@@ -2,6 +2,33 @@ plugins {
     id("memo.spring-boot")
 }
 
+// jOOQ classes generated from the migrated schema and committed (ADR-0007); refreshed by `updateJooq`.
+val jooqGeneratedDir = layout.projectDirectory.dir("src/main/jooq")
+
+kotlin {
+    sourceSets.named("main") {
+        kotlin.srcDir(jooqGeneratedDir)
+    }
+}
+
+ktlint {
+    filter {
+        exclude {
+            it.file.path
+                .replace('\\', '/')
+                .contains("/src/main/jooq/")
+        }
+    }
+}
+
+tasks.withType<dev.detekt.gradle.Detekt>().configureEach {
+    exclude {
+        it.file.path
+            .replace('\\', '/')
+            .contains("/src/main/jooq/")
+    }
+}
+
 dependencies {
     implementation(project(":shared"))
     implementation(platform(libs.aws.sdk.bom))
@@ -14,12 +41,14 @@ dependencies {
     implementation(libs.springdoc.webmvc.api)
     implementation(libs.jackson.module.kotlin)
     implementation(libs.kotlin.reflect)
+    implementation(libs.jug)
     implementation(libs.aws.s3) {
         // We use the JDK-based client only; keep Netty and Apache HTTP off the classpath.
         exclude(group = "software.amazon.awssdk", module = "netty-nio-client")
         exclude(group = "software.amazon.awssdk", module = "apache-client")
     }
     implementation(libs.aws.url.connection.client)
+    runtimeOnly(libs.spring.modulith.runtime)
     runtimeOnly(libs.flyway.database.postgresql)
     runtimeOnly(libs.postgresql)
 
@@ -31,20 +60,31 @@ dependencies {
     testImplementation(libs.testcontainers.junit)
     testImplementation(libs.testcontainers.postgresql)
     testImplementation(libs.mockk)
+    testImplementation(libs.jqwik)
+    testImplementation(libs.jooq.codegen)
+    testImplementation(libs.jooq.meta)
 }
 
-// Regenerates contracts/openapi.json from the running application (see OpenApiContractTest).
-tasks.register<Test>("updateContract") {
-    description = "Writes the generated OpenAPI spec to /contracts (the drift check runs in the normal test task)."
-    group = "contracts"
+/** A test task that runs one generator test in "update" mode (writes instead of checking for drift). */
+fun registerUpdateTask(
+    name: String,
+    testPattern: String,
+    flag: String,
+    what: String,
+) = tasks.register<Test>(name) {
+    description = "Regenerates $what (the drift check runs in the normal test task)."
+    group = "generation"
     val testSourceSet = sourceSets.test.get()
     testClassesDirs = testSourceSet.output.classesDirs
     classpath = testSourceSet.runtimeClasspath
     useJUnitPlatform()
-    filter { includeTestsMatching("*OpenApiContractTest") }
-    systemProperty("contracts.update", "true")
+    filter { includeTestsMatching(testPattern) }
+    systemProperty(flag, "true")
     outputs.upToDateWhen { false }
 }
+
+registerUpdateTask("updateContract", "*OpenApiContractTest", "contracts.update", "/contracts/openapi.json")
+registerUpdateTask("updateJooq", "*JooqCodegenTest", "jooq.update", "backend/src/main/jooq from the migrated schema")
 
 tasks.withType<Test>().configureEach {
     val repoRoot = rootProject.layout.projectDirectory

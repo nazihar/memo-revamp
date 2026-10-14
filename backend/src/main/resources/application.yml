@@ -24,7 +24,11 @@ spring:
     schemas: memo
     default-schema: memo
     create-schemas: false
-    locations: classpath:db/migration
+    # Spring Modulith runs db/migration/__root, then db/migration/<module> in module dependency order (ADR-0007).
+  modulith:
+    detection-strategy: explicitly-annotated
+    runtime:
+      flyway-enabled: true
   jooq:
     sql-dialect: postgres
   mvc:
@@ -51,6 +55,9 @@ springdoc:
     enabled: false
 
 memo:
+  demo:
+    # Seeds the demo tenant on startup (dev and test only; refuses under the prod profile).
+    seed: ${MEMO_DEMO_SEED:false}
   api-docs:
     enabled: false
   health:

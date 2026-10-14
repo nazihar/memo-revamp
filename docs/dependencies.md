@@ -20,6 +20,10 @@ Column meanings:
 | PostgreSQL JDBC | 42.7.13 (Boot-managed) | BSD-2-Clause | runtime | DB driver | 2026-10; active | — |
 | AWS SDK for Java v2 (s3, url-connection-client) | 2.55.16 | Apache-2.0 | runtime | S3 API client (locked decision) | released daily | — (locked) |
 | JSpecify | Boot-managed | Apache-2.0 | runtime | Nullness annotations | active | — |
+| Spring Modulith runtime | 2.1.1 | Apache-2.0 | runtime | Per-module Flyway migrations in dependency order (ADR-0007) | 2026; active | Single Flyway location (no module ownership) |
+| FasterXML java-uuid-generator (JUG) | 5.2.0 | Apache-2.0 | runtime | UUIDv7 ids (`TimeBasedEpochGenerator`, ADR-0008) | 2025-12; FasterXML, active | uuid-creator (single maintainer); hand-written |
+| jOOQ codegen + meta | 3.21.7 (Boot-managed) | Apache-2.0 | dev-only | Generates committed jOOQ sources in `JooqCodegenTest` (ADR-0007) | active | jOOQ Gradle plugin at compile time |
+| jqwik | 1.10.2 | EPL-2.0 | dev-only | Property-based and stateful tests (ADR-0008) | 2026-10-10; one main maintainer (accepted, dev-only) | Kotest property |
 | JUnit Jupiter | 6.0.3 (Boot-managed) | EPL-2.0 | dev-only | Test framework | active | — |
 | AssertJ | 3.27.7 (Boot-managed) | Apache-2.0 | dev-only | Assertions | active | Kotest assertions (decided in E02, ADR-TL) |
 | MockK | 1.14.11 | Apache-2.0 | dev-only | Mocks at boundaries only | 2026-05; active | Mockito-Kotlin |

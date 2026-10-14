@@ -43,6 +43,7 @@ class ModularityTest {
                 "notification",
                 "search",
                 "system",
+                "demo",
                 "common",
             )
     }

@@ -126,8 +126,9 @@ function killTree(child) {
 
 function runApps({ core }) {
   const env = ensureEnv()
-  const gradlew = isWindows ? 'gradlew.bat' : './gradlew'
-  const backend = spawn(gradlew, [':backend:bootRun', '--console=plain'], {
+  // Absolute path: cmd.exe may not search the current directory (NoDefaultCurrentDirectoryInExePath).
+  const gradlew = join(root, isWindows ? 'gradlew.bat' : 'gradlew')
+  const backend = spawn(isWindows ? `"${gradlew}"` : gradlew, [':backend:bootRun', '--console=plain'], {
     cwd: root,
     env: { ...process.env, ...backendEnv(env, { core }) },
     shell: isWindows,

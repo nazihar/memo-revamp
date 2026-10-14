@@ -16,14 +16,19 @@ import java.time.Instant
 
 @Schema(name = "Health", description = "Public platform status. Contains only component names and states.")
 data class HealthResponse(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     val status: HealthStatus,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     val checkedAt: Instant,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     val components: List<ComponentHealthResponse>,
 )
 
 @Schema(name = "ComponentHealth")
 data class ComponentHealthResponse(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     val name: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     val status: ComponentStatus,
 )
 

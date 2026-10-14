@@ -132,3 +132,12 @@ This is a single developer-facing status page, so there are no user journeys to 
 1. `./gradlew :backend:updateContract` runs `OpenApiContractTest` in update mode, which writes `/contracts/openapi.json` (OpenAPI **3.1**).
 2. In normal mode the same test **fails if the generated spec differs** from the committed file. This is the drift check; E04 makes it a gate.
 3. `pnpm --filter web generate:api` runs `@hey-api/openapi-ts` (pinned) and writes `web/src/api/generated` (committed). `pnpm typecheck` compiles it.
+
+## 14. Implementation notes (differences from the plan above)
+
+- **Database roles arrived in E01, not E02.** `deploy/db/init/01-roles.sh` creates `memo_migrator` (schema owner, used by Flyway) and `memo_app` (DML only, not the owner, `NOBYPASSRLS`). The same script runs in Compose and Testcontainers. E02 builds on it: RLS conventions, the meta-test and ADR-DB.
+- **CSRF answers before authentication.** A credential-less `POST` gets **403** (CSRF), not 401. Either way the request is never processed. `SecurityDefaultsTest` documents this.
+- **Modulith treats the KMP package as a library.** `com.memorevamp.shared` comes from `/shared` and is excluded from module detection, so any module may use it. Test-only packages are excluded too.
+- **Required fields in the contract are explicit.** Response DTO fields carry `@field:Schema(requiredMode = REQUIRED)`, because springdoc does not infer "required" from Kotlin non-null types. Convention: every non-null response field is annotated. Revisit in E03 with a global customizer.
+- **`exactOptionalPropertyTypes` is off in the web tsconfig.** The hey-api generated client does not compile with it. The other strict flags (`strict`, `noUncheckedIndexedAccess`, …) stay on.
+- **`MEMO_BUILD_ROOT` (optional) moves Gradle output out of `build/`.** This was added after VS Code's Java tooling, running Gradle 9.7.1, corrupted `build-logic` outputs during CLI builds. The directory must be on the same drive as the sources, because Kotlin incremental caches break across drives.

@@ -11,6 +11,7 @@
             "type" : "string"
           }
         },
+        "required" : [ "name", "status" ],
         "type" : "object"
       },
       "Health" : {
@@ -31,6 +32,7 @@
             "type" : "string"
           }
         },
+        "required" : [ "checkedAt", "components", "status" ],
         "type" : "object"
       }
     }

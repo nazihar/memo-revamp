@@ -1,0 +1,50 @@
+/*
+ * Design tokens (E03 design §2). Every colour pair used for text meets WCAG AA (4.5:1); axe verifies rendered contrast.
+ * Status colours are never the only signal: StatusBadge always shows a text label and an icon.
+ */
+:root {
+  --font-system:
+    system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans', 'Noto Sans Arabic', 'Noto Sans Bengali', Arial,
+    sans-serif;
+  --radius: 0.5rem;
+
+  --background: oklch(0.99 0 0);
+  --foreground: oklch(0.21 0.01 260);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.21 0.01 260);
+  --muted: oklch(0.96 0.005 260);
+  --muted-foreground: oklch(0.45 0.015 260);
+  --primary: oklch(0.42 0.13 255);
+  --primary-foreground: oklch(0.99 0 0);
+  --accent: oklch(0.95 0.01 255);
+  --accent-foreground: oklch(0.25 0.05 255);
+  --border: oklch(0.88 0.008 260);
+  --ring: oklch(0.5 0.15 255);
+  --destructive: oklch(0.5 0.19 27);
+
+  --status-up: oklch(0.45 0.12 150);
+  --status-degraded: oklch(0.5 0.12 70);
+  --status-down: oklch(0.5 0.19 27);
+  --status-disabled: oklch(0.45 0.01 260);
+}
+
+.dark {
+  --background: oklch(0.17 0.01 260);
+  --foreground: oklch(0.96 0.005 260);
+  --card: oklch(0.21 0.012 260);
+  --card-foreground: oklch(0.96 0.005 260);
+  --muted: oklch(0.26 0.012 260);
+  --muted-foreground: oklch(0.78 0.012 260);
+  --primary: oklch(0.78 0.1 255);
+  --primary-foreground: oklch(0.18 0.02 260);
+  --accent: oklch(0.3 0.03 255);
+  --accent-foreground: oklch(0.96 0.005 260);
+  --border: oklch(0.34 0.012 260);
+  --ring: oklch(0.75 0.12 255);
+  --destructive: oklch(0.72 0.17 27);
+
+  --status-up: oklch(0.8 0.14 150);
+  --status-degraded: oklch(0.83 0.13 80);
+  --status-down: oklch(0.75 0.16 27);
+  --status-disabled: oklch(0.78 0.01 260);
+}

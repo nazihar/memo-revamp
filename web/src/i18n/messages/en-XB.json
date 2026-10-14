@@ -1,0 +1,386 @@
+{
+  "app.name": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo & Wǝǝʇıuƃ Wɐuɐƃǝɯǝuʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "health.checkedAt": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅂ɐsʇ ɔɥǝɔʞǝp "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "health.component.database": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡɐʇɐqɐsǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "health.component.documentServer": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡoɔnɯǝuʇ sǝɹʌǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "health.component.mail": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wɐıʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "health.component.malwareScanner": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wɐʅʍɐɹǝ sɔɐuuǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "health.component.objectStorage": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Oqɾǝɔʇ sʇoɹɐƃǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "health.components": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄoɯdouǝuʇs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "health.loading": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥǝɔʞıuƃ dʅɐʇɟoɹɯ sʇɐʇns…"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "health.overall": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Oʌǝɹɐʅʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "health.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁʅɐʇɟoɹɯ sʇɐʇns"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "health.unreachable": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ dʅɐʇɟoɹɯ ɔonʅp uoʇ qǝ ɹǝɐɔɥǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "locale.label": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅂ɐuƃnɐƃǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "locale.trigger": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥɐuƃǝ ʅɐuƃnɐƃǝ (ɔnɹɹǝuʇ: "
+    },
+    {
+      "type": 1,
+      "value": "current"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "nav.status": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sʇɐʇns"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "shell.navigation": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wɐıu uɐʌıƃɐʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "shell.skipToContent": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sʞıd ʇo ɯɐıu ɔouʇǝuʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "status.degraded": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝƃɹɐpǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "status.disabled": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noʇ ɔouɟıƃnɹǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "status.down": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡoʍu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "status.up": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩d"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "theme.dark": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡɐɹʞ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "theme.label": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝɯǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "theme.light": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅂ıƃɥʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "theme.system": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sʎsʇǝɯ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "theme.trigger": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥɐuƃǝ ʇɥǝɯǝ (ɔnɹɹǝuʇ: "
+    },
+    {
+      "type": 1,
+      "value": "current"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ]
+}

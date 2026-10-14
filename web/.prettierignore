@@ -1,0 +1,10 @@
+dist
+coverage
+playwright-report
+test-results
+.lighthouseci
+src/api/generated
+src/routeTree.gen.ts
+src/i18n/messages
+pnpm-lock.yaml
+e2e/__screenshots__

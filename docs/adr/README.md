@@ -12,3 +12,5 @@ We use the MADR format (see [0001](0001-record-architecture-decisions.md)). Star
 | [0006](0006-database-roles-and-rls-conventions.md) | Database roles, RLS policy conventions and tenant-context semantics | accepted | 2026-10-14 |
 | [0007](0007-jooq-codegen-and-flyway-layout.md) | jOOQ edition, code generation pipeline and per-module Flyway layout | accepted | 2026-10-14 |
 | [0008](0008-backend-test-libraries.md) | Backend test libraries (assertions, property-based testing, ids) | accepted | 2026-10-14 |
+| [0009](0009-web-lint-and-format.md) | Web lint and format: ESLint + Prettier | accepted | 2026-10-14 |
+| [0010](0010-web-i18n.md) | Web internationalisation: react-intl (FormatJS) | accepted | 2026-10-14 |

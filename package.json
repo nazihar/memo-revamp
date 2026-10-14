@@ -1,0 +1,15 @@
+{
+  "name": "memo-revamp",
+  "private": true,
+  "packageManager": "pnpm@10.18.1",
+  "engines": {
+    "node": ">=24.0.0 <25"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.mjs dev",
+    "stack:up": "node scripts/dev.mjs up",
+    "stack:down": "node scripts/dev.mjs down",
+    "stack:reset": "node scripts/dev.mjs reset",
+    "stack:env": "node scripts/dev.mjs env"
+  }
+}

@@ -1,0 +1,82 @@
+# Defaults are safe for any environment; secrets come only from the environment (never from this file).
+spring:
+  application:
+    name: memo-revamp
+  threads:
+    virtual:
+      enabled: true
+  main:
+    banner-mode: off
+  autoconfigure:
+    # No default in-memory user with a logged password; identities arrive in Phase 1a.
+    exclude: org.springframework.boot.security.autoconfigure.UserDetailsServiceAutoConfiguration
+  datasource:
+    url: ${MEMO_DB_URL:jdbc:postgresql://localhost:5432/memo}
+    username: ${MEMO_DB_APP_USER:memo_app}
+    password: ${MEMO_DB_APP_PASSWORD:}
+    hikari:
+      connection-timeout: 5000 # ms
+      maximum-pool-size: 10
+  flyway:
+    # Migrations run as the schema owner; the application connects as memo_app (AGENTS.md §3.2).
+    user: ${MEMO_DB_MIGRATOR_USER:memo_migrator}
+    password: ${MEMO_DB_MIGRATOR_PASSWORD:}
+    schemas: memo
+    default-schema: memo
+    create-schemas: false
+    locations: classpath:db/migration
+  jooq:
+    sql-dialect: postgres
+  mvc:
+    problemdetails:
+      enabled: true
+  jackson:
+    default-property-inclusion: non_null
+
+server:
+  error:
+    include-stacktrace: never
+    include-message: never
+    include-binding-errors: never
+    include-exception: false
+  servlet:
+    session:
+      tracking-modes: []
+
+springdoc:
+  api-docs:
+    enabled: ${memo.api-docs.enabled}
+    version: openapi_3_1
+  swagger-ui:
+    enabled: false
+
+memo:
+  api-docs:
+    enabled: false
+  health:
+    cache-ttl: 5s
+    probe-timeout: 2s
+  storage:
+    endpoint: ${MEMO_S3_ENDPOINT:}
+    region: ${MEMO_S3_REGION:us-east-1}
+    access-key: ${MEMO_S3_ACCESS_KEY:}
+    secret-key: ${MEMO_S3_SECRET_KEY:}
+    records-bucket: records
+    work-bucket: work
+  document-server:
+    url: ${MEMO_DOCSERVER_URL:}
+  malware-scanner:
+    host: ${MEMO_CLAMAV_HOST:}
+    port: ${MEMO_CLAMAV_PORT:3310}
+  mail:
+    host: ${MEMO_SMTP_HOST:}
+    port: ${MEMO_SMTP_PORT:25}
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+memo:
+  api-docs:
+    enabled: true

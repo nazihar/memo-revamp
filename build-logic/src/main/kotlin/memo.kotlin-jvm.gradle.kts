@@ -1,0 +1,30 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
+plugins {
+    id("org.jetbrains.kotlin.jvm")
+    id("memo.quality")
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(libs.versions.java.get())
+    }
+}
+
+kotlin {
+    jvmToolchain(libs.versions.java.get().toInt())
+    compilerOptions {
+        jvmTarget = JvmTarget.fromTarget(libs.versions.java.get())
+        allWarningsAsErrors = true
+        // JSpecify nullness annotations (Spring 7) are enforced as errors.
+        freeCompilerArgs.add("-Xjsr305=strict")
+    }
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
+    testLogging {
+        events("failed", "skipped")
+        exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+    }
+}

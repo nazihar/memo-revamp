@@ -1,0 +1,6 @@
+# Project overrides on top of detekt's default configuration (buildUponDefaultConfig = true).
+# Keep this list short; every override needs a reason.
+style:
+  MaxLineLength:
+    # Aligned with ktlint's default for the official code style.
+    maxLineLength: 140

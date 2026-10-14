@@ -46,6 +46,7 @@ dependencies {
         // We use the JDK-based client only; keep Netty and Apache HTTP off the classpath.
         exclude(group = "software.amazon.awssdk", module = "netty-nio-client")
         exclude(group = "software.amazon.awssdk", module = "apache-client")
+        exclude(group = "software.amazon.awssdk", module = "apache5-client")
     }
     implementation(libs.aws.url.connection.client)
     runtimeOnly(libs.spring.modulith.runtime)

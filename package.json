@@ -10,6 +10,12 @@
     "stack:up": "node scripts/dev.mjs up",
     "stack:down": "node scripts/dev.mjs down",
     "stack:reset": "node scripts/dev.mjs reset",
-    "stack:env": "node scripts/dev.mjs env"
+    "stack:env": "node scripts/dev.mjs env",
+    "prepare": "lefthook install",
+    "sbom": "node ci/web-sbom.mjs",
+    "license-check": "node ci/license-check.mjs --report build/sbom/licenses.md build/sbom/backend.cdx.json build/sbom/web.cdx.json"
+  },
+  "devDependencies": {
+    "lefthook": "2.1.17"
   }
 }

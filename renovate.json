@@ -1,0 +1,44 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "ADR-0014: grouped weekly updates, immediate security updates, majors separate, no automerge in Phase 0.",
+  "extends": ["config:recommended", "helpers:pinGitHubActionDigests", "docker:pinDigests", ":semanticCommits"],
+  "timezone": "UTC",
+  "schedule": ["before 6am on monday"],
+  "prConcurrentLimit": 10,
+  "automerge": false,
+  "dependencyDashboard": true,
+  "vulnerabilityAlerts": { "enabled": true, "schedule": ["at any time"], "labels": ["security"] },
+  "osvVulnerabilityAlerts": true,
+  "lockFileMaintenance": { "enabled": true, "schedule": ["before 6am on the first day of the month"] },
+  "labels": ["dependencies"],
+  "packageRules": [
+    { "matchUpdateTypes": ["major"], "groupName": null, "schedule": ["at any time"], "labels": ["dependencies", "major"] },
+    { "matchPackageNames": ["@hey-api/openapi-ts"], "groupName": null, "labels": ["dependencies", "pre-1.0", "manual-review"] },
+    { "matchPackageNames": ["org.springframework.boot{/,}**", "org.springframework.modulith{/,}**", "org.springdoc{/,}**"], "groupName": "spring" },
+    { "matchPackageNames": ["org.jetbrains.kotlin{/,}**"], "groupName": "kotlin" },
+    { "matchPackageNames": ["@tanstack/**"], "groupName": "tanstack" },
+    { "matchPackageNames": ["react", "react-dom", "@types/react", "@types/react-dom"], "groupName": "react" },
+    { "matchPackageNames": ["eslint", "@eslint/**", "typescript-eslint", "eslint-plugin-**", "@tanstack/eslint-plugin-query", "eslint-config-prettier", "prettier", "globals", "com.pinterest.ktlint{/,}**", "org.jlleitschuh.gradle.ktlint{/,}**", "dev.detekt{/,}**"], "groupName": "lint tools" },
+    { "matchPackageNames": ["vitest", "@vitest/**", "@testing-library/**", "msw", "jsdom", "@playwright/test", "@axe-core/playwright", "axe-core", "net.jqwik{/,}**", "io.mockk{/,}**", "org.testcontainers{/,}**"], "groupName": "test tools" },
+    { "matchManagers": ["github-actions"], "groupName": "ci actions" },
+    { "matchDatasources": ["docker"], "groupName": "container images" },
+    { "matchPackageNames": ["org.apache.tomcat.embed:tomcat-embed-core", "com.fasterxml.jackson:jackson-bom", "tools.jackson:jackson-bom"], "groupName": "security overrides", "labels": ["dependencies", "security"], "description": "Remove these overrides once Spring Boot manages >= the patched versions (gradle/libs.versions.toml)." }
+  ],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Images referenced in workflows/scripts by tag (trivy, semgrep, gitleaks, actionlint, playwright)",
+      "managerFilePatterns": ["/^\\.github/workflows/.+\\.ya?ml$/", "/^ci/.+\\.sh$/", "/^web/package\\.json$/"],
+      "matchStrings": ["(?<depName>aquasec/trivy|semgrep/semgrep|zricethezav/gitleaks|rhysd/actionlint|mcr\\.microsoft\\.com/playwright):(?<currentValue>v?[0-9][0-9.]*(?:-[a-z]+)?)"],
+      "datasourceTemplate": "docker"
+    },
+    {
+      "customType": "regex",
+      "description": "TRIVY_VERSION env in workflows",
+      "managerFilePatterns": ["/^\\.github/workflows/.+\\.ya?ml$/"],
+      "matchStrings": ["TRIVY_VERSION: (?<currentValue>[0-9.]+)"],
+      "depNameTemplate": "aquasec/trivy",
+      "datasourceTemplate": "docker"
+    }
+  ]
+}

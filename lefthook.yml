@@ -1,0 +1,21 @@
+# Pre-commit stage (TESTING_STRATEGY §9): fast checks on staged files only. CI runs the full gates regardless.
+# Installed by `pnpm install` (root `prepare` script). Skip in an emergency with LEFTHOOK=0 — CI still enforces everything.
+pre-commit:
+  parallel: true
+  jobs:
+    - name: web-format
+      root: web/
+      glob: '*.{ts,tsx,js,json,css,md,yml,yaml}'
+      run: pnpm exec prettier --check {staged_files}
+
+    - name: web-lint
+      root: web/
+      glob: '*.{ts,tsx}'
+      run: pnpm exec eslint --max-warnings 0 {staged_files}
+
+    - name: kotlin-lint
+      glob: '*.{kt,kts}'
+      run: ./gradlew ktlintCheck --quiet
+
+    - name: secrets
+      run: sh ci/hooks/secrets.sh

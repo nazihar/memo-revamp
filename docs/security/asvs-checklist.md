@@ -19,9 +19,13 @@
 | V8 Authorization | Tenant context cannot leak across pooled connections; fails closed | L3 | met | `TenantTransactionsIT`, session-SET source scan in `ArchitectureRulesTest` |
 | V11 Cryptography | Per-tenant envelope encryption | L3 | planned (1a/1b) | — |
 | V12 Secure communication | TLS everywhere | L2 | planned (E05) | — |
-| V13 Configuration | Secrets not in code, config or logs | L2 | partial | Generated `.env` (git-ignored); random test secrets; `StorageProperties.toString` redacts (`ObjectStorageIT`); gitleaks (E04) |
+| V13 Configuration | Secrets not in code, config or logs | L2 | met (Phase 0 scope) | Generated `.env` (git-ignored); random test secrets; `StorageProperties.toString` redacts (`ObjectStorageIT`); gitleaks pre-commit + CI (full history); Semgrep `memo-no-secrets-in-logs` |
 | V13 Configuration | No unintended information disclosure | L2 | met | Health exposes names and status only (`HealthEndpointIT`); `server.error.include-*=never` |
 | V14 Data protection | Cache-Control on sensitive responses | L2 | met (API) | `Cache-Control: no-store` (`SecurityDefaultsTest`) |
-| V15 Secure coding & architecture | Dependency inventory, SBOM, pinned versions | L2 | partial | `docs/dependencies.md`, version catalog, lockfile; SBOM planned (E04) |
+| V15 Secure coding & architecture | Dependency inventory, SBOM, pinned versions | L2 | met | `docs/dependencies.md`; CycloneDX SBOMs per PR/release; Gradle `gradle.lockfile` + pnpm lockfile; actions by SHA, images by digest |
+| V15 Secure coding & architecture | Known-vulnerable components blocked | L2 | met | Trivy on SBOMs + images in PR, daily re-scan; security overrides for Tomcat/Jackson (ADR-0013) |
+| V15 Secure coding & architecture | Licence compliance | L2 | met | `ci/license-check.mjs` (self-tested) over both SBOMs; AGPL/GPL only as separate services |
+| V15 Secure coding & architecture | Signed, verifiable artefacts | L2 | partial (needs owner key) | cosign key-based signing + SBOM/provenance attestations in `release.yml` (ADR-0012) |
+| V15 Secure coding & architecture | Hardened containers | L2 | met | non-root, read-only root FS, no capabilities (`ci/image-smoke.sh`); Trivy config clean |
 | V15 Secure coding & architecture | Isolation of risky components | L2 | partial | ONLYOFFICE on an internal-only network (E01 manual check); NetworkPolicy (E05) |
 | V16 Security logging & error handling | Security events logged without sensitive data | L3 | planned (1a) | Audit module |

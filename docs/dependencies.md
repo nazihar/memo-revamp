@@ -83,6 +83,24 @@ Column meanings:
 | amazon/aws-cli image | 2.37.13 | Apache-2.0 | Bucket bootstrap job | — | very active |
 | alpine/socat image | 1.8.1.1 | GPL-2.0 (socat) | Dev-only TCP gateway into the internal ONLYOFFICE network | dev-only, unmodified | active |
 
+## Supply chain and build tooling (E04)
+
+| Name | Version | License | Scope | Purpose | Maintenance | Alternatives considered |
+|---|---|---|---|---|---|---|
+| CycloneDX Gradle plugin | 3.5.1 | Apache-2.0 | dev-only | Backend/shared SBOM (ADR-0013) | 2026-10-09; active | Syft |
+| SpotBugs / spotbugs-gradle-plugin / FindSecBugs | 4.10.5 / 6.5.13 / 1.14.0 | LGPL-2.1 / Apache-2.0 / LGPL-3.0 | dev-only (separate analysis tool) | JVM bytecode bug + security patterns | active / active / 2025-04 (slower cadence) | — |
+| Trivy (container) | 0.75.0 | Apache-2.0 | dev-only (service) | Vulnerabilities (SBOM, images, lockfiles), IaC misconfiguration | 2026-10-01; very active | OWASP Dependency-Check, Grype |
+| Semgrep CE (container) | 1.180.0 | LGPL-2.1 (engine) | dev-only (separate CLI) | SAST with custom rules | 2026-10-07; very active | CodeQL (GitHub-only) |
+| gitleaks (container) | 8.30.1 | MIT | dev-only | Secret scanning | 2026-03; active | trufflehog |
+| actionlint (container) | 1.7.12 | MIT | dev-only | Workflow lint (+shellcheck) | 2026-03; active | — |
+| cosign | 3.1.3 | Apache-2.0 | dev-only (release) | Image signing + attestations, offline verification (ADR-0012) | 2026-08; very active (Sigstore) | Notation |
+| lefthook | 2.1.17 | MIT | dev-only | Pre-commit hooks | very active | husky + lint-staged |
+| Renovate (GitHub App) | hosted | AGPL-3.0 (service, not linked) | dev-only (service) | Dependency update PRs (ADR-0014) | very active | Dependabot |
+| gcr.io/distroless/java25-debian13:nonroot | digest-pinned | Apache-2.0 (+ Debian package licences) | runtime base image | Backend runtime (ADR-0012) | Google, rebuilt continuously | Temurin JRE, Chainguard |
+| eclipse-temurin:25-jre-noble | digest-pinned | GPLv2+CE | build stage only | Layer extraction | active | — |
+| nginxinc/nginx-unprivileged | 1.31.6-alpine3.24 (digest) | BSD-2-Clause (nginx) | runtime base image | SPA static server + /api proxy | active | Caddy |
+| node | 24.21.0-alpine3.24 (digest) | MIT | build stage only | Renders nginx security headers | active | — |
+
 ## CI
 
 | Name | Version (SHA-pinned) | License | Purpose |
@@ -92,4 +110,5 @@ Column meanings:
 | actions/setup-node | v7.1.0 | MIT | Node |
 | gradle/actions/setup-gradle | v6.4.0 | MIT | Gradle caching |
 | pnpm/action-setup | v6.1.0 | MIT | pnpm |
-| actions/upload-artifact | v7.0.2 | MIT | Test reports |
+| actions/upload-artifact | v7.0.2 | MIT | Artefacts between jobs, reports |
+| actions/download-artifact | v8.0.2 | MIT | Artefacts between jobs |

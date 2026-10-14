@@ -1,0 +1,17 @@
+# gitleaks configuration (ADR-0013): default rules plus allow-lists for generated, non-secret content.
+title = "memo-revamp"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Generated artefacts and lockfiles contain hashes, not secrets."
+paths = [
+  '''pnpm-lock\.yaml''',
+  '''(^|/)gradle\.lockfile$''',
+  '''gradle/wrapper/gradle-wrapper\.properties''',
+  '''web/src/api/generated/''',
+  '''backend/src/main/jooq/''',
+  '''contracts/openapi\.json''',
+  '''web/e2e/__screenshots__/''',
+]

@@ -26,8 +26,8 @@ jobs:
       - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
         with:
           cache-read-only: true
-      # Long property runs: jqwik tries ×20 (JQWIK_DEFAULT_TRIES is read by jqwik.properties in later phases).
-      - run: ./gradlew :backend:bootJar :backend:test -Djqwik.tries.default=1000 --console=plain
+      # Long property runs (TESTING_STRATEGY §2): properties without an explicit `tries` use 1000 instead of the default.
+      - run: ./gradlew :backend:bootJar :backend:test -PjqwikTries=1000 --console=plain
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: backend-jar
@@ -47,8 +47,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
       - run: pnpm install --frozen-lockfile
-      # Visual + pseudo mock the API, so they need no backend; Firefox/WebKit smoke runs against a mocked-free stack
-      # in Phase 1a when the e2e stack moves into a reusable service container. Until then they use the preview build.
+      # Visual + pseudo-locale specs mock the API, so they need only the preview build (no backend).
       - run: pnpm --filter web exec playwright test --project=visual --project=pseudo --retries=1
       - if: failure()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -84,6 +83,33 @@ jobs:
       - if: always()
         run: ci/e2e-stack.sh logs
 
+  helm-kind:
+    name: Helm chart on kind (migration hook, probes, health)
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: backend-jar
+          path: backend/build/libs
+      - name: Build images
+        run: |
+          pnpm install --frozen-lockfile && pnpm --filter web build
+          docker build -f backend/Dockerfile -t memo-backend:ci .
+          docker build -f web/Dockerfile -t memo-web:ci .
+      - name: Install kind, kubectl and helm (pinned)
+        run: |
+          curl -fsSLo kind https://github.com/kubernetes-sigs/kind/releases/download/v0.33.0/kind-linux-amd64 && sudo install kind /usr/local/bin/
+          curl -fsSL https://get.helm.sh/helm-v4.3.0-linux-amd64.tar.gz | tar xz && sudo install linux-amd64/helm /usr/local/bin/
+      - run: ci/helm-kind.sh
+
   lighthouse:
     name: Lighthouse budgets
     runs-on: ubuntu-24.04
@@ -110,13 +136,59 @@ jobs:
           docker run --rm -v "$PWD:/src" "aquasec/trivy:$TRIVY_VERSION" fs --quiet --scanners vuln \
             --severity HIGH,CRITICAL --ignore-unfixed --ignorefile /src/.trivyignore --exit-code 1 /src
 
+  dast-and-perf:
+    name: ZAP baseline + Gatling smoke (on-prem stack; and dev when DEV_URL is set)
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: 25
+      - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
+        with:
+          cache-read-only: true
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: backend-jar
+          path: backend/build/libs
+      - name: Build images and start the on-prem stack
+        run: |
+          pnpm install --frozen-lockfile && pnpm --filter web build
+          docker build -f backend/Dockerfile -t memo-backend:ci .
+          docker build -f web/Dockerfile -t memo-web:ci .
+          ci/onprem-stack.sh up memo-backend:ci memo-web:ci 18100
+      - run: ci/zap-baseline.sh http://127.0.0.1:18100/
+      - run: ./gradlew :perf:gatlingRun --simulation com.memorevamp.perf.HealthSmokeSimulation -DbaseUrl=http://127.0.0.1:18100 --console=plain
+      - name: Against dev (when configured)
+        if: vars.DEV_URL != ''
+        run: |
+          ci/zap-baseline.sh "${{ vars.DEV_URL }}/"
+          ./gradlew :perf:gatlingRun --simulation com.memorevamp.perf.HealthSmokeSimulation -DbaseUrl="${{ vars.DEV_URL }}" --console=plain
+      - if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: dast-and-perf-reports
+          path: |
+            build/zap/
+            perf/build/reports/gatling/
+          retention-days: 30
+      - if: always()
+        run: ci/onprem-stack.sh down
+
   later-phase-placeholders:
-    name: placeholders (mutation · Schemathesis · upgrade/N-1 · ZAP · Gatling)
+    name: placeholders (mutation · Schemathesis · upgrade/N-1)
     runs-on: ubuntu-24.04
     timeout-minutes: 5
     steps:
       - run: |
-          echo "PIT mutation testing: starts with workflow/authz/audit modules (Phase 1a/2)."
-          echo "Schemathesis API fuzzing: starts when the first mutating endpoints exist (Phase 1a)."
-          echo "Upgrade + N-1 migration tests: start with the first deployed release (E05/Phase 1a)."
-          echo "ZAP baseline + Gatling smoke against dev: wired in E05."
+          echo "PIT mutation testing: starts with the workflow/authz/audit modules (Phase 1a/2)."
+          echo "Schemathesis API fuzzing: starts with the first mutating endpoints (Phase 1a)."
+          echo "Upgrade + N-1 migration tests: start with the first deployed release (E05 dev environment)."

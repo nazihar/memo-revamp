@@ -1,0 +1,184 @@
+# On-prem / single-VM profile (ADR-0015): the same images as SaaS and Kubernetes, for small installs and for our
+# dev/staging VM. Distinct from the local dev stack (deploy/compose/compose.yaml).
+#
+#   cp .env.example .env && ../../scripts/gen-secrets.sh .env    # once; then set image digests and hostnames
+#   docker compose --env-file .env up -d                           # core: postgres, storage, migrate, backend, web
+#   docker compose --env-file .env --profile documents --profile antivirus up -d
+#
+# Hardening on every service: read-only root FS + tmpfs, all capabilities dropped, no-new-privileges, non-root users,
+# resource limits. Migrations run in the one-shot `migrate` service with the migrator role; the backend only ever holds
+# the application role's credentials (ADR-0016).
+name: ${COMPOSE_PROJECT_NAME:-memo}
+
+x-hardening: &hardening
+  read_only: true
+  cap_drop: [ALL]
+  security_opt: [no-new-privileges:true]
+  restart: unless-stopped
+  logging:
+    driver: json-file
+    options: { max-size: '20m', max-file: '5' }
+
+x-backend-env: &backend-env
+  MEMO_DB_URL: jdbc:postgresql://postgres:5432/memo
+  MEMO_SMTP_HOST: ${MEMO_SMTP_HOST:-}
+  MEMO_SMTP_PORT: ${MEMO_SMTP_PORT:-25}
+  MEMO_DOCSERVER_URL: ${MEMO_DOCSERVER_URL:-}
+  MEMO_CLAMAV_HOST: ${MEMO_CLAMAV_HOST:-}
+  LOGGING_STRUCTURED_FORMAT_CONSOLE: ecs
+  MEMO_OTEL_EXPORT: ${MEMO_OTEL_EXPORT:-false}
+  SPRING_PROFILES_ACTIVE: ${MEMO_SPRING_PROFILES:-prod}
+
+services:
+  postgres:
+    <<: *hardening
+    image: ${MEMO_POSTGRES_IMAGE:?set in .env}
+    # postgres needs a few writable runtime dirs besides its data volume.
+    tmpfs: [/tmp, /var/run/postgresql]
+    cap_add: [CHOWN, DAC_OVERRIDE, FOWNER, SETGID, SETUID]
+    environment:
+      POSTGRES_DB: memo
+      POSTGRES_PASSWORD: ${POSTGRES_SUPERUSER_PASSWORD:?}
+      MEMO_MIGRATOR_PASSWORD: ${MEMO_MIGRATOR_PASSWORD:?}
+      MEMO_APP_PASSWORD: ${MEMO_APP_PASSWORD:?}
+    volumes:
+      - ../../db/init:/docker-entrypoint-initdb.d:ro
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d memo"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    deploy: { resources: { limits: { memory: 1g } } }
+
+  seaweedfs:
+    <<: *hardening
+    image: ${MEMO_SEAWEEDFS_IMAGE:?set in .env}
+    # The image's non-root user; the named volume inherits its ownership of /data, so no chown capability is needed.
+    user: "1000:1000"
+    tmpfs: [/tmp]
+    entrypoint: ["/bin/sh", "/seaweedfs/start.sh"]
+    environment:
+      S3_ADMIN_ACCESS_KEY: ${S3_ADMIN_ACCESS_KEY:?}
+      S3_ADMIN_SECRET_KEY: ${S3_ADMIN_SECRET_KEY:?}
+      S3_APP_ACCESS_KEY: ${S3_APP_ACCESS_KEY:?}
+      S3_APP_SECRET_KEY: ${S3_APP_SECRET_KEY:?}
+    volumes:
+      - ../../seaweedfs/start.sh:/seaweedfs/start.sh:ro
+      - seaweed:/data
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://127.0.0.1:8333/healthz || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 60
+    deploy: { resources: { limits: { memory: 1g } } }
+
+  storage-init:
+    image: ${MEMO_AWSCLI_IMAGE:?set in .env}
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    tmpfs: [/tmp, /root/.aws]
+    depends_on:
+      seaweedfs: { condition: service_healthy }
+    environment:
+      AWS_ACCESS_KEY_ID: ${S3_ADMIN_ACCESS_KEY:?}
+      AWS_SECRET_ACCESS_KEY: ${S3_ADMIN_SECRET_KEY:?}
+      AWS_DEFAULT_REGION: us-east-1
+      S3_ENDPOINT: http://seaweedfs:8333
+    entrypoint: ["/bin/sh", "/init/storage-init.sh"]
+    volumes:
+      - ../../seaweedfs/storage-init.sh:/init/storage-init.sh:ro
+    restart: "no"
+
+  migrate:
+    image: ${MEMO_BACKEND_IMAGE:?set in .env}
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    tmpfs: [/tmp]
+    depends_on:
+      postgres: { condition: service_healthy }
+    environment:
+      <<: *backend-env
+      MEMO_MODE: migrate
+      MEMO_DB_APP_USER: memo_migrator
+      MEMO_DB_APP_PASSWORD: ${MEMO_MIGRATOR_PASSWORD:?}
+      MEMO_DB_MIGRATOR_PASSWORD: ${MEMO_MIGRATOR_PASSWORD:?}
+    restart: "no"
+
+  backend:
+    <<: *hardening
+    image: ${MEMO_BACKEND_IMAGE:?set in .env}
+    tmpfs: [/tmp]
+    depends_on:
+      migrate: { condition: service_completed_successfully }
+      storage-init: { condition: service_completed_successfully }
+    environment:
+      <<: *backend-env
+      MEMO_FLYWAY_ENABLED: "false"
+      MEMO_S3_ENDPOINT: http://seaweedfs:8333
+      MEMO_DB_APP_PASSWORD: ${MEMO_APP_PASSWORD:?}
+      MEMO_S3_ACCESS_KEY: ${S3_APP_ACCESS_KEY:?}
+      MEMO_S3_SECRET_KEY: ${S3_APP_SECRET_KEY:?}
+      MEMO_DEMO_SEED: ${MEMO_DEMO_SEED:-false}
+    networks: [default, docs-internal]
+    # Readiness on the management port (never published).
+    healthcheck:
+      disable: true # distroless has no shell/curl; the web service and deploy.sh check readiness through the network
+    deploy: { resources: { limits: { memory: 1536m } } }
+
+  web:
+    <<: *hardening
+    image: ${MEMO_WEB_IMAGE:?set in .env}
+    tmpfs:
+      - /tmp
+      - /etc/nginx/conf.d:uid=101,gid=101
+    depends_on: [backend]
+    environment:
+      BACKEND_URL: http://backend:8080
+    ports:
+      - "${MEMO_WEB_BIND:-127.0.0.1}:${MEMO_WEB_PORT:-8080}:8080"
+    networks:
+      default: {}
+      # The edge proxy (deploy/compose/edge) reaches this environment as <project>-web, e.g. memo-dev-web.
+      edge: { aliases: ["${COMPOSE_PROJECT_NAME:-memo}-web"] }
+    deploy: { resources: { limits: { memory: 128m } } }
+
+  onlyoffice:
+    profiles: [documents]
+    image: ${MEMO_ONLYOFFICE_IMAGE:-onlyoffice/documentserver:9.4.0.1}
+    restart: unless-stopped
+    environment:
+      JWT_ENABLED: "true"
+      JWT_SECRET: ${ONLYOFFICE_JWT_SECRET:?}
+    # No outbound network (AGENTS.md §3.4): internal network shared with the backend only.
+    networks: [docs-internal]
+    deploy: { resources: { limits: { memory: 4g } } }
+
+  clamav:
+    profiles: [antivirus]
+    image: ${MEMO_CLAMAV_IMAGE:-clamav/clamav:1.5.4}
+    restart: unless-stopped
+    volumes: [clamav:/var/lib/clamav]
+    deploy: { resources: { limits: { memory: 3g } } }
+
+  mailpit:
+    # Dev/staging only: catches all mail. Never enable on production installs.
+    profiles: [devtools]
+    image: axllent/mailpit:v1.31.5
+    <<: *hardening
+
+networks:
+  default: {}
+  docs-internal:
+    internal: true
+  # Shared with the edge proxy (deploy/compose/edge). Created by deploy.sh / Ansible.
+  edge:
+    external: true
+    name: ${MEMO_EDGE_NETWORK:-memo-edge}
+
+volumes:
+  pgdata: {}
+  seaweed: {}
+  clamav: {}

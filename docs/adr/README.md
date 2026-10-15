@@ -18,3 +18,5 @@ We use the MADR format (see [0001](0001-record-architecture-decisions.md)). Star
 | [0012](0012-container-images-and-signing.md) | Container base images and image signing | accepted | 2026-10-14 |
 | [0013](0013-supply-chain-scanning.md) | Supply-chain scanning stack | accepted | 2026-10-14 |
 | [0014](0014-dependency-update-bot.md) | Dependency update bot: Renovate | accepted | 2026-10-14 |
+| [0015](0015-environments-iac-and-deployment.md) | Environments, IaC and deployment topology | accepted | 2026-10-14 |
+| [0016](0016-operability-baseline.md) | Operability baseline: structured logs, correlation id, OpenTelemetry, probes, migration job | accepted | 2026-10-14 |

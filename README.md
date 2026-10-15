@@ -47,6 +47,18 @@ The OpenAPI contract in `/contracts` is committed. The build fails if the runnin
 
 If an IDE builds the same tree with a different Gradle version (seen with VS Code's Java extension), set `MEMO_BUILD_ROOT=<repo>/.build-cli` for CLI builds. The build output then goes to a separate, git-ignored directory on the same drive.
 
+## Deploy
+
+| Target | How |
+|---|---|
+| Small on-prem install / our dev & staging VM | `deploy/compose/onprem` (Compose profile with a separate migration job); VM provisioning in `deploy/ansible`; `deploy/scripts/deploy.sh` (digest-pinned, automatic rollback). See ADR-0015. |
+| Kubernetes (SaaS, customer clusters) | `deploy/helm/memo` (migration hook Job, restricted pods, NetworkPolicies). |
+| Images | `backend/Dockerfile` (distroless Java 25), `web/Dockerfile` (nginx-unprivileged). Releases are signed with cosign: verify with `cosign verify --key deploy/cosign.pub --insecure-ignore-tlog <image@digest>`. |
+
+Operability (ADR-0016): ECS JSON logs with `correlation.id` and `tenant.id`; probes on management port 8081; OpenTelemetry export off unless `MEMO_OTEL_EXPORT=true`.
+
+The CI gates and how to run each one locally are listed in [`ci/README.md`](ci/README.md).
+
 ## Layout
 
 ```
@@ -55,7 +67,9 @@ shared/      Kotlin Multiplatform code shared with mobile
 web/         React + TypeScript SPA (Vite, TanStack Router/Query)
 mobile/      iOS and Android apps (from Phase 6a)
 contracts/   Generated OpenAPI spec (committed)
-deploy/      Compose stack, DB role script, storage bootstrap (Helm from E05)
+deploy/      Local + on-prem Compose, Helm chart, Ansible, DB role script, storage bootstrap, deploy scripts
+ci/          Gate scripts used by the GitHub workflows (portable to any CI)
+perf/        Gatling simulations
 build-logic/ Gradle convention plugins
 docs/        Plans, ADRs, security checklists, dependency register
 ```

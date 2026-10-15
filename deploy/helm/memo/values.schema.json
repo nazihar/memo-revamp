@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "memo chart values",
+  "description": "ADR-0015: secrets are referenced by Secret name only; keys that look like secrets are rejected.",
+  "type": "object",
+  "additionalProperties": false,
+  "propertyNames": { "not": { "pattern": "(?i)(password|secretkey|token|privatekey)" } },
+  "required": ["image", "database", "objectStorage", "backend", "web", "migrations", "networkPolicy"],
+  "properties": {
+    "image": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["backend", "web"],
+      "properties": {
+        "backend": { "type": "string", "minLength": 1 },
+        "web": { "type": "string", "minLength": 1 },
+        "pullPolicy": { "enum": ["Always", "IfNotPresent", "Never"] }
+      }
+    },
+    "imagePullSecrets": { "type": "array", "items": { "type": "object" } },
+    "database": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["url", "appSecret", "migratorSecret"],
+      "properties": {
+        "url": { "type": "string", "pattern": "^jdbc:postgresql://" },
+        "appSecret": { "type": "string", "minLength": 1 },
+        "migratorSecret": { "type": "string", "minLength": 1 }
+      }
+    },
+    "objectStorage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "endpoint": { "type": "string" },
+        "region": { "type": "string" },
+        "secret": { "type": "string" }
+      }
+    },
+    "integrations": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "documentServerUrl": { "type": "string" },
+        "malwareScannerHost": { "type": "string" },
+        "smtpHost": { "type": "string" },
+        "smtpPort": { "type": "integer", "minimum": 1, "maximum": 65535 }
+      }
+    },
+    "observability": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "logFormat": { "enum": ["ecs", "logstash", "gelf"] },
+        "otelExport": { "type": "boolean" }
+      }
+    },
+    "backend": { "$ref": "#/$defs/workload" },
+    "web": { "$ref": "#/$defs/workload" },
+    "migrations": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": { "resources": { "type": "object" } }
+    },
+    "ingress": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "className": { "type": "string" },
+        "host": { "type": "string" },
+        "tlsSecret": { "type": "string" }
+      }
+    },
+    "networkPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "backendEgressCidrs": { "type": "array", "items": { "type": "string" } },
+        "ingressFromNamespaceLabels": { "type": "object" }
+      }
+    }
+  },
+  "$defs": {
+    "workload": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "replicas": { "type": "integer", "minimum": 1 },
+        "resources": { "type": "object" }
+      }
+    }
+  }
+}

@@ -18,6 +18,8 @@ spring:
       connection-timeout: 5000 # ms
       maximum-pool-size: 10
   flyway:
+    # Deployed app instances set MEMO_FLYWAY_ENABLED=false: migrations run in the separate migrate job (ADR-0016).
+    enabled: ${MEMO_FLYWAY_ENABLED:true}
     # Migrations run as the schema owner; the application connects as memo_app (AGENTS.md §3.2).
     user: ${MEMO_DB_MIGRATOR_USER:memo_migrator}
     password: ${MEMO_DB_MIGRATOR_PASSWORD:}
@@ -37,6 +39,39 @@ spring:
   jackson:
     default-property-inclusion: non_null
 
+# Operability baseline (ADR-0016). Structured JSON logs are switched on by the deployment manifests
+# (LOGGING_STRUCTURED_FORMAT_CONSOLE=ecs); local dev and tests keep readable text.
+management:
+  server:
+    # Probes and metrics live on a separate port that is never exposed through the web proxy.
+    port: ${MEMO_MANAGEMENT_PORT:8081}
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+      group:
+        readiness:
+          include: readinessState, db
+  # OpenTelemetry is wired but exports nothing unless an environment enables it (no collector required).
+  tracing:
+    export:
+      enabled: ${MEMO_OTEL_EXPORT:false}
+  otlp:
+    tracing:
+      export:
+        enabled: ${MEMO_OTEL_EXPORT:false}
+    logging:
+      export:
+        enabled: ${MEMO_OTEL_EXPORT:false}
+    metrics:
+      export:
+        enabled: ${MEMO_OTEL_EXPORT:false}
+
 server:
   error:
     include-stacktrace: never
@@ -55,6 +90,8 @@ springdoc:
     enabled: false
 
 memo:
+  # app (default) | migrate: run the Modulith Flyway migrations as memo_migrator, then exit (ADR-0016).
+  mode: ${MEMO_MODE:app}
   demo:
     # Seeds the demo tenant on startup (dev and test only; refuses under the prod profile).
     seed: ${MEMO_DEMO_SEED:false}

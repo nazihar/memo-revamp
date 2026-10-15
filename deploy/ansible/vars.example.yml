@@ -1,0 +1,10 @@
+# Copy to vars.yml (git-ignored) and fill in. No secrets here: app secrets are generated on the VM itself.
+memo_hosts:
+  dev: dev.memo.example.com
+  staging: staging.memo.example.com
+memo_acme_email: ops@example.com
+memo_web_ports:
+  dev: 8080
+  staging: 8180
+# Public half of the CI deploy key (the private half is the GitHub `dev`/`staging` environment secret DEPLOY_SSH_KEY).
+memo_ci_deploy_public_key: "ssh-ed25519 AAAA... memo-ci-deploy"

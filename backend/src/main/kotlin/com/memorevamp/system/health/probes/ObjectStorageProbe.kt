@@ -26,7 +26,8 @@ data class StorageProperties(
     val recordsBucket: String = "records",
     val workBucket: String = "work",
 ) {
-    val enabled: Boolean get() = endpoint.isNotBlank()
+    /** Configured only when endpoint *and* credentials are present; a partial configuration is reported as disabled. */
+    val enabled: Boolean get() = endpoint.isNotBlank() && accessKey.isNotBlank() && secretKey.isNotBlank()
 
     override fun toString() = "StorageProperties(endpoint=$endpoint, region=$region, buckets=[$recordsBucket, $workBucket])"
 }

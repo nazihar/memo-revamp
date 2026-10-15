@@ -16,15 +16,14 @@ fun randomSecret(): String {
 }
 
 /**
- * One PostgreSQL container per test JVM, initialised with the same role script as Compose and on-prem installs
+ * A PostgreSQL container initialised with the same role script as Compose and on-prem installs
  * (`deploy/db/init/01-roles.sh`): Flyway runs as `memo_migrator`, the application connects as `memo_app`.
  */
-object TestDatabase {
-    const val IMAGE = "postgres:18.6"
+class PostgresInstance : AutoCloseable {
     val migratorPassword = randomSecret()
     val appPassword = randomSecret()
 
-    val container: PostgreSQLContainer by lazy {
+    val container: PostgreSQLContainer =
         PostgreSQLContainer(IMAGE)
             .withDatabaseName("memo")
             .withEnv("MEMO_MIGRATOR_PASSWORD", migratorPassword)
@@ -33,9 +32,25 @@ object TestDatabase {
                 MountableFile.forHostPath(repoRoot.resolve("deploy/db/init/01-roles.sh"), 0b111_101_101),
                 "/docker-entrypoint-initdb.d/01-roles.sh",
             ).also { it.start() }
-    }
 
     val jdbcUrl: String get() = container.jdbcUrl
+
+    override fun close() = container.stop()
+
+    companion object {
+        const val IMAGE = "postgres:18.6"
+    }
+}
+
+/** One shared PostgreSQL per test JVM (most tests); `fresh()` gives an isolated, empty one (e.g. migration tests). */
+object TestDatabase {
+    private val shared: PostgresInstance by lazy { PostgresInstance() }
+
+    val migratorPassword: String get() = shared.migratorPassword
+    val appPassword: String get() = shared.appPassword
+    val jdbcUrl: String get() = shared.jdbcUrl
+
+    fun fresh(): PostgresInstance = PostgresInstance()
 
     fun properties(): Map<String, String> =
         mapOf(

@@ -189,12 +189,34 @@ jobs:
           docker build -f backend/Dockerfile --build-arg REVISION=${{ github.sha }} -t memo-backend:ci .
           docker build -f web/Dockerfile --build-arg REVISION=${{ github.sha }} -t memo-web:ci .
       - run: ci/image-smoke.sh memo-backend:ci memo-web:ci
+      - name: On-prem Compose profile (migrate job → backend → web)
+        run: ci/onprem-smoke.sh memo-backend:ci memo-web:ci
       - name: Trivy image scan
         run: |
           for img in memo-backend:ci memo-web:ci; do
             docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v trivy-cache:/root/.cache \
               "aquasec/trivy:$TRIVY_VERSION" image --quiet --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 "$img"
           done
+
+  helm:
+    name: IaC (Helm lint · schema · kubeconform · Ansible lint)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: helm lint + template + kubeconform
+        run: |
+          docker run --rm -v "$PWD/deploy/helm:/charts" alpine/helm:4.3.0 lint /charts/memo --strict
+          docker run --rm -v "$PWD/deploy/helm:/charts" alpine/helm:4.3.0 template rel /charts/memo \
+            --set ingress.enabled=true --set objectStorage.endpoint=http://s3:8333 > chart.yaml
+          docker run --rm -v "$PWD:/w" ghcr.io/yannh/kubeconform:v0.8.0 -strict -summary -kubernetes-version 1.33.0 /w/chart.yaml
+      - name: Ansible syntax check + ansible-lint (production profile)
+        working-directory: deploy/ansible
+        run: |
+          cp vars.example.yml vars.yml && cp inventory.example.ini inventory.ini
+          pipx run --spec ansible-core==2.21.5 ansible-galaxy collection install -r requirements.yml
+          pipx run --spec ansible-core==2.21.5 ansible-playbook -i inventory.ini --syntax-check site.yml
+          pipx run --spec ansible-lint==26.10.1 ansible-lint --offline site.yml
 
   docs:
     name: docs (ADR index · workflow lint)

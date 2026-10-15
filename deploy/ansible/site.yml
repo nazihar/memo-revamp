@@ -1,0 +1,159 @@
+# Provisions the dev/staging VM (ADR-0015). Idempotent: safe to re-run for drift correction.
+#   ansible-playbook -i inventory.ini site.yml            (inventory/vars: see inventory.example.ini, vars.example.yml)
+#
+# Result: Docker Engine + Compose, a `memo` deploy user whose CI key can only run the deploy forced command,
+# firewall (22/80/443), unattended security upgrades, /opt/memo/{bin,edge,dev,staging} with generated secrets,
+# the shared `memo-edge` network and the Caddy TLS edge.
+- name: Provision memo VM
+  hosts: memo_vm
+  become: true
+  vars_files:
+    - vars.yml
+  vars:
+    memo_base: /opt/memo
+    memo_envs: [dev, staging]
+  tasks:
+    - name: Base packages
+      ansible.builtin.apt:
+        name: [ca-certificates, curl, gnupg, ufw, unattended-upgrades, util-linux]
+        state: present
+        update_cache: true
+        cache_valid_time: 3600
+
+    - name: Docker apt repository (signed)
+      ansible.builtin.deb822_repository:
+        name: docker
+        types: [deb]
+        uris: https://download.docker.com/linux/ubuntu
+        suites: ["{{ ansible_facts['distribution_release'] }}"]
+        components: [stable]
+        architectures: [amd64]
+        signed_by: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Docker Engine and Compose plugin
+      ansible.builtin.apt:
+        name: [docker-ce, docker-ce-cli, containerd.io, docker-compose-plugin]
+        state: present
+        update_cache: true
+
+    - name: Unattended security upgrades enabled
+      ansible.builtin.copy:
+        dest: /etc/apt/apt.conf.d/20auto-upgrades
+        content: |
+          APT::Periodic::Update-Package-Lists "1";
+          APT::Periodic::Unattended-Upgrade "1";
+        mode: "0644"
+
+    - name: Firewall allows only SSH, HTTP and HTTPS
+      community.general.ufw:
+        rule: allow
+        port: "{{ item }}"
+        proto: tcp
+      loop: ["22", "80", "443"]
+
+    - name: Firewall enabled (default deny incoming)
+      community.general.ufw:
+        state: enabled
+        policy: deny
+        direction: incoming
+
+    - name: Deploy user (docker group, no sudo)
+      ansible.builtin.user:
+        name: memo
+        groups: [docker]
+        append: true
+        shell: /bin/bash
+
+    - name: Directory layout
+      ansible.builtin.file:
+        path: "{{ memo_base }}/{{ item }}"
+        state: directory
+        owner: memo
+        group: memo
+        mode: "0750"
+      loop: "{{ ['bin', 'edge'] + memo_envs }}"
+
+    - name: Deploy scripts
+      ansible.builtin.copy:
+        src: "../scripts/{{ item }}"
+        dest: "{{ memo_base }}/bin/{{ item }}"
+        owner: root
+        group: memo
+        mode: "0750"
+      loop: [deploy.sh, ssh-entry.sh, gen-secrets.sh]
+
+    - name: CI key may only run the deploy forced command (threat model E05 S1)
+      ansible.posix.authorized_key:
+        user: memo
+        key: "{{ memo_ci_deploy_public_key }}"
+        key_options: 'command="{{ memo_base }}/bin/ssh-entry.sh",no-pty,no-port-forwarding,no-agent-forwarding,no-X11-forwarding'
+        exclusive: false
+
+    - name: Environment files from the template (never overwritten once present)
+      ansible.builtin.copy:
+        src: ../compose/onprem/.env.example
+        dest: "{{ memo_base }}/{{ item }}/.env"
+        owner: memo
+        group: memo
+        mode: "0600"
+        force: false
+      loop: "{{ memo_envs }}"
+
+    - name: Per-environment settings (project, port, demo tenant)
+      ansible.builtin.lineinfile:
+        path: "{{ memo_base }}/{{ item.0 }}/.env"
+        regexp: "^{{ item.1.key }}="
+        line: "{{ item.1.key }}={{ item.1.value }}"
+      loop: "{{ memo_envs | product(memo_env_settings | dict2items) | list }}"
+      loop_control:
+        label: "{{ item.0 }} {{ item.1.key }}"
+      vars:
+        memo_env_settings:
+          COMPOSE_PROJECT_NAME: "memo-{{ item.0 }}"
+          MEMO_WEB_PORT: "{{ memo_web_ports[item.0] }}"
+          MEMO_DEMO_SEED: "true" # dev/staging only (refused under the prod profile)
+          MEMO_SPRING_PROFILES: "{{ item.0 }}-vm"
+
+    - name: Generate secrets that are still empty (existing values are kept)
+      ansible.builtin.command: "{{ memo_base }}/bin/gen-secrets.sh {{ memo_base }}/{{ item }}/.env"
+      loop: "{{ memo_envs }}"
+      register: memo_gen_secrets
+      changed_when: "'generated' in memo_gen_secrets.stdout"
+      become: true
+      become_user: memo
+
+    - name: Shared edge network
+      ansible.builtin.command: docker network create memo-edge
+      register: memo_edge_network
+      changed_when: memo_edge_network.rc == 0
+      failed_when: memo_edge_network.rc != 0 and 'already exists' not in memo_edge_network.stderr
+
+    - name: Edge proxy files
+      ansible.builtin.copy:
+        src: "../compose/edge/{{ item }}"
+        dest: "{{ memo_base }}/edge/{{ item }}"
+        owner: memo
+        group: memo
+        mode: "0640"
+      loop: [compose.yaml, Caddyfile]
+
+    - name: Edge proxy settings
+      ansible.builtin.copy:
+        dest: "{{ memo_base }}/edge/.env"
+        content: |
+          MEMO_DEV_HOST={{ memo_hosts.dev }}
+          MEMO_STAGING_HOST={{ memo_hosts.staging }}
+          ACME_EMAIL={{ memo_acme_email }}
+        owner: memo
+        group: memo
+        mode: "0600"
+
+    - name: Edge proxy running
+      ansible.builtin.command: docker compose --env-file .env up -d
+      args:
+        chdir: "{{ memo_base }}/edge"
+      register: memo_edge_up
+      changed_when: "'Started' in memo_edge_up.stderr or 'Recreated' in memo_edge_up.stderr"
+      become: true
+      become_user: memo

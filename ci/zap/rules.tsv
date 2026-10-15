@@ -1,0 +1,9 @@
+# ZAP baseline rule overrides (TESTING_STRATEGY §6). Format: <rule id><TAB><IGNORE|WARN|FAIL><TAB>(reason)
+# Every IGNORE needs a reason; anything not listed keeps ZAP's default (WARN), and the job fails on FAIL or new HIGH.
+10049	IGNORE	(Non-storable content: Cache-Control no-store is deliberate for the SPA shell and the API)
+10109	IGNORE	(Modern web application: informational, the app is an SPA by design)
+10202	FAIL	(Absence of anti-CSRF tokens would be a real finding once forms exist)
+10038	FAIL	(Content Security Policy header not set)
+10020	FAIL	(Anti-clickjacking header missing)
+10021	FAIL	(X-Content-Type-Options missing)
+90004	FAIL	(Cross-Origin-Embedder-Policy missing or invalid)

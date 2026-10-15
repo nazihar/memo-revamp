@@ -1,0 +1,28 @@
+# TLS edge (ADR-0015). Each environment's web container joins the memo-edge network with the alias <project>-web.
+{
+	email {$ACME_EMAIL}
+	servers {
+		protocols h1 h2 h3
+	}
+}
+
+(common) {
+	encode zstd gzip
+	header {
+		Strict-Transport-Security "max-age=31536000; includeSubDomains"
+		-Server
+	}
+	request_body {
+		max_size 1MB
+	}
+}
+
+{$MEMO_DEV_HOST} {
+	import common
+	reverse_proxy memo-dev-web:8080
+}
+
+{$MEMO_STAGING_HOST} {
+	import common
+	reverse_proxy memo-staging-web:8080
+}

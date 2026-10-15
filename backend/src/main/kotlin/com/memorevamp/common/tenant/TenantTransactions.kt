@@ -1,6 +1,7 @@
 package com.memorevamp.common.tenant
 
 import org.jooq.DSLContext
+import org.slf4j.MDC
 import org.springframework.stereotype.Component
 import org.springframework.transaction.PlatformTransactionManager
 import org.springframework.transaction.support.TransactionSynchronization
@@ -58,10 +59,12 @@ class TenantTransactions(
         return template.execute {
             dsl.execute("select set_config('app.tenant_id', ?, true)", tenant.value.toString())
             TransactionSynchronizationManager.bindResource(RESOURCE_KEY, tenant)
+            MDC.put(MDC_KEY, tenant.toString())
             TransactionSynchronizationManager.registerSynchronization(
                 object : TransactionSynchronization {
                     override fun afterCompletion(status: Int) {
                         TransactionSynchronizationManager.unbindResourceIfPossible(RESOURCE_KEY)
+                        MDC.remove(MDC_KEY)
                     }
                 },
             )
@@ -71,6 +74,9 @@ class TenantTransactions(
 
     companion object {
         private val RESOURCE_KEY = Any()
+
+        /** Tenant id in structured logs while a tenant transaction is bound (ADR-0016). */
+        const val MDC_KEY = "tenant.id"
 
         /** The tenant bound to the current transaction, or null. */
         fun currentTenantOrNull(): TenantId? =

@@ -1,0 +1,85 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-backend
+  labels:
+    {{- include "memo.labels" . | nindent 4 }}
+    app.kubernetes.io/name: backend
+spec:
+  replicas: {{ .Values.backend.replicas }}
+  selector:
+    matchLabels:
+      {{- include "memo.selector" (dict "root" . "name" "backend") | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "memo.selector" (dict "root" . "name" "backend") | nindent 8 }}
+    spec:
+      automountServiceAccountToken: false
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- include "memo.podSecurity" . | nindent 8 }}
+      containers:
+        - name: backend
+          image: {{ .Values.image.backend | quote }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+            {{- include "memo.containerSecurity" . | nindent 12 }}
+          ports:
+            - { name: http, containerPort: 8080 }
+            - { name: management, containerPort: 8081 }
+          env:
+            {{- include "memo.backendEnv" . | nindent 12 }}
+            - name: MEMO_FLYWAY_ENABLED
+              value: "false"
+            - name: MEMO_DB_APP_PASSWORD
+              valueFrom: { secretKeyRef: { name: {{ .Values.database.appSecret }}, key: password } }
+            {{- if .Values.objectStorage.endpoint }}
+            - name: MEMO_S3_ENDPOINT
+              value: {{ .Values.objectStorage.endpoint | quote }}
+            - name: MEMO_S3_REGION
+              value: {{ .Values.objectStorage.region | quote }}
+            - name: MEMO_S3_ACCESS_KEY
+              valueFrom: { secretKeyRef: { name: {{ .Values.objectStorage.secret }}, key: accessKey } }
+            - name: MEMO_S3_SECRET_KEY
+              valueFrom: { secretKeyRef: { name: {{ .Values.objectStorage.secret }}, key: secretKey } }
+            {{- end }}
+            - name: MEMO_DOCSERVER_URL
+              value: {{ .Values.integrations.documentServerUrl | quote }}
+            - name: MEMO_CLAMAV_HOST
+              value: {{ .Values.integrations.malwareScannerHost | quote }}
+            - name: MEMO_SMTP_HOST
+              value: {{ .Values.integrations.smtpHost | quote }}
+            - name: MEMO_SMTP_PORT
+              value: {{ .Values.integrations.smtpPort | quote }}
+          startupProbe:
+            httpGet: { path: /actuator/health/liveness, port: management }
+            periodSeconds: 5
+            failureThreshold: 36
+          livenessProbe:
+            httpGet: { path: /actuator/health/liveness, port: management }
+            periodSeconds: 10
+          readinessProbe:
+            httpGet: { path: /actuator/health/readiness, port: management }
+            periodSeconds: 5
+          resources:
+            {{- toYaml .Values.backend.resources | nindent 12 }}
+          volumeMounts:
+            - { name: tmp, mountPath: /tmp }
+      volumes:
+        - { name: tmp, emptyDir: { sizeLimit: 512Mi } }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-backend
+  labels:
+    {{- include "memo.labels" . | nindent 4 }}
+spec:
+  selector:
+    {{- include "memo.selector" (dict "root" . "name" "backend") | nindent 4 }}
+  ports:
+    # Only the API port is in the Service; the management port is reached by the kubelet directly.
+    - { name: http, port: 8080, targetPort: http }

@@ -1,0 +1,7 @@
+apiVersion: v2
+name: memo
+description: Memo & Meeting Management — backend, web and migration job (ADR-0015). Databases, object storage, ONLYOFFICE and ClamAV are provided by the installation and configured as values.
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+kubeVersion: ">=1.30.0-0"

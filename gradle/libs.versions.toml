@@ -11,6 +11,8 @@ ktlint = "1.8.0"
 detekt = "2.0.0-alpha.6"
 foojay = "1.0.0"
 mockk = "1.14.11"
+jug = "5.2.0"
+jqwik = "1.10.2"
 
 [libraries]
 # Platforms / BOMs
@@ -30,6 +32,10 @@ spring-boot-starter-security-test = { module = "org.springframework.boot:spring-
 spring-boot-testcontainers = { module = "org.springframework.boot:spring-boot-testcontainers" }
 spring-modulith-starter-core = { module = "org.springframework.modulith:spring-modulith-starter-core" }
 spring-modulith-starter-test = { module = "org.springframework.modulith:spring-modulith-starter-test" }
+spring-modulith-runtime = { module = "org.springframework.modulith:spring-modulith-runtime" }
+jooq-codegen = { module = "org.jooq:jooq-codegen" }
+jooq-meta = { module = "org.jooq:jooq-meta" }
+jug = { module = "com.fasterxml.uuid:java-uuid-generator", version.ref = "jug" }
 springdoc-webmvc-api = { module = "org.springdoc:springdoc-openapi-starter-webmvc-api", version.ref = "springdoc" }
 jackson-module-kotlin = { module = "tools.jackson.module:jackson-module-kotlin" }
 kotlin-reflect = { module = "org.jetbrains.kotlin:kotlin-reflect" }
@@ -42,6 +48,7 @@ aws-url-connection-client = { module = "software.amazon.awssdk:url-connection-cl
 testcontainers-junit = { module = "org.testcontainers:testcontainers-junit-jupiter" }
 testcontainers-postgresql = { module = "org.testcontainers:testcontainers-postgresql" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+jqwik = { module = "net.jqwik:jqwik", version.ref = "jqwik" }
 
 # Gradle plugins used by build-logic
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }

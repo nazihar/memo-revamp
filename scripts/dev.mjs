@@ -77,6 +77,7 @@ export function backendEnv(env, { core }) {
     MEMO_S3_SECRET_KEY: env.S3_APP_SECRET_KEY,
     MEMO_SMTP_HOST: 'localhost',
     MEMO_SMTP_PORT: '1025',
+    MEMO_DEMO_SEED: 'true',
   }
   if (!core) {
     out.MEMO_DOCSERVER_URL = 'http://localhost:8081'

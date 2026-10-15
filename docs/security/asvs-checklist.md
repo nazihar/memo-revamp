@@ -13,6 +13,8 @@
 | V7 Session management | Server-side sessions, cookie flags, CSRF | L2 | partial | CSRF enabled; stateless until 1a (`SecurityDefaultsTest`) |
 | V8 Authorization | Deny-by-default for every request | L3 | met (skeleton) | `SecurityConfig` + `SecurityDefaultsTest`; authorization matrix tests per epic |
 | V8 Authorization | Least privilege for service identities | L3 | partial | DB app role DML-only, not owner, no BYPASSRLS (`SystemInfoRepositoryIT`); S3 app identity without bucket admin (`ObjectStorageIT`) |
+| V8 Authorization | Multi-tenant data isolation enforced below the application | L3 | met (reference table) | RLS ENABLE+FORCE + policy convention (ADR-0006); `RlsMetaTest` (catalog), `CrossTenantIsolationIT` (read/list/update/delete/insert/join/view/function), `RlsNegativeIT` |
+| V8 Authorization | Tenant context cannot leak across pooled connections; fails closed | L3 | met | `TenantTransactionsIT`, session-SET source scan in `ArchitectureRulesTest` |
 | V11 Cryptography | Per-tenant envelope encryption | L3 | planned (1a/1b) | — |
 | V12 Secure communication | TLS everywhere | L2 | planned (E05) | — |
 | V13 Configuration | Secrets not in code, config or logs | L2 | partial | Generated `.env` (git-ignored); random test secrets; `StorageProperties.toString` redacts (`ObjectStorageIT`); gitleaks (E04) |

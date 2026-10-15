@@ -24,6 +24,7 @@ include(":backend", ":shared")
 // Optional out-of-tree build output (e.g. to coexist with an IDE that builds the same tree with another Gradle version).
 providers.environmentVariable("MEMO_BUILD_ROOT").orNull?.let { root ->
     gradle.beforeProject {
-        layout.buildDirectory.set(file("$root/${rootProject.name}${path.replace(':', '/')}"))
+        // Keep a trailing `/build` so tools that recognise build output by path (ArchUnit/Modulith "exclude tests") still work.
+        layout.buildDirectory.set(file("$root/${rootProject.name}${path.replace(':', '/')}/build"))
     }
 }

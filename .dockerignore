@@ -4,5 +4,5 @@
 !web/dist/**
 !web/security-headers.json
 !web/nginx/**
-!.build-cli/memo-revamp/backend/build/libs/*.jar
+!.build-cli/memo/backend/build/libs/*.jar
 **/*.map

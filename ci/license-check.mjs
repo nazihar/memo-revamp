@@ -90,8 +90,8 @@ export function evaluate(components, exceptions = []) {
   return { failures, rows }
 }
 
-/** Our own modules (Gradle group com.memorevamp) are first-party, not third-party licences. */
-const FIRST_PARTY_GROUP = 'com.memorevamp'
+/** Our own modules (Gradle group com.memo) are first-party, not third-party licences. */
+const FIRST_PARTY_GROUP = 'com.memo'
 
 function loadComponents(file) {
   const bom = JSON.parse(readFileSync(file, 'utf8'))

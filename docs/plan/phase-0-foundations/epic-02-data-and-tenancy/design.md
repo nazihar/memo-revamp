@@ -108,4 +108,4 @@ No JSON fixtures.
 1. Classes annotated `@RestController` do not depend on `org.jooq..`.
 2. Main code outside `common.time` does not call `Instant.now()`, `LocalDateTime.now()`, `ZonedDateTime.now()`, `OffsetDateTime.now()`, `LocalDate.now()` or `System.currentTimeMillis()`. Use the injected `Clock`.
 3. Source scan: no session-level `SET app.`, `SET SESSION`, or `set_config(…, false)` in main sources or migrations.
-4. jOOQ generated tables of module X are used only from module X. Enforced by Modulith, because generated classes live in `com.memorevamp.<module>.internal.db` packages.
+4. jOOQ generated tables of module X are used only from module X. Enforced by Modulith, because generated classes live in `com.memo.<module>.internal.db` packages.

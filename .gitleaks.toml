@@ -1,5 +1,5 @@
 # gitleaks configuration (ADR-0013): default rules plus allow-lists for generated, non-secret content.
-title = "memo-revamp"
+title = "memo"
 
 [extend]
 useDefault = true

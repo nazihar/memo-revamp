@@ -17,7 +17,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "memo-revamp"
+rootProject.name = "memo"
 
 include(":backend", ":shared", ":perf")
 

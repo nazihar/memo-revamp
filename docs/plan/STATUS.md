@@ -7,12 +7,8 @@
 ## Current position
 - **Phase:** 0, Foundations and engineering baseline. **Implementation complete and verified locally; formal phase exit pending owner actions** (see "Waiting for human").
 - **Epics:** E01–E05 implemented. Plans, logs and test plans are in `docs/plan/phase-0-foundations/epic-0*/`.
-- **Branches:** stacked, local commits only, **nothing pushed**:
-  - `phase-0/e01-walking-skeleton`
-  - → `e02-data-and-tenancy`
-  - → `e03-web-foundation`
-  - → `e04-ci-and-supply-chain`
-  - → `e05-environments-and-deploy`
+- **Branches:** E01–E05 merged into `master` (PRs #1–#5); GitHub CI green on `master` (all 7 jobs).
+- **Product name:** `memo` everywhere except the repository name `memo-revamp` (A1, branch `chore/rename-product-to-memo`).
 
 ## State
 - [x] Phase overview approved; Q1, Q2, Q4, Q5 and Q7 answered; per-epic gate delegated
@@ -21,7 +17,9 @@
 - [x] E03 Web foundation (shell, i18n/RTL, Playwright + axe, CSP)
 - [x] E04 CI and supply chain (all gates run locally; workflows actionlint-clean)
 - [x] E05 Environments and deploy (on-prem profile, Helm, Ansible, deploy with rollback, ZAP, Gatling)
-- [ ] GitHub CI green (PR, nightly, release): **needs push**
+- [x] GitHub CI green on PRs and `master`
+- [x] Product renamed to `memo` (package `com.memo`, images `memo-backend` / `memo-web`)
+- [ ] First nightly run (scheduled 02:00 UTC) and first release run (**needs the cosign key**)
 - [ ] Dev environment deployed: **needs the VM**
 - [ ] Owner usability walkthrough (E03 `ux-review.md`)
 - [ ] NFRs confirmed (`docs/plan/nfr.md`, Q6)
@@ -36,27 +34,28 @@
 
 ## Next step
 1. The owner provides the items below.
-2. Push and fix whatever GitHub CI finds; first nightly and release runs.
+2. Watch the first nightly run; cut the first release once the cosign key exists.
 3. Provision the VM with Ansible, enable `deploy-dev`, run ZAP and Gatling against dev.
 4. Usability walkthrough and NFR sign-off; finalise the retrospective; record the phase exit.
 5. Then Phase 1a planning (overview first).
 
 ## Waiting for human
-1. **Push permission:** push the five stacked branches to `github.com/nazihar/memo-revamp` and open PRs (or merge them in order), so CI runs.
-2. **VM for dev and staging:**
+1. **VM for dev and staging:**
    - host/IP and OS (Ubuntu LTS expected);
    - an admin SSH account for Ansible;
    - DNS names for dev and staging;
    - TLS choice: ACME/Let's Encrypt or your own certificates.
-3. **GitHub setup:**
+2. **GitHub setup:**
    - `dev` environment secrets: `DEPLOY_SSH_KEY`, `DEPLOY_HOST`, `DEPLOY_KNOWN_HOSTS`;
    - variables `DEPLOY_DEV_ENABLED=true` and `DEV_URL`;
    - `release` environment with reviewers, plus the cosign key pair (`COSIGN_PRIVATE_KEY`, `COSIGN_PASSWORD`; commit `deploy/cosign.pub`);
    - branch protection on `master`.
-4. **Renovate:** install the GitHub App (ADR-0014).
-5. **Q3** (team and timeline) and **Q6** (who confirms the NFRs, and when).
-6. **UX walkthrough** of the shell: themes, Arabic/RTL, keyboard (about 15 minutes).
-7. **Assumption A1:** the base package `com.memorevamp` follows the repository name. Rename before Phase 1a if the product gets a final name.
+3. **Renovate:** install the GitHub App (ADR-0014).
+4. **Q3** (team and timeline) and **Q6** (who confirms the NFRs, and when).
+5. **UX walkthrough** of the shell: themes, Arabic/RTL, keyboard (about 15 minutes).
+
+## Assumptions
+- **A1 (resolved):** the product is `memo`. Package `com.memo`, Gradle group `com.memo`, application name `memo`, images `memo-backend` / `memo-web`. Only the repository keeps the name `memo-revamp`. The stored schema marker moved to `memo` with migration `system/V2`.
 
 ## Decisions taken
 ADR-0001 to ADR-0016 (`docs/adr/README.md`).

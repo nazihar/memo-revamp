@@ -34,7 +34,7 @@ jobs:
       actions: read # download artefacts of the triggering ci run
     env:
       SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
-      IMAGE_PREFIX: ghcr.io/${{ github.repository_owner }}/memo-revamp
+      IMAGE_PREFIX: ghcr.io/${{ github.repository_owner }}/memo
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:

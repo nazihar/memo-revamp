@@ -15,7 +15,7 @@ RUN node render-headers.mjs security-headers.json > security-headers.conf
 FROM ${RUNTIME_IMAGE}
 ARG VERSION=dev
 ARG REVISION=unknown
-LABEL org.opencontainers.image.title="memo-revamp-web" \
+LABEL org.opencontainers.image.title="memo-web" \
       org.opencontainers.image.source="https://github.com/nazihar/memo-revamp" \
       org.opencontainers.image.version="${VERSION}" \
       org.opencontainers.image.revision="${REVISION}" \

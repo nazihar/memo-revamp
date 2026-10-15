@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  SpotBugs exclusions (ADR-0013). Every entry needs a reason. Never exclude FindSecBugs SECURITY patterns wholesale:
+  security exclusions must name the class and explain why the finding does not apply.
+-->
+<FindBugsFilter>
+  <!-- jOOQ generated sources (ADR-0007): reviewed through the drift check, not hand-written. -->
+  <Match>
+    <Package name="~com\.memorevamp\.jooq(\..*)?"/>
+  </Match>
+
+  <!--
+    Kotlin/Spring idioms, not defects:
+    - EI_EXPOSE_REP/EI_EXPOSE_REP2: constructor-injected collaborators and immutable Kotlin `val`s of read-only types.
+    - MS_EXPOSE_REP: companion-object `val`s holding read-only Kotlin List/Regex.
+    - BC_BAD_CAST_TO_ABSTRACT_COLLECTION: emitted by the Kotlin compiler for inline collection operators (map, filter).
+  -->
+  <Match>
+    <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2,MS_EXPOSE_REP,BC_BAD_CAST_TO_ABSTRACT_COLLECTION"/>
+  </Match>
+
+  <!--
+    Health reachability probes: clamd's protocol has no TLS (it is reached on the internal network only), and the SMTP
+    probe only reads the 220 banner and sends QUIT, so no data crosses the socket. Real mail delivery (Phase 1a) uses
+    STARTTLS and is not covered by this exclusion.
+  -->
+  <Match>
+    <Class name="com.memorevamp.system.health.probes.SocketProbesKt"/>
+    <Bug pattern="UNENCRYPTED_SOCKET"/>
+  </Match>
+</FindBugsFilter>

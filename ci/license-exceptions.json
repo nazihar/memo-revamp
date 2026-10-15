@@ -1,0 +1,4 @@
+{
+  "$comment": "Components allowed despite failing the licence allow-list. Each entry needs the exact component (group:name or name, optionally @version) and a reason; review at every release.",
+  "exceptions": []
+}

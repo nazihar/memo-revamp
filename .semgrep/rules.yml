@@ -1,0 +1,73 @@
+# Custom SAST rules for our patterns (TESTING_STRATEGY §6, ADR-0013). Each rule has fixtures in .semgrep/tests/
+# (`semgrep --test .semgrep/` proves it fires on bad code and stays silent on good code).
+rules:
+  - id: memo-no-session-level-set
+    languages: [generic]
+    paths:
+      include: ['*.kt', '*.java', '*.sql', '*.sh']
+    severity: ERROR
+    message: >-
+      Session-level tenant settings leak across pooled connections. Use set_config('app.tenant_id', ?, true) inside the
+      transaction (TenantTransactions, ADR-0006).
+    pattern-either:
+      - pattern-regex: (?i)\bset\s+session\b
+      - pattern-regex: (?i)\bset\s+app\.\w+
+      - pattern-regex: (?i)set_config\s*\([^)]*,\s*false\s*\)
+
+  - id: memo-no-presigned-urls
+    languages: [kotlin, java]
+    severity: ERROR
+    message: >-
+      Presigned URLs give clients direct access to object storage. Files are decrypted and streamed through the backend
+      (AGENTS.md §2: no presigned URLs to browsers or apps).
+    pattern-either:
+      - pattern: S3Presigner.$METHOD(...)
+      - pattern: $P.presignGetObject(...)
+      - pattern: $P.presignPutObject(...)
+
+  - id: memo-no-secrets-in-logs
+    languages: [kotlin]
+    severity: ERROR
+    message: Never log secrets, tokens or passwords (AGENTS.md §3.4, Observability).
+    patterns:
+      - pattern-either:
+          - pattern: $LOG.$LEVEL(..., $X, ...)
+      - metavariable-regex:
+          metavariable: $LEVEL
+          regex: ^(trace|debug|info|warn|error)$
+      - metavariable-regex:
+          metavariable: $X
+          regex: (?i).*(password|passwd|secret|token|apikey|api_key|accesskey|privatekey).*
+
+  - id: memo-no-wall-clock
+    languages: [kotlin]
+    severity: ERROR
+    message: Inject java.time.Clock instead of reading the wall clock (TESTING_STRATEGY §3.1).
+    paths:
+      exclude: ['**/common/time/**', '**/src/test/**']
+    pattern-either:
+      - pattern: Instant.now()
+      - pattern: OffsetDateTime.now()
+      - pattern: LocalDateTime.now()
+      - pattern: ZonedDateTime.now()
+      - pattern: System.currentTimeMillis()
+
+  - id: memo-no-dangerously-set-inner-html
+    languages: [typescript]
+    severity: ERROR
+    message: Never inject raw HTML; render text, or use react-intl rich text with explicit tag components.
+    pattern: <$EL dangerouslySetInnerHTML={...} />
+
+  - id: memo-web-storage-only-preferences
+    languages: [typescript]
+    severity: ERROR
+    message: >-
+      Web Storage may only hold UI preferences, written through src/lib/preferences.ts. No tokens or personal data in
+      browser storage (AGENTS.md §2).
+    paths:
+      exclude: ['**/lib/preferences.ts', '**/*.test.ts', '**/*.test.tsx', '**/e2e/**', '**/test/**']
+    pattern-either:
+      - pattern: localStorage.setItem(...)
+      - pattern: sessionStorage.setItem(...)
+      - pattern: window.localStorage.setItem(...)
+      - pattern: window.sessionStorage.setItem(...)

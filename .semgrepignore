@@ -1,0 +1,12 @@
+# Paths Semgrep never scans (ADR-0013).
+node_modules/
+build/
+.build-cli/
+.gradle/
+dist/
+web/src/api/generated/
+web/src/routeTree.gen.ts
+backend/src/main/jooq/
+.semgrep/
+web/e2e/__screenshots__/
+docs/

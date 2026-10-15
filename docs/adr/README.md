@@ -14,3 +14,7 @@ We use the MADR format (see [0001](0001-record-architecture-decisions.md)). Star
 | [0008](0008-backend-test-libraries.md) | Backend test libraries (assertions, property-based testing, ids) | accepted | 2026-10-14 |
 | [0009](0009-web-lint-and-format.md) | Web lint and format: ESLint + Prettier | accepted | 2026-10-14 |
 | [0010](0010-web-i18n.md) | Web internationalisation: react-intl (FormatJS) | accepted | 2026-10-14 |
+| [0011](0011-ci-platform-and-stages.md) | CI platform, runner model and pipeline stages | accepted | 2026-10-14 |
+| [0012](0012-container-images-and-signing.md) | Container base images and image signing | accepted | 2026-10-14 |
+| [0013](0013-supply-chain-scanning.md) | Supply-chain scanning stack | accepted | 2026-10-14 |
+| [0014](0014-dependency-update-bot.md) | Dependency update bot: Renovate | accepted | 2026-10-14 |

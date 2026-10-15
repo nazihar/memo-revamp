@@ -1,5 +1,6 @@
-# Minimal PR gate from E01 (build + tests). E04 turns this into the staged pipeline (TESTING_STRATEGY §9).
-# Actions are pinned to commit SHAs; the tag is noted in a comment for the update bot.
+# PR stage (TESTING_STRATEGY §9, ADR-0011): every gate, parallel jobs, target ≤ 15 min wall clock.
+# Actions are pinned to commit SHAs (tag in the comment for Renovate); jobs call repository scripts so the pipeline can
+# move to self-hosted runners or another CI with the same commands.
 name: ci
 
 on:
@@ -14,9 +15,14 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
+env:
+  TRIVY_VERSION: 0.75.0
+  SEMGREP_IMAGE: semgrep/semgrep:1.180.0
+  GITLEAKS_IMAGE: zricethezav/gitleaks:v8.30.1
+
 jobs:
   backend:
-    name: backend (build, tests, lint, contract drift)
+    name: backend (build · tests · RLS · lint · SpotBugs · drift)
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -28,20 +34,30 @@ jobs:
       - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
         with:
           cache-read-only: ${{ github.ref != 'refs/heads/master' }}
-      # Includes Testcontainers suites (PostgreSQL with the real role script, SeaweedFS with the real bootstrap)
-      # and the OpenAPI drift test against /contracts.
-      - run: ./gradlew build --console=plain
+      # build = compile + unit/property/module/architecture/persistence/RLS meta + cross-tenant + negative + API tests
+      # (Testcontainers), contract + jOOQ drift, ktlint, detekt. Then SpotBugs/FindSecBugs, SBOM, boot jar.
+      - run: ./gradlew build :backend:spotbugsMain cyclonedxBom :backend:bootJar --console=plain
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: backend-jar
+          path: backend/build/libs/backend.jar
+          retention-days: 3
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: backend-sbom
+          path: build/reports/cyclonedx/bom.json
+          retention-days: 14
       - if: failure()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: backend-test-reports
+          name: backend-reports
           path: |
             backend/build/reports/
             shared/build/reports/
           retention-days: 7
 
   web:
-    name: web (client drift, typecheck, tests, build)
+    name: web (lint · typecheck · unit · i18n + client drift · build)
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -52,10 +68,140 @@ jobs:
           node-version-file: .node-version
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: Generated API client matches the committed contract
+      - name: Generated API client and message catalogs match the sources
         run: |
           pnpm --filter web generate:api
-          git diff --exit-code -- web/src/api/generated
+          pnpm --filter web i18n:extract
+          pnpm --filter web i18n:pseudo
+          git diff --exit-code -- web/src/api/generated web/src/i18n/messages
+      - run: pnpm --filter web i18n:verify
+      - run: pnpm --filter web format:check
+      - run: pnpm --filter web lint
       - run: pnpm --filter web typecheck
       - run: pnpm --filter web test
       - run: pnpm --filter web build
+      - run: node ci/web-sbom.mjs
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: web-dist
+          path: web/dist/
+          retention-days: 3
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: web-sbom
+          path: build/sbom/web.cdx.json
+          retention-days: 14
+
+  e2e:
+    name: e2e smoke (Playwright + axe on the real stack)
+    needs: [backend, web]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: '25'
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: backend-jar
+          path: backend/build/libs
+      - name: Start core stack + backend
+        run: ci/e2e-stack.sh start
+      - run: pnpm --filter web exec playwright install --with-deps chromium
+      - run: pnpm --filter web e2e
+      - if: always()
+        run: ci/e2e-stack.sh logs
+      - if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: playwright-report
+          path: web/playwright-report/
+          retention-days: 7
+
+  security:
+    name: security (secrets · SAST · licences · vulnerabilities · IaC)
+    needs: [backend, web]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: ${{ github.event_name == 'push' && 0 || 1 }}
+      - name: gitleaks (full history on master, working tree on PRs)
+        run: |
+          mode=$([ "${{ github.event_name }}" = push ] && echo git || echo dir)
+          docker run --rm -v "$PWD:/repo" "$GITLEAKS_IMAGE" "$mode" /repo --config /repo/.gitleaks.toml --redact --no-banner
+      - name: Semgrep (custom rule tests + scan)
+        run: |
+          docker run --rm -v "$PWD:/src" -w /src "$SEMGREP_IMAGE" semgrep --test /src/.semgrep
+          docker run --rm -v "$PWD:/src" -w /src "$SEMGREP_IMAGE" semgrep scan --metrics off --error \
+            --config /src/.semgrep/rules.yml --config p/kotlin --config p/typescript --config p/react --config p/secrets
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: backend-sbom
+          path: build/sbom/backend
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: web-sbom
+          path: build/sbom
+      - name: Licence allow-list over both SBOMs
+        run: |
+          mv build/sbom/backend/bom.json build/sbom/backend.cdx.json
+          node ci/license-check.mjs --self-test
+          node ci/license-check.mjs --report build/sbom/licenses.md build/sbom/backend.cdx.json build/sbom/web.cdx.json
+      - name: Trivy — dependency vulnerabilities (SBOMs), IaC and Dockerfile misconfiguration
+        run: |
+          trivy() { docker run --rm -v "$PWD:/src" -v trivy-cache:/root/.cache "aquasec/trivy:$TRIVY_VERSION" "$@"; }
+          trivy sbom --quiet --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed --ignorefile /src/.trivyignore --exit-code 1 /src/build/sbom/backend.cdx.json
+          trivy sbom --quiet --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed --ignorefile /src/.trivyignore --exit-code 1 /src/build/sbom/web.cdx.json
+          trivy config --quiet --severity HIGH,CRITICAL --exit-code 1 --skip-dirs /src/node_modules,/src/web/node_modules /src
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: sbom-and-licences
+          path: build/sbom/
+          retention-days: 30
+
+  images:
+    name: images (build · hardened smoke · Trivy image)
+    needs: [backend, web]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: backend-jar
+          path: backend/build/libs
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: web-dist
+          path: web/dist
+      - name: Build images
+        run: |
+          docker build -f backend/Dockerfile --build-arg REVISION=${{ github.sha }} -t memo-backend:ci .
+          docker build -f web/Dockerfile --build-arg REVISION=${{ github.sha }} -t memo-web:ci .
+      - run: ci/image-smoke.sh memo-backend:ci memo-web:ci
+      - name: Trivy image scan
+        run: |
+          for img in memo-backend:ci memo-web:ci; do
+            docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v trivy-cache:/root/.cache \
+              "aquasec/trivy:$TRIVY_VERSION" image --quiet --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 "$img"
+          done
+
+  docs:
+    name: docs (ADR index · workflow lint)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - run: node ci/check-adr-index.mjs
+      - name: actionlint
+        run: docker run --rm -v "$PWD:/repo" -w /repo rhysd/actionlint:1.7.12 -color

@@ -1,0 +1,8 @@
+# Images are built from pre-built artefacts (backend jar, web/dist); keep the context small and secret-free.
+**
+!backend/build/libs/*.jar
+!web/dist/**
+!web/security-headers.json
+!web/nginx/**
+!.build-cli/memo-revamp/backend/build/libs/*.jar
+**/*.map

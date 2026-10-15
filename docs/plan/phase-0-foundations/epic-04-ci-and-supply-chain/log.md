@@ -1,0 +1,31 @@
+# E04 CI pipeline and supply chain — log
+
+## 2026-10-14
+- Plan written (research, ADR-0011 to ADR-0014, design, threat model, tasks, test plan). Gate delegated.
+- Implemented:
+  - Gradle dependency locking (all projects + build-logic);
+  - CycloneDX SBOMs (Gradle aggregate + `ci/web-sbom.mjs` from pnpm's resolution);
+  - the `ci/license-check.mjs` gate with self-test and report;
+  - SpotBugs + FindSecBugs with justified exclusions;
+  - Semgrep custom rules (6) with fixtures;
+  - gitleaks config;
+  - lefthook pre-commit;
+  - backend (distroless, layered) and web (nginx-unprivileged, generated headers) images;
+  - `ci/image-smoke.sh` (read-only root, no capabilities, non-root, proxy, headers);
+  - workflows `ci.yml`, `nightly.yml` and `release.yml` (GHCR, cosign key signing, SBOM and SLSA provenance attestations, offline verify);
+  - `renovate.json`;
+  - `ci/check-adr-index.mjs`;
+  - `ci/README.md`.
+- Verified locally (each gate shown to fail on a bad input where applicable):
+  - **Licence check:** self-test passes; the first real run flagged first-party `shared` (now excluded as first-party) and `MIT-0` (added as permissive).
+  - **Trivy found real vulnerabilities:** Tomcat 11.0.24 had 3 CRITICAL CVEs; Jackson 2.22.1 and 3.1.5 had HIGH CVEs. Fixed with documented security overrides (Tomcat 11.0.25, Jackson 2.22.3/3.1.7) ahead of Boot 4.1.1. Backend tests are still green (66), and the SBOM and both images now have 0 fixable HIGH/CRITICAL.
+  - **Semgrep:** 6/6 rule tests pass; the repository scan with registry packs is clean.
+  - **gitleaks:** history is clean; planted realistic tokens are detected; the only working-tree hits are the git-ignored local `.env`.
+  - **SpotBugs:** clean after exclusions.
+  - **Images:** both build; the hardened smoke test passes; Trivy config shows 0 misconfigurations.
+  - **Workflows:** actionlint (with shellcheck) is clean.
+  - **ADR index check:** passes and catches a missing entry.
+- Not run: the GitHub workflows themselves, because the branches are not pushed (owner permission pending). Signing also needs the owner's cosign key, and Renovate needs the app installed.
+- Environment notes:
+  - On Windows, bind-mounted Trivy scans over `node_modules` time out. CI on Linux is unaffected, and the local runs used copies.
+  - Native curl cannot write to `/dev/null` under Git Bash with path conversion off, so the smoke script uses a temp file.

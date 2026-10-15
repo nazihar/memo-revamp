@@ -20,7 +20,8 @@
 - [x] E05 Environments and deploy (on-prem profile, Helm, Ansible, deploy with rollback, ZAP, Gatling)
 - [x] GitHub CI green on PRs and `master`
 - [x] Product renamed to `memo` (package `com.memo`, images `memo-backend` / `memo-web`)
-- [ ] First nightly run (scheduled 02:00 UTC) and first release run (**needs the cosign key**)
+- [x] Release signing key (2026-10-15): `release` environment with `COSIGN_PRIVATE_KEY` / `COSIGN_PASSWORD`; `deploy/cosign.pub` committed
+- [ ] First nightly run (scheduled 02:00 UTC) and first release run (tag `v*`)
 - [ ] Dev environment deployed: **needs the VM** (carried into Phase 1a)
 - [x] Owner usability walkthrough (2026-10-15): UI OK; "layout very simple" carried into Phase 1a as a layout/visual-design epic
 - [x] NFRs confirmed as proposed by the owner (2026-10-15); Q3 answered: agent only, no deadline
@@ -35,7 +36,7 @@
 
 ## Next step
 1. **Phase 1a planning:** write `docs/plan/phase-1a-minimum-core/overview.md` (AGENTS.md planning protocol). Its first epic is the app layout and visual design.
-2. Watch the first nightly run; cut the first release once the cosign key exists.
+2. Watch the first nightly run; cut the first release (`v0.1.0`) when the owner wants one.
 3. When the VM exists: provision it with Ansible, enable `deploy-dev`, run ZAP and Gatling against dev.
 
 ## Waiting for human
@@ -47,7 +48,7 @@
 2. **GitHub setup:**
    - `dev` environment secrets: `DEPLOY_SSH_KEY`, `DEPLOY_HOST`, `DEPLOY_KNOWN_HOSTS`;
    - variables `DEPLOY_DEV_ENABLED=true` and `DEV_URL`;
-   - `release` environment with reviewers, plus the cosign key pair (`COSIGN_PRIVATE_KEY`, `COSIGN_PASSWORD`; commit `deploy/cosign.pub`);
+   - required reviewers on the `release` environment (not set; may need a paid GitHub plan on a private repository. Meanwhile only the owner can push `v*` tags);
    - branch protection on `master`.
 3. **Renovate:** install the GitHub App (ADR-0014).
 4. **For Phase 1a design (no rush):** brand assets (logo, colours, fonts) and 2–3 reference apps you like.

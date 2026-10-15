@@ -1,0 +1,85 @@
+{
+  "components" : {
+    "schemas" : {
+      "ComponentHealth" : {
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "status" : {
+            "enum" : [ "UP", "DOWN", "DISABLED" ],
+            "type" : "string"
+          }
+        },
+        "required" : [ "name", "status" ],
+        "type" : "object"
+      },
+      "Health" : {
+        "description" : "Public platform status. Contains only component names and states.",
+        "properties" : {
+          "checkedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "components" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ComponentHealth"
+            },
+            "type" : "array"
+          },
+          "status" : {
+            "enum" : [ "UP", "DEGRADED", "DOWN" ],
+            "type" : "string"
+          }
+        },
+        "required" : [ "checkedAt", "components", "status" ],
+        "type" : "object"
+      }
+    }
+  },
+  "info" : {
+    "description" : "REST API. Errors use RFC 9457 Problem Details (application/problem+json).",
+    "license" : {
+      "name" : "Proprietary"
+    },
+    "title" : "Memo & Meeting Management API",
+    "version" : "v1"
+  },
+  "openapi" : "3.1.0",
+  "paths" : {
+    "/api/v1/health" : {
+      "get" : {
+        "description" : "Anonymous. Status per dependency, no versions, hosts or error details. Cached for a few seconds.",
+        "operationId" : "getHealth",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Health"
+                }
+              }
+            },
+            "description" : "UP or DEGRADED"
+          },
+          "503" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Health"
+                }
+              }
+            },
+            "description" : "DOWN (the database is unreachable)"
+          }
+        },
+        "summary" : "Platform status",
+        "tags" : [ "system" ]
+      }
+    }
+  },
+  "servers" : [ {
+    "description" : "Same origin",
+    "url" : "/"
+  } ]
+}

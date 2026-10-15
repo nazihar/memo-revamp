@@ -1,27 +1,28 @@
-# Phase 0 — retrospective (draft, 2026-10-14)
+# Phase 0 — retrospective (final, 2026-10-15)
 
-> Written at the end of implementation. **The phase is not formally exited yet:** see "Exit status". Final sign-off comes after CI has run on GitHub and dev is deployed.
+> **Phase 0 exited on 2026-10-15** with the owner's approval. The one open goal, the first deploy to the dev server, is carried into Phase 1a. It can run as soon as the VM exists (see "Exit status").
 
 ## Exit status (MASTER_PLAN Phase 0 exit criteria)
 
 | Criterion | Status | Evidence |
 |---|---|---|
 | `make dev` (or equivalent) starts the full local stack; the sample slice works end to end | **Met locally** | `pnpm dev` (ADR-0003); Playwright smoke 6/6 against the real stack and against the production images |
-| *(goal)* deploys to a dev environment in one command | **Built, not run**: needs the VM | `deploy.sh` with rollback tested locally; `deploy-dev.yml`; Ansible playbook lint-clean |
-| CI green with all gates; SBOM and license report produced | **Every gate run locally; GitHub CI not run yet**: needs push permission | `ci.yml`, `nightly.yml`, `release.yml` (actionlint clean); SBOMs and `licenses.md` generated |
+| *(goal)* deploys to a dev environment in one command | **Carried into Phase 1a** (owner decision, 2026-10-15): built and tested locally, waiting for the VM | `deploy.sh` with rollback tested locally; `deploy-dev.yml`; Ansible playbook lint-clean |
+| CI green with all gates; SBOM and license report produced | **Met**: GitHub CI green on PRs #1–#6 and on `master` (7 jobs) | `ci.yml`, `nightly.yml`, `release.yml` (actionlint clean); SBOMs and `licenses.md` generated |
 | Cross-tenant RLS test passes on the reference table and fails if RLS is disabled | **Met** | `CrossTenantIsolationIT`, `RlsNegativeIT`, `RlsMetaTest` |
 | ADRs for every decision taken in this phase | **Met** | ADR-0001 to ADR-0016; index check in CI |
 
 Phase-0 special tests (TESTING_STRATEGY §12):
 - RLS meta-test and negative test: done.
-- CI stages wired: defined, not yet run on GitHub.
+- CI stages wired: done, green on GitHub. The first nightly run is scheduled; the first release waits for the cosign key.
 - Demo tenant seeding: done.
 - ZAP baseline: run locally with 0 failures and 0 warnings; nightly job defined.
 
 Generic exit items:
 - Demo script: `demo.md`.
 - STATUS: updated.
-- Usability check: **pending** owner walkthrough (E03 `ux-review.md`).
+- NFRs: **confirmed** by the owner on 2026-10-15 (`nfr.md`).
+- Usability check: **done** 2026-10-15. UI OK; the layout is too simple, and that is carried into Phase 1a (E03 `ux-review.md`).
 
 ## What changed versus the plan
 - **DB roles moved from E02 to E01**, because the health slice needed a real app role from the start.
@@ -50,6 +51,9 @@ Generic exit items:
 - **Same Compose project name (`memo-dev`)** for the local stack and the VM environment. The local stack is now `memo-local`.
 
 ## Carry into Phase 1a
+- **First dev deploy** once the VM exists (STATUS, "Waiting for human"): run Ansible, set the `dev` secrets, run ZAP and Gatling against dev.
+- **Product rename after Phase 0:** `memo-revamp` became `memo` everywhere except the repository (PR #6, STATUS A1).
+- **First epic: app layout and visual design.** Wireframes of the app frame and the page types, plus a visual direction; owner approval before the feature screens (from the owner walkthrough).
 - Tenant context: request filter and propagation into jobs and listeners, on top of `TenantTransactions`.
 - A CSP nonce strategy (ADR) before the first modal dialog.
 - Rate limiting (Bucket4j); the audit module (hash chain, same-transaction outbox).

@@ -291,13 +291,18 @@ The confirmed NFRs are recorded in `docs/plan/nfr.md`, not in an ADR. A deviatio
 |---|---|---|---|
 | Phase 0 overview | Product owner (aradnazihar) | 2026-10-14 | Approved by the instruction "implement phase 0". The owner **delegated the per-epic review gate**: the agent writes each epic plan in full, then implements it without waiting. It stops only for decisions that need the owner. |
 
+### Phase exit
+| Item | By | Date | Notes |
+|---|---|---|---|
+| Phase 0 exit | Product owner (aradnazihar) | 2026-10-15 | Exit criteria met (`retrospective.md`): local stack, CI green on GitHub, RLS tests, ADRs, NFRs confirmed, usability check done. **Carried into Phase 1a:** the first dev deploy (waiting for the VM) and the app-layout epic from the UX walkthrough. |
+
 ### Answers to open questions (2026-10-14)
 | Q | Answer |
 |---|---|
 | Q1 | **GitHub Actions** (remote `github.com/nazihar/memo-revamp`). Pipeline logic lives in scripts so it can move to a self-hosted runner later. |
 | Q2 | **The owner's own server/VM.** Dev and staging are deployed over SSH from CI. The host details and credentials are still to come. |
-| Q3 | Open. The agent does the work; no timeline was given. |
+| Q3 | **Agent only, no deadline** (2026-10-15). The agent builds, and the owner reviews and decides. Phases are planned by scope, and the quality gates set the pace. |
 | Q4 | Accepted: `/shared` KMP module with a JVM target and `commonTest`; `/mobile/*` contains only READMEs. |
 | Q5 | Accepted: per-role storage-state fixture, used with the anonymous role only; no auth bypass. |
-| Q6 | Open. |
+| Q6 | **The product owner confirms the NFRs.** Confirmed as proposed on 2026-10-15 (`docs/plan/nfr.md`). |
 | Q7 | Accepted: added to E05. |

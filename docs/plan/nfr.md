@@ -1,10 +1,10 @@
 # Non-functional requirements (NFRs)
 
-> **Status: PROPOSED, awaiting product-owner confirmation (Phase 0 Q6).** The targets below come from MASTER_PLAN §6 and TESTING_STRATEGY §7, refined by what Phase 0 measured. Once confirmed, any later deviation needs an ADR. Confirmation is recorded in the table at the end.
+> **Status: CONFIRMED** by the product owner on 2026-10-15 (Phase 0 Q6). The targets below come from MASTER_PLAN §6 and TESTING_STRATEGY §7, refined by what Phase 0 measured. Any later deviation needs an ADR. Confirmation is recorded in the table at the end.
 
 ## Performance
 
-| # | Target (proposed) | Measured in Phase 0 | How verified |
+| # | Target | Measured in Phase 0 | How verified |
 |---|---|---|---|
 | P1 | p95 < 300 ms for common reads (list/detail API) at the target load | `/api/v1/health` through nginx: p95 48 ms, 20 users (Gatling smoke, local on-prem stack, 2026-10-14) | Gatling per critical journey; nightly smoke, weekly load (TESTING_STRATEGY §7) |
 | P2 | First page of a board book visible < 2 s | — (Phase 5) | Gatling + Lighthouse |
@@ -15,7 +15,7 @@
 
 ## Availability and recovery
 
-| # | Target (proposed) | Notes |
+| # | Target | Notes |
 |---|---|---|
 | A1 | SaaS availability 99.9 % monthly | Excludes announced maintenance windows; dedicated and on-prem installs follow the customer's SLA |
 | A2 | RPO ≤ 15 minutes | PostgreSQL continuous archiving (WAL) plus object-store replication. Backup design is in Phase 7; a minimal version comes before M1 |
@@ -24,7 +24,7 @@
 
 ## Synthetic data volumes (performance environments)
 
-| # | Volume (proposed) | Generator |
+| # | Volume | Generator |
 |---|---|---|
 | V1 | 1,000,000 memos with history per large tenant | `SyntheticVolumeGenerator` (Phase 3 adds memos) |
 | V2 | 10,000 active workflow instances with timers | Phase 2 |
@@ -45,4 +45,4 @@
 
 | Item | By | Date | Notes |
 |---|---|---|---|
-| NFR targets | — | — | **pending** (Q6: who confirms, and when) |
+| NFR targets (performance, availability and recovery, synthetic volumes) | Product owner (aradnazihar) | 2026-10-15 | **Confirmed as proposed.** Approved in the session after the Phase 0 UX walkthrough. |

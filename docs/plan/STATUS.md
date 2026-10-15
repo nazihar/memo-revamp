@@ -5,10 +5,11 @@
 **Last updated:** 2026-10-15 (UTC+06:00) by Claude (agent)
 
 ## Current position
-- **Phase:** 0, Foundations and engineering baseline. **Implementation complete and verified locally; formal phase exit pending owner actions** (see "Waiting for human").
+- **Phase:** 0 **exited 2026-10-15** (owner approval; `phase-0-foundations/retrospective.md`). **Next: Phase 1a planning**, starting with the overview.
+- **Carried into Phase 1a:** first dev deploy (waiting for the VM); app layout and visual design epic (from the UX walkthrough).
 - **Epics:** E01–E05 implemented. Plans, logs and test plans are in `docs/plan/phase-0-foundations/epic-0*/`.
-- **Branches:** E01–E05 merged into `master` (PRs #1–#5); GitHub CI green on `master` (all 7 jobs).
-- **Product name:** `memo` everywhere except the repository name `memo-revamp` (A1, branch `chore/rename-product-to-memo`).
+- **Branches:** everything is merged into `master` (PRs #1–#6); GitHub CI green; feature branches deleted.
+- **Product name:** `memo` everywhere except the repository name `memo-revamp` (A1, PR #6).
 
 ## State
 - [x] Phase overview approved; Q1, Q2, Q4, Q5 and Q7 answered; per-epic gate delegated
@@ -20,10 +21,10 @@
 - [x] GitHub CI green on PRs and `master`
 - [x] Product renamed to `memo` (package `com.memo`, images `memo-backend` / `memo-web`)
 - [ ] First nightly run (scheduled 02:00 UTC) and first release run (**needs the cosign key**)
-- [ ] Dev environment deployed: **needs the VM**
-- [ ] Owner usability walkthrough (E03 `ux-review.md`)
-- [ ] NFRs confirmed (`docs/plan/nfr.md`, Q6)
-- [ ] `retrospective.md` finalised and phase exit recorded in `overview.md §10`
+- [ ] Dev environment deployed: **needs the VM** (carried into Phase 1a)
+- [x] Owner usability walkthrough (2026-10-15): UI OK; "layout very simple" carried into Phase 1a as a layout/visual-design epic
+- [x] NFRs confirmed as proposed by the owner (2026-10-15); Q3 answered: agent only, no deadline
+- [x] `retrospective.md` finalised and phase exit recorded in `overview.md §10` (2026-10-15)
 
 ## Verified locally (2026-10-14/15)
 - **Backend:** 79 tests green (unit, property, Modulith, ArchUnit, RLS meta, cross-tenant, negative, API, contract and jOOQ drift, probes, migrate mode, structured logs); ktlint, detekt, SpotBugs + FindSecBugs clean.
@@ -33,11 +34,9 @@
 - **DAST/performance:** ZAP baseline 0 FAIL / 0 WARN; Gatling p95 48 ms.
 
 ## Next step
-1. The owner provides the items below.
+1. **Phase 1a planning:** write `docs/plan/phase-1a-minimum-core/overview.md` (AGENTS.md planning protocol). Its first epic is the app layout and visual design.
 2. Watch the first nightly run; cut the first release once the cosign key exists.
-3. Provision the VM with Ansible, enable `deploy-dev`, run ZAP and Gatling against dev.
-4. Usability walkthrough and NFR sign-off; finalise the retrospective; record the phase exit.
-5. Then Phase 1a planning (overview first).
+3. When the VM exists: provision it with Ansible, enable `deploy-dev`, run ZAP and Gatling against dev.
 
 ## Waiting for human
 1. **VM for dev and staging:**
@@ -51,8 +50,7 @@
    - `release` environment with reviewers, plus the cosign key pair (`COSIGN_PRIVATE_KEY`, `COSIGN_PASSWORD`; commit `deploy/cosign.pub`);
    - branch protection on `master`.
 3. **Renovate:** install the GitHub App (ADR-0014).
-4. **Q3** (team and timeline) and **Q6** (who confirms the NFRs, and when).
-5. **UX walkthrough** of the shell: themes, Arabic/RTL, keyboard (about 15 minutes).
+4. **For Phase 1a design (no rush):** brand assets (logo, colours, fonts) and 2–3 reference apps you like.
 
 ## Assumptions
 - **A1 (resolved):** the product is `memo`. Package `com.memo`, Gradle group `com.memo`, application name `memo`, images `memo-backend` / `memo-web`. Only the repository keeps the name `memo-revamp`. The stored schema marker moved to `memo` with migration `system/V2`.

@@ -55,7 +55,7 @@ If an IDE builds the same tree with a different Gradle version (seen with VS Cod
 | Kubernetes (SaaS, customer clusters) | `deploy/helm/memo` (migration hook Job, restricted pods, NetworkPolicies). |
 | Images | `backend/Dockerfile` (distroless Java 25), `web/Dockerfile` (nginx-unprivileged). Releases are signed with cosign: verify with `cosign verify --key deploy/cosign.pub --insecure-ignore-tlog <image@digest>`. |
 
-Operability (ADR-0016): ECS JSON logs with `correlation.id` and `tenant.id`; probes on management port 8081; OpenTelemetry export off unless `MEMO_OTEL_EXPORT=true`.
+Operability (ADR-0016): ECS JSON logs with `correlation.id` and `tenant.id`; probes on management port 8081 (8091 under `pnpm dev`, where 8081 is the ONLYOFFICE gateway); OpenTelemetry export off unless `MEMO_OTEL_EXPORT=true`.
 
 The CI gates and how to run each one locally are listed in [`ci/README.md`](ci/README.md).
 

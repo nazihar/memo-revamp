@@ -78,6 +78,8 @@ export function backendEnv(env, { core }) {
     MEMO_SMTP_HOST: 'localhost',
     MEMO_SMTP_PORT: '1025',
     MEMO_DEMO_SEED: 'true',
+    // The local stack publishes the ONLYOFFICE gateway on 8081, the backend's default management port (ADR-0016).
+    MEMO_MANAGEMENT_PORT: '8091',
   }
   if (!core) {
     out.MEMO_DOCSERVER_URL = 'http://localhost:8081'

@@ -80,8 +80,8 @@ jobs:
           node ci/provenance.mjs > build/provenance.json
           # No transparency log (offline verification, ADR-0012). cosign 3 only accepts --tlog-upload=false with the
           # TUF-provided signing config turned off.
-          for pair in "backend:$BACKEND:build/sbom/backend.cdx.json" "web:$WEB:build/sbom/web.cdx.json"; do
-            IFS=: read -r app image sbom <<<"$pair"
+          for entry in "backend|$BACKEND|build/sbom/backend.cdx.json" "web|$WEB|build/sbom/web.cdx.json"; do
+            IFS='|' read -r app image sbom <<<"$entry"   # not ":", image digests contain one
             cosign sign --yes --key env://COSIGN_PRIVATE_KEY --use-signing-config=false --tlog-upload=false "$image"
             cosign attest --yes --key env://COSIGN_PRIVATE_KEY --use-signing-config=false --tlog-upload=false --type cyclonedx --predicate "$sbom" "$image"
             cosign attest --yes --key env://COSIGN_PRIVATE_KEY --use-signing-config=false --tlog-upload=false --type slsaprovenance1 --predicate build/provenance.json "$image"

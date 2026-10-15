@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 // Performance tests (TESTING_STRATEGY §7): Gatling simulations in Kotlin. Not part of `./gradlew build`.
-//   ./gradlew :perf:gatlingRun --simulation com.memorevamp.perf.HealthSmokeSimulation -DbaseUrl=https://dev.example
+//   ./gradlew :perf:gatlingRun --simulation com.memo.perf.HealthSmokeSimulation -DbaseUrl=https://dev.example
 plugins {
     id("memo.kotlin-jvm")
     alias(libs.plugins.gatling)

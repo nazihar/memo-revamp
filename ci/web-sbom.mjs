@@ -53,8 +53,8 @@ const bom = {
   version: 1,
   metadata: {
     timestamp: new Date().toISOString(),
-    tools: { components: [{ type: 'application', name: 'memo-revamp ci/web-sbom.mjs' }] },
-    component: { type: 'application', name: 'memo-revamp-web', version: webPkg.version ?? '0.0.0' },
+    tools: { components: [{ type: 'application', name: 'memo ci/web-sbom.mjs' }] },
+    component: { type: 'application', name: 'memo-web', version: webPkg.version ?? '0.0.0' },
   },
   components,
 }

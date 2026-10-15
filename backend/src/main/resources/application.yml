@@ -1,7 +1,7 @@
 # Defaults are safe for any environment; secrets come only from the environment (never from this file).
 spring:
   application:
-    name: memo-revamp
+    name: memo
   threads:
     virtual:
       enabled: true

@@ -6,7 +6,7 @@
 <FindBugsFilter>
   <!-- jOOQ generated sources (ADR-0007): reviewed through the drift check, not hand-written. -->
   <Match>
-    <Package name="~com\.memorevamp\.jooq(\..*)?"/>
+    <Package name="~com\.memo\.jooq(\..*)?"/>
   </Match>
 
   <!--
@@ -25,7 +25,7 @@
     STARTTLS and is not covered by this exclusion.
   -->
   <Match>
-    <Class name="com.memorevamp.system.health.probes.SocketProbesKt"/>
+    <Class name="com.memo.system.health.probes.SocketProbesKt"/>
     <Bug pattern="UNENCRYPTED_SOCKET"/>
   </Match>
 </FindBugsFilter>

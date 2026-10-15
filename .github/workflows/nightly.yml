@@ -166,12 +166,12 @@ jobs:
           docker build -f web/Dockerfile -t memo-web:ci .
           ci/onprem-stack.sh up memo-backend:ci memo-web:ci 18100
       - run: ci/zap-baseline.sh http://127.0.0.1:18100/
-      - run: ./gradlew :perf:gatlingRun --simulation com.memorevamp.perf.HealthSmokeSimulation -DbaseUrl=http://127.0.0.1:18100 --console=plain
+      - run: ./gradlew :perf:gatlingRun --simulation com.memo.perf.HealthSmokeSimulation -DbaseUrl=http://127.0.0.1:18100 --console=plain
       - name: Against dev (when configured)
         if: vars.DEV_URL != ''
         run: |
           ci/zap-baseline.sh "${{ vars.DEV_URL }}/"
-          ./gradlew :perf:gatlingRun --simulation com.memorevamp.perf.HealthSmokeSimulation -DbaseUrl="${{ vars.DEV_URL }}" --console=plain
+          ./gradlew :perf:gatlingRun --simulation com.memo.perf.HealthSmokeSimulation -DbaseUrl="${{ vars.DEV_URL }}" --console=plain
       - if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:

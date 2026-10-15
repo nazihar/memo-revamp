@@ -1,5 +1,5 @@
 {
-  "name": "memo-revamp",
+  "name": "memo",
   "private": true,
   "packageManager": "pnpm@10.18.1",
   "engines": {

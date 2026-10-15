@@ -3,8 +3,8 @@
 
 image:
   # Pin by digest in real installs: repository@sha256:...
-  backend: ghcr.io/nazihar/memo-revamp-backend:0.1.0
-  web: ghcr.io/nazihar/memo-revamp-web:0.1.0
+  backend: ghcr.io/nazihar/memo-backend:0.1.0
+  web: ghcr.io/nazihar/memo-web:0.1.0
   pullPolicy: IfNotPresent
 imagePullSecrets: []
 

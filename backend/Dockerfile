@@ -17,7 +17,7 @@ RUN java -Djarmode=tools -jar app.jar extract --layers --launcher --destination 
 FROM ${RUNTIME_IMAGE}
 ARG VERSION=dev
 ARG REVISION=unknown
-LABEL org.opencontainers.image.title="memo-revamp-backend" \
+LABEL org.opencontainers.image.title="memo-backend" \
       org.opencontainers.image.source="https://github.com/nazihar/memo-revamp" \
       org.opencontainers.image.version="${VERSION}" \
       org.opencontainers.image.revision="${REVISION}" \

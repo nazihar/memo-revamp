@@ -5,7 +5,7 @@
 ## 1. Repository layout
 
 ```
-/backend            Spring Boot app (package root com.memorevamp), one package per Modulith module
+/backend            Spring Boot app (package root com.memo), one package per Modulith module
 /build-logic        Gradle convention plugins (ADR-0004)
 /shared             KMP module (JVM target only until Phase 6a; Q4)
 /web                Vite + React + TanStack Router SPA
@@ -16,15 +16,15 @@
 /docs               plan, adr, security, threat-models, dependencies.md
 ```
 
-The base package `com.memorevamp` follows the repository name. If the product gets a final name, we rename the package before Phase 1a (assumption A1, see STATUS).
+The base package is `com.memo`, after the product name `memo`. Only the repository is called `memo-revamp`; product, packages, Gradle/npm projects and images all use `memo` (renamed after Phase 0, see STATUS A1).
 
 ## 2. Modules (Spring Modulith)
 
-These packages are created under `com.memorevamp`, each with a `package-info.java` that carries `@ApplicationModule(displayName=…)`. The modules are `tenancy`, `identity`, `org`, `authz`, `audit`, `files`, `workflow`, `memo`, `forum`, `meeting`, `book`, `voting`, `minutes`, `actions`, `signature`, `notification` and `search`. One more module, **`system`**, owns platform health and other non-tenant operational data.
+These packages are created under `com.memo`, each with a `package-info.java` that carries `@ApplicationModule(displayName=…)`. The modules are `tenancy`, `identity`, `org`, `authz`, `audit`, `files`, `workflow`, `memo`, `forum`, `meeting`, `book`, `voting`, `minutes`, `actions`, `signature`, `notification` and `search`. One more module, **`system`**, owns platform health and other non-tenant operational data.
 
 Module rules for this epic:
 - `system` exposes no API to other modules. It publishes no events and consumes none.
-- Shared infrastructure (web error handling, security config) goes in `com.memorevamp.common`, which is declared an open module (`Type.OPEN`).
+- Shared infrastructure (web error handling, security config) goes in `com.memo.common`, which is declared an open module (`Type.OPEN`).
 - `ApplicationModules.of(MemoApplication::class.java).verify()` runs in the PR stage.
 
 ## 3. Data model
@@ -35,7 +35,7 @@ There is one non-tenant table, owned by `system`. It is created by the Flyway mi
 erDiagram
   system_info {
     smallint id PK "always 1"
-    text schema_marker "fixed value 'memo-revamp'"
+    text schema_marker "fixed value 'memo'"
     timestamptz installed_at
   }
 ```
@@ -137,7 +137,7 @@ This is a single developer-facing status page, so there are no user journeys to 
 
 - **Database roles arrived in E01, not E02.** `deploy/db/init/01-roles.sh` creates `memo_migrator` (schema owner, used by Flyway) and `memo_app` (DML only, not the owner, `NOBYPASSRLS`). The same script runs in Compose and Testcontainers. E02 builds on it: RLS conventions, the meta-test and ADR-DB.
 - **CSRF answers before authentication.** A credential-less `POST` gets **403** (CSRF), not 401. Either way the request is never processed. `SecurityDefaultsTest` documents this.
-- **Modulith treats the KMP package as a library.** `com.memorevamp.shared` comes from `/shared` and is excluded from module detection, so any module may use it. Test-only packages are excluded too.
+- **Modulith treats the KMP package as a library.** `com.memo.shared` comes from `/shared` and is excluded from module detection, so any module may use it. Test-only packages are excluded too.
 - **Required fields in the contract are explicit.** Response DTO fields carry `@field:Schema(requiredMode = REQUIRED)`, because springdoc does not infer "required" from Kotlin non-null types. Convention: every non-null response field is annotated. Revisit in E03 with a global customizer.
 - **`exactOptionalPropertyTypes` is off in the web tsconfig.** The hey-api generated client does not compile with it. The other strict flags (`strict`, `noUncheckedIndexedAccess`, …) stay on.
 - **`MEMO_BUILD_ROOT` (optional) moves Gradle output out of `build/`.** This was added after VS Code's Java tooling, running Gradle 9.7.1, corrupted `build-logic` outputs during CLI builds. The directory must be on the same drive as the sources, because Kotlin incremental caches break across drives.

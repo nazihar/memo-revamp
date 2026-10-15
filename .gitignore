@@ -17,7 +17,12 @@ web/blob-report/
 .env.*
 !.env.example
 
-# IDE / OS
+# IDE / OS (VS Code Java/Kotlin tooling writes Eclipse-style output into <project>/bin)
+bin/
+.project
+.classpath
+.settings/
+.factorypath
 .idea/
 *.iml
 .vscode/*

@@ -33,3 +33,8 @@ Thumbs.db
 # Ansible inventory/vars for the owner VM (hosts, keys)
 deploy/ansible/inventory.ini
 deploy/ansible/vars.yml
+
+# Signing keys: only the public half is committed (deploy/cosign.pub, ADR-0012)
+cosign.key
+*.key
+!deploy/cosign.pub

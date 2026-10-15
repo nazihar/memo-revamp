@@ -13,6 +13,7 @@ foojay = "1.0.0"
 mockk = "1.14.11"
 jug = "5.2.0"
 jqwik = "1.10.2"
+gatling = "3.16.0"
 cyclonedx = "3.5.1"
 spotbugs-gradle = "6.5.13"
 spotbugs = "4.10.5"
@@ -35,6 +36,7 @@ spring-boot-starter-security = { module = "org.springframework.boot:spring-boot-
 spring-boot-starter-jooq = { module = "org.springframework.boot:spring-boot-starter-jooq" }
 spring-boot-starter-flyway = { module = "org.springframework.boot:spring-boot-starter-flyway" }
 spring-boot-starter-actuator = { module = "org.springframework.boot:spring-boot-starter-actuator" }
+spring-boot-starter-opentelemetry = { module = "org.springframework.boot:spring-boot-starter-opentelemetry" }
 spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
 spring-boot-starter-webmvc-test = { module = "org.springframework.boot:spring-boot-starter-webmvc-test" }
 spring-boot-starter-security-test = { module = "org.springframework.boot:spring-boot-starter-security-test" }
@@ -73,4 +75,5 @@ security-jackson2-bom = { module = "com.fasterxml.jackson:jackson-bom", version.
 security-jackson3-bom = { module = "tools.jackson:jackson-bom", version.ref = "security-jackson3" }
 
 [plugins]
+gatling = { id = "io.gatling.gradle", version.ref = "gatling" }
 foojay = { id = "org.gradle.toolchains.foojay-resolver-convention", version.ref = "foojay" }

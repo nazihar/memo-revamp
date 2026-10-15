@@ -1,8 +1,11 @@
 package com.memorevamp.common.web
 
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication
+import org.springframework.boot.security.autoconfigure.actuate.web.servlet.EndpointRequest
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.annotation.Order
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.web.SecurityFilterChain
@@ -14,8 +17,32 @@ import tools.jackson.databind.json.JsonMapper
  * authenticated principal. No authentication mechanism exists yet (Phase 1a), so every other request is rejected with 401.
  */
 @Configuration(proxyBeanMethods = false)
+@ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 class SecurityConfig {
+    /**
+     * Actuator (management port 8081, never proxied): only the health probes are anonymous; every other endpoint
+     * is denied until an operator identity exists (Phase 1a/7).
+     */
     @Bean
+    @Order(1)
+    fun managementSecurity(
+        http: HttpSecurity,
+        jsonMapper: JsonMapper,
+    ): SecurityFilterChain {
+        http
+            .securityMatcher(EndpointRequest.toAnyEndpoint())
+            .authorizeHttpRequests { auth ->
+                auth.requestMatchers(EndpointRequest.to("health")).permitAll()
+                auth.anyRequest().denyAll()
+            }.sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
+            .exceptionHandling { it.authenticationEntryPoint(ProblemAuthenticationEntryPoint(jsonMapper)) }
+            .httpBasic { it.disable() }
+            .formLogin { it.disable() }
+        return http.build()
+    }
+
+    @Bean
+    @Order(2)
     fun apiSecurity(
         http: HttpSecurity,
         jsonMapper: JsonMapper,

@@ -23,6 +23,8 @@ kotlin {
 
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
+    // Nightly long property runs: -PjqwikTries=1000 (TESTING_STRATEGY §2).
+    providers.gradleProperty("jqwikTries").orNull?.let { systemProperty("jqwik.tries.default", it) }
     testLogging {
         events("failed", "skipped")
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL

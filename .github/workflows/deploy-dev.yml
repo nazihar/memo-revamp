@@ -1,0 +1,78 @@
+# One-command deploy to dev (Phase 0 goal, ADR-0015): after a green `ci` run on master, build the images from that
+# run's artefacts, push them to GHCR by digest and deploy over SSH with the forced-command key (deploy.sh rolls back on
+# failure). Dormant until the owner sets the repository variable DEPLOY_DEV_ENABLED=true and the `dev` environment
+# secrets DEPLOY_SSH_KEY, DEPLOY_HOST, DEPLOY_KNOWN_HOSTS (see ci/README.md and deploy/ansible).
+name: deploy-dev
+
+on:
+  workflow_run:
+    workflows: [ci]
+    types: [completed]
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-dev
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: >-
+      vars.DEPLOY_DEV_ENABLED == 'true' &&
+      (github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success')
+    runs-on: ubuntu-24.04
+    environment:
+      name: dev
+      url: ${{ vars.DEV_URL }}
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      packages: write
+      actions: read # download artefacts of the triggering ci run
+    env:
+      SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+      IMAGE_PREFIX: ghcr.io/${{ github.repository_owner }}/memo-revamp
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.SHA }}
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: backend-jar
+          path: backend/build/libs
+          run-id: ${{ github.event.workflow_run.id || github.run_id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
+        with:
+          name: web-dist
+          path: web/dist
+          run-id: ${{ github.event.workflow_run.id || github.run_id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push dev images (by digest)
+        id: images
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+          for app in backend web; do
+            ref="$IMAGE_PREFIX-$app:dev-$SHA"
+            docker build -f "$app/Dockerfile" --build-arg VERSION="dev-$SHA" --build-arg REVISION="$SHA" -t "$ref" .
+            docker push "$ref"
+            echo "$app=$(docker inspect --format '{{index .RepoDigests 0}}' "$ref")" >> "$GITHUB_OUTPUT"
+          done
+      - name: Deploy over SSH (forced command; manifests on stdin)
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+          BACKEND: ${{ steps.images.outputs.backend }}
+          WEB: ${{ steps.images.outputs.web }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy && chmod 600 ~/.ssh/deploy
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          tar -czf - deploy | ssh -i ~/.ssh/deploy -o StrictHostKeyChecking=yes "memo@$DEPLOY_HOST" deploy dev "$BACKEND" "$WEB"
+      - name: Smoke check through the public URL
+        if: vars.DEV_URL != ''
+        run: curl -fsS "${{ vars.DEV_URL }}/api/v1/health" | grep -q '"name":"database","status":"UP"'

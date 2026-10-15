@@ -28,4 +28,8 @@
 | V15 Secure coding & architecture | Signed, verifiable artefacts | L2 | partial (needs owner key) | cosign key-based signing + SBOM/provenance attestations in `release.yml` (ADR-0012) |
 | V15 Secure coding & architecture | Hardened containers | L2 | met | non-root, read-only root FS, no capabilities (`ci/image-smoke.sh`); Trivy config clean |
 | V15 Secure coding & architecture | Isolation of risky components | L2 | partial | ONLYOFFICE on an internal-only network (E01 manual check); NetworkPolicy (E05) |
+| V16 Security logging & error handling | Structured logs with correlation id, no client-controlled text | L2 | met | ECS JSON (`StructuredLoggingIT`); correlation id re-rendered from parsed bits (`CorrelationIdFilterTest`, FindSecBugs clean) |
 | V16 Security logging & error handling | Security events logged without sensitive data | L3 | planned (1a) | Audit module |
+| V13 Configuration | Management endpoints not exposed publicly | L2 | met | Actuator on port 8081, not proxied, only health probes anonymous (`ProbesIT`) |
+| V13 Configuration | Least privilege for runtime credentials | L2 | met | Migration job holds migrator role; app holds app role only (`MigrateModeIT`, `ci/onprem-smoke.sh`) |
+| V3 Web frontend security | Cross-origin isolation headers | L2 | met | COOP/COEP/CORP in `security-headers.json`; ZAP baseline 0 FAIL / 0 WARN |

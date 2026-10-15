@@ -101,6 +101,22 @@ Column meanings:
 | nginxinc/nginx-unprivileged | 1.31.6-alpine3.24 (digest) | BSD-2-Clause (nginx) | runtime base image | SPA static server + /api proxy | active | Caddy |
 | node | 24.21.0-alpine3.24 (digest) | MIT | build stage only | Renders nginx security headers | active | — |
 
+## Environments, deployment and operability (E05)
+
+| Name | Version | License | Scope | Purpose | Maintenance | Alternatives considered |
+|---|---|---|---|---|---|---|
+| spring-boot-starter-actuator | 4.1.1 (Boot) | Apache-2.0 | runtime | Liveness/readiness probes on the management port | very active | — |
+| spring-boot-starter-opentelemetry | 4.1.1 (Boot) | Apache-2.0 | runtime | OTel traces/metrics/logs via Micrometer (export off by default, ADR-0016) | very active | OTel Java agent |
+| Gatling + Gradle plugin | 3.16.0 | Apache-2.0 | dev-only | Performance simulations (`perf/`) | 2026-09-29; active | k6 (AGPL), JMeter |
+| OWASP ZAP (container) | 2.17.0 | Apache-2.0 | dev-only (service) | DAST baseline | 2025-12; active | Nuclei |
+| Helm | 4.3.0 | Apache-2.0 | dev-only | Chart lint/template/install | 2026-09; very active | Kustomize |
+| kubeconform | 0.8.0 | Apache-2.0 | dev-only | Manifest schema validation | 2026-06; active | kubeval (archived) |
+| kind | 0.33.0 | Apache-2.0 | dev-only | Throwaway Kubernetes for chart tests | 2026-08; active | k3d |
+| Ansible (ansible-core / ansible-lint) | 2.21.5 / 26.10.1 | GPL-3.0 (separate tool, not linked) | dev-only | VM provisioning (ADR-0015) | very active | OpenTofu, cloud-init |
+| Ansible collections community.general / ansible.posix | ≥10 / ≥2 | GPL-3.0 (tool plug-ins) | dev-only | ufw, authorized_key | active | — |
+| Caddy (container) | 2.11.7 | Apache-2.0 | service (VM edge) | TLS termination for dev/staging | 2026-10; very active | nginx + certbot, Traefik |
+| python:3.13-slim (container) | 3.13 | PSF-2.0 | dev-only | Local Ansible lint runs | active | — |
+
 ## CI
 
 | Name | Version (SHA-pinned) | License | Purpose |

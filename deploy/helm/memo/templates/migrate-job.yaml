@@ -1,0 +1,50 @@
+# Migrations run as a separate Job with the migrator role before install/upgrade (AGENTS.md §4, ADR-0016).
+# Backend pods never receive the migrator credentials.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-migrate
+  labels:
+    {{- include "memo.labels" . | nindent 4 }}
+    app.kubernetes.io/name: migrate
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade
+    helm.sh/hook-weight: "0"
+    helm.sh/hook-delete-policy: before-hook-creation
+spec:
+  backoffLimit: 2
+  activeDeadlineSeconds: 900
+  template:
+    metadata:
+      labels:
+        {{- include "memo.selector" (dict "root" . "name" "migrate") | nindent 8 }}
+    spec:
+      restartPolicy: Never
+      automountServiceAccountToken: false
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- include "memo.podSecurity" . | nindent 8 }}
+      containers:
+        - name: migrate
+          image: {{ .Values.image.backend | quote }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          securityContext:
+            {{- include "memo.containerSecurity" . | nindent 12 }}
+          env:
+            {{- include "memo.backendEnv" . | nindent 12 }}
+            - name: MEMO_MODE
+              value: migrate
+            - name: MEMO_DB_APP_USER
+              value: memo_migrator
+            - name: MEMO_DB_APP_PASSWORD
+              valueFrom: { secretKeyRef: { name: {{ .Values.database.migratorSecret }}, key: password } }
+            - name: MEMO_DB_MIGRATOR_PASSWORD
+              valueFrom: { secretKeyRef: { name: {{ .Values.database.migratorSecret }}, key: password } }
+          resources:
+            {{- toYaml .Values.migrations.resources | nindent 12 }}
+          volumeMounts:
+            - { name: tmp, mountPath: /tmp }
+      volumes:
+        - { name: tmp, emptyDir: { sizeLimit: 256Mi } }

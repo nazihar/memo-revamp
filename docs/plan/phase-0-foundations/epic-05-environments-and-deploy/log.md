@@ -1,0 +1,33 @@
+# E05 Environments, deployment and operability — log
+
+## 2026-10-14
+- Plan written (research, ADR-0015 environments/IaC/deploy, ADR-0016 operability, design, threat model, tasks, test plan). Gate delegated.
+- **Operability:**
+  - `CorrelationIdFilter`: re-renders inbound UUIDs or nginx ids from parsed bits;
+  - tenant id in the MDC;
+  - ECS JSON logs (set by the manifests);
+  - OpenTelemetry starter with export off;
+  - Actuator probes on management port 8081, with a separate security chain (health only).
+- **Migration job:** `memo.mode=migrate` (web type NONE). Application instances run with Flyway off and app-role credentials only.
+- **On-prem Compose profile:**
+  - hardened (read-only, cap_drop ALL, no-new-privileges, non-root, limits);
+  - `.env.example` without values plus `gen-secrets.sh`;
+  - `ci/onprem-smoke.sh` passes.
+- **Helm chart:** migration hook Job, backend and web Deployments, NetworkPolicies, values schema that rejects secret-like keys. `helm lint` and kubeconform are clean; the kind install script runs nightly.
+- **VM:**
+  - Ansible `site.yml` (ansible-lint clean at the production profile);
+  - Caddy TLS edge;
+  - `deploy.sh` with automatic rollback, verified locally with a broken release;
+  - `ssh-entry.sh` forced command (refuses anything but deploy);
+  - `deploy-dev.yml`, dormant until enabled.
+- **ZAP baseline:** first run found 3 WARN, including missing COEP. Added COEP/CORP; the rerun showed 0 FAIL, 0 WARN, 65 PASS (2 informational IGNOREs with reasons).
+- **Gatling smoke** through the on-prem stack: p95 48 ms, 0 errors.
+- **Playwright smoke** against the production images: 6/6.
+- **Found and fixed during E05:**
+  - FindSecBugs flagged response splitting and a CSRF disable;
+  - `SpringApplicationBuilder.properties()` has the lowest precedence, so command-line arguments are used instead;
+  - the storage probe crashed on a partial configuration;
+  - SeaweedFS needs to run as its own uid under `cap_drop ALL`;
+  - Gatling forks with Gradle's JVM, so `perf` targets Java 17;
+  - **Compose project-name clash between the local stack and the VM environment `memo-dev`.** The local stack was renamed to `memo-local`, and the old local `memo-dev_*` containers and volumes were removed; they held only session-generated dev data.
+- **Pending (owner):** VM details and access, DNS/TLS, GitHub environment secrets, enabling `DEPLOY_DEV_ENABLED`, NFR confirmation.

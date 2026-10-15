@@ -1,0 +1,31 @@
+# Shared TLS edge for the VM (ADR-0015): routes dev.<domain> and staging.<domain> to each environment's web service
+# over the external `memo-edge` network. Certificates: ACME (Let's Encrypt) by default, or owner-provided files.
+name: memo-edge
+
+services:
+  caddy:
+    image: caddy:2.11.7
+    restart: unless-stopped
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [NET_BIND_SERVICE]
+    security_opt: [no-new-privileges:true]
+    tmpfs: [/tmp]
+    ports: ["80:80", "443:443", "443:443/udp"]
+    environment:
+      MEMO_DEV_HOST: ${MEMO_DEV_HOST:?set in /opt/memo/edge/.env}
+      MEMO_STAGING_HOST: ${MEMO_STAGING_HOST:?set in /opt/memo/edge/.env}
+      ACME_EMAIL: ${ACME_EMAIL:-}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    networks: [memo-edge]
+
+networks:
+  memo-edge:
+    external: true
+
+volumes:
+  caddy-data: {}
+  caddy-config: {}

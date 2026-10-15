@@ -1,0 +1,62 @@
+# Values for the memo chart (ADR-0015). Secrets are NEVER values: reference existing Kubernetes Secrets by name.
+# The schema (values.schema.json) rejects unknown keys and any password-like key.
+
+image:
+  # Pin by digest in real installs: repository@sha256:...
+  backend: ghcr.io/nazihar/memo-revamp-backend:0.1.0
+  web: ghcr.io/nazihar/memo-revamp-web:0.1.0
+  pullPolicy: IfNotPresent
+imagePullSecrets: []
+
+database:
+  # jdbc:postgresql://host:5432/memo — the database must have been prepared with deploy/db/init/01-roles.sh
+  url: jdbc:postgresql://postgres:5432/memo
+  # Secret with key `password` for memo_app (backend pods).
+  appSecret: memo-db-app
+  # Secret with key `password` for memo_migrator (migration job only).
+  migratorSecret: memo-db-migrator
+
+objectStorage:
+  endpoint: ""            # empty = disabled (health shows "Not configured")
+  region: us-east-1
+  # Secret with keys `accessKey` and `secretKey` for the least-privilege app identity (ADR-0005).
+  secret: memo-s3-app
+
+integrations:
+  documentServerUrl: ""   # ONLYOFFICE (internal URL); empty = disabled
+  malwareScannerHost: ""  # clamd host; empty = disabled
+  smtpHost: ""
+  smtpPort: 25
+
+observability:
+  logFormat: ecs          # structured JSON logs (ADR-0016)
+  otelExport: false       # OTLP export off unless a collector exists
+
+backend:
+  replicas: 2
+  resources:
+    requests: { cpu: 250m, memory: 768Mi }
+    limits: { memory: 1536Mi }
+
+web:
+  replicas: 2
+  resources:
+    requests: { cpu: 50m, memory: 32Mi }
+    limits: { memory: 128Mi }
+
+migrations:
+  resources:
+    requests: { cpu: 250m, memory: 512Mi }
+    limits: { memory: 1Gi }
+
+ingress:
+  enabled: false
+  className: ""
+  host: memo.example.internal
+  tlsSecret: ""           # existing TLS secret; TLS termination is the installation's choice
+
+networkPolicy:
+  enabled: true
+  # Egress the backend needs besides in-cluster DNS (DB, S3, SMTP, ONLYOFFICE, ClamAV), as CIDRs or namespace selectors.
+  backendEgressCidrs: []
+  ingressFromNamespaceLabels: { kubernetes.io/metadata.name: ingress-nginx }

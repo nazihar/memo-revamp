@@ -37,6 +37,8 @@ dependencies {
     implementation(libs.spring.boot.starter.security)
     implementation(libs.spring.boot.starter.jooq)
     implementation(libs.spring.boot.starter.flyway)
+    implementation(libs.spring.boot.starter.actuator)
+    implementation(libs.spring.boot.starter.opentelemetry)
     implementation(libs.spring.modulith.starter.core)
     implementation(libs.springdoc.webmvc.api)
     implementation(libs.jackson.module.kotlin)

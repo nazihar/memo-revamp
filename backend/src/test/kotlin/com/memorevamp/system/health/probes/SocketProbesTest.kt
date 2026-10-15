@@ -89,5 +89,7 @@ class SocketProbesTest {
         assertThat(MailProbe(MailProperties()).check()).isEqualTo(ComponentStatus.DISABLED)
         assertThat(DocumentServerProbe(DocumentServerProperties()).check()).isEqualTo(ComponentStatus.DISABLED)
         assertThat(ObjectStorageProbe(StorageProperties()).check()).isEqualTo(ComponentStatus.DISABLED)
+        // endpoint without credentials (e.g. the migration job) must not crash bean creation
+        assertThat(ObjectStorageProbe(StorageProperties(endpoint = "http://storage:8333")).check()).isEqualTo(ComponentStatus.DISABLED)
     }
 }

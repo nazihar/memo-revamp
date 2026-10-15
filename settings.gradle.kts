@@ -19,7 +19,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "memo-revamp"
 
-include(":backend", ":shared")
+include(":backend", ":shared", ":perf")
 
 // Optional out-of-tree build output (e.g. to coexist with an IDE that builds the same tree with another Gradle version).
 providers.environmentVariable("MEMO_BUILD_ROOT").orNull?.let { root ->

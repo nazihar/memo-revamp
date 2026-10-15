@@ -7,7 +7,9 @@
 | Chapter | Requirement (summary) | Level | Status | Evidence |
 |---|---|---|---|---|
 | V2 Validation & business logic | Anti-automation on public endpoints | L2 | partial | Health endpoint result cache (E01, `HealthServiceTest`); rate limiting with Bucket4j planned (Phase 1a) |
-| V3 Web frontend security | Strict CSP, no inline scripts | L2 | partial | API CSP `default-src 'none'` (`SecurityDefaultsTest`); SPA CSP planned (E03) |
+| V3 Web frontend security | Strict CSP, no inline scripts | L2 | met (SPA + API) | API CSP `default-src 'none'` (`SecurityDefaultsTest`); SPA CSP from `web/security-headers.json`, no `unsafe-inline` (e2e `security.spec.ts`: headers, no inline script/style, CSP-violation fixture on every test) |
+| V3 Web frontend security | No sensitive data in browser storage | L2 | met | Allow-listed preference keys only (e2e `security.spec.ts`, `AppShell.test.tsx`) |
+| V3 Web frontend security | No third-party resources | L2 | met | e2e `the app loads nothing from third-party origins`; CSP `default-src 'self'` |
 | V4 API & web service | Consistent error format, no internal details | L2 | met | RFC 9457 handler (`ProblemDetailsTest`) |
 | V6 Authentication | MFA, lockout, session revocation, step-up | L3 | planned (1a) | — |
 | V7 Session management | Server-side sessions, cookie flags, CSRF | L2 | partial | CSRF enabled; stateless until 1a (`SecurityDefaultsTest`) |

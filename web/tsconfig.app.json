@@ -19,6 +19,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "useUnknownInCatchVariables": true,
+    "resolveJsonModule": true,
     "paths": { "@/*": ["./src/*"] }
   },
   "include": ["src"]

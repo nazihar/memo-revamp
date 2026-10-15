@@ -15,3 +15,4 @@
   - **The negative test showed defence in depth.** With RLS off only on `tenancy_setting`, the join and view probes stayed blocked by `tenancy_tenant`'s own RLS. The negative test now disables both tables and expects all 10 probes to leak.
   - **`MEMO_BUILD_ROOT` must end in `/build`.** Otherwise ArchUnit's and Modulith's "exclude test classes" import options no longer recognise test output.
   - **The reset `app.tenant_id` is `''`, not NULL.** This is the reason for `nullif` in the policy form (ADR-0006).
+- The switch to Modulith per-module Flyway histories invalidates databases migrated with the E01 layout, because `flyway_schema_history` already held `system` V1. This affected only local dev volumes (nothing deployed): recreate them with `pnpm stack:reset`. From the first real deployment (E05) on, migration history is append-only and layout changes need an ADR plus a repair step.

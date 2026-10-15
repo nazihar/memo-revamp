@@ -1,0 +1,9 @@
+{
+  "$comment": "Single source of the SPA's HTTP security headers (E03 design §4). Used by `vite preview` and by the web container's static server (E04). No 'unsafe-inline' anywhere.",
+  "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'",
+  "X-Content-Type-Options": "nosniff",
+  "Referrer-Policy": "no-referrer",
+  "Permissions-Policy": "camera=(), microphone=(), geolocation=(), payment=(), usb=()",
+  "Cross-Origin-Opener-Policy": "same-origin",
+  "X-Frame-Options": "DENY"
+}

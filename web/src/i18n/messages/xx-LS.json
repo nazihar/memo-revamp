@@ -1,0 +1,182 @@
+{
+  "app.name": [
+    {
+      "type": 0,
+      "value": "Memo & Meeting ManagementSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "health.checkedAt": [
+    {
+      "type": 0,
+      "value": "Last checked "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "health.component.database": [
+    {
+      "type": 0,
+      "value": "DatabaseSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "health.component.documentServer": [
+    {
+      "type": 0,
+      "value": "Document serverSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "health.component.mail": [
+    {
+      "type": 0,
+      "value": "MailSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "health.component.malwareScanner": [
+    {
+      "type": 0,
+      "value": "Malware scannerSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "health.component.objectStorage": [
+    {
+      "type": 0,
+      "value": "Object storageSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "health.components": [
+    {
+      "type": 0,
+      "value": "ComponentsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "health.loading": [
+    {
+      "type": 0,
+      "value": "Checking platform status…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "health.overall": [
+    {
+      "type": 0,
+      "value": "OverallSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "health.title": [
+    {
+      "type": 0,
+      "value": "Platform statusSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "health.unreachable": [
+    {
+      "type": 0,
+      "value": "The platform could not be reached.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "locale.label": [
+    {
+      "type": 0,
+      "value": "LanguageSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "locale.trigger": [
+    {
+      "type": 0,
+      "value": "Change language (current: "
+    },
+    {
+      "type": 1,
+      "value": "current"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.status": [
+    {
+      "type": 0,
+      "value": "StatusSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "shell.navigation": [
+    {
+      "type": 0,
+      "value": "Main navigationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "shell.skipToContent": [
+    {
+      "type": 0,
+      "value": "Skip to main contentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "status.degraded": [
+    {
+      "type": 0,
+      "value": "DegradedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "status.disabled": [
+    {
+      "type": 0,
+      "value": "Not configuredSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "status.down": [
+    {
+      "type": 0,
+      "value": "DownSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "status.up": [
+    {
+      "type": 0,
+      "value": "UpSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "theme.dark": [
+    {
+      "type": 0,
+      "value": "DarkSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "theme.label": [
+    {
+      "type": 0,
+      "value": "ThemeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "theme.light": [
+    {
+      "type": 0,
+      "value": "LightSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "theme.system": [
+    {
+      "type": 0,
+      "value": "SystemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "theme.trigger": [
+    {
+      "type": 0,
+      "value": "Change theme (current: "
+    },
+    {
+      "type": 1,
+      "value": "current"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ]
+}

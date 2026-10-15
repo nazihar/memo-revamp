@@ -1,8 +1,11 @@
+import './styles/index.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { createRouter, RouterProvider } from '@tanstack/react-router'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
+import { LocaleProvider } from './i18n/LocaleProvider'
 import { routeTree } from './routeTree.gen'
+import { ThemeProvider } from './theme/ThemeProvider'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -23,8 +26,12 @@ if (!root) throw new Error('#root element missing from index.html')
 
 createRoot(root).render(
   <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-    </QueryClientProvider>
+    <ThemeProvider>
+      <LocaleProvider>
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
+      </LocaleProvider>
+    </ThemeProvider>
   </StrictMode>,
 )

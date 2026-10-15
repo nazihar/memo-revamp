@@ -46,6 +46,19 @@ Column meanings:
 | React / React DOM | 19.3.0 | MIT | runtime | UI | 2026-10; Meta, very active | — (locked) |
 | @tanstack/react-router | 1.170.44 | MIT | runtime | SPA routing (file-based) | 2026-10; very active | — (locked) |
 | @tanstack/react-query | 5.104.2 | MIT | runtime | Server state | 2026-10; very active | — (locked) |
+| react-intl / @formatjs/cli | 12.1.4 / 6.16.34 | BSD-3-Clause / MIT | runtime / dev-only | ICU i18n, extraction, pseudo-locales, verify (ADR-0010) | 2026-10; FormatJS, very active | i18next + ICU, Lingui |
+| radix-ui (via shadcn/ui sources) | 1.8.1 | MIT | runtime | Accessible primitives (menus) | 2026-10; very active | — (locked) |
+| class-variance-authority / clsx / tailwind-merge | 0.7.1 / 2.1.1 / 3.7.0 | Apache-2.0 / MIT / MIT | runtime | shadcn/ui class composition | cva: stable but slow cadence (2024-11); others active | — |
+| lucide-react | 1.57.0 | ISC | runtime | Icons | very active | — |
+| tailwindcss / @tailwindcss/vite / tw-animate-css | 4.3.3 / 4.3.3 / 1.4.0 | MIT | dev-only | Styling, design tokens (CSS-first) | very active | CSS modules |
+| ESLint / @eslint/js / typescript-eslint | 10.12.0 / 10.0.1 / 8.71.2 | MIT | dev-only | Lint (ADR-0009) | very active | Biome |
+| eslint-plugin-formatjs / -security / -react-hooks / -react-refresh / @tanstack/eslint-plugin-query | 8.1.1 / 4.2.0 / 7.1.1 / 0.5.7 / 5.104.2 | MIT / Apache-2.0 / MIT / MIT / MIT | dev-only | i18n, security, hooks, HMR, query rules | active | — |
+| Prettier / eslint-config-prettier / globals | 3.9.10 / 10.1.8 / 17.13.0 | MIT | dev-only | Formatting | active | Biome |
+| @playwright/test | 1.64.0 | Apache-2.0 | dev-only | E2E, visual regression | very active (Microsoft) | Cypress |
+| axe-core / @axe-core/playwright | 4.14.0 / 4.13.0 | MPL-2.0 | dev-only | Accessibility checks (component + e2e) | very active (Deque) | Pa11y |
+| @lhci/cli | 0.15.1 | Apache-2.0 | dev-only | Lighthouse budgets (nightly) | 2025-06; slower cadence, still the reference CLI | unlighthouse |
+| @testing-library/user-event | 14.6.8 | MIT | dev-only | Realistic interaction in component tests | active | — |
+| mcr.microsoft.com/playwright image | v1.64.0-noble | Apache-2.0 | dev-only (service) | Linux rendering of visual baselines | very active | — |
 | @hey-api/openapi-ts | **0.99.0 (exact pin, pre-1.0)** | MIT | dev-only (generates runtime code) | Typed client + TanStack Query options from the contract | 2026-09-30; active. Pre-1.0 is justified by the locked decision (`AGENTS.md §2`); generated output is committed and the drift is checked in CI | openapi-typescript + openapi-fetch |
 | @tanstack/router-plugin | 1.168.45 | MIT | dev-only | Route tree generation | 2026-10; active | — |
 | TypeScript | 6.0.3 | Apache-2.0 | dev-only | Type checking | 2026-04. TS 7.0.2 (native) exists but typescript-eslint supports `<6.1` (ADR-0002) | TS 7 later |

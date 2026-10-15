@@ -1,61 +1,51 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { render, screen } from '@testing-library/react'
+import { screen } from '@testing-library/react'
 import { http, HttpResponse } from 'msw'
-import { beforeEach, describe, expect, it } from 'vitest'
-import { client } from '@/api/generated/client.gen'
-import type { Health } from '@/api/generated/types.gen'
-import { API_ORIGIN, healthHandler, server } from '@/test/msw'
+import { describe, expect, it } from 'vitest'
+import { API_ORIGIN, healthHandler, healthyResponse, server } from '@/test/msw'
+import { expectNoA11yViolations, renderWithProviders } from '@/test/render'
 import { HealthPage } from './HealthPage'
 
-const up: Health = {
-  status: 'UP',
-  checkedAt: '2026-10-14T10:00:00Z',
-  components: [
-    { name: 'database', status: 'UP' },
-    { name: 'objectStorage', status: 'UP' },
-    { name: 'documentServer', status: 'DISABLED' },
-    { name: 'malwareScanner', status: 'DOWN' },
-    { name: 'mail', status: 'UP' },
-  ],
-}
-
-function renderPage() {
-  const queryClient = new QueryClient({ defaultOptions: { queries: { retry: false } } })
-  return render(
-    <QueryClientProvider client={queryClient}>
-      <HealthPage />
-    </QueryClientProvider>,
-  )
-}
-
 describe('HealthPage', () => {
-  beforeEach(() => client.setConfig({ baseUrl: API_ORIGIN }))
-
   it('shows a loading state, then the overall status and every component as text', async () => {
-    server.use(healthHandler(up))
-    renderPage()
+    const { container } = renderWithProviders(<HealthPage />)
 
     expect(screen.getByRole('status')).toHaveTextContent('Checking platform status')
-    expect(await screen.findByTestId('overall-status')).toHaveTextContent('Up')
+    expect(await screen.findByText('Overall')).toBeInTheDocument()
     expect(screen.getByRole('heading', { level: 1, name: 'Platform status' })).toBeInTheDocument()
     expect(screen.getByText('Database')).toBeInTheDocument()
     expect(screen.getByText('Not configured')).toBeInTheDocument()
     expect(screen.getByText('Down')).toBeInTheDocument()
+    await expectNoA11yViolations(container)
   })
 
   it('renders the DOWN body that comes with a 503', async () => {
-    server.use(healthHandler({ ...up, status: 'DOWN', components: [{ name: 'database', status: 'DOWN' }] }, 503))
-    renderPage()
+    server.use(
+      healthHandler({ ...healthyResponse, status: 'DOWN', components: [{ name: 'database', status: 'DOWN' }] }, 503),
+    )
+    const { container } = renderWithProviders(<HealthPage />)
 
-    const overall = await screen.findByTestId('overall-status')
-    expect(overall).toHaveTextContent('Down')
+    await screen.findByText('Overall')
+    const overall = container.querySelector('p [data-status]')
     expect(overall).toHaveAttribute('data-status', 'DOWN')
+    expect(overall).toHaveTextContent('Down')
   })
 
   it('shows an alert when the backend is unreachable', async () => {
     server.use(http.get(`${API_ORIGIN}/api/v1/health`, () => HttpResponse.error()))
-    renderPage()
+    renderWithProviders(<HealthPage />)
 
     expect(await screen.findByRole('alert')).toHaveTextContent('The platform could not be reached.')
+  })
+
+  it('is fully translated in Arabic', async () => {
+    renderWithProviders(<HealthPage />, { locale: 'ar' })
+    expect(await screen.findByRole('heading', { level: 1, name: 'حالة المنصة' })).toBeInTheDocument()
+    expect(await screen.findByText('قاعدة البيانات')).toBeInTheDocument()
+  })
+
+  it('shows unknown components from a newer backend by their raw name', async () => {
+    server.use(healthHandler({ ...healthyResponse, components: [{ name: 'futureThing', status: 'UP' }] }))
+    renderWithProviders(<HealthPage />)
+    expect(await screen.findByText('futureThing')).toBeInTheDocument()
   })
 })

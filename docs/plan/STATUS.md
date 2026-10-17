@@ -24,6 +24,7 @@
 - [x] Release signing key (2026-10-15): `release` environment with `COSIGN_PRIVATE_KEY` / `COSIGN_PASSWORD`; `deploy/cosign.pub` committed
 - [x] First release run: `v0.1.0` signed and published (2026-10-15, after the cosign 3 fixes in PRs #9 and #10)
 - [x] First nightly run (2026-10-16) failed only on the lockfile re-scan: HIGH Jackson CVEs in `build-logic/gradle.lockfile` (build tooling, not shipped). Fixed in PR #11; the manual re-run passed on 2026-10-17
+- [x] Renovate GitHub App installed by the owner (2026-10-17, ADR-0014)
 - [ ] Dev environment deployed: **needs the VM** (carried into Phase 1a)
 - [x] Owner usability walkthrough (2026-10-15): UI OK; "layout very simple" carried into Phase 1a as a layout/visual-design epic
 - [x] NFRs confirmed as proposed by the owner (2026-10-15); Q3 answered: agent only, no deadline
@@ -51,8 +52,7 @@
    - variables `DEPLOY_DEV_ENABLED=true` and `DEV_URL`;
    - required reviewers on the `release` environment (not set; may need a paid GitHub plan on a private repository. Meanwhile only the owner can push `v*` tags);
    - branch protection on `master`.
-3. **Renovate:** install the GitHub App (ADR-0014).
-4. **For Phase 1a design (no rush):** brand assets (logo, colours, fonts) and 2–3 reference apps you like.
+3. **For Phase 1a design (no rush):** brand assets (logo, colours, fonts) and 2–3 reference apps you like.
 
 ## Assumptions
 - **A1 (resolved):** the product is `memo`. Package `com.memo`, Gradle group `com.memo`, application name `memo`, images `memo-backend` / `memo-web`. Only the repository keeps the name `memo-revamp`. The stored schema marker moved to `memo` with migration `system/V2`.

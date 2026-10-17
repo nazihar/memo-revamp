@@ -10,6 +10,9 @@ dependencies {
     implementation(libs.detekt.gradle.plugin)
     implementation(libs.cyclonedx.gradle.plugin)
     implementation(libs.spotbugs.gradle.plugin)
+    // The plugins pull Jackson in transitively; hold build tooling to the same patched versions as the app.
+    implementation(platform(libs.security.jackson2.bom))
+    implementation(platform(libs.security.jackson3.bom))
     // Exposes the `libs` catalog to precompiled script plugins.
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
 }

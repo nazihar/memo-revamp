@@ -2,13 +2,14 @@
 
 > Read at the start of every session; update at the end (see `AGENTS.md §0`). Keep this page short and current. Move history into the phase folder's `log.md`.
 
-**Last updated:** 2026-10-15 (UTC+06:00) by Claude (agent)
+**Last updated:** 2026-10-17 (UTC+06:00) by Claude (agent)
 
 ## Current position
 - **Phase:** 0 **exited 2026-10-15** (owner approval; `phase-0-foundations/retrospective.md`). **Next: Phase 1a planning**, starting with the overview.
 - **Carried into Phase 1a:** first dev deploy (waiting for the VM); app layout and visual design epic (from the UX walkthrough).
 - **Epics:** E01–E05 implemented. Plans, logs and test plans are in `docs/plan/phase-0-foundations/epic-0*/`.
-- **Branches:** everything is merged into `master` (PRs #1–#6); GitHub CI green; feature branches deleted.
+- **Branches:** everything is merged into `master` (PRs #1–#11); GitHub CI green; feature branches deleted.
+- **Release:** `v0.1.0` published with signed images (2026-10-15).
 - **Product name:** `memo` everywhere except the repository name `memo-revamp` (A1, PR #6).
 
 ## State
@@ -21,7 +22,9 @@
 - [x] GitHub CI green on PRs and `master`
 - [x] Product renamed to `memo` (package `com.memo`, images `memo-backend` / `memo-web`)
 - [x] Release signing key (2026-10-15): `release` environment with `COSIGN_PRIVATE_KEY` / `COSIGN_PASSWORD`; `deploy/cosign.pub` committed
-- [ ] First nightly run (scheduled 02:00 UTC) and first release run (tag `v*`)
+- [x] First release run: `v0.1.0` signed and published (2026-10-15, after the cosign 3 fixes in PRs #9 and #10)
+- [x] First nightly run (2026-10-16) failed only on the lockfile re-scan: HIGH Jackson CVEs in `build-logic/gradle.lockfile` (build tooling, not shipped). Fixed in PR #11; the manual re-run passed on 2026-10-17
+- [x] Renovate GitHub App installed by the owner (2026-10-17, ADR-0014)
 - [ ] Dev environment deployed: **needs the VM** (carried into Phase 1a)
 - [x] Owner usability walkthrough (2026-10-15): UI OK; "layout very simple" carried into Phase 1a as a layout/visual-design epic
 - [x] NFRs confirmed as proposed by the owner (2026-10-15); Q3 answered: agent only, no deadline
@@ -36,8 +39,7 @@
 
 ## Next step
 1. **Phase 1a planning:** write `docs/plan/phase-1a-minimum-core/overview.md` (AGENTS.md planning protocol). Its first epic is the app layout and visual design.
-2. Watch the first nightly run; cut the first release (`v0.1.0`) when the owner wants one.
-3. When the VM exists: provision it with Ansible, enable `deploy-dev`, run ZAP and Gatling against dev.
+2. When the VM exists: provision it with Ansible, enable `deploy-dev`, run ZAP and Gatling against dev.
 
 ## Waiting for human
 1. **VM for dev and staging:**
@@ -50,8 +52,7 @@
    - variables `DEPLOY_DEV_ENABLED=true` and `DEV_URL`;
    - required reviewers on the `release` environment (not set; may need a paid GitHub plan on a private repository. Meanwhile only the owner can push `v*` tags);
    - branch protection on `master`.
-3. **Renovate:** install the GitHub App (ADR-0014).
-4. **For Phase 1a design (no rush):** brand assets (logo, colours, fonts) and 2–3 reference apps you like.
+3. **For Phase 1a design (no rush):** brand assets (logo, colours, fonts) and 2–3 reference apps you like.
 
 ## Assumptions
 - **A1 (resolved):** the product is `memo`. Package `com.memo`, Gradle group `com.memo`, application name `memo`, images `memo-backend` / `memo-web`. Only the repository keeps the name `memo-revamp`. The stored schema marker moved to `memo` with migration `system/V2`.

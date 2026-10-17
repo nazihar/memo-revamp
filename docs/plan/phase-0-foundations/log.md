@@ -22,3 +22,10 @@ History moved out of `STATUS.md`, newest first.
   - ZAP and Gatling.
   - Blocked on the owner for push, the VM and secrets.
 - Phase exit pending: GitHub CI runs, dev deployment, UX walkthrough, NFR confirmation (see STATUS).
+
+## 2026-10-15
+- Product renamed to `memo` (PR #6). Phase 0 exited with the owner's approval (PR #7).
+- Release signing key added (PR #8). The first `v0.1.0` release runs failed on cosign 3 (transparency log, then digest parsing); fixed in PRs #9 and #10. `v0.1.0` published with signed images.
+
+## 2026-10-16/17
+- The first nightly failed only on the lockfile re-scan: new HIGH Jackson CVEs in `build-logic/gradle.lockfile`, pulled in by the Gradle plugins. The app was already on the patched versions. PR #11 applies the same security BOMs to build-logic; a manual nightly re-run passed.

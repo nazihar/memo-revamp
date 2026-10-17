@@ -15,7 +15,8 @@
   tasks:
     - name: Base packages
       ansible.builtin.apt:
-        name: [ca-certificates, curl, gnupg, ufw, unattended-upgrades, util-linux]
+        # acl: lets Ansible hand its temporary files to the unprivileged `memo` user (become_user tasks below).
+        name: [acl, ca-certificates, curl, gnupg, ufw, unattended-upgrades, util-linux]
         state: present
         update_cache: true
         cache_valid_time: 3600
@@ -103,11 +104,12 @@
     - name: Per-environment settings (project, port, demo tenant)
       ansible.builtin.lineinfile:
         path: "{{ memo_base }}/{{ item.0 }}/.env"
-        regexp: "^{{ item.1.key }}="
-        line: "{{ item.1.key }}={{ item.1.value }}"
-      loop: "{{ memo_envs | product(memo_env_settings | dict2items) | list }}"
+        regexp: "^{{ item.1 }}="
+        line: "{{ item.1 }}={{ memo_env_settings[item.1] }}"
+      # The loop is built from the keys alone: the values refer to `item`, which is undefined while the loop is evaluated.
+      loop: "{{ memo_envs | product(['COMPOSE_PROJECT_NAME', 'MEMO_WEB_PORT', 'MEMO_DEMO_SEED', 'MEMO_SPRING_PROFILES']) | list }}"
       loop_control:
-        label: "{{ item.0 }} {{ item.1.key }}"
+        label: "{{ item.0 }} {{ item.1 }}"
       vars:
         memo_env_settings:
           COMPOSE_PROJECT_NAME: "memo-{{ item.0 }}"
@@ -135,7 +137,9 @@
         dest: "{{ memo_base }}/edge/{{ item }}"
         owner: memo
         group: memo
-        mode: "0640"
+        # World-readable: Caddy runs with all capabilities dropped, so it cannot read a file owned by another uid. No
+        # secrets here (hosts and ACME email are in .env, which stays 0600).
+        mode: "0644"
       loop: [compose.yaml, Caddyfile]
 
     - name: Edge proxy settings

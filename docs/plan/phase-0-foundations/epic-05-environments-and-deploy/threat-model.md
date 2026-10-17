@@ -10,6 +10,7 @@
 | # | Threat | Mitigation | ASVS 5.0 | Test / evidence |
 |---|---|---|---|---|
 | S1 | A stolen CI deploy key is used to run arbitrary commands on the VM | Dedicated `memo` user without sudo; key restricted with `command="/opt/memo/bin/deploy.sh"` in `authorized_keys` (forced command); GitHub environment with approval for staging | V13.x | Ansible role + review |
+| S2 | A registry credential stored on the VM is stolen and used to read (or push) private images | No stored credential: each deploy passes the `deploy` job's short-lived token (`packages: read` only; pushing happens in a separate `images` job) on stdin; `deploy.sh` logs in with a throwaway `DOCKER_CONFIG` deleted when the run ends | V13.x, V14.x | `deploy-dev.yml` job permissions; review |
 | T1 | A wrong or unsigned image is deployed | Deploy by digest; in staging, `cosign verify` before deploy once the key exists | V15.1.x | `deploy.sh` checks |
 | T2 | Schema migration breaks the running version | Expand/contract; migration job before `up`; rollback to previous digests keeps the newer schema (N-1 compatible) | — | `deploy.sh` rollback test (simulated failure) |
 | I1 | Logs leak secrets or personal data | ECS JSON with ids only; Semgrep `memo-no-secrets-in-logs`; correlation id validated (no log injection) | V16.2.x, V16.4.x | `StructuredLoggingIT`, `CorrelationIdFilterTest` |

@@ -2,6 +2,9 @@
 # run's artefacts, push them to GHCR by digest and deploy over SSH with the forced-command key (deploy.sh rolls back on
 # failure). Dormant until the owner sets the repository variable DEPLOY_DEV_ENABLED=true and the `dev` environment
 # secrets DEPLOY_SSH_KEY, DEPLOY_HOST, DEPLOY_KNOWN_HOSTS (see ci/README.md and deploy/ansible).
+#
+# Two jobs so the token handed to the VM can only read packages: `images` pushes (packages: write), `deploy` passes
+# its own short-lived, read-only job token to the VM, which uses it for this pull only and stores nothing.
 name: deploy-dev
 
 on:
@@ -18,38 +21,54 @@ concurrency:
   group: deploy-dev
   cancel-in-progress: false
 
+env:
+  SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
+
 jobs:
-  deploy:
+  images:
     if: >-
       vars.DEPLOY_DEV_ENABLED == 'true' &&
       (github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success')
     runs-on: ubuntu-24.04
-    environment:
-      name: dev
-      url: ${{ vars.DEV_URL }}
     timeout-minutes: 20
     permissions:
       contents: read
       packages: write
-      actions: read # download artefacts of the triggering ci run
+      actions: read # download artefacts of the ci run
+    outputs:
+      backend: ${{ steps.images.outputs.backend }}
+      web: ${{ steps.images.outputs.web }}
     env:
-      SHA: ${{ github.event.workflow_run.head_sha || github.sha }}
       IMAGE_PREFIX: ghcr.io/${{ github.repository_owner }}/memo
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: ${{ env.SHA }}
+      # A manual run has no artefacts of its own: use the successful ci run of the same commit.
+      - name: Find the ci run that built this commit
+        id: ci
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CI_RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          id="$CI_RUN_ID"
+          if [ -z "$id" ]; then
+            id=$(gh run list -R "$GITHUB_REPOSITORY" --workflow ci.yml --commit "$SHA" --status success --limit 1 \
+              --json databaseId --jq '.[0].databaseId')
+          fi
+          [ -n "$id" ] || { echo "no successful ci run for $SHA" >&2; exit 1; }
+          echo "id=$id" >> "$GITHUB_OUTPUT"
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: backend-jar
           path: backend/build/libs
-          run-id: ${{ github.event.workflow_run.id || github.run_id }}
+          run-id: ${{ steps.ci.outputs.id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: web-dist
           path: web/dist
-          run-id: ${{ github.event.workflow_run.id || github.run_id }}
+          run-id: ${{ steps.ci.outputs.id }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and push dev images (by digest)
         id: images
@@ -61,18 +80,35 @@ jobs:
             docker push "$ref"
             echo "$app=$(docker inspect --format '{{index .RepoDigests 0}}' "$ref")" >> "$GITHUB_OUTPUT"
           done
-      - name: Deploy over SSH (forced command; manifests on stdin)
+
+  deploy:
+    needs: images
+    runs-on: ubuntu-24.04
+    environment:
+      name: dev
+      url: ${{ vars.DEV_URL }}
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      packages: read # the job token the VM pulls with
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ env.SHA }}
+      - name: Deploy over SSH (forced command; registry token line + manifests on stdin)
         env:
           DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
           DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
           DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
-          BACKEND: ${{ steps.images.outputs.backend }}
-          WEB: ${{ steps.images.outputs.web }}
+          REGISTRY_TOKEN: ${{ github.token }}
+          BACKEND: ${{ needs.images.outputs.backend }}
+          WEB: ${{ needs.images.outputs.web }}
         run: |
           install -m 700 -d ~/.ssh
           printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy && chmod 600 ~/.ssh/deploy
           printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
-          tar -czf - deploy | ssh -i ~/.ssh/deploy -o StrictHostKeyChecking=yes "memo@$DEPLOY_HOST" deploy dev "$BACKEND" "$WEB"
+          { printf '%s %s\n' "$GITHUB_ACTOR" "$REGISTRY_TOKEN"; tar -czf - deploy; } |
+            ssh -i ~/.ssh/deploy -o StrictHostKeyChecking=yes "memo@$DEPLOY_HOST" deploy dev "$BACKEND" "$WEB"
       - name: Smoke check through the public URL
         if: vars.DEV_URL != ''
         run: curl -fsS "${{ vars.DEV_URL }}/api/v1/health" | grep -q '"name":"database","status":"UP"'

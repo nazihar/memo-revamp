@@ -9,7 +9,8 @@
 # 4. wait for /api/v1/health through the web container's published port; on failure restore manifests + digests
 # 5. append to deployments.log (time, digests, CI run)
 #
-# Environment: MEMO_BASE (default /opt/memo), REQUIRE_DIGEST (default true), MEMO_CI_RUN (CI run URL, optional).
+# Environment: MEMO_BASE (default /opt/memo), REQUIRE_DIGEST (default true), MEMO_CI_RUN (CI run URL, optional),
+# REGISTRY_USER / REGISTRY_TOKEN (optional: registry login for this run only, set by ssh-entry.sh).
 set -euo pipefail
 ENV_NAME=${1:?env (dev|staging)}
 BACKEND=${2:?backend image@digest}
@@ -80,6 +81,15 @@ rollback() {
 }
 
 # --- 3/4. pull, migrate, start, verify ---
+# Private images: log in with the CI job's short-lived token into a throwaway Docker config, so no registry
+# credential is left on the VM after this run.
+if [ -n "${REGISTRY_TOKEN:-}" ]; then
+  DOCKER_CONFIG=$(mktemp -d)
+  export DOCKER_CONFIG
+  trap 'rm -rf "$DOCKER_CONFIG"' EXIT
+  printf '%s' "$REGISTRY_TOKEN" | docker login "${BACKEND%%/*}" -u "${REGISTRY_USER:-memo-deploy}" --password-stdin >/dev/null || rollback
+  unset REGISTRY_TOKEN
+fi
 if [ "${SKIP_PULL:-false}" != true ]; then dc pull --quiet backend web migrate || rollback; fi
 dc up -d --remove-orphans || rollback
 healthy || rollback

@@ -29,3 +29,10 @@ History moved out of `STATUS.md`, newest first.
 
 ## 2026-10-16/17
 - The first nightly failed only on the lockfile re-scan: new HIGH Jackson CVEs in `build-logic/gradle.lockfile`, pulled in by the Gradle plugins. The app was already on the patched versions. PR #11 applies the same security BOMs to build-logic; a manual nightly re-run passed.
+
+## 2026-10-17/18
+- Dev VM provisioned with Ansible (123.176.58.175, Ubuntu 24.04). The first real run exposed three playbook bugs, fixed in PR #13: a loop that referred to `item` before it existed, the missing `acl` package, and edge files Caddy could not read. Caddy got Let's Encrypt certificates for dev and staging.
+- GitHub `dev` environment and the `DEPLOY_DEV_ENABLED` / `DEV_URL` variables set by the agent with the owner's approval.
+- The first deploys failed pulling private images from GHCR (`unauthorized`). PR #14: the deploy job now passes its own short-lived token (`packages: read`) on stdin, the VM stores no registry credential, and `deploy-dev` is split into `images` and `deploy` jobs.
+- New HIGH libexpat CVEs then blocked `ci` on `master`. PR #15 bumped the distroless backend base and patched libexpat in the web image until `nginx-unprivileged` is rebuilt.
+- First successful dev deploy on 2026-10-18 (run 39099155693). `/api/v1/health` reports database and object storage UP; ONLYOFFICE, ClamAV and mail are not enabled yet.

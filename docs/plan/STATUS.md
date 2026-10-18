@@ -2,13 +2,14 @@
 
 > Read at the start of every session; update at the end (see `AGENTS.md §0`). Keep this page short and current. Move history into the phase folder's `log.md`.
 
-**Last updated:** 2026-10-17 (UTC+06:00) by Claude (agent)
+**Last updated:** 2026-10-18 (UTC+06:00) by Claude (agent)
 
 ## Current position
 - **Phase:** 0 **exited 2026-10-15** (owner approval; `phase-0-foundations/retrospective.md`). **Next: Phase 1a planning**, starting with the overview.
-- **Carried into Phase 1a:** first dev deploy (waiting for the VM); app layout and visual design epic (from the UX walkthrough).
+- **Carried into Phase 1a:** app layout and visual design epic (from the UX walkthrough).
+- **Dev environment live (2026-10-18):** https://dev.memo-revamp.naziharitsolution.com on the VM 123.176.58.175 (Ubuntu 24.04, 4 vCPU, 7.8 GB RAM, 100 GB disk). It deploys automatically after every green `ci` run on `master`.
 - **Epics:** E01–E05 implemented. Plans, logs and test plans are in `docs/plan/phase-0-foundations/epic-0*/`.
-- **Branches:** everything is merged into `master` (PRs #1–#11); GitHub CI green; feature branches deleted.
+- **Branches:** everything is merged into `master` (PRs #1–#15); GitHub CI green; feature branches deleted.
 - **Release:** `v0.1.0` published with signed images (2026-10-15).
 - **Product name:** `memo` everywhere except the repository name `memo-revamp` (A1, PR #6).
 
@@ -25,7 +26,11 @@
 - [x] First release run: `v0.1.0` signed and published (2026-10-15, after the cosign 3 fixes in PRs #9 and #10)
 - [x] First nightly run (2026-10-16) failed only on the lockfile re-scan: HIGH Jackson CVEs in `build-logic/gradle.lockfile` (build tooling, not shipped). Fixed in PR #11; the manual re-run passed on 2026-10-17
 - [x] Renovate GitHub App installed by the owner (2026-10-17, ADR-0014)
-- [ ] Dev environment deployed: **needs the VM** (carried into Phase 1a)
+- [x] Dev environment deployed (2026-10-18):
+  - VM provisioned with Ansible (playbook fixes in PR #13);
+  - private images pulled with the deploy job's short-lived token, no credential stored on the VM (PR #14);
+  - first deploy succeeded after the libexpat image fixes (PR #15).
+- [ ] ZAP baseline and Gatling against dev: they run in the next nightly now that `DEV_URL` is set
 - [x] Owner usability walkthrough (2026-10-15): UI OK; "layout very simple" carried into Phase 1a as a layout/visual-design epic
 - [x] NFRs confirmed as proposed by the owner (2026-10-15); Q3 answered: agent only, no deadline
 - [x] `retrospective.md` finalised and phase exit recorded in `overview.md §10` (2026-10-15)
@@ -39,17 +44,12 @@
 
 ## Next step
 1. **Phase 1a planning:** write `docs/plan/phase-1a-minimum-core/overview.md` (AGENTS.md planning protocol). Its first epic is the app layout and visual design.
-2. When the VM exists: provision it with Ansible, enable `deploy-dev`, run ZAP and Gatling against dev.
+2. Check the ZAP and Gatling results against dev from the next nightly.
+3. Remove the `apk upgrade libexpat` step from `web/Dockerfile` once `nginx-unprivileged` ships libexpat 2.9.0 or later.
 
 ## Waiting for human
-1. **VM for dev and staging:**
-   - host/IP and OS (Ubuntu LTS expected);
-   - an admin SSH account for Ansible;
-   - DNS names for dev and staging;
-   - TLS choice: ACME/Let's Encrypt or your own certificates.
+1. **VM memory:** 7.8 GB is enough for dev. Running staging, ONLYOFFICE and ClamAV as well needs 16 GB.
 2. **GitHub setup:**
-   - `dev` environment secrets: `DEPLOY_SSH_KEY`, `DEPLOY_HOST`, `DEPLOY_KNOWN_HOSTS`;
-   - variables `DEPLOY_DEV_ENABLED=true` and `DEV_URL`;
    - required reviewers on the `release` environment (not set; may need a paid GitHub plan on a private repository. Meanwhile only the owner can push `v*` tags);
    - branch protection on `master`.
 3. **For Phase 1a design (no rush):** brand assets (logo, colours, fonts) and 2–3 reference apps you like.

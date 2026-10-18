@@ -4,14 +4,18 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.stereotype.Component
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider
+import software.amazon.awssdk.core.checksums.RequestChecksumCalculation
+import software.amazon.awssdk.core.checksums.ResponseChecksumValidation
 import software.amazon.awssdk.core.sync.RequestBody
 import software.amazon.awssdk.http.urlconnection.UrlConnectionHttpClient
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.s3.S3Client
 import software.amazon.awssdk.services.s3.model.ObjectLockMode
 import java.net.URI
+import java.security.MessageDigest
 import java.time.Duration
 import java.time.Instant
+import java.util.Base64
 
 /**
  * Object storage settings (ADR-0005). Storage is disabled when the endpoint or credentials are missing. The `files` module
@@ -58,7 +62,12 @@ class RecordStore(
                         .connectionTimeout(TIMEOUT)
                         .socketTimeout(TIMEOUT)
                         .build(),
-                ).build()
+                )
+                // We send Content-MD5 ourselves (object-lock PUTs require it); no SDK checksum headers on top, which
+                // SeaweedFS rejects alongside it.
+                .requestChecksumCalculation(RequestChecksumCalculation.WHEN_REQUIRED)
+                .responseChecksumValidation(ResponseChecksumValidation.WHEN_REQUIRED)
+                .build()
         } else {
             null
         }
@@ -80,6 +89,7 @@ class RecordStore(
                     .bucket(properties.recordsBucket)
                     .key(key)
                     .contentType(contentType)
+                    .contentMD5(Base64.getEncoder().encodeToString(MessageDigest.getInstance("MD5").digest(body)))
                     .objectLockMode(ObjectLockMode.fromValue(mode.name))
                     .objectLockRetainUntilDate(retainUntil)
             },

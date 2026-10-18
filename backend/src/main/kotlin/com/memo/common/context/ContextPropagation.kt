@@ -23,10 +23,12 @@ class ContextSnapshot private constructor(
     private val mdc: Map<String, String>?,
 ) {
     fun <T> call(block: () -> T): T {
-        val withActor: () -> T = if (actor != null) ({ ActorContext.call(actor, block) }) else block
+        val boundActor = actor
+        val boundTenant = tenant
+        val withActor: () -> T = if (boundActor != null) ({ ActorContext.call(boundActor, block) }) else block
         val withScope: () -> T =
             when {
-                tenant != null -> ({ TenantContext.call(tenant, withActor) })
+                boundTenant != null -> ({ TenantContext.call(boundTenant, withActor) })
                 platform -> ({ PlatformScope.call(withActor) })
                 else -> withActor
             }

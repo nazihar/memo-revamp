@@ -47,13 +47,14 @@ class TenantTransactions(
     ): T =
         TenantContext.call(tenant) {
             val scope = TenantAwareTransactionManager.currentScope()
+            val boundTenant: UUID? = scope?.tenant?.value
             when {
-                scope == null -> template.execute { block() }
+                scope == null -> template.inTransaction(block)
 
-                scope.tenant == tenant -> block()
+                boundTenant == tenant.value -> block()
 
-                scope.tenant != null -> throw IllegalStateException(
-                    "Nested tenant transaction for a different tenant (${scope.tenant} → $tenant)",
+                boundTenant != null -> throw IllegalStateException(
+                    "Nested tenant transaction for a different tenant ($boundTenant → $tenant)",
                 )
 
                 else -> throw IllegalStateException("A tenant transaction cannot join a transaction started without a tenant")
@@ -90,7 +91,7 @@ class PlatformTransactions(
         PlatformScope.call {
             val scope = TenantAwareTransactionManager.currentScope()
             when {
-                scope == null -> template.execute { block() }
+                scope == null -> template.inTransaction(block)
                 scope.platform -> block()
                 else -> throw IllegalStateException("A platform transaction cannot join a tenant or tenant-less transaction")
             }
@@ -118,3 +119,10 @@ class TenantDsl(
         return bound
     }
 }
+
+/** The template's result may be null only when [block] returns null; boxing keeps that distinction explicit for callers. */
+private fun <T> TransactionTemplate.inTransaction(block: () -> T): T = requireNotNull(execute { Result(block()) }).value
+
+private class Result<T>(
+    val value: T,
+)

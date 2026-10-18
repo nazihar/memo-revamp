@@ -89,6 +89,9 @@ class RecordStore(
                     .bucket(properties.recordsBucket)
                     .key(key)
                     .contentType(contentType)
+                    // Transfer checksum required on object-lock PUTs, not a security control: integrity of the records
+                    // rests on the SHA-256 audit chain (ADR-0019). SeaweedFS rejects the SDK's default checksum here.
+                    // nosemgrep: kotlin.lang.security.use-of-md5.use-of-md5
                     .contentMD5(Base64.getEncoder().encodeToString(MessageDigest.getInstance("MD5").digest(body)))
                     .objectLockMode(ObjectLockMode.fromValue(mode.name))
                     .objectLockRetainUntilDate(retainUntil)

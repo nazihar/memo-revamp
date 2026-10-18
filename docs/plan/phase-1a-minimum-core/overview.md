@@ -2,7 +2,7 @@
 
 > Level-1 plan (see `AGENTS.md §5`). It splits the phase into epics, fixes their order and dependencies, lists the phase-level research and ADRs, and maps the exit criteria to epics. Each epic gets its own detailed plan (`epic-<NN>-<slug>/`: research, ADRs, design, threat model, tasks, test plan) just before it starts.
 >
-> **Status:** waiting for owner approval (see §10). Written 2026-10-18.
+> **Status:** approved 2026-10-18 (see §10). Written 2026-10-18.
 
 ---
 
@@ -78,7 +78,7 @@ Carried from the Phase 0 UX walkthrough ("layout very simple").
   - the standard page types: list (filter, sort, cursor pagination, bulk select), detail, form (create/edit, validation, dirty-state guard), settings page, empty, loading and error states;
   - the unauthenticated pages: login, MFA challenge, MFA enrolment, password reset, invitation acceptance;
   - the admin area layout that E04 and E07 fill.
-- **Visual direction:** colour, typography (with scripts for every language we ship; see Q8), density, iconography. Design tokens v2 in light and dark, contrast checked to WCAG 2.2 AA.
+- **Visual direction:** colour, typography (Latin and Arabic script coverage; Q8), density, iconography. Design tokens v2 in light and dark, contrast checked to WCAG 2.2 AA.
 - **Component kit** on shadcn/ui and Radix:
   - TanStack Table list template with cursor pagination;
   - TanStack Form form template with server-side Problem Details mapped to fields;
@@ -111,7 +111,7 @@ Backend foundations that every later epic writes through.
 - **Spring Boot 4.2:** decide whether to move before E03 (expected November 2026; Phase 0 retro).
 
 ### E03 — Identity, sessions and step-up
-- **Tenant resolution and account model** by ADR (Q2, Q3). Recommendation: one account per tenant; tenant resolved from the host name, with a single-tenant mode for dedicated and on-prem installs.
+- **Tenant resolution and account model** recorded by ADR (Q2, Q3 answered): one account per tenant; tenant resolved from the host name, with a single-tenant mode for dedicated and on-prem installs.
 - **Accounts:**
   - local accounts with lifecycle states (invited, active, locked, deactivated);
   - invitation by a tenant admin, with an expiring single-use link;
@@ -197,7 +197,7 @@ Backend foundations that every later epic writes through.
   - language defaults;
   - the audit viewer and export from E02.
 - **Terminology overrides:** tenant-level term overrides (for example "Memo" vs "Note" vs "Proposal") applied to UI messages and emails, by ADR (R15).
-- **Language packs:** the packs for 1a (Q8), loaded per route to keep the bundle budget.
+- **Language packs:** English only for 1a (Q8); Arabic stays as the RTL proof. Packs load per route to keep the bundle budget.
 
 ---
 
@@ -338,4 +338,16 @@ Numbers are assigned when written, starting at ADR-0017. Each one uses MADR.
 
 | Item | By | Date | Notes |
 |---|---|---|---|
-| Phase 1a overview | — | — | Waiting for owner approval and answers to Q1–Q8 |
+| Phase 1a overview | Product owner (aradnazihar) | 2026-10-18 | Approved. The owner **kept the per-epic gate delegation** from Phase 0: the agent writes each epic plan in full, then implements it without waiting, stopping only for decisions that need the owner. E01 wireframes and visual direction still go to the owner for approval. |
+
+### Answers to open questions (2026-10-18)
+| Q | Answer |
+|---|---|
+| Q1 | Approved; per-epic gate delegation kept (E01 wireframes and visual direction still need owner approval). |
+| Q2 | **One host name per tenant** (option A, for example `bank.memo.app`), plus a single-tenant mode for dedicated and on-prem installs. Email-first discovery can be added later without changing the data model. Dev needs a wildcard DNS record and certificate for `*.dev.memo-revamp.naziharitsolution.com` (owner action before E03's e2e on dev). |
+| Q3 | **One account per tenant.** The same email in two tenants is two separate accounts; no tenant switcher. |
+| Q4 | No brand assets yet: E01 proposes **two neutral visual directions** for the owner to choose from. |
+| Q5 | **MFA required by default**; a tenant admin may relax it only for non-admin users. Admins always need MFA. |
+| Q6 | **Separate admin host name**, separate operator accounts with mandatory MFA, no access to tenant data. The owner is the only operator in 1a. |
+| Q7 | **Proceed on the current 7.8 GB VM.** ONLYOFFICE stays off in dev during 1a; the agent measures memory once ClamAV runs and reports if it gets tight. |
+| Q8 | **English only** for 1a. Arabic stays as the RTL proof from Phase 0; no new language pack. Fonts cover Latin and Arabic. |

@@ -5,7 +5,7 @@
 **Last updated:** 2026-10-18 (UTC+06:00) by Claude (agent)
 
 ## Current position
-- **Phase:** 1a **planning**. The overview (`phase-1a-minimum-core/overview.md`, seven epics) is written and waits for owner approval and answers to Q1–Q8. Phase 0 exited 2026-10-15 (`phase-0-foundations/retrospective.md`).
+- **Phase:** 1a. Overview **approved 2026-10-18** with Q1–Q8 answered (`phase-1a-minimum-core/overview.md §10`); per-epic gate delegation kept. Next: plan E01 and E02. Phase 0 exited 2026-10-15.
 - **Carried into Phase 1a:** app layout and visual design, now epic E01 of the overview.
 - **Dev environment live (2026-10-18):** https://dev.memo-revamp.naziharitsolution.com on the VM 123.176.58.175 (Ubuntu 24.04, 4 vCPU, 7.8 GB RAM, 100 GB disk). It deploys automatically after every green `ci` run on `master`.
 - **Epics:** E01–E05 implemented. Plans, logs and test plans are in `docs/plan/phase-0-foundations/epic-0*/`.
@@ -43,7 +43,7 @@
 - **DAST/performance:** ZAP baseline 0 FAIL / 0 WARN; Gatling p95 48 ms.
 
 ## Next step
-1. **Phase 1a:** after approval, plan E01 (app frame and visual design) and E02 (platform kernel) in parallel. E02 is backend-only and fills the waits for the owner review of the E01 wireframes.
+1. **Phase 1a:** plan E01 (app frame and visual design) and E02 (platform kernel) in parallel. E02 is backend-only and fills the waits for the owner review of the E01 wireframes.
 2. Check the ZAP and Gatling results against dev from the next nightly.
 3. Remove the `apk upgrade libexpat` step from `web/Dockerfile` once `nginx-unprivileged` ships libexpat 2.9.0 or later.
 
@@ -52,7 +52,7 @@
 2. **GitHub setup:**
    - required reviewers on the `release` environment (not set; may need a paid GitHub plan on a private repository. Meanwhile only the owner can push `v*` tags);
    - branch protection on `master`.
-3. **Phase 1a overview:** approval and answers to Q1–Q8 (`phase-1a-minimum-core/overview.md §9`). Q4 includes the brand assets (logo, colours, fonts) and 2–3 reference apps still open from Phase 0.
+3. **Wildcard DNS for dev (Q2):** a `*.dev.memo-revamp.naziharitsolution.com` record pointing at the dev VM, needed before E03 runs per-tenant hosts on dev.
 
 ## Assumptions
 - **A1 (resolved):** the product is `memo`. Package `com.memo`, Gradle group `com.memo`, application name `memo`, images `memo-backend` / `memo-web`. Only the repository keeps the name `memo-revamp`. The stored schema marker moved to `memo` with migration `system/V2`.

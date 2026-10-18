@@ -5,6 +5,7 @@ import com.memo.common.id.IdGenerator
 import com.memo.common.tenant.TenantDsl
 import com.memo.jooq.tables.records.TenancySettingRecord
 import com.memo.jooq.tables.references.TENANCY_SETTING
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import java.time.Clock
 import java.time.OffsetDateTime
@@ -25,6 +26,7 @@ class TenantSettings(
     private val tenantDsl: TenantDsl,
     private val ids: IdGenerator,
     private val clock: Clock,
+    private val events: ApplicationEventPublisher,
 ) {
     fun get(key: String): TenantSetting? =
         tenantDsl
@@ -66,6 +68,7 @@ class TenantSettings(
             .returning()
             .fetchSingle()
             .toSetting()
+            .also { changed(key) }
     }
 
     /** Guarded update (AGENTS.md §4): applies only if the stored version is [expectedVersion]. */
@@ -85,6 +88,7 @@ class TenantSettings(
             .returning()
             .fetchOne()
             ?.toSetting()
+            ?.also { changed(key) }
             ?: throw ConcurrentModificationException("tenant setting '$key'", expectedVersion)
 
     fun delete(key: String): Boolean =
@@ -92,7 +96,10 @@ class TenantSettings(
             .current()
             .deleteFrom(TENANCY_SETTING)
             .where(TENANCY_SETTING.KEY.eq(key))
-            .execute() > 0
+            .execute()
+            .let { deleted -> (deleted > 0).also { if (it) changed(key) } }
+
+    private fun changed(key: String) = events.publishEvent(TenantSettingChanged(tenantDsl.tenant().value, key))
 
     private fun now() = OffsetDateTime.now(clock).withOffsetSameInstant(ZoneOffset.UTC)
 

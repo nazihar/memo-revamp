@@ -18,7 +18,13 @@ class RlsMetaTest : IntegrationTest() {
     private val platformTables =
         mapOf(
             "system_info" to "single platform marker row (E01)",
+            "system_scheduled_task" to "db-scheduler executions; task data carries ids only (ADR-0018)",
+            "event_publication" to "Spring Modulith outbox; events carry ids only (ADR-0017)",
+            "event_publication_archive" to "completed outbox entries; ids only (ADR-0017)",
         )
+
+    /** Tables whose names a framework fixes, exempt from the module-prefix rule. */
+    private val frameworkTables = setOf("event_publication", "event_publication_archive")
 
     /** SECURITY DEFINER functions allowed (none). */
     private val allowedSecurityDefiner = emptySet<String>()
@@ -198,7 +204,7 @@ class RlsMetaTest : IntegrationTest() {
                   and c.relname not like 'flyway_schema_history%'
                 """,
             ) { it.getString(1) }
-        assertThat(objects.filter { name -> modules.none { name.startsWith("${it}_") } })
+        assertThat(objects.filter { name -> name !in frameworkTables && modules.none { name.startsWith("${it}_") } })
             .describedAs("tables or views not prefixed with a module identifier ($modules)")
             .isEmpty()
     }

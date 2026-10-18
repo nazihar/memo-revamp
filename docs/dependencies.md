@@ -21,6 +21,9 @@ Column meanings:
 | AWS SDK for Java v2 (s3, url-connection-client) | 2.55.16 | Apache-2.0 | runtime | S3 API client (locked decision) | released daily | — (locked) |
 | JSpecify | Boot-managed | Apache-2.0 | runtime | Nullness annotations | active | — |
 | Spring Modulith runtime | 2.1.1 | Apache-2.0 | runtime | Per-module Flyway migrations in dependency order (ADR-0007) | 2026; active | Single Flyway location (no module ownership) |
+| Spring Modulith events JDBC (`spring-modulith-starter-jdbc`) | 2.1.1 | Apache-2.0 | runtime | Event publication registry: the transactional outbox for side effects (ADR-0019) | 2026; active | Hand-written outbox table (more code, same guarantees) |
+| db-scheduler (`db-scheduler-spring-boot-4-starter`) | 16.12.0 | Apache-2.0 | runtime | PostgreSQL-backed jobs and timers, single execution across nodes (ADR-0018) | 2026-05-29; active (maintainer plus contributors, 1.6k stars) | Quartz JDBC (heavier, more tables), ShedLock + @Scheduled (no persistent one-off tasks) |
+| Caffeine | 3.2.4 (Boot-managed) | Apache-2.0 | runtime | In-process caches invalidated through LISTEN/NOTIFY (ADR-0020) | 2026-10 (3.3.1 latest); active | Spring's ConcurrentMap cache (no TTL or size bound) |
 | FasterXML java-uuid-generator (JUG) | 5.2.0 | Apache-2.0 | runtime | UUIDv7 ids (`TimeBasedEpochGenerator`, ADR-0008) | 2025-12; FasterXML, active | uuid-creator (single maintainer); hand-written |
 | jOOQ codegen + meta | 3.21.7 (Boot-managed) | Apache-2.0 | dev-only | Generates committed jOOQ sources in `JooqCodegenTest` (ADR-0007) | active | jOOQ Gradle plugin at compile time |
 | jqwik | 1.10.2 | EPL-2.0 | dev-only | Property-based and stateful tests (ADR-0008) | 2026-10-10; one main maintainer (accepted, dev-only) | Kotest property |

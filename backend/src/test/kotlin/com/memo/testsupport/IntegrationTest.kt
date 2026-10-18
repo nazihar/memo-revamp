@@ -23,6 +23,8 @@ abstract class IntegrationTest {
         @DynamicPropertySource
         fun databaseProperties(registry: DynamicPropertyRegistry) {
             TestDatabase.properties().forEach { (key, value) -> registry.add(key) { value } }
+            // Jobs scheduled "now" run within a poll; keep that short so job tests wait on conditions, not intervals.
+            registry.add("db-scheduler.polling-interval") { "500ms" }
         }
     }
 }

@@ -46,7 +46,8 @@ class JooqCodegenTest : IntegrationTest() {
                             Database()
                                 .withName("org.jooq.meta.postgres.PostgresDatabase")
                                 .withInputSchema("memo")
-                                .withExcludes("flyway_schema_history.*"),
+                                // Framework-owned tables (Flyway, Spring Modulith outbox, db-scheduler) are never queried through jOOQ.
+                                .withExcludes("flyway_schema_history.* | event_publication.* | system_scheduled_task"),
                         ).withGenerate(
                             Generate()
                                 .withGeneratedAnnotation(false)

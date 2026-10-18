@@ -1,6 +1,7 @@
 package com.memo.tenancy
 
 import com.memo.common.id.IdGenerator
+import com.memo.common.jobs.KnownTenants
 import com.memo.common.tenant.PlatformTransactions
 import com.memo.common.tenant.TenantDsl
 import com.memo.common.tenant.TenantId
@@ -8,6 +9,7 @@ import com.memo.common.tenant.TenantTransactions
 import com.memo.jooq.tables.records.TenancyTenantRecord
 import com.memo.jooq.tables.references.TENANCY_TENANT
 import org.jooq.DSLContext
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import java.time.Clock
 import java.time.OffsetDateTime
@@ -36,7 +38,8 @@ class TenantRegistry(
     private val tenantDsl: TenantDsl,
     private val ids: IdGenerator,
     private val clock: Clock,
-) {
+    private val events: ApplicationEventPublisher,
+) : KnownTenants {
     /** Creates a new tenant with a fresh UUIDv7. */
     fun create(
         slug: String,
@@ -50,18 +53,21 @@ class TenantRegistry(
         name: String,
     ): Tenant =
         transactions.inTenant(id) {
-            val dsl = tenantDsl.current()
-            dsl
-                .insertInto(TENANCY_TENANT)
-                .set(TENANCY_TENANT.ID, id.value)
-                .set(TENANCY_TENANT.SLUG, slug)
-                .set(TENANCY_TENANT.NAME, name)
-                .set(TENANCY_TENANT.STATUS, TenantStatus.ACTIVE.name)
-                .set(TENANCY_TENANT.CREATED_AT, OffsetDateTime.now(clock).withOffsetSameInstant(ZoneOffset.UTC))
-                .onConflict(TENANCY_TENANT.ID)
-                .doNothing()
-                .execute()
-            requireNotNull(current()) { "tenant $id not visible after insert" }
+            val inserted =
+                tenantDsl
+                    .current()
+                    .insertInto(TENANCY_TENANT)
+                    .set(TENANCY_TENANT.ID, id.value)
+                    .set(TENANCY_TENANT.SLUG, slug)
+                    .set(TENANCY_TENANT.NAME, name)
+                    .set(TENANCY_TENANT.STATUS, TenantStatus.ACTIVE.name)
+                    .set(TENANCY_TENANT.CREATED_AT, OffsetDateTime.now(clock).withOffsetSameInstant(ZoneOffset.UTC))
+                    .onConflict(TENANCY_TENANT.ID)
+                    .doNothing()
+                    .execute()
+            val tenant = requireNotNull(current()) { "tenant $id not visible after insert" }
+            if (inserted == 1) events.publishEvent(TenantCreated(id.value))
+            tenant
         }
 
     /**
@@ -77,6 +83,10 @@ class TenantRegistry(
                 .orderBy(TENANCY_TENANT.ID)
                 .fetch { TenantId(it.value1()!!) }
         }
+
+    /** Whether [tenant] exists (any status); used by the job helpers to drop tasks for unknown tenants. */
+    override fun exists(tenant: TenantId): Boolean =
+        platformTransactions.read { dsl.fetchExists(TENANCY_TENANT, TENANCY_TENANT.ID.eq(tenant.value)) }
 
     /** The tenant of the current tenant transaction. */
     fun current(): Tenant? =

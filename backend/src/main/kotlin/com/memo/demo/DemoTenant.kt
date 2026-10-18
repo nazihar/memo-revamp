@@ -1,5 +1,6 @@
 package com.memo.demo
 
+import com.memo.common.context.ActorContext
 import com.memo.common.tenant.TenantId
 import com.memo.common.tenant.TenantTransactions
 import com.memo.tenancy.TenantRegistry
@@ -43,10 +44,12 @@ class DemoTenantSeeder(
 
     fun seed() {
         check(!environment.acceptsProfiles(Profiles.of("prod"))) { "The demo tenant must never be seeded in production" }
-        registry.ensure(DemoTenant.ID, DemoTenant.SLUG, DemoTenant.NAME)
-        transactions.inTenant(DemoTenant.ID) {
-            DemoTenant.SETTINGS.forEach { (key, value) ->
-                if (settings.get(key)?.value != value) settings.put(key, value)
+        ActorContext.asSystem("demo-seeder") {
+            registry.ensure(DemoTenant.ID, DemoTenant.SLUG, DemoTenant.NAME)
+            transactions.inTenant(DemoTenant.ID) {
+                DemoTenant.SETTINGS.forEach { (key, value) ->
+                    if (settings.get(key)?.value != value) settings.put(key, value)
+                }
             }
         }
         log.info("Demo tenant '{}' seeded", DemoTenant.SLUG)

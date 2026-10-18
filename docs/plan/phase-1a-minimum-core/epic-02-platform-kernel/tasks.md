@@ -4,7 +4,7 @@ Vertical slices for a backend-only epic: each one ends with working, tested beha
 
 | # | Task | Size | Depends |
 |---|---|---|---|
-| T1 | **Tenant and actor scope + transaction hook:** `TenantContext`, `ActorContext`, `TenantAwareTransactionManager`, `TenantTransactions` on top of them, `TenantDsl` check, `ContextTaskDecorator`, `TenantContextFilter` (actor + client only); ArchUnit/source-scan updates | M | — |
+| T1 | **Tenant and actor scope + transaction hook:** `TenantContext`, `ActorContext`, `TenantAwareTransactionManager`, `TenantTransactions` on top of them, `TenantDsl` check, `ContextTaskDecorator`, `ActorContextFilter` (actor + client only); ArchUnit/source-scan updates | M | — |
 | T2 | **Platform scope:** `PlatformTransactions`, `tenancy/V2` `platform_read` policy, `TenantRegistry.listActive()` for platform jobs; meta-test rule for `app.scope` | S | T1 |
 | T3 | **db-scheduler:** Boot 4 starter, `system_scheduled_task` migration, Jackson 3 serializer, `TenantTask` / `PlatformTask` helpers, failure policy; two-instance test | M | T1, T2 |
 | T4 | **Outbox:** `spring-modulith-starter-jdbc`, outbox migration, `TenantScopedEvent` / `PlatformEvent`, `TenantEvents.handle`, resubmission and archive-cleanup jobs; `TenantCreated` and `TenantSettingChanged` events; listener rules | M | T1, T3 |

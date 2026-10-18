@@ -92,4 +92,49 @@ class ArchitectureRulesTest {
         assertThat(offenders).describedAs("session-level SET is forbidden; use set_config(..., true) (ADR-0006)").isEmpty()
         assertThat(Files.exists(roots.first())).isTrue()
     }
+
+    private fun mainSources() =
+        repoRoot
+            .resolve("backend/src/main")
+            .walk()
+            .filter { it.isRegularFile() && it.extension in setOf("kt", "java") }
+            .filterNot { it.toString().replace('\\', '/').contains("/src/main/jooq/") }
+            .toList()
+
+    private fun filesContaining(pattern: Regex): Set<String> =
+        mainSources().filter { pattern.containsMatchIn(it.readText()) }.map { it.fileName.toString() }.toSet()
+
+    @Test
+    fun `only the transaction manager puts tenant or platform scope on a connection`() {
+        assertThat(filesContaining(Regex("""set_config""")))
+            .describedAs("set_config belongs to TenantAwareTransactionManager only (ADR-0017)")
+            .containsOnly("TenantAwareTransactionManager.kt")
+    }
+
+    @Test
+    fun `platform scope is entered only through PlatformTransactions`() {
+        assertThat(filesContaining(Regex("""PlatformScope\.call""")))
+            .describedAs("platform scope: PlatformTransactions, and ContextSnapshot to carry it across threads (ADR-0017)")
+            .containsOnly("TenantTransactions.kt", "ContextPropagation.kt")
+    }
+
+    @Test
+    fun `no coroutines on the backend`() {
+        noClasses()
+            .should()
+            .dependOnClassesThat()
+            .resideInAPackage("kotlinx.coroutines..")
+            .because("tenant context is not propagated into coroutines (ADR-0017)")
+            .check(classes)
+    }
+
+    @Test
+    fun `all scheduling goes through db-scheduler`() {
+        noClasses()
+            .should()
+            .dependOnClassesThat()
+            .haveFullyQualifiedName("org.springframework.scheduling.annotation.Scheduled")
+            .because("@Scheduled runs on every node and carries no tenant (ADR-0018)")
+            .check(classes)
+    }
 }

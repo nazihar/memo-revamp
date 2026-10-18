@@ -8,7 +8,7 @@ E02 is backend-only and ships **no REST endpoint**. Its consumers in this epic a
 
 ```mermaid
 flowchart LR
-  REQ[HTTP request] -->|E03: session or host| F[TenantContextFilter]
+  REQ[HTTP request] -->|E03: session or host| F[ActorContextFilter]
   F -->|ScopedValue.where| SVC["@Transactional service"]
   JOB[db-scheduler execution] -->|payload.tenantId| TT[TenantTask helper]
   EVT[Async event listener] -->|event.tenantId| TE[tenantEvents.handle]
@@ -29,7 +29,7 @@ flowchart LR
 | `TenantDsl` | existing | Throws unless the current transaction is bound to the scoped tenant |
 | `TenantEvents` | new | `handle(event: TenantScopedEvent) { }` binds scope + actor `System("event:<listener>")` and opens a transaction |
 | `ContextTaskDecorator` | `TaskDecorator` bean | Captures tenant, actor and MDC; re-binds them in the worker |
-| `TenantContextFilter` | servlet filter (order after correlation id) | E02: binds `ActorContext(Anonymous, ClientInfo)` only; **E03 adds tenant resolution** |
+| `ActorContextFilter` | servlet filter (order after correlation id) | E02: binds `ActorContext(Anonymous, ClientInfo)` only; **E03 adds tenant resolution** |
 
 Nesting rules:
 

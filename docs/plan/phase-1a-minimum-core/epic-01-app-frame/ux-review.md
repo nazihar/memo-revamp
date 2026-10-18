@@ -17,4 +17,4 @@ Shared in both: 44 px minimum targets, text + icon status badges (never colour a
 
 Agent recommendation: **A for the working screens, with B's type size and control height in director mode** (Phase 5), which reuses the same tokens at a larger scale.
 
-**Decision:** waiting for the owner.
+**Decision (owner, 2026-10-18): Direction A (Ledger)**, "fine for now; we'll improve that later if we need". E01 builds the frame, tokens and page templates in Direction A. Director mode (Phase 5) revisits type size and density.

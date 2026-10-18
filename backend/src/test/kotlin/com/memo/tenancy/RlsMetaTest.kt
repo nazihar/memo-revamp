@@ -202,4 +202,33 @@ class RlsMetaTest : IntegrationTest() {
             .describedAs("tables or views not prefixed with a module identifier ($modules)")
             .isEmpty()
     }
+
+    @Test
+    fun `platform scope is accepted only by platform policies`() {
+        val misuse =
+            query(
+                """
+                select c.relname, p.polname from pg_policy p join pg_class c on c.oid = p.polrelid
+                join pg_namespace n on n.oid = c.relnamespace
+                where n.nspname = 'memo'
+                  and (coalesce(pg_get_expr(p.polqual, p.polrelid), '') like '%app.scope%'
+                       or coalesce(pg_get_expr(p.polwithcheck, p.polrelid), '') like '%app.scope%')
+                  and p.polname not like 'platform\_%'
+                """,
+            ) { "${it.getString(1)}.${it.getString(2)}" }
+        assertThat(misuse).describedAs("policies accepting app.scope must be named platform_* (ADR-0017)").isEmpty()
+    }
+
+    @Test
+    fun `the registry accepts platform scope for reading only`() {
+        val platformPolicies =
+            query(
+                """
+                select c.relname, p.polcmd from pg_policy p join pg_class c on c.oid = p.polrelid
+                join pg_namespace n on n.oid = c.relnamespace
+                where n.nspname = 'memo' and p.polname = 'platform_read'
+                """,
+            ) { it.getString(1) to it.getString(2) }
+        assertThat(platformPolicies).containsExactly("tenancy_tenant" to "r")
+    }
 }

@@ -1,11 +1,13 @@
 package com.memo.tenancy
 
 import com.memo.common.id.IdGenerator
+import com.memo.common.tenant.PlatformTransactions
 import com.memo.common.tenant.TenantDsl
 import com.memo.common.tenant.TenantId
 import com.memo.common.tenant.TenantTransactions
 import com.memo.jooq.tables.records.TenancyTenantRecord
 import com.memo.jooq.tables.references.TENANCY_TENANT
+import org.jooq.DSLContext
 import org.springframework.stereotype.Service
 import java.time.Clock
 import java.time.OffsetDateTime
@@ -24,11 +26,13 @@ data class Tenant(
 /**
  * Tenant registry. A tenant row is only visible inside that tenant's own context (RLS `tenant_self`), and is created inside
  * the new tenant's context, so no code path can create or read rows for a tenant it is not scoped to (ADR-0006).
- * Cross-tenant listing is a platform operation for Phase 1a (separate audited path).
+ * Platform jobs list tenant ids through [listActiveIds] (platform scope, ADR-0017).
  */
 @Service
 class TenantRegistry(
     private val transactions: TenantTransactions,
+    private val platformTransactions: PlatformTransactions,
+    private val dsl: DSLContext,
     private val tenantDsl: TenantDsl,
     private val ids: IdGenerator,
     private val clock: Clock,
@@ -58,6 +62,20 @@ class TenantRegistry(
                 .doNothing()
                 .execute()
             requireNotNull(current()) { "tenant $id not visible after insert" }
+        }
+
+    /**
+     * Ids of all active tenants, for platform jobs that fan out per tenant (ADR-0017). Runs in platform scope, which can
+     * read the registry and nothing else.
+     */
+    fun listActiveIds(): List<TenantId> =
+        platformTransactions.read {
+            dsl
+                .select(TENANCY_TENANT.ID)
+                .from(TENANCY_TENANT)
+                .where(TENANCY_TENANT.STATUS.eq(TenantStatus.ACTIVE.name))
+                .orderBy(TENANCY_TENANT.ID)
+                .fetch { TenantId(it.value1()!!) }
         }
 
     /** The tenant of the current tenant transaction. */

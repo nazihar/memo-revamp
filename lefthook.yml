@@ -11,7 +11,8 @@ pre-commit:
     - name: web-lint
       root: web/
       glob: '*.{ts,tsx}'
-      run: pnpm exec eslint --max-warnings 0 {staged_files}
+      # Generated files (routeTree.gen.ts) are ignored by the ESLint config; do not count that as a warning.
+      run: pnpm exec eslint --max-warnings 0 --no-warn-ignored {staged_files}
 
     - name: kotlin-lint
       glob: '*.{kt,kts}'

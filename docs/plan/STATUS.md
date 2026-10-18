@@ -5,10 +5,10 @@
 **Last updated:** 2026-10-18 (UTC+06:00) by Claude (agent)
 
 ## Current position
-- **Phase:** 1a (overview approved 2026-10-18, gate delegation kept). **E02 platform kernel implemented** on `feat/1a-e02-platform-kernel` (PR to follow). **E01:** owner chose visual Direction A; frame build planned next.
+- **Phase:** 1a (overview approved 2026-10-18, gate delegation kept). **E02 platform kernel merged** (PR #18) and deployed to dev. **E01 app frame** (Direction A) implemented on `feat/1a-e01-app-frame` (PR #19).
 - **Dev environment live (2026-10-18):** https://dev.memo-revamp.naziharitsolution.com on the VM 123.176.58.175 (Ubuntu 24.04, 4 vCPU, 7.8 GB RAM, 100 GB disk). It deploys automatically after every green `ci` run on `master`.
 - **Phase 0 epics:** E01–E05 done (`docs/plan/phase-0-foundations/`).
-- **Branches:** `master` holds PRs #1–#17; E02 work on `feat/1a-e02-platform-kernel`.
+- **Branches:** `master` holds PRs #1–#18; E01 on `feat/1a-e01-app-frame`.
 - **Release:** `v0.1.0` published with signed images (2026-10-15).
 - **Product name:** `memo` everywhere except the repository name `memo-revamp` (A1, PR #6).
 
@@ -43,11 +43,12 @@
 - **DAST/performance:** ZAP baseline 0 FAIL / 0 WARN; Gatling p95 48 ms.
 
 ## Next step
-1. **Phase 1a:** open the E02 PR and merge when CI is green (dev deploy then recreates SeaweedFS for the new identities). Then plan and build E01 (frame in Direction A), then E03 (identity).
+1. **Phase 1a:** merge the E01 PR when CI is green; then plan and build **E03 identity and sessions** (backend first, screens on the E01 templates).
 2. Check the ZAP and Gatling results against dev from the next nightly.
 3. Remove the `apk upgrade libexpat` step from `web/Dockerfile` once `nginx-unprivileged` ships libexpat 2.9.0 or later.
 
 ## Waiting for human
+- **E01 manual accessibility pass (no rush):** a short keyboard + screen-reader (NVDA or VoiceOver) walk through the patterns gallery, run locally with `pnpm dev` at `/patterns` (the gallery is left out of production images, so it is not on the dev server). Automated axe, keyboard and CSP checks pass.
 1. **VM memory:** 7.8 GB is enough for dev. Running staging, ONLYOFFICE and ClamAV as well needs 16 GB.
 2. **GitHub setup:**
    - required reviewers on the `release` environment (not set; may need a paid GitHub plan on a private repository. Meanwhile only the owner can push `v*` tags);

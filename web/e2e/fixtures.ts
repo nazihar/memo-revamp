@@ -22,7 +22,10 @@ interface Fixtures {
 async function assertNoA11yViolations(page: Page): Promise<void> {
   // Let enter/exit animations settle: axe measures contrast on what is rendered, and a half-faded menu reports
   // false contrast failures (observed in CI).
-  await page.waitForFunction(() => document.getAnimations().every((a) => a.playState !== 'running'))
+  // Infinite animations (loading skeletons) never finish and are ignored.
+  await page.waitForFunction(() =>
+    document.getAnimations().every((a) => a.playState !== 'running' || a.effect?.getTiming().iterations === Infinity),
+  )
   const results = await new AxeBuilder({ page }).withTags(AXE_TAGS).analyze()
   const serious = results.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical')
   expect(

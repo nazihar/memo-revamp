@@ -51,6 +51,9 @@ Column meanings:
 | @tanstack/react-query | 5.104.2 | MIT | runtime | Server state | 2026-10; very active | — (locked) |
 | react-intl / @formatjs/cli | 12.1.4 / 6.16.34 | BSD-3-Clause / MIT | runtime / dev-only | ICU i18n, extraction, pseudo-locales, verify (ADR-0010) | 2026-10; FormatJS, very active | i18next + ICU, Lingui |
 | radix-ui (via shadcn/ui sources) | 1.8.1 | MIT | runtime | Accessible primitives (menus) | 2026-10; very active | — (locked) |
+| @tanstack/react-table | 9.3.1 | MIT | runtime | List template (`DataTable`): sorting, selection (E01) | 2026-10-12; very active; 9.0 GA 2026-08 | — (locked); v8 frozen since 2025-04 |
+| @tanstack/react-form | 1.33.5 | MIT | runtime | Form template state and validation (E01) | 2026-08; very active | — (locked) |
+| @fontsource/ibm-plex-sans, @fontsource/ibm-plex-sans-arabic | 5.3.0 | OFL-1.1 (fonts) | runtime (font files) | Direction A typeface, self-hosted for `font-src 'self'`; licence exception in `ci/license-exceptions.json`, OFL text shipped at `/licenses/` | 2026-07; active | Noto Sans + Noto Sans Arabic (Direction B), system fonts |
 | class-variance-authority / clsx / tailwind-merge | 0.7.1 / 2.1.1 / 3.7.0 | Apache-2.0 / MIT / MIT | runtime | shadcn/ui class composition | cva: stable but slow cadence (2024-11); others active | — |
 | lucide-react | 1.57.0 | ISC | runtime | Icons | very active | — |
 | tailwindcss / @tailwindcss/vite / tw-animate-css | 4.3.3 / 4.3.3 / 1.4.0 | MIT | dev-only | Styling, design tokens (CSS-first) | very active | CSS modules |

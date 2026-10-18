@@ -5,6 +5,48 @@
       "value": "Memo & Meeting ManagementSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "app.product": [
+    {
+      "type": 0,
+      "value": "memoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dialog.close": [
+    {
+      "type": 0,
+      "value": "CloseSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "form.leave.cancel": [
+    {
+      "type": 0,
+      "value": "Stay on this pageSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "form.leave.confirm": [
+    {
+      "type": 0,
+      "value": "LeaveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "form.leave.description": [
+    {
+      "type": 0,
+      "value": "Your changes on this page will be lost.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "form.leave.title": [
+    {
+      "type": 0,
+      "value": "Leave without saving?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "form.unsaved": [
+    {
+      "type": 0,
+      "value": "You have unsaved changes.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "health.checkedAt": [
     {
       "type": 0,
@@ -99,10 +141,328 @@
       "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "nav.group.administration": [
+    {
+      "type": 0,
+      "value": "AdministrationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.group.developer": [
+    {
+      "type": 0,
+      "value": "DeveloperSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.group.work": [
+    {
+      "type": 0,
+      "value": "WorkSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.patterns": [
+    {
+      "type": 0,
+      "value": "PatternsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "nav.status": [
     {
       "type": 0,
       "value": "StatusSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.code.taken": [
+    {
+      "type": 0,
+      "value": "This code is already used by another unit.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.col.name": [
+    {
+      "type": 0,
+      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.col.role": [
+    {
+      "type": 0,
+      "value": "RoleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.col.status": [
+    {
+      "type": 0,
+      "value": "StatusSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.confirm.description": [
+    {
+      "type": 0,
+      "value": "They will be signed out and cannot sign in until reactivated.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.confirm.open": [
+    {
+      "type": 0,
+      "value": "Deactivate userSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.confirm.title": [
+    {
+      "type": 0,
+      "value": "Deactivate this user?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.deactivate": [
+    {
+      "type": 0,
+      "value": "DeactivateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.description": [
+    {
+      "type": 0,
+      "value": "Every page template and component with synthetic data. Development and test builds only.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.detail": [
+    {
+      "type": 0,
+      "value": "Detail page and tabsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.dialog.description": [
+    {
+      "type": 0,
+      "value": "The new name appears everywhere the unit is shown.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.dialog.open": [
+    {
+      "type": 0,
+      "value": "Open dialogSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.dialog.title": [
+    {
+      "type": 0,
+      "value": "Rename unitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.dialogs": [
+    {
+      "type": 0,
+      "value": "DialogsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.discard": [
+    {
+      "type": 0,
+      "value": "Discard changesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.empty.title": [
+    {
+      "type": 0,
+      "value": "No users match these filtersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.error.title": [
+    {
+      "type": 0,
+      "value": "The list could not be loadedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.export": [
+    {
+      "type": 0,
+      "value": "ExportSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.filter": [
+    {
+      "type": 0,
+      "value": "FilterSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.filter.hint": [
+    {
+      "type": 0,
+      "value": "Name or emailSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.form": [
+    {
+      "type": 0,
+      "value": "Form pageSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.invite": [
+    {
+      "type": 0,
+      "value": "Invite userSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.list": [
+    {
+      "type": 0,
+      "value": "List pageSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.optional": [
+    {
+      "type": 0,
+      "value": "(optional)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.rename": [
+    {
+      "type": 0,
+      "value": "RenameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.required": [
+    {
+      "type": 0,
+      "value": "Enter a value.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.save": [
+    {
+      "type": 0,
+      "value": "Save changesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.saved": [
+    {
+      "type": 0,
+      "value": "Changes savedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.selected": [
+    {
+      "type": 0,
+      "value": "Selected: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.showing": [
+    {
+      "type": 0,
+      "value": "Rows "
+    },
+    {
+      "type": 1,
+      "value": "from"
+    },
+    {
+      "type": 0,
+      "value": "–"
+    },
+    {
+      "type": 1,
+      "value": "to"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.simulate": [
+    {
+      "type": 0,
+      "value": "Code \"TAKEN\" simulates a server validation error.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.states": [
+    {
+      "type": 0,
+      "value": "StatesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.tab.details": [
+    {
+      "type": 0,
+      "value": "DetailsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.tab.history": [
+    {
+      "type": 0,
+      "value": "HistorySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.title": [
+    {
+      "type": 0,
+      "value": "PatternsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.tree": [
+    {
+      "type": 0,
+      "value": "TreeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.unit.code": [
+    {
+      "type": 0,
+      "value": "CodeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.unit.code.hint": [
+    {
+      "type": 0,
+      "value": "Used in reference numbers. 2–10 letters.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.unit.description": [
+    {
+      "type": 0,
+      "value": "DescriptionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.unit.name": [
+    {
+      "type": 0,
+      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.unit.parent": [
+    {
+      "type": 0,
+      "value": "Parent unitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.units": [
+    {
+      "type": 0,
+      "value": "UnitsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "patterns.users": [
+    {
+      "type": 0,
+      "value": "UsersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "shell.breadcrumb": [
+    {
+      "type": 0,
+      "value": "BreadcrumbSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "shell.navigation": [
@@ -111,10 +471,48 @@
       "value": "Main navigationSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "shell.openMenu": [
+    {
+      "type": 0,
+      "value": "Open menuSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "shell.skipToContent": [
     {
       "type": 0,
       "value": "Skip to main contentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "state.error.reference": [
+    {
+      "type": 0,
+      "value": "Reference: "
+    },
+    {
+      "type": 1,
+      "value": "id"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "state.error.retry": [
+    {
+      "type": 0,
+      "value": "Try againSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "state.error.title": [
+    {
+      "type": 0,
+      "value": "Something went wrongSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "state.loading": [
+    {
+      "type": 0,
+      "value": "LoadingSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "status.degraded": [
@@ -139,6 +537,58 @@
     {
       "type": 0,
       "value": "UpSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "table.next": [
+    {
+      "type": 0,
+      "value": "NextSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "table.pagination": [
+    {
+      "type": 0,
+      "value": "PaginationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "table.previous": [
+    {
+      "type": 0,
+      "value": "PreviousSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "table.selectAll": [
+    {
+      "type": 0,
+      "value": "Select all rowsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "table.selectRow": [
+    {
+      "type": 0,
+      "value": "Select row "
+    },
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "table.sortBy": [
+    {
+      "type": 0,
+      "value": "Sort by "
+    },
+    {
+      "type": 1,
+      "value": "column"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "theme.dark": [

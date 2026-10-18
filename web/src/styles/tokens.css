@@ -1,50 +1,70 @@
 /*
- * Design tokens (E03 design §2). Every colour pair used for text meets WCAG AA (4.5:1); axe verifies rendered contrast.
- * Status colours are never the only signal: StatusBadge always shows a text label and an icon.
+ * Design tokens v2: Direction A "Ledger" (Phase 1a E01 design §1, approved by the owner 2026-10-18).
+ * Every text pair meets WCAG AA (4.5:1); axe verifies rendered contrast in light and dark on every e2e visit.
+ * Status colours are never the only signal: badges always show a text label and an icon.
  */
 :root {
   --font-system:
-    system-ui, -apple-system, 'Segoe UI', Roboto, 'Noto Sans', 'Noto Sans Arabic', 'Noto Sans Bengali', Arial,
+    'IBM Plex Sans', 'IBM Plex Sans Arabic', system-ui, -apple-system, 'Segoe UI', 'Noto Sans', 'Noto Sans Arabic',
     sans-serif;
   --radius: 0.5rem;
 
-  --background: oklch(0.99 0 0);
-  --foreground: oklch(0.21 0.01 260);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.21 0.01 260);
-  --muted: oklch(0.96 0.005 260);
-  --muted-foreground: oklch(0.45 0.015 260);
-  --primary: oklch(0.42 0.13 255);
-  --primary-foreground: oklch(0.99 0 0);
-  --accent: oklch(0.95 0.01 255);
-  --accent-foreground: oklch(0.25 0.05 255);
-  --border: oklch(0.88 0.008 260);
-  --ring: oklch(0.5 0.15 255);
-  --destructive: oklch(0.5 0.19 27);
+  --background: #f6f7f9;
+  --foreground: #1b2333;
+  --card: #ffffff;
+  --card-foreground: #1b2333;
+  --muted: #eef0f3;
+  --muted-foreground: #5a6475;
+  --primary: #1f4e8c;
+  --primary-foreground: #ffffff;
+  --accent: #e8eef7;
+  --accent-foreground: #163a69;
+  --border: #dde1e7;
+  --input: #c7cdd6;
+  --ring: #2f6bc0;
+  --destructive: #b42318;
+  --destructive-foreground: #ffffff;
 
-  --status-up: oklch(0.45 0.12 150);
-  --status-degraded: oklch(0.5 0.12 70);
-  --status-down: oklch(0.5 0.19 27);
-  --status-disabled: oklch(0.45 0.01 260);
+  /* Status pairs (badge background / text). */
+  --status-ok-bg: #e6f3ea;
+  --status-ok-fg: #1e6b3a;
+  --status-warn-bg: #fdf1dc;
+  --status-warn-fg: #7a4b00;
+  --status-danger-bg: #fbe7e7;
+  --status-danger-fg: #9b1c1c;
+  --status-neutral-bg: #eef0f3;
+  --status-neutral-fg: #4b5563;
+
+  /* Phase 0 names used by the health page; mapped onto the status pairs. */
+  --status-up: var(--status-ok-fg);
+  --status-degraded: var(--status-warn-fg);
+  --status-down: var(--status-danger-fg);
+  --status-disabled: var(--status-neutral-fg);
 }
 
 .dark {
-  --background: oklch(0.17 0.01 260);
-  --foreground: oklch(0.96 0.005 260);
-  --card: oklch(0.21 0.012 260);
-  --card-foreground: oklch(0.96 0.005 260);
-  --muted: oklch(0.26 0.012 260);
-  --muted-foreground: oklch(0.78 0.012 260);
-  --primary: oklch(0.78 0.1 255);
-  --primary-foreground: oklch(0.18 0.02 260);
-  --accent: oklch(0.3 0.03 255);
-  --accent-foreground: oklch(0.96 0.005 260);
-  --border: oklch(0.34 0.012 260);
-  --ring: oklch(0.75 0.12 255);
-  --destructive: oklch(0.72 0.17 27);
+  --background: #10151d;
+  --foreground: #e8ecf2;
+  --card: #171e29;
+  --card-foreground: #e8ecf2;
+  --muted: #1f2734;
+  --muted-foreground: #a3adbd;
+  --primary: #8db2ea;
+  --primary-foreground: #0d1726;
+  --accent: #1e2b40;
+  --accent-foreground: #c9daf4;
+  --border: #2a3341;
+  --input: #3a4556;
+  --ring: #8db2ea;
+  --destructive: #f28b82;
+  --destructive-foreground: #1b0a08;
 
-  --status-up: oklch(0.8 0.14 150);
-  --status-degraded: oklch(0.83 0.13 80);
-  --status-down: oklch(0.75 0.16 27);
-  --status-disabled: oklch(0.78 0.01 260);
+  --status-ok-bg: #12301f;
+  --status-ok-fg: #8fd6a8;
+  --status-warn-bg: #3a2a0c;
+  --status-warn-fg: #f2c46b;
+  --status-danger-bg: #3b1515;
+  --status-danger-fg: #f5a3a3;
+  --status-neutral-bg: #252e3b;
+  --status-neutral-fg: #c3cbd7;
 }

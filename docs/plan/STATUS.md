@@ -5,11 +5,10 @@
 **Last updated:** 2026-10-18 (UTC+06:00) by Claude (agent)
 
 ## Current position
-- **Phase:** 1a. Overview **approved 2026-10-18** with Q1–Q8 answered (`phase-1a-minimum-core/overview.md §10`); per-epic gate delegation kept. Next: plan E01 and E02. Phase 0 exited 2026-10-15.
-- **Carried into Phase 1a:** app layout and visual design, now epic E01 of the overview.
+- **Phase:** 1a (overview approved 2026-10-18, gate delegation kept). **E02 platform kernel implemented** on `feat/1a-e02-platform-kernel` (PR to follow). **E01:** owner chose visual Direction A; frame build planned next.
 - **Dev environment live (2026-10-18):** https://dev.memo-revamp.naziharitsolution.com on the VM 123.176.58.175 (Ubuntu 24.04, 4 vCPU, 7.8 GB RAM, 100 GB disk). It deploys automatically after every green `ci` run on `master`.
-- **Epics:** E01–E05 implemented. Plans, logs and test plans are in `docs/plan/phase-0-foundations/epic-0*/`.
-- **Branches:** everything is merged into `master` (PRs #1–#15); GitHub CI green; feature branches deleted.
+- **Phase 0 epics:** E01–E05 done (`docs/plan/phase-0-foundations/`).
+- **Branches:** `master` holds PRs #1–#17; E02 work on `feat/1a-e02-platform-kernel`.
 - **Release:** `v0.1.0` published with signed images (2026-10-15).
 - **Product name:** `memo` everywhere except the repository name `memo-revamp` (A1, PR #6).
 
@@ -26,6 +25,7 @@
 - [x] First release run: `v0.1.0` signed and published (2026-10-15, after the cosign 3 fixes in PRs #9 and #10)
 - [x] First nightly run (2026-10-16) failed only on the lockfile re-scan: HIGH Jackson CVEs in `build-logic/gradle.lockfile` (build tooling, not shipped). Fixed in PR #11; the manual re-run passed on 2026-10-17
 - [x] Renovate GitHub App installed by the owner (2026-10-17, ADR-0014)
+- [x] Wildcard DNS `*.dev.memo-revamp.naziharitsolution.com` → dev VM added by the owner (2026-10-18, Phase 1a Q2)
 - [x] Dev environment deployed (2026-10-18):
   - VM provisioned with Ansible (playbook fixes in PR #13);
   - private images pulled with the deploy job's short-lived token, no credential stored on the VM (PR #14);
@@ -43,7 +43,7 @@
 - **DAST/performance:** ZAP baseline 0 FAIL / 0 WARN; Gatling p95 48 ms.
 
 ## Next step
-1. **Phase 1a:** plan E01 (app frame and visual design) and E02 (platform kernel) in parallel. E02 is backend-only and fills the waits for the owner review of the E01 wireframes.
+1. **Phase 1a:** open the E02 PR and merge when CI is green (dev deploy then recreates SeaweedFS for the new identities). Then plan and build E01 (frame in Direction A), then E03 (identity).
 2. Check the ZAP and Gatling results against dev from the next nightly.
 3. Remove the `apk upgrade libexpat` step from `web/Dockerfile` once `nginx-unprivileged` ships libexpat 2.9.0 or later.
 
@@ -52,13 +52,12 @@
 2. **GitHub setup:**
    - required reviewers on the `release` environment (not set; may need a paid GitHub plan on a private repository. Meanwhile only the owner can push `v*` tags);
    - branch protection on `master`.
-3. **Wildcard DNS for dev (Q2):** a `*.dev.memo-revamp.naziharitsolution.com` record pointing at the dev VM, needed before E03 runs per-tenant hosts on dev.
 
 ## Assumptions
 - **A1 (resolved):** the product is `memo`. Package `com.memo`, Gradle group `com.memo`, application name `memo`, images `memo-backend` / `memo-web`. Only the repository keeps the name `memo-revamp`. The stored schema marker moved to `memo` with migration `system/V2`.
 
 ## Decisions taken
-ADR-0001 to ADR-0016 (`docs/adr/README.md`).
+ADR-0001 to ADR-0020 (`docs/adr/README.md`). Phase 1a so far: ADR-0017 tenant context, ADR-0018 jobs, ADR-0019 audit store, ADR-0020 cache invalidation.
 
 ## Environment notes (dev machine)
 - VS Code's Java extension builds the tree with its own Gradle 9.7.1. CLI builds use `MEMO_BUILD_ROOT=<repo>/.build-cli` (README).

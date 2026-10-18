@@ -1,6 +1,7 @@
 #!/bin/sh
 # Single-process SeaweedFS for local development (ADR-0005): master + volume + filer + S3 gateway.
 # Writes the S3 identities file from env so that no credential is committed.
+# After changing the identities, bump S3_IDENTITIES_REVISION in deploy/compose/compose.yaml and onprem/compose.yaml.
 set -eu
 : "${S3_ADMIN_ACCESS_KEY:?}" "${S3_ADMIN_SECRET_KEY:?}" "${S3_APP_ACCESS_KEY:?}" "${S3_APP_SECRET_KEY:?}"
 
@@ -16,7 +17,7 @@ cat > /tmp/s3.json <<EOF
     {
       "name": "app",
       "credentials": [{ "accessKey": "${S3_APP_ACCESS_KEY}", "secretKey": "${S3_APP_SECRET_KEY}" }],
-      "actions": ["Read:records", "Write:records", "List:records", "Read:work", "Write:work", "List:work"]
+      "actions": ["Read:records", "Write:records", "List:records", "PutObjectRetention:records", "GetObjectRetention:records", "Read:work", "Write:work", "List:work"]
     }
   ]
 }

@@ -46,6 +46,7 @@ pnpm --filter web typecheck && pnpm --filter web test && pnpm --filter web build
 The OpenAPI contract in `/contracts` is committed. The build fails if the running API and the contract differ, and CI fails if the generated web client is stale.
 
 If an IDE builds the same tree with a different Gradle version (seen with VS Code's Java extension), set `MEMO_BUILD_ROOT=<repo>/.build-cli` for CLI builds. The build output then goes to a separate, git-ignored directory on the same drive.
+If the IDE also holds Gradle's build-logic lock (`Timeout waiting to lock build logic queue`), add `--project-cache-dir=.build-cli/project-cache` to CLI builds so they use their own project cache.
 
 ## Deploy
 
@@ -62,7 +63,7 @@ The CI gates and how to run each one locally are listed in [`ci/README.md`](ci/R
 ## Layout
 
 ```
-backend/     Spring Boot modular monolith (Spring Modulith), Kotlin
+backend/     Spring Boot modular monolith (Spring Modulith), Kotlin; conventions in backend/README.md
 shared/      Kotlin Multiplatform code shared with mobile
 web/         React + TypeScript SPA (Vite, TanStack Router/Query)
 mobile/      iOS and Android apps (from Phase 6a)

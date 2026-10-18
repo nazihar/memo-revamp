@@ -58,7 +58,7 @@ erDiagram
     text actor_type "USER|SYSTEM|PLATFORM_OPERATOR|ANONYMOUS"
     text actor_id
     text acting_as_id
-    inet client_ip
+    text client_ip
     text client_user_agent "truncated 256"
     text correlation_id
     text action "e.g. tenant.setting.changed"
@@ -93,7 +93,7 @@ erDiagram
   }
 ```
 
-- **`audit_event`**: `PARTITION BY RANGE (occurred_at)`, monthly partitions `audit_event_yYYYYmMM` plus `audit_event_default`. Primary key `(id, occurred_at)`. Indexes (local): `(tenant_id, seq)`, `(tenant_id, occurred_at)`, `(tenant_id, object_type, object_id, occurred_at)`, `(tenant_id, actor_id, occurred_at)`. Before/after values live only inside `canonical`; columns hold what queries filter on.
+- **`audit_event`**: `PARTITION BY RANGE (occurred_at)`, monthly partitions `audit_event_yYYYYmMM` plus `audit_event_default`. Primary key `(tenant_id, occurred_at, id)` (it must contain the partition key, and `tenant_id` leads every index). Further indexes (local to each partition): `(tenant_id, seq)`, `(tenant_id, object_type, object_id, occurred_at)`, `(tenant_id, actor_id, occurred_at)`. Before/after values live only inside `canonical`; columns hold what queries filter on.
 - **Grants:** `memo_app` has `SELECT, INSERT` on `audit_event` and partitions; `UPDATE, DELETE, TRUNCATE` revoked. Trigger `audit_event_immutable` (`BEFORE UPDATE OR DELETE … FOR EACH ROW`) raises for any role.
 - **`audit_chain_head`**: one row per chain, created by the first flush (`INSERT … ON CONFLICT DO NOTHING`, then `SELECT … FOR UPDATE`).
 - **`audit_anchor`**: the database's record of what was written to the bucket (the bucket is the authority; this table lets verification find anchors without listing the bucket).
@@ -206,9 +206,10 @@ The RLS meta-test is extended: partitions are checked like tables; the platform-
 
 | Operation | Budget | How met / verified |
 |---|---|---|
-| Audit flush (1–5 entries) | p95 < 5 ms added to commit at 32 concurrent writers per tenant | Single-row lock held flush → commit; `AuditConcurrencyIT` records timings |
+| Audit flush (1–5 entries), uncontended | < 5 ms added to commit: two round trips (lock + read the head; insert entries and move the head in one CTE statement) | `AuditConcurrencyIT`. Measured 2026-10-18 on the dev laptop (Docker Desktop on Windows, ~3 ms per round trip): mean 5.9 ms |
+| Audited commits per tenant, contended | ≥ 100 per second with concurrent writers (the NFR load needs tens) | `AuditConcurrencyIT` (fails below 50/s on noisy runners). Measured with 32 writers: 171/s; flush p95 52 ms, which is queueing on the head lock, not work |
 | Verification throughput | ≥ 20,000 events/s per job thread on the dev VM class of hardware | Keyset pages of 5,000 by `(tenant_id, seq)`; measured on the V5 generator |
-| `set_config` per transaction | < 0.2 ms | One extra statement; measured in `TenantContextPropagationIT` |
+| `set_config` per transaction | One extra statement per transaction | A database round trip: well under 1 ms on a server network, about 3 ms on the Docker Desktop laptop. Inherent to transaction-local tenant context (ADR-0006) |
 | Settings read | cache hit: no DB round trip | `TenantSettingsCacheIT` |
 | `LISTEN` propagation | < 1 s from commit to remote eviction | `CacheInvalidationIT` |
 

@@ -1,6 +1,8 @@
 package com.memo.tenancy
 
+import com.memo.audit.AuditLog
 import com.memo.common.id.IdGenerator
+import com.memo.common.jobs.ActiveTenants
 import com.memo.common.jobs.KnownTenants
 import com.memo.common.tenant.PlatformTransactions
 import com.memo.common.tenant.TenantDsl
@@ -39,7 +41,9 @@ class TenantRegistry(
     private val ids: IdGenerator,
     private val clock: Clock,
     private val events: ApplicationEventPublisher,
-) : KnownTenants {
+    private val audit: AuditLog,
+) : KnownTenants,
+    ActiveTenants {
     /** Creates a new tenant with a fresh UUIDv7. */
     fun create(
         slug: String,
@@ -66,7 +70,20 @@ class TenantRegistry(
                     .doNothing()
                     .execute()
             val tenant = requireNotNull(current()) { "tenant $id not visible after insert" }
-            if (inserted == 1) events.publishEvent(TenantCreated(id.value))
+            if (inserted == 1) {
+                audit.record(
+                    "tenant.created",
+                    "tenant",
+                    id.toString(),
+                    after =
+                        mapOf(
+                            "slug" to slug,
+                            "name" to name,
+                            "status" to tenant.status.name,
+                        ),
+                )
+                events.publishEvent(TenantCreated(id.value))
+            }
             tenant
         }
 
@@ -83,6 +100,8 @@ class TenantRegistry(
                 .orderBy(TENANCY_TENANT.ID)
                 .fetch { TenantId(it.value1()!!) }
         }
+
+    override fun ids(): List<TenantId> = listActiveIds()
 
     /** Whether [tenant] exists (any status); used by the job helpers to drop tasks for unknown tenants. */
     override fun exists(tenant: TenantId): Boolean =

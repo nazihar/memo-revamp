@@ -29,6 +29,11 @@ fun interface KnownTenants {
     fun exists(tenant: TenantId): Boolean
 }
 
+/** Lists the tenants a platform job fans out to (platform scope, ADR-0017). Implemented by the tenancy module. */
+fun interface ActiveTenants {
+    fun ids(): List<TenantId>
+}
+
 /** A job failure that retrying cannot fix (for example a task for an unknown tenant): the execution is dropped. */
 class PermanentJobFailure(
     message: String,
@@ -77,6 +82,25 @@ class Jobs(
         Tasks
             .recurring(name, schedule)
             .execute { _, _ -> ActorContext.asSystem(name) { handler() } }
+
+    /**
+     * A one-off task with no scope binding, for platform work on one target named in its data (for example one audit
+     * chain). The handler opens scoped transactions itself, so it may touch a tenant and the platform chain one after the
+     * other, which a tenant-scoped task cannot.
+     */
+    fun <P : Any> platformOneOff(
+        name: String,
+        payload: Class<P>,
+        maxRetries: Int = DEFAULT_MAX_RETRIES,
+        handler: (P) -> Unit,
+    ): OneTimeTask<P> =
+        Tasks
+            .oneTime(name, payload)
+            .onFailure(retrying(name, maxRetries))
+            .execute { instance, _ ->
+                val data = instance.data ?: throw PermanentJobFailure("task $name has no data")
+                ActorContext.asSystem(name) { handler(data) }
+            }
 
     private fun <P> retrying(
         name: String,

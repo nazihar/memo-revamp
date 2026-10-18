@@ -56,7 +56,8 @@ dependencies {
     implementation(libs.aws.url.connection.client)
     runtimeOnly(libs.spring.modulith.runtime)
     runtimeOnly(libs.flyway.database.postgresql)
-    runtimeOnly(libs.postgresql)
+    // Compile scope for PGConnection (LISTEN/NOTIFY, ADR-0020).
+    implementation(libs.postgresql)
 
     testImplementation(libs.spring.boot.starter.test)
     testImplementation(libs.spring.boot.starter.webmvc.test)

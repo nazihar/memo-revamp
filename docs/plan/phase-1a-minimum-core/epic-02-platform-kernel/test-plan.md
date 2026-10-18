@@ -21,7 +21,7 @@ New: tenant context everywhere, platform scope, jobs, outbox, audit chain, ancho
 | T5 | Persistence | `AuditAppendOnlyIT`: app role UPDATE/DELETE refused; owner blocked by trigger | tenant A | PR |
 | T5 | Persistence | `AuditPartitionIT`: current + 12 months of partitions with RLS; DEFAULT partition catches an out-of-range row; app role cannot call `audit_ensure_partitions` | migrated schema | PR |
 | T5 | Unit | `CanonicalJsonTest` (stable bytes for equal input; key order; escaping; microsecond UTC); `AuditRedactionTest` | — | PR |
-| T5 | Concurrency | `AuditConcurrencyIT`: 32 writers × 50 transactions in one tenant → gapless `seq`, valid chain, no deadlock; flush p95 logged and asserted < 5 ms on CI (soft: warns at 5 ms, fails at 25 ms) | tenant A | PR |
+| T5 | Concurrency | `AuditConcurrencyIT`: 16 writers (more than the 10 pooled connections) × 50 transactions in one tenant → gapless `seq`, valid chain, no deadlock; throughput and uncontended flush time logged; fails below 50 audited commits/s or above 25 ms mean flush (budgets in design §10) | tenant A | PR |
 | T6 | Property (jqwik) | `AuditChainVerifierProperties`: random chains; any single modification/deletion/insertion/reordering/truncation is detected at the right `seq`; unmodified chains always verify | generated | PR (200 tries), nightly (10,000) |
 | T6 | Persistence | `AuditTamperIT`: owner edits `canonical`; owner edits a column only; owner deletes a middle row → reported; checkpoint behaviour | tenant A | PR |
 | T7 | Integration | `AuditAnchorIT`: anchor object written with retention; delete/overwrite refused by object lock; tail deletion + consistent head rewrite detected by anchor mismatch | SeaweedFS Testcontainer, tenant A | PR |

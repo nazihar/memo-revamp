@@ -4,6 +4,10 @@
 package com.memo.jooq
 
 
+import com.memo.jooq.tables.AuditAnchor
+import com.memo.jooq.tables.AuditChainHead
+import com.memo.jooq.tables.AuditEvent
+import com.memo.jooq.tables.AuditVerification
 import com.memo.jooq.tables.SystemInfo
 import com.memo.jooq.tables.TenancySetting
 import com.memo.jooq.tables.TenancySettingView
@@ -32,6 +36,26 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     }
 
     /**
+     * The table <code>memo.audit_anchor</code>.
+     */
+    val AUDIT_ANCHOR: AuditAnchor get() = AuditAnchor.AUDIT_ANCHOR
+
+    /**
+     * The table <code>memo.audit_chain_head</code>.
+     */
+    val AUDIT_CHAIN_HEAD: AuditChainHead get() = AuditChainHead.AUDIT_CHAIN_HEAD
+
+    /**
+     * The table <code>memo.audit_event</code>.
+     */
+    val AUDIT_EVENT: AuditEvent get() = AuditEvent.AUDIT_EVENT
+
+    /**
+     * The table <code>memo.audit_verification</code>.
+     */
+    val AUDIT_VERIFICATION: AuditVerification get() = AuditVerification.AUDIT_VERIFICATION
+
+    /**
      * The table <code>memo.system_info</code>.
      */
     val SYSTEM_INFO: SystemInfo get() = SystemInfo.SYSTEM_INFO
@@ -54,6 +78,10 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     override fun getCatalog(): Catalog = DefaultCatalog.DEFAULT_CATALOG
 
     override fun getTables(): List<Table<*>> = listOf(
+        AuditAnchor.AUDIT_ANCHOR,
+        AuditChainHead.AUDIT_CHAIN_HEAD,
+        AuditEvent.AUDIT_EVENT,
+        AuditVerification.AUDIT_VERIFICATION,
         SystemInfo.SYSTEM_INFO,
         TenancySetting.TENANCY_SETTING,
         TenancySettingView.TENANCY_SETTING_VIEW,

@@ -1,5 +1,9 @@
 package com.memo.tenancy
 
+import com.memo.audit.AuditLog
+import com.memo.common.cache.CacheInvalidation
+import com.memo.common.cache.TenantCache
+import com.memo.common.cache.TenantCaches
 import com.memo.common.concurrency.ConcurrentModificationException
 import com.memo.common.id.IdGenerator
 import com.memo.common.tenant.TenantDsl
@@ -10,6 +14,7 @@ import org.springframework.stereotype.Service
 import java.time.Clock
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
+import java.util.Optional
 
 data class TenantSetting(
     val key: String,
@@ -27,8 +32,16 @@ class TenantSettings(
     private val ids: IdGenerator,
     private val clock: Clock,
     private val events: ApplicationEventPublisher,
+    private val audit: AuditLog,
+    private val invalidation: CacheInvalidation,
+    caches: TenantCaches,
 ) {
-    fun get(key: String): TenantSetting? =
+    private val cache: TenantCache<String, Optional<TenantSetting>> = caches.register(CACHE)
+
+    /** Cached read (ADR-0020); a transaction that changed settings reads its own writes. */
+    fun get(key: String): TenantSetting? = cache.get(key) { Optional.ofNullable(load(key)) }.orElse(null)
+
+    private fun load(key: String): TenantSetting? =
         tenantDsl
             .current()
             .selectFrom(TENANCY_SETTING)
@@ -50,6 +63,7 @@ class TenantSettings(
         value: String,
     ): TenantSetting {
         require(KEY_PATTERN.matches(key)) { "invalid setting key" }
+        val before = load(key)?.value
         val now = now()
         return tenantDsl
             .current()
@@ -68,7 +82,7 @@ class TenantSettings(
             .returning()
             .fetchSingle()
             .toSetting()
-            .also { changed(key) }
+            .also { changed(key, before, value) }
     }
 
     /** Guarded update (AGENTS.md §4): applies only if the stored version is [expectedVersion]. */
@@ -76,8 +90,9 @@ class TenantSettings(
         key: String,
         value: String,
         expectedVersion: Long,
-    ): TenantSetting =
-        tenantDsl
+    ): TenantSetting {
+        val before = load(key)?.value
+        return tenantDsl
             .current()
             .update(TENANCY_SETTING)
             .set(TENANCY_SETTING.VALUE, value)
@@ -88,24 +103,43 @@ class TenantSettings(
             .returning()
             .fetchOne()
             ?.toSetting()
-            ?.also { changed(key) }
+            ?.also { changed(key, before, value) }
             ?: throw ConcurrentModificationException("tenant setting '$key'", expectedVersion)
+    }
 
-    fun delete(key: String): Boolean =
-        tenantDsl
+    fun delete(key: String): Boolean {
+        val before = load(key)?.value
+        return tenantDsl
             .current()
             .deleteFrom(TENANCY_SETTING)
             .where(TENANCY_SETTING.KEY.eq(key))
             .execute()
-            .let { deleted -> (deleted > 0).also { if (it) changed(key) } }
+            .let { deleted -> (deleted > 0).also { if (it) changed(key, before, null) } }
+    }
 
-    private fun changed(key: String) = events.publishEvent(TenantSettingChanged(tenantDsl.tenant().value, key))
+    /** Audit entry in this transaction (settings are non-secret by contract) and the outbox event for listeners. */
+    private fun changed(
+        key: String,
+        before: String?,
+        after: String?,
+    ) {
+        val action =
+            when {
+                before == null -> "tenant.setting.created"
+                after == null -> "tenant.setting.deleted"
+                else -> "tenant.setting.changed"
+            }
+        audit.record(action, "tenant.setting", key, before?.let { mapOf("value" to it) }, after?.let { mapOf("value" to it) })
+        invalidation.invalidate(CACHE, tenantDsl.tenant(), key)
+        events.publishEvent(TenantSettingChanged(tenantDsl.tenant().value, key))
+    }
 
     private fun now() = OffsetDateTime.now(clock).withOffsetSameInstant(ZoneOffset.UTC)
 
     private fun TenancySettingRecord.toSetting() = TenantSetting(key = key, value = value, version = version!!)
 
-    private companion object {
-        val KEY_PATTERN = Regex("^[a-z][a-z0-9.]{1,99}$")
+    companion object {
+        const val CACHE = "tenancy.settings"
+        private val KEY_PATTERN = Regex("^[a-z][a-z0-9.]{1,99}$")
     }
 }

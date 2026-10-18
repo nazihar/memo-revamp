@@ -1,5 +1,6 @@
 package com.memo.system.health.probes
 
+import com.memo.common.storage.StorageProperties
 import com.memo.system.health.ComponentStatus
 import com.memo.testsupport.TestObjectStorage
 import com.memo.testsupport.randomSecret

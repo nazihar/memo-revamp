@@ -25,6 +25,8 @@ tasks.withType<Test>().configureEach {
     useJUnitPlatform()
     // Nightly long property runs: -PjqwikTries=1000 (TESTING_STRATEGY §2).
     providers.gradleProperty("jqwikTries").orNull?.let { systemProperty("jqwik.tries.default", it) }
+    // Nightly audit verification throughput on a synthetic chain (E02 design §10): -PauditVolume=200000.
+    providers.gradleProperty("auditVolume").orNull?.let { systemProperty("memo.test.audit-volume", it) }
     testLogging {
         events("failed", "skipped")
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL

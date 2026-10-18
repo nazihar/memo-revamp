@@ -27,7 +27,7 @@ jobs:
         with:
           cache-read-only: true
       # Long property runs (TESTING_STRATEGY §2): properties without an explicit `tries` use 1000 instead of the default.
-      - run: ./gradlew :backend:bootJar :backend:test -PjqwikTries=1000 --console=plain
+      - run: ./gradlew :backend:bootJar :backend:test -PjqwikTries=1000 -PauditVolume=200000 --console=plain
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: backend-jar

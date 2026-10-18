@@ -5,12 +5,36 @@
 package com.memo.jooq.tables.references
 
 
+import com.memo.jooq.tables.AuditAnchor
+import com.memo.jooq.tables.AuditChainHead
+import com.memo.jooq.tables.AuditEvent
+import com.memo.jooq.tables.AuditVerification
 import com.memo.jooq.tables.SystemInfo
 import com.memo.jooq.tables.TenancySetting
 import com.memo.jooq.tables.TenancySettingView
 import com.memo.jooq.tables.TenancyTenant
 
 
+
+/**
+ * The table <code>memo.audit_anchor</code>.
+ */
+val AUDIT_ANCHOR: AuditAnchor = AuditAnchor.AUDIT_ANCHOR
+
+/**
+ * The table <code>memo.audit_chain_head</code>.
+ */
+val AUDIT_CHAIN_HEAD: AuditChainHead = AuditChainHead.AUDIT_CHAIN_HEAD
+
+/**
+ * The table <code>memo.audit_event</code>.
+ */
+val AUDIT_EVENT: AuditEvent = AuditEvent.AUDIT_EVENT
+
+/**
+ * The table <code>memo.audit_verification</code>.
+ */
+val AUDIT_VERIFICATION: AuditVerification = AuditVerification.AUDIT_VERIFICATION
 
 /**
  * The table <code>memo.system_info</code>.

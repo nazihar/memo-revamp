@@ -13,6 +13,7 @@ foojay = "1.0.0"
 mockk = "1.14.11"
 jug = "5.2.0"
 jqwik = "1.10.2"
+db-scheduler = "16.12.0"
 gatling = "3.16.0"
 cyclonedx = "3.5.1"
 spotbugs-gradle = "6.5.13"
@@ -42,6 +43,9 @@ spring-boot-starter-webmvc-test = { module = "org.springframework.boot:spring-bo
 spring-boot-starter-security-test = { module = "org.springframework.boot:spring-boot-starter-security-test" }
 spring-boot-testcontainers = { module = "org.springframework.boot:spring-boot-testcontainers" }
 spring-modulith-starter-core = { module = "org.springframework.modulith:spring-modulith-starter-core" }
+spring-modulith-starter-jdbc = { module = "org.springframework.modulith:spring-modulith-starter-jdbc" }
+db-scheduler-spring-boot-starter = { module = "com.github.kagkarlsson:db-scheduler-spring-boot-4-starter", version.ref = "db-scheduler" }
+caffeine = { module = "com.github.ben-manes.caffeine:caffeine" }
 spring-modulith-starter-test = { module = "org.springframework.modulith:spring-modulith-starter-test" }
 spring-modulith-runtime = { module = "org.springframework.modulith:spring-modulith-runtime" }
 jooq-codegen = { module = "org.jooq:jooq-codegen" }

@@ -1,11 +1,8 @@
 package com.memo.common.tenant
 
 import org.jooq.DSLContext
-import org.slf4j.MDC
 import org.springframework.stereotype.Component
 import org.springframework.transaction.PlatformTransactionManager
-import org.springframework.transaction.support.TransactionSynchronization
-import org.springframework.transaction.support.TransactionSynchronizationManager
 import org.springframework.transaction.support.TransactionTemplate
 import java.util.UUID
 
@@ -17,21 +14,18 @@ value class TenantId(
     override fun toString(): String = value.toString()
 }
 
-/** Thrown when tenant data is touched outside a tenant transaction (fail closed, AGENTS.md §3.2). */
+/** Thrown when tenant data is touched without a tenant-bound transaction (fail closed, AGENTS.md §3.2). */
 class MissingTenantContextException(
-    message: String = "No tenant context: tenant data may only be accessed inside TenantTransactions.inTenant { }",
+    message: String = "No tenant context: tenant data may only be accessed inside a transaction started in a tenant scope",
 ) : IllegalStateException(message)
 
 /**
- * Runs work inside a database transaction bound to one tenant (ADR-0006).
- *
- * The tenant is set with `set_config('app.tenant_id', …, true)`, i.e. transaction-local, so it can never leak to the next
- * user of a pooled connection. This is the seed of Phase 1a's request/job tenant context.
+ * Runs work for one tenant inside a database transaction (ADR-0006, ADR-0017): binds [TenantContext], then opens (or joins)
+ * a transaction, which [TenantAwareTransactionManager] binds to that tenant.
  */
 @Component
 class TenantTransactions(
     transactionManager: PlatformTransactionManager,
-    private val dsl: DSLContext,
 ) {
     private val readWrite = TransactionTemplate(transactionManager)
     private val readOnly = TransactionTemplate(transactionManager).apply { isReadOnly = true }
@@ -50,55 +44,85 @@ class TenantTransactions(
         tenant: TenantId,
         template: TransactionTemplate,
         block: () -> T,
-    ): T {
-        val bound = currentTenantOrNull()
-        if (bound != null) {
-            check(bound == tenant) { "Nested tenant transaction for a different tenant ($bound → $tenant)" }
-            return block()
+    ): T =
+        TenantContext.call(tenant) {
+            val scope = TenantAwareTransactionManager.currentScope()
+            val boundTenant: UUID? = scope?.tenant?.value
+            when {
+                scope == null -> template.inTransaction(block)
+
+                boundTenant == tenant.value -> block()
+
+                boundTenant != null -> throw IllegalStateException(
+                    "Nested tenant transaction for a different tenant ($boundTenant → $tenant)",
+                )
+
+                else -> throw IllegalStateException("A tenant transaction cannot join a transaction started without a tenant")
+            }
         }
-        return template.execute {
-            dsl.execute("select set_config('app.tenant_id', ?, true)", tenant.value.toString())
-            TransactionSynchronizationManager.bindResource(RESOURCE_KEY, tenant)
-            MDC.put(MDC_KEY, tenant.toString())
-            TransactionSynchronizationManager.registerSynchronization(
-                object : TransactionSynchronization {
-                    override fun afterCompletion(status: Int) {
-                        TransactionSynchronizationManager.unbindResourceIfPossible(RESOURCE_KEY)
-                        MDC.remove(MDC_KEY)
-                    }
-                },
-            )
-            block()
-        }
-    }
 
     companion object {
-        private val RESOURCE_KEY = Any()
-
-        /** Tenant id in structured logs while a tenant transaction is bound (ADR-0016). */
-        const val MDC_KEY = "tenant.id"
-
-        /** The tenant bound to the current transaction, or null. */
-        fun currentTenantOrNull(): TenantId? =
-            if (TransactionSynchronizationManager.isActualTransactionActive()) {
-                TransactionSynchronizationManager.getResource(RESOURCE_KEY) as TenantId?
-            } else {
-                null
-            }
+        /** The tenant the current transaction is bound to, or null. */
+        fun currentTenantOrNull(): TenantId? = TenantAwareTransactionManager.currentScope()?.tenant
 
         fun currentTenant(): TenantId = currentTenantOrNull() ?: throw MissingTenantContextException()
     }
 }
 
-/** The only way repositories reach tenant-owned tables: fails closed outside [TenantTransactions.inTenant]. */
+/**
+ * Platform-scope transactions (ADR-0017): can list tenants and write the platform audit chain, and nothing else.
+ * The only code allowed to enter platform scope (source scan in `ArchitectureRulesTest`).
+ */
+@Component
+class PlatformTransactions(
+    transactionManager: PlatformTransactionManager,
+) {
+    private val readWrite = TransactionTemplate(transactionManager)
+    private val readOnly = TransactionTemplate(transactionManager).apply { isReadOnly = true }
+
+    fun <T> read(block: () -> T): T = run(readOnly, block)
+
+    fun <T> write(block: () -> T): T = run(readWrite, block)
+
+    private fun <T> run(
+        template: TransactionTemplate,
+        block: () -> T,
+    ): T =
+        PlatformScope.call {
+            val scope = TenantAwareTransactionManager.currentScope()
+            when {
+                scope == null -> template.inTransaction(block)
+                scope.platform -> block()
+                else -> throw IllegalStateException("A platform transaction cannot join a tenant or tenant-less transaction")
+            }
+        }
+
+    companion object {
+        fun isPlatformTransaction(): Boolean = TenantAwareTransactionManager.currentScope()?.platform == true
+    }
+}
+
+/** The only way repositories reach tenant-owned tables: fails closed unless the transaction is bound to the scoped tenant. */
 @Component
 class TenantDsl(
     private val dsl: DSLContext,
 ) {
     fun current(): DSLContext {
-        TenantTransactions.currentTenant()
+        tenant()
         return dsl
     }
 
-    fun tenant(): TenantId = TenantTransactions.currentTenant()
+    fun tenant(): TenantId {
+        val bound = TenantTransactions.currentTenant()
+        val scoped = TenantContext.currentOrNull()
+        check(scoped == null || scoped == bound) { "Transaction is bound to $bound but the scope is $scoped" }
+        return bound
+    }
 }
+
+/** The template's result may be null only when [block] returns null; boxing keeps that distinction explicit for callers. */
+private fun <T> TransactionTemplate.inTransaction(block: () -> T): T = requireNotNull(execute { Result(block()) }).value
+
+private class Result<T>(
+    val value: T,
+)

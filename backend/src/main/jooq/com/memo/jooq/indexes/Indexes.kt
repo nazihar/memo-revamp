@@ -5,6 +5,8 @@
 package com.memo.jooq.indexes
 
 
+import com.memo.jooq.tables.AuditAnchor
+import com.memo.jooq.tables.AuditEvent
 import com.memo.jooq.tables.TenancySetting
 
 import org.jooq.Index
@@ -17,4 +19,8 @@ import org.jooq.impl.Internal
 // INDEX definitions
 // -------------------------------------------------------------------------
 
+val AUDIT_ANCHOR_TENANT_SEQ_UK: Index = Internal.createIndex(DSL.name("audit_anchor_tenant_seq_uk"), AuditAnchor.AUDIT_ANCHOR, arrayOf(AuditAnchor.AUDIT_ANCHOR.TENANT_ID, AuditAnchor.AUDIT_ANCHOR.SEQ), true)
+val AUDIT_EVENT_TENANT_ACTOR_IDX: Index = Internal.createIndex(DSL.name("audit_event_tenant_actor_idx"), AuditEvent.AUDIT_EVENT, arrayOf(AuditEvent.AUDIT_EVENT.TENANT_ID, AuditEvent.AUDIT_EVENT.ACTOR_ID, AuditEvent.AUDIT_EVENT.OCCURRED_AT), false)
+val AUDIT_EVENT_TENANT_OBJECT_IDX: Index = Internal.createIndex(DSL.name("audit_event_tenant_object_idx"), AuditEvent.AUDIT_EVENT, arrayOf(AuditEvent.AUDIT_EVENT.TENANT_ID, AuditEvent.AUDIT_EVENT.OBJECT_TYPE, AuditEvent.AUDIT_EVENT.OBJECT_ID, AuditEvent.AUDIT_EVENT.OCCURRED_AT), false)
+val AUDIT_EVENT_TENANT_SEQ_IDX: Index = Internal.createIndex(DSL.name("audit_event_tenant_seq_idx"), AuditEvent.AUDIT_EVENT, arrayOf(AuditEvent.AUDIT_EVENT.TENANT_ID, AuditEvent.AUDIT_EVENT.SEQ), false)
 val TENANCY_SETTING_TENANT_KEY_UK: Index = Internal.createIndex(DSL.name("tenancy_setting_tenant_key_uk"), TenancySetting.TENANCY_SETTING, arrayOf(TenancySetting.TENANCY_SETTING.TENANT_ID, TenancySetting.TENANCY_SETTING.KEY), true)

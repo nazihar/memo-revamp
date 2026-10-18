@@ -31,6 +31,8 @@ services:
       S3_ADMIN_SECRET_KEY: ${S3_ADMIN_SECRET_KEY:?}
       S3_APP_ACCESS_KEY: ${S3_APP_ACCESS_KEY:?}
       S3_APP_SECRET_KEY: ${S3_APP_SECRET_KEY:?}
+      # Bump when the identities in start.sh change: a changed value recreates the container so they reload.
+      S3_IDENTITIES_REVISION: "2"
     entrypoint: ["/bin/sh", "/seaweedfs/start.sh"]
     volumes:
       - ../seaweedfs/start.sh:/seaweedfs/start.sh:ro

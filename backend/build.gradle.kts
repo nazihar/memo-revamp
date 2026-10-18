@@ -40,6 +40,9 @@ dependencies {
     implementation(libs.spring.boot.starter.actuator)
     implementation(libs.spring.boot.starter.opentelemetry)
     implementation(libs.spring.modulith.starter.core)
+    implementation(libs.spring.modulith.starter.jdbc)
+    implementation(libs.db.scheduler.spring.boot.starter)
+    implementation(libs.caffeine)
     implementation(libs.springdoc.webmvc.api)
     implementation(libs.jackson.module.kotlin)
     implementation(libs.kotlin.reflect)
@@ -53,7 +56,8 @@ dependencies {
     implementation(libs.aws.url.connection.client)
     runtimeOnly(libs.spring.modulith.runtime)
     runtimeOnly(libs.flyway.database.postgresql)
-    runtimeOnly(libs.postgresql)
+    // Compile scope for PGConnection (LISTEN/NOTIFY, ADR-0020).
+    implementation(libs.postgresql)
 
     testImplementation(libs.spring.boot.starter.test)
     testImplementation(libs.spring.boot.starter.webmvc.test)

@@ -31,6 +31,17 @@ spring:
     detection-strategy: explicitly-annotated
     runtime:
       flyway-enabled: true
+    # Transactional outbox (ADR-0019, research §R6). Tables come from Flyway (system/V3); the app role has no DDL.
+    events:
+      jdbc:
+        schema-initialization:
+          enabled: false
+      completion-mode: archive
+      # Never on restart (several instances); OutboxMaintenance resubmits failed publications once per cluster.
+      republish-outstanding-events-on-restart: false
+      staleness:
+        published: PT5M
+        processing: PT5M
   jooq:
     sql-dialect: postgres
   mvc:
@@ -38,6 +49,16 @@ spring:
       enabled: true
   jackson:
     default-property-inclusion: non_null
+
+# Background jobs (ADR-0018).
+db-scheduler:
+  enabled: ${MEMO_JOBS_ENABLED:true}
+  table-name: system_scheduled_task
+  # Not lock-and-fetch: db-scheduler issue #933 on PostgreSQL.
+  polling-strategy: fetch
+  threads: 10
+  delay-startup-until-context-ready: true
+  always-persist-timestamp-in-utc: true
 
 # Operability baseline (ADR-0016). Structured JSON logs are switched on by the deployment manifests
 # (LOGGING_STRUCTURED_FORMAT_CONSOLE=ecs); local dev and tests keep readable text.

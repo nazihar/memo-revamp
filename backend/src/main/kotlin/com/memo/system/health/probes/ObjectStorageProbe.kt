@@ -1,8 +1,8 @@
 package com.memo.system.health.probes
 
+import com.memo.common.storage.StorageProperties
 import com.memo.system.health.ComponentProbe
 import com.memo.system.health.ComponentStatus
-import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.stereotype.Component
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider
@@ -12,25 +12,6 @@ import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.s3.S3Client
 import java.net.URI
 import java.time.Duration
-
-/**
- * Object storage settings. Ownership moves to the `files` module in Phase 1a, which will expose its own health API.
- * Storage is disabled when [endpoint] is blank.
- */
-@ConfigurationProperties("memo.storage")
-data class StorageProperties(
-    val endpoint: String = "",
-    val region: String = "us-east-1",
-    val accessKey: String = "",
-    val secretKey: String = "",
-    val recordsBucket: String = "records",
-    val workBucket: String = "work",
-) {
-    /** Configured only when endpoint *and* credentials are present; a partial configuration is reported as disabled. */
-    val enabled: Boolean get() = endpoint.isNotBlank() && accessKey.isNotBlank() && secretKey.isNotBlank()
-
-    override fun toString() = "StorageProperties(endpoint=$endpoint, region=$region, buckets=[$recordsBucket, $workBucket])"
-}
 
 @Component
 class ObjectStorageProbe(

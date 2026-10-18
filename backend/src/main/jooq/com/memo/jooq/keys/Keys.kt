@@ -5,9 +5,17 @@
 package com.memo.jooq.keys
 
 
+import com.memo.jooq.tables.AuditAnchor
+import com.memo.jooq.tables.AuditChainHead
+import com.memo.jooq.tables.AuditEvent
+import com.memo.jooq.tables.AuditVerification
 import com.memo.jooq.tables.SystemInfo
 import com.memo.jooq.tables.TenancySetting
 import com.memo.jooq.tables.TenancyTenant
+import com.memo.jooq.tables.records.AuditAnchorRecord
+import com.memo.jooq.tables.records.AuditChainHeadRecord
+import com.memo.jooq.tables.records.AuditEventRecord
+import com.memo.jooq.tables.records.AuditVerificationRecord
 import com.memo.jooq.tables.records.SystemInfoRecord
 import com.memo.jooq.tables.records.TenancySettingRecord
 import com.memo.jooq.tables.records.TenancyTenantRecord
@@ -24,6 +32,10 @@ import org.jooq.impl.QOM.ForeignKeyRule
 // UNIQUE and PRIMARY KEY definitions
 // -------------------------------------------------------------------------
 
+val AUDIT_ANCHOR_PKEY: UniqueKey<AuditAnchorRecord> = Internal.createUniqueKey(AuditAnchor.AUDIT_ANCHOR, DSL.name("audit_anchor_pkey"), arrayOf(AuditAnchor.AUDIT_ANCHOR.ID), true)
+val AUDIT_CHAIN_HEAD_PKEY: UniqueKey<AuditChainHeadRecord> = Internal.createUniqueKey(AuditChainHead.AUDIT_CHAIN_HEAD, DSL.name("audit_chain_head_pkey"), arrayOf(AuditChainHead.AUDIT_CHAIN_HEAD.TENANT_ID), true)
+val AUDIT_EVENT_PKEY: UniqueKey<AuditEventRecord> = Internal.createUniqueKey(AuditEvent.AUDIT_EVENT, DSL.name("audit_event_pkey"), arrayOf(AuditEvent.AUDIT_EVENT.TENANT_ID, AuditEvent.AUDIT_EVENT.OCCURRED_AT, AuditEvent.AUDIT_EVENT.ID), true)
+val AUDIT_VERIFICATION_PKEY: UniqueKey<AuditVerificationRecord> = Internal.createUniqueKey(AuditVerification.AUDIT_VERIFICATION, DSL.name("audit_verification_pkey"), arrayOf(AuditVerification.AUDIT_VERIFICATION.TENANT_ID), true)
 val SYSTEM_INFO_PKEY: UniqueKey<SystemInfoRecord> = Internal.createUniqueKey(SystemInfo.SYSTEM_INFO, DSL.name("system_info_pkey"), arrayOf(SystemInfo.SYSTEM_INFO.ID), true)
 val TENANCY_SETTING_PKEY: UniqueKey<TenancySettingRecord> = Internal.createUniqueKey(TenancySetting.TENANCY_SETTING, DSL.name("tenancy_setting_pkey"), arrayOf(TenancySetting.TENANCY_SETTING.ID), true)
 val TENANCY_TENANT_PKEY: UniqueKey<TenancyTenantRecord> = Internal.createUniqueKey(TenancyTenant.TENANCY_TENANT, DSL.name("tenancy_tenant_pkey"), arrayOf(TenancyTenant.TENANCY_TENANT.ID), true)

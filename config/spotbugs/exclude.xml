@@ -20,6 +20,28 @@
   </Match>
 
   <!--
+    Kotlin `use { }` closes JDBC statements and result sets in a finally block (kotlin.io.closeFinally), which SpotBugs does
+    not model. Limited to the classes that use raw JDBC this way; review new entries like any other exclusion.
+  -->
+  <Match>
+    <Or>
+      <Class name="com.memo.audit.internal.AuditPartitionCallback$Companion"/>
+      <Class name="com.memo.common.cache.PgNotificationListener"/>
+      <Class name="com.memo.common.tenant.TenantAwareTransactionManager"/>
+    </Or>
+    <Bug pattern="OBL_UNSATISFIED_OBLIGATION"/>
+  </Match>
+
+  <!--
+    S3 requires Content-MD5 on object-lock PUTs (RecordStore.putLocked). MD5 serves only as a transfer checksum demanded by
+    the protocol, not as a security control: record integrity rests on the SHA-256 audit chain (ADR-0019).
+  -->
+  <Match>
+    <Class name="com.memo.common.storage.RecordStore"/>
+    <Bug pattern="WEAK_MESSAGE_DIGEST_MD5"/>
+  </Match>
+
+  <!--
     Health reachability probes: clamd's protocol has no TLS (it is reached on the internal network only), and the SMTP
     probe only reads the 220 banner and sends QUIT, so no data crosses the socket. Real mail delivery (Phase 1a) uses
     STARTTLS and is not covered by this exclusion.

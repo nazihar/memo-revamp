@@ -33,6 +33,13 @@ internal fun runMigrations(args: Array<String>): Int {
         SpringApplicationBuilder(MemoApplication::class.java)
             .web(WebApplicationType.NONE)
             // Command-line arguments: highest precedence, so the environment cannot re-enable seeding or disable Flyway.
-            .run(*args, "--memo.demo.seed=false", "--spring.flyway.enabled=true")
+            .run(
+                *args,
+                "--memo.demo.seed=false",
+                "--spring.flyway.enabled=true",
+                // A migration run starts no jobs and no cache listener (ADR-0018, ADR-0020).
+                "--db-scheduler.enabled=false",
+                "--memo.cache.listener.enabled=false",
+            )
     return SpringApplication.exit(context)
 }

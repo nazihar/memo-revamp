@@ -48,7 +48,7 @@
 3. Remove the `apk upgrade libexpat` step from `web/Dockerfile` once `nginx-unprivileged` ships libexpat 2.9.0 or later.
 
 ## Waiting for human
-- **E01 manual accessibility pass (no rush):** a short keyboard + screen-reader (NVDA or VoiceOver) walk through the patterns gallery on dev (`/patterns` is not in production builds; use `pnpm dev` locally). Automated axe, keyboard and CSP checks pass.
+- **E01 manual accessibility pass (no rush):** a short keyboard + screen-reader (NVDA or VoiceOver) walk through the patterns gallery, run locally with `pnpm dev` at `/patterns` (the gallery is left out of production images, so it is not on the dev server). Automated axe, keyboard and CSP checks pass.
 1. **VM memory:** 7.8 GB is enough for dev. Running staging, ONLYOFFICE and ClamAV as well needs 16 GB.
 2. **GitHub setup:**
    - required reviewers on the `release` environment (not set; may need a paid GitHub plan on a private repository. Meanwhile only the owner can push `v*` tags);

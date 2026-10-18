@@ -97,7 +97,7 @@ Backend foundations that every later epic writes through.
   - fail closed everywhere: no context means an exception, never "all tenants";
   - guards: ArchUnit rules (no direct `DSLContext` in repositories outside `TenantDsl`, no `@Async` without the decorator) plus the existing runtime guard.
 - **Background jobs:** db-scheduler wired with tenant-aware task types, cluster-safe single execution, and a two-instance test.
-- **Transactional outbox:** the Spring Modulith event publication registry on JDBC. Incomplete publications are retried on restart, and completed ones are archived and cleaned up.
+- **Transactional outbox:** the Spring Modulith event publication registry on JDBC. Incomplete publications are resubmitted by a cluster-safe job (not on restart), and completed ones are archived and cleaned up.
 - **Cross-node cache invalidation:** Caffeine caches invalidated through PostgreSQL `LISTEN/NOTIFY`, with a reconnect strategy and a full flush after reconnect. The first consumers are tenant settings and, in E04, the org tree and permissions.
 - **Audit module:**
   - an append-only audit table, partitioned by time, with `tenant_id`, actor (user, acting-as, client, IP, device), action, object type and id, before/after where relevant, server UTC time and correlation id;
@@ -105,8 +105,9 @@ Backend foundations that every later epic writes through.
   - written in the **same transaction** as the business change, through a single `AuditLog` API that module services call;
   - a tamper-verification job (db-scheduler) with an incremental checkpoint;
   - periodic **anchoring** of chain heads into an object-locked bucket;
-  - a query API with keyset pagination and export (CSV and JSON, with a signed manifest). The viewer UI is in E07.
-  - Platform operations (E07) get their own chain.
+  - no REST endpoint in E02 (nothing can authenticate yet): the query API, the viewer and the export with a verifiable manifest come in E07;
+  - platform operations (E07) get their own chain.
+- **Platform scope** (pulled forward from E07): a transaction-local scope that can list tenants and nothing else, so platform jobs (anchoring, verification) can enumerate tenants. E07 builds operator access on it.
 - **Synthetic volume V5** (10 years of audit events for a large tenant) for verification and viewer performance.
 - **Spring Boot 4.2:** decide whether to move before E03 (expected November 2026; Phase 0 retro).
 
@@ -195,7 +196,7 @@ Backend foundations that every later epic writes through.
   - SMTP settings from E06;
   - branding (logo through E05, accent colour within accessible contrast limits);
   - language defaults;
-  - the audit viewer and export from E02.
+  - the audit query API, viewer and export (verifiable manifest) on top of the E02 store.
 - **Terminology overrides:** tenant-level term overrides (for example "Memo" vs "Note" vs "Proposal") applied to UI messages and emails, by ADR (R15).
 - **Language packs:** English only for 1a (Q8); Arabic stays as the RTL proof. Packs load per route to keep the bundle budget.
 
@@ -213,7 +214,7 @@ Backend foundations that every later epic writes through.
 | Rate limiting on login, OTP, password reset, upload and search | E03 (mechanism + auth), E05 (upload), E04 (search) |
 | Org directory: legal entities, units, positions, primary assignments, reporting lines, change history | **E04** |
 | Authorization: central policy service, roles, unit scope, classification clearance, SQL-pushed filters | **E04** |
-| Audit: hash chain, same-transaction outbox, tamper verification, viewer and export, anchoring | **E02** (store, verification, anchoring, API), E07 (viewer) |
+| Audit: hash chain, same-transaction outbox, tamper verification, viewer and export, anchoring | **E02** (store, verification, anchoring), E07 (query API, viewer, export) |
 | Files service | **E05** |
 | Notifications: in-app centre, email with tenant SMTP and templates, push payload design | E03 (minimal email), **E06** |
 | Tenant admin console (basic): users, org, roles, classification levels, terminology, branding | E03, E04 (screens), **E07** (assembly, terminology, branding) |

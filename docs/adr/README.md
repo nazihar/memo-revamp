@@ -20,3 +20,7 @@ We use the MADR format (see [0001](0001-record-architecture-decisions.md)). Star
 | [0014](0014-dependency-update-bot.md) | Dependency update bot: Renovate | accepted | 2026-10-14 |
 | [0015](0015-environments-iac-and-deployment.md) | Environments, IaC and deployment topology | accepted | 2026-10-14 |
 | [0016](0016-operability-baseline.md) | Operability baseline: structured logs, correlation id, OpenTelemetry, probes, migration job | accepted | 2026-10-14 |
+| [0017](0017-tenant-context-propagation.md) | Tenant context propagation | accepted | 2026-10-18 |
+| [0018](0018-background-jobs-db-scheduler.md) | Background jobs with db-scheduler | accepted | 2026-10-18 |
+| [0019](0019-audit-store.md) | Audit store: same-transaction hash chain, verification and anchoring | accepted | 2026-10-18 |
+| [0020](0020-cache-invalidation-listen-notify.md) | Caffeine caches with LISTEN/NOTIFY invalidation | accepted | 2026-10-18 |

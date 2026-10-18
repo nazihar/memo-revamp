@@ -24,3 +24,4 @@ We use the MADR format (see [0001](0001-record-architecture-decisions.md)). Star
 | [0018](0018-background-jobs-db-scheduler.md) | Background jobs with db-scheduler | accepted | 2026-10-18 |
 | [0019](0019-audit-store.md) | Audit store: same-transaction hash chain, verification and anchoring | accepted | 2026-10-18 |
 | [0020](0020-cache-invalidation-listen-notify.md) | Caffeine caches with LISTEN/NOTIFY invalidation | accepted | 2026-10-18 |
+| [0021](0021-modal-dialogs-native-dialog.md) | Modal surfaces on the native `<dialog>` element, no style nonce | accepted | 2026-10-18 |

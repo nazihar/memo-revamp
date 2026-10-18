@@ -20,6 +20,10 @@ LABEL org.opencontainers.image.title="memo-web" \
       org.opencontainers.image.version="${VERSION}" \
       org.opencontainers.image.revision="${REVISION}" \
       org.opencontainers.image.licenses="LicenseRef-Proprietary"
+# Security fix published after the pinned base was built (libexpat CVE-2026-77214, fixed in 2.9.0-r0). A no-op once
+# the base image ships it; remove then (Renovate's container-image update will show it).
+USER root
+RUN apk upgrade --no-cache libexpat
 COPY --chown=101:101 web/dist/ /usr/share/nginx/html/
 COPY web/nginx/default.conf.template /etc/nginx/templates/default.conf.template
 COPY --from=headers /work/security-headers.conf /etc/nginx/snippets/security-headers.conf

@@ -35,6 +35,8 @@ export default defineConfig({
   },
   build: {
     sourcemap: true,
+    // Fonts are never inlined as data: URIs: the CSP allows fonts from the app origin only (font-src 'self').
+    assetsInlineLimit: (file) => (/\.(woff2?|ttf|otf)$/.test(file) ? false : undefined),
   },
   test: {
     environment: 'jsdom',

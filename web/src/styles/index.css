@@ -1,5 +1,12 @@
 @import 'tailwindcss';
 @import 'tw-animate-css';
+/* Self-hosted fonts (CSP font-src 'self'); unicode-range subsets download only when a page needs them. */
+@import '@fontsource/ibm-plex-sans/400.css';
+@import '@fontsource/ibm-plex-sans/500.css';
+@import '@fontsource/ibm-plex-sans/600.css';
+@import '@fontsource/ibm-plex-sans-arabic/400.css';
+@import '@fontsource/ibm-plex-sans-arabic/500.css';
+@import '@fontsource/ibm-plex-sans-arabic/600.css';
 @import './tokens.css';
 
 /* Dark mode is class-based (.dark on <html>), set by the theme provider and public/theme-init.js. */
@@ -17,6 +24,16 @@
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-border: var(--border);
+  --color-input: var(--input);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-status-ok-bg: var(--status-ok-bg);
+  --color-status-ok-fg: var(--status-ok-fg);
+  --color-status-warn-bg: var(--status-warn-bg);
+  --color-status-warn-fg: var(--status-warn-fg);
+  --color-status-danger-bg: var(--status-danger-bg);
+  --color-status-danger-fg: var(--status-danger-fg);
+  --color-status-neutral-bg: var(--status-neutral-bg);
+  --color-status-neutral-fg: var(--status-neutral-fg);
   --color-ring: var(--ring);
   --color-destructive: var(--destructive);
   --color-status-up: var(--status-up);
@@ -31,8 +48,12 @@
 
 @layer base {
   html {
-    /* 16px base; never shrink text for the reading experience (AGENTS.md §3.7). */
+    /* 16px root (rem); working screens use 14px text (text-sm), director mode larger (AGENTS.md §3.7). */
     font-size: 100%;
+  }
+  /* Modal open (ADR-0021): lock page scroll with a class, never an inline style. */
+  html.modal-open {
+    overflow: hidden;
   }
   body {
     @apply bg-background text-foreground font-sans antialiased;

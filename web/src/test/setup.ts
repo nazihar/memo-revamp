@@ -2,7 +2,10 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup } from '@testing-library/react'
 import { afterAll, afterEach, beforeAll, beforeEach, vi } from 'vitest'
 import { client } from '@/api/generated/client.gen'
+import { installDialogPolyfill } from './dialog-polyfill'
 import { API_ORIGIN, server } from './msw'
+
+installDialogPolyfill()
 
 /** jsdom has no matchMedia; tests can flip `prefersDark` to simulate the OS theme. */
 export const media = { prefersDark: false }

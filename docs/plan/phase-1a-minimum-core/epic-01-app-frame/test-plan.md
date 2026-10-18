@@ -36,6 +36,6 @@ axe on every gallery section and open dialog; manual keyboard and screen-reader 
 T1 → axe contrast in `patterns.spec.ts`; T3 → `Dialog.test.tsx`, `patterns.spec.ts`; T4 → `AppShell.test.tsx`, visual; T5 → `DataTable.test.tsx`, `Form.test.tsx`, `TreePanel.test.tsx`; T6 → `patterns.spec.ts`, production-build check.
 
 ## Exit checklist
-- [ ] All listed tests implemented and green in their stage
-- [ ] No new quarantined tests
+- [x] All listed tests implemented and green in their stage (manual screen-reader pass pending, see ux-review.md)
+- [x] No new quarantined tests
 - [ ] Manual accessibility pass recorded

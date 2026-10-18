@@ -23,7 +23,9 @@ export default defineConfig({
     screenshot: 'only-on-failure',
   },
   expect: {
-    toHaveScreenshot: { maxDiffPixelRatio: 0.01, animations: 'disabled' },
+    // Strict enough to catch layout changes on mostly blank pages (a 1% / 0.2 tolerance let a whole new shell pass,
+    // found in Phase 1a E01); renders are deterministic in the pinned Linux Playwright image.
+    toHaveScreenshot: { maxDiffPixelRatio: 0.002, threshold: 0.1, animations: 'disabled' },
   },
   // Only the visual project takes screenshots; baselines are Linux-rendered (e2e/update-visual-baselines.sh).
   snapshotPathTemplate: '{testDir}/__screenshots__/{testFilePath}/{arg}{ext}',

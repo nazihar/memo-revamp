@@ -69,7 +69,8 @@ management:
   endpoints:
     web:
       exposure:
-        include: health
+        # tenanthost: Caddy on-demand TLS ask check (ADR-0022), management port only.
+        include: health, tenanthost
   endpoint:
     health:
       probes:
@@ -111,6 +112,13 @@ springdoc:
     enabled: false
 
 memo:
+  # Tenant resolution from the request host (ADR-0022).
+  tenancy:
+    mode: ${MEMO_TENANCY_MODE:multi}
+    base-domain: ${MEMO_TENANCY_BASE_DOMAIN:localhost}
+    single-tenant: ${MEMO_TENANCY_SINGLE_TENANT:}
+    # Tenant for the bare base domain (local dev, the dev VM); empty in production.
+    fallback-tenant: ${MEMO_TENANCY_FALLBACK_TENANT:}
   # app (default) | migrate: run the Modulith Flyway migrations as memo_migrator, then exit (ADR-0016).
   mode: ${MEMO_MODE:app}
   demo:

@@ -32,7 +32,7 @@ class SecurityConfig {
         http
             .securityMatcher(EndpointRequest.toAnyEndpoint())
             .authorizeHttpRequests { auth ->
-                auth.requestMatchers(EndpointRequest.to("health")).permitAll()
+                auth.requestMatchers(EndpointRequest.to("health", "tenanthost")).permitAll()
                 auth.anyRequest().denyAll()
             }.sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
             .exceptionHandling { it.authenticationEntryPoint(ProblemAuthenticationEntryPoint(jsonMapper)) }

@@ -9,6 +9,8 @@ import com.memo.jooq.tables.AuditChainHead
 import com.memo.jooq.tables.AuditEvent
 import com.memo.jooq.tables.AuditVerification
 import com.memo.jooq.tables.IdentityActionToken
+import com.memo.jooq.tables.IdentityHttpSession
+import com.memo.jooq.tables.IdentityHttpSessionAttributes
 import com.memo.jooq.tables.IdentityMfa
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
@@ -65,6 +67,16 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val IDENTITY_ACTION_TOKEN: IdentityActionToken get() = IdentityActionToken.IDENTITY_ACTION_TOKEN
 
     /**
+     * The table <code>memo.identity_http_session</code>.
+     */
+    val IDENTITY_HTTP_SESSION: IdentityHttpSession get() = IdentityHttpSession.IDENTITY_HTTP_SESSION
+
+    /**
+     * The table <code>memo.identity_http_session_attributes</code>.
+     */
+    val IDENTITY_HTTP_SESSION_ATTRIBUTES: IdentityHttpSessionAttributes get() = IdentityHttpSessionAttributes.IDENTITY_HTTP_SESSION_ATTRIBUTES
+
+    /**
      * The table <code>memo.identity_mfa</code>.
      */
     val IDENTITY_MFA: IdentityMfa get() = IdentityMfa.IDENTITY_MFA
@@ -107,6 +119,8 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         AuditEvent.AUDIT_EVENT,
         AuditVerification.AUDIT_VERIFICATION,
         IdentityActionToken.IDENTITY_ACTION_TOKEN,
+        IdentityHttpSession.IDENTITY_HTTP_SESSION,
+        IdentityHttpSessionAttributes.IDENTITY_HTTP_SESSION_ATTRIBUTES,
         IdentityMfa.IDENTITY_MFA,
         IdentityRecoveryCode.IDENTITY_RECOVERY_CODE,
         IdentityUser.IDENTITY_USER,

@@ -49,6 +49,13 @@ spring:
       enabled: true
   jackson:
     default-property-inclusion: non_null
+  # Sessions in PostgreSQL (ADR-0023). The schema is a Flyway migration; cleanup runs as a db-scheduler task.
+  session:
+    timeout: 30m
+    jdbc:
+      table-name: identity_http_session
+      initialize-schema: never
+      cleanup-cron: "-"
 
 # Background jobs (ADR-0018).
 db-scheduler:
@@ -102,6 +109,7 @@ server:
     include-exception: false
   servlet:
     session:
+      # The session cookie is configured in SessionConfig (ADR-0023).
       tracking-modes: []
 
 springdoc:
@@ -131,6 +139,8 @@ memo:
     password-encoding: ${MEMO_PASSWORD_ENCODING:argon2}
     # Optional directory of Have I Been Pwned range files for the full breached-password check.
     breached-passwords-dir: ${MEMO_BREACHED_PASSWORDS_DIR:}
+    # Secure cookies; only plain-HTTP test setups switch this off (browsers accept Secure on http://localhost).
+    cookie-secure: ${MEMO_COOKIE_SECURE:true}
   api-docs:
     enabled: false
   health:

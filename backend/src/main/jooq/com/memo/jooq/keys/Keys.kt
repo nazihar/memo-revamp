@@ -10,6 +10,8 @@ import com.memo.jooq.tables.AuditChainHead
 import com.memo.jooq.tables.AuditEvent
 import com.memo.jooq.tables.AuditVerification
 import com.memo.jooq.tables.IdentityActionToken
+import com.memo.jooq.tables.IdentityHttpSession
+import com.memo.jooq.tables.IdentityHttpSessionAttributes
 import com.memo.jooq.tables.IdentityMfa
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
@@ -21,6 +23,8 @@ import com.memo.jooq.tables.records.AuditChainHeadRecord
 import com.memo.jooq.tables.records.AuditEventRecord
 import com.memo.jooq.tables.records.AuditVerificationRecord
 import com.memo.jooq.tables.records.IdentityActionTokenRecord
+import com.memo.jooq.tables.records.IdentityHttpSessionAttributesRecord
+import com.memo.jooq.tables.records.IdentityHttpSessionRecord
 import com.memo.jooq.tables.records.IdentityMfaRecord
 import com.memo.jooq.tables.records.IdentityRecoveryCodeRecord
 import com.memo.jooq.tables.records.IdentityUserRecord
@@ -45,6 +49,8 @@ val AUDIT_CHAIN_HEAD_PKEY: UniqueKey<AuditChainHeadRecord> = Internal.createUniq
 val AUDIT_EVENT_PKEY: UniqueKey<AuditEventRecord> = Internal.createUniqueKey(AuditEvent.AUDIT_EVENT, DSL.name("audit_event_pkey"), arrayOf(AuditEvent.AUDIT_EVENT.TENANT_ID, AuditEvent.AUDIT_EVENT.OCCURRED_AT, AuditEvent.AUDIT_EVENT.ID), true)
 val AUDIT_VERIFICATION_PKEY: UniqueKey<AuditVerificationRecord> = Internal.createUniqueKey(AuditVerification.AUDIT_VERIFICATION, DSL.name("audit_verification_pkey"), arrayOf(AuditVerification.AUDIT_VERIFICATION.TENANT_ID), true)
 val IDENTITY_ACTION_TOKEN_PKEY: UniqueKey<IdentityActionTokenRecord> = Internal.createUniqueKey(IdentityActionToken.IDENTITY_ACTION_TOKEN, DSL.name("identity_action_token_pkey"), arrayOf(IdentityActionToken.IDENTITY_ACTION_TOKEN.ID), true)
+val IDENTITY_HTTP_SESSION_PKEY: UniqueKey<IdentityHttpSessionRecord> = Internal.createUniqueKey(IdentityHttpSession.IDENTITY_HTTP_SESSION, DSL.name("identity_http_session_pkey"), arrayOf(IdentityHttpSession.IDENTITY_HTTP_SESSION.PRIMARY_ID), true)
+val IDENTITY_HTTP_SESSION_ATTRIBUTES_PKEY: UniqueKey<IdentityHttpSessionAttributesRecord> = Internal.createUniqueKey(IdentityHttpSessionAttributes.IDENTITY_HTTP_SESSION_ATTRIBUTES, DSL.name("identity_http_session_attributes_pkey"), arrayOf(IdentityHttpSessionAttributes.IDENTITY_HTTP_SESSION_ATTRIBUTES.SESSION_PRIMARY_ID, IdentityHttpSessionAttributes.IDENTITY_HTTP_SESSION_ATTRIBUTES.ATTRIBUTE_NAME), true)
 val IDENTITY_MFA_PKEY: UniqueKey<IdentityMfaRecord> = Internal.createUniqueKey(IdentityMfa.IDENTITY_MFA, DSL.name("identity_mfa_pkey"), arrayOf(IdentityMfa.IDENTITY_MFA.USER_ID), true)
 val IDENTITY_RECOVERY_CODE_PKEY: UniqueKey<IdentityRecoveryCodeRecord> = Internal.createUniqueKey(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE, DSL.name("identity_recovery_code_pkey"), arrayOf(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.ID), true)
 val IDENTITY_USER_PKEY: UniqueKey<IdentityUserRecord> = Internal.createUniqueKey(IdentityUser.IDENTITY_USER, DSL.name("identity_user_pkey"), arrayOf(IdentityUser.IDENTITY_USER.ID), true)
@@ -59,6 +65,7 @@ val TENANCY_TENANT_SLUG_KEY: UniqueKey<TenancyTenantRecord> = Internal.createUni
 // -------------------------------------------------------------------------
 
 val IDENTITY_ACTION_TOKEN__IDENTITY_ACTION_TOKEN_TENANT_ID_USER_ID_FKEY: ForeignKey<IdentityActionTokenRecord, IdentityUserRecord> = Internal.createForeignKey(IdentityActionToken.IDENTITY_ACTION_TOKEN, DSL.name("identity_action_token_tenant_id_user_id_fkey"), arrayOf(IdentityActionToken.IDENTITY_ACTION_TOKEN.TENANT_ID, IdentityActionToken.IDENTITY_ACTION_TOKEN.USER_ID), com.memo.jooq.keys.IDENTITY_USER_TENANT_ID_ID_KEY, arrayOf(IdentityUser.IDENTITY_USER.TENANT_ID, IdentityUser.IDENTITY_USER.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
+val IDENTITY_HTTP_SESSION_ATTRIBUTES__IDENTITY_HTTP_SESSION_ATTRIBUTES_SESSION_PRIMARY_ID_FKEY: ForeignKey<IdentityHttpSessionAttributesRecord, IdentityHttpSessionRecord> = Internal.createForeignKey(IdentityHttpSessionAttributes.IDENTITY_HTTP_SESSION_ATTRIBUTES, DSL.name("identity_http_session_attributes_session_primary_id_fkey"), arrayOf(IdentityHttpSessionAttributes.IDENTITY_HTTP_SESSION_ATTRIBUTES.SESSION_PRIMARY_ID), com.memo.jooq.keys.IDENTITY_HTTP_SESSION_PKEY, arrayOf(IdentityHttpSession.IDENTITY_HTTP_SESSION.PRIMARY_ID), true, ForeignKeyRule.CASCADE, ForeignKeyRule.NO_ACTION)
 val IDENTITY_MFA__IDENTITY_MFA_TENANT_ID_USER_ID_FKEY: ForeignKey<IdentityMfaRecord, IdentityUserRecord> = Internal.createForeignKey(IdentityMfa.IDENTITY_MFA, DSL.name("identity_mfa_tenant_id_user_id_fkey"), arrayOf(IdentityMfa.IDENTITY_MFA.TENANT_ID, IdentityMfa.IDENTITY_MFA.USER_ID), com.memo.jooq.keys.IDENTITY_USER_TENANT_ID_ID_KEY, arrayOf(IdentityUser.IDENTITY_USER.TENANT_ID, IdentityUser.IDENTITY_USER.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val IDENTITY_RECOVERY_CODE__IDENTITY_RECOVERY_CODE_TENANT_ID_USER_ID_FKEY: ForeignKey<IdentityRecoveryCodeRecord, IdentityUserRecord> = Internal.createForeignKey(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE, DSL.name("identity_recovery_code_tenant_id_user_id_fkey"), arrayOf(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.TENANT_ID, IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.USER_ID), com.memo.jooq.keys.IDENTITY_USER_TENANT_ID_ID_KEY, arrayOf(IdentityUser.IDENTITY_USER.TENANT_ID, IdentityUser.IDENTITY_USER.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val TENANCY_SETTING__TENANCY_SETTING_TENANT_ID_FKEY: ForeignKey<TenancySettingRecord, TenancyTenantRecord> = Internal.createForeignKey(TenancySetting.TENANCY_SETTING, DSL.name("tenancy_setting_tenant_id_fkey"), arrayOf(TenancySetting.TENANCY_SETTING.TENANT_ID), com.memo.jooq.keys.TENANCY_TENANT_PKEY, arrayOf(TenancyTenant.TENANCY_TENANT.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)

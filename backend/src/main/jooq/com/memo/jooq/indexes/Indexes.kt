@@ -8,6 +8,7 @@ package com.memo.jooq.indexes
 import com.memo.jooq.tables.AuditAnchor
 import com.memo.jooq.tables.AuditEvent
 import com.memo.jooq.tables.IdentityActionToken
+import com.memo.jooq.tables.IdentityHttpSession
 import com.memo.jooq.tables.IdentityMfa
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
@@ -29,6 +30,9 @@ val AUDIT_EVENT_TENANT_OBJECT_IDX: Index = Internal.createIndex(DSL.name("audit_
 val AUDIT_EVENT_TENANT_SEQ_IDX: Index = Internal.createIndex(DSL.name("audit_event_tenant_seq_idx"), AuditEvent.AUDIT_EVENT, arrayOf(AuditEvent.AUDIT_EVENT.TENANT_ID, AuditEvent.AUDIT_EVENT.SEQ), false)
 val IDENTITY_ACTION_TOKEN_TENANT_HASH_UK: Index = Internal.createIndex(DSL.name("identity_action_token_tenant_hash_uk"), IdentityActionToken.IDENTITY_ACTION_TOKEN, arrayOf(IdentityActionToken.IDENTITY_ACTION_TOKEN.TENANT_ID, IdentityActionToken.IDENTITY_ACTION_TOKEN.TOKEN_HASH), true)
 val IDENTITY_ACTION_TOKEN_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("identity_action_token_tenant_user_idx"), IdentityActionToken.IDENTITY_ACTION_TOKEN, arrayOf(IdentityActionToken.IDENTITY_ACTION_TOKEN.TENANT_ID, IdentityActionToken.IDENTITY_ACTION_TOKEN.USER_ID), false)
+val IDENTITY_HTTP_SESSION_EXPIRY_IDX: Index = Internal.createIndex(DSL.name("identity_http_session_expiry_idx"), IdentityHttpSession.IDENTITY_HTTP_SESSION, arrayOf(IdentityHttpSession.IDENTITY_HTTP_SESSION.EXPIRY_TIME), false)
+val IDENTITY_HTTP_SESSION_ID_UK: Index = Internal.createIndex(DSL.name("identity_http_session_id_uk"), IdentityHttpSession.IDENTITY_HTTP_SESSION, arrayOf(IdentityHttpSession.IDENTITY_HTTP_SESSION.SESSION_ID), true)
+val IDENTITY_HTTP_SESSION_PRINCIPAL_IDX: Index = Internal.createIndex(DSL.name("identity_http_session_principal_idx"), IdentityHttpSession.IDENTITY_HTTP_SESSION, arrayOf(IdentityHttpSession.IDENTITY_HTTP_SESSION.PRINCIPAL_NAME), false)
 val IDENTITY_MFA_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("identity_mfa_tenant_user_idx"), IdentityMfa.IDENTITY_MFA, arrayOf(IdentityMfa.IDENTITY_MFA.TENANT_ID, IdentityMfa.IDENTITY_MFA.USER_ID), false)
 val IDENTITY_RECOVERY_CODE_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("identity_recovery_code_tenant_user_idx"), IdentityRecoveryCode.IDENTITY_RECOVERY_CODE, arrayOf(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.TENANT_ID, IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.USER_ID), false)
 val IDENTITY_USER_TENANT_EMAIL_UK: Index = Internal.createIndex(DSL.name("identity_user_tenant_email_uk"), IdentityUser.IDENTITY_USER, arrayOf(IdentityUser.IDENTITY_USER.TENANT_ID, IdentityUser.IDENTITY_USER.EMAIL), true)

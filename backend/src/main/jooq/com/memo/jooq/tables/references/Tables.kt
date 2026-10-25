@@ -10,6 +10,8 @@ import com.memo.jooq.tables.AuditChainHead
 import com.memo.jooq.tables.AuditEvent
 import com.memo.jooq.tables.AuditVerification
 import com.memo.jooq.tables.IdentityActionToken
+import com.memo.jooq.tables.IdentityHttpSession
+import com.memo.jooq.tables.IdentityHttpSessionAttributes
 import com.memo.jooq.tables.IdentityMfa
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
@@ -44,6 +46,16 @@ val AUDIT_VERIFICATION: AuditVerification = AuditVerification.AUDIT_VERIFICATION
  * The table <code>memo.identity_action_token</code>.
  */
 val IDENTITY_ACTION_TOKEN: IdentityActionToken = IdentityActionToken.IDENTITY_ACTION_TOKEN
+
+/**
+ * The table <code>memo.identity_http_session</code>.
+ */
+val IDENTITY_HTTP_SESSION: IdentityHttpSession = IdentityHttpSession.IDENTITY_HTTP_SESSION
+
+/**
+ * The table <code>memo.identity_http_session_attributes</code>.
+ */
+val IDENTITY_HTTP_SESSION_ATTRIBUTES: IdentityHttpSessionAttributes = IdentityHttpSessionAttributes.IDENTITY_HTTP_SESSION_ATTRIBUTES
 
 /**
  * The table <code>memo.identity_mfa</code>.

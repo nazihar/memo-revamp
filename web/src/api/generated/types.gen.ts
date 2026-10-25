@@ -18,6 +18,117 @@ export type Health = {
     status: 'UP' | 'DEGRADED' | 'DOWN';
 };
 
+export type LoginRequest = {
+    email: string;
+    password: string;
+};
+
+export type ProblemDetail = {
+    detail?: string;
+    instance?: string;
+    properties?: {
+        [key: string]: unknown;
+    };
+    status?: number;
+    title?: string;
+    type?: string;
+};
+
+/**
+ * Who is signed in on this organisation's host, and what they must do next.
+ */
+export type Session = {
+    /**
+     * Display name of the organisation of this host
+     */
+    organisation: string;
+    state: 'ANONYMOUS' | 'MFA_REQUIRED' | 'MFA_ENROLMENT_REQUIRED' | 'AUTHENTICATED';
+    /**
+     * Present unless ANONYMOUS
+     */
+    user?: SessionUser | null;
+};
+
+export type SessionUser = {
+    displayName: string;
+    email: string;
+    id: string;
+    tenantAdmin: boolean;
+};
+
+export type GetCsrfTokenData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/auth/csrf';
+};
+
+export type GetCsrfTokenResponses = {
+    /**
+     * Cookie set
+     */
+    204: void;
+};
+
+export type GetCsrfTokenResponse = GetCsrfTokenResponses[keyof GetCsrfTokenResponses];
+
+export type LoginData = {
+    body: LoginRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/auth/login';
+};
+
+export type LoginErrors = {
+    /**
+     * Invalid credentials (the same answer for unknown, inactive and wrong-password cases)
+     */
+    401: ProblemDetail;
+};
+
+export type LoginError = LoginErrors[keyof LoginErrors];
+
+export type LoginResponses = {
+    /**
+     * Signed in; see state
+     */
+    200: Session;
+};
+
+export type LoginResponse = LoginResponses[keyof LoginResponses];
+
+export type LogoutData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/auth/logout';
+};
+
+export type LogoutResponses = {
+    /**
+     * Signed out
+     */
+    204: void;
+};
+
+export type LogoutResponse = LogoutResponses[keyof LogoutResponses];
+
+export type GetSessionData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/auth/session';
+};
+
+export type GetSessionResponses = {
+    /**
+     * Session state
+     */
+    200: Session;
+};
+
+export type GetSessionResponse = GetSessionResponses[keyof GetSessionResponses];
+
 export type GetHealthData = {
     body?: never;
     path?: never;

@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { GetHealthData, GetHealthErrors, GetHealthResponses } from './types.gen';
+import type { GetCsrfTokenData, GetCsrfTokenResponses, GetHealthData, GetHealthErrors, GetHealthResponses, GetSessionData, GetSessionResponses, LoginData, LoginErrors, LoginResponses, LogoutData, LogoutResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -17,6 +17,41 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
      */
     meta?: keyof ClientMeta extends never ? Record<string, unknown> : ClientMeta;
 };
+
+/**
+ * Issue the CSRF cookie
+ *
+ * Sets the XSRF-TOKEN cookie; send its value as X-XSRF-TOKEN on every mutating request. Call on start and after sign-in or sign-out.
+ */
+export const getCsrfToken = <ThrowOnError extends boolean = false>(options?: Options<GetCsrfTokenData, ThrowOnError>): RequestResult<GetCsrfTokenResponses, unknown, ThrowOnError> => (options?.client ?? client).get<GetCsrfTokenResponses, unknown, ThrowOnError>({ url: '/api/v1/auth/csrf', ...options });
+
+/**
+ * Sign in with email and password
+ *
+ * Starts a new session (new id). The state says whether a TOTP code or MFA enrolment follows.
+ */
+export const login = <ThrowOnError extends boolean = false>(options: Options<LoginData, ThrowOnError>): RequestResult<LoginResponses, LoginErrors, ThrowOnError> => (options.client ?? client).post<LoginResponses, LoginErrors, ThrowOnError>({
+    url: '/api/v1/auth/login',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Sign out
+ *
+ * Ends this session, complete or not.
+ */
+export const logout = <ThrowOnError extends boolean = false>(options?: Options<LogoutData, ThrowOnError>): RequestResult<LogoutResponses, unknown, ThrowOnError> => (options?.client ?? client).post<LogoutResponses, unknown, ThrowOnError>({ url: '/api/v1/auth/logout', ...options });
+
+/**
+ * Current session state
+ *
+ * Never 401: anonymous callers get ANONYMOUS.
+ */
+export const getSession = <ThrowOnError extends boolean = false>(options?: Options<GetSessionData, ThrowOnError>): RequestResult<GetSessionResponses, unknown, ThrowOnError> => (options?.client ?? client).get<GetSessionResponses, unknown, ThrowOnError>({ url: '/api/v1/auth/session', ...options });
 
 /**
  * Platform status

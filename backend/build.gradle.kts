@@ -43,6 +43,8 @@ dependencies {
     implementation(libs.spring.modulith.starter.jdbc)
     implementation(libs.db.scheduler.spring.boot.starter)
     implementation(libs.caffeine)
+    // Argon2id password hashing (ADR-0023).
+    implementation(libs.bcprov)
     implementation(libs.springdoc.webmvc.api)
     implementation(libs.jackson.module.kotlin)
     implementation(libs.kotlin.reflect)
@@ -92,6 +94,14 @@ fun registerUpdateTask(
 
 registerUpdateTask("updateContract", "*OpenApiContractTest", "contracts.update", "/contracts/openapi.json")
 registerUpdateTask("updateJooq", "*JooqCodegenTest", "jooq.update", "backend/src/main/jooq from the migrated schema")
+registerUpdateTask(
+    "updateBreachedPasswords",
+    "*BreachedPasswordFilterTest",
+    "breached.update",
+    "the common-password Bloom filter",
+).configure {
+    providers.gradleProperty("breached.source").orNull?.let { systemProperty("breached.source", it) }
+}
 
 tasks.withType<Test>().configureEach {
     val repoRoot = rootProject.layout.projectDirectory

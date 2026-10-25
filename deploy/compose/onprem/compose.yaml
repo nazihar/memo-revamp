@@ -124,6 +124,7 @@ services:
       MEMO_S3_ACCESS_KEY: ${S3_APP_ACCESS_KEY:?}
       MEMO_S3_SECRET_KEY: ${S3_APP_SECRET_KEY:?}
       MEMO_DEMO_SEED: ${MEMO_DEMO_SEED:-false}
+      MEMO_DEMO_PASSWORD: ${MEMO_DEMO_PASSWORD:-}
     networks: [default, docs-internal]
     # Readiness on the management port (never published).
     healthcheck:

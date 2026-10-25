@@ -3,9 +3,11 @@ package com.memo.demo
 import com.memo.common.context.ActorContext
 import com.memo.common.tenant.TenantId
 import com.memo.common.tenant.TenantTransactions
+import com.memo.identity.UserAccounts
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
 import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
@@ -30,7 +32,20 @@ object DemoTenant {
             // Placeholder for the org tree until Phase 1b models units and positions.
             "org.placeholder" to "Head Office",
         )
+
+    /** Demo accounts. Their password comes from `MEMO_DEMO_PASSWORD` (generated into the git-ignored `.env`), never code. */
+    val USERS =
+        listOf(
+            DemoUser("admin@demo.example", "Demo Admin", tenantAdmin = true),
+            DemoUser("user@demo.example", "Demo User", tenantAdmin = false),
+        )
 }
+
+data class DemoUser(
+    val email: String,
+    val displayName: String,
+    val tenantAdmin: Boolean,
+)
 
 /** Creates or refreshes the demo tenant. Idempotent. Refuses to run under the `prod` profile. */
 @Component
@@ -39,6 +54,8 @@ class DemoTenantSeeder(
     private val settings: TenantSettings,
     private val transactions: TenantTransactions,
     private val environment: Environment,
+    private val accounts: UserAccounts,
+    @param:Value("\${memo.demo.password:}") private val demoPassword: String,
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
 
@@ -50,9 +67,21 @@ class DemoTenantSeeder(
                 DemoTenant.SETTINGS.forEach { (key, value) ->
                     if (settings.get(key)?.value != value) settings.put(key, value)
                 }
+                DemoTenant.USERS.forEach { seedUser(it) }
             }
         }
         log.info("Demo tenant '{}' seeded", DemoTenant.SLUG)
+    }
+
+    private fun seedUser(user: DemoUser) {
+        val account = accounts.findByEmail(user.email) ?: accounts.create(user.email, user.displayName, user.tenantAdmin)
+        if (demoPassword.isBlank()) {
+            // Names the variable, never its value.
+            // nosemgrep: semgrep.memo-no-secrets-in-logs
+            log.warn("MEMO_DEMO_PASSWORD is not set: demo user {} cannot sign in", user.email)
+        } else if (!accounts.passwordMatches(account.id, demoPassword)) {
+            accounts.setPassword(account.id, demoPassword)
+        }
     }
 }
 

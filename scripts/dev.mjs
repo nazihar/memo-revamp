@@ -28,6 +28,8 @@ const SECRET_KEYS = [
   'S3_APP_ACCESS_KEY',
   'S3_APP_SECRET_KEY',
   'ONLYOFFICE_JWT_SECRET',
+  // Password of the demo users (ADR-0023); never in code.
+  'MEMO_DEMO_PASSWORD',
 ]
 
 const CORE_SERVICES = ['postgres', 'seaweedfs', 'mailpit']
@@ -78,6 +80,7 @@ export function backendEnv(env, { core }) {
     MEMO_SMTP_HOST: 'localhost',
     MEMO_SMTP_PORT: '1025',
     MEMO_DEMO_SEED: 'true',
+    MEMO_DEMO_PASSWORD: env.MEMO_DEMO_PASSWORD,
     // The local stack publishes the ONLYOFFICE gateway on 8081, the backend's default management port (ADR-0016).
     MEMO_MANAGEMENT_PORT: '8091',
   }

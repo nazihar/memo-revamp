@@ -7,6 +7,10 @@ package com.memo.jooq.indexes
 
 import com.memo.jooq.tables.AuditAnchor
 import com.memo.jooq.tables.AuditEvent
+import com.memo.jooq.tables.IdentityActionToken
+import com.memo.jooq.tables.IdentityMfa
+import com.memo.jooq.tables.IdentityRecoveryCode
+import com.memo.jooq.tables.IdentityUser
 import com.memo.jooq.tables.TenancySetting
 
 import org.jooq.Index
@@ -23,4 +27,9 @@ val AUDIT_ANCHOR_TENANT_SEQ_UK: Index = Internal.createIndex(DSL.name("audit_anc
 val AUDIT_EVENT_TENANT_ACTOR_IDX: Index = Internal.createIndex(DSL.name("audit_event_tenant_actor_idx"), AuditEvent.AUDIT_EVENT, arrayOf(AuditEvent.AUDIT_EVENT.TENANT_ID, AuditEvent.AUDIT_EVENT.ACTOR_ID, AuditEvent.AUDIT_EVENT.OCCURRED_AT), false)
 val AUDIT_EVENT_TENANT_OBJECT_IDX: Index = Internal.createIndex(DSL.name("audit_event_tenant_object_idx"), AuditEvent.AUDIT_EVENT, arrayOf(AuditEvent.AUDIT_EVENT.TENANT_ID, AuditEvent.AUDIT_EVENT.OBJECT_TYPE, AuditEvent.AUDIT_EVENT.OBJECT_ID, AuditEvent.AUDIT_EVENT.OCCURRED_AT), false)
 val AUDIT_EVENT_TENANT_SEQ_IDX: Index = Internal.createIndex(DSL.name("audit_event_tenant_seq_idx"), AuditEvent.AUDIT_EVENT, arrayOf(AuditEvent.AUDIT_EVENT.TENANT_ID, AuditEvent.AUDIT_EVENT.SEQ), false)
+val IDENTITY_ACTION_TOKEN_TENANT_HASH_UK: Index = Internal.createIndex(DSL.name("identity_action_token_tenant_hash_uk"), IdentityActionToken.IDENTITY_ACTION_TOKEN, arrayOf(IdentityActionToken.IDENTITY_ACTION_TOKEN.TENANT_ID, IdentityActionToken.IDENTITY_ACTION_TOKEN.TOKEN_HASH), true)
+val IDENTITY_ACTION_TOKEN_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("identity_action_token_tenant_user_idx"), IdentityActionToken.IDENTITY_ACTION_TOKEN, arrayOf(IdentityActionToken.IDENTITY_ACTION_TOKEN.TENANT_ID, IdentityActionToken.IDENTITY_ACTION_TOKEN.USER_ID), false)
+val IDENTITY_MFA_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("identity_mfa_tenant_user_idx"), IdentityMfa.IDENTITY_MFA, arrayOf(IdentityMfa.IDENTITY_MFA.TENANT_ID, IdentityMfa.IDENTITY_MFA.USER_ID), false)
+val IDENTITY_RECOVERY_CODE_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("identity_recovery_code_tenant_user_idx"), IdentityRecoveryCode.IDENTITY_RECOVERY_CODE, arrayOf(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.TENANT_ID, IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.USER_ID), false)
+val IDENTITY_USER_TENANT_EMAIL_UK: Index = Internal.createIndex(DSL.name("identity_user_tenant_email_uk"), IdentityUser.IDENTITY_USER, arrayOf(IdentityUser.IDENTITY_USER.TENANT_ID, IdentityUser.IDENTITY_USER.EMAIL), true)
 val TENANCY_SETTING_TENANT_KEY_UK: Index = Internal.createIndex(DSL.name("tenancy_setting_tenant_key_uk"), TenancySetting.TENANCY_SETTING, arrayOf(TenancySetting.TENANCY_SETTING.TENANT_ID, TenancySetting.TENANCY_SETTING.KEY), true)

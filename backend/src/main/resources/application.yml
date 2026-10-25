@@ -124,6 +124,13 @@ memo:
   demo:
     # Seeds the demo tenant on startup (dev and test only; refuses under the prod profile).
     seed: ${MEMO_DEMO_SEED:false}
+    # Password of the demo users (generated into the git-ignored .env; empty: they cannot sign in).
+    password: ${MEMO_DEMO_PASSWORD:}
+  security:
+    # argon2 (default) | pbkdf2 (FIPS-approved algorithms only) (ADR-0023).
+    password-encoding: ${MEMO_PASSWORD_ENCODING:argon2}
+    # Optional directory of Have I Been Pwned range files for the full breached-password check.
+    breached-passwords-dir: ${MEMO_BREACHED_PASSWORDS_DIR:}
   api-docs:
     enabled: false
   health:

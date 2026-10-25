@@ -9,6 +9,10 @@ import com.memo.jooq.tables.AuditAnchor
 import com.memo.jooq.tables.AuditChainHead
 import com.memo.jooq.tables.AuditEvent
 import com.memo.jooq.tables.AuditVerification
+import com.memo.jooq.tables.IdentityActionToken
+import com.memo.jooq.tables.IdentityMfa
+import com.memo.jooq.tables.IdentityRecoveryCode
+import com.memo.jooq.tables.IdentityUser
 import com.memo.jooq.tables.SystemInfo
 import com.memo.jooq.tables.TenancySetting
 import com.memo.jooq.tables.TenancySettingView
@@ -35,6 +39,26 @@ val AUDIT_EVENT: AuditEvent = AuditEvent.AUDIT_EVENT
  * The table <code>memo.audit_verification</code>.
  */
 val AUDIT_VERIFICATION: AuditVerification = AuditVerification.AUDIT_VERIFICATION
+
+/**
+ * The table <code>memo.identity_action_token</code>.
+ */
+val IDENTITY_ACTION_TOKEN: IdentityActionToken = IdentityActionToken.IDENTITY_ACTION_TOKEN
+
+/**
+ * The table <code>memo.identity_mfa</code>.
+ */
+val IDENTITY_MFA: IdentityMfa = IdentityMfa.IDENTITY_MFA
+
+/**
+ * The table <code>memo.identity_recovery_code</code>.
+ */
+val IDENTITY_RECOVERY_CODE: IdentityRecoveryCode = IdentityRecoveryCode.IDENTITY_RECOVERY_CODE
+
+/**
+ * The table <code>memo.identity_user</code>.
+ */
+val IDENTITY_USER: IdentityUser = IdentityUser.IDENTITY_USER
 
 /**
  * The table <code>memo.system_info</code>.

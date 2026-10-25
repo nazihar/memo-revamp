@@ -166,6 +166,7 @@ org.apache.tomcat:tomcat-annotations-api:11.0.25=compileClasspath,productionRunt
 org.apiguardian:apiguardian-api:1.1.2=testCompileClasspath,testRuntimeClasspath
 org.assertj:assertj-core:3.27.7=testCompileClasspath,testRuntimeClasspath
 org.awaitility:awaitility:4.3.0=testCompileClasspath,testRuntimeClasspath
+org.bouncycastle:bcprov-jdk18on:1.86=compileClasspath,productionRuntimeClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
 org.checkerframework:checker-qual:3.19.0=detekt
 org.checkerframework:checker-qual:3.55.1=productionRuntimeClasspath,runtimeClasspath,testRuntimeClasspath
 org.dom4j:dom4j:2.2.0=spotbugs

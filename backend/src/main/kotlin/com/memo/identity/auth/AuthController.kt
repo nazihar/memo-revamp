@@ -1,6 +1,8 @@
 package com.memo.identity.auth
 
 import com.memo.audit.AuditLog
+import com.memo.common.ratelimit.RateLimit
+import com.memo.common.ratelimit.RateLimiter
 import com.memo.common.tenant.TenantContext
 import com.memo.common.tenant.TenantTransactions
 import com.memo.common.web.ProblemTypes
@@ -76,6 +78,7 @@ class AuthController(
     private val registry: TenantRegistry,
     private val audit: AuditLog,
     private val mfa: MfaEnrolments,
+    private val limiter: RateLimiter,
 ) {
     @GetMapping("/csrf")
     @Operation(
@@ -135,8 +138,13 @@ class AuthController(
                 content = [Content(mediaType = "application/json", schema = Schema(implementation = SessionResponse::class))],
             ),
             ApiResponse(
+                responseCode = "429",
+                description = "Too many attempts from this address or for this account; see Retry-After",
+                content = [Content(mediaType = "application/problem+json", schema = Schema(implementation = ProblemDetail::class))],
+            ),
+            ApiResponse(
                 responseCode = "401",
-                description = "Invalid credentials (the same answer for unknown, inactive and wrong-password cases)",
+                description = "Invalid credentials (the same answer for unknown, inactive, locked and wrong-password cases)",
                 content = [Content(mediaType = "application/problem+json", schema = Schema(implementation = ProblemDetail::class))],
             ),
         ],
@@ -147,6 +155,9 @@ class AuthController(
         response: HttpServletResponse,
     ): ResponseEntity<Any> {
         if (!plausible(body)) return invalidCredentials()
+        // Before any lookup or hashing (ADR-0025); the per-account key holds for unknown emails too, so 429 reveals nothing.
+        limiter.consume(RateLimit.LOGIN_PER_IP, request.remoteAddr)
+        limiter.consume(RateLimit.LOGIN_PER_ACCOUNT, "${TenantContext.current()}:${UserAccounts.normaliseEmail(body.email)}")
         return when (val result = signIn.withPassword(TenantContext.current(), body.email, body.password)) {
             is SignInResult.Rejected -> {
                 invalidCredentials()

@@ -19,3 +19,8 @@
   - `ActorContextFilter` stays first (anonymous actor for everything before security); `UserActorFilter` inside the security chain rebinds the actor to the signed-in user.
   - Problem `type` URIs are URNs (`urn:memo:problem:invalid-credentials`, `…:mfa-required`, …): stable identifiers, not links.
   - Partial sessions (password only, MFA outstanding) get 401 `mfa-required` on everything but the auth endpoints.
+- T4 (rate limits and lockout):
+  - Lockout answers stay uniform (401 `invalid-credentials`); the client message mentions both causes. Throttle 1 min doubling to 15 after 5 failures (attempts during a wait are neither evaluated nor counted), lock for 30 min after 20, lifted at the next successful sign-in after expiry (audited as `identity.user.unlocked` by `System(lockout)`).
+  - The per-account limit (10 per 15 min) applies to unknown emails too, so a 429 says nothing about whether an account exists.
+  - Trusted forwarded headers (a T1 leftover): `server.forward-headers-strategy=native` (Tomcat RemoteIpValve, private ranges trusted). nginx now sets `X-Forwarded-Host` from `$host` and drops `X-Forwarded-Port`, so a client cannot choose the tenant host through a forwarded header.
+  - Tests give every sign-in a random TEST-NET client address: test classes share the database, and a shared 127.0.0.1 would exhaust the per-IP limit across classes.

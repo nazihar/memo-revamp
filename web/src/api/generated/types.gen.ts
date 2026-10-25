@@ -81,9 +81,13 @@ export type LoginData = {
 
 export type LoginErrors = {
     /**
-     * Invalid credentials (the same answer for unknown, inactive and wrong-password cases)
+     * Invalid credentials (the same answer for unknown, inactive, locked and wrong-password cases)
      */
     401: ProblemDetail;
+    /**
+     * Too many attempts from this address or for this account; see Retry-After
+     */
+    429: ProblemDetail;
 };
 
 export type LoginError = LoginErrors[keyof LoginErrors];

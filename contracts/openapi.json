@@ -177,7 +177,17 @@
                 }
               }
             },
-            "description" : "Invalid credentials (the same answer for unknown, inactive and wrong-password cases)"
+            "description" : "Invalid credentials (the same answer for unknown, inactive, locked and wrong-password cases)"
+          },
+          "429" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemDetail"
+                }
+              }
+            },
+            "description" : "Too many attempts from this address or for this account; see Retry-After"
           }
         },
         "summary" : "Sign in with email and password",

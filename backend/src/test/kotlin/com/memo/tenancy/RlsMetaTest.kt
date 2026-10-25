@@ -23,6 +23,7 @@ class RlsMetaTest : IntegrationTest() {
             "event_publication_archive" to "completed outbox entries; ids only (ADR-0017)",
             "identity_http_session" to
                 "Spring Session store, looked up by session id; the principal's tenant is checked per request (ADR-0023)",
+            "identity_rate_limit_bucket" to "rate-limit state keyed by a hash of limit and subject; no tenant data (ADR-0025)",
             "identity_http_session_attributes" to "session principal JSON (ids, factors); no tenant content (ADR-0023)",
         )
 

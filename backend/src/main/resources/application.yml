@@ -111,6 +111,10 @@ server:
     session:
       # The session cookie is configured in SessionConfig (ADR-0023).
       tracking-modes: []
+  # Client address and host from X-Forwarded-* only when the immediate peer is a trusted proxy (Tomcat RemoteIpValve;
+  # private address ranges by default, override with SERVER_TOMCAT_REMOTEIP_INTERNAL_PROXIES). Per-IP rate limits and
+  # tenant resolution depend on it (ADR-0022, ADR-0025).
+  forward-headers-strategy: native
 
 springdoc:
   api-docs:

@@ -13,6 +13,7 @@ import com.memo.jooq.tables.IdentityActionToken
 import com.memo.jooq.tables.IdentityHttpSession
 import com.memo.jooq.tables.IdentityHttpSessionAttributes
 import com.memo.jooq.tables.IdentityMfa
+import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
 import com.memo.jooq.tables.SystemInfo
@@ -26,6 +27,7 @@ import com.memo.jooq.tables.records.IdentityActionTokenRecord
 import com.memo.jooq.tables.records.IdentityHttpSessionAttributesRecord
 import com.memo.jooq.tables.records.IdentityHttpSessionRecord
 import com.memo.jooq.tables.records.IdentityMfaRecord
+import com.memo.jooq.tables.records.IdentityRateLimitBucketRecord
 import com.memo.jooq.tables.records.IdentityRecoveryCodeRecord
 import com.memo.jooq.tables.records.IdentityUserRecord
 import com.memo.jooq.tables.records.SystemInfoRecord
@@ -52,6 +54,7 @@ val IDENTITY_ACTION_TOKEN_PKEY: UniqueKey<IdentityActionTokenRecord> = Internal.
 val IDENTITY_HTTP_SESSION_PKEY: UniqueKey<IdentityHttpSessionRecord> = Internal.createUniqueKey(IdentityHttpSession.IDENTITY_HTTP_SESSION, DSL.name("identity_http_session_pkey"), arrayOf(IdentityHttpSession.IDENTITY_HTTP_SESSION.PRIMARY_ID), true)
 val IDENTITY_HTTP_SESSION_ATTRIBUTES_PKEY: UniqueKey<IdentityHttpSessionAttributesRecord> = Internal.createUniqueKey(IdentityHttpSessionAttributes.IDENTITY_HTTP_SESSION_ATTRIBUTES, DSL.name("identity_http_session_attributes_pkey"), arrayOf(IdentityHttpSessionAttributes.IDENTITY_HTTP_SESSION_ATTRIBUTES.SESSION_PRIMARY_ID, IdentityHttpSessionAttributes.IDENTITY_HTTP_SESSION_ATTRIBUTES.ATTRIBUTE_NAME), true)
 val IDENTITY_MFA_PKEY: UniqueKey<IdentityMfaRecord> = Internal.createUniqueKey(IdentityMfa.IDENTITY_MFA, DSL.name("identity_mfa_pkey"), arrayOf(IdentityMfa.IDENTITY_MFA.USER_ID), true)
+val IDENTITY_RATE_LIMIT_BUCKET_PKEY: UniqueKey<IdentityRateLimitBucketRecord> = Internal.createUniqueKey(IdentityRateLimitBucket.IDENTITY_RATE_LIMIT_BUCKET, DSL.name("identity_rate_limit_bucket_pkey"), arrayOf(IdentityRateLimitBucket.IDENTITY_RATE_LIMIT_BUCKET.ID), true)
 val IDENTITY_RECOVERY_CODE_PKEY: UniqueKey<IdentityRecoveryCodeRecord> = Internal.createUniqueKey(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE, DSL.name("identity_recovery_code_pkey"), arrayOf(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.ID), true)
 val IDENTITY_USER_PKEY: UniqueKey<IdentityUserRecord> = Internal.createUniqueKey(IdentityUser.IDENTITY_USER, DSL.name("identity_user_pkey"), arrayOf(IdentityUser.IDENTITY_USER.ID), true)
 val IDENTITY_USER_TENANT_ID_ID_KEY: UniqueKey<IdentityUserRecord> = Internal.createUniqueKey(IdentityUser.IDENTITY_USER, DSL.name("identity_user_tenant_id_id_key"), arrayOf(IdentityUser.IDENTITY_USER.TENANT_ID, IdentityUser.IDENTITY_USER.ID), true)

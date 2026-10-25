@@ -12,6 +12,10 @@ server {
         proxy_pass ${BACKEND_URL};
         proxy_http_version 1.1;
         proxy_set_header Host $host;
+        # The backend trusts forwarded headers from private-range proxies (Tomcat RemoteIpValve, ADR-0025): never pass
+        # client-supplied host or port through, or a request could pick another tenant's host (ADR-0022).
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Port "";
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_set_header X-Request-Id $request_id;

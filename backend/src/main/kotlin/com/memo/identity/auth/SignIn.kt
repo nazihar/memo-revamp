@@ -98,19 +98,37 @@ class SignIn(
     ): SignInResult =
         transactions.inTenant(tenant) {
             val account = accounts.findByEmail(email)
-            // Accounts without a password (unknown, invited) compare against a dummy hash: same cost, always false.
+            val blocked = account != null && attempts.blocked(account, clock.instant())
+            // Unknown, invited, waiting or locked accounts compare against a dummy hash: same cost, always false.
             val matches =
-                if (account?.hasPassword == true) {
+                if (account?.hasPassword == true && !blocked) {
                     accounts.passwordMatches(account.id, password)
                 } else {
                     encoder.matches(password, dummyHash)
                     false
                 }
             when {
-                account == null -> rejected(null, "bad_credentials")
-                account.status != UserStatus.ACTIVE -> rejected(account, if (account.status == UserStatus.LOCKED) "locked" else "inactive")
-                !matches -> rejected(account, "bad_credentials")
-                else -> signedIn(tenant, account)
+                account == null -> {
+                    rejected(null, "bad_credentials")
+                }
+
+                blocked -> {
+                    rejected(account, "locked")
+                }
+
+                // LOCKED with an expired lock may sign in again (the lock lifts on success).
+                account.status != UserStatus.ACTIVE && account.status != UserStatus.LOCKED -> {
+                    rejected(account, "inactive")
+                }
+
+                !matches -> {
+                    attempts.failed(account)
+                    rejected(account, "bad_credentials")
+                }
+
+                else -> {
+                    signedIn(tenant, account)
+                }
             }
         }
 
@@ -136,7 +154,7 @@ class SignIn(
                 mfa.isEnrolled(account.id) -> SessionState.MFA_REQUIRED
                 else -> SessionState.MFA_ENROLMENT_REQUIRED
             }
-        attempts.succeeded(account.id)
+        attempts.succeeded(account)
         ActorContext.call(ActorScope(Actor.User(account.id.value), ActorContext.currentOrNull()?.client)) {
             audit.record("identity.session.created", "identity.user", account.id.toString(), after = mapOf("factors" to listOf("PASSWORD")))
         }

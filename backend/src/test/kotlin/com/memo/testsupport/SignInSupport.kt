@@ -82,15 +82,32 @@ fun sendingCsrf(
         request
     }
 
+/**
+ * A random client address per sign-in (TEST-NET-2/3 ranges): test classes share the database, so a shared 127.0.0.1
+ * would exhaust the per-IP limit across classes (ADR-0025). Rate-limit tests pass a fixed [clientIp].
+ */
+fun aClientIp(): String = "198.51.${RANDOM.nextInt(IP_OCTETS)}.${RANDOM.nextInt(IP_OCTETS)}"
+
+private val RANDOM = SecureRandom()
+private const val IP_OCTETS = 256
+
+fun fromIp(ip: String): RequestPostProcessor =
+    RequestPostProcessor { request ->
+        request.remoteAddr = ip
+        request
+    }
+
 fun MockMvcTester.login(
     tenant: TestTenant,
     email: String,
     password: String,
     session: Cookie? = null,
+    clientIp: String = aClientIp(),
 ): MvcTestResult =
     post()
         .uri("/api/v1/auth/login")
         .with(onHost(tenant.slug))
+        .with(fromIp(clientIp))
         .with(sendingCsrf(csrfToken(tenant), *listOfNotNull(session).toTypedArray()))
         .contentType(MediaType.APPLICATION_JSON)
         .content("""{"email":${json(email)},"password":${json(password)}}""")

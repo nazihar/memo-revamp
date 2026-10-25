@@ -6,7 +6,7 @@ import com.memo.common.tenant.TenantTransactions
 import com.memo.identity.UserAccount
 import com.memo.identity.UserAccounts
 import com.memo.identity.UserStatus
-import com.memo.identity.mfa.MfaEnrolments
+import com.memo.identity.mfa.MfaService
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
 import com.memo.testsupport.Audit
@@ -42,7 +42,7 @@ class LockoutIT : IntegrationTest() {
 
     @Autowired lateinit var tenantDsl: TenantDsl
 
-    @Autowired lateinit var mfa: MfaEnrolments
+    @Autowired lateinit var mfa: MfaService
 
     private val password = aPassword()
 

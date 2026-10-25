@@ -6,13 +6,9 @@ import com.memo.common.ratelimit.RateLimiter
 import com.memo.common.tenant.TenantContext
 import com.memo.common.tenant.TenantTransactions
 import com.memo.common.web.ProblemTypes
-import com.memo.identity.UserAccount
 import com.memo.identity.UserAccounts
-import com.memo.identity.UserId
-import com.memo.identity.mfa.MfaEnrolments
 import com.memo.identity.session.SessionPrincipal
 import com.memo.identity.session.SessionStore
-import com.memo.tenancy.TenantRegistry
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Content
@@ -74,11 +70,9 @@ class AuthController(
     private val store: SessionStore,
     private val csrfTokens: CsrfTokenRepository,
     private val transactions: TenantTransactions,
-    private val accounts: UserAccounts,
-    private val registry: TenantRegistry,
     private val audit: AuditLog,
-    private val mfa: MfaEnrolments,
     private val limiter: RateLimiter,
+    private val views: SessionViews,
 ) {
     @GetMapping("/csrf")
     @Operation(
@@ -112,19 +106,7 @@ class AuthController(
     )
     fun session(
         @AuthenticationPrincipal principal: SessionPrincipal?,
-    ): ResponseEntity<SessionResponse> {
-        val body =
-            transactions.readInTenant(TenantContext.current()) {
-                val organisation = registry.current()?.name.orEmpty()
-                val account = principal?.let { accounts.find(UserId(it.userId)) }
-                if (principal == null || account == null) {
-                    SessionResponse(SessionState.ANONYMOUS, organisation)
-                } else {
-                    SessionResponse(state(principal, account), organisation, account.toResponse())
-                }
-            }
-        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(body)
-    }
+    ): ResponseEntity<SessionResponse> = ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(views.of(principal))
 
     @PostMapping("/login")
     @Operation(
@@ -166,11 +148,7 @@ class AuthController(
             is SignInResult.SignedIn -> {
                 store.start(request, result.principal, result.idleTimeout)
                 csrfTokens.saveToken(null, request, response)
-                val organisation = transactions.readInTenant(TenantContext.current()) { registry.current()?.name.orEmpty() }
-                ResponseEntity
-                    .ok()
-                    .cacheControl(CacheControl.noStore())
-                    .body(SessionResponse(result.next, organisation, result.account.toResponse()))
+                ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(views.of(result.principal))
             }
         }
     }
@@ -195,16 +173,6 @@ class AuthController(
         return ResponseEntity.noContent().build()
     }
 
-    private fun state(
-        principal: SessionPrincipal,
-        account: UserAccount,
-    ): SessionState =
-        when {
-            principal.sessionComplete -> SessionState.AUTHENTICATED
-            mfa.isEnrolled(account.id) -> SessionState.MFA_REQUIRED
-            else -> SessionState.MFA_ENROLMENT_REQUIRED
-        }
-
     /** Implausible input gets the same answer as wrong credentials, before any lookup or hashing. */
     private fun plausible(body: LoginRequest) =
         body.email.isNotBlank() && body.email.length <= MAX_EMAIL && body.password.length in 1..MAX_PASSWORD
@@ -213,8 +181,6 @@ class AuthController(
         ResponseEntity
             .status(HttpStatus.UNAUTHORIZED)
             .body(ProblemTypes.of(HttpStatus.UNAUTHORIZED, ProblemTypes.INVALID_CREDENTIALS, "The email or password is incorrect."))
-
-    private fun UserAccount.toResponse() = SessionUserResponse(id.value, email, displayName, tenantAdmin)
 
     private companion object {
         const val MAX_EMAIL = 320

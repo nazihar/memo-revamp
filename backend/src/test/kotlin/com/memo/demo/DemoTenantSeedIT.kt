@@ -1,8 +1,11 @@
 package com.memo.demo
 
 import com.memo.common.tenant.TenantTransactions
+import com.memo.identity.MfaSeeding
 import com.memo.identity.UserAccounts
 import com.memo.identity.UserStatus
+import com.memo.identity.mfa.MfaService
+import com.memo.identity.mfa.Totp
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
 import com.memo.testsupport.IntegrationTest
@@ -28,10 +31,15 @@ class DemoTenantSeedIT : IntegrationTest() {
 
     @Autowired lateinit var environment: Environment
 
+    @Autowired lateinit var mfaSeeding: MfaSeeding
+
+    @Autowired lateinit var mfa: MfaService
+
     private fun seederWith(
         password: String,
+        totpSecret: String = "",
         env: Environment = environment,
-    ) = DemoTenantSeeder(registry, settings, transactions, env, accounts, password)
+    ) = DemoTenantSeeder(registry, settings, transactions, env, accounts, password, mfaSeeding, totpSecret)
 
     @Test
     fun `seeding is idempotent and produces the demo tenant as defined in code`() {
@@ -49,12 +57,13 @@ class DemoTenantSeedIT : IntegrationTest() {
     }
 
     @Test
-    fun `demo users get the password from the environment and can then sign in`() {
+    fun `demo users get password and TOTP secret from the environment and can then sign in`() {
         // Generated per run: no password lives in code or fixtures.
         val password = Base64.getUrlEncoder().encodeToString(ByteArray(24).also { SecureRandom().nextBytes(it) })
 
-        seederWith(password).seed()
-        seederWith(password).seed()
+        val totpSecret = Totp.base32(Totp.newSecret())
+        seederWith(password, totpSecret).seed()
+        seederWith(password, totpSecret).seed()
 
         transactions.inTenant(DemoTenant.ID) {
             DemoTenant.USERS.forEach {
@@ -62,6 +71,7 @@ class DemoTenantSeedIT : IntegrationTest() {
                 assertThat(account.status).isEqualTo(UserStatus.ACTIVE)
                 assertThat(account.tenantAdmin).isEqualTo(it.tenantAdmin)
                 assertThat(accounts.passwordMatches(account.id, password)).isTrue()
+                assertThat(mfa.verify(account, Totp.code(Totp.decodeBase32(totpSecret), Totp.step(java.time.Instant.now())))).isTrue()
             }
         }
     }
@@ -69,6 +79,6 @@ class DemoTenantSeedIT : IntegrationTest() {
     @Test
     fun `refuses to seed under the prod profile`() {
         val prod = StandardEnvironment().apply { setActiveProfiles("prod") }
-        assertThatThrownBy { seederWith("", prod).seed() }.hasMessageContaining("never be seeded in production")
+        assertThatThrownBy { seederWith("", env = prod).seed() }.hasMessageContaining("never be seeded in production")
     }
 }

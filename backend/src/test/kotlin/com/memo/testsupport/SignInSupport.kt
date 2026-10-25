@@ -35,7 +35,7 @@ fun TenantRegistry.aTestTenant(
 ): TestTenant {
     val slug = "$label-${UUID.randomUUID().toString().take(8)}"
     val tenant = TestTenant(create(slug = slug, name = "Test tenant $slug").id, slug)
-    if (!mfaRequired) transactions.inTenant(tenant.id) { settings.put(AuthSettings.MFA_REQUIRED, "false") }
+    if (!mfaRequired) transactions.inTenant(tenant.id) { settings.put(AuthSettings.MFA_REQUIRED, AuthSettings.MFA_ADMINS_ONLY) }
     return tenant
 }
 
@@ -112,6 +112,25 @@ fun MockMvcTester.login(
         .contentType(MediaType.APPLICATION_JSON)
         .content("""{"email":${json(email)},"password":${json(password)}}""")
         .exchange()
+
+/** A mutating JSON request on the tenant's host with a real CSRF token and the [session] cookie. */
+fun MockMvcTester.postJson(
+    tenant: TestTenant,
+    uri: String,
+    session: Cookie?,
+    json: String = "{}",
+): MvcTestResult =
+    post()
+        .uri(uri)
+        .with(onHost(tenant.slug))
+        .with(fromIp(aClientIp()))
+        .with(sendingCsrf(csrfToken(tenant), *listOfNotNull(session).toTypedArray()))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(json)
+        .exchange()
+
+/** The new session cookie when the response rotated the session id, else [previous]. */
+fun MvcTestResult.sessionCookie(previous: Cookie? = null): Cookie? = response.getCookie(SESSION_COOKIE) ?: previous
 
 /** Signs in and returns the session cookie. */
 fun MockMvcTester.signIn(

@@ -30,6 +30,10 @@ const SECRET_KEYS = [
   'ONLYOFFICE_JWT_SECRET',
   // Password of the demo users (ADR-0023); never in code.
   'MEMO_DEMO_PASSWORD',
+  // Base32 TOTP secret of the demo users (ADR-0024), so tests and people can compute their codes.
+  'MEMO_DEMO_TOTP_SECRET',
+  // Key material for secrets encrypted at rest (ADR-0024).
+  'MEMO_DATA_KEY',
 ]
 
 const CORE_SERVICES = ['postgres', 'seaweedfs', 'mailpit']
@@ -44,7 +48,7 @@ export function ensureEnv() {
   const existing = existsSync(envFile) ? parseEnv(readFileSync(envFile, 'utf8')) : {}
   const missing = SECRET_KEYS.filter((k) => !existing[k])
   if (missing.length > 0) {
-    for (const k of missing) existing[k] = randomBytes(24).toString('base64url')
+    for (const k of missing) existing[k] = k === 'MEMO_DEMO_TOTP_SECRET' ? base32(randomBytes(20)) : randomBytes(24).toString('base64url')
     const body = Object.entries(existing)
       .map(([k, v]) => `${k}=${v}`)
       .join('\n')
@@ -56,6 +60,24 @@ export function ensureEnv() {
     log(`wrote ${missing.length} generated credential(s) to deploy/compose/.env`)
   }
   return existing
+}
+
+/** RFC 4648 Base32 without padding (authenticator apps' secret format). */
+export function base32(bytes) {
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567'
+  let bits = 0
+  let value = 0
+  let out = ''
+  for (const byte of bytes) {
+    value = (value << 8) | byte
+    bits += 8
+    while (bits >= 5) {
+      out += alphabet[(value >>> (bits - 5)) & 31]
+      bits -= 5
+    }
+  }
+  if (bits > 0) out += alphabet[(value << (5 - bits)) & 31]
+  return out
 }
 
 export function parseEnv(text) {
@@ -81,6 +103,8 @@ export function backendEnv(env, { core }) {
     MEMO_SMTP_PORT: '1025',
     MEMO_DEMO_SEED: 'true',
     MEMO_DEMO_PASSWORD: env.MEMO_DEMO_PASSWORD,
+    MEMO_DEMO_TOTP_SECRET: env.MEMO_DEMO_TOTP_SECRET,
+    MEMO_DATA_KEY: env.MEMO_DATA_KEY,
     // The local stack publishes the ONLYOFFICE gateway on 8081, the backend's default management port (ADR-0016).
     MEMO_MANAGEMENT_PORT: '8091',
   }

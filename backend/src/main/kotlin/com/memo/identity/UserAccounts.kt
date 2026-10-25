@@ -25,7 +25,17 @@ value class UserId(
 }
 
 /** Account lifecycle (design.md §3): INVITED → ACTIVE ⇄ LOCKED; any → DEACTIVATED → ACTIVE. */
-enum class UserStatus { INVITED, ACTIVE, LOCKED, DEACTIVATED }
+enum class UserStatus {
+    INVITED,
+    ACTIVE,
+    LOCKED,
+    DEACTIVATED,
+    ;
+
+    /** May continue a sign-in already past the password (MFA step, enrolment). */
+    val canSignIn: Boolean
+        get() = this == ACTIVE
+}
 
 /** A local account of one tenant (ADR-0022). Never carries the password hash. */
 data class UserAccount(

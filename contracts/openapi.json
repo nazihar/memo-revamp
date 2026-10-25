@@ -1,6 +1,17 @@
 {
   "components" : {
     "schemas" : {
+      "CodeRequest" : {
+        "properties" : {
+          "code" : {
+            "description" : "6-digit TOTP code, or a recovery code",
+            "maxLength" : 32,
+            "type" : "string"
+          }
+        },
+        "required" : [ "code" ],
+        "type" : "object"
+      },
       "ComponentHealth" : {
         "properties" : {
           "name" : {
@@ -48,6 +59,40 @@
           }
         },
         "required" : [ "email", "password" ],
+        "type" : "object"
+      },
+      "MfaEnrolment" : {
+        "description" : "Shown once while enrolling; the secret never appears again.",
+        "properties" : {
+          "otpauthUri" : {
+            "type" : "string"
+          },
+          "qrSvg" : {
+            "description" : "QR code of otpauthUri as SVG markup",
+            "type" : "string"
+          },
+          "secret" : {
+            "description" : "Base32 secret for manual entry",
+            "type" : "string"
+          }
+        },
+        "required" : [ "otpauthUri", "qrSvg", "secret" ],
+        "type" : "object"
+      },
+      "MfaEnrolmentConfirmed" : {
+        "properties" : {
+          "recoveryCodes" : {
+            "description" : "Shown once; each code works once",
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "session" : {
+            "$ref" : "#/components/schemas/Session"
+          }
+        },
+        "required" : [ "recoveryCodes", "session" ],
         "type" : "object"
       },
       "ProblemDetail" : {
@@ -204,6 +249,126 @@
           }
         },
         "summary" : "Sign out",
+        "tags" : [ "auth" ]
+      }
+    },
+    "/api/v1/auth/mfa" : {
+      "post" : {
+        "description" : "A TOTP code (each usable once) or an unused recovery code. Rate-limited per user.",
+        "operationId" : "verifyMfa",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CodeRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Session"
+                }
+              }
+            },
+            "description" : "Factor added; see state"
+          },
+          "401" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemDetail"
+                }
+              }
+            },
+            "description" : "Invalid code"
+          },
+          "429" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemDetail"
+                }
+              }
+            },
+            "description" : "Too many codes; see Retry-After"
+          }
+        },
+        "summary" : "Second sign-in step",
+        "tags" : [ "auth" ]
+      }
+    },
+    "/api/v1/auth/mfa/enrolment" : {
+      "post" : {
+        "description" : "During sign-in when enrolment is required, or from a complete session to switch devices. Confirm with a code to activate.",
+        "operationId" : "startMfaEnrolment",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MfaEnrolment"
+                }
+              }
+            },
+            "description" : "Enrolment started"
+          },
+          "403" : {
+            "content" : {
+              "*/*" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "Already enrolled and the session is not complete"
+          }
+        },
+        "summary" : "Start TOTP enrolment",
+        "tags" : [ "auth" ]
+      }
+    },
+    "/api/v1/auth/mfa/enrolment/confirm" : {
+      "post" : {
+        "description" : "Activates MFA, returns recovery codes once, and completes the sign-in step.",
+        "operationId" : "confirmMfaEnrolment",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CodeRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MfaEnrolmentConfirmed"
+                }
+              }
+            },
+            "description" : "Enrolled"
+          },
+          "401" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemDetail"
+                }
+              }
+            },
+            "description" : "Invalid code"
+          }
+        },
+        "summary" : "Confirm TOTP enrolment",
         "tags" : [ "auth" ]
       }
     },

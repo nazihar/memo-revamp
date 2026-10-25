@@ -9,7 +9,7 @@ import com.memo.common.tenant.TenantTransactions
 import com.memo.identity.UserAccount
 import com.memo.identity.UserAccounts
 import com.memo.identity.UserStatus
-import com.memo.identity.mfa.MfaEnrolments
+import com.memo.identity.mfa.MfaService
 import com.memo.identity.session.Factor
 import com.memo.identity.session.SessionFactor
 import com.memo.identity.session.SessionPrincipal
@@ -32,8 +32,7 @@ class AuthSettings(
     fun absoluteTimeout(): Duration = Duration.ofHours(int(ABSOLUTE_HOURS, DEFAULT_ABSOLUTE_HOURS, 1..MAX_ABSOLUTE_HOURS).toLong())
 
     /** Tenant admins always need MFA; other users unless the tenant relaxes it (overview Q5). */
-    fun mfaRequired(account: UserAccount): Boolean =
-        account.tenantAdmin || settings.get(MFA_REQUIRED)?.value?.toBooleanStrictOrNull() ?: true
+    fun mfaRequired(account: UserAccount): Boolean = account.tenantAdmin || settings.get(MFA_REQUIRED)?.value != MFA_ADMINS_ONLY
 
     private fun int(
         key: String,
@@ -49,7 +48,10 @@ class AuthSettings(
     companion object {
         const val IDLE_MINUTES = "security.session.idle.minutes"
         const val ABSOLUTE_HOURS = "security.session.absolute.hours"
+
+        /** `all` (default; any other value counts as `all`) or `admins` (ADR-0024). */
         const val MFA_REQUIRED = "security.mfa.required"
+        const val MFA_ADMINS_ONLY = "admins"
         private const val DEFAULT_IDLE_MINUTES = 30
         private const val MAX_IDLE_MINUTES = 480
         private const val DEFAULT_ABSOLUTE_HOURS = 12
@@ -85,7 +87,7 @@ class SignIn(
     private val audit: AuditLog,
     private val clock: Clock,
     private val attempts: LoginAttempts,
-    private val mfa: MfaEnrolments,
+    private val mfa: MfaService,
 ) {
     private val dummyHash: String by lazy {
         requireNotNull(encoder.encode(Base64.getEncoder().encodeToString(ByteArray(DUMMY_BYTES).also { RANDOM.nextBytes(it) })))

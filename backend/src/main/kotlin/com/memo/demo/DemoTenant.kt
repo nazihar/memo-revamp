@@ -3,6 +3,7 @@ package com.memo.demo
 import com.memo.common.context.ActorContext
 import com.memo.common.tenant.TenantId
 import com.memo.common.tenant.TenantTransactions
+import com.memo.identity.MfaSeeding
 import com.memo.identity.UserAccounts
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
@@ -56,6 +57,8 @@ class DemoTenantSeeder(
     private val environment: Environment,
     private val accounts: UserAccounts,
     @param:Value("\${memo.demo.password:}") private val demoPassword: String,
+    private val mfa: MfaSeeding,
+    @param:Value("\${memo.demo.totp-secret:}") private val demoTotpSecret: String,
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
 
@@ -82,6 +85,8 @@ class DemoTenantSeeder(
         } else if (!accounts.passwordMatches(account.id, demoPassword)) {
             accounts.setPassword(account.id, demoPassword)
         }
+        // Base32, so Playwright and people can compute codes for the demo users (MFA is required by default).
+        if (demoTotpSecret.isNotBlank()) mfa.ensureTotp(account.id, demoTotpSecret)
     }
 }
 

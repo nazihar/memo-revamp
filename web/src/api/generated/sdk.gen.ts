@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { GetCsrfTokenData, GetCsrfTokenResponses, GetHealthData, GetHealthErrors, GetHealthResponses, GetSessionData, GetSessionResponses, LoginData, LoginErrors, LoginResponses, LogoutData, LogoutResponses } from './types.gen';
+import type { ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentErrors, ConfirmMfaEnrolmentResponses, GetCsrfTokenData, GetCsrfTokenResponses, GetHealthData, GetHealthErrors, GetHealthResponses, GetSessionData, GetSessionResponses, LoginData, LoginErrors, LoginResponses, LogoutData, LogoutResponses, StartMfaEnrolmentData, StartMfaEnrolmentErrors, StartMfaEnrolmentResponses, VerifyMfaData, VerifyMfaErrors, VerifyMfaResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -45,6 +45,41 @@ export const login = <ThrowOnError extends boolean = false>(options: Options<Log
  * Ends this session, complete or not.
  */
 export const logout = <ThrowOnError extends boolean = false>(options?: Options<LogoutData, ThrowOnError>): RequestResult<LogoutResponses, unknown, ThrowOnError> => (options?.client ?? client).post<LogoutResponses, unknown, ThrowOnError>({ url: '/api/v1/auth/logout', ...options });
+
+/**
+ * Second sign-in step
+ *
+ * A TOTP code (each usable once) or an unused recovery code. Rate-limited per user.
+ */
+export const verifyMfa = <ThrowOnError extends boolean = false>(options: Options<VerifyMfaData, ThrowOnError>): RequestResult<VerifyMfaResponses, VerifyMfaErrors, ThrowOnError> => (options.client ?? client).post<VerifyMfaResponses, VerifyMfaErrors, ThrowOnError>({
+    url: '/api/v1/auth/mfa',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Start TOTP enrolment
+ *
+ * During sign-in when enrolment is required, or from a complete session to switch devices. Confirm with a code to activate.
+ */
+export const startMfaEnrolment = <ThrowOnError extends boolean = false>(options?: Options<StartMfaEnrolmentData, ThrowOnError>): RequestResult<StartMfaEnrolmentResponses, StartMfaEnrolmentErrors, ThrowOnError> => (options?.client ?? client).post<StartMfaEnrolmentResponses, StartMfaEnrolmentErrors, ThrowOnError>({ url: '/api/v1/auth/mfa/enrolment', ...options });
+
+/**
+ * Confirm TOTP enrolment
+ *
+ * Activates MFA, returns recovery codes once, and completes the sign-in step.
+ */
+export const confirmMfaEnrolment = <ThrowOnError extends boolean = false>(options: Options<ConfirmMfaEnrolmentData, ThrowOnError>): RequestResult<ConfirmMfaEnrolmentResponses, ConfirmMfaEnrolmentErrors, ThrowOnError> => (options.client ?? client).post<ConfirmMfaEnrolmentResponses, ConfirmMfaEnrolmentErrors, ThrowOnError>({
+    url: '/api/v1/auth/mfa/enrolment/confirm',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
 
 /**
  * Current session state

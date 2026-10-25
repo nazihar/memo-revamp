@@ -22,6 +22,11 @@ objectStorage:
   # Secret with keys `accessKey` and `secretKey` for the least-privilege app identity (ADR-0005).
   secret: memo-s3-app
 
+security:
+  # Secret with key `dataKey` (at least 32 random characters): encrypts TOTP secrets at rest (ADR-0024). Back it up
+  # with the database; losing it means every user enrols MFA again.
+  dataKeySecret: memo-data-key
+
 integrations:
   documentServerUrl: ""   # ONLYOFFICE (internal URL); empty = disabled
   malwareScannerHost: ""  # clamd host; empty = disabled

@@ -36,6 +36,7 @@ com.google.errorprone:error_prone_annotations:2.10.0=detekt
 com.google.errorprone:error_prone_annotations:2.48.0=spotbugs
 com.google.errorprone:error_prone_annotations:2.49.0=compileClasspath,productionRuntimeClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
 com.google.protobuf:protobuf-java:4.35.1=productionRuntimeClasspath,runtimeClasspath,testRuntimeClasspath
+com.google.zxing:core:3.5.4=compileClasspath,productionRuntimeClasspath,runtimeClasspath,testCompileClasspath,testRuntimeClasspath
 com.h3xstream.findsecbugs:findsecbugs-plugin:1.14.0=spotbugsPlugins
 com.jayway.jsonpath:json-path:2.10.0=testCompileClasspath,testRuntimeClasspath
 com.pinterest.ktlint:ktlint-cli-reporter-baseline:1.8.0=ktlint,ktlintBaselineReporter

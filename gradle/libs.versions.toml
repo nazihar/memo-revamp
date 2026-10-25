@@ -16,6 +16,7 @@ jqwik = "1.10.2"
 db-scheduler = "16.12.0"
 bouncycastle = "1.86"
 bucket4j = "8.21.0"
+zxing = "3.5.4"
 gatling = "3.16.0"
 cyclonedx = "3.5.1"
 spotbugs-gradle = "6.5.13"
@@ -50,6 +51,7 @@ spring-modulith-starter-jdbc = { module = "org.springframework.modulith:spring-m
 db-scheduler-spring-boot-starter = { module = "com.github.kagkarlsson:db-scheduler-spring-boot-4-starter", version.ref = "db-scheduler" }
 caffeine = { module = "com.github.ben-manes.caffeine:caffeine" }
 bcprov = { module = "org.bouncycastle:bcprov-jdk18on", version.ref = "bouncycastle" }
+zxing-core = { module = "com.google.zxing:core", version.ref = "zxing" }
 bucket4j-postgresql = { module = "com.bucket4j:bucket4j_jdk17-postgresql", version.ref = "bucket4j" }
 spring-modulith-starter-test = { module = "org.springframework.modulith:spring-modulith-starter-test" }
 spring-modulith-runtime = { module = "org.springframework.modulith:spring-modulith-runtime" }

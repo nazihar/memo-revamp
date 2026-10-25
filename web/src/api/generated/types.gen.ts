@@ -4,6 +4,13 @@ export type ClientOptions = {
     baseUrl: `${string}://${string}` | (string & {});
 };
 
+export type CodeRequest = {
+    /**
+     * 6-digit TOTP code, or a recovery code
+     */
+    code: string;
+};
+
 export type ComponentHealth = {
     name: string;
     status: 'UP' | 'DOWN' | 'DISABLED';
@@ -21,6 +28,29 @@ export type Health = {
 export type LoginRequest = {
     email: string;
     password: string;
+};
+
+/**
+ * Shown once while enrolling; the secret never appears again.
+ */
+export type MfaEnrolment = {
+    otpauthUri: string;
+    /**
+     * QR code of otpauthUri as SVG markup
+     */
+    qrSvg: string;
+    /**
+     * Base32 secret for manual entry
+     */
+    secret: string;
+};
+
+export type MfaEnrolmentConfirmed = {
+    /**
+     * Shown once; each code works once
+     */
+    recoveryCodes: Array<string>;
+    session: Session;
 };
 
 export type ProblemDetail = {
@@ -116,6 +146,87 @@ export type LogoutResponses = {
 };
 
 export type LogoutResponse = LogoutResponses[keyof LogoutResponses];
+
+export type VerifyMfaData = {
+    body: CodeRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/auth/mfa';
+};
+
+export type VerifyMfaErrors = {
+    /**
+     * Invalid code
+     */
+    401: ProblemDetail;
+    /**
+     * Too many codes; see Retry-After
+     */
+    429: ProblemDetail;
+};
+
+export type VerifyMfaError = VerifyMfaErrors[keyof VerifyMfaErrors];
+
+export type VerifyMfaResponses = {
+    /**
+     * Factor added; see state
+     */
+    200: Session;
+};
+
+export type VerifyMfaResponse = VerifyMfaResponses[keyof VerifyMfaResponses];
+
+export type StartMfaEnrolmentData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/auth/mfa/enrolment';
+};
+
+export type StartMfaEnrolmentErrors = {
+    /**
+     * Already enrolled and the session is not complete
+     */
+    403: {
+        [key: string]: unknown;
+    };
+};
+
+export type StartMfaEnrolmentError = StartMfaEnrolmentErrors[keyof StartMfaEnrolmentErrors];
+
+export type StartMfaEnrolmentResponses = {
+    /**
+     * Enrolment started
+     */
+    200: MfaEnrolment;
+};
+
+export type StartMfaEnrolmentResponse = StartMfaEnrolmentResponses[keyof StartMfaEnrolmentResponses];
+
+export type ConfirmMfaEnrolmentData = {
+    body: CodeRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/auth/mfa/enrolment/confirm';
+};
+
+export type ConfirmMfaEnrolmentErrors = {
+    /**
+     * Invalid code
+     */
+    401: ProblemDetail;
+};
+
+export type ConfirmMfaEnrolmentError = ConfirmMfaEnrolmentErrors[keyof ConfirmMfaEnrolmentErrors];
+
+export type ConfirmMfaEnrolmentResponses = {
+    /**
+     * Enrolled
+     */
+    200: MfaEnrolmentConfirmed;
+};
+
+export type ConfirmMfaEnrolmentResponse = ConfirmMfaEnrolmentResponses[keyof ConfirmMfaEnrolmentResponses];
 
 export type GetSessionData = {
     body?: never;

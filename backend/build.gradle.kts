@@ -47,6 +47,7 @@ dependencies {
     // Argon2id password hashing (ADR-0023).
     implementation(libs.bcprov)
     implementation(libs.bucket4j.postgresql)
+    implementation(libs.zxing.core)
     implementation(libs.springdoc.webmvc.api)
     implementation(libs.jackson.module.kotlin)
     implementation(libs.kotlin.reflect)

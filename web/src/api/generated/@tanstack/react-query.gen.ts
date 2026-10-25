@@ -3,8 +3,8 @@
 import { type DefaultError, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { getCsrfToken, getHealth, getSession, login, logout, type Options } from '../sdk.gen';
-import type { GetCsrfTokenData, GetCsrfTokenResponse, GetHealthData, GetHealthError, GetHealthResponse, GetSessionData, GetSessionResponse, LoginData, LoginError, LoginResponse, LogoutData, LogoutResponse } from '../types.gen';
+import { confirmMfaEnrolment, getCsrfToken, getHealth, getSession, login, logout, type Options, startMfaEnrolment, verifyMfa } from '../sdk.gen';
+import type { ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentError, ConfirmMfaEnrolmentResponse, GetCsrfTokenData, GetCsrfTokenResponse, GetHealthData, GetHealthError, GetHealthResponse, GetSessionData, GetSessionResponse, LoginData, LoginError, LoginResponse, LogoutData, LogoutResponse, StartMfaEnrolmentData, StartMfaEnrolmentError, StartMfaEnrolmentResponse, VerifyMfaData, VerifyMfaError, VerifyMfaResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -87,6 +87,63 @@ export const logoutMutation = (options?: Partial<Options<LogoutData>>): UseMutat
     const mutationOptions: UseMutationOptions<LogoutResponse, DefaultError, Options<LogoutData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await logout({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Second sign-in step
+ *
+ * A TOTP code (each usable once) or an unused recovery code. Rate-limited per user.
+ */
+export const verifyMfaMutation = (options?: Partial<Options<VerifyMfaData>>): UseMutationOptions<VerifyMfaResponse, VerifyMfaError, Options<VerifyMfaData>> => {
+    const mutationOptions: UseMutationOptions<VerifyMfaResponse, VerifyMfaError, Options<VerifyMfaData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await verifyMfa({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Start TOTP enrolment
+ *
+ * During sign-in when enrolment is required, or from a complete session to switch devices. Confirm with a code to activate.
+ */
+export const startMfaEnrolmentMutation = (options?: Partial<Options<StartMfaEnrolmentData>>): UseMutationOptions<StartMfaEnrolmentResponse, StartMfaEnrolmentError, Options<StartMfaEnrolmentData>> => {
+    const mutationOptions: UseMutationOptions<StartMfaEnrolmentResponse, StartMfaEnrolmentError, Options<StartMfaEnrolmentData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await startMfaEnrolment({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Confirm TOTP enrolment
+ *
+ * Activates MFA, returns recovery codes once, and completes the sign-in step.
+ */
+export const confirmMfaEnrolmentMutation = (options?: Partial<Options<ConfirmMfaEnrolmentData>>): UseMutationOptions<ConfirmMfaEnrolmentResponse, ConfirmMfaEnrolmentError, Options<ConfirmMfaEnrolmentData>> => {
+    const mutationOptions: UseMutationOptions<ConfirmMfaEnrolmentResponse, ConfirmMfaEnrolmentError, Options<ConfirmMfaEnrolmentData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await confirmMfaEnrolment({
                 ...options,
                 ...fnOptions,
                 throwOnError: true

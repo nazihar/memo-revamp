@@ -8,6 +8,18 @@
     {
       "component": "@fontsource/ibm-plex-sans-arabic@5.3.0",
       "reason": "Font files (SIL OFL-1.1), bundled unmodified and served to browsers; not code linked into ours. OFL permits redistribution with software; obligation met by shipping the licence text at /licenses/ (web/public/licenses). Phase 1a E01."
+    },
+    {
+      "component": "org.springframework.session:spring-session-core@4.1.1",
+      "reason": "POM metadata error, not a licence change: the 4.1.1 POMs name a 'Broadcom Foundation License' without text or URL, while the jar's META-INF/LICENSE.txt and every source header are Apache-2.0. Spring maintainers confirmed it as a release-tooling bug (spring-projects/spring-session#3910, fixed for 4.1.2). Remove when Boot manages Spring Session >= 4.1.2. Phase 1a E03."
+    },
+    {
+      "component": "org.springframework.session:spring-session-jdbc@4.1.1",
+      "reason": "POM metadata error, not a licence change: the 4.1.1 POMs name a 'Broadcom Foundation License' without text or URL, while the jar's META-INF/LICENSE.txt and every source header are Apache-2.0. Spring maintainers confirmed it as a release-tooling bug (spring-projects/spring-session#3910, fixed for 4.1.2). Remove when Boot manages Spring Session >= 4.1.2. Phase 1a E03."
+    },
+    {
+      "component": "org.bouncycastle:bcprov-jdk18on@1.86",
+      "reason": "The Bouncy Castle Licence is the MIT licence text under the project's own name (https://www.bouncycastle.org/about/license/), so it is permissive like the MIT entries on the allow-list. Argon2id for password hashing (ADR-0023). Phase 1a E03."
     }
   ]
 }

@@ -67,7 +67,8 @@ class SecurityConfig {
             .authorizeHttpRequests { auth ->
                 PUBLIC_ENDPOINTS.forEach { auth.requestMatchers(it).permitAll() }
                 if (apiDocsEnabled) auth.requestMatchers("/v3/api-docs", "/v3/api-docs/**").permitAll()
-                auth.requestMatchers("/api/v1/auth/logout").authenticated()
+                // A partial session (password only) may finish the sign-in or leave.
+                auth.requestMatchers("/api/v1/auth/logout", "/api/v1/auth/mfa", "/api/v1/auth/mfa/**").authenticated()
                 auth.anyRequest().hasAuthority(AuthenticatedUser.SESSION_COMPLETE)
             }.securityContext { it.securityContextRepository(contextRepository) }
             .sessionManagement {

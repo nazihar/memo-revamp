@@ -138,11 +138,15 @@ memo:
     seed: ${MEMO_DEMO_SEED:false}
     # Password of the demo users (generated into the git-ignored .env; empty: they cannot sign in).
     password: ${MEMO_DEMO_PASSWORD:}
+    # Base32 TOTP secret of the demo users (generated into .env); empty: they must enrol MFA themselves.
+    totp-secret: ${MEMO_DEMO_TOTP_SECRET:}
   security:
     # argon2 (default) | pbkdf2 (FIPS-approved algorithms only) (ADR-0023).
     password-encoding: ${MEMO_PASSWORD_ENCODING:argon2}
     # Optional directory of Have I Been Pwned range files for the full breached-password check.
     breached-passwords-dir: ${MEMO_BREACHED_PASSWORDS_DIR:}
+    # Key material for secrets encrypted at rest (TOTP secrets, ADR-0024); required by the web application.
+    data-key: ${MEMO_DATA_KEY:}
     # Secure cookies; only plain-HTTP test setups switch this off (browsers accept Secure on http://localhost).
     cookie-secure: ${MEMO_COOKIE_SECURE:true}
   api-docs:

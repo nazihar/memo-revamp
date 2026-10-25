@@ -59,5 +59,12 @@ object TestDatabase {
             "spring.datasource.password" to appPassword,
             "spring.flyway.user" to "memo_migrator",
             "spring.flyway.password" to migratorPassword,
+            "memo.security.data-key" to dataKey,
         )
+
+    /** A fresh data key per test JVM (DataKeys): no key material lives in code or fixtures. */
+    private val dataKey: String =
+        java.util.Base64
+            .getUrlEncoder()
+            .encodeToString(ByteArray(32).also { java.security.SecureRandom().nextBytes(it) })
 }

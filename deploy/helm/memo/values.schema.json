@@ -37,6 +37,14 @@
         "secret": { "type": "string" }
       }
     },
+    "security": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dataKeySecret"],
+      "properties": {
+        "dataKeySecret": { "type": "string", "minLength": 1 }
+      }
+    },
     "integrations": {
       "type": "object",
       "additionalProperties": false,

@@ -23,14 +23,19 @@ CREATE TABLE identity_user (
 CREATE UNIQUE INDEX identity_user_tenant_email_uk ON identity_user (tenant_id, email);
 CREATE INDEX identity_user_tenant_name_idx ON identity_user (tenant_id, lower(display_name), id);
 
+-- TOTP (ADR-0024). Secrets are AES-GCM encrypted (DataKeys, bound to tenant and user). `secret_enc` is the active
+-- secret (null until the first enrolment is confirmed); `pending_secret_enc` an enrolment in progress, so re-enrolling
+-- never drops a working secret before the new one is confirmed.
 CREATE TABLE identity_mfa (
-    user_id     uuid        PRIMARY KEY,
-    tenant_id   uuid        NOT NULL,
-    secret_enc  bytea       NOT NULL,
-    confirmed   boolean     NOT NULL DEFAULT false,
-    last_step   bigint      NOT NULL DEFAULT 0,
-    enrolled_at timestamptz,
-    created_at  timestamptz NOT NULL,
+    user_id            uuid        PRIMARY KEY,
+    tenant_id          uuid        NOT NULL,
+    secret_enc         bytea,
+    pending_secret_enc bytea,
+    last_step          bigint      NOT NULL DEFAULT 0,
+    enrolled_at        timestamptz,
+    created_at         timestamptz NOT NULL,
+    updated_at         timestamptz NOT NULL,
+    CHECK (secret_enc IS NOT NULL OR pending_secret_enc IS NOT NULL),
     FOREIGN KEY (tenant_id, user_id) REFERENCES identity_user (tenant_id, id)
 );
 CREATE INDEX identity_mfa_tenant_user_idx ON identity_mfa (tenant_id, user_id);

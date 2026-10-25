@@ -17,6 +17,7 @@ import java.util.UUID
 import kotlin.collections.Collection
 import kotlin.collections.List
 
+import org.jooq.Check
 import org.jooq.Condition
 import org.jooq.Field
 import org.jooq.ForeignKey
@@ -91,12 +92,12 @@ open class IdentityMfa(
     /**
      * The column <code>memo.identity_mfa.secret_enc</code>.
      */
-    val SECRET_ENC: TableField<IdentityMfaRecord, ByteArray?> = createField(DSL.name("secret_enc"), SQLDataType.BLOB.nullable(false), this, "")
+    val SECRET_ENC: TableField<IdentityMfaRecord, ByteArray?> = createField(DSL.name("secret_enc"), SQLDataType.BLOB, this, "")
 
     /**
-     * The column <code>memo.identity_mfa.confirmed</code>.
+     * The column <code>memo.identity_mfa.pending_secret_enc</code>.
      */
-    val CONFIRMED: TableField<IdentityMfaRecord, Boolean?> = createField(DSL.name("confirmed"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "")
+    val PENDING_SECRET_ENC: TableField<IdentityMfaRecord, ByteArray?> = createField(DSL.name("pending_secret_enc"), SQLDataType.BLOB, this, "")
 
     /**
      * The column <code>memo.identity_mfa.last_step</code>.
@@ -112,6 +113,11 @@ open class IdentityMfa(
      * The column <code>memo.identity_mfa.created_at</code>.
      */
     val CREATED_AT: TableField<IdentityMfaRecord, OffsetDateTime?> = createField(DSL.name("created_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false), this, "")
+
+    /**
+     * The column <code>memo.identity_mfa.updated_at</code>.
+     */
+    val UPDATED_AT: TableField<IdentityMfaRecord, OffsetDateTime?> = createField(DSL.name("updated_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false), this, "")
 
     private constructor(alias: Name, aliased: Table<IdentityMfaRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<IdentityMfaRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
@@ -154,6 +160,9 @@ open class IdentityMfa(
      */
     fun identityUser(): IdentityUserPath = identityUser
     val identityUser: IdentityUserPath by lazy { IdentityUserPath(this, IDENTITY_MFA__IDENTITY_MFA_TENANT_ID_USER_ID_FKEY, null) }
+    override fun getChecks(): List<Check<IdentityMfaRecord>> = listOf(
+        Internal.createCheck(this, DSL.name("identity_mfa_check"), "(((secret_enc IS NOT NULL) OR (pending_secret_enc IS NOT NULL)))", true)
+    )
     override fun `as`(alias: String): IdentityMfa = IdentityMfa(DSL.name(alias), this)
     override fun `as`(alias: Name): IdentityMfa = IdentityMfa(alias, this)
     override fun `as`(alias: Table<*>): IdentityMfa = IdentityMfa(alias.qualifiedName, this)

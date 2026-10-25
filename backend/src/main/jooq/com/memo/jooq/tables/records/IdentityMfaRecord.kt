@@ -27,13 +27,13 @@ open class IdentityMfaRecord private constructor() : UpdatableRecordImpl<Identit
         set(value): Unit = set(1, value)
         get(): UUID = get(1) as UUID
 
-    open var secretEnc: ByteArray
+    open var secretEnc: ByteArray?
         set(value): Unit = set(2, value)
-        get(): ByteArray = get(2) as ByteArray
+        get(): ByteArray? = get(2) as ByteArray?
 
-    open var confirmed: Boolean?
+    open var pendingSecretEnc: ByteArray?
         set(value): Unit = set(3, value)
-        get(): Boolean? = get(3) as Boolean?
+        get(): ByteArray? = get(3) as ByteArray?
 
     open var lastStep: Long?
         set(value): Unit = set(4, value)
@@ -47,6 +47,10 @@ open class IdentityMfaRecord private constructor() : UpdatableRecordImpl<Identit
         set(value): Unit = set(6, value)
         get(): OffsetDateTime = get(6) as OffsetDateTime
 
+    open var updatedAt: OffsetDateTime
+        set(value): Unit = set(7, value)
+        get(): OffsetDateTime = get(7) as OffsetDateTime
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -56,14 +60,15 @@ open class IdentityMfaRecord private constructor() : UpdatableRecordImpl<Identit
     /**
      * Create a detached, initialised IdentityMfaRecord
      */
-    constructor(userId: UUID, tenantId: UUID, secretEnc: ByteArray, confirmed: Boolean? = null, lastStep: Long? = null, enrolledAt: OffsetDateTime? = null, createdAt: OffsetDateTime): this() {
+    constructor(userId: UUID, tenantId: UUID, secretEnc: ByteArray? = null, pendingSecretEnc: ByteArray? = null, lastStep: Long? = null, enrolledAt: OffsetDateTime? = null, createdAt: OffsetDateTime, updatedAt: OffsetDateTime): this() {
         this.userId = userId
         this.tenantId = tenantId
         this.secretEnc = secretEnc
-        this.confirmed = confirmed
+        this.pendingSecretEnc = pendingSecretEnc
         this.lastStep = lastStep
         this.enrolledAt = enrolledAt
         this.createdAt = createdAt
+        this.updatedAt = updatedAt
         resetTouchedOnNotNull()
     }
 }

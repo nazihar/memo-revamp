@@ -36,6 +36,8 @@ spec:
               value: "false"
             - name: MEMO_DB_APP_PASSWORD
               valueFrom: { secretKeyRef: { name: {{ .Values.database.appSecret }}, key: password } }
+            - name: MEMO_DATA_KEY
+              valueFrom: { secretKeyRef: { name: {{ .Values.security.dataKeySecret }}, key: dataKey } }
             {{- if .Values.objectStorage.endpoint }}
             - name: MEMO_S3_ENDPOINT
               value: {{ .Values.objectStorage.endpoint | quote }}

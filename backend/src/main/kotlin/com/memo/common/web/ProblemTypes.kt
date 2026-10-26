@@ -65,3 +65,9 @@ interface AuthenticatedUser {
 class StepUpRequiredException(
     val window: java.time.Duration,
 ) : RuntimeException("Step-up required")
+
+/** The `Idempotency-Key` was already used for a different request (422). */
+class IdempotencyKeyReusedException : RuntimeException("Idempotency-Key reused with a different request")
+
+/** A guarded write needs `If-Match` with the version the client last saw (428). */
+class PreconditionRequiredException : RuntimeException("If-Match required")

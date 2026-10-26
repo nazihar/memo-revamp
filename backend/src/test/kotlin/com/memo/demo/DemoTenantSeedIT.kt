@@ -9,14 +9,13 @@ import com.memo.identity.mfa.Totp
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
 import com.memo.testsupport.IntegrationTest
+import com.memo.testsupport.aPassword
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.env.Environment
 import org.springframework.core.env.StandardEnvironment
-import java.security.SecureRandom
-import java.util.Base64
 
 class DemoTenantSeedIT : IntegrationTest() {
     @Autowired lateinit var seeder: DemoTenantSeeder
@@ -59,7 +58,7 @@ class DemoTenantSeedIT : IntegrationTest() {
     @Test
     fun `demo users get password and TOTP secret from the environment and can then sign in`() {
         // Generated per run: no password lives in code or fixtures.
-        val password = Base64.getUrlEncoder().encodeToString(ByteArray(24).also { SecureRandom().nextBytes(it) })
+        val password = aPassword()
 
         val totpSecret = Totp.base32(Totp.newSecret())
         seederWith(password, totpSecret).seed()

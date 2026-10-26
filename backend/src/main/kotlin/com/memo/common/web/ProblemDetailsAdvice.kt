@@ -1,5 +1,6 @@
 package com.memo.common.web
 
+import com.memo.common.concurrency.ConcurrentModificationException
 import com.memo.common.ratelimit.RateLimitedException
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpHeaders
@@ -36,6 +37,37 @@ class ProblemDetailsAdvice : ResponseEntityExceptionHandler() {
             }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(problem)
     }
+
+    /** A guarded write lost to a concurrent change: the client reloads and decides again (AGENTS.md §4). */
+    @ExceptionHandler(ConcurrentModificationException::class)
+    fun conflict(): ResponseEntity<ProblemDetail> =
+        ResponseEntity
+            .status(HttpStatus.PRECONDITION_FAILED)
+            .body(
+                ProblemTypes.of(
+                    HttpStatus.PRECONDITION_FAILED,
+                    ProblemTypes.CONFLICT,
+                    "Someone else changed this in the meantime. Reload and try again.",
+                ),
+            )
+
+    @ExceptionHandler(PreconditionRequiredException::class)
+    fun preconditionRequired(): ResponseEntity<ProblemDetail> =
+        ResponseEntity
+            .status(HttpStatus.PRECONDITION_REQUIRED)
+            .body(ProblemTypes.of(HttpStatus.PRECONDITION_REQUIRED, ProblemTypes.CONFLICT, "Send If-Match with the version you last saw."))
+
+    @ExceptionHandler(IdempotencyKeyReusedException::class)
+    fun idempotencyKeyReused(): ResponseEntity<ProblemDetail> =
+        ResponseEntity
+            .status(HttpStatus.UNPROCESSABLE_CONTENT)
+            .body(
+                ProblemTypes.of(
+                    HttpStatus.UNPROCESSABLE_CONTENT,
+                    ProblemTypes.CONFLICT,
+                    "This Idempotency-Key was used for a different request.",
+                ),
+            )
 
     @ExceptionHandler(Exception::class)
     fun unexpected(ex: Exception): ProblemDetail {

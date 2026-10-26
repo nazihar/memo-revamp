@@ -4,6 +4,28 @@ export type ClientOptions = {
     baseUrl: `${string}://${string}` | (string & {});
 };
 
+export type AdminUser = {
+    displayName: string;
+    email: string;
+    id: string;
+    lastLoginAt?: string | null;
+    mfaEnrolled: boolean;
+    status: 'INVITED' | 'ACTIVE' | 'LOCKED' | 'DEACTIVATED';
+    tenantAdmin: boolean;
+    /**
+     * Send as If-Match on lifecycle actions
+     */
+    version: number;
+};
+
+export type AdminUserPage = {
+    items: Array<AdminUser>;
+    /**
+     * Pass as cursor for the next page; absent at the end
+     */
+    nextCursor?: string | null;
+};
+
 export type ChangePasswordRequest = {
     currentPassword: string;
     newPassword: string;
@@ -49,6 +71,12 @@ export type InvitationLookup = {
      * From the emailed link (its fragment)
      */
     token: string;
+};
+
+export type InviteUserRequest = {
+    displayName: string;
+    email: string;
+    tenantAdmin: boolean;
 };
 
 export type LoginRequest = {
@@ -159,6 +187,160 @@ export type StepUpRequest = {
     code?: string | null;
     password?: string | null;
 };
+
+export type ListUsersData = {
+    body?: never;
+    path?: never;
+    query?: {
+        cursor?: string;
+        status?: 'INVITED' | 'ACTIVE' | 'LOCKED' | 'DEACTIVATED';
+        /**
+         * Prefix of name or email
+         */
+        q?: string;
+        limit?: number;
+    };
+    url: '/api/v1/admin/users';
+};
+
+export type ListUsersResponses = {
+    /**
+     * OK
+     */
+    200: AdminUserPage;
+};
+
+export type ListUsersResponse = ListUsersResponses[keyof ListUsersResponses];
+
+export type InviteUserData = {
+    body: InviteUserRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/users';
+};
+
+export type InviteUserErrors = {
+    /**
+     * An account with this email exists
+     */
+    409: ProblemDetail;
+};
+
+export type InviteUserError = InviteUserErrors[keyof InviteUserErrors];
+
+export type InviteUserResponses = {
+    /**
+     * Invited
+     */
+    201: AdminUser;
+};
+
+export type InviteUserResponse = InviteUserResponses[keyof InviteUserResponses];
+
+export type DeactivateUserData = {
+    body?: never;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/users/{id}/deactivate';
+};
+
+export type DeactivateUserResponses = {
+    /**
+     * OK
+     */
+    200: AdminUser;
+};
+
+export type DeactivateUserResponse = DeactivateUserResponses[keyof DeactivateUserResponses];
+
+export type ResetUserMfaData = {
+    body?: never;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/users/{id}/mfa-reset';
+};
+
+export type ResetUserMfaResponses = {
+    /**
+     * OK
+     */
+    200: AdminUser;
+};
+
+export type ResetUserMfaResponse = ResetUserMfaResponses[keyof ResetUserMfaResponses];
+
+export type ReactivateUserData = {
+    body?: never;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/users/{id}/reactivate';
+};
+
+export type ReactivateUserResponses = {
+    /**
+     * OK
+     */
+    200: AdminUser;
+};
+
+export type ReactivateUserResponse = ReactivateUserResponses[keyof ReactivateUserResponses];
+
+export type RevokeUserSessionsData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/users/{id}/sessions/revoke';
+};
+
+export type RevokeUserSessionsResponses = {
+    /**
+     * Signed out
+     */
+    204: void;
+};
+
+export type RevokeUserSessionsResponse = RevokeUserSessionsResponses[keyof RevokeUserSessionsResponses];
+
+export type UnlockUserData = {
+    body?: never;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/users/{id}/unlock';
+};
+
+export type UnlockUserResponses = {
+    /**
+     * OK
+     */
+    200: AdminUser;
+};
+
+export type UnlockUserResponse = UnlockUserResponses[keyof UnlockUserResponses];
 
 export type GetCsrfTokenData = {
     body?: never;

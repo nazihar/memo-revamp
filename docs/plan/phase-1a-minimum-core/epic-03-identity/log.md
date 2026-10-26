@@ -42,3 +42,8 @@
   - Sign-in alert: a returning user signing in from a user agent none of their current sessions has.
   - Links use `memo.tenancy.public-url-template` (`MEMO_PUBLIC_URL_TEMPLATE`, `{slug}` placeholder; default `https://{slug}.<base domain>`).
   - Found and fixed while wiring mail: the T1 tenancy settings (`MEMO_TENANCY_*`) were not passed through by Compose, Helm or Ansible, so a deployed backend would have defaulted to base domain `localhost`. Compose now requires `MEMO_TENANCY_BASE_DOMAIN`; Ansible sets it per environment with `demo` as fallback, plus Mailpit (`devtools` profile, UI on the VM's loopback) as the mail catcher. Re-run Ansible before merging.
+- T8 (user administration API), decisions:
+  - `/api/v1/admin/**` needs `ROLE_TENANT_ADMIN`, which a session gets only when complete; a partial admin session gets 401 `mfa-required`, a user 403.
+  - Lifecycle actions are guarded updates on id, allowed statuses and the `If-Match` version: no header 428, stale 412, wrong status 409 `reason: STATUS`. Self-deactivation 409 `SELF`; the last active admin 409 `LAST_ADMIN` (admin rows are locked `FOR UPDATE` during the check, so two admins cannot deactivate each other at once). Deactivation and MFA reset sign the user out everywhere; deactivation retires open links.
+  - `Idempotency-Key` is a small reusable service in the `system` module (`system_idempotency_key`, tenant table): the key row is inserted first, so a concurrent repeat waits for the first commit and returns its result; a different body under the same key is 422.
+  - Test passwords skip the ~0.1 % of random strings the breached-password Bloom filter flags (CI hit one: a reset with a "breached" random password returned 400).

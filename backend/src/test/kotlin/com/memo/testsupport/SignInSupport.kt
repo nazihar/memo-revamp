@@ -7,6 +7,7 @@ import com.memo.common.tenant.TenantTransactions
 import com.memo.identity.UserAccount
 import com.memo.identity.UserAccounts
 import com.memo.identity.auth.AuthSettings
+import com.memo.identity.password.BreachedPasswords
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
 import jakarta.servlet.http.Cookie
@@ -39,8 +40,15 @@ fun TenantRegistry.aTestTenant(
     return tenant
 }
 
-/** Generated per run: test passwords never live in code or fixtures. */
-fun aPassword(): String = "pw-" + Base64.getUrlEncoder().encodeToString(ByteArray(18).also { SecureRandom().nextBytes(it) })
+/**
+ * Generated per run: test passwords never live in code or fixtures. The breached-password filter flags about 1 in 1,000
+ * random strings by design (ADR-0023); a test password must never be one of them, or the suite fails at random.
+ */
+fun aPassword(): String =
+    generateSequence { "pw-" + Base64.getUrlEncoder().encodeToString(ByteArray(18).also { SecureRandom().nextBytes(it) }) }
+        .first { !BREACHED.isBreached(it) }
+
+private val BREACHED = BreachedPasswords("")
 
 /** An ACTIVE user with [password]. */
 fun UserAccounts.anActiveUser(

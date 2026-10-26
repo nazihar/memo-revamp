@@ -17,6 +17,7 @@ import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
 import com.memo.jooq.tables.NotificationMailOutbox
+import com.memo.jooq.tables.SystemIdempotencyKey
 import com.memo.jooq.tables.SystemInfo
 import com.memo.jooq.tables.TenancySetting
 import com.memo.jooq.tables.TenancySettingView
@@ -83,6 +84,11 @@ val IDENTITY_USER: IdentityUser = IdentityUser.IDENTITY_USER
  * The table <code>memo.notification_mail_outbox</code>.
  */
 val NOTIFICATION_MAIL_OUTBOX: NotificationMailOutbox = NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX
+
+/**
+ * The table <code>memo.system_idempotency_key</code>.
+ */
+val SYSTEM_IDEMPOTENCY_KEY: SystemIdempotencyKey = SystemIdempotencyKey.SYSTEM_IDEMPOTENCY_KEY
 
 /**
  * The table <code>memo.system_info</code>.

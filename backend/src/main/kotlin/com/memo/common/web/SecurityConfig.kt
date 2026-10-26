@@ -69,6 +69,8 @@ class SecurityConfig {
                 if (apiDocsEnabled) auth.requestMatchers("/v3/api-docs", "/v3/api-docs/**").permitAll()
                 // A partial session (password only) may finish the sign-in or leave.
                 auth.requestMatchers("/api/v1/auth/logout", "/api/v1/auth/mfa", "/api/v1/auth/mfa/**").authenticated()
+                // Tenant admins only (E04 replaces the flag with role grants); the authority needs a complete session.
+                auth.requestMatchers("/api/v1/admin/**").hasAuthority(AuthenticatedUser.TENANT_ADMIN)
                 auth.anyRequest().hasAuthority(AuthenticatedUser.SESSION_COMPLETE)
             }.securityContext { it.securityContextRepository(contextRepository) }
             .sessionManagement {

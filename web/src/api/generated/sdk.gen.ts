@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AcceptInvitationData, AcceptInvitationErrors, AcceptInvitationResponses, ChangeMyPasswordData, ChangeMyPasswordErrors, ChangeMyPasswordResponses, CompletePasswordResetData, CompletePasswordResetErrors, CompletePasswordResetResponses, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentErrors, ConfirmMfaEnrolmentResponses, GetCsrfTokenData, GetCsrfTokenResponses, GetHealthData, GetHealthErrors, GetHealthResponses, GetMeData, GetMeResponses, GetSessionData, GetSessionResponses, ListMySessionsData, ListMySessionsResponses, LoginData, LoginErrors, LoginResponses, LogoutData, LogoutResponses, LookUpInvitationData, LookUpInvitationErrors, LookUpInvitationResponses, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesErrors, RegenerateMyRecoveryCodesResponses, RequestPasswordResetData, RequestPasswordResetResponses, RevokeMySessionData, RevokeMySessionErrors, RevokeMySessionResponses, StartMfaEnrolmentData, StartMfaEnrolmentErrors, StartMfaEnrolmentResponses, StepUpData, StepUpErrors, StepUpResponses, VerifyMfaData, VerifyMfaErrors, VerifyMfaResponses } from './types.gen';
+import type { AcceptInvitationData, AcceptInvitationErrors, AcceptInvitationResponses, ChangeMyPasswordData, ChangeMyPasswordErrors, ChangeMyPasswordResponses, CompletePasswordResetData, CompletePasswordResetErrors, CompletePasswordResetResponses, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentErrors, ConfirmMfaEnrolmentResponses, DeactivateUserData, DeactivateUserResponses, GetCsrfTokenData, GetCsrfTokenResponses, GetHealthData, GetHealthErrors, GetHealthResponses, GetMeData, GetMeResponses, GetSessionData, GetSessionResponses, InviteUserData, InviteUserErrors, InviteUserResponses, ListMySessionsData, ListMySessionsResponses, ListUsersData, ListUsersResponses, LoginData, LoginErrors, LoginResponses, LogoutData, LogoutResponses, LookUpInvitationData, LookUpInvitationErrors, LookUpInvitationResponses, ReactivateUserData, ReactivateUserResponses, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesErrors, RegenerateMyRecoveryCodesResponses, RequestPasswordResetData, RequestPasswordResetResponses, ResetUserMfaData, ResetUserMfaResponses, RevokeMySessionData, RevokeMySessionErrors, RevokeMySessionResponses, RevokeUserSessionsData, RevokeUserSessionsResponses, StartMfaEnrolmentData, StartMfaEnrolmentErrors, StartMfaEnrolmentResponses, StepUpData, StepUpErrors, StepUpResponses, UnlockUserData, UnlockUserResponses, VerifyMfaData, VerifyMfaErrors, VerifyMfaResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -17,6 +17,56 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
      */
     meta?: keyof ClientMeta extends never ? Record<string, unknown> : ClientMeta;
 };
+
+/**
+ * List the organisation's users
+ *
+ * Sorted by name; keyset-paginated.
+ */
+export const listUsers = <ThrowOnError extends boolean = false>(options?: Options<ListUsersData, ThrowOnError>): RequestResult<ListUsersResponses, unknown, ThrowOnError> => (options?.client ?? client).get<ListUsersResponses, unknown, ThrowOnError>({ url: '/api/v1/admin/users', ...options });
+
+/**
+ * Invite a user
+ *
+ * Creates an INVITED account and emails a one-time link (7 days). A repeat with the same Idempotency-Key returns the same user.
+ */
+export const inviteUser = <ThrowOnError extends boolean = false>(options: Options<InviteUserData, ThrowOnError>): RequestResult<InviteUserResponses, InviteUserErrors, ThrowOnError> => (options.client ?? client).post<InviteUserResponses, InviteUserErrors, ThrowOnError>({
+    url: '/api/v1/admin/users',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Deactivate a user
+ *
+ * Signs the user out everywhere. Not yourself, not the last admin.
+ */
+export const deactivateUser = <ThrowOnError extends boolean = false>(options: Options<DeactivateUserData, ThrowOnError>): RequestResult<DeactivateUserResponses, unknown, ThrowOnError> => (options.client ?? client).post<DeactivateUserResponses, unknown, ThrowOnError>({ url: '/api/v1/admin/users/{id}/deactivate', ...options });
+
+/**
+ * Reset two-step sign-in
+ *
+ * The user sets up an authenticator again at the next sign-in; signs them out.
+ */
+export const resetUserMfa = <ThrowOnError extends boolean = false>(options: Options<ResetUserMfaData, ThrowOnError>): RequestResult<ResetUserMfaResponses, unknown, ThrowOnError> => (options.client ?? client).post<ResetUserMfaResponses, unknown, ThrowOnError>({ url: '/api/v1/admin/users/{id}/mfa-reset', ...options });
+
+/**
+ * Reactivate a user
+ */
+export const reactivateUser = <ThrowOnError extends boolean = false>(options: Options<ReactivateUserData, ThrowOnError>): RequestResult<ReactivateUserResponses, unknown, ThrowOnError> => (options.client ?? client).post<ReactivateUserResponses, unknown, ThrowOnError>({ url: '/api/v1/admin/users/{id}/reactivate', ...options });
+
+/**
+ * Sign a user out everywhere
+ */
+export const revokeUserSessions = <ThrowOnError extends boolean = false>(options: Options<RevokeUserSessionsData, ThrowOnError>): RequestResult<RevokeUserSessionsResponses, unknown, ThrowOnError> => (options.client ?? client).post<RevokeUserSessionsResponses, unknown, ThrowOnError>({ url: '/api/v1/admin/users/{id}/sessions/revoke', ...options });
+
+/**
+ * Lift a temporary lock
+ */
+export const unlockUser = <ThrowOnError extends boolean = false>(options: Options<UnlockUserData, ThrowOnError>): RequestResult<UnlockUserResponses, unknown, ThrowOnError> => (options.client ?? client).post<UnlockUserResponses, unknown, ThrowOnError>({ url: '/api/v1/admin/users/{id}/unlock', ...options });
 
 /**
  * Issue the CSRF cookie

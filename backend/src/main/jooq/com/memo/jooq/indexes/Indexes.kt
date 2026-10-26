@@ -13,6 +13,7 @@ import com.memo.jooq.tables.IdentityMfa
 import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
+import com.memo.jooq.tables.NotificationMailOutbox
 import com.memo.jooq.tables.TenancySetting
 
 import org.jooq.Index
@@ -38,4 +39,5 @@ val IDENTITY_MFA_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("identit
 val IDENTITY_RATE_LIMIT_BUCKET_EXPIRY_IDX: Index = Internal.createIndex(DSL.name("identity_rate_limit_bucket_expiry_idx"), IdentityRateLimitBucket.IDENTITY_RATE_LIMIT_BUCKET, arrayOf(IdentityRateLimitBucket.IDENTITY_RATE_LIMIT_BUCKET.EXPIRES_AT), false)
 val IDENTITY_RECOVERY_CODE_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("identity_recovery_code_tenant_user_idx"), IdentityRecoveryCode.IDENTITY_RECOVERY_CODE, arrayOf(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.TENANT_ID, IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.USER_ID), false)
 val IDENTITY_USER_TENANT_EMAIL_UK: Index = Internal.createIndex(DSL.name("identity_user_tenant_email_uk"), IdentityUser.IDENTITY_USER, arrayOf(IdentityUser.IDENTITY_USER.TENANT_ID, IdentityUser.IDENTITY_USER.EMAIL), true)
+val NOTIFICATION_MAIL_OUTBOX_TENANT_STATUS_IDX: Index = Internal.createIndex(DSL.name("notification_mail_outbox_tenant_status_idx"), NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX, arrayOf(NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.TENANT_ID, NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.STATUS, NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.CREATED_AT), false)
 val TENANCY_SETTING_TENANT_KEY_UK: Index = Internal.createIndex(DSL.name("tenancy_setting_tenant_key_uk"), TenancySetting.TENANCY_SETTING, arrayOf(TenancySetting.TENANCY_SETTING.TENANT_ID, TenancySetting.TENANCY_SETTING.KEY), true)

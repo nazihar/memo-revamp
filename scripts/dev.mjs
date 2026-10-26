@@ -101,6 +101,11 @@ export function backendEnv(env, { core }) {
     MEMO_S3_SECRET_KEY: env.S3_APP_SECRET_KEY,
     MEMO_SMTP_HOST: 'localhost',
     MEMO_SMTP_PORT: '1025',
+    // Mailpit: a local catcher without TLS. Real relays keep STARTTLS (the default).
+    MEMO_SMTP_STARTTLS: 'false',
+    MEMO_SMTP_FROM: 'memo@localhost',
+    // Links in emails open the Vite dev server on the tenant's host.
+    MEMO_PUBLIC_URL_TEMPLATE: 'http://{slug}.localhost:5173',
     MEMO_DEMO_SEED: 'true',
     MEMO_DEMO_PASSWORD: env.MEMO_DEMO_PASSWORD,
     MEMO_DEMO_TOTP_SECRET: env.MEMO_DEMO_TOTP_SECRET,

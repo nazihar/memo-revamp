@@ -101,6 +101,10 @@ class SecurityConfig {
                 "/api/v1/auth/csrf",
                 "/api/v1/auth/session",
                 "/api/v1/auth/login",
+                "/api/v1/auth/password-reset",
+                "/api/v1/auth/password-reset/complete",
+                "/api/v1/auth/invitations/lookup",
+                "/api/v1/auth/invitations/accept",
             )
     }
 }

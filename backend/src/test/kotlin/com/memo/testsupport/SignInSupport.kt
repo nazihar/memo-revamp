@@ -103,11 +103,13 @@ fun MockMvcTester.login(
     password: String,
     session: Cookie? = null,
     clientIp: String = aClientIp(),
+    userAgent: String = "memo-tests",
 ): MvcTestResult =
     post()
         .uri("/api/v1/auth/login")
         .with(onHost(tenant.slug))
         .with(fromIp(clientIp))
+        .header("User-Agent", userAgent)
         .with(sendingCsrf(csrfToken(tenant), *listOfNotNull(session).toTypedArray()))
         .contentType(MediaType.APPLICATION_JSON)
         .content("""{"email":${json(email)},"password":${json(password)}}""")
@@ -144,3 +146,46 @@ fun MockMvcTester.signIn(
 }
 
 private fun json(value: String) = "\"" + value.replace("\\", "\\\\").replace("\"", "\\\"") + "\""
+
+/** The session id inside a `MEMO_SESSION` cookie (Spring Session Base64-encodes it). */
+fun sessionIdOf(cookie: Cookie): String = String(Base64.getDecoder().decode(cookie.value))
+
+/** Moves every factor of the session back to the year 2000, as if the step-up window had long passed. */
+fun ageSessionFactors(cookie: Cookie) {
+    AppRoleJdbc.connect { c ->
+        c
+            .prepareStatement(
+                """
+                update identity_http_session_attributes a
+                set attribute_bytes = convert_to(
+                    jsonb_set(p.j, '{factors}', (
+                        select jsonb_agg(jsonb_set(f, '{issuedAt}', '"2000-01-01T00:00:00Z"'))
+                        from jsonb_array_elements(p.j -> 'factors') f))::text, 'UTF8')
+                from (select session_primary_id, convert_from(attribute_bytes, 'UTF8')::jsonb j
+                      from identity_http_session_attributes where attribute_name = 'memo.principal') p
+                where a.attribute_name = 'memo.principal' and a.session_primary_id = p.session_primary_id
+                  and a.session_primary_id = (select primary_id from identity_http_session where session_id = ?)
+                """,
+            ).use {
+                it.setString(1, sessionIdOf(cookie))
+                check(it.executeUpdate() == 1) { "no such session" }
+            }
+    }
+}
+
+/** Any mutating request (PUT, DELETE, …) as [postJson] sends it. */
+fun MockMvcTester.sendJson(
+    method: org.springframework.http.HttpMethod,
+    tenant: TestTenant,
+    uri: String,
+    session: Cookie?,
+    json: String = "{}",
+): MvcTestResult =
+    method(method)
+        .uri(uri)
+        .with(onHost(tenant.slug))
+        .with(fromIp(aClientIp()))
+        .with(sendingCsrf(csrfToken(tenant), *listOfNotNull(session).toTypedArray()))
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(json)
+        .exchange()

@@ -1,6 +1,22 @@
 {
   "components" : {
     "schemas" : {
+      "ChangePasswordRequest" : {
+        "properties" : {
+          "currentPassword" : {
+            "format" : "password",
+            "maxLength" : 1024,
+            "type" : "string"
+          },
+          "newPassword" : {
+            "format" : "password",
+            "maxLength" : 1024,
+            "type" : "string"
+          }
+        },
+        "required" : [ "currentPassword", "newPassword" ],
+        "type" : "object"
+      },
       "CodeRequest" : {
         "properties" : {
           "code" : {
@@ -46,6 +62,48 @@
         "required" : [ "checkedAt", "components", "status" ],
         "type" : "object"
       },
+      "Invitation" : {
+        "properties" : {
+          "displayName" : {
+            "type" : "string"
+          },
+          "email" : {
+            "description" : "Masked, for example n***@bank.example",
+            "type" : "string"
+          },
+          "organisation" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "displayName", "email", "organisation" ],
+        "type" : "object"
+      },
+      "InvitationAcceptance" : {
+        "properties" : {
+          "password" : {
+            "format" : "password",
+            "maxLength" : 1024,
+            "type" : "string"
+          },
+          "token" : {
+            "maxLength" : 100,
+            "type" : "string"
+          }
+        },
+        "required" : [ "password", "token" ],
+        "type" : "object"
+      },
+      "InvitationLookup" : {
+        "properties" : {
+          "token" : {
+            "description" : "From the emailed link (its fragment)",
+            "maxLength" : 100,
+            "type" : "string"
+          }
+        },
+        "required" : [ "token" ],
+        "type" : "object"
+      },
       "LoginRequest" : {
         "properties" : {
           "email" : {
@@ -59,6 +117,32 @@
           }
         },
         "required" : [ "email", "password" ],
+        "type" : "object"
+      },
+      "Me" : {
+        "properties" : {
+          "displayName" : {
+            "type" : "string"
+          },
+          "email" : {
+            "type" : "string"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "lastLoginAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "mfaEnrolled" : {
+            "type" : "boolean"
+          },
+          "tenantAdmin" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "displayName", "email", "id", "mfaEnrolled", "tenantAdmin" ],
         "type" : "object"
       },
       "MfaEnrolment" : {
@@ -95,6 +179,59 @@
         "required" : [ "recoveryCodes", "session" ],
         "type" : "object"
       },
+      "MySession" : {
+        "properties" : {
+          "current" : {
+            "type" : "boolean"
+          },
+          "id" : {
+            "description" : "Opaque handle (never the session id)",
+            "type" : "string"
+          },
+          "ipAddress" : {
+            "type" : [ "string", "null" ]
+          },
+          "lastActiveAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "signedInAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "userAgent" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "current", "id", "lastActiveAt" ],
+        "type" : "object"
+      },
+      "PasswordResetCompletion" : {
+        "properties" : {
+          "newPassword" : {
+            "format" : "password",
+            "maxLength" : 1024,
+            "type" : "string"
+          },
+          "token" : {
+            "description" : "From the emailed link (its fragment)",
+            "maxLength" : 100,
+            "type" : "string"
+          }
+        },
+        "required" : [ "newPassword", "token" ],
+        "type" : "object"
+      },
+      "PasswordResetRequest" : {
+        "properties" : {
+          "email" : {
+            "maxLength" : 320,
+            "type" : "string"
+          }
+        },
+        "required" : [ "email" ],
+        "type" : "object"
+      },
       "ProblemDetail" : {
         "properties" : {
           "detail" : {
@@ -120,6 +257,19 @@
             "type" : "string"
           }
         },
+        "type" : "object"
+      },
+      "RecoveryCodes" : {
+        "properties" : {
+          "recoveryCodes" : {
+            "description" : "Shown once; the previous codes stop working",
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "recoveryCodes" ],
         "type" : "object"
       },
       "Session" : {
@@ -163,6 +313,21 @@
         },
         "required" : [ "displayName", "email", "id", "tenantAdmin" ],
         "type" : "object"
+      },
+      "StepUpRequest" : {
+        "description" : "A TOTP or recovery code for users with MFA; the current password otherwise.",
+        "properties" : {
+          "code" : {
+            "maxLength" : 32,
+            "type" : [ "string", "null" ]
+          },
+          "password" : {
+            "format" : "password",
+            "maxLength" : 1024,
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
       }
     }
   },
@@ -186,6 +351,85 @@
           }
         },
         "summary" : "Issue the CSRF cookie",
+        "tags" : [ "auth" ]
+      }
+    },
+    "/api/v1/auth/invitations/accept" : {
+      "post" : {
+        "description" : "Sets the password and signs in; the state says whether MFA enrolment follows.",
+        "operationId" : "acceptInvitation",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/InvitationAcceptance"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Session"
+                }
+              }
+            },
+            "description" : "Signed in"
+          },
+          "400" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemDetail"
+                }
+              }
+            },
+            "description" : "Invalid or expired link, or a weak password"
+          }
+        },
+        "summary" : "Accept an invitation",
+        "tags" : [ "auth" ]
+      }
+    },
+    "/api/v1/auth/invitations/lookup" : {
+      "post" : {
+        "operationId" : "lookUpInvitation",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/InvitationLookup"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Invitation"
+                }
+              }
+            },
+            "description" : "Valid invitation"
+          },
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Invitation"
+                }
+              }
+            },
+            "description" : "Unknown, used or expired link"
+          }
+        },
+        "summary" : "Show an invitation",
         "tags" : [ "auth" ]
       }
     },
@@ -318,13 +562,6 @@
             "description" : "Enrolment started"
           },
           "403" : {
-            "content" : {
-              "*/*" : {
-                "schema" : {
-                  "type" : "object"
-                }
-              }
-            },
             "description" : "Already enrolled and the session is not complete"
           }
         },
@@ -372,6 +609,62 @@
         "tags" : [ "auth" ]
       }
     },
+    "/api/v1/auth/password-reset" : {
+      "post" : {
+        "description" : "Always 202: the answer never says whether an account exists.",
+        "operationId" : "requestPasswordReset",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PasswordResetRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "202" : {
+            "description" : "If the account exists, a link is on its way"
+          }
+        },
+        "summary" : "Email a password reset link",
+        "tags" : [ "auth" ]
+      }
+    },
+    "/api/v1/auth/password-reset/complete" : {
+      "post" : {
+        "description" : "Signs out every session of the account. The link works once.",
+        "operationId" : "completePasswordReset",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PasswordResetCompletion"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "204" : {
+            "description" : "Password set; sign in with it"
+          },
+          "400" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemDetail"
+                }
+              }
+            },
+            "description" : "Invalid or expired link (errors[].field token), or a weak password (errors[].field newPassword)"
+          }
+        },
+        "summary" : "Set a new password from a reset link",
+        "tags" : [ "auth" ]
+      }
+    },
     "/api/v1/auth/session" : {
       "get" : {
         "description" : "Never 401: anonymous callers get ANONYMOUS.",
@@ -392,6 +685,39 @@
         "tags" : [ "auth" ]
       }
     },
+    "/api/v1/auth/step-up" : {
+      "post" : {
+        "description" : "Refreshes the session's strongest factor for the step-up window. Rate-limited per user.",
+        "operationId" : "stepUp",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/StepUpRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "204" : {
+            "description" : "Confirmed; retry the refused request"
+          },
+          "401" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemDetail"
+                }
+              }
+            },
+            "description" : "Wrong code or password"
+          }
+        },
+        "summary" : "Confirm it is you",
+        "tags" : [ "auth" ]
+      }
+    },
     "/api/v1/health" : {
       "get" : {
         "description" : "Anonymous. Status per dependency, no versions, hosts or error details. Cached for a few seconds.",
@@ -399,7 +725,7 @@
         "responses" : {
           "200" : {
             "content" : {
-              "*/*" : {
+              "application/json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/Health"
                 }
@@ -420,6 +746,127 @@
         },
         "summary" : "Platform status",
         "tags" : [ "system" ]
+      }
+    },
+    "/api/v1/me" : {
+      "get" : {
+        "operationId" : "getMe",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Me"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "My account",
+        "tags" : [ "me" ]
+      }
+    },
+    "/api/v1/me/password" : {
+      "put" : {
+        "description" : "Needs a recent step-up. Signs out every other session of the account.",
+        "operationId" : "changeMyPassword",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ChangePasswordRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "204" : {
+            "description" : "Changed"
+          },
+          "400" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemDetail"
+                }
+              }
+            },
+            "description" : "Current password wrong, or the new one breaks the policy (errors[].code: TOO_SHORT, TOO_LONG, BREACHED, CONTAINS_IDENTITY, INCORRECT)"
+          }
+        },
+        "summary" : "Change my password",
+        "tags" : [ "me" ]
+      }
+    },
+    "/api/v1/me/recovery-codes" : {
+      "post" : {
+        "description" : "Needs a recent step-up.",
+        "operationId" : "regenerateMyRecoveryCodes",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RecoveryCodes"
+                }
+              }
+            },
+            "description" : "New codes"
+          },
+          "409" : {
+            "description" : "MFA is not set up"
+          }
+        },
+        "summary" : "New recovery codes",
+        "tags" : [ "me" ]
+      }
+    },
+    "/api/v1/me/sessions" : {
+      "get" : {
+        "description" : "Every signed-in device of my account; the current one is marked.",
+        "operationId" : "listMySessions",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/MySession"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "My sessions",
+        "tags" : [ "me" ]
+      }
+    },
+    "/api/v1/me/sessions/{id}" : {
+      "delete" : {
+        "operationId" : "revokeMySession",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "Signed out"
+          },
+          "404" : {
+            "description" : "No such session"
+          }
+        },
+        "summary" : "Sign out one of my sessions",
+        "tags" : [ "me" ]
       }
     }
   },

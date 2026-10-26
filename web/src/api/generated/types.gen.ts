@@ -4,6 +4,11 @@ export type ClientOptions = {
     baseUrl: `${string}://${string}` | (string & {});
 };
 
+export type ChangePasswordRequest = {
+    currentPassword: string;
+    newPassword: string;
+};
+
 export type CodeRequest = {
     /**
      * 6-digit TOTP code, or a recovery code
@@ -25,9 +30,39 @@ export type Health = {
     status: 'UP' | 'DEGRADED' | 'DOWN';
 };
 
+export type Invitation = {
+    displayName: string;
+    /**
+     * Masked, for example n***@bank.example
+     */
+    email: string;
+    organisation: string;
+};
+
+export type InvitationAcceptance = {
+    password: string;
+    token: string;
+};
+
+export type InvitationLookup = {
+    /**
+     * From the emailed link (its fragment)
+     */
+    token: string;
+};
+
 export type LoginRequest = {
     email: string;
     password: string;
+};
+
+export type Me = {
+    displayName: string;
+    email: string;
+    id: string;
+    lastLoginAt?: string | null;
+    mfaEnrolled: boolean;
+    tenantAdmin: boolean;
 };
 
 /**
@@ -53,6 +88,30 @@ export type MfaEnrolmentConfirmed = {
     session: Session;
 };
 
+export type MySession = {
+    current: boolean;
+    /**
+     * Opaque handle (never the session id)
+     */
+    id: string;
+    ipAddress?: string | null;
+    lastActiveAt: string;
+    signedInAt?: string | null;
+    userAgent?: string | null;
+};
+
+export type PasswordResetCompletion = {
+    newPassword: string;
+    /**
+     * From the emailed link (its fragment)
+     */
+    token: string;
+};
+
+export type PasswordResetRequest = {
+    email: string;
+};
+
 export type ProblemDetail = {
     detail?: string;
     instance?: string;
@@ -62,6 +121,13 @@ export type ProblemDetail = {
     status?: number;
     title?: string;
     type?: string;
+};
+
+export type RecoveryCodes = {
+    /**
+     * Shown once; the previous codes stop working
+     */
+    recoveryCodes: Array<string>;
 };
 
 /**
@@ -86,6 +152,14 @@ export type SessionUser = {
     tenantAdmin: boolean;
 };
 
+/**
+ * A TOTP or recovery code for users with MFA; the current password otherwise.
+ */
+export type StepUpRequest = {
+    code?: string | null;
+    password?: string | null;
+};
+
 export type GetCsrfTokenData = {
     body?: never;
     path?: never;
@@ -101,6 +175,56 @@ export type GetCsrfTokenResponses = {
 };
 
 export type GetCsrfTokenResponse = GetCsrfTokenResponses[keyof GetCsrfTokenResponses];
+
+export type AcceptInvitationData = {
+    body: InvitationAcceptance;
+    path?: never;
+    query?: never;
+    url: '/api/v1/auth/invitations/accept';
+};
+
+export type AcceptInvitationErrors = {
+    /**
+     * Invalid or expired link, or a weak password
+     */
+    400: ProblemDetail;
+};
+
+export type AcceptInvitationError = AcceptInvitationErrors[keyof AcceptInvitationErrors];
+
+export type AcceptInvitationResponses = {
+    /**
+     * Signed in
+     */
+    200: Session;
+};
+
+export type AcceptInvitationResponse = AcceptInvitationResponses[keyof AcceptInvitationResponses];
+
+export type LookUpInvitationData = {
+    body: InvitationLookup;
+    path?: never;
+    query?: never;
+    url: '/api/v1/auth/invitations/lookup';
+};
+
+export type LookUpInvitationErrors = {
+    /**
+     * Unknown, used or expired link
+     */
+    404: Invitation;
+};
+
+export type LookUpInvitationError = LookUpInvitationErrors[keyof LookUpInvitationErrors];
+
+export type LookUpInvitationResponses = {
+    /**
+     * Valid invitation
+     */
+    200: Invitation;
+};
+
+export type LookUpInvitationResponse = LookUpInvitationResponses[keyof LookUpInvitationResponses];
 
 export type LoginData = {
     body: LoginRequest;
@@ -187,12 +311,8 @@ export type StartMfaEnrolmentErrors = {
     /**
      * Already enrolled and the session is not complete
      */
-    403: {
-        [key: string]: unknown;
-    };
+    403: unknown;
 };
-
-export type StartMfaEnrolmentError = StartMfaEnrolmentErrors[keyof StartMfaEnrolmentErrors];
 
 export type StartMfaEnrolmentResponses = {
     /**
@@ -228,6 +348,45 @@ export type ConfirmMfaEnrolmentResponses = {
 
 export type ConfirmMfaEnrolmentResponse = ConfirmMfaEnrolmentResponses[keyof ConfirmMfaEnrolmentResponses];
 
+export type RequestPasswordResetData = {
+    body: PasswordResetRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/auth/password-reset';
+};
+
+export type RequestPasswordResetResponses = {
+    /**
+     * If the account exists, a link is on its way
+     */
+    202: unknown;
+};
+
+export type CompletePasswordResetData = {
+    body: PasswordResetCompletion;
+    path?: never;
+    query?: never;
+    url: '/api/v1/auth/password-reset/complete';
+};
+
+export type CompletePasswordResetErrors = {
+    /**
+     * Invalid or expired link (errors[].field token), or a weak password (errors[].field newPassword)
+     */
+    400: ProblemDetail;
+};
+
+export type CompletePasswordResetError = CompletePasswordResetErrors[keyof CompletePasswordResetErrors];
+
+export type CompletePasswordResetResponses = {
+    /**
+     * Password set; sign in with it
+     */
+    204: void;
+};
+
+export type CompletePasswordResetResponse = CompletePasswordResetResponses[keyof CompletePasswordResetResponses];
+
 export type GetSessionData = {
     body?: never;
     path?: never;
@@ -243,6 +402,31 @@ export type GetSessionResponses = {
 };
 
 export type GetSessionResponse = GetSessionResponses[keyof GetSessionResponses];
+
+export type StepUpData = {
+    body: StepUpRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/auth/step-up';
+};
+
+export type StepUpErrors = {
+    /**
+     * Wrong code or password
+     */
+    401: ProblemDetail;
+};
+
+export type StepUpError = StepUpErrors[keyof StepUpErrors];
+
+export type StepUpResponses = {
+    /**
+     * Confirmed; retry the refused request
+     */
+    204: void;
+};
+
+export type StepUpResponse = StepUpResponses[keyof StepUpResponses];
 
 export type GetHealthData = {
     body?: never;
@@ -268,3 +452,108 @@ export type GetHealthResponses = {
 };
 
 export type GetHealthResponse = GetHealthResponses[keyof GetHealthResponses];
+
+export type GetMeData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/me';
+};
+
+export type GetMeResponses = {
+    /**
+     * OK
+     */
+    200: Me;
+};
+
+export type GetMeResponse = GetMeResponses[keyof GetMeResponses];
+
+export type ChangeMyPasswordData = {
+    body: ChangePasswordRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/me/password';
+};
+
+export type ChangeMyPasswordErrors = {
+    /**
+     * Current password wrong, or the new one breaks the policy (errors[].code: TOO_SHORT, TOO_LONG, BREACHED, CONTAINS_IDENTITY, INCORRECT)
+     */
+    400: ProblemDetail;
+};
+
+export type ChangeMyPasswordError = ChangeMyPasswordErrors[keyof ChangeMyPasswordErrors];
+
+export type ChangeMyPasswordResponses = {
+    /**
+     * Changed
+     */
+    204: void;
+};
+
+export type ChangeMyPasswordResponse = ChangeMyPasswordResponses[keyof ChangeMyPasswordResponses];
+
+export type RegenerateMyRecoveryCodesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/me/recovery-codes';
+};
+
+export type RegenerateMyRecoveryCodesErrors = {
+    /**
+     * MFA is not set up
+     */
+    409: unknown;
+};
+
+export type RegenerateMyRecoveryCodesResponses = {
+    /**
+     * New codes
+     */
+    200: RecoveryCodes;
+};
+
+export type RegenerateMyRecoveryCodesResponse = RegenerateMyRecoveryCodesResponses[keyof RegenerateMyRecoveryCodesResponses];
+
+export type ListMySessionsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/me/sessions';
+};
+
+export type ListMySessionsResponses = {
+    /**
+     * OK
+     */
+    200: Array<MySession>;
+};
+
+export type ListMySessionsResponse = ListMySessionsResponses[keyof ListMySessionsResponses];
+
+export type RevokeMySessionData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/me/sessions/{id}';
+};
+
+export type RevokeMySessionErrors = {
+    /**
+     * No such session
+     */
+    404: unknown;
+};
+
+export type RevokeMySessionResponses = {
+    /**
+     * Signed out
+     */
+    204: void;
+};
+
+export type RevokeMySessionResponse = RevokeMySessionResponses[keyof RevokeMySessionResponses];

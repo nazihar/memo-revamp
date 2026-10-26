@@ -16,6 +16,12 @@ object ProblemTypes {
     val VALIDATION: URI = URI.create("urn:memo:problem:validation")
     val CONFLICT: URI = URI.create("urn:memo:problem:conflict")
 
+    /** 400 `validation` with `errors: [{field, code, message}]`, the shape the web forms consume (E01 design §3). */
+    fun validation(errors: List<FieldProblem>): ProblemDetail =
+        of(HttpStatus.BAD_REQUEST, VALIDATION, "Some fields need attention.").apply {
+            setProperty("errors", errors.map { mapOf("field" to it.field, "code" to it.code, "message" to it.message) })
+        }
+
     fun of(
         status: HttpStatus,
         type: URI,
@@ -27,6 +33,13 @@ object ProblemTypes {
             this.title = title
         }
 }
+
+/** One field's problem: [code] for clients that translate, [message] as an English fallback. */
+data class FieldProblem(
+    val field: String,
+    val code: String,
+    val message: String,
+)
 
 /** A signed-in user as the security chain sees it; implemented by the identity module's session principal. */
 interface AuthenticatedUser {
@@ -44,3 +57,11 @@ interface AuthenticatedUser {
         const val TENANT_ADMIN = "ROLE_TENANT_ADMIN"
     }
 }
+
+/**
+ * The action needs a fresh second factor (ADR-0024): 401 `step-up-required`, with the window in seconds so the client
+ * can say how long the confirmation lasts. The client prompts, calls `/auth/step-up`, and retries once.
+ */
+class StepUpRequiredException(
+    val window: java.time.Duration,
+) : RuntimeException("Step-up required")

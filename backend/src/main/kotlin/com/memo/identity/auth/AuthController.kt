@@ -73,6 +73,7 @@ class AuthController(
     private val audit: AuditLog,
     private val limiter: RateLimiter,
     private val views: SessionViews,
+    private val alerts: SignInAlerts,
 ) {
     @GetMapping("/csrf")
     @Operation(
@@ -146,6 +147,7 @@ class AuthController(
             }
 
             is SignInResult.SignedIn -> {
+                alerts.onSignIn(result.principal, result.account, request.getHeader("User-Agent"))
                 store.start(request, result.principal, result.idleTimeout)
                 csrfTokens.saveToken(null, request, response)
                 ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(views.of(result.principal))

@@ -116,7 +116,7 @@ class MfaController(
                 description = "Enrolment started",
                 content = [Content(mediaType = "application/json", schema = Schema(implementation = EnrolmentResponse::class))],
             ),
-            ApiResponse(responseCode = "403", description = "Already enrolled and the session is not complete"),
+            ApiResponse(responseCode = "403", description = "Already enrolled and the session is not complete", content = [Content()]),
         ],
     )
     fun startEnrolment(

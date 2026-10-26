@@ -15,6 +15,7 @@ import com.memo.jooq.tables.IdentityMfa
 import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
+import com.memo.jooq.tables.NotificationMailOutbox
 import com.memo.jooq.tables.SystemInfo
 import com.memo.jooq.tables.TenancySetting
 import com.memo.jooq.tables.TenancySettingView
@@ -98,6 +99,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val IDENTITY_USER: IdentityUser get() = IdentityUser.IDENTITY_USER
 
     /**
+     * The table <code>memo.notification_mail_outbox</code>.
+     */
+    val NOTIFICATION_MAIL_OUTBOX: NotificationMailOutbox get() = NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX
+
+    /**
      * The table <code>memo.system_info</code>.
      */
     val SYSTEM_INFO: SystemInfo get() = SystemInfo.SYSTEM_INFO
@@ -131,6 +137,7 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         IdentityRateLimitBucket.IDENTITY_RATE_LIMIT_BUCKET,
         IdentityRecoveryCode.IDENTITY_RECOVERY_CODE,
         IdentityUser.IDENTITY_USER,
+        NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX,
         SystemInfo.SYSTEM_INFO,
         TenancySetting.TENANCY_SETTING,
         TenancySettingView.TENANCY_SETTING_VIEW,

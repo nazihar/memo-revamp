@@ -29,6 +29,9 @@ class AuthSettings(
 ) {
     fun idleTimeout(): Duration = Duration.ofMinutes(int(IDLE_MINUTES, DEFAULT_IDLE_MINUTES, 1..MAX_IDLE_MINUTES).toLong())
 
+    /** How long a fresh second factor (or password) counts for sensitive actions (ADR-0024). */
+    fun stepUpWindow(): Duration = Duration.ofMinutes(int(STEP_UP_MINUTES, DEFAULT_STEP_UP_MINUTES, 1..MAX_STEP_UP_MINUTES).toLong())
+
     fun absoluteTimeout(): Duration = Duration.ofHours(int(ABSOLUTE_HOURS, DEFAULT_ABSOLUTE_HOURS, 1..MAX_ABSOLUTE_HOURS).toLong())
 
     /** Tenant admins always need MFA; other users unless the tenant relaxes it (overview Q5). */
@@ -48,6 +51,9 @@ class AuthSettings(
     companion object {
         const val IDLE_MINUTES = "security.session.idle.minutes"
         const val ABSOLUTE_HOURS = "security.session.absolute.hours"
+        const val STEP_UP_MINUTES = "security.stepup.minutes"
+        private const val DEFAULT_STEP_UP_MINUTES = 5
+        private const val MAX_STEP_UP_MINUTES = 30
 
         /** `all` (default; any other value counts as `all`) or `admins` (ADR-0024). */
         const val MFA_REQUIRED = "security.mfa.required"
@@ -129,12 +135,13 @@ class SignIn(
                 }
 
                 else -> {
-                    signedIn(tenant, account)
+                    establish(tenant, account)
                 }
             }
         }
 
-    private fun signedIn(
+    /** Starts the session principal for [account] after its password was proven or just set. Inside the tenant transaction. */
+    fun establish(
         tenant: TenantId,
         account: UserAccount,
     ): SignInResult.SignedIn {

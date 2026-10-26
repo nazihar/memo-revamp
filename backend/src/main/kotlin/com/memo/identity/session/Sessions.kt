@@ -2,6 +2,7 @@ package com.memo.identity.session
 
 import com.github.kagkarlsson.scheduler.task.helper.RecurringTask
 import com.github.kagkarlsson.scheduler.task.schedule.Schedules
+import com.memo.common.context.ActorContext
 import com.memo.common.jobs.Jobs
 import com.memo.common.tenant.TenantContext
 import jakarta.servlet.http.HttpServletRequest
@@ -35,6 +36,13 @@ import java.time.Clock
 import java.time.Duration
 import java.util.Base64
 
+/** Where and when a session started (client address and user agent as seen at sign-in). */
+data class SessionClient(
+    val ip: String?,
+    val userAgent: String?,
+    val signedInAt: java.time.Instant,
+)
+
 /** Reads and writes the session principal (ADR-0023). Nothing else security-relevant lives in a session. */
 @Component
 class SessionStore(
@@ -62,7 +70,12 @@ class SessionStore(
         val session = request.getSession(true)
         session.maxInactiveInterval = idleTimeout.toSeconds().toInt()
         write(session, principal)
+        val client = ActorContext.currentOrNull()?.client
+        session.setAttribute(CLIENT, jsonMapper.writeValueAsString(SessionClient(client?.ip, client?.userAgent, principal.authenticatedAt)))
     }
+
+    fun client(json: String?): SessionClient? =
+        json?.let { runCatching { jsonMapper.readValue(it, SessionClient::class.java) }.getOrNull() }
 
     /** Stores an updated principal (a new factor) under a new session id. */
     fun upgrade(
@@ -84,6 +97,9 @@ class SessionStore(
 
     companion object {
         const val PRINCIPAL = "memo.principal"
+
+        /** Where the session was started, for "my sessions" (shown to the user only). */
+        const val CLIENT = "memo.client"
     }
 }
 

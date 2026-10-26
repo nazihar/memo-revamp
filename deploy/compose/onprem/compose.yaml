@@ -23,6 +23,15 @@ x-backend-env: &backend-env
   MEMO_DB_URL: jdbc:postgresql://postgres:5432/memo
   MEMO_SMTP_HOST: ${MEMO_SMTP_HOST:-}
   MEMO_SMTP_PORT: ${MEMO_SMTP_PORT:-25}
+  MEMO_SMTP_FROM: ${MEMO_SMTP_FROM:-}
+  MEMO_SMTP_USERNAME: ${MEMO_SMTP_USERNAME:-}
+  MEMO_SMTP_PASSWORD: ${MEMO_SMTP_PASSWORD:-}
+  MEMO_SMTP_STARTTLS: ${MEMO_SMTP_STARTTLS:-true}
+  MEMO_TENANCY_MODE: ${MEMO_TENANCY_MODE:-multi}
+  MEMO_TENANCY_BASE_DOMAIN: ${MEMO_TENANCY_BASE_DOMAIN:?set in .env}
+  MEMO_TENANCY_SINGLE_TENANT: ${MEMO_TENANCY_SINGLE_TENANT:-}
+  MEMO_TENANCY_FALLBACK_TENANT: ${MEMO_TENANCY_FALLBACK_TENANT:-}
+  MEMO_PUBLIC_URL_TEMPLATE: ${MEMO_PUBLIC_URL_TEMPLATE:-}
   MEMO_DOCSERVER_URL: ${MEMO_DOCSERVER_URL:-}
   MEMO_CLAMAV_HOST: ${MEMO_CLAMAV_HOST:-}
   LOGGING_STRUCTURED_FORMAT_CONSOLE: ecs
@@ -169,10 +178,12 @@ services:
     deploy: { resources: { limits: { memory: 3g } } }
 
   mailpit:
-    # Dev/staging only: catches all mail. Never enable on production installs.
+    # Dev/staging only: catches all mail. Never enable on production installs. The UI is bound to the VM's loopback:
+    # reach it with `ssh -L 8025:127.0.0.1:<MEMO_MAILPIT_PORT> <vm>`.
     profiles: [devtools]
     image: axllent/mailpit:v1.31.5
     <<: *hardening
+    ports: ["127.0.0.1:${MEMO_MAILPIT_PORT:-8025}:8025"]
 
 networks:
   default: {}

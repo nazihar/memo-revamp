@@ -3,8 +3,8 @@
 import { type DefaultError, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { confirmMfaEnrolment, getCsrfToken, getHealth, getSession, login, logout, type Options, startMfaEnrolment, verifyMfa } from '../sdk.gen';
-import type { ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentError, ConfirmMfaEnrolmentResponse, GetCsrfTokenData, GetCsrfTokenResponse, GetHealthData, GetHealthError, GetHealthResponse, GetSessionData, GetSessionResponse, LoginData, LoginError, LoginResponse, LogoutData, LogoutResponse, StartMfaEnrolmentData, StartMfaEnrolmentError, StartMfaEnrolmentResponse, VerifyMfaData, VerifyMfaError, VerifyMfaResponse } from '../types.gen';
+import { acceptInvitation, changeMyPassword, completePasswordReset, confirmMfaEnrolment, getCsrfToken, getHealth, getMe, getSession, listMySessions, login, logout, lookUpInvitation, type Options, regenerateMyRecoveryCodes, requestPasswordReset, revokeMySession, startMfaEnrolment, stepUp, verifyMfa } from '../sdk.gen';
+import type { AcceptInvitationData, AcceptInvitationError, AcceptInvitationResponse, ChangeMyPasswordData, ChangeMyPasswordError, ChangeMyPasswordResponse, CompletePasswordResetData, CompletePasswordResetError, CompletePasswordResetResponse, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentError, ConfirmMfaEnrolmentResponse, GetCsrfTokenData, GetCsrfTokenResponse, GetHealthData, GetHealthError, GetHealthResponse, GetMeData, GetMeResponse, GetSessionData, GetSessionResponse, ListMySessionsData, ListMySessionsResponse, LoginData, LoginError, LoginResponse, LogoutData, LogoutResponse, LookUpInvitationData, LookUpInvitationError, LookUpInvitationResponse, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesResponse, RequestPasswordResetData, RevokeMySessionData, RevokeMySessionResponse, StartMfaEnrolmentData, StartMfaEnrolmentResponse, StepUpData, StepUpError, StepUpResponse, VerifyMfaData, VerifyMfaError, VerifyMfaResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -58,6 +58,42 @@ export const getCsrfTokenOptions = (options?: Options<GetCsrfTokenData>) => quer
     },
     queryKey: getCsrfTokenQueryKey(options)
 });
+
+/**
+ * Accept an invitation
+ *
+ * Sets the password and signs in; the state says whether MFA enrolment follows.
+ */
+export const acceptInvitationMutation = (options?: Partial<Options<AcceptInvitationData>>): UseMutationOptions<AcceptInvitationResponse, AcceptInvitationError, Options<AcceptInvitationData>> => {
+    const mutationOptions: UseMutationOptions<AcceptInvitationResponse, AcceptInvitationError, Options<AcceptInvitationData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await acceptInvitation({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Show an invitation
+ */
+export const lookUpInvitationMutation = (options?: Partial<Options<LookUpInvitationData>>): UseMutationOptions<LookUpInvitationResponse, LookUpInvitationError, Options<LookUpInvitationData>> => {
+    const mutationOptions: UseMutationOptions<LookUpInvitationResponse, LookUpInvitationError, Options<LookUpInvitationData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await lookUpInvitation({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
 
 /**
  * Sign in with email and password
@@ -121,8 +157,8 @@ export const verifyMfaMutation = (options?: Partial<Options<VerifyMfaData>>): Us
  *
  * During sign-in when enrolment is required, or from a complete session to switch devices. Confirm with a code to activate.
  */
-export const startMfaEnrolmentMutation = (options?: Partial<Options<StartMfaEnrolmentData>>): UseMutationOptions<StartMfaEnrolmentResponse, StartMfaEnrolmentError, Options<StartMfaEnrolmentData>> => {
-    const mutationOptions: UseMutationOptions<StartMfaEnrolmentResponse, StartMfaEnrolmentError, Options<StartMfaEnrolmentData>> = {
+export const startMfaEnrolmentMutation = (options?: Partial<Options<StartMfaEnrolmentData>>): UseMutationOptions<StartMfaEnrolmentResponse, DefaultError, Options<StartMfaEnrolmentData>> => {
+    const mutationOptions: UseMutationOptions<StartMfaEnrolmentResponse, DefaultError, Options<StartMfaEnrolmentData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await startMfaEnrolment({
                 ...options,
@@ -154,6 +190,44 @@ export const confirmMfaEnrolmentMutation = (options?: Partial<Options<ConfirmMfa
     return mutationOptions;
 };
 
+/**
+ * Email a password reset link
+ *
+ * Always 202: the answer never says whether an account exists.
+ */
+export const requestPasswordResetMutation = (options?: Partial<Options<RequestPasswordResetData>>): UseMutationOptions<unknown, DefaultError, Options<RequestPasswordResetData>> => {
+    const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<RequestPasswordResetData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await requestPasswordReset({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Set a new password from a reset link
+ *
+ * Signs out every session of the account. The link works once.
+ */
+export const completePasswordResetMutation = (options?: Partial<Options<CompletePasswordResetData>>): UseMutationOptions<CompletePasswordResetResponse, CompletePasswordResetError, Options<CompletePasswordResetData>> => {
+    const mutationOptions: UseMutationOptions<CompletePasswordResetResponse, CompletePasswordResetError, Options<CompletePasswordResetData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await completePasswordReset({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
 export const getSessionQueryKey = (options?: Options<GetSessionData>) => createQueryKey('getSession', options);
 
 /**
@@ -174,6 +248,25 @@ export const getSessionOptions = (options?: Options<GetSessionData>) => queryOpt
     queryKey: getSessionQueryKey(options)
 });
 
+/**
+ * Confirm it is you
+ *
+ * Refreshes the session's strongest factor for the step-up window. Rate-limited per user.
+ */
+export const stepUpMutation = (options?: Partial<Options<StepUpData>>): UseMutationOptions<StepUpResponse, StepUpError, Options<StepUpData>> => {
+    const mutationOptions: UseMutationOptions<StepUpResponse, StepUpError, Options<StepUpData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await stepUp({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
 export const getHealthQueryKey = (options?: Options<GetHealthData>) => createQueryKey('getHealth', options);
 
 /**
@@ -193,3 +286,96 @@ export const getHealthOptions = (options?: Options<GetHealthData>) => queryOptio
     },
     queryKey: getHealthQueryKey(options)
 });
+
+export const getMeQueryKey = (options?: Options<GetMeData>) => createQueryKey('getMe', options);
+
+/**
+ * My account
+ */
+export const getMeOptions = (options?: Options<GetMeData>) => queryOptions<GetMeResponse, DefaultError, GetMeResponse, ReturnType<typeof getMeQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getMe({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getMeQueryKey(options)
+});
+
+/**
+ * Change my password
+ *
+ * Needs a recent step-up. Signs out every other session of the account.
+ */
+export const changeMyPasswordMutation = (options?: Partial<Options<ChangeMyPasswordData>>): UseMutationOptions<ChangeMyPasswordResponse, ChangeMyPasswordError, Options<ChangeMyPasswordData>> => {
+    const mutationOptions: UseMutationOptions<ChangeMyPasswordResponse, ChangeMyPasswordError, Options<ChangeMyPasswordData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await changeMyPassword({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * New recovery codes
+ *
+ * Needs a recent step-up.
+ */
+export const regenerateMyRecoveryCodesMutation = (options?: Partial<Options<RegenerateMyRecoveryCodesData>>): UseMutationOptions<RegenerateMyRecoveryCodesResponse, DefaultError, Options<RegenerateMyRecoveryCodesData>> => {
+    const mutationOptions: UseMutationOptions<RegenerateMyRecoveryCodesResponse, DefaultError, Options<RegenerateMyRecoveryCodesData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await regenerateMyRecoveryCodes({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const listMySessionsQueryKey = (options?: Options<ListMySessionsData>) => createQueryKey('listMySessions', options);
+
+/**
+ * My sessions
+ *
+ * Every signed-in device of my account; the current one is marked.
+ */
+export const listMySessionsOptions = (options?: Options<ListMySessionsData>) => queryOptions<ListMySessionsResponse, DefaultError, ListMySessionsResponse, ReturnType<typeof listMySessionsQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await listMySessions({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: listMySessionsQueryKey(options)
+});
+
+/**
+ * Sign out one of my sessions
+ */
+export const revokeMySessionMutation = (options?: Partial<Options<RevokeMySessionData>>): UseMutationOptions<RevokeMySessionResponse, DefaultError, Options<RevokeMySessionData>> => {
+    const mutationOptions: UseMutationOptions<RevokeMySessionResponse, DefaultError, Options<RevokeMySessionData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await revokeMySession({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};

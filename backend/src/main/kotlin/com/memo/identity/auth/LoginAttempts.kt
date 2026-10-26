@@ -50,6 +50,28 @@ class LoginAttempts(
         }
     }
 
+    /** A completed password reset: clears failures and lifts any lock, so the new password works at once. */
+    fun clear(account: UserAccount) {
+        tenantDsl
+            .current()
+            .update(IDENTITY_USER)
+            .set(IDENTITY_USER.FAILED_LOGINS, 0)
+            .setNull(IDENTITY_USER.LOCKED_UNTIL)
+            .set(IDENTITY_USER.STATUS, UserStatus.ACTIVE.name)
+            .where(IDENTITY_USER.ID.eq(account.id.value))
+            .and(IDENTITY_USER.STATUS.`in`(UserStatus.ACTIVE.name, UserStatus.LOCKED.name))
+            .execute()
+        if (account.status == UserStatus.LOCKED) {
+            audit.record(
+                "identity.user.unlocked",
+                "identity.user",
+                account.id.toString(),
+                mapOf("status" to "LOCKED"),
+                mapOf("reason" to "password_reset"),
+            )
+        }
+    }
+
     /** A successful sign-in: stamps `last_login_at`, clears failures and any expired lock. */
     fun succeeded(account: UserAccount) {
         tenantDsl

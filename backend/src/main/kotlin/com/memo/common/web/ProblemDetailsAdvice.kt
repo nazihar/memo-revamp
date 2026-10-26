@@ -28,6 +28,15 @@ class ProblemDetailsAdvice : ResponseEntityExceptionHandler() {
             .body(ProblemTypes.of(HttpStatus.TOO_MANY_REQUESTS, ProblemTypes.RATE_LIMITED, "Too many attempts. Try again later."))
     }
 
+    @ExceptionHandler(StepUpRequiredException::class)
+    fun stepUpRequired(ex: StepUpRequiredException): ResponseEntity<ProblemDetail> {
+        val problem =
+            ProblemTypes.of(HttpStatus.UNAUTHORIZED, ProblemTypes.STEP_UP_REQUIRED, "Confirm it is you to continue.").apply {
+                setProperty("stepUpWindowSeconds", ex.window.toSeconds())
+            }
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(problem)
+    }
+
     @ExceptionHandler(Exception::class)
     fun unexpected(ex: Exception): ProblemDetail {
         log.error("Unhandled exception", ex)

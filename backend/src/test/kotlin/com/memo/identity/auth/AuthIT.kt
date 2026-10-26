@@ -221,14 +221,14 @@ class AuthIT : IntegrationTest() {
                         sessionId(cookie),
                     ) { it.getString(1) to it.getString(2) }
                 }.unzip()
-        assertThat(
-            names,
-        ).containsExactlyInAnyOrder(
+        assertThat(names).containsExactlyInAnyOrder(
             "memo.principal",
+            "memo.client",
             "org.springframework.session.FindByIndexNameSessionRepository.PRINCIPAL_NAME_INDEX_NAME",
         )
         assertThat(values).allMatch { !it.contains(password) }
-        assertThat(values.first { it.startsWith("{") }).contains("\"userId\":\"${user.id}\"").contains("\"tenantId\":\"${strict.id}\"")
+        val principal = values[names.indexOf("memo.principal")]
+        assertThat(principal).contains("\"userId\":\"${user.id}\"").contains("\"tenantId\":\"${strict.id}\"")
         val maxInactive =
             AppRoleJdbc.connect { c ->
                 c.query("select max_inactive_interval from identity_http_session where session_id = ?", sessionId(cookie)) { it.getInt(1) }

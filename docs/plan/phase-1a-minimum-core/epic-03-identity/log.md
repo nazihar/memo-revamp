@@ -30,3 +30,15 @@
   - A partial session (password only) may enrol only an account that has no MFA yet; changing an existing authenticator needs a complete session.
   - The MFA policy setting takes `all` (default) or `admins`, as ADR-0024 says; T3 had used true/false.
   - Demo users get `MEMO_DEMO_TOTP_SECRET` (Base32) so Playwright can compute their codes (T10).
+- T6 (step-up), decisions:
+  - `StepUp.require()` checks the session's strongest factor: TOTP when the session has one, the password otherwise (users of an `admins`-only tenant have no TOTP). `/auth/step-up` takes a code or the password accordingly and refreshes that factor under a new session id.
+  - The `/me` endpoints of design §3 came with T6, as the first sensitive actions: `GET /me`, `PUT /me/password` (step-up, signs out every other session), `POST /me/recovery-codes` (step-up), `GET /me/sessions`, `DELETE /me/sessions/{id}`.
+  - Sessions are listed by an opaque handle (SHA-256 prefix of the session id), never the id itself, which is the cookie value. Each session records the client address, user agent and sign-in time at sign-in (`memo.client`).
+  - Validation problems carry `errors: [{field, code, message}]`; `code` (for example `TOO_SHORT`, `INCORRECT`) lets the web client translate.
+- T7 (invitations, password reset, mail), decisions:
+  - One-time tokens never appear in URLs: emailed links carry them in the fragment (`/invitation#<token>`, `/reset-password#<token>`), which browsers do not send, and the API takes them in POST bodies (`/auth/invitations/lookup`, `/auth/invitations/accept`, `/auth/password-reset/complete`) instead of the design's `GET /auth/invitations/{token}`. Request lines and proxy access logs stay free of secrets.
+  - Mail outbox (`notification_mail_outbox`, tenant table): template parameters can hold those links, so they are encrypted with `DataKeys` and cleared once sent. Delivery is a db-scheduler tenant task scheduled in the business transaction (the starter wraps the DataSource in `TransactionAwareDataSourceProxy`), retried 8 times; no SMTP host means the mail stays PENDING.
+  - A weak password is rejected before the link is used up, so the user can try again with the same link.
+  - Sign-in alert: a returning user signing in from a user agent none of their current sessions has.
+  - Links use `memo.tenancy.public-url-template` (`MEMO_PUBLIC_URL_TEMPLATE`, `{slug}` placeholder; default `https://{slug}.<base domain>`).
+  - Found and fixed while wiring mail: the T1 tenancy settings (`MEMO_TENANCY_*`) were not passed through by Compose, Helm or Ansible, so a deployed backend would have defaulted to base domain `localhost`. Compose now requires `MEMO_TENANCY_BASE_DOMAIN`; Ansible sets it per environment with `demo` as fallback, plus Mailpit (`devtools` profile, UI on the VM's loopback) as the mail catcher. Re-run Ansible before merging.

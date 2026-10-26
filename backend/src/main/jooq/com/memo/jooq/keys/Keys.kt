@@ -16,6 +16,7 @@ import com.memo.jooq.tables.IdentityMfa
 import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
+import com.memo.jooq.tables.NotificationMailOutbox
 import com.memo.jooq.tables.SystemInfo
 import com.memo.jooq.tables.TenancySetting
 import com.memo.jooq.tables.TenancyTenant
@@ -30,6 +31,7 @@ import com.memo.jooq.tables.records.IdentityMfaRecord
 import com.memo.jooq.tables.records.IdentityRateLimitBucketRecord
 import com.memo.jooq.tables.records.IdentityRecoveryCodeRecord
 import com.memo.jooq.tables.records.IdentityUserRecord
+import com.memo.jooq.tables.records.NotificationMailOutboxRecord
 import com.memo.jooq.tables.records.SystemInfoRecord
 import com.memo.jooq.tables.records.TenancySettingRecord
 import com.memo.jooq.tables.records.TenancyTenantRecord
@@ -58,6 +60,8 @@ val IDENTITY_RATE_LIMIT_BUCKET_PKEY: UniqueKey<IdentityRateLimitBucketRecord> = 
 val IDENTITY_RECOVERY_CODE_PKEY: UniqueKey<IdentityRecoveryCodeRecord> = Internal.createUniqueKey(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE, DSL.name("identity_recovery_code_pkey"), arrayOf(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.ID), true)
 val IDENTITY_USER_PKEY: UniqueKey<IdentityUserRecord> = Internal.createUniqueKey(IdentityUser.IDENTITY_USER, DSL.name("identity_user_pkey"), arrayOf(IdentityUser.IDENTITY_USER.ID), true)
 val IDENTITY_USER_TENANT_ID_ID_KEY: UniqueKey<IdentityUserRecord> = Internal.createUniqueKey(IdentityUser.IDENTITY_USER, DSL.name("identity_user_tenant_id_id_key"), arrayOf(IdentityUser.IDENTITY_USER.TENANT_ID, IdentityUser.IDENTITY_USER.ID), true)
+val NOTIFICATION_MAIL_OUTBOX_PKEY: UniqueKey<NotificationMailOutboxRecord> = Internal.createUniqueKey(NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX, DSL.name("notification_mail_outbox_pkey"), arrayOf(NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.ID), true)
+val NOTIFICATION_MAIL_OUTBOX_TENANT_ID_ID_KEY: UniqueKey<NotificationMailOutboxRecord> = Internal.createUniqueKey(NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX, DSL.name("notification_mail_outbox_tenant_id_id_key"), arrayOf(NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.TENANT_ID, NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.ID), true)
 val SYSTEM_INFO_PKEY: UniqueKey<SystemInfoRecord> = Internal.createUniqueKey(SystemInfo.SYSTEM_INFO, DSL.name("system_info_pkey"), arrayOf(SystemInfo.SYSTEM_INFO.ID), true)
 val TENANCY_SETTING_PKEY: UniqueKey<TenancySettingRecord> = Internal.createUniqueKey(TenancySetting.TENANCY_SETTING, DSL.name("tenancy_setting_pkey"), arrayOf(TenancySetting.TENANCY_SETTING.ID), true)
 val TENANCY_TENANT_PKEY: UniqueKey<TenancyTenantRecord> = Internal.createUniqueKey(TenancyTenant.TENANCY_TENANT, DSL.name("tenancy_tenant_pkey"), arrayOf(TenancyTenant.TENANCY_TENANT.ID), true)

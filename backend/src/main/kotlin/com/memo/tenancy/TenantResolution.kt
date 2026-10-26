@@ -21,8 +21,16 @@ data class TenancyProperties(
     val baseDomain: String = "localhost",
     val singleTenant: String = "",
     val fallbackTenant: String = "",
+    /**
+     * Where people open memo, for links in emails: `{slug}` is replaced by the tenant's slug. Empty means
+     * `https://{slug}.<baseDomain>`; single-tenant installs set their one address.
+     */
+    val publicUrlTemplate: String = "",
 ) {
     enum class Mode { MULTI, SINGLE }
+
+    /** The web address of the tenant with [slug], without a trailing slash. */
+    fun publicUrl(slug: String): String = publicUrlTemplate.ifBlank { "https://{slug}.$baseDomain" }.replace("{slug}", slug).trimEnd('/')
 }
 
 /** Resolves a request host to a tenant id; cached, because it runs on every API request. */

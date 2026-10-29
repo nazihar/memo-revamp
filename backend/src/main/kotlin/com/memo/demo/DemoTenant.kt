@@ -86,7 +86,15 @@ class DemoTenantSeeder(
             accounts.setPassword(account.id, demoPassword)
         }
         // Base32, so Playwright and people can compute codes for the demo users (MFA is required by default).
-        if (demoTotpSecret.isNotBlank()) mfa.ensureTotp(account.id, demoTotpSecret)
+        if (demoTotpSecret.isNotBlank()) {
+            check(BASE32_SECRET.matches(demoTotpSecret)) { "MEMO_DEMO_TOTP_SECRET must be 32 Base32 characters (A-Z, 2-7)" }
+            mfa.ensureTotp(account.id, demoTotpSecret)
+        }
+    }
+
+    private companion object {
+        /** 160 bits, unpadded, as `scripts/dev.mjs` and `gen-secrets.sh` generate it. */
+        val BASE32_SECRET = Regex("^[A-Z2-7]{32}$")
     }
 }
 

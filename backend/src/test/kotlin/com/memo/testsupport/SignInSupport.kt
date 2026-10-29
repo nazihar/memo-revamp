@@ -188,11 +188,13 @@ fun MockMvcTester.sendJson(
     uri: String,
     session: Cookie?,
     json: String = "{}",
+    headers: Map<String, String> = emptyMap(),
 ): MvcTestResult =
     method(method)
         .uri(uri)
         .with(onHost(tenant.slug))
         .with(fromIp(aClientIp()))
+        .headers { h -> headers.forEach { (name, value) -> h.add(name, value) } }
         .with(sendingCsrf(csrfToken(tenant), *listOfNotNull(session).toTypedArray()))
         .contentType(MediaType.APPLICATION_JSON)
         .content(json)

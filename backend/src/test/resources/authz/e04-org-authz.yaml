@@ -1,0 +1,4 @@
+# E04 org directory and authorisation (design E04 §7). Rules: rules.yaml.
+epic: E04
+endpoints:
+  - { endpoint: GET /api/v1/me/access, rule: signedIn }

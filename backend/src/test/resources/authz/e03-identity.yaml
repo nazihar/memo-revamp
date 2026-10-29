@@ -1,0 +1,34 @@
+# E03 identity, sessions and step-up (design E03 §4), backfilled in E04 T2. Rules: rules.yaml.
+epic: E03
+endpoints:
+  - { endpoint: GET /api/v1/health, rule: public }
+  - { endpoint: GET /api/v1/auth/csrf, rule: public }
+  - { endpoint: GET /api/v1/auth/session, rule: public }
+  - { endpoint: POST /api/v1/auth/login, rule: public }
+  - { endpoint: POST /api/v1/auth/password-reset, rule: public }
+  - { endpoint: POST /api/v1/auth/password-reset/complete, rule: public }
+  - { endpoint: POST /api/v1/auth/invitations/lookup, rule: public }
+  - { endpoint: POST /api/v1/auth/invitations/accept, rule: public }
+  - { endpoint: POST /api/v1/auth/logout, rule: anySession }
+  - { endpoint: POST /api/v1/auth/mfa, rule: anySession }
+  # A partial session may enrol only an account without MFA (E03 T5); the partial subject is enrolled.
+  - { endpoint: POST /api/v1/auth/mfa/enrolment, rule: anySession, expect: { partial: 403 } }
+  - { endpoint: POST /api/v1/auth/mfa/enrolment/confirm, rule: anySession }
+  - { endpoint: POST /api/v1/auth/step-up, rule: signedIn }
+  - { endpoint: GET /api/v1/me, rule: signedIn }
+  - { endpoint: GET /api/v1/me/sessions, rule: signedIn }
+  - { endpoint: "DELETE /api/v1/me/sessions/{id}", rule: signedIn }
+  - endpoint: PUT /api/v1/me/password
+    rule: signedInStepUp
+    body: { currentPassword: wrong, newPassword: also-wrong }
+  - { endpoint: POST /api/v1/me/recovery-codes, rule: signedInStepUp }
+  - { endpoint: GET /api/v1/admin/users, rule: tenantAdmin }
+  - endpoint: POST /api/v1/admin/users
+    rule: tenantAdminStepUp
+    headers: { Idempotency-Key: "{random}" }
+    body: { email: "{random}@matrix.example", displayName: Matrix }
+  - { endpoint: "POST /api/v1/admin/users/{id}/deactivate", rule: tenantAdminStepUp }
+  - { endpoint: "POST /api/v1/admin/users/{id}/reactivate", rule: tenantAdminStepUp }
+  - { endpoint: "POST /api/v1/admin/users/{id}/unlock", rule: tenantAdminStepUp }
+  - { endpoint: "POST /api/v1/admin/users/{id}/mfa-reset", rule: tenantAdminStepUp }
+  - { endpoint: "POST /api/v1/admin/users/{id}/sessions/revoke", rule: tenantAdminStepUp }

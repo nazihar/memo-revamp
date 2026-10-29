@@ -7,6 +7,8 @@ package com.memo.jooq.indexes
 
 import com.memo.jooq.tables.AuditAnchor
 import com.memo.jooq.tables.AuditEvent
+import com.memo.jooq.tables.AuthzClearance
+import com.memo.jooq.tables.AuthzGrant
 import com.memo.jooq.tables.IdentityActionToken
 import com.memo.jooq.tables.IdentityHttpSession
 import com.memo.jooq.tables.IdentityMfa
@@ -31,6 +33,9 @@ val AUDIT_ANCHOR_TENANT_SEQ_UK: Index = Internal.createIndex(DSL.name("audit_anc
 val AUDIT_EVENT_TENANT_ACTOR_IDX: Index = Internal.createIndex(DSL.name("audit_event_tenant_actor_idx"), AuditEvent.AUDIT_EVENT, arrayOf(AuditEvent.AUDIT_EVENT.TENANT_ID, AuditEvent.AUDIT_EVENT.ACTOR_ID, AuditEvent.AUDIT_EVENT.OCCURRED_AT), false)
 val AUDIT_EVENT_TENANT_OBJECT_IDX: Index = Internal.createIndex(DSL.name("audit_event_tenant_object_idx"), AuditEvent.AUDIT_EVENT, arrayOf(AuditEvent.AUDIT_EVENT.TENANT_ID, AuditEvent.AUDIT_EVENT.OBJECT_TYPE, AuditEvent.AUDIT_EVENT.OBJECT_ID, AuditEvent.AUDIT_EVENT.OCCURRED_AT), false)
 val AUDIT_EVENT_TENANT_SEQ_IDX: Index = Internal.createIndex(DSL.name("audit_event_tenant_seq_idx"), AuditEvent.AUDIT_EVENT, arrayOf(AuditEvent.AUDIT_EVENT.TENANT_ID, AuditEvent.AUDIT_EVENT.SEQ), false)
+val AUTHZ_CLEARANCE_TENANT_LEVEL_IDX: Index = Internal.createIndex(DSL.name("authz_clearance_tenant_level_idx"), AuthzClearance.AUTHZ_CLEARANCE, arrayOf(AuthzClearance.AUTHZ_CLEARANCE.TENANT_ID, AuthzClearance.AUTHZ_CLEARANCE.LEVEL_ID), false)
+val AUTHZ_GRANT_TENANT_ROLE_IDX: Index = Internal.createIndex(DSL.name("authz_grant_tenant_role_idx"), AuthzGrant.AUTHZ_GRANT, arrayOf(AuthzGrant.AUTHZ_GRANT.TENANT_ID, AuthzGrant.AUTHZ_GRANT.ROLE_ID), false)
+val AUTHZ_GRANT_TENANT_SCOPE_IDX: Index = Internal.createIndex(DSL.name("authz_grant_tenant_scope_idx"), AuthzGrant.AUTHZ_GRANT, arrayOf(AuthzGrant.AUTHZ_GRANT.TENANT_ID, AuthzGrant.AUTHZ_GRANT.SCOPE_UNIT_ID), false)
 val IDENTITY_ACTION_TOKEN_TENANT_HASH_UK: Index = Internal.createIndex(DSL.name("identity_action_token_tenant_hash_uk"), IdentityActionToken.IDENTITY_ACTION_TOKEN, arrayOf(IdentityActionToken.IDENTITY_ACTION_TOKEN.TENANT_ID, IdentityActionToken.IDENTITY_ACTION_TOKEN.TOKEN_HASH), true)
 val IDENTITY_ACTION_TOKEN_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("identity_action_token_tenant_user_idx"), IdentityActionToken.IDENTITY_ACTION_TOKEN, arrayOf(IdentityActionToken.IDENTITY_ACTION_TOKEN.TENANT_ID, IdentityActionToken.IDENTITY_ACTION_TOKEN.USER_ID), false)
 val IDENTITY_HTTP_SESSION_EXPIRY_IDX: Index = Internal.createIndex(DSL.name("identity_http_session_expiry_idx"), IdentityHttpSession.IDENTITY_HTTP_SESSION, arrayOf(IdentityHttpSession.IDENTITY_HTTP_SESSION.EXPIRY_TIME), false)

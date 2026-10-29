@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { acceptInvitation, changeMyPassword, completePasswordReset, confirmMfaEnrolment, deactivateUser, getCsrfToken, getHealth, getMe, getSession, inviteUser, listMySessions, listUsers, login, logout, lookUpInvitation, type Options, reactivateUser, regenerateMyRecoveryCodes, requestPasswordReset, resetUserMfa, revokeMySession, revokeUserSessions, startMfaEnrolment, stepUp, unlockUser, verifyMfa } from '../sdk.gen';
-import type { AcceptInvitationData, AcceptInvitationError, AcceptInvitationResponse, ChangeMyPasswordData, ChangeMyPasswordError, ChangeMyPasswordResponse, CompletePasswordResetData, CompletePasswordResetError, CompletePasswordResetResponse, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentError, ConfirmMfaEnrolmentResponse, DeactivateUserData, DeactivateUserResponse, GetCsrfTokenData, GetCsrfTokenResponse, GetHealthData, GetHealthError, GetHealthResponse, GetMeData, GetMeResponse, GetSessionData, GetSessionResponse, InviteUserData, InviteUserError, InviteUserResponse, ListMySessionsData, ListMySessionsResponse, ListUsersData, ListUsersResponse, LoginData, LoginError, LoginResponse, LogoutData, LogoutResponse, LookUpInvitationData, LookUpInvitationError, LookUpInvitationResponse, ReactivateUserData, ReactivateUserResponse, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesResponse, RequestPasswordResetData, ResetUserMfaData, ResetUserMfaResponse, RevokeMySessionData, RevokeMySessionResponse, RevokeUserSessionsData, RevokeUserSessionsResponse, StartMfaEnrolmentData, StartMfaEnrolmentResponse, StepUpData, StepUpError, StepUpResponse, UnlockUserData, UnlockUserResponse, VerifyMfaData, VerifyMfaError, VerifyMfaResponse } from '../types.gen';
+import { acceptInvitation, changeMyPassword, completePasswordReset, confirmMfaEnrolment, deactivateUser, getCsrfToken, getHealth, getMe, getMyAccess, getSession, inviteUser, listMySessions, listUsers, login, logout, lookUpInvitation, type Options, reactivateUser, regenerateMyRecoveryCodes, requestPasswordReset, resetUserMfa, revokeMySession, revokeUserSessions, startMfaEnrolment, stepUp, unlockUser, verifyMfa } from '../sdk.gen';
+import type { AcceptInvitationData, AcceptInvitationError, AcceptInvitationResponse, ChangeMyPasswordData, ChangeMyPasswordError, ChangeMyPasswordResponse, CompletePasswordResetData, CompletePasswordResetError, CompletePasswordResetResponse, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentError, ConfirmMfaEnrolmentResponse, DeactivateUserData, DeactivateUserResponse, GetCsrfTokenData, GetCsrfTokenResponse, GetHealthData, GetHealthError, GetHealthResponse, GetMeData, GetMeResponse, GetMyAccessData, GetMyAccessResponse, GetSessionData, GetSessionResponse, InviteUserData, InviteUserError, InviteUserResponse, ListMySessionsData, ListMySessionsResponse, ListUsersData, ListUsersResponse, LoginData, LoginError, LoginResponse, LogoutData, LogoutResponse, LookUpInvitationData, LookUpInvitationError, LookUpInvitationResponse, ReactivateUserData, ReactivateUserResponse, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesResponse, RequestPasswordResetData, ResetUserMfaData, ResetUserMfaResponse, RevokeMySessionData, RevokeMySessionResponse, RevokeUserSessionsData, RevokeUserSessionsResponse, StartMfaEnrolmentData, StartMfaEnrolmentResponse, StepUpData, StepUpError, StepUpResponse, UnlockUserData, UnlockUserResponse, VerifyMfaData, VerifyMfaError, VerifyMfaResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -492,6 +492,24 @@ export const getMeOptions = (options?: Options<GetMeData>) => queryOptions<GetMe
         return data;
     },
     queryKey: getMeQueryKey(options)
+});
+
+export const getMyAccessQueryKey = (options?: Options<GetMyAccessData>) => createQueryKey('getMyAccess', options);
+
+/**
+ * My permissions and clearance
+ */
+export const getMyAccessOptions = (options?: Options<GetMyAccessData>) => queryOptions<GetMyAccessResponse, DefaultError, GetMyAccessResponse, ReturnType<typeof getMyAccessQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getMyAccess({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getMyAccessQueryKey(options)
 });
 
 /**

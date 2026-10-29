@@ -1,5 +1,6 @@
 package com.memo.system.health
 
+import com.memo.common.authz.PublicEndpoint
 import com.memo.shared.health.HealthStatus
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Content
@@ -33,6 +34,7 @@ data class ComponentHealthResponse(
 )
 
 @RestController
+@PublicEndpoint
 @RequestMapping("/api/v1/health")
 @Tag(name = "system")
 class HealthController(

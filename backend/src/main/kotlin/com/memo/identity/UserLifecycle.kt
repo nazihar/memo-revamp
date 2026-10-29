@@ -1,6 +1,7 @@
 package com.memo.identity
 
 import com.memo.audit.AuditLog
+import com.memo.common.authz.AccessAdministration
 import com.memo.common.concurrency.ConcurrentModificationException
 import com.memo.common.tenant.TenantDsl
 import com.memo.identity.auth.LoginAttempts
@@ -39,6 +40,7 @@ class UserLifecycle(
     private val registry: TenantRegistry,
     private val audit: AuditLog,
     private val clock: Clock,
+    private val access: AccessAdministration,
 ) {
     /** Not oneself, and never the last active tenant admin (threat model E2). Open links stop working. */
     fun deactivate(
@@ -48,7 +50,7 @@ class UserLifecycle(
     ): UserAccount {
         if (id == actor) throw LifecycleRefusedException("SELF", "You cannot deactivate your own account.")
         val target = requireNotNull(accounts.find(id)) { "unknown user" }
-        if (target.tenantAdmin && otherActiveAdmins(id) == 0) {
+        if (accounts.isTenantAdmin(id) && otherActiveAdmins(id) == 0) {
             throw LifecycleRefusedException("LAST_ADMIN", "The organisation needs at least one active administrator.")
         }
         val updated =
@@ -139,16 +141,18 @@ class UserLifecycle(
         return requireNotNull(accounts.find(id))
     }
 
-    /** Active admins other than [id], with their rows locked so two admins cannot deactivate each other at once. */
-    private fun otherActiveAdmins(id: UserId): Int =
-        tenantDsl
+    /**
+     * Active tenant admins other than [id]. The tenant admin role row stays locked until commit, so two admins cannot
+     * deactivate each other (or revoke each other's grant, E04) at once.
+     */
+    private fun otherActiveAdmins(id: UserId): Int {
+        val others = access.otherTenantAdminsLocked(id.value)
+        if (others.isEmpty()) return 0
+        return tenantDsl
             .current()
-            .select(IDENTITY_USER.ID)
-            .from(IDENTITY_USER)
-            .where(IDENTITY_USER.TENANT_ADMIN.isTrue)
-            .and(IDENTITY_USER.STATUS.eq(UserStatus.ACTIVE.name))
-            .and(IDENTITY_USER.ID.ne(id.value))
-            .forUpdate()
-            .fetch()
-            .size
+            .fetchCount(
+                IDENTITY_USER,
+                IDENTITY_USER.ID.`in`(others).and(IDENTITY_USER.STATUS.eq(UserStatus.ACTIVE.name)),
+            )
+    }
 }

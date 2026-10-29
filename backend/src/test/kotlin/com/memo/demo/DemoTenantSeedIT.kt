@@ -1,5 +1,6 @@
 package com.memo.demo
 
+import com.memo.common.authz.AccessAdministration
 import com.memo.common.tenant.TenantTransactions
 import com.memo.identity.MfaSeeding
 import com.memo.identity.UserAccounts
@@ -34,11 +35,13 @@ class DemoTenantSeedIT : IntegrationTest() {
 
     @Autowired lateinit var mfa: MfaService
 
+    @Autowired lateinit var access: AccessAdministration
+
     private fun seederWith(
         password: String,
         totpSecret: String = "",
         env: Environment = environment,
-    ) = DemoTenantSeeder(registry, settings, transactions, env, accounts, password, mfaSeeding, totpSecret)
+    ) = DemoTenantSeeder(registry, settings, transactions, env, accounts, password, mfaSeeding, totpSecret, access)
 
     @Test
     fun `seeding is idempotent and produces the demo tenant as defined in code`() {
@@ -68,7 +71,7 @@ class DemoTenantSeedIT : IntegrationTest() {
             DemoTenant.USERS.forEach {
                 val account = accounts.findByEmail(it.email)!!
                 assertThat(account.status).isEqualTo(UserStatus.ACTIVE)
-                assertThat(account.tenantAdmin).isEqualTo(it.tenantAdmin)
+                assertThat(accounts.isTenantAdmin(account.id)).isEqualTo(it.tenantAdmin)
                 assertThat(accounts.passwordMatches(account.id, password)).isTrue()
                 assertThat(mfa.verify(account, Totp.code(Totp.decodeBase32(totpSecret), Totp.step(java.time.Instant.now())))).isTrue()
             }

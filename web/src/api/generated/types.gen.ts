@@ -116,6 +116,28 @@ export type MfaEnrolmentConfirmed = {
     session: Session;
 };
 
+export type MyAccess = {
+    clearance: MyClearance;
+    permissions: Array<MyPermission>;
+};
+
+export type MyClearance = {
+    name: string;
+    rank: number;
+};
+
+export type MyPermission = {
+    key: string;
+    /**
+     * Unit subtrees it is held for, when not tenant-wide
+     */
+    scopeUnitIds: Array<string>;
+    /**
+     * Held for the whole organisation
+     */
+    tenantWide: boolean;
+};
+
 export type MySession = {
     current: boolean;
     /**
@@ -650,6 +672,22 @@ export type GetMeResponses = {
 };
 
 export type GetMeResponse = GetMeResponses[keyof GetMeResponses];
+
+export type GetMyAccessData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/me/access';
+};
+
+export type GetMyAccessResponses = {
+    /**
+     * OK
+     */
+    200: MyAccess;
+};
+
+export type GetMyAccessResponse = GetMyAccessResponses[keyof GetMyAccessResponses];
 
 export type ChangeMyPasswordData = {
     body: ChangePasswordRequest;

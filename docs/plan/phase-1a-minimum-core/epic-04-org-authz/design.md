@@ -17,7 +17,7 @@ flowchart LR
   authz --> identity
 ```
 
-- `common.authz` (shared kernel): `Permission` (catalogue), `Policy`, `Target`, `AccessDenied`, the annotations `@Public`, `@SignedIn`, `@RequiresPermission`, and the `OrgTree` read model interface that `org` implements and `authz` consumes (no cycle).
+- `common.authz` (shared kernel): `Permission` (catalogue), `BuiltInRole`, `Policy`, `Resource`, `ForbiddenException`, `AccessAdministration` (built-in grants and the last-admin lock for `identity`), the annotations `@PublicEndpoint`, `@AuthenticationFlow` (sign-in steps, partial sessions), `@SignedIn`, `@RequiresPermission`, and the `OrgTree` read model interface that `org` implements and `authz` consumes (no cycle).
 - `org` publishes `OrgChanged(tenantId, kind, id)` (cache eviction and, in Phase 2, routing caches). `authz` publishes `GrantsChanged(tenantId, userId)`. Both carry `tenantId` (ADR-0017).
 - `identity` asks `Policy.isPrivileged(userId)` at sign-in (MFA policy `admins`, ADR-0024) instead of reading `tenant_admin`.
 
@@ -166,13 +166,15 @@ Later epics add permissions (files, notifications, tenant settings); the catalog
 
 ```kotlin
 interface Policy {
-    fun check(permission: Permission, target: Target = Target.Tenant): Decision   // ALLOW or DENY(reason)
-    fun require(permission: Permission, target: Target = Target.Tenant)          // throws AccessDenied → 403
+    fun allows(permission: Permission, resource: Resource = Resource.Tenant): Boolean
+    fun require(permission: Permission, resource: Resource = Resource.Tenant)  // throws ForbiddenException → 403
     fun condition(permission: Permission, unit: Field<UUID?>? = null, rank: Field<Int?>? = null): Condition
-    fun isPrivileged(user: UserId): Boolean
+    fun holdsAnywhere(permission: Permission): Boolean   // gate of scoped endpoints
+    fun grants(): List<ScopedPermission>
     fun clearanceRank(): Int
+    fun isPrivileged(user: UUID): Boolean
 }
-sealed interface Target { object Tenant; data class Unit(val id: UUID); data class Classified(val unit: UUID?, val rank: Int) }
+sealed interface Resource { object Tenant; data class Unit(val id: UUID); data class Classified(val unit: UUID?, val rank: Int) }
 ```
 
 Evaluation for the current actor (`Actor.User`):
@@ -186,7 +188,7 @@ Evaluation for the current actor (`Actor.User`):
 Caches (ADR-0020): `authz.grants` (key user id → effective permission scopes), `authz.roles` (role permissions), `org.tree` (units with ancestors and open/closed), evicted by `GrantsChanged` / `OrgChanged` at commit on every node.
 
 ## 5. Request pipeline changes
-- `AccessAnnotationInterceptor` (in `authz`, registered for `/api/**`): resolves the handler's access annotation; none → 500 in tests (meta-test) and 403 at runtime (deny by default). `@RequiresPermission(P)` calls `Policy.require(P)` for tenant-wide checks; scoped checks happen in the service with the loaded object's unit.
+- `AccessInterceptor` (in `authz`, registered for `/api/**`): resolves the handler's access annotation (method first, then class; exactly one); none → 403 at runtime (deny by default) and a build failure through the meta-test. `@RequiresPermission(P)` calls `Policy.require(P)` for tenant-wide checks; scoped checks happen in the service with the loaded object's unit.
 - Spring Security keeps authentication (session, factors); URL rules shrink to "auth endpoints public, everything else needs a complete session". `ROLE_TENANT_ADMIN` and the `tenantAdmin` principal field are replaced by policy checks (expand/contract below).
 - Admin MFA rule (ADR-0024 `admins`): "admin" now means privileged (holds any privileged permission). When a grant change makes a user privileged and they have no MFA, their sessions are revoked so the next sign-in requires enrolment.
 
@@ -253,7 +255,7 @@ Every new table has `tenant_id` first, RLS ENABLE + FORCE with the standard poli
 - `authz_grant (tenant_id, user_id)`, `(tenant_id, role_id)`; unique `authz_classification_level (tenant_id, rank)` deferrable (reorder in one statement);
 - picker: `identity_user (tenant_id, lower(display_name) text_pattern_ops)`, `org_position (tenant_id, lower(title) text_pattern_ops)`.
 
-Cross-module FKs (`org_assignment.user_id` → `identity_user`, `authz_grant.scope_unit_id` → `org_unit`) are real composite FKs: the record must not point at nothing.
+No FKs across modules (`org_assignment.user_id` → `identity_user`, `authz_grant.user_id`, `authz_grant.scope_unit_id` → `org_unit`): module migrations run in no guaranteed order (found in T1: authz migrated before identity), as E03 already noted for `tenant_id`. The writing services check those references, and the cross-tenant and consistency tests cover them.
 
 ## 10. Migrations and compatibility (expand → migrate → contract)
 - `org/V1__directory.sql`, `authz/V1__roles_grants_classification.sql` (schema only).

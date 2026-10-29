@@ -1,6 +1,7 @@
 package com.memo.identity.auth
 
 import com.memo.audit.AuditLog
+import com.memo.common.authz.SignedIn
 import com.memo.common.ratelimit.RateLimit
 import com.memo.common.ratelimit.RateLimiter
 import com.memo.common.tenant.TenantContext
@@ -39,6 +40,7 @@ data class StepUpRequest(
 
 /** Re-confirms the user before a sensitive action (ADR-0024); the client retries the refused request after this. */
 @RestController
+@SignedIn
 @RequestMapping("/api/v1/auth/step-up")
 @Tag(name = "auth")
 class StepUpController(

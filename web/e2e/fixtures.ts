@@ -2,6 +2,17 @@ import AxeBuilder from '@axe-core/playwright'
 import { test as base, expect, type Page } from '@playwright/test'
 import { storageStateFor, type Role } from './roles'
 
+/**
+ * WebKit (Playwright 1.64's build) reports CSP violations for its own internals: an inline style in the shadow tree of
+ * every native `<select>`, and a style element when a modal `<dialog>` opens. The events target the document or the
+ * `<select>` itself (which carries no style attribute of ours). Our code is the same in every browser, and Chromium and
+ * Firefox still catch any inline style of ours; a violation on one of our elements is still reported in WebKit too.
+ */
+const WEBKIT_INTERNAL = [
+  /^Content-Security-Policy violation: style-src-(attr|elem) inline \(browser internal\)$/,
+  /^Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive/,
+]
+
 /** WCAG 2.2 AA tag set used for every page visit (TESTING_STRATEGY §4). */
 const AXE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']
 
@@ -43,14 +54,22 @@ export const test = base.extend<Fixtures>({
   },
 
   cspViolations: [
-    async ({ page }, use) => {
+    async ({ page, browserName }, use) => {
       const violations: string[] = []
       page.on('console', (msg) => {
-        if (/Content[- ]Security[- ]Policy/i.test(msg.text())) violations.push(msg.text())
+        const text = msg.text()
+        if (!/Content[- ]Security[- ]Policy/i.test(text)) return
+        if (browserName === 'webkit' && WEBKIT_INTERNAL.some((pattern) => pattern.test(text))) return
+        violations.push(text)
       })
       await page.addInitScript(() => {
         document.addEventListener('securitypolicyviolation', (e) => {
-          console.error(`Content-Security-Policy violation: ${e.violatedDirective} ${e.blockedURI}`)
+          // WebKit reports styles of a native <select>'s own shadow tree on the document or on the <select> itself.
+          const internal =
+            e.target === document || (e.target instanceof HTMLSelectElement && !e.target.hasAttribute('style'))
+          const element = e.target instanceof Element ? ` (${e.target.outerHTML.slice(0, 80)})` : ''
+          const where = internal ? ' (browser internal)' : element
+          console.error(`Content-Security-Policy violation: ${e.violatedDirective} ${e.blockedURI}${where}`)
         })
       })
       await use(violations)

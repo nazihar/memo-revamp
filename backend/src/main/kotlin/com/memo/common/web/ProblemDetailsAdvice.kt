@@ -1,5 +1,6 @@
 package com.memo.common.web
 
+import com.memo.common.authz.ForbiddenException
 import com.memo.common.concurrency.ConcurrentModificationException
 import com.memo.common.ratelimit.RateLimitedException
 import org.slf4j.LoggerFactory
@@ -28,6 +29,15 @@ class ProblemDetailsAdvice : ResponseEntityExceptionHandler() {
             .header(HttpHeaders.RETRY_AFTER, seconds.toString())
             .body(ProblemTypes.of(HttpStatus.TOO_MANY_REQUESTS, ProblemTypes.RATE_LIMITED, "Too many attempts. Try again later."))
     }
+
+    /** Deny by default (ADR-0027): the permission is named for the client; nothing about the object is revealed. */
+    @ExceptionHandler(ForbiddenException::class)
+    fun forbidden(ex: ForbiddenException): ResponseEntity<ProblemDetail> =
+        ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+            ProblemTypes.of(HttpStatus.FORBIDDEN, ProblemTypes.FORBIDDEN, "You do not have access to this.").apply {
+                ex.permission?.let { setProperty("permission", it.key) }
+            },
+        )
 
     @ExceptionHandler(StepUpRequiredException::class)
     fun stepUpRequired(ex: StepUpRequiredException): ResponseEntity<ProblemDetail> {

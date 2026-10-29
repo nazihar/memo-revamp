@@ -1,0 +1,31 @@
+# Shared vocabulary of the authorisation matrix (TESTING_STRATEGY §3.4, design E04 §7). Each epic's file lists its
+# endpoints with a rule from here, plus per-subject overrides where an endpoint differs. Every subject × endpoint cell
+# becomes a generated test: "allow" means the request passes authorisation (never 5xx, never 403, and never 401 except
+# 401 invalid-credentials, which is a wrong code or password, not a denial); a number is the exact status expected.
+#
+# An entry may give a sample `body` and `headers` ("{random}" becomes a fresh UUID) for endpoints that validate them
+# before the authorisation check that a cell is about (step-up); otherwise the body is {} and path variables random ids.
+#
+# Subjects (built by testsupport/AuthzSubjects.kt, one fresh session per cell):
+#   anonymous          no session
+#   partial            a tenant admin who has proven the password but not yet the second factor
+#   user               a signed-in user without grants (implicit user role)
+#   tenantAdmin        a tenant admin, signed in with password and TOTP just now
+#   tenantAdminStale   the same, with every factor older than the step-up window
+#   otherTenantAdmin   a tenant admin of another tenant, sending that session to this tenant's host
+subjects: [anonymous, partial, user, tenantAdmin, tenantAdminStale, otherTenantAdmin]
+
+rules:
+  public:
+    { anonymous: allow, partial: allow, user: allow, tenantAdmin: allow, tenantAdminStale: allow, otherTenantAdmin: allow }
+  # Sign-in steps that need some session, possibly partial.
+  anySession:
+    { anonymous: 401, partial: allow, user: allow, tenantAdmin: allow, tenantAdminStale: allow, otherTenantAdmin: 401 }
+  signedIn:
+    { anonymous: 401, partial: 401, user: allow, tenantAdmin: allow, tenantAdminStale: allow, otherTenantAdmin: 401 }
+  signedInStepUp:
+    { anonymous: 401, partial: 401, user: allow, tenantAdmin: allow, tenantAdminStale: 401, otherTenantAdmin: 401 }
+  tenantAdmin:
+    { anonymous: 401, partial: 401, user: 403, tenantAdmin: allow, tenantAdminStale: allow, otherTenantAdmin: 401 }
+  tenantAdminStepUp:
+    { anonymous: 401, partial: 401, user: 403, tenantAdmin: allow, tenantAdminStale: 401, otherTenantAdmin: 401 }

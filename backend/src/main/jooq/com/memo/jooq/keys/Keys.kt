@@ -9,6 +9,11 @@ import com.memo.jooq.tables.AuditAnchor
 import com.memo.jooq.tables.AuditChainHead
 import com.memo.jooq.tables.AuditEvent
 import com.memo.jooq.tables.AuditVerification
+import com.memo.jooq.tables.AuthzClassificationLevel
+import com.memo.jooq.tables.AuthzClearance
+import com.memo.jooq.tables.AuthzGrant
+import com.memo.jooq.tables.AuthzRole
+import com.memo.jooq.tables.AuthzRolePermission
 import com.memo.jooq.tables.IdentityActionToken
 import com.memo.jooq.tables.IdentityHttpSession
 import com.memo.jooq.tables.IdentityHttpSessionAttributes
@@ -25,6 +30,11 @@ import com.memo.jooq.tables.records.AuditAnchorRecord
 import com.memo.jooq.tables.records.AuditChainHeadRecord
 import com.memo.jooq.tables.records.AuditEventRecord
 import com.memo.jooq.tables.records.AuditVerificationRecord
+import com.memo.jooq.tables.records.AuthzClassificationLevelRecord
+import com.memo.jooq.tables.records.AuthzClearanceRecord
+import com.memo.jooq.tables.records.AuthzGrantRecord
+import com.memo.jooq.tables.records.AuthzRolePermissionRecord
+import com.memo.jooq.tables.records.AuthzRoleRecord
 import com.memo.jooq.tables.records.IdentityActionTokenRecord
 import com.memo.jooq.tables.records.IdentityHttpSessionAttributesRecord
 import com.memo.jooq.tables.records.IdentityHttpSessionRecord
@@ -54,6 +64,16 @@ val AUDIT_ANCHOR_PKEY: UniqueKey<AuditAnchorRecord> = Internal.createUniqueKey(A
 val AUDIT_CHAIN_HEAD_PKEY: UniqueKey<AuditChainHeadRecord> = Internal.createUniqueKey(AuditChainHead.AUDIT_CHAIN_HEAD, DSL.name("audit_chain_head_pkey"), arrayOf(AuditChainHead.AUDIT_CHAIN_HEAD.TENANT_ID), true)
 val AUDIT_EVENT_PKEY: UniqueKey<AuditEventRecord> = Internal.createUniqueKey(AuditEvent.AUDIT_EVENT, DSL.name("audit_event_pkey"), arrayOf(AuditEvent.AUDIT_EVENT.TENANT_ID, AuditEvent.AUDIT_EVENT.OCCURRED_AT, AuditEvent.AUDIT_EVENT.ID), true)
 val AUDIT_VERIFICATION_PKEY: UniqueKey<AuditVerificationRecord> = Internal.createUniqueKey(AuditVerification.AUDIT_VERIFICATION, DSL.name("audit_verification_pkey"), arrayOf(AuditVerification.AUDIT_VERIFICATION.TENANT_ID), true)
+val AUTHZ_CLASSIFICATION_LEVEL_PKEY: UniqueKey<AuthzClassificationLevelRecord> = Internal.createUniqueKey(AuthzClassificationLevel.AUTHZ_CLASSIFICATION_LEVEL, DSL.name("authz_classification_level_pkey"), arrayOf(AuthzClassificationLevel.AUTHZ_CLASSIFICATION_LEVEL.ID), true)
+val AUTHZ_CLASSIFICATION_LEVEL_TENANT_ID_ID_KEY: UniqueKey<AuthzClassificationLevelRecord> = Internal.createUniqueKey(AuthzClassificationLevel.AUTHZ_CLASSIFICATION_LEVEL, DSL.name("authz_classification_level_tenant_id_id_key"), arrayOf(AuthzClassificationLevel.AUTHZ_CLASSIFICATION_LEVEL.TENANT_ID, AuthzClassificationLevel.AUTHZ_CLASSIFICATION_LEVEL.ID), true)
+val AUTHZ_CLASSIFICATION_LEVEL_TENANT_ID_RANK_KEY: UniqueKey<AuthzClassificationLevelRecord> = Internal.createUniqueKey(AuthzClassificationLevel.AUTHZ_CLASSIFICATION_LEVEL, DSL.name("authz_classification_level_tenant_id_rank_key"), arrayOf(AuthzClassificationLevel.AUTHZ_CLASSIFICATION_LEVEL.TENANT_ID, AuthzClassificationLevel.AUTHZ_CLASSIFICATION_LEVEL.RANK), true)
+val AUTHZ_CLEARANCE_PKEY: UniqueKey<AuthzClearanceRecord> = Internal.createUniqueKey(AuthzClearance.AUTHZ_CLEARANCE, DSL.name("authz_clearance_pkey"), arrayOf(AuthzClearance.AUTHZ_CLEARANCE.TENANT_ID, AuthzClearance.AUTHZ_CLEARANCE.USER_ID), true)
+val AUTHZ_GRANT_PKEY: UniqueKey<AuthzGrantRecord> = Internal.createUniqueKey(AuthzGrant.AUTHZ_GRANT, DSL.name("authz_grant_pkey"), arrayOf(AuthzGrant.AUTHZ_GRANT.ID), true)
+val AUTHZ_GRANT_TENANT_ID_USER_ID_ROLE_ID_SCOPE_UNIT_ID_KEY: UniqueKey<AuthzGrantRecord> = Internal.createUniqueKey(AuthzGrant.AUTHZ_GRANT, DSL.name("authz_grant_tenant_id_user_id_role_id_scope_unit_id_key"), arrayOf(AuthzGrant.AUTHZ_GRANT.TENANT_ID, AuthzGrant.AUTHZ_GRANT.USER_ID, AuthzGrant.AUTHZ_GRANT.ROLE_ID, AuthzGrant.AUTHZ_GRANT.SCOPE_UNIT_ID), true)
+val AUTHZ_ROLE_PKEY: UniqueKey<AuthzRoleRecord> = Internal.createUniqueKey(AuthzRole.AUTHZ_ROLE, DSL.name("authz_role_pkey"), arrayOf(AuthzRole.AUTHZ_ROLE.ID), true)
+val AUTHZ_ROLE_TENANT_ID_ID_KEY: UniqueKey<AuthzRoleRecord> = Internal.createUniqueKey(AuthzRole.AUTHZ_ROLE, DSL.name("authz_role_tenant_id_id_key"), arrayOf(AuthzRole.AUTHZ_ROLE.TENANT_ID, AuthzRole.AUTHZ_ROLE.ID), true)
+val AUTHZ_ROLE_TENANT_ID_KEY_KEY: UniqueKey<AuthzRoleRecord> = Internal.createUniqueKey(AuthzRole.AUTHZ_ROLE, DSL.name("authz_role_tenant_id_key_key"), arrayOf(AuthzRole.AUTHZ_ROLE.TENANT_ID, AuthzRole.AUTHZ_ROLE.KEY), true)
+val AUTHZ_ROLE_PERMISSION_PKEY: UniqueKey<AuthzRolePermissionRecord> = Internal.createUniqueKey(AuthzRolePermission.AUTHZ_ROLE_PERMISSION, DSL.name("authz_role_permission_pkey"), arrayOf(AuthzRolePermission.AUTHZ_ROLE_PERMISSION.TENANT_ID, AuthzRolePermission.AUTHZ_ROLE_PERMISSION.ROLE_ID, AuthzRolePermission.AUTHZ_ROLE_PERMISSION.PERMISSION), true)
 val IDENTITY_ACTION_TOKEN_PKEY: UniqueKey<IdentityActionTokenRecord> = Internal.createUniqueKey(IdentityActionToken.IDENTITY_ACTION_TOKEN, DSL.name("identity_action_token_pkey"), arrayOf(IdentityActionToken.IDENTITY_ACTION_TOKEN.ID), true)
 val IDENTITY_HTTP_SESSION_PKEY: UniqueKey<IdentityHttpSessionRecord> = Internal.createUniqueKey(IdentityHttpSession.IDENTITY_HTTP_SESSION, DSL.name("identity_http_session_pkey"), arrayOf(IdentityHttpSession.IDENTITY_HTTP_SESSION.PRIMARY_ID), true)
 val IDENTITY_HTTP_SESSION_ATTRIBUTES_PKEY: UniqueKey<IdentityHttpSessionAttributesRecord> = Internal.createUniqueKey(IdentityHttpSessionAttributes.IDENTITY_HTTP_SESSION_ATTRIBUTES, DSL.name("identity_http_session_attributes_pkey"), arrayOf(IdentityHttpSessionAttributes.IDENTITY_HTTP_SESSION_ATTRIBUTES.SESSION_PRIMARY_ID, IdentityHttpSessionAttributes.IDENTITY_HTTP_SESSION_ATTRIBUTES.ATTRIBUTE_NAME), true)
@@ -74,6 +94,9 @@ val TENANCY_TENANT_SLUG_KEY: UniqueKey<TenancyTenantRecord> = Internal.createUni
 // FOREIGN KEY definitions
 // -------------------------------------------------------------------------
 
+val AUTHZ_CLEARANCE__AUTHZ_CLEARANCE_TENANT_ID_LEVEL_ID_FKEY: ForeignKey<AuthzClearanceRecord, AuthzClassificationLevelRecord> = Internal.createForeignKey(AuthzClearance.AUTHZ_CLEARANCE, DSL.name("authz_clearance_tenant_id_level_id_fkey"), arrayOf(AuthzClearance.AUTHZ_CLEARANCE.TENANT_ID, AuthzClearance.AUTHZ_CLEARANCE.LEVEL_ID), com.memo.jooq.keys.AUTHZ_CLASSIFICATION_LEVEL_TENANT_ID_ID_KEY, arrayOf(AuthzClassificationLevel.AUTHZ_CLASSIFICATION_LEVEL.TENANT_ID, AuthzClassificationLevel.AUTHZ_CLASSIFICATION_LEVEL.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
+val AUTHZ_GRANT__AUTHZ_GRANT_TENANT_ID_ROLE_ID_FKEY: ForeignKey<AuthzGrantRecord, AuthzRoleRecord> = Internal.createForeignKey(AuthzGrant.AUTHZ_GRANT, DSL.name("authz_grant_tenant_id_role_id_fkey"), arrayOf(AuthzGrant.AUTHZ_GRANT.TENANT_ID, AuthzGrant.AUTHZ_GRANT.ROLE_ID), com.memo.jooq.keys.AUTHZ_ROLE_TENANT_ID_ID_KEY, arrayOf(AuthzRole.AUTHZ_ROLE.TENANT_ID, AuthzRole.AUTHZ_ROLE.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
+val AUTHZ_ROLE_PERMISSION__AUTHZ_ROLE_PERMISSION_TENANT_ID_ROLE_ID_FKEY: ForeignKey<AuthzRolePermissionRecord, AuthzRoleRecord> = Internal.createForeignKey(AuthzRolePermission.AUTHZ_ROLE_PERMISSION, DSL.name("authz_role_permission_tenant_id_role_id_fkey"), arrayOf(AuthzRolePermission.AUTHZ_ROLE_PERMISSION.TENANT_ID, AuthzRolePermission.AUTHZ_ROLE_PERMISSION.ROLE_ID), com.memo.jooq.keys.AUTHZ_ROLE_TENANT_ID_ID_KEY, arrayOf(AuthzRole.AUTHZ_ROLE.TENANT_ID, AuthzRole.AUTHZ_ROLE.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val IDENTITY_ACTION_TOKEN__IDENTITY_ACTION_TOKEN_TENANT_ID_USER_ID_FKEY: ForeignKey<IdentityActionTokenRecord, IdentityUserRecord> = Internal.createForeignKey(IdentityActionToken.IDENTITY_ACTION_TOKEN, DSL.name("identity_action_token_tenant_id_user_id_fkey"), arrayOf(IdentityActionToken.IDENTITY_ACTION_TOKEN.TENANT_ID, IdentityActionToken.IDENTITY_ACTION_TOKEN.USER_ID), com.memo.jooq.keys.IDENTITY_USER_TENANT_ID_ID_KEY, arrayOf(IdentityUser.IDENTITY_USER.TENANT_ID, IdentityUser.IDENTITY_USER.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val IDENTITY_HTTP_SESSION_ATTRIBUTES__IDENTITY_HTTP_SESSION_ATTRIBUTES_SESSION_PRIMARY_ID_FKEY: ForeignKey<IdentityHttpSessionAttributesRecord, IdentityHttpSessionRecord> = Internal.createForeignKey(IdentityHttpSessionAttributes.IDENTITY_HTTP_SESSION_ATTRIBUTES, DSL.name("identity_http_session_attributes_session_primary_id_fkey"), arrayOf(IdentityHttpSessionAttributes.IDENTITY_HTTP_SESSION_ATTRIBUTES.SESSION_PRIMARY_ID), com.memo.jooq.keys.IDENTITY_HTTP_SESSION_PKEY, arrayOf(IdentityHttpSession.IDENTITY_HTTP_SESSION.PRIMARY_ID), true, ForeignKeyRule.CASCADE, ForeignKeyRule.NO_ACTION)
 val IDENTITY_MFA__IDENTITY_MFA_TENANT_ID_USER_ID_FKEY: ForeignKey<IdentityMfaRecord, IdentityUserRecord> = Internal.createForeignKey(IdentityMfa.IDENTITY_MFA, DSL.name("identity_mfa_tenant_id_user_id_fkey"), arrayOf(IdentityMfa.IDENTITY_MFA.TENANT_ID, IdentityMfa.IDENTITY_MFA.USER_ID), com.memo.jooq.keys.IDENTITY_USER_TENANT_ID_ID_KEY, arrayOf(IdentityUser.IDENTITY_USER.TENANT_ID, IdentityUser.IDENTITY_USER.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)

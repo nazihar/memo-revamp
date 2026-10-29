@@ -1,5 +1,6 @@
 package com.memo.identity
 
+import com.memo.common.authz.AccessAdministration
 import com.memo.common.tenant.TenantDsl
 import com.memo.jooq.tables.references.IDENTITY_MFA
 import com.memo.jooq.tables.references.IDENTITY_USER
@@ -34,6 +35,7 @@ data class UserPage(
 @Component
 class UserDirectory(
     private val tenantDsl: TenantDsl,
+    private val access: AccessAdministration,
 ) {
     fun page(
         cursor: String?,
@@ -68,7 +70,6 @@ class UserDirectory(
                     IDENTITY_USER.EMAIL,
                     IDENTITY_USER.DISPLAY_NAME,
                     IDENTITY_USER.STATUS,
-                    IDENTITY_USER.TENANT_ADMIN,
                     IDENTITY_USER.LAST_LOGIN_AT,
                     IDENTITY_USER.VERSION,
                     sortName.`as`("sort_name"),
@@ -82,7 +83,9 @@ class UserDirectory(
                 ).orderBy(sortName, IDENTITY_USER.ID)
                 .limit(size + 1)
                 .fetch()
-        val items = rows.take(size).map { item(it) }
+        val page = rows.take(size)
+        val admins = access.tenantAdmins(page.map { it.get(IDENTITY_USER.ID)!! })
+        val items = page.map { item(it, admins) }
         val next =
             if (rows.size >
                 size
@@ -94,13 +97,16 @@ class UserDirectory(
         return UserPage(items, next)
     }
 
-    private fun item(row: org.jooq.Record): UserListItem =
+    private fun item(
+        row: org.jooq.Record,
+        admins: Set<UUID>,
+    ): UserListItem =
         UserListItem(
             id = row.get(IDENTITY_USER.ID)!!,
             email = row.get(IDENTITY_USER.EMAIL)!!,
             displayName = row.get(IDENTITY_USER.DISPLAY_NAME)!!,
             status = UserStatus.valueOf(row.get(IDENTITY_USER.STATUS)!!),
-            tenantAdmin = row.get(IDENTITY_USER.TENANT_ADMIN)!!,
+            tenantAdmin = row.get(IDENTITY_USER.ID) in admins,
             mfaEnrolled = row.get("mfa_enrolled", Boolean::class.java) ?: false,
             lastLoginAt = row.get(IDENTITY_USER.LAST_LOGIN_AT)?.toInstant(),
             version = row.get(IDENTITY_USER.VERSION)!!,

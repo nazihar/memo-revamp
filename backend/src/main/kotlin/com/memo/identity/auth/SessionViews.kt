@@ -33,7 +33,7 @@ class SessionViews(
                 SessionResponse(
                     state,
                     organisation,
-                    SessionUserResponse(account.id.value, account.email, account.displayName, account.tenantAdmin),
+                    SessionUserResponse(account.id.value, account.email, account.displayName, accounts.isTenantAdmin(account.id)),
                 )
             }
         }

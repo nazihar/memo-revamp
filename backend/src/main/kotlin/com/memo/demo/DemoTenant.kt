@@ -1,5 +1,7 @@
 package com.memo.demo
 
+import com.memo.common.authz.AccessAdministration
+import com.memo.common.authz.BuiltInRole
 import com.memo.common.context.ActorContext
 import com.memo.common.tenant.TenantId
 import com.memo.common.tenant.TenantTransactions
@@ -59,6 +61,7 @@ class DemoTenantSeeder(
     @param:Value("\${memo.demo.password:}") private val demoPassword: String,
     private val mfa: MfaSeeding,
     @param:Value("\${memo.demo.totp-secret:}") private val demoTotpSecret: String,
+    private val access: AccessAdministration,
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
 
@@ -78,6 +81,7 @@ class DemoTenantSeeder(
 
     private fun seedUser(user: DemoUser) {
         val account = accounts.findByEmail(user.email) ?: accounts.create(user.email, user.displayName, user.tenantAdmin)
+        if (user.tenantAdmin) access.grantBuiltIn(account.id.value, BuiltInRole.TENANT_ADMIN)
         if (demoPassword.isBlank()) {
             // Names the variable, never its value.
             // nosemgrep: semgrep.memo-no-secrets-in-logs

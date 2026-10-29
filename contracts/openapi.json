@@ -247,6 +247,56 @@
         "required" : [ "recoveryCodes", "session" ],
         "type" : "object"
       },
+      "MyAccess" : {
+        "properties" : {
+          "clearance" : {
+            "$ref" : "#/components/schemas/MyClearance"
+          },
+          "permissions" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MyPermission"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "clearance", "permissions" ],
+        "type" : "object"
+      },
+      "MyClearance" : {
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "rank" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "name", "rank" ],
+        "type" : "object"
+      },
+      "MyPermission" : {
+        "properties" : {
+          "key" : {
+            "example" : "org.manage",
+            "type" : "string"
+          },
+          "scopeUnitIds" : {
+            "description" : "Unit subtrees it is held for, when not tenant-wide",
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "tenantWide" : {
+            "description" : "Held for the whole organisation",
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "key", "scopeUnitIds", "tenantWide" ],
+        "type" : "object"
+      },
       "MySession" : {
         "properties" : {
           "current" : {
@@ -1094,6 +1144,25 @@
           }
         },
         "summary" : "My account",
+        "tags" : [ "me" ]
+      }
+    },
+    "/api/v1/me/access" : {
+      "get" : {
+        "operationId" : "getMyAccess",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MyAccess"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "My permissions and clearance",
         "tags" : [ "me" ]
       }
     },

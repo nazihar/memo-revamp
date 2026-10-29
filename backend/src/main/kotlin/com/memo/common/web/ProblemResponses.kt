@@ -7,8 +7,10 @@ import org.springframework.http.MediaType
 import org.springframework.http.ProblemDetail
 import org.springframework.security.access.AccessDeniedException
 import org.springframework.security.core.AuthenticationException
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.access.AccessDeniedHandler
+import org.springframework.security.web.csrf.CsrfException
 import tools.jackson.databind.json.JsonMapper
 import java.net.URI
 
@@ -18,10 +20,12 @@ internal fun HttpServletResponse.writeProblem(
     status: HttpStatus,
     detail: String,
     instance: String,
+    type: URI? = null,
 ) {
     val problem =
         ProblemDetail.forStatusAndDetail(status, detail).apply {
             this.instance = URI.create(instance)
+            if (type != null) this.type = type
         }
     this.status = status.value()
     contentType = MediaType.APPLICATION_PROBLEM_JSON_VALUE
@@ -45,5 +49,19 @@ class ProblemAccessDeniedHandler(
         request: HttpServletRequest,
         response: HttpServletResponse,
         accessDeniedException: AccessDeniedException,
-    ) = response.writeProblem(jsonMapper, HttpStatus.FORBIDDEN, "Access is denied.", request.requestURI)
+    ) {
+        val user = SecurityContextHolder.getContext().authentication?.principal as? AuthenticatedUser
+        if (user != null && !user.sessionComplete && accessDeniedException !is CsrfException) {
+            // Password accepted, TOTP (or enrolment) outstanding: the client continues the sign-in, it is not forbidden.
+            response.writeProblem(
+                jsonMapper,
+                HttpStatus.UNAUTHORIZED,
+                "A second sign-in step is required.",
+                request.requestURI,
+                ProblemTypes.MFA_REQUIRED,
+            )
+        } else {
+            response.writeProblem(jsonMapper, HttpStatus.FORBIDDEN, "Access is denied.", request.requestURI)
+        }
+    }
 }

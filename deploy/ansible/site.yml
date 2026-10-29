@@ -12,6 +12,22 @@
   vars:
     memo_base: /opt/memo
     memo_envs: [dev, staging]
+    memo_env_keys:
+      - COMPOSE_PROJECT_NAME
+      - MEMO_WEB_PORT
+      - MEMO_DEMO_SEED
+      - MEMO_SPRING_PROFILES
+      - MEMO_TENANCY_BASE_DOMAIN
+      - MEMO_TENANCY_FALLBACK_TENANT
+      - COMPOSE_PROFILES
+      - MEMO_SMTP_HOST
+      - MEMO_SMTP_PORT
+      - MEMO_SMTP_STARTTLS
+      - MEMO_SMTP_FROM
+      - MEMO_MAILPIT_PORT
+    memo_mailpit_ports:
+      dev: 8025
+      staging: 8125
   tasks:
     - name: Base packages
       ansible.builtin.apt:
@@ -101,13 +117,13 @@
         force: false
       loop: "{{ memo_envs }}"
 
-    - name: Per-environment settings (project, port, demo tenant)
+    - name: Per-environment settings (project, port, demo tenant, organisation hosts, mail catcher)
       ansible.builtin.lineinfile:
         path: "{{ memo_base }}/{{ item.0 }}/.env"
         regexp: "^{{ item.1 }}="
         line: "{{ item.1 }}={{ memo_env_settings[item.1] }}"
       # The loop is built from the keys alone: the values refer to `item`, which is undefined while the loop is evaluated.
-      loop: "{{ memo_envs | product(['COMPOSE_PROJECT_NAME', 'MEMO_WEB_PORT', 'MEMO_DEMO_SEED', 'MEMO_SPRING_PROFILES']) | list }}"
+      loop: "{{ memo_envs | product(memo_env_keys) | list }}"
       loop_control:
         label: "{{ item.0 }} {{ item.1 }}"
       vars:
@@ -116,6 +132,16 @@
           MEMO_WEB_PORT: "{{ memo_web_ports[item.0] }}"
           MEMO_DEMO_SEED: "true" # dev/staging only (refused under the prod profile)
           MEMO_SPRING_PROFILES: "{{ item.0 }}-vm"
+          # Organisations live on <slug>.<host> (wildcard DNS); the bare host shows the demo organisation (ADR-0022).
+          MEMO_TENANCY_BASE_DOMAIN: "{{ memo_hosts[item.0] }}"
+          MEMO_TENANCY_FALLBACK_TENANT: demo
+          # Mail goes to Mailpit on the VM (owner decision 2026-10-25); its UI only through an SSH tunnel.
+          COMPOSE_PROFILES: devtools
+          MEMO_SMTP_HOST: mailpit
+          MEMO_SMTP_PORT: "1025"
+          MEMO_SMTP_STARTTLS: "false"
+          MEMO_SMTP_FROM: "memo@{{ memo_hosts[item.0] }}"
+          MEMO_MAILPIT_PORT: "{{ memo_mailpit_ports[item.0] }}"
 
     - name: Generate secrets that are still empty (existing values are kept)
       ansible.builtin.command: "{{ memo_base }}/bin/gen-secrets.sh {{ memo_base }}/{{ item }}/.env"

@@ -29,6 +29,7 @@ sleep 2 # init scripts run after the first ready signal
 docker run -d --name "$BE" --network "$NET" "${hardening[@]}" \
   -e MEMO_DB_URL="jdbc:postgresql://$PG:5432/memo" \
   -e MEMO_DB_APP_PASSWORD="$APP_PW" -e MEMO_DB_MIGRATOR_PASSWORD="$MIGRATOR_PW" \
+  -e MEMO_DATA_KEY="$(rand)$(rand)" \
   "$BACKEND_IMAGE" >/dev/null
 
 docker run -d --name "$WEB" --network "$NET" "${hardening[@]}" \

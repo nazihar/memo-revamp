@@ -22,11 +22,26 @@ objectStorage:
   # Secret with keys `accessKey` and `secretKey` for the least-privilege app identity (ADR-0005).
   secret: memo-s3-app
 
+tenancy:
+  mode: multi             # multi: <slug>.<baseDomain> per organisation; single: one organisation for every host
+  baseDomain: memo.example.com
+  singleTenant: ""
+  publicUrlTemplate: ""   # links in emails, {slug} = organisation; empty: https://{slug}.<baseDomain>
+
+security:
+  # Secret with key `dataKey` (at least 32 random characters): encrypts TOTP secrets at rest (ADR-0024). Back it up
+  # with the database; losing it means every user enrols MFA again.
+  dataKeySecret: memo-data-key
+
 integrations:
   documentServerUrl: ""   # ONLYOFFICE (internal URL); empty = disabled
   malwareScannerHost: ""  # clamd host; empty = disabled
   smtpHost: ""
   smtpPort: 25
+  smtpFrom: ""
+  smtpStarttls: true
+  # Optional Secret with keys `username` and `password` for an authenticating relay.
+  smtpSecret: ""
 
 observability:
   logFormat: ecs          # structured JSON logs (ADR-0016)

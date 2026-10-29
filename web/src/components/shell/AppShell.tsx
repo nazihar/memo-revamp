@@ -3,7 +3,7 @@ import { Menu } from 'lucide-react'
 import { useState, type ReactNode } from 'react'
 import { defineMessages, useIntl, type MessageDescriptor } from 'react-intl'
 import { useTenantBranding } from '@/app/branding'
-import { groupLabels, navigationGroups } from '@/app/navigation'
+import { ANONYMOUS, groupLabels, navigationGroups, type Viewer } from '@/app/navigation'
 import { Button } from '@/components/ui/button'
 import { Sheet } from '@/components/ui/dialog'
 import { Breadcrumbs, type Crumb } from '@/components/ui/misc'
@@ -50,11 +50,11 @@ function TenantIdentity() {
   )
 }
 
-function NavigationList({ onNavigate }: { onNavigate?: () => void }) {
+function NavigationList({ viewer, onNavigate }: { viewer: Viewer; onNavigate?: () => void }) {
   const intl = useIntl()
   return (
     <div className="flex flex-col gap-4">
-      {navigationGroups().map(({ group, items }) => (
+      {navigationGroups(viewer).map(({ group, items }) => (
         <div key={group} className="flex flex-col gap-0.5">
           <h2 className="px-2.5 pb-1 text-xs font-semibold uppercase tracking-wide text-muted-foreground">
             {intl.formatMessage(groupLabels[group])}
@@ -94,7 +94,17 @@ function useCrumbs(): Crumb[] {
  * Application frame, Direction A (E01 design §2): grouped sidebar on the inline-start side (an off-canvas Sheet below
  * 1024px), top bar with breadcrumbs and global menus, main landmark. Logical properties only, so it mirrors under RTL.
  */
-export function AppShell({ children }: { children: ReactNode }) {
+export function AppShell({
+  children,
+  viewer = ANONYMOUS,
+  account,
+}: {
+  children: ReactNode
+  /** Which menu entries to show (the server enforces access regardless). */
+  viewer?: Viewer
+  /** The account control of the top bar (E03): a menu when signed in, a sign-in link otherwise. */
+  account?: ReactNode
+}) {
   const intl = useIntl()
   const [menuOpen, setMenuOpen] = useState(false)
   const crumbs = useCrumbs()
@@ -111,13 +121,14 @@ export function AppShell({ children }: { children: ReactNode }) {
 
         <nav aria-label={navLabel} className="hidden w-58 shrink-0 flex-col border-e bg-card px-3 py-4 lg:flex">
           <TenantIdentity />
-          <NavigationList />
+          <NavigationList viewer={viewer} />
         </nav>
 
         <Sheet open={menuOpen} onOpenChange={setMenuOpen} label={navLabel}>
           <nav aria-label={navLabel} className="flex flex-col px-3 py-4">
             <TenantIdentity />
             <NavigationList
+              viewer={viewer}
               onNavigate={() => {
                 setMenuOpen(false)
               }}
@@ -143,7 +154,8 @@ export function AppShell({ children }: { children: ReactNode }) {
             <div className="ms-auto flex items-center gap-1">
               <LocaleMenu />
               <ThemeMenu />
-              {/* Slots: notifications (E06) and the account menu (E03). */}
+              {/* Slot: notifications (E06). */}
+              {account}
             </div>
           </header>
           <main id="main" tabIndex={-1} className="flex-1 px-4 py-6 focus:outline-none lg:px-6">

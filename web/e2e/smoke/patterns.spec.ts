@@ -96,6 +96,6 @@ test.describe('small screens', () => {
     await app.checkA11y()
     await sheet.getByRole('link', { name: 'Status' }).click()
     await expect(sheet).toBeHidden()
-    await expect(page).toHaveURL(/\/$/)
+    await expect(page).toHaveURL(/\/status$/)
   })
 })

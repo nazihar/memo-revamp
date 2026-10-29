@@ -1,6 +1,9 @@
 package com.memo.common.web
 
+import com.memo.tenancy.TenantRegistry
 import com.memo.testsupport.IntegrationTest
+import com.memo.testsupport.aTenantSlug
+import com.memo.testsupport.onHost
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -13,6 +16,9 @@ class SecurityDefaultsTest : IntegrationTest() {
     @Autowired
     lateinit var mvc: MockMvcTester
 
+    @Autowired
+    lateinit var tenants: TenantRegistry
+
     @Test
     fun `health is available anonymously`() {
         assertThat(mvc.get().uri("/api/v1/health")).hasStatus(HttpStatus.OK)
@@ -20,7 +26,12 @@ class SecurityDefaultsTest : IntegrationTest() {
 
     @Test
     fun `unknown api route is rejected with 401 problem details`() {
-        val result = mvc.get().uri("/api/v1/does-not-exist").exchange()
+        val result =
+            mvc
+                .get()
+                .uri("/api/v1/does-not-exist")
+                .with(onHost(tenants.aTenantSlug("sec")))
+                .exchange()
         assertThat(result).hasStatus(HttpStatus.UNAUTHORIZED)
         assertThat(result).hasContentTypeCompatibleWith(MediaType.APPLICATION_PROBLEM_JSON)
         assertThat(result).bodyJson().extractingPath("$.status").isEqualTo(401)

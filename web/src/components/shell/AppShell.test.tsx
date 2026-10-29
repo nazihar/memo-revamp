@@ -6,7 +6,7 @@ import { expectNoA11yViolations, renderRoute } from '@/test/render'
 
 describe('AppShell', () => {
   it('has banner, navigation and main landmarks and is axe-clean', async () => {
-    const { container } = renderRoute('/')
+    const { container } = renderRoute('/status')
     expect(await screen.findByRole('banner')).toBeInTheDocument()
     expect(screen.getByRole('navigation', { name: 'Main navigation' })).toBeInTheDocument()
     expect(screen.getByRole('main')).toBeInTheDocument()
@@ -16,7 +16,7 @@ describe('AppShell', () => {
 
   it('the menu button opens the navigation in a modal sheet and a link closes it', async () => {
     const user = userEvent.setup()
-    renderRoute('/')
+    renderRoute('/status')
     await user.click(await screen.findByRole('button', { name: 'Open menu' }))
     const sheet = screen.getByRole('dialog', { name: 'Main navigation' })
     expect(sheet).toHaveAttribute('open')
@@ -25,7 +25,7 @@ describe('AppShell', () => {
   })
 
   it('marks the current page in the navigation and the breadcrumb', async () => {
-    renderRoute('/')
+    renderRoute('/status')
     await screen.findByRole('banner')
     const nav = screen.getByRole('navigation', { name: 'Main navigation' })
     expect(within(nav).getByRole('link', { name: 'Status' })).toHaveAttribute('aria-current', 'page')
@@ -34,7 +34,7 @@ describe('AppShell', () => {
   })
 
   it('skip link is the first tab stop and targets main', async () => {
-    renderRoute('/')
+    renderRoute('/status')
     await screen.findByRole('banner')
     await userEvent.tab()
     const skip = screen.getByRole('link', { name: 'Skip to main content' })
@@ -45,7 +45,7 @@ describe('AppShell', () => {
 
   it('switching to Arabic sets lang and dir on <html>, translates the shell and persists the choice', async () => {
     const user = userEvent.setup()
-    renderRoute('/')
+    renderRoute('/status')
     await user.click(await screen.findByRole('button', { name: /Change language/ }))
     await user.click(await screen.findByRole('menuitemradio', { name: 'العربية' }))
 
@@ -59,13 +59,13 @@ describe('AppShell', () => {
 
   it('restores a saved locale on start', async () => {
     localStorage.setItem('memo.locale', 'ar')
-    renderRoute('/')
+    renderRoute('/status')
     expect(await screen.findByRole('heading', { level: 1, name: 'حالة المنصة' })).toBeInTheDocument()
   })
 
   it('theme menu applies dark mode and persists it', async () => {
     const user = userEvent.setup()
-    renderRoute('/')
+    renderRoute('/status')
     await user.click(await screen.findByRole('button', { name: /Change theme/ }))
     await user.click(await screen.findByRole('menuitemradio', { name: 'Dark' }))
     expect(document.documentElement).toHaveClass('dark')
@@ -74,14 +74,14 @@ describe('AppShell', () => {
 
   it('system theme follows the operating system preference', async () => {
     media.prefersDark = true
-    renderRoute('/')
+    renderRoute('/status')
     await screen.findByRole('banner')
     expect(document.documentElement).toHaveClass('dark')
   })
 
   it('stores nothing but preference keys in Web Storage', async () => {
     const user = userEvent.setup()
-    renderRoute('/')
+    renderRoute('/status')
     await user.click(await screen.findByRole('button', { name: /Change theme/ }))
     await user.click(await screen.findByRole('menuitemradio', { name: 'Light' }))
     expect(Object.keys(localStorage).filter((k) => !['memo.theme', 'memo.locale'].includes(k))).toEqual([])

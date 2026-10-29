@@ -1,4 +1,64 @@
 {
+  "account.security": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wʎ sǝɔnɹıʇʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "account.signIn": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sıƃu ıu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "account.signOut": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sıƃu onʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "account.trigger": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔɔonuʇ: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "app.name": [
     {
       "type": 0,
@@ -35,6 +95,202 @@
     {
       "type": 0,
       "value": "Ↄʅosǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "enrol.code": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄopǝ ɟɹoɯ ʇɥǝ ɐdd"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "enrol.code.invalid": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥɐʇ ɔopǝ pıp uoʇ ɯɐʇɔɥ. Mɐıʇ ɟoɹ ɐ uǝʍ ɔopǝ ɐup ʇɹʎ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "enrol.codes.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iɟ ʎon ʅosǝ ʎonɹ dɥouǝ, ǝɐɔɥ oɟ ʇɥǝsǝ ɔopǝs ʅǝʇs ʎon sıƃu ıu ouɔǝ. Sʇoɹǝ ʇɥǝɯ soɯǝʍɥǝɹǝ sɐɟǝ, snɔɥ ɐs ɐ dɐssʍoɹp ɯɐuɐƃǝɹ. ⊥ɥǝʎ ɐɹǝ sɥoʍu ouʅʎ uoʍ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "enrol.codes.saved": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "I ɥɐʌǝ sɐʌǝp ɯʎ ɹǝɔoʌǝɹʎ ɔopǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "enrol.codes.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sɐʌǝ ʎonɹ ɹǝɔoʌǝɹʎ ɔopǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "enrol.confirm": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥nɹu ou ʇʍo-sʇǝd sıƃu-ıu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "enrol.continue": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄouʇıunǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "enrol.failed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝʇnd ɔonʅp uoʇ sʇɐɹʇ. Sıƃu ıu ɐƃɐıu ɐup ɹǝʇɹʎ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "enrol.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sɔɐu ʇɥǝ Òᴚ ɔopǝ ʍıʇɥ ɐu ɐnʇɥǝuʇıɔɐʇoɹ ɐdd (ɟoɹ ǝxɐɯdʅǝ Wıɔɹosoɟʇ ∀nʇɥǝuʇıɔɐʇoɹ, ⅁ooƃʅǝ ∀nʇɥǝuʇıɔɐʇoɹ oɹ 1Ԁɐssʍoɹp), ʇɥǝu ǝuʇǝɹ ʇɥǝ ɔopǝ ıʇ sɥoʍs."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "enrol.loading": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɹǝdɐɹıuƃ ʎonɹ sǝʇnd ʞǝʎ…"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "enrol.manual": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɐuuoʇ sɔɐu? Ǝuʇǝɹ ʇɥıs ʞǝʎ ıu ʇɥǝ ɐdd ıusʇǝɐp:"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "enrol.qrAlt": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Òᴚ ɔopǝ ɟoɹ ʎonɹ ɐnʇɥǝuʇıɔɐʇoɹ ɐdd"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "enrol.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝʇ nd ʇʍo-sʇǝd sıƃu-ıu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "enrol.tooMany": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥oo ɯɐuʎ ɐʇʇǝɯdʇs. Mɐıʇ ɐ ɯıunʇǝ ɐup ʇɹʎ ɐƃɐıu."
     },
     {
       "type": 0,
@@ -269,6 +525,282 @@
       "value": "‬"
     }
   ],
+  "home.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯos, ɯǝǝʇıuƃs ɐup ɐddɹoʌɐʅs ɐɹɹıʌǝ ɥǝɹǝ ıu ʇɥǝ ɔoɯıuƃ ɹǝʅǝɐsǝs."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "home.security": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wʎ sǝɔnɹıʇʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "home.security.text": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɐssʍoɹp, ʇʍo-sʇǝd sıƃu-ıu ɐup sıƃuǝp-ıu pǝʌıɔǝs."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "home.status": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁʅɐʇɟoɹɯ sʇɐʇns"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "home.status.text": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɥǝʇɥǝɹ ǝʌǝɹʎ dɐɹʇ oɟ ʇɥǝ dʅɐʇɟoɹɯ ıs ʍoɹʞıuƃ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "home.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mǝʅɔoɯǝ, "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "home.users": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩sǝɹs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "home.users.text": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iuʌıʇǝ dǝodʅǝ ɐup ɯɐuɐƃǝ ʇɥǝıɹ ɐɔɔonuʇs."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "invitation.accept": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝʇ dɐssʍoɹp ɐup ɔouʇıunǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "invitation.invalid.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iʇ ʍɐs ɐʅɹǝɐpʎ nsǝp oɹ ɥɐs ǝxdıɹǝp. ∀sʞ ʎonɹ ɐpɯıuısʇɹɐʇoɹ ʇo sǝup ɐ uǝʍ ouǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "invitation.invalid.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥıs ıuʌıʇɐʇıou ıs uo ʅouƃǝɹ ʌɐʅıp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "invitation.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄on ʍǝɹǝ ıuʌıʇǝp ɐs "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "email"
+    },
+    {
+      "type": 0,
+      "value": "). Ↄɥoosǝ ɐ dɐssʍoɹp ʇo ɟıuısɥ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "invitation.loading": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥǝɔʞıuƃ ʎonɹ ıuʌıʇɐʇıou…"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "invitation.password": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɐssʍoɹp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "invitation.password.hint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ʇ ʅǝɐsʇ 12 ɔɥɐɹɐɔʇǝɹs. ∀ ʅouƃ dɥɹɐsǝ ıs ǝɐsıǝɹ ʇo ɹǝɯǝɯqǝɹ ʇɥɐu ɐ ɔoɯdʅǝx ʍoɹp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "invitation.signIn": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅁o ʇo sıƃu ıu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "invitation.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ſoıu "
+    },
+    {
+      "type": 1,
+      "value": "organisation"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "invitation.tooMany": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥oo ɯɐuʎ ɐʇʇǝɯdʇs. Mɐıʇ ɐ ʍɥıʅǝ ɐup ʇɹʎ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "locale.label": [
     {
       "type": 0,
@@ -299,6 +831,272 @@
     {
       "type": 0,
       "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "login.code": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄopǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "login.code.invalid": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥɐʇ ɔopǝ ıs uoʇ ʌɐʅıp. Ↄɥǝɔʞ ʇɥǝ ʇıɯǝ ou ʎonɹ dɥouǝ ɐup ʇɹʎ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "login.code.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Odǝu ʎonɹ ɐnʇɥǝuʇıɔɐʇoɹ ɐdd ɐup ǝuʇǝɹ ʇɥǝ 6-pıƃıʇ ɔopǝ ɟoɹ ɯǝɯo."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "login.code.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝuʇǝɹ ʎonɹ ɔopǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "login.email": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝɯɐıʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "login.failed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sıƃuıuƃ ıu pıp uoʇ ʍoɹʞ. ⊥ɹʎ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "login.forgot": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎoɹƃoʇ ʎonɹ dɐssʍoɹp?"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "login.invalid": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ǝɯɐıʅ oɹ dɐssʍoɹp ıs ıuɔoɹɹǝɔʇ, oɹ ʇɥǝ ɐɔɔonuʇ ıs ʇǝɯdoɹɐɹıʅʎ ʅoɔʞǝp. ⊥ɹʎ ɐƃɐıu oɹ ɹǝsǝʇ ʎonɹ dɐssʍoɹp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "login.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩sǝ ʎonɹ ʍoɹʞ ǝɯɐıʅ ɐup dɐssʍoɹp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "login.password": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɐssʍoɹp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "login.recovery.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝuʇǝɹ ouǝ oɟ ʇɥǝ ɹǝɔoʌǝɹʎ ɔopǝs ʎon sɐʌǝp ʍɥǝu ʎon sǝʇ nd ʇʍo-sʇǝd sıƃu-ıu. Ǝɐɔɥ ɔopǝ ʍoɹʞs ouɔǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "login.recoveryCode": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɔoʌǝɹʎ ɔopǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "login.startOver": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sıƃu ıu ɐs soɯǝouǝ ǝʅsǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "login.submit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sıƃu ıu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "login.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sıƃu ıu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "login.tooMany": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥oo ɯɐuʎ ɐʇʇǝɯdʇs. Mɐıʇ ɐ ɟǝʍ ɯıunʇǝs ɐup ʇɹʎ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "login.useCode": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩sǝ ʇɥǝ ɔopǝ ɟɹoɯ ɯʎ ɐdd"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "login.useRecovery": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩sǝ ɐ ɹǝɔoʌǝɹʎ ɔopǝ ıusʇǝɐp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "login.verify": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄouʇıunǝ"
     },
     {
       "type": 0,
@@ -347,6 +1145,20 @@
       "value": "‬"
     }
   ],
+  "nav.home": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Hoɯǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "nav.patterns": [
     {
       "type": 0,
@@ -369,6 +1181,104 @@
     {
       "type": 0,
       "value": "Sʇɐʇns"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "nav.users": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩sǝɹs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "password.breached": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥıs dɐssʍoɹp ɐddǝɐɹs ıu ʞuoʍu pɐʇɐ qɹǝɐɔɥǝs. Ↄɥoosǝ ɐuoʇɥǝɹ ouǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "password.containsIdentity": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡo uoʇ nsǝ ʎonɹ uɐɯǝ oɹ ǝɯɐıʅ ıu ʇɥǝ dɐssʍoɹp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "password.incorrect": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɔnɹɹǝuʇ dɐssʍoɹp ıs uoʇ ɔoɹɹǝɔʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "password.other": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥoosǝ ɐuoʇɥǝɹ dɐssʍoɹp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "password.tooLong": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩sǝ ɐʇ ɯosʇ 128 ɔɥɐɹɐɔʇǝɹs."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "password.tooShort": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩sǝ ɐʇ ʅǝɐsʇ 12 ɔɥɐɹɐɔʇǝɹs."
     },
     {
       "type": 0,
@@ -1007,6 +1917,700 @@
       "value": "‬"
     }
   ],
+  "recoveryCodes.label": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɔoʌǝɹʎ ɔopǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "reset.back": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԑɐɔʞ ʇo sıƃu ıu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "reset.done.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄on ʍǝɹǝ sıƃuǝp onʇ ǝʌǝɹʎʍɥǝɹǝ. Sıƃu ıu ʍıʇɥ ʎonɹ uǝʍ dɐssʍoɹp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "reset.done.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɐssʍoɹp ɔɥɐuƃǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "reset.email": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝɯɐıʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "reset.failed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥɐʇ pıp uoʇ ʍoɹʞ. ⊥ɹʎ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "reset.invalidLink": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥıs ʅıuʞ ıs uo ʅouƃǝɹ ʌɐʅıp. ∀sʞ ɟoɹ ɐ uǝʍ ouǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "reset.new.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩sǝ ɐʇ ʅǝɐsʇ 12 ɔɥɐɹɐɔʇǝɹs. ∀ ʅouƃ dɥɹɐsǝ ıs ǝɐsıǝɹ ʇo ɹǝɯǝɯqǝɹ ʇɥɐu ɐ ɔoɯdʅǝx ʍoɹp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "reset.new.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥoosǝ ɐ uǝʍ dɐssʍoɹp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "reset.newPassword": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nǝʍ dɐssʍoɹp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "reset.request.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝuʇǝɹ ʎonɹ ʍoɹʞ ǝɯɐıʅ. Iɟ ıʇ ɥɐs ɐu ɐɔɔonuʇ, ʍǝ ʍıʅʅ ǝɯɐıʅ ʎon ɐ ʅıuʞ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "reset.request.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝsǝʇ ʎonɹ dɐssʍoɹp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "reset.save": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝʇ dɐssʍoɹp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "reset.send": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝɯɐıʅ ɯǝ ɐ ʅıuʞ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "reset.sent.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iɟ ɐu ɐɔɔonuʇ ǝxısʇs ɟoɹ ʇɥɐʇ ɐppɹǝss, ɐ ʅıuʞ ıs ou ıʇs ʍɐʎ. Iʇ ʍoɹʞs ouɔǝ ɐup ǝxdıɹǝs ıu 30 ɯıunʇǝs."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "reset.sent.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥǝɔʞ ʎonɹ ǝɯɐıʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "reset.signIn": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅁o ʇo sıƃu ıu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "reset.tooMany": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥oo ɯɐuʎ ɹǝbnǝsʇs. Mɐıʇ ɐ ʍɥıʅǝ ɐup ʇɹʎ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.codes.done": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "I ɥɐʌǝ sɐʌǝp ʇɥǝɯ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.codes.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄onɹ dɹǝʌıons ɔopǝs uo ʅouƃǝɹ ʍoɹʞ. Sʇoɹǝ ʇɥǝsǝ soɯǝʍɥǝɹǝ sɐɟǝ; ʇɥǝʎ ɐɹǝ sɥoʍu ouʅʎ uoʍ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.codes.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄onɹ uǝʍ ɹǝɔoʌǝɹʎ ɔopǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.failed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥɐʇ pıp uoʇ ʍoɹʞ. ⊥ɹʎ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Hoʍ ʎon sıƃu ıu, ɐup ʍɥǝɹǝ ʎon ɐɹǝ sıƃuǝp ıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.mfa": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ʍo-sʇǝd sıƃu-ıu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.mfa.newCodes": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nǝʍ ɹǝɔoʌǝɹʎ ɔopǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.mfa.newDevice": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝʇ nd ɐ uǝʍ ɐnʇɥǝuʇıɔɐʇoɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.mfa.off": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Oɟɟ: ʎonɹ oɹƃɐuısɐʇıou poǝs uoʇ ɹǝbnıɹǝ ıʇ ɟoɹ ʎonɹ ɐɔɔonuʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.mfa.on": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ou: ʎon ɔouɟıɹɯ ǝɐɔɥ sıƃu-ıu ʍıʇɥ ɐ ɔopǝ ɟɹoɯ ʎonɹ ɐnʇɥǝuʇıɔɐʇoɹ ɐdd."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.password": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɐssʍoɹp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.password.change": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥɐuƃǝ dɐssʍoɹp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.password.changed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɐssʍoɹp ɔɥɐuƃǝp. Oʇɥǝɹ pǝʌıɔǝs ʍǝɹǝ sıƃuǝp onʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.password.current": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄnɹɹǝuʇ dɐssʍoɹp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.password.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥɐuƃıuƃ ıʇ sıƃus ʎon onʇ ou ǝʌǝɹʎ oʇɥǝɹ pǝʌıɔǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.password.new": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nǝʍ dɐssʍoɹp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.password.new.hint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ʇ ʅǝɐsʇ 12 ɔɥɐɹɐɔʇǝɹs. ∀ ʅouƃ dɥɹɐsǝ ıs ǝɐsıǝɹ ʇo ɹǝɯǝɯqǝɹ ʇɥɐu ɐ ɔoɯdʅǝx ʍoɹp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.sessions": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sıƃuǝp-ıu pǝʌıɔǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.sessions.actions": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔʇıous"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.sessions.address": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ppɹǝss"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.sessions.device": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝʌıɔǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.sessions.lastActive": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅂ɐsʇ ɐɔʇıʌǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.sessions.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sıƃu onʇ ɐuʎ pǝʌıɔǝ ʎon po uoʇ ɹǝɔoƃuısǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.sessions.notRecorded": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noʇ ɹǝɔoɹpǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.sessions.on": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "browser"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "os"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.sessions.signOut": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sıƃu onʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.sessions.signedIn": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sıƃuǝp ıu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.sessions.signedOut": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ pǝʌıɔǝ ʍɐs sıƃuǝp onʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.sessions.this": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥıs pǝʌıɔǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.sessions.unknown": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩uʞuoʍu pǝʌıɔǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "security.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wʎ sǝɔnɹıʇʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "shell.breadcrumb": [
     {
       "type": 0,
@@ -1179,6 +2783,132 @@
       "value": "‬"
     }
   ],
+  "stepUp.cancel": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɐuɔǝʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "stepUp.code": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄopǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "stepUp.confirm": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄouɟıɹɯ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "stepUp.description.code": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝuʇǝɹ ʇɥǝ 6-pıƃıʇ ɔopǝ ɟɹoɯ ʎonɹ ɐnʇɥǝuʇıɔɐʇoɹ ɐdd ʇo ɔouʇıunǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "stepUp.description.password": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝuʇǝɹ ʎonɹ dɐssʍoɹp ʇo ɔouʇıunǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "stepUp.password": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɐssʍoɹp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "stepUp.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄouɟıɹɯ ıʇ ıs ʎon"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "stepUp.tooMany": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥oo ɯɐuʎ ɐʇʇǝɯdʇs. Mɐıʇ ɐ ɯıunʇǝ ɐup ʇɹʎ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "stepUp.wrong": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥɐʇ pıp uoʇ ɯɐʇɔɥ. ⊥ɹʎ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "table.next": [
     {
       "type": 0,
@@ -1343,6 +3073,814 @@
     {
       "type": 0,
       "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.action.deactivate": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɐɔʇıʌɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.action.mfaReset": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝsǝʇ ʇʍo-sʇǝd sıƃu-ıu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.action.reactivate": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɐɔʇıʌɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.action.revokeSessions": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sıƃu onʇ ǝʌǝɹʎʍɥǝɹǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.action.unlock": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩uʅoɔʞ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.actionsFor": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔʇıous ɟoɹ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.admin": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pɯıuısʇɹɐʇoɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.apply": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝɐɹɔɥ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.cancel": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɐuɔǝʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.caption": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩sǝɹs oɟ ʇɥǝ oɹƃɐuısɐʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.changed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Soɯǝouǝ ɔɥɐuƃǝp ʇɥıs ɐɔɔonuʇ ɯǝɐuʍɥıʅǝ. ⊥ɥǝ ʅısʇ ʍɐs ɹǝʅoɐpǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.col.actions": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔʇıous"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.col.lastSignIn": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅂ɐsʇ sıƃu-ıu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.col.mfa": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ʍo-sʇǝd sıƃu-ıu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.col.status": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sʇɐʇns"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.col.user": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩sǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.confirm.deactivate": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɐɔʇıʌɐʇǝ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.confirm.mfaReset": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝsǝʇ ʇʍo-sʇǝd sıƃu-ıu ɟoɹ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.confirm.reactivate": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɐɔʇıʌɐʇǝ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.confirm.revokeSessions": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sıƃu "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " onʇ ǝʌǝɹʎʍɥǝɹǝ?"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.confirm.unlock": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩uʅoɔʞ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.done": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡouǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.email": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Moɹʞ ǝɯɐıʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.empty": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No nsǝɹs ɯɐʇɔɥ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.explain.deactivate": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝʎ ɐɹǝ sıƃuǝp onʇ ɐʇ ouɔǝ ɐup ɔɐuuoʇ sıƃu ıu nuʇıʅ ɹǝɐɔʇıʌɐʇǝp. ⊥ɥǝıɹ ʍoɹʞ sʇɐʎs."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.explain.mfaReset": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝʎ ɐɹǝ sıƃuǝp onʇ ɐup sǝʇ nd ɐu ɐnʇɥǝuʇıɔɐʇoɹ ɐdd ɐƃɐıu ɐʇ ʇɥǝ uǝxʇ sıƃu-ıu. ⊥ɥǝʎ ƃǝʇ ɐu ǝɯɐıʅ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.explain.reactivate": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝʎ ɔɐu sıƃu ıu ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.explain.revokeSessions": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝʌǝɹʎ pǝʌıɔǝ ʇɥǝʎ nsǝ ıs sıƃuǝp onʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.explain.unlock": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝʎ ɔɐu ʇɹʎ ʇo sıƃu ıu ɐƃɐıu ɹıƃɥʇ ɐʍɐʎ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.failed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥɐʇ pıp uoʇ ʍoɹʞ. ⊥ɹʎ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.invite": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iuʌıʇǝ nsǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.inviteLead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝʎ ƃǝʇ ɐu ǝɯɐıʅ ʍıʇɥ ɐ ʅıuʞ ʇo sǝʇ ʇɥǝıɹ dɐssʍoɹp. ⊥ɥǝ ʅıuʞ ʍoɹʞs ɟoɹ 7 pɐʎs."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.inviteTitle": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iuʌıʇǝ ɐ nsǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝʌǝɹʎouǝ ʍɥo ɔɐu sıƃu ıu ʇo ʎonɹ oɹƃɐuısɐʇıou."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.makeAdmin": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pɯıuısʇɹɐʇoɹ oɟ ʇɥǝ oɹƃɐuısɐʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.mfa.off": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Oɟɟ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.mfa.on": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.name": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎnʅʅ uɐɯǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.never": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nǝʌǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.refused.lastAdmin": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ oɹƃɐuısɐʇıou uǝǝps ɐʇ ʅǝɐsʇ ouǝ ɐɔʇıʌǝ ɐpɯıuısʇɹɐʇoɹ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.refused.self": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄on ɔɐuuoʇ po ʇɥıs ʇo ʎonɹ oʍu ɐɔɔonuʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.refused.state": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noʇ dossıqʅǝ ıu ʇɥǝ ɐɔɔonuʇ’s ɔnɹɹǝuʇ sʇɐʇns."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.required": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝbnıɹǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.search": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝɐɹɔɥ qʎ uɐɯǝ oɹ ǝɯɐıʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.send": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝup ıuʌıʇɐʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.sent": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iuʌıʇɐʇıou sǝuʇ ʇo "
+    },
+    {
+      "type": 1,
+      "value": "email"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.status": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sʇɐʇns"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.status.active": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔʇıʌǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.status.all": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ʅʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.status.deactivated": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɐɔʇıʌɐʇǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.status.invited": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iuʌıʇǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.status.locked": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅂oɔʞǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.taken": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀u ɐɔɔonuʇ ʍıʇɥ ʇɥıs ǝɯɐıʅ ɐʅɹǝɐpʎ ǝxısʇs."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "users.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩sǝɹs"
     },
     {
       "type": 0,

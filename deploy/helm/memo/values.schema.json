@@ -37,6 +37,25 @@
         "secret": { "type": "string" }
       }
     },
+    "tenancy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "baseDomain"],
+      "properties": {
+        "mode": { "enum": ["multi", "single"] },
+        "baseDomain": { "type": "string", "minLength": 1 },
+        "singleTenant": { "type": "string" },
+        "publicUrlTemplate": { "type": "string" }
+      }
+    },
+    "security": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dataKeySecret"],
+      "properties": {
+        "dataKeySecret": { "type": "string", "minLength": 1 }
+      }
+    },
     "integrations": {
       "type": "object",
       "additionalProperties": false,
@@ -44,7 +63,10 @@
         "documentServerUrl": { "type": "string" },
         "malwareScannerHost": { "type": "string" },
         "smtpHost": { "type": "string" },
-        "smtpPort": { "type": "integer", "minimum": 1, "maximum": 65535 }
+        "smtpPort": { "type": "integer", "minimum": 1, "maximum": 65535 },
+        "smtpFrom": { "type": "string" },
+        "smtpStarttls": { "type": "boolean" },
+        "smtpSecret": { "type": "string" }
       }
     },
     "observability": {

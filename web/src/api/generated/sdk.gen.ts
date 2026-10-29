@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { GetHealthData, GetHealthErrors, GetHealthResponses } from './types.gen';
+import type { AcceptInvitationData, AcceptInvitationErrors, AcceptInvitationResponses, ChangeMyPasswordData, ChangeMyPasswordErrors, ChangeMyPasswordResponses, CompletePasswordResetData, CompletePasswordResetErrors, CompletePasswordResetResponses, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentErrors, ConfirmMfaEnrolmentResponses, DeactivateUserData, DeactivateUserResponses, GetCsrfTokenData, GetCsrfTokenResponses, GetHealthData, GetHealthErrors, GetHealthResponses, GetMeData, GetMeResponses, GetSessionData, GetSessionResponses, InviteUserData, InviteUserErrors, InviteUserResponses, ListMySessionsData, ListMySessionsResponses, ListUsersData, ListUsersResponses, LoginData, LoginErrors, LoginResponses, LogoutData, LogoutResponses, LookUpInvitationData, LookUpInvitationErrors, LookUpInvitationResponses, ReactivateUserData, ReactivateUserResponses, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesErrors, RegenerateMyRecoveryCodesResponses, RequestPasswordResetData, RequestPasswordResetResponses, ResetUserMfaData, ResetUserMfaResponses, RevokeMySessionData, RevokeMySessionErrors, RevokeMySessionResponses, RevokeUserSessionsData, RevokeUserSessionsResponses, StartMfaEnrolmentData, StartMfaEnrolmentErrors, StartMfaEnrolmentResponses, StepUpData, StepUpErrors, StepUpResponses, UnlockUserData, UnlockUserResponses, VerifyMfaData, VerifyMfaErrors, VerifyMfaResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -19,8 +19,234 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
 };
 
 /**
+ * List the organisation's users
+ *
+ * Sorted by name; keyset-paginated.
+ */
+export const listUsers = <ThrowOnError extends boolean = false>(options?: Options<ListUsersData, ThrowOnError>): RequestResult<ListUsersResponses, unknown, ThrowOnError> => (options?.client ?? client).get<ListUsersResponses, unknown, ThrowOnError>({ url: '/api/v1/admin/users', ...options });
+
+/**
+ * Invite a user
+ *
+ * Creates an INVITED account and emails a one-time link (7 days). A repeat with the same Idempotency-Key returns the same user.
+ */
+export const inviteUser = <ThrowOnError extends boolean = false>(options: Options<InviteUserData, ThrowOnError>): RequestResult<InviteUserResponses, InviteUserErrors, ThrowOnError> => (options.client ?? client).post<InviteUserResponses, InviteUserErrors, ThrowOnError>({
+    url: '/api/v1/admin/users',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Deactivate a user
+ *
+ * Signs the user out everywhere. Not yourself, not the last admin.
+ */
+export const deactivateUser = <ThrowOnError extends boolean = false>(options: Options<DeactivateUserData, ThrowOnError>): RequestResult<DeactivateUserResponses, unknown, ThrowOnError> => (options.client ?? client).post<DeactivateUserResponses, unknown, ThrowOnError>({ url: '/api/v1/admin/users/{id}/deactivate', ...options });
+
+/**
+ * Reset two-step sign-in
+ *
+ * The user sets up an authenticator again at the next sign-in; signs them out.
+ */
+export const resetUserMfa = <ThrowOnError extends boolean = false>(options: Options<ResetUserMfaData, ThrowOnError>): RequestResult<ResetUserMfaResponses, unknown, ThrowOnError> => (options.client ?? client).post<ResetUserMfaResponses, unknown, ThrowOnError>({ url: '/api/v1/admin/users/{id}/mfa-reset', ...options });
+
+/**
+ * Reactivate a user
+ */
+export const reactivateUser = <ThrowOnError extends boolean = false>(options: Options<ReactivateUserData, ThrowOnError>): RequestResult<ReactivateUserResponses, unknown, ThrowOnError> => (options.client ?? client).post<ReactivateUserResponses, unknown, ThrowOnError>({ url: '/api/v1/admin/users/{id}/reactivate', ...options });
+
+/**
+ * Sign a user out everywhere
+ */
+export const revokeUserSessions = <ThrowOnError extends boolean = false>(options: Options<RevokeUserSessionsData, ThrowOnError>): RequestResult<RevokeUserSessionsResponses, unknown, ThrowOnError> => (options.client ?? client).post<RevokeUserSessionsResponses, unknown, ThrowOnError>({ url: '/api/v1/admin/users/{id}/sessions/revoke', ...options });
+
+/**
+ * Lift a temporary lock
+ */
+export const unlockUser = <ThrowOnError extends boolean = false>(options: Options<UnlockUserData, ThrowOnError>): RequestResult<UnlockUserResponses, unknown, ThrowOnError> => (options.client ?? client).post<UnlockUserResponses, unknown, ThrowOnError>({ url: '/api/v1/admin/users/{id}/unlock', ...options });
+
+/**
+ * Issue the CSRF cookie
+ *
+ * Sets the XSRF-TOKEN cookie; send its value as X-XSRF-TOKEN on every mutating request. Call on start and after sign-in or sign-out.
+ */
+export const getCsrfToken = <ThrowOnError extends boolean = false>(options?: Options<GetCsrfTokenData, ThrowOnError>): RequestResult<GetCsrfTokenResponses, unknown, ThrowOnError> => (options?.client ?? client).get<GetCsrfTokenResponses, unknown, ThrowOnError>({ url: '/api/v1/auth/csrf', ...options });
+
+/**
+ * Accept an invitation
+ *
+ * Sets the password and signs in; the state says whether MFA enrolment follows.
+ */
+export const acceptInvitation = <ThrowOnError extends boolean = false>(options: Options<AcceptInvitationData, ThrowOnError>): RequestResult<AcceptInvitationResponses, AcceptInvitationErrors, ThrowOnError> => (options.client ?? client).post<AcceptInvitationResponses, AcceptInvitationErrors, ThrowOnError>({
+    url: '/api/v1/auth/invitations/accept',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Show an invitation
+ */
+export const lookUpInvitation = <ThrowOnError extends boolean = false>(options: Options<LookUpInvitationData, ThrowOnError>): RequestResult<LookUpInvitationResponses, LookUpInvitationErrors, ThrowOnError> => (options.client ?? client).post<LookUpInvitationResponses, LookUpInvitationErrors, ThrowOnError>({
+    url: '/api/v1/auth/invitations/lookup',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Sign in with email and password
+ *
+ * Starts a new session (new id). The state says whether a TOTP code or MFA enrolment follows.
+ */
+export const login = <ThrowOnError extends boolean = false>(options: Options<LoginData, ThrowOnError>): RequestResult<LoginResponses, LoginErrors, ThrowOnError> => (options.client ?? client).post<LoginResponses, LoginErrors, ThrowOnError>({
+    url: '/api/v1/auth/login',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Sign out
+ *
+ * Ends this session, complete or not.
+ */
+export const logout = <ThrowOnError extends boolean = false>(options?: Options<LogoutData, ThrowOnError>): RequestResult<LogoutResponses, unknown, ThrowOnError> => (options?.client ?? client).post<LogoutResponses, unknown, ThrowOnError>({ url: '/api/v1/auth/logout', ...options });
+
+/**
+ * Second sign-in step
+ *
+ * A TOTP code (each usable once) or an unused recovery code. Rate-limited per user.
+ */
+export const verifyMfa = <ThrowOnError extends boolean = false>(options: Options<VerifyMfaData, ThrowOnError>): RequestResult<VerifyMfaResponses, VerifyMfaErrors, ThrowOnError> => (options.client ?? client).post<VerifyMfaResponses, VerifyMfaErrors, ThrowOnError>({
+    url: '/api/v1/auth/mfa',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Start TOTP enrolment
+ *
+ * During sign-in when enrolment is required, or from a complete session to switch devices. Confirm with a code to activate.
+ */
+export const startMfaEnrolment = <ThrowOnError extends boolean = false>(options?: Options<StartMfaEnrolmentData, ThrowOnError>): RequestResult<StartMfaEnrolmentResponses, StartMfaEnrolmentErrors, ThrowOnError> => (options?.client ?? client).post<StartMfaEnrolmentResponses, StartMfaEnrolmentErrors, ThrowOnError>({ url: '/api/v1/auth/mfa/enrolment', ...options });
+
+/**
+ * Confirm TOTP enrolment
+ *
+ * Activates MFA, returns recovery codes once, and completes the sign-in step.
+ */
+export const confirmMfaEnrolment = <ThrowOnError extends boolean = false>(options: Options<ConfirmMfaEnrolmentData, ThrowOnError>): RequestResult<ConfirmMfaEnrolmentResponses, ConfirmMfaEnrolmentErrors, ThrowOnError> => (options.client ?? client).post<ConfirmMfaEnrolmentResponses, ConfirmMfaEnrolmentErrors, ThrowOnError>({
+    url: '/api/v1/auth/mfa/enrolment/confirm',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Email a password reset link
+ *
+ * Always 202: the answer never says whether an account exists.
+ */
+export const requestPasswordReset = <ThrowOnError extends boolean = false>(options: Options<RequestPasswordResetData, ThrowOnError>): RequestResult<RequestPasswordResetResponses, unknown, ThrowOnError> => (options.client ?? client).post<RequestPasswordResetResponses, unknown, ThrowOnError>({
+    url: '/api/v1/auth/password-reset',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Set a new password from a reset link
+ *
+ * Signs out every session of the account. The link works once.
+ */
+export const completePasswordReset = <ThrowOnError extends boolean = false>(options: Options<CompletePasswordResetData, ThrowOnError>): RequestResult<CompletePasswordResetResponses, CompletePasswordResetErrors, ThrowOnError> => (options.client ?? client).post<CompletePasswordResetResponses, CompletePasswordResetErrors, ThrowOnError>({
+    url: '/api/v1/auth/password-reset/complete',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Current session state
+ *
+ * Never 401: anonymous callers get ANONYMOUS.
+ */
+export const getSession = <ThrowOnError extends boolean = false>(options?: Options<GetSessionData, ThrowOnError>): RequestResult<GetSessionResponses, unknown, ThrowOnError> => (options?.client ?? client).get<GetSessionResponses, unknown, ThrowOnError>({ url: '/api/v1/auth/session', ...options });
+
+/**
+ * Confirm it is you
+ *
+ * Refreshes the session's strongest factor for the step-up window. Rate-limited per user.
+ */
+export const stepUp = <ThrowOnError extends boolean = false>(options: Options<StepUpData, ThrowOnError>): RequestResult<StepUpResponses, StepUpErrors, ThrowOnError> => (options.client ?? client).post<StepUpResponses, StepUpErrors, ThrowOnError>({
+    url: '/api/v1/auth/step-up',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
  * Platform status
  *
  * Anonymous. Status per dependency, no versions, hosts or error details. Cached for a few seconds.
  */
 export const getHealth = <ThrowOnError extends boolean = false>(options?: Options<GetHealthData, ThrowOnError>): RequestResult<GetHealthResponses, GetHealthErrors, ThrowOnError> => (options?.client ?? client).get<GetHealthResponses, GetHealthErrors, ThrowOnError>({ url: '/api/v1/health', ...options });
+
+/**
+ * My account
+ */
+export const getMe = <ThrowOnError extends boolean = false>(options?: Options<GetMeData, ThrowOnError>): RequestResult<GetMeResponses, unknown, ThrowOnError> => (options?.client ?? client).get<GetMeResponses, unknown, ThrowOnError>({ url: '/api/v1/me', ...options });
+
+/**
+ * Change my password
+ *
+ * Needs a recent step-up. Signs out every other session of the account.
+ */
+export const changeMyPassword = <ThrowOnError extends boolean = false>(options: Options<ChangeMyPasswordData, ThrowOnError>): RequestResult<ChangeMyPasswordResponses, ChangeMyPasswordErrors, ThrowOnError> => (options.client ?? client).put<ChangeMyPasswordResponses, ChangeMyPasswordErrors, ThrowOnError>({
+    url: '/api/v1/me/password',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * New recovery codes
+ *
+ * Needs a recent step-up.
+ */
+export const regenerateMyRecoveryCodes = <ThrowOnError extends boolean = false>(options?: Options<RegenerateMyRecoveryCodesData, ThrowOnError>): RequestResult<RegenerateMyRecoveryCodesResponses, RegenerateMyRecoveryCodesErrors, ThrowOnError> => (options?.client ?? client).post<RegenerateMyRecoveryCodesResponses, RegenerateMyRecoveryCodesErrors, ThrowOnError>({ url: '/api/v1/me/recovery-codes', ...options });
+
+/**
+ * My sessions
+ *
+ * Every signed-in device of my account; the current one is marked.
+ */
+export const listMySessions = <ThrowOnError extends boolean = false>(options?: Options<ListMySessionsData, ThrowOnError>): RequestResult<ListMySessionsResponses, unknown, ThrowOnError> => (options?.client ?? client).get<ListMySessionsResponses, unknown, ThrowOnError>({ url: '/api/v1/me/sessions', ...options });
+
+/**
+ * Sign out one of my sessions
+ */
+export const revokeMySession = <ThrowOnError extends boolean = false>(options: Options<RevokeMySessionData, ThrowOnError>): RequestResult<RevokeMySessionResponses, RevokeMySessionErrors, ThrowOnError> => (options.client ?? client).delete<RevokeMySessionResponses, RevokeMySessionErrors, ThrowOnError>({ url: '/api/v1/me/sessions/{id}', ...options });

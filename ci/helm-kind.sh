@@ -14,6 +14,7 @@ kind load docker-image memo-backend:ci memo-web:ci --name "$CLUSTER"
 kubectl create namespace "$NS" --dry-run=client -o yaml | kubectl apply -f -
 
 kubectl -n "$NS" create secret generic memo-db-app --from-literal=password="$APP_PW" --dry-run=client -o yaml | kubectl apply -f -
+kubectl -n "$NS" create secret generic memo-data-key --from-literal=dataKey="$(rand)$(rand)" --dry-run=client -o yaml | kubectl apply -f -
 kubectl -n "$NS" create secret generic memo-db-migrator --from-literal=password="$MIGRATOR_PW" --dry-run=client -o yaml | kubectl apply -f -
 kubectl -n "$NS" create configmap memo-db-init --from-file="$ROOT/deploy/db/init/01-roles.sh" --dry-run=client -o yaml | kubectl apply -f -
 

@@ -25,3 +25,7 @@ We use the MADR format (see [0001](0001-record-architecture-decisions.md)). Star
 | [0019](0019-audit-store.md) | Audit store: same-transaction hash chain, verification and anchoring | accepted | 2026-10-18 |
 | [0020](0020-cache-invalidation-listen-notify.md) | Caffeine caches with LISTEN/NOTIFY invalidation | accepted | 2026-10-18 |
 | [0021](0021-modal-dialogs-native-dialog.md) | Modal surfaces on the native `<dialog>` element, no style nonce | accepted | 2026-10-18 |
+| [0022](0022-tenant-resolution-and-accounts.md) | Tenant resolution from the host name; one account per tenant | accepted | 2026-10-18 |
+| [0023](0023-local-authentication-and-sessions.md) | Local authentication and server-side sessions for the SPA | accepted | 2026-10-18 |
+| [0024](0024-totp-mfa-and-step-up.md) | TOTP multi-factor authentication, recovery codes and step-up | accepted | 2026-10-18 |
+| [0025](0025-rate-limiting.md) | Rate limiting with Bucket4j on PostgreSQL | accepted | 2026-10-18 |

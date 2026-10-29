@@ -36,6 +36,8 @@ spec:
               value: "false"
             - name: MEMO_DB_APP_PASSWORD
               valueFrom: { secretKeyRef: { name: {{ .Values.database.appSecret }}, key: password } }
+            - name: MEMO_DATA_KEY
+              valueFrom: { secretKeyRef: { name: {{ .Values.security.dataKeySecret }}, key: dataKey } }
             {{- if .Values.objectStorage.endpoint }}
             - name: MEMO_S3_ENDPOINT
               value: {{ .Values.objectStorage.endpoint | quote }}
@@ -54,6 +56,24 @@ spec:
               value: {{ .Values.integrations.smtpHost | quote }}
             - name: MEMO_SMTP_PORT
               value: {{ .Values.integrations.smtpPort | quote }}
+            - name: MEMO_SMTP_FROM
+              value: {{ .Values.integrations.smtpFrom | quote }}
+            - name: MEMO_SMTP_STARTTLS
+              value: {{ .Values.integrations.smtpStarttls | quote }}
+            {{- if .Values.integrations.smtpSecret }}
+            - name: MEMO_SMTP_USERNAME
+              valueFrom: { secretKeyRef: { name: {{ .Values.integrations.smtpSecret }}, key: username } }
+            - name: MEMO_SMTP_PASSWORD
+              valueFrom: { secretKeyRef: { name: {{ .Values.integrations.smtpSecret }}, key: password } }
+            {{- end }}
+            - name: MEMO_TENANCY_MODE
+              value: {{ .Values.tenancy.mode | quote }}
+            - name: MEMO_TENANCY_BASE_DOMAIN
+              value: {{ .Values.tenancy.baseDomain | quote }}
+            - name: MEMO_TENANCY_SINGLE_TENANT
+              value: {{ .Values.tenancy.singleTenant | quote }}
+            - name: MEMO_PUBLIC_URL_TEMPLATE
+              value: {{ .Values.tenancy.publicUrlTemplate | quote }}
           startupProbe:
             httpGet: { path: /actuator/health/liveness, port: management }
             periodSeconds: 5

@@ -49,6 +49,13 @@ spring:
       enabled: true
   jackson:
     default-property-inclusion: non_null
+  # Sessions in PostgreSQL (ADR-0023). The schema is a Flyway migration; cleanup runs as a db-scheduler task.
+  session:
+    timeout: 30m
+    jdbc:
+      table-name: identity_http_session
+      initialize-schema: never
+      cleanup-cron: "-"
 
 # Background jobs (ADR-0018).
 db-scheduler:
@@ -69,7 +76,8 @@ management:
   endpoints:
     web:
       exposure:
-        include: health
+        # tenanthost: Caddy on-demand TLS ask check (ADR-0022), management port only.
+        include: health, tenanthost
   endpoint:
     health:
       probes:
@@ -101,7 +109,12 @@ server:
     include-exception: false
   servlet:
     session:
+      # The session cookie is configured in SessionConfig (ADR-0023).
       tracking-modes: []
+  # Client address and host from X-Forwarded-* only when the immediate peer is a trusted proxy (Tomcat RemoteIpValve;
+  # private address ranges by default, override with SERVER_TOMCAT_REMOTEIP_INTERNAL_PROXIES). Per-IP rate limits and
+  # tenant resolution depend on it (ADR-0022, ADR-0025).
+  forward-headers-strategy: native
 
 springdoc:
   api-docs:
@@ -109,13 +122,37 @@ springdoc:
     version: openapi_3_1
   swagger-ui:
     enabled: false
+  # Responses are JSON unless an endpoint says otherwise (problem details declare application/problem+json).
+  default-produces-media-type: application/json
 
 memo:
+  # Tenant resolution from the request host (ADR-0022).
+  tenancy:
+    mode: ${MEMO_TENANCY_MODE:multi}
+    base-domain: ${MEMO_TENANCY_BASE_DOMAIN:localhost}
+    single-tenant: ${MEMO_TENANCY_SINGLE_TENANT:}
+    # Tenant for the bare base domain (local dev, the dev VM); empty in production.
+    fallback-tenant: ${MEMO_TENANCY_FALLBACK_TENANT:}
+    # Links in emails, with {slug} for the tenant; empty: https://{slug}.<base-domain>.
+    public-url-template: ${MEMO_PUBLIC_URL_TEMPLATE:}
   # app (default) | migrate: run the Modulith Flyway migrations as memo_migrator, then exit (ADR-0016).
   mode: ${MEMO_MODE:app}
   demo:
     # Seeds the demo tenant on startup (dev and test only; refuses under the prod profile).
     seed: ${MEMO_DEMO_SEED:false}
+    # Password of the demo users (generated into the git-ignored .env; empty: they cannot sign in).
+    password: ${MEMO_DEMO_PASSWORD:}
+    # Base32 TOTP secret of the demo users (generated into .env); empty: they must enrol MFA themselves.
+    totp-secret: ${MEMO_DEMO_TOTP_SECRET:}
+  security:
+    # argon2 (default) | pbkdf2 (FIPS-approved algorithms only) (ADR-0023).
+    password-encoding: ${MEMO_PASSWORD_ENCODING:argon2}
+    # Optional directory of Have I Been Pwned range files for the full breached-password check.
+    breached-passwords-dir: ${MEMO_BREACHED_PASSWORDS_DIR:}
+    # Key material for secrets encrypted at rest (TOTP secrets, ADR-0024); required by the web application.
+    data-key: ${MEMO_DATA_KEY:}
+    # Secure cookies; only plain-HTTP test setups switch this off (browsers accept Secure on http://localhost).
+    cookie-secure: ${MEMO_COOKIE_SECURE:true}
   api-docs:
     enabled: false
   health:
@@ -136,6 +173,11 @@ memo:
   mail:
     host: ${MEMO_SMTP_HOST:}
     port: ${MEMO_SMTP_PORT:25}
+    from: ${MEMO_SMTP_FROM:}
+    username: ${MEMO_SMTP_USERNAME:}
+    password: ${MEMO_SMTP_PASSWORD:}
+    # STARTTLS required; only a local mail catcher (Mailpit) switches it off.
+    starttls: ${MEMO_SMTP_STARTTLS:true}
 
 ---
 spring:

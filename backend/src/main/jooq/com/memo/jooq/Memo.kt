@@ -8,6 +8,15 @@ import com.memo.jooq.tables.AuditAnchor
 import com.memo.jooq.tables.AuditChainHead
 import com.memo.jooq.tables.AuditEvent
 import com.memo.jooq.tables.AuditVerification
+import com.memo.jooq.tables.IdentityActionToken
+import com.memo.jooq.tables.IdentityHttpSession
+import com.memo.jooq.tables.IdentityHttpSessionAttributes
+import com.memo.jooq.tables.IdentityMfa
+import com.memo.jooq.tables.IdentityRateLimitBucket
+import com.memo.jooq.tables.IdentityRecoveryCode
+import com.memo.jooq.tables.IdentityUser
+import com.memo.jooq.tables.NotificationMailOutbox
+import com.memo.jooq.tables.SystemIdempotencyKey
 import com.memo.jooq.tables.SystemInfo
 import com.memo.jooq.tables.TenancySetting
 import com.memo.jooq.tables.TenancySettingView
@@ -56,6 +65,51 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val AUDIT_VERIFICATION: AuditVerification get() = AuditVerification.AUDIT_VERIFICATION
 
     /**
+     * The table <code>memo.identity_action_token</code>.
+     */
+    val IDENTITY_ACTION_TOKEN: IdentityActionToken get() = IdentityActionToken.IDENTITY_ACTION_TOKEN
+
+    /**
+     * The table <code>memo.identity_http_session</code>.
+     */
+    val IDENTITY_HTTP_SESSION: IdentityHttpSession get() = IdentityHttpSession.IDENTITY_HTTP_SESSION
+
+    /**
+     * The table <code>memo.identity_http_session_attributes</code>.
+     */
+    val IDENTITY_HTTP_SESSION_ATTRIBUTES: IdentityHttpSessionAttributes get() = IdentityHttpSessionAttributes.IDENTITY_HTTP_SESSION_ATTRIBUTES
+
+    /**
+     * The table <code>memo.identity_mfa</code>.
+     */
+    val IDENTITY_MFA: IdentityMfa get() = IdentityMfa.IDENTITY_MFA
+
+    /**
+     * The table <code>memo.identity_rate_limit_bucket</code>.
+     */
+    val IDENTITY_RATE_LIMIT_BUCKET: IdentityRateLimitBucket get() = IdentityRateLimitBucket.IDENTITY_RATE_LIMIT_BUCKET
+
+    /**
+     * The table <code>memo.identity_recovery_code</code>.
+     */
+    val IDENTITY_RECOVERY_CODE: IdentityRecoveryCode get() = IdentityRecoveryCode.IDENTITY_RECOVERY_CODE
+
+    /**
+     * The table <code>memo.identity_user</code>.
+     */
+    val IDENTITY_USER: IdentityUser get() = IdentityUser.IDENTITY_USER
+
+    /**
+     * The table <code>memo.notification_mail_outbox</code>.
+     */
+    val NOTIFICATION_MAIL_OUTBOX: NotificationMailOutbox get() = NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX
+
+    /**
+     * The table <code>memo.system_idempotency_key</code>.
+     */
+    val SYSTEM_IDEMPOTENCY_KEY: SystemIdempotencyKey get() = SystemIdempotencyKey.SYSTEM_IDEMPOTENCY_KEY
+
+    /**
      * The table <code>memo.system_info</code>.
      */
     val SYSTEM_INFO: SystemInfo get() = SystemInfo.SYSTEM_INFO
@@ -82,6 +136,15 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         AuditChainHead.AUDIT_CHAIN_HEAD,
         AuditEvent.AUDIT_EVENT,
         AuditVerification.AUDIT_VERIFICATION,
+        IdentityActionToken.IDENTITY_ACTION_TOKEN,
+        IdentityHttpSession.IDENTITY_HTTP_SESSION,
+        IdentityHttpSessionAttributes.IDENTITY_HTTP_SESSION_ATTRIBUTES,
+        IdentityMfa.IDENTITY_MFA,
+        IdentityRateLimitBucket.IDENTITY_RATE_LIMIT_BUCKET,
+        IdentityRecoveryCode.IDENTITY_RECOVERY_CODE,
+        IdentityUser.IDENTITY_USER,
+        NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX,
+        SystemIdempotencyKey.SYSTEM_IDEMPOTENCY_KEY,
         SystemInfo.SYSTEM_INFO,
         TenancySetting.TENANCY_SETTING,
         TenancySettingView.TENANCY_SETTING_VIEW,

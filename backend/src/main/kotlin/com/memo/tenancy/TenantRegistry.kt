@@ -103,6 +103,16 @@ class TenantRegistry(
 
     override fun ids(): List<TenantId> = listActiveIds()
 
+    /** Id of the tenant with [slug] (any status), for host-based resolution (ADR-0022). Platform scope. */
+    fun findIdBySlug(slug: String): TenantId? =
+        platformTransactions.read {
+            dsl
+                .select(TENANCY_TENANT.ID)
+                .from(TENANCY_TENANT)
+                .where(TENANCY_TENANT.SLUG.eq(slug))
+                .fetchOne { TenantId(it.value1()!!) }
+        }
+
     /** Whether [tenant] exists (any status); used by the job helpers to drop tasks for unknown tenants. */
     override fun exists(tenant: TenantId): Boolean =
         platformTransactions.read { dsl.fetchExists(TENANCY_TENANT, TENANCY_TENANT.ID.eq(tenant.value)) }

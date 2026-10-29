@@ -42,6 +42,15 @@
   </Match>
 
   <!--
+    The optional Have I Been Pwned range files are keyed by SHA-1 (BreachedPasswords.sha1). SHA-1 only looks a
+    candidate password up in the customer's local copy of that corpus; stored passwords are hashed with Argon2id/PBKDF2.
+  -->
+  <Match>
+    <Class name="com.memo.identity.password.BreachedPasswords$Companion"/>
+    <Bug pattern="WEAK_MESSAGE_DIGEST_SHA1"/>
+  </Match>
+
+  <!--
     Health reachability probes: clamd's protocol has no TLS (it is reached on the internal network only), and the SMTP
     probe only reads the 220 banner and sends QUIT, so no data crosses the socket. Real mail delivery (Phase 1a) uses
     STARTTLS and is not covered by this exclusion.

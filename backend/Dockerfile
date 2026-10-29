@@ -5,7 +5,7 @@
 # Base images are pinned by digest; Renovate updates the digests.
 
 ARG LAYERS_IMAGE=eclipse-temurin:25-jre-noble@sha256:d9a39a23634650173f1e2bbc176227af9728587ecf0f4b62d53e9355cd7a19ab
-ARG RUNTIME_IMAGE=gcr.io/distroless/java25-debian13:nonroot@sha256:bb5fd2c016691aef1cf9ff376294c1eeaa5b635af240a0a3ed3242e2877f7866
+ARG RUNTIME_IMAGE=gcr.io/distroless/java25-debian13:nonroot@sha256:5d3177252775d4b01603470fe21c015393019089904f68724bd37242e4bc6e6d
 
 FROM ${LAYERS_IMAGE} AS layers
 ARG JAR_FILE=backend/build/libs/backend.jar

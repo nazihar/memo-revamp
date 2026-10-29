@@ -1,3 +1,6 @@
 
 # TanStack Router plugin cache
 .tanstack/
+
+# Playwright sign-in states (session cookies of the demo users): never commit
+e2e/.auth/

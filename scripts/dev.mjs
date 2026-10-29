@@ -106,6 +106,10 @@ export function backendEnv(env, { core }) {
     MEMO_SMTP_FROM: 'memo@localhost',
     // Links in emails open the Vite dev server on the tenant's host.
     MEMO_PUBLIC_URL_TEMPLATE: 'http://{slug}.localhost:5173',
+    // The bare localhost shows the demo organisation; <slug>.localhost reaches any other (ADR-0022).
+    MEMO_TENANCY_FALLBACK_TENANT: 'demo',
+    // Plain-HTTP localhost: WebKit drops Secure cookies there (Chromium and Firefox do not). Never off elsewhere.
+    MEMO_COOKIE_SECURE: 'false',
     MEMO_DEMO_SEED: 'true',
     MEMO_DEMO_PASSWORD: env.MEMO_DEMO_PASSWORD,
     MEMO_DEMO_TOTP_SECRET: env.MEMO_DEMO_TOTP_SECRET,

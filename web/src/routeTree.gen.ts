@@ -9,68 +9,296 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as PatternsRouteImport } from './routes/patterns'
+import { Route as AuthRouteImport } from './routes/_auth'
+import { Route as ShellRouteImport } from './routes/_shell'
+import { Route as AuthInvitationRouteImport } from './routes/_auth/invitation'
+import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as AuthResetPasswordRouteImport } from './routes/_auth/reset-password'
+import { Route as ShellSignedInRouteImport } from './routes/_shell/_signedIn'
+import { Route as ShellPatternsRouteImport } from './routes/_shell/patterns'
+import { Route as ShellStatusRouteImport } from './routes/_shell/status'
+import { Route as AuthLoginEnrolMfaRouteImport } from './routes/_auth/login_.enrol-mfa'
+import { Route as ShellSignedInIndexRouteImport } from './routes/_shell/_signedIn/index'
+import { Route as ShellSignedInAdminUsersRouteImport } from './routes/_shell/_signedIn/admin.users'
+import { Route as ShellSignedInMeSecurityRouteImport } from './routes/_shell/_signedIn/me.security'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const AuthRoute = AuthRouteImport.update({
+  id: '/_auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PatternsRoute = PatternsRouteImport.update({
+const ShellRoute = ShellRouteImport.update({
+  id: '/_shell',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthInvitationRoute = AuthInvitationRouteImport.update({
+  id: '/invitation',
+  path: '/invitation',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthLoginRoute = AuthLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AuthRoute,
+} as any)
+const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => AuthRoute,
+} as any)
+const ShellSignedInRoute = ShellSignedInRouteImport.update({
+  id: '/_signedIn',
+  getParentRoute: () => ShellRoute,
+} as any)
+const ShellPatternsRoute = ShellPatternsRouteImport.update({
   id: '/patterns',
   path: '/patterns',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => ShellRoute,
+} as any)
+const ShellStatusRoute = ShellStatusRouteImport.update({
+  id: '/status',
+  path: '/status',
+  getParentRoute: () => ShellRoute,
+} as any)
+const AuthLoginEnrolMfaRoute = AuthLoginEnrolMfaRouteImport.update({
+  id: '/login_/enrol-mfa',
+  path: '/login/enrol-mfa',
+  getParentRoute: () => AuthRoute,
+} as any)
+const ShellSignedInIndexRoute = ShellSignedInIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ShellSignedInRoute,
+} as any)
+const ShellSignedInAdminUsersRoute = ShellSignedInAdminUsersRouteImport.update({
+  id: '/admin/users',
+  path: '/admin/users',
+  getParentRoute: () => ShellSignedInRoute,
+} as any)
+const ShellSignedInMeSecurityRoute = ShellSignedInMeSecurityRouteImport.update({
+  id: '/me/security',
+  path: '/me/security',
+  getParentRoute: () => ShellSignedInRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '/patterns': typeof PatternsRoute
+  '/': typeof ShellSignedInIndexRoute
+  '/invitation': typeof AuthInvitationRoute
+  '/login': typeof AuthLoginRoute
+  '/reset-password': typeof AuthResetPasswordRoute
+  '/patterns': typeof ShellPatternsRoute
+  '/status': typeof ShellStatusRoute
+  '/login/enrol-mfa': typeof AuthLoginEnrolMfaRoute
+  '/admin/users': typeof ShellSignedInAdminUsersRoute
+  '/me/security': typeof ShellSignedInMeSecurityRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/patterns': typeof PatternsRoute
+  '/': typeof ShellSignedInIndexRoute
+  '/invitation': typeof AuthInvitationRoute
+  '/login': typeof AuthLoginRoute
+  '/reset-password': typeof AuthResetPasswordRoute
+  '/patterns': typeof ShellPatternsRoute
+  '/status': typeof ShellStatusRoute
+  '/login/enrol-mfa': typeof AuthLoginEnrolMfaRoute
+  '/admin/users': typeof ShellSignedInAdminUsersRoute
+  '/me/security': typeof ShellSignedInMeSecurityRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
-  '/patterns': typeof PatternsRoute
+  '/_auth': typeof AuthRouteWithChildren
+  '/_shell': typeof ShellRouteWithChildren
+  '/_auth/invitation': typeof AuthInvitationRoute
+  '/_auth/login': typeof AuthLoginRoute
+  '/_auth/reset-password': typeof AuthResetPasswordRoute
+  '/_shell/_signedIn': typeof ShellSignedInRouteWithChildren
+  '/_shell/patterns': typeof ShellPatternsRoute
+  '/_shell/status': typeof ShellStatusRoute
+  '/_auth/login_/enrol-mfa': typeof AuthLoginEnrolMfaRoute
+  '/_shell/_signedIn/': typeof ShellSignedInIndexRoute
+  '/_shell/_signedIn/admin/users': typeof ShellSignedInAdminUsersRoute
+  '/_shell/_signedIn/me/security': typeof ShellSignedInMeSecurityRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/patterns'
+  fullPaths:
+    | '/'
+    | '/invitation'
+    | '/login'
+    | '/reset-password'
+    | '/patterns'
+    | '/status'
+    | '/login/enrol-mfa'
+    | '/admin/users'
+    | '/me/security'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/patterns'
-  id: '__root__' | '/' | '/patterns'
+  to:
+    | '/'
+    | '/invitation'
+    | '/login'
+    | '/reset-password'
+    | '/patterns'
+    | '/status'
+    | '/login/enrol-mfa'
+    | '/admin/users'
+    | '/me/security'
+  id:
+    | '__root__'
+    | '/_auth'
+    | '/_shell'
+    | '/_auth/invitation'
+    | '/_auth/login'
+    | '/_auth/reset-password'
+    | '/_shell/_signedIn'
+    | '/_shell/patterns'
+    | '/_shell/status'
+    | '/_auth/login_/enrol-mfa'
+    | '/_shell/_signedIn/'
+    | '/_shell/_signedIn/admin/users'
+    | '/_shell/_signedIn/me/security'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  PatternsRoute: typeof PatternsRoute
+  AuthRoute: typeof AuthRouteWithChildren
+  ShellRoute: typeof ShellRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
+    '/_auth': {
+      id: '/_auth'
+      path: ''
       fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/patterns': {
-      id: '/patterns'
+    '/_shell': {
+      id: '/_shell'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof ShellRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_auth/invitation': {
+      id: '/_auth/invitation'
+      path: '/invitation'
+      fullPath: '/invitation'
+      preLoaderRoute: typeof AuthInvitationRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/login': {
+      id: '/_auth/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof AuthLoginRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_auth/reset-password': {
+      id: '/_auth/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof AuthResetPasswordRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_shell/_signedIn': {
+      id: '/_shell/_signedIn'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof ShellSignedInRouteImport
+      parentRoute: typeof ShellRoute
+    }
+    '/_shell/patterns': {
+      id: '/_shell/patterns'
       path: '/patterns'
       fullPath: '/patterns'
-      preLoaderRoute: typeof PatternsRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof ShellPatternsRouteImport
+      parentRoute: typeof ShellRoute
+    }
+    '/_shell/status': {
+      id: '/_shell/status'
+      path: '/status'
+      fullPath: '/status'
+      preLoaderRoute: typeof ShellStatusRouteImport
+      parentRoute: typeof ShellRoute
+    }
+    '/_auth/login_/enrol-mfa': {
+      id: '/_auth/login_/enrol-mfa'
+      path: '/login/enrol-mfa'
+      fullPath: '/login/enrol-mfa'
+      preLoaderRoute: typeof AuthLoginEnrolMfaRouteImport
+      parentRoute: typeof AuthRoute
+    }
+    '/_shell/_signedIn/': {
+      id: '/_shell/_signedIn/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof ShellSignedInIndexRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
+    '/_shell/_signedIn/admin/users': {
+      id: '/_shell/_signedIn/admin/users'
+      path: '/admin/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof ShellSignedInAdminUsersRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
+    '/_shell/_signedIn/me/security': {
+      id: '/_shell/_signedIn/me/security'
+      path: '/me/security'
+      fullPath: '/me/security'
+      preLoaderRoute: typeof ShellSignedInMeSecurityRouteImport
+      parentRoute: typeof ShellSignedInRoute
     }
   }
 }
 
+interface AuthRouteChildren {
+  AuthInvitationRoute: typeof AuthInvitationRoute
+  AuthLoginRoute: typeof AuthLoginRoute
+  AuthResetPasswordRoute: typeof AuthResetPasswordRoute
+  AuthLoginEnrolMfaRoute: typeof AuthLoginEnrolMfaRoute
+}
+
+const AuthRouteChildren: AuthRouteChildren = {
+  AuthInvitationRoute: AuthInvitationRoute,
+  AuthLoginRoute: AuthLoginRoute,
+  AuthResetPasswordRoute: AuthResetPasswordRoute,
+  AuthLoginEnrolMfaRoute: AuthLoginEnrolMfaRoute,
+}
+
+const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
+
+interface ShellSignedInRouteChildren {
+  ShellSignedInIndexRoute: typeof ShellSignedInIndexRoute
+  ShellSignedInAdminUsersRoute: typeof ShellSignedInAdminUsersRoute
+  ShellSignedInMeSecurityRoute: typeof ShellSignedInMeSecurityRoute
+}
+
+const ShellSignedInRouteChildren: ShellSignedInRouteChildren = {
+  ShellSignedInIndexRoute: ShellSignedInIndexRoute,
+  ShellSignedInAdminUsersRoute: ShellSignedInAdminUsersRoute,
+  ShellSignedInMeSecurityRoute: ShellSignedInMeSecurityRoute,
+}
+
+const ShellSignedInRouteWithChildren = ShellSignedInRoute._addFileChildren(
+  ShellSignedInRouteChildren,
+)
+
+interface ShellRouteChildren {
+  ShellSignedInRoute: typeof ShellSignedInRouteWithChildren
+  ShellPatternsRoute: typeof ShellPatternsRoute
+  ShellStatusRoute: typeof ShellStatusRoute
+}
+
+const ShellRouteChildren: ShellRouteChildren = {
+  ShellSignedInRoute: ShellSignedInRouteWithChildren,
+  ShellPatternsRoute: ShellPatternsRoute,
+  ShellStatusRoute: ShellStatusRoute,
+}
+
+const ShellRouteWithChildren = ShellRoute._addFileChildren(ShellRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  PatternsRoute: PatternsRoute,
+  AuthRoute: AuthRouteWithChildren,
+  ShellRoute: ShellRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

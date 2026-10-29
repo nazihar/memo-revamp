@@ -1,6 +1,6 @@
 import AxeBuilder from '@axe-core/playwright'
 import { test as base, expect, type Page } from '@playwright/test'
-import { roles, type Role } from './roles'
+import { storageStateFor, type Role } from './roles'
 
 /** WCAG 2.2 AA tag set used for every page visit (TESTING_STRATEGY §4). */
 const AXE_TAGS = ['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']
@@ -37,9 +37,9 @@ async function assertNoA11yViolations(page: Page): Promise<void> {
 export const test = base.extend<Fixtures>({
   role: ['anonymous', { option: true }],
 
-  // Role → storage state (Phase 0 Q5). Only "anonymous" exists until Phase 1a adds real logins in global setup.
+  // Role → storage state written by the global setup's real sign-ins (Phase 0 Q5).
   storageState: async ({ role }, use) => {
-    await use(roles[role].storageState)
+    await use(storageStateFor(role))
   },
 
   cspViolations: [

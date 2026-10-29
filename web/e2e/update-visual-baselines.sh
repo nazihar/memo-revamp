@@ -10,6 +10,7 @@ set -eu
 work=$(mktemp -d)
 cd "$work"
 npm init -y >/dev/null
+npm pkg set type=module # the e2e helpers are ES modules (import.meta), as in web/package.json
 npm install --no-audit --no-fund --silent @playwright/test@1.64.0 @axe-core/playwright@4.13.0
 cp -r /web/e2e /web/playwright.config.ts /web/security-headers.json .
 E2E_BASE_URL="$E2E_BASE_URL" npx playwright test --project=visual --update-snapshots "$@"

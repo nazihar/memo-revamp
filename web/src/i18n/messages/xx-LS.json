@@ -1,4 +1,36 @@
 {
+  "account.security": [
+    {
+      "type": 0,
+      "value": "My securitySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "account.signIn": [
+    {
+      "type": 0,
+      "value": "Sign inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "account.signOut": [
+    {
+      "type": 0,
+      "value": "Sign outSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "account.trigger": [
+    {
+      "type": 0,
+      "value": "Account: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "app.name": [
     {
       "type": 0,
@@ -15,6 +47,90 @@
     {
       "type": 0,
       "value": "CloseSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "enrol.code": [
+    {
+      "type": 0,
+      "value": "Code from the appSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "enrol.code.invalid": [
+    {
+      "type": 0,
+      "value": "That code did not match. Wait for a new code and try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "enrol.codes.lead": [
+    {
+      "type": 0,
+      "value": "If you lose your phone, each of these codes lets you sign in once. Store them somewhere safe, such as a password manager. They are shown only now.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "enrol.codes.saved": [
+    {
+      "type": 0,
+      "value": "I have saved my recovery codesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "enrol.codes.title": [
+    {
+      "type": 0,
+      "value": "Save your recovery codesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "enrol.confirm": [
+    {
+      "type": 0,
+      "value": "Turn on two-step sign-inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "enrol.continue": [
+    {
+      "type": 0,
+      "value": "ContinueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "enrol.failed": [
+    {
+      "type": 0,
+      "value": "Setup could not start. Sign in again and retry.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "enrol.lead": [
+    {
+      "type": 0,
+      "value": "Scan the QR code with an authenticator app (for example Microsoft Authenticator, Google Authenticator or 1Password), then enter the code it shows.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "enrol.loading": [
+    {
+      "type": 0,
+      "value": "Preparing your setup key…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "enrol.manual": [
+    {
+      "type": 0,
+      "value": "Cannot scan? Enter this key in the app instead:SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "enrol.qrAlt": [
+    {
+      "type": 0,
+      "value": "QR code for your authenticator appSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "enrol.title": [
+    {
+      "type": 0,
+      "value": "Set up two-step sign-inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "enrol.tooMany": [
+    {
+      "type": 0,
+      "value": "Too many attempts. Wait a minute and try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "form.leave.cancel": [
@@ -121,6 +237,146 @@
       "value": "The platform could not be reached.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "home.lead": [
+    {
+      "type": 0,
+      "value": "Memos, meetings and approvals arrive here in the coming releases.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "home.security": [
+    {
+      "type": 0,
+      "value": "My securitySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "home.security.text": [
+    {
+      "type": 0,
+      "value": "Password, two-step sign-in and signed-in devices.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "home.status": [
+    {
+      "type": 0,
+      "value": "Platform statusSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "home.status.text": [
+    {
+      "type": 0,
+      "value": "Whether every part of the platform is working.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "home.title": [
+    {
+      "type": 0,
+      "value": "Welcome, "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "home.users": [
+    {
+      "type": 0,
+      "value": "UsersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "home.users.text": [
+    {
+      "type": 0,
+      "value": "Invite people and manage their accounts.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "invitation.accept": [
+    {
+      "type": 0,
+      "value": "Set password and continueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "invitation.invalid.lead": [
+    {
+      "type": 0,
+      "value": "It was already used or has expired. Ask your administrator to send a new one.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "invitation.invalid.title": [
+    {
+      "type": 0,
+      "value": "This invitation is no longer validSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "invitation.lead": [
+    {
+      "type": 0,
+      "value": "You were invited as "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "email"
+    },
+    {
+      "type": 0,
+      "value": "). Choose a password to finish.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "invitation.loading": [
+    {
+      "type": 0,
+      "value": "Checking your invitation…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "invitation.password": [
+    {
+      "type": 0,
+      "value": "PasswordSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "invitation.password.hint": [
+    {
+      "type": 0,
+      "value": "At least 12 characters. A long phrase is easier to remember than a complex word.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "invitation.signIn": [
+    {
+      "type": 0,
+      "value": "Go to sign inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "invitation.title": [
+    {
+      "type": 0,
+      "value": "Join "
+    },
+    {
+      "type": 1,
+      "value": "organisation"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "invitation.tooMany": [
+    {
+      "type": 0,
+      "value": "Too many attempts. Wait a while and try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "locale.label": [
     {
       "type": 0,
@@ -141,6 +397,120 @@
       "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "login.code": [
+    {
+      "type": 0,
+      "value": "CodeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "login.code.invalid": [
+    {
+      "type": 0,
+      "value": "That code is not valid. Check the time on your phone and try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "login.code.lead": [
+    {
+      "type": 0,
+      "value": "Open your authenticator app and enter the 6-digit code for memo.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "login.code.title": [
+    {
+      "type": 0,
+      "value": "Enter your codeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "login.email": [
+    {
+      "type": 0,
+      "value": "EmailSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "login.failed": [
+    {
+      "type": 0,
+      "value": "Signing in did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "login.forgot": [
+    {
+      "type": 0,
+      "value": "Forgot your password?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "login.invalid": [
+    {
+      "type": 0,
+      "value": "The email or password is incorrect, or the account is temporarily locked. Try again or reset your password.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "login.lead": [
+    {
+      "type": 0,
+      "value": "Use your work email and password.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "login.password": [
+    {
+      "type": 0,
+      "value": "PasswordSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "login.recovery.lead": [
+    {
+      "type": 0,
+      "value": "Enter one of the recovery codes you saved when you set up two-step sign-in. Each code works once.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "login.recoveryCode": [
+    {
+      "type": 0,
+      "value": "Recovery codeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "login.startOver": [
+    {
+      "type": 0,
+      "value": "Sign in as someone elseSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "login.submit": [
+    {
+      "type": 0,
+      "value": "Sign inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "login.title": [
+    {
+      "type": 0,
+      "value": "Sign inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "login.tooMany": [
+    {
+      "type": 0,
+      "value": "Too many attempts. Wait a few minutes and try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "login.useCode": [
+    {
+      "type": 0,
+      "value": "Use the code from my appSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "login.useRecovery": [
+    {
+      "type": 0,
+      "value": "Use a recovery code insteadSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "login.verify": [
+    {
+      "type": 0,
+      "value": "ContinueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "nav.group.administration": [
     {
       "type": 0,
@@ -159,6 +529,12 @@
       "value": "WorkSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "nav.home": [
+    {
+      "type": 0,
+      "value": "HomeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "nav.patterns": [
     {
       "type": 0,
@@ -169,6 +545,48 @@
     {
       "type": 0,
       "value": "StatusSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.users": [
+    {
+      "type": 0,
+      "value": "UsersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "password.breached": [
+    {
+      "type": 0,
+      "value": "This password appears in known data breaches. Choose another one.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "password.containsIdentity": [
+    {
+      "type": 0,
+      "value": "Do not use your name or email in the password.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "password.incorrect": [
+    {
+      "type": 0,
+      "value": "The current password is not correct.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "password.other": [
+    {
+      "type": 0,
+      "value": "Choose another password.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "password.tooLong": [
+    {
+      "type": 0,
+      "value": "Use at most 128 characters.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "password.tooShort": [
+    {
+      "type": 0,
+      "value": "Use at least 12 characters.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "patterns.cancel": [
@@ -459,6 +877,312 @@
       "value": "UsersSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "recoveryCodes.label": [
+    {
+      "type": 0,
+      "value": "Recovery codesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "reset.back": [
+    {
+      "type": 0,
+      "value": "Back to sign inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "reset.done.lead": [
+    {
+      "type": 0,
+      "value": "You were signed out everywhere. Sign in with your new password.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "reset.done.title": [
+    {
+      "type": 0,
+      "value": "Password changedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "reset.email": [
+    {
+      "type": 0,
+      "value": "EmailSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "reset.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "reset.invalidLink": [
+    {
+      "type": 0,
+      "value": "This link is no longer valid. Ask for a new one.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "reset.new.lead": [
+    {
+      "type": 0,
+      "value": "Use at least 12 characters. A long phrase is easier to remember than a complex word.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "reset.new.title": [
+    {
+      "type": 0,
+      "value": "Choose a new passwordSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "reset.newPassword": [
+    {
+      "type": 0,
+      "value": "New passwordSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "reset.request.lead": [
+    {
+      "type": 0,
+      "value": "Enter your work email. If it has an account, we will email you a link.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "reset.request.title": [
+    {
+      "type": 0,
+      "value": "Reset your passwordSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "reset.save": [
+    {
+      "type": 0,
+      "value": "Set passwordSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "reset.send": [
+    {
+      "type": 0,
+      "value": "Email me a linkSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "reset.sent.lead": [
+    {
+      "type": 0,
+      "value": "If an account exists for that address, a link is on its way. It works once and expires in 30 minutes.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "reset.sent.title": [
+    {
+      "type": 0,
+      "value": "Check your emailSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "reset.signIn": [
+    {
+      "type": 0,
+      "value": "Go to sign inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "reset.tooMany": [
+    {
+      "type": 0,
+      "value": "Too many requests. Wait a while and try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.codes.done": [
+    {
+      "type": 0,
+      "value": "I have saved themSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.codes.lead": [
+    {
+      "type": 0,
+      "value": "Your previous codes no longer work. Store these somewhere safe; they are shown only now.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.codes.title": [
+    {
+      "type": 0,
+      "value": "Your new recovery codesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.lead": [
+    {
+      "type": 0,
+      "value": "How you sign in, and where you are signed in.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.mfa": [
+    {
+      "type": 0,
+      "value": "Two-step sign-inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.mfa.newCodes": [
+    {
+      "type": 0,
+      "value": "New recovery codesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.mfa.newDevice": [
+    {
+      "type": 0,
+      "value": "Set up a new authenticatorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.mfa.off": [
+    {
+      "type": 0,
+      "value": "Off: your organisation does not require it for your account.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.mfa.on": [
+    {
+      "type": 0,
+      "value": "On: you confirm each sign-in with a code from your authenticator app.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.password": [
+    {
+      "type": 0,
+      "value": "PasswordSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.password.change": [
+    {
+      "type": 0,
+      "value": "Change passwordSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.password.changed": [
+    {
+      "type": 0,
+      "value": "Password changed. Other devices were signed out.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.password.current": [
+    {
+      "type": 0,
+      "value": "Current passwordSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.password.lead": [
+    {
+      "type": 0,
+      "value": "Changing it signs you out on every other device.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.password.new": [
+    {
+      "type": 0,
+      "value": "New passwordSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.password.new.hint": [
+    {
+      "type": 0,
+      "value": "At least 12 characters. A long phrase is easier to remember than a complex word.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.sessions": [
+    {
+      "type": 0,
+      "value": "Signed-in devicesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.sessions.actions": [
+    {
+      "type": 0,
+      "value": "ActionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.sessions.address": [
+    {
+      "type": 0,
+      "value": "AddressSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.sessions.device": [
+    {
+      "type": 0,
+      "value": "DeviceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.sessions.lastActive": [
+    {
+      "type": 0,
+      "value": "Last activeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.sessions.lead": [
+    {
+      "type": 0,
+      "value": "Sign out any device you do not recognise.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.sessions.notRecorded": [
+    {
+      "type": 0,
+      "value": "Not recordedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.sessions.on": [
+    {
+      "type": 1,
+      "value": "browser"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "os"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.sessions.signOut": [
+    {
+      "type": 0,
+      "value": "Sign outSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.sessions.signedIn": [
+    {
+      "type": 0,
+      "value": "Signed inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.sessions.signedOut": [
+    {
+      "type": 0,
+      "value": "The device was signed out.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.sessions.this": [
+    {
+      "type": 0,
+      "value": "This deviceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.sessions.unknown": [
+    {
+      "type": 0,
+      "value": "Unknown deviceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "security.title": [
+    {
+      "type": 0,
+      "value": "My securitySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "shell.breadcrumb": [
     {
       "type": 0,
@@ -537,6 +1261,60 @@
     {
       "type": 0,
       "value": "UpSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "stepUp.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "stepUp.code": [
+    {
+      "type": 0,
+      "value": "CodeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "stepUp.confirm": [
+    {
+      "type": 0,
+      "value": "ConfirmSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "stepUp.description.code": [
+    {
+      "type": 0,
+      "value": "Enter the 6-digit code from your authenticator app to continue.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "stepUp.description.password": [
+    {
+      "type": 0,
+      "value": "Enter your password to continue.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "stepUp.password": [
+    {
+      "type": 0,
+      "value": "PasswordSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "stepUp.title": [
+    {
+      "type": 0,
+      "value": "Confirm it is youSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "stepUp.tooMany": [
+    {
+      "type": 0,
+      "value": "Too many attempts. Wait a minute and try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "stepUp.wrong": [
+    {
+      "type": 0,
+      "value": "That did not match. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "table.next": [
@@ -627,6 +1405,386 @@
     {
       "type": 0,
       "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.action.deactivate": [
+    {
+      "type": 0,
+      "value": "DeactivateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.action.mfaReset": [
+    {
+      "type": 0,
+      "value": "Reset two-step sign-inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.action.reactivate": [
+    {
+      "type": 0,
+      "value": "ReactivateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.action.revokeSessions": [
+    {
+      "type": 0,
+      "value": "Sign out everywhereSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.action.unlock": [
+    {
+      "type": 0,
+      "value": "UnlockSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.actionsFor": [
+    {
+      "type": 0,
+      "value": "Actions for "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.admin": [
+    {
+      "type": 0,
+      "value": "AdministratorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.apply": [
+    {
+      "type": 0,
+      "value": "SearchSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.caption": [
+    {
+      "type": 0,
+      "value": "Users of the organisationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.changed": [
+    {
+      "type": 0,
+      "value": "Someone changed this account meanwhile. The list was reloaded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.col.actions": [
+    {
+      "type": 0,
+      "value": "ActionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.col.lastSignIn": [
+    {
+      "type": 0,
+      "value": "Last sign-inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.col.mfa": [
+    {
+      "type": 0,
+      "value": "Two-step sign-inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.col.status": [
+    {
+      "type": 0,
+      "value": "StatusSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.col.user": [
+    {
+      "type": 0,
+      "value": "UserSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.confirm.deactivate": [
+    {
+      "type": 0,
+      "value": "Deactivate "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.confirm.mfaReset": [
+    {
+      "type": 0,
+      "value": "Reset two-step sign-in for "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.confirm.reactivate": [
+    {
+      "type": 0,
+      "value": "Reactivate "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.confirm.revokeSessions": [
+    {
+      "type": 0,
+      "value": "Sign "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " out everywhere?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.confirm.unlock": [
+    {
+      "type": 0,
+      "value": "Unlock "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.done": [
+    {
+      "type": 0,
+      "value": "Done.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.email": [
+    {
+      "type": 0,
+      "value": "Work emailSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.empty": [
+    {
+      "type": 0,
+      "value": "No users match.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.explain.deactivate": [
+    {
+      "type": 0,
+      "value": "They are signed out at once and cannot sign in until reactivated. Their work stays.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.explain.mfaReset": [
+    {
+      "type": 0,
+      "value": "They are signed out and set up an authenticator app again at the next sign-in. They get an email.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.explain.reactivate": [
+    {
+      "type": 0,
+      "value": "They can sign in again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.explain.revokeSessions": [
+    {
+      "type": 0,
+      "value": "Every device they use is signed out.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.explain.unlock": [
+    {
+      "type": 0,
+      "value": "They can try to sign in again right away.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.invite": [
+    {
+      "type": 0,
+      "value": "Invite userSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.inviteLead": [
+    {
+      "type": 0,
+      "value": "They get an email with a link to set their password. The link works for 7 days.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.inviteTitle": [
+    {
+      "type": 0,
+      "value": "Invite a userSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.lead": [
+    {
+      "type": 0,
+      "value": "Everyone who can sign in to your organisation.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.makeAdmin": [
+    {
+      "type": 0,
+      "value": "Administrator of the organisationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.mfa.off": [
+    {
+      "type": 0,
+      "value": "OffSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.mfa.on": [
+    {
+      "type": 0,
+      "value": "OnSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.name": [
+    {
+      "type": 0,
+      "value": "Full nameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.never": [
+    {
+      "type": 0,
+      "value": "NeverSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.refused.lastAdmin": [
+    {
+      "type": 0,
+      "value": "The organisation needs at least one active administrator.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.refused.self": [
+    {
+      "type": 0,
+      "value": "You cannot do this to your own account.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.refused.state": [
+    {
+      "type": 0,
+      "value": "Not possible in the account’s current status.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.required": [
+    {
+      "type": 0,
+      "value": "Required.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.search": [
+    {
+      "type": 0,
+      "value": "Search by name or emailSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.send": [
+    {
+      "type": 0,
+      "value": "Send invitationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.sent": [
+    {
+      "type": 0,
+      "value": "Invitation sent to "
+    },
+    {
+      "type": 1,
+      "value": "email"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.status": [
+    {
+      "type": 0,
+      "value": "StatusSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.status.active": [
+    {
+      "type": 0,
+      "value": "ActiveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.status.all": [
+    {
+      "type": 0,
+      "value": "AllSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.status.deactivated": [
+    {
+      "type": 0,
+      "value": "DeactivatedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.status.invited": [
+    {
+      "type": 0,
+      "value": "InvitedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.status.locked": [
+    {
+      "type": 0,
+      "value": "LockedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.taken": [
+    {
+      "type": 0,
+      "value": "An account with this email already exists.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "users.title": [
+    {
+      "type": 0,
+      "value": "UsersSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ]
 }

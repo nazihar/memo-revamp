@@ -10,7 +10,7 @@ const crumbs = defineMessages({
 })
 
 /** Patterns gallery: development and e2e builds only (E01 design §5, threat model I2). */
-export const Route = createFileRoute('/patterns')({
+export const Route = createFileRoute('/_shell/patterns')({
   beforeLoad: () => {
     // eslint-disable-next-line @typescript-eslint/only-throw-error -- TanStack Router's notFound() is designed to be thrown
     if (!patternsEnabled) throw notFound()

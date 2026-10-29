@@ -6,7 +6,8 @@ const crumbs = defineMessages({
   status: { id: 'nav.status', defaultMessage: 'Status' },
 })
 
-export const Route = createFileRoute('/')({
+/** Platform status: public, like the health endpoint behind it. */
+export const Route = createFileRoute('/_shell/status')({
   component: HealthPage,
   staticData: { crumb: crumbs.status },
 })

@@ -10,6 +10,10 @@ test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => {
     localStorage.setItem('memo.locale', 'en-XA')
   })
+  // An anonymous visitor: the organisation name is data, not a translation, so none is shown here.
+  await page.route('**/api/v1/auth/session', (route) =>
+    route.fulfill({ json: { state: 'ANONYMOUS', organisation: '' } }),
+  )
   // Fixed API data: component *names* come from translations, the status text too; nothing else is user-visible.
   await page.route('**/api/v1/health', (route) =>
     route.fulfill({
@@ -25,8 +29,8 @@ test.beforeEach(async ({ page }) => {
   )
 })
 
-test('every visible string on the shell and health page is externalised', async ({ app, page }) => {
-  await app.visit('/')
+test('every visible string on the shell and the status page is externalised', async ({ app, page }) => {
+  await app.visit('/status')
   await expect(page.getByRole('heading', { level: 1 })).toContainText('[')
 
   const unlocalised = await page.evaluate(() => {

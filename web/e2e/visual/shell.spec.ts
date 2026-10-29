@@ -12,7 +12,7 @@ const variants = [
 ] as const
 
 for (const variant of variants) {
-  test(`health page — ${variant.name}`, async ({ app, page }) => {
+  test(`status page — ${variant.name}`, async ({ app, page }) => {
     await page.addInitScript(
       ({ theme, locale }) => {
         localStorage.setItem('memo.theme', theme)
@@ -21,6 +21,9 @@ for (const variant of variants) {
       { theme: variant.theme, locale: variant.locale },
     )
     await page.clock.setFixedTime(new Date('2026-10-14T10:00:05Z'))
+    await page.route('**/api/v1/auth/session', (route) =>
+      route.fulfill({ json: { state: 'ANONYMOUS', organisation: 'Demo Organization' } }),
+    )
     await page.route('**/api/v1/health', (route) =>
       route.fulfill({
         json: {
@@ -36,7 +39,7 @@ for (const variant of variants) {
         },
       }),
     )
-    await app.visit('/')
+    await app.visit('/status')
     await expect(page.locator('dl dt')).toHaveCount(5)
     await expect(page).toHaveScreenshot(`${variant.name}.png`, { fullPage: true })
   })

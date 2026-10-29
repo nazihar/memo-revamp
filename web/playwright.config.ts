@@ -12,6 +12,8 @@ const externalServer = Boolean(process.env.E2E_BASE_URL)
 
 export default defineConfig({
   testDir: './e2e',
+  // Signs the demo roles in once per run (e2e/global-setup.ts); skipped when no backend answers.
+  globalSetup: './e2e/global-setup.ts',
   outputDir: './test-results',
   fullyParallel: true,
   forbidOnly: ci,

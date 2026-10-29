@@ -2,7 +2,7 @@ import { expect, test } from '../fixtures'
 
 /** Critical journey for Phase 0: the walking skeleton end to end (browser → SPA → API → DB and services). */
 test('health page shows the live platform status', async ({ app, page }) => {
-  await app.visit('/')
+  await app.visit('/status')
 
   await expect(page.getByRole('heading', { level: 1, name: 'Platform status' })).toBeVisible()
   await expect(page.getByText('Overall')).toBeVisible()
@@ -13,7 +13,7 @@ test('health page shows the live platform status', async ({ app, page }) => {
 })
 
 test('shell is keyboard operable: skip link, then theme and language menus', async ({ app, page }) => {
-  await app.visit('/')
+  await app.visit('/status')
 
   await page.keyboard.press('Tab')
   await expect(page.getByRole('link', { name: 'Skip to main content' })).toBeFocused()

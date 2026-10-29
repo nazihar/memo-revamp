@@ -2,13 +2,13 @@
 
 > Read at the start of every session; update at the end (see `AGENTS.md §0`). Keep this page short and current. Move history into the phase folder's `log.md`.
 
-**Last updated:** 2026-10-18 (UTC+06:00) by Claude (agent)
+**Last updated:** 2026-10-29 (UTC+06:00) by Claude (agent)
 
 ## Current position
-- **Phase:** 1a (overview approved 2026-10-18, gate delegation kept). **E02 platform kernel merged** (PR #18) and deployed to dev. **E01 app frame** (Direction A) implemented on `feat/1a-e01-app-frame` (PR #19).
+- **Phase:** 1a (overview approved 2026-10-18, gate delegation kept). Merged: **E02 platform kernel** (PR #18), **E01 app frame** (PR #19). **E03 identity, sessions and step-up** complete on `feat/1a-e03-identity` (PR #20): T1–T10 done; Caddy on-demand TLS for organisation subdomains and the authenticated ZAP scan moved to E07 (see the E03 log).
 - **Dev environment live (2026-10-18):** https://dev.memo-revamp.naziharitsolution.com on the VM 123.176.58.175 (Ubuntu 24.04, 4 vCPU, 7.8 GB RAM, 100 GB disk). It deploys automatically after every green `ci` run on `master`.
 - **Phase 0 epics:** E01–E05 done (`docs/plan/phase-0-foundations/`).
-- **Branches:** `master` holds PRs #1–#18; E01 on `feat/1a-e01-app-frame`.
+- **Branches:** `master` holds PRs #1–#19; E03 on `feat/1a-e03-identity`.
 - **Release:** `v0.1.0` published with signed images (2026-10-15).
 - **Product name:** `memo` everywhere except the repository name `memo-revamp` (A1, PR #6).
 
@@ -43,9 +43,10 @@
 - **DAST/performance:** ZAP baseline 0 FAIL / 0 WARN; Gatling p95 48 ms.
 
 ## Next step
-1. **Phase 1a:** merge the E01 PR when CI is green; then plan and build **E03 identity and sessions** (backend first, screens on the E01 templates).
+1. **Phase 1a:** merge E03 (PR #20) when CI is green, after re-running Ansible on the dev VM (new `.env` settings: tenancy base domain, Mailpit, `MEMO_DATA_KEY`, demo password and TOTP secret). Then plan **E04 organisation and authorisation**.
 2. Check the ZAP and Gatling results against dev from the next nightly.
-3. Remove the `apk upgrade libexpat` step from `web/Dockerfile` once `nginx-unprivileged` ships libexpat 2.9.0 or later.
+3. Remove the `apk upgrade` lines from `web/Dockerfile` once `nginx-unprivileged` ships the fixed Alpine packages.
+4. Remove the Spring Session licence exceptions (`ci/license-exceptions.json`) once Boot manages Spring Session 4.1.2 or later.
 
 ## Waiting for human
 - **E01 manual accessibility pass (no rush):** a short keyboard + screen-reader (NVDA or VoiceOver) walk through the patterns gallery, run locally with `pnpm dev` at `/patterns` (the gallery is left out of production images, so it is not on the dev server). Automated axe, keyboard and CSP checks pass.
@@ -58,10 +59,11 @@
 - **A1 (resolved):** the product is `memo`. Package `com.memo`, Gradle group `com.memo`, application name `memo`, images `memo-backend` / `memo-web`. Only the repository keeps the name `memo-revamp`. The stored schema marker moved to `memo` with migration `system/V2`.
 
 ## Decisions taken
-ADR-0001 to ADR-0020 (`docs/adr/README.md`). Phase 1a so far: ADR-0017 tenant context, ADR-0018 jobs, ADR-0019 audit store, ADR-0020 cache invalidation.
+ADR-0001 to ADR-0025 (`docs/adr/README.md`). Phase 1a so far: ADR-0017 tenant context, ADR-0018 jobs, ADR-0019 audit store, ADR-0020 cache invalidation, ADR-0021 modal dialogs, ADR-0022 tenant resolution and accounts, ADR-0023 local authentication and sessions, ADR-0024 TOTP MFA and step-up, ADR-0025 rate limiting.
 
 ## Environment notes (dev machine)
-- VS Code's Java extension builds the tree with its own Gradle 9.7.1. CLI builds use `MEMO_BUILD_ROOT=<repo>/.build-cli` (README).
+- VS Code's Java extension builds the tree with its own Gradle and can hold the shared `build-logic/.gradle` lock, stalling CLI builds at "Calculating task graph". CLI builds use `MEMO_BUILD_ROOT=<repo>/.build-cli` (README); the git-ignored `.vscode/settings.json` sets the Java extension to LightWeight mode (owner agreed 2026-10-26; the owner does not code on this project).
+- Demo users: `admin@demo.example` and `user@demo.example`; password and TOTP secret (Base32) in the generated `deploy/compose/.env` (`MEMO_DEMO_PASSWORD`, `MEMO_DEMO_TOTP_SECRET`). Locally the bare `localhost` is the demo organisation.
 - The local Compose stack is now project `memo-local`; the old `memo-dev` local volumes were removed. The first `pnpm dev` re-creates them, and ClamAV re-downloads its signatures.
 
 ## Milestone tracker

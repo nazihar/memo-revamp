@@ -7,6 +7,6 @@ import java.util.UUID
 data class OrgChanged(
     override val tenantId: UUID,
     /** `legal_entity`, `unit`, `position`, `assignment` or `reporting_line`. */
-    val kind: String,
+    val objectType: String,
     val objectId: UUID,
 ) : TenantScopedEvent

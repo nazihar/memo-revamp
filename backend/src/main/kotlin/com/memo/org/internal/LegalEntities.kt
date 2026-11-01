@@ -68,7 +68,7 @@ class LegalEntities(
         policy.require(Permission.ORG_LEGAL_ENTITIES_MANAGE)
         val before = get(id)
         refuseIf(!validTo.isAfter(before.validFrom), "DATES") { "The closing date must be after the start date." }
-        refuseIf(units.units().any { it.legalEntityId == id && (it.validTo == null || it.validTo.isAfter(validTo)) }, "NOT_EMPTY") {
+        refuseIf(units.units().any { it.legalEntityId == id && it.validTo?.isAfter(validTo) != false }, "NOT_EMPTY") {
             "Close the entity's units first."
         }
         return save(before, expectedVersion, before.copy(validTo = validTo), "closed")

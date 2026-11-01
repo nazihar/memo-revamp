@@ -90,7 +90,7 @@ class Assignments(
         store.lockUser(event.userId)
         store
             .ofUser(event.userId)
-            .filter { it.status == RecordStatus.ACTIVE && (it.period.to == null || it.period.to.isAfter(today)) }
+            .filter { it.status == RecordStatus.ACTIVE && it.period.runsPast(today) }
             .forEach {
                 if (it.period.from.isBefore(today)) {
                     save(it, it.version, Period(it.period.from, today), RecordStatus.ACTIVE, "ended")

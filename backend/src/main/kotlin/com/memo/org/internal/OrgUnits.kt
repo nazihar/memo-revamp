@@ -42,7 +42,7 @@ class OrgUnits(
         policy.require(Permission.ORG_MANAGE, scopeOf(parent?.id))
         val entity = legalEntities.get(legalEntityId)
         val from = validFrom ?: calendar.today()
-        refuseIf(entity.validTo != null && !entity.validTo.isAfter(from), "CLOSED") { "The legal entity is closed." }
+        refuseIf(entity.validTo?.let { !it.isAfter(from) } == true, "CLOSED") { "The legal entity is closed." }
         refuseIf(
             parent != null && parent.legalEntityId != legalEntityId,
             "OTHER_ENTITY",

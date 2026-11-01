@@ -24,6 +24,9 @@ data class Period(
 
     fun overlaps(other: Period) = (other.to == null || from < other.to) && (to == null || other.from < to)
 
+    /** Still running after [date] (open-ended, or ending later). */
+    fun runsPast(date: LocalDate) = to == null || to.isAfter(date)
+
     fun contains(date: LocalDate) = !from.isAfter(date) && (to == null || to.isAfter(date))
 
     /** Whether this period lies within [outer]. */

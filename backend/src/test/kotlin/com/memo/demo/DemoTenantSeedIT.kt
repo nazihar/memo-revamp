@@ -37,11 +37,13 @@ class DemoTenantSeedIT : IntegrationTest() {
 
     @Autowired lateinit var access: AccessAdministration
 
+    @Autowired lateinit var orgSeeding: com.memo.org.OrgSeeding
+
     private fun seederWith(
         password: String,
         totpSecret: String = "",
         env: Environment = environment,
-    ) = DemoTenantSeeder(registry, settings, transactions, env, accounts, password, mfaSeeding, totpSecret, access)
+    ) = DemoTenantSeeder(registry, settings, transactions, env, accounts, password, mfaSeeding, totpSecret, access, orgSeeding)
 
     @Test
     fun `seeding is idempotent and produces the demo tenant as defined in code`() {
@@ -82,5 +84,52 @@ class DemoTenantSeedIT : IntegrationTest() {
     fun `refuses to seed under the prod profile`() {
         val prod = StandardEnvironment().apply { setActiveProfiles("prod") }
         assertThatThrownBy { seederWith("", env = prod).seed() }.hasMessageContaining("never be seeded in production")
+    }
+
+    @Autowired lateinit var tenantDsl: com.memo.common.tenant.TenantDsl
+
+    @Autowired lateinit var policy: com.memo.common.authz.Policy
+
+    @Test
+    fun `the demo bank has its org tree, people in most seats and administrators by role`() {
+        seeder.seed()
+        seeder.seed()
+
+        transactions.inTenant(DemoTenant.ID) {
+            val dsl = tenantDsl.current()
+            assertThat(dsl.fetchCount(com.memo.jooq.tables.references.ORG_UNIT)).isEqualTo(DemoOrg.UNITS.size)
+            assertThat(dsl.fetchCount(com.memo.jooq.tables.references.ORG_POSITION)).isEqualTo(DemoOrg.POSITIONS.size)
+            assertThat(dsl.fetchCount(com.memo.jooq.tables.references.ORG_REPORTING_LINE)).isEqualTo(DemoOrg.REPORTING_LINES.size)
+            val openSeats = DemoOrg.POSITIONS.size - DemoOrg.SEATS.size - DemoOrg.VACANT.size
+            assertThat(dsl.fetchCount(com.memo.jooq.tables.references.ORG_ASSIGNMENT))
+                .isEqualTo(DemoOrg.SEATS.size + minOf(openSeats, DemoOrg.STAFF.size))
+        }
+        val branchAdmin = transactions.readInTenant(DemoTenant.ID) { accounts.findByEmail("branchadmin@demo.example")!! }
+        com.memo.common.context.ActorContext.call(
+            com.memo.common.context
+                .ActorScope(
+                    com.memo.common.context.Actor
+                        .User(branchAdmin.id.value),
+                    null,
+                ),
+        ) {
+            com.memo.common.tenant.TenantContext.call(DemoTenant.ID) {
+                val manage = com.memo.common.authz.Permission.ORG_MANAGE
+                assertThat(
+                    policy.allows(
+                        manage,
+                        com.memo.common.authz.Resource
+                            .Unit(DemoOrg.unitId("BR-GUL")),
+                    ),
+                ).isTrue()
+                assertThat(
+                    policy.allows(
+                        manage,
+                        com.memo.common.authz.Resource
+                            .Unit(DemoOrg.unitId("REG-S")),
+                    ),
+                ).isFalse()
+            }
+        }
     }
 }

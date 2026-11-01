@@ -9,7 +9,7 @@ import java.time.ZoneId
 import java.time.ZoneOffset
 
 /**
- * Effective dates are calendar dates in the tenant's time zone (ADR-0026): tenant setting `locale.time.zone` (an IANA id,
+ * Effective dates are calendar dates in the tenant's time zone (ADR-0026): tenant setting `default.timezone` (an IANA id,
  * UTC when missing or invalid). Inside a tenant context.
  */
 @Component
@@ -29,6 +29,6 @@ class OrgCalendar(
     fun today(): LocalDate = LocalDate.now(clock.withZone(zone()))
 
     companion object {
-        const val TIME_ZONE = "locale.time.zone"
+        const val TIME_ZONE = "default.timezone"
     }
 }

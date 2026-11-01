@@ -3,7 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 import { describe, expect, it } from 'vitest'
 import type { AdminUser, AdminUserPage, Me, Session } from '@/api/generated/types.gen'
-import { API_ORIGIN, server, sessionHandler, signedInSession } from '@/test/msw'
+import { accessHandler, API_ORIGIN, server, sessionHandler, signedInSession } from '@/test/msw'
 import { expectNoA11yViolations, renderRoute } from '@/test/render'
 
 const mfaRequired: Session = { state: 'MFA_REQUIRED', organisation: 'Bank of Example' }
@@ -125,6 +125,7 @@ const nadia: AdminUser = {
 function adminBackend() {
   server.use(
     sessionHandler(signedInSession(true)),
+    accessHandler(['identity.users.manage']),
     http.get(`${API_ORIGIN}/api/v1/me`, () =>
       HttpResponse.json<Me>({
         id: '01900000-0000-7000-8000-0000000000aa',

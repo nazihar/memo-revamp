@@ -511,6 +511,12 @@
       "value": "ContinueSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "nav.classifications": [
+    {
+      "type": 0,
+      "value": "ClassificationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "nav.group.administration": [
     {
       "type": 0,
@@ -535,10 +541,28 @@
       "value": "HomeSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "nav.org": [
+    {
+      "type": 0,
+      "value": "OrganisationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "nav.patterns": [
     {
       "type": 0,
       "value": "PatternsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.position": [
+    {
+      "type": 0,
+      "value": "PositionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.roles": [
+    {
+      "type": 0,
+      "value": "RolesSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "nav.status": [
@@ -551,6 +575,734 @@
     {
       "type": 0,
       "value": "UsersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.addEntity": [
+    {
+      "type": 0,
+      "value": "Add legal entitySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.addPosition": [
+    {
+      "type": 0,
+      "value": "Add positionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.addRoot": [
+    {
+      "type": 0,
+      "value": "Add top unitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.addUnit": [
+    {
+      "type": 0,
+      "value": "Add sub-unitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.assign": [
+    {
+      "type": 0,
+      "value": "Assign personSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.assignTitle": [
+    {
+      "type": 0,
+      "value": "Assign a person to "
+    },
+    {
+      "type": 1,
+      "value": "position"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.backToUnit": [
+    {
+      "type": 0,
+      "value": "Back to "
+    },
+    {
+      "type": 1,
+      "value": "unit"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.cancelAssignment": [
+    {
+      "type": 0,
+      "value": "Cancel recordSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.cancelAssignmentLead": [
+    {
+      "type": 0,
+      "value": "Use this for an assignment entered by mistake. It stays visible as cancelled.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.cancelAssignmentTitle": [
+    {
+      "type": 0,
+      "value": "Cancel this record?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.cancelled": [
+    {
+      "type": 0,
+      "value": "CancelledSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.changeLine": [
+    {
+      "type": 0,
+      "value": "Change reporting lineSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.close": [
+    {
+      "type": 0,
+      "value": "CloseSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.closeDate": [
+    {
+      "type": 0,
+      "value": "Closes onSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.closeLead": [
+    {
+      "type": 0,
+      "value": "It stays in the history. Give the first day it no longer exists.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.closeTitle": [
+    {
+      "type": 0,
+      "value": "Close "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.closedOn": [
+    {
+      "type": 0,
+      "value": "Closed on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.code": [
+    {
+      "type": 0,
+      "value": "CodeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.col.actions": [
+    {
+      "type": 0,
+      "value": "ActionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.col.by": [
+    {
+      "type": 0,
+      "value": "BySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.col.change": [
+    {
+      "type": 0,
+      "value": "ChangeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.col.from": [
+    {
+      "type": 0,
+      "value": "FromSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.col.holder": [
+    {
+      "type": 0,
+      "value": "Held bySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.col.person": [
+    {
+      "type": 0,
+      "value": "PersonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.col.position": [
+    {
+      "type": 0,
+      "value": "PositionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.col.since": [
+    {
+      "type": 0,
+      "value": "SinceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.col.status": [
+    {
+      "type": 0,
+      "value": "StatusSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.col.until": [
+    {
+      "type": 0,
+      "value": "UntilSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.col.when": [
+    {
+      "type": 0,
+      "value": "WhenSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.current": [
+    {
+      "type": 0,
+      "value": "CurrentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.edit": [
+    {
+      "type": 0,
+      "value": "EditSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.editPosition": [
+    {
+      "type": 0,
+      "value": "Edit positionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.empty": [
+    {
+      "type": 0,
+      "value": "No units yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.empty.lead": [
+    {
+      "type": 0,
+      "value": "Start with your legal entity and its top unit.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.end": [
+    {
+      "type": 0,
+      "value": "EndSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.endDate": [
+    {
+      "type": 0,
+      "value": "First day without the positionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.endTitle": [
+    {
+      "type": 0,
+      "value": "End "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "’s assignmentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.entityName": [
+    {
+      "type": 0,
+      "value": "Legal entity nameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.filter": [
+    {
+      "type": 0,
+      "value": "Find a unitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.filter.none": [
+    {
+      "type": 0,
+      "value": "No unit matches.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.fromDate": [
+    {
+      "type": 0,
+      "value": "FromSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.head": [
+    {
+      "type": 0,
+      "value": "HeadSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.headOfUnit": [
+    {
+      "type": 0,
+      "value": "Head of the unitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.history": [
+    {
+      "type": 0,
+      "value": "Change historySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.history.caption": [
+    {
+      "type": 0,
+      "value": "Changes, newest firstSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.history.closed": [
+    {
+      "type": 0,
+      "value": "ClosedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.history.created": [
+    {
+      "type": 0,
+      "value": "CreatedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.history.empty": [
+    {
+      "type": 0,
+      "value": "No changes recorded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.history.moved": [
+    {
+      "type": 0,
+      "value": "MovedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.history.system": [
+    {
+      "type": 0,
+      "value": "SystemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.history.updated": [
+    {
+      "type": 0,
+      "value": "ChangedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.holders": [
+    {
+      "type": 0,
+      "value": "Held by, over timeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.holders.caption": [
+    {
+      "type": 0,
+      "value": "Who held this positionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.holders.none": [
+    {
+      "type": 0,
+      "value": "Nobody has held this position yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.keep": [
+    {
+      "type": 0,
+      "value": "KeepSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.lead": [
+    {
+      "type": 0,
+      "value": "Units, positions and who holds them.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.linePosition": [
+    {
+      "type": 0,
+      "value": "PositionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.lineTitle": [
+    {
+      "type": 0,
+      "value": "Who does "
+    },
+    {
+      "type": 1,
+      "value": "position"
+    },
+    {
+      "type": 0,
+      "value": " report to?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.move": [
+    {
+      "type": 0,
+      "value": "MoveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.moveLead": [
+    {
+      "type": 0,
+      "value": "Its sub-units and positions move with it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.moveTitle": [
+    {
+      "type": 0,
+      "value": "Move "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.name": [
+    {
+      "type": 0,
+      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.newParent": [
+    {
+      "type": 0,
+      "value": "New parent unitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.newPosition": [
+    {
+      "type": 0,
+      "value": "New position in "
+    },
+    {
+      "type": 1,
+      "value": "unit"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.newTopUnit": [
+    {
+      "type": 0,
+      "value": "New top unitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.newUnitUnder": [
+    {
+      "type": 0,
+      "value": "New unit under "
+    },
+    {
+      "type": 1,
+      "value": "parent"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.ongoing": [
+    {
+      "type": 0,
+      "value": "OngoingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.past": [
+    {
+      "type": 0,
+      "value": "PastSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.person": [
+    {
+      "type": 0,
+      "value": "PersonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.pickUnit": [
+    {
+      "type": 0,
+      "value": "Choose a unit to see its positions.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.positionCode": [
+    {
+      "type": 0,
+      "value": "Code (optional)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.positionTitle": [
+    {
+      "type": 0,
+      "value": "TitleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.positions": [
+    {
+      "type": 0,
+      "value": "PositionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.positions.caption": [
+    {
+      "type": 0,
+      "value": "Positions of the unitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.positions.none": [
+    {
+      "type": 0,
+      "value": "No positions in this unit.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.refused.cancelled": [
+    {
+      "type": 0,
+      "value": "A cancelled record cannot change.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.refused.changed": [
+    {
+      "type": 0,
+      "value": "Someone changed this meanwhile. It was reloaded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.refused.closed": [
+    {
+      "type": 0,
+      "value": "It is closed on that date.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.refused.cycle": [
+    {
+      "type": 0,
+      "value": "That would make it its own parent or manager.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.refused.dates": [
+    {
+      "type": 0,
+      "value": "Those dates do not fit.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.refused.duplicateCode": [
+    {
+      "type": 0,
+      "value": "Another open unit or position has this code.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.refused.forbidden": [
+    {
+      "type": 0,
+      "value": "You cannot change this part of the organisation.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.refused.headTaken": [
+    {
+      "type": 0,
+      "value": "The unit already has a head position.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.refused.notEmpty": [
+    {
+      "type": 0,
+      "value": "Close or end what is still inside it first.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.refused.otherEntity": [
+    {
+      "type": 0,
+      "value": "Units can only move within their legal entity.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.refused.overlap": [
+    {
+      "type": 0,
+      "value": "Someone else holds this position in that period.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.refused.userInactive": [
+    {
+      "type": 0,
+      "value": "This person’s account is not active.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.refused.userOverlap": [
+    {
+      "type": 0,
+      "value": "This person holds another position in that period.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.rename": [
+    {
+      "type": 0,
+      "value": "RenameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.reportsTo": [
+    {
+      "type": 0,
+      "value": "Reports toSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.reportsTo.none": [
+    {
+      "type": 0,
+      "value": "Reports to nobodySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.required": [
+    {
+      "type": 0,
+      "value": "Required.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.save": [
+    {
+      "type": 0,
+      "value": "SaveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.saved": [
+    {
+      "type": 0,
+      "value": "Saved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.since": [
+    {
+      "type": 0,
+      "value": "Since "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.title": [
+    {
+      "type": 0,
+      "value": "OrganisationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.tree": [
+    {
+      "type": 0,
+      "value": "UnitsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.unit": [
+    {
+      "type": 0,
+      "value": "UnitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.unitDialog": [
+    {
+      "type": 0,
+      "value": "UnitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.unitPath": [
+    {
+      "type": 0,
+      "value": "Unit pathSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.unitWithCode": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "code"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.untilDate": [
+    {
+      "type": 0,
+      "value": "Until (optional)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.upcoming": [
+    {
+      "type": 0,
+      "value": "UpcomingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "org.vacant": [
+    {
+      "type": 0,
+      "value": "VacantSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "password.breached": [
@@ -875,6 +1627,36 @@
     {
       "type": 0,
       "value": "UsersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "picker.failed": [
+    {
+      "type": 0,
+      "value": "Search failed. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "picker.hint": [
+    {
+      "type": 0,
+      "value": "Type at least two letters of a name or title.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "picker.none": [
+    {
+      "type": 0,
+      "value": "Nobody found.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "picker.searching": [
+    {
+      "type": 0,
+      "value": "Searching…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "picker.vacant": [
+    {
+      "type": 0,
+      "value": "VacantSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "recoveryCodes.label": [

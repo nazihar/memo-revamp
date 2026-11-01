@@ -32,12 +32,13 @@ export interface Crumb {
   href?: string
 }
 
-export function Breadcrumbs({ items, className }: { items: Crumb[]; className?: string }) {
+/** [label] names the navigation landmark; pages that show a second trail next to the shell's give it its own. */
+export function Breadcrumbs({ items, className, label }: { items: Crumb[]; className?: string; label?: string }) {
   const intl = useIntl()
   if (items.length === 0) return null
   return (
     <nav
-      aria-label={intl.formatMessage({ id: 'shell.breadcrumb', defaultMessage: 'Breadcrumb' })}
+      aria-label={label ?? intl.formatMessage({ id: 'shell.breadcrumb', defaultMessage: 'Breadcrumb' })}
       className={className}
     >
       <ol className="flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground">

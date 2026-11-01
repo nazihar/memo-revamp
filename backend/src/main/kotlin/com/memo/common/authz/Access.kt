@@ -79,3 +79,13 @@ object AccessCaches {
     /** Effective grants and clearance per user. */
     const val GRANTS = "authz.grants"
 }
+
+/**
+ * A user's grants changed (ids only, ADR-0017); [gained] is true when a grant was added. Published inside the changing
+ * transaction; identity listens to sign out a user who became privileged without MFA (ADR-0024).
+ */
+data class GrantsChanged(
+    override val tenantId: UUID,
+    val userId: UUID,
+    val gained: Boolean,
+) : com.memo.common.events.TenantScopedEvent

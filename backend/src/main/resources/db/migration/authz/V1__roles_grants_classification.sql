@@ -45,7 +45,8 @@ CREATE INDEX authz_grant_tenant_scope_idx ON authz_grant (tenant_id, scope_unit_
 CREATE TABLE authz_classification_level (
     id          uuid        PRIMARY KEY,
     tenant_id   uuid        NOT NULL,
-    rank        int         NOT NULL CHECK (rank BETWEEN 0 AND 99),
+    -- Reordering moves ranks through 500+ temporarily, so the unique (tenant_id, rank) never collides mid-update.
+    rank        int         NOT NULL CHECK (rank BETWEEN 0 AND 999),
     name        text        NOT NULL CHECK (length(name) BETWEEN 1 AND 100),
     description text        CHECK (length(description) <= 500),
     version     bigint      NOT NULL DEFAULT 0,

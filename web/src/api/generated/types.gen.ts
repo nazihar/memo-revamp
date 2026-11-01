@@ -37,6 +37,36 @@ export type ChangePasswordRequest = {
     newPassword: string;
 };
 
+export type ClassificationLevel = {
+    description?: string | null;
+    id: string;
+    name: string;
+    /**
+     * 0 = lowest
+     */
+    rank: number;
+    /**
+     * Send as If-Match on renames
+     */
+    version: number;
+};
+
+export type ClassificationLevelRequest = {
+    description?: string | null;
+    name: string;
+};
+
+export type ClassificationOrderRequest = {
+    /**
+     * Every level id, lowest first
+     */
+    levelIds: Array<string>;
+};
+
+export type ClearanceRequest = {
+    levelId: string;
+};
+
 export type CloseRequest = {
     /**
      * First day it no longer exists
@@ -68,6 +98,26 @@ export type CreateOrgUnitRequest = {
      * Defaults to today
      */
     validFrom?: string | null;
+};
+
+export type Grant = {
+    builtIn?: string | null;
+    grantedAt: string;
+    id: string;
+    roleId: string;
+    roleName: string;
+    /**
+     * Unit subtree; absent for the whole organisation
+     */
+    scopeUnitId?: string | null;
+};
+
+export type GrantRequest = {
+    roleId: string;
+    /**
+     * Limit to a unit subtree
+     */
+    scopeUnitId?: string | null;
 };
 
 /**
@@ -343,6 +393,18 @@ export type PeriodRequest = {
     validTo?: string | null;
 };
 
+export type PermissionInfo = {
+    key: string;
+    /**
+     * Holders count as administrators (always MFA)
+     */
+    privileged: boolean;
+    /**
+     * Can be limited to a unit subtree
+     */
+    scopable: boolean;
+};
+
 export type PositionRequest = {
     code?: string | null;
     head: boolean;
@@ -381,6 +443,34 @@ export type ReportingLineRequest = {
     validTo?: string | null;
 };
 
+export type Role = {
+    /**
+     * Key of a built-in role; absent for custom roles
+     */
+    builtIn?: string | null;
+    description?: string | null;
+    /**
+     * How many grants use it
+     */
+    grants: number;
+    id: string;
+    name: string;
+    permissions: Array<string>;
+    /**
+     * Send as If-Match on changes
+     */
+    version: number;
+};
+
+export type RoleRequest = {
+    description?: string | null;
+    name: string;
+    /**
+     * Catalogue keys
+     */
+    permissions: Array<string>;
+};
+
 /**
  * Who is signed in on this organisation's host, and what they must do next.
  */
@@ -414,6 +504,11 @@ export type StepUpRequest = {
 export type UpdateOrgUnitRequest = {
     code: string;
     name: string;
+};
+
+export type UserAccess = {
+    clearance: ClassificationLevel;
+    grants: Array<Grant>;
 };
 
 export type ListUsersData = {
@@ -837,6 +932,255 @@ export type StepUpResponses = {
 };
 
 export type StepUpResponse = StepUpResponses[keyof StepUpResponses];
+
+export type ListClassificationLevelsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/authz/classification-levels';
+};
+
+export type ListClassificationLevelsResponses = {
+    /**
+     * OK
+     */
+    200: Array<ClassificationLevel>;
+};
+
+export type ListClassificationLevelsResponse = ListClassificationLevelsResponses[keyof ListClassificationLevelsResponses];
+
+export type CreateClassificationLevelData = {
+    body: ClassificationLevelRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/v1/authz/classification-levels';
+};
+
+export type CreateClassificationLevelResponses = {
+    /**
+     * OK
+     */
+    200: ClassificationLevel;
+};
+
+export type CreateClassificationLevelResponse = CreateClassificationLevelResponses[keyof CreateClassificationLevelResponses];
+
+export type ReorderClassificationLevelsData = {
+    body: ClassificationOrderRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/authz/classification-levels/order';
+};
+
+export type ReorderClassificationLevelsResponses = {
+    /**
+     * OK
+     */
+    200: Array<ClassificationLevel>;
+};
+
+export type ReorderClassificationLevelsResponse = ReorderClassificationLevelsResponses[keyof ReorderClassificationLevelsResponses];
+
+export type DeleteClassificationLevelData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/authz/classification-levels/{id}';
+};
+
+export type DeleteClassificationLevelResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
+export type RenameClassificationLevelData = {
+    body: ClassificationLevelRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/authz/classification-levels/{id}';
+};
+
+export type RenameClassificationLevelResponses = {
+    /**
+     * OK
+     */
+    200: ClassificationLevel;
+};
+
+export type RenameClassificationLevelResponse = RenameClassificationLevelResponses[keyof RenameClassificationLevelResponses];
+
+export type RevokeGrantData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/authz/grants/{id}';
+};
+
+export type RevokeGrantResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
+export type ListPermissionsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/authz/permissions';
+};
+
+export type ListPermissionsResponses = {
+    /**
+     * OK
+     */
+    200: Array<PermissionInfo>;
+};
+
+export type ListPermissionsResponse = ListPermissionsResponses[keyof ListPermissionsResponses];
+
+export type ListRolesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/authz/roles';
+};
+
+export type ListRolesResponses = {
+    /**
+     * OK
+     */
+    200: Array<Role>;
+};
+
+export type ListRolesResponse = ListRolesResponses[keyof ListRolesResponses];
+
+export type CreateRoleData = {
+    body: RoleRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/v1/authz/roles';
+};
+
+export type CreateRoleResponses = {
+    /**
+     * OK
+     */
+    200: Role;
+};
+
+export type CreateRoleResponse = CreateRoleResponses[keyof CreateRoleResponses];
+
+export type DeleteRoleData = {
+    body?: never;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/authz/roles/{id}';
+};
+
+export type DeleteRoleResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
+export type UpdateRoleData = {
+    body: RoleRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/authz/roles/{id}';
+};
+
+export type UpdateRoleResponses = {
+    /**
+     * OK
+     */
+    200: Role;
+};
+
+export type UpdateRoleResponse = UpdateRoleResponses[keyof UpdateRoleResponses];
+
+export type GetUserAccessData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/authz/users/{id}/access';
+};
+
+export type GetUserAccessResponses = {
+    /**
+     * OK
+     */
+    200: UserAccess;
+};
+
+export type GetUserAccessResponse = GetUserAccessResponses[keyof GetUserAccessResponses];
+
+export type SetClearanceData = {
+    body: ClearanceRequest;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/authz/users/{id}/clearance';
+};
+
+export type SetClearanceResponses = {
+    /**
+     * OK
+     */
+    200: ClassificationLevel;
+};
+
+export type SetClearanceResponse = SetClearanceResponses[keyof SetClearanceResponses];
+
+export type GrantRoleData = {
+    body: GrantRequest;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/authz/users/{id}/grants';
+};
+
+export type GrantRoleResponses = {
+    /**
+     * OK
+     */
+    200: Grant;
+};
+
+export type GrantRoleResponse = GrantRoleResponses[keyof GrantRoleResponses];
 
 export type GetHealthData = {
     body?: never;

@@ -32,3 +32,10 @@
   - Reporting lines: one per position at a time; the cycle check is conservative (all active lines overlapping the new period) and serialised per tenant by an advisory lock.
   - History reads the audit trail through a new public `AuditTrail.history(objectType, objectId)` (audit module), allowed with `audit.read` or `org.manage` on the object; the endpoint is `@SignedIn` and the object decides.
   - Identity got `UserSummaries` (batch names for holders and the picker) so org views make one query per screen.
+- T5 done (roles, grants, classification, clearance):
+  - Custom roles are sets of catalogue keys; built-in roles cannot change (`BUILT_IN`), a role in use cannot be deleted (`IN_USE`), names are unique (`DUPLICATE_NAME`). Changing a role's permissions evicts the tenant's cached grants, so holders' access changes at once.
+  - Grants: `NOT_SCOPABLE`, `UNKNOWN_UNIT`, `IMPLICIT` (the user role), `DUPLICATE`. Revoking a tenant-wide tenant admin grant locks the role row and refuses `LAST_ADMIN` unless another active admin remains (concurrency test: two admins revoking each other leave one). The tenant admin grant writes E03's flag through.
+  - A user who gains a privileged permission in a tenant with MFA for administrators only is signed out (identity listens to `GrantsChanged`), so the next sign-in requires MFA. Revoking never signs anyone out.
+  - Levels: a new level goes on top (the most sensitive) and can be reordered; reordering moves ranks through 500+ to keep the unique key intact, so the rank check in `authz/V1` widened to 0..999 (changed in place, not merged or deployed). A level someone is cleared to cannot go (`IN_USE`); the last one cannot go either. No clearance row means the lowest level.
+  - Every authorisation change needs a fresh step-up (matrix rule `tenantAdminStepUp`).
+  - `PolicyConditionIT` is part of `AccessAdminIT`: the SQL filter selects exactly the units the in-memory decision allows, for a scoped admin, a tenant admin and a plain user.

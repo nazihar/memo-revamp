@@ -175,7 +175,7 @@ open class AuthzClassificationLevel(
     override fun getChecks(): List<Check<AuthzClassificationLevelRecord>> = listOf(
         Internal.createCheck(this, DSL.name("authz_classification_level_description_check"), "((length(description) <= 500))", true),
         Internal.createCheck(this, DSL.name("authz_classification_level_name_check"), "(((length(name) >= 1) AND (length(name) <= 100)))", true),
-        Internal.createCheck(this, DSL.name("authz_classification_level_rank_check"), "(((rank >= 0) AND (rank <= 99)))", true)
+        Internal.createCheck(this, DSL.name("authz_classification_level_rank_check"), "(((rank >= 0) AND (rank <= 999)))", true)
     )
     override fun `as`(alias: String): AuthzClassificationLevel = AuthzClassificationLevel(DSL.name(alias), this)
     override fun `as`(alias: Name): AuthzClassificationLevel = AuthzClassificationLevel(alias, this)

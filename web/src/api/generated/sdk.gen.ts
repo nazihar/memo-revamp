@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AcceptInvitationData, AcceptInvitationErrors, AcceptInvitationResponses, AssignPositionData, AssignPositionResponses, CancelAssignmentData, CancelAssignmentResponses, CancelReportingLineData, CancelReportingLineResponses, ChangeMyPasswordData, ChangeMyPasswordErrors, ChangeMyPasswordResponses, CloseLegalEntityData, CloseLegalEntityResponses, CloseOrgUnitData, CloseOrgUnitResponses, ClosePositionData, ClosePositionResponses, CompletePasswordResetData, CompletePasswordResetErrors, CompletePasswordResetResponses, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentErrors, ConfirmMfaEnrolmentResponses, CreateLegalEntityData, CreateLegalEntityResponses, CreateOrgUnitData, CreateOrgUnitResponses, CreatePositionData, CreatePositionResponses, CreateReportingLineData, CreateReportingLineResponses, DeactivateUserData, DeactivateUserResponses, GetCsrfTokenData, GetCsrfTokenResponses, GetHealthData, GetHealthErrors, GetHealthResponses, GetMeData, GetMeResponses, GetMyAccessData, GetMyAccessResponses, GetOrgHistoryData, GetOrgHistoryResponses, GetOrgUnitData, GetOrgUnitResponses, GetPositionData, GetPositionHolderData, GetPositionHolderResponses, GetPositionResponses, GetSessionData, GetSessionResponses, InviteUserData, InviteUserErrors, InviteUserResponses, ListLegalEntitiesData, ListLegalEntitiesResponses, ListMySessionsData, ListMySessionsResponses, ListOrgUnitsData, ListOrgUnitsResponses, ListUnitPositionsData, ListUnitPositionsResponses, ListUserAssignmentsData, ListUserAssignmentsResponses, ListUsersData, ListUsersResponses, LoginData, LoginErrors, LoginResponses, LogoutData, LogoutResponses, LookUpInvitationData, LookUpInvitationErrors, LookUpInvitationResponses, MoveOrgUnitData, MoveOrgUnitResponses, ReactivateUserData, ReactivateUserResponses, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesErrors, RegenerateMyRecoveryCodesResponses, RequestPasswordResetData, RequestPasswordResetResponses, ResetUserMfaData, ResetUserMfaResponses, RevokeMySessionData, RevokeMySessionErrors, RevokeMySessionResponses, RevokeUserSessionsData, RevokeUserSessionsResponses, StartMfaEnrolmentData, StartMfaEnrolmentErrors, StartMfaEnrolmentResponses, StepUpData, StepUpErrors, StepUpResponses, UnlockUserData, UnlockUserResponses, UpdateAssignmentData, UpdateAssignmentResponses, UpdateLegalEntityData, UpdateLegalEntityResponses, UpdateOrgUnitData, UpdateOrgUnitResponses, UpdatePositionData, UpdatePositionResponses, UpdateReportingLineData, UpdateReportingLineResponses, VerifyMfaData, VerifyMfaErrors, VerifyMfaResponses } from './types.gen';
+import type { AcceptInvitationData, AcceptInvitationErrors, AcceptInvitationResponses, AssignPositionData, AssignPositionResponses, CancelAssignmentData, CancelAssignmentResponses, CancelReportingLineData, CancelReportingLineResponses, ChangeMyPasswordData, ChangeMyPasswordErrors, ChangeMyPasswordResponses, CloseLegalEntityData, CloseLegalEntityResponses, CloseOrgUnitData, CloseOrgUnitResponses, ClosePositionData, ClosePositionResponses, CompletePasswordResetData, CompletePasswordResetErrors, CompletePasswordResetResponses, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentErrors, ConfirmMfaEnrolmentResponses, CreateClassificationLevelData, CreateClassificationLevelResponses, CreateLegalEntityData, CreateLegalEntityResponses, CreateOrgUnitData, CreateOrgUnitResponses, CreatePositionData, CreatePositionResponses, CreateReportingLineData, CreateReportingLineResponses, CreateRoleData, CreateRoleResponses, DeactivateUserData, DeactivateUserResponses, DeleteClassificationLevelData, DeleteClassificationLevelResponses, DeleteRoleData, DeleteRoleResponses, GetCsrfTokenData, GetCsrfTokenResponses, GetHealthData, GetHealthErrors, GetHealthResponses, GetMeData, GetMeResponses, GetMyAccessData, GetMyAccessResponses, GetOrgHistoryData, GetOrgHistoryResponses, GetOrgUnitData, GetOrgUnitResponses, GetPositionData, GetPositionHolderData, GetPositionHolderResponses, GetPositionResponses, GetSessionData, GetSessionResponses, GetUserAccessData, GetUserAccessResponses, GrantRoleData, GrantRoleResponses, InviteUserData, InviteUserErrors, InviteUserResponses, ListClassificationLevelsData, ListClassificationLevelsResponses, ListLegalEntitiesData, ListLegalEntitiesResponses, ListMySessionsData, ListMySessionsResponses, ListOrgUnitsData, ListOrgUnitsResponses, ListPermissionsData, ListPermissionsResponses, ListRolesData, ListRolesResponses, ListUnitPositionsData, ListUnitPositionsResponses, ListUserAssignmentsData, ListUserAssignmentsResponses, ListUsersData, ListUsersResponses, LoginData, LoginErrors, LoginResponses, LogoutData, LogoutResponses, LookUpInvitationData, LookUpInvitationErrors, LookUpInvitationResponses, MoveOrgUnitData, MoveOrgUnitResponses, ReactivateUserData, ReactivateUserResponses, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesErrors, RegenerateMyRecoveryCodesResponses, RenameClassificationLevelData, RenameClassificationLevelResponses, ReorderClassificationLevelsData, ReorderClassificationLevelsResponses, RequestPasswordResetData, RequestPasswordResetResponses, ResetUserMfaData, ResetUserMfaResponses, RevokeGrantData, RevokeGrantResponses, RevokeMySessionData, RevokeMySessionErrors, RevokeMySessionResponses, RevokeUserSessionsData, RevokeUserSessionsResponses, SetClearanceData, SetClearanceResponses, StartMfaEnrolmentData, StartMfaEnrolmentErrors, StartMfaEnrolmentResponses, StepUpData, StepUpErrors, StepUpResponses, UnlockUserData, UnlockUserResponses, UpdateAssignmentData, UpdateAssignmentResponses, UpdateLegalEntityData, UpdateLegalEntityResponses, UpdateOrgUnitData, UpdateOrgUnitResponses, UpdatePositionData, UpdatePositionResponses, UpdateReportingLineData, UpdateReportingLineResponses, UpdateRoleData, UpdateRoleResponses, VerifyMfaData, VerifyMfaErrors, VerifyMfaResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -199,6 +199,125 @@ export const getSession = <ThrowOnError extends boolean = false>(options?: Optio
  */
 export const stepUp = <ThrowOnError extends boolean = false>(options: Options<StepUpData, ThrowOnError>): RequestResult<StepUpResponses, StepUpErrors, ThrowOnError> => (options.client ?? client).post<StepUpResponses, StepUpErrors, ThrowOnError>({
     url: '/api/v1/auth/step-up',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Classification levels, lowest first
+ */
+export const listClassificationLevels = <ThrowOnError extends boolean = false>(options?: Options<ListClassificationLevelsData, ThrowOnError>): RequestResult<ListClassificationLevelsResponses, unknown, ThrowOnError> => (options?.client ?? client).get<ListClassificationLevelsResponses, unknown, ThrowOnError>({ url: '/api/v1/authz/classification-levels', ...options });
+
+/**
+ * Add a level above the others
+ */
+export const createClassificationLevel = <ThrowOnError extends boolean = false>(options: Options<CreateClassificationLevelData, ThrowOnError>): RequestResult<CreateClassificationLevelResponses, unknown, ThrowOnError> => (options.client ?? client).post<CreateClassificationLevelResponses, unknown, ThrowOnError>({
+    url: '/api/v1/authz/classification-levels',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Put the levels in a new order, lowest first
+ */
+export const reorderClassificationLevels = <ThrowOnError extends boolean = false>(options: Options<ReorderClassificationLevelsData, ThrowOnError>): RequestResult<ReorderClassificationLevelsResponses, unknown, ThrowOnError> => (options.client ?? client).post<ReorderClassificationLevelsResponses, unknown, ThrowOnError>({
+    url: '/api/v1/authz/classification-levels/order',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Remove a level nobody is cleared to
+ */
+export const deleteClassificationLevel = <ThrowOnError extends boolean = false>(options: Options<DeleteClassificationLevelData, ThrowOnError>): RequestResult<DeleteClassificationLevelResponses, unknown, ThrowOnError> => (options.client ?? client).delete<DeleteClassificationLevelResponses, unknown, ThrowOnError>({ url: '/api/v1/authz/classification-levels/{id}', ...options });
+
+/**
+ * Rename a level
+ */
+export const renameClassificationLevel = <ThrowOnError extends boolean = false>(options: Options<RenameClassificationLevelData, ThrowOnError>): RequestResult<RenameClassificationLevelResponses, unknown, ThrowOnError> => (options.client ?? client).put<RenameClassificationLevelResponses, unknown, ThrowOnError>({
+    url: '/api/v1/authz/classification-levels/{id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Revoke a role grant
+ */
+export const revokeGrant = <ThrowOnError extends boolean = false>(options: Options<RevokeGrantData, ThrowOnError>): RequestResult<RevokeGrantResponses, unknown, ThrowOnError> => (options.client ?? client).delete<RevokeGrantResponses, unknown, ThrowOnError>({ url: '/api/v1/authz/grants/{id}', ...options });
+
+/**
+ * The permission catalogue
+ */
+export const listPermissions = <ThrowOnError extends boolean = false>(options?: Options<ListPermissionsData, ThrowOnError>): RequestResult<ListPermissionsResponses, unknown, ThrowOnError> => (options?.client ?? client).get<ListPermissionsResponses, unknown, ThrowOnError>({ url: '/api/v1/authz/permissions', ...options });
+
+/**
+ * Built-in and custom roles
+ */
+export const listRoles = <ThrowOnError extends boolean = false>(options?: Options<ListRolesData, ThrowOnError>): RequestResult<ListRolesResponses, unknown, ThrowOnError> => (options?.client ?? client).get<ListRolesResponses, unknown, ThrowOnError>({ url: '/api/v1/authz/roles', ...options });
+
+/**
+ * Create a custom role
+ */
+export const createRole = <ThrowOnError extends boolean = false>(options: Options<CreateRoleData, ThrowOnError>): RequestResult<CreateRoleResponses, unknown, ThrowOnError> => (options.client ?? client).post<CreateRoleResponses, unknown, ThrowOnError>({
+    url: '/api/v1/authz/roles',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Remove an unused custom role
+ */
+export const deleteRole = <ThrowOnError extends boolean = false>(options: Options<DeleteRoleData, ThrowOnError>): RequestResult<DeleteRoleResponses, unknown, ThrowOnError> => (options.client ?? client).delete<DeleteRoleResponses, unknown, ThrowOnError>({ url: '/api/v1/authz/roles/{id}', ...options });
+
+/**
+ * Change a custom role
+ */
+export const updateRole = <ThrowOnError extends boolean = false>(options: Options<UpdateRoleData, ThrowOnError>): RequestResult<UpdateRoleResponses, unknown, ThrowOnError> => (options.client ?? client).put<UpdateRoleResponses, unknown, ThrowOnError>({
+    url: '/api/v1/authz/roles/{id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * A user's role grants and clearance
+ */
+export const getUserAccess = <ThrowOnError extends boolean = false>(options: Options<GetUserAccessData, ThrowOnError>): RequestResult<GetUserAccessResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetUserAccessResponses, unknown, ThrowOnError>({ url: '/api/v1/authz/users/{id}/access', ...options });
+
+/**
+ * Set a user's clearance level
+ */
+export const setClearance = <ThrowOnError extends boolean = false>(options: Options<SetClearanceData, ThrowOnError>): RequestResult<SetClearanceResponses, unknown, ThrowOnError> => (options.client ?? client).put<SetClearanceResponses, unknown, ThrowOnError>({
+    url: '/api/v1/authz/users/{id}/clearance',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Give a user a role, for the organisation or a unit subtree
+ */
+export const grantRole = <ThrowOnError extends boolean = false>(options: Options<GrantRoleData, ThrowOnError>): RequestResult<GrantRoleResponses, unknown, ThrowOnError> => (options.client ?? client).post<GrantRoleResponses, unknown, ThrowOnError>({
+    url: '/api/v1/authz/users/{id}/grants',
     ...options,
     headers: {
         'Content-Type': 'application/json',

@@ -22,6 +22,18 @@ data class UserAccess(
     val clearanceRank: Int,
 )
 
+/** One role grant as administrators see it. */
+data class GrantRow(
+    val id: UUID,
+    val userId: UUID,
+    val roleId: UUID,
+    val roleName: String,
+    /** Built-in role key, null for a custom role. */
+    val builtIn: String?,
+    val scopeUnit: UUID?,
+    val grantedAt: java.time.Instant,
+)
+
 /** Roles and grants (ADR-0027). Every method runs inside a tenant transaction. */
 @Repository
 class RoleStore(
@@ -89,6 +101,45 @@ class RoleStore(
         return if (inserted == 1) id else null
     }
 
+    fun grantsOf(user: UUID): List<GrantRow> = grantRows(AUTHZ_GRANT.USER_ID.eq(user))
+
+    fun findGrant(id: UUID): GrantRow? = grantRows(AUTHZ_GRANT.ID.eq(id)).firstOrNull()
+
+    fun deleteGrant(id: UUID): Boolean =
+        tenantDsl
+            .current()
+            .deleteFrom(AUTHZ_GRANT)
+            .where(AUTHZ_GRANT.ID.eq(id))
+            .execute() == 1
+
+    private fun grantRows(condition: org.jooq.Condition): List<GrantRow> =
+        tenantDsl
+            .current()
+            .select(
+                AUTHZ_GRANT.ID,
+                AUTHZ_GRANT.USER_ID,
+                AUTHZ_GRANT.ROLE_ID,
+                AUTHZ_ROLE.NAME,
+                AUTHZ_ROLE.KEY,
+                AUTHZ_GRANT.SCOPE_UNIT_ID,
+                AUTHZ_GRANT.GRANTED_AT,
+            ).from(AUTHZ_GRANT)
+            .join(AUTHZ_ROLE)
+            .on(AUTHZ_ROLE.TENANT_ID.eq(AUTHZ_GRANT.TENANT_ID), AUTHZ_ROLE.ID.eq(AUTHZ_GRANT.ROLE_ID))
+            .where(condition)
+            .orderBy(AUTHZ_GRANT.GRANTED_AT)
+            .fetch {
+                GrantRow(
+                    it.value1()!!,
+                    it.value2()!!,
+                    it.value3()!!,
+                    it.value4()!!,
+                    it.value5(),
+                    it.value6(),
+                    it.value7()!!.toInstant(),
+                )
+            }
+
     /** Users (of [among], when given) holding [roleId] tenant-wide. */
     fun tenantWideHolders(
         roleId: UUID,
@@ -142,20 +193,19 @@ class RoleStore(
                     .map { ScopedPermission(it, row.value3()) }
             }
         val implicit = BuiltInRole.USER.permissions.map { ScopedPermission(it, null) }
-        return UserAccess((implicit + scoped).distinct(), clearanceRankOf(user))
+        val clearance =
+            tenantDsl
+                .current()
+                .select(AUTHZ_CLASSIFICATION_LEVEL.RANK)
+                .from(AUTHZ_CLEARANCE)
+                .join(AUTHZ_CLASSIFICATION_LEVEL)
+                .on(
+                    AUTHZ_CLASSIFICATION_LEVEL.TENANT_ID.eq(AUTHZ_CLEARANCE.TENANT_ID),
+                    AUTHZ_CLASSIFICATION_LEVEL.ID.eq(AUTHZ_CLEARANCE.LEVEL_ID),
+                ).where(AUTHZ_CLEARANCE.USER_ID.eq(user))
+                .fetchOne(AUTHZ_CLASSIFICATION_LEVEL.RANK) ?: 0
+        return UserAccess((implicit + scoped).distinct(), clearance)
     }
-
-    private fun clearanceRankOf(user: UUID): Int =
-        tenantDsl
-            .current()
-            .select(AUTHZ_CLASSIFICATION_LEVEL.RANK)
-            .from(AUTHZ_CLEARANCE)
-            .join(AUTHZ_CLASSIFICATION_LEVEL)
-            .on(
-                AUTHZ_CLASSIFICATION_LEVEL.TENANT_ID.eq(AUTHZ_CLEARANCE.TENANT_ID),
-                AUTHZ_CLASSIFICATION_LEVEL.ID.eq(AUTHZ_CLEARANCE.LEVEL_ID),
-            ).where(AUTHZ_CLEARANCE.USER_ID.eq(user))
-            .fetchOne(AUTHZ_CLASSIFICATION_LEVEL.RANK) ?: 0
 
     private fun now() = OffsetDateTime.now(clock).withOffsetSameInstant(ZoneOffset.UTC)
 }

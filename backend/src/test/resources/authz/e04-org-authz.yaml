@@ -29,3 +29,30 @@ endpoints:
   - { endpoint: "POST /api/v1/org/reporting-lines/{id}/cancel", rule: tenantAdmin }
   # Any signed-in user may ask; the object decides (audit.read or org.manage on it). Random ids are 404 for everyone.
   - { endpoint: "GET /api/v1/org/history/{type}/{id}", rule: signedIn }
+  # Roles, grants, classification and clearance (T5): mutations need a fresh step-up.
+  - { endpoint: GET /api/v1/authz/permissions, rule: tenantAdmin }
+  - { endpoint: GET /api/v1/authz/roles, rule: tenantAdmin }
+  - endpoint: POST /api/v1/authz/roles
+    rule: tenantAdminStepUp
+    headers: { Idempotency-Key: "{random}" }
+    body: { name: "Matrix {random}", permissions: [audit.read] }
+  - endpoint: "PUT /api/v1/authz/roles/{id}"
+    rule: tenantAdminStepUp
+    headers: { If-Match: "\"0\"" }
+    body: { name: "Matrix {random}", permissions: [audit.read] }
+  - { endpoint: "DELETE /api/v1/authz/roles/{id}", rule: tenantAdminStepUp, headers: { If-Match: "\"0\"" } }
+  - { endpoint: "GET /api/v1/authz/users/{id}/access", rule: tenantAdmin }
+  - { endpoint: "POST /api/v1/authz/users/{id}/grants", rule: tenantAdminStepUp, body: { roleId: "{random}" } }
+  - { endpoint: "DELETE /api/v1/authz/grants/{id}", rule: tenantAdminStepUp }
+  - { endpoint: "PUT /api/v1/authz/users/{id}/clearance", rule: tenantAdminStepUp, body: { levelId: "{random}" } }
+  - { endpoint: GET /api/v1/authz/classification-levels, rule: signedIn }
+  - endpoint: POST /api/v1/authz/classification-levels
+    rule: tenantAdminStepUp
+    headers: { Idempotency-Key: "{random}" }
+    body: { name: "Matrix {random}" }
+  - endpoint: "PUT /api/v1/authz/classification-levels/{id}"
+    rule: tenantAdminStepUp
+    headers: { If-Match: "\"0\"" }
+    body: { name: "Matrix {random}" }
+  - { endpoint: POST /api/v1/authz/classification-levels/order, rule: tenantAdminStepUp, body: { levelIds: [] } }
+  - { endpoint: "DELETE /api/v1/authz/classification-levels/{id}", rule: tenantAdminStepUp }

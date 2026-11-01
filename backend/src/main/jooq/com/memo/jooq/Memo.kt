@@ -21,6 +21,11 @@ import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
 import com.memo.jooq.tables.NotificationMailOutbox
+import com.memo.jooq.tables.OrgAssignment
+import com.memo.jooq.tables.OrgLegalEntity
+import com.memo.jooq.tables.OrgPosition
+import com.memo.jooq.tables.OrgReportingLine
+import com.memo.jooq.tables.OrgUnit
 import com.memo.jooq.tables.SystemIdempotencyKey
 import com.memo.jooq.tables.SystemInfo
 import com.memo.jooq.tables.TenancySetting
@@ -135,6 +140,31 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val NOTIFICATION_MAIL_OUTBOX: NotificationMailOutbox get() = NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX
 
     /**
+     * The table <code>memo.org_assignment</code>.
+     */
+    val ORG_ASSIGNMENT: OrgAssignment get() = OrgAssignment.ORG_ASSIGNMENT
+
+    /**
+     * The table <code>memo.org_legal_entity</code>.
+     */
+    val ORG_LEGAL_ENTITY: OrgLegalEntity get() = OrgLegalEntity.ORG_LEGAL_ENTITY
+
+    /**
+     * The table <code>memo.org_position</code>.
+     */
+    val ORG_POSITION: OrgPosition get() = OrgPosition.ORG_POSITION
+
+    /**
+     * The table <code>memo.org_reporting_line</code>.
+     */
+    val ORG_REPORTING_LINE: OrgReportingLine get() = OrgReportingLine.ORG_REPORTING_LINE
+
+    /**
+     * The table <code>memo.org_unit</code>.
+     */
+    val ORG_UNIT: OrgUnit get() = OrgUnit.ORG_UNIT
+
+    /**
      * The table <code>memo.system_idempotency_key</code>.
      */
     val SYSTEM_IDEMPOTENCY_KEY: SystemIdempotencyKey get() = SystemIdempotencyKey.SYSTEM_IDEMPOTENCY_KEY
@@ -179,6 +209,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         IdentityRecoveryCode.IDENTITY_RECOVERY_CODE,
         IdentityUser.IDENTITY_USER,
         NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX,
+        OrgAssignment.ORG_ASSIGNMENT,
+        OrgLegalEntity.ORG_LEGAL_ENTITY,
+        OrgPosition.ORG_POSITION,
+        OrgReportingLine.ORG_REPORTING_LINE,
+        OrgUnit.ORG_UNIT,
         SystemIdempotencyKey.SYSTEM_IDEMPOTENCY_KEY,
         SystemInfo.SYSTEM_INFO,
         TenancySetting.TENANCY_SETTING,

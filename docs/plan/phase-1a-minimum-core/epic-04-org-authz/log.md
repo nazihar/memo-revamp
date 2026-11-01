@@ -18,3 +18,10 @@
   - "Allowed" means not 403, not 5xx, and no 401 other than `invalid-credentials` (a wrong code is not a denial).
   - Two E03 endpoints validate body or headers before the step-up check (`PUT /me/password`, `POST /admin/users`), so their entries carry sample requests; a partial session gets 403 on enrolment for an already-enrolled account (E03 T5 rule, recorded as an override).
   - JUnit dynamic tests did not get the test actor; `TestActorExtension` now covers them.
+- T3 done (legal entities and units):
+  - All org tables in one migration (`org/V1`), so codegen runs once; positions, assignments and reporting lines follow in T4. A picker index on display names (`identity/V4`, `text_pattern_ops`) is in place for T6.
+  - Tree changes (create, move, close) take a per-tenant advisory lock, so two concurrent moves cannot build a cycle. A move rewrites the subtree's ancestor arrays in one `UPDATE` (`newPrefix || ancestors[array_position(ancestors, unit):]`).
+  - Scope: creating needs `org.manage` on the parent (a root unit tenant-wide); renaming on the unit itself; moving on the current and the new parent; closing on the parent. A scoped administrator can therefore rename their scope root but not move or close it (403 rather than a separate `SCOPE_ROOT` reason).
+  - A scoped grant confers only the role's scopable permissions (so `org_admin` can be scoped although `directory.read` is not scopable; the reader permission comes from the implicit user role). Design §2 said such roles could not be scoped at all.
+  - The org tree is cached per tenant (`org.tree`) and evicted at commit of every unit change; the policy reads unit scope from it.
+  - `RefusedException` (409 with `reason`) and `ifMatchVersion`/`etagOf` moved to `common.web` for every module.

@@ -31,6 +31,13 @@ export type ChangePasswordRequest = {
     newPassword: string;
 };
 
+export type CloseRequest = {
+    /**
+     * First day it no longer exists
+     */
+    validTo: string;
+};
+
 export type CodeRequest = {
     /**
      * 6-digit TOTP code, or a recovery code
@@ -41,6 +48,20 @@ export type CodeRequest = {
 export type ComponentHealth = {
     name: string;
     status: 'UP' | 'DOWN' | 'DISABLED';
+};
+
+export type CreateOrgUnitRequest = {
+    code: string;
+    legalEntityId: string;
+    name: string;
+    /**
+     * Absent for a root unit of the legal entity
+     */
+    parentId?: string | null;
+    /**
+     * Defaults to today
+     */
+    validFrom?: string | null;
 };
 
 /**
@@ -77,6 +98,29 @@ export type InviteUserRequest = {
     displayName: string;
     email: string;
     tenantAdmin: boolean;
+};
+
+export type LegalEntity = {
+    id: string;
+    name: string;
+    registrationNumber?: string | null;
+    shortName?: string | null;
+    validFrom: string;
+    validTo?: string | null;
+    /**
+     * Send as If-Match on updates
+     */
+    version: number;
+};
+
+export type LegalEntityRequest = {
+    name: string;
+    registrationNumber?: string | null;
+    shortName?: string | null;
+    /**
+     * Creation only; defaults to today
+     */
+    validFrom?: string | null;
 };
 
 export type LoginRequest = {
@@ -116,6 +160,10 @@ export type MfaEnrolmentConfirmed = {
     session: Session;
 };
 
+export type MoveOrgUnitRequest = {
+    parentId: string;
+};
+
 export type MyAccess = {
     clearance: MyClearance;
     permissions: Array<MyPermission>;
@@ -148,6 +196,32 @@ export type MySession = {
     lastActiveAt: string;
     signedInAt?: string | null;
     userAgent?: string | null;
+};
+
+export type OrgUnit = {
+    code: string;
+    id: string;
+    legalEntityId: string;
+    name: string;
+    parentId?: string | null;
+    validFrom: string;
+    validTo?: string | null;
+    /**
+     * Send as If-Match on updates
+     */
+    version: number;
+};
+
+export type OrgUnitDetail = {
+    /**
+     * Whether the signed-in user may change this unit
+     */
+    canManage: boolean;
+    /**
+     * Ancestors, root first
+     */
+    path: Array<OrgUnit>;
+    unit: OrgUnit;
 };
 
 export type PasswordResetCompletion = {
@@ -208,6 +282,11 @@ export type SessionUser = {
 export type StepUpRequest = {
     code?: string | null;
     password?: string | null;
+};
+
+export type UpdateOrgUnitRequest = {
+    code: string;
+    name: string;
 };
 
 export type ListUsersData = {
@@ -777,3 +856,202 @@ export type RevokeMySessionResponses = {
 };
 
 export type RevokeMySessionResponse = RevokeMySessionResponses[keyof RevokeMySessionResponses];
+
+export type ListLegalEntitiesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/org/legal-entities';
+};
+
+export type ListLegalEntitiesResponses = {
+    /**
+     * OK
+     */
+    200: Array<LegalEntity>;
+};
+
+export type ListLegalEntitiesResponse = ListLegalEntitiesResponses[keyof ListLegalEntitiesResponses];
+
+export type CreateLegalEntityData = {
+    body: LegalEntityRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/v1/org/legal-entities';
+};
+
+export type CreateLegalEntityResponses = {
+    /**
+     * OK
+     */
+    200: LegalEntity;
+};
+
+export type CreateLegalEntityResponse = CreateLegalEntityResponses[keyof CreateLegalEntityResponses];
+
+export type UpdateLegalEntityData = {
+    body: LegalEntityRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/legal-entities/{id}';
+};
+
+export type UpdateLegalEntityResponses = {
+    /**
+     * OK
+     */
+    200: LegalEntity;
+};
+
+export type UpdateLegalEntityResponse = UpdateLegalEntityResponses[keyof UpdateLegalEntityResponses];
+
+export type CloseLegalEntityData = {
+    body: CloseRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/legal-entities/{id}/close';
+};
+
+export type CloseLegalEntityResponses = {
+    /**
+     * OK
+     */
+    200: LegalEntity;
+};
+
+export type CloseLegalEntityResponse = CloseLegalEntityResponses[keyof CloseLegalEntityResponses];
+
+export type ListOrgUnitsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Date the tree is shown for
+         */
+        asOf?: string;
+        includeClosed?: boolean;
+    };
+    url: '/api/v1/org/units';
+};
+
+export type ListOrgUnitsResponses = {
+    /**
+     * OK
+     */
+    200: Array<OrgUnit>;
+};
+
+export type ListOrgUnitsResponse = ListOrgUnitsResponses[keyof ListOrgUnitsResponses];
+
+export type CreateOrgUnitData = {
+    body: CreateOrgUnitRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/v1/org/units';
+};
+
+export type CreateOrgUnitResponses = {
+    /**
+     * OK
+     */
+    200: OrgUnit;
+};
+
+export type CreateOrgUnitResponse = CreateOrgUnitResponses[keyof CreateOrgUnitResponses];
+
+export type GetOrgUnitData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/units/{id}';
+};
+
+export type GetOrgUnitResponses = {
+    /**
+     * OK
+     */
+    200: OrgUnitDetail;
+};
+
+export type GetOrgUnitResponse = GetOrgUnitResponses[keyof GetOrgUnitResponses];
+
+export type UpdateOrgUnitData = {
+    body: UpdateOrgUnitRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/units/{id}';
+};
+
+export type UpdateOrgUnitResponses = {
+    /**
+     * OK
+     */
+    200: OrgUnit;
+};
+
+export type UpdateOrgUnitResponse = UpdateOrgUnitResponses[keyof UpdateOrgUnitResponses];
+
+export type CloseOrgUnitData = {
+    body: CloseRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/units/{id}/close';
+};
+
+export type CloseOrgUnitResponses = {
+    /**
+     * OK
+     */
+    200: OrgUnit;
+};
+
+export type CloseOrgUnitResponse = CloseOrgUnitResponses[keyof CloseOrgUnitResponses];
+
+export type MoveOrgUnitData = {
+    body: MoveOrgUnitRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/units/{id}/move';
+};
+
+export type MoveOrgUnitResponses = {
+    /**
+     * OK
+     */
+    200: OrgUnit;
+};
+
+export type MoveOrgUnitResponse = MoveOrgUnitResponses[keyof MoveOrgUnitResponses];

@@ -16,6 +16,10 @@ import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
 import com.memo.jooq.tables.NotificationMailOutbox
+import com.memo.jooq.tables.OrgAssignment
+import com.memo.jooq.tables.OrgPosition
+import com.memo.jooq.tables.OrgReportingLine
+import com.memo.jooq.tables.OrgUnit
 import com.memo.jooq.tables.SystemIdempotencyKey
 import com.memo.jooq.tables.TenancySetting
 
@@ -46,5 +50,14 @@ val IDENTITY_RATE_LIMIT_BUCKET_EXPIRY_IDX: Index = Internal.createIndex(DSL.name
 val IDENTITY_RECOVERY_CODE_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("identity_recovery_code_tenant_user_idx"), IdentityRecoveryCode.IDENTITY_RECOVERY_CODE, arrayOf(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.TENANT_ID, IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.USER_ID), false)
 val IDENTITY_USER_TENANT_EMAIL_UK: Index = Internal.createIndex(DSL.name("identity_user_tenant_email_uk"), IdentityUser.IDENTITY_USER, arrayOf(IdentityUser.IDENTITY_USER.TENANT_ID, IdentityUser.IDENTITY_USER.EMAIL), true)
 val NOTIFICATION_MAIL_OUTBOX_TENANT_STATUS_IDX: Index = Internal.createIndex(DSL.name("notification_mail_outbox_tenant_status_idx"), NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX, arrayOf(NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.TENANT_ID, NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.STATUS, NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.CREATED_AT), false)
+val ORG_ASSIGNMENT_TENANT_POSITION_IDX: Index = Internal.createIndex(DSL.name("org_assignment_tenant_position_idx"), OrgAssignment.ORG_ASSIGNMENT, arrayOf(OrgAssignment.ORG_ASSIGNMENT.TENANT_ID, OrgAssignment.ORG_ASSIGNMENT.POSITION_ID, OrgAssignment.ORG_ASSIGNMENT.VALID_FROM), false)
+val ORG_ASSIGNMENT_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("org_assignment_tenant_user_idx"), OrgAssignment.ORG_ASSIGNMENT, arrayOf(OrgAssignment.ORG_ASSIGNMENT.TENANT_ID, OrgAssignment.ORG_ASSIGNMENT.USER_ID, OrgAssignment.ORG_ASSIGNMENT.VALID_FROM), false)
+val ORG_POSITION_TENANT_HEAD_UK: Index = Internal.createIndex(DSL.name("org_position_tenant_head_uk"), OrgPosition.ORG_POSITION, arrayOf(OrgPosition.ORG_POSITION.TENANT_ID, OrgPosition.ORG_POSITION.UNIT_ID), true)
+val ORG_POSITION_TENANT_UNIT_IDX: Index = Internal.createIndex(DSL.name("org_position_tenant_unit_idx"), OrgPosition.ORG_POSITION, arrayOf(OrgPosition.ORG_POSITION.TENANT_ID, OrgPosition.ORG_POSITION.UNIT_ID), false)
+val ORG_REPORTING_LINE_TENANT_POSITION_IDX: Index = Internal.createIndex(DSL.name("org_reporting_line_tenant_position_idx"), OrgReportingLine.ORG_REPORTING_LINE, arrayOf(OrgReportingLine.ORG_REPORTING_LINE.TENANT_ID, OrgReportingLine.ORG_REPORTING_LINE.POSITION_ID, OrgReportingLine.ORG_REPORTING_LINE.VALID_FROM), false)
+val ORG_REPORTING_LINE_TENANT_REPORTS_TO_IDX: Index = Internal.createIndex(DSL.name("org_reporting_line_tenant_reports_to_idx"), OrgReportingLine.ORG_REPORTING_LINE, arrayOf(OrgReportingLine.ORG_REPORTING_LINE.TENANT_ID, OrgReportingLine.ORG_REPORTING_LINE.REPORTS_TO_POSITION_ID), false)
+val ORG_UNIT_ANCESTORS_IDX: Index = Internal.createIndex(DSL.name("org_unit_ancestors_idx"), OrgUnit.ORG_UNIT, arrayOf(OrgUnit.ORG_UNIT.ANCESTORS), false)
+val ORG_UNIT_TENANT_ENTITY_IDX: Index = Internal.createIndex(DSL.name("org_unit_tenant_entity_idx"), OrgUnit.ORG_UNIT, arrayOf(OrgUnit.ORG_UNIT.TENANT_ID, OrgUnit.ORG_UNIT.LEGAL_ENTITY_ID), false)
+val ORG_UNIT_TENANT_PARENT_IDX: Index = Internal.createIndex(DSL.name("org_unit_tenant_parent_idx"), OrgUnit.ORG_UNIT, arrayOf(OrgUnit.ORG_UNIT.TENANT_ID, OrgUnit.ORG_UNIT.PARENT_ID), false)
 val SYSTEM_IDEMPOTENCY_KEY_TENANT_CREATED_IDX: Index = Internal.createIndex(DSL.name("system_idempotency_key_tenant_created_idx"), SystemIdempotencyKey.SYSTEM_IDEMPOTENCY_KEY, arrayOf(SystemIdempotencyKey.SYSTEM_IDEMPOTENCY_KEY.TENANT_ID, SystemIdempotencyKey.SYSTEM_IDEMPOTENCY_KEY.CREATED_AT), false)
 val TENANCY_SETTING_TENANT_KEY_UK: Index = Internal.createIndex(DSL.name("tenancy_setting_tenant_key_uk"), TenancySetting.TENANCY_SETTING, arrayOf(TenancySetting.TENANCY_SETTING.TENANT_ID, TenancySetting.TENANCY_SETTING.KEY), true)

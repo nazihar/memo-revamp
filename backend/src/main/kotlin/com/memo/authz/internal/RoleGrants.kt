@@ -20,14 +20,16 @@ class RoleGrants(
     override fun grantBuiltIn(
         user: UUID,
         role: BuiltInRole,
+        scopeUnit: UUID?,
     ) {
         require(role != BuiltInRole.USER) { "every active user holds the user role implicitly" }
-        val grant = roles.insertGrant(user, roleId(role), null) ?: return
+        require(scopeUnit == null || role.permissions.any { it.scopable }) { "${role.key} has no permission that can be scoped" }
+        val grant = roles.insertGrant(user, roleId(role), scopeUnit) ?: return
         audit.record(
             "authz.grant.created",
             "authz.grant",
             grant.toString(),
-            after = mapOf("userId" to user.toString(), "role" to role.key, "scopeUnitId" to null),
+            after = mapOf("userId" to user.toString(), "role" to role.key, "scopeUnitId" to scopeUnit?.toString()),
         )
         invalidation.invalidate(AccessCaches.GRANTS, tenantDsl.tenant(), user.toString())
     }

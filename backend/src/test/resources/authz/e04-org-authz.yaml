@@ -2,3 +2,14 @@
 epic: E04
 endpoints:
   - { endpoint: GET /api/v1/me/access, rule: signedIn }
+  # Org directory (T3). Changes are gated by holding the permission somewhere; scoped checks are in OrgUnitsIT.
+  - { endpoint: GET /api/v1/org/legal-entities, rule: signedIn }
+  - { endpoint: POST /api/v1/org/legal-entities, rule: tenantAdmin }
+  - { endpoint: "PUT /api/v1/org/legal-entities/{id}", rule: tenantAdmin }
+  - { endpoint: "POST /api/v1/org/legal-entities/{id}/close", rule: tenantAdmin }
+  - { endpoint: GET /api/v1/org/units, rule: signedIn }
+  - { endpoint: "GET /api/v1/org/units/{id}", rule: signedIn }
+  - { endpoint: POST /api/v1/org/units, rule: tenantAdmin }
+  - { endpoint: "PUT /api/v1/org/units/{id}", rule: tenantAdmin }
+  - { endpoint: "POST /api/v1/org/units/{id}/move", rule: tenantAdmin }
+  - { endpoint: "POST /api/v1/org/units/{id}/close", rule: tenantAdmin }

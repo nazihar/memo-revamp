@@ -48,6 +48,15 @@ class ProblemDetailsAdvice : ResponseEntityExceptionHandler() {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(problem)
     }
 
+    /** Not possible in the current state: 409 with a stable `reason` code. */
+    @ExceptionHandler(RefusedException::class)
+    fun refused(ex: RefusedException): ResponseEntity<ProblemDetail> =
+        ResponseEntity.status(HttpStatus.CONFLICT).body(
+            ProblemTypes.of(HttpStatus.CONFLICT, ProblemTypes.CONFLICT, ex.message ?: "Not possible.").apply {
+                setProperty("reason", ex.reason)
+            },
+        )
+
     /** A guarded write lost to a concurrent change: the client reloads and decides again (AGENTS.md §4). */
     @ExceptionHandler(ConcurrentModificationException::class)
     fun conflict(): ResponseEntity<ProblemDetail> =

@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { acceptInvitation, changeMyPassword, completePasswordReset, confirmMfaEnrolment, deactivateUser, getCsrfToken, getHealth, getMe, getMyAccess, getSession, inviteUser, listMySessions, listUsers, login, logout, lookUpInvitation, type Options, reactivateUser, regenerateMyRecoveryCodes, requestPasswordReset, resetUserMfa, revokeMySession, revokeUserSessions, startMfaEnrolment, stepUp, unlockUser, verifyMfa } from '../sdk.gen';
-import type { AcceptInvitationData, AcceptInvitationError, AcceptInvitationResponse, ChangeMyPasswordData, ChangeMyPasswordError, ChangeMyPasswordResponse, CompletePasswordResetData, CompletePasswordResetError, CompletePasswordResetResponse, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentError, ConfirmMfaEnrolmentResponse, DeactivateUserData, DeactivateUserResponse, GetCsrfTokenData, GetCsrfTokenResponse, GetHealthData, GetHealthError, GetHealthResponse, GetMeData, GetMeResponse, GetMyAccessData, GetMyAccessResponse, GetSessionData, GetSessionResponse, InviteUserData, InviteUserError, InviteUserResponse, ListMySessionsData, ListMySessionsResponse, ListUsersData, ListUsersResponse, LoginData, LoginError, LoginResponse, LogoutData, LogoutResponse, LookUpInvitationData, LookUpInvitationError, LookUpInvitationResponse, ReactivateUserData, ReactivateUserResponse, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesResponse, RequestPasswordResetData, ResetUserMfaData, ResetUserMfaResponse, RevokeMySessionData, RevokeMySessionResponse, RevokeUserSessionsData, RevokeUserSessionsResponse, StartMfaEnrolmentData, StartMfaEnrolmentResponse, StepUpData, StepUpError, StepUpResponse, UnlockUserData, UnlockUserResponse, VerifyMfaData, VerifyMfaError, VerifyMfaResponse } from '../types.gen';
+import { acceptInvitation, changeMyPassword, closeLegalEntity, closeOrgUnit, completePasswordReset, confirmMfaEnrolment, createLegalEntity, createOrgUnit, deactivateUser, getCsrfToken, getHealth, getMe, getMyAccess, getOrgUnit, getSession, inviteUser, listLegalEntities, listMySessions, listOrgUnits, listUsers, login, logout, lookUpInvitation, moveOrgUnit, type Options, reactivateUser, regenerateMyRecoveryCodes, requestPasswordReset, resetUserMfa, revokeMySession, revokeUserSessions, startMfaEnrolment, stepUp, unlockUser, updateLegalEntity, updateOrgUnit, verifyMfa } from '../sdk.gen';
+import type { AcceptInvitationData, AcceptInvitationError, AcceptInvitationResponse, ChangeMyPasswordData, ChangeMyPasswordError, ChangeMyPasswordResponse, CloseLegalEntityData, CloseLegalEntityResponse, CloseOrgUnitData, CloseOrgUnitResponse, CompletePasswordResetData, CompletePasswordResetError, CompletePasswordResetResponse, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentError, ConfirmMfaEnrolmentResponse, CreateLegalEntityData, CreateLegalEntityResponse, CreateOrgUnitData, CreateOrgUnitResponse, DeactivateUserData, DeactivateUserResponse, GetCsrfTokenData, GetCsrfTokenResponse, GetHealthData, GetHealthError, GetHealthResponse, GetMeData, GetMeResponse, GetMyAccessData, GetMyAccessResponse, GetOrgUnitData, GetOrgUnitResponse, GetSessionData, GetSessionResponse, InviteUserData, InviteUserError, InviteUserResponse, ListLegalEntitiesData, ListLegalEntitiesResponse, ListMySessionsData, ListMySessionsResponse, ListOrgUnitsData, ListOrgUnitsResponse, ListUsersData, ListUsersResponse, LoginData, LoginError, LoginResponse, LogoutData, LogoutResponse, LookUpInvitationData, LookUpInvitationError, LookUpInvitationResponse, MoveOrgUnitData, MoveOrgUnitResponse, ReactivateUserData, ReactivateUserResponse, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesResponse, RequestPasswordResetData, ResetUserMfaData, ResetUserMfaResponse, RevokeMySessionData, RevokeMySessionResponse, RevokeUserSessionsData, RevokeUserSessionsResponse, StartMfaEnrolmentData, StartMfaEnrolmentResponse, StepUpData, StepUpError, StepUpResponse, UnlockUserData, UnlockUserResponse, UpdateLegalEntityData, UpdateLegalEntityResponse, UpdateOrgUnitData, UpdateOrgUnitResponse, VerifyMfaData, VerifyMfaError, VerifyMfaResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -577,6 +577,181 @@ export const revokeMySessionMutation = (options?: Partial<Options<RevokeMySessio
     const mutationOptions: UseMutationOptions<RevokeMySessionResponse, DefaultError, Options<RevokeMySessionData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await revokeMySession({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const listLegalEntitiesQueryKey = (options?: Options<ListLegalEntitiesData>) => createQueryKey('listLegalEntities', options);
+
+/**
+ * Legal entities
+ */
+export const listLegalEntitiesOptions = (options?: Options<ListLegalEntitiesData>) => queryOptions<ListLegalEntitiesResponse, DefaultError, ListLegalEntitiesResponse, ReturnType<typeof listLegalEntitiesQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await listLegalEntities({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: listLegalEntitiesQueryKey(options)
+});
+
+/**
+ * Create a legal entity
+ */
+export const createLegalEntityMutation = (options?: Partial<Options<CreateLegalEntityData>>): UseMutationOptions<CreateLegalEntityResponse, DefaultError, Options<CreateLegalEntityData>> => {
+    const mutationOptions: UseMutationOptions<CreateLegalEntityResponse, DefaultError, Options<CreateLegalEntityData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await createLegalEntity({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Rename a legal entity
+ */
+export const updateLegalEntityMutation = (options?: Partial<Options<UpdateLegalEntityData>>): UseMutationOptions<UpdateLegalEntityResponse, DefaultError, Options<UpdateLegalEntityData>> => {
+    const mutationOptions: UseMutationOptions<UpdateLegalEntityResponse, DefaultError, Options<UpdateLegalEntityData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await updateLegalEntity({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Close a legal entity
+ */
+export const closeLegalEntityMutation = (options?: Partial<Options<CloseLegalEntityData>>): UseMutationOptions<CloseLegalEntityResponse, DefaultError, Options<CloseLegalEntityData>> => {
+    const mutationOptions: UseMutationOptions<CloseLegalEntityResponse, DefaultError, Options<CloseLegalEntityData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await closeLegalEntity({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const listOrgUnitsQueryKey = (options?: Options<ListOrgUnitsData>) => createQueryKey('listOrgUnits', options);
+
+/**
+ * The units tree as a flat list
+ *
+ * Units valid on `asOf` (default today), or every unit with `includeClosed`. Clients build the tree from parentId.
+ */
+export const listOrgUnitsOptions = (options?: Options<ListOrgUnitsData>) => queryOptions<ListOrgUnitsResponse, DefaultError, ListOrgUnitsResponse, ReturnType<typeof listOrgUnitsQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await listOrgUnits({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: listOrgUnitsQueryKey(options)
+});
+
+/**
+ * Create a unit
+ */
+export const createOrgUnitMutation = (options?: Partial<Options<CreateOrgUnitData>>): UseMutationOptions<CreateOrgUnitResponse, DefaultError, Options<CreateOrgUnitData>> => {
+    const mutationOptions: UseMutationOptions<CreateOrgUnitResponse, DefaultError, Options<CreateOrgUnitData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await createOrgUnit({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const getOrgUnitQueryKey = (options: Options<GetOrgUnitData>) => createQueryKey('getOrgUnit', options);
+
+/**
+ * A unit with its path
+ */
+export const getOrgUnitOptions = (options: Options<GetOrgUnitData>) => queryOptions<GetOrgUnitResponse, DefaultError, GetOrgUnitResponse, ReturnType<typeof getOrgUnitQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getOrgUnit({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getOrgUnitQueryKey(options)
+});
+
+/**
+ * Rename or recode a unit
+ */
+export const updateOrgUnitMutation = (options?: Partial<Options<UpdateOrgUnitData>>): UseMutationOptions<UpdateOrgUnitResponse, DefaultError, Options<UpdateOrgUnitData>> => {
+    const mutationOptions: UseMutationOptions<UpdateOrgUnitResponse, DefaultError, Options<UpdateOrgUnitData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await updateOrgUnit({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Close a unit
+ */
+export const closeOrgUnitMutation = (options?: Partial<Options<CloseOrgUnitData>>): UseMutationOptions<CloseOrgUnitResponse, DefaultError, Options<CloseOrgUnitData>> => {
+    const mutationOptions: UseMutationOptions<CloseOrgUnitResponse, DefaultError, Options<CloseOrgUnitData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await closeOrgUnit({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Move a unit, with its sub-units, under another parent
+ */
+export const moveOrgUnitMutation = (options?: Partial<Options<MoveOrgUnitData>>): UseMutationOptions<MoveOrgUnitResponse, DefaultError, Options<MoveOrgUnitData>> => {
+    const mutationOptions: UseMutationOptions<MoveOrgUnitResponse, DefaultError, Options<MoveOrgUnitData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await moveOrgUnit({
                 ...options,
                 ...fnOptions,
                 throwOnError: true

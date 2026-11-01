@@ -22,6 +22,11 @@ import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
 import com.memo.jooq.tables.NotificationMailOutbox
+import com.memo.jooq.tables.OrgAssignment
+import com.memo.jooq.tables.OrgLegalEntity
+import com.memo.jooq.tables.OrgPosition
+import com.memo.jooq.tables.OrgReportingLine
+import com.memo.jooq.tables.OrgUnit
 import com.memo.jooq.tables.SystemIdempotencyKey
 import com.memo.jooq.tables.SystemInfo
 import com.memo.jooq.tables.TenancySetting
@@ -43,6 +48,11 @@ import com.memo.jooq.tables.records.IdentityRateLimitBucketRecord
 import com.memo.jooq.tables.records.IdentityRecoveryCodeRecord
 import com.memo.jooq.tables.records.IdentityUserRecord
 import com.memo.jooq.tables.records.NotificationMailOutboxRecord
+import com.memo.jooq.tables.records.OrgAssignmentRecord
+import com.memo.jooq.tables.records.OrgLegalEntityRecord
+import com.memo.jooq.tables.records.OrgPositionRecord
+import com.memo.jooq.tables.records.OrgReportingLineRecord
+import com.memo.jooq.tables.records.OrgUnitRecord
 import com.memo.jooq.tables.records.SystemIdempotencyKeyRecord
 import com.memo.jooq.tables.records.SystemInfoRecord
 import com.memo.jooq.tables.records.TenancySettingRecord
@@ -84,6 +94,16 @@ val IDENTITY_USER_PKEY: UniqueKey<IdentityUserRecord> = Internal.createUniqueKey
 val IDENTITY_USER_TENANT_ID_ID_KEY: UniqueKey<IdentityUserRecord> = Internal.createUniqueKey(IdentityUser.IDENTITY_USER, DSL.name("identity_user_tenant_id_id_key"), arrayOf(IdentityUser.IDENTITY_USER.TENANT_ID, IdentityUser.IDENTITY_USER.ID), true)
 val NOTIFICATION_MAIL_OUTBOX_PKEY: UniqueKey<NotificationMailOutboxRecord> = Internal.createUniqueKey(NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX, DSL.name("notification_mail_outbox_pkey"), arrayOf(NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.ID), true)
 val NOTIFICATION_MAIL_OUTBOX_TENANT_ID_ID_KEY: UniqueKey<NotificationMailOutboxRecord> = Internal.createUniqueKey(NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX, DSL.name("notification_mail_outbox_tenant_id_id_key"), arrayOf(NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.TENANT_ID, NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.ID), true)
+val ORG_ASSIGNMENT_PKEY: UniqueKey<OrgAssignmentRecord> = Internal.createUniqueKey(OrgAssignment.ORG_ASSIGNMENT, DSL.name("org_assignment_pkey"), arrayOf(OrgAssignment.ORG_ASSIGNMENT.ID), true)
+val ORG_ASSIGNMENT_TENANT_ID_ID_KEY: UniqueKey<OrgAssignmentRecord> = Internal.createUniqueKey(OrgAssignment.ORG_ASSIGNMENT, DSL.name("org_assignment_tenant_id_id_key"), arrayOf(OrgAssignment.ORG_ASSIGNMENT.TENANT_ID, OrgAssignment.ORG_ASSIGNMENT.ID), true)
+val ORG_LEGAL_ENTITY_PKEY: UniqueKey<OrgLegalEntityRecord> = Internal.createUniqueKey(OrgLegalEntity.ORG_LEGAL_ENTITY, DSL.name("org_legal_entity_pkey"), arrayOf(OrgLegalEntity.ORG_LEGAL_ENTITY.ID), true)
+val ORG_LEGAL_ENTITY_TENANT_ID_ID_KEY: UniqueKey<OrgLegalEntityRecord> = Internal.createUniqueKey(OrgLegalEntity.ORG_LEGAL_ENTITY, DSL.name("org_legal_entity_tenant_id_id_key"), arrayOf(OrgLegalEntity.ORG_LEGAL_ENTITY.TENANT_ID, OrgLegalEntity.ORG_LEGAL_ENTITY.ID), true)
+val ORG_POSITION_PKEY: UniqueKey<OrgPositionRecord> = Internal.createUniqueKey(OrgPosition.ORG_POSITION, DSL.name("org_position_pkey"), arrayOf(OrgPosition.ORG_POSITION.ID), true)
+val ORG_POSITION_TENANT_ID_ID_KEY: UniqueKey<OrgPositionRecord> = Internal.createUniqueKey(OrgPosition.ORG_POSITION, DSL.name("org_position_tenant_id_id_key"), arrayOf(OrgPosition.ORG_POSITION.TENANT_ID, OrgPosition.ORG_POSITION.ID), true)
+val ORG_REPORTING_LINE_PKEY: UniqueKey<OrgReportingLineRecord> = Internal.createUniqueKey(OrgReportingLine.ORG_REPORTING_LINE, DSL.name("org_reporting_line_pkey"), arrayOf(OrgReportingLine.ORG_REPORTING_LINE.ID), true)
+val ORG_REPORTING_LINE_TENANT_ID_ID_KEY: UniqueKey<OrgReportingLineRecord> = Internal.createUniqueKey(OrgReportingLine.ORG_REPORTING_LINE, DSL.name("org_reporting_line_tenant_id_id_key"), arrayOf(OrgReportingLine.ORG_REPORTING_LINE.TENANT_ID, OrgReportingLine.ORG_REPORTING_LINE.ID), true)
+val ORG_UNIT_PKEY: UniqueKey<OrgUnitRecord> = Internal.createUniqueKey(OrgUnit.ORG_UNIT, DSL.name("org_unit_pkey"), arrayOf(OrgUnit.ORG_UNIT.ID), true)
+val ORG_UNIT_TENANT_ID_ID_KEY: UniqueKey<OrgUnitRecord> = Internal.createUniqueKey(OrgUnit.ORG_UNIT, DSL.name("org_unit_tenant_id_id_key"), arrayOf(OrgUnit.ORG_UNIT.TENANT_ID, OrgUnit.ORG_UNIT.ID), true)
 val SYSTEM_IDEMPOTENCY_KEY_PKEY: UniqueKey<SystemIdempotencyKeyRecord> = Internal.createUniqueKey(SystemIdempotencyKey.SYSTEM_IDEMPOTENCY_KEY, DSL.name("system_idempotency_key_pkey"), arrayOf(SystemIdempotencyKey.SYSTEM_IDEMPOTENCY_KEY.TENANT_ID, SystemIdempotencyKey.SYSTEM_IDEMPOTENCY_KEY.OPERATION, SystemIdempotencyKey.SYSTEM_IDEMPOTENCY_KEY.KEY), true)
 val SYSTEM_INFO_PKEY: UniqueKey<SystemInfoRecord> = Internal.createUniqueKey(SystemInfo.SYSTEM_INFO, DSL.name("system_info_pkey"), arrayOf(SystemInfo.SYSTEM_INFO.ID), true)
 val TENANCY_SETTING_PKEY: UniqueKey<TenancySettingRecord> = Internal.createUniqueKey(TenancySetting.TENANCY_SETTING, DSL.name("tenancy_setting_pkey"), arrayOf(TenancySetting.TENANCY_SETTING.ID), true)
@@ -101,4 +121,10 @@ val IDENTITY_ACTION_TOKEN__IDENTITY_ACTION_TOKEN_TENANT_ID_USER_ID_FKEY: Foreign
 val IDENTITY_HTTP_SESSION_ATTRIBUTES__IDENTITY_HTTP_SESSION_ATTRIBUTES_SESSION_PRIMARY_ID_FKEY: ForeignKey<IdentityHttpSessionAttributesRecord, IdentityHttpSessionRecord> = Internal.createForeignKey(IdentityHttpSessionAttributes.IDENTITY_HTTP_SESSION_ATTRIBUTES, DSL.name("identity_http_session_attributes_session_primary_id_fkey"), arrayOf(IdentityHttpSessionAttributes.IDENTITY_HTTP_SESSION_ATTRIBUTES.SESSION_PRIMARY_ID), com.memo.jooq.keys.IDENTITY_HTTP_SESSION_PKEY, arrayOf(IdentityHttpSession.IDENTITY_HTTP_SESSION.PRIMARY_ID), true, ForeignKeyRule.CASCADE, ForeignKeyRule.NO_ACTION)
 val IDENTITY_MFA__IDENTITY_MFA_TENANT_ID_USER_ID_FKEY: ForeignKey<IdentityMfaRecord, IdentityUserRecord> = Internal.createForeignKey(IdentityMfa.IDENTITY_MFA, DSL.name("identity_mfa_tenant_id_user_id_fkey"), arrayOf(IdentityMfa.IDENTITY_MFA.TENANT_ID, IdentityMfa.IDENTITY_MFA.USER_ID), com.memo.jooq.keys.IDENTITY_USER_TENANT_ID_ID_KEY, arrayOf(IdentityUser.IDENTITY_USER.TENANT_ID, IdentityUser.IDENTITY_USER.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val IDENTITY_RECOVERY_CODE__IDENTITY_RECOVERY_CODE_TENANT_ID_USER_ID_FKEY: ForeignKey<IdentityRecoveryCodeRecord, IdentityUserRecord> = Internal.createForeignKey(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE, DSL.name("identity_recovery_code_tenant_id_user_id_fkey"), arrayOf(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.TENANT_ID, IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.USER_ID), com.memo.jooq.keys.IDENTITY_USER_TENANT_ID_ID_KEY, arrayOf(IdentityUser.IDENTITY_USER.TENANT_ID, IdentityUser.IDENTITY_USER.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
+val ORG_ASSIGNMENT__ORG_ASSIGNMENT_TENANT_ID_POSITION_ID_FKEY: ForeignKey<OrgAssignmentRecord, OrgPositionRecord> = Internal.createForeignKey(OrgAssignment.ORG_ASSIGNMENT, DSL.name("org_assignment_tenant_id_position_id_fkey"), arrayOf(OrgAssignment.ORG_ASSIGNMENT.TENANT_ID, OrgAssignment.ORG_ASSIGNMENT.POSITION_ID), com.memo.jooq.keys.ORG_POSITION_TENANT_ID_ID_KEY, arrayOf(OrgPosition.ORG_POSITION.TENANT_ID, OrgPosition.ORG_POSITION.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
+val ORG_POSITION__ORG_POSITION_TENANT_ID_UNIT_ID_FKEY: ForeignKey<OrgPositionRecord, OrgUnitRecord> = Internal.createForeignKey(OrgPosition.ORG_POSITION, DSL.name("org_position_tenant_id_unit_id_fkey"), arrayOf(OrgPosition.ORG_POSITION.TENANT_ID, OrgPosition.ORG_POSITION.UNIT_ID), com.memo.jooq.keys.ORG_UNIT_TENANT_ID_ID_KEY, arrayOf(OrgUnit.ORG_UNIT.TENANT_ID, OrgUnit.ORG_UNIT.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
+val ORG_REPORTING_LINE__ORG_REPORTING_LINE_TENANT_ID_POSITION_ID_FKEY: ForeignKey<OrgReportingLineRecord, OrgPositionRecord> = Internal.createForeignKey(OrgReportingLine.ORG_REPORTING_LINE, DSL.name("org_reporting_line_tenant_id_position_id_fkey"), arrayOf(OrgReportingLine.ORG_REPORTING_LINE.TENANT_ID, OrgReportingLine.ORG_REPORTING_LINE.POSITION_ID), com.memo.jooq.keys.ORG_POSITION_TENANT_ID_ID_KEY, arrayOf(OrgPosition.ORG_POSITION.TENANT_ID, OrgPosition.ORG_POSITION.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
+val ORG_REPORTING_LINE__ORG_REPORTING_LINE_TENANT_ID_REPORTS_TO_POSITION_ID_FKEY: ForeignKey<OrgReportingLineRecord, OrgPositionRecord> = Internal.createForeignKey(OrgReportingLine.ORG_REPORTING_LINE, DSL.name("org_reporting_line_tenant_id_reports_to_position_id_fkey"), arrayOf(OrgReportingLine.ORG_REPORTING_LINE.TENANT_ID, OrgReportingLine.ORG_REPORTING_LINE.REPORTS_TO_POSITION_ID), com.memo.jooq.keys.ORG_POSITION_TENANT_ID_ID_KEY, arrayOf(OrgPosition.ORG_POSITION.TENANT_ID, OrgPosition.ORG_POSITION.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
+val ORG_UNIT__ORG_UNIT_TENANT_ID_LEGAL_ENTITY_ID_FKEY: ForeignKey<OrgUnitRecord, OrgLegalEntityRecord> = Internal.createForeignKey(OrgUnit.ORG_UNIT, DSL.name("org_unit_tenant_id_legal_entity_id_fkey"), arrayOf(OrgUnit.ORG_UNIT.TENANT_ID, OrgUnit.ORG_UNIT.LEGAL_ENTITY_ID), com.memo.jooq.keys.ORG_LEGAL_ENTITY_TENANT_ID_ID_KEY, arrayOf(OrgLegalEntity.ORG_LEGAL_ENTITY.TENANT_ID, OrgLegalEntity.ORG_LEGAL_ENTITY.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
+val ORG_UNIT__ORG_UNIT_TENANT_ID_PARENT_ID_FKEY: ForeignKey<OrgUnitRecord, OrgUnitRecord> = Internal.createForeignKey(OrgUnit.ORG_UNIT, DSL.name("org_unit_tenant_id_parent_id_fkey"), arrayOf(OrgUnit.ORG_UNIT.TENANT_ID, OrgUnit.ORG_UNIT.PARENT_ID), com.memo.jooq.keys.ORG_UNIT_TENANT_ID_ID_KEY, arrayOf(OrgUnit.ORG_UNIT.TENANT_ID, OrgUnit.ORG_UNIT.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val TENANCY_SETTING__TENANCY_SETTING_TENANT_ID_FKEY: ForeignKey<TenancySettingRecord, TenancyTenantRecord> = Internal.createForeignKey(TenancySetting.TENANCY_SETTING, DSL.name("tenancy_setting_tenant_id_fkey"), arrayOf(TenancySetting.TENANCY_SETTING.TENANT_ID), com.memo.jooq.keys.TENANCY_TENANT_PKEY, arrayOf(TenancyTenant.TENANCY_TENANT.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)

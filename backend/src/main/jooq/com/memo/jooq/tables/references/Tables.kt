@@ -22,6 +22,11 @@ import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
 import com.memo.jooq.tables.NotificationMailOutbox
+import com.memo.jooq.tables.OrgAssignment
+import com.memo.jooq.tables.OrgLegalEntity
+import com.memo.jooq.tables.OrgPosition
+import com.memo.jooq.tables.OrgReportingLine
+import com.memo.jooq.tables.OrgUnit
 import com.memo.jooq.tables.SystemIdempotencyKey
 import com.memo.jooq.tables.SystemInfo
 import com.memo.jooq.tables.TenancySetting
@@ -114,6 +119,31 @@ val IDENTITY_USER: IdentityUser = IdentityUser.IDENTITY_USER
  * The table <code>memo.notification_mail_outbox</code>.
  */
 val NOTIFICATION_MAIL_OUTBOX: NotificationMailOutbox = NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX
+
+/**
+ * The table <code>memo.org_assignment</code>.
+ */
+val ORG_ASSIGNMENT: OrgAssignment = OrgAssignment.ORG_ASSIGNMENT
+
+/**
+ * The table <code>memo.org_legal_entity</code>.
+ */
+val ORG_LEGAL_ENTITY: OrgLegalEntity = OrgLegalEntity.ORG_LEGAL_ENTITY
+
+/**
+ * The table <code>memo.org_position</code>.
+ */
+val ORG_POSITION: OrgPosition = OrgPosition.ORG_POSITION
+
+/**
+ * The table <code>memo.org_reporting_line</code>.
+ */
+val ORG_REPORTING_LINE: OrgReportingLine = OrgReportingLine.ORG_REPORTING_LINE
+
+/**
+ * The table <code>memo.org_unit</code>.
+ */
+val ORG_UNIT: OrgUnit = OrgUnit.ORG_UNIT
 
 /**
  * The table <code>memo.system_idempotency_key</code>.

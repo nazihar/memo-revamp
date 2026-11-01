@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AcceptInvitationData, AcceptInvitationErrors, AcceptInvitationResponses, ChangeMyPasswordData, ChangeMyPasswordErrors, ChangeMyPasswordResponses, CompletePasswordResetData, CompletePasswordResetErrors, CompletePasswordResetResponses, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentErrors, ConfirmMfaEnrolmentResponses, DeactivateUserData, DeactivateUserResponses, GetCsrfTokenData, GetCsrfTokenResponses, GetHealthData, GetHealthErrors, GetHealthResponses, GetMeData, GetMeResponses, GetMyAccessData, GetMyAccessResponses, GetSessionData, GetSessionResponses, InviteUserData, InviteUserErrors, InviteUserResponses, ListMySessionsData, ListMySessionsResponses, ListUsersData, ListUsersResponses, LoginData, LoginErrors, LoginResponses, LogoutData, LogoutResponses, LookUpInvitationData, LookUpInvitationErrors, LookUpInvitationResponses, ReactivateUserData, ReactivateUserResponses, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesErrors, RegenerateMyRecoveryCodesResponses, RequestPasswordResetData, RequestPasswordResetResponses, ResetUserMfaData, ResetUserMfaResponses, RevokeMySessionData, RevokeMySessionErrors, RevokeMySessionResponses, RevokeUserSessionsData, RevokeUserSessionsResponses, StartMfaEnrolmentData, StartMfaEnrolmentErrors, StartMfaEnrolmentResponses, StepUpData, StepUpErrors, StepUpResponses, UnlockUserData, UnlockUserResponses, VerifyMfaData, VerifyMfaErrors, VerifyMfaResponses } from './types.gen';
+import type { AcceptInvitationData, AcceptInvitationErrors, AcceptInvitationResponses, ChangeMyPasswordData, ChangeMyPasswordErrors, ChangeMyPasswordResponses, CloseLegalEntityData, CloseLegalEntityResponses, CloseOrgUnitData, CloseOrgUnitResponses, CompletePasswordResetData, CompletePasswordResetErrors, CompletePasswordResetResponses, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentErrors, ConfirmMfaEnrolmentResponses, CreateLegalEntityData, CreateLegalEntityResponses, CreateOrgUnitData, CreateOrgUnitResponses, DeactivateUserData, DeactivateUserResponses, GetCsrfTokenData, GetCsrfTokenResponses, GetHealthData, GetHealthErrors, GetHealthResponses, GetMeData, GetMeResponses, GetMyAccessData, GetMyAccessResponses, GetOrgUnitData, GetOrgUnitResponses, GetSessionData, GetSessionResponses, InviteUserData, InviteUserErrors, InviteUserResponses, ListLegalEntitiesData, ListLegalEntitiesResponses, ListMySessionsData, ListMySessionsResponses, ListOrgUnitsData, ListOrgUnitsResponses, ListUsersData, ListUsersResponses, LoginData, LoginErrors, LoginResponses, LogoutData, LogoutResponses, LookUpInvitationData, LookUpInvitationErrors, LookUpInvitationResponses, MoveOrgUnitData, MoveOrgUnitResponses, ReactivateUserData, ReactivateUserResponses, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesErrors, RegenerateMyRecoveryCodesResponses, RequestPasswordResetData, RequestPasswordResetResponses, ResetUserMfaData, ResetUserMfaResponses, RevokeMySessionData, RevokeMySessionErrors, RevokeMySessionResponses, RevokeUserSessionsData, RevokeUserSessionsResponses, StartMfaEnrolmentData, StartMfaEnrolmentErrors, StartMfaEnrolmentResponses, StepUpData, StepUpErrors, StepUpResponses, UnlockUserData, UnlockUserResponses, UpdateLegalEntityData, UpdateLegalEntityResponses, UpdateOrgUnitData, UpdateOrgUnitResponses, VerifyMfaData, VerifyMfaErrors, VerifyMfaResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -255,3 +255,104 @@ export const listMySessions = <ThrowOnError extends boolean = false>(options?: O
  * Sign out one of my sessions
  */
 export const revokeMySession = <ThrowOnError extends boolean = false>(options: Options<RevokeMySessionData, ThrowOnError>): RequestResult<RevokeMySessionResponses, RevokeMySessionErrors, ThrowOnError> => (options.client ?? client).delete<RevokeMySessionResponses, RevokeMySessionErrors, ThrowOnError>({ url: '/api/v1/me/sessions/{id}', ...options });
+
+/**
+ * Legal entities
+ */
+export const listLegalEntities = <ThrowOnError extends boolean = false>(options?: Options<ListLegalEntitiesData, ThrowOnError>): RequestResult<ListLegalEntitiesResponses, unknown, ThrowOnError> => (options?.client ?? client).get<ListLegalEntitiesResponses, unknown, ThrowOnError>({ url: '/api/v1/org/legal-entities', ...options });
+
+/**
+ * Create a legal entity
+ */
+export const createLegalEntity = <ThrowOnError extends boolean = false>(options: Options<CreateLegalEntityData, ThrowOnError>): RequestResult<CreateLegalEntityResponses, unknown, ThrowOnError> => (options.client ?? client).post<CreateLegalEntityResponses, unknown, ThrowOnError>({
+    url: '/api/v1/org/legal-entities',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Rename a legal entity
+ */
+export const updateLegalEntity = <ThrowOnError extends boolean = false>(options: Options<UpdateLegalEntityData, ThrowOnError>): RequestResult<UpdateLegalEntityResponses, unknown, ThrowOnError> => (options.client ?? client).put<UpdateLegalEntityResponses, unknown, ThrowOnError>({
+    url: '/api/v1/org/legal-entities/{id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Close a legal entity
+ */
+export const closeLegalEntity = <ThrowOnError extends boolean = false>(options: Options<CloseLegalEntityData, ThrowOnError>): RequestResult<CloseLegalEntityResponses, unknown, ThrowOnError> => (options.client ?? client).post<CloseLegalEntityResponses, unknown, ThrowOnError>({
+    url: '/api/v1/org/legal-entities/{id}/close',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * The units tree as a flat list
+ *
+ * Units valid on `asOf` (default today), or every unit with `includeClosed`. Clients build the tree from parentId.
+ */
+export const listOrgUnits = <ThrowOnError extends boolean = false>(options?: Options<ListOrgUnitsData, ThrowOnError>): RequestResult<ListOrgUnitsResponses, unknown, ThrowOnError> => (options?.client ?? client).get<ListOrgUnitsResponses, unknown, ThrowOnError>({ url: '/api/v1/org/units', ...options });
+
+/**
+ * Create a unit
+ */
+export const createOrgUnit = <ThrowOnError extends boolean = false>(options: Options<CreateOrgUnitData, ThrowOnError>): RequestResult<CreateOrgUnitResponses, unknown, ThrowOnError> => (options.client ?? client).post<CreateOrgUnitResponses, unknown, ThrowOnError>({
+    url: '/api/v1/org/units',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * A unit with its path
+ */
+export const getOrgUnit = <ThrowOnError extends boolean = false>(options: Options<GetOrgUnitData, ThrowOnError>): RequestResult<GetOrgUnitResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetOrgUnitResponses, unknown, ThrowOnError>({ url: '/api/v1/org/units/{id}', ...options });
+
+/**
+ * Rename or recode a unit
+ */
+export const updateOrgUnit = <ThrowOnError extends boolean = false>(options: Options<UpdateOrgUnitData, ThrowOnError>): RequestResult<UpdateOrgUnitResponses, unknown, ThrowOnError> => (options.client ?? client).put<UpdateOrgUnitResponses, unknown, ThrowOnError>({
+    url: '/api/v1/org/units/{id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Close a unit
+ */
+export const closeOrgUnit = <ThrowOnError extends boolean = false>(options: Options<CloseOrgUnitData, ThrowOnError>): RequestResult<CloseOrgUnitResponses, unknown, ThrowOnError> => (options.client ?? client).post<CloseOrgUnitResponses, unknown, ThrowOnError>({
+    url: '/api/v1/org/units/{id}/close',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Move a unit, with its sub-units, under another parent
+ */
+export const moveOrgUnit = <ThrowOnError extends boolean = false>(options: Options<MoveOrgUnitData, ThrowOnError>): RequestResult<MoveOrgUnitResponses, unknown, ThrowOnError> => (options.client ?? client).post<MoveOrgUnitResponses, unknown, ThrowOnError>({
+    url: '/api/v1/org/units/{id}/move',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});

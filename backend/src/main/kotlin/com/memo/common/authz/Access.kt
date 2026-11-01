@@ -39,10 +39,14 @@ annotation class RequiresPermission(
  * and the demo seeder do not depend on it. Calls run inside a tenant transaction.
  */
 interface AccessAdministration {
-    /** Grants [role] tenant-wide to [user] unless they already hold it. */
+    /**
+     * Grants [role] to [user] unless they already hold it: tenant-wide, or for the subtree of [scopeUnit], where the grant
+     * confers only the role's scopable permissions.
+     */
     fun grantBuiltIn(
         user: UUID,
         role: BuiltInRole,
+        scopeUnit: UUID? = null,
     )
 
     /** Which of [users] hold a tenant-wide [BuiltInRole.TENANT_ADMIN] grant. */

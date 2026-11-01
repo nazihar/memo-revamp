@@ -26,6 +26,12 @@ export type AdminUserPage = {
     nextCursor?: string | null;
 };
 
+export type AssignRequest = {
+    userId: string;
+    validFrom: string;
+    validTo?: string | null;
+};
+
 export type ChangePasswordRequest = {
     currentPassword: string;
     newPassword: string;
@@ -198,6 +204,99 @@ export type MySession = {
     userAgent?: string | null;
 };
 
+export type OrgAssignment = {
+    id: string;
+    person: OrgPerson;
+    positionId: string;
+    status: 'ACTIVE' | 'CANCELLED';
+    validFrom: string;
+    validTo?: string | null;
+    /**
+     * Send as If-Match on updates
+     */
+    version: number;
+};
+
+export type OrgHistoryEntry = {
+    action: string;
+    /**
+     * Display name of the person who made the change; absent for the system
+     */
+    actor?: string | null;
+    after?: {
+        [key: string]: unknown;
+    } | null;
+    before?: {
+        [key: string]: unknown;
+    } | null;
+    occurredAt: string;
+};
+
+export type OrgPerson = {
+    displayName: string;
+    email: string;
+    id: string;
+};
+
+export type OrgPosition = {
+    code?: string | null;
+    /**
+     * Head of its unit
+     */
+    head: boolean;
+    id: string;
+    title: string;
+    unitId: string;
+    validFrom: string;
+    validTo?: string | null;
+    /**
+     * Send as If-Match on updates
+     */
+    version: number;
+};
+
+export type OrgPositionDetail = {
+    /**
+     * Newest first, cancelled ones included
+     */
+    assignments: Array<OrgAssignment>;
+    /**
+     * Whether the signed-in user may change it
+     */
+    canManage: boolean;
+    position: OrgPosition;
+    /**
+     * Newest first, cancelled ones included
+     */
+    reportingLines: Array<OrgReportingLine>;
+    unit: OrgUnit;
+};
+
+export type OrgPositionWithHolder = {
+    /**
+     * Holder on the requested date; absent when vacant
+     */
+    holder?: OrgPerson | null;
+    /**
+     * Start of the holder's assignment
+     */
+    holderSince?: string | null;
+    position: OrgPosition;
+};
+
+export type OrgReportingLine = {
+    id: string;
+    positionId: string;
+    reportsTo: OrgPosition;
+    status: 'ACTIVE' | 'CANCELLED';
+    validFrom: string;
+    validTo?: string | null;
+    /**
+     * Send as If-Match on updates
+     */
+    version: number;
+};
+
 export type OrgUnit = {
     code: string;
     id: string;
@@ -236,6 +335,28 @@ export type PasswordResetRequest = {
     email: string;
 };
 
+export type PeriodRequest = {
+    validFrom: string;
+    /**
+     * First day it no longer applies; absent for open-ended
+     */
+    validTo?: string | null;
+};
+
+export type PositionRequest = {
+    code?: string | null;
+    head: boolean;
+    title: string;
+    /**
+     * Creation only
+     */
+    unitId?: string | null;
+    /**
+     * Creation only; defaults to today
+     */
+    validFrom?: string | null;
+};
+
 export type ProblemDetail = {
     detail?: string;
     instance?: string;
@@ -252,6 +373,12 @@ export type RecoveryCodes = {
      * Shown once; the previous codes stop working
      */
     recoveryCodes: Array<string>;
+};
+
+export type ReportingLineRequest = {
+    reportsToPositionId: string;
+    validFrom: string;
+    validTo?: string | null;
 };
 
 /**
@@ -857,6 +984,69 @@ export type RevokeMySessionResponses = {
 
 export type RevokeMySessionResponse = RevokeMySessionResponses[keyof RevokeMySessionResponses];
 
+export type UpdateAssignmentData = {
+    body: PeriodRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/assignments/{id}';
+};
+
+export type UpdateAssignmentResponses = {
+    /**
+     * OK
+     */
+    200: OrgAssignment;
+};
+
+export type UpdateAssignmentResponse = UpdateAssignmentResponses[keyof UpdateAssignmentResponses];
+
+export type CancelAssignmentData = {
+    body?: never;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/assignments/{id}/cancel';
+};
+
+export type CancelAssignmentResponses = {
+    /**
+     * OK
+     */
+    200: OrgAssignment;
+};
+
+export type CancelAssignmentResponse = CancelAssignmentResponses[keyof CancelAssignmentResponses];
+
+export type GetOrgHistoryData = {
+    body?: never;
+    path: {
+        type: string;
+        id: string;
+    };
+    query?: {
+        limit?: number;
+    };
+    url: '/api/v1/org/history/{type}/{id}';
+};
+
+export type GetOrgHistoryResponses = {
+    /**
+     * OK
+     */
+    200: Array<OrgHistoryEntry>;
+};
+
+export type GetOrgHistoryResponse = GetOrgHistoryResponses[keyof GetOrgHistoryResponses];
+
 export type ListLegalEntitiesData = {
     body?: never;
     path?: never;
@@ -933,6 +1123,189 @@ export type CloseLegalEntityResponses = {
 };
 
 export type CloseLegalEntityResponse = CloseLegalEntityResponses[keyof CloseLegalEntityResponses];
+
+export type CreatePositionData = {
+    body: PositionRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/v1/org/positions';
+};
+
+export type CreatePositionResponses = {
+    /**
+     * OK
+     */
+    200: OrgPosition;
+};
+
+export type CreatePositionResponse = CreatePositionResponses[keyof CreatePositionResponses];
+
+export type GetPositionData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/positions/{id}';
+};
+
+export type GetPositionResponses = {
+    /**
+     * OK
+     */
+    200: OrgPositionDetail;
+};
+
+export type GetPositionResponse = GetPositionResponses[keyof GetPositionResponses];
+
+export type UpdatePositionData = {
+    body: PositionRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/positions/{id}';
+};
+
+export type UpdatePositionResponses = {
+    /**
+     * OK
+     */
+    200: OrgPosition;
+};
+
+export type UpdatePositionResponse = UpdatePositionResponses[keyof UpdatePositionResponses];
+
+export type AssignPositionData = {
+    body: AssignRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/positions/{id}/assignments';
+};
+
+export type AssignPositionResponses = {
+    /**
+     * OK
+     */
+    200: OrgAssignment;
+};
+
+export type AssignPositionResponse = AssignPositionResponses[keyof AssignPositionResponses];
+
+export type ClosePositionData = {
+    body: CloseRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/positions/{id}/close';
+};
+
+export type ClosePositionResponses = {
+    /**
+     * OK
+     */
+    200: OrgPosition;
+};
+
+export type ClosePositionResponse = ClosePositionResponses[keyof ClosePositionResponses];
+
+export type GetPositionHolderData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: {
+        date?: string;
+    };
+    url: '/api/v1/org/positions/{id}/holder';
+};
+
+export type GetPositionHolderResponses = {
+    /**
+     * OK
+     */
+    200: OrgAssignment;
+};
+
+export type GetPositionHolderResponse = GetPositionHolderResponses[keyof GetPositionHolderResponses];
+
+export type CreateReportingLineData = {
+    body: ReportingLineRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/positions/{id}/reporting-lines';
+};
+
+export type CreateReportingLineResponses = {
+    /**
+     * OK
+     */
+    200: OrgReportingLine;
+};
+
+export type CreateReportingLineResponse = CreateReportingLineResponses[keyof CreateReportingLineResponses];
+
+export type UpdateReportingLineData = {
+    body: PeriodRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/reporting-lines/{id}';
+};
+
+export type UpdateReportingLineResponses = {
+    /**
+     * OK
+     */
+    200: OrgReportingLine;
+};
+
+export type UpdateReportingLineResponse = UpdateReportingLineResponses[keyof UpdateReportingLineResponses];
+
+export type CancelReportingLineData = {
+    body?: never;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/reporting-lines/{id}/cancel';
+};
+
+export type CancelReportingLineResponses = {
+    /**
+     * OK
+     */
+    200: OrgReportingLine;
+};
+
+export type CancelReportingLineResponse = CancelReportingLineResponses[keyof CancelReportingLineResponses];
 
 export type ListOrgUnitsData = {
     body?: never;
@@ -1055,3 +1428,41 @@ export type MoveOrgUnitResponses = {
 };
 
 export type MoveOrgUnitResponse = MoveOrgUnitResponses[keyof MoveOrgUnitResponses];
+
+export type ListUnitPositionsData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: {
+        asOf?: string;
+    };
+    url: '/api/v1/org/units/{id}/positions';
+};
+
+export type ListUnitPositionsResponses = {
+    /**
+     * OK
+     */
+    200: Array<OrgPositionWithHolder>;
+};
+
+export type ListUnitPositionsResponse = ListUnitPositionsResponses[keyof ListUnitPositionsResponses];
+
+export type ListUserAssignmentsData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/users/{id}/assignments';
+};
+
+export type ListUserAssignmentsResponses = {
+    /**
+     * OK
+     */
+    200: Array<OrgAssignment>;
+};
+
+export type ListUserAssignmentsResponse = ListUserAssignmentsResponses[keyof ListUserAssignmentsResponses];

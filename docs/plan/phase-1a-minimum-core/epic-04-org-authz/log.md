@@ -25,3 +25,10 @@
   - A scoped grant confers only the role's scopable permissions (so `org_admin` can be scoped although `directory.read` is not scopable; the reader permission comes from the implicit user role). Design §2 said such roles could not be scoped at all.
   - The org tree is cached per tenant (`org.tree`) and evicted at commit of every unit change; the policy reads unit scope from it.
   - `RefusedException` (409 with `reason`) and `ifMatchVersion`/`etagOf` moved to `common.web` for every module.
+- T4 done (positions, assignments, reporting lines, history):
+  - Assignments lock the position row (`FOR UPDATE`) and the user (advisory lock), then check overlaps per position (`OVERLAP`) and per user (`USER_OVERLAP`); the concurrency test assigns one seat from two threads and gets exactly one winner. Dates must lie within the position's (`DATES`); a cancelled record cannot change (`CANCELLED`).
+  - INVITED users can be assigned as well as ACTIVE ones (an administrator invites, then places the person); the design said ACTIVE only.
+  - Deactivation: identity publishes `UserDeactivated` in its transaction; org listens synchronously, ends running assignments today and cancels future ones, audited as part of the administrator's action (the design said actor `System`; the actor is the administrator who deactivated).
+  - Reporting lines: one per position at a time; the cycle check is conservative (all active lines overlapping the new period) and serialised per tenant by an advisory lock.
+  - History reads the audit trail through a new public `AuditTrail.history(objectType, objectId)` (audit module), allowed with `audit.read` or `org.manage` on the object; the endpoint is `@SignedIn` and the object decides.
+  - Identity got `UserSummaries` (batch names for holders and the picker) so org views make one query per screen.

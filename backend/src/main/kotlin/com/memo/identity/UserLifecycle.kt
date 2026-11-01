@@ -13,6 +13,7 @@ import com.memo.notification.Mail
 import com.memo.notification.MailTemplate
 import com.memo.tenancy.TenantRegistry
 import org.jooq.impl.DSL
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import java.time.Clock
 import java.time.OffsetDateTime
@@ -41,6 +42,7 @@ class UserLifecycle(
     private val audit: AuditLog,
     private val clock: Clock,
     private val access: AccessAdministration,
+    private val events: ApplicationEventPublisher,
 ) {
     /** Not oneself, and never the last active tenant admin (threat model E2). Open links stop working. */
     fun deactivate(
@@ -63,6 +65,8 @@ class UserLifecycle(
             mapOf("status" to target.status.name),
             mapOf("status" to "DEACTIVATED"),
         )
+        // Synchronous listeners (org: open assignments end) run in this transaction.
+        events.publishEvent(UserDeactivated(tenantDsl.tenant().value, id.value))
         return updated
     }
 

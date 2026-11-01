@@ -71,3 +71,103 @@ data class CloseRequest(
 fun LegalEntity.toResponse() = LegalEntityResponse(id, name, shortName, registrationNumber, validFrom, validTo, version)
 
 fun OrgUnit.toResponse() = OrgUnitResponse(id, legalEntityId, parentId, code, name, validFrom, validTo, version)
+
+@Schema(name = "OrgPosition")
+data class PositionResponse(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val id: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val unitId: UUID,
+    val code: String? = null,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val title: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED, description = "Head of its unit") val head: Boolean,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val validFrom: LocalDate,
+    val validTo: LocalDate? = null,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED, description = "Send as If-Match on updates") val version: Long,
+)
+
+@Schema(name = "OrgPerson")
+data class PersonResponse(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val id: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val displayName: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val email: String,
+)
+
+@Schema(name = "OrgPositionWithHolder")
+data class PositionWithHolderResponse(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val position: PositionResponse,
+    @field:Schema(description = "Holder on the requested date; absent when vacant") val holder: PersonResponse? = null,
+    @field:Schema(description = "Start of the holder's assignment") val holderSince: LocalDate? = null,
+)
+
+@Schema(name = "OrgAssignment")
+data class AssignmentResponse(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val id: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val positionId: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val person: PersonResponse,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val validFrom: LocalDate,
+    val validTo: LocalDate? = null,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val status: RecordStatus,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED, description = "Send as If-Match on updates") val version: Long,
+)
+
+@Schema(name = "OrgReportingLine")
+data class ReportingLineResponse(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val id: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val positionId: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val reportsTo: PositionResponse,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val validFrom: LocalDate,
+    val validTo: LocalDate? = null,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val status: RecordStatus,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED, description = "Send as If-Match on updates") val version: Long,
+)
+
+@Schema(name = "OrgPositionDetail")
+data class PositionDetailResponse(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val position: PositionResponse,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val unit: OrgUnitResponse,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED, description = "Newest first, cancelled ones included")
+    val assignments: List<AssignmentResponse>,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED, description = "Newest first, cancelled ones included")
+    val reportingLines: List<ReportingLineResponse>,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED, description = "Whether the signed-in user may change it")
+    val canManage: Boolean,
+)
+
+@Schema(name = "PositionRequest")
+data class PositionRequest(
+    @field:Schema(description = "Creation only") val unitId: UUID? = null,
+    @field:Schema(maxLength = 30) val code: String? = null,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED, maxLength = 200) val title: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val head: Boolean = false,
+    @field:Schema(description = "Creation only; defaults to today") val validFrom: LocalDate? = null,
+)
+
+@Schema(name = "PeriodRequest")
+data class PeriodRequest(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val validFrom: LocalDate,
+    @field:Schema(description = "First day it no longer applies; absent for open-ended") val validTo: LocalDate? = null,
+)
+
+@Schema(name = "AssignRequest")
+data class AssignRequest(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val userId: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val validFrom: LocalDate,
+    val validTo: LocalDate? = null,
+)
+
+@Schema(name = "ReportingLineRequest")
+data class ReportingLineRequest(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val reportsToPositionId: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val validFrom: LocalDate,
+    val validTo: LocalDate? = null,
+)
+
+@Schema(name = "OrgHistoryEntry")
+data class HistoryEntryResponse(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val occurredAt: java.time.Instant,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED, example = "org.unit.moved") val action: String,
+    @field:Schema(description = "Display name of the person who made the change; absent for the system") val actor: String? = null,
+    val before: Map<String, Any?>? = null,
+    val after: Map<String, Any?>? = null,
+)
+
+fun OrgPosition.toResponse() = PositionResponse(id, unitId, code, title, head, validFrom, validTo, version)

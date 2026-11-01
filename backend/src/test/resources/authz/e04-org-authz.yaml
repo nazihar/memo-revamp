@@ -13,3 +13,19 @@ endpoints:
   - { endpoint: "PUT /api/v1/org/units/{id}", rule: tenantAdmin }
   - { endpoint: "POST /api/v1/org/units/{id}/move", rule: tenantAdmin }
   - { endpoint: "POST /api/v1/org/units/{id}/close", rule: tenantAdmin }
+  # Positions, assignments, reporting lines and history (T4); scoped and attribute cases in AssignmentsIT/OrgUnitsIT.
+  - { endpoint: "GET /api/v1/org/units/{id}/positions", rule: signedIn }
+  - { endpoint: "GET /api/v1/org/positions/{id}", rule: signedIn }
+  - { endpoint: POST /api/v1/org/positions, rule: tenantAdmin }
+  - { endpoint: "PUT /api/v1/org/positions/{id}", rule: tenantAdmin }
+  - { endpoint: "POST /api/v1/org/positions/{id}/close", rule: tenantAdmin }
+  - { endpoint: "POST /api/v1/org/positions/{id}/assignments", rule: tenantAdmin }
+  - { endpoint: "PUT /api/v1/org/assignments/{id}", rule: tenantAdmin }
+  - { endpoint: "POST /api/v1/org/assignments/{id}/cancel", rule: tenantAdmin }
+  - { endpoint: "GET /api/v1/org/positions/{id}/holder", rule: signedIn }
+  - { endpoint: "GET /api/v1/org/users/{id}/assignments", rule: signedIn }
+  - { endpoint: "POST /api/v1/org/positions/{id}/reporting-lines", rule: tenantAdmin }
+  - { endpoint: "PUT /api/v1/org/reporting-lines/{id}", rule: tenantAdmin }
+  - { endpoint: "POST /api/v1/org/reporting-lines/{id}/cancel", rule: tenantAdmin }
+  # Any signed-in user may ask; the object decides (audit.read or org.manage on it). Random ids are 404 for everyone.
+  - { endpoint: "GET /api/v1/org/history/{type}/{id}", rule: signedIn }

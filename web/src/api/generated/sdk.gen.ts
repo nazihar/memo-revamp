@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AcceptInvitationData, AcceptInvitationErrors, AcceptInvitationResponses, ChangeMyPasswordData, ChangeMyPasswordErrors, ChangeMyPasswordResponses, CloseLegalEntityData, CloseLegalEntityResponses, CloseOrgUnitData, CloseOrgUnitResponses, CompletePasswordResetData, CompletePasswordResetErrors, CompletePasswordResetResponses, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentErrors, ConfirmMfaEnrolmentResponses, CreateLegalEntityData, CreateLegalEntityResponses, CreateOrgUnitData, CreateOrgUnitResponses, DeactivateUserData, DeactivateUserResponses, GetCsrfTokenData, GetCsrfTokenResponses, GetHealthData, GetHealthErrors, GetHealthResponses, GetMeData, GetMeResponses, GetMyAccessData, GetMyAccessResponses, GetOrgUnitData, GetOrgUnitResponses, GetSessionData, GetSessionResponses, InviteUserData, InviteUserErrors, InviteUserResponses, ListLegalEntitiesData, ListLegalEntitiesResponses, ListMySessionsData, ListMySessionsResponses, ListOrgUnitsData, ListOrgUnitsResponses, ListUsersData, ListUsersResponses, LoginData, LoginErrors, LoginResponses, LogoutData, LogoutResponses, LookUpInvitationData, LookUpInvitationErrors, LookUpInvitationResponses, MoveOrgUnitData, MoveOrgUnitResponses, ReactivateUserData, ReactivateUserResponses, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesErrors, RegenerateMyRecoveryCodesResponses, RequestPasswordResetData, RequestPasswordResetResponses, ResetUserMfaData, ResetUserMfaResponses, RevokeMySessionData, RevokeMySessionErrors, RevokeMySessionResponses, RevokeUserSessionsData, RevokeUserSessionsResponses, StartMfaEnrolmentData, StartMfaEnrolmentErrors, StartMfaEnrolmentResponses, StepUpData, StepUpErrors, StepUpResponses, UnlockUserData, UnlockUserResponses, UpdateLegalEntityData, UpdateLegalEntityResponses, UpdateOrgUnitData, UpdateOrgUnitResponses, VerifyMfaData, VerifyMfaErrors, VerifyMfaResponses } from './types.gen';
+import type { AcceptInvitationData, AcceptInvitationErrors, AcceptInvitationResponses, AssignPositionData, AssignPositionResponses, CancelAssignmentData, CancelAssignmentResponses, CancelReportingLineData, CancelReportingLineResponses, ChangeMyPasswordData, ChangeMyPasswordErrors, ChangeMyPasswordResponses, CloseLegalEntityData, CloseLegalEntityResponses, CloseOrgUnitData, CloseOrgUnitResponses, ClosePositionData, ClosePositionResponses, CompletePasswordResetData, CompletePasswordResetErrors, CompletePasswordResetResponses, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentErrors, ConfirmMfaEnrolmentResponses, CreateLegalEntityData, CreateLegalEntityResponses, CreateOrgUnitData, CreateOrgUnitResponses, CreatePositionData, CreatePositionResponses, CreateReportingLineData, CreateReportingLineResponses, DeactivateUserData, DeactivateUserResponses, GetCsrfTokenData, GetCsrfTokenResponses, GetHealthData, GetHealthErrors, GetHealthResponses, GetMeData, GetMeResponses, GetMyAccessData, GetMyAccessResponses, GetOrgHistoryData, GetOrgHistoryResponses, GetOrgUnitData, GetOrgUnitResponses, GetPositionData, GetPositionHolderData, GetPositionHolderResponses, GetPositionResponses, GetSessionData, GetSessionResponses, InviteUserData, InviteUserErrors, InviteUserResponses, ListLegalEntitiesData, ListLegalEntitiesResponses, ListMySessionsData, ListMySessionsResponses, ListOrgUnitsData, ListOrgUnitsResponses, ListUnitPositionsData, ListUnitPositionsResponses, ListUserAssignmentsData, ListUserAssignmentsResponses, ListUsersData, ListUsersResponses, LoginData, LoginErrors, LoginResponses, LogoutData, LogoutResponses, LookUpInvitationData, LookUpInvitationErrors, LookUpInvitationResponses, MoveOrgUnitData, MoveOrgUnitResponses, ReactivateUserData, ReactivateUserResponses, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesErrors, RegenerateMyRecoveryCodesResponses, RequestPasswordResetData, RequestPasswordResetResponses, ResetUserMfaData, ResetUserMfaResponses, RevokeMySessionData, RevokeMySessionErrors, RevokeMySessionResponses, RevokeUserSessionsData, RevokeUserSessionsResponses, StartMfaEnrolmentData, StartMfaEnrolmentErrors, StartMfaEnrolmentResponses, StepUpData, StepUpErrors, StepUpResponses, UnlockUserData, UnlockUserResponses, UpdateAssignmentData, UpdateAssignmentResponses, UpdateLegalEntityData, UpdateLegalEntityResponses, UpdateOrgUnitData, UpdateOrgUnitResponses, UpdatePositionData, UpdatePositionResponses, UpdateReportingLineData, UpdateReportingLineResponses, VerifyMfaData, VerifyMfaErrors, VerifyMfaResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -257,6 +257,28 @@ export const listMySessions = <ThrowOnError extends boolean = false>(options?: O
 export const revokeMySession = <ThrowOnError extends boolean = false>(options: Options<RevokeMySessionData, ThrowOnError>): RequestResult<RevokeMySessionResponses, RevokeMySessionErrors, ThrowOnError> => (options.client ?? client).delete<RevokeMySessionResponses, RevokeMySessionErrors, ThrowOnError>({ url: '/api/v1/me/sessions/{id}', ...options });
 
 /**
+ * End an assignment or correct its dates
+ */
+export const updateAssignment = <ThrowOnError extends boolean = false>(options: Options<UpdateAssignmentData, ThrowOnError>): RequestResult<UpdateAssignmentResponses, unknown, ThrowOnError> => (options.client ?? client).put<UpdateAssignmentResponses, unknown, ThrowOnError>({
+    url: '/api/v1/org/assignments/{id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Cancel an assignment recorded in error
+ */
+export const cancelAssignment = <ThrowOnError extends boolean = false>(options: Options<CancelAssignmentData, ThrowOnError>): RequestResult<CancelAssignmentResponses, unknown, ThrowOnError> => (options.client ?? client).post<CancelAssignmentResponses, unknown, ThrowOnError>({ url: '/api/v1/org/assignments/{id}/cancel', ...options });
+
+/**
+ * Change history of a unit or position, newest first
+ */
+export const getOrgHistory = <ThrowOnError extends boolean = false>(options: Options<GetOrgHistoryData, ThrowOnError>): RequestResult<GetOrgHistoryResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetOrgHistoryResponses, unknown, ThrowOnError>({ url: '/api/v1/org/history/{type}/{id}', ...options });
+
+/**
  * Legal entities
  */
 export const listLegalEntities = <ThrowOnError extends boolean = false>(options?: Options<ListLegalEntitiesData, ThrowOnError>): RequestResult<ListLegalEntitiesResponses, unknown, ThrowOnError> => (options?.client ?? client).get<ListLegalEntitiesResponses, unknown, ThrowOnError>({ url: '/api/v1/org/legal-entities', ...options });
@@ -296,6 +318,93 @@ export const closeLegalEntity = <ThrowOnError extends boolean = false>(options: 
         ...options.headers
     }
 });
+
+/**
+ * Create a position in a unit
+ */
+export const createPosition = <ThrowOnError extends boolean = false>(options: Options<CreatePositionData, ThrowOnError>): RequestResult<CreatePositionResponses, unknown, ThrowOnError> => (options.client ?? client).post<CreatePositionResponses, unknown, ThrowOnError>({
+    url: '/api/v1/org/positions',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * A position with its holders and reporting lines over time
+ */
+export const getPosition = <ThrowOnError extends boolean = false>(options: Options<GetPositionData, ThrowOnError>): RequestResult<GetPositionResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetPositionResponses, unknown, ThrowOnError>({ url: '/api/v1/org/positions/{id}', ...options });
+
+/**
+ * Retitle or recode a position, or mark it as head of its unit
+ */
+export const updatePosition = <ThrowOnError extends boolean = false>(options: Options<UpdatePositionData, ThrowOnError>): RequestResult<UpdatePositionResponses, unknown, ThrowOnError> => (options.client ?? client).put<UpdatePositionResponses, unknown, ThrowOnError>({
+    url: '/api/v1/org/positions/{id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Assign a person to a position from a date
+ */
+export const assignPosition = <ThrowOnError extends boolean = false>(options: Options<AssignPositionData, ThrowOnError>): RequestResult<AssignPositionResponses, unknown, ThrowOnError> => (options.client ?? client).post<AssignPositionResponses, unknown, ThrowOnError>({
+    url: '/api/v1/org/positions/{id}/assignments',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Close a position
+ */
+export const closePosition = <ThrowOnError extends boolean = false>(options: Options<ClosePositionData, ThrowOnError>): RequestResult<ClosePositionResponses, unknown, ThrowOnError> => (options.client ?? client).post<ClosePositionResponses, unknown, ThrowOnError>({
+    url: '/api/v1/org/positions/{id}/close',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Who held a position on a date (default today); 204 when vacant
+ */
+export const getPositionHolder = <ThrowOnError extends boolean = false>(options: Options<GetPositionHolderData, ThrowOnError>): RequestResult<GetPositionHolderResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetPositionHolderResponses, unknown, ThrowOnError>({ url: '/api/v1/org/positions/{id}/holder', ...options });
+
+/**
+ * Make a position report to another from a date
+ */
+export const createReportingLine = <ThrowOnError extends boolean = false>(options: Options<CreateReportingLineData, ThrowOnError>): RequestResult<CreateReportingLineResponses, unknown, ThrowOnError> => (options.client ?? client).post<CreateReportingLineResponses, unknown, ThrowOnError>({
+    url: '/api/v1/org/positions/{id}/reporting-lines',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * End a reporting line or correct its dates
+ */
+export const updateReportingLine = <ThrowOnError extends boolean = false>(options: Options<UpdateReportingLineData, ThrowOnError>): RequestResult<UpdateReportingLineResponses, unknown, ThrowOnError> => (options.client ?? client).put<UpdateReportingLineResponses, unknown, ThrowOnError>({
+    url: '/api/v1/org/reporting-lines/{id}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Cancel a reporting line recorded in error
+ */
+export const cancelReportingLine = <ThrowOnError extends boolean = false>(options: Options<CancelReportingLineData, ThrowOnError>): RequestResult<CancelReportingLineResponses, unknown, ThrowOnError> => (options.client ?? client).post<CancelReportingLineResponses, unknown, ThrowOnError>({ url: '/api/v1/org/reporting-lines/{id}/cancel', ...options });
 
 /**
  * The units tree as a flat list
@@ -356,3 +465,13 @@ export const moveOrgUnit = <ThrowOnError extends boolean = false>(options: Optio
         ...options.headers
     }
 });
+
+/**
+ * Positions of a unit with their holders on a date (default today)
+ */
+export const listUnitPositions = <ThrowOnError extends boolean = false>(options: Options<ListUnitPositionsData, ThrowOnError>): RequestResult<ListUnitPositionsResponses, unknown, ThrowOnError> => (options.client ?? client).get<ListUnitPositionsResponses, unknown, ThrowOnError>({ url: '/api/v1/org/units/{id}/positions', ...options });
+
+/**
+ * A person's positions over time, newest first
+ */
+export const listUserAssignments = <ThrowOnError extends boolean = false>(options: Options<ListUserAssignmentsData, ThrowOnError>): RequestResult<ListUserAssignmentsResponses, unknown, ThrowOnError> => (options.client ?? client).get<ListUserAssignmentsResponses, unknown, ThrowOnError>({ url: '/api/v1/org/users/{id}/assignments', ...options });

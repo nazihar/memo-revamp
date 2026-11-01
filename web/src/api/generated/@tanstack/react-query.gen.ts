@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { acceptInvitation, changeMyPassword, closeLegalEntity, closeOrgUnit, completePasswordReset, confirmMfaEnrolment, createLegalEntity, createOrgUnit, deactivateUser, getCsrfToken, getHealth, getMe, getMyAccess, getOrgUnit, getSession, inviteUser, listLegalEntities, listMySessions, listOrgUnits, listUsers, login, logout, lookUpInvitation, moveOrgUnit, type Options, reactivateUser, regenerateMyRecoveryCodes, requestPasswordReset, resetUserMfa, revokeMySession, revokeUserSessions, startMfaEnrolment, stepUp, unlockUser, updateLegalEntity, updateOrgUnit, verifyMfa } from '../sdk.gen';
-import type { AcceptInvitationData, AcceptInvitationError, AcceptInvitationResponse, ChangeMyPasswordData, ChangeMyPasswordError, ChangeMyPasswordResponse, CloseLegalEntityData, CloseLegalEntityResponse, CloseOrgUnitData, CloseOrgUnitResponse, CompletePasswordResetData, CompletePasswordResetError, CompletePasswordResetResponse, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentError, ConfirmMfaEnrolmentResponse, CreateLegalEntityData, CreateLegalEntityResponse, CreateOrgUnitData, CreateOrgUnitResponse, DeactivateUserData, DeactivateUserResponse, GetCsrfTokenData, GetCsrfTokenResponse, GetHealthData, GetHealthError, GetHealthResponse, GetMeData, GetMeResponse, GetMyAccessData, GetMyAccessResponse, GetOrgUnitData, GetOrgUnitResponse, GetSessionData, GetSessionResponse, InviteUserData, InviteUserError, InviteUserResponse, ListLegalEntitiesData, ListLegalEntitiesResponse, ListMySessionsData, ListMySessionsResponse, ListOrgUnitsData, ListOrgUnitsResponse, ListUsersData, ListUsersResponse, LoginData, LoginError, LoginResponse, LogoutData, LogoutResponse, LookUpInvitationData, LookUpInvitationError, LookUpInvitationResponse, MoveOrgUnitData, MoveOrgUnitResponse, ReactivateUserData, ReactivateUserResponse, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesResponse, RequestPasswordResetData, ResetUserMfaData, ResetUserMfaResponse, RevokeMySessionData, RevokeMySessionResponse, RevokeUserSessionsData, RevokeUserSessionsResponse, StartMfaEnrolmentData, StartMfaEnrolmentResponse, StepUpData, StepUpError, StepUpResponse, UnlockUserData, UnlockUserResponse, UpdateLegalEntityData, UpdateLegalEntityResponse, UpdateOrgUnitData, UpdateOrgUnitResponse, VerifyMfaData, VerifyMfaError, VerifyMfaResponse } from '../types.gen';
+import { acceptInvitation, assignPosition, cancelAssignment, cancelReportingLine, changeMyPassword, closeLegalEntity, closeOrgUnit, closePosition, completePasswordReset, confirmMfaEnrolment, createLegalEntity, createOrgUnit, createPosition, createReportingLine, deactivateUser, getCsrfToken, getHealth, getMe, getMyAccess, getOrgHistory, getOrgUnit, getPosition, getPositionHolder, getSession, inviteUser, listLegalEntities, listMySessions, listOrgUnits, listUnitPositions, listUserAssignments, listUsers, login, logout, lookUpInvitation, moveOrgUnit, type Options, reactivateUser, regenerateMyRecoveryCodes, requestPasswordReset, resetUserMfa, revokeMySession, revokeUserSessions, startMfaEnrolment, stepUp, unlockUser, updateAssignment, updateLegalEntity, updateOrgUnit, updatePosition, updateReportingLine, verifyMfa } from '../sdk.gen';
+import type { AcceptInvitationData, AcceptInvitationError, AcceptInvitationResponse, AssignPositionData, AssignPositionResponse, CancelAssignmentData, CancelAssignmentResponse, CancelReportingLineData, CancelReportingLineResponse, ChangeMyPasswordData, ChangeMyPasswordError, ChangeMyPasswordResponse, CloseLegalEntityData, CloseLegalEntityResponse, CloseOrgUnitData, CloseOrgUnitResponse, ClosePositionData, ClosePositionResponse, CompletePasswordResetData, CompletePasswordResetError, CompletePasswordResetResponse, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentError, ConfirmMfaEnrolmentResponse, CreateLegalEntityData, CreateLegalEntityResponse, CreateOrgUnitData, CreateOrgUnitResponse, CreatePositionData, CreatePositionResponse, CreateReportingLineData, CreateReportingLineResponse, DeactivateUserData, DeactivateUserResponse, GetCsrfTokenData, GetCsrfTokenResponse, GetHealthData, GetHealthError, GetHealthResponse, GetMeData, GetMeResponse, GetMyAccessData, GetMyAccessResponse, GetOrgHistoryData, GetOrgHistoryResponse, GetOrgUnitData, GetOrgUnitResponse, GetPositionData, GetPositionHolderData, GetPositionHolderResponse, GetPositionResponse, GetSessionData, GetSessionResponse, InviteUserData, InviteUserError, InviteUserResponse, ListLegalEntitiesData, ListLegalEntitiesResponse, ListMySessionsData, ListMySessionsResponse, ListOrgUnitsData, ListOrgUnitsResponse, ListUnitPositionsData, ListUnitPositionsResponse, ListUserAssignmentsData, ListUserAssignmentsResponse, ListUsersData, ListUsersResponse, LoginData, LoginError, LoginResponse, LogoutData, LogoutResponse, LookUpInvitationData, LookUpInvitationError, LookUpInvitationResponse, MoveOrgUnitData, MoveOrgUnitResponse, ReactivateUserData, ReactivateUserResponse, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesResponse, RequestPasswordResetData, ResetUserMfaData, ResetUserMfaResponse, RevokeMySessionData, RevokeMySessionResponse, RevokeUserSessionsData, RevokeUserSessionsResponse, StartMfaEnrolmentData, StartMfaEnrolmentResponse, StepUpData, StepUpError, StepUpResponse, UnlockUserData, UnlockUserResponse, UpdateAssignmentData, UpdateAssignmentResponse, UpdateLegalEntityData, UpdateLegalEntityResponse, UpdateOrgUnitData, UpdateOrgUnitResponse, UpdatePositionData, UpdatePositionResponse, UpdateReportingLineData, UpdateReportingLineResponse, VerifyMfaData, VerifyMfaError, VerifyMfaResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -587,6 +587,58 @@ export const revokeMySessionMutation = (options?: Partial<Options<RevokeMySessio
     return mutationOptions;
 };
 
+/**
+ * End an assignment or correct its dates
+ */
+export const updateAssignmentMutation = (options?: Partial<Options<UpdateAssignmentData>>): UseMutationOptions<UpdateAssignmentResponse, DefaultError, Options<UpdateAssignmentData>> => {
+    const mutationOptions: UseMutationOptions<UpdateAssignmentResponse, DefaultError, Options<UpdateAssignmentData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await updateAssignment({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Cancel an assignment recorded in error
+ */
+export const cancelAssignmentMutation = (options?: Partial<Options<CancelAssignmentData>>): UseMutationOptions<CancelAssignmentResponse, DefaultError, Options<CancelAssignmentData>> => {
+    const mutationOptions: UseMutationOptions<CancelAssignmentResponse, DefaultError, Options<CancelAssignmentData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await cancelAssignment({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const getOrgHistoryQueryKey = (options: Options<GetOrgHistoryData>) => createQueryKey('getOrgHistory', options);
+
+/**
+ * Change history of a unit or position, newest first
+ */
+export const getOrgHistoryOptions = (options: Options<GetOrgHistoryData>) => queryOptions<GetOrgHistoryResponse, DefaultError, GetOrgHistoryResponse, ReturnType<typeof getOrgHistoryQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getOrgHistory({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getOrgHistoryQueryKey(options)
+});
+
 export const listLegalEntitiesQueryKey = (options?: Options<ListLegalEntitiesData>) => createQueryKey('listLegalEntities', options);
 
 /**
@@ -646,6 +698,161 @@ export const closeLegalEntityMutation = (options?: Partial<Options<CloseLegalEnt
     const mutationOptions: UseMutationOptions<CloseLegalEntityResponse, DefaultError, Options<CloseLegalEntityData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await closeLegalEntity({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Create a position in a unit
+ */
+export const createPositionMutation = (options?: Partial<Options<CreatePositionData>>): UseMutationOptions<CreatePositionResponse, DefaultError, Options<CreatePositionData>> => {
+    const mutationOptions: UseMutationOptions<CreatePositionResponse, DefaultError, Options<CreatePositionData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await createPosition({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const getPositionQueryKey = (options: Options<GetPositionData>) => createQueryKey('getPosition', options);
+
+/**
+ * A position with its holders and reporting lines over time
+ */
+export const getPositionOptions = (options: Options<GetPositionData>) => queryOptions<GetPositionResponse, DefaultError, GetPositionResponse, ReturnType<typeof getPositionQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getPosition({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getPositionQueryKey(options)
+});
+
+/**
+ * Retitle or recode a position, or mark it as head of its unit
+ */
+export const updatePositionMutation = (options?: Partial<Options<UpdatePositionData>>): UseMutationOptions<UpdatePositionResponse, DefaultError, Options<UpdatePositionData>> => {
+    const mutationOptions: UseMutationOptions<UpdatePositionResponse, DefaultError, Options<UpdatePositionData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await updatePosition({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Assign a person to a position from a date
+ */
+export const assignPositionMutation = (options?: Partial<Options<AssignPositionData>>): UseMutationOptions<AssignPositionResponse, DefaultError, Options<AssignPositionData>> => {
+    const mutationOptions: UseMutationOptions<AssignPositionResponse, DefaultError, Options<AssignPositionData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await assignPosition({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Close a position
+ */
+export const closePositionMutation = (options?: Partial<Options<ClosePositionData>>): UseMutationOptions<ClosePositionResponse, DefaultError, Options<ClosePositionData>> => {
+    const mutationOptions: UseMutationOptions<ClosePositionResponse, DefaultError, Options<ClosePositionData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await closePosition({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const getPositionHolderQueryKey = (options: Options<GetPositionHolderData>) => createQueryKey('getPositionHolder', options);
+
+/**
+ * Who held a position on a date (default today); 204 when vacant
+ */
+export const getPositionHolderOptions = (options: Options<GetPositionHolderData>) => queryOptions<GetPositionHolderResponse, DefaultError, GetPositionHolderResponse, ReturnType<typeof getPositionHolderQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getPositionHolder({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getPositionHolderQueryKey(options)
+});
+
+/**
+ * Make a position report to another from a date
+ */
+export const createReportingLineMutation = (options?: Partial<Options<CreateReportingLineData>>): UseMutationOptions<CreateReportingLineResponse, DefaultError, Options<CreateReportingLineData>> => {
+    const mutationOptions: UseMutationOptions<CreateReportingLineResponse, DefaultError, Options<CreateReportingLineData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await createReportingLine({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * End a reporting line or correct its dates
+ */
+export const updateReportingLineMutation = (options?: Partial<Options<UpdateReportingLineData>>): UseMutationOptions<UpdateReportingLineResponse, DefaultError, Options<UpdateReportingLineData>> => {
+    const mutationOptions: UseMutationOptions<UpdateReportingLineResponse, DefaultError, Options<UpdateReportingLineData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await updateReportingLine({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Cancel a reporting line recorded in error
+ */
+export const cancelReportingLineMutation = (options?: Partial<Options<CancelReportingLineData>>): UseMutationOptions<CancelReportingLineResponse, DefaultError, Options<CancelReportingLineData>> => {
+    const mutationOptions: UseMutationOptions<CancelReportingLineResponse, DefaultError, Options<CancelReportingLineData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await cancelReportingLine({
                 ...options,
                 ...fnOptions,
                 throwOnError: true
@@ -761,3 +968,39 @@ export const moveOrgUnitMutation = (options?: Partial<Options<MoveOrgUnitData>>)
     };
     return mutationOptions;
 };
+
+export const listUnitPositionsQueryKey = (options: Options<ListUnitPositionsData>) => createQueryKey('listUnitPositions', options);
+
+/**
+ * Positions of a unit with their holders on a date (default today)
+ */
+export const listUnitPositionsOptions = (options: Options<ListUnitPositionsData>) => queryOptions<ListUnitPositionsResponse, DefaultError, ListUnitPositionsResponse, ReturnType<typeof listUnitPositionsQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await listUnitPositions({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: listUnitPositionsQueryKey(options)
+});
+
+export const listUserAssignmentsQueryKey = (options: Options<ListUserAssignmentsData>) => createQueryKey('listUserAssignments', options);
+
+/**
+ * A person's positions over time, newest first
+ */
+export const listUserAssignmentsOptions = (options: Options<ListUserAssignmentsData>) => queryOptions<ListUserAssignmentsResponse, DefaultError, ListUserAssignmentsResponse, ReturnType<typeof listUserAssignmentsQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await listUserAssignments({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: listUserAssignmentsQueryKey(options)
+});

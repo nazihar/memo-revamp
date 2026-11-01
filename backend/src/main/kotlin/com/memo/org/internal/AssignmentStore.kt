@@ -95,6 +95,23 @@ class AssignmentStore(
                 .associateBy { it.positionId }
         }
 
+    /** Active assignments of [users] valid on [date]: the position each person holds then. */
+    fun heldBy(
+        users: Collection<UUID>,
+        date: LocalDate,
+    ): Map<UUID, Assignment> =
+        if (users.isEmpty()) {
+            emptyMap()
+        } else {
+            tenantDsl
+                .current()
+                .selectFrom(ORG_ASSIGNMENT)
+                .where(ORG_ASSIGNMENT.USER_ID.`in`(users), ORG_ASSIGNMENT.STATUS.eq(RecordStatus.ACTIVE.name))
+                .and(validOn(ORG_ASSIGNMENT.VALID_FROM, ORG_ASSIGNMENT.VALID_TO, date))
+                .fetch { it.toAssignment() }
+                .associateBy { it.userId }
+        }
+
     fun insert(
         user: UUID,
         position: UUID,

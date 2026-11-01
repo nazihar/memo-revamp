@@ -100,6 +100,36 @@ export type CreateOrgUnitRequest = {
     validFrom?: string | null;
 };
 
+export type DirectoryPosition = {
+    /**
+     * Holder today; absent when vacant
+     */
+    holder?: OrgPerson | null;
+    id: string;
+    title: string;
+    unitId: string;
+    unitName: string;
+};
+
+export type DirectoryPositionSummary = {
+    id: string;
+    title: string;
+    unitName: string;
+};
+
+export type DirectorySearchResult = {
+    positions: Array<DirectoryPosition>;
+    users: Array<DirectoryUser>;
+};
+
+export type DirectoryUser = {
+    person: OrgPerson;
+    /**
+     * Primary position today
+     */
+    position?: DirectoryPositionSummary | null;
+};
+
 export type Grant = {
     builtIn?: string | null;
     grantedAt: string;
@@ -1181,6 +1211,32 @@ export type GrantRoleResponses = {
 };
 
 export type GrantRoleResponse = GrantRoleResponses[keyof GrantRoleResponses];
+
+export type SearchDirectoryData = {
+    body?: never;
+    path?: never;
+    query: {
+        /**
+         * At least 2 characters
+         */
+        q: string;
+        /**
+         * user, position, or both (default)
+         */
+        kind?: Array<string>;
+        limit?: number;
+    };
+    url: '/api/v1/directory/search';
+};
+
+export type SearchDirectoryResponses = {
+    /**
+     * OK
+     */
+    200: DirectorySearchResult;
+};
+
+export type SearchDirectoryResponse = SearchDirectoryResponses[keyof SearchDirectoryResponses];
 
 export type GetHealthData = {
     body?: never;

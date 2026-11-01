@@ -56,3 +56,5 @@ endpoints:
     body: { name: "Matrix {random}" }
   - { endpoint: POST /api/v1/authz/classification-levels/order, rule: tenantAdminStepUp, body: { levelIds: [] } }
   - { endpoint: "DELETE /api/v1/authz/classification-levels/{id}", rule: tenantAdminStepUp }
+  # People picker (T6): directory.read through the implicit user role; q is required, so allowed calls may be 400.
+  - { endpoint: GET /api/v1/directory/search, rule: signedIn }

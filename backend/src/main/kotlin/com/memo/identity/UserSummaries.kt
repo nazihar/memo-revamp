@@ -3,6 +3,7 @@ package com.memo.identity
 import com.memo.common.events.TenantScopedEvent
 import com.memo.common.tenant.TenantDsl
 import com.memo.jooq.tables.references.IDENTITY_USER
+import org.jooq.impl.DSL
 import org.springframework.stereotype.Component
 import java.util.UUID
 
@@ -37,4 +38,29 @@ class UserSummaries(
     }
 
     fun of(id: UUID): UserSummary? = of(listOf(id))[id]
+
+    /**
+     * Active and invited users whose name has a word starting with [term], or whose email starts with it (people picker,
+     * E04 research R14). [term] is already normalised (lower case, NFC); at most [limit] results, by name.
+     */
+    fun search(
+        term: String,
+        limit: Int,
+    ): List<UserSummary> {
+        val escaped = term.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+        val name = DSL.lower(IDENTITY_USER.DISPLAY_NAME)
+        return tenantDsl
+            .current()
+            .select(IDENTITY_USER.ID, IDENTITY_USER.DISPLAY_NAME, IDENTITY_USER.EMAIL, IDENTITY_USER.STATUS)
+            .from(IDENTITY_USER)
+            .where(IDENTITY_USER.STATUS.`in`(UserStatus.ACTIVE.name, UserStatus.INVITED.name))
+            .and(
+                name
+                    .like("$escaped%", '\\')
+                    .or(name.like("% $escaped%", '\\'))
+                    .or(IDENTITY_USER.EMAIL.like("$escaped%", '\\')),
+            ).orderBy(name, IDENTITY_USER.ID)
+            .limit(limit)
+            .fetch { UserSummary(it.value1()!!, it.value2()!!, it.value3()!!, UserStatus.valueOf(it.value4()!!)) }
+    }
 }

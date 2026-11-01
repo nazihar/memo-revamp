@@ -213,6 +213,85 @@
         "required" : [ "code", "legalEntityId", "name" ],
         "type" : "object"
       },
+      "DirectoryPosition" : {
+        "properties" : {
+          "holder" : {
+            "description" : "Holder today; absent when vacant",
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/OrgPerson"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "unitId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "unitName" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "id", "title", "unitId", "unitName" ],
+        "type" : "object"
+      },
+      "DirectoryPositionSummary" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "unitName" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "id", "title", "unitName" ],
+        "type" : "object"
+      },
+      "DirectorySearchResult" : {
+        "properties" : {
+          "positions" : {
+            "items" : {
+              "$ref" : "#/components/schemas/DirectoryPosition"
+            },
+            "type" : "array"
+          },
+          "users" : {
+            "items" : {
+              "$ref" : "#/components/schemas/DirectoryUser"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "positions", "users" ],
+        "type" : "object"
+      },
+      "DirectoryUser" : {
+        "properties" : {
+          "person" : {
+            "$ref" : "#/components/schemas/OrgPerson"
+          },
+          "position" : {
+            "description" : "Primary position today",
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/DirectoryPositionSummary"
+            }, {
+              "type" : "null"
+            } ]
+          }
+        },
+        "required" : [ "person" ],
+        "type" : "object"
+      },
       "Grant" : {
         "properties" : {
           "builtIn" : {
@@ -2174,6 +2253,54 @@
         },
         "summary" : "Give a user a role, for the organisation or a unit subtree",
         "tags" : [ "authz" ]
+      }
+    },
+    "/api/v1/directory/search" : {
+      "get" : {
+        "operationId" : "searchDirectory",
+        "parameters" : [ {
+          "description" : "At least 2 characters",
+          "in" : "query",
+          "name" : "q",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "user, position, or both (default)",
+          "in" : "query",
+          "name" : "kind",
+          "required" : false,
+          "schema" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "required" : false,
+          "schema" : {
+            "default" : 10,
+            "format" : "int32",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DirectorySearchResult"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Find people and positions by the start of a word in their name or title",
+        "tags" : [ "directory" ]
       }
     },
     "/api/v1/health" : {

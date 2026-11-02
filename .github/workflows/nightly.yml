@@ -171,7 +171,8 @@ jobs:
         if: vars.DEV_URL != ''
         run: |
           ci/zap-baseline.sh "${{ vars.DEV_URL }}/"
-          ./gradlew :perf:gatlingRun --simulation com.memo.perf.HealthSmokeSimulation -DbaseUrl="${{ vars.DEV_URL }}" --console=plain
+          # Remote from the runner: network distance dominates latency, so only errors and gross regressions count here.
+          ./gradlew :perf:gatlingRun --simulation com.memo.perf.HealthSmokeSimulation -DbaseUrl="${{ vars.DEV_URL }}" -Dp95BudgetMs=2000 --console=plain
       - if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:

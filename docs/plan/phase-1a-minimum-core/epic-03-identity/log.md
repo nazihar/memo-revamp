@@ -59,3 +59,15 @@
   - Local and CI stack (`scripts/dev.mjs`): `MEMO_TENANCY_FALLBACK_TENANT=demo` (bare localhost is the demo organisation) and `MEMO_COOKIE_SECURE=false` (WebKit drops Secure cookies on plain-HTTP localhost; never off elsewhere).
   - Visual baselines of the shell regenerated (Sign in button). The 0.2 % tolerance let the new button pass unnoticed; a later epic should screenshot the top bar on its own.
   - Moved to E07, where more organisations and the admin screens arrive: Caddy on-demand TLS for organisation subdomains (the dev VM serves the demo organisation on the bare host until then) and the authenticated weekly ZAP scan (it can reuse the Playwright API sign-in).
+
+## 2026-10-29
+After the merge (PR #20), the dev deploy and the first nightly since E03 found the following; fixed in PR #21.
+- **Dev went to 502.** `gen-secrets.sh` filtered only 256 random bytes down to Base32 characters, so it could write fewer than 32; dev got 30, which is not valid Base32, and the demo seeder stopped the backend. The script now reads 4 KiB, refuses short values and replaces a malformed demo TOTP secret; the seeder names the variable.
+- **The deploy did not roll back.** The backend answers health as soon as Tomcat starts, while start-up runners can still stop it seconds later. `deploy.sh` now needs five consecutive UP checks.
+- **Mailpit restarted in a loop** on the read-only root file system: it needs a tmpfs `/tmp`.
+- **CSRF race on a first visit:** every request without the `XSRF-TOKEN` cookie gets a new token, so the app's first requests raced to set it, and a first-time invitee could see "This invitation is no longer valid". The app fetches the cookie once before its first render; a mutation refused with 403 while the cookie changed in flight is sent once more.
+- **Dialog focus in Safari:** WebKit does not focus a clicked button (focus goes to the nearest focusable ancestor or the body), so closing a dialog lost the opener; the last pressed control now stands in.
+- **WebKit CSP noise:** WebKit reports violations for its own internals (native `<select>`, modal `<dialog>`). The e2e check ignores those in WebKit only, by target; anything on our elements is still reported, and Chromium and Firefox check everything.
+- **ZAP 10027:** bundles referenced their source maps, which images leave out; maps are now `hidden`.
+- **Dependency re-scan:** Guava 33.7.2 for the build plugins (CVE-2026-102554; build tooling only).
+- Local `playwright test` reuses a server already on port 4173; a stale preview server hid a fix for a while. Stop it before trusting a local run.

@@ -98,10 +98,12 @@ class DemoTenantSeeder(
         DemoOrg.REPORTING_LINES.forEach { (position, to) -> org.reportingLine(position, to, DemoOrg.START) }
         DemoOrg.SEATS.forEach { (email, position) -> org.assignment(position, demoAccounts.getValue(email), DemoOrg.START) }
         val openSeats = DemoOrg.POSITIONS.map { it.id }.filter { it !in DemoOrg.SEATS.values && it !in DemoOrg.VACANT }
-        DemoOrg.STAFF.zip(openSeats).forEach { (name, position) ->
+        DemoOrg.STAFF.forEach { name ->
             val email = DemoOrg.staffEmail(name)
-            val staff = accounts.findByEmail(email) ?: accounts.create(email, name)
-            org.assignment(position, staff.id.value, DemoOrg.START)
+            accounts.findByEmail(email) ?: accounts.create(email, name)
+        }
+        DemoOrg.STAFF.dropLast(DemoOrg.UNSEATED).zip(openSeats).forEach { (name, position) ->
+            org.assignment(position, requireNotNull(accounts.findByEmail(DemoOrg.staffEmail(name))).id.value, DemoOrg.START)
         }
     }
 

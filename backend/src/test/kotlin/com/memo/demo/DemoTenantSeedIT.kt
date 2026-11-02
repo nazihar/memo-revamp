@@ -102,7 +102,7 @@ class DemoTenantSeedIT : IntegrationTest() {
             assertThat(dsl.fetchCount(com.memo.jooq.tables.references.ORG_REPORTING_LINE)).isEqualTo(DemoOrg.REPORTING_LINES.size)
             val openSeats = DemoOrg.POSITIONS.size - DemoOrg.SEATS.size - DemoOrg.VACANT.size
             assertThat(dsl.fetchCount(com.memo.jooq.tables.references.ORG_ASSIGNMENT))
-                .isEqualTo(DemoOrg.SEATS.size + minOf(openSeats, DemoOrg.STAFF.size))
+                .isEqualTo(DemoOrg.SEATS.size + minOf(openSeats, DemoOrg.STAFF.size - DemoOrg.UNSEATED))
         }
         val branchAdmin = transactions.readInTenant(DemoTenant.ID) { accounts.findByEmail("branchadmin@demo.example")!! }
         com.memo.common.context.ActorContext.call(

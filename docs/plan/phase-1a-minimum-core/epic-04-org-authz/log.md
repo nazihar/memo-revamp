@@ -56,3 +56,9 @@
   - `/admin/roles`: built-in roles named in the user's language and read-only; custom roles created, changed and removed with permission checkboxes that say which permissions are administrative (always MFA) and which can be limited to a unit.
   - `/admin/classifications`: ordered levels with "more/less sensitive" buttons, add, rename, remove.
   - Every authorisation change goes through `useWithStepUp`; refusals map to their reasons (`LAST_ADMIN`, `IN_USE`, `NOT_SCOPABLE`, …). Users and roles menus follow `/me/access`; user names in the users list link to the detail page.
+- T10 done (e2e and docs):
+  - Playwright roles `orgAdmin`, `branchAdmin`, `auditor` (real sign-in with TOTP in the global setup). Journeys on the real stack: the org administrator adds a unit and a position, places a new joiner through the picker, cancels the record and reads the history; the branch administrator can change North Region only; a user reads without administration; a tenant admin gives and revokes a role behind step-up; the roles and classification screens pass axe. Smoke suite 20/20 locally, and again on a rerun over the same data.
+  - Visual baselines for the org directory (light/dark × LTR/RTL). Reviewing them showed the tree did not open to the selected unit; it now opens the selected unit's ancestors.
+  - Local database reset once: `authz/V1` changed in place (rank range) after it had run locally; CI and dev never ran the earlier version.
+  - Cross-tenant coverage for roles and grants relies on the RLS meta-test (every new table has RLS ENABLE + FORCE) and the matrix's other-tenant subject; org has explicit cases (`OrgUnitsIT`, `DirectorySearchIT`).
+  - Docs: ASVS V8 rows, design §15 (changes during implementation), test plan exit list.

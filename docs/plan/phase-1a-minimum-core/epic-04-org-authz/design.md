@@ -293,3 +293,13 @@ No FKs across modules (`org_assignment.user_id` → `identity_user`, `authz_gran
 
 ## 14. Demo tenant
 A realistic bank: one legal entity "Demo Bank", about 30 units (board office, CEO office, divisions such as Credit, Operations, Finance, HR, IT, Risk, Compliance, Treasury; departments under them; regional branches), about 80 positions with heads and reporting lines, demo users `admin@`, `orgadmin@`, `branchadmin@` (scoped to a region), `auditor@`, `user@` plus about 40 named staff (no password: `INVITED`, for the picker and the tree). Defined as code in `demo/` and used by tests, e2e and local development.
+
+## 15. Changes during implementation
+Details and reasons are in [log.md](log.md).
+- **Paths:** the directory is `/org` for every signed-in user (not `/admin/org`); the user detail page is `/admin/users/$userId`, backed by a new `GET /admin/users/{id}`; `/org/users/{id}/assignments` returns positions with titles and unit names.
+- **Scope:** a scoped grant confers only the role's scopable permissions (so `org_admin` can be scoped). A scoped administrator may rename their scope root but not move or close it; the refusal is a plain 403, not a `SCOPE_ROOT` reason.
+- **No cross-module foreign keys** (§9): module migrations run in no guaranteed order.
+- **Time zone:** the existing `default.timezone` tenant setting, not a new `locale.time.zone`.
+- **Assignments:** invited users can be assigned as well as active ones; ending assignments on deactivation is recorded under the administrator who deactivated.
+- **Classification ranks** range 0..999 so reordering can pass through temporary ranks.
+- **Demo:** three staff stay unseated (new joiners) so journeys can place someone without moving anyone.

@@ -166,6 +166,9 @@ object DemoOrg {
             "Sohel Rana",
         )
 
+    /** The last few staff hold no position yet (new joiners), so journeys can place someone without moving anyone. */
+    const val UNSEATED = 3
+
     /** A few seats stay vacant, so the screens show vacancies too. */
     val VACANT: Set<UUID> = setOf(unitByCode("RSK-OR").headPosition, unitByCode("BR-KHU").headPosition)
 

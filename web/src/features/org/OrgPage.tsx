@@ -53,6 +53,13 @@ export function OrgPage({ selected }: { selected?: string }) {
   const [filter, setFilter] = useState('')
   const [pending, setPending] = useState<Pending>()
   const tree = useMemo(() => buildTree(units.data ?? []), [units.data])
+  // The roots and every ancestor of the selected unit start open, so the selection is always in view.
+  const expanded = useMemo(() => {
+    const byId = new Map((units.data ?? []).map((u) => [u.id, u]))
+    const open = tree.map((n) => n.id)
+    for (let u = selected ? byId.get(selected) : undefined; u?.parentId; u = byId.get(u.parentId)) open.push(u.parentId)
+    return open
+  }, [tree, units.data, selected])
   const tenantWideManage = access.data?.permissions.some((p) => p.key === PERMISSION.orgManage && p.tenantWide) ?? false
   const select = (id: string) => void navigate({ to: '/org', search: { unit: id } })
   const refresh = () => queryClient.invalidateQueries()
@@ -138,11 +145,12 @@ export function OrgPage({ selected }: { selected?: string }) {
               )
             ) : (
               <TreePanel
+                key={selected}
                 label={intl.formatMessage(om.treeLabel)}
                 nodes={tree}
                 selectedId={selected}
                 onSelect={select}
-                defaultExpanded={tree.map((n) => n.id)}
+                defaultExpanded={expanded}
               />
             )}
           </aside>

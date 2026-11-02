@@ -43,7 +43,7 @@ Tree view follows the ARIA tree pattern (arrow keys, Home/End, type-ahead); pick
 3. Revoke and re-grant roles across two browsers and check how fast access changes (20 min).
 
 ## Exit checklist
-- [ ] All listed tests implemented and green in their stage
-- [ ] No new quarantined tests
-- [ ] ASVS checklist updated
-- [ ] `EXPLAIN` of new list/search queries recorded at V3 volume
+- [x] All listed tests implemented and green in their stage (concurrency, matrix, cross-tenant and audit cases folded into `OrgUnitsIT`, `AssignmentsIT`, `AccessAdminIT`, `DirectorySearchIT`)
+- [x] No new quarantined tests
+- [x] ASVS checklist updated (V8 rows)
+- [x] `EXPLAIN` of new list/search queries recorded at V3 volume (log, T7)

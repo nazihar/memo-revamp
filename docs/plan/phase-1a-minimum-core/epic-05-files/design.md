@@ -217,7 +217,7 @@ Indexes: `files_version (tenant_id, file_id, number desc)`, `files_file (tenant_
 A metric `memo.files.provisional.oldest.seconds` and a health detail warn when a provisional lock is older than 1 hour.
 
 ## 13. Deployment
-- **ClamAV config:** `deploy/clamav/clamd.conf` (ADR-0029 heuristics and limits) mounted into the image in Compose (dev, on-prem) and as a ConfigMap in Helm; `freshclam` uses the image default. On-prem air-gapped installs point `freshclam` at a private mirror (runbook).
+- **ClamAV config:** `deploy/clamav/clamd.env` (ADR-0029 heuristics and limits as `CLAMD_CONF_<Option>` variables, which the official image writes into its `clamd.conf` at start), used by Compose (`env_file`), Helm and the tests, so every install and the test scanner share one source. `freshclam` uses the image default. On-prem air-gapped installs point `freshclam` at a private mirror (runbook).
 - **Dev VM:** the `antivirus` profile is turned on for the dev environment (memory measured: 6.3 GiB available before ClamAV). Container limit 3 GiB.
 - **Helm:** an optional ClamAV Deployment (`malwareScanner.deploy: true`) with its own NetworkPolicy (ingress from the backend only; egress only to DNS and the signature mirror), or an external `malwareScanner.host`.
 - **nginx (web image):** `location /api/v1/files` with `client_max_body_size` at the ceiling, `proxy_request_buffering off`, `proxy_read_timeout 300s`; other routes keep 1 MB.

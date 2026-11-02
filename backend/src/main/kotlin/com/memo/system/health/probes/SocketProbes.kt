@@ -1,5 +1,6 @@
 package com.memo.system.health.probes
 
+import com.memo.common.scan.MalwareScannerProperties
 import com.memo.system.health.ComponentProbe
 import com.memo.system.health.ComponentStatus
 import org.springframework.boot.context.properties.ConfigurationProperties
@@ -17,14 +18,6 @@ data class TcpEndpoint(
     val port: Int = 0,
 ) {
     val enabled: Boolean get() = host.isNotBlank()
-}
-
-@ConfigurationProperties("memo.malware-scanner")
-data class MalwareScannerProperties(
-    val host: String = "",
-    val port: Int = 3310,
-) {
-    fun endpoint() = TcpEndpoint(host, port)
 }
 
 @ConfigurationProperties("memo.mail")
@@ -76,7 +69,7 @@ class MalwareScannerProbe(
     override val name = "malwareScanner"
 
     override fun check() =
-        probeTcp(properties.endpoint(), TIMEOUT) { socket ->
+        probeTcp(TcpEndpoint(properties.host, properties.port), TIMEOUT) { socket ->
             socket.getOutputStream().apply {
                 write("zPING\u0000".toByteArray(StandardCharsets.US_ASCII))
                 flush()

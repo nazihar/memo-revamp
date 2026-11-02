@@ -56,9 +56,17 @@ set_var MEMO_BACKEND_IMAGE "$BACKEND"
 set_var MEMO_WEB_IMAGE "$WEB"
 PORT=$(get MEMO_WEB_PORT); PORT=${PORT:-8080}
 
+# Healthy means UP on HEALTH_STABLE consecutive checks: the backend answers as soon as Tomcat starts, while start-up
+# runners (the demo seeder) can still fail and stop it a few seconds later.
 healthy() {
+  ok=0
   for _ in $(seq 1 ${HEALTH_ATTEMPTS:-90}); do
-    if curl -fs "http://127.0.0.1:$PORT/api/v1/health" | grep -q '"name":"database","status":"UP"'; then return 0; fi
+    if curl -fs "http://127.0.0.1:$PORT/api/v1/health" | grep -q '"name":"database","status":"UP"'; then
+      ok=$((ok + 1))
+      [ "$ok" -ge "${HEALTH_STABLE:-5}" ] && return 0
+    else
+      ok=0
+    fi
     sleep 2
   done
   return 1

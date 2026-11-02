@@ -34,7 +34,8 @@ export default defineConfig({
     headers: securityHeaders,
   },
   build: {
-    sourcemap: true,
+    // Maps for local debugging only: bundles do not reference them, and images leave them out (.dockerignore).
+    sourcemap: 'hidden',
     // Fonts are never inlined as data: URIs: the CSP allows fonts from the app origin only (font-src 'self').
     assetsInlineLimit: (file) => (/\.(woff2?|ttf|otf)$/.test(file) ? false : undefined),
   },

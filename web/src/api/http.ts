@@ -61,15 +61,29 @@ export async function csrfToken(): Promise<string> {
   return decodeURIComponent(readCookie(CSRF_COOKIE) ?? '')
 }
 
+/**
+ * `fetch` with the CSRF header on mutating requests. The server gives every request that arrives without the cookie a
+ * new token, so on a first visit concurrent requests (the session query, the CSRF fetch) can replace the cookie while a
+ * mutation is in flight with the previous value: that mutation gets 403. It is sent once more with the new value.
+ */
+export async function csrfFetch(input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
+  const request = new Request(input, init)
+  if (!MUTATING.has(request.method.toUpperCase())) return fetch(request)
+  const retry = request.clone()
+  const sent = await csrfToken()
+  request.headers.set(CSRF_HEADER, sent)
+  const response = await fetch(request)
+  const current = readCookie(CSRF_COOKIE)
+  if (response.status !== 403 || !current || decodeURIComponent(current) === sent) return response
+  retry.headers.set(CSRF_HEADER, decodeURIComponent(current))
+  return fetch(retry)
+}
+
 let configured = false
 
-/** Installs the interceptors once (main.tsx and tests). */
+/** Installs the CSRF-aware fetch once (main.tsx and tests). */
 export function configureHttp(): void {
   if (configured) return
   configured = true
-  client.setConfig({ credentials: 'same-origin' })
-  client.interceptors.request.use(async (request) => {
-    if (MUTATING.has(request.method.toUpperCase())) request.headers.set(CSRF_HEADER, await csrfToken())
-    return request
-  })
+  client.setConfig({ credentials: 'same-origin', fetch: csrfFetch })
 }

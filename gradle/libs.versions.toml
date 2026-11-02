@@ -27,6 +27,8 @@ findsecbugs = "1.14.0"
 security-tomcat = "11.0.25"
 security-jackson2 = "2.22.3"
 security-jackson3 = "3.1.7"
+# Build tooling only (build-logic): CVE-2026-102554 (nightly re-scan, 2026-10-29). Remove once the plugins pull >= this.
+security-guava = "33.7.2-jre"
 
 [libraries]
 # Platforms / BOMs
@@ -85,6 +87,7 @@ findsecbugs = { module = "com.h3xstream.findsecbugs:findsecbugs-plugin", version
 security-tomcat-embed-core = { module = "org.apache.tomcat.embed:tomcat-embed-core", version.ref = "security-tomcat" }
 security-jackson2-bom = { module = "com.fasterxml.jackson:jackson-bom", version.ref = "security-jackson2" }
 security-jackson3-bom = { module = "tools.jackson:jackson-bom", version.ref = "security-jackson3" }
+security-guava = { module = "com.google.guava:guava", version.ref = "security-guava" }
 
 [plugins]
 gatling = { id = "io.gatling.gradle", version.ref = "gatling" }

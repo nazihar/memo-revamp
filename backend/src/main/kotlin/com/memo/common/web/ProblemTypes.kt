@@ -17,6 +17,9 @@ object ProblemTypes {
     val CONFLICT: URI = URI.create("urn:memo:problem:conflict")
     val FORBIDDEN: URI = URI.create("urn:memo:problem:forbidden")
 
+    /** An upload was refused; `reason` says why (ADR-0029). */
+    val FILE_REJECTED: URI = URI.create("urn:memo:problem:file-rejected")
+
     /** 400 `validation` with `errors: [{field, code, message}]`, the shape the web forms consume (E01 design §3). */
     fun validation(errors: List<FieldProblem>): ProblemDetail =
         of(HttpStatus.BAD_REQUEST, VALIDATION, "Some fields need attention.").apply {

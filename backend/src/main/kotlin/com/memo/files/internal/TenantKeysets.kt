@@ -16,6 +16,7 @@ import com.memo.common.tenant.TenantTransactions
 import com.memo.jooq.tables.references.FILES_TENANT_KEYSET
 import org.springframework.stereotype.Component
 import org.springframework.transaction.support.TransactionSynchronizationManager
+import java.nio.ByteBuffer
 import java.nio.channels.SeekableByteChannel
 import java.nio.channels.WritableByteChannel
 import java.time.Clock
@@ -146,7 +147,12 @@ internal class FileCrypto(
         file: UUID,
         version: UUID,
         ciphertext: SeekableByteChannel,
-    ): SeekableByteChannel = keysets.cipher(tenant).aead.newSeekableDecryptingChannel(ciphertext, associatedData(tenant, file, version))
+    ): SeekableByteChannel {
+        val channel = keysets.cipher(tenant).aead.newSeekableDecryptingChannel(ciphertext, associatedData(tenant, file, version))
+        // A keyset's channel picks the matching key on its first read and cannot tell its size before: read once, rewind.
+        channel.read(ByteBuffer.allocate(1))
+        return channel.position(0)
+    }
 
     companion object {
         fun associatedData(

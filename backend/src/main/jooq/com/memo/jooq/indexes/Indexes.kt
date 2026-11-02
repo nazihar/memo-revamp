@@ -9,6 +9,9 @@ import com.memo.jooq.tables.AuditAnchor
 import com.memo.jooq.tables.AuditEvent
 import com.memo.jooq.tables.AuthzClearance
 import com.memo.jooq.tables.AuthzGrant
+import com.memo.jooq.tables.FilesFile
+import com.memo.jooq.tables.FilesPendingUpload
+import com.memo.jooq.tables.FilesVersion
 import com.memo.jooq.tables.IdentityActionToken
 import com.memo.jooq.tables.IdentityHttpSession
 import com.memo.jooq.tables.IdentityMfa
@@ -40,6 +43,10 @@ val AUDIT_EVENT_TENANT_SEQ_IDX: Index = Internal.createIndex(DSL.name("audit_eve
 val AUTHZ_CLEARANCE_TENANT_LEVEL_IDX: Index = Internal.createIndex(DSL.name("authz_clearance_tenant_level_idx"), AuthzClearance.AUTHZ_CLEARANCE, arrayOf(AuthzClearance.AUTHZ_CLEARANCE.TENANT_ID, AuthzClearance.AUTHZ_CLEARANCE.LEVEL_ID), false)
 val AUTHZ_GRANT_TENANT_ROLE_IDX: Index = Internal.createIndex(DSL.name("authz_grant_tenant_role_idx"), AuthzGrant.AUTHZ_GRANT, arrayOf(AuthzGrant.AUTHZ_GRANT.TENANT_ID, AuthzGrant.AUTHZ_GRANT.ROLE_ID), false)
 val AUTHZ_GRANT_TENANT_SCOPE_IDX: Index = Internal.createIndex(DSL.name("authz_grant_tenant_scope_idx"), AuthzGrant.AUTHZ_GRANT, arrayOf(AuthzGrant.AUTHZ_GRANT.TENANT_ID, AuthzGrant.AUTHZ_GRANT.SCOPE_UNIT_ID), false)
+val FILES_FILE_TENANT_CURRENT_IDX: Index = Internal.createIndex(DSL.name("files_file_tenant_current_idx"), FilesFile.FILES_FILE, arrayOf(FilesFile.FILES_FILE.TENANT_ID, FilesFile.FILES_FILE.CURRENT_VERSION_ID), false)
+val FILES_FILE_TENANT_OWNER_IDX: Index = Internal.createIndex(DSL.name("files_file_tenant_owner_idx"), FilesFile.FILES_FILE, arrayOf(FilesFile.FILES_FILE.TENANT_ID, FilesFile.FILES_FILE.PURPOSE, FilesFile.FILES_FILE.OWNER_ID), false)
+val FILES_PENDING_UPLOAD_TENANT_CREATED_IDX: Index = Internal.createIndex(DSL.name("files_pending_upload_tenant_created_idx"), FilesPendingUpload.FILES_PENDING_UPLOAD, arrayOf(FilesPendingUpload.FILES_PENDING_UPLOAD.TENANT_ID, FilesPendingUpload.FILES_PENDING_UPLOAD.CREATED_AT), false)
+val FILES_VERSION_TENANT_PROVISIONAL_IDX: Index = Internal.createIndex(DSL.name("files_version_tenant_provisional_idx"), FilesVersion.FILES_VERSION, arrayOf(FilesVersion.FILES_VERSION.TENANT_ID, FilesVersion.FILES_VERSION.UPLOADED_AT), false)
 val IDENTITY_ACTION_TOKEN_TENANT_HASH_UK: Index = Internal.createIndex(DSL.name("identity_action_token_tenant_hash_uk"), IdentityActionToken.IDENTITY_ACTION_TOKEN, arrayOf(IdentityActionToken.IDENTITY_ACTION_TOKEN.TENANT_ID, IdentityActionToken.IDENTITY_ACTION_TOKEN.TOKEN_HASH), true)
 val IDENTITY_ACTION_TOKEN_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("identity_action_token_tenant_user_idx"), IdentityActionToken.IDENTITY_ACTION_TOKEN, arrayOf(IdentityActionToken.IDENTITY_ACTION_TOKEN.TENANT_ID, IdentityActionToken.IDENTITY_ACTION_TOKEN.USER_ID), false)
 val IDENTITY_HTTP_SESSION_EXPIRY_IDX: Index = Internal.createIndex(DSL.name("identity_http_session_expiry_idx"), IdentityHttpSession.IDENTITY_HTTP_SESSION, arrayOf(IdentityHttpSession.IDENTITY_HTTP_SESSION.EXPIRY_TIME), false)

@@ -8,7 +8,7 @@
 - **Phase:** 1a (overview approved 2026-10-18, gate delegation kept). Merged and on dev: **E02 platform kernel** (PR #18), **E01 app frame** (PR #19), **E03 identity, sessions and step-up** (PR #20), **E04 org directory and authorisation** (PR #22; ADR-0026, ADR-0027), plus fixes (PRs #21, #23). Next: **E05 files** and **E06 notifications**.
 - **Dev environment live (2026-10-18):** https://dev.memo-revamp.naziharitsolution.com on the VM 123.176.58.175 (Ubuntu 24.04, 4 vCPU, 7.8 GB RAM, 100 GB disk). It deploys automatically after every green `ci` run on `master`.
 - **Phase 0 epics:** E01–E05 done (`docs/plan/phase-0-foundations/`).
-- **Branches:** `master` holds PRs #1–#23; ZAP fixes on `fix/zap-two-targets`.
+- **Branches:** `master` holds PRs #1–#24; the Gatling budget fix on `fix/gatling-remote-budget`.
 - **Release:** `v0.1.0` published with signed images (2026-10-15).
 - **Product name:** `memo` everywhere except the repository name `memo-revamp` (A1, PR #6).
 
@@ -30,7 +30,8 @@
   - VM provisioned with Ansible (playbook fixes in PR #13);
   - private images pulled with the deploy job's short-lived token, no credential stored on the VM (PR #14);
   - first deploy succeeded after the libexpat image fixes (PR #15).
-- [ ] ZAP baseline and Gatling against dev: the 2026-11-02 nightly passed everything except this job, which stopped before scanning dev (CI script bug). A local ZAP scan of dev found 0 failures and one warning (rule 10015); both are fixed on `fix/zap-two-targets`. Gatling against dev has not run yet
+- [x] ZAP baseline against dev (2026-11-02): 0 failures, 0 warnings
+- [ ] Gatling against dev: no errors (20 of 20 requests); p95 1,052 ms from the GitHub runner, against 8–15 ms on the VM and 53 ms from Bangladesh, so it is network distance. Remote runs get their own budget (`fix/gatling-remote-budget`)
 - [x] Owner usability walkthrough (2026-10-15): UI OK; "layout very simple" carried into Phase 1a as a layout/visual-design epic
 - [x] NFRs confirmed as proposed by the owner (2026-10-15); Q3 answered: agent only, no deadline
 - [x] `retrospective.md` finalised and phase exit recorded in `overview.md §10` (2026-10-15)
@@ -43,8 +44,7 @@
 - **DAST/performance:** ZAP baseline 0 FAIL / 0 WARN; Gatling p95 48 ms.
 
 ## Next step
-1. **Merge the ZAP fixes**, then re-run the nightly: the only nightly job not yet green is ZAP and Gatling against dev.
-2. Check the Gatling result against dev from that run; it has never run there.
+1. **Merge the Gatling budget fix** and re-run the nightly; it is then expected to be fully green.
 3. Plan **E05 files** and **E06 notifications** (they can run beside each other), then E07.
 4. Remove the `apk upgrade` lines from `web/Dockerfile` once `nginx-unprivileged` ships the fixed Alpine packages; remove the Spring Session licence exceptions once Boot manages Spring Session 4.1.2 or later; remove the Guava pin in `build-logic` once the plugins pull 33.7.2 or later.
 

@@ -11,6 +11,9 @@ History moved out of `STATUS.md`, newest first.
 - Nightly on `efc05e6`: Firefox and WebKit on the real stack, pseudo-locale, visual, Lighthouse, Helm on kind and the dependency re-scan all pass; the on-prem ZAP scan shows informational alerts only. The ZAP and Gatling job failed before reaching dev: `ci/zap-baseline.sh` reused the first scan's report folder, whose files belong to the container user. Each target now has its own folder.
 - A local ZAP scan of dev found one warning the on-prem scan cannot show, because rule 10015 applies only over HTTPS: `Cache-Control: no-store` is already the strictest value but the rule looks for all three directives. The SPA shell now sends `no-store, no-cache, must-revalidate` rather than ignoring the rule, so a page with a real gap would still be caught.
 
+- PR #24 (ZAP report folders, Cache-Control) merged and deployed (`20546ad`). Nightly on it: everything green except Gatling against dev. ZAP against dev now has 0 failures and 0 warnings.
+- Gatling against dev, first run ever: 20 of 20 requests OK, but p95 1,052 ms against the 300 ms budget. The health endpoint takes 8–15 ms on the VM and about 35–53 ms from Bangladesh; the GitHub runner is on another continent and opens a new TLS connection per request. The budget is a parameter now: 300 ms by default (the on-prem stack beside the runner) and 2 s for remote targets, which still catches errors and gross regressions.
+
 ## 2026-10-29
 - PR #20 (E03) merged. The deploy left dev at 502 and the first nightly since E03 failed; both are written up in the E03 log. Fixed in PR #21.
 - The owner made the repository public for a while so Actions can run (billing block on the private repository).

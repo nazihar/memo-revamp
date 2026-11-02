@@ -14,6 +14,8 @@ History moved out of `STATUS.md`, newest first.
 - PR #24 (ZAP report folders, Cache-Control) merged and deployed (`20546ad`). Nightly on it: everything green except Gatling against dev. ZAP against dev now has 0 failures and 0 warnings.
 - Gatling against dev, first run ever: 20 of 20 requests OK, but p95 1,052 ms against the 300 ms budget. The health endpoint takes 8–15 ms on the VM and about 35–53 ms from Bangladesh; the GitHub runner is on another continent and opens a new TLS connection per request. The budget is a parameter now: 300 ms by default (the on-prem stack beside the runner) and 2 s for remote targets, which still catches errors and gross regressions.
 
+- PR #25 (Gatling budget) merged and deployed (`b2461eb`). Nightly on it fully green: Firefox and WebKit on the real stack and with pseudo-locale and visual checks, ZAP and Gatling on the on-prem stack and against dev, Lighthouse, Helm on kind, dependency re-scan.
+
 ## 2026-10-29
 - PR #20 (E03) merged. The deploy left dev at 502 and the first nightly since E03 failed; both are written up in the E03 log. Fixed in PR #21.
 - The owner made the repository public for a while so Actions can run (billing block on the private repository).

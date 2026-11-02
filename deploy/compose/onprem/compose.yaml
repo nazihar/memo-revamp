@@ -183,6 +183,8 @@ services:
     profiles: [devtools]
     image: axllent/mailpit:v1.31.5
     <<: *hardening
+    # Keeps its message database in /tmp (read-only root file system).
+    tmpfs: [/tmp]
     ports: ["127.0.0.1:${MEMO_MAILPIT_PORT:-8025}:8025"]
 
 networks:

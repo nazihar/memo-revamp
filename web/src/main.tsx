@@ -4,7 +4,7 @@ import { createRouter, RouterProvider } from '@tanstack/react-router'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { getSessionQueryKey } from './api/generated/@tanstack/react-query.gen'
-import { configureHttp, isProblem, PROBLEM } from './api/http'
+import { configureHttp, csrfToken, isProblem, PROBLEM } from './api/http'
 import { LocaleProvider } from './i18n/LocaleProvider'
 import { routeTree } from './routeTree.gen'
 import { ThemeProvider } from './theme/ThemeProvider'
@@ -45,14 +45,23 @@ declare module '@tanstack/react-router' {
 const root = document.getElementById('root')
 if (!root) throw new Error('#root element missing from index.html')
 
-createRoot(root).render(
-  <StrictMode>
-    <ThemeProvider>
-      <LocaleProvider>
-        <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
-        </QueryClientProvider>
-      </LocaleProvider>
-    </ThemeProvider>
-  </StrictMode>,
-)
+const render = () => {
+  createRoot(root).render(
+    <StrictMode>
+      <ThemeProvider>
+        <LocaleProvider>
+          <QueryClientProvider client={queryClient}>
+            <RouterProvider router={router} />
+          </QueryClientProvider>
+        </LocaleProvider>
+      </ThemeProvider>
+    </StrictMode>,
+  )
+}
+
+// The server gives every request without the CSRF cookie a new token, so on a first visit the app's first requests
+// would race to set it (a mutation could go out with a token another response had just replaced). Fetch it once first;
+// render regardless if the backend cannot be reached.
+void csrfToken()
+  .catch(() => undefined)
+  .finally(render)

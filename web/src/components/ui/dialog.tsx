@@ -8,6 +8,30 @@ import { Button } from './button'
 
 const MODAL_OPEN_CLASS = 'modal-open'
 
+// Safari (WebKit) does not focus a button when it is clicked (focus goes to the nearest focusable ancestor, such as
+// <main tabindex="-1">, or stays on the body), so there the control that opened a dialog is not document.activeElement.
+// The last pressed control stands in for it, so focus still returns to the opener on close.
+let lastPressed: HTMLElement | null = null
+if (typeof document !== 'undefined') {
+  document.addEventListener(
+    'pointerdown',
+    (event) => {
+      lastPressed =
+        event.target instanceof Element
+          ? event.target.closest<HTMLElement>('button, a[href], input, select, textarea, summary, [tabindex]')
+          : null
+    },
+    true,
+  )
+}
+
+function opener(): HTMLElement | null {
+  const active = document.activeElement instanceof HTMLElement ? document.activeElement : null
+  const pressed = lastPressed?.isConnected ? lastPressed : null
+  if (pressed && pressed !== active && (!active || active === document.body || active.contains(pressed))) return pressed
+  return active === document.body ? null : active
+}
+
 /** Opens and closes a <dialog> with showModal(), restores focus, and reports closing (Escape, close button, backdrop). */
 function useModal(open: boolean, onOpenChange: (open: boolean) => void) {
   const ref = useRef<HTMLDialogElement>(null)
@@ -17,7 +41,7 @@ function useModal(open: boolean, onOpenChange: (open: boolean) => void) {
     const dialog = ref.current
     if (!dialog) return
     if (open && !dialog.open) {
-      returnFocus.current = document.activeElement instanceof HTMLElement ? document.activeElement : null
+      returnFocus.current = opener()
       dialog.showModal()
       document.documentElement.classList.add(MODAL_OPEN_CLASS)
     } else if (!open && dialog.open) {

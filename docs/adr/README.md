@@ -31,3 +31,5 @@ We use the MADR format (see [0001](0001-record-architecture-decisions.md)). Star
 | [0025](0025-rate-limiting.md) | Rate limiting with Bucket4j on PostgreSQL | accepted | 2026-10-18 |
 | [0026](0026-org-model.md) | Org model: units tree, positions, effective-dated assignments | accepted | 2026-10-29 |
 | [0027](0027-authorisation-model.md) | Authorisation: permission catalogue, roles, policy service, SQL pushdown | accepted | 2026-10-29 |
+| [0028](0028-envelope-encryption.md) | Envelope encryption of files: Tink streaming AEAD with per-tenant keysets | accepted | 2026-11-02 |
+| [0029](0029-upload-pipeline-and-downloads.md) | Upload pipeline (detection, scanning, limits) and streamed range downloads | accepted | 2026-11-02 |

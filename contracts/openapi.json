@@ -52,6 +52,24 @@
         "required" : [ "items" ],
         "type" : "object"
       },
+      "AssignRequest" : {
+        "properties" : {
+          "userId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "validFrom" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "validTo" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "userId", "validFrom" ],
+        "type" : "object"
+      },
       "ChangePasswordRequest" : {
         "properties" : {
           "currentPassword" : {
@@ -66,6 +84,81 @@
           }
         },
         "required" : [ "currentPassword", "newPassword" ],
+        "type" : "object"
+      },
+      "ClassificationLevel" : {
+        "properties" : {
+          "description" : {
+            "type" : [ "string", "null" ]
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "rank" : {
+            "description" : "0 = lowest",
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "version" : {
+            "description" : "Send as If-Match on renames",
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "id", "name", "rank", "version" ],
+        "type" : "object"
+      },
+      "ClassificationLevelRequest" : {
+        "properties" : {
+          "description" : {
+            "maxLength" : 500,
+            "type" : [ "string", "null" ]
+          },
+          "name" : {
+            "maxLength" : 100,
+            "type" : "string"
+          }
+        },
+        "required" : [ "name" ],
+        "type" : "object"
+      },
+      "ClassificationOrderRequest" : {
+        "properties" : {
+          "levelIds" : {
+            "description" : "Every level id, lowest first",
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "levelIds" ],
+        "type" : "object"
+      },
+      "ClearanceRequest" : {
+        "properties" : {
+          "levelId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "levelId" ],
+        "type" : "object"
+      },
+      "CloseRequest" : {
+        "properties" : {
+          "validTo" : {
+            "description" : "First day it no longer exists",
+            "format" : "date",
+            "type" : "string"
+          }
+        },
+        "required" : [ "validTo" ],
         "type" : "object"
       },
       "CodeRequest" : {
@@ -90,6 +183,157 @@
           }
         },
         "required" : [ "name", "status" ],
+        "type" : "object"
+      },
+      "CreateOrgUnitRequest" : {
+        "properties" : {
+          "code" : {
+            "maxLength" : 30,
+            "type" : "string"
+          },
+          "legalEntityId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "name" : {
+            "maxLength" : 200,
+            "type" : "string"
+          },
+          "parentId" : {
+            "description" : "Absent for a root unit of the legal entity",
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "validFrom" : {
+            "description" : "Defaults to today",
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "code", "legalEntityId", "name" ],
+        "type" : "object"
+      },
+      "DirectoryPosition" : {
+        "properties" : {
+          "holder" : {
+            "description" : "Holder today; absent when vacant",
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/OrgPerson"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "unitId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "unitName" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "id", "title", "unitId", "unitName" ],
+        "type" : "object"
+      },
+      "DirectoryPositionSummary" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "unitName" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "id", "title", "unitName" ],
+        "type" : "object"
+      },
+      "DirectorySearchResult" : {
+        "properties" : {
+          "positions" : {
+            "items" : {
+              "$ref" : "#/components/schemas/DirectoryPosition"
+            },
+            "type" : "array"
+          },
+          "users" : {
+            "items" : {
+              "$ref" : "#/components/schemas/DirectoryUser"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "positions", "users" ],
+        "type" : "object"
+      },
+      "DirectoryUser" : {
+        "properties" : {
+          "person" : {
+            "$ref" : "#/components/schemas/OrgPerson"
+          },
+          "position" : {
+            "description" : "Primary position today",
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/DirectoryPositionSummary"
+            }, {
+              "type" : "null"
+            } ]
+          }
+        },
+        "required" : [ "person" ],
+        "type" : "object"
+      },
+      "Grant" : {
+        "properties" : {
+          "builtIn" : {
+            "type" : [ "string", "null" ]
+          },
+          "grantedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "roleId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "roleName" : {
+            "type" : "string"
+          },
+          "scopeUnitId" : {
+            "description" : "Unit subtree; absent for the whole organisation",
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "grantedAt", "id", "roleId", "roleName" ],
+        "type" : "object"
+      },
+      "GrantRequest" : {
+        "properties" : {
+          "roleId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "scopeUnitId" : {
+            "description" : "Limit to a unit subtree",
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "roleId" ],
         "type" : "object"
       },
       "Health" : {
@@ -172,6 +416,61 @@
         "required" : [ "displayName", "email", "tenantAdmin" ],
         "type" : "object"
       },
+      "LegalEntity" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "registrationNumber" : {
+            "type" : [ "string", "null" ]
+          },
+          "shortName" : {
+            "type" : [ "string", "null" ]
+          },
+          "validFrom" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "validTo" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "version" : {
+            "description" : "Send as If-Match on updates",
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "id", "name", "validFrom", "version" ],
+        "type" : "object"
+      },
+      "LegalEntityRequest" : {
+        "properties" : {
+          "name" : {
+            "maxLength" : 200,
+            "type" : "string"
+          },
+          "registrationNumber" : {
+            "maxLength" : 100,
+            "type" : [ "string", "null" ]
+          },
+          "shortName" : {
+            "maxLength" : 50,
+            "type" : [ "string", "null" ]
+          },
+          "validFrom" : {
+            "description" : "Creation only; defaults to today",
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "name" ],
+        "type" : "object"
+      },
       "LoginRequest" : {
         "properties" : {
           "email" : {
@@ -247,6 +546,66 @@
         "required" : [ "recoveryCodes", "session" ],
         "type" : "object"
       },
+      "MoveOrgUnitRequest" : {
+        "properties" : {
+          "parentId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "parentId" ],
+        "type" : "object"
+      },
+      "MyAccess" : {
+        "properties" : {
+          "clearance" : {
+            "$ref" : "#/components/schemas/MyClearance"
+          },
+          "permissions" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MyPermission"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "clearance", "permissions" ],
+        "type" : "object"
+      },
+      "MyClearance" : {
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "rank" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "name", "rank" ],
+        "type" : "object"
+      },
+      "MyPermission" : {
+        "properties" : {
+          "key" : {
+            "example" : "org.manage",
+            "type" : "string"
+          },
+          "scopeUnitIds" : {
+            "description" : "Unit subtrees it is held for, when not tenant-wide",
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "tenantWide" : {
+            "description" : "Held for the whole organisation",
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "key", "scopeUnitIds", "tenantWide" ],
+        "type" : "object"
+      },
       "MySession" : {
         "properties" : {
           "current" : {
@@ -274,6 +633,290 @@
         "required" : [ "current", "id", "lastActiveAt" ],
         "type" : "object"
       },
+      "OrgAssignment" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "person" : {
+            "$ref" : "#/components/schemas/OrgPerson"
+          },
+          "positionId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "status" : {
+            "enum" : [ "ACTIVE", "CANCELLED" ],
+            "type" : "string"
+          },
+          "validFrom" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "validTo" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "version" : {
+            "description" : "Send as If-Match on updates",
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "id", "person", "positionId", "status", "validFrom", "version" ],
+        "type" : "object"
+      },
+      "OrgHistoryEntry" : {
+        "properties" : {
+          "action" : {
+            "example" : "org.unit.moved",
+            "type" : "string"
+          },
+          "actor" : {
+            "description" : "Display name of the person who made the change; absent for the system",
+            "type" : [ "string", "null" ]
+          },
+          "after" : {
+            "additionalProperties" : { },
+            "type" : [ "object", "null" ]
+          },
+          "before" : {
+            "additionalProperties" : { },
+            "type" : [ "object", "null" ]
+          },
+          "occurredAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          }
+        },
+        "required" : [ "action", "occurredAt" ],
+        "type" : "object"
+      },
+      "OrgPerson" : {
+        "properties" : {
+          "displayName" : {
+            "type" : "string"
+          },
+          "email" : {
+            "type" : "string"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "displayName", "email", "id" ],
+        "type" : "object"
+      },
+      "OrgPosition" : {
+        "properties" : {
+          "code" : {
+            "type" : [ "string", "null" ]
+          },
+          "head" : {
+            "description" : "Head of its unit",
+            "type" : "boolean"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "unitId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "validFrom" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "validTo" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "version" : {
+            "description" : "Send as If-Match on updates",
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "head", "id", "title", "unitId", "validFrom", "version" ],
+        "type" : "object"
+      },
+      "OrgPositionDetail" : {
+        "properties" : {
+          "assignments" : {
+            "description" : "Newest first, cancelled ones included",
+            "items" : {
+              "$ref" : "#/components/schemas/OrgAssignment"
+            },
+            "type" : "array"
+          },
+          "canManage" : {
+            "description" : "Whether the signed-in user may change it",
+            "type" : "boolean"
+          },
+          "position" : {
+            "$ref" : "#/components/schemas/OrgPosition"
+          },
+          "reportingLines" : {
+            "description" : "Newest first, cancelled ones included",
+            "items" : {
+              "$ref" : "#/components/schemas/OrgReportingLine"
+            },
+            "type" : "array"
+          },
+          "unit" : {
+            "$ref" : "#/components/schemas/OrgUnit"
+          }
+        },
+        "required" : [ "assignments", "canManage", "position", "reportingLines", "unit" ],
+        "type" : "object"
+      },
+      "OrgPositionWithHolder" : {
+        "properties" : {
+          "holder" : {
+            "description" : "Holder on the requested date; absent when vacant",
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/OrgPerson"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "holderSince" : {
+            "description" : "Start of the holder's assignment",
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "position" : {
+            "$ref" : "#/components/schemas/OrgPosition"
+          }
+        },
+        "required" : [ "position" ],
+        "type" : "object"
+      },
+      "OrgReportingLine" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "positionId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "reportsTo" : {
+            "$ref" : "#/components/schemas/OrgPosition"
+          },
+          "status" : {
+            "enum" : [ "ACTIVE", "CANCELLED" ],
+            "type" : "string"
+          },
+          "validFrom" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "validTo" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "version" : {
+            "description" : "Send as If-Match on updates",
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "id", "positionId", "reportsTo", "status", "validFrom", "version" ],
+        "type" : "object"
+      },
+      "OrgUnit" : {
+        "properties" : {
+          "code" : {
+            "type" : "string"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "legalEntityId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "parentId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "validFrom" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "validTo" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "version" : {
+            "description" : "Send as If-Match on updates",
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "code", "id", "legalEntityId", "name", "validFrom", "version" ],
+        "type" : "object"
+      },
+      "OrgUnitDetail" : {
+        "properties" : {
+          "canManage" : {
+            "description" : "Whether the signed-in user may change this unit",
+            "type" : "boolean"
+          },
+          "path" : {
+            "description" : "Ancestors, root first",
+            "items" : {
+              "$ref" : "#/components/schemas/OrgUnit"
+            },
+            "type" : "array"
+          },
+          "unit" : {
+            "$ref" : "#/components/schemas/OrgUnit"
+          }
+        },
+        "required" : [ "canManage", "path", "unit" ],
+        "type" : "object"
+      },
+      "OrgUserPosition" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "position" : {
+            "$ref" : "#/components/schemas/OrgPosition"
+          },
+          "status" : {
+            "enum" : [ "ACTIVE", "CANCELLED" ],
+            "type" : "string"
+          },
+          "unitName" : {
+            "type" : "string"
+          },
+          "validFrom" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "validTo" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "id", "position", "status", "unitName", "validFrom" ],
+        "type" : "object"
+      },
       "PasswordResetCompletion" : {
         "properties" : {
           "newPassword" : {
@@ -298,6 +941,66 @@
           }
         },
         "required" : [ "email" ],
+        "type" : "object"
+      },
+      "PeriodRequest" : {
+        "properties" : {
+          "validFrom" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "validTo" : {
+            "description" : "First day it no longer applies; absent for open-ended",
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "validFrom" ],
+        "type" : "object"
+      },
+      "PermissionInfo" : {
+        "properties" : {
+          "key" : {
+            "example" : "org.manage",
+            "type" : "string"
+          },
+          "privileged" : {
+            "description" : "Holders count as administrators (always MFA)",
+            "type" : "boolean"
+          },
+          "scopable" : {
+            "description" : "Can be limited to a unit subtree",
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "key", "privileged", "scopable" ],
+        "type" : "object"
+      },
+      "PositionRequest" : {
+        "properties" : {
+          "code" : {
+            "maxLength" : 30,
+            "type" : [ "string", "null" ]
+          },
+          "head" : {
+            "type" : "boolean"
+          },
+          "title" : {
+            "maxLength" : 200,
+            "type" : "string"
+          },
+          "unitId" : {
+            "description" : "Creation only",
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "validFrom" : {
+            "description" : "Creation only; defaults to today",
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "head", "title" ],
         "type" : "object"
       },
       "ProblemDetail" : {
@@ -338,6 +1041,81 @@
           }
         },
         "required" : [ "recoveryCodes" ],
+        "type" : "object"
+      },
+      "ReportingLineRequest" : {
+        "properties" : {
+          "reportsToPositionId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "validFrom" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "validTo" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "reportsToPositionId", "validFrom" ],
+        "type" : "object"
+      },
+      "Role" : {
+        "properties" : {
+          "builtIn" : {
+            "description" : "Key of a built-in role; absent for custom roles",
+            "type" : [ "string", "null" ]
+          },
+          "description" : {
+            "type" : [ "string", "null" ]
+          },
+          "grants" : {
+            "description" : "How many grants use it",
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "permissions" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "version" : {
+            "description" : "Send as If-Match on changes",
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "grants", "id", "name", "permissions", "version" ],
+        "type" : "object"
+      },
+      "RoleRequest" : {
+        "properties" : {
+          "description" : {
+            "maxLength" : 500,
+            "type" : [ "string", "null" ]
+          },
+          "name" : {
+            "maxLength" : 100,
+            "type" : "string"
+          },
+          "permissions" : {
+            "description" : "Catalogue keys",
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "name", "permissions" ],
         "type" : "object"
       },
       "Session" : {
@@ -395,6 +1173,35 @@
             "type" : [ "string", "null" ]
           }
         },
+        "type" : "object"
+      },
+      "UpdateOrgUnitRequest" : {
+        "properties" : {
+          "code" : {
+            "maxLength" : 30,
+            "type" : "string"
+          },
+          "name" : {
+            "maxLength" : 200,
+            "type" : "string"
+          }
+        },
+        "required" : [ "code", "name" ],
+        "type" : "object"
+      },
+      "UserAccess" : {
+        "properties" : {
+          "clearance" : {
+            "$ref" : "#/components/schemas/ClassificationLevel"
+          },
+          "grants" : {
+            "items" : {
+              "$ref" : "#/components/schemas/Grant"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "clearance", "grants" ],
         "type" : "object"
       }
     }
@@ -505,6 +1312,34 @@
           }
         },
         "summary" : "Invite a user",
+        "tags" : [ "admin" ]
+      }
+    },
+    "/api/v1/admin/users/{id}" : {
+      "get" : {
+        "operationId" : "getUser",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AdminUser"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "One user of the organisation",
         "tags" : [ "admin" ]
       }
     },
@@ -1048,6 +1883,482 @@
         "tags" : [ "auth" ]
       }
     },
+    "/api/v1/authz/classification-levels" : {
+      "get" : {
+        "operationId" : "listClassificationLevels",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/ClassificationLevel"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Classification levels, lowest first",
+        "tags" : [ "authz" ]
+      },
+      "post" : {
+        "operationId" : "createClassificationLevel",
+        "parameters" : [ {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ClassificationLevelRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ClassificationLevel"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Add a level above the others",
+        "tags" : [ "authz" ]
+      }
+    },
+    "/api/v1/authz/classification-levels/order" : {
+      "post" : {
+        "operationId" : "reorderClassificationLevels",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ClassificationOrderRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/ClassificationLevel"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Put the levels in a new order, lowest first",
+        "tags" : [ "authz" ]
+      }
+    },
+    "/api/v1/authz/classification-levels/{id}" : {
+      "delete" : {
+        "operationId" : "deleteClassificationLevel",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "summary" : "Remove a level nobody is cleared to",
+        "tags" : [ "authz" ]
+      },
+      "put" : {
+        "operationId" : "renameClassificationLevel",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ClassificationLevelRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ClassificationLevel"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Rename a level",
+        "tags" : [ "authz" ]
+      }
+    },
+    "/api/v1/authz/grants/{id}" : {
+      "delete" : {
+        "operationId" : "revokeGrant",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "summary" : "Revoke a role grant",
+        "tags" : [ "authz" ]
+      }
+    },
+    "/api/v1/authz/permissions" : {
+      "get" : {
+        "operationId" : "listPermissions",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/PermissionInfo"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The permission catalogue",
+        "tags" : [ "authz" ]
+      }
+    },
+    "/api/v1/authz/roles" : {
+      "get" : {
+        "operationId" : "listRoles",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/Role"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Built-in and custom roles",
+        "tags" : [ "authz" ]
+      },
+      "post" : {
+        "operationId" : "createRole",
+        "parameters" : [ {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RoleRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Role"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Create a custom role",
+        "tags" : [ "authz" ]
+      }
+    },
+    "/api/v1/authz/roles/{id}" : {
+      "delete" : {
+        "operationId" : "deleteRole",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "summary" : "Remove an unused custom role",
+        "tags" : [ "authz" ]
+      },
+      "put" : {
+        "operationId" : "updateRole",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RoleRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Role"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Change a custom role",
+        "tags" : [ "authz" ]
+      }
+    },
+    "/api/v1/authz/users/{id}/access" : {
+      "get" : {
+        "operationId" : "getUserAccess",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/UserAccess"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A user's role grants and clearance",
+        "tags" : [ "authz" ]
+      }
+    },
+    "/api/v1/authz/users/{id}/clearance" : {
+      "put" : {
+        "operationId" : "setClearance",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ClearanceRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ClassificationLevel"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Set a user's clearance level",
+        "tags" : [ "authz" ]
+      }
+    },
+    "/api/v1/authz/users/{id}/grants" : {
+      "post" : {
+        "operationId" : "grantRole",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/GrantRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Grant"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Give a user a role, for the organisation or a unit subtree",
+        "tags" : [ "authz" ]
+      }
+    },
+    "/api/v1/directory/search" : {
+      "get" : {
+        "operationId" : "searchDirectory",
+        "parameters" : [ {
+          "description" : "At least 2 characters",
+          "in" : "query",
+          "name" : "q",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "description" : "user, position, or both (default)",
+          "in" : "query",
+          "name" : "kind",
+          "required" : false,
+          "schema" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "required" : false,
+          "schema" : {
+            "default" : 10,
+            "format" : "int32",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DirectorySearchResult"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Find people and positions by the start of a word in their name or title",
+        "tags" : [ "directory" ]
+      }
+    },
     "/api/v1/health" : {
       "get" : {
         "description" : "Anonymous. Status per dependency, no versions, hosts or error details. Cached for a few seconds.",
@@ -1094,6 +2405,25 @@
           }
         },
         "summary" : "My account",
+        "tags" : [ "me" ]
+      }
+    },
+    "/api/v1/me/access" : {
+      "get" : {
+        "operationId" : "getMyAccess",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MyAccess"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "My permissions and clearance",
         "tags" : [ "me" ]
       }
     },
@@ -1197,6 +2527,946 @@
         },
         "summary" : "Sign out one of my sessions",
         "tags" : [ "me" ]
+      }
+    },
+    "/api/v1/org/assignments/{id}" : {
+      "put" : {
+        "operationId" : "updateAssignment",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PeriodRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/OrgAssignment"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "End an assignment or correct its dates",
+        "tags" : [ "org" ]
+      }
+    },
+    "/api/v1/org/assignments/{id}/cancel" : {
+      "post" : {
+        "operationId" : "cancelAssignment",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/OrgAssignment"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Cancel an assignment recorded in error",
+        "tags" : [ "org" ]
+      }
+    },
+    "/api/v1/org/history/{type}/{id}" : {
+      "get" : {
+        "operationId" : "getOrgHistory",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "type",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "required" : false,
+          "schema" : {
+            "default" : 50,
+            "format" : "int32",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/OrgHistoryEntry"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Change history of a unit or position, newest first",
+        "tags" : [ "org" ]
+      }
+    },
+    "/api/v1/org/legal-entities" : {
+      "get" : {
+        "operationId" : "listLegalEntities",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/LegalEntity"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Legal entities",
+        "tags" : [ "org" ]
+      },
+      "post" : {
+        "operationId" : "createLegalEntity",
+        "parameters" : [ {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/LegalEntityRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/LegalEntity"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Create a legal entity",
+        "tags" : [ "org" ]
+      }
+    },
+    "/api/v1/org/legal-entities/{id}" : {
+      "put" : {
+        "operationId" : "updateLegalEntity",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/LegalEntityRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/LegalEntity"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Rename a legal entity",
+        "tags" : [ "org" ]
+      }
+    },
+    "/api/v1/org/legal-entities/{id}/close" : {
+      "post" : {
+        "operationId" : "closeLegalEntity",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CloseRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/LegalEntity"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Close a legal entity",
+        "tags" : [ "org" ]
+      }
+    },
+    "/api/v1/org/positions" : {
+      "post" : {
+        "operationId" : "createPosition",
+        "parameters" : [ {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PositionRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/OrgPosition"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Create a position in a unit",
+        "tags" : [ "org" ]
+      }
+    },
+    "/api/v1/org/positions/{id}" : {
+      "get" : {
+        "operationId" : "getPosition",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/OrgPositionDetail"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A position with its holders and reporting lines over time",
+        "tags" : [ "org" ]
+      },
+      "put" : {
+        "operationId" : "updatePosition",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PositionRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/OrgPosition"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Retitle or recode a position, or mark it as head of its unit",
+        "tags" : [ "org" ]
+      }
+    },
+    "/api/v1/org/positions/{id}/assignments" : {
+      "post" : {
+        "operationId" : "assignPosition",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/AssignRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/OrgAssignment"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Assign a person to a position from a date",
+        "tags" : [ "org" ]
+      }
+    },
+    "/api/v1/org/positions/{id}/close" : {
+      "post" : {
+        "operationId" : "closePosition",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CloseRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/OrgPosition"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Close a position",
+        "tags" : [ "org" ]
+      }
+    },
+    "/api/v1/org/positions/{id}/holder" : {
+      "get" : {
+        "operationId" : "getPositionHolder",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "date",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/OrgAssignment"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Who held a position on a date (default today); 204 when vacant",
+        "tags" : [ "org" ]
+      }
+    },
+    "/api/v1/org/positions/{id}/reporting-lines" : {
+      "post" : {
+        "operationId" : "createReportingLine",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ReportingLineRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/OrgReportingLine"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Make a position report to another from a date",
+        "tags" : [ "org" ]
+      }
+    },
+    "/api/v1/org/reporting-lines/{id}" : {
+      "put" : {
+        "operationId" : "updateReportingLine",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PeriodRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/OrgReportingLine"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "End a reporting line or correct its dates",
+        "tags" : [ "org" ]
+      }
+    },
+    "/api/v1/org/reporting-lines/{id}/cancel" : {
+      "post" : {
+        "operationId" : "cancelReportingLine",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/OrgReportingLine"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Cancel a reporting line recorded in error",
+        "tags" : [ "org" ]
+      }
+    },
+    "/api/v1/org/units" : {
+      "get" : {
+        "description" : "Units valid on `asOf` (default today), or every unit with `includeClosed`. Clients build the tree from parentId.",
+        "operationId" : "listOrgUnits",
+        "parameters" : [ {
+          "description" : "Date the tree is shown for",
+          "in" : "query",
+          "name" : "asOf",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "includeClosed",
+          "required" : false,
+          "schema" : {
+            "default" : false,
+            "type" : "boolean"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/OrgUnit"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The units tree as a flat list",
+        "tags" : [ "org" ]
+      },
+      "post" : {
+        "operationId" : "createOrgUnit",
+        "parameters" : [ {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CreateOrgUnitRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/OrgUnit"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Create a unit",
+        "tags" : [ "org" ]
+      }
+    },
+    "/api/v1/org/units/{id}" : {
+      "get" : {
+        "operationId" : "getOrgUnit",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/OrgUnitDetail"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A unit with its path",
+        "tags" : [ "org" ]
+      },
+      "put" : {
+        "operationId" : "updateOrgUnit",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/UpdateOrgUnitRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/OrgUnit"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Rename or recode a unit",
+        "tags" : [ "org" ]
+      }
+    },
+    "/api/v1/org/units/{id}/close" : {
+      "post" : {
+        "operationId" : "closeOrgUnit",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CloseRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/OrgUnit"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Close a unit",
+        "tags" : [ "org" ]
+      }
+    },
+    "/api/v1/org/units/{id}/move" : {
+      "post" : {
+        "operationId" : "moveOrgUnit",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MoveOrgUnitRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/OrgUnit"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Move a unit, with its sub-units, under another parent",
+        "tags" : [ "org" ]
+      }
+    },
+    "/api/v1/org/units/{id}/positions" : {
+      "get" : {
+        "operationId" : "listUnitPositions",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "asOf",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/OrgPositionWithHolder"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Positions of a unit with their holders on a date (default today)",
+        "tags" : [ "org" ]
+      }
+    },
+    "/api/v1/org/users/{id}/assignments" : {
+      "get" : {
+        "operationId" : "listUserAssignments",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/OrgUserPosition"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A person's positions over time, newest first",
+        "tags" : [ "org" ]
       }
     }
   },

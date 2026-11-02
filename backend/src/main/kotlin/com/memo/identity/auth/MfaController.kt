@@ -1,6 +1,7 @@
 package com.memo.identity.auth
 
 import com.memo.audit.AuditLog
+import com.memo.common.authz.AuthenticationFlow
 import com.memo.common.ratelimit.RateLimit
 import com.memo.common.ratelimit.RateLimiter
 import com.memo.common.tenant.TenantContext
@@ -57,6 +58,7 @@ data class EnrolmentConfirmedResponse(
 
 /** The second sign-in step and TOTP enrolment (ADR-0024). Each success adds `FACTOR_TOTP` under a new session id. */
 @RestController
+@AuthenticationFlow
 @RequestMapping("/api/v1/auth/mfa")
 @Tag(name = "auth")
 class MfaController(

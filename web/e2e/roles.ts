@@ -4,10 +4,11 @@ import { fileURLToPath } from 'node:url'
 /**
  * Per-role authenticated sessions as Playwright storage states (TESTING_STRATEGY §4, Phase 0 Q5). The global setup
  * signs the demo organisation's users in through the real sign-in flow, MFA included, and writes
- * `e2e/.auth/<role>.json`. There is deliberately no test-only auth bypass in the application. Later phases add initiator,
- * approver, secretary and director.
+ * `e2e/.auth/<role>.json`. There is deliberately no test-only auth bypass in the application. E04 added the org
+ * administrator, a branch administrator scoped to North Region, and the auditor; later phases add initiator, approver,
+ * secretary and director.
  */
-export type SignedInRole = 'tenantAdmin' | 'user'
+export type SignedInRole = 'tenantAdmin' | 'orgAdmin' | 'branchAdmin' | 'auditor' | 'user'
 export type Role = 'anonymous' | SignedInRole
 
 export function authFile(role: SignedInRole): string {

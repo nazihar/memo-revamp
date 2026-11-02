@@ -1,6 +1,11 @@
 import { useQuery, useQueryClient, type QueryClient } from '@tanstack/react-query'
-import { getMeOptions, getSessionOptions, getSessionQueryKey } from '@/api/generated/@tanstack/react-query.gen'
-import type { Session } from '@/api/generated/types.gen'
+import {
+  getMeOptions,
+  getMyAccessQueryKey,
+  getSessionOptions,
+  getSessionQueryKey,
+} from '@/api/generated/@tanstack/react-query.gen'
+import type { MyAccess, Session } from '@/api/generated/types.gen'
 import { problemType, PROBLEM } from '@/api/http'
 import type { Viewer } from '@/app/navigation'
 
@@ -24,6 +29,8 @@ export function useSessionRefresh() {
 
 export function refreshSession(queryClient: QueryClient, next?: Session) {
   if (next) queryClient.setQueryData(getSessionQueryKey(), next)
+  // Permissions belong to the session: another sign-in must not see the previous user's.
+  queryClient.removeQueries({ queryKey: getMyAccessQueryKey() })
   return queryClient.invalidateQueries({ queryKey: getSessionQueryKey() })
 }
 
@@ -43,8 +50,8 @@ export function pathForState(state: Session['state'], next?: string): string | u
 /** Seconds from a 429 problem's detail is not available; the hint is generic but honest. */
 export const isRateLimited = (error: unknown) => problemType(error) === PROBLEM.rateLimited
 
-/** What the menus may show for [session] (the server enforces access regardless). */
-export function viewerOf(session: Session | undefined): Viewer {
-  const user = session?.state === 'AUTHENTICATED' ? session.user : undefined
-  return { signedIn: !!user, tenantAdmin: user?.tenantAdmin ?? false }
+/** What the menus may show for [session] and [access] (the server enforces access regardless). */
+export function viewerOf(session: Session | undefined, access?: MyAccess): Viewer {
+  const signedIn = session?.state === 'AUTHENTICATED'
+  return { signedIn, permissions: signedIn ? (access?.permissions.map((p) => p.key) ?? []) : [] }
 }

@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
-import type { Health, Session } from '@/api/generated/types.gen'
+import type { Health, MyAccess, Session } from '@/api/generated/types.gen'
 
 // jsdom has no origin for relative URLs; the generated client uses baseUrl "/" which resolves against this.
 export const API_ORIGIN = 'http://localhost:3000'
@@ -44,5 +44,14 @@ export const csrfHandler = () =>
     return new HttpResponse(null, { status: 204 })
   })
 
+/** `GET /me/access`: what the signed-in user may do; by default only the implicit user role (directory.read). */
+export const accessHandler = (permissions: string[] = []) =>
+  http.get(`${API_ORIGIN}/api/v1/me/access`, () =>
+    HttpResponse.json<MyAccess>({
+      permissions: ['directory.read', ...permissions].map((key) => ({ key, tenantWide: true, scopeUnitIds: [] })),
+      clearance: { rank: 0, name: 'Public' },
+    }),
+  )
+
 /** Default handlers: every test starts from a healthy backend and an anonymous visitor, and overrides what it needs. */
-export const server = setupServer(healthHandler(), sessionHandler(), csrfHandler())
+export const server = setupServer(healthHandler(), sessionHandler(), csrfHandler(), accessHandler())

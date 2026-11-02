@@ -1,6 +1,7 @@
 package com.memo.identity.auth
 
 import com.memo.audit.AuditLog
+import com.memo.common.authz.Policy
 import com.memo.common.context.Actor
 import com.memo.common.context.ActorContext
 import com.memo.common.context.ActorScope
@@ -26,6 +27,7 @@ import java.util.Base64
 @Component
 class AuthSettings(
     private val settings: TenantSettings,
+    private val policy: Policy,
 ) {
     fun idleTimeout(): Duration = Duration.ofMinutes(int(IDLE_MINUTES, DEFAULT_IDLE_MINUTES, 1..MAX_IDLE_MINUTES).toLong())
 
@@ -34,8 +36,9 @@ class AuthSettings(
 
     fun absoluteTimeout(): Duration = Duration.ofHours(int(ABSOLUTE_HOURS, DEFAULT_ABSOLUTE_HOURS, 1..MAX_ABSOLUTE_HOURS).toLong())
 
-    /** Tenant admins always need MFA; other users unless the tenant relaxes it (overview Q5). */
-    fun mfaRequired(account: UserAccount): Boolean = account.tenantAdmin || settings.get(MFA_REQUIRED)?.value != MFA_ADMINS_ONLY
+    /** Holders of privileged permissions always need MFA; other users unless the tenant relaxes it (overview Q5, ADR-0027). */
+    fun mfaRequired(account: UserAccount): Boolean =
+        settings.get(MFA_REQUIRED)?.value != MFA_ADMINS_ONLY || policy.isPrivileged(account.id.value)
 
     private fun int(
         key: String,
@@ -151,7 +154,6 @@ class SignIn(
             SessionPrincipal(
                 tenantId = tenant.value,
                 userId = account.id.value,
-                tenantAdmin = account.tenantAdmin,
                 mfaRequired = mfaRequired,
                 factors = listOf(SessionFactor(Factor.PASSWORD, now)),
                 authenticatedAt = now,

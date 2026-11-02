@@ -1,5 +1,6 @@
 package com.memo.identity.auth
 
+import com.memo.common.authz.PublicEndpoint
 import com.memo.common.ratelimit.RateLimit
 import com.memo.common.ratelimit.RateLimiter
 import com.memo.common.tenant.TenantContext
@@ -74,6 +75,7 @@ data class InvitationResponse(
  * rate-limited (ADR-0025).
  */
 @RestController
+@PublicEndpoint
 @RequestMapping("/api/v1/auth")
 @Tag(name = "auth")
 class RecoveryController(

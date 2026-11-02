@@ -1,17 +1,10 @@
-import type { Page } from '@playwright/test'
-import { demoSecret, enterCode, latestMailText } from '../auth'
+import { confirmIfAsked, demoSecret, enterCode, latestMailText } from '../auth'
 import { expect, test } from '../fixtures'
 
 /**
  * Identity journeys (E03 test plan T9/T10) on the real stack: sign-in with TOTP, an invitation accepted through the
  * emailed link (Mailpit), MFA enrolment, sessions, and an admin action behind step-up.
  */
-
-/** Admin actions may ask to confirm with a code; the demo admin answers with the demo TOTP secret. */
-async function confirmIfAsked(page: Page, secret: string) {
-  const dialog = page.getByRole('dialog', { name: 'Confirm it is you' })
-  if (await dialog.isVisible().catch(() => false)) await enterCode(page, secret, 'Code', 'Confirm')
-}
 
 test('an anonymous visitor is sent to sign-in, which is accessible', async ({ app, page }) => {
   await app.visit('/')

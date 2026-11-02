@@ -1,6 +1,7 @@
 package com.memo.identity.session
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.memo.common.web.AuthenticatedUser
 import org.springframework.security.authentication.AbstractAuthenticationToken
 import org.springframework.security.core.GrantedAuthority
@@ -23,13 +24,15 @@ data class SessionFactor(
 )
 
 /**
- * The only security-relevant content of a session (ADR-0023), stored as JSON in the `memo.principal` attribute. Role and
- * MFA requirement are fixed at sign-in; changing them (E04 role grants, admin actions) revokes the user's sessions.
+ * The only security-relevant content of a session (ADR-0023), stored as JSON in the `memo.principal` attribute. The MFA
+ * requirement is fixed at sign-in; a change that makes a user privileged without MFA revokes their sessions. Permissions
+ * are not stored: the policy reads them from cached grants (ADR-0027). Unknown properties (E03's `tenantAdmin`) are
+ * ignored, so sessions survive the upgrade.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 data class SessionPrincipal(
     override val tenantId: UUID,
     override val userId: UUID,
-    val tenantAdmin: Boolean,
     val mfaRequired: Boolean,
     val factors: List<SessionFactor>,
     val authenticatedAt: Instant,
@@ -60,7 +63,6 @@ data class SessionPrincipal(
         buildList {
             factors.forEach { add(FactorGrantedAuthority.withAuthority(it.type.authority).issuedAt(it.issuedAt).build()) }
             if (sessionComplete) add(SimpleGrantedAuthority(AuthenticatedUser.SESSION_COMPLETE))
-            if (sessionComplete && tenantAdmin) add(SimpleGrantedAuthority(AuthenticatedUser.TENANT_ADMIN))
         }
 }
 

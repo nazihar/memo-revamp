@@ -30,6 +30,7 @@ enum class RateLimit(
     PASSWORD_RESET_PER_IP(5, Duration.ofHours(1)),
     PASSWORD_RESET_PER_ACCOUNT(3, Duration.ofHours(1)),
     INVITATION_PER_IP(10, Duration.ofHours(1)),
+    DIRECTORY_SEARCH_PER_USER(60, Duration.ofMinutes(1)),
     ;
 
     internal val configuration: BucketConfiguration by lazy {

@@ -1,11 +1,11 @@
-import { Activity, House, LayoutTemplate, Users, type LucideIcon } from 'lucide-react'
+import { Activity, House, LayoutTemplate, Network, ShieldCheck, Tags, Users, type LucideIcon } from 'lucide-react'
 import { defineMessages, type MessageDescriptor } from 'react-intl'
 import { patternsEnabled } from './features'
 
 export type NavGroup = 'work' | 'administration' | 'developer'
 
-/** Who sees a menu entry; the server enforces access regardless (E03 design §4). */
-export type Audience = 'everyone' | 'signedIn' | 'tenantAdmin'
+/** Who sees a menu entry: everyone, any signed-in user, or holders of a permission (ADR-0027). The server decides. */
+export type Audience = 'everyone' | 'signedIn' | { permission: string }
 
 export interface NavItem {
   id: string
@@ -21,15 +21,19 @@ export interface NavItem {
 /** What the current viewer may see. */
 export interface Viewer {
   signedIn: boolean
-  tenantAdmin: boolean
+  /** Permission keys held anywhere (`GET /me/access`). */
+  permissions: string[]
 }
 
-export const ANONYMOUS: Viewer = { signedIn: false, tenantAdmin: false }
+export const ANONYMOUS: Viewer = { signedIn: false, permissions: [] }
 
 const messages = defineMessages({
   home: { id: 'nav.home', defaultMessage: 'Home' },
   status: { id: 'nav.status', defaultMessage: 'Status' },
   users: { id: 'nav.users', defaultMessage: 'Users' },
+  org: { id: 'nav.org', defaultMessage: 'Organisation' },
+  roles: { id: 'nav.roles', defaultMessage: 'Roles' },
+  classifications: { id: 'nav.classifications', defaultMessage: 'Classification' },
   patterns: { id: 'nav.patterns', defaultMessage: 'Patterns' },
 })
 
@@ -50,13 +54,32 @@ export const navigation: NavItem[] = [
     audience: 'everyone',
     enabled: true,
   },
+  { id: 'org', to: '/org', label: messages.org, icon: Network, group: 'work', audience: 'signedIn', enabled: true },
   {
     id: 'users',
     to: '/admin/users',
     label: messages.users,
     icon: Users,
     group: 'administration',
-    audience: 'tenantAdmin',
+    audience: { permission: 'identity.users.manage' },
+    enabled: true,
+  },
+  {
+    id: 'roles',
+    to: '/admin/roles',
+    label: messages.roles,
+    icon: ShieldCheck,
+    group: 'administration',
+    audience: { permission: 'authz.roles.manage' },
+    enabled: true,
+  },
+  {
+    id: 'classifications',
+    to: '/admin/classifications',
+    label: messages.classifications,
+    icon: Tags,
+    group: 'administration',
+    audience: { permission: 'authz.classifications.manage' },
     enabled: true,
   },
   {
@@ -71,9 +94,9 @@ export const navigation: NavItem[] = [
 ]
 
 function visibleTo(viewer: Viewer, audience: Audience): boolean {
-  if (audience === 'tenantAdmin') return viewer.tenantAdmin
+  if (audience === 'everyone') return true
   if (audience === 'signedIn') return viewer.signedIn
-  return true
+  return viewer.signedIn && viewer.permissions.includes(audience.permission)
 }
 
 /** Enabled items the viewer may see, grouped in display order; empty groups are left out. */

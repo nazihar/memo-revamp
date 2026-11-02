@@ -1,6 +1,7 @@
 package com.memo.identity.auth
 
 import com.memo.audit.AuditLog
+import com.memo.common.authz.AuthenticationFlow
 import com.memo.common.ratelimit.RateLimit
 import com.memo.common.ratelimit.RateLimiter
 import com.memo.common.tenant.TenantContext
@@ -63,6 +64,7 @@ data class SessionUserResponse(
 
 /** Sign-in, sign-out and session state for the SPA (ADR-0023): JSON only, no redirects, no tokens in JavaScript. */
 @RestController
+@AuthenticationFlow
 @RequestMapping("/api/v1/auth")
 @Tag(name = "auth")
 class AuthController(

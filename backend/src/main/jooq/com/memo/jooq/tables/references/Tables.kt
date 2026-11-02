@@ -9,6 +9,11 @@ import com.memo.jooq.tables.AuditAnchor
 import com.memo.jooq.tables.AuditChainHead
 import com.memo.jooq.tables.AuditEvent
 import com.memo.jooq.tables.AuditVerification
+import com.memo.jooq.tables.AuthzClassificationLevel
+import com.memo.jooq.tables.AuthzClearance
+import com.memo.jooq.tables.AuthzGrant
+import com.memo.jooq.tables.AuthzRole
+import com.memo.jooq.tables.AuthzRolePermission
 import com.memo.jooq.tables.IdentityActionToken
 import com.memo.jooq.tables.IdentityHttpSession
 import com.memo.jooq.tables.IdentityHttpSessionAttributes
@@ -17,6 +22,11 @@ import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
 import com.memo.jooq.tables.NotificationMailOutbox
+import com.memo.jooq.tables.OrgAssignment
+import com.memo.jooq.tables.OrgLegalEntity
+import com.memo.jooq.tables.OrgPosition
+import com.memo.jooq.tables.OrgReportingLine
+import com.memo.jooq.tables.OrgUnit
 import com.memo.jooq.tables.SystemIdempotencyKey
 import com.memo.jooq.tables.SystemInfo
 import com.memo.jooq.tables.TenancySetting
@@ -44,6 +54,31 @@ val AUDIT_EVENT: AuditEvent = AuditEvent.AUDIT_EVENT
  * The table <code>memo.audit_verification</code>.
  */
 val AUDIT_VERIFICATION: AuditVerification = AuditVerification.AUDIT_VERIFICATION
+
+/**
+ * The table <code>memo.authz_classification_level</code>.
+ */
+val AUTHZ_CLASSIFICATION_LEVEL: AuthzClassificationLevel = AuthzClassificationLevel.AUTHZ_CLASSIFICATION_LEVEL
+
+/**
+ * The table <code>memo.authz_clearance</code>.
+ */
+val AUTHZ_CLEARANCE: AuthzClearance = AuthzClearance.AUTHZ_CLEARANCE
+
+/**
+ * The table <code>memo.authz_grant</code>.
+ */
+val AUTHZ_GRANT: AuthzGrant = AuthzGrant.AUTHZ_GRANT
+
+/**
+ * The table <code>memo.authz_role</code>.
+ */
+val AUTHZ_ROLE: AuthzRole = AuthzRole.AUTHZ_ROLE
+
+/**
+ * The table <code>memo.authz_role_permission</code>.
+ */
+val AUTHZ_ROLE_PERMISSION: AuthzRolePermission = AuthzRolePermission.AUTHZ_ROLE_PERMISSION
 
 /**
  * The table <code>memo.identity_action_token</code>.
@@ -84,6 +119,31 @@ val IDENTITY_USER: IdentityUser = IdentityUser.IDENTITY_USER
  * The table <code>memo.notification_mail_outbox</code>.
  */
 val NOTIFICATION_MAIL_OUTBOX: NotificationMailOutbox = NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX
+
+/**
+ * The table <code>memo.org_assignment</code>.
+ */
+val ORG_ASSIGNMENT: OrgAssignment = OrgAssignment.ORG_ASSIGNMENT
+
+/**
+ * The table <code>memo.org_legal_entity</code>.
+ */
+val ORG_LEGAL_ENTITY: OrgLegalEntity = OrgLegalEntity.ORG_LEGAL_ENTITY
+
+/**
+ * The table <code>memo.org_position</code>.
+ */
+val ORG_POSITION: OrgPosition = OrgPosition.ORG_POSITION
+
+/**
+ * The table <code>memo.org_reporting_line</code>.
+ */
+val ORG_REPORTING_LINE: OrgReportingLine = OrgReportingLine.ORG_REPORTING_LINE
+
+/**
+ * The table <code>memo.org_unit</code>.
+ */
+val ORG_UNIT: OrgUnit = OrgUnit.ORG_UNIT
 
 /**
  * The table <code>memo.system_idempotency_key</code>.

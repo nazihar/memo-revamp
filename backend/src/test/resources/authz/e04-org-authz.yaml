@@ -1,0 +1,62 @@
+# E04 org directory and authorisation (design E04 §7). Rules: rules.yaml.
+epic: E04
+endpoints:
+  - { endpoint: GET /api/v1/me/access, rule: signedIn }
+  # Org directory (T3). Changes are gated by holding the permission somewhere; scoped checks are in OrgUnitsIT.
+  - { endpoint: GET /api/v1/org/legal-entities, rule: signedIn }
+  - { endpoint: POST /api/v1/org/legal-entities, rule: tenantAdmin }
+  - { endpoint: "PUT /api/v1/org/legal-entities/{id}", rule: tenantAdmin }
+  - { endpoint: "POST /api/v1/org/legal-entities/{id}/close", rule: tenantAdmin }
+  - { endpoint: GET /api/v1/org/units, rule: signedIn }
+  - { endpoint: "GET /api/v1/org/units/{id}", rule: signedIn }
+  - { endpoint: POST /api/v1/org/units, rule: tenantAdmin }
+  - { endpoint: "PUT /api/v1/org/units/{id}", rule: tenantAdmin }
+  - { endpoint: "POST /api/v1/org/units/{id}/move", rule: tenantAdmin }
+  - { endpoint: "POST /api/v1/org/units/{id}/close", rule: tenantAdmin }
+  # Positions, assignments, reporting lines and history (T4); scoped and attribute cases in AssignmentsIT/OrgUnitsIT.
+  - { endpoint: "GET /api/v1/org/units/{id}/positions", rule: signedIn }
+  - { endpoint: "GET /api/v1/org/positions/{id}", rule: signedIn }
+  - { endpoint: POST /api/v1/org/positions, rule: tenantAdmin }
+  - { endpoint: "PUT /api/v1/org/positions/{id}", rule: tenantAdmin }
+  - { endpoint: "POST /api/v1/org/positions/{id}/close", rule: tenantAdmin }
+  - { endpoint: "POST /api/v1/org/positions/{id}/assignments", rule: tenantAdmin }
+  - { endpoint: "PUT /api/v1/org/assignments/{id}", rule: tenantAdmin }
+  - { endpoint: "POST /api/v1/org/assignments/{id}/cancel", rule: tenantAdmin }
+  - { endpoint: "GET /api/v1/org/positions/{id}/holder", rule: signedIn }
+  - { endpoint: "GET /api/v1/org/users/{id}/assignments", rule: signedIn }
+  - { endpoint: "POST /api/v1/org/positions/{id}/reporting-lines", rule: tenantAdmin }
+  - { endpoint: "PUT /api/v1/org/reporting-lines/{id}", rule: tenantAdmin }
+  - { endpoint: "POST /api/v1/org/reporting-lines/{id}/cancel", rule: tenantAdmin }
+  # Any signed-in user may ask; the object decides (audit.read or org.manage on it). Random ids are 404 for everyone.
+  - { endpoint: "GET /api/v1/org/history/{type}/{id}", rule: signedIn }
+  # Roles, grants, classification and clearance (T5): mutations need a fresh step-up.
+  - { endpoint: GET /api/v1/authz/permissions, rule: tenantAdmin }
+  - { endpoint: GET /api/v1/authz/roles, rule: tenantAdmin }
+  - endpoint: POST /api/v1/authz/roles
+    rule: tenantAdminStepUp
+    headers: { Idempotency-Key: "{random}" }
+    body: { name: "Matrix {random}", permissions: [audit.read] }
+  - endpoint: "PUT /api/v1/authz/roles/{id}"
+    rule: tenantAdminStepUp
+    headers: { If-Match: "\"0\"" }
+    body: { name: "Matrix {random}", permissions: [audit.read] }
+  - { endpoint: "DELETE /api/v1/authz/roles/{id}", rule: tenantAdminStepUp, headers: { If-Match: "\"0\"" } }
+  - { endpoint: "GET /api/v1/authz/users/{id}/access", rule: tenantAdmin }
+  - { endpoint: "POST /api/v1/authz/users/{id}/grants", rule: tenantAdminStepUp, body: { roleId: "{random}" } }
+  - { endpoint: "DELETE /api/v1/authz/grants/{id}", rule: tenantAdminStepUp }
+  - { endpoint: "PUT /api/v1/authz/users/{id}/clearance", rule: tenantAdminStepUp, body: { levelId: "{random}" } }
+  - { endpoint: GET /api/v1/authz/classification-levels, rule: signedIn }
+  - endpoint: POST /api/v1/authz/classification-levels
+    rule: tenantAdminStepUp
+    headers: { Idempotency-Key: "{random}" }
+    body: { name: "Matrix {random}" }
+  - endpoint: "PUT /api/v1/authz/classification-levels/{id}"
+    rule: tenantAdminStepUp
+    headers: { If-Match: "\"0\"" }
+    body: { name: "Matrix {random}" }
+  - { endpoint: POST /api/v1/authz/classification-levels/order, rule: tenantAdminStepUp, body: { levelIds: [] } }
+  - { endpoint: "DELETE /api/v1/authz/classification-levels/{id}", rule: tenantAdminStepUp }
+  # People picker (T6): directory.read through the implicit user role; q is required, so allowed calls may be 400.
+  - { endpoint: GET /api/v1/directory/search, rule: signedIn }
+  # User detail for the access screens (T9).
+  - { endpoint: "GET /api/v1/admin/users/{id}", rule: tenantAdmin }

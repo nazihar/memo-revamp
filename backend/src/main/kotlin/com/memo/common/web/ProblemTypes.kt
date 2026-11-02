@@ -15,6 +15,7 @@ object ProblemTypes {
     val RATE_LIMITED: URI = URI.create("urn:memo:problem:rate-limited")
     val VALIDATION: URI = URI.create("urn:memo:problem:validation")
     val CONFLICT: URI = URI.create("urn:memo:problem:conflict")
+    val FORBIDDEN: URI = URI.create("urn:memo:problem:forbidden")
 
     /** 400 `validation` with `errors: [{field, code, message}]`, the shape the web forms consume (E01 design §3). */
     fun validation(errors: List<FieldProblem>): ProblemDetail =
@@ -52,9 +53,6 @@ interface AuthenticatedUser {
     companion object {
         /** Granted when every required factor is present; the default requirement of all non-auth endpoints. */
         const val SESSION_COMPLETE = "SESSION_COMPLETE"
-
-        /** Until E04 replaces it with role grants. */
-        const val TENANT_ADMIN = "ROLE_TENANT_ADMIN"
     }
 }
 

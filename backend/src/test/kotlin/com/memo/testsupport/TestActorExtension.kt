@@ -22,6 +22,14 @@ class TestActorExtension : InvocationInterceptor {
         asTestActor(invocation)
     }
 
+    override fun interceptDynamicTest(
+        invocation: InvocationInterceptor.Invocation<Void?>,
+        invocationContext: org.junit.jupiter.api.extension.DynamicTestInvocationContext,
+        extensionContext: ExtensionContext,
+    ) {
+        asTestActor(invocation)
+    }
+
     override fun interceptTestTemplateMethod(
         invocation: InvocationInterceptor.Invocation<Void?>,
         invocationContext: ReflectiveInvocationContext<Method>,

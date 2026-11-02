@@ -1,0 +1,64 @@
+# E04 Org directory and authorisation — log
+
+## 2026-10-29
+- E03 merged (PR #20). Plan written: research, ADR-0026 (org model) and ADR-0027 (authorisation model), design, threat model, tasks, test plan. Gate delegated (overview Q1).
+- Findings: no new runtime dependency is needed. The units tree uses an adjacency list with a derived ancestor array (GIN), not `ltree` or a closure table, so no PostgreSQL extension is required on-prem. Effective dating covers assignments, reporting lines and unit/position existence; renames are audit-only history, so Phase 2 records must snapshot position and unit names.
+- Authorisation is an in-code policy service over a code-defined permission catalogue (jCasbin and Cedar compared; neither translates rules into SQL filters, which list endpoints need). Deny by default is enforced twice: an access annotation on every handler at runtime, and the endpoint-coverage meta-test in the build.
+- E03's `tenant_admin` flag becomes a role grant (expand → migrate → contract): the flag is still written for one release and dropped later.
+- Screens reuse the E01 templates and tree view approved in the E01 UX review; the owner sees them at the epic demo.
+- T1 done (policy kernel):
+  - `common.authz` holds the catalogue, `BuiltInRole`, `Policy` and `Resource` (renamed from the design's `Target`, which clashes with Kotlin's `@Target`), the access annotations, and `AccessAdministration` (built-in grants and the locked last-admin check), so `identity` and `demo` use the policy without depending on `authz`.
+  - Built-in roles keep their permissions in code (no `authz_role_permission` rows). A user without a clearance row has the lowest level.
+  - No foreign keys across modules: the first codegen run failed because the `authz` migration ran before `identity`'s. Modules migrate in no guaranteed order (as E03 noted for `tenant_id`).
+  - Bootstrap: a synchronous `TenantCreated` listener creates roles and levels in the creating transaction; a start-up runner brings older tenants up to date and turns `tenant_admin = true` into grants. `ON CONFLICT DO NOTHING` (with `UNIQUE NULLS NOT DISTINCT` on grants) keeps it safe on several nodes.
+  - `identity_user.tenant_admin` is written in step with the grant (`LegacyTenantAdminFlag`) and read only by the bootstrap; `UserAccount` no longer has the field. `ROLE_TENANT_ADMIN` is gone: `/admin/users/**` needs `identity.users.manage` through `@RequiresPermission`. The session principal ignores E03's `tenantAdmin` property, so signed-in users stay signed in across the upgrade.
+  - "MFA for admins" now means privileged (holding any privileged permission): `AuthSettings.mfaRequired` asks `Policy.isPrivileged`.
+  - Tenant suspension is not evaluated yet (no way to suspend before E07); E07 adds it to the policy and to tenant resolution.
+- T2 done (authorisation matrix): `backend/src/test/resources/authz/rules.yaml` defines the subjects and shared rules; one file per epic lists endpoints with a rule, overrides and optional sample body/headers. `AuthorizationMatrixTest` generates one test per cell (156 for E03 + `/me/access`), each with a fresh session; `EndpointCoverageTest` fails on an endpoint missing from the matrix, a matrix entry without an endpoint, or a handler without exactly one access declaration.
+  - "Allowed" means not 403, not 5xx, and no 401 other than `invalid-credentials` (a wrong code is not a denial).
+  - Two E03 endpoints validate body or headers before the step-up check (`PUT /me/password`, `POST /admin/users`), so their entries carry sample requests; a partial session gets 403 on enrolment for an already-enrolled account (E03 T5 rule, recorded as an override).
+  - JUnit dynamic tests did not get the test actor; `TestActorExtension` now covers them.
+- T3 done (legal entities and units):
+  - All org tables in one migration (`org/V1`), so codegen runs once; positions, assignments and reporting lines follow in T4. A picker index on display names (`identity/V4`, `text_pattern_ops`) is in place for T6.
+  - Tree changes (create, move, close) take a per-tenant advisory lock, so two concurrent moves cannot build a cycle. A move rewrites the subtree's ancestor arrays in one `UPDATE` (`newPrefix || ancestors[array_position(ancestors, unit):]`).
+  - Scope: creating needs `org.manage` on the parent (a root unit tenant-wide); renaming on the unit itself; moving on the current and the new parent; closing on the parent. A scoped administrator can therefore rename their scope root but not move or close it (403 rather than a separate `SCOPE_ROOT` reason).
+  - A scoped grant confers only the role's scopable permissions (so `org_admin` can be scoped although `directory.read` is not scopable; the reader permission comes from the implicit user role). Design §2 said such roles could not be scoped at all.
+  - The org tree is cached per tenant (`org.tree`) and evicted at commit of every unit change; the policy reads unit scope from it.
+  - `RefusedException` (409 with `reason`) and `ifMatchVersion`/`etagOf` moved to `common.web` for every module.
+- T4 done (positions, assignments, reporting lines, history):
+  - Assignments lock the position row (`FOR UPDATE`) and the user (advisory lock), then check overlaps per position (`OVERLAP`) and per user (`USER_OVERLAP`); the concurrency test assigns one seat from two threads and gets exactly one winner. Dates must lie within the position's (`DATES`); a cancelled record cannot change (`CANCELLED`).
+  - INVITED users can be assigned as well as ACTIVE ones (an administrator invites, then places the person); the design said ACTIVE only.
+  - Deactivation: identity publishes `UserDeactivated` in its transaction; org listens synchronously, ends running assignments today and cancels future ones, audited as part of the administrator's action (the design said actor `System`; the actor is the administrator who deactivated).
+  - Reporting lines: one per position at a time; the cycle check is conservative (all active lines overlapping the new period) and serialised per tenant by an advisory lock.
+  - History reads the audit trail through a new public `AuditTrail.history(objectType, objectId)` (audit module), allowed with `audit.read` or `org.manage` on the object; the endpoint is `@SignedIn` and the object decides.
+  - Identity got `UserSummaries` (batch names for holders and the picker) so org views make one query per screen.
+- T5 done (roles, grants, classification, clearance):
+  - Custom roles are sets of catalogue keys; built-in roles cannot change (`BUILT_IN`), a role in use cannot be deleted (`IN_USE`), names are unique (`DUPLICATE_NAME`). Changing a role's permissions evicts the tenant's cached grants, so holders' access changes at once.
+  - Grants: `NOT_SCOPABLE`, `UNKNOWN_UNIT`, `IMPLICIT` (the user role), `DUPLICATE`. Revoking a tenant-wide tenant admin grant locks the role row and refuses `LAST_ADMIN` unless another active admin remains (concurrency test: two admins revoking each other leave one). The tenant admin grant writes E03's flag through.
+  - A user who gains a privileged permission in a tenant with MFA for administrators only is signed out (identity listens to `GrantsChanged`), so the next sign-in requires MFA. Revoking never signs anyone out.
+  - Levels: a new level goes on top (the most sensitive) and can be reordered; reordering moves ranks through 500+ to keep the unique key intact, so the rank check in `authz/V1` widened to 0..999 (changed in place, not merged or deployed). A level someone is cleared to cannot go (`IN_USE`); the last one cannot go either. No clearance row means the lowest level.
+  - Every authorisation change needs a fresh step-up (matrix rule `tenantAdminStepUp`).
+  - `PolicyConditionIT` is part of `AccessAdminIT`: the SQL filter selects exactly the units the in-memory decision allows, for a scoped admin, a tenant admin and a plain user.
+- T6 done (people picker): `GET /directory/search?q&kind&limit` finds active and invited users (word start in the name, or email prefix) and open positions (word start in the title) with today's holder and position; at most 20 of each, one query per kind plus batch lookups. Queries are normalised (NFC, lower case, Arabic tatweel removed) and need two characters. Limit: 60 a minute per user, refilled smoothly (`DIRECTORY_SEARCH_PER_USER`).
+- T7 done (demo tenant and volume):
+  - Demo Bank PLC: 33 units (board, CEO office, eight divisions with departments, a branch network with two regions and four branches), 56 positions (a head per unit plus officers), reporting lines from every position to the head above, and 49 people in seats (demo accounts plus 44 named staff, INVITED). Two seats stay vacant on purpose. New demo accounts: `orgadmin@` (org_admin), `branchadmin@` (org_admin scoped to North Region), `auditor@`. Seeding goes through a public `OrgSeeding` (fixed ids, idempotent, audited, no policy check: seeders only).
+  - The org calendar reads the existing `default.timezone` tenant setting (the design said `locale.time.zone`).
+  - `OrgPerformanceIT` at 1,510 units, 2,000 positions, 5,000 users and 1,800 holders, p95 on a dev laptop: units tree 37–52 ms (budget 150), unit positions 16–19 ms (100), picker 15–22 ms (100), policy check 2.7 ms including its transaction. The test asserts the budgets with 2x headroom for CI runners. `EXPLAIN` of the name prefix search uses `identity_user_tenant_name_search_idx` (`text_pattern_ops`).
+- T8 done (web, org):
+  - `/org` for every signed-in user (the directory is readable with the implicit user role; the design had `/admin/org`): unit tree (E01 `TreePanel`) with a filter, and for the selected unit its path, positions with today's holders, and the actions the server allows (`canManage` on the unit: add sub-unit or position, rename, move, close). A tenant-wide `org.manage` holder can add top units; an empty organisation starts with a legal entity.
+  - `/org/positions/$positionId`: holders over time (current, past, upcoming, cancelled), end and cancel; the current reporting line and changing it (the old line ends where the new one starts); assign a person through the people picker.
+  - People picker: ARIA 1.2 combobox over `/directory/search`, debounced 250 ms, keyboard operable; reused for positions (reporting lines).
+  - Change history: a collapsible section that loads `/org/history` when opened and disappears for people who may not read it (403).
+  - Menus follow `/me/access` (permission keys) instead of the tenant admin flag; cached permissions are dropped whenever the session changes.
+  - The unit path is a second breadcrumb trail beside the shell's; the component test caught two landmarks with the same name, so trails can now carry their own label ("Unit path").
+- T9 done (web, access):
+  - `/admin/users/$userId`: positions held (titles and units), role grants with their scope (give a role, limited to a unit where the role has a scopable permission; revoke), clearance. Needed `GET /admin/users/{id}` (own small controller, `identity.users.manage`) and a per-user positions view with titles (`/org/users/{id}/assignments` now returns `OrgUserPosition`).
+  - `/admin/roles`: built-in roles named in the user's language and read-only; custom roles created, changed and removed with permission checkboxes that say which permissions are administrative (always MFA) and which can be limited to a unit.
+  - `/admin/classifications`: ordered levels with "more/less sensitive" buttons, add, rename, remove.
+  - Every authorisation change goes through `useWithStepUp`; refusals map to their reasons (`LAST_ADMIN`, `IN_USE`, `NOT_SCOPABLE`, …). Users and roles menus follow `/me/access`; user names in the users list link to the detail page.
+- T10 done (e2e and docs):
+  - Playwright roles `orgAdmin`, `branchAdmin`, `auditor` (real sign-in with TOTP in the global setup). Journeys on the real stack: the org administrator adds a unit and a position, places a new joiner through the picker, cancels the record and reads the history; the branch administrator can change North Region only; a user reads without administration; a tenant admin gives and revokes a role behind step-up; the roles and classification screens pass axe. Smoke suite 20/20 locally, and again on a rerun over the same data.
+  - Visual baselines for the org directory (light/dark × LTR/RTL). Reviewing them showed the tree did not open to the selected unit; it now opens the selected unit's ancestors.
+  - Local database reset once: `authz/V1` changed in place (rank range) after it had run locally; CI and dev never ran the earlier version.
+  - Cross-tenant coverage for roles and grants relies on the RLS meta-test (every new table has RLS ENABLE + FORCE) and the matrix's other-tenant subject; org has explicit cases (`OrgUnitsIT`, `DirectorySearchIT`).
+  - Docs: ASVS V8 rows, design §15 (changes during implementation), test plan exit list.

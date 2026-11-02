@@ -1,5 +1,6 @@
 package com.memo.common.web
 
+import com.memo.common.authz.ForbiddenException
 import com.memo.common.concurrency.ConcurrentModificationException
 import com.memo.common.ratelimit.RateLimitedException
 import org.slf4j.LoggerFactory
@@ -29,6 +30,15 @@ class ProblemDetailsAdvice : ResponseEntityExceptionHandler() {
             .body(ProblemTypes.of(HttpStatus.TOO_MANY_REQUESTS, ProblemTypes.RATE_LIMITED, "Too many attempts. Try again later."))
     }
 
+    /** Deny by default (ADR-0027): the permission is named for the client; nothing about the object is revealed. */
+    @ExceptionHandler(ForbiddenException::class)
+    fun forbidden(ex: ForbiddenException): ResponseEntity<ProblemDetail> =
+        ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+            ProblemTypes.of(HttpStatus.FORBIDDEN, ProblemTypes.FORBIDDEN, "You do not have access to this.").apply {
+                ex.permission?.let { setProperty("permission", it.key) }
+            },
+        )
+
     @ExceptionHandler(StepUpRequiredException::class)
     fun stepUpRequired(ex: StepUpRequiredException): ResponseEntity<ProblemDetail> {
         val problem =
@@ -37,6 +47,15 @@ class ProblemDetailsAdvice : ResponseEntityExceptionHandler() {
             }
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(problem)
     }
+
+    /** Not possible in the current state: 409 with a stable `reason` code. */
+    @ExceptionHandler(RefusedException::class)
+    fun refused(ex: RefusedException): ResponseEntity<ProblemDetail> =
+        ResponseEntity.status(HttpStatus.CONFLICT).body(
+            ProblemTypes.of(HttpStatus.CONFLICT, ProblemTypes.CONFLICT, ex.message ?: "Not possible.").apply {
+                setProperty("reason", ex.reason)
+            },
+        )
 
     /** A guarded write lost to a concurrent change: the client reloads and decides again (AGENTS.md §4). */
     @ExceptionHandler(ConcurrentModificationException::class)

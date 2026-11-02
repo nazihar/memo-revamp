@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { acceptInvitation, changeMyPassword, completePasswordReset, confirmMfaEnrolment, deactivateUser, getCsrfToken, getHealth, getMe, getSession, inviteUser, listMySessions, listUsers, login, logout, lookUpInvitation, type Options, reactivateUser, regenerateMyRecoveryCodes, requestPasswordReset, resetUserMfa, revokeMySession, revokeUserSessions, startMfaEnrolment, stepUp, unlockUser, verifyMfa } from '../sdk.gen';
-import type { AcceptInvitationData, AcceptInvitationError, AcceptInvitationResponse, ChangeMyPasswordData, ChangeMyPasswordError, ChangeMyPasswordResponse, CompletePasswordResetData, CompletePasswordResetError, CompletePasswordResetResponse, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentError, ConfirmMfaEnrolmentResponse, DeactivateUserData, DeactivateUserResponse, GetCsrfTokenData, GetCsrfTokenResponse, GetHealthData, GetHealthError, GetHealthResponse, GetMeData, GetMeResponse, GetSessionData, GetSessionResponse, InviteUserData, InviteUserError, InviteUserResponse, ListMySessionsData, ListMySessionsResponse, ListUsersData, ListUsersResponse, LoginData, LoginError, LoginResponse, LogoutData, LogoutResponse, LookUpInvitationData, LookUpInvitationError, LookUpInvitationResponse, ReactivateUserData, ReactivateUserResponse, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesResponse, RequestPasswordResetData, ResetUserMfaData, ResetUserMfaResponse, RevokeMySessionData, RevokeMySessionResponse, RevokeUserSessionsData, RevokeUserSessionsResponse, StartMfaEnrolmentData, StartMfaEnrolmentResponse, StepUpData, StepUpError, StepUpResponse, UnlockUserData, UnlockUserResponse, VerifyMfaData, VerifyMfaError, VerifyMfaResponse } from '../types.gen';
+import { acceptInvitation, assignPosition, cancelAssignment, cancelReportingLine, changeMyPassword, closeLegalEntity, closeOrgUnit, closePosition, completePasswordReset, confirmMfaEnrolment, createClassificationLevel, createLegalEntity, createOrgUnit, createPosition, createReportingLine, createRole, deactivateUser, deleteClassificationLevel, deleteRole, getCsrfToken, getHealth, getMe, getMyAccess, getOrgHistory, getOrgUnit, getPosition, getPositionHolder, getSession, getUser, getUserAccess, grantRole, inviteUser, listClassificationLevels, listLegalEntities, listMySessions, listOrgUnits, listPermissions, listRoles, listUnitPositions, listUserAssignments, listUsers, login, logout, lookUpInvitation, moveOrgUnit, type Options, reactivateUser, regenerateMyRecoveryCodes, renameClassificationLevel, reorderClassificationLevels, requestPasswordReset, resetUserMfa, revokeGrant, revokeMySession, revokeUserSessions, searchDirectory, setClearance, startMfaEnrolment, stepUp, unlockUser, updateAssignment, updateLegalEntity, updateOrgUnit, updatePosition, updateReportingLine, updateRole, verifyMfa } from '../sdk.gen';
+import type { AcceptInvitationData, AcceptInvitationError, AcceptInvitationResponse, AssignPositionData, AssignPositionResponse, CancelAssignmentData, CancelAssignmentResponse, CancelReportingLineData, CancelReportingLineResponse, ChangeMyPasswordData, ChangeMyPasswordError, ChangeMyPasswordResponse, CloseLegalEntityData, CloseLegalEntityResponse, CloseOrgUnitData, CloseOrgUnitResponse, ClosePositionData, ClosePositionResponse, CompletePasswordResetData, CompletePasswordResetError, CompletePasswordResetResponse, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentError, ConfirmMfaEnrolmentResponse, CreateClassificationLevelData, CreateClassificationLevelResponse, CreateLegalEntityData, CreateLegalEntityResponse, CreateOrgUnitData, CreateOrgUnitResponse, CreatePositionData, CreatePositionResponse, CreateReportingLineData, CreateReportingLineResponse, CreateRoleData, CreateRoleResponse, DeactivateUserData, DeactivateUserResponse, DeleteClassificationLevelData, DeleteRoleData, GetCsrfTokenData, GetCsrfTokenResponse, GetHealthData, GetHealthError, GetHealthResponse, GetMeData, GetMeResponse, GetMyAccessData, GetMyAccessResponse, GetOrgHistoryData, GetOrgHistoryResponse, GetOrgUnitData, GetOrgUnitResponse, GetPositionData, GetPositionHolderData, GetPositionHolderResponse, GetPositionResponse, GetSessionData, GetSessionResponse, GetUserAccessData, GetUserAccessResponse, GetUserData, GetUserResponse, GrantRoleData, GrantRoleResponse, InviteUserData, InviteUserError, InviteUserResponse, ListClassificationLevelsData, ListClassificationLevelsResponse, ListLegalEntitiesData, ListLegalEntitiesResponse, ListMySessionsData, ListMySessionsResponse, ListOrgUnitsData, ListOrgUnitsResponse, ListPermissionsData, ListPermissionsResponse, ListRolesData, ListRolesResponse, ListUnitPositionsData, ListUnitPositionsResponse, ListUserAssignmentsData, ListUserAssignmentsResponse, ListUsersData, ListUsersResponse, LoginData, LoginError, LoginResponse, LogoutData, LogoutResponse, LookUpInvitationData, LookUpInvitationError, LookUpInvitationResponse, MoveOrgUnitData, MoveOrgUnitResponse, ReactivateUserData, ReactivateUserResponse, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesResponse, RenameClassificationLevelData, RenameClassificationLevelResponse, ReorderClassificationLevelsData, ReorderClassificationLevelsResponse, RequestPasswordResetData, ResetUserMfaData, ResetUserMfaResponse, RevokeGrantData, RevokeMySessionData, RevokeMySessionResponse, RevokeUserSessionsData, RevokeUserSessionsResponse, SearchDirectoryData, SearchDirectoryResponse, SetClearanceData, SetClearanceResponse, StartMfaEnrolmentData, StartMfaEnrolmentResponse, StepUpData, StepUpError, StepUpResponse, UnlockUserData, UnlockUserResponse, UpdateAssignmentData, UpdateAssignmentResponse, UpdateLegalEntityData, UpdateLegalEntityResponse, UpdateOrgUnitData, UpdateOrgUnitResponse, UpdatePositionData, UpdatePositionResponse, UpdateReportingLineData, UpdateReportingLineResponse, UpdateRoleData, UpdateRoleResponse, VerifyMfaData, VerifyMfaError, VerifyMfaResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -138,6 +138,24 @@ export const inviteUserMutation = (options?: Partial<Options<InviteUserData>>): 
     };
     return mutationOptions;
 };
+
+export const getUserQueryKey = (options: Options<GetUserData>) => createQueryKey('getUser', options);
+
+/**
+ * One user of the organisation
+ */
+export const getUserOptions = (options: Options<GetUserData>) => queryOptions<GetUserResponse, DefaultError, GetUserResponse, ReturnType<typeof getUserQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getUser({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getUserQueryKey(options)
+});
 
 /**
  * Deactivate a user
@@ -456,6 +474,266 @@ export const stepUpMutation = (options?: Partial<Options<StepUpData>>): UseMutat
     return mutationOptions;
 };
 
+export const listClassificationLevelsQueryKey = (options?: Options<ListClassificationLevelsData>) => createQueryKey('listClassificationLevels', options);
+
+/**
+ * Classification levels, lowest first
+ */
+export const listClassificationLevelsOptions = (options?: Options<ListClassificationLevelsData>) => queryOptions<ListClassificationLevelsResponse, DefaultError, ListClassificationLevelsResponse, ReturnType<typeof listClassificationLevelsQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await listClassificationLevels({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: listClassificationLevelsQueryKey(options)
+});
+
+/**
+ * Add a level above the others
+ */
+export const createClassificationLevelMutation = (options?: Partial<Options<CreateClassificationLevelData>>): UseMutationOptions<CreateClassificationLevelResponse, DefaultError, Options<CreateClassificationLevelData>> => {
+    const mutationOptions: UseMutationOptions<CreateClassificationLevelResponse, DefaultError, Options<CreateClassificationLevelData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await createClassificationLevel({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Put the levels in a new order, lowest first
+ */
+export const reorderClassificationLevelsMutation = (options?: Partial<Options<ReorderClassificationLevelsData>>): UseMutationOptions<ReorderClassificationLevelsResponse, DefaultError, Options<ReorderClassificationLevelsData>> => {
+    const mutationOptions: UseMutationOptions<ReorderClassificationLevelsResponse, DefaultError, Options<ReorderClassificationLevelsData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await reorderClassificationLevels({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Remove a level nobody is cleared to
+ */
+export const deleteClassificationLevelMutation = (options?: Partial<Options<DeleteClassificationLevelData>>): UseMutationOptions<unknown, DefaultError, Options<DeleteClassificationLevelData>> => {
+    const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<DeleteClassificationLevelData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await deleteClassificationLevel({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Rename a level
+ */
+export const renameClassificationLevelMutation = (options?: Partial<Options<RenameClassificationLevelData>>): UseMutationOptions<RenameClassificationLevelResponse, DefaultError, Options<RenameClassificationLevelData>> => {
+    const mutationOptions: UseMutationOptions<RenameClassificationLevelResponse, DefaultError, Options<RenameClassificationLevelData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await renameClassificationLevel({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Revoke a role grant
+ */
+export const revokeGrantMutation = (options?: Partial<Options<RevokeGrantData>>): UseMutationOptions<unknown, DefaultError, Options<RevokeGrantData>> => {
+    const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<RevokeGrantData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await revokeGrant({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const listPermissionsQueryKey = (options?: Options<ListPermissionsData>) => createQueryKey('listPermissions', options);
+
+/**
+ * The permission catalogue
+ */
+export const listPermissionsOptions = (options?: Options<ListPermissionsData>) => queryOptions<ListPermissionsResponse, DefaultError, ListPermissionsResponse, ReturnType<typeof listPermissionsQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await listPermissions({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: listPermissionsQueryKey(options)
+});
+
+export const listRolesQueryKey = (options?: Options<ListRolesData>) => createQueryKey('listRoles', options);
+
+/**
+ * Built-in and custom roles
+ */
+export const listRolesOptions = (options?: Options<ListRolesData>) => queryOptions<ListRolesResponse, DefaultError, ListRolesResponse, ReturnType<typeof listRolesQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await listRoles({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: listRolesQueryKey(options)
+});
+
+/**
+ * Create a custom role
+ */
+export const createRoleMutation = (options?: Partial<Options<CreateRoleData>>): UseMutationOptions<CreateRoleResponse, DefaultError, Options<CreateRoleData>> => {
+    const mutationOptions: UseMutationOptions<CreateRoleResponse, DefaultError, Options<CreateRoleData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await createRole({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Remove an unused custom role
+ */
+export const deleteRoleMutation = (options?: Partial<Options<DeleteRoleData>>): UseMutationOptions<unknown, DefaultError, Options<DeleteRoleData>> => {
+    const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<DeleteRoleData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await deleteRole({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Change a custom role
+ */
+export const updateRoleMutation = (options?: Partial<Options<UpdateRoleData>>): UseMutationOptions<UpdateRoleResponse, DefaultError, Options<UpdateRoleData>> => {
+    const mutationOptions: UseMutationOptions<UpdateRoleResponse, DefaultError, Options<UpdateRoleData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await updateRole({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const getUserAccessQueryKey = (options: Options<GetUserAccessData>) => createQueryKey('getUserAccess', options);
+
+/**
+ * A user's role grants and clearance
+ */
+export const getUserAccessOptions = (options: Options<GetUserAccessData>) => queryOptions<GetUserAccessResponse, DefaultError, GetUserAccessResponse, ReturnType<typeof getUserAccessQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getUserAccess({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getUserAccessQueryKey(options)
+});
+
+/**
+ * Set a user's clearance level
+ */
+export const setClearanceMutation = (options?: Partial<Options<SetClearanceData>>): UseMutationOptions<SetClearanceResponse, DefaultError, Options<SetClearanceData>> => {
+    const mutationOptions: UseMutationOptions<SetClearanceResponse, DefaultError, Options<SetClearanceData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await setClearance({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Give a user a role, for the organisation or a unit subtree
+ */
+export const grantRoleMutation = (options?: Partial<Options<GrantRoleData>>): UseMutationOptions<GrantRoleResponse, DefaultError, Options<GrantRoleData>> => {
+    const mutationOptions: UseMutationOptions<GrantRoleResponse, DefaultError, Options<GrantRoleData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await grantRole({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const searchDirectoryQueryKey = (options: Options<SearchDirectoryData>) => createQueryKey('searchDirectory', options);
+
+/**
+ * Find people and positions by the start of a word in their name or title
+ */
+export const searchDirectoryOptions = (options: Options<SearchDirectoryData>) => queryOptions<SearchDirectoryResponse, DefaultError, SearchDirectoryResponse, ReturnType<typeof searchDirectoryQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await searchDirectory({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: searchDirectoryQueryKey(options)
+});
+
 export const getHealthQueryKey = (options?: Options<GetHealthData>) => createQueryKey('getHealth', options);
 
 /**
@@ -492,6 +770,24 @@ export const getMeOptions = (options?: Options<GetMeData>) => queryOptions<GetMe
         return data;
     },
     queryKey: getMeQueryKey(options)
+});
+
+export const getMyAccessQueryKey = (options?: Options<GetMyAccessData>) => createQueryKey('getMyAccess', options);
+
+/**
+ * My permissions and clearance
+ */
+export const getMyAccessOptions = (options?: Options<GetMyAccessData>) => queryOptions<GetMyAccessResponse, DefaultError, GetMyAccessResponse, ReturnType<typeof getMyAccessQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getMyAccess({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getMyAccessQueryKey(options)
 });
 
 /**
@@ -568,3 +864,421 @@ export const revokeMySessionMutation = (options?: Partial<Options<RevokeMySessio
     };
     return mutationOptions;
 };
+
+/**
+ * End an assignment or correct its dates
+ */
+export const updateAssignmentMutation = (options?: Partial<Options<UpdateAssignmentData>>): UseMutationOptions<UpdateAssignmentResponse, DefaultError, Options<UpdateAssignmentData>> => {
+    const mutationOptions: UseMutationOptions<UpdateAssignmentResponse, DefaultError, Options<UpdateAssignmentData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await updateAssignment({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Cancel an assignment recorded in error
+ */
+export const cancelAssignmentMutation = (options?: Partial<Options<CancelAssignmentData>>): UseMutationOptions<CancelAssignmentResponse, DefaultError, Options<CancelAssignmentData>> => {
+    const mutationOptions: UseMutationOptions<CancelAssignmentResponse, DefaultError, Options<CancelAssignmentData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await cancelAssignment({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const getOrgHistoryQueryKey = (options: Options<GetOrgHistoryData>) => createQueryKey('getOrgHistory', options);
+
+/**
+ * Change history of a unit or position, newest first
+ */
+export const getOrgHistoryOptions = (options: Options<GetOrgHistoryData>) => queryOptions<GetOrgHistoryResponse, DefaultError, GetOrgHistoryResponse, ReturnType<typeof getOrgHistoryQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getOrgHistory({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getOrgHistoryQueryKey(options)
+});
+
+export const listLegalEntitiesQueryKey = (options?: Options<ListLegalEntitiesData>) => createQueryKey('listLegalEntities', options);
+
+/**
+ * Legal entities
+ */
+export const listLegalEntitiesOptions = (options?: Options<ListLegalEntitiesData>) => queryOptions<ListLegalEntitiesResponse, DefaultError, ListLegalEntitiesResponse, ReturnType<typeof listLegalEntitiesQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await listLegalEntities({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: listLegalEntitiesQueryKey(options)
+});
+
+/**
+ * Create a legal entity
+ */
+export const createLegalEntityMutation = (options?: Partial<Options<CreateLegalEntityData>>): UseMutationOptions<CreateLegalEntityResponse, DefaultError, Options<CreateLegalEntityData>> => {
+    const mutationOptions: UseMutationOptions<CreateLegalEntityResponse, DefaultError, Options<CreateLegalEntityData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await createLegalEntity({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Rename a legal entity
+ */
+export const updateLegalEntityMutation = (options?: Partial<Options<UpdateLegalEntityData>>): UseMutationOptions<UpdateLegalEntityResponse, DefaultError, Options<UpdateLegalEntityData>> => {
+    const mutationOptions: UseMutationOptions<UpdateLegalEntityResponse, DefaultError, Options<UpdateLegalEntityData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await updateLegalEntity({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Close a legal entity
+ */
+export const closeLegalEntityMutation = (options?: Partial<Options<CloseLegalEntityData>>): UseMutationOptions<CloseLegalEntityResponse, DefaultError, Options<CloseLegalEntityData>> => {
+    const mutationOptions: UseMutationOptions<CloseLegalEntityResponse, DefaultError, Options<CloseLegalEntityData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await closeLegalEntity({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Create a position in a unit
+ */
+export const createPositionMutation = (options?: Partial<Options<CreatePositionData>>): UseMutationOptions<CreatePositionResponse, DefaultError, Options<CreatePositionData>> => {
+    const mutationOptions: UseMutationOptions<CreatePositionResponse, DefaultError, Options<CreatePositionData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await createPosition({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const getPositionQueryKey = (options: Options<GetPositionData>) => createQueryKey('getPosition', options);
+
+/**
+ * A position with its holders and reporting lines over time
+ */
+export const getPositionOptions = (options: Options<GetPositionData>) => queryOptions<GetPositionResponse, DefaultError, GetPositionResponse, ReturnType<typeof getPositionQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getPosition({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getPositionQueryKey(options)
+});
+
+/**
+ * Retitle or recode a position, or mark it as head of its unit
+ */
+export const updatePositionMutation = (options?: Partial<Options<UpdatePositionData>>): UseMutationOptions<UpdatePositionResponse, DefaultError, Options<UpdatePositionData>> => {
+    const mutationOptions: UseMutationOptions<UpdatePositionResponse, DefaultError, Options<UpdatePositionData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await updatePosition({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Assign a person to a position from a date
+ */
+export const assignPositionMutation = (options?: Partial<Options<AssignPositionData>>): UseMutationOptions<AssignPositionResponse, DefaultError, Options<AssignPositionData>> => {
+    const mutationOptions: UseMutationOptions<AssignPositionResponse, DefaultError, Options<AssignPositionData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await assignPosition({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Close a position
+ */
+export const closePositionMutation = (options?: Partial<Options<ClosePositionData>>): UseMutationOptions<ClosePositionResponse, DefaultError, Options<ClosePositionData>> => {
+    const mutationOptions: UseMutationOptions<ClosePositionResponse, DefaultError, Options<ClosePositionData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await closePosition({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const getPositionHolderQueryKey = (options: Options<GetPositionHolderData>) => createQueryKey('getPositionHolder', options);
+
+/**
+ * Who held a position on a date (default today); 204 when vacant
+ */
+export const getPositionHolderOptions = (options: Options<GetPositionHolderData>) => queryOptions<GetPositionHolderResponse, DefaultError, GetPositionHolderResponse, ReturnType<typeof getPositionHolderQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getPositionHolder({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getPositionHolderQueryKey(options)
+});
+
+/**
+ * Make a position report to another from a date
+ */
+export const createReportingLineMutation = (options?: Partial<Options<CreateReportingLineData>>): UseMutationOptions<CreateReportingLineResponse, DefaultError, Options<CreateReportingLineData>> => {
+    const mutationOptions: UseMutationOptions<CreateReportingLineResponse, DefaultError, Options<CreateReportingLineData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await createReportingLine({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * End a reporting line or correct its dates
+ */
+export const updateReportingLineMutation = (options?: Partial<Options<UpdateReportingLineData>>): UseMutationOptions<UpdateReportingLineResponse, DefaultError, Options<UpdateReportingLineData>> => {
+    const mutationOptions: UseMutationOptions<UpdateReportingLineResponse, DefaultError, Options<UpdateReportingLineData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await updateReportingLine({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Cancel a reporting line recorded in error
+ */
+export const cancelReportingLineMutation = (options?: Partial<Options<CancelReportingLineData>>): UseMutationOptions<CancelReportingLineResponse, DefaultError, Options<CancelReportingLineData>> => {
+    const mutationOptions: UseMutationOptions<CancelReportingLineResponse, DefaultError, Options<CancelReportingLineData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await cancelReportingLine({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const listOrgUnitsQueryKey = (options?: Options<ListOrgUnitsData>) => createQueryKey('listOrgUnits', options);
+
+/**
+ * The units tree as a flat list
+ *
+ * Units valid on `asOf` (default today), or every unit with `includeClosed`. Clients build the tree from parentId.
+ */
+export const listOrgUnitsOptions = (options?: Options<ListOrgUnitsData>) => queryOptions<ListOrgUnitsResponse, DefaultError, ListOrgUnitsResponse, ReturnType<typeof listOrgUnitsQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await listOrgUnits({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: listOrgUnitsQueryKey(options)
+});
+
+/**
+ * Create a unit
+ */
+export const createOrgUnitMutation = (options?: Partial<Options<CreateOrgUnitData>>): UseMutationOptions<CreateOrgUnitResponse, DefaultError, Options<CreateOrgUnitData>> => {
+    const mutationOptions: UseMutationOptions<CreateOrgUnitResponse, DefaultError, Options<CreateOrgUnitData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await createOrgUnit({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const getOrgUnitQueryKey = (options: Options<GetOrgUnitData>) => createQueryKey('getOrgUnit', options);
+
+/**
+ * A unit with its path
+ */
+export const getOrgUnitOptions = (options: Options<GetOrgUnitData>) => queryOptions<GetOrgUnitResponse, DefaultError, GetOrgUnitResponse, ReturnType<typeof getOrgUnitQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getOrgUnit({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getOrgUnitQueryKey(options)
+});
+
+/**
+ * Rename or recode a unit
+ */
+export const updateOrgUnitMutation = (options?: Partial<Options<UpdateOrgUnitData>>): UseMutationOptions<UpdateOrgUnitResponse, DefaultError, Options<UpdateOrgUnitData>> => {
+    const mutationOptions: UseMutationOptions<UpdateOrgUnitResponse, DefaultError, Options<UpdateOrgUnitData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await updateOrgUnit({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Close a unit
+ */
+export const closeOrgUnitMutation = (options?: Partial<Options<CloseOrgUnitData>>): UseMutationOptions<CloseOrgUnitResponse, DefaultError, Options<CloseOrgUnitData>> => {
+    const mutationOptions: UseMutationOptions<CloseOrgUnitResponse, DefaultError, Options<CloseOrgUnitData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await closeOrgUnit({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Move a unit, with its sub-units, under another parent
+ */
+export const moveOrgUnitMutation = (options?: Partial<Options<MoveOrgUnitData>>): UseMutationOptions<MoveOrgUnitResponse, DefaultError, Options<MoveOrgUnitData>> => {
+    const mutationOptions: UseMutationOptions<MoveOrgUnitResponse, DefaultError, Options<MoveOrgUnitData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await moveOrgUnit({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const listUnitPositionsQueryKey = (options: Options<ListUnitPositionsData>) => createQueryKey('listUnitPositions', options);
+
+/**
+ * Positions of a unit with their holders on a date (default today)
+ */
+export const listUnitPositionsOptions = (options: Options<ListUnitPositionsData>) => queryOptions<ListUnitPositionsResponse, DefaultError, ListUnitPositionsResponse, ReturnType<typeof listUnitPositionsQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await listUnitPositions({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: listUnitPositionsQueryKey(options)
+});
+
+export const listUserAssignmentsQueryKey = (options: Options<ListUserAssignmentsData>) => createQueryKey('listUserAssignments', options);
+
+/**
+ * A person's positions over time, newest first
+ */
+export const listUserAssignmentsOptions = (options: Options<ListUserAssignmentsData>) => queryOptions<ListUserAssignmentsResponse, DefaultError, ListUserAssignmentsResponse, ReturnType<typeof listUserAssignmentsQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await listUserAssignments({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: listUserAssignmentsQueryKey(options)
+});

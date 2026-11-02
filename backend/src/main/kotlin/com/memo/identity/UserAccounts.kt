@@ -1,6 +1,8 @@
 package com.memo.identity
 
 import com.memo.audit.AuditLog
+import com.memo.common.authz.AccessAdministration
+import com.memo.common.authz.BuiltInRole
 import com.memo.common.id.IdGenerator
 import com.memo.common.tenant.TenantDsl
 import com.memo.identity.password.PasswordPolicy
@@ -43,7 +45,6 @@ data class UserAccount(
     val email: String,
     val displayName: String,
     val status: UserStatus,
-    val tenantAdmin: Boolean,
     val hasPassword: Boolean,
     val lockedUntil: Instant?,
     val lastLoginAt: Instant?,
@@ -72,6 +73,7 @@ class UserAccounts(
     private val encoder: PasswordEncoder,
     private val policy: PasswordPolicy,
     private val settings: TenantSettings,
+    private val access: AccessAdministration,
 ) {
     fun find(id: UserId): UserAccount? = record(id)?.toAccount()
 
@@ -83,7 +85,10 @@ class UserAccounts(
             .fetchOne()
             ?.toAccount()
 
-    /** Creates an account without a password: INVITED until the invitation is accepted (T7) or the seeder sets one. */
+    /**
+     * Creates an account without a password: INVITED until the invitation is accepted or the seeder sets one. A tenant
+     * admin gets the built-in role grant (E04); the old flag is still written for one release (expand → migrate → contract).
+     */
     fun create(
         email: String,
         displayName: String,
@@ -115,8 +120,12 @@ class UserAccounts(
             created.id.toString(),
             after = mapOf("email" to created.email, "displayName" to created.displayName, "tenantAdmin" to tenantAdmin),
         )
+        if (tenantAdmin) access.grantBuiltIn(created.id.value, BuiltInRole.TENANT_ADMIN)
         return created
     }
+
+    /** Whether the account holds the tenant-wide tenant admin role (ADR-0027). */
+    fun isTenantAdmin(id: UserId): Boolean = access.tenantAdmins(listOf(id.value)).isNotEmpty()
 
     /** Policy violations for [password] as this user's new password (for live feedback; [setPassword] re-checks). */
     fun passwordViolations(
@@ -199,7 +208,6 @@ class UserAccounts(
             email = email,
             displayName = displayName,
             status = UserStatus.valueOf(status),
-            tenantAdmin = tenantAdmin!!,
             hasPassword = passwordHash != null,
             lockedUntil = lockedUntil?.toInstant(),
             lastLoginAt = lastLoginAt?.toInstant(),

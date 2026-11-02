@@ -26,9 +26,52 @@ export type AdminUserPage = {
     nextCursor?: string | null;
 };
 
+export type AssignRequest = {
+    userId: string;
+    validFrom: string;
+    validTo?: string | null;
+};
+
 export type ChangePasswordRequest = {
     currentPassword: string;
     newPassword: string;
+};
+
+export type ClassificationLevel = {
+    description?: string | null;
+    id: string;
+    name: string;
+    /**
+     * 0 = lowest
+     */
+    rank: number;
+    /**
+     * Send as If-Match on renames
+     */
+    version: number;
+};
+
+export type ClassificationLevelRequest = {
+    description?: string | null;
+    name: string;
+};
+
+export type ClassificationOrderRequest = {
+    /**
+     * Every level id, lowest first
+     */
+    levelIds: Array<string>;
+};
+
+export type ClearanceRequest = {
+    levelId: string;
+};
+
+export type CloseRequest = {
+    /**
+     * First day it no longer exists
+     */
+    validTo: string;
 };
 
 export type CodeRequest = {
@@ -41,6 +84,70 @@ export type CodeRequest = {
 export type ComponentHealth = {
     name: string;
     status: 'UP' | 'DOWN' | 'DISABLED';
+};
+
+export type CreateOrgUnitRequest = {
+    code: string;
+    legalEntityId: string;
+    name: string;
+    /**
+     * Absent for a root unit of the legal entity
+     */
+    parentId?: string | null;
+    /**
+     * Defaults to today
+     */
+    validFrom?: string | null;
+};
+
+export type DirectoryPosition = {
+    /**
+     * Holder today; absent when vacant
+     */
+    holder?: OrgPerson | null;
+    id: string;
+    title: string;
+    unitId: string;
+    unitName: string;
+};
+
+export type DirectoryPositionSummary = {
+    id: string;
+    title: string;
+    unitName: string;
+};
+
+export type DirectorySearchResult = {
+    positions: Array<DirectoryPosition>;
+    users: Array<DirectoryUser>;
+};
+
+export type DirectoryUser = {
+    person: OrgPerson;
+    /**
+     * Primary position today
+     */
+    position?: DirectoryPositionSummary | null;
+};
+
+export type Grant = {
+    builtIn?: string | null;
+    grantedAt: string;
+    id: string;
+    roleId: string;
+    roleName: string;
+    /**
+     * Unit subtree; absent for the whole organisation
+     */
+    scopeUnitId?: string | null;
+};
+
+export type GrantRequest = {
+    roleId: string;
+    /**
+     * Limit to a unit subtree
+     */
+    scopeUnitId?: string | null;
 };
 
 /**
@@ -77,6 +184,29 @@ export type InviteUserRequest = {
     displayName: string;
     email: string;
     tenantAdmin: boolean;
+};
+
+export type LegalEntity = {
+    id: string;
+    name: string;
+    registrationNumber?: string | null;
+    shortName?: string | null;
+    validFrom: string;
+    validTo?: string | null;
+    /**
+     * Send as If-Match on updates
+     */
+    version: number;
+};
+
+export type LegalEntityRequest = {
+    name: string;
+    registrationNumber?: string | null;
+    shortName?: string | null;
+    /**
+     * Creation only; defaults to today
+     */
+    validFrom?: string | null;
 };
 
 export type LoginRequest = {
@@ -116,6 +246,32 @@ export type MfaEnrolmentConfirmed = {
     session: Session;
 };
 
+export type MoveOrgUnitRequest = {
+    parentId: string;
+};
+
+export type MyAccess = {
+    clearance: MyClearance;
+    permissions: Array<MyPermission>;
+};
+
+export type MyClearance = {
+    name: string;
+    rank: number;
+};
+
+export type MyPermission = {
+    key: string;
+    /**
+     * Unit subtrees it is held for, when not tenant-wide
+     */
+    scopeUnitIds: Array<string>;
+    /**
+     * Held for the whole organisation
+     */
+    tenantWide: boolean;
+};
+
 export type MySession = {
     current: boolean;
     /**
@@ -128,6 +284,134 @@ export type MySession = {
     userAgent?: string | null;
 };
 
+export type OrgAssignment = {
+    id: string;
+    person: OrgPerson;
+    positionId: string;
+    status: 'ACTIVE' | 'CANCELLED';
+    validFrom: string;
+    validTo?: string | null;
+    /**
+     * Send as If-Match on updates
+     */
+    version: number;
+};
+
+export type OrgHistoryEntry = {
+    action: string;
+    /**
+     * Display name of the person who made the change; absent for the system
+     */
+    actor?: string | null;
+    after?: {
+        [key: string]: unknown;
+    } | null;
+    before?: {
+        [key: string]: unknown;
+    } | null;
+    occurredAt: string;
+};
+
+export type OrgPerson = {
+    displayName: string;
+    email: string;
+    id: string;
+};
+
+export type OrgPosition = {
+    code?: string | null;
+    /**
+     * Head of its unit
+     */
+    head: boolean;
+    id: string;
+    title: string;
+    unitId: string;
+    validFrom: string;
+    validTo?: string | null;
+    /**
+     * Send as If-Match on updates
+     */
+    version: number;
+};
+
+export type OrgPositionDetail = {
+    /**
+     * Newest first, cancelled ones included
+     */
+    assignments: Array<OrgAssignment>;
+    /**
+     * Whether the signed-in user may change it
+     */
+    canManage: boolean;
+    position: OrgPosition;
+    /**
+     * Newest first, cancelled ones included
+     */
+    reportingLines: Array<OrgReportingLine>;
+    unit: OrgUnit;
+};
+
+export type OrgPositionWithHolder = {
+    /**
+     * Holder on the requested date; absent when vacant
+     */
+    holder?: OrgPerson | null;
+    /**
+     * Start of the holder's assignment
+     */
+    holderSince?: string | null;
+    position: OrgPosition;
+};
+
+export type OrgReportingLine = {
+    id: string;
+    positionId: string;
+    reportsTo: OrgPosition;
+    status: 'ACTIVE' | 'CANCELLED';
+    validFrom: string;
+    validTo?: string | null;
+    /**
+     * Send as If-Match on updates
+     */
+    version: number;
+};
+
+export type OrgUnit = {
+    code: string;
+    id: string;
+    legalEntityId: string;
+    name: string;
+    parentId?: string | null;
+    validFrom: string;
+    validTo?: string | null;
+    /**
+     * Send as If-Match on updates
+     */
+    version: number;
+};
+
+export type OrgUnitDetail = {
+    /**
+     * Whether the signed-in user may change this unit
+     */
+    canManage: boolean;
+    /**
+     * Ancestors, root first
+     */
+    path: Array<OrgUnit>;
+    unit: OrgUnit;
+};
+
+export type OrgUserPosition = {
+    id: string;
+    position: OrgPosition;
+    status: 'ACTIVE' | 'CANCELLED';
+    unitName: string;
+    validFrom: string;
+    validTo?: string | null;
+};
+
 export type PasswordResetCompletion = {
     newPassword: string;
     /**
@@ -138,6 +422,40 @@ export type PasswordResetCompletion = {
 
 export type PasswordResetRequest = {
     email: string;
+};
+
+export type PeriodRequest = {
+    validFrom: string;
+    /**
+     * First day it no longer applies; absent for open-ended
+     */
+    validTo?: string | null;
+};
+
+export type PermissionInfo = {
+    key: string;
+    /**
+     * Holders count as administrators (always MFA)
+     */
+    privileged: boolean;
+    /**
+     * Can be limited to a unit subtree
+     */
+    scopable: boolean;
+};
+
+export type PositionRequest = {
+    code?: string | null;
+    head: boolean;
+    title: string;
+    /**
+     * Creation only
+     */
+    unitId?: string | null;
+    /**
+     * Creation only; defaults to today
+     */
+    validFrom?: string | null;
 };
 
 export type ProblemDetail = {
@@ -156,6 +474,40 @@ export type RecoveryCodes = {
      * Shown once; the previous codes stop working
      */
     recoveryCodes: Array<string>;
+};
+
+export type ReportingLineRequest = {
+    reportsToPositionId: string;
+    validFrom: string;
+    validTo?: string | null;
+};
+
+export type Role = {
+    /**
+     * Key of a built-in role; absent for custom roles
+     */
+    builtIn?: string | null;
+    description?: string | null;
+    /**
+     * How many grants use it
+     */
+    grants: number;
+    id: string;
+    name: string;
+    permissions: Array<string>;
+    /**
+     * Send as If-Match on changes
+     */
+    version: number;
+};
+
+export type RoleRequest = {
+    description?: string | null;
+    name: string;
+    /**
+     * Catalogue keys
+     */
+    permissions: Array<string>;
 };
 
 /**
@@ -186,6 +538,16 @@ export type SessionUser = {
 export type StepUpRequest = {
     code?: string | null;
     password?: string | null;
+};
+
+export type UpdateOrgUnitRequest = {
+    code: string;
+    name: string;
+};
+
+export type UserAccess = {
+    clearance: ClassificationLevel;
+    grants: Array<Grant>;
 };
 
 export type ListUsersData = {
@@ -239,6 +601,24 @@ export type InviteUserResponses = {
 };
 
 export type InviteUserResponse = InviteUserResponses[keyof InviteUserResponses];
+
+export type GetUserData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/users/{id}';
+};
+
+export type GetUserResponses = {
+    /**
+     * OK
+     */
+    200: AdminUser;
+};
+
+export type GetUserResponse = GetUserResponses[keyof GetUserResponses];
 
 export type DeactivateUserData = {
     body?: never;
@@ -610,6 +990,281 @@ export type StepUpResponses = {
 
 export type StepUpResponse = StepUpResponses[keyof StepUpResponses];
 
+export type ListClassificationLevelsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/authz/classification-levels';
+};
+
+export type ListClassificationLevelsResponses = {
+    /**
+     * OK
+     */
+    200: Array<ClassificationLevel>;
+};
+
+export type ListClassificationLevelsResponse = ListClassificationLevelsResponses[keyof ListClassificationLevelsResponses];
+
+export type CreateClassificationLevelData = {
+    body: ClassificationLevelRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/v1/authz/classification-levels';
+};
+
+export type CreateClassificationLevelResponses = {
+    /**
+     * OK
+     */
+    200: ClassificationLevel;
+};
+
+export type CreateClassificationLevelResponse = CreateClassificationLevelResponses[keyof CreateClassificationLevelResponses];
+
+export type ReorderClassificationLevelsData = {
+    body: ClassificationOrderRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/authz/classification-levels/order';
+};
+
+export type ReorderClassificationLevelsResponses = {
+    /**
+     * OK
+     */
+    200: Array<ClassificationLevel>;
+};
+
+export type ReorderClassificationLevelsResponse = ReorderClassificationLevelsResponses[keyof ReorderClassificationLevelsResponses];
+
+export type DeleteClassificationLevelData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/authz/classification-levels/{id}';
+};
+
+export type DeleteClassificationLevelResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
+export type RenameClassificationLevelData = {
+    body: ClassificationLevelRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/authz/classification-levels/{id}';
+};
+
+export type RenameClassificationLevelResponses = {
+    /**
+     * OK
+     */
+    200: ClassificationLevel;
+};
+
+export type RenameClassificationLevelResponse = RenameClassificationLevelResponses[keyof RenameClassificationLevelResponses];
+
+export type RevokeGrantData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/authz/grants/{id}';
+};
+
+export type RevokeGrantResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
+export type ListPermissionsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/authz/permissions';
+};
+
+export type ListPermissionsResponses = {
+    /**
+     * OK
+     */
+    200: Array<PermissionInfo>;
+};
+
+export type ListPermissionsResponse = ListPermissionsResponses[keyof ListPermissionsResponses];
+
+export type ListRolesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/authz/roles';
+};
+
+export type ListRolesResponses = {
+    /**
+     * OK
+     */
+    200: Array<Role>;
+};
+
+export type ListRolesResponse = ListRolesResponses[keyof ListRolesResponses];
+
+export type CreateRoleData = {
+    body: RoleRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/v1/authz/roles';
+};
+
+export type CreateRoleResponses = {
+    /**
+     * OK
+     */
+    200: Role;
+};
+
+export type CreateRoleResponse = CreateRoleResponses[keyof CreateRoleResponses];
+
+export type DeleteRoleData = {
+    body?: never;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/authz/roles/{id}';
+};
+
+export type DeleteRoleResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
+export type UpdateRoleData = {
+    body: RoleRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/authz/roles/{id}';
+};
+
+export type UpdateRoleResponses = {
+    /**
+     * OK
+     */
+    200: Role;
+};
+
+export type UpdateRoleResponse = UpdateRoleResponses[keyof UpdateRoleResponses];
+
+export type GetUserAccessData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/authz/users/{id}/access';
+};
+
+export type GetUserAccessResponses = {
+    /**
+     * OK
+     */
+    200: UserAccess;
+};
+
+export type GetUserAccessResponse = GetUserAccessResponses[keyof GetUserAccessResponses];
+
+export type SetClearanceData = {
+    body: ClearanceRequest;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/authz/users/{id}/clearance';
+};
+
+export type SetClearanceResponses = {
+    /**
+     * OK
+     */
+    200: ClassificationLevel;
+};
+
+export type SetClearanceResponse = SetClearanceResponses[keyof SetClearanceResponses];
+
+export type GrantRoleData = {
+    body: GrantRequest;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/authz/users/{id}/grants';
+};
+
+export type GrantRoleResponses = {
+    /**
+     * OK
+     */
+    200: Grant;
+};
+
+export type GrantRoleResponse = GrantRoleResponses[keyof GrantRoleResponses];
+
+export type SearchDirectoryData = {
+    body?: never;
+    path?: never;
+    query: {
+        /**
+         * At least 2 characters
+         */
+        q: string;
+        /**
+         * user, position, or both (default)
+         */
+        kind?: Array<string>;
+        limit?: number;
+    };
+    url: '/api/v1/directory/search';
+};
+
+export type SearchDirectoryResponses = {
+    /**
+     * OK
+     */
+    200: DirectorySearchResult;
+};
+
+export type SearchDirectoryResponse = SearchDirectoryResponses[keyof SearchDirectoryResponses];
+
 export type GetHealthData = {
     body?: never;
     path?: never;
@@ -650,6 +1305,22 @@ export type GetMeResponses = {
 };
 
 export type GetMeResponse = GetMeResponses[keyof GetMeResponses];
+
+export type GetMyAccessData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/me/access';
+};
+
+export type GetMyAccessResponses = {
+    /**
+     * OK
+     */
+    200: MyAccess;
+};
+
+export type GetMyAccessResponse = GetMyAccessResponses[keyof GetMyAccessResponses];
 
 export type ChangeMyPasswordData = {
     body: ChangePasswordRequest;
@@ -739,3 +1410,486 @@ export type RevokeMySessionResponses = {
 };
 
 export type RevokeMySessionResponse = RevokeMySessionResponses[keyof RevokeMySessionResponses];
+
+export type UpdateAssignmentData = {
+    body: PeriodRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/assignments/{id}';
+};
+
+export type UpdateAssignmentResponses = {
+    /**
+     * OK
+     */
+    200: OrgAssignment;
+};
+
+export type UpdateAssignmentResponse = UpdateAssignmentResponses[keyof UpdateAssignmentResponses];
+
+export type CancelAssignmentData = {
+    body?: never;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/assignments/{id}/cancel';
+};
+
+export type CancelAssignmentResponses = {
+    /**
+     * OK
+     */
+    200: OrgAssignment;
+};
+
+export type CancelAssignmentResponse = CancelAssignmentResponses[keyof CancelAssignmentResponses];
+
+export type GetOrgHistoryData = {
+    body?: never;
+    path: {
+        type: string;
+        id: string;
+    };
+    query?: {
+        limit?: number;
+    };
+    url: '/api/v1/org/history/{type}/{id}';
+};
+
+export type GetOrgHistoryResponses = {
+    /**
+     * OK
+     */
+    200: Array<OrgHistoryEntry>;
+};
+
+export type GetOrgHistoryResponse = GetOrgHistoryResponses[keyof GetOrgHistoryResponses];
+
+export type ListLegalEntitiesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/org/legal-entities';
+};
+
+export type ListLegalEntitiesResponses = {
+    /**
+     * OK
+     */
+    200: Array<LegalEntity>;
+};
+
+export type ListLegalEntitiesResponse = ListLegalEntitiesResponses[keyof ListLegalEntitiesResponses];
+
+export type CreateLegalEntityData = {
+    body: LegalEntityRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/v1/org/legal-entities';
+};
+
+export type CreateLegalEntityResponses = {
+    /**
+     * OK
+     */
+    200: LegalEntity;
+};
+
+export type CreateLegalEntityResponse = CreateLegalEntityResponses[keyof CreateLegalEntityResponses];
+
+export type UpdateLegalEntityData = {
+    body: LegalEntityRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/legal-entities/{id}';
+};
+
+export type UpdateLegalEntityResponses = {
+    /**
+     * OK
+     */
+    200: LegalEntity;
+};
+
+export type UpdateLegalEntityResponse = UpdateLegalEntityResponses[keyof UpdateLegalEntityResponses];
+
+export type CloseLegalEntityData = {
+    body: CloseRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/legal-entities/{id}/close';
+};
+
+export type CloseLegalEntityResponses = {
+    /**
+     * OK
+     */
+    200: LegalEntity;
+};
+
+export type CloseLegalEntityResponse = CloseLegalEntityResponses[keyof CloseLegalEntityResponses];
+
+export type CreatePositionData = {
+    body: PositionRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/v1/org/positions';
+};
+
+export type CreatePositionResponses = {
+    /**
+     * OK
+     */
+    200: OrgPosition;
+};
+
+export type CreatePositionResponse = CreatePositionResponses[keyof CreatePositionResponses];
+
+export type GetPositionData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/positions/{id}';
+};
+
+export type GetPositionResponses = {
+    /**
+     * OK
+     */
+    200: OrgPositionDetail;
+};
+
+export type GetPositionResponse = GetPositionResponses[keyof GetPositionResponses];
+
+export type UpdatePositionData = {
+    body: PositionRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/positions/{id}';
+};
+
+export type UpdatePositionResponses = {
+    /**
+     * OK
+     */
+    200: OrgPosition;
+};
+
+export type UpdatePositionResponse = UpdatePositionResponses[keyof UpdatePositionResponses];
+
+export type AssignPositionData = {
+    body: AssignRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/positions/{id}/assignments';
+};
+
+export type AssignPositionResponses = {
+    /**
+     * OK
+     */
+    200: OrgAssignment;
+};
+
+export type AssignPositionResponse = AssignPositionResponses[keyof AssignPositionResponses];
+
+export type ClosePositionData = {
+    body: CloseRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/positions/{id}/close';
+};
+
+export type ClosePositionResponses = {
+    /**
+     * OK
+     */
+    200: OrgPosition;
+};
+
+export type ClosePositionResponse = ClosePositionResponses[keyof ClosePositionResponses];
+
+export type GetPositionHolderData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: {
+        date?: string;
+    };
+    url: '/api/v1/org/positions/{id}/holder';
+};
+
+export type GetPositionHolderResponses = {
+    /**
+     * OK
+     */
+    200: OrgAssignment;
+};
+
+export type GetPositionHolderResponse = GetPositionHolderResponses[keyof GetPositionHolderResponses];
+
+export type CreateReportingLineData = {
+    body: ReportingLineRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/positions/{id}/reporting-lines';
+};
+
+export type CreateReportingLineResponses = {
+    /**
+     * OK
+     */
+    200: OrgReportingLine;
+};
+
+export type CreateReportingLineResponse = CreateReportingLineResponses[keyof CreateReportingLineResponses];
+
+export type UpdateReportingLineData = {
+    body: PeriodRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/reporting-lines/{id}';
+};
+
+export type UpdateReportingLineResponses = {
+    /**
+     * OK
+     */
+    200: OrgReportingLine;
+};
+
+export type UpdateReportingLineResponse = UpdateReportingLineResponses[keyof UpdateReportingLineResponses];
+
+export type CancelReportingLineData = {
+    body?: never;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/reporting-lines/{id}/cancel';
+};
+
+export type CancelReportingLineResponses = {
+    /**
+     * OK
+     */
+    200: OrgReportingLine;
+};
+
+export type CancelReportingLineResponse = CancelReportingLineResponses[keyof CancelReportingLineResponses];
+
+export type ListOrgUnitsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        /**
+         * Date the tree is shown for
+         */
+        asOf?: string;
+        includeClosed?: boolean;
+    };
+    url: '/api/v1/org/units';
+};
+
+export type ListOrgUnitsResponses = {
+    /**
+     * OK
+     */
+    200: Array<OrgUnit>;
+};
+
+export type ListOrgUnitsResponse = ListOrgUnitsResponses[keyof ListOrgUnitsResponses];
+
+export type CreateOrgUnitData = {
+    body: CreateOrgUnitRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/v1/org/units';
+};
+
+export type CreateOrgUnitResponses = {
+    /**
+     * OK
+     */
+    200: OrgUnit;
+};
+
+export type CreateOrgUnitResponse = CreateOrgUnitResponses[keyof CreateOrgUnitResponses];
+
+export type GetOrgUnitData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/units/{id}';
+};
+
+export type GetOrgUnitResponses = {
+    /**
+     * OK
+     */
+    200: OrgUnitDetail;
+};
+
+export type GetOrgUnitResponse = GetOrgUnitResponses[keyof GetOrgUnitResponses];
+
+export type UpdateOrgUnitData = {
+    body: UpdateOrgUnitRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/units/{id}';
+};
+
+export type UpdateOrgUnitResponses = {
+    /**
+     * OK
+     */
+    200: OrgUnit;
+};
+
+export type UpdateOrgUnitResponse = UpdateOrgUnitResponses[keyof UpdateOrgUnitResponses];
+
+export type CloseOrgUnitData = {
+    body: CloseRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/units/{id}/close';
+};
+
+export type CloseOrgUnitResponses = {
+    /**
+     * OK
+     */
+    200: OrgUnit;
+};
+
+export type CloseOrgUnitResponse = CloseOrgUnitResponses[keyof CloseOrgUnitResponses];
+
+export type MoveOrgUnitData = {
+    body: MoveOrgUnitRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/units/{id}/move';
+};
+
+export type MoveOrgUnitResponses = {
+    /**
+     * OK
+     */
+    200: OrgUnit;
+};
+
+export type MoveOrgUnitResponse = MoveOrgUnitResponses[keyof MoveOrgUnitResponses];
+
+export type ListUnitPositionsData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: {
+        asOf?: string;
+    };
+    url: '/api/v1/org/units/{id}/positions';
+};
+
+export type ListUnitPositionsResponses = {
+    /**
+     * OK
+     */
+    200: Array<OrgPositionWithHolder>;
+};
+
+export type ListUnitPositionsResponse = ListUnitPositionsResponses[keyof ListUnitPositionsResponses];
+
+export type ListUserAssignmentsData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/org/users/{id}/assignments';
+};
+
+export type ListUserAssignmentsResponses = {
+    /**
+     * OK
+     */
+    200: Array<OrgUserPosition>;
+};
+
+export type ListUserAssignmentsResponse = ListUserAssignmentsResponses[keyof ListUserAssignmentsResponses];

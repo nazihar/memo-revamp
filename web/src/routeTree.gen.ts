@@ -19,8 +19,13 @@ import { Route as ShellPatternsRouteImport } from './routes/_shell/patterns'
 import { Route as ShellStatusRouteImport } from './routes/_shell/status'
 import { Route as AuthLoginEnrolMfaRouteImport } from './routes/_auth/login_.enrol-mfa'
 import { Route as ShellSignedInIndexRouteImport } from './routes/_shell/_signedIn/index'
+import { Route as ShellSignedInOrgRouteImport } from './routes/_shell/_signedIn/org'
+import { Route as ShellSignedInAdminClassificationsRouteImport } from './routes/_shell/_signedIn/admin.classifications'
+import { Route as ShellSignedInAdminRolesRouteImport } from './routes/_shell/_signedIn/admin.roles'
 import { Route as ShellSignedInAdminUsersRouteImport } from './routes/_shell/_signedIn/admin.users'
 import { Route as ShellSignedInMeSecurityRouteImport } from './routes/_shell/_signedIn/me.security'
+import { Route as ShellSignedInAdminUsersUserIdRouteImport } from './routes/_shell/_signedIn/admin.users_.$userId'
+import { Route as ShellSignedInOrgPositionsPositionIdRouteImport } from './routes/_shell/_signedIn/org_.positions.$positionId'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/_auth',
@@ -69,6 +74,22 @@ const ShellSignedInIndexRoute = ShellSignedInIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ShellSignedInRoute,
 } as any)
+const ShellSignedInOrgRoute = ShellSignedInOrgRouteImport.update({
+  id: '/org',
+  path: '/org',
+  getParentRoute: () => ShellSignedInRoute,
+} as any)
+const ShellSignedInAdminClassificationsRoute =
+  ShellSignedInAdminClassificationsRouteImport.update({
+    id: '/admin/classifications',
+    path: '/admin/classifications',
+    getParentRoute: () => ShellSignedInRoute,
+  } as any)
+const ShellSignedInAdminRolesRoute = ShellSignedInAdminRolesRouteImport.update({
+  id: '/admin/roles',
+  path: '/admin/roles',
+  getParentRoute: () => ShellSignedInRoute,
+} as any)
 const ShellSignedInAdminUsersRoute = ShellSignedInAdminUsersRouteImport.update({
   id: '/admin/users',
   path: '/admin/users',
@@ -79,6 +100,18 @@ const ShellSignedInMeSecurityRoute = ShellSignedInMeSecurityRouteImport.update({
   path: '/me/security',
   getParentRoute: () => ShellSignedInRoute,
 } as any)
+const ShellSignedInAdminUsersUserIdRoute =
+  ShellSignedInAdminUsersUserIdRouteImport.update({
+    id: '/admin/users_/$userId',
+    path: '/admin/users/$userId',
+    getParentRoute: () => ShellSignedInRoute,
+  } as any)
+const ShellSignedInOrgPositionsPositionIdRoute =
+  ShellSignedInOrgPositionsPositionIdRouteImport.update({
+    id: '/org_/positions/$positionId',
+    path: '/org/positions/$positionId',
+    getParentRoute: () => ShellSignedInRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof ShellSignedInIndexRoute
@@ -88,8 +121,13 @@ export interface FileRoutesByFullPath {
   '/patterns': typeof ShellPatternsRoute
   '/status': typeof ShellStatusRoute
   '/login/enrol-mfa': typeof AuthLoginEnrolMfaRoute
+  '/org': typeof ShellSignedInOrgRoute
+  '/admin/classifications': typeof ShellSignedInAdminClassificationsRoute
+  '/admin/roles': typeof ShellSignedInAdminRolesRoute
   '/admin/users': typeof ShellSignedInAdminUsersRoute
   '/me/security': typeof ShellSignedInMeSecurityRoute
+  '/admin/users/$userId': typeof ShellSignedInAdminUsersUserIdRoute
+  '/org/positions/$positionId': typeof ShellSignedInOrgPositionsPositionIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof ShellSignedInIndexRoute
@@ -99,8 +137,13 @@ export interface FileRoutesByTo {
   '/patterns': typeof ShellPatternsRoute
   '/status': typeof ShellStatusRoute
   '/login/enrol-mfa': typeof AuthLoginEnrolMfaRoute
+  '/org': typeof ShellSignedInOrgRoute
+  '/admin/classifications': typeof ShellSignedInAdminClassificationsRoute
+  '/admin/roles': typeof ShellSignedInAdminRolesRoute
   '/admin/users': typeof ShellSignedInAdminUsersRoute
   '/me/security': typeof ShellSignedInMeSecurityRoute
+  '/admin/users/$userId': typeof ShellSignedInAdminUsersUserIdRoute
+  '/org/positions/$positionId': typeof ShellSignedInOrgPositionsPositionIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -113,9 +156,14 @@ export interface FileRoutesById {
   '/_shell/patterns': typeof ShellPatternsRoute
   '/_shell/status': typeof ShellStatusRoute
   '/_auth/login_/enrol-mfa': typeof AuthLoginEnrolMfaRoute
+  '/_shell/_signedIn/org': typeof ShellSignedInOrgRoute
   '/_shell/_signedIn/': typeof ShellSignedInIndexRoute
+  '/_shell/_signedIn/admin/classifications': typeof ShellSignedInAdminClassificationsRoute
+  '/_shell/_signedIn/admin/roles': typeof ShellSignedInAdminRolesRoute
   '/_shell/_signedIn/admin/users': typeof ShellSignedInAdminUsersRoute
   '/_shell/_signedIn/me/security': typeof ShellSignedInMeSecurityRoute
+  '/_shell/_signedIn/admin/users_/$userId': typeof ShellSignedInAdminUsersUserIdRoute
+  '/_shell/_signedIn/org_/positions/$positionId': typeof ShellSignedInOrgPositionsPositionIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -127,8 +175,13 @@ export interface FileRouteTypes {
     | '/patterns'
     | '/status'
     | '/login/enrol-mfa'
+    | '/org'
+    | '/admin/classifications'
+    | '/admin/roles'
     | '/admin/users'
     | '/me/security'
+    | '/admin/users/$userId'
+    | '/org/positions/$positionId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -138,8 +191,13 @@ export interface FileRouteTypes {
     | '/patterns'
     | '/status'
     | '/login/enrol-mfa'
+    | '/org'
+    | '/admin/classifications'
+    | '/admin/roles'
     | '/admin/users'
     | '/me/security'
+    | '/admin/users/$userId'
+    | '/org/positions/$positionId'
   id:
     | '__root__'
     | '/_auth'
@@ -151,9 +209,14 @@ export interface FileRouteTypes {
     | '/_shell/patterns'
     | '/_shell/status'
     | '/_auth/login_/enrol-mfa'
+    | '/_shell/_signedIn/org'
     | '/_shell/_signedIn/'
+    | '/_shell/_signedIn/admin/classifications'
+    | '/_shell/_signedIn/admin/roles'
     | '/_shell/_signedIn/admin/users'
     | '/_shell/_signedIn/me/security'
+    | '/_shell/_signedIn/admin/users_/$userId'
+    | '/_shell/_signedIn/org_/positions/$positionId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -233,6 +296,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShellSignedInIndexRouteImport
       parentRoute: typeof ShellSignedInRoute
     }
+    '/_shell/_signedIn/org': {
+      id: '/_shell/_signedIn/org'
+      path: '/org'
+      fullPath: '/org'
+      preLoaderRoute: typeof ShellSignedInOrgRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
+    '/_shell/_signedIn/admin/classifications': {
+      id: '/_shell/_signedIn/admin/classifications'
+      path: '/admin/classifications'
+      fullPath: '/admin/classifications'
+      preLoaderRoute: typeof ShellSignedInAdminClassificationsRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
+    '/_shell/_signedIn/admin/roles': {
+      id: '/_shell/_signedIn/admin/roles'
+      path: '/admin/roles'
+      fullPath: '/admin/roles'
+      preLoaderRoute: typeof ShellSignedInAdminRolesRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
     '/_shell/_signedIn/admin/users': {
       id: '/_shell/_signedIn/admin/users'
       path: '/admin/users'
@@ -245,6 +329,20 @@ declare module '@tanstack/react-router' {
       path: '/me/security'
       fullPath: '/me/security'
       preLoaderRoute: typeof ShellSignedInMeSecurityRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
+    '/_shell/_signedIn/admin/users_/$userId': {
+      id: '/_shell/_signedIn/admin/users_/$userId'
+      path: '/admin/users/$userId'
+      fullPath: '/admin/users/$userId'
+      preLoaderRoute: typeof ShellSignedInAdminUsersUserIdRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
+    '/_shell/_signedIn/org_/positions/$positionId': {
+      id: '/_shell/_signedIn/org_/positions/$positionId'
+      path: '/org/positions/$positionId'
+      fullPath: '/org/positions/$positionId'
+      preLoaderRoute: typeof ShellSignedInOrgPositionsPositionIdRouteImport
       parentRoute: typeof ShellSignedInRoute
     }
   }
@@ -267,15 +365,27 @@ const AuthRouteChildren: AuthRouteChildren = {
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface ShellSignedInRouteChildren {
+  ShellSignedInOrgRoute: typeof ShellSignedInOrgRoute
   ShellSignedInIndexRoute: typeof ShellSignedInIndexRoute
+  ShellSignedInAdminClassificationsRoute: typeof ShellSignedInAdminClassificationsRoute
+  ShellSignedInAdminRolesRoute: typeof ShellSignedInAdminRolesRoute
   ShellSignedInAdminUsersRoute: typeof ShellSignedInAdminUsersRoute
   ShellSignedInMeSecurityRoute: typeof ShellSignedInMeSecurityRoute
+  ShellSignedInAdminUsersUserIdRoute: typeof ShellSignedInAdminUsersUserIdRoute
+  ShellSignedInOrgPositionsPositionIdRoute: typeof ShellSignedInOrgPositionsPositionIdRoute
 }
 
 const ShellSignedInRouteChildren: ShellSignedInRouteChildren = {
+  ShellSignedInOrgRoute: ShellSignedInOrgRoute,
   ShellSignedInIndexRoute: ShellSignedInIndexRoute,
+  ShellSignedInAdminClassificationsRoute:
+    ShellSignedInAdminClassificationsRoute,
+  ShellSignedInAdminRolesRoute: ShellSignedInAdminRolesRoute,
   ShellSignedInAdminUsersRoute: ShellSignedInAdminUsersRoute,
   ShellSignedInMeSecurityRoute: ShellSignedInMeSecurityRoute,
+  ShellSignedInAdminUsersUserIdRoute: ShellSignedInAdminUsersUserIdRoute,
+  ShellSignedInOrgPositionsPositionIdRoute:
+    ShellSignedInOrgPositionsPositionIdRoute,
 }
 
 const ShellSignedInRouteWithChildren = ShellSignedInRoute._addFileChildren(

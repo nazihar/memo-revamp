@@ -1,10 +1,13 @@
 package com.memo.demo
 
+import com.memo.common.authz.AccessAdministration
+import com.memo.common.authz.BuiltInRole
 import com.memo.common.context.ActorContext
 import com.memo.common.tenant.TenantId
 import com.memo.common.tenant.TenantTransactions
 import com.memo.identity.MfaSeeding
 import com.memo.identity.UserAccounts
+import com.memo.org.OrgSeeding
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
 import org.slf4j.LoggerFactory
@@ -30,23 +33,28 @@ object DemoTenant {
         linkedMapOf(
             "default.locale" to "en",
             "default.timezone" to "UTC",
-            // Placeholder for the org tree until Phase 1b models units and positions.
-            "org.placeholder" to "Head Office",
         )
 
     /** Demo accounts. Their password comes from `MEMO_DEMO_PASSWORD` (generated into the git-ignored `.env`), never code. */
     val USERS =
         listOf(
-            DemoUser("admin@demo.example", "Demo Admin", tenantAdmin = true),
-            DemoUser("user@demo.example", "Demo User", tenantAdmin = false),
+            DemoUser("admin@demo.example", "Demo Admin", BuiltInRole.TENANT_ADMIN),
+            DemoUser("orgadmin@demo.example", "Demo Org Admin", BuiltInRole.ORG_ADMIN),
+            DemoUser("branchadmin@demo.example", "Demo Branch Admin", BuiltInRole.ORG_ADMIN, scopeUnit = "REG-N"),
+            DemoUser("auditor@demo.example", "Demo Auditor", BuiltInRole.AUDITOR),
+            DemoUser("user@demo.example", "Demo User", null),
         )
 }
 
+/** A demo account with its role, tenant-wide or for the subtree of the unit with code [scopeUnit]. */
 data class DemoUser(
     val email: String,
     val displayName: String,
-    val tenantAdmin: Boolean,
-)
+    val role: BuiltInRole?,
+    val scopeUnit: String? = null,
+) {
+    val tenantAdmin: Boolean get() = role == BuiltInRole.TENANT_ADMIN
+}
 
 /** Creates or refreshes the demo tenant. Idempotent. Refuses to run under the `prod` profile. */
 @Component
@@ -59,6 +67,8 @@ class DemoTenantSeeder(
     @param:Value("\${memo.demo.password:}") private val demoPassword: String,
     private val mfa: MfaSeeding,
     @param:Value("\${memo.demo.totp-secret:}") private val demoTotpSecret: String,
+    private val access: AccessAdministration,
+    private val org: OrgSeeding,
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
 
@@ -70,14 +80,36 @@ class DemoTenantSeeder(
                 DemoTenant.SETTINGS.forEach { (key, value) ->
                     if (settings.get(key)?.value != value) settings.put(key, value)
                 }
-                DemoTenant.USERS.forEach { seedUser(it) }
+                val demoAccounts = DemoTenant.USERS.associate { it.email to seedUser(it) }
+                seedOrg(demoAccounts)
+                DemoTenant.USERS.filter { it.role != null && !it.tenantAdmin }.forEach { user ->
+                    access.grantBuiltIn(demoAccounts.getValue(user.email), user.role!!, user.scopeUnit?.let { DemoOrg.unitId(it) })
+                }
             }
         }
         log.info("Demo tenant '{}' seeded", DemoTenant.SLUG)
     }
 
-    private fun seedUser(user: DemoUser) {
+    /** Units, positions, reporting lines, and people in most seats: demo accounts in theirs, staff (INVITED) in the rest. */
+    private fun seedOrg(demoAccounts: Map<String, UUID>) {
+        org.legalEntity(DemoOrg.ENTITY, DemoOrg.ENTITY_NAME, DemoOrg.START)
+        DemoOrg.UNITS.forEach { org.unit(it.id, DemoOrg.ENTITY, it.parent?.let(DemoOrg::unitId), it.code, it.name, DemoOrg.START) }
+        DemoOrg.POSITIONS.forEach { org.position(it.id, DemoOrg.unitId(it.unit), it.title, it.head, DemoOrg.START) }
+        DemoOrg.REPORTING_LINES.forEach { (position, to) -> org.reportingLine(position, to, DemoOrg.START) }
+        DemoOrg.SEATS.forEach { (email, position) -> org.assignment(position, demoAccounts.getValue(email), DemoOrg.START) }
+        val openSeats = DemoOrg.POSITIONS.map { it.id }.filter { it !in DemoOrg.SEATS.values && it !in DemoOrg.VACANT }
+        DemoOrg.STAFF.forEach { name ->
+            val email = DemoOrg.staffEmail(name)
+            accounts.findByEmail(email) ?: accounts.create(email, name)
+        }
+        DemoOrg.STAFF.dropLast(DemoOrg.UNSEATED).zip(openSeats).forEach { (name, position) ->
+            org.assignment(position, requireNotNull(accounts.findByEmail(DemoOrg.staffEmail(name))).id.value, DemoOrg.START)
+        }
+    }
+
+    private fun seedUser(user: DemoUser): UUID {
         val account = accounts.findByEmail(user.email) ?: accounts.create(user.email, user.displayName, user.tenantAdmin)
+        if (user.tenantAdmin) access.grantBuiltIn(account.id.value, BuiltInRole.TENANT_ADMIN)
         if (demoPassword.isBlank()) {
             // Names the variable, never its value.
             // nosemgrep: semgrep.memo-no-secrets-in-logs
@@ -90,6 +122,7 @@ class DemoTenantSeeder(
             check(BASE32_SECRET.matches(demoTotpSecret)) { "MEMO_DEMO_TOTP_SECRET must be 32 Base32 characters (A-Z, 2-7)" }
             mfa.ensureTotp(account.id, demoTotpSecret)
         }
+        return account.id.value
     }
 
     private companion object {

@@ -1,5 +1,6 @@
 package com.memo.identity.me
 
+import com.memo.common.authz.SignedIn
 import com.memo.common.tenant.TenantContext
 import com.memo.common.tenant.TenantTransactions
 import com.memo.common.web.FieldProblem
@@ -79,6 +80,7 @@ data class MySessionResponse(
 
 /** The signed-in user's own account (design E03 §3). Password and recovery-code changes need a step-up (ADR-0024). */
 @RestController
+@SignedIn
 @RequestMapping("/api/v1/me")
 @Tag(name = "me")
 class MeController(
@@ -101,7 +103,7 @@ class MeController(
                     account.id.value,
                     account.email,
                     account.displayName,
-                    account.tenantAdmin,
+                    accounts.isTenantAdmin(account.id),
                     mfa.isEnrolled(account.id),
                     account.lastLoginAt,
                 )

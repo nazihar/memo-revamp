@@ -10,6 +10,9 @@ import type { APIRequestContext, Page } from '@playwright/test'
  */
 export const DEMO_USERS = {
   tenantAdmin: 'admin@demo.example',
+  orgAdmin: 'orgadmin@demo.example',
+  branchAdmin: 'branchadmin@demo.example',
+  auditor: 'auditor@demo.example',
   user: 'user@demo.example',
 } as const
 
@@ -123,4 +126,10 @@ export async function latestMailText(request: APIRequestContext, to: string, tim
     await new Promise((resolve) => setTimeout(resolve, 1_000))
   }
   throw new Error(`no mail to ${to} within ${String(timeoutMs)} ms`)
+}
+
+/** Admin actions may ask to confirm with a code; the demo users answer with the demo TOTP secret. */
+export async function confirmIfAsked(page: Page, secret: string): Promise<void> {
+  const dialog = page.getByRole('dialog', { name: 'Confirm it is you' })
+  if (await dialog.isVisible().catch(() => false)) await enterCode(page, secret, 'Code', 'Confirm')
 }

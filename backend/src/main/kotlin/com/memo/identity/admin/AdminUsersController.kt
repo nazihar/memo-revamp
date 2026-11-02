@@ -1,6 +1,8 @@
 package com.memo.identity.admin
 
 import com.memo.audit.AuditLog
+import com.memo.common.authz.Permission
+import com.memo.common.authz.RequiresPermission
 import com.memo.common.tenant.TenantContext
 import com.memo.common.tenant.TenantTransactions
 import com.memo.common.web.FieldProblem
@@ -88,6 +90,7 @@ data class InviteUserRequest(
  * need `If-Match: "<version>"`; inviting needs an `Idempotency-Key`.
  */
 @RestController
+@RequiresPermission(Permission.IDENTITY_USERS_MANAGE)
 @RequestMapping("/api/v1/admin/users")
 @Tag(name = "admin")
 class AdminUsersController(
@@ -276,7 +279,7 @@ class AdminUsersController(
             account.email,
             account.displayName,
             account.status,
-            account.tenantAdmin,
+            accounts.isTenantAdmin(account.id),
             mfa.isEnrolled(account.id),
             account.lastLoginAt,
             account.version,

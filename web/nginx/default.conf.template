@@ -32,7 +32,8 @@ server {
     # Everything else is the SPA shell (client-side routes); never cached so a deploy is picked up immediately.
     location / {
         include /etc/nginx/snippets/security-headers.conf;
-        add_header Cache-Control "no-store" always;
+        # no-store alone already forbids caching; the rest is what ZAP rule 10015 looks for, so the rule stays useful.
+        add_header Cache-Control "no-store, no-cache, must-revalidate" always;
         try_files $uri /index.html;
     }
 }

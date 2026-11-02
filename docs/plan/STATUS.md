@@ -5,10 +5,10 @@
 **Last updated:** 2026-11-02 (UTC+06:00) by Claude (agent)
 
 ## Current position
-- **Phase:** 1a (overview approved 2026-10-18, gate delegation kept). Merged: **E02 platform kernel** (PR #18), **E01 app frame** (PR #19), **E03 identity, sessions and step-up** (PR #20), the deploy and nightly fixes (PR #21), **E04 org directory and authorisation** (PR #22; ADR-0026, ADR-0027). **E04 is merged but not yet on dev:** master CI ran out of test heap on the merge commit, so the deploy was skipped and dev runs PR #21 (`19da6c5`). The fix is `chore/test-heap-and-docs`.
+- **Phase:** 1a (overview approved 2026-10-18, gate delegation kept). Merged and on dev: **E02 platform kernel** (PR #18), **E01 app frame** (PR #19), **E03 identity, sessions and step-up** (PR #20), **E04 org directory and authorisation** (PR #22; ADR-0026, ADR-0027), plus fixes (PRs #21, #23). Next: **E05 files** and **E06 notifications**.
 - **Dev environment live (2026-10-18):** https://dev.memo-revamp.naziharitsolution.com on the VM 123.176.58.175 (Ubuntu 24.04, 4 vCPU, 7.8 GB RAM, 100 GB disk). It deploys automatically after every green `ci` run on `master`.
 - **Phase 0 epics:** E01–E05 done (`docs/plan/phase-0-foundations/`).
-- **Branches:** `master` holds PRs #1–#22; test heap fix and docs on `chore/test-heap-and-docs`.
+- **Branches:** `master` holds PRs #1–#23; ZAP fixes on `fix/zap-two-targets`.
 - **Release:** `v0.1.0` published with signed images (2026-10-15).
 - **Product name:** `memo` everywhere except the repository name `memo-revamp` (A1, PR #6).
 
@@ -30,7 +30,7 @@
   - VM provisioned with Ansible (playbook fixes in PR #13);
   - private images pulled with the deploy job's short-lived token, no credential stored on the VM (PR #14);
   - first deploy succeeded after the libexpat image fixes (PR #15).
-- [ ] ZAP baseline and Gatling against dev: the 2026-10-29 nightly stopped at a ZAP warning (fixed in PR #21) with dev down; they run again in the next nightly
+- [ ] ZAP baseline and Gatling against dev: the 2026-11-02 nightly passed everything except this job, which stopped before scanning dev (CI script bug). A local ZAP scan of dev found 0 failures and one warning (rule 10015); both are fixed on `fix/zap-two-targets`. Gatling against dev has not run yet
 - [x] Owner usability walkthrough (2026-10-15): UI OK; "layout very simple" carried into Phase 1a as a layout/visual-design epic
 - [x] NFRs confirmed as proposed by the owner (2026-10-15); Q3 answered: agent only, no deadline
 - [x] `retrospective.md` finalised and phase exit recorded in `overview.md §10` (2026-10-15)
@@ -43,8 +43,8 @@
 - **DAST/performance:** ZAP baseline 0 FAIL / 0 WARN; Gatling p95 48 ms.
 
 ## Next step
-1. **Merge the test heap fix.** Master CI then goes green and deploys E04 to dev: the Demo Bank org and the new demo accounts (`orgadmin@`, `branchadmin@`, `auditor@`).
-2. **Re-run the nightly** after that deploy. It is the first full result since E03: Firefox and WebKit on the final code, ZAP and Gatling against dev, and the dependency re-scan with the Guava pin.
+1. **Merge the ZAP fixes**, then re-run the nightly: the only nightly job not yet green is ZAP and Gatling against dev.
+2. Check the Gatling result against dev from that run; it has never run there.
 3. Plan **E05 files** and **E06 notifications** (they can run beside each other), then E07.
 4. Remove the `apk upgrade` lines from `web/Dockerfile` once `nginx-unprivileged` ships the fixed Alpine packages; remove the Spring Session licence exceptions once Boot manages Spring Session 4.1.2 or later; remove the Guava pin in `build-logic` once the plugins pull 33.7.2 or later.
 

@@ -7,6 +7,10 @@ History moved out of `STATUS.md`, newest first.
 - Master CI failed on the PR #22 merge commit, and on a re-run: the test JVM ran out of heap (Gradle's default 512 MiB) in ArchUnit's class import, after the suite had grown with E04. The same tree had passed on the PR, so the limit was being reached only on some runs. The deploy was skipped, so E04 is not on dev yet. The test heap is now 1 GiB.
 - Lesson: a green PR run does not prove master will be green when a resource limit is close. Watch the master run before calling an epic deployed.
 
+- PR #23 (test heap, docs) merged: master CI green, and E04 deployed to dev (`efc05e6`) with the Demo Bank: 33 units, 56 positions, 46 people in seats.
+- Nightly on `efc05e6`: Firefox and WebKit on the real stack, pseudo-locale, visual, Lighthouse, Helm on kind and the dependency re-scan all pass; the on-prem ZAP scan shows informational alerts only. The ZAP and Gatling job failed before reaching dev: `ci/zap-baseline.sh` reused the first scan's report folder, whose files belong to the container user. Each target now has its own folder.
+- A local ZAP scan of dev found one warning the on-prem scan cannot show, because rule 10015 applies only over HTTPS: `Cache-Control: no-store` is already the strictest value but the rule looks for all three directives. The SPA shell now sends `no-store, no-cache, must-revalidate` rather than ignoring the rule, so a page with a real gap would still be caught.
+
 ## 2026-10-29
 - PR #20 (E03) merged. The deploy left dev at 502 and the first nightly since E03 failed; both are written up in the E03 log. Fixed in PR #21.
 - The owner made the repository public for a while so Actions can run (billing block on the private repository).

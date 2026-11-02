@@ -889,6 +889,34 @@
         "required" : [ "canManage", "path", "unit" ],
         "type" : "object"
       },
+      "OrgUserPosition" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "position" : {
+            "$ref" : "#/components/schemas/OrgPosition"
+          },
+          "status" : {
+            "enum" : [ "ACTIVE", "CANCELLED" ],
+            "type" : "string"
+          },
+          "unitName" : {
+            "type" : "string"
+          },
+          "validFrom" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "validTo" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "id", "position", "status", "unitName", "validFrom" ],
+        "type" : "object"
+      },
       "PasswordResetCompletion" : {
         "properties" : {
           "newPassword" : {
@@ -1284,6 +1312,34 @@
           }
         },
         "summary" : "Invite a user",
+        "tags" : [ "admin" ]
+      }
+    },
+    "/api/v1/admin/users/{id}" : {
+      "get" : {
+        "operationId" : "getUser",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AdminUser"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "One user of the organisation",
         "tags" : [ "admin" ]
       }
     },
@@ -3400,7 +3456,7 @@
               "application/json" : {
                 "schema" : {
                   "items" : {
-                    "$ref" : "#/components/schemas/OrgAssignment"
+                    "$ref" : "#/components/schemas/OrgUserPosition"
                   },
                   "type" : "array"
                 }

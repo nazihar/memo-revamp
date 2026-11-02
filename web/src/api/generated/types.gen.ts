@@ -403,6 +403,15 @@ export type OrgUnitDetail = {
     unit: OrgUnit;
 };
 
+export type OrgUserPosition = {
+    id: string;
+    position: OrgPosition;
+    status: 'ACTIVE' | 'CANCELLED';
+    unitName: string;
+    validFrom: string;
+    validTo?: string | null;
+};
+
 export type PasswordResetCompletion = {
     newPassword: string;
     /**
@@ -592,6 +601,24 @@ export type InviteUserResponses = {
 };
 
 export type InviteUserResponse = InviteUserResponses[keyof InviteUserResponses];
+
+export type GetUserData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/users/{id}';
+};
+
+export type GetUserResponses = {
+    /**
+     * OK
+     */
+    200: AdminUser;
+};
+
+export type GetUserResponse = GetUserResponses[keyof GetUserResponses];
 
 export type DeactivateUserData = {
     body?: never;
@@ -1862,7 +1889,7 @@ export type ListUserAssignmentsResponses = {
     /**
      * OK
      */
-    200: Array<OrgAssignment>;
+    200: Array<OrgUserPosition>;
 };
 
 export type ListUserAssignmentsResponse = ListUserAssignmentsResponses[keyof ListUserAssignmentsResponses];

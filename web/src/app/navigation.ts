@@ -71,7 +71,7 @@ export const navigation: NavItem[] = [
     icon: ShieldCheck,
     group: 'administration',
     audience: { permission: 'authz.roles.manage' },
-    enabled: false,
+    enabled: true,
   },
   {
     id: 'classifications',
@@ -80,7 +80,7 @@ export const navigation: NavItem[] = [
     icon: Tags,
     group: 'administration',
     audience: { permission: 'authz.classifications.manage' },
-    enabled: false,
+    enabled: true,
   },
   {
     id: 'patterns',

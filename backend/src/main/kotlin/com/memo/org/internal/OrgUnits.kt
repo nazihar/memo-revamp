@@ -30,6 +30,9 @@ class OrgUnits(
 ) {
     fun unit(id: UUID): OrgUnit = store.unit(id) ?: throw OrgNotFoundException("unit")
 
+    /** Names of [ids] (from the cached-free store; one query). */
+    fun namesOf(ids: Set<UUID>): Map<UUID, String> = store.units().filter { it.id in ids }.associate { it.id to it.name }
+
     fun createUnit(
         legalEntityId: UUID,
         parentId: UUID?,

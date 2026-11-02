@@ -52,9 +52,17 @@ class OrgViews(
         )
     }
 
-    fun assignmentsOf(userId: UUID): List<AssignmentResponse> {
-        val person = users.of(userId) ?: throw OrgNotFoundException("user")
-        return assignments.ofUser(userId).map { it.toResponse(person) }
+    /** A person's positions over time with titles and unit names, newest first. */
+    fun assignmentsOf(userId: UUID): List<UserPositionResponse> {
+        users.of(userId) ?: throw OrgNotFoundException("user")
+        val history = assignments.ofUser(userId)
+        val held = positionStore.byIds(history.map { it.positionId })
+        val unitNames = units.namesOf(held.values.map { it.unitId }.toSet())
+        return history.mapNotNull { a ->
+            held[a.positionId]?.let { p ->
+                UserPositionResponse(a.id, p.toResponse(), unitNames[p.unitId].orEmpty(), a.period.from, a.period.to, a.status)
+            }
+        }
     }
 
     fun holderOn(

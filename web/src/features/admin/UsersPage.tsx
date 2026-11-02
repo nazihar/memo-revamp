@@ -1,4 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { Link } from '@tanstack/react-router'
 import { MoreHorizontal, UserPlus } from 'lucide-react'
 import { useRef, useState, type SyntheticEvent } from 'react'
 import { defineMessages, useIntl, type NoMessageValues } from 'react-intl'
@@ -189,7 +190,9 @@ export function UsersPage() {
       cell: ({ row }) => (
         <div>
           <div className="flex flex-wrap items-center gap-2 font-medium">
-            {row.original.displayName}
+            <Link to="/admin/users/$userId" params={{ userId: row.original.id }} className="hover:underline">
+              {row.original.displayName}
+            </Link>
             {row.original.tenantAdmin ? <Badge tone="neutral">{intl.formatMessage(m.admin)}</Badge> : null}
           </div>
           <div className="text-xs text-muted-foreground">{row.original.email}</div>

@@ -171,3 +171,13 @@ data class HistoryEntryResponse(
 )
 
 fun OrgPosition.toResponse() = PositionResponse(id, unitId, code, title, head, validFrom, validTo, version)
+
+@Schema(name = "OrgUserPosition")
+data class UserPositionResponse(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val id: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val position: PositionResponse,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val unitName: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val validFrom: LocalDate,
+    val validTo: LocalDate? = null,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val status: RecordStatus,
+)

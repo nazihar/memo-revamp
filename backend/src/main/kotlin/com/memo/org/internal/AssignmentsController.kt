@@ -110,7 +110,7 @@ class AssignmentsController(
     @Operation(operationId = "listUserAssignments", summary = "A person's positions over time, newest first")
     fun ofUser(
         @PathVariable id: UUID,
-    ): ResponseEntity<List<AssignmentResponse>> =
+    ): ResponseEntity<List<UserPositionResponse>> =
         ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(
             read {
                 views.assignmentsOf(id)

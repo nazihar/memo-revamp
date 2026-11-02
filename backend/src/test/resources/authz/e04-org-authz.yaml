@@ -58,3 +58,5 @@ endpoints:
   - { endpoint: "DELETE /api/v1/authz/classification-levels/{id}", rule: tenantAdminStepUp }
   # People picker (T6): directory.read through the implicit user role; q is required, so allowed calls may be 400.
   - { endpoint: GET /api/v1/directory/search, rule: signedIn }
+  # User detail for the access screens (T9).
+  - { endpoint: "GET /api/v1/admin/users/{id}", rule: tenantAdmin }

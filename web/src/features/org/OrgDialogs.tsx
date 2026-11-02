@@ -20,6 +20,7 @@ export function FormDialog({
   valid,
   onSubmit,
   onClose,
+  problemMessage,
   children,
 }: {
   title: string
@@ -28,6 +29,8 @@ export function FormDialog({
   valid: boolean
   onSubmit: () => Promise<unknown>
   onClose: () => void
+  /** How a refusal reads; org refusals by default. */
+  problemMessage?: (error: unknown) => string
   children: ReactNode
 }) {
   const intl = useIntl()
@@ -42,7 +45,7 @@ export function FormDialog({
       toast.show(intl.formatMessage(om.saved))
       onClose()
     } catch (error) {
-      toast.show(orgProblemMessage(intl, error), 'error')
+      toast.show(problemMessage ? problemMessage(error) : orgProblemMessage(intl, error), 'error')
     } finally {
       setBusy(false)
     }

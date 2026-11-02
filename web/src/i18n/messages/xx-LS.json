@@ -1,4 +1,518 @@
 {
+  "access.allRoles.caption": [
+    {
+      "type": 0,
+      "value": "Roles of the organisationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.builtIn": [
+    {
+      "type": 0,
+      "value": "Built-inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.clearance": [
+    {
+      "type": 0,
+      "value": "ClearanceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.clearance.lead": [
+    {
+      "type": 0,
+      "value": "The most sensitive classification this person may open.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.col.actions": [
+    {
+      "type": 0,
+      "value": "ActionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.col.from": [
+    {
+      "type": 0,
+      "value": "FromSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.col.granted": [
+    {
+      "type": 0,
+      "value": "Given onSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.col.holders": [
+    {
+      "type": 0,
+      "value": "GrantsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.col.name": [
+    {
+      "type": 0,
+      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.col.permissions": [
+    {
+      "type": 0,
+      "value": "PermissionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.col.position": [
+    {
+      "type": 0,
+      "value": "PositionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.col.rank": [
+    {
+      "type": 0,
+      "value": "OrderSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.col.role": [
+    {
+      "type": 0,
+      "value": "RoleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.col.scope": [
+    {
+      "type": 0,
+      "value": "WhereSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.col.until": [
+    {
+      "type": 0,
+      "value": "UntilSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.deleteRole": [
+    {
+      "type": 0,
+      "value": "RemoveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.deleteRoleLead": [
+    {
+      "type": 0,
+      "value": "Only roles nobody holds can be removed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.deleteRoleTitle": [
+    {
+      "type": 0,
+      "value": "Remove this role?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.description": [
+    {
+      "type": 0,
+      "value": "Description (optional)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.editRole": [
+    {
+      "type": 0,
+      "value": "Edit roleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.grant": [
+    {
+      "type": 0,
+      "value": "Give a roleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.grantTitle": [
+    {
+      "type": 0,
+      "value": "Give a roleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.keep": [
+    {
+      "type": 0,
+      "value": "KeepSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.levels.caption": [
+    {
+      "type": 0,
+      "value": "Classification levels, least sensitive firstSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.levels.none": [
+    {
+      "type": 0,
+      "value": "No levels.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.levelsLead": [
+    {
+      "type": 0,
+      "value": "Levels from least to most sensitive. People open documents up to their clearance.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.levelsTitle": [
+    {
+      "type": 0,
+      "value": "ClassificationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.moveDown": [
+    {
+      "type": 0,
+      "value": "Less sensitiveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.moveDownFor": [
+    {
+      "type": 0,
+      "value": "Make "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " less sensitiveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.moveUp": [
+    {
+      "type": 0,
+      "value": "More sensitiveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.moveUpFor": [
+    {
+      "type": 0,
+      "value": "Make "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " more sensitiveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.name": [
+    {
+      "type": 0,
+      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.newLevel": [
+    {
+      "type": 0,
+      "value": "Add levelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.newRole": [
+    {
+      "type": 0,
+      "value": "New roleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.ongoing": [
+    {
+      "type": 0,
+      "value": "OngoingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.permission.auditRead": [
+    {
+      "type": 0,
+      "value": "Read the audit historySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.permission.classifications": [
+    {
+      "type": 0,
+      "value": "Manage classification and clearancesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.permission.directoryRead": [
+    {
+      "type": 0,
+      "value": "See the org directorySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.permission.legalEntities": [
+    {
+      "type": 0,
+      "value": "Manage legal entitiesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.permission.orgManage": [
+    {
+      "type": 0,
+      "value": "Manage units, positions and assignmentsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.permission.roles": [
+    {
+      "type": 0,
+      "value": "Manage roles and grantsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.permission.users": [
+    {
+      "type": 0,
+      "value": "Manage usersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.permissions": [
+    {
+      "type": 0,
+      "value": "PermissionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.positions": [
+    {
+      "type": 0,
+      "value": "PositionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.positions.caption": [
+    {
+      "type": 0,
+      "value": "Positions held, newest firstSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.positions.none": [
+    {
+      "type": 0,
+      "value": "No positions.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.privileged": [
+    {
+      "type": 0,
+      "value": "Administrator permission: always needs two-step sign-in.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.refused.builtIn": [
+    {
+      "type": 0,
+      "value": "Built-in roles cannot change.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.refused.changed": [
+    {
+      "type": 0,
+      "value": "Someone changed this meanwhile. It was reloaded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.refused.duplicate": [
+    {
+      "type": 0,
+      "value": "The person already holds this role there.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.refused.duplicateName": [
+    {
+      "type": 0,
+      "value": "Another one has this name.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.refused.implicit": [
+    {
+      "type": 0,
+      "value": "Everyone holds the user role already.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.refused.inUse": [
+    {
+      "type": 0,
+      "value": "It is still in use.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.refused.lastAdmin": [
+    {
+      "type": 0,
+      "value": "The organisation needs at least one active administrator.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.refused.lastLevel": [
+    {
+      "type": 0,
+      "value": "The organisation needs at least one level.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.refused.notScopable": [
+    {
+      "type": 0,
+      "value": "This role cannot be limited to a unit.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.removeLevel": [
+    {
+      "type": 0,
+      "value": "RemoveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.removeLevelLead": [
+    {
+      "type": 0,
+      "value": "Only levels nobody is cleared to can be removed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.removeLevelTitle": [
+    {
+      "type": 0,
+      "value": "Remove this level?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.renameLevel": [
+    {
+      "type": 0,
+      "value": "Rename levelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.revoke": [
+    {
+      "type": 0,
+      "value": "RevokeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.revokeLead": [
+    {
+      "type": 0,
+      "value": "The person loses what this role allowed at once.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.revokeTitle": [
+    {
+      "type": 0,
+      "value": "Revoke this role?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.role": [
+    {
+      "type": 0,
+      "value": "RoleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.role.auditor": [
+    {
+      "type": 0,
+      "value": "AuditorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.role.orgAdmin": [
+    {
+      "type": 0,
+      "value": "Org directory administratorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.role.tenantAdmin": [
+    {
+      "type": 0,
+      "value": "Organisation administratorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.role.user": [
+    {
+      "type": 0,
+      "value": "UserSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.roles": [
+    {
+      "type": 0,
+      "value": "RolesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.roles.caption": [
+    {
+      "type": 0,
+      "value": "Roles given to this personSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.roles.none": [
+    {
+      "type": 0,
+      "value": "Only the basic user role, which everyone has.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.rolesLead": [
+    {
+      "type": 0,
+      "value": "Roles are sets of permissions. Built-in roles are fixed; add your own for other combinations.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.rolesTitle": [
+    {
+      "type": 0,
+      "value": "RolesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.save": [
+    {
+      "type": 0,
+      "value": "SaveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.saveClearance": [
+    {
+      "type": 0,
+      "value": "Save clearanceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.saved": [
+    {
+      "type": 0,
+      "value": "Saved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.scopable": [
+    {
+      "type": 0,
+      "value": "Can be limited to a unit.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.scope": [
+    {
+      "type": 0,
+      "value": "WhereSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.scope.hint": [
+    {
+      "type": 0,
+      "value": "Limit to one unit and the units below it, where the role allows.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.user.lead": [
+    {
+      "type": 0,
+      "value": "Positions, roles and clearance of this person.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.wholeOrganisation": [
+    {
+      "type": 0,
+      "value": "Whole organisationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "account.security": [
     {
       "type": 0,
@@ -569,6 +1083,12 @@
     {
       "type": 0,
       "value": "StatusSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.user": [
+    {
+      "type": 0,
+      "value": "UserSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "nav.users": [

@@ -51,3 +51,8 @@
   - Change history: a collapsible section that loads `/org/history` when opened and disappears for people who may not read it (403).
   - Menus follow `/me/access` (permission keys) instead of the tenant admin flag; cached permissions are dropped whenever the session changes.
   - The unit path is a second breadcrumb trail beside the shell's; the component test caught two landmarks with the same name, so trails can now carry their own label ("Unit path").
+- T9 done (web, access):
+  - `/admin/users/$userId`: positions held (titles and units), role grants with their scope (give a role, limited to a unit where the role has a scopable permission; revoke), clearance. Needed `GET /admin/users/{id}` (own small controller, `identity.users.manage`) and a per-user positions view with titles (`/org/users/{id}/assignments` now returns `OrgUserPosition`).
+  - `/admin/roles`: built-in roles named in the user's language and read-only; custom roles created, changed and removed with permission checkboxes that say which permissions are administrative (always MFA) and which can be limited to a unit.
+  - `/admin/classifications`: ordered levels with "more/less sensitive" buttons, add, rename, remove.
+  - Every authorisation change goes through `useWithStepUp`; refusals map to their reasons (`LAST_ADMIN`, `IN_USE`, `NOT_SCOPABLE`, …). Users and roles menus follow `/me/access`; user names in the users list link to the detail page.

@@ -51,9 +51,9 @@ dependencies {
     implementation(libs.zxing.core)
     // Envelope encryption of files: streaming AEAD with seekable decryption (ADR-0028).
     implementation(libs.tink)
-    // Content detection only, no parsers (ADR-0029); PDF inspection with limits.
+    // Content detection by magic only, no parsers (ADR-0029); zip central directories; PDF inspection with limits.
     implementation(libs.tika.core)
-    implementation(libs.tika.parser.zip.commons)
+    implementation(libs.commons.compress)
     implementation(libs.pdfbox)
     implementation(libs.springdoc.webmvc.api)
     implementation(libs.jackson.module.kotlin)

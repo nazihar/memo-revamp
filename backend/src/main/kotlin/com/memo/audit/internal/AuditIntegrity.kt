@@ -6,7 +6,7 @@ import com.memo.audit.AuditLog
 import com.memo.audit.AuditVerification
 import com.memo.audit.ChainPoint
 import com.memo.audit.PlatformChain
-import com.memo.common.storage.RecordStore
+import com.memo.common.storage.ObjectStore
 import com.memo.common.storage.RetentionMode
 import com.memo.common.tenant.PlatformTransactions
 import com.memo.common.tenant.TenantId
@@ -58,7 +58,7 @@ internal object AnchorKeys {
 internal class AuditIntegrity(
     private val store: AuditStore,
     private val scope: ChainScope,
-    private val records: RecordStore,
+    private val records: ObjectStore,
     private val platform: PlatformTransactions,
     private val audit: AuditLog,
     private val clock: Clock,

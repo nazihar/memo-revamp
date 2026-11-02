@@ -21,7 +21,7 @@ flowchart LR
   - `FilePurpose` (interface, registered as Spring beans by the owning module): `key`, `allowedTypes`, `maxBytes`, `maxPdfPages`, `storage` (`RECORD` | `ORDINARY`), `retention` (record purposes), `auditReads`, `inlineTypes`, `mayUpload(ownerId)`, `mayRead(file)`.
   - `FileVersionCreated(tenantId, purpose, ownerId, fileId, versionId)`, published **synchronously in the business transaction**, so the owner can store its pointer (for example the tenant logo) or veto by throwing.
   - `Files` service for owners: `info(fileId)`, `versions(fileId)`, `currentVersion(fileId)`. Upload and download stay inside `files` (one implementation of the HTTP details).
-- **`common.storage.ObjectStore`** replaces `RecordStore` (same S3 client set-up): streamed multipart `put` to either bucket with optional lock, `extendRetention`, `getRange`, `head`, `delete` (work bucket only). The audit anchors (ADR-0019) move to it unchanged.
+- **`common.storage.ObjectStore`** replaces `RecordStore` (same S3 client set-up): streamed `put` from a file to either bucket (one PUT with the Content-MD5 object-lock PUTs need; multipart only if the ceiling ever passes 5 GiB), `extendRetention`, `readRange` and a range-reading channel, `deleteAllVersions`. The audit anchors (ADR-0019) move to it unchanged.
 - **`common.crypto.KeyProvider`**: `currentKekId()`, `kek(id): Aead`. `SoftwareKeyProvider` (id `software-v1`) derives the KEK from `MEMO_DATA_KEY` (ADR-0028). `DataKeys` (TOTP secrets) stays as it is.
 - No foreign keys across modules (E04 lesson): `owner_id` is text, interpreted by the purpose.
 
@@ -125,7 +125,7 @@ sequenceDiagram
   AV-->>API: OK / FOUND / ERROR
   API->>SP: decrypt (seekable) → detect type, OOXML, PDF checks
   API->>DB: tx1: pending upload row
-  API->>S3: put ciphertext (records: provisional lock 7 d)
+  API->>S3: put ciphertext (records: provisional lock 7 d, final mode)
   API->>DB: tx2: version, file pointer, audit, FileVersionCreated, delete pending
   API->>S3: extend retention (records) → lock FINAL
   API-->>C: 201 version

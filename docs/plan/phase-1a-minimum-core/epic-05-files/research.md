@@ -78,7 +78,7 @@ PDFBox 3 loads from a `RandomAccessRead`; we adapt the seekable decrypting chann
 
 ### SeaweedFS object lock
 - Object lock must be enabled at bucket creation (ADR-0005 does this) and needs versioning. GOVERNANCE (admins and holders of `s3:BypassGovernanceRetention` may override) and COMPLIANCE (nobody may delete or shorten) are both supported; legal hold is supported; maximum 100 years.
-- The documentation does not cover CopyObject with lock headers or multipart uploads with lock headers. Option B avoids CopyObject; multipart with lock headers and `PutObjectRetention` extension are confirmed by integration tests against the pinned SeaweedFS before relying on them.
+- The documentation does not cover CopyObject with lock headers or multipart uploads with lock headers. Option B avoids CopyObject; PUT with lock headers and `PutObjectRetention` extension are confirmed by integration tests against the pinned SeaweedFS before relying on them.
 - **Orphans:** an object written to `records` before its database row commits cannot be deleted if the commit fails. We write record objects with a **short provisional retention** (7 days), commit, then extend retention to the final date (the `app` identity already has `PutObjectRetention`). A retry job extends any version whose lock is still provisional; a sweep removes pending uploads whose commit never happened once their provisional lock has expired.
 
 ### Hostile-file limits (summary)

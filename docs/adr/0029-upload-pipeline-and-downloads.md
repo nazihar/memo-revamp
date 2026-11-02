@@ -33,7 +33,7 @@ Chosen option: **1**.
 2. One read loop; each chunk goes to SHA-256, to clamd `INSTREAM` and into the Tink encrypting channel (ADR-0028) writing a spool file in a private temp directory. Exceeding the size limit aborts at once.
 3. clamd verdict: `OK` continues; `FOUND` (signatures and heuristics such as `Heuristics.Limits.Exceeded`, `Heuristics.Encrypted.*`, `Heuristics.OLE2.ContainsMacros`) rejects as `MALWARE`. A scanner error or timeout rejects as `SCAN_UNAVAILABLE` (`503`). **Fail closed**: there is no switch to skip scanning.
 4. Detect the type from content: Tika magic on the first bytes; zip containers through `tika-parser-zip-commons`; OOXML through our `[Content_Types].xml` reader (macro-enabled variants detected); PDFs opened with PDFBox through the decrypting channel with a memory-only cap. Reject `TYPE_NOT_ALLOWED`, `TYPE_MISMATCH` (extension disagrees), `MALFORMED`, `ENCRYPTED`, `LIMIT_EXCEEDED`.
-5. Accepted: record a pending upload (own transaction), upload the ciphertext from the spool to the purpose's bucket under `t/<tenantId>/<random 128-bit>`; record objects get a **provisional 7-day GOVERNANCE retention**.
+5. Accepted: record a pending upload (own transaction), upload the ciphertext from the spool to the purpose's bucket under `t/<tenantId>/<random 128-bit>`; record objects get a **provisional 7-day retention in the tenant's final mode** (the application identity cannot change a lock's mode later, only extend its date; verified against SeaweedFS).
 6. Business transaction: insert the file version, delete the pending row, audit `file.version.created`. Then extend the record object's retention to its final date; a job retries any version whose lock is still provisional.
 7. The spool is deleted in `finally`; a startup sweep removes leftovers. Every rejection is audited (`file.upload.rejected` with reason and, for malware, the signature name) and returns `422` Problem Details with a `reason`.
 
@@ -57,7 +57,7 @@ Chosen option: **1**.
 ### Confirmation
 - Hostile-file corpus suite (EICAR, zip bomb, nested archive, polyglot, wrong extension, oversized, malformed PDF, huge page count, encrypted PDF, macro document) against ClamAV and SeaweedFS Testcontainers: each is rejected with its reason, nothing reaches the buckets, memory stays bounded.
 - Range download tests (first, middle, last, suffix, unsatisfiable, multi-range, `If-Range` match and mismatch, segment boundaries).
-- Object-lock tests: delete and overwrite of a record version are refused; provisional retention is extended after commit and by the retry job.
+- Object-lock tests: deleting a record version, shortening or bypassing its lock are refused (an overwrite only adds a version); provisional retention is extended after commit and by the retry job.
 - A nightly Jazzer fuzz target over the detection, the OOXML reader, the clamd reply parser and the `Range` parser.
 
 ## Pros and cons of the options

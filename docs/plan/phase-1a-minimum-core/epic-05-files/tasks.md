@@ -3,7 +3,7 @@
 | # | Task | Size | Depends |
 |---|---|---|---|
 | T1 | **Crypto and keysets:** add Tink; `KeyProvider` + `SoftwareKeyProvider` (HKDF label `memo/v1/kek`); `files` module skeleton; `files_tenant_keyset` table (RLS), create-on-first-use with `ON CONFLICT`, cache, `files.keyset.created` audit; `FileCipher` (encrypting channel to a file, seekable decrypting channel, AAD format) | M | — |
-| T2 | **Object store:** `common.storage.ObjectStore` replaces `RecordStore` (audit anchors move over unchanged); streamed multipart put with optional lock; `extendRetention`; `S3RangeChannel` (segment-aligned ranged reads, read-ahead); `delete` for `work` only; integration tests against SeaweedFS for multipart + lock headers and retention extension | M | — |
+| T2 | **Object store:** `common.storage.ObjectStore` replaces `RecordStore` (audit anchors move over unchanged); streamed put with optional lock; `extendRetention`; `S3RangeChannel` (segment-aligned ranged reads, read-ahead); `delete` for `work` only; integration tests against SeaweedFS for multipart + lock headers and retention extension | M | — |
 | T3 | **clamd:** `ClamdClient` (`INSTREAM`, `VERSION`, strict reply parser, timeouts); `deploy/clamav/clamd.conf`; `TestMalwareScanner` Testcontainer with a test signature database; health probe uses the client | M | — |
 | T4 | **Content inspection:** add `tika-core`, `tika-parser-zip-commons`, PDFBox; `ContentInspector` (magic + zip containers), `OoxmlTypeReader`, `PdfInspector`, file-name sanitiser and extension map, inspection executor with timeout | M | T1 |
 | T5 | **Upload pipeline and API:** `FilePurpose` registry, `files_file`/`files_version`/`files_pending_upload` tables (RLS, immutability trigger), single-pass pipeline (digest + scan + encrypt to spool), inspection, store, business transaction with `FileVersionCreated` and audit, rejections, rate limit `UPLOAD_PER_USER`, node semaphore, Idempotency-Key, `If-Match` on new versions; multipart disabled; spool start-up sweep; test purposes | L | T1–T4 |
@@ -17,7 +17,7 @@ T1, T2 and T3 can run in parallel; T4 after T1 (inspection reads the spool throu
 
 ## Acceptance criteria (selection; full list in test-plan.md)
 - **T1:** Given a tenant without a keyset, when two nodes encrypt at once, then exactly one keyset row exists and both ciphertexts decrypt. Given tenant A's ciphertext, tenant B's keyset cannot decrypt it. Given the stored keyset bytes, they do not parse without the KEK.
-- **T2:** Given a record object stored with a provisional lock, when retention is extended, then `GetObjectRetention` shows the final date; a delete of that version and an overwrite are refused. Given a 100 MiB object, a 64 KiB range at any offset reads at most two segments.
+- **T2:** Given a record object stored with a provisional lock, when retention is extended, then `GetObjectRetention` shows the final date in the same mode; deleting that version, shortening or bypassing its lock, and changing GOVERNANCE to COMPLIANCE are refused, and an overwrite only adds a version. Given a 100 MiB object, a 64 KiB range at any offset reads at most two segments.
 - **T3:** Given EICAR, clamd reports `FOUND`; given clean bytes, `OK`; given an unreachable or misbehaving clamd (garbage reply, early close, timeout), the client reports an error, never clean.
 - **T4:** Given a DOCX, a DOCM renamed `.docx`, an ODT, a PDF and a ZIP, detection returns their true types without reading file names. Given a PDF with 100,000 pages or an encrypted PDF, inspection rejects it within its time and memory limits.
 - **T5:**

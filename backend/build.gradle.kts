@@ -108,6 +108,8 @@ registerUpdateTask(
 }
 
 tasks.withType<Test>().configureEach {
+    // Gradle's default of 512 MiB became too tight with E04's suite: master CI ran out of heap on a tree that had passed.
+    maxHeapSize = "1g"
     val repoRoot = rootProject.layout.projectDirectory
     // Tests read the committed contract and the same deploy scripts (DB roles, bucket bootstrap) that real installs use.
     systemProperty("repo.root", repoRoot.asFile.absolutePath)

@@ -18,6 +18,8 @@
   - "Allowed" means not 403, not 5xx, and no 401 other than `invalid-credentials` (a wrong code is not a denial).
   - Two E03 endpoints validate body or headers before the step-up check (`PUT /me/password`, `POST /admin/users`), so their entries carry sample requests; a partial session gets 403 on enrolment for an already-enrolled account (E03 T5 rule, recorded as an override).
   - JUnit dynamic tests did not get the test actor; `TestActorExtension` now covers them.
+
+## 2026-11-01
 - T3 done (legal entities and units):
   - All org tables in one migration (`org/V1`), so codegen runs once; positions, assignments and reporting lines follow in T4. A picker index on display names (`identity/V4`, `text_pattern_ops`) is in place for T6.
   - Tree changes (create, move, close) take a per-tenant advisory lock, so two concurrent moves cannot build a cycle. A move rewrites the subtree's ancestor arrays in one `UPDATE` (`newPrefix || ancestors[array_position(ancestors, unit):]`).
@@ -51,6 +53,8 @@
   - Change history: a collapsible section that loads `/org/history` when opened and disappears for people who may not read it (403).
   - Menus follow `/me/access` (permission keys) instead of the tenant admin flag; cached permissions are dropped whenever the session changes.
   - The unit path is a second breadcrumb trail beside the shell's; the component test caught two landmarks with the same name, so trails can now carry their own label ("Unit path").
+
+## 2026-11-02
 - T9 done (web, access):
   - `/admin/users/$userId`: positions held (titles and units), role grants with their scope (give a role, limited to a unit where the role has a scopable permission; revoke), clearance. Needed `GET /admin/users/{id}` (own small controller, `identity.users.manage`) and a per-user positions view with titles (`/org/users/{id}/assignments` now returns `OrgUserPosition`).
   - `/admin/roles`: built-in roles named in the user's language and read-only; custom roles created, changed and removed with permission checkboxes that say which permissions are administrative (always MFA) and which can be limited to a unit.

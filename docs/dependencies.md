@@ -112,6 +112,8 @@ Column meanings:
 | nginxinc/nginx-unprivileged | 1.31.6-alpine3.24 (digest) | BSD-2-Clause (nginx) | runtime base image | SPA static server + /api proxy | active | Caddy |
 | node | 24.21.0-alpine3.24 (digest) | MIT | build stage only | Renders nginx security headers | active | — |
 
+Guava is pinned to 33.7.2-jre in `build-logic` (CVE-2026-102554), for the build plugins only; it does not ship. Remove the pin once the plugins pull 33.7.2 or later.
+
 ## Environments, deployment and operability (E05)
 
 | Name | Version | License | Scope | Purpose | Maintenance | Alternatives considered |

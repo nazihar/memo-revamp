@@ -369,9 +369,9 @@ internal class Uploads(
     )
 
     companion object {
-        const val MAX_BYTES_SETTING = "files.upload.max-bytes"
-        const val RETENTION_MODE_SETTING = "files.records.retention-mode"
-        const val RETENTION_YEARS_SETTING = "files.records.retention-years"
+        const val MAX_BYTES_SETTING = "files.upload.max.bytes"
+        const val RETENTION_MODE_SETTING = "files.records.retention.mode"
+        const val RETENTION_YEARS_SETTING = "files.records.retention.years"
         const val DEFAULT_RETENTION_YEARS = 10
         private const val IDEMPOTENCY_OPERATION = "files.upload"
         private const val CIPHERTEXT_TYPE = "application/octet-stream"

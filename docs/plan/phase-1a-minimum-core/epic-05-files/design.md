@@ -133,7 +133,7 @@ sequenceDiagram
 ```
 
 - **Before reading the body:** purpose exists; `mayUpload(owner)`; `Content-Length` (if sent) ≤ the limit; rate limit `UPLOAD_PER_USER` (30/min); node semaphore (8 permits, `503` + `Retry-After: 5` when full). The tenant's keyset is loaded (created on first use).
-- **Effective limit** = min(purpose `maxBytes`, tenant setting `files.upload.max-bytes`, platform ceiling `memo.files.max-upload-bytes`, default 100 MiB). clamd's `StreamMaxLength` is set to the platform ceiling.
+- **Effective limit** = min(purpose `maxBytes`, tenant setting `files.upload.max.bytes`, platform ceiling `memo.files.max-upload-bytes`, default 100 MiB). clamd's `StreamMaxLength` is set to the platform ceiling.
 - **Spool directory:** `memo.files.spool-dir` (default `${java.io.tmpdir}/memo-spool`), created `0700`, files `0600`, cleaned at start. Spools are ciphertext under the tenant keyset with the version's AAD (the ids are assigned before streaming), so the same bytes are uploaded unchanged.
 - **Scanner:** our `ClamdClient` (socket, connect timeout 2 s, read timeout 120 s, chunks of 64 KiB). Reply parsing is strict; anything other than `stream: OK` or `stream: <name> FOUND` is an error (fail closed). The verdict and the engine version (`VERSION` command, cached for 5 minutes) are stored with the version.
 - **Detection** (`ContentInspector`): Tika `MimeTypes` magic on the first 64 KiB (no parsers, no zip-container detector); `ZipInspector` (Commons Compress `ZipFile` over the decrypting channel, entry count checked from the trailer first) for OOXML (`[Content_Types].xml`, macro and VBA parts) and ODF (Basic macros); a zip trailer behind a non-zip type is refused as a polyglot; `PdfInspector` (PDFBox, memory-only stream cache capped at 64 MiB, page count, encryption). Runs on the `files-inspect` executor (4 threads per node), timeout 20 s.
@@ -192,9 +192,9 @@ All four tables are tenant-owned: `tenant_id` first in every index, RLS `ENABLE`
 | `memo.files.max-upload-bytes` | install | 104857600 | ceiling; also clamd `StreamMaxLength` |
 | `memo.files.spool-dir` | install | `${java.io.tmpdir}/memo-spool` | ciphertext only |
 | `memo.files.concurrent-uploads` | install | 8 | per node |
-| `files.upload.max-bytes` | tenant | ceiling | may only lower the ceiling |
-| `files.records.retention-mode` | tenant | `GOVERNANCE` | `COMPLIANCE` is irreversible per object; changing it needs step-up (E07 screen) |
-| `files.records.retention-years` | tenant | 10 | purposes may set their own |
+| `files.upload.max.bytes` | tenant | ceiling | may only lower the ceiling |
+| `files.records.retention.mode` | tenant | `GOVERNANCE` | `COMPLIANCE` is irreversible per object; changing it needs step-up (E07 screen) |
+| `files.records.retention.years` | tenant | 10 | purposes may set their own |
 
 ## 11. Performance budget
 | Operation | Budget (dev VM, seeded) | How |
@@ -211,11 +211,11 @@ Indexes: `files_version (tenant_id, file_id, number desc)`, `files_file (tenant_
 ## 12. Background work
 | Job | Kind | Schedule | Idempotency |
 |---|---|---|---|
-| `files-retention-finalise` | platform recurring, per tenant | every 5 min | `PutObjectRetention` to the stored date is idempotent; only rows still `PROVISIONAL` older than 2 min |
-| `files-pending-sweep` | platform recurring, per tenant | hourly | pending rows older than 1 h: delete the object from `work`; for `records`, wait until `provisional_until` passes, then delete the object version and the row. Object lock expires by the storage server's clock: if the app's clock runs ahead, storage refuses the delete and the next run retries |
+| `files-retention-finalise` (fanned out by `files-retention-sweep`) | tenant task per active tenant | every 5 min | `PutObjectRetention` to the stored date is idempotent; only rows still `PROVISIONAL` older than 2 min |
+| `files-pending-cleanup` (fanned out by `files-pending-sweep`) | tenant task per active tenant | hourly | pending rows older than 1 h: delete the object from `work`; for `records`, wait until `provisional_until` passes, then delete the object version and the row. Object lock expires by the storage server's clock: if the app's clock runs ahead, storage refuses the delete and the next run retries |
 | spool sweep | start-up runner | at start | removes every file in the spool directory |
 
-A metric `memo.files.provisional.oldest.seconds` and a health detail warn when a provisional lock is older than 1 hour.
+Each lock the job cannot extend is logged and counted (`memo.files.retention.still.provisional`); alert on a rising count. Removing a leftover is audited (`file.upload.leftover.removed`).
 
 ## 13. Deployment
 - **ClamAV config:** `deploy/clamav/clamd.env` (ADR-0029 heuristics and limits as `CLAMD_CONF_<Option>` variables, which the official image writes into its `clamd.conf` at start), used by Compose (`env_file`), Helm and the tests, so every install and the test scanner share one source. `freshclam` uses the image default. On-prem air-gapped installs point `freshclam` at a private mirror (runbook).

@@ -84,7 +84,7 @@ PDFBox 3 loads from a `RandomAccessRead`; we adapt the seekable decrypting chann
 ### Hostile-file limits (summary)
 | Limit | Where | Default |
 |---|---|---|
-| Upload size | per purpose, capped by the tenant setting `files.upload.max-bytes` and the platform ceiling | purpose-specific; ceiling 100 MiB |
+| Upload size | per purpose, capped by the tenant setting `files.upload.max.bytes` and the platform ceiling | purpose-specific; ceiling 100 MiB |
 | Concurrent uploads per node | semaphore | 8; beyond that `503` with `Retry-After` |
 | Upload rate | Bucket4j (ADR-0025) | 30 per minute per user |
 | Zip container read | our OOXML reader | 2,000 entries, `[Content_Types].xml` ≤ 1 MiB, compression ratio ≤ 100 |

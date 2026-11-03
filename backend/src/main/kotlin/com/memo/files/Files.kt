@@ -23,7 +23,7 @@ interface FilePurpose {
 
     val storage: StorageClass
 
-    /** Record purposes: years to retain each version; null uses the tenant setting `files.records.retention-years`. */
+    /** Record purposes: years to retain each version; null uses the tenant setting `files.records.retention.years`. */
     val retentionYears: Int? get() = null
 
     /** Whether opening a version is audited (`file.opened`); false only for non-sensitive content such as a logo. */

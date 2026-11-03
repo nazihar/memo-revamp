@@ -40,6 +40,9 @@ CREATE TABLE files_version (
     sha256           bytea       NOT NULL CHECK (length(sha256) = 32),
     bucket           text        NOT NULL CHECK (bucket IN ('records', 'work')),
     object_key       text        NOT NULL CHECK (object_key ~ '^t/[0-9a-f-]{36}/[a-z2-7]{26}$'),
+    -- The storage version written at upload: reads and retention changes address it, so a newer version written under
+    -- the same key (possible in a versioned bucket) can never shadow the record. Null where the bucket is unversioned.
+    object_version   text        CHECK (length(object_version) BETWEEN 1 AND 1024),
     ciphertext_bytes bigint      NOT NULL CHECK (ciphertext_bytes > 0),
     keyset_key_id    bigint      NOT NULL,
     scan_engine      text        NOT NULL CHECK (length(scan_engine) BETWEEN 1 AND 200),
@@ -55,7 +58,8 @@ CREATE TABLE files_version (
     FOREIGN KEY (tenant_id, file_id) REFERENCES files_file (tenant_id, id),
     -- Record versions are always locked (provisionally until the commit is through); ordinary versions never are.
     CHECK ((bucket = 'records') = (lock_state <> 'NONE')),
-    CHECK ((lock_state = 'NONE') = (retain_until IS NULL AND retention_mode IS NULL))
+    CHECK ((lock_state = 'NONE') = (retain_until IS NULL AND retention_mode IS NULL)),
+    CHECK (bucket <> 'records' OR object_version IS NOT NULL)
 );
 CREATE INDEX files_version_tenant_provisional_idx ON files_version (tenant_id, uploaded_at) WHERE lock_state = 'PROVISIONAL';
 

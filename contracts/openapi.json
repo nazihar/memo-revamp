@@ -2541,6 +2541,27 @@
         "tags" : [ "files" ]
       }
     },
+    "/api/v1/files/{fileId}/content" : {
+      "get" : {
+        "operationId" : "getFileContent",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "fileId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "summary" : "Content of the current version (supports Range)",
+        "tags" : [ "files" ]
+      }
+    },
     "/api/v1/files/{fileId}/versions" : {
       "post" : {
         "operationId" : "uploadFileVersion",
@@ -2597,6 +2618,35 @@
           }
         },
         "summary" : "Upload a new version of a file",
+        "tags" : [ "files" ]
+      }
+    },
+    "/api/v1/files/{fileId}/versions/{versionId}/content" : {
+      "get" : {
+        "operationId" : "getFileVersionContent",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "fileId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "versionId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "summary" : "Content of one version (supports Range)",
         "tags" : [ "files" ]
       }
     },

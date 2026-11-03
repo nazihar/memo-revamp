@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { acceptInvitation, assignPosition, cancelAssignment, cancelReportingLine, changeMyPassword, closeLegalEntity, closeOrgUnit, closePosition, completePasswordReset, confirmMfaEnrolment, createClassificationLevel, createLegalEntity, createOrgUnit, createPosition, createReportingLine, createRole, deactivateUser, deleteClassificationLevel, deleteRole, getCsrfToken, getFile, getHealth, getMe, getMyAccess, getOrgHistory, getOrgUnit, getPosition, getPositionHolder, getSession, getUser, getUserAccess, grantRole, inviteUser, listClassificationLevels, listLegalEntities, listMySessions, listOrgUnits, listPermissions, listRoles, listUnitPositions, listUserAssignments, listUsers, login, logout, lookUpInvitation, moveOrgUnit, type Options, reactivateUser, regenerateMyRecoveryCodes, renameClassificationLevel, reorderClassificationLevels, requestPasswordReset, resetUserMfa, revokeGrant, revokeMySession, revokeUserSessions, searchDirectory, setClearance, startMfaEnrolment, stepUp, unlockUser, updateAssignment, updateLegalEntity, updateOrgUnit, updatePosition, updateReportingLine, updateRole, uploadFile, uploadFileVersion, verifyMfa } from '../sdk.gen';
-import type { AcceptInvitationData, AcceptInvitationError, AcceptInvitationResponse, AssignPositionData, AssignPositionResponse, CancelAssignmentData, CancelAssignmentResponse, CancelReportingLineData, CancelReportingLineResponse, ChangeMyPasswordData, ChangeMyPasswordError, ChangeMyPasswordResponse, CloseLegalEntityData, CloseLegalEntityResponse, CloseOrgUnitData, CloseOrgUnitResponse, ClosePositionData, ClosePositionResponse, CompletePasswordResetData, CompletePasswordResetError, CompletePasswordResetResponse, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentError, ConfirmMfaEnrolmentResponse, CreateClassificationLevelData, CreateClassificationLevelResponse, CreateLegalEntityData, CreateLegalEntityResponse, CreateOrgUnitData, CreateOrgUnitResponse, CreatePositionData, CreatePositionResponse, CreateReportingLineData, CreateReportingLineResponse, CreateRoleData, CreateRoleResponse, DeactivateUserData, DeactivateUserResponse, DeleteClassificationLevelData, DeleteRoleData, GetCsrfTokenData, GetCsrfTokenResponse, GetFileData, GetFileResponse, GetHealthData, GetHealthError, GetHealthResponse, GetMeData, GetMeResponse, GetMyAccessData, GetMyAccessResponse, GetOrgHistoryData, GetOrgHistoryResponse, GetOrgUnitData, GetOrgUnitResponse, GetPositionData, GetPositionHolderData, GetPositionHolderResponse, GetPositionResponse, GetSessionData, GetSessionResponse, GetUserAccessData, GetUserAccessResponse, GetUserData, GetUserResponse, GrantRoleData, GrantRoleResponse, InviteUserData, InviteUserError, InviteUserResponse, ListClassificationLevelsData, ListClassificationLevelsResponse, ListLegalEntitiesData, ListLegalEntitiesResponse, ListMySessionsData, ListMySessionsResponse, ListOrgUnitsData, ListOrgUnitsResponse, ListPermissionsData, ListPermissionsResponse, ListRolesData, ListRolesResponse, ListUnitPositionsData, ListUnitPositionsResponse, ListUserAssignmentsData, ListUserAssignmentsResponse, ListUsersData, ListUsersResponse, LoginData, LoginError, LoginResponse, LogoutData, LogoutResponse, LookUpInvitationData, LookUpInvitationError, LookUpInvitationResponse, MoveOrgUnitData, MoveOrgUnitResponse, ReactivateUserData, ReactivateUserResponse, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesResponse, RenameClassificationLevelData, RenameClassificationLevelResponse, ReorderClassificationLevelsData, ReorderClassificationLevelsResponse, RequestPasswordResetData, ResetUserMfaData, ResetUserMfaResponse, RevokeGrantData, RevokeMySessionData, RevokeMySessionResponse, RevokeUserSessionsData, RevokeUserSessionsResponse, SearchDirectoryData, SearchDirectoryResponse, SetClearanceData, SetClearanceResponse, StartMfaEnrolmentData, StartMfaEnrolmentResponse, StepUpData, StepUpError, StepUpResponse, UnlockUserData, UnlockUserResponse, UpdateAssignmentData, UpdateAssignmentResponse, UpdateLegalEntityData, UpdateLegalEntityResponse, UpdateOrgUnitData, UpdateOrgUnitResponse, UpdatePositionData, UpdatePositionResponse, UpdateReportingLineData, UpdateReportingLineResponse, UpdateRoleData, UpdateRoleResponse, UploadFileData, UploadFileResponse, UploadFileVersionData, UploadFileVersionResponse, VerifyMfaData, VerifyMfaError, VerifyMfaResponse } from '../types.gen';
+import { acceptInvitation, assignPosition, cancelAssignment, cancelReportingLine, changeMyPassword, closeLegalEntity, closeOrgUnit, closePosition, completePasswordReset, confirmMfaEnrolment, createClassificationLevel, createLegalEntity, createOrgUnit, createPosition, createReportingLine, createRole, deactivateUser, deleteClassificationLevel, deleteRole, getCsrfToken, getFile, getFileContent, getFileVersionContent, getHealth, getMe, getMyAccess, getOrgHistory, getOrgUnit, getPosition, getPositionHolder, getSession, getUser, getUserAccess, grantRole, inviteUser, listClassificationLevels, listLegalEntities, listMySessions, listOrgUnits, listPermissions, listRoles, listUnitPositions, listUserAssignments, listUsers, login, logout, lookUpInvitation, moveOrgUnit, type Options, reactivateUser, regenerateMyRecoveryCodes, renameClassificationLevel, reorderClassificationLevels, requestPasswordReset, resetUserMfa, revokeGrant, revokeMySession, revokeUserSessions, searchDirectory, setClearance, startMfaEnrolment, stepUp, unlockUser, updateAssignment, updateLegalEntity, updateOrgUnit, updatePosition, updateReportingLine, updateRole, uploadFile, uploadFileVersion, verifyMfa } from '../sdk.gen';
+import type { AcceptInvitationData, AcceptInvitationError, AcceptInvitationResponse, AssignPositionData, AssignPositionResponse, CancelAssignmentData, CancelAssignmentResponse, CancelReportingLineData, CancelReportingLineResponse, ChangeMyPasswordData, ChangeMyPasswordError, ChangeMyPasswordResponse, CloseLegalEntityData, CloseLegalEntityResponse, CloseOrgUnitData, CloseOrgUnitResponse, ClosePositionData, ClosePositionResponse, CompletePasswordResetData, CompletePasswordResetError, CompletePasswordResetResponse, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentError, ConfirmMfaEnrolmentResponse, CreateClassificationLevelData, CreateClassificationLevelResponse, CreateLegalEntityData, CreateLegalEntityResponse, CreateOrgUnitData, CreateOrgUnitResponse, CreatePositionData, CreatePositionResponse, CreateReportingLineData, CreateReportingLineResponse, CreateRoleData, CreateRoleResponse, DeactivateUserData, DeactivateUserResponse, DeleteClassificationLevelData, DeleteRoleData, GetCsrfTokenData, GetCsrfTokenResponse, GetFileContentData, GetFileData, GetFileResponse, GetFileVersionContentData, GetHealthData, GetHealthError, GetHealthResponse, GetMeData, GetMeResponse, GetMyAccessData, GetMyAccessResponse, GetOrgHistoryData, GetOrgHistoryResponse, GetOrgUnitData, GetOrgUnitResponse, GetPositionData, GetPositionHolderData, GetPositionHolderResponse, GetPositionResponse, GetSessionData, GetSessionResponse, GetUserAccessData, GetUserAccessResponse, GetUserData, GetUserResponse, GrantRoleData, GrantRoleResponse, InviteUserData, InviteUserError, InviteUserResponse, ListClassificationLevelsData, ListClassificationLevelsResponse, ListLegalEntitiesData, ListLegalEntitiesResponse, ListMySessionsData, ListMySessionsResponse, ListOrgUnitsData, ListOrgUnitsResponse, ListPermissionsData, ListPermissionsResponse, ListRolesData, ListRolesResponse, ListUnitPositionsData, ListUnitPositionsResponse, ListUserAssignmentsData, ListUserAssignmentsResponse, ListUsersData, ListUsersResponse, LoginData, LoginError, LoginResponse, LogoutData, LogoutResponse, LookUpInvitationData, LookUpInvitationError, LookUpInvitationResponse, MoveOrgUnitData, MoveOrgUnitResponse, ReactivateUserData, ReactivateUserResponse, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesResponse, RenameClassificationLevelData, RenameClassificationLevelResponse, ReorderClassificationLevelsData, ReorderClassificationLevelsResponse, RequestPasswordResetData, ResetUserMfaData, ResetUserMfaResponse, RevokeGrantData, RevokeMySessionData, RevokeMySessionResponse, RevokeUserSessionsData, RevokeUserSessionsResponse, SearchDirectoryData, SearchDirectoryResponse, SetClearanceData, SetClearanceResponse, StartMfaEnrolmentData, StartMfaEnrolmentResponse, StepUpData, StepUpError, StepUpResponse, UnlockUserData, UnlockUserResponse, UpdateAssignmentData, UpdateAssignmentResponse, UpdateLegalEntityData, UpdateLegalEntityResponse, UpdateOrgUnitData, UpdateOrgUnitResponse, UpdatePositionData, UpdatePositionResponse, UpdateReportingLineData, UpdateReportingLineResponse, UpdateRoleData, UpdateRoleResponse, UploadFileData, UploadFileResponse, UploadFileVersionData, UploadFileVersionResponse, VerifyMfaData, VerifyMfaError, VerifyMfaResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -799,6 +799,24 @@ export const getFileInfiniteOptions = (options: Options<GetFileData>) => {
     return opts as Omit<typeof opts, 'initialData'>;
 };
 
+export const getFileContentQueryKey = (options: Options<GetFileContentData>) => createQueryKey('getFileContent', options);
+
+/**
+ * Content of the current version (supports Range)
+ */
+export const getFileContentOptions = (options: Options<GetFileContentData>) => queryOptions<unknown, DefaultError, unknown, ReturnType<typeof getFileContentQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getFileContent({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getFileContentQueryKey(options)
+});
+
 /**
  * Upload a new version of a file
  */
@@ -815,6 +833,24 @@ export const uploadFileVersionMutation = (options?: Partial<Options<UploadFileVe
     };
     return mutationOptions;
 };
+
+export const getFileVersionContentQueryKey = (options: Options<GetFileVersionContentData>) => createQueryKey('getFileVersionContent', options);
+
+/**
+ * Content of one version (supports Range)
+ */
+export const getFileVersionContentOptions = (options: Options<GetFileVersionContentData>) => queryOptions<unknown, DefaultError, unknown, ReturnType<typeof getFileVersionContentQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getFileVersionContent({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getFileVersionContentQueryKey(options)
+});
 
 export const getHealthQueryKey = (options?: Options<GetHealthData>) => createQueryKey('getHealth', options);
 

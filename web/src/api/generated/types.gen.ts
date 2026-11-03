@@ -1333,6 +1333,22 @@ export type GetFileResponses = {
 
 export type GetFileResponse = GetFileResponses[keyof GetFileResponses];
 
+export type GetFileContentData = {
+    body?: never;
+    path: {
+        fileId: string;
+    };
+    query?: never;
+    url: '/api/v1/files/{fileId}/content';
+};
+
+export type GetFileContentResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
 export type UploadFileVersionData = {
     body?: Blob | File;
     headers: {
@@ -1355,6 +1371,23 @@ export type UploadFileVersionResponses = {
 };
 
 export type UploadFileVersionResponse = UploadFileVersionResponses[keyof UploadFileVersionResponses];
+
+export type GetFileVersionContentData = {
+    body?: never;
+    path: {
+        fileId: string;
+        versionId: string;
+    };
+    query?: never;
+    url: '/api/v1/files/{fileId}/versions/{versionId}/content';
+};
+
+export type GetFileVersionContentResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
 
 export type GetHealthData = {
     body?: never;

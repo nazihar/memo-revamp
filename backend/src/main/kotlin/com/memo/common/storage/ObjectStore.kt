@@ -119,8 +119,9 @@ class ObjectStore(
     }
 
     /**
-     * Streams [file] to [key] in [bucket]. Objects in [Bucket.RECORDS] need a [retention]; objects in [Bucket.WORK] must not
-     * have one. Reads the file twice: once for the transfer checksum that object-lock PUTs require, once to send it.
+     * Streams [file] to [key] in [bucket] and returns the storage version it created (null in an unversioned bucket).
+     * Objects in [Bucket.RECORDS] need a [retention]; objects in [Bucket.WORK] must not have one. Reads the file twice:
+     * once for the transfer checksum that object-lock PUTs require, once to send it.
      */
     fun put(
         bucket: Bucket,
@@ -128,45 +129,60 @@ class ObjectStore(
         file: Path,
         contentType: String,
         retention: Retention?,
-    ) {
+    ): String? {
         require((bucket == Bucket.RECORDS) == (retention != null)) { "records objects are locked, work objects are not" }
         val md5 = Files.newInputStream(file).use(::md5)
-        s3.putObject(request(bucket, key, contentType, md5, retention), RequestBody.fromFile(file))
+        return s3
+            .putObject(request(bucket, key, contentType, md5, retention), RequestBody.fromFile(file))
+            .versionId()
+            ?.takeUnless { it == UNVERSIONED }
     }
 
-    /** Sets the retention of the current version of [key] in `records`; storage refuses to shorten it. */
+    /** Sets the retention of [version] of [key] in `records`; storage refuses to shorten it or change its mode. */
     fun extendRetention(
         key: String,
+        version: String,
         retention: Retention,
     ) {
         s3.putObjectRetention {
             it
                 .bucket(properties.recordsBucket)
                 .key(key)
+                .versionId(version)
                 .retention { r -> r.mode(ObjectLockRetentionMode.fromValue(retention.mode.name)).retainUntilDate(retention.until) }
         }
     }
 
-    /** Reads up to [length] bytes of [key] starting at [offset]; fewer only at the end of the object. */
+    /**
+     * Reads up to [length] bytes of [key] (its [version], or the latest when null) from [offset]; fewer only at the end of
+     * the object.
+     */
     fun readRange(
         bucket: Bucket,
         key: String,
         offset: Long,
         length: Int,
+        version: String? = null,
     ): ByteArray {
         require(offset >= 0 && length > 0)
         return s3
-            .getObject { it.bucket(name(bucket)).key(key).range("bytes=$offset-${offset + length - 1}") }
-            .use { it.readAllBytes() }
+            .getObject {
+                it
+                    .bucket(name(bucket))
+                    .key(key)
+                    .versionId(version)
+                    .range("bytes=$offset-${offset + length - 1}")
+            }.use { it.readAllBytes() }
     }
 
-    /** A read-only channel over [key] of known [size], fetching [chunk]-byte ranges on demand. */
+    /** A read-only channel over [version] of [key] (latest when null), of known [size], fetching [chunk]-byte ranges. */
     fun channel(
         bucket: Bucket,
         key: String,
+        version: String?,
         size: Long,
         chunk: Int,
-    ): SeekableByteChannel = RangeReadChannel(this, bucket, key, size, chunk)
+    ): SeekableByteChannel = RangeReadChannel(this, bucket, key, version, size, chunk)
 
     /**
      * Deletes every version of [key]. In `work` that removes the object; in `records` storage refuses versions whose
@@ -231,6 +247,9 @@ class ObjectStore(
             }.build()
 
     private companion object {
+        /** What some S3 servers answer as the version of an object in an unversioned bucket. */
+        const val UNVERSIONED = "null"
+
         val CONNECT_TIMEOUT: Duration = Duration.ofSeconds(10)
 
         // Inactivity on the socket, not the duration of a whole transfer.
@@ -257,6 +276,7 @@ internal class RangeReadChannel(
     private val store: ObjectStore,
     private val bucket: Bucket,
     private val key: String,
+    private val version: String?,
     private val size: Long,
     private val chunk: Int,
 ) : SeekableByteChannel {
@@ -269,7 +289,7 @@ internal class RangeReadChannel(
         if (!open) throw ClosedChannelException()
         if (position < size && (position < bufferStart || position >= bufferStart + buffer.size)) {
             bufferStart = position
-            buffer = store.readRange(bucket, key, position, minOf(chunk.toLong(), size - position).toInt())
+            buffer = store.readRange(bucket, key, position, minOf(chunk.toLong(), size - position).toInt(), version)
         }
         val from = position - bufferStart
         if (position >= size || from >= buffer.size) return -1

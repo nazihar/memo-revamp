@@ -53,6 +53,7 @@ erDiagram
     bytea sha256 "plaintext digest"
     text bucket "records | work"
     text object_key "t/<tenant>/<random>"
+    text object_version "storage version id; required for records"
     bigint ciphertext_bytes
     int keyset_key_id "Tink key id"
     text scan_engine "clamd version + signature version"
@@ -143,7 +144,7 @@ sequenceDiagram
 ## 5. Downloads
 - `GET /api/v1/files/{fileId}/content` (current version) and `GET /api/v1/files/{fileId}/versions/{versionId}/content`; `HEAD` for both.
 - Short transaction: load file and version under RLS (absent → `404`), `mayRead` (denied → `403`), audit `file.opened` if the purpose audits reads and the session has no marker for this version from the last 30 minutes. The transaction ends before streaming.
-- Streaming: `S3RangeChannel` (a `SeekableByteChannel` over ranged `GetObject`, reading whole 64 KiB ciphertext segments with a one-segment read-ahead) → Tink seekable decrypting channel → response output stream, 64 KiB buffer. No database connection is held while streaming.
+- Streaming: `RangeReadChannel` (a `SeekableByteChannel` over ranged `GetObject` of the **recorded storage version**, 128 KiB per request, i.e. two ciphertext segments) → Tink seekable decrypting channel → response output stream, 64 KiB buffer. No database connection is held while streaming.
 - Headers: see ADR-0029. `Content-Disposition` uses `filename*=UTF-8''` with the stored name; `inline` only when the purpose lists the type in `inlineTypes`.
 - **Integrity:** Tink authenticates every segment it returns; a tampered object fails mid-stream, the connection is aborted (not completed with a short body), and `file.integrity.failed` is logged at ERROR and audited.
 
@@ -211,7 +212,7 @@ Indexes: `files_version (tenant_id, file_id, number desc)`, `files_file (tenant_
 | Job | Kind | Schedule | Idempotency |
 |---|---|---|---|
 | `files-retention-finalise` | platform recurring, per tenant | every 5 min | `PutObjectRetention` to the stored date is idempotent; only rows still `PROVISIONAL` older than 2 min |
-| `files-pending-sweep` | platform recurring, per tenant | hourly | pending rows older than 1 h: delete the object from `work`; for `records`, wait until `provisional_until` passes, then delete the object version and the row |
+| `files-pending-sweep` | platform recurring, per tenant | hourly | pending rows older than 1 h: delete the object from `work`; for `records`, wait until `provisional_until` passes, then delete the object version and the row. Object lock expires by the storage server's clock: if the app's clock runs ahead, storage refuses the delete and the next run retries |
 | spool sweep | start-up runner | at start | removes every file in the spool directory |
 
 A metric `memo.files.provisional.oldest.seconds` and a health detail warn when a provisional lock is older than 1 hour.

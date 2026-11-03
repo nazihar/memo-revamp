@@ -12,6 +12,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.time.Duration
 import java.time.Instant
+import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import java.util.UUID
 import kotlin.random.Random
@@ -29,7 +30,22 @@ class ObjectStoreIT {
         return Files.write(dir.resolve("f-${UUID.randomUUID()}"), bytes) to bytes
     }
 
+    private fun versionOf(key: String): String = storage.appClient().headObject { it.bucket("records").key(key) }.versionId()
+
     private fun aKey() = "test/${UUID.randomUUID()}"
+
+    /**
+     * The storage server's clock (its `Date` header): object lock expires by that clock, and a container VM's clock can
+     * lag the test JVM's by many seconds (seen with Docker Desktop after the host slept).
+     */
+    private fun storageNow(): Instant =
+        storage
+            .appClient()
+            .listObjectsV2 { it.bucket("work").maxKeys(1) }
+            .sdkHttpResponse()
+            .firstMatchingHeader("Date")
+            .map { Instant.from(DateTimeFormatter.RFC_1123_DATE_TIME.parse(it)) }
+            .orElseThrow()
 
     private fun inDays(days: Long) = Instant.now().plus(days, ChronoUnit.DAYS).truncatedTo(ChronoUnit.SECONDS)
 
@@ -51,7 +67,7 @@ class ObjectStoreIT {
                     .bypassGovernanceRetention(true)
             }
         }.isInstanceOf(S3Exception::class.java)
-        assertThatThrownBy { store.extendRetention(key, Retention(RetentionMode.GOVERNANCE, inDays(1))) }
+        assertThatThrownBy { store.extendRetention(key, versionOf(key), Retention(RetentionMode.GOVERNANCE, inDays(1))) }
             .isInstanceOf(S3Exception::class.java)
 
         // An overwrite only adds a version; the locked one stays readable.
@@ -68,7 +84,7 @@ class ObjectStoreIT {
             store.put(Bucket.RECORDS, key, file, "application/octet-stream", Retention(mode, inDays(7)))
 
             val final = inDays(3650)
-            store.extendRetention(key, Retention(mode, final))
+            store.extendRetention(key, versionOf(key), Retention(mode, final))
 
             val retention = storage.appClient().getObjectRetention { it.bucket("records").key(key) }.retention()
             assertThat(retention.modeAsString()).isEqualTo(mode.name)
@@ -82,7 +98,7 @@ class ObjectStoreIT {
         val (file, _) = aFile(1_000)
         store.put(Bucket.RECORDS, key, file, "application/octet-stream", Retention(RetentionMode.GOVERNANCE, inDays(7)))
 
-        assertThatThrownBy { store.extendRetention(key, Retention(RetentionMode.COMPLIANCE, inDays(3650))) }
+        assertThatThrownBy { store.extendRetention(key, versionOf(key), Retention(RetentionMode.COMPLIANCE, inDays(3650))) }
             .isInstanceOf(S3Exception::class.java)
     }
 
@@ -103,15 +119,12 @@ class ObjectStoreIT {
     fun `a record object whose provisional lock has expired can be removed with all its versions`() {
         val key = aKey()
         val (file, _) = aFile(1_000)
-        store.put(Bucket.RECORDS, key, file, "application/octet-stream", Retention(RetentionMode.GOVERNANCE, Instant.now().plusSeconds(3)))
+        store.put(Bucket.RECORDS, key, file, "application/octet-stream", Retention(RetentionMode.GOVERNANCE, storageNow().plusSeconds(3)))
 
-        await().atMost(Duration.ofSeconds(20)).pollInterval(Duration.ofSeconds(1)).ignoreExceptions().until {
+        await().atMost(Duration.ofSeconds(20)).pollInterval(Duration.ofSeconds(1)).ignoreExceptions().untilAsserted {
             store.deleteAllVersions(Bucket.RECORDS, key)
-            storage
-                .appClient()
-                .listObjectVersions { it.bucket("records").prefix(key) }
-                .versions()
-                .isEmpty()
+            val listing = storage.appClient().listObjectVersions { it.bucket("records").prefix(key) }
+            assertThat(listing.versions().map { it.versionId() } + listing.deleteMarkers().map { "marker:" + it.versionId() }).isEmpty()
         }
     }
 
@@ -123,7 +136,7 @@ class ObjectStoreIT {
         store.put(Bucket.WORK, key, file, "application/octet-stream", null)
         val random = Random(7)
 
-        store.channel(Bucket.WORK, key, size.toLong(), 64 * 1024).use { channel ->
+        store.channel(Bucket.WORK, key, null, size.toLong(), 64 * 1024).use { channel ->
             repeat(20) {
                 val start = random.nextInt(size)
                 val length = random.nextInt(1, 150_000)

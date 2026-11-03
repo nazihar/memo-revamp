@@ -133,6 +133,11 @@ open class FilesVersion(
     val OBJECT_KEY: TableField<FilesVersionRecord, String?> = createField(DSL.name("object_key"), SQLDataType.CLOB.nullable(false), this, "")
 
     /**
+     * The column <code>memo.files_version.object_version</code>.
+     */
+    val OBJECT_VERSION: TableField<FilesVersionRecord, String?> = createField(DSL.name("object_version"), SQLDataType.CLOB, this, "")
+
+    /**
      * The column <code>memo.files_version.ciphertext_bytes</code>.
      */
     val CIPHERTEXT_BYTES: TableField<FilesVersionRecord, Long?> = createField(DSL.name("ciphertext_bytes"), SQLDataType.BIGINT.nullable(false), this, "")
@@ -223,11 +228,13 @@ open class FilesVersion(
         Internal.createCheck(this, DSL.name("files_version_bucket_check"), "((bucket = ANY (ARRAY['records'::text, 'work'::text])))", true),
         Internal.createCheck(this, DSL.name("files_version_check"), "(((bucket = 'records'::text) = (lock_state <> 'NONE'::text)))", true),
         Internal.createCheck(this, DSL.name("files_version_check1"), "(((lock_state = 'NONE'::text) = ((retain_until IS NULL) AND (retention_mode IS NULL))))", true),
+        Internal.createCheck(this, DSL.name("files_version_check2"), "(((bucket <> 'records'::text) OR (object_version IS NOT NULL)))", true),
         Internal.createCheck(this, DSL.name("files_version_ciphertext_bytes_check"), "((ciphertext_bytes > 0))", true),
         Internal.createCheck(this, DSL.name("files_version_lock_state_check"), "((lock_state = ANY (ARRAY['NONE'::text, 'PROVISIONAL'::text, 'FINAL'::text])))", true),
         Internal.createCheck(this, DSL.name("files_version_media_type_check"), "(((length(media_type) >= 3) AND (length(media_type) <= 200)))", true),
         Internal.createCheck(this, DSL.name("files_version_number_check"), "((number >= 1))", true),
         Internal.createCheck(this, DSL.name("files_version_object_key_check"), "((object_key ~ '^t/[0-9a-f-]{36}/[a-z2-7]{26}\$'::text))", true),
+        Internal.createCheck(this, DSL.name("files_version_object_version_check"), "(((length(object_version) >= 1) AND (length(object_version) <= 1024)))", true),
         Internal.createCheck(this, DSL.name("files_version_original_name_check"), "(((length(original_name) >= 1) AND (length(original_name) <= 255)))", true),
         Internal.createCheck(this, DSL.name("files_version_pdf_pages_check"), "((pdf_pages >= 0))", true),
         Internal.createCheck(this, DSL.name("files_version_retention_mode_check"), "((retention_mode = ANY (ARRAY['GOVERNANCE'::text, 'COMPLIANCE'::text])))", true),

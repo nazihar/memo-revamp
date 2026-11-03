@@ -59,41 +59,45 @@ open class FilesVersionRecord private constructor() : UpdatableRecordImpl<FilesV
         set(value): Unit = set(9, value)
         get(): String = get(9) as String
 
-    open var ciphertextBytes: Long
+    open var objectVersion: String?
         set(value): Unit = set(10, value)
-        get(): Long = get(10) as Long
+        get(): String? = get(10) as String?
 
-    open var keysetKeyId: Long
+    open var ciphertextBytes: Long
         set(value): Unit = set(11, value)
         get(): Long = get(11) as Long
 
-    open var scanEngine: String
+    open var keysetKeyId: Long
         set(value): Unit = set(12, value)
-        get(): String = get(12) as String
+        get(): Long = get(12) as Long
+
+    open var scanEngine: String
+        set(value): Unit = set(13, value)
+        get(): String = get(13) as String
 
     open var pdfPages: Int?
-        set(value): Unit = set(13, value)
-        get(): Int? = get(13) as Int?
+        set(value): Unit = set(14, value)
+        get(): Int? = get(14) as Int?
 
     open var lockState: String
-        set(value): Unit = set(14, value)
-        get(): String = get(14) as String
+        set(value): Unit = set(15, value)
+        get(): String = get(15) as String
 
     open var retainUntil: OffsetDateTime?
-        set(value): Unit = set(15, value)
-        get(): OffsetDateTime? = get(15) as OffsetDateTime?
+        set(value): Unit = set(16, value)
+        get(): OffsetDateTime? = get(16) as OffsetDateTime?
 
     open var retentionMode: String?
-        set(value): Unit = set(16, value)
-        get(): String? = get(16) as String?
+        set(value): Unit = set(17, value)
+        get(): String? = get(17) as String?
 
     open var uploadedBy: UUID?
-        set(value): Unit = set(17, value)
-        get(): UUID? = get(17) as UUID?
+        set(value): Unit = set(18, value)
+        get(): UUID? = get(18) as UUID?
 
     open var uploadedAt: OffsetDateTime
-        set(value): Unit = set(18, value)
-        get(): OffsetDateTime = get(18) as OffsetDateTime
+        set(value): Unit = set(19, value)
+        get(): OffsetDateTime = get(19) as OffsetDateTime
 
     // -------------------------------------------------------------------------
     // Primary key information
@@ -104,7 +108,7 @@ open class FilesVersionRecord private constructor() : UpdatableRecordImpl<FilesV
     /**
      * Create a detached, initialised FilesVersionRecord
      */
-    constructor(id: UUID, tenantId: UUID, fileId: UUID, number: Int, originalName: String, mediaType: String, sizeBytes: Long, sha256: ByteArray, bucket: String, objectKey: String, ciphertextBytes: Long, keysetKeyId: Long, scanEngine: String, pdfPages: Int? = null, lockState: String, retainUntil: OffsetDateTime? = null, retentionMode: String? = null, uploadedBy: UUID? = null, uploadedAt: OffsetDateTime): this() {
+    constructor(id: UUID, tenantId: UUID, fileId: UUID, number: Int, originalName: String, mediaType: String, sizeBytes: Long, sha256: ByteArray, bucket: String, objectKey: String, objectVersion: String? = null, ciphertextBytes: Long, keysetKeyId: Long, scanEngine: String, pdfPages: Int? = null, lockState: String, retainUntil: OffsetDateTime? = null, retentionMode: String? = null, uploadedBy: UUID? = null, uploadedAt: OffsetDateTime): this() {
         this.id = id
         this.tenantId = tenantId
         this.fileId = fileId
@@ -115,6 +119,7 @@ open class FilesVersionRecord private constructor() : UpdatableRecordImpl<FilesV
         this.sha256 = sha256
         this.bucket = bucket
         this.objectKey = objectKey
+        this.objectVersion = objectVersion
         this.ciphertextBytes = ciphertextBytes
         this.keysetKeyId = keysetKeyId
         this.scanEngine = scanEngine

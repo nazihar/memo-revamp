@@ -7,3 +7,6 @@ endpoints:
   - { endpoint: POST /api/v1/files, rule: signedIn, headers: { Idempotency-Key: "{random}" } }
   - { endpoint: "POST /api/v1/files/{fileId}/versions", rule: signedIn, headers: { Idempotency-Key: "{random}", If-Match: "\"0\"" } }
   - { endpoint: "GET /api/v1/files/{fileId}", rule: signedIn }
+  # Content (T6): random ids are 404 for every signed-in subject.
+  - { endpoint: "GET /api/v1/files/{fileId}/content", rule: signedIn }
+  - { endpoint: "GET /api/v1/files/{fileId}/versions/{versionId}/content", rule: signedIn }

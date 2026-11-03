@@ -31,6 +31,7 @@ internal data class NewVersion(
     val sha256: ByteArray,
     val bucket: String,
     val objectKey: String,
+    val objectVersion: String?,
     val ciphertextBytes: Long,
     val keysetKeyId: Long,
     val scanEngine: String,
@@ -48,6 +49,7 @@ internal data class StoredObject(
     val versionId: UUID,
     val bucket: String,
     val objectKey: String,
+    val objectVersion: String?,
     val ciphertextBytes: Long,
 )
 
@@ -88,10 +90,16 @@ internal class FileStore(
 
     fun storedObject(versionId: UUID): StoredObject? =
         dsl
-            .select(FILES_VERSION.FILE_ID, FILES_VERSION.ID, FILES_VERSION.BUCKET, FILES_VERSION.OBJECT_KEY, FILES_VERSION.CIPHERTEXT_BYTES)
-            .from(FILES_VERSION)
+            .select(
+                FILES_VERSION.FILE_ID,
+                FILES_VERSION.ID,
+                FILES_VERSION.BUCKET,
+                FILES_VERSION.OBJECT_KEY,
+                FILES_VERSION.OBJECT_VERSION,
+                FILES_VERSION.CIPHERTEXT_BYTES,
+            ).from(FILES_VERSION)
             .where(FILES_VERSION.ID.eq(versionId))
-            .fetchOne { StoredObject(it.value1()!!, it.value2()!!, it.value3()!!, it.value4()!!, it.value5()!!) }
+            .fetchOne { StoredObject(it.value1()!!, it.value2()!!, it.value3()!!, it.value4()!!, it.value5(), it.value6()!!) }
 
     fun insertFile(
         id: UUID,
@@ -140,6 +148,7 @@ internal class FileStore(
             .set(FILES_VERSION.SHA256, version.sha256)
             .set(FILES_VERSION.BUCKET, version.bucket)
             .set(FILES_VERSION.OBJECT_KEY, version.objectKey)
+            .set(FILES_VERSION.OBJECT_VERSION, version.objectVersion)
             .set(FILES_VERSION.CIPHERTEXT_BYTES, version.ciphertextBytes)
             .set(FILES_VERSION.KEYSET_KEY_ID, version.keysetKeyId)
             .set(FILES_VERSION.SCAN_ENGINE, version.scanEngine)
@@ -175,13 +184,26 @@ internal class FileStore(
         limit: Int,
     ): List<ProvisionalLock> =
         dsl
-            .select(FILES_VERSION.ID, FILES_VERSION.OBJECT_KEY, FILES_VERSION.RETAIN_UNTIL, FILES_VERSION.RETENTION_MODE)
-            .from(FILES_VERSION)
+            .select(
+                FILES_VERSION.ID,
+                FILES_VERSION.OBJECT_KEY,
+                FILES_VERSION.OBJECT_VERSION,
+                FILES_VERSION.RETAIN_UNTIL,
+                FILES_VERSION.RETENTION_MODE,
+            ).from(FILES_VERSION)
             .where(FILES_VERSION.LOCK_STATE.eq(LockState.PROVISIONAL.name))
             .and(FILES_VERSION.UPLOADED_AT.lt(before.utc()))
             .orderBy(FILES_VERSION.UPLOADED_AT)
             .limit(limit)
-            .fetch { ProvisionalLock(it.value1()!!, it.value2()!!, it.value3()!!.toInstant(), RetentionMode.valueOf(it.value4()!!)) }
+            .fetch {
+                ProvisionalLock(
+                    it.value1()!!,
+                    it.value2()!!,
+                    it.value3()!!,
+                    it.value4()!!.toInstant(),
+                    RetentionMode.valueOf(it.value5()!!),
+                )
+            }
 
     private fun FilesFileRecord.toInfo() =
         FileInfo(
@@ -264,6 +286,7 @@ internal fun Instant.utc(): OffsetDateTime = atOffset(ZoneOffset.UTC)
 internal data class ProvisionalLock(
     val versionId: UUID,
     val objectKey: String,
+    val objectVersion: String,
     val retainUntil: Instant,
     val mode: RetentionMode,
 )

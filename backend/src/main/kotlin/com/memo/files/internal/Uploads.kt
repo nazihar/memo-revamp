@@ -198,7 +198,7 @@ internal class Uploads(
             val provisional = plan.retention?.provisional(now)
             val pendingId = ids.next()
             transactions.inTenant(tenant) { pending.insert(pendingId, bucket.stored, objectKey, now, provisional?.until) }
-            objects.put(bucket, objectKey, spoolFile, CIPHERTEXT_TYPE, provisional)
+            val objectVersion = objects.put(bucket, objectKey, spoolFile, CIPHERTEXT_TYPE, provisional)
 
             val final = plan.retention?.final(now)
             val version =
@@ -211,6 +211,7 @@ internal class Uploads(
                     sha256 = received.sha256,
                     bucket = bucket.stored,
                     objectKey = objectKey,
+                    objectVersion = objectVersion,
                     ciphertextBytes = Files.size(spoolFile),
                     keysetKeyId = keyId,
                     scanEngine = received.engine,
@@ -229,7 +230,7 @@ internal class Uploads(
                         idempotency.once(IDEMPOTENCY_OPERATION, request.idempotencyKey, requestHash) { commit(plan, version, pendingId) },
                     )
                 }
-            if (stored == versionId && final != null) retentions.finalise(tenant, versionId, objectKey, final)
+            if (stored == versionId && final != null) retentions.finalise(tenant, versionId, objectKey, objectVersion!!, final)
             return stored
         } finally {
             spool.delete(spoolFile)
@@ -465,11 +466,12 @@ internal class Retentions(
         tenant: TenantId,
         versionId: UUID,
         objectKey: String,
+        objectVersion: String,
         retention: Retention,
     ): Boolean {
         val extended =
             try {
-                objects.extendRetention(objectKey, retention)
+                objects.extendRetention(objectKey, objectVersion, retention)
                 true
             } catch (e: SdkException) {
                 log.warn("Retention of file version {} is still provisional: {}", versionId, e.javaClass.simpleName)

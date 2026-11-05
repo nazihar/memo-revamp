@@ -33,3 +33,4 @@ We use the MADR format (see [0001](0001-record-architecture-decisions.md)). Star
 | [0027](0027-authorisation-model.md) | Authorisation: permission catalogue, roles, policy service, SQL pushdown | accepted | 2026-10-29 |
 | [0028](0028-envelope-encryption.md) | Envelope encryption of files: Tink streaming AEAD with per-tenant keysets | accepted | 2026-11-02 |
 | [0029](0029-upload-pipeline-and-downloads.md) | Upload pipeline (detection, scanning, limits) and streamed range downloads | accepted | 2026-11-02 |
+| [0030](0030-notifications-and-email-delivery.md) | Notifications: in-app centre, email through tenant relays, localised templates | accepted | 2026-11-05 |

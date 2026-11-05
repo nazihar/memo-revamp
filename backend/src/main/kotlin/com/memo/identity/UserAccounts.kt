@@ -52,6 +52,9 @@ data class UserAccount(
     val version: Long,
 )
 
+/** This account as a notification recipient (ADR-0030). */
+fun UserAccount.recipient(): com.memo.notification.Recipient = com.memo.notification.Recipient(id.value, email, displayName, locale)
+
 /** The proposed password breaks the policy; [violations] say why (mapped to messages by the client). */
 class PasswordRejectedException(
     val violations: List<PasswordViolation>,
@@ -225,4 +228,12 @@ class UserAccounts(
 
         fun normaliseEmail(email: String): String = email.trim().lowercase(Locale.ROOT)
     }
+}
+
+/** Users as notification recipients for the notification module (ADR-0030). */
+@org.springframework.stereotype.Component
+internal class AccountRecipients(
+    private val accounts: UserAccounts,
+) : com.memo.notification.RecipientLookup {
+    override fun recipient(userId: java.util.UUID): com.memo.notification.Recipient? = accounts.find(UserId(userId))?.recipient()
 }

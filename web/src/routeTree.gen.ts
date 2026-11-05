@@ -19,10 +19,13 @@ import { Route as ShellPatternsRouteImport } from './routes/_shell/patterns'
 import { Route as ShellStatusRouteImport } from './routes/_shell/status'
 import { Route as AuthLoginEnrolMfaRouteImport } from './routes/_auth/login_.enrol-mfa'
 import { Route as ShellSignedInIndexRouteImport } from './routes/_shell/_signedIn/index'
+import { Route as ShellSignedInNotificationsRouteImport } from './routes/_shell/_signedIn/notifications'
 import { Route as ShellSignedInOrgRouteImport } from './routes/_shell/_signedIn/org'
 import { Route as ShellSignedInAdminClassificationsRouteImport } from './routes/_shell/_signedIn/admin.classifications'
+import { Route as ShellSignedInAdminEmailRouteImport } from './routes/_shell/_signedIn/admin.email'
 import { Route as ShellSignedInAdminRolesRouteImport } from './routes/_shell/_signedIn/admin.roles'
 import { Route as ShellSignedInAdminUsersRouteImport } from './routes/_shell/_signedIn/admin.users'
+import { Route as ShellSignedInMeNotificationsRouteImport } from './routes/_shell/_signedIn/me.notifications'
 import { Route as ShellSignedInMeSecurityRouteImport } from './routes/_shell/_signedIn/me.security'
 import { Route as ShellSignedInAdminUsersUserIdRouteImport } from './routes/_shell/_signedIn/admin.users_.$userId'
 import { Route as ShellSignedInOrgPositionsPositionIdRouteImport } from './routes/_shell/_signedIn/org_.positions.$positionId'
@@ -74,6 +77,12 @@ const ShellSignedInIndexRoute = ShellSignedInIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ShellSignedInRoute,
 } as any)
+const ShellSignedInNotificationsRoute =
+  ShellSignedInNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => ShellSignedInRoute,
+  } as any)
 const ShellSignedInOrgRoute = ShellSignedInOrgRouteImport.update({
   id: '/org',
   path: '/org',
@@ -85,6 +94,11 @@ const ShellSignedInAdminClassificationsRoute =
     path: '/admin/classifications',
     getParentRoute: () => ShellSignedInRoute,
   } as any)
+const ShellSignedInAdminEmailRoute = ShellSignedInAdminEmailRouteImport.update({
+  id: '/admin/email',
+  path: '/admin/email',
+  getParentRoute: () => ShellSignedInRoute,
+} as any)
 const ShellSignedInAdminRolesRoute = ShellSignedInAdminRolesRouteImport.update({
   id: '/admin/roles',
   path: '/admin/roles',
@@ -95,6 +109,12 @@ const ShellSignedInAdminUsersRoute = ShellSignedInAdminUsersRouteImport.update({
   path: '/admin/users',
   getParentRoute: () => ShellSignedInRoute,
 } as any)
+const ShellSignedInMeNotificationsRoute =
+  ShellSignedInMeNotificationsRouteImport.update({
+    id: '/me/notifications',
+    path: '/me/notifications',
+    getParentRoute: () => ShellSignedInRoute,
+  } as any)
 const ShellSignedInMeSecurityRoute = ShellSignedInMeSecurityRouteImport.update({
   id: '/me/security',
   path: '/me/security',
@@ -121,10 +141,13 @@ export interface FileRoutesByFullPath {
   '/patterns': typeof ShellPatternsRoute
   '/status': typeof ShellStatusRoute
   '/login/enrol-mfa': typeof AuthLoginEnrolMfaRoute
+  '/notifications': typeof ShellSignedInNotificationsRoute
   '/org': typeof ShellSignedInOrgRoute
   '/admin/classifications': typeof ShellSignedInAdminClassificationsRoute
+  '/admin/email': typeof ShellSignedInAdminEmailRoute
   '/admin/roles': typeof ShellSignedInAdminRolesRoute
   '/admin/users': typeof ShellSignedInAdminUsersRoute
+  '/me/notifications': typeof ShellSignedInMeNotificationsRoute
   '/me/security': typeof ShellSignedInMeSecurityRoute
   '/admin/users/$userId': typeof ShellSignedInAdminUsersUserIdRoute
   '/org/positions/$positionId': typeof ShellSignedInOrgPositionsPositionIdRoute
@@ -137,10 +160,13 @@ export interface FileRoutesByTo {
   '/patterns': typeof ShellPatternsRoute
   '/status': typeof ShellStatusRoute
   '/login/enrol-mfa': typeof AuthLoginEnrolMfaRoute
+  '/notifications': typeof ShellSignedInNotificationsRoute
   '/org': typeof ShellSignedInOrgRoute
   '/admin/classifications': typeof ShellSignedInAdminClassificationsRoute
+  '/admin/email': typeof ShellSignedInAdminEmailRoute
   '/admin/roles': typeof ShellSignedInAdminRolesRoute
   '/admin/users': typeof ShellSignedInAdminUsersRoute
+  '/me/notifications': typeof ShellSignedInMeNotificationsRoute
   '/me/security': typeof ShellSignedInMeSecurityRoute
   '/admin/users/$userId': typeof ShellSignedInAdminUsersUserIdRoute
   '/org/positions/$positionId': typeof ShellSignedInOrgPositionsPositionIdRoute
@@ -156,11 +182,14 @@ export interface FileRoutesById {
   '/_shell/patterns': typeof ShellPatternsRoute
   '/_shell/status': typeof ShellStatusRoute
   '/_auth/login_/enrol-mfa': typeof AuthLoginEnrolMfaRoute
+  '/_shell/_signedIn/notifications': typeof ShellSignedInNotificationsRoute
   '/_shell/_signedIn/org': typeof ShellSignedInOrgRoute
   '/_shell/_signedIn/': typeof ShellSignedInIndexRoute
   '/_shell/_signedIn/admin/classifications': typeof ShellSignedInAdminClassificationsRoute
+  '/_shell/_signedIn/admin/email': typeof ShellSignedInAdminEmailRoute
   '/_shell/_signedIn/admin/roles': typeof ShellSignedInAdminRolesRoute
   '/_shell/_signedIn/admin/users': typeof ShellSignedInAdminUsersRoute
+  '/_shell/_signedIn/me/notifications': typeof ShellSignedInMeNotificationsRoute
   '/_shell/_signedIn/me/security': typeof ShellSignedInMeSecurityRoute
   '/_shell/_signedIn/admin/users_/$userId': typeof ShellSignedInAdminUsersUserIdRoute
   '/_shell/_signedIn/org_/positions/$positionId': typeof ShellSignedInOrgPositionsPositionIdRoute
@@ -175,10 +204,13 @@ export interface FileRouteTypes {
     | '/patterns'
     | '/status'
     | '/login/enrol-mfa'
+    | '/notifications'
     | '/org'
     | '/admin/classifications'
+    | '/admin/email'
     | '/admin/roles'
     | '/admin/users'
+    | '/me/notifications'
     | '/me/security'
     | '/admin/users/$userId'
     | '/org/positions/$positionId'
@@ -191,10 +223,13 @@ export interface FileRouteTypes {
     | '/patterns'
     | '/status'
     | '/login/enrol-mfa'
+    | '/notifications'
     | '/org'
     | '/admin/classifications'
+    | '/admin/email'
     | '/admin/roles'
     | '/admin/users'
+    | '/me/notifications'
     | '/me/security'
     | '/admin/users/$userId'
     | '/org/positions/$positionId'
@@ -209,11 +244,14 @@ export interface FileRouteTypes {
     | '/_shell/patterns'
     | '/_shell/status'
     | '/_auth/login_/enrol-mfa'
+    | '/_shell/_signedIn/notifications'
     | '/_shell/_signedIn/org'
     | '/_shell/_signedIn/'
     | '/_shell/_signedIn/admin/classifications'
+    | '/_shell/_signedIn/admin/email'
     | '/_shell/_signedIn/admin/roles'
     | '/_shell/_signedIn/admin/users'
+    | '/_shell/_signedIn/me/notifications'
     | '/_shell/_signedIn/me/security'
     | '/_shell/_signedIn/admin/users_/$userId'
     | '/_shell/_signedIn/org_/positions/$positionId'
@@ -296,6 +334,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShellSignedInIndexRouteImport
       parentRoute: typeof ShellSignedInRoute
     }
+    '/_shell/_signedIn/notifications': {
+      id: '/_shell/_signedIn/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof ShellSignedInNotificationsRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
     '/_shell/_signedIn/org': {
       id: '/_shell/_signedIn/org'
       path: '/org'
@@ -310,6 +355,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShellSignedInAdminClassificationsRouteImport
       parentRoute: typeof ShellSignedInRoute
     }
+    '/_shell/_signedIn/admin/email': {
+      id: '/_shell/_signedIn/admin/email'
+      path: '/admin/email'
+      fullPath: '/admin/email'
+      preLoaderRoute: typeof ShellSignedInAdminEmailRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
     '/_shell/_signedIn/admin/roles': {
       id: '/_shell/_signedIn/admin/roles'
       path: '/admin/roles'
@@ -322,6 +374,13 @@ declare module '@tanstack/react-router' {
       path: '/admin/users'
       fullPath: '/admin/users'
       preLoaderRoute: typeof ShellSignedInAdminUsersRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
+    '/_shell/_signedIn/me/notifications': {
+      id: '/_shell/_signedIn/me/notifications'
+      path: '/me/notifications'
+      fullPath: '/me/notifications'
+      preLoaderRoute: typeof ShellSignedInMeNotificationsRouteImport
       parentRoute: typeof ShellSignedInRoute
     }
     '/_shell/_signedIn/me/security': {
@@ -365,23 +424,29 @@ const AuthRouteChildren: AuthRouteChildren = {
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
 interface ShellSignedInRouteChildren {
+  ShellSignedInNotificationsRoute: typeof ShellSignedInNotificationsRoute
   ShellSignedInOrgRoute: typeof ShellSignedInOrgRoute
   ShellSignedInIndexRoute: typeof ShellSignedInIndexRoute
   ShellSignedInAdminClassificationsRoute: typeof ShellSignedInAdminClassificationsRoute
+  ShellSignedInAdminEmailRoute: typeof ShellSignedInAdminEmailRoute
   ShellSignedInAdminRolesRoute: typeof ShellSignedInAdminRolesRoute
   ShellSignedInAdminUsersRoute: typeof ShellSignedInAdminUsersRoute
+  ShellSignedInMeNotificationsRoute: typeof ShellSignedInMeNotificationsRoute
   ShellSignedInMeSecurityRoute: typeof ShellSignedInMeSecurityRoute
   ShellSignedInAdminUsersUserIdRoute: typeof ShellSignedInAdminUsersUserIdRoute
   ShellSignedInOrgPositionsPositionIdRoute: typeof ShellSignedInOrgPositionsPositionIdRoute
 }
 
 const ShellSignedInRouteChildren: ShellSignedInRouteChildren = {
+  ShellSignedInNotificationsRoute: ShellSignedInNotificationsRoute,
   ShellSignedInOrgRoute: ShellSignedInOrgRoute,
   ShellSignedInIndexRoute: ShellSignedInIndexRoute,
   ShellSignedInAdminClassificationsRoute:
     ShellSignedInAdminClassificationsRoute,
+  ShellSignedInAdminEmailRoute: ShellSignedInAdminEmailRoute,
   ShellSignedInAdminRolesRoute: ShellSignedInAdminRolesRoute,
   ShellSignedInAdminUsersRoute: ShellSignedInAdminUsersRoute,
+  ShellSignedInMeNotificationsRoute: ShellSignedInMeNotificationsRoute,
   ShellSignedInMeSecurityRoute: ShellSignedInMeSecurityRoute,
   ShellSignedInAdminUsersUserIdRoute: ShellSignedInAdminUsersUserIdRoute,
   ShellSignedInOrgPositionsPositionIdRoute:

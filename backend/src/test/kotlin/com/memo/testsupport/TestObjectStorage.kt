@@ -7,6 +7,8 @@ import org.testcontainers.containers.wait.strategy.Wait
 import org.testcontainers.utility.MountableFile
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider
+import software.amazon.awssdk.core.checksums.RequestChecksumCalculation
+import software.amazon.awssdk.core.checksums.ResponseChecksumValidation
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.s3.S3Client
 import java.net.URI
@@ -88,6 +90,10 @@ object TestObjectStorage {
             .region(Region.US_EAST_1)
             .forcePathStyle(true)
             .credentialsProvider(StaticCredentialsProvider.create(AwsBasicCredentials.create(key, secret)))
+            // As in ObjectStore: tests send Content-MD5 on object-lock PUTs, and SeaweedFS rejects it next to the SDK's default
+            // flexible checksum (seen as an intermittent "Content-Md5 you specified is not valid" on CI).
+            .requestChecksumCalculation(RequestChecksumCalculation.WHEN_REQUIRED)
+            .responseChecksumValidation(ResponseChecksumValidation.WHEN_REQUIRED)
             .build()
 
     private const val S3_PORT = 8333

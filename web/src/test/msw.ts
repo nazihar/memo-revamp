@@ -54,4 +54,8 @@ export const accessHandler = (permissions: string[] = []) =>
   )
 
 /** Default handlers: every test starts from a healthy backend and an anonymous visitor, and overrides what it needs. */
-export const server = setupServer(healthHandler(), sessionHandler(), csrfHandler(), accessHandler())
+/** The bell polls the unread count on every signed-in page (E06). */
+export const unreadHandler = (count = 0) =>
+  http.get(`${API_ORIGIN}/api/v1/me/notifications/unread-count`, () => HttpResponse.json({ count }))
+
+export const server = setupServer(healthHandler(), sessionHandler(), csrfHandler(), accessHandler(), unreadHandler())

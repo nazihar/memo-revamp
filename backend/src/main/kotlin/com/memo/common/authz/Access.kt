@@ -89,3 +89,11 @@ data class GrantsChanged(
     val userId: UUID,
     val gained: Boolean,
 ) : com.memo.common.events.TenantScopedEvent
+
+/**
+ * Step-up authentication (ADR-0024) for modules that cannot depend on `identity` (it depends on them): a fresh second
+ * factor within the tenant's window, else [com.memo.common.web.StepUpRequiredException]. Implemented by `identity`.
+ */
+interface StepUpCheck {
+    fun require()
+}

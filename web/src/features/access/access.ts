@@ -11,6 +11,7 @@ export const PERMISSION = {
   rolesManage: 'authz.roles.manage',
   classificationsManage: 'authz.classifications.manage',
   auditRead: 'audit.read',
+  notificationSettings: 'notification.settings.manage',
 } as const
 
 /** What the signed-in user may do (`GET /me/access`), for menus and buttons only. */

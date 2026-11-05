@@ -2,6 +2,7 @@ package com.memo.files.internal
 
 import com.memo.files.FilePurpose
 import com.memo.files.FileType
+import jakarta.annotation.PostConstruct
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.ObjectProvider
 import org.springframework.boot.ApplicationArguments
@@ -36,19 +37,22 @@ internal class Purposes(
     provider: ObjectProvider<FilePurpose>,
 ) {
     private val purposes = provider.orderedStream().toList()
-    private val byKey: Map<String, FilePurpose> =
-        purposes.associateBy { it.key }.also { map ->
-            check(
-                map.size == purposes.size,
-            ) { "duplicate file purpose keys: ${purposes.groupBy { it.key }.filterValues { it.size > 1 }.keys}" }
-            map.values.forEach { purpose ->
-                check(KEY.matches(purpose.key)) { "invalid file purpose key '${purpose.key}'" }
-                check(purpose.allowedTypes.isNotEmpty() && purpose.allowedTypes.none { it in FileType.NEVER_ALLOWED }) {
-                    "file purpose '${purpose.key}' allows no type, or a type that is never allowed"
-                }
-                check(purpose.maxBytes > 0) { "file purpose '${purpose.key}' needs a positive maxBytes" }
+    private val byKey: Map<String, FilePurpose> = purposes.associateBy { it.key }
+
+    /** Stops the application start on a duplicate key or an invalid declaration. */
+    @PostConstruct
+    fun verify() {
+        check(
+            byKey.size == purposes.size,
+        ) { "duplicate file purpose keys: ${purposes.groupBy { it.key }.filterValues { it.size > 1 }.keys}" }
+        purposes.forEach { purpose ->
+            check(KEY.matches(purpose.key)) { "invalid file purpose key '${purpose.key}'" }
+            check(purpose.allowedTypes.isNotEmpty() && purpose.allowedTypes.none { it in FileType.NEVER_ALLOWED }) {
+                "file purpose '${purpose.key}' allows no type, or a type that is never allowed"
             }
+            check(purpose.maxBytes > 0) { "file purpose '${purpose.key}' needs a positive maxBytes" }
         }
+    }
 
     operator fun get(key: String): FilePurpose? = byKey[key]
 
@@ -94,7 +98,7 @@ internal class Spool(
     /** Removes leftovers of uploads interrupted by a crash or a kill. */
     override fun run(args: ApplicationArguments) {
         if (!Files.isDirectory(directory)) return
-        Files.list(directory).use { files -> files.filter { it.fileName.toString().endsWith(".spool") }.forEach(::delete) }
+        Files.list(directory).use { files -> files.filter { it.fileName?.toString()?.endsWith(".spool") == true }.forEach(::delete) }
     }
 
     private fun ensureDirectory() {

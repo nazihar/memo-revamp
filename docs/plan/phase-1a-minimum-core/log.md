@@ -2,6 +2,9 @@
 
 History moved out of `STATUS.md`, newest first.
 
+## 2026-11-05
+- E05 built (T1–T10) on `feat/1a-e05-files`; details in `epic-05-files/log.md`. Key findings: ClamAV passes single-entry zip bombs (scans a trimmed copy), nginx response buffering would write decrypted downloads to disk, a versioned bucket lets a newer object shadow a record unless reads pin the storage version. All three are handled and tested.
+
 ## 2026-11-02
 - E05 plan written (ADR-0028 envelope encryption, ADR-0029 upload pipeline and range downloads); details in `epic-05-files/log.md`. Dev VM memory measured for Q7: ClamAV fits.
 

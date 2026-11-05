@@ -5,7 +5,7 @@
 **Last updated:** 2026-11-02 (UTC+06:00) by Claude (agent)
 
 ## Current position
-- **Phase:** 1a (overview approved 2026-10-18, gate delegation kept). Merged and on dev: **E02 platform kernel** (PR #18), **E01 app frame** (PR #19), **E03 identity, sessions and step-up** (PR #20), **E04 org directory and authorisation** (PR #22; ADR-0026, ADR-0027), plus fixes (PRs #21, #23–#26). **Now: E05 files** on `feat/1a-e05-files` (ADR-0028, ADR-0029): T1–T7 pushed (keysets, object store, clamd, inspection, upload API, downloads, retention jobs); T8–T10 (corpus and fuzzing, matrix and performance, deployment) in progress. E06 notifications follows (it can run beside E05).
+- **Phase:** 1a (overview approved 2026-10-18, gate delegation kept). Merged and on dev: **E02 platform kernel** (PR #18), **E01 app frame** (PR #19), **E03 identity, sessions and step-up** (PR #20), **E04 org directory and authorisation** (PR #22; ADR-0026, ADR-0027), plus fixes (PRs #21, #23–#26). **E05 files** built on `feat/1a-e05-files` (ADR-0028, ADR-0029), T1–T10 done, full backend suite green; PR open, waiting for the owner (Ansible run on the VM, then merge). Next: E06 notifications. E06 notifications follows (it can run beside E05).
 - **Dev environment live (2026-10-18):** https://dev.memo-revamp.naziharitsolution.com on the VM 123.176.58.175 (Ubuntu 24.04, 4 vCPU, 7.8 GB RAM, 100 GB disk). It deploys automatically after every green `ci` run on `master`.
 - **Phase 0 epics:** E01–E05 done (`docs/plan/phase-0-foundations/`).
 - **Branches:** `master` holds PRs #1–#26; `feat/1a-e05-files` in progress (pushed, no PR yet).
@@ -44,10 +44,12 @@
 - **DAST/performance:** ZAP baseline 0 FAIL / 0 WARN; Gatling p95 48 ms.
 
 ## Next step
-1. Implement **E05** slice by slice (`epic-05-files/tasks.md`): T1 crypto and keysets, T2 object store, T3 clamd client (parallel), then T4 inspection, T5 upload pipeline, T6 downloads, T7 retention jobs, T8 corpus and fuzzing, T9 matrix and performance, T10 deployment (ClamAV on the dev VM). Then plan **E06**, then E07.
-2. Remove the `apk upgrade` lines from `web/Dockerfile` once `nginx-unprivileged` ships the fixed Alpine packages; remove the Spring Session licence exceptions once Boot manages Spring Session 4.1.2 or later; remove the Guava pin in `build-logic` once the plugins pull 33.7.2 or later.
+1. Owner: re-run Ansible on the dev VM (dry run already shows the expected changes, see "Waiting for human"), then merge the E05 PR. Watch the master CI and the deploy; ClamAV downloads its signatures on first start.
+2. Plan and build **E06 notifications**, then E07 (which adds the first real file purpose, the tenant logo, and the upload component).
+3. Remove the `apk upgrade` lines from `web/Dockerfile` once `nginx-unprivileged` ships the fixed Alpine packages; remove the Spring Session licence exceptions once Boot manages Spring Session 4.1.2 or later; remove the Guava pin in `build-logic` once the plugins pull 33.7.2 or later.
 
 ## Waiting for human
+- **E05 (needed before merge):** run the playbook on the dev VM (the agent's tool permission refused it). From the repository root, in Docker as before (`python:3.13-slim`, `apt-get install openssh-client`, `pip install ansible-core==2.21.5`, `ansible-galaxy collection install -r requirements.yml`, `ansible-playbook -i inventory.ini site.yml`). It sets `COMPOSE_PROFILES=devtools,antivirus` and `MEMO_CLAMAV_HOST=clamav` in both `.env` files and restarts Caddy with the new Caddyfile. Then merge the PR.
 - **E01 manual accessibility pass (no rush):** a short keyboard + screen-reader (NVDA or VoiceOver) walk through the patterns gallery, run locally with `pnpm dev` at `/patterns` (the gallery is left out of production images, so it is not on the dev server). Automated axe, keyboard and CSP checks pass.
 1. **VM memory:** 7.8 GB is enough for dev, including ClamAV (measured 2026-11-02: 6.3 GiB available before it; ClamAV peaks at about 2.4 GiB). Running staging and ONLYOFFICE as well needs 16 GB.
 2. **GitHub setup:**

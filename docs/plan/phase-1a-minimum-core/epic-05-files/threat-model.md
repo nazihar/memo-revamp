@@ -32,4 +32,5 @@
 - Signatures are only as fresh as `freshclam`; air-gapped installs depend on the customer's mirror. Stored files are not re-scanned when signatures update (Phase 3).
 - Legacy OLE2 Office formats are refused in 1a rather than inspected; Phase 2 must decide before memo attachments allow them.
 - Declared sizes in a zip can lie; nothing in 1a extracts archives except clamd (bounded) and our content-types read (bounded). Any later extractor (text extraction, conversion) must enforce its own limits.
+- clamd speaks no TLS: upload content crosses the internal network to the scanner unencrypted (Compose network, Kubernetes NetworkPolicy keep it internal). Installs that need encryption on that hop run clamd beside the backend (same pod or host) or behind a TLS tunnel.
 - Range reads are not audited individually (open granularity by design, AGENTS §3.3).

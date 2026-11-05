@@ -134,9 +134,10 @@ internal class ClamdStream(
     }
 
     /** Ends the stream and waits for the verdict. */
-    fun finish(): ScanVerdict =
-        try {
-            if (broken == null) {
+    fun finish(): ScanVerdict {
+        val failure = broken
+        return try {
+            if (failure == null) {
                 out.write(ByteArray(Int.SIZE_BYTES))
                 out.flush()
             }
@@ -144,7 +145,7 @@ internal class ClamdStream(
             val reply = ClamdClient.readReply(socket.getInputStream())
             when {
                 reply.isNotEmpty() -> ClamdReply.parse(reply)
-                broken != null -> ScanVerdict.Failed("connection lost: ${broken?.message}")
+                failure != null -> ScanVerdict.Failed("connection lost: ${failure.message}")
                 else -> ScanVerdict.Failed("empty reply")
             }
         } catch (e: IOException) {
@@ -152,6 +153,7 @@ internal class ClamdStream(
         } finally {
             close()
         }
+    }
 
     override fun close() = socket.close()
 

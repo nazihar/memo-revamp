@@ -52,8 +52,8 @@ No screens in E05. Problem Details `reason` codes are stable keys for E07's uplo
 3. Try to make a record version disappear or change: retries, concurrent versions, crashes between storage and commit (30 min).
 
 ## Exit checklist
-- [ ] All listed tests implemented and green in their stage
-- [ ] No new quarantined tests
-- [ ] ASVS checklist updated (V5, V11, V14, V16 rows)
-- [ ] Corpus green against full signatures in the nightly
-- [ ] Dev VM runs ClamAV; memory after a day of signature reloads recorded in the log
+- [x] All listed tests implemented and green in their stage. Several were folded into fewer classes: tamper and range properties in `FileCipherProperties`; keyset races in `KeysetStorageIT`; storage and locks in `ObjectStoreIT`; upload rejections, idempotency, concurrency, veto, rate limit, spool in `UploadIT`; API, multipart, cross-tenant in `UploadApiIT`; ranges, headers, open audit, tampering and version shadowing in `DownloadIT`; jobs and settings in `FilesMaintenanceIT`; performance in `FilesPerformanceIT` (PR stage with 2x headroom, like the org performance test)
+- [x] No new quarantined tests
+- [x] ASVS checklist updated (V5, V11, V14, V16 rows)
+- [ ] Corpus against the full official signatures: **not built yet** (the nightly runs the corpus with the test signatures, like the PR stage). Follow-up: a nightly job with `clamav/clamav:1.5.4` and a cached signature volume
+- [ ] Dev VM runs ClamAV; memory after a day of signature reloads recorded in the log (after the first deploy)

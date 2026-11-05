@@ -11,6 +11,7 @@ import com.memo.jooq.tables.records.FilesVersionRecord
 import com.memo.jooq.tables.references.FILES_FILE
 import com.memo.jooq.tables.references.FILES_PENDING_UPLOAD
 import com.memo.jooq.tables.references.FILES_VERSION
+import org.jooq.impl.DSL
 import org.springframework.stereotype.Component
 import java.time.Instant
 import java.time.OffsetDateTime
@@ -82,7 +83,7 @@ internal class FileStore(
         dsl
             .selectFrom(FILES_VERSION)
             .where(FILES_VERSION.FILE_ID.eq(fileId))
-            .apply { if (before != null) and(FILES_VERSION.NUMBER.lt(before)) }
+            .and(if (before != null) FILES_VERSION.NUMBER.lt(before) else DSL.noCondition())
             .orderBy(FILES_VERSION.NUMBER.desc())
             .limit(limit)
             .fetch()

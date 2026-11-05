@@ -33,6 +33,7 @@ x-backend-env: &backend-env
   MEMO_TENANCY_FALLBACK_TENANT: ${MEMO_TENANCY_FALLBACK_TENANT:-}
   MEMO_PUBLIC_URL_TEMPLATE: ${MEMO_PUBLIC_URL_TEMPLATE:-}
   MEMO_DOCSERVER_URL: ${MEMO_DOCSERVER_URL:-}
+  # `clamav` with the antivirus profile; without a scanner every upload is refused (ADR-0029).
   MEMO_CLAMAV_HOST: ${MEMO_CLAMAV_HOST:-}
   LOGGING_STRUCTURED_FORMAT_CONSOLE: ecs
   MEMO_OTEL_EXPORT: ${MEMO_OTEL_EXPORT:-false}
@@ -136,6 +137,8 @@ services:
       MEMO_DEMO_PASSWORD: ${MEMO_DEMO_PASSWORD:-}
       MEMO_DEMO_TOTP_SECRET: ${MEMO_DEMO_TOTP_SECRET:-}
       MEMO_DATA_KEY: ${MEMO_DATA_KEY:?}
+    # Upload spools (ciphertext; at most max-upload-bytes x concurrent uploads, 800 MiB by default) on disk, not in RAM.
+    volumes: [spool:/var/lib/memo/spool]
     networks: [default, docs-internal]
     # Readiness on the management port (never published).
     healthcheck:
@@ -174,7 +177,15 @@ services:
     profiles: [antivirus]
     image: ${MEMO_CLAMAV_IMAGE:-clamav/clamav:1.5.4}
     restart: unless-stopped
+    # Heuristics and limits shared with every install and the tests (ADR-0029). freshclam needs HTTPS to the signature
+    # mirror; air-gapped installs point it at a private mirror (runbook).
+    env_file: [../../clamav/clamd.env]
     volumes: [clamav:/var/lib/clamav]
+    healthcheck:
+      test: ["CMD-SHELL", "clamdcheck.sh"]
+      interval: 30s
+      timeout: 10s
+      retries: 40
     deploy: { resources: { limits: { memory: 3g } } }
 
   mailpit:
@@ -200,3 +211,4 @@ volumes:
   pgdata: {}
   seaweed: {}
   clamav: {}
+  spool: {}

@@ -292,6 +292,85 @@
         "required" : [ "person" ],
         "type" : "object"
       },
+      "FileVersionView" : {
+        "properties" : {
+          "fileId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "mediaType" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "number" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "pdfPages" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "retainUntil" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "sha256" : {
+            "type" : "string"
+          },
+          "sizeBytes" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "uploadedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "uploadedBy" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "versionId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "FileView" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "nextBefore" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "ownerId" : {
+            "type" : [ "string", "null" ]
+          },
+          "purpose" : {
+            "type" : "string"
+          },
+          "version" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "versionCount" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "versions" : {
+            "items" : {
+              "$ref" : "#/components/schemas/FileVersionView"
+            },
+            "type" : "array"
+          }
+        },
+        "type" : "object"
+      },
       "Grant" : {
         "properties" : {
           "builtIn" : {
@@ -2357,6 +2436,218 @@
         },
         "summary" : "Find people and positions by the start of a word in their name or title",
         "tags" : [ "directory" ]
+      }
+    },
+    "/api/v1/files" : {
+      "post" : {
+        "operationId" : "uploadFile",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "purpose",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "owner",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Content-Disposition",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/octet-stream" : {
+              "schema" : {
+                "format" : "binary",
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/FileVersionView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Upload a new file for a purpose",
+        "tags" : [ "files" ]
+      }
+    },
+    "/api/v1/files/{fileId}" : {
+      "get" : {
+        "operationId" : "getFile",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "fileId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "before",
+          "required" : false,
+          "schema" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "required" : false,
+          "schema" : {
+            "default" : 50,
+            "format" : "int32",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/FileView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A file and its versions, newest first",
+        "tags" : [ "files" ]
+      }
+    },
+    "/api/v1/files/{fileId}/content" : {
+      "get" : {
+        "operationId" : "getFileContent",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "fileId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "summary" : "Content of the current version (supports Range)",
+        "tags" : [ "files" ]
+      }
+    },
+    "/api/v1/files/{fileId}/versions" : {
+      "post" : {
+        "operationId" : "uploadFileVersion",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "fileId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Content-Disposition",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/octet-stream" : {
+              "schema" : {
+                "format" : "binary",
+                "type" : "string"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/FileVersionView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Upload a new version of a file",
+        "tags" : [ "files" ]
+      }
+    },
+    "/api/v1/files/{fileId}/versions/{versionId}/content" : {
+      "get" : {
+        "operationId" : "getFileVersionContent",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "fileId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "versionId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "summary" : "Content of one version (supports Range)",
+        "tags" : [ "files" ]
       }
     },
     "/api/v1/health" : {

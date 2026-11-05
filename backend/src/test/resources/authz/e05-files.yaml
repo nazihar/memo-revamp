@@ -1,0 +1,12 @@
+# E05 files service (design E05 §6–7). Rules: rules.yaml.
+# Signed-in users reach every file endpoint; the file's purpose then decides (FilePurpose.mayUpload / mayRead). Those
+# decisions, and other tenants' files (404), are tested in UploadIT, UploadApiIT and the download tests. Here the
+# generator sends JSON, so allowed upload cells end at 415 (raw bodies only) and random file ids at 404.
+epic: E05
+endpoints:
+  - { endpoint: POST /api/v1/files, rule: signedIn, headers: { Idempotency-Key: "{random}" } }
+  - { endpoint: "POST /api/v1/files/{fileId}/versions", rule: signedIn, headers: { Idempotency-Key: "{random}", If-Match: "\"0\"" } }
+  - { endpoint: "GET /api/v1/files/{fileId}", rule: signedIn }
+  # Content (T6): random ids are 404 for every signed-in subject.
+  - { endpoint: "GET /api/v1/files/{fileId}/content", rule: signedIn }
+  - { endpoint: "GET /api/v1/files/{fileId}/versions/{versionId}/content", rule: signedIn }

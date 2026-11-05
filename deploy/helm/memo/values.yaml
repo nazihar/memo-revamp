@@ -35,13 +35,20 @@ security:
 
 integrations:
   documentServerUrl: ""   # ONLYOFFICE (internal URL); empty = disabled
-  malwareScannerHost: ""  # clamd host; empty = disabled
+  # clamd host, configured with deploy/clamav/clamd.env (ADR-0029). Empty: every upload is refused (fail closed).
+  malwareScannerHost: ""
   smtpHost: ""
   smtpPort: 25
   smtpFrom: ""
   smtpStarttls: true
   # Optional Secret with keys `username` and `password` for an authenticating relay.
   smtpSecret: ""
+
+files:
+  maxUploadBytes: 104857600   # platform ceiling; purposes and tenants can only lower it
+  concurrentUploads: 8        # per backend pod
+  # Ciphertext spools of uploads in progress (emptyDir): at least maxUploadBytes x concurrentUploads.
+  spoolSizeLimit: 1Gi
 
 observability:
   logFormat: ecs          # structured JSON logs (ADR-0016)

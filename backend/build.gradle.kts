@@ -49,6 +49,12 @@ dependencies {
     implementation(libs.bcprov)
     implementation(libs.bucket4j.postgresql)
     implementation(libs.zxing.core)
+    // Envelope encryption of files: streaming AEAD with seekable decryption (ADR-0028).
+    implementation(libs.tink)
+    // Content detection by magic only, no parsers (ADR-0029); zip central directories; PDF inspection with limits.
+    implementation(libs.tika.core)
+    implementation(libs.commons.compress)
+    implementation(libs.pdfbox)
     implementation(libs.springdoc.webmvc.api)
     implementation(libs.jackson.module.kotlin)
     implementation(libs.kotlin.reflect)
@@ -74,6 +80,8 @@ dependencies {
     testImplementation(libs.testcontainers.postgresql)
     testImplementation(libs.mockk)
     testImplementation(libs.jqwik)
+    // Fuzz targets (TESTING_STRATEGY §3.6): regression inputs in the PR stage, time-boxed fuzzing in the nightly.
+    testImplementation(libs.jazzer.junit)
     testImplementation(libs.jooq.codegen)
     testImplementation(libs.jooq.meta)
 }

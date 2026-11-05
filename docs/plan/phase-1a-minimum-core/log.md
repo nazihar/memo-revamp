@@ -2,7 +2,12 @@
 
 History moved out of `STATUS.md`, newest first.
 
+## 2026-11-05
+- E05 built (T1–T10) on `feat/1a-e05-files`; details in `epic-05-files/log.md`. Key findings: ClamAV passes single-entry zip bombs (scans a trimmed copy), nginx response buffering would write decrypted downloads to disk, a versioned bucket lets a newer object shadow a record unless reads pin the storage version. All three are handled and tested.
+
 ## 2026-11-02
+- E05 plan written (ADR-0028 envelope encryption, ADR-0029 upload pipeline and range downloads); details in `epic-05-files/log.md`. Dev VM memory measured for Q7: ClamAV fits.
+
 - PR #21 (fixes from the E03 deploy and the first nightly) and PR #22 (E04) merged. PR #21 deployed to dev; Mailpit runs there again.
 - Master CI failed on the PR #22 merge commit, and on a re-run: the test JVM ran out of heap (Gradle's default 512 MiB) in ArchUnit's class import, after the suite had grown with E04. The same tree had passed on the PR, so the limit was being reached only on some runs. The deploy was skipped, so E04 is not on dev yet. The test heap is now 1 GiB.
 - Lesson: a green PR run does not prove master will be green when a resource limit is close. Watch the master run before calling an epic deployed.

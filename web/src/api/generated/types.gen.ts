@@ -130,6 +130,30 @@ export type DirectoryUser = {
     position?: DirectoryPositionSummary | null;
 };
 
+export type FileVersionView = {
+    fileId?: string;
+    mediaType?: string;
+    name?: string;
+    number?: number;
+    pdfPages?: number | null;
+    retainUntil?: string | null;
+    sha256?: string;
+    sizeBytes?: number;
+    uploadedAt?: string;
+    uploadedBy?: string | null;
+    versionId?: string;
+};
+
+export type FileView = {
+    id?: string;
+    nextBefore?: number | null;
+    ownerId?: string | null;
+    purpose?: string;
+    version?: number;
+    versionCount?: number;
+    versions?: Array<FileVersionView>;
+};
+
 export type Grant = {
     builtIn?: string | null;
     grantedAt: string;
@@ -1264,6 +1288,106 @@ export type SearchDirectoryResponses = {
 };
 
 export type SearchDirectoryResponse = SearchDirectoryResponses[keyof SearchDirectoryResponses];
+
+export type UploadFileData = {
+    body?: Blob | File;
+    headers: {
+        'Idempotency-Key': string;
+        'Content-Disposition'?: string;
+    };
+    path?: never;
+    query: {
+        purpose: string;
+        owner?: string;
+    };
+    url: '/api/v1/files';
+};
+
+export type UploadFileResponses = {
+    /**
+     * OK
+     */
+    200: FileVersionView;
+};
+
+export type UploadFileResponse = UploadFileResponses[keyof UploadFileResponses];
+
+export type GetFileData = {
+    body?: never;
+    path: {
+        fileId: string;
+    };
+    query?: {
+        before?: number;
+        limit?: number;
+    };
+    url: '/api/v1/files/{fileId}';
+};
+
+export type GetFileResponses = {
+    /**
+     * OK
+     */
+    200: FileView;
+};
+
+export type GetFileResponse = GetFileResponses[keyof GetFileResponses];
+
+export type GetFileContentData = {
+    body?: never;
+    path: {
+        fileId: string;
+    };
+    query?: never;
+    url: '/api/v1/files/{fileId}/content';
+};
+
+export type GetFileContentResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
+export type UploadFileVersionData = {
+    body?: Blob | File;
+    headers: {
+        'If-Match'?: string;
+        'Idempotency-Key': string;
+        'Content-Disposition'?: string;
+    };
+    path: {
+        fileId: string;
+    };
+    query?: never;
+    url: '/api/v1/files/{fileId}/versions';
+};
+
+export type UploadFileVersionResponses = {
+    /**
+     * OK
+     */
+    200: FileVersionView;
+};
+
+export type UploadFileVersionResponse = UploadFileVersionResponses[keyof UploadFileVersionResponses];
+
+export type GetFileVersionContentData = {
+    body?: never;
+    path: {
+        fileId: string;
+        versionId: string;
+    };
+    query?: never;
+    url: '/api/v1/files/{fileId}/versions/{versionId}/content';
+};
+
+export type GetFileVersionContentResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
 
 export type GetHealthData = {
     body?: never;

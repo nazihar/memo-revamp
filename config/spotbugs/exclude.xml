@@ -33,11 +33,12 @@
   </Match>
 
   <!--
-    S3 requires Content-MD5 on object-lock PUTs (RecordStore.putLocked). MD5 serves only as a transfer checksum demanded by
-    the protocol, not as a security control: record integrity rests on the SHA-256 audit chain (ADR-0019).
+    S3 requires Content-MD5 on object-lock PUTs (ObjectStore.md5). MD5 serves only as a transfer checksum demanded by the
+    protocol, not as a security control: content integrity rests on authenticated encryption (ADR-0028) and records on the
+    SHA-256 audit chain (ADR-0019).
   -->
   <Match>
-    <Class name="com.memo.common.storage.RecordStore"/>
+    <Class name="com.memo.common.storage.ObjectStore$Companion"/>
     <Bug pattern="WEAK_MESSAGE_DIGEST_MD5"/>
   </Match>
 
@@ -57,6 +58,15 @@
   -->
   <Match>
     <Class name="com.memo.system.health.probes.SocketProbesKt"/>
+    <Bug pattern="UNENCRYPTED_SOCKET"/>
+  </Match>
+
+  <!--
+    clamd (ADR-0029): the protocol has no TLS. The scanner is reached only on the internal network (Compose network,
+    Kubernetes NetworkPolicy); upload content crosses it unencrypted before it is encrypted (threat model E05, residual).
+  -->
+  <Match>
+    <Class name="com.memo.files.internal.ClamdClient"/>
     <Bug pattern="UNENCRYPTED_SOCKET"/>
   </Match>
 </FindBugsFilter>

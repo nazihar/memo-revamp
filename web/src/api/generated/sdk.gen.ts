@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AcceptInvitationData, AcceptInvitationErrors, AcceptInvitationResponses, AssignPositionData, AssignPositionResponses, CancelAssignmentData, CancelAssignmentResponses, CancelReportingLineData, CancelReportingLineResponses, ChangeMyPasswordData, ChangeMyPasswordErrors, ChangeMyPasswordResponses, CloseLegalEntityData, CloseLegalEntityResponses, CloseOrgUnitData, CloseOrgUnitResponses, ClosePositionData, ClosePositionResponses, CompletePasswordResetData, CompletePasswordResetErrors, CompletePasswordResetResponses, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentErrors, ConfirmMfaEnrolmentResponses, CreateClassificationLevelData, CreateClassificationLevelResponses, CreateLegalEntityData, CreateLegalEntityResponses, CreateOrgUnitData, CreateOrgUnitResponses, CreatePositionData, CreatePositionResponses, CreateReportingLineData, CreateReportingLineResponses, CreateRoleData, CreateRoleResponses, DeactivateUserData, DeactivateUserResponses, DeleteClassificationLevelData, DeleteClassificationLevelResponses, DeleteRoleData, DeleteRoleResponses, GetCsrfTokenData, GetCsrfTokenResponses, GetHealthData, GetHealthErrors, GetHealthResponses, GetMeData, GetMeResponses, GetMyAccessData, GetMyAccessResponses, GetOrgHistoryData, GetOrgHistoryResponses, GetOrgUnitData, GetOrgUnitResponses, GetPositionData, GetPositionHolderData, GetPositionHolderResponses, GetPositionResponses, GetSessionData, GetSessionResponses, GetUserAccessData, GetUserAccessResponses, GetUserData, GetUserResponses, GrantRoleData, GrantRoleResponses, InviteUserData, InviteUserErrors, InviteUserResponses, ListClassificationLevelsData, ListClassificationLevelsResponses, ListLegalEntitiesData, ListLegalEntitiesResponses, ListMySessionsData, ListMySessionsResponses, ListOrgUnitsData, ListOrgUnitsResponses, ListPermissionsData, ListPermissionsResponses, ListRolesData, ListRolesResponses, ListUnitPositionsData, ListUnitPositionsResponses, ListUserAssignmentsData, ListUserAssignmentsResponses, ListUsersData, ListUsersResponses, LoginData, LoginErrors, LoginResponses, LogoutData, LogoutResponses, LookUpInvitationData, LookUpInvitationErrors, LookUpInvitationResponses, MoveOrgUnitData, MoveOrgUnitResponses, ReactivateUserData, ReactivateUserResponses, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesErrors, RegenerateMyRecoveryCodesResponses, RenameClassificationLevelData, RenameClassificationLevelResponses, ReorderClassificationLevelsData, ReorderClassificationLevelsResponses, RequestPasswordResetData, RequestPasswordResetResponses, ResetUserMfaData, ResetUserMfaResponses, RevokeGrantData, RevokeGrantResponses, RevokeMySessionData, RevokeMySessionErrors, RevokeMySessionResponses, RevokeUserSessionsData, RevokeUserSessionsResponses, SearchDirectoryData, SearchDirectoryResponses, SetClearanceData, SetClearanceResponses, StartMfaEnrolmentData, StartMfaEnrolmentErrors, StartMfaEnrolmentResponses, StepUpData, StepUpErrors, StepUpResponses, UnlockUserData, UnlockUserResponses, UpdateAssignmentData, UpdateAssignmentResponses, UpdateLegalEntityData, UpdateLegalEntityResponses, UpdateOrgUnitData, UpdateOrgUnitResponses, UpdatePositionData, UpdatePositionResponses, UpdateReportingLineData, UpdateReportingLineResponses, UpdateRoleData, UpdateRoleResponses, VerifyMfaData, VerifyMfaErrors, VerifyMfaResponses } from './types.gen';
+import type { AcceptInvitationData, AcceptInvitationErrors, AcceptInvitationResponses, AssignPositionData, AssignPositionResponses, CancelAssignmentData, CancelAssignmentResponses, CancelReportingLineData, CancelReportingLineResponses, ChangeMyPasswordData, ChangeMyPasswordErrors, ChangeMyPasswordResponses, CloseLegalEntityData, CloseLegalEntityResponses, CloseOrgUnitData, CloseOrgUnitResponses, ClosePositionData, ClosePositionResponses, CompletePasswordResetData, CompletePasswordResetErrors, CompletePasswordResetResponses, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentErrors, ConfirmMfaEnrolmentResponses, CreateClassificationLevelData, CreateClassificationLevelResponses, CreateLegalEntityData, CreateLegalEntityResponses, CreateOrgUnitData, CreateOrgUnitResponses, CreatePositionData, CreatePositionResponses, CreateReportingLineData, CreateReportingLineResponses, CreateRoleData, CreateRoleResponses, DeactivateUserData, DeactivateUserResponses, DeleteClassificationLevelData, DeleteClassificationLevelResponses, DeleteRoleData, DeleteRoleResponses, GetCsrfTokenData, GetCsrfTokenResponses, GetFileContentData, GetFileContentResponses, GetFileData, GetFileResponses, GetFileVersionContentData, GetFileVersionContentResponses, GetHealthData, GetHealthErrors, GetHealthResponses, GetMeData, GetMeResponses, GetMyAccessData, GetMyAccessResponses, GetOrgHistoryData, GetOrgHistoryResponses, GetOrgUnitData, GetOrgUnitResponses, GetPositionData, GetPositionHolderData, GetPositionHolderResponses, GetPositionResponses, GetSessionData, GetSessionResponses, GetUserAccessData, GetUserAccessResponses, GetUserData, GetUserResponses, GrantRoleData, GrantRoleResponses, InviteUserData, InviteUserErrors, InviteUserResponses, ListClassificationLevelsData, ListClassificationLevelsResponses, ListLegalEntitiesData, ListLegalEntitiesResponses, ListMySessionsData, ListMySessionsResponses, ListOrgUnitsData, ListOrgUnitsResponses, ListPermissionsData, ListPermissionsResponses, ListRolesData, ListRolesResponses, ListUnitPositionsData, ListUnitPositionsResponses, ListUserAssignmentsData, ListUserAssignmentsResponses, ListUsersData, ListUsersResponses, LoginData, LoginErrors, LoginResponses, LogoutData, LogoutResponses, LookUpInvitationData, LookUpInvitationErrors, LookUpInvitationResponses, MoveOrgUnitData, MoveOrgUnitResponses, ReactivateUserData, ReactivateUserResponses, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesErrors, RegenerateMyRecoveryCodesResponses, RenameClassificationLevelData, RenameClassificationLevelResponses, ReorderClassificationLevelsData, ReorderClassificationLevelsResponses, RequestPasswordResetData, RequestPasswordResetResponses, ResetUserMfaData, ResetUserMfaResponses, RevokeGrantData, RevokeGrantResponses, RevokeMySessionData, RevokeMySessionErrors, RevokeMySessionResponses, RevokeUserSessionsData, RevokeUserSessionsResponses, SearchDirectoryData, SearchDirectoryResponses, SetClearanceData, SetClearanceResponses, StartMfaEnrolmentData, StartMfaEnrolmentErrors, StartMfaEnrolmentResponses, StepUpData, StepUpErrors, StepUpResponses, UnlockUserData, UnlockUserResponses, UpdateAssignmentData, UpdateAssignmentResponses, UpdateLegalEntityData, UpdateLegalEntityResponses, UpdateOrgUnitData, UpdateOrgUnitResponses, UpdatePositionData, UpdatePositionResponses, UpdateReportingLineData, UpdateReportingLineResponses, UpdateRoleData, UpdateRoleResponses, UploadFileData, UploadFileResponses, UploadFileVersionData, UploadFileVersionResponses, VerifyMfaData, VerifyMfaErrors, VerifyMfaResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -334,6 +334,47 @@ export const grantRole = <ThrowOnError extends boolean = false>(options: Options
  * Find people and positions by the start of a word in their name or title
  */
 export const searchDirectory = <ThrowOnError extends boolean = false>(options: Options<SearchDirectoryData, ThrowOnError>): RequestResult<SearchDirectoryResponses, unknown, ThrowOnError> => (options.client ?? client).get<SearchDirectoryResponses, unknown, ThrowOnError>({ url: '/api/v1/directory/search', ...options });
+
+/**
+ * Upload a new file for a purpose
+ */
+export const uploadFile = <ThrowOnError extends boolean = false>(options: Options<UploadFileData, ThrowOnError>): RequestResult<UploadFileResponses, unknown, ThrowOnError> => (options.client ?? client).post<UploadFileResponses, unknown, ThrowOnError>({
+    bodySerializer: null,
+    url: '/api/v1/files',
+    ...options,
+    headers: {
+        'Content-Type': 'application/octet-stream',
+        ...options.headers
+    }
+});
+
+/**
+ * A file and its versions, newest first
+ */
+export const getFile = <ThrowOnError extends boolean = false>(options: Options<GetFileData, ThrowOnError>): RequestResult<GetFileResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetFileResponses, unknown, ThrowOnError>({ url: '/api/v1/files/{fileId}', ...options });
+
+/**
+ * Content of the current version (supports Range)
+ */
+export const getFileContent = <ThrowOnError extends boolean = false>(options: Options<GetFileContentData, ThrowOnError>): RequestResult<GetFileContentResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetFileContentResponses, unknown, ThrowOnError>({ url: '/api/v1/files/{fileId}/content', ...options });
+
+/**
+ * Upload a new version of a file
+ */
+export const uploadFileVersion = <ThrowOnError extends boolean = false>(options: Options<UploadFileVersionData, ThrowOnError>): RequestResult<UploadFileVersionResponses, unknown, ThrowOnError> => (options.client ?? client).post<UploadFileVersionResponses, unknown, ThrowOnError>({
+    bodySerializer: null,
+    url: '/api/v1/files/{fileId}/versions',
+    ...options,
+    headers: {
+        'Content-Type': 'application/octet-stream',
+        ...options.headers
+    }
+});
+
+/**
+ * Content of one version (supports Range)
+ */
+export const getFileVersionContent = <ThrowOnError extends boolean = false>(options: Options<GetFileVersionContentData, ThrowOnError>): RequestResult<GetFileVersionContentResponses, unknown, ThrowOnError> => (options.client ?? client).get<GetFileVersionContentResponses, unknown, ThrowOnError>({ url: '/api/v1/files/{fileId}/versions/{versionId}/content', ...options });
 
 /**
  * Platform status

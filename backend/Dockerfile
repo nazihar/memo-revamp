@@ -12,7 +12,7 @@ ARG JAR_FILE=backend/build/libs/backend.jar
 WORKDIR /work
 COPY ${JAR_FILE} app.jar
 # Spring Boot layered extraction: dependencies change rarely, application often → better image layer reuse.
-RUN java -Djarmode=tools -jar app.jar extract --layers --launcher --destination extracted
+RUN java -Djarmode=tools -jar app.jar extract --layers --launcher --destination extracted && mkdir -p spool
 
 FROM ${RUNTIME_IMAGE}
 ARG VERSION=dev
@@ -27,6 +27,10 @@ COPY --from=layers /work/extracted/dependencies/ ./
 COPY --from=layers /work/extracted/spring-boot-loader/ ./
 COPY --from=layers /work/extracted/snapshot-dependencies/ ./
 COPY --from=layers /work/extracted/application/ ./
+# Upload spools (ciphertext only, ADR-0029): deployments mount a volume here (Compose volume, Kubernetes emptyDir);
+# the directory exists in the image so a new volume inherits the non-root owner.
+COPY --from=layers --chown=65532:65532 --chmod=0700 /work/spool /var/lib/memo/spool
+ENV MEMO_FILES_SPOOL_DIR=/var/lib/memo/spool
 # /tmp must be a writable volume (emptyDir/tmpfs) because the root filesystem is mounted read-only.
 ENV JAVA_TOOL_OPTIONS="-XX:MaxRAMPercentage=75 -XX:+ExitOnOutOfMemoryError -Djava.io.tmpdir=/tmp -Dfile.encoding=UTF-8"
 USER 65532:65532

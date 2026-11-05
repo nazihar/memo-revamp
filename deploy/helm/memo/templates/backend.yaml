@@ -52,6 +52,10 @@ spec:
               value: {{ .Values.integrations.documentServerUrl | quote }}
             - name: MEMO_CLAMAV_HOST
               value: {{ .Values.integrations.malwareScannerHost | quote }}
+            - name: MEMO_FILES_MAX_UPLOAD_BYTES
+              value: {{ .Values.files.maxUploadBytes | quote }}
+            - name: MEMO_FILES_CONCURRENT_UPLOADS
+              value: {{ .Values.files.concurrentUploads | quote }}
             - name: MEMO_SMTP_HOST
               value: {{ .Values.integrations.smtpHost | quote }}
             - name: MEMO_SMTP_PORT
@@ -88,8 +92,11 @@ spec:
             {{- toYaml .Values.backend.resources | nindent 12 }}
           volumeMounts:
             - { name: tmp, mountPath: /tmp }
+            # Upload spools: ciphertext only (ADR-0029), on node disk rather than in the pod's memory.
+            - { name: spool, mountPath: /var/lib/memo/spool }
       volumes:
         - { name: tmp, emptyDir: { sizeLimit: 512Mi } }
+        - { name: spool, emptyDir: { sizeLimit: {{ .Values.files.spoolSizeLimit }} } }
 ---
 apiVersion: v1
 kind: Service

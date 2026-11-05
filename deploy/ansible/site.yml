@@ -25,6 +25,7 @@
       - MEMO_SMTP_STARTTLS
       - MEMO_SMTP_FROM
       - MEMO_MAILPIT_PORT
+      - MEMO_CLAMAV_HOST
     memo_mailpit_ports:
       dev: 8025
       staging: 8125
@@ -136,7 +137,9 @@
           MEMO_TENANCY_BASE_DOMAIN: "{{ memo_hosts[item.0] }}"
           MEMO_TENANCY_FALLBACK_TENANT: demo
           # Mail goes to Mailpit on the VM (owner decision 2026-10-25); its UI only through an SSH tunnel.
-          COMPOSE_PROFILES: devtools
+          # ClamAV from E05 (Phase 1a Q7: measured to fit the 7.8 GB VM with one environment running).
+          COMPOSE_PROFILES: devtools,antivirus
+          MEMO_CLAMAV_HOST: clamav
           MEMO_SMTP_HOST: mailpit
           MEMO_SMTP_PORT: "1025"
           MEMO_SMTP_STARTTLS: "false"
@@ -167,6 +170,7 @@
         # secrets here (hosts and ACME email are in .env, which stays 0600).
         mode: "0644"
       loop: [compose.yaml, Caddyfile]
+      register: memo_edge_files
 
     - name: Edge proxy settings
       ansible.builtin.copy:
@@ -185,5 +189,17 @@
         chdir: "{{ memo_base }}/edge"
       register: memo_edge_up
       changed_when: "'Started' in memo_edge_up.stderr or 'Recreated' in memo_edge_up.stderr"
+      become: true
+      become_user: memo
+
+    # `up -d` leaves a running Caddy alone when only its bind-mounted Caddyfile changed. A restart (not `caddy reload`):
+    # the copy replaces the file, and a single-file bind mount keeps the old inode until the container starts again.
+    - name: Edge proxy picks up a changed Caddyfile
+      ansible.builtin.command: docker compose --env-file .env restart caddy
+      args:
+        chdir: "{{ memo_base }}/edge"
+      # Runs only when the Caddyfile changed, and then it always is a change.
+      changed_when: true
+      when: memo_edge_files.results | selectattr('changed') | list | length > 0
       become: true
       become_user: memo

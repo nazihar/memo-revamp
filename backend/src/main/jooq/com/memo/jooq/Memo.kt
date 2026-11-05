@@ -13,6 +13,10 @@ import com.memo.jooq.tables.AuthzClearance
 import com.memo.jooq.tables.AuthzGrant
 import com.memo.jooq.tables.AuthzRole
 import com.memo.jooq.tables.AuthzRolePermission
+import com.memo.jooq.tables.FilesFile
+import com.memo.jooq.tables.FilesPendingUpload
+import com.memo.jooq.tables.FilesTenantKeyset
+import com.memo.jooq.tables.FilesVersion
 import com.memo.jooq.tables.IdentityActionToken
 import com.memo.jooq.tables.IdentityHttpSession
 import com.memo.jooq.tables.IdentityHttpSessionAttributes
@@ -98,6 +102,26 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      * The table <code>memo.authz_role_permission</code>.
      */
     val AUTHZ_ROLE_PERMISSION: AuthzRolePermission get() = AuthzRolePermission.AUTHZ_ROLE_PERMISSION
+
+    /**
+     * The table <code>memo.files_file</code>.
+     */
+    val FILES_FILE: FilesFile get() = FilesFile.FILES_FILE
+
+    /**
+     * The table <code>memo.files_pending_upload</code>.
+     */
+    val FILES_PENDING_UPLOAD: FilesPendingUpload get() = FilesPendingUpload.FILES_PENDING_UPLOAD
+
+    /**
+     * The table <code>memo.files_tenant_keyset</code>.
+     */
+    val FILES_TENANT_KEYSET: FilesTenantKeyset get() = FilesTenantKeyset.FILES_TENANT_KEYSET
+
+    /**
+     * The table <code>memo.files_version</code>.
+     */
+    val FILES_VERSION: FilesVersion get() = FilesVersion.FILES_VERSION
 
     /**
      * The table <code>memo.identity_action_token</code>.
@@ -201,6 +225,10 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         AuthzGrant.AUTHZ_GRANT,
         AuthzRole.AUTHZ_ROLE,
         AuthzRolePermission.AUTHZ_ROLE_PERMISSION,
+        FilesFile.FILES_FILE,
+        FilesPendingUpload.FILES_PENDING_UPLOAD,
+        FilesTenantKeyset.FILES_TENANT_KEYSET,
+        FilesVersion.FILES_VERSION,
         IdentityActionToken.IDENTITY_ACTION_TOKEN,
         IdentityHttpSession.IDENTITY_HTTP_SESSION,
         IdentityHttpSessionAttributes.IDENTITY_HTTP_SESSION_ATTRIBUTES,

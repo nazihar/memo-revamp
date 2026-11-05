@@ -47,6 +47,11 @@ spring:
   mvc:
     problemdetails:
       enabled: true
+  servlet:
+    multipart:
+      # Never: multipart parts larger than a threshold are spooled to temp files as plaintext. Uploads are raw bodies
+      # streamed through the scanner and encrypted at once (ADR-0029).
+      enabled: false
   jackson:
     default-property-inclusion: non_null
   # Sessions in PostgreSQL (ADR-0023). The schema is a Flyway migration; cleanup runs as a db-scheduler task.
@@ -170,6 +175,12 @@ memo:
   malware-scanner:
     host: ${MEMO_CLAMAV_HOST:}
     port: ${MEMO_CLAMAV_PORT:3310}
+  # Files service (ADR-0029). Uploads are refused while the malware scanner is not configured.
+  files:
+    max-upload-bytes: ${MEMO_FILES_MAX_UPLOAD_BYTES:104857600}
+    # Ciphertext spools of uploads in progress; needs max-upload-bytes x concurrent-uploads of free space.
+    spool-dir: ${MEMO_FILES_SPOOL_DIR:}
+    concurrent-uploads: ${MEMO_FILES_CONCURRENT_UPLOADS:8}
   mail:
     host: ${MEMO_SMTP_HOST:}
     port: ${MEMO_SMTP_PORT:25}

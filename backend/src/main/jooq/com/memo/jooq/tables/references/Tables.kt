@@ -14,6 +14,10 @@ import com.memo.jooq.tables.AuthzClearance
 import com.memo.jooq.tables.AuthzGrant
 import com.memo.jooq.tables.AuthzRole
 import com.memo.jooq.tables.AuthzRolePermission
+import com.memo.jooq.tables.FilesFile
+import com.memo.jooq.tables.FilesPendingUpload
+import com.memo.jooq.tables.FilesTenantKeyset
+import com.memo.jooq.tables.FilesVersion
 import com.memo.jooq.tables.IdentityActionToken
 import com.memo.jooq.tables.IdentityHttpSession
 import com.memo.jooq.tables.IdentityHttpSessionAttributes
@@ -79,6 +83,26 @@ val AUTHZ_ROLE: AuthzRole = AuthzRole.AUTHZ_ROLE
  * The table <code>memo.authz_role_permission</code>.
  */
 val AUTHZ_ROLE_PERMISSION: AuthzRolePermission = AuthzRolePermission.AUTHZ_ROLE_PERMISSION
+
+/**
+ * The table <code>memo.files_file</code>.
+ */
+val FILES_FILE: FilesFile = FilesFile.FILES_FILE
+
+/**
+ * The table <code>memo.files_pending_upload</code>.
+ */
+val FILES_PENDING_UPLOAD: FilesPendingUpload = FilesPendingUpload.FILES_PENDING_UPLOAD
+
+/**
+ * The table <code>memo.files_tenant_keyset</code>.
+ */
+val FILES_TENANT_KEYSET: FilesTenantKeyset = FilesTenantKeyset.FILES_TENANT_KEYSET
+
+/**
+ * The table <code>memo.files_version</code>.
+ */
+val FILES_VERSION: FilesVersion = FilesVersion.FILES_VERSION
 
 /**
  * The table <code>memo.identity_action_token</code>.

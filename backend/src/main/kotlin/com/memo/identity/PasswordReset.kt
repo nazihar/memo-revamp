@@ -9,6 +9,8 @@ import com.memo.identity.tokens.ActionTokens
 import com.memo.identity.tokens.TokenPurpose
 import com.memo.notification.Mail
 import com.memo.notification.MailTemplate
+import com.memo.notification.NotificationKind
+import com.memo.notification.Notifications
 import com.memo.tenancy.TenancyProperties
 import com.memo.tenancy.TenantRegistry
 import org.springframework.stereotype.Service
@@ -24,6 +26,7 @@ class PasswordReset(
     private val tokens: ActionTokens,
     private val attempts: LoginAttempts,
     private val mail: Mail,
+    private val notifications: Notifications,
     private val registry: TenantRegistry,
     private val tenancy: TenancyProperties,
     private val audit: AuditLog,
@@ -45,6 +48,7 @@ class PasswordReset(
                     "organisation" to tenant.name,
                     "link" to "${tenancy.publicUrl(tenant.slug)}/reset-password#$token",
                 ),
+                account.locale,
             )
             // In the tenant chain without the email (design E03 §5).
             audit.record("identity.user.password_reset_requested", "identity.user", account.id.toString())
@@ -75,13 +79,10 @@ class PasswordReset(
 
     /** "Your password was changed" (after a reset or a change in My security). */
     fun notifyPasswordChanged(account: UserAccount) {
-        mail.enqueue(
-            MailTemplate.PASSWORD_CHANGED,
-            account.email,
-            mapOf(
-                "name" to account.displayName,
-                "organisation" to registry.current()?.name.orEmpty(),
-            ),
+        notifications.notify(
+            account.recipient(),
+            NotificationKind.PASSWORD_CHANGED,
+            mapOf("organisation" to registry.current()?.name.orEmpty()),
         )
     }
 }

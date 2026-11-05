@@ -1,0 +1,18 @@
+# E06 notifications (design E06 §5). Rules: rules.yaml.
+# Own notifications and preferences are about the signed-in user only (NotificationsIT); random ids are 404.
+epic: E06
+endpoints:
+  - { endpoint: GET /api/v1/me/notifications, rule: signedIn }
+  - { endpoint: GET /api/v1/me/notifications/unread-count, rule: signedIn }
+  - { endpoint: "POST /api/v1/me/notifications/{id}/read", rule: signedIn }
+  - { endpoint: POST /api/v1/me/notifications/read-all, rule: signedIn }
+  - { endpoint: GET /api/v1/me/notification-preferences, rule: signedIn }
+  - { endpoint: PUT /api/v1/me/notification-preferences, rule: signedIn }
+  # Admin → Email: notification.settings.manage; changes need a fresh step-up.
+  - { endpoint: GET /api/v1/admin/mail-settings, rule: tenantAdmin }
+  - endpoint: PUT /api/v1/admin/mail-settings
+    rule: tenantAdminStepUp
+    body: { host: "smtp.bank.example", port: 587, tlsMode: STARTTLS, fromAddress: "board@bank.example" }
+  - { endpoint: DELETE /api/v1/admin/mail-settings, rule: tenantAdminStepUp }
+  - { endpoint: POST /api/v1/admin/mail-settings/test, rule: tenantAdminStepUp }
+  - { endpoint: GET /api/v1/admin/mail-log, rule: tenantAdmin }

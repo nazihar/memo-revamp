@@ -29,27 +29,27 @@ import java.util.UUID
 import io.swagger.v3.oas.annotations.parameters.RequestBody as BodyDoc
 
 data class FileVersionView(
-    val fileId: UUID,
-    val versionId: UUID,
-    val number: Int,
-    val name: String,
-    val mediaType: String,
-    val sizeBytes: Long,
-    val sha256: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val fileId: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val versionId: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val number: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val name: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val mediaType: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val sizeBytes: Long,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val sha256: String,
     val pdfPages: Int?,
     val uploadedBy: UUID?,
-    val uploadedAt: Instant,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val uploadedAt: Instant,
     val retainUntil: Instant?,
 )
 
 data class FileView(
-    val id: UUID,
-    val purpose: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val id: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val purpose: String,
     val ownerId: String?,
-    val versionCount: Int,
-    val version: Long,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val versionCount: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val version: Long,
     /** Newest first. */
-    val versions: List<FileVersionView>,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val versions: List<FileVersionView>,
     /** Pass as `before` for older versions; null when there are none. */
     val nextBefore: Int?,
 )

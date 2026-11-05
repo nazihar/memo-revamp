@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AcceptInvitationData, AcceptInvitationErrors, AcceptInvitationResponses, AssignPositionData, AssignPositionResponses, CancelAssignmentData, CancelAssignmentResponses, CancelReportingLineData, CancelReportingLineResponses, ChangeMyPasswordData, ChangeMyPasswordErrors, ChangeMyPasswordResponses, CloseLegalEntityData, CloseLegalEntityResponses, CloseOrgUnitData, CloseOrgUnitResponses, ClosePositionData, ClosePositionResponses, CompletePasswordResetData, CompletePasswordResetErrors, CompletePasswordResetResponses, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentErrors, ConfirmMfaEnrolmentResponses, CreateClassificationLevelData, CreateClassificationLevelResponses, CreateLegalEntityData, CreateLegalEntityResponses, CreateOrgUnitData, CreateOrgUnitResponses, CreatePositionData, CreatePositionResponses, CreateReportingLineData, CreateReportingLineResponses, CreateRoleData, CreateRoleResponses, DeactivateUserData, DeactivateUserResponses, DeleteClassificationLevelData, DeleteClassificationLevelResponses, DeleteRoleData, DeleteRoleResponses, GetCsrfTokenData, GetCsrfTokenResponses, GetFileContentData, GetFileContentResponses, GetFileData, GetFileResponses, GetFileVersionContentData, GetFileVersionContentResponses, GetHealthData, GetHealthErrors, GetHealthResponses, GetMeData, GetMeResponses, GetMyAccessData, GetMyAccessResponses, GetOrgHistoryData, GetOrgHistoryResponses, GetOrgUnitData, GetOrgUnitResponses, GetPositionData, GetPositionHolderData, GetPositionHolderResponses, GetPositionResponses, GetSessionData, GetSessionResponses, GetUserAccessData, GetUserAccessResponses, GetUserData, GetUserResponses, GrantRoleData, GrantRoleResponses, InviteUserData, InviteUserErrors, InviteUserResponses, ListClassificationLevelsData, ListClassificationLevelsResponses, ListLegalEntitiesData, ListLegalEntitiesResponses, ListMySessionsData, ListMySessionsResponses, ListOrgUnitsData, ListOrgUnitsResponses, ListPermissionsData, ListPermissionsResponses, ListRolesData, ListRolesResponses, ListUnitPositionsData, ListUnitPositionsResponses, ListUserAssignmentsData, ListUserAssignmentsResponses, ListUsersData, ListUsersResponses, LoginData, LoginErrors, LoginResponses, LogoutData, LogoutResponses, LookUpInvitationData, LookUpInvitationErrors, LookUpInvitationResponses, MoveOrgUnitData, MoveOrgUnitResponses, ReactivateUserData, ReactivateUserResponses, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesErrors, RegenerateMyRecoveryCodesResponses, RenameClassificationLevelData, RenameClassificationLevelResponses, ReorderClassificationLevelsData, ReorderClassificationLevelsResponses, RequestPasswordResetData, RequestPasswordResetResponses, ResetUserMfaData, ResetUserMfaResponses, RevokeGrantData, RevokeGrantResponses, RevokeMySessionData, RevokeMySessionErrors, RevokeMySessionResponses, RevokeUserSessionsData, RevokeUserSessionsResponses, SearchDirectoryData, SearchDirectoryResponses, SetClearanceData, SetClearanceResponses, StartMfaEnrolmentData, StartMfaEnrolmentErrors, StartMfaEnrolmentResponses, StepUpData, StepUpErrors, StepUpResponses, UnlockUserData, UnlockUserResponses, UpdateAssignmentData, UpdateAssignmentResponses, UpdateLegalEntityData, UpdateLegalEntityResponses, UpdateOrgUnitData, UpdateOrgUnitResponses, UpdatePositionData, UpdatePositionResponses, UpdateReportingLineData, UpdateReportingLineResponses, UpdateRoleData, UpdateRoleResponses, UploadFileData, UploadFileResponses, UploadFileVersionData, UploadFileVersionResponses, VerifyMfaData, VerifyMfaErrors, VerifyMfaResponses } from './types.gen';
+import type { AcceptInvitationData, AcceptInvitationErrors, AcceptInvitationResponses, AssignPositionData, AssignPositionResponses, CancelAssignmentData, CancelAssignmentResponses, CancelReportingLineData, CancelReportingLineResponses, ChangeMyPasswordData, ChangeMyPasswordErrors, ChangeMyPasswordResponses, CloseLegalEntityData, CloseLegalEntityResponses, CloseOrgUnitData, CloseOrgUnitResponses, ClosePositionData, ClosePositionResponses, CompletePasswordResetData, CompletePasswordResetErrors, CompletePasswordResetResponses, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentErrors, ConfirmMfaEnrolmentResponses, CreateClassificationLevelData, CreateClassificationLevelResponses, CreateLegalEntityData, CreateLegalEntityResponses, CreateOrgUnitData, CreateOrgUnitResponses, CreatePositionData, CreatePositionResponses, CreateReportingLineData, CreateReportingLineResponses, CreateRoleData, CreateRoleResponses, DeactivateUserData, DeactivateUserResponses, DeleteClassificationLevelData, DeleteClassificationLevelResponses, DeleteRoleData, DeleteRoleResponses, GetCsrfTokenData, GetCsrfTokenResponses, GetFileContentData, GetFileContentResponses, GetFileData, GetFileResponses, GetFileVersionContentData, GetFileVersionContentResponses, GetHealthData, GetHealthErrors, GetHealthResponses, GetMailLogData, GetMailLogResponses, GetMailSettingsData, GetMailSettingsResponses, GetMeData, GetMeResponses, GetMyAccessData, GetMyAccessResponses, GetMyNotificationPreferencesData, GetMyNotificationPreferencesResponses, GetMyUnreadCountData, GetMyUnreadCountResponses, GetOrgHistoryData, GetOrgHistoryResponses, GetOrgUnitData, GetOrgUnitResponses, GetPositionData, GetPositionHolderData, GetPositionHolderResponses, GetPositionResponses, GetSessionData, GetSessionResponses, GetUserAccessData, GetUserAccessResponses, GetUserData, GetUserResponses, GrantRoleData, GrantRoleResponses, InviteUserData, InviteUserErrors, InviteUserResponses, ListClassificationLevelsData, ListClassificationLevelsResponses, ListLegalEntitiesData, ListLegalEntitiesResponses, ListMyNotificationsData, ListMyNotificationsResponses, ListMySessionsData, ListMySessionsResponses, ListOrgUnitsData, ListOrgUnitsResponses, ListPermissionsData, ListPermissionsResponses, ListRolesData, ListRolesResponses, ListUnitPositionsData, ListUnitPositionsResponses, ListUserAssignmentsData, ListUserAssignmentsResponses, ListUsersData, ListUsersResponses, LoginData, LoginErrors, LoginResponses, LogoutData, LogoutResponses, LookUpInvitationData, LookUpInvitationErrors, LookUpInvitationResponses, MarkAllNotificationsReadData, MarkAllNotificationsReadResponses, MarkNotificationReadData, MarkNotificationReadResponses, MoveOrgUnitData, MoveOrgUnitResponses, ReactivateUserData, ReactivateUserResponses, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesErrors, RegenerateMyRecoveryCodesResponses, RemoveMailSettingsData, RemoveMailSettingsResponses, RenameClassificationLevelData, RenameClassificationLevelResponses, ReorderClassificationLevelsData, ReorderClassificationLevelsResponses, RequestPasswordResetData, RequestPasswordResetResponses, ResetUserMfaData, ResetUserMfaResponses, RevokeGrantData, RevokeGrantResponses, RevokeMySessionData, RevokeMySessionErrors, RevokeMySessionResponses, RevokeUserSessionsData, RevokeUserSessionsResponses, SearchDirectoryData, SearchDirectoryResponses, SetClearanceData, SetClearanceResponses, SetMailSettingsData, SetMailSettingsResponses, SetMyNotificationPreferencesData, SetMyNotificationPreferencesResponses, StartMfaEnrolmentData, StartMfaEnrolmentErrors, StartMfaEnrolmentResponses, StepUpData, StepUpErrors, StepUpResponses, TestMailSettingsData, TestMailSettingsResponses, UnlockUserData, UnlockUserResponses, UpdateAssignmentData, UpdateAssignmentResponses, UpdateLegalEntityData, UpdateLegalEntityResponses, UpdateOrgUnitData, UpdateOrgUnitResponses, UpdatePositionData, UpdatePositionResponses, UpdateReportingLineData, UpdateReportingLineResponses, UpdateRoleData, UpdateRoleResponses, UploadFileData, UploadFileResponses, UploadFileVersionData, UploadFileVersionResponses, VerifyMfaData, VerifyMfaErrors, VerifyMfaResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -17,6 +17,38 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
      */
     meta?: keyof ClientMeta extends never ? Record<string, unknown> : ClientMeta;
 };
+
+/**
+ * Delivery log of the organisation's emails, newest first
+ */
+export const getMailLog = <ThrowOnError extends boolean = false>(options?: Options<GetMailLogData, ThrowOnError>): RequestResult<GetMailLogResponses, unknown, ThrowOnError> => (options?.client ?? client).get<GetMailLogResponses, unknown, ThrowOnError>({ url: '/api/v1/admin/mail-log', ...options });
+
+/**
+ * Go back to the platform mail relay
+ */
+export const removeMailSettings = <ThrowOnError extends boolean = false>(options?: Options<RemoveMailSettingsData, ThrowOnError>): RequestResult<RemoveMailSettingsResponses, unknown, ThrowOnError> => (options?.client ?? client).delete<RemoveMailSettingsResponses, unknown, ThrowOnError>({ url: '/api/v1/admin/mail-settings', ...options });
+
+/**
+ * The organisation's mail relay (204 when it uses the platform relay)
+ */
+export const getMailSettings = <ThrowOnError extends boolean = false>(options?: Options<GetMailSettingsData, ThrowOnError>): RequestResult<GetMailSettingsResponses, unknown, ThrowOnError> => (options?.client ?? client).get<GetMailSettingsResponses, unknown, ThrowOnError>({ url: '/api/v1/admin/mail-settings', ...options });
+
+/**
+ * Set the organisation's mail relay
+ */
+export const setMailSettings = <ThrowOnError extends boolean = false>(options: Options<SetMailSettingsData, ThrowOnError>): RequestResult<SetMailSettingsResponses, unknown, ThrowOnError> => (options.client ?? client).put<SetMailSettingsResponses, unknown, ThrowOnError>({
+    url: '/api/v1/admin/mail-settings',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Send a test email to myself through the current relay
+ */
+export const testMailSettings = <ThrowOnError extends boolean = false>(options?: Options<TestMailSettingsData, ThrowOnError>): RequestResult<TestMailSettingsResponses, unknown, ThrowOnError> => (options?.client ?? client).post<TestMailSettingsResponses, unknown, ThrowOnError>({ url: '/api/v1/admin/mail-settings/test', ...options });
 
 /**
  * List the organisation's users
@@ -392,6 +424,43 @@ export const getMe = <ThrowOnError extends boolean = false>(options?: Options<Ge
  * My permissions and clearance
  */
 export const getMyAccess = <ThrowOnError extends boolean = false>(options?: Options<GetMyAccessData, ThrowOnError>): RequestResult<GetMyAccessResponses, unknown, ThrowOnError> => (options?.client ?? client).get<GetMyAccessResponses, unknown, ThrowOnError>({ url: '/api/v1/me/access', ...options });
+
+/**
+ * My notification channels per category
+ */
+export const getMyNotificationPreferences = <ThrowOnError extends boolean = false>(options?: Options<GetMyNotificationPreferencesData, ThrowOnError>): RequestResult<GetMyNotificationPreferencesResponses, unknown, ThrowOnError> => (options?.client ?? client).get<GetMyNotificationPreferencesResponses, unknown, ThrowOnError>({ url: '/api/v1/me/notification-preferences', ...options });
+
+/**
+ * Change my notification channels
+ */
+export const setMyNotificationPreferences = <ThrowOnError extends boolean = false>(options: Options<SetMyNotificationPreferencesData, ThrowOnError>): RequestResult<SetMyNotificationPreferencesResponses, unknown, ThrowOnError> => (options.client ?? client).put<SetMyNotificationPreferencesResponses, unknown, ThrowOnError>({
+    url: '/api/v1/me/notification-preferences',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * My notifications, newest first
+ */
+export const listMyNotifications = <ThrowOnError extends boolean = false>(options?: Options<ListMyNotificationsData, ThrowOnError>): RequestResult<ListMyNotificationsResponses, unknown, ThrowOnError> => (options?.client ?? client).get<ListMyNotificationsResponses, unknown, ThrowOnError>({ url: '/api/v1/me/notifications', ...options });
+
+/**
+ * Mark all my notifications as read
+ */
+export const markAllNotificationsRead = <ThrowOnError extends boolean = false>(options?: Options<MarkAllNotificationsReadData, ThrowOnError>): RequestResult<MarkAllNotificationsReadResponses, unknown, ThrowOnError> => (options?.client ?? client).post<MarkAllNotificationsReadResponses, unknown, ThrowOnError>({ url: '/api/v1/me/notifications/read-all', ...options });
+
+/**
+ * How many of my notifications are unread
+ */
+export const getMyUnreadCount = <ThrowOnError extends boolean = false>(options?: Options<GetMyUnreadCountData, ThrowOnError>): RequestResult<GetMyUnreadCountResponses, unknown, ThrowOnError> => (options?.client ?? client).get<GetMyUnreadCountResponses, unknown, ThrowOnError>({ url: '/api/v1/me/notifications/unread-count', ...options });
+
+/**
+ * Mark one of my notifications as read
+ */
+export const markNotificationRead = <ThrowOnError extends boolean = false>(options: Options<MarkNotificationReadData, ThrowOnError>): RequestResult<MarkNotificationReadResponses, unknown, ThrowOnError> => (options.client ?? client).post<MarkNotificationReadResponses, unknown, ThrowOnError>({ url: '/api/v1/me/notifications/{id}/read', ...options });
 
 /**
  * Change my password

@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { acceptInvitation, assignPosition, cancelAssignment, cancelReportingLine, changeMyPassword, closeLegalEntity, closeOrgUnit, closePosition, completePasswordReset, confirmMfaEnrolment, createClassificationLevel, createLegalEntity, createOrgUnit, createPosition, createReportingLine, createRole, deactivateUser, deleteClassificationLevel, deleteRole, getCsrfToken, getFile, getFileContent, getFileVersionContent, getHealth, getMe, getMyAccess, getOrgHistory, getOrgUnit, getPosition, getPositionHolder, getSession, getUser, getUserAccess, grantRole, inviteUser, listClassificationLevels, listLegalEntities, listMySessions, listOrgUnits, listPermissions, listRoles, listUnitPositions, listUserAssignments, listUsers, login, logout, lookUpInvitation, moveOrgUnit, type Options, reactivateUser, regenerateMyRecoveryCodes, renameClassificationLevel, reorderClassificationLevels, requestPasswordReset, resetUserMfa, revokeGrant, revokeMySession, revokeUserSessions, searchDirectory, setClearance, startMfaEnrolment, stepUp, unlockUser, updateAssignment, updateLegalEntity, updateOrgUnit, updatePosition, updateReportingLine, updateRole, uploadFile, uploadFileVersion, verifyMfa } from '../sdk.gen';
-import type { AcceptInvitationData, AcceptInvitationError, AcceptInvitationResponse, AssignPositionData, AssignPositionResponse, CancelAssignmentData, CancelAssignmentResponse, CancelReportingLineData, CancelReportingLineResponse, ChangeMyPasswordData, ChangeMyPasswordError, ChangeMyPasswordResponse, CloseLegalEntityData, CloseLegalEntityResponse, CloseOrgUnitData, CloseOrgUnitResponse, ClosePositionData, ClosePositionResponse, CompletePasswordResetData, CompletePasswordResetError, CompletePasswordResetResponse, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentError, ConfirmMfaEnrolmentResponse, CreateClassificationLevelData, CreateClassificationLevelResponse, CreateLegalEntityData, CreateLegalEntityResponse, CreateOrgUnitData, CreateOrgUnitResponse, CreatePositionData, CreatePositionResponse, CreateReportingLineData, CreateReportingLineResponse, CreateRoleData, CreateRoleResponse, DeactivateUserData, DeactivateUserResponse, DeleteClassificationLevelData, DeleteRoleData, GetCsrfTokenData, GetCsrfTokenResponse, GetFileContentData, GetFileData, GetFileResponse, GetFileVersionContentData, GetHealthData, GetHealthError, GetHealthResponse, GetMeData, GetMeResponse, GetMyAccessData, GetMyAccessResponse, GetOrgHistoryData, GetOrgHistoryResponse, GetOrgUnitData, GetOrgUnitResponse, GetPositionData, GetPositionHolderData, GetPositionHolderResponse, GetPositionResponse, GetSessionData, GetSessionResponse, GetUserAccessData, GetUserAccessResponse, GetUserData, GetUserResponse, GrantRoleData, GrantRoleResponse, InviteUserData, InviteUserError, InviteUserResponse, ListClassificationLevelsData, ListClassificationLevelsResponse, ListLegalEntitiesData, ListLegalEntitiesResponse, ListMySessionsData, ListMySessionsResponse, ListOrgUnitsData, ListOrgUnitsResponse, ListPermissionsData, ListPermissionsResponse, ListRolesData, ListRolesResponse, ListUnitPositionsData, ListUnitPositionsResponse, ListUserAssignmentsData, ListUserAssignmentsResponse, ListUsersData, ListUsersResponse, LoginData, LoginError, LoginResponse, LogoutData, LogoutResponse, LookUpInvitationData, LookUpInvitationError, LookUpInvitationResponse, MoveOrgUnitData, MoveOrgUnitResponse, ReactivateUserData, ReactivateUserResponse, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesResponse, RenameClassificationLevelData, RenameClassificationLevelResponse, ReorderClassificationLevelsData, ReorderClassificationLevelsResponse, RequestPasswordResetData, ResetUserMfaData, ResetUserMfaResponse, RevokeGrantData, RevokeMySessionData, RevokeMySessionResponse, RevokeUserSessionsData, RevokeUserSessionsResponse, SearchDirectoryData, SearchDirectoryResponse, SetClearanceData, SetClearanceResponse, StartMfaEnrolmentData, StartMfaEnrolmentResponse, StepUpData, StepUpError, StepUpResponse, UnlockUserData, UnlockUserResponse, UpdateAssignmentData, UpdateAssignmentResponse, UpdateLegalEntityData, UpdateLegalEntityResponse, UpdateOrgUnitData, UpdateOrgUnitResponse, UpdatePositionData, UpdatePositionResponse, UpdateReportingLineData, UpdateReportingLineResponse, UpdateRoleData, UpdateRoleResponse, UploadFileData, UploadFileResponse, UploadFileVersionData, UploadFileVersionResponse, VerifyMfaData, VerifyMfaError, VerifyMfaResponse } from '../types.gen';
+import { acceptInvitation, assignPosition, cancelAssignment, cancelReportingLine, changeMyPassword, closeLegalEntity, closeOrgUnit, closePosition, completePasswordReset, confirmMfaEnrolment, createClassificationLevel, createLegalEntity, createOrgUnit, createPosition, createReportingLine, createRole, deactivateUser, deleteClassificationLevel, deleteRole, getCsrfToken, getFile, getFileContent, getFileVersionContent, getHealth, getMailLog, getMailSettings, getMe, getMyAccess, getMyNotificationPreferences, getMyUnreadCount, getOrgHistory, getOrgUnit, getPosition, getPositionHolder, getSession, getUser, getUserAccess, grantRole, inviteUser, listClassificationLevels, listLegalEntities, listMyNotifications, listMySessions, listOrgUnits, listPermissions, listRoles, listUnitPositions, listUserAssignments, listUsers, login, logout, lookUpInvitation, markAllNotificationsRead, markNotificationRead, moveOrgUnit, type Options, reactivateUser, regenerateMyRecoveryCodes, removeMailSettings, renameClassificationLevel, reorderClassificationLevels, requestPasswordReset, resetUserMfa, revokeGrant, revokeMySession, revokeUserSessions, searchDirectory, setClearance, setMailSettings, setMyNotificationPreferences, startMfaEnrolment, stepUp, testMailSettings, unlockUser, updateAssignment, updateLegalEntity, updateOrgUnit, updatePosition, updateReportingLine, updateRole, uploadFile, uploadFileVersion, verifyMfa } from '../sdk.gen';
+import type { AcceptInvitationData, AcceptInvitationError, AcceptInvitationResponse, AssignPositionData, AssignPositionResponse, CancelAssignmentData, CancelAssignmentResponse, CancelReportingLineData, CancelReportingLineResponse, ChangeMyPasswordData, ChangeMyPasswordError, ChangeMyPasswordResponse, CloseLegalEntityData, CloseLegalEntityResponse, CloseOrgUnitData, CloseOrgUnitResponse, ClosePositionData, ClosePositionResponse, CompletePasswordResetData, CompletePasswordResetError, CompletePasswordResetResponse, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentError, ConfirmMfaEnrolmentResponse, CreateClassificationLevelData, CreateClassificationLevelResponse, CreateLegalEntityData, CreateLegalEntityResponse, CreateOrgUnitData, CreateOrgUnitResponse, CreatePositionData, CreatePositionResponse, CreateReportingLineData, CreateReportingLineResponse, CreateRoleData, CreateRoleResponse, DeactivateUserData, DeactivateUserResponse, DeleteClassificationLevelData, DeleteRoleData, GetCsrfTokenData, GetCsrfTokenResponse, GetFileContentData, GetFileData, GetFileResponse, GetFileVersionContentData, GetHealthData, GetHealthError, GetHealthResponse, GetMailLogData, GetMailLogResponse, GetMailSettingsData, GetMailSettingsResponse, GetMeData, GetMeResponse, GetMyAccessData, GetMyAccessResponse, GetMyNotificationPreferencesData, GetMyNotificationPreferencesResponse, GetMyUnreadCountData, GetMyUnreadCountResponse, GetOrgHistoryData, GetOrgHistoryResponse, GetOrgUnitData, GetOrgUnitResponse, GetPositionData, GetPositionHolderData, GetPositionHolderResponse, GetPositionResponse, GetSessionData, GetSessionResponse, GetUserAccessData, GetUserAccessResponse, GetUserData, GetUserResponse, GrantRoleData, GrantRoleResponse, InviteUserData, InviteUserError, InviteUserResponse, ListClassificationLevelsData, ListClassificationLevelsResponse, ListLegalEntitiesData, ListLegalEntitiesResponse, ListMyNotificationsData, ListMyNotificationsResponse, ListMySessionsData, ListMySessionsResponse, ListOrgUnitsData, ListOrgUnitsResponse, ListPermissionsData, ListPermissionsResponse, ListRolesData, ListRolesResponse, ListUnitPositionsData, ListUnitPositionsResponse, ListUserAssignmentsData, ListUserAssignmentsResponse, ListUsersData, ListUsersResponse, LoginData, LoginError, LoginResponse, LogoutData, LogoutResponse, LookUpInvitationData, LookUpInvitationError, LookUpInvitationResponse, MarkAllNotificationsReadData, MarkNotificationReadData, MoveOrgUnitData, MoveOrgUnitResponse, ReactivateUserData, ReactivateUserResponse, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesResponse, RemoveMailSettingsData, RenameClassificationLevelData, RenameClassificationLevelResponse, ReorderClassificationLevelsData, ReorderClassificationLevelsResponse, RequestPasswordResetData, ResetUserMfaData, ResetUserMfaResponse, RevokeGrantData, RevokeMySessionData, RevokeMySessionResponse, RevokeUserSessionsData, RevokeUserSessionsResponse, SearchDirectoryData, SearchDirectoryResponse, SetClearanceData, SetClearanceResponse, SetMailSettingsData, SetMailSettingsResponse, SetMyNotificationPreferencesData, SetMyNotificationPreferencesResponse, StartMfaEnrolmentData, StartMfaEnrolmentResponse, StepUpData, StepUpError, StepUpResponse, TestMailSettingsData, TestMailSettingsResponse, UnlockUserData, UnlockUserResponse, UpdateAssignmentData, UpdateAssignmentResponse, UpdateLegalEntityData, UpdateLegalEntityResponse, UpdateOrgUnitData, UpdateOrgUnitResponse, UpdatePositionData, UpdatePositionResponse, UpdateReportingLineData, UpdateReportingLineResponse, UpdateRoleData, UpdateRoleResponse, UploadFileData, UploadFileResponse, UploadFileVersionData, UploadFileVersionResponse, VerifyMfaData, VerifyMfaError, VerifyMfaResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -39,16 +39,14 @@ const createQueryKey = <TOptions extends Options>(id: string, options?: TOptions
     return [params];
 };
 
-export const listUsersQueryKey = (options?: Options<ListUsersData>) => createQueryKey('listUsers', options);
+export const getMailLogQueryKey = (options?: Options<GetMailLogData>) => createQueryKey('getMailLog', options);
 
 /**
- * List the organisation's users
- *
- * Sorted by name; keyset-paginated.
+ * Delivery log of the organisation's emails, newest first
  */
-export const listUsersOptions = (options?: Options<ListUsersData>) => queryOptions<ListUsersResponse, DefaultError, ListUsersResponse, ReturnType<typeof listUsersQueryKey>>({
+export const getMailLogOptions = (options?: Options<GetMailLogData>) => queryOptions<GetMailLogResponse, DefaultError, GetMailLogResponse, ReturnType<typeof getMailLogQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-        const { data } = await listUsers({
+        const { data } = await getMailLog({
             ...options,
             ...queryKey[0],
             signal,
@@ -56,7 +54,7 @@ export const listUsersOptions = (options?: Options<ListUsersData>) => queryOptio
         });
         return data;
     },
-    queryKey: listUsersQueryKey(options)
+    queryKey: getMailLogQueryKey(options)
 });
 
 const createInfiniteParams = <K extends Pick<QueryKey<Options>[0], 'body' | 'headers' | 'path' | 'query'>>(queryKey: QueryKey<Options>, page: K) => {
@@ -87,6 +85,125 @@ const createInfiniteParams = <K extends Pick<QueryKey<Options>[0], 'body' | 'hea
     }
     return params as unknown as typeof page;
 };
+
+export const getMailLogInfiniteQueryKey = (options?: Options<GetMailLogData>): QueryKey<Options<GetMailLogData>> => createQueryKey('getMailLog', options, true);
+
+/**
+ * Delivery log of the organisation's emails, newest first
+ */
+export const getMailLogInfiniteOptions = (options?: Options<GetMailLogData>) => {
+    const opts = infiniteQueryOptions<GetMailLogResponse, DefaultError, InfiniteData<GetMailLogResponse>, QueryKey<Options<GetMailLogData>>, string | Pick<QueryKey<Options<GetMailLogData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+    // @ts-ignore
+    {
+        queryFn: async ({ pageParam, queryKey, signal }) => {
+            // @ts-ignore
+            const page: Pick<QueryKey<Options<GetMailLogData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
+                query: {
+                    cursor: pageParam
+                }
+            };
+            const params = createInfiniteParams(queryKey, page);
+            const { data } = await getMailLog({
+                ...options,
+                ...params,
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: getMailLogInfiniteQueryKey(options)
+    });
+    return opts as Omit<typeof opts, 'initialData'>;
+};
+
+/**
+ * Go back to the platform mail relay
+ */
+export const removeMailSettingsMutation = (options?: Partial<Options<RemoveMailSettingsData>>): UseMutationOptions<unknown, DefaultError, Options<RemoveMailSettingsData>> => {
+    const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<RemoveMailSettingsData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await removeMailSettings({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const getMailSettingsQueryKey = (options?: Options<GetMailSettingsData>) => createQueryKey('getMailSettings', options);
+
+/**
+ * The organisation's mail relay (204 when it uses the platform relay)
+ */
+export const getMailSettingsOptions = (options?: Options<GetMailSettingsData>) => queryOptions<GetMailSettingsResponse, DefaultError, GetMailSettingsResponse, ReturnType<typeof getMailSettingsQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getMailSettings({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getMailSettingsQueryKey(options)
+});
+
+/**
+ * Set the organisation's mail relay
+ */
+export const setMailSettingsMutation = (options?: Partial<Options<SetMailSettingsData>>): UseMutationOptions<SetMailSettingsResponse, DefaultError, Options<SetMailSettingsData>> => {
+    const mutationOptions: UseMutationOptions<SetMailSettingsResponse, DefaultError, Options<SetMailSettingsData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await setMailSettings({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Send a test email to myself through the current relay
+ */
+export const testMailSettingsMutation = (options?: Partial<Options<TestMailSettingsData>>): UseMutationOptions<TestMailSettingsResponse, DefaultError, Options<TestMailSettingsData>> => {
+    const mutationOptions: UseMutationOptions<TestMailSettingsResponse, DefaultError, Options<TestMailSettingsData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await testMailSettings({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const listUsersQueryKey = (options?: Options<ListUsersData>) => createQueryKey('listUsers', options);
+
+/**
+ * List the organisation's users
+ *
+ * Sorted by name; keyset-paginated.
+ */
+export const listUsersOptions = (options?: Options<ListUsersData>) => queryOptions<ListUsersResponse, DefaultError, ListUsersResponse, ReturnType<typeof listUsersQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await listUsers({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: listUsersQueryKey(options)
+});
 
 export const listUsersInfiniteQueryKey = (options?: Options<ListUsersData>): QueryKey<Options<ListUsersData>> => createQueryKey('listUsers', options, true);
 
@@ -907,6 +1024,141 @@ export const getMyAccessOptions = (options?: Options<GetMyAccessData>) => queryO
     },
     queryKey: getMyAccessQueryKey(options)
 });
+
+export const getMyNotificationPreferencesQueryKey = (options?: Options<GetMyNotificationPreferencesData>) => createQueryKey('getMyNotificationPreferences', options);
+
+/**
+ * My notification channels per category
+ */
+export const getMyNotificationPreferencesOptions = (options?: Options<GetMyNotificationPreferencesData>) => queryOptions<GetMyNotificationPreferencesResponse, DefaultError, GetMyNotificationPreferencesResponse, ReturnType<typeof getMyNotificationPreferencesQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getMyNotificationPreferences({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getMyNotificationPreferencesQueryKey(options)
+});
+
+/**
+ * Change my notification channels
+ */
+export const setMyNotificationPreferencesMutation = (options?: Partial<Options<SetMyNotificationPreferencesData>>): UseMutationOptions<SetMyNotificationPreferencesResponse, DefaultError, Options<SetMyNotificationPreferencesData>> => {
+    const mutationOptions: UseMutationOptions<SetMyNotificationPreferencesResponse, DefaultError, Options<SetMyNotificationPreferencesData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await setMyNotificationPreferences({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const listMyNotificationsQueryKey = (options?: Options<ListMyNotificationsData>) => createQueryKey('listMyNotifications', options);
+
+/**
+ * My notifications, newest first
+ */
+export const listMyNotificationsOptions = (options?: Options<ListMyNotificationsData>) => queryOptions<ListMyNotificationsResponse, DefaultError, ListMyNotificationsResponse, ReturnType<typeof listMyNotificationsQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await listMyNotifications({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: listMyNotificationsQueryKey(options)
+});
+
+export const listMyNotificationsInfiniteQueryKey = (options?: Options<ListMyNotificationsData>): QueryKey<Options<ListMyNotificationsData>> => createQueryKey('listMyNotifications', options, true);
+
+/**
+ * My notifications, newest first
+ */
+export const listMyNotificationsInfiniteOptions = (options?: Options<ListMyNotificationsData>) => {
+    const opts = infiniteQueryOptions<ListMyNotificationsResponse, DefaultError, InfiniteData<ListMyNotificationsResponse>, QueryKey<Options<ListMyNotificationsData>>, string | Pick<QueryKey<Options<ListMyNotificationsData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+    // @ts-ignore
+    {
+        queryFn: async ({ pageParam, queryKey, signal }) => {
+            // @ts-ignore
+            const page: Pick<QueryKey<Options<ListMyNotificationsData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
+                query: {
+                    cursor: pageParam
+                }
+            };
+            const params = createInfiniteParams(queryKey, page);
+            const { data } = await listMyNotifications({
+                ...options,
+                ...params,
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: listMyNotificationsInfiniteQueryKey(options)
+    });
+    return opts as Omit<typeof opts, 'initialData'>;
+};
+
+/**
+ * Mark all my notifications as read
+ */
+export const markAllNotificationsReadMutation = (options?: Partial<Options<MarkAllNotificationsReadData>>): UseMutationOptions<unknown, DefaultError, Options<MarkAllNotificationsReadData>> => {
+    const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<MarkAllNotificationsReadData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await markAllNotificationsRead({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const getMyUnreadCountQueryKey = (options?: Options<GetMyUnreadCountData>) => createQueryKey('getMyUnreadCount', options);
+
+/**
+ * How many of my notifications are unread
+ */
+export const getMyUnreadCountOptions = (options?: Options<GetMyUnreadCountData>) => queryOptions<GetMyUnreadCountResponse, DefaultError, GetMyUnreadCountResponse, ReturnType<typeof getMyUnreadCountQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getMyUnreadCount({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getMyUnreadCountQueryKey(options)
+});
+
+/**
+ * Mark one of my notifications as read
+ */
+export const markNotificationReadMutation = (options?: Partial<Options<MarkNotificationReadData>>): UseMutationOptions<unknown, DefaultError, Options<MarkNotificationReadData>> => {
+    const mutationOptions: UseMutationOptions<unknown, DefaultError, Options<MarkNotificationReadData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await markNotificationRead({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
 
 /**
  * Change my password

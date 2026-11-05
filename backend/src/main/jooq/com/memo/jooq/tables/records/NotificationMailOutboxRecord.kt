@@ -55,6 +55,30 @@ open class NotificationMailOutboxRecord private constructor() : UpdatableRecordI
         set(value): Unit = set(8, value)
         get(): OffsetDateTime? = get(8) as OffsetDateTime?
 
+    open var locale: String?
+        set(value): Unit = set(9, value)
+        get(): String? = get(9) as String?
+
+    open var relay: String?
+        set(value): Unit = set(10, value)
+        get(): String? = get(10) as String?
+
+    open var smtpCode: Int?
+        set(value): Unit = set(11, value)
+        get(): Int? = get(11) as Int?
+
+    open var errorClass: String?
+        set(value): Unit = set(12, value)
+        get(): String? = get(12) as String?
+
+    open var lastAttemptAt: OffsetDateTime?
+        set(value): Unit = set(13, value)
+        get(): OffsetDateTime? = get(13) as OffsetDateTime?
+
+    open var failedAt: OffsetDateTime?
+        set(value): Unit = set(14, value)
+        get(): OffsetDateTime? = get(14) as OffsetDateTime?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -64,7 +88,7 @@ open class NotificationMailOutboxRecord private constructor() : UpdatableRecordI
     /**
      * Create a detached, initialised NotificationMailOutboxRecord
      */
-    constructor(id: UUID, tenantId: UUID, template: String, toAddress: String, paramsEnc: ByteArray? = null, status: String, attempts: Int? = null, createdAt: OffsetDateTime, sentAt: OffsetDateTime? = null): this() {
+    constructor(id: UUID, tenantId: UUID, template: String, toAddress: String, paramsEnc: ByteArray? = null, status: String, attempts: Int? = null, createdAt: OffsetDateTime, sentAt: OffsetDateTime? = null, locale: String? = null, relay: String? = null, smtpCode: Int? = null, errorClass: String? = null, lastAttemptAt: OffsetDateTime? = null, failedAt: OffsetDateTime? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.template = template
@@ -74,6 +98,12 @@ open class NotificationMailOutboxRecord private constructor() : UpdatableRecordI
         this.attempts = attempts
         this.createdAt = createdAt
         this.sentAt = sentAt
+        this.locale = locale
+        this.relay = relay
+        this.smtpCode = smtpCode
+        this.errorClass = errorClass
+        this.lastAttemptAt = lastAttemptAt
+        this.failedAt = failedAt
         resetTouchedOnNotNull()
     }
 }

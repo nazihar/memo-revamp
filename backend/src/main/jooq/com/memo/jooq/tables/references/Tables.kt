@@ -25,7 +25,11 @@ import com.memo.jooq.tables.IdentityMfa
 import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
+import com.memo.jooq.tables.NotificationItem
+import com.memo.jooq.tables.NotificationItemDefault
 import com.memo.jooq.tables.NotificationMailOutbox
+import com.memo.jooq.tables.NotificationPreference
+import com.memo.jooq.tables.NotificationSmtp
 import com.memo.jooq.tables.OrgAssignment
 import com.memo.jooq.tables.OrgLegalEntity
 import com.memo.jooq.tables.OrgPosition
@@ -140,9 +144,29 @@ val IDENTITY_RECOVERY_CODE: IdentityRecoveryCode = IdentityRecoveryCode.IDENTITY
 val IDENTITY_USER: IdentityUser = IdentityUser.IDENTITY_USER
 
 /**
+ * The table <code>memo.notification_item</code>.
+ */
+val NOTIFICATION_ITEM: NotificationItem = NotificationItem.NOTIFICATION_ITEM
+
+/**
+ * The table <code>memo.notification_item_default</code>.
+ */
+val NOTIFICATION_ITEM_DEFAULT: NotificationItemDefault = NotificationItemDefault.NOTIFICATION_ITEM_DEFAULT
+
+/**
  * The table <code>memo.notification_mail_outbox</code>.
  */
 val NOTIFICATION_MAIL_OUTBOX: NotificationMailOutbox = NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX
+
+/**
+ * The table <code>memo.notification_preference</code>.
+ */
+val NOTIFICATION_PREFERENCE: NotificationPreference = NotificationPreference.NOTIFICATION_PREFERENCE
+
+/**
+ * The table <code>memo.notification_smtp</code>.
+ */
+val NOTIFICATION_SMTP: NotificationSmtp = NotificationSmtp.NOTIFICATION_SMTP
 
 /**
  * The table <code>memo.org_assignment</code>.

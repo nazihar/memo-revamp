@@ -24,7 +24,11 @@ import com.memo.jooq.tables.IdentityMfa
 import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
+import com.memo.jooq.tables.NotificationItem
+import com.memo.jooq.tables.NotificationItemDefault
 import com.memo.jooq.tables.NotificationMailOutbox
+import com.memo.jooq.tables.NotificationPreference
+import com.memo.jooq.tables.NotificationSmtp
 import com.memo.jooq.tables.OrgAssignment
 import com.memo.jooq.tables.OrgLegalEntity
 import com.memo.jooq.tables.OrgPosition
@@ -159,9 +163,29 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val IDENTITY_USER: IdentityUser get() = IdentityUser.IDENTITY_USER
 
     /**
+     * The table <code>memo.notification_item</code>.
+     */
+    val NOTIFICATION_ITEM: NotificationItem get() = NotificationItem.NOTIFICATION_ITEM
+
+    /**
+     * The table <code>memo.notification_item_default</code>.
+     */
+    val NOTIFICATION_ITEM_DEFAULT: NotificationItemDefault get() = NotificationItemDefault.NOTIFICATION_ITEM_DEFAULT
+
+    /**
      * The table <code>memo.notification_mail_outbox</code>.
      */
     val NOTIFICATION_MAIL_OUTBOX: NotificationMailOutbox get() = NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX
+
+    /**
+     * The table <code>memo.notification_preference</code>.
+     */
+    val NOTIFICATION_PREFERENCE: NotificationPreference get() = NotificationPreference.NOTIFICATION_PREFERENCE
+
+    /**
+     * The table <code>memo.notification_smtp</code>.
+     */
+    val NOTIFICATION_SMTP: NotificationSmtp get() = NotificationSmtp.NOTIFICATION_SMTP
 
     /**
      * The table <code>memo.org_assignment</code>.
@@ -236,7 +260,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         IdentityRateLimitBucket.IDENTITY_RATE_LIMIT_BUCKET,
         IdentityRecoveryCode.IDENTITY_RECOVERY_CODE,
         IdentityUser.IDENTITY_USER,
+        NotificationItem.NOTIFICATION_ITEM,
+        NotificationItemDefault.NOTIFICATION_ITEM_DEFAULT,
         NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX,
+        NotificationPreference.NOTIFICATION_PREFERENCE,
+        NotificationSmtp.NOTIFICATION_SMTP,
         OrgAssignment.ORG_ASSIGNMENT,
         OrgLegalEntity.ORG_LEGAL_ENTITY,
         OrgPosition.ORG_POSITION,

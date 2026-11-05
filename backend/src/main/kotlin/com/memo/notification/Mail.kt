@@ -16,39 +16,16 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
 /**
- * Transactional email (design E03 §6). Subjects never carry sensitive content (AGENTS.md §3.4); the parameters each
- * template uses are listed with it.
+ * Transactional email templates (ADR-0030). Subject and body per language live in `notification/messages*.properties`;
+ * subjects take no parameters and never carry sensitive content (AGENTS.md §3.4). Parameters each body uses:
+ * - INVITATION: name, inviter, organisation, link
+ * - PASSWORD_RESET: name, organisation, link
+ * - PASSWORD_CHANGED, MFA_RESET: name, organisation
+ * - SIGN_IN_ALERT: name, organisation, device, time
+ * - ROLE_GRANTED: name, organisation, role
+ * - TEST: name, organisation
  */
-enum class MailTemplate(
-    val subject: String,
-    val text: String,
-) {
-    INVITATION(
-        "You are invited to memo",
-        "Hello {name},\n\n{inviter} invited you to {organisation} on memo. Set your password and get started:\n\n{link}\n\n" +
-            "The link works once and expires in 7 days. If you did not expect this invitation, you can ignore this email.",
-    ),
-    PASSWORD_RESET(
-        "Reset your memo password",
-        "Hello {name},\n\nSomeone asked to reset your password for {organisation} on memo. Choose a new one here:\n\n{link}\n\n" +
-            "The link works once and expires in 30 minutes. If it was not you, ignore this email: your password stays as it is.",
-    ),
-    PASSWORD_CHANGED(
-        "Your memo password was changed",
-        "Hello {name},\n\nThe password of your account at {organisation} was just changed, and your other sessions were " +
-            "signed out.\n\nIf this was not you, contact your administrator now.",
-    ),
-    MFA_RESET(
-        "Your memo sign-in was reset",
-        "Hello {name},\n\nAn administrator at {organisation} reset your two-step sign-in. You will set up your " +
-            "authenticator app again the next time you sign in.\n\nIf you did not expect this, contact your administrator.",
-    ),
-    SIGN_IN_ALERT(
-        "New sign-in to memo",
-        "Hello {name},\n\nYour account at {organisation} was signed in to from a new device:\n\n{device}\n{time} (UTC)\n\n" +
-            "If this was not you, change your password and contact your administrator.",
-    ),
-}
+enum class MailTemplate { INVITATION, PASSWORD_RESET, PASSWORD_CHANGED, MFA_RESET, SIGN_IN_ALERT, ROLE_GRANTED, TEST }
 
 /**
  * Queues an email in the caller's tenant transaction and schedules its delivery in the same commit (db-scheduler joins
@@ -65,10 +42,12 @@ class Mail(
     @param:Qualifier("mailSendTask") private val sendTask: OneTimeTask<MailSend>,
     private val scheduler: ObjectProvider<SchedulerClient>,
 ) {
+    /** [locale] is the recipient's BCP 47 tag; null uses the tenant's default language. */
     fun enqueue(
         template: MailTemplate,
         to: String,
         params: Map<String, String>,
+        locale: String? = null,
     ) {
         val id = ids.next()
         val tenant = tenantDsl.tenant()
@@ -79,6 +58,7 @@ class Mail(
             .set(NOTIFICATION_MAIL_OUTBOX.TENANT_ID, tenant.value)
             .set(NOTIFICATION_MAIL_OUTBOX.TEMPLATE, template.name)
             .set(NOTIFICATION_MAIL_OUTBOX.TO_ADDRESS, to)
+            .set(NOTIFICATION_MAIL_OUTBOX.LOCALE, locale)
             .set(NOTIFICATION_MAIL_OUTBOX.PARAMS_ENC, keys.encrypt(json.writeValueAsBytes(params), aad(tenant.toString(), id.toString())))
             .set(NOTIFICATION_MAIL_OUTBOX.STATUS, "PENDING")
             .set(NOTIFICATION_MAIL_OUTBOX.CREATED_AT, OffsetDateTime.now(clock).withOffsetSameInstant(ZoneOffset.UTC))

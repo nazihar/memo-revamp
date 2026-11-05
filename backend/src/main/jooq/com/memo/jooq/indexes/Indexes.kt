@@ -18,6 +18,8 @@ import com.memo.jooq.tables.IdentityMfa
 import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
+import com.memo.jooq.tables.NotificationItem
+import com.memo.jooq.tables.NotificationItemDefault
 import com.memo.jooq.tables.NotificationMailOutbox
 import com.memo.jooq.tables.OrgAssignment
 import com.memo.jooq.tables.OrgPosition
@@ -56,6 +58,11 @@ val IDENTITY_MFA_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("identit
 val IDENTITY_RATE_LIMIT_BUCKET_EXPIRY_IDX: Index = Internal.createIndex(DSL.name("identity_rate_limit_bucket_expiry_idx"), IdentityRateLimitBucket.IDENTITY_RATE_LIMIT_BUCKET, arrayOf(IdentityRateLimitBucket.IDENTITY_RATE_LIMIT_BUCKET.EXPIRES_AT), false)
 val IDENTITY_RECOVERY_CODE_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("identity_recovery_code_tenant_user_idx"), IdentityRecoveryCode.IDENTITY_RECOVERY_CODE, arrayOf(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.TENANT_ID, IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.USER_ID), false)
 val IDENTITY_USER_TENANT_EMAIL_UK: Index = Internal.createIndex(DSL.name("identity_user_tenant_email_uk"), IdentityUser.IDENTITY_USER, arrayOf(IdentityUser.IDENTITY_USER.TENANT_ID, IdentityUser.IDENTITY_USER.EMAIL), true)
+val NOTIFICATION_ITEM_DEFAULT_TENANT_ID_USER_ID_CREATED_AT_ID_IDX: Index = Internal.createIndex(DSL.name("notification_item_default_tenant_id_user_id_created_at_id_idx"), NotificationItemDefault.NOTIFICATION_ITEM_DEFAULT, arrayOf(NotificationItemDefault.NOTIFICATION_ITEM_DEFAULT.TENANT_ID, NotificationItemDefault.NOTIFICATION_ITEM_DEFAULT.USER_ID, NotificationItemDefault.NOTIFICATION_ITEM_DEFAULT.CREATED_AT.desc(), NotificationItemDefault.NOTIFICATION_ITEM_DEFAULT.ID.desc()), false)
+val NOTIFICATION_ITEM_DEFAULT_TENANT_ID_USER_ID_IDX: Index = Internal.createIndex(DSL.name("notification_item_default_tenant_id_user_id_idx"), NotificationItemDefault.NOTIFICATION_ITEM_DEFAULT, arrayOf(NotificationItemDefault.NOTIFICATION_ITEM_DEFAULT.TENANT_ID, NotificationItemDefault.NOTIFICATION_ITEM_DEFAULT.USER_ID), false)
+val NOTIFICATION_ITEM_UNREAD_IDX: Index = Internal.createIndex(DSL.name("notification_item_unread_idx"), NotificationItem.NOTIFICATION_ITEM, arrayOf(NotificationItem.NOTIFICATION_ITEM.TENANT_ID, NotificationItem.NOTIFICATION_ITEM.USER_ID), false)
+val NOTIFICATION_ITEM_USER_IDX: Index = Internal.createIndex(DSL.name("notification_item_user_idx"), NotificationItem.NOTIFICATION_ITEM, arrayOf(NotificationItem.NOTIFICATION_ITEM.TENANT_ID, NotificationItem.NOTIFICATION_ITEM.USER_ID, NotificationItem.NOTIFICATION_ITEM.CREATED_AT.desc(), NotificationItem.NOTIFICATION_ITEM.ID.desc()), false)
+val NOTIFICATION_MAIL_OUTBOX_TENANT_CREATED_IDX: Index = Internal.createIndex(DSL.name("notification_mail_outbox_tenant_created_idx"), NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX, arrayOf(NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.TENANT_ID, NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.CREATED_AT.desc(), NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.ID.desc()), false)
 val NOTIFICATION_MAIL_OUTBOX_TENANT_STATUS_IDX: Index = Internal.createIndex(DSL.name("notification_mail_outbox_tenant_status_idx"), NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX, arrayOf(NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.TENANT_ID, NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.STATUS, NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.CREATED_AT), false)
 val ORG_ASSIGNMENT_TENANT_POSITION_IDX: Index = Internal.createIndex(DSL.name("org_assignment_tenant_position_idx"), OrgAssignment.ORG_ASSIGNMENT, arrayOf(OrgAssignment.ORG_ASSIGNMENT.TENANT_ID, OrgAssignment.ORG_ASSIGNMENT.POSITION_ID, OrgAssignment.ORG_ASSIGNMENT.VALID_FROM), false)
 val ORG_ASSIGNMENT_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("org_assignment_tenant_user_idx"), OrgAssignment.ORG_ASSIGNMENT, arrayOf(OrgAssignment.ORG_ASSIGNMENT.TENANT_ID, OrgAssignment.ORG_ASSIGNMENT.USER_ID, OrgAssignment.ORG_ASSIGNMENT.VALID_FROM), false)

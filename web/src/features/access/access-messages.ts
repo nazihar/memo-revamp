@@ -112,6 +112,10 @@ export const catalogue = defineMessages({
     defaultMessage: 'Manage classification and clearances',
   },
   'audit.read': { id: 'access.permission.auditRead', defaultMessage: 'Read the audit history' },
+  'notification.settings.manage': {
+    id: 'access.permission.notificationSettings',
+    defaultMessage: 'Manage email delivery',
+  },
 })
 
 export function catalogueLabel(intl: IntlShape, key: string, fallback?: string): string {

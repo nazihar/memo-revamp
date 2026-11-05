@@ -5,6 +5,7 @@ package com.memo.jooq.tables
 
 
 import com.memo.jooq.Memo
+import com.memo.jooq.indexes.NOTIFICATION_MAIL_OUTBOX_TENANT_CREATED_IDX
 import com.memo.jooq.indexes.NOTIFICATION_MAIL_OUTBOX_TENANT_STATUS_IDX
 import com.memo.jooq.keys.NOTIFICATION_MAIL_OUTBOX_PKEY
 import com.memo.jooq.keys.NOTIFICATION_MAIL_OUTBOX_TENANT_ID_ID_KEY
@@ -122,6 +123,36 @@ open class NotificationMailOutbox(
      */
     val SENT_AT: TableField<NotificationMailOutboxRecord, OffsetDateTime?> = createField(DSL.name("sent_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
 
+    /**
+     * The column <code>memo.notification_mail_outbox.locale</code>.
+     */
+    val LOCALE: TableField<NotificationMailOutboxRecord, String?> = createField(DSL.name("locale"), SQLDataType.CLOB, this, "")
+
+    /**
+     * The column <code>memo.notification_mail_outbox.relay</code>.
+     */
+    val RELAY: TableField<NotificationMailOutboxRecord, String?> = createField(DSL.name("relay"), SQLDataType.CLOB, this, "")
+
+    /**
+     * The column <code>memo.notification_mail_outbox.smtp_code</code>.
+     */
+    val SMTP_CODE: TableField<NotificationMailOutboxRecord, Int?> = createField(DSL.name("smtp_code"), SQLDataType.INTEGER, this, "")
+
+    /**
+     * The column <code>memo.notification_mail_outbox.error_class</code>.
+     */
+    val ERROR_CLASS: TableField<NotificationMailOutboxRecord, String?> = createField(DSL.name("error_class"), SQLDataType.CLOB, this, "")
+
+    /**
+     * The column <code>memo.notification_mail_outbox.last_attempt_at</code>.
+     */
+    val LAST_ATTEMPT_AT: TableField<NotificationMailOutboxRecord, OffsetDateTime?> = createField(DSL.name("last_attempt_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
+
+    /**
+     * The column <code>memo.notification_mail_outbox.failed_at</code>.
+     */
+    val FAILED_AT: TableField<NotificationMailOutboxRecord, OffsetDateTime?> = createField(DSL.name("failed_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
+
     private constructor(alias: Name, aliased: Table<NotificationMailOutboxRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<NotificationMailOutboxRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<NotificationMailOutboxRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -143,11 +174,15 @@ open class NotificationMailOutbox(
      */
     constructor(): this(DSL.name("notification_mail_outbox"), null)
     override fun getSchema(): Schema? = if (aliased()) null else Memo.MEMO
-    override fun getIndexes(): List<Index> = listOf(NOTIFICATION_MAIL_OUTBOX_TENANT_STATUS_IDX)
+    override fun getIndexes(): List<Index> = listOf(NOTIFICATION_MAIL_OUTBOX_TENANT_CREATED_IDX, NOTIFICATION_MAIL_OUTBOX_TENANT_STATUS_IDX)
     override fun getPrimaryKey(): UniqueKey<NotificationMailOutboxRecord> = NOTIFICATION_MAIL_OUTBOX_PKEY
     override fun getUniqueKeys(): List<UniqueKey<NotificationMailOutboxRecord>> = listOf(NOTIFICATION_MAIL_OUTBOX_TENANT_ID_ID_KEY)
     override fun getChecks(): List<Check<NotificationMailOutboxRecord>> = listOf(
         Internal.createCheck(this, DSL.name("notification_mail_outbox_attempts_check"), "((attempts >= 0))", true),
+        Internal.createCheck(this, DSL.name("notification_mail_outbox_error_class_check"), "((length(error_class) <= 100))", true),
+        Internal.createCheck(this, DSL.name("notification_mail_outbox_locale_check"), "((length(locale) <= 35))", true),
+        Internal.createCheck(this, DSL.name("notification_mail_outbox_relay_check"), "((relay = ANY (ARRAY['TENANT'::text, 'PLATFORM'::text])))", true),
+        Internal.createCheck(this, DSL.name("notification_mail_outbox_smtp_code_check"), "(((smtp_code >= 100) AND (smtp_code <= 599)))", true),
         Internal.createCheck(this, DSL.name("notification_mail_outbox_status_check"), "((status = ANY (ARRAY['PENDING'::text, 'SENT'::text, 'FAILED'::text])))", true),
         Internal.createCheck(this, DSL.name("notification_mail_outbox_template_check"), "((length(template) <= 100))", true),
         Internal.createCheck(this, DSL.name("notification_mail_outbox_to_address_check"), "((length(to_address) <= 320))", true)

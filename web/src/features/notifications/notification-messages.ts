@@ -1,0 +1,148 @@
+import { defineMessages, type IntlShape, type MessageDescriptor } from 'react-intl'
+
+/** Strings of the notification centre, preferences and the email settings (design E06 §8). */
+export const nm = defineMessages({
+  title: { id: 'notifications.title', defaultMessage: 'Notifications' },
+  lead: { id: 'notifications.lead', defaultMessage: 'What happened to your account and your work.' },
+  markAll: { id: 'notifications.markAll', defaultMessage: 'Mark all as read' },
+  loadMore: { id: 'notifications.loadMore', defaultMessage: 'Show older' },
+  empty: {
+    id: 'notifications.empty',
+    defaultMessage: 'Nothing new. Notifications about your account and work appear here.',
+  },
+  bellMore: { id: 'notifications.bellMore', defaultMessage: '9+' },
+
+  prefsTitle: { id: 'notifications.prefs.title', defaultMessage: 'Notification settings' },
+  prefsLead: {
+    id: 'notifications.prefs.lead',
+    defaultMessage: 'Choose how you hear about each kind of event. Security notices always reach you.',
+  },
+  prefsCaption: { id: 'notifications.prefs.caption', defaultMessage: 'Channels per kind of notification' },
+  colCategory: { id: 'notifications.prefs.colCategory', defaultMessage: 'Kind' },
+  channelInApp: { id: 'notifications.prefs.inApp', defaultMessage: 'In memo' },
+  channelEmail: { id: 'notifications.prefs.email', defaultMessage: 'Email' },
+  mandatory: { id: 'notifications.prefs.mandatory', defaultMessage: 'Always on, to protect your account' },
+  saved: { id: 'notifications.prefs.saved', defaultMessage: 'Notification settings saved.' },
+  categorySECURITY: { id: 'notifications.category.security', defaultMessage: 'Security' },
+  categoryADMINISTRATION: { id: 'notifications.category.administration', defaultMessage: 'Access and administration' },
+
+  mailTitle: { id: 'mail.title', defaultMessage: 'Email delivery' },
+  mailLead: {
+    id: 'mail.lead',
+    defaultMessage:
+      "Send this organisation's email through its own mail server. Without one, the platform's server is used.",
+  },
+  mailPlatform: { id: 'mail.platform', defaultMessage: "Email goes through the platform's mail server." },
+  mailHost: { id: 'mail.host', defaultMessage: 'Mail server' },
+  mailPort: { id: 'mail.port', defaultMessage: 'Port' },
+  mailTls: { id: 'mail.tls', defaultMessage: 'Encryption' },
+  mailTlsStarttls: { id: 'mail.tls.starttls', defaultMessage: 'STARTTLS (usually port 587)' },
+  mailTlsTls: { id: 'mail.tls.tls', defaultMessage: 'TLS (usually port 465)' },
+  mailTlsNone: { id: 'mail.tls.none', defaultMessage: 'None (test installations only)' },
+  mailUsername: { id: 'mail.username', defaultMessage: 'User name' },
+  mailPassword: { id: 'mail.password', defaultMessage: 'Password' },
+  mailPasswordKeep: { id: 'mail.passwordKeep', defaultMessage: 'A password is stored. Leave empty to keep it.' },
+  mailFromAddress: { id: 'mail.fromAddress', defaultMessage: 'Sender address' },
+  mailFromName: { id: 'mail.fromName', defaultMessage: 'Sender name' },
+  optional: { id: 'mail.optional', defaultMessage: '(optional)' },
+  save: { id: 'mail.save', defaultMessage: 'Save' },
+  remove: { id: 'mail.remove', defaultMessage: "Use the platform's server" },
+  test: { id: 'mail.test', defaultMessage: 'Send a test email to me' },
+  testOk: { id: 'mail.testOk', defaultMessage: 'Test email sent. Check your inbox.' },
+  mailSaved: { id: 'mail.saved', defaultMessage: 'Mail server saved.' },
+  mailRemoved: { id: 'mail.removed', defaultMessage: "Email goes through the platform's server again." },
+  logTitle: { id: 'mail.log.title', defaultMessage: 'Recent emails' },
+  logCaption: { id: 'mail.log.caption', defaultMessage: 'Delivery of recent emails, newest first' },
+  logEmpty: { id: 'mail.log.empty', defaultMessage: 'No emails yet.' },
+  colTo: { id: 'mail.log.to', defaultMessage: 'To' },
+  colTemplate: { id: 'mail.log.template', defaultMessage: 'Email' },
+  colStatus: { id: 'mail.log.status', defaultMessage: 'Status' },
+  colAttempts: { id: 'mail.log.attempts', defaultMessage: 'Attempts' },
+  colWhen: { id: 'mail.log.when', defaultMessage: 'Queued' },
+  statusSENT: { id: 'mail.log.sent', defaultMessage: 'Sent' },
+  statusPENDING: { id: 'mail.log.pending', defaultMessage: 'Waiting' },
+  statusFAILED: { id: 'mail.log.failed', defaultMessage: 'Failed' },
+})
+
+/** Messages with values (typed, so a missing value is a compile error). */
+export const nmv = defineMessages<{
+  bell: { count: number }
+  unreadItem: { text: string }
+  prefCell: { category: string; channel: string }
+  testFailed: { detail: string }
+  mailInvalid: { detail: string }
+}>({
+  bell: {
+    id: 'notifications.bell',
+    defaultMessage: '{count, plural, =0 {Notifications} one {Notifications, # unread} other {Notifications, # unread}}',
+  },
+  unreadItem: { id: 'notifications.unreadItem', defaultMessage: 'Unread: {text}' },
+  prefCell: { id: 'notifications.prefs.cell', defaultMessage: '{category}: {channel}' },
+  testFailed: { id: 'mail.testFailed', defaultMessage: 'The mail server did not accept the test email ({detail}).' },
+  mailInvalid: { id: 'mail.invalid', defaultMessage: 'Check the mail server settings: {detail}' },
+})
+
+const kindsWithValues = defineMessages<{ signInAlert: { device: string }; roleGranted: { role: string } }>({
+  signInAlert: { id: 'notifications.kind.signInAlert', defaultMessage: 'New sign-in to your account from {device}' },
+  roleGranted: { id: 'notifications.kind.roleGranted', defaultMessage: 'You were given the role {role}' },
+})
+
+const kinds = defineMessages({
+  passwordChanged: { id: 'notifications.kind.passwordChanged', defaultMessage: 'Your password was changed' },
+  mfaReset: { id: 'notifications.kind.mfaReset', defaultMessage: 'An administrator reset your two-step sign-in' },
+  unknown: { id: 'notifications.kind.unknown', defaultMessage: 'Something changed in your account' },
+})
+
+/** The text of a notification of [kind] (ADR-0030); unknown kinds (a newer server) fall back to a generic text. */
+export function notificationText(intl: IntlShape, kind: string, params: Record<string, string>): string {
+  switch (kind) {
+    case 'SIGN_IN_ALERT':
+      return intl.formatMessage(kindsWithValues.signInAlert, { device: params.device ?? '' })
+    case 'ROLE_GRANTED':
+      return intl.formatMessage(kindsWithValues.roleGranted, { role: params.role ?? '' })
+    case 'PASSWORD_CHANGED':
+      return intl.formatMessage(kinds.passwordChanged)
+    case 'MFA_RESET':
+      return intl.formatMessage(kinds.mfaReset)
+    default:
+      return intl.formatMessage(kinds.unknown)
+  }
+}
+
+const categoryMessages: Record<string, MessageDescriptor | undefined> = {
+  SECURITY: nm.categorySECURITY,
+  ADMINISTRATION: nm.categoryADMINISTRATION,
+}
+
+export function categoryLabel(intl: IntlShape, category: string): string {
+  const message = categoryMessages[category]
+  return message ? intl.formatMessage(message) : category
+}
+
+const mailTemplates = defineMessages({
+  INVITATION: { id: 'mail.template.invitation', defaultMessage: 'Invitation' },
+  PASSWORD_RESET: { id: 'mail.template.passwordReset', defaultMessage: 'Password reset' },
+  PASSWORD_CHANGED: { id: 'mail.template.passwordChanged', defaultMessage: 'Password changed' },
+  MFA_RESET: { id: 'mail.template.mfaReset', defaultMessage: 'Two-step sign-in reset' },
+  SIGN_IN_ALERT: { id: 'mail.template.signInAlert', defaultMessage: 'New sign-in' },
+  ROLE_GRANTED: { id: 'mail.template.roleGranted', defaultMessage: 'Role granted' },
+  TEST: { id: 'mail.template.test', defaultMessage: 'Test email' },
+})
+
+const templateMessages: Record<string, MessageDescriptor | undefined> = mailTemplates
+
+export function templateLabel(intl: IntlShape, template: string): string {
+  const message = templateMessages[template]
+  return message ? intl.formatMessage(message) : template
+}
+
+const statusMessages: Record<string, MessageDescriptor | undefined> = {
+  SENT: nm.statusSENT,
+  PENDING: nm.statusPENDING,
+  FAILED: nm.statusFAILED,
+}
+
+export function statusLabel(intl: IntlShape, status: string): string {
+  const message = statusMessages[status]
+  return message ? intl.formatMessage(message) : status
+}

@@ -77,6 +77,15 @@
         "otelExport": { "type": "boolean" }
       }
     },
+    "files": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "maxUploadBytes": { "type": "integer", "minimum": 1 },
+        "concurrentUploads": { "type": "integer", "minimum": 1 },
+        "spoolSizeLimit": { "type": "string", "pattern": "^[0-9]+(Mi|Gi)$" }
+      }
+    },
     "backend": { "$ref": "#/$defs/workload" },
     "web": { "$ref": "#/$defs/workload" },
     "migrations": {

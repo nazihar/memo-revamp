@@ -22,6 +22,26 @@ server {
         proxy_read_timeout 60s;
     }
 
+    # Files (ADR-0029): streamed both ways. Request buffering would write uploads to a temp file before the backend
+    # scans and encrypts them, response buffering would write decrypted downloads to one: both are off. The body limit
+    # is the platform ceiling (memo.files.max-upload-bytes); the backend enforces each purpose's own limit.
+    location /api/v1/files {
+        client_max_body_size 100m;
+        proxy_request_buffering off;
+        proxy_buffering off;
+        proxy_max_temp_file_size 0;
+        proxy_pass ${BACKEND_URL};
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Port "";
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Request-Id $request_id;
+        proxy_read_timeout 300s;
+        proxy_send_timeout 300s;
+    }
+
     # Content-hashed build assets: cache forever.
     location /assets/ {
         include /etc/nginx/snippets/security-headers.conf;

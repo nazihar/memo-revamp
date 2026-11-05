@@ -219,11 +219,11 @@ Each lock the job cannot extend is logged and counted (`memo.files.retention.sti
 
 ## 13. Deployment
 - **ClamAV config:** `deploy/clamav/clamd.env` (ADR-0029 heuristics and limits as `CLAMD_CONF_<Option>` variables, which the official image writes into its `clamd.conf` at start), used by Compose (`env_file`), Helm and the tests, so every install and the test scanner share one source. `freshclam` uses the image default. On-prem air-gapped installs point `freshclam` at a private mirror (runbook).
-- **Dev VM:** the `antivirus` profile is turned on for the dev environment (memory measured: 6.3 GiB available before ClamAV). Container limit 3 GiB.
-- **Helm:** an optional ClamAV Deployment (`malwareScanner.deploy: true`) with its own NetworkPolicy (ingress from the backend only; egress only to DNS and the signature mirror), or an external `malwareScanner.host`.
-- **nginx (web image):** `location /api/v1/files` with `client_max_body_size` at the ceiling, `proxy_request_buffering off`, `proxy_read_timeout 300s`; other routes keep 1 MB.
-- **Caddy (edge):** the same path allows the ceiling in `request_body` and is excluded from `encode`.
-- **Spool disk:** document the space (ceiling × concurrent uploads) in the on-prem runbook; the backend container's temp directory is a writable volume, not the read-only root.
+- **Dev VM:** Ansible sets `COMPOSE_PROFILES=devtools,antivirus` and `MEMO_CLAMAV_HOST=clamav` (memory measured: 6.3 GiB available before ClamAV). Container limit 3 GiB.
+- **Helm:** ClamAV is an external service (`integrations.malwareScannerHost`) configured from `clamd.env`; the chart gains `files.*` values (ceiling, concurrent uploads, spool size) and a `spool` emptyDir. An in-chart ClamAV was dropped from the plan: Kubernetes customers run their own scanning service, and a second copy of the settings would drift.
+- **nginx (web image):** `location /api/v1/files` with `client_max_body_size 100m`, `proxy_request_buffering off` **and `proxy_buffering off`** (response buffering would write decrypted downloads to a temp file), 300 s timeouts; other routes keep 1 MB.
+- **Caddy (edge):** the same path allows 100 MB in `request_body` and is excluded from `encode`.
+- **Spool disk:** the backend image creates `/var/lib/memo/spool` (owned by the non-root user) and sets `MEMO_FILES_SPOOL_DIR`; Compose mounts the `spool` volume there, Kubernetes an emptyDir. Sizing and proxy rules for customers are in `docs/runbooks/files-and-malware-scanning.md`.
 
 ## 14. UX
 No screens in E05. The upload component (progress, cancel, rejection messages per `reason`) is built with its first user, E07's branding page; the rejection reasons and their messages are fixed here so the component can map them. No `ux-review.md` for this epic.

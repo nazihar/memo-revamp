@@ -95,6 +95,7 @@ services:
   clamav:
     image: clamav/clamav:1.5.4
     profiles: [full]
+    env_file: [../clamav/clamd.env]
     ports: ["127.0.0.1:3310:3310"]
     volumes:
       - clamav:/var/lib/clamav

@@ -157,18 +157,33 @@ class UploadApiIT : FilesIntegrationTest() {
     }
 
     @Test
-    fun `another tenant's file is not found`() {
-        val fileId = upload(aSession(), Samples.png()).body()["fileId"]
+    fun `another tenant's file is not found, for reading, downloading or adding a version`() {
+        val created = upload(aSession(), Samples.png()).body()
+        val fileId = created["fileId"]
         val other = registry.aTestTenant(transactions, settings, "other", mfaRequired = false)
+        val otherSession = aSession(other)
 
-        assertThat(
-            mvc
-                .get()
-                .uri("/api/v1/files/$fileId")
-                .with(onHost(other.slug))
-                .cookie(aSession(other))
-                .exchange(),
-        ).hasStatus(HttpStatus.NOT_FOUND)
+        listOf("/api/v1/files/$fileId", "/api/v1/files/$fileId/content", "/api/v1/files/$fileId/versions/${created["versionId"]}/content")
+            .forEach { uri ->
+                assertThat(
+                    mvc
+                        .get()
+                        .uri(uri)
+                        .with(onHost(other.slug))
+                        .cookie(otherSession)
+                        .exchange(),
+                ).describedAs(uri).hasStatus(HttpStatus.NOT_FOUND)
+            }
+        val newVersion =
+            upload(
+                otherSession,
+                Samples.png(),
+                "/api/v1/files/$fileId/versions",
+                on = other,
+                headers =
+                    mapOf("If-Match" to "\"1\""),
+            )
+        assertThat(newVersion).hasStatus(HttpStatus.NOT_FOUND)
     }
 }
 

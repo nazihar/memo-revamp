@@ -7,13 +7,19 @@
 }
 
 (common) {
-	encode zstd gzip
+	# Files (ADR-0029): streamed, never compressed (ranges and binary content), body limit = the platform upload ceiling.
+	@files path /api/v1/files /api/v1/files/*
+	@other not path /api/v1/files /api/v1/files/*
+	encode @other zstd gzip
 	header {
 		Strict-Transport-Security "max-age=31536000; includeSubDomains"
 		-Server
 	}
-	request_body {
+	request_body @other {
 		max_size 1MB
+	}
+	request_body @files {
+		max_size 100MB
 	}
 }
 

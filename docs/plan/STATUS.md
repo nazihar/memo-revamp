@@ -5,10 +5,10 @@
 **Last updated:** 2026-11-02 (UTC+06:00) by Claude (agent)
 
 ## Current position
-- **Phase:** 1a (overview approved 2026-10-18, gate delegation kept). Merged and on dev: **E02 platform kernel** (PR #18), **E01 app frame** (PR #19), **E03 identity, sessions and step-up** (PR #20), **E04 org directory and authorisation** (PR #22; ADR-0026, ADR-0027), plus fixes (PRs #21, #23–#26). **Now: E05 files**: plan written 2026-11-02 (ADR-0028, ADR-0029), implementation starting on `feat/1a-e05-files` at T1–T3. E06 notifications follows (it can run beside E05).
+- **Phase:** 1a (overview approved 2026-10-18, gate delegation kept). Merged and on dev: **E02 platform kernel** (PR #18), **E01 app frame** (PR #19), **E03 identity, sessions and step-up** (PR #20), **E04 org directory and authorisation** (PR #22; ADR-0026, ADR-0027), plus fixes (PRs #21, #23–#26). **Now: E05 files** on `feat/1a-e05-files` (ADR-0028, ADR-0029): T1–T7 pushed (keysets, object store, clamd, inspection, upload API, downloads, retention jobs); T8–T10 (corpus and fuzzing, matrix and performance, deployment) in progress. E06 notifications follows (it can run beside E05).
 - **Dev environment live (2026-10-18):** https://dev.memo-revamp.naziharitsolution.com on the VM 123.176.58.175 (Ubuntu 24.04, 4 vCPU, 7.8 GB RAM, 100 GB disk). It deploys automatically after every green `ci` run on `master`.
 - **Phase 0 epics:** E01–E05 done (`docs/plan/phase-0-foundations/`).
-- **Branches:** `master` holds PRs #1–#26; `feat/1a-e05-files` in progress (plan committed).
+- **Branches:** `master` holds PRs #1–#26; `feat/1a-e05-files` in progress (pushed, no PR yet).
 - **Release:** `v0.1.0` published with signed images (2026-10-15).
 - **Product name:** `memo` everywhere except the repository name `memo-revamp` (A1, PR #6).
 

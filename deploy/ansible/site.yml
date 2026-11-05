@@ -25,6 +25,7 @@
       - MEMO_SMTP_STARTTLS
       - MEMO_SMTP_FROM
       - MEMO_MAILPIT_PORT
+      - MEMO_CLAMAV_HOST
     memo_mailpit_ports:
       dev: 8025
       staging: 8125
@@ -136,7 +137,9 @@
           MEMO_TENANCY_BASE_DOMAIN: "{{ memo_hosts[item.0] }}"
           MEMO_TENANCY_FALLBACK_TENANT: demo
           # Mail goes to Mailpit on the VM (owner decision 2026-10-25); its UI only through an SSH tunnel.
-          COMPOSE_PROFILES: devtools
+          # ClamAV from E05 (Phase 1a Q7: measured to fit the 7.8 GB VM with one environment running).
+          COMPOSE_PROFILES: devtools,antivirus
+          MEMO_CLAMAV_HOST: clamav
           MEMO_SMTP_HOST: mailpit
           MEMO_SMTP_PORT: "1025"
           MEMO_SMTP_STARTTLS: "false"

@@ -170,6 +170,7 @@
         # secrets here (hosts and ACME email are in .env, which stays 0600).
         mode: "0644"
       loop: [compose.yaml, Caddyfile]
+      register: memo_edge_files
 
     - name: Edge proxy settings
       ansible.builtin.copy:
@@ -188,5 +189,15 @@
         chdir: "{{ memo_base }}/edge"
       register: memo_edge_up
       changed_when: "'Started' in memo_edge_up.stderr or 'Recreated' in memo_edge_up.stderr"
+      become: true
+      become_user: memo
+
+    # `up -d` leaves a running Caddy alone when only its bind-mounted Caddyfile changed. A restart (not `caddy reload`):
+    # the copy replaces the file, and a single-file bind mount keeps the old inode until the container starts again.
+    - name: Edge proxy picks up a changed Caddyfile
+      ansible.builtin.command: docker compose --env-file .env restart caddy
+      args:
+        chdir: "{{ memo_base }}/edge"
+      when: memo_edge_files.results | selectattr('changed') | list | length > 0
       become: true
       become_user: memo

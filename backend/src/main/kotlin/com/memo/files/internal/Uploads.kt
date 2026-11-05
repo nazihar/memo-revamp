@@ -292,7 +292,7 @@ internal class Uploads(
             }
         when (verdict) {
             is ScanVerdict.Clean -> Unit
-            is ScanVerdict.Infected -> reject(RejectionReason.MALWARE, "signature" to verdict.signature)
+            is ScanVerdict.Infected -> reject(reasonOf(verdict.signature), "signature" to verdict.signature)
             is ScanVerdict.Failed -> reject(RejectionReason.SCAN_UNAVAILABLE, "scanner" to verdict.reason)
         }
         return Received(progress.bytes, digest.digest(), scanner.engine())
@@ -408,6 +408,17 @@ internal class Uploads(
 private fun WritableByteChannel.writeFully(chunk: ByteBuffer) {
     while (chunk.hasRemaining()) write(chunk)
 }
+
+/**
+ * What a clamd finding means for the uploader: heuristics for scan limits and encryption are not malware, and say so
+ * (the signature name still goes to the audit).
+ */
+internal fun reasonOf(signature: String): RejectionReason =
+    when {
+        signature.startsWith("Heuristics.Limits.Exceeded") -> RejectionReason.LIMIT_EXCEEDED
+        signature.startsWith("Heuristics.Encrypted") -> RejectionReason.ENCRYPTED
+        else -> RejectionReason.MALWARE
+    }
 
 /** Object lock keeps whole seconds: round up, so the lock never ends before the date the database records. */
 private fun Instant.toLockPrecision(): Instant = truncatedTo(ChronoUnit.SECONDS).let { if (it == this) it else it.plusSeconds(1) }

@@ -80,6 +80,8 @@ dependencies {
     testImplementation(libs.testcontainers.postgresql)
     testImplementation(libs.mockk)
     testImplementation(libs.jqwik)
+    // Fuzz targets (TESTING_STRATEGY §3.6): regression inputs in the PR stage, time-boxed fuzzing in the nightly.
+    testImplementation(libs.jazzer.junit)
     testImplementation(libs.jooq.codegen)
     testImplementation(libs.jooq.meta)
 }

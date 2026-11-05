@@ -1,6 +1,7 @@
 package com.memo.files.internal
 
 import com.memo.files.FileType
+import org.apache.commons.compress.archivers.zip.ZipArchiveEntry
 import org.apache.commons.compress.archivers.zip.ZipFile
 import java.io.IOException
 import java.io.InputStream
@@ -21,6 +22,8 @@ internal object ZipInspector {
     const val MAX_ENTRIES = 2_000
     const val MAX_CONTENT_TYPES_BYTES = 1L shl 20
     const val MAX_RATIO = 100
+    const val MAX_TOTAL_BYTES = 1L shl 30
+    private const val RATIO_CHECK_FROM = 1L shl 20
 
     private const val EOCD_SIGNATURE = 0x06054b50
     private const val EOCD_MIN = 22
@@ -41,8 +44,8 @@ internal object ZipInspector {
         tikaType: FileType?,
     ): FileType {
         val eocd = endOfCentralDirectory(channel) ?: reject(RejectionReason.MALFORMED, "problem" to "zip-trailer")
-        val entries = eocd.getShort(EOCD_ENTRIES_OFFSET).toInt() and ZIP64_MARKER
-        if (entries == ZIP64_MARKER || entries > MAX_ENTRIES) {
+        val declaredEntries = eocd.getShort(EOCD_ENTRIES_OFFSET).toInt() and ZIP64_MARKER
+        if (declaredEntries == ZIP64_MARKER || declaredEntries > MAX_ENTRIES) {
             reject(RejectionReason.LIMIT_EXCEEDED, "limit" to "zip-entries")
         }
         channel.position(0)
@@ -56,12 +59,9 @@ internal object ZipInspector {
             } catch (e: IOException) {
                 reject(RejectionReason.MALFORMED, "problem" to "zip", cause = e)
             }
-        val names =
-            zip.entries
-                .asSequence()
-                .map { it.name }
-                .toList()
-        if (names.size > MAX_ENTRIES) reject(RejectionReason.LIMIT_EXCEEDED, "limit" to "zip-entries")
+        val entries = zip.entries.toList()
+        checkSizes(entries)
+        val names = entries.map { it.name }
         val contentTypes = zip.getEntry(CONTENT_TYPES)
         return when {
             contentTypes != null -> {
@@ -84,6 +84,22 @@ internal object ZipInspector {
             else -> {
                 FileType.ZIP
             }
+        }
+    }
+
+    /**
+     * Refuses decompression bombs from the central directory (research §R15): clamd does not alert on a compressed entry
+     * larger than its MaxFileSize, it scans a trimmed copy. Too many entries, a large entry compressed beyond
+     * [MAX_RATIO], or more than [MAX_TOTAL_BYTES] in all are limits exceeded. Nested archives are left to clamd's
+     * recursion limit; whatever extracts archives later must keep its own limits.
+     */
+    private fun checkSizes(entries: List<ZipArchiveEntry>) {
+        if (entries.size > MAX_ENTRIES) reject(RejectionReason.LIMIT_EXCEEDED, "limit" to "zip-entries")
+        val bomb =
+            entries.any { it.size > RATIO_CHECK_FROM && it.compressedSize > 0 && it.size / it.compressedSize > MAX_RATIO }
+        if (bomb) reject(RejectionReason.LIMIT_EXCEEDED, "limit" to "zip-ratio")
+        if (entries.any { it.size < 0 } || entries.sumOf { it.size } > MAX_TOTAL_BYTES) {
+            reject(RejectionReason.LIMIT_EXCEEDED, "limit" to "zip-size")
         }
     }
 

@@ -48,7 +48,7 @@ Chosen option: **1**.
 
 ### Consequences
 - Good: nothing rejected reaches object storage; no plaintext on any disk; the client body is read once.
-- Good: limits sit at every parser: clamd limits with `AlertExceedsMax`, our zip reader, PDFBox memory cap, executor timeouts.
+- Good: limits sit at every parser: clamd limits with `AlertExceedsMax`, our zip reader, PDFBox memory cap, executor timeouts. clamd alone does not stop a single-entry compression bomb (it scans a trimmed copy and answers OK, found in T8), so the zip reader refuses those from the central directory.
 - Bad: each node needs local disk for spools (maximum upload size × concurrent uploads, 800 MiB at the defaults). Documented in the deployment runbook.
 - Bad: legacy OLE2 Office files (`.doc`, `.xls`, `.ppt`) cannot be told apart or checked for macros without Apache POI, so no 1a purpose allows them. Phase 2 decides for memo attachments.
 - Bad: the request body is not multipart, so the web upload uses `XMLHttpRequest` for progress (E07's upload component). The generated client still owns every other call.

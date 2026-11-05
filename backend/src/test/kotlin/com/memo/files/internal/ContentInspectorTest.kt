@@ -99,6 +99,11 @@ class ContentInspectorTest {
     }
 
     @Test
+    fun `a compression bomb is refused from its central directory, which clamd would only trim`() {
+        assertThat(rejection(Samples.zipBomb(200), "a.zip").detail).containsEntry("limit", "zip-ratio")
+    }
+
+    @Test
     fun `a zip with too many entries is refused from its trailer, before the directory is parsed`() {
         val many = Samples.zip(*Array(ZipInspector.MAX_ENTRIES + 1) { "f$it.txt" to ByteArray(0) })
 

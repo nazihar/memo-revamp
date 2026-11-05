@@ -36,6 +36,7 @@ Column meanings:
 | FasterXML java-uuid-generator (JUG) | 5.2.0 | Apache-2.0 | runtime | UUIDv7 ids (`TimeBasedEpochGenerator`, ADR-0008) | 2025-12; FasterXML, active | uuid-creator (single maintainer); hand-written |
 | jOOQ codegen + meta | 3.21.7 (Boot-managed) | Apache-2.0 | dev-only | Generates committed jOOQ sources in `JooqCodegenTest` (ADR-0007) | active | jOOQ Gradle plugin at compile time |
 | jqwik | 1.10.2 | EPL-2.0 | dev-only | Property-based and stateful tests (ADR-0008) | 2026-10-10; one main maintainer (accepted, dev-only) | Kotest property |
+| Jazzer (`jazzer-junit`) | 0.30.0 | Apache-2.0 | dev-only | Coverage-guided fuzzing of the upload path: regression inputs in PR runs, time-boxed fuzzing nightly (TESTING_STRATEGY §3.6) | 2026-02-24; Code Intelligence, open source again after a pause in 2025; runs in OSS-Fuzz | JQF/Zest (less active); jqwik generators only (not coverage-guided) |
 | JUnit Jupiter | 6.0.3 (Boot-managed) | EPL-2.0 | dev-only | Test framework | active | — |
 | AssertJ | 3.27.7 (Boot-managed) | Apache-2.0 | dev-only | Assertions | active | Kotest assertions (decided in E02, ADR-TL) |
 | MockK | 1.14.11 | Apache-2.0 | dev-only | Mocks at boundaries only | 2026-05; active | Mockito-Kotlin |

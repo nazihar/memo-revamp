@@ -127,6 +127,42 @@ object Samples {
     /** A valid PDF with a zip appended: opens as a PDF and as an archive. */
     fun pdfZipPolyglot(): ByteArray = pdf() + zip("payload.txt" to "hidden".toByteArray())
 
+    /** A zip in a zip in a zip ... [depth] levels deep, the innermost holding a text file. */
+    fun nestedZip(depth: Int): ByteArray = (1..depth).fold(text) { inner, level -> zip("level-$level.zip" to inner) }
+
+    /** [megabytes] MiB of zeros deflated into a few hundred KiB: a decompression bomb. */
+    fun zipBomb(megabytes: Int): ByteArray {
+        val out = ByteArrayOutputStream()
+        ZipOutputStream(out).use { zip ->
+            zip.setLevel(9)
+            zip.putNextEntry(ZipEntry("zeros.bin"))
+            val chunk = ByteArray(1 shl 20)
+            repeat(megabytes) { zip.write(chunk) }
+            zip.closeEntry()
+        }
+        return out.toByteArray()
+    }
+
+    /** A zip whose entry is flagged as encrypted (general purpose bit 0), as a password-protected archive is. */
+    fun encryptedZip(): ByteArray {
+        val bytes = zip("secret.txt" to text)
+        flagEncrypted(bytes, byteArrayOf(0x50, 0x4B, 0x03, 0x04), LOCAL_FLAGS_OFFSET)
+        flagEncrypted(bytes, byteArrayOf(0x50, 0x4B, 0x01, 0x02), CENTRAL_FLAGS_OFFSET)
+        return bytes
+    }
+
+    private fun flagEncrypted(
+        bytes: ByteArray,
+        signature: ByteArray,
+        flagsOffset: Int,
+    ) {
+        val at = (0..bytes.size - signature.size).first { i -> signature.indices.all { bytes[i + it] == signature[it] } }
+        bytes[at + flagsOffset] = (bytes[at + flagsOffset].toInt() or 1).toByte()
+    }
+
+    private const val LOCAL_FLAGS_OFFSET = 6
+    private const val CENTRAL_FLAGS_OFFSET = 8
+
     private fun image(format: String): ByteArray {
         val image = BufferedImage(8, 8, BufferedImage.TYPE_INT_RGB)
         return ByteArrayOutputStream().also { ImageIO.write(image, format, it) }.toByteArray()

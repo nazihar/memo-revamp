@@ -5,10 +5,10 @@
 **Last updated:** 2026-11-02 (UTC+06:00) by Claude (agent)
 
 ## Current position
-- **Phase:** 1a (overview approved 2026-10-18, gate delegation kept). Merged and on dev: **E02 platform kernel** (PR #18), **E01 app frame** (PR #19), **E03 identity, sessions and step-up** (PR #20), **E04 org directory and authorisation** (PR #22; ADR-0026, ADR-0027), plus fixes (PRs #21, #23–#26). **E05 files** built on `feat/1a-e05-files` (ADR-0028, ADR-0029), T1–T10 done, full backend suite green; PR open, waiting for the owner (Ansible run on the VM, then merge). Next: E06 notifications. E06 notifications follows (it can run beside E05).
+- **Phase:** 1a (overview approved 2026-10-18, gate delegation kept). Merged and on dev: **E02 platform kernel** (PR #18), **E01 app frame** (PR #19), **E03 identity, sessions and step-up** (PR #20), **E04 org directory and authorisation** (PR #22; ADR-0026, ADR-0027), plus fixes (PRs #21, #23–#26). **E05 files** built on `feat/1a-e05-files` (ADR-0028, ADR-0029), T1–T10 done, full backend suite green; **PR #27** open, waiting for the owner (Ansible run on the VM, then merge). Next: E06 notifications. E06 notifications follows (it can run beside E05).
 - **Dev environment live (2026-10-18):** https://dev.memo-revamp.naziharitsolution.com on the VM 123.176.58.175 (Ubuntu 24.04, 4 vCPU, 7.8 GB RAM, 100 GB disk). It deploys automatically after every green `ci` run on `master`.
 - **Phase 0 epics:** E01–E05 done (`docs/plan/phase-0-foundations/`).
-- **Branches:** `master` holds PRs #1–#26; `feat/1a-e05-files` in progress (pushed, no PR yet).
+- **Branches:** `master` holds PRs #1–#26; `feat/1a-e05-files` is PR #27.
 - **Release:** `v0.1.0` published with signed images (2026-10-15).
 - **Product name:** `memo` everywhere except the repository name `memo-revamp` (A1, PR #6).
 
@@ -44,7 +44,7 @@
 - **DAST/performance:** ZAP baseline 0 FAIL / 0 WARN; Gatling p95 48 ms.
 
 ## Next step
-1. Owner: re-run Ansible on the dev VM (dry run already shows the expected changes, see "Waiting for human"), then merge the E05 PR. Watch the master CI and the deploy; ClamAV downloads its signatures on first start.
+1. Owner: re-run Ansible on the dev VM (dry run already shows the expected changes, see "Waiting for human"), then merge PR #27. Watch the master CI and the deploy; ClamAV downloads its signatures on first start.
 2. Plan and build **E06 notifications**, then E07 (which adds the first real file purpose, the tenant logo, and the upload component).
 3. Remove the `apk upgrade` lines from `web/Dockerfile` once `nginx-unprivileged` ships the fixed Alpine packages; remove the Spring Session licence exceptions once Boot manages Spring Session 4.1.2 or later; remove the Guava pin in `build-logic` once the plugins pull 33.7.2 or later.
 

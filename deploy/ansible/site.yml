@@ -198,6 +198,8 @@
       ansible.builtin.command: docker compose --env-file .env restart caddy
       args:
         chdir: "{{ memo_base }}/edge"
+      # Runs only when the Caddyfile changed, and then it always is a change.
+      changed_when: true
       when: memo_edge_files.results | selectattr('changed') | list | length > 0
       become: true
       become_user: memo

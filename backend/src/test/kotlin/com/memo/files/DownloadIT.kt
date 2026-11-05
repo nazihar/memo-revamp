@@ -263,12 +263,10 @@ class DownloadIT : FilesIntegrationTest() {
         assertThat(Audit.entries(tenant.id).map { it.action }).contains("file.integrity.failed")
     }
 
-    private fun md5(bytes: ByteArray): String =
-        java.util.Base64
-            .getEncoder()
-            .encodeToString(
-                java.security.MessageDigest
-                    .getInstance("MD5")
-                    .digest(bytes),
-            )
+    /** The Content-MD5 transfer checksum that object-lock PUTs need (as in ObjectStore), to forge objects in tests. */
+    private fun md5(bytes: ByteArray): String {
+        // nosemgrep: kotlin.lang.security.use-of-md5.use-of-md5
+        val digest = java.security.MessageDigest.getInstance("MD5")
+        return java.util.Base64.getEncoder().encodeToString(digest.digest(bytes))
+    }
 }

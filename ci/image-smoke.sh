@@ -53,6 +53,17 @@ grep -qi "^cache-control: no-store" <<<"$headers" || fail "index.html must not b
 deep=$(curl -s -o "$DISCARD" -w '%{http_code}' "http://127.0.0.1:$PORT/some/client/route")
 [[ "$deep" == 200 ]] || fail "SPA fallback returned $deep"
 
+# Body limits (ADR-0029): the files route takes uploads up to the platform ceiling, every other route stays at 1 MB.
+BIG=$(mktemp)
+dd if=/dev/zero of="$BIG" bs=1048576 count=5 2>/dev/null
+upload=$(curl -s -o "$DISCARD" -w '%{http_code}' -H 'Content-Type: application/octet-stream' --data-binary "@$BIG" \
+  "http://127.0.0.1:$PORT/api/v1/files?purpose=smoke")
+[[ "$upload" != 413 && "$upload" != 000 ]] || fail "files route refused a 5 MiB body at the proxy ($upload)"
+other=$(curl -s -o "$DISCARD" -w '%{http_code}' -H 'Content-Type: application/json' --data-binary "@$BIG" \
+  "http://127.0.0.1:$PORT/api/v1/auth/login")
+[[ "$other" == 413 ]] || fail "a 5 MiB body to another route must be refused by the proxy (got $other)"
+rm -f "$BIG"
+
 [[ $(docker inspect -f '{{.Config.User}}' "$BACKEND_IMAGE") == 65532:65532 ]] || fail "backend must run as uid 65532"
 [[ $(docker inspect -f '{{.Config.User}}' "$WEB_IMAGE") == 101 ]] || fail "web must run as uid 101"
 echo "image smoke OK: non-root, read-only root FS, no capabilities; health via proxy UP; SPA headers present"

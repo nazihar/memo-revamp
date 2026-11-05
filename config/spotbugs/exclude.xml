@@ -26,6 +26,7 @@
   <Match>
     <Or>
       <Class name="com.memo.audit.internal.AuditPartitionCallback$Companion"/>
+      <Class name="com.memo.notification.internal.NotificationPartitionCallback$Companion"/>
       <Class name="com.memo.common.cache.PgNotificationListener"/>
       <Class name="com.memo.common.tenant.TenantAwareTransactionManager"/>
     </Or>

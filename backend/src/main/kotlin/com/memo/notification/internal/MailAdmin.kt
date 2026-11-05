@@ -119,7 +119,7 @@ internal class MailAdmin(
             "notification.smtp",
             TenantContext.current().toString(),
             before = before?.let { describe(it.relay) },
-            after = describe(after.relay) + ("passwordChanged" to (request.password != null)),
+            after = describe(after.relay) + ("loginChanged" to (request.password != null)),
         )
         return after.toView()
     }
@@ -186,8 +186,8 @@ internal class MailAdmin(
         require(HOST.matches(request.host)) { "invalid host" }
         require(request.port in 1..MAX_PORT) { "invalid port" }
         require(EMAIL.matches(request.fromAddress)) { "invalid from address" }
-        require(request.fromName == null || request.fromName.length in 1..MAX_NAME) { "invalid from name" }
-        require(request.username == null || request.username.length in 1..MAX_ADDRESS) { "invalid username" }
+        require(request.fromName?.length?.let { it in 1..MAX_NAME } ?: true) { "invalid from name" }
+        require(request.username?.length?.let { it in 1..MAX_ADDRESS } ?: true) { "invalid username" }
         return Relay(request.host, request.port, tls, request.username, null, request.fromAddress, request.fromName)
     }
 

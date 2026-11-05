@@ -109,7 +109,7 @@ New catalogue permission `notification.settings.manage` (privileged, not scopabl
 ## 6. Audit events
 | Action | Object | Data |
 |---|---|---|
-| `notification.smtp.changed` | `notification.smtp`, tenant | before/after without the password; `passwordChanged: true/false` |
+| `notification.smtp.changed` | `notification.smtp`, tenant | before/after without the password; `loginChanged: true/false` (keys containing "password" are redacted by the audit store) |
 | `notification.smtp.removed` | `notification.smtp`, tenant | before without the password |
 | `notification.smtp.tested` | `notification.smtp`, tenant | result class |
 | `notification.preferences.changed` | `notification.preferences`, user | changed toggles |

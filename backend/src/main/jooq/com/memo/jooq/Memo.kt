@@ -25,7 +25,6 @@ import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
 import com.memo.jooq.tables.NotificationItem
-import com.memo.jooq.tables.NotificationItemDefault
 import com.memo.jooq.tables.NotificationMailOutbox
 import com.memo.jooq.tables.NotificationPreference
 import com.memo.jooq.tables.NotificationSmtp
@@ -168,11 +167,6 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val NOTIFICATION_ITEM: NotificationItem get() = NotificationItem.NOTIFICATION_ITEM
 
     /**
-     * The table <code>memo.notification_item_default</code>.
-     */
-    val NOTIFICATION_ITEM_DEFAULT: NotificationItemDefault get() = NotificationItemDefault.NOTIFICATION_ITEM_DEFAULT
-
-    /**
      * The table <code>memo.notification_mail_outbox</code>.
      */
     val NOTIFICATION_MAIL_OUTBOX: NotificationMailOutbox get() = NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX
@@ -261,7 +255,6 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         IdentityRecoveryCode.IDENTITY_RECOVERY_CODE,
         IdentityUser.IDENTITY_USER,
         NotificationItem.NOTIFICATION_ITEM,
-        NotificationItemDefault.NOTIFICATION_ITEM_DEFAULT,
         NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX,
         NotificationPreference.NOTIFICATION_PREFERENCE,
         NotificationSmtp.NOTIFICATION_SMTP,

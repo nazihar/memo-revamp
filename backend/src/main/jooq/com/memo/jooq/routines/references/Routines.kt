@@ -5,71 +5,12 @@
 package com.memo.jooq.routines.references
 
 
-import com.memo.jooq.routines.NotificationEnsurePartitions
-import com.memo.jooq.routines.NotificationSecurePartition
 import com.memo.jooq.routines.TenancySettingCount
 
 import org.jooq.Configuration
 import org.jooq.Field
 
 
-
-/**
- * Call <code>memo.notification_ensure_partitions</code>
- */
-fun notificationEnsurePartitions(
-      configuration: Configuration
-    , monthsAhead: Int?
-    , retentionMonths: Int?
-): Int? {
-    val f = NotificationEnsurePartitions()
-    f.setMonthsAhead(monthsAhead)
-    f.setRetentionMonths(retentionMonths)
-
-    f.execute(configuration)
-    return f.returnValue
-}
-
-/**
- * Get <code>memo.notification_ensure_partitions</code> as a field.
- */
-fun notificationEnsurePartitions(
-      monthsAhead: Int?
-    , retentionMonths: Int?
-): Field<Int?> {
-    val f = NotificationEnsurePartitions()
-    f.setMonthsAhead(monthsAhead)
-    f.setRetentionMonths(retentionMonths)
-
-    return f.asField()
-}
-
-/**
- * Get <code>memo.notification_ensure_partitions</code> as a field.
- */
-fun notificationEnsurePartitions(
-      monthsAhead: Field<Int?>
-    , retentionMonths: Field<Int?>
-): Field<Int?> {
-    val f = NotificationEnsurePartitions()
-    f.setMonthsAhead(monthsAhead)
-    f.setRetentionMonths(retentionMonths)
-
-    return f.asField()
-}
-
-/**
- * Call <code>memo.notification_secure_partition</code>
- */
-fun notificationSecurePartition(
-      configuration: Configuration
-    , part: String?
-): Unit {
-    val p = NotificationSecurePartition()
-    p.setPart(part)
-
-    p.execute(configuration)
-}
 
 /**
  * Call <code>memo.tenancy_setting_count</code>

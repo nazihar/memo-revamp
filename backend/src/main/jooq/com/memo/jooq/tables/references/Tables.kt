@@ -26,7 +26,6 @@ import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
 import com.memo.jooq.tables.NotificationItem
-import com.memo.jooq.tables.NotificationItemDefault
 import com.memo.jooq.tables.NotificationMailOutbox
 import com.memo.jooq.tables.NotificationPreference
 import com.memo.jooq.tables.NotificationSmtp
@@ -147,11 +146,6 @@ val IDENTITY_USER: IdentityUser = IdentityUser.IDENTITY_USER
  * The table <code>memo.notification_item</code>.
  */
 val NOTIFICATION_ITEM: NotificationItem = NotificationItem.NOTIFICATION_ITEM
-
-/**
- * The table <code>memo.notification_item_default</code>.
- */
-val NOTIFICATION_ITEM_DEFAULT: NotificationItemDefault = NotificationItemDefault.NOTIFICATION_ITEM_DEFAULT
 
 /**
  * The table <code>memo.notification_mail_outbox</code>.

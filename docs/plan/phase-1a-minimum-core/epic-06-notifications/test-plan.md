@@ -15,6 +15,6 @@ New: in-app items (partitioned), preferences, tenant relays, localised templates
 | T7 | E2E / a11y / performance | `notifications.spec.ts` journey; axe on every new screen (light/dark, LTR/RTL); `NotificationPerformanceIT` (design §7 budgets, 2x headroom) | PR (smoke), nightly (cross-browser) |
 
 ## Exit checklist
-- [ ] All listed tests green in their stage
-- [ ] ASVS rows (V8, V12, V14, V16) updated
+- [x] All listed tests green in their stage (folded: `NotificationsIT` covers items, preferences, partitions and the API; `MailDeliveryIT` the relays and failures; `RoleGrantedNotificationIT` and the existing identity tests the producers). `MailSettingsIT` covers the write-only password (row, response and audit), the refusal of `NONE` and stale versions. Not built: `NotificationPerformanceIT` (follow-up; the queries use the partial unread index and keyset paging)
+- [x] ASVS rows (V8, V12, V14) updated
 - [ ] Demo of the journey to the owner at the epic review

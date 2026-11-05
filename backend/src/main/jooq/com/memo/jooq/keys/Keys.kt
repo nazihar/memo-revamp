@@ -26,7 +26,6 @@ import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
 import com.memo.jooq.tables.NotificationItem
-import com.memo.jooq.tables.NotificationItemDefault
 import com.memo.jooq.tables.NotificationMailOutbox
 import com.memo.jooq.tables.NotificationPreference
 import com.memo.jooq.tables.NotificationSmtp
@@ -59,7 +58,6 @@ import com.memo.jooq.tables.records.IdentityMfaRecord
 import com.memo.jooq.tables.records.IdentityRateLimitBucketRecord
 import com.memo.jooq.tables.records.IdentityRecoveryCodeRecord
 import com.memo.jooq.tables.records.IdentityUserRecord
-import com.memo.jooq.tables.records.NotificationItemDefaultRecord
 import com.memo.jooq.tables.records.NotificationItemRecord
 import com.memo.jooq.tables.records.NotificationMailOutboxRecord
 import com.memo.jooq.tables.records.NotificationPreferenceRecord
@@ -119,7 +117,6 @@ val IDENTITY_RECOVERY_CODE_PKEY: UniqueKey<IdentityRecoveryCodeRecord> = Interna
 val IDENTITY_USER_PKEY: UniqueKey<IdentityUserRecord> = Internal.createUniqueKey(IdentityUser.IDENTITY_USER, DSL.name("identity_user_pkey"), arrayOf(IdentityUser.IDENTITY_USER.ID), true)
 val IDENTITY_USER_TENANT_ID_ID_KEY: UniqueKey<IdentityUserRecord> = Internal.createUniqueKey(IdentityUser.IDENTITY_USER, DSL.name("identity_user_tenant_id_id_key"), arrayOf(IdentityUser.IDENTITY_USER.TENANT_ID, IdentityUser.IDENTITY_USER.ID), true)
 val NOTIFICATION_ITEM_PKEY: UniqueKey<NotificationItemRecord> = Internal.createUniqueKey(NotificationItem.NOTIFICATION_ITEM, DSL.name("notification_item_pkey"), arrayOf(NotificationItem.NOTIFICATION_ITEM.TENANT_ID, NotificationItem.NOTIFICATION_ITEM.ID, NotificationItem.NOTIFICATION_ITEM.CREATED_AT), true)
-val NOTIFICATION_ITEM_DEFAULT_PKEY: UniqueKey<NotificationItemDefaultRecord> = Internal.createUniqueKey(NotificationItemDefault.NOTIFICATION_ITEM_DEFAULT, DSL.name("notification_item_default_pkey"), arrayOf(NotificationItemDefault.NOTIFICATION_ITEM_DEFAULT.TENANT_ID, NotificationItemDefault.NOTIFICATION_ITEM_DEFAULT.ID, NotificationItemDefault.NOTIFICATION_ITEM_DEFAULT.CREATED_AT), true)
 val NOTIFICATION_MAIL_OUTBOX_PKEY: UniqueKey<NotificationMailOutboxRecord> = Internal.createUniqueKey(NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX, DSL.name("notification_mail_outbox_pkey"), arrayOf(NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.ID), true)
 val NOTIFICATION_MAIL_OUTBOX_TENANT_ID_ID_KEY: UniqueKey<NotificationMailOutboxRecord> = Internal.createUniqueKey(NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX, DSL.name("notification_mail_outbox_tenant_id_id_key"), arrayOf(NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.TENANT_ID, NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.ID), true)
 val NOTIFICATION_PREFERENCE_PKEY: UniqueKey<NotificationPreferenceRecord> = Internal.createUniqueKey(NotificationPreference.NOTIFICATION_PREFERENCE, DSL.name("notification_preference_pkey"), arrayOf(NotificationPreference.NOTIFICATION_PREFERENCE.TENANT_ID, NotificationPreference.NOTIFICATION_PREFERENCE.USER_ID, NotificationPreference.NOTIFICATION_PREFERENCE.CATEGORY, NotificationPreference.NOTIFICATION_PREFERENCE.CHANNEL), true)

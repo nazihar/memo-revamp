@@ -267,6 +267,7 @@ class DownloadIT : FilesIntegrationTest() {
     private fun md5(bytes: ByteArray): String {
         // nosemgrep: kotlin.lang.security.use-of-md5.use-of-md5
         val digest = java.security.MessageDigest.getInstance("MD5")
-        return java.util.Base64.getEncoder().encodeToString(digest.digest(bytes))
+        val encoder = java.util.Base64.getEncoder()
+        return encoder.encodeToString(digest.digest(bytes))
     }
 }

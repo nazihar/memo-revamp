@@ -23,7 +23,8 @@
 	}
 }
 
-{$MEMO_DEV_HOST} {
+# The operator console (ADR-0031) is admin.<dev host>, covered by the wildcard DNS record.
+{$MEMO_DEV_HOST}, admin.{$MEMO_DEV_HOST} {
 	import common
 	reverse_proxy memo-dev-web:8080
 }

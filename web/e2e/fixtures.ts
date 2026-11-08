@@ -30,7 +30,7 @@ interface Fixtures {
   cspViolations: string[]
 }
 
-async function assertNoA11yViolations(page: Page): Promise<void> {
+export async function assertNoA11yViolations(page: Page): Promise<void> {
   // Let enter/exit animations settle: axe measures contrast on what is rendered, and a half-faded menu reports
   // false contrast failures (observed in CI).
   // Infinite animations (loading skeletons) never finish and are ignored.

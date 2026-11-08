@@ -28,6 +28,12 @@ tenancy:
   singleTenant: ""
   publicUrlTemplate: ""   # links in emails, {slug} = organisation; empty: https://{slug}.<baseDomain>
 
+# Operator console (ADR-0031): its own host; empty = admin.<baseDomain> in multi mode, none in single mode.
+platform:
+  enabled: true
+  host: ""
+  publicUrl: ""           # where operators open it (enrolment links); empty: https://<host>
+
 security:
   # Secret with key `dataKey` (at least 32 random characters): encrypts TOTP secrets at rest (ADR-0024). Back it up
   # with the database; losing it means every user enrols MFA again.

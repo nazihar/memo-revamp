@@ -4,112 +4,256 @@
   "description": "ADR-0015: secrets are referenced by Secret name only; keys that look like secrets are rejected.",
   "type": "object",
   "additionalProperties": false,
-  "propertyNames": { "not": { "pattern": "(?i)(password|secretkey|token|privatekey)" } },
-  "required": ["image", "database", "objectStorage", "backend", "web", "migrations", "networkPolicy"],
+  "propertyNames": {
+    "not": {
+      "pattern": "(?i)(password|secretkey|token|privatekey)"
+    }
+  },
+  "required": [
+    "image",
+    "database",
+    "objectStorage",
+    "backend",
+    "web",
+    "migrations",
+    "networkPolicy"
+  ],
   "properties": {
     "image": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["backend", "web"],
+      "required": [
+        "backend",
+        "web"
+      ],
       "properties": {
-        "backend": { "type": "string", "minLength": 1 },
-        "web": { "type": "string", "minLength": 1 },
-        "pullPolicy": { "enum": ["Always", "IfNotPresent", "Never"] }
+        "backend": {
+          "type": "string",
+          "minLength": 1
+        },
+        "web": {
+          "type": "string",
+          "minLength": 1
+        },
+        "pullPolicy": {
+          "enum": [
+            "Always",
+            "IfNotPresent",
+            "Never"
+          ]
+        }
       }
     },
-    "imagePullSecrets": { "type": "array", "items": { "type": "object" } },
+    "imagePullSecrets": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
     "database": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["url", "appSecret", "migratorSecret"],
+      "required": [
+        "url",
+        "appSecret",
+        "migratorSecret"
+      ],
       "properties": {
-        "url": { "type": "string", "pattern": "^jdbc:postgresql://" },
-        "appSecret": { "type": "string", "minLength": 1 },
-        "migratorSecret": { "type": "string", "minLength": 1 }
+        "url": {
+          "type": "string",
+          "pattern": "^jdbc:postgresql://"
+        },
+        "appSecret": {
+          "type": "string",
+          "minLength": 1
+        },
+        "migratorSecret": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     },
     "objectStorage": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "endpoint": { "type": "string" },
-        "region": { "type": "string" },
-        "secret": { "type": "string" }
+        "endpoint": {
+          "type": "string"
+        },
+        "region": {
+          "type": "string"
+        },
+        "secret": {
+          "type": "string"
+        }
       }
     },
     "tenancy": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["mode", "baseDomain"],
+      "required": [
+        "mode",
+        "baseDomain"
+      ],
       "properties": {
-        "mode": { "enum": ["multi", "single"] },
-        "baseDomain": { "type": "string", "minLength": 1 },
-        "singleTenant": { "type": "string" },
-        "publicUrlTemplate": { "type": "string" }
+        "mode": {
+          "enum": [
+            "multi",
+            "single"
+          ]
+        },
+        "baseDomain": {
+          "type": "string",
+          "minLength": 1
+        },
+        "singleTenant": {
+          "type": "string"
+        },
+        "publicUrlTemplate": {
+          "type": "string"
+        }
+      }
+    },
+    "platform": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "host": {
+          "type": "string"
+        },
+        "publicUrl": {
+          "type": "string"
+        }
       }
     },
     "security": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["dataKeySecret"],
+      "required": [
+        "dataKeySecret"
+      ],
       "properties": {
-        "dataKeySecret": { "type": "string", "minLength": 1 }
+        "dataKeySecret": {
+          "type": "string",
+          "minLength": 1
+        }
       }
     },
     "integrations": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "documentServerUrl": { "type": "string" },
-        "malwareScannerHost": { "type": "string" },
-        "smtpHost": { "type": "string" },
-        "smtpPort": { "type": "integer", "minimum": 1, "maximum": 65535 },
-        "smtpFrom": { "type": "string" },
-        "smtpStarttls": { "type": "boolean" },
-        "smtpSecret": { "type": "string" }
+        "documentServerUrl": {
+          "type": "string"
+        },
+        "malwareScannerHost": {
+          "type": "string"
+        },
+        "smtpHost": {
+          "type": "string"
+        },
+        "smtpPort": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 65535
+        },
+        "smtpFrom": {
+          "type": "string"
+        },
+        "smtpStarttls": {
+          "type": "boolean"
+        },
+        "smtpSecret": {
+          "type": "string"
+        }
       }
     },
     "observability": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "logFormat": { "enum": ["ecs", "logstash", "gelf"] },
-        "otelExport": { "type": "boolean" }
+        "logFormat": {
+          "enum": [
+            "ecs",
+            "logstash",
+            "gelf"
+          ]
+        },
+        "otelExport": {
+          "type": "boolean"
+        }
       }
     },
     "files": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "maxUploadBytes": { "type": "integer", "minimum": 1 },
-        "concurrentUploads": { "type": "integer", "minimum": 1 },
-        "spoolSizeLimit": { "type": "string", "pattern": "^[0-9]+(Mi|Gi)$" }
+        "maxUploadBytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "concurrentUploads": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "spoolSizeLimit": {
+          "type": "string",
+          "pattern": "^[0-9]+(Mi|Gi)$"
+        }
       }
     },
-    "backend": { "$ref": "#/$defs/workload" },
-    "web": { "$ref": "#/$defs/workload" },
+    "backend": {
+      "$ref": "#/$defs/workload"
+    },
+    "web": {
+      "$ref": "#/$defs/workload"
+    },
     "migrations": {
       "type": "object",
       "additionalProperties": false,
-      "properties": { "resources": { "type": "object" } }
+      "properties": {
+        "resources": {
+          "type": "object"
+        }
+      }
     },
     "ingress": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "enabled": { "type": "boolean" },
-        "className": { "type": "string" },
-        "host": { "type": "string" },
-        "tlsSecret": { "type": "string" }
+        "enabled": {
+          "type": "boolean"
+        },
+        "className": {
+          "type": "string"
+        },
+        "host": {
+          "type": "string"
+        },
+        "tlsSecret": {
+          "type": "string"
+        }
       }
     },
     "networkPolicy": {
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "enabled": { "type": "boolean" },
-        "backendEgressCidrs": { "type": "array", "items": { "type": "string" } },
-        "ingressFromNamespaceLabels": { "type": "object" }
+        "enabled": {
+          "type": "boolean"
+        },
+        "backendEgressCidrs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "ingressFromNamespaceLabels": {
+          "type": "object"
+        }
       }
     }
   },
@@ -118,8 +262,13 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "replicas": { "type": "integer", "minimum": 1 },
-        "resources": { "type": "object" }
+        "replicas": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "resources": {
+          "type": "object"
+        }
       }
     }
   }

@@ -28,7 +28,8 @@ export default defineConfig({
   preview: {
     port: 4173,
     // host.docker.internal: the Linux Playwright container used for visual baselines (e2e/update-visual-baselines.sh).
-    allowedHosts: ['localhost', 'host.docker.internal'],
+    // .localhost: tenant hosts and the operator console (admin.localhost) in the E07 journeys.
+    allowedHosts: ['localhost', '.localhost', 'host.docker.internal'],
     strictPort: true,
     proxy: apiProxy,
     headers: securityHeaders,

@@ -78,6 +78,12 @@ spec:
               value: {{ .Values.tenancy.singleTenant | quote }}
             - name: MEMO_PUBLIC_URL_TEMPLATE
               value: {{ .Values.tenancy.publicUrlTemplate | quote }}
+            - name: MEMO_PLATFORM_ENABLED
+              value: {{ .Values.platform.enabled | quote }}
+            - name: MEMO_PLATFORM_HOST
+              value: {{ .Values.platform.host | quote }}
+            - name: MEMO_PLATFORM_PUBLIC_URL
+              value: {{ .Values.platform.publicUrl | quote }}
           startupProbe:
             httpGet: { path: /actuator/health/liveness, port: management }
             periodSeconds: 5

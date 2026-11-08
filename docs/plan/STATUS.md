@@ -5,7 +5,7 @@
 **Last updated:** 2026-11-08 (UTC+06:00) by Claude (agent)
 
 ## Current position
-- **Phase:** 1a (overview approved 2026-10-18, gate delegation kept). Merged and on dev: **E02 platform kernel** (PR #18), **E01 app frame** (PR #19), **E03 identity, sessions and step-up** (PR #20), **E04 org directory and authorisation** (PR #22; ADR-0026, ADR-0027), plus fixes (PRs #21, #23–#26). **E05 files** merged (PR #27) and on dev since 2026-11-05 (ClamAV running). **E06 notifications** built on `feat/1a-e06-notifications` (ADR-0030); PR #28 is CI-green and waits for the owner's merge go-ahead. **E07 tenant lifecycle and administration** planned (ADR-0031 to ADR-0033) and in progress on `feat/1a-e07-tenant-admin` (stacked on E06).
+- **Phase:** 1a (overview approved 2026-10-18, gate delegation kept). Merged and on dev: **E02 platform kernel** (PR #18), **E01 app frame** (PR #19), **E03 identity, sessions and step-up** (PR #20), **E04 org directory and authorisation** (PR #22; ADR-0026, ADR-0027), plus fixes (PRs #21, #23–#26). **E05 files** merged (PR #27) and on dev since 2026-11-05 (ClamAV running). **E06 notifications** built on `feat/1a-e06-notifications` (ADR-0030); PR #28 is CI-green and waits for the owner's merge go-ahead. **E07 tenant lifecycle and administration** built on `feat/1a-e07-tenant-admin` (stacked on E06; ADR-0031 to ADR-0033): operator console on its own host, tenant creation and suspension, tenant admin console (security, branding, language and terms, audit viewer and verifiable export). PR opens once PR #28 is merged (or as a stacked PR).
 - **Dev environment live (2026-10-18):** https://dev.memo-revamp.naziharitsolution.com on the VM 123.176.58.175 (Ubuntu 24.04, 4 vCPU, 7.8 GB RAM, 100 GB disk). It deploys automatically after every green `ci` run on `master`.
 - **Phase 0 epics:** E01–E05 done (`docs/plan/phase-0-foundations/`).
 - **Branches:** `master` holds PRs #1–#27; `feat/1a-e06-notifications` is PR #28; `feat/1a-e07-tenant-admin` builds E07 on top of it.
@@ -45,11 +45,13 @@
 
 ## Next step
 1. Owner: merge PR #28 (E06; CI green). Merges need the owner's go-ahead per PR. Then watch the master CI and the dev deploy.
-2. Build **E07** slice by slice (`epic-07-tenant-admin/tasks.md`): operator accounts and host, tenant lifecycle and suspension, settings and terms, branding, audit viewer and export, both consoles, E2E and `demo.md`; then the Phase 1a exit.
-3. Follow-ups: corpus against the full ClamAV signatures in the nightly (E05); notification performance test (E06); record ClamAV memory on the VM after a day of reloads; remove the `apk upgrade` lines from `web/Dockerfile`, the Spring Session licence exceptions and the Guava pin when upstream catches up.
+2. E07: CI on the stacked PR (the E2E exit journey runs there first), then merge after E06. After merge, an Ansible run so Caddy serves `admin.<dev host>`, and `operator-invite` on the VM for the owner's own operator account (runbook `platform-operators.md`).
+3. Phase 1a exit: `retrospective.md`, moderated usability walkthrough (login + MFA, org editing, tenant administration), manual keyboard and screen-reader pass, owner demo (`demo.md`).
+4. Follow-ups: corpus against the full ClamAV signatures in the nightly (E05); notification performance test (E06); record ClamAV memory on the VM after a day of reloads; remove the `apk upgrade` lines from `web/Dockerfile`, the Spring Session licence exceptions and the Guava pin when upstream catches up.
 
 ## Waiting for human
 - **E06 merge:** PR #28 (notifications) is CI-green and waits for your go-ahead.
+- **E07 on dev (after its merge):** permission to run the Ansible playbook again (Caddy gains `admin.<dev host>`), then I run `operator-invite` for your address and give you the one-time link.
 - **E01 manual accessibility pass (no rush):** a short keyboard + screen-reader (NVDA or VoiceOver) walk through the patterns gallery, run locally with `pnpm dev` at `/patterns` (the gallery is left out of production images, so it is not on the dev server). Automated axe, keyboard and CSP checks pass.
 1. **VM memory:** 7.8 GB is enough for dev, including ClamAV (measured 2026-11-02: 6.3 GiB available before it; ClamAV peaks at about 2.4 GiB). Running staging and ONLYOFFICE as well needs 16 GB.
 2. **GitHub setup:**

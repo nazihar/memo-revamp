@@ -51,9 +51,9 @@ test('an operator creates an organisation; its first admin joins, manages sessio
   await assertNoA11yViolations(operator)
 
   await operator.getByRole('link', { name: 'New organisation' }).click()
-  await operator.getByLabel('Name').fill(`Acme Bank ${run}`)
-  await operator.getByLabel('Address').fill(slug)
-  await operator.getByLabel('Time zone').fill('Asia/Dhaka')
+  await operator.getByLabel('Name', { exact: true }).fill(`Acme Bank ${run}`)
+  await operator.getByLabel('Address', { exact: true }).fill(slug)
+  await operator.getByLabel('Time zone', { exact: true }).fill('Asia/Dhaka')
   await operator.getByLabel('First administrator’s name').fill(adminName)
   await operator.getByLabel('First administrator’s email').fill(adminEmail)
   await assertNoA11yViolations(operator)

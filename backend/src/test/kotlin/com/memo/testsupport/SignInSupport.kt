@@ -4,9 +4,11 @@ package com.memo.testsupport
 
 import com.memo.common.tenant.TenantId
 import com.memo.common.tenant.TenantTransactions
+import com.memo.identity.MfaSeeding
 import com.memo.identity.UserAccount
 import com.memo.identity.UserAccounts
 import com.memo.identity.auth.AuthSettings
+import com.memo.identity.mfa.Totp
 import com.memo.identity.password.BreachedPasswords
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
@@ -18,6 +20,7 @@ import org.springframework.test.web.servlet.assertj.MockMvcTester
 import org.springframework.test.web.servlet.assertj.MvcTestResult
 import org.springframework.test.web.servlet.request.RequestPostProcessor
 import java.security.SecureRandom
+import java.time.Instant
 import java.util.Base64
 import java.util.UUID
 
@@ -207,3 +210,19 @@ fun MockMvcTester.sendJson(
         .contentType(MediaType.APPLICATION_JSON)
         .content(json)
         .exchange()
+
+/** A tenant admin with TOTP, signed in completely just now (password and code), as the admin screens need. */
+fun MockMvcTester.adminSession(
+    tenant: TestTenant,
+    accounts: UserAccounts,
+    transactions: TenantTransactions,
+    mfaSeeding: MfaSeeding,
+): Cookie {
+    val password = aPassword()
+    val admin = accounts.anActiveUser(transactions, tenant, password, tenantAdmin = true)
+    val secret = Totp.base32(Totp.newSecret())
+    transactions.inTenant(tenant.id) { mfaSeeding.ensureTotp(admin.id, secret) }
+    val partial = requireNotNull(login(tenant, admin.email, password).sessionCookie())
+    val code = Totp.code(Totp.decodeBase32(secret), Totp.step(Instant.now()))
+    return requireNotNull(postJson(tenant, "/api/v1/auth/mfa", partial, """{"code":"$code"}""").sessionCookie(partial))
+}

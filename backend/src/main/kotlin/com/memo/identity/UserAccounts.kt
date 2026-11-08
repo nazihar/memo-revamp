@@ -9,7 +9,6 @@ import com.memo.identity.password.PasswordPolicy
 import com.memo.identity.password.PasswordViolation
 import com.memo.jooq.tables.records.IdentityUserRecord
 import com.memo.jooq.tables.references.IDENTITY_USER
-import com.memo.tenancy.TenantSettings
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.time.Clock
@@ -75,7 +74,7 @@ class UserAccounts(
     private val audit: AuditLog,
     private val encoder: PasswordEncoder,
     private val policy: PasswordPolicy,
-    private val settings: TenantSettings,
+    private val securitySettings: SecuritySettings,
     private val access: AccessAdministration,
 ) {
     fun find(id: UserId): UserAccount? = record(id)?.toAccount()
@@ -189,12 +188,7 @@ class UserAccounts(
         return matches
     }
 
-    private fun minLength(): Int =
-        settings
-            .get(MIN_LENGTH_SETTING)
-            ?.value
-            ?.toIntOrNull()
-            ?.coerceAtLeast(PasswordPolicy.ABSOLUTE_MIN) ?: PasswordPolicy.DEFAULT_MIN
+    private fun minLength(): Int = securitySettings.int(SecurityLimit.PASSWORD_MIN_LENGTH)
 
     private fun record(id: UserId): IdentityUserRecord? =
         tenantDsl
@@ -219,8 +213,8 @@ class UserAccounts(
         )
 
     companion object {
-        /** Tenant setting: minimum password length (default 12, never below 8). */
-        const val MIN_LENGTH_SETTING = "security.password.min.length"
+        /** Tenant setting: minimum password length ([SecurityLimit.PASSWORD_MIN_LENGTH]). */
+        val MIN_LENGTH_SETTING = SecurityLimit.PASSWORD_MIN_LENGTH.key
         private const val MAX_NAME = 200
 
         // Deliberately loose: the invitation email proves the address; this only rejects obvious garbage.

@@ -17,6 +17,7 @@ import com.memo.identity.auth.SessionState
 import com.memo.identity.password.PasswordProblems
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -149,7 +150,11 @@ class OperatorAuthController(
         operationId = "platformLogin",
         summary = "Operator sign-in with email and password",
         responses = [
-            ApiResponse(responseCode = "200", description = "Password accepted; TOTP or enrolment follows"),
+            ApiResponse(
+                responseCode = "200",
+                description = "Password accepted; TOTP or enrolment follows",
+                content = [Content(mediaType = "application/json", schema = Schema(implementation = PlatformSessionResponse::class))],
+            ),
             ApiResponse(responseCode = "401", description = "Invalid credentials (same answer for every reason)"),
             ApiResponse(responseCode = "429", description = "Too many attempts; see Retry-After"),
         ],
@@ -207,7 +212,11 @@ class OperatorMfaController(
         operationId = "verifyPlatformMfa",
         summary = "Second sign-in step (TOTP)",
         responses = [
-            ApiResponse(responseCode = "200", description = "Signed in"),
+            ApiResponse(
+                responseCode = "200",
+                description = "OK",
+                content = [Content(mediaType = "application/json", schema = Schema(implementation = PlatformSessionResponse::class))],
+            ),
             ApiResponse(responseCode = "401", description = "Invalid code"),
         ],
     )
@@ -225,7 +234,14 @@ class OperatorMfaController(
     @Operation(
         operationId = "startPlatformMfaEnrolment",
         summary = "Start TOTP enrolment (first sign-in, or a complete session switching devices)",
-        responses = [ApiResponse(responseCode = "403", description = "Already enrolled and the session is not complete")],
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "OK",
+                content = [Content(mediaType = "application/json", schema = Schema(implementation = EnrolmentResponse::class))],
+            ),
+            ApiResponse(responseCode = "403", description = "Already enrolled and the session is not complete"),
+        ],
     )
     fun startEnrolment(
         @AuthenticationPrincipal principal: OperatorPrincipal,
@@ -243,7 +259,13 @@ class OperatorMfaController(
     @Operation(
         operationId = "confirmPlatformMfaEnrolment",
         summary = "Confirm TOTP enrolment; completes the sign-in",
-        responses = [ApiResponse(responseCode = "401", description = "Invalid code")],
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "OK",
+                content = [Content(mediaType = "application/json", schema = Schema(implementation = PlatformSessionResponse::class))],
+            ), ApiResponse(responseCode = "401", description = "Invalid code"),
+        ],
     )
     fun confirmEnrolment(
         @AuthenticationPrincipal principal: OperatorPrincipal,
@@ -263,7 +285,13 @@ class OperatorMfaController(
     @Operation(
         operationId = "platformStepUp",
         summary = "Confirm a sensitive action with a fresh TOTP code",
-        responses = [ApiResponse(responseCode = "401", description = "Invalid code")],
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "OK",
+                content = [Content(mediaType = "application/json", schema = Schema(implementation = PlatformSessionResponse::class))],
+            ), ApiResponse(responseCode = "401", description = "Invalid code"),
+        ],
     )
     fun stepUp(
         @AuthenticationPrincipal principal: OperatorPrincipal,
@@ -321,7 +349,11 @@ class OperatorEnrolmentController(
         operationId = "acceptPlatformEnrolment",
         summary = "Set the operator's password from the enrolment link; TOTP enrolment follows",
         responses = [
-            ApiResponse(responseCode = "200", description = "Password set; signed in with the password"),
+            ApiResponse(
+                responseCode = "200",
+                description = "OK",
+                content = [Content(mediaType = "application/json", schema = Schema(implementation = PlatformSessionResponse::class))],
+            ),
             ApiResponse(
                 responseCode = "400",
                 description = "Invalid or expired link, or a weak password",

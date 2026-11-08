@@ -36,7 +36,7 @@ object DemoTenant {
 
     val SETTINGS =
         linkedMapOf(
-            "default.locale" to "en",
+            "locale.default" to "en",
             "default.timezone" to "UTC",
         )
 

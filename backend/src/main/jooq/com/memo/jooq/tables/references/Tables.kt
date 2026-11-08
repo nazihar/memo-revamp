@@ -40,6 +40,7 @@ import com.memo.jooq.tables.SystemInfo
 import com.memo.jooq.tables.TenancySetting
 import com.memo.jooq.tables.TenancySettingView
 import com.memo.jooq.tables.TenancyTenant
+import com.memo.jooq.tables.TenancyTerm
 
 
 
@@ -217,3 +218,8 @@ val TENANCY_SETTING_VIEW: TenancySettingView = TenancySettingView.TENANCY_SETTIN
  * The table <code>memo.tenancy_tenant</code>.
  */
 val TENANCY_TENANT: TenancyTenant = TenancyTenant.TENANCY_TENANT
+
+/**
+ * The table <code>memo.tenancy_term</code>.
+ */
+val TENANCY_TERM: TenancyTerm = TenancyTerm.TENANCY_TERM

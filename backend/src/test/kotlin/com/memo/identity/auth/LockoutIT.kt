@@ -44,6 +44,8 @@ class LockoutIT : IntegrationTest() {
 
     @Autowired lateinit var mfa: MfaService
 
+    @Autowired lateinit var securitySettings: com.memo.identity.SecuritySettings
+
     private val password = aPassword()
 
     private val tenant: TestTenant by lazy { registry.aTestTenant(transactions, settings, "lockout", mfaRequired = false) }
@@ -51,7 +53,7 @@ class LockoutIT : IntegrationTest() {
     private val clock = MutableClock()
 
     private val signIn: SignIn by lazy {
-        SignIn(transactions, accounts, encoder, authSettings, audit, clock, LoginAttempts(tenantDsl, clock, audit), mfa)
+        SignIn(transactions, accounts, encoder, authSettings, audit, clock, LoginAttempts(tenantDsl, clock, audit, securitySettings), mfa)
     }
 
     private fun attempt(

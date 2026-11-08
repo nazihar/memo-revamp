@@ -8,7 +8,9 @@ import com.memo.jooq.Memo
 import com.memo.jooq.keys.TENANCY_SETTING__TENANCY_SETTING_TENANT_ID_FKEY
 import com.memo.jooq.keys.TENANCY_TENANT_PKEY
 import com.memo.jooq.keys.TENANCY_TENANT_SLUG_KEY
+import com.memo.jooq.keys.TENANCY_TERM__TENANCY_TERM_TENANT_ID_FKEY
 import com.memo.jooq.tables.TenancySetting.TenancySettingPath
+import com.memo.jooq.tables.TenancyTerm.TenancyTermPath
 import com.memo.jooq.tables.records.TenancyTenantRecord
 
 import java.time.OffsetDateTime
@@ -163,6 +165,22 @@ open class TenancyTenant(
 
     val tenancySetting: TenancySettingPath
         get(): TenancySettingPath = tenancySetting()
+
+    private lateinit var _tenancyTerm: TenancyTermPath
+
+    /**
+     * Get the implicit to-many join path to the <code>memo.tenancy_term</code>
+     * table
+     */
+    fun tenancyTerm(): TenancyTermPath {
+        if (!this::_tenancyTerm.isInitialized)
+            _tenancyTerm = TenancyTermPath(this, null, TENANCY_TERM__TENANCY_TERM_TENANT_ID_FKEY.inverseKey)
+
+        return _tenancyTerm;
+    }
+
+    val tenancyTerm: TenancyTermPath
+        get(): TenancyTermPath = tenancyTerm()
     override fun getChecks(): List<Check<TenancyTenantRecord>> = listOf(
         Internal.createCheck(this, DSL.name("tenancy_tenant_name_check"), "(((length(name) >= 1) AND (length(name) <= 200)))", true),
         Internal.createCheck(this, DSL.name("tenancy_tenant_slug_check"), "((slug ~ '^[a-z0-9](?:[a-z0-9-]{1,61}[a-z0-9])\$'::text))", true),

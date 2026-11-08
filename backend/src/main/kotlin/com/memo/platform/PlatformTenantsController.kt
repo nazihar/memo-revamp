@@ -11,6 +11,7 @@ import com.memo.tenancy.TenantStatus
 import com.memo.tenancy.TenantSummary
 import com.memo.tenancy.UnknownTenantException
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.media.Content
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.responses.ApiResponse
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -118,7 +119,11 @@ class PlatformTenantsController(
         operationId = "createPlatformTenant",
         summary = "Create a tenant and invite its first administrator",
         responses = [
-            ApiResponse(responseCode = "201", description = "Created; the invitation mail is queued"),
+            ApiResponse(
+                responseCode = "201",
+                description = "Created; the invitation mail is queued",
+                content = [Content(mediaType = "application/json", schema = Schema(implementation = PlatformTenantResponse::class))],
+            ),
             ApiResponse(responseCode = "400", description = "Invalid or reserved slug, name, language, time zone or email"),
             ApiResponse(responseCode = "401", description = "Step-up required"),
         ],
@@ -149,7 +154,17 @@ class PlatformTenantsController(
     }
 
     @PatchMapping("/{id}")
-    @Operation(operationId = "renamePlatformTenant", summary = "Rename a tenant (If-Match)")
+    @Operation(
+        operationId = "renamePlatformTenant",
+        summary = "Rename a tenant (If-Match)",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "OK",
+                content = [Content(mediaType = "application/json", schema = Schema(implementation = PlatformTenantResponse::class))],
+            ),
+        ],
+    )
     fun rename(
         @PathVariable id: UUID,
         @RequestBody body: PlatformTenantRename,
@@ -162,14 +177,34 @@ class PlatformTenantsController(
     }
 
     @PostMapping("/{id}/suspend")
-    @Operation(operationId = "suspendPlatformTenant", summary = "Suspend: the host refuses every request, sessions end, jobs wait")
+    @Operation(
+        operationId = "suspendPlatformTenant",
+        summary = "Suspend: the host refuses every request, sessions end, jobs wait",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "OK",
+                content = [Content(mediaType = "application/json", schema = Schema(implementation = PlatformTenantResponse::class))],
+            ),
+        ],
+    )
     fun suspend(
         @PathVariable id: UUID,
         @RequestHeader("If-Match", required = false) ifMatch: String?,
     ): ResponseEntity<Any> = changed(tenants.suspend(TenantId(id), ifMatchVersion(ifMatch)))
 
     @PostMapping("/{id}/resume")
-    @Operation(operationId = "resumePlatformTenant", summary = "Resume a suspended tenant")
+    @Operation(
+        operationId = "resumePlatformTenant",
+        summary = "Resume a suspended tenant",
+        responses = [
+            ApiResponse(
+                responseCode = "200",
+                description = "OK",
+                content = [Content(mediaType = "application/json", schema = Schema(implementation = PlatformTenantResponse::class))],
+            ),
+        ],
+    )
     fun resume(
         @PathVariable id: UUID,
         @RequestHeader("If-Match", required = false) ifMatch: String?,

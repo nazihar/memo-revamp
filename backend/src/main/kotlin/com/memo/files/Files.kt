@@ -95,3 +95,21 @@ interface Files {
         before: Int? = null,
     ): List<FileVersionInfo>
 }
+
+/**
+ * Content for owning modules that serve a file themselves, such as the tenant logo on the sign-in page (E07). No access
+ * check: the owning module has decided who may see it. Call outside a transaction; tenant scope required.
+ */
+interface FileContents {
+    /** The current version of [fileId] when the file has [purpose], else null. */
+    fun current(
+        fileId: UUID,
+        purpose: String,
+    ): FileVersionInfo?
+
+    /** Writes the whole plaintext of [version] to [out]. */
+    fun write(
+        version: FileVersionInfo,
+        out: java.io.OutputStream,
+    )
+}

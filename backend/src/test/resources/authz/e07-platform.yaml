@@ -44,3 +44,4 @@ endpoints:
   - endpoint: "POST /api/v1/platform/tenants/{id}/first-admin"
     rule: operatorStepUp
     body: { email: "admin@matrix.example", displayName: "Matrix Admin" }
+  - { endpoint: GET /api/v1/platform/audit, rule: operator }

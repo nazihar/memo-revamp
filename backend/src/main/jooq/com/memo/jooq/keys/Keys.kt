@@ -39,6 +39,7 @@ import com.memo.jooq.tables.SystemIdempotencyKey
 import com.memo.jooq.tables.SystemInfo
 import com.memo.jooq.tables.TenancySetting
 import com.memo.jooq.tables.TenancyTenant
+import com.memo.jooq.tables.TenancyTerm
 import com.memo.jooq.tables.records.AuditAnchorRecord
 import com.memo.jooq.tables.records.AuditChainHeadRecord
 import com.memo.jooq.tables.records.AuditEventRecord
@@ -73,6 +74,7 @@ import com.memo.jooq.tables.records.SystemIdempotencyKeyRecord
 import com.memo.jooq.tables.records.SystemInfoRecord
 import com.memo.jooq.tables.records.TenancySettingRecord
 import com.memo.jooq.tables.records.TenancyTenantRecord
+import com.memo.jooq.tables.records.TenancyTermRecord
 
 import org.jooq.ForeignKey
 import org.jooq.UniqueKey
@@ -140,6 +142,7 @@ val SYSTEM_INFO_PKEY: UniqueKey<SystemInfoRecord> = Internal.createUniqueKey(Sys
 val TENANCY_SETTING_PKEY: UniqueKey<TenancySettingRecord> = Internal.createUniqueKey(TenancySetting.TENANCY_SETTING, DSL.name("tenancy_setting_pkey"), arrayOf(TenancySetting.TENANCY_SETTING.ID), true)
 val TENANCY_TENANT_PKEY: UniqueKey<TenancyTenantRecord> = Internal.createUniqueKey(TenancyTenant.TENANCY_TENANT, DSL.name("tenancy_tenant_pkey"), arrayOf(TenancyTenant.TENANCY_TENANT.ID), true)
 val TENANCY_TENANT_SLUG_KEY: UniqueKey<TenancyTenantRecord> = Internal.createUniqueKey(TenancyTenant.TENANCY_TENANT, DSL.name("tenancy_tenant_slug_key"), arrayOf(TenancyTenant.TENANCY_TENANT.SLUG), true)
+val TENANCY_TERM_PKEY: UniqueKey<TenancyTermRecord> = Internal.createUniqueKey(TenancyTerm.TENANCY_TERM, DSL.name("tenancy_term_pkey"), arrayOf(TenancyTerm.TENANCY_TERM.ID), true)
 
 // -------------------------------------------------------------------------
 // FOREIGN KEY definitions
@@ -161,3 +164,4 @@ val ORG_REPORTING_LINE__ORG_REPORTING_LINE_TENANT_ID_REPORTS_TO_POSITION_ID_FKEY
 val ORG_UNIT__ORG_UNIT_TENANT_ID_LEGAL_ENTITY_ID_FKEY: ForeignKey<OrgUnitRecord, OrgLegalEntityRecord> = Internal.createForeignKey(OrgUnit.ORG_UNIT, DSL.name("org_unit_tenant_id_legal_entity_id_fkey"), arrayOf(OrgUnit.ORG_UNIT.TENANT_ID, OrgUnit.ORG_UNIT.LEGAL_ENTITY_ID), com.memo.jooq.keys.ORG_LEGAL_ENTITY_TENANT_ID_ID_KEY, arrayOf(OrgLegalEntity.ORG_LEGAL_ENTITY.TENANT_ID, OrgLegalEntity.ORG_LEGAL_ENTITY.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val ORG_UNIT__ORG_UNIT_TENANT_ID_PARENT_ID_FKEY: ForeignKey<OrgUnitRecord, OrgUnitRecord> = Internal.createForeignKey(OrgUnit.ORG_UNIT, DSL.name("org_unit_tenant_id_parent_id_fkey"), arrayOf(OrgUnit.ORG_UNIT.TENANT_ID, OrgUnit.ORG_UNIT.PARENT_ID), com.memo.jooq.keys.ORG_UNIT_TENANT_ID_ID_KEY, arrayOf(OrgUnit.ORG_UNIT.TENANT_ID, OrgUnit.ORG_UNIT.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val TENANCY_SETTING__TENANCY_SETTING_TENANT_ID_FKEY: ForeignKey<TenancySettingRecord, TenancyTenantRecord> = Internal.createForeignKey(TenancySetting.TENANCY_SETTING, DSL.name("tenancy_setting_tenant_id_fkey"), arrayOf(TenancySetting.TENANCY_SETTING.TENANT_ID), com.memo.jooq.keys.TENANCY_TENANT_PKEY, arrayOf(TenancyTenant.TENANCY_TENANT.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
+val TENANCY_TERM__TENANCY_TERM_TENANT_ID_FKEY: ForeignKey<TenancyTermRecord, TenancyTenantRecord> = Internal.createForeignKey(TenancyTerm.TENANCY_TERM, DSL.name("tenancy_term_tenant_id_fkey"), arrayOf(TenancyTerm.TENANCY_TERM.TENANT_ID), com.memo.jooq.keys.TENANCY_TENANT_PKEY, arrayOf(TenancyTenant.TENANCY_TENANT.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)

@@ -32,6 +32,88 @@ export type AssignRequest = {
     validTo?: string | null;
 };
 
+/**
+ * One audit entry (ADR-0033).
+ */
+export type AuditEvent = {
+    actingAsId?: string | null;
+    action: string;
+    actorId?: string | null;
+    /**
+     * Display name when the actor is a user of this organisation
+     */
+    actorName?: string | null;
+    /**
+     * USER, SYSTEM, PLATFORM_OPERATOR or ANONYMOUS
+     */
+    actorType: string;
+    after?: {
+        [key: string]: unknown;
+    } | null;
+    before?: {
+        [key: string]: unknown;
+    } | null;
+    clientIp?: string | null;
+    clientUserAgent?: string | null;
+    objectId?: string | null;
+    objectType: string;
+    occurredAt: string;
+    seq: number;
+};
+
+/**
+ * Leave the narrowing fields empty for a chain-continuous export.
+ */
+export type AuditExportRequest = {
+    action?: string | null;
+    actorId?: string | null;
+    from: string;
+    objectId?: string | null;
+    objectType?: string | null;
+    to: string;
+};
+
+export type AuditPage = {
+    items: Array<AuditEvent>;
+    /**
+     * Pass as cursor for older entries; absent on the last page
+     */
+    nextCursor?: number | null;
+};
+
+/**
+ * How the organisation's pages look: name, colours and logo (design E07 §6).
+ */
+export type Branding = {
+    /**
+     * #rrggbb for the dark theme; absent: the default
+     */
+    colourDark?: string | null;
+    /**
+     * #rrggbb for the light theme; absent: the default
+     */
+    colourLight?: string | null;
+    /**
+     * Admin view only: the logo file, for replacing it
+     */
+    logoFileId?: string | null;
+    /**
+     * Present when a logo is set; changes when the logo changes (use in the image URL)
+     */
+    logoVersion?: string | null;
+    organisation: string;
+    version: number;
+};
+
+export type BrandingUpdate = {
+    colourDark?: string | null;
+    colourLight?: string | null;
+    /**
+     * A file uploaded with purpose tenant.logo; absent removes the logo
+     */
+    logoFileId?: string | null;
+};
+
 export type ChangePasswordRequest = {
     currentPassword: string;
     newPassword: string;
@@ -532,6 +614,27 @@ export type PermissionInfo = {
     scopable: boolean;
 };
 
+/**
+ * One entry of the platform chain (ADR-0031, ADR-0033).
+ */
+export type PlatformAuditEvent = {
+    action: string;
+    actorId?: string | null;
+    actorType: string;
+    after?: {
+        [key: string]: unknown;
+    } | null;
+    objectId?: string | null;
+    objectType: string;
+    occurredAt: string;
+    seq: number;
+};
+
+export type PlatformAuditPage = {
+    items: Array<PlatformAuditEvent>;
+    nextCursor?: number | null;
+};
+
 export type PlatformEnrolment = {
     displayName: string;
     /**
@@ -688,6 +791,45 @@ export type RoleRequest = {
     permissions: Array<string>;
 };
 
+export type SecuritySettingLimit = {
+    default: number;
+    field: string;
+    max: number;
+    min: number;
+};
+
+/**
+ * The organisation's sign-in and lockout rules (design E07 §2).
+ */
+export type SecuritySettings = {
+    absoluteHours: number;
+    idleMinutes: number;
+    /**
+     * Failures in a row that lock the account
+     */
+    lockAfter: number;
+    lockMinutes: number;
+    /**
+     * all, or admins (administrators always need MFA)
+     */
+    mfaRequired: string;
+    passwordMinLength: number;
+    stepUpMinutes: number;
+    /**
+     * Failures before each attempt has to wait
+     */
+    throttleAfter: number;
+};
+
+export type SecuritySettingsView = {
+    limits: Array<SecuritySettingLimit>;
+    settings: SecuritySettings;
+    /**
+     * Send back as If-Match
+     */
+    version: number;
+};
+
 /**
  * Who is signed in on this organisation's host, and what they must do next.
  */
@@ -718,6 +860,64 @@ export type StepUpRequest = {
     password?: string | null;
 };
 
+/**
+ * The organisation's default language and time zone.
+ */
+export type TenantPreferences = {
+    /**
+     * en or ar
+     */
+    locale: string;
+    /**
+     * IANA time zone
+     */
+    timeZone: string;
+};
+
+export type TenantPreferencesView = {
+    preferences: TenantPreferences;
+    /**
+     * Send back as If-Match
+     */
+    version: number;
+};
+
+export type Term = {
+    /**
+     * masculine or feminine; required for Arabic
+     */
+    gender?: string | null;
+    /**
+     * Singular, as used mid-sentence
+     */
+    one: string;
+    /**
+     * Plural, as used mid-sentence
+     */
+    other: string;
+    /**
+     * unit, position or memo
+     */
+    term: string;
+};
+
+/**
+ * The organisation's own words for this language; terms not listed use the defaults.
+ */
+export type Terms = {
+    locale: string;
+    terms: Array<Term>;
+    /**
+     * Send back as If-Match
+     */
+    version: number;
+};
+
+export type TermsUpdate = {
+    locale: string;
+    terms: Array<Term>;
+};
+
 export type UnreadCount = {
     count: number;
 };
@@ -731,6 +931,105 @@ export type UserAccess = {
     clearance: ClassificationLevel;
     grants: Array<Grant>;
 };
+
+export type QueryAuditData = {
+    body?: never;
+    path?: never;
+    query?: {
+        from?: string;
+        to?: string;
+        action?: string;
+        actorId?: string;
+        objectType?: string;
+        objectId?: string;
+        cursor?: number;
+        limit?: number;
+    };
+    url: '/api/v1/admin/audit';
+};
+
+export type QueryAuditResponses = {
+    /**
+     * OK
+     */
+    200: AuditPage;
+};
+
+export type QueryAuditResponse = QueryAuditResponses[keyof QueryAuditResponses];
+
+export type ExportAuditData = {
+    body: AuditExportRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/audit/export';
+};
+
+export type ExportAuditErrors = {
+    /**
+     * Invalid range
+     */
+    400: {
+        [key: string]: unknown;
+    };
+    /**
+     * Step-up required
+     */
+    401: {
+        [key: string]: unknown;
+    };
+    /**
+     * Too many exports
+     */
+    429: {
+        [key: string]: unknown;
+    };
+};
+
+export type ExportAuditError = ExportAuditErrors[keyof ExportAuditErrors];
+
+export type ExportAuditResponses = {
+    /**
+     * The ZIP
+     */
+    200: Blob | File;
+};
+
+export type ExportAuditResponse = ExportAuditResponses[keyof ExportAuditResponses];
+
+export type GetAdminBrandingData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/branding';
+};
+
+export type GetAdminBrandingResponses = {
+    /**
+     * OK
+     */
+    200: Branding;
+};
+
+export type GetAdminBrandingResponse = GetAdminBrandingResponses[keyof GetAdminBrandingResponses];
+
+export type UpdateBrandingData = {
+    body: BrandingUpdate;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/branding';
+};
+
+export type UpdateBrandingErrors = {
+    /**
+     * Not a colour, too little contrast (with the ratio), or not a logo file
+     */
+    400: Branding;
+};
+
+export type UpdateBrandingError = UpdateBrandingErrors[keyof UpdateBrandingErrors];
 
 export type GetMailLogData = {
     body?: never;
@@ -815,6 +1114,118 @@ export type TestMailSettingsResponses = {
 };
 
 export type TestMailSettingsResponse = TestMailSettingsResponses[keyof TestMailSettingsResponses];
+
+export type GetTenantPreferencesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/preferences';
+};
+
+export type GetTenantPreferencesResponses = {
+    /**
+     * OK
+     */
+    200: TenantPreferencesView;
+};
+
+export type GetTenantPreferencesResponse = GetTenantPreferencesResponses[keyof GetTenantPreferencesResponses];
+
+export type UpdateTenantPreferencesData = {
+    body: TenantPreferences;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/preferences';
+};
+
+export type UpdateTenantPreferencesResponses = {
+    /**
+     * OK
+     */
+    200: TenantPreferencesView;
+};
+
+export type UpdateTenantPreferencesResponse = UpdateTenantPreferencesResponses[keyof UpdateTenantPreferencesResponses];
+
+export type GetSecuritySettingsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/security-settings';
+};
+
+export type GetSecuritySettingsResponses = {
+    /**
+     * OK
+     */
+    200: SecuritySettingsView;
+};
+
+export type GetSecuritySettingsResponse = GetSecuritySettingsResponses[keyof GetSecuritySettingsResponses];
+
+export type UpdateSecuritySettingsData = {
+    body: SecuritySettings;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/security-settings';
+};
+
+export type UpdateSecuritySettingsErrors = {
+    /**
+     * A value is outside its range
+     */
+    400: {
+        [key: string]: unknown;
+    };
+    /**
+     * Step-up required
+     */
+    401: {
+        [key: string]: unknown;
+    };
+    /**
+     * Changed meanwhile
+     */
+    409: {
+        [key: string]: unknown;
+    };
+};
+
+export type UpdateSecuritySettingsError = UpdateSecuritySettingsErrors[keyof UpdateSecuritySettingsErrors];
+
+export type UpdateSecuritySettingsResponses = {
+    /**
+     * OK
+     */
+    200: SecuritySettingsView;
+};
+
+export type UpdateSecuritySettingsResponse = UpdateSecuritySettingsResponses[keyof UpdateSecuritySettingsResponses];
+
+export type UpdateTermsData = {
+    body: TermsUpdate;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/terms';
+};
+
+export type UpdateTermsResponses = {
+    /**
+     * OK
+     */
+    200: Terms;
+};
+
+export type UpdateTermsResponse = UpdateTermsResponses[keyof UpdateTermsResponses];
 
 export type ListUsersData = {
     body?: never;
@@ -1504,6 +1915,43 @@ export type GrantRoleResponses = {
 };
 
 export type GrantRoleResponse = GrantRoleResponses[keyof GrantRoleResponses];
+
+export type GetBrandingData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/branding';
+};
+
+export type GetBrandingResponses = {
+    /**
+     * OK
+     */
+    200: Branding;
+};
+
+export type GetBrandingResponse = GetBrandingResponses[keyof GetBrandingResponses];
+
+export type GetBrandingLogoData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/branding/logo';
+};
+
+export type GetBrandingLogoErrors = {
+    /**
+     * No logo
+     */
+    404: unknown;
+};
+
+export type GetBrandingLogoResponses = {
+    /**
+     * PNG, JPEG or WebP
+     */
+    200: unknown;
+};
 
 export type SearchDirectoryData = {
     body?: never;
@@ -2357,6 +2805,28 @@ export type ListUserAssignmentsResponses = {
 
 export type ListUserAssignmentsResponse = ListUserAssignmentsResponses[keyof ListUserAssignmentsResponses];
 
+export type QueryPlatformAuditData = {
+    body?: never;
+    path?: never;
+    query?: {
+        from?: string;
+        to?: string;
+        action?: string;
+        cursor?: number;
+        limit?: number;
+    };
+    url: '/api/v1/platform/audit';
+};
+
+export type QueryPlatformAuditResponses = {
+    /**
+     * OK
+     */
+    200: PlatformAuditPage;
+};
+
+export type QueryPlatformAuditResponse = QueryPlatformAuditResponses[keyof QueryPlatformAuditResponses];
+
 export type GetPlatformCsrfTokenData = {
     body?: never;
     path?: never;
@@ -2391,11 +2861,9 @@ export type AcceptPlatformEnrolmentError = AcceptPlatformEnrolmentErrors[keyof A
 
 export type AcceptPlatformEnrolmentResponses = {
     /**
-     * Password set; signed in with the password
+     * OK
      */
-    200: {
-        [key: string]: unknown;
-    };
+    200: PlatformSession;
 };
 
 export type AcceptPlatformEnrolmentResponse = AcceptPlatformEnrolmentResponses[keyof AcceptPlatformEnrolmentResponses];
@@ -2444,9 +2912,7 @@ export type PlatformLoginResponses = {
     /**
      * Password accepted; TOTP or enrolment follows
      */
-    200: {
-        [key: string]: unknown;
-    };
+    200: PlatformSession;
 };
 
 export type PlatformLoginResponse = PlatformLoginResponses[keyof PlatformLoginResponses];
@@ -2487,11 +2953,9 @@ export type VerifyPlatformMfaError = VerifyPlatformMfaErrors[keyof VerifyPlatfor
 
 export type VerifyPlatformMfaResponses = {
     /**
-     * Signed in
+     * OK
      */
-    200: {
-        [key: string]: unknown;
-    };
+    200: PlatformSession;
 };
 
 export type VerifyPlatformMfaResponse = VerifyPlatformMfaResponses[keyof VerifyPlatformMfaResponses];
@@ -2514,6 +2978,15 @@ export type StartPlatformMfaEnrolmentErrors = {
 
 export type StartPlatformMfaEnrolmentError = StartPlatformMfaEnrolmentErrors[keyof StartPlatformMfaEnrolmentErrors];
 
+export type StartPlatformMfaEnrolmentResponses = {
+    /**
+     * OK
+     */
+    200: MfaEnrolment;
+};
+
+export type StartPlatformMfaEnrolmentResponse = StartPlatformMfaEnrolmentResponses[keyof StartPlatformMfaEnrolmentResponses];
+
 export type ConfirmPlatformMfaEnrolmentData = {
     body: CodeRequest;
     path?: never;
@@ -2531,6 +3004,15 @@ export type ConfirmPlatformMfaEnrolmentErrors = {
 };
 
 export type ConfirmPlatformMfaEnrolmentError = ConfirmPlatformMfaEnrolmentErrors[keyof ConfirmPlatformMfaEnrolmentErrors];
+
+export type ConfirmPlatformMfaEnrolmentResponses = {
+    /**
+     * OK
+     */
+    200: PlatformSession;
+};
+
+export type ConfirmPlatformMfaEnrolmentResponse = ConfirmPlatformMfaEnrolmentResponses[keyof ConfirmPlatformMfaEnrolmentResponses];
 
 export type GetPlatformSessionData = {
     body?: never;
@@ -2565,6 +3047,15 @@ export type PlatformStepUpErrors = {
 };
 
 export type PlatformStepUpError = PlatformStepUpErrors[keyof PlatformStepUpErrors];
+
+export type PlatformStepUpResponses = {
+    /**
+     * OK
+     */
+    200: PlatformSession;
+};
+
+export type PlatformStepUpResponse = PlatformStepUpResponses[keyof PlatformStepUpResponses];
 
 export type ListPlatformTenantsData = {
     body?: never;
@@ -2614,9 +3105,7 @@ export type CreatePlatformTenantResponses = {
     /**
      * Created; the invitation mail is queued
      */
-    201: {
-        [key: string]: unknown;
-    };
+    201: PlatformTenant;
 };
 
 export type CreatePlatformTenantResponse = CreatePlatformTenantResponses[keyof CreatePlatformTenantResponses];
@@ -2655,9 +3144,7 @@ export type RenamePlatformTenantResponses = {
     /**
      * OK
      */
-    200: {
-        [key: string]: unknown;
-    };
+    200: PlatformTenant;
 };
 
 export type RenamePlatformTenantResponse = RenamePlatformTenantResponses[keyof RenamePlatformTenantResponses];
@@ -2709,9 +3196,7 @@ export type ResumePlatformTenantResponses = {
     /**
      * OK
      */
-    200: {
-        [key: string]: unknown;
-    };
+    200: PlatformTenant;
 };
 
 export type ResumePlatformTenantResponse = ResumePlatformTenantResponses[keyof ResumePlatformTenantResponses];
@@ -2732,9 +3217,25 @@ export type SuspendPlatformTenantResponses = {
     /**
      * OK
      */
-    200: {
-        [key: string]: unknown;
-    };
+    200: PlatformTenant;
 };
 
 export type SuspendPlatformTenantResponse = SuspendPlatformTenantResponses[keyof SuspendPlatformTenantResponses];
+
+export type GetTermsData = {
+    body?: never;
+    path?: never;
+    query: {
+        locale: string;
+    };
+    url: '/api/v1/terms';
+};
+
+export type GetTermsResponses = {
+    /**
+     * OK
+     */
+    200: Terms;
+};
+
+export type GetTermsResponse = GetTermsResponses[keyof GetTermsResponses];

@@ -109,6 +109,9 @@ class SecurityConfig {
                 "/api/v1/auth/password-reset/complete",
                 "/api/v1/auth/invitations/lookup",
                 "/api/v1/auth/invitations/accept",
+                // Branding for the sign-in page (E07).
+                "/api/v1/branding",
+                "/api/v1/branding/logo",
             )
     }
 }

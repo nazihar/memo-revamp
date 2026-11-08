@@ -39,6 +39,7 @@ import com.memo.jooq.tables.SystemInfo
 import com.memo.jooq.tables.TenancySetting
 import com.memo.jooq.tables.TenancySettingView
 import com.memo.jooq.tables.TenancyTenant
+import com.memo.jooq.tables.TenancyTerm
 
 import kotlin.collections.List
 
@@ -237,6 +238,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      */
     val TENANCY_TENANT: TenancyTenant get() = TenancyTenant.TENANCY_TENANT
 
+    /**
+     * The table <code>memo.tenancy_term</code>.
+     */
+    val TENANCY_TERM: TenancyTerm get() = TenancyTerm.TENANCY_TERM
+
     override fun getCatalog(): Catalog = DefaultCatalog.DEFAULT_CATALOG
 
     override fun getTables(): List<Table<*>> = listOf(
@@ -274,6 +280,7 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         SystemInfo.SYSTEM_INFO,
         TenancySetting.TENANCY_SETTING,
         TenancySettingView.TENANCY_SETTING_VIEW,
-        TenancyTenant.TENANCY_TENANT
+        TenancyTenant.TENANCY_TENANT,
+        TenancyTerm.TENANCY_TERM
     )
 }

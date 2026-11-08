@@ -27,6 +27,7 @@ import com.memo.jooq.tables.OrgReportingLine
 import com.memo.jooq.tables.OrgUnit
 import com.memo.jooq.tables.SystemIdempotencyKey
 import com.memo.jooq.tables.TenancySetting
+import com.memo.jooq.tables.TenancyTerm
 
 import org.jooq.Index
 import org.jooq.impl.DSL
@@ -74,3 +75,4 @@ val ORG_UNIT_TENANT_ENTITY_IDX: Index = Internal.createIndex(DSL.name("org_unit_
 val ORG_UNIT_TENANT_PARENT_IDX: Index = Internal.createIndex(DSL.name("org_unit_tenant_parent_idx"), OrgUnit.ORG_UNIT, arrayOf(OrgUnit.ORG_UNIT.TENANT_ID, OrgUnit.ORG_UNIT.PARENT_ID), false)
 val SYSTEM_IDEMPOTENCY_KEY_TENANT_CREATED_IDX: Index = Internal.createIndex(DSL.name("system_idempotency_key_tenant_created_idx"), SystemIdempotencyKey.SYSTEM_IDEMPOTENCY_KEY, arrayOf(SystemIdempotencyKey.SYSTEM_IDEMPOTENCY_KEY.TENANT_ID, SystemIdempotencyKey.SYSTEM_IDEMPOTENCY_KEY.CREATED_AT), false)
 val TENANCY_SETTING_TENANT_KEY_UK: Index = Internal.createIndex(DSL.name("tenancy_setting_tenant_key_uk"), TenancySetting.TENANCY_SETTING, arrayOf(TenancySetting.TENANCY_SETTING.TENANT_ID, TenancySetting.TENANCY_SETTING.KEY), true)
+val TENANCY_TERM_TENANT_TERM_LOCALE_UK: Index = Internal.createIndex(DSL.name("tenancy_term_tenant_term_locale_uk"), TenancyTerm.TENANCY_TERM, arrayOf(TenancyTerm.TENANCY_TERM.TENANT_ID, TenancyTerm.TENANCY_TERM.TERM, TenancyTerm.TENANCY_TERM.LOCALE), true)

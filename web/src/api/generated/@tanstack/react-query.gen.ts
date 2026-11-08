@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { acceptInvitation, acceptPlatformEnrolment, assignPosition, cancelAssignment, cancelReportingLine, changeMyPassword, closeLegalEntity, closeOrgUnit, closePosition, completePasswordReset, confirmMfaEnrolment, confirmPlatformMfaEnrolment, createClassificationLevel, createLegalEntity, createOrgUnit, createPlatformTenant, createPosition, createReportingLine, createRole, deactivateUser, deleteClassificationLevel, deleteRole, getCsrfToken, getFile, getFileContent, getFileVersionContent, getHealth, getMailLog, getMailSettings, getMe, getMyAccess, getMyNotificationPreferences, getMyUnreadCount, getOrgHistory, getOrgUnit, getPlatformCsrfToken, getPlatformSession, getPlatformTenant, getPosition, getPositionHolder, getSession, getUser, getUserAccess, grantRole, invitePlatformTenantFirstAdmin, inviteUser, listClassificationLevels, listLegalEntities, listMyNotifications, listMySessions, listOrgUnits, listPermissions, listPlatformTenants, listRoles, listUnitPositions, listUserAssignments, listUsers, login, logout, lookUpInvitation, lookUpPlatformEnrolment, markAllNotificationsRead, markNotificationRead, moveOrgUnit, type Options, platformLogin, platformLogout, platformStepUp, reactivateUser, regenerateMyRecoveryCodes, removeMailSettings, renameClassificationLevel, renamePlatformTenant, reorderClassificationLevels, requestPasswordReset, resetUserMfa, resumePlatformTenant, revokeGrant, revokeMySession, revokeUserSessions, searchDirectory, setClearance, setMailSettings, setMyNotificationPreferences, startMfaEnrolment, startPlatformMfaEnrolment, stepUp, suspendPlatformTenant, testMailSettings, unlockUser, updateAssignment, updateLegalEntity, updateOrgUnit, updatePosition, updateReportingLine, updateRole, uploadFile, uploadFileVersion, verifyMfa, verifyPlatformMfa } from '../sdk.gen';
-import type { AcceptInvitationData, AcceptInvitationError, AcceptInvitationResponse, AcceptPlatformEnrolmentData, AcceptPlatformEnrolmentError, AcceptPlatformEnrolmentResponse, AssignPositionData, AssignPositionResponse, CancelAssignmentData, CancelAssignmentResponse, CancelReportingLineData, CancelReportingLineResponse, ChangeMyPasswordData, ChangeMyPasswordError, ChangeMyPasswordResponse, CloseLegalEntityData, CloseLegalEntityResponse, CloseOrgUnitData, CloseOrgUnitResponse, ClosePositionData, ClosePositionResponse, CompletePasswordResetData, CompletePasswordResetError, CompletePasswordResetResponse, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentError, ConfirmMfaEnrolmentResponse, ConfirmPlatformMfaEnrolmentData, ConfirmPlatformMfaEnrolmentError, CreateClassificationLevelData, CreateClassificationLevelResponse, CreateLegalEntityData, CreateLegalEntityResponse, CreateOrgUnitData, CreateOrgUnitResponse, CreatePlatformTenantData, CreatePlatformTenantError, CreatePlatformTenantResponse, CreatePositionData, CreatePositionResponse, CreateReportingLineData, CreateReportingLineResponse, CreateRoleData, CreateRoleResponse, DeactivateUserData, DeactivateUserResponse, DeleteClassificationLevelData, DeleteRoleData, GetCsrfTokenData, GetCsrfTokenResponse, GetFileContentData, GetFileData, GetFileResponse, GetFileVersionContentData, GetHealthData, GetHealthError, GetHealthResponse, GetMailLogData, GetMailLogResponse, GetMailSettingsData, GetMailSettingsResponse, GetMeData, GetMeResponse, GetMyAccessData, GetMyAccessResponse, GetMyNotificationPreferencesData, GetMyNotificationPreferencesResponse, GetMyUnreadCountData, GetMyUnreadCountResponse, GetOrgHistoryData, GetOrgHistoryResponse, GetOrgUnitData, GetOrgUnitResponse, GetPlatformCsrfTokenData, GetPlatformCsrfTokenResponse, GetPlatformSessionData, GetPlatformSessionResponse, GetPlatformTenantData, GetPlatformTenantResponse, GetPositionData, GetPositionHolderData, GetPositionHolderResponse, GetPositionResponse, GetSessionData, GetSessionResponse, GetUserAccessData, GetUserAccessResponse, GetUserData, GetUserResponse, GrantRoleData, GrantRoleResponse, InvitePlatformTenantFirstAdminData, InvitePlatformTenantFirstAdminError, InvitePlatformTenantFirstAdminResponse, InviteUserData, InviteUserError, InviteUserResponse, ListClassificationLevelsData, ListClassificationLevelsResponse, ListLegalEntitiesData, ListLegalEntitiesResponse, ListMyNotificationsData, ListMyNotificationsResponse, ListMySessionsData, ListMySessionsResponse, ListOrgUnitsData, ListOrgUnitsResponse, ListPermissionsData, ListPermissionsResponse, ListPlatformTenantsData, ListPlatformTenantsResponse, ListRolesData, ListRolesResponse, ListUnitPositionsData, ListUnitPositionsResponse, ListUserAssignmentsData, ListUserAssignmentsResponse, ListUsersData, ListUsersResponse, LoginData, LoginError, LoginResponse, LogoutData, LogoutResponse, LookUpInvitationData, LookUpInvitationError, LookUpInvitationResponse, LookUpPlatformEnrolmentData, LookUpPlatformEnrolmentError, MarkAllNotificationsReadData, MarkNotificationReadData, MoveOrgUnitData, MoveOrgUnitResponse, PlatformLoginData, PlatformLoginError, PlatformLoginResponse, PlatformLogoutData, PlatformLogoutResponse, PlatformStepUpData, PlatformStepUpError, ReactivateUserData, ReactivateUserResponse, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesResponse, RemoveMailSettingsData, RenameClassificationLevelData, RenameClassificationLevelResponse, RenamePlatformTenantData, RenamePlatformTenantResponse, ReorderClassificationLevelsData, ReorderClassificationLevelsResponse, RequestPasswordResetData, ResetUserMfaData, ResetUserMfaResponse, ResumePlatformTenantData, ResumePlatformTenantResponse, RevokeGrantData, RevokeMySessionData, RevokeMySessionResponse, RevokeUserSessionsData, RevokeUserSessionsResponse, SearchDirectoryData, SearchDirectoryResponse, SetClearanceData, SetClearanceResponse, SetMailSettingsData, SetMailSettingsResponse, SetMyNotificationPreferencesData, SetMyNotificationPreferencesResponse, StartMfaEnrolmentData, StartMfaEnrolmentResponse, StartPlatformMfaEnrolmentData, StartPlatformMfaEnrolmentError, StepUpData, StepUpError, StepUpResponse, SuspendPlatformTenantData, SuspendPlatformTenantResponse, TestMailSettingsData, TestMailSettingsResponse, UnlockUserData, UnlockUserResponse, UpdateAssignmentData, UpdateAssignmentResponse, UpdateLegalEntityData, UpdateLegalEntityResponse, UpdateOrgUnitData, UpdateOrgUnitResponse, UpdatePositionData, UpdatePositionResponse, UpdateReportingLineData, UpdateReportingLineResponse, UpdateRoleData, UpdateRoleResponse, UploadFileData, UploadFileResponse, UploadFileVersionData, UploadFileVersionResponse, VerifyMfaData, VerifyMfaError, VerifyMfaResponse, VerifyPlatformMfaData, VerifyPlatformMfaError, VerifyPlatformMfaResponse } from '../types.gen';
+import { acceptInvitation, acceptPlatformEnrolment, assignPosition, cancelAssignment, cancelReportingLine, changeMyPassword, closeLegalEntity, closeOrgUnit, closePosition, completePasswordReset, confirmMfaEnrolment, confirmPlatformMfaEnrolment, createClassificationLevel, createLegalEntity, createOrgUnit, createPlatformTenant, createPosition, createReportingLine, createRole, deactivateUser, deleteClassificationLevel, deleteRole, exportAudit, getAdminBranding, getBranding, getBrandingLogo, getCsrfToken, getFile, getFileContent, getFileVersionContent, getHealth, getMailLog, getMailSettings, getMe, getMyAccess, getMyNotificationPreferences, getMyUnreadCount, getOrgHistory, getOrgUnit, getPlatformCsrfToken, getPlatformSession, getPlatformTenant, getPosition, getPositionHolder, getSecuritySettings, getSession, getTenantPreferences, getTerms, getUser, getUserAccess, grantRole, invitePlatformTenantFirstAdmin, inviteUser, listClassificationLevels, listLegalEntities, listMyNotifications, listMySessions, listOrgUnits, listPermissions, listPlatformTenants, listRoles, listUnitPositions, listUserAssignments, listUsers, login, logout, lookUpInvitation, lookUpPlatformEnrolment, markAllNotificationsRead, markNotificationRead, moveOrgUnit, type Options, platformLogin, platformLogout, platformStepUp, queryAudit, queryPlatformAudit, reactivateUser, regenerateMyRecoveryCodes, removeMailSettings, renameClassificationLevel, renamePlatformTenant, reorderClassificationLevels, requestPasswordReset, resetUserMfa, resumePlatformTenant, revokeGrant, revokeMySession, revokeUserSessions, searchDirectory, setClearance, setMailSettings, setMyNotificationPreferences, startMfaEnrolment, startPlatformMfaEnrolment, stepUp, suspendPlatformTenant, testMailSettings, unlockUser, updateAssignment, updateBranding, updateLegalEntity, updateOrgUnit, updatePosition, updateReportingLine, updateRole, updateSecuritySettings, updateTenantPreferences, updateTerms, uploadFile, uploadFileVersion, verifyMfa, verifyPlatformMfa } from '../sdk.gen';
+import type { AcceptInvitationData, AcceptInvitationError, AcceptInvitationResponse, AcceptPlatformEnrolmentData, AcceptPlatformEnrolmentError, AcceptPlatformEnrolmentResponse, AssignPositionData, AssignPositionResponse, CancelAssignmentData, CancelAssignmentResponse, CancelReportingLineData, CancelReportingLineResponse, ChangeMyPasswordData, ChangeMyPasswordError, ChangeMyPasswordResponse, CloseLegalEntityData, CloseLegalEntityResponse, CloseOrgUnitData, CloseOrgUnitResponse, ClosePositionData, ClosePositionResponse, CompletePasswordResetData, CompletePasswordResetError, CompletePasswordResetResponse, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentError, ConfirmMfaEnrolmentResponse, ConfirmPlatformMfaEnrolmentData, ConfirmPlatformMfaEnrolmentError, ConfirmPlatformMfaEnrolmentResponse, CreateClassificationLevelData, CreateClassificationLevelResponse, CreateLegalEntityData, CreateLegalEntityResponse, CreateOrgUnitData, CreateOrgUnitResponse, CreatePlatformTenantData, CreatePlatformTenantError, CreatePlatformTenantResponse, CreatePositionData, CreatePositionResponse, CreateReportingLineData, CreateReportingLineResponse, CreateRoleData, CreateRoleResponse, DeactivateUserData, DeactivateUserResponse, DeleteClassificationLevelData, DeleteRoleData, ExportAuditData, ExportAuditError, ExportAuditResponse, GetAdminBrandingData, GetAdminBrandingResponse, GetBrandingData, GetBrandingLogoData, GetBrandingResponse, GetCsrfTokenData, GetCsrfTokenResponse, GetFileContentData, GetFileData, GetFileResponse, GetFileVersionContentData, GetHealthData, GetHealthError, GetHealthResponse, GetMailLogData, GetMailLogResponse, GetMailSettingsData, GetMailSettingsResponse, GetMeData, GetMeResponse, GetMyAccessData, GetMyAccessResponse, GetMyNotificationPreferencesData, GetMyNotificationPreferencesResponse, GetMyUnreadCountData, GetMyUnreadCountResponse, GetOrgHistoryData, GetOrgHistoryResponse, GetOrgUnitData, GetOrgUnitResponse, GetPlatformCsrfTokenData, GetPlatformCsrfTokenResponse, GetPlatformSessionData, GetPlatformSessionResponse, GetPlatformTenantData, GetPlatformTenantResponse, GetPositionData, GetPositionHolderData, GetPositionHolderResponse, GetPositionResponse, GetSecuritySettingsData, GetSecuritySettingsResponse, GetSessionData, GetSessionResponse, GetTenantPreferencesData, GetTenantPreferencesResponse, GetTermsData, GetTermsResponse, GetUserAccessData, GetUserAccessResponse, GetUserData, GetUserResponse, GrantRoleData, GrantRoleResponse, InvitePlatformTenantFirstAdminData, InvitePlatformTenantFirstAdminError, InvitePlatformTenantFirstAdminResponse, InviteUserData, InviteUserError, InviteUserResponse, ListClassificationLevelsData, ListClassificationLevelsResponse, ListLegalEntitiesData, ListLegalEntitiesResponse, ListMyNotificationsData, ListMyNotificationsResponse, ListMySessionsData, ListMySessionsResponse, ListOrgUnitsData, ListOrgUnitsResponse, ListPermissionsData, ListPermissionsResponse, ListPlatformTenantsData, ListPlatformTenantsResponse, ListRolesData, ListRolesResponse, ListUnitPositionsData, ListUnitPositionsResponse, ListUserAssignmentsData, ListUserAssignmentsResponse, ListUsersData, ListUsersResponse, LoginData, LoginError, LoginResponse, LogoutData, LogoutResponse, LookUpInvitationData, LookUpInvitationError, LookUpInvitationResponse, LookUpPlatformEnrolmentData, LookUpPlatformEnrolmentError, MarkAllNotificationsReadData, MarkNotificationReadData, MoveOrgUnitData, MoveOrgUnitResponse, PlatformLoginData, PlatformLoginError, PlatformLoginResponse, PlatformLogoutData, PlatformLogoutResponse, PlatformStepUpData, PlatformStepUpError, PlatformStepUpResponse, QueryAuditData, QueryAuditResponse, QueryPlatformAuditData, QueryPlatformAuditResponse, ReactivateUserData, ReactivateUserResponse, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesResponse, RemoveMailSettingsData, RenameClassificationLevelData, RenameClassificationLevelResponse, RenamePlatformTenantData, RenamePlatformTenantResponse, ReorderClassificationLevelsData, ReorderClassificationLevelsResponse, RequestPasswordResetData, ResetUserMfaData, ResetUserMfaResponse, ResumePlatformTenantData, ResumePlatformTenantResponse, RevokeGrantData, RevokeMySessionData, RevokeMySessionResponse, RevokeUserSessionsData, RevokeUserSessionsResponse, SearchDirectoryData, SearchDirectoryResponse, SetClearanceData, SetClearanceResponse, SetMailSettingsData, SetMailSettingsResponse, SetMyNotificationPreferencesData, SetMyNotificationPreferencesResponse, StartMfaEnrolmentData, StartMfaEnrolmentResponse, StartPlatformMfaEnrolmentData, StartPlatformMfaEnrolmentError, StartPlatformMfaEnrolmentResponse, StepUpData, StepUpError, StepUpResponse, SuspendPlatformTenantData, SuspendPlatformTenantResponse, TestMailSettingsData, TestMailSettingsResponse, UnlockUserData, UnlockUserResponse, UpdateAssignmentData, UpdateAssignmentResponse, UpdateBrandingData, UpdateBrandingError, UpdateLegalEntityData, UpdateLegalEntityResponse, UpdateOrgUnitData, UpdateOrgUnitResponse, UpdatePositionData, UpdatePositionResponse, UpdateReportingLineData, UpdateReportingLineResponse, UpdateRoleData, UpdateRoleResponse, UpdateSecuritySettingsData, UpdateSecuritySettingsError, UpdateSecuritySettingsResponse, UpdateTenantPreferencesData, UpdateTenantPreferencesResponse, UpdateTermsData, UpdateTermsResponse, UploadFileData, UploadFileResponse, UploadFileVersionData, UploadFileVersionResponse, VerifyMfaData, VerifyMfaError, VerifyMfaResponse, VerifyPlatformMfaData, VerifyPlatformMfaError, VerifyPlatformMfaResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -39,14 +39,14 @@ const createQueryKey = <TOptions extends Options>(id: string, options?: TOptions
     return [params];
 };
 
-export const getMailLogQueryKey = (options?: Options<GetMailLogData>) => createQueryKey('getMailLog', options);
+export const queryAuditQueryKey = (options?: Options<QueryAuditData>) => createQueryKey('queryAudit', options);
 
 /**
- * Delivery log of the organisation's emails, newest first
+ * Audit entries, newest first (default: the last 7 days; at most a year)
  */
-export const getMailLogOptions = (options?: Options<GetMailLogData>) => queryOptions<GetMailLogResponse, DefaultError, GetMailLogResponse, ReturnType<typeof getMailLogQueryKey>>({
+export const queryAuditOptions = (options?: Options<QueryAuditData>) => queryOptions<QueryAuditResponse, DefaultError, QueryAuditResponse, ReturnType<typeof queryAuditQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
-        const { data } = await getMailLog({
+        const { data } = await queryAudit({
             ...options,
             ...queryKey[0],
             signal,
@@ -54,7 +54,7 @@ export const getMailLogOptions = (options?: Options<GetMailLogData>) => queryOpt
         });
         return data;
     },
-    queryKey: getMailLogQueryKey(options)
+    queryKey: queryAuditQueryKey(options)
 });
 
 const createInfiniteParams = <K extends Pick<QueryKey<Options>[0], 'body' | 'headers' | 'path' | 'query'>>(queryKey: QueryKey<Options>, page: K) => {
@@ -85,6 +85,106 @@ const createInfiniteParams = <K extends Pick<QueryKey<Options>[0], 'body' | 'hea
     }
     return params as unknown as typeof page;
 };
+
+export const queryAuditInfiniteQueryKey = (options?: Options<QueryAuditData>): QueryKey<Options<QueryAuditData>> => createQueryKey('queryAudit', options, true);
+
+/**
+ * Audit entries, newest first (default: the last 7 days; at most a year)
+ */
+export const queryAuditInfiniteOptions = (options?: Options<QueryAuditData>) => {
+    const opts = infiniteQueryOptions<QueryAuditResponse, DefaultError, InfiniteData<QueryAuditResponse>, QueryKey<Options<QueryAuditData>>, number | Pick<QueryKey<Options<QueryAuditData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+    // @ts-ignore
+    {
+        queryFn: async ({ pageParam, queryKey, signal }) => {
+            // @ts-ignore
+            const page: Pick<QueryKey<Options<QueryAuditData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
+                query: {
+                    cursor: pageParam
+                }
+            };
+            const params = createInfiniteParams(queryKey, page);
+            const { data } = await queryAudit({
+                ...options,
+                ...params,
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: queryAuditInfiniteQueryKey(options)
+    });
+    return opts as Omit<typeof opts, 'initialData'>;
+};
+
+/**
+ * Verifiable export: ZIP with events, manifest and verification steps (step-up; 5 per hour)
+ */
+export const exportAuditMutation = (options?: Partial<Options<ExportAuditData>>): UseMutationOptions<ExportAuditResponse, ExportAuditError, Options<ExportAuditData>> => {
+    const mutationOptions: UseMutationOptions<ExportAuditResponse, ExportAuditError, Options<ExportAuditData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await exportAudit({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const getAdminBrandingQueryKey = (options?: Options<GetAdminBrandingData>) => createQueryKey('getAdminBranding', options);
+
+/**
+ * Colours and logo file, for editing
+ */
+export const getAdminBrandingOptions = (options?: Options<GetAdminBrandingData>) => queryOptions<GetAdminBrandingResponse, DefaultError, GetAdminBrandingResponse, ReturnType<typeof getAdminBrandingQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getAdminBranding({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getAdminBrandingQueryKey(options)
+});
+
+/**
+ * Change colours and logo (If-Match); colours must keep their contrast
+ */
+export const updateBrandingMutation = (options?: Partial<Options<UpdateBrandingData>>): UseMutationOptions<unknown, UpdateBrandingError, Options<UpdateBrandingData>> => {
+    const mutationOptions: UseMutationOptions<unknown, UpdateBrandingError, Options<UpdateBrandingData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await updateBranding({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const getMailLogQueryKey = (options?: Options<GetMailLogData>) => createQueryKey('getMailLog', options);
+
+/**
+ * Delivery log of the organisation's emails, newest first
+ */
+export const getMailLogOptions = (options?: Options<GetMailLogData>) => queryOptions<GetMailLogResponse, DefaultError, GetMailLogResponse, ReturnType<typeof getMailLogQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getMailLog({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getMailLogQueryKey(options)
+});
 
 export const getMailLogInfiniteQueryKey = (options?: Options<GetMailLogData>): QueryKey<Options<GetMailLogData>> => createQueryKey('getMailLog', options, true);
 
@@ -175,6 +275,93 @@ export const testMailSettingsMutation = (options?: Partial<Options<TestMailSetti
     const mutationOptions: UseMutationOptions<TestMailSettingsResponse, DefaultError, Options<TestMailSettingsData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await testMailSettings({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const getTenantPreferencesQueryKey = (options?: Options<GetTenantPreferencesData>) => createQueryKey('getTenantPreferences', options);
+
+/**
+ * Default language and time zone
+ */
+export const getTenantPreferencesOptions = (options?: Options<GetTenantPreferencesData>) => queryOptions<GetTenantPreferencesResponse, DefaultError, GetTenantPreferencesResponse, ReturnType<typeof getTenantPreferencesQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getTenantPreferences({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getTenantPreferencesQueryKey(options)
+});
+
+/**
+ * Change the default language and time zone (If-Match)
+ */
+export const updateTenantPreferencesMutation = (options?: Partial<Options<UpdateTenantPreferencesData>>): UseMutationOptions<UpdateTenantPreferencesResponse, DefaultError, Options<UpdateTenantPreferencesData>> => {
+    const mutationOptions: UseMutationOptions<UpdateTenantPreferencesResponse, DefaultError, Options<UpdateTenantPreferencesData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await updateTenantPreferences({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const getSecuritySettingsQueryKey = (options?: Options<GetSecuritySettingsData>) => createQueryKey('getSecuritySettings', options);
+
+/**
+ * Security settings with their allowed ranges
+ */
+export const getSecuritySettingsOptions = (options?: Options<GetSecuritySettingsData>) => queryOptions<GetSecuritySettingsResponse, DefaultError, GetSecuritySettingsResponse, ReturnType<typeof getSecuritySettingsQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getSecuritySettings({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getSecuritySettingsQueryKey(options)
+});
+
+/**
+ * Change security settings (If-Match, step-up)
+ */
+export const updateSecuritySettingsMutation = (options?: Partial<Options<UpdateSecuritySettingsData>>): UseMutationOptions<UpdateSecuritySettingsResponse, UpdateSecuritySettingsError, Options<UpdateSecuritySettingsData>> => {
+    const mutationOptions: UseMutationOptions<UpdateSecuritySettingsResponse, UpdateSecuritySettingsError, Options<UpdateSecuritySettingsData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await updateSecuritySettings({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Replace a language's terms; terms left out go back to the defaults (If-Match)
+ */
+export const updateTermsMutation = (options?: Partial<Options<UpdateTermsData>>): UseMutationOptions<UpdateTermsResponse, DefaultError, Options<UpdateTermsData>> => {
+    const mutationOptions: UseMutationOptions<UpdateTermsResponse, DefaultError, Options<UpdateTermsData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await updateTerms({
                 ...options,
                 ...fnOptions,
                 throwOnError: true
@@ -832,6 +1019,42 @@ export const grantRoleMutation = (options?: Partial<Options<GrantRoleData>>): Us
     };
     return mutationOptions;
 };
+
+export const getBrandingQueryKey = (options?: Options<GetBrandingData>) => createQueryKey('getBranding', options);
+
+/**
+ * The organisation's name, colours and logo version
+ */
+export const getBrandingOptions = (options?: Options<GetBrandingData>) => queryOptions<GetBrandingResponse, DefaultError, GetBrandingResponse, ReturnType<typeof getBrandingQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getBranding({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getBrandingQueryKey(options)
+});
+
+export const getBrandingLogoQueryKey = (options?: Options<GetBrandingLogoData>) => createQueryKey('getBrandingLogo', options);
+
+/**
+ * The organisation's logo
+ */
+export const getBrandingLogoOptions = (options?: Options<GetBrandingLogoData>) => queryOptions<unknown, DefaultError, unknown, ReturnType<typeof getBrandingLogoQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getBrandingLogo({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getBrandingLogoQueryKey(options)
+});
 
 export const searchDirectoryQueryKey = (options: Options<SearchDirectoryData>) => createQueryKey('searchDirectory', options);
 
@@ -1653,6 +1876,54 @@ export const listUserAssignmentsOptions = (options: Options<ListUserAssignmentsD
     queryKey: listUserAssignmentsQueryKey(options)
 });
 
+export const queryPlatformAuditQueryKey = (options?: Options<QueryPlatformAuditData>) => createQueryKey('queryPlatformAudit', options);
+
+/**
+ * Platform chain entries, newest first (default: the last 7 days)
+ */
+export const queryPlatformAuditOptions = (options?: Options<QueryPlatformAuditData>) => queryOptions<QueryPlatformAuditResponse, DefaultError, QueryPlatformAuditResponse, ReturnType<typeof queryPlatformAuditQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await queryPlatformAudit({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: queryPlatformAuditQueryKey(options)
+});
+
+export const queryPlatformAuditInfiniteQueryKey = (options?: Options<QueryPlatformAuditData>): QueryKey<Options<QueryPlatformAuditData>> => createQueryKey('queryPlatformAudit', options, true);
+
+/**
+ * Platform chain entries, newest first (default: the last 7 days)
+ */
+export const queryPlatformAuditInfiniteOptions = (options?: Options<QueryPlatformAuditData>) => {
+    const opts = infiniteQueryOptions<QueryPlatformAuditResponse, DefaultError, InfiniteData<QueryPlatformAuditResponse>, QueryKey<Options<QueryPlatformAuditData>>, number | Pick<QueryKey<Options<QueryPlatformAuditData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+    // @ts-ignore
+    {
+        queryFn: async ({ pageParam, queryKey, signal }) => {
+            // @ts-ignore
+            const page: Pick<QueryKey<Options<QueryPlatformAuditData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
+                query: {
+                    cursor: pageParam
+                }
+            };
+            const params = createInfiniteParams(queryKey, page);
+            const { data } = await queryPlatformAudit({
+                ...options,
+                ...params,
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: queryPlatformAuditInfiniteQueryKey(options)
+    });
+    return opts as Omit<typeof opts, 'initialData'>;
+};
+
 export const getPlatformCsrfTokenQueryKey = (options?: Options<GetPlatformCsrfTokenData>) => createQueryKey('getPlatformCsrfToken', options);
 
 /**
@@ -1759,8 +2030,8 @@ export const verifyPlatformMfaMutation = (options?: Partial<Options<VerifyPlatfo
 /**
  * Start TOTP enrolment (first sign-in, or a complete session switching devices)
  */
-export const startPlatformMfaEnrolmentMutation = (options?: Partial<Options<StartPlatformMfaEnrolmentData>>): UseMutationOptions<unknown, StartPlatformMfaEnrolmentError, Options<StartPlatformMfaEnrolmentData>> => {
-    const mutationOptions: UseMutationOptions<unknown, StartPlatformMfaEnrolmentError, Options<StartPlatformMfaEnrolmentData>> = {
+export const startPlatformMfaEnrolmentMutation = (options?: Partial<Options<StartPlatformMfaEnrolmentData>>): UseMutationOptions<StartPlatformMfaEnrolmentResponse, StartPlatformMfaEnrolmentError, Options<StartPlatformMfaEnrolmentData>> => {
+    const mutationOptions: UseMutationOptions<StartPlatformMfaEnrolmentResponse, StartPlatformMfaEnrolmentError, Options<StartPlatformMfaEnrolmentData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await startPlatformMfaEnrolment({
                 ...options,
@@ -1776,8 +2047,8 @@ export const startPlatformMfaEnrolmentMutation = (options?: Partial<Options<Star
 /**
  * Confirm TOTP enrolment; completes the sign-in
  */
-export const confirmPlatformMfaEnrolmentMutation = (options?: Partial<Options<ConfirmPlatformMfaEnrolmentData>>): UseMutationOptions<unknown, ConfirmPlatformMfaEnrolmentError, Options<ConfirmPlatformMfaEnrolmentData>> => {
-    const mutationOptions: UseMutationOptions<unknown, ConfirmPlatformMfaEnrolmentError, Options<ConfirmPlatformMfaEnrolmentData>> = {
+export const confirmPlatformMfaEnrolmentMutation = (options?: Partial<Options<ConfirmPlatformMfaEnrolmentData>>): UseMutationOptions<ConfirmPlatformMfaEnrolmentResponse, ConfirmPlatformMfaEnrolmentError, Options<ConfirmPlatformMfaEnrolmentData>> => {
+    const mutationOptions: UseMutationOptions<ConfirmPlatformMfaEnrolmentResponse, ConfirmPlatformMfaEnrolmentError, Options<ConfirmPlatformMfaEnrolmentData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await confirmPlatformMfaEnrolment({
                 ...options,
@@ -1813,8 +2084,8 @@ export const getPlatformSessionOptions = (options?: Options<GetPlatformSessionDa
 /**
  * Confirm a sensitive action with a fresh TOTP code
  */
-export const platformStepUpMutation = (options?: Partial<Options<PlatformStepUpData>>): UseMutationOptions<unknown, PlatformStepUpError, Options<PlatformStepUpData>> => {
-    const mutationOptions: UseMutationOptions<unknown, PlatformStepUpError, Options<PlatformStepUpData>> = {
+export const platformStepUpMutation = (options?: Partial<Options<PlatformStepUpData>>): UseMutationOptions<PlatformStepUpResponse, PlatformStepUpError, Options<PlatformStepUpData>> => {
+    const mutationOptions: UseMutationOptions<PlatformStepUpResponse, PlatformStepUpError, Options<PlatformStepUpData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await platformStepUp({
                 ...options,
@@ -1977,3 +2248,21 @@ export const suspendPlatformTenantMutation = (options?: Partial<Options<SuspendP
     };
     return mutationOptions;
 };
+
+export const getTermsQueryKey = (options: Options<GetTermsData>) => createQueryKey('getTerms', options);
+
+/**
+ * The organisation's own words for a language (overrides only)
+ */
+export const getTermsOptions = (options: Options<GetTermsData>) => queryOptions<GetTermsResponse, DefaultError, GetTermsResponse, ReturnType<typeof getTermsQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getTerms({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getTermsQueryKey(options)
+});

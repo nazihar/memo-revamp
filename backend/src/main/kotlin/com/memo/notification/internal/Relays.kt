@@ -4,9 +4,13 @@ import com.memo.common.cache.CacheInvalidation
 import com.memo.common.cache.TenantCache
 import com.memo.common.cache.TenantCaches
 import com.memo.common.crypto.DataKeys
+import com.memo.common.tenant.TenantContext
 import com.memo.common.tenant.TenantDsl
+import com.memo.common.tenant.TenantTransactions
 import com.memo.jooq.tables.references.NOTIFICATION_SMTP
 import com.memo.tenancy.TenantSettings
+import com.memo.tenancy.TermKey
+import com.memo.tenancy.Terminology
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.MessageSource
 import org.springframework.context.annotation.Bean
@@ -171,6 +175,8 @@ internal data class StoredRelay(
 internal class MailTexts(
     @param:Qualifier("mailMessageSource") private val messages: MessageSource,
     private val settings: TenantSettings,
+    private val terminology: Terminology,
+    private val transactions: TenantTransactions,
 ) {
     /** The recipient's language if we have texts for it, else the tenant default, else English. */
     fun localeOf(tag: String?): Locale {
@@ -187,7 +193,29 @@ internal class MailTexts(
         template: com.memo.notification.MailTemplate,
         locale: Locale,
         params: Map<String, String>,
-    ): String = MailText.render(messages.getMessage("mail.${template.name}.body", null, locale), params)
+    ): String = MailText.render(messages.getMessage("mail.${template.name}.body", null, locale), terms(locale) + params)
+
+    /**
+     * The tenant's words for [locale] as placeholders (ADR-0032): `{unit}`, `{units}` and so on, the tenant's override or
+     * the bundle's default. A template's own parameters win over terms with the same name.
+     */
+    fun terms(locale: Locale): Map<String, String> {
+        // Rendering runs outside the delivery's transactions (no transaction is held while talking to the relay).
+        val overrides =
+            transactions
+                .readInTenant(
+                    TenantContext.current(),
+                ) { terminology.overrides(locale.language) }
+                .associateBy { it.term }
+        return TermKey.entries
+            .flatMap { term ->
+                val override = overrides[term]
+                listOf(
+                    term.key to (override?.one ?: messages.getMessage("term.${term.key}.one", null, locale)),
+                    "${term.key}s" to (override?.other ?: messages.getMessage("term.${term.key}.other", null, locale)),
+                )
+            }.toMap()
+    }
 
     fun footer(locale: Locale): String = messages.getMessage("mail.footer", null, locale)
 

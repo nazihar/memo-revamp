@@ -1,0 +1,33 @@
+# E07 tenant admin console (design E07 §4). Rules: rules.yaml. tenant.settings.manage is privileged; tenant admins hold it.
+epic: E07
+endpoints:
+  - { endpoint: GET /api/v1/admin/security-settings, rule: tenantAdmin }
+  # Weakening sign-in rules needs a fresh second factor.
+  - endpoint: PUT /api/v1/admin/security-settings
+    rule: tenantAdminStepUp
+    headers: { If-Match: '"0"' }
+    body:
+      { mfaRequired: admins, idleMinutes: 30, absoluteHours: 12, stepUpMinutes: 5, passwordMinLength: 12, throttleAfter: 5, lockAfter: 20, lockMinutes: 30 }
+  - { endpoint: GET /api/v1/admin/preferences, rule: tenantAdmin }
+  - endpoint: PUT /api/v1/admin/preferences
+    rule: tenantAdmin
+    headers: { If-Match: '"999"' }
+    body: { locale: en, timeZone: UTC }
+  - { endpoint: GET /api/v1/terms, rule: signedIn }
+  - endpoint: PUT /api/v1/admin/terms
+    rule: tenantAdmin
+    headers: { If-Match: '"999"' }
+    body: { locale: en, terms: [] }
+  # Audit viewer and export (ADR-0033): audit.read; the export also needs a fresh step-up.
+  - { endpoint: GET /api/v1/admin/audit, rule: tenantAdmin }
+  - endpoint: POST /api/v1/admin/audit/export
+    rule: tenantAdminStepUp
+    body: { from: "2026-01-01T00:00:00Z", to: "2026-01-02T00:00:00Z" }
+  # Branding: public on the tenant's host (the sign-in page shows it); editing needs tenant.settings.manage.
+  - { endpoint: GET /api/v1/branding, rule: public }
+  - { endpoint: GET /api/v1/branding/logo, rule: public }
+  - { endpoint: GET /api/v1/admin/branding, rule: tenantAdmin }
+  - endpoint: PUT /api/v1/admin/branding
+    rule: tenantAdmin
+    headers: { If-Match: '"999"' }
+    body: { colourLight: "#1f4e8c" }

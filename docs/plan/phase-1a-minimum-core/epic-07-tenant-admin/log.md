@@ -21,3 +21,9 @@
   - Spring Modulith treats `identity.operator` as internal; the demo seeder and the platform module use it, so it is now a named interface.
   - A controller-scoped `@RestControllerAdvice` loses to the global advice's catch-all unless it is ordered first.
   - `SuspendedTenantIT` walks every mapped tenant endpoint (over 50) on a suspended host and expects 403 from each: the suspended-tenant cases of the authorisation matrix, without a column per file.
+- T3–T5 backend built: security settings API (ranges in one `SecurityLimit` table read by sign-in, password policy and lockout; lockout thresholds are tenant settings now), language defaults, terminology (`tenancy_term`, `/terms`, `/admin/terms`, term placeholders in emails), `branding` module (`tenant.logo` purpose, colours checked against WCAG contrast in both themes, public `/branding` and `/branding/logo`), audit query API and the verifiable ZIP export, platform audit viewer. A new `FileContents` API lets an owning module stream its own file (the public logo). Matrix 613 cells.
+- Findings:
+  - The export records `audit.exported` before the first byte is written, so no export goes unrecorded; an unfiltered range is widened to the full sequence span between its first and last entry, because commit order and timestamps can disagree at the edges.
+  - `AuditExportIT` verifies exports with code written from `VERIFY.md` alone, not with memo's own verifier, and catches a one-character change in an entry even when the manifest's file hash is recomputed.
+  - Email rendering runs outside any transaction (no transaction is held while talking to the relay), so term lookups open their own read transaction; `MailDeliveryIT` caught it.
+  - Endpoints that return `ResponseEntity<Any>` (because they also answer with problems) need an explicit 200 schema, or the generated web client types their body as `unknown`.

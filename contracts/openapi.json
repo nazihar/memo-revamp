@@ -336,6 +336,7 @@
             "type" : "string"
           }
         },
+        "required" : [ "fileId", "mediaType", "name", "number", "sha256", "sizeBytes", "uploadedAt", "versionId" ],
         "type" : "object"
       },
       "FileView" : {
@@ -369,6 +370,7 @@
             "type" : "array"
           }
         },
+        "required" : [ "id", "purpose", "version", "versionCount", "versions" ],
         "type" : "object"
       },
       "Grant" : {
@@ -565,6 +567,145 @@
         "required" : [ "email", "password" ],
         "type" : "object"
       },
+      "MailLogEntry" : {
+        "properties" : {
+          "attempts" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "createdAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "errorClass" : {
+            "type" : [ "string", "null" ]
+          },
+          "failedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "relay" : {
+            "type" : [ "string", "null" ]
+          },
+          "sentAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "smtpCode" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "status" : {
+            "type" : "string"
+          },
+          "template" : {
+            "type" : "string"
+          },
+          "to" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "attempts", "createdAt", "id", "status", "template", "to" ],
+        "type" : "object"
+      },
+      "MailLogPage" : {
+        "properties" : {
+          "entries" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MailLogEntry"
+            },
+            "type" : "array"
+          },
+          "nextCursor" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "entries" ],
+        "type" : "object"
+      },
+      "MailSettingsRequest" : {
+        "properties" : {
+          "fromAddress" : {
+            "type" : "string"
+          },
+          "fromName" : {
+            "type" : [ "string", "null" ]
+          },
+          "host" : {
+            "type" : "string"
+          },
+          "password" : {
+            "type" : [ "string", "null" ]
+          },
+          "port" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "tlsMode" : {
+            "type" : "string"
+          },
+          "username" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "fromAddress", "host", "port", "tlsMode" ],
+        "type" : "object"
+      },
+      "MailSettingsView" : {
+        "properties" : {
+          "fromAddress" : {
+            "type" : "string"
+          },
+          "fromName" : {
+            "type" : [ "string", "null" ]
+          },
+          "host" : {
+            "type" : "string"
+          },
+          "passwordSet" : {
+            "type" : "boolean"
+          },
+          "port" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "tlsMode" : {
+            "type" : "string"
+          },
+          "username" : {
+            "type" : [ "string", "null" ]
+          },
+          "version" : {
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "fromAddress", "host", "passwordSet", "port", "tlsMode", "version" ],
+        "type" : "object"
+      },
+      "MailTestResult" : {
+        "properties" : {
+          "errorClass" : {
+            "type" : [ "string", "null" ]
+          },
+          "ok" : {
+            "type" : "boolean"
+          },
+          "relay" : {
+            "type" : "string"
+          },
+          "smtpCode" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          }
+        },
+        "required" : [ "ok", "relay" ],
+        "type" : "object"
+      },
       "Me" : {
         "properties" : {
           "displayName" : {
@@ -710,6 +851,53 @@
           }
         },
         "required" : [ "current", "id", "lastActiveAt" ],
+        "type" : "object"
+      },
+      "NotificationPage" : {
+        "properties" : {
+          "items" : {
+            "items" : {
+              "$ref" : "#/components/schemas/NotificationView"
+            },
+            "type" : "array"
+          },
+          "nextCursor" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "items" ],
+        "type" : "object"
+      },
+      "NotificationView" : {
+        "properties" : {
+          "category" : {
+            "type" : "string"
+          },
+          "createdAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "kind" : {
+            "type" : "string"
+          },
+          "link" : {
+            "type" : [ "string", "null" ]
+          },
+          "params" : {
+            "additionalProperties" : {
+              "type" : "string"
+            },
+            "type" : "object"
+          },
+          "read" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "category", "createdAt", "id", "kind", "params", "read" ],
         "type" : "object"
       },
       "OrgAssignment" : {
@@ -1082,6 +1270,39 @@
         "required" : [ "head", "title" ],
         "type" : "object"
       },
+      "PreferenceChange" : {
+        "properties" : {
+          "category" : {
+            "type" : "string"
+          },
+          "channel" : {
+            "type" : "string"
+          },
+          "enabled" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "category", "channel", "enabled" ],
+        "type" : "object"
+      },
+      "PreferenceView" : {
+        "properties" : {
+          "category" : {
+            "type" : "string"
+          },
+          "channel" : {
+            "type" : "string"
+          },
+          "enabled" : {
+            "type" : "boolean"
+          },
+          "mandatory" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "category", "channel", "enabled", "mandatory" ],
+        "type" : "object"
+      },
       "ProblemDetail" : {
         "properties" : {
           "detail" : {
@@ -1254,6 +1475,16 @@
         },
         "type" : "object"
       },
+      "UnreadCount" : {
+        "properties" : {
+          "count" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "count" ],
+        "type" : "object"
+      },
       "UpdateOrgUnitRequest" : {
         "properties" : {
           "code" : {
@@ -1295,6 +1526,126 @@
   },
   "openapi" : "3.1.0",
   "paths" : {
+    "/api/v1/admin/mail-log" : {
+      "get" : {
+        "operationId" : "getMailLog",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "cursor",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "required" : false,
+          "schema" : {
+            "default" : 50,
+            "format" : "int32",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MailLogPage"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Delivery log of the organisation's emails, newest first",
+        "tags" : [ "notifications" ]
+      }
+    },
+    "/api/v1/admin/mail-settings" : {
+      "delete" : {
+        "operationId" : "removeMailSettings",
+        "responses" : {
+          "200" : {
+            "content" : { },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Go back to the platform mail relay",
+        "tags" : [ "notifications" ]
+      },
+      "get" : {
+        "operationId" : "getMailSettings",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MailSettingsView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The organisation's mail relay (204 when it uses the platform relay)",
+        "tags" : [ "notifications" ]
+      },
+      "put" : {
+        "operationId" : "setMailSettings",
+        "parameters" : [ {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MailSettingsRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MailSettingsView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Set the organisation's mail relay",
+        "tags" : [ "notifications" ]
+      }
+    },
+    "/api/v1/admin/mail-settings/test" : {
+      "post" : {
+        "operationId" : "testMailSettings",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MailTestResult"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Send a test email to myself through the current relay",
+        "tags" : [ "notifications" ]
+      }
+    },
     "/api/v1/admin/users" : {
       "get" : {
         "description" : "Sorted by name; keyset-paginated.",
@@ -2716,6 +3067,151 @@
         },
         "summary" : "My permissions and clearance",
         "tags" : [ "me" ]
+      }
+    },
+    "/api/v1/me/notification-preferences" : {
+      "get" : {
+        "operationId" : "getMyNotificationPreferences",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/PreferenceView"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "My notification channels per category",
+        "tags" : [ "notifications" ]
+      },
+      "put" : {
+        "operationId" : "setMyNotificationPreferences",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "items" : {
+                  "$ref" : "#/components/schemas/PreferenceChange"
+                },
+                "type" : "array"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/PreferenceView"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Change my notification channels",
+        "tags" : [ "notifications" ]
+      }
+    },
+    "/api/v1/me/notifications" : {
+      "get" : {
+        "operationId" : "listMyNotifications",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "cursor",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "required" : false,
+          "schema" : {
+            "default" : 20,
+            "format" : "int32",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/NotificationPage"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "My notifications, newest first",
+        "tags" : [ "notifications" ]
+      }
+    },
+    "/api/v1/me/notifications/read-all" : {
+      "post" : {
+        "operationId" : "markAllNotificationsRead",
+        "responses" : {
+          "200" : {
+            "content" : { },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Mark all my notifications as read",
+        "tags" : [ "notifications" ]
+      }
+    },
+    "/api/v1/me/notifications/unread-count" : {
+      "get" : {
+        "operationId" : "getMyUnreadCount",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/UnreadCount"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "How many of my notifications are unread",
+        "tags" : [ "notifications" ]
+      }
+    },
+    "/api/v1/me/notifications/{id}/read" : {
+      "post" : {
+        "operationId" : "markNotificationRead",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : { },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Mark one of my notifications as read",
+        "tags" : [ "notifications" ]
       }
     },
     "/api/v1/me/password" : {

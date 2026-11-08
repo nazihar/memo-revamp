@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate } from '@tanstack/react-router'
-import { LogOut, ShieldCheck } from 'lucide-react'
+import { BellRing, LogOut, ShieldCheck } from 'lucide-react'
 import { defineMessages, useIntl, type NoMessageValues } from 'react-intl'
 import { logout } from '@/api/generated/sdk.gen'
 import { useSession } from './session'
@@ -17,11 +17,13 @@ import {
 const messages = defineMessages<{
   trigger: { name: string }
   security: NoMessageValues
+  notifications: NoMessageValues
   signOut: NoMessageValues
   signIn: NoMessageValues
 }>({
   trigger: { id: 'account.trigger', defaultMessage: 'Account: {name}' },
   security: { id: 'account.security', defaultMessage: 'My security' },
+  notifications: { id: 'account.notifications', defaultMessage: 'Notification settings' },
   signOut: { id: 'account.signOut', defaultMessage: 'Sign out' },
   signIn: { id: 'account.signIn', defaultMessage: 'Sign in' },
 })
@@ -74,6 +76,10 @@ export function AccountMenu() {
         <DropdownMenuItem onSelect={() => void navigate({ to: '/me/security' })}>
           <ShieldCheck aria-hidden="true" />
           {intl.formatMessage(messages.security)}
+        </DropdownMenuItem>
+        <DropdownMenuItem onSelect={() => void navigate({ to: '/me/notifications' })}>
+          <BellRing aria-hidden="true" />
+          {intl.formatMessage(messages.notifications)}
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={() => void signOut()}>
           <LogOut aria-hidden="true" />

@@ -13,9 +13,14 @@ import com.memo.common.tenant.TenantContext
 import com.memo.common.web.RefusedException
 import com.memo.common.web.refuseIf
 import com.memo.identity.LegacyTenantAdminFlag
+import com.memo.identity.UserAccounts
 import com.memo.identity.UserId
 import com.memo.identity.UserStatus
 import com.memo.identity.UserSummaries
+import com.memo.identity.recipient
+import com.memo.notification.NotificationKind
+import com.memo.notification.Notifications
+import com.memo.tenancy.TenantRegistry
 import org.springframework.beans.factory.ObjectProvider
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
@@ -122,6 +127,9 @@ class GrantAdmin(
     private val roles: RoleCatalog,
     private val access: RoleGrants,
     private val users: UserSummaries,
+    private val accounts: UserAccounts,
+    private val notifications: Notifications,
+    private val registry: TenantRegistry,
     private val legacyFlag: LegacyTenantAdminFlag,
     private val orgTree: ObjectProvider<OrgTree>,
     private val policy: Policy,
@@ -158,6 +166,13 @@ class GrantAdmin(
             after = mapOf("userId" to user.toString(), "roleId" to roleId.toString(), "scopeUnitId" to scopeUnit?.toString()),
         )
         changed(user, gained = true)
+        accounts.find(UserId(user))?.let {
+            notifications.notify(
+                it.recipient(),
+                NotificationKind.ROLE_GRANTED,
+                mapOf("role" to role.name, "organisation" to registry.current()?.name.orEmpty()),
+            )
+        }
         return grants.grantsOf(user).first { it.id == id }
     }
 

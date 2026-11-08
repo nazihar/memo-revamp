@@ -261,6 +261,12 @@
       "value": "Manage legal entitiesSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "access.permission.notificationSettings": [
+    {
+      "type": 0,
+      "value": "Manage email deliverySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "access.permission.orgManage": [
     {
       "type": 0,
@@ -511,6 +517,12 @@
     {
       "type": 0,
       "value": "Whole organisationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "account.notifications": [
+    {
+      "type": 0,
+      "value": "Notification settingsSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "account.security": [
@@ -1025,10 +1037,278 @@
       "value": "ContinueSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "mail.fromAddress": [
+    {
+      "type": 0,
+      "value": "Sender addressSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.fromName": [
+    {
+      "type": 0,
+      "value": "Sender nameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.host": [
+    {
+      "type": 0,
+      "value": "Mail serverSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.invalid": [
+    {
+      "type": 0,
+      "value": "Check the mail server settings: "
+    },
+    {
+      "type": 1,
+      "value": "detail"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.lead": [
+    {
+      "type": 0,
+      "value": "Send this organisation's email through its own mail server. Without one, the platform's server is used.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.log.attempts": [
+    {
+      "type": 0,
+      "value": "AttemptsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.log.caption": [
+    {
+      "type": 0,
+      "value": "Delivery of recent emails, newest firstSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.log.empty": [
+    {
+      "type": 0,
+      "value": "No emails yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.log.failed": [
+    {
+      "type": 0,
+      "value": "FailedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.log.pending": [
+    {
+      "type": 0,
+      "value": "WaitingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.log.sent": [
+    {
+      "type": 0,
+      "value": "SentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.log.status": [
+    {
+      "type": 0,
+      "value": "StatusSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.log.template": [
+    {
+      "type": 0,
+      "value": "EmailSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.log.title": [
+    {
+      "type": 0,
+      "value": "Recent emailsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.log.to": [
+    {
+      "type": 0,
+      "value": "ToSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.log.when": [
+    {
+      "type": 0,
+      "value": "QueuedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.optional": [
+    {
+      "type": 0,
+      "value": "(optional)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.password": [
+    {
+      "type": 0,
+      "value": "PasswordSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.passwordKeep": [
+    {
+      "type": 0,
+      "value": "A password is stored. Leave empty to keep it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.platform": [
+    {
+      "type": 0,
+      "value": "Email goes through the platform's mail server.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.port": [
+    {
+      "type": 0,
+      "value": "PortSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.remove": [
+    {
+      "type": 0,
+      "value": "Use the platform's serverSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.removed": [
+    {
+      "type": 0,
+      "value": "Email goes through the platform's server again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.save": [
+    {
+      "type": 0,
+      "value": "SaveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.saved": [
+    {
+      "type": 0,
+      "value": "Mail server saved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.invitation": [
+    {
+      "type": 0,
+      "value": "InvitationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.mfaReset": [
+    {
+      "type": 0,
+      "value": "Two-step sign-in resetSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.passwordChanged": [
+    {
+      "type": 0,
+      "value": "Password changedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.passwordReset": [
+    {
+      "type": 0,
+      "value": "Password resetSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.roleGranted": [
+    {
+      "type": 0,
+      "value": "Role grantedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.signInAlert": [
+    {
+      "type": 0,
+      "value": "New sign-inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.test": [
+    {
+      "type": 0,
+      "value": "Test emailSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.test": [
+    {
+      "type": 0,
+      "value": "Send a test email to meSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.testFailed": [
+    {
+      "type": 0,
+      "value": "The mail server did not accept the test email ("
+    },
+    {
+      "type": 1,
+      "value": "detail"
+    },
+    {
+      "type": 0,
+      "value": ").SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.testOk": [
+    {
+      "type": 0,
+      "value": "Test email sent. Check your inbox.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.title": [
+    {
+      "type": 0,
+      "value": "Email deliverySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.tls": [
+    {
+      "type": 0,
+      "value": "EncryptionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.tls.none": [
+    {
+      "type": 0,
+      "value": "None (test installations only)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.tls.starttls": [
+    {
+      "type": 0,
+      "value": "STARTTLS (usually port 587)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.tls.tls": [
+    {
+      "type": 0,
+      "value": "TLS (usually port 465)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.username": [
+    {
+      "type": 0,
+      "value": "User nameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "nav.classifications": [
     {
       "type": 0,
       "value": "ClassificationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.email": [
+    {
+      "type": 0,
+      "value": "EmailSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "nav.group.administration": [
@@ -1053,6 +1333,18 @@
     {
       "type": 0,
       "value": "HomeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.notificationSettings": [
+    {
+      "type": 0,
+      "value": "Notification settingsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.notifications": [
+    {
+      "type": 0,
+      "value": "NotificationsSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "nav.org": [
@@ -1095,6 +1387,232 @@
     {
       "type": 0,
       "value": "UsersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.bell": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Notifications"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Notifications, "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " unread"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Notifications, "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " unread"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.bellMore": [
+    {
+      "type": 0,
+      "value": "9+SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.category.administration": [
+    {
+      "type": 0,
+      "value": "Access and administrationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.category.security": [
+    {
+      "type": 0,
+      "value": "SecuritySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.empty": [
+    {
+      "type": 0,
+      "value": "Nothing new. Notifications about your account and work appear here.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.mfaReset": [
+    {
+      "type": 0,
+      "value": "An administrator reset your two-step sign-inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.passwordChanged": [
+    {
+      "type": 0,
+      "value": "Your password was changedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.roleGranted": [
+    {
+      "type": 0,
+      "value": "You were given the role "
+    },
+    {
+      "type": 1,
+      "value": "role"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.signInAlert": [
+    {
+      "type": 0,
+      "value": "New sign-in to your account from "
+    },
+    {
+      "type": 1,
+      "value": "device"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.unknown": [
+    {
+      "type": 0,
+      "value": "Something changed in your accountSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.lead": [
+    {
+      "type": 0,
+      "value": "What happened to your account and your work.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.loadMore": [
+    {
+      "type": 0,
+      "value": "Show olderSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.markAll": [
+    {
+      "type": 0,
+      "value": "Mark all as readSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.prefs.caption": [
+    {
+      "type": 0,
+      "value": "Channels per kind of notificationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.prefs.cell": [
+    {
+      "type": 1,
+      "value": "category"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "channel"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.prefs.colCategory": [
+    {
+      "type": 0,
+      "value": "KindSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.prefs.email": [
+    {
+      "type": 0,
+      "value": "EmailSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.prefs.inApp": [
+    {
+      "type": 0,
+      "value": "In memoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.prefs.lead": [
+    {
+      "type": 0,
+      "value": "Choose how you hear about each kind of event. Security notices always reach you.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.prefs.mandatory": [
+    {
+      "type": 0,
+      "value": "Always on, to protect your accountSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.prefs.saved": [
+    {
+      "type": 0,
+      "value": "Notification settings saved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.prefs.title": [
+    {
+      "type": 0,
+      "value": "Notification settingsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.title": [
+    {
+      "type": 0,
+      "value": "NotificationsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.unreadItem": [
+    {
+      "type": 0,
+      "value": "Unread: "
+    },
+    {
+      "type": 1,
+      "value": "text"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "org.addEntity": [

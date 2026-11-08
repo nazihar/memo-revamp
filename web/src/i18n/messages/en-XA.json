@@ -589,6 +589,20 @@
       "value": "]"
     }
   ],
+  "access.permission.notificationSettings": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿȧȧƞȧȧɠḗḗ ḗḗḿȧȧīŀ ḓḗḗŀīṽḗḗřẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "access.permission.orgManage": [
     {
       "type": 0,
@@ -1171,6 +1185,20 @@
     {
       "type": 0,
       "value": "Ẇħǿǿŀḗḗ ǿǿřɠȧȧƞīşȧȧŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "account.notifications": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧīƒīƈȧȧŧīǿǿƞ şḗḗŧŧīƞɠş"
     },
     {
       "type": 0,
@@ -2281,6 +2309,592 @@
       "value": "]"
     }
   ],
+  "mail.fromAddress": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḗḗƞḓḗḗř ȧȧḓḓřḗḗşş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.fromName": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḗḗƞḓḗḗř ƞȧȧḿḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.host": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿȧȧīŀ şḗḗřṽḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.invalid": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħḗḗƈķ ŧħḗḗ ḿȧȧīŀ şḗḗřṽḗḗř şḗḗŧŧīƞɠş: "
+    },
+    {
+      "type": 1,
+      "value": "detail"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḗḗƞḓ ŧħīş ǿǿřɠȧȧƞīşȧȧŧīǿǿƞ'ş ḗḗḿȧȧīŀ ŧħřǿǿŭŭɠħ īŧş ǿǿẇƞ ḿȧȧīŀ şḗḗřṽḗḗř. Ẇīŧħǿǿŭŭŧ ǿǿƞḗḗ, ŧħḗḗ ƥŀȧȧŧƒǿǿřḿ'ş şḗḗřṽḗḗř īş ŭŭşḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.log.attempts": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŧŧḗḗḿƥŧş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.log.caption": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗŀīṽḗḗřẏ ǿǿƒ řḗḗƈḗḗƞŧ ḗḗḿȧȧīŀş, ƞḗḗẇḗḗşŧ ƒīřşŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.log.empty": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ḗḗḿȧȧīŀş ẏḗḗŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.log.failed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒȧȧīŀḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.log.pending": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇȧȧīŧīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.log.sent": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḗḗƞŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.log.status": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŧȧȧŧŭŭş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.log.template": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗḿȧȧīŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.log.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƈḗḗƞŧ ḗḗḿȧȧīŀş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.log.to": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧǿǿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.log.when": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɋŭŭḗḗŭŭḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.optional": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "(ǿǿƥŧīǿǿƞȧȧŀ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.password": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥȧȧşşẇǿǿřḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.passwordKeep": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ƥȧȧşşẇǿǿřḓ īş şŧǿǿřḗḗḓ. Ŀḗḗȧȧṽḗḗ ḗḗḿƥŧẏ ŧǿǿ ķḗḗḗḗƥ īŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.platform": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗḿȧȧīŀ ɠǿǿḗḗş ŧħřǿǿŭŭɠħ ŧħḗḗ ƥŀȧȧŧƒǿǿřḿ'ş ḿȧȧīŀ şḗḗřṽḗḗř."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.port": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥǿǿřŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.remove": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭşḗḗ ŧħḗḗ ƥŀȧȧŧƒǿǿřḿ'ş şḗḗřṽḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.removed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗḿȧȧīŀ ɠǿǿḗḗş ŧħřǿǿŭŭɠħ ŧħḗḗ ƥŀȧȧŧƒǿǿřḿ'ş şḗḗřṽḗḗř ȧȧɠȧȧīƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.save": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şȧȧṽḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.saved": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿȧȧīŀ şḗḗřṽḗḗř şȧȧṽḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.template.invitation": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īƞṽīŧȧȧŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.template.mfaReset": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧẇǿǿ-şŧḗḗƥ şīɠƞ-īƞ řḗḗşḗḗŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.template.passwordChanged": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥȧȧşşẇǿǿřḓ ƈħȧȧƞɠḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.template.passwordReset": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥȧȧşşẇǿǿřḓ řḗḗşḗḗŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.template.roleGranted": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řǿǿŀḗḗ ɠřȧȧƞŧḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.template.signInAlert": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞḗḗẇ şīɠƞ-īƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.template.test": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧḗḗşŧ ḗḗḿȧȧīŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.test": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḗḗƞḓ ȧȧ ŧḗḗşŧ ḗḗḿȧȧīŀ ŧǿǿ ḿḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.testFailed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḿȧȧīŀ şḗḗřṽḗḗř ḓīḓ ƞǿǿŧ ȧȧƈƈḗḗƥŧ ŧħḗḗ ŧḗḗşŧ ḗḗḿȧȧīŀ ("
+    },
+    {
+      "type": 1,
+      "value": "detail"
+    },
+    {
+      "type": 0,
+      "value": ")."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.testOk": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧḗḗşŧ ḗḗḿȧȧīŀ şḗḗƞŧ. Ƈħḗḗƈķ ẏǿǿŭŭř īƞƀǿǿẋ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗḿȧȧīŀ ḓḗḗŀīṽḗḗřẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.tls": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗƞƈřẏƥŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.tls.none": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿƞḗḗ (ŧḗḗşŧ īƞşŧȧȧŀŀȧȧŧīǿǿƞş ǿǿƞŀẏ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.tls.starttls": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ŞŦȦŘŦŦĿŞ (ŭŭşŭŭȧȧŀŀẏ ƥǿǿřŧ 587)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.tls.tls": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ŦĿŞ (ŭŭşŭŭȧȧŀŀẏ ƥǿǿřŧ 465)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.username": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭşḗḗř ƞȧȧḿḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "nav.classifications": [
     {
       "type": 0,
@@ -2289,6 +2903,20 @@
     {
       "type": 0,
       "value": "Ƈŀȧȧşşīƒīƈȧȧŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "nav.email": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗḿȧȧīŀ"
     },
     {
       "type": 0,
@@ -2345,6 +2973,34 @@
     {
       "type": 0,
       "value": "Ħǿǿḿḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "nav.notificationSettings": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧīƒīƈȧȧŧīǿǿƞ şḗḗŧŧīƞɠş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "nav.notifications": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧīƒīƈȧȧŧīǿǿƞş"
     },
     {
       "type": 0,
@@ -2443,6 +3099,404 @@
     {
       "type": 0,
       "value": "Ŭşḗḗřş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.bell": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ƞǿǿŧīƒīƈȧȧŧīǿǿƞş"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ƞǿǿŧīƒīƈȧȧŧīǿǿƞş, "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ŭŭƞřḗḗȧȧḓ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ƞǿǿŧīƒīƈȧȧŧīǿǿƞş, "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ŭŭƞřḗḗȧȧḓ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.bellMore": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "9+"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.category.administration": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƈƈḗḗşş ȧȧƞḓ ȧȧḓḿīƞīşŧřȧȧŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.category.security": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḗḗƈŭŭřīŧẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.empty": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧħīƞɠ ƞḗḗẇ. Ƞǿǿŧīƒīƈȧȧŧīǿǿƞş ȧȧƀǿǿŭŭŧ ẏǿǿŭŭř ȧȧƈƈǿǿŭŭƞŧ ȧȧƞḓ ẇǿǿřķ ȧȧƥƥḗḗȧȧř ħḗḗřḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.kind.mfaReset": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƞ ȧȧḓḿīƞīşŧřȧȧŧǿǿř řḗḗşḗḗŧ ẏǿǿŭŭř ŧẇǿǿ-şŧḗḗƥ şīɠƞ-īƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.kind.passwordChanged": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭř ƥȧȧşşẇǿǿřḓ ẇȧȧş ƈħȧȧƞɠḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.kind.roleGranted": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ẇḗḗřḗḗ ɠīṽḗḗƞ ŧħḗḗ řǿǿŀḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "role"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.kind.signInAlert": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞḗḗẇ şīɠƞ-īƞ ŧǿǿ ẏǿǿŭŭř ȧȧƈƈǿǿŭŭƞŧ ƒřǿǿḿ "
+    },
+    {
+      "type": 1,
+      "value": "device"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.kind.unknown": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şǿǿḿḗḗŧħīƞɠ ƈħȧȧƞɠḗḗḓ īƞ ẏǿǿŭŭř ȧȧƈƈǿǿŭŭƞŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇħȧȧŧ ħȧȧƥƥḗḗƞḗḗḓ ŧǿǿ ẏǿǿŭŭř ȧȧƈƈǿǿŭŭƞŧ ȧȧƞḓ ẏǿǿŭŭř ẇǿǿřķ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.loadMore": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şħǿǿẇ ǿǿŀḓḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.markAll": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿȧȧřķ ȧȧŀŀ ȧȧş řḗḗȧȧḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.prefs.caption": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħȧȧƞƞḗḗŀş ƥḗḗř ķīƞḓ ǿǿƒ ƞǿǿŧīƒīƈȧȧŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.prefs.cell": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "category"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "channel"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.prefs.colCategory": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ķīƞḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.prefs.email": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗḿȧȧīŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.prefs.inApp": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īƞ ḿḗḗḿǿǿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.prefs.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħǿǿǿǿşḗḗ ħǿǿẇ ẏǿǿŭŭ ħḗḗȧȧř ȧȧƀǿǿŭŭŧ ḗḗȧȧƈħ ķīƞḓ ǿǿƒ ḗḗṽḗḗƞŧ. Şḗḗƈŭŭřīŧẏ ƞǿǿŧīƈḗḗş ȧȧŀẇȧȧẏş řḗḗȧȧƈħ ẏǿǿŭŭ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.prefs.mandatory": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŀẇȧȧẏş ǿǿƞ, ŧǿǿ ƥřǿǿŧḗḗƈŧ ẏǿǿŭŭř ȧȧƈƈǿǿŭŭƞŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.prefs.saved": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧīƒīƈȧȧŧīǿǿƞ şḗḗŧŧīƞɠş şȧȧṽḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.prefs.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧīƒīƈȧȧŧīǿǿƞ şḗḗŧŧīƞɠş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧīƒīƈȧȧŧīǿǿƞş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.unreadItem": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭƞřḗḗȧȧḓ: "
+    },
+    {
+      "type": 1,
+      "value": "text"
     },
     {
       "type": 0,

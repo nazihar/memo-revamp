@@ -37,6 +37,8 @@ dependencies {
     implementation(libs.spring.boot.starter.security)
     implementation(libs.spring.boot.starter.session.jdbc)
     implementation(libs.spring.boot.starter.mail)
+    // SMTP reply codes (permanent vs transient failures, ADR-0030); version from the Boot BOM.
+    implementation(libs.angus.mail)
     implementation(libs.spring.boot.starter.jooq)
     implementation(libs.spring.boot.starter.flyway)
     implementation(libs.spring.boot.starter.actuator)

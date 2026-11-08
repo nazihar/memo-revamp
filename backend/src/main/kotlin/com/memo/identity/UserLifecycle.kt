@@ -9,8 +9,8 @@ import com.memo.identity.mfa.MfaService
 import com.memo.identity.tokens.ActionTokens
 import com.memo.identity.tokens.TokenPurpose
 import com.memo.jooq.tables.references.IDENTITY_USER
-import com.memo.notification.Mail
-import com.memo.notification.MailTemplate
+import com.memo.notification.NotificationKind
+import com.memo.notification.Notifications
 import com.memo.tenancy.TenantRegistry
 import org.jooq.impl.DSL
 import org.springframework.context.ApplicationEventPublisher
@@ -37,7 +37,7 @@ class UserLifecycle(
     private val attempts: LoginAttempts,
     private val tokens: ActionTokens,
     private val mfa: MfaService,
-    private val mail: Mail,
+    private val notifications: Notifications,
     private val registry: TenantRegistry,
     private val audit: AuditLog,
     private val clock: Clock,
@@ -98,21 +98,14 @@ class UserLifecycle(
         return updated
     }
 
-    /** Removes MFA (the user enrols again) and tells the user by email. */
+    /** Removes MFA (the user enrols again) and tells the user (in-app and email, mandatory). */
     fun resetMfa(
         id: UserId,
         expectedVersion: Long,
     ): UserAccount {
         val updated = transition(id, expectedVersion, UserStatus.entries.toSet(), null)
         mfa.reset(id)
-        mail.enqueue(
-            MailTemplate.MFA_RESET,
-            updated.email,
-            mapOf(
-                "name" to updated.displayName,
-                "organisation" to registry.current()?.name.orEmpty(),
-            ),
-        )
+        notifications.notify(updated.recipient(), NotificationKind.MFA_RESET, mapOf("organisation" to registry.current()?.name.orEmpty()))
         return updated
     }
 

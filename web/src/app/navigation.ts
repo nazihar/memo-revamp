@@ -1,4 +1,4 @@
-import { Activity, House, LayoutTemplate, Network, ShieldCheck, Tags, Users, type LucideIcon } from 'lucide-react'
+import { Activity, House, LayoutTemplate, Mail, Network, ShieldCheck, Tags, Users, type LucideIcon } from 'lucide-react'
 import { defineMessages, type MessageDescriptor } from 'react-intl'
 import { patternsEnabled } from './features'
 
@@ -34,6 +34,7 @@ const messages = defineMessages({
   org: { id: 'nav.org', defaultMessage: 'Organisation' },
   roles: { id: 'nav.roles', defaultMessage: 'Roles' },
   classifications: { id: 'nav.classifications', defaultMessage: 'Classification' },
+  email: { id: 'nav.email', defaultMessage: 'Email' },
   patterns: { id: 'nav.patterns', defaultMessage: 'Patterns' },
 })
 
@@ -80,6 +81,15 @@ export const navigation: NavItem[] = [
     icon: Tags,
     group: 'administration',
     audience: { permission: 'authz.classifications.manage' },
+    enabled: true,
+  },
+  {
+    id: 'email',
+    to: '/admin/email',
+    label: messages.email,
+    icon: Mail,
+    group: 'administration',
+    audience: { permission: 'notification.settings.manage' },
     enabled: true,
   },
   {

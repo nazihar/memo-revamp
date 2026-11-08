@@ -131,27 +131,27 @@ export type DirectoryUser = {
 };
 
 export type FileVersionView = {
-    fileId?: string;
-    mediaType?: string;
-    name?: string;
-    number?: number;
+    fileId: string;
+    mediaType: string;
+    name: string;
+    number: number;
     pdfPages?: number | null;
     retainUntil?: string | null;
-    sha256?: string;
-    sizeBytes?: number;
-    uploadedAt?: string;
+    sha256: string;
+    sizeBytes: number;
+    uploadedAt: string;
     uploadedBy?: string | null;
-    versionId?: string;
+    versionId: string;
 };
 
 export type FileView = {
-    id?: string;
+    id: string;
     nextBefore?: number | null;
     ownerId?: string | null;
-    purpose?: string;
-    version?: number;
-    versionCount?: number;
-    versions?: Array<FileVersionView>;
+    purpose: string;
+    version: number;
+    versionCount: number;
+    versions: Array<FileVersionView>;
 };
 
 export type Grant = {
@@ -238,6 +238,53 @@ export type LoginRequest = {
     password: string;
 };
 
+export type MailLogEntry = {
+    attempts: number;
+    createdAt: string;
+    errorClass?: string | null;
+    failedAt?: string | null;
+    id: string;
+    relay?: string | null;
+    sentAt?: string | null;
+    smtpCode?: number | null;
+    status: string;
+    template: string;
+    to: string;
+};
+
+export type MailLogPage = {
+    entries: Array<MailLogEntry>;
+    nextCursor?: string | null;
+};
+
+export type MailSettingsRequest = {
+    fromAddress: string;
+    fromName?: string | null;
+    host: string;
+    password?: string | null;
+    port: number;
+    tlsMode: string;
+    username?: string | null;
+};
+
+export type MailSettingsView = {
+    fromAddress: string;
+    fromName?: string | null;
+    host: string;
+    passwordSet: boolean;
+    port: number;
+    tlsMode: string;
+    username?: string | null;
+    version: number;
+};
+
+export type MailTestResult = {
+    errorClass?: string | null;
+    ok: boolean;
+    relay: string;
+    smtpCode?: number | null;
+};
+
 export type Me = {
     displayName: string;
     email: string;
@@ -306,6 +353,23 @@ export type MySession = {
     lastActiveAt: string;
     signedInAt?: string | null;
     userAgent?: string | null;
+};
+
+export type NotificationPage = {
+    items: Array<NotificationView>;
+    nextCursor?: string | null;
+};
+
+export type NotificationView = {
+    category: string;
+    createdAt: string;
+    id: string;
+    kind: string;
+    link?: string | null;
+    params: {
+        [key: string]: string;
+    };
+    read: boolean;
 };
 
 export type OrgAssignment = {
@@ -482,6 +546,19 @@ export type PositionRequest = {
     validFrom?: string | null;
 };
 
+export type PreferenceChange = {
+    category: string;
+    channel: string;
+    enabled: boolean;
+};
+
+export type PreferenceView = {
+    category: string;
+    channel: string;
+    enabled: boolean;
+    mandatory: boolean;
+};
+
 export type ProblemDetail = {
     detail?: string;
     instance?: string;
@@ -564,6 +641,10 @@ export type StepUpRequest = {
     password?: string | null;
 };
 
+export type UnreadCount = {
+    count: number;
+};
+
 export type UpdateOrgUnitRequest = {
     code: string;
     name: string;
@@ -573,6 +654,90 @@ export type UserAccess = {
     clearance: ClassificationLevel;
     grants: Array<Grant>;
 };
+
+export type GetMailLogData = {
+    body?: never;
+    path?: never;
+    query?: {
+        cursor?: string;
+        limit?: number;
+    };
+    url: '/api/v1/admin/mail-log';
+};
+
+export type GetMailLogResponses = {
+    /**
+     * OK
+     */
+    200: MailLogPage;
+};
+
+export type GetMailLogResponse = GetMailLogResponses[keyof GetMailLogResponses];
+
+export type RemoveMailSettingsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/mail-settings';
+};
+
+export type RemoveMailSettingsResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
+export type GetMailSettingsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/mail-settings';
+};
+
+export type GetMailSettingsResponses = {
+    /**
+     * OK
+     */
+    200: MailSettingsView;
+};
+
+export type GetMailSettingsResponse = GetMailSettingsResponses[keyof GetMailSettingsResponses];
+
+export type SetMailSettingsData = {
+    body: MailSettingsRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/mail-settings';
+};
+
+export type SetMailSettingsResponses = {
+    /**
+     * OK
+     */
+    200: MailSettingsView;
+};
+
+export type SetMailSettingsResponse = SetMailSettingsResponses[keyof SetMailSettingsResponses];
+
+export type TestMailSettingsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/mail-settings/test';
+};
+
+export type TestMailSettingsResponses = {
+    /**
+     * OK
+     */
+    200: MailTestResult;
+};
+
+export type TestMailSettingsResponse = TestMailSettingsResponses[keyof TestMailSettingsResponses];
 
 export type ListUsersData = {
     body?: never;
@@ -1445,6 +1610,103 @@ export type GetMyAccessResponses = {
 };
 
 export type GetMyAccessResponse = GetMyAccessResponses[keyof GetMyAccessResponses];
+
+export type GetMyNotificationPreferencesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/me/notification-preferences';
+};
+
+export type GetMyNotificationPreferencesResponses = {
+    /**
+     * OK
+     */
+    200: Array<PreferenceView>;
+};
+
+export type GetMyNotificationPreferencesResponse = GetMyNotificationPreferencesResponses[keyof GetMyNotificationPreferencesResponses];
+
+export type SetMyNotificationPreferencesData = {
+    body: Array<PreferenceChange>;
+    path?: never;
+    query?: never;
+    url: '/api/v1/me/notification-preferences';
+};
+
+export type SetMyNotificationPreferencesResponses = {
+    /**
+     * OK
+     */
+    200: Array<PreferenceView>;
+};
+
+export type SetMyNotificationPreferencesResponse = SetMyNotificationPreferencesResponses[keyof SetMyNotificationPreferencesResponses];
+
+export type ListMyNotificationsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        cursor?: string;
+        limit?: number;
+    };
+    url: '/api/v1/me/notifications';
+};
+
+export type ListMyNotificationsResponses = {
+    /**
+     * OK
+     */
+    200: NotificationPage;
+};
+
+export type ListMyNotificationsResponse = ListMyNotificationsResponses[keyof ListMyNotificationsResponses];
+
+export type MarkAllNotificationsReadData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/me/notifications/read-all';
+};
+
+export type MarkAllNotificationsReadResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
+export type GetMyUnreadCountData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/me/notifications/unread-count';
+};
+
+export type GetMyUnreadCountResponses = {
+    /**
+     * OK
+     */
+    200: UnreadCount;
+};
+
+export type GetMyUnreadCountResponse = GetMyUnreadCountResponses[keyof GetMyUnreadCountResponses];
+
+export type MarkNotificationReadData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/me/notifications/{id}/read';
+};
+
+export type MarkNotificationReadResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
 
 export type ChangeMyPasswordData = {
     body: ChangePasswordRequest;

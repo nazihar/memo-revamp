@@ -1,5 +1,6 @@
 package com.memo.identity
 
+import com.memo.common.authz.StepUpCheck
 import com.memo.common.tenant.TenantContext
 import com.memo.common.tenant.TenantTransactions
 import com.memo.common.web.StepUpRequiredException
@@ -20,8 +21,8 @@ class StepUp(
     private val settings: AuthSettings,
     private val transactions: TenantTransactions,
     private val clock: Clock,
-) {
-    fun require() {
+) : StepUpCheck {
+    override fun require() {
         val principal = SecurityContextHolder.getContext().authentication?.principal as? SessionPrincipal
         val window = transactions.readInTenant(TenantContext.current()) { settings.stepUpWindow() }
         val proven = principal?.let { it.factor(strongest(it))?.issuedAt }

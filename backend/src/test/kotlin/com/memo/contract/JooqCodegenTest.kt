@@ -56,6 +56,10 @@ class JooqCodegenTest : IntegrationTest() {
                                         "audit_ensure_partitions",
                                         "audit_secure_partition",
                                         "audit_event_immutable",
+                                        "notification_item_(y[0-9]+m[0-9]+|default)",
+                                        "notification_ensure_partitions",
+                                        "notification_secure_partition",
+                                        "files_version_guard",
                                     ).joinToString(" | "),
                                 ),
                         ).withGenerate(

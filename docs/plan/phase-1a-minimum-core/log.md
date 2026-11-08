@@ -3,6 +3,8 @@
 History moved out of `STATUS.md`, newest first.
 
 ## 2026-11-05
+- PR #27 (E05) merged with the owner's go-ahead after the owner allowed the Ansible run (antivirus profile, Caddy restart); master CI needed one rerun (an intermittent checksum clash in a test S3 client, fixed on the E06 branch). E05 is on dev with ClamAV.
+- E06 planned (ADR-0030) and built; details in `epic-06-notifications/log.md`.
 - E05 built (T1–T10) on `feat/1a-e05-files`; details in `epic-05-files/log.md`. Key findings: ClamAV passes single-entry zip bombs (scans a trimmed copy), nginx response buffering would write decrypted downloads to disk, a versioned bucket lets a newer object shadow a record unless reads pin the storage version. All three are handled and tested.
 
 ## 2026-11-02

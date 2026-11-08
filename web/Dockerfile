@@ -21,10 +21,11 @@ LABEL org.opencontainers.image.title="memo-web" \
       org.opencontainers.image.revision="${REVISION}" \
       org.opencontainers.image.licenses="LicenseRef-Proprietary"
 # Security fixes published after the pinned base was built: libexpat CVE-2026-77214 (2.9.0-r0), brotli-libs
-# CVE-2026-111497 (1.2.1-r0), curl/libcurl CVE-2026-92392 (8.23.0-r0), libx11 CVE-2026-88806 (1.8.14-r0). A no-op once
-# the base image ships them; remove then (Renovate's container-image update will show it).
+# CVE-2026-111497 (1.2.1-r0), curl/libcurl CVE-2026-92392 (8.23.0-r0), libx11 CVE-2026-88806 (1.8.14-r0), musl
+# CVE-2026-107891 (1.2.6-r3). A no-op once the base image ships them; remove then (Renovate's container-image update
+# will show it).
 USER root
-RUN apk upgrade --no-cache libexpat brotli-libs curl libcurl libx11
+RUN apk upgrade --no-cache libexpat brotli-libs curl libcurl libx11 musl musl-utils
 COPY --chown=101:101 web/dist/ /usr/share/nginx/html/
 COPY web/nginx/default.conf.template /etc/nginx/templates/default.conf.template
 COPY --from=headers /work/security-headers.conf /etc/nginx/snippets/security-headers.conf

@@ -30,6 +30,9 @@ enum class Permission(
 
     /** The audit history of org and authz objects (E04; the full audit viewer in E07). */
     AUDIT_READ("audit.read", scopable = false, privileged = true),
+
+    /** The tenant's mail relay, test sends and the delivery log (E06). */
+    NOTIFICATION_SETTINGS_MANAGE("notification.settings.manage", scopable = false, privileged = true),
     ;
 
     companion object {

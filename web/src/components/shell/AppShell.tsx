@@ -98,12 +98,15 @@ export function AppShell({
   children,
   viewer = ANONYMOUS,
   account,
+  notifications,
 }: {
   children: ReactNode
   /** Which menu entries to show (the server enforces access regardless). */
   viewer?: Viewer
   /** The account control of the top bar (E03): a menu when signed in, a sign-in link otherwise. */
   account?: ReactNode
+  /** The notifications entry of the top bar (E06): the bell, for signed-in users. */
+  notifications?: ReactNode
 }) {
   const intl = useIntl()
   const [menuOpen, setMenuOpen] = useState(false)
@@ -154,7 +157,7 @@ export function AppShell({
             <div className="ms-auto flex items-center gap-1">
               <LocaleMenu />
               <ThemeMenu />
-              {/* Slot: notifications (E06). */}
+              {notifications}
               {account}
             </div>
           </header>

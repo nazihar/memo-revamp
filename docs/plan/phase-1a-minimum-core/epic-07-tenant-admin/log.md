@@ -15,3 +15,9 @@
   - Both hosts share one Spring Session table, so a tenant session id sent under the operator cookie name does load a session there. What keeps them apart is the principal attribute: on the operator host only `memo.operator` is read, on tenant hosts only `memo.principal`. `OperatorPathIT` sends each side's session id under the other's cookie name to prove it.
   - The per-account login rate limit (10 per 15 minutes) would answer 429 before a lock at 10 failures could ever be seen; operators now lock at 5.
   - Operator tables follow the module prefix rule (`identity_operator`, not `platform_operator` as first drafted); the one-time link is a hash on the operator row instead of a separate token table.
+- T2 built: `platform` module (registry list and view, create with defaults and first-admin invitation, rename, suspend, resume, re-invite), `TenantLifecycle` in tenancy, resolver caching the status with cross-node eviction (a new `TenantCaches.onEvict` hook on the LISTEN/NOTIFY channel), 403 `tenant-suspended` from the resolution filter, sessions deleted in the suspension's transaction, suspended tenants' tasks re-queued an hour later as fresh executions (db-scheduler's `removeAndScheduleNew`), so pauses never count as failures. Matrix 577 cells.
+- Findings:
+  - No new RLS policy was needed after all: lifecycle changes run in the tenant's own scope under `tenant_self`, with the tenant-chain entry in the same transaction; the platform chain is written afterwards in platform scope. ADR-0031 updated.
+  - Spring Modulith treats `identity.operator` as internal; the demo seeder and the platform module use it, so it is now a named interface.
+  - A controller-scoped `@RestControllerAdvice` loses to the global advice's catch-all unless it is ordered first.
+  - `SuspendedTenantIT` walks every mapped tenant endpoint (over 50) on a suspended host and expects 403 from each: the suspended-tenant cases of the authorisation matrix, without a column per file.

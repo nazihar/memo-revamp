@@ -13,3 +13,8 @@ data class TenantSettingChanged(
     override val tenantId: UUID,
     val settingKey: String,
 ) : TenantScopedEvent
+
+/** A tenant was suspended (ADR-0031): its sessions end (identity listens). */
+data class TenantSuspended(
+    override val tenantId: UUID,
+) : TenantScopedEvent

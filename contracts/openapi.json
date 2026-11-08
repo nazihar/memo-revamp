@@ -1256,6 +1256,20 @@
         "required" : [ "displayName", "email" ],
         "type" : "object"
       },
+      "PlatformFirstAdmin" : {
+        "properties" : {
+          "displayName" : {
+            "maxLength" : 200,
+            "type" : "string"
+          },
+          "email" : {
+            "maxLength" : 320,
+            "type" : "string"
+          }
+        },
+        "required" : [ "displayName", "email" ],
+        "type" : "object"
+      },
       "PlatformOperator" : {
         "properties" : {
           "displayName" : {
@@ -1289,6 +1303,100 @@
           }
         },
         "required" : [ "state" ],
+        "type" : "object"
+      },
+      "PlatformTenant" : {
+        "description" : "A tenant's registry entry: metadata only, never tenant data (ADR-0031).",
+        "properties" : {
+          "createdAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "hasAdmin" : {
+            "description" : "Whether the tenant has an active administrator; only on the single-tenant view",
+            "type" : [ "boolean", "null" ]
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "slug" : {
+            "type" : "string"
+          },
+          "status" : {
+            "enum" : [ "ACTIVE", "SUSPENDED" ],
+            "type" : "string"
+          },
+          "statusChangedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "version" : {
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "createdAt", "id", "name", "slug", "status", "version" ],
+        "type" : "object"
+      },
+      "PlatformTenantCreation" : {
+        "properties" : {
+          "adminEmail" : {
+            "maxLength" : 320,
+            "type" : "string"
+          },
+          "adminName" : {
+            "maxLength" : 200,
+            "type" : "string"
+          },
+          "locale" : {
+            "description" : "Default language: en or ar",
+            "type" : "string"
+          },
+          "name" : {
+            "maxLength" : 200,
+            "type" : "string"
+          },
+          "slug" : {
+            "description" : "Host label: <slug>.<base domain>",
+            "maxLength" : 63,
+            "type" : "string"
+          },
+          "timeZone" : {
+            "description" : "IANA time zone, for example Asia/Dhaka",
+            "type" : "string"
+          }
+        },
+        "required" : [ "adminEmail", "adminName", "locale", "name", "slug", "timeZone" ],
+        "type" : "object"
+      },
+      "PlatformTenantPage" : {
+        "properties" : {
+          "items" : {
+            "items" : {
+              "$ref" : "#/components/schemas/PlatformTenant"
+            },
+            "type" : "array"
+          },
+          "nextCursor" : {
+            "description" : "Pass as cursor for the next page; absent on the last page",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "items" ],
+        "type" : "object"
+      },
+      "PlatformTenantRename" : {
+        "properties" : {
+          "name" : {
+            "maxLength" : 200,
+            "type" : "string"
+          }
+        },
+        "required" : [ "name" ],
         "type" : "object"
       },
       "PositionRequest" : {
@@ -4579,6 +4687,285 @@
         },
         "summary" : "Confirm a sensitive action with a fresh TOTP code",
         "tags" : [ "platform-auth" ]
+      }
+    },
+    "/api/v1/platform/tenants" : {
+      "get" : {
+        "operationId" : "listPlatformTenants",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "cursor",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "q",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "required" : false,
+          "schema" : {
+            "default" : 50,
+            "format" : "int32",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PlatformTenantPage"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Tenants by slug, optionally filtered by name or slug",
+        "tags" : [ "platform-tenants" ]
+      },
+      "post" : {
+        "operationId" : "createPlatformTenant",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PlatformTenantCreation"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "Created; the invitation mail is queued"
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "Invalid or reserved slug, name, language, time zone or email"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "Step-up required"
+          }
+        },
+        "summary" : "Create a tenant and invite its first administrator",
+        "tags" : [ "platform-tenants" ]
+      }
+    },
+    "/api/v1/platform/tenants/{id}" : {
+      "get" : {
+        "operationId" : "getPlatformTenant",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PlatformTenant"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "One tenant's registry entry",
+        "tags" : [ "platform-tenants" ]
+      },
+      "patch" : {
+        "operationId" : "renamePlatformTenant",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PlatformTenantRename"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Rename a tenant (If-Match)",
+        "tags" : [ "platform-tenants" ]
+      }
+    },
+    "/api/v1/platform/tenants/{id}/first-admin" : {
+      "post" : {
+        "operationId" : "invitePlatformTenantFirstAdmin",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PlatformFirstAdmin"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "204" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "Invitation queued"
+          },
+          "409" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "The tenant already has an active administrator"
+          }
+        },
+        "summary" : "Invite (or re-invite) the tenant's first administrator",
+        "tags" : [ "platform-tenants" ]
+      }
+    },
+    "/api/v1/platform/tenants/{id}/resume" : {
+      "post" : {
+        "operationId" : "resumePlatformTenant",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Resume a suspended tenant",
+        "tags" : [ "platform-tenants" ]
+      }
+    },
+    "/api/v1/platform/tenants/{id}/suspend" : {
+      "post" : {
+        "operationId" : "suspendPlatformTenant",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Suspend: the host refuses every request, sessions end, jobs wait",
+        "tags" : [ "platform-tenants" ]
       }
     }
   },

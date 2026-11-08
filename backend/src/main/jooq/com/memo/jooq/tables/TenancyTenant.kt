@@ -108,6 +108,11 @@ open class TenancyTenant(
      */
     val CREATED_AT: TableField<TenancyTenantRecord, OffsetDateTime?> = createField(DSL.name("created_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false), this, "")
 
+    /**
+     * The column <code>memo.tenancy_tenant.status_changed_at</code>.
+     */
+    val STATUS_CHANGED_AT: TableField<TenancyTenantRecord, OffsetDateTime?> = createField(DSL.name("status_changed_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
+
     private constructor(alias: Name, aliased: Table<TenancyTenantRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<TenancyTenantRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<TenancyTenantRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -161,6 +166,7 @@ open class TenancyTenant(
     override fun getChecks(): List<Check<TenancyTenantRecord>> = listOf(
         Internal.createCheck(this, DSL.name("tenancy_tenant_name_check"), "(((length(name) >= 1) AND (length(name) <= 200)))", true),
         Internal.createCheck(this, DSL.name("tenancy_tenant_slug_check"), "((slug ~ '^[a-z0-9](?:[a-z0-9-]{1,61}[a-z0-9])\$'::text))", true),
+        Internal.createCheck(this, DSL.name("tenancy_tenant_slug_not_reserved"), "((slug <> ALL (ARRAY['admin'::text, 'www'::text, 'api'::text, 'mail'::text, 'static'::text])))", true),
         Internal.createCheck(this, DSL.name("tenancy_tenant_status_check"), "((status = ANY (ARRAY['ACTIVE'::text, 'SUSPENDED'::text])))", true)
     )
     override fun `as`(alias: String): TenancyTenant = TenancyTenant(DSL.name(alias), this)

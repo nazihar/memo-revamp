@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { acceptInvitation, acceptPlatformEnrolment, assignPosition, cancelAssignment, cancelReportingLine, changeMyPassword, closeLegalEntity, closeOrgUnit, closePosition, completePasswordReset, confirmMfaEnrolment, confirmPlatformMfaEnrolment, createClassificationLevel, createLegalEntity, createOrgUnit, createPosition, createReportingLine, createRole, deactivateUser, deleteClassificationLevel, deleteRole, getCsrfToken, getFile, getFileContent, getFileVersionContent, getHealth, getMailLog, getMailSettings, getMe, getMyAccess, getMyNotificationPreferences, getMyUnreadCount, getOrgHistory, getOrgUnit, getPlatformCsrfToken, getPlatformSession, getPosition, getPositionHolder, getSession, getUser, getUserAccess, grantRole, inviteUser, listClassificationLevels, listLegalEntities, listMyNotifications, listMySessions, listOrgUnits, listPermissions, listRoles, listUnitPositions, listUserAssignments, listUsers, login, logout, lookUpInvitation, lookUpPlatformEnrolment, markAllNotificationsRead, markNotificationRead, moveOrgUnit, type Options, platformLogin, platformLogout, platformStepUp, reactivateUser, regenerateMyRecoveryCodes, removeMailSettings, renameClassificationLevel, reorderClassificationLevels, requestPasswordReset, resetUserMfa, revokeGrant, revokeMySession, revokeUserSessions, searchDirectory, setClearance, setMailSettings, setMyNotificationPreferences, startMfaEnrolment, startPlatformMfaEnrolment, stepUp, testMailSettings, unlockUser, updateAssignment, updateLegalEntity, updateOrgUnit, updatePosition, updateReportingLine, updateRole, uploadFile, uploadFileVersion, verifyMfa, verifyPlatformMfa } from '../sdk.gen';
-import type { AcceptInvitationData, AcceptInvitationError, AcceptInvitationResponse, AcceptPlatformEnrolmentData, AcceptPlatformEnrolmentError, AcceptPlatformEnrolmentResponse, AssignPositionData, AssignPositionResponse, CancelAssignmentData, CancelAssignmentResponse, CancelReportingLineData, CancelReportingLineResponse, ChangeMyPasswordData, ChangeMyPasswordError, ChangeMyPasswordResponse, CloseLegalEntityData, CloseLegalEntityResponse, CloseOrgUnitData, CloseOrgUnitResponse, ClosePositionData, ClosePositionResponse, CompletePasswordResetData, CompletePasswordResetError, CompletePasswordResetResponse, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentError, ConfirmMfaEnrolmentResponse, ConfirmPlatformMfaEnrolmentData, ConfirmPlatformMfaEnrolmentError, CreateClassificationLevelData, CreateClassificationLevelResponse, CreateLegalEntityData, CreateLegalEntityResponse, CreateOrgUnitData, CreateOrgUnitResponse, CreatePositionData, CreatePositionResponse, CreateReportingLineData, CreateReportingLineResponse, CreateRoleData, CreateRoleResponse, DeactivateUserData, DeactivateUserResponse, DeleteClassificationLevelData, DeleteRoleData, GetCsrfTokenData, GetCsrfTokenResponse, GetFileContentData, GetFileData, GetFileResponse, GetFileVersionContentData, GetHealthData, GetHealthError, GetHealthResponse, GetMailLogData, GetMailLogResponse, GetMailSettingsData, GetMailSettingsResponse, GetMeData, GetMeResponse, GetMyAccessData, GetMyAccessResponse, GetMyNotificationPreferencesData, GetMyNotificationPreferencesResponse, GetMyUnreadCountData, GetMyUnreadCountResponse, GetOrgHistoryData, GetOrgHistoryResponse, GetOrgUnitData, GetOrgUnitResponse, GetPlatformCsrfTokenData, GetPlatformCsrfTokenResponse, GetPlatformSessionData, GetPlatformSessionResponse, GetPositionData, GetPositionHolderData, GetPositionHolderResponse, GetPositionResponse, GetSessionData, GetSessionResponse, GetUserAccessData, GetUserAccessResponse, GetUserData, GetUserResponse, GrantRoleData, GrantRoleResponse, InviteUserData, InviteUserError, InviteUserResponse, ListClassificationLevelsData, ListClassificationLevelsResponse, ListLegalEntitiesData, ListLegalEntitiesResponse, ListMyNotificationsData, ListMyNotificationsResponse, ListMySessionsData, ListMySessionsResponse, ListOrgUnitsData, ListOrgUnitsResponse, ListPermissionsData, ListPermissionsResponse, ListRolesData, ListRolesResponse, ListUnitPositionsData, ListUnitPositionsResponse, ListUserAssignmentsData, ListUserAssignmentsResponse, ListUsersData, ListUsersResponse, LoginData, LoginError, LoginResponse, LogoutData, LogoutResponse, LookUpInvitationData, LookUpInvitationError, LookUpInvitationResponse, LookUpPlatformEnrolmentData, LookUpPlatformEnrolmentError, MarkAllNotificationsReadData, MarkNotificationReadData, MoveOrgUnitData, MoveOrgUnitResponse, PlatformLoginData, PlatformLoginError, PlatformLoginResponse, PlatformLogoutData, PlatformLogoutResponse, PlatformStepUpData, PlatformStepUpError, ReactivateUserData, ReactivateUserResponse, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesResponse, RemoveMailSettingsData, RenameClassificationLevelData, RenameClassificationLevelResponse, ReorderClassificationLevelsData, ReorderClassificationLevelsResponse, RequestPasswordResetData, ResetUserMfaData, ResetUserMfaResponse, RevokeGrantData, RevokeMySessionData, RevokeMySessionResponse, RevokeUserSessionsData, RevokeUserSessionsResponse, SearchDirectoryData, SearchDirectoryResponse, SetClearanceData, SetClearanceResponse, SetMailSettingsData, SetMailSettingsResponse, SetMyNotificationPreferencesData, SetMyNotificationPreferencesResponse, StartMfaEnrolmentData, StartMfaEnrolmentResponse, StartPlatformMfaEnrolmentData, StartPlatformMfaEnrolmentError, StepUpData, StepUpError, StepUpResponse, TestMailSettingsData, TestMailSettingsResponse, UnlockUserData, UnlockUserResponse, UpdateAssignmentData, UpdateAssignmentResponse, UpdateLegalEntityData, UpdateLegalEntityResponse, UpdateOrgUnitData, UpdateOrgUnitResponse, UpdatePositionData, UpdatePositionResponse, UpdateReportingLineData, UpdateReportingLineResponse, UpdateRoleData, UpdateRoleResponse, UploadFileData, UploadFileResponse, UploadFileVersionData, UploadFileVersionResponse, VerifyMfaData, VerifyMfaError, VerifyMfaResponse, VerifyPlatformMfaData, VerifyPlatformMfaError, VerifyPlatformMfaResponse } from '../types.gen';
+import { acceptInvitation, acceptPlatformEnrolment, assignPosition, cancelAssignment, cancelReportingLine, changeMyPassword, closeLegalEntity, closeOrgUnit, closePosition, completePasswordReset, confirmMfaEnrolment, confirmPlatformMfaEnrolment, createClassificationLevel, createLegalEntity, createOrgUnit, createPlatformTenant, createPosition, createReportingLine, createRole, deactivateUser, deleteClassificationLevel, deleteRole, getCsrfToken, getFile, getFileContent, getFileVersionContent, getHealth, getMailLog, getMailSettings, getMe, getMyAccess, getMyNotificationPreferences, getMyUnreadCount, getOrgHistory, getOrgUnit, getPlatformCsrfToken, getPlatformSession, getPlatformTenant, getPosition, getPositionHolder, getSession, getUser, getUserAccess, grantRole, invitePlatformTenantFirstAdmin, inviteUser, listClassificationLevels, listLegalEntities, listMyNotifications, listMySessions, listOrgUnits, listPermissions, listPlatformTenants, listRoles, listUnitPositions, listUserAssignments, listUsers, login, logout, lookUpInvitation, lookUpPlatformEnrolment, markAllNotificationsRead, markNotificationRead, moveOrgUnit, type Options, platformLogin, platformLogout, platformStepUp, reactivateUser, regenerateMyRecoveryCodes, removeMailSettings, renameClassificationLevel, renamePlatformTenant, reorderClassificationLevels, requestPasswordReset, resetUserMfa, resumePlatformTenant, revokeGrant, revokeMySession, revokeUserSessions, searchDirectory, setClearance, setMailSettings, setMyNotificationPreferences, startMfaEnrolment, startPlatformMfaEnrolment, stepUp, suspendPlatformTenant, testMailSettings, unlockUser, updateAssignment, updateLegalEntity, updateOrgUnit, updatePosition, updateReportingLine, updateRole, uploadFile, uploadFileVersion, verifyMfa, verifyPlatformMfa } from '../sdk.gen';
+import type { AcceptInvitationData, AcceptInvitationError, AcceptInvitationResponse, AcceptPlatformEnrolmentData, AcceptPlatformEnrolmentError, AcceptPlatformEnrolmentResponse, AssignPositionData, AssignPositionResponse, CancelAssignmentData, CancelAssignmentResponse, CancelReportingLineData, CancelReportingLineResponse, ChangeMyPasswordData, ChangeMyPasswordError, ChangeMyPasswordResponse, CloseLegalEntityData, CloseLegalEntityResponse, CloseOrgUnitData, CloseOrgUnitResponse, ClosePositionData, ClosePositionResponse, CompletePasswordResetData, CompletePasswordResetError, CompletePasswordResetResponse, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentError, ConfirmMfaEnrolmentResponse, ConfirmPlatformMfaEnrolmentData, ConfirmPlatformMfaEnrolmentError, CreateClassificationLevelData, CreateClassificationLevelResponse, CreateLegalEntityData, CreateLegalEntityResponse, CreateOrgUnitData, CreateOrgUnitResponse, CreatePlatformTenantData, CreatePlatformTenantError, CreatePlatformTenantResponse, CreatePositionData, CreatePositionResponse, CreateReportingLineData, CreateReportingLineResponse, CreateRoleData, CreateRoleResponse, DeactivateUserData, DeactivateUserResponse, DeleteClassificationLevelData, DeleteRoleData, GetCsrfTokenData, GetCsrfTokenResponse, GetFileContentData, GetFileData, GetFileResponse, GetFileVersionContentData, GetHealthData, GetHealthError, GetHealthResponse, GetMailLogData, GetMailLogResponse, GetMailSettingsData, GetMailSettingsResponse, GetMeData, GetMeResponse, GetMyAccessData, GetMyAccessResponse, GetMyNotificationPreferencesData, GetMyNotificationPreferencesResponse, GetMyUnreadCountData, GetMyUnreadCountResponse, GetOrgHistoryData, GetOrgHistoryResponse, GetOrgUnitData, GetOrgUnitResponse, GetPlatformCsrfTokenData, GetPlatformCsrfTokenResponse, GetPlatformSessionData, GetPlatformSessionResponse, GetPlatformTenantData, GetPlatformTenantResponse, GetPositionData, GetPositionHolderData, GetPositionHolderResponse, GetPositionResponse, GetSessionData, GetSessionResponse, GetUserAccessData, GetUserAccessResponse, GetUserData, GetUserResponse, GrantRoleData, GrantRoleResponse, InvitePlatformTenantFirstAdminData, InvitePlatformTenantFirstAdminError, InvitePlatformTenantFirstAdminResponse, InviteUserData, InviteUserError, InviteUserResponse, ListClassificationLevelsData, ListClassificationLevelsResponse, ListLegalEntitiesData, ListLegalEntitiesResponse, ListMyNotificationsData, ListMyNotificationsResponse, ListMySessionsData, ListMySessionsResponse, ListOrgUnitsData, ListOrgUnitsResponse, ListPermissionsData, ListPermissionsResponse, ListPlatformTenantsData, ListPlatformTenantsResponse, ListRolesData, ListRolesResponse, ListUnitPositionsData, ListUnitPositionsResponse, ListUserAssignmentsData, ListUserAssignmentsResponse, ListUsersData, ListUsersResponse, LoginData, LoginError, LoginResponse, LogoutData, LogoutResponse, LookUpInvitationData, LookUpInvitationError, LookUpInvitationResponse, LookUpPlatformEnrolmentData, LookUpPlatformEnrolmentError, MarkAllNotificationsReadData, MarkNotificationReadData, MoveOrgUnitData, MoveOrgUnitResponse, PlatformLoginData, PlatformLoginError, PlatformLoginResponse, PlatformLogoutData, PlatformLogoutResponse, PlatformStepUpData, PlatformStepUpError, ReactivateUserData, ReactivateUserResponse, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesResponse, RemoveMailSettingsData, RenameClassificationLevelData, RenameClassificationLevelResponse, RenamePlatformTenantData, RenamePlatformTenantResponse, ReorderClassificationLevelsData, ReorderClassificationLevelsResponse, RequestPasswordResetData, ResetUserMfaData, ResetUserMfaResponse, ResumePlatformTenantData, ResumePlatformTenantResponse, RevokeGrantData, RevokeMySessionData, RevokeMySessionResponse, RevokeUserSessionsData, RevokeUserSessionsResponse, SearchDirectoryData, SearchDirectoryResponse, SetClearanceData, SetClearanceResponse, SetMailSettingsData, SetMailSettingsResponse, SetMyNotificationPreferencesData, SetMyNotificationPreferencesResponse, StartMfaEnrolmentData, StartMfaEnrolmentResponse, StartPlatformMfaEnrolmentData, StartPlatformMfaEnrolmentError, StepUpData, StepUpError, StepUpResponse, SuspendPlatformTenantData, SuspendPlatformTenantResponse, TestMailSettingsData, TestMailSettingsResponse, UnlockUserData, UnlockUserResponse, UpdateAssignmentData, UpdateAssignmentResponse, UpdateLegalEntityData, UpdateLegalEntityResponse, UpdateOrgUnitData, UpdateOrgUnitResponse, UpdatePositionData, UpdatePositionResponse, UpdateReportingLineData, UpdateReportingLineResponse, UpdateRoleData, UpdateRoleResponse, UploadFileData, UploadFileResponse, UploadFileVersionData, UploadFileVersionResponse, VerifyMfaData, VerifyMfaError, VerifyMfaResponse, VerifyPlatformMfaData, VerifyPlatformMfaError, VerifyPlatformMfaResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -1817,6 +1817,157 @@ export const platformStepUpMutation = (options?: Partial<Options<PlatformStepUpD
     const mutationOptions: UseMutationOptions<unknown, PlatformStepUpError, Options<PlatformStepUpData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await platformStepUp({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const listPlatformTenantsQueryKey = (options?: Options<ListPlatformTenantsData>) => createQueryKey('listPlatformTenants', options);
+
+/**
+ * Tenants by slug, optionally filtered by name or slug
+ */
+export const listPlatformTenantsOptions = (options?: Options<ListPlatformTenantsData>) => queryOptions<ListPlatformTenantsResponse, DefaultError, ListPlatformTenantsResponse, ReturnType<typeof listPlatformTenantsQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await listPlatformTenants({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: listPlatformTenantsQueryKey(options)
+});
+
+export const listPlatformTenantsInfiniteQueryKey = (options?: Options<ListPlatformTenantsData>): QueryKey<Options<ListPlatformTenantsData>> => createQueryKey('listPlatformTenants', options, true);
+
+/**
+ * Tenants by slug, optionally filtered by name or slug
+ */
+export const listPlatformTenantsInfiniteOptions = (options?: Options<ListPlatformTenantsData>) => {
+    const opts = infiniteQueryOptions<ListPlatformTenantsResponse, DefaultError, InfiniteData<ListPlatformTenantsResponse>, QueryKey<Options<ListPlatformTenantsData>>, string | Pick<QueryKey<Options<ListPlatformTenantsData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+    // @ts-ignore
+    {
+        queryFn: async ({ pageParam, queryKey, signal }) => {
+            // @ts-ignore
+            const page: Pick<QueryKey<Options<ListPlatformTenantsData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
+                query: {
+                    cursor: pageParam
+                }
+            };
+            const params = createInfiniteParams(queryKey, page);
+            const { data } = await listPlatformTenants({
+                ...options,
+                ...params,
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: listPlatformTenantsInfiniteQueryKey(options)
+    });
+    return opts as Omit<typeof opts, 'initialData'>;
+};
+
+/**
+ * Create a tenant and invite its first administrator
+ */
+export const createPlatformTenantMutation = (options?: Partial<Options<CreatePlatformTenantData>>): UseMutationOptions<CreatePlatformTenantResponse, CreatePlatformTenantError, Options<CreatePlatformTenantData>> => {
+    const mutationOptions: UseMutationOptions<CreatePlatformTenantResponse, CreatePlatformTenantError, Options<CreatePlatformTenantData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await createPlatformTenant({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const getPlatformTenantQueryKey = (options: Options<GetPlatformTenantData>) => createQueryKey('getPlatformTenant', options);
+
+/**
+ * One tenant's registry entry
+ */
+export const getPlatformTenantOptions = (options: Options<GetPlatformTenantData>) => queryOptions<GetPlatformTenantResponse, DefaultError, GetPlatformTenantResponse, ReturnType<typeof getPlatformTenantQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getPlatformTenant({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getPlatformTenantQueryKey(options)
+});
+
+/**
+ * Rename a tenant (If-Match)
+ */
+export const renamePlatformTenantMutation = (options?: Partial<Options<RenamePlatformTenantData>>): UseMutationOptions<RenamePlatformTenantResponse, DefaultError, Options<RenamePlatformTenantData>> => {
+    const mutationOptions: UseMutationOptions<RenamePlatformTenantResponse, DefaultError, Options<RenamePlatformTenantData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await renamePlatformTenant({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Invite (or re-invite) the tenant's first administrator
+ */
+export const invitePlatformTenantFirstAdminMutation = (options?: Partial<Options<InvitePlatformTenantFirstAdminData>>): UseMutationOptions<InvitePlatformTenantFirstAdminResponse, InvitePlatformTenantFirstAdminError, Options<InvitePlatformTenantFirstAdminData>> => {
+    const mutationOptions: UseMutationOptions<InvitePlatformTenantFirstAdminResponse, InvitePlatformTenantFirstAdminError, Options<InvitePlatformTenantFirstAdminData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await invitePlatformTenantFirstAdmin({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Resume a suspended tenant
+ */
+export const resumePlatformTenantMutation = (options?: Partial<Options<ResumePlatformTenantData>>): UseMutationOptions<ResumePlatformTenantResponse, DefaultError, Options<ResumePlatformTenantData>> => {
+    const mutationOptions: UseMutationOptions<ResumePlatformTenantResponse, DefaultError, Options<ResumePlatformTenantData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await resumePlatformTenant({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Suspend: the host refuses every request, sessions end, jobs wait
+ */
+export const suspendPlatformTenantMutation = (options?: Partial<Options<SuspendPlatformTenantData>>): UseMutationOptions<SuspendPlatformTenantResponse, DefaultError, Options<SuspendPlatformTenantData>> => {
+    const mutationOptions: UseMutationOptions<SuspendPlatformTenantResponse, DefaultError, Options<SuspendPlatformTenantData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await suspendPlatformTenant({
                 ...options,
                 ...fnOptions,
                 throwOnError: true

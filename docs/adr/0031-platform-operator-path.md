@@ -34,7 +34,7 @@ Chosen option: **2**, because it gives host, credential and database separation 
 
 **Sessions.** Spring Session JDBC as for users (ADR-0023), but: cookie `MEMO_OPERATOR` (HttpOnly, Secure, SameSite=Strict, host-only), principal attribute `memo.operator`, principal index `platform:<operatorId>`, idle 15 minutes, absolute 8 hours, step-up window 5 minutes for suspend, resume and first-admin invitation. The cookie serializer picks the name by host, so the operator cookie is never set on, or read from, a tenant host.
 
-**Database access.** Every operator request runs in platform scope (`PlatformTransactions`, `app.scope = platform`, no tenant id). Tenant tables' RLS policies return no rows and reject writes in that scope (ADR-0006, ADR-0017). New platform-scope policies allow exactly: `INSERT` and `UPDATE` on `tenancy_tenant`; all on `identity_operator`; the platform audit chain (existing). Operators see the registry (id, slug, name, status, created and changed times) and nothing else.
+**Database access.** Every operator read runs in platform scope (`PlatformTransactions`, `app.scope = platform`, no tenant id). Tenant tables' RLS policies return no rows and reject writes in that scope (ADR-0006, ADR-0017). Operators see the registry (id, slug, name, status, created and changed times) and nothing else. Changes to a tenant's registry row (rename, suspend, resume) are made by the tenancy module's `TenantLifecycle` in that tenant's own scope (policy `tenant_self`), with the tenant-chain audit entry in the same transaction; the platform module records the platform-chain entry in platform scope. No new platform-scope write policy is needed.
 
 **First admin.** `TenantProvisioning` is the only class in the platform module allowed to open a tenant transaction (ArchUnit). It runs in the target tenant's context, refuses if the tenant already has an active tenant admin, creates or re-sends the invitation (E03 flow, role tenant admin), records `tenant.first_admin.invited` in **both** chains (the tenant's, with actor `PLATFORM_OPERATOR`, and the platform's), and returns nothing from the tenant.
 
@@ -53,7 +53,7 @@ Chosen option: **2**, because it gives host, credential and database separation 
 - `OperatorAuthIT`: TOTP enrolment forced, lockout, step-up for suspend.
 - `TenantProvisioningIT`: refuses when an active admin exists; both chains record the invitation.
 - `SuspendedTenantIT`: every tenant endpoint (from the handler mappings) answers 403; sessions deleted; one-off tasks paused and resumed.
-- ArchUnit: only `TenantProvisioning` in the platform module opens tenant transactions.
+- ArchUnit: in the platform module only `TenantProvisioning` uses `TenantTransactions` or `TenantDsl`.
 
 ## Pros and cons of the options
 ### Separate application

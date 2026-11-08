@@ -68,7 +68,7 @@ erDiagram
 ```
 
 - `identity_operator` (owned by `identity`, so the module prefix rule holds): a platform table (no `tenant_id`), RLS `ENABLE` + `FORCE` with the policy `platform_operator` that admits only `app.scope = platform`. One pending enrolment link per operator, stored as its hash on the row. Lockout: 5 wrong passwords in a row lock for 30 minutes (the per-account rate limit allows 10 per 15 minutes, so the lock is reached first).
-- `tenancy_tenant`: new policies `platform_insert` (`INSERT … WITH CHECK app.scope = platform`) and `platform_update` (`UPDATE` in platform scope). Slug check gains the reserved list.
+- `tenancy_tenant`: new column `status_changed_at`; the slug check gains the reserved list. No new policy: lifecycle changes run in the tenant's own scope (`tenant_self`), reads in platform scope (`platform_read`).
 - Branding lives in settings (`branding.color.light`, `branding.color.dark`, `branding.logo.file`): small, non-secret, already audited and cached.
 - Settings keys used by the console (all existing unless marked new):
 

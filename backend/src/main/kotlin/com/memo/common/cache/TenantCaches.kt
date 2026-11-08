@@ -61,6 +61,18 @@ class TenantCache<K : Any, V : Any> internal constructor(
 @Component
 class TenantCaches {
     private val caches = ConcurrentHashMap<String, TenantCache<*, *>>()
+    private val listeners = ConcurrentHashMap<String, MutableList<(TenantId) -> Unit>>()
+
+    /**
+     * Calls [listener] whenever entries of [name] are evicted for a tenant on this node, from this node's commits or other
+     * nodes' notifications: for caches not keyed by tenant context, such as host resolution.
+     */
+    fun onEvict(
+        name: String,
+        listener: (TenantId) -> Unit,
+    ) {
+        listeners.computeIfAbsent(name) { java.util.concurrent.CopyOnWriteArrayList() }.add(listener)
+    }
 
     fun <K : Any, V : Any> register(
         name: String,
@@ -78,11 +90,17 @@ class TenantCaches {
         key: String?,
     ) {
         caches[name]?.evict(tenant, key)
+        listeners[name]?.forEach { it(tenant) }
     }
 
-    internal fun evictAll() = caches.values.forEach { it.evictAll() }
+    internal fun evictAll() {
+        caches.values.forEach { it.evictAll() }
+        listeners.values.flatten().forEach { it(ALL_TENANTS) }
+    }
 
     companion object {
+        /** Passed to [onEvict] listeners when every entry is flushed (listener reconnect). */
+        val ALL_TENANTS = TenantId(java.util.UUID(0, 0))
         val DEFAULT_TTL: Duration = Duration.ofMinutes(10)
         const val DEFAULT_MAX_SIZE = 10_000L
     }

@@ -44,6 +44,7 @@ class ModularityTest {
                 "search",
                 "system",
                 "demo",
+                "platform",
                 "common",
             )
     }

@@ -1,9 +1,11 @@
 package com.memo.tenancy.web
 
 import com.memo.common.tenant.TenantContext
+import com.memo.common.web.ProblemTypes
 import com.memo.common.web.writeProblem
 import com.memo.tenancy.PlatformHost
 import com.memo.tenancy.TenantResolver
+import com.memo.tenancy.TenantStatus
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -20,7 +22,8 @@ import tools.jackson.databind.json.JsonMapper
  * gets 404 without revealing whether other tenants exist.
  *
  * The operator console's host (ADR-0031) serves the platform API and nothing else, without a tenant; tenant hosts never
- * serve the platform API. Both refusals are 404, as for any path that does not exist.
+ * serve the platform API. Both refusals are 404, as for any path that does not exist. A suspended tenant's host answers
+ * 403 `tenant-suspended` to every request (ADR-0031): one place, so no endpoint can forget it.
  */
 @Component
 @Order(TenantResolutionFilter.ORDER)
@@ -63,12 +66,26 @@ class TenantResolutionFilter(
         response: HttpServletResponse,
         chain: FilterChain,
     ) {
-        val tenant = resolver.resolve(request.serverName)
-        if (tenant == null) {
-            response.writeProblem(jsonMapper, HttpStatus.NOT_FOUND, "Unknown organisation.", request.requestURI)
-            return
+        val tenant = resolver.lookup(request.serverName)
+        when (tenant?.status) {
+            null -> {
+                response.writeProblem(jsonMapper, HttpStatus.NOT_FOUND, "Unknown organisation.", request.requestURI)
+            }
+
+            TenantStatus.SUSPENDED -> {
+                response.writeProblem(
+                    jsonMapper,
+                    HttpStatus.FORBIDDEN,
+                    "This organisation is suspended.",
+                    request.requestURI,
+                    ProblemTypes.TENANT_SUSPENDED,
+                )
+            }
+
+            TenantStatus.ACTIVE -> {
+                TenantContext.call(tenant.id) { chain.doFilter(request, response) }
+            }
         }
-        TenantContext.call(tenant) { chain.doFilter(request, response) }
     }
 
     private fun path(request: HttpServletRequest) = request.requestURI.removePrefix(request.contextPath)

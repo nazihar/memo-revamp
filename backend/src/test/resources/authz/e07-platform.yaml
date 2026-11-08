@@ -24,3 +24,23 @@ endpoints:
     body: { code: "000000" }
     expect: { operatorPartial: 403 }
   - { endpoint: POST /api/v1/platform/auth/logout, rule: operatorAnySession }
+  # Tenants: registry metadata only. Creating a tenant, cutting access and reaching into a tenant need step-up.
+  - { endpoint: GET /api/v1/platform/tenants, rule: operator }
+  - endpoint: POST /api/v1/platform/tenants
+    rule: operatorStepUp
+    body:
+      { slug: "m-{random}", name: "Matrix Bank", locale: en, timeZone: UTC, adminEmail: "admin-{random}@matrix.example", adminName: "Matrix Admin" }
+  - { endpoint: "GET /api/v1/platform/tenants/{id}", rule: operator }
+  - endpoint: "PATCH /api/v1/platform/tenants/{id}"
+    rule: operator
+    body: { name: "Matrix Bank" }
+    headers: { If-Match: '"0"' }
+  - endpoint: "POST /api/v1/platform/tenants/{id}/suspend"
+    rule: operatorStepUp
+    headers: { If-Match: '"0"' }
+  - endpoint: "POST /api/v1/platform/tenants/{id}/resume"
+    rule: operatorStepUp
+    headers: { If-Match: '"0"' }
+  - endpoint: "POST /api/v1/platform/tenants/{id}/first-admin"
+    rule: operatorStepUp
+    body: { email: "admin@matrix.example", displayName: "Matrix Admin" }

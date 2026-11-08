@@ -3,6 +3,7 @@ package com.memo.common.jobs
 import com.github.kagkarlsson.scheduler.task.ExecutionComplete
 import com.github.kagkarlsson.scheduler.task.ExecutionOperations
 import com.github.kagkarlsson.scheduler.task.FailureHandler
+import com.github.kagkarlsson.scheduler.task.SchedulableInstance
 import com.github.kagkarlsson.scheduler.task.helper.OneTimeTask
 import com.github.kagkarlsson.scheduler.task.helper.RecurringTask
 import com.github.kagkarlsson.scheduler.task.helper.Tasks
@@ -24,10 +25,16 @@ interface TenantScopedPayload {
     val tenantId: UUID
 }
 
-/** Answers whether a tenant id names an existing tenant. Implemented by the tenancy module. */
+/** Whether a tenant exists and may run work now. */
+enum class TenantState { UNKNOWN, ACTIVE, SUSPENDED }
+
+/** Answers what state a tenant id is in (ADR-0018, ADR-0031). Implemented by the tenancy module. */
 fun interface KnownTenants {
-    fun exists(tenant: TenantId): Boolean
+    fun state(tenant: TenantId): TenantState
 }
+
+/** A task for a suspended tenant: rescheduled [Jobs.PAUSE] later as a fresh execution, not counted as a failure. */
+class TenantSuspendedPause : RuntimeException("tenant suspended")
 
 /** Lists the tenants a platform job fans out to (platform scope, ADR-0017). Implemented by the tenancy module. */
 fun interface ActiveTenants {
@@ -66,7 +73,11 @@ class Jobs(
                     runCatching { instance.data }.getOrElse { throw PermanentJobFailure("task data of $name is unreadable") }
                         ?: throw PermanentJobFailure("task $name has no data (no tenant)")
                 val tenant = TenantId(data.tenantId)
-                if (!knownTenants.exists(tenant)) throw PermanentJobFailure("task $name names an unknown tenant")
+                when (knownTenants.state(tenant)) {
+                    TenantState.UNKNOWN -> throw PermanentJobFailure("task $name names an unknown tenant")
+                    TenantState.SUSPENDED -> throw TenantSuspendedPause()
+                    TenantState.ACTIVE -> Unit
+                }
                 TenantContext.call(tenant) { ActorContext.asSystem(name) { handler(data) } }
             }
 
@@ -110,6 +121,13 @@ class Jobs(
         return FailureHandler { complete: ExecutionComplete, operations: ExecutionOperations<P> ->
             val failures = complete.execution.consecutiveFailures + 1
             when {
+                complete.cause.map { it is TenantSuspendedPause }.orElse(false) -> {
+                    meters.counter(PAUSED_METRIC, "task", name).increment()
+                    operations.removeAndScheduleNew(
+                        SchedulableInstance.of(complete.execution.taskInstance, complete.timeDone.plus(PAUSE)),
+                    )
+                }
+
                 complete.cause.map { it is PermanentJobFailure }.orElse(false) -> {
                     log.error("Task {} failed permanently: {}", name, complete.cause.get().message)
                     meters.counter(FAILED_METRIC, "task", name, "reason", "permanent").increment()
@@ -131,6 +149,10 @@ class Jobs(
 
     companion object {
         const val FAILED_METRIC = "memo.jobs.failed"
+        const val PAUSED_METRIC = "memo.jobs.paused"
+
+        /** How long a suspended tenant's task waits before it looks again (ADR-0031). */
+        val PAUSE: Duration = Duration.ofHours(1)
         private const val DEFAULT_MAX_RETRIES = 5
         private val FIRST_RETRY_DELAY: Duration = Duration.ofSeconds(10)
     }

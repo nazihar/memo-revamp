@@ -119,6 +119,23 @@ class ArchitectureRulesTest {
     }
 
     @Test
+    fun `the platform module enters a tenant only through TenantProvisioning`() {
+        noClasses()
+            .that()
+            .resideInAPackage("com.memo.platform..")
+            .and()
+            .doNotHaveSimpleName("TenantProvisioning")
+            .should()
+            .dependOnClassesThat()
+            .haveFullyQualifiedName("com.memo.common.tenant.TenantTransactions")
+            .orShould()
+            .dependOnClassesThat()
+            .haveFullyQualifiedName("com.memo.common.tenant.TenantDsl")
+            .because("operator code reads the registry in platform scope only; the first-admin invitation is the one exception (ADR-0031)")
+            .check(classes)
+    }
+
+    @Test
     fun `no coroutines on the backend`() {
         noClasses()
             .should()

@@ -17,6 +17,9 @@ object ProblemTypes {
     val CONFLICT: URI = URI.create("urn:memo:problem:conflict")
     val FORBIDDEN: URI = URI.create("urn:memo:problem:forbidden")
 
+    /** Every API request to a suspended organisation's host (ADR-0031); the web shows a full-page notice. */
+    val TENANT_SUSPENDED: URI = URI.create("urn:memo:problem:tenant-suspended")
+
     /** An upload was refused; `reason` says why (ADR-0029). */
     val FILE_REJECTED: URI = URI.create("urn:memo:problem:file-rejected")
 

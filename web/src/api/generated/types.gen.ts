@@ -540,6 +540,11 @@ export type PlatformEnrolment = {
     email: string;
 };
 
+export type PlatformFirstAdmin = {
+    displayName: string;
+    email: string;
+};
+
 export type PlatformOperator = {
     displayName: string;
     email: string;
@@ -555,6 +560,53 @@ export type PlatformSession = {
      */
     operator?: PlatformOperator | null;
     state: 'ANONYMOUS' | 'MFA_REQUIRED' | 'MFA_ENROLMENT_REQUIRED' | 'AUTHENTICATED';
+};
+
+/**
+ * A tenant's registry entry: metadata only, never tenant data (ADR-0031).
+ */
+export type PlatformTenant = {
+    createdAt: string;
+    /**
+     * Whether the tenant has an active administrator; only on the single-tenant view
+     */
+    hasAdmin?: boolean | null;
+    id: string;
+    name: string;
+    slug: string;
+    status: 'ACTIVE' | 'SUSPENDED';
+    statusChangedAt?: string | null;
+    version: number;
+};
+
+export type PlatformTenantCreation = {
+    adminEmail: string;
+    adminName: string;
+    /**
+     * Default language: en or ar
+     */
+    locale: string;
+    name: string;
+    /**
+     * Host label: <slug>.<base domain>
+     */
+    slug: string;
+    /**
+     * IANA time zone, for example Asia/Dhaka
+     */
+    timeZone: string;
+};
+
+export type PlatformTenantPage = {
+    items: Array<PlatformTenant>;
+    /**
+     * Pass as cursor for the next page; absent on the last page
+     */
+    nextCursor?: string | null;
+};
+
+export type PlatformTenantRename = {
+    name: string;
 };
 
 export type PositionRequest = {
@@ -2513,3 +2565,176 @@ export type PlatformStepUpErrors = {
 };
 
 export type PlatformStepUpError = PlatformStepUpErrors[keyof PlatformStepUpErrors];
+
+export type ListPlatformTenantsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        cursor?: string;
+        q?: string;
+        limit?: number;
+    };
+    url: '/api/v1/platform/tenants';
+};
+
+export type ListPlatformTenantsResponses = {
+    /**
+     * OK
+     */
+    200: PlatformTenantPage;
+};
+
+export type ListPlatformTenantsResponse = ListPlatformTenantsResponses[keyof ListPlatformTenantsResponses];
+
+export type CreatePlatformTenantData = {
+    body: PlatformTenantCreation;
+    path?: never;
+    query?: never;
+    url: '/api/v1/platform/tenants';
+};
+
+export type CreatePlatformTenantErrors = {
+    /**
+     * Invalid or reserved slug, name, language, time zone or email
+     */
+    400: {
+        [key: string]: unknown;
+    };
+    /**
+     * Step-up required
+     */
+    401: {
+        [key: string]: unknown;
+    };
+};
+
+export type CreatePlatformTenantError = CreatePlatformTenantErrors[keyof CreatePlatformTenantErrors];
+
+export type CreatePlatformTenantResponses = {
+    /**
+     * Created; the invitation mail is queued
+     */
+    201: {
+        [key: string]: unknown;
+    };
+};
+
+export type CreatePlatformTenantResponse = CreatePlatformTenantResponses[keyof CreatePlatformTenantResponses];
+
+export type GetPlatformTenantData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/platform/tenants/{id}';
+};
+
+export type GetPlatformTenantResponses = {
+    /**
+     * OK
+     */
+    200: PlatformTenant;
+};
+
+export type GetPlatformTenantResponse = GetPlatformTenantResponses[keyof GetPlatformTenantResponses];
+
+export type RenamePlatformTenantData = {
+    body: PlatformTenantRename;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/platform/tenants/{id}';
+};
+
+export type RenamePlatformTenantResponses = {
+    /**
+     * OK
+     */
+    200: {
+        [key: string]: unknown;
+    };
+};
+
+export type RenamePlatformTenantResponse = RenamePlatformTenantResponses[keyof RenamePlatformTenantResponses];
+
+export type InvitePlatformTenantFirstAdminData = {
+    body: PlatformFirstAdmin;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/platform/tenants/{id}/first-admin';
+};
+
+export type InvitePlatformTenantFirstAdminErrors = {
+    /**
+     * The tenant already has an active administrator
+     */
+    409: {
+        [key: string]: unknown;
+    };
+};
+
+export type InvitePlatformTenantFirstAdminError = InvitePlatformTenantFirstAdminErrors[keyof InvitePlatformTenantFirstAdminErrors];
+
+export type InvitePlatformTenantFirstAdminResponses = {
+    /**
+     * Invitation queued
+     */
+    204: {
+        [key: string]: unknown;
+    };
+};
+
+export type InvitePlatformTenantFirstAdminResponse = InvitePlatformTenantFirstAdminResponses[keyof InvitePlatformTenantFirstAdminResponses];
+
+export type ResumePlatformTenantData = {
+    body?: never;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/platform/tenants/{id}/resume';
+};
+
+export type ResumePlatformTenantResponses = {
+    /**
+     * OK
+     */
+    200: {
+        [key: string]: unknown;
+    };
+};
+
+export type ResumePlatformTenantResponse = ResumePlatformTenantResponses[keyof ResumePlatformTenantResponses];
+
+export type SuspendPlatformTenantData = {
+    body?: never;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/platform/tenants/{id}/suspend';
+};
+
+export type SuspendPlatformTenantResponses = {
+    /**
+     * OK
+     */
+    200: {
+        [key: string]: unknown;
+    };
+};
+
+export type SuspendPlatformTenantResponse = SuspendPlatformTenantResponses[keyof SuspendPlatformTenantResponses];

@@ -4,6 +4,7 @@ import com.memo.audit.AuditLog
 import com.memo.common.id.IdGenerator
 import com.memo.common.jobs.ActiveTenants
 import com.memo.common.jobs.KnownTenants
+import com.memo.common.jobs.TenantState
 import com.memo.common.tenant.PlatformTransactions
 import com.memo.common.tenant.TenantDsl
 import com.memo.common.tenant.TenantId
@@ -11,9 +12,11 @@ import com.memo.common.tenant.TenantTransactions
 import com.memo.jooq.tables.records.TenancyTenantRecord
 import com.memo.jooq.tables.references.TENANCY_TENANT
 import org.jooq.DSLContext
+import org.jooq.impl.DSL
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import java.time.Clock
+import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
@@ -25,6 +28,17 @@ data class Tenant(
     val name: String,
     val status: TenantStatus,
     val version: Long,
+)
+
+/** A registry row as the operator console shows it (ADR-0031): metadata only, never tenant data. */
+data class TenantSummary(
+    val id: TenantId,
+    val slug: String,
+    val name: String,
+    val status: TenantStatus,
+    val version: Long,
+    val createdAt: Instant,
+    val statusChangedAt: Instant?,
 )
 
 /**
@@ -103,19 +117,69 @@ class TenantRegistry(
 
     override fun ids(): List<TenantId> = listActiveIds()
 
-    /** Id of the tenant with [slug] (any status), for host-based resolution (ADR-0022). Platform scope. */
-    fun findIdBySlug(slug: String): TenantId? =
+    /** The tenant with [slug] and its status, for host-based resolution (ADR-0022). Platform scope. */
+    fun findBySlug(slug: String): ResolvedTenant? =
         platformTransactions.read {
             dsl
-                .select(TENANCY_TENANT.ID)
+                .select(TENANCY_TENANT.ID, TENANCY_TENANT.STATUS)
                 .from(TENANCY_TENANT)
                 .where(TENANCY_TENANT.SLUG.eq(slug))
-                .fetchOne { TenantId(it.value1()!!) }
+                .fetchOne { ResolvedTenant(TenantId(it.value1()!!), TenantStatus.valueOf(it.value2()!!)) }
         }
 
-    /** Whether [tenant] exists (any status); used by the job helpers to drop tasks for unknown tenants. */
-    override fun exists(tenant: TenantId): Boolean =
-        platformTransactions.read { dsl.fetchExists(TENANCY_TENANT, TENANCY_TENANT.ID.eq(tenant.value)) }
+    /** For the job helpers: unknown tenants' tasks are dropped, suspended tenants' tasks wait (ADR-0031). */
+    override fun state(tenant: TenantId): TenantState =
+        platformTransactions
+            .read {
+                dsl
+                    .select(TENANCY_TENANT.STATUS)
+                    .from(TENANCY_TENANT)
+                    .where(TENANCY_TENANT.ID.eq(tenant.value))
+                    .fetchOne { TenantStatus.valueOf(it.value1()!!) }
+            }.let {
+                when (it) {
+                    null -> TenantState.UNKNOWN
+                    TenantStatus.ACTIVE -> TenantState.ACTIVE
+                    TenantStatus.SUSPENDED -> TenantState.SUSPENDED
+                }
+            }
+
+    /** Registry rows by slug after [afterSlug], optionally matching [query] in name or slug (platform scope). */
+    fun page(
+        afterSlug: String?,
+        query: String?,
+        limit: Int,
+    ): List<TenantSummary> =
+        platformTransactions.read {
+            val pattern =
+                query?.trim()?.takeIf { it.isNotEmpty() }?.let {
+                    "%" +
+                        it
+                            .lowercase()
+                            .replace("\\", "\\\\")
+                            .replace("%", "\\%")
+                            .replace("_", "\\_") + "%"
+                }
+            dsl
+                .selectFrom(TENANCY_TENANT)
+                .where(afterSlug?.let { TENANCY_TENANT.SLUG.gt(it) } ?: DSL.noCondition())
+                .and(
+                    pattern?.let { DSL.lower(TENANCY_TENANT.NAME).like(it, '\\').or(TENANCY_TENANT.SLUG.like(it, '\\')) }
+                        ?: DSL.noCondition(),
+                ).orderBy(TENANCY_TENANT.SLUG)
+                .limit(limit)
+                .fetch { it.toSummary() }
+        }
+
+    /** One registry row (platform scope). */
+    fun summary(id: TenantId): TenantSummary? =
+        platformTransactions.read {
+            dsl
+                .selectFrom(TENANCY_TENANT)
+                .where(TENANCY_TENANT.ID.eq(id.value))
+                .fetchOne()
+                ?.toSummary()
+        }
 
     /** The tenant of the current tenant transaction. */
     fun current(): Tenant? =
@@ -125,6 +189,17 @@ class TenantRegistry(
             .where(TENANCY_TENANT.ID.eq(tenantDsl.tenant().value))
             .fetchOne()
             ?.toTenant()
+
+    private fun TenancyTenantRecord.toSummary() =
+        TenantSummary(
+            id = TenantId(id),
+            slug = slug,
+            name = name,
+            status = TenantStatus.valueOf(status!!),
+            version = version!!,
+            createdAt = createdAt.toInstant(),
+            statusChangedAt = statusChangedAt?.toInstant(),
+        )
 
     private fun TenancyTenantRecord.toTenant() =
         Tenant(

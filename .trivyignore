@@ -1,0 +1,8 @@
+# Time-boxed vulnerability exceptions (ADR-0013). Each entry: owner, reason, expiry. Trivy stops honouring an entry
+# after its exp: date, so an expired exception fails the build again rather than lingering.
+
+# zlib in gcr.io/distroless/java25-debian13 (HIGH). Fixed in Debian, not yet in any distroless digest (checked
+# 2026-11-08); Renovate picks up the rebuilt digest. Exposure is low: the overflow is in zlib's gzFile write API,
+# which the JDK's java.util.zip does not call. Owner: aradnazihar. Accepted 2026-11-08 for two weeks.
+CVE-2026-85091 exp:2026-11-22
+CVE-2026-76844 exp:2026-11-22

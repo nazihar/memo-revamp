@@ -194,8 +194,9 @@ jobs:
       - name: Trivy image scan
         run: |
           for img in memo-backend:ci memo-web:ci; do
-            docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v trivy-cache:/root/.cache \
-              "aquasec/trivy:$TRIVY_VERSION" image --quiet --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 "$img"
+            docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$PWD:/src" -v trivy-cache:/root/.cache \
+              "aquasec/trivy:$TRIVY_VERSION" image --quiet --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed \
+              --ignorefile /src/.trivyignore --exit-code 1 "$img"
           done
 
   helm:

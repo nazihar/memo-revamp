@@ -5,10 +5,10 @@
 **Last updated:** 2026-11-08 (UTC+06:00) by Claude (agent)
 
 ## Current position
-- **Phase:** 1a (overview approved 2026-10-18, gate delegation kept). Merged and on dev: **E02 platform kernel** (PR #18), **E01 app frame** (PR #19), **E03 identity, sessions and step-up** (PR #20), **E04 org directory and authorisation** (PR #22; ADR-0026, ADR-0027), plus fixes (PRs #21, #23–#26). **E05 files** merged (PR #27) and on dev since 2026-11-05 (ClamAV running). **E06 notifications** built on `feat/1a-e06-notifications` (ADR-0030); PR #28 is CI-green and waits for the owner's merge go-ahead. **E07 tenant lifecycle and administration** built on `feat/1a-e07-tenant-admin` (stacked on E06; ADR-0031 to ADR-0033): operator console on its own host, tenant creation and suspension, tenant admin console (security, branding, language and terms, audit viewer and verifiable export). PR #29 (stacked on #28): all jobs green except the image scan (base-image zlib CVEs, see Waiting for human); the E2E exit journey passes.
+- **Phase:** 1a (overview approved 2026-10-18, gate delegation kept). Merged and on dev: **E02 platform kernel** (PR #18), **E01 app frame** (PR #19), **E03 identity, sessions and step-up** (PR #20), **E04 org directory and authorisation** (PR #22; ADR-0026, ADR-0027), plus fixes (PRs #21, #23–#26). **E05 files** merged (PR #27) and on dev since 2026-11-05 (ClamAV running). **E06 notifications** (PR #28, ADR-0030) and **E07 tenant lifecycle and administration** (PR #29, ADR-0031 to ADR-0033) merged and on dev since 2026-11-08: operator console on its own host (https://admin.dev.memo-revamp.naziharitsolution.com, Caddy updated by Ansible), tenant creation and suspension, tenant admin console (security, branding, language and terms, audit viewer and verifiable export). The owner's operator account is invited (enrolment link valid 24 hours). All Phase 1a epics are built; the phase exit items remain. PR #30 fixes two nightly findings (see Next step).
 - **Dev environment live (2026-10-18):** https://dev.memo-revamp.naziharitsolution.com on the VM 123.176.58.175 (Ubuntu 24.04, 4 vCPU, 7.8 GB RAM, 100 GB disk). It deploys automatically after every green `ci` run on `master`.
 - **Phase 0 epics:** E01–E05 done (`docs/plan/phase-0-foundations/`).
-- **Branches:** `master` holds PRs #1–#27; `feat/1a-e06-notifications` is PR #28; `feat/1a-e07-tenant-admin` builds E07 on top of it.
+- **Branches:** `master` holds PRs #1–#29; `fix/nightly-fuzz-and-helm-int` is PR #30.
 - **Release:** `v0.1.0` published with signed images (2026-10-15).
 - **Product name:** `memo` everywhere except the repository name `memo-revamp` (A1, PR #6).
 
@@ -44,15 +44,15 @@
 - **DAST/performance:** ZAP baseline 0 FAIL / 0 WARN; Gatling p95 48 ms.
 
 ## Next step
-1. Owner: merge PR #28 (E06; CI green). Merges need the owner's go-ahead per PR. Then watch the master CI and the dev deploy.
-2. E07: CI on the stacked PR (the E2E exit journey runs there first), then merge after E06. After merge, an Ansible run so Caddy serves `admin.<dev host>`, and `operator-invite` on the VM for the owner's own operator account (runbook `platform-operators.md`).
-3. Phase 1a exit: `retrospective.md`, moderated usability walkthrough (login + MFA, org editing, tenant administration), manual keyboard and screen-reader pass, owner demo (`demo.md`).
+1. PR #30 (owner go-ahead to merge): the nightly has failed since E05. Jazzer found a JDK StAX `MissingResourceException` that escaped the upload refusal path (now refused as malformed), and Helm rendered the upload ceiling as `1.048576e+08`, so the backend never started on Kubernetes (now `int64`, with a CI guard). After merge, the next nightly confirms both.
+2. Owner: enrol the operator account from the printed link (password ≥ 15 characters, then an authenticator app), then run the demo (`demo.md`).
+3. Phase 1a exit: `retrospective.md` once the demo, walkthrough and manual accessibility pass (Waiting for human) are done.
 4. Follow-ups: the zlib CVE exception in `.trivyignore` expires 2026-11-22 (owner-accepted 2026-11-08): take the rebuilt distroless digest from Renovate and delete the two entries before then; corpus against the full ClamAV signatures in the nightly (E05); notification performance test (E06); record ClamAV memory on the VM after a day of reloads; remove the `apk upgrade` lines from `web/Dockerfile`, the Spring Session licence exceptions and the Guava pin when upstream catches up.
 
 ## Waiting for human
-- **E06 merge:** PR #28 (notifications) is CI-green and waits for your go-ahead.
-- **E07 merge:** PR #29 after #28, once its CI is green.
-- **E07 on dev (after its merge):** permission to run the Ansible playbook again (Caddy gains `admin.<dev host>`), then I run `operator-invite` for your address and give you the one-time link.
+- **PR #30 merge:** nightly fixes (fuzz finding, Helm integer rendering); CI result in the PR.
+- **Operator enrolment:** open the one-time link given in chat on 2026-11-08 (valid 24 hours); if it expires, I print a new one with `operator-invite`.
+- **Phase 1a exit with you:** owner demo (`demo.md`), moderated usability walkthrough (login + MFA, org editing, tenant administration), manual keyboard and screen-reader pass.
 - **E01 manual accessibility pass (no rush):** a short keyboard + screen-reader (NVDA or VoiceOver) walk through the patterns gallery, run locally with `pnpm dev` at `/patterns` (the gallery is left out of production images, so it is not on the dev server). Automated axe, keyboard and CSP checks pass.
 1. **VM memory:** 7.8 GB is enough for dev, including ClamAV (measured 2026-11-02: 6.3 GiB available before it; ClamAV peaks at about 2.4 GiB). Running staging and ONLYOFFICE as well needs 16 GB.
 2. **GitHub setup:**

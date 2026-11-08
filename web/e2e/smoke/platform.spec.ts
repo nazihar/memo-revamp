@@ -1,5 +1,5 @@
 import type { Browser, Page } from '@playwright/test'
-import { demoSecret, enterCode, latestMailText } from '../auth'
+import { demoSecret, enterCode, latestMailText, totp } from '../auth'
 import { assertNoA11yViolations, expect, test } from '../fixtures'
 
 /**
@@ -119,8 +119,18 @@ test('an operator creates an organisation; its first admin joins, manages sessio
   await admin.getByRole('button', { name: 'New recovery codes' }).click()
   const confirm = admin.getByRole('dialog', { name: 'Confirm it is you' })
   await expect(confirm).toBeVisible()
-  await enterCode(admin, key, 'Code', 'Confirm')
-  await expect(admin.getByRole('heading', { name: 'Your new recovery codes' })).toBeVisible()
+  // In the dialog: the page has other fields whose labels contain "Code".
+  const codes = admin.getByRole('heading', { name: 'Your new recovery codes' })
+  for (const offset of [0, 1]) {
+    await confirm.getByLabel('Code', { exact: true }).fill(totp(key, offset))
+    await confirm.getByRole('button', { name: 'Confirm' }).click()
+    const shown = await codes
+      .waitFor({ timeout: 5_000 })
+      .then(() => true)
+      .catch(() => false)
+    if (shown) break
+  }
+  await expect(codes).toBeVisible()
 
   // The operator suspends the organisation: its host shows the notice; resuming brings sign-in back.
   await operator.reload()

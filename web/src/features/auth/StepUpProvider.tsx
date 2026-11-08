@@ -1,8 +1,8 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { useCallback, useMemo, useRef, useState, type SyntheticEvent, type ReactNode } from 'react'
 import { defineMessages, useIntl } from 'react-intl'
-import { getSessionQueryKey } from '@/api/generated/@tanstack/react-query.gen'
-import { stepUp } from '@/api/generated/sdk.gen'
+import { getPlatformSessionQueryKey, getSessionQueryKey } from '@/api/generated/@tanstack/react-query.gen'
+import { platformStepUp, stepUp } from '@/api/generated/sdk.gen'
 import { isRateLimited } from './session'
 import { useMe } from './session'
 import { StepUpContext, type StepUpApi } from './step-up-context'
@@ -26,8 +26,11 @@ const messages = defineMessages({
   tooMany: { id: 'stepUp.tooMany', defaultMessage: 'Too many attempts. Wait a minute and try again.' },
 })
 
-/** Provides [useWithStepUp] and renders the confirmation dialog (ADR-0024). */
-export function StepUpProvider({ children }: { children: ReactNode }) {
+/**
+ * Provides [useWithStepUp] and renders the confirmation dialog (ADR-0024). On the operator console ([platform]) the
+ * operator always confirms with a TOTP code (ADR-0031).
+ */
+export function StepUpProvider({ children, platform = false }: { children: ReactNode; platform?: boolean }) {
   const intl = useIntl()
   const queryClient = useQueryClient()
   const [open, setOpen] = useState(false)
@@ -35,8 +38,8 @@ export function StepUpProvider({ children }: { children: ReactNode }) {
   const [error, setError] = useState<string>()
   const [busy, setBusy] = useState(false)
   const resolver = useRef<((ok: boolean) => void) | null>(null)
-  const me = useMe(open)
-  const withCode = me.data?.mfaEnrolled ?? true
+  const me = useMe(open && !platform)
+  const withCode = platform || (me.data?.mfaEnrolled ?? true)
 
   const finish = useCallback((ok: boolean) => {
     resolver.current?.(ok)
@@ -61,8 +64,13 @@ export function StepUpProvider({ children }: { children: ReactNode }) {
     e.preventDefault()
     setBusy(true)
     try {
-      await stepUp({ body: withCode ? { code: value.trim() } : { password: value }, throwOnError: true })
-      await queryClient.invalidateQueries({ queryKey: getSessionQueryKey() })
+      if (platform) {
+        await platformStepUp({ body: { code: value.trim() }, throwOnError: true })
+        await queryClient.invalidateQueries({ queryKey: getPlatformSessionQueryKey() })
+      } else {
+        await stepUp({ body: withCode ? { code: value.trim() } : { password: value }, throwOnError: true })
+        await queryClient.invalidateQueries({ queryKey: getSessionQueryKey() })
+      }
       finish(true)
     } catch (err) {
       setError(intl.formatMessage(isRateLimited(err) ? messages.tooMany : messages.wrong))

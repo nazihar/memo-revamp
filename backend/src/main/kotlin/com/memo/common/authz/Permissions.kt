@@ -33,6 +33,9 @@ enum class Permission(
 
     /** The tenant's mail relay, test sends and the delivery log (E06). */
     NOTIFICATION_SETTINGS_MANAGE("notification.settings.manage", scopable = false, privileged = true),
+
+    /** Security settings, language defaults, terminology and branding (E07). */
+    TENANT_SETTINGS_MANAGE("tenant.settings.manage", scopable = false, privileged = true),
     ;
 
     companion object {

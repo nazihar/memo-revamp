@@ -29,3 +29,17 @@ rules:
     { anonymous: 401, partial: 401, user: 403, tenantAdmin: allow, tenantAdminStale: allow, otherTenantAdmin: 401 }
   tenantAdminStepUp:
     { anonymous: 401, partial: 401, user: 403, tenantAdmin: allow, tenantAdminStale: 401, otherTenantAdmin: 401 }
+
+# The operator console (ADR-0031): files with `host: platform` run on its host with these subjects instead.
+#   anonymous          no session
+#   operatorPartial    an operator who has proven the password but not the TOTP code
+#   operator           an operator signed in with password and TOTP just now
+#   operatorStale      the same, with every factor older than the step-up window
+#   tenantAdmin        a tenant admin's complete session sent to the operator host
+platformSubjects: [anonymous, operatorPartial, operator, operatorStale, tenantAdmin]
+
+platformRules:
+  platformPublic: { anonymous: allow, operatorPartial: allow, operator: allow, operatorStale: allow, tenantAdmin: allow }
+  operatorAnySession: { anonymous: 401, operatorPartial: allow, operator: allow, operatorStale: allow, tenantAdmin: 401 }
+  operator: { anonymous: 401, operatorPartial: 401, operator: allow, operatorStale: allow, tenantAdmin: 401 }
+  operatorStepUp: { anonymous: 401, operatorPartial: 401, operator: allow, operatorStale: 401, tenantAdmin: 401 }

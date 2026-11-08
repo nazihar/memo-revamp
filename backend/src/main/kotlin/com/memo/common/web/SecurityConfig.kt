@@ -56,7 +56,7 @@ class SecurityConfig {
     }
 
     @Bean
-    @Order(2)
+    @Order(TENANT_CHAIN_ORDER)
     fun apiSecurity(
         http: HttpSecurity,
         jsonMapper: JsonMapper,
@@ -95,6 +95,9 @@ class SecurityConfig {
     }
 
     companion object {
+        /** After the management chain (1) and the operator console's chain (2, ADR-0031), which match narrower paths. */
+        const val TENANT_CHAIN_ORDER = 3
+
         val PUBLIC_ENDPOINTS =
             listOf(
                 "/api/v1/health",
@@ -106,6 +109,9 @@ class SecurityConfig {
                 "/api/v1/auth/password-reset/complete",
                 "/api/v1/auth/invitations/lookup",
                 "/api/v1/auth/invitations/accept",
+                // Branding for the sign-in page (E07).
+                "/api/v1/branding",
+                "/api/v1/branding/logo",
             )
     }
 }

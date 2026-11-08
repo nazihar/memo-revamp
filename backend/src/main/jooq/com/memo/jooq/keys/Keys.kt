@@ -22,6 +22,7 @@ import com.memo.jooq.tables.IdentityActionToken
 import com.memo.jooq.tables.IdentityHttpSession
 import com.memo.jooq.tables.IdentityHttpSessionAttributes
 import com.memo.jooq.tables.IdentityMfa
+import com.memo.jooq.tables.IdentityOperator
 import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
@@ -38,6 +39,7 @@ import com.memo.jooq.tables.SystemIdempotencyKey
 import com.memo.jooq.tables.SystemInfo
 import com.memo.jooq.tables.TenancySetting
 import com.memo.jooq.tables.TenancyTenant
+import com.memo.jooq.tables.TenancyTerm
 import com.memo.jooq.tables.records.AuditAnchorRecord
 import com.memo.jooq.tables.records.AuditChainHeadRecord
 import com.memo.jooq.tables.records.AuditEventRecord
@@ -55,6 +57,7 @@ import com.memo.jooq.tables.records.IdentityActionTokenRecord
 import com.memo.jooq.tables.records.IdentityHttpSessionAttributesRecord
 import com.memo.jooq.tables.records.IdentityHttpSessionRecord
 import com.memo.jooq.tables.records.IdentityMfaRecord
+import com.memo.jooq.tables.records.IdentityOperatorRecord
 import com.memo.jooq.tables.records.IdentityRateLimitBucketRecord
 import com.memo.jooq.tables.records.IdentityRecoveryCodeRecord
 import com.memo.jooq.tables.records.IdentityUserRecord
@@ -71,6 +74,7 @@ import com.memo.jooq.tables.records.SystemIdempotencyKeyRecord
 import com.memo.jooq.tables.records.SystemInfoRecord
 import com.memo.jooq.tables.records.TenancySettingRecord
 import com.memo.jooq.tables.records.TenancyTenantRecord
+import com.memo.jooq.tables.records.TenancyTermRecord
 
 import org.jooq.ForeignKey
 import org.jooq.UniqueKey
@@ -112,6 +116,8 @@ val IDENTITY_ACTION_TOKEN_PKEY: UniqueKey<IdentityActionTokenRecord> = Internal.
 val IDENTITY_HTTP_SESSION_PKEY: UniqueKey<IdentityHttpSessionRecord> = Internal.createUniqueKey(IdentityHttpSession.IDENTITY_HTTP_SESSION, DSL.name("identity_http_session_pkey"), arrayOf(IdentityHttpSession.IDENTITY_HTTP_SESSION.PRIMARY_ID), true)
 val IDENTITY_HTTP_SESSION_ATTRIBUTES_PKEY: UniqueKey<IdentityHttpSessionAttributesRecord> = Internal.createUniqueKey(IdentityHttpSessionAttributes.IDENTITY_HTTP_SESSION_ATTRIBUTES, DSL.name("identity_http_session_attributes_pkey"), arrayOf(IdentityHttpSessionAttributes.IDENTITY_HTTP_SESSION_ATTRIBUTES.SESSION_PRIMARY_ID, IdentityHttpSessionAttributes.IDENTITY_HTTP_SESSION_ATTRIBUTES.ATTRIBUTE_NAME), true)
 val IDENTITY_MFA_PKEY: UniqueKey<IdentityMfaRecord> = Internal.createUniqueKey(IdentityMfa.IDENTITY_MFA, DSL.name("identity_mfa_pkey"), arrayOf(IdentityMfa.IDENTITY_MFA.USER_ID), true)
+val IDENTITY_OPERATOR_EMAIL_KEY: UniqueKey<IdentityOperatorRecord> = Internal.createUniqueKey(IdentityOperator.IDENTITY_OPERATOR, DSL.name("identity_operator_email_key"), arrayOf(IdentityOperator.IDENTITY_OPERATOR.EMAIL), true)
+val IDENTITY_OPERATOR_PKEY: UniqueKey<IdentityOperatorRecord> = Internal.createUniqueKey(IdentityOperator.IDENTITY_OPERATOR, DSL.name("identity_operator_pkey"), arrayOf(IdentityOperator.IDENTITY_OPERATOR.ID), true)
 val IDENTITY_RATE_LIMIT_BUCKET_PKEY: UniqueKey<IdentityRateLimitBucketRecord> = Internal.createUniqueKey(IdentityRateLimitBucket.IDENTITY_RATE_LIMIT_BUCKET, DSL.name("identity_rate_limit_bucket_pkey"), arrayOf(IdentityRateLimitBucket.IDENTITY_RATE_LIMIT_BUCKET.ID), true)
 val IDENTITY_RECOVERY_CODE_PKEY: UniqueKey<IdentityRecoveryCodeRecord> = Internal.createUniqueKey(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE, DSL.name("identity_recovery_code_pkey"), arrayOf(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.ID), true)
 val IDENTITY_USER_PKEY: UniqueKey<IdentityUserRecord> = Internal.createUniqueKey(IdentityUser.IDENTITY_USER, DSL.name("identity_user_pkey"), arrayOf(IdentityUser.IDENTITY_USER.ID), true)
@@ -136,6 +142,7 @@ val SYSTEM_INFO_PKEY: UniqueKey<SystemInfoRecord> = Internal.createUniqueKey(Sys
 val TENANCY_SETTING_PKEY: UniqueKey<TenancySettingRecord> = Internal.createUniqueKey(TenancySetting.TENANCY_SETTING, DSL.name("tenancy_setting_pkey"), arrayOf(TenancySetting.TENANCY_SETTING.ID), true)
 val TENANCY_TENANT_PKEY: UniqueKey<TenancyTenantRecord> = Internal.createUniqueKey(TenancyTenant.TENANCY_TENANT, DSL.name("tenancy_tenant_pkey"), arrayOf(TenancyTenant.TENANCY_TENANT.ID), true)
 val TENANCY_TENANT_SLUG_KEY: UniqueKey<TenancyTenantRecord> = Internal.createUniqueKey(TenancyTenant.TENANCY_TENANT, DSL.name("tenancy_tenant_slug_key"), arrayOf(TenancyTenant.TENANCY_TENANT.SLUG), true)
+val TENANCY_TERM_PKEY: UniqueKey<TenancyTermRecord> = Internal.createUniqueKey(TenancyTerm.TENANCY_TERM, DSL.name("tenancy_term_pkey"), arrayOf(TenancyTerm.TENANCY_TERM.ID), true)
 
 // -------------------------------------------------------------------------
 // FOREIGN KEY definitions
@@ -157,3 +164,4 @@ val ORG_REPORTING_LINE__ORG_REPORTING_LINE_TENANT_ID_REPORTS_TO_POSITION_ID_FKEY
 val ORG_UNIT__ORG_UNIT_TENANT_ID_LEGAL_ENTITY_ID_FKEY: ForeignKey<OrgUnitRecord, OrgLegalEntityRecord> = Internal.createForeignKey(OrgUnit.ORG_UNIT, DSL.name("org_unit_tenant_id_legal_entity_id_fkey"), arrayOf(OrgUnit.ORG_UNIT.TENANT_ID, OrgUnit.ORG_UNIT.LEGAL_ENTITY_ID), com.memo.jooq.keys.ORG_LEGAL_ENTITY_TENANT_ID_ID_KEY, arrayOf(OrgLegalEntity.ORG_LEGAL_ENTITY.TENANT_ID, OrgLegalEntity.ORG_LEGAL_ENTITY.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val ORG_UNIT__ORG_UNIT_TENANT_ID_PARENT_ID_FKEY: ForeignKey<OrgUnitRecord, OrgUnitRecord> = Internal.createForeignKey(OrgUnit.ORG_UNIT, DSL.name("org_unit_tenant_id_parent_id_fkey"), arrayOf(OrgUnit.ORG_UNIT.TENANT_ID, OrgUnit.ORG_UNIT.PARENT_ID), com.memo.jooq.keys.ORG_UNIT_TENANT_ID_ID_KEY, arrayOf(OrgUnit.ORG_UNIT.TENANT_ID, OrgUnit.ORG_UNIT.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val TENANCY_SETTING__TENANCY_SETTING_TENANT_ID_FKEY: ForeignKey<TenancySettingRecord, TenancyTenantRecord> = Internal.createForeignKey(TenancySetting.TENANCY_SETTING, DSL.name("tenancy_setting_tenant_id_fkey"), arrayOf(TenancySetting.TENANCY_SETTING.TENANT_ID), com.memo.jooq.keys.TENANCY_TENANT_PKEY, arrayOf(TenancyTenant.TENANCY_TENANT.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
+val TENANCY_TERM__TENANCY_TERM_TENANT_ID_FKEY: ForeignKey<TenancyTermRecord, TenancyTenantRecord> = Internal.createForeignKey(TenancyTerm.TENANCY_TERM, DSL.name("tenancy_term_tenant_id_fkey"), arrayOf(TenancyTerm.TENANCY_TERM.TENANT_ID), com.memo.jooq.keys.TENANCY_TENANT_PKEY, arrayOf(TenancyTenant.TENANCY_TENANT.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)

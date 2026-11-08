@@ -3,12 +3,14 @@ package com.memo.authz
 import com.memo.common.tenant.TenantTransactions
 import com.memo.identity.MfaSeeding
 import com.memo.identity.UserAccounts
+import com.memo.identity.operator.OperatorMfa
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
 import com.memo.testsupport.AuthzMatrix
 import com.memo.testsupport.AuthzSubjects
 import com.memo.testsupport.IntegrationTest
 import com.memo.testsupport.MatrixCell
+import com.memo.testsupport.platformSend
 import com.memo.testsupport.sendJson
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DynamicTest
@@ -42,7 +44,9 @@ class AuthorizationMatrixTest : IntegrationTest() {
 
     @Autowired lateinit var json: JsonMapper
 
-    private val subjects by lazy { AuthzSubjects(mvc, registry, settings, transactions, accounts, mfaSeeding) }
+    @Autowired lateinit var operators: OperatorMfa
+
+    private val subjects by lazy { AuthzSubjects(mvc, registry, settings, transactions, accounts, mfaSeeding, operators) }
 
     @TestFactory
     fun matrix(): List<DynamicTest> = AuthzMatrix.cells.map { cell -> DynamicTest.dynamicTest(cell.toString()) { check(cell) } }
@@ -51,7 +55,13 @@ class AuthorizationMatrixTest : IntegrationTest() {
         val uri = cell.path.replace(PATH_VARIABLE) { UUID.randomUUID().toString() }
         val body = cell.body?.let { randomised(json.writeValueAsString(it)) } ?: "{}"
         val headers = cell.headers.mapValues { randomised(it.value) }
-        val result = mvc.sendJson(HttpMethod.valueOf(cell.method), subjects.tenant, uri, subjects.session(cell.subject), body, headers)
+        val method = HttpMethod.valueOf(cell.method)
+        val result =
+            if (cell.host == MatrixCell.PLATFORM_HOST) {
+                mvc.platformSend(method, uri, subjects.platformSession(cell.subject), body, headers)
+            } else {
+                mvc.sendJson(method, subjects.tenant, uri, subjects.session(cell.subject), body, headers)
+            }
         val status = result.response.status
         val describe = "$cell (body: ${result.response.contentAsString})"
         if (cell.expected == "allow") {

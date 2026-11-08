@@ -32,7 +32,7 @@ export default defineConfig(
     languageOptions: {
       globals: { ...globals.browser },
       parserOptions: {
-        projectService: { allowDefaultProject: ['eslint.config.js', 'nginx/*.mjs'] },
+        projectService: { allowDefaultProject: ['eslint.config.js', 'nginx/*.mjs', 'scripts/*.mjs'] },
         tsconfigRootDir: import.meta.dirname,
       },
     },
@@ -66,7 +66,7 @@ export default defineConfig(
   },
   {
     // Tests and tooling: strings in assertions are not UI; Node globals available.
-    files: ['**/*.test.{ts,tsx}', 'src/test/**', 'e2e/**', '*.config.{ts,js}', 'nginx/*.mjs'],
+    files: ['**/*.test.{ts,tsx}', 'src/test/**', 'e2e/**', '*.config.{ts,js}', 'nginx/*.mjs', 'scripts/*.mjs'],
     languageOptions: { globals: { ...globals.node } },
     rules: {
       'formatjs/no-literal-string-in-jsx': 'off',
@@ -81,7 +81,7 @@ export default defineConfig(
   },
   {
     // Plain JS tooling outside the TS projects (Node scripts run at build time).
-    files: ['eslint.config.js', 'nginx/*.mjs'],
+    files: ['eslint.config.js', 'nginx/*.mjs', 'scripts/*.mjs'],
     ...tseslint.configs.disableTypeChecked,
     languageOptions: { globals: { ...globals.node } },
   },

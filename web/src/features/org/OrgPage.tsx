@@ -29,7 +29,8 @@ import { Breadcrumbs } from '@/components/ui/misc'
 import { holds, PERMISSION, useMyAccess } from '@/features/access/access'
 import { HistoryList } from './HistoryList'
 import { DateDialog, MoveUnitDialog, PositionFormDialog, UnitFormDialog } from './OrgDialogs'
-import { om, omv } from './org-messages'
+import { om, omt, omv } from './org-messages'
+import { useTerms } from '@/features/terms/terms'
 
 type Pending = 'addUnit' | 'addRoot' | 'addEntity' | 'rename' | 'move' | 'close' | 'addPosition'
 
@@ -45,6 +46,7 @@ function buildTree(units: OrgUnit[]): TreeNode[] {
 /** `/org` (design E04 §13): the units tree, and for the selected unit its path, positions, holders and actions. */
 export function OrgPage({ selected }: { selected?: string }) {
   const intl = useIntl()
+  const terms = useTerms()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
   const units = useQuery(listOrgUnitsOptions())
@@ -91,7 +93,7 @@ export function OrgPage({ selected }: { selected?: string }) {
           }}
         >
           <Plus aria-hidden="true" />
-          {intl.formatMessage(om.addRoot)}
+          {intl.formatMessage(omt.addRoot, terms)}
         </Button>
       ) : null}
     </>
@@ -101,7 +103,7 @@ export function OrgPage({ selected }: { selected?: string }) {
     <section aria-labelledby="org-title">
       <PageHeader
         title={<span id="org-title">{intl.formatMessage(om.title)}</span>}
-        description={intl.formatMessage(om.lead)}
+        description={intl.formatMessage(omt.lead, terms)}
         actions={headerActions}
       />
       {units.isPending ? (
@@ -109,14 +111,14 @@ export function OrgPage({ selected }: { selected?: string }) {
       ) : units.isError ? (
         <ErrorState onRetry={() => void units.refetch()} />
       ) : tree.length === 0 ? (
-        <EmptyState title={intl.formatMessage(om.empty)} description={intl.formatMessage(om.emptyLead)} />
+        <EmptyState title={intl.formatMessage(omt.empty, terms)} description={intl.formatMessage(om.emptyLead)} />
       ) : (
         <div className="grid gap-6 lg:grid-cols-[minmax(16rem,22rem)_1fr]">
           <aside className="rounded-md border p-3">
             <Input
               type="search"
-              aria-label={intl.formatMessage(om.filter)}
-              placeholder={intl.formatMessage(om.filter)}
+              aria-label={intl.formatMessage(omt.filter, terms)}
+              placeholder={intl.formatMessage(omt.filter, terms)}
               value={filter}
               onChange={(e) => {
                 setFilter(e.target.value)
@@ -125,7 +127,7 @@ export function OrgPage({ selected }: { selected?: string }) {
             />
             {matches ? (
               matches.length === 0 ? (
-                <p className="px-2 text-sm text-muted-foreground">{intl.formatMessage(om.noMatch)}</p>
+                <p className="px-2 text-sm text-muted-foreground">{intl.formatMessage(omt.noMatch, terms)}</p>
               ) : (
                 <ul className="flex flex-col gap-0.5">
                   {matches.map((u) => (
@@ -146,7 +148,7 @@ export function OrgPage({ selected }: { selected?: string }) {
             ) : (
               <TreePanel
                 key={selected}
-                label={intl.formatMessage(om.treeLabel)}
+                label={intl.formatMessage(omt.treeLabel, terms)}
                 nodes={tree}
                 selectedId={selected}
                 onSelect={select}
@@ -158,7 +160,7 @@ export function OrgPage({ selected }: { selected?: string }) {
             {selected ? (
               <UnitPanel id={selected} onAction={setPending} />
             ) : (
-              <p className="text-sm text-muted-foreground">{intl.formatMessage(om.pickUnit)}</p>
+              <p className="text-sm text-muted-foreground">{intl.formatMessage(omt.pickUnit, terms)}</p>
             )}
           </div>
         </div>
@@ -182,6 +184,7 @@ export function OrgPage({ selected }: { selected?: string }) {
 
 function UnitPanel({ id, onAction }: { id: string; onAction: (action: Pending) => void }) {
   const intl = useIntl()
+  const terms = useTerms()
   const detail = useQuery(getOrgUnitOptions({ path: { id } }))
   const positions = useQuery(listUnitPositionsOptions({ path: { id } }))
   if (detail.isPending) return <LoadingState rows={3} />
@@ -231,15 +234,15 @@ function UnitPanel({ id, onAction }: { id: string; onAction: (action: Pending) =
         items={[...path.map((p) => ({ label: p.name, href: `/org?unit=${p.id}` })), { label: unit.name }]}
       />
       <UnitHeader detail={detail.data} canManage={canManage} onAction={onAction} />
-      <h3 className="mb-2 mt-6 text-base font-semibold">{intl.formatMessage(om.positions)}</h3>
+      <h3 className="mb-2 mt-6 text-base font-semibold">{intl.formatMessage(omt.positions, terms)}</h3>
       <DataTable
-        caption={intl.formatMessage(om.positionsCaption)}
+        caption={intl.formatMessage(omt.positionsCaption, terms)}
         columns={columns}
         rows={positions.data ?? []}
         getRowId={(p) => p.position.id}
         state={positions.isPending ? 'loading' : positions.isError ? 'error' : 'ready'}
         error={{ onRetry: () => void positions.refetch() }}
-        empty={intl.formatMessage(om.noPositions)}
+        empty={intl.formatMessage(omt.noPositions, terms)}
       />
       <HistoryList type="unit" id={unit.id} />
     </article>
@@ -256,6 +259,7 @@ function UnitHeader({
   onAction: (action: Pending) => void
 }) {
   const intl = useIntl()
+  const terms = useTerms()
   const { unit, path } = detail
   const action = (key: Pending, label: string, variant: 'outline' | 'default' = 'outline') => (
     <Button
@@ -282,8 +286,8 @@ function UnitHeader({
       </div>
       {canManage && !unit.validTo ? (
         <div className="flex flex-wrap gap-2">
-          {action('addPosition', intl.formatMessage(om.addPosition), 'default')}
-          {action('addUnit', intl.formatMessage(om.addUnit))}
+          {action('addPosition', intl.formatMessage(omt.addPosition, terms), 'default')}
+          {action('addUnit', intl.formatMessage(omt.addUnit, terms))}
           {action('rename', intl.formatMessage(om.rename))}
           {path.length > 0 ? action('move', intl.formatMessage(om.move)) : null}
           {action('close', intl.formatMessage(om.close))}

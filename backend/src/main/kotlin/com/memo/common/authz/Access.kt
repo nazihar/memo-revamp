@@ -25,6 +25,14 @@ annotation class AuthenticationFlow
 annotation class SignedIn
 
 /**
+ * A platform operator with a complete operator session, on the operator console's host (ADR-0031). Spring Security's
+ * platform chain demands the session; the interceptor checks the principal is an operator.
+ */
+@Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
+@Retention(AnnotationRetention.RUNTIME)
+annotation class OperatorOnly
+
+/**
  * Needs [value] somewhere: tenant-wide for unscoped permissions, for some unit for scoped ones. The service then checks
  * the object's own unit with [Policy.require].
  */

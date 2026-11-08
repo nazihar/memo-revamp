@@ -2,6 +2,9 @@
 
 History moved out of `STATUS.md`, newest first.
 
+## 2026-11-08
+- E06 PR #28 green, waiting for the owner's go-ahead. E07 planned (ADR-0031 to ADR-0033); details in `epic-07-tenant-admin/log.md`.
+
 ## 2026-11-05
 - PR #27 (E05) merged with the owner's go-ahead after the owner allowed the Ansible run (antivirus profile, Caddy restart); master CI needed one rerun (an intermittent checksum clash in a test S3 client, fixed on the E06 branch). E05 is on dev with ClamAV.
 - E06 planned (ADR-0030) and built; details in `epic-06-notifications/log.md`.

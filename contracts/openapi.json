@@ -70,6 +70,149 @@
         "required" : [ "userId", "validFrom" ],
         "type" : "object"
       },
+      "AuditEvent" : {
+        "description" : "One audit entry (ADR-0033).",
+        "properties" : {
+          "actingAsId" : {
+            "type" : [ "string", "null" ]
+          },
+          "action" : {
+            "type" : "string"
+          },
+          "actorId" : {
+            "type" : [ "string", "null" ]
+          },
+          "actorName" : {
+            "description" : "Display name when the actor is a user of this organisation",
+            "type" : [ "string", "null" ]
+          },
+          "actorType" : {
+            "description" : "USER, SYSTEM, PLATFORM_OPERATOR or ANONYMOUS",
+            "type" : "string"
+          },
+          "after" : {
+            "additionalProperties" : { },
+            "type" : [ "object", "null" ]
+          },
+          "before" : {
+            "additionalProperties" : { },
+            "type" : [ "object", "null" ]
+          },
+          "clientIp" : {
+            "type" : [ "string", "null" ]
+          },
+          "clientUserAgent" : {
+            "type" : [ "string", "null" ]
+          },
+          "objectId" : {
+            "type" : [ "string", "null" ]
+          },
+          "objectType" : {
+            "type" : "string"
+          },
+          "occurredAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "seq" : {
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "action", "actorType", "objectType", "occurredAt", "seq" ],
+        "type" : "object"
+      },
+      "AuditExportRequest" : {
+        "description" : "Leave the narrowing fields empty for a chain-continuous export.",
+        "properties" : {
+          "action" : {
+            "type" : [ "string", "null" ]
+          },
+          "actorId" : {
+            "type" : [ "string", "null" ]
+          },
+          "from" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "objectId" : {
+            "type" : [ "string", "null" ]
+          },
+          "objectType" : {
+            "type" : [ "string", "null" ]
+          },
+          "to" : {
+            "format" : "date-time",
+            "type" : "string"
+          }
+        },
+        "required" : [ "from", "to" ],
+        "type" : "object"
+      },
+      "AuditPage" : {
+        "properties" : {
+          "items" : {
+            "items" : {
+              "$ref" : "#/components/schemas/AuditEvent"
+            },
+            "type" : "array"
+          },
+          "nextCursor" : {
+            "description" : "Pass as cursor for older entries; absent on the last page",
+            "format" : "int64",
+            "type" : [ "integer", "null" ]
+          }
+        },
+        "required" : [ "items" ],
+        "type" : "object"
+      },
+      "Branding" : {
+        "description" : "How the organisation's pages look: name, colours and logo (design E07 §6).",
+        "properties" : {
+          "colourDark" : {
+            "description" : "#rrggbb for the dark theme; absent: the default",
+            "type" : [ "string", "null" ]
+          },
+          "colourLight" : {
+            "description" : "#rrggbb for the light theme; absent: the default",
+            "type" : [ "string", "null" ]
+          },
+          "logoFileId" : {
+            "description" : "Admin view only: the logo file, for replacing it",
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "logoVersion" : {
+            "description" : "Present when a logo is set; changes when the logo changes (use in the image URL)",
+            "type" : [ "string", "null" ]
+          },
+          "organisation" : {
+            "type" : "string"
+          },
+          "version" : {
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "organisation", "version" ],
+        "type" : "object"
+      },
+      "BrandingUpdate" : {
+        "properties" : {
+          "colourDark" : {
+            "type" : [ "string", "null" ]
+          },
+          "colourLight" : {
+            "type" : [ "string", "null" ]
+          },
+          "logoFileId" : {
+            "description" : "A file uploaded with purpose tenant.logo; absent removes the logo",
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
       "ChangePasswordRequest" : {
         "properties" : {
           "currentPassword" : {
@@ -1243,6 +1386,212 @@
         "required" : [ "key", "privileged", "scopable" ],
         "type" : "object"
       },
+      "PlatformAuditEvent" : {
+        "description" : "One entry of the platform chain (ADR-0031, ADR-0033).",
+        "properties" : {
+          "action" : {
+            "type" : "string"
+          },
+          "actorId" : {
+            "type" : [ "string", "null" ]
+          },
+          "actorType" : {
+            "type" : "string"
+          },
+          "after" : {
+            "additionalProperties" : { },
+            "type" : [ "object", "null" ]
+          },
+          "objectId" : {
+            "type" : [ "string", "null" ]
+          },
+          "objectType" : {
+            "type" : "string"
+          },
+          "occurredAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "seq" : {
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "action", "actorType", "objectType", "occurredAt", "seq" ],
+        "type" : "object"
+      },
+      "PlatformAuditPage" : {
+        "properties" : {
+          "items" : {
+            "items" : {
+              "$ref" : "#/components/schemas/PlatformAuditEvent"
+            },
+            "type" : "array"
+          },
+          "nextCursor" : {
+            "format" : "int64",
+            "type" : [ "integer", "null" ]
+          }
+        },
+        "required" : [ "items" ],
+        "type" : "object"
+      },
+      "PlatformEnrolment" : {
+        "properties" : {
+          "displayName" : {
+            "type" : "string"
+          },
+          "email" : {
+            "description" : "Masked, for example o***@memo.example",
+            "type" : "string"
+          }
+        },
+        "required" : [ "displayName", "email" ],
+        "type" : "object"
+      },
+      "PlatformFirstAdmin" : {
+        "properties" : {
+          "displayName" : {
+            "maxLength" : 200,
+            "type" : "string"
+          },
+          "email" : {
+            "maxLength" : 320,
+            "type" : "string"
+          }
+        },
+        "required" : [ "displayName", "email" ],
+        "type" : "object"
+      },
+      "PlatformOperator" : {
+        "properties" : {
+          "displayName" : {
+            "type" : "string"
+          },
+          "email" : {
+            "type" : "string"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "displayName", "email", "id" ],
+        "type" : "object"
+      },
+      "PlatformSession" : {
+        "description" : "Who is signed in on the operator console, and what they must do next.",
+        "properties" : {
+          "operator" : {
+            "description" : "Present unless ANONYMOUS",
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/PlatformOperator"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "state" : {
+            "enum" : [ "ANONYMOUS", "MFA_REQUIRED", "MFA_ENROLMENT_REQUIRED", "AUTHENTICATED" ],
+            "type" : "string"
+          }
+        },
+        "required" : [ "state" ],
+        "type" : "object"
+      },
+      "PlatformTenant" : {
+        "description" : "A tenant's registry entry: metadata only, never tenant data (ADR-0031).",
+        "properties" : {
+          "createdAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "hasAdmin" : {
+            "description" : "Whether the tenant has an active administrator; only on the single-tenant view",
+            "type" : [ "boolean", "null" ]
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "slug" : {
+            "type" : "string"
+          },
+          "status" : {
+            "enum" : [ "ACTIVE", "SUSPENDED" ],
+            "type" : "string"
+          },
+          "statusChangedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "version" : {
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "createdAt", "id", "name", "slug", "status", "version" ],
+        "type" : "object"
+      },
+      "PlatformTenantCreation" : {
+        "properties" : {
+          "adminEmail" : {
+            "maxLength" : 320,
+            "type" : "string"
+          },
+          "adminName" : {
+            "maxLength" : 200,
+            "type" : "string"
+          },
+          "locale" : {
+            "description" : "Default language: en or ar",
+            "type" : "string"
+          },
+          "name" : {
+            "maxLength" : 200,
+            "type" : "string"
+          },
+          "slug" : {
+            "description" : "Host label: <slug>.<base domain>",
+            "maxLength" : 63,
+            "type" : "string"
+          },
+          "timeZone" : {
+            "description" : "IANA time zone, for example Asia/Dhaka",
+            "type" : "string"
+          }
+        },
+        "required" : [ "adminEmail", "adminName", "locale", "name", "slug", "timeZone" ],
+        "type" : "object"
+      },
+      "PlatformTenantPage" : {
+        "properties" : {
+          "items" : {
+            "items" : {
+              "$ref" : "#/components/schemas/PlatformTenant"
+            },
+            "type" : "array"
+          },
+          "nextCursor" : {
+            "description" : "Pass as cursor for the next page; absent on the last page",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "items" ],
+        "type" : "object"
+      },
+      "PlatformTenantRename" : {
+        "properties" : {
+          "name" : {
+            "maxLength" : 200,
+            "type" : "string"
+          }
+        },
+        "required" : [ "name" ],
+        "type" : "object"
+      },
       "PositionRequest" : {
         "properties" : {
           "code" : {
@@ -1418,6 +1767,88 @@
         "required" : [ "name", "permissions" ],
         "type" : "object"
       },
+      "SecuritySettingLimit" : {
+        "properties" : {
+          "default" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "field" : {
+            "type" : "string"
+          },
+          "max" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "min" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "default", "field", "max", "min" ],
+        "type" : "object"
+      },
+      "SecuritySettings" : {
+        "description" : "The organisation's sign-in and lockout rules (design E07 §2).",
+        "properties" : {
+          "absoluteHours" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "idleMinutes" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "lockAfter" : {
+            "description" : "Failures in a row that lock the account",
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "lockMinutes" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "mfaRequired" : {
+            "description" : "all, or admins (administrators always need MFA)",
+            "type" : "string"
+          },
+          "passwordMinLength" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "stepUpMinutes" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "throttleAfter" : {
+            "description" : "Failures before each attempt has to wait",
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "absoluteHours", "idleMinutes", "lockAfter", "lockMinutes", "mfaRequired", "passwordMinLength", "stepUpMinutes", "throttleAfter" ],
+        "type" : "object"
+      },
+      "SecuritySettingsView" : {
+        "properties" : {
+          "limits" : {
+            "items" : {
+              "$ref" : "#/components/schemas/SecuritySettingLimit"
+            },
+            "type" : "array"
+          },
+          "settings" : {
+            "$ref" : "#/components/schemas/SecuritySettings"
+          },
+          "version" : {
+            "description" : "Send back as If-Match",
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "limits", "settings", "version" ],
+        "type" : "object"
+      },
       "Session" : {
         "description" : "Who is signed in on this organisation's host, and what they must do next.",
         "properties" : {
@@ -1475,6 +1906,95 @@
         },
         "type" : "object"
       },
+      "TenantPreferences" : {
+        "description" : "The organisation's default language and time zone.",
+        "properties" : {
+          "locale" : {
+            "description" : "en or ar",
+            "type" : "string"
+          },
+          "timeZone" : {
+            "description" : "IANA time zone",
+            "type" : "string"
+          }
+        },
+        "required" : [ "locale", "timeZone" ],
+        "type" : "object"
+      },
+      "TenantPreferencesView" : {
+        "properties" : {
+          "preferences" : {
+            "$ref" : "#/components/schemas/TenantPreferences"
+          },
+          "version" : {
+            "description" : "Send back as If-Match",
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "preferences", "version" ],
+        "type" : "object"
+      },
+      "Term" : {
+        "properties" : {
+          "gender" : {
+            "description" : "masculine or feminine; required for Arabic",
+            "type" : [ "string", "null" ]
+          },
+          "one" : {
+            "description" : "Singular, as used mid-sentence",
+            "maxLength" : 40,
+            "type" : "string"
+          },
+          "other" : {
+            "description" : "Plural, as used mid-sentence",
+            "maxLength" : 40,
+            "type" : "string"
+          },
+          "term" : {
+            "description" : "unit, position or memo",
+            "type" : "string"
+          }
+        },
+        "required" : [ "one", "other", "term" ],
+        "type" : "object"
+      },
+      "Terms" : {
+        "description" : "The organisation's own words for this language; terms not listed use the defaults.",
+        "properties" : {
+          "locale" : {
+            "type" : "string"
+          },
+          "terms" : {
+            "items" : {
+              "$ref" : "#/components/schemas/Term"
+            },
+            "type" : "array"
+          },
+          "version" : {
+            "description" : "Send back as If-Match",
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "locale", "terms", "version" ],
+        "type" : "object"
+      },
+      "TermsUpdate" : {
+        "properties" : {
+          "locale" : {
+            "type" : "string"
+          },
+          "terms" : {
+            "items" : {
+              "$ref" : "#/components/schemas/Term"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "locale", "terms" ],
+        "type" : "object"
+      },
       "UnreadCount" : {
         "properties" : {
           "count" : {
@@ -1526,6 +2046,194 @@
   },
   "openapi" : "3.1.0",
   "paths" : {
+    "/api/v1/admin/audit" : {
+      "get" : {
+        "operationId" : "queryAudit",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "from",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "to",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "action",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "actorId",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "objectType",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "objectId",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "cursor",
+          "required" : false,
+          "schema" : {
+            "format" : "int64",
+            "type" : "integer"
+          }
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "required" : false,
+          "schema" : {
+            "default" : 50,
+            "format" : "int32",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AuditPage"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Audit entries, newest first (default: the last 7 days; at most a year)",
+        "tags" : [ "audit" ]
+      }
+    },
+    "/api/v1/admin/audit/export" : {
+      "post" : {
+        "operationId" : "exportAudit",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/AuditExportRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/zip" : { }
+            },
+            "description" : "The ZIP"
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "Invalid range"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "Step-up required"
+          },
+          "429" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "Too many exports"
+          }
+        },
+        "summary" : "Verifiable export: ZIP with events, manifest and verification steps (step-up; 5 per hour)",
+        "tags" : [ "audit" ]
+      }
+    },
+    "/api/v1/admin/branding" : {
+      "get" : {
+        "operationId" : "getAdminBranding",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Branding"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Colours and logo file, for editing",
+        "tags" : [ "admin-settings" ]
+      },
+      "put" : {
+        "operationId" : "updateBranding",
+        "parameters" : [ {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/BrandingUpdate"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Branding"
+                }
+              }
+            },
+            "description" : "Not a colour, too little contrast (with the ratio), or not a logo file"
+          }
+        },
+        "summary" : "Change colours and logo (If-Match); colours must keep their contrast",
+        "tags" : [ "admin-settings" ]
+      }
+    },
     "/api/v1/admin/mail-log" : {
       "get" : {
         "operationId" : "getMailLog",
@@ -1644,6 +2352,181 @@
         },
         "summary" : "Send a test email to myself through the current relay",
         "tags" : [ "notifications" ]
+      }
+    },
+    "/api/v1/admin/preferences" : {
+      "get" : {
+        "operationId" : "getTenantPreferences",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TenantPreferencesView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Default language and time zone",
+        "tags" : [ "admin-settings" ]
+      },
+      "put" : {
+        "operationId" : "updateTenantPreferences",
+        "parameters" : [ {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TenantPreferences"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TenantPreferencesView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Change the default language and time zone (If-Match)",
+        "tags" : [ "admin-settings" ]
+      }
+    },
+    "/api/v1/admin/security-settings" : {
+      "get" : {
+        "operationId" : "getSecuritySettings",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SecuritySettingsView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Security settings with their allowed ranges",
+        "tags" : [ "admin-settings" ]
+      },
+      "put" : {
+        "operationId" : "updateSecuritySettings",
+        "parameters" : [ {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/SecuritySettings"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SecuritySettingsView"
+                }
+              }
+            },
+            "description" : "OK"
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "A value is outside its range"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "Step-up required"
+          },
+          "409" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "Changed meanwhile"
+          }
+        },
+        "summary" : "Change security settings (If-Match, step-up)",
+        "tags" : [ "admin-settings" ]
+      }
+    },
+    "/api/v1/admin/terms" : {
+      "put" : {
+        "operationId" : "updateTerms",
+        "parameters" : [ {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TermsUpdate"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Terms"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Replace a language's terms; terms left out go back to the defaults (If-Match)",
+        "tags" : [ "admin-settings" ]
       }
     },
     "/api/v1/admin/users" : {
@@ -2739,6 +3622,43 @@
         },
         "summary" : "Give a user a role, for the organisation or a unit subtree",
         "tags" : [ "authz" ]
+      }
+    },
+    "/api/v1/branding" : {
+      "get" : {
+        "operationId" : "getBranding",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Branding"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The organisation's name, colours and logo version",
+        "tags" : [ "branding" ]
+      }
+    },
+    "/api/v1/branding/logo" : {
+      "get" : {
+        "operationId" : "getBrandingLogo",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "image/*" : { }
+            },
+            "description" : "PNG, JPEG or WebP"
+          },
+          "404" : {
+            "description" : "No logo"
+          }
+        },
+        "summary" : "The organisation's logo",
+        "tags" : [ "branding" ]
       }
     },
     "/api/v1/directory/search" : {
@@ -4254,6 +5174,677 @@
         },
         "summary" : "A person's positions over time, newest first",
         "tags" : [ "org" ]
+      }
+    },
+    "/api/v1/platform/audit" : {
+      "get" : {
+        "operationId" : "queryPlatformAudit",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "from",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "to",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "action",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "cursor",
+          "required" : false,
+          "schema" : {
+            "format" : "int64",
+            "type" : "integer"
+          }
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "required" : false,
+          "schema" : {
+            "default" : 50,
+            "format" : "int32",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PlatformAuditPage"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Platform chain entries, newest first (default: the last 7 days)",
+        "tags" : [ "platform-audit" ]
+      }
+    },
+    "/api/v1/platform/auth/csrf" : {
+      "get" : {
+        "operationId" : "getPlatformCsrfToken",
+        "responses" : {
+          "204" : {
+            "description" : "Cookie set"
+          }
+        },
+        "summary" : "Issue the CSRF cookie on the operator console",
+        "tags" : [ "platform-auth" ]
+      }
+    },
+    "/api/v1/platform/auth/enrolment/accept" : {
+      "post" : {
+        "operationId" : "acceptPlatformEnrolment",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/InvitationAcceptance"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PlatformSession"
+                }
+              }
+            },
+            "description" : "OK"
+          },
+          "400" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemDetail"
+                }
+              }
+            },
+            "description" : "Invalid or expired link, or a weak password"
+          }
+        },
+        "summary" : "Set the operator's password from the enrolment link; TOTP enrolment follows",
+        "tags" : [ "platform-auth" ]
+      }
+    },
+    "/api/v1/platform/auth/enrolment/lookup" : {
+      "post" : {
+        "operationId" : "lookUpPlatformEnrolment",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/InvitationLookup"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PlatformEnrolment"
+                }
+              }
+            },
+            "description" : "Unknown, used or expired link"
+          }
+        },
+        "summary" : "Show an operator enrolment link",
+        "tags" : [ "platform-auth" ]
+      }
+    },
+    "/api/v1/platform/auth/login" : {
+      "post" : {
+        "operationId" : "platformLogin",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PlatformSession"
+                }
+              }
+            },
+            "description" : "Password accepted; TOTP or enrolment follows"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "Invalid credentials (same answer for every reason)"
+          },
+          "429" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "Too many attempts; see Retry-After"
+          }
+        },
+        "summary" : "Operator sign-in with email and password",
+        "tags" : [ "platform-auth" ]
+      }
+    },
+    "/api/v1/platform/auth/logout" : {
+      "post" : {
+        "operationId" : "platformLogout",
+        "responses" : {
+          "204" : {
+            "description" : "Signed out"
+          }
+        },
+        "summary" : "Sign out of the operator console",
+        "tags" : [ "platform-auth" ]
+      }
+    },
+    "/api/v1/platform/auth/mfa" : {
+      "post" : {
+        "operationId" : "verifyPlatformMfa",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CodeRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PlatformSession"
+                }
+              }
+            },
+            "description" : "OK"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "Invalid code"
+          }
+        },
+        "summary" : "Second sign-in step (TOTP)",
+        "tags" : [ "platform-auth" ]
+      }
+    },
+    "/api/v1/platform/auth/mfa/enrolment" : {
+      "post" : {
+        "operationId" : "startPlatformMfaEnrolment",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MfaEnrolment"
+                }
+              }
+            },
+            "description" : "OK"
+          },
+          "403" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "Already enrolled and the session is not complete"
+          }
+        },
+        "summary" : "Start TOTP enrolment (first sign-in, or a complete session switching devices)",
+        "tags" : [ "platform-auth" ]
+      }
+    },
+    "/api/v1/platform/auth/mfa/enrolment/confirm" : {
+      "post" : {
+        "operationId" : "confirmPlatformMfaEnrolment",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CodeRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PlatformSession"
+                }
+              }
+            },
+            "description" : "OK"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "Invalid code"
+          }
+        },
+        "summary" : "Confirm TOTP enrolment; completes the sign-in",
+        "tags" : [ "platform-auth" ]
+      }
+    },
+    "/api/v1/platform/auth/session" : {
+      "get" : {
+        "description" : "Never 401: anonymous callers get ANONYMOUS. Answers only on the operator console's host.",
+        "operationId" : "getPlatformSession",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PlatformSession"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Current operator session state",
+        "tags" : [ "platform-auth" ]
+      }
+    },
+    "/api/v1/platform/auth/step-up" : {
+      "post" : {
+        "operationId" : "platformStepUp",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CodeRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PlatformSession"
+                }
+              }
+            },
+            "description" : "OK"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "Invalid code"
+          }
+        },
+        "summary" : "Confirm a sensitive action with a fresh TOTP code",
+        "tags" : [ "platform-auth" ]
+      }
+    },
+    "/api/v1/platform/tenants" : {
+      "get" : {
+        "operationId" : "listPlatformTenants",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "cursor",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "q",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "required" : false,
+          "schema" : {
+            "default" : 50,
+            "format" : "int32",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PlatformTenantPage"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Tenants by slug, optionally filtered by name or slug",
+        "tags" : [ "platform-tenants" ]
+      },
+      "post" : {
+        "operationId" : "createPlatformTenant",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PlatformTenantCreation"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PlatformTenant"
+                }
+              }
+            },
+            "description" : "Created; the invitation mail is queued"
+          },
+          "400" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "Invalid or reserved slug, name, language, time zone or email"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "Step-up required"
+          }
+        },
+        "summary" : "Create a tenant and invite its first administrator",
+        "tags" : [ "platform-tenants" ]
+      }
+    },
+    "/api/v1/platform/tenants/{id}" : {
+      "get" : {
+        "operationId" : "getPlatformTenant",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PlatformTenant"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "One tenant's registry entry",
+        "tags" : [ "platform-tenants" ]
+      },
+      "patch" : {
+        "operationId" : "renamePlatformTenant",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PlatformTenantRename"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PlatformTenant"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Rename a tenant (If-Match)",
+        "tags" : [ "platform-tenants" ]
+      }
+    },
+    "/api/v1/platform/tenants/{id}/first-admin" : {
+      "post" : {
+        "operationId" : "invitePlatformTenantFirstAdmin",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/PlatformFirstAdmin"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "204" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "Invitation queued"
+          },
+          "409" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "The tenant already has an active administrator"
+          }
+        },
+        "summary" : "Invite (or re-invite) the tenant's first administrator",
+        "tags" : [ "platform-tenants" ]
+      }
+    },
+    "/api/v1/platform/tenants/{id}/resume" : {
+      "post" : {
+        "operationId" : "resumePlatformTenant",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PlatformTenant"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Resume a suspended tenant",
+        "tags" : [ "platform-tenants" ]
+      }
+    },
+    "/api/v1/platform/tenants/{id}/suspend" : {
+      "post" : {
+        "operationId" : "suspendPlatformTenant",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PlatformTenant"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Suspend: the host refuses every request, sessions end, jobs wait",
+        "tags" : [ "platform-tenants" ]
+      }
+    },
+    "/api/v1/terms" : {
+      "get" : {
+        "operationId" : "getTerms",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "locale",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/Terms"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The organisation's own words for a language (overrides only)",
+        "tags" : [ "terms" ]
       }
     }
   },

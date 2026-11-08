@@ -4,9 +4,11 @@ package com.memo.testsupport
 
 import com.memo.common.tenant.TenantId
 import com.memo.common.tenant.TenantTransactions
+import com.memo.identity.MfaSeeding
 import com.memo.identity.UserAccount
 import com.memo.identity.UserAccounts
 import com.memo.identity.auth.AuthSettings
+import com.memo.identity.mfa.Totp
 import com.memo.identity.password.BreachedPasswords
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
@@ -18,6 +20,7 @@ import org.springframework.test.web.servlet.assertj.MockMvcTester
 import org.springframework.test.web.servlet.assertj.MvcTestResult
 import org.springframework.test.web.servlet.request.RequestPostProcessor
 import java.security.SecureRandom
+import java.time.Instant
 import java.util.Base64
 import java.util.UUID
 
@@ -158,8 +161,14 @@ private fun json(value: String) = "\"" + value.replace("\\", "\\\\").replace("\"
 /** The session id inside a `MEMO_SESSION` cookie (Spring Session Base64-encodes it). */
 fun sessionIdOf(cookie: Cookie): String = String(Base64.getDecoder().decode(cookie.value))
 
-/** Moves every factor of the session back to the year 2000, as if the step-up window had long passed. */
-fun ageSessionFactors(cookie: Cookie) {
+/**
+ * Moves every factor of the session back to the year 2000, as if the step-up window had long passed. [attribute] is
+ * `memo.principal` for users and `memo.operator` for operators.
+ */
+fun ageSessionFactors(
+    cookie: Cookie,
+    attribute: String = "memo.principal",
+) {
     AppRoleJdbc.connect { c ->
         c
             .prepareStatement(
@@ -170,12 +179,14 @@ fun ageSessionFactors(cookie: Cookie) {
                         select jsonb_agg(jsonb_set(f, '{issuedAt}', '"2000-01-01T00:00:00Z"'))
                         from jsonb_array_elements(p.j -> 'factors') f))::text, 'UTF8')
                 from (select session_primary_id, convert_from(attribute_bytes, 'UTF8')::jsonb j
-                      from identity_http_session_attributes where attribute_name = 'memo.principal') p
-                where a.attribute_name = 'memo.principal' and a.session_primary_id = p.session_primary_id
+                      from identity_http_session_attributes where attribute_name = ?) p
+                where a.attribute_name = ? and a.session_primary_id = p.session_primary_id
                   and a.session_primary_id = (select primary_id from identity_http_session where session_id = ?)
                 """,
             ).use {
-                it.setString(1, sessionIdOf(cookie))
+                it.setString(1, attribute)
+                it.setString(2, attribute)
+                it.setString(3, sessionIdOf(cookie))
                 check(it.executeUpdate() == 1) { "no such session" }
             }
     }
@@ -199,3 +210,19 @@ fun MockMvcTester.sendJson(
         .contentType(MediaType.APPLICATION_JSON)
         .content(json)
         .exchange()
+
+/** A tenant admin with TOTP, signed in completely just now (password and code), as the admin screens need. */
+fun MockMvcTester.adminSession(
+    tenant: TestTenant,
+    accounts: UserAccounts,
+    transactions: TenantTransactions,
+    mfaSeeding: MfaSeeding,
+): Cookie {
+    val password = aPassword()
+    val admin = accounts.anActiveUser(transactions, tenant, password, tenantAdmin = true)
+    val secret = Totp.base32(Totp.newSecret())
+    transactions.inTenant(tenant.id) { mfaSeeding.ensureTotp(admin.id, secret) }
+    val partial = requireNotNull(login(tenant, admin.email, password).sessionCookie())
+    val code = Totp.code(Totp.decodeBase32(secret), Totp.step(Instant.now()))
+    return requireNotNull(postJson(tenant, "/api/v1/auth/mfa", partial, """{"code":"$code"}""").sessionCookie(partial))
+}

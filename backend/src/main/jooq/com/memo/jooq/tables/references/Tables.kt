@@ -22,6 +22,7 @@ import com.memo.jooq.tables.IdentityActionToken
 import com.memo.jooq.tables.IdentityHttpSession
 import com.memo.jooq.tables.IdentityHttpSessionAttributes
 import com.memo.jooq.tables.IdentityMfa
+import com.memo.jooq.tables.IdentityOperator
 import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
@@ -39,6 +40,7 @@ import com.memo.jooq.tables.SystemInfo
 import com.memo.jooq.tables.TenancySetting
 import com.memo.jooq.tables.TenancySettingView
 import com.memo.jooq.tables.TenancyTenant
+import com.memo.jooq.tables.TenancyTerm
 
 
 
@@ -128,6 +130,11 @@ val IDENTITY_HTTP_SESSION_ATTRIBUTES: IdentityHttpSessionAttributes = IdentityHt
 val IDENTITY_MFA: IdentityMfa = IdentityMfa.IDENTITY_MFA
 
 /**
+ * The table <code>memo.identity_operator</code>.
+ */
+val IDENTITY_OPERATOR: IdentityOperator = IdentityOperator.IDENTITY_OPERATOR
+
+/**
  * The table <code>memo.identity_rate_limit_bucket</code>.
  */
 val IDENTITY_RATE_LIMIT_BUCKET: IdentityRateLimitBucket = IdentityRateLimitBucket.IDENTITY_RATE_LIMIT_BUCKET
@@ -211,3 +218,8 @@ val TENANCY_SETTING_VIEW: TenancySettingView = TenancySettingView.TENANCY_SETTIN
  * The table <code>memo.tenancy_tenant</code>.
  */
 val TENANCY_TENANT: TenancyTenant = TenancyTenant.TENANCY_TENANT
+
+/**
+ * The table <code>memo.tenancy_term</code>.
+ */
+val TENANCY_TERM: TenancyTerm = TenancyTerm.TENANCY_TERM

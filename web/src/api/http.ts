@@ -18,6 +18,7 @@ export const PROBLEM = {
   rateLimited: 'urn:memo:problem:rate-limited',
   validation: 'urn:memo:problem:validation',
   conflict: 'urn:memo:problem:conflict',
+  tenantSuspended: 'urn:memo:problem:tenant-suspended',
 } as const
 
 export interface Problem {
@@ -48,11 +49,20 @@ export function readCookie(name: string): string | undefined {
 
 let pending: Promise<void> | undefined
 
+/** The operator console (ADR-0031) lives under `/platform` on its own host, with its own CSRF endpoint. */
+export function isPlatformPath(pathname: string = window.location.pathname): boolean {
+  return pathname === '/platform' || pathname.startsWith('/platform/')
+}
+
+function csrfPath(): string {
+  return isPlatformPath() ? '/api/v1/platform/auth/csrf' : '/api/v1/auth/csrf'
+}
+
 /** The CSRF token, fetching the cookie once when it is missing (concurrent callers share one request). */
 export async function csrfToken(): Promise<string> {
   const existing = readCookie(CSRF_COOKIE)
   if (existing) return decodeURIComponent(existing)
-  pending ??= fetch('/api/v1/auth/csrf', { credentials: 'same-origin' })
+  pending ??= fetch(csrfPath(), { credentials: 'same-origin' })
     .then(() => undefined)
     .finally(() => {
       pending = undefined

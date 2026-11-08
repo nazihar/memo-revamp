@@ -15,6 +15,7 @@ import com.memo.jooq.tables.FilesVersion
 import com.memo.jooq.tables.IdentityActionToken
 import com.memo.jooq.tables.IdentityHttpSession
 import com.memo.jooq.tables.IdentityMfa
+import com.memo.jooq.tables.IdentityOperator
 import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
@@ -26,6 +27,7 @@ import com.memo.jooq.tables.OrgReportingLine
 import com.memo.jooq.tables.OrgUnit
 import com.memo.jooq.tables.SystemIdempotencyKey
 import com.memo.jooq.tables.TenancySetting
+import com.memo.jooq.tables.TenancyTerm
 
 import org.jooq.Index
 import org.jooq.impl.DSL
@@ -54,6 +56,7 @@ val IDENTITY_HTTP_SESSION_EXPIRY_IDX: Index = Internal.createIndex(DSL.name("ide
 val IDENTITY_HTTP_SESSION_ID_UK: Index = Internal.createIndex(DSL.name("identity_http_session_id_uk"), IdentityHttpSession.IDENTITY_HTTP_SESSION, arrayOf(IdentityHttpSession.IDENTITY_HTTP_SESSION.SESSION_ID), true)
 val IDENTITY_HTTP_SESSION_PRINCIPAL_IDX: Index = Internal.createIndex(DSL.name("identity_http_session_principal_idx"), IdentityHttpSession.IDENTITY_HTTP_SESSION, arrayOf(IdentityHttpSession.IDENTITY_HTTP_SESSION.PRINCIPAL_NAME), false)
 val IDENTITY_MFA_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("identity_mfa_tenant_user_idx"), IdentityMfa.IDENTITY_MFA, arrayOf(IdentityMfa.IDENTITY_MFA.TENANT_ID, IdentityMfa.IDENTITY_MFA.USER_ID), false)
+val IDENTITY_OPERATOR_ENROLMENT_UK: Index = Internal.createIndex(DSL.name("identity_operator_enrolment_uk"), IdentityOperator.IDENTITY_OPERATOR, arrayOf(IdentityOperator.IDENTITY_OPERATOR.ENROLMENT_TOKEN_HASH), true)
 val IDENTITY_RATE_LIMIT_BUCKET_EXPIRY_IDX: Index = Internal.createIndex(DSL.name("identity_rate_limit_bucket_expiry_idx"), IdentityRateLimitBucket.IDENTITY_RATE_LIMIT_BUCKET, arrayOf(IdentityRateLimitBucket.IDENTITY_RATE_LIMIT_BUCKET.EXPIRES_AT), false)
 val IDENTITY_RECOVERY_CODE_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("identity_recovery_code_tenant_user_idx"), IdentityRecoveryCode.IDENTITY_RECOVERY_CODE, arrayOf(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.TENANT_ID, IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.USER_ID), false)
 val IDENTITY_USER_TENANT_EMAIL_UK: Index = Internal.createIndex(DSL.name("identity_user_tenant_email_uk"), IdentityUser.IDENTITY_USER, arrayOf(IdentityUser.IDENTITY_USER.TENANT_ID, IdentityUser.IDENTITY_USER.EMAIL), true)
@@ -72,3 +75,4 @@ val ORG_UNIT_TENANT_ENTITY_IDX: Index = Internal.createIndex(DSL.name("org_unit_
 val ORG_UNIT_TENANT_PARENT_IDX: Index = Internal.createIndex(DSL.name("org_unit_tenant_parent_idx"), OrgUnit.ORG_UNIT, arrayOf(OrgUnit.ORG_UNIT.TENANT_ID, OrgUnit.ORG_UNIT.PARENT_ID), false)
 val SYSTEM_IDEMPOTENCY_KEY_TENANT_CREATED_IDX: Index = Internal.createIndex(DSL.name("system_idempotency_key_tenant_created_idx"), SystemIdempotencyKey.SYSTEM_IDEMPOTENCY_KEY, arrayOf(SystemIdempotencyKey.SYSTEM_IDEMPOTENCY_KEY.TENANT_ID, SystemIdempotencyKey.SYSTEM_IDEMPOTENCY_KEY.CREATED_AT), false)
 val TENANCY_SETTING_TENANT_KEY_UK: Index = Internal.createIndex(DSL.name("tenancy_setting_tenant_key_uk"), TenancySetting.TENANCY_SETTING, arrayOf(TenancySetting.TENANCY_SETTING.TENANT_ID, TenancySetting.TENANCY_SETTING.KEY), true)
+val TENANCY_TERM_TENANT_TERM_LOCALE_UK: Index = Internal.createIndex(DSL.name("tenancy_term_tenant_term_locale_uk"), TenancyTerm.TENANCY_TERM, arrayOf(TenancyTerm.TENANCY_TERM.TENANT_ID, TenancyTerm.TENANCY_TERM.TERM, TenancyTerm.TENANCY_TERM.LOCALE), true)

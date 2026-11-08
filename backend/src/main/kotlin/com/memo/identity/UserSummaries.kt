@@ -1,5 +1,6 @@
 package com.memo.identity
 
+import com.memo.common.context.ActorNames
 import com.memo.common.events.TenantScopedEvent
 import com.memo.common.tenant.TenantDsl
 import com.memo.jooq.tables.references.IDENTITY_USER
@@ -25,7 +26,9 @@ data class UserDeactivated(
 @Component
 class UserSummaries(
     private val tenantDsl: TenantDsl,
-) {
+) : ActorNames {
+    override fun names(users: Collection<UUID>): Map<UUID, String> = of(users).mapValues { it.value.displayName }
+
     fun of(ids: Collection<UUID>): Map<UUID, UserSummary> {
         if (ids.isEmpty()) return emptyMap()
         return tenantDsl

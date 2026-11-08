@@ -140,6 +140,12 @@ memo:
     fallback-tenant: ${MEMO_TENANCY_FALLBACK_TENANT:}
     # Links in emails, with {slug} for the tenant; empty: https://{slug}.<base-domain>.
     public-url-template: ${MEMO_PUBLIC_URL_TEMPLATE:}
+  # Operator console (ADR-0031): empty host = admin.<base-domain> in multi-tenant mode, none in single-tenant mode.
+  platform:
+    enabled: ${MEMO_PLATFORM_ENABLED:true}
+    host: ${MEMO_PLATFORM_HOST:}
+    # Where operators open the console, for the enrolment link; empty: https://<host>.
+    public-url: ${MEMO_PLATFORM_PUBLIC_URL:}
   # app (default) | migrate: run the Modulith Flyway migrations as memo_migrator, then exit (ADR-0016).
   mode: ${MEMO_MODE:app}
   demo:

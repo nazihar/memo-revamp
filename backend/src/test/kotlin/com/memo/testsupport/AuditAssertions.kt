@@ -70,6 +70,21 @@ object Audit {
             )
         }
 
+    /** The platform chain (ADR-0031), read in platform scope. */
+    fun platformEntries(): List<AuditRow> =
+        AppRoleJdbc.inPlatform { c -> c.query(SELECT_ENTRIES) { it.toStored() } }.map {
+            AuditRow(
+                it.seq,
+                it.columns.action,
+                it.columns.objectType,
+                it.columns.objectId,
+                it.columns.actorType,
+                it.columns.actorId,
+                it.columns.correlationId,
+                it.canonical,
+            )
+        }
+
     fun assertAudited(
         tenant: TenantId,
         action: String,

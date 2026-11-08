@@ -1,0 +1,47 @@
+# E07 operator console (ADR-0031, design E07 §4). Rules: platformRules in rules.yaml, on the operator host.
+epic: E07
+host: platform
+endpoints:
+  - { endpoint: GET /api/v1/platform/auth/csrf, rule: platformPublic }
+  - { endpoint: GET /api/v1/platform/auth/session, rule: platformPublic }
+  - { endpoint: POST /api/v1/platform/auth/login, rule: platformPublic }
+  - { endpoint: POST /api/v1/platform/auth/enrolment/lookup, rule: platformPublic }
+  - { endpoint: POST /api/v1/platform/auth/enrolment/accept, rule: platformPublic }
+  # A random code is a wrong code (401 invalid-credentials), which still passed authorisation.
+  - endpoint: POST /api/v1/platform/auth/mfa
+    rule: operatorAnySession
+    body: { code: "000000" }
+  # An enrolled operator may re-enrol only with a complete session.
+  - endpoint: POST /api/v1/platform/auth/mfa/enrolment
+    rule: operatorAnySession
+    expect: { operatorPartial: 403 }
+  - endpoint: POST /api/v1/platform/auth/mfa/enrolment/confirm
+    rule: operatorAnySession
+    body: { code: "000000" }
+    expect: { operatorPartial: 403 }
+  - endpoint: POST /api/v1/platform/auth/step-up
+    rule: operatorAnySession
+    body: { code: "000000" }
+    expect: { operatorPartial: 403 }
+  - { endpoint: POST /api/v1/platform/auth/logout, rule: operatorAnySession }
+  # Tenants: registry metadata only. Creating a tenant, cutting access and reaching into a tenant need step-up.
+  - { endpoint: GET /api/v1/platform/tenants, rule: operator }
+  - endpoint: POST /api/v1/platform/tenants
+    rule: operatorStepUp
+    body:
+      { slug: "m-{random}", name: "Matrix Bank", locale: en, timeZone: UTC, adminEmail: "admin-{random}@matrix.example", adminName: "Matrix Admin" }
+  - { endpoint: "GET /api/v1/platform/tenants/{id}", rule: operator }
+  - endpoint: "PATCH /api/v1/platform/tenants/{id}"
+    rule: operator
+    body: { name: "Matrix Bank" }
+    headers: { If-Match: '"0"' }
+  - endpoint: "POST /api/v1/platform/tenants/{id}/suspend"
+    rule: operatorStepUp
+    headers: { If-Match: '"0"' }
+  - endpoint: "POST /api/v1/platform/tenants/{id}/resume"
+    rule: operatorStepUp
+    headers: { If-Match: '"0"' }
+  - endpoint: "POST /api/v1/platform/tenants/{id}/first-admin"
+    rule: operatorStepUp
+    body: { email: "admin@matrix.example", displayName: "Matrix Admin" }
+  - { endpoint: GET /api/v1/platform/audit, rule: operator }

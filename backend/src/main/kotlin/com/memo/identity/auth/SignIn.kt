@@ -7,6 +7,8 @@ import com.memo.common.context.ActorContext
 import com.memo.common.context.ActorScope
 import com.memo.common.tenant.TenantId
 import com.memo.common.tenant.TenantTransactions
+import com.memo.identity.SecurityLimit
+import com.memo.identity.SecuritySettings
 import com.memo.identity.UserAccount
 import com.memo.identity.UserAccounts
 import com.memo.identity.UserStatus
@@ -23,48 +25,30 @@ import java.time.Clock
 import java.time.Duration
 import java.util.Base64
 
-/** Per-tenant session and MFA settings (ADR-0023, ADR-0024), with their defaults and bounds. */
+/** Per-tenant session and MFA settings (ADR-0023, ADR-0024); defaults and bounds in [SecurityLimit]. */
 @Component
 class AuthSettings(
-    private val settings: TenantSettings,
+    private val settings: SecuritySettings,
     private val policy: Policy,
 ) {
-    fun idleTimeout(): Duration = Duration.ofMinutes(int(IDLE_MINUTES, DEFAULT_IDLE_MINUTES, 1..MAX_IDLE_MINUTES).toLong())
+    fun idleTimeout(): Duration = Duration.ofMinutes(settings.int(SecurityLimit.IDLE_MINUTES).toLong())
 
     /** How long a fresh second factor (or password) counts for sensitive actions (ADR-0024). */
-    fun stepUpWindow(): Duration = Duration.ofMinutes(int(STEP_UP_MINUTES, DEFAULT_STEP_UP_MINUTES, 1..MAX_STEP_UP_MINUTES).toLong())
+    fun stepUpWindow(): Duration = Duration.ofMinutes(settings.int(SecurityLimit.STEP_UP_MINUTES).toLong())
 
-    fun absoluteTimeout(): Duration = Duration.ofHours(int(ABSOLUTE_HOURS, DEFAULT_ABSOLUTE_HOURS, 1..MAX_ABSOLUTE_HOURS).toLong())
+    fun absoluteTimeout(): Duration = Duration.ofHours(settings.int(SecurityLimit.ABSOLUTE_HOURS).toLong())
 
     /** Holders of privileged permissions always need MFA; other users unless the tenant relaxes it (overview Q5, ADR-0027). */
-    fun mfaRequired(account: UserAccount): Boolean =
-        settings.get(MFA_REQUIRED)?.value != MFA_ADMINS_ONLY || policy.isPrivileged(account.id.value)
-
-    private fun int(
-        key: String,
-        default: Int,
-        bounds: IntRange,
-    ): Int =
-        settings
-            .get(key)
-            ?.value
-            ?.toIntOrNull()
-            ?.coerceIn(bounds) ?: default
+    fun mfaRequired(account: UserAccount): Boolean = settings.mfaPolicy() != MFA_ADMINS_ONLY || policy.isPrivileged(account.id.value)
 
     companion object {
-        const val IDLE_MINUTES = "security.session.idle.minutes"
-        const val ABSOLUTE_HOURS = "security.session.absolute.hours"
-        const val STEP_UP_MINUTES = "security.stepup.minutes"
-        private const val DEFAULT_STEP_UP_MINUTES = 5
-        private const val MAX_STEP_UP_MINUTES = 30
+        val IDLE_MINUTES = SecurityLimit.IDLE_MINUTES.key
+        val ABSOLUTE_HOURS = SecurityLimit.ABSOLUTE_HOURS.key
+        val STEP_UP_MINUTES = SecurityLimit.STEP_UP_MINUTES.key
 
         /** `all` (default; any other value counts as `all`) or `admins` (ADR-0024). */
-        const val MFA_REQUIRED = "security.mfa.required"
-        const val MFA_ADMINS_ONLY = "admins"
-        private const val DEFAULT_IDLE_MINUTES = 30
-        private const val MAX_IDLE_MINUTES = 480
-        private const val DEFAULT_ABSOLUTE_HOURS = 12
-        private const val MAX_ABSOLUTE_HOURS = 24
+        const val MFA_REQUIRED = SecuritySettings.MFA_REQUIRED
+        const val MFA_ADMINS_ONLY = SecuritySettings.MFA_ADMINS_ONLY
     }
 }
 

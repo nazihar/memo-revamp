@@ -17,6 +17,9 @@ object ProblemTypes {
     val CONFLICT: URI = URI.create("urn:memo:problem:conflict")
     val FORBIDDEN: URI = URI.create("urn:memo:problem:forbidden")
 
+    /** Every API request to a suspended organisation's host (ADR-0031); the web shows a full-page notice. */
+    val TENANT_SUSPENDED: URI = URI.create("urn:memo:problem:tenant-suspended")
+
     /** An upload was refused; `reason` says why (ADR-0029). */
     val FILE_REJECTED: URI = URI.create("urn:memo:problem:file-rejected")
 
@@ -56,6 +59,19 @@ interface AuthenticatedUser {
     companion object {
         /** Granted when every required factor is present; the default requirement of all non-auth endpoints. */
         const val SESSION_COMPLETE = "SESSION_COMPLETE"
+    }
+}
+
+/** A platform operator as the platform security chain sees it (ADR-0031); never a tenant user. */
+interface AuthenticatedOperator {
+    val operatorId: java.util.UUID
+
+    /** Password and TOTP are both proven. */
+    val sessionComplete: Boolean
+
+    companion object {
+        /** Granted when the operator has proven password and TOTP; required by every platform endpoint but sign-in. */
+        const val OPERATOR_SESSION_COMPLETE = "OPERATOR_SESSION_COMPLETE"
     }
 }
 

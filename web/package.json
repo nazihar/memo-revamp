@@ -16,7 +16,7 @@
     "generate:api": "openapi-ts",
     "i18n:extract": "formatjs extract \"src/**/*.{ts,tsx}\" --ignore \"src/**/*.d.ts\" --ignore \"src/api/generated/**\" --format simple --out-file src/i18n/messages/en.json --throws",
     "i18n:pseudo": "formatjs compile src/i18n/messages/en.json --format simple --ast --pseudo-locale xx-LS --out-file src/i18n/messages/xx-LS.json && formatjs compile src/i18n/messages/en.json --format simple --ast --pseudo-locale en-XA --out-file src/i18n/messages/en-XA.json && formatjs compile src/i18n/messages/en.json --format simple --ast --pseudo-locale en-XB --out-file src/i18n/messages/en-XB.json",
-    "i18n:verify": "formatjs verify --source-locale en --missing-keys --structural-equality src/i18n/messages/en.json src/i18n/messages/ar.json",
+    "i18n:verify": "formatjs verify --source-locale en --missing-keys --structural-equality src/i18n/messages/en.json src/i18n/messages/ar.json && node scripts/catalogue-size.mjs",
     "i18n": "pnpm i18n:extract && pnpm i18n:pseudo && pnpm i18n:verify",
     "e2e": "playwright test --project=smoke",
     "e2e:full": "playwright test --project=full --project=pseudo",

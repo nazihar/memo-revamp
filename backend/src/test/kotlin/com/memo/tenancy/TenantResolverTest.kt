@@ -1,12 +1,13 @@
 package com.memo.tenancy
 
+import com.memo.common.cache.TenantCaches
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 /** ADR-0022: which slug a host names, per mode. */
 class TenantResolverTest {
-    private fun resolver(props: TenancyProperties) = TenantResolver(props, mockk(relaxed = true))
+    private fun resolver(props: TenancyProperties) = TenantResolver(props, mockk(relaxed = true), TenantCaches())
 
     private val multi = resolver(TenancyProperties(baseDomain = "memo.example", fallbackTenant = ""))
 

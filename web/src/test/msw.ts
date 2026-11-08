@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
-import type { Health, MyAccess, Session } from '@/api/generated/types.gen'
+import type { Health, MyAccess, Session, Branding, PlatformSession, Term, Terms } from '@/api/generated/types.gen'
 
 // jsdom has no origin for relative URLs; the generated client uses baseUrl "/" which resolves against this.
 export const API_ORIGIN = 'http://localhost:3000'
@@ -58,4 +58,29 @@ export const accessHandler = (permissions: string[] = []) =>
 export const unreadHandler = (count = 0) =>
   http.get(`${API_ORIGIN}/api/v1/me/notifications/unread-count`, () => HttpResponse.json({ count }))
 
-export const server = setupServer(healthHandler(), sessionHandler(), csrfHandler(), accessHandler(), unreadHandler())
+/** Branding (E07): the default look unless a test sets colours or a logo. */
+export const brandingHandler = (body: Partial<Branding> = {}) =>
+  http.get(`${API_ORIGIN}/api/v1/branding`, () =>
+    HttpResponse.json<Branding>({ organisation: 'Bank of Example', version: 0, ...body }),
+  )
+
+/** The organisation's terms (ADR-0032): none by default, so the standard words. */
+export const termsHandler = (terms: Term[] = []) =>
+  http.get(`${API_ORIGIN}/api/v1/terms`, ({ request }) =>
+    HttpResponse.json<Terms>({ locale: new URL(request.url).searchParams.get('locale') ?? 'en', terms, version: 0 }),
+  )
+
+/** The operator console's session (ADR-0031); anonymous unless a test signs in. */
+export const platformSessionHandler = (body: PlatformSession = { state: 'ANONYMOUS' }) =>
+  http.get(`${API_ORIGIN}/api/v1/platform/auth/session`, () => HttpResponse.json<PlatformSession>(body))
+
+export const server = setupServer(
+  healthHandler(),
+  sessionHandler(),
+  csrfHandler(),
+  accessHandler(),
+  unreadHandler(),
+  brandingHandler(),
+  termsHandler(),
+  platformSessionHandler(),
+)

@@ -33,6 +33,18 @@ class MailTemplatesTest {
     }
 
     @Test
+    fun `every term has default forms in every language, and a template placeholder takes the tenant's term`() {
+        listOf(bundle(""), bundle("_ar")).forEach { messages ->
+            com.memo.tenancy.TermKey.entries.forEach { term ->
+                assertThat(messages.getProperty("term.${term.key}.one")).describedAs(term.key).isNotBlank()
+                assertThat(messages.getProperty("term.${term.key}.other")).describedAs(term.key).isNotBlank()
+            }
+        }
+        assertThat(MailText.render("Your {unit} has new {memos}.", mapOf("unit" to "department", "memos" to "notes")))
+            .isEqualTo("Your department has new notes.")
+    }
+
+    @Test
     fun `subjects take no parameters, so nothing sensitive can reach them`() {
         listOf(bundle(""), bundle("_ar")).forEach { messages ->
             messages.stringPropertyNames().filter { it.endsWith(".subject") }.forEach {

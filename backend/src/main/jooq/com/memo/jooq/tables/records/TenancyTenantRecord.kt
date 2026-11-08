@@ -43,6 +43,10 @@ open class TenancyTenantRecord private constructor() : UpdatableRecordImpl<Tenan
         set(value): Unit = set(5, value)
         get(): OffsetDateTime = get(5) as OffsetDateTime
 
+    open var statusChangedAt: OffsetDateTime?
+        set(value): Unit = set(6, value)
+        get(): OffsetDateTime? = get(6) as OffsetDateTime?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -52,13 +56,14 @@ open class TenancyTenantRecord private constructor() : UpdatableRecordImpl<Tenan
     /**
      * Create a detached, initialised TenancyTenantRecord
      */
-    constructor(id: UUID, slug: String, name: String, status: String? = null, version: Long? = null, createdAt: OffsetDateTime): this() {
+    constructor(id: UUID, slug: String, name: String, status: String? = null, version: Long? = null, createdAt: OffsetDateTime, statusChangedAt: OffsetDateTime? = null): this() {
         this.id = id
         this.slug = slug
         this.name = name
         this.status = status
         this.version = version
         this.createdAt = createdAt
+        this.statusChangedAt = statusChangedAt
         resetTouchedOnNotNull()
     }
 }

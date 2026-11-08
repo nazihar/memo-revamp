@@ -46,6 +46,18 @@ object AppRoleJdbc {
             }
         }
 
+    /** Runs [block] in a platform-scope transaction (ADR-0017), as `PlatformTransactions` does, and rolls back. */
+    fun <T> inPlatform(block: (Connection) -> T): T =
+        connect { c ->
+            c.autoCommit = false
+            try {
+                c.prepareStatement("select set_config('app.scope', 'platform', true)").use { it.execute() }
+                block(c)
+            } finally {
+                c.rollback()
+            }
+        }
+
     fun Connection.long(
         sql: String,
         vararg params: Any,

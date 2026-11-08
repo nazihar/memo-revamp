@@ -4,6 +4,8 @@ import com.memo.common.tenant.TenantTransactions
 import com.memo.identity.MfaSeeding
 import com.memo.identity.UserAccounts
 import com.memo.identity.mfa.Totp
+import com.memo.identity.operator.OperatorMfa
+import com.memo.identity.operator.OperatorSessionStore
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
 import jakarta.servlet.http.Cookie
@@ -23,10 +25,17 @@ data class MatrixCell(
     /** Sample request body and headers (rules.yaml); `{random}` stands for a fresh UUID. */
     val body: Map<String, Any?>? = null,
     val headers: Map<String, String> = emptyMap(),
+    /** `tenant` (a tenant's host) or `platform` (the operator console's host, ADR-0031). */
+    val host: String = TENANT_HOST,
 ) {
     val endpoint: String get() = "$method $path"
 
     override fun toString() = "$epic $endpoint as $subject → $expected"
+
+    companion object {
+        const val TENANT_HOST = "tenant"
+        const val PLATFORM_HOST = "platform"
+    }
 }
 
 /** The machine-readable matrix files in `src/test/resources/authz` (`rules.yaml` plus one file per epic). */
@@ -43,16 +52,27 @@ object AuthzMatrix {
     private val rulesFile: Map<String, Any?> = read(resources.single { it.filename == "rules.yaml" })
 
     @Suppress("UNCHECKED_CAST")
-    val subjects: List<String> = rulesFile["subjects"] as List<String>
+    private val subjectsByHost: Map<String, List<String>> =
+        mapOf(
+            MatrixCell.TENANT_HOST to rulesFile["subjects"] as List<String>,
+            MatrixCell.PLATFORM_HOST to rulesFile["platformSubjects"] as List<String>,
+        )
 
     @Suppress("UNCHECKED_CAST")
-    private val rules: Map<String, Map<String, Any>> = rulesFile["rules"] as Map<String, Map<String, Any>>
+    private val rulesByHost: Map<String, Map<String, Map<String, Any>>> =
+        mapOf(
+            MatrixCell.TENANT_HOST to rulesFile["rules"] as Map<String, Map<String, Any>>,
+            MatrixCell.PLATFORM_HOST to rulesFile["platformRules"] as Map<String, Map<String, Any>>,
+        )
 
     @Suppress("UNCHECKED_CAST")
     val cells: List<MatrixCell> by lazy {
         resources.filter { it.filename != "rules.yaml" }.flatMap { resource ->
             val file = read(resource)
             val epic = file["epic"] as String
+            val host = file["host"] as String? ?: MatrixCell.TENANT_HOST
+            val subjects = requireNotNull(subjectsByHost[host]) { "${resource.filename}: unknown host $host" }
+            val rules = rulesByHost.getValue(host)
             (file["endpoints"] as List<Map<String, Any?>>).flatMap { entry ->
                 val endpoint = entry["endpoint"] as String
                 val (method, path) = endpoint.split(" ", limit = 2)
@@ -69,6 +89,7 @@ object AuthzMatrix {
                         expected.toString(),
                         entry["body"] as Map<String, Any?>?,
                         (entry["headers"] as Map<String, Any?>?).orEmpty().mapValues { it.value.toString() },
+                        host,
                     )
                 }
             }
@@ -90,6 +111,7 @@ class AuthzSubjects(
     private val transactions: TenantTransactions,
     private val accounts: UserAccounts,
     private val mfaSeeding: MfaSeeding,
+    private val operators: OperatorMfa,
 ) {
     private val password = aPassword()
 
@@ -107,6 +129,17 @@ class AuthzSubjects(
             "tenantAdminStale" -> adminComplete(tenant).also { ageSessionFactors(it) }
             "otherTenantAdmin" -> adminComplete(otherTenant)
             else -> error("unknown subject $subject")
+        }
+
+    /** Sessions for the operator console's subjects (rules.yaml `platformSubjects`). */
+    fun platformSession(subject: String): Cookie? =
+        when (subject) {
+            "anonymous" -> null
+            "operatorPartial" -> mvc.operatorPartial(operators.anOperator())
+            "operator" -> mvc.operatorSession(operators.anOperator())
+            "operatorStale" -> mvc.operatorSession(operators.anOperator()).also { ageSessionFactors(it, OperatorSessionStore.PRINCIPAL) }
+            "tenantAdmin" -> adminComplete(tenant)
+            else -> error("unknown platform subject $subject")
         }
 
     private fun adminPartial(on: TestTenant): Pair<Cookie, String> {

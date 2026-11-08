@@ -50,8 +50,10 @@ class ProblemAccessDeniedHandler(
         response: HttpServletResponse,
         accessDeniedException: AccessDeniedException,
     ) {
-        val user = SecurityContextHolder.getContext().authentication?.principal as? AuthenticatedUser
-        if (user != null && !user.sessionComplete && accessDeniedException !is CsrfException) {
+        val principal = SecurityContextHolder.getContext().authentication?.principal
+        val partial =
+            (principal as? AuthenticatedUser)?.sessionComplete == false || (principal as? AuthenticatedOperator)?.sessionComplete == false
+        if (partial && accessDeniedException !is CsrfException) {
             // Password accepted, TOTP (or enrolment) outstanding: the client continues the sign-in, it is not forbidden.
             response.writeProblem(
                 jsonMapper,

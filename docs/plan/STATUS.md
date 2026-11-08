@@ -2,13 +2,13 @@
 
 > Read at the start of every session; update at the end (see `AGENTS.md §0`). Keep this page short and current. Move history into the phase folder's `log.md`.
 
-**Last updated:** 2026-11-05 (UTC+06:00) by Claude (agent)
+**Last updated:** 2026-11-08 (UTC+06:00) by Claude (agent)
 
 ## Current position
-- **Phase:** 1a (overview approved 2026-10-18, gate delegation kept). Merged and on dev: **E02 platform kernel** (PR #18), **E01 app frame** (PR #19), **E03 identity, sessions and step-up** (PR #20), **E04 org directory and authorisation** (PR #22; ADR-0026, ADR-0027), plus fixes (PRs #21, #23–#26). **E05 files** merged (PR #27) and on dev since 2026-11-05 (ClamAV running). **E06 notifications** built on `feat/1a-e06-notifications` (ADR-0030); PR open, waiting for the owner's merge go-ahead. Next: E07 tenant lifecycle and administration.
+- **Phase:** 1a (overview approved 2026-10-18, gate delegation kept). Merged and on dev: **E02 platform kernel** (PR #18), **E01 app frame** (PR #19), **E03 identity, sessions and step-up** (PR #20), **E04 org directory and authorisation** (PR #22; ADR-0026, ADR-0027), plus fixes (PRs #21, #23–#26). **E05 files** merged (PR #27) and on dev since 2026-11-05 (ClamAV running). **E06 notifications** built on `feat/1a-e06-notifications` (ADR-0030); PR #28 is CI-green and waits for the owner's merge go-ahead. **E07 tenant lifecycle and administration** built on `feat/1a-e07-tenant-admin` (stacked on E06; ADR-0031 to ADR-0033): operator console on its own host, tenant creation and suspension, tenant admin console (security, branding, language and terms, audit viewer and verifiable export). PR #29 (stacked on #28): all jobs green except the image scan (base-image zlib CVEs, see Waiting for human); the E2E exit journey passes.
 - **Dev environment live (2026-10-18):** https://dev.memo-revamp.naziharitsolution.com on the VM 123.176.58.175 (Ubuntu 24.04, 4 vCPU, 7.8 GB RAM, 100 GB disk). It deploys automatically after every green `ci` run on `master`.
 - **Phase 0 epics:** E01–E05 done (`docs/plan/phase-0-foundations/`).
-- **Branches:** `master` holds PRs #1–#27; `feat/1a-e06-notifications` is the E06 PR.
+- **Branches:** `master` holds PRs #1–#27; `feat/1a-e06-notifications` is PR #28; `feat/1a-e07-tenant-admin` builds E07 on top of it.
 - **Release:** `v0.1.0` published with signed images (2026-10-15).
 - **Product name:** `memo` everywhere except the repository name `memo-revamp` (A1, PR #6).
 
@@ -44,12 +44,15 @@
 - **DAST/performance:** ZAP baseline 0 FAIL / 0 WARN; Gatling p95 48 ms.
 
 ## Next step
-1. Owner: merge the E06 PR when CI is green (merges need the owner's go-ahead per PR). Then watch the master CI and the dev deploy.
-2. Plan and build **E07 tenant lifecycle and administration**: platform console on a separate host, suspension, the admin console assembly, terminology overrides, branding (the first real file purpose, the tenant logo, with the upload component). E07 also writes the phase demo script; then the Phase 1a exit.
-3. Follow-ups: corpus against the full ClamAV signatures in the nightly (E05); notification performance test (E06); record ClamAV memory on the VM after a day of reloads; remove the `apk upgrade` lines from `web/Dockerfile`, the Spring Session licence exceptions and the Guava pin when upstream catches up.
+1. Owner: merge PR #28 (E06; CI green). Merges need the owner's go-ahead per PR. Then watch the master CI and the dev deploy.
+2. E07: CI on the stacked PR (the E2E exit journey runs there first), then merge after E06. After merge, an Ansible run so Caddy serves `admin.<dev host>`, and `operator-invite` on the VM for the owner's own operator account (runbook `platform-operators.md`).
+3. Phase 1a exit: `retrospective.md`, moderated usability walkthrough (login + MFA, org editing, tenant administration), manual keyboard and screen-reader pass, owner demo (`demo.md`).
+4. Follow-ups: the zlib CVE exception in `.trivyignore` expires 2026-11-22 (owner-accepted 2026-11-08): take the rebuilt distroless digest from Renovate and delete the two entries before then; corpus against the full ClamAV signatures in the nightly (E05); notification performance test (E06); record ClamAV memory on the VM after a day of reloads; remove the `apk upgrade` lines from `web/Dockerfile`, the Spring Session licence exceptions and the Guava pin when upstream catches up.
 
 ## Waiting for human
-- **E06 merge:** the E06 PR (notifications) waits for your go-ahead once its CI is green.
+- **E06 merge:** PR #28 (notifications) is CI-green and waits for your go-ahead.
+- **E07 merge:** PR #29 after #28, once its CI is green.
+- **E07 on dev (after its merge):** permission to run the Ansible playbook again (Caddy gains `admin.<dev host>`), then I run `operator-invite` for your address and give you the one-time link.
 - **E01 manual accessibility pass (no rush):** a short keyboard + screen-reader (NVDA or VoiceOver) walk through the patterns gallery, run locally with `pnpm dev` at `/patterns` (the gallery is left out of production images, so it is not on the dev server). Automated axe, keyboard and CSP checks pass.
 1. **VM memory:** 7.8 GB is enough for dev, including ClamAV (measured 2026-11-02: 6.3 GiB available before it; ClamAV peaks at about 2.4 GiB). Running staging and ONLYOFFICE as well needs 16 GB.
 2. **GitHub setup:**
@@ -60,7 +63,7 @@
 - **A1 (resolved):** the product is `memo`. Package `com.memo`, Gradle group `com.memo`, application name `memo`, images `memo-backend` / `memo-web`. Only the repository keeps the name `memo-revamp`. The stored schema marker moved to `memo` with migration `system/V2`.
 
 ## Decisions taken
-ADR-0001 to ADR-0030 (`docs/adr/README.md`). Phase 1a so far: ADR-0017 tenant context, ADR-0018 jobs, ADR-0019 audit store, ADR-0020 cache invalidation, ADR-0021 modal dialogs, ADR-0022 tenant resolution and accounts, ADR-0023 local authentication and sessions, ADR-0024 TOTP MFA and step-up, ADR-0025 rate limiting, ADR-0026 org model, ADR-0027 authorisation model, ADR-0028 envelope encryption, ADR-0029 upload pipeline and range downloads, ADR-0030 notifications and email delivery.
+ADR-0001 to ADR-0033 (`docs/adr/README.md`). Phase 1a so far: ADR-0017 tenant context, ADR-0018 jobs, ADR-0019 audit store, ADR-0020 cache invalidation, ADR-0021 modal dialogs, ADR-0022 tenant resolution and accounts, ADR-0023 local authentication and sessions, ADR-0024 TOTP MFA and step-up, ADR-0025 rate limiting, ADR-0026 org model, ADR-0027 authorisation model, ADR-0028 envelope encryption, ADR-0029 upload pipeline and range downloads, ADR-0030 notifications and email delivery, ADR-0031 platform operator path, ADR-0032 terminology overrides, ADR-0033 audit viewer and export.
 
 ## Environment notes (dev machine)
 - VS Code's Java extension builds the tree with its own Gradle and can hold the shared `build-logic/.gradle` lock, stalling CLI builds at "Calculating task graph". CLI builds use `MEMO_BUILD_ROOT=<repo>/.build-cli` (README); the git-ignored `.vscode/settings.json` sets the Java extension to LightWeight mode (owner agreed 2026-10-26; the owner does not code on this project).

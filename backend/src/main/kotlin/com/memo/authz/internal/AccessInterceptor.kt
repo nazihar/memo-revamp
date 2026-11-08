@@ -2,16 +2,19 @@ package com.memo.authz.internal
 
 import com.memo.common.authz.AuthenticationFlow
 import com.memo.common.authz.ForbiddenException
+import com.memo.common.authz.OperatorOnly
 import com.memo.common.authz.Policy
 import com.memo.common.authz.PublicEndpoint
 import com.memo.common.authz.RequiresPermission
 import com.memo.common.authz.SignedIn
+import com.memo.common.web.AuthenticatedOperator
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.LoggerFactory
 import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplication
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.annotation.AnnotatedElementUtils
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.method.HandlerMethod
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
@@ -25,13 +28,21 @@ sealed interface DeclaredAccess {
 
     data object Signed : DeclaredAccess
 
+    data object Operator : DeclaredAccess
+
     data class Permission(
         val annotation: RequiresPermission,
     ) : DeclaredAccess
 
     companion object {
         private val TYPES =
-            listOf(PublicEndpoint::class.java, AuthenticationFlow::class.java, SignedIn::class.java, RequiresPermission::class.java)
+            listOf(
+                PublicEndpoint::class.java,
+                AuthenticationFlow::class.java,
+                SignedIn::class.java,
+                RequiresPermission::class.java,
+                OperatorOnly::class.java,
+            )
 
         /** The handler's declaration; null when it has none or more than one (both are build failures). */
         fun of(handler: HandlerMethod): DeclaredAccess? = on(handler.method) ?: on(handler.beanType)
@@ -44,6 +55,7 @@ sealed interface DeclaredAccess {
                 is AuthenticationFlow -> Flow
                 is SignedIn -> Signed
                 is RequiresPermission -> Permission(annotation)
+                is OperatorOnly -> Operator
                 else -> null
             }
         }
@@ -66,19 +78,22 @@ class AccessInterceptor(
         handler: Any,
     ): Boolean {
         if (handler !is HandlerMethod) return true
-        when (val access = DeclaredAccess.of(handler)) {
-            null -> {
-                log.error("Handler {} declares no access rule: refused", handler.shortLogMessage)
-                throw ForbiddenException(null)
-            }
-
-            is DeclaredAccess.Permission -> {
-                if (!policy.holdsAnywhere(access.annotation.value)) throw ForbiddenException(access.annotation.value)
-            }
-
-            DeclaredAccess.Public, DeclaredAccess.Flow, DeclaredAccess.Signed -> {}
-        }
+        check(DeclaredAccess.of(handler), handler)
         return true
+    }
+
+    private fun check(
+        access: DeclaredAccess?,
+        handler: HandlerMethod,
+    ) {
+        val allowed =
+            when (access) {
+                null -> false.also { log.error("Handler {} declares no access rule: refused", handler.shortLogMessage) }
+                is DeclaredAccess.Permission -> policy.holdsAnywhere(access.annotation.value)
+                DeclaredAccess.Operator -> SecurityContextHolder.getContext().authentication?.principal is AuthenticatedOperator
+                DeclaredAccess.Public, DeclaredAccess.Flow, DeclaredAccess.Signed -> true
+            }
+        if (!allowed) throw ForbiddenException((access as? DeclaredAccess.Permission)?.annotation?.value)
     }
 }
 

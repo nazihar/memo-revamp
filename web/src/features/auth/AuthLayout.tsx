@@ -1,5 +1,9 @@
 import type { ReactNode } from 'react'
 import { defineMessages, useIntl } from 'react-intl'
+import { useQuery } from '@tanstack/react-query'
+import { getBrandingOptions } from '@/api/generated/@tanstack/react-query.gen'
+import { BrandingApplier } from '@/features/admin/BrandingApplier'
+import { logoUrl } from '@/features/admin/branding'
 import { useSession } from './session'
 import { LocaleMenu } from '@/components/shell/LocaleMenu'
 import { ThemeMenu } from '@/components/shell/ThemeMenu'
@@ -14,6 +18,8 @@ export function AuthLayout({ children }: { children: ReactNode }) {
   const intl = useIntl()
   const session = useSession()
   const organisation = session.data?.organisation
+  const branding = useQuery({ ...getBrandingOptions(), staleTime: 5 * 60_000 })
+  const logoVersion = branding.data?.logoVersion
   return (
     <ToastProvider>
       <div className="flex min-h-dvh flex-col bg-background">
@@ -23,13 +29,18 @@ export function AuthLayout({ children }: { children: ReactNode }) {
         </header>
         <main id="main" className="flex flex-1 items-start justify-center px-4 pb-12 pt-6 sm:pt-16">
           <div className="w-full max-w-md">
+            <BrandingApplier />
             <div className="mb-6 flex items-center gap-2.5">
-              <span
-                aria-hidden="true"
-                className="flex size-10 shrink-0 items-center justify-center rounded-md bg-accent text-base font-semibold text-accent-foreground"
-              >
-                {(organisation ?? 'm').slice(0, 1)}
-              </span>
+              {logoVersion ? (
+                <img src={logoUrl(logoVersion)} alt="" className="max-h-10 max-w-40 object-contain" />
+              ) : (
+                <span
+                  aria-hidden="true"
+                  className="flex size-10 shrink-0 items-center justify-center rounded-md bg-accent text-base font-semibold text-accent-foreground"
+                >
+                  {(organisation ?? 'm').slice(0, 1)}
+                </span>
+              )}
               <div className="flex min-w-0 flex-col">
                 <span className="truncate font-semibold">{organisation ?? intl.formatMessage(messages.product)}</span>
                 <span className="text-xs text-muted-foreground">{intl.formatMessage(messages.product)}</span>

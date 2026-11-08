@@ -294,6 +294,7 @@ function SessionsSection() {
       {sessions.data ? (
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
+            <caption className="sr-only">{intl.formatMessage(m.sessions)}</caption>
             <thead className="text-start text-muted-foreground">
               <tr className="border-b">
                 <th scope="col" className="py-2 pe-3 text-start font-medium">

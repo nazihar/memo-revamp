@@ -5,7 +5,7 @@
 **Last updated:** 2026-11-08 (UTC+06:00) by Claude (agent)
 
 ## Current position
-- **Phase:** 1a (overview approved 2026-10-18, gate delegation kept). Merged and on dev: **E02 platform kernel** (PR #18), **E01 app frame** (PR #19), **E03 identity, sessions and step-up** (PR #20), **E04 org directory and authorisation** (PR #22; ADR-0026, ADR-0027), plus fixes (PRs #21, #23–#26). **E05 files** merged (PR #27) and on dev since 2026-11-05 (ClamAV running). **E06 notifications** built on `feat/1a-e06-notifications` (ADR-0030); PR #28 is CI-green and waits for the owner's merge go-ahead. **E07 tenant lifecycle and administration** built on `feat/1a-e07-tenant-admin` (stacked on E06; ADR-0031 to ADR-0033): operator console on its own host, tenant creation and suspension, tenant admin console (security, branding, language and terms, audit viewer and verifiable export). PR opens once PR #28 is merged (or as a stacked PR).
+- **Phase:** 1a (overview approved 2026-10-18, gate delegation kept). Merged and on dev: **E02 platform kernel** (PR #18), **E01 app frame** (PR #19), **E03 identity, sessions and step-up** (PR #20), **E04 org directory and authorisation** (PR #22; ADR-0026, ADR-0027), plus fixes (PRs #21, #23–#26). **E05 files** merged (PR #27) and on dev since 2026-11-05 (ClamAV running). **E06 notifications** built on `feat/1a-e06-notifications` (ADR-0030); PR #28 is CI-green and waits for the owner's merge go-ahead. **E07 tenant lifecycle and administration** built on `feat/1a-e07-tenant-admin` (stacked on E06; ADR-0031 to ADR-0033): operator console on its own host, tenant creation and suspension, tenant admin console (security, branding, language and terms, audit viewer and verifiable export). PR #29 (stacked on #28): all jobs green except the image scan (base-image zlib CVEs, see Waiting for human); the E2E exit journey passes.
 - **Dev environment live (2026-10-18):** https://dev.memo-revamp.naziharitsolution.com on the VM 123.176.58.175 (Ubuntu 24.04, 4 vCPU, 7.8 GB RAM, 100 GB disk). It deploys automatically after every green `ci` run on `master`.
 - **Phase 0 epics:** E01–E05 done (`docs/plan/phase-0-foundations/`).
 - **Branches:** `master` holds PRs #1–#27; `feat/1a-e06-notifications` is PR #28; `feat/1a-e07-tenant-admin` builds E07 on top of it.
@@ -51,6 +51,8 @@
 
 ## Waiting for human
 - **E06 merge:** PR #28 (notifications) is CI-green and waits for your go-ahead.
+- **Base image CVEs (blocks every PR and master):** two HIGH zlib CVEs in the distroless Java base image, fixed in Debian but not yet in distroless. Choose: (a) a `.trivyignore` exception until 2026-11-22 that the image scan also reads, or (b) wait for a fixed digest (Renovate). Low exposure: the overflow is in zlib's gzFile write API, which Java's zip support does not use.
+- **E07 merge:** PR #29 after #28, once its CI is green.
 - **E07 on dev (after its merge):** permission to run the Ansible playbook again (Caddy gains `admin.<dev host>`), then I run `operator-invite` for your address and give you the one-time link.
 - **E01 manual accessibility pass (no rush):** a short keyboard + screen-reader (NVDA or VoiceOver) walk through the patterns gallery, run locally with `pnpm dev` at `/patterns` (the gallery is left out of production images, so it is not on the dev server). Automated axe, keyboard and CSP checks pass.
 1. **VM memory:** 7.8 GB is enough for dev, including ClamAV (measured 2026-11-02: 6.3 GiB available before it; ClamAV peaks at about 2.4 GiB). Running staging and ONLYOFFICE as well needs 16 GB.

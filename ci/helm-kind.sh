@@ -48,10 +48,15 @@ EOF
 kubectl -n "$NS" rollout status deploy/postgres --timeout=180s
 sleep 5 # init scripts run after the first readiness
 
+diagnose() {
+  kubectl -n "$NS" get pods -o wide; kubectl -n "$NS" logs job/memo-migrate --tail=50 || true
+  kubectl -n "$NS" logs deploy/memo-backend --tail=80 || true
+}
+
 helm upgrade --install memo "$ROOT/deploy/helm/memo" -n "$NS" --wait --timeout 10m \
   --set image.backend=memo-backend:ci --set image.web=memo-web:ci --set image.pullPolicy=Never \
   --set database.url=jdbc:postgresql://postgres:5432/memo --set backend.replicas=1 --set web.replicas=1 \
-  --set networkPolicy.enabled=false
+  --set networkPolicy.enabled=false || { diagnose; echo "helm on kind FAILED: install did not become ready" >&2; exit 1; }
 
 kubectl -n "$NS" port-forward svc/memo-web 18081:80 >/tmp/pf.log 2>&1 &
 PF=$!
@@ -61,6 +66,5 @@ for _ in $(seq 1 30); do
   [[ "$body" == *'"name":"database","status":"UP"'* ]] && { echo "helm on kind OK: $body"; exit 0; }
   sleep 2
 done
-kubectl -n "$NS" get pods -o wide; kubectl -n "$NS" logs job/memo-migrate --tail=50 || true
-kubectl -n "$NS" logs deploy/memo-backend --tail=80 || true
+diagnose
 echo "helm on kind FAILED: ${body:-<none>}" >&2; exit 1

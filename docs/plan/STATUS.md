@@ -47,11 +47,10 @@
 1. Owner: merge PR #28 (E06; CI green). Merges need the owner's go-ahead per PR. Then watch the master CI and the dev deploy.
 2. E07: CI on the stacked PR (the E2E exit journey runs there first), then merge after E06. After merge, an Ansible run so Caddy serves `admin.<dev host>`, and `operator-invite` on the VM for the owner's own operator account (runbook `platform-operators.md`).
 3. Phase 1a exit: `retrospective.md`, moderated usability walkthrough (login + MFA, org editing, tenant administration), manual keyboard and screen-reader pass, owner demo (`demo.md`).
-4. Follow-ups: corpus against the full ClamAV signatures in the nightly (E05); notification performance test (E06); record ClamAV memory on the VM after a day of reloads; remove the `apk upgrade` lines from `web/Dockerfile`, the Spring Session licence exceptions and the Guava pin when upstream catches up.
+4. Follow-ups: the zlib CVE exception in `.trivyignore` expires 2026-11-22 (owner-accepted 2026-11-08): take the rebuilt distroless digest from Renovate and delete the two entries before then; corpus against the full ClamAV signatures in the nightly (E05); notification performance test (E06); record ClamAV memory on the VM after a day of reloads; remove the `apk upgrade` lines from `web/Dockerfile`, the Spring Session licence exceptions and the Guava pin when upstream catches up.
 
 ## Waiting for human
 - **E06 merge:** PR #28 (notifications) is CI-green and waits for your go-ahead.
-- **Base image CVEs (blocks every PR and master):** two HIGH zlib CVEs in the distroless Java base image, fixed in Debian but not yet in distroless. Choose: (a) a `.trivyignore` exception until 2026-11-22 that the image scan also reads, or (b) wait for a fixed digest (Renovate). Low exposure: the overflow is in zlib's gzFile write API, which Java's zip support does not use.
 - **E07 merge:** PR #29 after #28, once its CI is green.
 - **E07 on dev (after its merge):** permission to run the Ansible playbook again (Caddy gains `admin.<dev host>`), then I run `operator-invite` for your address and give you the one-time link.
 - **E01 manual accessibility pass (no rush):** a short keyboard + screen-reader (NVDA or VoiceOver) walk through the patterns gallery, run locally with `pnpm dev` at `/patterns` (the gallery is left out of production images, so it is not on the dev server). Automated axe, keyboard and CSP checks pass.

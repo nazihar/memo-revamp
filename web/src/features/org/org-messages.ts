@@ -1,32 +1,21 @@
 import { defineMessages, type IntlShape } from 'react-intl'
+import type { TermValues } from '@/features/terms/terms'
 import { isProblem } from '@/api/http'
 
 /** Strings shared by the org screens (design E04 §13). */
 export const om = defineMessages({
   title: { id: 'org.title', defaultMessage: 'Organisation' },
-  lead: { id: 'org.lead', defaultMessage: 'Units, positions and who holds them.' },
-  treeLabel: { id: 'org.tree', defaultMessage: 'Units' },
   unitPath: { id: 'org.unitPath', defaultMessage: 'Unit path' },
-  filter: { id: 'org.filter', defaultMessage: 'Find a unit' },
-  noMatch: { id: 'org.filter.none', defaultMessage: 'No unit matches.' },
-  pickUnit: { id: 'org.pickUnit', defaultMessage: 'Choose a unit to see its positions.' },
-  empty: { id: 'org.empty', defaultMessage: 'No units yet.' },
   emptyLead: { id: 'org.empty.lead', defaultMessage: 'Start with your legal entity and its top unit.' },
   code: { id: 'org.code', defaultMessage: 'Code' },
   name: { id: 'org.name', defaultMessage: 'Name' },
-  positions: { id: 'org.positions', defaultMessage: 'Positions' },
-  positionsCaption: { id: 'org.positions.caption', defaultMessage: 'Positions of the unit' },
-  noPositions: { id: 'org.positions.none', defaultMessage: 'No positions in this unit.' },
   colPosition: { id: 'org.col.position', defaultMessage: 'Position' },
   colHolder: { id: 'org.col.holder', defaultMessage: 'Held by' },
   colSince: { id: 'org.col.since', defaultMessage: 'Since' },
   head: { id: 'org.head', defaultMessage: 'Head' },
   vacant: { id: 'org.vacant', defaultMessage: 'Vacant' },
-  addUnit: { id: 'org.addUnit', defaultMessage: 'Add sub-unit' },
-  addRoot: { id: 'org.addRoot', defaultMessage: 'Add top unit' },
   addEntity: { id: 'org.addEntity', defaultMessage: 'Add legal entity' },
   entityName: { id: 'org.entityName', defaultMessage: 'Legal entity name' },
-  addPosition: { id: 'org.addPosition', defaultMessage: 'Add position' },
   rename: { id: 'org.rename', defaultMessage: 'Rename' },
   move: { id: 'org.move', defaultMessage: 'Move' },
   close: { id: 'org.close', defaultMessage: 'Close' },
@@ -159,3 +148,43 @@ export function today(): string {
   const d = new Date()
   return `${String(d.getFullYear())}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`
 }
+
+/**
+ * Texts that name units or positions take the organisation's terms (ADR-0032, `useTerms`): `{unit}`, `{Units}`,
+ * `{unitGender}` and so on. Counted phrases do not combine a number with a term. Where Arabic agrees with the term's
+ * gender, the English text is wrapped in a one-branch `select` so both catalogues have the same arguments.
+ */
+type OrgTermMessage =
+  | 'lead'
+  | 'treeLabel'
+  | 'filter'
+  | 'noMatch'
+  | 'pickUnit'
+  | 'empty'
+  | 'positions'
+  | 'positionsCaption'
+  | 'noPositions'
+  | 'addUnit'
+  | 'addRoot'
+  | 'addPosition'
+
+export const omt = defineMessages<Record<OrgTermMessage, TermValues>>({
+  lead: { id: 'org.lead', defaultMessage: '{Units}, {positions} and who holds them.' },
+  treeLabel: { id: 'org.tree', defaultMessage: '{Units}' },
+  filter: { id: 'org.filter', defaultMessage: 'Find a {unit}' },
+  noMatch: { id: 'org.filter.none', defaultMessage: '{unitGender, select, other {No {unit} matches.}}' },
+  pickUnit: {
+    id: 'org.pickUnit',
+    defaultMessage: '{unitGender, select, other {Choose a {unit} to see its {positions}.}}',
+  },
+  empty: { id: 'org.empty', defaultMessage: 'No {units} yet.' },
+  positions: { id: 'org.positions', defaultMessage: '{Positions}' },
+  positionsCaption: { id: 'org.positions.caption', defaultMessage: '{Positions} of the {unit}' },
+  noPositions: {
+    id: 'org.positions.none',
+    defaultMessage: '{unitGender, select, other {No {positions} in this {unit}.}}',
+  },
+  addUnit: { id: 'org.addUnit', defaultMessage: '{unitGender, select, other {Add sub-{unit}}}' },
+  addRoot: { id: 'org.addRoot', defaultMessage: '{unitGender, select, other {Add top {unit}}}' },
+  addPosition: { id: 'org.addPosition', defaultMessage: 'Add {position}' },
+})

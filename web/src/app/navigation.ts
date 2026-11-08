@@ -1,11 +1,26 @@
-import { Activity, House, LayoutTemplate, Mail, Network, ShieldCheck, Tags, Users, type LucideIcon } from 'lucide-react'
+import {
+  Activity,
+  FileClock,
+  House,
+  Languages,
+  LayoutTemplate,
+  LockKeyhole,
+  Mail,
+  Network,
+  Palette,
+  Settings,
+  ShieldCheck,
+  Tags,
+  Users,
+  type LucideIcon,
+} from 'lucide-react'
 import { defineMessages, type MessageDescriptor } from 'react-intl'
 import { patternsEnabled } from './features'
 
 export type NavGroup = 'work' | 'administration' | 'developer'
 
 /** Who sees a menu entry: everyone, any signed-in user, or holders of a permission (ADR-0027). The server decides. */
-export type Audience = 'everyone' | 'signedIn' | { permission: string }
+export type Audience = 'everyone' | 'signedIn' | { permission: string } | { anyOf: string[] }
 
 export interface NavItem {
   id: string
@@ -35,6 +50,11 @@ const messages = defineMessages({
   roles: { id: 'nav.roles', defaultMessage: 'Roles' },
   classifications: { id: 'nav.classifications', defaultMessage: 'Classification' },
   email: { id: 'nav.email', defaultMessage: 'Email' },
+  admin: { id: 'nav.admin', defaultMessage: 'Overview' },
+  security: { id: 'nav.security', defaultMessage: 'Security' },
+  branding: { id: 'nav.branding', defaultMessage: 'Branding' },
+  language: { id: 'nav.language', defaultMessage: 'Language and terms' },
+  audit: { id: 'nav.audit', defaultMessage: 'Audit' },
   patterns: { id: 'nav.patterns', defaultMessage: 'Patterns' },
 })
 
@@ -43,6 +63,16 @@ export const groupLabels = defineMessages({
   administration: { id: 'nav.group.administration', defaultMessage: 'Administration' },
   developer: { id: 'nav.group.developer', defaultMessage: 'Developer' },
 })
+
+/** Any of these makes someone an administrator for the menu: they see the administration overview. */
+export const ADMIN_PERMISSIONS = [
+  'identity.users.manage',
+  'authz.roles.manage',
+  'authz.classifications.manage',
+  'notification.settings.manage',
+  'tenant.settings.manage',
+  'audit.read',
+]
 
 export const navigation: NavItem[] = [
   { id: 'home', to: '/', label: messages.home, icon: House, group: 'work', audience: 'signedIn', enabled: true },
@@ -56,6 +86,15 @@ export const navigation: NavItem[] = [
     enabled: true,
   },
   { id: 'org', to: '/org', label: messages.org, icon: Network, group: 'work', audience: 'signedIn', enabled: true },
+  {
+    id: 'admin',
+    to: '/admin',
+    label: messages.admin,
+    icon: Settings,
+    group: 'administration',
+    audience: { anyOf: ADMIN_PERMISSIONS },
+    enabled: true,
+  },
   {
     id: 'users',
     to: '/admin/users',
@@ -93,6 +132,42 @@ export const navigation: NavItem[] = [
     enabled: true,
   },
   {
+    id: 'security',
+    to: '/admin/security',
+    label: messages.security,
+    icon: LockKeyhole,
+    group: 'administration',
+    audience: { permission: 'tenant.settings.manage' },
+    enabled: true,
+  },
+  {
+    id: 'branding',
+    to: '/admin/branding',
+    label: messages.branding,
+    icon: Palette,
+    group: 'administration',
+    audience: { permission: 'tenant.settings.manage' },
+    enabled: true,
+  },
+  {
+    id: 'language',
+    to: '/admin/language',
+    label: messages.language,
+    icon: Languages,
+    group: 'administration',
+    audience: { permission: 'tenant.settings.manage' },
+    enabled: true,
+  },
+  {
+    id: 'audit',
+    to: '/admin/audit',
+    label: messages.audit,
+    icon: FileClock,
+    group: 'administration',
+    audience: { permission: 'audit.read' },
+    enabled: true,
+  },
+  {
     id: 'patterns',
     to: '/patterns',
     label: messages.patterns,
@@ -106,7 +181,15 @@ export const navigation: NavItem[] = [
 function visibleTo(viewer: Viewer, audience: Audience): boolean {
   if (audience === 'everyone') return true
   if (audience === 'signedIn') return viewer.signedIn
+  if ('anyOf' in audience) return viewer.signedIn && audience.anyOf.some((p) => viewer.permissions.includes(p))
   return viewer.signedIn && viewer.permissions.includes(audience.permission)
+}
+
+/** The enabled administration entries the viewer may see, for the overview page. */
+export function adminItems(viewer: Viewer): NavItem[] {
+  return navigation.filter(
+    (i) => i.enabled && i.group === 'administration' && i.id !== 'admin' && visibleTo(viewer, i.audience),
+  )
 }
 
 /** Enabled items the viewer may see, grouped in display order; empty groups are left out. */

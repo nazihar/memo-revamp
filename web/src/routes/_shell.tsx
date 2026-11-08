@@ -1,5 +1,6 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 import { AppShell } from '@/components/shell/AppShell'
+import { BrandingApplier } from '@/features/admin/BrandingApplier'
 import { AccountMenu } from '@/features/auth/AccountMenu'
 import { useMyAccess } from '@/features/access/access'
 import { useSession, viewerOf } from '@/features/auth/session'
@@ -19,6 +20,7 @@ function ShellLayout() {
       account={<AccountMenu />}
       notifications={<NotificationBell />}
     >
+      <BrandingApplier />
       <Outlet />
     </AppShell>
   )

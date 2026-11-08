@@ -7,7 +7,9 @@ import { sessionQuery } from '@/features/auth/session'
  */
 export const Route = createFileRoute('/_shell/_signedIn')({
   beforeLoad: async ({ context, location }) => {
-    const session = await context.queryClient.query(sessionQuery())
+    // A suspended or unknown organisation answers with a problem; the root's tenant gate shows the notice instead.
+    const session = await context.queryClient.query(sessionQuery()).catch(() => undefined)
+    if (!session) return
     // eslint-disable-next-line @typescript-eslint/only-throw-error -- TanStack Router's redirect() is designed to be thrown
     if (session.state === 'MFA_ENROLMENT_REQUIRED') throw redirect({ to: '/login/enrol-mfa' })
     // eslint-disable-next-line @typescript-eslint/only-throw-error -- as above

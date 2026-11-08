@@ -15,7 +15,8 @@
   --card-foreground: #1b2333;
   --muted: #eef0f3;
   --muted-foreground: #5a6475;
-  --primary: #1f4e8c;
+  /* A tenant colour (E07 branding) replaces the primary; set at start-up from /api/v1/branding. */
+  --primary: var(--brand-light, #1f4e8c);
   --primary-foreground: #ffffff;
   --accent: #e8eef7;
   --accent-foreground: #163a69;
@@ -49,7 +50,7 @@
   --card-foreground: #e8ecf2;
   --muted: #1f2734;
   --muted-foreground: #a3adbd;
-  --primary: #8db2ea;
+  --primary: var(--brand-dark, #8db2ea);
   --primary-foreground: #0d1726;
   --accent: #1e2b40;
   --accent-foreground: #c9daf4;

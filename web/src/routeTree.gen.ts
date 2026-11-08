@@ -11,22 +11,35 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthRouteImport } from './routes/_auth'
 import { Route as ShellRouteImport } from './routes/_shell'
+import { Route as PlatformRouteImport } from './routes/platform'
 import { Route as AuthInvitationRouteImport } from './routes/_auth/invitation'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
 import { Route as AuthResetPasswordRouteImport } from './routes/_auth/reset-password'
 import { Route as ShellSignedInRouteImport } from './routes/_shell/_signedIn'
 import { Route as ShellPatternsRouteImport } from './routes/_shell/patterns'
 import { Route as ShellStatusRouteImport } from './routes/_shell/status'
+import { Route as PlatformOperatorRouteImport } from './routes/platform/_operator'
+import { Route as PlatformEnrolRouteImport } from './routes/platform/enrol'
+import { Route as PlatformLoginRouteImport } from './routes/platform/login'
 import { Route as AuthLoginEnrolMfaRouteImport } from './routes/_auth/login_.enrol-mfa'
 import { Route as ShellSignedInIndexRouteImport } from './routes/_shell/_signedIn/index'
 import { Route as ShellSignedInNotificationsRouteImport } from './routes/_shell/_signedIn/notifications'
 import { Route as ShellSignedInOrgRouteImport } from './routes/_shell/_signedIn/org'
+import { Route as PlatformOperatorIndexRouteImport } from './routes/platform/_operator/index'
+import { Route as PlatformOperatorAuditRouteImport } from './routes/platform/_operator/audit'
+import { Route as ShellSignedInAdminIndexRouteImport } from './routes/_shell/_signedIn/admin.index'
+import { Route as ShellSignedInAdminAuditRouteImport } from './routes/_shell/_signedIn/admin.audit'
+import { Route as ShellSignedInAdminBrandingRouteImport } from './routes/_shell/_signedIn/admin.branding'
 import { Route as ShellSignedInAdminClassificationsRouteImport } from './routes/_shell/_signedIn/admin.classifications'
 import { Route as ShellSignedInAdminEmailRouteImport } from './routes/_shell/_signedIn/admin.email'
+import { Route as ShellSignedInAdminLanguageRouteImport } from './routes/_shell/_signedIn/admin.language'
 import { Route as ShellSignedInAdminRolesRouteImport } from './routes/_shell/_signedIn/admin.roles'
+import { Route as ShellSignedInAdminSecurityRouteImport } from './routes/_shell/_signedIn/admin.security'
 import { Route as ShellSignedInAdminUsersRouteImport } from './routes/_shell/_signedIn/admin.users'
 import { Route as ShellSignedInMeNotificationsRouteImport } from './routes/_shell/_signedIn/me.notifications'
 import { Route as ShellSignedInMeSecurityRouteImport } from './routes/_shell/_signedIn/me.security'
+import { Route as PlatformOperatorTenantsTenantIdRouteImport } from './routes/platform/_operator/tenants.$tenantId'
+import { Route as PlatformOperatorTenantsNewRouteImport } from './routes/platform/_operator/tenants.new'
 import { Route as ShellSignedInAdminUsersUserIdRouteImport } from './routes/_shell/_signedIn/admin.users_.$userId'
 import { Route as ShellSignedInOrgPositionsPositionIdRouteImport } from './routes/_shell/_signedIn/org_.positions.$positionId'
 
@@ -36,6 +49,11 @@ const AuthRoute = AuthRouteImport.update({
 } as any)
 const ShellRoute = ShellRouteImport.update({
   id: '/_shell',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlatformRoute = PlatformRouteImport.update({
+  id: '/platform',
+  path: '/platform',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthInvitationRoute = AuthInvitationRouteImport.update({
@@ -67,6 +85,20 @@ const ShellStatusRoute = ShellStatusRouteImport.update({
   path: '/status',
   getParentRoute: () => ShellRoute,
 } as any)
+const PlatformOperatorRoute = PlatformOperatorRouteImport.update({
+  id: '/_operator',
+  getParentRoute: () => PlatformRoute,
+} as any)
+const PlatformEnrolRoute = PlatformEnrolRouteImport.update({
+  id: '/enrol',
+  path: '/enrol',
+  getParentRoute: () => PlatformRoute,
+} as any)
+const PlatformLoginRoute = PlatformLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => PlatformRoute,
+} as any)
 const AuthLoginEnrolMfaRoute = AuthLoginEnrolMfaRouteImport.update({
   id: '/login_/enrol-mfa',
   path: '/login/enrol-mfa',
@@ -88,6 +120,32 @@ const ShellSignedInOrgRoute = ShellSignedInOrgRouteImport.update({
   path: '/org',
   getParentRoute: () => ShellSignedInRoute,
 } as any)
+const PlatformOperatorIndexRoute = PlatformOperatorIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PlatformOperatorRoute,
+} as any)
+const PlatformOperatorAuditRoute = PlatformOperatorAuditRouteImport.update({
+  id: '/audit',
+  path: '/audit',
+  getParentRoute: () => PlatformOperatorRoute,
+} as any)
+const ShellSignedInAdminIndexRoute = ShellSignedInAdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => ShellSignedInRoute,
+} as any)
+const ShellSignedInAdminAuditRoute = ShellSignedInAdminAuditRouteImport.update({
+  id: '/admin/audit',
+  path: '/admin/audit',
+  getParentRoute: () => ShellSignedInRoute,
+} as any)
+const ShellSignedInAdminBrandingRoute =
+  ShellSignedInAdminBrandingRouteImport.update({
+    id: '/admin/branding',
+    path: '/admin/branding',
+    getParentRoute: () => ShellSignedInRoute,
+  } as any)
 const ShellSignedInAdminClassificationsRoute =
   ShellSignedInAdminClassificationsRouteImport.update({
     id: '/admin/classifications',
@@ -99,11 +157,23 @@ const ShellSignedInAdminEmailRoute = ShellSignedInAdminEmailRouteImport.update({
   path: '/admin/email',
   getParentRoute: () => ShellSignedInRoute,
 } as any)
+const ShellSignedInAdminLanguageRoute =
+  ShellSignedInAdminLanguageRouteImport.update({
+    id: '/admin/language',
+    path: '/admin/language',
+    getParentRoute: () => ShellSignedInRoute,
+  } as any)
 const ShellSignedInAdminRolesRoute = ShellSignedInAdminRolesRouteImport.update({
   id: '/admin/roles',
   path: '/admin/roles',
   getParentRoute: () => ShellSignedInRoute,
 } as any)
+const ShellSignedInAdminSecurityRoute =
+  ShellSignedInAdminSecurityRouteImport.update({
+    id: '/admin/security',
+    path: '/admin/security',
+    getParentRoute: () => ShellSignedInRoute,
+  } as any)
 const ShellSignedInAdminUsersRoute = ShellSignedInAdminUsersRouteImport.update({
   id: '/admin/users',
   path: '/admin/users',
@@ -120,6 +190,18 @@ const ShellSignedInMeSecurityRoute = ShellSignedInMeSecurityRouteImport.update({
   path: '/me/security',
   getParentRoute: () => ShellSignedInRoute,
 } as any)
+const PlatformOperatorTenantsTenantIdRoute =
+  PlatformOperatorTenantsTenantIdRouteImport.update({
+    id: '/tenants/$tenantId',
+    path: '/tenants/$tenantId',
+    getParentRoute: () => PlatformOperatorRoute,
+  } as any)
+const PlatformOperatorTenantsNewRoute =
+  PlatformOperatorTenantsNewRouteImport.update({
+    id: '/tenants/new',
+    path: '/tenants/new',
+    getParentRoute: () => PlatformOperatorRoute,
+  } as any)
 const ShellSignedInAdminUsersUserIdRoute =
   ShellSignedInAdminUsersUserIdRouteImport.update({
     id: '/admin/users_/$userId',
@@ -135,39 +217,62 @@ const ShellSignedInOrgPositionsPositionIdRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof ShellSignedInIndexRoute
+  '/platform': typeof PlatformRouteWithChildren
   '/invitation': typeof AuthInvitationRoute
   '/login': typeof AuthLoginRoute
   '/reset-password': typeof AuthResetPasswordRoute
   '/patterns': typeof ShellPatternsRoute
   '/status': typeof ShellStatusRoute
+  '/platform/enrol': typeof PlatformEnrolRoute
+  '/platform/login': typeof PlatformLoginRoute
   '/login/enrol-mfa': typeof AuthLoginEnrolMfaRoute
   '/notifications': typeof ShellSignedInNotificationsRoute
   '/org': typeof ShellSignedInOrgRoute
+  '/platform/audit': typeof PlatformOperatorAuditRoute
+  '/platform/': typeof PlatformOperatorIndexRoute
+  '/admin/audit': typeof ShellSignedInAdminAuditRoute
+  '/admin/branding': typeof ShellSignedInAdminBrandingRoute
   '/admin/classifications': typeof ShellSignedInAdminClassificationsRoute
   '/admin/email': typeof ShellSignedInAdminEmailRoute
+  '/admin/language': typeof ShellSignedInAdminLanguageRoute
   '/admin/roles': typeof ShellSignedInAdminRolesRoute
+  '/admin/security': typeof ShellSignedInAdminSecurityRoute
   '/admin/users': typeof ShellSignedInAdminUsersRoute
   '/me/notifications': typeof ShellSignedInMeNotificationsRoute
   '/me/security': typeof ShellSignedInMeSecurityRoute
+  '/platform/tenants/$tenantId': typeof PlatformOperatorTenantsTenantIdRoute
+  '/platform/tenants/new': typeof PlatformOperatorTenantsNewRoute
+  '/admin/': typeof ShellSignedInAdminIndexRoute
   '/admin/users/$userId': typeof ShellSignedInAdminUsersUserIdRoute
   '/org/positions/$positionId': typeof ShellSignedInOrgPositionsPositionIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof ShellSignedInIndexRoute
+  '/platform': typeof PlatformOperatorIndexRoute
   '/invitation': typeof AuthInvitationRoute
   '/login': typeof AuthLoginRoute
   '/reset-password': typeof AuthResetPasswordRoute
   '/patterns': typeof ShellPatternsRoute
   '/status': typeof ShellStatusRoute
+  '/platform/enrol': typeof PlatformEnrolRoute
+  '/platform/login': typeof PlatformLoginRoute
   '/login/enrol-mfa': typeof AuthLoginEnrolMfaRoute
   '/notifications': typeof ShellSignedInNotificationsRoute
   '/org': typeof ShellSignedInOrgRoute
+  '/platform/audit': typeof PlatformOperatorAuditRoute
+  '/admin/audit': typeof ShellSignedInAdminAuditRoute
+  '/admin/branding': typeof ShellSignedInAdminBrandingRoute
   '/admin/classifications': typeof ShellSignedInAdminClassificationsRoute
   '/admin/email': typeof ShellSignedInAdminEmailRoute
+  '/admin/language': typeof ShellSignedInAdminLanguageRoute
   '/admin/roles': typeof ShellSignedInAdminRolesRoute
+  '/admin/security': typeof ShellSignedInAdminSecurityRoute
   '/admin/users': typeof ShellSignedInAdminUsersRoute
   '/me/notifications': typeof ShellSignedInMeNotificationsRoute
   '/me/security': typeof ShellSignedInMeSecurityRoute
+  '/platform/tenants/$tenantId': typeof PlatformOperatorTenantsTenantIdRoute
+  '/platform/tenants/new': typeof PlatformOperatorTenantsNewRoute
+  '/admin': typeof ShellSignedInAdminIndexRoute
   '/admin/users/$userId': typeof ShellSignedInAdminUsersUserIdRoute
   '/org/positions/$positionId': typeof ShellSignedInOrgPositionsPositionIdRoute
 }
@@ -175,22 +280,35 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_auth': typeof AuthRouteWithChildren
   '/_shell': typeof ShellRouteWithChildren
+  '/platform': typeof PlatformRouteWithChildren
   '/_auth/invitation': typeof AuthInvitationRoute
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/reset-password': typeof AuthResetPasswordRoute
   '/_shell/_signedIn': typeof ShellSignedInRouteWithChildren
   '/_shell/patterns': typeof ShellPatternsRoute
   '/_shell/status': typeof ShellStatusRoute
+  '/platform/_operator': typeof PlatformOperatorRouteWithChildren
+  '/platform/enrol': typeof PlatformEnrolRoute
+  '/platform/login': typeof PlatformLoginRoute
   '/_auth/login_/enrol-mfa': typeof AuthLoginEnrolMfaRoute
   '/_shell/_signedIn/notifications': typeof ShellSignedInNotificationsRoute
   '/_shell/_signedIn/org': typeof ShellSignedInOrgRoute
+  '/platform/_operator/audit': typeof PlatformOperatorAuditRoute
   '/_shell/_signedIn/': typeof ShellSignedInIndexRoute
+  '/platform/_operator/': typeof PlatformOperatorIndexRoute
+  '/_shell/_signedIn/admin/audit': typeof ShellSignedInAdminAuditRoute
+  '/_shell/_signedIn/admin/branding': typeof ShellSignedInAdminBrandingRoute
   '/_shell/_signedIn/admin/classifications': typeof ShellSignedInAdminClassificationsRoute
   '/_shell/_signedIn/admin/email': typeof ShellSignedInAdminEmailRoute
+  '/_shell/_signedIn/admin/language': typeof ShellSignedInAdminLanguageRoute
   '/_shell/_signedIn/admin/roles': typeof ShellSignedInAdminRolesRoute
+  '/_shell/_signedIn/admin/security': typeof ShellSignedInAdminSecurityRoute
   '/_shell/_signedIn/admin/users': typeof ShellSignedInAdminUsersRoute
   '/_shell/_signedIn/me/notifications': typeof ShellSignedInMeNotificationsRoute
   '/_shell/_signedIn/me/security': typeof ShellSignedInMeSecurityRoute
+  '/platform/_operator/tenants/$tenantId': typeof PlatformOperatorTenantsTenantIdRoute
+  '/platform/_operator/tenants/new': typeof PlatformOperatorTenantsNewRoute
+  '/_shell/_signedIn/admin/': typeof ShellSignedInAdminIndexRoute
   '/_shell/_signedIn/admin/users_/$userId': typeof ShellSignedInAdminUsersUserIdRoute
   '/_shell/_signedIn/org_/positions/$positionId': typeof ShellSignedInOrgPositionsPositionIdRoute
 }
@@ -198,61 +316,97 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/platform'
     | '/invitation'
     | '/login'
     | '/reset-password'
     | '/patterns'
     | '/status'
+    | '/platform/enrol'
+    | '/platform/login'
     | '/login/enrol-mfa'
     | '/notifications'
     | '/org'
+    | '/platform/audit'
+    | '/platform/'
+    | '/admin/audit'
+    | '/admin/branding'
     | '/admin/classifications'
     | '/admin/email'
+    | '/admin/language'
     | '/admin/roles'
+    | '/admin/security'
     | '/admin/users'
     | '/me/notifications'
     | '/me/security'
+    | '/platform/tenants/$tenantId'
+    | '/platform/tenants/new'
+    | '/admin/'
     | '/admin/users/$userId'
     | '/org/positions/$positionId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/platform'
     | '/invitation'
     | '/login'
     | '/reset-password'
     | '/patterns'
     | '/status'
+    | '/platform/enrol'
+    | '/platform/login'
     | '/login/enrol-mfa'
     | '/notifications'
     | '/org'
+    | '/platform/audit'
+    | '/admin/audit'
+    | '/admin/branding'
     | '/admin/classifications'
     | '/admin/email'
+    | '/admin/language'
     | '/admin/roles'
+    | '/admin/security'
     | '/admin/users'
     | '/me/notifications'
     | '/me/security'
+    | '/platform/tenants/$tenantId'
+    | '/platform/tenants/new'
+    | '/admin'
     | '/admin/users/$userId'
     | '/org/positions/$positionId'
   id:
     | '__root__'
     | '/_auth'
     | '/_shell'
+    | '/platform'
     | '/_auth/invitation'
     | '/_auth/login'
     | '/_auth/reset-password'
     | '/_shell/_signedIn'
     | '/_shell/patterns'
     | '/_shell/status'
+    | '/platform/_operator'
+    | '/platform/enrol'
+    | '/platform/login'
     | '/_auth/login_/enrol-mfa'
     | '/_shell/_signedIn/notifications'
     | '/_shell/_signedIn/org'
+    | '/platform/_operator/audit'
     | '/_shell/_signedIn/'
+    | '/platform/_operator/'
+    | '/_shell/_signedIn/admin/audit'
+    | '/_shell/_signedIn/admin/branding'
     | '/_shell/_signedIn/admin/classifications'
     | '/_shell/_signedIn/admin/email'
+    | '/_shell/_signedIn/admin/language'
     | '/_shell/_signedIn/admin/roles'
+    | '/_shell/_signedIn/admin/security'
     | '/_shell/_signedIn/admin/users'
     | '/_shell/_signedIn/me/notifications'
     | '/_shell/_signedIn/me/security'
+    | '/platform/_operator/tenants/$tenantId'
+    | '/platform/_operator/tenants/new'
+    | '/_shell/_signedIn/admin/'
     | '/_shell/_signedIn/admin/users_/$userId'
     | '/_shell/_signedIn/org_/positions/$positionId'
   fileRoutesById: FileRoutesById
@@ -260,6 +414,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   ShellRoute: typeof ShellRouteWithChildren
+  PlatformRoute: typeof PlatformRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -276,6 +431,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof ShellRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/platform': {
+      id: '/platform'
+      path: '/platform'
+      fullPath: '/platform'
+      preLoaderRoute: typeof PlatformRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_auth/invitation': {
@@ -320,6 +482,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShellStatusRouteImport
       parentRoute: typeof ShellRoute
     }
+    '/platform/_operator': {
+      id: '/platform/_operator'
+      path: ''
+      fullPath: '/platform'
+      preLoaderRoute: typeof PlatformOperatorRouteImport
+      parentRoute: typeof PlatformRoute
+    }
+    '/platform/enrol': {
+      id: '/platform/enrol'
+      path: '/enrol'
+      fullPath: '/platform/enrol'
+      preLoaderRoute: typeof PlatformEnrolRouteImport
+      parentRoute: typeof PlatformRoute
+    }
+    '/platform/login': {
+      id: '/platform/login'
+      path: '/login'
+      fullPath: '/platform/login'
+      preLoaderRoute: typeof PlatformLoginRouteImport
+      parentRoute: typeof PlatformRoute
+    }
     '/_auth/login_/enrol-mfa': {
       id: '/_auth/login_/enrol-mfa'
       path: '/login/enrol-mfa'
@@ -348,6 +531,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShellSignedInOrgRouteImport
       parentRoute: typeof ShellSignedInRoute
     }
+    '/platform/_operator/': {
+      id: '/platform/_operator/'
+      path: '/'
+      fullPath: '/platform/'
+      preLoaderRoute: typeof PlatformOperatorIndexRouteImport
+      parentRoute: typeof PlatformOperatorRoute
+    }
+    '/platform/_operator/audit': {
+      id: '/platform/_operator/audit'
+      path: '/audit'
+      fullPath: '/platform/audit'
+      preLoaderRoute: typeof PlatformOperatorAuditRouteImport
+      parentRoute: typeof PlatformOperatorRoute
+    }
+    '/_shell/_signedIn/admin/': {
+      id: '/_shell/_signedIn/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof ShellSignedInAdminIndexRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
+    '/_shell/_signedIn/admin/audit': {
+      id: '/_shell/_signedIn/admin/audit'
+      path: '/admin/audit'
+      fullPath: '/admin/audit'
+      preLoaderRoute: typeof ShellSignedInAdminAuditRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
+    '/_shell/_signedIn/admin/branding': {
+      id: '/_shell/_signedIn/admin/branding'
+      path: '/admin/branding'
+      fullPath: '/admin/branding'
+      preLoaderRoute: typeof ShellSignedInAdminBrandingRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
     '/_shell/_signedIn/admin/classifications': {
       id: '/_shell/_signedIn/admin/classifications'
       path: '/admin/classifications'
@@ -362,11 +580,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShellSignedInAdminEmailRouteImport
       parentRoute: typeof ShellSignedInRoute
     }
+    '/_shell/_signedIn/admin/language': {
+      id: '/_shell/_signedIn/admin/language'
+      path: '/admin/language'
+      fullPath: '/admin/language'
+      preLoaderRoute: typeof ShellSignedInAdminLanguageRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
     '/_shell/_signedIn/admin/roles': {
       id: '/_shell/_signedIn/admin/roles'
       path: '/admin/roles'
       fullPath: '/admin/roles'
       preLoaderRoute: typeof ShellSignedInAdminRolesRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
+    '/_shell/_signedIn/admin/security': {
+      id: '/_shell/_signedIn/admin/security'
+      path: '/admin/security'
+      fullPath: '/admin/security'
+      preLoaderRoute: typeof ShellSignedInAdminSecurityRouteImport
       parentRoute: typeof ShellSignedInRoute
     }
     '/_shell/_signedIn/admin/users': {
@@ -389,6 +621,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/me/security'
       preLoaderRoute: typeof ShellSignedInMeSecurityRouteImport
       parentRoute: typeof ShellSignedInRoute
+    }
+    '/platform/_operator/tenants/$tenantId': {
+      id: '/platform/_operator/tenants/$tenantId'
+      path: '/tenants/$tenantId'
+      fullPath: '/platform/tenants/$tenantId'
+      preLoaderRoute: typeof PlatformOperatorTenantsTenantIdRouteImport
+      parentRoute: typeof PlatformOperatorRoute
+    }
+    '/platform/_operator/tenants/new': {
+      id: '/platform/_operator/tenants/new'
+      path: '/tenants/new'
+      fullPath: '/platform/tenants/new'
+      preLoaderRoute: typeof PlatformOperatorTenantsNewRouteImport
+      parentRoute: typeof PlatformOperatorRoute
     }
     '/_shell/_signedIn/admin/users_/$userId': {
       id: '/_shell/_signedIn/admin/users_/$userId'
@@ -427,12 +673,17 @@ interface ShellSignedInRouteChildren {
   ShellSignedInNotificationsRoute: typeof ShellSignedInNotificationsRoute
   ShellSignedInOrgRoute: typeof ShellSignedInOrgRoute
   ShellSignedInIndexRoute: typeof ShellSignedInIndexRoute
+  ShellSignedInAdminAuditRoute: typeof ShellSignedInAdminAuditRoute
+  ShellSignedInAdminBrandingRoute: typeof ShellSignedInAdminBrandingRoute
   ShellSignedInAdminClassificationsRoute: typeof ShellSignedInAdminClassificationsRoute
   ShellSignedInAdminEmailRoute: typeof ShellSignedInAdminEmailRoute
+  ShellSignedInAdminLanguageRoute: typeof ShellSignedInAdminLanguageRoute
   ShellSignedInAdminRolesRoute: typeof ShellSignedInAdminRolesRoute
+  ShellSignedInAdminSecurityRoute: typeof ShellSignedInAdminSecurityRoute
   ShellSignedInAdminUsersRoute: typeof ShellSignedInAdminUsersRoute
   ShellSignedInMeNotificationsRoute: typeof ShellSignedInMeNotificationsRoute
   ShellSignedInMeSecurityRoute: typeof ShellSignedInMeSecurityRoute
+  ShellSignedInAdminIndexRoute: typeof ShellSignedInAdminIndexRoute
   ShellSignedInAdminUsersUserIdRoute: typeof ShellSignedInAdminUsersUserIdRoute
   ShellSignedInOrgPositionsPositionIdRoute: typeof ShellSignedInOrgPositionsPositionIdRoute
 }
@@ -441,13 +692,18 @@ const ShellSignedInRouteChildren: ShellSignedInRouteChildren = {
   ShellSignedInNotificationsRoute: ShellSignedInNotificationsRoute,
   ShellSignedInOrgRoute: ShellSignedInOrgRoute,
   ShellSignedInIndexRoute: ShellSignedInIndexRoute,
+  ShellSignedInAdminAuditRoute: ShellSignedInAdminAuditRoute,
+  ShellSignedInAdminBrandingRoute: ShellSignedInAdminBrandingRoute,
   ShellSignedInAdminClassificationsRoute:
     ShellSignedInAdminClassificationsRoute,
   ShellSignedInAdminEmailRoute: ShellSignedInAdminEmailRoute,
+  ShellSignedInAdminLanguageRoute: ShellSignedInAdminLanguageRoute,
   ShellSignedInAdminRolesRoute: ShellSignedInAdminRolesRoute,
+  ShellSignedInAdminSecurityRoute: ShellSignedInAdminSecurityRoute,
   ShellSignedInAdminUsersRoute: ShellSignedInAdminUsersRoute,
   ShellSignedInMeNotificationsRoute: ShellSignedInMeNotificationsRoute,
   ShellSignedInMeSecurityRoute: ShellSignedInMeSecurityRoute,
+  ShellSignedInAdminIndexRoute: ShellSignedInAdminIndexRoute,
   ShellSignedInAdminUsersUserIdRoute: ShellSignedInAdminUsersUserIdRoute,
   ShellSignedInOrgPositionsPositionIdRoute:
     ShellSignedInOrgPositionsPositionIdRoute,
@@ -471,9 +727,43 @@ const ShellRouteChildren: ShellRouteChildren = {
 
 const ShellRouteWithChildren = ShellRoute._addFileChildren(ShellRouteChildren)
 
+interface PlatformOperatorRouteChildren {
+  PlatformOperatorAuditRoute: typeof PlatformOperatorAuditRoute
+  PlatformOperatorIndexRoute: typeof PlatformOperatorIndexRoute
+  PlatformOperatorTenantsTenantIdRoute: typeof PlatformOperatorTenantsTenantIdRoute
+  PlatformOperatorTenantsNewRoute: typeof PlatformOperatorTenantsNewRoute
+}
+
+const PlatformOperatorRouteChildren: PlatformOperatorRouteChildren = {
+  PlatformOperatorAuditRoute: PlatformOperatorAuditRoute,
+  PlatformOperatorIndexRoute: PlatformOperatorIndexRoute,
+  PlatformOperatorTenantsTenantIdRoute: PlatformOperatorTenantsTenantIdRoute,
+  PlatformOperatorTenantsNewRoute: PlatformOperatorTenantsNewRoute,
+}
+
+const PlatformOperatorRouteWithChildren =
+  PlatformOperatorRoute._addFileChildren(PlatformOperatorRouteChildren)
+
+interface PlatformRouteChildren {
+  PlatformOperatorRoute: typeof PlatformOperatorRouteWithChildren
+  PlatformEnrolRoute: typeof PlatformEnrolRoute
+  PlatformLoginRoute: typeof PlatformLoginRoute
+}
+
+const PlatformRouteChildren: PlatformRouteChildren = {
+  PlatformOperatorRoute: PlatformOperatorRouteWithChildren,
+  PlatformEnrolRoute: PlatformEnrolRoute,
+  PlatformLoginRoute: PlatformLoginRoute,
+}
+
+const PlatformRouteWithChildren = PlatformRoute._addFileChildren(
+  PlatformRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   ShellRoute: ShellRouteWithChildren,
+  PlatformRoute: PlatformRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

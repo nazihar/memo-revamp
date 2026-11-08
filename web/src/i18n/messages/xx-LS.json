@@ -557,6 +557,522 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "admin.audit.action": [
+    {
+      "type": 0,
+      "value": "Action starts withSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.audit.after": [
+    {
+      "type": 0,
+      "value": "AfterSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.audit.anonymous": [
+    {
+      "type": 0,
+      "value": "Not signed inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.audit.before": [
+    {
+      "type": 0,
+      "value": "BeforeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.audit.caption": [
+    {
+      "type": 0,
+      "value": "Audit entries, newest firstSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.audit.col.action": [
+    {
+      "type": 0,
+      "value": "ActionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.audit.col.actor": [
+    {
+      "type": 0,
+      "value": "WhoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.audit.col.change": [
+    {
+      "type": 0,
+      "value": "ChangeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.audit.col.object": [
+    {
+      "type": 0,
+      "value": "ObjectSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.audit.col.time": [
+    {
+      "type": 0,
+      "value": "TimeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.audit.details": [
+    {
+      "type": 0,
+      "value": "DetailsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.audit.empty": [
+    {
+      "type": 0,
+      "value": "Nothing in this period.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.audit.export": [
+    {
+      "type": 0,
+      "value": "ExportSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.audit.export.hint": [
+    {
+      "type": 0,
+      "value": "A ZIP file with the entries, a manifest and the steps to verify it. Without filters it proves nothing is missing.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.audit.exported": [
+    {
+      "type": 0,
+      "value": "Export downloaded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.audit.from": [
+    {
+      "type": 0,
+      "value": "FromSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.audit.lead": [
+    {
+      "type": 0,
+      "value": "Every change in your organisation, newest first. The record cannot be altered without it showing.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.audit.loadMore": [
+    {
+      "type": 0,
+      "value": "Load moreSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.audit.objectType": [
+    {
+      "type": 0,
+      "value": "Object typeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.audit.platform": [
+    {
+      "type": 0,
+      "value": "Platform operatorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.audit.system": [
+    {
+      "type": 0,
+      "value": "SystemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.audit.title": [
+    {
+      "type": 0,
+      "value": "AuditSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.audit.to": [
+    {
+      "type": 0,
+      "value": "ToSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.audit.tooMany": [
+    {
+      "type": 0,
+      "value": "Too many exports this hour. Try again later.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.branding.colour.hint": [
+    {
+      "type": 0,
+      "value": "As #rrggbb. Leave empty for the default.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.branding.contrast": [
+    {
+      "type": 1,
+      "value": "ratio"
+    },
+    {
+      "type": 0,
+      "value": ":1 (at least "
+    },
+    {
+      "type": 1,
+      "value": "minimum"
+    },
+    {
+      "type": 0,
+      "value": ":1)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.branding.contrast.low": [
+    {
+      "type": 0,
+      "value": "Too little contrastSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.branding.contrast.ok": [
+    {
+      "type": 0,
+      "value": "ReadableSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.branding.dark": [
+    {
+      "type": 0,
+      "value": "Colour, dark themeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.branding.lead": [
+    {
+      "type": 0,
+      "value": "Your logo appears on the sign-in page and in the top bar. Colours must stay readable for everyone.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.branding.light": [
+    {
+      "type": 0,
+      "value": "Colour, light themeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.branding.logo": [
+    {
+      "type": 0,
+      "value": "LogoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.branding.logo.hint": [
+    {
+      "type": 0,
+      "value": "PNG, JPEG or WebP, up to 512 KB. Shown at most 160 × 40.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.branding.logo.none": [
+    {
+      "type": 0,
+      "value": "No logo yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.branding.logo.remove": [
+    {
+      "type": 0,
+      "value": "Remove logoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.branding.title": [
+    {
+      "type": 0,
+      "value": "BrandingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.card.audit": [
+    {
+      "type": 0,
+      "value": "Who changed what, and a verifiable export.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.card.branding": [
+    {
+      "type": 0,
+      "value": "Logo and colours.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.card.classifications": [
+    {
+      "type": 0,
+      "value": "Classification levels and clearances.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.card.email": [
+    {
+      "type": 0,
+      "value": "Your mail server and the delivery log.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.card.language": [
+    {
+      "type": 0,
+      "value": "Default language, time zone and your own words.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.card.roles": [
+    {
+      "type": 0,
+      "value": "Who may do what, for the whole organisation or one part.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.card.security": [
+    {
+      "type": 0,
+      "value": "Two-step sign-in, session length, passwords and lockout.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.card.users": [
+    {
+      "type": 0,
+      "value": "Invite people, reset sign-in, end sessions.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.home.lead": [
+    {
+      "type": 0,
+      "value": "Settings for your whole organisation. You see the parts you may change.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.home.title": [
+    {
+      "type": 0,
+      "value": "AdministrationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.invalid": [
+    {
+      "type": 0,
+      "value": "Check the highlighted fields.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.language.default": [
+    {
+      "type": 0,
+      "value": "Default languageSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.language.lead": [
+    {
+      "type": 0,
+      "value": "The defaults for new people, and the words your organisation uses for some things.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.language.timeZone": [
+    {
+      "type": 0,
+      "value": "Time zoneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.language.title": [
+    {
+      "type": 0,
+      "value": "Language and termsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.save": [
+    {
+      "type": 0,
+      "value": "SaveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.saved": [
+    {
+      "type": 0,
+      "value": "Saved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.security.absolute": [
+    {
+      "type": 0,
+      "value": "Longest session (hours)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.security.idle": [
+    {
+      "type": 0,
+      "value": "Sign out after inactivity (minutes)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.security.lead": [
+    {
+      "type": 0,
+      "value": "Changes apply to the next sign-in. Saving asks you to confirm it is you.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.security.lock": [
+    {
+      "type": 0,
+      "value": "Wrong passwords in a row that lock the accountSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.security.lockMinutes": [
+    {
+      "type": 0,
+      "value": "Lock lasts (minutes)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.security.mfa": [
+    {
+      "type": 0,
+      "value": "Who must use two-step sign-inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.security.mfa.admins": [
+    {
+      "type": 0,
+      "value": "Administrators only (administrators always need it)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.security.mfa.all": [
+    {
+      "type": 0,
+      "value": "EveryoneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.security.password": [
+    {
+      "type": 0,
+      "value": "Shortest password (characters)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.security.stepUp": [
+    {
+      "type": 0,
+      "value": "A confirmation lasts (minutes)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.security.throttle": [
+    {
+      "type": 0,
+      "value": "Wrong passwords before each attempt has to waitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.security.title": [
+    {
+      "type": 0,
+      "value": "SecuritySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.stale": [
+    {
+      "type": 0,
+      "value": "Someone changed these settings meanwhile. The page now shows their version.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.terms.caption": [
+    {
+      "type": 0,
+      "value": "Terms for the chosen languageSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.terms.cell": [
+    {
+      "type": 1,
+      "value": "term"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "column"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.terms.col.gender": [
+    {
+      "type": 0,
+      "value": "Grammatical genderSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.terms.col.one": [
+    {
+      "type": 0,
+      "value": "OneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.terms.col.other": [
+    {
+      "type": 0,
+      "value": "SeveralSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.terms.col.term": [
+    {
+      "type": 0,
+      "value": "TermSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.terms.feminine": [
+    {
+      "type": 0,
+      "value": "FeminineSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.terms.language": [
+    {
+      "type": 0,
+      "value": "LanguageSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.terms.lead": [
+    {
+      "type": 0,
+      "value": "Write the words as they appear in a sentence. Empty rows use the standard words.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.terms.masculine": [
+    {
+      "type": 0,
+      "value": "MasculineSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.terms.memo": [
+    {
+      "type": 0,
+      "value": "MemoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.terms.position": [
+    {
+      "type": 0,
+      "value": "PositionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.terms.save": [
+    {
+      "type": 0,
+      "value": "Save termsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.terms.title": [
+    {
+      "type": 0,
+      "value": "Your termsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "admin.terms.unit": [
+    {
+      "type": 0,
+      "value": "Unit (department, branch)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "app.name": [
     {
       "type": 0,
@@ -1299,6 +1815,24 @@
       "value": "User nameSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "nav.admin": [
+    {
+      "type": 0,
+      "value": "OverviewSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.audit": [
+    {
+      "type": 0,
+      "value": "AuditSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.branding": [
+    {
+      "type": 0,
+      "value": "BrandingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "nav.classifications": [
     {
       "type": 0,
@@ -1335,6 +1869,12 @@
       "value": "HomeSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "nav.language": [
+    {
+      "type": 0,
+      "value": "Language and termsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "nav.notificationSettings": [
     {
       "type": 0,
@@ -1369,6 +1909,12 @@
     {
       "type": 0,
       "value": "RolesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.security": [
+    {
+      "type": 0,
+      "value": "SecuritySSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "nav.status": [
@@ -1624,19 +2170,63 @@
   "org.addPosition": [
     {
       "type": 0,
-      "value": "Add positionSSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": "Add "
+    },
+    {
+      "type": 1,
+      "value": "position"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "org.addRoot": [
     {
+      "type": 5,
+      "value": "unitGender",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Add top "
+            },
+            {
+              "type": 1,
+              "value": "unit"
+            }
+          ]
+        }
+      }
+    },
+    {
       "type": 0,
-      "value": "Add top unitSSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "org.addUnit": [
     {
+      "type": 5,
+      "value": "unitGender",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Add sub-"
+            },
+            {
+              "type": 1,
+              "value": "unit"
+            }
+          ]
+        }
+      }
+    },
+    {
       "type": 0,
-      "value": "Add sub-unitSSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "org.assign": [
@@ -1848,7 +2438,15 @@
   "org.empty": [
     {
       "type": 0,
-      "value": "No units yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": "No "
+    },
+    {
+      "type": 1,
+      "value": "units"
+    },
+    {
+      "type": 0,
+      "value": " yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "org.empty.lead": [
@@ -1898,13 +2496,43 @@
   "org.filter": [
     {
       "type": 0,
-      "value": "Find a unitSSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": "Find a "
+    },
+    {
+      "type": 1,
+      "value": "unit"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "org.filter.none": [
     {
+      "type": 5,
+      "value": "unitGender",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "No "
+            },
+            {
+              "type": 1,
+              "value": "unit"
+            },
+            {
+              "type": 0,
+              "value": " matches."
+            }
+          ]
+        }
+      }
+    },
+    {
       "type": 0,
-      "value": "No unit matches.SSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "org.fromDate": [
@@ -1999,8 +2627,20 @@
   ],
   "org.lead": [
     {
+      "type": 1,
+      "value": "Units"
+    },
+    {
       "type": 0,
-      "value": "Units, positions and who holds them.SSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "positions"
+    },
+    {
+      "type": 0,
+      "value": " and who holds them.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "org.linePosition": [
@@ -2115,8 +2755,38 @@
   ],
   "org.pickUnit": [
     {
+      "type": 5,
+      "value": "unitGender",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Choose a "
+            },
+            {
+              "type": 1,
+              "value": "unit"
+            },
+            {
+              "type": 0,
+              "value": " to see its "
+            },
+            {
+              "type": 1,
+              "value": "positions"
+            },
+            {
+              "type": 0,
+              "value": "."
+            }
+          ]
+        }
+      }
+    },
+    {
       "type": 0,
-      "value": "Choose a unit to see its positions.SSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "org.positionCode": [
@@ -2133,20 +2803,66 @@
   ],
   "org.positions": [
     {
+      "type": 1,
+      "value": "Positions"
+    },
+    {
       "type": 0,
-      "value": "PositionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "org.positions.caption": [
     {
+      "type": 1,
+      "value": "Positions"
+    },
+    {
       "type": 0,
-      "value": "Positions of the unitSSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": " of the "
+    },
+    {
+      "type": 1,
+      "value": "unit"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "org.positions.none": [
     {
+      "type": 5,
+      "value": "unitGender",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "No "
+            },
+            {
+              "type": 1,
+              "value": "positions"
+            },
+            {
+              "type": 0,
+              "value": " in this "
+            },
+            {
+              "type": 1,
+              "value": "unit"
+            },
+            {
+              "type": 0,
+              "value": "."
+            }
+          ]
+        }
+      }
+    },
+    {
       "type": 0,
-      "value": "No positions in this unit.SSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "org.refused.cancelled": [
@@ -2285,8 +3001,12 @@
   ],
   "org.tree": [
     {
+      "type": 1,
+      "value": "Units"
+    },
+    {
       "type": 0,
-      "value": "UnitsSSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "org.unit": [
@@ -2695,6 +3415,520 @@
     {
       "type": 0,
       "value": "VacantSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.audit.caption": [
+    {
+      "type": 0,
+      "value": "Platform audit entries, newest firstSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.audit.filter": [
+    {
+      "type": 0,
+      "value": "Action starts withSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.audit.lead": [
+    {
+      "type": 0,
+      "value": "What operators and platform jobs did, newest first. Organisations also see actions that concern them.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.audit.title": [
+    {
+      "type": 0,
+      "value": "Platform auditSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.back": [
+    {
+      "type": 0,
+      "value": "All organisationsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.code": [
+    {
+      "type": 0,
+      "value": "CodeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.code.invalid": [
+    {
+      "type": 0,
+      "value": "That code is not valid. Try the next one.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.code.lead": [
+    {
+      "type": 0,
+      "value": "Enter the 6-digit code from your authenticator app.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.code.submit": [
+    {
+      "type": 0,
+      "value": "ContinueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.code.title": [
+    {
+      "type": 0,
+      "value": "Enter your codeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.col.action": [
+    {
+      "type": 0,
+      "value": "ActionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.col.actor": [
+    {
+      "type": 0,
+      "value": "ActorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.col.created": [
+    {
+      "type": 0,
+      "value": "CreatedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.col.name": [
+    {
+      "type": 0,
+      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.col.object": [
+    {
+      "type": 0,
+      "value": "ObjectSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.col.slug": [
+    {
+      "type": 0,
+      "value": "AddressSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.col.status": [
+    {
+      "type": 0,
+      "value": "StatusSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.col.time": [
+    {
+      "type": 0,
+      "value": "TimeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.console": [
+    {
+      "type": 0,
+      "value": "Platform administrationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.enrol.key": [
+    {
+      "type": 0,
+      "value": "KeySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.enrol.lead": [
+    {
+      "type": 0,
+      "value": "Scan the code with an authenticator app, or type the key, then enter the 6-digit code it shows.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.enrol.qr": [
+    {
+      "type": 0,
+      "value": "QR code for your authenticator appSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.enrol.title": [
+    {
+      "type": 0,
+      "value": "Set up two-step sign-inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.link.invalid": [
+    {
+      "type": 0,
+      "value": "This link is no longer valid. Ask for a new one to be generated on the server.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.link.lead": [
+    {
+      "type": 0,
+      "value": "Operator account for "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "email"
+    },
+    {
+      "type": 0,
+      "value": ").SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.link.password": [
+    {
+      "type": 0,
+      "value": "New password (at least 15 characters)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.link.submit": [
+    {
+      "type": 0,
+      "value": "Set passwordSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.link.title": [
+    {
+      "type": 0,
+      "value": "Choose your passwordSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.link.weak": [
+    {
+      "type": 0,
+      "value": "Choose a longer password that is not on a list of breached passwords and does not contain your name.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.loadMore": [
+    {
+      "type": 0,
+      "value": "Load moreSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.login.email": [
+    {
+      "type": 0,
+      "value": "EmailSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.login.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.login.invalid": [
+    {
+      "type": 0,
+      "value": "The email or password is incorrect, or the account is locked for a while.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.login.lead": [
+    {
+      "type": 0,
+      "value": "Platform operators only. Two-step sign-in is always required.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.login.password": [
+    {
+      "type": 0,
+      "value": "PasswordSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.login.submit": [
+    {
+      "type": 0,
+      "value": "Sign inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.login.title": [
+    {
+      "type": 0,
+      "value": "Operator sign-inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.login.tooMany": [
+    {
+      "type": 0,
+      "value": "Too many attempts. Wait a few minutes and try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.nav.audit": [
+    {
+      "type": 0,
+      "value": "Platform auditSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.nav.tenants": [
+    {
+      "type": 0,
+      "value": "OrganisationsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.new.adminEmail": [
+    {
+      "type": 0,
+      "value": "First administrator’s emailSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.new.adminName": [
+    {
+      "type": 0,
+      "value": "First administrator’s nameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.new.create": [
+    {
+      "type": 0,
+      "value": "Create and inviteSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.new.created": [
+    {
+      "type": 0,
+      "value": "Organisation created. The invitation is on its way.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.new.invalid": [
+    {
+      "type": 0,
+      "value": "Check the highlighted fields.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.new.lead": [
+    {
+      "type": 0,
+      "value": "Creates the organisation and emails its first administrator an invitation.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.new.locale": [
+    {
+      "type": 0,
+      "value": "Default languageSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.new.name": [
+    {
+      "type": 0,
+      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.new.slug": [
+    {
+      "type": 0,
+      "value": "AddressSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.new.slug.hint": [
+    {
+      "type": 0,
+      "value": "3 to 63 lower-case letters, digits and hyphens. Becomes the start of the organisation’s web address.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.new.timeZone": [
+    {
+      "type": 0,
+      "value": "Time zoneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.new.title": [
+    {
+      "type": 0,
+      "value": "New organisationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.notServed": [
+    {
+      "type": 0,
+      "value": "The platform console is not available at this address.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.product": [
+    {
+      "type": 0,
+      "value": "memoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.signOut": [
+    {
+      "type": 0,
+      "value": "Sign outSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.stale": [
+    {
+      "type": 0,
+      "value": "Someone changed this meanwhile. The page shows the current state.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.status.active": [
+    {
+      "type": 0,
+      "value": "ActiveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.status.suspended": [
+    {
+      "type": 0,
+      "value": "SuspendedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.tenant.admin": [
+    {
+      "type": 0,
+      "value": "AdministratorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.tenant.admin.no": [
+    {
+      "type": 0,
+      "value": "No administrator yetSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.tenant.admin.yes": [
+    {
+      "type": 0,
+      "value": "Has an active administratorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.tenant.createdAt": [
+    {
+      "type": 0,
+      "value": "CreatedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.tenant.hasAdmin": [
+    {
+      "type": 0,
+      "value": "The organisation already has an active administrator.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.tenant.invite": [
+    {
+      "type": 0,
+      "value": "Send invitationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.tenant.invite.lead": [
+    {
+      "type": 0,
+      "value": "Only possible while the organisation has no active administrator.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.tenant.invite.title": [
+    {
+      "type": 0,
+      "value": "Invite the first administratorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.tenant.invited": [
+    {
+      "type": 0,
+      "value": "Invitation sent.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.tenant.rename": [
+    {
+      "type": 0,
+      "value": "RenameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.tenant.renamed": [
+    {
+      "type": 0,
+      "value": "Name saved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.tenant.resume": [
+    {
+      "type": 0,
+      "value": "ResumeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.tenant.resumed": [
+    {
+      "type": 0,
+      "value": "Organisation resumed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.tenant.statusChangedAt": [
+    {
+      "type": 0,
+      "value": "Status changedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.tenant.suspend": [
+    {
+      "type": 0,
+      "value": "SuspendSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.tenant.suspend.effects": [
+    {
+      "type": 0,
+      "value": "Nobody can sign in, everyone signed in is signed out, and its background work waits until you resume it. Its data stays as it is.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.tenant.suspend.title": [
+    {
+      "type": 0,
+      "value": "Suspend this organisation?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.tenant.suspended": [
+    {
+      "type": 0,
+      "value": "Organisation suspended.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.tenants.caption": [
+    {
+      "type": 0,
+      "value": "Organisations, by addressSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.tenants.empty": [
+    {
+      "type": 0,
+      "value": "No organisations match.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.tenants.lead": [
+    {
+      "type": 0,
+      "value": "Each organisation has its own address and data. You see its registry entry only.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.tenants.new": [
+    {
+      "type": 0,
+      "value": "New organisationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.tenants.search": [
+    {
+      "type": 0,
+      "value": "Search by name or addressSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "platform.tenants.title": [
+    {
+      "type": 0,
+      "value": "OrganisationsSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "recoveryCodes.label": [
@@ -3189,6 +4423,72 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "tenant.suspended.lead": [
+    {
+      "type": 0,
+      "value": "Nobody can sign in at the moment. Contact your administrator or the platform team.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "tenant.suspended.title": [
+    {
+      "type": 0,
+      "value": "This organisation is suspendedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "term.memo.gender": [
+    {
+      "type": 0,
+      "value": "otherSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "term.memo.one": [
+    {
+      "type": 0,
+      "value": "memoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "term.memo.other": [
+    {
+      "type": 0,
+      "value": "memosSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "term.position.gender": [
+    {
+      "type": 0,
+      "value": "otherSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "term.position.one": [
+    {
+      "type": 0,
+      "value": "positionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "term.position.other": [
+    {
+      "type": 0,
+      "value": "positionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "term.unit.gender": [
+    {
+      "type": 0,
+      "value": "otherSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "term.unit.one": [
+    {
+      "type": 0,
+      "value": "unitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "term.unit.other": [
+    {
+      "type": 0,
+      "value": "unitsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "theme.dark": [
     {
       "type": 0,
@@ -3225,6 +4525,36 @@
     {
       "type": 0,
       "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "upload.dropHint": [
+    {
+      "type": 0,
+      "value": "Choose a file, or drop it on this area.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "upload.failed": [
+    {
+      "type": 0,
+      "value": "The upload did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "upload.rejected": [
+    {
+      "type": 0,
+      "value": "This file was refused.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "upload.tooLarge": [
+    {
+      "type": 0,
+      "value": "This file is too large.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "upload.uploading": [
+    {
+      "type": 0,
+      "value": "Uploading and checking…SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "users.action.deactivate": [

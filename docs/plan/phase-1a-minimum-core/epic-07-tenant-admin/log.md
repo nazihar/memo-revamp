@@ -10,3 +10,8 @@
   - Terminology overrides are term arguments with translator-owned defaults and Arabic gender through ICU `select`, not per-tenant message overlays.
   - Branding is its own module, because `files` already depends on `tenancy`.
   - Language packs stay split per locale (the English catalogue is 7 KB gzip); `i18n:verify` gets a size limit as the trigger for per-route splitting.
+- T1 built: operator accounts (`identity_operator`, platform-scope RLS), enrolment link from the `operator-invite` command, password + forced TOTP enrolment, lockout (5 in a row, 30 minutes), step-up, operator cookie `MEMO_OPERATOR` chosen by host, a separate security chain for `/api/v1/platform/**`, host routing in the tenant resolution filter, a demo operator. The authorisation matrix now runs files with `host: platform` on the operator host with their own subjects (50 new cells, 542 in total).
+- Findings:
+  - Both hosts share one Spring Session table, so a tenant session id sent under the operator cookie name does load a session there. What keeps them apart is the principal attribute: on the operator host only `memo.operator` is read, on tenant hosts only `memo.principal`. `OperatorPathIT` sends each side's session id under the other's cookie name to prove it.
+  - The per-account login rate limit (10 per 15 minutes) would answer 429 before a lock at 10 failures could ever be seen; operators now lock at 5.
+  - Operator tables follow the module prefix rule (`identity_operator`, not `platform_operator` as first drafted); the one-time link is a hash on the operator row instead of a separate token table.

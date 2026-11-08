@@ -21,6 +21,7 @@ import com.memo.jooq.tables.IdentityActionToken
 import com.memo.jooq.tables.IdentityHttpSession
 import com.memo.jooq.tables.IdentityHttpSessionAttributes
 import com.memo.jooq.tables.IdentityMfa
+import com.memo.jooq.tables.IdentityOperator
 import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
@@ -147,6 +148,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val IDENTITY_MFA: IdentityMfa get() = IdentityMfa.IDENTITY_MFA
 
     /**
+     * The table <code>memo.identity_operator</code>.
+     */
+    val IDENTITY_OPERATOR: IdentityOperator get() = IdentityOperator.IDENTITY_OPERATOR
+
+    /**
      * The table <code>memo.identity_rate_limit_bucket</code>.
      */
     val IDENTITY_RATE_LIMIT_BUCKET: IdentityRateLimitBucket get() = IdentityRateLimitBucket.IDENTITY_RATE_LIMIT_BUCKET
@@ -251,6 +257,7 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         IdentityHttpSession.IDENTITY_HTTP_SESSION,
         IdentityHttpSessionAttributes.IDENTITY_HTTP_SESSION_ATTRIBUTES,
         IdentityMfa.IDENTITY_MFA,
+        IdentityOperator.IDENTITY_OPERATOR,
         IdentityRateLimitBucket.IDENTITY_RATE_LIMIT_BUCKET,
         IdentityRecoveryCode.IDENTITY_RECOVERY_CODE,
         IdentityUser.IDENTITY_USER,

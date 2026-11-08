@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AcceptInvitationData, AcceptInvitationErrors, AcceptInvitationResponses, AssignPositionData, AssignPositionResponses, CancelAssignmentData, CancelAssignmentResponses, CancelReportingLineData, CancelReportingLineResponses, ChangeMyPasswordData, ChangeMyPasswordErrors, ChangeMyPasswordResponses, CloseLegalEntityData, CloseLegalEntityResponses, CloseOrgUnitData, CloseOrgUnitResponses, ClosePositionData, ClosePositionResponses, CompletePasswordResetData, CompletePasswordResetErrors, CompletePasswordResetResponses, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentErrors, ConfirmMfaEnrolmentResponses, CreateClassificationLevelData, CreateClassificationLevelResponses, CreateLegalEntityData, CreateLegalEntityResponses, CreateOrgUnitData, CreateOrgUnitResponses, CreatePositionData, CreatePositionResponses, CreateReportingLineData, CreateReportingLineResponses, CreateRoleData, CreateRoleResponses, DeactivateUserData, DeactivateUserResponses, DeleteClassificationLevelData, DeleteClassificationLevelResponses, DeleteRoleData, DeleteRoleResponses, GetCsrfTokenData, GetCsrfTokenResponses, GetFileContentData, GetFileContentResponses, GetFileData, GetFileResponses, GetFileVersionContentData, GetFileVersionContentResponses, GetHealthData, GetHealthErrors, GetHealthResponses, GetMailLogData, GetMailLogResponses, GetMailSettingsData, GetMailSettingsResponses, GetMeData, GetMeResponses, GetMyAccessData, GetMyAccessResponses, GetMyNotificationPreferencesData, GetMyNotificationPreferencesResponses, GetMyUnreadCountData, GetMyUnreadCountResponses, GetOrgHistoryData, GetOrgHistoryResponses, GetOrgUnitData, GetOrgUnitResponses, GetPositionData, GetPositionHolderData, GetPositionHolderResponses, GetPositionResponses, GetSessionData, GetSessionResponses, GetUserAccessData, GetUserAccessResponses, GetUserData, GetUserResponses, GrantRoleData, GrantRoleResponses, InviteUserData, InviteUserErrors, InviteUserResponses, ListClassificationLevelsData, ListClassificationLevelsResponses, ListLegalEntitiesData, ListLegalEntitiesResponses, ListMyNotificationsData, ListMyNotificationsResponses, ListMySessionsData, ListMySessionsResponses, ListOrgUnitsData, ListOrgUnitsResponses, ListPermissionsData, ListPermissionsResponses, ListRolesData, ListRolesResponses, ListUnitPositionsData, ListUnitPositionsResponses, ListUserAssignmentsData, ListUserAssignmentsResponses, ListUsersData, ListUsersResponses, LoginData, LoginErrors, LoginResponses, LogoutData, LogoutResponses, LookUpInvitationData, LookUpInvitationErrors, LookUpInvitationResponses, MarkAllNotificationsReadData, MarkAllNotificationsReadResponses, MarkNotificationReadData, MarkNotificationReadResponses, MoveOrgUnitData, MoveOrgUnitResponses, ReactivateUserData, ReactivateUserResponses, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesErrors, RegenerateMyRecoveryCodesResponses, RemoveMailSettingsData, RemoveMailSettingsResponses, RenameClassificationLevelData, RenameClassificationLevelResponses, ReorderClassificationLevelsData, ReorderClassificationLevelsResponses, RequestPasswordResetData, RequestPasswordResetResponses, ResetUserMfaData, ResetUserMfaResponses, RevokeGrantData, RevokeGrantResponses, RevokeMySessionData, RevokeMySessionErrors, RevokeMySessionResponses, RevokeUserSessionsData, RevokeUserSessionsResponses, SearchDirectoryData, SearchDirectoryResponses, SetClearanceData, SetClearanceResponses, SetMailSettingsData, SetMailSettingsResponses, SetMyNotificationPreferencesData, SetMyNotificationPreferencesResponses, StartMfaEnrolmentData, StartMfaEnrolmentErrors, StartMfaEnrolmentResponses, StepUpData, StepUpErrors, StepUpResponses, TestMailSettingsData, TestMailSettingsResponses, UnlockUserData, UnlockUserResponses, UpdateAssignmentData, UpdateAssignmentResponses, UpdateLegalEntityData, UpdateLegalEntityResponses, UpdateOrgUnitData, UpdateOrgUnitResponses, UpdatePositionData, UpdatePositionResponses, UpdateReportingLineData, UpdateReportingLineResponses, UpdateRoleData, UpdateRoleResponses, UploadFileData, UploadFileResponses, UploadFileVersionData, UploadFileVersionResponses, VerifyMfaData, VerifyMfaErrors, VerifyMfaResponses } from './types.gen';
+import type { AcceptInvitationData, AcceptInvitationErrors, AcceptInvitationResponses, AcceptPlatformEnrolmentData, AcceptPlatformEnrolmentErrors, AcceptPlatformEnrolmentResponses, AssignPositionData, AssignPositionResponses, CancelAssignmentData, CancelAssignmentResponses, CancelReportingLineData, CancelReportingLineResponses, ChangeMyPasswordData, ChangeMyPasswordErrors, ChangeMyPasswordResponses, CloseLegalEntityData, CloseLegalEntityResponses, CloseOrgUnitData, CloseOrgUnitResponses, ClosePositionData, ClosePositionResponses, CompletePasswordResetData, CompletePasswordResetErrors, CompletePasswordResetResponses, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentErrors, ConfirmMfaEnrolmentResponses, ConfirmPlatformMfaEnrolmentData, ConfirmPlatformMfaEnrolmentErrors, CreateClassificationLevelData, CreateClassificationLevelResponses, CreateLegalEntityData, CreateLegalEntityResponses, CreateOrgUnitData, CreateOrgUnitResponses, CreatePositionData, CreatePositionResponses, CreateReportingLineData, CreateReportingLineResponses, CreateRoleData, CreateRoleResponses, DeactivateUserData, DeactivateUserResponses, DeleteClassificationLevelData, DeleteClassificationLevelResponses, DeleteRoleData, DeleteRoleResponses, GetCsrfTokenData, GetCsrfTokenResponses, GetFileContentData, GetFileContentResponses, GetFileData, GetFileResponses, GetFileVersionContentData, GetFileVersionContentResponses, GetHealthData, GetHealthErrors, GetHealthResponses, GetMailLogData, GetMailLogResponses, GetMailSettingsData, GetMailSettingsResponses, GetMeData, GetMeResponses, GetMyAccessData, GetMyAccessResponses, GetMyNotificationPreferencesData, GetMyNotificationPreferencesResponses, GetMyUnreadCountData, GetMyUnreadCountResponses, GetOrgHistoryData, GetOrgHistoryResponses, GetOrgUnitData, GetOrgUnitResponses, GetPlatformCsrfTokenData, GetPlatformCsrfTokenResponses, GetPlatformSessionData, GetPlatformSessionResponses, GetPositionData, GetPositionHolderData, GetPositionHolderResponses, GetPositionResponses, GetSessionData, GetSessionResponses, GetUserAccessData, GetUserAccessResponses, GetUserData, GetUserResponses, GrantRoleData, GrantRoleResponses, InviteUserData, InviteUserErrors, InviteUserResponses, ListClassificationLevelsData, ListClassificationLevelsResponses, ListLegalEntitiesData, ListLegalEntitiesResponses, ListMyNotificationsData, ListMyNotificationsResponses, ListMySessionsData, ListMySessionsResponses, ListOrgUnitsData, ListOrgUnitsResponses, ListPermissionsData, ListPermissionsResponses, ListRolesData, ListRolesResponses, ListUnitPositionsData, ListUnitPositionsResponses, ListUserAssignmentsData, ListUserAssignmentsResponses, ListUsersData, ListUsersResponses, LoginData, LoginErrors, LoginResponses, LogoutData, LogoutResponses, LookUpInvitationData, LookUpInvitationErrors, LookUpInvitationResponses, LookUpPlatformEnrolmentData, LookUpPlatformEnrolmentErrors, MarkAllNotificationsReadData, MarkAllNotificationsReadResponses, MarkNotificationReadData, MarkNotificationReadResponses, MoveOrgUnitData, MoveOrgUnitResponses, PlatformLoginData, PlatformLoginErrors, PlatformLoginResponses, PlatformLogoutData, PlatformLogoutResponses, PlatformStepUpData, PlatformStepUpErrors, ReactivateUserData, ReactivateUserResponses, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesErrors, RegenerateMyRecoveryCodesResponses, RemoveMailSettingsData, RemoveMailSettingsResponses, RenameClassificationLevelData, RenameClassificationLevelResponses, ReorderClassificationLevelsData, ReorderClassificationLevelsResponses, RequestPasswordResetData, RequestPasswordResetResponses, ResetUserMfaData, ResetUserMfaResponses, RevokeGrantData, RevokeGrantResponses, RevokeMySessionData, RevokeMySessionErrors, RevokeMySessionResponses, RevokeUserSessionsData, RevokeUserSessionsResponses, SearchDirectoryData, SearchDirectoryResponses, SetClearanceData, SetClearanceResponses, SetMailSettingsData, SetMailSettingsResponses, SetMyNotificationPreferencesData, SetMyNotificationPreferencesResponses, StartMfaEnrolmentData, StartMfaEnrolmentErrors, StartMfaEnrolmentResponses, StartPlatformMfaEnrolmentData, StartPlatformMfaEnrolmentErrors, StepUpData, StepUpErrors, StepUpResponses, TestMailSettingsData, TestMailSettingsResponses, UnlockUserData, UnlockUserResponses, UpdateAssignmentData, UpdateAssignmentResponses, UpdateLegalEntityData, UpdateLegalEntityResponses, UpdateOrgUnitData, UpdateOrgUnitResponses, UpdatePositionData, UpdatePositionResponses, UpdateReportingLineData, UpdateReportingLineResponses, UpdateRoleData, UpdateRoleResponses, UploadFileData, UploadFileResponses, UploadFileVersionData, UploadFileVersionResponses, VerifyMfaData, VerifyMfaErrors, VerifyMfaResponses, VerifyPlatformMfaData, VerifyPlatformMfaErrors, VerifyPlatformMfaResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -714,3 +714,97 @@ export const listUnitPositions = <ThrowOnError extends boolean = false>(options:
  * A person's positions over time, newest first
  */
 export const listUserAssignments = <ThrowOnError extends boolean = false>(options: Options<ListUserAssignmentsData, ThrowOnError>): RequestResult<ListUserAssignmentsResponses, unknown, ThrowOnError> => (options.client ?? client).get<ListUserAssignmentsResponses, unknown, ThrowOnError>({ url: '/api/v1/org/users/{id}/assignments', ...options });
+
+/**
+ * Issue the CSRF cookie on the operator console
+ */
+export const getPlatformCsrfToken = <ThrowOnError extends boolean = false>(options?: Options<GetPlatformCsrfTokenData, ThrowOnError>): RequestResult<GetPlatformCsrfTokenResponses, unknown, ThrowOnError> => (options?.client ?? client).get<GetPlatformCsrfTokenResponses, unknown, ThrowOnError>({ url: '/api/v1/platform/auth/csrf', ...options });
+
+/**
+ * Set the operator's password from the enrolment link; TOTP enrolment follows
+ */
+export const acceptPlatformEnrolment = <ThrowOnError extends boolean = false>(options: Options<AcceptPlatformEnrolmentData, ThrowOnError>): RequestResult<AcceptPlatformEnrolmentResponses, AcceptPlatformEnrolmentErrors, ThrowOnError> => (options.client ?? client).post<AcceptPlatformEnrolmentResponses, AcceptPlatformEnrolmentErrors, ThrowOnError>({
+    url: '/api/v1/platform/auth/enrolment/accept',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Show an operator enrolment link
+ */
+export const lookUpPlatformEnrolment = <ThrowOnError extends boolean = false>(options: Options<LookUpPlatformEnrolmentData, ThrowOnError>): RequestResult<unknown, LookUpPlatformEnrolmentErrors, ThrowOnError> => (options.client ?? client).post<unknown, LookUpPlatformEnrolmentErrors, ThrowOnError>({
+    url: '/api/v1/platform/auth/enrolment/lookup',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Operator sign-in with email and password
+ */
+export const platformLogin = <ThrowOnError extends boolean = false>(options: Options<PlatformLoginData, ThrowOnError>): RequestResult<PlatformLoginResponses, PlatformLoginErrors, ThrowOnError> => (options.client ?? client).post<PlatformLoginResponses, PlatformLoginErrors, ThrowOnError>({
+    url: '/api/v1/platform/auth/login',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Sign out of the operator console
+ */
+export const platformLogout = <ThrowOnError extends boolean = false>(options?: Options<PlatformLogoutData, ThrowOnError>): RequestResult<PlatformLogoutResponses, unknown, ThrowOnError> => (options?.client ?? client).post<PlatformLogoutResponses, unknown, ThrowOnError>({ url: '/api/v1/platform/auth/logout', ...options });
+
+/**
+ * Second sign-in step (TOTP)
+ */
+export const verifyPlatformMfa = <ThrowOnError extends boolean = false>(options: Options<VerifyPlatformMfaData, ThrowOnError>): RequestResult<VerifyPlatformMfaResponses, VerifyPlatformMfaErrors, ThrowOnError> => (options.client ?? client).post<VerifyPlatformMfaResponses, VerifyPlatformMfaErrors, ThrowOnError>({
+    url: '/api/v1/platform/auth/mfa',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Start TOTP enrolment (first sign-in, or a complete session switching devices)
+ */
+export const startPlatformMfaEnrolment = <ThrowOnError extends boolean = false>(options?: Options<StartPlatformMfaEnrolmentData, ThrowOnError>): RequestResult<unknown, StartPlatformMfaEnrolmentErrors, ThrowOnError> => (options?.client ?? client).post<unknown, StartPlatformMfaEnrolmentErrors, ThrowOnError>({ url: '/api/v1/platform/auth/mfa/enrolment', ...options });
+
+/**
+ * Confirm TOTP enrolment; completes the sign-in
+ */
+export const confirmPlatformMfaEnrolment = <ThrowOnError extends boolean = false>(options: Options<ConfirmPlatformMfaEnrolmentData, ThrowOnError>): RequestResult<unknown, ConfirmPlatformMfaEnrolmentErrors, ThrowOnError> => (options.client ?? client).post<unknown, ConfirmPlatformMfaEnrolmentErrors, ThrowOnError>({
+    url: '/api/v1/platform/auth/mfa/enrolment/confirm',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Current operator session state
+ *
+ * Never 401: anonymous callers get ANONYMOUS. Answers only on the operator console's host.
+ */
+export const getPlatformSession = <ThrowOnError extends boolean = false>(options?: Options<GetPlatformSessionData, ThrowOnError>): RequestResult<GetPlatformSessionResponses, unknown, ThrowOnError> => (options?.client ?? client).get<GetPlatformSessionResponses, unknown, ThrowOnError>({ url: '/api/v1/platform/auth/session', ...options });
+
+/**
+ * Confirm a sensitive action with a fresh TOTP code
+ */
+export const platformStepUp = <ThrowOnError extends boolean = false>(options: Options<PlatformStepUpData, ThrowOnError>): RequestResult<unknown, PlatformStepUpErrors, ThrowOnError> => (options.client ?? client).post<unknown, PlatformStepUpErrors, ThrowOnError>({
+    url: '/api/v1/platform/auth/step-up',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});

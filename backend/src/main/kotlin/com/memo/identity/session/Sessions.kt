@@ -5,6 +5,9 @@ import com.github.kagkarlsson.scheduler.task.schedule.Schedules
 import com.memo.common.context.ActorContext
 import com.memo.common.jobs.Jobs
 import com.memo.common.tenant.TenantContext
+import com.memo.identity.operator.OperatorAuthentication
+import com.memo.identity.operator.OperatorSessionStore
+import com.memo.tenancy.PlatformHost
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import jakarta.servlet.http.HttpSession
@@ -106,11 +109,13 @@ class SessionStore(
 /**
  * Rebuilds the request's authentication from the session principal (ADR-0023). A principal from another tenant than the
  * request host's, or past its absolute timeout, invalidates the session; requests outside a tenant (health, management)
- * are anonymous. Sessions are written only by [SessionStore], never here.
+ * are anonymous. On the operator console's host only the operator principal counts (ADR-0031). Sessions are written
+ * only by [SessionStore] and [OperatorSessionStore], never here.
  */
 @Component
 class MemoSecurityContextRepository(
     private val store: SessionStore,
+    private val operators: OperatorSessionStore,
     private val clock: Clock,
 ) : SecurityContextRepository {
     override fun loadDeferredContext(request: HttpServletRequest): DeferredSecurityContext =
@@ -122,7 +127,18 @@ class MemoSecurityContextRepository(
             override fun isGenerated(): Boolean = loaded == null
         }
 
-    private fun load(request: HttpServletRequest): SecurityContext? {
+    private fun load(request: HttpServletRequest): SecurityContext? =
+        if (PlatformHost.isPlatformRequest(request)) loadOperator(request) else loadUser(request)
+
+    private fun loadOperator(request: HttpServletRequest): SecurityContext? {
+        val stored = request.getSession(false)?.let { session -> operators.read(session)?.let { session to it } } ?: return null
+        val (session, principal) = stored
+        val valid = clock.instant() < principal.expiresAt
+        if (!valid) session.invalidate()
+        return if (valid) SecurityContextImpl(OperatorAuthentication(principal)) else null
+    }
+
+    private fun loadUser(request: HttpServletRequest): SecurityContext? {
         val stored = request.getSession(false)?.let { session -> store.read(session)?.let { session to it } }
         val tenant = TenantContext.currentOrNull()
         if (stored == null || tenant == null) return null
@@ -143,7 +159,8 @@ class MemoSecurityContextRepository(
         response: HttpServletResponse,
     ) = Unit
 
-    override fun containsContext(request: HttpServletRequest): Boolean = request.getSession(false)?.let { store.read(it) } != null
+    override fun containsContext(request: HttpServletRequest): Boolean =
+        request.getSession(false)?.let { if (PlatformHost.isPlatformRequest(request)) operators.read(it) else store.read(it) } != null
 }
 
 /** 256-bit random session ids (ASVS V7.2.3 asks for at least 128 bits; Spring's default UUIDs carry 122). */
@@ -190,20 +207,28 @@ object StringOnlySessionAttributes : GenericConverter {
 class SessionConfig {
     /**
      * The session cookie (ADR-0023): `MEMO_SESSION`, HttpOnly, Secure, SameSite=Lax, host-only (no Domain, so it never
-     * reaches another tenant's host). Defined here because Boot applies `server.servlet.session.cookie.*` to Spring
-     * Session only with an embedded server.
+     * reaches another tenant's host). On the operator console's host it is `MEMO_OPERATOR` with SameSite=Strict
+     * (ADR-0031), so neither side ever reads the other's cookie. Defined here because Boot applies
+     * `server.servlet.session.cookie.*` to Spring Session only with an embedded server.
      */
     @Bean
     fun sessionCookieSerializer(
         @Value("\${memo.security.cookie-secure:true}") secure: Boolean,
+        platformHost: PlatformHost,
     ): CookieSerializer =
-        DefaultCookieSerializer().apply {
-            setCookieName(COOKIE_NAME)
-            setUseHttpOnlyCookie(true)
-            setUseSecureCookie(secure)
-            setSameSite("Lax")
-            setCookiePath("/")
-        }
+        HostCookieSerializer(platformHost, cookie(COOKIE_NAME, "Lax", secure), cookie(OPERATOR_COOKIE_NAME, "Strict", secure))
+
+    private fun cookie(
+        name: String,
+        sameSite: String,
+        secure: Boolean,
+    ) = DefaultCookieSerializer().apply {
+        setCookieName(name)
+        setUseHttpOnlyCookie(true)
+        setUseSecureCookie(secure)
+        setSameSite(sameSite)
+        setCookiePath("/")
+    }
 
     @Bean
     fun memoSessionRepositoryCustomizer(): SessionRepositoryCustomizer<JdbcIndexedSessionRepository> =
@@ -221,6 +246,20 @@ class SessionConfig {
 
     companion object {
         const val COOKIE_NAME = "MEMO_SESSION"
+        const val OPERATOR_COOKIE_NAME = "MEMO_OPERATOR"
         private val CLEANUP_EVERY: Duration = Duration.ofMinutes(5)
     }
+}
+
+/** Picks the tenant or the operator cookie by request host (Spring Session runs before tenant resolution). */
+class HostCookieSerializer(
+    private val platformHost: PlatformHost,
+    private val tenant: CookieSerializer,
+    private val operator: CookieSerializer,
+) : CookieSerializer {
+    override fun writeCookieValue(cookieValue: CookieSerializer.CookieValue) = pick(cookieValue.request).writeCookieValue(cookieValue)
+
+    override fun readCookieValues(request: HttpServletRequest): List<String> = pick(request).readCookieValues(request)
+
+    private fun pick(request: HttpServletRequest): CookieSerializer = if (platformHost.matches(request.serverName)) operator else tenant
 }

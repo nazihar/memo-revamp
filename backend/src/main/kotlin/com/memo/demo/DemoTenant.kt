@@ -7,6 +7,7 @@ import com.memo.common.tenant.TenantId
 import com.memo.common.tenant.TenantTransactions
 import com.memo.identity.MfaSeeding
 import com.memo.identity.UserAccounts
+import com.memo.identity.operator.OperatorMfa
 import com.memo.org.OrgSeeding
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
@@ -28,6 +29,10 @@ object DemoTenant {
     val ID = TenantId(UUID.fromString("01900000-0000-7000-8000-000000000001"))
     const val SLUG = "demo"
     const val NAME = "Demo Organization"
+
+    /** The demo platform operator (ADR-0031), on the operator console's host; same password and TOTP secret. */
+    const val OPERATOR_EMAIL = "operator@demo.example"
+    const val OPERATOR_NAME = "Demo Operator"
 
     val SETTINGS =
         linkedMapOf(
@@ -69,6 +74,7 @@ class DemoTenantSeeder(
     @param:Value("\${memo.demo.totp-secret:}") private val demoTotpSecret: String,
     private val access: AccessAdministration,
     private val org: OrgSeeding,
+    private val operators: OperatorMfa,
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
 
@@ -85,6 +91,11 @@ class DemoTenantSeeder(
                 DemoTenant.USERS.filter { it.role != null && !it.tenantAdmin }.forEach { user ->
                     access.grantBuiltIn(demoAccounts.getValue(user.email), user.role!!, user.scopeUnit?.let { DemoOrg.unitId(it) })
                 }
+            }
+        }
+        if (demoPassword.isNotBlank() && demoTotpSecret.isNotBlank()) {
+            ActorContext.asSystem("demo-seeder") {
+                operators.seed(DemoTenant.OPERATOR_EMAIL, DemoTenant.OPERATOR_NAME, demoPassword, demoTotpSecret)
             }
         }
         log.info("Demo tenant '{}' seeded", DemoTenant.SLUG)

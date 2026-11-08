@@ -22,6 +22,7 @@ import com.memo.jooq.tables.IdentityActionToken
 import com.memo.jooq.tables.IdentityHttpSession
 import com.memo.jooq.tables.IdentityHttpSessionAttributes
 import com.memo.jooq.tables.IdentityMfa
+import com.memo.jooq.tables.IdentityOperator
 import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
@@ -126,6 +127,11 @@ val IDENTITY_HTTP_SESSION_ATTRIBUTES: IdentityHttpSessionAttributes = IdentityHt
  * The table <code>memo.identity_mfa</code>.
  */
 val IDENTITY_MFA: IdentityMfa = IdentityMfa.IDENTITY_MFA
+
+/**
+ * The table <code>memo.identity_operator</code>.
+ */
+val IDENTITY_OPERATOR: IdentityOperator = IdentityOperator.IDENTITY_OPERATOR
 
 /**
  * The table <code>memo.identity_rate_limit_bucket</code>.

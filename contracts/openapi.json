@@ -1243,6 +1243,54 @@
         "required" : [ "key", "privileged", "scopable" ],
         "type" : "object"
       },
+      "PlatformEnrolment" : {
+        "properties" : {
+          "displayName" : {
+            "type" : "string"
+          },
+          "email" : {
+            "description" : "Masked, for example o***@memo.example",
+            "type" : "string"
+          }
+        },
+        "required" : [ "displayName", "email" ],
+        "type" : "object"
+      },
+      "PlatformOperator" : {
+        "properties" : {
+          "displayName" : {
+            "type" : "string"
+          },
+          "email" : {
+            "type" : "string"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "displayName", "email", "id" ],
+        "type" : "object"
+      },
+      "PlatformSession" : {
+        "description" : "Who is signed in on the operator console, and what they must do next.",
+        "properties" : {
+          "operator" : {
+            "description" : "Present unless ANONYMOUS",
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/PlatformOperator"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "state" : {
+            "enum" : [ "ANONYMOUS", "MFA_REQUIRED", "MFA_ENROLMENT_REQUIRED", "AUTHENTICATED" ],
+            "type" : "string"
+          }
+        },
+        "required" : [ "state" ],
+        "type" : "object"
+      },
       "PositionRequest" : {
         "properties" : {
           "code" : {
@@ -4254,6 +4302,283 @@
         },
         "summary" : "A person's positions over time, newest first",
         "tags" : [ "org" ]
+      }
+    },
+    "/api/v1/platform/auth/csrf" : {
+      "get" : {
+        "operationId" : "getPlatformCsrfToken",
+        "responses" : {
+          "204" : {
+            "description" : "Cookie set"
+          }
+        },
+        "summary" : "Issue the CSRF cookie on the operator console",
+        "tags" : [ "platform-auth" ]
+      }
+    },
+    "/api/v1/platform/auth/enrolment/accept" : {
+      "post" : {
+        "operationId" : "acceptPlatformEnrolment",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/InvitationAcceptance"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "Password set; signed in with the password"
+          },
+          "400" : {
+            "content" : {
+              "application/problem+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProblemDetail"
+                }
+              }
+            },
+            "description" : "Invalid or expired link, or a weak password"
+          }
+        },
+        "summary" : "Set the operator's password from the enrolment link; TOTP enrolment follows",
+        "tags" : [ "platform-auth" ]
+      }
+    },
+    "/api/v1/platform/auth/enrolment/lookup" : {
+      "post" : {
+        "operationId" : "lookUpPlatformEnrolment",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/InvitationLookup"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "404" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PlatformEnrolment"
+                }
+              }
+            },
+            "description" : "Unknown, used or expired link"
+          }
+        },
+        "summary" : "Show an operator enrolment link",
+        "tags" : [ "platform-auth" ]
+      }
+    },
+    "/api/v1/platform/auth/login" : {
+      "post" : {
+        "operationId" : "platformLogin",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/LoginRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "Password accepted; TOTP or enrolment follows"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "Invalid credentials (same answer for every reason)"
+          },
+          "429" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "Too many attempts; see Retry-After"
+          }
+        },
+        "summary" : "Operator sign-in with email and password",
+        "tags" : [ "platform-auth" ]
+      }
+    },
+    "/api/v1/platform/auth/logout" : {
+      "post" : {
+        "operationId" : "platformLogout",
+        "responses" : {
+          "204" : {
+            "description" : "Signed out"
+          }
+        },
+        "summary" : "Sign out of the operator console",
+        "tags" : [ "platform-auth" ]
+      }
+    },
+    "/api/v1/platform/auth/mfa" : {
+      "post" : {
+        "operationId" : "verifyPlatformMfa",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CodeRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "Signed in"
+          },
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "Invalid code"
+          }
+        },
+        "summary" : "Second sign-in step (TOTP)",
+        "tags" : [ "platform-auth" ]
+      }
+    },
+    "/api/v1/platform/auth/mfa/enrolment" : {
+      "post" : {
+        "operationId" : "startPlatformMfaEnrolment",
+        "responses" : {
+          "403" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "Already enrolled and the session is not complete"
+          }
+        },
+        "summary" : "Start TOTP enrolment (first sign-in, or a complete session switching devices)",
+        "tags" : [ "platform-auth" ]
+      }
+    },
+    "/api/v1/platform/auth/mfa/enrolment/confirm" : {
+      "post" : {
+        "operationId" : "confirmPlatformMfaEnrolment",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CodeRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "Invalid code"
+          }
+        },
+        "summary" : "Confirm TOTP enrolment; completes the sign-in",
+        "tags" : [ "platform-auth" ]
+      }
+    },
+    "/api/v1/platform/auth/session" : {
+      "get" : {
+        "description" : "Never 401: anonymous callers get ANONYMOUS. Answers only on the operator console's host.",
+        "operationId" : "getPlatformSession",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PlatformSession"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Current operator session state",
+        "tags" : [ "platform-auth" ]
+      }
+    },
+    "/api/v1/platform/auth/step-up" : {
+      "post" : {
+        "operationId" : "platformStepUp",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CodeRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "401" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object"
+                }
+              }
+            },
+            "description" : "Invalid code"
+          }
+        },
+        "summary" : "Confirm a sensitive action with a fresh TOTP code",
+        "tags" : [ "platform-auth" ]
       }
     }
   },

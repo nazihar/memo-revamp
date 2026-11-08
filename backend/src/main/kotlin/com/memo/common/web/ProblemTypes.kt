@@ -59,6 +59,19 @@ interface AuthenticatedUser {
     }
 }
 
+/** A platform operator as the platform security chain sees it (ADR-0031); never a tenant user. */
+interface AuthenticatedOperator {
+    val operatorId: java.util.UUID
+
+    /** Password and TOTP are both proven. */
+    val sessionComplete: Boolean
+
+    companion object {
+        /** Granted when the operator has proven password and TOTP; required by every platform endpoint but sign-in. */
+        const val OPERATOR_SESSION_COMPLETE = "OPERATOR_SESSION_COMPLETE"
+    }
+}
+
 /**
  * The action needs a fresh second factor (ADR-0024): 401 `step-up-required`, with the window in seconds so the client
  * can say how long the confirmation lasts. The client prompts, calls `/auth/step-up`, and retries once.

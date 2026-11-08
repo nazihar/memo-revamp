@@ -1,0 +1,26 @@
+# E07 operator console (ADR-0031, design E07 §4). Rules: platformRules in rules.yaml, on the operator host.
+epic: E07
+host: platform
+endpoints:
+  - { endpoint: GET /api/v1/platform/auth/csrf, rule: platformPublic }
+  - { endpoint: GET /api/v1/platform/auth/session, rule: platformPublic }
+  - { endpoint: POST /api/v1/platform/auth/login, rule: platformPublic }
+  - { endpoint: POST /api/v1/platform/auth/enrolment/lookup, rule: platformPublic }
+  - { endpoint: POST /api/v1/platform/auth/enrolment/accept, rule: platformPublic }
+  # A random code is a wrong code (401 invalid-credentials), which still passed authorisation.
+  - endpoint: POST /api/v1/platform/auth/mfa
+    rule: operatorAnySession
+    body: { code: "000000" }
+  # An enrolled operator may re-enrol only with a complete session.
+  - endpoint: POST /api/v1/platform/auth/mfa/enrolment
+    rule: operatorAnySession
+    expect: { operatorPartial: 403 }
+  - endpoint: POST /api/v1/platform/auth/mfa/enrolment/confirm
+    rule: operatorAnySession
+    body: { code: "000000" }
+    expect: { operatorPartial: 403 }
+  - endpoint: POST /api/v1/platform/auth/step-up
+    rule: operatorAnySession
+    body: { code: "000000" }
+    expect: { operatorPartial: 403 }
+  - { endpoint: POST /api/v1/platform/auth/logout, rule: operatorAnySession }

@@ -532,6 +532,31 @@ export type PermissionInfo = {
     scopable: boolean;
 };
 
+export type PlatformEnrolment = {
+    displayName: string;
+    /**
+     * Masked, for example o***@memo.example
+     */
+    email: string;
+};
+
+export type PlatformOperator = {
+    displayName: string;
+    email: string;
+    id: string;
+};
+
+/**
+ * Who is signed in on the operator console, and what they must do next.
+ */
+export type PlatformSession = {
+    /**
+     * Present unless ANONYMOUS
+     */
+    operator?: PlatformOperator | null;
+    state: 'ANONYMOUS' | 'MFA_REQUIRED' | 'MFA_ENROLMENT_REQUIRED' | 'AUTHENTICATED';
+};
+
 export type PositionRequest = {
     code?: string | null;
     head: boolean;
@@ -2279,3 +2304,212 @@ export type ListUserAssignmentsResponses = {
 };
 
 export type ListUserAssignmentsResponse = ListUserAssignmentsResponses[keyof ListUserAssignmentsResponses];
+
+export type GetPlatformCsrfTokenData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/platform/auth/csrf';
+};
+
+export type GetPlatformCsrfTokenResponses = {
+    /**
+     * Cookie set
+     */
+    204: void;
+};
+
+export type GetPlatformCsrfTokenResponse = GetPlatformCsrfTokenResponses[keyof GetPlatformCsrfTokenResponses];
+
+export type AcceptPlatformEnrolmentData = {
+    body: InvitationAcceptance;
+    path?: never;
+    query?: never;
+    url: '/api/v1/platform/auth/enrolment/accept';
+};
+
+export type AcceptPlatformEnrolmentErrors = {
+    /**
+     * Invalid or expired link, or a weak password
+     */
+    400: ProblemDetail;
+};
+
+export type AcceptPlatformEnrolmentError = AcceptPlatformEnrolmentErrors[keyof AcceptPlatformEnrolmentErrors];
+
+export type AcceptPlatformEnrolmentResponses = {
+    /**
+     * Password set; signed in with the password
+     */
+    200: {
+        [key: string]: unknown;
+    };
+};
+
+export type AcceptPlatformEnrolmentResponse = AcceptPlatformEnrolmentResponses[keyof AcceptPlatformEnrolmentResponses];
+
+export type LookUpPlatformEnrolmentData = {
+    body: InvitationLookup;
+    path?: never;
+    query?: never;
+    url: '/api/v1/platform/auth/enrolment/lookup';
+};
+
+export type LookUpPlatformEnrolmentErrors = {
+    /**
+     * Unknown, used or expired link
+     */
+    404: PlatformEnrolment;
+};
+
+export type LookUpPlatformEnrolmentError = LookUpPlatformEnrolmentErrors[keyof LookUpPlatformEnrolmentErrors];
+
+export type PlatformLoginData = {
+    body: LoginRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/platform/auth/login';
+};
+
+export type PlatformLoginErrors = {
+    /**
+     * Invalid credentials (same answer for every reason)
+     */
+    401: {
+        [key: string]: unknown;
+    };
+    /**
+     * Too many attempts; see Retry-After
+     */
+    429: {
+        [key: string]: unknown;
+    };
+};
+
+export type PlatformLoginError = PlatformLoginErrors[keyof PlatformLoginErrors];
+
+export type PlatformLoginResponses = {
+    /**
+     * Password accepted; TOTP or enrolment follows
+     */
+    200: {
+        [key: string]: unknown;
+    };
+};
+
+export type PlatformLoginResponse = PlatformLoginResponses[keyof PlatformLoginResponses];
+
+export type PlatformLogoutData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/platform/auth/logout';
+};
+
+export type PlatformLogoutResponses = {
+    /**
+     * Signed out
+     */
+    204: void;
+};
+
+export type PlatformLogoutResponse = PlatformLogoutResponses[keyof PlatformLogoutResponses];
+
+export type VerifyPlatformMfaData = {
+    body: CodeRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/platform/auth/mfa';
+};
+
+export type VerifyPlatformMfaErrors = {
+    /**
+     * Invalid code
+     */
+    401: {
+        [key: string]: unknown;
+    };
+};
+
+export type VerifyPlatformMfaError = VerifyPlatformMfaErrors[keyof VerifyPlatformMfaErrors];
+
+export type VerifyPlatformMfaResponses = {
+    /**
+     * Signed in
+     */
+    200: {
+        [key: string]: unknown;
+    };
+};
+
+export type VerifyPlatformMfaResponse = VerifyPlatformMfaResponses[keyof VerifyPlatformMfaResponses];
+
+export type StartPlatformMfaEnrolmentData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/platform/auth/mfa/enrolment';
+};
+
+export type StartPlatformMfaEnrolmentErrors = {
+    /**
+     * Already enrolled and the session is not complete
+     */
+    403: {
+        [key: string]: unknown;
+    };
+};
+
+export type StartPlatformMfaEnrolmentError = StartPlatformMfaEnrolmentErrors[keyof StartPlatformMfaEnrolmentErrors];
+
+export type ConfirmPlatformMfaEnrolmentData = {
+    body: CodeRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/platform/auth/mfa/enrolment/confirm';
+};
+
+export type ConfirmPlatformMfaEnrolmentErrors = {
+    /**
+     * Invalid code
+     */
+    401: {
+        [key: string]: unknown;
+    };
+};
+
+export type ConfirmPlatformMfaEnrolmentError = ConfirmPlatformMfaEnrolmentErrors[keyof ConfirmPlatformMfaEnrolmentErrors];
+
+export type GetPlatformSessionData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/platform/auth/session';
+};
+
+export type GetPlatformSessionResponses = {
+    /**
+     * OK
+     */
+    200: PlatformSession;
+};
+
+export type GetPlatformSessionResponse = GetPlatformSessionResponses[keyof GetPlatformSessionResponses];
+
+export type PlatformStepUpData = {
+    body: CodeRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/platform/auth/step-up';
+};
+
+export type PlatformStepUpErrors = {
+    /**
+     * Invalid code
+     */
+    401: {
+        [key: string]: unknown;
+    };
+};
+
+export type PlatformStepUpError = PlatformStepUpErrors[keyof PlatformStepUpErrors];

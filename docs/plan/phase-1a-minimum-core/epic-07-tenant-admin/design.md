@@ -38,25 +38,21 @@ erDiagram
     timestamptz created_at
     timestamptz status_changed_at "new"
   }
-  platform_operator {
+  identity_operator {
     uuid id PK
     text email UK
     text display_name
-    text password_hash
-    bytea totp_secret_enc "DataKeys, AAD platform.operator:id"
     text status "INVITED | ACTIVE | DISABLED"
-    int failed_attempts
+    text password_hash
+    bytea totp_secret_enc "DataKeys, AAD identity.operator:id"
+    bytea totp_pending_enc
+    bigint totp_last_step
+    bytea enrolment_token_hash "SHA-256 of the one-time link"
+    timestamptz enrolment_expires_at
+    int failed_logins
     timestamptz locked_until
     timestamptz last_login_at
     bigint version
-    timestamptz created_at
-  }
-  platform_operator_token {
-    uuid id PK
-    uuid operator_id FK
-    bytea token_hash "SHA-256"
-    timestamptz expires_at
-    timestamptz used_at
   }
   tenancy_term {
     uuid id PK
@@ -69,10 +65,9 @@ erDiagram
     bigint version
   }
   tenancy_tenant ||--o{ tenancy_term : has
-  platform_operator ||--o{ platform_operator_token : enrols
 ```
 
-- `platform_operator`, `platform_operator_token`: platform tables (no `tenant_id`), RLS `ENABLE` + `FORCE` with a policy that admits only `app.scope = platform`; the RLS meta-test learns the "platform-only" policy shape.
+- `identity_operator` (owned by `identity`, so the module prefix rule holds): a platform table (no `tenant_id`), RLS `ENABLE` + `FORCE` with the policy `platform_operator` that admits only `app.scope = platform`. One pending enrolment link per operator, stored as its hash on the row. Lockout: 5 wrong passwords in a row lock for 30 minutes (the per-account rate limit allows 10 per 15 minutes, so the lock is reached first).
 - `tenancy_tenant`: new policies `platform_insert` (`INSERT … WITH CHECK app.scope = platform`) and `platform_update` (`UPDATE` in platform scope). Slug check gains the reserved list.
 - Branding lives in settings (`branding.color.light`, `branding.color.dark`, `branding.logo.file`): small, non-secret, already audited and cached.
 - Settings keys used by the console (all existing unless marked new):

@@ -39,11 +39,15 @@ class DemoTenantSeedIT : IntegrationTest() {
 
     @Autowired lateinit var orgSeeding: com.memo.org.OrgSeeding
 
+    @Autowired lateinit var operators: com.memo.identity.operator.OperatorMfa
+
+    @Autowired lateinit var operatorAccounts: com.memo.identity.operator.OperatorAccounts
+
     private fun seederWith(
         password: String,
         totpSecret: String = "",
         env: Environment = environment,
-    ) = DemoTenantSeeder(registry, settings, transactions, env, accounts, password, mfaSeeding, totpSecret, access, orgSeeding)
+    ) = DemoTenantSeeder(registry, settings, transactions, env, accounts, password, mfaSeeding, totpSecret, access, orgSeeding, operators)
 
     @Test
     fun `seeding is idempotent and produces the demo tenant as defined in code`() {
@@ -68,6 +72,10 @@ class DemoTenantSeedIT : IntegrationTest() {
         val totpSecret = Totp.base32(Totp.newSecret())
         seederWith(password, totpSecret).seed()
         seederWith(password, totpSecret).seed()
+
+        val operator = requireNotNull(operatorAccounts.findByEmail(DemoTenant.OPERATOR_EMAIL))
+        assertThat(operator.enrolled).isTrue()
+        assertThat(operatorAccounts.passwordMatches(operator.id, password)).isTrue()
 
         transactions.inTenant(DemoTenant.ID) {
             DemoTenant.USERS.forEach {

@@ -158,8 +158,14 @@ private fun json(value: String) = "\"" + value.replace("\\", "\\\\").replace("\"
 /** The session id inside a `MEMO_SESSION` cookie (Spring Session Base64-encodes it). */
 fun sessionIdOf(cookie: Cookie): String = String(Base64.getDecoder().decode(cookie.value))
 
-/** Moves every factor of the session back to the year 2000, as if the step-up window had long passed. */
-fun ageSessionFactors(cookie: Cookie) {
+/**
+ * Moves every factor of the session back to the year 2000, as if the step-up window had long passed. [attribute] is
+ * `memo.principal` for users and `memo.operator` for operators.
+ */
+fun ageSessionFactors(
+    cookie: Cookie,
+    attribute: String = "memo.principal",
+) {
     AppRoleJdbc.connect { c ->
         c
             .prepareStatement(
@@ -170,12 +176,14 @@ fun ageSessionFactors(cookie: Cookie) {
                         select jsonb_agg(jsonb_set(f, '{issuedAt}', '"2000-01-01T00:00:00Z"'))
                         from jsonb_array_elements(p.j -> 'factors') f))::text, 'UTF8')
                 from (select session_primary_id, convert_from(attribute_bytes, 'UTF8')::jsonb j
-                      from identity_http_session_attributes where attribute_name = 'memo.principal') p
-                where a.attribute_name = 'memo.principal' and a.session_primary_id = p.session_primary_id
+                      from identity_http_session_attributes where attribute_name = ?) p
+                where a.attribute_name = ? and a.session_primary_id = p.session_primary_id
                   and a.session_primary_id = (select primary_id from identity_http_session where session_id = ?)
                 """,
             ).use {
-                it.setString(1, sessionIdOf(cookie))
+                it.setString(1, attribute)
+                it.setString(2, attribute)
+                it.setString(3, sessionIdOf(cookie))
                 check(it.executeUpdate() == 1) { "no such session" }
             }
     }

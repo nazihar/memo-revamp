@@ -48,12 +48,7 @@ class TenantResolver(
 
     /** The slug a host names under the current mode, or null when the host names no tenant. */
     fun slugFor(host: String): String? {
-        val name =
-            host
-                .substringBefore(':')
-                .trim()
-                .trimEnd('.')
-                .lowercase(Locale.ROOT)
+        val name = hostName(host)
         val base = properties.baseDomain.lowercase(Locale.ROOT)
         return when {
             properties.mode == TenancyProperties.Mode.SINGLE -> properties.singleTenant.ifBlank { null }

@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { acceptInvitation, assignPosition, cancelAssignment, cancelReportingLine, changeMyPassword, closeLegalEntity, closeOrgUnit, closePosition, completePasswordReset, confirmMfaEnrolment, createClassificationLevel, createLegalEntity, createOrgUnit, createPosition, createReportingLine, createRole, deactivateUser, deleteClassificationLevel, deleteRole, getCsrfToken, getFile, getFileContent, getFileVersionContent, getHealth, getMailLog, getMailSettings, getMe, getMyAccess, getMyNotificationPreferences, getMyUnreadCount, getOrgHistory, getOrgUnit, getPosition, getPositionHolder, getSession, getUser, getUserAccess, grantRole, inviteUser, listClassificationLevels, listLegalEntities, listMyNotifications, listMySessions, listOrgUnits, listPermissions, listRoles, listUnitPositions, listUserAssignments, listUsers, login, logout, lookUpInvitation, markAllNotificationsRead, markNotificationRead, moveOrgUnit, type Options, reactivateUser, regenerateMyRecoveryCodes, removeMailSettings, renameClassificationLevel, reorderClassificationLevels, requestPasswordReset, resetUserMfa, revokeGrant, revokeMySession, revokeUserSessions, searchDirectory, setClearance, setMailSettings, setMyNotificationPreferences, startMfaEnrolment, stepUp, testMailSettings, unlockUser, updateAssignment, updateLegalEntity, updateOrgUnit, updatePosition, updateReportingLine, updateRole, uploadFile, uploadFileVersion, verifyMfa } from '../sdk.gen';
-import type { AcceptInvitationData, AcceptInvitationError, AcceptInvitationResponse, AssignPositionData, AssignPositionResponse, CancelAssignmentData, CancelAssignmentResponse, CancelReportingLineData, CancelReportingLineResponse, ChangeMyPasswordData, ChangeMyPasswordError, ChangeMyPasswordResponse, CloseLegalEntityData, CloseLegalEntityResponse, CloseOrgUnitData, CloseOrgUnitResponse, ClosePositionData, ClosePositionResponse, CompletePasswordResetData, CompletePasswordResetError, CompletePasswordResetResponse, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentError, ConfirmMfaEnrolmentResponse, CreateClassificationLevelData, CreateClassificationLevelResponse, CreateLegalEntityData, CreateLegalEntityResponse, CreateOrgUnitData, CreateOrgUnitResponse, CreatePositionData, CreatePositionResponse, CreateReportingLineData, CreateReportingLineResponse, CreateRoleData, CreateRoleResponse, DeactivateUserData, DeactivateUserResponse, DeleteClassificationLevelData, DeleteRoleData, GetCsrfTokenData, GetCsrfTokenResponse, GetFileContentData, GetFileData, GetFileResponse, GetFileVersionContentData, GetHealthData, GetHealthError, GetHealthResponse, GetMailLogData, GetMailLogResponse, GetMailSettingsData, GetMailSettingsResponse, GetMeData, GetMeResponse, GetMyAccessData, GetMyAccessResponse, GetMyNotificationPreferencesData, GetMyNotificationPreferencesResponse, GetMyUnreadCountData, GetMyUnreadCountResponse, GetOrgHistoryData, GetOrgHistoryResponse, GetOrgUnitData, GetOrgUnitResponse, GetPositionData, GetPositionHolderData, GetPositionHolderResponse, GetPositionResponse, GetSessionData, GetSessionResponse, GetUserAccessData, GetUserAccessResponse, GetUserData, GetUserResponse, GrantRoleData, GrantRoleResponse, InviteUserData, InviteUserError, InviteUserResponse, ListClassificationLevelsData, ListClassificationLevelsResponse, ListLegalEntitiesData, ListLegalEntitiesResponse, ListMyNotificationsData, ListMyNotificationsResponse, ListMySessionsData, ListMySessionsResponse, ListOrgUnitsData, ListOrgUnitsResponse, ListPermissionsData, ListPermissionsResponse, ListRolesData, ListRolesResponse, ListUnitPositionsData, ListUnitPositionsResponse, ListUserAssignmentsData, ListUserAssignmentsResponse, ListUsersData, ListUsersResponse, LoginData, LoginError, LoginResponse, LogoutData, LogoutResponse, LookUpInvitationData, LookUpInvitationError, LookUpInvitationResponse, MarkAllNotificationsReadData, MarkNotificationReadData, MoveOrgUnitData, MoveOrgUnitResponse, ReactivateUserData, ReactivateUserResponse, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesResponse, RemoveMailSettingsData, RenameClassificationLevelData, RenameClassificationLevelResponse, ReorderClassificationLevelsData, ReorderClassificationLevelsResponse, RequestPasswordResetData, ResetUserMfaData, ResetUserMfaResponse, RevokeGrantData, RevokeMySessionData, RevokeMySessionResponse, RevokeUserSessionsData, RevokeUserSessionsResponse, SearchDirectoryData, SearchDirectoryResponse, SetClearanceData, SetClearanceResponse, SetMailSettingsData, SetMailSettingsResponse, SetMyNotificationPreferencesData, SetMyNotificationPreferencesResponse, StartMfaEnrolmentData, StartMfaEnrolmentResponse, StepUpData, StepUpError, StepUpResponse, TestMailSettingsData, TestMailSettingsResponse, UnlockUserData, UnlockUserResponse, UpdateAssignmentData, UpdateAssignmentResponse, UpdateLegalEntityData, UpdateLegalEntityResponse, UpdateOrgUnitData, UpdateOrgUnitResponse, UpdatePositionData, UpdatePositionResponse, UpdateReportingLineData, UpdateReportingLineResponse, UpdateRoleData, UpdateRoleResponse, UploadFileData, UploadFileResponse, UploadFileVersionData, UploadFileVersionResponse, VerifyMfaData, VerifyMfaError, VerifyMfaResponse } from '../types.gen';
+import { acceptInvitation, acceptPlatformEnrolment, assignPosition, cancelAssignment, cancelReportingLine, changeMyPassword, closeLegalEntity, closeOrgUnit, closePosition, completePasswordReset, confirmMfaEnrolment, confirmPlatformMfaEnrolment, createClassificationLevel, createLegalEntity, createOrgUnit, createPosition, createReportingLine, createRole, deactivateUser, deleteClassificationLevel, deleteRole, getCsrfToken, getFile, getFileContent, getFileVersionContent, getHealth, getMailLog, getMailSettings, getMe, getMyAccess, getMyNotificationPreferences, getMyUnreadCount, getOrgHistory, getOrgUnit, getPlatformCsrfToken, getPlatformSession, getPosition, getPositionHolder, getSession, getUser, getUserAccess, grantRole, inviteUser, listClassificationLevels, listLegalEntities, listMyNotifications, listMySessions, listOrgUnits, listPermissions, listRoles, listUnitPositions, listUserAssignments, listUsers, login, logout, lookUpInvitation, lookUpPlatformEnrolment, markAllNotificationsRead, markNotificationRead, moveOrgUnit, type Options, platformLogin, platformLogout, platformStepUp, reactivateUser, regenerateMyRecoveryCodes, removeMailSettings, renameClassificationLevel, reorderClassificationLevels, requestPasswordReset, resetUserMfa, revokeGrant, revokeMySession, revokeUserSessions, searchDirectory, setClearance, setMailSettings, setMyNotificationPreferences, startMfaEnrolment, startPlatformMfaEnrolment, stepUp, testMailSettings, unlockUser, updateAssignment, updateLegalEntity, updateOrgUnit, updatePosition, updateReportingLine, updateRole, uploadFile, uploadFileVersion, verifyMfa, verifyPlatformMfa } from '../sdk.gen';
+import type { AcceptInvitationData, AcceptInvitationError, AcceptInvitationResponse, AcceptPlatformEnrolmentData, AcceptPlatformEnrolmentError, AcceptPlatformEnrolmentResponse, AssignPositionData, AssignPositionResponse, CancelAssignmentData, CancelAssignmentResponse, CancelReportingLineData, CancelReportingLineResponse, ChangeMyPasswordData, ChangeMyPasswordError, ChangeMyPasswordResponse, CloseLegalEntityData, CloseLegalEntityResponse, CloseOrgUnitData, CloseOrgUnitResponse, ClosePositionData, ClosePositionResponse, CompletePasswordResetData, CompletePasswordResetError, CompletePasswordResetResponse, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentError, ConfirmMfaEnrolmentResponse, ConfirmPlatformMfaEnrolmentData, ConfirmPlatformMfaEnrolmentError, CreateClassificationLevelData, CreateClassificationLevelResponse, CreateLegalEntityData, CreateLegalEntityResponse, CreateOrgUnitData, CreateOrgUnitResponse, CreatePositionData, CreatePositionResponse, CreateReportingLineData, CreateReportingLineResponse, CreateRoleData, CreateRoleResponse, DeactivateUserData, DeactivateUserResponse, DeleteClassificationLevelData, DeleteRoleData, GetCsrfTokenData, GetCsrfTokenResponse, GetFileContentData, GetFileData, GetFileResponse, GetFileVersionContentData, GetHealthData, GetHealthError, GetHealthResponse, GetMailLogData, GetMailLogResponse, GetMailSettingsData, GetMailSettingsResponse, GetMeData, GetMeResponse, GetMyAccessData, GetMyAccessResponse, GetMyNotificationPreferencesData, GetMyNotificationPreferencesResponse, GetMyUnreadCountData, GetMyUnreadCountResponse, GetOrgHistoryData, GetOrgHistoryResponse, GetOrgUnitData, GetOrgUnitResponse, GetPlatformCsrfTokenData, GetPlatformCsrfTokenResponse, GetPlatformSessionData, GetPlatformSessionResponse, GetPositionData, GetPositionHolderData, GetPositionHolderResponse, GetPositionResponse, GetSessionData, GetSessionResponse, GetUserAccessData, GetUserAccessResponse, GetUserData, GetUserResponse, GrantRoleData, GrantRoleResponse, InviteUserData, InviteUserError, InviteUserResponse, ListClassificationLevelsData, ListClassificationLevelsResponse, ListLegalEntitiesData, ListLegalEntitiesResponse, ListMyNotificationsData, ListMyNotificationsResponse, ListMySessionsData, ListMySessionsResponse, ListOrgUnitsData, ListOrgUnitsResponse, ListPermissionsData, ListPermissionsResponse, ListRolesData, ListRolesResponse, ListUnitPositionsData, ListUnitPositionsResponse, ListUserAssignmentsData, ListUserAssignmentsResponse, ListUsersData, ListUsersResponse, LoginData, LoginError, LoginResponse, LogoutData, LogoutResponse, LookUpInvitationData, LookUpInvitationError, LookUpInvitationResponse, LookUpPlatformEnrolmentData, LookUpPlatformEnrolmentError, MarkAllNotificationsReadData, MarkNotificationReadData, MoveOrgUnitData, MoveOrgUnitResponse, PlatformLoginData, PlatformLoginError, PlatformLoginResponse, PlatformLogoutData, PlatformLogoutResponse, PlatformStepUpData, PlatformStepUpError, ReactivateUserData, ReactivateUserResponse, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesResponse, RemoveMailSettingsData, RenameClassificationLevelData, RenameClassificationLevelResponse, ReorderClassificationLevelsData, ReorderClassificationLevelsResponse, RequestPasswordResetData, ResetUserMfaData, ResetUserMfaResponse, RevokeGrantData, RevokeMySessionData, RevokeMySessionResponse, RevokeUserSessionsData, RevokeUserSessionsResponse, SearchDirectoryData, SearchDirectoryResponse, SetClearanceData, SetClearanceResponse, SetMailSettingsData, SetMailSettingsResponse, SetMyNotificationPreferencesData, SetMyNotificationPreferencesResponse, StartMfaEnrolmentData, StartMfaEnrolmentResponse, StartPlatformMfaEnrolmentData, StartPlatformMfaEnrolmentError, StepUpData, StepUpError, StepUpResponse, TestMailSettingsData, TestMailSettingsResponse, UnlockUserData, UnlockUserResponse, UpdateAssignmentData, UpdateAssignmentResponse, UpdateLegalEntityData, UpdateLegalEntityResponse, UpdateOrgUnitData, UpdateOrgUnitResponse, UpdatePositionData, UpdatePositionResponse, UpdateReportingLineData, UpdateReportingLineResponse, UpdateRoleData, UpdateRoleResponse, UploadFileData, UploadFileResponse, UploadFileVersionData, UploadFileVersionResponse, VerifyMfaData, VerifyMfaError, VerifyMfaResponse, VerifyPlatformMfaData, VerifyPlatformMfaError, VerifyPlatformMfaResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -1652,3 +1652,177 @@ export const listUserAssignmentsOptions = (options: Options<ListUserAssignmentsD
     },
     queryKey: listUserAssignmentsQueryKey(options)
 });
+
+export const getPlatformCsrfTokenQueryKey = (options?: Options<GetPlatformCsrfTokenData>) => createQueryKey('getPlatformCsrfToken', options);
+
+/**
+ * Issue the CSRF cookie on the operator console
+ */
+export const getPlatformCsrfTokenOptions = (options?: Options<GetPlatformCsrfTokenData>) => queryOptions<GetPlatformCsrfTokenResponse, DefaultError, GetPlatformCsrfTokenResponse, ReturnType<typeof getPlatformCsrfTokenQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getPlatformCsrfToken({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getPlatformCsrfTokenQueryKey(options)
+});
+
+/**
+ * Set the operator's password from the enrolment link; TOTP enrolment follows
+ */
+export const acceptPlatformEnrolmentMutation = (options?: Partial<Options<AcceptPlatformEnrolmentData>>): UseMutationOptions<AcceptPlatformEnrolmentResponse, AcceptPlatformEnrolmentError, Options<AcceptPlatformEnrolmentData>> => {
+    const mutationOptions: UseMutationOptions<AcceptPlatformEnrolmentResponse, AcceptPlatformEnrolmentError, Options<AcceptPlatformEnrolmentData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await acceptPlatformEnrolment({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Show an operator enrolment link
+ */
+export const lookUpPlatformEnrolmentMutation = (options?: Partial<Options<LookUpPlatformEnrolmentData>>): UseMutationOptions<unknown, LookUpPlatformEnrolmentError, Options<LookUpPlatformEnrolmentData>> => {
+    const mutationOptions: UseMutationOptions<unknown, LookUpPlatformEnrolmentError, Options<LookUpPlatformEnrolmentData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await lookUpPlatformEnrolment({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Operator sign-in with email and password
+ */
+export const platformLoginMutation = (options?: Partial<Options<PlatformLoginData>>): UseMutationOptions<PlatformLoginResponse, PlatformLoginError, Options<PlatformLoginData>> => {
+    const mutationOptions: UseMutationOptions<PlatformLoginResponse, PlatformLoginError, Options<PlatformLoginData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await platformLogin({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Sign out of the operator console
+ */
+export const platformLogoutMutation = (options?: Partial<Options<PlatformLogoutData>>): UseMutationOptions<PlatformLogoutResponse, DefaultError, Options<PlatformLogoutData>> => {
+    const mutationOptions: UseMutationOptions<PlatformLogoutResponse, DefaultError, Options<PlatformLogoutData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await platformLogout({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Second sign-in step (TOTP)
+ */
+export const verifyPlatformMfaMutation = (options?: Partial<Options<VerifyPlatformMfaData>>): UseMutationOptions<VerifyPlatformMfaResponse, VerifyPlatformMfaError, Options<VerifyPlatformMfaData>> => {
+    const mutationOptions: UseMutationOptions<VerifyPlatformMfaResponse, VerifyPlatformMfaError, Options<VerifyPlatformMfaData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await verifyPlatformMfa({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Start TOTP enrolment (first sign-in, or a complete session switching devices)
+ */
+export const startPlatformMfaEnrolmentMutation = (options?: Partial<Options<StartPlatformMfaEnrolmentData>>): UseMutationOptions<unknown, StartPlatformMfaEnrolmentError, Options<StartPlatformMfaEnrolmentData>> => {
+    const mutationOptions: UseMutationOptions<unknown, StartPlatformMfaEnrolmentError, Options<StartPlatformMfaEnrolmentData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await startPlatformMfaEnrolment({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Confirm TOTP enrolment; completes the sign-in
+ */
+export const confirmPlatformMfaEnrolmentMutation = (options?: Partial<Options<ConfirmPlatformMfaEnrolmentData>>): UseMutationOptions<unknown, ConfirmPlatformMfaEnrolmentError, Options<ConfirmPlatformMfaEnrolmentData>> => {
+    const mutationOptions: UseMutationOptions<unknown, ConfirmPlatformMfaEnrolmentError, Options<ConfirmPlatformMfaEnrolmentData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await confirmPlatformMfaEnrolment({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const getPlatformSessionQueryKey = (options?: Options<GetPlatformSessionData>) => createQueryKey('getPlatformSession', options);
+
+/**
+ * Current operator session state
+ *
+ * Never 401: anonymous callers get ANONYMOUS. Answers only on the operator console's host.
+ */
+export const getPlatformSessionOptions = (options?: Options<GetPlatformSessionData>) => queryOptions<GetPlatformSessionResponse, DefaultError, GetPlatformSessionResponse, ReturnType<typeof getPlatformSessionQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getPlatformSession({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getPlatformSessionQueryKey(options)
+});
+
+/**
+ * Confirm a sensitive action with a fresh TOTP code
+ */
+export const platformStepUpMutation = (options?: Partial<Options<PlatformStepUpData>>): UseMutationOptions<unknown, PlatformStepUpError, Options<PlatformStepUpData>> => {
+    const mutationOptions: UseMutationOptions<unknown, PlatformStepUpError, Options<PlatformStepUpData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await platformStepUp({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};

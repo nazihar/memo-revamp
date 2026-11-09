@@ -12,6 +12,7 @@ import com.memo.identity.mfa.Totp
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
 import com.memo.testsupport.AppRoleJdbc
+import com.memo.testsupport.Audit
 import com.memo.testsupport.IntegrationTest
 import com.memo.testsupport.MailOutbox
 import com.memo.testsupport.TestTenant
@@ -200,6 +201,8 @@ class UserAdminApiIT : IntegrationTest() {
 
         assertThat(action(reload(user), "reactivate")).bodyJson().extractingPath("$.status").isEqualTo("ACTIVE")
         assertThat(mvc.login(tenant, user.email, password)).hasStatus(HttpStatus.OK)
+        Audit.assertAudited(tenant.id, "identity.user.deactivated", user.id.toString(), admin.id.toString())
+        Audit.assertAudited(tenant.id, "identity.user.reactivated", user.id.toString(), admin.id.toString())
     }
 
     @Test

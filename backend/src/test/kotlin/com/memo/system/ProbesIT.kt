@@ -55,13 +55,14 @@ class ProbesIT {
     }
 
     @Test
-    fun `the on-demand TLS ask check knows only existing tenant hosts (ADR-0022)`() {
+    fun `the on-demand TLS ask check knows only existing tenant hosts and the operator console (ADR-0022, ADR-0031)`() {
         val slug = "ask-${UUID.randomUUID().toString().take(8)}"
         ActorContext.asSystem("test") { tenants.create(slug, "Ask test") }
         assertThat(get("http://localhost:$managementPort/actuator/tenanthost?domain=$slug.localhost").statusCode()).isEqualTo(200)
         assertThat(get("http://localhost:$managementPort/actuator/tenanthost?domain=missing-$slug.localhost").statusCode())
             .isEqualTo(404)
         assertThat(get("http://localhost:$managementPort/actuator/tenanthost?domain=evil.example").statusCode()).isEqualTo(404)
+        assertThat(get("http://localhost:$managementPort/actuator/tenanthost?domain=admin.localhost").statusCode()).isEqualTo(200)
     }
 
     @Autowired

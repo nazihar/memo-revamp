@@ -56,6 +56,6 @@ None (no UI).
 T1 → `TenantContextPropagationIT`, `TenantContextTest`; T2 → `PlatformScopeIT`; T3 → `SchedulerSingleExecutionIT`, `TenantTaskIT`; T4 → `TenantEventsIT`, `OutboxResubmissionIT`, `EventPayloadRulesTest`; T5 → `AuditSameTransactionIT`, `AuditRecordIT`, `AuditAppendOnlyIT`, `AuditPartitionIT`; T6 → `AuditChainVerifierProperties`, `AuditTamperIT`; T7 → `AuditAnchorIT`, `AuditPartitionCheckIT`; T8 → `CacheInvalidationIT`, `TenantSettingsCacheIT`; T9 → `AuditVerificationThroughput`.
 
 ## Exit checklist
-- [ ] All listed tests implemented and green in their stage
-- [ ] No new quarantined tests
-- [ ] ASVS checklist updated (V8, V16)
+- [x] All listed tests implemented and green in their stage (checked at phase close, 2026-11-09). Folded: `TenantContextTest` into `TenantContextPropagationIT` and `TenantTransactionsIT`; `OutboxResubmissionIT` into `TenantEventsIT`; `AuditAppendOnlyIT` and the redaction test into `AuditRecordIT`; `CanonicalJsonTest` is `AuditCanonicalFormTest`; the throughput test is `AuditVerificationThroughputIT` (nightly)
+- [x] No new quarantined tests
+- [x] ASVS checklist updated (V8, V16)

@@ -2,7 +2,13 @@
 
 History moved out of `STATUS.md`, newest first.
 
+## 2026-11-09
+- PR #30 (nightly findings: StAX `MissingResourceException` on upload, Helm integer rendering) merged; master CI failed once on `OrgPerformanceIT` (planner chose a sequential scan on shared statistics), green on rerun, deployed. Nightly started by hand to confirm both fixes.
+- Phase close review: every planned test mapped to a real one; built the missing cross-tenant link test (`RecoveryIT`) and the console-host branch of the Caddy ask check (`ProbesIT`); 20 audit actions recorded but never asserted are now asserted, and `AuditActionCoverageTest` plus a runtime check in `AuthorizationMatrixTest` keep it so; ASVS V2, V6, V7 rows corrected; `OrgPerformanceIT` made independent of planner statistics.
+- **Phase 1a closed** (owner instruction). `retrospective.md` written; overview §10 records the exit. Carried: owner demo, moderated walkthrough, manual accessibility pass.
+
 ## 2026-11-08
+- Owner accepted a two-week zlib exception; PRs #28 (E06) and #29 (E07) merged and deployed; Ansible put the operator console on `admin.dev.memo-revamp.naziharitsolution.com`; the owner's operator account invited.
 - E06 PR #28 green, waiting for the owner's go-ahead. E07 planned (ADR-0031 to ADR-0033); details in `epic-07-tenant-admin/log.md`.
 
 ## 2026-11-05

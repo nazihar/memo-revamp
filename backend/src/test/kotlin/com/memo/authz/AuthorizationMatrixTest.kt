@@ -6,6 +6,7 @@ import com.memo.identity.UserAccounts
 import com.memo.identity.operator.OperatorMfa
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
+import com.memo.testsupport.Audit
 import com.memo.testsupport.AuthzMatrix
 import com.memo.testsupport.AuthzSubjects
 import com.memo.testsupport.IntegrationTest
@@ -26,7 +27,8 @@ import java.util.UUID
  * Generated from the matrix files (TESTING_STRATEGY §3.4, design E04 §7): every allowed cell is a positive test,
  * every denied cell a negative one. Path variables get random ids and bodies are `{}` unless the entry gives a sample:
  * an allowed request may then fail validation or find nothing (400, 404, 428), which still proves it passed
- * authorisation.
+ * authorisation. An allowed change that succeeds (2xx) must also add an audit entry (ADR-0019), unless it is listed in
+ * [NOT_AUDITED] with its reason: the coverage check for "every state change is audited" that grows with the matrix.
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AuthorizationMatrixTest : IntegrationTest() {
@@ -56,6 +58,7 @@ class AuthorizationMatrixTest : IntegrationTest() {
         val body = cell.body?.let { randomised(json.writeValueAsString(it)) } ?: "{}"
         val headers = cell.headers.mapValues { randomised(it.value) }
         val method = HttpMethod.valueOf(cell.method)
+        val auditedBefore = if (cell.expected == "allow" && method != HttpMethod.GET) lastAuditSeq(cell) else null
         val result =
             if (cell.host == MatrixCell.PLATFORM_HOST) {
                 mvc.platformSend(method, uri, subjects.platformSession(cell.subject), body, headers)
@@ -68,15 +71,26 @@ class AuthorizationMatrixTest : IntegrationTest() {
             assertThat(status).describedAs(describe).isLessThan(500).isNotEqualTo(403)
             // A wrong code or password is not a denial; any other 401 is.
             if (status == 401) assertThat(result.response.contentAsString).describedAs(describe).contains(INVALID_CREDENTIALS)
+            if (auditedBefore != null && status in SUCCESS && cell.endpoint !in NOT_AUDITED.keys) {
+                assertThat(lastAuditSeq(cell)).describedAs("$describe: a successful change must be audited").isGreaterThan(auditedBefore)
+            }
         } else {
             assertThat(status).describedAs(describe).isEqualTo(cell.expected.toInt())
         }
     }
+
+    private fun lastAuditSeq(cell: MatrixCell): Long =
+        (if (cell.host == MatrixCell.PLATFORM_HOST) Audit.platformEntries() else Audit.entries(subjects.tenant.id))
+            .maxOfOrNull { it.seq } ?: 0
 
     private fun randomised(value: String) = value.replace("{random}", UUID.randomUUID().toString())
 
     private companion object {
         val PATH_VARIABLE = Regex("\\{[^}]+}")
         const val INVALID_CREDENTIALS = "urn:memo:problem:invalid-credentials"
+        val SUCCESS = 200..299
+
+        /** Successful changes that write no audit entry, each with its reason. */
+        val NOT_AUDITED: Map<String, String> = emptyMap()
     }
 }

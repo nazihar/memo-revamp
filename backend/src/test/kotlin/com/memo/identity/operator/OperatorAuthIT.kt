@@ -108,6 +108,12 @@ class OperatorAuthIT : IntegrationTest() {
 
         assertThat(locked).hasStatus(HttpStatus.UNAUTHORIZED)
         assertThat(Audit.platformEntries().map { it.action to it.objectId }).contains("platform.operator.locked" to operator.id.toString())
+
+        val failedBefore = Audit.platformEntries().count { it.action == "platform.operator.sign_in_failed" }
+        val unknown = mvc.platformPost("/api/v1/platform/auth/login", null, """{"email":"nobody@platform.example","password":"x"}""")
+        assertThat(unknown).hasStatus(HttpStatus.UNAUTHORIZED)
+        assertThat(Audit.platformEntries().count { it.action == "platform.operator.sign_in_failed" && it.objectId == "unknown" })
+            .isGreaterThan(failedBefore)
     }
 
     @Test

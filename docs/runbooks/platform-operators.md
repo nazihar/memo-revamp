@@ -23,7 +23,7 @@ docker compose run --rm backend operator-invite owner@example.com "Owner Name"
 kubectl run memo-operator-invite --rm -it --restart=Never --image=<backend image> --env-from=... -- operator-invite owner@example.com "Owner Name"
 ```
 
-The command prints a one-time link (24 hours) to its own output, never to the log. Open it, choose a password (at least 15 characters), then set up an authenticator app; two-step sign-in is always required for operators.
+The command prints a one-time link (24 hours) to its own output, never to the log. Open it, choose a password (at least 15 characters), then set up an authenticator app; two-step sign-in is always required for operators. Scan the QR code into two apps (for example a phone and a password manager), so losing one device does not need a reset.
 
 Running the command again for an existing operator **resets** them: password and authenticator are cleared, their sessions end, and a new link is printed. This is also the recovery path for a lost authenticator (operators have no recovery codes in Phase 1a).
 

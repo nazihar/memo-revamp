@@ -2,7 +2,7 @@
 
 > **For the owner, before the screens are built** (overview Q1). Wireframe level: layout, content and actions, not visual detail. The screens use the Ledger direction and the Phase 1a templates (list, detail, form, dialog). Please answer the questions in §8; the backend slices start meanwhile.
 >
-> **Status:** waiting for the owner. Written 2026-11-09.
+> **Status:** approved by the owner 2026-11-09 (§9). Written 2026-11-09.
 
 ## 1. The journey (D1 scenario)
 
@@ -154,4 +154,4 @@ Approvers can act from a phone browser before the approver app exists (Phase 6a)
 
 | Date | Reviewer | Outcome |
 |---|---|---|
-| — | Product owner | Waiting |
+| 2026-11-09 | Product owner (aradnazihar) | **Approved as planned** ("no issues on the questions as plan"). Q1 layout as drawn (stacked on a phone); Q2 tabs My tasks, Drafts, Sent, Closed; Q3 ↑ ↓ reordering; Q4 visibility limited to the initiator and the approvers (if cleared), tenant admins only for reassignment; Q5 the words "Return" and "Reject" (tenant terminology can change them later). |

@@ -341,6 +341,11 @@ Numbers are assigned when written, starting at ADR-0017. Each one uses MADR.
 |---|---|---|---|
 | Phase 1a overview | Product owner (aradnazihar) | 2026-10-18 | Approved. The owner **kept the per-epic gate delegation** from Phase 0: the agent writes each epic plan in full, then implements it without waiting, stopping only for decisions that need the owner. E01 wireframes and visual direction still go to the owner for approval. |
 
+### Phase exit
+| Item | By | Date | Notes |
+|---|---|---|---|
+| Phase 1a exit | Product owner (aradnazihar) | 2026-11-09 | Closed at the owner's instruction ("merge and complete this phase"). All six exit criteria met with evidence (`retrospective.md`); all seven epics merged and on dev. **Carried:** the owner demo, the moderated usability walkthrough and the manual keyboard and screen-reader pass, which need the owner in person. |
+
 ### Answers to open questions (2026-10-18)
 | Q | Answer |
 |---|---|

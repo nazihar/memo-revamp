@@ -56,4 +56,4 @@ No screens in E05. Problem Details `reason` codes are stable keys for E07's uplo
 - [x] No new quarantined tests
 - [x] ASVS checklist updated (V5, V11, V14, V16 rows)
 - [ ] Corpus against the full official signatures: **not built yet** (the nightly runs the corpus with the test signatures, like the PR stage). Follow-up: a nightly job with `clamav/clamav:1.5.4` and a cached signature volume
-- [ ] Dev VM runs ClamAV; memory after a day of signature reloads recorded in the log (after the first deploy)
+- [x] Dev VM runs ClamAV; memory after a day of signature reloads recorded in the log: 965 MiB after three days (2026-11-09), 5.2 GB still available on the VM

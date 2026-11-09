@@ -93,4 +93,20 @@ class MailSettingsIT : IntegrationTest() {
         assertThatThrownBy { asAdmin(tenant) { admin.save(request(), first.version) } }
             .isInstanceOf(ConcurrentModificationException::class.java)
     }
+
+    @Test
+    fun `a test mail and removing the relay are audited`() {
+        val tenant = registry.aTestTenant(transactions, settings, "relay-audit")
+        val user = accounts.anActiveUser(transactions, tenant, aPassword(), tenantAdmin = true)
+        ActorContext.call(ActorScope(Actor.User(user.id.value), null)) {
+            TenantContext.call(tenant.id) {
+                // The test mail goes out on the platform relay, outside any transaction, like the endpoint.
+                admin.test()
+                transactions.inTenant(tenant.id) { admin.save(request(), null) }
+                transactions.inTenant(tenant.id) { admin.remove() }
+            }
+        }
+        Audit.assertAudited(tenant.id, "notification.smtp.tested", tenant.id.toString(), user.id.toString())
+        Audit.assertAudited(tenant.id, "notification.smtp.removed", tenant.id.toString(), user.id.toString())
+    }
 }

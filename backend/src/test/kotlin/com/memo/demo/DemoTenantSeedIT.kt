@@ -9,6 +9,7 @@ import com.memo.identity.mfa.MfaService
 import com.memo.identity.mfa.Totp
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
+import com.memo.testsupport.Audit
 import com.memo.testsupport.IntegrationTest
 import com.memo.testsupport.aPassword
 import org.assertj.core.api.Assertions.assertThat
@@ -111,6 +112,13 @@ class DemoTenantSeedIT : IntegrationTest() {
             val openSeats = DemoOrg.POSITIONS.size - DemoOrg.SEATS.size - DemoOrg.VACANT.size
             assertThat(dsl.fetchCount(com.memo.jooq.tables.references.ORG_ASSIGNMENT))
                 .isEqualTo(DemoOrg.SEATS.size + minOf(openSeats, DemoOrg.STAFF.size - DemoOrg.UNSEATED))
+        }
+        // Seeding twice audits each object once: only rows actually inserted are recorded.
+        val created = Audit.entries(DemoTenant.ID).filter { it.action.startsWith("org.") && it.action.endsWith(".created") }
+        for (action in listOf("org.unit.created", "org.reporting_line.created", "org.assignment.created")) {
+            val perObject = created.filter { it.action == action }.groupingBy { it.objectId }.eachCount()
+            assertThat(perObject).describedAs(action).isNotEmpty()
+            assertThat(perObject.values).describedAs(action).allMatch { it == 1 }
         }
         val branchAdmin = transactions.readInTenant(DemoTenant.ID) { accounts.findByEmail("branchadmin@demo.example")!! }
         com.memo.common.context.ActorContext.call(

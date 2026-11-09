@@ -39,6 +39,6 @@ axe on every auth screen (light/dark); keyboard-only sign-in including the code 
 3. Abuse the reset and invitation links: reuse, expiry, other host, referer (30 min).
 
 ## Exit checklist
-- [ ] All listed tests implemented and green in their stage
-- [ ] No new quarantined tests
-- [ ] ASVS checklist updated
+- [x] All listed tests implemented and green in their stage (checked at phase close, 2026-11-09). Folded into fewer classes: sign-in, session data, timeouts, revocation and CSRF in `AuthIT`; reset and invitations in `RecoveryIT`; TOTP, replay and recovery codes in `MfaFlowIT` and `TotpTest`; step-up and session lists in `StepUpAndMeIT`; user lifecycle in `UserAdminApiIT` and `UserAccountsIT`; rate limits in `LoginRateLimitIT`; mail outbox in `MailDeliveryIT` (E06); the Caddy ask check in `ProbesIT`; the identity matrix in `e03-identity.yaml` (`AuthorizationMatrixTest`); cross-tenant: every identity table under forced RLS with a tenant policy (`RlsMetaTest`), a session refused on another tenant's host (`AuthIT`), and reset and invitation links refused on another tenant's host without being consumed (`RecoveryIT`, added at phase close); `BreachedPasswordsTest` is `BreachedPasswordFilterTest`
+- [x] No new quarantined tests
+- [x] ASVS checklist updated (V2, V6, V7 rows brought up to date at phase close)

@@ -18,7 +18,8 @@ A general, data-driven routing engine used for memos and, later, agenda submissi
 - **Files:** scanned, envelope-encrypted, versioned files with SHA-256 content hashes, object-locked record buckets and streamed range downloads (ADR-0028, ADR-0029). The policy callback lets an owning module decide who may read a file. Its first real owner is the memo.
 - **Notifications:** in-app centre and localised email from module events (ADR-0030).
 - **Web:** the Ledger visual direction, the list, detail and form templates, modal dialogs under the strict CSP (ADR-0021), and per-role Playwright logins.
-- **Not there yet:** no `workflow` or `memo` package, no idempotency-key mechanism (the first mobile-style mutating endpoints arrive here), and no ONLYOFFICE integration: the service runs in the local Compose stack (ADR-0003, Phase 0) but no code uses it, and it is off on the 7.8 GB dev VM (Phase 1a Q7).
+- **Idempotency keys:** `system.Idempotency` (a key row claimed in the business transaction, the stored result replayed, 422 on a reused key with another body), used today by file uploads. Phase 2 applies it to every workflow and memo action.
+- **Not there yet:** no `workflow` or `memo` package, and no ONLYOFFICE integration: the service runs in the local Compose stack (ADR-0003, Phase 0) but no code uses it, and it is off on the 7.8 GB dev VM (Phase 1a Q7).
 
 ### What Phase 2 deliberately does *not* do
 These belong to Phase 3 or later. Phase 2 designs for them so they plug in without rework:
@@ -78,7 +79,7 @@ Exactly the eight steps of the master plan's first slice, on the engine's real t
 - **Route builder:** an ordered approver list from the people picker. Validation: at least one approver, no duplicates, not the initiator, only active users, and clearance for the memo's classification. Clearance is checked again when each task is assigned; an approver who lost clearance blocks the step visibly (the memo shows it to the initiator and the tenant admin) rather than leaving the memo stuck unseen.
 - **Runtime:** submit starts round 1 and creates the first task. Approve moves to the next approver; Return (remark mandatory) unlocks the memo for the initiator; Reject (remark mandatory) is final; Withdraw is open to the initiator until final approval. Resubmit continues the **same instance as round N+1 from the first approver**. Approvals from earlier rounds stay in history and never count. The last approval of the current round sets the memo to Approved.
 - **Document binding and lock:** every action records the document version and hash it applied to. While in review the document is read-only (the upload endpoint refuses, and the version a task shows is the version the round started with). Return and Draft unlock it.
-- **Concurrency:** guarded updates (`… WHERE id = ? AND state = ? AND version = ?`, 0 rows → 409) on instance and task, plus **idempotency keys** on every mutating workflow and memo endpoint (a new kernel facility, by ADR, reused by every later module and by mobile).
+- **Concurrency:** guarded updates (`… WHERE id = ? AND state = ? AND version = ?`, 0 rows → 409) on instance and task, plus **idempotency keys** on every mutating workflow and memo endpoint (the existing `system.Idempotency`, extended from creating requests to actions, and reused by mobile).
 - **Step-up on approve:** the existing step-up service, per the memo-type flag, with its own tenant setting for the approval window (default 30 minutes; Q5) so the security-settings window stays short.
 - **Reassignment:** a tenant admin reassigns a pending task (approver on leave or deactivated), with a mandatory reason; audited; both people notified.
 - **Note sheet:** an append-only entry per action (actor, action, remark, round, document version and hash, time). Remarks are plain text in this slice; rich text and attachments are Phase 3.
@@ -150,7 +151,7 @@ Exactly the eight steps of the master plan's first slice, on the engine's real t
 | DoA rules management and simulator | **E04** |
 | Visual builder with validation, preview, simulation, diff | **E06** |
 | Events for other modules | E01 (first events), **E03** |
-| *(new kernel facility)* Idempotency keys on mutating endpoints | **E01** |
+| *(kernel)* Idempotency keys on every action endpoint | **E01** |
 
 ## 5. Exit criteria → epics
 
@@ -214,9 +215,8 @@ Numbers are assigned when written, starting at ADR-0034. Each one uses MADR.
 | ADR | Decision | Epic |
 |---|---|---|
 | ADR-ENGINE | Own workflow engine on PostgreSQL (or an embedded one), and the `workflow` / subject module boundary | E01 |
-| ADR-WFDATA | Workflow data model: instance, round, step, task, action; guarded transitions; denormalised "who holds it" | E01 |
-| ADR-IDEM | Idempotency keys for mutating endpoints (kernel facility) | E01 |
-| ADR-DOCBIND | Document versions bound to actions; lock during review | E01 |
+| ADR-WFDATA | Workflow data model: instance, round, step, task, action; guarded transitions with idempotency keys; denormalised "who holds it" | E01 |
+| ADR-DOCBIND | Memo documents: versions bound to actions, lock during review, step-up on approve | E01 |
 | ADR-OO | ONLYOFFICE integration: adapter, JWT, callback isolation, signed document links, licence obligations | E02 |
 | ADR-DEF | Definition format, schema, versioning, maker-checker lifecycle and in-flight migration | E03 |
 | ADR-EXPR | Condition language and its sandbox | E03 |

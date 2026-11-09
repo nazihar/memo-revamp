@@ -6,12 +6,17 @@
 
 ## Current position
 - **Phase 1a closed on 2026-11-09** (owner instruction; `phase-1a-minimum-core/retrospective.md`, exit recorded in `overview.md §10`). All seven epics merged and on dev: E01 app frame, E02 platform kernel, E03 identity, sessions and step-up, E04 org directory and authorisation, E05 files, E06 notifications, E07 tenant lifecycle and administration (PRs #18–#30). Three exit items need the owner in person and are carried (Waiting for human).
-- **Next phase not started:** Phase 1b (enterprise identity and organisation) and Phase 2 (workflow engine) may run in parallel (MASTER_PLAN); the owner chooses where to start, then the agent writes that phase's overview for approval.
+- **Phase 2 (workflow engine) started on 2026-11-09** at the owner's choice. The overview is approved (2026-11-09, Q1–Q5 answered, per-epic gate delegation kept): `phase-2-workflow-engine/overview.md` (six epics: E01 first slice / D1, E02 ONLYOFFICE editing, E03 definition model and runtime, E04 assignees and DoA, E05 timers and SLAs, E06 visual builder). Phase 1b is not started; it must finish before Phase 3 exits.
 - **Dev environment:** https://dev.memo-revamp.naziharitsolution.com and the operator console https://admin.dev.memo-revamp.naziharitsolution.com on the VM 123.176.58.175. It deploys automatically after every green `ci` run on `master`. The owner's operator account is enrolled.
 - **Phase 0:** done (`docs/plan/phase-0-foundations/`). **Release:** `v0.1.0` (2026-10-15). **Product name:** `memo` everywhere except the repository name (A1).
-- **Branches:** `master` holds PRs #1–#31; `fix/fuzz-blank-file-name` is PR #32.
+- **Branches:** `master` holds PRs #1–#32; `docs/phase-2-overview` carries the Phase 2 overview.
 
-## State (Phase 1a)
+## State (Phase 2)
+- [x] Overview written (2026-11-09)
+- [x] Overview approved (2026-11-09), Q1–Q5 answered, per-epic gate delegated (E01 screen flows reviewed by the owner before build)
+- [ ] E01 plan (research, ADRs, design, threat model, tasks, test plan)
+
+## State (Phase 1a, closed)
 - [x] Overview approved (2026-10-18), Q1–Q8 answered, per-epic gate delegated
 - [x] E01–E07 merged, deployed to dev and documented (each epic folder: plan, threat model, test plan, log)
 - [x] Exit criteria met with evidence; phase-close review built the missing tests (`AuditActionCoverageTest`, matrix audit check, cross-tenant link test) and corrected stale ASVS rows
@@ -20,16 +25,14 @@
 - [ ] Owner demo, moderated usability walkthrough, manual keyboard and screen-reader pass (carried)
 
 ## Next step
-1. Owner: choose the next phase (1b enterprise identity, 2 workflow engine, or both in parallel). The agent then writes its overview for approval.
-2. PR #32 (owner go-ahead to merge, CI green): the hand-started nightly confirmed the Helm fix, and Jazzer found a blank upload name from dots and spaces; fixed with a stored regression input. The next nightly should be fully green.
+1. Agent: write the E01 plan (first slice, D1) in `phase-2-workflow-engine/epic-01-first-slice/`, then send the screen flows (route builder, inbox, memo view) to the owner before building the screens. Backend slices can start meanwhile.
+2. Owner: upgrade the dev VM to 16 GB before E02 (ONLYOFFICE on dev).
 3. Before 2026-11-22: take the rebuilt distroless digest from Renovate and delete the zlib entries in `.trivyignore`.
 4. Follow-ups (retrospective "Carried"): `AuditPerformanceIT`, `NotificationPerformanceIT`, the full-signature ClamAV corpus nightly, sample bodies for the remaining mutating matrix cells, upstream clean-ups (`apk upgrade` lines, Spring Session licence exceptions, Guava pin), Spring Boot 4.2 GA.
 
 ## Waiting for human
-- **PR #32 merge:** fuzz finding (blank upload name), CI green.
-- **Next phase:** 1b, 2, or both in parallel.
+- **Dev VM to 16 GB** (Phase 2 Q2) before E02: ONLYOFFICE joins dev then. Today 7.8 GB runs dev with ClamAV (965 MiB after three days).
 - **Carried from Phase 1a (in person, no rush):** the demo (`docs/plan/phase-1a-minimum-core/demo.md`), a moderated usability walkthrough (login + MFA, org editing, tenant administration) and a manual keyboard + screen-reader pass (NVDA or VoiceOver), including the E01 patterns gallery (`pnpm dev`, `/patterns`).
-- **VM memory:** 7.8 GB is enough for dev with ClamAV (965 MiB after three days; 5.2 GB available). Staging and ONLYOFFICE as well need 16 GB.
 - **GitHub setup:** required reviewers on the `release` environment (may need a paid plan on a private repository; meanwhile only the owner can push `v*` tags) and branch protection on `master`.
 
 ## Assumptions

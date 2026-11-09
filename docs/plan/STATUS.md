@@ -2,68 +2,40 @@
 
 > Read at the start of every session; update at the end (see `AGENTS.md §0`). Keep this page short and current. Move history into the phase folder's `log.md`.
 
-**Last updated:** 2026-11-08 (UTC+06:00) by Claude (agent)
+**Last updated:** 2026-11-09 (UTC+06:00) by Claude (agent)
 
 ## Current position
-- **Phase:** 1a (overview approved 2026-10-18, gate delegation kept). Merged and on dev: **E02 platform kernel** (PR #18), **E01 app frame** (PR #19), **E03 identity, sessions and step-up** (PR #20), **E04 org directory and authorisation** (PR #22; ADR-0026, ADR-0027), plus fixes (PRs #21, #23–#26). **E05 files** merged (PR #27) and on dev since 2026-11-05 (ClamAV running). **E06 notifications** (PR #28, ADR-0030) and **E07 tenant lifecycle and administration** (PR #29, ADR-0031 to ADR-0033) merged and on dev since 2026-11-08: operator console on its own host (https://admin.dev.memo-revamp.naziharitsolution.com, Caddy updated by Ansible), tenant creation and suspension, tenant admin console (security, branding, language and terms, audit viewer and verifiable export). The owner's operator account is invited (enrolment link valid 24 hours). All Phase 1a epics are built; the phase exit items remain. PR #30 fixes two nightly findings (see Next step).
-- **Dev environment live (2026-10-18):** https://dev.memo-revamp.naziharitsolution.com on the VM 123.176.58.175 (Ubuntu 24.04, 4 vCPU, 7.8 GB RAM, 100 GB disk). It deploys automatically after every green `ci` run on `master`.
-- **Phase 0 epics:** E01–E05 done (`docs/plan/phase-0-foundations/`).
-- **Branches:** `master` holds PRs #1–#29; `fix/nightly-fuzz-and-helm-int` is PR #30.
-- **Release:** `v0.1.0` published with signed images (2026-10-15).
-- **Product name:** `memo` everywhere except the repository name `memo-revamp` (A1, PR #6).
+- **Phase 1a closed on 2026-11-09** (owner instruction; `phase-1a-minimum-core/retrospective.md`, exit recorded in `overview.md §10`). All seven epics merged and on dev: E01 app frame, E02 platform kernel, E03 identity, sessions and step-up, E04 org directory and authorisation, E05 files, E06 notifications, E07 tenant lifecycle and administration (PRs #18–#30). Three exit items need the owner in person and are carried (Waiting for human).
+- **Next phase not started:** Phase 1b (enterprise identity and organisation) and Phase 2 (workflow engine) may run in parallel (MASTER_PLAN); the owner chooses where to start, then the agent writes that phase's overview for approval.
+- **Dev environment:** https://dev.memo-revamp.naziharitsolution.com and the operator console https://admin.dev.memo-revamp.naziharitsolution.com on the VM 123.176.58.175. It deploys automatically after every green `ci` run on `master`. The owner's operator account is enrolled.
+- **Phase 0:** done (`docs/plan/phase-0-foundations/`). **Release:** `v0.1.0` (2026-10-15). **Product name:** `memo` everywhere except the repository name (A1).
+- **Branches:** `master` holds PRs #1–#30; `docs/phase-1a-close` carries the phase close (tests and docs).
 
-## State
-- [x] Phase overview approved; Q1, Q2, Q4, Q5 and Q7 answered; per-epic gate delegated
-- [x] E01 Walking skeleton
-- [x] E02 Data and tenancy (RLS meta-test, cross-tenant suite, negative test)
-- [x] E03 Web foundation (shell, i18n/RTL, Playwright + axe, CSP)
-- [x] E04 CI and supply chain (all gates run locally; workflows actionlint-clean)
-- [x] E05 Environments and deploy (on-prem profile, Helm, Ansible, deploy with rollback, ZAP, Gatling)
-- [x] GitHub CI green on PRs and `master`
-- [x] Product renamed to `memo` (package `com.memo`, images `memo-backend` / `memo-web`)
-- [x] Release signing key (2026-10-15): `release` environment with `COSIGN_PRIVATE_KEY` / `COSIGN_PASSWORD`; `deploy/cosign.pub` committed
-- [x] First release run: `v0.1.0` signed and published (2026-10-15, after the cosign 3 fixes in PRs #9 and #10)
-- [x] First nightly run (2026-10-16) failed only on the lockfile re-scan: HIGH Jackson CVEs in `build-logic/gradle.lockfile` (build tooling, not shipped). Fixed in PR #11; the manual re-run passed on 2026-10-17
-- [x] Renovate GitHub App installed by the owner (2026-10-17, ADR-0014)
-- [x] Wildcard DNS `*.dev.memo-revamp.naziharitsolution.com` → dev VM added by the owner (2026-10-18, Phase 1a Q2)
-- [x] Dev environment deployed (2026-10-18):
-  - VM provisioned with Ansible (playbook fixes in PR #13);
-  - private images pulled with the deploy job's short-lived token, no credential stored on the VM (PR #14);
-  - first deploy succeeded after the libexpat image fixes (PR #15).
-- [x] ZAP baseline against dev (2026-11-02): 0 failures, 0 warnings
-- [x] Gatling against dev (2026-11-02): no errors; latency budget 2 s for remote runs, since the GitHub runner is on another continent (8–15 ms on the VM, ~50 ms from Bangladesh). Nightly on `b2461eb` fully green
-- [x] Owner usability walkthrough (2026-10-15): UI OK; "layout very simple" carried into Phase 1a as a layout/visual-design epic
-- [x] NFRs confirmed as proposed by the owner (2026-10-15); Q3 answered: agent only, no deadline
-- [x] `retrospective.md` finalised and phase exit recorded in `overview.md §10` (2026-10-15)
-
-## Verified locally (2026-10-14/15)
-- **Backend:** 79 tests green (unit, property, Modulith, ArchUnit, RLS meta, cross-tenant, negative, API, contract and jOOQ drift, probes, migrate mode, structured logs); ktlint, detekt, SpotBugs + FindSecBugs clean.
-- **Web:** lint, typecheck and format clean; Vitest 12/12; Playwright smoke 6/6 (dev stack and production images); pseudo 1/1; visual 4/4 (Linux baselines).
-- **Supply chain:** SBOMs and licence gate pass; Trivy shows 0 fixable HIGH/CRITICAL in the SBOMs and images; gitleaks clean; 6 Semgrep rules tested.
-- **Deployment:** image and on-prem smoke tests pass; `deploy.sh` rollback verified; Helm lint + kubeconform clean; ansible-lint clean (production profile).
-- **DAST/performance:** ZAP baseline 0 FAIL / 0 WARN; Gatling p95 48 ms.
+## State (Phase 1a)
+- [x] Overview approved (2026-10-18), Q1–Q8 answered, per-epic gate delegated
+- [x] E01–E07 merged, deployed to dev and documented (each epic folder: plan, threat model, test plan, log)
+- [x] Exit criteria met with evidence; phase-close review built the missing tests (`AuditActionCoverageTest`, matrix audit check, cross-tenant link test) and corrected stale ASVS rows
+- [x] ADR-0017 to ADR-0033 accepted
+- [x] Full backend suite and the E2E exit journey green in CI; nightly fixes (PR #30) on master
+- [ ] Owner demo, moderated usability walkthrough, manual keyboard and screen-reader pass (carried)
 
 ## Next step
-1. PR #30 (owner go-ahead to merge): the nightly has failed since E05. Jazzer found a JDK StAX `MissingResourceException` that escaped the upload refusal path (now refused as malformed), and Helm rendered the upload ceiling as `1.048576e+08`, so the backend never started on Kubernetes (now `int64`, with a CI guard). After merge, the next nightly confirms both.
-2. Owner: enrol the operator account from the printed link (password ≥ 15 characters, then an authenticator app), then run the demo (`demo.md`).
-3. Phase 1a exit: `retrospective.md` once the demo, walkthrough and manual accessibility pass (Waiting for human) are done.
-4. Follow-ups: the zlib CVE exception in `.trivyignore` expires 2026-11-22 (owner-accepted 2026-11-08): take the rebuilt distroless digest from Renovate and delete the two entries before then; corpus against the full ClamAV signatures in the nightly (E05); notification performance test (E06); record ClamAV memory on the VM after a day of reloads; remove the `apk upgrade` lines from `web/Dockerfile`, the Spring Session licence exceptions and the Guava pin when upstream catches up.
+1. Owner: choose the next phase (1b enterprise identity, 2 workflow engine, or both in parallel). The agent then writes its overview for approval.
+2. Confirm the hand-started nightly on master is green (it covers the PR #30 fixes: fuzzing and Helm on kind).
+3. Before 2026-11-22: take the rebuilt distroless digest from Renovate and delete the zlib entries in `.trivyignore`.
+4. Follow-ups (retrospective "Carried"): `AuditPerformanceIT`, `NotificationPerformanceIT`, the full-signature ClamAV corpus nightly, sample bodies for the remaining mutating matrix cells, upstream clean-ups (`apk upgrade` lines, Spring Session licence exceptions, Guava pin), Spring Boot 4.2 GA.
 
 ## Waiting for human
-- **PR #30 merge:** nightly fixes (fuzz finding, Helm integer rendering); CI result in the PR.
-- **Operator enrolment:** open the one-time link given in chat on 2026-11-08 (valid 24 hours); if it expires, I print a new one with `operator-invite`.
-- **Phase 1a exit with you:** owner demo (`demo.md`), moderated usability walkthrough (login + MFA, org editing, tenant administration), manual keyboard and screen-reader pass.
-- **E01 manual accessibility pass (no rush):** a short keyboard + screen-reader (NVDA or VoiceOver) walk through the patterns gallery, run locally with `pnpm dev` at `/patterns` (the gallery is left out of production images, so it is not on the dev server). Automated axe, keyboard and CSP checks pass.
-1. **VM memory:** 7.8 GB is enough for dev, including ClamAV (measured 2026-11-02: 6.3 GiB available before it; ClamAV peaks at about 2.4 GiB). Running staging and ONLYOFFICE as well needs 16 GB.
-2. **GitHub setup:**
-   - required reviewers on the `release` environment (not set; may need a paid GitHub plan on a private repository. Meanwhile only the owner can push `v*` tags);
-   - branch protection on `master`.
+- **Next phase:** 1b, 2, or both in parallel.
+- **Carried from Phase 1a (in person, no rush):** the demo (`docs/plan/phase-1a-minimum-core/demo.md`), a moderated usability walkthrough (login + MFA, org editing, tenant administration) and a manual keyboard + screen-reader pass (NVDA or VoiceOver), including the E01 patterns gallery (`pnpm dev`, `/patterns`).
+- **VM memory:** 7.8 GB is enough for dev with ClamAV (965 MiB after three days; 5.2 GB available). Staging and ONLYOFFICE as well need 16 GB.
+- **GitHub setup:** required reviewers on the `release` environment (may need a paid plan on a private repository; meanwhile only the owner can push `v*` tags) and branch protection on `master`.
 
 ## Assumptions
 - **A1 (resolved):** the product is `memo`. Package `com.memo`, Gradle group `com.memo`, application name `memo`, images `memo-backend` / `memo-web`. Only the repository keeps the name `memo-revamp`. The stored schema marker moved to `memo` with migration `system/V2`.
 
 ## Decisions taken
-ADR-0001 to ADR-0033 (`docs/adr/README.md`). Phase 1a so far: ADR-0017 tenant context, ADR-0018 jobs, ADR-0019 audit store, ADR-0020 cache invalidation, ADR-0021 modal dialogs, ADR-0022 tenant resolution and accounts, ADR-0023 local authentication and sessions, ADR-0024 TOTP MFA and step-up, ADR-0025 rate limiting, ADR-0026 org model, ADR-0027 authorisation model, ADR-0028 envelope encryption, ADR-0029 upload pipeline and range downloads, ADR-0030 notifications and email delivery, ADR-0031 platform operator path, ADR-0032 terminology overrides, ADR-0033 audit viewer and export.
+ADR-0001 to ADR-0033 (`docs/adr/README.md`). Phase 1a: ADR-0017 tenant context, ADR-0018 jobs, ADR-0019 audit store, ADR-0020 cache invalidation, ADR-0021 modal dialogs, ADR-0022 tenant resolution and accounts, ADR-0023 local authentication and sessions, ADR-0024 TOTP MFA and step-up, ADR-0025 rate limiting, ADR-0026 org model, ADR-0027 authorisation model, ADR-0028 envelope encryption, ADR-0029 upload pipeline and range downloads, ADR-0030 notifications and email delivery, ADR-0031 platform operator path, ADR-0032 terminology overrides, ADR-0033 audit viewer and export.
 
 ## Environment notes (dev machine)
 - VS Code's Java extension builds the tree with its own Gradle and can hold the shared `build-logic/.gradle` lock, stalling CLI builds at "Calculating task graph". CLI builds use `MEMO_BUILD_ROOT=<repo>/.build-cli` (README); the git-ignored `.vscode/settings.json` sets the Java extension to LightWeight mode (owner agreed 2026-10-26; the owner does not code on this project).

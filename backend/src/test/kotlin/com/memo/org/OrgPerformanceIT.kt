@@ -173,6 +173,9 @@ class OrgPerformanceIT : IntegrationTest() {
     fun `the picker queries use the prefix indexes`() {
         val plan =
             transactions.readInTenant(tenant.id) {
+                // identity_user is shared by every test tenant, so its statistics drift as the suite grows and the planner
+                // may prefer a sequential scan for a one-row estimate. What must hold is that the query can use the index.
+                tenantDsl.current().execute("set local enable_seqscan = off")
                 tenantDsl
                     .current()
                     .fetch(

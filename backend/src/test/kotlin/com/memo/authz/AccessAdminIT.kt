@@ -117,8 +117,13 @@ class AccessAdminIT : IntegrationTest() {
         assertThat(refusal { asUser(admin) { roles.delete(auditor.id, auditor.version) } }).isEqualTo("BUILT_IN")
 
         val person = accounts.anActiveUser(transactions, tenant, password)
-        asUser(admin) { grants.grant(person.id.value, role.id, null) }
+        val grant = asUser(admin) { grants.grant(person.id.value, role.id, null) }
         assertThat(refusal { asUser(admin) { roles.delete(role.id, role.version) } }).isEqualTo("IN_USE")
+        Audit.assertAudited(tenant.id, "authz.role.created", role.id.toString(), admin.id.toString())
+        Audit.assertAudited(tenant.id, "authz.grant.created", grant.id.toString(), admin.id.toString())
+        val unused = asUser(admin) { roles.create("Unused ${UUID.randomUUID()}", null, setOf(Permission.AUDIT_READ)) }
+        asUser(admin) { roles.delete(unused.id, unused.version) }
+        Audit.assertAudited(tenant.id, "authz.role.deleted", unused.id.toString(), admin.id.toString())
         asUser(person) { assertThat(policy.allows(Permission.AUDIT_READ)).isTrue() }
 
         // Changing the role's permissions changes what its holders may do at once.
@@ -199,6 +204,16 @@ class AccessAdminIT : IntegrationTest() {
         }
         assertThat(refusal { asUser(levelsAdmin, levelsTenant) { classification.delete(secret.id) } }).isEqualTo("IN_USE")
         Audit.assertAudited(levelsTenant.id, "authz.clearance.changed", person.id.toString(), levelsAdmin.id.toString())
+        Audit.assertAudited(levelsTenant.id, "authz.classification.created", secret.id.toString(), levelsAdmin.id.toString())
+        Audit.assertAudited(levelsTenant.id, "authz.classification.reordered", null, levelsAdmin.id.toString())
+
+        val spare = asUser(levelsAdmin, levelsTenant) { classification.create("Spare", null) }
+        asUser(levelsAdmin, levelsTenant) {
+            classification.rename(spare.id, spare.version, "Spare level", null)
+            classification.delete(spare.id)
+        }
+        Audit.assertAudited(levelsTenant.id, "authz.classification.updated", spare.id.toString(), levelsAdmin.id.toString())
+        Audit.assertAudited(levelsTenant.id, "authz.classification.deleted", spare.id.toString(), levelsAdmin.id.toString())
     }
 
     @Test

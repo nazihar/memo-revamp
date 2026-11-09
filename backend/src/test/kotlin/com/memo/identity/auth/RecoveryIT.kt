@@ -182,6 +182,28 @@ class RecoveryIT : IntegrationTest() {
     }
 
     @Test
+    fun `reset and invitation links work only on the host of the tenant that issued them`() {
+        val other = registry.aTestTenant(transactions, settings, "recovery-other", mfaRequired = false)
+        val user = accounts.anActiveUser(transactions, tenant, password)
+        requestReset(user.email)
+        val reset = outbox.token(outbox.last(tenant, "PASSWORD_RESET", user.email))
+        val email = "cross-${UUID.randomUUID().toString().take(8)}@bank.example"
+        transactions.inTenant(tenant.id) { invitations.invite(email, "Lina Saleh", tenantAdmin = false, inviterName = "Admin") }
+        val invitation = outbox.token(outbox.last(tenant, "INVITATION", email))
+
+        val resetElsewhere =
+            mvc.postJson(other, "/api/v1/auth/password-reset/complete", null, """{"token":"$reset","newPassword":"${aPassword()}"}""")
+        assertThat(resetElsewhere).bodyJson().extractingPath("$.errors[0].code").isEqualTo("INVALID")
+        assertThat(mvc.postJson(other, "/api/v1/auth/invitations/lookup", null, """{"token":"$invitation"}""")).hasStatus(
+            HttpStatus.NOT_FOUND,
+        )
+
+        // Both links are still good at home: the attempt on the other host consumed nothing.
+        assertThat(mvc.postJson(tenant, "/api/v1/auth/invitations/lookup", null, """{"token":"$invitation"}""")).hasStatus(HttpStatus.OK)
+        assertThat(completeReset(reset, aPassword())).hasStatus(HttpStatus.NO_CONTENT)
+    }
+
+    @Test
     fun `a new invitation link retires the old one`() {
         val email = "again-${UUID.randomUUID().toString().take(8)}@bank.example"
         val invited =
@@ -195,6 +217,7 @@ class RecoveryIT : IntegrationTest() {
         assertThat(mvc.postJson(tenant, "/api/v1/auth/invitations/lookup", null, """{"token":"$first"}""")).hasStatus(HttpStatus.NOT_FOUND)
         val second = outbox.token(outbox.last(tenant, "INVITATION", email))
         assertThat(mvc.postJson(tenant, "/api/v1/auth/invitations/lookup", null, """{"token":"$second"}""")).hasStatus(HttpStatus.OK)
+        Audit.assertAudited(tenant.id, "identity.user.invitation_resent", invited.id.toString())
     }
 
     @Test

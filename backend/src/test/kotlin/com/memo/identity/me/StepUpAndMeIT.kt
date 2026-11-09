@@ -126,7 +126,8 @@ class StepUpAndMeIT : IntegrationTest() {
 
     @Test
     fun `users with MFA step up with a code before new recovery codes`() {
-        val (_, secret, cookie) = totpUser()
+        val (user, secret, cookie) = totpUser()
+        Audit.assertAudited(strict.id, "identity.session.factor_added", user.id.toString(), user.id.toString())
         ageSessionFactors(cookie)
 
         assertThat(mvc.postJson(strict, "/api/v1/me/recovery-codes", cookie)).hasStatus(HttpStatus.UNAUTHORIZED)
@@ -138,6 +139,7 @@ class StepUpAndMeIT : IntegrationTest() {
         val codes = mvc.postJson(strict, "/api/v1/me/recovery-codes", confirmed.sessionCookie(cookie))
         assertThat(codes).hasStatus(HttpStatus.OK)
         assertThat(codes).bodyJson().extractingPath("$.recoveryCodes.length()").isEqualTo(10)
+        Audit.assertAudited(strict.id, "identity.user.recovery_codes_regenerated", user.id.toString(), user.id.toString())
     }
 
     @Test

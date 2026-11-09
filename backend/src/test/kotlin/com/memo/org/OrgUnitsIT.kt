@@ -147,6 +147,7 @@ class OrgUnitsIT : IntegrationTest() {
         val desk = tree.create(tree.branch.id, "Desk", branchAdmin)
         assertThat(desk.parentId).isEqualTo(tree.branch.id)
         asUser(branchAdmin) { units.updateUnit(tree.north.id, tree.north.version, tree.north.code, "North region (renamed)") }
+        Audit.assertAudited(tenant.id, "org.unit.updated", tree.north.id.toString(), branchAdmin.id.toString())
 
         assertThatThrownBy { tree.create(tree.south.id, "Outside", branchAdmin) }.isInstanceOf(ForbiddenException::class.java)
         assertThatThrownBy { tree.create(null, "New root", branchAdmin) }.isInstanceOf(ForbiddenException::class.java)

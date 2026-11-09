@@ -22,9 +22,9 @@ internal object FileNames {
                 .substringAfterLast('\\')
                 .replace(UNSAFE, "")
                 .replace(SPACES, " ")
-                .trim()
-                .trim('.')
-        val name = base.ifEmpty { "file.$fallbackExtension" }
+                // Together: ". ." trimmed in two steps would leave a blank name (found by fuzzing).
+                .trim { it.isWhitespace() || it == '.' }
+        val name = base.ifBlank { "file.$fallbackExtension" }
         return if (name.length <= MAX_LENGTH) name else shorten(name)
     }
 

@@ -1,5 +1,6 @@
 plugins {
     id("memo.spring-boot")
+    alias(libs.plugins.pitest)
 }
 
 // jOOQ classes generated from the migrated schema and committed (ADR-0007); refreshed by `updateJooq`.
@@ -126,4 +127,17 @@ tasks.withType<Test>().configureEach {
     inputs.dir(repoRoot.dir("deploy/db")).withPathSensitivity(PathSensitivity.RELATIVE)
     inputs.dir(repoRoot.dir("deploy/seaweedfs")).withPathSensitivity(PathSensitivity.RELATIVE)
     inputs.files(repoRoot.file("contracts/openapi.json")).withPathSensitivity(PathSensitivity.RELATIVE).optional()
+}
+
+// Mutation testing (TESTING_STRATEGY §4): nightly, on the pure cores of critical modules. Starts with the workflow engine
+// (Phase 2 E01); authz, audit and numbering join as their logic moves into pure packages.
+pitest {
+    pitestVersion = libs.versions.pitest.core
+    junit5PluginVersion = libs.versions.pitest.junit5
+    targetClasses.set(listOf("com.memo.workflow.engine.*"))
+    targetTests.set(listOf("com.memo.workflow.engine.*"))
+    threads.set(4)
+    outputFormats.set(listOf("HTML", "XML"))
+    timestampedReports.set(false)
+    mutationThreshold.set(70)
 }

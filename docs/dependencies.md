@@ -37,6 +37,9 @@ Column meanings:
 | jOOQ codegen + meta | 3.21.7 (Boot-managed) | Apache-2.0 | dev-only | Generates committed jOOQ sources in `JooqCodegenTest` (ADR-0007) | active | jOOQ Gradle plugin at compile time |
 | jqwik | 1.10.2 | EPL-2.0 | dev-only | Property-based and stateful tests (ADR-0008) | 2026-10-10; one main maintainer (accepted, dev-only) | Kotest property |
 | Jazzer (`jazzer-junit`) | 0.30.0 | Apache-2.0 | dev-only | Coverage-guided fuzzing of the upload path: regression inputs in PR runs, time-boxed fuzzing nightly (TESTING_STRATEGY §3.6) | 2026-02-24; Code Intelligence, open source again after a pause in 2025; runs in OSS-Fuzz | JQF/Zest (less active); jqwik generators only (not coverage-guided) |
+| PIT (`pitest`) | 1.30.1 | Apache-2.0 | dev-only | Mutation testing of the pure cores of critical modules, nightly, threshold 70 % (TESTING_STRATEGY §4); starts with the workflow engine (Phase 2 E01) | 2026-10-14 (1.30.2 of 2026-11-05 skipped as too new); hcoles, steady releases since 2010 | Major (inactive); none other mature on the JVM |
+| PIT JUnit 5 plugin (`pitest-junit5-plugin`) | 1.2.3 | Apache-2.0 | dev-only | Runs JUnit 5 and jqwik tests under PIT | 2025-05-20; pitest organisation, releases when JUnit changes | — (required by PIT for JUnit 5) |
+| Gradle PIT plugin (`info.solidsoft.pitest`) | 1.19.0 | Apache-2.0 | dev-only | `pitest` Gradle task and configuration | 2026-03-29; szpak, the standard Gradle integration | A `JavaExec` task over the PIT command line (fallback if the plugin lags Gradle) |
 | JUnit Jupiter | 6.0.3 (Boot-managed) | EPL-2.0 | dev-only | Test framework | active | — |
 | AssertJ | 3.27.7 (Boot-managed) | Apache-2.0 | dev-only | Assertions | active | Kotest assertions (decided in E02, ADR-TL) |
 | MockK | 1.14.11 | Apache-2.0 | dev-only | Mocks at boundaries only | 2026-05; active | Mockito-Kotlin |

@@ -41,6 +41,13 @@ import com.memo.jooq.tables.TenancySetting
 import com.memo.jooq.tables.TenancySettingView
 import com.memo.jooq.tables.TenancyTenant
 import com.memo.jooq.tables.TenancyTerm
+import com.memo.jooq.tables.WorkflowAction
+import com.memo.jooq.tables.WorkflowDefinition
+import com.memo.jooq.tables.WorkflowDefinitionVersion
+import com.memo.jooq.tables.WorkflowInstance
+import com.memo.jooq.tables.WorkflowRound
+import com.memo.jooq.tables.WorkflowStep
+import com.memo.jooq.tables.WorkflowTask
 
 
 
@@ -223,3 +230,38 @@ val TENANCY_TENANT: TenancyTenant = TenancyTenant.TENANCY_TENANT
  * The table <code>memo.tenancy_term</code>.
  */
 val TENANCY_TERM: TenancyTerm = TenancyTerm.TENANCY_TERM
+
+/**
+ * The table <code>memo.workflow_action</code>.
+ */
+val WORKFLOW_ACTION: WorkflowAction = WorkflowAction.WORKFLOW_ACTION
+
+/**
+ * The table <code>memo.workflow_definition</code>.
+ */
+val WORKFLOW_DEFINITION: WorkflowDefinition = WorkflowDefinition.WORKFLOW_DEFINITION
+
+/**
+ * The table <code>memo.workflow_definition_version</code>.
+ */
+val WORKFLOW_DEFINITION_VERSION: WorkflowDefinitionVersion = WorkflowDefinitionVersion.WORKFLOW_DEFINITION_VERSION
+
+/**
+ * The table <code>memo.workflow_instance</code>.
+ */
+val WORKFLOW_INSTANCE: WorkflowInstance = WorkflowInstance.WORKFLOW_INSTANCE
+
+/**
+ * The table <code>memo.workflow_round</code>.
+ */
+val WORKFLOW_ROUND: WorkflowRound = WorkflowRound.WORKFLOW_ROUND
+
+/**
+ * The table <code>memo.workflow_step</code>.
+ */
+val WORKFLOW_STEP: WorkflowStep = WorkflowStep.WORKFLOW_STEP
+
+/**
+ * The table <code>memo.workflow_task</code>.
+ */
+val WORKFLOW_TASK: WorkflowTask = WorkflowTask.WORKFLOW_TASK

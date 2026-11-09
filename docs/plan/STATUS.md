@@ -17,7 +17,8 @@
 - [x] E01 plan written (2026-11-09): research, ADR-0034 to ADR-0036, design, threat model, tasks, test plan, screen flows (`epic-01-first-slice/`)
 - [x] E01 screen flows approved by the owner (2026-11-09, as planned)
 - [x] E01 T1 engine core (pure transition function, property tests, PIT nightly at 90 %)
-- [ ] E01 T2–T11 (current: T2 workflow persistence and service)
+- [x] E01 T2 workflow tables and service
+- [ ] E01 T3–T11 (current: T3 memo types and drafts)
 
 ## State (Phase 1a, closed)
 - [x] Overview approved (2026-10-18), Q1–Q8 answered, per-epic gate delegated
@@ -28,7 +29,7 @@
 - [ ] Owner demo, moderated usability walkthrough, manual keyboard and screen-reader pass (carried)
 
 ## Next step
-1. Agent: E01 T2 (workflow tables and service) on `feat/2-e01-first-slice`, then T3–T8 (backend), T9 (screens), T10 (demo, matrix, E2E, D1 script), T11.
+1. Agent: E01 T3 (memo types and drafts) on `feat/2-e01-first-slice`, then T4–T8 (backend), T9 (screens), T10 (demo, matrix, E2E, D1 script), T11.
 2. Owner: upgrade the dev VM to 16 GB before E02 (ONLYOFFICE on dev).
 3. Before 2026-11-22: take the rebuilt distroless digest from Renovate and delete the zlib entries in `.trivyignore`.
 4. Follow-ups (retrospective "Carried"): `AuditPerformanceIT`, `NotificationPerformanceIT`, the full-signature ClamAV corpus nightly, sample bodies for the remaining mutating matrix cells, upstream clean-ups (`apk upgrade` lines, Spring Session licence exceptions, Guava pin), Spring Boot 4.2 GA.

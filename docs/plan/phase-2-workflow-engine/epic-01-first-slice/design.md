@@ -240,6 +240,8 @@ Response of an action: the memo view (new status, allowed actions), so the clien
 **Matrix** (`p2-e01-memo.yaml`): every endpoint × {anonymous, partial session, initiator, current approver, earlier approver, later approver (not yet reached), uninvolved user, uncleared participant (clearance lowered), tenant admin (not participant), auditor, deactivated session, other-tenant admin} → allow / 401 / 403 / 404. Visible-but-not-allowed actions answer `403`; invisible memos answer `404`.
 
 ## 7. Audit events
+Submit, resubmit and withdraw are audited once, by the workflow module (T2), not again by the memo; the memo audits only its own changes.
+
 
 | Action | Object | Before / after |
 |---|---|---|
@@ -248,8 +250,7 @@ Response of an action: the memo view (new status, allowed actions), so the clien
 | `memo.updated` | memo | changed field names; classification before/after |
 | `memo.route.updated` | memo | approver ids before/after |
 | `memo.discarded` | memo | — |
-| `memo.submitted`, `memo.resubmitted` | memo | round, document version id + SHA-256, approver ids |
-| `memo.withdrawn` | memo | round |
+| `workflow.instance.started`, `workflow.instance.resubmitted`, `workflow.instance.withdrawn` | instance (with subject type and id) | round, subject snapshot (document version id + SHA-256) |
 | `workflow.task.approved`, `workflow.task.returned`, `workflow.task.rejected` | task (with instance and subject ids) | round, document version id + SHA-256, step-up age |
 | `workflow.task.reassigned` | task | from, to, reason length (reason text in the action row) |
 | `workflow.task.blocked` | task | reason code |

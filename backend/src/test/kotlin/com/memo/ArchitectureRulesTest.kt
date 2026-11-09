@@ -77,7 +77,7 @@ class ArchitectureRulesTest {
     @Test
     fun `generated jOOQ tables are only used by their owning module`() {
         // Table classes are named after the table, which is prefixed with the owning module (ADR-0006).
-        val tableModules = mapOf("Tenancy" to "tenancy", "System" to "system", "Audit" to "audit")
+        val tableModules = mapOf("Tenancy" to "tenancy", "System" to "system", "Audit" to "audit", "Workflow" to "workflow")
         tableModules.forEach { (prefix, module) ->
             noClasses()
                 .that()

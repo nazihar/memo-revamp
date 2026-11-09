@@ -17,3 +17,6 @@ enum class ActionKind { SUBMIT, APPROVE, RETURN, REJECT, WITHDRAW, RESUBMIT, REA
 
 /** Why a task was created but cannot be acted on until a tenant admin reassigns it (design E01 §2, invariant 12). */
 enum class BlockedReason { NO_CLEARANCE, INACTIVE }
+
+/** How a task stopped being open, as published in [WorkflowTaskClosed]. */
+enum class TaskClosure { COMPLETED, CANCELLED, REASSIGNED }

@@ -124,6 +124,25 @@ Creating opens the memo view in **Draft**, where the document and the approvers 
 ```
 Reassign asks for the new approver (picker, same checks) and a reason, then the authenticator code. Both people are notified. The admin sees the memo's subject only if they are cleared for its classification; otherwise "Restricted item".
 
+## 7a. On a phone (approvers)
+
+```
+┌ ← Budget transfer for Q4 …┐   ┌ Inbox ───────────────────┐
+│ In review · round 2       │   │ My tasks 4 │ Drafts │ Sent│
+│ From Karim H. · today     │   │ ● Budget transfer for Q4 │
+│ ┌───────────────────────┐ │   │   Karim H. · round 1 · 09:12
+│ │ budget-transfer.docx  │ │   │ ● Branch renovation, …   │
+│ │ v2 · [Download]       │ │   │   Sara M. · round 2 · yday│
+│ └───────────────────────┘ │   │   Vendor contract renewal│
+│ Route: ✓ Karim · ● You ·  │   │   Omar T. · round 1 · 3 d │
+│        ○ Leila            │   └──────────────────────────┘
+│ ▸ History (2 rounds)      │
+├───────────────────────────┤
+│ [Return] [Reject] [Approve]│  ← fixed at the bottom, large buttons
+└───────────────────────────┘
+```
+Approvers can act from a phone browser before the approver app exists (Phase 6a). Dialogs open full-screen; the authenticator prompt works the same way.
+
 ## 8. Questions for the owner
 1. **Layout:** document and history on the left, approvers on the right (stacked on a phone). OK?
 2. **Inbox tabs:** My tasks, Drafts, Sent, Closed. Anything missing for D1?

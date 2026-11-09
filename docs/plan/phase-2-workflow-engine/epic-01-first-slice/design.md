@@ -302,6 +302,7 @@ Wireframes and the walkthrough are in [ux-review.md](ux-review.md) and go to the
 - Server state only through the generated TanStack Query options. Action dialogs create the `Idempotency-Key` when they open (a double submit replays; a second device conflicts). After any action the memo query is replaced by the response; the inbox and the notification count are invalidated.
 - The existing step-up handling answers `401 step-up-required` with the TOTP dialog and retries the action with the same key.
 - The approver picker reuses the E04 people picker (users only), and shows at once why someone cannot be chosen (not cleared, inactive, yourself).
+- **Phone-friendly approval pages** (overview, benchmark follow-up): the inbox, the memo view and the action dialogs work from 360 px wide. Below the medium breakpoint the memo view stacks (status and action bar, document, route, history); the action bar is fixed at the bottom with targets of at least 44 × 44 px; dialogs become full-screen sheets; the inbox rows become two-line cards. The route editor and the admin screens only need to be usable on a phone, not optimised for it.
 
 ## 15. Demo tenant
 - "General memo" type on `sequential-approval`, step-up on.

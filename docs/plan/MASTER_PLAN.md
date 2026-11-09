@@ -301,7 +301,7 @@ Sequencing rules:
 **Scope**
 - **Federated identity:** per-tenant OIDC, SAML 2.0 and LDAP configuration (dynamic relying-party registrations from the database); group-to-role mapping; just-in-time provisioning; WebAuthn/passkeys.
 - **Mobile token issuer:** Spring Authorization Server inside the backend (authorization code + PKCE, device-bound rotating refresh tokens), federating to the tenant's IdP. Needed by Phase 6a.
-- **Organization (full):** additional and acting assignments with dates, delegation (time-boxed, scoped, recorded as "acting for"), bulk import from CSV/Excel, and **scheduled org synchronization from HR systems** (file drop or API, with a dry-run diff and approval before applying).
+- **Organization (full):** additional and acting assignments with dates, delegation (time-boxed, scoped, recorded as "acting for"), including **self-service out-of-office substitution** (a user names their substitute and the dates; admins can set it for others), bulk import from CSV/Excel, and **scheduled org synchronization from HR systems** (file drop or API, with a dry-run diff and approval before applying).
 - **Keys:** KMS/HSM key provider (self-hosted option such as OpenBao, cloud KMS, or PKCS#11 HSM — decide by ADR), key rotation, crypto-shredding on tenant offboarding.
 - **Tenant lifecycle completion:** export and offboarding.
 - **Break-glass operator access:** customer-approved, time-boxed, fully audited support access, visible to the tenant's admins.
@@ -343,7 +343,7 @@ The most common real-world case must work end to end, with no admin setup, befor
 Minimal memo screens (create, inbox, memo view with history grouped by round) are built here and reused/extended by Phase 3. In-browser ONLYOFFICE editing is the last task of this slice; upload/replace of .docx comes first.
 
 **Scope (full engine, built on top of the first slice)**
-- **Definition model** (versioned JSON, validated by schema): step types (review, approve, sign, notify, parallel all/any/n-of-m, conditional branch, escalate-to-forum, sub-workflow), allowed actions per step (approve, reject, return to originator, return to a previous step, forward with remark, seek clarification, delegate), SLA per step with reminder and escalation policies.
+- **Definition model** (versioned JSON, validated by schema): step types (review, approve, sign, notify, parallel all/any/n-of-m, conditional branch, escalate-to-forum, sub-workflow), allowed actions per step (approve, reject, return to originator, return to a previous step, forward with remark, seek clarification, refer for opinion, delegate), SLA per step with reminder and escalation policies.
 - **Rounds and resubmission policy:** a returned item resubmits into the same instance as a new round. Per-definition policy: `restart from first step` (default, and the only policy in the first slice), `resume from the returning step`, or `restart but skip steps whose approvers saw an unchanged document version`. Approvals from earlier rounds remain in history but never count toward the current round.
 - **Initiator-defined routes (extended):** parallel groups, positions instead of named people, restriction to an allowed approver list, and automatic validation against DoA rules (e.g. a required approver must be in the route before submission is allowed).
 - **Assignee resolvers:** position; relative (initiator's supervisor, N levels up, unit head); role within unit; DoA rule lookup (attribute-based thresholds); forum (secretariat queue); explicit person chosen by the initiator (governed by memo-type policy).
@@ -353,6 +353,7 @@ Minimal memo screens (create, inbox, memo view with history grouped by round) ar
 - **Ad-hoc routing mode:** free forwarding within constraints (allowed units/levels), mixed with fixed skeleton steps.
 - **Scheduling:** SLA timers, reminders and escalations via db-scheduler; business calendars (tenant working days, holidays, time zones).
 - **DoA rules management:** UI to maintain the delegation-of-authority matrix; simulator ("for this memo type, amount and unit, who approves?").
+- **Separation of duties and conflict of interest:** tenant rules checked at route validation and task creation (no self-approval, one approval per person per round, declared interests exclude an approver, prepare and approve by different people per memo type); decisions audited.
 - **Visual builder:** React Flow based editor with validation, preview and simulation; diff between versions.
 - **Events:** published for other modules (task created, step completed, instance completed/rejected, escalated).
 

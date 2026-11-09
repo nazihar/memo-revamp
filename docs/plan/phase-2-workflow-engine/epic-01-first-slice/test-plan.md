@@ -26,7 +26,8 @@ New: the `workflow` module (engine core, tables, service, events), the `memo` mo
 | T7 | Performance | `MemoPerformanceIT` (design §10 budgets with 2× headroom; query counts) | PR |
 | T8 | Unit / integration | `WorkflowNotificationsIT` (each kind to the right recipients), `WorkflowMailContentTest` (no subject or remark text in email subject or body; Arabic renders) | PR |
 | T9 | Component | Vitest + Testing Library: route editor (add, reorder with ↑ ↓ by keyboard, remove, reasons shown), action dialogs (remark required, key created on open, retry after step-up keeps the key), history by round | PR |
-| T9 | Accessibility / visual | axe on every new screen, light/dark, LTR/RTL; visual baselines; pseudo-locale overflow | PR |
+| T9 | Accessibility / visual | axe on every new screen, light/dark, LTR/RTL; visual baselines at desktop and phone width (390 px); pseudo-locale overflow; target size ≥ 44 px on the phone action bar | PR |
+| T10 | E2E (phone) | `memo-approve-phone.spec.ts`: an approver opens a task from the inbox, approves with step-up and returns another, in a phone viewport (Playwright device profile) | PR |
 | T10 | E2E | `memo-first-slice.spec.ts` (the D1 journey with three signed-in users), `memo-reassign.spec.ts`; Chromium every PR, Firefox nightly | PR, nightly |
 | all | Audit | `WorkflowAuditIT`: each new action asserted (`AuditActionCoverageTest` enforces it); actor, session, document hash, step-up age present; no subject or remark text in audit `before/after` | PR |
 | all | Cross-tenant | `CrossTenantMemoIT` (memos, tasks, history, documents of tenant A invisible from B; B's admin cannot reassign A's task) | PR |

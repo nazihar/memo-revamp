@@ -9,7 +9,7 @@
 - **Next phase not started:** Phase 1b (enterprise identity and organisation) and Phase 2 (workflow engine) may run in parallel (MASTER_PLAN); the owner chooses where to start, then the agent writes that phase's overview for approval.
 - **Dev environment:** https://dev.memo-revamp.naziharitsolution.com and the operator console https://admin.dev.memo-revamp.naziharitsolution.com on the VM 123.176.58.175. It deploys automatically after every green `ci` run on `master`. The owner's operator account is enrolled.
 - **Phase 0:** done (`docs/plan/phase-0-foundations/`). **Release:** `v0.1.0` (2026-10-15). **Product name:** `memo` everywhere except the repository name (A1).
-- **Branches:** `master` holds PRs #1–#30; `docs/phase-1a-close` carries the phase close (tests and docs).
+- **Branches:** `master` holds PRs #1–#31; `fix/fuzz-blank-file-name` is PR #32.
 
 ## State (Phase 1a)
 - [x] Overview approved (2026-10-18), Q1–Q8 answered, per-epic gate delegated
@@ -21,11 +21,12 @@
 
 ## Next step
 1. Owner: choose the next phase (1b enterprise identity, 2 workflow engine, or both in parallel). The agent then writes its overview for approval.
-2. Confirm the hand-started nightly on master is green (it covers the PR #30 fixes: fuzzing and Helm on kind).
+2. PR #32 (owner go-ahead to merge, CI green): the hand-started nightly confirmed the Helm fix, and Jazzer found a blank upload name from dots and spaces; fixed with a stored regression input. The next nightly should be fully green.
 3. Before 2026-11-22: take the rebuilt distroless digest from Renovate and delete the zlib entries in `.trivyignore`.
 4. Follow-ups (retrospective "Carried"): `AuditPerformanceIT`, `NotificationPerformanceIT`, the full-signature ClamAV corpus nightly, sample bodies for the remaining mutating matrix cells, upstream clean-ups (`apk upgrade` lines, Spring Session licence exceptions, Guava pin), Spring Boot 4.2 GA.
 
 ## Waiting for human
+- **PR #32 merge:** fuzz finding (blank upload name), CI green.
 - **Next phase:** 1b, 2, or both in parallel.
 - **Carried from Phase 1a (in person, no rush):** the demo (`docs/plan/phase-1a-minimum-core/demo.md`), a moderated usability walkthrough (login + MFA, org editing, tenant administration) and a manual keyboard + screen-reader pass (NVDA or VoiceOver), including the E01 patterns gallery (`pnpm dev`, `/patterns`).
 - **VM memory:** 7.8 GB is enough for dev with ClamAV (965 MiB after three days; 5.2 GB available). Staging and ONLYOFFICE as well need 16 GB.

@@ -8,6 +8,7 @@ import java.io.InputStream
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.channels.SeekableByteChannel
+import java.util.MissingResourceException
 import javax.xml.stream.XMLInputFactory
 import javax.xml.stream.XMLStreamConstants
 import javax.xml.stream.XMLStreamException
@@ -138,6 +139,9 @@ internal object ZipInspector {
         return try {
             input.use { contentTypes(factory.createXMLStreamReader(it)) }
         } catch (e: XMLStreamException) {
+            reject(RejectionReason.MALFORMED, "problem" to "content-types", cause = e)
+        } catch (e: MissingResourceException) {
+            // The JDK's StAX scanner reports some DTD errors under message keys its bundle lacks (found by fuzzing).
             reject(RejectionReason.MALFORMED, "problem" to "content-types", cause = e)
         } catch (e: IOException) {
             reject(RejectionReason.LIMIT_EXCEEDED, "limit" to "content-types", cause = e)

@@ -26,7 +26,7 @@
 - [x] E01 T8 workflow notifications
 - [x] E01 T9 memo screens (desktop and phone layouts)
 - [x] E01 T10 demo memos, matrix, first-slice E2E journey, D1 script (`epic-01-first-slice/demo.md`)
-- [ ] E01 T11 close (current: CI green on PR #34, visual baselines, owner's D1 demo)
+- [ ] E01 T11 close (CI green on PR #34, 2026-11-10; left: visual baselines for the memo screens, the owner's D1 demo)
 
 ## State (Phase 1a, closed)
 - [x] Overview approved (2026-10-18), Q1–Q8 answered, per-epic gate delegated
@@ -37,11 +37,11 @@
 - [ ] Owner demo, moderated usability walkthrough, manual keyboard and screen-reader pass (carried)
 
 ## Next step
-1. Agent: get PR #34 green (backend, web, E2E), then close E01 (T11: visual baselines for the memo screens, retrospective notes, epic log).
-2. Owner: merge PR #34 when green; then the D1 demo on dev (`phase-2-workflow-engine/epic-01-first-slice/demo.md`).
-2. Owner: upgrade the dev VM to 16 GB before E02 (ONLYOFFICE on dev).
-3. Before 2026-11-22: take the rebuilt distroless digest from Renovate and delete the zlib entries in `.trivyignore`.
-4. Follow-ups (retrospective "Carried"): `AuditPerformanceIT`, `NotificationPerformanceIT`, the full-signature ClamAV corpus nightly, sample bodies for the remaining mutating matrix cells, upstream clean-ups (`apk upgrade` lines, Spring Session licence exceptions, Guava pin), Spring Boot 4.2 GA.
+1. Agent: after the merge, visual baselines for the memo screens (Linux, Playwright image), then E02 planning.
+2. Owner: merge PR #34 (all checks green); then the D1 demo on dev (`phase-2-workflow-engine/epic-01-first-slice/demo.md`).
+3. Owner: upgrade the dev VM to 16 GB before E02 (ONLYOFFICE on dev).
+4. Before 2026-11-22: take the rebuilt distroless digest from Renovate and delete the zlib entries in `.trivyignore`.
+5. Follow-ups (retrospective "Carried"): `AuditPerformanceIT`, `NotificationPerformanceIT`, the full-signature ClamAV corpus nightly, sample bodies for the remaining mutating matrix cells, upstream clean-ups (`apk upgrade` lines, Spring Session licence exceptions, Guava pin), Spring Boot 4.2 GA.
 
 ## Waiting for human
 - **Dev VM to 16 GB** (Phase 2 Q2) before E02: ONLYOFFICE joins dev then. Today 7.8 GB runs dev with ClamAV (965 MiB after three days).

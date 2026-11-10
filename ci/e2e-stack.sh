@@ -14,13 +14,16 @@ case "${1:-start}" in
     node "$ROOT/scripts/dev.mjs" up --core
     eval "$(node "$ROOT/scripts/dev.mjs" env --core | sed 's/^/export /')"
     docker rm -f memo-e2e-clamd >/dev/null 2>&1 || true
-    # An argument starting with "-" makes the image's /init run clamd directly, without downloading signatures.
-    docker run -d --name memo-e2e-clamd --env-file "$ROOT/deploy/clamav/clamd.env" -p 127.0.0.1:3310:3310 \
-      -v "$SIGNATURES/memo-test.hdb:/var/lib/clamav/memo-test.hdb:ro" \
-      -v "$SIGNATURES/memo-test.ndb:/var/lib/clamav/memo-test.ndb:ro" \
+    # An argument starting with "-" makes the image's /init run clamd directly, without downloading signatures. The
+    # database files are copied in, not mounted: /init changes their owner.
+    docker create --name memo-e2e-clamd --env-file "$ROOT/deploy/clamav/clamd.env" -p 127.0.0.1:3310:3310 \
       clamav/clamav:1.5.4_base --foreground >/dev/null
+    docker cp "$SIGNATURES/memo-test.hdb" memo-e2e-clamd:/var/lib/clamav/memo-test.hdb
+    docker cp "$SIGNATURES/memo-test.ndb" memo-e2e-clamd:/var/lib/clamav/memo-test.ndb
+    docker start memo-e2e-clamd >/dev/null
+    # The published port accepts connections before clamd listens; ask clamd itself, as the Compose health check does.
     for _ in $(seq 1 60); do
-      if (echo >/dev/tcp/127.0.0.1/3310) 2>/dev/null; then break; fi
+      if docker exec memo-e2e-clamd clamdcheck.sh >/dev/null 2>&1; then break; fi
       sleep 2
     done
     export MEMO_CLAMAV_HOST=localhost MEMO_CLAMAV_PORT=3310

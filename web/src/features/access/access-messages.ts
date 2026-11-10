@@ -116,6 +116,12 @@ export const catalogue = defineMessages({
     id: 'access.permission.notificationSettings',
     defaultMessage: 'Manage email delivery',
   },
+  'memo.create': { id: 'access.permission.memoCreate', defaultMessage: 'Write and submit memos' },
+  'memo.types.manage': { id: 'access.permission.memoTypes', defaultMessage: 'Manage memo types' },
+  'workflow.tasks.reassign': {
+    id: 'access.permission.workflowTasksReassign',
+    defaultMessage: 'Reassign approval tasks',
+  },
 })
 
 export function catalogueLabel(intl: IntlShape, key: string, fallback?: string): string {

@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { acceptInvitation, acceptPlatformEnrolment, assignPosition, cancelAssignment, cancelReportingLine, changeMyPassword, closeLegalEntity, closeOrgUnit, closePosition, completePasswordReset, confirmMfaEnrolment, confirmPlatformMfaEnrolment, createClassificationLevel, createLegalEntity, createOrgUnit, createPlatformTenant, createPosition, createReportingLine, createRole, deactivateUser, deleteClassificationLevel, deleteRole, exportAudit, getAdminBranding, getBranding, getBrandingLogo, getCsrfToken, getFile, getFileContent, getFileVersionContent, getHealth, getMailLog, getMailSettings, getMe, getMyAccess, getMyNotificationPreferences, getMyUnreadCount, getOrgHistory, getOrgUnit, getPlatformCsrfToken, getPlatformSession, getPlatformTenant, getPosition, getPositionHolder, getSecuritySettings, getSession, getTenantPreferences, getTerms, getUser, getUserAccess, grantRole, invitePlatformTenantFirstAdmin, inviteUser, listClassificationLevels, listLegalEntities, listMyNotifications, listMySessions, listOrgUnits, listPermissions, listPlatformTenants, listRoles, listUnitPositions, listUserAssignments, listUsers, login, logout, lookUpInvitation, lookUpPlatformEnrolment, markAllNotificationsRead, markNotificationRead, moveOrgUnit, type Options, platformLogin, platformLogout, platformStepUp, queryAudit, queryPlatformAudit, reactivateUser, regenerateMyRecoveryCodes, removeMailSettings, renameClassificationLevel, renamePlatformTenant, reorderClassificationLevels, requestPasswordReset, resetUserMfa, resumePlatformTenant, revokeGrant, revokeMySession, revokeUserSessions, searchDirectory, setClearance, setMailSettings, setMyNotificationPreferences, startMfaEnrolment, startPlatformMfaEnrolment, stepUp, suspendPlatformTenant, testMailSettings, unlockUser, updateAssignment, updateBranding, updateLegalEntity, updateOrgUnit, updatePosition, updateReportingLine, updateRole, updateSecuritySettings, updateTenantPreferences, updateTerms, uploadFile, uploadFileVersion, verifyMfa, verifyPlatformMfa } from '../sdk.gen';
-import type { AcceptInvitationData, AcceptInvitationError, AcceptInvitationResponse, AcceptPlatformEnrolmentData, AcceptPlatformEnrolmentError, AcceptPlatformEnrolmentResponse, AssignPositionData, AssignPositionResponse, CancelAssignmentData, CancelAssignmentResponse, CancelReportingLineData, CancelReportingLineResponse, ChangeMyPasswordData, ChangeMyPasswordError, ChangeMyPasswordResponse, CloseLegalEntityData, CloseLegalEntityResponse, CloseOrgUnitData, CloseOrgUnitResponse, ClosePositionData, ClosePositionResponse, CompletePasswordResetData, CompletePasswordResetError, CompletePasswordResetResponse, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentError, ConfirmMfaEnrolmentResponse, ConfirmPlatformMfaEnrolmentData, ConfirmPlatformMfaEnrolmentError, ConfirmPlatformMfaEnrolmentResponse, CreateClassificationLevelData, CreateClassificationLevelResponse, CreateLegalEntityData, CreateLegalEntityResponse, CreateOrgUnitData, CreateOrgUnitResponse, CreatePlatformTenantData, CreatePlatformTenantError, CreatePlatformTenantResponse, CreatePositionData, CreatePositionResponse, CreateReportingLineData, CreateReportingLineResponse, CreateRoleData, CreateRoleResponse, DeactivateUserData, DeactivateUserResponse, DeleteClassificationLevelData, DeleteRoleData, ExportAuditData, ExportAuditError, ExportAuditResponse, GetAdminBrandingData, GetAdminBrandingResponse, GetBrandingData, GetBrandingLogoData, GetBrandingResponse, GetCsrfTokenData, GetCsrfTokenResponse, GetFileContentData, GetFileData, GetFileResponse, GetFileVersionContentData, GetHealthData, GetHealthError, GetHealthResponse, GetMailLogData, GetMailLogResponse, GetMailSettingsData, GetMailSettingsResponse, GetMeData, GetMeResponse, GetMyAccessData, GetMyAccessResponse, GetMyNotificationPreferencesData, GetMyNotificationPreferencesResponse, GetMyUnreadCountData, GetMyUnreadCountResponse, GetOrgHistoryData, GetOrgHistoryResponse, GetOrgUnitData, GetOrgUnitResponse, GetPlatformCsrfTokenData, GetPlatformCsrfTokenResponse, GetPlatformSessionData, GetPlatformSessionResponse, GetPlatformTenantData, GetPlatformTenantResponse, GetPositionData, GetPositionHolderData, GetPositionHolderResponse, GetPositionResponse, GetSecuritySettingsData, GetSecuritySettingsResponse, GetSessionData, GetSessionResponse, GetTenantPreferencesData, GetTenantPreferencesResponse, GetTermsData, GetTermsResponse, GetUserAccessData, GetUserAccessResponse, GetUserData, GetUserResponse, GrantRoleData, GrantRoleResponse, InvitePlatformTenantFirstAdminData, InvitePlatformTenantFirstAdminError, InvitePlatformTenantFirstAdminResponse, InviteUserData, InviteUserError, InviteUserResponse, ListClassificationLevelsData, ListClassificationLevelsResponse, ListLegalEntitiesData, ListLegalEntitiesResponse, ListMyNotificationsData, ListMyNotificationsResponse, ListMySessionsData, ListMySessionsResponse, ListOrgUnitsData, ListOrgUnitsResponse, ListPermissionsData, ListPermissionsResponse, ListPlatformTenantsData, ListPlatformTenantsResponse, ListRolesData, ListRolesResponse, ListUnitPositionsData, ListUnitPositionsResponse, ListUserAssignmentsData, ListUserAssignmentsResponse, ListUsersData, ListUsersResponse, LoginData, LoginError, LoginResponse, LogoutData, LogoutResponse, LookUpInvitationData, LookUpInvitationError, LookUpInvitationResponse, LookUpPlatformEnrolmentData, LookUpPlatformEnrolmentError, MarkAllNotificationsReadData, MarkNotificationReadData, MoveOrgUnitData, MoveOrgUnitResponse, PlatformLoginData, PlatformLoginError, PlatformLoginResponse, PlatformLogoutData, PlatformLogoutResponse, PlatformStepUpData, PlatformStepUpError, PlatformStepUpResponse, QueryAuditData, QueryAuditResponse, QueryPlatformAuditData, QueryPlatformAuditResponse, ReactivateUserData, ReactivateUserResponse, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesResponse, RemoveMailSettingsData, RenameClassificationLevelData, RenameClassificationLevelResponse, RenamePlatformTenantData, RenamePlatformTenantResponse, ReorderClassificationLevelsData, ReorderClassificationLevelsResponse, RequestPasswordResetData, ResetUserMfaData, ResetUserMfaResponse, ResumePlatformTenantData, ResumePlatformTenantResponse, RevokeGrantData, RevokeMySessionData, RevokeMySessionResponse, RevokeUserSessionsData, RevokeUserSessionsResponse, SearchDirectoryData, SearchDirectoryResponse, SetClearanceData, SetClearanceResponse, SetMailSettingsData, SetMailSettingsResponse, SetMyNotificationPreferencesData, SetMyNotificationPreferencesResponse, StartMfaEnrolmentData, StartMfaEnrolmentResponse, StartPlatformMfaEnrolmentData, StartPlatformMfaEnrolmentError, StartPlatformMfaEnrolmentResponse, StepUpData, StepUpError, StepUpResponse, SuspendPlatformTenantData, SuspendPlatformTenantResponse, TestMailSettingsData, TestMailSettingsResponse, UnlockUserData, UnlockUserResponse, UpdateAssignmentData, UpdateAssignmentResponse, UpdateBrandingData, UpdateBrandingError, UpdateLegalEntityData, UpdateLegalEntityResponse, UpdateOrgUnitData, UpdateOrgUnitResponse, UpdatePositionData, UpdatePositionResponse, UpdateReportingLineData, UpdateReportingLineResponse, UpdateRoleData, UpdateRoleResponse, UpdateSecuritySettingsData, UpdateSecuritySettingsError, UpdateSecuritySettingsResponse, UpdateTenantPreferencesData, UpdateTenantPreferencesResponse, UpdateTermsData, UpdateTermsResponse, UploadFileData, UploadFileResponse, UploadFileVersionData, UploadFileVersionResponse, VerifyMfaData, VerifyMfaError, VerifyMfaResponse, VerifyPlatformMfaData, VerifyPlatformMfaError, VerifyPlatformMfaResponse } from '../types.gen';
+import { acceptInvitation, acceptPlatformEnrolment, approveTask, assignPosition, cancelAssignment, cancelReportingLine, changeMyPassword, closeLegalEntity, closeOrgUnit, closePosition, completePasswordReset, confirmMfaEnrolment, confirmPlatformMfaEnrolment, createClassificationLevel, createLegalEntity, createMemo, createMemoType, createOrgUnit, createPlatformTenant, createPosition, createReportingLine, createRole, deactivateUser, deleteClassificationLevel, deleteRole, discardMemo, exportAudit, getAdminBranding, getBranding, getBrandingLogo, getCsrfToken, getFile, getFileContent, getFileVersionContent, getHealth, getMailLog, getMailSettings, getMe, getMemo, getMemoHistory, getMyAccess, getMyNotificationPreferences, getMyUnreadCount, getOrgHistory, getOrgUnit, getPlatformCsrfToken, getPlatformSession, getPlatformTenant, getPosition, getPositionHolder, getSecuritySettings, getSession, getTenantPreferences, getTerms, getUser, getUserAccess, grantRole, invitePlatformTenantFirstAdmin, inviteUser, listAllMemoTypes, listClassificationLevels, listLegalEntities, listMemoTypes, listMyMemos, listMyNotifications, listMySessions, listMyTasks, listOpenTasks, listOrgUnits, listPermissions, listPlatformTenants, listRoles, listUnitPositions, listUserAssignments, listUsers, login, logout, lookUpInvitation, lookUpPlatformEnrolment, markAllNotificationsRead, markNotificationRead, moveOrgUnit, type Options, platformLogin, platformLogout, platformStepUp, queryAudit, queryPlatformAudit, reactivateUser, reassignTask, regenerateMyRecoveryCodes, rejectTask, removeMailSettings, renameClassificationLevel, renamePlatformTenant, reorderClassificationLevels, replaceMemoRoute, requestPasswordReset, resetUserMfa, resubmitMemo, resumePlatformTenant, returnTask, revokeGrant, revokeMySession, revokeUserSessions, searchDirectory, setClearance, setMailSettings, setMyNotificationPreferences, startMfaEnrolment, startPlatformMfaEnrolment, stepUp, submitMemo, suspendPlatformTenant, testMailSettings, unlockUser, updateAssignment, updateBranding, updateLegalEntity, updateMemo, updateMemoType, updateOrgUnit, updatePosition, updateReportingLine, updateRole, updateSecuritySettings, updateTenantPreferences, updateTerms, uploadFile, uploadFileVersion, verifyMfa, verifyPlatformMfa, withdrawMemo } from '../sdk.gen';
+import type { AcceptInvitationData, AcceptInvitationError, AcceptInvitationResponse, AcceptPlatformEnrolmentData, AcceptPlatformEnrolmentError, AcceptPlatformEnrolmentResponse, ApproveTaskData, ApproveTaskResponse, AssignPositionData, AssignPositionResponse, CancelAssignmentData, CancelAssignmentResponse, CancelReportingLineData, CancelReportingLineResponse, ChangeMyPasswordData, ChangeMyPasswordError, ChangeMyPasswordResponse, CloseLegalEntityData, CloseLegalEntityResponse, CloseOrgUnitData, CloseOrgUnitResponse, ClosePositionData, ClosePositionResponse, CompletePasswordResetData, CompletePasswordResetError, CompletePasswordResetResponse, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentError, ConfirmMfaEnrolmentResponse, ConfirmPlatformMfaEnrolmentData, ConfirmPlatformMfaEnrolmentError, ConfirmPlatformMfaEnrolmentResponse, CreateClassificationLevelData, CreateClassificationLevelResponse, CreateLegalEntityData, CreateLegalEntityResponse, CreateMemoData, CreateMemoResponse, CreateMemoTypeData, CreateMemoTypeResponse, CreateOrgUnitData, CreateOrgUnitResponse, CreatePlatformTenantData, CreatePlatformTenantError, CreatePlatformTenantResponse, CreatePositionData, CreatePositionResponse, CreateReportingLineData, CreateReportingLineResponse, CreateRoleData, CreateRoleResponse, DeactivateUserData, DeactivateUserResponse, DeleteClassificationLevelData, DeleteRoleData, DiscardMemoData, DiscardMemoResponse, ExportAuditData, ExportAuditError, ExportAuditResponse, GetAdminBrandingData, GetAdminBrandingResponse, GetBrandingData, GetBrandingLogoData, GetBrandingResponse, GetCsrfTokenData, GetCsrfTokenResponse, GetFileContentData, GetFileData, GetFileResponse, GetFileVersionContentData, GetHealthData, GetHealthError, GetHealthResponse, GetMailLogData, GetMailLogResponse, GetMailSettingsData, GetMailSettingsResponse, GetMeData, GetMemoData, GetMemoHistoryData, GetMemoHistoryResponse, GetMemoResponse, GetMeResponse, GetMyAccessData, GetMyAccessResponse, GetMyNotificationPreferencesData, GetMyNotificationPreferencesResponse, GetMyUnreadCountData, GetMyUnreadCountResponse, GetOrgHistoryData, GetOrgHistoryResponse, GetOrgUnitData, GetOrgUnitResponse, GetPlatformCsrfTokenData, GetPlatformCsrfTokenResponse, GetPlatformSessionData, GetPlatformSessionResponse, GetPlatformTenantData, GetPlatformTenantResponse, GetPositionData, GetPositionHolderData, GetPositionHolderResponse, GetPositionResponse, GetSecuritySettingsData, GetSecuritySettingsResponse, GetSessionData, GetSessionResponse, GetTenantPreferencesData, GetTenantPreferencesResponse, GetTermsData, GetTermsResponse, GetUserAccessData, GetUserAccessResponse, GetUserData, GetUserResponse, GrantRoleData, GrantRoleResponse, InvitePlatformTenantFirstAdminData, InvitePlatformTenantFirstAdminError, InvitePlatformTenantFirstAdminResponse, InviteUserData, InviteUserError, InviteUserResponse, ListAllMemoTypesData, ListAllMemoTypesResponse, ListClassificationLevelsData, ListClassificationLevelsResponse, ListLegalEntitiesData, ListLegalEntitiesResponse, ListMemoTypesData, ListMemoTypesResponse, ListMyMemosData, ListMyMemosResponse, ListMyNotificationsData, ListMyNotificationsResponse, ListMySessionsData, ListMySessionsResponse, ListMyTasksData, ListMyTasksResponse, ListOpenTasksData, ListOpenTasksResponse, ListOrgUnitsData, ListOrgUnitsResponse, ListPermissionsData, ListPermissionsResponse, ListPlatformTenantsData, ListPlatformTenantsResponse, ListRolesData, ListRolesResponse, ListUnitPositionsData, ListUnitPositionsResponse, ListUserAssignmentsData, ListUserAssignmentsResponse, ListUsersData, ListUsersResponse, LoginData, LoginError, LoginResponse, LogoutData, LogoutResponse, LookUpInvitationData, LookUpInvitationError, LookUpInvitationResponse, LookUpPlatformEnrolmentData, LookUpPlatformEnrolmentError, MarkAllNotificationsReadData, MarkNotificationReadData, MoveOrgUnitData, MoveOrgUnitResponse, PlatformLoginData, PlatformLoginError, PlatformLoginResponse, PlatformLogoutData, PlatformLogoutResponse, PlatformStepUpData, PlatformStepUpError, PlatformStepUpResponse, QueryAuditData, QueryAuditResponse, QueryPlatformAuditData, QueryPlatformAuditResponse, ReactivateUserData, ReactivateUserResponse, ReassignTaskData, ReassignTaskResponse, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesResponse, RejectTaskData, RejectTaskResponse, RemoveMailSettingsData, RenameClassificationLevelData, RenameClassificationLevelResponse, RenamePlatformTenantData, RenamePlatformTenantResponse, ReorderClassificationLevelsData, ReorderClassificationLevelsResponse, ReplaceMemoRouteData, ReplaceMemoRouteResponse, RequestPasswordResetData, ResetUserMfaData, ResetUserMfaResponse, ResubmitMemoData, ResubmitMemoResponse, ResumePlatformTenantData, ResumePlatformTenantResponse, ReturnTaskData, ReturnTaskResponse, RevokeGrantData, RevokeMySessionData, RevokeMySessionResponse, RevokeUserSessionsData, RevokeUserSessionsResponse, SearchDirectoryData, SearchDirectoryResponse, SetClearanceData, SetClearanceResponse, SetMailSettingsData, SetMailSettingsResponse, SetMyNotificationPreferencesData, SetMyNotificationPreferencesResponse, StartMfaEnrolmentData, StartMfaEnrolmentResponse, StartPlatformMfaEnrolmentData, StartPlatformMfaEnrolmentError, StartPlatformMfaEnrolmentResponse, StepUpData, StepUpError, StepUpResponse, SubmitMemoData, SubmitMemoResponse, SuspendPlatformTenantData, SuspendPlatformTenantResponse, TestMailSettingsData, TestMailSettingsResponse, UnlockUserData, UnlockUserResponse, UpdateAssignmentData, UpdateAssignmentResponse, UpdateBrandingData, UpdateBrandingError, UpdateLegalEntityData, UpdateLegalEntityResponse, UpdateMemoData, UpdateMemoResponse, UpdateMemoTypeData, UpdateMemoTypeResponse, UpdateOrgUnitData, UpdateOrgUnitResponse, UpdatePositionData, UpdatePositionResponse, UpdateReportingLineData, UpdateReportingLineResponse, UpdateRoleData, UpdateRoleResponse, UpdateSecuritySettingsData, UpdateSecuritySettingsError, UpdateSecuritySettingsResponse, UpdateTenantPreferencesData, UpdateTenantPreferencesResponse, UpdateTermsData, UpdateTermsResponse, UploadFileData, UploadFileResponse, UploadFileVersionData, UploadFileVersionResponse, VerifyMfaData, VerifyMfaError, VerifyMfaResponse, VerifyPlatformMfaData, VerifyPlatformMfaError, VerifyPlatformMfaResponse, WithdrawMemoData, WithdrawMemoResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -285,6 +285,58 @@ export const testMailSettingsMutation = (options?: Partial<Options<TestMailSetti
     return mutationOptions;
 };
 
+export const listAllMemoTypesQueryKey = (options?: Options<ListAllMemoTypesData>) => createQueryKey('listAllMemoTypes', options);
+
+/**
+ * Every memo type, active or not
+ */
+export const listAllMemoTypesOptions = (options?: Options<ListAllMemoTypesData>) => queryOptions<ListAllMemoTypesResponse, DefaultError, ListAllMemoTypesResponse, ReturnType<typeof listAllMemoTypesQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await listAllMemoTypes({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: listAllMemoTypesQueryKey(options)
+});
+
+/**
+ * Create a memo type
+ */
+export const createMemoTypeMutation = (options?: Partial<Options<CreateMemoTypeData>>): UseMutationOptions<CreateMemoTypeResponse, DefaultError, Options<CreateMemoTypeData>> => {
+    const mutationOptions: UseMutationOptions<CreateMemoTypeResponse, DefaultError, Options<CreateMemoTypeData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await createMemoType({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Change a memo type
+ */
+export const updateMemoTypeMutation = (options?: Partial<Options<UpdateMemoTypeData>>): UseMutationOptions<UpdateMemoTypeResponse, DefaultError, Options<UpdateMemoTypeData>> => {
+    const mutationOptions: UseMutationOptions<UpdateMemoTypeResponse, DefaultError, Options<UpdateMemoTypeData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await updateMemoType({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
 export const getTenantPreferencesQueryKey = (options?: Options<GetTenantPreferencesData>) => createQueryKey('getTenantPreferences', options);
 
 /**
@@ -540,6 +592,71 @@ export const unlockUserMutation = (options?: Partial<Options<UnlockUserData>>): 
     const mutationOptions: UseMutationOptions<UnlockUserResponse, DefaultError, Options<UnlockUserData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await unlockUser({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const listOpenTasksQueryKey = (options?: Options<ListOpenTasksData>) => createQueryKey('listOpenTasks', options);
+
+/**
+ * Open workflow tasks, or only the blocked ones
+ */
+export const listOpenTasksOptions = (options?: Options<ListOpenTasksData>) => queryOptions<ListOpenTasksResponse, DefaultError, ListOpenTasksResponse, ReturnType<typeof listOpenTasksQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await listOpenTasks({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: listOpenTasksQueryKey(options)
+});
+
+export const listOpenTasksInfiniteQueryKey = (options?: Options<ListOpenTasksData>): QueryKey<Options<ListOpenTasksData>> => createQueryKey('listOpenTasks', options, true);
+
+/**
+ * Open workflow tasks, or only the blocked ones
+ */
+export const listOpenTasksInfiniteOptions = (options?: Options<ListOpenTasksData>) => {
+    const opts = infiniteQueryOptions<ListOpenTasksResponse, DefaultError, InfiniteData<ListOpenTasksResponse>, QueryKey<Options<ListOpenTasksData>>, string | Pick<QueryKey<Options<ListOpenTasksData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+    // @ts-ignore
+    {
+        queryFn: async ({ pageParam, queryKey, signal }) => {
+            // @ts-ignore
+            const page: Pick<QueryKey<Options<ListOpenTasksData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
+                query: {
+                    cursor: pageParam
+                }
+            };
+            const params = createInfiniteParams(queryKey, page);
+            const { data } = await listOpenTasks({
+                ...options,
+                ...params,
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: listOpenTasksInfiniteQueryKey(options)
+    });
+    return opts as Omit<typeof opts, 'initialData'>;
+};
+
+/**
+ * Give an open task to someone else
+ */
+export const reassignTaskMutation = (options?: Partial<Options<ReassignTaskData>>): UseMutationOptions<ReassignTaskResponse, DefaultError, Options<ReassignTaskData>> => {
+    const mutationOptions: UseMutationOptions<ReassignTaskResponse, DefaultError, Options<ReassignTaskData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await reassignTask({
                 ...options,
                 ...fnOptions,
                 throwOnError: true
@@ -1212,6 +1329,54 @@ export const getHealthOptions = (options?: Options<GetHealthData>) => queryOptio
     queryKey: getHealthQueryKey(options)
 });
 
+export const listMyTasksQueryKey = (options?: Options<ListMyTasksData>) => createQueryKey('listMyTasks', options);
+
+/**
+ * My open tasks
+ */
+export const listMyTasksOptions = (options?: Options<ListMyTasksData>) => queryOptions<ListMyTasksResponse, DefaultError, ListMyTasksResponse, ReturnType<typeof listMyTasksQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await listMyTasks({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: listMyTasksQueryKey(options)
+});
+
+export const listMyTasksInfiniteQueryKey = (options?: Options<ListMyTasksData>): QueryKey<Options<ListMyTasksData>> => createQueryKey('listMyTasks', options, true);
+
+/**
+ * My open tasks
+ */
+export const listMyTasksInfiniteOptions = (options?: Options<ListMyTasksData>) => {
+    const opts = infiniteQueryOptions<ListMyTasksResponse, DefaultError, InfiniteData<ListMyTasksResponse>, QueryKey<Options<ListMyTasksData>>, string | Pick<QueryKey<Options<ListMyTasksData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+    // @ts-ignore
+    {
+        queryFn: async ({ pageParam, queryKey, signal }) => {
+            // @ts-ignore
+            const page: Pick<QueryKey<Options<ListMyTasksData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
+                query: {
+                    cursor: pageParam
+                }
+            };
+            const params = createInfiniteParams(queryKey, page);
+            const { data } = await listMyTasks({
+                ...options,
+                ...params,
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: listMyTasksInfiniteQueryKey(options)
+    });
+    return opts as Omit<typeof opts, 'initialData'>;
+};
+
 export const getMeQueryKey = (options?: Options<GetMeData>) => createQueryKey('getMe', options);
 
 /**
@@ -1448,6 +1613,227 @@ export const revokeMySessionMutation = (options?: Partial<Options<RevokeMySessio
     const mutationOptions: UseMutationOptions<RevokeMySessionResponse, DefaultError, Options<RevokeMySessionData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await revokeMySession({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const listMemoTypesQueryKey = (options?: Options<ListMemoTypesData>) => createQueryKey('listMemoTypes', options);
+
+/**
+ * Active memo types
+ */
+export const listMemoTypesOptions = (options?: Options<ListMemoTypesData>) => queryOptions<ListMemoTypesResponse, DefaultError, ListMemoTypesResponse, ReturnType<typeof listMemoTypesQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await listMemoTypes({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: listMemoTypesQueryKey(options)
+});
+
+export const listMyMemosQueryKey = (options: Options<ListMyMemosData>) => createQueryKey('listMyMemos', options);
+
+/**
+ * My drafts, sent or closed memos
+ */
+export const listMyMemosOptions = (options: Options<ListMyMemosData>) => queryOptions<ListMyMemosResponse, DefaultError, ListMyMemosResponse, ReturnType<typeof listMyMemosQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await listMyMemos({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: listMyMemosQueryKey(options)
+});
+
+export const listMyMemosInfiniteQueryKey = (options: Options<ListMyMemosData>): QueryKey<Options<ListMyMemosData>> => createQueryKey('listMyMemos', options, true);
+
+/**
+ * My drafts, sent or closed memos
+ */
+export const listMyMemosInfiniteOptions = (options: Options<ListMyMemosData>) => {
+    const opts = infiniteQueryOptions<ListMyMemosResponse, DefaultError, InfiniteData<ListMyMemosResponse>, QueryKey<Options<ListMyMemosData>>, string | Pick<QueryKey<Options<ListMyMemosData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
+    // @ts-ignore
+    {
+        queryFn: async ({ pageParam, queryKey, signal }) => {
+            // @ts-ignore
+            const page: Pick<QueryKey<Options<ListMyMemosData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
+                query: {
+                    cursor: pageParam
+                }
+            };
+            const params = createInfiniteParams(queryKey, page);
+            const { data } = await listMyMemos({
+                ...options,
+                ...params,
+                signal,
+                throwOnError: true
+            });
+            return data;
+        },
+        queryKey: listMyMemosInfiniteQueryKey(options)
+    });
+    return opts as Omit<typeof opts, 'initialData'>;
+};
+
+/**
+ * Create a draft memo
+ */
+export const createMemoMutation = (options?: Partial<Options<CreateMemoData>>): UseMutationOptions<CreateMemoResponse, DefaultError, Options<CreateMemoData>> => {
+    const mutationOptions: UseMutationOptions<CreateMemoResponse, DefaultError, Options<CreateMemoData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await createMemo({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const getMemoQueryKey = (options: Options<GetMemoData>) => createQueryKey('getMemo', options);
+
+/**
+ * A memo the actor takes part in
+ */
+export const getMemoOptions = (options: Options<GetMemoData>) => queryOptions<GetMemoResponse, DefaultError, GetMemoResponse, ReturnType<typeof getMemoQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getMemo({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getMemoQueryKey(options)
+});
+
+/**
+ * Change a memo's subject, type or classification
+ */
+export const updateMemoMutation = (options?: Partial<Options<UpdateMemoData>>): UseMutationOptions<UpdateMemoResponse, DefaultError, Options<UpdateMemoData>> => {
+    const mutationOptions: UseMutationOptions<UpdateMemoResponse, DefaultError, Options<UpdateMemoData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await updateMemo({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Discard a draft
+ */
+export const discardMemoMutation = (options?: Partial<Options<DiscardMemoData>>): UseMutationOptions<DiscardMemoResponse, DefaultError, Options<DiscardMemoData>> => {
+    const mutationOptions: UseMutationOptions<DiscardMemoResponse, DefaultError, Options<DiscardMemoData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await discardMemo({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const getMemoHistoryQueryKey = (options: Options<GetMemoHistoryData>) => createQueryKey('getMemoHistory', options);
+
+/**
+ * A memo's actions by round
+ */
+export const getMemoHistoryOptions = (options: Options<GetMemoHistoryData>) => queryOptions<GetMemoHistoryResponse, DefaultError, GetMemoHistoryResponse, ReturnType<typeof getMemoHistoryQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getMemoHistory({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getMemoHistoryQueryKey(options)
+});
+
+/**
+ * Start the next round after a return
+ */
+export const resubmitMemoMutation = (options?: Partial<Options<ResubmitMemoData>>): UseMutationOptions<ResubmitMemoResponse, DefaultError, Options<ResubmitMemoData>> => {
+    const mutationOptions: UseMutationOptions<ResubmitMemoResponse, DefaultError, Options<ResubmitMemoData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await resubmitMemo({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Set the ordered approvers of a memo
+ */
+export const replaceMemoRouteMutation = (options?: Partial<Options<ReplaceMemoRouteData>>): UseMutationOptions<ReplaceMemoRouteResponse, DefaultError, Options<ReplaceMemoRouteData>> => {
+    const mutationOptions: UseMutationOptions<ReplaceMemoRouteResponse, DefaultError, Options<ReplaceMemoRouteData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await replaceMemoRoute({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Send a draft to its first approver
+ */
+export const submitMemoMutation = (options?: Partial<Options<SubmitMemoData>>): UseMutationOptions<SubmitMemoResponse, DefaultError, Options<SubmitMemoData>> => {
+    const mutationOptions: UseMutationOptions<SubmitMemoResponse, DefaultError, Options<SubmitMemoData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await submitMemo({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Withdraw a memo from review
+ */
+export const withdrawMemoMutation = (options?: Partial<Options<WithdrawMemoData>>): UseMutationOptions<WithdrawMemoResponse, DefaultError, Options<WithdrawMemoData>> => {
+    const mutationOptions: UseMutationOptions<WithdrawMemoResponse, DefaultError, Options<WithdrawMemoData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await withdrawMemo({
                 ...options,
                 ...fnOptions,
                 throwOnError: true
@@ -2239,6 +2625,57 @@ export const suspendPlatformTenantMutation = (options?: Partial<Options<SuspendP
     const mutationOptions: UseMutationOptions<SuspendPlatformTenantResponse, DefaultError, Options<SuspendPlatformTenantData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await suspendPlatformTenant({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Approve the memo of a task
+ */
+export const approveTaskMutation = (options?: Partial<Options<ApproveTaskData>>): UseMutationOptions<ApproveTaskResponse, DefaultError, Options<ApproveTaskData>> => {
+    const mutationOptions: UseMutationOptions<ApproveTaskResponse, DefaultError, Options<ApproveTaskData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await approveTask({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Reject the memo of a task
+ */
+export const rejectTaskMutation = (options?: Partial<Options<RejectTaskData>>): UseMutationOptions<RejectTaskResponse, DefaultError, Options<RejectTaskData>> => {
+    const mutationOptions: UseMutationOptions<RejectTaskResponse, DefaultError, Options<RejectTaskData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await rejectTask({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Return the memo of a task to its initiator
+ */
+export const returnTaskMutation = (options?: Partial<Options<ReturnTaskData>>): UseMutationOptions<ReturnTaskResponse, DefaultError, Options<ReturnTaskData>> => {
+    const mutationOptions: UseMutationOptions<ReturnTaskResponse, DefaultError, Options<ReturnTaskData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await returnTask({
                 ...options,
                 ...fnOptions,
                 throwOnError: true

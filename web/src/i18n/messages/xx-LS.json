@@ -261,6 +261,18 @@
       "value": "Manage legal entitiesSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "access.permission.memoCreate": [
+    {
+      "type": 0,
+      "value": "Write and submit memosSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.permission.memoTypes": [
+    {
+      "type": 0,
+      "value": "Manage memo typesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "access.permission.notificationSettings": [
     {
       "type": 0,
@@ -283,6 +295,12 @@
     {
       "type": 0,
       "value": "Manage usersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.permission.workflowTasksReassign": [
+    {
+      "type": 0,
+      "value": "Reassign approval tasksSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "access.permissions": [
@@ -1717,6 +1735,30 @@
       "value": "InvitationSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "mail.template.memoApproved": [
+    {
+      "type": 0,
+      "value": "Memo approvedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.memoRejected": [
+    {
+      "type": 0,
+      "value": "Memo rejectedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.memoReturned": [
+    {
+      "type": 0,
+      "value": "Memo returnedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.memoWithdrawn": [
+    {
+      "type": 0,
+      "value": "Memo withdrawnSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "mail.template.mfaReset": [
     {
       "type": 0,
@@ -1745,6 +1787,24 @@
     {
       "type": 0,
       "value": "New sign-inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.taskAssigned": [
+    {
+      "type": 0,
+      "value": "Memo waiting for approvalSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.taskBlocked": [
+    {
+      "type": 0,
+      "value": "Memo waiting for reassignmentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.taskReassigned": [
+    {
+      "type": 0,
+      "value": "Memo task reassignedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "mail.template.test": [
@@ -1815,6 +1875,882 @@
       "value": "User nameSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.action.approve": [
+    {
+      "type": 0,
+      "value": "ApproveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.action.discard": [
+    {
+      "type": 0,
+      "value": "Discard draftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.action.edit": [
+    {
+      "type": 0,
+      "value": "EditSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.action.reject": [
+    {
+      "type": 0,
+      "value": "RejectSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.action.resubmit": [
+    {
+      "type": 0,
+      "value": "ResubmitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.action.return": [
+    {
+      "type": 0,
+      "value": "ReturnSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.action.submit": [
+    {
+      "type": 0,
+      "value": "SubmitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.action.withdraw": [
+    {
+      "type": 0,
+      "value": "WithdrawSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.actions": [
+    {
+      "type": 0,
+      "value": "ActionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.assignedAt": [
+    {
+      "type": 0,
+      "value": "Waiting since "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.blocked": [
+    {
+      "type": 0,
+      "value": "Waiting for reassignmentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.conflict": [
+    {
+      "type": 0,
+      "value": "Someone acted on this memo meanwhile. It was reloaded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.create.lead": [
+    {
+      "type": 0,
+      "value": "Start with the subject and type. You add the document and the approvers next.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.create.submit": [
+    {
+      "type": 0,
+      "value": "Create draftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.create.title": [
+    {
+      "type": 0,
+      "value": "New memoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.approve": [
+    {
+      "type": 0,
+      "value": "Approve "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.approve.lead": [
+    {
+      "type": 0,
+      "value": "You approve document version "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": ". You may be asked to confirm it is you.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.discard": [
+    {
+      "type": 0,
+      "value": "Discard this draft?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.discard.lead": [
+    {
+      "type": 0,
+      "value": "It moves to Closed and cannot be submitted.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.reject": [
+    {
+      "type": 0,
+      "value": "Reject "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.reject.lead": [
+    {
+      "type": 0,
+      "value": "The memo ends here. Say why.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.resubmit": [
+    {
+      "type": 0,
+      "value": "Resubmit?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.resubmit.lead": [
+    {
+      "type": 0,
+      "value": "A new round starts with the first approver. Approvals of earlier rounds no longer count.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.return": [
+    {
+      "type": 0,
+      "value": "Return "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " to its author?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.return.lead": [
+    {
+      "type": 0,
+      "value": "Say what needs to change. They can resubmit it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.submit": [
+    {
+      "type": 0,
+      "value": "Submit for approval?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.submit.lead": [
+    {
+      "type": 0,
+      "value": "The first approver gets it now. You cannot change it while it is in review.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.withdraw": [
+    {
+      "type": 0,
+      "value": "Withdraw this memo?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.withdraw.lead": [
+    {
+      "type": 0,
+      "value": "The approval ends for good.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.document": [
+    {
+      "type": 0,
+      "value": "DocumentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.document.download": [
+    {
+      "type": 0,
+      "value": "DownloadSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.document.hint": [
+    {
+      "type": 0,
+      "value": "Word (.docx), up to 25 MB.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.document.newVersion": [
+    {
+      "type": 0,
+      "value": "Upload a new versionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.document.none": [
+    {
+      "type": 0,
+      "value": "No document yet. Upload the memo as a Word file.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.document.upload": [
+    {
+      "type": 0,
+      "value": "Upload the documentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.document.version": [
+    {
+      "type": 0,
+      "value": "Version "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.done": [
+    {
+      "type": 0,
+      "value": "Done.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.field.classification": [
+    {
+      "type": 0,
+      "value": "ClassificationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.field.classification.default": [
+    {
+      "type": 0,
+      "value": "The type’s defaultSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.field.classification.hint": [
+    {
+      "type": 0,
+      "value": "At least the type’s default, and at most your own clearance.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.field.subject": [
+    {
+      "type": 0,
+      "value": "SubjectSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.field.type": [
+    {
+      "type": 0,
+      "value": "Memo typeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.from": [
+    {
+      "type": 0,
+      "value": "From "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.history": [
+    {
+      "type": 0,
+      "value": "HistorySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.history.action.approve": [
+    {
+      "type": 0,
+      "value": "ApprovedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.history.action.reassign": [
+    {
+      "type": 0,
+      "value": "ReassignedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.history.action.reject": [
+    {
+      "type": 0,
+      "value": "RejectedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.history.action.resubmit": [
+    {
+      "type": 0,
+      "value": "ResubmittedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.history.action.return": [
+    {
+      "type": 0,
+      "value": "ReturnedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.history.action.submit": [
+    {
+      "type": 0,
+      "value": "SubmittedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.history.action.withdraw": [
+    {
+      "type": 0,
+      "value": "WithdrewSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.history.document": [
+    {
+      "type": 0,
+      "value": "Document version "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.history.earlier": [
+    {
+      "type": 0,
+      "value": "Earlier round: its approvals no longer count.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.history.empty": [
+    {
+      "type": 0,
+      "value": "Nothing has happened yet: the memo is a draft.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.holders": [
+    {
+      "type": 0,
+      "value": "Waiting forSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.inbox.empty.closed": [
+    {
+      "type": 0,
+      "value": "No closed memos yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.inbox.empty.drafts": [
+    {
+      "type": 0,
+      "value": "You have no drafts.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.inbox.empty.sent": [
+    {
+      "type": 0,
+      "value": "None of your memos is in review.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.inbox.empty.tasks": [
+    {
+      "type": 0,
+      "value": "Nothing is waiting for you.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.inbox.lead": [
+    {
+      "type": 0,
+      "value": "Memos waiting for you, and the memos you write.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.inbox.tab.closed": [
+    {
+      "type": 0,
+      "value": "ClosedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.inbox.tab.drafts": [
+    {
+      "type": 0,
+      "value": "DraftsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.inbox.tab.sent": [
+    {
+      "type": 0,
+      "value": "SentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.inbox.tab.tasks": [
+    {
+      "type": 0,
+      "value": "My tasksSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.inbox.title": [
+    {
+      "type": 0,
+      "value": "InboxSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.loadMore": [
+    {
+      "type": 0,
+      "value": "Show moreSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.new": [
+    {
+      "type": 0,
+      "value": "New memoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notFound": [
+    {
+      "type": 0,
+      "value": "This memo does not exist, or you cannot see it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.referenceHolders": [
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " · With "
+    },
+    {
+      "type": 1,
+      "value": "names"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.referenceRound": [
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " · Round "
+    },
+    {
+      "type": 1,
+      "value": "round"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.refused.document": [
+    {
+      "type": 0,
+      "value": "Upload the document first.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.refused.route": [
+    {
+      "type": 0,
+      "value": "Add at least one approver first.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.remark": [
+    {
+      "type": 0,
+      "value": "RemarkSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.remark.optional": [
+    {
+      "type": 0,
+      "value": "Remark (optional)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.remark.required": [
+    {
+      "type": 0,
+      "value": "A remark is required.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.required": [
+    {
+      "type": 0,
+      "value": "Required.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.restricted": [
+    {
+      "type": 0,
+      "value": "Restricted memoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.restricted.hint": [
+    {
+      "type": 0,
+      "value": "You are no longer cleared to read it. An administrator can reassign the task.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.round": [
+    {
+      "type": 0,
+      "value": "Round "
+    },
+    {
+      "type": 1,
+      "value": "round"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route": [
+    {
+      "type": 0,
+      "value": "ApproversSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.add": [
+    {
+      "type": 0,
+      "value": "Add approverSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.down": [
+    {
+      "type": 0,
+      "value": "Move "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " downSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.empty": [
+    {
+      "type": 0,
+      "value": "No approvers yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.lead": [
+    {
+      "type": 0,
+      "value": "In order. Each approver gets the memo after the one before has approved it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.picker": [
+    {
+      "type": 0,
+      "value": "ApproverSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.problem.duplicate": [
+    {
+      "type": 0,
+      "value": "Already on the route.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.problem.empty": [
+    {
+      "type": 0,
+      "value": "Add at least one approver.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.problem.inactive": [
+    {
+      "type": 0,
+      "value": "Cannot sign in at the moment.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.problem.notCleared": [
+    {
+      "type": 0,
+      "value": "Not cleared for this classification.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.problem.self": [
+    {
+      "type": 0,
+      "value": "You cannot approve your own memo.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.problem.tooLong": [
+    {
+      "type": 0,
+      "value": "Too many approvers.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.remove": [
+    {
+      "type": 0,
+      "value": "Remove "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.save": [
+    {
+      "type": 0,
+      "value": "Save approversSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.saved": [
+    {
+      "type": 0,
+      "value": "Approvers saved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.up": [
+    {
+      "type": 0,
+      "value": "Move "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " upSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.save": [
+    {
+      "type": 0,
+      "value": "SaveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.status.approved": [
+    {
+      "type": 0,
+      "value": "ApprovedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.status.discarded": [
+    {
+      "type": 0,
+      "value": "DiscardedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.status.draft": [
+    {
+      "type": 0,
+      "value": "DraftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.status.inReview": [
+    {
+      "type": 0,
+      "value": "In reviewSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.status.rejected": [
+    {
+      "type": 0,
+      "value": "RejectedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.status.returned": [
+    {
+      "type": 0,
+      "value": "ReturnedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.status.withdrawn": [
+    {
+      "type": 0,
+      "value": "WithdrawnSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.updatedAt": [
+    {
+      "type": 0,
+      "value": "Changed "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.active": [
+    {
+      "type": 0,
+      "value": "In useSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.add": [
+    {
+      "type": 0,
+      "value": "Add memo typeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.caption": [
+    {
+      "type": 0,
+      "value": "Memo types of the organisationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.col.actions": [
+    {
+      "type": 0,
+      "value": "ActionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.col.default": [
+    {
+      "type": 0,
+      "value": "Default classificationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.col.name": [
+    {
+      "type": 0,
+      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.col.stepUp": [
+    {
+      "type": 0,
+      "value": "Confirm before approvingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.edit": [
+    {
+      "type": 0,
+      "value": "Edit "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.inactive": [
+    {
+      "type": 0,
+      "value": "Switched offSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.lastActive": [
+    {
+      "type": 0,
+      "value": "Keep at least one memo type in use.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.lead": [
+    {
+      "type": 0,
+      "value": "What people choose when they write a memo. A type is never deleted, only switched off.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.lowest": [
+    {
+      "type": 0,
+      "value": "Lowest levelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.no": [
+    {
+      "type": 0,
+      "value": "NoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.stepUp": [
+    {
+      "type": 0,
+      "value": "Approvers confirm it is them before approvingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.title": [
+    {
+      "type": 0,
+      "value": "Memo typesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.yes": [
+    {
+      "type": 0,
+      "value": "YesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "nav.admin": [
     {
       "type": 0,
@@ -1869,10 +2805,34 @@
       "value": "HomeSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "nav.inbox": [
+    {
+      "type": 0,
+      "value": "InboxSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "nav.language": [
     {
       "type": 0,
       "value": "Language and termsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.memo": [
+    {
+      "type": 0,
+      "value": "MemoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.memoTypes": [
+    {
+      "type": 0,
+      "value": "Memo typesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.newMemo": [
+    {
+      "type": 0,
+      "value": "New memoSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "nav.notificationSettings": [
@@ -1933,6 +2893,12 @@
     {
       "type": 0,
       "value": "UsersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.workflowTasks": [
+    {
+      "type": 0,
+      "value": "Open tasksSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "notifications.bell": [
@@ -2005,10 +2971,72 @@
       "value": "SecuritySSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "notifications.category.workflow": [
+    {
+      "type": 0,
+      "value": "Memo approvalsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "notifications.empty": [
     {
       "type": 0,
       "value": "Nothing new. Notifications about your account and work appear here.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.memoApproved": [
+    {
+      "type": 0,
+      "value": "Memo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " was approvedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.memoRejected": [
+    {
+      "type": 0,
+      "value": "Memo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " was rejectedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.memoReturned": [
+    {
+      "type": 0,
+      "value": "Memo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " was returned to youSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.memoWithdrawn": [
+    {
+      "type": 0,
+      "value": "Memo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " was withdrawnSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "notifications.kind.mfaReset": [
@@ -2049,6 +3077,48 @@
     {
       "type": 0,
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.taskAssigned": [
+    {
+      "type": 0,
+      "value": "Memo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " is waiting for your approvalSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.taskBlocked": [
+    {
+      "type": 0,
+      "value": "Memo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " is waiting for reassignmentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.taskReassigned": [
+    {
+      "type": 0,
+      "value": "The approval of memo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " was reassignedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "notifications.kind.unknown": [
@@ -4935,6 +6005,140 @@
     {
       "type": 0,
       "value": "UsersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflowTasks.blocked.clearance": [
+    {
+      "type": 0,
+      "value": "Not clearedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflowTasks.blocked.inactive": [
+    {
+      "type": 0,
+      "value": "Cannot sign inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflowTasks.caption": [
+    {
+      "type": 0,
+      "value": "Open workflow tasksSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflowTasks.col.actions": [
+    {
+      "type": 0,
+      "value": "ActionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflowTasks.col.assignee": [
+    {
+      "type": 0,
+      "value": "ApproverSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflowTasks.col.memo": [
+    {
+      "type": 0,
+      "value": "MemoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflowTasks.col.since": [
+    {
+      "type": 0,
+      "value": "Waiting sinceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflowTasks.empty": [
+    {
+      "type": 0,
+      "value": "No task matches.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflowTasks.filter.blocked": [
+    {
+      "type": 0,
+      "value": "Waiting for reassignmentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflowTasks.filter.open": [
+    {
+      "type": 0,
+      "value": "All open tasksSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflowTasks.lead": [
+    {
+      "type": 0,
+      "value": "Give a task to someone else when its approver cannot act, for example after they left.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflowTasks.newAssignee": [
+    {
+      "type": 0,
+      "value": "New approverSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflowTasks.reason": [
+    {
+      "type": 0,
+      "value": "ReasonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflowTasks.reassign": [
+    {
+      "type": 0,
+      "value": "ReassignSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflowTasks.reassignFor": [
+    {
+      "type": 0,
+      "value": "Reassign "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflowTasks.reassignLead": [
+    {
+      "type": 0,
+      "value": "The new approver must be active and cleared for the memo. Both approvers are told.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflowTasks.refused.inRound": [
+    {
+      "type": 0,
+      "value": "This person is already on the route.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflowTasks.refused.initiator": [
+    {
+      "type": 0,
+      "value": "The author cannot approve.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflowTasks.refused.notEligible": [
+    {
+      "type": 0,
+      "value": "This person is inactive or not cleared for the memo.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflowTasks.refused.same": [
+    {
+      "type": 0,
+      "value": "This person holds the task already.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflowTasks.title": [
+    {
+      "type": 0,
+      "value": "Open tasksSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ]
 }

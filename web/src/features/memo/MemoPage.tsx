@@ -1,0 +1,243 @@
+import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useNavigate } from '@tanstack/react-router'
+import { Download } from 'lucide-react'
+import { useState } from 'react'
+import { useIntl } from 'react-intl'
+import {
+  getMemoHistoryQueryKey,
+  getMemoOptions,
+  getMemoQueryKey,
+  listMyMemosInfiniteQueryKey,
+  listMyTasksInfiniteQueryKey,
+} from '@/api/generated/@tanstack/react-query.gen'
+import type { MemoView } from '@/api/generated/types.gen'
+import { PROBLEM, type Problem } from '@/api/http'
+import { FileUpload } from '@/components/page/FileUpload'
+import { PageHeader } from '@/components/page/PageHeader'
+import { EmptyState, ErrorState, LoadingState } from '@/components/page/States'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { useToast } from '@/components/ui/toast-context'
+import { ActionDialog, type MemoActionKind } from './ActionDialog'
+import { EditMemoDialog } from './EditMemoDialog'
+import { MemoHistory } from './MemoHistory'
+import { actionButtons, mm, mmv, statusLabels } from './memo-messages'
+import { statusTone } from './memo-status'
+import { RouteEditor } from './RouteEditor'
+
+const DOCX = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document,.docx'
+const MAX_BYTES = 25 * 1024 * 1024
+
+/** Which dialog each allowed action opens; EDIT, UPLOAD_DOCUMENT and EDIT_ROUTE are handled on the page itself. */
+const DIALOG_ACTIONS: Partial<Record<MemoView['allowedActions'][number], MemoActionKind>> = {
+  APPROVE: 'approve',
+  RETURN: 'return',
+  REJECT: 'reject',
+  SUBMIT: 'submit',
+  RESUBMIT: 'resubmit',
+  WITHDRAW: 'withdraw',
+  DISCARD: 'discard',
+}
+
+/**
+ * `/memos/$memoId` (design E01 §13, ux-review §4–§5): the memo's fields and status, its document, the route, the history
+ * by round and the action bar. Below the medium breakpoint it stacks and the action bar is fixed at the bottom.
+ */
+export function MemoPage({ memoId }: { memoId: string }) {
+  const intl = useIntl()
+  const toast = useToast()
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
+  const memo = useQuery(getMemoOptions({ path: { id: memoId } }))
+  const [dialog, setDialog] = useState<MemoActionKind>()
+  const [editing, setEditing] = useState(false)
+
+  const replace = async (next: MemoView) => {
+    queryClient.setQueryData(getMemoQueryKey({ path: { id: memoId } }), next)
+    await Promise.all([
+      queryClient.invalidateQueries({ queryKey: getMemoHistoryQueryKey({ path: { id: memoId } }) }),
+      queryClient.invalidateQueries({ queryKey: listMyTasksInfiniteQueryKey({ query: { limit: 25 } }) }),
+      queryClient.invalidateQueries({ queryKey: listMyMemosInfiniteQueryKey({ query: { box: 'sent', limit: 25 } }) }),
+    ])
+  }
+  const onProblem = async (problem: Problem | undefined) => {
+    if (problem?.type === PROBLEM.conflict || problem?.status === 412) {
+      toast.show(intl.formatMessage(mm.conflict), 'error')
+      await memo.refetch()
+    } else if (problem?.errors?.some((e) => e.field === 'document')) {
+      toast.show(intl.formatMessage(mm.documentRequired), 'error')
+    } else if (problem?.errors?.some((e) => e.field.startsWith('route'))) {
+      toast.show(intl.formatMessage(mm.routeRequired), 'error')
+    } else {
+      toast.show(problem?.detail ?? intl.formatMessage(mm.failed), 'error')
+    }
+  }
+
+  if (memo.isPending) return <LoadingState />
+  if (memo.isError) {
+    return (memo.error as Problem | undefined)?.status === 404 ? (
+      <EmptyState title={intl.formatMessage(mm.notFound)} />
+    ) : (
+      <ErrorState onRetry={() => void memo.refetch()} />
+    )
+  }
+  const view = memo.data
+  const allowed = new Set(view.allowedActions)
+  const dialogs = view.allowedActions.flatMap((a) => (DIALOG_ACTIONS[a] ? [DIALOG_ACTIONS[a]] : []))
+  const document = view.document
+
+  return (
+    <section aria-labelledby="memo-title" className="pb-24 md:pb-0">
+      <PageHeader
+        title={<span id="memo-title">{view.subject}</span>}
+        description={`${view.reference} · ${view.type.name} · ${view.classification.name}`}
+        status={<Badge tone={statusTone[view.status]}>{intl.formatMessage(statusLabels[view.status])}</Badge>}
+        actions={
+          allowed.has('EDIT') ? (
+            <Button
+              variant="outline"
+              onClick={() => {
+                setEditing(true)
+              }}
+            >
+              {intl.formatMessage(mm.actionEdit)}
+            </Button>
+          ) : null
+        }
+      />
+      <div className="grid gap-6 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
+        <div className="flex flex-col gap-6">
+          <Section title={intl.formatMessage(mm.document)}>
+            {document ? (
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="text-sm">
+                  {intl.formatMessage(mmv.documentVersion, { number: document.number, name: document.name })}
+                </span>
+                <Button variant="outline" asChild>
+                  <a href={`/api/v1/files/${document.fileId}/versions/${document.versionId}/content`} download>
+                    <Download aria-hidden="true" />
+                    {intl.formatMessage(mm.download)}
+                  </a>
+                </Button>
+              </div>
+            ) : (
+              <p className="text-sm text-muted-foreground">{intl.formatMessage(mm.documentNone)}</p>
+            )}
+            {allowed.has('UPLOAD_DOCUMENT') ? (
+              <div className="mt-3">
+                <FileUpload
+                  label={intl.formatMessage(document ? mm.documentNewVersion : mm.documentUpload)}
+                  hint={intl.formatMessage(mm.documentHint)}
+                  purpose="memo.document"
+                  owner={view.id}
+                  accept={DOCX}
+                  maxBytes={MAX_BYTES}
+                  version={document ? { fileId: document.fileId, fileVersion: document.fileVersion } : undefined}
+                  onUploaded={() => void memo.refetch()}
+                />
+              </div>
+            ) : null}
+          </Section>
+          <Section title={intl.formatMessage(mm.history)}>
+            <MemoHistory memoId={view.id} />
+          </Section>
+        </div>
+        <div className="flex flex-col gap-6">
+          {view.holders.length > 0 ? (
+            <Section title={intl.formatMessage(mm.holders)}>
+              <p className="text-sm">{view.holders.map((h) => h.name).join(', ')}</p>
+            </Section>
+          ) : null}
+          <Section title={intl.formatMessage(mm.route)} lead={intl.formatMessage(mm.routeLead)}>
+            {allowed.has('EDIT_ROUTE') ? (
+              <RouteEditor
+                key={view.version}
+                memo={view}
+                onSaved={(saved) => {
+                  toast.show(intl.formatMessage(mm.routeSaved), 'success')
+                  void replace(saved)
+                }}
+                onProblem={(p) => void onProblem(p)}
+              />
+            ) : view.route.length === 0 ? (
+              <p className="text-sm text-muted-foreground">{intl.formatMessage(mm.routeEmpty)}</p>
+            ) : (
+              <ol className="flex list-decimal flex-col gap-1 ps-5 text-sm">
+                {view.route.map((entry) => (
+                  <li key={entry.ordinal}>{entry.approver.name}</li>
+                ))}
+              </ol>
+            )}
+          </Section>
+          <div className="text-sm text-muted-foreground">
+            {intl.formatMessage(mmv.from, { name: view.initiator.name })}
+          </div>
+        </div>
+      </div>
+      {dialogs.length > 0 ? (
+        <div
+          role="toolbar"
+          aria-label={intl.formatMessage(mm.actions)}
+          className="fixed inset-x-0 bottom-0 z-10 flex flex-wrap justify-end gap-2 border-t bg-card px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] md:static md:mt-6 md:border-0 md:bg-transparent md:p-0"
+        >
+          {dialogs.map((kind) => (
+            <Button
+              key={kind}
+              className="min-h-11 min-w-11"
+              variant={kind === 'approve' || kind === 'submit' || kind === 'resubmit' ? 'default' : 'outline'}
+              onClick={() => {
+                setDialog(kind)
+              }}
+            >
+              {intl.formatMessage(actionButtons[kind])}
+            </Button>
+          ))}
+        </div>
+      ) : null}
+      {dialog ? (
+        <ActionDialog
+          memo={view}
+          kind={dialog}
+          onClose={() => {
+            setDialog(undefined)
+          }}
+          onDone={(next) => {
+            setDialog(undefined)
+            toast.show(intl.formatMessage(mm.done), 'success')
+            void replace(next)
+            if (dialog === 'approve' || dialog === 'return' || dialog === 'reject') {
+              void navigate({ to: '/inbox', search: { tab: 'tasks' } })
+            }
+          }}
+          onProblem={(p) => {
+            setDialog(undefined)
+            void onProblem(p)
+          }}
+        />
+      ) : null}
+      {editing ? (
+        <EditMemoDialog
+          memo={view}
+          onClose={() => {
+            setEditing(false)
+          }}
+          onSaved={(saved) => {
+            setEditing(false)
+            void replace(saved)
+          }}
+          onProblem={(p) => void onProblem(p)}
+        />
+      ) : null}
+    </section>
+  )
+}
+
+function Section({ title, lead, children }: { title: string; lead?: string; children: React.ReactNode }) {
+  return (
+    <section className="rounded-md border p-4">
+      <h2 className="text-base font-semibold">{title}</h2>
+      {lead ? <p className="mb-3 text-sm text-muted-foreground">{lead}</p> : <div className="mb-3" />}
+      {children}
+    </section>
+  )
+}

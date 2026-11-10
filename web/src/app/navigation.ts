@@ -2,6 +2,9 @@ import {
   Activity,
   FileClock,
   House,
+  Inbox,
+  ListChecks,
+  FileStack,
   Languages,
   LayoutTemplate,
   LockKeyhole,
@@ -44,6 +47,9 @@ export const ANONYMOUS: Viewer = { signedIn: false, permissions: [] }
 
 const messages = defineMessages({
   home: { id: 'nav.home', defaultMessage: 'Home' },
+  inbox: { id: 'nav.inbox', defaultMessage: 'Inbox' },
+  workflowTasks: { id: 'nav.workflowTasks', defaultMessage: 'Open tasks' },
+  memoTypes: { id: 'nav.memoTypes', defaultMessage: 'Memo types' },
   status: { id: 'nav.status', defaultMessage: 'Status' },
   users: { id: 'nav.users', defaultMessage: 'Users' },
   org: { id: 'nav.org', defaultMessage: 'Organisation' },
@@ -72,10 +78,13 @@ export const ADMIN_PERMISSIONS = [
   'notification.settings.manage',
   'tenant.settings.manage',
   'audit.read',
+  'memo.types.manage',
+  'workflow.tasks.reassign',
 ]
 
 export const navigation: NavItem[] = [
   { id: 'home', to: '/', label: messages.home, icon: House, group: 'work', audience: 'signedIn', enabled: true },
+  { id: 'inbox', to: '/inbox', label: messages.inbox, icon: Inbox, group: 'work', audience: 'signedIn', enabled: true },
   {
     id: 'status',
     to: '/status',
@@ -156,6 +165,24 @@ export const navigation: NavItem[] = [
     icon: Languages,
     group: 'administration',
     audience: { permission: 'tenant.settings.manage' },
+    enabled: true,
+  },
+  {
+    id: 'workflowTasks',
+    to: '/admin/workflow/tasks',
+    label: messages.workflowTasks,
+    icon: ListChecks,
+    group: 'administration',
+    audience: { permission: 'workflow.tasks.reassign' },
+    enabled: true,
+  },
+  {
+    id: 'memoTypes',
+    to: '/admin/memo-types',
+    label: messages.memoTypes,
+    icon: FileStack,
+    group: 'administration',
+    audience: { permission: 'memo.types.manage' },
     enabled: true,
   },
   {

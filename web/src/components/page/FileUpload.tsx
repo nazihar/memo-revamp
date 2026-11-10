@@ -28,6 +28,7 @@ export function FileUpload({
   owner,
   accept,
   maxBytes,
+  version,
   onUploaded,
 }: {
   label: string
@@ -36,6 +37,8 @@ export function FileUpload({
   owner?: string
   accept: string
   maxBytes: number
+  /** Upload a new version of this file instead of a new file; [fileVersion] is its current ETag version. */
+  version?: { fileId: string; fileVersion: number }
   onUploaded: (uploaded: Uploaded) => void
 }) {
   const intl = useIntl()
@@ -53,13 +56,15 @@ export function FileUpload({
     setBusy(true)
     try {
       const query = new URLSearchParams({ purpose, ...(owner ? { owner } : {}) })
-      const response = await csrfFetch(`/api/v1/files?${query.toString()}`, {
+      const url = version ? `/api/v1/files/${version.fileId}/versions` : `/api/v1/files?${query.toString()}`
+      const response = await csrfFetch(url, {
         method: 'POST',
         credentials: 'same-origin',
         headers: {
           'Content-Type': 'application/octet-stream',
           'Content-Disposition': `attachment; filename*=UTF-8''${encodeURIComponent(file.name)}`,
           'Idempotency-Key': crypto.randomUUID(),
+          ...(version ? { 'If-Match': `"${version.fileVersion}"` } : {}),
         },
         body: file,
       })

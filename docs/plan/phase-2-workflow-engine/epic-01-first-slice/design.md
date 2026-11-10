@@ -51,6 +51,7 @@ erDiagram
   memo {
     uuid id PK
     uuid tenant_id
+    text reference "M-2026-00042, per tenant and year"
     uuid memo_type_id
     text subject
     uuid classification_id
@@ -69,7 +70,8 @@ erDiagram
     uuid id PK
     uuid tenant_id
     text name
-    uuid default_classification_id
+    text key "general for the built-in type, else null"
+    uuid default_classification_id "null: the lowest level"
     text route_policy "INITIATOR_DEFINED FIXED BOTH (E01: INITIATOR_DEFINED)"
     text definition_key "sequential-approval"
     bool step_up_on_approve "default true"
@@ -204,10 +206,10 @@ All under `/api/v1`, Problem Details for errors, cursor pagination, `ETag`/`If-M
 | Method and path | Purpose | Access | Notes |
 |---|---|---|---|
 | `GET /memo-types` | Active types for the create form | `@SignedIn` | |
-| `GET /admin/memo-types`, `POST`, `PATCH /admin/memo-types/{id}` | Minimal type admin: name, default classification, step-up flag, active | `memo.types.manage` | Route policy fixed to initiator-defined in E01 |
+| `GET /admin/memo-types`, `POST`, `PUT /admin/memo-types/{id}` | Minimal type admin: name, default classification, step-up flag, active | `memo.types.manage` | Route policy fixed to initiator-defined in E01 |
 | `POST /memos` | Create a draft | `memo.create` | Body: subject (1–300 chars), type, classification (≥ type default is allowed, lower refused) |
 | `GET /memos/{id}` | Memo view: fields, status, document (current version), route, round, holders, allowed actions for me | participant + clearance | `404` when not visible (no existence leak) |
-| `PATCH /memos/{id}` | Edit subject, type, classification | initiator, `DRAFT` / `RETURNED` (classification only in `DRAFT`) | `If-Match` |
+| `PUT /memos/{id}` | Edit subject, type, classification (the whole set, as in create) | initiator, `DRAFT` / `RETURNED` (classification only in `DRAFT`) | `If-Match` |
 | `PUT /memos/{id}/route` | Replace the ordered approver list | initiator, `DRAFT` / `RETURNED` | `If-Match`; validation errors per entry (`approver-inactive`, `approver-not-cleared`, `duplicate`, `self`) |
 | `POST /files?purpose=memo.document&owner={memoId}`, `POST /files/{fileId}/versions` | Upload v1, new versions | `FilePurpose.mayUpload`: initiator, `DRAFT` / `RETURNED` | Existing files endpoints; `FileVersionCreated` listener stores `document_file_id` on v1 |
 | `GET /files/{fileId}/versions/{versionId}/content` | Download a version | `FilePurpose.mayRead`: memo visible to the actor | Existing endpoint; `file.opened` audited |

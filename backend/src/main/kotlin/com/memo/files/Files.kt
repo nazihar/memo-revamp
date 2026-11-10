@@ -121,7 +121,7 @@ interface FileContents {
  * user bound; the purpose's `mayUpload` applies as for the API. Returns the new version's id.
  */
 interface FileUploads {
-    /** Whether uploads can be scanned now (the malware scanner answers, or none is configured). */
+    /** Whether uploads can be scanned now: a malware scanner is configured and answers (uploads fail closed without one). */
     fun ready(): Boolean
 
     /** A new file of [purposeKey] for [ownerId]. */

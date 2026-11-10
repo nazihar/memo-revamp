@@ -8,7 +8,10 @@ import java.util.UUID
 @Component
 internal class ProgrammaticUploads(
     private val uploads: Uploads,
+    private val clamd: ClamdClient,
 ) : FileUploads {
+    override fun ready(): Boolean = !clamd.enabled || runCatching { clamd.version() }.isSuccess
+
     override fun upload(
         purposeKey: String,
         ownerId: String?,

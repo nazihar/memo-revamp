@@ -5,6 +5,7 @@ import com.memo.common.context.ActorContext
 import com.memo.common.context.ActorScope
 import com.memo.common.tenant.TenantContext
 import com.memo.common.tenant.TenantTransactions
+import com.memo.files.FileUploads
 import com.memo.identity.UserAccounts
 import com.memo.identity.UserId
 import com.memo.identity.UserLifecycle
@@ -146,12 +147,47 @@ class DemoMemoSeeder(
     }
 }
 
-/** After the demo tenant itself (its users and their passwords). */
+/**
+ * After the demo tenant itself (its users and their passwords), on a background thread: the documents need the malware
+ * scanner, which may still be loading its signatures when the app starts. The app never waits for it or fails because
+ * of it; the demo memos simply appear once the scanner answers (or not at all, with a warning, if it never does).
+ */
 @Component
 @Order(Ordered.LOWEST_PRECEDENCE)
 @ConditionalOnProperty("memo.demo.seed", havingValue = "true")
 class DemoMemoSeedOnStartup(
     private val seeder: DemoMemoSeeder,
+    private val uploads: FileUploads,
 ) : ApplicationRunner {
-    override fun run(args: ApplicationArguments) = seeder.seed()
+    private val log = LoggerFactory.getLogger(javaClass)
+
+    override fun run(args: ApplicationArguments) {
+        Thread.ofVirtual().name("demo-memos").start(::seedWhenReady)
+    }
+
+    @Suppress("TooGenericExceptionCaught")
+    private fun seedWhenReady() {
+        if (!scannerAnswers()) {
+            log.warn("Demo memos not seeded: the malware scanner did not answer")
+            return
+        }
+        try {
+            seeder.seed()
+        } catch (e: RuntimeException) {
+            log.warn("Demo memos not seeded", e)
+        }
+    }
+
+    private fun scannerAnswers(): Boolean {
+        repeat(ATTEMPTS) {
+            if (uploads.ready()) return true
+            Thread.sleep(WAIT_MILLIS)
+        }
+        return false
+    }
+
+    private companion object {
+        const val ATTEMPTS = 90
+        const val WAIT_MILLIS = 10_000L
+    }
 }

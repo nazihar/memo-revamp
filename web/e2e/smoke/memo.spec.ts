@@ -22,6 +22,11 @@ async function upload(page: Page, label: string, text: string) {
   })
 }
 
+/** The memo's status badge (the history also names actions such as "Returned"). */
+function status(page: Page, text: string) {
+  return page.locator('[data-tone]', { hasText: text })
+}
+
 async function act(page: Page, memoUrl: string, button: string, remark?: string) {
   await page.goto(memoUrl)
   await page.getByRole('toolbar', { name: 'Actions' }).getByRole('button', { name: button }).click()
@@ -57,13 +62,13 @@ test.describe('as the initiator', () => {
     await page.getByRole('button', { name: 'Save approvers' }).click()
     await expect(page.getByText('Approvers saved.')).toBeVisible()
     await act(page, memoUrl, 'Submit')
-    await expect(page.getByText('In review')).toBeVisible()
+    await expect(status(page, 'In review')).toBeVisible()
 
     const head = await as(browser, 'headCredit')
     await act(head, memoUrl, 'Return', 'Please add the annex.')
 
     await page.goto(memoUrl)
-    await expect(page.getByText('Returned')).toBeVisible()
+    await expect(status(page, 'Returned')).toBeVisible()
     await upload(page, 'Upload a new version', 'Version 2 with the annex')
     await expect(page.getByText(/^Version 2 ·/)).toBeVisible()
     await act(page, memoUrl, 'Resubmit')
@@ -74,7 +79,7 @@ test.describe('as the initiator', () => {
     await act(director, memoUrl, 'Approve')
 
     await page.goto(memoUrl)
-    await expect(page.getByText('Approved', { exact: true }).first()).toBeVisible()
+    await expect(status(page, 'Approved')).toBeVisible()
     await app.checkA11y()
   })
 })

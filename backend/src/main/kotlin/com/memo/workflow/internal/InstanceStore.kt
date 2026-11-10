@@ -11,6 +11,7 @@ import com.memo.jooq.tables.references.WORKFLOW_TASK
 import com.memo.workflow.ActionKind
 import com.memo.workflow.BlockedReason
 import com.memo.workflow.InstanceStatus
+import com.memo.workflow.SubjectRef
 import com.memo.workflow.engine.ActionRecord
 import com.memo.workflow.engine.Effect
 import com.memo.workflow.engine.InstanceState
@@ -37,7 +38,7 @@ data class LoadedInstance(
 )
 
 /**
- * Reads instances for the engine (ADR-0035). [lock] takes the instance row `FOR UPDATE`, so actions on one instance are
+ * Reads instances for the engine (ADR-0035). [load] takes the instance row `FOR UPDATE`, so actions on one instance are
  * serialised and `seq` stays gapless; [InstanceWriter] then writes the outcome. Inside a tenant transaction.
  */
 @Component
@@ -52,6 +53,25 @@ class InstanceStore(
             .where(WORKFLOW_TASK.ID.eq(taskId))
             .fetchOne(WORKFLOW_TASK.INSTANCE_ID)
 
+    /** The subject of the task's instance. */
+    fun subjectOfTask(taskId: UUID): SubjectRef? =
+        tenantDsl
+            .current()
+            .select(WORKFLOW_INSTANCE.SUBJECT_TYPE, WORKFLOW_INSTANCE.SUBJECT_ID)
+            .from(WORKFLOW_TASK)
+            .join(WORKFLOW_INSTANCE)
+            .on(WORKFLOW_INSTANCE.ID.eq(WORKFLOW_TASK.INSTANCE_ID))
+            .where(WORKFLOW_TASK.ID.eq(taskId))
+            .fetchOne { SubjectRef(it.value1()!!, it.value2()!!) }
+
+    fun subjectOfInstance(instanceId: UUID): SubjectRef? =
+        tenantDsl
+            .current()
+            .select(WORKFLOW_INSTANCE.SUBJECT_TYPE, WORKFLOW_INSTANCE.SUBJECT_ID)
+            .from(WORKFLOW_INSTANCE)
+            .where(WORKFLOW_INSTANCE.ID.eq(instanceId))
+            .fetchOne { SubjectRef(it.value1()!!, it.value2()!!) }
+
     fun instanceOfSubject(
         subjectType: String,
         subjectId: UUID,
@@ -64,14 +84,14 @@ class InstanceStore(
             .and(WORKFLOW_INSTANCE.SUBJECT_ID.eq(subjectId))
             .fetchOne(WORKFLOW_INSTANCE.ID)
 
-    fun lock(instanceId: UUID): LoadedInstance? {
+    /** The instance and its current round; [lock] takes the row `FOR UPDATE` (actions), reads go without. */
+    fun load(
+        instanceId: UUID,
+        lock: Boolean,
+    ): LoadedInstance? {
         val dsl = tenantDsl.current()
-        val instance =
-            dsl
-                .selectFrom(WORKFLOW_INSTANCE)
-                .where(WORKFLOW_INSTANCE.ID.eq(instanceId))
-                .forUpdate()
-                .fetchOne() ?: return null
+        val select = dsl.selectFrom(WORKFLOW_INSTANCE).where(WORKFLOW_INSTANCE.ID.eq(instanceId))
+        val instance = (if (lock) select.forUpdate() else select).fetchOne() ?: return null
         val round =
             dsl
                 .selectFrom(WORKFLOW_ROUND)

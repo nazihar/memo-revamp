@@ -1,5 +1,6 @@
 package com.memo.common.authz
 
+import java.time.Duration
 import java.util.UUID
 
 /**
@@ -65,6 +66,12 @@ interface AccessAdministration {
      * concurrent "last admin" checks cannot both pass (threat model E04 E3).
      */
     fun otherTenantAdminsLocked(except: UUID): Set<UUID>
+
+    /**
+     * Users who hold [permission] tenant-wide through a grant (not the implicit user role), for example the people to tell
+     * that a workflow task waits for reassignment.
+     */
+    fun tenantWideHolders(permission: Permission): Set<UUID>
 }
 
 /**
@@ -103,5 +110,6 @@ data class GrantsChanged(
  * factor within the tenant's window, else [com.memo.common.web.StepUpRequiredException]. Implemented by `identity`.
  */
 interface StepUpCheck {
-    fun require()
+    /** [window] null: the tenant's step-up window; actions with their own window (approvals, ADR-0036) pass it. */
+    fun require(window: Duration? = null)
 }

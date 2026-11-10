@@ -147,7 +147,7 @@ open class NotificationItem(
     override fun getChecks(): List<Check<NotificationItemRecord>> = listOf(
         Internal.createCheck(this, DSL.name("notification_item_category_check"), "((category ~ '^[A-Z][A-Z_]{1,39}\$'::text))", true),
         Internal.createCheck(this, DSL.name("notification_item_kind_check"), "((kind ~ '^[A-Z][A-Z_]{1,59}\$'::text))", true),
-        Internal.createCheck(this, DSL.name("notification_item_link_check"), "((link ~ '^/[A-Za-z0-9/_.~%?=&-]{0,499}\$'::text))", true),
+        Internal.createCheck(this, DSL.name("notification_item_link_check"), "(((length(link) <= 500) AND (link ~ '^/[A-Za-z0-9/_.~%?=&-]*\$'::text)))", true),
         Internal.createCheck(this, DSL.name("notification_item_params_check"), "((octet_length((params)::text) <= 4096))", true)
     )
     override fun `as`(alias: String): NotificationItem = NotificationItem(DSL.name(alias), this)

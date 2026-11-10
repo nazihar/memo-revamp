@@ -4,8 +4,13 @@ import com.memo.audit.AuditLog
 import com.memo.common.authz.AccessAdministration
 import com.memo.common.authz.AccessCaches
 import com.memo.common.authz.BuiltInRole
+import com.memo.common.authz.Permission
 import com.memo.common.cache.CacheInvalidation
 import com.memo.common.tenant.TenantDsl
+import com.memo.jooq.tables.references.AUTHZ_GRANT
+import com.memo.jooq.tables.references.AUTHZ_ROLE
+import com.memo.jooq.tables.references.AUTHZ_ROLE_PERMISSION
+import org.jooq.impl.DSL
 import org.springframework.stereotype.Service
 import java.util.UUID
 
@@ -40,6 +45,27 @@ class RoleGrants(
         val roleId = roleId(BuiltInRole.TENANT_ADMIN)
         roles.lockRole(roleId)
         return roles.tenantWideHolders(roleId) - except
+    }
+
+    override fun tenantWideHolders(permission: Permission): Set<UUID> {
+        val builtIn = BuiltInRole.entries.filter { permission in it.permissions && it != BuiltInRole.USER }.map { it.key }
+        val custom =
+            DSL.exists(
+                DSL
+                    .selectOne()
+                    .from(AUTHZ_ROLE_PERMISSION)
+                    .where(AUTHZ_ROLE_PERMISSION.ROLE_ID.eq(AUTHZ_ROLE.ID), AUTHZ_ROLE_PERMISSION.PERMISSION.eq(permission.key)),
+            )
+        return tenantDsl
+            .current()
+            .selectDistinct(AUTHZ_GRANT.USER_ID)
+            .from(AUTHZ_GRANT)
+            .join(AUTHZ_ROLE)
+            .on(AUTHZ_ROLE.TENANT_ID.eq(AUTHZ_GRANT.TENANT_ID), AUTHZ_ROLE.ID.eq(AUTHZ_GRANT.ROLE_ID))
+            .where(AUTHZ_GRANT.SCOPE_UNIT_ID.isNull, AUTHZ_ROLE.KEY.`in`(builtIn).or(AUTHZ_ROLE.KEY.isNull.and(custom)))
+            .fetchSet(AUTHZ_GRANT.USER_ID)
+            .filterNotNull()
+            .toSet()
     }
 
     /** The built-in role's id, creating the built-in roles first in a tenant that predates them. */

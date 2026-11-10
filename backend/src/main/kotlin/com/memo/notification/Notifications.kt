@@ -8,6 +8,9 @@ enum class NotificationCategory(
 ) {
     SECURITY(mandatory = true),
     ADMINISTRATION(mandatory = false),
+
+    /** Memo approvals (Phase 2 E01): users may switch email off; the in-app item stays the inbox's companion. */
+    WORKFLOW(mandatory = false),
 }
 
 /** Where a notification goes. `PUSH` is reserved for the mobile apps (Phase 6a) and not delivered yet. */
@@ -25,6 +28,15 @@ enum class NotificationKind(
     PASSWORD_CHANGED(NotificationCategory.SECURITY, MailTemplate.PASSWORD_CHANGED),
     MFA_RESET(NotificationCategory.SECURITY, MailTemplate.MFA_RESET),
     ROLE_GRANTED(NotificationCategory.ADMINISTRATION, MailTemplate.ROLE_GRANTED),
+
+    // Workflow (design E01 §12): parameters `reference` and `organisation`; the link opens the memo.
+    TASK_ASSIGNED(NotificationCategory.WORKFLOW, MailTemplate.TASK_ASSIGNED),
+    MEMO_RETURNED(NotificationCategory.WORKFLOW, MailTemplate.MEMO_RETURNED),
+    MEMO_REJECTED(NotificationCategory.WORKFLOW, MailTemplate.MEMO_REJECTED),
+    MEMO_APPROVED(NotificationCategory.WORKFLOW, MailTemplate.MEMO_APPROVED),
+    TASK_REASSIGNED(NotificationCategory.WORKFLOW, MailTemplate.TASK_REASSIGNED),
+    TASK_BLOCKED(NotificationCategory.WORKFLOW, MailTemplate.TASK_BLOCKED),
+    MEMO_WITHDRAWN(NotificationCategory.WORKFLOW, MailTemplate.MEMO_WITHDRAWN),
 }
 
 /** Who receives a notification; the producer already holds the user, so `notification` never looks people up. */

@@ -25,6 +25,10 @@ import com.memo.jooq.tables.IdentityOperator
 import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
+import com.memo.jooq.tables.MemoParticipant
+import com.memo.jooq.tables.MemoReferenceCounter
+import com.memo.jooq.tables.MemoRouteEntry
+import com.memo.jooq.tables.MemoType
 import com.memo.jooq.tables.NotificationItem
 import com.memo.jooq.tables.NotificationMailOutbox
 import com.memo.jooq.tables.NotificationPreference
@@ -176,6 +180,31 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val IDENTITY_USER: IdentityUser get() = IdentityUser.IDENTITY_USER
 
     /**
+     * The table <code>memo.memo</code>.
+     */
+    val MEMO_ : com.memo.jooq.tables.Memo get() = com.memo.jooq.tables.Memo.MEMO_
+
+    /**
+     * The table <code>memo.memo_participant</code>.
+     */
+    val MEMO_PARTICIPANT: MemoParticipant get() = MemoParticipant.MEMO_PARTICIPANT
+
+    /**
+     * The table <code>memo.memo_reference_counter</code>.
+     */
+    val MEMO_REFERENCE_COUNTER: MemoReferenceCounter get() = MemoReferenceCounter.MEMO_REFERENCE_COUNTER
+
+    /**
+     * The table <code>memo.memo_route_entry</code>.
+     */
+    val MEMO_ROUTE_ENTRY: MemoRouteEntry get() = MemoRouteEntry.MEMO_ROUTE_ENTRY
+
+    /**
+     * The table <code>memo.memo_type</code>.
+     */
+    val MEMO_TYPE: MemoType get() = MemoType.MEMO_TYPE
+
+    /**
      * The table <code>memo.notification_item</code>.
      */
     val NOTIFICATION_ITEM: NotificationItem get() = NotificationItem.NOTIFICATION_ITEM
@@ -309,6 +338,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         IdentityRateLimitBucket.IDENTITY_RATE_LIMIT_BUCKET,
         IdentityRecoveryCode.IDENTITY_RECOVERY_CODE,
         IdentityUser.IDENTITY_USER,
+        com.memo.jooq.tables.Memo.MEMO_,
+        MemoParticipant.MEMO_PARTICIPANT,
+        MemoReferenceCounter.MEMO_REFERENCE_COUNTER,
+        MemoRouteEntry.MEMO_ROUTE_ENTRY,
+        MemoType.MEMO_TYPE,
         NotificationItem.NOTIFICATION_ITEM,
         NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX,
         NotificationPreference.NOTIFICATION_PREFERENCE,

@@ -8,6 +8,7 @@ import com.memo.jooq.Memo
 import com.memo.jooq.indexes.WORKFLOW_TASK_INBOX_IDX
 import com.memo.jooq.indexes.WORKFLOW_TASK_INSTANCE_IDX
 import com.memo.jooq.indexes.WORKFLOW_TASK_ONE_OPEN_IDX
+import com.memo.jooq.indexes.WORKFLOW_TASK_OPEN_IDX
 import com.memo.jooq.indexes.WORKFLOW_TASK_STEP_IDX
 import com.memo.jooq.keys.WORKFLOW_TASK_PKEY
 import com.memo.jooq.keys.WORKFLOW_TASK_TENANT_ID_ID_KEY
@@ -172,7 +173,7 @@ open class WorkflowTask(
         override fun `as`(alias: Table<*>): WorkflowTaskPath = WorkflowTaskPath(alias.qualifiedName, this)
     }
     override fun getSchema(): Schema? = if (aliased()) null else Memo.MEMO
-    override fun getIndexes(): List<Index> = listOf(WORKFLOW_TASK_INBOX_IDX, WORKFLOW_TASK_INSTANCE_IDX, WORKFLOW_TASK_ONE_OPEN_IDX, WORKFLOW_TASK_STEP_IDX)
+    override fun getIndexes(): List<Index> = listOf(WORKFLOW_TASK_INBOX_IDX, WORKFLOW_TASK_INSTANCE_IDX, WORKFLOW_TASK_ONE_OPEN_IDX, WORKFLOW_TASK_OPEN_IDX, WORKFLOW_TASK_STEP_IDX)
     override fun getPrimaryKey(): UniqueKey<WorkflowTaskRecord> = WORKFLOW_TASK_PKEY
     override fun getUniqueKeys(): List<UniqueKey<WorkflowTaskRecord>> = listOf(WORKFLOW_TASK_TENANT_ID_ID_KEY)
     override fun getReferences(): List<ForeignKey<WorkflowTaskRecord, *>> = listOf(WORKFLOW_TASK__WORKFLOW_TASK_TENANT_ID_INSTANCE_ID_FKEY, WORKFLOW_TASK__WORKFLOW_TASK_TENANT_ID_STEP_ID_FKEY)

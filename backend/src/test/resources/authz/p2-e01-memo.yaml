@@ -1,0 +1,53 @@
+# Phase 2 E01 memos (design E01 §5, §6). Rules: rules.yaml. Every active user holds memo.create through the implicit user
+# role; memo.types.manage is privileged (tenant admins). Memos are visible to their participants only, so the random ids
+# here are 404 for everyone allowed through; the per-participant matrix (initiator, approvers, uncleared) is MemoDraftIT
+# and, from T4, the memo journey tests.
+epic: P2-E01
+endpoints:
+  - { endpoint: GET /api/v1/memo-types, rule: signedIn }
+  - { endpoint: GET /api/v1/admin/memo-types, rule: tenantAdmin }
+  - endpoint: POST /api/v1/admin/memo-types
+    rule: tenantAdmin
+    body: { name: "Matrix type {random}" }
+    headers: { Idempotency-Key: "{random}" }
+  - endpoint: "PUT /api/v1/admin/memo-types/{id}"
+    rule: tenantAdmin
+    body: { name: "Matrix type" }
+    headers: { If-Match: "\"0\"" }
+  - endpoint: POST /api/v1/memos
+    rule: signedIn
+    body: { subject: "Matrix memo", typeId: "{random}" }
+    headers: { Idempotency-Key: "{random}" }
+  - { endpoint: "GET /api/v1/memos/{id}", rule: signedIn }
+  - endpoint: "PUT /api/v1/memos/{id}"
+    rule: signedIn
+    body: { subject: "Matrix memo", typeId: "{random}" }
+    headers: { If-Match: "\"0\"" }
+  - { endpoint: "POST /api/v1/memos/{id}/discard", rule: signedIn, headers: { Idempotency-Key: "{random}" } }
+  - endpoint: "PUT /api/v1/memos/{id}/route"
+    rule: signedIn
+    body: { approvers: [] }
+    headers: { If-Match: "\"0\"" }
+  - { endpoint: "POST /api/v1/memos/{id}/submit", rule: signedIn, headers: { Idempotency-Key: "{random}" } }
+  - { endpoint: "POST /api/v1/memos/{id}/resubmit", rule: signedIn, headers: { Idempotency-Key: "{random}" } }
+  - { endpoint: "POST /api/v1/memos/{id}/withdraw", rule: signedIn, headers: { Idempotency-Key: "{random}" } }
+  # Tasks of memos the actor cannot see are 404 like the memo; step-up is checked only once the memo is visible.
+  - { endpoint: "POST /api/v1/tasks/{taskId}/approve", rule: signedIn, headers: { Idempotency-Key: "{random}" } }
+  - endpoint: "POST /api/v1/tasks/{taskId}/return"
+    rule: signedIn
+    body: { remark: "Matrix" }
+    headers: { Idempotency-Key: "{random}" }
+  - endpoint: "POST /api/v1/tasks/{taskId}/reject"
+    rule: signedIn
+    body: { remark: "Matrix" }
+    headers: { Idempotency-Key: "{random}" }
+  # Inbox, boxes and history (T7): about the signed-in user only.
+  - { endpoint: GET /api/v1/inbox/tasks, rule: signedIn }
+  - { endpoint: GET /api/v1/memos, rule: signedIn }
+  - { endpoint: "GET /api/v1/memos/{id}/history", rule: signedIn }
+  # Reassignment (T6): workflow.tasks.reassign is privileged; reassigning needs a fresh step-up.
+  - { endpoint: GET /api/v1/admin/workflow/tasks, rule: tenantAdmin }
+  - endpoint: "POST /api/v1/admin/workflow/tasks/{taskId}/reassign"
+    rule: tenantAdminStepUp
+    body: { newAssigneeId: "{random}", reason: "Matrix" }
+    headers: { Idempotency-Key: "{random}" }

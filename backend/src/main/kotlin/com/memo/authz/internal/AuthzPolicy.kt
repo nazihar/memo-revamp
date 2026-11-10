@@ -81,7 +81,8 @@ class AuthzPolicy(
         return if (user == null || TenantContext.currentOrNull() == null) null else accessOf(user)
     }
 
-    private fun accessOf(user: UUID): UserAccess {
+    /** [user]'s grants and clearance, from the cache. */
+    internal fun accessOf(user: UUID): UserAccess {
         val tenant = TenantContext.current()
         return cache.get(user) { transactions.readInTenant(tenant) { roles.accessOf(user) } }
     }

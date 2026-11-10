@@ -9,6 +9,7 @@ import com.memo.workflow.engine.Resubmit
 import com.memo.workflow.engine.Return
 import com.memo.workflow.engine.Withdraw
 import com.memo.workflow.internal.WorkflowRunner
+import com.memo.workflow.internal.WorkflowSettings
 import org.springframework.stereotype.Service
 import java.util.UUID
 
@@ -22,7 +23,11 @@ import java.util.UUID
 @Service
 class Workflows(
     private val runner: WorkflowRunner,
+    private val settings: WorkflowSettings,
 ) {
+    /** Most approvers a route may have in this tenant (`workflow.route.max`); subjects check it before they start. */
+    fun maxApprovers(): Int = settings.maxApprovers()
+
     /** Round 1 on the built-in sequential definition, the steps taken from [route] in order. */
     fun start(
         subjectType: String,
@@ -64,13 +69,7 @@ class Workflows(
         newAssignee: UUID,
         reason: String?,
     ): WorkflowView = runner.onTask(taskId, currentUser()) { actor -> Reassign(actor, taskId, newAssignee, reason) }
-
-    /** The instance of a subject, if it was ever submitted. */
-    fun instanceOf(
-        subjectType: String,
-        subjectId: UUID,
-    ): UUID? = runner.instanceOf(subjectType, subjectId)
-
-    private fun currentUser(): Actor.User =
-        ActorContext.current().actor as? Actor.User ?: throw IllegalStateException("workflow actions need a signed-in user")
 }
+
+private fun currentUser(): Actor.User =
+    ActorContext.current().actor as? Actor.User ?: throw IllegalStateException("workflow actions need a signed-in user")

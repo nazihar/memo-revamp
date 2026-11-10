@@ -42,6 +42,7 @@ class WorkflowRunner(
         actor: Actor.User,
     ): WorkflowView {
         val subject = subject(subjectType)
+        subject.lock(subjectId)
         if (instances.instanceOfSubject(subjectType, subjectId) != null) throw WorkflowRefusedException(ALREADY_STARTED)
         val outcome = accepted(transition(subject, subjectId, route).start(actor.userId, route, remark))
         val instanceId = ids.next()
@@ -64,8 +65,10 @@ class WorkflowRunner(
         actor: Actor.User,
         command: (UUID) -> Command,
     ): WorkflowView {
-        val loaded = instances.lock(instanceId) ?: throw WorkflowRefusedException(INSTANCE_NOT_FOUND)
-        val subject = subject(loaded.subjectType)
+        val ref = instances.subjectOfInstance(instanceId) ?: throw WorkflowRefusedException(INSTANCE_NOT_FOUND)
+        val subject = subject(ref.type)
+        subject.lock(ref.id)
+        val loaded = instances.load(instanceId, lock = true) ?: throw WorkflowRefusedException(INSTANCE_NOT_FOUND)
         val cmd = command(actor.userId)
         val people =
             loaded.state.round.steps
@@ -74,10 +77,15 @@ class WorkflowRunner(
         return record(loaded, loaded.state, subject, outcome, actor)
     }
 
-    fun instanceOf(
+    /** Where the subject's instance is now, without locking it; null if it was never submitted. */
+    fun viewOf(
         subjectType: String,
         subjectId: UUID,
-    ): UUID? = instances.instanceOfSubject(subjectType, subjectId)
+    ): WorkflowView? =
+        instances
+            .instanceOfSubject(subjectType, subjectId)
+            ?.let { instances.load(it, lock = false) }
+            ?.let { view(it, it.state, it.version) }
 
     private fun record(
         instance: LoadedInstance,
@@ -93,17 +101,7 @@ class WorkflowRunner(
             writer.write(instance.id, before, instance.version, outcome, snapshotJson, actor.actingAs, now())
         effects.audit(instance, outcome, snapshot)
         effects.publish(instance, before, outcome, actionId)
-        val state = outcome.state
-        return WorkflowView(
-            instanceId = instance.id,
-            subjectType = instance.subjectType,
-            subjectId = instance.subjectId,
-            status = state.status,
-            round = state.round.number,
-            currentAssignees = state.currentAssignees,
-            openTaskId = state.openTasks.firstOrNull()?.id,
-            version = version,
-        )
+        return view(instance, outcome.state, version)
     }
 
     private fun transition(
@@ -115,19 +113,6 @@ class WorkflowRunner(
         return Transition(TransitionContext(ids::next, { ineligible[it] }, settings.maxApprovers()))
     }
 
-    private fun newPeople(command: Command): List<UUID> =
-        when (command) {
-            is Resubmit -> command.route
-            is Reassign -> listOf(command.newAssignee)
-            else -> emptyList()
-        }
-
-    private fun accepted(decision: Decision): Outcome =
-        when (decision) {
-            is Decision.Accepted -> decision.outcome
-            is Decision.Refused -> throw WorkflowRefusedException(decision.reason.name)
-        }
-
     private fun subject(type: String): WorkflowSubject =
         subjects.singleOrNull { it.type == type } ?: throw IllegalArgumentException("no workflow subject of type '$type'")
 
@@ -138,4 +123,36 @@ class WorkflowRunner(
         const val TASK_NOT_FOUND = "TASK_NOT_FOUND"
         const val INSTANCE_NOT_FOUND = "INSTANCE_NOT_FOUND"
     }
+}
+
+private fun newPeople(command: Command): List<UUID> =
+    when (command) {
+        is Resubmit -> command.route
+        is Reassign -> listOf(command.newAssignee)
+        else -> emptyList()
+    }
+
+private fun accepted(decision: Decision): Outcome =
+    when (decision) {
+        is Decision.Accepted -> decision.outcome
+        is Decision.Refused -> throw WorkflowRefusedException(decision.reason.name)
+    }
+
+private fun view(
+    instance: LoadedInstance,
+    state: InstanceState,
+    version: Long,
+): WorkflowView {
+    val open = state.openTasks.firstOrNull()
+    return WorkflowView(
+        instanceId = instance.id,
+        subjectType = instance.subjectType,
+        subjectId = instance.subjectId,
+        status = state.status,
+        round = state.round.number,
+        currentAssignees = state.currentAssignees,
+        openTaskId = open?.id,
+        openTaskBlocked = open?.blocked,
+        version = version,
+    )
 }

@@ -36,6 +36,15 @@ enum class Permission(
 
     /** Security settings, language defaults, terminology and branding (E07). */
     TENANT_SETTINGS_MANAGE("tenant.settings.manage", scopable = false, privileged = true),
+
+    /** Create and submit memos (Phase 2 E01); every active user holds it through the built-in user role. */
+    MEMO_CREATE("memo.create", scopable = false, privileged = false),
+
+    /** Memo types: name, default classification, step-up before approve (Phase 2 E01). */
+    MEMO_TYPES_MANAGE("memo.types.manage", scopable = false, privileged = true),
+
+    /** See open workflow tasks and reassign them, for example when an approver left (Phase 2 E01). */
+    WORKFLOW_TASKS_REASSIGN("workflow.tasks.reassign", scopable = false, privileged = true),
     ;
 
     companion object {
@@ -57,7 +66,7 @@ enum class BuiltInRole(
     TENANT_ADMIN("tenant_admin", "Organisation administrator", Permission.entries.toSet()),
     ORG_ADMIN("org_admin", "Org directory administrator", setOf(Permission.DIRECTORY_READ, Permission.ORG_MANAGE)),
     AUDITOR("auditor", "Auditor", setOf(Permission.DIRECTORY_READ, Permission.AUDIT_READ)),
-    USER("user", "User", setOf(Permission.DIRECTORY_READ)),
+    USER("user", "User", setOf(Permission.DIRECTORY_READ, Permission.MEMO_CREATE)),
     ;
 
     companion object {

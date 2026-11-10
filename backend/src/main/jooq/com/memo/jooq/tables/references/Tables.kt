@@ -26,6 +26,11 @@ import com.memo.jooq.tables.IdentityOperator
 import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
+import com.memo.jooq.tables.Memo
+import com.memo.jooq.tables.MemoParticipant
+import com.memo.jooq.tables.MemoReferenceCounter
+import com.memo.jooq.tables.MemoRouteEntry
+import com.memo.jooq.tables.MemoType
 import com.memo.jooq.tables.NotificationItem
 import com.memo.jooq.tables.NotificationMailOutbox
 import com.memo.jooq.tables.NotificationPreference
@@ -155,6 +160,31 @@ val IDENTITY_RECOVERY_CODE: IdentityRecoveryCode = IdentityRecoveryCode.IDENTITY
  * The table <code>memo.identity_user</code>.
  */
 val IDENTITY_USER: IdentityUser = IdentityUser.IDENTITY_USER
+
+/**
+ * The table <code>memo.memo</code>.
+ */
+val MEMO_: Memo = Memo.MEMO_
+
+/**
+ * The table <code>memo.memo_participant</code>.
+ */
+val MEMO_PARTICIPANT: MemoParticipant = MemoParticipant.MEMO_PARTICIPANT
+
+/**
+ * The table <code>memo.memo_reference_counter</code>.
+ */
+val MEMO_REFERENCE_COUNTER: MemoReferenceCounter = MemoReferenceCounter.MEMO_REFERENCE_COUNTER
+
+/**
+ * The table <code>memo.memo_route_entry</code>.
+ */
+val MEMO_ROUTE_ENTRY: MemoRouteEntry = MemoRouteEntry.MEMO_ROUTE_ENTRY
+
+/**
+ * The table <code>memo.memo_type</code>.
+ */
+val MEMO_TYPE: MemoType = MemoType.MEMO_TYPE
 
 /**
  * The table <code>memo.notification_item</code>.

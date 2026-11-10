@@ -89,41 +89,33 @@ class ActionEffects(
                 ?.flatMap { it.tasks }
                 ?.associate { it.id to it.assignee }
                 .orEmpty()
-        outcome.effects.forEach { effect ->
-            when (effect) {
-                is Effect.TaskClosed -> {
-                    val assignee = assignees.getValue(effect.taskId)
-                    events.publishEvent(
-                        WorkflowTaskClosed(
-                            tenant,
-                            instance.id,
-                            instance.subjectType,
-                            instance.subjectId,
-                            effect.taskId,
-                            assignee,
-                            TaskClosure.valueOf(effect.state.name),
-                        ),
+        // Casts, not a `when` with an empty branch: that compiles to a type switch SpotBugs reports as missing a default.
+        outcome.effects
+            .mapNotNull { effect ->
+                (effect as? Effect.TaskClosed)?.let {
+                    WorkflowTaskClosed(
+                        tenant,
+                        instance.id,
+                        instance.subjectType,
+                        instance.subjectId,
+                        it.taskId,
+                        assignees.getValue(it.taskId),
+                        TaskClosure.valueOf(it.state.name),
+                        outcome.action.kind,
+                    )
+                } ?: (effect as? Effect.TaskCreated)?.task?.let {
+                    WorkflowTaskCreated(
+                        tenant,
+                        instance.id,
+                        instance.subjectType,
+                        instance.subjectId,
+                        it.id,
+                        it.assignee,
+                        it.blocked,
+                        outcome.action.kind,
                     )
                 }
-
-                is Effect.TaskCreated -> {
-                    val task = effect.task
-                    events.publishEvent(
-                        WorkflowTaskCreated(
-                            tenant,
-                            instance.id,
-                            instance.subjectType,
-                            instance.subjectId,
-                            task.id,
-                            task.assignee,
-                            task.blocked,
-                        ),
-                    )
-                }
-
-                else -> {}
-            }
-        }
+            }.forEach(events::publishEvent)
         val action = outcome.action
         events.publishEvent(
             WorkflowActionTaken(

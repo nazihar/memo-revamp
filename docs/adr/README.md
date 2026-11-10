@@ -37,3 +37,6 @@ We use the MADR format (see [0001](0001-record-architecture-decisions.md)). Star
 | [0031](0031-platform-operator-path.md) | Platform operator path: separate host, accounts and session; platform scope only | accepted | 2026-11-08 |
 | [0032](0032-terminology-overrides.md) | Tenant terminology overrides as term arguments | accepted | 2026-11-08 |
 | [0033](0033-audit-viewer-and-export.md) | Audit query API, viewer and verifiable export | accepted | 2026-11-08 |
+| [0034](0034-own-workflow-engine.md) | Our own workflow engine on PostgreSQL, subject-agnostic | accepted | 2026-11-09 |
+| [0035](0035-workflow-data-model-and-concurrency.md) | Workflow data model: instances, rounds, steps, tasks; guarded transitions with idempotency keys | accepted | 2026-11-09 |
+| [0036](0036-memo-documents-binding-and-approval-step-up.md) | Memo documents: version binding, lock during review, step-up on approve | accepted | 2026-11-09 |

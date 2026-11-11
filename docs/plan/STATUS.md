@@ -45,8 +45,8 @@
 ## Next step
 1. Agent: merge #38 when green (owner approved 2026-11-11), check editing on dev after the deploy, then E02 follow-ups: Firefox and WebKit runs of the edit journey, nightly `OnlyOfficeContainerIT`.
 2. Owner: the D1 demo on dev (`phase-2-workflow-engine/epic-01-first-slice/demo.md`).
-4. Before 2026-11-22: take the rebuilt distroless digest from Renovate and delete the zlib entries in `.trivyignore`.
-5. Follow-ups (retrospective "Carried"): `AuditPerformanceIT`, `NotificationPerformanceIT`, the full-signature ClamAV corpus nightly, sample bodies for the remaining mutating matrix cells, upstream clean-ups (`apk upgrade` lines, Spring Session licence exceptions, Guava pin), Spring Boot 4.2 GA.
+3. Before 2026-11-22: take the rebuilt distroless digest from Renovate and delete the zlib entries in `.trivyignore`.
+4. Follow-ups (retrospective "Carried"): `AuditPerformanceIT`, `NotificationPerformanceIT`, the full-signature ClamAV corpus nightly, sample bodies for the remaining mutating matrix cells, upstream clean-ups (`apk upgrade` lines, Spring Session licence exceptions, Guava pin), Spring Boot 4.2 GA.
 
 ## Waiting for human
 - **D1 pilot demo** (Phase 2 E01): on dev once the release with PR #34 is deployed, following `phase-2-workflow-engine/epic-01-first-slice/demo.md`.

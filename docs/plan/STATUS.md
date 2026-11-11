@@ -9,7 +9,7 @@
 - **Phase 2 (workflow engine) started on 2026-11-09** at the owner's choice. The overview is approved (2026-11-09, Q1–Q5 answered, per-epic gate delegation kept): `phase-2-workflow-engine/overview.md` (six epics: E01 first slice / D1, E02 ONLYOFFICE editing, E03 definition model and runtime, E04 assignees and DoA, E05 timers and SLAs, E06 visual builder). Phase 1b is not started; it must finish before Phase 3 exits.
 - **Dev environment:** https://dev.memo-revamp.naziharitsolution.com and the operator console https://admin.dev.memo-revamp.naziharitsolution.com on the VM 123.176.58.175. It deploys automatically after every green `ci` run on `master`. The owner's operator account is enrolled.
 - **Phase 0:** done (`docs/plan/phase-0-foundations/`). **Release:** `v0.1.0` (2026-10-15). **Product name:** `memo` everywhere except the repository name (A1).
-- **Branches:** `master` holds PRs #1–#33 (#33: the Phase 2 overview and the E01 plan, merged 2026-11-10); `feat/2-e01-first-slice` (draft PR #34) carries the E01 code.
+- **Branches:** `master` holds PRs #1–#34 (#34: Phase 2 E01, the first slice, merged 2026-11-11).
 
 ## State (Phase 2)
 - [x] Overview written (2026-11-09)
@@ -26,7 +26,7 @@
 - [x] E01 T8 workflow notifications
 - [x] E01 T9 memo screens (desktop and phone layouts)
 - [x] E01 T10 demo memos, matrix, first-slice E2E journey, D1 script (`epic-01-first-slice/demo.md`)
-- [ ] E01 T11 close (CI green on PR #34, 2026-11-10; left: visual baselines for the memo screens, the owner's D1 demo)
+- [x] E01 T11 close (PR #34 merged 2026-11-11; visual baselines in the follow-up PR; the owner's D1 demo is in Waiting for human)
 
 ## State (Phase 1a, closed)
 - [x] Overview approved (2026-10-18), Q1–Q8 answered, per-epic gate delegated
@@ -37,13 +37,14 @@
 - [ ] Owner demo, moderated usability walkthrough, manual keyboard and screen-reader pass (carried)
 
 ## Next step
-1. Agent: after the merge, visual baselines for the memo screens (Linux, Playwright image), then E02 planning.
-2. Owner: merge PR #34 (all checks green); then the D1 demo on dev (`phase-2-workflow-engine/epic-01-first-slice/demo.md`).
+1. Agent: E02 plan (ONLYOFFICE editing) on `docs/2-e02-plan`.
+2. Owner: merge the visual-baselines PR when green; the D1 demo on dev (`phase-2-workflow-engine/epic-01-first-slice/demo.md`).
 3. Owner: upgrade the dev VM to 16 GB before E02 (ONLYOFFICE on dev).
 4. Before 2026-11-22: take the rebuilt distroless digest from Renovate and delete the zlib entries in `.trivyignore`.
 5. Follow-ups (retrospective "Carried"): `AuditPerformanceIT`, `NotificationPerformanceIT`, the full-signature ClamAV corpus nightly, sample bodies for the remaining mutating matrix cells, upstream clean-ups (`apk upgrade` lines, Spring Session licence exceptions, Guava pin), Spring Boot 4.2 GA.
 
 ## Waiting for human
+- **D1 pilot demo** (Phase 2 E01): on dev once the release with PR #34 is deployed, following `phase-2-workflow-engine/epic-01-first-slice/demo.md`.
 - **Dev VM to 16 GB** (Phase 2 Q2) before E02: ONLYOFFICE joins dev then. Today 7.8 GB runs dev with ClamAV (965 MiB after three days).
 - **Carried from Phase 1a (in person, no rush):** the demo (`docs/plan/phase-1a-minimum-core/demo.md`), a moderated usability walkthrough (login + MFA, org editing, tenant administration) and a manual keyboard + screen-reader pass (NVDA or VoiceOver), including the E01 patterns gallery (`pnpm dev`, `/patterns`).
 - **GitHub setup:** required reviewers on the `release` environment (may need a paid plan on a private repository; meanwhile only the owner can push `v*` tags) and branch protection on `master`.

@@ -20,6 +20,7 @@ import { useToast } from '@/components/ui/toast-context'
 import { useWithStepUp } from '@/features/auth/step-up-context'
 import { FormDialog } from '@/features/org/OrgDialogs'
 import { accessProblemMessage, am, amv } from './access-messages'
+import { newIdempotencyKey } from '@/lib/idempotency'
 
 /** `/admin/classifications` (design E04 §13): ordered levels; add, rename, reorder, and remove unused ones. */
 export function ClassificationsPage() {
@@ -156,7 +157,7 @@ function LevelDialog({ level, onClose }: { level?: ClassificationLevel; onClose:
   const withStepUp = useWithStepUp()
   const [name, setName] = useState(level?.name ?? '')
   const [description, setDescription] = useState(level?.description ?? '')
-  const [key] = useState(() => crypto.randomUUID())
+  const [key] = useState(() => newIdempotencyKey())
   const save = async () => {
     const body = { name: name.trim(), ...(description.trim() ? { description: description.trim() } : {}) }
     await withStepUp(() =>

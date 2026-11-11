@@ -16,7 +16,9 @@ import { Button } from '@/components/ui/button'
 import { Dialog } from '@/components/ui/dialog'
 import { Field } from '@/components/ui/field'
 import { Textarea } from '@/components/ui/form-controls'
+import { isolated } from './memo-fields'
 import { actionButtons, dialogLeads, dialogTitles, mm } from './memo-messages'
+import { newIdempotencyKey } from '@/lib/idempotency'
 
 export type MemoActionKind = 'submit' | 'resubmit' | 'withdraw' | 'discard' | 'approve' | 'return' | 'reject'
 
@@ -53,7 +55,7 @@ export function ActionDialog({
 }) {
   const intl = useIntl()
   const withStepUp = useWithStepUp()
-  const [key] = useState(() => crypto.randomUUID())
+  const [key] = useState(() => newIdempotencyKey())
   const [remark, setRemark] = useState('')
   const [error, setError] = useState<string>()
   const [busy, setBusy] = useState(false)
@@ -103,7 +105,7 @@ export function ActionDialog({
       onOpenChange={(open) => {
         if (!open) onClose()
       }}
-      title={intl.formatMessage(dialogTitles[kind], { reference: memo.reference })}
+      title={intl.formatMessage(dialogTitles[kind], { reference: isolated(memo.reference) })}
       description={intl.formatMessage(dialogLeads[kind], { number: memo.document?.number ?? 0 })}
       className="max-md:h-dvh max-md:max-h-none max-md:w-screen max-md:max-w-none max-md:rounded-none"
       footer={

@@ -11,6 +11,7 @@ import { useToast } from '@/components/ui/toast-context'
 import { fieldErrors, type MemoFieldValues } from './memo-fields'
 import { MemoFields } from './MemoFields'
 import { mm } from './memo-messages'
+import { newIdempotencyKey } from '@/lib/idempotency'
 
 /** `/memos/new` (ux-review §3): subject, type and classification; the draft opens next for the document and route. */
 export function NewMemoPage() {
@@ -22,7 +23,7 @@ export function NewMemoPage() {
   const [errors, setErrors] = useState<Partial<Record<keyof MemoFieldValues, string>>>({})
   const [busy, setBusy] = useState(false)
   // One key per form: a double click creates one draft.
-  const [key] = useState(() => crypto.randomUUID())
+  const [key] = useState(() => newIdempotencyKey())
 
   // Until the user picks one, the first active type.
   const typeId = values.typeId !== '' ? values.typeId : (types.data?.[0]?.id ?? '')

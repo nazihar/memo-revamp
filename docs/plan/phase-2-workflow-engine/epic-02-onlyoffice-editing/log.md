@@ -20,3 +20,4 @@
   - `api.js` sets an empty `onmousewheel` attribute on its frame (a Safari workaround), which our CSP refuses. The page skips inline-handler attributes while the editor builds its frame, so the CSP keeps no `unsafe-hashes`.
   - Memory: about 0.95 GiB with one editor (recorded in `nfr.md`).
 - Firefox and WebKit runs of the journey, and the nightly `OnlyOfficeContainerIT`, are still open (T4/T5).
+- **On dev after the merge (#38, deploy 2026-11-11):** `/office/` served with the framing and COEP headers, but the editor reported "Connection is lost": ONLYOFFICE built the converted-document link as `http://` on the `https` page (mixed content), because TLS ends at Caddy and the web nginx forwarded its own `$scheme`. The `/office/` location now forwards the edge's `X-Forwarded-Proto` (falling back to `$scheme`). Also moved `chat` off `customization` (deprecated in 9.4; `permissions.chat` already says it).

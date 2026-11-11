@@ -2,12 +2,15 @@
 # CI e2e environment (ADR-0011): Compose *core* stack (PostgreSQL, SeaweedFS, Mailpit), a clamd with the test signature
 # database (the `_base` image starts in seconds, as in the backend tests; uploads fail closed without a scanner) and the
 # built backend jar on the runner. Playwright then builds/serves the SPA itself (vite preview) and proxies /api to the backend.
+# E2E_DOCUMENTS=1 adds ONLYOFFICE (the pinned image, on 8081 where vite proxies /office/) and turns in-browser editing on,
+# so the edit journey runs instead of skipping (nightly; ADR-0037). It reaches the backend's internal port on the host.
 #   ci/e2e-stack.sh start | logs | stop
 set -euo pipefail
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 JAR=${BACKEND_JAR:-$ROOT/backend/build/libs/backend.jar}
 LOG=$ROOT/build/e2e-backend.log
 SIGNATURES=$ROOT/backend/src/test/resources/files/clamav
+OFFICE_IMAGE=onlyoffice/documentserver:9.4.0.1
 
 case "${1:-start}" in
   start)
@@ -27,6 +30,20 @@ case "${1:-start}" in
       sleep 2
     done
     export MEMO_CLAMAV_HOST=localhost MEMO_CLAMAV_PORT=3310
+    if [ "${E2E_DOCUMENTS:-}" = 1 ]; then
+      # Hex: 64 characters, nothing a shell or the image's config writer could mangle.
+      OFFICE_SECRET=$(openssl rand -hex 32)
+      docker rm -f memo-e2e-office >/dev/null 2>&1 || true
+      docker run -d --name memo-e2e-office -p 127.0.0.1:8081:80 --add-host host.docker.internal:host-gateway \
+        -e JWT_ENABLED=true -e JWT_SECRET="$OFFICE_SECRET" -e JWT_HEADER=Authorization -e ALLOW_PRIVATE_IP_ADDRESS=true \
+        "$OFFICE_IMAGE" >/dev/null
+      for _ in $(seq 1 120); do
+        if curl -fs http://127.0.0.1:8081/healthcheck | grep -q true; then echo "ONLYOFFICE is up"; break; fi
+        sleep 3
+      done
+      export MEMO_DOCSERVER_URL=http://127.0.0.1:8081 MEMO_DOCEDIT_JWT_SECRET="$OFFICE_SECRET" \
+        MEMO_DOCEDIT_INTERNAL_URL=http://host.docker.internal:8082
+    fi
     mkdir -p "$(dirname "$LOG")"
     SPRING_PROFILES_ACTIVE=dev nohup java -jar "$JAR" >"$LOG" 2>&1 &
     echo $! >"$ROOT/build/e2e-backend.pid"
@@ -41,10 +58,11 @@ case "${1:-start}" in
   logs)
     [ -f "$LOG" ] && tail -200 "$LOG" || true
     docker logs --tail 50 memo-e2e-clamd 2>&1 || true
+    docker logs --tail 50 memo-e2e-office 2>&1 || true
     ;;
   stop)
     [ -f "$ROOT/build/e2e-backend.pid" ] && kill "$(cat "$ROOT/build/e2e-backend.pid")" 2>/dev/null || true
-    docker rm -f memo-e2e-clamd >/dev/null 2>&1 || true
+    docker rm -f memo-e2e-clamd memo-e2e-office >/dev/null 2>&1 || true
     node "$ROOT/scripts/dev.mjs" down
     ;;
   *) echo "usage: $0 start|logs|stop" >&2; exit 2 ;;

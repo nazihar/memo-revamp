@@ -57,10 +57,10 @@ jobs:
           retention-days: 14
 
   cross-browser:
-    name: e2e smoke on Firefox + WebKit (real stack)
+    name: e2e smoke on Firefox + WebKit, in-browser editing on all three (real stack with ONLYOFFICE)
     needs: build
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
@@ -77,9 +77,13 @@ jobs:
         with:
           name: backend-jar
           path: backend/build/libs
+      # With the pinned ONLYOFFICE, so the edit journey stores a real version instead of skipping (ADR-0037).
       - run: ci/e2e-stack.sh start
-      - run: pnpm --filter web exec playwright install --with-deps firefox webkit
+        env:
+          E2E_DOCUMENTS: '1'
+      - run: pnpm --filter web exec playwright install --with-deps chromium firefox webkit
       - run: pnpm --filter web exec playwright test --project=firefox --project=webkit --retries=1
+      - run: pnpm --filter web exec playwright test --project=smoke --retries=1 e2e/smoke/document-editing.spec.ts
       - if: always()
         run: ci/e2e-stack.sh logs
 

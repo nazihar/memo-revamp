@@ -30,7 +30,7 @@
 - [x] E02 plan written and merged (2026-11-11): research, ADR-0037, design, threat model, tasks, test plan (`epic-02-onlyoffice-editing/`, PR #37)
 - [x] E02 T1–T3 service, network, `docedit` module, download and callbacks (forced RLS, HS256, internal connector, saves through the files pipeline)
 - [x] E02 T4 web editor page and buttons (read-only on phones), en/ar
-- [x] E02 T5 `DocEditIT`, matrix `p2-e02-docedit.yaml`, E2E edit journey green against a real ONLYOFFICE locally and on dev in Chromium, Firefox and WebKit; the nightly container test still open
+- [x] E02 T5 `DocEditIT`, matrix `p2-e02-docedit.yaml`, E2E edit journey green against a real ONLYOFFICE locally and on dev in Chromium, Firefox and WebKit; nightly on the E2E stack with ONLYOFFICE
 - [x] E02 T6 runbook, ASVS rows, licence register, nfr memory figures, epic log
 - [x] E02 merged and on dev (#38, #39; Ansible 2026-11-11 turned on the `documents` profile; editing verified on dev)
 
@@ -43,7 +43,7 @@
 - [ ] Owner demo, moderated usability walkthrough, manual keyboard and screen-reader pass (carried)
 
 ## Next step
-1. Agent: E02 follow-up, the nightly `OnlyOfficeContainerIT`; then the E03 plan (definition model and runtime).
+1. Agent: the E03 plan (definition model and runtime). E02 is done; its edit journey runs nightly against the real ONLYOFFICE.
 2. Owner: the D1 demo on dev (`phase-2-workflow-engine/epic-01-first-slice/demo.md`).
 3. Before 2026-11-22: take the rebuilt distroless digest from Renovate and delete the zlib entries in `.trivyignore`.
 4. Follow-ups (retrospective "Carried"): `AuditPerformanceIT`, `NotificationPerformanceIT`, the full-signature ClamAV corpus nightly, sample bodies for the remaining mutating matrix cells, upstream clean-ups (`apk upgrade` lines, Spring Session licence exceptions, Guava pin), Spring Boot 4.2 GA.

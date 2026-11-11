@@ -16,7 +16,7 @@ New: the `docedit` module (sessions, adapter, internal connector, signed links, 
 | T3 | Integration | `DocEditDownloadIT`, `DocEditCallbackIT` (every status, token cases, foreign host, redirect, oversize, EICAR, DOCM, replay, audit), `EditSaveRaceIT`, `SubmitWhileEditingIT` | PR |
 | T4 | Web unit | edit/view buttons by allowed actions and editing on/off; editor page states (loading, error, saving) with a stubbed `DocsAPI`; axe | PR |
 | T4 | E2E | security spec extended: editor page without CSP violations or third-party requests (full stack) | nightly |
-| T5 | Container | `OnlyOfficeContainerIT`: open a session, drive a force save through the command service, assert the stored version | nightly |
+| T5 | Real document server | The edit journey (`smoke/document-editing.spec.ts`) on the nightly E2E stack with the pinned ONLYOFFICE (`E2E_DOCUMENTS=1`): open, type, close, version 2 stored, in Chromium, Firefox and WebKit. Replaces the planned `OnlyOfficeContainerIT` (see the log) | nightly |
 | T5 | E2E | edit journey: open the editor, type, close, the memo shows version 2, submit allowed after the save | nightly (full stack) |
 | T5 | Matrix | `p2-e02-docedit.yaml`: public endpoints for anonymous, user, initiator, approver, stranger; internal endpoints (`host: internal`) without a token → refused | PR |
 

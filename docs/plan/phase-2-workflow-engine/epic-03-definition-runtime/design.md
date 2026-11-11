@@ -155,7 +155,7 @@ Refusals added: `ACTION_NOT_ALLOWED` (not in the step's `actions`), `NOT_AN_EARL
 ### 4.6 Resubmission policies
 - `restart`: round *n+1* starts at `start` (E01).
 - `resume`: round *n+1* starts at the step whose holder returned the item; for a route entry, at that approver's position in the new route if they are still in it, else at the route's first approver. Steps before it are not repeated.
-- `skip-unchanged`: round *n+1* starts at `start`; a human step whose same assignee approved or recommended in round *n* on a document with the same hash is completed automatically with a `CARRY` action that points to the earlier action. Parallel steps carry each task separately.
+- `skip-unchanged`: round *n+1* starts at `start`; a review, approve or route step whose same person approved or recommended in round *n* on the same subject snapshot (for memos: the same document version and hash) is passed with a `CARRY` action by that person. Parallel steps always run again (E03 keeps their completion rule simple; carrying single holders of a parallel step is a later refinement).
 
 ### 4.7 Version pinning and migration
 New instances use the newest `PUBLISHED` version of the memo type's definition. Migration (§5) per instance: allowed when the instance is `RUNNING` or `RETURNED`, the target is a newer `PUBLISHED` version of the same definition, and every open step's `node_id` exists in the target with the same `type`. It sets `definition_version_id`, adds a `MIGRATE` action (from and to version) and audits `workflow.instance.migrated`. Open tasks stay; the path after them follows the target.
@@ -179,7 +179,7 @@ New instances use the newest `PUBLISHED` version of the memo type's definition. 
 | `POST …/{key}/migrations` | migrate the listed instances (≤ 100), `Idempotency-Key` | `.approve`, step-up |
 | `POST /api/v1/tasks/{id}/{send-back,forward,delegate,ask,answer,refer,opinion,recommend}` | the new task actions (body: remark, target) | task holder (engine check), `Idempotency-Key` |
 | `POST /api/v1/memos/{id}/recall` | recall | initiator |
-| `POST /api/v1/admin/workflow-instances/{id}/cancel` | cancel with reason | `workflow.instances.cancel`, step-up |
+| `POST /api/v1/admin/workflow/instances/{id}/cancel` | cancel with reason (next to E01's `/admin/workflow/tasks`) | `workflow.instances.cancel`, step-up |
 | `GET /api/v1/memos/{id}` | gains `step` (name, type), `allowedActions` per the step, `sendBackTargets`, `opinions`, `clarification` | as E01 |
 
 Errors: Problem Details with `reason` (the engine refusal, or `DEFINITION_INVALID` with `errors[]`: pointer, code, message).

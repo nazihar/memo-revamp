@@ -297,6 +297,24 @@
       "value": "Manage usersSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "access.permission.workflowDefinitionsApprove": [
+    {
+      "type": 0,
+      "value": "Review and publish workflow definitionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.permission.workflowDefinitionsManage": [
+    {
+      "type": 0,
+      "value": "Write workflow definitions and submit them for reviewSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.permission.workflowInstancesCancel": [
+    {
+      "type": 0,
+      "value": "Cancel running workflowsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "access.permission.workflowTasksReassign": [
     {
       "type": 0,
@@ -2755,6 +2773,12 @@
     {
       "type": 0,
       "value": "ApprovedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.status.cancelled": [
+    {
+      "type": 0,
+      "value": "CancelledSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.status.discarded": [

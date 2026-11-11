@@ -35,7 +35,7 @@ class DefinitionWalkProperties {
         var nextId = 1_000L
         val transition =
             Transition(
-                TransitionContext({ UUID(1, nextId++) }, { null }, maxApprovers = 4) { mapOf("amount" to case.amount) },
+                TransitionContext({ UUID(1, nextId++) }, { null }, maxApprovers = 4, attributes = { mapOf("amount" to case.amount) }),
                 case.definition,
             )
         val routed = case.definition.steps.any { it.type == StepType.ROUTE }

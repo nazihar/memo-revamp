@@ -142,6 +142,15 @@ class MemosController(
         @RequestBody(required = false) body: RemarkRequest?,
     ): ResponseEntity<MemoView> = act(key, "memo.withdraw", id, body) { reviews.withdraw(id, body?.remark) }
 
+    @PostMapping("/{id}/recall")
+    @SignedIn
+    @Operation(operationId = "recallMemo", summary = "Pull a memo back before any approver acted")
+    fun recall(
+        @PathVariable id: UUID,
+        @RequestHeader("Idempotency-Key") key: String,
+        @RequestBody(required = false) body: RemarkRequest?,
+    ): ResponseEntity<MemoView> = act(key, "memo.recall", id, body) { reviews.recall(id, body?.remark) }
+
     @PostMapping("/{id}/discard")
     @SignedIn
     @Operation(operationId = "discardMemo", summary = "Discard a draft")

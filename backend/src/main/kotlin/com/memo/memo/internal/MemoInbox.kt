@@ -55,7 +55,7 @@ enum class MemoBox(
 ) {
     DRAFTS(setOf(MemoStatus.DRAFT)),
     SENT(setOf(MemoStatus.IN_REVIEW, MemoStatus.RETURNED)),
-    CLOSED(setOf(MemoStatus.APPROVED, MemoStatus.REJECTED, MemoStatus.WITHDRAWN, MemoStatus.DISCARDED)),
+    CLOSED(setOf(MemoStatus.APPROVED, MemoStatus.REJECTED, MemoStatus.WITHDRAWN, MemoStatus.DISCARDED, MemoStatus.CANCELLED)),
 }
 
 data class HistoryAction(

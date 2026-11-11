@@ -67,6 +67,17 @@ class MemoReviews(
         return memos.get(id)
     }
 
+    /** Pulls the memo back before any approver acted (design E03 §4.4); it returns to the initiator to edit and resubmit. */
+    fun recall(
+        id: UUID,
+        remark: String?,
+    ): Memo {
+        val memo = locked(id)
+        refuseIf(memo.status != MemoStatus.IN_REVIEW, "WRONG_STATE") { "Only a memo in review can be recalled." }
+        workflows.recall(checkNotNull(memo.workflowInstanceId), remark)
+        return memos.get(id)
+    }
+
     /** A review never starts on a document that may still change in an open editor (ADR-0037). */
     private fun notBeingEdited(memo: Memo) {
         refuseIf(memo.documentFileId?.let(editing::beingEdited) == true, "DOCUMENT_BEING_EDITED") {

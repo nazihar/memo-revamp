@@ -2,13 +2,9 @@ package com.memo.workflow.engine
 
 import com.memo.workflow.ActionKind
 import com.memo.workflow.definition.AssigneeKind
-import com.memo.workflow.definition.CompiledCondition
-import com.memo.workflow.definition.ConditionOutcome
-import com.memo.workflow.definition.Conditions
 import com.memo.workflow.definition.Definition
 import com.memo.workflow.definition.StepDef
 import com.memo.workflow.definition.StepType
-import java.time.Instant
 import java.util.UUID
 
 /** Where a walk through the definition stopped: the round as it is now, what to write, and the automatic actions taken. */
@@ -28,8 +24,8 @@ internal class Rounds(
     private val context: TransitionContext,
     private val definition: Definition,
 ) {
-    private val compiled = mutableMapOf<String, CompiledCondition>()
-    private val values: Map<String, Any?> by lazy { context.attributes() }
+    private val branches = Branches(context, definition)
+    private val carries = Carries(context.carried)
 
     /** A new round, entered at the definition's start. */
     fun open(
@@ -44,12 +40,30 @@ internal class Rounds(
         from: Step,
         people: People,
     ): Walk {
-        val entry = from.routeIndex?.plus(1)?.takeIf { it < round.route.size }
+        val (entry, carried) = from.routeIndex?.let { carries.uncarried(round, from.nodeId, it + 1) } ?: (null to emptyList())
+        val skipped = carries.skip(round, from.nodeId, carried)
         return if (entry != null) {
-            val (next, step) = routeEntry(round, from.nodeId, entry)
+            val (next, step) = routeEntry(skipped, from.nodeId, entry)
+            Walk(next, listOf(Effect.TaskCreated(step.id, step.tasks.last())), carried, finished = false)
+        } else {
+            enter(skipped, checkNotNull(definition.step(from.nodeId).next), people, emptyList(), carried)
+        }
+    }
+
+    /** A new round that starts again at [from] (the `resume` policy): a route entry at its approver's place in the new route. */
+    fun resume(
+        number: Int,
+        route: List<UUID>,
+        people: People,
+        from: Step,
+    ): Walk {
+        val round = Round(number, RoundOutcome.OPEN, emptyList(), route)
+        val index = from.routeIndex
+        return if (index != null && route.isNotEmpty()) {
+            val (next, step) = routeEntry(round, from.nodeId, route.indexOf(from.assignee).coerceAtLeast(0))
             Walk(next, listOf(Effect.TaskCreated(step.id, step.tasks.last())), emptyList(), finished = false)
         } else {
-            enter(round, checkNotNull(definition.step(from.nodeId).next), people, emptyList(), emptyList())
+            enter(round, from.nodeId, people, emptyList(), emptyList())
         }
     }
 
@@ -74,15 +88,8 @@ internal class Rounds(
         return Walk(next, step.tasks.map { Effect.TaskCreated(step.id, it) }, emptyList(), finished = false)
     }
 
-    private fun parallel(
-        round: Round,
-        node: StepDef,
-    ): Step {
-        val holders = node.assignees.map { checkNotNull(it.userId) }
-        return activated(round, node, StepKind.PARALLEL, holders.first(), null).copy(tasks = holders.map(::newTask))
-    }
-
-    private tailrec fun enter(
+    /** From [at] on: steps without a person act and move on; the first step that needs a person stops the walk. */
+    private fun enter(
         round: Round,
         at: String,
         people: People,
@@ -92,28 +99,65 @@ internal class Rounds(
         if (at == Definition.END) return Walk(round, effects, followUps, finished = true)
         val node = definition.step(at)
         return when (node.type) {
-            StepType.ROUTE -> {
-                if (round.route.isEmpty()) {
-                    enter(round, checkNotNull(node.next), people, effects, followUps)
+            StepType.ROUTE, StepType.REVIEW, StepType.APPROVE, StepType.PARALLEL -> person(round, node, people, effects, followUps)
+            StepType.BRANCH, StepType.NOTIFY, StepType.ESCALATE_TO_FORUM -> pass(round, node, people, effects, followUps)
+            else -> throw IllegalStateException("step type ${node.type.json} cannot run")
+        }
+    }
+
+    /** A step that needs people: its task(s) open, unless every approval it asks for carries over (then the walk goes on). */
+    private fun person(
+        round: Round,
+        node: StepDef,
+        people: People,
+        effects: List<Effect>,
+        followUps: List<ActionRecord>,
+    ): Walk {
+        val holder = node.assignee?.userId
+        return when {
+            node.type == StepType.ROUTE -> {
+                val (first, carried) = carries.uncarried(round, node.id, 0)
+                if (first == null) {
+                    enter(round, checkNotNull(node.next), people, effects, followUps + carried)
                 } else {
-                    val (next, step) = routeEntry(round, node.id, 0)
-                    Walk(next, effects + Effect.TaskCreated(step.id, step.tasks.last()), followUps, finished = false)
+                    val (next, step) = routeEntry(round, node.id, first)
+                    Walk(
+                        carries.skip(next, node.id, carried),
+                        effects + Effect.TaskCreated(step.id, step.tasks.last()),
+                        followUps + carried,
+                        false,
+                    )
                 }
             }
 
-            StepType.REVIEW, StepType.APPROVE -> {
-                val kind = if (node.type == StepType.REVIEW) StepKind.REVIEW else StepKind.APPROVE
-                val step = activated(round, node, kind, checkNotNull(checkNotNull(node.assignee).userId), null)
-                Walk(round.copy(steps = round.steps + step), effects + Effect.TaskCreated(step.id, step.tasks.last()), followUps, false)
-            }
-
-            StepType.PARALLEL -> {
+            node.type == StepType.PARALLEL -> {
                 val step = parallel(round, node)
                 Walk(round.copy(steps = round.steps + step), effects + step.tasks.map { Effect.TaskCreated(step.id, it) }, followUps, false)
             }
 
+            holder != null && carries.carries(node.id, holder) -> {
+                enter(round, checkNotNull(node.next), people, effects, followUps + carries.record(node.id, holder, round.number))
+            }
+
+            else -> {
+                val kind = if (node.type == StepType.REVIEW) StepKind.REVIEW else StepKind.APPROVE
+                val step = activated(round, node, kind, checkNotNull(holder), null)
+                Walk(round.copy(steps = round.steps + step), effects + Effect.TaskCreated(step.id, step.tasks.last()), followUps, false)
+            }
+        }
+    }
+
+    /** A step without a person: a branch chooses the way on, a notification or an escalation is recorded and published. */
+    private fun pass(
+        round: Round,
+        node: StepDef,
+        people: People,
+        effects: List<Effect>,
+        followUps: List<ActionRecord>,
+    ): Walk =
+        when (node.type) {
             StepType.BRANCH -> {
-                val (next, record) = branch(node, round.number, people.actor)
+                val (next, record) = branches.choose(node, round.number, people.actor)
                 enter(round, next, people, effects, followUps + record)
             }
 
@@ -130,25 +174,23 @@ internal class Rounds(
                     }
                 val message = checkNotNull(node.message)
                 val record = automatic(ActionKind.NOTIFY, round.number, people.actor, mapOf("step" to node.id, "message" to message))
-                enter(
-                    round,
-                    checkNotNull(node.next),
-                    people,
-                    effects + Effect.Notify(node.id, recipients.distinct(), message),
-                    followUps + record,
-                )
+                val notify = Effect.Notify(node.id, recipients.distinct(), message)
+                enter(round, checkNotNull(node.next), people, effects + notify, followUps + record)
             }
 
-            StepType.ESCALATE_TO_FORUM -> {
+            else -> {
                 val forum = checkNotNull(node.forum)
                 val record = automatic(ActionKind.ESCALATE_TO_FORUM, round.number, people.actor, mapOf("step" to node.id, "forum" to forum))
                 enter(round, checkNotNull(node.next), people, effects + Effect.EscalateToForum(node.id, forum), followUps + record)
             }
-
-            else -> {
-                throw IllegalStateException("step type ${node.type.json} cannot run")
-            }
         }
+
+    private fun parallel(
+        round: Round,
+        node: StepDef,
+    ): Step {
+        val holders = node.assignees.map { checkNotNull(it.userId) }
+        return activated(round, node, StepKind.PARALLEL, holders.first(), null).copy(tasks = holders.map(::newTask))
     }
 
     /** The route entry [index] activated: its pending step if the round has one, else a new step. */
@@ -200,53 +242,6 @@ internal class Rounds(
             routeIndex = routeIndex,
             name = node.name,
         )
-
-    /** The first branch whose condition is true, else `otherwise`; the record keeps the inputs and what failed. */
-    private fun branch(
-        node: StepDef,
-        round: Int,
-        actor: UUID,
-    ): Pair<String, ActionRecord> {
-        val inputs = linkedMapOf<String, Any?>()
-        val failed = mutableListOf<Int>()
-        val taken =
-            node.branches.indices.firstOrNull { i ->
-                val condition = condition(node.branches[i].condition)
-                condition.reads.forEach { inputs[it] = shown(values[it]) }
-                when (val outcome = condition.evaluate(values)) {
-                    is ConditionOutcome.Value -> outcome.result
-                    is ConditionOutcome.Failed -> false.also { failed += i }
-                }
-            }
-        val next = taken?.let { node.branches[it].next } ?: checkNotNull(node.otherwise)
-        val details = mapOf("step" to node.id, "taken" to (taken ?: "otherwise"), "inputs" to inputs, "failed" to failed)
-        return next to automatic(ActionKind.ROUTE, round, actor, details)
-    }
-
-    private fun condition(text: String): CompiledCondition =
-        compiled.getOrPut(text) {
-            val (condition, error) = Conditions.compile(text, definition.attributes)
-            checkNotNull(condition) { "a published condition does not compile: ${error?.message}" }
-        }
-
-    private fun automatic(
-        kind: ActionKind,
-        round: Int,
-        actor: UUID,
-        details: Map<String, Any?>,
-    ): ActionRecord = ActionRecord(kind, round, null, actor, null, details)
-
-    private companion object {
-        const val MAX_SHOWN = 200
-
-        /** Attribute values as the history shows them: JSON-friendly and short. */
-        fun shown(value: Any?): Any? =
-            when (value) {
-                null, is Boolean, is Number -> value
-                is Instant -> value.toString()
-                else -> value.toString().take(MAX_SHOWN)
-            }
-    }
 }
 
 /** Who a walk acts for: the instance's initiator (notify recipients) and the person whose action led here. */

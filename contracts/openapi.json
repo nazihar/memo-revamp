@@ -251,7 +251,7 @@
             "type" : "integer"
           },
           "status" : {
-            "enum" : [ "DRAFT", "IN_REVIEW", "RETURNED", "APPROVED", "REJECTED", "WITHDRAWN", "DISCARDED" ],
+            "enum" : [ "DRAFT", "IN_REVIEW", "RETURNED", "APPROVED", "REJECTED", "WITHDRAWN", "DISCARDED", "CANCELLED" ],
             "type" : "string"
           },
           "subject" : {
@@ -322,6 +322,14 @@
           "logoFileId" : {
             "description" : "A file uploaded with purpose tenant.logo; absent removes the logo",
             "format" : "uuid",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "CancelRequest" : {
+        "properties" : {
+          "reason" : {
             "type" : [ "string", "null" ]
           }
         },
@@ -1295,7 +1303,7 @@
         "properties" : {
           "allowedActions" : {
             "items" : {
-              "enum" : [ "EDIT", "UPLOAD_DOCUMENT", "EDIT_ROUTE", "SUBMIT", "DISCARD", "RESUBMIT", "WITHDRAW", "APPROVE", "RETURN", "REJECT", "EDIT_DOCUMENT", "VIEW_DOCUMENT", "RECOMMEND", "SEND_BACK", "FORWARD", "DELEGATE", "ASK", "REFER", "ANSWER", "OPINION" ],
+              "enum" : [ "EDIT", "UPLOAD_DOCUMENT", "EDIT_ROUTE", "SUBMIT", "DISCARD", "RESUBMIT", "WITHDRAW", "APPROVE", "RETURN", "REJECT", "EDIT_DOCUMENT", "VIEW_DOCUMENT", "RECOMMEND", "SEND_BACK", "FORWARD", "DELEGATE", "ASK", "REFER", "ANSWER", "OPINION", "RECALL" ],
               "type" : "string"
             },
             "type" : "array"
@@ -1354,7 +1362,7 @@
             "type" : "array"
           },
           "status" : {
-            "enum" : [ "DRAFT", "IN_REVIEW", "RETURNED", "APPROVED", "REJECTED", "WITHDRAWN", "DISCARDED" ],
+            "enum" : [ "DRAFT", "IN_REVIEW", "RETURNED", "APPROVED", "REJECTED", "WITHDRAWN", "DISCARDED", "CANCELLED" ],
             "type" : "string"
           },
           "subject" : {
@@ -2724,6 +2732,9 @@
             "format" : "uuid",
             "type" : [ "string", "null" ]
           },
+          "recallable" : {
+            "type" : "boolean"
+          },
           "round" : {
             "format" : "int32",
             "type" : "integer"
@@ -2744,7 +2755,7 @@
             "type" : "integer"
           }
         },
-        "required" : [ "currentAssignees", "instanceId", "round", "status", "subjectId", "subjectType", "version" ],
+        "required" : [ "currentAssignees", "instanceId", "recallable", "round", "status", "subjectId", "subjectType", "version" ],
         "type" : "object"
       }
     }
@@ -3632,6 +3643,51 @@
         },
         "summary" : "Lift a temporary lock",
         "tags" : [ "admin" ]
+      }
+    },
+    "/api/v1/admin/workflow/instances/{instanceId}/cancel" : {
+      "post" : {
+        "operationId" : "cancelWorkflow",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "instanceId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CancelRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/WorkflowView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Cancel a running workflow with a reason",
+        "tags" : [ "workflow" ]
       }
     },
     "/api/v1/admin/workflow/tasks" : {
@@ -5510,6 +5566,50 @@
           }
         },
         "summary" : "A memo's actions by round",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/memos/{id}/recall" : {
+      "post" : {
+        "operationId" : "recallMemo",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RemarkRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemoView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Pull a memo back before any approver acted",
         "tags" : [ "memo" ]
       }
     },

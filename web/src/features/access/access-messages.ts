@@ -122,6 +122,18 @@ export const catalogue = defineMessages({
     id: 'access.permission.workflowTasksReassign',
     defaultMessage: 'Reassign approval tasks',
   },
+  'workflow.definitions.manage': {
+    id: 'access.permission.workflowDefinitionsManage',
+    defaultMessage: 'Write workflow definitions and submit them for review',
+  },
+  'workflow.definitions.approve': {
+    id: 'access.permission.workflowDefinitionsApprove',
+    defaultMessage: 'Review and publish workflow definitions',
+  },
+  'workflow.instances.cancel': {
+    id: 'access.permission.workflowInstancesCancel',
+    defaultMessage: 'Cancel running workflows',
+  },
 })
 
 export function catalogueLabel(intl: IntlShape, key: string, fallback?: string): string {

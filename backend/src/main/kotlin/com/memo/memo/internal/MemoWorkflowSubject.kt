@@ -120,6 +120,7 @@ class MemoWorkflowListener(
                 InstanceStatus.APPROVED to MemoStatus.APPROVED,
                 InstanceStatus.REJECTED to MemoStatus.REJECTED,
                 InstanceStatus.WITHDRAWN to MemoStatus.WITHDRAWN,
+                InstanceStatus.CANCELLED to MemoStatus.CANCELLED,
             )
     }
 }

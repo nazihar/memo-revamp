@@ -20,6 +20,9 @@ enum class MemoStatus {
     REJECTED,
     WITHDRAWN,
     DISCARDED,
+
+    /** An administrator cancelled the workflow (design E03 §4.4). */
+    CANCELLED,
     ;
 
     /** Fields, document and route may change only while the initiator holds the memo. */

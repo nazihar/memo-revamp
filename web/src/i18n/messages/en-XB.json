@@ -673,6 +673,48 @@
       "value": "‬"
     }
   ],
+  "access.permission.workflowDefinitionsApprove": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝʌıǝʍ ɐup dnqʅısɥ ʍoɹʞɟʅoʍ pǝɟıuıʇıous"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "access.permission.workflowDefinitionsManage": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɹıʇǝ ʍoɹʞɟʅoʍ pǝɟıuıʇıous ɐup snqɯıʇ ʇɥǝɯ ɟoɹ ɹǝʌıǝʍ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "access.permission.workflowInstancesCancel": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɐuɔǝʅ ɹnuuıuƃ ʍoɹʞɟʅoʍs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "access.permission.workflowTasksReassign": [
     {
       "type": 0,
@@ -6023,6 +6065,20 @@
     {
       "type": 0,
       "value": "∀ddɹoʌǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.status.cancelled": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɐuɔǝʅʅǝp"
     },
     {
       "type": 0,

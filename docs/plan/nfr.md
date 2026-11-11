@@ -40,6 +40,7 @@
 ## Capacity of the dev/staging VM (ADR-0015)
 - **Minimum:** 8 vCPU, 16 GB RAM, 200 GB SSD to run dev + staging with ONLYOFFICE and ClamAV.
 - **Lighter option:** 4 vCPU and 8 GB is enough if ONLYOFFICE and ClamAV run only in staging.
+- **ONLYOFFICE 9.4.0.1, measured (Phase 2 E02, local full stack, 2026-11-11):** about 0.94 GiB with no editor open after start-up and about 0.95 GiB with one editor open (single-process mode); 1.35 GiB in a long-running instance. Its Compose limit of 4 GB leaves room for concurrent editors and conversions.
 
 ## Confirmation
 

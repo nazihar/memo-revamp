@@ -37,7 +37,7 @@ const SECRET_KEYS = [
 ]
 
 const CORE_SERVICES = ['postgres', 'seaweedfs', 'mailpit']
-const FULL_SERVICES = [...CORE_SERVICES, 'onlyoffice', 'onlyoffice-gateway', 'clamav']
+const FULL_SERVICES = [...CORE_SERVICES, 'onlyoffice', 'onlyoffice-gateway', 'backend-gateway', 'clamav']
 
 function log(msg) {
   console.log(`[dev] ${msg}`)

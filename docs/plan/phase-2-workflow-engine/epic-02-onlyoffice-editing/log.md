@@ -13,4 +13,10 @@
   - **Repeated callbacks:** the upload idempotency key already stored once; the session update and `docedit.version.saved` now also happen once.
   - **Local stack:** `pnpm dev` set `MEMO_DOCSERVER_URL` but no secret, so the backend would have refused to start with this branch. `scripts/dev.mjs` now passes the secret, and a `backend-gateway` socat gives ONLYOFFICE its only way out: the host backend's port 8082.
   - **Bean names:** `identity` already has a `SessionStore`; ours is `EditSessionStore`.
-  - **Tests:** the planned separate ITs (callback, download, session, race, submit-while-editing, expiry, internal connector) are one `DocEditIT` sharing a fake document server; each planned case is a step in it. `OnlyOfficeContainerIT` and the E2E edit journey (nightly) follow in their own PR.
+  - **Tests:** the planned separate ITs (callback, download, session, race, submit-while-editing, expiry, internal connector) are one `DocEditIT` sharing a fake document server, one test per case. The E2E edit journey is in the smoke project and skips itself where no document server runs (the PR stack).
+- **Live check (T1/T4) against ONLYOFFICE 9.4.0.1 on the local full stack**, E2E `document-editing.spec.ts` (Chromium, production build): the `/office/` sub-path works, the editor runs framed by our page under the strict CSP and COEP, and an edit comes back as version 2 through the upload pipeline. Findings, all fixed:
+  - The framed editor page needs COEP/CORP on its own responses (our pages require COEP), and only our pages may frame it: nginx `/office/` sends `frame-ancestors 'self'` and `X-Frame-Options: SAMEORIGIN` too; Vite mirrors the block for local runs.
+  - ONLYOFFICE builds the links to its converted document from the **WebSocket's** `X-Forwarded-Host`: the proxy must set it on upgrades as well (nginx does; Vite needed `proxyReqWs`). Without it the editor loads our `index.html` and reports "file content does not match the file extension".
+  - `api.js` sets an empty `onmousewheel` attribute on its frame (a Safari workaround), which our CSP refuses. The page skips inline-handler attributes while the editor builds its frame, so the CSP keeps no `unsafe-hashes`.
+  - Memory: about 0.95 GiB with one editor (recorded in `nfr.md`).
+- Firefox and WebKit runs of the journey, and the nightly `OnlyOfficeContainerIT`, are still open (T4/T5).

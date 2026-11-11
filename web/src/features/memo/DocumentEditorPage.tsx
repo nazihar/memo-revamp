@@ -57,6 +57,23 @@ function loadScript(src: string): Promise<void> {
 }
 
 /**
+ * Runs [create] without inline event-handler attributes: the editor script sets an empty `onmousewheel` on its frame (a
+ * Safari workaround) that our CSP refuses anyway. Skipping it keeps the CSP free of `unsafe-hashes` and the console clean.
+ */
+function withoutInlineHandlers<T>(create: () => T): T {
+  // eslint-disable-next-line @typescript-eslint/unbound-method -- restored below and only ever called with an element
+  const setAttribute = Element.prototype.setAttribute
+  Element.prototype.setAttribute = function (this: Element, name: string, value: string) {
+    if (!/^on/i.test(name)) setAttribute.call(this, name, value)
+  }
+  try {
+    return create()
+  } finally {
+    Element.prototype.setAttribute = setAttribute
+  }
+}
+
+/**
  * `/memos/$memoId/document` (design E02 §9): the memo's document in the browser editor, editable by the initiator
  * while they hold the memo, read-only for everyone else who sees it. Leaving waits for the save to land.
  */
@@ -83,7 +100,8 @@ export function DocumentEditorPage({ memoId, mode }: { memoId: string; mode: 'ed
         })
         await loadScript(opened.data.scriptUrl)
         if (run.cancelled || !window.DocsAPI) return
-        editor.current = new window.DocsAPI.DocEditor('memo-document-editor', opened.data.config)
+        const api = window.DocsAPI
+        editor.current = withoutInlineHandlers(() => new api.DocEditor('memo-document-editor', opened.data.config))
         setSession(opened.data.sessionId)
         setState('ready')
       } catch {

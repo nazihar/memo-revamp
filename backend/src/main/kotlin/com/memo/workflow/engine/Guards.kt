@@ -74,6 +74,10 @@ internal object Guards {
             is Withdraw, is Resubmit, is Recall, is Cancel -> {
                 instance(state, command, context, routed)
             }
+
+            is Migrate -> {
+                Migrations.refusal(state, command.target)
+            }
         }
 
     /** Commands on the instance rather than a task: withdraw, resubmit, recall, cancel. */

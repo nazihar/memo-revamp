@@ -19,6 +19,7 @@ import com.memo.workflow.engine.Decision
 import com.memo.workflow.engine.Delegate
 import com.memo.workflow.engine.Forward
 import com.memo.workflow.engine.InstanceState
+import com.memo.workflow.engine.Migrate
 import com.memo.workflow.engine.Outcome
 import com.memo.workflow.engine.Reassign
 import com.memo.workflow.engine.Refer
@@ -100,6 +101,33 @@ class WorkflowRunner(
         return record(loaded, loaded.state, subject, outcome, actor)
     }
 
+    /**
+     * Moves the instance from version [from] to the newer [to] of its definition (design E03 §4.7), each an id and its
+     * number. Refused when it is no longer on [from] (migrated meanwhile) or a step it is at is missing or changed in [to].
+     */
+    fun migrate(
+        instanceId: UUID,
+        actor: Actor.User,
+        from: Pair<UUID, Int>,
+        to: Pair<UUID, Int>,
+    ): WorkflowView {
+        val ref = instances.subjectOfInstance(instanceId) ?: throw WorkflowRefusedException(INSTANCE_NOT_FOUND)
+        val subject = subject(ref.type)
+        subject.lock(ref.id)
+        val found = instances.load(instanceId, lock = true)
+        if (found?.definitionVersionId !=
+            from.first
+        ) {
+            throw WorkflowRefusedException(if (found == null) INSTANCE_NOT_FOUND else VERSION_CHANGED)
+        }
+        val loaded = checkNotNull(found)
+        val command = Migrate(actor.userId, compiled.get(to.first), from.second, to.second)
+        val outcome = accepted(transition(subject, loaded.subjectId, emptyList(), loaded.definition).apply(loaded.state, command))
+        val view = record(loaded, loaded.state, subject, outcome, actor)
+        instances.repin(instanceId, to.first)
+        return view
+    }
+
     /** Where the subject's instance is now, without locking it; null if it was never submitted. */
     fun viewOf(
         subjectType: String,
@@ -176,6 +204,7 @@ class WorkflowRunner(
         const val ALREADY_STARTED = "ALREADY_STARTED"
         const val TASK_NOT_FOUND = "TASK_NOT_FOUND"
         const val INSTANCE_NOT_FOUND = "INSTANCE_NOT_FOUND"
+        const val VERSION_CHANGED = "VERSION_CHANGED"
     }
 }
 

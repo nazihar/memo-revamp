@@ -3,7 +3,9 @@ package com.memo.workflow.internal
 import com.memo.common.id.IdGenerator
 import com.memo.common.tenant.TenantDsl
 import com.memo.common.web.RefusedException
+import com.memo.jooq.tables.records.WorkflowTaskRecord
 import com.memo.jooq.tables.references.WORKFLOW_ACTION
+import com.memo.jooq.tables.references.WORKFLOW_DEFINITION_VERSION
 import com.memo.jooq.tables.references.WORKFLOW_INSTANCE
 import com.memo.jooq.tables.references.WORKFLOW_ROUND
 import com.memo.jooq.tables.references.WORKFLOW_STEP
@@ -40,6 +42,8 @@ data class LoadedInstance(
     val version: Long,
     val state: InstanceState,
     val definition: Definition = DefinitionCompiler.SEQUENTIAL,
+    /** The pinned definition version (ADR-0038); only a migration changes it. */
+    val definitionVersionId: UUID? = null,
 )
 
 /**
@@ -130,19 +134,7 @@ class InstanceStore(
                     routeIndex = step.routeIndex,
                     name = definition.stepsById[step.nodeId]?.name,
                     tasks =
-                        tasks[step.id].orEmpty().map { task ->
-                            Task(
-                                id = task.id,
-                                assignee = task.assigneeId,
-                                state = TaskState.valueOf(task.state),
-                                blocked = task.blockedReason?.let(BlockedReason::valueOf),
-                                outcome = task.outcome?.let(ActionKind::valueOf),
-                                kind = TaskKind.valueOf(task.kind!!),
-                                onBehalfOf = task.onBehalfOf,
-                                waiting = task.waiting == true,
-                                parentTaskId = task.parentTaskId,
-                            )
-                        },
+                        tasks[step.id].orEmpty().map(::task),
                 )
             }
         val state =
@@ -151,7 +143,63 @@ class InstanceStore(
                 status = InstanceStatus.valueOf(instance.status),
                 round = Round(round.number, RoundOutcome.valueOf(round.outcome), engineSteps, round.route.orEmpty().filterNotNull()),
             )
-        return LoadedInstance(instance.id, instance.subjectType, instance.subjectId, instance.version!!, state, definition)
+        return LoadedInstance(
+            instance.id,
+            instance.subjectType,
+            instance.subjectId,
+            instance.version!!,
+            state,
+            definition,
+            instance.definitionVersionId,
+        )
+    }
+
+    private fun task(task: WorkflowTaskRecord): Task =
+        Task(
+            id = task.id,
+            assignee = task.assigneeId,
+            state = TaskState.valueOf(task.state),
+            blocked = task.blockedReason?.let(BlockedReason::valueOf),
+            outcome = task.outcome?.let(ActionKind::valueOf),
+            kind = TaskKind.valueOf(task.kind!!),
+            onBehalfOf = task.onBehalfOf,
+            waiting = task.waiting == true,
+            parentTaskId = task.parentTaskId,
+        )
+
+    /**
+     * Instances that run or wait for resubmission on a version of [definitionId] other than [target], oldest first, with
+     * the version they are on: what a migration to [target] could move (design E03 §4.7).
+     */
+    fun onOtherVersions(
+        definitionId: UUID,
+        target: UUID,
+        limit: Int,
+    ): List<Pair<UUID, UUID>> =
+        tenantDsl
+            .current()
+            .select(WORKFLOW_INSTANCE.ID, WORKFLOW_INSTANCE.DEFINITION_VERSION_ID)
+            .from(WORKFLOW_INSTANCE)
+            .join(WORKFLOW_DEFINITION_VERSION)
+            .on(WORKFLOW_DEFINITION_VERSION.ID.eq(WORKFLOW_INSTANCE.DEFINITION_VERSION_ID))
+            .where(WORKFLOW_DEFINITION_VERSION.DEFINITION_ID.eq(definitionId))
+            .and(WORKFLOW_INSTANCE.DEFINITION_VERSION_ID.ne(target))
+            .and(WORKFLOW_INSTANCE.STATUS.`in`(InstanceStatus.RUNNING.name, InstanceStatus.RETURNED.name))
+            .orderBy(WORKFLOW_INSTANCE.CREATED_AT, WORKFLOW_INSTANCE.ID)
+            .limit(limit)
+            .fetch { it.value1()!! to it.value2()!! }
+
+    /** Pins the instance to [versionId]; only a migration does this (invariant 13). */
+    fun repin(
+        instanceId: UUID,
+        versionId: UUID,
+    ) {
+        tenantDsl
+            .current()
+            .update(WORKFLOW_INSTANCE)
+            .set(WORKFLOW_INSTANCE.DEFINITION_VERSION_ID, versionId)
+            .where(WORKFLOW_INSTANCE.ID.eq(instanceId))
+            .execute()
     }
 
     /**

@@ -174,6 +174,7 @@ class ActionEffects(
                 ActionKind.RECOMMEND to "workflow.task.recommended",
                 ActionKind.RECALL to "workflow.instance.recalled",
                 ActionKind.CANCEL to "workflow.instance.cancelled",
+                ActionKind.MIGRATE to "workflow.instance.migrated",
                 ActionKind.SEND_BACK to "workflow.task.sent_back",
                 ActionKind.FORWARD to "workflow.task.forwarded",
                 ActionKind.DELEGATE to "workflow.task.delegated",

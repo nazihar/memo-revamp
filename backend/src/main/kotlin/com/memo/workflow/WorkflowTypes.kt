@@ -48,7 +48,7 @@ enum class ActionKind {
 enum class BlockedReason { NO_CLEARANCE, INACTIVE }
 
 /** How a task stopped being open, as published in [WorkflowTaskClosed]. */
-enum class TaskClosure { COMPLETED, CANCELLED, REASSIGNED }
+enum class TaskClosure { COMPLETED, CANCELLED, REASSIGNED, TRANSFERRED }
 
 /** The type of an item attribute that definition conditions may read (ADR-0039), as JSON names it. */
 enum class AttributeType(

@@ -80,6 +80,13 @@ internal class Rounds(
                 Walk(round.copy(steps = round.steps + step), effects + Effect.TaskCreated(step.id, step.tasks.last()), followUps, false)
             }
 
+            StepType.PARALLEL -> {
+                val holders = node.assignees.map { checkNotNull(it.userId) }
+                val step =
+                    activated(round, node, StepKind.PARALLEL, holders.first(), null).copy(tasks = holders.map(::newTask))
+                Walk(round.copy(steps = round.steps + step), effects + step.tasks.map { Effect.TaskCreated(step.id, it) }, followUps, false)
+            }
+
             StepType.BRANCH -> {
                 val (next, record) = branch(node, round.number, people.actor)
                 enter(round, next, people, effects, followUps + record)

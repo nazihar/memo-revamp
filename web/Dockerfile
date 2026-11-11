@@ -29,8 +29,11 @@ RUN apk upgrade --no-cache libexpat brotli-libs curl libcurl libx11 musl musl-ut
 COPY --chown=101:101 web/dist/ /usr/share/nginx/html/
 COPY web/nginx/default.conf.template /etc/nginx/templates/default.conf.template
 COPY --from=headers /work/security-headers.conf /etc/nginx/snippets/security-headers.conf
-# Only BACKEND_URL is substituted into the template; nginx's own $variables are left alone.
+# Only these three are substituted into the template; nginx's own $variables are left alone. NGINX_RESOLVER is Docker's
+# embedded DNS; Kubernetes sets the cluster DNS service.
 ENV BACKEND_URL=http://backend:8080 \
-    NGINX_ENVSUBST_FILTER=^BACKEND_URL$
+    OFFICE_URL=http://onlyoffice \
+    NGINX_RESOLVER=127.0.0.11 \
+    NGINX_ENVSUBST_FILTER=^(BACKEND_URL|OFFICE_URL|NGINX_RESOLVER)$
 USER 101
 EXPOSE 8080

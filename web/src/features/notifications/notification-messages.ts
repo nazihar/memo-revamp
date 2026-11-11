@@ -93,6 +93,7 @@ const kindsWithValues = defineMessages<{
   taskReassigned: { reference: string }
   taskBlocked: { reference: string }
   memoWithdrawn: { reference: string }
+  editNotSaved: { name: string }
 }>({
   signInAlert: { id: 'notifications.kind.signInAlert', defaultMessage: 'New sign-in to your account from {device}' },
   roleGranted: { id: 'notifications.kind.roleGranted', defaultMessage: 'You were given the role {role}' },
@@ -109,6 +110,10 @@ const kindsWithValues = defineMessages<{
   },
   taskBlocked: { id: 'notifications.kind.taskBlocked', defaultMessage: 'Memo {reference} is waiting for reassignment' },
   memoWithdrawn: { id: 'notifications.kind.memoWithdrawn', defaultMessage: 'Memo {reference} was withdrawn' },
+  editNotSaved: {
+    id: 'notifications.kind.editNotSaved',
+    defaultMessage: 'Your changes to {name} in the browser editor could not be saved',
+  },
 })
 
 const kinds = defineMessages({
@@ -139,6 +144,8 @@ export function notificationText(intl: IntlShape, kind: string, params: Record<s
       return intl.formatMessage(kindsWithValues.taskBlocked, reference)
     case 'MEMO_WITHDRAWN':
       return intl.formatMessage(kindsWithValues.memoWithdrawn, reference)
+    case 'EDIT_NOT_SAVED':
+      return intl.formatMessage(kindsWithValues.editNotSaved, { name: params.name ?? '' })
     case 'PASSWORD_CHANGED':
       return intl.formatMessage(kinds.passwordChanged)
     case 'MFA_RESET':

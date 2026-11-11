@@ -31,6 +31,7 @@ class ModularityTest {
                 "authz",
                 "audit",
                 "files",
+                "docedit",
                 "workflow",
                 "memo",
                 "forum",

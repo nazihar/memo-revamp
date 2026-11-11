@@ -32,6 +32,10 @@ spec:
           env:
             - name: BACKEND_URL
               value: http://{{ .Release.Name }}-backend:8080
+            - name: OFFICE_URL
+              value: {{ .Values.integrations.documentServerUrl | default "http://onlyoffice.invalid" | quote }}
+            - name: NGINX_RESOLVER
+              value: {{ .Values.integrations.documentServer.dnsResolver | quote }}
           readinessProbe:
             httpGet: { path: /, port: http }
             periodSeconds: 5

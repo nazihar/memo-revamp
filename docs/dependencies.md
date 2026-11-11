@@ -96,7 +96,7 @@ Column meanings:
 |---|---|---|---|---|---|
 | PostgreSQL | 18.6 | PostgreSQL License | Database | — | active |
 | SeaweedFS | 4.48 | Apache-2.0 | S3 object storage (default server) | — | 2026-09-28; very active |
-| ONLYOFFICE Docs | 9.4.0.1 | AGPL-3.0 + additional terms | Document editing and conversion | **AGPL**: runs as a separate, unmodified service. If we distribute it on-prem, we must provide its source or point to it and keep its notices. **Legal review is required before on-prem distribution** (`MASTER_PLAN §5`). 10.0 is available; we take it after a bake period | active |
+| ONLYOFFICE Docs | 9.4.0.1 | AGPL-3.0 + additional terms | Document editing and conversion | **AGPL**: runs as a separate, unmodified service. If we distribute it on-prem, we must provide its source or point to it and keep its notices: source of the pinned release at https://github.com/ONLYOFFICE/DocumentServer (tag `v9.4.0.1`), named in the runbook `docs/runbooks/document-editing.md`. Used through its public editor API and JWT only, no change to its code or branding (ADR-0037). 9.4 has no connection limit in the Community edition; our own cap is `memo.docedit.max-sessions-per-tenant`. **Legal review is required before on-prem distribution** (`MASTER_PLAN §5`). 10.0 is available; we take it after a bake period | active |
 | ClamAV | 1.5.4 | GPL-2.0 | Malware scanning | **GPL**: separate, unmodified service; same obligations as above. freshclam needs outbound access, so air-gapped installs need a mirror | active (Cisco Talos) |
 | Mailpit | v1.31.5 | MIT | Local mail catcher (dev only) | — | weekly releases |
 | amazon/aws-cli image | 2.37.13 | Apache-2.0 | Bucket bootstrap job | — | very active |

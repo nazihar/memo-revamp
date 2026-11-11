@@ -26,6 +26,7 @@
       - MEMO_SMTP_FROM
       - MEMO_MAILPIT_PORT
       - MEMO_CLAMAV_HOST
+      - MEMO_DOCSERVER_URL
     memo_mailpit_ports:
       dev: 8025
       staging: 8125
@@ -137,8 +138,9 @@
           MEMO_TENANCY_BASE_DOMAIN: "{{ memo_hosts[item.0] }}"
           MEMO_TENANCY_FALLBACK_TENANT: demo
           # Mail goes to Mailpit on the VM (owner decision 2026-10-25); its UI only through an SSH tunnel.
-          # ClamAV from E05 (Phase 1a Q7: measured to fit the 7.8 GB VM with one environment running).
-          COMPOSE_PROFILES: devtools,antivirus
+          # ClamAV from E05 (Phase 1a Q7). ONLYOFFICE on dev only (Phase 2 E02), since the VM has 16 GB (Phase 2 Q2).
+          COMPOSE_PROFILES: "{{ 'devtools,antivirus,documents' if item.0 == 'dev' else 'devtools,antivirus' }}"
+          MEMO_DOCSERVER_URL: "{{ 'http://onlyoffice' if item.0 == 'dev' else '' }}"
           MEMO_CLAMAV_HOST: clamav
           MEMO_SMTP_HOST: mailpit
           MEMO_SMTP_PORT: "1025"

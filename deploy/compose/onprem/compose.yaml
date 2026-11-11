@@ -35,7 +35,10 @@ x-backend-env: &backend-env
   MEMO_PLATFORM_ENABLED: ${MEMO_PLATFORM_ENABLED:-true}
   MEMO_PLATFORM_HOST: ${MEMO_PLATFORM_HOST:-}
   MEMO_PLATFORM_PUBLIC_URL: ${MEMO_PLATFORM_PUBLIC_URL:-}
+  # In-browser editing (ADR-0037) with the `documents` profile: MEMO_DOCSERVER_URL=http://onlyoffice turns it on.
   MEMO_DOCSERVER_URL: ${MEMO_DOCSERVER_URL:-}
+  MEMO_DOCEDIT_JWT_SECRET: ${ONLYOFFICE_JWT_SECRET:-}
+  MEMO_DOCEDIT_INTERNAL_URL: http://backend:8082
   # `clamav` with the antivirus profile; without a scanner every upload is refused (ADR-0029).
   MEMO_CLAMAV_HOST: ${MEMO_CLAMAV_HOST:-}
   LOGGING_STRUCTURED_FORMAT_CONSOLE: ecs
@@ -163,6 +166,8 @@ services:
       default: {}
       # The edge proxy (deploy/compose/edge) reaches this environment as <project>-web, e.g. memo-dev-web.
       edge: { aliases: ["${COMPOSE_PROJECT_NAME:-memo}-web"] }
+      # /office/ is proxied to the document server (ADR-0037), which lives on this internal network only.
+      docs-internal: {}
     deploy: { resources: { limits: { memory: 128m } } }
 
   onlyoffice:
@@ -172,6 +177,14 @@ services:
     environment:
       JWT_ENABLED: "true"
       JWT_SECRET: ${ONLYOFFICE_JWT_SECRET:?}
+      JWT_HEADER: Authorization
+      # The backend is on a private address of the internal network; nothing else is reachable from there.
+      ALLOW_PRIVATE_IP_ADDRESS: "true"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://127.0.0.1/healthcheck | grep -q true"]
+      interval: 15s
+      timeout: 5s
+      retries: 40
     # No outbound network (AGENTS.md §3.4): internal network shared with the backend only.
     networks: [docs-internal]
     deploy: { resources: { limits: { memory: 4g } } }

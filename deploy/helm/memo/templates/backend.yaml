@@ -30,6 +30,8 @@ spec:
           ports:
             - { name: http, containerPort: 8080 }
             - { name: management, containerPort: 8081 }
+            # The document server's download and callback endpoints (ADR-0037); never behind the Ingress.
+            - { name: docedit, containerPort: 8082 }
           env:
             {{- include "memo.backendEnv" . | nindent 12 }}
             - name: MEMO_FLYWAY_ENABLED
@@ -50,6 +52,15 @@ spec:
             {{- end }}
             - name: MEMO_DOCSERVER_URL
               value: {{ .Values.integrations.documentServerUrl | quote }}
+            {{- if .Values.integrations.documentServerUrl }}
+            - name: MEMO_DOCEDIT_INTERNAL_URL
+              value: http://{{ .Release.Name }}-backend:8082
+            - name: MEMO_DOCEDIT_JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ required "integrations.documentServer.jwtSecret is required with documentServerUrl" .Values.integrations.documentServer.jwtSecret }}
+                  key: jwtSecret
+            {{- end }}
             - name: MEMO_CLAMAV_HOST
               value: {{ .Values.integrations.malwareScannerHost | quote }}
             - name: MEMO_FILES_MAX_UPLOAD_BYTES
@@ -116,3 +127,6 @@ spec:
   ports:
     # Only the API port is in the Service; the management port is reached by the kubelet directly.
     - { name: http, port: 8080, targetPort: http }
+    {{- if .Values.integrations.documentServerUrl }}
+    - { name: docedit, port: 8082, targetPort: docedit }
+    {{- end }}

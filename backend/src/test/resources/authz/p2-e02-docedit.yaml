@@ -1,0 +1,11 @@
+# Phase 2 E02 in-browser editing (design E02 §4). Rules: rules.yaml. Who may edit or view is the file purpose's decision,
+# so random ids are 404 for everyone allowed through (DocEditIT covers initiator, approver and stranger). The document
+# server's endpoints live on the internal connector under /internal/docedit and are tested in DocEditIT.
+epic: P2-E02
+endpoints:
+  - { endpoint: GET /api/v1/files/editing, rule: signedIn }
+  - endpoint: "POST /api/v1/files/{fileId}/edit-sessions"
+    rule: signedIn
+    body: { mode: EDIT, language: en }
+    headers: { Idempotency-Key: "{random}" }
+  - { endpoint: "GET /api/v1/edit-sessions/{id}", rule: signedIn }

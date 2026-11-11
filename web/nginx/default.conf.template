@@ -1,6 +1,13 @@
-# SPA + API reverse proxy (ADR-0012). Rendered by the nginx entrypoint (envsubst of ${BACKEND_URL} only).
+# SPA + API reverse proxy (ADR-0012). Rendered by the nginx entrypoint (envsubst of ${BACKEND_URL}, ${OFFICE_URL} and
+# ${NGINX_RESOLVER} only).
 # Note: add_header directives are NOT inherited into a location that declares its own add_header, so every location
 # that serves SPA content includes the security-header snippet itself. /api/ responses keep the backend's own headers.
+# WebSocket upgrade for the document editor (/office/).
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    '' close;
+}
+
 server {
     listen 8080;
     server_name _;
@@ -40,6 +47,29 @@ server {
         proxy_set_header X-Request-Id $request_id;
         proxy_read_timeout 300s;
         proxy_send_timeout 300s;
+    }
+
+    # The document server (ADR-0037) under /office/ on the tenant's own host, so the SPA's CSP stays 'self'. Resolved per
+    # request: installs without ONLYOFFICE start fine and answer 502 here. X-Forwarded-Host carries the sub-path, which
+    # is how ONLYOFFICE learns its public base URL. Its pages are framed by the SPA, whose documents require COEP, so
+    # they get the matching cross-origin headers; our CSP is not applied to them (the editor is not our code).
+    location /office/ {
+        resolver ${NGINX_RESOLVER} valid=30s ipv6=off;
+        set $office ${OFFICE_URL};
+        rewrite ^/office/(.*)$ /$1 break;
+        proxy_pass $office;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+        proxy_set_header Host $host;
+        proxy_set_header X-Forwarded-Host $host/office;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        client_max_body_size 100m;
+        proxy_read_timeout 3600s;
+        add_header Cross-Origin-Embedder-Policy "require-corp" always;
+        add_header Cross-Origin-Resource-Policy "same-origin" always;
+        add_header X-Content-Type-Options "nosniff" always;
     }
 
     # Content-hashed build assets: cache forever.

@@ -1,8 +1,15 @@
 import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
-import { describe, expect, it } from 'vitest'
-import type { HistoryRound, InboxPage, MemoView } from '@/api/generated/types.gen'
+import { describe, expect, it, vi } from 'vitest'
+import type {
+  EditSessionView,
+  HistoryRound,
+  InboxPage,
+  MemoView,
+  OpenEditorRequest,
+  OpenEditorResponse,
+} from '@/api/generated/types.gen'
 import { accessHandler, API_ORIGIN, server, sessionHandler, signedInSession } from '@/test/msw'
 import { expectNoA11yViolations, renderRoute } from '@/test/render'
 
@@ -164,5 +171,100 @@ describe('memo view', () => {
     await screen.findByText('My tasks', {}, { timeout: 5000 })
     expect(keys).toHaveLength(1)
     expect(keys[0]).toMatch(/^[0-9a-f-]{36}$/)
+  })
+})
+
+describe('document editor', () => {
+  const script = '/office/web-apps/apps/api/documents/api.js'
+  const editors: object[] = []
+
+  /** The document server's script is not loaded in tests: stand in for its global, as if it had loaded. */
+  function fakeEditorScript() {
+    const tag = document.createElement('script')
+    tag.dataset.editor = script
+    document.head.append(tag)
+    window.DocsAPI = {
+      DocEditor: class {
+        constructor(_element: string, config: object) {
+          editors.push(config)
+        }
+        destroyEditor() {
+          // Nothing to tear down in the stand-in.
+        }
+      },
+    }
+  }
+
+  function editorHandlers(state: EditSessionView['state']) {
+    return [
+      http.post(`${API_ORIGIN}/api/v1/files/f1/edit-sessions`, async ({ request }) => {
+        const body = (await request.json()) as OpenEditorRequest
+        return HttpResponse.json<OpenEditorResponse>({
+          sessionId: 's1',
+          scriptUrl: script,
+          config: { document: { key: 'mKEY' }, editorConfig: { mode: body.mode === 'EDIT' ? 'edit' : 'view' } },
+        })
+      }),
+      http.get(`${API_ORIGIN}/api/v1/edit-sessions/s1`, () =>
+        HttpResponse.json<EditSessionView>({ id: 's1', state, reason: state === 'FAILED' ? 'LOCKED' : null }),
+      ),
+    ]
+  }
+
+  it('offers editing where the memo allows it, and reading otherwise', async () => {
+    server.use(
+      sessionHandler(signedInSession()),
+      accessHandler([]),
+      ...memoHandlers({ ...memo, allowedActions: ['APPROVE', 'VIEW_DOCUMENT'] }),
+    )
+    renderRoute('/memos/m1')
+    const open = await screen.findByRole('link', { name: 'Open in the browser' }, { timeout: 5000 })
+    expect(open).toHaveAttribute('href', '/memos/m1/document?mode=view')
+    expect(screen.queryByRole('link', { name: 'Edit in the browser' })).not.toBeInTheDocument()
+  })
+
+  it('opens the editor with the signed configuration and goes back once the save has landed', async () => {
+    const user = userEvent.setup()
+    fakeEditorScript()
+    server.use(
+      sessionHandler(signedInSession()),
+      accessHandler([]),
+      ...memoHandlers({
+        ...memo,
+        status: 'DRAFT',
+        allowedActions: ['UPLOAD_DOCUMENT', 'EDIT_DOCUMENT', 'VIEW_DOCUMENT'],
+      }),
+      ...editorHandlers('SAVED'),
+    )
+    const { container } = renderRoute('/memos/m1/document?mode=edit')
+
+    expect(await screen.findByRole('heading', { name: /Editing/ }, { timeout: 5000 })).toHaveTextContent('M-2026-00042')
+    await vi.waitFor(() => {
+      expect(editors.at(-1)).toMatchObject({ editorConfig: { mode: 'edit' } })
+    })
+    await expectNoA11yViolations(container)
+    await user.click(screen.getByRole('button', { name: 'Back to the memo' }))
+    expect(
+      await screen.findByRole('heading', { name: 'Budget transfer to the treasury' }, { timeout: 5000 }),
+    ).toBeInTheDocument()
+  })
+
+  it('says so when the save could not land', async () => {
+    const user = userEvent.setup()
+    fakeEditorScript()
+    server.use(
+      sessionHandler(signedInSession()),
+      accessHandler([]),
+      ...memoHandlers({ ...memo, status: 'DRAFT', allowedActions: ['EDIT_DOCUMENT'] }),
+      ...editorHandlers('FAILED'),
+    )
+    renderRoute('/memos/m1/document?mode=edit')
+
+    await screen.findByRole('heading', { name: /Editing/ }, { timeout: 5000 })
+    await vi.waitFor(() => {
+      expect(editors.length).toBeGreaterThan(0)
+    })
+    await user.click(screen.getByRole('button', { name: 'Back to the memo' }))
+    expect(await screen.findByRole('alert')).toHaveTextContent('Your changes could not be saved')
   })
 })

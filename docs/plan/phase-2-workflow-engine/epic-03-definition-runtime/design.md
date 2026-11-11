@@ -196,7 +196,7 @@ Maker-checker is a rule, not a role split: `approve` and `send-back` refuse when
 
 ## 7. Audit events
 
-`workflow.definition.created`, `.draft.updated`, `.submitted`, `.sent-back`, `.published`, `.retired`; `workflow.instance.migrated`, `workflow.instance.cancelled`; the task actions are audited as `workflow.task.<action>` like E01's (`send-back`, `forwarded`, `delegated`, `asked`, `answered`, `referred`, `opinion-given`, `recommended`), `memo.recalled`. Each in the action's transaction (ADR-0019), ids only, remarks never in the audit payload (they are in the workflow history, readable under the memo's rules).
+`workflow.definition.created`, `.draft_updated`, `.submitted`, `.sent_back`, `.published`, `.retired`; `workflow.instance.migrated`, `workflow.instance.cancelled`; the task actions are audited as `workflow.task.<action>` like E01's (`sent_back`, `forwarded`, `delegated`, `asked`, `answered`, `referred`, `opinion_given`, `recommended`), `memo.recalled`. Each in the action's transaction (ADR-0019), ids only, remarks never in the audit payload (they are in the workflow history, readable under the memo's rules).
 
 ## 8. Tenancy and RLS
 No new table. New columns inherit the tables' forced RLS. Definitions, compiled bodies and conditions are per tenant; a fragment reference resolves only within the tenant. `RlsMetaTest` covers the tables already.

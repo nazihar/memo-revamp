@@ -181,6 +181,24 @@ internal fun fingerprint(request: String): String {
     return "$user\n$request"
 }
 
+/** Where to send the memo back to: a step listed in the memo's `sendBackTargets`. */
+data class SendBackRequest(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val targetStepId: UUID,
+    val remark: String?,
+)
+
+/** Forward, delegate or ask: the person, and the remark (the reason, or the question). */
+data class HandOnRequest(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val to: UUID,
+    val remark: String?,
+)
+
+/** Refer for opinion: up to ten people, and what they should comment on. */
+data class ReferRequest(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val to: List<UUID>,
+    val remark: String?,
+)
+
 /** A memo type as the create form needs it. */
 data class MemoTypeOption(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val id: UUID,
@@ -317,6 +335,83 @@ class MemoTasksController(
         @RequestHeader("Idempotency-Key") key: String,
         @RequestBody body: RemarkRequest,
     ): ResponseEntity<MemoView> = act(key, "workflow.task.reject", taskId, body) { tasks.reject(taskId, body.remark) }
+
+    @PostMapping("/{taskId}/send-back")
+    @SignedIn
+    @Operation(operationId = "sendBackTask", summary = "Send the memo back to an earlier step of this round")
+    fun sendBack(
+        @PathVariable taskId: UUID,
+        @RequestHeader("Idempotency-Key") key: String,
+        @RequestBody body: SendBackRequest,
+    ): ResponseEntity<MemoView> =
+        act(key, "workflow.task.send_back", taskId, body) { tasks.handOn(taskId) { it.sendBack(taskId, body.targetStepId, body.remark) } }
+
+    @PostMapping("/{taskId}/forward")
+    @SignedIn
+    @Operation(operationId = "forwardTask", summary = "Hand the task to someone else, who then holds the step")
+    fun forward(
+        @PathVariable taskId: UUID,
+        @RequestHeader("Idempotency-Key") key: String,
+        @RequestBody body: HandOnRequest,
+    ): ResponseEntity<MemoView> =
+        act(key, "workflow.task.forward", taskId, body) {
+            tasks.handOn(taskId) { it.forward(taskId, body.to, body.remark) }
+        }
+
+    @PostMapping("/{taskId}/delegate")
+    @SignedIn
+    @Operation(operationId = "delegateTask", summary = "Hand the task to someone who acts for you")
+    fun delegate(
+        @PathVariable taskId: UUID,
+        @RequestHeader("Idempotency-Key") key: String,
+        @RequestBody body: HandOnRequest,
+    ): ResponseEntity<MemoView> =
+        act(key, "workflow.task.delegate", taskId, body) {
+            tasks.handOn(taskId) { it.delegate(taskId, body.to, body.remark) }
+        }
+
+    @PostMapping("/{taskId}/ask")
+    @SignedIn
+    @Operation(operationId = "askOnTask", summary = "Ask someone a question; the task waits for the answer")
+    fun ask(
+        @PathVariable taskId: UUID,
+        @RequestHeader("Idempotency-Key") key: String,
+        @RequestBody body: HandOnRequest,
+    ): ResponseEntity<MemoView> =
+        act(key, "workflow.task.ask", taskId, body) { tasks.handOn(taskId) { it.ask(taskId, body.to, body.remark) } }
+
+    @PostMapping("/{taskId}/answer")
+    @SignedIn
+    @Operation(operationId = "answerTask", summary = "Answer the question this task asks")
+    fun answer(
+        @PathVariable taskId: UUID,
+        @RequestHeader("Idempotency-Key") key: String,
+        @RequestBody body: RemarkRequest,
+    ): ResponseEntity<MemoView> = act(key, "workflow.task.answer", taskId, body) { tasks.handOn(taskId) { it.answer(taskId, body.remark) } }
+
+    @PostMapping("/{taskId}/refer")
+    @SignedIn
+    @Operation(operationId = "referTask", summary = "Ask people for their opinions; you keep the task")
+    fun refer(
+        @PathVariable taskId: UUID,
+        @RequestHeader("Idempotency-Key") key: String,
+        @RequestBody body: ReferRequest,
+    ): ResponseEntity<MemoView> =
+        act(key, "workflow.task.refer", taskId, body) {
+            tasks.handOn(taskId) { it.refer(taskId, body.to, body.remark) }
+        }
+
+    @PostMapping("/{taskId}/opinion")
+    @SignedIn
+    @Operation(operationId = "giveOpinion", summary = "Give the opinion this task asks for")
+    fun opinion(
+        @PathVariable taskId: UUID,
+        @RequestHeader("Idempotency-Key") key: String,
+        @RequestBody body: RemarkRequest,
+    ): ResponseEntity<MemoView> =
+        act(key, "workflow.task.opinion", taskId, body) {
+            tasks.handOn(taskId) { it.giveOpinion(taskId, body.remark) }
+        }
 
     private fun act(
         key: String,

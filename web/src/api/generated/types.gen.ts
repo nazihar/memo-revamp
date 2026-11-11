@@ -321,6 +321,11 @@ export type GrantRequest = {
     scopeUnitId?: string | null;
 };
 
+export type HandOnRequest = {
+    remark?: string | null;
+    to: string;
+};
+
 /**
  * Public platform status. Contains only component names and states.
  */
@@ -511,7 +516,7 @@ export type MemoTypeRequest = {
 };
 
 export type MemoView = {
-    allowedActions: Array<'EDIT' | 'UPLOAD_DOCUMENT' | 'EDIT_ROUTE' | 'SUBMIT' | 'DISCARD' | 'RESUBMIT' | 'WITHDRAW' | 'APPROVE' | 'RETURN' | 'REJECT' | 'EDIT_DOCUMENT' | 'VIEW_DOCUMENT'>;
+    allowedActions: Array<'EDIT' | 'UPLOAD_DOCUMENT' | 'EDIT_ROUTE' | 'SUBMIT' | 'DISCARD' | 'RESUBMIT' | 'WITHDRAW' | 'APPROVE' | 'RETURN' | 'REJECT' | 'EDIT_DOCUMENT' | 'VIEW_DOCUMENT' | 'RECOMMEND' | 'SEND_BACK' | 'FORWARD' | 'DELEGATE' | 'ASK' | 'REFER' | 'ANSWER' | 'OPINION'>;
     classification: ClassificationView;
     createdAt: string;
     document?: DocumentView | null;
@@ -522,6 +527,7 @@ export type MemoView = {
     reference: string;
     round: number;
     route: Array<RouteEntryView>;
+    sendBackTargets: Array<SendBackTargetView>;
     status: 'DRAFT' | 'IN_REVIEW' | 'RETURNED' | 'APPROVED' | 'REJECTED' | 'WITHDRAWN' | 'DISCARDED';
     subject: string;
     type: Named;
@@ -938,6 +944,11 @@ export type RecoveryCodes = {
     recoveryCodes: Array<string>;
 };
 
+export type ReferRequest = {
+    remark?: string | null;
+    to: Array<string>;
+};
+
 export type RemarkRequest = {
     remark?: string | null;
 };
@@ -1024,6 +1035,17 @@ export type SecuritySettingsView = {
     version: number;
 };
 
+export type SendBackRequest = {
+    remark?: string | null;
+    targetStepId: string;
+};
+
+export type SendBackTargetView = {
+    holder: Named;
+    name?: string | null;
+    stepId: string;
+};
+
 /**
  * Who is signed in on this organisation's host, and what they must do next.
  */
@@ -1057,6 +1079,9 @@ export type StepUpRequest = {
 export type TaskRef = {
     blocked?: 'NO_CLEARANCE' | 'INACTIVE';
     id: string;
+    role: 'DECIDE' | 'OPINION' | 'CLARIFY';
+    stepName?: string | null;
+    waiting: boolean;
 };
 
 /**
@@ -3822,6 +3847,27 @@ export type SuspendPlatformTenantResponses = {
 
 export type SuspendPlatformTenantResponse = SuspendPlatformTenantResponses[keyof SuspendPlatformTenantResponses];
 
+export type AnswerTaskData = {
+    body: RemarkRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        taskId: string;
+    };
+    query?: never;
+    url: '/api/v1/tasks/{taskId}/answer';
+};
+
+export type AnswerTaskResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type AnswerTaskResponse = AnswerTaskResponses[keyof AnswerTaskResponses];
+
 export type ApproveTaskData = {
     body?: RemarkRequest;
     headers: {
@@ -3842,6 +3888,111 @@ export type ApproveTaskResponses = {
 };
 
 export type ApproveTaskResponse = ApproveTaskResponses[keyof ApproveTaskResponses];
+
+export type AskOnTaskData = {
+    body: HandOnRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        taskId: string;
+    };
+    query?: never;
+    url: '/api/v1/tasks/{taskId}/ask';
+};
+
+export type AskOnTaskResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type AskOnTaskResponse = AskOnTaskResponses[keyof AskOnTaskResponses];
+
+export type DelegateTaskData = {
+    body: HandOnRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        taskId: string;
+    };
+    query?: never;
+    url: '/api/v1/tasks/{taskId}/delegate';
+};
+
+export type DelegateTaskResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type DelegateTaskResponse = DelegateTaskResponses[keyof DelegateTaskResponses];
+
+export type ForwardTaskData = {
+    body: HandOnRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        taskId: string;
+    };
+    query?: never;
+    url: '/api/v1/tasks/{taskId}/forward';
+};
+
+export type ForwardTaskResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type ForwardTaskResponse = ForwardTaskResponses[keyof ForwardTaskResponses];
+
+export type GiveOpinionData = {
+    body: RemarkRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        taskId: string;
+    };
+    query?: never;
+    url: '/api/v1/tasks/{taskId}/opinion';
+};
+
+export type GiveOpinionResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type GiveOpinionResponse = GiveOpinionResponses[keyof GiveOpinionResponses];
+
+export type ReferTaskData = {
+    body: ReferRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        taskId: string;
+    };
+    query?: never;
+    url: '/api/v1/tasks/{taskId}/refer';
+};
+
+export type ReferTaskResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type ReferTaskResponse = ReferTaskResponses[keyof ReferTaskResponses];
 
 export type RejectTaskData = {
     body: RemarkRequest;
@@ -3884,6 +4035,27 @@ export type ReturnTaskResponses = {
 };
 
 export type ReturnTaskResponse = ReturnTaskResponses[keyof ReturnTaskResponses];
+
+export type SendBackTaskData = {
+    body: SendBackRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        taskId: string;
+    };
+    query?: never;
+    url: '/api/v1/tasks/{taskId}/send-back';
+};
+
+export type SendBackTaskResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type SendBackTaskResponse = SendBackTaskResponses[keyof SendBackTaskResponses];
 
 export type GetTermsData = {
     body?: never;

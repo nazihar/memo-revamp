@@ -87,6 +87,16 @@ class WorkflowQueries(
     /** Every action of the instance, in order. */
     fun history(instanceId: UUID): List<ActionEntry> = tasks.history(instanceId)
 
+    /** The open task [user] holds on the subject (a decision first), with what they can do with it; null if none. */
+    fun myTask(
+        subjectType: String,
+        subjectId: UUID,
+        user: UUID,
+    ): MyTask? = runner.myTask(subjectType, subjectId, user)
+
+    /** The open task [taskId] as its holder sees it; null if it is not open. */
+    fun task(taskId: UUID): MyTask? = runner.task(taskId)
+
     private fun page(
         limit: Int,
         fetch: (Int) -> List<TaskItem>,
@@ -101,3 +111,30 @@ class WorkflowQueries(
         const val MAX_LIMIT = 100
     }
 }
+
+/** What a task asks of its holder (design E03 §4.4): a decision, an opinion, or an answer to a question. */
+enum class TaskRole { DECIDE, OPINION, CLARIFY }
+
+/** An earlier step of the round the holder may send the item back to. */
+data class StepRef(
+    val stepId: UUID,
+    val name: String?,
+    val holderId: UUID,
+)
+
+/** An open task as its holder sees it: what kind it is and what they can do with it now (design E03 §4.4, §12). */
+data class MyTask(
+    val id: UUID,
+    val role: TaskRole,
+    val blocked: BlockedReason?,
+    /** A decision waiting for the answer to a question; it cannot be decided meanwhile. */
+    val waiting: Boolean,
+    /** Delegated to the holder: they act for someone else and cannot hand it on again. */
+    val delegated: Boolean,
+    val stepName: String?,
+    /** APPROVE, or RECOMMEND on a review step. */
+    val positive: ActionKind,
+    /** The actions the step offers (decisions only). */
+    val actions: List<ActionKind>,
+    val sendBackTargets: List<StepRef>,
+)

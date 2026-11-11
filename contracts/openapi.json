@@ -757,6 +757,19 @@
         "required" : [ "roleId" ],
         "type" : "object"
       },
+      "HandOnRequest" : {
+        "properties" : {
+          "remark" : {
+            "type" : [ "string", "null" ]
+          },
+          "to" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "to" ],
+        "type" : "object"
+      },
       "Health" : {
         "description" : "Public platform status. Contains only component names and states.",
         "properties" : {
@@ -1282,7 +1295,7 @@
         "properties" : {
           "allowedActions" : {
             "items" : {
-              "enum" : [ "EDIT", "UPLOAD_DOCUMENT", "EDIT_ROUTE", "SUBMIT", "DISCARD", "RESUBMIT", "WITHDRAW", "APPROVE", "RETURN", "REJECT", "EDIT_DOCUMENT", "VIEW_DOCUMENT" ],
+              "enum" : [ "EDIT", "UPLOAD_DOCUMENT", "EDIT_ROUTE", "SUBMIT", "DISCARD", "RESUBMIT", "WITHDRAW", "APPROVE", "RETURN", "REJECT", "EDIT_DOCUMENT", "VIEW_DOCUMENT", "RECOMMEND", "SEND_BACK", "FORWARD", "DELEGATE", "ASK", "REFER", "ANSWER", "OPINION" ],
               "type" : "string"
             },
             "type" : "array"
@@ -1334,6 +1347,12 @@
             },
             "type" : "array"
           },
+          "sendBackTargets" : {
+            "items" : {
+              "$ref" : "#/components/schemas/SendBackTargetView"
+            },
+            "type" : "array"
+          },
           "status" : {
             "enum" : [ "DRAFT", "IN_REVIEW", "RETURNED", "APPROVED", "REJECTED", "WITHDRAWN", "DISCARDED" ],
             "type" : "string"
@@ -1353,7 +1372,7 @@
             "type" : "integer"
           }
         },
-        "required" : [ "allowedActions", "classification", "createdAt", "holders", "id", "initiator", "reference", "round", "route", "status", "subject", "type", "updatedAt", "version" ],
+        "required" : [ "allowedActions", "classification", "createdAt", "holders", "id", "initiator", "reference", "round", "route", "sendBackTargets", "status", "subject", "type", "updatedAt", "version" ],
         "type" : "object"
       },
       "MfaEnrolment" : {
@@ -2240,6 +2259,22 @@
         "required" : [ "recoveryCodes" ],
         "type" : "object"
       },
+      "ReferRequest" : {
+        "properties" : {
+          "remark" : {
+            "type" : [ "string", "null" ]
+          },
+          "to" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "to" ],
+        "type" : "object"
+      },
       "RemarkRequest" : {
         "properties" : {
           "remark" : {
@@ -2430,6 +2465,35 @@
         "required" : [ "limits", "settings", "version" ],
         "type" : "object"
       },
+      "SendBackRequest" : {
+        "properties" : {
+          "remark" : {
+            "type" : [ "string", "null" ]
+          },
+          "targetStepId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "targetStepId" ],
+        "type" : "object"
+      },
+      "SendBackTargetView" : {
+        "properties" : {
+          "holder" : {
+            "$ref" : "#/components/schemas/Named"
+          },
+          "name" : {
+            "type" : [ "string", "null" ]
+          },
+          "stepId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "holder", "stepId" ],
+        "type" : "object"
+      },
       "Session" : {
         "description" : "Who is signed in on this organisation's host, and what they must do next.",
         "properties" : {
@@ -2496,9 +2560,19 @@
           "id" : {
             "format" : "uuid",
             "type" : "string"
+          },
+          "role" : {
+            "enum" : [ "DECIDE", "OPINION", "CLARIFY" ],
+            "type" : "string"
+          },
+          "stepName" : {
+            "type" : [ "string", "null" ]
+          },
+          "waiting" : {
+            "type" : "boolean"
           }
         },
-        "required" : [ "id" ],
+        "required" : [ "id", "role", "waiting" ],
         "type" : "object"
       },
       "TenantPreferences" : {
@@ -7200,6 +7274,51 @@
         "tags" : [ "platform-tenants" ]
       }
     },
+    "/api/v1/tasks/{taskId}/answer" : {
+      "post" : {
+        "operationId" : "answerTask",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "taskId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RemarkRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemoView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Answer the question this task asks",
+        "tags" : [ "memo" ]
+      }
+    },
     "/api/v1/tasks/{taskId}/approve" : {
       "post" : {
         "operationId" : "approveTask",
@@ -7241,6 +7360,231 @@
           }
         },
         "summary" : "Approve the memo of a task",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/tasks/{taskId}/ask" : {
+      "post" : {
+        "operationId" : "askOnTask",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "taskId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/HandOnRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemoView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Ask someone a question; the task waits for the answer",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/tasks/{taskId}/delegate" : {
+      "post" : {
+        "operationId" : "delegateTask",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "taskId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/HandOnRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemoView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Hand the task to someone who acts for you",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/tasks/{taskId}/forward" : {
+      "post" : {
+        "operationId" : "forwardTask",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "taskId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/HandOnRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemoView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Hand the task to someone else, who then holds the step",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/tasks/{taskId}/opinion" : {
+      "post" : {
+        "operationId" : "giveOpinion",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "taskId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RemarkRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemoView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Give the opinion this task asks for",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/tasks/{taskId}/refer" : {
+      "post" : {
+        "operationId" : "referTask",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "taskId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ReferRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemoView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Ask people for their opinions; you keep the task",
         "tags" : [ "memo" ]
       }
     },
@@ -7331,6 +7675,51 @@
           }
         },
         "summary" : "Return the memo of a task to its initiator",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/tasks/{taskId}/send-back" : {
+      "post" : {
+        "operationId" : "sendBackTask",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "taskId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/SendBackRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemoView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Send the memo back to an earlier step of this round",
         "tags" : [ "memo" ]
       }
     },

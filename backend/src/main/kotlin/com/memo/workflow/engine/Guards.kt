@@ -1,6 +1,8 @@
 package com.memo.workflow.engine
 
 import com.memo.workflow.InstanceStatus
+import com.memo.workflow.definition.Definition
+import com.memo.workflow.definition.StepAction
 import java.util.UUID
 
 /** Remark rules shared by every action: mandatory where the action says so, at most [MAX_LENGTH] characters. */
@@ -43,25 +45,26 @@ internal object Routes {
         }
 }
 
-/** Whether a command may run against a state (design E01 §3); null means it may. */
+/** Whether a command may run against a state (design E01 §3, E03 §4.4); null means it may. */
 internal object Guards {
+    /** Actions whose remark is always required, whatever the definition says (design E03 §2). */
+    private val ALWAYS_REMARK =
+        setOf(StepAction.RETURN, StepAction.REJECT, StepAction.SEND_BACK, StepAction.FORWARD, StepAction.ASK, StepAction.REFER)
+
     fun refusal(
         state: InstanceState,
         command: Command,
         context: TransitionContext,
+        definition: Definition,
         routed: Boolean = true,
     ): Refusal? =
         when (command) {
-            is Approve -> {
-                taskAction(state, command.actor, command.taskId) ?: Remarks.refusal(command.remark, required = false)
+            is Approve, is Return, is Reject -> {
+                decisionOf(state, command, definition)
             }
 
-            is Return -> {
-                taskAction(state, command.actor, command.taskId) ?: Remarks.refusal(command.remark, required = true)
-            }
-
-            is Reject -> {
-                taskAction(state, command.actor, command.taskId) ?: Remarks.refusal(command.remark, required = true)
+            is SendBack, is Forward, is Delegate, is Ask, is Refer, is Answer, is GiveOpinion -> {
+                HandOnGuards.refusal(state, command, context, definition)
             }
 
             is Withdraw -> {
@@ -80,6 +83,44 @@ internal object Guards {
             }
         }
 
+    private fun decisionOf(
+        state: InstanceState,
+        command: TaskCommand,
+        definition: Definition,
+    ): Refusal? =
+        when (command) {
+            is Return -> decision(state, command.actor, command.taskId, StepAction.RETURN, command.remark, definition)
+            is Reject -> decision(state, command.actor, command.taskId, StepAction.REJECT, command.remark, definition)
+            else -> decision(state, command.actor, command.taskId, null, (command as Approve).remark, definition)
+        }
+
+    /**
+     * The holder deciding on their open decision task: an action the step offers ([action] null: the step's positive
+     * action), not while waiting for an answer, with the remark the action or the definition requires. A delegated task
+     * cannot be handed on again.
+     */
+    internal fun decision(
+        state: InstanceState,
+        actor: UUID,
+        taskId: UUID,
+        action: StepAction?,
+        remark: String?,
+        definition: Definition,
+    ): Refusal? {
+        val holderRefusal = taskAction(state, actor, taskId)
+        if (holderRefusal != null) return holderRefusal
+        val (step, task) = state.findTask(taskId)!!
+        val node = definition.stepsById[step.nodeId]
+        val wanted = action ?: if (step.kind == StepKind.REVIEW) StepAction.RECOMMEND else StepAction.APPROVE
+        val handOnAgain = task.onBehalfOf != null && (wanted == StepAction.FORWARD || wanted == StepAction.DELEGATE)
+        return when {
+            task.kind != TaskKind.DECIDE -> Refusal.ACTION_NOT_ALLOWED
+            task.waiting -> Refusal.WAITING_FOR_ANSWER
+            node == null || wanted !in node.offeredActions || handOnAgain -> Refusal.ACTION_NOT_ALLOWED
+            else -> Remarks.refusal(remark, required = wanted in ALWAYS_REMARK || wanted in node.remarks.orEmpty())
+        }
+    }
+
     private fun taskAction(
         state: InstanceState,
         actor: UUID,
@@ -95,6 +136,17 @@ internal object Guards {
             else -> null
         }
     }
+
+    /** Answering a question or giving an opinion: the consultation task's holder, with the answer or opinion. */
+    internal fun consultation(
+        state: InstanceState,
+        actor: UUID,
+        taskId: UUID,
+        kind: TaskKind,
+        remark: String?,
+    ): Refusal? =
+        taskAction(state, actor, taskId)
+            ?: if (state.findTask(taskId)!!.second.kind != kind) Refusal.NOT_A_CONSULTATION else Remarks.refusal(remark, required = true)
 
     private fun initiatorIn(
         state: InstanceState,

@@ -9,7 +9,7 @@
 - **Phase 2 (workflow engine) started on 2026-11-09** at the owner's choice. The overview is approved (2026-11-09, Q1–Q5 answered, per-epic gate delegation kept): `phase-2-workflow-engine/overview.md` (six epics: E01 first slice / D1, E02 ONLYOFFICE editing, E03 definition model and runtime, E04 assignees and DoA, E05 timers and SLAs, E06 visual builder). Phase 1b is not started; it must finish before Phase 3 exits.
 - **Dev environment:** https://dev.memo-revamp.naziharitsolution.com and the operator console https://admin.dev.memo-revamp.naziharitsolution.com on the VM 123.176.58.175. It deploys automatically after every green `ci` run on `master`. The owner's operator account is enrolled.
 - **Phase 0:** done (`docs/plan/phase-0-foundations/`). **Release:** `v0.1.0` (2026-10-15). **Product name:** `memo` everywhere except the repository name (A1).
-- **Branches:** `master` holds PRs #1–#34 (#34: Phase 2 E01, the first slice, merged 2026-11-11). Open: #35 memo visual baselines, #36 web image CVE fix, #37 E02 plan, and the E02 implementation on `feat/2-e02-docedit` (stacked on #37, contains #35).
+- **Branches:** `master` holds PRs #1–#34 (#34: Phase 2 E01, the first slice, merged 2026-11-11). Open: #35 memo visual baselines, #36 web image CVE fix, #37 E02 plan, and #38 the E02 implementation (stacked on #37, contains #35).
 
 ## State (Phase 2)
 - [x] Overview written (2026-11-09)
@@ -43,7 +43,7 @@
 - [ ] Owner demo, moderated usability walkthrough, manual keyboard and screen-reader pass (carried)
 
 ## Next step
-1. Owner: merge in this order: #36 (web image CVE fix), #35 (visual baselines, after re-running its image check), #37 (E02 plan), then the E02 implementation PR.
+1. Owner: merge in this order: #36 (web image CVE fix), #35 (visual baselines, after re-running its image check), #37 (E02 plan), then #38 (E02 implementation).
 2. Agent: after the E02 merge, check ONLYOFFICE on dev (Ansible re-run for the `documents` profile and the new env lines), then E02 follow-ups: Firefox and WebKit runs of the edit journey, nightly `OnlyOfficeContainerIT`.
 3. Owner: the D1 demo on dev (`phase-2-workflow-engine/epic-01-first-slice/demo.md`).
 4. Before 2026-11-22: take the rebuilt distroless digest from Renovate and delete the zlib entries in `.trivyignore`.
@@ -51,7 +51,7 @@
 
 ## Waiting for human
 - **D1 pilot demo** (Phase 2 E01): on dev once the release with PR #34 is deployed, following `phase-2-workflow-engine/epic-01-first-slice/demo.md`.
-- **Merges:** #36, #35, #37 and the E02 implementation PR, in that order (each needs the owner's go-ahead).
+- **Merges:** #36, #35, #37 and #38, in that order (each needs the owner's go-ahead).
 - **Carried from Phase 1a (in person, no rush):** the demo (`docs/plan/phase-1a-minimum-core/demo.md`), a moderated usability walkthrough (login + MFA, org editing, tenant administration) and a manual keyboard + screen-reader pass (NVDA or VoiceOver), including the E01 patterns gallery (`pnpm dev`, `/patterns`).
 - **GitHub setup:** required reviewers on the `release` environment (may need a paid plan on a private repository; meanwhile only the owner can push `v*` tags) and branch protection on `master`.
 

@@ -34,6 +34,20 @@ class WorkflowProblems {
         )
     }
 
+    @ExceptionHandler(DefinitionNotFoundException::class)
+    fun definitionNotFound(): ResponseEntity<ProblemDetail> =
+        ResponseEntity.status(HttpStatus.NOT_FOUND).body(ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, "Not found"))
+
+    /** A definition that does not validate (design E03 §5): one entry per problem, `field` being its JSON pointer. */
+    @ExceptionHandler(DefinitionInvalidException::class)
+    fun definitionInvalid(ex: DefinitionInvalidException): ResponseEntity<ProblemDetail> =
+        ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(
+            ProblemTypes.validation(ex.problems).apply {
+                status = HttpStatus.UNPROCESSABLE_CONTENT.value()
+                setProperty("reason", "DEFINITION_INVALID")
+            },
+        )
+
     private companion object {
         val FORBIDDEN = setOf("NOT_INITIATOR", "NOT_ASSIGNEE")
         val NOT_FOUND = setOf(WorkflowRunner.TASK_NOT_FOUND, WorkflowRunner.INSTANCE_NOT_FOUND)

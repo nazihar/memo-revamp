@@ -28,14 +28,14 @@ class MemoReviews(
         val memo = locked(id)
         refuseIf(memo.status != MemoStatus.DRAFT, "WRONG_STATE") { "Only a draft can be submitted." }
         notBeingEdited(memo)
-        val route = routes.route(id)
+        val type = types.find(memo.typeId)
+        val route = route(memo, type)
         val problems =
             listOfNotNull(FieldProblem("document", "required", "Upload the memo document first.").takeIf { memo.documentFileId == null }) +
-                routes.problems(memo, route)
+                problems(memo, type, route)
         if (problems.isNotEmpty()) throw MemoRejectedException(problems)
         // The memo type's workflow (E03): new memos pin its newest published version.
-        val definition = types.find(memo.typeId)?.definitionKey ?: Workflows.SEQUENTIAL_APPROVAL
-        workflows.start(MemoWorkflowSubject.TYPE, id, route, remark, definition)
+        workflows.start(MemoWorkflowSubject.TYPE, id, route, remark, type?.definitionKey ?: Workflows.SEQUENTIAL_APPROVAL)
         return memos.get(id)
     }
 
@@ -47,8 +47,9 @@ class MemoReviews(
         val memo = locked(id)
         refuseIf(memo.status != MemoStatus.RETURNED, "WRONG_STATE") { "Only a memo returned to you can be resubmitted." }
         notBeingEdited(memo)
-        val route = routes.route(id)
-        val problems = routes.problems(memo, route)
+        val type = types.find(memo.typeId)
+        val route = route(memo, type)
+        val problems = problems(memo, type, route)
         if (problems.isNotEmpty()) throw MemoRejectedException(problems)
         workflows.resubmit(checkNotNull(memo.workflowInstanceId), route, remark)
         return memos.get(id)
@@ -77,6 +78,18 @@ class MemoReviews(
         workflows.recall(checkNotNull(memo.workflowInstanceId), remark)
         return memos.get(id)
     }
+
+    /** The initiator's route, unless the type's definition names every step (`FIXED`): then there is none. */
+    private fun route(
+        memo: Memo,
+        type: MemoType?,
+    ): List<UUID> = if (type?.routePolicy == RoutePolicy.FIXED) emptyList() else routes.route(memo.id)
+
+    private fun problems(
+        memo: Memo,
+        type: MemoType?,
+        route: List<UUID>,
+    ) = if (type?.routePolicy == RoutePolicy.FIXED) emptyList() else routes.problems(memo, route)
 
     /** A review never starts on a document that may still change in an open editor (ADR-0037). */
     private fun notBeingEdited(memo: Memo) {

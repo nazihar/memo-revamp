@@ -467,6 +467,27 @@
         "required" : [ "name", "status" ],
         "type" : "object"
       },
+      "CreateDefinitionRequest" : {
+        "properties" : {
+          "body" : {
+            "additionalProperties" : { },
+            "type" : "object"
+          },
+          "description" : {
+            "type" : [ "string", "null" ]
+          },
+          "fragment" : {
+            "type" : "boolean"
+          },
+          "key" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
       "CreateOrgUnitRequest" : {
         "properties" : {
           "code" : {
@@ -493,6 +514,53 @@
           }
         },
         "required" : [ "code", "legalEntityId", "name" ],
+        "type" : "object"
+      },
+      "DefinitionResponse" : {
+        "properties" : {
+          "definition" : {
+            "$ref" : "#/components/schemas/DefinitionSummary"
+          },
+          "versions" : {
+            "items" : {
+              "$ref" : "#/components/schemas/VersionSummary"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "definition", "versions" ],
+        "type" : "object"
+      },
+      "DefinitionSummary" : {
+        "properties" : {
+          "builtIn" : {
+            "type" : "boolean"
+          },
+          "description" : {
+            "type" : [ "string", "null" ]
+          },
+          "fragment" : {
+            "type" : "boolean"
+          },
+          "key" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "openVersion" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/VersionSummary"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "publishedVersion" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          }
+        },
+        "required" : [ "builtIn", "fragment", "key", "name" ],
         "type" : "object"
       },
       "DirectoryPosition" : {
@@ -610,6 +678,15 @@
         "required" : [ "fileId", "fileVersion", "name", "number", "sha256", "sizeBytes", "uploadedAt", "versionId" ],
         "type" : "object"
       },
+      "DraftRequest" : {
+        "properties" : {
+          "body" : {
+            "additionalProperties" : { },
+            "type" : [ "object", "null" ]
+          }
+        },
+        "type" : "object"
+      },
       "EditSessionView" : {
         "properties" : {
           "id" : {
@@ -638,6 +715,20 @@
           }
         },
         "required" : [ "enabled" ],
+        "type" : "object"
+      },
+      "FieldProblem" : {
+        "properties" : {
+          "code" : {
+            "type" : "string"
+          },
+          "field" : {
+            "type" : "string"
+          },
+          "message" : {
+            "type" : "string"
+          }
+        },
         "type" : "object"
       },
       "FileVersionView" : {
@@ -1248,6 +1339,7 @@
             "type" : "string"
           },
           "routePolicy" : {
+            "enum" : [ "INITIATOR_DEFINED", "FIXED", "BOTH" ],
             "type" : "string"
           },
           "stepUpOnApprove" : {
@@ -1290,8 +1382,14 @@
             "format" : "uuid",
             "type" : [ "string", "null" ]
           },
+          "definitionKey" : {
+            "type" : [ "string", "null" ]
+          },
           "name" : {
             "type" : "string"
+          },
+          "routePolicy" : {
+            "type" : [ "string", "null" ]
           },
           "stepUpOnApprove" : {
             "type" : "boolean"
@@ -2309,6 +2407,14 @@
         "required" : [ "reportsToPositionId", "validFrom" ],
         "type" : "object"
       },
+      "ReviewRequest" : {
+        "properties" : {
+          "remark" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
       "Role" : {
         "properties" : {
           "builtIn" : {
@@ -2709,6 +2815,104 @@
           }
         },
         "required" : [ "clearance", "grants" ],
+        "type" : "object"
+      },
+      "ValidateRequest" : {
+        "properties" : {
+          "body" : {
+            "additionalProperties" : { },
+            "type" : [ "object", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "ValidationResponse" : {
+        "properties" : {
+          "problems" : {
+            "items" : {
+              "$ref" : "#/components/schemas/FieldProblem"
+            },
+            "type" : "array"
+          },
+          "valid" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "problems", "valid" ],
+        "type" : "object"
+      },
+      "VersionResponse" : {
+        "properties" : {
+          "body" : {
+            "additionalProperties" : { },
+            "type" : "object"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "key" : {
+            "type" : "string"
+          },
+          "problems" : {
+            "items" : {
+              "$ref" : "#/components/schemas/FieldProblem"
+            },
+            "type" : "array"
+          },
+          "revision" : {
+            "description" : "Send as If-Match when changing or submitting a draft",
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "version" : {
+            "$ref" : "#/components/schemas/VersionSummary"
+          }
+        },
+        "required" : [ "body", "id", "key", "problems", "revision", "version" ],
+        "type" : "object"
+      },
+      "VersionSummary" : {
+        "properties" : {
+          "number" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "publishedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "reviewRemark" : {
+            "type" : [ "string", "null" ]
+          },
+          "reviewedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "reviewedBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/Person"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "state" : {
+            "enum" : [ "DRAFT", "IN_REVIEW", "PUBLISHED", "RETIRED" ],
+            "type" : "string"
+          },
+          "submittedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "submittedBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/Person"
+            }, {
+              "type" : "null"
+            } ]
+          }
+        },
+        "required" : [ "number", "state" ],
         "type" : "object"
       },
       "WorkflowView" : {
@@ -3643,6 +3847,440 @@
         },
         "summary" : "Lift a temporary lock",
         "tags" : [ "admin" ]
+      }
+    },
+    "/api/v1/admin/workflow-definitions" : {
+      "get" : {
+        "operationId" : "listWorkflowDefinitions",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/DefinitionSummary"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Workflow definitions with their published and open versions",
+        "tags" : [ "workflow" ]
+      },
+      "post" : {
+        "operationId" : "createWorkflowDefinition",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CreateDefinitionRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/VersionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A new definition, its body saved as draft version 1",
+        "tags" : [ "workflow" ]
+      }
+    },
+    "/api/v1/admin/workflow-definitions/{key}" : {
+      "get" : {
+        "operationId" : "getWorkflowDefinition",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DefinitionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A workflow definition and its versions",
+        "tags" : [ "workflow" ]
+      }
+    },
+    "/api/v1/admin/workflow-definitions/{key}/versions" : {
+      "post" : {
+        "operationId" : "newWorkflowDefinitionDraft",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/DraftRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/VersionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A new draft, from a body or a copy of the published version",
+        "tags" : [ "workflow" ]
+      }
+    },
+    "/api/v1/admin/workflow-definitions/{key}/versions/{number}" : {
+      "get" : {
+        "operationId" : "getWorkflowDefinitionVersion",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "number",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/VersionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A version's body and what validation finds in it",
+        "tags" : [ "workflow" ]
+      },
+      "put" : {
+        "operationId" : "replaceWorkflowDefinitionDraft",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "number",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/DraftRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/VersionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Replace a draft's body (import or save)",
+        "tags" : [ "workflow" ]
+      }
+    },
+    "/api/v1/admin/workflow-definitions/{key}/versions/{number}/approve" : {
+      "post" : {
+        "operationId" : "approveWorkflowDefinition",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "number",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ReviewRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/VersionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Publish a version in review (not your own submission)",
+        "tags" : [ "workflow" ]
+      }
+    },
+    "/api/v1/admin/workflow-definitions/{key}/versions/{number}/export" : {
+      "get" : {
+        "operationId" : "exportWorkflowDefinition",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "number",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A version's body as a JSON file",
+        "tags" : [ "workflow" ]
+      }
+    },
+    "/api/v1/admin/workflow-definitions/{key}/versions/{number}/retire" : {
+      "post" : {
+        "operationId" : "retireWorkflowDefinition",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "number",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/VersionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Retire the published version of a definition nothing uses",
+        "tags" : [ "workflow" ]
+      }
+    },
+    "/api/v1/admin/workflow-definitions/{key}/versions/{number}/send-back" : {
+      "post" : {
+        "operationId" : "sendBackWorkflowDefinition",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "number",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ReviewRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/VersionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Return a version in review to draft, saying why",
+        "tags" : [ "workflow" ]
+      }
+    },
+    "/api/v1/admin/workflow-definitions/{key}/versions/{number}/submit" : {
+      "post" : {
+        "operationId" : "submitWorkflowDefinition",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "number",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/VersionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Send a valid draft for review",
+        "tags" : [ "workflow" ]
+      }
+    },
+    "/api/v1/admin/workflow-definitions/{key}/versions/{number}/validate" : {
+      "post" : {
+        "operationId" : "validateWorkflowDefinition",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "number",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ValidateRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ValidationResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Check a version, or an unsaved body, without changing anything",
+        "tags" : [ "workflow" ]
       }
     },
     "/api/v1/admin/workflow/instances/{instanceId}/cancel" : {

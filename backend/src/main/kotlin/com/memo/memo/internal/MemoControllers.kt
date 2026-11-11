@@ -10,6 +10,7 @@ import com.memo.common.tenant.TenantTransactions
 import com.memo.common.web.etagOf
 import com.memo.common.web.ifMatchVersion
 import com.memo.system.Idempotency
+import com.memo.workflow.Workflows
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -237,9 +238,13 @@ data class MemoTypeRequest(
     val defaultClassificationId: UUID? = null,
     val stepUpOnApprove: Boolean = true,
     val active: Boolean = true,
+    /** A published workflow definition (design E03 §4.7); omitted: unchanged (`sequential-approval` for a new type). */
+    val definitionKey: String? = null,
+    /** `INITIATOR_DEFINED`, `FIXED` or `BOTH`; it has to fit the definition. Omitted: unchanged (`INITIATOR_DEFINED` when new). */
+    val routePolicy: String? = null,
 )
 
-/** Minimal memo-type administration (design E01 §5): route policy and definition stay fixed in E01. */
+/** Memo-type administration (design E01 §5): since E03 a type chooses its workflow definition and route policy. */
 @RestController
 @RequestMapping("/api/v1/admin/memo-types")
 @Tag(name = "memo")
@@ -288,14 +293,24 @@ class AdminMemoTypesController(
         @RequestBody body: MemoTypeRequest,
     ): ResponseEntity<MemoType> {
         val version = ifMatchVersion(ifMatch)
-        val type = transactions.inTenant(TenantContext.current()) { types.update(id, version, body.fields()) }
+        val type = transactions.inTenant(TenantContext.current()) { types.update(id, version, body.fields(types.get(id))) }
         return ResponseEntity.ok().eTag(etagOf(type.version)).body(type)
     }
 
-    private fun MemoTypeRequest.fields(): MemoTypeFields {
+    /** The fields as the request gives them; the definition and route policy default to [current]'s (or the built-in ones). */
+    private fun MemoTypeRequest.fields(current: MemoType? = null): MemoTypeFields {
         val trimmed = name.trim()
         require(trimmed.length in 1..MAX_NAME) { "A name of 1 to $MAX_NAME characters is required." }
-        return MemoTypeFields(trimmed, defaultClassificationId, stepUpOnApprove, active)
+        val policy = routePolicy ?: current?.routePolicy?.name ?: RoutePolicy.INITIATOR_DEFINED.name
+        require(RoutePolicy.entries.any { it.name == policy }) { "The route policy is INITIATOR_DEFINED, FIXED or BOTH." }
+        return MemoTypeFields(
+            trimmed,
+            defaultClassificationId,
+            stepUpOnApprove,
+            active,
+            definitionKey?.trim() ?: current?.definitionKey ?: Workflows.SEQUENTIAL_APPROVAL,
+            RoutePolicy.valueOf(policy),
+        )
     }
 
     private companion object {

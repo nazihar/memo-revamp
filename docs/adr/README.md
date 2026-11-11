@@ -41,3 +41,5 @@ We use the MADR format (see [0001](0001-record-architecture-decisions.md)). Star
 | [0035](0035-workflow-data-model-and-concurrency.md) | Workflow data model: instances, rounds, steps, tasks; guarded transitions with idempotency keys | accepted | 2026-11-09 |
 | [0036](0036-memo-documents-binding-and-approval-step-up.md) | Memo documents: version binding, lock during review, step-up on approve | accepted | 2026-11-09 |
 | [0037](0037-onlyoffice-editing-integration.md) | In-browser editing through ONLYOFFICE behind an editor adapter | accepted | 2026-11-11 |
+| [0038](0038-workflow-definitions-versioning-and-migration.md) | Workflow definitions: JSON graph, schema, maker-checker lifecycle, pinning and admin migration | accepted | 2026-11-11 |
+| [0039](0039-condition-language-cel.md) | Condition language: CEL with declared attributes, no macros, recorded evaluations | accepted | 2026-11-11 |

@@ -23,6 +23,7 @@ import { useToast } from '@/components/ui/toast-context'
 import { HistoryList } from './HistoryList'
 import { DateDialog, PickAndDateDialog, PositionFormDialog } from './OrgDialogs'
 import { om, omv, orgProblemMessage, today } from './org-messages'
+import { newIdempotencyKey } from '@/lib/idempotency'
 
 type Pending =
   | { kind: 'edit' }
@@ -217,7 +218,7 @@ function PositionActions({
   const intl = useIntl()
   const toast = useToast()
   const { position, reportingLines } = detail
-  const [key] = useState(() => ({ 'Idempotency-Key': crypto.randomUUID() }))
+  const [key] = useState(() => ({ 'Idempotency-Key': newIdempotencyKey() }))
   const confirmed = useRef(false)
   const after = async <T,>(call: Promise<T>) => {
     const result = await call

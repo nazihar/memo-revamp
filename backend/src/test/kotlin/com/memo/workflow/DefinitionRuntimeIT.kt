@@ -109,8 +109,8 @@ class DefinitionRuntimeIT : IntegrationTest() {
         assertThat(route["taken"].asInt()).isZero()
         assertThat(route["inputs"]["amount"].asInt()).isEqualTo(5000)
         val events = recorder.of(item)
-        assertThat(events.filterIsInstance<WorkflowNotifyRequested>().single().recipients).containsExactly(initiator)
-        assertThat(events.filterIsInstance<WorkflowEscalatedToForum>().single().forum).isEqualTo("board")
+        assertThat(events.filterIsInstance<WorkflowNotifyRequested>().map { it.recipientId }).containsExactly(initiator)
+        assertThat(events.filterIsInstance<WorkflowEscalatedToForum>().single().forumKey).isEqualTo("board")
     }
 
     @Test

@@ -40,3 +40,4 @@ We use the MADR format (see [0001](0001-record-architecture-decisions.md)). Star
 | [0034](0034-own-workflow-engine.md) | Our own workflow engine on PostgreSQL, subject-agnostic | accepted | 2026-11-09 |
 | [0035](0035-workflow-data-model-and-concurrency.md) | Workflow data model: instances, rounds, steps, tasks; guarded transitions with idempotency keys | accepted | 2026-11-09 |
 | [0036](0036-memo-documents-binding-and-approval-step-up.md) | Memo documents: version binding, lock during review, step-up on approve | accepted | 2026-11-09 |
+| [0037](0037-onlyoffice-editing-integration.md) | In-browser editing through ONLYOFFICE behind an editor adapter | accepted | 2026-11-11 |

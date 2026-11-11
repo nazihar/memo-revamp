@@ -70,4 +70,14 @@
     <Class name="com.memo.files.internal.ClamdClient"/>
     <Bug pattern="UNENCRYPTED_SOCKET"/>
   </Match>
+
+  <!--
+    The document server's endpoints (ADR-0037) on the internal connector: no browser, no cookie, no session. Every request
+    carries an HMAC-signed link and the document server's HS256 token, which a cross-site request cannot forge, so CSRF
+    protection has nothing to protect there. The public chain (SecurityConfig) keeps CSRF on every state change.
+  -->
+  <Match>
+    <Class name="~com\.memo\.docedit\.internal\.InternalConnectorConfig.*"/>
+    <Bug pattern="SPRING_CSRF_PROTECTION_DISABLED"/>
+  </Match>
 </FindBugsFilter>

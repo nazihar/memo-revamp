@@ -8,7 +8,7 @@ Decision: [ADR-0037](../../../adr/0037-onlyoffice-editing-integration.md). Build
 
 ```mermaid
 flowchart LR
-  web["web<br/>/memos/$id/edit"]
+  web["web<br/>/memos/$id/document"]
   memo["memo<br/>memo.document purpose (mayEdit)<br/>submit refused while editing"]
   docedit["docedit<br/>sessions, EditorAdapter,<br/>internal connector"]
   oo["ONLYOFFICE adapter<br/>(docedit.internal.onlyoffice)"]
@@ -57,7 +57,7 @@ erDiagram
 ### Open
 1. Browser `POST /api/v1/files/{fileId}/edit-sessions {mode}` with `Idempotency-Key` → `docedit` checks the purpose (`mayEdit` for `EDIT`, `mayRead` for `VIEW`; 403/404 as the purpose says), creates or reuses the session, asks the adapter for the config.
 2. The config (signed JWT in `token`) holds `document.key`, `document.url` = `http://<backend-internal>:8082/internal/docedit/sessions/{id}/content?exp=…&sig=…` (HMAC, five minutes), `document.permissions` (§R8.5), `editorConfig.callbackUrl` = `http://<backend-internal>:8082/internal/docedit/sessions/{id}/callback`, `editorConfig.user` (id, display name), `editorConfig.lang` (the user's locale), `customization` (no plugins, no macros, no "open file location", no help links to the internet).
-3. The web page `/memos/$memoId/edit` loads `/office/web-apps/apps/api/documents/api.js` and starts `DocsAPI.DocEditor` with the config.
+3. The web page `/memos/$memoId/document` loads `/office/web-apps/apps/api/documents/api.js` and starts `DocsAPI.DocEditor` with the config.
 
 ### Download (document server → backend)
 `GET /internal/docedit/sessions/{id}/content` on the internal connector: signature and expiry checked, then the ONLYOFFICE JWT in the header; the session must be `OPEN`; streams the **base version** through `FileContents` (decrypting); audited as `file.opened` with `channel: editor`.
@@ -66,7 +66,7 @@ erDiagram
 `POST /internal/docedit/sessions/{id}/callback`:
 1. Verify the body token (HS256, our secret, `exp`); its payload must equal the body (`key`, `status`, `url`); `key` must equal the session's key.
 2. By status (research §R8.2): 1 → touch `last_activity_at`; 4 → `CLOSED`; 2 and 6 (types 0/1) → **save**; 3, 7 → `FAILED` / audit; others → ignore. Always answer `{"error":0}` once the request is authentic; answer `{"error":1}` (and audit `docedit.callback.refused`) when it is not.
-3. **Save:** refuse unless the callback `url`'s scheme, host and port equal the configured internal document-server address; download with a 60-second timeout and the purpose's size limit; store through `FileUploads` **as the session's user** with an idempotency key of `docedit:{sessionId}:{status}:{url hash}` (a repeated callback stores once). A veto from the purpose (the memo was submitted meanwhile) marks the session `FAILED` with reason `LOCKED`, keeps the uploaded bytes nowhere, and notifies the user ("your changes could not be saved because the memo was submitted").
+3. **Save:** take only the **path** of the callback `url` (ONLYOFFICE names it on the browser-facing address, research §R8.4), refuse unless it lies under the document server's `/cache/` (after removing the public `/office` prefix), and fetch it from the configured internal address; download with a 60-second timeout and the purpose's size limit; store through `FileUploads` **as the session's user** with an idempotency key of `docedit:{sessionId}:{status}:{url hash}` (a repeated callback stores once). A veto from the purpose (the memo was submitted meanwhile) marks the session `FAILED` with reason `LOCKED`, keeps the uploaded bytes nowhere, and notifies the user ("your changes could not be saved because the memo was submitted").
 4. On success: `SAVED` with `saved_version_id` (status 2) or still `OPEN` (status 6); audit `docedit.version.saved`; the memo view shows the new version on its next refresh.
 
 ### Submit while editing
@@ -77,7 +77,7 @@ erDiagram
 | Method and path | Connector | Purpose | Access |
 |---|---|---|---|
 | `POST /api/v1/files/{fileId}/edit-sessions` | public | Open an editor (`mode`: `EDIT` or `VIEW`), returns the signed config and the session id | `@SignedIn`; the purpose decides (`mayEdit`/`mayRead`); `Idempotency-Key` |
-| `GET /api/v1/files/{fileId}/edit-sessions/current` | public | Whether I have an open edit session (to resume) | `@SignedIn`; own sessions only |
+| `GET /api/v1/edit-sessions/{id}` | public | How my edit session ended (`OPEN`, `SAVED`, `CLOSED`, `FAILED` with a reason, `EXPIRED`); opening again resumes an open one | `@SignedIn`; own sessions only |
 | `GET /internal/docedit/sessions/{id}/content` | internal | Document for the editor | signed link + ONLYOFFICE JWT |
 | `POST /internal/docedit/sessions/{id}/callback` | internal | Status callbacks | ONLYOFFICE JWT |
 
@@ -115,7 +115,7 @@ With the sub-path, `script-src 'self'`, `frame-src 'self'`, `connect-src 'self'`
 
 ## 9. Web
 - Memo view: "Edit in browser" next to "Upload a new version" when `EDIT_DOCUMENT` is allowed; "Open in browser" (view) for everyone else who sees the memo. Hidden when the server reports editing is off (`GET /api/v1/files/editing` → `{enabled}`; cached).
-- `/memos/$memoId/edit` (and `?mode=view`): a full-height page with a back link and the editor; leaving asks to wait for the save ("Your changes are being saved") until the memo shows the new version or 30 seconds pass.
+- `/memos/$memoId/document?mode=edit` (and `?mode=view`): a full-height page with a back link and the editor; leaving waits for the save ("Saving your changes as a new version…") until the session reports how it ended or 30 seconds pass.
 - Phones: view mode only (the editor's mobile edit mode is out of E02); the button reads "Open" there.
 - i18n en/ar; the editor's own UI follows `editorConfig.lang`.
 

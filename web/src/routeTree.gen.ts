@@ -46,6 +46,7 @@ import { Route as PlatformOperatorTenantsTenantIdRouteImport } from './routes/pl
 import { Route as PlatformOperatorTenantsNewRouteImport } from './routes/platform/_operator/tenants.new'
 import { Route as ShellSignedInAdminUsersUserIdRouteImport } from './routes/_shell/_signedIn/admin.users_.$userId'
 import { Route as ShellSignedInAdminWorkflowTasksRouteImport } from './routes/_shell/_signedIn/admin.workflow.tasks'
+import { Route as ShellSignedInMemosMemoIdDocumentRouteImport } from './routes/_shell/_signedIn/memos.$memoId_.document'
 import { Route as ShellSignedInOrgPositionsPositionIdRouteImport } from './routes/_shell/_signedIn/org_.positions.$positionId'
 
 const AuthRoute = AuthRouteImport.update({
@@ -241,6 +242,12 @@ const ShellSignedInAdminWorkflowTasksRoute =
     path: '/admin/workflow/tasks',
     getParentRoute: () => ShellSignedInRoute,
   } as any)
+const ShellSignedInMemosMemoIdDocumentRoute =
+  ShellSignedInMemosMemoIdDocumentRouteImport.update({
+    id: '/memos/$memoId_/document',
+    path: '/memos/$memoId/document',
+    getParentRoute: () => ShellSignedInRoute,
+  } as any)
 const ShellSignedInOrgPositionsPositionIdRoute =
   ShellSignedInOrgPositionsPositionIdRouteImport.update({
     id: '/org_/positions/$positionId',
@@ -282,6 +289,7 @@ export interface FileRoutesByFullPath {
   '/admin/': typeof ShellSignedInAdminIndexRoute
   '/admin/users/$userId': typeof ShellSignedInAdminUsersUserIdRoute
   '/admin/workflow/tasks': typeof ShellSignedInAdminWorkflowTasksRoute
+  '/memos/$memoId/document': typeof ShellSignedInMemosMemoIdDocumentRoute
   '/org/positions/$positionId': typeof ShellSignedInOrgPositionsPositionIdRoute
 }
 export interface FileRoutesByTo {
@@ -317,6 +325,7 @@ export interface FileRoutesByTo {
   '/admin': typeof ShellSignedInAdminIndexRoute
   '/admin/users/$userId': typeof ShellSignedInAdminUsersUserIdRoute
   '/admin/workflow/tasks': typeof ShellSignedInAdminWorkflowTasksRoute
+  '/memos/$memoId/document': typeof ShellSignedInMemosMemoIdDocumentRoute
   '/org/positions/$positionId': typeof ShellSignedInOrgPositionsPositionIdRoute
 }
 export interface FileRoutesById {
@@ -358,6 +367,7 @@ export interface FileRoutesById {
   '/_shell/_signedIn/admin/': typeof ShellSignedInAdminIndexRoute
   '/_shell/_signedIn/admin/users_/$userId': typeof ShellSignedInAdminUsersUserIdRoute
   '/_shell/_signedIn/admin/workflow/tasks': typeof ShellSignedInAdminWorkflowTasksRoute
+  '/_shell/_signedIn/memos/$memoId_/document': typeof ShellSignedInMemosMemoIdDocumentRoute
   '/_shell/_signedIn/org_/positions/$positionId': typeof ShellSignedInOrgPositionsPositionIdRoute
 }
 export interface FileRouteTypes {
@@ -396,6 +406,7 @@ export interface FileRouteTypes {
     | '/admin/'
     | '/admin/users/$userId'
     | '/admin/workflow/tasks'
+    | '/memos/$memoId/document'
     | '/org/positions/$positionId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -431,6 +442,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/admin/users/$userId'
     | '/admin/workflow/tasks'
+    | '/memos/$memoId/document'
     | '/org/positions/$positionId'
   id:
     | '__root__'
@@ -471,6 +483,7 @@ export interface FileRouteTypes {
     | '/_shell/_signedIn/admin/'
     | '/_shell/_signedIn/admin/users_/$userId'
     | '/_shell/_signedIn/admin/workflow/tasks'
+    | '/_shell/_signedIn/memos/$memoId_/document'
     | '/_shell/_signedIn/org_/positions/$positionId'
   fileRoutesById: FileRoutesById
 }
@@ -741,6 +754,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShellSignedInAdminWorkflowTasksRouteImport
       parentRoute: typeof ShellSignedInRoute
     }
+    '/_shell/_signedIn/memos/$memoId_/document': {
+      id: '/_shell/_signedIn/memos/$memoId_/document'
+      path: '/memos/$memoId/document'
+      fullPath: '/memos/$memoId/document'
+      preLoaderRoute: typeof ShellSignedInMemosMemoIdDocumentRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
     '/_shell/_signedIn/org_/positions/$positionId': {
       id: '/_shell/_signedIn/org_/positions/$positionId'
       path: '/org/positions/$positionId'
@@ -788,6 +808,7 @@ interface ShellSignedInRouteChildren {
   ShellSignedInAdminIndexRoute: typeof ShellSignedInAdminIndexRoute
   ShellSignedInAdminUsersUserIdRoute: typeof ShellSignedInAdminUsersUserIdRoute
   ShellSignedInAdminWorkflowTasksRoute: typeof ShellSignedInAdminWorkflowTasksRoute
+  ShellSignedInMemosMemoIdDocumentRoute: typeof ShellSignedInMemosMemoIdDocumentRoute
   ShellSignedInOrgPositionsPositionIdRoute: typeof ShellSignedInOrgPositionsPositionIdRoute
 }
 
@@ -813,6 +834,7 @@ const ShellSignedInRouteChildren: ShellSignedInRouteChildren = {
   ShellSignedInAdminIndexRoute: ShellSignedInAdminIndexRoute,
   ShellSignedInAdminUsersUserIdRoute: ShellSignedInAdminUsersUserIdRoute,
   ShellSignedInAdminWorkflowTasksRoute: ShellSignedInAdminWorkflowTasksRoute,
+  ShellSignedInMemosMemoIdDocumentRoute: ShellSignedInMemosMemoIdDocumentRoute,
   ShellSignedInOrgPositionsPositionIdRoute:
     ShellSignedInOrgPositionsPositionIdRoute,
 }

@@ -40,7 +40,7 @@ HS256 throughout. Three directions, each with its own secret and switch in `loca
 
 ### R8.4 Document URL and download
 `document.url` must be an absolute URL the document server can fetch (local links need a token). The `url` in a callback points at the document server's cache.
-→ Our `document.url` is a **short-lived, single-purpose signed link** to a backend endpoint (HMAC over session id and expiry, five minutes), reached on an internal port (§R8.6). When saving, the backend fetches the callback `url` **only if its host and port equal the configured internal document-server address** (no SSRF through a forged callback), with a size limit and a timeout.
+→ Our `document.url` is a **short-lived, single-purpose signed link** to a backend endpoint (HMAC over session id and expiry, five minutes), reached on an internal port (§R8.6). When saving, the backend **ignores the host of the callback `url`**: ONLYOFFICE builds it from the browser-facing address (`X-Forwarded-Host`, so `https://<tenant>/office/cache/…`, found in the T1 spike). Only a path under the document server's `/cache/` is accepted, and it is always fetched from the configured internal address, with a size limit and a timeout, so a forged URL cannot point the backend anywhere else (no SSRF).
 
 ### R8.5 Permissions and modes
 `editorConfig.mode` `edit` or `view`; `document.permissions` (`edit`, `download`, `print`, `copy`, `comment`, `review`).

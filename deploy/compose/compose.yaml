@@ -76,6 +76,8 @@ services:
       JWT_ENABLED: "true"
       JWT_SECRET: ${ONLYOFFICE_JWT_SECRET:?}
       JWT_HEADER: Authorization
+      # The backend is reached through `backend-gateway`, a private address.
+      ALLOW_PRIVATE_IP_ADDRESS: "true"
     # No outbound network (AGENTS.md §3.4): attached only to an internal network shared with the backend proxy.
     networks: [docs-internal]
     healthcheck:
@@ -91,6 +93,15 @@ services:
     command: ["TCP-LISTEN:8081,fork,reuseaddr", "TCP:onlyoffice:80"]
     networks: [default, docs-internal]
     ports: ["127.0.0.1:8081:8081"]
+
+  # The way back for in-browser editing (ADR-0037): ONLYOFFICE fetches documents from and reports saves to the host-run
+  # backend's internal port 8082, and reaches nothing else.
+  backend-gateway:
+    image: alpine/socat:1.8.1.1
+    profiles: [full]
+    command: ["TCP-LISTEN:8082,fork,reuseaddr", "TCP:host.docker.internal:8082"]
+    extra_hosts: ["host.docker.internal:host-gateway"]
+    networks: [default, docs-internal]
 
   clamav:
     image: clamav/clamav:1.5.4

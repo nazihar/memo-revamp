@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { useNavigate } from '@tanstack/react-router'
-import { Download } from 'lucide-react'
+import { Link, useNavigate } from '@tanstack/react-router'
+import { Download, FilePenLine, FileText } from 'lucide-react'
 import { useState } from 'react'
 import { useIntl } from 'react-intl'
 import {
@@ -61,7 +61,9 @@ export function MemoPage({ memoId }: { memoId: string }) {
     ])
   }
   const onProblem = async (problem: Problem | undefined) => {
-    if (problem?.type === PROBLEM.conflict || problem?.status === 412) {
+    if (problem?.reason === 'DOCUMENT_BEING_EDITED') {
+      toast.show(intl.formatMessage(mm.beingEdited), 'error')
+    } else if (problem?.type === PROBLEM.conflict || problem?.status === 412) {
       toast.show(intl.formatMessage(mm.conflict), 'error')
       await memo.refetch()
     } else if (problem?.errors?.some((e) => e.field === 'document')) {
@@ -119,6 +121,23 @@ export function MemoPage({ memoId }: { memoId: string }) {
                     {intl.formatMessage(mm.download)}
                   </a>
                 </Button>
+                {/* Phones read only (design E02): the editor's mobile editing is out of scope. */}
+                {allowed.has('EDIT_DOCUMENT') ? (
+                  <Button variant="outline" className="max-sm:hidden" asChild>
+                    <Link to="/memos/$memoId/document" params={{ memoId: view.id }} search={{ mode: 'edit' }}>
+                      <FilePenLine aria-hidden="true" />
+                      {intl.formatMessage(mm.editInBrowser)}
+                    </Link>
+                  </Button>
+                ) : null}
+                {allowed.has('VIEW_DOCUMENT') ? (
+                  <Button variant="outline" className={allowed.has('EDIT_DOCUMENT') ? 'sm:hidden' : undefined} asChild>
+                    <Link to="/memos/$memoId/document" params={{ memoId: view.id }} search={{ mode: 'view' }}>
+                      <FileText aria-hidden="true" />
+                      {intl.formatMessage(mm.openInBrowser)}
+                    </Link>
+                  </Button>
+                ) : null}
               </div>
             ) : (
               <p className="text-sm text-muted-foreground">{intl.formatMessage(mm.documentNone)}</p>

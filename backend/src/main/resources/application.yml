@@ -178,6 +178,13 @@ memo:
     work-bucket: work
   document-server:
     url: ${MEMO_DOCSERVER_URL:}
+  # In-browser editing (ADR-0037). Off while the document server URL is blank.
+  docedit:
+    document-server-url: ${MEMO_DOCSERVER_URL:}
+    public-path: ${MEMO_DOCEDIT_PUBLIC_PATH:/office/}
+    internal-port: ${MEMO_DOCEDIT_INTERNAL_PORT:8082}
+    internal-url: ${MEMO_DOCEDIT_INTERNAL_URL:http://backend:8082}
+    jwt-secret: ${MEMO_DOCEDIT_JWT_SECRET:}
   malware-scanner:
     host: ${MEMO_CLAMAV_HOST:}
     port: ${MEMO_CLAMAV_PORT:3310}

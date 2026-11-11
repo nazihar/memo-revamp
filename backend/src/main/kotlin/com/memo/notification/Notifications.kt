@@ -37,6 +37,9 @@ enum class NotificationKind(
     TASK_REASSIGNED(NotificationCategory.WORKFLOW, MailTemplate.TASK_REASSIGNED),
     TASK_BLOCKED(NotificationCategory.WORKFLOW, MailTemplate.TASK_BLOCKED),
     MEMO_WITHDRAWN(NotificationCategory.WORKFLOW, MailTemplate.MEMO_WITHDRAWN),
+
+    // In-browser editing (design E02 §3): a save that could not land; in-app only, parameter `name` (the file's name).
+    EDIT_NOT_SAVED(NotificationCategory.WORKFLOW, null),
 }
 
 /** Who receives a notification; the producer already holds the user, so `notification` never looks people up. */

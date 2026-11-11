@@ -41,6 +41,12 @@ security:
 
 integrations:
   documentServerUrl: ""   # ONLYOFFICE (internal URL); empty = disabled
+  # In-browser editing (ADR-0037), used when documentServerUrl is set. Browsers reach the document server under /office/
+  # on the tenant host through the web pods; the document server reaches the backend on its internal port (8082).
+  documentServer:
+    jwtSecret: ""           # Secret with key `jwtSecret`: the same secret ONLYOFFICE is configured with (32+ bytes)
+    podLabels: { app.kubernetes.io/name: onlyoffice }   # how the network policies find the document server's pods
+    dnsResolver: kube-dns.kube-system.svc.cluster.local # nginx resolves the document server per request
   # clamd host, configured with deploy/clamav/clamd.env (ADR-0029). Empty: every upload is refused (fail closed).
   malwareScannerHost: ""
   smtpHost: ""

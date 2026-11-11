@@ -2,6 +2,7 @@ package com.memo.memo.internal
 
 import com.memo.common.web.FieldProblem
 import com.memo.common.web.refuseIf
+import com.memo.docedit.DocumentEditing
 import com.memo.workflow.Workflows
 import org.springframework.stereotype.Service
 import java.util.UUID
@@ -16,6 +17,7 @@ class MemoReviews(
     private val store: MemoStore,
     private val routes: MemoRoutes,
     private val workflows: Workflows,
+    private val editing: DocumentEditing,
 ) {
     /** Round 1: the memo needs a document and a valid route; the first approver gets the task. */
     fun submit(
@@ -24,6 +26,7 @@ class MemoReviews(
     ): Memo {
         val memo = locked(id)
         refuseIf(memo.status != MemoStatus.DRAFT, "WRONG_STATE") { "Only a draft can be submitted." }
+        notBeingEdited(memo)
         val route = routes.route(id)
         val problems =
             listOfNotNull(FieldProblem("document", "required", "Upload the memo document first.").takeIf { memo.documentFileId == null }) +
@@ -40,6 +43,7 @@ class MemoReviews(
     ): Memo {
         val memo = locked(id)
         refuseIf(memo.status != MemoStatus.RETURNED, "WRONG_STATE") { "Only a memo returned to you can be resubmitted." }
+        notBeingEdited(memo)
         val route = routes.route(id)
         val problems = routes.problems(memo, route)
         if (problems.isNotEmpty()) throw MemoRejectedException(problems)
@@ -58,6 +62,13 @@ class MemoReviews(
         }
         workflows.withdraw(checkNotNull(memo.workflowInstanceId), remark)
         return memos.get(id)
+    }
+
+    /** A review never starts on a document that may still change in an open editor (ADR-0037). */
+    private fun notBeingEdited(memo: Memo) {
+        refuseIf(memo.documentFileId?.let(editing::beingEdited) == true, "DOCUMENT_BEING_EDITED") {
+            "The document is open in the editor. Close it, wait for the save, then submit."
+        }
     }
 
     /** The actor's own memo, its row locked so uploads and edits cannot slip in between the checks and the action. */

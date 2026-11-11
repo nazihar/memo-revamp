@@ -14,6 +14,7 @@ import com.memo.jooq.tables.AuthzClearance
 import com.memo.jooq.tables.AuthzGrant
 import com.memo.jooq.tables.AuthzRole
 import com.memo.jooq.tables.AuthzRolePermission
+import com.memo.jooq.tables.DoceditSession
 import com.memo.jooq.tables.FilesFile
 import com.memo.jooq.tables.FilesPendingUpload
 import com.memo.jooq.tables.FilesTenantKeyset
@@ -61,6 +62,7 @@ import com.memo.jooq.tables.records.AuthzClearanceRecord
 import com.memo.jooq.tables.records.AuthzGrantRecord
 import com.memo.jooq.tables.records.AuthzRolePermissionRecord
 import com.memo.jooq.tables.records.AuthzRoleRecord
+import com.memo.jooq.tables.records.DoceditSessionRecord
 import com.memo.jooq.tables.records.FilesFileRecord
 import com.memo.jooq.tables.records.FilesPendingUploadRecord
 import com.memo.jooq.tables.records.FilesTenantKeysetRecord
@@ -126,6 +128,8 @@ val AUTHZ_ROLE_PKEY: UniqueKey<AuthzRoleRecord> = Internal.createUniqueKey(Authz
 val AUTHZ_ROLE_TENANT_ID_ID_KEY: UniqueKey<AuthzRoleRecord> = Internal.createUniqueKey(AuthzRole.AUTHZ_ROLE, DSL.name("authz_role_tenant_id_id_key"), arrayOf(AuthzRole.AUTHZ_ROLE.TENANT_ID, AuthzRole.AUTHZ_ROLE.ID), true)
 val AUTHZ_ROLE_TENANT_ID_KEY_KEY: UniqueKey<AuthzRoleRecord> = Internal.createUniqueKey(AuthzRole.AUTHZ_ROLE, DSL.name("authz_role_tenant_id_key_key"), arrayOf(AuthzRole.AUTHZ_ROLE.TENANT_ID, AuthzRole.AUTHZ_ROLE.KEY), true)
 val AUTHZ_ROLE_PERMISSION_PKEY: UniqueKey<AuthzRolePermissionRecord> = Internal.createUniqueKey(AuthzRolePermission.AUTHZ_ROLE_PERMISSION, DSL.name("authz_role_permission_pkey"), arrayOf(AuthzRolePermission.AUTHZ_ROLE_PERMISSION.TENANT_ID, AuthzRolePermission.AUTHZ_ROLE_PERMISSION.ROLE_ID, AuthzRolePermission.AUTHZ_ROLE_PERMISSION.PERMISSION), true)
+val DOCEDIT_SESSION_PKEY: UniqueKey<DoceditSessionRecord> = Internal.createUniqueKey(DoceditSession.DOCEDIT_SESSION, DSL.name("docedit_session_pkey"), arrayOf(DoceditSession.DOCEDIT_SESSION.ID), true)
+val DOCEDIT_SESSION_TENANT_ID_ID_KEY: UniqueKey<DoceditSessionRecord> = Internal.createUniqueKey(DoceditSession.DOCEDIT_SESSION, DSL.name("docedit_session_tenant_id_id_key"), arrayOf(DoceditSession.DOCEDIT_SESSION.TENANT_ID, DoceditSession.DOCEDIT_SESSION.ID), true)
 val FILES_FILE_PKEY: UniqueKey<FilesFileRecord> = Internal.createUniqueKey(FilesFile.FILES_FILE, DSL.name("files_file_pkey"), arrayOf(FilesFile.FILES_FILE.ID), true)
 val FILES_FILE_TENANT_ID_ID_KEY: UniqueKey<FilesFileRecord> = Internal.createUniqueKey(FilesFile.FILES_FILE, DSL.name("files_file_tenant_id_id_key"), arrayOf(FilesFile.FILES_FILE.TENANT_ID, FilesFile.FILES_FILE.ID), true)
 val FILES_PENDING_UPLOAD_PKEY: UniqueKey<FilesPendingUploadRecord> = Internal.createUniqueKey(FilesPendingUpload.FILES_PENDING_UPLOAD, DSL.name("files_pending_upload_pkey"), arrayOf(FilesPendingUpload.FILES_PENDING_UPLOAD.ID), true)

@@ -14,6 +14,7 @@ import com.memo.jooq.tables.AuthzClearance
 import com.memo.jooq.tables.AuthzGrant
 import com.memo.jooq.tables.AuthzRole
 import com.memo.jooq.tables.AuthzRolePermission
+import com.memo.jooq.tables.DoceditSession
 import com.memo.jooq.tables.FilesFile
 import com.memo.jooq.tables.FilesPendingUpload
 import com.memo.jooq.tables.FilesTenantKeyset
@@ -100,6 +101,11 @@ val AUTHZ_ROLE: AuthzRole = AuthzRole.AUTHZ_ROLE
  * The table <code>memo.authz_role_permission</code>.
  */
 val AUTHZ_ROLE_PERMISSION: AuthzRolePermission = AuthzRolePermission.AUTHZ_ROLE_PERMISSION
+
+/**
+ * The table <code>memo.docedit_session</code>.
+ */
+val DOCEDIT_SESSION: DoceditSession = DoceditSession.DOCEDIT_SESSION
 
 /**
  * The table <code>memo.files_file</code>.

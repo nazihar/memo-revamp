@@ -45,6 +45,12 @@ export const mm = defineMessages({
   documentNewVersion: { id: 'memo.document.newVersion', defaultMessage: 'Upload a new version' },
   documentHint: { id: 'memo.document.hint', defaultMessage: 'Word (.docx), up to 25 MB.' },
   download: { id: 'memo.document.download', defaultMessage: 'Download' },
+  editInBrowser: { id: 'memo.document.editInBrowser', defaultMessage: 'Edit in the browser' },
+  openInBrowser: { id: 'memo.document.openInBrowser', defaultMessage: 'Open in the browser' },
+  beingEdited: {
+    id: 'memo.refused.beingEdited',
+    defaultMessage: 'The document is open in the editor. Close it and wait for the save, then submit.',
+  },
   route: { id: 'memo.route', defaultMessage: 'Approvers' },
   routeLead: {
     id: 'memo.route.lead',

@@ -602,6 +602,36 @@
         "required" : [ "fileId", "fileVersion", "name", "number", "sha256", "sizeBytes", "uploadedAt", "versionId" ],
         "type" : "object"
       },
+      "EditSessionView" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "reason" : {
+            "type" : [ "string", "null" ]
+          },
+          "savedVersionId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "state" : {
+            "enum" : [ "OPEN", "SAVED", "CLOSED", "FAILED", "EXPIRED" ],
+            "type" : "string"
+          }
+        },
+        "required" : [ "id", "state" ],
+        "type" : "object"
+      },
+      "EditingStatus" : {
+        "properties" : {
+          "enabled" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "enabled" ],
+        "type" : "object"
+      },
       "FileVersionView" : {
         "properties" : {
           "fileId" : {
@@ -1252,7 +1282,7 @@
         "properties" : {
           "allowedActions" : {
             "items" : {
-              "enum" : [ "EDIT", "UPLOAD_DOCUMENT", "EDIT_ROUTE", "SUBMIT", "DISCARD", "RESUBMIT", "WITHDRAW", "APPROVE", "RETURN", "REJECT" ],
+              "enum" : [ "EDIT", "UPLOAD_DOCUMENT", "EDIT_ROUTE", "SUBMIT", "DISCARD", "RESUBMIT", "WITHDRAW", "APPROVE", "RETURN", "REJECT", "EDIT_DOCUMENT", "VIEW_DOCUMENT" ],
               "type" : "string"
             },
             "type" : "array"
@@ -1505,6 +1535,35 @@
           }
         },
         "required" : [ "category", "createdAt", "id", "kind", "params", "read" ],
+        "type" : "object"
+      },
+      "OpenEditorRequest" : {
+        "properties" : {
+          "language" : {
+            "type" : "string"
+          },
+          "mode" : {
+            "enum" : [ "EDIT", "VIEW" ],
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "OpenEditorResponse" : {
+        "properties" : {
+          "config" : {
+            "additionalProperties" : { },
+            "type" : "object"
+          },
+          "scriptUrl" : {
+            "type" : "string"
+          },
+          "sessionId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "config", "scriptUrl", "sessionId" ],
         "type" : "object"
       },
       "OrgAssignment" : {
@@ -4488,6 +4547,34 @@
         "tags" : [ "directory" ]
       }
     },
+    "/api/v1/edit-sessions/{id}" : {
+      "get" : {
+        "operationId" : "getEditSession",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/EditSessionView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "How my edit session ended",
+        "tags" : [ "docedit" ]
+      }
+    },
     "/api/v1/files" : {
       "post" : {
         "operationId" : "uploadFile",
@@ -4544,6 +4631,25 @@
         },
         "summary" : "Upload a new file for a purpose",
         "tags" : [ "files" ]
+      }
+    },
+    "/api/v1/files/editing" : {
+      "get" : {
+        "operationId" : "getEditingStatus",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/EditingStatus"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Whether documents can be edited in the browser here",
+        "tags" : [ "docedit" ]
       }
     },
     "/api/v1/files/{fileId}" : {
@@ -4610,6 +4716,51 @@
         },
         "summary" : "Content of the current version (supports Range)",
         "tags" : [ "files" ]
+      }
+    },
+    "/api/v1/files/{fileId}/edit-sessions" : {
+      "post" : {
+        "operationId" : "openEditor",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "fileId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/OpenEditorRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/OpenEditorResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Open a document in the browser editor",
+        "tags" : [ "docedit" ]
       }
     },
     "/api/v1/files/{fileId}/versions" : {

@@ -1109,6 +1109,58 @@
       "value": "CloseSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "editor.back": [
+    {
+      "type": 0,
+      "value": "Back to the memoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "editor.editing": [
+    {
+      "type": 0,
+      "value": "Editing "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "editor.failed": [
+    {
+      "type": 0,
+      "value": "The editor could not be opened.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "editor.notSaved": [
+    {
+      "type": 0,
+      "value": "Your changes could not be saved: the memo can no longer be changed, or a newer version was uploaded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "editor.saving": [
+    {
+      "type": 0,
+      "value": "Saving your changes as a new version…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "editor.viewing": [
+    {
+      "type": 0,
+      "value": "Reading "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "enrol.code": [
     {
       "type": 0,
@@ -2107,6 +2159,12 @@
       "value": "DownloadSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.document.editInBrowser": [
+    {
+      "type": 0,
+      "value": "Edit in the browserSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.document.hint": [
     {
       "type": 0,
@@ -2123,6 +2181,12 @@
     {
       "type": 0,
       "value": "No document yet. Upload the memo as a Word file.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.document.openInBrowser": [
+    {
+      "type": 0,
+      "value": "Open in the browserSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.document.upload": [
@@ -2401,6 +2465,12 @@
     {
       "type": 0,
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.refused.beingEdited": [
+    {
+      "type": 0,
+      "value": "The document is open in the editor. Close it and wait for the save, then submit.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.refused.document": [
@@ -2823,6 +2893,12 @@
       "value": "MemoSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "nav.memoDocument": [
+    {
+      "type": 0,
+      "value": "DocumentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "nav.memoTypes": [
     {
       "type": 0,
@@ -2981,6 +3057,20 @@
     {
       "type": 0,
       "value": "Nothing new. Notifications about your account and work appear here.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.editNotSaved": [
+    {
+      "type": 0,
+      "value": "Your changes to "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " in the browser editor could not be savedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "notifications.kind.memoApproved": [

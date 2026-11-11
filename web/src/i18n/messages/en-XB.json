@@ -2517,6 +2517,98 @@
       "value": "‬"
     }
   ],
+  "editor.back": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԑɐɔʞ ʇo ʇɥǝ ɯǝɯo"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "editor.editing": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝpıʇıuƃ "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "editor.failed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ǝpıʇoɹ ɔonʅp uoʇ qǝ odǝuǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "editor.notSaved": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄onɹ ɔɥɐuƃǝs ɔonʅp uoʇ qǝ sɐʌǝp: ʇɥǝ ɯǝɯo ɔɐu uo ʅouƃǝɹ qǝ ɔɥɐuƃǝp, oɹ ɐ uǝʍǝɹ ʌǝɹsıou ʍɐs ndʅoɐpǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "editor.saving": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sɐʌıuƃ ʎonɹ ɔɥɐuƃǝs ɐs ɐ uǝʍ ʌǝɹsıou…"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "editor.viewing": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɐpıuƃ "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "enrol.code": [
     {
       "type": 0,
@@ -4687,6 +4779,20 @@
       "value": "‬"
     }
   ],
+  "memo.document.editInBrowser": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝpıʇ ıu ʇɥǝ qɹoʍsǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "memo.document.hint": [
     {
       "type": 0,
@@ -4723,6 +4829,20 @@
     {
       "type": 0,
       "value": "No poɔnɯǝuʇ ʎǝʇ. ∩dʅoɐp ʇɥǝ ɯǝɯo ɐs ɐ Moɹp ɟıʅǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.document.openInBrowser": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Odǝu ıu ʇɥǝ qɹoʍsǝɹ"
     },
     {
       "type": 0,
@@ -5277,6 +5397,20 @@
     {
       "type": 1,
       "value": "round"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.refused.beingEdited": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ poɔnɯǝuʇ ıs odǝu ıu ʇɥǝ ǝpıʇoɹ. Ↄʅosǝ ıʇ ɐup ʍɐıʇ ɟoɹ ʇɥǝ sɐʌǝ, ʇɥǝu snqɯıʇ."
     },
     {
       "type": 0,
@@ -6183,6 +6317,20 @@
       "value": "‬"
     }
   ],
+  "nav.memoDocument": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡoɔnɯǝuʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "nav.memoTypes": [
     {
       "type": 0,
@@ -6485,6 +6633,28 @@
     {
       "type": 0,
       "value": "Noʇɥıuƃ uǝʍ. Noʇıɟıɔɐʇıous ɐqonʇ ʎonɹ ɐɔɔonuʇ ɐup ʍoɹʞ ɐddǝɐɹ ɥǝɹǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.kind.editNotSaved": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄onɹ ɔɥɐuƃǝs ʇo "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ıu ʇɥǝ qɹoʍsǝɹ ǝpıʇoɹ ɔonʅp uoʇ qǝ sɐʌǝp"
     },
     {
       "type": 0,

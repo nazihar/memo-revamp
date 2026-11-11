@@ -1,4 +1,4 @@
-# E02 In-browser editing — threat model (STRIDE)
+| I2 | SSRF: a callback names an internal or external URL for the backend to fetch | 4 | The callback URL's host is ignored; only a path under the document server's `/cache/` is accepted and fetched from the configured internal address; `..` refused; redirects not followed; timeout and size limit |# E02 In-browser editing — threat model (STRIDE)
 
 ## Data flows
 1. Browser → edge → backend (public): open an edit session, receive the signed editor config.
@@ -15,7 +15,7 @@
 | T2 | Saved content bypasses scanning or type checks | 5 | Saves go through `FileUploads` (scan, DOCX inspection, macro refusal, encryption, record storage) | V12.x | `DocEditCallbackIT` (EICAR in the saved result → refused, session `FAILED`; DOCM content → refused) |
 | T3 | Replayed callback stores the same version twice or an old result over a newer one | 3 | Idempotency key per (session, status, URL hash); the session's base version is fixed and the file version check (`expectedVersion`) refuses a stale save | V2.x | `DocEditCallbackIT` (same callback twice → one version) |
 | I1 | The download link leaks and lets someone fetch the document | 3 | Link signed (HMAC) for one session, five-minute expiry, internal connector only, plus ONLYOFFICE's JWT; session must be `OPEN` | V8.x, V13.x | `DocEditDownloadIT` (expired, wrong signature, other session's signature, closed session → 403/404) |
-| I2 | SSRF: a callback names an internal or external URL for the backend to fetch | 4 | Only the configured document-server scheme/host/port is fetched; redirects not followed; timeout and size limit | V12.x (SSRF) | `DocEditCallbackIT` (foreign host, redirect, oversized → refused) |
+| I2 | SSRF: a callback names an internal or external URL for the backend to fetch | 4 | Only the configured document-server scheme/host/port is fetched; redirects not followed; timeout and size limit | V12.x (SSRF) | `DocEditCallbackIT` (path outside the cache, `..`, oversized → refused; the browser-facing URL is fetched internally) |
 | I3 | Plaintext copies of documents in the document server's cache | 2, 3 | Separate service on an internal network with no outbound route; its cache cleaned by its own settings; deployment note: cache volume on encrypted storage; editing off where the operator does not run it | V14.x | Compose/Helm review checklist; `nfr.md` note. **Residual risk, accepted for E02** |
 | I4 | The editor fetches resources from the internet (fonts, help, telemetry) | 2 | No outbound network for the service; `customization` disables help and external links; CSP `'self'` on the tenant host | V14.x, V3.x | E2E: no third-party requests (existing security spec extended to the editor page) |
 | R1 | A user denies having saved a version | 3, 5 | `docedit.version.saved` and `file.version.created` audited with the session's user, the version hash and the callback status | V16.x | `DocEditCallbackIT` (audit entries asserted) |

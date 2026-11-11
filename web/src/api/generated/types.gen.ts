@@ -266,6 +266,17 @@ export type DocumentView = {
     versionId: string;
 };
 
+export type EditSessionView = {
+    id: string;
+    reason?: string | null;
+    savedVersionId?: string | null;
+    state: 'OPEN' | 'SAVED' | 'CLOSED' | 'FAILED' | 'EXPIRED';
+};
+
+export type EditingStatus = {
+    enabled: boolean;
+};
+
 export type FileVersionView = {
     fileId: string;
     mediaType: string;
@@ -500,7 +511,7 @@ export type MemoTypeRequest = {
 };
 
 export type MemoView = {
-    allowedActions: Array<'EDIT' | 'UPLOAD_DOCUMENT' | 'EDIT_ROUTE' | 'SUBMIT' | 'DISCARD' | 'RESUBMIT' | 'WITHDRAW' | 'APPROVE' | 'RETURN' | 'REJECT'>;
+    allowedActions: Array<'EDIT' | 'UPLOAD_DOCUMENT' | 'EDIT_ROUTE' | 'SUBMIT' | 'DISCARD' | 'RESUBMIT' | 'WITHDRAW' | 'APPROVE' | 'RETURN' | 'REJECT' | 'EDIT_DOCUMENT' | 'VIEW_DOCUMENT'>;
     classification: ClassificationView;
     createdAt: string;
     document?: DocumentView | null;
@@ -599,6 +610,19 @@ export type NotificationView = {
         [key: string]: string;
     };
     read: boolean;
+};
+
+export type OpenEditorRequest = {
+    language?: string;
+    mode?: 'EDIT' | 'VIEW';
+};
+
+export type OpenEditorResponse = {
+    config: {
+        [key: string]: unknown;
+    };
+    scriptUrl: string;
+    sessionId: string;
 };
 
 export type OrgAssignment = {
@@ -2264,6 +2288,24 @@ export type SearchDirectoryResponses = {
 
 export type SearchDirectoryResponse = SearchDirectoryResponses[keyof SearchDirectoryResponses];
 
+export type GetEditSessionData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/edit-sessions/{id}';
+};
+
+export type GetEditSessionResponses = {
+    /**
+     * OK
+     */
+    200: EditSessionView;
+};
+
+export type GetEditSessionResponse = GetEditSessionResponses[keyof GetEditSessionResponses];
+
 export type UploadFileData = {
     body?: Blob | File;
     headers: {
@@ -2286,6 +2328,22 @@ export type UploadFileResponses = {
 };
 
 export type UploadFileResponse = UploadFileResponses[keyof UploadFileResponses];
+
+export type GetEditingStatusData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/files/editing';
+};
+
+export type GetEditingStatusResponses = {
+    /**
+     * OK
+     */
+    200: EditingStatus;
+};
+
+export type GetEditingStatusResponse = GetEditingStatusResponses[keyof GetEditingStatusResponses];
 
 export type GetFileData = {
     body?: never;
@@ -2323,6 +2381,27 @@ export type GetFileContentResponses = {
      */
     200: unknown;
 };
+
+export type OpenEditorData = {
+    body: OpenEditorRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        fileId: string;
+    };
+    query?: never;
+    url: '/api/v1/files/{fileId}/edit-sessions';
+};
+
+export type OpenEditorResponses = {
+    /**
+     * OK
+     */
+    200: OpenEditorResponse;
+};
+
+export type OpenEditorResponse2 = OpenEditorResponses[keyof OpenEditorResponses];
 
 export type UploadFileVersionData = {
     body?: Blob | File;

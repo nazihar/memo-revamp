@@ -12,8 +12,48 @@ const securityHeaders = Object.fromEntries(
   ).filter(([name]) => !name.startsWith('$')),
 )
 
+/**
+ * Headers on the editor's own responses, as the web container's nginx adds them (`location /office/`): the SPA requires
+ * COEP, so the framed editor must answer with it, and only our pages may frame it.
+ */
+const OFFICE_HEADERS: Record<string, string> = {
+  'Cross-Origin-Embedder-Policy': 'require-corp',
+  'Cross-Origin-Resource-Policy': 'same-origin',
+  'X-Content-Type-Options': 'nosniff',
+  'Content-Security-Policy': "frame-ancestors 'self'",
+  'X-Frame-Options': 'SAMEORIGIN',
+}
+
 // The SPA talks to the backend on the same origin (/api); in development and preview Vite proxies to the backend.
-const apiProxy = { '/api': { target: process.env.MEMO_API_ORIGIN ?? 'http://localhost:8080', changeOrigin: false } }
+// The document editor (ADR-0037) is under /office/ as in production: the full local stack publishes ONLYOFFICE through
+// its gateway on 8081. X-Forwarded-Host carries the sub-path, which is how ONLYOFFICE learns its public base URL.
+const apiProxy = {
+  '/api': { target: process.env.MEMO_API_ORIGIN ?? 'http://localhost:8080', changeOrigin: false },
+  '/office': {
+    target: process.env.MEMO_OFFICE_ORIGIN ?? 'http://localhost:8081',
+    changeOrigin: false,
+    ws: true,
+    rewrite: (path: string) => path.replace(/^\/office/, ''),
+    headers: { 'X-Forwarded-Proto': 'http' },
+    configure: (proxy: {
+      on: ((
+        event: 'proxyReq' | 'proxyReqWs',
+        handler: (req: { setHeader: (n: string, v: string) => void; getHeader: (n: string) => unknown }) => void,
+      ) => void) &
+        ((event: 'proxyRes', handler: (res: { headers: Record<string, unknown> }) => void) => void)
+    }) => {
+      // Also on the WebSocket: ONLYOFFICE builds the links to the converted document from that connection's headers.
+      for (const event of ['proxyReq', 'proxyReqWs'] as const) {
+        proxy.on(event, (req) => {
+          req.setHeader('X-Forwarded-Host', `${String(req.getHeader('host'))}/office`)
+        })
+      }
+      proxy.on('proxyRes', (res) => {
+        for (const [name, value] of Object.entries(OFFICE_HEADERS)) res.headers[name.toLowerCase()] = value
+      })
+    },
+  },
+}
 
 export default defineConfig({
   plugins: [tanstackRouter({ target: 'react', autoCodeSplitting: true }), react(), tailwindcss()],

@@ -13,6 +13,7 @@ import com.memo.jooq.tables.AuthzClearance
 import com.memo.jooq.tables.AuthzGrant
 import com.memo.jooq.tables.AuthzRole
 import com.memo.jooq.tables.AuthzRolePermission
+import com.memo.jooq.tables.DoceditSession
 import com.memo.jooq.tables.FilesFile
 import com.memo.jooq.tables.FilesPendingUpload
 import com.memo.jooq.tables.FilesTenantKeyset
@@ -118,6 +119,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      * The table <code>memo.authz_role_permission</code>.
      */
     val AUTHZ_ROLE_PERMISSION: AuthzRolePermission get() = AuthzRolePermission.AUTHZ_ROLE_PERMISSION
+
+    /**
+     * The table <code>memo.docedit_session</code>.
+     */
+    val DOCEDIT_SESSION: DoceditSession get() = DoceditSession.DOCEDIT_SESSION
 
     /**
      * The table <code>memo.files_file</code>.
@@ -326,6 +332,7 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         AuthzGrant.AUTHZ_GRANT,
         AuthzRole.AUTHZ_ROLE,
         AuthzRolePermission.AUTHZ_ROLE_PERMISSION,
+        DoceditSession.DOCEDIT_SESSION,
         FilesFile.FILES_FILE,
         FilesPendingUpload.FILES_PENDING_UPLOAD,
         FilesTenantKeyset.FILES_TENANT_KEYSET,

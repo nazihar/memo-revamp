@@ -9,6 +9,7 @@ import com.memo.jooq.tables.AuditAnchor
 import com.memo.jooq.tables.AuditEvent
 import com.memo.jooq.tables.AuthzClearance
 import com.memo.jooq.tables.AuthzGrant
+import com.memo.jooq.tables.DoceditSession
 import com.memo.jooq.tables.FilesFile
 import com.memo.jooq.tables.FilesPendingUpload
 import com.memo.jooq.tables.FilesVersion
@@ -53,6 +54,8 @@ val AUDIT_EVENT_TENANT_SEQ_IDX: Index = Internal.createIndex(DSL.name("audit_eve
 val AUTHZ_CLEARANCE_TENANT_LEVEL_IDX: Index = Internal.createIndex(DSL.name("authz_clearance_tenant_level_idx"), AuthzClearance.AUTHZ_CLEARANCE, arrayOf(AuthzClearance.AUTHZ_CLEARANCE.TENANT_ID, AuthzClearance.AUTHZ_CLEARANCE.LEVEL_ID), false)
 val AUTHZ_GRANT_TENANT_ROLE_IDX: Index = Internal.createIndex(DSL.name("authz_grant_tenant_role_idx"), AuthzGrant.AUTHZ_GRANT, arrayOf(AuthzGrant.AUTHZ_GRANT.TENANT_ID, AuthzGrant.AUTHZ_GRANT.ROLE_ID), false)
 val AUTHZ_GRANT_TENANT_SCOPE_IDX: Index = Internal.createIndex(DSL.name("authz_grant_tenant_scope_idx"), AuthzGrant.AUTHZ_GRANT, arrayOf(AuthzGrant.AUTHZ_GRANT.TENANT_ID, AuthzGrant.AUTHZ_GRANT.SCOPE_UNIT_ID), false)
+val DOCEDIT_SESSION_ONE_OPEN_EDIT_IDX: Index = Internal.createIndex(DSL.name("docedit_session_one_open_edit_idx"), DoceditSession.DOCEDIT_SESSION, arrayOf(DoceditSession.DOCEDIT_SESSION.TENANT_ID, DoceditSession.DOCEDIT_SESSION.FILE_ID, DoceditSession.DOCEDIT_SESSION.USER_ID), true)
+val DOCEDIT_SESSION_TENANT_FILE_IDX: Index = Internal.createIndex(DSL.name("docedit_session_tenant_file_idx"), DoceditSession.DOCEDIT_SESSION, arrayOf(DoceditSession.DOCEDIT_SESSION.TENANT_ID, DoceditSession.DOCEDIT_SESSION.FILE_ID, DoceditSession.DOCEDIT_SESSION.STATE), false)
 val FILES_FILE_TENANT_CURRENT_IDX: Index = Internal.createIndex(DSL.name("files_file_tenant_current_idx"), FilesFile.FILES_FILE, arrayOf(FilesFile.FILES_FILE.TENANT_ID, FilesFile.FILES_FILE.CURRENT_VERSION_ID), false)
 val FILES_FILE_TENANT_OWNER_IDX: Index = Internal.createIndex(DSL.name("files_file_tenant_owner_idx"), FilesFile.FILES_FILE, arrayOf(FilesFile.FILES_FILE.TENANT_ID, FilesFile.FILES_FILE.PURPOSE, FilesFile.FILES_FILE.OWNER_ID), false)
 val FILES_PENDING_UPLOAD_TENANT_CREATED_IDX: Index = Internal.createIndex(DSL.name("files_pending_upload_tenant_created_idx"), FilesPendingUpload.FILES_PENDING_UPLOAD, arrayOf(FilesPendingUpload.FILES_PENDING_UPLOAD.TENANT_ID, FilesPendingUpload.FILES_PENDING_UPLOAD.CREATED_AT), false)

@@ -36,6 +36,14 @@ spec:
             matchLabels:
               {{- include "memo.selector" (dict "root" . "name" "backend") | nindent 14 }}
       ports: [{ port: 8080 }]
+    {{- if .Values.integrations.documentServerUrl }}
+    # /office/ is proxied to the document server (ADR-0037).
+    - to:
+        - podSelector:
+            matchLabels:
+              {{- toYaml .Values.integrations.documentServer.podLabels | nindent 14 }}
+      ports: [{ port: 80 }]
+    {{- end }}
     - to:
         - namespaceSelector: {}
           podSelector: { matchLabels: { k8s-app: kube-dns } }
@@ -60,6 +68,14 @@ spec:
             matchLabels:
               {{- include "memo.selector" (dict "root" . "name" "web") | nindent 14 }}
       ports: [{ port: 8080 }]
+    {{- if .Values.integrations.documentServerUrl }}
+    # The document server's downloads and callbacks, on the internal port only (ADR-0037).
+    - from:
+        - podSelector:
+            matchLabels:
+              {{- toYaml .Values.integrations.documentServer.podLabels | nindent 14 }}
+      ports: [{ port: 8082 }]
+    {{- end }}
   egress:
     - to:
         - namespaceSelector: {}

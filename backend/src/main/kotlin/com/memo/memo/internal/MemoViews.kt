@@ -3,6 +3,7 @@ package com.memo.memo.internal
 import com.memo.common.authz.Clearances
 import com.memo.common.context.Actor
 import com.memo.common.context.ActorContext
+import com.memo.docedit.DocumentEditing
 import com.memo.files.Files
 import com.memo.identity.UserSummaries
 import com.memo.workflow.BlockedReason
@@ -41,8 +42,24 @@ data class RouteEntryView(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val approver: Named,
 )
 
-/** What the actor may do on the memo now, for buttons only; the server checks again on every request. */
-enum class MemoAction { EDIT, UPLOAD_DOCUMENT, EDIT_ROUTE, SUBMIT, DISCARD, RESUBMIT, WITHDRAW, APPROVE, RETURN, REJECT }
+/**
+ * What the actor may do on the memo now, for buttons only; the server checks again on every request. EDIT_DOCUMENT and
+ * VIEW_DOCUMENT appear only where editing in the browser is configured (ADR-0037).
+ */
+enum class MemoAction {
+    EDIT,
+    UPLOAD_DOCUMENT,
+    EDIT_ROUTE,
+    SUBMIT,
+    DISCARD,
+    RESUBMIT,
+    WITHDRAW,
+    APPROVE,
+    RETURN,
+    REJECT,
+    EDIT_DOCUMENT,
+    VIEW_DOCUMENT,
+}
 
 /** The actor's open task on the memo; [blocked] set means it waits for reassignment and cannot be acted on. */
 data class TaskRef(
@@ -79,6 +96,7 @@ class MemoViews(
     private val files: Files,
     private val users: UserSummaries,
     private val workflows: WorkflowQueries,
+    private val editing: DocumentEditing,
 ) {
     fun of(memo: Memo): MemoView {
         val route = routes.route(memo.id)
@@ -101,7 +119,7 @@ class MemoViews(
             round = memo.currentRound,
             holders = holders.map { Named(it, names[it].orEmpty()) },
             myTask = myTask,
-            allowedActions = actions(memo, user, myTask),
+            allowedActions = actions(memo, user, myTask).let { it + documentActions(memo, it) },
             createdAt = memo.createdAt,
             updatedAt = memo.updatedAt,
             version = memo.version,
@@ -136,6 +154,17 @@ class MemoViews(
             memo.status == MemoStatus.RETURNED -> RETURNED
             memo.status == MemoStatus.IN_REVIEW -> listOf(MemoAction.WITHDRAW)
             else -> emptyList()
+        }
+
+    /** Edit in the browser wherever a new version may be uploaded; everyone who sees the memo may view it there. */
+    private fun documentActions(
+        memo: Memo,
+        actions: List<MemoAction>,
+    ): List<MemoAction> =
+        if (!editing.enabled || memo.documentFileId == null) {
+            emptyList()
+        } else {
+            listOfNotNull(MemoAction.EDIT_DOCUMENT.takeIf { MemoAction.UPLOAD_DOCUMENT in actions }, MemoAction.VIEW_DOCUMENT)
         }
 
     private companion object {

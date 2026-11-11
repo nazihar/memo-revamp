@@ -168,6 +168,24 @@
         },
         "smtpSecret": {
           "type": "string"
+        },
+        "documentServer": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "jwtSecret": {
+              "type": "string"
+            },
+            "podLabels": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "dnsResolver": {
+              "type": "string"
+            }
+          }
         }
       }
     },

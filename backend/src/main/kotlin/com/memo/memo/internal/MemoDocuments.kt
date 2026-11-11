@@ -4,8 +4,8 @@ import com.memo.common.authz.Policy
 import com.memo.common.context.Actor
 import com.memo.common.context.ActorContext
 import com.memo.common.web.refuseIf
+import com.memo.docedit.EditableFilePurpose
 import com.memo.files.FileInfo
-import com.memo.files.FilePurpose
 import com.memo.files.FileType
 import com.memo.files.FileVersionCreated
 import com.memo.files.StorageClass
@@ -25,7 +25,7 @@ import java.util.UUID
 class MemoDocumentPurpose(
     private val store: MemoStore,
     private val policy: Policy,
-) : FilePurpose {
+) : EditableFilePurpose {
     override val key = KEY
     override val allowedTypes = setOf(FileType.DOCX)
     override val maxBytes = MAX_BYTES
@@ -38,6 +38,9 @@ class MemoDocumentPurpose(
     }
 
     override fun mayRead(file: FileInfo): Boolean = memoOf(file.ownerId) != null
+
+    /** Editing in the browser follows the same rule as uploading a new version (ADR-0037). */
+    override fun mayEdit(file: FileInfo): Boolean = mayUpload(file.ownerId)
 
     /** The owner memo if the actor may see it. */
     private fun memoOf(ownerId: String?): Memo? {

@@ -65,11 +65,12 @@ object Samples {
         return out.toByteArray()
     }
 
-    /** A minimal OOXML package whose main part has [mainContentType]; [vba] adds a VBA project part. */
+    /** A minimal OOXML package whose main part has [mainContentType] and [body]; [vba] adds a VBA project part. */
     fun ooxml(
         mainPart: String,
         mainContentType: String,
         vba: Boolean = false,
+        body: String = "<doc/>",
     ): ByteArray {
         val vbaType = if (vba) """<Default Extension="bin" ContentType="application/vnd.ms-office.vbaProject"/>""" else ""
         val contentTypes =
@@ -79,12 +80,14 @@ object Samples {
               <Default Extension="xml" ContentType="application/xml"/>$vbaType
               <Override PartName="/$mainPart" ContentType="$mainContentType"/>
             </Types>"""
-        val parts = mutableListOf("[Content_Types].xml" to contentTypes.toByteArray(), mainPart to "<doc/>".toByteArray())
+        val parts = mutableListOf("[Content_Types].xml" to contentTypes.toByteArray(), mainPart to body.toByteArray())
         if (vba) parts += "word/vbaProject.bin" to ByteArray(512)
         return zip(*parts.toTypedArray())
     }
 
-    fun docx() = ooxml("word/document.xml", "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml")
+    /** A DOCX; a different [body] gives different bytes, as a new version of a document has. */
+    fun docx(body: String = "<doc/>") =
+        ooxml("word/document.xml", "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml", body = body)
 
     fun docm() = ooxml("word/document.xml", "application/vnd.ms-word.document.macroEnabled.main+xml", vba = true)
 

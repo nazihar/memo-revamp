@@ -163,6 +163,30 @@ class NotificationsIT : IntegrationTest() {
     }
 
     @Test
+    fun `a notification keeps its link to an app route, up to 500 characters`() {
+        val (user, _) = aUser()
+        val link = "/memos/" + "a".repeat(493)
+        transactions.inTenant(tenant.id) {
+            ActorContext.asSystem(
+                "test",
+            ) { notifications.notify(user.recipient(), NotificationKind.ROLE_GRANTED, mapOf("role" to "R"), link) }
+        }
+        assertThat(count("select count(*) from notification_item where user_id = '${user.id.value}' and link = '$link'")).isEqualTo(1)
+        assertThatThrownBy {
+            transactions.inTenant(tenant.id) {
+                ActorContext.asSystem("test") {
+                    notifications.notify(
+                        user.recipient(),
+                        NotificationKind.ROLE_GRANTED,
+                        mapOf("role" to "R"),
+                        "https://elsewhere.example/x",
+                    )
+                }
+            }
+        }.isInstanceOf(IllegalArgumentException::class.java)
+    }
+
+    @Test
     fun `security notices cannot be turned off`() {
         val (user, password) = aUser()
         val cookie = session(user, password)

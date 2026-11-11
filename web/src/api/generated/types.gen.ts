@@ -4,6 +4,28 @@ export type ClientOptions = {
     baseUrl: `${string}://${string}` | (string & {});
 };
 
+export type AdminTaskPage = {
+    items: Array<AdminTaskResponse>;
+    nextCursor?: string | null;
+};
+
+export type AdminTaskResponse = {
+    assignee: Person;
+    blocked?: 'NO_CLEARANCE' | 'INACTIVE';
+    createdAt: string;
+    round: number;
+    subject: AdminTaskSubject;
+    taskId: string;
+};
+
+export type AdminTaskSubject = {
+    id: string;
+    reference?: string | null;
+    restricted: boolean;
+    title?: string | null;
+    type: string;
+};
+
 export type AdminUser = {
     displayName: string;
     email: string;
@@ -81,6 +103,21 @@ export type AuditPage = {
     nextCursor?: number | null;
 };
 
+export type BoxItem = {
+    holders: Array<Named>;
+    id: string;
+    reference: string;
+    round: number;
+    status: 'DRAFT' | 'IN_REVIEW' | 'RETURNED' | 'APPROVED' | 'REJECTED' | 'WITHDRAWN' | 'DISCARDED';
+    subject: string;
+    updatedAt: string;
+};
+
+export type BoxPage = {
+    items: Array<BoxItem>;
+    nextCursor?: string | null;
+};
+
 /**
  * How the organisation's pages look: name, colours and logo (design E07 §6).
  */
@@ -143,6 +180,12 @@ export type ClassificationOrderRequest = {
      * Every level id, lowest first
      */
     levelIds: Array<string>;
+};
+
+export type ClassificationView = {
+    id: string;
+    name: string;
+    rank: number;
 };
 
 export type ClearanceRequest = {
@@ -212,6 +255,17 @@ export type DirectoryUser = {
     position?: DirectoryPositionSummary | null;
 };
 
+export type DocumentView = {
+    fileId: string;
+    fileVersion: number;
+    name: string;
+    number: number;
+    sha256: string;
+    sizeBytes: number;
+    uploadedAt: string;
+    versionId: string;
+};
+
 export type FileVersionView = {
     fileId: string;
     mediaType: string;
@@ -263,6 +317,43 @@ export type Health = {
     checkedAt: string;
     components: Array<ComponentHealth>;
     status: 'UP' | 'DEGRADED' | 'DOWN';
+};
+
+export type HistoryAction = {
+    actingFor?: Named | null;
+    actor: Named;
+    documentNumber?: number | null;
+    kind: 'SUBMIT' | 'APPROVE' | 'RETURN' | 'REJECT' | 'WITHDRAW' | 'RESUBMIT' | 'REASSIGN';
+    occurredAt: string;
+    remark?: string | null;
+    seq: number;
+    sha256?: string | null;
+};
+
+export type HistoryRound = {
+    actions: Array<HistoryAction>;
+    current: boolean;
+    round: number;
+};
+
+export type InboxItem = {
+    assignedAt: string;
+    blocked?: 'NO_CLEARANCE' | 'INACTIVE';
+    memo: InboxMemo;
+    round: number;
+    taskId: string;
+};
+
+export type InboxMemo = {
+    id: string;
+    reference?: string | null;
+    restricted: boolean;
+    subject?: string | null;
+};
+
+export type InboxPage = {
+    items: Array<InboxItem>;
+    nextCursor?: string | null;
 };
 
 export type Invitation = {
@@ -376,6 +467,57 @@ export type Me = {
     tenantAdmin: boolean;
 };
 
+export type MemoRequest = {
+    classificationId?: string | null;
+    subject?: string;
+    typeId?: string;
+};
+
+export type MemoType = {
+    active: boolean;
+    defaultClassificationId?: string | null;
+    definitionKey: string;
+    id: string;
+    key?: string | null;
+    name: string;
+    routePolicy: string;
+    stepUpOnApprove: boolean;
+    version: number;
+};
+
+export type MemoTypeOption = {
+    defaultClassificationId?: string | null;
+    id: string;
+    name: string;
+    stepUpOnApprove: boolean;
+};
+
+export type MemoTypeRequest = {
+    active?: boolean;
+    defaultClassificationId?: string | null;
+    name?: string;
+    stepUpOnApprove?: boolean;
+};
+
+export type MemoView = {
+    allowedActions: Array<'EDIT' | 'UPLOAD_DOCUMENT' | 'EDIT_ROUTE' | 'SUBMIT' | 'DISCARD' | 'RESUBMIT' | 'WITHDRAW' | 'APPROVE' | 'RETURN' | 'REJECT'>;
+    classification: ClassificationView;
+    createdAt: string;
+    document?: DocumentView | null;
+    holders: Array<Named>;
+    id: string;
+    initiator: Named;
+    myTask?: TaskRef | null;
+    reference: string;
+    round: number;
+    route: Array<RouteEntryView>;
+    status: 'DRAFT' | 'IN_REVIEW' | 'RETURNED' | 'APPROVED' | 'REJECTED' | 'WITHDRAWN' | 'DISCARDED';
+    subject: string;
+    type: Named;
+    updatedAt: string;
+    version: number;
+};
+
 /**
  * Shown once while enrolling; the secret never appears again.
  */
@@ -435,6 +577,11 @@ export type MySession = {
     lastActiveAt: string;
     signedInAt?: string | null;
     userAgent?: string | null;
+};
+
+export type Named = {
+    id: string;
+    name: string;
 };
 
 export type NotificationPage = {
@@ -614,6 +761,11 @@ export type PermissionInfo = {
     scopable: boolean;
 };
 
+export type Person = {
+    id: string;
+    name: string;
+};
+
 /**
  * One entry of the platform chain (ADR-0031, ADR-0033).
  */
@@ -750,11 +902,20 @@ export type ProblemDetail = {
     type?: string;
 };
 
+export type ReassignRequest = {
+    newAssigneeId?: string;
+    reason?: string | null;
+};
+
 export type RecoveryCodes = {
     /**
      * Shown once; the previous codes stop working
      */
     recoveryCodes: Array<string>;
+};
+
+export type RemarkRequest = {
+    remark?: string | null;
 };
 
 export type ReportingLineRequest = {
@@ -789,6 +950,15 @@ export type RoleRequest = {
      * Catalogue keys
      */
     permissions: Array<string>;
+};
+
+export type RouteEntryView = {
+    approver: Named;
+    ordinal: number;
+};
+
+export type RouteRequest = {
+    approvers?: Array<string>;
 };
 
 export type SecuritySettingLimit = {
@@ -858,6 +1028,11 @@ export type SessionUser = {
 export type StepUpRequest = {
     code?: string | null;
     password?: string | null;
+};
+
+export type TaskRef = {
+    blocked?: 'NO_CLEARANCE' | 'INACTIVE';
+    id: string;
 };
 
 /**
@@ -930,6 +1105,18 @@ export type UpdateOrgUnitRequest = {
 export type UserAccess = {
     clearance: ClassificationLevel;
     grants: Array<Grant>;
+};
+
+export type WorkflowView = {
+    currentAssignees: Array<string>;
+    instanceId: string;
+    openTaskBlocked?: 'NO_CLEARANCE' | 'INACTIVE';
+    openTaskId?: string | null;
+    round: number;
+    status: 'RUNNING' | 'RETURNED' | 'APPROVED' | 'REJECTED' | 'WITHDRAWN';
+    subjectId: string;
+    subjectType: string;
+    version: number;
 };
 
 export type QueryAuditData = {
@@ -1114,6 +1301,62 @@ export type TestMailSettingsResponses = {
 };
 
 export type TestMailSettingsResponse = TestMailSettingsResponses[keyof TestMailSettingsResponses];
+
+export type ListAllMemoTypesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/memo-types';
+};
+
+export type ListAllMemoTypesResponses = {
+    /**
+     * OK
+     */
+    200: Array<MemoType>;
+};
+
+export type ListAllMemoTypesResponse = ListAllMemoTypesResponses[keyof ListAllMemoTypesResponses];
+
+export type CreateMemoTypeData = {
+    body: MemoTypeRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/memo-types';
+};
+
+export type CreateMemoTypeResponses = {
+    /**
+     * OK
+     */
+    200: MemoType;
+};
+
+export type CreateMemoTypeResponse = CreateMemoTypeResponses[keyof CreateMemoTypeResponses];
+
+export type UpdateMemoTypeData = {
+    body: MemoTypeRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/memo-types/{id}';
+};
+
+export type UpdateMemoTypeResponses = {
+    /**
+     * OK
+     */
+    200: MemoType;
+};
+
+export type UpdateMemoTypeResponse = UpdateMemoTypeResponses[keyof UpdateMemoTypeResponses];
 
 export type GetTenantPreferencesData = {
     body?: never;
@@ -1398,6 +1641,48 @@ export type UnlockUserResponses = {
 };
 
 export type UnlockUserResponse = UnlockUserResponses[keyof UnlockUserResponses];
+
+export type ListOpenTasksData = {
+    body?: never;
+    path?: never;
+    query?: {
+        filter?: string;
+        assignee?: string;
+        cursor?: string;
+        limit?: number;
+    };
+    url: '/api/v1/admin/workflow/tasks';
+};
+
+export type ListOpenTasksResponses = {
+    /**
+     * OK
+     */
+    200: AdminTaskPage;
+};
+
+export type ListOpenTasksResponse = ListOpenTasksResponses[keyof ListOpenTasksResponses];
+
+export type ReassignTaskData = {
+    body: ReassignRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        taskId: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/workflow/tasks/{taskId}/reassign';
+};
+
+export type ReassignTaskResponses = {
+    /**
+     * OK
+     */
+    200: WorkflowView;
+};
+
+export type ReassignTaskResponse = ReassignTaskResponses[keyof ReassignTaskResponses];
 
 export type GetCsrfTokenData = {
     body?: never;
@@ -2104,6 +2389,25 @@ export type GetHealthResponses = {
 
 export type GetHealthResponse = GetHealthResponses[keyof GetHealthResponses];
 
+export type ListMyTasksData = {
+    body?: never;
+    path?: never;
+    query?: {
+        cursor?: string;
+        limit?: number;
+    };
+    url: '/api/v1/inbox/tasks';
+};
+
+export type ListMyTasksResponses = {
+    /**
+     * OK
+     */
+    200: InboxPage;
+};
+
+export type ListMyTasksResponse = ListMyTasksResponses[keyof ListMyTasksResponses];
+
 export type GetMeData = {
     body?: never;
     path?: never;
@@ -2321,6 +2625,223 @@ export type RevokeMySessionResponses = {
 };
 
 export type RevokeMySessionResponse = RevokeMySessionResponses[keyof RevokeMySessionResponses];
+
+export type ListMemoTypesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/memo-types';
+};
+
+export type ListMemoTypesResponses = {
+    /**
+     * OK
+     */
+    200: Array<MemoTypeOption>;
+};
+
+export type ListMemoTypesResponse = ListMemoTypesResponses[keyof ListMemoTypesResponses];
+
+export type ListMyMemosData = {
+    body?: never;
+    path?: never;
+    query: {
+        box: string;
+        cursor?: string;
+        limit?: number;
+    };
+    url: '/api/v1/memos';
+};
+
+export type ListMyMemosResponses = {
+    /**
+     * OK
+     */
+    200: BoxPage;
+};
+
+export type ListMyMemosResponse = ListMyMemosResponses[keyof ListMyMemosResponses];
+
+export type CreateMemoData = {
+    body: MemoRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/v1/memos';
+};
+
+export type CreateMemoResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type CreateMemoResponse = CreateMemoResponses[keyof CreateMemoResponses];
+
+export type GetMemoData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}';
+};
+
+export type GetMemoResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type GetMemoResponse = GetMemoResponses[keyof GetMemoResponses];
+
+export type UpdateMemoData = {
+    body: MemoRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}';
+};
+
+export type UpdateMemoResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type UpdateMemoResponse = UpdateMemoResponses[keyof UpdateMemoResponses];
+
+export type DiscardMemoData = {
+    body?: never;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/discard';
+};
+
+export type DiscardMemoResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type DiscardMemoResponse = DiscardMemoResponses[keyof DiscardMemoResponses];
+
+export type GetMemoHistoryData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/history';
+};
+
+export type GetMemoHistoryResponses = {
+    /**
+     * OK
+     */
+    200: Array<HistoryRound>;
+};
+
+export type GetMemoHistoryResponse = GetMemoHistoryResponses[keyof GetMemoHistoryResponses];
+
+export type ResubmitMemoData = {
+    body?: RemarkRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/resubmit';
+};
+
+export type ResubmitMemoResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type ResubmitMemoResponse = ResubmitMemoResponses[keyof ResubmitMemoResponses];
+
+export type ReplaceMemoRouteData = {
+    body: RouteRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/route';
+};
+
+export type ReplaceMemoRouteResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type ReplaceMemoRouteResponse = ReplaceMemoRouteResponses[keyof ReplaceMemoRouteResponses];
+
+export type SubmitMemoData = {
+    body?: RemarkRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/submit';
+};
+
+export type SubmitMemoResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type SubmitMemoResponse = SubmitMemoResponses[keyof SubmitMemoResponses];
+
+export type WithdrawMemoData = {
+    body?: RemarkRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/withdraw';
+};
+
+export type WithdrawMemoResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type WithdrawMemoResponse = WithdrawMemoResponses[keyof WithdrawMemoResponses];
 
 export type UpdateAssignmentData = {
     body: PeriodRequest;
@@ -3221,6 +3742,69 @@ export type SuspendPlatformTenantResponses = {
 };
 
 export type SuspendPlatformTenantResponse = SuspendPlatformTenantResponses[keyof SuspendPlatformTenantResponses];
+
+export type ApproveTaskData = {
+    body?: RemarkRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        taskId: string;
+    };
+    query?: never;
+    url: '/api/v1/tasks/{taskId}/approve';
+};
+
+export type ApproveTaskResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type ApproveTaskResponse = ApproveTaskResponses[keyof ApproveTaskResponses];
+
+export type RejectTaskData = {
+    body: RemarkRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        taskId: string;
+    };
+    query?: never;
+    url: '/api/v1/tasks/{taskId}/reject';
+};
+
+export type RejectTaskResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type RejectTaskResponse = RejectTaskResponses[keyof RejectTaskResponses];
+
+export type ReturnTaskData = {
+    body: RemarkRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        taskId: string;
+    };
+    query?: never;
+    url: '/api/v1/tasks/{taskId}/return';
+};
+
+export type ReturnTaskResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type ReturnTaskResponse = ReturnTaskResponses[keyof ReturnTaskResponses];
 
 export type GetTermsData = {
     body?: never;

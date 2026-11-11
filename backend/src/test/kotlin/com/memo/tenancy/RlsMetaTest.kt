@@ -195,7 +195,7 @@ class RlsMetaTest : IntegrationTest() {
     }
 
     @Test
-    fun `every table and view is prefixed with its owning module`() {
+    fun `every table and view is named after its owning module`() {
         val modules =
             ApplicationModules
                 .of(MemoApplication::class.java)
@@ -208,7 +208,7 @@ class RlsMetaTest : IntegrationTest() {
                   and c.relname not like 'flyway_schema_history%'
                 """,
             ) { it.getString(1) }
-        assertThat(objects.filter { name -> name !in frameworkTables && modules.none { name.startsWith("${it}_") } })
+        assertThat(objects.filter { name -> name !in frameworkTables && modules.none { name == it || name.startsWith("${it}_") } })
             .describedAs("tables or views not prefixed with a module identifier ($modules)")
             .isEmpty()
     }

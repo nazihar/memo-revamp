@@ -137,7 +137,7 @@ class PolicyIT : IntegrationTest() {
             .bodyJson()
             .extractingPath("$.permissions[*].key")
             .asArray()
-            .containsExactly("directory.read")
+            .containsExactly("directory.read", "memo.create")
         assertThat(result).bodyJson().extractingPath("$.permissions[0].tenantWide").isEqualTo(true)
         assertThat(result).bodyJson().extractingPath("$.clearance.name").isEqualTo("Public")
     }

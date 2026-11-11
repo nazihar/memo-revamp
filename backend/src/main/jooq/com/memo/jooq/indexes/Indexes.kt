@@ -19,6 +19,8 @@ import com.memo.jooq.tables.IdentityOperator
 import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
+import com.memo.jooq.tables.Memo
+import com.memo.jooq.tables.MemoParticipant
 import com.memo.jooq.tables.NotificationItem
 import com.memo.jooq.tables.NotificationMailOutbox
 import com.memo.jooq.tables.OrgAssignment
@@ -28,6 +30,11 @@ import com.memo.jooq.tables.OrgUnit
 import com.memo.jooq.tables.SystemIdempotencyKey
 import com.memo.jooq.tables.TenancySetting
 import com.memo.jooq.tables.TenancyTerm
+import com.memo.jooq.tables.WorkflowAction
+import com.memo.jooq.tables.WorkflowInstance
+import com.memo.jooq.tables.WorkflowRound
+import com.memo.jooq.tables.WorkflowStep
+import com.memo.jooq.tables.WorkflowTask
 
 import org.jooq.Index
 import org.jooq.impl.DSL
@@ -60,6 +67,9 @@ val IDENTITY_OPERATOR_ENROLMENT_UK: Index = Internal.createIndex(DSL.name("ident
 val IDENTITY_RATE_LIMIT_BUCKET_EXPIRY_IDX: Index = Internal.createIndex(DSL.name("identity_rate_limit_bucket_expiry_idx"), IdentityRateLimitBucket.IDENTITY_RATE_LIMIT_BUCKET, arrayOf(IdentityRateLimitBucket.IDENTITY_RATE_LIMIT_BUCKET.EXPIRES_AT), false)
 val IDENTITY_RECOVERY_CODE_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("identity_recovery_code_tenant_user_idx"), IdentityRecoveryCode.IDENTITY_RECOVERY_CODE, arrayOf(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.TENANT_ID, IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.USER_ID), false)
 val IDENTITY_USER_TENANT_EMAIL_UK: Index = Internal.createIndex(DSL.name("identity_user_tenant_email_uk"), IdentityUser.IDENTITY_USER, arrayOf(IdentityUser.IDENTITY_USER.TENANT_ID, IdentityUser.IDENTITY_USER.EMAIL), true)
+val MEMO_PARTICIPANT_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("memo_participant_tenant_user_idx"), MemoParticipant.MEMO_PARTICIPANT, arrayOf(MemoParticipant.MEMO_PARTICIPANT.TENANT_ID, MemoParticipant.MEMO_PARTICIPANT.USER_ID, MemoParticipant.MEMO_PARTICIPANT.MEMO_ID), false)
+val MEMO_TENANT_INITIATOR_BOX_IDX: Index = Internal.createIndex(DSL.name("memo_tenant_initiator_box_idx"), Memo.MEMO_, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.INITIATOR_ID, Memo.MEMO_.STATUS, Memo.MEMO_.UPDATED_AT.desc(), Memo.MEMO_.ID), false)
+val MEMO_TENANT_TYPE_IDX: Index = Internal.createIndex(DSL.name("memo_tenant_type_idx"), Memo.MEMO_, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.MEMO_TYPE_ID), false)
 val NOTIFICATION_ITEM_UNREAD_IDX: Index = Internal.createIndex(DSL.name("notification_item_unread_idx"), NotificationItem.NOTIFICATION_ITEM, arrayOf(NotificationItem.NOTIFICATION_ITEM.TENANT_ID, NotificationItem.NOTIFICATION_ITEM.USER_ID), false)
 val NOTIFICATION_ITEM_USER_IDX: Index = Internal.createIndex(DSL.name("notification_item_user_idx"), NotificationItem.NOTIFICATION_ITEM, arrayOf(NotificationItem.NOTIFICATION_ITEM.TENANT_ID, NotificationItem.NOTIFICATION_ITEM.USER_ID, NotificationItem.NOTIFICATION_ITEM.CREATED_AT.desc(), NotificationItem.NOTIFICATION_ITEM.ID.desc()), false)
 val NOTIFICATION_MAIL_OUTBOX_TENANT_CREATED_IDX: Index = Internal.createIndex(DSL.name("notification_mail_outbox_tenant_created_idx"), NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX, arrayOf(NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.TENANT_ID, NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.CREATED_AT.desc(), NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.ID.desc()), false)
@@ -76,3 +86,12 @@ val ORG_UNIT_TENANT_PARENT_IDX: Index = Internal.createIndex(DSL.name("org_unit_
 val SYSTEM_IDEMPOTENCY_KEY_TENANT_CREATED_IDX: Index = Internal.createIndex(DSL.name("system_idempotency_key_tenant_created_idx"), SystemIdempotencyKey.SYSTEM_IDEMPOTENCY_KEY, arrayOf(SystemIdempotencyKey.SYSTEM_IDEMPOTENCY_KEY.TENANT_ID, SystemIdempotencyKey.SYSTEM_IDEMPOTENCY_KEY.CREATED_AT), false)
 val TENANCY_SETTING_TENANT_KEY_UK: Index = Internal.createIndex(DSL.name("tenancy_setting_tenant_key_uk"), TenancySetting.TENANCY_SETTING, arrayOf(TenancySetting.TENANCY_SETTING.TENANT_ID, TenancySetting.TENANCY_SETTING.KEY), true)
 val TENANCY_TERM_TENANT_TERM_LOCALE_UK: Index = Internal.createIndex(DSL.name("tenancy_term_tenant_term_locale_uk"), TenancyTerm.TENANCY_TERM, arrayOf(TenancyTerm.TENANCY_TERM.TENANT_ID, TenancyTerm.TENANCY_TERM.TERM, TenancyTerm.TENANCY_TERM.LOCALE), true)
+val WORKFLOW_ACTION_TASK_IDX: Index = Internal.createIndex(DSL.name("workflow_action_task_idx"), WorkflowAction.WORKFLOW_ACTION, arrayOf(WorkflowAction.WORKFLOW_ACTION.TENANT_ID, WorkflowAction.WORKFLOW_ACTION.TASK_ID), false)
+val WORKFLOW_INSTANCE_DEFINITION_IDX: Index = Internal.createIndex(DSL.name("workflow_instance_definition_idx"), WorkflowInstance.WORKFLOW_INSTANCE, arrayOf(WorkflowInstance.WORKFLOW_INSTANCE.TENANT_ID, WorkflowInstance.WORKFLOW_INSTANCE.DEFINITION_VERSION_ID), false)
+val WORKFLOW_ROUND_ONE_OPEN_IDX: Index = Internal.createIndex(DSL.name("workflow_round_one_open_idx"), WorkflowRound.WORKFLOW_ROUND, arrayOf(WorkflowRound.WORKFLOW_ROUND.TENANT_ID, WorkflowRound.WORKFLOW_ROUND.INSTANCE_ID), true)
+val WORKFLOW_STEP_INSTANCE_IDX: Index = Internal.createIndex(DSL.name("workflow_step_instance_idx"), WorkflowStep.WORKFLOW_STEP, arrayOf(WorkflowStep.WORKFLOW_STEP.TENANT_ID, WorkflowStep.WORKFLOW_STEP.INSTANCE_ID), false)
+val WORKFLOW_TASK_INBOX_IDX: Index = Internal.createIndex(DSL.name("workflow_task_inbox_idx"), WorkflowTask.WORKFLOW_TASK, arrayOf(WorkflowTask.WORKFLOW_TASK.TENANT_ID, WorkflowTask.WORKFLOW_TASK.ASSIGNEE_ID, WorkflowTask.WORKFLOW_TASK.STATE, WorkflowTask.WORKFLOW_TASK.CREATED_AT.desc(), WorkflowTask.WORKFLOW_TASK.ID), false)
+val WORKFLOW_TASK_INSTANCE_IDX: Index = Internal.createIndex(DSL.name("workflow_task_instance_idx"), WorkflowTask.WORKFLOW_TASK, arrayOf(WorkflowTask.WORKFLOW_TASK.TENANT_ID, WorkflowTask.WORKFLOW_TASK.INSTANCE_ID), false)
+val WORKFLOW_TASK_ONE_OPEN_IDX: Index = Internal.createIndex(DSL.name("workflow_task_one_open_idx"), WorkflowTask.WORKFLOW_TASK, arrayOf(WorkflowTask.WORKFLOW_TASK.TENANT_ID, WorkflowTask.WORKFLOW_TASK.STEP_ID), true)
+val WORKFLOW_TASK_OPEN_IDX: Index = Internal.createIndex(DSL.name("workflow_task_open_idx"), WorkflowTask.WORKFLOW_TASK, arrayOf(WorkflowTask.WORKFLOW_TASK.TENANT_ID, WorkflowTask.WORKFLOW_TASK.CREATED_AT.desc(), WorkflowTask.WORKFLOW_TASK.ID), false)
+val WORKFLOW_TASK_STEP_IDX: Index = Internal.createIndex(DSL.name("workflow_task_step_idx"), WorkflowTask.WORKFLOW_TASK, arrayOf(WorkflowTask.WORKFLOW_TASK.TENANT_ID, WorkflowTask.WORKFLOW_TASK.STEP_ID), false)

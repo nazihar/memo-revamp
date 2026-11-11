@@ -26,6 +26,11 @@ import com.memo.jooq.tables.IdentityOperator
 import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
+import com.memo.jooq.tables.Memo
+import com.memo.jooq.tables.MemoParticipant
+import com.memo.jooq.tables.MemoReferenceCounter
+import com.memo.jooq.tables.MemoRouteEntry
+import com.memo.jooq.tables.MemoType
 import com.memo.jooq.tables.NotificationItem
 import com.memo.jooq.tables.NotificationMailOutbox
 import com.memo.jooq.tables.NotificationPreference
@@ -41,6 +46,13 @@ import com.memo.jooq.tables.TenancySetting
 import com.memo.jooq.tables.TenancySettingView
 import com.memo.jooq.tables.TenancyTenant
 import com.memo.jooq.tables.TenancyTerm
+import com.memo.jooq.tables.WorkflowAction
+import com.memo.jooq.tables.WorkflowDefinition
+import com.memo.jooq.tables.WorkflowDefinitionVersion
+import com.memo.jooq.tables.WorkflowInstance
+import com.memo.jooq.tables.WorkflowRound
+import com.memo.jooq.tables.WorkflowStep
+import com.memo.jooq.tables.WorkflowTask
 
 
 
@@ -150,6 +162,31 @@ val IDENTITY_RECOVERY_CODE: IdentityRecoveryCode = IdentityRecoveryCode.IDENTITY
 val IDENTITY_USER: IdentityUser = IdentityUser.IDENTITY_USER
 
 /**
+ * The table <code>memo.memo</code>.
+ */
+val MEMO_: Memo = Memo.MEMO_
+
+/**
+ * The table <code>memo.memo_participant</code>.
+ */
+val MEMO_PARTICIPANT: MemoParticipant = MemoParticipant.MEMO_PARTICIPANT
+
+/**
+ * The table <code>memo.memo_reference_counter</code>.
+ */
+val MEMO_REFERENCE_COUNTER: MemoReferenceCounter = MemoReferenceCounter.MEMO_REFERENCE_COUNTER
+
+/**
+ * The table <code>memo.memo_route_entry</code>.
+ */
+val MEMO_ROUTE_ENTRY: MemoRouteEntry = MemoRouteEntry.MEMO_ROUTE_ENTRY
+
+/**
+ * The table <code>memo.memo_type</code>.
+ */
+val MEMO_TYPE: MemoType = MemoType.MEMO_TYPE
+
+/**
  * The table <code>memo.notification_item</code>.
  */
 val NOTIFICATION_ITEM: NotificationItem = NotificationItem.NOTIFICATION_ITEM
@@ -223,3 +260,38 @@ val TENANCY_TENANT: TenancyTenant = TenancyTenant.TENANCY_TENANT
  * The table <code>memo.tenancy_term</code>.
  */
 val TENANCY_TERM: TenancyTerm = TenancyTerm.TENANCY_TERM
+
+/**
+ * The table <code>memo.workflow_action</code>.
+ */
+val WORKFLOW_ACTION: WorkflowAction = WorkflowAction.WORKFLOW_ACTION
+
+/**
+ * The table <code>memo.workflow_definition</code>.
+ */
+val WORKFLOW_DEFINITION: WorkflowDefinition = WorkflowDefinition.WORKFLOW_DEFINITION
+
+/**
+ * The table <code>memo.workflow_definition_version</code>.
+ */
+val WORKFLOW_DEFINITION_VERSION: WorkflowDefinitionVersion = WorkflowDefinitionVersion.WORKFLOW_DEFINITION_VERSION
+
+/**
+ * The table <code>memo.workflow_instance</code>.
+ */
+val WORKFLOW_INSTANCE: WorkflowInstance = WorkflowInstance.WORKFLOW_INSTANCE
+
+/**
+ * The table <code>memo.workflow_round</code>.
+ */
+val WORKFLOW_ROUND: WorkflowRound = WorkflowRound.WORKFLOW_ROUND
+
+/**
+ * The table <code>memo.workflow_step</code>.
+ */
+val WORKFLOW_STEP: WorkflowStep = WorkflowStep.WORKFLOW_STEP
+
+/**
+ * The table <code>memo.workflow_task</code>.
+ */
+val WORKFLOW_TASK: WorkflowTask = WorkflowTask.WORKFLOW_TASK

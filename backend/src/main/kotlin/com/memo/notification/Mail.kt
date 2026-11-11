@@ -24,8 +24,25 @@ import java.time.ZoneOffset
  * - SIGN_IN_ALERT: name, organisation, device, time
  * - ROLE_GRANTED: name, organisation, role
  * - TEST: name, organisation
+ * - TASK_ASSIGNED, MEMO_RETURNED, MEMO_REJECTED, MEMO_APPROVED, TASK_REASSIGNED, TASK_BLOCKED, MEMO_WITHDRAWN: name,
+ *   organisation, reference, link (never the memo's subject or a remark, design E01 §12)
  */
-enum class MailTemplate { INVITATION, PASSWORD_RESET, PASSWORD_CHANGED, MFA_RESET, SIGN_IN_ALERT, ROLE_GRANTED, TEST }
+enum class MailTemplate {
+    INVITATION,
+    PASSWORD_RESET,
+    PASSWORD_CHANGED,
+    MFA_RESET,
+    SIGN_IN_ALERT,
+    ROLE_GRANTED,
+    TEST,
+    TASK_ASSIGNED,
+    MEMO_RETURNED,
+    MEMO_REJECTED,
+    MEMO_APPROVED,
+    TASK_REASSIGNED,
+    TASK_BLOCKED,
+    MEMO_WITHDRAWN,
+}
 
 /**
  * Queues an email in the caller's tenant transaction and schedules its delivery in the same commit (db-scheduler joins

@@ -162,12 +162,13 @@ private fun json(value: String) = "\"" + value.replace("\\", "\\\\").replace("\"
 fun sessionIdOf(cookie: Cookie): String = String(Base64.getDecoder().decode(cookie.value))
 
 /**
- * Moves every factor of the session back to the year 2000, as if the step-up window had long passed. [attribute] is
+ * Moves every factor of the session back to [issuedAt] (by default the year 2000, as if the step-up window had long passed). [attribute] is
  * `memo.principal` for users and `memo.operator` for operators.
  */
 fun ageSessionFactors(
     cookie: Cookie,
     attribute: String = "memo.principal",
+    issuedAt: java.time.Instant = java.time.Instant.parse("2000-01-01T00:00:00Z"),
 ) {
     AppRoleJdbc.connect { c ->
         c
@@ -176,7 +177,7 @@ fun ageSessionFactors(
                 update identity_http_session_attributes a
                 set attribute_bytes = convert_to(
                     jsonb_set(p.j, '{factors}', (
-                        select jsonb_agg(jsonb_set(f, '{issuedAt}', '"2000-01-01T00:00:00Z"'))
+                        select jsonb_agg(jsonb_set(f, '{issuedAt}', to_jsonb(?::text)))
                         from jsonb_array_elements(p.j -> 'factors') f))::text, 'UTF8')
                 from (select session_primary_id, convert_from(attribute_bytes, 'UTF8')::jsonb j
                       from identity_http_session_attributes where attribute_name = ?) p
@@ -184,9 +185,10 @@ fun ageSessionFactors(
                   and a.session_primary_id = (select primary_id from identity_http_session where session_id = ?)
                 """,
             ).use {
-                it.setString(1, attribute)
+                it.setString(1, issuedAt.toString())
                 it.setString(2, attribute)
-                it.setString(3, sessionIdOf(cookie))
+                it.setString(3, attribute)
+                it.setString(4, sessionIdOf(cookie))
                 check(it.executeUpdate() == 1) { "no such session" }
             }
     }

@@ -1,5 +1,6 @@
 package com.memo.files
 
+import com.memo.common.events.TenantScopedEvent
 import java.time.Instant
 import java.util.UUID
 
@@ -75,12 +76,12 @@ data class FileVersionInfo(
  * pointer (for example the tenant logo) or veto the upload by throwing, which rolls everything back.
  */
 data class FileVersionCreated(
-    val tenantId: UUID,
-    val purpose: String,
+    override val tenantId: UUID,
+    val purposeKey: String,
     val ownerId: String?,
     val fileId: UUID,
     val versionId: UUID,
-)
+) : TenantScopedEvent
 
 /** Read access for owning modules. Inside a tenant transaction; no authorisation (the owner decides). */
 interface Files {
@@ -112,4 +113,32 @@ interface FileContents {
         version: FileVersionInfo,
         out: java.io.OutputStream,
     )
+}
+
+/**
+ * Stores files through the full upload pipeline (scan, inspection, encryption, purpose checks) for callers that are not
+ * HTTP requests, such as seeders acting as a user (ADR-0029). Call outside a transaction, with the tenant and the acting
+ * user bound; the purpose's `mayUpload` applies as for the API. Returns the new version's id.
+ */
+interface FileUploads {
+    /** Whether uploads can be scanned now: a malware scanner is configured and answers (uploads fail closed without one). */
+    fun ready(): Boolean
+
+    /** A new file of [purposeKey] for [ownerId]. */
+    fun upload(
+        purposeKey: String,
+        ownerId: String?,
+        name: String,
+        bytes: ByteArray,
+        idempotencyKey: String,
+    ): UUID
+
+    /** A new version of [fileId], guarded on its [expectedFileVersion]. */
+    fun uploadVersion(
+        fileId: UUID,
+        expectedFileVersion: Long,
+        name: String,
+        bytes: ByteArray,
+        idempotencyKey: String,
+    ): UUID
 }

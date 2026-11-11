@@ -25,6 +25,10 @@ import com.memo.jooq.tables.IdentityOperator
 import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
+import com.memo.jooq.tables.MemoParticipant
+import com.memo.jooq.tables.MemoReferenceCounter
+import com.memo.jooq.tables.MemoRouteEntry
+import com.memo.jooq.tables.MemoType
 import com.memo.jooq.tables.NotificationItem
 import com.memo.jooq.tables.NotificationMailOutbox
 import com.memo.jooq.tables.NotificationPreference
@@ -40,6 +44,13 @@ import com.memo.jooq.tables.TenancySetting
 import com.memo.jooq.tables.TenancySettingView
 import com.memo.jooq.tables.TenancyTenant
 import com.memo.jooq.tables.TenancyTerm
+import com.memo.jooq.tables.WorkflowAction
+import com.memo.jooq.tables.WorkflowDefinition
+import com.memo.jooq.tables.WorkflowDefinitionVersion
+import com.memo.jooq.tables.WorkflowInstance
+import com.memo.jooq.tables.WorkflowRound
+import com.memo.jooq.tables.WorkflowStep
+import com.memo.jooq.tables.WorkflowTask
 
 import kotlin.collections.List
 
@@ -169,6 +180,31 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val IDENTITY_USER: IdentityUser get() = IdentityUser.IDENTITY_USER
 
     /**
+     * The table <code>memo.memo</code>.
+     */
+    val MEMO_ : com.memo.jooq.tables.Memo get() = com.memo.jooq.tables.Memo.MEMO_
+
+    /**
+     * The table <code>memo.memo_participant</code>.
+     */
+    val MEMO_PARTICIPANT: MemoParticipant get() = MemoParticipant.MEMO_PARTICIPANT
+
+    /**
+     * The table <code>memo.memo_reference_counter</code>.
+     */
+    val MEMO_REFERENCE_COUNTER: MemoReferenceCounter get() = MemoReferenceCounter.MEMO_REFERENCE_COUNTER
+
+    /**
+     * The table <code>memo.memo_route_entry</code>.
+     */
+    val MEMO_ROUTE_ENTRY: MemoRouteEntry get() = MemoRouteEntry.MEMO_ROUTE_ENTRY
+
+    /**
+     * The table <code>memo.memo_type</code>.
+     */
+    val MEMO_TYPE: MemoType get() = MemoType.MEMO_TYPE
+
+    /**
      * The table <code>memo.notification_item</code>.
      */
     val NOTIFICATION_ITEM: NotificationItem get() = NotificationItem.NOTIFICATION_ITEM
@@ -243,6 +279,41 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      */
     val TENANCY_TERM: TenancyTerm get() = TenancyTerm.TENANCY_TERM
 
+    /**
+     * The table <code>memo.workflow_action</code>.
+     */
+    val WORKFLOW_ACTION: WorkflowAction get() = WorkflowAction.WORKFLOW_ACTION
+
+    /**
+     * The table <code>memo.workflow_definition</code>.
+     */
+    val WORKFLOW_DEFINITION: WorkflowDefinition get() = WorkflowDefinition.WORKFLOW_DEFINITION
+
+    /**
+     * The table <code>memo.workflow_definition_version</code>.
+     */
+    val WORKFLOW_DEFINITION_VERSION: WorkflowDefinitionVersion get() = WorkflowDefinitionVersion.WORKFLOW_DEFINITION_VERSION
+
+    /**
+     * The table <code>memo.workflow_instance</code>.
+     */
+    val WORKFLOW_INSTANCE: WorkflowInstance get() = WorkflowInstance.WORKFLOW_INSTANCE
+
+    /**
+     * The table <code>memo.workflow_round</code>.
+     */
+    val WORKFLOW_ROUND: WorkflowRound get() = WorkflowRound.WORKFLOW_ROUND
+
+    /**
+     * The table <code>memo.workflow_step</code>.
+     */
+    val WORKFLOW_STEP: WorkflowStep get() = WorkflowStep.WORKFLOW_STEP
+
+    /**
+     * The table <code>memo.workflow_task</code>.
+     */
+    val WORKFLOW_TASK: WorkflowTask get() = WorkflowTask.WORKFLOW_TASK
+
     override fun getCatalog(): Catalog = DefaultCatalog.DEFAULT_CATALOG
 
     override fun getTables(): List<Table<*>> = listOf(
@@ -267,6 +338,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         IdentityRateLimitBucket.IDENTITY_RATE_LIMIT_BUCKET,
         IdentityRecoveryCode.IDENTITY_RECOVERY_CODE,
         IdentityUser.IDENTITY_USER,
+        com.memo.jooq.tables.Memo.MEMO_,
+        MemoParticipant.MEMO_PARTICIPANT,
+        MemoReferenceCounter.MEMO_REFERENCE_COUNTER,
+        MemoRouteEntry.MEMO_ROUTE_ENTRY,
+        MemoType.MEMO_TYPE,
         NotificationItem.NOTIFICATION_ITEM,
         NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX,
         NotificationPreference.NOTIFICATION_PREFERENCE,
@@ -281,6 +357,13 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         TenancySetting.TENANCY_SETTING,
         TenancySettingView.TENANCY_SETTING_VIEW,
         TenancyTenant.TENANCY_TENANT,
-        TenancyTerm.TENANCY_TERM
+        TenancyTerm.TENANCY_TERM,
+        WorkflowAction.WORKFLOW_ACTION,
+        WorkflowDefinition.WORKFLOW_DEFINITION,
+        WorkflowDefinitionVersion.WORKFLOW_DEFINITION_VERSION,
+        WorkflowInstance.WORKFLOW_INSTANCE,
+        WorkflowRound.WORKFLOW_ROUND,
+        WorkflowStep.WORKFLOW_STEP,
+        WorkflowTask.WORKFLOW_TASK
     )
 }

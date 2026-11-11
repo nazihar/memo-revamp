@@ -5,6 +5,7 @@ import com.tngtech.archunit.core.domain.JavaClass
 import com.tngtech.archunit.core.domain.JavaClasses
 import com.tngtech.archunit.core.importer.ClassFileImporter
 import com.tngtech.archunit.core.importer.ImportOption
+import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes
 import com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -55,9 +56,35 @@ class ArchitectureRulesTest {
     }
 
     @Test
+    fun `the workflow engine is pure Kotlin`() {
+        // ADR-0034: the transition function has no Spring, no database and no clock, so property tests run in milliseconds.
+        classes()
+            .that()
+            .resideInAPackage("com.memo.workflow.engine..")
+            .should()
+            .onlyDependOnClassesThat()
+            .resideInAnyPackage(
+                "java.lang..",
+                "java.util..",
+                "kotlin..",
+                "org.jetbrains.annotations..",
+                "com.memo.workflow",
+                "com.memo.workflow.engine..",
+            ).because("the engine core is a pure function over the instance state (ADR-0034)")
+            .check(classes)
+    }
+
+    @Test
     fun `generated jOOQ tables are only used by their owning module`() {
         // Table classes are named after the table, which is prefixed with the owning module (ADR-0006).
-        val tableModules = mapOf("Tenancy" to "tenancy", "System" to "system", "Audit" to "audit")
+        val tableModules =
+            mapOf(
+                "Tenancy" to "tenancy",
+                "System" to "system",
+                "Audit" to "audit",
+                "Workflow" to "workflow",
+                "Memo" to "memo",
+            )
         tableModules.forEach { (prefix, module) ->
             noClasses()
                 .that()

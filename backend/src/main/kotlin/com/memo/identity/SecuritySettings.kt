@@ -16,6 +16,9 @@ enum class SecurityLimit(
     IDLE_MINUTES("security.session.idle.minutes", 30, 5..480),
     ABSOLUTE_HOURS("security.session.absolute.hours", 12, 1..24),
     STEP_UP_MINUTES("security.stepup.minutes", 5, 1..30),
+
+    /** Step-up before approving a memo (ADR-0036, overview Q5): longer, so a run of approvals needs one confirmation. */
+    APPROVAL_STEP_UP_MINUTES("security.stepup.approval.minutes", 30, 5..240),
     PASSWORD_MIN_LENGTH("security.password.min.length", 12, 12..128),
     THROTTLE_AFTER("security.lockout.throttle.after", 5, 3..10),
     LOCK_AFTER("security.lockout.lock.after", 20, 5..50),

@@ -26,6 +26,11 @@ import com.memo.jooq.tables.IdentityOperator
 import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
+import com.memo.jooq.tables.Memo
+import com.memo.jooq.tables.MemoParticipant
+import com.memo.jooq.tables.MemoReferenceCounter
+import com.memo.jooq.tables.MemoRouteEntry
+import com.memo.jooq.tables.MemoType
 import com.memo.jooq.tables.NotificationItem
 import com.memo.jooq.tables.NotificationMailOutbox
 import com.memo.jooq.tables.NotificationPreference
@@ -40,6 +45,13 @@ import com.memo.jooq.tables.SystemInfo
 import com.memo.jooq.tables.TenancySetting
 import com.memo.jooq.tables.TenancyTenant
 import com.memo.jooq.tables.TenancyTerm
+import com.memo.jooq.tables.WorkflowAction
+import com.memo.jooq.tables.WorkflowDefinition
+import com.memo.jooq.tables.WorkflowDefinitionVersion
+import com.memo.jooq.tables.WorkflowInstance
+import com.memo.jooq.tables.WorkflowRound
+import com.memo.jooq.tables.WorkflowStep
+import com.memo.jooq.tables.WorkflowTask
 import com.memo.jooq.tables.records.AuditAnchorRecord
 import com.memo.jooq.tables.records.AuditChainHeadRecord
 import com.memo.jooq.tables.records.AuditEventRecord
@@ -61,6 +73,11 @@ import com.memo.jooq.tables.records.IdentityOperatorRecord
 import com.memo.jooq.tables.records.IdentityRateLimitBucketRecord
 import com.memo.jooq.tables.records.IdentityRecoveryCodeRecord
 import com.memo.jooq.tables.records.IdentityUserRecord
+import com.memo.jooq.tables.records.MemoParticipantRecord
+import com.memo.jooq.tables.records.MemoRecord
+import com.memo.jooq.tables.records.MemoReferenceCounterRecord
+import com.memo.jooq.tables.records.MemoRouteEntryRecord
+import com.memo.jooq.tables.records.MemoTypeRecord
 import com.memo.jooq.tables.records.NotificationItemRecord
 import com.memo.jooq.tables.records.NotificationMailOutboxRecord
 import com.memo.jooq.tables.records.NotificationPreferenceRecord
@@ -75,6 +92,13 @@ import com.memo.jooq.tables.records.SystemInfoRecord
 import com.memo.jooq.tables.records.TenancySettingRecord
 import com.memo.jooq.tables.records.TenancyTenantRecord
 import com.memo.jooq.tables.records.TenancyTermRecord
+import com.memo.jooq.tables.records.WorkflowActionRecord
+import com.memo.jooq.tables.records.WorkflowDefinitionRecord
+import com.memo.jooq.tables.records.WorkflowDefinitionVersionRecord
+import com.memo.jooq.tables.records.WorkflowInstanceRecord
+import com.memo.jooq.tables.records.WorkflowRoundRecord
+import com.memo.jooq.tables.records.WorkflowStepRecord
+import com.memo.jooq.tables.records.WorkflowTaskRecord
 
 import org.jooq.ForeignKey
 import org.jooq.UniqueKey
@@ -122,6 +146,17 @@ val IDENTITY_RATE_LIMIT_BUCKET_PKEY: UniqueKey<IdentityRateLimitBucketRecord> = 
 val IDENTITY_RECOVERY_CODE_PKEY: UniqueKey<IdentityRecoveryCodeRecord> = Internal.createUniqueKey(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE, DSL.name("identity_recovery_code_pkey"), arrayOf(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.ID), true)
 val IDENTITY_USER_PKEY: UniqueKey<IdentityUserRecord> = Internal.createUniqueKey(IdentityUser.IDENTITY_USER, DSL.name("identity_user_pkey"), arrayOf(IdentityUser.IDENTITY_USER.ID), true)
 val IDENTITY_USER_TENANT_ID_ID_KEY: UniqueKey<IdentityUserRecord> = Internal.createUniqueKey(IdentityUser.IDENTITY_USER, DSL.name("identity_user_tenant_id_id_key"), arrayOf(IdentityUser.IDENTITY_USER.TENANT_ID, IdentityUser.IDENTITY_USER.ID), true)
+val MEMO_PKEY: UniqueKey<MemoRecord> = Internal.createUniqueKey(Memo.MEMO_, DSL.name("memo_pkey"), arrayOf(Memo.MEMO_.ID), true)
+val MEMO_TENANT_ID_DOCUMENT_FILE_ID_KEY: UniqueKey<MemoRecord> = Internal.createUniqueKey(Memo.MEMO_, DSL.name("memo_tenant_id_document_file_id_key"), arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.DOCUMENT_FILE_ID), true)
+val MEMO_TENANT_ID_ID_KEY: UniqueKey<MemoRecord> = Internal.createUniqueKey(Memo.MEMO_, DSL.name("memo_tenant_id_id_key"), arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.ID), true)
+val MEMO_TENANT_ID_REFERENCE_KEY: UniqueKey<MemoRecord> = Internal.createUniqueKey(Memo.MEMO_, DSL.name("memo_tenant_id_reference_key"), arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.REFERENCE), true)
+val MEMO_PARTICIPANT_PKEY: UniqueKey<MemoParticipantRecord> = Internal.createUniqueKey(MemoParticipant.MEMO_PARTICIPANT, DSL.name("memo_participant_pkey"), arrayOf(MemoParticipant.MEMO_PARTICIPANT.TENANT_ID, MemoParticipant.MEMO_PARTICIPANT.MEMO_ID, MemoParticipant.MEMO_PARTICIPANT.USER_ID), true)
+val MEMO_REFERENCE_COUNTER_PKEY: UniqueKey<MemoReferenceCounterRecord> = Internal.createUniqueKey(MemoReferenceCounter.MEMO_REFERENCE_COUNTER, DSL.name("memo_reference_counter_pkey"), arrayOf(MemoReferenceCounter.MEMO_REFERENCE_COUNTER.TENANT_ID, MemoReferenceCounter.MEMO_REFERENCE_COUNTER.YEAR), true)
+val MEMO_ROUTE_ENTRY_PKEY: UniqueKey<MemoRouteEntryRecord> = Internal.createUniqueKey(MemoRouteEntry.MEMO_ROUTE_ENTRY, DSL.name("memo_route_entry_pkey"), arrayOf(MemoRouteEntry.MEMO_ROUTE_ENTRY.TENANT_ID, MemoRouteEntry.MEMO_ROUTE_ENTRY.MEMO_ID, MemoRouteEntry.MEMO_ROUTE_ENTRY.ORDINAL), true)
+val MEMO_ROUTE_ENTRY_TENANT_ID_MEMO_ID_APPROVER_ID_KEY: UniqueKey<MemoRouteEntryRecord> = Internal.createUniqueKey(MemoRouteEntry.MEMO_ROUTE_ENTRY, DSL.name("memo_route_entry_tenant_id_memo_id_approver_id_key"), arrayOf(MemoRouteEntry.MEMO_ROUTE_ENTRY.TENANT_ID, MemoRouteEntry.MEMO_ROUTE_ENTRY.MEMO_ID, MemoRouteEntry.MEMO_ROUTE_ENTRY.APPROVER_ID), true)
+val MEMO_TYPE_PKEY: UniqueKey<MemoTypeRecord> = Internal.createUniqueKey(MemoType.MEMO_TYPE, DSL.name("memo_type_pkey"), arrayOf(MemoType.MEMO_TYPE.ID), true)
+val MEMO_TYPE_TENANT_ID_ID_KEY: UniqueKey<MemoTypeRecord> = Internal.createUniqueKey(MemoType.MEMO_TYPE, DSL.name("memo_type_tenant_id_id_key"), arrayOf(MemoType.MEMO_TYPE.TENANT_ID, MemoType.MEMO_TYPE.ID), true)
+val MEMO_TYPE_TENANT_ID_KEY_KEY: UniqueKey<MemoTypeRecord> = Internal.createUniqueKey(MemoType.MEMO_TYPE, DSL.name("memo_type_tenant_id_key_key"), arrayOf(MemoType.MEMO_TYPE.TENANT_ID, MemoType.MEMO_TYPE.KEY), true)
 val NOTIFICATION_ITEM_PKEY: UniqueKey<NotificationItemRecord> = Internal.createUniqueKey(NotificationItem.NOTIFICATION_ITEM, DSL.name("notification_item_pkey"), arrayOf(NotificationItem.NOTIFICATION_ITEM.TENANT_ID, NotificationItem.NOTIFICATION_ITEM.ID, NotificationItem.NOTIFICATION_ITEM.CREATED_AT), true)
 val NOTIFICATION_MAIL_OUTBOX_PKEY: UniqueKey<NotificationMailOutboxRecord> = Internal.createUniqueKey(NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX, DSL.name("notification_mail_outbox_pkey"), arrayOf(NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.ID), true)
 val NOTIFICATION_MAIL_OUTBOX_TENANT_ID_ID_KEY: UniqueKey<NotificationMailOutboxRecord> = Internal.createUniqueKey(NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX, DSL.name("notification_mail_outbox_tenant_id_id_key"), arrayOf(NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.TENANT_ID, NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.ID), true)
@@ -143,6 +178,26 @@ val TENANCY_SETTING_PKEY: UniqueKey<TenancySettingRecord> = Internal.createUniqu
 val TENANCY_TENANT_PKEY: UniqueKey<TenancyTenantRecord> = Internal.createUniqueKey(TenancyTenant.TENANCY_TENANT, DSL.name("tenancy_tenant_pkey"), arrayOf(TenancyTenant.TENANCY_TENANT.ID), true)
 val TENANCY_TENANT_SLUG_KEY: UniqueKey<TenancyTenantRecord> = Internal.createUniqueKey(TenancyTenant.TENANCY_TENANT, DSL.name("tenancy_tenant_slug_key"), arrayOf(TenancyTenant.TENANCY_TENANT.SLUG), true)
 val TENANCY_TERM_PKEY: UniqueKey<TenancyTermRecord> = Internal.createUniqueKey(TenancyTerm.TENANCY_TERM, DSL.name("tenancy_term_pkey"), arrayOf(TenancyTerm.TENANCY_TERM.ID), true)
+val WORKFLOW_ACTION_PKEY: UniqueKey<WorkflowActionRecord> = Internal.createUniqueKey(WorkflowAction.WORKFLOW_ACTION, DSL.name("workflow_action_pkey"), arrayOf(WorkflowAction.WORKFLOW_ACTION.ID), true)
+val WORKFLOW_ACTION_TENANT_ID_ID_KEY: UniqueKey<WorkflowActionRecord> = Internal.createUniqueKey(WorkflowAction.WORKFLOW_ACTION, DSL.name("workflow_action_tenant_id_id_key"), arrayOf(WorkflowAction.WORKFLOW_ACTION.TENANT_ID, WorkflowAction.WORKFLOW_ACTION.ID), true)
+val WORKFLOW_ACTION_TENANT_ID_INSTANCE_ID_SEQ_KEY: UniqueKey<WorkflowActionRecord> = Internal.createUniqueKey(WorkflowAction.WORKFLOW_ACTION, DSL.name("workflow_action_tenant_id_instance_id_seq_key"), arrayOf(WorkflowAction.WORKFLOW_ACTION.TENANT_ID, WorkflowAction.WORKFLOW_ACTION.INSTANCE_ID, WorkflowAction.WORKFLOW_ACTION.SEQ), true)
+val WORKFLOW_DEFINITION_PKEY: UniqueKey<WorkflowDefinitionRecord> = Internal.createUniqueKey(WorkflowDefinition.WORKFLOW_DEFINITION, DSL.name("workflow_definition_pkey"), arrayOf(WorkflowDefinition.WORKFLOW_DEFINITION.ID), true)
+val WORKFLOW_DEFINITION_TENANT_ID_ID_KEY: UniqueKey<WorkflowDefinitionRecord> = Internal.createUniqueKey(WorkflowDefinition.WORKFLOW_DEFINITION, DSL.name("workflow_definition_tenant_id_id_key"), arrayOf(WorkflowDefinition.WORKFLOW_DEFINITION.TENANT_ID, WorkflowDefinition.WORKFLOW_DEFINITION.ID), true)
+val WORKFLOW_DEFINITION_TENANT_ID_KEY_KEY: UniqueKey<WorkflowDefinitionRecord> = Internal.createUniqueKey(WorkflowDefinition.WORKFLOW_DEFINITION, DSL.name("workflow_definition_tenant_id_key_key"), arrayOf(WorkflowDefinition.WORKFLOW_DEFINITION.TENANT_ID, WorkflowDefinition.WORKFLOW_DEFINITION.KEY), true)
+val WORKFLOW_DEFINITION_VERSION_PKEY: UniqueKey<WorkflowDefinitionVersionRecord> = Internal.createUniqueKey(WorkflowDefinitionVersion.WORKFLOW_DEFINITION_VERSION, DSL.name("workflow_definition_version_pkey"), arrayOf(WorkflowDefinitionVersion.WORKFLOW_DEFINITION_VERSION.ID), true)
+val WORKFLOW_DEFINITION_VERSION_TENANT_ID_DEFINITION_ID_NUMBER_KEY: UniqueKey<WorkflowDefinitionVersionRecord> = Internal.createUniqueKey(WorkflowDefinitionVersion.WORKFLOW_DEFINITION_VERSION, DSL.name("workflow_definition_version_tenant_id_definition_id_number_key"), arrayOf(WorkflowDefinitionVersion.WORKFLOW_DEFINITION_VERSION.TENANT_ID, WorkflowDefinitionVersion.WORKFLOW_DEFINITION_VERSION.DEFINITION_ID, WorkflowDefinitionVersion.WORKFLOW_DEFINITION_VERSION.NUMBER), true)
+val WORKFLOW_DEFINITION_VERSION_TENANT_ID_ID_KEY: UniqueKey<WorkflowDefinitionVersionRecord> = Internal.createUniqueKey(WorkflowDefinitionVersion.WORKFLOW_DEFINITION_VERSION, DSL.name("workflow_definition_version_tenant_id_id_key"), arrayOf(WorkflowDefinitionVersion.WORKFLOW_DEFINITION_VERSION.TENANT_ID, WorkflowDefinitionVersion.WORKFLOW_DEFINITION_VERSION.ID), true)
+val WORKFLOW_INSTANCE_PKEY: UniqueKey<WorkflowInstanceRecord> = Internal.createUniqueKey(WorkflowInstance.WORKFLOW_INSTANCE, DSL.name("workflow_instance_pkey"), arrayOf(WorkflowInstance.WORKFLOW_INSTANCE.ID), true)
+val WORKFLOW_INSTANCE_TENANT_ID_ID_KEY: UniqueKey<WorkflowInstanceRecord> = Internal.createUniqueKey(WorkflowInstance.WORKFLOW_INSTANCE, DSL.name("workflow_instance_tenant_id_id_key"), arrayOf(WorkflowInstance.WORKFLOW_INSTANCE.TENANT_ID, WorkflowInstance.WORKFLOW_INSTANCE.ID), true)
+val WORKFLOW_INSTANCE_TENANT_ID_SUBJECT_TYPE_SUBJECT_ID_KEY: UniqueKey<WorkflowInstanceRecord> = Internal.createUniqueKey(WorkflowInstance.WORKFLOW_INSTANCE, DSL.name("workflow_instance_tenant_id_subject_type_subject_id_key"), arrayOf(WorkflowInstance.WORKFLOW_INSTANCE.TENANT_ID, WorkflowInstance.WORKFLOW_INSTANCE.SUBJECT_TYPE, WorkflowInstance.WORKFLOW_INSTANCE.SUBJECT_ID), true)
+val WORKFLOW_ROUND_PKEY: UniqueKey<WorkflowRoundRecord> = Internal.createUniqueKey(WorkflowRound.WORKFLOW_ROUND, DSL.name("workflow_round_pkey"), arrayOf(WorkflowRound.WORKFLOW_ROUND.ID), true)
+val WORKFLOW_ROUND_TENANT_ID_ID_KEY: UniqueKey<WorkflowRoundRecord> = Internal.createUniqueKey(WorkflowRound.WORKFLOW_ROUND, DSL.name("workflow_round_tenant_id_id_key"), arrayOf(WorkflowRound.WORKFLOW_ROUND.TENANT_ID, WorkflowRound.WORKFLOW_ROUND.ID), true)
+val WORKFLOW_ROUND_TENANT_ID_INSTANCE_ID_NUMBER_KEY: UniqueKey<WorkflowRoundRecord> = Internal.createUniqueKey(WorkflowRound.WORKFLOW_ROUND, DSL.name("workflow_round_tenant_id_instance_id_number_key"), arrayOf(WorkflowRound.WORKFLOW_ROUND.TENANT_ID, WorkflowRound.WORKFLOW_ROUND.INSTANCE_ID, WorkflowRound.WORKFLOW_ROUND.NUMBER), true)
+val WORKFLOW_STEP_PKEY: UniqueKey<WorkflowStepRecord> = Internal.createUniqueKey(WorkflowStep.WORKFLOW_STEP, DSL.name("workflow_step_pkey"), arrayOf(WorkflowStep.WORKFLOW_STEP.ID), true)
+val WORKFLOW_STEP_TENANT_ID_ID_KEY: UniqueKey<WorkflowStepRecord> = Internal.createUniqueKey(WorkflowStep.WORKFLOW_STEP, DSL.name("workflow_step_tenant_id_id_key"), arrayOf(WorkflowStep.WORKFLOW_STEP.TENANT_ID, WorkflowStep.WORKFLOW_STEP.ID), true)
+val WORKFLOW_STEP_TENANT_ID_ROUND_ID_ORDINAL_KEY: UniqueKey<WorkflowStepRecord> = Internal.createUniqueKey(WorkflowStep.WORKFLOW_STEP, DSL.name("workflow_step_tenant_id_round_id_ordinal_key"), arrayOf(WorkflowStep.WORKFLOW_STEP.TENANT_ID, WorkflowStep.WORKFLOW_STEP.ROUND_ID, WorkflowStep.WORKFLOW_STEP.ORDINAL), true)
+val WORKFLOW_TASK_PKEY: UniqueKey<WorkflowTaskRecord> = Internal.createUniqueKey(WorkflowTask.WORKFLOW_TASK, DSL.name("workflow_task_pkey"), arrayOf(WorkflowTask.WORKFLOW_TASK.ID), true)
+val WORKFLOW_TASK_TENANT_ID_ID_KEY: UniqueKey<WorkflowTaskRecord> = Internal.createUniqueKey(WorkflowTask.WORKFLOW_TASK, DSL.name("workflow_task_tenant_id_id_key"), arrayOf(WorkflowTask.WORKFLOW_TASK.TENANT_ID, WorkflowTask.WORKFLOW_TASK.ID), true)
 
 // -------------------------------------------------------------------------
 // FOREIGN KEY definitions
@@ -157,6 +212,9 @@ val IDENTITY_ACTION_TOKEN__IDENTITY_ACTION_TOKEN_TENANT_ID_USER_ID_FKEY: Foreign
 val IDENTITY_HTTP_SESSION_ATTRIBUTES__IDENTITY_HTTP_SESSION_ATTRIBUTES_SESSION_PRIMARY_ID_FKEY: ForeignKey<IdentityHttpSessionAttributesRecord, IdentityHttpSessionRecord> = Internal.createForeignKey(IdentityHttpSessionAttributes.IDENTITY_HTTP_SESSION_ATTRIBUTES, DSL.name("identity_http_session_attributes_session_primary_id_fkey"), arrayOf(IdentityHttpSessionAttributes.IDENTITY_HTTP_SESSION_ATTRIBUTES.SESSION_PRIMARY_ID), com.memo.jooq.keys.IDENTITY_HTTP_SESSION_PKEY, arrayOf(IdentityHttpSession.IDENTITY_HTTP_SESSION.PRIMARY_ID), true, ForeignKeyRule.CASCADE, ForeignKeyRule.NO_ACTION)
 val IDENTITY_MFA__IDENTITY_MFA_TENANT_ID_USER_ID_FKEY: ForeignKey<IdentityMfaRecord, IdentityUserRecord> = Internal.createForeignKey(IdentityMfa.IDENTITY_MFA, DSL.name("identity_mfa_tenant_id_user_id_fkey"), arrayOf(IdentityMfa.IDENTITY_MFA.TENANT_ID, IdentityMfa.IDENTITY_MFA.USER_ID), com.memo.jooq.keys.IDENTITY_USER_TENANT_ID_ID_KEY, arrayOf(IdentityUser.IDENTITY_USER.TENANT_ID, IdentityUser.IDENTITY_USER.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val IDENTITY_RECOVERY_CODE__IDENTITY_RECOVERY_CODE_TENANT_ID_USER_ID_FKEY: ForeignKey<IdentityRecoveryCodeRecord, IdentityUserRecord> = Internal.createForeignKey(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE, DSL.name("identity_recovery_code_tenant_id_user_id_fkey"), arrayOf(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.TENANT_ID, IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.USER_ID), com.memo.jooq.keys.IDENTITY_USER_TENANT_ID_ID_KEY, arrayOf(IdentityUser.IDENTITY_USER.TENANT_ID, IdentityUser.IDENTITY_USER.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
+val MEMO__MEMO_TENANT_ID_MEMO_TYPE_ID_FKEY: ForeignKey<MemoRecord, MemoTypeRecord> = Internal.createForeignKey(Memo.MEMO_, DSL.name("memo_tenant_id_memo_type_id_fkey"), arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.MEMO_TYPE_ID), com.memo.jooq.keys.MEMO_TYPE_TENANT_ID_ID_KEY, arrayOf(MemoType.MEMO_TYPE.TENANT_ID, MemoType.MEMO_TYPE.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
+val MEMO_PARTICIPANT__MEMO_PARTICIPANT_TENANT_ID_MEMO_ID_FKEY: ForeignKey<MemoParticipantRecord, MemoRecord> = Internal.createForeignKey(MemoParticipant.MEMO_PARTICIPANT, DSL.name("memo_participant_tenant_id_memo_id_fkey"), arrayOf(MemoParticipant.MEMO_PARTICIPANT.TENANT_ID, MemoParticipant.MEMO_PARTICIPANT.MEMO_ID), com.memo.jooq.keys.MEMO_TENANT_ID_ID_KEY, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
+val MEMO_ROUTE_ENTRY__MEMO_ROUTE_ENTRY_TENANT_ID_MEMO_ID_FKEY: ForeignKey<MemoRouteEntryRecord, MemoRecord> = Internal.createForeignKey(MemoRouteEntry.MEMO_ROUTE_ENTRY, DSL.name("memo_route_entry_tenant_id_memo_id_fkey"), arrayOf(MemoRouteEntry.MEMO_ROUTE_ENTRY.TENANT_ID, MemoRouteEntry.MEMO_ROUTE_ENTRY.MEMO_ID), com.memo.jooq.keys.MEMO_TENANT_ID_ID_KEY, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val ORG_ASSIGNMENT__ORG_ASSIGNMENT_TENANT_ID_POSITION_ID_FKEY: ForeignKey<OrgAssignmentRecord, OrgPositionRecord> = Internal.createForeignKey(OrgAssignment.ORG_ASSIGNMENT, DSL.name("org_assignment_tenant_id_position_id_fkey"), arrayOf(OrgAssignment.ORG_ASSIGNMENT.TENANT_ID, OrgAssignment.ORG_ASSIGNMENT.POSITION_ID), com.memo.jooq.keys.ORG_POSITION_TENANT_ID_ID_KEY, arrayOf(OrgPosition.ORG_POSITION.TENANT_ID, OrgPosition.ORG_POSITION.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val ORG_POSITION__ORG_POSITION_TENANT_ID_UNIT_ID_FKEY: ForeignKey<OrgPositionRecord, OrgUnitRecord> = Internal.createForeignKey(OrgPosition.ORG_POSITION, DSL.name("org_position_tenant_id_unit_id_fkey"), arrayOf(OrgPosition.ORG_POSITION.TENANT_ID, OrgPosition.ORG_POSITION.UNIT_ID), com.memo.jooq.keys.ORG_UNIT_TENANT_ID_ID_KEY, arrayOf(OrgUnit.ORG_UNIT.TENANT_ID, OrgUnit.ORG_UNIT.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val ORG_REPORTING_LINE__ORG_REPORTING_LINE_TENANT_ID_POSITION_ID_FKEY: ForeignKey<OrgReportingLineRecord, OrgPositionRecord> = Internal.createForeignKey(OrgReportingLine.ORG_REPORTING_LINE, DSL.name("org_reporting_line_tenant_id_position_id_fkey"), arrayOf(OrgReportingLine.ORG_REPORTING_LINE.TENANT_ID, OrgReportingLine.ORG_REPORTING_LINE.POSITION_ID), com.memo.jooq.keys.ORG_POSITION_TENANT_ID_ID_KEY, arrayOf(OrgPosition.ORG_POSITION.TENANT_ID, OrgPosition.ORG_POSITION.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
@@ -165,3 +223,11 @@ val ORG_UNIT__ORG_UNIT_TENANT_ID_LEGAL_ENTITY_ID_FKEY: ForeignKey<OrgUnitRecord,
 val ORG_UNIT__ORG_UNIT_TENANT_ID_PARENT_ID_FKEY: ForeignKey<OrgUnitRecord, OrgUnitRecord> = Internal.createForeignKey(OrgUnit.ORG_UNIT, DSL.name("org_unit_tenant_id_parent_id_fkey"), arrayOf(OrgUnit.ORG_UNIT.TENANT_ID, OrgUnit.ORG_UNIT.PARENT_ID), com.memo.jooq.keys.ORG_UNIT_TENANT_ID_ID_KEY, arrayOf(OrgUnit.ORG_UNIT.TENANT_ID, OrgUnit.ORG_UNIT.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val TENANCY_SETTING__TENANCY_SETTING_TENANT_ID_FKEY: ForeignKey<TenancySettingRecord, TenancyTenantRecord> = Internal.createForeignKey(TenancySetting.TENANCY_SETTING, DSL.name("tenancy_setting_tenant_id_fkey"), arrayOf(TenancySetting.TENANCY_SETTING.TENANT_ID), com.memo.jooq.keys.TENANCY_TENANT_PKEY, arrayOf(TenancyTenant.TENANCY_TENANT.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val TENANCY_TERM__TENANCY_TERM_TENANT_ID_FKEY: ForeignKey<TenancyTermRecord, TenancyTenantRecord> = Internal.createForeignKey(TenancyTerm.TENANCY_TERM, DSL.name("tenancy_term_tenant_id_fkey"), arrayOf(TenancyTerm.TENANCY_TERM.TENANT_ID), com.memo.jooq.keys.TENANCY_TENANT_PKEY, arrayOf(TenancyTenant.TENANCY_TENANT.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
+val WORKFLOW_ACTION__WORKFLOW_ACTION_TENANT_ID_INSTANCE_ID_FKEY: ForeignKey<WorkflowActionRecord, WorkflowInstanceRecord> = Internal.createForeignKey(WorkflowAction.WORKFLOW_ACTION, DSL.name("workflow_action_tenant_id_instance_id_fkey"), arrayOf(WorkflowAction.WORKFLOW_ACTION.TENANT_ID, WorkflowAction.WORKFLOW_ACTION.INSTANCE_ID), com.memo.jooq.keys.WORKFLOW_INSTANCE_TENANT_ID_ID_KEY, arrayOf(WorkflowInstance.WORKFLOW_INSTANCE.TENANT_ID, WorkflowInstance.WORKFLOW_INSTANCE.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
+val WORKFLOW_DEFINITION_VERSION__WORKFLOW_DEFINITION_VERSION_TENANT_ID_DEFINITION_ID_FKEY: ForeignKey<WorkflowDefinitionVersionRecord, WorkflowDefinitionRecord> = Internal.createForeignKey(WorkflowDefinitionVersion.WORKFLOW_DEFINITION_VERSION, DSL.name("workflow_definition_version_tenant_id_definition_id_fkey"), arrayOf(WorkflowDefinitionVersion.WORKFLOW_DEFINITION_VERSION.TENANT_ID, WorkflowDefinitionVersion.WORKFLOW_DEFINITION_VERSION.DEFINITION_ID), com.memo.jooq.keys.WORKFLOW_DEFINITION_TENANT_ID_ID_KEY, arrayOf(WorkflowDefinition.WORKFLOW_DEFINITION.TENANT_ID, WorkflowDefinition.WORKFLOW_DEFINITION.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
+val WORKFLOW_INSTANCE__WORKFLOW_INSTANCE_TENANT_ID_DEFINITION_VERSION_ID_FKEY: ForeignKey<WorkflowInstanceRecord, WorkflowDefinitionVersionRecord> = Internal.createForeignKey(WorkflowInstance.WORKFLOW_INSTANCE, DSL.name("workflow_instance_tenant_id_definition_version_id_fkey"), arrayOf(WorkflowInstance.WORKFLOW_INSTANCE.TENANT_ID, WorkflowInstance.WORKFLOW_INSTANCE.DEFINITION_VERSION_ID), com.memo.jooq.keys.WORKFLOW_DEFINITION_VERSION_TENANT_ID_ID_KEY, arrayOf(WorkflowDefinitionVersion.WORKFLOW_DEFINITION_VERSION.TENANT_ID, WorkflowDefinitionVersion.WORKFLOW_DEFINITION_VERSION.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
+val WORKFLOW_ROUND__WORKFLOW_ROUND_TENANT_ID_INSTANCE_ID_FKEY: ForeignKey<WorkflowRoundRecord, WorkflowInstanceRecord> = Internal.createForeignKey(WorkflowRound.WORKFLOW_ROUND, DSL.name("workflow_round_tenant_id_instance_id_fkey"), arrayOf(WorkflowRound.WORKFLOW_ROUND.TENANT_ID, WorkflowRound.WORKFLOW_ROUND.INSTANCE_ID), com.memo.jooq.keys.WORKFLOW_INSTANCE_TENANT_ID_ID_KEY, arrayOf(WorkflowInstance.WORKFLOW_INSTANCE.TENANT_ID, WorkflowInstance.WORKFLOW_INSTANCE.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
+val WORKFLOW_STEP__WORKFLOW_STEP_TENANT_ID_INSTANCE_ID_FKEY: ForeignKey<WorkflowStepRecord, WorkflowInstanceRecord> = Internal.createForeignKey(WorkflowStep.WORKFLOW_STEP, DSL.name("workflow_step_tenant_id_instance_id_fkey"), arrayOf(WorkflowStep.WORKFLOW_STEP.TENANT_ID, WorkflowStep.WORKFLOW_STEP.INSTANCE_ID), com.memo.jooq.keys.WORKFLOW_INSTANCE_TENANT_ID_ID_KEY, arrayOf(WorkflowInstance.WORKFLOW_INSTANCE.TENANT_ID, WorkflowInstance.WORKFLOW_INSTANCE.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
+val WORKFLOW_STEP__WORKFLOW_STEP_TENANT_ID_ROUND_ID_FKEY: ForeignKey<WorkflowStepRecord, WorkflowRoundRecord> = Internal.createForeignKey(WorkflowStep.WORKFLOW_STEP, DSL.name("workflow_step_tenant_id_round_id_fkey"), arrayOf(WorkflowStep.WORKFLOW_STEP.TENANT_ID, WorkflowStep.WORKFLOW_STEP.ROUND_ID), com.memo.jooq.keys.WORKFLOW_ROUND_TENANT_ID_ID_KEY, arrayOf(WorkflowRound.WORKFLOW_ROUND.TENANT_ID, WorkflowRound.WORKFLOW_ROUND.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
+val WORKFLOW_TASK__WORKFLOW_TASK_TENANT_ID_INSTANCE_ID_FKEY: ForeignKey<WorkflowTaskRecord, WorkflowInstanceRecord> = Internal.createForeignKey(WorkflowTask.WORKFLOW_TASK, DSL.name("workflow_task_tenant_id_instance_id_fkey"), arrayOf(WorkflowTask.WORKFLOW_TASK.TENANT_ID, WorkflowTask.WORKFLOW_TASK.INSTANCE_ID), com.memo.jooq.keys.WORKFLOW_INSTANCE_TENANT_ID_ID_KEY, arrayOf(WorkflowInstance.WORKFLOW_INSTANCE.TENANT_ID, WorkflowInstance.WORKFLOW_INSTANCE.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
+val WORKFLOW_TASK__WORKFLOW_TASK_TENANT_ID_STEP_ID_FKEY: ForeignKey<WorkflowTaskRecord, WorkflowStepRecord> = Internal.createForeignKey(WorkflowTask.WORKFLOW_TASK, DSL.name("workflow_task_tenant_id_step_id_fkey"), arrayOf(WorkflowTask.WORKFLOW_TASK.TENANT_ID, WorkflowTask.WORKFLOW_TASK.STEP_ID), com.memo.jooq.keys.WORKFLOW_STEP_TENANT_ID_ID_KEY, arrayOf(WorkflowStep.WORKFLOW_STEP.TENANT_ID, WorkflowStep.WORKFLOW_STEP.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)

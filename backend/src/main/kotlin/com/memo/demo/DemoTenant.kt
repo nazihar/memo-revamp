@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
+import org.springframework.core.Ordered
+import org.springframework.core.annotation.Order
 import org.springframework.core.env.Environment
 import org.springframework.core.env.Profiles
 import org.springframework.stereotype.Component
@@ -48,6 +50,10 @@ object DemoTenant {
             DemoUser("branchadmin@demo.example", "Demo Branch Admin", BuiltInRole.ORG_ADMIN, scopeUnit = "REG-N"),
             DemoUser("auditor@demo.example", "Demo Auditor", BuiltInRole.AUDITOR),
             DemoUser("user@demo.example", "Demo User", null),
+            // Approvers of the demo memos (design E01 §15): two department heads and a director.
+            DemoUser("head.credit@demo.example", "Demo Head of Credit", null),
+            DemoUser("head.finance@demo.example", "Demo Head of Finance", null),
+            DemoUser("director@demo.example", "Demo Director", null),
         )
 }
 
@@ -144,6 +150,7 @@ class DemoTenantSeeder(
 
 /** Seeds on startup when `memo.demo.seed=true` (local dev via `pnpm dev`, the dev environment). */
 @Component
+@Order(Ordered.LOWEST_PRECEDENCE - 1)
 @ConditionalOnProperty("memo.demo.seed", havingValue = "true")
 class DemoTenantSeedOnStartup(
     private val seeder: DemoTenantSeeder,

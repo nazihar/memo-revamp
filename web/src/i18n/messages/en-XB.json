@@ -589,6 +589,34 @@
       "value": "‬"
     }
   ],
+  "access.permission.memoCreate": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɹıʇǝ ɐup snqɯıʇ ɯǝɯos"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "access.permission.memoTypes": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wɐuɐƃǝ ɯǝɯo ʇʎdǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "access.permission.notificationSettings": [
     {
       "type": 0,
@@ -639,6 +667,20 @@
     {
       "type": 0,
       "value": "Wɐuɐƃǝ nsǝɹs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "access.permission.workflowTasksReassign": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɐssıƃu ɐddɹoʌɐʅ ʇɐsʞs"
     },
     {
       "type": 0,
@@ -3845,6 +3887,62 @@
       "value": "‬"
     }
   ],
+  "mail.template.memoApproved": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo ɐddɹoʌǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "mail.template.memoRejected": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo ɹǝɾǝɔʇǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "mail.template.memoReturned": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo ɹǝʇnɹuǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "mail.template.memoWithdrawn": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo ʍıʇɥpɹɐʍu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "mail.template.mfaReset": [
     {
       "type": 0,
@@ -3909,6 +4007,48 @@
     {
       "type": 0,
       "value": "Nǝʍ sıƃu-ıu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "mail.template.taskAssigned": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo ʍɐıʇıuƃ ɟoɹ ɐddɹoʌɐʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "mail.template.taskBlocked": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo ʍɐıʇıuƃ ɟoɹ ɹǝɐssıƃuɯǝuʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "mail.template.taskReassigned": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo ʇɐsʞ ɹǝɐssıƃuǝp"
     },
     {
       "type": 0,
@@ -4063,6 +4203,1818 @@
       "value": "‬"
     }
   ],
+  "memo.action.approve": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ddɹoʌǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.action.discard": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡısɔɐɹp pɹɐɟʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.action.edit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝpıʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.action.reject": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɾǝɔʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.action.resubmit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝsnqɯıʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.action.return": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝʇnɹu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.action.submit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Snqɯıʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.action.withdraw": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mıʇɥpɹɐʍ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.actions": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔʇıous"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.assignedAt": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɐıʇıuƃ sıuɔǝ "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.blocked": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɐıʇıuƃ ɟoɹ ɹǝɐssıƃuɯǝuʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.cancel": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɐuɔǝʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.conflict": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Soɯǝouǝ ɐɔʇǝp ou ʇɥıs ɯǝɯo ɯǝɐuʍɥıʅǝ. Iʇ ʍɐs ɹǝʅoɐpǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.create.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sʇɐɹʇ ʍıʇɥ ʇɥǝ snqɾǝɔʇ ɐup ʇʎdǝ. ⅄on ɐpp ʇɥǝ poɔnɯǝuʇ ɐup ʇɥǝ ɐddɹoʌǝɹs uǝxʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.create.submit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɹǝɐʇǝ pɹɐɟʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.create.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nǝʍ ɯǝɯo"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.dialog.approve": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ddɹoʌǝ "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.dialog.approve.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄on ɐddɹoʌǝ poɔnɯǝuʇ ʌǝɹsıou "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": ". ⅄on ɯɐʎ qǝ ɐsʞǝp ʇo ɔouɟıɹɯ ıʇ ıs ʎon."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.dialog.discard": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡısɔɐɹp ʇɥıs pɹɐɟʇ?"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.dialog.discard.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iʇ ɯoʌǝs ʇo Ↄʅosǝp ɐup ɔɐuuoʇ qǝ snqɯıʇʇǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.dialog.reject": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɾǝɔʇ "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.dialog.reject.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɯǝɯo ǝups ɥǝɹǝ. Sɐʎ ʍɥʎ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.dialog.resubmit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝsnqɯıʇ?"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.dialog.resubmit.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ uǝʍ ɹonup sʇɐɹʇs ʍıʇɥ ʇɥǝ ɟıɹsʇ ɐddɹoʌǝɹ. ∀ddɹoʌɐʅs oɟ ǝɐɹʅıǝɹ ɹonups uo ʅouƃǝɹ ɔonuʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.dialog.return": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝʇnɹu "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ʇo ıʇs ɐnʇɥoɹ?"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.dialog.return.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sɐʎ ʍɥɐʇ uǝǝps ʇo ɔɥɐuƃǝ. ⊥ɥǝʎ ɔɐu ɹǝsnqɯıʇ ıʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.dialog.submit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Snqɯıʇ ɟoɹ ɐddɹoʌɐʅ?"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.dialog.submit.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɟıɹsʇ ɐddɹoʌǝɹ ƃǝʇs ıʇ uoʍ. ⅄on ɔɐuuoʇ ɔɥɐuƃǝ ıʇ ʍɥıʅǝ ıʇ ıs ıu ɹǝʌıǝʍ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.dialog.withdraw": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mıʇɥpɹɐʍ ʇɥıs ɯǝɯo?"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.dialog.withdraw.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɐddɹoʌɐʅ ǝups ɟoɹ ƃoop."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.document": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡoɔnɯǝuʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.document.download": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡoʍuʅoɐp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.document.hint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Moɹp (.poɔx), nd ʇo 25 WԐ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.document.newVersion": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩dʅoɐp ɐ uǝʍ ʌǝɹsıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.document.none": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No poɔnɯǝuʇ ʎǝʇ. ∩dʅoɐp ʇɥǝ ɯǝɯo ɐs ɐ Moɹp ɟıʅǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.document.upload": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩dʅoɐp ʇɥǝ poɔnɯǝuʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.document.version": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ʌǝɹsıou "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.done": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡouǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.failed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥɐʇ pıp uoʇ ʍoɹʞ. ⊥ɹʎ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.field.classification": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄʅɐssıɟıɔɐʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.field.classification.default": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ʇʎdǝ’s pǝɟɐnʅʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.field.classification.hint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ʇ ʅǝɐsʇ ʇɥǝ ʇʎdǝ’s pǝɟɐnʅʇ, ɐup ɐʇ ɯosʇ ʎonɹ oʍu ɔʅǝɐɹɐuɔǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.field.subject": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Snqɾǝɔʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.field.type": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo ʇʎdǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.from": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎɹoɯ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.history": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Hısʇoɹʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.history.action.approve": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ddɹoʌǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.history.action.reassign": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɐssıƃuǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.history.action.reject": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɾǝɔʇǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.history.action.resubmit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝsnqɯıʇʇǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.history.action.return": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝʇnɹuǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.history.action.submit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Snqɯıʇʇǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.history.action.withdraw": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mıʇɥpɹǝʍ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.history.document": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡoɔnɯǝuʇ ʌǝɹsıou "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.history.earlier": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝɐɹʅıǝɹ ɹonup: ıʇs ɐddɹoʌɐʅs uo ʅouƃǝɹ ɔonuʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.history.empty": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noʇɥıuƃ ɥɐs ɥɐddǝuǝp ʎǝʇ: ʇɥǝ ɯǝɯo ıs ɐ pɹɐɟʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.holders": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɐıʇıuƃ ɟoɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.inbox.empty.closed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No ɔʅosǝp ɯǝɯos ʎǝʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.inbox.empty.drafts": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄on ɥɐʌǝ uo pɹɐɟʇs."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.inbox.empty.sent": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nouǝ oɟ ʎonɹ ɯǝɯos ıs ıu ɹǝʌıǝʍ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.inbox.empty.tasks": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noʇɥıuƃ ıs ʍɐıʇıuƃ ɟoɹ ʎon."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.inbox.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯos ʍɐıʇıuƃ ɟoɹ ʎon, ɐup ʇɥǝ ɯǝɯos ʎon ʍɹıʇǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.inbox.tab.closed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄʅosǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.inbox.tab.drafts": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡɹɐɟʇs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.inbox.tab.sent": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝuʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.inbox.tab.tasks": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wʎ ʇɐsʞs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.inbox.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iuqox"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.loadMore": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sɥoʍ ɯoɹǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.new": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nǝʍ ɯǝɯo"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.notFound": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥıs ɯǝɯo poǝs uoʇ ǝxısʇ, oɹ ʎon ɔɐuuoʇ sǝǝ ıʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.referenceHolders": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " · Mıʇɥ "
+    },
+    {
+      "type": 1,
+      "value": "names"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.referenceRound": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " · ᴚonup "
+    },
+    {
+      "type": 1,
+      "value": "round"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.refused.document": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩dʅoɐp ʇɥǝ poɔnɯǝuʇ ɟıɹsʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.refused.route": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp ɐʇ ʅǝɐsʇ ouǝ ɐddɹoʌǝɹ ɟıɹsʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.remark": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯɐɹʞ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.remark.optional": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯɐɹʞ (odʇıouɐʅ)"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.remark.required": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ ɹǝɯɐɹʞ ıs ɹǝbnıɹǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.required": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝbnıɹǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.restricted": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝsʇɹıɔʇǝp ɯǝɯo"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.restricted.hint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄on ɐɹǝ uo ʅouƃǝɹ ɔʅǝɐɹǝp ʇo ɹǝɐp ıʇ. ∀u ɐpɯıuısʇɹɐʇoɹ ɔɐu ɹǝɐssıƃu ʇɥǝ ʇɐsʞ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.round": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚonup "
+    },
+    {
+      "type": 1,
+      "value": "round"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.route": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ddɹoʌǝɹs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.route.add": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp ɐddɹoʌǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.route.down": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Woʌǝ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " poʍu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.route.empty": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No ɐddɹoʌǝɹs ʎǝʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.route.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iu oɹpǝɹ. Ǝɐɔɥ ɐddɹoʌǝɹ ƃǝʇs ʇɥǝ ɯǝɯo ɐɟʇǝɹ ʇɥǝ ouǝ qǝɟoɹǝ ɥɐs ɐddɹoʌǝp ıʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.route.picker": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ddɹoʌǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.route.problem.duplicate": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ʅɹǝɐpʎ ou ʇɥǝ ɹonʇǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.route.problem.empty": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp ɐʇ ʅǝɐsʇ ouǝ ɐddɹoʌǝɹ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.route.problem.inactive": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɐuuoʇ sıƃu ıu ɐʇ ʇɥǝ ɯoɯǝuʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.route.problem.notCleared": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noʇ ɔʅǝɐɹǝp ɟoɹ ʇɥıs ɔʅɐssıɟıɔɐʇıou."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.route.problem.self": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄on ɔɐuuoʇ ɐddɹoʌǝ ʎonɹ oʍu ɯǝɯo."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.route.problem.tooLong": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥oo ɯɐuʎ ɐddɹoʌǝɹs."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.route.remove": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯoʌǝ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.route.save": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sɐʌǝ ɐddɹoʌǝɹs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.route.saved": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ddɹoʌǝɹs sɐʌǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.route.up": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Woʌǝ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " nd"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.save": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sɐʌǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.status.approved": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ddɹoʌǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.status.discarded": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡısɔɐɹpǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.status.draft": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡɹɐɟʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.status.inReview": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iu ɹǝʌıǝʍ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.status.rejected": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɾǝɔʇǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.status.returned": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝʇnɹuǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.status.withdrawn": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mıʇɥpɹɐʍu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.updatedAt": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥɐuƃǝp "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memoTypes.active": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iu nsǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memoTypes.add": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp ɯǝɯo ʇʎdǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memoTypes.caption": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo ʇʎdǝs oɟ ʇɥǝ oɹƃɐuısɐʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memoTypes.col.actions": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔʇıous"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memoTypes.col.default": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɟɐnʅʇ ɔʅɐssıɟıɔɐʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memoTypes.col.name": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nɐɯǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memoTypes.col.stepUp": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄouɟıɹɯ qǝɟoɹǝ ɐddɹoʌıuƃ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memoTypes.edit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝpıʇ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memoTypes.inactive": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sʍıʇɔɥǝp oɟɟ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memoTypes.lastActive": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ӽǝǝd ɐʇ ʅǝɐsʇ ouǝ ɯǝɯo ʇʎdǝ ıu nsǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memoTypes.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɥɐʇ dǝodʅǝ ɔɥoosǝ ʍɥǝu ʇɥǝʎ ʍɹıʇǝ ɐ ɯǝɯo. ∀ ʇʎdǝ ıs uǝʌǝɹ pǝʅǝʇǝp, ouʅʎ sʍıʇɔɥǝp oɟɟ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memoTypes.lowest": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅂oʍǝsʇ ʅǝʌǝʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memoTypes.no": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memoTypes.stepUp": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ddɹoʌǝɹs ɔouɟıɹɯ ıʇ ıs ʇɥǝɯ qǝɟoɹǝ ɐddɹoʌıuƃ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memoTypes.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo ʇʎdǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memoTypes.yes": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄ǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "nav.admin": [
     {
       "type": 0,
@@ -4189,6 +6141,20 @@
       "value": "‬"
     }
   ],
+  "nav.inbox": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iuqox"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "nav.language": [
     {
       "type": 0,
@@ -4197,6 +6163,48 @@
     {
       "type": 0,
       "value": "⅂ɐuƃnɐƃǝ ɐup ʇǝɹɯs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "nav.memo": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "nav.memoTypes": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo ʇʎdǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "nav.newMemo": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nǝʍ ɯǝɯo"
     },
     {
       "type": 0,
@@ -4343,6 +6351,20 @@
       "value": "‬"
     }
   ],
+  "nav.workflowTasks": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Odǝu ʇɐsʞs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "notifications.bell": [
     {
       "type": 0,
@@ -4441,6 +6463,20 @@
       "value": "‬"
     }
   ],
+  "notifications.category.workflow": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo ɐddɹoʌɐʅs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "notifications.empty": [
     {
       "type": 0,
@@ -4449,6 +6485,94 @@
     {
       "type": 0,
       "value": "Noʇɥıuƃ uǝʍ. Noʇıɟıɔɐʇıous ɐqonʇ ʎonɹ ɐɔɔonuʇ ɐup ʍoɹʞ ɐddǝɐɹ ɥǝɹǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.kind.memoApproved": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ʍɐs ɐddɹoʌǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.kind.memoRejected": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ʍɐs ɹǝɾǝɔʇǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.kind.memoReturned": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ʍɐs ɹǝʇnɹuǝp ʇo ʎon"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.kind.memoWithdrawn": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ʍɐs ʍıʇɥpɹɐʍu"
     },
     {
       "type": 0,
@@ -4513,6 +6637,72 @@
     {
       "type": 1,
       "value": "device"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.kind.taskAssigned": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ıs ʍɐıʇıuƃ ɟoɹ ʎonɹ ɐddɹoʌɐʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.kind.taskBlocked": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ıs ʍɐıʇıuƃ ɟoɹ ɹǝɐssıƃuɯǝuʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.kind.taskReassigned": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɐddɹoʌɐʅ oɟ ɯǝɯo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ʍɐs ɹǝɐssıƃuǝp"
     },
     {
       "type": 0,
@@ -10571,6 +12761,304 @@
     {
       "type": 0,
       "value": "∩sǝɹs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflowTasks.blocked.clearance": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noʇ ɔʅǝɐɹǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflowTasks.blocked.inactive": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɐuuoʇ sıƃu ıu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflowTasks.caption": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Odǝu ʍoɹʞɟʅoʍ ʇɐsʞs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflowTasks.col.actions": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔʇıous"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflowTasks.col.assignee": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ddɹoʌǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflowTasks.col.memo": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflowTasks.col.since": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɐıʇıuƃ sıuɔǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflowTasks.empty": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No ʇɐsʞ ɯɐʇɔɥǝs."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflowTasks.filter.blocked": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɐıʇıuƃ ɟoɹ ɹǝɐssıƃuɯǝuʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflowTasks.filter.open": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ʅʅ odǝu ʇɐsʞs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflowTasks.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅁ıʌǝ ɐ ʇɐsʞ ʇo soɯǝouǝ ǝʅsǝ ʍɥǝu ıʇs ɐddɹoʌǝɹ ɔɐuuoʇ ɐɔʇ, ɟoɹ ǝxɐɯdʅǝ ɐɟʇǝɹ ʇɥǝʎ ʅǝɟʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflowTasks.newAssignee": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nǝʍ ɐddɹoʌǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflowTasks.reason": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɐsou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflowTasks.reassign": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɐssıƃu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflowTasks.reassignFor": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɐssıƃu "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflowTasks.reassignLead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ uǝʍ ɐddɹoʌǝɹ ɯnsʇ qǝ ɐɔʇıʌǝ ɐup ɔʅǝɐɹǝp ɟoɹ ʇɥǝ ɯǝɯo. Ԑoʇɥ ɐddɹoʌǝɹs ɐɹǝ ʇoʅp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflowTasks.refused.inRound": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥıs dǝɹsou ıs ɐʅɹǝɐpʎ ou ʇɥǝ ɹonʇǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflowTasks.refused.initiator": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɐnʇɥoɹ ɔɐuuoʇ ɐddɹoʌǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflowTasks.refused.notEligible": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥıs dǝɹsou ıs ıuɐɔʇıʌǝ oɹ uoʇ ɔʅǝɐɹǝp ɟoɹ ʇɥǝ ɯǝɯo."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflowTasks.refused.same": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥıs dǝɹsou ɥoʅps ʇɥǝ ʇɐsʞ ɐʅɹǝɐpʎ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflowTasks.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Odǝu ʇɐsʞs"
     },
     {
       "type": 0,

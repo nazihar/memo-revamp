@@ -12,6 +12,9 @@ export const PERMISSION = {
   classificationsManage: 'authz.classifications.manage',
   auditRead: 'audit.read',
   notificationSettings: 'notification.settings.manage',
+  memoCreate: 'memo.create',
+  memoTypesManage: 'memo.types.manage',
+  workflowTasksReassign: 'workflow.tasks.reassign',
 } as const
 
 /** What the signed-in user may do (`GET /me/access`), for menus and buttons only. */

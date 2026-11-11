@@ -25,6 +25,7 @@ export const nm = defineMessages({
   saved: { id: 'notifications.prefs.saved', defaultMessage: 'Notification settings saved.' },
   categorySECURITY: { id: 'notifications.category.security', defaultMessage: 'Security' },
   categoryADMINISTRATION: { id: 'notifications.category.administration', defaultMessage: 'Access and administration' },
+  categoryWORKFLOW: { id: 'notifications.category.workflow', defaultMessage: 'Memo approvals' },
 
   mailTitle: { id: 'mail.title', defaultMessage: 'Email delivery' },
   mailLead: {
@@ -82,9 +83,32 @@ export const nmv = defineMessages<{
   mailInvalid: { id: 'mail.invalid', defaultMessage: 'Check the mail server settings: {detail}' },
 })
 
-const kindsWithValues = defineMessages<{ signInAlert: { device: string }; roleGranted: { role: string } }>({
+const kindsWithValues = defineMessages<{
+  signInAlert: { device: string }
+  roleGranted: { role: string }
+  taskAssigned: { reference: string }
+  memoReturned: { reference: string }
+  memoRejected: { reference: string }
+  memoApproved: { reference: string }
+  taskReassigned: { reference: string }
+  taskBlocked: { reference: string }
+  memoWithdrawn: { reference: string }
+}>({
   signInAlert: { id: 'notifications.kind.signInAlert', defaultMessage: 'New sign-in to your account from {device}' },
   roleGranted: { id: 'notifications.kind.roleGranted', defaultMessage: 'You were given the role {role}' },
+  taskAssigned: {
+    id: 'notifications.kind.taskAssigned',
+    defaultMessage: 'Memo {reference} is waiting for your approval',
+  },
+  memoReturned: { id: 'notifications.kind.memoReturned', defaultMessage: 'Memo {reference} was returned to you' },
+  memoRejected: { id: 'notifications.kind.memoRejected', defaultMessage: 'Memo {reference} was rejected' },
+  memoApproved: { id: 'notifications.kind.memoApproved', defaultMessage: 'Memo {reference} was approved' },
+  taskReassigned: {
+    id: 'notifications.kind.taskReassigned',
+    defaultMessage: 'The approval of memo {reference} was reassigned',
+  },
+  taskBlocked: { id: 'notifications.kind.taskBlocked', defaultMessage: 'Memo {reference} is waiting for reassignment' },
+  memoWithdrawn: { id: 'notifications.kind.memoWithdrawn', defaultMessage: 'Memo {reference} was withdrawn' },
 })
 
 const kinds = defineMessages({
@@ -95,11 +119,26 @@ const kinds = defineMessages({
 
 /** The text of a notification of [kind] (ADR-0030); unknown kinds (a newer server) fall back to a generic text. */
 export function notificationText(intl: IntlShape, kind: string, params: Record<string, string>): string {
+  const reference = { reference: params.reference ?? '' }
   switch (kind) {
     case 'SIGN_IN_ALERT':
       return intl.formatMessage(kindsWithValues.signInAlert, { device: params.device ?? '' })
     case 'ROLE_GRANTED':
       return intl.formatMessage(kindsWithValues.roleGranted, { role: params.role ?? '' })
+    case 'TASK_ASSIGNED':
+      return intl.formatMessage(kindsWithValues.taskAssigned, reference)
+    case 'MEMO_RETURNED':
+      return intl.formatMessage(kindsWithValues.memoReturned, reference)
+    case 'MEMO_REJECTED':
+      return intl.formatMessage(kindsWithValues.memoRejected, reference)
+    case 'MEMO_APPROVED':
+      return intl.formatMessage(kindsWithValues.memoApproved, reference)
+    case 'TASK_REASSIGNED':
+      return intl.formatMessage(kindsWithValues.taskReassigned, reference)
+    case 'TASK_BLOCKED':
+      return intl.formatMessage(kindsWithValues.taskBlocked, reference)
+    case 'MEMO_WITHDRAWN':
+      return intl.formatMessage(kindsWithValues.memoWithdrawn, reference)
     case 'PASSWORD_CHANGED':
       return intl.formatMessage(kinds.passwordChanged)
     case 'MFA_RESET':
@@ -112,6 +151,7 @@ export function notificationText(intl: IntlShape, kind: string, params: Record<s
 const categoryMessages: Record<string, MessageDescriptor | undefined> = {
   SECURITY: nm.categorySECURITY,
   ADMINISTRATION: nm.categoryADMINISTRATION,
+  WORKFLOW: nm.categoryWORKFLOW,
 }
 
 export function categoryLabel(intl: IntlShape, category: string): string {
@@ -127,6 +167,13 @@ const mailTemplates = defineMessages({
   SIGN_IN_ALERT: { id: 'mail.template.signInAlert', defaultMessage: 'New sign-in' },
   ROLE_GRANTED: { id: 'mail.template.roleGranted', defaultMessage: 'Role granted' },
   TEST: { id: 'mail.template.test', defaultMessage: 'Test email' },
+  TASK_ASSIGNED: { id: 'mail.template.taskAssigned', defaultMessage: 'Memo waiting for approval' },
+  MEMO_RETURNED: { id: 'mail.template.memoReturned', defaultMessage: 'Memo returned' },
+  MEMO_REJECTED: { id: 'mail.template.memoRejected', defaultMessage: 'Memo rejected' },
+  MEMO_APPROVED: { id: 'mail.template.memoApproved', defaultMessage: 'Memo approved' },
+  TASK_REASSIGNED: { id: 'mail.template.taskReassigned', defaultMessage: 'Memo task reassigned' },
+  TASK_BLOCKED: { id: 'mail.template.taskBlocked', defaultMessage: 'Memo waiting for reassignment' },
+  MEMO_WITHDRAWN: { id: 'mail.template.memoWithdrawn', defaultMessage: 'Memo withdrawn' },
 })
 
 const templateMessages: Record<string, MessageDescriptor | undefined> = mailTemplates

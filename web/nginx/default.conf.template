@@ -60,7 +60,8 @@ server {
     # request: installs without ONLYOFFICE start fine and answer 502 here. X-Forwarded-Host carries the sub-path, which
     # is how ONLYOFFICE learns its public base URL. Its pages are framed by the SPA, whose documents require COEP, so
     # they get the matching cross-origin headers; our CSP is not applied to them (the editor is not our code). Only our own
-    # pages may frame them (OFFICE_HEADERS in vite.config.ts mirrors this block for local runs).
+    # pages may frame them: `frame-ancestors` alone, since next to it X-Frame-Options is ignored (Firefox says so on every
+    # editor load). OFFICE_HEADERS in vite.config.ts mirrors this block for local runs.
     location /office/ {
         resolver ${NGINX_RESOLVER} valid=30s ipv6=off;
         set $office ${OFFICE_URL};
@@ -79,7 +80,6 @@ server {
         add_header Cross-Origin-Resource-Policy "same-origin" always;
         add_header X-Content-Type-Options "nosniff" always;
         add_header Content-Security-Policy "frame-ancestors 'self'" always;
-        add_header X-Frame-Options "SAMEORIGIN" always;
     }
 
     # Content-hashed build assets: cache forever.

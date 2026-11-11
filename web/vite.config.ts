@@ -21,7 +21,6 @@ const OFFICE_HEADERS: Record<string, string> = {
   'Cross-Origin-Resource-Policy': 'same-origin',
   'X-Content-Type-Options': 'nosniff',
   'Content-Security-Policy': "frame-ancestors 'self'",
-  'X-Frame-Options': 'SAMEORIGIN',
 }
 
 // The SPA talks to the backend on the same origin (/api); in development and preview Vite proxies to the backend.

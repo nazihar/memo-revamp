@@ -9,7 +9,7 @@
 - **Phase 2 (workflow engine) started on 2026-11-09** at the owner's choice. The overview is approved (2026-11-09, Q1–Q5 answered, per-epic gate delegation kept): `phase-2-workflow-engine/overview.md` (six epics: E01 first slice / D1, E02 ONLYOFFICE editing, E03 definition model and runtime, E04 assignees and DoA, E05 timers and SLAs, E06 visual builder). Phase 1b is not started; it must finish before Phase 3 exits.
 - **Dev environment:** https://dev.memo-revamp.naziharitsolution.com and the operator console https://admin.dev.memo-revamp.naziharitsolution.com on the VM 123.176.58.175. It deploys automatically after every green `ci` run on `master`. The owner's operator account is enrolled.
 - **Phase 0:** done (`docs/plan/phase-0-foundations/`). **Release:** `v0.1.0` (2026-10-15). **Product name:** `memo` everywhere except the repository name (A1).
-- **Branches:** `master` holds PRs #1–#37 (2026-11-11: #34 Phase 2 E01, #35 memo visual baselines, #36 web image CVE fix, #37 E02 plan). Open: #38 the E02 implementation.
+- **Branches:** `master` holds PRs #1–#39 (2026-11-11: #34 Phase 2 E01, #35 memo visual baselines, #36 web image CVE fix, #37 E02 plan, #38 E02 implementation, #39 forwarded scheme for the editor).
 
 ## State (Phase 2)
 - [x] Overview written (2026-11-09)
@@ -30,9 +30,9 @@
 - [x] E02 plan written and merged (2026-11-11): research, ADR-0037, design, threat model, tasks, test plan (`epic-02-onlyoffice-editing/`, PR #37)
 - [x] E02 T1–T3 service, network, `docedit` module, download and callbacks (forced RLS, HS256, internal connector, saves through the files pipeline)
 - [x] E02 T4 web editor page and buttons (read-only on phones), en/ar
-- [x] E02 T5 `DocEditIT`, matrix `p2-e02-docedit.yaml`, E2E edit journey green against a real ONLYOFFICE locally; Firefox/WebKit runs and the nightly container test still open
+- [x] E02 T5 `DocEditIT`, matrix `p2-e02-docedit.yaml`, E2E edit journey green against a real ONLYOFFICE locally and on dev in Chromium, Firefox and WebKit; the nightly container test still open
 - [x] E02 T6 runbook, ASVS rows, licence register, nfr memory figures, epic log
-- [ ] E02 merged and on dev (#38; dev `.env` already has the `documents` profile and `MEMO_DOCSERVER_URL`, Ansible 2026-11-11)
+- [x] E02 merged and on dev (#38, #39; Ansible 2026-11-11 turned on the `documents` profile; editing verified on dev)
 
 ## State (Phase 1a, closed)
 - [x] Overview approved (2026-10-18), Q1–Q8 answered, per-epic gate delegated
@@ -43,7 +43,7 @@
 - [ ] Owner demo, moderated usability walkthrough, manual keyboard and screen-reader pass (carried)
 
 ## Next step
-1. Agent: merge #38 when green (owner approved 2026-11-11), check editing on dev after the deploy, then E02 follow-ups: Firefox and WebKit runs of the edit journey, nightly `OnlyOfficeContainerIT`.
+1. Agent: E02 follow-up, the nightly `OnlyOfficeContainerIT`; then the E03 plan (definition model and runtime).
 2. Owner: the D1 demo on dev (`phase-2-workflow-engine/epic-01-first-slice/demo.md`).
 3. Before 2026-11-22: take the rebuilt distroless digest from Renovate and delete the zlib entries in `.trivyignore`.
 4. Follow-ups (retrospective "Carried"): `AuditPerformanceIT`, `NotificationPerformanceIT`, the full-signature ClamAV corpus nightly, sample bodies for the remaining mutating matrix cells, upstream clean-ups (`apk upgrade` lines, Spring Session licence exceptions, Guava pin), Spring Boot 4.2 GA.

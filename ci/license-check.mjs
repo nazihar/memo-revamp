@@ -36,6 +36,8 @@ const ALIASES = new Map(
     'bsd license 3': 'BSD-3-Clause',
     'the bsd license': 'BSD-3-Clause',
     'new bsd license': 'BSD-3-Clause',
+    // The Go project's licence is the BSD-3-Clause text (RE2/J, pulled by CEL for ADR-0039).
+    'go license': 'BSD-3-Clause',
     'bsd-2-clause': 'BSD-2-Clause',
     'eclipse public license v2.0': 'EPL-2.0',
     'eclipse public license - v 2.0': 'EPL-2.0',

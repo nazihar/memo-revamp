@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://memo.example/schemas/workflow-definition-v2.json",
+  "title": "Workflow definition, schema version 2 (ADR-0038)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "start", "steps"],
+  "properties": {
+    "schemaVersion": { "const": 2 },
+    "attributes": {
+      "type": "array",
+      "maxItems": 30,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "type"],
+        "properties": {
+          "name": { "type": "string", "pattern": "^[a-z][A-Za-z0-9]{0,39}$" },
+          "type": { "enum": ["string", "int", "double", "bool", "timestamp"] }
+        }
+      }
+    },
+    "resubmit": { "enum": ["restart", "resume", "skip-unchanged"] },
+    "start": { "$ref": "#/$defs/stepId" },
+    "steps": { "type": "array", "minItems": 1, "maxItems": 100, "items": { "$ref": "#/$defs/step" } }
+  },
+  "$defs": {
+    "stepId": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,39}$" },
+    "target": { "type": "string", "pattern": "^([a-z][a-z0-9-]{0,39})$" },
+    "name": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "action": { "enum": ["APPROVE", "RECOMMEND", "RETURN", "REJECT", "SEND_BACK", "FORWARD", "DELEGATE", "ASK", "REFER"] },
+    "assignee": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "properties": {
+        "kind": { "enum": ["person", "initiator"] },
+        "userId": { "type": "string", "format": "uuid" }
+      },
+      "if": { "properties": { "kind": { "const": "person" } } },
+      "then": { "required": ["userId"] },
+      "else": { "not": { "required": ["userId"] } }
+    },
+    "sla": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["due"],
+      "properties": {
+        "due": { "type": "string", "pattern": "^P(?!$)(\\d{1,3}D)?(T(?=\\d)(\\d{1,4}H)?(\\d{1,4}M)?)?$" },
+        "workingTime": { "type": "boolean" }
+      }
+    },
+    "step": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type"],
+      "properties": {
+        "id": { "$ref": "#/$defs/stepId" },
+        "type": { "enum": ["route", "review", "approve", "parallel", "branch", "notify", "subworkflow", "escalate-to-forum", "sign"] },
+        "name": { "$ref": "#/$defs/name" },
+        "next": { "$ref": "#/$defs/target" },
+        "assignee": { "$ref": "#/$defs/assignee" },
+        "assignees": { "type": "array", "minItems": 2, "maxItems": 20, "items": { "$ref": "#/$defs/assignee" } },
+        "mode": { "enum": ["all", "any", "n-of-m"] },
+        "n": { "type": "integer", "minimum": 1, "maximum": 20 },
+        "actions": { "type": "array", "uniqueItems": true, "maxItems": 9, "items": { "$ref": "#/$defs/action" } },
+        "remarks": { "type": "array", "uniqueItems": true, "maxItems": 9, "items": { "$ref": "#/$defs/action" } },
+        "branches": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 10,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["when", "next"],
+            "properties": {
+              "when": { "type": "string", "minLength": 1, "maxLength": 1000 },
+              "next": { "$ref": "#/$defs/target" }
+            }
+          }
+        },
+        "otherwise": { "$ref": "#/$defs/target" },
+        "recipients": { "type": "array", "minItems": 1, "maxItems": 20, "items": { "$ref": "#/$defs/assignee" } },
+        "message": { "type": "string", "pattern": "^[a-z][A-Za-z0-9]{0,59}$" },
+        "definition": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,99}$" },
+        "forum": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,99}$" },
+        "sla": { "$ref": "#/$defs/sla" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "type": { "const": "route" } } },
+          "then": { "required": ["next"], "propertyNames": { "enum": ["id", "type", "name", "next", "actions", "remarks", "sla"] } }
+        },
+        {
+          "if": { "properties": { "type": { "enum": ["review", "approve", "sign"] } } },
+          "then": { "required": ["assignee", "next"], "propertyNames": { "enum": ["id", "type", "name", "next", "assignee", "actions", "remarks", "sla"] } }
+        },
+        {
+          "if": { "properties": { "type": { "const": "parallel" } } },
+          "then": {
+            "required": ["assignees", "mode", "next"],
+            "propertyNames": { "enum": ["id", "type", "name", "next", "assignees", "mode", "n", "actions", "remarks", "sla"] },
+            "if": { "properties": { "mode": { "const": "n-of-m" } } },
+            "then": { "required": ["n"] },
+            "else": { "not": { "required": ["n"] } }
+          }
+        },
+        {
+          "if": { "properties": { "type": { "const": "branch" } } },
+          "then": { "required": ["branches", "otherwise"], "propertyNames": { "enum": ["id", "type", "name", "branches", "otherwise"] } }
+        },
+        {
+          "if": { "properties": { "type": { "const": "notify" } } },
+          "then": { "required": ["recipients", "message", "next"], "propertyNames": { "enum": ["id", "type", "name", "next", "recipients", "message"] } }
+        },
+        {
+          "if": { "properties": { "type": { "const": "subworkflow" } } },
+          "then": { "required": ["definition", "next"], "propertyNames": { "enum": ["id", "type", "name", "next", "definition"] } }
+        },
+        {
+          "if": { "properties": { "type": { "const": "escalate-to-forum" } } },
+          "then": { "required": ["forum", "next"], "propertyNames": { "enum": ["id", "type", "name", "next", "forum"] } }
+        }
+      ]
+    }
+  }
+}

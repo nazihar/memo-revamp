@@ -1,0 +1,1 @@
+item.amount > 100000 && item.category.matches("^cap")

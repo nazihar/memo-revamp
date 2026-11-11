@@ -25,6 +25,12 @@ interface WorkflowSubject {
      */
     fun snapshot(subjectId: UUID): Map<String, Any?>
 
+    /** The item attributes definition conditions may read for this subject type (ADR-0039), by name. */
+    val attributes: Map<String, AttributeType> get() = emptyMap()
+
+    /** The current values of [attributes] for [subjectId]; a missing value sends a condition to its branch's `otherwise`. */
+    fun attributeValues(subjectId: UUID): Map<String, Any?> = emptyMap()
+
     /** What lists show of [subjectIds], in one query per page (absent ids are shown as unknown). */
     fun summaries(subjectIds: Collection<UUID>): Map<UUID, SubjectSummary> = emptyMap()
 

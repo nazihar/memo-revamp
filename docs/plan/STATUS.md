@@ -34,7 +34,8 @@
 - [x] E02 T6 runbook, ASVS rows, licence register, nfr memory figures, epic log
 - [x] E02 merged and on dev (#38, #39; Ansible 2026-11-11 turned on the `documents` profile; editing verified on dev)
 - [x] E03 plan written (2026-11-11): research, ADR-0038 (definitions), ADR-0039 (CEL conditions), design, threat model, tasks T1–T11, test plan (`epic-03-definition-runtime/`)
-- [ ] E03 T1 definition model · T2 conditions · T3 runtime · T4 parallel · T5 task actions · T6 round control · T7 lifecycle · T8 migration · T9 events · T10 web · T11 close
+- [x] E03 T1 definition model · T2 conditions (PR stacked on #41)
+- [ ] E03 T3 runtime · T4 parallel · T5 task actions · T6 round control · T7 lifecycle · T8 migration · T9 events · T10 web · T11 close
 
 ## State (Phase 1a, closed)
 - [x] Overview approved (2026-10-18), Q1–Q8 answered, per-epic gate delegated

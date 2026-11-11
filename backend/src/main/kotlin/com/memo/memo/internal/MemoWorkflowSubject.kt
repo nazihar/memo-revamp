@@ -6,6 +6,7 @@ import com.memo.files.Files
 import com.memo.identity.UserStatus
 import com.memo.identity.UserSummaries
 import com.memo.workflow.ActionKind
+import com.memo.workflow.AttributeType
 import com.memo.workflow.BlockedReason
 import com.memo.workflow.InstanceStatus
 import com.memo.workflow.WorkflowActionTaken
@@ -57,6 +58,12 @@ class MemoWorkflowSubject(
     override fun lock(subjectId: UUID) {
         store.lock(subjectId)
     }
+
+    override val attributes: Map<String, AttributeType> =
+        mapOf("memoTypeId" to AttributeType.STRING, "classificationRank" to AttributeType.INT)
+
+    override fun attributeValues(subjectId: UUID): Map<String, Any?> =
+        store.find(subjectId)?.let { mapOf("memoTypeId" to it.typeId.toString(), "classificationRank" to it.classificationRank) }.orEmpty()
 
     override fun snapshot(subjectId: UUID): Map<String, Any?> {
         val version =

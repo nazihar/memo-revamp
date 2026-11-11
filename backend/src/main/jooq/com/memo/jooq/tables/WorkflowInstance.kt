@@ -154,6 +154,11 @@ open class WorkflowInstance(
      */
     val VERSION: TableField<WorkflowInstanceRecord, Long?> = createField(DSL.name("version"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BIGINT)), this, "")
 
+    /**
+     * The column <code>memo.workflow_instance.current_step_name</code>.
+     */
+    val CURRENT_STEP_NAME: TableField<WorkflowInstanceRecord, String?> = createField(DSL.name("current_step_name"), SQLDataType.CLOB, this, "")
+
     private constructor(alias: Name, aliased: Table<WorkflowInstanceRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<WorkflowInstanceRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<WorkflowInstanceRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -264,7 +269,8 @@ open class WorkflowInstance(
     override fun getChecks(): List<Check<WorkflowInstanceRecord>> = listOf(
         Internal.createCheck(this, DSL.name("workflow_instance_check"), "(((status = 'RUNNING'::text) = (current_step_id IS NOT NULL)))", true),
         Internal.createCheck(this, DSL.name("workflow_instance_current_round_check"), "((current_round >= 1))", true),
-        Internal.createCheck(this, DSL.name("workflow_instance_status_check"), "((status = ANY (ARRAY['RUNNING'::text, 'RETURNED'::text, 'APPROVED'::text, 'REJECTED'::text, 'WITHDRAWN'::text])))", true),
+        Internal.createCheck(this, DSL.name("workflow_instance_current_step_name_check"), "((length(current_step_name) <= 200))", true),
+        Internal.createCheck(this, DSL.name("workflow_instance_status_check"), "((status = ANY (ARRAY['RUNNING'::text, 'RETURNED'::text, 'APPROVED'::text, 'REJECTED'::text, 'WITHDRAWN'::text, 'CANCELLED'::text])))", true),
         Internal.createCheck(this, DSL.name("workflow_instance_subject_type_check"), "((subject_type ~ '^[a-z][a-z0-9.-]{0,99}\$'::text))", true)
     )
     override fun `as`(alias: String): WorkflowInstance = WorkflowInstance(DSL.name(alias), this)

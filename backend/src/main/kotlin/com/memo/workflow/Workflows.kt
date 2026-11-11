@@ -28,13 +28,17 @@ class Workflows(
     /** Most approvers a route may have in this tenant (`workflow.route.max`); subjects check it before they start. */
     fun maxApprovers(): Int = settings.maxApprovers()
 
-    /** Round 1 on the built-in sequential definition, the steps taken from [route] in order. */
+    /**
+     * Round 1 on the newest published version of [definitionKey] (ADR-0038); [route] fills its route step, and must be
+     * empty when the definition has none. The default is the built-in sequential approval of the route.
+     */
     fun start(
         subjectType: String,
         subjectId: UUID,
         route: List<UUID>,
         remark: String? = null,
-    ): WorkflowView = runner.start(subjectType, subjectId, route, remark, currentUser())
+        definitionKey: String = SEQUENTIAL_APPROVAL,
+    ): WorkflowView = runner.start(subjectType, subjectId, route, remark, currentUser(), definitionKey)
 
     fun approve(
         taskId: UUID,
@@ -69,6 +73,11 @@ class Workflows(
         newAssignee: UUID,
         reason: String?,
     ): WorkflowView = runner.onTask(taskId, currentUser()) { actor -> Reassign(actor, taskId, newAssignee, reason) }
+
+    companion object {
+        /** The built-in definition every tenant has: sequential approval of the initiator's route. */
+        const val SEQUENTIAL_APPROVAL = "sequential-approval"
+    }
 }
 
 private fun currentUser(): Actor.User =

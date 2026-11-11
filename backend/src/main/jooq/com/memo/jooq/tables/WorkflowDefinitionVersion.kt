@@ -5,6 +5,7 @@ package com.memo.jooq.tables
 
 
 import com.memo.jooq.Memo
+import com.memo.jooq.indexes.WORKFLOW_DEFINITION_VERSION_ONE_PUBLISHED_IDX
 import com.memo.jooq.keys.WORKFLOW_DEFINITION_VERSION_PKEY
 import com.memo.jooq.keys.WORKFLOW_DEFINITION_VERSION_TENANT_ID_DEFINITION_ID_NUMBER_KEY
 import com.memo.jooq.keys.WORKFLOW_DEFINITION_VERSION_TENANT_ID_ID_KEY
@@ -24,6 +25,7 @@ import org.jooq.Check
 import org.jooq.Condition
 import org.jooq.Field
 import org.jooq.ForeignKey
+import org.jooq.Index
 import org.jooq.InverseForeignKey
 import org.jooq.JSONB
 import org.jooq.Name
@@ -123,6 +125,41 @@ open class WorkflowDefinitionVersion(
      */
     val CREATED_AT: TableField<WorkflowDefinitionVersionRecord, OffsetDateTime?> = createField(DSL.name("created_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false), this, "")
 
+    /**
+     * The column <code>memo.workflow_definition_version.compiled</code>.
+     */
+    val COMPILED: TableField<WorkflowDefinitionVersionRecord, JSONB?> = createField(DSL.name("compiled"), SQLDataType.JSONB, this, "")
+
+    /**
+     * The column <code>memo.workflow_definition_version.submitted_by</code>.
+     */
+    val SUBMITTED_BY: TableField<WorkflowDefinitionVersionRecord, UUID?> = createField(DSL.name("submitted_by"), SQLDataType.UUID, this, "")
+
+    /**
+     * The column <code>memo.workflow_definition_version.submitted_at</code>.
+     */
+    val SUBMITTED_AT: TableField<WorkflowDefinitionVersionRecord, OffsetDateTime?> = createField(DSL.name("submitted_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
+
+    /**
+     * The column <code>memo.workflow_definition_version.reviewed_by</code>.
+     */
+    val REVIEWED_BY: TableField<WorkflowDefinitionVersionRecord, UUID?> = createField(DSL.name("reviewed_by"), SQLDataType.UUID, this, "")
+
+    /**
+     * The column <code>memo.workflow_definition_version.reviewed_at</code>.
+     */
+    val REVIEWED_AT: TableField<WorkflowDefinitionVersionRecord, OffsetDateTime?> = createField(DSL.name("reviewed_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
+
+    /**
+     * The column <code>memo.workflow_definition_version.review_remark</code>.
+     */
+    val REVIEW_REMARK: TableField<WorkflowDefinitionVersionRecord, String?> = createField(DSL.name("review_remark"), SQLDataType.CLOB, this, "")
+
+    /**
+     * The column <code>memo.workflow_definition_version.published_at</code>.
+     */
+    val PUBLISHED_AT: TableField<WorkflowDefinitionVersionRecord, OffsetDateTime?> = createField(DSL.name("published_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
+
     private constructor(alias: Name, aliased: Table<WorkflowDefinitionVersionRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<WorkflowDefinitionVersionRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<WorkflowDefinitionVersionRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -157,6 +194,7 @@ open class WorkflowDefinitionVersion(
         override fun `as`(alias: Table<*>): WorkflowDefinitionVersionPath = WorkflowDefinitionVersionPath(alias.qualifiedName, this)
     }
     override fun getSchema(): Schema? = if (aliased()) null else Memo.MEMO
+    override fun getIndexes(): List<Index> = listOf(WORKFLOW_DEFINITION_VERSION_ONE_PUBLISHED_IDX)
     override fun getPrimaryKey(): UniqueKey<WorkflowDefinitionVersionRecord> = WORKFLOW_DEFINITION_VERSION_PKEY
     override fun getUniqueKeys(): List<UniqueKey<WorkflowDefinitionVersionRecord>> = listOf(WORKFLOW_DEFINITION_VERSION_TENANT_ID_DEFINITION_ID_NUMBER_KEY, WORKFLOW_DEFINITION_VERSION_TENANT_ID_ID_KEY)
     override fun getReferences(): List<ForeignKey<WorkflowDefinitionVersionRecord, *>> = listOf(WORKFLOW_DEFINITION_VERSION__WORKFLOW_DEFINITION_VERSION_TENANT_ID_DEFINITION_ID_FKEY)
@@ -185,7 +223,10 @@ open class WorkflowDefinitionVersion(
         get(): WorkflowInstancePath = workflowInstance()
     override fun getChecks(): List<Check<WorkflowDefinitionVersionRecord>> = listOf(
         Internal.createCheck(this, DSL.name("workflow_definition_version_body_check"), "((octet_length((body)::text) <= 1048576))", true),
+        Internal.createCheck(this, DSL.name("workflow_definition_version_checker_check"), "(((reviewed_by IS NULL) OR (reviewed_by <> submitted_by)))", true),
+        Internal.createCheck(this, DSL.name("workflow_definition_version_compiled_check"), "((octet_length((compiled)::text) <= 2097152))", true),
         Internal.createCheck(this, DSL.name("workflow_definition_version_number_check"), "((number >= 1))", true),
+        Internal.createCheck(this, DSL.name("workflow_definition_version_review_remark_check"), "(((length(review_remark) >= 1) AND (length(review_remark) <= 4000)))", true),
         Internal.createCheck(this, DSL.name("workflow_definition_version_schema_version_check"), "((schema_version >= 1))", true),
         Internal.createCheck(this, DSL.name("workflow_definition_version_state_check"), "((state = ANY (ARRAY['DRAFT'::text, 'IN_REVIEW'::text, 'PUBLISHED'::text, 'RETIRED'::text])))", true)
     )

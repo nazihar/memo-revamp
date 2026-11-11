@@ -10,6 +10,9 @@ enum class RoundOutcome { OPEN, RETURNED, APPROVED, REJECTED, WITHDRAWN }
 
 enum class StepState { PENDING, ACTIVE, DONE, SKIPPED }
 
+/** What a step asks of its holder (`workflow_step.type`): route entries and approve steps approve, review steps recommend. */
+enum class StepKind { APPROVE, REVIEW, PARALLEL }
+
 enum class TaskState { OPEN, COMPLETED, CANCELLED, REASSIGNED }
 
 /** A piece of work for one person; [outcome] is APPROVE, RETURN or REJECT once COMPLETED. */
@@ -21,19 +24,33 @@ data class Task(
     val outcome: ActionKind? = null,
 )
 
-/** One approver's place in a round. [assignee] is who holds the step now (it changes on reassignment). */
+/**
+ * One activation of a definition step in a round (design E03 §3). [assignee] is who holds it now (it changes on
+ * reassignment); [nodeId] is the definition step it activates; route entries also carry their [routeIndex].
+ */
 data class Step(
     val id: UUID,
     val ordinal: Int,
     val assignee: UUID,
     val state: StepState,
     val tasks: List<Task> = emptyList(),
-)
+    val nodeId: String = ROUTE_NODE,
+    val kind: StepKind = StepKind.APPROVE,
+    val routeIndex: Int? = null,
+    val name: String? = null,
+) {
+    companion object {
+        /** The route step of the built-in sequential definition, which every E01 step activates. */
+        const val ROUTE_NODE = "route"
+    }
+}
 
 data class Round(
     val number: Int,
     val outcome: RoundOutcome,
     val steps: List<Step>,
+    /** The initiator's route for this round (the approvers of the definition's route step). */
+    val route: List<UUID> = emptyList(),
 ) {
     fun replaceStep(
         stepId: UUID,

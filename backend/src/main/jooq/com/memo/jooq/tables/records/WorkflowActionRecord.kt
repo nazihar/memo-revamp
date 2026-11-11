@@ -68,6 +68,10 @@ open class WorkflowActionRecord private constructor() : UpdatableRecordImpl<Work
         set(value): Unit = set(11, value)
         get(): OffsetDateTime = get(11) as OffsetDateTime
 
+    open var details: JSONB?
+        set(value): Unit = set(12, value)
+        get(): JSONB? = get(12) as JSONB?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -77,7 +81,7 @@ open class WorkflowActionRecord private constructor() : UpdatableRecordImpl<Work
     /**
      * Create a detached, initialised WorkflowActionRecord
      */
-    constructor(id: UUID, tenantId: UUID, instanceId: UUID, seq: Long, round: Int, taskId: UUID? = null, kind: String, actorId: UUID, actingForId: UUID? = null, remark: String? = null, subjectSnapshot: JSONB? = null, occurredAt: OffsetDateTime): this() {
+    constructor(id: UUID, tenantId: UUID, instanceId: UUID, seq: Long, round: Int, taskId: UUID? = null, kind: String, actorId: UUID, actingForId: UUID? = null, remark: String? = null, subjectSnapshot: JSONB? = null, occurredAt: OffsetDateTime, details: JSONB? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.instanceId = instanceId
@@ -90,6 +94,7 @@ open class WorkflowActionRecord private constructor() : UpdatableRecordImpl<Work
         this.remark = remark
         this.subjectSnapshot = subjectSnapshot
         this.occurredAt = occurredAt
+        this.details = details
         resetTouchedOnNotNull()
     }
 }

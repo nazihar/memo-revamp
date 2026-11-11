@@ -1,8 +1,11 @@
 package com.memo.testsupport
 
 import com.memo.workflow.ActionKind
+import com.memo.workflow.AttributeType
 import com.memo.workflow.BlockedReason
 import com.memo.workflow.WorkflowActionTaken
+import com.memo.workflow.WorkflowEscalatedToForum
+import com.memo.workflow.WorkflowNotifyRequested
 import com.memo.workflow.WorkflowSubject
 import com.memo.workflow.WorkflowTaskClosed
 import com.memo.workflow.WorkflowTaskCreated
@@ -23,6 +26,13 @@ class TestWorkflowSubject : WorkflowSubject {
     val ineligible = ConcurrentHashMap<UUID, BlockedReason>()
     val documentVersion = ConcurrentHashMap<UUID, Int>()
     val vetoed: MutableSet<UUID> = ConcurrentHashMap.newKeySet()
+
+    /** Attribute values per item, for branch conditions (E03). */
+    val values = ConcurrentHashMap<UUID, Map<String, Any?>>()
+
+    override val attributes: Map<String, AttributeType> = mapOf("amount" to AttributeType.INT, "category" to AttributeType.STRING)
+
+    override fun attributeValues(subjectId: UUID): Map<String, Any?> = values[subjectId].orEmpty()
 
     /** Called inside every action before it is written; a test can block here to hold the instance lock. */
     @Volatile
@@ -68,12 +78,24 @@ class WorkflowEventRecorder {
         events += event
     }
 
+    @EventListener
+    fun on(event: WorkflowNotifyRequested) {
+        events += event
+    }
+
+    @EventListener
+    fun on(event: WorkflowEscalatedToForum) {
+        events += event
+    }
+
     fun of(subjectId: UUID): List<Any> =
         events.filter {
             when (it) {
                 is WorkflowActionTaken -> it.subjectId == subjectId
                 is WorkflowTaskCreated -> it.subjectId == subjectId
                 is WorkflowTaskClosed -> it.subjectId == subjectId
+                is WorkflowNotifyRequested -> it.subjectId == subjectId
+                is WorkflowEscalatedToForum -> it.subjectId == subjectId
                 else -> false
             }
         }

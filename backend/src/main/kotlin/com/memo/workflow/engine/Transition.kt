@@ -2,17 +2,24 @@ package com.memo.workflow.engine
 
 import com.memo.workflow.ActionKind
 import com.memo.workflow.InstanceStatus
+import com.memo.workflow.definition.Definition
+import com.memo.workflow.definition.DefinitionCompiler
+import com.memo.workflow.definition.StepType
 import java.util.UUID
 
 /**
  * The workflow's transition function (ADR-0034, ADR-0035): given a state and a command, the next state, the action row
- * and the effects to write, or a refusal. Pure: no I/O, no clock; ids and eligibility come from [context]. E01 knows one
- * definition, the sequential approval of an initiator-defined route; E03 widens the step types on the same model.
+ * and the effects to write, or a refusal. Pure: no I/O, no clock; ids and eligibility come from [context]. The instance
+ * follows its compiled [definition] (E03); the default is E01's built-in sequential approval of the initiator's route.
  */
 class Transition(
     private val context: TransitionContext,
+    private val definition: Definition = DefinitionCompiler.SEQUENTIAL,
 ) {
-    private val rounds = Rounds(context)
+    private val rounds = Rounds(context, definition)
+
+    /** Whether the definition takes the initiator's route; without a route step the route must be empty. */
+    private val routed = definition.steps.any { it.type == StepType.ROUTE }
 
     /** Round 1 of a new instance. */
     fun start(
@@ -20,18 +27,35 @@ class Transition(
         route: List<UUID>,
         remark: String? = null,
     ): Decision {
-        val refusal = Routes.refusal(initiator, route, context.maxApprovers) ?: Remarks.refusal(remark, required = false)
+        val refusal = Routes.refusal(initiator, route, context.maxApprovers, routed) ?: Remarks.refusal(remark, required = false)
         if (refusal != null) return Decision.Refused(refusal)
-        val round = rounds.open(1, route)
-        val action = ActionRecord(ActionKind.SUBMIT, round.number, null, initiator, Remarks.clean(remark))
-        return Decision.Accepted(Outcome(InstanceState(initiator, InstanceStatus.RUNNING, round), action, rounds.started(round)))
+        val walk = rounds.open(1, route, People(initiator, initiator))
+        val action = ActionRecord(ActionKind.SUBMIT, 1, null, initiator, Remarks.clean(remark))
+        return Decision.Accepted(opened(initiator, walk, action))
+    }
+
+    /** A new round's outcome: started, its first tasks, and approved at once when the walk reached the end. */
+    private fun opened(
+        initiator: UUID,
+        walk: Walk,
+        action: ActionRecord,
+    ): Outcome {
+        val started = listOf(Effect.RoundStarted(walk.round.number)) + walk.effects
+        val state = InstanceState(initiator, InstanceStatus.RUNNING, walk.round)
+        return if (walk.finished) {
+            val done = state.copy(status = InstanceStatus.APPROVED, round = walk.round.copy(outcome = RoundOutcome.APPROVED))
+            val ended = listOf(Effect.RoundEnded(walk.round.number, RoundOutcome.APPROVED), Effect.InstanceEnded(InstanceStatus.APPROVED))
+            Outcome(done, action, started + ended, walk.followUps)
+        } else {
+            Outcome(state, action, started, walk.followUps)
+        }
     }
 
     fun apply(
         state: InstanceState,
         command: Command,
     ): Decision {
-        val refusal = Guards.refusal(state, command, context)
+        val refusal = Guards.refusal(state, command, context, routed)
         return if (refusal != null) Decision.Refused(refusal) else Decision.Accepted(accept(state, command))
     }
 
@@ -48,25 +72,24 @@ class Transition(
             is Reassign -> reassign(state, command)
         }
 
+    /** The positive action: Approve, or Recommend on a review step; then on to the next step that needs a person. */
     private fun approve(
         state: InstanceState,
         command: Approve,
     ): Outcome {
         val (step, task) = state.guardedTask(command.taskId)
-        val closed = state.round.closeTask(step.id, task.id, ActionKind.APPROVE, StepState.DONE)
-        val next = closed.steps.indexOfFirst { it.state == StepState.PENDING }
-        val effects = mutableListOf<Effect>(Effect.TaskClosed(task.id, TaskState.COMPLETED, ActionKind.APPROVE))
-        val nextState =
-            if (next >= 0) {
-                val round = closed.copy(steps = rounds.activate(closed.steps, next))
-                effects += Effect.TaskCreated(round.steps[next].id, round.steps[next].tasks.last())
-                state.copy(round = round)
-            } else {
-                effects += Effect.RoundEnded(closed.number, RoundOutcome.APPROVED)
-                effects += Effect.InstanceEnded(InstanceStatus.APPROVED)
-                state.copy(status = InstanceStatus.APPROVED, round = closed.copy(outcome = RoundOutcome.APPROVED))
-            }
-        return Outcome(nextState, record(ActionKind.APPROVE, state, task.id, command.actor, command.remark), effects)
+        val kind = if (step.kind == StepKind.REVIEW) ActionKind.RECOMMEND else ActionKind.APPROVE
+        val closed = state.round.closeTask(step.id, task.id, kind, StepState.DONE)
+        val walk = rounds.advance(closed, step, People(state.initiator, command.actor))
+        val effects = listOf(Effect.TaskClosed(task.id, TaskState.COMPLETED, kind)) + walk.effects
+        val action = record(kind, state, task.id, command.actor, command.remark)
+        return if (walk.finished) {
+            val ended = listOf(Effect.RoundEnded(closed.number, RoundOutcome.APPROVED), Effect.InstanceEnded(InstanceStatus.APPROVED))
+            val done = state.copy(status = InstanceStatus.APPROVED, round = walk.round.copy(outcome = RoundOutcome.APPROVED))
+            Outcome(done, action, effects + ended, walk.followUps)
+        } else {
+            Outcome(state.copy(round = walk.round), action, effects, walk.followUps)
+        }
     }
 
     /** Return or reject: the round ends here; steps not reached are skipped. Only a rejection ends the instance. */
@@ -124,9 +147,9 @@ class Transition(
         state: InstanceState,
         command: Resubmit,
     ): Outcome {
-        val round = rounds.open(state.round.number + 1, command.route)
-        val next = InstanceState(state.initiator, InstanceStatus.RUNNING, round)
-        return Outcome(next, record(ActionKind.RESUBMIT, next, null, command.actor, command.remark), rounds.started(round))
+        val walk = rounds.open(state.round.number + 1, command.route, People(state.initiator, command.actor))
+        val action = ActionRecord(ActionKind.RESUBMIT, walk.round.number, null, command.actor, Remarks.clean(command.remark))
+        return opened(state.initiator, walk, action)
     }
 
     private fun reassign(

@@ -7,13 +7,42 @@ enum class InstanceStatus {
     APPROVED,
     REJECTED,
     WITHDRAWN,
+
+    /** Stopped by an administrator with a reason (design E03 §4.4). */
+    CANCELLED,
     ;
 
-    val terminal: Boolean get() = this == APPROVED || this == REJECTED || this == WITHDRAWN
+    val terminal: Boolean get() = this == APPROVED || this == REJECTED || this == WITHDRAWN || this == CANCELLED
 }
 
-/** Everything that can happen to an instance; one `workflow_action` row each (ADR-0035). */
-enum class ActionKind { SUBMIT, APPROVE, RETURN, REJECT, WITHDRAW, RESUBMIT, REASSIGN }
+/**
+ * Everything that can happen to an instance; one `workflow_action` row each (ADR-0035, design E03 §4.4). ROUTE, NOTIFY,
+ * ESCALATE_TO_FORUM and CARRY are recorded by the engine itself, after the action that led to them.
+ */
+enum class ActionKind {
+    SUBMIT,
+    APPROVE,
+    RETURN,
+    REJECT,
+    WITHDRAW,
+    RESUBMIT,
+    REASSIGN,
+    RECOMMEND,
+    ROUTE,
+    NOTIFY,
+    ESCALATE_TO_FORUM,
+    SEND_BACK,
+    FORWARD,
+    DELEGATE,
+    ASK,
+    ANSWER,
+    REFER,
+    OPINION,
+    RECALL,
+    CANCEL,
+    MIGRATE,
+    CARRY,
+}
 
 /** Why a task was created but cannot be acted on until a tenant admin reassigns it (design E01 §2, invariant 12). */
 enum class BlockedReason { NO_CLEARANCE, INACTIVE }

@@ -43,6 +43,14 @@ open class WorkflowDefinitionRecord private constructor() : UpdatableRecordImpl<
         set(value): Unit = set(5, value)
         get(): OffsetDateTime = get(5) as OffsetDateTime
 
+    open var description: String?
+        set(value): Unit = set(6, value)
+        get(): String? = get(6) as String?
+
+    open var fragment: Boolean?
+        set(value): Unit = set(7, value)
+        get(): Boolean? = get(7) as Boolean?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -52,13 +60,15 @@ open class WorkflowDefinitionRecord private constructor() : UpdatableRecordImpl<
     /**
      * Create a detached, initialised WorkflowDefinitionRecord
      */
-    constructor(id: UUID, tenantId: UUID, key: String, name: String, builtIn: Boolean, createdAt: OffsetDateTime): this() {
+    constructor(id: UUID, tenantId: UUID, key: String, name: String, builtIn: Boolean, createdAt: OffsetDateTime, description: String? = null, fragment: Boolean? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.key = key
         this.name = name
         this.builtIn = builtIn
         this.createdAt = createdAt
+        this.description = description
+        this.fragment = fragment
         resetTouchedOnNotNull()
     }
 }

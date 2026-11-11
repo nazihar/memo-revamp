@@ -795,7 +795,7 @@
             "type" : [ "integer", "null" ]
           },
           "kind" : {
-            "enum" : [ "SUBMIT", "APPROVE", "RETURN", "REJECT", "WITHDRAW", "RESUBMIT", "REASSIGN" ],
+            "enum" : [ "SUBMIT", "APPROVE", "RETURN", "REJECT", "WITHDRAW", "RESUBMIT", "REASSIGN", "RECOMMEND", "ROUTE", "NOTIFY", "ESCALATE_TO_FORUM", "SEND_BACK", "FORWARD", "DELEGATE", "ASK", "ANSWER", "REFER", "OPINION", "RECALL", "CANCEL", "MIGRATE", "CARRY" ],
             "type" : "string"
           },
           "occurredAt" : {
@@ -2655,7 +2655,7 @@
             "type" : "integer"
           },
           "status" : {
-            "enum" : [ "RUNNING", "RETURNED", "APPROVED", "REJECTED", "WITHDRAWN" ],
+            "enum" : [ "RUNNING", "RETURNED", "APPROVED", "REJECTED", "WITHDRAWN", "CANCELLED" ],
             "type" : "string"
           },
           "subjectId" : {

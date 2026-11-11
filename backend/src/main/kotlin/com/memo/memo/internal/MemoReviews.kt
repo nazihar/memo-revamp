@@ -18,6 +18,7 @@ class MemoReviews(
     private val routes: MemoRoutes,
     private val workflows: Workflows,
     private val editing: DocumentEditing,
+    private val types: MemoTypeStore,
 ) {
     /** Round 1: the memo needs a document and a valid route; the first approver gets the task. */
     fun submit(
@@ -32,7 +33,9 @@ class MemoReviews(
             listOfNotNull(FieldProblem("document", "required", "Upload the memo document first.").takeIf { memo.documentFileId == null }) +
                 routes.problems(memo, route)
         if (problems.isNotEmpty()) throw MemoRejectedException(problems)
-        workflows.start(MemoWorkflowSubject.TYPE, id, route, remark)
+        // The memo type's workflow (E03): new memos pin its newest published version.
+        val definition = types.find(memo.typeId)?.definitionKey ?: Workflows.SEQUENTIAL_APPROVAL
+        workflows.start(MemoWorkflowSubject.TYPE, id, route, remark, definition)
         return memos.get(id)
     }
 

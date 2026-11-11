@@ -12,6 +12,8 @@ import com.memo.workflow.ActionKind
 import com.memo.workflow.BlockedReason
 import com.memo.workflow.InstanceStatus
 import com.memo.workflow.SubjectRef
+import com.memo.workflow.definition.Definition
+import com.memo.workflow.definition.DefinitionCompiler
 import com.memo.workflow.engine.ActionRecord
 import com.memo.workflow.engine.Effect
 import com.memo.workflow.engine.InstanceState
@@ -19,6 +21,7 @@ import com.memo.workflow.engine.Outcome
 import com.memo.workflow.engine.Round
 import com.memo.workflow.engine.RoundOutcome
 import com.memo.workflow.engine.Step
+import com.memo.workflow.engine.StepKind
 import com.memo.workflow.engine.StepState
 import com.memo.workflow.engine.Task
 import com.memo.workflow.engine.TaskState
@@ -28,13 +31,14 @@ import org.springframework.stereotype.Component
 import java.time.OffsetDateTime
 import java.util.UUID
 
-/** An instance as loaded for a transition: its row data and the engine state of its latest round. */
+/** An instance as loaded for a transition: its row data, the engine state of its latest round and its pinned definition. */
 data class LoadedInstance(
     val id: UUID,
     val subjectType: String,
     val subjectId: UUID,
     val version: Long,
     val state: InstanceState,
+    val definition: Definition = DefinitionCompiler.SEQUENTIAL,
 )
 
 /**
@@ -44,6 +48,7 @@ data class LoadedInstance(
 @Component
 class InstanceStore(
     private val tenantDsl: TenantDsl,
+    private val definitions: CompiledDefinitions,
 ) {
     fun instanceOfTask(taskId: UUID): UUID? =
         tenantDsl
@@ -111,6 +116,7 @@ class InstanceStore(
                 .orderBy(WORKFLOW_TASK.CREATED_AT, WORKFLOW_TASK.ID)
                 .fetch()
                 .groupBy { it.stepId }
+        val definition = definitions.get(instance.definitionVersionId)
         val engineSteps =
             steps.map { step ->
                 Step(
@@ -118,6 +124,10 @@ class InstanceStore(
                     ordinal = step.ordinal,
                     assignee = step.assigneeId,
                     state = StepState.valueOf(step.state),
+                    nodeId = step.nodeId,
+                    kind = StepKind.valueOf(step.type),
+                    routeIndex = step.routeIndex,
+                    name = definition.stepsById[step.nodeId]?.name,
                     tasks =
                         tasks[step.id].orEmpty().map { task ->
                             Task(
@@ -134,9 +144,9 @@ class InstanceStore(
             InstanceState(
                 initiator = instance.initiatorId,
                 status = InstanceStatus.valueOf(instance.status),
-                round = Round(round.number, RoundOutcome.valueOf(round.outcome), engineSteps),
+                round = Round(round.number, RoundOutcome.valueOf(round.outcome), engineSteps, round.route.orEmpty().filterNotNull()),
             )
-        return LoadedInstance(instance.id, instance.subjectType, instance.subjectId, instance.version!!, state)
+        return LoadedInstance(instance.id, instance.subjectType, instance.subjectId, instance.version!!, state, definition)
     }
 
     /** The row of a new instance, before its first round is written by [write]. */
@@ -161,6 +171,7 @@ class InstanceStore(
             .set(WORKFLOW_INSTANCE.CURRENT_ROUND, state.round.number)
             .set(WORKFLOW_INSTANCE.CURRENT_STEP_ID, state.activeStep?.id)
             .set(WORKFLOW_INSTANCE.CURRENT_ASSIGNEES, state.currentAssignees.toTypedArray<UUID?>())
+            .set(WORKFLOW_INSTANCE.CURRENT_STEP_NAME, state.activeStep?.name)
             .set(WORKFLOW_INSTANCE.CREATED_AT, now)
             .set(WORKFLOW_INSTANCE.UPDATED_AT, now)
             .execute()

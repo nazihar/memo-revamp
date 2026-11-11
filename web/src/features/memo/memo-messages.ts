@@ -118,6 +118,21 @@ export const actionLabels = defineMessages({
   REJECT: { id: 'memo.history.action.reject', defaultMessage: 'Rejected' },
   WITHDRAW: { id: 'memo.history.action.withdraw', defaultMessage: 'Withdrew' },
   REASSIGN: { id: 'memo.history.action.reassign', defaultMessage: 'Reassigned' },
+  RECOMMEND: { id: 'memo.history.action.recommend', defaultMessage: 'Recommended' },
+  ROUTE: { id: 'memo.history.action.route', defaultMessage: 'Routed by the workflow' },
+  NOTIFY: { id: 'memo.history.action.notify', defaultMessage: 'Notification sent' },
+  ESCALATE_TO_FORUM: { id: 'memo.history.action.escalateToForum', defaultMessage: 'Escalated to a forum' },
+  SEND_BACK: { id: 'memo.history.action.sendBack', defaultMessage: 'Sent back to an earlier step' },
+  FORWARD: { id: 'memo.history.action.forward', defaultMessage: 'Forwarded' },
+  DELEGATE: { id: 'memo.history.action.delegate', defaultMessage: 'Delegated' },
+  ASK: { id: 'memo.history.action.ask', defaultMessage: 'Asked for clarification' },
+  ANSWER: { id: 'memo.history.action.answer', defaultMessage: 'Answered' },
+  REFER: { id: 'memo.history.action.refer', defaultMessage: 'Asked for opinions' },
+  OPINION: { id: 'memo.history.action.opinion', defaultMessage: 'Gave an opinion' },
+  RECALL: { id: 'memo.history.action.recall', defaultMessage: 'Recalled' },
+  CANCEL: { id: 'memo.history.action.cancel', defaultMessage: 'Cancelled' },
+  MIGRATE: { id: 'memo.history.action.migrate', defaultMessage: 'Moved to a new workflow version' },
+  CARRY: { id: 'memo.history.action.carry', defaultMessage: 'Approval carried over (document unchanged)' },
 })
 
 /** Texts with values (react-intl checks them against the message). */

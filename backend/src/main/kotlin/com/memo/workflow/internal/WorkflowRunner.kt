@@ -5,6 +5,7 @@ import com.memo.common.id.IdGenerator
 import com.memo.workflow.WorkflowRefusedException
 import com.memo.workflow.WorkflowSubject
 import com.memo.workflow.WorkflowView
+import com.memo.workflow.definition.Definition
 import com.memo.workflow.engine.Command
 import com.memo.workflow.engine.Decision
 import com.memo.workflow.engine.InstanceState
@@ -27,6 +28,7 @@ class WorkflowRunner(
     private val instances: InstanceStore,
     private val writer: InstanceWriter,
     private val definitions: DefinitionStore,
+    private val compiled: CompiledDefinitions,
     private val settings: WorkflowSettings,
     private val subjects: List<WorkflowSubject>,
     private val effects: ActionEffects,
@@ -40,15 +42,19 @@ class WorkflowRunner(
         route: List<UUID>,
         remark: String?,
         actor: Actor.User,
+        definitionKey: String = DefinitionStore.SEQUENTIAL_APPROVAL,
     ): WorkflowView {
         val subject = subject(subjectType)
         subject.lock(subjectId)
         if (instances.instanceOfSubject(subjectType, subjectId) != null) throw WorkflowRefusedException(ALREADY_STARTED)
-        val outcome = accepted(transition(subject, subjectId, route).start(actor.userId, route, remark))
+        // New instances pin the newest published version (ADR-0038).
+        val version = definitions.publishedVersion(definitionKey)
+        val definition = compiled.get(version)
+        val outcome = accepted(transition(subject, subjectId, route, definition).start(actor.userId, route, remark))
         val instanceId = ids.next()
-        val definition = definitions.publishedVersion(DefinitionStore.SEQUENTIAL_APPROVAL)
-        instances.insert(instanceId, subjectType, subjectId, definition, outcome.state, now())
-        return record(LoadedInstance(instanceId, subjectType, subjectId, 0, outcome.state), null, subject, outcome, actor)
+        instances.insert(instanceId, subjectType, subjectId, version, outcome.state, now())
+        val loaded = LoadedInstance(instanceId, subjectType, subjectId, 0, outcome.state, definition)
+        return record(loaded, null, subject, outcome, actor)
     }
 
     fun onTask(
@@ -73,7 +79,7 @@ class WorkflowRunner(
         val people =
             loaded.state.round.steps
                 .map { it.assignee } + newPeople(cmd)
-        val outcome = accepted(transition(subject, loaded.subjectId, people).apply(loaded.state, cmd))
+        val outcome = accepted(transition(subject, loaded.subjectId, people, loaded.definition).apply(loaded.state, cmd))
         return record(loaded, loaded.state, subject, outcome, actor)
     }
 
@@ -104,13 +110,17 @@ class WorkflowRunner(
         return view(instance, outcome.state, version)
     }
 
+    /** The engine for one action: eligibility of everyone it may hand a task to, and the subject's attributes on demand. */
     private fun transition(
         subject: WorkflowSubject,
         subjectId: UUID,
         people: Collection<UUID>,
+        definition: Definition,
     ): Transition {
-        val ineligible = subject.ineligible(subjectId, people.toSet())
-        return Transition(TransitionContext(ids::next, { ineligible[it] }, settings.maxApprovers()))
+        val named = definition.steps.flatMap { step -> listOfNotNull(step.assignee?.userId) + step.assignees.mapNotNull { it.userId } }
+        val ineligible = subject.ineligible(subjectId, (people + named).toSet())
+        val context = TransitionContext(ids::next, { ineligible[it] }, settings.maxApprovers()) { subject.attributeValues(subjectId) }
+        return Transition(context, definition)
     }
 
     private fun subject(type: String): WorkflowSubject =

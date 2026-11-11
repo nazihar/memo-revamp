@@ -5,6 +5,8 @@ import com.memo.common.tenant.TenantDsl
 import com.memo.workflow.ActionKind
 import com.memo.workflow.TaskClosure
 import com.memo.workflow.WorkflowActionTaken
+import com.memo.workflow.WorkflowEscalatedToForum
+import com.memo.workflow.WorkflowNotifyRequested
 import com.memo.workflow.WorkflowTaskClosed
 import com.memo.workflow.WorkflowTaskCreated
 import com.memo.workflow.engine.Effect
@@ -116,6 +118,7 @@ class ActionEffects(
                     )
                 }
             }.forEach(events::publishEvent)
+        publishSteps(instance, outcome, tenant)
         val action = outcome.action
         events.publishEvent(
             WorkflowActionTaken(
@@ -131,6 +134,34 @@ class ActionEffects(
         )
     }
 
+    /** The events of notify and escalate-to-forum steps the action passed (design E03 §1). */
+    private fun publishSteps(
+        instance: LoadedInstance,
+        outcome: Outcome,
+        tenant: UUID,
+    ) {
+        outcome.effects.forEach { effect ->
+            (effect as? Effect.Notify)?.let {
+                events.publishEvent(
+                    WorkflowNotifyRequested(
+                        tenant,
+                        instance.id,
+                        instance.subjectType,
+                        instance.subjectId,
+                        it.nodeId,
+                        it.recipients,
+                        it.message,
+                    ),
+                )
+            }
+            (effect as? Effect.EscalateToForum)?.let {
+                events.publishEvent(
+                    WorkflowEscalatedToForum(tenant, instance.id, instance.subjectType, instance.subjectId, it.nodeId, it.forum),
+                )
+            }
+        }
+    }
+
     private companion object {
         const val TASK = "workflow_task"
         const val INSTANCE = "workflow_instance"
@@ -138,6 +169,7 @@ class ActionEffects(
             mapOf(
                 ActionKind.SUBMIT to "workflow.instance.started",
                 ActionKind.APPROVE to "workflow.task.approved",
+                ActionKind.RECOMMEND to "workflow.task.recommended",
                 ActionKind.RETURN to "workflow.task.returned",
                 ActionKind.REJECT to "workflow.task.rejected",
                 ActionKind.WITHDRAW to "workflow.instance.withdrawn",

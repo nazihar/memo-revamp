@@ -63,6 +63,22 @@ open class WorkflowTaskRecord private constructor() : UpdatableRecordImpl<Workfl
         set(value): Unit = set(10, value)
         get(): Long? = get(10) as Long?
 
+    open var kind: String?
+        set(value): Unit = set(11, value)
+        get(): String? = get(11) as String?
+
+    open var onBehalfOf: UUID?
+        set(value): Unit = set(12, value)
+        get(): UUID? = get(12) as UUID?
+
+    open var waiting: Boolean?
+        set(value): Unit = set(13, value)
+        get(): Boolean? = get(13) as Boolean?
+
+    open var parentTaskId: UUID?
+        set(value): Unit = set(14, value)
+        get(): UUID? = get(14) as UUID?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -72,7 +88,7 @@ open class WorkflowTaskRecord private constructor() : UpdatableRecordImpl<Workfl
     /**
      * Create a detached, initialised WorkflowTaskRecord
      */
-    constructor(id: UUID, tenantId: UUID, instanceId: UUID, stepId: UUID, assigneeId: UUID, state: String, blockedReason: String? = null, outcome: String? = null, createdAt: OffsetDateTime, completedAt: OffsetDateTime? = null, version: Long? = null): this() {
+    constructor(id: UUID, tenantId: UUID, instanceId: UUID, stepId: UUID, assigneeId: UUID, state: String, blockedReason: String? = null, outcome: String? = null, createdAt: OffsetDateTime, completedAt: OffsetDateTime? = null, version: Long? = null, kind: String? = null, onBehalfOf: UUID? = null, waiting: Boolean? = null, parentTaskId: UUID? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.instanceId = instanceId
@@ -84,6 +100,10 @@ open class WorkflowTaskRecord private constructor() : UpdatableRecordImpl<Workfl
         this.createdAt = createdAt
         this.completedAt = completedAt
         this.version = version
+        this.kind = kind
+        this.onBehalfOf = onBehalfOf
+        this.waiting = waiting
+        this.parentTaskId = parentTaskId
         resetTouchedOnNotNull()
     }
 }

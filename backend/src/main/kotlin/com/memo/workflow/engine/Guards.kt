@@ -22,14 +22,19 @@ internal object Remarks {
     fun clean(remark: String?): String? = remark?.trim()?.takeIf { it.isNotEmpty() }
 }
 
-/** The shape of an initiator-defined route (invariant 11); clearance and account state are the subject's checks. */
+/**
+ * The shape of an initiator-defined route (invariant 11); clearance and account state are the subject's checks. A
+ * definition without a route step ([routed] false) takes no route at all.
+ */
 internal object Routes {
     fun refusal(
         initiator: UUID,
         route: List<UUID>,
         maxApprovers: Int,
+        routed: Boolean = true,
     ): Refusal? =
         when {
+            !routed -> if (route.isEmpty()) null else Refusal.ROUTE_NOT_USED
             route.isEmpty() -> Refusal.ROUTE_EMPTY
             route.size > maxApprovers -> Refusal.ROUTE_TOO_LONG
             initiator in route -> Refusal.INITIATOR_AS_APPROVER
@@ -44,6 +49,7 @@ internal object Guards {
         state: InstanceState,
         command: Command,
         context: TransitionContext,
+        routed: Boolean = true,
     ): Refusal? =
         when (command) {
             is Approve -> {
@@ -65,7 +71,7 @@ internal object Guards {
 
             is Resubmit -> {
                 initiatorIn(state, command.actor, InstanceStatus.RETURNED)
-                    ?: Routes.refusal(state.initiator, command.route, context.maxApprovers)
+                    ?: Routes.refusal(state.initiator, command.route, context.maxApprovers, routed)
                     ?: Remarks.refusal(command.remark, required = false)
             }
 

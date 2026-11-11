@@ -50,6 +50,14 @@ open class WorkflowStepRecord private constructor() : UpdatableRecordImpl<Workfl
         set(value): Unit = set(7, value)
         get(): String = get(7) as String
 
+    open var nodeId: String
+        set(value): Unit = set(8, value)
+        get(): String = get(8) as String
+
+    open var routeIndex: Int?
+        set(value): Unit = set(9, value)
+        get(): Int? = get(9) as Int?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -59,7 +67,7 @@ open class WorkflowStepRecord private constructor() : UpdatableRecordImpl<Workfl
     /**
      * Create a detached, initialised WorkflowStepRecord
      */
-    constructor(id: UUID, tenantId: UUID, instanceId: UUID, roundId: UUID, ordinal: Int, type: String, assigneeId: UUID, state: String): this() {
+    constructor(id: UUID, tenantId: UUID, instanceId: UUID, roundId: UUID, ordinal: Int, type: String, assigneeId: UUID, state: String, nodeId: String, routeIndex: Int? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.instanceId = instanceId
@@ -68,6 +76,8 @@ open class WorkflowStepRecord private constructor() : UpdatableRecordImpl<Workfl
         this.type = type
         this.assigneeId = assigneeId
         this.state = state
+        this.nodeId = nodeId
+        this.routeIndex = routeIndex
         resetTouchedOnNotNull()
     }
 }

@@ -106,7 +106,6 @@ class OnlyOfficeAdapter(
                                 "help" to false,
                                 "feedback" to false,
                                 "goback" to false,
-                                "chat" to false,
                                 "compactHeader" to true,
                             ),
                     ),

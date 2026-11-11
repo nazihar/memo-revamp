@@ -118,23 +118,26 @@ data class WorkflowTaskClosed(
     val action: ActionKind,
 ) : TenantScopedEvent
 
-/** A notify step was passed (design E03 §2): the subject's module tells [recipients] with the definition's [message] key. */
+/**
+ * A notify step was passed (design E03 §2): the subject's module tells [recipientId] with the definition's [messageKey].
+ * One event per recipient, so events carry ids only (ADR-0017).
+ */
 data class WorkflowNotifyRequested(
     override val tenantId: UUID,
     val instanceId: UUID,
     val subjectType: String,
     val subjectId: UUID,
     val stepId: String,
-    val recipients: List<UUID>,
-    val message: String,
+    val recipientId: UUID,
+    val messageKey: String,
 ) : TenantScopedEvent
 
-/** An escalate-to-forum step was passed; the meetings module (Phase 4) puts the item on [forum]'s agenda. */
+/** An escalate-to-forum step was passed; the meetings module (Phase 4) puts the item on the agenda of [forumKey]. */
 data class WorkflowEscalatedToForum(
     override val tenantId: UUID,
     val instanceId: UUID,
     val subjectType: String,
     val subjectId: UUID,
     val stepId: String,
-    val forum: String,
+    val forumKey: String,
 ) : TenantScopedEvent

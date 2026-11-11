@@ -141,18 +141,20 @@ class ActionEffects(
         tenant: UUID,
     ) {
         outcome.effects.forEach { effect ->
-            (effect as? Effect.Notify)?.let {
-                events.publishEvent(
-                    WorkflowNotifyRequested(
-                        tenant,
-                        instance.id,
-                        instance.subjectType,
-                        instance.subjectId,
-                        it.nodeId,
-                        it.recipients,
-                        it.message,
-                    ),
-                )
+            (effect as? Effect.Notify)?.let { notify ->
+                notify.recipients.forEach { recipient ->
+                    events.publishEvent(
+                        WorkflowNotifyRequested(
+                            tenant,
+                            instance.id,
+                            instance.subjectType,
+                            instance.subjectId,
+                            notify.nodeId,
+                            recipient,
+                            notify.message,
+                        ),
+                    )
+                }
             }
             (effect as? Effect.EscalateToForum)?.let {
                 events.publishEvent(

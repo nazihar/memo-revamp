@@ -68,9 +68,25 @@ class ArchitectureRulesTest {
                 "java.util..",
                 "kotlin..",
                 "org.jetbrains.annotations..",
+                "java.time..",
                 "com.memo.workflow",
                 "com.memo.workflow.engine..",
+                // E03: the engine walks compiled definitions and evaluates their CEL conditions, both pure (ADR-0038, ADR-0039).
+                "com.memo.workflow.definition..",
             ).because("the engine core is a pure function over the instance state (ADR-0034)")
+            .check(classes)
+    }
+
+    @Test
+    fun `workflow definitions and conditions need no Spring and no database`() {
+        // ADR-0038, ADR-0039: definitions are validated, compiled and evaluated in memory, so the engine stays pure.
+        noClasses()
+            .that()
+            .resideInAPackage("com.memo.workflow.definition..")
+            .should()
+            .dependOnClassesThat()
+            .resideInAnyPackage("org.springframework..", "org.jooq..", "com.memo.jooq..", "java.sql..")
+            .because("definitions are data checked and run in memory (ADR-0038)")
             .check(classes)
     }
 

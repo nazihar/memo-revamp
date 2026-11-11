@@ -25,6 +25,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Field } from '@/components/ui/field'
 import { Checkbox, Input, Select } from '@/components/ui/form-controls'
 import { useToast } from '@/components/ui/toast-context'
+import { newIdempotencyKey } from '@/lib/idempotency'
 
 type Status = AdminUser['status']
 type Action = 'deactivate' | 'reactivate' | 'unlock' | 'mfaReset' | 'revokeSessions'
@@ -446,7 +447,7 @@ function InviteDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (op
   const [admin, setAdmin] = useState(false)
   const [errors, setErrors] = useState<{ email?: string; displayName?: string }>({})
   // One key per invitation: a double click or a retry after a lost response creates the user once.
-  const [key, setKey] = useState(() => crypto.randomUUID())
+  const [key, setKey] = useState(() => newIdempotencyKey())
   const [busy, setBusy] = useState(false)
 
   const close = () => {
@@ -454,7 +455,7 @@ function InviteDialog({ open, onOpenChange }: { open: boolean; onOpenChange: (op
     setName('')
     setAdmin(false)
     setErrors({})
-    setKey(crypto.randomUUID())
+    setKey(newIdempotencyKey())
     onOpenChange(false)
   }
 

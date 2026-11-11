@@ -31,6 +31,7 @@ import { HistoryList } from './HistoryList'
 import { DateDialog, MoveUnitDialog, PositionFormDialog, UnitFormDialog } from './OrgDialogs'
 import { om, omt, omv } from './org-messages'
 import { useTerms } from '@/features/terms/terms'
+import { newIdempotencyKey } from '@/lib/idempotency'
 
 type Pending = 'addUnit' | 'addRoot' | 'addEntity' | 'rename' | 'move' | 'close' | 'addPosition'
 
@@ -318,7 +319,7 @@ function UnitActions({
   const unit = units.find((u) => u.id === selected)
   const ifMatch = unit ? { 'If-Match': `"${String(unit.version)}"` } : undefined
   // One key per dialog: a double click or a retry after a lost response creates the object once.
-  const [key] = useState(() => ({ 'Idempotency-Key': crypto.randomUUID() }))
+  const [key] = useState(() => ({ 'Idempotency-Key': newIdempotencyKey() }))
   const after = async <T,>(call: Promise<T>) => {
     const result = await call
     await onDone()

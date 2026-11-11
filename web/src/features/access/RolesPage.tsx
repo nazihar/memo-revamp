@@ -16,6 +16,7 @@ import { useToast } from '@/components/ui/toast-context'
 import { useWithStepUp } from '@/features/auth/step-up-context'
 import { FormDialog } from '@/features/org/OrgDialogs'
 import { accessProblemMessage, am, catalogueLabel } from './access-messages'
+import { newIdempotencyKey } from '@/lib/idempotency'
 
 /** `/admin/roles` (design E04 §13): built-in and custom roles; custom roles are created, changed and removed here. */
 export function RolesPage() {
@@ -121,7 +122,7 @@ function RoleDialog({ role, onClose }: { role?: Role; onClose: () => void }) {
   const [name, setName] = useState(role?.name ?? '')
   const [description, setDescription] = useState(role?.description ?? '')
   const [chosen, setChosen] = useState(new Set(role?.permissions ?? []))
-  const [key] = useState(() => crypto.randomUUID())
+  const [key] = useState(() => newIdempotencyKey())
   const save = async () => {
     const body = {
       name: name.trim(),

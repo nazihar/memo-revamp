@@ -154,7 +154,7 @@ describe('memo view', () => {
     renderRoute('/memos/m1')
 
     await user.click(await screen.findByRole('button', { name: 'Return' }, { timeout: 5000 }))
-    const dialog = await screen.findByRole('dialog', { name: 'Return M-2026-00042 to its author?' })
+    const dialog = await screen.findByRole('dialog', { name: /^Return .?M-2026-00042.? to its author[?]$/ })
     await user.click(within(dialog).getByRole('button', { name: 'Return' }))
     expect(within(dialog).getByText('A remark is required.')).toBeInTheDocument()
     expect(keys).toEqual([])

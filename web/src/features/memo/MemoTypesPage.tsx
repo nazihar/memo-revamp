@@ -20,6 +20,7 @@ import { Field } from '@/components/ui/field'
 import { Checkbox, Input, Select } from '@/components/ui/form-controls'
 import { useToast } from '@/components/ui/toast-context'
 import { mm } from './memo-messages'
+import { newIdempotencyKey } from '@/lib/idempotency'
 
 const m = defineMessages({
   title: { id: 'memoTypes.title', defaultMessage: 'Memo types' },
@@ -141,7 +142,7 @@ function TypeDialog({
   const intl = useIntl()
   const toast = useToast()
   const queryClient = useQueryClient()
-  const [key] = useState(() => crypto.randomUUID())
+  const [key] = useState(() => newIdempotencyKey())
   const [name, setName] = useState(type?.name ?? '')
   const [level, setLevel] = useState(type?.defaultClassificationId ?? '')
   const [stepUp, setStepUp] = useState(type?.stepUpOnApprove ?? true)

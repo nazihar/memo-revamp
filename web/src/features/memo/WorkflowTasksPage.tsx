@@ -16,7 +16,9 @@ import { Textarea } from '@/components/ui/form-controls'
 import { useToast } from '@/components/ui/toast-context'
 import { useWithStepUp } from '@/features/auth/step-up-context'
 import { PeoplePicker, type Picked } from '@/features/org/PeoplePicker'
+import { isolated } from './memo-fields'
 import { mm, mmv } from './memo-messages'
+import { newIdempotencyKey } from '@/lib/idempotency'
 
 const m = defineMessages({
   title: { id: 'workflowTasks.title', defaultMessage: 'Open tasks' },
@@ -75,7 +77,7 @@ export function WorkflowTasksPage() {
               {s.restricted ? intl.formatMessage(mm.restricted) : s.title}
             </span>
             <span className="text-xs text-muted-foreground">
-              {intl.formatMessage(mmv.referenceRound, { reference: s.reference ?? '', round: row.original.round })}
+              {intl.formatMessage(mmv.referenceRound, { reference: isolated(s.reference), round: row.original.round })}
             </span>
           </div>
         )
@@ -167,7 +169,7 @@ function ReassignDialog({
   const toast = useToast()
   const withStepUp = useWithStepUp()
   const queryClient = useQueryClient()
-  const [key] = useState(() => crypto.randomUUID())
+  const [key] = useState(() => newIdempotencyKey())
   const [picked, setPicked] = useState<Picked>()
   const [reason, setReason] = useState('')
   const [error, setError] = useState<string>()
@@ -209,7 +211,7 @@ function ReassignDialog({
       onOpenChange={(open) => {
         if (!open) onClose()
       }}
-      title={intl.formatMessage(mv.reassignFor, { reference: task.subject.reference ?? '' })}
+      title={intl.formatMessage(mv.reassignFor, { reference: isolated(task.subject.reference) })}
       description={intl.formatMessage(m.reassignLead)}
       footer={
         <>

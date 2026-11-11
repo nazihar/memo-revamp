@@ -3,6 +3,7 @@ import { useId, useState, type DragEvent } from 'react'
 import { defineMessages, useIntl } from 'react-intl'
 import { csrfFetch, isProblem } from '@/api/http'
 import { cn } from '@/lib/utils'
+import { newIdempotencyKey } from '@/lib/idempotency'
 
 const messages = defineMessages({
   drop: { id: 'upload.dropHint', defaultMessage: 'Choose a file, or drop it on this area.' },
@@ -63,7 +64,7 @@ export function FileUpload({
         headers: {
           'Content-Type': 'application/octet-stream',
           'Content-Disposition': `attachment; filename*=UTF-8''${encodeURIComponent(file.name)}`,
-          'Idempotency-Key': crypto.randomUUID(),
+          'Idempotency-Key': newIdempotencyKey(),
           ...(version ? { 'If-Match': `"${version.fileVersion}"` } : {}),
         },
         body: file,

@@ -48,7 +48,7 @@ Checked when a route is validated (submit) and whenever people are resolved:
 | Rule | Check | On failure |
 |---|---|---|
 | SOD-1 | the initiator is never a candidate | excluded (E01 refuses them in a route) |
-| SOD-2 | a person who already approved or recommended in this round is not a candidate again (tenant setting `workflow.sod.oncePerRound`, default on) | excluded; a route listing them twice is refused (E01) |
+| SOD-2 | a person who already approved or recommended in this round is not a candidate again (tenant setting `workflow.sod.once.per.round`, default on) | excluded; a route listing them twice is refused (E01) |
 | SOD-3 | a substitute never receives a task on an item they initiated, or one their principal is excluded from | the principal's substitution is not applied for this task |
 | SOD-4 | people with a declared interest on the item (`memo_interest`) are not candidates; a holder can declare an interest on their open task (`POST /api/v1/tasks/{id}/recuse`, reason required), which closes it and re-resolves the step without them | excluded; recusal recorded (`RECUSE`) |
 Exclusions are recorded in the step's `resolution`; when they leave nobody, the step is `UNRESOLVED` (never skipped). Rule decisions are in the history; `workflow.task.recused` and `memo.interest.declared` are audited.

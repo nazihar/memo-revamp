@@ -77,6 +77,9 @@ enum class MemoAction {
     /** Take, or give back, a step shared by several candidates (design E04 §4.2). */
     CLAIM,
     RELEASE,
+
+    /** Declare an interest and stand aside (SOD-4). */
+    RECUSE,
 }
 
 /**
@@ -123,6 +126,8 @@ data class MemoView(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val createdAt: Instant,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val updatedAt: Instant,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val version: Long,
+    /** People with a declared interest, who are never asked to decide on the memo (SOD-4, design E04 §4.4). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val interests: List<Named> = emptyList(),
 )
 
 /** Builds [MemoView]s: names from identity, the document from files. Inside a tenant transaction. */
@@ -135,8 +140,10 @@ class MemoViews(
     private val users: UserSummaries,
     private val workflows: WorkflowQueries,
     private val editing: DocumentEditing,
+    private val interestStore: MemoInterestStore,
 ) {
     fun of(memo: Memo): MemoView {
+        val interests = interestStore.of(memo.id)
         val route = routes.route(memo.id)
         val workflow = memo.workflowInstanceId?.let { workflows.viewOf(MemoWorkflowSubject.TYPE, memo.id) }
         val holders = workflow?.currentAssignees.orEmpty()
@@ -145,7 +152,7 @@ class MemoViews(
         val targets = open?.sendBackTargets.orEmpty()
         val names =
             users
-                .of(route + holders + memo.initiatorId + targets.map { it.holderId } + listOfNotNull(open?.claimedBy))
+                .of(route + holders + memo.initiatorId + targets.map { it.holderId } + listOfNotNull(open?.claimedBy) + interests)
                 .mapValues { it.value.displayName }
         val myTask =
             open?.let { task ->
@@ -174,6 +181,7 @@ class MemoViews(
             myTask = myTask,
             allowedActions = allowed,
             sendBackTargets = targets.map { SendBackTargetView(it.stepId, it.name, Named(it.holderId, names[it.holderId].orEmpty())) },
+            interests = interests.map { Named(it, names[it].orEmpty()) }.sortedBy { it.name },
             createdAt = memo.createdAt,
             updatedAt = memo.updatedAt,
             version = memo.version,
@@ -203,7 +211,7 @@ class MemoViews(
         recallable: Boolean,
     ): List<MemoAction> =
         when {
-            task != null -> taskActions(task) + claimActions(task, user)
+            task != null -> taskActions(task) + claimActions(task, user) + recusal(task, user)
             user != memo.initiatorId -> emptyList()
             memo.status == MemoStatus.DRAFT -> DRAFT
             memo.status == MemoStatus.RETURNED -> RETURNED
@@ -249,6 +257,17 @@ class MemoViews(
             task.claimedBy == user -> listOf(MemoAction.RELEASE)
             else -> emptyList()
         }
+
+    /** A decision holder may always declare an interest and stand aside, unless another candidate claimed the step. */
+    private fun recusal(
+        task: MyTask,
+        user: UUID?,
+    ): List<MemoAction> =
+        listOfNotNull(
+            MemoAction.RECUSE.takeIf {
+                task.role == TaskRole.DECIDE && task.blocked == null && (task.claimedBy == null || task.claimedBy == user)
+            },
+        )
 
     /** Edit in the browser wherever a new version may be uploaded; everyone who sees the memo may view it there. */
     private fun documentActions(

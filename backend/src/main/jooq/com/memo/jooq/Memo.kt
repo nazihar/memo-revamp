@@ -26,6 +26,7 @@ import com.memo.jooq.tables.IdentityOperator
 import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
+import com.memo.jooq.tables.MemoInterest
 import com.memo.jooq.tables.MemoParticipant
 import com.memo.jooq.tables.MemoReferenceCounter
 import com.memo.jooq.tables.MemoRouteEntry
@@ -193,6 +194,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val MEMO_ : com.memo.jooq.tables.Memo get() = com.memo.jooq.tables.Memo.MEMO_
 
     /**
+     * The table <code>memo.memo_interest</code>.
+     */
+    val MEMO_INTEREST: MemoInterest get() = MemoInterest.MEMO_INTEREST
+
+    /**
      * The table <code>memo.memo_participant</code>.
      */
     val MEMO_PARTICIPANT: MemoParticipant get() = MemoParticipant.MEMO_PARTICIPANT
@@ -358,6 +364,7 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         IdentityRecoveryCode.IDENTITY_RECOVERY_CODE,
         IdentityUser.IDENTITY_USER,
         com.memo.jooq.tables.Memo.MEMO_,
+        MemoInterest.MEMO_INTEREST,
         MemoParticipant.MEMO_PARTICIPANT,
         MemoReferenceCounter.MEMO_REFERENCE_COUNTER,
         MemoRouteEntry.MEMO_ROUTE_ENTRY,

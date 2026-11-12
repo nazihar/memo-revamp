@@ -23,8 +23,43 @@ internal class HandOns(
             is Ask -> ask(state, command)
             is Answer -> answer(state, command)
             is Refer -> refer(state, command)
+            is Recuse -> recuse(state, command)
             else -> opinion(state, command as GiveOpinion)
         }
+
+    /**
+     * The holder stands aside (SOD-4, design E04 §4.4): their task closes. Other candidates of a shared step carry on;
+     * otherwise the step resolves again without them, or waits for an administrator.
+     */
+    fun recuse(
+        state: InstanceState,
+        command: Recuse,
+    ): Outcome {
+        val (step, task) = state.guardedTask(command.taskId)
+        val closed =
+            state.round.replaceStep(step.id) { current ->
+                current.copy(
+                    tasks = current.tasks.map { if (it.id == task.id) it.copy(state = TaskState.CANCELLED) else it },
+                    claimedBy = current.claimedBy.takeUnless { it == task.assignee },
+                )
+            }
+        val closing = Effect.TaskClosed(task.id, TaskState.CANCELLED, null)
+        val action = record(ActionKind.RECUSE, state, task.id, command.actor, command.remark)
+        if (closed.step(step.id).tasks.any { it.state == TaskState.OPEN && it.kind == TaskKind.DECIDE }) {
+            return Outcome(state.copy(round = closed), action, listOf(closing))
+        }
+        val open = closed.step(step.id).tasks.filter { it.state == TaskState.OPEN }
+        val skipped =
+            closed.replaceStep(step.id) { current ->
+                current.copy(
+                    state = StepState.SKIPPED,
+                    tasks = current.tasks.map { if (it.state == TaskState.OPEN) it.copy(state = TaskState.CANCELLED) else it },
+                )
+            }
+        val walk = rounds.reactivate(skipped, step, state.initiator, setOf(command.actor))
+        val cancelled = open.map { Effect.TaskClosed(it.id, TaskState.CANCELLED, null) }
+        return Outcome(state.copy(round = walk.round), action, listOf(closing) + cancelled + walk.effects, walk.followUps)
+    }
 
     /** The task ends; open tasks of the round are cancelled; the target step runs again, and what followed it after that. */
     fun sendBack(

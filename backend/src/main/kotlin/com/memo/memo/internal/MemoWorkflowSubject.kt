@@ -31,8 +31,12 @@ class MemoWorkflowSubject(
     private val files: Files,
     private val users: UserSummaries,
     private val clearances: Clearances,
+    private val interests: MemoInterestStore,
 ) : WorkflowSubject {
     override val type = TYPE
+
+    /** People with a declared interest in the memo are never asked to decide on it (SOD-4, design E04 §4.4). */
+    override fun interested(subjectId: UUID): Set<UUID> = interests.of(subjectId)
 
     override fun ineligible(
         subjectId: UUID,

@@ -29,6 +29,11 @@ class TestWorkflowSubject : WorkflowSubject {
     val documentVersion = ConcurrentHashMap<UUID, Int>()
     val vetoed: MutableSet<UUID> = ConcurrentHashMap.newKeySet()
 
+    /** People with a declared interest per item (SOD-4, E04). */
+    val interests = ConcurrentHashMap<UUID, Set<UUID>>()
+
+    override fun interested(subjectId: UUID): Set<UUID> = interests[subjectId].orEmpty()
+
     /** Attribute values per item, for branch conditions (E03). */
     val values = ConcurrentHashMap<UUID, Map<String, Any?>>()
 

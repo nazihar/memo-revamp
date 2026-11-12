@@ -28,6 +28,7 @@ import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
 import com.memo.jooq.tables.Memo
+import com.memo.jooq.tables.MemoInterest
 import com.memo.jooq.tables.MemoParticipant
 import com.memo.jooq.tables.MemoReferenceCounter
 import com.memo.jooq.tables.MemoRouteEntry
@@ -173,6 +174,11 @@ val IDENTITY_USER: IdentityUser = IdentityUser.IDENTITY_USER
  * The table <code>memo.memo</code>.
  */
 val MEMO_: Memo = Memo.MEMO_
+
+/**
+ * The table <code>memo.memo_interest</code>.
+ */
+val MEMO_INTEREST: MemoInterest = MemoInterest.MEMO_INTEREST
 
 /**
  * The table <code>memo.memo_participant</code>.

@@ -217,6 +217,7 @@ class ActionEffects(
                 ActionKind.MIGRATE to "workflow.instance.migrated",
                 ActionKind.CLAIM to "workflow.task.claimed",
                 ActionKind.RELEASE to "workflow.task.released",
+                ActionKind.RECUSE to "workflow.task.recused",
                 ActionKind.SEND_BACK to "workflow.task.sent_back",
                 ActionKind.FORWARD to "workflow.task.forwarded",
                 ActionKind.DELEGATE to "workflow.task.delegated",

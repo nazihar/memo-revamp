@@ -152,7 +152,7 @@ class WorkflowInvariantProperties {
                 assertThat(after.currentAssignees).containsExactly(command.newAssignee)
             }
 
-            is SendBack, is Forward, is Delegate, is Ask, is Answer, is Refer, is GiveOpinion -> {
+            is SendBack, is Forward, is Delegate, is Ask, is Answer, is Refer, is GiveOpinion, is Recuse -> {
                 throw AssertionError("the E01 scripts never generate E03 hand-on commands")
             }
 

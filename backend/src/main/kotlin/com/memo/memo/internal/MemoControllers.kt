@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.CacheControl
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -526,13 +527,15 @@ class InboxController(
 
 /**
  * Claiming and releasing a memo task shared by several candidates (design E04 §4.2): the candidate who claims it decides
- * it alone until they release it. Each needs an `Idempotency-Key`; the answer is the memo as it is now.
+ * it alone until they release it; and standing aside with a declared interest (§4.4). Each needs an `Idempotency-Key`;
+ * the answer is the memo as it is now.
  */
 @RestController
 @RequestMapping("/api/v1/tasks")
 @Tag(name = "memo")
 class MemoTaskClaimsController(
     private val tasks: MemoTasks,
+    private val interests: MemoInterests,
     private val memos: Memos,
     private val views: MemoViews,
     private val idempotency: Idempotency,
@@ -554,6 +557,15 @@ class MemoTaskClaimsController(
         @RequestHeader("Idempotency-Key") key: String,
     ): ResponseEntity<MemoView> = act(key, "workflow.task.release", taskId) { tasks.handOn(taskId) { it.release(taskId) } }
 
+    @PostMapping("/{taskId}/recuse")
+    @SignedIn
+    @Operation(operationId = "recuseFromTask", summary = "Declare an interest in the memo and stand aside; the step goes to someone else")
+    fun recuse(
+        @PathVariable taskId: UUID,
+        @RequestHeader("Idempotency-Key") key: String,
+        @RequestBody body: RemarkRequest,
+    ): ResponseEntity<MemoView> = act(key, "workflow.task.recuse", taskId) { interests.recuse(taskId, body.remark) }
+
     private fun act(
         key: String,
         operation: String,
@@ -567,4 +579,36 @@ class MemoTaskClaimsController(
             }
         return ResponseEntity.ok().eTag(etagOf(view.version)).body(view)
     }
+}
+
+data class InterestRequest(
+    val userId: UUID,
+    /** What the interest is (kept with the memo, never in the audit log). */
+    val reason: String? = null,
+)
+
+/** The people with a declared interest in a memo (design E04 §4.4), listed by its initiator while the memo is theirs to edit. */
+@RestController
+@RequestMapping("/api/v1/memos/{id}/interests")
+@Tag(name = "memo")
+class MemoInterestsController(
+    private val interests: MemoInterests,
+    private val views: MemoViews,
+    private val transactions: TenantTransactions,
+) {
+    @PostMapping
+    @SignedIn
+    @Operation(operationId = "declareMemoInterest", summary = "Record that someone has an interest in the memo")
+    fun declare(
+        @PathVariable id: UUID,
+        @RequestBody body: InterestRequest,
+    ): MemoView = transactions.inTenant(TenantContext.current()) { views.of(interests.declare(id, body.userId, body.reason)) }
+
+    @DeleteMapping("/{userId}")
+    @SignedIn
+    @Operation(operationId = "removeMemoInterest", summary = "Remove a declared interest")
+    fun remove(
+        @PathVariable id: UUID,
+        @PathVariable userId: UUID,
+    ): MemoView = transactions.inTenant(TenantContext.current()) { views.of(interests.remove(id, userId)) }
 }

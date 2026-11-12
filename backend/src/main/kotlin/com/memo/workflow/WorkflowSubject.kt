@@ -31,6 +31,12 @@ interface WorkflowSubject {
     /** The current values of [attributes] for [subjectId]; a missing value sends a condition to its branch's `otherwise`. */
     fun attributeValues(subjectId: UUID): Map<String, Any?> = emptyMap()
 
+    /**
+     * The people with a declared interest in [subjectId] (a beneficiary, a related party, an approver who stood aside):
+     * never candidates for its steps (SOD-4, design E04 §4.4).
+     */
+    fun interested(subjectId: UUID): Set<UUID> = emptySet()
+
     /** What lists show of [subjectIds], in one query per page (absent ids are shown as unknown). */
     fun summaries(subjectIds: Collection<UUID>): Map<UUID, SubjectSummary> = emptyMap()
 

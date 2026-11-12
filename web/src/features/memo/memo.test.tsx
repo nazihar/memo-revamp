@@ -43,6 +43,7 @@ const memo: MemoView = {
   createdAt: '2026-11-09T08:00:00Z',
   updatedAt: '2026-11-10T08:00:00Z',
   version: 4,
+  interests: [],
 }
 
 const history: HistoryRound[] = [

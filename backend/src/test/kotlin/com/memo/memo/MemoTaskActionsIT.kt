@@ -83,7 +83,7 @@ class MemoTaskActionsIT : MemoIntegrationTest() {
         assertThat(atBob["myTask"]["role"].asString()).isEqualTo("DECIDE")
         assertThat(atBob["myTask"]["stepName"].asString()).isEqualTo("Approvers")
         assertThat(atBob["allowedActions"].toList().map { it.asString() })
-            .containsExactly("APPROVE", "RETURN", "REJECT", "FORWARD", "DELEGATE", "ASK", "REFER")
+            .containsExactly("APPROVE", "RETURN", "REJECT", "FORWARD", "DELEGATE", "ASK", "REFER", "RECUSE")
         val bobTask = atBob["myTask"]["id"].asString()
         assertThat(act(bobTask, "refer", stranger, """{"to":["${dave.id}"],"remark":"views?"}""")).hasStatus(HttpStatus.NOT_FOUND)
 

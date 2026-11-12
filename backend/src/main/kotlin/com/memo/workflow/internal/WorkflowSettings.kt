@@ -16,8 +16,12 @@ class WorkflowSettings(
             ?.toIntOrNull()
             ?.coerceIn(MAX_APPROVERS_RANGE) ?: MAX_APPROVERS_DEFAULT
 
+    /** SOD-2: nobody approves twice in one round (design E04 §4.4); on unless the tenant switched it off. */
+    fun oncePerRound(): Boolean = settings.get(ONCE_PER_ROUND)?.value?.toBooleanStrictOrNull() ?: true
+
     companion object {
         const val MAX_APPROVERS = "workflow.route.max"
+        const val ONCE_PER_ROUND = "workflow.sod.once.per.round"
         private const val MAX_APPROVERS_DEFAULT = 20
         private val MAX_APPROVERS_RANGE = 1..50
     }

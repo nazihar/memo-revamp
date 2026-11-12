@@ -92,6 +92,16 @@ data class Release(
     val byAdministrator: Boolean = false,
 ) : TaskCommand
 
+/**
+ * The holder declares an interest in the item and stands aside (SOD-4, design E04 §4.4): their task closes and the step
+ * goes to whoever else it resolves to, never to them. [remark] (the reason) is required.
+ */
+data class Recuse(
+    override val actor: UUID,
+    override val taskId: UUID,
+    val remark: String?,
+) : TaskCommand
+
 /** Sends the item back to an earlier step of this round, which runs again (design E03 §4.4). */
 data class SendBack(
     override val actor: UUID,
@@ -273,6 +283,10 @@ class TransitionContext(
     val carried: Set<Carried> = emptySet(),
     /** Who a definition's assignees are now (design E04 §4.1). */
     val resolver: Resolver = Resolver.NAMED,
+    /** SOD-2: nobody approves twice in one round (tenant setting, design E04 §4.4). */
+    val oncePerRound: Boolean = true,
+    /** SOD-4: the people with a declared interest in the subject, read when a step is resolved. */
+    val interested: () -> Set<UUID> = { emptySet() },
 )
 
 /** An approval of [nodeId] by [person] that can carry over into the next round. */

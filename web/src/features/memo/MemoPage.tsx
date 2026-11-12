@@ -37,7 +37,31 @@ const DIALOG_ACTIONS: Partial<Record<MemoView['allowedActions'][number], MemoAct
   RESUBMIT: 'resubmit',
   WITHDRAW: 'withdraw',
   DISCARD: 'discard',
+  RECOMMEND: 'recommend',
+  RECALL: 'recall',
+  ANSWER: 'answer',
+  OPINION: 'opinion',
+  SEND_BACK: 'sendBack',
+  FORWARD: 'forward',
+  DELEGATE: 'delegate',
+  ASK: 'ask',
+  REFER: 'refer',
 }
+
+/** The main action of the bar; the others are outlined. */
+const PRIMARY = new Set<MemoActionKind>(['approve', 'recommend', 'submit', 'resubmit', 'answer', 'opinion'])
+
+/** After these the task is no longer the person's, so the page goes back to their tasks. */
+const LEAVES_TASK = new Set<MemoActionKind>([
+  'approve',
+  'recommend',
+  'return',
+  'reject',
+  'sendBack',
+  'forward',
+  'answer',
+  'opinion',
+])
 
 /**
  * `/memos/$memoId` (design E01 §13, ux-review §4–§5): the memo's fields and status, its document, the route, the history
@@ -162,32 +186,50 @@ export function MemoPage({ memoId }: { memoId: string }) {
           </Section>
         </div>
         <div className="flex flex-col gap-6">
-          {view.holders.length > 0 ? (
+          {view.holders.length > 0 || view.myTask ? (
             <Section title={intl.formatMessage(mm.holders)}>
-              <p className="text-sm">{view.holders.map((h) => h.name).join(', ')}</p>
+              {view.holders.length > 0 ? <p className="text-sm">{view.holders.map((h) => h.name).join(', ')}</p> : null}
+              {view.myTask?.stepName ? (
+                <p className="text-sm text-muted-foreground">
+                  {intl.formatMessage(mmv.step, { step: view.myTask.stepName })}
+                </p>
+              ) : null}
+              {view.myTask?.role === 'OPINION' ? (
+                <Badge tone="neutral">{intl.formatMessage(mm.roleOpinion)}</Badge>
+              ) : null}
+              {view.myTask?.role === 'CLARIFY' ? (
+                <Badge tone="neutral">{intl.formatMessage(mm.roleClarify)}</Badge>
+              ) : null}
+              {view.myTask?.waiting ? (
+                <p role="status" className="mt-2 text-sm">
+                  {intl.formatMessage(mm.waitingForAnswer)}
+                </p>
+              ) : null}
             </Section>
           ) : null}
-          <Section title={intl.formatMessage(mm.route)} lead={intl.formatMessage(mm.routeLead)}>
-            {allowed.has('EDIT_ROUTE') ? (
-              <RouteEditor
-                key={view.version}
-                memo={view}
-                onSaved={(saved) => {
-                  toast.show(intl.formatMessage(mm.routeSaved), 'success')
-                  void replace(saved)
-                }}
-                onProblem={(p) => void onProblem(p)}
-              />
-            ) : view.route.length === 0 ? (
-              <p className="text-sm text-muted-foreground">{intl.formatMessage(mm.routeEmpty)}</p>
-            ) : (
-              <ol className="flex list-decimal flex-col gap-1 ps-5 text-sm">
-                {view.route.map((entry) => (
-                  <li key={entry.ordinal}>{entry.approver.name}</li>
-                ))}
-              </ol>
-            )}
-          </Section>
+          {allowed.has('EDIT_ROUTE') || view.route.length > 0 ? (
+            <Section title={intl.formatMessage(mm.route)} lead={intl.formatMessage(mm.routeLead)}>
+              {allowed.has('EDIT_ROUTE') ? (
+                <RouteEditor
+                  key={view.version}
+                  memo={view}
+                  onSaved={(saved) => {
+                    toast.show(intl.formatMessage(mm.routeSaved), 'success')
+                    void replace(saved)
+                  }}
+                  onProblem={(p) => void onProblem(p)}
+                />
+              ) : view.route.length === 0 ? (
+                <p className="text-sm text-muted-foreground">{intl.formatMessage(mm.routeEmpty)}</p>
+              ) : (
+                <ol className="flex list-decimal flex-col gap-1 ps-5 text-sm">
+                  {view.route.map((entry) => (
+                    <li key={entry.ordinal}>{entry.approver.name}</li>
+                  ))}
+                </ol>
+              )}
+            </Section>
+          ) : null}
           <div className="text-sm text-muted-foreground">
             {intl.formatMessage(mmv.from, { name: view.initiator.name })}
           </div>
@@ -203,7 +245,7 @@ export function MemoPage({ memoId }: { memoId: string }) {
             <Button
               key={kind}
               className="min-h-11 min-w-11"
-              variant={kind === 'approve' || kind === 'submit' || kind === 'resubmit' ? 'default' : 'outline'}
+              variant={PRIMARY.has(kind) ? 'default' : 'outline'}
               onClick={() => {
                 setDialog(kind)
               }}
@@ -224,7 +266,7 @@ export function MemoPage({ memoId }: { memoId: string }) {
             setDialog(undefined)
             toast.show(intl.formatMessage(mm.done), 'success')
             void replace(next)
-            if (dialog === 'approve' || dialog === 'return' || dialog === 'reject') {
+            if (LEAVES_TASK.has(dialog)) {
               void navigate({ to: '/inbox', search: { tab: 'tasks' } })
             }
           }}

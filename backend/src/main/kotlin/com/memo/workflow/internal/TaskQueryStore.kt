@@ -10,6 +10,7 @@ import com.memo.workflow.ActionKind
 import com.memo.workflow.BlockedReason
 import com.memo.workflow.SubjectRef
 import com.memo.workflow.TaskItem
+import com.memo.workflow.TaskRole
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Component
 import tools.jackson.databind.json.JsonMapper
@@ -42,8 +43,18 @@ class TaskQueryStore(
             )
         return tenantDsl
             .current()
-            .select(t.ID, t.INSTANCE_ID, i.SUBJECT_TYPE, i.SUBJECT_ID, t.ASSIGNEE_ID, i.CURRENT_ROUND, t.BLOCKED_REASON, t.CREATED_AT)
-            .from(t)
+            .select(
+                t.ID,
+                t.INSTANCE_ID,
+                i.SUBJECT_TYPE,
+                i.SUBJECT_ID,
+                t.ASSIGNEE_ID,
+                i.CURRENT_ROUND,
+                t.BLOCKED_REASON,
+                t.CREATED_AT,
+                t.KIND,
+                i.CURRENT_STEP_NAME,
+            ).from(t)
             .join(i)
             .on(i.ID.eq(t.INSTANCE_ID))
             .where(conditions)
@@ -58,6 +69,8 @@ class TaskQueryStore(
                     round = r.value6()!!,
                     blocked = r.value7()?.let(BlockedReason::valueOf),
                     createdAt = r.value8()!!.toInstant(),
+                    role = TaskRole.valueOf(r.value9()!!),
+                    stepName = r.value10(),
                 )
             }
     }

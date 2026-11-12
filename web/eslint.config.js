@@ -32,7 +32,9 @@ export default defineConfig(
     languageOptions: {
       globals: { ...globals.browser },
       parserOptions: {
-        projectService: { allowDefaultProject: ['eslint.config.js', 'nginx/*.mjs', 'scripts/*.mjs'] },
+        projectService: {
+          allowDefaultProject: ['eslint.config.js', 'nginx/*.mjs', 'scripts/*.mjs', 'scripts/*.d.mts'],
+        },
         tsconfigRootDir: import.meta.dirname,
       },
     },

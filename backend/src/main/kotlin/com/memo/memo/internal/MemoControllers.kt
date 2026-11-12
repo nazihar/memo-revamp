@@ -10,6 +10,8 @@ import com.memo.common.tenant.TenantTransactions
 import com.memo.common.web.etagOf
 import com.memo.common.web.ifMatchVersion
 import com.memo.system.Idempotency
+import com.memo.workflow.DefinitionChoice
+import com.memo.workflow.WorkflowDefinitions
 import com.memo.workflow.Workflows
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Schema
@@ -250,6 +252,7 @@ data class MemoTypeRequest(
 @Tag(name = "memo")
 class AdminMemoTypesController(
     private val types: MemoTypes,
+    private val definitions: WorkflowDefinitions,
     private val idempotency: Idempotency,
     private val transactions: TenantTransactions,
     private val json: JsonMapper,
@@ -262,6 +265,11 @@ class AdminMemoTypesController(
             .ok()
             .cacheControl(CacheControl.noStore())
             .body(transactions.readInTenant(TenantContext.current()) { types.all() })
+
+    @GetMapping("/definitions")
+    @RequiresPermission(Permission.MEMO_TYPES_MANAGE)
+    @Operation(operationId = "listMemoTypeDefinitions", summary = "Published workflow definitions a memo type can run on")
+    fun definitions(): List<DefinitionChoice> = transactions.readInTenant(TenantContext.current()) { definitions.published() }
 
     @PostMapping
     @RequiresPermission(Permission.MEMO_TYPES_MANAGE)

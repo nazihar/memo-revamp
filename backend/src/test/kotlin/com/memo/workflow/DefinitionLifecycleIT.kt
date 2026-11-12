@@ -134,6 +134,10 @@ class DefinitionLifecycleIT : MemoIntegrationTest() {
         publish("fixed", fixed(approver.id))
         publish("routed", ROUTED)
 
+        val choices = read("/api/v1/admin/memo-types/definitions", maker).json()
+        val routed = (0 until choices.size()).associate { choices[it]["key"].asString() to choices[it]["routed"].asBoolean() }
+        assertThat(routed).containsEntry("fixed", false).containsEntry("routed", true).containsEntry("sequential-approval", true)
+
         val unknown = memoType("Unknown", """"definitionKey":"nothing","routePolicy":"INITIATOR_DEFINED"""")
         assertThat(unknown.errors()).containsExactly("definitionKey:unknown")
         assertThat(memoType("Wrong", """"definitionKey":"fixed","routePolicy":"BOTH"""").errors()).containsExactly("routePolicy:mismatch")
@@ -151,9 +155,14 @@ class DefinitionLifecycleIT : MemoIntegrationTest() {
                 initiator.session,
                 """{"subject":"Laptops","typeId":"${type.json()["id"].asString()}","classificationId":"${levels()[0].id}"}""",
             ).json()["id"].asString()
+        val allowed = get(memo, initiator.session).json()["allowedActions"]
+        assertThat((0 until allowed.size()).map { allowed[it].asString() }).contains("SUBMIT").doesNotContain("EDIT_ROUTE")
         uploadDocument(memo, initiator.session)
         assertThat(post("/api/v1/memos/$memo/submit", initiator.session)).hasStatusOk()
         assertThat(get(memo, approver.session).json()["myTask"]?.get("id")).isNotNull()
+        val inbox = read("/api/v1/inbox/tasks", approver.session).json()["items"][0]
+        assertThat(inbox["kind"].asString()).isEqualTo("DECIDE")
+        assertThat(inbox["stepName"].asString()).isEqualTo("Buyer")
 
         // Edits that leave the definition out keep it (the E01 form does not send it).
         val version = type.json()["version"].asLong()

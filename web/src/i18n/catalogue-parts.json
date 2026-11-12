@@ -1,0 +1,9 @@
+{
+  "$comment": "Message catalogues load per route (E07 research R22, E03 T10): a message whose id starts with one of a part's prefixes is in that part, everything else is in core; a part loads when a page under one of its routes opens. Checked by scripts/catalogue-size.mjs.",
+  "admin": {
+    "routes": ["/admin"],
+    "prefixes": ["admin", "access", "users", "mail", "workflowTasks", "memoTypes", "workflows"]
+  },
+  "platform": { "routes": ["/platform"], "prefixes": ["platform"] },
+  "patterns": { "routes": ["/patterns"], "prefixes": ["patterns"] }
+}

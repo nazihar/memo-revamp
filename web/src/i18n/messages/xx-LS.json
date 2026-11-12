@@ -1951,10 +1951,28 @@
       "value": "User nameSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.action.answer": [
+    {
+      "type": 0,
+      "value": "AnswerSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.action.approve": [
     {
       "type": 0,
       "value": "ApproveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.action.ask": [
+    {
+      "type": 0,
+      "value": "Ask a questionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.action.delegate": [
+    {
+      "type": 0,
+      "value": "DelegateSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.action.discard": [
@@ -1967,6 +1985,36 @@
     {
       "type": 0,
       "value": "EditSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.action.forward": [
+    {
+      "type": 0,
+      "value": "ForwardSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.action.opinion": [
+    {
+      "type": 0,
+      "value": "Give your opinionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.action.recall": [
+    {
+      "type": 0,
+      "value": "RecallSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.action.recommend": [
+    {
+      "type": 0,
+      "value": "RecommendSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.action.refer": [
+    {
+      "type": 0,
+      "value": "Ask for opinionsSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.action.reject": [
@@ -1987,6 +2035,12 @@
       "value": "ReturnSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.action.sendBack": [
+    {
+      "type": 0,
+      "value": "Send backSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.action.submit": [
     {
       "type": 0,
@@ -2003,6 +2057,12 @@
     {
       "type": 0,
       "value": "ActionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.answer.text": [
+    {
+      "type": 0,
+      "value": "Your answerSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.assignedAt": [
@@ -2055,6 +2115,26 @@
       "value": "New memoSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.dialog.answer": [
+    {
+      "type": 0,
+      "value": "Answer the question on "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.answer.lead": [
+    {
+      "type": 0,
+      "value": "Whoever asked can decide once you answer.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.dialog.approve": [
     {
       "type": 0,
@@ -2083,6 +2163,46 @@
       "value": ". You may be asked to confirm it is you.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.dialog.ask": [
+    {
+      "type": 0,
+      "value": "Ask about "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.ask.lead": [
+    {
+      "type": 0,
+      "value": "You can decide once your question is answered.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.delegate": [
+    {
+      "type": 0,
+      "value": "Delegate "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.delegate.lead": [
+    {
+      "type": 0,
+      "value": "The person you choose acts for you; the step stays yours.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.dialog.discard": [
     {
       "type": 0,
@@ -2093,6 +2213,114 @@
     {
       "type": 0,
       "value": "It moves to Closed and cannot be submitted.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.forward": [
+    {
+      "type": 0,
+      "value": "Forward "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.forward.lead": [
+    {
+      "type": 0,
+      "value": "The person you choose holds the step instead of you.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.opinion": [
+    {
+      "type": 0,
+      "value": "Your opinion on "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.opinion.lead": [
+    {
+      "type": 0,
+      "value": "It goes into the history for whoever decides.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.recall": [
+    {
+      "type": 0,
+      "value": "Recall "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.recall.lead": [
+    {
+      "type": 0,
+      "value": "Nobody has acted on it yet. It comes back to you to change and resubmit.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.recommend": [
+    {
+      "type": 0,
+      "value": "Recommend "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.recommend.lead": [
+    {
+      "type": 0,
+      "value": "You recommend document version "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": ". The next step gets it with your recommendation.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.refer": [
+    {
+      "type": 0,
+      "value": "Ask for opinions on "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.refer.lead": [
+    {
+      "type": 0,
+      "value": "You keep the task and decide when you are ready.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.dialog.reject": [
@@ -2145,6 +2373,26 @@
     {
       "type": 0,
       "value": "Say what needs to change. They can resubmit it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.sendBack": [
+    {
+      "type": 0,
+      "value": "Send "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " back?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.sendBack.lead": [
+    {
+      "type": 0,
+      "value": "The step you choose runs again, and the steps after it too. Say why.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.dialog.submit": [
@@ -2297,6 +2545,18 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.handOn.personRequired": [
+    {
+      "type": 0,
+      "value": "Choose a person.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.handOn.to": [
+    {
+      "type": 0,
+      "value": "PersonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.history": [
     {
       "type": 0,
@@ -2435,6 +2695,20 @@
       "value": "WithdrewSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.history.branch": [
+    {
+      "type": 0,
+      "value": "Based on "
+    },
+    {
+      "type": 1,
+      "value": "inputs"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.history.document": [
     {
       "type": 0,
@@ -2459,6 +2733,42 @@
     {
       "type": 0,
       "value": "Nothing has happened yet: the memo is a draft.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.history.migrated": [
+    {
+      "type": 0,
+      "value": "From version "
+    },
+    {
+      "type": 1,
+      "value": "from"
+    },
+    {
+      "type": 0,
+      "value": " to version "
+    },
+    {
+      "type": 1,
+      "value": "to"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.history.to": [
+    {
+      "type": 0,
+      "value": "To "
+    },
+    {
+      "type": 1,
+      "value": "names"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.holders": [
@@ -2489,6 +2799,18 @@
     {
       "type": 0,
       "value": "Nothing is waiting for you.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.inbox.kind.clarify": [
+    {
+      "type": 0,
+      "value": "Question for youSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.inbox.kind.opinion": [
+    {
+      "type": 0,
+      "value": "Opinion askedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.inbox.lead": [
@@ -2543,6 +2865,24 @@
     {
       "type": 0,
       "value": "This memo does not exist, or you cannot see it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.opinion.text": [
+    {
+      "type": 0,
+      "value": "Your opinionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.refer.peopleRequired": [
+    {
+      "type": 0,
+      "value": "Choose at least one person.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.refer.to": [
+    {
+      "type": 0,
+      "value": "People (up to 10)SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.referenceHolders": [
@@ -2775,6 +3115,36 @@
       "value": "SaveSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.sendBack.stepRequired": [
+    {
+      "type": 0,
+      "value": "Choose a step.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.sendBack.target": [
+    {
+      "type": 1,
+      "value": "step"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.sendBack.to": [
+    {
+      "type": 0,
+      "value": "Send back toSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.status.approved": [
     {
       "type": 0,
@@ -2821,6 +3191,38 @@
     {
       "type": 0,
       "value": "WithdrawnSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.step": [
+    {
+      "type": 0,
+      "value": "Step: "
+    },
+    {
+      "type": 1,
+      "value": "step"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.task.role.clarify": [
+    {
+      "type": 0,
+      "value": "A question for youSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.task.role.opinion": [
+    {
+      "type": 0,
+      "value": "Your opinion is asked forSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.task.waiting": [
+    {
+      "type": 0,
+      "value": "You asked a question. You can decide once it is answered.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.updatedAt": [
@@ -2879,6 +3281,12 @@
       "value": "Confirm before approvingSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memoTypes.col.workflow": [
+    {
+      "type": 0,
+      "value": "WorkflowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memoTypes.edit": [
     {
       "type": 0,
@@ -2923,6 +3331,30 @@
       "value": "NoSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memoTypes.policy": [
+    {
+      "type": 0,
+      "value": "ApproversSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.policy.both": [
+    {
+      "type": 0,
+      "value": "The workflow’s steps, plus those the author choosesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.policy.fixed": [
+    {
+      "type": 0,
+      "value": "The workflow names every stepSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.policy.initiator": [
+    {
+      "type": 0,
+      "value": "The author chooses themSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memoTypes.stepUp": [
     {
       "type": 0,
@@ -2933,6 +3365,12 @@
     {
       "type": 0,
       "value": "Memo typesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.workflow.hint": [
+    {
+      "type": 0,
+      "value": "New memos of this type use its published version; memos in review keep theirs.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memoTypes.yes": [
@@ -3091,10 +3529,22 @@
       "value": "UsersSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "nav.workflow": [
+    {
+      "type": 0,
+      "value": "WorkflowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "nav.workflowTasks": [
     {
       "type": 0,
       "value": "Open tasksSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.workflows": [
+    {
+      "type": 0,
+      "value": "WorkflowsSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "notifications.bell": [
@@ -6363,6 +6813,584 @@
     {
       "type": 0,
       "value": "Open tasksSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.action.approve": [
+    {
+      "type": 0,
+      "value": "Approve and publishSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.action.export": [
+    {
+      "type": 0,
+      "value": "ExportSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.action.import": [
+    {
+      "type": 0,
+      "value": "Import a fileSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.action.newDraft": [
+    {
+      "type": 0,
+      "value": "New draftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.action.retire": [
+    {
+      "type": 0,
+      "value": "RetireSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.action.save": [
+    {
+      "type": 0,
+      "value": "Save draftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.action.sendBack": [
+    {
+      "type": 0,
+      "value": "Send backSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.action.submit": [
+    {
+      "type": 0,
+      "value": "Submit for reviewSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.action.validate": [
+    {
+      "type": 0,
+      "value": "CheckSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.add": [
+    {
+      "type": 0,
+      "value": "New workflowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.approve.lead": [
+    {
+      "type": 0,
+      "value": "New memos use it from now on; the version published before is retired. You may be asked to confirm it is you.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.approve.title": [
+    {
+      "type": 0,
+      "value": "Publish this version?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.body": [
+    {
+      "type": 0,
+      "value": "DefinitionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.body.hint": [
+    {
+      "type": 0,
+      "value": "The definition as JSON (schema version 2). Save keeps a draft even while it has problems.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.body.invalidJson": [
+    {
+      "type": 0,
+      "value": "This is not valid JSON.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builtIn": [
+    {
+      "type": 0,
+      "value": "Built inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.caption": [
+    {
+      "type": 0,
+      "value": "Workflow definitions of the organisationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.col.at": [
+    {
+      "type": 0,
+      "value": "AtSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.col.can": [
+    {
+      "type": 0,
+      "value": "Can moveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.col.from": [
+    {
+      "type": 0,
+      "value": "On versionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.col.key": [
+    {
+      "type": 0,
+      "value": "KeySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.col.memo": [
+    {
+      "type": 0,
+      "value": "MemoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.col.name": [
+    {
+      "type": 0,
+      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.col.open": [
+    {
+      "type": 0,
+      "value": "In progressSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.col.published": [
+    {
+      "type": 0,
+      "value": "PublishedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.col.reviewed": [
+    {
+      "type": 0,
+      "value": "Reviewed bySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.col.state": [
+    {
+      "type": 0,
+      "value": "StateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.col.submitted": [
+    {
+      "type": 0,
+      "value": "Submitted bySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.col.version": [
+    {
+      "type": 0,
+      "value": "VersionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.conflict": [
+    {
+      "type": 0,
+      "value": "Someone changed this version meanwhile. It was reloaded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.create.submit": [
+    {
+      "type": 0,
+      "value": "Create draftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.create.title": [
+    {
+      "type": 0,
+      "value": "New workflowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.done": [
+    {
+      "type": 0,
+      "value": "Done.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.field.description": [
+    {
+      "type": 0,
+      "value": "Description (optional)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.field.fragment": [
+    {
+      "type": 0,
+      "value": "Meant to be used inside other workflowsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.field.key": [
+    {
+      "type": 0,
+      "value": "KeySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.field.key.hint": [
+    {
+      "type": 0,
+      "value": "Lower case letters, digits and dashes, starting with a letter. It never changes.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.field.name": [
+    {
+      "type": 0,
+      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.fragment": [
+    {
+      "type": 0,
+      "value": "Sub-workflowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.keyTaken": [
+    {
+      "type": 0,
+      "value": "A workflow with this key exists.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.lead": [
+    {
+      "type": 0,
+      "value": "How memos move from step to step. A version is written, reviewed by someone else, then published; memos keep the version they started on.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.migration": [
+    {
+      "type": 0,
+      "value": "Memos on older versionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.migration.caption": [
+    {
+      "type": 0,
+      "value": "Running memos on other versionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.migration.lead": [
+    {
+      "type": 0,
+      "value": "Memos keep the version they started on. You can move those whose current step still exists to the published version.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.migration.migrate": [
+    {
+      "type": 0,
+      "value": "Move selectedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.migration.migrated": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " memo moved."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " memos moved."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.migration.moved": [
+    {
+      "type": 0,
+      "value": "MovedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.migration.none": [
+    {
+      "type": 0,
+      "value": "No memos run on other versions.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.migration.preview": [
+    {
+      "type": 0,
+      "value": "Find memosSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.migration.select": [
+    {
+      "type": 0,
+      "value": "Select "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.none": [
+    {
+      "type": 0,
+      "value": "NoneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.notFound": [
+    {
+      "type": 0,
+      "value": "This workflow does not exist.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.problems": [
+    {
+      "type": 0,
+      "value": "ProblemsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.problems.none": [
+    {
+      "type": 0,
+      "value": "No problems found.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.reason.notOlder": [
+    {
+      "type": 0,
+      "value": "It is on a newer versionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.reason.otherDefinition": [
+    {
+      "type": 0,
+      "value": "It runs another workflowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.reason.stepChanged": [
+    {
+      "type": 0,
+      "value": "Its current step works differently thereSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.reason.stepMissing": [
+    {
+      "type": 0,
+      "value": "Its current step is not in the new versionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.reason.wrongState": [
+    {
+      "type": 0,
+      "value": "It is not running any moreSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.refused.draftExists": [
+    {
+      "type": 0,
+      "value": "There is already a draft or a version in review.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.refused.inUse": [
+    {
+      "type": 0,
+      "value": "A memo type still uses this workflow.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.refused.invalid": [
+    {
+      "type": 0,
+      "value": "Fix the problems first.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.refused.samePerson": [
+    {
+      "type": 0,
+      "value": "Someone other than the person who submitted it has to review it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.remark": [
+    {
+      "type": 0,
+      "value": "RemarkSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.remark.optional": [
+    {
+      "type": 0,
+      "value": "Remark (optional)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.remark.required": [
+    {
+      "type": 0,
+      "value": "Say what needs to change.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.required": [
+    {
+      "type": 0,
+      "value": "Required.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.restricted": [
+    {
+      "type": 0,
+      "value": "Restricted memoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.retire.lead": [
+    {
+      "type": 0,
+      "value": "New memos cannot use this workflow any more. Memos already on it keep running.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.retire.title": [
+    {
+      "type": 0,
+      "value": "Retire this version?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.reviewRemark": [
+    {
+      "type": 0,
+      "value": "Reviewer’s remarkSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.saved": [
+    {
+      "type": 0,
+      "value": "Saved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.sendBack.title": [
+    {
+      "type": 0,
+      "value": "Send this version back?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.show": [
+    {
+      "type": 0,
+      "value": "ShowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.state.draft": [
+    {
+      "type": 0,
+      "value": "DraftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.state.inReview": [
+    {
+      "type": 0,
+      "value": "In reviewSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.state.published": [
+    {
+      "type": 0,
+      "value": "PublishedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.state.retired": [
+    {
+      "type": 0,
+      "value": "RetiredSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.title": [
+    {
+      "type": 0,
+      "value": "WorkflowsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.version": [
+    {
+      "type": 0,
+      "value": "Version "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.versionState": [
+    {
+      "type": 0,
+      "value": "Version "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "state"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.versions": [
+    {
+      "type": 0,
+      "value": "VersionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.versions.caption": [
+    {
+      "type": 0,
+      "value": "Versions, newest firstSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.yes": [
+    {
+      "type": 0,
+      "value": "YesSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ]
 }

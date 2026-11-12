@@ -516,6 +516,21 @@
         "required" : [ "code", "legalEntityId", "name" ],
         "type" : "object"
       },
+      "DefinitionChoice" : {
+        "properties" : {
+          "key" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "routed" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "key", "name", "routed" ],
+        "type" : "object"
+      },
       "DefinitionResponse" : {
         "properties" : {
           "definition" : {
@@ -970,6 +985,10 @@
             "enum" : [ "NO_CLEARANCE", "INACTIVE" ],
             "type" : [ "string", "null" ]
           },
+          "kind" : {
+            "enum" : [ "DECIDE", "OPINION", "CLARIFY" ],
+            "type" : "string"
+          },
           "memo" : {
             "$ref" : "#/components/schemas/InboxMemo"
           },
@@ -977,12 +996,15 @@
             "format" : "int32",
             "type" : "integer"
           },
+          "stepName" : {
+            "type" : [ "string", "null" ]
+          },
           "taskId" : {
             "format" : "uuid",
             "type" : "string"
           }
         },
-        "required" : [ "assignedAt", "memo", "round", "taskId" ],
+        "required" : [ "assignedAt", "kind", "memo", "round", "taskId" ],
         "type" : "object"
       },
       "InboxMemo" : {
@@ -1582,6 +1604,7 @@
             "type" : "array"
           }
         },
+        "required" : [ "instanceIds" ],
         "type" : "object"
       },
       "MigrationResponse" : {
@@ -3421,6 +3444,28 @@
           }
         },
         "summary" : "Create a memo type",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/admin/memo-types/definitions" : {
+      "get" : {
+        "operationId" : "listMemoTypeDefinitions",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/DefinitionChoice"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Published workflow definitions a memo type can run on",
         "tags" : [ "memo" ]
       }
     },

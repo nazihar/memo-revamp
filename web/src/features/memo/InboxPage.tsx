@@ -121,6 +121,9 @@ function TaskRow({ item }: { item: InboxItem }) {
         </span>
       </span>
       <span className="flex items-center gap-2 text-xs text-muted-foreground">
+        {item.stepName ? <span>{item.stepName}</span> : null}
+        {item.kind === 'OPINION' ? <Badge tone="neutral">{intl.formatMessage(mm.kindOpinion)}</Badge> : null}
+        {item.kind === 'CLARIFY' ? <Badge tone="neutral">{intl.formatMessage(mm.kindClarify)}</Badge> : null}
         {item.blocked ? <Badge tone="warn">{intl.formatMessage(mm.blocked)}</Badge> : null}
         <time dateTime={item.assignedAt}>{waiting}</time>
       </span>

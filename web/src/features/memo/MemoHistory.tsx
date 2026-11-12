@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
-import { useIntl } from 'react-intl'
+import { useIntl, type IntlShape } from 'react-intl'
 import { getMemoHistoryOptions } from '@/api/generated/@tanstack/react-query.gen'
+import type { HistoryAction } from '@/api/generated/types.gen'
 import { ErrorState, LoadingState } from '@/components/page/States'
 import { cn } from '@/lib/utils'
 import { actionLabels, mm, mmv } from './memo-messages'
@@ -31,7 +32,11 @@ export function MemoHistory({ memoId }: { memoId: string }) {
                 <span className="flex flex-wrap gap-x-2 text-sm">
                   <span className="font-medium">{action.actor.name}</span>
                   <span>{intl.formatMessage(actionLabels[action.kind])}</span>
+                  {action.step ? <span className="text-muted-foreground">{action.step}</span> : null}
                 </span>
+                {detailLine(intl, action) ? (
+                  <span className="text-xs text-muted-foreground">{detailLine(intl, action)}</span>
+                ) : null}
                 <span className="flex flex-wrap gap-x-2 text-xs text-muted-foreground">
                   <time dateTime={action.occurredAt}>
                     {intl.formatDate(action.occurredAt, { dateStyle: 'medium', timeStyle: 'short' })}
@@ -48,4 +53,22 @@ export function MemoHistory({ memoId }: { memoId: string }) {
       ))}
     </div>
   )
+}
+
+/**
+ * What an action was about, in one line (design E03 §12): who a task went to, the versions of a migration, or the item
+ * values a branch was decided on.
+ */
+function detailLine(intl: IntlShape, action: HistoryAction): string | undefined {
+  if (action.to.length > 0)
+    return intl.formatMessage(mmv.historyTo, { names: intl.formatList(action.to.map((p) => p.name)) })
+  const { from, to, inputs } = action.details
+  if (action.kind === 'MIGRATE' && typeof from === 'number' && typeof to === 'number') {
+    return intl.formatMessage(mmv.historyMigrated, { from, to })
+  }
+  if (action.kind === 'ROUTE' && inputs && typeof inputs === 'object') {
+    const shown = Object.entries(inputs as Record<string, unknown>).map(([name, value]) => `${name} = ${String(value)}`)
+    if (shown.length > 0) return intl.formatMessage(mmv.historyBranch, { inputs: intl.formatList(shown) })
+  }
+  return undefined
 }

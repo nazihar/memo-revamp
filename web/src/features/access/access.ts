@@ -15,6 +15,8 @@ export const PERMISSION = {
   memoCreate: 'memo.create',
   memoTypesManage: 'memo.types.manage',
   workflowTasksReassign: 'workflow.tasks.reassign',
+  workflowDefinitionsManage: 'workflow.definitions.manage',
+  workflowDefinitionsApprove: 'workflow.definitions.approve',
 } as const
 
 /** What the signed-in user may do (`GET /me/access`), for menus and buttons only. */

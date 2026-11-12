@@ -125,6 +125,14 @@ function TaskRow({ item }: { item: InboxItem }) {
         {item.kind === 'OPINION' ? <Badge tone="neutral">{intl.formatMessage(mm.kindOpinion)}</Badge> : null}
         {item.kind === 'CLARIFY' ? <Badge tone="neutral">{intl.formatMessage(mm.kindClarify)}</Badge> : null}
         {item.blocked ? <Badge tone="warn">{intl.formatMessage(mm.blocked)}</Badge> : null}
+        {item.actingFor ? (
+          <Badge tone="neutral">{intl.formatMessage(mmv.actingFor, { name: item.actingFor.name })}</Badge>
+        ) : null}
+        {item.claimedBy ? (
+          <Badge tone="neutral">{intl.formatMessage(mmv.claimedBy, { name: item.claimedBy.name })}</Badge>
+        ) : item.shared ? (
+          <Badge tone="neutral">{intl.formatMessage(mm.sharedBadge)}</Badge>
+        ) : null}
         <time dateTime={item.assignedAt}>{waiting}</time>
       </span>
     </Link>

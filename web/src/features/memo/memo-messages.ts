@@ -85,6 +85,31 @@ export const mm = defineMessages({
   actionRefer: { id: 'memo.action.refer', defaultMessage: 'Ask for opinions' },
   actionAnswer: { id: 'memo.action.answer', defaultMessage: 'Answer' },
   actionOpinion: { id: 'memo.action.opinion', defaultMessage: 'Give your opinion' },
+  sharedBadge: { id: 'memo.inbox.shared', defaultMessage: 'Shared' },
+  actionRecuse: { id: 'memo.action.recuse', defaultMessage: 'Declare an interest' },
+  actionClaim: { id: 'memo.action.claim', defaultMessage: 'Claim' },
+  actionRelease: { id: 'memo.action.release', defaultMessage: 'Release' },
+  claimed: { id: 'memo.claimed', defaultMessage: 'You claimed this task. The others cannot act until you release it.' },
+  shared: {
+    id: 'memo.shared',
+    defaultMessage: 'Others can act on this too. The first decision completes the step; claim it to work on it alone.',
+  },
+  interests: { id: 'memo.interests', defaultMessage: 'Declared interests' },
+  interestsLead: {
+    id: 'memo.interests.lead',
+    defaultMessage: 'People with an interest in this memo cannot approve it. The reason stays with the memo.',
+  },
+  interestsNone: { id: 'memo.interests.none', defaultMessage: 'Nobody has declared an interest.' },
+  interestPerson: { id: 'memo.interests.person', defaultMessage: 'Person' },
+  interestReason: { id: 'memo.interests.reason', defaultMessage: 'Reason' },
+  interestAdd: { id: 'memo.interests.add', defaultMessage: 'Declare interest' },
+  interestReasonRequired: { id: 'memo.interests.reasonRequired', defaultMessage: 'Give a reason.' },
+  doaPreview: { id: 'memo.doa.preview', defaultMessage: 'Who approves this?' },
+  doaPreviewTitle: { id: 'memo.doa.preview.title', defaultMessage: 'Delegation of authority' },
+  doaNone: { id: 'memo.doa.none', defaultMessage: 'No delegation of authority is in force.' },
+  doaNoRule: { id: 'memo.doa.noRule', defaultMessage: 'No rule of the delegation of authority applies to this memo.' },
+  doaNobody: { id: 'memo.doa.nobody', defaultMessage: 'Nobody holds these positions now.' },
+  close: { id: 'memo.close', defaultMessage: 'Close' },
   actions: { id: 'memo.actions', defaultMessage: 'Actions' },
   sendBackTo: { id: 'memo.sendBack.to', defaultMessage: 'Send back to' },
   handTo: { id: 'memo.handOn.to', defaultMessage: 'Person' },
@@ -123,6 +148,13 @@ export const routeProblems = defineMessages({
   },
   'too-long': { id: 'memo.route.problem.tooLong', defaultMessage: 'Too many approvers.' },
   empty: { id: 'memo.route.problem.empty', defaultMessage: 'Add at least one approver.' },
+  invalid: {
+    id: 'memo.route.problem.invalid',
+    defaultMessage: 'An entry is one person, one position, or a group of two or more.',
+  },
+  interested: { id: 'memo.route.problem.interested', defaultMessage: 'Has declared an interest in this memo.' },
+  'position-unknown': { id: 'memo.route.problem.positionUnknown', defaultMessage: 'This position no longer exists.' },
+  'not-allowed': { id: 'memo.route.problem.notAllowed', defaultMessage: 'Not allowed to approve this type of memo.' },
 })
 
 export const statusLabels = defineMessages({
@@ -182,7 +214,19 @@ export const mmv = defineMessages<{
   historyTo: { names: string }
   historyMigrated: { from: number; to: number }
   historyBranch: { inputs: string }
+  claimedBy: { name: string }
+  actingFor: { name: string }
+  doaGroup: { group: number; needed: number; covered: number }
+  doaVersion: { version: number; rule: string }
 }>({
+  claimedBy: { id: 'memo.claimedBy', defaultMessage: 'Claimed by {name}' },
+  actingFor: { id: 'memo.actingFor', defaultMessage: 'For {name}' },
+  doaGroup: {
+    id: 'memo.doa.group',
+    defaultMessage:
+      'Group {group}: {needed, plural, one {# approval} other {# approvals}} needed; your route has {covered}.',
+  },
+  doaVersion: { id: 'memo.doa.version', defaultMessage: 'Version {version}, rule “{rule}”' },
   round: { id: 'memo.round', defaultMessage: 'Round {round}' },
   assignedAt: { id: 'memo.assignedAt', defaultMessage: 'Waiting since {time}' },
   updatedAt: { id: 'memo.updatedAt', defaultMessage: 'Changed {time}' },
@@ -219,7 +263,9 @@ export const dialogTitles = defineMessages<{
   refer: { reference: string }
   answer: { reference: string }
   opinion: { reference: string }
+  recuse: { reference: string }
 }>({
+  recuse: { id: 'memo.dialog.recuse', defaultMessage: 'Stand aside from {reference}?' },
   recommend: { id: 'memo.dialog.recommend', defaultMessage: 'Recommend {reference}?' },
   recall: { id: 'memo.dialog.recall', defaultMessage: 'Recall {reference}?' },
   sendBack: { id: 'memo.dialog.sendBack', defaultMessage: 'Send {reference} back?' },
@@ -256,7 +302,12 @@ export const dialogLeads = defineMessages<{
   refer: { number: number }
   answer: { number: number }
   opinion: { number: number }
+  recuse: { number: number }
 }>({
+  recuse: {
+    id: 'memo.dialog.recuse.lead',
+    defaultMessage: 'Say what your interest is. The task leaves you and the step goes to someone else.',
+  },
   recommend: {
     id: 'memo.dialog.recommend.lead',
     defaultMessage: 'You recommend document version {number}. The next step gets it with your recommendation.',
@@ -317,4 +368,5 @@ export const actionButtons = {
   refer: mm.actionRefer,
   answer: mm.actionAnswer,
   opinion: mm.actionOpinion,
+  recuse: mm.actionRecuse,
 }

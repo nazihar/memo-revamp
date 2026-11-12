@@ -33,6 +33,12 @@ data class InboxItem(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val kind: TaskRole = TaskRole.DECIDE,
     /** The step the memo is at, by name. */
     val stepName: String? = null,
+    /** Whom the holder acts for (a delegator, or the principal of a substitution). */
+    val actingFor: Named? = null,
+    /** Offered to several people: the first decision completes the step (design E04 §4.2). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val shared: Boolean = false,
+    /** Who claimed the shared task, if anyone has. */
+    val claimedBy: Named? = null,
 )
 
 data class InboxPage(
@@ -115,6 +121,8 @@ class MemoInbox(
                 .toSet()
         val summaries = lists.summaries(memoIds)
         val visible = lists.visibleAmong(memoIds, currentUser(), policy.clearanceRank())
+        val names = users.of(page.items.flatMap { listOfNotNull(it.onBehalfOf, it.claimedBy) }.toSet()).mapValues { it.value.displayName }
+        val named = { id: UUID? -> id?.let { Named(it, names[it].orEmpty()) } }
         val items =
             page.items.map { task ->
                 val id = task.subject.id
@@ -127,6 +135,9 @@ class MemoInbox(
                     task.createdAt,
                     task.role,
                     task.stepName,
+                    named(task.onBehalfOf),
+                    task.shared,
+                    named(task.claimedBy),
                 )
             }
         return InboxPage(items, page.nextCursor)

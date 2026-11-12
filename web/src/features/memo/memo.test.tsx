@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 import { describe, expect, it, vi } from 'vitest'
 import type {
+  DoaPreviewView,
   EditSessionView,
   HistoryRound,
   InboxPage,
@@ -92,6 +93,8 @@ const inbox: InboxPage = {
       assignedAt: '2026-11-10T08:00:00Z',
       kind: 'DECIDE',
       stepName: 'Finance review',
+      shared: true,
+      actingFor: { id: 'u9', name: 'Rahim Uddin' },
     },
     {
       taskId: 'k2',
@@ -99,6 +102,7 @@ const inbox: InboxPage = {
       round: 1,
       assignedAt: '2026-11-09T08:00:00Z',
       kind: 'OPINION',
+      shared: false,
     },
   ],
   nextCursor: null,
@@ -123,6 +127,8 @@ describe('inbox', () => {
     const link = await screen.findByRole('link', { name: /Budget transfer to the treasury/ }, { timeout: 5000 })
     expect(link).toHaveAttribute('href', '/memos/m1')
     expect(screen.getByText('Restricted memo')).toBeInTheDocument()
+    expect(screen.getByText('For Rahim Uddin')).toBeInTheDocument()
+    expect(screen.getByText('Shared')).toBeInTheDocument()
     expect(screen.getByRole('tab', { name: 'My tasks' })).toHaveAttribute('aria-selected', 'true')
     await expectNoA11yViolations(container)
   })
@@ -331,5 +337,168 @@ describe('E03 task actions', () => {
     await user.click(within(dialog).getByRole('button', { name: 'Send back' }))
     await screen.findByText('My tasks', {}, { timeout: 5000 })
     expect(bodies).toEqual([{ targetStepId: 's1', remark: 'Recheck the figures' }])
+  })
+})
+
+describe('E04 work', () => {
+  it('claims a shared task, then says who holds it', async () => {
+    const user = userEvent.setup()
+    const keys: string[] = []
+    const shared: MemoView = {
+      ...memo,
+      myTask: { id: 'k1', role: 'DECIDE', waiting: false, shared: true },
+      allowedActions: ['CLAIM', 'APPROVE', 'RECUSE'],
+    }
+    server.use(
+      sessionHandler(signedInSession()),
+      accessHandler([]),
+      ...memoHandlers(shared),
+      http.post(`${API_ORIGIN}/api/v1/tasks/k1/claim`, ({ request }) => {
+        keys.push(request.headers.get('Idempotency-Key') ?? '')
+        return HttpResponse.json<MemoView>({ ...shared, allowedActions: ['RELEASE', 'APPROVE', 'RECUSE'] })
+      }),
+    )
+    const { container } = renderRoute('/memos/m1')
+
+    expect(await screen.findByText(/Others can act on this too/, {}, { timeout: 5000 })).toBeInTheDocument()
+    const actions = screen.getByRole('toolbar', { name: 'Actions' })
+    expect(
+      within(actions)
+        .getAllByRole('button')
+        .map((b) => b.textContent),
+    ).toEqual(['Claim', 'Approve', 'Declare an interest'])
+    await expectNoA11yViolations(container)
+
+    await user.click(within(actions).getByRole('button', { name: 'Claim' }))
+    expect(await screen.findByText(/You claimed this task/)).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Release' })).toBeInTheDocument()
+    expect(keys).toHaveLength(1)
+  })
+
+  it('stands aside only with a reason', async () => {
+    const user = userEvent.setup()
+    const bodies: unknown[] = []
+    server.use(
+      sessionHandler(signedInSession()),
+      accessHandler([]),
+      ...memoHandlers({ ...memo, allowedActions: ['APPROVE', 'RECUSE'] }),
+      http.get(`${API_ORIGIN}/api/v1/inbox/tasks`, () => HttpResponse.json<InboxPage>({ items: [], nextCursor: null })),
+      http.post(`${API_ORIGIN}/api/v1/tasks/k1/recuse`, async ({ request }) => {
+        bodies.push(await request.json())
+        return HttpResponse.json<MemoView>({ ...memo, myTask: undefined, allowedActions: [] })
+      }),
+    )
+    renderRoute('/memos/m1')
+
+    await user.click(await screen.findByRole('button', { name: 'Declare an interest' }, { timeout: 5000 }))
+    const dialog = await screen.findByRole('dialog', { name: /^Stand aside from .?M-2026-00042.?[?]$/ })
+    await user.click(within(dialog).getByRole('button', { name: 'Declare an interest' }))
+    expect(within(dialog).getByText('A remark is required.')).toBeInTheDocument()
+    await user.type(within(dialog).getByRole('textbox', { name: /Remark/ }), 'I am the guarantor')
+    await user.click(within(dialog).getByRole('button', { name: 'Declare an interest' }))
+    await screen.findByText('My tasks', {}, { timeout: 5000 })
+    expect(bodies).toEqual([{ remark: 'I am the guarantor' }])
+  })
+
+  it('shows positions and groups on the route, interests, and who the DoA asks for', async () => {
+    const user = userEvent.setup()
+    const draft: MemoView = {
+      ...memo,
+      status: 'DRAFT',
+      myTask: undefined,
+      holders: [],
+      route: [
+        { ordinal: 1, position: { id: 'p1', title: 'GM Credit', holder: { id: 'u2', name: 'Bob Approver' } } },
+        {
+          ordinal: 2,
+          group: {
+            mode: 'ANY',
+            members: [
+              { ordinal: 1, approver: { id: 'u3', name: 'Carol Approver' } },
+              { ordinal: 2, position: { id: 'p2', title: 'DMD' } },
+            ],
+          },
+        },
+      ],
+      interests: [{ id: 'u5', name: 'Erin Beneficiary' }],
+      allowedActions: ['SUBMIT'],
+    }
+    server.use(
+      sessionHandler(signedInSession()),
+      accessHandler([]),
+      ...memoHandlers(draft),
+      http.post(`${API_ORIGIN}/api/v1/memos/m1/doa-preview`, () =>
+        HttpResponse.json<DoaPreviewView>({
+          version: 3,
+          ruleName: 'Credit up to 5M',
+          groups: [
+            {
+              needed: 2,
+              covered: 1,
+              people: [
+                { id: 'u6', name: 'Dave DMD' },
+                { id: 'u7', name: 'Amy AMD' },
+              ],
+            },
+          ],
+        }),
+      ),
+    )
+    const { container } = renderRoute('/memos/m1')
+
+    expect(await screen.findByText('GM Credit (now Bob Approver)', {}, { timeout: 5000 })).toBeInTheDocument()
+    expect(screen.getByText('Any of: Carol Approver, DMD (vacant)')).toBeInTheDocument()
+    expect(screen.getByText('Erin Beneficiary')).toBeInTheDocument()
+    await expectNoA11yViolations(container)
+
+    await user.click(screen.getByRole('button', { name: 'Who approves this?' }))
+    const dialog = await screen.findByRole('dialog', { name: 'Delegation of authority' })
+    expect(await within(dialog).findByText('Group 1: 2 approvals needed; your route has 1.')).toBeInTheDocument()
+    expect(within(dialog).getByText('Dave DMD, Amy AMD')).toBeInTheDocument()
+  })
+
+  it('saves a route of a position and a group as entries', async () => {
+    const user = userEvent.setup()
+    const bodies: unknown[] = []
+    const draft: MemoView = {
+      ...memo,
+      status: 'DRAFT',
+      myTask: undefined,
+      route: [
+        { ordinal: 1, position: { id: 'p1', title: 'GM Credit' } },
+        {
+          ordinal: 2,
+          group: {
+            mode: 'ALL',
+            members: [
+              { ordinal: 1, approver: { id: 'u3', name: 'Carol Approver' } },
+              { ordinal: 2, position: { id: 'p2', title: 'DMD' } },
+            ],
+          },
+        },
+      ],
+      allowedActions: ['EDIT_ROUTE'],
+    }
+    server.use(
+      sessionHandler(signedInSession()),
+      accessHandler([]),
+      ...memoHandlers(draft),
+      http.put(`${API_ORIGIN}/api/v1/memos/m1/route`, async ({ request }) => {
+        bodies.push(await request.json())
+        return HttpResponse.json<MemoView>(draft)
+      }),
+    )
+    const { container } = renderRoute('/memos/m1')
+
+    await user.click(await screen.findByRole('button', { name: 'Save approvers' }, { timeout: 5000 }))
+    await screen.findByText('Approvers saved.')
+    expect(bodies).toEqual([
+      {
+        entries: [{ positionId: 'p1' }, { group: { mode: 'ALL', members: [{ userId: 'u3' }, { positionId: 'p2' }] } }],
+      },
+    ])
+    await user.selectOptions(screen.getByRole('combobox', { name: 'Add' }), 'group')
+    expect(screen.getByRole('button', { name: 'Add group' })).toBeDisabled()
+    await expectNoA11yViolations(container)
   })
 })

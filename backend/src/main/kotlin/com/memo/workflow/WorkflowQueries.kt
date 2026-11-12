@@ -25,6 +25,12 @@ data class TaskItem(
     val role: TaskRole = TaskRole.DECIDE,
     /** The instance's active step, by name. */
     val stepName: String? = null,
+    /** Whom the holder acts for: a delegator, or the principal of a substitution (design E04 §4.5). */
+    val onBehalfOf: UUID? = null,
+    /** Offered to several candidates: the first decision completes the step (design E04 §4.2). */
+    val shared: Boolean = false,
+    /** The candidate who claimed the shared step, if anyone has. */
+    val claimedBy: UUID? = null,
 )
 
 /** A page of tasks, newest first; [nextCursor] fetches the next one (null at the end). */

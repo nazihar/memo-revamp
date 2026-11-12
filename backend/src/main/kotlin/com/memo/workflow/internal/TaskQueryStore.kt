@@ -11,6 +11,7 @@ import com.memo.workflow.BlockedReason
 import com.memo.workflow.SubjectRef
 import com.memo.workflow.TaskItem
 import com.memo.workflow.TaskRole
+import com.memo.workflow.engine.StepKind
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Component
 import tools.jackson.databind.json.JsonMapper
@@ -34,6 +35,7 @@ class TaskQueryStore(
     ): List<TaskItem> {
         val t = WORKFLOW_TASK
         val i = WORKFLOW_INSTANCE
+        val s = WORKFLOW_STEP
         val conditions =
             listOfNotNull(
                 t.STATE.eq(OPEN),
@@ -54,9 +56,15 @@ class TaskQueryStore(
                 t.CREATED_AT,
                 t.KIND,
                 i.CURRENT_STEP_NAME,
+                t.ON_BEHALF_OF,
+                s.NEEDED,
+                s.CLAIMED_BY,
+                s.TYPE,
             ).from(t)
             .join(i)
             .on(i.ID.eq(t.INSTANCE_ID))
+            .join(s)
+            .on(s.ID.eq(t.STEP_ID))
             .where(conditions)
             .orderBy(t.CREATED_AT.desc(), t.ID.desc())
             .limit(limit)
@@ -71,6 +79,10 @@ class TaskQueryStore(
                     createdAt = r.value8()!!.toInstant(),
                     role = TaskRole.valueOf(r.value9()!!),
                     stepName = r.value10(),
+                    onBehalfOf = r.value11(),
+                    // A step resolved to several candidates; parallel steps need each of them and are not "shared".
+                    shared = r.value12() != null && r.value14() != StepKind.PARALLEL.name,
+                    claimedBy = r.value13(),
                 )
             }
     }

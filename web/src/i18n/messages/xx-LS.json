@@ -1969,6 +1969,20 @@
       "value": "User nameSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.actingFor": [
+    {
+      "type": 0,
+      "value": "For "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.action.answer": [
     {
       "type": 0,
@@ -1985,6 +1999,12 @@
     {
       "type": 0,
       "value": "Ask a questionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.action.claim": [
+    {
+      "type": 0,
+      "value": "ClaimSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.action.delegate": [
@@ -2029,6 +2049,12 @@
       "value": "RecommendSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.action.recuse": [
+    {
+      "type": 0,
+      "value": "Declare an interestSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.action.refer": [
     {
       "type": 0,
@@ -2039,6 +2065,12 @@
     {
       "type": 0,
       "value": "RejectSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.action.release": [
+    {
+      "type": 0,
+      "value": "ReleaseSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.action.resubmit": [
@@ -2107,6 +2139,32 @@
     {
       "type": 0,
       "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.claimed": [
+    {
+      "type": 0,
+      "value": "You claimed this task. The others cannot act until you release it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.claimedBy": [
+    {
+      "type": 0,
+      "value": "Claimed by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.close": [
+    {
+      "type": 0,
+      "value": "CloseSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.conflict": [
@@ -2321,6 +2379,26 @@
       "value": ". The next step gets it with your recommendation.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.dialog.recuse": [
+    {
+      "type": 0,
+      "value": "Stand aside from "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.recuse.lead": [
+    {
+      "type": 0,
+      "value": "Say what your interest is. The task leaves you and the step goes to someone else.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.dialog.refer": [
     {
       "type": 0,
@@ -2435,6 +2513,114 @@
     {
       "type": 0,
       "value": "The approval ends for good.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.doa.group": [
+    {
+      "type": 0,
+      "value": "Group "
+    },
+    {
+      "type": 1,
+      "value": "group"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 6,
+      "value": "needed",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " approval"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " approvals"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " needed; your route has "
+    },
+    {
+      "type": 1,
+      "value": "covered"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.doa.noRule": [
+    {
+      "type": 0,
+      "value": "No rule of the delegation of authority applies to this memo.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.doa.nobody": [
+    {
+      "type": 0,
+      "value": "Nobody holds these positions now.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.doa.none": [
+    {
+      "type": 0,
+      "value": "No delegation of authority is in force.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.doa.preview": [
+    {
+      "type": 0,
+      "value": "Who approves this?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.doa.preview.title": [
+    {
+      "type": 0,
+      "value": "Delegation of authoritySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.doa.version": [
+    {
+      "type": 0,
+      "value": "Version "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": ", rule “"
+    },
+    {
+      "type": 1,
+      "value": "rule"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.document": [
@@ -2855,6 +3041,12 @@
       "value": "Memos waiting for you, and the memos you write.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.inbox.shared": [
+    {
+      "type": 0,
+      "value": "SharedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.inbox.tab.closed": [
     {
       "type": 0,
@@ -2883,6 +3075,48 @@
     {
       "type": 0,
       "value": "InboxSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.interests": [
+    {
+      "type": 0,
+      "value": "Declared interestsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.interests.add": [
+    {
+      "type": 0,
+      "value": "Declare interestSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.interests.lead": [
+    {
+      "type": 0,
+      "value": "People with an interest in this memo cannot approve it. The reason stays with the memo.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.interests.none": [
+    {
+      "type": 0,
+      "value": "Nobody has declared an interest.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.interests.person": [
+    {
+      "type": 0,
+      "value": "PersonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.interests.reason": [
+    {
+      "type": 0,
+      "value": "ReasonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.interests.reasonRequired": [
+    {
+      "type": 0,
+      "value": "Give a reason.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.loadMore": [
@@ -3057,6 +3291,134 @@
       "value": "No approvers yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.route.group.add": [
+    {
+      "type": 0,
+      "value": "Add groupSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.group.addMember": [
+    {
+      "type": 0,
+      "value": "Add memberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.group.all": [
+    {
+      "type": 0,
+      "value": "all of them approveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.group.any": [
+    {
+      "type": 0,
+      "value": "any one of them approvesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.group.label": [
+    {
+      "type": 5,
+      "value": "mode",
+      "options": {
+        "ALL": {
+          "value": [
+            {
+              "type": 0,
+              "value": "All of"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Any of"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "names"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.group.member": [
+    {
+      "type": 0,
+      "value": "MemberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.group.memberKind": [
+    {
+      "type": 0,
+      "value": "Member isSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.group.members": [
+    {
+      "type": 0,
+      "value": "MembersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.group.mode": [
+    {
+      "type": 0,
+      "value": "The group decides whenSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.group.needs": [
+    {
+      "type": 0,
+      "value": "A group needs at least two members.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.group.removeMember": [
+    {
+      "type": 0,
+      "value": "Remove "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " from the groupSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.kind": [
+    {
+      "type": 0,
+      "value": "AddSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.kind.group": [
+    {
+      "type": 0,
+      "value": "A groupSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.kind.person": [
+    {
+      "type": 0,
+      "value": "A personSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.kind.position": [
+    {
+      "type": 0,
+      "value": "A positionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.route.lead": [
     {
       "type": 0,
@@ -3067,6 +3429,46 @@
     {
       "type": 0,
       "value": "ApproverSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.position": [
+    {
+      "type": 0,
+      "value": "PositionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.position.hint": [
+    {
+      "type": 0,
+      "value": "Whoever holds the position when the memo reaches it approves.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.position.label": [
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " (now "
+    },
+    {
+      "type": 1,
+      "value": "holder"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.position.vacant": [
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " (vacant)SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.route.problem.duplicate": [
@@ -3087,10 +3489,34 @@
       "value": "Cannot sign in at the moment.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.route.problem.interested": [
+    {
+      "type": 0,
+      "value": "Has declared an interest in this memo.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.problem.invalid": [
+    {
+      "type": 0,
+      "value": "An entry is one person, one position, or a group of two or more.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.problem.notAllowed": [
+    {
+      "type": 0,
+      "value": "Not allowed to approve this type of memo.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.route.problem.notCleared": [
     {
       "type": 0,
       "value": "Not cleared for this classification.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.route.problem.positionUnknown": [
+    {
+      "type": 0,
+      "value": "This position no longer exists.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.route.problem.self": [
@@ -3179,6 +3605,12 @@
     {
       "type": 0,
       "value": "Send back toSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.shared": [
+    {
+      "type": 0,
+      "value": "Others can act on this too. The first decision completes the step; claim it to work on it alone.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.status.approved": [

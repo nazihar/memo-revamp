@@ -9,7 +9,15 @@ import java.util.UUID
 internal class Activations(
     private val context: TransitionContext,
 ) {
-    fun newTask(assignee: UUID): Task = Task(context.newId(), assignee, TaskState.OPEN, context.eligibility(assignee))
+    /** A task for [assignee], or for their substitute acting for them while a substitution is in force (design E04 §4.5). */
+    fun newTask(assignee: UUID): Task {
+        val substitute = context.substituteOf(assignee)
+        return if (substitute == null) {
+            Task(context.newId(), assignee, TaskState.OPEN, context.eligibility(assignee))
+        } else {
+            Task(context.newId(), substitute, TaskState.OPEN, context.eligibility(substitute), onBehalfOf = assignee)
+        }
+    }
 
     /**
      * A step for the people [found] (design E04 §4.1): one holder; several, of whom the step needs its parallel mode's

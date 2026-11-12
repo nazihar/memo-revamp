@@ -14,6 +14,7 @@ import com.memo.workflow.WorkflowTaskCreated
 import com.memo.workflow.engine.Effect
 import com.memo.workflow.engine.InstanceState
 import com.memo.workflow.engine.Outcome
+import com.memo.workflow.engine.StaffChanges
 import com.memo.workflow.engine.StepState
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Component
@@ -45,13 +46,10 @@ class ActionEffects(
                 "snapshot" to snapshot,
             ) +
                 if (action.kind == ActionKind.REASSIGN) {
-                    mapOf(
-                        "to" to
-                            created
-                                .single()
-                                .task.assignee
-                                .toString(),
-                    )
+                    // One new holder, or several after a step resolved again (design E04 §4.6); ids and codes only.
+                    val cause = action.details["reason"]?.toString()?.takeIf { it in STAFF_CHANGES }
+                    mapOf("to" to created.mapNotNull { it.task.assignee?.toString() }.joinToString(",")) +
+                        listOfNotNull(cause?.let { "cause" to it })
                 } else {
                     emptyMap()
                 }
@@ -205,6 +203,7 @@ class ActionEffects(
     }
 
     private companion object {
+        val STAFF_CHANGES = setOf(StaffChanges.INACTIVE, StaffChanges.HOLDER_CHANGED)
         const val TASK = "workflow_task"
         const val INSTANCE = "workflow_instance"
         val AUDIT_ACTIONS =

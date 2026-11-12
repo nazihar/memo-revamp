@@ -121,6 +121,16 @@
         "required" : [ "items" ],
         "type" : "object"
       },
+      "AppliedResponse" : {
+        "properties" : {
+          "moved" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "moved" ],
+        "type" : "object"
+      },
       "AssignRequest" : {
         "properties" : {
           "userId" : {
@@ -2867,6 +2877,57 @@
         },
         "type" : "object"
       },
+      "SubstitutionRequest" : {
+        "properties" : {
+          "principalId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "reason" : {
+            "type" : [ "string", "null" ]
+          },
+          "substituteId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "validFrom" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "validTo" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "SubstitutionResponse" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "principal" : {
+            "$ref" : "#/components/schemas/Person"
+          },
+          "reason" : {
+            "type" : [ "string", "null" ]
+          },
+          "substitute" : {
+            "$ref" : "#/components/schemas/Person"
+          },
+          "validFrom" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "validTo" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "id", "principal", "substitute", "validFrom" ],
+        "type" : "object"
+      },
       "TaskRef" : {
         "properties" : {
           "blocked" : {
@@ -4732,6 +4793,120 @@
           }
         },
         "summary" : "Rename a queue and replace its members",
+        "tags" : [ "workflow" ]
+      }
+    },
+    "/api/v1/admin/workflow/substitutions" : {
+      "get" : {
+        "operationId" : "listSubstitutions",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "principal",
+          "required" : false,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/SubstitutionResponse"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Substitutions, newest first, of everyone or one person",
+        "tags" : [ "workflow" ]
+      },
+      "post" : {
+        "operationId" : "createSubstitution",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/SubstitutionRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SubstitutionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Name someone to act for a person between two dates",
+        "tags" : [ "workflow" ]
+      }
+    },
+    "/api/v1/admin/workflow/substitutions/{id}/apply" : {
+      "post" : {
+        "operationId" : "applySubstitution",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AppliedResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Move the person's open tasks to their substitute",
+        "tags" : [ "workflow" ]
+      }
+    },
+    "/api/v1/admin/workflow/substitutions/{id}/end" : {
+      "post" : {
+        "operationId" : "endSubstitution",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SubstitutionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "End a substitution today",
         "tags" : [ "workflow" ]
       }
     },

@@ -48,6 +48,10 @@ export type AdminUserPage = {
     nextCursor?: string | null;
 };
 
+export type AppliedResponse = {
+    moved: number;
+};
+
 export type AssignRequest = {
     userId: string;
     validFrom: string;
@@ -1192,6 +1196,23 @@ export type StepUpRequest = {
     password?: string | null;
 };
 
+export type SubstitutionRequest = {
+    principalId?: string;
+    reason?: string | null;
+    substituteId?: string;
+    validFrom?: string;
+    validTo?: string | null;
+};
+
+export type SubstitutionResponse = {
+    id: string;
+    principal: Person;
+    reason?: string | null;
+    substitute: Person;
+    validFrom: string;
+    validTo?: string | null;
+};
+
 export type TaskRef = {
     blocked?: 'NO_CLEARANCE' | 'INACTIVE' | 'UNRESOLVED';
     claimedBy?: Named | null;
@@ -2200,6 +2221,76 @@ export type UpdateWorkflowQueueResponses = {
 };
 
 export type UpdateWorkflowQueueResponse = UpdateWorkflowQueueResponses[keyof UpdateWorkflowQueueResponses];
+
+export type ListSubstitutionsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        principal?: string;
+    };
+    url: '/api/v1/admin/workflow/substitutions';
+};
+
+export type ListSubstitutionsResponses = {
+    /**
+     * OK
+     */
+    200: Array<SubstitutionResponse>;
+};
+
+export type ListSubstitutionsResponse = ListSubstitutionsResponses[keyof ListSubstitutionsResponses];
+
+export type CreateSubstitutionData = {
+    body: SubstitutionRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/workflow/substitutions';
+};
+
+export type CreateSubstitutionResponses = {
+    /**
+     * OK
+     */
+    200: SubstitutionResponse;
+};
+
+export type CreateSubstitutionResponse = CreateSubstitutionResponses[keyof CreateSubstitutionResponses];
+
+export type ApplySubstitutionData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/workflow/substitutions/{id}/apply';
+};
+
+export type ApplySubstitutionResponses = {
+    /**
+     * OK
+     */
+    200: AppliedResponse;
+};
+
+export type ApplySubstitutionResponse = ApplySubstitutionResponses[keyof ApplySubstitutionResponses];
+
+export type EndSubstitutionData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/workflow/substitutions/{id}/end';
+};
+
+export type EndSubstitutionResponses = {
+    /**
+     * OK
+     */
+    200: SubstitutionResponse;
+};
+
+export type EndSubstitutionResponse = EndSubstitutionResponses[keyof EndSubstitutionResponses];
 
 export type ListOpenTasksData = {
     body?: never;

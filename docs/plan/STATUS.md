@@ -50,7 +50,8 @@
 - [x] E04 T2 resolvers (stacked PR)
 - [x] E04 T3 queues, claim and release (stacked PR)
 - [x] E04 T4 separation of duties and interests (stacked PR)
-- [ ] E04 T5 substitution · T6 DoA · T7 routes · T8–T9 web · T10 close
+- [x] E04 T5 substitution and staff changes (stacked PR)
+- [ ] E04 T6 DoA · T7 routes · T8–T9 web · T10 close
 
 ## State (Phase 1a, closed)
 - [x] Overview approved (2026-10-18), Q1–Q8 answered, per-epic gate delegated

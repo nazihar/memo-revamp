@@ -74,7 +74,27 @@ data class Reassign(
     override val taskId: UUID,
     val newAssignee: UUID,
     val reason: String?,
+    /** The new assignee acts for this person, who keeps the step (a substitution applied to open tasks, design E04 §4.5). */
+    val onBehalfOf: UUID? = null,
 ) : TaskCommand
+
+/**
+ * The task's holder can no longer act (deactivated, design E04 §4.6): the task is replaced by one blocked for
+ * reassignment, so the administrators are told as when a task is created blocked (E01).
+ */
+data class Block(
+    override val actor: UUID,
+    override val taskId: UUID,
+) : TaskCommand
+
+/**
+ * The person a step resolved to changed (a position's holder changed, design E04 §4.6): its open decision tasks are
+ * closed and the step resolves again. [actor] is whoever changed the organisation.
+ */
+data class Reresolve(
+    override val actor: UUID,
+    val stepId: UUID,
+) : Command
 
 /** A candidate takes a step shared by several people (design E04 §4.2): the others cannot decide it until it is released. */
 data class Claim(
@@ -179,6 +199,8 @@ enum class Refusal {
     STEP_MISSING,
     STEP_CHANGED,
     NOT_SHARED,
+    ALREADY_BLOCKED,
+    NOTHING_TO_RESOLVE,
     ALREADY_CLAIMED,
     NOT_CLAIMED,
     CLAIMED_BY_OTHER,
@@ -287,6 +309,11 @@ class TransitionContext(
     val oncePerRound: Boolean = true,
     /** SOD-4: the people with a declared interest in the subject, read when a step is resolved. */
     val interested: () -> Set<UUID> = { emptySet() },
+    /**
+     * Who acts for a person while their substitution is in force (design E04 §4.5); the runner leaves out substitutes
+     * who may not act on this item (SOD-3). Their tasks go to the substitute, acting for the person.
+     */
+    val substituteOf: (UUID) -> UUID? = { null },
 )
 
 /** An approval of [nodeId] by [person] that can carry over into the next round. */

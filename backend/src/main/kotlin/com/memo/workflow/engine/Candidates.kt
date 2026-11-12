@@ -1,6 +1,7 @@
 package com.memo.workflow.engine
 
 import com.memo.workflow.ActionKind
+import com.memo.workflow.definition.Assignee
 import com.memo.workflow.definition.StepDef
 import java.util.UUID
 
@@ -8,6 +9,12 @@ import java.util.UUID
 internal data class Found(
     val people: List<UUID>,
     val record: Map<String, Any?>,
+)
+
+/** The members of a DoA approval group, resolved instead of the step's own assignees (design E04 §4.3). */
+internal data class Members(
+    val assignees: List<Assignee>,
+    val group: Int,
 )
 
 /**
@@ -25,10 +32,12 @@ internal class Candidates(
         initiator: UUID,
         round: Round,
         recused: Set<UUID> = emptySet(),
+        members: Members? = null,
     ): Found {
-        val resolutions = (listOfNotNull(node.assignee) + node.assignees).map { context.resolver.resolve(it, initiator) }
+        val assignees = members?.assignees ?: (listOfNotNull(node.assignee) + node.assignees)
+        val resolutions = assignees.map { context.resolver.resolve(it, initiator) }
         val found = resolutions.flatMap { it.people }.distinct()
-        val rules = exclusions(node, initiator, round, recused)
+        val rules = exclusions(node, members?.group, initiator, round, recused)
         val excluded = found.mapNotNull { person -> rules.firstOrNull { person in it.second }?.let { person to it.first } }
         val people = found - excluded.map { it.first }.toSet()
         val record =
@@ -39,7 +48,8 @@ internal class Candidates(
             record["excluded"] =
                 excluded.map { (person, rule) -> mapOf("person" to person.toString(), "rule" to rule) }
         }
-        val fallback = node.fallback
+        // A DoA group has no fallback: who may approve is the DoA's to say.
+        val fallback = node.fallback.takeIf { members == null }
         val chosen =
             if (people.isEmpty() && fallback != null) {
                 val outside = rules.flatMap { it.second }.toSet()
@@ -68,6 +78,7 @@ internal class Candidates(
      */
     private fun exclusions(
         node: StepDef,
+        group: Int?,
         initiator: UUID,
         round: Round,
         recused: Set<UUID>,
@@ -75,7 +86,7 @@ internal class Candidates(
         val decided =
             if (context.oncePerRound) {
                 round.steps
-                    .filter { it.nodeId != node.id }
+                    .filter { it.nodeId != node.id || it.doaGroup != group }
                     .flatMap { it.tasks }
                     .filter { it.state == TaskState.COMPLETED && it.outcome in DECISIONS }
                     .mapNotNull { it.onBehalfOf ?: it.assignee }

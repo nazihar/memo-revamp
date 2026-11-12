@@ -56,6 +56,25 @@ internal class Activations(
         return step.copy(resolution = found.record)
     }
 
+    /**
+     * An approval group of a DoA rule (design E04 §4.3): a task for each person [found]; the step needs [needed] of their
+     * approvals, and holds a task without assignee for each approval it cannot find, for an administrator to assign.
+     */
+    fun group(
+        round: Round,
+        node: StepDef,
+        found: Found,
+        needed: Int,
+        group: Int,
+    ): Step {
+        val people = found.people
+        val missing =
+            List((needed - people.size).coerceAtLeast(0)) { Task(context.newId(), null, TaskState.OPEN, BlockedReason.UNRESOLVED) }
+        return activated(round, node, StepKind.PARALLEL, null, null)
+            .copy(assignee = people.firstOrNull(), tasks = people.map(::newTask) + missing, needed = needed, doaGroup = group)
+            .copy(resolution = found.record)
+    }
+
     fun activated(
         round: Round,
         node: StepDef,

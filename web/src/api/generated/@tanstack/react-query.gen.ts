@@ -3,8 +3,8 @@
 import { type DefaultError, type InfiniteData, infiniteQueryOptions, queryOptions, type UseMutationOptions } from '@tanstack/react-query';
 
 import { client } from '../client.gen';
-import { acceptInvitation, acceptPlatformEnrolment, answerTask, applySubstitution, approveTask, approveWorkflowDefinition, askOnTask, assignPosition, cancelAssignment, cancelReportingLine, cancelWorkflow, changeMyPassword, claimTask, closeLegalEntity, closeOrgUnit, closePosition, completePasswordReset, confirmMfaEnrolment, confirmPlatformMfaEnrolment, createClassificationLevel, createLegalEntity, createMemo, createMemoType, createOrgUnit, createPlatformTenant, createPosition, createReportingLine, createRole, createSubstitution, createWorkflowDefinition, createWorkflowQueue, deactivateUser, declareMemoInterest, delegateTask, deleteClassificationLevel, deleteRole, discardMemo, endSubstitution, exportAudit, exportWorkflowDefinition, forwardTask, getAdminBranding, getBranding, getBrandingLogo, getCsrfToken, getEditingStatus, getEditSession, getFile, getFileContent, getFileVersionContent, getHealth, getMailLog, getMailSettings, getMe, getMemo, getMemoHistory, getMyAccess, getMyNotificationPreferences, getMyUnreadCount, getOrgHistory, getOrgUnit, getPlatformCsrfToken, getPlatformSession, getPlatformTenant, getPosition, getPositionHolder, getSecuritySettings, getSession, getTenantPreferences, getTerms, getUser, getUserAccess, getWorkflowDefinition, getWorkflowDefinitionVersion, giveOpinion, grantRole, invitePlatformTenantFirstAdmin, inviteUser, listAllMemoTypes, listClassificationLevels, listLegalEntities, listMemoTypeDefinitions, listMemoTypes, listMyMemos, listMyNotifications, listMySessions, listMyTasks, listOpenTasks, listOrgUnits, listPermissions, listPlatformTenants, listRoles, listSubstitutions, listUnitPositions, listUserAssignments, listUsers, listWorkflowDefinitions, listWorkflowQueues, login, logout, lookUpInvitation, lookUpPlatformEnrolment, markAllNotificationsRead, markNotificationRead, migrateWorkflowInstances, moveOrgUnit, newWorkflowDefinitionDraft, openEditor, type Options, platformLogin, platformLogout, platformStepUp, previewWorkflowMigration, queryAudit, queryPlatformAudit, reactivateUser, reassignTask, recallMemo, recuseFromTask, referTask, regenerateMyRecoveryCodes, rejectTask, releaseClaimedTask, releaseTask, removeMailSettings, removeMemoInterest, renameClassificationLevel, renamePlatformTenant, reorderClassificationLevels, replaceMemoRoute, replaceWorkflowDefinitionDraft, requestPasswordReset, resetUserMfa, resubmitMemo, resumePlatformTenant, retireWorkflowDefinition, returnTask, revokeGrant, revokeMySession, revokeUserSessions, searchDirectory, sendBackTask, sendBackWorkflowDefinition, setClearance, setMailSettings, setMyNotificationPreferences, startMfaEnrolment, startPlatformMfaEnrolment, stepUp, submitMemo, submitWorkflowDefinition, suspendPlatformTenant, testMailSettings, unlockUser, updateAssignment, updateBranding, updateLegalEntity, updateMemo, updateMemoType, updateOrgUnit, updatePosition, updateReportingLine, updateRole, updateSecuritySettings, updateTenantPreferences, updateTerms, updateWorkflowQueue, uploadFile, uploadFileVersion, validateWorkflowDefinition, verifyMfa, verifyPlatformMfa, withdrawMemo } from '../sdk.gen';
-import type { AcceptInvitationData, AcceptInvitationError, AcceptInvitationResponse, AcceptPlatformEnrolmentData, AcceptPlatformEnrolmentError, AcceptPlatformEnrolmentResponse, AnswerTaskData, AnswerTaskResponse, ApplySubstitutionData, ApplySubstitutionResponse, ApproveTaskData, ApproveTaskResponse, ApproveWorkflowDefinitionData, ApproveWorkflowDefinitionResponse, AskOnTaskData, AskOnTaskResponse, AssignPositionData, AssignPositionResponse, CancelAssignmentData, CancelAssignmentResponse, CancelReportingLineData, CancelReportingLineResponse, CancelWorkflowData, CancelWorkflowResponse, ChangeMyPasswordData, ChangeMyPasswordError, ChangeMyPasswordResponse, ClaimTaskData, ClaimTaskResponse, CloseLegalEntityData, CloseLegalEntityResponse, CloseOrgUnitData, CloseOrgUnitResponse, ClosePositionData, ClosePositionResponse, CompletePasswordResetData, CompletePasswordResetError, CompletePasswordResetResponse, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentError, ConfirmMfaEnrolmentResponse, ConfirmPlatformMfaEnrolmentData, ConfirmPlatformMfaEnrolmentError, ConfirmPlatformMfaEnrolmentResponse, CreateClassificationLevelData, CreateClassificationLevelResponse, CreateLegalEntityData, CreateLegalEntityResponse, CreateMemoData, CreateMemoResponse, CreateMemoTypeData, CreateMemoTypeResponse, CreateOrgUnitData, CreateOrgUnitResponse, CreatePlatformTenantData, CreatePlatformTenantError, CreatePlatformTenantResponse, CreatePositionData, CreatePositionResponse, CreateReportingLineData, CreateReportingLineResponse, CreateRoleData, CreateRoleResponse, CreateSubstitutionData, CreateSubstitutionResponse, CreateWorkflowDefinitionData, CreateWorkflowDefinitionResponse, CreateWorkflowQueueData, CreateWorkflowQueueResponse, DeactivateUserData, DeactivateUserResponse, DeclareMemoInterestData, DeclareMemoInterestResponse, DelegateTaskData, DelegateTaskResponse, DeleteClassificationLevelData, DeleteRoleData, DiscardMemoData, DiscardMemoResponse, EndSubstitutionData, EndSubstitutionResponse, ExportAuditData, ExportAuditError, ExportAuditResponse, ExportWorkflowDefinitionData, ExportWorkflowDefinitionResponse, ForwardTaskData, ForwardTaskResponse, GetAdminBrandingData, GetAdminBrandingResponse, GetBrandingData, GetBrandingLogoData, GetBrandingResponse, GetCsrfTokenData, GetCsrfTokenResponse, GetEditingStatusData, GetEditingStatusResponse, GetEditSessionData, GetEditSessionResponse, GetFileContentData, GetFileData, GetFileResponse, GetFileVersionContentData, GetHealthData, GetHealthError, GetHealthResponse, GetMailLogData, GetMailLogResponse, GetMailSettingsData, GetMailSettingsResponse, GetMeData, GetMemoData, GetMemoHistoryData, GetMemoHistoryResponse, GetMemoResponse, GetMeResponse, GetMyAccessData, GetMyAccessResponse, GetMyNotificationPreferencesData, GetMyNotificationPreferencesResponse, GetMyUnreadCountData, GetMyUnreadCountResponse, GetOrgHistoryData, GetOrgHistoryResponse, GetOrgUnitData, GetOrgUnitResponse, GetPlatformCsrfTokenData, GetPlatformCsrfTokenResponse, GetPlatformSessionData, GetPlatformSessionResponse, GetPlatformTenantData, GetPlatformTenantResponse, GetPositionData, GetPositionHolderData, GetPositionHolderResponse, GetPositionResponse, GetSecuritySettingsData, GetSecuritySettingsResponse, GetSessionData, GetSessionResponse, GetTenantPreferencesData, GetTenantPreferencesResponse, GetTermsData, GetTermsResponse, GetUserAccessData, GetUserAccessResponse, GetUserData, GetUserResponse, GetWorkflowDefinitionData, GetWorkflowDefinitionResponse, GetWorkflowDefinitionVersionData, GetWorkflowDefinitionVersionResponse, GiveOpinionData, GiveOpinionResponse, GrantRoleData, GrantRoleResponse, InvitePlatformTenantFirstAdminData, InvitePlatformTenantFirstAdminError, InvitePlatformTenantFirstAdminResponse, InviteUserData, InviteUserError, InviteUserResponse, ListAllMemoTypesData, ListAllMemoTypesResponse, ListClassificationLevelsData, ListClassificationLevelsResponse, ListLegalEntitiesData, ListLegalEntitiesResponse, ListMemoTypeDefinitionsData, ListMemoTypeDefinitionsResponse, ListMemoTypesData, ListMemoTypesResponse, ListMyMemosData, ListMyMemosResponse, ListMyNotificationsData, ListMyNotificationsResponse, ListMySessionsData, ListMySessionsResponse, ListMyTasksData, ListMyTasksResponse, ListOpenTasksData, ListOpenTasksResponse, ListOrgUnitsData, ListOrgUnitsResponse, ListPermissionsData, ListPermissionsResponse, ListPlatformTenantsData, ListPlatformTenantsResponse, ListRolesData, ListRolesResponse, ListSubstitutionsData, ListSubstitutionsResponse, ListUnitPositionsData, ListUnitPositionsResponse, ListUserAssignmentsData, ListUserAssignmentsResponse, ListUsersData, ListUsersResponse, ListWorkflowDefinitionsData, ListWorkflowDefinitionsResponse, ListWorkflowQueuesData, ListWorkflowQueuesResponse, LoginData, LoginError, LoginResponse, LogoutData, LogoutResponse, LookUpInvitationData, LookUpInvitationError, LookUpInvitationResponse, LookUpPlatformEnrolmentData, LookUpPlatformEnrolmentError, MarkAllNotificationsReadData, MarkNotificationReadData, MigrateWorkflowInstancesData, MigrateWorkflowInstancesResponse, MoveOrgUnitData, MoveOrgUnitResponse, NewWorkflowDefinitionDraftData, NewWorkflowDefinitionDraftResponse, OpenEditorData, OpenEditorResponse2, PlatformLoginData, PlatformLoginError, PlatformLoginResponse, PlatformLogoutData, PlatformLogoutResponse, PlatformStepUpData, PlatformStepUpError, PlatformStepUpResponse, PreviewWorkflowMigrationData, PreviewWorkflowMigrationResponse, QueryAuditData, QueryAuditResponse, QueryPlatformAuditData, QueryPlatformAuditResponse, ReactivateUserData, ReactivateUserResponse, ReassignTaskData, ReassignTaskResponse, RecallMemoData, RecallMemoResponse, RecuseFromTaskData, RecuseFromTaskResponse, ReferTaskData, ReferTaskResponse, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesResponse, RejectTaskData, RejectTaskResponse, ReleaseClaimedTaskData, ReleaseClaimedTaskResponse, ReleaseTaskData, ReleaseTaskResponse, RemoveMailSettingsData, RemoveMemoInterestData, RemoveMemoInterestResponse, RenameClassificationLevelData, RenameClassificationLevelResponse, RenamePlatformTenantData, RenamePlatformTenantResponse, ReorderClassificationLevelsData, ReorderClassificationLevelsResponse, ReplaceMemoRouteData, ReplaceMemoRouteResponse, ReplaceWorkflowDefinitionDraftData, ReplaceWorkflowDefinitionDraftResponse, RequestPasswordResetData, ResetUserMfaData, ResetUserMfaResponse, ResubmitMemoData, ResubmitMemoResponse, ResumePlatformTenantData, ResumePlatformTenantResponse, RetireWorkflowDefinitionData, RetireWorkflowDefinitionResponse, ReturnTaskData, ReturnTaskResponse, RevokeGrantData, RevokeMySessionData, RevokeMySessionResponse, RevokeUserSessionsData, RevokeUserSessionsResponse, SearchDirectoryData, SearchDirectoryResponse, SendBackTaskData, SendBackTaskResponse, SendBackWorkflowDefinitionData, SendBackWorkflowDefinitionResponse, SetClearanceData, SetClearanceResponse, SetMailSettingsData, SetMailSettingsResponse, SetMyNotificationPreferencesData, SetMyNotificationPreferencesResponse, StartMfaEnrolmentData, StartMfaEnrolmentResponse, StartPlatformMfaEnrolmentData, StartPlatformMfaEnrolmentError, StartPlatformMfaEnrolmentResponse, StepUpData, StepUpError, StepUpResponse, SubmitMemoData, SubmitMemoResponse, SubmitWorkflowDefinitionData, SubmitWorkflowDefinitionResponse, SuspendPlatformTenantData, SuspendPlatformTenantResponse, TestMailSettingsData, TestMailSettingsResponse, UnlockUserData, UnlockUserResponse, UpdateAssignmentData, UpdateAssignmentResponse, UpdateBrandingData, UpdateBrandingError, UpdateLegalEntityData, UpdateLegalEntityResponse, UpdateMemoData, UpdateMemoResponse, UpdateMemoTypeData, UpdateMemoTypeResponse, UpdateOrgUnitData, UpdateOrgUnitResponse, UpdatePositionData, UpdatePositionResponse, UpdateReportingLineData, UpdateReportingLineResponse, UpdateRoleData, UpdateRoleResponse, UpdateSecuritySettingsData, UpdateSecuritySettingsError, UpdateSecuritySettingsResponse, UpdateTenantPreferencesData, UpdateTenantPreferencesResponse, UpdateTermsData, UpdateTermsResponse, UpdateWorkflowQueueData, UpdateWorkflowQueueResponse, UploadFileData, UploadFileResponse, UploadFileVersionData, UploadFileVersionResponse, ValidateWorkflowDefinitionData, ValidateWorkflowDefinitionResponse, VerifyMfaData, VerifyMfaError, VerifyMfaResponse, VerifyPlatformMfaData, VerifyPlatformMfaError, VerifyPlatformMfaResponse, WithdrawMemoData, WithdrawMemoResponse } from '../types.gen';
+import { acceptInvitation, acceptPlatformEnrolment, answerTask, applySubstitution, approveDoaVersion, approveTask, approveWorkflowDefinition, askOnTask, assignPosition, cancelAssignment, cancelReportingLine, cancelWorkflow, changeMyPassword, claimTask, closeLegalEntity, closeOrgUnit, closePosition, completePasswordReset, confirmMfaEnrolment, confirmPlatformMfaEnrolment, createClassificationLevel, createDoaDraft, createLegalEntity, createMemo, createMemoType, createOrgUnit, createPlatformTenant, createPosition, createReportingLine, createRole, createSubstitution, createWorkflowDefinition, createWorkflowQueue, deactivateUser, declareMemoInterest, delegateTask, deleteClassificationLevel, deleteRole, discardMemo, endSubstitution, exportAudit, exportWorkflowDefinition, forwardTask, getAdminBranding, getBranding, getBrandingLogo, getCsrfToken, getDoaVersion, getEditingStatus, getEditSession, getFile, getFileContent, getFileVersionContent, getHealth, getMailLog, getMailSettings, getMe, getMemo, getMemoHistory, getMyAccess, getMyNotificationPreferences, getMyUnreadCount, getOrgHistory, getOrgUnit, getPlatformCsrfToken, getPlatformSession, getPlatformTenant, getPosition, getPositionHolder, getSecuritySettings, getSession, getTenantPreferences, getTerms, getUser, getUserAccess, getWorkflowDefinition, getWorkflowDefinitionVersion, giveOpinion, grantRole, invitePlatformTenantFirstAdmin, inviteUser, listAllMemoTypes, listClassificationLevels, listDoaVersions, listLegalEntities, listMemoTypeDefinitions, listMemoTypes, listMyMemos, listMyNotifications, listMySessions, listMyTasks, listOpenTasks, listOrgUnits, listPermissions, listPlatformTenants, listRoles, listSubstitutions, listUnitPositions, listUserAssignments, listUsers, listWorkflowDefinitions, listWorkflowQueues, login, logout, lookUpInvitation, lookUpPlatformEnrolment, markAllNotificationsRead, markNotificationRead, migrateWorkflowInstances, moveOrgUnit, newWorkflowDefinitionDraft, openEditor, type Options, platformLogin, platformLogout, platformStepUp, previewWorkflowMigration, queryAudit, queryPlatformAudit, reactivateUser, reassignTask, recallMemo, recuseFromTask, referTask, regenerateMyRecoveryCodes, rejectTask, releaseClaimedTask, releaseTask, removeMailSettings, removeMemoInterest, renameClassificationLevel, renamePlatformTenant, reorderClassificationLevels, replaceDoaDraft, replaceMemoRoute, replaceWorkflowDefinitionDraft, requestPasswordReset, resetUserMfa, resubmitMemo, resumePlatformTenant, retireWorkflowDefinition, returnTask, revokeGrant, revokeMySession, revokeUserSessions, searchDirectory, sendBackDoaVersion, sendBackTask, sendBackWorkflowDefinition, setClearance, setMailSettings, setMyNotificationPreferences, simulateDoa, startMfaEnrolment, startPlatformMfaEnrolment, stepUp, submitDoaVersion, submitMemo, submitWorkflowDefinition, suspendPlatformTenant, testMailSettings, unlockUser, updateAssignment, updateBranding, updateLegalEntity, updateMemo, updateMemoType, updateOrgUnit, updatePosition, updateReportingLine, updateRole, updateSecuritySettings, updateTenantPreferences, updateTerms, updateWorkflowQueue, uploadFile, uploadFileVersion, validateWorkflowDefinition, verifyMfa, verifyPlatformMfa, withdrawMemo } from '../sdk.gen';
+import type { AcceptInvitationData, AcceptInvitationError, AcceptInvitationResponse, AcceptPlatformEnrolmentData, AcceptPlatformEnrolmentError, AcceptPlatformEnrolmentResponse, AnswerTaskData, AnswerTaskResponse, ApplySubstitutionData, ApplySubstitutionResponse, ApproveDoaVersionData, ApproveDoaVersionResponse, ApproveTaskData, ApproveTaskResponse, ApproveWorkflowDefinitionData, ApproveWorkflowDefinitionResponse, AskOnTaskData, AskOnTaskResponse, AssignPositionData, AssignPositionResponse, CancelAssignmentData, CancelAssignmentResponse, CancelReportingLineData, CancelReportingLineResponse, CancelWorkflowData, CancelWorkflowResponse, ChangeMyPasswordData, ChangeMyPasswordError, ChangeMyPasswordResponse, ClaimTaskData, ClaimTaskResponse, CloseLegalEntityData, CloseLegalEntityResponse, CloseOrgUnitData, CloseOrgUnitResponse, ClosePositionData, ClosePositionResponse, CompletePasswordResetData, CompletePasswordResetError, CompletePasswordResetResponse, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentError, ConfirmMfaEnrolmentResponse, ConfirmPlatformMfaEnrolmentData, ConfirmPlatformMfaEnrolmentError, ConfirmPlatformMfaEnrolmentResponse, CreateClassificationLevelData, CreateClassificationLevelResponse, CreateDoaDraftData, CreateDoaDraftResponse, CreateLegalEntityData, CreateLegalEntityResponse, CreateMemoData, CreateMemoResponse, CreateMemoTypeData, CreateMemoTypeResponse, CreateOrgUnitData, CreateOrgUnitResponse, CreatePlatformTenantData, CreatePlatformTenantError, CreatePlatformTenantResponse, CreatePositionData, CreatePositionResponse, CreateReportingLineData, CreateReportingLineResponse, CreateRoleData, CreateRoleResponse, CreateSubstitutionData, CreateSubstitutionResponse, CreateWorkflowDefinitionData, CreateWorkflowDefinitionResponse, CreateWorkflowQueueData, CreateWorkflowQueueResponse, DeactivateUserData, DeactivateUserResponse, DeclareMemoInterestData, DeclareMemoInterestResponse, DelegateTaskData, DelegateTaskResponse, DeleteClassificationLevelData, DeleteRoleData, DiscardMemoData, DiscardMemoResponse, EndSubstitutionData, EndSubstitutionResponse, ExportAuditData, ExportAuditError, ExportAuditResponse, ExportWorkflowDefinitionData, ExportWorkflowDefinitionResponse, ForwardTaskData, ForwardTaskResponse, GetAdminBrandingData, GetAdminBrandingResponse, GetBrandingData, GetBrandingLogoData, GetBrandingResponse, GetCsrfTokenData, GetCsrfTokenResponse, GetDoaVersionData, GetDoaVersionResponse, GetEditingStatusData, GetEditingStatusResponse, GetEditSessionData, GetEditSessionResponse, GetFileContentData, GetFileData, GetFileResponse, GetFileVersionContentData, GetHealthData, GetHealthError, GetHealthResponse, GetMailLogData, GetMailLogResponse, GetMailSettingsData, GetMailSettingsResponse, GetMeData, GetMemoData, GetMemoHistoryData, GetMemoHistoryResponse, GetMemoResponse, GetMeResponse, GetMyAccessData, GetMyAccessResponse, GetMyNotificationPreferencesData, GetMyNotificationPreferencesResponse, GetMyUnreadCountData, GetMyUnreadCountResponse, GetOrgHistoryData, GetOrgHistoryResponse, GetOrgUnitData, GetOrgUnitResponse, GetPlatformCsrfTokenData, GetPlatformCsrfTokenResponse, GetPlatformSessionData, GetPlatformSessionResponse, GetPlatformTenantData, GetPlatformTenantResponse, GetPositionData, GetPositionHolderData, GetPositionHolderResponse, GetPositionResponse, GetSecuritySettingsData, GetSecuritySettingsResponse, GetSessionData, GetSessionResponse, GetTenantPreferencesData, GetTenantPreferencesResponse, GetTermsData, GetTermsResponse, GetUserAccessData, GetUserAccessResponse, GetUserData, GetUserResponse, GetWorkflowDefinitionData, GetWorkflowDefinitionResponse, GetWorkflowDefinitionVersionData, GetWorkflowDefinitionVersionResponse, GiveOpinionData, GiveOpinionResponse, GrantRoleData, GrantRoleResponse, InvitePlatformTenantFirstAdminData, InvitePlatformTenantFirstAdminError, InvitePlatformTenantFirstAdminResponse, InviteUserData, InviteUserError, InviteUserResponse, ListAllMemoTypesData, ListAllMemoTypesResponse, ListClassificationLevelsData, ListClassificationLevelsResponse, ListDoaVersionsData, ListDoaVersionsResponse, ListLegalEntitiesData, ListLegalEntitiesResponse, ListMemoTypeDefinitionsData, ListMemoTypeDefinitionsResponse, ListMemoTypesData, ListMemoTypesResponse, ListMyMemosData, ListMyMemosResponse, ListMyNotificationsData, ListMyNotificationsResponse, ListMySessionsData, ListMySessionsResponse, ListMyTasksData, ListMyTasksResponse, ListOpenTasksData, ListOpenTasksResponse, ListOrgUnitsData, ListOrgUnitsResponse, ListPermissionsData, ListPermissionsResponse, ListPlatformTenantsData, ListPlatformTenantsResponse, ListRolesData, ListRolesResponse, ListSubstitutionsData, ListSubstitutionsResponse, ListUnitPositionsData, ListUnitPositionsResponse, ListUserAssignmentsData, ListUserAssignmentsResponse, ListUsersData, ListUsersResponse, ListWorkflowDefinitionsData, ListWorkflowDefinitionsResponse, ListWorkflowQueuesData, ListWorkflowQueuesResponse, LoginData, LoginError, LoginResponse, LogoutData, LogoutResponse, LookUpInvitationData, LookUpInvitationError, LookUpInvitationResponse, LookUpPlatformEnrolmentData, LookUpPlatformEnrolmentError, MarkAllNotificationsReadData, MarkNotificationReadData, MigrateWorkflowInstancesData, MigrateWorkflowInstancesResponse, MoveOrgUnitData, MoveOrgUnitResponse, NewWorkflowDefinitionDraftData, NewWorkflowDefinitionDraftResponse, OpenEditorData, OpenEditorResponse2, PlatformLoginData, PlatformLoginError, PlatformLoginResponse, PlatformLogoutData, PlatformLogoutResponse, PlatformStepUpData, PlatformStepUpError, PlatformStepUpResponse, PreviewWorkflowMigrationData, PreviewWorkflowMigrationResponse, QueryAuditData, QueryAuditResponse, QueryPlatformAuditData, QueryPlatformAuditResponse, ReactivateUserData, ReactivateUserResponse, ReassignTaskData, ReassignTaskResponse, RecallMemoData, RecallMemoResponse, RecuseFromTaskData, RecuseFromTaskResponse, ReferTaskData, ReferTaskResponse, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesResponse, RejectTaskData, RejectTaskResponse, ReleaseClaimedTaskData, ReleaseClaimedTaskResponse, ReleaseTaskData, ReleaseTaskResponse, RemoveMailSettingsData, RemoveMemoInterestData, RemoveMemoInterestResponse, RenameClassificationLevelData, RenameClassificationLevelResponse, RenamePlatformTenantData, RenamePlatformTenantResponse, ReorderClassificationLevelsData, ReorderClassificationLevelsResponse, ReplaceDoaDraftData, ReplaceDoaDraftResponse, ReplaceMemoRouteData, ReplaceMemoRouteResponse, ReplaceWorkflowDefinitionDraftData, ReplaceWorkflowDefinitionDraftResponse, RequestPasswordResetData, ResetUserMfaData, ResetUserMfaResponse, ResubmitMemoData, ResubmitMemoResponse, ResumePlatformTenantData, ResumePlatformTenantResponse, RetireWorkflowDefinitionData, RetireWorkflowDefinitionResponse, ReturnTaskData, ReturnTaskResponse, RevokeGrantData, RevokeMySessionData, RevokeMySessionResponse, RevokeUserSessionsData, RevokeUserSessionsResponse, SearchDirectoryData, SearchDirectoryResponse, SendBackDoaVersionData, SendBackDoaVersionResponse, SendBackTaskData, SendBackTaskResponse, SendBackWorkflowDefinitionData, SendBackWorkflowDefinitionResponse, SetClearanceData, SetClearanceResponse, SetMailSettingsData, SetMailSettingsResponse, SetMyNotificationPreferencesData, SetMyNotificationPreferencesResponse, SimulateDoaData, SimulateDoaResponse, StartMfaEnrolmentData, StartMfaEnrolmentResponse, StartPlatformMfaEnrolmentData, StartPlatformMfaEnrolmentError, StartPlatformMfaEnrolmentResponse, StepUpData, StepUpError, StepUpResponse, SubmitDoaVersionData, SubmitDoaVersionResponse, SubmitMemoData, SubmitMemoResponse, SubmitWorkflowDefinitionData, SubmitWorkflowDefinitionResponse, SuspendPlatformTenantData, SuspendPlatformTenantResponse, TestMailSettingsData, TestMailSettingsResponse, UnlockUserData, UnlockUserResponse, UpdateAssignmentData, UpdateAssignmentResponse, UpdateBrandingData, UpdateBrandingError, UpdateLegalEntityData, UpdateLegalEntityResponse, UpdateMemoData, UpdateMemoResponse, UpdateMemoTypeData, UpdateMemoTypeResponse, UpdateOrgUnitData, UpdateOrgUnitResponse, UpdatePositionData, UpdatePositionResponse, UpdateReportingLineData, UpdateReportingLineResponse, UpdateRoleData, UpdateRoleResponse, UpdateSecuritySettingsData, UpdateSecuritySettingsError, UpdateSecuritySettingsResponse, UpdateTenantPreferencesData, UpdateTenantPreferencesResponse, UpdateTermsData, UpdateTermsResponse, UpdateWorkflowQueueData, UpdateWorkflowQueueResponse, UploadFileData, UploadFileResponse, UploadFileVersionData, UploadFileVersionResponse, ValidateWorkflowDefinitionData, ValidateWorkflowDefinitionResponse, VerifyMfaData, VerifyMfaError, VerifyMfaResponse, VerifyPlatformMfaData, VerifyPlatformMfaError, VerifyPlatformMfaResponse, WithdrawMemoData, WithdrawMemoResponse } from '../types.gen';
 
 export type QueryKey<TOptions extends Options> = [
     Pick<TOptions, 'baseUrl' | 'body' | 'headers' | 'path' | 'query'> & {
@@ -852,6 +852,144 @@ export const validateWorkflowDefinitionMutation = (options?: Partial<Options<Val
     const mutationOptions: UseMutationOptions<ValidateWorkflowDefinitionResponse, DefaultError, Options<ValidateWorkflowDefinitionData>> = {
         mutationFn: async (fnOptions) => {
             const { data } = await validateWorkflowDefinition({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const listDoaVersionsQueryKey = (options?: Options<ListDoaVersionsData>) => createQueryKey('listDoaVersions', options);
+
+/**
+ * The DoA versions, newest first
+ */
+export const listDoaVersionsOptions = (options?: Options<ListDoaVersionsData>) => queryOptions<ListDoaVersionsResponse, DefaultError, ListDoaVersionsResponse, ReturnType<typeof listDoaVersionsQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await listDoaVersions({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: listDoaVersionsQueryKey(options)
+});
+
+/**
+ * Who would approve an item, under a version or the one in force
+ */
+export const simulateDoaMutation = (options?: Partial<Options<SimulateDoaData>>): UseMutationOptions<SimulateDoaResponse, DefaultError, Options<SimulateDoaData>> => {
+    const mutationOptions: UseMutationOptions<SimulateDoaResponse, DefaultError, Options<SimulateDoaData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await simulateDoa({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Start a new draft, from the given rules or the version in force
+ */
+export const createDoaDraftMutation = (options?: Partial<Options<CreateDoaDraftData>>): UseMutationOptions<CreateDoaDraftResponse, DefaultError, Options<CreateDoaDraftData>> => {
+    const mutationOptions: UseMutationOptions<CreateDoaDraftResponse, DefaultError, Options<CreateDoaDraftData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await createDoaDraft({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+export const getDoaVersionQueryKey = (options: Options<GetDoaVersionData>) => createQueryKey('getDoaVersion', options);
+
+/**
+ * A DoA version with its rules
+ */
+export const getDoaVersionOptions = (options: Options<GetDoaVersionData>) => queryOptions<GetDoaVersionResponse, DefaultError, GetDoaVersionResponse, ReturnType<typeof getDoaVersionQueryKey>>({
+    queryFn: async ({ queryKey, signal }) => {
+        const { data } = await getDoaVersion({
+            ...options,
+            ...queryKey[0],
+            signal,
+            throwOnError: true
+        });
+        return data;
+    },
+    queryKey: getDoaVersionQueryKey(options)
+});
+
+/**
+ * Replace a draft's date and rules
+ */
+export const replaceDoaDraftMutation = (options?: Partial<Options<ReplaceDoaDraftData>>): UseMutationOptions<ReplaceDoaDraftResponse, DefaultError, Options<ReplaceDoaDraftData>> => {
+    const mutationOptions: UseMutationOptions<ReplaceDoaDraftResponse, DefaultError, Options<ReplaceDoaDraftData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await replaceDoaDraft({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Publish a version in review (not your own submission)
+ */
+export const approveDoaVersionMutation = (options?: Partial<Options<ApproveDoaVersionData>>): UseMutationOptions<ApproveDoaVersionResponse, DefaultError, Options<ApproveDoaVersionData>> => {
+    const mutationOptions: UseMutationOptions<ApproveDoaVersionResponse, DefaultError, Options<ApproveDoaVersionData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await approveDoaVersion({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Return a version in review to draft, saying why
+ */
+export const sendBackDoaVersionMutation = (options?: Partial<Options<SendBackDoaVersionData>>): UseMutationOptions<SendBackDoaVersionResponse, DefaultError, Options<SendBackDoaVersionData>> => {
+    const mutationOptions: UseMutationOptions<SendBackDoaVersionResponse, DefaultError, Options<SendBackDoaVersionData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await sendBackDoaVersion({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
+
+/**
+ * Send a draft for review
+ */
+export const submitDoaVersionMutation = (options?: Partial<Options<SubmitDoaVersionData>>): UseMutationOptions<SubmitDoaVersionResponse, DefaultError, Options<SubmitDoaVersionData>> => {
+    const mutationOptions: UseMutationOptions<SubmitDoaVersionResponse, DefaultError, Options<SubmitDoaVersionData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await submitDoaVersion({
                 ...options,
                 ...fnOptions,
                 throwOnError: true

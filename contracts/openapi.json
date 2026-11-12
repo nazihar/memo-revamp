@@ -671,6 +671,205 @@
         "required" : [ "person" ],
         "type" : "object"
       },
+      "DoaDraftRequest" : {
+        "properties" : {
+          "effectiveFrom" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "rules" : {
+            "items" : {
+              "$ref" : "#/components/schemas/DoaRule"
+            },
+            "type" : [ "array", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "DoaMember" : {
+        "properties" : {
+          "kind" : {
+            "type" : "string"
+          },
+          "positionId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "roleId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "unit" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "DoaRule" : {
+        "properties" : {
+          "condition" : {
+            "type" : [ "string", "null" ]
+          },
+          "groups" : {
+            "items" : {
+              "$ref" : "#/components/schemas/DoaRuleGroup"
+            },
+            "type" : "array"
+          },
+          "includeSubtree" : {
+            "type" : "boolean"
+          },
+          "memoTypeId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "subjectType" : {
+            "type" : "string"
+          },
+          "unitId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "DoaRuleGroup" : {
+        "properties" : {
+          "needed" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "of" : {
+            "items" : {
+              "$ref" : "#/components/schemas/DoaMember"
+            },
+            "type" : "array"
+          }
+        },
+        "type" : "object"
+      },
+      "DoaSimulationGroup" : {
+        "properties" : {
+          "needed" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "people" : {
+            "items" : {
+              "$ref" : "#/components/schemas/Person"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "needed", "people" ],
+        "type" : "object"
+      },
+      "DoaSimulationRequest" : {
+        "properties" : {
+          "attributes" : {
+            "additionalProperties" : { },
+            "type" : "object"
+          },
+          "initiatorId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "subjectType" : {
+            "type" : "string"
+          },
+          "version" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "DoaSimulationResponse" : {
+        "properties" : {
+          "groups" : {
+            "items" : {
+              "$ref" : "#/components/schemas/DoaSimulationGroup"
+            },
+            "type" : "array"
+          },
+          "reason" : {
+            "type" : [ "string", "null" ]
+          },
+          "rule" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "ruleName" : {
+            "type" : [ "string", "null" ]
+          },
+          "version" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          }
+        },
+        "required" : [ "groups" ],
+        "type" : "object"
+      },
+      "DoaVersionResponse" : {
+        "properties" : {
+          "effectiveFrom" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "number" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "publishedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "reviewRemark" : {
+            "type" : [ "string", "null" ]
+          },
+          "reviewedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "reviewedBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/Person"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "revision" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "rules" : {
+            "items" : {
+              "$ref" : "#/components/schemas/DoaRule"
+            },
+            "type" : [ "array", "null" ]
+          },
+          "state" : {
+            "enum" : [ "DRAFT", "IN_REVIEW", "PUBLISHED", "RETIRED" ],
+            "type" : "string"
+          },
+          "submittedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "submittedBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/Person"
+            }, {
+              "type" : "null"
+            } ]
+          }
+        },
+        "required" : [ "number", "revision", "state" ],
+        "type" : "object"
+      },
       "DocumentView" : {
         "properties" : {
           "fileId" : {
@@ -4655,6 +4854,261 @@
           }
         },
         "summary" : "Check a version, or an unsaved body, without changing anything",
+        "tags" : [ "workflow" ]
+      }
+    },
+    "/api/v1/admin/workflow/doa" : {
+      "get" : {
+        "operationId" : "listDoaVersions",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/DoaVersionResponse"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The DoA versions, newest first",
+        "tags" : [ "workflow" ]
+      }
+    },
+    "/api/v1/admin/workflow/doa/simulate" : {
+      "post" : {
+        "operationId" : "simulateDoa",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/DoaSimulationRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DoaSimulationResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Who would approve an item, under a version or the one in force",
+        "tags" : [ "workflow" ]
+      }
+    },
+    "/api/v1/admin/workflow/doa/versions" : {
+      "post" : {
+        "operationId" : "createDoaDraft",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/DoaDraftRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DoaVersionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Start a new draft, from the given rules or the version in force",
+        "tags" : [ "workflow" ]
+      }
+    },
+    "/api/v1/admin/workflow/doa/versions/{number}" : {
+      "get" : {
+        "operationId" : "getDoaVersion",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "number",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DoaVersionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A DoA version with its rules",
+        "tags" : [ "workflow" ]
+      },
+      "put" : {
+        "operationId" : "replaceDoaDraft",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "number",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/DoaDraftRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DoaVersionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Replace a draft's date and rules",
+        "tags" : [ "workflow" ]
+      }
+    },
+    "/api/v1/admin/workflow/doa/versions/{number}/approve" : {
+      "post" : {
+        "operationId" : "approveDoaVersion",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "number",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ReviewRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DoaVersionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Publish a version in review (not your own submission)",
+        "tags" : [ "workflow" ]
+      }
+    },
+    "/api/v1/admin/workflow/doa/versions/{number}/send-back" : {
+      "post" : {
+        "operationId" : "sendBackDoaVersion",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "number",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ReviewRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DoaVersionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Return a version in review to draft, saying why",
+        "tags" : [ "workflow" ]
+      }
+    },
+    "/api/v1/admin/workflow/doa/versions/{number}/submit" : {
+      "post" : {
+        "operationId" : "submitDoaVersion",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "number",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DoaVersionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Send a draft for review",
         "tags" : [ "workflow" ]
       }
     },

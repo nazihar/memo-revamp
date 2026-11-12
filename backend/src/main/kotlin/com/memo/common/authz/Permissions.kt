@@ -57,6 +57,12 @@ enum class Permission(
 
     /** Create and change the queues workflow steps can go to (Phase 2 E04). */
     WORKFLOW_QUEUES_MANAGE("workflow.queues.manage", scopable = false, privileged = true),
+
+    /** Draft and submit versions of the delegation of authority (Phase 2 E04). */
+    WORKFLOW_DOA_MANAGE("workflow.doa.manage", scopable = false, privileged = true),
+
+    /** Publish or send back a DoA version someone else submitted (Phase 2 E04); with a step-up. */
+    WORKFLOW_DOA_APPROVE("workflow.doa.approve", scopable = false, privileged = true),
     ;
 
     companion object {

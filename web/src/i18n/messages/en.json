@@ -48,6 +48,8 @@
   "access.permission.users": "Manage users",
   "access.permission.workflowDefinitionsApprove": "Review and publish workflow definitions",
   "access.permission.workflowDefinitionsManage": "Write workflow definitions and submit them for review",
+  "access.permission.workflowDoaApprove": "Review and publish the delegation of authority",
+  "access.permission.workflowDoaManage": "Draft the delegation of authority and submit it for review",
   "access.permission.workflowInstancesCancel": "Cancel running workflows",
   "access.permission.workflowQueuesManage": "Manage workflow queues",
   "access.permission.workflowTasksReassign": "Reassign approval tasks",

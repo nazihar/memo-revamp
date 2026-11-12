@@ -49,6 +49,8 @@ import com.memo.jooq.tables.TenancyTerm
 import com.memo.jooq.tables.WorkflowAction
 import com.memo.jooq.tables.WorkflowDefinition
 import com.memo.jooq.tables.WorkflowDefinitionVersion
+import com.memo.jooq.tables.WorkflowDoaRule
+import com.memo.jooq.tables.WorkflowDoaVersion
 import com.memo.jooq.tables.WorkflowInstance
 import com.memo.jooq.tables.WorkflowQueue
 import com.memo.jooq.tables.WorkflowQueueMember
@@ -310,6 +312,16 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val WORKFLOW_DEFINITION_VERSION: WorkflowDefinitionVersion get() = WorkflowDefinitionVersion.WORKFLOW_DEFINITION_VERSION
 
     /**
+     * The table <code>memo.workflow_doa_rule</code>.
+     */
+    val WORKFLOW_DOA_RULE: WorkflowDoaRule get() = WorkflowDoaRule.WORKFLOW_DOA_RULE
+
+    /**
+     * The table <code>memo.workflow_doa_version</code>.
+     */
+    val WORKFLOW_DOA_VERSION: WorkflowDoaVersion get() = WorkflowDoaVersion.WORKFLOW_DOA_VERSION
+
+    /**
      * The table <code>memo.workflow_instance</code>.
      */
     val WORKFLOW_INSTANCE: WorkflowInstance get() = WorkflowInstance.WORKFLOW_INSTANCE
@@ -393,6 +405,8 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         WorkflowAction.WORKFLOW_ACTION,
         WorkflowDefinition.WORKFLOW_DEFINITION,
         WorkflowDefinitionVersion.WORKFLOW_DEFINITION_VERSION,
+        WorkflowDoaRule.WORKFLOW_DOA_RULE,
+        WorkflowDoaVersion.WORKFLOW_DOA_VERSION,
         WorkflowInstance.WORKFLOW_INSTANCE,
         WorkflowQueue.WORKFLOW_QUEUE,
         WorkflowQueueMember.WORKFLOW_QUEUE_MEMBER,

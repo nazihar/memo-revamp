@@ -294,6 +294,69 @@ export type DirectoryUser = {
     position?: DirectoryPositionSummary | null;
 };
 
+export type DoaDraftRequest = {
+    effectiveFrom?: string | null;
+    rules?: Array<DoaRule> | null;
+};
+
+export type DoaMember = {
+    kind?: string;
+    positionId?: string | null;
+    roleId?: string | null;
+    unit?: string | null;
+};
+
+export type DoaRule = {
+    condition?: string | null;
+    groups?: Array<DoaRuleGroup>;
+    includeSubtree?: boolean;
+    memoTypeId?: string | null;
+    name?: string;
+    subjectType?: string;
+    unitId?: string | null;
+};
+
+export type DoaRuleGroup = {
+    needed?: number;
+    of?: Array<DoaMember>;
+};
+
+export type DoaSimulationGroup = {
+    needed: number;
+    people: Array<Person>;
+};
+
+export type DoaSimulationRequest = {
+    attributes?: {
+        [key: string]: unknown;
+    };
+    initiatorId?: string;
+    subjectType?: string;
+    version?: number | null;
+};
+
+export type DoaSimulationResponse = {
+    groups: Array<DoaSimulationGroup>;
+    reason?: string | null;
+    rule?: number | null;
+    ruleName?: string | null;
+    version?: number | null;
+};
+
+export type DoaVersionResponse = {
+    effectiveFrom?: string | null;
+    number: number;
+    publishedAt?: string | null;
+    reviewRemark?: string | null;
+    reviewedAt?: string | null;
+    reviewedBy?: Person | null;
+    revision: number;
+    rules?: Array<DoaRule> | null;
+    state: 'DRAFT' | 'IN_REVIEW' | 'PUBLISHED' | 'RETIRED';
+    submittedAt?: string | null;
+    submittedBy?: Person | null;
+};
+
 export type DocumentView = {
     fileId: string;
     fileVersion: number;
@@ -2147,6 +2210,150 @@ export type ValidateWorkflowDefinitionResponses = {
 };
 
 export type ValidateWorkflowDefinitionResponse = ValidateWorkflowDefinitionResponses[keyof ValidateWorkflowDefinitionResponses];
+
+export type ListDoaVersionsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/workflow/doa';
+};
+
+export type ListDoaVersionsResponses = {
+    /**
+     * OK
+     */
+    200: Array<DoaVersionResponse>;
+};
+
+export type ListDoaVersionsResponse = ListDoaVersionsResponses[keyof ListDoaVersionsResponses];
+
+export type SimulateDoaData = {
+    body: DoaSimulationRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/workflow/doa/simulate';
+};
+
+export type SimulateDoaResponses = {
+    /**
+     * OK
+     */
+    200: DoaSimulationResponse;
+};
+
+export type SimulateDoaResponse = SimulateDoaResponses[keyof SimulateDoaResponses];
+
+export type CreateDoaDraftData = {
+    body?: DoaDraftRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/workflow/doa/versions';
+};
+
+export type CreateDoaDraftResponses = {
+    /**
+     * OK
+     */
+    200: DoaVersionResponse;
+};
+
+export type CreateDoaDraftResponse = CreateDoaDraftResponses[keyof CreateDoaDraftResponses];
+
+export type GetDoaVersionData = {
+    body?: never;
+    path: {
+        number: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/workflow/doa/versions/{number}';
+};
+
+export type GetDoaVersionResponses = {
+    /**
+     * OK
+     */
+    200: DoaVersionResponse;
+};
+
+export type GetDoaVersionResponse = GetDoaVersionResponses[keyof GetDoaVersionResponses];
+
+export type ReplaceDoaDraftData = {
+    body: DoaDraftRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        number: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/workflow/doa/versions/{number}';
+};
+
+export type ReplaceDoaDraftResponses = {
+    /**
+     * OK
+     */
+    200: DoaVersionResponse;
+};
+
+export type ReplaceDoaDraftResponse = ReplaceDoaDraftResponses[keyof ReplaceDoaDraftResponses];
+
+export type ApproveDoaVersionData = {
+    body?: ReviewRequest;
+    path: {
+        number: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/workflow/doa/versions/{number}/approve';
+};
+
+export type ApproveDoaVersionResponses = {
+    /**
+     * OK
+     */
+    200: DoaVersionResponse;
+};
+
+export type ApproveDoaVersionResponse = ApproveDoaVersionResponses[keyof ApproveDoaVersionResponses];
+
+export type SendBackDoaVersionData = {
+    body: ReviewRequest;
+    path: {
+        number: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/workflow/doa/versions/{number}/send-back';
+};
+
+export type SendBackDoaVersionResponses = {
+    /**
+     * OK
+     */
+    200: DoaVersionResponse;
+};
+
+export type SendBackDoaVersionResponse = SendBackDoaVersionResponses[keyof SendBackDoaVersionResponses];
+
+export type SubmitDoaVersionData = {
+    body?: never;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        number: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/workflow/doa/versions/{number}/submit';
+};
+
+export type SubmitDoaVersionResponses = {
+    /**
+     * OK
+     */
+    200: DoaVersionResponse;
+};
+
+export type SubmitDoaVersionResponse = SubmitDoaVersionResponses[keyof SubmitDoaVersionResponses];
 
 export type CancelWorkflowData = {
     body: CancelRequest;

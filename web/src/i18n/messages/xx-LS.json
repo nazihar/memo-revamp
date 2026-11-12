@@ -309,6 +309,18 @@
       "value": "Write workflow definitions and submit them for reviewSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "access.permission.workflowDoaApprove": [
+    {
+      "type": 0,
+      "value": "Review and publish the delegation of authoritySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.permission.workflowDoaManage": [
+    {
+      "type": 0,
+      "value": "Draft the delegation of authority and submit it for reviewSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "access.permission.workflowInstancesCancel": [
     {
       "type": 0,

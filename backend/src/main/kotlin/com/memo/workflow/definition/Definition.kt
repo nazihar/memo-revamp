@@ -12,6 +12,9 @@ enum class StepType(
     REVIEW("review", true),
     APPROVE("approve", true),
     PARALLEL("parallel", true),
+
+    /** The approval groups of the delegation of authority, one after the other (design E04 §4.3). */
+    DOA("doa", true),
     BRANCH("branch", false),
     NOTIFY("notify", false),
     SUBWORKFLOW("subworkflow", false),
@@ -149,9 +152,21 @@ data class StepDef(
     companion object {
         fun defaultActions(type: StepType): List<StepAction> =
             when (type) {
-                StepType.REVIEW -> listOf(StepAction.RECOMMEND, StepAction.RETURN)
-                StepType.ROUTE, StepType.APPROVE, StepType.PARALLEL -> listOf(StepAction.APPROVE, StepAction.RETURN, StepAction.REJECT)
-                else -> emptyList()
+                StepType.REVIEW -> {
+                    listOf(StepAction.RECOMMEND, StepAction.RETURN)
+                }
+
+                StepType.ROUTE, StepType.APPROVE, StepType.PARALLEL, StepType.DOA -> {
+                    listOf(
+                        StepAction.APPROVE,
+                        StepAction.RETURN,
+                        StepAction.REJECT,
+                    )
+                }
+
+                else -> {
+                    emptyList()
+                }
             }
     }
 }

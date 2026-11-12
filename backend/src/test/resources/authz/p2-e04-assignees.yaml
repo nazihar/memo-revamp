@@ -29,3 +29,20 @@ endpoints:
     body: { principalId: "{random}", substituteId: "{random}", validFrom: "2026-01-01" }
   - { endpoint: "POST /api/v1/admin/workflow/substitutions/{id}/end", rule: tenantAdmin }
   - { endpoint: "POST /api/v1/admin/workflow/substitutions/{id}/apply", rule: tenantAdminStepUp }
+  # Delegation of authority (design E04 §3, §5): drafting under workflow.doa.manage, review under .approve (publishing
+  # needs a step-up), reading and simulating under either. Unknown version numbers are 404.
+  - { endpoint: "GET /api/v1/admin/workflow/doa", rule: tenantAdmin }
+  - { endpoint: "GET /api/v1/admin/workflow/doa/versions/{number}", rule: tenantAdmin }
+  - { endpoint: "POST /api/v1/admin/workflow/doa/versions", rule: tenantAdmin, body: { rules: [] } }
+  - endpoint: "PUT /api/v1/admin/workflow/doa/versions/{number}"
+    rule: tenantAdmin
+    body: { rules: [] }
+    headers: { If-Match: "\"0\"" }
+  - { endpoint: "POST /api/v1/admin/workflow/doa/versions/{number}/submit", rule: tenantAdmin, headers: { If-Match: "\"0\"" } }
+  - { endpoint: "POST /api/v1/admin/workflow/doa/versions/{number}/approve", rule: tenantAdminStepUp }
+  - endpoint: "POST /api/v1/admin/workflow/doa/versions/{number}/send-back"
+    rule: tenantAdmin
+    body: { remark: "Matrix" }
+  - endpoint: "POST /api/v1/admin/workflow/doa/simulate"
+    rule: tenantAdmin
+    body: { subjectType: "memo", initiatorId: "{random}" }

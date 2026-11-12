@@ -42,6 +42,12 @@ internal class Rounds(
         from: Step,
         people: People,
     ): Walk {
+        // The next approval group of a DoA rule, when there is one (design E04 §4.3).
+        val group = from.doaGroup?.plus(1)?.takeIf { it < context.doa().groups.size }
+        if (group != null) {
+            val (next, step) = doaGroup(round, definition.step(from.nodeId), people.initiator, group)
+            return Walk(next, created(step), emptyList(), finished = false)
+        }
         val (entry, carried) = from.routeIndex?.let { carries.uncarried(round, from.nodeId, it + 1) } ?: (null to emptyList())
         val skipped = carries.skip(round, from.nodeId, carried)
         return if (entry != null) {
@@ -87,6 +93,10 @@ internal class Rounds(
         val holder = target.assignee
         val (next, step) =
             when {
+                node.type == StepType.DOA -> {
+                    doaGroup(round, node, initiator, target.doaGroup ?: 0, recused)
+                }
+
                 // A route entry whose approver stood aside: the initiator chose them, so an administrator assigns it.
                 index != null && recused.isNotEmpty() -> {
                     val found = Found(emptyList(), mapOf("excluded" to recused.map { mapOf("person" to it.toString(), "rule" to "SOD-4") }))
@@ -122,10 +132,27 @@ internal class Rounds(
         if (at == Definition.END) return Walk(round, effects, followUps, finished = true)
         val node = definition.step(at)
         return when (node.type) {
-            StepType.ROUTE -> route(round, node, people, effects, followUps)
-            StepType.REVIEW, StepType.APPROVE, StepType.PARALLEL -> person(round, node, people, effects, followUps)
-            StepType.BRANCH, StepType.NOTIFY, StepType.ESCALATE_TO_FORUM -> pass(round, node, people, effects, followUps)
-            else -> throw IllegalStateException("step type ${node.type.json} cannot run")
+            StepType.ROUTE -> {
+                route(round, node, people, effects, followUps)
+            }
+
+            StepType.REVIEW, StepType.APPROVE, StepType.PARALLEL -> {
+                person(round, node, people, effects, followUps)
+            }
+
+            StepType.DOA -> {
+                doaGroup(round, node, people.initiator, 0).let { (next, step) ->
+                    Walk(next, effects + created(step), followUps, false)
+                }
+            }
+
+            StepType.BRANCH, StepType.NOTIFY, StepType.ESCALATE_TO_FORUM -> {
+                pass(round, node, people, effects, followUps)
+            }
+
+            else -> {
+                throw IllegalStateException("step type ${node.type.json} cannot run")
+            }
         }
     }
 
@@ -193,6 +220,31 @@ internal class Rounds(
             }
         }
 
+    /**
+     * Approval group [group] of the DoA rule that matched (design E04 §4.3): its members resolved, less the
+     * separation-of-duties exclusions; the step needs the group's approvals, and waits for an administrator for any it
+     * cannot find (or for all of them when no rule matched).
+     */
+    private fun doaGroup(
+        round: Round,
+        node: StepDef,
+        initiator: UUID,
+        group: Int,
+        recused: Set<UUID> = emptySet(),
+    ): Pair<Round, Step> {
+        val match = context.doa()
+        val wanted = match.groups.getOrNull(group)
+        val found =
+            if (wanted == null) {
+                Found(emptyList(), emptyMap())
+            } else {
+                candidates.of(node, initiator, round, recused, Members(wanted.members, group))
+            }
+        val record = match.record + mapOf("group" to group, "needed" to (wanted?.needed ?: 1)) + found.record
+        val step = steps.group(round, node, found.copy(record = record), wanted?.needed ?: 1, group)
+        return round.copy(steps = round.steps + step) to step
+    }
+
     /** The route entry [index] activated: its pending step if the round has one, else a new step. */
     private fun routeEntry(
         round: Round,
@@ -224,6 +276,9 @@ internal class Rounds(
         return round.copy(steps = round.steps + step + waiting) to step
     }
 }
+
+/** A task created for each of [step]'s tasks. */
+private fun created(step: Step): List<Effect> = step.tasks.map { Effect.TaskCreated(step.id, it) }
 
 /** Who a walk acts for: the instance's initiator (notify recipients) and the person whose action led here. */
 internal data class People(

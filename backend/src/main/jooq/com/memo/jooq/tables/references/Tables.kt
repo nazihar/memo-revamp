@@ -51,6 +51,8 @@ import com.memo.jooq.tables.TenancyTerm
 import com.memo.jooq.tables.WorkflowAction
 import com.memo.jooq.tables.WorkflowDefinition
 import com.memo.jooq.tables.WorkflowDefinitionVersion
+import com.memo.jooq.tables.WorkflowDoaRule
+import com.memo.jooq.tables.WorkflowDoaVersion
 import com.memo.jooq.tables.WorkflowInstance
 import com.memo.jooq.tables.WorkflowQueue
 import com.memo.jooq.tables.WorkflowQueueMember
@@ -290,6 +292,16 @@ val WORKFLOW_DEFINITION: WorkflowDefinition = WorkflowDefinition.WORKFLOW_DEFINI
  * The table <code>memo.workflow_definition_version</code>.
  */
 val WORKFLOW_DEFINITION_VERSION: WorkflowDefinitionVersion = WorkflowDefinitionVersion.WORKFLOW_DEFINITION_VERSION
+
+/**
+ * The table <code>memo.workflow_doa_rule</code>.
+ */
+val WORKFLOW_DOA_RULE: WorkflowDoaRule = WorkflowDoaRule.WORKFLOW_DOA_RULE
+
+/**
+ * The table <code>memo.workflow_doa_version</code>.
+ */
+val WORKFLOW_DOA_VERSION: WorkflowDoaVersion = WorkflowDoaVersion.WORKFLOW_DOA_VERSION
 
 /**
  * The table <code>memo.workflow_instance</code>.

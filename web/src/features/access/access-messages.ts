@@ -138,6 +138,14 @@ export const catalogue = defineMessages({
     id: 'access.permission.workflowQueuesManage',
     defaultMessage: 'Manage workflow queues',
   },
+  'workflow.doa.manage': {
+    id: 'access.permission.workflowDoaManage',
+    defaultMessage: 'Draft the delegation of authority and submit it for review',
+  },
+  'workflow.doa.approve': {
+    id: 'access.permission.workflowDoaApprove',
+    defaultMessage: 'Review and publish the delegation of authority',
+  },
 })
 
 export function catalogueLabel(intl: IntlShape, key: string, fallback?: string): string {

@@ -1823,6 +1823,12 @@
       "value": "Memo returnedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "mail.template.memoUpdate": [
+    {
+      "type": 0,
+      "value": "News about a memoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "mail.template.memoWithdrawn": [
     {
       "type": 0,
@@ -3227,6 +3233,20 @@
     {
       "type": 0,
       "value": " was returned to youSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.memoUpdate": [
+    {
+      "type": 0,
+      "value": "There is news about memo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "notifications.kind.memoWithdrawn": [

@@ -146,7 +146,7 @@ open class MemoParticipant(
     fun memo(): MemoPath = memo
     val memo: MemoPath by lazy { MemoPath(this, MEMO_PARTICIPANT__MEMO_PARTICIPANT_TENANT_ID_MEMO_ID_FKEY, null) }
     override fun getChecks(): List<Check<MemoParticipantRecord>> = listOf(
-        Internal.createCheck(this, DSL.name("memo_participant_kind_check"), "((kind = ANY (ARRAY['INITIATOR'::text, 'APPROVER'::text])))", true)
+        Internal.createCheck(this, DSL.name("memo_participant_kind_check"), "((kind = ANY (ARRAY['INITIATOR'::text, 'APPROVER'::text, 'NOTIFIED'::text])))", true)
     )
     override fun `as`(alias: String): MemoParticipant = MemoParticipant(DSL.name(alias), this)
     override fun `as`(alias: Name): MemoParticipant = MemoParticipant(alias, this)

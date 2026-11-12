@@ -1,6 +1,7 @@
 package com.memo.memo.internal
 
 import com.memo.common.authz.AccessAdministration
+import com.memo.common.authz.Clearances
 import com.memo.common.authz.Permission
 import com.memo.notification.NotificationKind
 import com.memo.notification.Notifications
@@ -11,10 +12,14 @@ import com.memo.workflow.ActionKind
 import com.memo.workflow.InstanceStatus
 import com.memo.workflow.TaskClosure
 import com.memo.workflow.WorkflowActionTaken
+import com.memo.workflow.WorkflowNotifyRequested
 import com.memo.workflow.WorkflowTaskClosed
 import com.memo.workflow.WorkflowTaskCreated
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
+import java.time.Clock
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import java.util.UUID
 
 /**
@@ -29,6 +34,8 @@ class MemoNotifier(
     private val access: AccessAdministration,
     private val registry: TenantRegistry,
     private val tenancy: TenancyProperties,
+    private val clearances: Clearances,
+    private val clock: Clock,
 ) {
     @EventListener
     fun onTaskCreated(event: WorkflowTaskCreated) {
@@ -75,10 +82,30 @@ class MemoNotifier(
         store.find(event.subjectId)?.let { notify(it.initiatorId, kind, it.id) }
     }
 
+    /**
+     * A definition's notify step (design E03 §2): the recipient, if cleared for the memo, becomes a participant (so the
+     * link opens it) and is told; the step's message key goes with the in-app notification, never into the email.
+     */
+    @EventListener
+    fun onNotify(event: WorkflowNotifyRequested) {
+        if (event.subjectType != MemoWorkflowSubject.TYPE) return
+        val memo = store.find(event.subjectId)
+        val rank = clearances.rankOf(listOf(event.recipientId))[event.recipientId]
+        if (memo == null || rank == null || rank < memo.classificationRank) return
+        store.addParticipant(
+            memo.id,
+            event.recipientId,
+            ParticipantKind.NOTIFIED,
+            OffsetDateTime.now(clock).withOffsetSameInstant(ZoneOffset.UTC),
+        )
+        notify(event.recipientId, NotificationKind.MEMO_UPDATE, memo.id, mapOf("message" to event.messageKey))
+    }
+
     private fun notify(
         user: UUID,
         kind: NotificationKind,
         memoId: UUID,
+        extra: Map<String, String> = emptyMap(),
     ) {
         val recipient = recipients.recipient(user) ?: return
         val memo = store.find(memoId) ?: return
@@ -91,7 +118,7 @@ class MemoNotifier(
                 "reference" to memo.reference,
                 "organisation" to tenant?.name.orEmpty(),
                 "link" to (tenant?.let { tenancy.publicUrl(it.slug) }.orEmpty() + link),
-            ),
+            ) + extra,
             link,
         )
     }

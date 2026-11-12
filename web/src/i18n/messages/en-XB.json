@@ -4063,6 +4063,20 @@
       "value": "‬"
     }
   ],
+  "mail.template.memoUpdate": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nǝʍs ɐqonʇ ɐ ɯǝɯo"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "mail.template.memoWithdrawn": [
     {
       "type": 0,
@@ -6987,6 +7001,24 @@
     {
       "type": 0,
       "value": " ʍɐs ɹǝʇnɹuǝp ʇo ʎon"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.kind.memoUpdate": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝɹǝ ıs uǝʍs ɐqonʇ ɯǝɯo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
     },
     {
       "type": 0,

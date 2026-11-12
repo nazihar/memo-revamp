@@ -38,6 +38,9 @@ enum class NotificationKind(
     TASK_BLOCKED(NotificationCategory.WORKFLOW, MailTemplate.TASK_BLOCKED),
     MEMO_WITHDRAWN(NotificationCategory.WORKFLOW, MailTemplate.MEMO_WITHDRAWN),
 
+    // A definition's notify step (design E03 §2): parameters as above plus `message`, the step's message key.
+    MEMO_UPDATE(NotificationCategory.WORKFLOW, MailTemplate.MEMO_UPDATE),
+
     // In-browser editing (design E02 §3): a save that could not land; in-app only, parameter `name` (the file's name).
     EDIT_NOT_SAVED(NotificationCategory.WORKFLOW, null),
 }

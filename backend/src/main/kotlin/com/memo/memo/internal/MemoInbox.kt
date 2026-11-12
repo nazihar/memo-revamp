@@ -5,6 +5,7 @@ import com.memo.common.context.Actor
 import com.memo.common.context.ActorContext
 import com.memo.common.web.Cursors
 import com.memo.identity.UserSummaries
+import com.memo.workflow.ActionEntry
 import com.memo.workflow.ActionKind
 import com.memo.workflow.BlockedReason
 import com.memo.workflow.WorkflowQueries
@@ -67,6 +68,15 @@ data class HistoryAction(
     val documentNumber: Int?,
     val sha256: String?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val occurredAt: Instant,
+    /** The step the action concerns, by name (design E03 §12). */
+    val step: String? = null,
+    /** Who the task was handed to: forwarded, delegated, asked or referred. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val to: List<Named> = emptyList(),
+    /**
+     * What an automatic action was based on: `taken` and `inputs` of a branch (`ROUTE`), `message` of a notification,
+     * `forum` of an escalation, `from` and `to` versions of a migration.
+     */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val details: Map<String, Any?> = emptyMap(),
 )
 
 /** One round of a memo's history; [current] is false for earlier rounds, whose approvals no longer count. */
@@ -139,7 +149,7 @@ class MemoInbox(
         val memo = memos.get(id)
         val instance = memo.workflowInstanceId ?: return emptyList()
         val actions = queries.history(instance)
-        val names = users.of(actions.flatMap { listOfNotNull(it.actorId, it.actingForId) }.toSet())
+        val names = users.of(actions.flatMap { listOfNotNull(it.actorId, it.actingForId) + handedTo(it) }.toSet())
 
         fun named(user: UUID) = Named(user, names[user]?.displayName.orEmpty())
         return actions
@@ -160,16 +170,35 @@ class MemoInbox(
                                 documentNumber = (it.snapshot["documentNumber"] as? Number)?.toInt(),
                                 sha256 = it.snapshot["sha256"] as? String,
                                 occurredAt = it.occurredAt,
+                                step = it.stepName,
+                                to = handedTo(it).map(::named),
+                                details = it.details.filterKeys { key -> key !in INTERNAL && !(key == "to" && it.kind in HANDED_ON) },
                             )
                         },
                 )
             }
     }
 
+    /** The people a hand-on gave the task to, from its details (ids, ADR-0017). */
+    private fun handedTo(entry: ActionEntry): List<UUID> =
+        if (entry.kind !in HANDED_ON) {
+            emptyList()
+        } else {
+            when (val to = entry.details["to"]) {
+                is String -> listOf(UUID.fromString(to))
+                is List<*> -> to.filterIsInstance<String>().map(UUID::fromString)
+                else -> emptyList()
+            }
+        }
+
     private fun currentUser(): UUID =
         (ActorContext.current().actor as? Actor.User)?.userId ?: throw IllegalStateException("the inbox needs a signed-in user")
 
     private companion object {
         const val MAX_LIMIT = 100
+        val HANDED_ON = setOf(ActionKind.FORWARD, ActionKind.DELEGATE, ActionKind.ASK, ActionKind.REFER)
+
+        /** Details the history shows otherwise (the step by name) or that only the engine needs. */
+        val INTERNAL = setOf("step", "toStep", "toStepId")
     }
 }

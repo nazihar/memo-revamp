@@ -24,7 +24,7 @@ import java.time.ZoneOffset
  * - SIGN_IN_ALERT: name, organisation, device, time
  * - ROLE_GRANTED: name, organisation, role
  * - TEST: name, organisation
- * - TASK_ASSIGNED, MEMO_RETURNED, MEMO_REJECTED, MEMO_APPROVED, TASK_REASSIGNED, TASK_BLOCKED, MEMO_WITHDRAWN: name,
+ * - TASK_ASSIGNED, MEMO_RETURNED, MEMO_REJECTED, MEMO_APPROVED, TASK_REASSIGNED, TASK_BLOCKED, MEMO_WITHDRAWN, MEMO_UPDATE: name,
  *   organisation, reference, link (never the memo's subject or a remark, design E01 §12)
  */
 enum class MailTemplate {
@@ -42,6 +42,7 @@ enum class MailTemplate {
     TASK_REASSIGNED,
     TASK_BLOCKED,
     MEMO_WITHDRAWN,
+    MEMO_UPDATE,
 }
 
 /**

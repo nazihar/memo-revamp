@@ -902,6 +902,10 @@
           "actor" : {
             "$ref" : "#/components/schemas/Named"
           },
+          "details" : {
+            "additionalProperties" : { },
+            "type" : "object"
+          },
           "documentNumber" : {
             "format" : "int32",
             "type" : [ "integer", "null" ]
@@ -923,9 +927,18 @@
           },
           "sha256" : {
             "type" : [ "string", "null" ]
+          },
+          "step" : {
+            "type" : [ "string", "null" ]
+          },
+          "to" : {
+            "items" : {
+              "$ref" : "#/components/schemas/Named"
+            },
+            "type" : "array"
           }
         },
-        "required" : [ "actor", "kind", "occurredAt", "seq" ],
+        "required" : [ "actor", "details", "kind", "occurredAt", "seq", "to" ],
         "type" : "object"
       },
       "HistoryRound" : {

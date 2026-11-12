@@ -6,12 +6,15 @@ import com.memo.workflow.ActionKind
 import com.memo.workflow.TaskClosure
 import com.memo.workflow.WorkflowActionTaken
 import com.memo.workflow.WorkflowEscalatedToForum
+import com.memo.workflow.WorkflowInstanceEnded
 import com.memo.workflow.WorkflowNotifyRequested
+import com.memo.workflow.WorkflowStepCompleted
 import com.memo.workflow.WorkflowTaskClosed
 import com.memo.workflow.WorkflowTaskCreated
 import com.memo.workflow.engine.Effect
 import com.memo.workflow.engine.InstanceState
 import com.memo.workflow.engine.Outcome
+import com.memo.workflow.engine.StepState
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Component
 import java.util.UUID
@@ -118,6 +121,7 @@ class ActionEffects(
                     )
                 }
             }.forEach(events::publishEvent)
+        publishCompleted(instance, before, outcome, tenant)
         publishSteps(instance, outcome, tenant)
         val action = outcome.action
         events.publishEvent(
@@ -132,6 +136,42 @@ class ActionEffects(
                 outcome.state.status,
             ),
         )
+        // Last, so listeners of the end see the subject already updated from the action.
+        outcome.effects.filterIsInstance<Effect.InstanceEnded>().forEach {
+            events.publishEvent(WorkflowInstanceEnded(tenant, instance.id, instance.subjectType, instance.subjectId, it.status))
+        }
+    }
+
+    /** Steps that hold tasks and became done in this action (design E03 §1). */
+    private fun publishCompleted(
+        instance: LoadedInstance,
+        before: InstanceState?,
+        outcome: Outcome,
+        tenant: UUID,
+    ) {
+        val done =
+            before
+                ?.round
+                ?.steps
+                .orEmpty()
+                .filter { it.state == StepState.DONE }
+                .map { it.id }
+                .toSet()
+        outcome.state.round.steps
+            .filter { it.state == StepState.DONE && it.id !in done }
+            .forEach {
+                events.publishEvent(
+                    WorkflowStepCompleted(
+                        tenant,
+                        instance.id,
+                        instance.subjectType,
+                        instance.subjectId,
+                        it.id,
+                        it.nodeId,
+                        outcome.state.round.number,
+                    ),
+                )
+            }
     }
 
     /** The events of notify and escalate-to-forum steps the action passed (design E03 §1). */

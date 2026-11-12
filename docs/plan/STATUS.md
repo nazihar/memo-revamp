@@ -43,7 +43,8 @@
 - [x] E03 T8 in-flight migration (stacked PR)
 - [x] E03 T9 events and history (stacked PR)
 - [x] E03 T10 web (stacked PR)
-- [ ] E03 T11 close
+- [x] E03 T11 close: demo "Credit facility" workflow and FIXED memo type, E2E journey (opinion, recommend, send back, approve) green locally, ASVS rows, runbook `workflow-definitions.md`, epic log
+- [ ] E03 merged (stacked PRs #41–#51, in order) and on dev
 
 ## State (Phase 1a, closed)
 - [x] Overview approved (2026-10-18), Q1–Q8 answered, per-epic gate delegated
@@ -54,7 +55,8 @@
 - [ ] Owner demo, moderated usability walkthrough, manual keyboard and screen-reader pass (carried)
 
 ## Next step
-1. Agent: E03 implementation, slice by slice (T1 definition model and T2 conditions first), each slice its own PR.
+1. Owner: merge E03 in order (#41 → #51); agent then deploys and checks it on dev.
+1. Agent: E04 plan, then implementation.
 2. Owner: the D1 demo on dev (`phase-2-workflow-engine/epic-01-first-slice/demo.md`).
 3. Before 2026-11-22: take the rebuilt distroless digest from Renovate and delete the zlib entries in `.trivyignore`.
 4. Follow-ups (retrospective "Carried"): `AuditPerformanceIT`, `NotificationPerformanceIT`, the full-signature ClamAV corpus nightly, sample bodies for the remaining mutating matrix cells, upstream clean-ups (`apk upgrade` lines, Spring Session licence exceptions, Guava pin), Spring Boot 4.2 GA.

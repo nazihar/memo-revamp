@@ -10,10 +10,12 @@ import com.memo.memo.internal.MemoFields
 import com.memo.memo.internal.MemoListStore
 import com.memo.memo.internal.MemoReviews
 import com.memo.memo.internal.MemoRoutes
+import com.memo.memo.internal.MemoTypeFields
 import com.memo.memo.internal.MemoTypeStore
 import com.memo.memo.internal.MemoTypes
 import com.memo.memo.internal.MemoWorkflowSubject
 import com.memo.memo.internal.Memos
+import com.memo.memo.internal.RoutePolicy
 import com.memo.workflow.WorkflowQueries
 import com.memo.workflow.Workflows
 import org.springframework.stereotype.Service
@@ -107,6 +109,18 @@ class MemoSeeding(
                 RETURN -> workflows.returnToInitiator(task, remark)
                 REJECT -> workflows.reject(task, remark)
                 else -> throw IllegalArgumentException("unknown action $action")
+            }
+        }
+    }
+
+    /** A memo type called [name] whose workflow [definitionKey] names every step (`FIXED`), unless the tenant has one. */
+    fun fixedType(
+        name: String,
+        definitionKey: String,
+    ) {
+        tx {
+            if (types.all().none { it.name == name }) {
+                types.create(MemoTypeFields(name, null, stepUpOnApprove = true, active = true, definitionKey, RoutePolicy.FIXED))
             }
         }
     }

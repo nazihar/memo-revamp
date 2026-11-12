@@ -7,6 +7,7 @@ import com.memo.common.tenant.TenantContext
 import com.memo.common.tenant.TenantTransactions
 import com.memo.identity.UserAccounts
 import com.memo.memo.MemoSeeding
+import com.memo.workflow.DoaSeedGroup
 import com.memo.workflow.WorkflowSeeding
 import org.slf4j.LoggerFactory
 import org.springframework.boot.ApplicationArguments
@@ -36,12 +37,50 @@ class DemoWorkflowSeeder(
     fun seed() {
         val ids = ActorContext.asSystem("demo-workflows") { transactions.inTenant(DemoTenant.ID) { people() } }
         val author = ids.getValue(ADMIN)
-        if (asUser(author) { workflows.exists(KEY) }) return
-        asUser(author) { workflows.submit(KEY, NAME, definition(ids)) }
-        asUser(ids.getValue(REVIEWER)) { workflows.approve(KEY) }
-        asUser(author) { memos.fixedType(NAME, KEY) }
-        log.info("Demo workflow seeded")
+        if (!asUser(author) { workflows.exists(KEY) }) {
+            asUser(author) { workflows.submit(KEY, NAME, definition(ids)) }
+            asUser(ids.getValue(REVIEWER)) { workflows.approve(KEY) }
+            asUser(author) { memos.fixedType(NAME, KEY) }
+            log.info("Demo workflow seeded")
+        }
+        seedAuthority(ids)
     }
+
+    /**
+     * E04 T10: "Credit under authority": the credit desk (a queue of the head of credit and the director; one claims,
+     * the first decision completes it), then the delegation of authority (the managing director, then the chief
+     * financial officer, by their positions), and the author is told. The DoA is maker-checked like the definition.
+     */
+    private fun seedAuthority(ids: Map<String, UUID>) {
+        val author = ids.getValue(ADMIN)
+        val reviewer = ids.getValue(REVIEWER)
+        if (asUser(author) { workflows.exists(AUTHORITY_KEY) }) return
+        asUser(author) { workflows.queue(DESK, "Credit desk", listOf(ids.getValue(HEAD_CREDIT), ids.getValue(DIRECTOR))) }
+        asUser(author) { workflows.submit(AUTHORITY_KEY, AUTHORITY_NAME, authority()) }
+        asUser(reviewer) { workflows.approve(AUTHORITY_KEY) }
+        if (!asUser(author) { workflows.doaSeeded() }) {
+            val groups =
+                listOf(
+                    DoaSeedGroup(1, listOf(DemoOrg.unitByCode("CEO").headPosition)),
+                    DoaSeedGroup(1, listOf(DemoOrg.unitByCode("FIN").headPosition)),
+                )
+            val number = asUser(author) { workflows.submitDoa("memo", "Credit memos", groups) }
+            asUser(reviewer) { workflows.approveDoa(number) }
+        }
+        asUser(author) { memos.fixedType(AUTHORITY_NAME, AUTHORITY_KEY) }
+        log.info("Demo delegation of authority seeded")
+    }
+
+    private fun authority(): String =
+        """
+        {"schemaVersion":2,"start":"desk","steps":[
+          {"id":"desk","type":"review","name":"Credit desk","assignee":{"kind":"queue","queue":"$DESK"},
+           "actions":["RECOMMEND","RETURN"],"next":"authority"},
+          {"id":"authority","type":"doa","name":"Delegation of authority","next":"tell"},
+          {"id":"tell","type":"notify","name":"Tell the author","recipients":[{"kind":"initiator"}],
+           "message":"creditDecided","next":"end"}
+        ]}
+        """.trimIndent()
 
     private fun definition(ids: Map<String, UUID>): String {
         fun person(email: String) = """{"kind":"person","userId":"${ids.getValue(email)}"}"""
@@ -73,6 +112,9 @@ class DemoWorkflowSeeder(
 
     companion object {
         const val KEY = "credit-facility"
+        const val AUTHORITY_KEY = "credit-authority"
+        const val AUTHORITY_NAME = "Credit under authority"
+        const val DESK = "credit-desk"
         const val NAME = "Credit facility"
         const val ADMIN = "admin@demo.example"
         const val REVIEWER = "orgadmin@demo.example"

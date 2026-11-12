@@ -115,6 +115,10 @@ object DemoOrg {
             "branchadmin@demo.example" to unitByCode("REG-N").headPosition,
             "auditor@demo.example" to unitByCode("AUD").headPosition,
             "user@demo.example" to POSITIONS.first { it.title == "Credit Officer" }.id,
+            // The demo approvers hold the seats the delegation of authority names (E04 T10).
+            "head.credit@demo.example" to unitByCode("CRD").headPosition,
+            "head.finance@demo.example" to unitByCode("FIN").headPosition,
+            "director@demo.example" to unitByCode("CEO").headPosition,
         )
 
     /** Named staff without sign-in (INVITED), for the tree and the people picker. */

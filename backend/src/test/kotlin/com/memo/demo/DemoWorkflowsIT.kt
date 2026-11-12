@@ -18,12 +18,17 @@ import com.memo.testsupport.IntegrationTest
 import com.memo.testsupport.aPassword
 import com.memo.workflow.WorkflowDefinitions
 import com.memo.workflow.WorkflowSeeding
+import com.memo.workflow.internal.DoaLifecycle
+import com.memo.workflow.internal.Queues
+import com.memo.workflow.internal.VersionState
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.env.Environment
 
-/** The demo workflow (test plan E03 T11): published through maker-checker, chosen by a FIXED memo type, seeded once. */
+/**
+ * The demo workflows (test plan E03 T11, E04 T10): published through maker-checker, chosen by FIXED memo types, with the
+ * credit desk queue and a published DoA, seeded once. */
 class DemoWorkflowsIT : IntegrationTest() {
     @Autowired lateinit var registry: TenantRegistry
 
@@ -50,6 +55,10 @@ class DemoWorkflowsIT : IntegrationTest() {
     @Autowired lateinit var definitions: WorkflowDefinitions
 
     @Autowired lateinit var types: MemoTypes
+
+    @Autowired lateinit var doa: DoaLifecycle
+
+    @Autowired lateinit var queues: Queues
 
     @Test
     fun `the credit facility workflow is published and chosen by its memo type, once`() {
@@ -79,6 +88,11 @@ class DemoWorkflowsIT : IntegrationTest() {
                     val typed = types.all().filter { it.name == DemoWorkflowSeeder.NAME }
                     assertThat(typed).hasSize(1)
                     assertThat(typed.single().definitionKey).isEqualTo(DemoWorkflowSeeder.KEY)
+                    // E04 T10: the credit desk queue, the authority definition and a published DoA, once.
+                    assertThat(definitions.choice(DemoWorkflowSeeder.AUTHORITY_KEY)?.routed).isFalse()
+                    assertThat(types.all().filter { it.name == DemoWorkflowSeeder.AUTHORITY_NAME }).hasSize(1)
+                    assertThat(doa.list().map { it.state }).containsExactly(VersionState.PUBLISHED)
+                    assertThat(queues.find(DemoWorkflowSeeder.DESK)?.members).hasSize(2)
                 }
             }
         }

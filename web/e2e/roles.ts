@@ -8,7 +8,8 @@ import { fileURLToPath } from 'node:url'
  * administrator, a branch administrator scoped to North Region, and the auditor; later phases add initiator, approver,
  * secretary and director.
  */
-export type SignedInRole = 'tenantAdmin' | 'orgAdmin' | 'branchAdmin' | 'auditor' | 'user' | 'headCredit' | 'director'
+export type SignedInRole =
+  'tenantAdmin' | 'orgAdmin' | 'branchAdmin' | 'auditor' | 'user' | 'headCredit' | 'director' | 'headFinance'
 export type Role = 'anonymous' | SignedInRole
 
 export function authFile(role: SignedInRole): string {

@@ -7855,6 +7855,122 @@
       "value": "‬"
     }
   ],
+  "memoTypes.allowed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɥo ɯɐʎ ɐddɹoʌǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memoTypes.allowed.add": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memoTypes.allowed.anyone": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀uʎouǝ. ∀pp dǝodʅǝ, dosıʇıous oɹ ɹoʅǝs ʇo ʅıɯıʇ ıʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memoTypes.allowed.kind": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp ɐ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memoTypes.allowed.person": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁǝɹsou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memoTypes.allowed.position": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁosıʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memoTypes.allowed.remove": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯoʌǝ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memoTypes.allowed.role": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚoʅǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "memoTypes.caption": [
     {
       "type": 0,
@@ -7933,6 +8049,20 @@
     {
       "type": 0,
       "value": "Moɹʞɟʅoʍ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memoTypes.doaCheck": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɹonʇǝ ɯnsʇ ƃıʌǝ ʇɥǝ pǝʅǝƃɐʇıou oɟ ɐnʇɥoɹıʇʎ ıʇs ɐddɹoʌɐʅs qǝɟoɹǝ ʇɥǝ ɯǝɯo ɔɐu qǝ snqɯıʇʇǝp"
     },
     {
       "type": 0,
@@ -8195,6 +8325,20 @@
       "value": "‬"
     }
   ],
+  "nav.doa": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝʅǝƃɐʇıou oɟ ɐnʇɥoɹıʇʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "nav.email": [
     {
       "type": 0,
@@ -8419,6 +8563,20 @@
       "value": "‬"
     }
   ],
+  "nav.queues": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ònǝnǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "nav.roles": [
     {
       "type": 0,
@@ -8455,6 +8613,20 @@
     {
       "type": 0,
       "value": "Sʇɐʇns"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "nav.substitutions": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Snqsʇıʇnʇıous"
     },
     {
       "type": 0,
@@ -15761,6 +15933,1184 @@
       "value": "‬"
     }
   ],
+  "workflows.doa.addRule": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp ɹnʅǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.approve": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ddɹoʌǝ ɐup dnqʅısɥ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.caption": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ʌǝɹsıous, uǝʍǝsʇ ɟıɹsʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.col.actions": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔʇıous"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.col.effective": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɐʞǝs ǝɟɟǝɔʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.col.reviewed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝʌıǝʍǝp qʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.col.state": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sʇɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.col.submitted": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Snqɯıʇʇǝp qʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.col.version": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ʌǝɹsıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.conflict": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Soɯǝouǝ ɔɥɐuƃǝp ʇɥıs ʌǝɹsıou ɯǝɐuʍɥıʅǝ. Iʇ ɥɐs qǝǝu ɹǝʅoɐpǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.done": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡouǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.effectiveFrom": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɐʞǝs ǝɟɟǝɔʇ ou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.effectiveFrom.hint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥opɐʎ oɹ ʅɐʇǝɹ. Wǝɯos sʇɐɹʇǝp qǝɟoɹǝ ʇɥǝu ʞǝǝd ʇɥǝ ʌǝɹsıou ıu ɟoɹɔǝ ɐʇ ʇɥǝıɹ sʇɐɹʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.empty": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No ʌǝɹsıous ʎǝʇ. Sʇɐɹʇ ɐ pɹɐɟʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.failed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥɐʇ pıp uoʇ ʍoɹʞ. ⊥ɹʎ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.group.addMember": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp ɯǝɯqǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.group.memberKind": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp ɐ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.group.needed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ddɹoʌɐʅs uǝǝpǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.group.noMembers": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No ɯǝɯqǝɹs ʎǝʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.group.position": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁosıʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.group.remove": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯoʌǝ ƃɹond"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.group.role": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚoʅǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.group.role.hint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iʇs ɥoʅpǝɹs ıu ʇɥǝ ıuıʇıɐʇoɹ’s nuıʇ oɹ ɐqoʌǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.groupNumber": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅁ɹond "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.invalid": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ʌǝɹsıou ɥɐs dɹoqʅǝɯs:"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚnʅǝs sɐʎ ʍɥo ɯnsʇ ɐddɹoʌǝ ʍɥıɔɥ ɯǝɯos, ƃɹond qʎ ƃɹond. ∀ uǝʍ ʌǝɹsıou ʇɐʞǝs ǝɟɟǝɔʇ ou ıʇs pɐʇǝ ouɔǝ soɯǝouǝ oʇɥǝɹ ʇɥɐu ıʇs ɐnʇɥoɹ ɐddɹoʌǝs ıʇ; ɯǝɯos ʞǝǝd ʇɥǝ ʌǝɹsıou ıu ɟoɹɔǝ ʍɥǝu ʇɥǝʎ sʇɐɹʇǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.moveDown": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Woʌǝ "
+    },
+    {
+      "type": 1,
+      "value": "rule"
+    },
+    {
+      "type": 0,
+      "value": " poʍu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.moveUp": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Woʌǝ "
+    },
+    {
+      "type": 1,
+      "value": "rule"
+    },
+    {
+      "type": 0,
+      "value": " nd"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.newDraft": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nǝʍ pɹɐɟʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.noRules": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No ɹnʅǝs ʎǝʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.notSet": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noʇ sǝʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.open": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Odǝu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.openVersion": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Odǝu ʌǝɹsıou "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.refused.dateTaken": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀uoʇɥǝɹ ʌǝɹsıou ʇɐʞǝs ǝɟɟǝɔʇ ou ʇɥɐʇ pɐʇǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.refused.draftExists": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝɹǝ ıs ɐʅɹǝɐpʎ ɐ pɹɐɟʇ oɹ ɐ ʌǝɹsıou ıu ɹǝʌıǝʍ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.refused.samePerson": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Soɯǝouǝ oʇɥǝɹ ʇɥɐu ʇɥǝ snqɯıʇʇǝɹ ɥɐs ʇo ɹǝʌıǝʍ ıʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.refused.wrongState": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ʌǝɹsıou ɥɐs ɯoʌǝp ou ɯǝɐuʍɥıʅǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.remark": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯɐɹʞ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.remark.hint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝbnıɹǝp ʇo sǝup qɐɔʞ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.removeMember": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯoʌǝ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.removeRuleNamed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯoʌǝ "
+    },
+    {
+      "type": 1,
+      "value": "rule"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.reviewRemarkText": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝʌıǝʍǝɹ’s ɹǝɯɐɹʞ: "
+    },
+    {
+      "type": 1,
+      "value": "remark"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.roleIn": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "role"
+    },
+    {
+      "type": 0,
+      "value": " (ıuıʇıɐʇoɹ’s nuıʇ oɹ ɐqoʌǝ)"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.rule.addGroup": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp ƃɹond"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.rule.anyMemoType": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀uʎ ɯǝɯo ʇʎdǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.rule.anyUnit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀uʎ nuıʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.rule.condition": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄoupıʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.rule.condition.hint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎoɹ ǝxɐɯdʅǝ ıʇǝɯ.ɔʅɐssıɟıɔɐʇıouᴚɐuʞ >= 2. ⅂ǝɐʌǝ ǝɯdʇʎ ɟoɹ ǝʌǝɹʎ ɯǝɯo."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.rule.groups": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ddɹoʌɐʅ ƃɹonds, ıu oɹpǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.rule.memoType": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo ʇʎdǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.rule.name": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nɐɯǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.rule.subtree": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iuɔʅnpǝ ʇɥǝ nuıʇs qǝʅoʍ ıʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.rule.unit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iuıʇıɐʇoɹ’s nuıʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.ruleNumber": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚnʅǝ "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.ruleTitle": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚnʅǝ "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.rules": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚnʅǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.rules.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɟıɹsʇ ɹnʅǝ ʇɥɐʇ ɟıʇs ɐ ɯǝɯo ɐddʅıǝs. Oɹpǝɹ ʇɥǝɯ ɟɹoɯ ʇɥǝ ɯosʇ sdǝɔıɟıɔ ʇo ʇɥǝ ɯosʇ ƃǝuǝɹɐʅ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.save": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sɐʌǝ pɹɐɟʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.sendBack": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝup qɐɔʞ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.sim.chooseInitiator": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥoosǝ ʇɥǝ ıuıʇıɐʇoɹ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.sim.inForce": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ouǝ ıu ɟoɹɔǝ ʇopɐʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.sim.initiator": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iuıʇıɐʇoɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.sim.needs": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "needed",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɐddɹoʌɐʅ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɐddɹoʌɐʅs"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " ɟɹoɯ: "
+    },
+    {
+      "type": 1,
+      "value": "names"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.sim.noDoa": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No ʌǝɹsıou ıs ıu ɟoɹɔǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.sim.noRule": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No ɹnʅǝ ɐddʅıǝs ʇo snɔɥ ɐ ɯǝɯo."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.sim.nobody": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noqopʎ ɥoʅps ʇɥǝsǝ uoʍ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.sim.rank": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄʅɐssıɟıɔɐʇıou ɹɐuʞ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.sim.result": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ʌǝɹsıou "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": ", ɹnʅǝ “"
+    },
+    {
+      "type": 1,
+      "value": "rule"
+    },
+    {
+      "type": 0,
+      "value": "”"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.sim.run": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sıɯnʅɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.sim.version": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ʌǝɹsıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.simulator": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɥo ɐddɹoʌǝs ʇɥıs?"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.simulator.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɹʎ ɐ ɯǝɯo ɐƃɐıusʇ ɐ ʌǝɹsıou: ʍɥo ʍonʅp ɥɐʌǝ ʇo ɐddɹoʌǝ ıʇ, ƃɹond qʎ ƃɹond, ʇopɐʎ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.submit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Snqɯıʇ ɟoɹ ɹǝʌıǝʍ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝʅǝƃɐʇıou oɟ ɐnʇɥoɹıʇʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.unitSubtree": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "unit"
+    },
+    {
+      "type": 0,
+      "value": ", ʍıʇɥ ʇɥǝ nuıʇs qǝʅoʍ ıʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.doa.versionNumber": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ʌǝɹsıou "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "workflows.done": [
     {
       "type": 0,
@@ -16113,6 +17463,406 @@
       "value": "‬"
     }
   ],
+  "workflows.queues.add": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp bnǝnǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.queues.addMember": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp ɯǝɯqǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.queues.cancel": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɐuɔǝʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.queues.caption": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Moɹʞɟʅoʍ bnǝnǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.queues.col.actions": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔʇıous"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.queues.col.key": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ӽǝʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.queues.col.members": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯqǝɹs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.queues.col.name": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nɐɯǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.queues.conflict": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Soɯǝouǝ ɔɥɐuƃǝp ʇɥıs bnǝnǝ ɯǝɐuʍɥıʅǝ. Odǝu ıʇ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.queues.done": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sɐʌǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.queues.edit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝpıʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.queues.editName": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝpıʇ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.queues.empty": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No bnǝnǝs ʎǝʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.queues.failed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥɐʇ pıp uoʇ ʍoɹʞ. ⊥ɹʎ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.queues.key": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ӽǝʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.queues.key.hint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɟıuıʇıous uɐɯǝ ʇɥǝ bnǝnǝ qʎ ıʇs ʞǝʎ: ʅoʍǝɹ ɔɐsǝ ʅǝʇʇǝɹs, pıƃıʇs ɐup pɐsɥǝs. Iʇ ɔɐuuoʇ ɔɥɐuƃǝ ʅɐʇǝɹ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.queues.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ ʍoɹʞɟʅoʍ sʇǝd ɔɐu ƃo ʇo ɐ bnǝnǝ: ǝʌǝɹʎ ɯǝɯqǝɹ ƃǝʇs ʇɥǝ ʇɐsʞ, ouǝ ɔʅɐıɯs ıʇ, ɐup ʇɥǝ ɟıɹsʇ pǝɔısıou ɔoɯdʅǝʇǝs ıʇ. Wǝɯqǝɹs ɐɹǝ dǝodʅǝ, oɹ ʍɥoǝʌǝɹ ɥoʅps ɐ dosıʇıou."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.queues.member": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯqǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.queues.memberKind": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp ɐ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.queues.name": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nɐɯǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.queues.noMembers": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No ɯǝɯqǝɹs ʎǝʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.queues.person": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁǝɹsou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.queues.position": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁosıʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.queues.refused.keyTaken": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ bnǝnǝ ʍıʇɥ ʇɥıs ʞǝʎ ǝxısʇs."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.queues.remove": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯoʌǝ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.queues.required": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ ʞǝʎ ɐup ɐ uɐɯǝ ɐɹǝ ɹǝbnıɹǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.queues.save": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sɐʌǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.queues.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ònǝnǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "workflows.reason.notOlder": [
     {
       "type": 0,
@@ -16443,6 +18193,500 @@
     {
       "type": 0,
       "value": "ᴚǝʇıɹǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.add": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp snqsʇıʇnʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.apply": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Woʌǝ odǝu ʇɐsʞs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.cancel": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɐuɔǝʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.caption": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Snqsʇıʇnʇıous, uǝʍǝsʇ ɟıɹsʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.col.actions": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔʇıous"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.col.dates": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡɐʇǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.col.person": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁǝɹsou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.col.reason": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɐsou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.col.substitute": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Snqsʇıʇnʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.dates": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "from"
+    },
+    {
+      "type": 0,
+      "value": " ʇo "
+    },
+    {
+      "type": 1,
+      "value": "to"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.done": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡouǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.empty": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No snqsʇıʇnʇıous ʎǝʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.end": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝup ʇopɐʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.ended": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝupǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.failed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥɐʇ pıp uoʇ ʍoɹʞ. ⊥ɹʎ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.from": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎɹoɯ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.inForce": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iu ɟoɹɔǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɥıʅǝ ɐ snqsʇıʇnʇıou ıs ıu ɟoɹɔǝ, uǝʍ ʇɐsʞs ɟoɹ ʇɥǝ dǝɹsou ƃo ʇo ʇɥǝıɹ snqsʇıʇnʇǝ, ʍɥo ɐɔʇs ɟoɹ ʇɥǝɯ. Nǝʌǝɹ ou ɐ ɯǝɯo ʇɥǝ snqsʇıʇnʇǝ ʍɹoʇǝ oɹ ɥɐs ɐu ıuʇǝɹǝsʇ ıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.moved": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "No odǝu ʇɐsʞs ɯoʌǝp."
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " odǝu ʇɐsʞ ɯoʌǝp."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " odǝu ʇɐsʞs ɯoʌǝp."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.openEnded": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎɹoɯ "
+    },
+    {
+      "type": 1,
+      "value": "from"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.person": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁǝɹsou ɐʍɐʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.planned": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁʅɐuuǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.reason": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɐsou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.refused.ended": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥıs snqsʇıʇnʇıou ɥɐs ǝupǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.refused.notInForce": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥıs snqsʇıʇnʇıou ıs uoʇ ıu ɟoɹɔǝ ʇopɐʎ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.refused.overlap": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥıs dǝɹsou ɐʅɹǝɐpʎ ɥɐs ɐ snqsʇıʇnʇǝ ɟoɹ soɯǝ oɟ ʇɥǝsǝ pɐʇǝs."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.required": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥoosǝ qoʇɥ dǝodʅǝ ɐup ɐ sʇɐɹʇ pɐʇǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.save": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sɐʌǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.substitute": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Snqsʇıʇnʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Snqsʇıʇnʇıous"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.to": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩uʇıʅ (uoʇ ıuɔʅnpǝp)"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.substitutions.to.hint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅂ǝɐʌǝ ǝɯdʇʎ nuʇıʅ soɯǝouǝ ǝups ıʇ."
     },
     {
       "type": 0,

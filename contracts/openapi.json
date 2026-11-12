@@ -891,6 +891,12 @@
             "format" : "int32",
             "type" : "integer"
           },
+          "positions" : {
+            "additionalProperties" : {
+              "type" : "string"
+            },
+            "type" : "object"
+          },
           "publishedAt" : {
             "format" : "date-time",
             "type" : [ "string", "null" ]
@@ -935,7 +941,7 @@
             } ]
           }
         },
-        "required" : [ "number", "revision", "state" ],
+        "required" : [ "number", "positions", "revision", "state" ],
         "type" : "object"
       },
       "DocumentView" : {
@@ -1669,6 +1675,12 @@
           "allowedApprovers" : {
             "$ref" : "#/components/schemas/AllowedApprovers"
           },
+          "allowedNames" : {
+            "additionalProperties" : {
+              "type" : "string"
+            },
+            "type" : "object"
+          },
           "defaultClassificationId" : {
             "format" : "uuid",
             "type" : [ "string", "null" ]
@@ -1701,7 +1713,7 @@
             "type" : "integer"
           }
         },
-        "required" : [ "active", "allowedApprovers", "definitionKey", "doaCheck", "id", "name", "routePolicy", "stepUpOnApprove", "version" ],
+        "required" : [ "active", "allowedApprovers", "allowedNames", "definitionKey", "doaCheck", "id", "name", "routePolicy", "stepUpOnApprove", "version" ],
         "type" : "object"
       },
       "MemoTypeOption" : {

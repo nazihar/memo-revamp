@@ -9,6 +9,8 @@ import com.memo.common.tenant.TenantContext
 import com.memo.common.tenant.TenantTransactions
 import com.memo.common.web.etagOf
 import com.memo.common.web.ifMatchVersion
+import com.memo.identity.UserSummaries
+import com.memo.org.OrgDirectory
 import com.memo.system.Idempotency
 import com.memo.workflow.DefinitionChoice
 import com.memo.workflow.RouteEntry
@@ -271,6 +273,8 @@ data class MemoTypeRequest(
 class AdminMemoTypesController(
     private val types: MemoTypes,
     private val definitions: WorkflowDefinitions,
+    private val users: UserSummaries,
+    private val directory: OrgDirectory,
     private val idempotency: Idempotency,
     private val transactions: TenantTransactions,
     private val json: JsonMapper,
@@ -282,7 +286,7 @@ class AdminMemoTypesController(
         ResponseEntity
             .ok()
             .cacheControl(CacheControl.noStore())
-            .body(transactions.readInTenant(TenantContext.current()) { types.all() })
+            .body(transactions.readInTenant(TenantContext.current()) { named(types.all()) })
 
     @GetMapping("/definitions")
     @RequiresPermission(Permission.MEMO_TYPES_MANAGE)
@@ -321,6 +325,16 @@ class AdminMemoTypesController(
         val version = ifMatchVersion(ifMatch)
         val type = transactions.inTenant(TenantContext.current()) { types.update(id, version, body.fields(types.get(id))) }
         return ResponseEntity.ok().eTag(etagOf(type.version)).body(type)
+    }
+
+    /** The types with the names of their allowed people and the titles of their allowed positions. */
+    private fun named(all: List<MemoType>): List<MemoType> {
+        val people = users.of(all.flatMap { it.allowedApprovers.people }.toSet()).mapValues { it.value.displayName }
+        val positions = directory.positions(all.flatMap { it.allowedApprovers.positions }.toSet()).mapValues { it.value.title }
+        return all.map { type ->
+            val allowed = type.allowedApprovers
+            type.copy(allowedNames = (people.filterKeys { it in allowed.people } + positions.filterKeys { it in allowed.positions }))
+        }
     }
 
     /** The fields as the request gives them; the definition and route policy default to [current]'s (or the built-in ones). */

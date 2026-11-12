@@ -3719,6 +3719,62 @@
       "value": "Add memo typeSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memoTypes.allowed": [
+    {
+      "type": 0,
+      "value": "Who may approveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.allowed.add": [
+    {
+      "type": 0,
+      "value": "AddSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.allowed.anyone": [
+    {
+      "type": 0,
+      "value": "Anyone. Add people, positions or roles to limit it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.allowed.kind": [
+    {
+      "type": 0,
+      "value": "Add aSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.allowed.person": [
+    {
+      "type": 0,
+      "value": "PersonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.allowed.position": [
+    {
+      "type": 0,
+      "value": "PositionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.allowed.remove": [
+    {
+      "type": 0,
+      "value": "Remove "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.allowed.role": [
+    {
+      "type": 0,
+      "value": "RoleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memoTypes.caption": [
     {
       "type": 0,
@@ -3753,6 +3809,12 @@
     {
       "type": 0,
       "value": "WorkflowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.doaCheck": [
+    {
+      "type": 0,
+      "value": "The route must give the delegation of authority its approvals before the memo can be submittedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memoTypes.edit": [
@@ -3871,6 +3933,12 @@
       "value": "ClassificationSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "nav.doa": [
+    {
+      "type": 0,
+      "value": "Delegation of authoritySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "nav.email": [
     {
       "type": 0,
@@ -3967,6 +4035,12 @@
       "value": "PositionSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "nav.queues": [
+    {
+      "type": 0,
+      "value": "QueuesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "nav.roles": [
     {
       "type": 0,
@@ -3983,6 +4057,12 @@
     {
       "type": 0,
       "value": "StatusSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.substitutions": [
+    {
+      "type": 0,
+      "value": "SubstitutionsSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "nav.user": [
@@ -7493,6 +7573,612 @@
       "value": "New workflowSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "workflows.doa.addRule": [
+    {
+      "type": 0,
+      "value": "Add ruleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.approve": [
+    {
+      "type": 0,
+      "value": "Approve and publishSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.caption": [
+    {
+      "type": 0,
+      "value": "Versions, newest firstSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.col.actions": [
+    {
+      "type": 0,
+      "value": "ActionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.col.effective": [
+    {
+      "type": 0,
+      "value": "Takes effectSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.col.reviewed": [
+    {
+      "type": 0,
+      "value": "Reviewed bySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.col.state": [
+    {
+      "type": 0,
+      "value": "StateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.col.submitted": [
+    {
+      "type": 0,
+      "value": "Submitted bySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.col.version": [
+    {
+      "type": 0,
+      "value": "VersionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.conflict": [
+    {
+      "type": 0,
+      "value": "Someone changed this version meanwhile. It has been reloaded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.done": [
+    {
+      "type": 0,
+      "value": "Done.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.effectiveFrom": [
+    {
+      "type": 0,
+      "value": "Takes effect onSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.effectiveFrom.hint": [
+    {
+      "type": 0,
+      "value": "Today or later. Memos started before then keep the version in force at their start.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.empty": [
+    {
+      "type": 0,
+      "value": "No versions yet. Start a draft.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.group.addMember": [
+    {
+      "type": 0,
+      "value": "Add memberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.group.memberKind": [
+    {
+      "type": 0,
+      "value": "Add aSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.group.needed": [
+    {
+      "type": 0,
+      "value": "Approvals neededSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.group.noMembers": [
+    {
+      "type": 0,
+      "value": "No members yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.group.position": [
+    {
+      "type": 0,
+      "value": "PositionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.group.remove": [
+    {
+      "type": 0,
+      "value": "Remove groupSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.group.role": [
+    {
+      "type": 0,
+      "value": "RoleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.group.role.hint": [
+    {
+      "type": 0,
+      "value": "Its holders in the initiator’s unit or above.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.groupNumber": [
+    {
+      "type": 0,
+      "value": "Group "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.invalid": [
+    {
+      "type": 0,
+      "value": "The version has problems:SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.lead": [
+    {
+      "type": 0,
+      "value": "Rules say who must approve which memos, group by group. A new version takes effect on its date once someone other than its author approves it; memos keep the version in force when they started.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.moveDown": [
+    {
+      "type": 0,
+      "value": "Move "
+    },
+    {
+      "type": 1,
+      "value": "rule"
+    },
+    {
+      "type": 0,
+      "value": " downSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.moveUp": [
+    {
+      "type": 0,
+      "value": "Move "
+    },
+    {
+      "type": 1,
+      "value": "rule"
+    },
+    {
+      "type": 0,
+      "value": " upSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.newDraft": [
+    {
+      "type": 0,
+      "value": "New draftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.noRules": [
+    {
+      "type": 0,
+      "value": "No rules yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.notSet": [
+    {
+      "type": 0,
+      "value": "Not setSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.open": [
+    {
+      "type": 0,
+      "value": "OpenSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.openVersion": [
+    {
+      "type": 0,
+      "value": "Open version "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.refused.dateTaken": [
+    {
+      "type": 0,
+      "value": "Another version takes effect on that date.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.refused.draftExists": [
+    {
+      "type": 0,
+      "value": "There is already a draft or a version in review.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.refused.samePerson": [
+    {
+      "type": 0,
+      "value": "Someone other than the submitter has to review it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.refused.wrongState": [
+    {
+      "type": 0,
+      "value": "The version has moved on meanwhile.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.remark": [
+    {
+      "type": 0,
+      "value": "RemarkSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.remark.hint": [
+    {
+      "type": 0,
+      "value": "Required to send back.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.removeMember": [
+    {
+      "type": 0,
+      "value": "Remove "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.removeRuleNamed": [
+    {
+      "type": 0,
+      "value": "Remove "
+    },
+    {
+      "type": 1,
+      "value": "rule"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.reviewRemarkText": [
+    {
+      "type": 0,
+      "value": "Reviewer’s remark: "
+    },
+    {
+      "type": 1,
+      "value": "remark"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.roleIn": [
+    {
+      "type": 1,
+      "value": "role"
+    },
+    {
+      "type": 0,
+      "value": " (initiator’s unit or above)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.rule.addGroup": [
+    {
+      "type": 0,
+      "value": "Add groupSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.rule.anyMemoType": [
+    {
+      "type": 0,
+      "value": "Any memo typeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.rule.anyUnit": [
+    {
+      "type": 0,
+      "value": "Any unitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.rule.condition": [
+    {
+      "type": 0,
+      "value": "ConditionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.rule.condition.hint": [
+    {
+      "type": 0,
+      "value": "For example item.classificationRank >= 2. Leave empty for every memo.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.rule.groups": [
+    {
+      "type": 0,
+      "value": "Approval groups, in orderSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.rule.memoType": [
+    {
+      "type": 0,
+      "value": "Memo typeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.rule.name": [
+    {
+      "type": 0,
+      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.rule.subtree": [
+    {
+      "type": 0,
+      "value": "Include the units below itSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.rule.unit": [
+    {
+      "type": 0,
+      "value": "Initiator’s unitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.ruleNumber": [
+    {
+      "type": 0,
+      "value": "Rule "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.ruleTitle": [
+    {
+      "type": 0,
+      "value": "Rule "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.rules": [
+    {
+      "type": 0,
+      "value": "RulesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.rules.lead": [
+    {
+      "type": 0,
+      "value": "The first rule that fits a memo applies. Order them from the most specific to the most general.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.save": [
+    {
+      "type": 0,
+      "value": "Save draftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.sendBack": [
+    {
+      "type": 0,
+      "value": "Send backSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.sim.chooseInitiator": [
+    {
+      "type": 0,
+      "value": "Choose the initiator.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.sim.inForce": [
+    {
+      "type": 0,
+      "value": "The one in force todaySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.sim.initiator": [
+    {
+      "type": 0,
+      "value": "InitiatorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.sim.needs": [
+    {
+      "type": 6,
+      "value": "needed",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " approval"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " approvals"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " from: "
+    },
+    {
+      "type": 1,
+      "value": "names"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.sim.noDoa": [
+    {
+      "type": 0,
+      "value": "No version is in force.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.sim.noRule": [
+    {
+      "type": 0,
+      "value": "No rule applies to such a memo.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.sim.nobody": [
+    {
+      "type": 0,
+      "value": "Nobody holds these now.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.sim.rank": [
+    {
+      "type": 0,
+      "value": "Classification rankSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.sim.result": [
+    {
+      "type": 0,
+      "value": "Version "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": ", rule “"
+    },
+    {
+      "type": 1,
+      "value": "rule"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.sim.run": [
+    {
+      "type": 0,
+      "value": "SimulateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.sim.version": [
+    {
+      "type": 0,
+      "value": "VersionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.simulator": [
+    {
+      "type": 0,
+      "value": "Who approves this?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.simulator.lead": [
+    {
+      "type": 0,
+      "value": "Try a memo against a version: who would have to approve it, group by group, today.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.submit": [
+    {
+      "type": 0,
+      "value": "Submit for reviewSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.title": [
+    {
+      "type": 0,
+      "value": "Delegation of authoritySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.unitSubtree": [
+    {
+      "type": 1,
+      "value": "unit"
+    },
+    {
+      "type": 0,
+      "value": ", with the units below itSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.doa.versionNumber": [
+    {
+      "type": 0,
+      "value": "Version "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "workflows.done": [
     {
       "type": 0,
@@ -7669,6 +8355,190 @@
       "value": "No problems found.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "workflows.queues.add": [
+    {
+      "type": 0,
+      "value": "Add queueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.queues.addMember": [
+    {
+      "type": 0,
+      "value": "Add memberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.queues.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.queues.caption": [
+    {
+      "type": 0,
+      "value": "Workflow queuesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.queues.col.actions": [
+    {
+      "type": 0,
+      "value": "ActionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.queues.col.key": [
+    {
+      "type": 0,
+      "value": "KeySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.queues.col.members": [
+    {
+      "type": 0,
+      "value": "MembersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.queues.col.name": [
+    {
+      "type": 0,
+      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.queues.conflict": [
+    {
+      "type": 0,
+      "value": "Someone changed this queue meanwhile. Open it again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.queues.done": [
+    {
+      "type": 0,
+      "value": "Saved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.queues.edit": [
+    {
+      "type": 0,
+      "value": "EditSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.queues.editName": [
+    {
+      "type": 0,
+      "value": "Edit "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.queues.empty": [
+    {
+      "type": 0,
+      "value": "No queues yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.queues.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.queues.key": [
+    {
+      "type": 0,
+      "value": "KeySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.queues.key.hint": [
+    {
+      "type": 0,
+      "value": "Definitions name the queue by its key: lower case letters, digits and dashes. It cannot change later.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.queues.lead": [
+    {
+      "type": 0,
+      "value": "A workflow step can go to a queue: every member gets the task, one claims it, and the first decision completes it. Members are people, or whoever holds a position.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.queues.member": [
+    {
+      "type": 0,
+      "value": "MemberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.queues.memberKind": [
+    {
+      "type": 0,
+      "value": "Add aSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.queues.name": [
+    {
+      "type": 0,
+      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.queues.noMembers": [
+    {
+      "type": 0,
+      "value": "No members yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.queues.person": [
+    {
+      "type": 0,
+      "value": "PersonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.queues.position": [
+    {
+      "type": 0,
+      "value": "PositionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.queues.refused.keyTaken": [
+    {
+      "type": 0,
+      "value": "A queue with this key exists.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.queues.remove": [
+    {
+      "type": 0,
+      "value": "Remove "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.queues.required": [
+    {
+      "type": 0,
+      "value": "A key and a name are required.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.queues.save": [
+    {
+      "type": 0,
+      "value": "SaveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.queues.title": [
+    {
+      "type": 0,
+      "value": "QueuesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "workflows.reason.notOlder": [
     {
       "type": 0,
@@ -7811,6 +8681,256 @@
     {
       "type": 0,
       "value": "RetiredSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.add": [
+    {
+      "type": 0,
+      "value": "Add substitutionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.apply": [
+    {
+      "type": 0,
+      "value": "Move open tasksSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.caption": [
+    {
+      "type": 0,
+      "value": "Substitutions, newest firstSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.col.actions": [
+    {
+      "type": 0,
+      "value": "ActionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.col.dates": [
+    {
+      "type": 0,
+      "value": "DatesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.col.person": [
+    {
+      "type": 0,
+      "value": "PersonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.col.reason": [
+    {
+      "type": 0,
+      "value": "ReasonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.col.substitute": [
+    {
+      "type": 0,
+      "value": "SubstituteSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.dates": [
+    {
+      "type": 1,
+      "value": "from"
+    },
+    {
+      "type": 0,
+      "value": " to "
+    },
+    {
+      "type": 1,
+      "value": "to"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.done": [
+    {
+      "type": 0,
+      "value": "Done.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.empty": [
+    {
+      "type": 0,
+      "value": "No substitutions yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.end": [
+    {
+      "type": 0,
+      "value": "End todaySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.ended": [
+    {
+      "type": 0,
+      "value": "EndedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.from": [
+    {
+      "type": 0,
+      "value": "FromSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.inForce": [
+    {
+      "type": 0,
+      "value": "In forceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.lead": [
+    {
+      "type": 0,
+      "value": "While a substitution is in force, new tasks for the person go to their substitute, who acts for them. Never on a memo the substitute wrote or has an interest in.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.moved": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "No open tasks moved."
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " open task moved."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " open tasks moved."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.openEnded": [
+    {
+      "type": 0,
+      "value": "From "
+    },
+    {
+      "type": 1,
+      "value": "from"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.person": [
+    {
+      "type": 0,
+      "value": "Person awaySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.planned": [
+    {
+      "type": 0,
+      "value": "PlannedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.reason": [
+    {
+      "type": 0,
+      "value": "ReasonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.refused.ended": [
+    {
+      "type": 0,
+      "value": "This substitution has ended.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.refused.notInForce": [
+    {
+      "type": 0,
+      "value": "This substitution is not in force today.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.refused.overlap": [
+    {
+      "type": 0,
+      "value": "This person already has a substitute for some of these dates.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.required": [
+    {
+      "type": 0,
+      "value": "Choose both people and a start date.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.save": [
+    {
+      "type": 0,
+      "value": "SaveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.substitute": [
+    {
+      "type": 0,
+      "value": "SubstituteSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.title": [
+    {
+      "type": 0,
+      "value": "SubstitutionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.to": [
+    {
+      "type": 0,
+      "value": "Until (not included)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.substitutions.to.hint": [
+    {
+      "type": 0,
+      "value": "Leave empty until someone ends it.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "workflows.title": [

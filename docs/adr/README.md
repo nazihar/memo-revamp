@@ -43,3 +43,4 @@ We use the MADR format (see [0001](0001-record-architecture-decisions.md)). Star
 | [0037](0037-onlyoffice-editing-integration.md) | In-browser editing through ONLYOFFICE behind an editor adapter | accepted | 2026-11-11 |
 | [0038](0038-workflow-definitions-versioning-and-migration.md) | Workflow definitions: JSON graph, schema, maker-checker lifecycle, pinning and admin migration | accepted | 2026-11-11 |
 | [0039](0039-condition-language-cel.md) | Condition language: CEL with declared attributes, no macros, recorded evaluations | accepted | 2026-11-11 |
+| [0040](0040-assignee-resolution-queues-doa-and-acting-for.md) | Assignee resolution, queues, DoA rules, separation of duties and acting for | accepted | 2026-11-12 |

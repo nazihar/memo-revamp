@@ -54,6 +54,9 @@ enum class Permission(
 
     /** Cancel a running workflow with a reason (Phase 2 E03). */
     WORKFLOW_INSTANCES_CANCEL("workflow.instances.cancel", scopable = false, privileged = true),
+
+    /** Create and change the queues workflow steps can go to (Phase 2 E04). */
+    WORKFLOW_QUEUES_MANAGE("workflow.queues.manage", scopable = false, privileged = true),
     ;
 
     companion object {

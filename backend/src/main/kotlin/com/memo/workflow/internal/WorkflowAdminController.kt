@@ -11,6 +11,7 @@ import com.memo.identity.UserSummaries
 import com.memo.system.Idempotency
 import com.memo.workflow.BlockedReason
 import com.memo.workflow.TaskItem
+import com.memo.workflow.WorkflowHandOns
 import com.memo.workflow.WorkflowQueries
 import com.memo.workflow.WorkflowRefusedException
 import com.memo.workflow.WorkflowView
@@ -77,6 +78,7 @@ data class ReassignRequest(
 class WorkflowAdminController(
     private val queries: WorkflowQueries,
     private val workflows: Workflows,
+    private val handOns: WorkflowHandOns,
     private val subjects: AdminSubjects,
     private val users: UserSummaries,
     private val stepUp: StepUpCheck,
@@ -122,6 +124,22 @@ class WorkflowAdminController(
             checkNotNull(queries.viewOf(subject.type, subject.id))
         }
     }
+
+    @PostMapping("/{taskId}/release")
+    @RequiresPermission(Permission.WORKFLOW_TASKS_REASSIGN)
+    @Operation(operationId = "releaseClaimedTask", summary = "Give a claimed step back to everyone it was offered to")
+    fun release(
+        @PathVariable taskId: UUID,
+        @RequestHeader("Idempotency-Key") key: String,
+    ): WorkflowView =
+        transactions.inTenant(TenantContext.current()) {
+            val user = (ActorContext.current().actor as? Actor.User)?.userId
+            idempotency.once("workflow.task.release.admin", key, "$user\n$taskId") {
+                handOns.release(taskId, byAdministrator = true).instanceId.toString()
+            }
+            val subject = checkNotNull(queries.subjectOfTask(taskId))
+            checkNotNull(queries.viewOf(subject.type, subject.id))
+        }
 
     private fun responses(tasks: List<TaskItem>): List<AdminTaskResponse> {
         val shown = subjects.of(tasks.map { it.subject })

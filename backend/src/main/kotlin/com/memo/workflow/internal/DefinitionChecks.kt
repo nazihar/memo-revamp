@@ -24,6 +24,7 @@ class DefinitionChecks(
     private val compiled: CompiledDefinitions,
     private val directory: OrgDirectory,
     private val roles: RoleHolders,
+    private val queues: Queues,
     subjects: List<WorkflowSubject>,
 ) {
     private val catalogue = subjects.flatMap { it.attributes.entries }.associate { it.key to it.value }
@@ -47,5 +48,7 @@ class DefinitionChecks(
         override fun roleExists(id: UUID) = roles.exists(id)
 
         override fun unitExists(id: UUID) = directory.unitExists(id)
+
+        override fun queueExists(key: String) = queues.find(key) != null
     }
 }

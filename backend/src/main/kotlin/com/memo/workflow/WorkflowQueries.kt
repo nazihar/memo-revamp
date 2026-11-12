@@ -154,4 +154,8 @@ data class MyTask(
     /** The actions the step offers (decisions only). */
     val actions: List<ActionKind>,
     val sendBackTargets: List<StepRef>,
+    /** The step is offered to several candidates and may be claimed (design E04 §4.2). */
+    val shared: Boolean = false,
+    /** Who claimed the shared step; while someone else has, the holder cannot decide. */
+    val claimedBy: UUID? = null,
 )

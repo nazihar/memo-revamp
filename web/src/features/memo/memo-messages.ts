@@ -159,6 +159,8 @@ export const actionLabels = defineMessages({
   CANCEL: { id: 'memo.history.action.cancel', defaultMessage: 'Cancelled' },
   MIGRATE: { id: 'memo.history.action.migrate', defaultMessage: 'Moved to a new workflow version' },
   CARRY: { id: 'memo.history.action.carry', defaultMessage: 'Approval carried over (document unchanged)' },
+  CLAIM: { id: 'memo.history.action.claim', defaultMessage: 'Took the task' },
+  RELEASE: { id: 'memo.history.action.release', defaultMessage: 'Gave the task back' },
 })
 
 /** Texts with values (react-intl checks them against the message). */

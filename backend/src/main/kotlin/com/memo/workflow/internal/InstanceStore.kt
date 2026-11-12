@@ -134,6 +134,7 @@ class InstanceStore(
                     routeIndex = step.routeIndex,
                     name = definition.stepsById[step.nodeId]?.name,
                     needed = step.needed,
+                    claimedBy = step.claimedBy,
                     tasks =
                         tasks[step.id].orEmpty().map(::task),
                 )

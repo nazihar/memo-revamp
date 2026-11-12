@@ -68,6 +68,7 @@ object DefinitionJson {
             unit = json.text("unit")?.takeUnless { it == INITIATOR_UNIT }?.let(UUID::fromString),
             up = json["up"]?.asInt(),
             roleId = json.text("roleId")?.let(UUID::fromString),
+            queue = json.text("queue"),
         )
 
     private fun print(step: StepDef): ObjectNode {
@@ -128,6 +129,7 @@ object DefinitionJson {
         }
         assignee.up?.let { out.put("up", it) }
         assignee.roleId?.let { out.put("roleId", it.toString()) }
+        assignee.queue?.let { out.put("queue", it) }
         return out
     }
 

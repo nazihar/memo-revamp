@@ -48,7 +48,8 @@
 - [x] E04 plan written (2026-11-12): research (R1, R5, R6, R12), ADR-0040, design, threat model, tasks T1–T10, test plan (`epic-04-assignees-doa/`)
 - [x] E04 T1 read facades (stacked PR)
 - [x] E04 T2 resolvers (stacked PR)
-- [ ] E04 T3 queues · T4 SoD · T5 substitution · T6 DoA · T7 routes · T8–T9 web · T10 close
+- [x] E04 T3 queues, claim and release (stacked PR)
+- [ ] E04 T4 SoD · T5 substitution · T6 DoA · T7 routes · T8–T9 web · T10 close
 
 ## State (Phase 1a, closed)
 - [x] Overview approved (2026-10-18), Q1–Q8 answered, per-epic gate delegated

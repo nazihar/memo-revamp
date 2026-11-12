@@ -34,7 +34,7 @@ class WorkflowProblems {
         )
     }
 
-    @ExceptionHandler(DefinitionNotFoundException::class)
+    @ExceptionHandler(DefinitionNotFoundException::class, QueueNotFoundException::class)
     fun definitionNotFound(): ResponseEntity<ProblemDetail> =
         ResponseEntity.status(HttpStatus.NOT_FOUND).body(ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, "Not found"))
 

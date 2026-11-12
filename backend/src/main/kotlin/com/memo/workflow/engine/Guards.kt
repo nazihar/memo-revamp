@@ -75,6 +75,15 @@ internal object Guards {
                 instance(state, command, context, routed)
             }
 
+            is Claim -> {
+                taskAction(state, command.actor, command.taskId) ?: Claims.claimRefusal(state, command)
+            }
+
+            is Release -> {
+                (if (command.byAdministrator) null else taskAction(state, command.actor, command.taskId))
+                    ?: Claims.releaseRefusal(state, command)
+            }
+
             is Migrate -> {
                 Migrations.refusal(state, command.target)
             }
@@ -160,13 +169,16 @@ internal object Guards {
         actor: UUID,
         taskId: UUID,
     ): Refusal? {
-        val task = state.findTask(taskId)?.second
+        val found = state.findTask(taskId)
+        val task = found?.second
+        val claimer = found?.first?.claimedBy
         return when {
             state.status != InstanceStatus.RUNNING -> Refusal.WRONG_STATE
             task == null -> Refusal.TASK_NOT_FOUND
             task.state != TaskState.OPEN -> Refusal.TASK_NOT_OPEN
             task.assignee != actor -> Refusal.NOT_ASSIGNEE
             task.blocked != null -> Refusal.TASK_BLOCKED
+            task.kind == TaskKind.DECIDE && claimer != null && claimer != actor -> Refusal.CLAIMED_BY_OTHER
             else -> null
         }
     }

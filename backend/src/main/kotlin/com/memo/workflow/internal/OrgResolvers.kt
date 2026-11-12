@@ -19,6 +19,7 @@ import java.util.UUID
 class OrgResolvers(
     private val directory: OrgDirectory,
     private val roles: RoleHolders,
+    private val queues: Queues,
 ) {
     /** A resolver for one action; the initiator's position is looked up once. */
     fun resolver(): Resolver {
@@ -33,6 +34,7 @@ class OrgResolvers(
                     AssigneeKind.SUPERVISOR -> supervisor(assignee, own)
                     AssigneeKind.UNIT_HEAD -> unitHead(assignee, own)
                     AssigneeKind.ROLE -> role(assignee, own)
+                    AssigneeKind.QUEUE -> queue(checkNotNull(assignee.queue), inputs(assignee))
                 }
             if (resolution.people.size > MAX_CANDIDATES) {
                 Resolution(emptyList(), resolution.inputs + ("reason" to TOO_MANY))
@@ -82,6 +84,14 @@ class OrgResolvers(
         return Resolution(people, if (people.isEmpty()) inputs + ("reason" to NOBODY) else inputs)
     }
 
+    private fun queue(
+        key: String,
+        inputs: Map<String, Any?>,
+    ): Resolution {
+        val people = queues.people(key)
+        return Resolution(people, if (people.isEmpty()) inputs + ("reason" to NOBODY) else inputs)
+    }
+
     private fun holderOf(
         position: UUID,
         inputs: Map<String, Any?>,
@@ -105,6 +115,7 @@ class OrgResolvers(
             assignee.unit?.let { "unit" to it.toString() },
             assignee.up?.let { "up" to it },
             assignee.roleId?.let { "roleId" to it.toString() },
+            assignee.queue?.let { "queue" to it },
         ).toMap()
 
     companion object {

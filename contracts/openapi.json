@@ -19,10 +19,14 @@
       "AdminTaskResponse" : {
         "properties" : {
           "assignee" : {
-            "$ref" : "#/components/schemas/Person"
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/Person"
+            }, {
+              "type" : "null"
+            } ]
           },
           "blocked" : {
-            "enum" : [ "NO_CLEARANCE", "INACTIVE" ],
+            "enum" : [ "NO_CLEARANCE", "INACTIVE", "UNRESOLVED" ],
             "type" : [ "string", "null" ]
           },
           "createdAt" : {
@@ -41,7 +45,7 @@
             "type" : "string"
           }
         },
-        "required" : [ "assignee", "createdAt", "round", "subject", "taskId" ],
+        "required" : [ "createdAt", "round", "subject", "taskId" ],
         "type" : "object"
       },
       "AdminTaskSubject" : {
@@ -982,7 +986,7 @@
             "type" : "string"
           },
           "blocked" : {
-            "enum" : [ "NO_CLEARANCE", "INACTIVE" ],
+            "enum" : [ "NO_CLEARANCE", "INACTIVE", "UNRESOLVED" ],
             "type" : [ "string", "null" ]
           },
           "kind" : {
@@ -2776,7 +2780,7 @@
       "TaskRef" : {
         "properties" : {
           "blocked" : {
-            "enum" : [ "NO_CLEARANCE", "INACTIVE" ],
+            "enum" : [ "NO_CLEARANCE", "INACTIVE", "UNRESOLVED" ],
             "type" : [ "string", "null" ]
           },
           "id" : {
@@ -3037,7 +3041,7 @@
             "type" : "string"
           },
           "openTaskBlocked" : {
-            "enum" : [ "NO_CLEARANCE", "INACTIVE" ],
+            "enum" : [ "NO_CLEARANCE", "INACTIVE", "UNRESOLVED" ],
             "type" : [ "string", "null" ]
           },
           "openTaskId" : {

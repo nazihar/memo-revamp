@@ -110,7 +110,7 @@ open class WorkflowTask(
     /**
      * The column <code>memo.workflow_task.assignee_id</code>.
      */
-    val ASSIGNEE_ID: TableField<WorkflowTaskRecord, UUID?> = createField(DSL.name("assignee_id"), SQLDataType.UUID.nullable(false), this, "")
+    val ASSIGNEE_ID: TableField<WorkflowTaskRecord, UUID?> = createField(DSL.name("assignee_id"), SQLDataType.UUID, this, "")
 
     /**
      * The column <code>memo.workflow_task.state</code>.
@@ -212,7 +212,8 @@ open class WorkflowTask(
     fun workflowStep(): WorkflowStepPath = workflowStep
     val workflowStep: WorkflowStepPath by lazy { WorkflowStepPath(this, WORKFLOW_TASK__WORKFLOW_TASK_TENANT_ID_STEP_ID_FKEY, null) }
     override fun getChecks(): List<Check<WorkflowTaskRecord>> = listOf(
-        Internal.createCheck(this, DSL.name("workflow_task_blocked_reason_check"), "((blocked_reason = ANY (ARRAY['NO_CLEARANCE'::text, 'INACTIVE'::text])))", true),
+        Internal.createCheck(this, DSL.name("workflow_task_assignee_check"), "(((assignee_id IS NOT NULL) OR (blocked_reason = 'UNRESOLVED'::text)))", true),
+        Internal.createCheck(this, DSL.name("workflow_task_blocked_reason_check"), "((blocked_reason = ANY (ARRAY['NO_CLEARANCE'::text, 'INACTIVE'::text, 'UNRESOLVED'::text])))", true),
         Internal.createCheck(this, DSL.name("workflow_task_check"), "(((state = 'OPEN'::text) = (completed_at IS NULL)))", true),
         Internal.createCheck(this, DSL.name("workflow_task_check1"), "(((state = 'COMPLETED'::text) = (outcome IS NOT NULL)))", true),
         Internal.createCheck(this, DSL.name("workflow_task_kind_check"), "((kind = ANY (ARRAY['DECIDE'::text, 'OPINION'::text, 'CLARIFY'::text])))", true),

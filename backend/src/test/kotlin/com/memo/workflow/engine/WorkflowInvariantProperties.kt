@@ -83,7 +83,7 @@ class WorkflowInvariantProperties {
 
         for ((round, cycle) in cycles.withIndex()) {
             repeat(cycle.approvals.coerceAtMost(state.round.steps.size - 1)) { state = act(transition, state, ::approveCurrent) }
-            state = act(transition, state) { Return(it.openTasks.single().assignee, it.openTasks.single().id, "rework") }
+            state = act(transition, state) { Return(it.openTasks.single().assignee!!, it.openTasks.single().id, "rework") }
             assertThat(state.status).isEqualTo(InstanceStatus.RETURNED)
             state = act(transition, state) { Resubmit(initiator, cycle.route.map { index -> people[index] }) }
             assertThat(state.round.number).isEqualTo(round + 2)
@@ -109,7 +109,7 @@ class WorkflowInvariantProperties {
         ).isEqualTo(steps)
     }
 
-    private fun approveCurrent(state: InstanceState): Command = Approve(state.openTasks.single().assignee, state.openTasks.single().id)
+    private fun approveCurrent(state: InstanceState): Command = Approve(state.openTasks.single().assignee!!, state.openTasks.single().id)
 
     private fun act(
         transition: Transition,

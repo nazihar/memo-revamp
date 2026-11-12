@@ -6693,6 +6693,12 @@
       "value": "Cannot sign inSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "workflowTasks.blocked.unresolved": [
+    {
+      "type": 0,
+      "value": "Nobody found for this stepSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "workflowTasks.caption": [
     {
       "type": 0,
@@ -6751,6 +6757,12 @@
     {
       "type": 0,
       "value": "New approverSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflowTasks.nobody": [
+    {
+      "type": 0,
+      "value": "Nobody yetSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "workflowTasks.reason": [

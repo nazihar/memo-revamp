@@ -133,6 +133,7 @@ class InstanceStore(
                     kind = StepKind.valueOf(step.type),
                     routeIndex = step.routeIndex,
                     name = definition.stepsById[step.nodeId]?.name,
+                    needed = step.needed,
                     tasks =
                         tasks[step.id].orEmpty().map(::task),
                 )

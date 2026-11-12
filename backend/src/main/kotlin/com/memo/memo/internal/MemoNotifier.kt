@@ -101,13 +101,14 @@ class MemoNotifier(
         notify(event.recipientId, NotificationKind.MEMO_UPDATE, memo.id, mapOf("message" to event.messageKey))
     }
 
+    /** Tells [user] (nobody when null: a step without assignee, which the reassigners hear about instead). */
     private fun notify(
-        user: UUID,
+        user: UUID?,
         kind: NotificationKind,
         memoId: UUID,
         extra: Map<String, String> = emptyMap(),
     ) {
-        val recipient = recipients.recipient(user) ?: return
+        val recipient = user?.let(recipients::recipient) ?: return
         val memo = store.find(memoId) ?: return
         val tenant = registry.current()
         val link = "/memos/$memoId"

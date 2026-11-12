@@ -103,6 +103,13 @@ class DefinitionValidatorTest {
         val initiatorDecides = """{"schemaVersion":2,"start":"a","steps":[{"id":"a","type":"approve",
                     "assignee":{"kind":"initiator"},"next":"end"}]}"""
         assertThat(problems(initiatorDecides)).contains("ASSIGNEE_KIND" to "/steps/0/assignee")
+        // E04: steps may go to resolvers over the organisation; a fallback is a named person.
+        val resolved = """{"schemaVersion":2,"start":"a","steps":[{"id":"a","type":"approve",
+                    "assignee":{"kind":"supervisor","levels":2},"fallback":{"kind":"unitHead","unit":"initiator"},"next":"end"}]}"""
+        assertThat(problems(resolved)).containsExactly("FALLBACK_KIND" to "/steps/0/fallback")
+        val missingLevels = """{"schemaVersion":2,"start":"a","steps":[{"id":"a","type":"approve",
+                    "assignee":{"kind":"supervisor"},"next":"end"}]}"""
+        assertThat(problems(missingLevels).map { it.first }).containsOnly("SCHEMA")
         assertThat(problems(approve("a", next = "end", actions = """["RECOMMEND","RETURN"]""")).map { it.first })
             .contains("ACTION_MISSING", "ACTION_NOT_FOR_TYPE")
         val reviewRejects =

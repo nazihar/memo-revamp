@@ -65,7 +65,7 @@ class TaskQueryStore(
                     taskId = r.value1()!!,
                     instanceId = r.value2()!!,
                     subject = SubjectRef(r.value3()!!, r.value4()!!),
-                    assigneeId = r.value5()!!,
+                    assigneeId = r.value5(),
                     round = r.value6()!!,
                     blocked = r.value7()?.let(BlockedReason::valueOf),
                     createdAt = r.value8()!!.toInstant(),

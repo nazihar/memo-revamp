@@ -101,7 +101,8 @@ data class WorkflowTaskCreated(
     val subjectType: String,
     val subjectId: UUID,
     val taskId: UUID,
-    val assigneeId: UUID,
+    /** Null for a step nobody was found for (blocked `UNRESOLVED`, design E04 §4.1). */
+    val assigneeId: UUID?,
     val blocked: BlockedReason?,
     /** The action that created it: SUBMIT, APPROVE (next step), RESUBMIT or REASSIGN. */
     val action: ActionKind,
@@ -114,7 +115,7 @@ data class WorkflowTaskClosed(
     val subjectType: String,
     val subjectId: UUID,
     val taskId: UUID,
-    val assigneeId: UUID,
+    val assigneeId: UUID?,
     val closure: TaskClosure,
     /** The action that closed it. */
     val action: ActionKind,

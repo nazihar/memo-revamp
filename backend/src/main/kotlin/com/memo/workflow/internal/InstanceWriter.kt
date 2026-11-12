@@ -101,6 +101,8 @@ class InstanceWriter(
                 WORKFLOW_STEP.STATE,
                 WORKFLOW_STEP.NODE_ID,
                 WORKFLOW_STEP.ROUTE_INDEX,
+                WORKFLOW_STEP.NEEDED,
+                WORKFLOW_STEP.RESOLUTION,
             )
         steps
             .fold(insert) { query, step ->
@@ -115,6 +117,8 @@ class InstanceWriter(
                     step.state.name,
                     step.nodeId,
                     step.routeIndex,
+                    step.needed,
+                    step.resolution?.let { JSONB.valueOf(json.writeValueAsString(it)) },
                 )
             }.execute()
     }

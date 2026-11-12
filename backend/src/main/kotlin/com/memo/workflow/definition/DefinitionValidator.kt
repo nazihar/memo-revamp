@@ -8,6 +8,7 @@ import com.networknt.schema.SpecificationVersion
 import com.networknt.schema.path.NodePath
 import tools.jackson.databind.JsonNode
 import java.util.Locale
+import java.util.UUID
 
 /** One reason a definition is refused: where (a JSON pointer into the body), a stable code and a sentence for the admin. */
 data class DefinitionProblem(
@@ -30,8 +31,11 @@ data class Validation(
  */
 class DefinitionValidator(
     private val catalogue: Map<String, AttributeType>?,
+    references: DefinitionReferences = DefinitionReferences.ANY,
     private val fragments: (String) -> Definition?,
 ) {
+    private val assignees = AssigneeChecks(references)
+
     fun validate(body: JsonNode): Validation {
         val shape =
             schema.validate(body) { context ->
@@ -132,12 +136,7 @@ class DefinitionValidator(
                 StepType.SUBWORKFLOW -> fragment(at, step)
                 else -> Unit
             }
-            listOfNotNull(step.assignee).plus(step.assignees).forEachIndexed { a, assignee ->
-                if (step.type.human && assignee.kind != AssigneeKind.PERSON) {
-                    val where = if (step.assignee != null) "$at/assignee" else "$at/assignees/$a"
-                    add(where, "ASSIGNEE_KIND", "a step that decides needs a named person")
-                }
-            }
+            problems += assignees.problems(at, step)
             if (step.type.human) actions(at, step)
         }
 
@@ -260,4 +259,73 @@ class DefinitionValidator(
                         .replace("/", "~1")
             }
     }
+}
+
+/** The tenant's organisation as the validator checks references to it (design E04 §2); [ANY] accepts every id. */
+interface DefinitionReferences {
+    fun positionExists(id: UUID): Boolean
+
+    fun roleExists(id: UUID): Boolean
+
+    fun unitExists(id: UUID): Boolean
+
+    companion object {
+        val ANY =
+            object : DefinitionReferences {
+                override fun positionExists(id: UUID) = true
+
+                override fun roleExists(id: UUID) = true
+
+                override fun unitExists(id: UUID) = true
+            }
+    }
+}
+
+/**
+ * Who a step may go to (design E04 §2): the initiator only hears from notify steps, a fallback is a named person, and
+ * positions, roles and units must exist in the tenant.
+ */
+private class AssigneeChecks(
+    private val references: DefinitionReferences,
+) {
+    fun problems(
+        at: String,
+        step: StepDef,
+    ): List<DefinitionProblem> {
+        val named =
+            listOfNotNull(step.assignee?.let { "$at/assignee" to it }) +
+                step.assignees.mapIndexed { a, assignee -> "$at/assignees/$a" to assignee } +
+                step.recipients.mapIndexed { r, assignee -> "$at/recipients/$r" to assignee } +
+                listOfNotNull(step.fallback?.let { "$at/fallback" to it })
+        val kinds =
+            listOfNotNull(
+                step.assignee?.takeIf { step.type.human && it.kind == AssigneeKind.INITIATOR }?.let {
+                    DefinitionProblem("$at/assignee", "ASSIGNEE_KIND", "the initiator cannot decide on their own item")
+                },
+                step.fallback?.takeIf { it.kind != AssigneeKind.PERSON }?.let {
+                    DefinitionProblem("$at/fallback", "FALLBACK_KIND", "a fallback is a named person")
+                },
+            ) +
+                step.assignees.mapIndexedNotNull { a, assignee ->
+                    DefinitionProblem("$at/assignees/$a", "ASSIGNEE_KIND", "the initiator cannot decide on their own item")
+                        .takeIf { assignee.kind == AssigneeKind.INITIATOR }
+                }
+        return kinds + named.flatMap { (where, assignee) -> unknown(where, assignee) }
+    }
+
+    private fun unknown(
+        at: String,
+        assignee: Assignee,
+    ): List<DefinitionProblem> =
+        listOfNotNull(
+            assignee.positionId?.takeUnless(references::positionExists)?.let {
+                DefinitionProblem("$at/positionId", "UNKNOWN_POSITION", "no position $it in this organisation")
+            },
+            assignee.roleId?.takeUnless(references::roleExists)?.let {
+                DefinitionProblem("$at/roleId", "UNKNOWN_ROLE", "no role $it in this organisation")
+            },
+            assignee.unit?.takeUnless(references::unitExists)?.let {
+                DefinitionProblem("$at/unit", "UNKNOWN_UNIT", "no unit $it in this organisation")
+            },
+        )
 }

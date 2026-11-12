@@ -43,6 +43,8 @@ const m = defineMessages({
   empty: { id: 'workflowTasks.empty', defaultMessage: 'No task matches.' },
   NO_CLEARANCE: { id: 'workflowTasks.blocked.clearance', defaultMessage: 'Not cleared' },
   INACTIVE: { id: 'workflowTasks.blocked.inactive', defaultMessage: 'Cannot sign in' },
+  UNRESOLVED: { id: 'workflowTasks.blocked.unresolved', defaultMessage: 'Nobody found for this step' },
+  nobody: { id: 'workflowTasks.nobody', defaultMessage: 'Nobody yet' },
   ASSIGNEE_NOT_ELIGIBLE: {
     id: 'workflowTasks.refused.notEligible',
     defaultMessage: 'This person is inactive or not cleared for the memo.',
@@ -88,7 +90,7 @@ export function WorkflowTasksPage() {
       header: intl.formatMessage(m.colAssignee),
       cell: ({ row }) => (
         <span className="flex flex-wrap items-center gap-2">
-          {row.original.assignee.name}
+          {row.original.assignee?.name ?? intl.formatMessage(m.nobody)}
           {row.original.blocked ? <Badge tone="warn">{intl.formatMessage(m[row.original.blocked])}</Badge> : null}
         </span>
       ),

@@ -16,7 +16,8 @@ data class TaskItem(
     val taskId: UUID,
     val instanceId: UUID,
     val subject: SubjectRef,
-    val assigneeId: UUID,
+    /** Null while nobody is found for the step (design E04 §4.1). */
+    val assigneeId: UUID?,
     val round: Int,
     val blocked: BlockedReason?,
     val createdAt: Instant,

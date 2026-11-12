@@ -28,6 +28,7 @@ import org.jooq.Field
 import org.jooq.ForeignKey
 import org.jooq.Index
 import org.jooq.InverseForeignKey
+import org.jooq.JSONB
 import org.jooq.Name
 import org.jooq.Path
 import org.jooq.PlainSQL
@@ -117,7 +118,7 @@ open class WorkflowStep(
     /**
      * The column <code>memo.workflow_step.assignee_id</code>.
      */
-    val ASSIGNEE_ID: TableField<WorkflowStepRecord, UUID?> = createField(DSL.name("assignee_id"), SQLDataType.UUID.nullable(false), this, "")
+    val ASSIGNEE_ID: TableField<WorkflowStepRecord, UUID?> = createField(DSL.name("assignee_id"), SQLDataType.UUID, this, "")
 
     /**
      * The column <code>memo.workflow_step.state</code>.
@@ -133,6 +134,16 @@ open class WorkflowStep(
      * The column <code>memo.workflow_step.route_index</code>.
      */
     val ROUTE_INDEX: TableField<WorkflowStepRecord, Int?> = createField(DSL.name("route_index"), SQLDataType.INTEGER, this, "")
+
+    /**
+     * The column <code>memo.workflow_step.needed</code>.
+     */
+    val NEEDED: TableField<WorkflowStepRecord, Int?> = createField(DSL.name("needed"), SQLDataType.INTEGER, this, "")
+
+    /**
+     * The column <code>memo.workflow_step.resolution</code>.
+     */
+    val RESOLUTION: TableField<WorkflowStepRecord, JSONB?> = createField(DSL.name("resolution"), SQLDataType.JSONB, this, "")
 
     private constructor(alias: Name, aliased: Table<WorkflowStepRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<WorkflowStepRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
@@ -200,8 +211,10 @@ open class WorkflowStep(
     val workflowTask: WorkflowTaskPath
         get(): WorkflowTaskPath = workflowTask()
     override fun getChecks(): List<Check<WorkflowStepRecord>> = listOf(
+        Internal.createCheck(this, DSL.name("workflow_step_needed_check"), "(((needed >= 1) AND (needed <= 20)))", true),
         Internal.createCheck(this, DSL.name("workflow_step_node_id_check"), "((node_id ~ '^[a-z][a-z0-9/-]{0,199}\$'::text))", true),
         Internal.createCheck(this, DSL.name("workflow_step_ordinal_check"), "((ordinal >= 1))", true),
+        Internal.createCheck(this, DSL.name("workflow_step_resolution_check"), "((octet_length((resolution)::text) <= 8192))", true),
         Internal.createCheck(this, DSL.name("workflow_step_route_index_check"), "((route_index >= 0))", true),
         Internal.createCheck(this, DSL.name("workflow_step_state_check"), "((state = ANY (ARRAY['PENDING'::text, 'ACTIVE'::text, 'DONE'::text, 'SKIPPED'::text])))", true),
         Internal.createCheck(this, DSL.name("workflow_step_type_check"), "((type = ANY (ARRAY['APPROVE'::text, 'REVIEW'::text, 'PARALLEL'::text])))", true)

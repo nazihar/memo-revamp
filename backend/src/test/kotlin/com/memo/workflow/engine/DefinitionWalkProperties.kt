@@ -49,7 +49,7 @@ class DefinitionWalkProperties {
             val node = case.definition.step(step.nodeId)
             val expected = if (node.type == StepType.ROUTE) route[step.routeIndex!!] else node.assignee!!.userId
             assertThat(task.assignee).isEqualTo(expected)
-            outcome = (transition.apply(outcome.state, Approve(task.assignee, task.id)) as Decision.Accepted).outcome
+            outcome = (transition.apply(outcome.state, Approve(task.assignee!!, task.id)) as Decision.Accepted).outcome
             automatic += outcome.followUps
             decisions++
             check(decisions < MAX_DECISIONS) { "the walk does not end" }

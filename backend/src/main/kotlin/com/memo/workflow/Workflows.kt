@@ -40,7 +40,9 @@ class Workflows(
         route: List<UUID>,
         remark: String? = null,
         definitionKey: String = SEQUENTIAL_APPROVAL,
-    ): WorkflowView = runner.start(subjectType, subjectId, route, remark, currentUser(), definitionKey)
+        /** A route with positions and groups (design E04 §4.7), in place of [route] (then empty). */
+        entries: List<RouteEntry>? = null,
+    ): WorkflowView = runner.start(subjectType, subjectId, route, remark, currentUser(), definitionKey, entries)
 
     fun approve(
         taskId: UUID,
@@ -67,7 +69,8 @@ class Workflows(
         instanceId: UUID,
         route: List<UUID>,
         remark: String? = null,
-    ): WorkflowView = runner.onInstance(instanceId, currentUser()) { actor -> Resubmit(actor, route, remark) }
+        entries: List<RouteEntry>? = null,
+    ): WorkflowView = runner.onInstance(instanceId, currentUser()) { actor -> Resubmit(actor, route, remark, entries) }
 
     /** Moves an open task to [newAssignee]; the caller has checked that the actor may reassign (design E01 §6). */
     fun reassign(

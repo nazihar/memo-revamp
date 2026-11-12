@@ -75,7 +75,14 @@ internal class StaffChanges(
             } else {
                 val step = state.round.steps.firstOrNull { it.id == (command as Reresolve).stepId }
                 val open = step?.tasks?.any { it.state == TaskState.OPEN && it.kind == TaskKind.DECIDE } == true
-                val resolvable = step?.state == StepState.ACTIVE && step.routeIndex == null
+                // A route entry naming a person stays theirs; one naming a position or a group resolves again.
+                val named =
+                    step?.routeIndex?.let {
+                        state.round.route
+                            .getOrNull(it)
+                            ?.userId
+                    } != null
+                val resolvable = step?.state == StepState.ACTIVE && !named
                 if (running && resolvable && open) null else Refusal.NOTHING_TO_RESOLVE
             }
         }

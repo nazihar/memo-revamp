@@ -2,6 +2,7 @@ package com.memo.workflow.engine
 
 import com.memo.workflow.ActionKind
 import com.memo.workflow.InstanceStatus
+import com.memo.workflow.RouteEntry
 import com.memo.workflow.definition.Definition
 import com.memo.workflow.definition.DefinitionCompiler
 import com.memo.workflow.definition.ResubmitPolicy
@@ -28,10 +29,13 @@ class Transition(
         initiator: UUID,
         route: List<UUID>,
         remark: String? = null,
+        entries: List<RouteEntry>? = null,
     ): Decision {
-        val refusal = Routes.refusal(initiator, route, context.maxApprovers, routed) ?: Remarks.refusal(remark, required = false)
+        // People only, or positions and groups as well (design E04 §4.7).
+        val chosen = entries ?: route.map(RouteEntry::person)
+        val refusal = Routes.refusal(initiator, chosen, context.maxApprovers, routed) ?: Remarks.refusal(remark, required = false)
         if (refusal != null) return Decision.Refused(refusal)
-        val walk = rounds.open(1, route, People(initiator, initiator))
+        val walk = rounds.open(1, chosen, People(initiator, initiator))
         val action = ActionRecord(ActionKind.SUBMIT, 1, null, initiator, Remarks.clean(remark))
         return Decision.Accepted(opened(initiator, walk, action))
     }
@@ -201,9 +205,9 @@ class Transition(
         val returning = state.round.steps.firstOrNull { step -> step.tasks.any { it.outcome == ActionKind.RETURN } }
         val walk =
             if (definition.resubmitPolicy == ResubmitPolicy.RESUME && returning != null) {
-                rounds.resume(number, command.route, people, returning)
+                rounds.resume(number, command.routeEntries, people, returning, returning.routeIndex?.let(state.round.route::getOrNull))
             } else {
-                rounds.open(number, command.route, people)
+                rounds.open(number, command.routeEntries, people)
             }
         val action = ActionRecord(ActionKind.RESUBMIT, walk.round.number, null, command.actor, Remarks.clean(command.remark))
         return opened(state.initiator, walk, action)

@@ -48,6 +48,12 @@ export type AdminUserPage = {
     nextCursor?: string | null;
 };
 
+export type AllowedApprovers = {
+    people?: Array<string>;
+    positions?: Array<string>;
+    roles?: Array<string>;
+};
+
 export type AppliedResponse = {
     moved: number;
 };
@@ -304,6 +310,19 @@ export type DoaMember = {
     positionId?: string | null;
     roleId?: string | null;
     unit?: string | null;
+};
+
+export type DoaPreviewGroupView = {
+    covered: number;
+    needed: number;
+    people: Array<Named>;
+};
+
+export type DoaPreviewView = {
+    groups: Array<DoaPreviewGroupView>;
+    reason?: string | null;
+    ruleName?: string | null;
+    version?: number | null;
 };
 
 export type DoaRule = {
@@ -617,8 +636,10 @@ export type MemoRequest = {
 
 export type MemoType = {
     active: boolean;
+    allowedApprovers: AllowedApprovers;
     defaultClassificationId?: string | null;
     definitionKey: string;
+    doaCheck: boolean;
     id: string;
     key?: string | null;
     name: string;
@@ -636,8 +657,10 @@ export type MemoTypeOption = {
 
 export type MemoTypeRequest = {
     active?: boolean;
+    allowedApprovers?: AllowedApprovers | null;
     defaultClassificationId?: string | null;
     definitionKey?: string | null;
+    doaCheck?: boolean | null;
     name?: string;
     routePolicy?: string | null;
     stepUpOnApprove?: boolean;
@@ -1170,13 +1193,38 @@ export type RoleRequest = {
     permissions: Array<string>;
 };
 
+export type RouteEntry = {
+    group?: RouteGroup | null;
+    positionId?: string | null;
+    userId?: string | null;
+};
+
 export type RouteEntryView = {
-    approver: Named;
+    approver?: Named | null;
+    group?: RouteGroupView | null;
     ordinal: number;
+    position?: RoutePositionView | null;
+};
+
+export type RouteGroup = {
+    members?: Array<RouteEntry>;
+    mode?: 'ALL' | 'ANY';
+};
+
+export type RouteGroupView = {
+    members: Array<RouteEntryView>;
+    mode: 'ALL' | 'ANY';
+};
+
+export type RoutePositionView = {
+    holder?: Named | null;
+    id: string;
+    title: string;
 };
 
 export type RouteRequest = {
     approvers?: Array<string>;
+    entries?: Array<RouteEntry> | null;
 };
 
 export type SecuritySettingLimit = {
@@ -3673,6 +3721,24 @@ export type DiscardMemoResponses = {
 };
 
 export type DiscardMemoResponse = DiscardMemoResponses[keyof DiscardMemoResponses];
+
+export type PreviewMemoDoaData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/doa-preview';
+};
+
+export type PreviewMemoDoaResponses = {
+    /**
+     * OK
+     */
+    200: DoaPreviewView;
+};
+
+export type PreviewMemoDoaResponse = PreviewMemoDoaResponses[keyof PreviewMemoDoaResponses];
 
 export type GetMemoHistoryData = {
     body?: never;

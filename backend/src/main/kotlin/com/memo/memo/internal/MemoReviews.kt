@@ -3,6 +3,7 @@ package com.memo.memo.internal
 import com.memo.common.web.FieldProblem
 import com.memo.common.web.refuseIf
 import com.memo.docedit.DocumentEditing
+import com.memo.workflow.RouteEntry
 import com.memo.workflow.Workflows
 import org.springframework.stereotype.Service
 import java.util.UUID
@@ -35,7 +36,7 @@ class MemoReviews(
                 problems(memo, type, route)
         if (problems.isNotEmpty()) throw MemoRejectedException(problems)
         // The memo type's workflow (E03): new memos pin its newest published version.
-        workflows.start(MemoWorkflowSubject.TYPE, id, route, remark, type?.definitionKey ?: Workflows.SEQUENTIAL_APPROVAL)
+        workflows.start(MemoWorkflowSubject.TYPE, id, emptyList(), remark, type?.definitionKey ?: Workflows.SEQUENTIAL_APPROVAL, route)
         return memos.get(id)
     }
 
@@ -51,7 +52,7 @@ class MemoReviews(
         val route = route(memo, type)
         val problems = problems(memo, type, route)
         if (problems.isNotEmpty()) throw MemoRejectedException(problems)
-        workflows.resubmit(checkNotNull(memo.workflowInstanceId), route, remark)
+        workflows.resubmit(checkNotNull(memo.workflowInstanceId), emptyList(), remark, route)
         return memos.get(id)
     }
 
@@ -83,13 +84,19 @@ class MemoReviews(
     private fun route(
         memo: Memo,
         type: MemoType?,
-    ): List<UUID> = if (type?.routePolicy == RoutePolicy.FIXED) emptyList() else routes.route(memo.id)
+    ): List<RouteEntry> = if (type?.routePolicy == RoutePolicy.FIXED) emptyList() else routes.route(memo.id)
 
     private fun problems(
         memo: Memo,
         type: MemoType?,
-        route: List<UUID>,
-    ) = if (type?.routePolicy == RoutePolicy.FIXED) emptyList() else routes.problems(memo, route)
+        route: List<RouteEntry>,
+    ) = if (type?.routePolicy ==
+        RoutePolicy.FIXED
+    ) {
+        emptyList()
+    } else {
+        routes.problems(memo, route).ifEmpty { routes.authority(memo, type, route) }
+    }
 
     /** A review never starts on a document that may still change in an open editor (ADR-0037). */
     private fun notBeingEdited(memo: Memo) {

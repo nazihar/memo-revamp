@@ -98,6 +98,12 @@
         "assignee": { "$ref": "#/$defs/assignee" },
         "assignees": { "type": "array", "minItems": 2, "maxItems": 20, "items": { "$ref": "#/$defs/assignee" } },
         "mode": { "enum": ["all", "any", "n-of-m"] },
+        "forward": {
+          "type": "object",
+          "required": ["within"],
+          "additionalProperties": false,
+          "properties": { "within": { "enum": ["unit", "legalEntity", "anyone"] } }
+        },
         "n": { "type": "integer", "minimum": 1, "maximum": 20 },
         "actions": { "type": "array", "uniqueItems": true, "maxItems": 9, "items": { "$ref": "#/$defs/action" } },
         "remarks": { "type": "array", "uniqueItems": true, "maxItems": 9, "items": { "$ref": "#/$defs/action" } },
@@ -126,17 +132,17 @@
       "allOf": [
         {
           "if": { "properties": { "type": { "const": "route" } } },
-          "then": { "required": ["next"], "propertyNames": { "enum": ["id", "type", "name", "next", "actions", "remarks", "sla"] } }
+          "then": { "required": ["next"], "propertyNames": { "enum": ["id", "type", "name", "next", "actions", "remarks", "sla", "forward"] } }
         },
         {
           "if": { "properties": { "type": { "enum": ["review", "approve", "sign"] } } },
-          "then": { "required": ["assignee", "next"], "propertyNames": { "enum": ["id", "type", "name", "next", "assignee", "fallback", "actions", "remarks", "sla"] } }
+          "then": { "required": ["assignee", "next"], "propertyNames": { "enum": ["id", "type", "name", "next", "assignee", "fallback", "actions", "remarks", "sla", "forward"] } }
         },
         {
           "if": { "properties": { "type": { "const": "parallel" } } },
           "then": {
             "required": ["assignees", "mode", "next"],
-            "propertyNames": { "enum": ["id", "type", "name", "next", "assignees", "mode", "n", "actions", "remarks", "sla"] },
+            "propertyNames": { "enum": ["id", "type", "name", "next", "assignees", "mode", "n", "actions", "remarks", "sla", "forward"] },
             "if": { "properties": { "mode": { "const": "n-of-m" } } },
             "then": { "required": ["n"] },
             "else": { "not": { "required": ["n"] } }
@@ -144,7 +150,7 @@
         },
         {
           "if": { "properties": { "type": { "const": "doa" } } },
-          "then": { "required": ["next"], "propertyNames": { "enum": ["id", "type", "name", "next", "actions", "remarks", "sla"] } }
+          "then": { "required": ["next"], "propertyNames": { "enum": ["id", "type", "name", "next", "actions", "remarks", "sla", "forward"] } }
         },
         {
           "if": { "properties": { "type": { "const": "branch" } } },

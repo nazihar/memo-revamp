@@ -21,6 +21,7 @@ import org.jooq.Condition
 import org.jooq.Field
 import org.jooq.ForeignKey
 import org.jooq.InverseForeignKey
+import org.jooq.JSONB
 import org.jooq.Name
 import org.jooq.Path
 import org.jooq.PlainSQL
@@ -95,7 +96,17 @@ open class MemoRouteEntry(
     /**
      * The column <code>memo.memo_route_entry.approver_id</code>.
      */
-    val APPROVER_ID: TableField<MemoRouteEntryRecord, UUID?> = createField(DSL.name("approver_id"), SQLDataType.UUID.nullable(false), this, "")
+    val APPROVER_ID: TableField<MemoRouteEntryRecord, UUID?> = createField(DSL.name("approver_id"), SQLDataType.UUID, this, "")
+
+    /**
+     * The column <code>memo.memo_route_entry.position_id</code>.
+     */
+    val POSITION_ID: TableField<MemoRouteEntryRecord, UUID?> = createField(DSL.name("position_id"), SQLDataType.UUID, this, "")
+
+    /**
+     * The column <code>memo.memo_route_entry.group_entry</code>.
+     */
+    val GROUP_ENTRY: TableField<MemoRouteEntryRecord, JSONB?> = createField(DSL.name("group_entry"), SQLDataType.JSONB, this, "")
 
     private constructor(alias: Name, aliased: Table<MemoRouteEntryRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<MemoRouteEntryRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
@@ -139,6 +150,8 @@ open class MemoRouteEntry(
     fun memo(): MemoPath = memo
     val memo: MemoPath by lazy { MemoPath(this, MEMO_ROUTE_ENTRY__MEMO_ROUTE_ENTRY_TENANT_ID_MEMO_ID_FKEY, null) }
     override fun getChecks(): List<Check<MemoRouteEntryRecord>> = listOf(
+        Internal.createCheck(this, DSL.name("memo_route_entry_group_entry_check"), "(((group_entry IS NULL) OR ((jsonb_typeof(group_entry) = 'object'::text) AND (octet_length((group_entry)::text) <= 8192))))", true),
+        Internal.createCheck(this, DSL.name("memo_route_entry_kind_check"), "((num_nonnulls(approver_id, position_id, group_entry) = 1))", true),
         Internal.createCheck(this, DSL.name("memo_route_entry_ordinal_check"), "((ordinal >= 1))", true)
     )
     override fun `as`(alias: String): MemoRouteEntry = MemoRouteEntry(DSL.name(alias), this)

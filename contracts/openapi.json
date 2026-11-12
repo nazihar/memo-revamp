@@ -121,6 +121,32 @@
         "required" : [ "items" ],
         "type" : "object"
       },
+      "AllowedApprovers" : {
+        "properties" : {
+          "people" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "positions" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "roles" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        },
+        "type" : "object"
+      },
       "AppliedResponse" : {
         "properties" : {
           "moved" : {
@@ -703,6 +729,48 @@
             "type" : [ "string", "null" ]
           }
         },
+        "type" : "object"
+      },
+      "DoaPreviewGroupView" : {
+        "properties" : {
+          "covered" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "needed" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "people" : {
+            "items" : {
+              "$ref" : "#/components/schemas/Named"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "covered", "needed", "people" ],
+        "type" : "object"
+      },
+      "DoaPreviewView" : {
+        "properties" : {
+          "groups" : {
+            "items" : {
+              "$ref" : "#/components/schemas/DoaPreviewGroupView"
+            },
+            "type" : "array"
+          },
+          "reason" : {
+            "type" : [ "string", "null" ]
+          },
+          "ruleName" : {
+            "type" : [ "string", "null" ]
+          },
+          "version" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          }
+        },
+        "required" : [ "groups" ],
         "type" : "object"
       },
       "DoaRule" : {
@@ -1581,12 +1649,18 @@
           "active" : {
             "type" : "boolean"
           },
+          "allowedApprovers" : {
+            "$ref" : "#/components/schemas/AllowedApprovers"
+          },
           "defaultClassificationId" : {
             "format" : "uuid",
             "type" : [ "string", "null" ]
           },
           "definitionKey" : {
             "type" : "string"
+          },
+          "doaCheck" : {
+            "type" : "boolean"
           },
           "id" : {
             "format" : "uuid",
@@ -1610,7 +1684,7 @@
             "type" : "integer"
           }
         },
-        "required" : [ "active", "definitionKey", "id", "name", "routePolicy", "stepUpOnApprove", "version" ],
+        "required" : [ "active", "allowedApprovers", "definitionKey", "doaCheck", "id", "name", "routePolicy", "stepUpOnApprove", "version" ],
         "type" : "object"
       },
       "MemoTypeOption" : {
@@ -1638,12 +1712,22 @@
           "active" : {
             "type" : "boolean"
           },
+          "allowedApprovers" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/AllowedApprovers"
+            }, {
+              "type" : "null"
+            } ]
+          },
           "defaultClassificationId" : {
             "format" : "uuid",
             "type" : [ "string", "null" ]
           },
           "definitionKey" : {
             "type" : [ "string", "null" ]
+          },
+          "doaCheck" : {
+            "type" : [ "boolean", "null" ]
           },
           "name" : {
             "type" : "string"
@@ -2883,17 +2967,106 @@
         "required" : [ "name", "permissions" ],
         "type" : "object"
       },
+      "RouteEntry" : {
+        "properties" : {
+          "group" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/RouteGroup"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "positionId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "userId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
       "RouteEntryView" : {
         "properties" : {
           "approver" : {
-            "$ref" : "#/components/schemas/Named"
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/Named"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "group" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/RouteGroupView"
+            }, {
+              "type" : "null"
+            } ]
           },
           "ordinal" : {
             "format" : "int32",
             "type" : "integer"
+          },
+          "position" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/RoutePositionView"
+            }, {
+              "type" : "null"
+            } ]
           }
         },
-        "required" : [ "approver", "ordinal" ],
+        "required" : [ "ordinal" ],
+        "type" : "object"
+      },
+      "RouteGroup" : {
+        "properties" : {
+          "members" : {
+            "items" : {
+              "$ref" : "#/components/schemas/RouteEntry"
+            },
+            "type" : "array"
+          },
+          "mode" : {
+            "enum" : [ "ALL", "ANY" ],
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "RouteGroupView" : {
+        "properties" : {
+          "members" : {
+            "items" : {
+              "$ref" : "#/components/schemas/RouteEntryView"
+            },
+            "type" : "array"
+          },
+          "mode" : {
+            "enum" : [ "ALL", "ANY" ],
+            "type" : "string"
+          }
+        },
+        "required" : [ "members", "mode" ],
+        "type" : "object"
+      },
+      "RoutePositionView" : {
+        "properties" : {
+          "holder" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/Named"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "title" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "id", "title" ],
         "type" : "object"
       },
       "RouteRequest" : {
@@ -2904,6 +3077,12 @@
               "type" : "string"
             },
             "type" : "array"
+          },
+          "entries" : {
+            "items" : {
+              "$ref" : "#/components/schemas/RouteEntry"
+            },
+            "type" : [ "array", "null" ]
           }
         },
         "type" : "object"
@@ -7244,6 +7423,34 @@
           }
         },
         "summary" : "Discard a draft",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/memos/{id}/doa-preview" : {
+      "post" : {
+        "operationId" : "previewMemoDoa",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DoaPreviewView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Who the delegation of authority asks to approve the memo",
         "tags" : [ "memo" ]
       }
     },

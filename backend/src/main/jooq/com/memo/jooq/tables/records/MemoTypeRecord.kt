@@ -9,6 +9,7 @@ import com.memo.jooq.tables.MemoType
 import java.time.OffsetDateTime
 import java.util.UUID
 
+import org.jooq.JSONB
 import org.jooq.Record1
 import org.jooq.impl.UpdatableRecordImpl
 
@@ -67,6 +68,14 @@ open class MemoTypeRecord private constructor() : UpdatableRecordImpl<MemoTypeRe
         set(value): Unit = set(11, value)
         get(): OffsetDateTime = get(11) as OffsetDateTime
 
+    open var allowedApprovers: JSONB?
+        set(value): Unit = set(12, value)
+        get(): JSONB? = get(12) as JSONB?
+
+    open var doaCheck: Boolean?
+        set(value): Unit = set(13, value)
+        get(): Boolean? = get(13) as Boolean?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -76,7 +85,7 @@ open class MemoTypeRecord private constructor() : UpdatableRecordImpl<MemoTypeRe
     /**
      * Create a detached, initialised MemoTypeRecord
      */
-    constructor(id: UUID, tenantId: UUID, key: String? = null, name: String, defaultClassificationId: UUID? = null, routePolicy: String? = null, definitionKey: String? = null, stepUpOnApprove: Boolean? = null, active: Boolean? = null, version: Long? = null, createdAt: OffsetDateTime, updatedAt: OffsetDateTime): this() {
+    constructor(id: UUID, tenantId: UUID, key: String? = null, name: String, defaultClassificationId: UUID? = null, routePolicy: String? = null, definitionKey: String? = null, stepUpOnApprove: Boolean? = null, active: Boolean? = null, version: Long? = null, createdAt: OffsetDateTime, updatedAt: OffsetDateTime, allowedApprovers: JSONB? = null, doaCheck: Boolean? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.key = key
@@ -89,6 +98,8 @@ open class MemoTypeRecord private constructor() : UpdatableRecordImpl<MemoTypeRe
         this.version = version
         this.createdAt = createdAt
         this.updatedAt = updatedAt
+        this.allowedApprovers = allowedApprovers
+        this.doaCheck = doaCheck
         resetTouchedOnNotNull()
     }
 }

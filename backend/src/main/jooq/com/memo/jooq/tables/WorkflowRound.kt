@@ -134,6 +134,11 @@ open class WorkflowRound(
      */
     val ROUTE: TableField<WorkflowRoundRecord, Array<UUID?>?> = createField(DSL.name("route"), SQLDataType.UUID.array().nullable(false).defaultValue(DSL.field(DSL.raw("'{}'::uuid[]"), SQLDataType.UUID.array())), this, "")
 
+    /**
+     * The column <code>memo.workflow_round.route_entries</code>.
+     */
+    val ROUTE_ENTRIES: TableField<WorkflowRoundRecord, JSONB?> = createField(DSL.name("route_entries"), SQLDataType.JSONB, this, "")
+
     private constructor(alias: Name, aliased: Table<WorkflowRoundRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<WorkflowRoundRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<WorkflowRoundRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -197,6 +202,7 @@ open class WorkflowRound(
         Internal.createCheck(this, DSL.name("workflow_round_check"), "(((outcome = 'OPEN'::text) = (ended_at IS NULL)))", true),
         Internal.createCheck(this, DSL.name("workflow_round_number_check"), "((number >= 1))", true),
         Internal.createCheck(this, DSL.name("workflow_round_outcome_check"), "((outcome = ANY (ARRAY['OPEN'::text, 'RETURNED'::text, 'APPROVED'::text, 'REJECTED'::text, 'WITHDRAWN'::text, 'RECALLED'::text, 'CANCELLED'::text])))", true),
+        Internal.createCheck(this, DSL.name("workflow_round_route_entries_check"), "(((route_entries IS NULL) OR ((jsonb_typeof(route_entries) = 'array'::text) AND (octet_length((route_entries)::text) <= 65536))))", true),
         Internal.createCheck(this, DSL.name("workflow_round_start_snapshot_check"), "((octet_length((start_snapshot)::text) <= 4096))", true)
     )
     override fun `as`(alias: String): WorkflowRound = WorkflowRound(DSL.name(alias), this)

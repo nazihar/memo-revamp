@@ -28,7 +28,9 @@ export function RouteEditor({
   onProblem: (problem: Problem | undefined) => void
 }) {
   const intl = useIntl()
-  const [entries, setEntries] = useState<Entry[]>(memo.route.map((r) => ({ id: r.approver.id, name: r.approver.name })))
+  const [entries, setEntries] = useState<Entry[]>(
+    memo.route.flatMap((r) => (r.approver ? [{ id: r.approver.id, name: r.approver.name }] : [])),
+  )
   const [picked, setPicked] = useState<Picked>()
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [busy, setBusy] = useState(false)

@@ -1,6 +1,7 @@
 package com.memo.workflow.engine
 
 import com.memo.workflow.InstanceStatus
+import com.memo.workflow.RouteEntry
 import com.memo.workflow.definition.Definition
 import com.memo.workflow.definition.StepAction
 import java.util.UUID
@@ -31,18 +32,22 @@ internal object Remarks {
 internal object Routes {
     fun refusal(
         initiator: UUID,
-        route: List<UUID>,
+        route: List<RouteEntry>,
         maxApprovers: Int,
         routed: Boolean = true,
-    ): Refusal? =
-        when {
+    ): Refusal? {
+        val people = route.flatMap { it.people }
+        val positions = route.flatMap { it.positions }
+        return when {
             !routed -> if (route.isEmpty()) null else Refusal.ROUTE_NOT_USED
             route.isEmpty() -> Refusal.ROUTE_EMPTY
             route.size > maxApprovers -> Refusal.ROUTE_TOO_LONG
-            initiator in route -> Refusal.INITIATOR_AS_APPROVER
-            route.toSet().size != route.size -> Refusal.ROUTE_DUPLICATE
+            route.any { !it.wellFormed } -> Refusal.ROUTE_INVALID
+            initiator in people -> Refusal.INITIATOR_AS_APPROVER
+            people.toSet().size != people.size || positions.toSet().size != positions.size -> Refusal.ROUTE_DUPLICATE
             else -> null
         }
+    }
 }
 
 /** Whether a command may run against a state (design E01 §3, E03 §4.4); null means it may. */
@@ -108,7 +113,7 @@ internal object Guards {
 
             is Resubmit -> {
                 initiatorIn(state, command.actor, InstanceStatus.RETURNED)
-                    ?: Routes.refusal(state.initiator, command.route, context.maxApprovers, routed)
+                    ?: Routes.refusal(state.initiator, command.routeEntries, context.maxApprovers, routed)
                     ?: Remarks.refusal(command.remark, required = false)
             }
 

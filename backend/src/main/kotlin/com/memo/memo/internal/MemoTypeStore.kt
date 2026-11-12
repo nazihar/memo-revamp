@@ -1,13 +1,16 @@
 package com.memo.memo.internal
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.memo.common.id.IdGenerator
 import com.memo.common.tenant.TenantDsl
 import com.memo.jooq.tables.records.MemoTypeRecord
 import com.memo.jooq.tables.references.MEMO_TYPE
 import com.memo.workflow.Workflows
 import io.swagger.v3.oas.annotations.media.Schema
+import org.jooq.JSONB
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Repository
+import tools.jackson.databind.json.JsonMapper
 import java.time.Clock
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -30,6 +33,19 @@ enum class RoutePolicy {
     val routed: Boolean get() = this != FIXED
 }
 
+/**
+ * Who may be on a memo type's routes (design E04 §4.7): named people, the holders of positions, and the holders of roles.
+ * Empty: anyone.
+ */
+data class AllowedApprovers(
+    val people: List<UUID> = emptyList(),
+    val positions: List<UUID> = emptyList(),
+    val roles: List<UUID> = emptyList(),
+) {
+    @get:JsonIgnore
+    val anyone: Boolean get() = people.isEmpty() && positions.isEmpty() && roles.isEmpty()
+}
+
 /** A memo type (design E01 §2, E03 §4.7): its workflow definition and who chooses the approvers. */
 data class MemoType(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val id: UUID,
@@ -43,6 +59,10 @@ data class MemoType(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val stepUpOnApprove: Boolean,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val active: Boolean,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val version: Long,
+    /** Who may be on its routes (design E04 §4.7); empty lists: anyone. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val allowedApprovers: AllowedApprovers = AllowedApprovers(),
+    /** Whether a route must satisfy the DoA at submit (design E04 §4.7). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val doaCheck: Boolean = false,
 )
 
 /** The fields an administrator edits. */
@@ -53,6 +73,8 @@ data class MemoTypeFields(
     val active: Boolean,
     val definitionKey: String = Workflows.SEQUENTIAL_APPROVAL,
     val routePolicy: RoutePolicy = RoutePolicy.INITIATOR_DEFINED,
+    val allowedApprovers: AllowedApprovers = AllowedApprovers(),
+    val doaCheck: Boolean = false,
 )
 
 /** Memo types (design E01 §2). Every method runs inside a tenant transaction. */
@@ -61,6 +83,7 @@ class MemoTypeStore(
     private val tenantDsl: TenantDsl,
     private val ids: IdGenerator,
     private val clock: Clock,
+    private val json: JsonMapper,
 ) {
     /** Every type, by name. */
     fun all(): List<MemoType> =
@@ -106,6 +129,8 @@ class MemoTypeStore(
             .set(MEMO_TYPE.ACTIVE, fields.active)
             .set(MEMO_TYPE.DEFINITION_KEY, fields.definitionKey)
             .set(MEMO_TYPE.ROUTE_POLICY, fields.routePolicy.name)
+            .set(MEMO_TYPE.ALLOWED_APPROVERS, JSONB.valueOf(json.writeValueAsString(fields.allowedApprovers)))
+            .set(MEMO_TYPE.DOA_CHECK, fields.doaCheck)
             .set(MEMO_TYPE.CREATED_AT, now)
             .set(MEMO_TYPE.UPDATED_AT, now)
             .onConflictDoNothing()
@@ -128,6 +153,8 @@ class MemoTypeStore(
             .set(MEMO_TYPE.ACTIVE, fields.active)
             .set(MEMO_TYPE.DEFINITION_KEY, fields.definitionKey)
             .set(MEMO_TYPE.ROUTE_POLICY, fields.routePolicy.name)
+            .set(MEMO_TYPE.ALLOWED_APPROVERS, JSONB.valueOf(json.writeValueAsString(fields.allowedApprovers)))
+            .set(MEMO_TYPE.DOA_CHECK, fields.doaCheck)
             .set(MEMO_TYPE.VERSION, MEMO_TYPE.VERSION.plus(1))
             .set(MEMO_TYPE.UPDATED_AT, now())
             .where(MEMO_TYPE.ID.eq(id), MEMO_TYPE.VERSION.eq(expectedVersion))
@@ -152,6 +179,8 @@ class MemoTypeStore(
             stepUpOnApprove = stepUpOnApprove!!,
             active = active!!,
             version = version!!,
+            allowedApprovers = json.readValue(allowedApprovers!!.data(), AllowedApprovers::class.java),
+            doaCheck = doaCheck == true,
         )
 
     private fun now() = OffsetDateTime.now(clock).withOffsetSameInstant(ZoneOffset.UTC)

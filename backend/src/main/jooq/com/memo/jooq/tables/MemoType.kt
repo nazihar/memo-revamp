@@ -23,6 +23,7 @@ import org.jooq.Condition
 import org.jooq.Field
 import org.jooq.ForeignKey
 import org.jooq.InverseForeignKey
+import org.jooq.JSONB
 import org.jooq.Name
 import org.jooq.Path
 import org.jooq.PlainSQL
@@ -139,6 +140,16 @@ open class MemoType(
      */
     val UPDATED_AT: TableField<MemoTypeRecord, OffsetDateTime?> = createField(DSL.name("updated_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false), this, "")
 
+    /**
+     * The column <code>memo.memo_type.allowed_approvers</code>.
+     */
+    val ALLOWED_APPROVERS: TableField<MemoTypeRecord, JSONB?> = createField(DSL.name("allowed_approvers"), SQLDataType.JSONB.nullable(false).defaultValue(DSL.field(DSL.raw("'{}'::jsonb"), SQLDataType.JSONB)), this, "")
+
+    /**
+     * The column <code>memo.memo_type.doa_check</code>.
+     */
+    val DOA_CHECK: TableField<MemoTypeRecord, Boolean?> = createField(DSL.name("doa_check"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "")
+
     private constructor(alias: Name, aliased: Table<MemoTypeRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<MemoTypeRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<MemoTypeRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -189,6 +200,7 @@ open class MemoType(
     val memo: MemoPath
         get(): MemoPath = memo()
     override fun getChecks(): List<Check<MemoTypeRecord>> = listOf(
+        Internal.createCheck(this, DSL.name("memo_type_allowed_approvers_check"), "(((jsonb_typeof(allowed_approvers) = 'object'::text) AND (octet_length((allowed_approvers)::text) <= 16384)))", true),
         Internal.createCheck(this, DSL.name("memo_type_definition_key_check"), "((definition_key ~ '^[a-z][a-z0-9-]{0,99}\$'::text))", true),
         Internal.createCheck(this, DSL.name("memo_type_key_check"), "((key ~ '^[a-z][a-z0-9-]{0,49}\$'::text))", true),
         Internal.createCheck(this, DSL.name("memo_type_name_check"), "(((length(name) >= 1) AND (length(name) <= 200)))", true),

@@ -5,6 +5,7 @@ import com.memo.common.id.IdGenerator
 import com.memo.workflow.ActionKind
 import com.memo.workflow.InstanceStatus
 import com.memo.workflow.MyTask
+import com.memo.workflow.RouteEntry
 import com.memo.workflow.StepRef
 import com.memo.workflow.TaskRole
 import com.memo.workflow.WorkflowRefusedException
@@ -52,6 +53,7 @@ class WorkflowRunner(
     private val resolvers: OrgResolvers,
     private val substitutes: SubstitutesInForce,
     private val doa: DoaMatcher,
+    private val orgLimits: ForwardLimits,
     private val ids: IdGenerator,
     private val json: JsonMapper,
     private val clock: Clock,
@@ -63,6 +65,7 @@ class WorkflowRunner(
         remark: String?,
         actor: Actor.User,
         definitionKey: String = DefinitionStore.SEQUENTIAL_APPROVAL,
+        entries: List<RouteEntry>? = null,
     ): WorkflowView {
         val subject = subject(subjectType)
         subject.lock(subjectId)
@@ -74,7 +77,14 @@ class WorkflowRunner(
         val doaVersion = doa.pin(definition)
         val outcome =
             accepted(
-                transition(subject, subjectId, actor.userId, route, definition, doaVersion = doaVersion).start(actor.userId, route, remark),
+                transition(
+                    subject,
+                    subjectId,
+                    actor.userId,
+                    route + entries.orEmpty().flatMap { it.people },
+                    definition,
+                    doaVersion = doaVersion,
+                ).start(actor.userId, route, remark, entries),
             )
         val instanceId = ids.next()
         instances.insert(instanceId, subjectType, subjectId, version, outcome.state, now(), doaVersion)
@@ -221,6 +231,7 @@ class WorkflowRunner(
                 // SOD-3: a substitute never acts on an item they initiated or have an interest in (design E04 §4.4).
                 substituteOf = { person -> substitutes.of(person)?.takeUnless { it == initiator || it in interested.value } },
                 doa = authority::value,
+                within = orgLimits::within,
             )
         return Transition(context, definition)
     }
@@ -259,7 +270,7 @@ class WorkflowRunner(
 
 private fun newPeople(command: Command): List<UUID> =
     when (command) {
-        is Resubmit -> command.route
+        is Resubmit -> command.routeEntries.flatMap { it.people }
         is Reassign -> listOf(command.newAssignee)
         is Forward -> listOf(command.to)
         is Delegate -> listOf(command.to)

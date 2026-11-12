@@ -67,6 +67,9 @@ class OrgDirectory(
     /** Whether the tenant has a unit [unitId] (open or closed). */
     fun unitExists(unitId: UUID): Boolean = units.unit(unitId) != null
 
+    /** The legal entity [unitId] belongs to; null for an unknown unit. */
+    fun legalEntityOf(unitId: UUID): UUID? = units.unit(unitId)?.legalEntityId
+
     /** [unitId]'s ancestors, nearest first (empty for a root unit or an unknown one). */
     fun ancestors(unitId: UUID): List<UUID> =
         units

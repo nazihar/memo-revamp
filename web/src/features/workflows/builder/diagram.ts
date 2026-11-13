@@ -5,7 +5,7 @@ import { bm, bmv } from './builder-messages'
 import type { DefinitionBody, StepJson } from './definition'
 import { describeType, describeWho, stepName, targetName, type Labels } from './describe'
 import { layout } from './layout'
-import { toGraph } from './model'
+import { END_NODE, START_NODE, toGraph } from './model'
 import { problemsByStep } from './problems'
 
 /** What a step node shows. */
@@ -66,6 +66,12 @@ export function diagram(
     })
     return { id: n.id, type: 'step', position, data, ariaLabel, draggable: false, selected: n.id === selected }
   })
+  const nodeName = (id: string) =>
+    id === START_NODE
+      ? intl.formatMessage(bm.start)
+      : id === END_NODE
+        ? intl.formatMessage(bm.end)
+        : targetName(intl, body.steps, id)
   const edges: Edge[] = graph.edges
     .filter((e) => !e.dangling)
     .map((e) => {
@@ -75,13 +81,23 @@ export function diagram(
           : e.kind === 'otherwise'
             ? intl.formatMessage(bm.otherwise)
             : undefined
+      const from = nodeName(e.source)
+      const to = nodeName(e.target)
+      // Every connection is named in words, never by step ids (React Flow's default).
+      const ariaLabel =
+        e.kind === 'branch'
+          ? intl.formatMessage(bmv.edgeIf, { from, to, condition: e.condition ?? '' })
+          : e.kind === 'otherwise'
+            ? intl.formatMessage(bmv.edgeOtherwise, { from, to })
+            : intl.formatMessage(bmv.edge, { from, to })
       return {
         id: e.id,
         source: e.source,
         target: e.target,
         type: 'smoothstep',
         markerEnd: { type: MarkerType.ArrowClosed },
-        ...(label ? { label, ariaLabel: label } : {}),
+        ariaLabel,
+        ...(label ? { label } : {}),
       }
     })
   return { nodes, edges }

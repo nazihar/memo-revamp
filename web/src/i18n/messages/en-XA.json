@@ -16531,6 +16531,34 @@
       "value": "]"
     }
   ],
+  "workflows.builder.attribute.classificationRank": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŀȧȧşşīƒīƈȧȧŧīǿǿƞ řȧȧƞķ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.attribute.memoTypeId": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿǿǿ ŧẏƥḗḗ (īḓ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "workflows.builder.cancel": [
     {
       "type": 0,
@@ -16615,6 +16643,252 @@
     {
       "type": 0,
       "value": "Ƈħǿǿǿǿşḗḗ…"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.condition.addRow": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧḓḓ ȧȧ ƈǿǿḿƥȧȧřīşǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.condition.asCel": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇřīŧḗḗ īŧ ȧȧş ƇḖĿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.condition.asSimple": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭşḗḗ ŧħḗḗ şīḿƥŀḗḗ ƒǿǿřḿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.condition.attribute": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŧŧřīƀŭŭŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.condition.cel": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿƞḓīŧīǿǿƞ (ƇḖĿ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.condition.celHint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ şīḿƥŀḗḗ ƒǿǿřḿ ƈȧȧƞƞǿǿŧ şħǿǿẇ ŧħīş ƈǿǿƞḓīŧīǿǿƞ; īŧ īş ķḗḗƥŧ ḗḗẋȧȧƈŧŀẏ ȧȧş ẇřīŧŧḗḗƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.condition.comparison": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿḿƥȧȧřīşǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.condition.false": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.condition.join": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ħǿǿŀḓş ẇħḗḗƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.condition.join.all": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ȧȧŀŀ ǿǿƒ ŧħḗḗşḗḗ ȧȧřḗḗ ŧřŭŭḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.condition.join.any": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ȧȧƞẏ ǿǿƒ ŧħḗḗşḗḗ īş ŧřŭŭḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.condition.noAttributes": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īŧḗḗḿş ǿǿƒ ŧħīş ķīƞḓ ħȧȧṽḗḗ ƞǿǿ ȧȧŧŧřīƀŭŭŧḗḗş ȧȧ ƈǿǿƞḓīŧīǿǿƞ ƈȧȧƞ ƈǿǿḿƥȧȧřḗḗ. Ẇřīŧḗḗ ŧħḗḗ ƈǿǿƞḓīŧīǿǿƞ ȧȧş ƇḖĿ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.condition.removeRow": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗḿǿǿṽḗḗ ƈǿǿḿƥȧȧřīşǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.condition.row": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿḿƥȧȧřīşǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.condition.true": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.condition.value": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ṽȧȧŀŭŭḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.condition.valueList": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ṽȧȧŀŭŭḗḗş, şḗḗƥȧȧřȧȧŧḗḗḓ ƀẏ ƈǿǿḿḿȧȧş"
     },
     {
       "type": 0,
@@ -16765,6 +17039,20 @@
       "value": "]"
     }
   ],
+  "workflows.builder.duration.amount": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧḿǿǿŭŭƞŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "workflows.builder.duration.days": [
     {
       "type": 0,
@@ -16845,6 +17133,20 @@
       "value": "]"
     }
   ],
+  "workflows.builder.duration.iso": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓŭŭřȧȧŧīǿǿƞ (ĪŞǾ 8601, şŭŭƈħ ȧȧş Ƥ1ḒŦ4Ħ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "workflows.builder.duration.minutes": [
     {
       "type": 0,
@@ -16879,6 +17181,62 @@
       },
       "offset": 0,
       "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.duration.unit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭƞīŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.duration.unit.days": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ḓȧȧẏş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.duration.unit.hours": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ħǿǿŭŭřş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.duration.unit.minutes": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ḿīƞŭŭŧḗḗş"
     },
     {
       "type": 0,
@@ -17455,6 +17813,88 @@
       "value": "]"
     }
   ],
+  "workflows.builder.notify.add": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧḓḓ şǿǿḿḗḗǿǿƞḗḗ ŧǿǿ ŧḗḗŀŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.notify.message": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗşşȧȧɠḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.notify.messageHint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ķḗḗẏ ǿǿƒ ŧħḗḗ ƞǿǿŧīƈḗḗ ŧǿǿ şḗḗƞḓ, şŭŭƈħ ȧȧş ƈřḗḗḓīŧḒḗḗƈīḓḗḗḓ. Ŧħḗḗ ƞǿǿŧīƈḗḗ ƞȧȧḿḗḗş ŧħḗḗ ḿḗḗḿǿǿ ǿǿƞŀẏ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.notify.recipientN": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧḗḗŀŀ "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.notify.remove": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗḿǿǿṽḗḗ ƥḗḗřşǿǿƞ ǿǿř ɠřǿǿŭŭƥ "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " ŧǿǿ ŧḗḗŀŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "workflows.builder.nowhere": [
     {
       "type": 0,
@@ -17463,6 +17903,104 @@
     {
       "type": 0,
       "value": "Ƞǿǿẇħḗḗřḗḗ ẏḗḗŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.op.eq": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "īş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.op.ge": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "īş ȧȧŧ ŀḗḗȧȧşŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.op.gt": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "īş ḿǿǿřḗḗ ŧħȧȧƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.op.in": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "īş ǿǿƞḗḗ ǿǿƒ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.op.le": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "īş ȧȧŧ ḿǿǿşŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.op.lt": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "īş ŀḗḗşş ŧħȧȧƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.op.ne": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "īş ƞǿǿŧ"
     },
     {
       "type": 0,
@@ -17855,6 +18393,20 @@
       "value": "]"
     }
   ],
+  "workflows.builder.sla.addReminder": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧḓḓ ȧȧ řḗḗḿīƞḓḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "workflows.builder.sla.due": [
     {
       "type": 0,
@@ -17895,6 +18447,34 @@
       "value": "]"
     }
   ],
+  "workflows.builder.sla.escalate.nextLevelOption": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿǿǿṽḗḗ ŧħḗḗ ŧȧȧşķ ǿǿƞḗḗ ŀḗḗṽḗḗŀ ŭŭƥ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.sla.escalate.none": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧħīƞɠ ḿǿǿřḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "workflows.builder.sla.escalate.notify": [
     {
       "type": 0,
@@ -17911,6 +18491,20 @@
     {
       "type": 0,
       "value": " ŀȧȧŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.sla.escalate.notifyOption": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧḗḗŀŀ ŧħḗḗ ħǿǿŀḓḗḗř’ş şŭŭƥḗḗřṽīşǿǿř"
     },
     {
       "type": 0,
@@ -17941,6 +18535,146 @@
     {
       "type": 0,
       "value": " ŀȧȧŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.sla.escalate.reassignOption": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿǿǿṽḗḗ ŧħḗḗ ŧȧȧşķ ŧǿǿ şǿǿḿḗḗǿǿƞḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.sla.field.after": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗḿīƞḓḗḗřş ȧȧƒŧḗḗř īŧ īş ḓŭŭḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.sla.field.before": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ħǿǿẇ ŀǿǿƞɠ ƀḗḗƒǿǿřḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.sla.field.due": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓŭŭḗḗ ȧȧƒŧḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.sla.field.escalateAfter": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ħǿǿẇ ŀǿǿƞɠ ŀȧȧŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.sla.field.escalateTo": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿǿǿṽḗḗ īŧ ŧǿǿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.sla.field.escalation": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇħḗḗƞ īŧ īş ŀȧȧŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.sla.field.remindBefore": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗḿīƞḓ ŧħḗḗ ħǿǿŀḓḗḗř ƀḗḗƒǿǿřḗḗ īŧ īş ḓŭŭḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.sla.field.workingTime": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿŭŭƞŧ ẇǿǿřķīƞɠ ŧīḿḗḗ ǿǿƞŀẏ (ŧħḗḗ ƀŭŭşīƞḗḗşş ƈȧȧŀḗḗƞḓȧȧř)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.sla.has": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş şŧḗḗƥ ħȧȧş ȧȧ ḓḗḗȧȧḓŀīƞḗḗ"
     },
     {
       "type": 0,
@@ -17985,6 +18719,46 @@
     {
       "type": 0,
       "value": " ƀḗḗƒǿǿřḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.sla.reminderN": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗḿīƞḓḗḗř "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧƒŧḗḗř īŧ īş ḓŭŭḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.sla.removeReminder": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗḿǿǿṽḗḗ řḗḗḿīƞḓḗḗř "
+    },
+    {
+      "type": 1,
+      "value": "n"
     },
     {
       "type": 0,

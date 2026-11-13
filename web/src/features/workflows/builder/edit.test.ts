@@ -83,6 +83,15 @@ describe('editing a definition', () => {
     expect(next.steps.find((s) => s.id === 'size')?.branches?.[0]?.when).toBe('item.classificationRank == 1')
   })
 
+  it('sets a condition and declares the attributes it reads, once', () => {
+    const declare = [{ name: 'amount', type: 'double' }]
+    let next = apply(body, { kind: 'setCondition', id: 'size', index: 0, when: 'item.amount > 1000.0', declare })
+    expect(next.steps.find((s) => s.id === 'size')?.branches?.[0]?.when).toBe('item.amount > 1000.0')
+    expect(next.attributes).toEqual(declare)
+    next = apply(next, { kind: 'setCondition', id: 'size', index: 0, when: 'item.amount > 5.0', declare })
+    expect(next.attributes).toEqual(declare)
+  })
+
   it('gives new steps unused ids from their type', () => {
     expect(newStepId(body, 'approve')).toBe('approve')
     expect(newStepId(body, 'review')).toBe('review-2')

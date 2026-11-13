@@ -7923,6 +7923,18 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "workflows.builder.attribute.classificationRank": [
+    {
+      "type": 0,
+      "value": "Classification rankSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.attribute.memoTypeId": [
+    {
+      "type": 0,
+      "value": "Memo type (id)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "workflows.builder.cancel": [
     {
       "type": 0,
@@ -7983,6 +7995,124 @@
     {
       "type": 0,
       "value": "Choose…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.condition.addRow": [
+    {
+      "type": 0,
+      "value": "Add a comparisonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.condition.asCel": [
+    {
+      "type": 0,
+      "value": "Write it as CELSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.condition.asSimple": [
+    {
+      "type": 0,
+      "value": "Use the simple formSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.condition.attribute": [
+    {
+      "type": 0,
+      "value": "AttributeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.condition.cel": [
+    {
+      "type": 0,
+      "value": "Condition (CEL)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.condition.celHint": [
+    {
+      "type": 0,
+      "value": "The simple form cannot show this condition; it is kept exactly as written.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.condition.comparison": [
+    {
+      "type": 0,
+      "value": "ComparisonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.condition.false": [
+    {
+      "type": 0,
+      "value": "NoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.condition.join": [
+    {
+      "type": 0,
+      "value": "Holds whenSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.condition.join.all": [
+    {
+      "type": 0,
+      "value": "all of these are trueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.condition.join.any": [
+    {
+      "type": 0,
+      "value": "any of these is trueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.condition.noAttributes": [
+    {
+      "type": 0,
+      "value": "Items of this kind have no attributes a condition can compare. Write the condition as CEL.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.condition.removeRow": [
+    {
+      "type": 0,
+      "value": "Remove comparison "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.condition.row": [
+    {
+      "type": 0,
+      "value": "Comparison "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.condition.true": [
+    {
+      "type": 0,
+      "value": "YesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.condition.value": [
+    {
+      "type": 0,
+      "value": "ValueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.condition.valueList": [
+    {
+      "type": 0,
+      "value": "Values, separated by commasSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "workflows.builder.conditionN": [
@@ -8051,6 +8181,12 @@
     {
       "type": 0,
       "value": "CloseSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.duration.amount": [
+    {
+      "type": 0,
+      "value": "AmountSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "workflows.builder.duration.days": [
@@ -8125,6 +8261,12 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "workflows.builder.duration.iso": [
+    {
+      "type": 0,
+      "value": "Duration (ISO 8601, such as P1DT4H)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "workflows.builder.duration.minutes": [
     {
       "type": 6,
@@ -8159,6 +8301,30 @@
     {
       "type": 0,
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.duration.unit": [
+    {
+      "type": 0,
+      "value": "UnitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.duration.unit.days": [
+    {
+      "type": 0,
+      "value": "daysSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.duration.unit.hours": [
+    {
+      "type": 0,
+      "value": "hoursSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.duration.unit.minutes": [
+    {
+      "type": 0,
+      "value": "minutesSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "workflows.builder.duration.workingDays": [
@@ -8503,10 +8669,98 @@
       "value": "This body cannot be drawn: it needs a start and a list of steps, each with an id and a type. Use the JSON view.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "workflows.builder.notify.add": [
+    {
+      "type": 0,
+      "value": "Add someone to tellSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.notify.message": [
+    {
+      "type": 0,
+      "value": "MessageSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.notify.messageHint": [
+    {
+      "type": 0,
+      "value": "The key of the notice to send, such as creditDecided. The notice names the memo only.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.notify.recipientN": [
+    {
+      "type": 0,
+      "value": "Tell "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.notify.remove": [
+    {
+      "type": 0,
+      "value": "Remove person or group "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " to tellSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "workflows.builder.nowhere": [
     {
       "type": 0,
       "value": "Nowhere yetSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.op.eq": [
+    {
+      "type": 0,
+      "value": "isSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.op.ge": [
+    {
+      "type": 0,
+      "value": "is at leastSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.op.gt": [
+    {
+      "type": 0,
+      "value": "is more thanSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.op.in": [
+    {
+      "type": 0,
+      "value": "is one ofSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.op.le": [
+    {
+      "type": 0,
+      "value": "is at mostSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.op.lt": [
+    {
+      "type": 0,
+      "value": "is less thanSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.op.ne": [
+    {
+      "type": 0,
+      "value": "is notSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "workflows.builder.otherwise": [
@@ -8719,6 +8973,12 @@
       "value": "Selected stepSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "workflows.builder.sla.addReminder": [
+    {
+      "type": 0,
+      "value": "Add a reminderSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "workflows.builder.sla.due": [
     {
       "type": 0,
@@ -8747,6 +9007,18 @@
       "value": " lateSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "workflows.builder.sla.escalate.nextLevelOption": [
+    {
+      "type": 0,
+      "value": "Move the task one level upSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.sla.escalate.none": [
+    {
+      "type": 0,
+      "value": "Nothing moreSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "workflows.builder.sla.escalate.notify": [
     {
       "type": 0,
@@ -8759,6 +9031,12 @@
     {
       "type": 0,
       "value": " lateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.sla.escalate.notifyOption": [
+    {
+      "type": 0,
+      "value": "Tell the holder’s supervisorSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "workflows.builder.sla.escalate.reassign": [
@@ -8781,6 +9059,66 @@
     {
       "type": 0,
       "value": " lateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.sla.escalate.reassignOption": [
+    {
+      "type": 0,
+      "value": "Move the task to someoneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.sla.field.after": [
+    {
+      "type": 0,
+      "value": "Reminders after it is dueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.sla.field.before": [
+    {
+      "type": 0,
+      "value": "How long beforeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.sla.field.due": [
+    {
+      "type": 0,
+      "value": "Due afterSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.sla.field.escalateAfter": [
+    {
+      "type": 0,
+      "value": "How long lateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.sla.field.escalateTo": [
+    {
+      "type": 0,
+      "value": "Move it toSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.sla.field.escalation": [
+    {
+      "type": 0,
+      "value": "When it is lateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.sla.field.remindBefore": [
+    {
+      "type": 0,
+      "value": "Remind the holder before it is dueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.sla.field.workingTime": [
+    {
+      "type": 0,
+      "value": "Count working time only (the business calendar)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.sla.has": [
+    {
+      "type": 0,
+      "value": "This step has a deadlineSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "workflows.builder.sla.remindAfter": [
@@ -8809,6 +9147,34 @@
     {
       "type": 0,
       "value": " beforeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.sla.reminderN": [
+    {
+      "type": 0,
+      "value": "Reminder "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " after it is dueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.sla.removeReminder": [
+    {
+      "type": 0,
+      "value": "Remove reminder "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "workflows.builder.start": [

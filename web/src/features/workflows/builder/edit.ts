@@ -19,6 +19,8 @@ export type Command =
   | { kind: 'set'; id: string; patch: Partial<StepJson> }
   | { kind: 'addBranch'; id: string; branch: BranchJson }
   | { kind: 'removeBranch'; id: string; index: number }
+  /** A branch's condition, declaring the attributes it reads (conditions compile against the declared ones, ADR-0039). */
+  | { kind: 'setCondition'; id: string; index: number; when: string; declare: { name: string; type: string }[] }
 
 function withSteps(body: DefinitionBody, steps: StepJson[]): DefinitionBody {
   return { ...body, steps }
@@ -111,6 +113,13 @@ function remove(body: DefinitionBody, id: string): DefinitionBody {
   return incoming(without, id).reduce((b, slot) => connect(b, slot, onward), without)
 }
 
+/** [attributes] added to the body's declared attributes, unless declared already. */
+function declare(body: DefinitionBody, attributes: { name: string; type: string }[]): DefinitionBody {
+  const declared = body.attributes ?? []
+  const missing = attributes.filter((a) => !declared.some((d) => d.name === a.name))
+  return missing.length === 0 ? body : { ...body, attributes: [...declared, ...missing] }
+}
+
 /** The body after [command]; a command that names a step that does not exist changes nothing. */
 export function apply(body: DefinitionBody, command: Command): DefinitionBody {
   switch (command.kind) {
@@ -129,6 +138,14 @@ export function apply(body: DefinitionBody, command: Command): DefinitionBody {
         ...s,
         branches: (s.branches ?? []).filter((_, i) => i !== command.index),
       }))
+    case 'setCondition':
+      return declare(
+        mapStep(body, command.id, (s) => ({
+          ...s,
+          branches: (s.branches ?? []).map((b, i) => (i === command.index ? { ...b, when: command.when } : b)),
+        })),
+        command.declare,
+      )
   }
 }
 

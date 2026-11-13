@@ -18,7 +18,9 @@ export function parseBody(text: string): DefinitionBody | undefined {
 
 /** What changes one field of one step: typing in it again extends the same undo step instead of adding one per key. */
 function coalesceKey(command: Command): string | undefined {
-  return command.kind === 'set' ? `${command.id}:${Object.keys(command.patch).sort().join(',')}` : undefined
+  if (command.kind === 'set') return `${command.id}:${Object.keys(command.patch).sort().join(',')}`
+  if (command.kind === 'setCondition') return `${command.id}:condition:${String(command.index)}`
+  return undefined
 }
 
 /**

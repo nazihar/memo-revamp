@@ -174,8 +174,10 @@ class OrgPerformanceIT : IntegrationTest() {
         val plan =
             transactions.readInTenant(tenant.id) {
                 // identity_user is shared by every test tenant, so its statistics drift as the suite grows and the planner
-                // may prefer a sequential scan for a one-row estimate. What must hold is that the query can use the index.
+                // may prefer a sequential or bitmap scan for a one-row estimate. What must hold is that the query can use the
+                // index that serves both the prefix filter and the order.
                 tenantDsl.current().execute("set local enable_seqscan = off")
+                tenantDsl.current().execute("set local enable_bitmapscan = off")
                 tenantDsl
                     .current()
                     .fetch(

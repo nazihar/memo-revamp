@@ -47,6 +47,8 @@ import com.memo.jooq.tables.TenancySettingView
 import com.memo.jooq.tables.TenancyTenant
 import com.memo.jooq.tables.TenancyTerm
 import com.memo.jooq.tables.WorkflowAction
+import com.memo.jooq.tables.WorkflowCalendar
+import com.memo.jooq.tables.WorkflowCalendarDay
 import com.memo.jooq.tables.WorkflowDefinition
 import com.memo.jooq.tables.WorkflowDefinitionVersion
 import com.memo.jooq.tables.WorkflowDoaRule
@@ -302,6 +304,16 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val WORKFLOW_ACTION: WorkflowAction get() = WorkflowAction.WORKFLOW_ACTION
 
     /**
+     * The table <code>memo.workflow_calendar</code>.
+     */
+    val WORKFLOW_CALENDAR: WorkflowCalendar get() = WorkflowCalendar.WORKFLOW_CALENDAR
+
+    /**
+     * The table <code>memo.workflow_calendar_day</code>.
+     */
+    val WORKFLOW_CALENDAR_DAY: WorkflowCalendarDay get() = WorkflowCalendarDay.WORKFLOW_CALENDAR_DAY
+
+    /**
      * The table <code>memo.workflow_definition</code>.
      */
     val WORKFLOW_DEFINITION: WorkflowDefinition get() = WorkflowDefinition.WORKFLOW_DEFINITION
@@ -403,6 +415,8 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         TenancyTenant.TENANCY_TENANT,
         TenancyTerm.TENANCY_TERM,
         WorkflowAction.WORKFLOW_ACTION,
+        WorkflowCalendar.WORKFLOW_CALENDAR,
+        WorkflowCalendarDay.WORKFLOW_CALENDAR_DAY,
         WorkflowDefinition.WORKFLOW_DEFINITION,
         WorkflowDefinitionVersion.WORKFLOW_DEFINITION_VERSION,
         WorkflowDoaRule.WORKFLOW_DOA_RULE,

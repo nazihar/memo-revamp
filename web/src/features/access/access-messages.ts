@@ -146,6 +146,10 @@ export const catalogue = defineMessages({
     id: 'access.permission.workflowDoaApprove',
     defaultMessage: 'Review and publish the delegation of authority',
   },
+  'workflow.calendar.manage': {
+    id: 'access.permission.workflowCalendarManage',
+    defaultMessage: 'Set the business calendar for deadlines',
+  },
 })
 
 export function catalogueLabel(intl: IntlShape, key: string, fallback?: string): string {

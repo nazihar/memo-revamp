@@ -9,6 +9,7 @@ import com.memo.org.internal.ReportingLineStore
 import com.memo.org.internal.UnitStore
 import org.springframework.stereotype.Service
 import java.time.LocalDate
+import java.time.ZoneId
 import java.util.UUID
 
 /** A position as other modules see it: where it is and whether it heads its unit. */
@@ -35,6 +36,9 @@ class OrgDirectory(
 ) {
     /** Today in the tenant's time zone. */
     fun today(): LocalDate = calendar.today()
+
+    /** The tenant's time zone (the organisation's default; UTC when not set). */
+    fun zone(): ZoneId = calendar.zone()
 
     /** The holder of each of [positionIds] on [date]; vacant positions are absent. */
     fun holders(
@@ -101,10 +105,10 @@ class OrgDirectory(
         return current?.let { positions.byIds(listOf(it))[it]?.ref() }
     }
 
-    private fun OrgPosition.ref() = PositionRef(id, unitId, title, head)
-
     companion object {
         /** How far up a resolver may walk (design E04 §2). */
         const val MAX_LEVELS = 10
     }
 }
+
+private fun OrgPosition.ref() = PositionRef(id, unitId, title, head)

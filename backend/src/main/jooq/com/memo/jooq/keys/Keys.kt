@@ -48,6 +48,8 @@ import com.memo.jooq.tables.TenancySetting
 import com.memo.jooq.tables.TenancyTenant
 import com.memo.jooq.tables.TenancyTerm
 import com.memo.jooq.tables.WorkflowAction
+import com.memo.jooq.tables.WorkflowCalendar
+import com.memo.jooq.tables.WorkflowCalendarDay
 import com.memo.jooq.tables.WorkflowDefinition
 import com.memo.jooq.tables.WorkflowDefinitionVersion
 import com.memo.jooq.tables.WorkflowDoaRule
@@ -102,6 +104,8 @@ import com.memo.jooq.tables.records.TenancySettingRecord
 import com.memo.jooq.tables.records.TenancyTenantRecord
 import com.memo.jooq.tables.records.TenancyTermRecord
 import com.memo.jooq.tables.records.WorkflowActionRecord
+import com.memo.jooq.tables.records.WorkflowCalendarDayRecord
+import com.memo.jooq.tables.records.WorkflowCalendarRecord
 import com.memo.jooq.tables.records.WorkflowDefinitionRecord
 import com.memo.jooq.tables.records.WorkflowDefinitionVersionRecord
 import com.memo.jooq.tables.records.WorkflowDoaRuleRecord
@@ -198,6 +202,8 @@ val TENANCY_TERM_PKEY: UniqueKey<TenancyTermRecord> = Internal.createUniqueKey(T
 val WORKFLOW_ACTION_PKEY: UniqueKey<WorkflowActionRecord> = Internal.createUniqueKey(WorkflowAction.WORKFLOW_ACTION, DSL.name("workflow_action_pkey"), arrayOf(WorkflowAction.WORKFLOW_ACTION.ID), true)
 val WORKFLOW_ACTION_TENANT_ID_ID_KEY: UniqueKey<WorkflowActionRecord> = Internal.createUniqueKey(WorkflowAction.WORKFLOW_ACTION, DSL.name("workflow_action_tenant_id_id_key"), arrayOf(WorkflowAction.WORKFLOW_ACTION.TENANT_ID, WorkflowAction.WORKFLOW_ACTION.ID), true)
 val WORKFLOW_ACTION_TENANT_ID_INSTANCE_ID_SEQ_KEY: UniqueKey<WorkflowActionRecord> = Internal.createUniqueKey(WorkflowAction.WORKFLOW_ACTION, DSL.name("workflow_action_tenant_id_instance_id_seq_key"), arrayOf(WorkflowAction.WORKFLOW_ACTION.TENANT_ID, WorkflowAction.WORKFLOW_ACTION.INSTANCE_ID, WorkflowAction.WORKFLOW_ACTION.SEQ), true)
+val WORKFLOW_CALENDAR_PKEY: UniqueKey<WorkflowCalendarRecord> = Internal.createUniqueKey(WorkflowCalendar.WORKFLOW_CALENDAR, DSL.name("workflow_calendar_pkey"), arrayOf(WorkflowCalendar.WORKFLOW_CALENDAR.TENANT_ID), true)
+val WORKFLOW_CALENDAR_DAY_PKEY: UniqueKey<WorkflowCalendarDayRecord> = Internal.createUniqueKey(WorkflowCalendarDay.WORKFLOW_CALENDAR_DAY, DSL.name("workflow_calendar_day_pkey"), arrayOf(WorkflowCalendarDay.WORKFLOW_CALENDAR_DAY.TENANT_ID, WorkflowCalendarDay.WORKFLOW_CALENDAR_DAY.DAY), true)
 val WORKFLOW_DEFINITION_PKEY: UniqueKey<WorkflowDefinitionRecord> = Internal.createUniqueKey(WorkflowDefinition.WORKFLOW_DEFINITION, DSL.name("workflow_definition_pkey"), arrayOf(WorkflowDefinition.WORKFLOW_DEFINITION.ID), true)
 val WORKFLOW_DEFINITION_TENANT_ID_ID_KEY: UniqueKey<WorkflowDefinitionRecord> = Internal.createUniqueKey(WorkflowDefinition.WORKFLOW_DEFINITION, DSL.name("workflow_definition_tenant_id_id_key"), arrayOf(WorkflowDefinition.WORKFLOW_DEFINITION.TENANT_ID, WorkflowDefinition.WORKFLOW_DEFINITION.ID), true)
 val WORKFLOW_DEFINITION_TENANT_ID_KEY_KEY: UniqueKey<WorkflowDefinitionRecord> = Internal.createUniqueKey(WorkflowDefinition.WORKFLOW_DEFINITION, DSL.name("workflow_definition_tenant_id_key_key"), arrayOf(WorkflowDefinition.WORKFLOW_DEFINITION.TENANT_ID, WorkflowDefinition.WORKFLOW_DEFINITION.KEY), true)

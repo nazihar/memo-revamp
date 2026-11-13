@@ -123,3 +123,16 @@
     - `views.test.tsx`: arrow keys move the focus along connections and across; Delete asks, then removes;
     - `workflows.test.tsx`: the announcement after adding a step, and axe on the Arabic definition page.
   - **Not done here:** the keyboard-only E2E of building a workflow. It joins the exit journey (T9), which builds in the Steps view.
+- **T9 (close, epic and phase):**
+  - **Exit journey** `builder.spec.ts` (Playwright, every PR):
+    - The tenant admin creates a definition and, in the Steps view, removes the starter step and builds a review by the head of credit, a branch on classification rank ≥ 2, a parallel committee (director and head of finance), and a director with a two-day deadline whose supervisor is told a day late.
+    - Problems clear as it is built. It is saved, drawn, and simulated on both branches: rank 0 is approved through the director; rank 2 stops at the committee, because no demo user is cleared above rank 0.
+    - It is submitted; a second administrator approves it with a step-up; a memo type runs on it.
+    - A memo goes review → branch → director, showing its due time, to Approved.
+  - **Demo seed:** `reviewer@demo.example` ("Demo Workflow Reviewer", tenant administrator) gives the maker-checker review a real second person. The E2E role is `reviewer`.
+  - **Phase documents:**
+    - the phase demo script `demo.md`;
+    - `retrospective.md`, with the exit status per criterion;
+    - runbook `docs/runbooks/workflow-builder.md`;
+    - four ASVS rows: who may use the catalogue and the simulation, the reviewer approving what was shown, simulation limits, and text rendered as text.
+- **E06 complete** (PRs #72–#81, stacked on E05; none merged yet).

@@ -46,6 +46,8 @@ object DemoTenant {
     val USERS =
         listOf(
             DemoUser("admin@demo.example", "Demo Admin", BuiltInRole.TENANT_ADMIN),
+            // A second administrator, so a workflow written by one is approved by another (maker-checker, E06 T9).
+            DemoUser("reviewer@demo.example", "Demo Workflow Reviewer", BuiltInRole.TENANT_ADMIN),
             DemoUser("orgadmin@demo.example", "Demo Org Admin", BuiltInRole.ORG_ADMIN),
             DemoUser("branchadmin@demo.example", "Demo Branch Admin", BuiltInRole.ORG_ADMIN, scopeUnit = "REG-N"),
             DemoUser("auditor@demo.example", "Demo Auditor", BuiltInRole.AUDITOR),

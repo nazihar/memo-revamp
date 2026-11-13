@@ -38,6 +38,9 @@ export const bm = defineMessages({
 
 export const bmv = defineMessages<{
   stepHeading: { index: number; name: string }
+  edge: { from: string; to: string }
+  edgeIf: { from: string; to: string; condition: string }
+  edgeOtherwise: { from: string; to: string }
   stepAria: { index: number; count: number; type: string; name: string; who: string; next: string }
   problems: { count: number }
   unknown: { id: string }
@@ -62,6 +65,9 @@ export const bmv = defineMessages<{
   escalateNextLevel: { after: string }
 }>({
   stepHeading: { id: 'workflows.builder.stepHeading', defaultMessage: '{index}. {name}' },
+  edge: { id: 'workflows.builder.edge', defaultMessage: '{from} leads to {to}' },
+  edgeIf: { id: 'workflows.builder.edge.if', defaultMessage: '{from} leads to {to} if {condition}' },
+  edgeOtherwise: { id: 'workflows.builder.edge.otherwise', defaultMessage: '{from} otherwise leads to {to}' },
   stepAria: {
     id: 'workflows.builder.stepAria',
     defaultMessage: 'Step {index} of {count}, {type}, {name}. {who} Leads to {next}.',

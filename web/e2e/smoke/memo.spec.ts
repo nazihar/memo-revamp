@@ -44,6 +44,8 @@ test.describe('as the initiator', () => {
     const subject = `E2E memo ${String(Date.now())}`
     await app.visit('/memos/new')
     await page.getByLabel('Subject').fill(subject)
+    // The demo has a second type, Credit facility, whose workflow names every step (E03): this journey builds a route.
+    await page.getByLabel('Memo type').selectOption({ label: 'General memo' })
     await page.getByRole('button', { name: 'Create draft' }).click()
     await expect(page.getByRole('heading', { level: 1, name: subject })).toBeVisible()
     const memoUrl = page.url()

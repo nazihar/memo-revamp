@@ -43,13 +43,26 @@ class MemoWorkflowSubject(
         users: Collection<UUID>,
     ): Map<UUID, BlockedReason> {
         val memo = store.find(subjectId) ?: return emptyMap()
+        return ineligibleAtRank(memo.classificationRank, users)
+    }
+
+    /** A sample memo of classification rank `classificationRank` (0 when absent), for the definition simulation. */
+    override fun ineligibleAt(
+        attributes: Map<String, Any?>,
+        users: Collection<UUID>,
+    ): Map<UUID, BlockedReason> = ineligibleAtRank((attributes["classificationRank"] as? Number)?.toInt() ?: 0, users)
+
+    private fun ineligibleAtRank(
+        rank: Int,
+        users: Collection<UUID>,
+    ): Map<UUID, BlockedReason> {
         val people = this.users.of(users.toSet())
         val ranks = clearances.rankOf(users.toSet())
         return users
             .associateWith { user ->
                 when {
                     people[user]?.status != UserStatus.ACTIVE -> BlockedReason.INACTIVE
-                    ranks.getValue(user) < memo.classificationRank -> BlockedReason.NO_CLEARANCE
+                    ranks.getValue(user) < rank -> BlockedReason.NO_CLEARANCE
                     else -> null
                 }
             }.filterValues { it != null }

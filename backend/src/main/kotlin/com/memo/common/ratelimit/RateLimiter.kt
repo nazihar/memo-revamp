@@ -35,6 +35,7 @@ enum class RateLimit(
     MAIL_TEST_PER_TENANT(5, Duration.ofHours(1)),
     AUDIT_QUERY_PER_USER(60, Duration.ofMinutes(1)),
     AUDIT_EXPORT_PER_TENANT(5, Duration.ofHours(1)),
+    WORKFLOW_SIMULATION_PER_USER(30, Duration.ofMinutes(1)),
     ;
 
     internal val configuration: BucketConfiguration by lazy {

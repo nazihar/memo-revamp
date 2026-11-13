@@ -80,6 +80,16 @@ class DoaMatcher(
         return matched(version, subject.type, subject.attributeValues(subjectId), initiator).first
     }
 
+    /** The DoA in force today as it would apply to an item of [subjectType] with [attributes] (the definition simulation, E06). */
+    fun matchAt(
+        subjectType: String,
+        attributes: Map<String, Any?>,
+        initiator: UUID,
+    ): DoaMatch {
+        val version = versions.inForce(directory.today()) ?: return DoaMatch.NONE
+        return matched(version, subjectType, attributes, initiator).first
+    }
+
     /** Who would approve an item of [subjectType] with [attributes], started by [initiator], under version [number] or the one in force. */
     fun simulate(
         number: Int?,

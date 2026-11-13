@@ -52,6 +52,12 @@ class TestWorkflowSubject : WorkflowSubject {
         users: Collection<UUID>,
     ): Map<UUID, BlockedReason> = ineligible.filterKeys { it in users }
 
+    /** The simulation's twin (design E06 §4): the same people are ineligible whatever the sample. */
+    override fun ineligibleAt(
+        attributes: Map<String, Any?>,
+        users: Collection<UUID>,
+    ): Map<UUID, BlockedReason> = ineligible.filterKeys { it in users }
+
     override fun snapshot(subjectId: UUID): Map<String, Any?> = mapOf("documentVersion" to (documentVersion[subjectId] ?: 1))
 
     override fun beforeAction(

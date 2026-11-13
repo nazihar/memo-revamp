@@ -3398,6 +3398,115 @@
         "required" : [ "displayName", "email", "id", "tenantAdmin" ],
         "type" : "object"
       },
+      "SimulatedPersonResponse" : {
+        "properties" : {
+          "actingFor" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/Person"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "id", "name" ],
+        "type" : "object"
+      },
+      "SimulatedStepResponse" : {
+        "properties" : {
+          "blockedReason" : {
+            "enum" : [ "NO_CLEARANCE", "INACTIVE", "UNRESOLVED" ],
+            "type" : [ "string", "null" ]
+          },
+          "branch" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "condition" : {
+            "type" : [ "string", "null" ]
+          },
+          "group" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "next" : {
+            "type" : [ "string", "null" ]
+          },
+          "outcome" : {
+            "enum" : [ "DECIDED", "BLOCKED", "NOTIFIED", "BRANCHED", "PASSED" ],
+            "type" : "string"
+          },
+          "people" : {
+            "items" : {
+              "$ref" : "#/components/schemas/SimulatedPersonResponse"
+            },
+            "type" : "array"
+          },
+          "sla" : {
+            "additionalProperties" : { },
+            "type" : [ "object", "null" ]
+          },
+          "stepId" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "name", "outcome", "people", "stepId", "type" ],
+        "type" : "object"
+      },
+      "SimulationRequest" : {
+        "properties" : {
+          "attributes" : {
+            "additionalProperties" : { },
+            "type" : "object"
+          },
+          "body" : {
+            "additionalProperties" : { },
+            "type" : [ "object", "null" ]
+          },
+          "initiatorId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "route" : {
+            "items" : {
+              "$ref" : "#/components/schemas/RouteEntry"
+            },
+            "type" : "array"
+          },
+          "subjectType" : {
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "SimulationResponse" : {
+        "properties" : {
+          "ended" : {
+            "enum" : [ "APPROVED", "BLOCKED", "LIMIT" ],
+            "type" : "string"
+          },
+          "steps" : {
+            "items" : {
+              "$ref" : "#/components/schemas/SimulatedStepResponse"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "ended", "steps" ],
+        "type" : "object"
+      },
       "StepUpRequest" : {
         "description" : "A TOTP or recovery code for users with MFA; the current password otherwise.",
         "properties" : {
@@ -5107,6 +5216,50 @@
           }
         },
         "summary" : "Return a version in review to draft, saying why",
+        "tags" : [ "workflow" ]
+      }
+    },
+    "/api/v1/admin/workflow-definitions/{key}/versions/{number}/simulate" : {
+      "post" : {
+        "operationId" : "simulateWorkflowDefinition",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "number",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/SimulationRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SimulationResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Who a version, or an unsaved body, would reach for a sample item",
         "tags" : [ "workflow" ]
       }
     },

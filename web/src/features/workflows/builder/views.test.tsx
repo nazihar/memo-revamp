@@ -1,5 +1,5 @@
-import { screen, within } from '@testing-library/react'
-import { beforeAll, describe, expect, it } from 'vitest'
+import { fireEvent, screen, within } from '@testing-library/react'
+import { beforeAll, describe, expect, it, vi } from 'vitest'
 import { installReactFlowStubs } from '@/test/react-flow'
 import { expectNoA11yViolations, renderWithProviders } from '@/test/render'
 import { DefinitionDiagram } from './DefinitionDiagram'
@@ -83,5 +83,18 @@ describe('the builder views (read-only)', () => {
     expect(within(diagram).getByLabelText('End')).toBeInTheDocument()
     expect(within(diagram).getByText('Farid Finance', { exact: false })).toBeInTheDocument()
     await expectNoA11yViolations(container)
+  })
+
+  it('in a draft, selecting a step in the diagram opens its panel beside it', async () => {
+    const onCommand = vi.fn()
+    renderWithProviders(<DefinitionDiagram body={body} labels={labels} problems={problems} onCommand={onCommand} />)
+    expect(screen.getByText('Select a step in the diagram to change it, or use the Steps view.')).toBeInTheDocument()
+    fireEvent.click(await screen.findByLabelText(/^Step 4 of 5, Approval, Director./))
+    const panel = screen.getByRole('region', { name: 'Director' })
+    expect(within(panel).getByText('No step "nowhere".')).toBeInTheDocument()
+    fireEvent.change(within(panel).getByLabelText('Name'), { target: { value: 'Managing director' } })
+    expect(onCommand).toHaveBeenCalledWith({ kind: 'set', id: 'director', patch: { name: 'Managing director' } })
+    fireEvent.change(within(panel).getByLabelText('Leads to'), { target: { value: 'tell' } })
+    expect(onCommand).toHaveBeenCalledWith({ kind: 'connect', from: { kind: 'next', step: 'director' }, to: 'tell' })
   })
 })

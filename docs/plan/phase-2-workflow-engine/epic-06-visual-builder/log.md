@@ -39,3 +39,18 @@
     - `DefinitionSimulationIT`: labels.
   - **jsdom stubs** for React Flow (`src/test/react-flow.ts`) are installed per test file, so other tests keep jsdom's real element sizes.
   - **Not done:** an Arabic render test of the builder. Admin catalogue parts load lazily in component tests; `i18n:verify` checks the Arabic keys instead.
+- **T2 (editing core):** a draft is edited in the builder.
+  - **Commands** (`edit.ts`, pure): add a step after another or at the start (it takes over where that step led; after a branch, its otherwise); connect any slot (start, next, a condition, otherwise); remove a step (what led to it is re-pointed when it led to one place, otherwise left for validation); set properties (an undefined value removes the key); add and remove conditions.
+    - New steps get unused ids from their type and the minimum their type needs.
+    - **Undo and redo** keep up to 100 bodies. Typing in one field extends one undo step instead of one per key, and JSON-view edits count as one change.
+  - **Panels:**
+    - The **Steps view** has "Add a step at the start" and a **Change** button per step that opens its panel inline.
+    - In the **diagram**, selecting a step (click, or Enter on a focused node) opens the same panel beside the diagram, never over it.
+    - The panel has the name, Leads to, a branch's conditions (raw CEL until T4) with their targets and otherwise, "Add a step after this one" (the palette: every type but `sign`) and **Remove** (confirmed).
+  - **Live validation:** half a second after a change, the unsaved body goes to `validate`; only the newest answer counts. A polite status line says "Checking…" or how many problems were found, and the problems badge their steps.
+  - **Save** keeps If-Match. On 412 the local work stays, with **Reload the saved version** or **Copy my changes as JSON**. Leaving with unsaved changes asks first (`UnsavedChangesGuard`). Drafts now open on the diagram too.
+  - **Tests:**
+    - `edit.test.ts`: every command; history limits. Properties: any edits, all undone, give back the start; ids stay unique; nothing outside `steps` changes.
+    - `workflows.test.tsx`: add a step from the Steps view, the debounced check and its badge, undo and redo, save with If-Match, and a 412 keeping the work.
+    - `views.test.tsx`: selecting a diagram step opens its panel; renaming and connecting send their commands.
+  - **Size:** the Arabic admin catalogue part is now 11.2 of its 15 KiB limit. T3 and T4 add strings; if it nears the limit, the builder's strings get their own part.

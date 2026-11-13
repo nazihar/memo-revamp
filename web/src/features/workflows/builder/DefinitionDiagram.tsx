@@ -1,14 +1,17 @@
 import { Background, Controls, Handle, Position, ReactFlow, type Node, type NodeProps } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { defineMessages, useIntl } from 'react-intl'
 import type { FieldProblem } from '@/api/generated/types.gen'
 import { Badge } from '@/components/ui/badge'
 import { bm, bmv } from './builder-messages'
 import type { DefinitionBody } from './definition'
-import type { Labels } from './describe'
+import { stepName, type Labels } from './describe'
 import { diagram, type StepData } from './diagram'
+import type { Command } from './edit'
 import { MARKER_SIZE, NODE_HEIGHT, NODE_WIDTH } from './layout'
+import { START_NODE } from './model'
+import { AddStep, StepPanel } from './StepPanel'
 
 /** React Flow's own words, in the user's language (research R1: `ariaLabelConfig`). */
 const flow = defineMessages({
@@ -83,13 +86,24 @@ export function DefinitionDiagram({
   body,
   labels,
   problems,
+  onCommand,
 }: {
   body: DefinitionBody
   labels: Labels
   problems: FieldProblem[]
+  /** Set for a draft the user may change: the selected step's panel opens beside the diagram. */
+  onCommand?: (command: Command) => void
 }) {
   const intl = useIntl()
-  const { nodes, edges } = useMemo(() => diagram(intl, body, labels, problems), [intl, body, labels, problems])
+  const [selected, setSelected] = useState<string>()
+  const { nodes, edges } = useMemo(
+    () => diagram(intl, body, labels, problems, selected),
+    [intl, body, labels, problems, selected],
+  )
+  const selectedStep = body.steps.find((s) => s.id === selected)
+  const select = (id: string | undefined) => {
+    setSelected(id !== undefined && body.steps.some((s) => s.id === id) ? id : undefined)
+  }
   const ariaLabelConfig = useMemo(
     () => ({
       'node.a11yDescription.default': intl.formatMessage(flow.nodeDescription),
@@ -104,7 +118,7 @@ export function DefinitionDiagram({
     }),
     [intl],
   )
-  return (
+  const figure = (
     <figure className="flex flex-col gap-1">
       <div
         role="group"
@@ -125,6 +139,16 @@ export function DefinitionDiagram({
           fitView
           minZoom={0.2}
           ariaLabelConfig={ariaLabelConfig}
+          onNodeClick={(_, node) => {
+            select(node.id)
+          }}
+          onPaneClick={() => {
+            select(undefined)
+          }}
+          onNodesChange={(changes) => {
+            // Keyboard selection (Enter or Space on a focused node) arrives as a select change.
+            for (const c of changes) if (c.type === 'select' && c.selected) select(c.id)
+          }}
         >
           <Background />
           <Controls showInteractive={false} />
@@ -132,5 +156,24 @@ export function DefinitionDiagram({
       </div>
       <figcaption className="text-xs text-muted-foreground">{intl.formatMessage(bm.diagramHint)}</figcaption>
     </figure>
+  )
+  if (!onCommand) return figure
+  return (
+    <div className="grid gap-4 lg:grid-cols-[minmax(0,2fr)_minmax(18rem,1fr)]">
+      {figure}
+      <section aria-labelledby="builder-selected" className="rounded-md border p-3">
+        <h4 id="builder-selected" className="mb-2 text-sm font-semibold" dir="auto">
+          {selectedStep ? stepName(selectedStep) : intl.formatMessage(bm.selected)}
+        </h4>
+        {selectedStep ? (
+          <StepPanel key={selectedStep.id} body={body} step={selectedStep} problems={problems} onCommand={onCommand} />
+        ) : (
+          <div className="flex flex-col gap-3">
+            <p className="text-sm text-muted-foreground">{intl.formatMessage(bm.noSelection)}</p>
+            <AddStep body={body} after={START_NODE} label={intl.formatMessage(bm.addFirst)} onCommand={onCommand} />
+          </div>
+        )}
+      </section>
+    </div>
   )
 }

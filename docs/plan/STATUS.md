@@ -68,7 +68,8 @@
 - [x] E06 plan written (2026-11-13): research (R1 libraries, R9 builders and accessibility), ADR-0042, design, threat model, tasks T1–T9, test plan, UX flows (`epic-06-visual-builder/`)
 - [x] E06 T5 simulation API: the pure engine in memory against sample values, read-only, rate-limited (stacked PR)
 - [x] E06 T1 diagram and Steps view (read-only), labels on versions (stacked PR)
-- [ ] E06 T2 editing · T3 panels 1 · T4 panels 2 · T6 simulation UI · T7 diff and review · T8 accessibility pass · T9 close (epic and phase)
+- [x] E06 T2 editing core: commands with undo, panels in the Steps view and beside the diagram, live validation, 412 keeps the work (stacked PR)
+- [ ] E06 T3 panels 1 · T4 panels 2 · T6 simulation UI · T7 diff and review · T8 accessibility pass · T9 close (epic and phase)
 
 ## State (Phase 1a, closed)
 - [x] Overview approved (2026-10-18), Q1–Q8 answered, per-epic gate delegated

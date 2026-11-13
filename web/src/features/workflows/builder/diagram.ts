@@ -28,6 +28,7 @@ export function diagram(
   body: DefinitionBody,
   labels: Labels,
   problems: FieldProblem[],
+  selected?: string,
 ): { nodes: Node[]; edges: Edge[] } {
   const graph = toGraph(body)
   const positions = layout(graph)
@@ -63,7 +64,7 @@ export function diagram(
       who,
       next: nextOf(step),
     })
-    return { id: n.id, type: 'step', position, data, ariaLabel, draggable: false }
+    return { id: n.id, type: 'step', position, data, ariaLabel, draggable: false, selected: n.id === selected }
   })
   const edges: Edge[] = graph.edges
     .filter((e) => !e.dangling)

@@ -7563,6 +7563,30 @@
       "value": "This is not valid JSON.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "workflows.builder.add": [
+    {
+      "type": 0,
+      "value": "AddSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.addAfter": [
+    {
+      "type": 0,
+      "value": "Add a step after this oneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.addCondition": [
+    {
+      "type": 0,
+      "value": "Add a conditionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.addFirst": [
+    {
+      "type": 0,
+      "value": "Add a step at the startSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "workflows.builder.assignee.initiator": [
     {
       "type": 0,
@@ -7715,6 +7739,94 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "workflows.builder.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.checked": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "No problems found."
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " problem found."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " problems found."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.checking": [
+    {
+      "type": 0,
+      "value": "Checking…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.conditionN": [
+    {
+      "type": 0,
+      "value": "Condition "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.conflict": [
+    {
+      "type": 0,
+      "value": "Someone else saved this draft while you were changing it. Your changes are still here: copy them, or reload the saved version.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.copied": [
+    {
+      "type": 0,
+      "value": "Copied.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.copy": [
+    {
+      "type": 0,
+      "value": "Copy my changes as JSONSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "workflows.builder.deadline": [
     {
       "type": 0,
@@ -7737,6 +7849,12 @@
     {
       "type": 0,
       "value": "The approval groups of the delegation of authoritySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.doneEditing": [
+    {
+      "type": 0,
+      "value": "CloseSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "workflows.builder.duration.days": [
@@ -7955,10 +8073,34 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "workflows.builder.edit": [
+    {
+      "type": 0,
+      "value": "ChangeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "workflows.builder.end": [
     {
       "type": 0,
       "value": "EndSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.field.condition": [
+    {
+      "type": 0,
+      "value": "ConditionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.field.name": [
+    {
+      "type": 0,
+      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.field.type": [
+    {
+      "type": 0,
+      "value": "Type of stepSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "workflows.builder.flow.controls": [
@@ -8041,6 +8183,26 @@
       "value": "Leads toSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "workflows.builder.leadsToN": [
+    {
+      "type": 0,
+      "value": "If condition "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " holds, leads toSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.noSelection": [
+    {
+      "type": 0,
+      "value": "Select a step in the diagram to change it, or use the Steps view.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "workflows.builder.notReadable": [
     {
       "type": 0,
@@ -8117,6 +8279,64 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "workflows.builder.redo": [
+    {
+      "type": 0,
+      "value": "RedoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.reload": [
+    {
+      "type": 0,
+      "value": "Reload the saved versionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.remove": [
+    {
+      "type": 0,
+      "value": "Remove this stepSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.remove.confirm": [
+    {
+      "type": 0,
+      "value": "RemoveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.remove.description": [
+    {
+      "type": 0,
+      "value": "What led to this step will lead where it led, when that is one place. You can undo this until you save.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.remove.title": [
+    {
+      "type": 0,
+      "value": "Remove “"
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "”?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.removeCondition": [
+    {
+      "type": 0,
+      "value": "Remove condition "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "workflows.builder.route": [
     {
       "type": 0,
@@ -8127,6 +8347,12 @@
     {
       "type": 0,
       "value": "RunsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.selected": [
+    {
+      "type": 0,
+      "value": "Selected stepSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "workflows.builder.sla.due": [
@@ -8299,6 +8525,20 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "workflows.builder.stepProblems": [
+    {
+      "type": 0,
+      "value": "Problems in "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "workflows.builder.steps": [
     {
       "type": 0,
@@ -8309,6 +8549,12 @@
     {
       "type": 0,
       "value": "TellsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.tools": [
+    {
+      "type": 0,
+      "value": "Change the workflowSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "workflows.builder.type.approve": [
@@ -8369,6 +8615,12 @@
     {
       "type": 0,
       "value": "Sub-workflowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.undo": [
+    {
+      "type": 0,
+      "value": "UndoSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "workflows.builder.unknown": [

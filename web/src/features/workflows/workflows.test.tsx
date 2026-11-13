@@ -133,7 +133,8 @@ describe('workflow definitions', () => {
     )
     renderRoute('/admin/workflows/purchase?version=2')
 
-    const editor = await screen.findByRole('textbox', { name: /Definition/ }, { timeout: 5000 })
+    await user.click(await screen.findByRole('tab', { name: 'JSON' }, { timeout: 5000 }))
+    const editor = screen.getByRole('textbox', { name: /Definition/ })
     expect(editor).not.toHaveAttribute('readonly')
     await user.click(screen.getByRole('button', { name: 'Check' }))
     expect(await screen.findByText('No step "nowhere".')).toBeInTheDocument()
@@ -142,6 +143,50 @@ describe('workflow definitions', () => {
     await user.type(editor, ' ')
     expect(screen.getByRole('button', { name: 'Submit for review' })).toBeDisabled()
   })
+
+  it('builds a draft: adds a step, checks it as you go, undoes, and keeps the work when someone saved meanwhile', async () => {
+    const user = userEvent.setup()
+    const validated: unknown[] = []
+    const saves: { ifMatch: string | null; body: unknown }[] = []
+    server.use(
+      ...handlers([MANAGE], version(2, 'DRAFT')),
+      http.post(`${API_ORIGIN}/api/v1/admin/workflow-definitions/purchase/versions/2/validate`, async ({ request }) => {
+        validated.push(await request.json())
+        return HttpResponse.json<ValidationResponse>({
+          valid: false,
+          problems: [{ field: '/steps/0/assignee', code: 'REQUIRED', message: 'Say who approves.' }],
+        })
+      }),
+      http.put(`${API_ORIGIN}/api/v1/admin/workflow-definitions/purchase/versions/2`, async ({ request }) => {
+        saves.push({ ifMatch: request.headers.get('If-Match'), body: await request.json() })
+        return HttpResponse.json({ status: 412, title: 'Precondition failed' }, { status: 412 })
+      }),
+    )
+    renderRoute('/admin/workflows/purchase?version=2')
+
+    await user.click(await screen.findByRole('tab', { name: 'Steps' }, { timeout: 5000 }))
+    await user.selectOptions(screen.getByLabelText('Add a step at the start'), 'Approval')
+    await user.click(screen.getByRole('button', { name: 'Add' }))
+    const list = screen.getByRole('list', { name: 'Steps, in the order they are written' })
+    expect(within(list).getAllByRole('listitem')).toHaveLength(2)
+    expect(within(list).getByRole('heading', { name: '1. Approval' })).toBeInTheDocument()
+    // Checked half a second after the change, with the problem on the new step.
+    expect(await screen.findByText('1 problem found.', {}, { timeout: 3000 })).toBeInTheDocument()
+    expect(validated).toHaveLength(1)
+    expect(within(list).getByText('1 problem')).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Undo' }))
+    expect(within(list).getAllByRole('listitem')).toHaveLength(1)
+    await user.click(screen.getByRole('button', { name: 'Redo' }))
+    expect(within(list).getAllByRole('listitem')).toHaveLength(2)
+
+    await user.click(screen.getByRole('button', { name: 'Save draft' }))
+    expect(await screen.findByRole('alert')).toHaveTextContent('Someone else saved this draft')
+    expect(saves[0]?.ifMatch).toBe('"3"')
+    expect((saves[0]?.body as { body: { steps: unknown[] } }).body.steps).toHaveLength(2)
+    expect(within(list).getAllByRole('listitem')).toHaveLength(2)
+    expect(screen.getByRole('button', { name: 'Reload the saved version' })).toBeInTheDocument()
+  }, 20_000)
 
   it('previews memos on older versions with why some cannot move', async () => {
     const user = userEvent.setup()

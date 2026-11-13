@@ -37,6 +37,6 @@ Administration → **Open tasks** → filter **Overdue** lists every open task p
 - If the app was down, due timers fire when it starts again.
 - Failed runs retry with backoff. After the retry limit the job logs `Task workflow-timer failed … giving up` and increments `memo.jobs.failed`; the timer row stays `PENDING`.
 - Nothing re-fires a dropped timer: that reminder or escalation is missed. The task still shows its due time, the **Overdue** filter still lists it, and the holder and initiator can still act. Fix the cause and record the incident. A sweep of pending timers past their time is a follow-up (E05 log, "Carried").
-- Load: the weekly **Load** workflow (`.github/workflows/load.yml`) runs the inbox with 10,000 active instances that have timers (volume V2). The target is p95 < 300 ms.
+- Load: the weekly **Load** workflow (`.github/workflows/load.yml`) runs the inbox with 10,000 active instances that have timers (volume V2). The target is p95 < 300 ms; the first run measured 10 ms (2026-11-14). It runs with the malware scanner (every volume memo uploads a document), and its sign-ins stay under 20 a minute, the per-address limit. If it fails, its artefact holds the backend log.
 
 **Not an operator task:** platform operators do not see tenant calendars or tasks (ADR-0031).

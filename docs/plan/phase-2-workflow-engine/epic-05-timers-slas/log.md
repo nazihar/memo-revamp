@@ -111,3 +111,4 @@
 - Inbox sorted by due time (the inbox API pages by assignment time).
 - SLA form in the definition editor: E06's builder.
 - The first weekly load report, after merge to the default branch.
+- **After the merge (2026-11-13/14):** the load stage needed four fixes before it measured anything (PR #82; phase log 2026-11-13): a system actor for the generator's tenant, the `antivirus` profile on the load stack, waiting out the upload limit, and a simulation that reaches the volume tenant, carries its Secure cookies and signs in within the per-address limit. First result: inbox p95 10 ms with 10,000 memos in review, no errors.

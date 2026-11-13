@@ -1,16 +1,16 @@
 # Phase 2 — retrospective (2026-11-13)
 
-> **All six epics are built.** E01 and E02 are merged and on dev. E03–E06 are stacked pull requests #41 → #81, each on the one before, waiting for the owner to merge them in order. The phase closes when they are merged, deployed to dev, and the items under "Carried" that need the owner are done.
+> **All six epics are built, merged and on dev** (E03–E06 merged 2026-11-13, PRs #41–#81). The phase closes when the owner's items under "Carried" are done.
 
 ## Exit status (MASTER_PLAN Phase 2 exit criteria, overview §5)
 
 | Criterion | Status | Evidence |
 |---|---|---|
 | **First slice:** create with .docx, choose approvers, submit; return; v2; resubmit; round 2 from the first approver; last approval → Approved; one approval per double-click, earlier rounds not counted, document locked during review, cross-tenant isolation, an audit event per action | **Met**, merged and on dev | `memo.spec.ts` on every PR; `MemoReviewIT`, `MemoReassignIT`; double-action and round tests; property-based invariants (`WorkflowInvariantProperties`); `AuditActionCoverageTest` (E01, PR #34) |
-| A tenant admin can build, simulate, get approval for and publish a multi-step workflow with conditions, parallel branches, SLAs and escalation, without developer involvement | **Met** in CI (not merged): the exit journey is green on PR #81 (2026-11-13) | `builder.spec.ts`: built in the Steps view (review, branch on rank, parallel committee, director with a deadline and escalation), simulated on both branches, approved by a second administrator with a step-up, used by a memo type, a memo routed to Approved. Plus `DefinitionSimulationIT`, `BuilderCatalogueIT`, the builder's unit, property and component tests |
-| In-flight instances survive definition changes (version pinning proven by test) | **Met** in CI (not merged) | `MigrationIT` (preview, per-instance audit), pinning tests in `DefinitionRuntimeIT` (E03) |
-| Load: 10,000 active instances with timers per tenant without degraded inbox latency | **Built, not yet measured** | Volume V2 generator (`WorkflowVolumeIT`), Gatling `InboxLoadSimulation`, weekly `load.yml`. GitHub runs scheduled workflows only on the default branch, so the first report comes after merge |
-| Full audit of every action, including delegated "acting for" actions | **Met** in CI (not merged) | Audit assertions per action and `AuditActionCoverageTest`; acting-for recorded from the task, never the session (`SubstitutionIT`, `TaskActionsIT`) (E03, E04) |
+| A tenant admin can build, simulate, get approval for and publish a multi-step workflow with conditions, parallel branches, SLAs and escalation, without developer involvement | **Met**, merged and on dev: the exit journey is green in CI and against dev (2026-11-13) | `builder.spec.ts`: built in the Steps view (review, branch on rank, parallel committee, director with a deadline and escalation), simulated on both branches, approved by a second administrator with a step-up, used by a memo type, a memo routed to Approved. Plus `DefinitionSimulationIT`, `BuilderCatalogueIT`, the builder's unit, property and component tests |
+| In-flight instances survive definition changes (version pinning proven by test) | **Met**, merged | `MigrationIT` (preview, per-instance audit), pinning tests in `DefinitionRuntimeIT` (E03) |
+| Load: 10,000 active instances with timers per tenant without degraded inbox latency | **Met** (2026-11-14): inbox p95 10 ms against 300 ms, no errors | Volume V2 generator (`WorkflowVolumeIT`), Gatling `InboxLoadSimulation` (18,100 reads by 50 approvers, each a full page of due decisions), `load.yml` run 43482461508 on PR #82's branch. The weekly run on `master` follows #82's merge |
+| Full audit of every action, including delegated "acting for" actions | **Met**, merged | Audit assertions per action and `AuditActionCoverageTest`; acting-for recorded from the task, never the session (`SubstitutionIT`, `TaskActionsIT`) (E03, E04) |
 
 **Phase-2 special tests** (TESTING_STRATEGY §12):
 - first-slice E2E;
@@ -53,15 +53,22 @@
   - controlled number fields turned "3" into "23", and clamping on clear made "2" hard to type (E06 T3, T4);
   - a merge left conflict markers in the Arabic catalogue, caught by typecheck before push (E06 T2).
 - **Load tests in CI:** several web test files time out under a full parallel run and pass alone. This is a known flake, still open.
+- **The load stage's first runs** (after the merge): four faults in the stage itself, none in the inbox:
+  - the generator had no actor bound at start-up;
+  - the stack had no malware scanner;
+  - the generator reached the upload limit;
+  - the simulation used the wrong tenant host, lost its Secure cookies over plain HTTP, and signed in faster than the per-address limit allows.
+
+  The lesson: a stage that only runs on `master` should be run by hand before the phase closes. The faults are in the phase log (2026-11-13).
+- **The E2E against dev:** dev's organisation was older than the demo approvers' seats, so the authority journey failed there until the seats were corrected.
 
 ## Carried
 - **Owner:**
-  - merge #41 → #81 in order;
-  - then the agent deploys them to dev and checks them there;
   - the phase demo (`demo.md`) and the D1 demo;
   - the builder usability walkthrough;
   - the manual keyboard and screen-reader pass (checklist in E06 `ux-review.md`).
-- **After merge:** the first weekly load report (p95 < 300 ms on V2).
+- **After #82 merges:** the weekly load run on `master` (Sundays 03:00 UTC).
+- **On dev:** two "E2E authority" test memos wait on a staff member who cannot sign in (phase log, 2026-11-13). They are test data only.
 - **Follow-ups:**
   - a sweep for timers dropped after their retry limit (E05);
   - the inbox sorted by due time (E05);

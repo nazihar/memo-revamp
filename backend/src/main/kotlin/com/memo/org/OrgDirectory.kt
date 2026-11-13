@@ -1,0 +1,101 @@
+package com.memo.org
+
+import com.memo.org.internal.AssignmentStore
+import com.memo.org.internal.OrgCalendar
+import com.memo.org.internal.OrgPosition
+import com.memo.org.internal.PositionStore
+import com.memo.org.internal.RecordStatus
+import com.memo.org.internal.ReportingLineStore
+import com.memo.org.internal.UnitStore
+import org.springframework.stereotype.Service
+import java.time.LocalDate
+import java.util.UUID
+
+/** A position as other modules see it: where it is and whether it heads its unit. */
+data class PositionRef(
+    val id: UUID,
+    val unitId: UUID,
+    val title: String,
+    val head: Boolean,
+)
+
+/**
+ * Read-only questions about the organisation for other modules (design E04 §1), such as the workflow's assignee
+ * resolvers: who holds a position, which position a person holds, a unit's head and ancestors, and the reporting line
+ * upwards. Dates are calendar dates in the tenant's time zone ([today]); only open records count. Inside a tenant
+ * transaction.
+ */
+@Service
+class OrgDirectory(
+    private val assignments: AssignmentStore,
+    private val positions: PositionStore,
+    private val units: UnitStore,
+    private val lines: ReportingLineStore,
+    private val calendar: OrgCalendar,
+) {
+    /** Today in the tenant's time zone. */
+    fun today(): LocalDate = calendar.today()
+
+    /** The holder of each of [positionIds] on [date]; vacant positions are absent. */
+    fun holders(
+        positionIds: Collection<UUID>,
+        date: LocalDate = today(),
+    ): Map<UUID, UUID> = assignments.holdersOn(positionIds, date).mapValues { it.value.userId }
+
+    /** The position each of [userIds] holds on [date]; people without one are absent. */
+    fun positionsOf(
+        userIds: Collection<UUID>,
+        date: LocalDate = today(),
+    ): Map<UUID, PositionRef> {
+        val held = assignments.heldBy(userIds, date)
+        val refs = positions.byIds(held.values.map { it.positionId }).filterValues { it.openOn(date) }.mapValues { it.value.ref() }
+        return held.mapNotNull { (user, assignment) -> refs[assignment.positionId]?.let { user to it } }.toMap()
+    }
+
+    /** The positions of [ids] that exist, open or not. */
+    fun positions(ids: Collection<UUID>): Map<UUID, PositionRef> = positions.byIds(ids).mapValues { it.value.ref() }
+
+    /** The open head position of [unitId] on [date], if it has one. */
+    fun headOf(
+        unitId: UUID,
+        date: LocalDate = today(),
+    ): PositionRef? = positions.ofUnit(unitId).firstOrNull { it.head && it.openOn(date) }?.ref()
+
+    /** [unitId]'s ancestors, nearest first (empty for a root unit or an unknown one). */
+    fun ancestors(unitId: UUID): List<UUID> =
+        units
+            .unit(unitId)
+            ?.ancestors
+            ?.reversed()
+            .orEmpty()
+
+    /**
+     * The position [positionId] reports to, [levels] lines up, on [date]; null when the chain ends before (the top of
+     * the organisation, or a position without a line).
+     */
+    fun reportsTo(
+        positionId: UUID,
+        levels: Int,
+        date: LocalDate = today(),
+    ): PositionRef? {
+        require(levels in 1..MAX_LEVELS) { "levels is 1 to $MAX_LEVELS" }
+        var current: UUID? = positionId
+        repeat(levels) {
+            current =
+                current?.let { position ->
+                    lines
+                        .ofPosition(position)
+                        .firstOrNull { it.status == RecordStatus.ACTIVE && it.period.contains(date) }
+                        ?.reportsToPositionId
+                }
+        }
+        return current?.let { positions.byIds(listOf(it))[it]?.ref() }
+    }
+
+    private fun OrgPosition.ref() = PositionRef(id, unitId, title, head)
+
+    companion object {
+        /** How far up a resolver may walk (design E04 §2). */
+        const val MAX_LEVELS = 10
+    }
+}

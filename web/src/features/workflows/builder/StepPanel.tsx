@@ -7,6 +7,7 @@ import { AlertDialog } from '@/components/ui/dialog'
 import { Field } from '@/components/ui/field'
 import { Input, Select } from '@/components/ui/form-controls'
 import { bm, bmv, stepTypeLabels } from './builder-messages'
+import { ConditionEditor } from './ConditionEditor'
 import { END, type DefinitionBody, type StepJson, type StepType } from './definition'
 import { stepName, type Labels } from './describe'
 import { newStep, PALETTE, type Command, type Slot } from './edit'
@@ -215,22 +216,14 @@ function BranchEditor({
   return (
     <div className="flex flex-col gap-3">
       {branches.map((b, i) => (
-        <fieldset key={String(i)} className="grid gap-2 rounded-md border p-2 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
+        <fieldset key={String(i)} className="flex flex-col gap-2 rounded-md border p-2">
           <legend className="px-1 text-sm font-medium">{intl.formatMessage(bmv.conditionN, { n: i + 1 })}</legend>
-          <Field label={intl.formatMessage(bm.condition)}>
-            {(p) => (
-              <Input
-                {...p}
-                dir="ltr"
-                className="font-mono text-xs"
-                value={b.when}
-                onChange={(e) => {
-                  const next = branches.map((x, j) => (j === i ? { ...x, when: e.target.value } : x))
-                  onCommand({ kind: 'set', id: step.id, patch: { branches: next } })
-                }}
-              />
-            )}
-          </Field>
+          <ConditionEditor
+            text={b.when}
+            onChange={(when, declare) => {
+              onCommand({ kind: 'setCondition', id: step.id, index: i, when, declare })
+            }}
+          />
           <TargetSelect
             body={body}
             self={step.id}

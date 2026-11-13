@@ -9,6 +9,7 @@ import { AssigneeEditor } from './AssigneeEditor'
 import { HUMAN_STEPS, type AssigneeJson, type StepJson } from './definition'
 import type { Labels } from './describe'
 import type { Command } from './edit'
+import { SlaEditor } from './SlaEditor'
 
 const dm = defineMessages({
   actions: { id: 'workflows.builder.actions', defaultMessage: 'What the holder can do' },
@@ -39,13 +40,23 @@ const dm = defineMessages({
     defaultMessage: 'Goes to the approvers the initiator chooses, one after the other.',
   },
   choose: { id: 'workflows.builder.choose', defaultMessage: 'Choose…' },
+  addRecipient: { id: 'workflows.builder.notify.add', defaultMessage: 'Add someone to tell' },
+  message: { id: 'workflows.builder.notify.message', defaultMessage: 'Message' },
+  messageHint: {
+    id: 'workflows.builder.notify.messageHint',
+    defaultMessage: 'The key of the notice to send, such as creditDecided. The notice names the memo only.',
+  },
 })
 
 const dmv = defineMessages<{
   assigneeN: { n: number }
   removeAssignee: { n: number }
   remarkFor: { action: string }
+  recipientN: { n: number }
+  removeRecipient: { n: number }
 }>({
+  recipientN: { id: 'workflows.builder.notify.recipientN', defaultMessage: 'Tell {n}' },
+  removeRecipient: { id: 'workflows.builder.notify.remove', defaultMessage: 'Remove person or group {n} to tell' },
   assigneeN: { id: 'workflows.builder.parallel.assigneeN', defaultMessage: 'Person or group {n}' },
   removeAssignee: { id: 'workflows.builder.parallel.remove', defaultMessage: 'Remove person or group {n}' },
   remarkFor: { id: 'workflows.builder.actions.remarkFor', defaultMessage: '{action} needs a remark' },
@@ -261,9 +272,83 @@ function ParallelEditor({
   )
 }
 
+/** Whom a notify step tells, and the message key the notice uses (design E03 §4.2). */
+function NotifyEditor({
+  step,
+  labels,
+  onLabel,
+  onCommand,
+}: {
+  step: StepJson
+  labels: Labels
+  onLabel: (id: string, label: string) => void
+  onCommand: (command: Command) => void
+}) {
+  const intl = useIntl()
+  const recipients = step.recipients ?? []
+  const setRecipients = (next: AssigneeJson[]) => {
+    onCommand({ kind: 'set', id: step.id, patch: { recipients: next } })
+  }
+  return (
+    <div className="flex flex-col gap-2">
+      {recipients.map((a, i) => (
+        <div key={String(i)} className="flex items-start gap-2">
+          <div className="flex-1">
+            <AssigneeEditor
+              legend={intl.formatMessage(dmv.recipientN, { n: i + 1 })}
+              value={a}
+              labels={labels}
+              onLabel={onLabel}
+              allowInitiator
+              onChange={(next) => {
+                setRecipients(recipients.map((x, j) => (j === i ? next : x)))
+              }}
+            />
+          </div>
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label={intl.formatMessage(dmv.removeRecipient, { n: i + 1 })}
+            disabled={recipients.length === 1}
+            onClick={() => {
+              setRecipients(recipients.filter((_, j) => j !== i))
+            }}
+          >
+            <Trash2 aria-hidden="true" />
+          </Button>
+        </div>
+      ))}
+      <div>
+        <Button
+          variant="outline"
+          onClick={() => {
+            setRecipients([...recipients, { kind: 'initiator' }])
+          }}
+        >
+          <Plus aria-hidden="true" />
+          {intl.formatMessage(dm.addRecipient)}
+        </Button>
+      </div>
+      <Field label={intl.formatMessage(dm.message)} hint={intl.formatMessage(dm.messageHint)}>
+        {(p) => (
+          <Input
+            {...p}
+            dir="ltr"
+            value={step.message ?? ''}
+            onChange={(e) => {
+              onCommand({ kind: 'set', id: step.id, patch: { message: e.target.value } })
+            }}
+          />
+        )}
+      </Field>
+    </div>
+  )
+}
+
 /**
  * The type-specific part of a step's panel (design E06 §3, T3): who it goes to and what the holder can do; a parallel
- * step's mode and people; the sub-workflow or forum it runs. Branches, deadlines and notices are T4's.
+ * step's mode and people; its deadline; whom a notice tells; the sub-workflow or forum it runs. Conditions are in the
+ * branch editor.
  */
 export function StepDetails({
   step,
@@ -298,6 +383,12 @@ export function StepDetails({
         <p className="text-sm text-muted-foreground">{intl.formatMessage(dm.routeHint)}</p>
       ) : null}
       {HUMAN_STEPS.has(step.type) && step.type !== 'sign' ? <ActionsEditor step={step} onCommand={onCommand} /> : null}
+      {HUMAN_STEPS.has(step.type) && step.type !== 'sign' ? (
+        <SlaEditor step={step} labels={labels} onLabel={onLabel} onCommand={onCommand} />
+      ) : null}
+      {step.type === 'notify' ? (
+        <NotifyEditor step={step} labels={labels} onLabel={onLabel} onCommand={onCommand} />
+      ) : null}
       {step.type === 'subworkflow' ? (
         <Field label={intl.formatMessage(dm.fragment)}>
           {(p) => (

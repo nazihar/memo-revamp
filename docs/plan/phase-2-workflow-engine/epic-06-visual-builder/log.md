@@ -70,3 +70,18 @@
     - `BuilderCatalogueIT`: attributes, roles, a queue, a published fragment but not a draft one, no `sign`. Matrix row added.
     - `panels.test.tsx`: a role in a unit, a queue, the supervisor's levels and a position through the picker each write the right JSON; actions, remarks and the forward limit; a parallel step's mode and people; axe.
   - **Size:** the Arabic admin catalogue part is now 11.8 of 15 KiB.
+- **T4 (panels: when and where):**
+  - **Conditions** (`conditions.ts`, pure): rows of attribute · comparison · value joined by "all of" (`&&`) or "any of" (`||`) ↔ CEL.
+    - Comparisons follow the type: numbers compare; strings are or are not, or are one of a list; booleans are yes or no. Timestamps are CEL only.
+    - Doubles always print with a decimal point, or CEL would refuse the comparison.
+    - Anything else (parentheses, mixed joins, functions, attribute against attribute) reads as undefined, opens as CEL and is never rewritten.
+    - A new command `setCondition` sets a branch's condition and declares the attributes it reads in the same undo step: conditions compile against the declared attributes (ADR-0039).
+    - Typing in one condition is one undo step.
+  - **Deadline panel** on every human step but `sign`: due after an amount and a unit (anything combining units shows as ISO text), working time (on by default), a reminder before, up to three after, and what happens when late. A reassignment names its target with the assignee panel; the initiator is never offered.
+  - **Notify panel:** the people or groups to tell (the initiator allowed) and the message key.
+  - The value of a condition row keeps what is typed, so a number can be cleared and retyped. This was found by the test: a controlled number field turned "3" into "23".
+  - **Tests:**
+    - `conditions.test.ts`: reading, the CEL kept as written, printing, and a property that rows written as CEL read back as the same rows;
+    - `edit.test.ts`: `setCondition` declares once;
+    - `panels-when.test.tsx`: a simple condition edited and joined, an unreadable one left alone, every deadline control, notices; axe.
+  - **Size:** the Arabic admin catalogue part is now 12.6 of 15 KiB. A path loads one part, so a separate builder part needs the loader to take two. Do that if T6–T8 bring it near the limit.

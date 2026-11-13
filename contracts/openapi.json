@@ -1258,6 +1258,13 @@
       },
       "InboxItem" : {
         "properties" : {
+          "actingFor" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/Named"
+            }, {
+              "type" : "null"
+            } ]
+          },
           "assignedAt" : {
             "format" : "date-time",
             "type" : "string"
@@ -1265,6 +1272,13 @@
           "blocked" : {
             "enum" : [ "NO_CLEARANCE", "INACTIVE", "UNRESOLVED" ],
             "type" : [ "string", "null" ]
+          },
+          "claimedBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/Named"
+            }, {
+              "type" : "null"
+            } ]
           },
           "kind" : {
             "enum" : [ "DECIDE", "OPINION", "CLARIFY" ],
@@ -1277,6 +1291,9 @@
             "format" : "int32",
             "type" : "integer"
           },
+          "shared" : {
+            "type" : "boolean"
+          },
           "stepName" : {
             "type" : [ "string", "null" ]
           },
@@ -1285,7 +1302,7 @@
             "type" : "string"
           }
         },
-        "required" : [ "assignedAt", "kind", "memo", "round", "taskId" ],
+        "required" : [ "assignedAt", "kind", "memo", "round", "shared", "taskId" ],
         "type" : "object"
       },
       "InboxMemo" : {

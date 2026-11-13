@@ -53,7 +53,8 @@
 - [x] E04 T5 substitution and staff changes (stacked PR)
 - [x] E04 T6 DoA versions, rules, `doa` step and simulator (stacked PR)
 - [x] E04 T7 extended routes, allowed approvers, DoA check, forward limits (stacked PR)
-- [ ] E04 T8–T9 web · T10 close
+- [x] E04 T8 web work screens: claim, release, recusal, routes with positions and groups, interests, DoA preview, inbox badges (stacked PR)
+- [ ] E04 T9 web admin · T10 close
 
 ## State (Phase 1a, closed)
 - [x] Overview approved (2026-10-18), Q1–Q8 answered, per-epic gate delegated

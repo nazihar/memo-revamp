@@ -10,6 +10,7 @@ import {
   listMyMemosInfiniteQueryKey,
   listMyTasksInfiniteQueryKey,
 } from '@/api/generated/@tanstack/react-query.gen'
+import { claimTask, releaseTask } from '@/api/generated/sdk.gen'
 import type { MemoView } from '@/api/generated/types.gen'
 import { PROBLEM, type Problem } from '@/api/http'
 import { FileUpload } from '@/components/page/FileUpload'
@@ -18,8 +19,11 @@ import { EmptyState, ErrorState, LoadingState } from '@/components/page/States'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { useToast } from '@/components/ui/toast-context'
+import { newIdempotencyKey } from '@/lib/idempotency'
 import { ActionDialog, type MemoActionKind } from './ActionDialog'
+import { DoaPreviewDialog } from './DoaPreviewDialog'
 import { EditMemoDialog } from './EditMemoDialog'
+import { MemoInterests } from './MemoInterests'
 import { MemoHistory } from './MemoHistory'
 import { actionButtons, mm, mmv, statusLabels } from './memo-messages'
 import { statusTone } from './memo-status'
@@ -47,6 +51,7 @@ const DIALOG_ACTIONS: Partial<Record<MemoView['allowedActions'][number], MemoAct
   DELEGATE: 'delegate',
   ASK: 'ask',
   REFER: 'refer',
+  RECUSE: 'recuse',
 }
 
 /** The main action of the bar; the others are outlined. */
@@ -62,6 +67,7 @@ const LEAVES_TASK = new Set<MemoActionKind>([
   'forward',
   'answer',
   'opinion',
+  'recuse',
 ])
 
 /**
@@ -76,6 +82,8 @@ export function MemoPage({ memoId }: { memoId: string }) {
   const memo = useQuery(getMemoOptions({ path: { id: memoId } }))
   const [dialog, setDialog] = useState<MemoActionKind>()
   const [editing, setEditing] = useState(false)
+  const [previewing, setPreviewing] = useState(false)
+  const [claiming, setClaiming] = useState(false)
 
   const replace = async (next: MemoView) => {
     queryClient.setQueryData(getMemoQueryKey({ path: { id: memoId } }), next)
@@ -93,6 +101,11 @@ export function MemoPage({ memoId }: { memoId: string }) {
       await memo.refetch()
     } else if (problem?.errors?.some((e) => e.field === 'document')) {
       toast.show(intl.formatMessage(mm.documentRequired), 'error')
+    } else if (problem?.errors?.some((e) => e.code === 'doa-missing')) {
+      toast.show(
+        problem.errors.find((e) => e.code === 'doa-missing')?.message ?? intl.formatMessage(mm.failed),
+        'error',
+      )
     } else if (problem?.errors?.some((e) => e.field.startsWith('route'))) {
       toast.show(intl.formatMessage(mm.routeRequired), 'error')
     } else {
@@ -112,6 +125,31 @@ export function MemoPage({ memoId }: { memoId: string }) {
   const allowed = new Set(view.allowedActions)
   const dialogs = view.allowedActions.flatMap((a) => (DIALOG_ACTIONS[a] ? [DIALOG_ACTIONS[a]] : []))
   const document = view.document
+  const taskId = view.myTask?.id
+
+  /** Claim or release a shared task (design E04 §4.2): no remark, so no dialog. */
+  const claim = async (release: boolean) => {
+    if (!taskId) return
+    setClaiming(true)
+    try {
+      const options = {
+        path: { taskId },
+        headers: { 'Idempotency-Key': newIdempotencyKey() },
+        throwOnError: true as const,
+      }
+      const next = release ? await releaseTask(options) : await claimTask(options)
+      toast.show(intl.formatMessage(mm.done), 'success')
+      await replace(next.data)
+    } catch (problem) {
+      await onProblem(problem as Problem | undefined)
+    } finally {
+      setClaiming(false)
+    }
+  }
+  const claims = [
+    allowed.has('CLAIM') ? ('claim' as const) : null,
+    allowed.has('RELEASE') ? ('release' as const) : null,
+  ].filter((c) => c !== null)
 
   return (
     <section aria-labelledby="memo-title" className="pb-24 md:pb-0">
@@ -201,6 +239,15 @@ export function MemoPage({ memoId }: { memoId: string }) {
               {view.myTask?.role === 'CLARIFY' ? (
                 <Badge tone="neutral">{intl.formatMessage(mm.roleClarify)}</Badge>
               ) : null}
+              {view.myTask?.shared ? (
+                <p role="status" className="mt-2 text-sm">
+                  {allowed.has('RELEASE')
+                    ? intl.formatMessage(mm.claimed)
+                    : view.myTask.claimedBy
+                      ? intl.formatMessage(mmv.claimedBy, { name: view.myTask.claimedBy.name })
+                      : intl.formatMessage(mm.shared)}
+                </p>
+              ) : null}
               {view.myTask?.waiting ? (
                 <p role="status" className="mt-2 text-sm">
                   {intl.formatMessage(mm.waitingForAnswer)}
@@ -225,10 +272,32 @@ export function MemoPage({ memoId }: { memoId: string }) {
               ) : (
                 <ol className="flex list-decimal flex-col gap-1 ps-5 text-sm">
                   {view.route.map((entry) => (
-                    <li key={entry.ordinal}>{routeEntryLabel(entry)}</li>
+                    <li key={entry.ordinal}>{routeEntryLabel(intl, entry)}</li>
                   ))}
                 </ol>
               )}
+              {allowed.has('SUBMIT') || allowed.has('RESUBMIT') ? (
+                <div className="mt-3">
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setPreviewing(true)
+                    }}
+                  >
+                    {intl.formatMessage(mm.doaPreview)}
+                  </Button>
+                </div>
+              ) : null}
+            </Section>
+          ) : null}
+          {allowed.has('EDIT') || view.interests.length > 0 ? (
+            <Section title={intl.formatMessage(mm.interests)} lead={intl.formatMessage(mm.interestsLead)}>
+              <MemoInterests
+                memo={view}
+                editable={allowed.has('EDIT')}
+                onChanged={(next) => void replace(next)}
+                onProblem={(p) => void onProblem(p)}
+              />
             </Section>
           ) : null}
           <div className="text-sm text-muted-foreground">
@@ -236,12 +305,23 @@ export function MemoPage({ memoId }: { memoId: string }) {
           </div>
         </div>
       </div>
-      {dialogs.length > 0 ? (
+      {dialogs.length > 0 || claims.length > 0 ? (
         <div
           role="toolbar"
           aria-label={intl.formatMessage(mm.actions)}
           className="fixed inset-x-0 bottom-0 z-10 flex flex-wrap justify-end gap-2 border-t bg-card px-4 py-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] md:static md:mt-6 md:border-0 md:bg-transparent md:p-0"
         >
+          {claims.map((kind) => (
+            <Button
+              key={kind}
+              className="min-h-11 min-w-11"
+              variant="outline"
+              disabled={claiming}
+              onClick={() => void claim(kind === 'release')}
+            >
+              {intl.formatMessage(kind === 'claim' ? mm.actionClaim : mm.actionRelease)}
+            </Button>
+          ))}
           {dialogs.map((kind) => (
             <Button
               key={kind}
@@ -274,6 +354,14 @@ export function MemoPage({ memoId }: { memoId: string }) {
           onProblem={(p) => {
             setDialog(undefined)
             void onProblem(p)
+          }}
+        />
+      ) : null}
+      {previewing ? (
+        <DoaPreviewDialog
+          memoId={view.id}
+          onClose={() => {
+            setPreviewing(false)
           }}
         />
       ) : null}

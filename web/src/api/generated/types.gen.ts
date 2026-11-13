@@ -491,11 +491,14 @@ export type HistoryRound = {
 };
 
 export type InboxItem = {
+    actingFor?: Named | null;
     assignedAt: string;
     blocked?: 'NO_CLEARANCE' | 'INACTIVE' | 'UNRESOLVED';
+    claimedBy?: Named | null;
     kind: 'DECIDE' | 'OPINION' | 'CLARIFY';
     memo: InboxMemo;
     round: number;
+    shared: boolean;
     stepName?: string | null;
     taskId: string;
 };

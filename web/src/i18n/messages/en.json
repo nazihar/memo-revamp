@@ -410,6 +410,7 @@
   "memo.history.action.carry": "Approval carried over (document unchanged)",
   "memo.history.action.claim": "Took the task",
   "memo.history.action.delegate": "Delegated",
+  "memo.history.action.escalate": "Escalated by the workflow: overdue",
   "memo.history.action.escalateToForum": "Escalated to a forum",
   "memo.history.action.forward": "Forwarded",
   "memo.history.action.migrate": "Moved to a new workflow version",

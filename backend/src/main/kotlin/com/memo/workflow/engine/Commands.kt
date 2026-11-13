@@ -102,6 +102,19 @@ data class Reresolve(
     val stepId: UUID,
 ) : Command
 
+/**
+ * An overdue task escalates (design E05 §4.3), as the workflow: with [move], to [to] (or a blocked task when null);
+ * otherwise [targets] are told and the holder keeps it. [action] is the SLA's (`notify`, `reassign`, `nextLevel`).
+ */
+data class Escalate(
+    override val actor: UUID,
+    override val taskId: UUID,
+    val action: String,
+    val move: Boolean,
+    val to: UUID?,
+    val targets: List<UUID> = emptyList(),
+) : TaskCommand
+
 /** A candidate takes a step shared by several people (design E04 §4.2): the others cannot decide it until it is released. */
 data class Claim(
     override val actor: UUID,
@@ -260,6 +273,12 @@ sealed interface Effect {
         val nodeId: String,
         val recipients: List<UUID>,
         val message: String,
+    ) : Effect
+
+    /** An overdue task's escalation tells [recipients] (ids); the holder keeps the task (design E05 §4.3). */
+    data class Escalated(
+        val taskId: UUID,
+        val recipients: List<UUID>,
     ) : Effect
 
     /** An escalate-to-forum step was passed (Phase 4 acts on it). */

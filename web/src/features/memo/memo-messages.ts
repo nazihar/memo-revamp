@@ -194,6 +194,7 @@ export const actionLabels = defineMessages({
   CLAIM: { id: 'memo.history.action.claim', defaultMessage: 'Took the task' },
   RELEASE: { id: 'memo.history.action.release', defaultMessage: 'Gave the task back' },
   RECUSE: { id: 'memo.history.action.recuse', defaultMessage: 'Declared an interest and stood aside' },
+  ESCALATE: { id: 'memo.history.action.escalate', defaultMessage: 'Escalated by the workflow: overdue' },
 })
 
 /** Texts with values (react-intl checks them against the message). */

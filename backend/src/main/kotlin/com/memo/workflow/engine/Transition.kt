@@ -81,6 +81,7 @@ class Transition(
             is Migrate -> Migrations.apply(state, command)
             is Claim, is Release -> Claims.apply(state, command)
             is Block, is Reresolve -> StaffChanges(rounds).apply(state, command)
+            is Escalate -> Escalations(context, rounds).apply(state, command)
         }
 
     /** A delegate's action is recorded as acting for the holder who delegated the task (design E03 §4.4, invariant 17). */

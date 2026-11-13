@@ -2827,6 +2827,12 @@
       "value": "DelegatedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.history.action.escalate": [
+    {
+      "type": 0,
+      "value": "Escalated by the workflow: overdueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.history.action.escalateToForum": [
     {
       "type": 0,

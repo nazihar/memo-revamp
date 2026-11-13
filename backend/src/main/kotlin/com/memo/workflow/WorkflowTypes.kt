@@ -52,6 +52,9 @@ enum class ActionKind {
 
     /** The holder declared an interest and stood aside (SOD-4, design E04 §4.4). */
     RECUSE,
+
+    /** An overdue task escalated by the workflow (design E05 §4.3). */
+    ESCALATE,
 }
 
 /**

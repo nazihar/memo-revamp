@@ -19,6 +19,7 @@ import com.memo.testsupport.aPassword
 import com.memo.testsupport.anActiveUser
 import com.memo.workflow.internal.Calendars
 import com.memo.workflow.internal.DefinitionLifecycle
+import com.memo.workflow.internal.TimerEscalations
 import com.memo.workflow.internal.TimerFire
 import com.memo.workflow.internal.WorkflowTimers
 import org.assertj.core.api.Assertions.assertThat
@@ -55,8 +56,10 @@ class MemoReminderIT : MemoIntegrationTest() {
 
     @Autowired lateinit var scheduler: ObjectProvider<SchedulerClient>
 
+    @Autowired lateinit var escalations: ObjectProvider<TimerEscalations>
+
     private val clock = MutableClock()
-    private val timers by lazy { WorkflowTimers(tenantDsl, transactions, ids, calendars, events, clock, task, scheduler) }
+    private val timers by lazy { WorkflowTimers(tenantDsl, transactions, ids, calendars, events, clock, task, scheduler, escalations) }
     private val outbox by lazy { MailOutbox(keys, json) }
 
     @Test

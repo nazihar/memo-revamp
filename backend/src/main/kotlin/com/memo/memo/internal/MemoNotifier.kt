@@ -13,6 +13,7 @@ import com.memo.workflow.InstanceStatus
 import com.memo.workflow.TaskClosure
 import com.memo.workflow.TimerKind
 import com.memo.workflow.WorkflowActionTaken
+import com.memo.workflow.WorkflowEscalated
 import com.memo.workflow.WorkflowNotifyRequested
 import com.memo.workflow.WorkflowTaskClosed
 import com.memo.workflow.WorkflowTaskCreated
@@ -123,6 +124,25 @@ class MemoNotifier(
             // The workflow escalates on its own: it reassigns or tells the escalation targets.
             TimerKind.ESCALATE -> {}
         }
+    }
+
+    /**
+     * An overdue task escalated to [WorkflowEscalated.recipientId] who is to be told (design E05 §4.3): if cleared for the
+     * memo, they become a participant (so the link opens it) and hear that it is overdue.
+     */
+    @EventListener
+    fun onEscalated(event: WorkflowEscalated) {
+        if (event.subjectType != MemoWorkflowSubject.TYPE) return
+        val memo = store.find(event.subjectId)
+        val rank = clearances.rankOf(listOf(event.recipientId))[event.recipientId]
+        if (memo == null || rank == null || rank < memo.classificationRank) return
+        store.addParticipant(
+            memo.id,
+            event.recipientId,
+            ParticipantKind.NOTIFIED,
+            OffsetDateTime.now(clock).withOffsetSameInstant(ZoneOffset.UTC),
+        )
+        notify(event.recipientId, NotificationKind.TASK_OVERDUE, memo.id)
     }
 
     /** Tells [user] (nobody when null: a step without assignee, which the reassigners hear about instead). */

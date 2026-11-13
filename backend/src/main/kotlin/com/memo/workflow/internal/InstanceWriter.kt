@@ -66,7 +66,7 @@ class InstanceWriter(
                 is Effect.TaskClosed -> closeTask(effect, now)
                 is Effect.RoundEnded -> endRound(instanceId, effect, now)
                 is Effect.TaskWaiting -> markWaiting(effect)
-                is Effect.InstanceEnded, is Effect.Notify, is Effect.EscalateToForum -> Unit
+                is Effect.InstanceEnded, is Effect.Notify, is Effect.EscalateToForum, is Effect.Escalated -> Unit
             }
         }
         if (sameRound) updateSteps(before.round, after.round)

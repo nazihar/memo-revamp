@@ -35,6 +35,8 @@ import { DefinitionDiagram } from './builder/DefinitionDiagram'
 import { ChangesView } from './builder/ChangesView'
 import { SimulationPanel } from './builder/SimulationPanel'
 import { StepsView } from './builder/StepsView'
+import { stepName } from './builder/describe'
+import type { Command } from './builder/edit'
 import { useBuilder, useLiveValidation } from './builder/useBuilder'
 import { UnsavedBanner, UnsavedChangesGuard } from '@/components/page/FormPage'
 import { useToast } from '@/components/ui/toast-context'
@@ -283,7 +285,24 @@ function VersionEditor({
   const path = { key: definitionKey, number: String(number) }
   const ifMatch = { 'If-Match': `"${version.revision}"` }
   const checking = useLiveValidation({ path, text, original, enabled: editable, onProblems: setProblems })
-  const onCommand = editable ? builder.edit : undefined
+  // Structural changes are announced in the status line (design E06 §7); typing in a field is not.
+  const [announcement, setAnnouncement] = useState<string>()
+  const announce = (command: Command) => {
+    if (command.kind === 'add') {
+      setAnnouncement(intl.formatMessage(bmv.announceAdded, { name: stepName(command.step) }))
+    } else if (command.kind === 'remove') {
+      const step = drawable?.steps.find((s) => s.id === command.id)
+      setAnnouncement(intl.formatMessage(bmv.announceRemoved, { name: step ? stepName(step) : command.id }))
+    } else if (command.kind === 'connect') {
+      setAnnouncement(intl.formatMessage(bm.announceConnected))
+    }
+  }
+  const onCommand = editable
+    ? (command: Command) => {
+        announce(command)
+        builder.edit(command)
+      }
+    : undefined
   const [picked, setPicked] = useState<Record<string, string>>({})
   // The last simulation, kept only while the body it ran on is unchanged.
   const [simulated, setSimulated] = useState<{ text: string; result: SimulationResponse }>()
@@ -393,22 +412,41 @@ function VersionEditor({
       {editable ? (
         <div className="flex flex-wrap items-center gap-2">
           <div role="toolbar" aria-label={intl.formatMessage(bm.editTools)} className="flex gap-2">
-            <Button variant="outline" disabled={!builder.canUndo} onClick={builder.undo}>
+            <Button
+              variant="outline"
+              disabled={!builder.canUndo}
+              onClick={() => {
+                builder.undo()
+                setAnnouncement(intl.formatMessage(bm.announceUndone))
+              }}
+            >
               <Undo2 aria-hidden="true" />
               {intl.formatMessage(bm.undo)}
             </Button>
-            <Button variant="outline" disabled={!builder.canRedo} onClick={builder.redo}>
+            <Button
+              variant="outline"
+              disabled={!builder.canRedo}
+              onClick={() => {
+                builder.redo()
+                setAnnouncement(intl.formatMessage(bm.announceRedone))
+              }}
+            >
               <Redo2 aria-hidden="true" />
               {intl.formatMessage(bm.redo)}
             </Button>
           </div>
           <UnsavedBanner visible={dirty} />
           <p role="status" className="text-sm text-muted-foreground">
-            {checking
-              ? intl.formatMessage(bm.checking)
-              : dirty
-                ? intl.formatMessage(bmv.checked, { count: problems.length })
-                : null}
+            {[
+              announcement,
+              checking
+                ? intl.formatMessage(bm.checking)
+                : dirty
+                  ? intl.formatMessage(bmv.checked, { count: problems.length })
+                  : undefined,
+            ]
+              .filter(Boolean)
+              .join(' ')}
           </p>
         </div>
       ) : null}

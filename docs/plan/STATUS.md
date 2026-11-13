@@ -73,7 +73,8 @@
 - [x] E06 T4 panels for when and where: simple conditions ↔ CEL, deadlines with reminders and escalation, notices (stacked PR)
 - [x] E06 T6 simulation UI: sample values, the path in the diagram and the Steps view, reasons in words; builder catalogue part (stacked PR)
 - [x] E06 T7 diff and review: the Changes tab against the published or any other version, in words and on the diagram (stacked PR)
-- [ ] E06 T8 accessibility pass · T9 close (epic and phase)
+- [x] E06 T8 accessibility pass: arrow keys along connections, Delete asks, announcements, diagram contrast, manual checklist (stacked PR)
+- [ ] E06 T9 close (epic and phase)
 
 ## State (Phase 1a, closed)
 - [x] Overview approved (2026-10-18), Q1–Q8 answered, per-epic gate delegated

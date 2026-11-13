@@ -177,7 +177,9 @@ describe('workflow definitions', () => {
     expect(within(list).getAllByRole('listitem')).toHaveLength(2)
     expect(within(list).getByRole('heading', { name: '1. Approval' })).toBeInTheDocument()
     // Checked half a second after the change, with the problem on the new step.
-    expect(await screen.findByText('1 problem found.', {}, { timeout: 3000 })).toBeInTheDocument()
+    expect(await screen.findByText(/1 problem found\./, {}, { timeout: 3000 })).toBeInTheDocument()
+    // The change is announced in the same polite status line (E06 T8).
+    expect(screen.getByText(/^Approval added. /)).toHaveAttribute('role', 'status')
     expect(validated).toHaveLength(1)
     expect(within(list).getByText('1 problem')).toBeInTheDocument()
 
@@ -329,6 +331,7 @@ describe('workflow definitions', () => {
     expect(await screen.findByRole('tab', { name: 'المخطط' }, { timeout: 5000 })).toBeInTheDocument()
     expect(screen.getByRole('region', { name: 'المحاكاة' })).toBeInTheDocument()
     expect(partsForPath('/admin/workflows/purchase')).toEqual(['admin', 'builder'])
+    await expectNoA11yViolations(document.body)
     expect(partsForPath('/admin/users')).toEqual(['admin'])
   })
 })

@@ -47,5 +47,35 @@ The per-epic gate is delegated for Phase 2 (overview §10, Q1). The overview ask
   - focus is never hidden under the panel (WCAG 2.4.11).
 - **Arabic:** the diagram stays top-down; panels, lists and labels mirror (RTL). Step names keep their own direction (`dir="auto"`).
 
+## Manual keyboard and screen-reader checklist (T8)
+Run with NVDA + Firefox and VoiceOver + Safari, in English and Arabic, on a draft of "Credit facility". The results go under Findings.
+
+1. **Tabs:** Tab reaches Diagram, Steps, JSON and, for a reviewer, Changes. The arrow keys move between tabs.
+2. **Steps view:**
+   - Each step is announced as a list item with its heading, "1. Credit review".
+   - **Change** opens the panel inline and says it is expanded.
+   - Every field has a label, and its problems are read after it.
+   - **Add a step at the start** and **Add a step after this one** work with the keyboard alone.
+3. **Diagram:**
+   - Tab enters the diagram. Each step is read as "Step n of m, type, name. Who it goes to. Leads to …".
+   - Down and Up follow the connections; Left and Right move between the steps one step leads to.
+   - Enter selects a step, and its panel opens beside the diagram without covering it (WCAG 2.4.11).
+   - Delete asks before removing a step.
+   - Connections are read as "Credit review leads to By classification", with their condition.
+4. **Announcements:** adding, removing and connecting a step, undo and redo, and "Checking…" and the problem count are read without the focus moving (WCAG 4.1.3).
+5. **Simulate:**
+   - The people picker works as a combobox.
+   - The result line is read when it arrives.
+   - Steps it reached are said to be "Reached in the simulation" in the diagram and the Steps view.
+6. **Changes:** "Compared with" can be changed by keyboard. Each changed step is read with Added, Removed or Changed and its changes, "Goes to: Amina Rahman → Bilal Chowdhury".
+7. **Contrast and size, by eye:**
+   - Connections, handles and the selected ring stand out in light and dark themes (WCAG 1.4.11).
+   - No control is smaller than 24 by 24 pixels (2.5.8).
+   - Zoom to 200% and 400%: the panel stacks under the diagram and nothing is cut off.
+8. **Arabic:**
+   - Panels and lists read right to left, and the diagram stays top-down.
+   - Step names in Latin script keep their own direction.
+   - The arrow in "before ← after" points from old to new.
+
 ## Findings
 - (To be filled at the phase demo and the manual keyboard and screen-reader pass.)

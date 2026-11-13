@@ -78,3 +78,27 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/*
+ * The workflow builder's diagram (E06 T8). Connections and handles take the muted foreground, which keeps 3:1 or more
+ * against the canvas in both themes (WCAG 1.4.11); React Flow's own greys are lighter and its stylesheet loads later,
+ * hence the doubled class. A selected step gets a ring,
+ * which focus never replaces (the focus outline is the global one).
+ */
+.react-flow.react-flow {
+  --xy-background-color-default: var(--background);
+  --xy-edge-stroke-default: var(--muted-foreground);
+  --xy-edge-stroke-selected-default: var(--foreground);
+  --xy-connectionline-stroke-default: var(--muted-foreground);
+  --xy-handle-background-color-default: var(--muted-foreground);
+  --xy-handle-border-color-default: var(--background);
+  --xy-edge-label-background-color-default: var(--background);
+  --xy-edge-label-color-default: var(--foreground);
+  --xy-controls-button-background-color-default: var(--background);
+  --xy-controls-button-color-default: var(--foreground);
+  --xy-controls-button-border-color-default: var(--border);
+}
+
+.react-flow__node.selected > div {
+  box-shadow: 0 0 0 3px var(--primary);
+}

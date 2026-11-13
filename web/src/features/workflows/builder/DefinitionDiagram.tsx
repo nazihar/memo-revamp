@@ -1,7 +1,7 @@
 import { Background, Controls, Handle, Position, ReactFlow, type Node, type NodeProps } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
 import { Footprints } from 'lucide-react'
-import { useMemo, useState } from 'react'
+import { useMemo, useState, type KeyboardEvent } from 'react'
 import { defineMessages, useIntl } from 'react-intl'
 import type { FieldProblem } from '@/api/generated/types.gen'
 import { Badge } from '@/components/ui/badge'
@@ -9,9 +9,10 @@ import { bm, bmv } from './builder-messages'
 import type { DefinitionBody } from './definition'
 import { stepName, type Labels } from './describe'
 import { diagram, type StepData } from './diagram'
+import { neighbour, type Direction } from './navigate'
 import type { Command } from './edit'
 import { MARKER_SIZE, NODE_HEIGHT, NODE_WIDTH } from './layout'
-import { START_NODE } from './model'
+import { START_NODE, toGraph } from './model'
 import { AddStep, StepPanel } from './StepPanel'
 
 /** React Flow's own words, in the user's language (research R1: `ariaLabelConfig`). */
@@ -121,6 +122,39 @@ export function DefinitionDiagram({
     [intl, body, labels, problems, selected, reached, changes],
   )
   const selectedStep = body.steps.find((s) => s.id === selected)
+  const graph = useMemo(() => toGraph(body), [body])
+  const [removing, setRemoving] = useState(0)
+
+  /** Arrow keys follow the connections; Delete on a step of a draft asks to remove it (design E06 §7). */
+  const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    const node = (event.target as HTMLElement).closest<HTMLElement>('.react-flow__node')
+    const id = node?.dataset.id
+    if (!node || id === undefined) return
+    const keys: Record<string, Direction> = {
+      ArrowDown: 'down',
+      ArrowUp: 'up',
+      ArrowLeft: 'previous',
+      ArrowRight: 'next',
+    }
+    const direction = keys[event.key]
+    if (direction) {
+      event.preventDefault()
+      const to = neighbour(graph, id, direction)
+      const target =
+        to === undefined
+          ? null
+          : event.currentTarget.querySelector<HTMLElement>(`.react-flow__node[data-id="${CSS.escape(to)}"]`)
+      target?.focus()
+    } else if (
+      onCommand &&
+      (event.key === 'Delete' || event.key === 'Backspace') &&
+      body.steps.some((s) => s.id === id)
+    ) {
+      event.preventDefault()
+      select(id)
+      setRemoving((n) => n + 1)
+    }
+  }
   const select = (id: string | undefined) => {
     setSelected(id !== undefined && body.steps.some((s) => s.id === id) ? id : undefined)
   }
@@ -143,6 +177,7 @@ export function DefinitionDiagram({
       <div
         role="group"
         aria-label={intl.formatMessage(bm.diagramLabel)}
+        onKeyDown={onKeyDown}
         className="h-120 w-full rounded-md border"
         dir="ltr"
       >
@@ -156,6 +191,7 @@ export function DefinitionDiagram({
           nodesFocusable
           edgesFocusable
           disableKeyboardA11y
+          deleteKeyCode={null}
           fitView
           minZoom={0.2}
           ariaLabelConfig={ariaLabelConfig}
@@ -187,7 +223,8 @@ export function DefinitionDiagram({
         </h4>
         {selectedStep ? (
           <StepPanel
-            key={selectedStep.id}
+            key={`${selectedStep.id}-${String(removing)}`}
+            askRemove={removing > 0}
             body={body}
             step={selectedStep}
             problems={problems}

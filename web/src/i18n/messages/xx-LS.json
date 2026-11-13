@@ -1257,6 +1257,44 @@
       "value": "AddedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "builder.announce.added": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " added.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.announce.connected": [
+    {
+      "type": 0,
+      "value": "Connection changed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.announce.redone": [
+    {
+      "type": 0,
+      "value": "Redone.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.announce.removed": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " removed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.announce.undone": [
+    {
+      "type": 0,
+      "value": "Undone.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "builder.assignee.choose": [
     {
       "type": 0,

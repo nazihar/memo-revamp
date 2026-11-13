@@ -49,8 +49,11 @@ class WorkflowVolume(
     ): TenantId? {
         check(!environment.acceptsProfiles(Profiles.of("prod"))) { "Synthetic volumes must never be generated in production" }
         require(instances in 1..MAX_INSTANCES) { "instances must be 1..$MAX_INSTANCES" }
-        if (registry.findBySlug(SLUG) != null) return null
-        val tenant = registry.create(slug = SLUG, name = "Synthetic volume V2").id
+        // Start-up binds no actor, and creating a tenant is audited: the generator acts as the system until its users exist.
+        val tenant =
+            ActorContext.asSystem("volume-v2") {
+                if (registry.findBySlug(SLUG) != null) null else registry.create(slug = SLUG, name = "Synthetic volume V2").id
+            } ?: return null
         val people =
             TenantContext.call(tenant) {
                 ActorContext.asSystem("volume-v2") {

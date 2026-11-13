@@ -57,7 +57,8 @@
 - [x] E04 T9 web admin: DoA versions, rules, review and simulator; queues; substitutions; memo type policies (stacked PR)
 - [x] E04 T10 close: demo DoA and queue, E2E journey, ASVS rows, runbook (stacked PR) — **E04 complete** (PRs #52–#62, none merged yet)
 - [x] E05 plan written (2026-11-13): research (R7, business calendars), ADR-0041, design, threat model, tasks T1–T8, test plan (`epic-05-timers-slas/`)
-- [ ] E05 T1 business calendar · T2 SLA and due times · T3 timers · T4 reminders · T5 escalation · T6 volume V2 · T7 web · T8 close
+- [x] E05 T1 business calendar (stacked PR)
+- [ ] E05 T2 SLA and due times · T3 timers · T4 reminders · T5 escalation · T6 volume V2 · T7 web · T8 close
 
 ## State (Phase 1a, closed)
 - [x] Overview approved (2026-10-18), Q1–Q8 answered, per-epic gate delegated

@@ -367,6 +367,99 @@
         },
         "type" : "object"
       },
+      "CalendarDayResponse" : {
+        "properties" : {
+          "day" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "note" : {
+            "type" : [ "string", "null" ]
+          },
+          "periods" : {
+            "items" : {
+              "items" : {
+                "type" : "string"
+              },
+              "type" : "array"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "day", "periods" ],
+        "type" : "object"
+      },
+      "CalendarDaysRequest" : {
+        "properties" : {
+          "from" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "note" : {
+            "type" : [ "string", "null" ]
+          },
+          "periods" : {
+            "items" : {
+              "items" : {
+                "type" : "string"
+              },
+              "type" : "array"
+            },
+            "type" : "array"
+          },
+          "to" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "CalendarResponse" : {
+        "properties" : {
+          "defaulted" : {
+            "type" : "boolean"
+          },
+          "timeZone" : {
+            "type" : "string"
+          },
+          "version" : {
+            "description" : "Send as If-Match on changes",
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "week" : {
+            "additionalProperties" : {
+              "items" : {
+                "items" : {
+                  "type" : "string"
+                },
+                "type" : "array"
+              },
+              "type" : "array"
+            },
+            "type" : "object"
+          }
+        },
+        "required" : [ "defaulted", "timeZone", "version", "week" ],
+        "type" : "object"
+      },
+      "CalendarWeekRequest" : {
+        "properties" : {
+          "week" : {
+            "additionalProperties" : {
+              "items" : {
+                "items" : {
+                  "type" : "string"
+                },
+                "type" : "array"
+              },
+              "type" : "array"
+            },
+            "type" : "object"
+          }
+        },
+        "type" : "object"
+      },
       "CancelRequest" : {
         "properties" : {
           "reason" : {
@@ -985,6 +1078,30 @@
           "body" : {
             "additionalProperties" : { },
             "type" : [ "object", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "DuePreviewRequest" : {
+        "properties" : {
+          "due" : {
+            "type" : "string"
+          },
+          "start" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "workingTime" : {
+            "type" : "boolean"
+          }
+        },
+        "type" : "object"
+      },
+      "DuePreviewResponse" : {
+        "properties" : {
+          "due" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
           }
         },
         "type" : "object"
@@ -5062,6 +5179,179 @@
           }
         },
         "summary" : "Check a version, or an unsaved body, without changing anything",
+        "tags" : [ "workflow" ]
+      }
+    },
+    "/api/v1/admin/workflow/calendar" : {
+      "get" : {
+        "operationId" : "getWorkflowCalendar",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CalendarResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The weekly working hours and time zone",
+        "tags" : [ "workflow" ]
+      },
+      "put" : {
+        "operationId" : "replaceWorkflowCalendar",
+        "parameters" : [ {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CalendarWeekRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CalendarResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Set the weekly working hours",
+        "tags" : [ "workflow" ]
+      }
+    },
+    "/api/v1/admin/workflow/calendar/days" : {
+      "get" : {
+        "operationId" : "listWorkflowCalendarDays",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "from",
+          "required" : true,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "to",
+          "required" : true,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/CalendarDayResponse"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Holidays and other special days between two dates",
+        "tags" : [ "workflow" ]
+      },
+      "post" : {
+        "operationId" : "setWorkflowCalendarDays",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CalendarDaysRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/CalendarDayResponse"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Set a day or a range: closed, or with its own hours",
+        "tags" : [ "workflow" ]
+      }
+    },
+    "/api/v1/admin/workflow/calendar/days/{day}" : {
+      "delete" : {
+        "operationId" : "removeWorkflowCalendarDay",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "day",
+          "required" : true,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "summary" : "Let a day follow the weekly hours again",
+        "tags" : [ "workflow" ]
+      }
+    },
+    "/api/v1/admin/workflow/calendar/preview" : {
+      "post" : {
+        "operationId" : "previewWorkflowDue",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/DuePreviewRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DuePreviewResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "When an SLA started at a time would be due",
         "tags" : [ "workflow" ]
       }
     },

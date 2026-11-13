@@ -46,6 +46,7 @@
   "access.permission.orgManage": "Manage units, positions and assignments",
   "access.permission.roles": "Manage roles and grants",
   "access.permission.users": "Manage users",
+  "access.permission.workflowCalendarManage": "Set the business calendar for deadlines",
   "access.permission.workflowDefinitionsApprove": "Review and publish workflow definitions",
   "access.permission.workflowDefinitionsManage": "Write workflow definitions and submit them for review",
   "access.permission.workflowDoaApprove": "Review and publish the delegation of authority",

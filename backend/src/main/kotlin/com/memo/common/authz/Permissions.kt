@@ -63,6 +63,9 @@ enum class Permission(
 
     /** Publish or send back a DoA version someone else submitted (Phase 2 E04); with a step-up. */
     WORKFLOW_DOA_APPROVE("workflow.doa.approve", scopable = false, privileged = true),
+
+    /** Set the business calendar SLAs count working time on (Phase 2 E05). */
+    WORKFLOW_CALENDAR_MANAGE("workflow.calendar.manage", scopable = false, privileged = true),
     ;
 
     companion object {

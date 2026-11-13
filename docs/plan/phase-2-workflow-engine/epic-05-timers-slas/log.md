@@ -11,3 +11,21 @@
   - pausing an SLA while a task waits for an answer;
   - SLA reports and dashboards (Phase 7 reporting);
   - recalculating due times when the calendar changes.
+- **T1 (business calendar):**
+  - **Arithmetic:** `workflow.calendar.BusinessCalendar` is pure and DST-safe. Periods are local times; lengths are measured between the instants they map to.
+    - In working time a **day is a working day**: the same time of day on the n-th working day after. Hours and minutes are working minutes. So `P1D` from Thursday 15:00 in Dhaka is Sunday 15:00, and `PT16H` is Monday 15:00.
+    - SLA durations are therefore `SlaDuration(days, minutes)`, not `java.time.Duration`, where 24 hours would turn into a day. The property test caught this.
+    - A start outside working hours counts from the next working period. Due times landing on a period's end stay there (17:00, not 9:00 the next day).
+    - Walks are bounded to 3 years. A calendar with no working days gives no due time.
+  - **Storage:** `workflow_calendar` (weekly periods per weekday, version) and `workflow_calendar_day` (a date with its own periods, or none: closed, and a note), in migration `workflow/V11` with forced RLS.
+  - **Deviation from the design:** there is no time-zone column. The calendar uses the tenant's time zone setting (`OrgDirectory.zone()`), so there is one source of truth.
+  - **Default:** until set, Sunday–Thursday 9:00–17:00.
+  - **API** `/api/v1/admin/workflow/calendar` under `workflow.calendar.manage` (new, privileged):
+    - GET and PUT for the week, with If-Match;
+    - `GET /days?from&to` (at most 400 days);
+    - `POST /days` for one day or a range of up to 366 days, closed or with its own hours;
+    - `DELETE /days/{day}`;
+    - `POST /preview` returns the due time for a start and a duration.
+  - At most 4 non-overlapping periods a day. Audit: `workflow.calendar.updated`, `.day_set` (from, to, closed), `.day_removed`.
+  - Also here: `OrgPerformanceIT`'s plan check now rules out bitmap scans too. CI's planner chose one on PR #62; it is a separate commit.
+  - Tests: `BusinessCalendarTest`, `BusinessCalendarProperties` (Dhaka, London, New York and UTC; due inside a working period, additivity, working days), `BusinessCalendarIT`, matrix `p2-e05-timers.yaml`.

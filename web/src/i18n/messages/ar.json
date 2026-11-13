@@ -46,6 +46,7 @@
   "access.permission.orgManage": "إدارة الوحدات والوظائف والتعيينات",
   "access.permission.roles": "إدارة الأدوار والمنح",
   "access.permission.users": "إدارة المستخدمين",
+  "access.permission.workflowCalendarManage": "ضبط تقويم العمل للمواعيد النهائية",
   "access.permission.workflowDefinitionsApprove": "مراجعة تعريفات سير العمل ونشرها",
   "access.permission.workflowDefinitionsManage": "كتابة تعريفات سير العمل وإرسالها للمراجعة",
   "access.permission.workflowDoaApprove": "مراجعة تفويض الصلاحيات ونشره",

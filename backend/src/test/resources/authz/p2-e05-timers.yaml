@@ -1,0 +1,17 @@
+# Phase 2 E05 timers, SLAs and escalation (design E05 §5). The business calendar is for holders of
+# workflow.calendar.manage; tenant administrators hold it.
+epic: P2-E05
+endpoints:
+  - { endpoint: "GET /api/v1/admin/workflow/calendar", rule: tenantAdmin }
+  - endpoint: "PUT /api/v1/admin/workflow/calendar"
+    rule: tenantAdmin
+    body: { week: { SUNDAY: [["09:00", "17:00"]] } }
+    headers: { If-Match: "\"0\"" }
+  - { endpoint: "GET /api/v1/admin/workflow/calendar/days", rule: tenantAdmin }
+  - endpoint: "POST /api/v1/admin/workflow/calendar/days"
+    rule: tenantAdmin
+    body: { from: "2026-12-16", periods: [], note: "Victory Day" }
+  - { endpoint: "DELETE /api/v1/admin/workflow/calendar/days/{day}", rule: tenantAdmin }
+  - endpoint: "POST /api/v1/admin/workflow/calendar/preview"
+    rule: tenantAdmin
+    body: { due: "P1D" }

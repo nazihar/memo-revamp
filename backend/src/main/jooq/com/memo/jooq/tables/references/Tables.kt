@@ -49,6 +49,8 @@ import com.memo.jooq.tables.TenancySettingView
 import com.memo.jooq.tables.TenancyTenant
 import com.memo.jooq.tables.TenancyTerm
 import com.memo.jooq.tables.WorkflowAction
+import com.memo.jooq.tables.WorkflowCalendar
+import com.memo.jooq.tables.WorkflowCalendarDay
 import com.memo.jooq.tables.WorkflowDefinition
 import com.memo.jooq.tables.WorkflowDefinitionVersion
 import com.memo.jooq.tables.WorkflowDoaRule
@@ -282,6 +284,16 @@ val TENANCY_TERM: TenancyTerm = TenancyTerm.TENANCY_TERM
  * The table <code>memo.workflow_action</code>.
  */
 val WORKFLOW_ACTION: WorkflowAction = WorkflowAction.WORKFLOW_ACTION
+
+/**
+ * The table <code>memo.workflow_calendar</code>.
+ */
+val WORKFLOW_CALENDAR: WorkflowCalendar = WorkflowCalendar.WORKFLOW_CALENDAR
+
+/**
+ * The table <code>memo.workflow_calendar_day</code>.
+ */
+val WORKFLOW_CALENDAR_DAY: WorkflowCalendarDay = WorkflowCalendarDay.WORKFLOW_CALENDAR_DAY
 
 /**
  * The table <code>memo.workflow_definition</code>.

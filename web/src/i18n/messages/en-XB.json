@@ -673,6 +673,20 @@
       "value": "‬"
     }
   ],
+  "access.permission.workflowCalendarManage": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝʇ ʇɥǝ qnsıuǝss ɔɐʅǝupɐɹ ɟoɹ pǝɐpʅıuǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "access.permission.workflowDefinitionsApprove": [
     {
       "type": 0,

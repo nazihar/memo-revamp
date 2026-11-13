@@ -161,6 +161,37 @@ export type BrandingUpdate = {
     logoFileId?: string | null;
 };
 
+export type CalendarDayResponse = {
+    day: string;
+    note?: string | null;
+    periods: Array<Array<string>>;
+};
+
+export type CalendarDaysRequest = {
+    from?: string;
+    note?: string | null;
+    periods?: Array<Array<string>>;
+    to?: string | null;
+};
+
+export type CalendarResponse = {
+    defaulted: boolean;
+    timeZone: string;
+    /**
+     * Send as If-Match on changes
+     */
+    version: number;
+    week: {
+        [key: string]: Array<Array<string>>;
+    };
+};
+
+export type CalendarWeekRequest = {
+    week?: {
+        [key: string]: Array<Array<string>>;
+    };
+};
+
 export type CancelRequest = {
     reason?: string | null;
 };
@@ -394,6 +425,16 @@ export type DraftRequest = {
     body?: {
         [key: string]: unknown;
     } | null;
+};
+
+export type DuePreviewRequest = {
+    due?: string;
+    start?: string | null;
+    workingTime?: boolean;
+};
+
+export type DuePreviewResponse = {
+    due?: string | null;
 };
 
 export type EditSessionView = {
@@ -2267,6 +2308,108 @@ export type ValidateWorkflowDefinitionResponses = {
 };
 
 export type ValidateWorkflowDefinitionResponse = ValidateWorkflowDefinitionResponses[keyof ValidateWorkflowDefinitionResponses];
+
+export type GetWorkflowCalendarData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/workflow/calendar';
+};
+
+export type GetWorkflowCalendarResponses = {
+    /**
+     * OK
+     */
+    200: CalendarResponse;
+};
+
+export type GetWorkflowCalendarResponse = GetWorkflowCalendarResponses[keyof GetWorkflowCalendarResponses];
+
+export type ReplaceWorkflowCalendarData = {
+    body: CalendarWeekRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/workflow/calendar';
+};
+
+export type ReplaceWorkflowCalendarResponses = {
+    /**
+     * OK
+     */
+    200: CalendarResponse;
+};
+
+export type ReplaceWorkflowCalendarResponse = ReplaceWorkflowCalendarResponses[keyof ReplaceWorkflowCalendarResponses];
+
+export type ListWorkflowCalendarDaysData = {
+    body?: never;
+    path?: never;
+    query: {
+        from: string;
+        to: string;
+    };
+    url: '/api/v1/admin/workflow/calendar/days';
+};
+
+export type ListWorkflowCalendarDaysResponses = {
+    /**
+     * OK
+     */
+    200: Array<CalendarDayResponse>;
+};
+
+export type ListWorkflowCalendarDaysResponse = ListWorkflowCalendarDaysResponses[keyof ListWorkflowCalendarDaysResponses];
+
+export type SetWorkflowCalendarDaysData = {
+    body: CalendarDaysRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/workflow/calendar/days';
+};
+
+export type SetWorkflowCalendarDaysResponses = {
+    /**
+     * OK
+     */
+    200: Array<CalendarDayResponse>;
+};
+
+export type SetWorkflowCalendarDaysResponse = SetWorkflowCalendarDaysResponses[keyof SetWorkflowCalendarDaysResponses];
+
+export type RemoveWorkflowCalendarDayData = {
+    body?: never;
+    path: {
+        day: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/workflow/calendar/days/{day}';
+};
+
+export type RemoveWorkflowCalendarDayResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
+export type PreviewWorkflowDueData = {
+    body: DuePreviewRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/workflow/calendar/preview';
+};
+
+export type PreviewWorkflowDueResponses = {
+    /**
+     * OK
+     */
+    200: DuePreviewResponse;
+};
+
+export type PreviewWorkflowDueResponse = PreviewWorkflowDueResponses[keyof PreviewWorkflowDueResponses];
 
 export type ListDoaVersionsData = {
     body?: never;

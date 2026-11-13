@@ -146,6 +146,8 @@ data class MemoView(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val version: Long,
     /** People with a declared interest, who are never asked to decide on the memo (SOD-4, design E04 §4.4). */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val interests: List<Named> = emptyList(),
+    /** When the current step is due, from its SLA in working time (design E05 §4.4); null without one. */
+    val dueAt: Instant? = null,
 )
 
 /** Builds [MemoView]s: names from identity, the document from files. Inside a tenant transaction. */
@@ -222,6 +224,7 @@ class MemoViews(
             allowedActions = allowed,
             sendBackTargets = targets.map { SendBackTargetView(it.stepId, it.name, Named(it.holderId, names[it.holderId].orEmpty())) },
             interests = interests.map { Named(it, names[it].orEmpty()) }.sortedBy { it.name },
+            dueAt = workflow?.let { workflows.dueOf(MemoWorkflowSubject.TYPE, memo.id) },
             createdAt = memo.createdAt,
             updatedAt = memo.updatedAt,
             version = memo.version,

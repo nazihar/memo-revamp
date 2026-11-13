@@ -128,10 +128,49 @@ enum class ForwardWithin(
     }
 }
 
-/** Due time of a step (ISO-8601 duration), validated now and acted on in E05. */
+/**
+ * A step's service level (ADR-0041, design E05 §2): due after [due] (ISO 8601 days, hours, minutes), counted in the
+ * tenant's working time unless [workingTime] is false; reminders before and after; and an escalation.
+ */
 data class Sla(
     val due: String,
     val workingTime: Boolean? = null,
+    val remind: Remind? = null,
+    val escalate: Escalate? = null,
+) {
+    /** Working time unless the definition says otherwise. */
+    val inWorkingTime: Boolean get() = workingTime != false
+}
+
+/** Reminders to the holder: once [before] the due time, and after it at each of [after] (at most 3). */
+data class Remind(
+    val before: String? = null,
+    val after: List<String> = emptyList(),
+)
+
+/** What happens [after] the due time (design E05 §4.3). */
+enum class EscalateAction(
+    val json: String,
+) {
+    /** Tell the targets ([Escalate.to], or the holder's supervisor); the holder keeps the task. */
+    NOTIFY("notify"),
+
+    /** Move the task to [Escalate.to]. */
+    REASSIGN("reassign"),
+
+    /** Move the task to the holder's supervisor by the reporting line. */
+    NEXT_LEVEL("nextLevel"),
+    ;
+
+    companion object {
+        fun of(json: String): EscalateAction = entries.first { it.json == json }
+    }
+}
+
+data class Escalate(
+    val after: String,
+    val action: EscalateAction,
+    val to: Assignee? = null,
 )
 
 /** One step as authored. Which fields are set depends on [type]; the JSON Schema enforces the combinations. */

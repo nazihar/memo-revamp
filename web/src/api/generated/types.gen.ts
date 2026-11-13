@@ -13,6 +13,7 @@ export type AdminTaskResponse = {
     assignee?: Person | null;
     blocked?: 'NO_CLEARANCE' | 'INACTIVE' | 'UNRESOLVED';
     createdAt: string;
+    dueAt?: string | null;
     round: number;
     subject: AdminTaskSubject;
     taskId: string;
@@ -539,6 +540,7 @@ export type InboxItem = {
     assignedAt: string;
     blocked?: 'NO_CLEARANCE' | 'INACTIVE' | 'UNRESOLVED';
     claimedBy?: Named | null;
+    dueAt?: string | null;
     kind: 'DECIDE' | 'OPINION' | 'CLARIFY';
     memo: InboxMemo;
     round: number;
@@ -721,6 +723,7 @@ export type MemoView = {
     classification: ClassificationView;
     createdAt: string;
     document?: DocumentView | null;
+    dueAt?: string | null;
     holders: Array<Named>;
     id: string;
     initiator: Named;

@@ -16,6 +16,7 @@ import org.jooq.impl.DSL
 import org.springframework.stereotype.Component
 import tools.jackson.databind.json.JsonMapper
 import java.time.Instant
+import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.util.UUID
 
@@ -32,6 +33,7 @@ class TaskQueryStore(
         blockedOnly: Boolean,
         after: Pair<Instant, UUID>?,
         limit: Int,
+        overdueAt: Instant? = null,
     ): List<TaskItem> {
         val t = WORKFLOW_TASK
         val i = WORKFLOW_INSTANCE
@@ -41,6 +43,7 @@ class TaskQueryStore(
                 t.STATE.eq(OPEN),
                 assignee?.let { t.ASSIGNEE_ID.eq(it) },
                 t.BLOCKED_REASON.isNotNull.takeIf { blockedOnly },
+                overdueAt?.let { t.DUE_AT.lt(it.atOffset(ZoneOffset.UTC)) },
                 after?.let { (at, id) -> DSL.row(t.CREATED_AT, t.ID).lt(at.atOffset(ZoneOffset.UTC), id) },
             )
         return tenantDsl
@@ -60,6 +63,7 @@ class TaskQueryStore(
                 s.NEEDED,
                 s.CLAIMED_BY,
                 s.TYPE,
+                t.DUE_AT,
             ).from(t)
             .join(i)
             .on(i.ID.eq(t.INSTANCE_ID))
@@ -83,9 +87,20 @@ class TaskQueryStore(
                     // A step resolved to several candidates; parallel steps need each of them and are not "shared".
                     shared = r.value12() != null && r.value14() != StepKind.PARALLEL.name,
                     claimedBy = r.value13(),
+                    dueAt = r.value15()?.toInstant(),
                 )
             }
     }
+
+    /** When the instance's current step is due: the earliest due time of its open decisions, if any has one. */
+    fun dueOf(instanceId: UUID): Instant? =
+        tenantDsl
+            .current()
+            .select(DSL.min(WORKFLOW_TASK.DUE_AT))
+            .from(WORKFLOW_TASK)
+            .where(WORKFLOW_TASK.INSTANCE_ID.eq(instanceId), WORKFLOW_TASK.STATE.eq(OPEN), WORKFLOW_TASK.KIND.eq(DECIDE))
+            .fetchOne(0, OffsetDateTime::class.java)
+            ?.toInstant()
 
     fun holders(
         subjectType: String,
@@ -146,5 +161,6 @@ class TaskQueryStore(
 
     private companion object {
         const val OPEN = "OPEN"
+        const val DECIDE = "DECIDE"
     }
 }

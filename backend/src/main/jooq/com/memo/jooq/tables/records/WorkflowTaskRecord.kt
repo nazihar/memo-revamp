@@ -79,6 +79,10 @@ open class WorkflowTaskRecord private constructor() : UpdatableRecordImpl<Workfl
         set(value): Unit = set(14, value)
         get(): UUID? = get(14) as UUID?
 
+    open var dueAt: OffsetDateTime?
+        set(value): Unit = set(15, value)
+        get(): OffsetDateTime? = get(15) as OffsetDateTime?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -88,7 +92,7 @@ open class WorkflowTaskRecord private constructor() : UpdatableRecordImpl<Workfl
     /**
      * Create a detached, initialised WorkflowTaskRecord
      */
-    constructor(id: UUID, tenantId: UUID, instanceId: UUID, stepId: UUID, assigneeId: UUID? = null, state: String, blockedReason: String? = null, outcome: String? = null, createdAt: OffsetDateTime, completedAt: OffsetDateTime? = null, version: Long? = null, kind: String? = null, onBehalfOf: UUID? = null, waiting: Boolean? = null, parentTaskId: UUID? = null): this() {
+    constructor(id: UUID, tenantId: UUID, instanceId: UUID, stepId: UUID, assigneeId: UUID? = null, state: String, blockedReason: String? = null, outcome: String? = null, createdAt: OffsetDateTime, completedAt: OffsetDateTime? = null, version: Long? = null, kind: String? = null, onBehalfOf: UUID? = null, waiting: Boolean? = null, parentTaskId: UUID? = null, dueAt: OffsetDateTime? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.instanceId = instanceId
@@ -104,6 +108,7 @@ open class WorkflowTaskRecord private constructor() : UpdatableRecordImpl<Workfl
         this.onBehalfOf = onBehalfOf
         this.waiting = waiting
         this.parentTaskId = parentTaskId
+        this.dueAt = dueAt
         resetTouchedOnNotNull()
     }
 }

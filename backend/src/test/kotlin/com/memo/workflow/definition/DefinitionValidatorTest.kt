@@ -177,6 +177,23 @@ class DefinitionValidatorTest {
         assertThat(problems(call)).isEmpty()
     }
 
+    @Test
+    fun `an SLA with reminders and an escalation is valid, and its own rules are checked`() {
+        fun withSla(sla: String) =
+            definition("a", """{"id":"a","type":"approve","assignee":{"kind":"person","userId":"ALICE"},"sla":$sla,"next":"end"}""")
+
+        val good = """{"due":"P2D","remind":{"before":"PT4H","after":["PT4H","P1D"]},"escalate":{"after":"P1D","action":"nextLevel"}}"""
+        assertThat(problems(withSla(good))).isEmpty()
+        assertThat(problems(withSla("""{"due":"PT4H","remind":{"before":"PT4H"}}""")))
+            .containsExactly("SLA_REMIND_BEFORE" to "/steps/0/sla/remind/before")
+        assertThat(problems(withSla("""{"due":"P1D","escalate":{"after":"PT1H","action":"reassign"}}""")))
+            .containsExactly("SLA_ESCALATE_TO" to "/steps/0/sla/escalate/to")
+        assertThat(problems(withSla("""{"due":"P1D","escalate":{"after":"PT1H","action":"notify","to":{"kind":"initiator"}}}""")))
+            .containsExactly("ASSIGNEE_KIND" to "/steps/0/sla/escalate/to")
+        assertThat(problems(withSla("""{"due":"P1D","remind":{"after":["PT1H","PT2H","PT3H","PT4H"]}}"""))).isNotEmpty()
+        assertThat(problems(withSla("""{"due":"P1D","escalate":{"after":"PT1H","action":"fire"}}"""))).isNotEmpty()
+    }
+
     private fun definition(
         start: String,
         vararg steps: String,

@@ -29,3 +29,17 @@
   - At most 4 non-overlapping periods a day. Audit: `workflow.calendar.updated`, `.day_set` (from, to, closed), `.day_removed`.
   - Also here: `OrgPerformanceIT`'s plan check now rules out bitmap scans too. CI's planner chose one on PR #62; it is a separate commit.
   - Tests: `BusinessCalendarTest`, `BusinessCalendarProperties` (Dhaka, London, New York and UTC; due inside a working period, additivity, working days), `BusinessCalendarIT`, matrix `p2-e05-timers.yaml`.
+- **T2 (SLA model and due times):**
+  - **Definition:** `sla` gains `remind` (`before`, and `after` with up to 3 entries) and `escalate` (`after`, `action` notify / reassign / nextLevel, and `to`, an assignee). This is schema 2, additive; `workingTime` defaults to true.
+  - **Validation:**
+    - a reminder before the due time must be shorter than it (`SLA_REMIND_BEFORE`, comparing a day as 24 hours);
+    - `reassign` needs `to` (`SLA_ESCALATE_TO`);
+    - `to` is never the initiator and must exist (E04 references).
+  - **`workflow_task.due_at`** (migration `workflow/V12`, with a partial index on open tasks) is set on decision tasks of SLA steps when the task is written. It is computed by `DueTimes` from the action's time with the tenant calendar, which is read once per action and only when needed.
+    - A task replacing another on the same step (reassign, forward, staff change) keeps the step's due time.
+    - A step that runs again (send-back, resubmit, re-resolution) gets a new one.
+  - **Where due times show:**
+    - task lists: `TaskItem.dueAt`, the inbox's `InboxItem.dueAt`, and the admin open tasks' `dueAt` with a new `filter=overdue`;
+    - the memo view's `dueAt`: the earliest due time of the current step's open decisions (`WorkflowQueries.dueOf`).
+  - SLA JSON moved to `SlaJson`; the definition printer was at its complexity limit.
+  - Tests: validator cases, `SlaDueIT` (working and calendar time, kept on reassign, renewed after a send-back, none without an SLA).

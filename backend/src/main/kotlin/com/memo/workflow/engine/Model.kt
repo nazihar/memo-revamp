@@ -3,6 +3,7 @@ package com.memo.workflow.engine
 import com.memo.workflow.ActionKind
 import com.memo.workflow.BlockedReason
 import com.memo.workflow.InstanceStatus
+import com.memo.workflow.RouteEntry
 import java.util.UUID
 
 /** How a round ended; OPEN while it runs (ADR-0035). */
@@ -73,8 +74,8 @@ data class Round(
     val number: Int,
     val outcome: RoundOutcome,
     val steps: List<Step>,
-    /** The initiator's route for this round (the approvers of the definition's route step). */
-    val route: List<UUID> = emptyList(),
+    /** The initiator's route for this round (the entries of the definition's route step, design E04 §4.7). */
+    val route: List<RouteEntry> = emptyList(),
 ) {
     fun replaceStep(
         stepId: UUID,

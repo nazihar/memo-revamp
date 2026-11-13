@@ -16,6 +16,7 @@ import com.memo.memo.internal.MemoTypes
 import com.memo.memo.internal.MemoWorkflowSubject
 import com.memo.memo.internal.Memos
 import com.memo.memo.internal.RoutePolicy
+import com.memo.workflow.RouteEntry
 import com.memo.workflow.WorkflowQueries
 import com.memo.workflow.Workflows
 import org.springframework.stereotype.Service
@@ -72,7 +73,7 @@ class MemoSeeding(
         memo: UUID,
         approvers: List<UUID>,
     ) {
-        tx { routes.replace(memo, memos.get(memo).version, approvers) }
+        tx { routes.replace(memo, memos.get(memo).version, approvers.map(RouteEntry::person)) }
     }
 
     fun submit(

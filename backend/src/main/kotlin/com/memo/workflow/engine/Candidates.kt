@@ -11,10 +11,14 @@ internal data class Found(
     val record: Map<String, Any?>,
 )
 
-/** The members of a DoA approval group, resolved instead of the step's own assignees (design E04 §4.3). */
+/**
+ * Who to resolve instead of the step's own assignees: a DoA approval group ([group], design E04 §4.3) or a route entry
+ * naming positions ([routeIndex], §4.7). Decisions on other groups or entries of the same step count for SOD-2.
+ */
 internal data class Members(
     val assignees: List<Assignee>,
-    val group: Int,
+    val group: Int? = null,
+    val routeIndex: Int? = null,
 )
 
 /**
@@ -37,7 +41,7 @@ internal class Candidates(
         val assignees = members?.assignees ?: (listOfNotNull(node.assignee) + node.assignees)
         val resolutions = assignees.map { context.resolver.resolve(it, initiator) }
         val found = resolutions.flatMap { it.people }.distinct()
-        val rules = exclusions(node, members?.group, initiator, round, recused)
+        val rules = exclusions(node, members, initiator, round, recused)
         val excluded = found.mapNotNull { person -> rules.firstOrNull { person in it.second }?.let { person to it.first } }
         val people = found - excluded.map { it.first }.toSet()
         val record =
@@ -78,7 +82,7 @@ internal class Candidates(
      */
     private fun exclusions(
         node: StepDef,
-        group: Int?,
+        members: Members?,
         initiator: UUID,
         round: Round,
         recused: Set<UUID>,
@@ -86,7 +90,7 @@ internal class Candidates(
         val decided =
             if (context.oncePerRound) {
                 round.steps
-                    .filter { it.nodeId != node.id || it.doaGroup != group }
+                    .filter { it.nodeId != node.id || it.doaGroup != members?.group || it.routeIndex != members?.routeIndex }
                     .flatMap { it.tasks }
                     .filter { it.state == TaskState.COMPLETED && it.outcome in DECISIONS }
                     .mapNotNull { it.onBehalfOf ?: it.assignee }

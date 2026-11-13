@@ -1,6 +1,10 @@
 package com.memo.workflow.internal
 
 import com.memo.org.OrgDirectory
+import com.memo.workflow.DoaPreview
+import com.memo.workflow.DoaPreviewGroup
+import com.memo.workflow.DoaShortfall
+import com.memo.workflow.RouteEntry
 import com.memo.workflow.WorkflowSubject
 import com.memo.workflow.definition.Assignee
 import com.memo.workflow.definition.AssigneeKind
@@ -49,16 +53,6 @@ object DoaMembers {
         }
 }
 
-/** What a simulation found (design E04 §4.3): the version and rule, and who each group would go to. */
-data class DoaSimulation(
-    val version: Int?,
-    val rule: Int?,
-    val ruleName: String?,
-    /** Why nothing matched: `NO_DOA` or `NO_RULE`. */
-    val reason: String?,
-    val groups: List<Pair<Int, List<UUID>>>,
-)
-
 /**
  * Matches an item against a DoA version (design E04 §4.3): the first rule, in order, for the subject type and memo type,
  * whose unit is the initiator's unit (or above it, with its subtree) and whose condition holds for the item's
@@ -92,22 +86,52 @@ class DoaMatcher(
         subjectType: String,
         attributes: Map<String, Any?>,
         initiator: UUID,
-    ): DoaSimulation {
+    ): DoaPreview {
         val version = (if (number == null) versions.inForce(directory.today()) else versions.version(number))
         if (number != null && version == null) throw DoaNotFoundException()
-        if (version == null) return DoaSimulation(null, null, null, DoaMatch.NO_DOA, emptyList())
+        if (version == null) return DoaPreview(null, null, null, DoaMatch.NO_DOA, emptyList())
         val (match, rule) = matched(version, subjectType, attributes, initiator)
         val resolver = resolvers.resolver()
         val groups =
             match.groups.map { group ->
-                group.needed to
+                DoaPreviewGroup(
+                    group.needed,
                     group.members
                         .flatMap { resolver.resolve(it, initiator).people }
                         .distinct()
-                        .filter { it != initiator }
+                        .filter { it != initiator },
+                )
             }
         val reason = if (rule == null) DoaMatch.NO_RULE else null
-        return DoaSimulation(version.number, rule?.first, rule?.second?.name, reason, groups)
+        return DoaPreview(version.number, rule?.first, rule?.second?.name, reason, groups)
+    }
+
+    /** The DoA in force as it would apply to [subjectId] of [subjectType] if [initiator] submitted it now. */
+    fun preview(
+        subjectType: String,
+        subjectId: UUID,
+        initiator: UUID,
+    ): DoaPreview {
+        val subject = subjects.single { it.type == subjectType }
+        return simulate(null, subjectType, subject.attributeValues(subjectId), initiator)
+    }
+
+    /**
+     * The groups of [preview] that [route] does not cover (design E04 §4.7): an entry counts for a group when someone it
+     * names (a person, a position's holder today, a group's member) is among the group's people.
+     */
+    fun shortfalls(
+        subjectType: String,
+        subjectId: UUID,
+        initiator: UUID,
+        route: List<RouteEntry>,
+    ): List<DoaShortfall> {
+        val holders = directory.holders(route.flatMap { it.positions })
+        val reach = route.map { entry -> (entry.people + entry.positions.mapNotNull(holders::get)).toSet() }
+        return preview(subjectType, subjectId, initiator).groups.mapIndexedNotNull { index, group ->
+            val covered = reach.count { people -> people.any { it in group.people } }
+            DoaShortfall(index, group.needed, covered, group.people).takeIf { covered < group.needed }
+        }
     }
 
     private fun matched(

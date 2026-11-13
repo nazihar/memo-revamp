@@ -3,6 +3,7 @@ package com.memo.workflow.internal
 import com.memo.common.id.IdGenerator
 import com.memo.common.tenant.TenantDsl
 import com.memo.common.web.RefusedException
+import com.memo.jooq.tables.records.WorkflowStepRecord
 import com.memo.jooq.tables.records.WorkflowTaskRecord
 import com.memo.jooq.tables.references.WORKFLOW_ACTION
 import com.memo.jooq.tables.references.WORKFLOW_DEFINITION_VERSION
@@ -13,6 +14,7 @@ import com.memo.jooq.tables.references.WORKFLOW_TASK
 import com.memo.workflow.ActionKind
 import com.memo.workflow.BlockedReason
 import com.memo.workflow.InstanceStatus
+import com.memo.workflow.RouteEntry
 import com.memo.workflow.SubjectRef
 import com.memo.workflow.definition.Definition
 import com.memo.workflow.definition.DefinitionCompiler
@@ -31,6 +33,8 @@ import com.memo.workflow.engine.TaskState
 import org.jooq.JSONB
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Component
+import tools.jackson.core.type.TypeReference
+import tools.jackson.databind.json.JsonMapper
 import java.time.OffsetDateTime
 import java.util.UUID
 
@@ -56,6 +60,7 @@ data class LoadedInstance(
 class InstanceStore(
     private val tenantDsl: TenantDsl,
     private val definitions: CompiledDefinitions,
+    private val json: JsonMapper,
 ) {
     fun instanceOfTask(taskId: UUID): UUID? =
         tenantDsl
@@ -124,29 +129,18 @@ class InstanceStore(
                 .fetch()
                 .groupBy { it.stepId }
         val definition = definitions.get(instance.definitionVersionId)
-        val engineSteps =
-            steps.map { step ->
-                Step(
-                    id = step.id,
-                    ordinal = step.ordinal,
-                    assignee = step.assigneeId,
-                    state = StepState.valueOf(step.state),
-                    nodeId = step.nodeId,
-                    kind = StepKind.valueOf(step.type),
-                    routeIndex = step.routeIndex,
-                    name = definition.stepsById[step.nodeId]?.name,
-                    needed = step.needed,
-                    claimedBy = step.claimedBy,
-                    doaGroup = step.doaGroup,
-                    tasks =
-                        tasks[step.id].orEmpty().map(::task),
-                )
-            }
+        val engineSteps = steps.map { step(it, tasks[it.id].orEmpty(), definition) }
         val state =
             InstanceState(
                 initiator = instance.initiatorId,
                 status = InstanceStatus.valueOf(instance.status),
-                round = Round(round.number, RoundOutcome.valueOf(round.outcome), engineSteps, round.route.orEmpty().filterNotNull()),
+                round =
+                    Round(
+                        round.number,
+                        RoundOutcome.valueOf(round.outcome),
+                        engineSteps,
+                        route(round.routeEntries, round.route),
+                    ),
             )
         return LoadedInstance(
             instance.id,
@@ -160,18 +154,11 @@ class InstanceStore(
         )
     }
 
-    private fun task(task: WorkflowTaskRecord): Task =
-        Task(
-            id = task.id,
-            assignee = task.assigneeId,
-            state = TaskState.valueOf(task.state),
-            blocked = task.blockedReason?.let(BlockedReason::valueOf),
-            outcome = task.outcome?.let(ActionKind::valueOf),
-            kind = TaskKind.valueOf(task.kind!!),
-            onBehalfOf = task.onBehalfOf,
-            waiting = task.waiting == true,
-            parentTaskId = task.parentTaskId,
-        )
+    /** The round's route: its entries when it names more than people, else the people (design E04 §4.7). */
+    private fun route(
+        entries: JSONB?,
+        people: Array<UUID?>?,
+    ): List<RouteEntry> = entries?.let { json.readValue(it.data(), ROUTE) } ?: people.orEmpty().filterNotNull().map(RouteEntry::person)
 
     /**
      * Instances that run or wait for resubmission on a version of [definitionId] other than [target], oldest first, with
@@ -280,3 +267,38 @@ data class Approval(
     val person: UUID,
     val snapshot: String,
 )
+
+private val ROUTE = object : TypeReference<List<RouteEntry>>() {}
+
+private fun step(
+    step: WorkflowStepRecord,
+    tasks: List<WorkflowTaskRecord>,
+    definition: Definition,
+): Step =
+    Step(
+        id = step.id,
+        ordinal = step.ordinal,
+        assignee = step.assigneeId,
+        state = StepState.valueOf(step.state),
+        nodeId = step.nodeId,
+        kind = StepKind.valueOf(step.type),
+        routeIndex = step.routeIndex,
+        name = definition.stepsById[step.nodeId]?.name,
+        needed = step.needed,
+        claimedBy = step.claimedBy,
+        doaGroup = step.doaGroup,
+        tasks = tasks.map(::task),
+    )
+
+private fun task(task: WorkflowTaskRecord): Task =
+    Task(
+        id = task.id,
+        assignee = task.assigneeId,
+        state = TaskState.valueOf(task.state),
+        blocked = task.blockedReason?.let(BlockedReason::valueOf),
+        outcome = task.outcome?.let(ActionKind::valueOf),
+        kind = TaskKind.valueOf(task.kind!!),
+        onBehalfOf = task.onBehalfOf,
+        waiting = task.waiting == true,
+        parentTaskId = task.parentTaskId,
+    )

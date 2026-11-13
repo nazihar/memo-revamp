@@ -114,6 +114,20 @@ data class Branch(
     val next: String,
 )
 
+/** How far a step's holder may forward it (design E04 §4.7): within their unit (and below), their legal entity, or to anyone. */
+enum class ForwardWithin(
+    val json: String,
+) {
+    UNIT("unit"),
+    LEGAL_ENTITY("legalEntity"),
+    ANYONE("anyone"),
+    ;
+
+    companion object {
+        fun of(json: String): ForwardWithin = entries.first { it.json == json }
+    }
+}
+
 /** Due time of a step (ISO-8601 duration), validated now and acted on in E05. */
 data class Sla(
     val due: String,
@@ -141,6 +155,8 @@ data class StepDef(
     val sla: Sla? = null,
     /** Who gets the step when [assignee] resolves to nobody (design E04 §4.1); without it the step waits for an administrator. */
     val fallback: Assignee? = null,
+    /** How far its holder may forward it; anyone when null (E03's behaviour). */
+    val forward: ForwardWithin? = null,
 ) {
     /** Where this step can lead: `next`, or every branch and `otherwise`. */
     val targets: List<String> get() = listOfNotNull(next) + branches.map { it.next } + listOfNotNull(otherwise)

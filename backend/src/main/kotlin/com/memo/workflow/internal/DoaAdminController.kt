@@ -173,14 +173,14 @@ class DoaAdminController(
     ): DoaSimulationResponse =
         transactions.readInTenant(TenantContext.current()) {
             val result = matcher.simulate(body.version, body.subjectType, body.attributes, body.initiatorId)
-            val names = users.of(result.groups.flatMap { it.second }.toSet())
+            val names = users.of(result.groups.flatMap { it.people }.toSet())
             DoaSimulationResponse(
                 result.version,
                 result.rule,
                 result.ruleName,
                 result.reason,
-                result.groups.map { (needed, people) ->
-                    DoaSimulationGroup(needed, people.map { Person(it, names[it]?.displayName.orEmpty()) })
+                result.groups.map { group ->
+                    DoaSimulationGroup(group.needed, group.people.map { Person(it, names[it]?.displayName.orEmpty()) })
                 },
             )
         }

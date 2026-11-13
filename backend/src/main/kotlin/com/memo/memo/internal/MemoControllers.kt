@@ -11,6 +11,7 @@ import com.memo.common.web.etagOf
 import com.memo.common.web.ifMatchVersion
 import com.memo.system.Idempotency
 import com.memo.workflow.DefinitionChoice
+import com.memo.workflow.RouteEntry
 import com.memo.workflow.WorkflowDefinitions
 import com.memo.workflow.Workflows
 import io.swagger.v3.oas.annotations.Operation
@@ -115,7 +116,16 @@ class MemosController(
         @RequestBody body: RouteRequest,
     ): ResponseEntity<MemoView> {
         val version = ifMatchVersion(ifMatch)
-        val view = transactions.inTenant(TenantContext.current()) { views.of(routes.replace(id, version, body.approvers)) }
+        val view =
+            transactions.inTenant(TenantContext.current()) {
+                views.of(
+                    routes.replace(
+                        id,
+                        version,
+                        body.entries ?: body.approvers.map(RouteEntry::person),
+                    ),
+                )
+            }
         return ResponseEntity.ok().eTag(etagOf(view.version)).body(view)
     }
 
@@ -181,7 +191,10 @@ class MemosController(
 }
 
 data class RouteRequest(
-    val approvers: List<UUID>,
+    /** The approvers in order, people only; ignored when [entries] is given. */
+    val approvers: List<UUID> = emptyList(),
+    /** The route with positions and groups as well as people (design E04 §4.7). */
+    val entries: List<RouteEntry>? = null,
 )
 
 data class RemarkRequest(
@@ -245,6 +258,10 @@ data class MemoTypeRequest(
     val definitionKey: String? = null,
     /** `INITIATOR_DEFINED`, `FIXED` or `BOTH`; it has to fit the definition. Omitted: unchanged (`INITIATOR_DEFINED` when new). */
     val routePolicy: String? = null,
+    /** Who may be on its routes (design E04 §4.7). Omitted: unchanged (anyone when new). */
+    val allowedApprovers: AllowedApprovers? = null,
+    /** Whether a route must satisfy the DoA at submit. Omitted: unchanged (off when new). */
+    val doaCheck: Boolean? = null,
 )
 
 /** Memo-type administration (design E01 §5): since E03 a type chooses its workflow definition and route policy. */
@@ -312,6 +329,10 @@ class AdminMemoTypesController(
         require(trimmed.length in 1..MAX_NAME) { "A name of 1 to $MAX_NAME characters is required." }
         val policy = routePolicy ?: current?.routePolicy?.name ?: RoutePolicy.INITIATOR_DEFINED.name
         require(RoutePolicy.entries.any { it.name == policy }) { "The route policy is INITIATOR_DEFINED, FIXED or BOTH." }
+        val allowed = allowedApprovers ?: current?.allowedApprovers ?: AllowedApprovers()
+        require(listOf(allowed.people, allowed.positions, allowed.roles).all { it.size <= MAX_ALLOWED }) {
+            "At most $MAX_ALLOWED people, positions and roles each."
+        }
         return MemoTypeFields(
             trimmed,
             defaultClassificationId,
@@ -319,11 +340,14 @@ class AdminMemoTypesController(
             active,
             definitionKey?.trim() ?: current?.definitionKey ?: Workflows.SEQUENTIAL_APPROVAL,
             RoutePolicy.valueOf(policy),
+            allowed,
+            doaCheck ?: current?.doaCheck ?: false,
         )
     }
 
     private companion object {
         const val MAX_NAME = 200
+        const val MAX_ALLOWED = 200
     }
 }
 

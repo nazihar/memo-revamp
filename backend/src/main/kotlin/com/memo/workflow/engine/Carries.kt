@@ -24,9 +24,10 @@ internal class Carries(
         nodeId: String,
         start: Int,
     ): Pair<Int?, List<ActionRecord>> {
-        val passed = (start until round.route.size).takeWhile { carries(nodeId, round.route[it]) }
+        // Only an entry naming a person carries over; positions and groups are asked again.
+        val passed = (start until round.route.size).takeWhile { i -> round.route[i].userId?.let { carries(nodeId, it) } == true }
         val first = (start + passed.size).takeIf { it < round.route.size }
-        return first to passed.map { record(nodeId, round.route[it], round.number) }
+        return first to passed.map { record(nodeId, checkNotNull(round.route[it].userId), round.number) }
     }
 
     fun record(

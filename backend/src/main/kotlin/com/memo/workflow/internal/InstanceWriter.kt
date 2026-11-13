@@ -145,8 +145,15 @@ class InstanceWriter(
             .set(WORKFLOW_ROUND.STARTED_BY, startedBy)
             .set(WORKFLOW_ROUND.STARTED_AT, now)
             .set(WORKFLOW_ROUND.START_SNAPSHOT, snapshot)
-            .set(WORKFLOW_ROUND.ROUTE, round.route.toTypedArray<UUID?>())
-            .execute()
+            .set(WORKFLOW_ROUND.ROUTE, round.route.map { it.userId }.toTypedArray<UUID?>())
+            // The whole route only when it names more than people (design E04 §4.7).
+            .set(
+                WORKFLOW_ROUND.ROUTE_ENTRIES,
+                round.route
+                    .takeIf { r ->
+                        r.any { it.userId == null }
+                    }?.let { JSONB.valueOf(json.writeValueAsString(it)) },
+            ).execute()
         insertSteps(instanceId, round, round.steps, roundId)
     }
 
@@ -231,7 +238,7 @@ class InstanceWriter(
         val previous = before.steps.associateBy { it.id }
         after.steps
             .filter { step ->
-                previous[step.id]?.let { it.state != step.state || it.assignee != step.assignee || it.claimedBy != step.claimedBy } ?: false
+                previous[step.id]?.let { it.copy(tasks = step.tasks) != step } ?: false
             }.forEach { step ->
                 tenantDsl
                     .current()
@@ -239,6 +246,10 @@ class InstanceWriter(
                     .set(WORKFLOW_STEP.STATE, step.state.name)
                     .set(WORKFLOW_STEP.ASSIGNEE_ID, step.assignee)
                     .set(WORKFLOW_STEP.CLAIMED_BY, step.claimedBy)
+                    // A route entry naming a position or a group resolves when it is reached (design E04 §4.7).
+                    .set(WORKFLOW_STEP.TYPE, step.kind.name)
+                    .set(WORKFLOW_STEP.NEEDED, step.needed)
+                    .set(WORKFLOW_STEP.RESOLUTION, step.resolution?.let { JSONB.valueOf(json.writeValueAsString(it)) })
                     .where(WORKFLOW_STEP.ID.eq(step.id))
                     .execute()
             }

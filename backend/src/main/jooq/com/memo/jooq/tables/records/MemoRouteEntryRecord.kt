@@ -8,6 +8,7 @@ import com.memo.jooq.tables.MemoRouteEntry
 
 import java.util.UUID
 
+import org.jooq.JSONB
 import org.jooq.Record3
 import org.jooq.impl.UpdatableRecordImpl
 
@@ -30,9 +31,17 @@ open class MemoRouteEntryRecord private constructor() : UpdatableRecordImpl<Memo
         set(value): Unit = set(2, value)
         get(): Int = get(2) as Int
 
-    open var approverId: UUID
+    open var approverId: UUID?
         set(value): Unit = set(3, value)
-        get(): UUID = get(3) as UUID
+        get(): UUID? = get(3) as UUID?
+
+    open var positionId: UUID?
+        set(value): Unit = set(4, value)
+        get(): UUID? = get(4) as UUID?
+
+    open var groupEntry: JSONB?
+        set(value): Unit = set(5, value)
+        get(): JSONB? = get(5) as JSONB?
 
     // -------------------------------------------------------------------------
     // Primary key information
@@ -43,11 +52,13 @@ open class MemoRouteEntryRecord private constructor() : UpdatableRecordImpl<Memo
     /**
      * Create a detached, initialised MemoRouteEntryRecord
      */
-    constructor(tenantId: UUID, memoId: UUID, ordinal: Int, approverId: UUID): this() {
+    constructor(tenantId: UUID, memoId: UUID, ordinal: Int, approverId: UUID? = null, positionId: UUID? = null, groupEntry: JSONB? = null): this() {
         this.tenantId = tenantId
         this.memoId = memoId
         this.ordinal = ordinal
         this.approverId = approverId
+        this.positionId = positionId
+        this.groupEntry = groupEntry
         resetTouchedOnNotNull()
     }
 }

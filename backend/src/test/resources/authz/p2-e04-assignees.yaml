@@ -46,3 +46,5 @@ endpoints:
   - endpoint: "POST /api/v1/admin/workflow/doa/simulate"
     rule: tenantAdmin
     body: { subjectType: "memo", initiatorId: "{random}" }
+  # The initiator's DoA preview (design E04 §4.7): memos the actor cannot see are 404.
+  - { endpoint: "POST /api/v1/memos/{id}/doa-preview", rule: signedIn }

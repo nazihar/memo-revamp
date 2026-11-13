@@ -147,10 +147,10 @@ class DoaIT : IntegrationTest() {
 
         val simulated = act(checker) { matcher.simulate(null, TestWorkflowSubject.TYPE, mapOf("amount" to 1), initiator) }
         assertThat(simulated.version).isEqualTo(2)
-        assertThat(simulated.groups).containsExactly(1 to listOf(ceo))
+        assertThat(simulated.groups).containsExactly(DoaPreviewGroup(1, listOf(ceo)))
         val old = act(checker) { matcher.simulate(1, TestWorkflowSubject.TYPE, mapOf("amount" to 5_000_000), initiator) }
         assertThat(old.ruleName).isEqualTo("Large credit")
-        assertThat(old.groups.map { it.first }).containsExactly(2, 1)
+        assertThat(old.groups.map { it.needed }).containsExactly(2, 1)
     }
 
     @Test

@@ -3,7 +3,9 @@ package com.memo.workflow.engine
 import com.memo.workflow.ActionKind
 import com.memo.workflow.BlockedReason
 import com.memo.workflow.InstanceStatus
+import com.memo.workflow.RouteEntry
 import com.memo.workflow.definition.Definition
+import com.memo.workflow.definition.ForwardWithin
 import java.util.UUID
 
 /** Something a person asks of a running instance. The service has already checked permissions such as reassignment. */
@@ -67,7 +69,11 @@ data class Resubmit(
     override val actor: UUID,
     val route: List<UUID>,
     val remark: String? = null,
-) : Command
+    /** A route of positions and groups as well as people (design E04 §4.7); [route] stands for people only when null. */
+    val entries: List<RouteEntry>? = null,
+) : Command {
+    val routeEntries: List<RouteEntry> get() = entries ?: route.map(RouteEntry::person)
+}
 
 data class Reassign(
     override val actor: UUID,
@@ -179,6 +185,12 @@ data class GiveOpinion(
 /** Why the engine refused a command; the service maps each to a Problem Details type. */
 enum class Refusal {
     NOT_INITIATOR,
+
+    /** A route entry that is not one person, one position, or a group of two or more of them (design E04 §4.7). */
+    ROUTE_INVALID,
+
+    /** Forwarded outside the step's limit: the holder's unit or legal entity (design E04 §4.7). */
+    FORWARD_OUTSIDE_LIMIT,
     NOT_ASSIGNEE,
     WRONG_STATE,
     TASK_NOT_FOUND,
@@ -316,6 +328,8 @@ class TransitionContext(
     val substituteOf: (UUID) -> UUID? = { null },
     /** The delegation of authority for the instance's pinned version (design E04 §4.3), asked when a `doa` step activates. */
     val doa: () -> DoaMatch = { DoaMatch.NONE },
+    /** Whether [to] is within [limit] of the holder (design E04 §4.7), for steps that limit forwarding. */
+    val within: (holder: UUID, to: UUID, limit: ForwardWithin) -> Boolean = { _, _, _ -> true },
 )
 
 /** An approval of [nodeId] by [person] that can carry over into the next round. */

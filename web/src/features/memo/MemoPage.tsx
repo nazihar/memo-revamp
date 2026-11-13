@@ -24,6 +24,7 @@ import { MemoHistory } from './MemoHistory'
 import { actionButtons, mm, mmv, statusLabels } from './memo-messages'
 import { statusTone } from './memo-status'
 import { RouteEditor } from './RouteEditor'
+import { routeEntryLabel } from './route-entry'
 
 const DOCX = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document,.docx'
 const MAX_BYTES = 25 * 1024 * 1024
@@ -224,7 +225,7 @@ export function MemoPage({ memoId }: { memoId: string }) {
               ) : (
                 <ol className="flex list-decimal flex-col gap-1 ps-5 text-sm">
                   {view.route.map((entry) => (
-                    <li key={entry.ordinal}>{entry.approver.name}</li>
+                    <li key={entry.ordinal}>{routeEntryLabel(entry)}</li>
                   ))}
                 </ol>
               )}

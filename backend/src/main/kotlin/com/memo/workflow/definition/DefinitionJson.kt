@@ -57,6 +57,7 @@ object DefinitionJson {
             forum = json.text("forum"),
             sla = json["sla"]?.let { Sla(it["due"].asString(), it["workingTime"]?.asBoolean()) },
             fallback = json["fallback"]?.let(::assignee),
+            forward = json["forward"]?.get("within")?.asString()?.let(ForwardWithin::of),
         )
 
     private fun assignee(json: JsonNode): Assignee =
@@ -86,6 +87,7 @@ object DefinitionJson {
     ) {
         step.assignee?.let { out.set("assignee", print(it)) }
         step.fallback?.let { out.set("fallback", print(it)) }
+        step.forward?.let { out.putObject("forward").put("within", it.json) }
         if (step.assignees.isNotEmpty()) out.putArray("assignees").addAll(step.assignees.map(::print))
         step.mode?.let { out.put("mode", it.json) }
         step.n?.let { out.put("n", it) }

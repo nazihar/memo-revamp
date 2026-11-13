@@ -1,6 +1,10 @@
 package com.memo.workflow.engine
 
 import com.memo.workflow.ActionKind
+import com.memo.workflow.GroupMode
+import com.memo.workflow.RouteEntry
+import com.memo.workflow.definition.Assignee
+import com.memo.workflow.definition.AssigneeKind
 import com.memo.workflow.definition.Definition
 import com.memo.workflow.definition.StepDef
 import com.memo.workflow.definition.StepType
@@ -32,7 +36,7 @@ internal class Rounds(
     /** A new round, entered at the definition's start. */
     fun open(
         number: Int,
-        route: List<UUID>,
+        route: List<RouteEntry>,
         people: People,
     ): Walk = enter(Round(number, RoundOutcome.OPEN, emptyList(), route), definition.start, people, emptyList(), emptyList())
 
@@ -51,8 +55,8 @@ internal class Rounds(
         val (entry, carried) = from.routeIndex?.let { carries.uncarried(round, from.nodeId, it + 1) } ?: (null to emptyList())
         val skipped = carries.skip(round, from.nodeId, carried)
         return if (entry != null) {
-            val (next, step) = routeEntry(skipped, from.nodeId, entry)
-            Walk(next, listOf(Effect.TaskCreated(step.id, step.tasks.last())), carried, finished = false)
+            val (next, step) = routeEntry(skipped, from.nodeId, entry, people.initiator)
+            Walk(next, created(step), carried, finished = false)
         } else {
             enter(skipped, checkNotNull(definition.step(from.nodeId).next), people, emptyList(), carried)
         }
@@ -61,15 +65,16 @@ internal class Rounds(
     /** A new round that starts again at [from] (the `resume` policy): a route entry at its approver's place in the new route. */
     fun resume(
         number: Int,
-        route: List<UUID>,
+        route: List<RouteEntry>,
         people: People,
         from: Step,
+        previous: RouteEntry?,
     ): Walk {
         val round = Round(number, RoundOutcome.OPEN, emptyList(), route)
         val index = from.routeIndex
         return if (index != null && route.isNotEmpty()) {
-            val (next, step) = routeEntry(round, from.nodeId, from.assignee?.let(route::indexOf)?.coerceAtLeast(0) ?: 0)
-            Walk(next, listOf(Effect.TaskCreated(step.id, step.tasks.last())), emptyList(), finished = false)
+            val (next, step) = routeEntry(round, from.nodeId, previous?.let(route::indexOf)?.coerceAtLeast(0) ?: 0, people.initiator)
+            Walk(next, created(step), emptyList(), finished = false)
         } else {
             enter(round, from.nodeId, people, emptyList(), emptyList())
         }
@@ -104,7 +109,7 @@ internal class Rounds(
                 }
 
                 index != null -> {
-                    routeEntry(round, target.nodeId, index)
+                    routeEntry(round, target.nodeId, index, initiator)
                 }
 
                 target.shared || holder == null || recused.isNotEmpty() -> {
@@ -168,8 +173,8 @@ internal class Rounds(
         return if (first == null) {
             enter(round, checkNotNull(node.next), people, effects, followUps + carried)
         } else {
-            val (next, step) = routeEntry(round, node.id, first)
-            Walk(carries.skip(next, node.id, carried), effects + Effect.TaskCreated(step.id, step.tasks.last()), followUps + carried, false)
+            val (next, step) = routeEntry(round, node.id, first, people.initiator)
+            Walk(carries.skip(next, node.id, carried), effects + created(step), followUps + carried, false)
         }
     }
 
@@ -238,33 +243,49 @@ internal class Rounds(
             if (wanted == null) {
                 Found(emptyList(), emptyMap())
             } else {
-                candidates.of(node, initiator, round, recused, Members(wanted.members, group))
+                candidates.of(node, initiator, round, recused, Members(wanted.members, group = group))
             }
         val record = match.record + mapOf("group" to group, "needed" to (wanted?.needed ?: 1)) + found.record
         val step = steps.group(round, node, found.copy(record = record), wanted?.needed ?: 1, group)
         return round.copy(steps = round.steps + step) to step
     }
 
-    /** The route entry [index] activated: its pending step if the round has one, else a new step. */
+    /**
+     * The route entry [index] activated (its pending step if the round has one, else a new step): a person gets the task;
+     * a position or a group resolves now, as a definition's step would (design E04 §4.7).
+     */
     private fun routeEntry(
         round: Round,
         nodeId: String,
         index: Int,
+        initiator: UUID,
     ): Pair<Round, Step> {
         val pending = round.steps.lastOrNull { it.nodeId == nodeId && it.routeIndex == index && it.state == StepState.PENDING }
-        if (pending != null) {
-            val active = pending.copy(state = StepState.ACTIVE, tasks = pending.tasks + newTask(checkNotNull(pending.assignee)))
-            return round.replaceStep(pending.id) { active } to active
-        }
         val node = definition.step(nodeId)
-        val step = steps.activated(round, node, StepKind.APPROVE, round.route[index], index)
+        val entry = round.route[index]
+        val person = entry.userId
+        val resolved =
+            if (person != null) {
+                pending?.copy(state = StepState.ACTIVE, tasks = pending.tasks + newTask(person))
+                    ?: steps.activated(round, node, StepKind.APPROVE, person, index)
+            } else {
+                val members =
+                    entry.positions.map { Assignee(AssigneeKind.POSITION, positionId = it) } +
+                        entry.people.map { Assignee(AssigneeKind.PERSON, userId = it) }
+                val found = candidates.of(node, initiator, round, members = Members(members, routeIndex = index))
+                val needed = entry.group?.let { if (it.mode == GroupMode.ALL) it.members.size else 1 }
+                val step = steps.entry(round, node, found, needed, index)
+                pending?.let { step.copy(id = it.id, ordinal = it.ordinal) } ?: step
+            }
+        if (pending != null) return round.replaceStep(pending.id) { resolved } to resolved
+        val step = resolved
         // The rest of the route waits as pending steps, so the round shows who comes next (as in E01).
         val waiting =
             (index + 1 until round.route.size).mapIndexed { offset, i ->
                 Step(
                     context.newId(),
                     step.ordinal + offset + 1,
-                    round.route[i],
+                    round.route[i].userId,
                     StepState.PENDING,
                     emptyList(),
                     nodeId,

@@ -6,9 +6,12 @@ import com.memo.common.context.ActorContext
 import com.memo.docedit.DocumentEditing
 import com.memo.files.Files
 import com.memo.identity.UserSummaries
+import com.memo.org.OrgDirectory
 import com.memo.workflow.ActionKind
 import com.memo.workflow.BlockedReason
+import com.memo.workflow.GroupMode
 import com.memo.workflow.MyTask
+import com.memo.workflow.RouteEntry
 import com.memo.workflow.TaskRole
 import com.memo.workflow.WorkflowQueries
 import io.swagger.v3.oas.annotations.media.Schema
@@ -40,9 +43,24 @@ data class DocumentView(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val uploadedAt: Instant,
 )
 
+/** One route entry (design E04 §4.7): a person ([approver]), a position (with its holder today, if any), or a group. */
 data class RouteEntryView(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val ordinal: Int,
-    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val approver: Named,
+    val approver: Named? = null,
+    val position: RoutePositionView? = null,
+    val group: RouteGroupView? = null,
+)
+
+data class RoutePositionView(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val id: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val title: String,
+    /** Who holds it today; the entry goes to whoever holds it when it is reached. */
+    val holder: Named?,
+)
+
+data class RouteGroupView(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val mode: GroupMode,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val members: List<RouteEntryView>,
 )
 
 /**
@@ -141,10 +159,14 @@ class MemoViews(
     private val workflows: WorkflowQueries,
     private val editing: DocumentEditing,
     private val interestStore: MemoInterestStore,
+    private val directory: OrgDirectory,
 ) {
     fun of(memo: Memo): MemoView {
         val interests = interestStore.of(memo.id)
         val route = routes.route(memo.id)
+        val positions = route.flatMap { it.positions }
+        val titles = directory.positions(positions)
+        val holdersToday = directory.holders(positions)
         val workflow = memo.workflowInstanceId?.let { workflows.viewOf(MemoWorkflowSubject.TYPE, memo.id) }
         val holders = workflow?.currentAssignees.orEmpty()
         val user = (ActorContext.current().actor as? Actor.User)?.userId
@@ -152,8 +174,11 @@ class MemoViews(
         val targets = open?.sendBackTargets.orEmpty()
         val names =
             users
-                .of(route + holders + memo.initiatorId + targets.map { it.holderId } + listOfNotNull(open?.claimedBy) + interests)
-                .mapValues { it.value.displayName }
+                .of(
+                    route.flatMap { it.people } + holdersToday.values + holders + memo.initiatorId + targets.map { it.holderId } +
+                        listOfNotNull(open?.claimedBy) +
+                        interests,
+                ).mapValues { it.value.displayName }
         val myTask =
             open?.let { task ->
                 val claimer = task.claimedBy?.let { Named(it, names[it].orEmpty()) }
@@ -175,7 +200,22 @@ class MemoViews(
             status = memo.status,
             initiator = Named(memo.initiatorId, names[memo.initiatorId].orEmpty()),
             document = document(memo.documentFileId),
-            route = route.mapIndexed { index, id -> RouteEntryView(index + 1, Named(id, names[id].orEmpty())) },
+            route =
+                route.mapIndexed { index, entry ->
+                    fun view(
+                        ordinal: Int,
+                        e: RouteEntry,
+                    ): RouteEntryView =
+                        RouteEntryView(
+                            ordinal,
+                            e.userId?.let { Named(it, names[it].orEmpty()) },
+                            e.positionId?.let { p ->
+                                RoutePositionView(p, titles[p]?.title.orEmpty(), holdersToday[p]?.let { Named(it, names[it].orEmpty()) })
+                            },
+                            e.group?.let { g -> RouteGroupView(g.mode, g.members.mapIndexed { i, m -> view(i + 1, m) }) },
+                        )
+                    view(index + 1, entry)
+                },
             round = memo.currentRound,
             holders = holders.map { Named(it, names[it].orEmpty()) },
             myTask = myTask,

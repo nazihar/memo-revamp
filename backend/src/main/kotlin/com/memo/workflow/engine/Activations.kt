@@ -65,7 +65,7 @@ internal class Activations(
         node: StepDef,
         found: Found,
         needed: Int,
-        group: Int,
+        group: Int?,
     ): Step {
         val people = found.people
         val missing =
@@ -74,6 +74,18 @@ internal class Activations(
             .copy(assignee = people.firstOrNull(), tasks = people.map(::newTask) + missing, needed = needed, doaGroup = group)
             .copy(resolution = found.record)
     }
+
+    /**
+     * A route entry naming a position or a group (design E04 §4.7): a position goes to its holder, as a definition's
+     * step would; a group needs [needed] approvals from its members.
+     */
+    fun entry(
+        round: Round,
+        node: StepDef,
+        found: Found,
+        needed: Int?,
+        index: Int,
+    ): Step = (if (needed == null) shaped(round, node, found) else group(round, node, found, needed, null)).copy(routeIndex = index)
 
     fun activated(
         round: Round,

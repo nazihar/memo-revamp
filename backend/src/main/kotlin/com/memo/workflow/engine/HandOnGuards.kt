@@ -1,6 +1,7 @@
 package com.memo.workflow.engine
 
 import com.memo.workflow.definition.Definition
+import com.memo.workflow.definition.ForwardWithin
 import com.memo.workflow.definition.StepAction
 import java.util.UUID
 
@@ -27,7 +28,7 @@ internal object HandOnGuards {
 
             is Forward -> {
                 Guards.decision(state, command.actor, command.taskId, StepAction.FORWARD, command.remark, definition)
-                    ?: handOver(state, command.taskId, command.to, context)
+                    ?: forwarded(state, command, context, definition)
             }
 
             is Delegate -> {
@@ -63,6 +64,27 @@ internal object HandOnGuards {
         val target = state.round.steps.firstOrNull { it.id == command.targetStepId }
         val earlier = target != null && target.state == StepState.DONE && target.ordinal < current.ordinal
         return if (earlier) null else Refusal.NOT_AN_EARLIER_STEP
+    }
+
+    private fun forwarded(
+        state: InstanceState,
+        command: Forward,
+        context: TransitionContext,
+        definition: Definition,
+    ): Refusal? = handOver(state, command.taskId, command.to, context) ?: forwardLimit(state, command, context, definition)
+
+    /** A step may keep forwarding within the holder's unit or legal entity (design E04 §4.7). */
+    private fun forwardLimit(
+        state: InstanceState,
+        command: Forward,
+        context: TransitionContext,
+        definition: Definition,
+    ): Refusal? {
+        val (step, task) = state.findTask(command.taskId)!!
+        val limit = definition.stepsById[step.nodeId]?.forward ?: ForwardWithin.ANYONE
+        val holder = task.onBehalfOf ?: task.assignee
+        val outside = limit != ForwardWithin.ANYONE && (holder == null || !context.within(holder, command.to, limit))
+        return Refusal.FORWARD_OUTSIDE_LIMIT.takeIf { outside }
     }
 
     /** Forward and delegate: someone eligible, not the initiator, not the holder, and not already deciding on this step. */

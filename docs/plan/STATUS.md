@@ -71,7 +71,8 @@
 - [x] E06 T2 editing core: commands with undo, panels in the Steps view and beside the diagram, live validation, 412 keeps the work (stacked PR)
 - [x] E06 T3 panels for who and what: builder catalogue, assignees of every kind, actions and remarks, forward limits, parallel steps (stacked PR)
 - [x] E06 T4 panels for when and where: simple conditions ↔ CEL, deadlines with reminders and escalation, notices (stacked PR)
-- [ ] E06 T6 simulation UI · T7 diff and review · T8 accessibility pass · T9 close (epic and phase)
+- [x] E06 T6 simulation UI: sample values, the path in the diagram and the Steps view, reasons in words; builder catalogue part (stacked PR)
+- [ ] E06 T7 diff and review · T8 accessibility pass · T9 close (epic and phase)
 
 ## State (Phase 1a, closed)
 - [x] Overview approved (2026-10-18), Q1–Q8 answered, per-epic gate delegated

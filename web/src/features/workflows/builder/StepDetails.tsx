@@ -12,38 +12,38 @@ import type { Command } from './edit'
 import { SlaEditor } from './SlaEditor'
 
 const dm = defineMessages({
-  actions: { id: 'workflows.builder.actions', defaultMessage: 'What the holder can do' },
+  actions: { id: 'builder.actions', defaultMessage: 'What the holder can do' },
   actionsHint: {
-    id: 'workflows.builder.actions.hint',
+    id: 'builder.actions.hint',
     defaultMessage: 'Tick “needs a remark” for actions the holder must explain.',
   },
-  needsRemark: { id: 'workflows.builder.actions.remark', defaultMessage: 'needs a remark' },
-  forward: { id: 'workflows.builder.forward', defaultMessage: 'Forwarding is allowed to' },
-  forwardAnyone: { id: 'workflows.builder.forward.anyone', defaultMessage: 'Anyone' },
-  forwardUnit: { id: 'workflows.builder.forward.unit', defaultMessage: 'The holder’s unit and below' },
-  forwardLegalEntity: { id: 'workflows.builder.forward.legalEntity', defaultMessage: 'The holder’s legal entity' },
-  forwardNoLimit: { id: 'workflows.builder.forward.none', defaultMessage: 'No limit set' },
-  mode: { id: 'workflows.builder.parallel.mode', defaultMessage: 'Decided when' },
-  modeAll: { id: 'workflows.builder.parallel.mode.all', defaultMessage: 'Everyone has approved' },
-  modeAny: { id: 'workflows.builder.parallel.mode.any', defaultMessage: 'Anyone has approved' },
-  modeN: { id: 'workflows.builder.parallel.mode.n', defaultMessage: 'A number of them have approved' },
-  n: { id: 'workflows.builder.parallel.field.n', defaultMessage: 'How many' },
-  addAssignee: { id: 'workflows.builder.parallel.add', defaultMessage: 'Add someone' },
-  fragment: { id: 'workflows.builder.subworkflow.field', defaultMessage: 'Sub-workflow to run' },
-  forum: { id: 'workflows.builder.forum.field', defaultMessage: 'Forum key' },
+  needsRemark: { id: 'builder.actions.remark', defaultMessage: 'needs a remark' },
+  forward: { id: 'builder.forward', defaultMessage: 'Forwarding is allowed to' },
+  forwardAnyone: { id: 'builder.forward.anyone', defaultMessage: 'Anyone' },
+  forwardUnit: { id: 'builder.forward.unit', defaultMessage: 'The holder’s unit and below' },
+  forwardLegalEntity: { id: 'builder.forward.legalEntity', defaultMessage: 'The holder’s legal entity' },
+  forwardNoLimit: { id: 'builder.forward.none', defaultMessage: 'No limit set' },
+  mode: { id: 'builder.parallel.mode', defaultMessage: 'Decided when' },
+  modeAll: { id: 'builder.parallel.mode.all', defaultMessage: 'Everyone has approved' },
+  modeAny: { id: 'builder.parallel.mode.any', defaultMessage: 'Anyone has approved' },
+  modeN: { id: 'builder.parallel.mode.n', defaultMessage: 'A number of them have approved' },
+  n: { id: 'builder.parallel.field.n', defaultMessage: 'How many' },
+  addAssignee: { id: 'builder.parallel.add', defaultMessage: 'Add someone' },
+  fragment: { id: 'builder.subworkflow.field', defaultMessage: 'Sub-workflow to run' },
+  forum: { id: 'builder.forum.field', defaultMessage: 'Forum key' },
   doaHint: {
-    id: 'workflows.builder.doa.hint',
+    id: 'builder.doa.hint',
     defaultMessage: 'Goes to the approval groups of the delegation of authority in force when the memo starts.',
   },
   routeHint: {
-    id: 'workflows.builder.route.hint',
+    id: 'builder.route.hint',
     defaultMessage: 'Goes to the approvers the initiator chooses, one after the other.',
   },
-  choose: { id: 'workflows.builder.choose', defaultMessage: 'Choose…' },
-  addRecipient: { id: 'workflows.builder.notify.add', defaultMessage: 'Add someone to tell' },
-  message: { id: 'workflows.builder.notify.message', defaultMessage: 'Message' },
+  choose: { id: 'builder.choose', defaultMessage: 'Choose…' },
+  addRecipient: { id: 'builder.notify.add', defaultMessage: 'Add someone to tell' },
+  message: { id: 'builder.notify.message', defaultMessage: 'Message' },
   messageHint: {
-    id: 'workflows.builder.notify.messageHint',
+    id: 'builder.notify.messageHint',
     defaultMessage: 'The key of the notice to send, such as creditDecided. The notice names the memo only.',
   },
 })
@@ -55,23 +55,23 @@ const dmv = defineMessages<{
   recipientN: { n: number }
   removeRecipient: { n: number }
 }>({
-  recipientN: { id: 'workflows.builder.notify.recipientN', defaultMessage: 'Tell {n}' },
-  removeRecipient: { id: 'workflows.builder.notify.remove', defaultMessage: 'Remove person or group {n} to tell' },
-  assigneeN: { id: 'workflows.builder.parallel.assigneeN', defaultMessage: 'Person or group {n}' },
-  removeAssignee: { id: 'workflows.builder.parallel.remove', defaultMessage: 'Remove person or group {n}' },
-  remarkFor: { id: 'workflows.builder.actions.remarkFor', defaultMessage: '{action} needs a remark' },
+  recipientN: { id: 'builder.notify.recipientN', defaultMessage: 'Tell {n}' },
+  removeRecipient: { id: 'builder.notify.remove', defaultMessage: 'Remove person or group {n} to tell' },
+  assigneeN: { id: 'builder.parallel.assigneeN', defaultMessage: 'Person or group {n}' },
+  removeAssignee: { id: 'builder.parallel.remove', defaultMessage: 'Remove person or group {n}' },
+  remarkFor: { id: 'builder.actions.remarkFor', defaultMessage: '{action} needs a remark' },
 })
 
 const actionLabels = defineMessages({
-  APPROVE: { id: 'workflows.builder.action.approve', defaultMessage: 'Approve' },
-  RECOMMEND: { id: 'workflows.builder.action.recommend', defaultMessage: 'Recommend' },
-  RETURN: { id: 'workflows.builder.action.return', defaultMessage: 'Return to the initiator' },
-  REJECT: { id: 'workflows.builder.action.reject', defaultMessage: 'Reject' },
-  SEND_BACK: { id: 'workflows.builder.action.sendBack', defaultMessage: 'Send back to an earlier step' },
-  FORWARD: { id: 'workflows.builder.action.forward', defaultMessage: 'Forward' },
-  DELEGATE: { id: 'workflows.builder.action.delegate', defaultMessage: 'Delegate' },
-  ASK: { id: 'workflows.builder.action.ask', defaultMessage: 'Ask for opinions' },
-  REFER: { id: 'workflows.builder.action.refer', defaultMessage: 'Refer' },
+  APPROVE: { id: 'builder.action.approve', defaultMessage: 'Approve' },
+  RECOMMEND: { id: 'builder.action.recommend', defaultMessage: 'Recommend' },
+  RETURN: { id: 'builder.action.return', defaultMessage: 'Return to the initiator' },
+  REJECT: { id: 'builder.action.reject', defaultMessage: 'Reject' },
+  SEND_BACK: { id: 'builder.action.sendBack', defaultMessage: 'Send back to an earlier step' },
+  FORWARD: { id: 'builder.action.forward', defaultMessage: 'Forward' },
+  DELEGATE: { id: 'builder.action.delegate', defaultMessage: 'Delegate' },
+  ASK: { id: 'builder.action.ask', defaultMessage: 'Ask for opinions' },
+  REFER: { id: 'builder.action.refer', defaultMessage: 'Refer' },
 })
 
 type Action = keyof typeof actionLabels

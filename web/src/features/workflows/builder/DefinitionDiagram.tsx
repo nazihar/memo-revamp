@@ -1,5 +1,6 @@
 import { Background, Controls, Handle, Position, ReactFlow, type Node, type NodeProps } from '@xyflow/react'
 import '@xyflow/react/dist/style.css'
+import { Footprints } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { defineMessages, useIntl } from 'react-intl'
 import type { FieldProblem } from '@/api/generated/types.gen'
@@ -16,19 +17,19 @@ import { AddStep, StepPanel } from './StepPanel'
 /** React Flow's own words, in the user's language (research R1: `ariaLabelConfig`). */
 const flow = defineMessages({
   nodeDescription: {
-    id: 'workflows.builder.flow.node',
+    id: 'builder.flow.node',
     defaultMessage: 'Press Enter or Space to select a step, and Escape to clear the selection.',
   },
   edgeDescription: {
-    id: 'workflows.builder.flow.edge',
+    id: 'builder.flow.edge',
     defaultMessage: 'Press Enter or Space to select a connection, and Escape to clear the selection.',
   },
-  controls: { id: 'workflows.builder.flow.controls', defaultMessage: 'Diagram controls' },
-  zoomIn: { id: 'workflows.builder.flow.zoomIn', defaultMessage: 'Zoom in' },
-  zoomOut: { id: 'workflows.builder.flow.zoomOut', defaultMessage: 'Zoom out' },
-  fitView: { id: 'workflows.builder.flow.fitView', defaultMessage: 'Fit the workflow to the view' },
-  interactive: { id: 'workflows.builder.flow.interactive', defaultMessage: 'Toggle interactivity' },
-  handle: { id: 'workflows.builder.flow.handle', defaultMessage: 'Connection point' },
+  controls: { id: 'builder.flow.controls', defaultMessage: 'Diagram controls' },
+  zoomIn: { id: 'builder.flow.zoomIn', defaultMessage: 'Zoom in' },
+  zoomOut: { id: 'builder.flow.zoomOut', defaultMessage: 'Zoom out' },
+  fitView: { id: 'builder.flow.fitView', defaultMessage: 'Fit the workflow to the view' },
+  interactive: { id: 'builder.flow.interactive', defaultMessage: 'Toggle interactivity' },
+  handle: { id: 'builder.flow.handle', defaultMessage: 'Connection point' },
 })
 
 interface MarkerData extends Record<string, unknown> {
@@ -42,7 +43,8 @@ function StepBox({ data }: NodeProps<StepNode>) {
   const intl = useIntl()
   return (
     <div
-      className="flex h-full flex-col gap-0.5 overflow-hidden rounded-md border-2 border-foreground/60 bg-background px-3 py-2 text-start text-xs"
+      data-reached={data.reached || undefined}
+      className="flex h-full flex-col gap-0.5 overflow-hidden rounded-md border-2 border-foreground/60 bg-background px-3 py-2 text-start text-xs data-[reached]:border-primary data-[reached]:ring-2 data-[reached]:ring-primary"
       style={{ width: NODE_WIDTH, height: NODE_HEIGHT }}
     >
       <Handle type="target" position={Position.Top} isConnectable={false} />
@@ -50,6 +52,9 @@ function StepBox({ data }: NodeProps<StepNode>) {
         <span className="font-medium text-muted-foreground">{data.type}</span>
         {data.problems > 0 ? (
           <Badge tone="danger">{intl.formatMessage(bmv.problems, { count: data.problems })}</Badge>
+        ) : null}
+        {data.reached ? (
+          <Footprints aria-label={intl.formatMessage(bm.reached)} className="ms-auto size-3.5 text-primary" />
         ) : null}
       </span>
       <span className="truncate text-sm font-semibold" dir="auto">
@@ -88,6 +93,7 @@ export function DefinitionDiagram({
   problems,
   onCommand,
   onLabel,
+  reached,
 }: {
   body: DefinitionBody
   labels: Labels
@@ -96,12 +102,14 @@ export function DefinitionDiagram({
   onCommand?: (command: Command) => void
   /** Names picked in a panel before the draft is saved. */
   onLabel?: (id: string, label: string) => void
+  /** Steps the last simulation reached. */
+  reached?: ReadonlySet<string>
 }) {
   const intl = useIntl()
   const [selected, setSelected] = useState<string>()
   const { nodes, edges } = useMemo(
-    () => diagram(intl, body, labels, problems, selected),
-    [intl, body, labels, problems, selected],
+    () => diagram(intl, body, labels, problems, selected, reached),
+    [intl, body, labels, problems, selected, reached],
   )
   const selectedStep = body.steps.find((s) => s.id === selected)
   const select = (id: string | undefined) => {

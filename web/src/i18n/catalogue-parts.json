@@ -4,6 +4,16 @@
     "routes": ["/admin"],
     "prefixes": ["admin", "access", "users", "mail", "workflowTasks", "memoTypes", "workflows"]
   },
-  "platform": { "routes": ["/platform"], "prefixes": ["platform"] },
-  "patterns": { "routes": ["/patterns"], "prefixes": ["patterns"] }
+  "builder": {
+    "routes": ["/admin/workflows"],
+    "prefixes": ["builder"]
+  },
+  "platform": {
+    "routes": ["/platform"],
+    "prefixes": ["platform"]
+  },
+  "patterns": {
+    "routes": ["/patterns"],
+    "prefixes": ["patterns"]
+  }
 }

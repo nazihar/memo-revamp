@@ -19,7 +19,7 @@ import {
   submitWorkflowDefinition,
   validateWorkflowDefinition,
 } from '@/api/generated/sdk.gen'
-import type { FieldProblem, VersionResponse, VersionSummary } from '@/api/generated/types.gen'
+import type { FieldProblem, SimulationResponse, VersionResponse, VersionSummary } from '@/api/generated/types.gen'
 import { isProblem, PROBLEM, type Problem } from '@/api/http'
 import { DataTable, type DataTableColumn } from '@/components/page/DataTable'
 import { PageHeader } from '@/components/page/PageHeader'
@@ -32,6 +32,7 @@ import { Textarea } from '@/components/ui/form-controls'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/misc'
 import { bm, bmv } from './builder/builder-messages'
 import { DefinitionDiagram } from './builder/DefinitionDiagram'
+import { SimulationPanel } from './builder/SimulationPanel'
 import { StepsView } from './builder/StepsView'
 import { useBuilder, useLiveValidation } from './builder/useBuilder'
 import { UnsavedBanner, UnsavedChangesGuard } from '@/components/page/FormPage'
@@ -263,6 +264,10 @@ function VersionEditor({
   const checking = useLiveValidation({ path, text, original, enabled: editable, onProblems: setProblems })
   const onCommand = editable ? builder.edit : undefined
   const [picked, setPicked] = useState<Record<string, string>>({})
+  // The last simulation, kept only while the body it ran on is unchanged.
+  const [simulated, setSimulated] = useState<{ text: string; result: SimulationResponse }>()
+  const simulation = simulated?.text === text ? simulated.result : undefined
+  const reached = simulation ? new Set(simulation.steps.map((s) => s.stepId)) : undefined
   const labels = { ...version.labels, ...picked }
   const onLabel = (id: string, label: string) => {
     setPicked((current) => (current[id] === label ? current : { ...current, [id]: label }))
@@ -432,6 +437,7 @@ function VersionEditor({
               problems={problems}
               onCommand={onCommand}
               onLabel={onLabel}
+              {...(reached ? { reached } : {})}
             />
           ) : (
             <p className="text-sm">{intl.formatMessage(bm.notReadable)}</p>
@@ -439,7 +445,14 @@ function VersionEditor({
         </TabsContent>
         <TabsContent value="steps" className="pt-3">
           {drawable ? (
-            <StepsView body={drawable} labels={labels} problems={problems} onCommand={onCommand} onLabel={onLabel} />
+            <StepsView
+              body={drawable}
+              labels={labels}
+              problems={problems}
+              onCommand={onCommand}
+              onLabel={onLabel}
+              {...(reached ? { reached } : {})}
+            />
           ) : (
             <p className="text-sm">{intl.formatMessage(bm.notReadable)}</p>
           )}
@@ -464,6 +477,18 @@ function VersionEditor({
           </Field>
         </TabsContent>
       </Tabs>
+      {drawable ? (
+        <SimulationPanel
+          definitionKey={definitionKey}
+          number={number}
+          body={drawable}
+          labels={labels}
+          result={simulation}
+          onResult={(result) => {
+            setSimulated(result ? { text, result } : undefined)
+          }}
+        />
+      ) : null}
       <section aria-labelledby="problems-title">
         <h3 id="problems-title" className="mb-1 text-sm font-semibold">
           {intl.formatMessage(wm.problems)}

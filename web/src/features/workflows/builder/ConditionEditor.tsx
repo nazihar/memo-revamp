@@ -18,47 +18,47 @@ import {
 } from './conditions'
 
 const cm = defineMessages({
-  join: { id: 'workflows.builder.condition.join', defaultMessage: 'Holds when' },
-  joinAll: { id: 'workflows.builder.condition.join.all', defaultMessage: 'all of these are true' },
-  joinAny: { id: 'workflows.builder.condition.join.any', defaultMessage: 'any of these is true' },
-  attribute: { id: 'workflows.builder.condition.attribute', defaultMessage: 'Attribute' },
-  comparison: { id: 'workflows.builder.condition.comparison', defaultMessage: 'Comparison' },
-  value: { id: 'workflows.builder.condition.value', defaultMessage: 'Value' },
-  valueList: { id: 'workflows.builder.condition.valueList', defaultMessage: 'Values, separated by commas' },
-  addRow: { id: 'workflows.builder.condition.addRow', defaultMessage: 'Add a comparison' },
-  asCel: { id: 'workflows.builder.condition.asCel', defaultMessage: 'Write it as CEL' },
-  asSimple: { id: 'workflows.builder.condition.asSimple', defaultMessage: 'Use the simple form' },
-  cel: { id: 'workflows.builder.condition.cel', defaultMessage: 'Condition (CEL)' },
+  join: { id: 'builder.condition.join', defaultMessage: 'Holds when' },
+  joinAll: { id: 'builder.condition.join.all', defaultMessage: 'all of these are true' },
+  joinAny: { id: 'builder.condition.join.any', defaultMessage: 'any of these is true' },
+  attribute: { id: 'builder.condition.attribute', defaultMessage: 'Attribute' },
+  comparison: { id: 'builder.condition.comparison', defaultMessage: 'Comparison' },
+  value: { id: 'builder.condition.value', defaultMessage: 'Value' },
+  valueList: { id: 'builder.condition.valueList', defaultMessage: 'Values, separated by commas' },
+  addRow: { id: 'builder.condition.addRow', defaultMessage: 'Add a comparison' },
+  asCel: { id: 'builder.condition.asCel', defaultMessage: 'Write it as CEL' },
+  asSimple: { id: 'builder.condition.asSimple', defaultMessage: 'Use the simple form' },
+  cel: { id: 'builder.condition.cel', defaultMessage: 'Condition (CEL)' },
   celHint: {
-    id: 'workflows.builder.condition.celHint',
+    id: 'builder.condition.celHint',
     defaultMessage: 'The simple form cannot show this condition; it is kept exactly as written.',
   },
   noAttributes: {
-    id: 'workflows.builder.condition.noAttributes',
+    id: 'builder.condition.noAttributes',
     defaultMessage: 'Items of this kind have no attributes a condition can compare. Write the condition as CEL.',
   },
-  yes: { id: 'workflows.builder.condition.true', defaultMessage: 'Yes' },
-  no: { id: 'workflows.builder.condition.false', defaultMessage: 'No' },
+  yes: { id: 'builder.condition.true', defaultMessage: 'Yes' },
+  no: { id: 'builder.condition.false', defaultMessage: 'No' },
 })
 
 const cmv = defineMessages<{ removeRow: { n: number }; row: { n: number } }>({
-  removeRow: { id: 'workflows.builder.condition.removeRow', defaultMessage: 'Remove comparison {n}' },
-  row: { id: 'workflows.builder.condition.row', defaultMessage: 'Comparison {n}' },
+  removeRow: { id: 'builder.condition.removeRow', defaultMessage: 'Remove comparison {n}' },
+  row: { id: 'builder.condition.row', defaultMessage: 'Comparison {n}' },
 })
 
 const opLabels = defineMessages({
-  '==': { id: 'workflows.builder.op.eq', defaultMessage: 'is' },
-  '!=': { id: 'workflows.builder.op.ne', defaultMessage: 'is not' },
-  '<': { id: 'workflows.builder.op.lt', defaultMessage: 'is less than' },
-  '<=': { id: 'workflows.builder.op.le', defaultMessage: 'is at most' },
-  '>': { id: 'workflows.builder.op.gt', defaultMessage: 'is more than' },
-  '>=': { id: 'workflows.builder.op.ge', defaultMessage: 'is at least' },
-  in: { id: 'workflows.builder.op.in', defaultMessage: 'is one of' },
+  '==': { id: 'builder.op.eq', defaultMessage: 'is' },
+  '!=': { id: 'builder.op.ne', defaultMessage: 'is not' },
+  '<': { id: 'builder.op.lt', defaultMessage: 'is less than' },
+  '<=': { id: 'builder.op.le', defaultMessage: 'is at most' },
+  '>': { id: 'builder.op.gt', defaultMessage: 'is more than' },
+  '>=': { id: 'builder.op.ge', defaultMessage: 'is at least' },
+  in: { id: 'builder.op.in', defaultMessage: 'is one of' },
 })
 
 const attributeLabels = defineMessages({
-  classificationRank: { id: 'workflows.builder.attribute.classificationRank', defaultMessage: 'Classification rank' },
-  memoTypeId: { id: 'workflows.builder.attribute.memoTypeId', defaultMessage: 'Memo type (id)' },
+  classificationRank: { id: 'builder.attribute.classificationRank', defaultMessage: 'Classification rank' },
+  memoTypeId: { id: 'builder.attribute.memoTypeId', defaultMessage: 'Memo type (id)' },
 })
 
 /** The attributes conditions may compare, from every item type the catalogue lists (the validator uses all of them). */

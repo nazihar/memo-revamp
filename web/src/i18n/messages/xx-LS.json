@@ -1145,6 +1145,2102 @@
       "value": "memoSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "builder.action.approve": [
+    {
+      "type": 0,
+      "value": "ApproveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.action.ask": [
+    {
+      "type": 0,
+      "value": "Ask for opinionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.action.delegate": [
+    {
+      "type": 0,
+      "value": "DelegateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.action.forward": [
+    {
+      "type": 0,
+      "value": "ForwardSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.action.recommend": [
+    {
+      "type": 0,
+      "value": "RecommendSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.action.refer": [
+    {
+      "type": 0,
+      "value": "ReferSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.action.reject": [
+    {
+      "type": 0,
+      "value": "RejectSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.action.return": [
+    {
+      "type": 0,
+      "value": "Return to the initiatorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.action.sendBack": [
+    {
+      "type": 0,
+      "value": "Send back to an earlier stepSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.actions": [
+    {
+      "type": 0,
+      "value": "What the holder can doSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.actions.hint": [
+    {
+      "type": 0,
+      "value": "Tick “needs a remark” for actions the holder must explain.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.actions.remark": [
+    {
+      "type": 0,
+      "value": "needs a remarkSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.actions.remarkFor": [
+    {
+      "type": 1,
+      "value": "action"
+    },
+    {
+      "type": 0,
+      "value": " needs a remarkSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.add": [
+    {
+      "type": 0,
+      "value": "AddSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.addAfter": [
+    {
+      "type": 0,
+      "value": "Add a step after this oneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.addCondition": [
+    {
+      "type": 0,
+      "value": "Add a conditionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.addFirst": [
+    {
+      "type": 0,
+      "value": "Add a step at the startSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.assignee.choose": [
+    {
+      "type": 0,
+      "value": "Choose…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.assignee.field.initiatorsUnit": [
+    {
+      "type": 0,
+      "value": "The initiator’s unitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.assignee.field.levels": [
+    {
+      "type": 0,
+      "value": "Levels up the reporting lineSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.assignee.field.person": [
+    {
+      "type": 0,
+      "value": "PersonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.assignee.field.position": [
+    {
+      "type": 0,
+      "value": "PositionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.assignee.field.queue": [
+    {
+      "type": 0,
+      "value": "QueueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.assignee.field.role": [
+    {
+      "type": 0,
+      "value": "RoleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.assignee.field.unit": [
+    {
+      "type": 0,
+      "value": "UnitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.assignee.field.up": [
+    {
+      "type": 0,
+      "value": "Units above it (0 for the unit itself)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.assignee.initiator": [
+    {
+      "type": 0,
+      "value": "The initiatorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.assignee.initiatorsUnit": [
+    {
+      "type": 0,
+      "value": "the initiator’s unitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.assignee.kind": [
+    {
+      "type": 0,
+      "value": "Goes toSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.assignee.kind.initiator": [
+    {
+      "type": 0,
+      "value": "The initiatorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.assignee.kind.person": [
+    {
+      "type": 0,
+      "value": "A personSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.assignee.kind.position": [
+    {
+      "type": 0,
+      "value": "The holder of a positionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.assignee.kind.queue": [
+    {
+      "type": 0,
+      "value": "A queue (whoever takes it first)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.assignee.kind.role": [
+    {
+      "type": 0,
+      "value": "People with a roleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.assignee.kind.supervisor": [
+    {
+      "type": 0,
+      "value": "The initiator’s supervisorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.assignee.kind.unitHead": [
+    {
+      "type": 0,
+      "value": "The head of a unitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.assignee.position": [
+    {
+      "type": 0,
+      "value": "The holder of "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.assignee.queue": [
+    {
+      "type": 0,
+      "value": "The queue "
+    },
+    {
+      "type": 1,
+      "value": "queue"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.assignee.role": [
+    {
+      "type": 1,
+      "value": "role"
+    },
+    {
+      "type": 0,
+      "value": " in "
+    },
+    {
+      "type": 1,
+      "value": "unit"
+    },
+    {
+      "type": 0,
+      "value": " or aboveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.assignee.supervisor": [
+    {
+      "type": 6,
+      "value": "levels",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "The initiator’s supervisor"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "The initiator’s supervisor, "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " levels up"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.assignee.unitHead": [
+    {
+      "type": 6,
+      "value": "up",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "The head of "
+            },
+            {
+              "type": 1,
+              "value": "unit"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "The head of the unit above "
+            },
+            {
+              "type": 1,
+              "value": "unit"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "The head of the unit "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " levels above "
+            },
+            {
+              "type": 1,
+              "value": "unit"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.attribute.classificationRank": [
+    {
+      "type": 0,
+      "value": "Classification rankSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.attribute.memoTypeId": [
+    {
+      "type": 0,
+      "value": "Memo type (id)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.checked": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "No problems found."
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " problem found."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " problems found."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.checking": [
+    {
+      "type": 0,
+      "value": "Checking…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.choose": [
+    {
+      "type": 0,
+      "value": "Choose…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.condition.addRow": [
+    {
+      "type": 0,
+      "value": "Add a comparisonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.condition.asCel": [
+    {
+      "type": 0,
+      "value": "Write it as CELSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.condition.asSimple": [
+    {
+      "type": 0,
+      "value": "Use the simple formSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.condition.attribute": [
+    {
+      "type": 0,
+      "value": "AttributeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.condition.cel": [
+    {
+      "type": 0,
+      "value": "Condition (CEL)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.condition.celHint": [
+    {
+      "type": 0,
+      "value": "The simple form cannot show this condition; it is kept exactly as written.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.condition.comparison": [
+    {
+      "type": 0,
+      "value": "ComparisonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.condition.false": [
+    {
+      "type": 0,
+      "value": "NoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.condition.join": [
+    {
+      "type": 0,
+      "value": "Holds whenSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.condition.join.all": [
+    {
+      "type": 0,
+      "value": "all of these are trueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.condition.join.any": [
+    {
+      "type": 0,
+      "value": "any of these is trueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.condition.noAttributes": [
+    {
+      "type": 0,
+      "value": "Items of this kind have no attributes a condition can compare. Write the condition as CEL.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.condition.removeRow": [
+    {
+      "type": 0,
+      "value": "Remove comparison "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.condition.row": [
+    {
+      "type": 0,
+      "value": "Comparison "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.condition.true": [
+    {
+      "type": 0,
+      "value": "YesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.condition.value": [
+    {
+      "type": 0,
+      "value": "ValueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.condition.valueList": [
+    {
+      "type": 0,
+      "value": "Values, separated by commasSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.conditionN": [
+    {
+      "type": 0,
+      "value": "Condition "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.conflict": [
+    {
+      "type": 0,
+      "value": "Someone else saved this draft while you were changing it. Your changes are still here: copy them, or reload the saved version.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.copied": [
+    {
+      "type": 0,
+      "value": "Copied.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.copy": [
+    {
+      "type": 0,
+      "value": "Copy my changes as JSONSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.deadline": [
+    {
+      "type": 0,
+      "value": "DeadlineSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.diagram": [
+    {
+      "type": 0,
+      "value": "Workflow diagramSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.diagram.hint": [
+    {
+      "type": 0,
+      "value": "The Steps view shows the same workflow as a list, for keyboard and screen reader use.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.doa": [
+    {
+      "type": 0,
+      "value": "The approval groups of the delegation of authoritySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.doa.hint": [
+    {
+      "type": 0,
+      "value": "Goes to the approval groups of the delegation of authority in force when the memo starts.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.doneEditing": [
+    {
+      "type": 0,
+      "value": "CloseSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.duration.amount": [
+    {
+      "type": 0,
+      "value": "AmountSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.duration.days": [
+    {
+      "type": 6,
+      "value": "n",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " day"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " days"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.duration.hours": [
+    {
+      "type": 6,
+      "value": "n",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " hour"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " hours"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.duration.iso": [
+    {
+      "type": 0,
+      "value": "Duration (ISO 8601, such as P1DT4H)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.duration.minutes": [
+    {
+      "type": 6,
+      "value": "n",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " minute"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " minutes"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.duration.unit": [
+    {
+      "type": 0,
+      "value": "UnitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.duration.unit.days": [
+    {
+      "type": 0,
+      "value": "daysSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.duration.unit.hours": [
+    {
+      "type": 0,
+      "value": "hoursSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.duration.unit.minutes": [
+    {
+      "type": 0,
+      "value": "minutesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.duration.workingDays": [
+    {
+      "type": 6,
+      "value": "n",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working day"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working days"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.duration.workingHours": [
+    {
+      "type": 6,
+      "value": "n",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working hour"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working hours"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.duration.workingMinutes": [
+    {
+      "type": 6,
+      "value": "n",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working minute"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working minutes"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.edge": [
+    {
+      "type": 1,
+      "value": "from"
+    },
+    {
+      "type": 0,
+      "value": " leads to "
+    },
+    {
+      "type": 1,
+      "value": "to"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.edge.if": [
+    {
+      "type": 1,
+      "value": "from"
+    },
+    {
+      "type": 0,
+      "value": " leads to "
+    },
+    {
+      "type": 1,
+      "value": "to"
+    },
+    {
+      "type": 0,
+      "value": " if "
+    },
+    {
+      "type": 1,
+      "value": "condition"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.edge.otherwise": [
+    {
+      "type": 1,
+      "value": "from"
+    },
+    {
+      "type": 0,
+      "value": " otherwise leads to "
+    },
+    {
+      "type": 1,
+      "value": "to"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.edit": [
+    {
+      "type": 0,
+      "value": "ChangeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.end": [
+    {
+      "type": 0,
+      "value": "EndSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.field.condition": [
+    {
+      "type": 0,
+      "value": "ConditionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.field.name": [
+    {
+      "type": 0,
+      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.field.type": [
+    {
+      "type": 0,
+      "value": "Type of stepSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.flow.controls": [
+    {
+      "type": 0,
+      "value": "Diagram controlsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.flow.edge": [
+    {
+      "type": 0,
+      "value": "Press Enter or Space to select a connection, and Escape to clear the selection.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.flow.fitView": [
+    {
+      "type": 0,
+      "value": "Fit the workflow to the viewSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.flow.handle": [
+    {
+      "type": 0,
+      "value": "Connection pointSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.flow.interactive": [
+    {
+      "type": 0,
+      "value": "Toggle interactivitySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.flow.node": [
+    {
+      "type": 0,
+      "value": "Press Enter or Space to select a step, and Escape to clear the selection.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.flow.zoomIn": [
+    {
+      "type": 0,
+      "value": "Zoom inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.flow.zoomOut": [
+    {
+      "type": 0,
+      "value": "Zoom outSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.forum": [
+    {
+      "type": 0,
+      "value": "ForumSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.forum.field": [
+    {
+      "type": 0,
+      "value": "Forum keySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.forward": [
+    {
+      "type": 0,
+      "value": "Forwarding is allowed toSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.forward.anyone": [
+    {
+      "type": 0,
+      "value": "AnyoneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.forward.legalEntity": [
+    {
+      "type": 0,
+      "value": "The holder’s legal entitySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.forward.none": [
+    {
+      "type": 0,
+      "value": "No limit setSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.forward.unit": [
+    {
+      "type": 0,
+      "value": "The holder’s unit and belowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.goesTo": [
+    {
+      "type": 0,
+      "value": "Goes toSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.if": [
+    {
+      "type": 0,
+      "value": "If "
+    },
+    {
+      "type": 1,
+      "value": "condition"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.leadsTo": [
+    {
+      "type": 0,
+      "value": "Leads toSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.leadsToN": [
+    {
+      "type": 0,
+      "value": "If condition "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " holds, leads toSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.noSelection": [
+    {
+      "type": 0,
+      "value": "Select a step in the diagram to change it, or use the Steps view.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.notReadable": [
+    {
+      "type": 0,
+      "value": "This body cannot be drawn: it needs a start and a list of steps, each with an id and a type. Use the JSON view.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.notify.add": [
+    {
+      "type": 0,
+      "value": "Add someone to tellSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.notify.message": [
+    {
+      "type": 0,
+      "value": "MessageSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.notify.messageHint": [
+    {
+      "type": 0,
+      "value": "The key of the notice to send, such as creditDecided. The notice names the memo only.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.notify.recipientN": [
+    {
+      "type": 0,
+      "value": "Tell "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.notify.remove": [
+    {
+      "type": 0,
+      "value": "Remove person or group "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " to tellSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.nowhere": [
+    {
+      "type": 0,
+      "value": "Nowhere yetSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.op.eq": [
+    {
+      "type": 0,
+      "value": "isSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.op.ge": [
+    {
+      "type": 0,
+      "value": "is at leastSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.op.gt": [
+    {
+      "type": 0,
+      "value": "is more thanSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.op.in": [
+    {
+      "type": 0,
+      "value": "is one ofSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.op.le": [
+    {
+      "type": 0,
+      "value": "is at mostSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.op.lt": [
+    {
+      "type": 0,
+      "value": "is less thanSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.op.ne": [
+    {
+      "type": 0,
+      "value": "is notSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.otherwise": [
+    {
+      "type": 0,
+      "value": "OtherwiseSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.parallel.add": [
+    {
+      "type": 0,
+      "value": "Add someoneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.parallel.all": [
+    {
+      "type": 0,
+      "value": "All ofSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.parallel.any": [
+    {
+      "type": 0,
+      "value": "Any one ofSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.parallel.assigneeN": [
+    {
+      "type": 0,
+      "value": "Person or group "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.parallel.field.n": [
+    {
+      "type": 0,
+      "value": "How manySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.parallel.mode": [
+    {
+      "type": 0,
+      "value": "Decided whenSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.parallel.mode.all": [
+    {
+      "type": 0,
+      "value": "Everyone has approvedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.parallel.mode.any": [
+    {
+      "type": 0,
+      "value": "Anyone has approvedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.parallel.mode.n": [
+    {
+      "type": 0,
+      "value": "A number of them have approvedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.parallel.n": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " ofSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.parallel.remove": [
+    {
+      "type": 0,
+      "value": "Remove person or group "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.problems": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " problem"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " problems"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.reached": [
+    {
+      "type": 0,
+      "value": "Reached in the simulationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.redo": [
+    {
+      "type": 0,
+      "value": "RedoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.reload": [
+    {
+      "type": 0,
+      "value": "Reload the saved versionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.remove": [
+    {
+      "type": 0,
+      "value": "Remove this stepSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.remove.confirm": [
+    {
+      "type": 0,
+      "value": "RemoveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.remove.description": [
+    {
+      "type": 0,
+      "value": "What led to this step will lead where it led, when that is one place. You can undo this until you save.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.remove.title": [
+    {
+      "type": 0,
+      "value": "Remove “"
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "”?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.removeCondition": [
+    {
+      "type": 0,
+      "value": "Remove condition "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.route": [
+    {
+      "type": 0,
+      "value": "The approvers the initiator choosesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.route.hint": [
+    {
+      "type": 0,
+      "value": "Goes to the approvers the initiator chooses, one after the other.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.runs": [
+    {
+      "type": 0,
+      "value": "RunsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.selected": [
+    {
+      "type": 0,
+      "value": "Selected stepSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.actingFor": [
+    {
+      "type": 0,
+      "value": "for "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.addApprover": [
+    {
+      "type": 0,
+      "value": "Add an approverSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.approved": [
+    {
+      "type": 0,
+      "value": "It would be approved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.approverN": [
+    {
+      "type": 0,
+      "value": "Approver "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.blocked": [
+    {
+      "type": 0,
+      "value": "It would stop and wait for an administrator: someone it reaches cannot take it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.classificationRank": [
+    {
+      "type": 0,
+      "value": "Classification rankSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.conditionHeld": [
+    {
+      "type": 0,
+      "value": "Condition "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " held: "
+    },
+    {
+      "type": 1,
+      "value": "condition"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.failed": [
+    {
+      "type": 0,
+      "value": "The simulation could not run.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.false": [
+    {
+      "type": 0,
+      "value": "NoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.group": [
+    {
+      "type": 0,
+      "value": "Approval group "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.inactive": [
+    {
+      "type": 0,
+      "value": "The account is not active.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.initiator": [
+    {
+      "type": 0,
+      "value": "Started bySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.invalid": [
+    {
+      "type": 0,
+      "value": "The workflow has problems. Fix them, then simulate again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.lead": [
+    {
+      "type": 0,
+      "value": "Who this workflow would reach for an item like this, started now, if everyone approves. Nothing is saved or sent.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.limit": [
+    {
+      "type": 0,
+      "value": "It took too many steps; the simulation stopped.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.limited": [
+    {
+      "type": 0,
+      "value": "Too many simulations. Try again in a minute.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.memoType": [
+    {
+      "type": 0,
+      "value": "Memo typeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.needInitiator": [
+    {
+      "type": 0,
+      "value": "Choose who starts it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.noClearance": [
+    {
+      "type": 0,
+      "value": "Not cleared for this classification.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.otherwise": [
+    {
+      "type": 0,
+      "value": "No condition held: otherwise.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.outcome.blocked": [
+    {
+      "type": 0,
+      "value": "Stops hereSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.outcome.branched": [
+    {
+      "type": 0,
+      "value": "BranchSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.outcome.decided": [
+    {
+      "type": 0,
+      "value": "DecidedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.outcome.notified": [
+    {
+      "type": 0,
+      "value": "ToldSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.outcome.passed": [
+    {
+      "type": 0,
+      "value": "PassedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.path": [
+    {
+      "type": 0,
+      "value": "Steps it would reach, in orderSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.removeApprover": [
+    {
+      "type": 0,
+      "value": "Remove approver "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.route": [
+    {
+      "type": 0,
+      "value": "Approvers the initiator choosesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.run": [
+    {
+      "type": 0,
+      "value": "SimulateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.running": [
+    {
+      "type": 0,
+      "value": "Simulating…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.title": [
+    {
+      "type": 0,
+      "value": "SimulateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.true": [
+    {
+      "type": 0,
+      "value": "YesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sim.unresolved": [
+    {
+      "type": 0,
+      "value": "Nobody could be found for this step.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sla.addReminder": [
+    {
+      "type": 0,
+      "value": "Add a reminderSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sla.due": [
+    {
+      "type": 0,
+      "value": "Due in "
+    },
+    {
+      "type": 1,
+      "value": "duration"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sla.escalate.nextLevel": [
+    {
+      "type": 0,
+      "value": "moves to the next level "
+    },
+    {
+      "type": 1,
+      "value": "after"
+    },
+    {
+      "type": 0,
+      "value": " lateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sla.escalate.nextLevelOption": [
+    {
+      "type": 0,
+      "value": "Move the task one level upSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sla.escalate.none": [
+    {
+      "type": 0,
+      "value": "Nothing moreSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sla.escalate.notify": [
+    {
+      "type": 0,
+      "value": "the supervisor is told "
+    },
+    {
+      "type": 1,
+      "value": "after"
+    },
+    {
+      "type": 0,
+      "value": " lateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sla.escalate.notifyOption": [
+    {
+      "type": 0,
+      "value": "Tell the holder’s supervisorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sla.escalate.reassign": [
+    {
+      "type": 0,
+      "value": "moves to "
+    },
+    {
+      "type": 1,
+      "value": "to"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "after"
+    },
+    {
+      "type": 0,
+      "value": " lateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sla.escalate.reassignOption": [
+    {
+      "type": 0,
+      "value": "Move the task to someoneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sla.field.after": [
+    {
+      "type": 0,
+      "value": "Reminders after it is dueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sla.field.before": [
+    {
+      "type": 0,
+      "value": "How long beforeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sla.field.due": [
+    {
+      "type": 0,
+      "value": "Due afterSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sla.field.escalateAfter": [
+    {
+      "type": 0,
+      "value": "How long lateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sla.field.escalateTo": [
+    {
+      "type": 0,
+      "value": "Move it toSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sla.field.escalation": [
+    {
+      "type": 0,
+      "value": "When it is lateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sla.field.remindBefore": [
+    {
+      "type": 0,
+      "value": "Remind the holder before it is dueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sla.field.workingTime": [
+    {
+      "type": 0,
+      "value": "Count working time only (the business calendar)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sla.has": [
+    {
+      "type": 0,
+      "value": "This step has a deadlineSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sla.remindAfter": [
+    {
+      "type": 0,
+      "value": "reminders "
+    },
+    {
+      "type": 1,
+      "value": "durations"
+    },
+    {
+      "type": 0,
+      "value": " afterSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sla.remindBefore": [
+    {
+      "type": 0,
+      "value": "reminder "
+    },
+    {
+      "type": 1,
+      "value": "duration"
+    },
+    {
+      "type": 0,
+      "value": " beforeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sla.reminderN": [
+    {
+      "type": 0,
+      "value": "Reminder "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " after it is dueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.sla.removeReminder": [
+    {
+      "type": 0,
+      "value": "Remove reminder "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.start": [
+    {
+      "type": 0,
+      "value": "StartSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.stepAria": [
+    {
+      "type": 0,
+      "value": "Step "
+    },
+    {
+      "type": 1,
+      "value": "index"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ". "
+    },
+    {
+      "type": 1,
+      "value": "who"
+    },
+    {
+      "type": 0,
+      "value": " Leads to "
+    },
+    {
+      "type": 1,
+      "value": "next"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.stepAria.reached": [
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": " Reached in the simulation.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.stepHeading": [
+    {
+      "type": 1,
+      "value": "index"
+    },
+    {
+      "type": 0,
+      "value": ". "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.stepProblems": [
+    {
+      "type": 0,
+      "value": "Problems in "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.steps": [
+    {
+      "type": 0,
+      "value": "Steps, in the order they are writtenSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.subworkflow.field": [
+    {
+      "type": 0,
+      "value": "Sub-workflow to runSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.tells": [
+    {
+      "type": 0,
+      "value": "TellsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.tools": [
+    {
+      "type": 0,
+      "value": "Change the workflowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.type.approve": [
+    {
+      "type": 0,
+      "value": "ApprovalSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.type.branch": [
+    {
+      "type": 0,
+      "value": "BranchSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.type.doa": [
+    {
+      "type": 0,
+      "value": "Delegation of authoritySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.type.forum": [
+    {
+      "type": 0,
+      "value": "Escalate to a forumSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.type.notify": [
+    {
+      "type": 0,
+      "value": "NotifySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.type.parallel": [
+    {
+      "type": 0,
+      "value": "Parallel decisionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.type.review": [
+    {
+      "type": 0,
+      "value": "ReviewSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.type.route": [
+    {
+      "type": 0,
+      "value": "RouteSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.type.sign": [
+    {
+      "type": 0,
+      "value": "SignatureSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.type.subworkflow": [
+    {
+      "type": 0,
+      "value": "Sub-workflowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.undo": [
+    {
+      "type": 0,
+      "value": "UndoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.unknown": [
+    {
+      "type": 0,
+      "value": "Unknown ("
+    },
+    {
+      "type": 1,
+      "value": "id"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.view.diagram": [
+    {
+      "type": 0,
+      "value": "DiagramSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.view.json": [
+    {
+      "type": 0,
+      "value": "JSONSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.view.steps": [
+    {
+      "type": 0,
+      "value": "StepsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.views": [
+    {
+      "type": 0,
+      "value": "Views of this versionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "dialog.close": [
     {
       "type": 0,
@@ -7561,1840 +9657,6 @@
     {
       "type": 0,
       "value": "This is not valid JSON.SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.action.approve": [
-    {
-      "type": 0,
-      "value": "ApproveSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.action.ask": [
-    {
-      "type": 0,
-      "value": "Ask for opinionsSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.action.delegate": [
-    {
-      "type": 0,
-      "value": "DelegateSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.action.forward": [
-    {
-      "type": 0,
-      "value": "ForwardSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.action.recommend": [
-    {
-      "type": 0,
-      "value": "RecommendSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.action.refer": [
-    {
-      "type": 0,
-      "value": "ReferSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.action.reject": [
-    {
-      "type": 0,
-      "value": "RejectSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.action.return": [
-    {
-      "type": 0,
-      "value": "Return to the initiatorSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.action.sendBack": [
-    {
-      "type": 0,
-      "value": "Send back to an earlier stepSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.actions": [
-    {
-      "type": 0,
-      "value": "What the holder can doSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.actions.hint": [
-    {
-      "type": 0,
-      "value": "Tick “needs a remark” for actions the holder must explain.SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.actions.remark": [
-    {
-      "type": 0,
-      "value": "needs a remarkSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.actions.remarkFor": [
-    {
-      "type": 1,
-      "value": "action"
-    },
-    {
-      "type": 0,
-      "value": " needs a remarkSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.add": [
-    {
-      "type": 0,
-      "value": "AddSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.addAfter": [
-    {
-      "type": 0,
-      "value": "Add a step after this oneSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.addCondition": [
-    {
-      "type": 0,
-      "value": "Add a conditionSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.addFirst": [
-    {
-      "type": 0,
-      "value": "Add a step at the startSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.assignee.choose": [
-    {
-      "type": 0,
-      "value": "Choose…SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.assignee.field.initiatorsUnit": [
-    {
-      "type": 0,
-      "value": "The initiator’s unitSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.assignee.field.levels": [
-    {
-      "type": 0,
-      "value": "Levels up the reporting lineSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.assignee.field.person": [
-    {
-      "type": 0,
-      "value": "PersonSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.assignee.field.position": [
-    {
-      "type": 0,
-      "value": "PositionSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.assignee.field.queue": [
-    {
-      "type": 0,
-      "value": "QueueSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.assignee.field.role": [
-    {
-      "type": 0,
-      "value": "RoleSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.assignee.field.unit": [
-    {
-      "type": 0,
-      "value": "UnitSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.assignee.field.up": [
-    {
-      "type": 0,
-      "value": "Units above it (0 for the unit itself)SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.assignee.initiator": [
-    {
-      "type": 0,
-      "value": "The initiatorSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.assignee.initiatorsUnit": [
-    {
-      "type": 0,
-      "value": "the initiator’s unitSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.assignee.kind": [
-    {
-      "type": 0,
-      "value": "Goes toSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.assignee.kind.initiator": [
-    {
-      "type": 0,
-      "value": "The initiatorSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.assignee.kind.person": [
-    {
-      "type": 0,
-      "value": "A personSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.assignee.kind.position": [
-    {
-      "type": 0,
-      "value": "The holder of a positionSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.assignee.kind.queue": [
-    {
-      "type": 0,
-      "value": "A queue (whoever takes it first)SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.assignee.kind.role": [
-    {
-      "type": 0,
-      "value": "People with a roleSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.assignee.kind.supervisor": [
-    {
-      "type": 0,
-      "value": "The initiator’s supervisorSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.assignee.kind.unitHead": [
-    {
-      "type": 0,
-      "value": "The head of a unitSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.assignee.position": [
-    {
-      "type": 0,
-      "value": "The holder of "
-    },
-    {
-      "type": 1,
-      "value": "name"
-    },
-    {
-      "type": 0,
-      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.assignee.queue": [
-    {
-      "type": 0,
-      "value": "The queue "
-    },
-    {
-      "type": 1,
-      "value": "queue"
-    },
-    {
-      "type": 0,
-      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.assignee.role": [
-    {
-      "type": 1,
-      "value": "role"
-    },
-    {
-      "type": 0,
-      "value": " in "
-    },
-    {
-      "type": 1,
-      "value": "unit"
-    },
-    {
-      "type": 0,
-      "value": " or aboveSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.assignee.supervisor": [
-    {
-      "type": 6,
-      "value": "levels",
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "The initiator’s supervisor"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "The initiator’s supervisor, "
-            },
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " levels up"
-            }
-          ]
-        }
-      },
-      "offset": 0,
-      "pluralType": "cardinal"
-    },
-    {
-      "type": 0,
-      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.assignee.unitHead": [
-    {
-      "type": 6,
-      "value": "up",
-      "options": {
-        "=0": {
-          "value": [
-            {
-              "type": 0,
-              "value": "The head of "
-            },
-            {
-              "type": 1,
-              "value": "unit"
-            }
-          ]
-        },
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "The head of the unit above "
-            },
-            {
-              "type": 1,
-              "value": "unit"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "The head of the unit "
-            },
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " levels above "
-            },
-            {
-              "type": 1,
-              "value": "unit"
-            }
-          ]
-        }
-      },
-      "offset": 0,
-      "pluralType": "cardinal"
-    },
-    {
-      "type": 0,
-      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.attribute.classificationRank": [
-    {
-      "type": 0,
-      "value": "Classification rankSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.attribute.memoTypeId": [
-    {
-      "type": 0,
-      "value": "Memo type (id)SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.cancel": [
-    {
-      "type": 0,
-      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.checked": [
-    {
-      "type": 6,
-      "value": "count",
-      "options": {
-        "=0": {
-          "value": [
-            {
-              "type": 0,
-              "value": "No problems found."
-            }
-          ]
-        },
-        "one": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " problem found."
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " problems found."
-            }
-          ]
-        }
-      },
-      "offset": 0,
-      "pluralType": "cardinal"
-    },
-    {
-      "type": 0,
-      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.checking": [
-    {
-      "type": 0,
-      "value": "Checking…SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.choose": [
-    {
-      "type": 0,
-      "value": "Choose…SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.condition.addRow": [
-    {
-      "type": 0,
-      "value": "Add a comparisonSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.condition.asCel": [
-    {
-      "type": 0,
-      "value": "Write it as CELSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.condition.asSimple": [
-    {
-      "type": 0,
-      "value": "Use the simple formSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.condition.attribute": [
-    {
-      "type": 0,
-      "value": "AttributeSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.condition.cel": [
-    {
-      "type": 0,
-      "value": "Condition (CEL)SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.condition.celHint": [
-    {
-      "type": 0,
-      "value": "The simple form cannot show this condition; it is kept exactly as written.SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.condition.comparison": [
-    {
-      "type": 0,
-      "value": "ComparisonSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.condition.false": [
-    {
-      "type": 0,
-      "value": "NoSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.condition.join": [
-    {
-      "type": 0,
-      "value": "Holds whenSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.condition.join.all": [
-    {
-      "type": 0,
-      "value": "all of these are trueSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.condition.join.any": [
-    {
-      "type": 0,
-      "value": "any of these is trueSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.condition.noAttributes": [
-    {
-      "type": 0,
-      "value": "Items of this kind have no attributes a condition can compare. Write the condition as CEL.SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.condition.removeRow": [
-    {
-      "type": 0,
-      "value": "Remove comparison "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.condition.row": [
-    {
-      "type": 0,
-      "value": "Comparison "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.condition.true": [
-    {
-      "type": 0,
-      "value": "YesSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.condition.value": [
-    {
-      "type": 0,
-      "value": "ValueSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.condition.valueList": [
-    {
-      "type": 0,
-      "value": "Values, separated by commasSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.conditionN": [
-    {
-      "type": 0,
-      "value": "Condition "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.conflict": [
-    {
-      "type": 0,
-      "value": "Someone else saved this draft while you were changing it. Your changes are still here: copy them, or reload the saved version.SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.copied": [
-    {
-      "type": 0,
-      "value": "Copied.SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.copy": [
-    {
-      "type": 0,
-      "value": "Copy my changes as JSONSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.deadline": [
-    {
-      "type": 0,
-      "value": "DeadlineSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.diagram": [
-    {
-      "type": 0,
-      "value": "Workflow diagramSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.diagram.hint": [
-    {
-      "type": 0,
-      "value": "The Steps view shows the same workflow as a list, for keyboard and screen reader use.SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.doa": [
-    {
-      "type": 0,
-      "value": "The approval groups of the delegation of authoritySSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.doa.hint": [
-    {
-      "type": 0,
-      "value": "Goes to the approval groups of the delegation of authority in force when the memo starts.SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.doneEditing": [
-    {
-      "type": 0,
-      "value": "CloseSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.duration.amount": [
-    {
-      "type": 0,
-      "value": "AmountSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.duration.days": [
-    {
-      "type": 6,
-      "value": "n",
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " day"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " days"
-            }
-          ]
-        }
-      },
-      "offset": 0,
-      "pluralType": "cardinal"
-    },
-    {
-      "type": 0,
-      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.duration.hours": [
-    {
-      "type": 6,
-      "value": "n",
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " hour"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " hours"
-            }
-          ]
-        }
-      },
-      "offset": 0,
-      "pluralType": "cardinal"
-    },
-    {
-      "type": 0,
-      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.duration.iso": [
-    {
-      "type": 0,
-      "value": "Duration (ISO 8601, such as P1DT4H)SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.duration.minutes": [
-    {
-      "type": 6,
-      "value": "n",
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " minute"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " minutes"
-            }
-          ]
-        }
-      },
-      "offset": 0,
-      "pluralType": "cardinal"
-    },
-    {
-      "type": 0,
-      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.duration.unit": [
-    {
-      "type": 0,
-      "value": "UnitSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.duration.unit.days": [
-    {
-      "type": 0,
-      "value": "daysSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.duration.unit.hours": [
-    {
-      "type": 0,
-      "value": "hoursSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.duration.unit.minutes": [
-    {
-      "type": 0,
-      "value": "minutesSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.duration.workingDays": [
-    {
-      "type": 6,
-      "value": "n",
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " working day"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " working days"
-            }
-          ]
-        }
-      },
-      "offset": 0,
-      "pluralType": "cardinal"
-    },
-    {
-      "type": 0,
-      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.duration.workingHours": [
-    {
-      "type": 6,
-      "value": "n",
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " working hour"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " working hours"
-            }
-          ]
-        }
-      },
-      "offset": 0,
-      "pluralType": "cardinal"
-    },
-    {
-      "type": 0,
-      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.duration.workingMinutes": [
-    {
-      "type": 6,
-      "value": "n",
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " working minute"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " working minutes"
-            }
-          ]
-        }
-      },
-      "offset": 0,
-      "pluralType": "cardinal"
-    },
-    {
-      "type": 0,
-      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.edge": [
-    {
-      "type": 1,
-      "value": "from"
-    },
-    {
-      "type": 0,
-      "value": " leads to "
-    },
-    {
-      "type": 1,
-      "value": "to"
-    },
-    {
-      "type": 0,
-      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.edge.if": [
-    {
-      "type": 1,
-      "value": "from"
-    },
-    {
-      "type": 0,
-      "value": " leads to "
-    },
-    {
-      "type": 1,
-      "value": "to"
-    },
-    {
-      "type": 0,
-      "value": " if "
-    },
-    {
-      "type": 1,
-      "value": "condition"
-    },
-    {
-      "type": 0,
-      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.edge.otherwise": [
-    {
-      "type": 1,
-      "value": "from"
-    },
-    {
-      "type": 0,
-      "value": " otherwise leads to "
-    },
-    {
-      "type": 1,
-      "value": "to"
-    },
-    {
-      "type": 0,
-      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.edit": [
-    {
-      "type": 0,
-      "value": "ChangeSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.end": [
-    {
-      "type": 0,
-      "value": "EndSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.field.condition": [
-    {
-      "type": 0,
-      "value": "ConditionSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.field.name": [
-    {
-      "type": 0,
-      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.field.type": [
-    {
-      "type": 0,
-      "value": "Type of stepSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.flow.controls": [
-    {
-      "type": 0,
-      "value": "Diagram controlsSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.flow.edge": [
-    {
-      "type": 0,
-      "value": "Press Enter or Space to select a connection, and Escape to clear the selection.SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.flow.fitView": [
-    {
-      "type": 0,
-      "value": "Fit the workflow to the viewSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.flow.handle": [
-    {
-      "type": 0,
-      "value": "Connection pointSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.flow.interactive": [
-    {
-      "type": 0,
-      "value": "Toggle interactivitySSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.flow.node": [
-    {
-      "type": 0,
-      "value": "Press Enter or Space to select a step, and Escape to clear the selection.SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.flow.zoomIn": [
-    {
-      "type": 0,
-      "value": "Zoom inSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.flow.zoomOut": [
-    {
-      "type": 0,
-      "value": "Zoom outSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.forum": [
-    {
-      "type": 0,
-      "value": "ForumSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.forum.field": [
-    {
-      "type": 0,
-      "value": "Forum keySSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.forward": [
-    {
-      "type": 0,
-      "value": "Forwarding is allowed toSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.forward.anyone": [
-    {
-      "type": 0,
-      "value": "AnyoneSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.forward.legalEntity": [
-    {
-      "type": 0,
-      "value": "The holder’s legal entitySSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.forward.none": [
-    {
-      "type": 0,
-      "value": "No limit setSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.forward.unit": [
-    {
-      "type": 0,
-      "value": "The holder’s unit and belowSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.goesTo": [
-    {
-      "type": 0,
-      "value": "Goes toSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.if": [
-    {
-      "type": 0,
-      "value": "If "
-    },
-    {
-      "type": 1,
-      "value": "condition"
-    },
-    {
-      "type": 0,
-      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.leadsTo": [
-    {
-      "type": 0,
-      "value": "Leads toSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.leadsToN": [
-    {
-      "type": 0,
-      "value": "If condition "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": " holds, leads toSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.noSelection": [
-    {
-      "type": 0,
-      "value": "Select a step in the diagram to change it, or use the Steps view.SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.notReadable": [
-    {
-      "type": 0,
-      "value": "This body cannot be drawn: it needs a start and a list of steps, each with an id and a type. Use the JSON view.SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.notify.add": [
-    {
-      "type": 0,
-      "value": "Add someone to tellSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.notify.message": [
-    {
-      "type": 0,
-      "value": "MessageSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.notify.messageHint": [
-    {
-      "type": 0,
-      "value": "The key of the notice to send, such as creditDecided. The notice names the memo only.SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.notify.recipientN": [
-    {
-      "type": 0,
-      "value": "Tell "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.notify.remove": [
-    {
-      "type": 0,
-      "value": "Remove person or group "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": " to tellSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.nowhere": [
-    {
-      "type": 0,
-      "value": "Nowhere yetSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.op.eq": [
-    {
-      "type": 0,
-      "value": "isSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.op.ge": [
-    {
-      "type": 0,
-      "value": "is at leastSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.op.gt": [
-    {
-      "type": 0,
-      "value": "is more thanSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.op.in": [
-    {
-      "type": 0,
-      "value": "is one ofSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.op.le": [
-    {
-      "type": 0,
-      "value": "is at mostSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.op.lt": [
-    {
-      "type": 0,
-      "value": "is less thanSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.op.ne": [
-    {
-      "type": 0,
-      "value": "is notSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.otherwise": [
-    {
-      "type": 0,
-      "value": "OtherwiseSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.parallel.add": [
-    {
-      "type": 0,
-      "value": "Add someoneSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.parallel.all": [
-    {
-      "type": 0,
-      "value": "All ofSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.parallel.any": [
-    {
-      "type": 0,
-      "value": "Any one ofSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.parallel.assigneeN": [
-    {
-      "type": 0,
-      "value": "Person or group "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.parallel.field.n": [
-    {
-      "type": 0,
-      "value": "How manySSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.parallel.mode": [
-    {
-      "type": 0,
-      "value": "Decided whenSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.parallel.mode.all": [
-    {
-      "type": 0,
-      "value": "Everyone has approvedSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.parallel.mode.any": [
-    {
-      "type": 0,
-      "value": "Anyone has approvedSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.parallel.mode.n": [
-    {
-      "type": 0,
-      "value": "A number of them have approvedSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.parallel.n": [
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": " ofSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.parallel.remove": [
-    {
-      "type": 0,
-      "value": "Remove person or group "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.problems": [
-    {
-      "type": 6,
-      "value": "count",
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " problem"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " problems"
-            }
-          ]
-        }
-      },
-      "offset": 0,
-      "pluralType": "cardinal"
-    },
-    {
-      "type": 0,
-      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.redo": [
-    {
-      "type": 0,
-      "value": "RedoSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.reload": [
-    {
-      "type": 0,
-      "value": "Reload the saved versionSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.remove": [
-    {
-      "type": 0,
-      "value": "Remove this stepSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.remove.confirm": [
-    {
-      "type": 0,
-      "value": "RemoveSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.remove.description": [
-    {
-      "type": 0,
-      "value": "What led to this step will lead where it led, when that is one place. You can undo this until you save.SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.remove.title": [
-    {
-      "type": 0,
-      "value": "Remove “"
-    },
-    {
-      "type": 1,
-      "value": "name"
-    },
-    {
-      "type": 0,
-      "value": "”?SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.removeCondition": [
-    {
-      "type": 0,
-      "value": "Remove condition "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.route": [
-    {
-      "type": 0,
-      "value": "The approvers the initiator choosesSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.route.hint": [
-    {
-      "type": 0,
-      "value": "Goes to the approvers the initiator chooses, one after the other.SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.runs": [
-    {
-      "type": 0,
-      "value": "RunsSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.selected": [
-    {
-      "type": 0,
-      "value": "Selected stepSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.sla.addReminder": [
-    {
-      "type": 0,
-      "value": "Add a reminderSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.sla.due": [
-    {
-      "type": 0,
-      "value": "Due in "
-    },
-    {
-      "type": 1,
-      "value": "duration"
-    },
-    {
-      "type": 0,
-      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.sla.escalate.nextLevel": [
-    {
-      "type": 0,
-      "value": "moves to the next level "
-    },
-    {
-      "type": 1,
-      "value": "after"
-    },
-    {
-      "type": 0,
-      "value": " lateSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.sla.escalate.nextLevelOption": [
-    {
-      "type": 0,
-      "value": "Move the task one level upSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.sla.escalate.none": [
-    {
-      "type": 0,
-      "value": "Nothing moreSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.sla.escalate.notify": [
-    {
-      "type": 0,
-      "value": "the supervisor is told "
-    },
-    {
-      "type": 1,
-      "value": "after"
-    },
-    {
-      "type": 0,
-      "value": " lateSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.sla.escalate.notifyOption": [
-    {
-      "type": 0,
-      "value": "Tell the holder’s supervisorSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.sla.escalate.reassign": [
-    {
-      "type": 0,
-      "value": "moves to "
-    },
-    {
-      "type": 1,
-      "value": "to"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "type": 1,
-      "value": "after"
-    },
-    {
-      "type": 0,
-      "value": " lateSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.sla.escalate.reassignOption": [
-    {
-      "type": 0,
-      "value": "Move the task to someoneSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.sla.field.after": [
-    {
-      "type": 0,
-      "value": "Reminders after it is dueSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.sla.field.before": [
-    {
-      "type": 0,
-      "value": "How long beforeSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.sla.field.due": [
-    {
-      "type": 0,
-      "value": "Due afterSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.sla.field.escalateAfter": [
-    {
-      "type": 0,
-      "value": "How long lateSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.sla.field.escalateTo": [
-    {
-      "type": 0,
-      "value": "Move it toSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.sla.field.escalation": [
-    {
-      "type": 0,
-      "value": "When it is lateSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.sla.field.remindBefore": [
-    {
-      "type": 0,
-      "value": "Remind the holder before it is dueSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.sla.field.workingTime": [
-    {
-      "type": 0,
-      "value": "Count working time only (the business calendar)SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.sla.has": [
-    {
-      "type": 0,
-      "value": "This step has a deadlineSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.sla.remindAfter": [
-    {
-      "type": 0,
-      "value": "reminders "
-    },
-    {
-      "type": 1,
-      "value": "durations"
-    },
-    {
-      "type": 0,
-      "value": " afterSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.sla.remindBefore": [
-    {
-      "type": 0,
-      "value": "reminder "
-    },
-    {
-      "type": 1,
-      "value": "duration"
-    },
-    {
-      "type": 0,
-      "value": " beforeSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.sla.reminderN": [
-    {
-      "type": 0,
-      "value": "Reminder "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": " after it is dueSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.sla.removeReminder": [
-    {
-      "type": 0,
-      "value": "Remove reminder "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.start": [
-    {
-      "type": 0,
-      "value": "StartSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.stepAria": [
-    {
-      "type": 0,
-      "value": "Step "
-    },
-    {
-      "type": 1,
-      "value": "index"
-    },
-    {
-      "type": 0,
-      "value": " of "
-    },
-    {
-      "type": 1,
-      "value": "count"
-    },
-    {
-      "type": 0,
-      "value": ", "
-    },
-    {
-      "type": 1,
-      "value": "type"
-    },
-    {
-      "type": 0,
-      "value": ", "
-    },
-    {
-      "type": 1,
-      "value": "name"
-    },
-    {
-      "type": 0,
-      "value": ". "
-    },
-    {
-      "type": 1,
-      "value": "who"
-    },
-    {
-      "type": 0,
-      "value": " Leads to "
-    },
-    {
-      "type": 1,
-      "value": "next"
-    },
-    {
-      "type": 0,
-      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.stepHeading": [
-    {
-      "type": 1,
-      "value": "index"
-    },
-    {
-      "type": 0,
-      "value": ". "
-    },
-    {
-      "type": 1,
-      "value": "name"
-    },
-    {
-      "type": 0,
-      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.stepProblems": [
-    {
-      "type": 0,
-      "value": "Problems in "
-    },
-    {
-      "type": 1,
-      "value": "name"
-    },
-    {
-      "type": 0,
-      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.steps": [
-    {
-      "type": 0,
-      "value": "Steps, in the order they are writtenSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.subworkflow.field": [
-    {
-      "type": 0,
-      "value": "Sub-workflow to runSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.tells": [
-    {
-      "type": 0,
-      "value": "TellsSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.tools": [
-    {
-      "type": 0,
-      "value": "Change the workflowSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.type.approve": [
-    {
-      "type": 0,
-      "value": "ApprovalSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.type.branch": [
-    {
-      "type": 0,
-      "value": "BranchSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.type.doa": [
-    {
-      "type": 0,
-      "value": "Delegation of authoritySSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.type.forum": [
-    {
-      "type": 0,
-      "value": "Escalate to a forumSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.type.notify": [
-    {
-      "type": 0,
-      "value": "NotifySSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.type.parallel": [
-    {
-      "type": 0,
-      "value": "Parallel decisionSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.type.review": [
-    {
-      "type": 0,
-      "value": "ReviewSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.type.route": [
-    {
-      "type": 0,
-      "value": "RouteSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.type.sign": [
-    {
-      "type": 0,
-      "value": "SignatureSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.type.subworkflow": [
-    {
-      "type": 0,
-      "value": "Sub-workflowSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.undo": [
-    {
-      "type": 0,
-      "value": "UndoSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.unknown": [
-    {
-      "type": 0,
-      "value": "Unknown ("
-    },
-    {
-      "type": 1,
-      "value": "id"
-    },
-    {
-      "type": 0,
-      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.view.diagram": [
-    {
-      "type": 0,
-      "value": "DiagramSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.view.json": [
-    {
-      "type": 0,
-      "value": "JSONSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.view.steps": [
-    {
-      "type": 0,
-      "value": "StepsSSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "workflows.builder.views": [
-    {
-      "type": 0,
-      "value": "Views of this versionSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "workflows.builtIn": [

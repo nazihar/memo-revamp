@@ -85,3 +85,16 @@
     - `edit.test.ts`: `setCondition` declares once;
     - `panels-when.test.tsx`: a simple condition edited and joined, an unreadable one left alone, every deadline control, notices; axe.
   - **Size:** the Arabic admin catalogue part is now 12.6 of 15 KiB. A path loads one part, so a separate builder part needs the loader to take two. Do that if T6–T8 bring it near the limit.
+- **T6 (simulation UI):** a **Simulate** section under the views.
+  - **Inputs:** who starts it (the people picker); a sample value for each attribute the definition declares (classification rank as a number; memo type from the memo types; yes/no for booleans); and, when the definition has a route step, the approvers the initiator would choose.
+  - **What it sends:** the body on screen, saved or not, to `simulate`.
+  - **Result:** a polite status line says whether it would be approved, stop and wait for an administrator, or hit the step limit. An ordered list shows each step reached: who it reaches (with "for" a substitute's principal), why it would stop (not cleared, inactive, nobody found), which condition held or "otherwise", the DoA group, and the deadline in words.
+  - **Path marking:** the steps reached are marked in the diagram (a ring and an icon with a name, not colour alone, plus "Reached in the simulation" in the node's accessible name) and in the Steps view (a badge). The result is dropped as soon as the body changes.
+  - **Errors:** 422 says the workflow has problems; 429 says to try again in a minute; anything else says it could not run.
+  - **Catalogue split:** the builder's messages now have their own catalogue part, `builder` (ids `builder.*`, loaded with `/admin/workflows` pages).
+    - The shell's `CatalogueGate` takes every part a path needs (`partsForPath`).
+    - This answers the T4 note. The Arabic admin part drops to 9.5 KiB; the builder part is 4.2 KiB, both of 15.
+  - **Tests:**
+    - `workflows.test.tsx`: simulate from the page (the initiator required first, the request carrying the sample, the path with its condition, block reason and deadline, the Steps view marking both steps), and the Arabic definition page loading both parts;
+    - `simulation.test.tsx`: the route inputs, 422 and 429, axe.
+  - The full web suite passes apart from four files that time out under load and pass when rerun (the known flake).

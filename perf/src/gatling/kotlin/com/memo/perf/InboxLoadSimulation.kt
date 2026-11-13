@@ -47,7 +47,7 @@ class InboxLoadSimulation : Simulation() {
             .exec(
                 http("GET /auth/csrf")
                     .get("/api/v1/auth/csrf")
-                    .check(status().shouldBe(OK), headerRegex("Set-Cookie", "XSRF-TOKEN=([^;]+)").saveAs("xsrf")),
+                    .check(status().shouldBe(NO_CONTENT), headerRegex("Set-Cookie", "XSRF-TOKEN=([^;]+)").saveAs("xsrf")),
             ).exec(
                 http("POST /auth/login")
                     .post("/api/v1/auth/login")
@@ -78,10 +78,14 @@ class InboxLoadSimulation : Simulation() {
         const val INBOX = "GET /inbox/tasks"
         const val SESSION_COOKIE = "MEMO_SESSION"
         const val APPROVERS = 50
-        const val READS = 20
+
+        // Sign-ins are limited to 20 a minute per address (LOGIN_PER_IP) and every user comes from this one: the ramp
+        // stays under it, and each approver keeps reading for about three minutes, so all of them overlap at the end.
+        const val READS = 360
         const val PAUSE_MS = 500L
-        const val RAMP_SECONDS = 30L
+        const val RAMP_SECONDS = 165L
         const val OK = 200
+        const val NO_CONTENT = 204
         const val P95 = 95.0
         const val P95_BUDGET_MS = 300
         const val MAX_ERROR_PERCENT = 1.0

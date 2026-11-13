@@ -3,6 +3,7 @@ package com.memo.workflow.engine
 import com.memo.workflow.ActionKind
 import com.memo.workflow.BlockedReason
 import com.memo.workflow.InstanceStatus
+import com.memo.workflow.definition.Definition
 import java.util.UUID
 
 /** Something a person asks of a running instance. The service has already checked permissions such as reassignment. */
@@ -20,6 +21,17 @@ data class Recall(
 data class Cancel(
     override val actor: UUID,
     val remark: String?,
+) : Command
+
+/**
+ * Moves the instance to [target], a newer published version of its definition (design E03 §4.7); [from] and [to] are
+ * the version numbers, for the history. The caller has checked the permission and that [target] is newer.
+ */
+data class Migrate(
+    override val actor: UUID,
+    val target: Definition,
+    val from: Int,
+    val to: Int,
 ) : Command
 
 /** A command on one task. */
@@ -138,6 +150,8 @@ enum class Refusal {
     ASSIGNEE_NOT_ELIGIBLE,
     ACTION_NOT_ALLOWED,
     NOT_AN_EARLIER_STEP,
+    STEP_MISSING,
+    STEP_CHANGED,
     WAITING_FOR_ANSWER,
     ALREADY_ON_STEP,
     TOO_MANY_REFERRALS,

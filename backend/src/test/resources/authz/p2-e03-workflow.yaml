@@ -58,3 +58,9 @@ endpoints:
     body: { remark: "Matrix" }
   - { endpoint: "POST /api/v1/admin/workflow-definitions/{key}/versions/{number}/retire", rule: tenantAdminStepUp }
   - { endpoint: "GET /api/v1/admin/workflow-definitions/{key}/versions/{number}/export", rule: tenantAdmin }
+  # In-flight migration (T8): workflow.definitions.approve; migrating needs a fresh step-up. Unknown keys are 404.
+  - { endpoint: "POST /api/v1/admin/workflow-definitions/{key}/migrations/preview", rule: tenantAdmin }
+  - endpoint: "POST /api/v1/admin/workflow-definitions/{key}/migrations"
+    rule: tenantAdminStepUp
+    body: { instanceIds: ["{random}"] }
+    headers: { Idempotency-Key: "{random}" }

@@ -601,6 +601,29 @@ export type MfaEnrolmentConfirmed = {
     session: Session;
 };
 
+export type MigrationItem = {
+    fromVersion?: number | null;
+    instanceId: string;
+    migratable: boolean;
+    migrated: boolean;
+    openSteps: Array<string>;
+    reason?: string | null;
+    subject: AdminTaskSubject;
+};
+
+export type MigrationPreviewRequest = {
+    instanceIds?: Array<string> | null;
+};
+
+export type MigrationRequest = {
+    instanceIds?: Array<string>;
+};
+
+export type MigrationResponse = {
+    items: Array<MigrationItem>;
+    toVersion: number;
+};
+
 export type MoveOrgUnitRequest = {
     parentId: string;
 };
@@ -1824,6 +1847,45 @@ export type GetWorkflowDefinitionResponses = {
 };
 
 export type GetWorkflowDefinitionResponse = GetWorkflowDefinitionResponses[keyof GetWorkflowDefinitionResponses];
+
+export type MigrateWorkflowInstancesData = {
+    body: MigrationRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        key: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/workflow-definitions/{key}/migrations';
+};
+
+export type MigrateWorkflowInstancesResponses = {
+    /**
+     * OK
+     */
+    200: MigrationResponse;
+};
+
+export type MigrateWorkflowInstancesResponse = MigrateWorkflowInstancesResponses[keyof MigrateWorkflowInstancesResponses];
+
+export type PreviewWorkflowMigrationData = {
+    body?: MigrationPreviewRequest;
+    path: {
+        key: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/workflow-definitions/{key}/migrations/preview';
+};
+
+export type PreviewWorkflowMigrationResponses = {
+    /**
+     * OK
+     */
+    200: MigrationResponse;
+};
+
+export type PreviewWorkflowMigrationResponse = PreviewWorkflowMigrationResponses[keyof PreviewWorkflowMigrationResponses];
 
 export type NewWorkflowDefinitionDraftData = {
     body?: DraftRequest;

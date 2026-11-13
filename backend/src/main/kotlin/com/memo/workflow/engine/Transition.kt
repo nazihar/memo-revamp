@@ -74,6 +74,7 @@ class Transition(
             is Reassign -> reassign(state, command)
             is SendBack, is Forward, is Delegate, is Ask, is Answer, is Refer, is GiveOpinion -> handOns.apply(state, command)
             is Recall, is Cancel -> RoundControl.apply(state, command)
+            is Migrate -> Migrations.apply(state, command)
         }
 
     /** A delegate's action is recorded as acting for the holder who delegated the task (design E03 §4.4, invariant 17). */

@@ -40,7 +40,8 @@
 - [x] E03 T5 task actions (stacked PR)
 - [x] E03 T6 round control (stacked PR)
 - [x] E03 T7 definition lifecycle (stacked PR)
-- [ ] E03 T8 migration · T9 events · T10 web · T11 close
+- [x] E03 T8 in-flight migration (stacked PR)
+- [ ] E03 T9 events · T10 web · T11 close
 
 ## State (Phase 1a, closed)
 - [x] Overview approved (2026-10-18), Q1–Q8 answered, per-epic gate delegated

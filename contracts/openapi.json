@@ -1515,6 +1515,78 @@
         "required" : [ "recoveryCodes", "session" ],
         "type" : "object"
       },
+      "MigrationItem" : {
+        "properties" : {
+          "fromVersion" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "instanceId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "migratable" : {
+            "type" : "boolean"
+          },
+          "migrated" : {
+            "type" : "boolean"
+          },
+          "openSteps" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "reason" : {
+            "type" : [ "string", "null" ]
+          },
+          "subject" : {
+            "$ref" : "#/components/schemas/AdminTaskSubject"
+          }
+        },
+        "required" : [ "instanceId", "migratable", "migrated", "openSteps", "subject" ],
+        "type" : "object"
+      },
+      "MigrationPreviewRequest" : {
+        "properties" : {
+          "instanceIds" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : [ "array", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "MigrationRequest" : {
+        "properties" : {
+          "instanceIds" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        },
+        "type" : "object"
+      },
+      "MigrationResponse" : {
+        "properties" : {
+          "items" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MigrationItem"
+            },
+            "type" : "array"
+          },
+          "toVersion" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "items", "toVersion" ],
+        "type" : "object"
+      },
       "MoveOrgUnitRequest" : {
         "properties" : {
           "parentId" : {
@@ -3922,6 +3994,86 @@
           }
         },
         "summary" : "A workflow definition and its versions",
+        "tags" : [ "workflow" ]
+      }
+    },
+    "/api/v1/admin/workflow-definitions/{key}/migrations" : {
+      "post" : {
+        "operationId" : "migrateWorkflowInstances",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MigrationRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MigrationResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Move listed instances to the published version",
+        "tags" : [ "workflow" ]
+      }
+    },
+    "/api/v1/admin/workflow-definitions/{key}/migrations/preview" : {
+      "post" : {
+        "operationId" : "previewWorkflowMigration",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MigrationPreviewRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MigrationResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Which running instances can move to the published version",
         "tags" : [ "workflow" ]
       }
     },

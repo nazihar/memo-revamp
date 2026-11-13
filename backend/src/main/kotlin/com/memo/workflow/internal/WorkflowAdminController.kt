@@ -1,7 +1,6 @@
 package com.memo.workflow.internal
 
 import com.memo.common.authz.Permission
-import com.memo.common.authz.Policy
 import com.memo.common.authz.RequiresPermission
 import com.memo.common.authz.StepUpCheck
 import com.memo.common.context.Actor
@@ -14,7 +13,6 @@ import com.memo.workflow.BlockedReason
 import com.memo.workflow.TaskItem
 import com.memo.workflow.WorkflowQueries
 import com.memo.workflow.WorkflowRefusedException
-import com.memo.workflow.WorkflowSubject
 import com.memo.workflow.WorkflowView
 import com.memo.workflow.Workflows
 import io.swagger.v3.oas.annotations.Operation
@@ -78,9 +76,8 @@ data class ReassignRequest(
 class WorkflowAdminController(
     private val queries: WorkflowQueries,
     private val workflows: Workflows,
-    private val subjects: List<WorkflowSubject>,
+    private val subjects: AdminSubjects,
     private val users: UserSummaries,
-    private val policy: Policy,
     private val stepUp: StepUpCheck,
     private val idempotency: Idempotency,
     private val transactions: TenantTransactions,
@@ -126,27 +123,12 @@ class WorkflowAdminController(
     }
 
     private fun responses(tasks: List<TaskItem>): List<AdminTaskResponse> {
-        val summaries =
-            tasks
-                .groupBy { it.subject.type }
-                .flatMap { (type, items) ->
-                    subjectOf(type)?.summaries(items.map { it.subject.id }).orEmpty().toList()
-                }.toMap()
+        val shown = subjects.of(tasks.map { it.subject })
         val names = users.of(tasks.map { it.assigneeId }.toSet())
-        val clearance = policy.clearanceRank()
         return tasks.map { task ->
-            val summary = summaries[task.subject.id]
-            val restricted = summary == null || summary.classificationRank > clearance
             AdminTaskResponse(
                 taskId = task.taskId,
-                subject =
-                    AdminTaskSubject(
-                        task.subject.type,
-                        task.subject.id,
-                        summary?.reference,
-                        summary?.title?.takeUnless { restricted },
-                        restricted,
-                    ),
+                subject = shown.getValue(task.subject),
                 assignee = Person(task.assigneeId, names[task.assigneeId]?.displayName.orEmpty()),
                 round = task.round,
                 blocked = task.blocked,
@@ -154,8 +136,6 @@ class WorkflowAdminController(
             )
         }
     }
-
-    private fun subjectOf(type: String) = subjects.singleOrNull { it.type == type }
 }
 
 data class CancelRequest(

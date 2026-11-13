@@ -33,6 +33,8 @@
 - [x] E02 T5 `DocEditIT`, matrix `p2-e02-docedit.yaml`, E2E edit journey green against a real ONLYOFFICE locally and on dev in Chromium, Firefox and WebKit; nightly on the E2E stack with ONLYOFFICE
 - [x] E02 T6 runbook, ASVS rows, licence register, nfr memory figures, epic log
 - [x] E02 merged and on dev (#38, #39; Ansible 2026-11-11 turned on the `documents` profile; editing verified on dev)
+- [x] E03 plan written (2026-11-11): research, ADR-0038 (definitions), ADR-0039 (CEL conditions), design, threat model, tasks T1–T11, test plan (`epic-03-definition-runtime/`)
+- [ ] E03 T1 definition model · T2 conditions · T3 runtime · T4 parallel · T5 task actions · T6 round control · T7 lifecycle · T8 migration · T9 events · T10 web · T11 close
 
 ## State (Phase 1a, closed)
 - [x] Overview approved (2026-10-18), Q1–Q8 answered, per-epic gate delegated
@@ -43,7 +45,7 @@
 - [ ] Owner demo, moderated usability walkthrough, manual keyboard and screen-reader pass (carried)
 
 ## Next step
-1. Agent: the E03 plan (definition model and runtime). E02 is done; its edit journey runs nightly against the real ONLYOFFICE.
+1. Agent: E03 implementation, slice by slice (T1 definition model and T2 conditions first), each slice its own PR.
 2. Owner: the D1 demo on dev (`phase-2-workflow-engine/epic-01-first-slice/demo.md`).
 3. Before 2026-11-22: take the rebuilt distroless digest from Renovate and delete the zlib entries in `.trivyignore`.
 4. Follow-ups (retrospective "Carried"): `AuditPerformanceIT`, `NotificationPerformanceIT`, the full-signature ClamAV corpus nightly, sample bodies for the remaining mutating matrix cells, upstream clean-ups (`apk upgrade` lines, Spring Session licence exceptions, Guava pin), Spring Boot 4.2 GA.
@@ -57,7 +59,7 @@
 - **A1 (resolved):** the product is `memo`. Package `com.memo`, Gradle group `com.memo`, application name `memo`, images `memo-backend` / `memo-web`. Only the repository keeps the name `memo-revamp`. The stored schema marker moved to `memo` with migration `system/V2`.
 
 ## Decisions taken
-ADR-0001 to ADR-0037 (`docs/adr/README.md`). Phase 2: ADR-0037 ONLYOFFICE editing integration, ADR-0034 own workflow engine, ADR-0035 workflow data model and concurrency, ADR-0036 memo document binding and approval step-up. Phase 1a: ADR-0017 tenant context, ADR-0018 jobs, ADR-0019 audit store, ADR-0020 cache invalidation, ADR-0021 modal dialogs, ADR-0022 tenant resolution and accounts, ADR-0023 local authentication and sessions, ADR-0024 TOTP MFA and step-up, ADR-0025 rate limiting, ADR-0026 org model, ADR-0027 authorisation model, ADR-0028 envelope encryption, ADR-0029 upload pipeline and range downloads, ADR-0030 notifications and email delivery, ADR-0031 platform operator path, ADR-0032 terminology overrides, ADR-0033 audit viewer and export.
+ADR-0001 to ADR-0039 (`docs/adr/README.md`). Phase 2: ADR-0038 workflow definitions, ADR-0039 CEL conditions, ADR-0037 ONLYOFFICE editing integration, ADR-0034 own workflow engine, ADR-0035 workflow data model and concurrency, ADR-0036 memo document binding and approval step-up. Phase 1a: ADR-0017 tenant context, ADR-0018 jobs, ADR-0019 audit store, ADR-0020 cache invalidation, ADR-0021 modal dialogs, ADR-0022 tenant resolution and accounts, ADR-0023 local authentication and sessions, ADR-0024 TOTP MFA and step-up, ADR-0025 rate limiting, ADR-0026 org model, ADR-0027 authorisation model, ADR-0028 envelope encryption, ADR-0029 upload pipeline and range downloads, ADR-0030 notifications and email delivery, ADR-0031 platform operator path, ADR-0032 terminology overrides, ADR-0033 audit viewer and export.
 
 ## Environment notes (dev machine)
 - VS Code's Java extension builds the tree with its own Gradle and can hold the shared `build-logic/.gradle` lock, stalling CLI builds at "Calculating task graph". CLI builds use `MEMO_BUILD_ROOT=<repo>/.build-cli` (README); the git-ignored `.vscode/settings.json` sets the Java extension to LightWeight mode (owner agreed 2026-10-26; the owner does not code on this project).

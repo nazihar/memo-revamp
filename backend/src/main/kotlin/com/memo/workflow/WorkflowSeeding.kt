@@ -2,10 +2,24 @@ package com.memo.workflow
 
 import com.memo.common.tenant.TenantContext
 import com.memo.common.tenant.TenantTransactions
+import com.memo.org.OrgDirectory
 import com.memo.workflow.internal.DefinitionLifecycle
 import com.memo.workflow.internal.DefinitionVersions
+import com.memo.workflow.internal.DoaLifecycle
+import com.memo.workflow.internal.DoaMember
+import com.memo.workflow.internal.DoaRule
+import com.memo.workflow.internal.DoaRuleGroup
+import com.memo.workflow.internal.QueueMember
+import com.memo.workflow.internal.Queues
 import org.springframework.stereotype.Service
 import tools.jackson.databind.json.JsonMapper
+import java.util.UUID
+
+/** One approval group of a seeded DoA rule: [needed] approvals from the holders of [positions] (design E04 §3). */
+data class DoaSeedGroup(
+    val needed: Int,
+    val positions: List<UUID>,
+)
 
 /**
  * Definitions for seeders (the demo tenant, test plan E03 T11), through the same lifecycle as the API: written and
@@ -16,6 +30,9 @@ import tools.jackson.databind.json.JsonMapper
 class WorkflowSeeding(
     private val versions: DefinitionVersions,
     private val lifecycle: DefinitionLifecycle,
+    private val queues: Queues,
+    private val doa: DoaLifecycle,
+    private val directory: OrgDirectory,
     private val transactions: TenantTransactions,
     private val json: JsonMapper,
 ) {
@@ -40,6 +57,38 @@ class WorkflowSeeding(
         number: Int = 1,
     ) {
         tx { lifecycle.approve(key, number, null) }
+    }
+
+    /** A queue of [people] called [key], unless the tenant has one (design E04 §4.2). */
+    fun queue(
+        key: String,
+        name: String,
+        people: List<UUID>,
+    ) {
+        tx { if (queues.find(key) == null) queues.create(key, name, people.map { QueueMember(userId = it) }) }
+    }
+
+    /** Whether the tenant has a DoA version yet. */
+    fun doaSeeded(): Boolean = tx { doa.list().isNotEmpty() }
+
+    /**
+     * A DoA version taking effect today with one rule, [name], for every [subjectType] item, asking [groups] in order;
+     * submitted for review by the current user. Returns the version's number.
+     */
+    fun submitDoa(
+        subjectType: String,
+        name: String,
+        groups: List<DoaSeedGroup>,
+    ): Int =
+        tx {
+            val members = groups.map { g -> DoaRuleGroup(g.needed, g.positions.map { DoaMember("position", positionId = it) }) }
+            val draft = doa.create(directory.today(), listOf(DoaRule(name, subjectType, groups = members)))
+            doa.submit(draft.version.number, draft.version.revision).version.number
+        }
+
+    /** Publishes DoA version [number], approved by the current user (not the one who submitted it). */
+    fun approveDoa(number: Int) {
+        tx { doa.approve(number, null) }
     }
 
     private fun <T> tx(block: () -> T): T = transactions.inTenant(TenantContext.current(), block)

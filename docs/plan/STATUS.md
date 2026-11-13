@@ -55,7 +55,7 @@
 - [x] E04 T7 extended routes, allowed approvers, DoA check, forward limits (stacked PR)
 - [x] E04 T8 web work screens: claim, release, recusal, routes with positions and groups, interests, DoA preview, inbox badges (stacked PR)
 - [x] E04 T9 web admin: DoA versions, rules, review and simulator; queues; substitutions; memo type policies (stacked PR)
-- [ ] E04 T10 close
+- [x] E04 T10 close: demo DoA and queue, E2E journey, ASVS rows, runbook (stacked PR) — **E04 complete** (PRs #52–#62, none merged yet)
 
 ## State (Phase 1a, closed)
 - [x] Overview approved (2026-10-18), Q1–Q8 answered, per-epic gate delegated
@@ -66,8 +66,8 @@
 - [ ] Owner demo, moderated usability walkthrough, manual keyboard and screen-reader pass (carried)
 
 ## Next step
-1. Owner: merge E03 in order (#41 → #51); agent then deploys and checks it on dev.
-1. Agent: E04 implementation, slice by slice (T1 read facades first), stacked on the E03 PRs.
+1. Owner: merge E03 and E04 in order (#41 → #62, each stacked on the one before); agent then deploys and checks them on dev.
+1. Agent: E05 (timers and SLAs) plan under the delegated gate, then implementation stacked on the E04 PRs.
 2. Owner: the D1 demo on dev (`phase-2-workflow-engine/epic-01-first-slice/demo.md`).
 3. Before 2026-11-22: take the rebuilt distroless digest from Renovate and delete the zlib entries in `.trivyignore`.
 4. Follow-ups (retrospective "Carried"): `AuditPerformanceIT`, `NotificationPerformanceIT`, the full-signature ClamAV corpus nightly, sample bodies for the remaining mutating matrix cells, upstream clean-ups (`apk upgrade` lines, Spring Session licence exceptions, Guava pin), Spring Boot 4.2 GA.

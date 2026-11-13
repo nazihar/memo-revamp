@@ -16,6 +16,7 @@ export const DEMO_USERS = {
   user: 'user@demo.example',
   headCredit: 'head.credit@demo.example',
   director: 'director@demo.example',
+  headFinance: 'head.finance@demo.example',
 } as const
 
 const envFile = fileURLToPath(new URL('../../deploy/compose/.env', import.meta.url))

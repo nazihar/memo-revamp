@@ -6,11 +6,15 @@ import com.memo.common.context.ActorScope
 import com.memo.common.tenant.TenantDsl
 import com.memo.common.tenant.TenantId
 import com.memo.common.tenant.TenantTransactions
+import com.memo.common.web.RefusedException
 import com.memo.jooq.tables.references.WORKFLOW_ACTION
 import com.memo.jooq.tables.references.WORKFLOW_DEFINITION
 import com.memo.jooq.tables.references.WORKFLOW_DEFINITION_VERSION
 import com.memo.jooq.tables.references.WORKFLOW_INSTANCE
+import com.memo.jooq.tables.references.WORKFLOW_TASK
 import com.memo.tenancy.TenantRegistry
+import com.memo.testsupport.AppRoleJdbc
+import com.memo.testsupport.AppRoleJdbc.long
 import com.memo.testsupport.Audit
 import com.memo.testsupport.IntegrationTest
 import com.memo.testsupport.TestWorkflowSubject
@@ -27,6 +31,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import tools.jackson.databind.json.JsonMapper
 import java.time.OffsetDateTime
 import java.util.UUID
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 /**
  * Instances run their pinned definition (design E03 §4.2, test plan T3): review, branch, approve, route, notify and
@@ -166,6 +173,81 @@ class DefinitionRuntimeIT : IntegrationTest() {
         assertThat(newerReviewed.currentAssignees).containsExactly(big)
     }
 
+    private fun parallel(
+        mode: String,
+        vararg people: UUID,
+        n: Int? = null,
+    ) = """
+        {"schemaVersion":2,"start":"board","steps":[
+          {"id":"board","type":"parallel","name":"Board","mode":"$mode",${n?.let { "\"n\":$it," } ?: ""}
+           "assignees":[${people.joinToString(",") { """{"kind":"person","userId":"$it"}""" }}],"next":"end"}
+        ]}
+        """
+
+    @Test
+    fun `two of three approvals settle a parallel step, and the third task is cancelled`() {
+        publish("board", parallel("n-of-m", first, second, big, n = 2))
+        val started = act(initiator) { workflows.start(TestWorkflowSubject.TYPE, UUID.randomUUID(), emptyList(), definitionKey = "board") }
+        assertThat(started.currentAssignees).containsExactlyInAnyOrder(first, second, big)
+        val one = act(first) { workflows.approve(openTask(started.instanceId, first)) }
+        assertThat(one.status).isEqualTo(InstanceStatus.RUNNING)
+        assertThat(one.currentAssignees).containsExactlyInAnyOrder(second, big)
+        val third = openTask(started.instanceId, big)
+        val two = act(second) { workflows.approve(openTask(started.instanceId, second)) }
+        assertThat(two.status).isEqualTo(InstanceStatus.APPROVED)
+        AppRoleJdbc.inTransaction(tenant) { c ->
+            assertThat(c.long("select count(*) from workflow_task where id = ? and state = 'CANCELLED'", third)).isEqualTo(1)
+        }
+    }
+
+    @Test
+    fun `of two simultaneous approvals that would each settle an any-of step, one settles it and the other is refused`() {
+        publish("any", parallel("any", first, second))
+        val started = act(initiator) { workflows.start(TestWorkflowSubject.TYPE, UUID.randomUUID(), emptyList(), definitionKey = "any") }
+        val tasks = mapOf(first to openTask(started.instanceId, first), second to openTask(started.instanceId, second))
+        val inside = CountDownLatch(1)
+        subject.onAction = { _ ->
+            if (inside.count > 0) {
+                inside.countDown()
+                Thread.sleep(HOLD_MILLIS)
+            }
+        }
+        val pool = Executors.newFixedThreadPool(2)
+        try {
+            val a = pool.submit<Result<WorkflowView>> { runCatching { act(first) { workflows.approve(tasks.getValue(first)) } } }
+            assertThat(inside.await(10, TimeUnit.SECONDS)).isTrue()
+            val b = pool.submit<Result<WorkflowView>> { runCatching { act(second) { workflows.approve(tasks.getValue(second)) } } }
+            val results = listOf(a.get(30, TimeUnit.SECONDS), b.get(30, TimeUnit.SECONDS))
+            assertThat(results.count { it.isSuccess }).isEqualTo(1)
+            assertThat(results.single { it.isFailure }.exceptionOrNull())
+                .isInstanceOfAny(WorkflowRefusedException::class.java, RefusedException::class.java)
+        } finally {
+            pool.shutdownNow()
+            subject.onAction = {}
+        }
+        AppRoleJdbc.inTransaction(tenant) { c ->
+            assertThat(
+                c.long("select count(*) from workflow_action where instance_id = ? and kind = 'APPROVE'", started.instanceId),
+            ).isEqualTo(1)
+            assertThat(
+                c.long("select count(*) from workflow_round where instance_id = ? and outcome = 'APPROVED'", started.instanceId),
+            ).isEqualTo(1)
+        }
+    }
+
+    private fun openTask(
+        instanceId: UUID,
+        person: UUID,
+    ): UUID =
+        act(initiator) {
+            tenantDsl
+                .current()
+                .select(WORKFLOW_TASK.ID)
+                .from(WORKFLOW_TASK)
+                .where(WORKFLOW_TASK.INSTANCE_ID.eq(instanceId), WORKFLOW_TASK.ASSIGNEE_ID.eq(person), WORKFLOW_TASK.STATE.eq("OPEN"))
+                .fetchSingle(WORKFLOW_TASK.ID)!!
+        }
+
     /** Publishes [body] as the next version of [key] (the lifecycle API arrives in T7), retiring the previous one. */
     private fun publish(
         key: String,
@@ -245,4 +327,8 @@ class DefinitionRuntimeIT : IntegrationTest() {
         user: UUID,
         block: () -> T,
     ): T = ActorContext.call(ActorScope(Actor.User(user), null)) { transactions.inTenant(tenant, block) }
+
+    private companion object {
+        const val HOLD_MILLIS = 500L
+    }
 }

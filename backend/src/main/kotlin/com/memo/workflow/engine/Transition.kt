@@ -79,10 +79,31 @@ class Transition(
     ): Outcome {
         val (step, task) = state.guardedTask(command.taskId)
         val kind = if (step.kind == StepKind.REVIEW) ActionKind.RECOMMEND else ActionKind.APPROVE
-        val closed = state.round.closeTask(step.id, task.id, kind, StepState.DONE)
-        val walk = rounds.advance(closed, step, People(state.initiator, command.actor))
-        val effects = listOf(Effect.TaskClosed(task.id, TaskState.COMPLETED, kind)) + walk.effects
         val action = record(kind, state, task.id, command.actor, command.remark)
+        val closedTask = Effect.TaskClosed(task.id, TaskState.COMPLETED, kind)
+        val parallel = step.kind == StepKind.PARALLEL
+        val decided = state.round.closeTask(step.id, task.id, kind, if (parallel) StepState.ACTIVE else StepState.DONE)
+        // A parallel step waits until it has its approvals (design E03 §4.3); then its other tasks are no longer needed.
+        val waiting = parallel && Parallel.verdict(decided.step(step.id), definition.step(step.nodeId)) == Verdict.WAITING
+        return if (waiting) {
+            Outcome(state.copy(round = decided), action, listOf(closedTask))
+        } else {
+            val (settled, cancelled) = decided.settle(step.id)
+            advanced(state, settled, step, action, listOf(closedTask) + cancelled, command.actor)
+        }
+    }
+
+    /** After a step completed: on to the next step that needs a person, or the end (the round and instance approved). */
+    private fun advanced(
+        state: InstanceState,
+        closed: Round,
+        step: Step,
+        action: ActionRecord,
+        closing: List<Effect>,
+        actor: UUID,
+    ): Outcome {
+        val walk = rounds.advance(closed, step, People(state.initiator, actor))
+        val effects = closing + walk.effects
         return if (walk.finished) {
             val ended = listOf(Effect.RoundEnded(closed.number, RoundOutcome.APPROVED), Effect.InstanceEnded(InstanceStatus.APPROVED))
             val done = state.copy(status = InstanceStatus.APPROVED, round = walk.round.copy(outcome = RoundOutcome.APPROVED))
@@ -101,24 +122,33 @@ class Transition(
         kind: ActionKind,
     ): Outcome {
         val (step, _) = state.guardedTask(taskId)
+        val action = record(kind, state, taskId, actor, remark)
+        val closedTask = Effect.TaskClosed(taskId, TaskState.COMPLETED, kind)
+        // In a parallel step a rejection is one "no"; it rejects only when the step can no longer succeed (design E03 §4.3).
+        val parallelNo = kind == ActionKind.REJECT && step.kind == StepKind.PARALLEL
+        val decided = state.round.closeTask(step.id, taskId, kind, if (parallelNo) StepState.ACTIVE else StepState.DONE)
+        if (parallelNo && Parallel.verdict(decided.step(step.id), definition.step(step.nodeId)) == Verdict.WAITING) {
+            return Outcome(state.copy(round = decided), action, listOf(closedTask))
+        }
         val (roundOutcome, status) =
             if (kind == ActionKind.RETURN) {
                 RoundOutcome.RETURNED to InstanceStatus.RETURNED
             } else {
                 RoundOutcome.REJECTED to InstanceStatus.REJECTED
             }
+        val (cancelledRound, cancelled) = decided.cancelOpen()
         val round =
-            state.round
-                .closeTask(step.id, taskId, kind, StepState.DONE)
+            cancelledRound
+                .replaceStep(step.id) { it.copy(state = StepState.DONE) }
                 .skipPending()
                 .copy(outcome = roundOutcome)
         val effects =
-            listOfNotNull(
-                Effect.TaskClosed(taskId, TaskState.COMPLETED, kind),
-                Effect.RoundEnded(round.number, roundOutcome),
-                Effect.InstanceEnded(status).takeIf { status.terminal },
-            )
-        return Outcome(state.copy(status = status, round = round), record(kind, state, taskId, actor, remark), effects)
+            listOf(closedTask) + cancelled +
+                listOfNotNull(
+                    Effect.RoundEnded(round.number, roundOutcome),
+                    Effect.InstanceEnded(status).takeIf { status.terminal },
+                )
+        return Outcome(state.copy(status = status, round = round), action, effects)
     }
 
     private fun withdraw(
@@ -194,6 +224,45 @@ private fun Round.closeTask(
 
 private fun Round.skipPending(): Round =
     copy(steps = steps.map { if (it.state == StepState.PENDING) it.copy(state = StepState.SKIPPED) else it })
+
+private fun Round.step(id: UUID): Step = steps.first { it.id == id }
+
+/** The step is done: its tasks still open (other parallel holders, consultations) are cancelled. */
+private fun Round.settle(stepId: UUID): Pair<Round, List<Effect>> {
+    val open = step(stepId).tasks.filter { it.state == TaskState.OPEN }
+    val round =
+        replaceStep(stepId) { step ->
+            step.copy(
+                state = StepState.DONE,
+                tasks = step.tasks.map { if (it.state == TaskState.OPEN) it.copy(state = TaskState.CANCELLED) else it },
+            )
+        }
+    return round to open.map { Effect.TaskClosed(it.id, TaskState.CANCELLED, null) }
+}
+
+/** Every task still open in the round is cancelled (the round ends). */
+private fun Round.cancelOpen(): Pair<Round, List<Effect>> {
+    val open = steps.flatMap { step -> step.tasks.filter { it.state == TaskState.OPEN } }
+    val round =
+        copy(
+            steps =
+                steps.map { step ->
+                    step.copy(
+                        tasks =
+                            step.tasks.map {
+                                if (it.state ==
+                                    TaskState.OPEN
+                                ) {
+                                    it.copy(state = TaskState.CANCELLED)
+                                } else {
+                                    it
+                                }
+                            },
+                    )
+                },
+        )
+    return round to open.map { Effect.TaskClosed(it.id, TaskState.CANCELLED, null) }
+}
 
 /** The task a command names; [Guards] has already refused commands whose task is missing. */
 private fun InstanceState.guardedTask(taskId: UUID): Pair<Step, Task> =

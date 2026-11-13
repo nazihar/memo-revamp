@@ -13,7 +13,8 @@ enum class StepState { PENDING, ACTIVE, DONE, SKIPPED }
 /** What a step asks of its holder (`workflow_step.type`): route entries and approve steps approve, review steps recommend. */
 enum class StepKind { APPROVE, REVIEW, PARALLEL }
 
-enum class TaskState { OPEN, COMPLETED, CANCELLED, REASSIGNED }
+/** TRANSFERRED: handed on by its holder (forward, delegate, design E03 §4.4); REASSIGNED: moved by an administrator. */
+enum class TaskState { OPEN, COMPLETED, CANCELLED, REASSIGNED, TRANSFERRED }
 
 /** A piece of work for one person; [outcome] is APPROVE, RETURN or REJECT once COMPLETED. */
 data class Task(

@@ -5,6 +5,7 @@ package com.memo.jooq.tables
 
 
 import com.memo.jooq.Memo
+import com.memo.jooq.indexes.WORKFLOW_TASK_DUE_IDX
 import com.memo.jooq.indexes.WORKFLOW_TASK_INBOX_IDX
 import com.memo.jooq.indexes.WORKFLOW_TASK_INSTANCE_IDX
 import com.memo.jooq.indexes.WORKFLOW_TASK_ONE_OPEN_IDX
@@ -162,6 +163,11 @@ open class WorkflowTask(
      */
     val PARENT_TASK_ID: TableField<WorkflowTaskRecord, UUID?> = createField(DSL.name("parent_task_id"), SQLDataType.UUID, this, "")
 
+    /**
+     * The column <code>memo.workflow_task.due_at</code>.
+     */
+    val DUE_AT: TableField<WorkflowTaskRecord, OffsetDateTime?> = createField(DSL.name("due_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
+
     private constructor(alias: Name, aliased: Table<WorkflowTaskRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<WorkflowTaskRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<WorkflowTaskRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -194,7 +200,7 @@ open class WorkflowTask(
         override fun `as`(alias: Table<*>): WorkflowTaskPath = WorkflowTaskPath(alias.qualifiedName, this)
     }
     override fun getSchema(): Schema? = if (aliased()) null else Memo.MEMO
-    override fun getIndexes(): List<Index> = listOf(WORKFLOW_TASK_INBOX_IDX, WORKFLOW_TASK_INSTANCE_IDX, WORKFLOW_TASK_ONE_OPEN_IDX, WORKFLOW_TASK_OPEN_IDX, WORKFLOW_TASK_PARENT_IDX, WORKFLOW_TASK_STEP_IDX)
+    override fun getIndexes(): List<Index> = listOf(WORKFLOW_TASK_DUE_IDX, WORKFLOW_TASK_INBOX_IDX, WORKFLOW_TASK_INSTANCE_IDX, WORKFLOW_TASK_ONE_OPEN_IDX, WORKFLOW_TASK_OPEN_IDX, WORKFLOW_TASK_PARENT_IDX, WORKFLOW_TASK_STEP_IDX)
     override fun getPrimaryKey(): UniqueKey<WorkflowTaskRecord> = WORKFLOW_TASK_PKEY
     override fun getUniqueKeys(): List<UniqueKey<WorkflowTaskRecord>> = listOf(WORKFLOW_TASK_TENANT_ID_ID_KEY)
     override fun getReferences(): List<ForeignKey<WorkflowTaskRecord, *>> = listOf(WORKFLOW_TASK__WORKFLOW_TASK_TENANT_ID_INSTANCE_ID_FKEY, WORKFLOW_TASK__WORKFLOW_TASK_TENANT_ID_STEP_ID_FKEY)

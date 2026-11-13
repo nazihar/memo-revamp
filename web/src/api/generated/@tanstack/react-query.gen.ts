@@ -1245,7 +1245,7 @@ export const endSubstitutionMutation = (options?: Partial<Options<EndSubstitutio
 export const listOpenTasksQueryKey = (options?: Options<ListOpenTasksData>) => createQueryKey('listOpenTasks', options);
 
 /**
- * Open workflow tasks, or only the blocked ones
+ * Open workflow tasks, or only the blocked or overdue ones
  */
 export const listOpenTasksOptions = (options?: Options<ListOpenTasksData>) => queryOptions<ListOpenTasksResponse, DefaultError, ListOpenTasksResponse, ReturnType<typeof listOpenTasksQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
@@ -1263,7 +1263,7 @@ export const listOpenTasksOptions = (options?: Options<ListOpenTasksData>) => qu
 export const listOpenTasksInfiniteQueryKey = (options?: Options<ListOpenTasksData>): QueryKey<Options<ListOpenTasksData>> => createQueryKey('listOpenTasks', options, true);
 
 /**
- * Open workflow tasks, or only the blocked ones
+ * Open workflow tasks, or only the blocked or overdue ones
  */
 export const listOpenTasksInfiniteOptions = (options?: Options<ListOpenTasksData>) => {
     const opts = infiniteQueryOptions<ListOpenTasksResponse, DefaultError, InfiniteData<ListOpenTasksResponse>, QueryKey<Options<ListOpenTasksData>>, string | Pick<QueryKey<Options<ListOpenTasksData>>[0], 'body' | 'headers' | 'path' | 'query'>>(

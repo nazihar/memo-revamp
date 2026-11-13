@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import tools.jackson.databind.json.JsonMapper
+import java.time.Clock
 import java.time.Instant
 import java.util.UUID
 
@@ -56,6 +57,8 @@ data class AdminTaskResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val round: Int,
     val blocked: BlockedReason?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val createdAt: Instant,
+    /** When the decision is due (design E05 §4.4). */
+    val dueAt: Instant? = null,
 )
 
 data class AdminTaskPage(
@@ -85,20 +88,22 @@ class WorkflowAdminController(
     private val idempotency: Idempotency,
     private val transactions: TenantTransactions,
     private val json: JsonMapper,
+    private val clock: Clock,
 ) {
     @GetMapping
     @RequiresPermission(Permission.WORKFLOW_TASKS_REASSIGN)
-    @Operation(operationId = "listOpenTasks", summary = "Open workflow tasks, or only the blocked ones")
+    @Operation(operationId = "listOpenTasks", summary = "Open workflow tasks, or only the blocked or overdue ones")
     fun list(
         @RequestParam(defaultValue = "open") filter: String,
         @RequestParam(required = false) assignee: UUID?,
         @RequestParam(required = false) cursor: String?,
         @RequestParam(defaultValue = "25") limit: Int,
     ): ResponseEntity<AdminTaskPage> {
-        require(filter == "open" || filter == "blocked") { "filter is open or blocked" }
+        require(filter in FILTERS) { "filter is open, blocked or overdue" }
         val page =
             transactions.readInTenant(TenantContext.current()) {
-                val tasks = queries.openTasks(filter == "blocked", assignee, cursor, limit)
+                val overdueAt = if (filter == "overdue") clock.instant() else null
+                val tasks = queries.openTasks(filter == "blocked", assignee, cursor, limit, overdueAt)
                 AdminTaskPage(responses(tasks.items), tasks.nextCursor)
             }
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(page)
@@ -152,8 +157,13 @@ class WorkflowAdminController(
                 round = task.round,
                 blocked = task.blocked,
                 createdAt = task.createdAt,
+                dueAt = task.dueAt,
             )
         }
+    }
+
+    private companion object {
+        val FILTERS = setOf("open", "blocked", "overdue")
     }
 }
 

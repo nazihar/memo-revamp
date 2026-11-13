@@ -31,6 +31,8 @@ data class TaskItem(
     val shared: Boolean = false,
     /** The candidate who claimed the shared step, if anyone has. */
     val claimedBy: UUID? = null,
+    /** When the decision is due, from its step's SLA (design E05 §4.2); null without one. */
+    val dueAt: Instant? = null,
 )
 
 /** A page of tasks, newest first; [nextCursor] fetches the next one (null at the end). */
@@ -93,13 +95,20 @@ class WorkflowQueries(
         return page(limit) { tasks.open(assignee = user, blockedOnly = false, after = cursor?.let(Cursors::decode), limit = it) }
     }
 
-    /** Every open task of the tenant, or only the blocked ones, optionally of one assignee. */
+    /** Every open task of the tenant, or only the blocked ones (or those overdue at [overdueAt]), optionally of one assignee. */
     fun openTasks(
         blockedOnly: Boolean,
         assignee: UUID?,
         cursor: String?,
         limit: Int,
-    ): TaskPage = page(limit) { tasks.open(assignee, blockedOnly, cursor?.let(Cursors::decode), it) }
+        overdueAt: Instant? = null,
+    ): TaskPage = page(limit) { tasks.open(assignee, blockedOnly, cursor?.let(Cursors::decode), it, overdueAt) }
+
+    /** When the subject's current step is due (design E05 §4.4); null without an SLA or when nothing is open. */
+    fun dueOf(
+        subjectType: String,
+        subjectId: UUID,
+    ): Instant? = instances.instanceOfSubject(subjectType, subjectId)?.let(tasks::dueOf)
 
     /** Who holds each running subject now (design E01 §10: one query for a page of the sent box). */
     fun holders(

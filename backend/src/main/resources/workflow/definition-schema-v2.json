@@ -77,13 +77,32 @@
         }
       ]
     },
+    "duration": { "type": "string", "pattern": "^P(?!$)(\\d{1,3}D)?(T(?=\\d)(\\d{1,4}H)?(\\d{1,4}M)?)?$" },
     "sla": {
       "type": "object",
       "additionalProperties": false,
       "required": ["due"],
       "properties": {
-        "due": { "type": "string", "pattern": "^P(?!$)(\\d{1,3}D)?(T(?=\\d)(\\d{1,4}H)?(\\d{1,4}M)?)?$" },
-        "workingTime": { "type": "boolean" }
+        "due": { "$ref": "#/$defs/duration" },
+        "workingTime": { "type": "boolean" },
+        "remind": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "before": { "$ref": "#/$defs/duration" },
+            "after": { "type": "array", "maxItems": 3, "items": { "$ref": "#/$defs/duration" } }
+          }
+        },
+        "escalate": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["after", "action"],
+          "properties": {
+            "after": { "$ref": "#/$defs/duration" },
+            "action": { "enum": ["notify", "reassign", "nextLevel"] },
+            "to": { "$ref": "#/$defs/assignee" }
+          }
+        }
       }
     },
     "step": {

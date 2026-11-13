@@ -39,6 +39,8 @@ data class InboxItem(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val shared: Boolean = false,
     /** Who claimed the shared task, if anyone has. */
     val claimedBy: Named? = null,
+    /** When the decision is due (design E05 §4.4); the inbox flags it once past. */
+    val dueAt: Instant? = null,
 )
 
 data class InboxPage(
@@ -138,6 +140,7 @@ class MemoInbox(
                     named(task.onBehalfOf),
                     task.shared,
                     named(task.claimedBy),
+                    task.dueAt,
                 )
             }
         return InboxPage(items, page.nextCursor)

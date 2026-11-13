@@ -20,12 +20,15 @@ import com.memo.workflow.engine.RoundOutcome
 import com.memo.workflow.engine.Step
 import com.memo.workflow.engine.StepState
 import com.memo.workflow.engine.Task
+import com.memo.workflow.engine.TaskKind
 import com.memo.workflow.engine.TaskState
 import org.jooq.JSONB
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Component
 import tools.jackson.databind.json.JsonMapper
+import java.time.Instant
 import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import java.util.UUID
 
 /**
@@ -50,6 +53,7 @@ class InstanceWriter(
         snapshot: JSONB,
         actingFor: UUID?,
         now: OffsetDateTime,
+        dueOf: (UUID) -> Instant? = { null },
     ): Pair<UUID, Long> {
         val after = outcome.state
         val sameRound = before != null && before.round.number == after.round.number
@@ -58,7 +62,7 @@ class InstanceWriter(
         outcome.effects.forEach { effect ->
             when (effect) {
                 is Effect.RoundStarted -> insertRound(instanceId, after.round, outcome.action.actor, snapshot, now)
-                is Effect.TaskCreated -> insertTask(instanceId, effect.stepId, effect.task, now)
+                is Effect.TaskCreated -> insertTask(instanceId, effect.stepId, effect.task, now, dueOf)
                 is Effect.TaskClosed -> closeTask(effect, now)
                 is Effect.RoundEnded -> endRound(instanceId, effect, now)
                 is Effect.TaskWaiting -> markWaiting(effect)
@@ -162,7 +166,10 @@ class InstanceWriter(
         stepId: UUID,
         task: Task,
         now: OffsetDateTime,
+        dueOf: (UUID) -> Instant?,
     ) {
+        // Decisions on an SLA step are due (DueTimes keeps the step's due time when a task replaces another).
+        val due = if (task.kind == TaskKind.DECIDE) dueOf(stepId)?.atOffset(ZoneOffset.UTC) else null
         tenantDsl
             .current()
             .insertInto(WORKFLOW_TASK)
@@ -178,6 +185,7 @@ class InstanceWriter(
             .set(WORKFLOW_TASK.WAITING, task.waiting)
             .set(WORKFLOW_TASK.PARENT_TASK_ID, task.parentTaskId)
             .set(WORKFLOW_TASK.CREATED_AT, now)
+            .set(WORKFLOW_TASK.DUE_AT, due)
             .execute()
     }
 

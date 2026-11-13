@@ -540,7 +540,7 @@ export const applySubstitution = <ThrowOnError extends boolean = false>(options:
 export const endSubstitution = <ThrowOnError extends boolean = false>(options: Options<EndSubstitutionData, ThrowOnError>): RequestResult<EndSubstitutionResponses, unknown, ThrowOnError> => (options.client ?? client).post<EndSubstitutionResponses, unknown, ThrowOnError>({ url: '/api/v1/admin/workflow/substitutions/{id}/end', ...options });
 
 /**
- * Open workflow tasks, or only the blocked ones
+ * Open workflow tasks, or only the blocked or overdue ones
  */
 export const listOpenTasks = <ThrowOnError extends boolean = false>(options?: Options<ListOpenTasksData, ThrowOnError>): RequestResult<ListOpenTasksResponses, unknown, ThrowOnError> => (options?.client ?? client).get<ListOpenTasksResponses, unknown, ThrowOnError>({ url: '/api/v1/admin/workflow/tasks', ...options });
 

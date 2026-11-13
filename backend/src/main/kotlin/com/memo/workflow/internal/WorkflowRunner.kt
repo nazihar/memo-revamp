@@ -54,6 +54,7 @@ class WorkflowRunner(
     private val substitutes: SubstitutesInForce,
     private val doa: DoaMatcher,
     private val orgLimits: ForwardLimits,
+    private val dues: DueTimes,
     private val ids: IdGenerator,
     private val json: JsonMapper,
     private val clock: Clock,
@@ -190,8 +191,18 @@ class WorkflowRunner(
         subject.beforeAction(instance.subjectId, outcome.action.kind)
         val snapshot = subject.snapshot(instance.subjectId)
         val snapshotJson = JSONB.valueOf(json.writeValueAsString(snapshot))
+        val at = now()
         val (actionId, version) =
-            writer.write(instance.id, before, instance.version, outcome, snapshotJson, actor.actingAs, now())
+            writer.write(
+                instance.id,
+                before,
+                instance.version,
+                outcome,
+                snapshotJson,
+                actor.actingAs,
+                at,
+                dues.of(instance.definition, outcome, at.toInstant()),
+            )
         effects.audit(instance, outcome, snapshot)
         effects.publish(instance, before, outcome, actionId)
         return view(instance, outcome.state, version)

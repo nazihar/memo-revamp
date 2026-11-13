@@ -55,7 +55,7 @@ object DefinitionJson {
             message = json.text("message"),
             definition = json.text("definition"),
             forum = json.text("forum"),
-            sla = json["sla"]?.let { Sla(it["due"].asString(), it["workingTime"]?.asBoolean()) },
+            sla = json["sla"]?.let { SlaJson.read(it, ::assignee) },
             fallback = json["fallback"]?.let(::assignee),
             forward = json["forward"]?.get("within")?.asString()?.let(ForwardWithin::of),
         )
@@ -103,10 +103,7 @@ object DefinitionJson {
         step.message?.let { out.put("message", it) }
         step.definition?.let { out.put("definition", it) }
         step.forum?.let { out.put("forum", it) }
-        step.sla?.let { sla ->
-            val node = out.putObject("sla").put("due", sla.due)
-            sla.workingTime?.let { node.put("workingTime", it) }
-        }
+        step.sla?.let { SlaJson.write(out.putObject("sla"), it, ::print) }
     }
 
     private fun routing(

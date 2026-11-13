@@ -1,6 +1,7 @@
 package com.memo.workflow.definition
 
 import com.memo.workflow.AttributeType
+import com.memo.workflow.calendar.SlaDuration
 import com.networknt.schema.InputFormat
 import com.networknt.schema.Schema
 import com.networknt.schema.SchemaRegistry
@@ -138,6 +139,7 @@ class DefinitionValidator(
             }
             problems += assignees.problems(at, step)
             if (step.type.human) actions(at, step)
+            step.sla?.let { problems += slaProblems("$at/sla", it) }
         }
 
         private fun parallel(
@@ -300,7 +302,13 @@ private class AssigneeChecks(
             listOfNotNull(step.assignee?.let { "$at/assignee" to it }) +
                 step.assignees.mapIndexed { a, assignee -> "$at/assignees/$a" to assignee } +
                 step.recipients.mapIndexed { r, assignee -> "$at/recipients/$r" to assignee } +
-                listOfNotNull(step.fallback?.let { "$at/fallback" to it })
+                listOfNotNull(step.fallback?.let { "$at/fallback" to it }) +
+                listOfNotNull(
+                    step.sla
+                        ?.escalate
+                        ?.to
+                        ?.let { "$at/sla/escalate/to" to it },
+                )
         val kinds =
             listOfNotNull(
                 step.assignee?.takeIf { step.type.human && it.kind == AssigneeKind.INITIATOR }?.let {
@@ -336,3 +344,29 @@ private class AssigneeChecks(
             },
         )
 }
+
+/**
+ * What an SLA must satisfy beyond the schema (design E05 §2): a reminder before the due time comes before it, a
+ * reassignment says to whom, and nobody escalates to the initiator.
+ */
+internal fun slaProblems(
+    at: String,
+    sla: Sla,
+): List<DefinitionProblem> {
+    val before = sla.remind?.before
+    val escalate = sla.escalate
+    return listOfNotNull(
+        DefinitionProblem("$at/remind/before", "SLA_REMIND_BEFORE", "a reminder before the due time must be shorter than the due time")
+            .takeIf { before != null && roughMinutes(before) >= roughMinutes(sla.due) },
+        DefinitionProblem("$at/escalate/to", "SLA_ESCALATE_TO", "say whom the task is reassigned to")
+            .takeIf { escalate?.action == EscalateAction.REASSIGN && escalate.to == null },
+        DefinitionProblem("$at/escalate/to", "ASSIGNEE_KIND", "the initiator cannot decide on their own item")
+            .takeIf { escalate?.to?.kind == AssigneeKind.INITIATOR },
+    )
+}
+
+/** A duration in minutes, a day counted as 24 hours: enough to compare a reminder with its due time. */
+private fun roughMinutes(iso: String): Long =
+    runCatching { SlaDuration.parse(iso) }.getOrNull()?.let { it.days * MINUTES_PER_DAY + it.minutes } ?: 0
+
+private const val MINUTES_PER_DAY = 24 * 60L

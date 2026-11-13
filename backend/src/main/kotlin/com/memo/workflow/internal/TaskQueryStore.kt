@@ -3,6 +3,7 @@ package com.memo.workflow.internal
 import com.memo.common.tenant.TenantDsl
 import com.memo.jooq.tables.references.WORKFLOW_ACTION
 import com.memo.jooq.tables.references.WORKFLOW_INSTANCE
+import com.memo.jooq.tables.references.WORKFLOW_STEP
 import com.memo.jooq.tables.references.WORKFLOW_TASK
 import com.memo.workflow.ActionEntry
 import com.memo.workflow.ActionKind
@@ -20,6 +21,7 @@ import java.util.UUID
 @Component
 class TaskQueryStore(
     private val tenantDsl: TenantDsl,
+    private val definitions: CompiledDefinitions,
     private val json: JsonMapper,
 ) {
     /** Open tasks newest first, of [assignee] (all when null), after the keyset position [after]. */
@@ -74,13 +76,32 @@ class TaskQueryStore(
             .associate { it.value1()!! to it.value2().orEmpty().filterNotNull() }
     }
 
-    fun history(instanceId: UUID): List<ActionEntry> =
-        tenantDsl
-            .current()
-            .selectFrom(WORKFLOW_ACTION)
+    /**
+     * Every action of the instance in order, with its details and the name of the step it concerns: its task's step, or
+     * the step its details name (a branch, a notification, a send-back target), named as the pinned version names it.
+     */
+    fun history(instanceId: UUID): List<ActionEntry> {
+        val dsl = tenantDsl.current()
+        val pinned =
+            dsl
+                .select(WORKFLOW_INSTANCE.DEFINITION_VERSION_ID)
+                .from(WORKFLOW_INSTANCE)
+                .where(WORKFLOW_INSTANCE.ID.eq(instanceId))
+                .fetchOne(WORKFLOW_INSTANCE.DEFINITION_VERSION_ID) ?: return emptyList()
+        val steps = definitions.get(pinned).stepsById
+        return dsl
+            .select(WORKFLOW_ACTION.asterisk(), WORKFLOW_STEP.NODE_ID)
+            .from(WORKFLOW_ACTION)
+            .leftJoin(WORKFLOW_TASK)
+            .on(WORKFLOW_TASK.ID.eq(WORKFLOW_ACTION.TASK_ID))
+            .leftJoin(WORKFLOW_STEP)
+            .on(WORKFLOW_STEP.ID.eq(WORKFLOW_TASK.STEP_ID))
             .where(WORKFLOW_ACTION.INSTANCE_ID.eq(instanceId))
             .orderBy(WORKFLOW_ACTION.SEQ)
-            .fetch { r ->
+            .fetch { row ->
+                val r = row.into(WORKFLOW_ACTION)
+                val details = r.details?.let { json.readValue(it.data(), Map::class.java) }.orEmpty()
+                val node = row.get(WORKFLOW_STEP.NODE_ID) ?: (details["toStep"] ?: details["step"]) as? String
                 @Suppress("UNCHECKED_CAST")
                 ActionEntry(
                     seq = r.seq,
@@ -92,8 +113,11 @@ class TaskQueryStore(
                     remark = r.remark,
                     snapshot = json.readValue(r.subjectSnapshot!!.data(), Map::class.java) as Map<String, Any?>,
                     occurredAt = r.occurredAt.toInstant(),
+                    details = details as Map<String, Any?>,
+                    stepName = node?.let { steps[it]?.name ?: it },
                 )
             }
+    }
 
     private companion object {
         const val OPEN = "OPEN"

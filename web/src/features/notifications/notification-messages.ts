@@ -93,6 +93,7 @@ const kindsWithValues = defineMessages<{
   taskReassigned: { reference: string }
   taskBlocked: { reference: string }
   memoWithdrawn: { reference: string }
+  memoUpdate: { reference: string }
   editNotSaved: { name: string }
 }>({
   signInAlert: { id: 'notifications.kind.signInAlert', defaultMessage: 'New sign-in to your account from {device}' },
@@ -110,6 +111,7 @@ const kindsWithValues = defineMessages<{
   },
   taskBlocked: { id: 'notifications.kind.taskBlocked', defaultMessage: 'Memo {reference} is waiting for reassignment' },
   memoWithdrawn: { id: 'notifications.kind.memoWithdrawn', defaultMessage: 'Memo {reference} was withdrawn' },
+  memoUpdate: { id: 'notifications.kind.memoUpdate', defaultMessage: 'There is news about memo {reference}' },
   editNotSaved: {
     id: 'notifications.kind.editNotSaved',
     defaultMessage: 'Your changes to {name} in the browser editor could not be saved',
@@ -144,6 +146,8 @@ export function notificationText(intl: IntlShape, kind: string, params: Record<s
       return intl.formatMessage(kindsWithValues.taskBlocked, reference)
     case 'MEMO_WITHDRAWN':
       return intl.formatMessage(kindsWithValues.memoWithdrawn, reference)
+    case 'MEMO_UPDATE':
+      return intl.formatMessage(kindsWithValues.memoUpdate, reference)
     case 'EDIT_NOT_SAVED':
       return intl.formatMessage(kindsWithValues.editNotSaved, { name: params.name ?? '' })
     case 'PASSWORD_CHANGED':
@@ -181,6 +185,7 @@ const mailTemplates = defineMessages({
   TASK_REASSIGNED: { id: 'mail.template.taskReassigned', defaultMessage: 'Memo task reassigned' },
   TASK_BLOCKED: { id: 'mail.template.taskBlocked', defaultMessage: 'Memo waiting for reassignment' },
   MEMO_WITHDRAWN: { id: 'mail.template.memoWithdrawn', defaultMessage: 'Memo withdrawn' },
+  MEMO_UPDATE: { id: 'mail.template.memoUpdate', defaultMessage: 'News about a memo' },
 })
 
 const templateMessages: Record<string, MessageDescriptor | undefined> = mailTemplates

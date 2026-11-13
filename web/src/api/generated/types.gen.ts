@@ -379,12 +379,17 @@ export type Health = {
 export type HistoryAction = {
     actingFor?: Named | null;
     actor: Named;
+    details: {
+        [key: string]: unknown;
+    };
     documentNumber?: number | null;
     kind: 'SUBMIT' | 'APPROVE' | 'RETURN' | 'REJECT' | 'WITHDRAW' | 'RESUBMIT' | 'REASSIGN' | 'RECOMMEND' | 'ROUTE' | 'NOTIFY' | 'ESCALATE_TO_FORUM' | 'SEND_BACK' | 'FORWARD' | 'DELEGATE' | 'ASK' | 'ANSWER' | 'REFER' | 'OPINION' | 'RECALL' | 'CANCEL' | 'MIGRATE' | 'CARRY';
     occurredAt: string;
     remark?: string | null;
     seq: number;
     sha256?: string | null;
+    step?: string | null;
+    to: Array<Named>;
 };
 
 export type HistoryRound = {

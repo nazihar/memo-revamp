@@ -40,6 +40,13 @@ data class ActionEntry(
     /** What the action applied to, as the subject described it (for memos: document version and SHA-256). */
     val snapshot: Map<String, Any?>,
     val occurredAt: Instant,
+    /**
+     * What the action was based on (design E03 §3, at most 4 KiB): a branch's condition inputs and result, a
+     * notification's message key, a forum, a send-back target, the people handed to (ids), the versions of a migration.
+     */
+    val details: Map<String, Any?> = emptyMap(),
+    /** The name of the definition step the action concerns (its task's step, or the step it names), if it has one. */
+    val stepName: String? = null,
 )
 
 /**

@@ -143,3 +143,37 @@ data class WorkflowEscalatedToForum(
     val stepId: String,
     val forumKey: String,
 ) : TenantScopedEvent
+
+/** A step that holds tasks was completed (design E03 §1): its decision is made and the walk went on. */
+data class WorkflowStepCompleted(
+    override val tenantId: UUID,
+    val instanceId: UUID,
+    val subjectType: String,
+    val subjectId: UUID,
+    val stepId: UUID,
+    /** The definition step it came from. */
+    val nodeId: String,
+    val round: Int,
+) : TenantScopedEvent
+
+/** The instance ended for good: approved, rejected, withdrawn or cancelled (design E03 §1). */
+data class WorkflowInstanceEnded(
+    override val tenantId: UUID,
+    val instanceId: UUID,
+    val subjectType: String,
+    val subjectId: UUID,
+    val status: InstanceStatus,
+) : TenantScopedEvent
+
+/**
+ * A task was escalated because it waited too long (design E03 §1): [recipientId] is told about [taskId]. Defined in E03
+ * so consumers can be written against it; E05 publishes it.
+ */
+data class WorkflowEscalated(
+    override val tenantId: UUID,
+    val instanceId: UUID,
+    val subjectType: String,
+    val subjectId: UUID,
+    val taskId: UUID,
+    val recipientId: UUID,
+) : TenantScopedEvent

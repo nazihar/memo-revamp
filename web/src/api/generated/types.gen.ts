@@ -365,6 +365,9 @@ export type DoaSimulationResponse = {
 export type DoaVersionResponse = {
     effectiveFrom?: string | null;
     number: number;
+    positions: {
+        [key: string]: string;
+    };
     publishedAt?: string | null;
     reviewRemark?: string | null;
     reviewedAt?: string | null;
@@ -640,6 +643,9 @@ export type MemoRequest = {
 export type MemoType = {
     active: boolean;
     allowedApprovers: AllowedApprovers;
+    allowedNames: {
+        [key: string]: string;
+    };
     defaultClassificationId?: string | null;
     definitionKey: string;
     doaCheck: boolean;

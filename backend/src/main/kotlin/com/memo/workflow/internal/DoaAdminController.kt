@@ -8,6 +8,7 @@ import com.memo.common.tenant.TenantTransactions
 import com.memo.common.web.etagOf
 import com.memo.common.web.ifMatchVersion
 import com.memo.identity.UserSummaries
+import com.memo.org.OrgDirectory
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -39,6 +40,8 @@ data class DoaVersionResponse(
     val publishedAt: Instant?,
     /** The rules, in order; left out of the list of versions. */
     val rules: List<DoaRule>?,
+    /** The titles of the positions the rules name, by id (for display). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val positions: Map<UUID, String> = emptyMap(),
 )
 
 data class DoaDraftRequest(
@@ -83,6 +86,7 @@ class DoaAdminController(
     private val lifecycle: DoaLifecycle,
     private val matcher: DoaMatcher,
     private val users: UserSummaries,
+    private val directory: OrgDirectory,
     private val stepUp: StepUpCheck,
     private val transactions: TenantTransactions,
 ) {
@@ -207,6 +211,10 @@ class DoaAdminController(
             version.reviewRemark,
             version.publishedAt,
             rules,
+            rules
+                ?.flatMap { rule -> rule.groups.flatMap { group -> group.of.mapNotNull { it.positionId } } }
+                ?.let { ids -> directory.positions(ids.toSet()).mapValues { it.value.title } }
+                .orEmpty(),
         )
     }
 }

@@ -10,7 +10,7 @@ import {
   listMemoTypesQueryKey,
 } from '@/api/generated/@tanstack/react-query.gen'
 import { createMemoType, updateMemoType } from '@/api/generated/sdk.gen'
-import type { DefinitionChoice, MemoType } from '@/api/generated/types.gen'
+import type { AllowedApprovers, DefinitionChoice, MemoType } from '@/api/generated/types.gen'
 import { isProblem } from '@/api/http'
 import { DataTable, type DataTableColumn } from '@/components/page/DataTable'
 import { PageHeader } from '@/components/page/PageHeader'
@@ -20,6 +20,7 @@ import { Dialog } from '@/components/ui/dialog'
 import { Field } from '@/components/ui/field'
 import { Checkbox, Input, Select } from '@/components/ui/form-controls'
 import { useToast } from '@/components/ui/toast-context'
+import { AllowedApproversEditor } from './AllowedApproversEditor'
 import { mm } from './memo-messages'
 import { newIdempotencyKey } from '@/lib/idempotency'
 
@@ -47,6 +48,10 @@ const m = defineMessages({
   policyInitiator: { id: 'memoTypes.policy.initiator', defaultMessage: 'The author chooses them' },
   policyBoth: { id: 'memoTypes.policy.both', defaultMessage: 'The workflow’s steps, plus those the author chooses' },
   policyFixed: { id: 'memoTypes.policy.fixed', defaultMessage: 'The workflow names every step' },
+  doaCheck: {
+    id: 'memoTypes.doaCheck',
+    defaultMessage: 'The route must give the delegation of authority its approvals before the memo can be submitted',
+  },
   workflowHint: {
     id: 'memoTypes.workflow.hint',
     defaultMessage: 'New memos of this type use its published version; memos in review keep theirs.',
@@ -173,6 +178,9 @@ function TypeDialog({
   const [active, setActive] = useState(type?.active ?? true)
   const [definitionKey, setDefinitionKey] = useState(type?.definitionKey ?? SEQUENTIAL)
   const [policy, setPolicy] = useState<MemoType['routePolicy']>(type?.routePolicy ?? 'INITIATOR_DEFINED')
+  const [allowed, setAllowed] = useState<AllowedApprovers>(type?.allowedApprovers ?? {})
+  const [allowedNames, setAllowedNames] = useState<Record<string, string>>(type?.allowedNames ?? {})
+  const [doaCheck, setDoaCheck] = useState(type?.doaCheck ?? false)
   const routed = definitions.find((d) => d.key === definitionKey)?.routed ?? true
   const policies: MemoType['routePolicy'][] = routed ? ['INITIATOR_DEFINED', 'BOTH'] : ['FIXED']
   const [error, setError] = useState<string>()
@@ -191,6 +199,8 @@ function TypeDialog({
       active,
       definitionKey,
       routePolicy: policy,
+      allowedApprovers: allowed,
+      doaCheck,
     }
     try {
       if (type) {
@@ -304,6 +314,27 @@ function TypeDialog({
             </Select>
           )}
         </Field>
+        {policy !== 'FIXED' ? (
+          <>
+            <AllowedApproversEditor
+              value={allowed}
+              names={allowedNames}
+              onChange={(next, names) => {
+                setAllowed(next)
+                setAllowedNames(names)
+              }}
+            />
+            <label className="flex items-center gap-2 text-sm">
+              <Checkbox
+                checked={doaCheck}
+                onChange={(e) => {
+                  setDoaCheck(e.target.checked)
+                }}
+              />
+              {intl.formatMessage(m.doaCheck)}
+            </label>
+          </>
+        ) : null}
         <label className="flex items-center gap-2 text-sm">
           <Checkbox
             checked={stepUp}

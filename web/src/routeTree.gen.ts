@@ -45,6 +45,9 @@ import { Route as ShellSignedInMemosNewRouteImport } from './routes/_shell/_sign
 import { Route as PlatformOperatorTenantsTenantIdRouteImport } from './routes/platform/_operator/tenants.$tenantId'
 import { Route as PlatformOperatorTenantsNewRouteImport } from './routes/platform/_operator/tenants.new'
 import { Route as ShellSignedInAdminUsersUserIdRouteImport } from './routes/_shell/_signedIn/admin.users_.$userId'
+import { Route as ShellSignedInAdminWorkflowDoaRouteImport } from './routes/_shell/_signedIn/admin.workflow.doa'
+import { Route as ShellSignedInAdminWorkflowQueuesRouteImport } from './routes/_shell/_signedIn/admin.workflow.queues'
+import { Route as ShellSignedInAdminWorkflowSubstitutionsRouteImport } from './routes/_shell/_signedIn/admin.workflow.substitutions'
 import { Route as ShellSignedInAdminWorkflowTasksRouteImport } from './routes/_shell/_signedIn/admin.workflow.tasks'
 import { Route as ShellSignedInAdminWorkflowsIndexRouteImport } from './routes/_shell/_signedIn/admin.workflows.index'
 import { Route as ShellSignedInAdminWorkflowsKeyRouteImport } from './routes/_shell/_signedIn/admin.workflows.$key'
@@ -238,6 +241,24 @@ const ShellSignedInAdminUsersUserIdRoute =
     path: '/admin/users/$userId',
     getParentRoute: () => ShellSignedInRoute,
   } as any)
+const ShellSignedInAdminWorkflowDoaRoute =
+  ShellSignedInAdminWorkflowDoaRouteImport.update({
+    id: '/admin/workflow/doa',
+    path: '/admin/workflow/doa',
+    getParentRoute: () => ShellSignedInRoute,
+  } as any)
+const ShellSignedInAdminWorkflowQueuesRoute =
+  ShellSignedInAdminWorkflowQueuesRouteImport.update({
+    id: '/admin/workflow/queues',
+    path: '/admin/workflow/queues',
+    getParentRoute: () => ShellSignedInRoute,
+  } as any)
+const ShellSignedInAdminWorkflowSubstitutionsRoute =
+  ShellSignedInAdminWorkflowSubstitutionsRouteImport.update({
+    id: '/admin/workflow/substitutions',
+    path: '/admin/workflow/substitutions',
+    getParentRoute: () => ShellSignedInRoute,
+  } as any)
 const ShellSignedInAdminWorkflowTasksRoute =
   ShellSignedInAdminWorkflowTasksRouteImport.update({
     id: '/admin/workflow/tasks',
@@ -302,6 +323,9 @@ export interface FileRoutesByFullPath {
   '/platform/tenants/new': typeof PlatformOperatorTenantsNewRoute
   '/admin/': typeof ShellSignedInAdminIndexRoute
   '/admin/users/$userId': typeof ShellSignedInAdminUsersUserIdRoute
+  '/admin/workflow/doa': typeof ShellSignedInAdminWorkflowDoaRoute
+  '/admin/workflow/queues': typeof ShellSignedInAdminWorkflowQueuesRoute
+  '/admin/workflow/substitutions': typeof ShellSignedInAdminWorkflowSubstitutionsRoute
   '/admin/workflow/tasks': typeof ShellSignedInAdminWorkflowTasksRoute
   '/admin/workflows/$key': typeof ShellSignedInAdminWorkflowsKeyRoute
   '/memos/$memoId/document': typeof ShellSignedInMemosMemoIdDocumentRoute
@@ -340,6 +364,9 @@ export interface FileRoutesByTo {
   '/platform/tenants/new': typeof PlatformOperatorTenantsNewRoute
   '/admin': typeof ShellSignedInAdminIndexRoute
   '/admin/users/$userId': typeof ShellSignedInAdminUsersUserIdRoute
+  '/admin/workflow/doa': typeof ShellSignedInAdminWorkflowDoaRoute
+  '/admin/workflow/queues': typeof ShellSignedInAdminWorkflowQueuesRoute
+  '/admin/workflow/substitutions': typeof ShellSignedInAdminWorkflowSubstitutionsRoute
   '/admin/workflow/tasks': typeof ShellSignedInAdminWorkflowTasksRoute
   '/admin/workflows/$key': typeof ShellSignedInAdminWorkflowsKeyRoute
   '/memos/$memoId/document': typeof ShellSignedInMemosMemoIdDocumentRoute
@@ -384,6 +411,9 @@ export interface FileRoutesById {
   '/platform/_operator/tenants/new': typeof PlatformOperatorTenantsNewRoute
   '/_shell/_signedIn/admin/': typeof ShellSignedInAdminIndexRoute
   '/_shell/_signedIn/admin/users_/$userId': typeof ShellSignedInAdminUsersUserIdRoute
+  '/_shell/_signedIn/admin/workflow/doa': typeof ShellSignedInAdminWorkflowDoaRoute
+  '/_shell/_signedIn/admin/workflow/queues': typeof ShellSignedInAdminWorkflowQueuesRoute
+  '/_shell/_signedIn/admin/workflow/substitutions': typeof ShellSignedInAdminWorkflowSubstitutionsRoute
   '/_shell/_signedIn/admin/workflow/tasks': typeof ShellSignedInAdminWorkflowTasksRoute
   '/_shell/_signedIn/admin/workflows/$key': typeof ShellSignedInAdminWorkflowsKeyRoute
   '/_shell/_signedIn/memos/$memoId_/document': typeof ShellSignedInMemosMemoIdDocumentRoute
@@ -425,6 +455,9 @@ export interface FileRouteTypes {
     | '/platform/tenants/new'
     | '/admin/'
     | '/admin/users/$userId'
+    | '/admin/workflow/doa'
+    | '/admin/workflow/queues'
+    | '/admin/workflow/substitutions'
     | '/admin/workflow/tasks'
     | '/admin/workflows/$key'
     | '/memos/$memoId/document'
@@ -463,6 +496,9 @@ export interface FileRouteTypes {
     | '/platform/tenants/new'
     | '/admin'
     | '/admin/users/$userId'
+    | '/admin/workflow/doa'
+    | '/admin/workflow/queues'
+    | '/admin/workflow/substitutions'
     | '/admin/workflow/tasks'
     | '/admin/workflows/$key'
     | '/memos/$memoId/document'
@@ -506,6 +542,9 @@ export interface FileRouteTypes {
     | '/platform/_operator/tenants/new'
     | '/_shell/_signedIn/admin/'
     | '/_shell/_signedIn/admin/users_/$userId'
+    | '/_shell/_signedIn/admin/workflow/doa'
+    | '/_shell/_signedIn/admin/workflow/queues'
+    | '/_shell/_signedIn/admin/workflow/substitutions'
     | '/_shell/_signedIn/admin/workflow/tasks'
     | '/_shell/_signedIn/admin/workflows/$key'
     | '/_shell/_signedIn/memos/$memoId_/document'
@@ -773,6 +812,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShellSignedInAdminUsersUserIdRouteImport
       parentRoute: typeof ShellSignedInRoute
     }
+    '/_shell/_signedIn/admin/workflow/doa': {
+      id: '/_shell/_signedIn/admin/workflow/doa'
+      path: '/admin/workflow/doa'
+      fullPath: '/admin/workflow/doa'
+      preLoaderRoute: typeof ShellSignedInAdminWorkflowDoaRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
+    '/_shell/_signedIn/admin/workflow/queues': {
+      id: '/_shell/_signedIn/admin/workflow/queues'
+      path: '/admin/workflow/queues'
+      fullPath: '/admin/workflow/queues'
+      preLoaderRoute: typeof ShellSignedInAdminWorkflowQueuesRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
+    '/_shell/_signedIn/admin/workflow/substitutions': {
+      id: '/_shell/_signedIn/admin/workflow/substitutions'
+      path: '/admin/workflow/substitutions'
+      fullPath: '/admin/workflow/substitutions'
+      preLoaderRoute: typeof ShellSignedInAdminWorkflowSubstitutionsRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
     '/_shell/_signedIn/admin/workflow/tasks': {
       id: '/_shell/_signedIn/admin/workflow/tasks'
       path: '/admin/workflow/tasks'
@@ -847,6 +907,9 @@ interface ShellSignedInRouteChildren {
   ShellSignedInMemosNewRoute: typeof ShellSignedInMemosNewRoute
   ShellSignedInAdminIndexRoute: typeof ShellSignedInAdminIndexRoute
   ShellSignedInAdminUsersUserIdRoute: typeof ShellSignedInAdminUsersUserIdRoute
+  ShellSignedInAdminWorkflowDoaRoute: typeof ShellSignedInAdminWorkflowDoaRoute
+  ShellSignedInAdminWorkflowQueuesRoute: typeof ShellSignedInAdminWorkflowQueuesRoute
+  ShellSignedInAdminWorkflowSubstitutionsRoute: typeof ShellSignedInAdminWorkflowSubstitutionsRoute
   ShellSignedInAdminWorkflowTasksRoute: typeof ShellSignedInAdminWorkflowTasksRoute
   ShellSignedInAdminWorkflowsKeyRoute: typeof ShellSignedInAdminWorkflowsKeyRoute
   ShellSignedInMemosMemoIdDocumentRoute: typeof ShellSignedInMemosMemoIdDocumentRoute
@@ -875,6 +938,10 @@ const ShellSignedInRouteChildren: ShellSignedInRouteChildren = {
   ShellSignedInMemosNewRoute: ShellSignedInMemosNewRoute,
   ShellSignedInAdminIndexRoute: ShellSignedInAdminIndexRoute,
   ShellSignedInAdminUsersUserIdRoute: ShellSignedInAdminUsersUserIdRoute,
+  ShellSignedInAdminWorkflowDoaRoute: ShellSignedInAdminWorkflowDoaRoute,
+  ShellSignedInAdminWorkflowQueuesRoute: ShellSignedInAdminWorkflowQueuesRoute,
+  ShellSignedInAdminWorkflowSubstitutionsRoute:
+    ShellSignedInAdminWorkflowSubstitutionsRoute,
   ShellSignedInAdminWorkflowTasksRoute: ShellSignedInAdminWorkflowTasksRoute,
   ShellSignedInAdminWorkflowsKeyRoute: ShellSignedInAdminWorkflowsKeyRoute,
   ShellSignedInMemosMemoIdDocumentRoute: ShellSignedInMemosMemoIdDocumentRoute,

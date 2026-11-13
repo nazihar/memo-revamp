@@ -63,6 +63,8 @@ data class MemoType(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val allowedApprovers: AllowedApprovers = AllowedApprovers(),
     /** Whether a route must satisfy the DoA at submit (design E04 §4.7). */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val doaCheck: Boolean = false,
+    /** For administrators: the names of the allowed people and the titles of the allowed positions, by id. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val allowedNames: Map<UUID, String> = emptyMap(),
 )
 
 /** The fields an administrator edits. */

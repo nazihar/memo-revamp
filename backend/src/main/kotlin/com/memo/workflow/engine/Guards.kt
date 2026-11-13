@@ -63,7 +63,7 @@ internal object Guards {
                 decisionOf(state, command, definition)
             }
 
-            is SendBack, is Forward, is Delegate, is Ask, is Refer, is Answer, is GiveOpinion -> {
+            is SendBack, is Forward, is Delegate, is Ask, is Refer, is Answer, is GiveOpinion, is Recuse -> {
                 HandOnGuards.refusal(state, command, context, definition)
             }
 
@@ -164,7 +164,7 @@ internal object Guards {
         }
     }
 
-    private fun taskAction(
+    internal fun taskAction(
         state: InstanceState,
         actor: UUID,
         taskId: UUID,

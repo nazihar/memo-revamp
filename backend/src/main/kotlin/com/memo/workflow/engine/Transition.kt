@@ -72,7 +72,7 @@ class Transition(
             is Withdraw -> withdraw(state, command)
             is Resubmit -> resubmit(state, command)
             is Reassign -> reassign(state, command)
-            is SendBack, is Forward, is Delegate, is Ask, is Answer, is Refer, is GiveOpinion -> handOns.apply(state, command)
+            is SendBack, is Forward, is Delegate, is Ask, is Answer, is Refer, is GiveOpinion, is Recuse -> handOns.apply(state, command)
             is Recall, is Cancel -> RoundControl.apply(state, command)
             is Migrate -> Migrations.apply(state, command)
             is Claim, is Release -> Claims.apply(state, command)

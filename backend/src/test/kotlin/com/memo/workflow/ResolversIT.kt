@@ -101,12 +101,12 @@ class ResolversIT : IntegrationTest() {
     }
 
     @Test
-    fun `a position, the supervisor two lines up and the unit head above resolve to their holders`() {
+    fun `a position, the supervisor one line up and the unit head two units above resolve to their holders`() {
         publish(
             "chain",
             steps(
                 """{"kind":"position","positionId":"$gm"}""",
-                """{"kind":"supervisor","levels":2}""",
+                """{"kind":"supervisor","levels":1}""",
                 """{"kind":"unitHead","unit":"initiator","up":2}""",
             ),
         )
@@ -115,8 +115,8 @@ class ResolversIT : IntegrationTest() {
         assertThat(resolution(started.instanceId).single()).containsEntry("people", listOf(bob.toString()))
 
         val second = act(bob) { workflows.approve(started.openTaskId!!) }
-        assertThat(second.currentAssignees).containsExactly(bob)
-        val third = act(bob) { workflows.approve(second.openTaskId!!) }
+        assertThat(second.currentAssignees).containsExactly(carol)
+        val third = act(carol) { workflows.approve(second.openTaskId!!) }
         assertThat(third.currentAssignees).containsExactly(alice)
         assertThat(act(alice) { workflows.approve(third.openTaskId!!) }.status).isEqualTo(InstanceStatus.APPROVED)
     }

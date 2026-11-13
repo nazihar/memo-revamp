@@ -78,7 +78,7 @@ class MemoReassignIT : MemoIntegrationTest() {
         assertThat(tasks(admin, "?filter=blocked").json()["items"].size()).isZero()
 
         val erinView = get(id, erin.session).json()
-        assertThat(erinView["allowedActions"].toString()).isEqualTo("""["APPROVE","RETURN","REJECT"]""")
+        assertThat(erinView["allowedActions"].toString()).isEqualTo("""["APPROVE","RETURN","REJECT","RECUSE"]""")
         assertThat(post("/api/v1/tasks/${erinView["myTask"]["id"].asString()}/approve", erin.session).json()["status"].asString())
             .isEqualTo("APPROVED")
     }

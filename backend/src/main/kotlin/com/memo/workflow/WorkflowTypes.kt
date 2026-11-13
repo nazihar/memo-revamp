@@ -46,6 +46,9 @@ enum class ActionKind {
     /** A candidate took a step shared by several people (design E04 §4.2); [RELEASE] gives it back. */
     CLAIM,
     RELEASE,
+
+    /** The holder declared an interest and stood aside (SOD-4, design E04 §4.4). */
+    RECUSE,
 }
 
 /**

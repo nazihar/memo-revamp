@@ -161,6 +161,7 @@ export const actionLabels = defineMessages({
   CARRY: { id: 'memo.history.action.carry', defaultMessage: 'Approval carried over (document unchanged)' },
   CLAIM: { id: 'memo.history.action.claim', defaultMessage: 'Took the task' },
   RELEASE: { id: 'memo.history.action.release', defaultMessage: 'Gave the task back' },
+  RECUSE: { id: 'memo.history.action.recuse', defaultMessage: 'Declared an interest and stood aside' },
 })
 
 /** Texts with values (react-intl checks them against the message). */

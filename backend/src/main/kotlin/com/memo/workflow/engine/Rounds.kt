@@ -80,18 +80,28 @@ internal class Rounds(
         round: Round,
         target: Step,
         initiator: UUID,
+        recused: Set<UUID> = emptySet(),
     ): Walk {
         val node = definition.step(target.nodeId)
         val index = target.routeIndex
         val holder = target.assignee
         val (next, step) =
             when {
+                // A route entry whose approver stood aside: the initiator chose them, so an administrator assigns it.
+                index != null && recused.isNotEmpty() -> {
+                    val found = Found(emptyList(), mapOf("excluded" to recused.map { mapOf("person" to it.toString(), "rule" to "SOD-4") }))
+                    steps.shaped(round, node, found).copy(routeIndex = index).let { round.copy(steps = round.steps + it) to it }
+                }
+
                 index != null -> {
                     routeEntry(round, target.nodeId, index)
                 }
 
-                target.shared || holder == null -> {
-                    steps.shaped(round, node, candidates.of(node, initiator)).let { round.copy(steps = round.steps + it) to it }
+                target.shared || holder == null || recused.isNotEmpty() -> {
+                    steps.shaped(round, node, candidates.of(node, initiator, round, recused)).let {
+                        round.copy(steps = round.steps + it) to
+                            it
+                    }
                 }
 
                 else -> {
@@ -144,7 +154,7 @@ internal class Rounds(
         effects: List<Effect>,
         followUps: List<ActionRecord>,
     ): Walk {
-        val found = candidates.of(node, people.initiator)
+        val found = candidates.of(node, people.initiator, round)
         val holder = found.people.singleOrNull()
         return if (node.type != StepType.PARALLEL && holder != null && carries.carries(node.id, holder)) {
             enter(round, checkNotNull(node.next), people, effects, followUps + carries.record(node.id, holder, round.number))

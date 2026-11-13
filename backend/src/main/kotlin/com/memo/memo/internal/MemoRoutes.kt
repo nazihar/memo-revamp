@@ -26,6 +26,7 @@ class MemoRoutes(
     private val routes: MemoRouteStore,
     private val users: UserSummaries,
     private val clearances: Clearances,
+    private val interests: MemoInterestStore,
     private val workflows: Workflows,
     private val audit: AuditLog,
     private val clock: Clock,
@@ -73,11 +74,13 @@ class MemoRoutes(
         if (whole.isNotEmpty() || approvers.isEmpty()) return whole
         val people = users.of(approvers.toSet())
         val ranks = clearances.rankOf(approvers.toSet())
+        val interested = interests.of(memo.id)
         return approvers.mapIndexedNotNull { index, approver ->
             val code =
                 when {
                     approvers.indexOf(approver) != index -> "duplicate"
                     approver == memo.initiatorId -> "self"
+                    approver in interested -> "interested"
                     people[approver]?.status != UserStatus.ACTIVE -> "approver-inactive"
                     ranks.getValue(approver) < memo.classificationRank -> "approver-not-cleared"
                     else -> null
@@ -93,6 +96,7 @@ class MemoRoutes(
                 "self" to "You cannot approve your own memo.",
                 "approver-inactive" to "This person cannot sign in at the moment.",
                 "approver-not-cleared" to "This person is not cleared for the memo's classification.",
+                "interested" to "This person has declared an interest in the memo.",
             )
     }
 }

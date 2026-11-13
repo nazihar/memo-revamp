@@ -6,6 +6,7 @@ package com.memo.jooq.tables
 
 import com.memo.jooq.indexes.MEMO_TENANT_INITIATOR_BOX_IDX
 import com.memo.jooq.indexes.MEMO_TENANT_TYPE_IDX
+import com.memo.jooq.keys.MEMO_INTEREST__MEMO_INTEREST_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_PARTICIPANT__MEMO_PARTICIPANT_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_PKEY
 import com.memo.jooq.keys.MEMO_ROUTE_ENTRY__MEMO_ROUTE_ENTRY_TENANT_ID_MEMO_ID_FKEY
@@ -13,6 +14,7 @@ import com.memo.jooq.keys.MEMO_TENANT_ID_DOCUMENT_FILE_ID_KEY
 import com.memo.jooq.keys.MEMO_TENANT_ID_ID_KEY
 import com.memo.jooq.keys.MEMO_TENANT_ID_REFERENCE_KEY
 import com.memo.jooq.keys.MEMO__MEMO_TENANT_ID_MEMO_TYPE_ID_FKEY
+import com.memo.jooq.tables.MemoInterest.MemoInterestPath
 import com.memo.jooq.tables.MemoParticipant.MemoParticipantPath
 import com.memo.jooq.tables.MemoRouteEntry.MemoRouteEntryPath
 import com.memo.jooq.tables.MemoType.MemoTypePath
@@ -208,6 +210,22 @@ open class Memo(
      */
     fun memoType(): MemoTypePath = memoType
     val memoType: MemoTypePath by lazy { MemoTypePath(this, MEMO__MEMO_TENANT_ID_MEMO_TYPE_ID_FKEY, null) }
+
+    private lateinit var _memoInterest: MemoInterestPath
+
+    /**
+     * Get the implicit to-many join path to the <code>memo.memo_interest</code>
+     * table
+     */
+    fun memoInterest(): MemoInterestPath {
+        if (!this::_memoInterest.isInitialized)
+            _memoInterest = MemoInterestPath(this, null, MEMO_INTEREST__MEMO_INTEREST_TENANT_ID_MEMO_ID_FKEY.inverseKey)
+
+        return _memoInterest;
+    }
+
+    val memoInterest: MemoInterestPath
+        get(): MemoInterestPath = memoInterest()
 
     private lateinit var _memoParticipant: MemoParticipantPath
 

@@ -397,6 +397,7 @@
   "memo.history.action.reassign": "Reassigned",
   "memo.history.action.recall": "Recalled",
   "memo.history.action.recommend": "Recommended",
+  "memo.history.action.recuse": "Declared an interest and stood aside",
   "memo.history.action.refer": "Asked for opinions",
   "memo.history.action.reject": "Rejected",
   "memo.history.action.release": "Gave the task back",

@@ -1,5 +1,6 @@
 package com.memo.workflow.engine
 
+import com.memo.workflow.ActionKind
 import com.memo.workflow.definition.StepDef
 import java.util.UUID
 
@@ -10,9 +11,11 @@ internal data class Found(
 )
 
 /**
- * Resolves a definition step's assignees for an instance (design E04 §4.1, ADR-0040): each assignee through the
- * [TransitionContext.resolver], the initiator left out (SOD-1: nobody decides on their own item), and the step's
- * `fallback` when that leaves nobody. Pure, like [Transition].
+ * Resolves a definition step's assignees for an instance (design E04 §4.1, §4.4, ADR-0040): each assignee through the
+ * [TransitionContext.resolver], then the separation-of-duties exclusions: the initiator (SOD-1), anyone who already
+ * approved or recommended in this round (SOD-2, unless the tenant switched it off), and anyone with a declared interest
+ * in the item or who just recused themselves (SOD-4). The step's `fallback` takes over when that leaves nobody. Every
+ * exclusion is recorded. Pure, like [Transition].
  */
 internal class Candidates(
     private val context: TransitionContext,
@@ -20,19 +23,32 @@ internal class Candidates(
     fun of(
         node: StepDef,
         initiator: UUID,
+        round: Round,
+        recused: Set<UUID> = emptySet(),
     ): Found {
         val resolutions = (listOfNotNull(node.assignee) + node.assignees).map { context.resolver.resolve(it, initiator) }
         val found = resolutions.flatMap { it.people }.distinct()
-        val people = found - initiator
+        val rules = exclusions(node, initiator, round, recused)
+        val excluded = found.mapNotNull { person -> rules.firstOrNull { person in it.second }?.let { person to it.first } }
+        val people = found - excluded.map { it.first }.toSet()
         val record =
             mutableMapOf<String, Any?>(
                 "resolved" to resolutions.map { it.inputs + ("people" to it.people.map(UUID::toString)) },
             )
-        if (initiator in found) record["excluded"] = listOf(mapOf("person" to initiator.toString(), "rule" to SOD_1))
+        if (excluded.isNotEmpty()) {
+            record["excluded"] =
+                excluded.map { (person, rule) -> mapOf("person" to person.toString(), "rule" to rule) }
+        }
         val fallback = node.fallback
         val chosen =
             if (people.isEmpty() && fallback != null) {
-                (context.resolver.resolve(fallback, initiator).people - initiator).distinct().also { record["fallback"] = true }
+                val outside = rules.flatMap { it.second }.toSet()
+                context.resolver
+                    .resolve(fallback, initiator)
+                    .people
+                    .filterNot { it in outside }
+                    .distinct()
+                    .also { record["fallback"] = true }
             } else {
                 people
             }
@@ -46,8 +62,34 @@ internal class Candidates(
         initiator: UUID,
     ): List<UUID> = node.recipients.flatMap { context.resolver.resolve(it, initiator).people }.distinct()
 
+    /**
+     * Who may not be a candidate, by rule, in the order the rules are checked (design E04 §4.4). SOD-2 counts decisions on
+     * other steps only: a step that runs again after a send-back may go back to the person who decided it before.
+     */
+    private fun exclusions(
+        node: StepDef,
+        initiator: UUID,
+        round: Round,
+        recused: Set<UUID>,
+    ): List<Pair<String, Set<UUID>>> {
+        val decided =
+            if (context.oncePerRound) {
+                round.steps
+                    .filter { it.nodeId != node.id }
+                    .flatMap { it.tasks }
+                    .filter { it.state == TaskState.COMPLETED && it.outcome in DECISIONS }
+                    .mapNotNull { it.onBehalfOf ?: it.assignee }
+                    .toSet()
+            } else {
+                emptySet()
+            }
+        return listOf(SOD_1 to setOf(initiator), SOD_2 to decided, SOD_4 to (context.interested() + recused))
+    }
+
     private companion object {
-        /** The initiator never approves their own item (design E04 §4.4). */
         const val SOD_1 = "SOD-1"
+        const val SOD_2 = "SOD-2"
+        const val SOD_4 = "SOD-4"
+        val DECISIONS = setOf(ActionKind.APPROVE, ActionKind.RECOMMEND)
     }
 }

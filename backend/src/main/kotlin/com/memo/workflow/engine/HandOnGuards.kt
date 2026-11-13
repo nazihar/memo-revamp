@@ -16,6 +16,10 @@ internal object HandOnGuards {
         definition: Definition,
     ): Refusal? =
         when (command) {
+            is Recuse -> {
+                recusal(state, command)
+            }
+
             is SendBack -> {
                 Guards.decision(state, command.actor, command.taskId, StepAction.SEND_BACK, command.remark, definition)
                     ?: sendBackTarget(state, command)
@@ -102,4 +106,13 @@ internal object HandOnGuards {
         val tooMany = command.to.size > MAX_REFERRALS || open + command.to.size > MAX_OPEN_OPINIONS
         return if (tooMany) Refusal.TOO_MANY_REFERRALS else consulted(command.actor, command.to, context)
     }
+
+    /** Standing aside (SOD-4): the decision task's holder, with a reason. */
+    private fun recusal(
+        state: InstanceState,
+        command: Recuse,
+    ): Refusal? =
+        Guards.taskAction(state, command.actor, command.taskId)
+            ?: Refusal.ACTION_NOT_ALLOWED.takeIf { state.findTask(command.taskId)?.second?.kind != TaskKind.DECIDE }
+            ?: Remarks.refusal(command.remark, required = true)
 }

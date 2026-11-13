@@ -389,7 +389,7 @@ export type HistoryAction = {
         [key: string]: unknown;
     };
     documentNumber?: number | null;
-    kind: 'SUBMIT' | 'APPROVE' | 'RETURN' | 'REJECT' | 'WITHDRAW' | 'RESUBMIT' | 'REASSIGN' | 'RECOMMEND' | 'ROUTE' | 'NOTIFY' | 'ESCALATE_TO_FORUM' | 'SEND_BACK' | 'FORWARD' | 'DELEGATE' | 'ASK' | 'ANSWER' | 'REFER' | 'OPINION' | 'RECALL' | 'CANCEL' | 'MIGRATE' | 'CARRY' | 'CLAIM' | 'RELEASE';
+    kind: 'SUBMIT' | 'APPROVE' | 'RETURN' | 'REJECT' | 'WITHDRAW' | 'RESUBMIT' | 'REASSIGN' | 'RECOMMEND' | 'ROUTE' | 'NOTIFY' | 'ESCALATE_TO_FORUM' | 'SEND_BACK' | 'FORWARD' | 'DELEGATE' | 'ASK' | 'ANSWER' | 'REFER' | 'OPINION' | 'RECALL' | 'CANCEL' | 'MIGRATE' | 'CARRY' | 'CLAIM' | 'RELEASE' | 'RECUSE';
     occurredAt: string;
     remark?: string | null;
     seq: number;
@@ -424,6 +424,11 @@ export type InboxMemo = {
 export type InboxPage = {
     items: Array<InboxItem>;
     nextCursor?: string | null;
+};
+
+export type InterestRequest = {
+    reason?: string | null;
+    userId?: string;
 };
 
 export type Invitation = {
@@ -572,13 +577,14 @@ export type MemoTypeRequest = {
 };
 
 export type MemoView = {
-    allowedActions: Array<'EDIT' | 'UPLOAD_DOCUMENT' | 'EDIT_ROUTE' | 'SUBMIT' | 'DISCARD' | 'RESUBMIT' | 'WITHDRAW' | 'APPROVE' | 'RETURN' | 'REJECT' | 'EDIT_DOCUMENT' | 'VIEW_DOCUMENT' | 'RECOMMEND' | 'SEND_BACK' | 'FORWARD' | 'DELEGATE' | 'ASK' | 'REFER' | 'ANSWER' | 'OPINION' | 'RECALL' | 'CLAIM' | 'RELEASE'>;
+    allowedActions: Array<'EDIT' | 'UPLOAD_DOCUMENT' | 'EDIT_ROUTE' | 'SUBMIT' | 'DISCARD' | 'RESUBMIT' | 'WITHDRAW' | 'APPROVE' | 'RETURN' | 'REJECT' | 'EDIT_DOCUMENT' | 'VIEW_DOCUMENT' | 'RECOMMEND' | 'SEND_BACK' | 'FORWARD' | 'DELEGATE' | 'ASK' | 'REFER' | 'ANSWER' | 'OPINION' | 'RECALL' | 'CLAIM' | 'RELEASE' | 'RECUSE'>;
     classification: ClassificationView;
     createdAt: string;
     document?: DocumentView | null;
     holders: Array<Named>;
     id: string;
     initiator: Named;
+    interests: Array<Named>;
     myTask?: TaskRef | null;
     reference: string;
     round: number;
@@ -3388,6 +3394,43 @@ export type GetMemoHistoryResponses = {
 
 export type GetMemoHistoryResponse = GetMemoHistoryResponses[keyof GetMemoHistoryResponses];
 
+export type DeclareMemoInterestData = {
+    body: InterestRequest;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/interests';
+};
+
+export type DeclareMemoInterestResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type DeclareMemoInterestResponse = DeclareMemoInterestResponses[keyof DeclareMemoInterestResponses];
+
+export type RemoveMemoInterestData = {
+    body?: never;
+    path: {
+        id: string;
+        userId: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/interests/{userId}';
+};
+
+export type RemoveMemoInterestResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type RemoveMemoInterestResponse = RemoveMemoInterestResponses[keyof RemoveMemoInterestResponses];
+
 export type RecallMemoData = {
     body?: RemarkRequest;
     headers: {
@@ -4539,6 +4582,27 @@ export type GiveOpinionResponses = {
 };
 
 export type GiveOpinionResponse = GiveOpinionResponses[keyof GiveOpinionResponses];
+
+export type RecuseFromTaskData = {
+    body: RemarkRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        taskId: string;
+    };
+    query?: never;
+    url: '/api/v1/tasks/{taskId}/recuse';
+};
+
+export type RecuseFromTaskResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type RecuseFromTaskResponse = RecuseFromTaskResponses[keyof RecuseFromTaskResponses];
 
 export type ReferTaskData = {
     body: ReferRequest;

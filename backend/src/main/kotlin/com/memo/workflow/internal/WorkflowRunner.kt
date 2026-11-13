@@ -181,6 +181,8 @@ class WorkflowRunner(
                 attributes = { subject.attributeValues(subjectId) },
                 carried = carried,
                 resolver = resolvers.resolver(),
+                oncePerRound = settings.oncePerRound(),
+                interested = lazy { subject.interested(subjectId) }::value,
             )
         return Transition(context, definition)
     }

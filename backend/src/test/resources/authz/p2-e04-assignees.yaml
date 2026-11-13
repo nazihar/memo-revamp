@@ -13,3 +13,12 @@ endpoints:
     rule: tenantAdmin
     body: { name: "Matrix" }
     headers: { If-Match: "\"0\"" }
+  - endpoint: "POST /api/v1/tasks/{taskId}/recuse"
+    rule: signedIn
+    body: { remark: "Matrix" }
+    headers: { Idempotency-Key: "{random}" }
+  # Declared interests: the memo initiator's (404 for memos the actor cannot see).
+  - endpoint: "POST /api/v1/memos/{id}/interests"
+    rule: signedIn
+    body: { userId: "{random}", reason: "Matrix" }
+  - { endpoint: "DELETE /api/v1/memos/{id}/interests/{userId}", rule: signedIn }

@@ -8,6 +8,7 @@ import com.memo.workflow.engine.Claim
 import com.memo.workflow.engine.Delegate
 import com.memo.workflow.engine.Forward
 import com.memo.workflow.engine.GiveOpinion
+import com.memo.workflow.engine.Recuse
 import com.memo.workflow.engine.Refer
 import com.memo.workflow.engine.Release
 import com.memo.workflow.engine.SendBack
@@ -82,6 +83,12 @@ class WorkflowHandOns(
         taskId: UUID,
         byAdministrator: Boolean = false,
     ): WorkflowView = runner.onTask(taskId, currentUser()) { actor -> Release(actor, taskId, byAdministrator) }
+
+    /** The holder declares an interest and stands aside (SOD-4); [remark] is the reason. */
+    fun recuse(
+        taskId: UUID,
+        remark: String?,
+    ): WorkflowView = runner.onTask(taskId, currentUser()) { actor -> Recuse(actor, taskId, remark) }
 
     private fun currentUser(): Actor.User =
         ActorContext.current().actor as? Actor.User ?: throw IllegalStateException("workflow actions need a signed-in user")

@@ -66,7 +66,7 @@ class MemoReviewIT : MemoIntegrationTest() {
     fun `return, a new version and resubmit start round 2 from the first approver, bound to the new version, until approved`() {
         val id = submitted()
         val bobView = get(id, bob.session).json()
-        assertThat(bobView["allowedActions"].toString()).isEqualTo("""["APPROVE","RETURN","REJECT"]""")
+        assertThat(bobView["allowedActions"].toString()).isEqualTo("""["APPROVE","RETURN","REJECT","RECUSE"]""")
         assertThat(bobView["holders"][0]["id"].asString()).isEqualTo(bob.id.toString())
 
         val round1 = task(id, bob)

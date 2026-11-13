@@ -7563,6 +7563,852 @@
       "value": "This is not valid JSON.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "workflows.builder.assignee.initiator": [
+    {
+      "type": 0,
+      "value": "The initiatorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.assignee.initiatorsUnit": [
+    {
+      "type": 0,
+      "value": "the initiator’s unitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.assignee.position": [
+    {
+      "type": 0,
+      "value": "The holder of "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.assignee.queue": [
+    {
+      "type": 0,
+      "value": "The queue "
+    },
+    {
+      "type": 1,
+      "value": "queue"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.assignee.role": [
+    {
+      "type": 1,
+      "value": "role"
+    },
+    {
+      "type": 0,
+      "value": " in "
+    },
+    {
+      "type": 1,
+      "value": "unit"
+    },
+    {
+      "type": 0,
+      "value": " or aboveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.assignee.supervisor": [
+    {
+      "type": 6,
+      "value": "levels",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "The initiator’s supervisor"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "The initiator’s supervisor, "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " levels up"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.assignee.unitHead": [
+    {
+      "type": 6,
+      "value": "up",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "The head of "
+            },
+            {
+              "type": 1,
+              "value": "unit"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "The head of the unit above "
+            },
+            {
+              "type": 1,
+              "value": "unit"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "The head of the unit "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " levels above "
+            },
+            {
+              "type": 1,
+              "value": "unit"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.deadline": [
+    {
+      "type": 0,
+      "value": "DeadlineSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.diagram": [
+    {
+      "type": 0,
+      "value": "Workflow diagramSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.diagram.hint": [
+    {
+      "type": 0,
+      "value": "The Steps view shows the same workflow as a list, for keyboard and screen reader use.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.doa": [
+    {
+      "type": 0,
+      "value": "The approval groups of the delegation of authoritySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.duration.days": [
+    {
+      "type": 6,
+      "value": "n",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " day"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " days"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.duration.hours": [
+    {
+      "type": 6,
+      "value": "n",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " hour"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " hours"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.duration.minutes": [
+    {
+      "type": 6,
+      "value": "n",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " minute"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " minutes"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.duration.workingDays": [
+    {
+      "type": 6,
+      "value": "n",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working day"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working days"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.duration.workingHours": [
+    {
+      "type": 6,
+      "value": "n",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working hour"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working hours"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.duration.workingMinutes": [
+    {
+      "type": 6,
+      "value": "n",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working minute"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working minutes"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.end": [
+    {
+      "type": 0,
+      "value": "EndSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.flow.controls": [
+    {
+      "type": 0,
+      "value": "Diagram controlsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.flow.edge": [
+    {
+      "type": 0,
+      "value": "Press Enter or Space to select a connection, and Escape to clear the selection.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.flow.fitView": [
+    {
+      "type": 0,
+      "value": "Fit the workflow to the viewSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.flow.handle": [
+    {
+      "type": 0,
+      "value": "Connection pointSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.flow.interactive": [
+    {
+      "type": 0,
+      "value": "Toggle interactivitySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.flow.node": [
+    {
+      "type": 0,
+      "value": "Press Enter or Space to select a step, and Escape to clear the selection.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.flow.zoomIn": [
+    {
+      "type": 0,
+      "value": "Zoom inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.flow.zoomOut": [
+    {
+      "type": 0,
+      "value": "Zoom outSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.forum": [
+    {
+      "type": 0,
+      "value": "ForumSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.goesTo": [
+    {
+      "type": 0,
+      "value": "Goes toSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.if": [
+    {
+      "type": 0,
+      "value": "If "
+    },
+    {
+      "type": 1,
+      "value": "condition"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.leadsTo": [
+    {
+      "type": 0,
+      "value": "Leads toSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.notReadable": [
+    {
+      "type": 0,
+      "value": "This body cannot be drawn: it needs a start and a list of steps, each with an id and a type. Use the JSON view.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.nowhere": [
+    {
+      "type": 0,
+      "value": "Nowhere yetSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.otherwise": [
+    {
+      "type": 0,
+      "value": "OtherwiseSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.parallel.all": [
+    {
+      "type": 0,
+      "value": "All ofSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.parallel.any": [
+    {
+      "type": 0,
+      "value": "Any one ofSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.parallel.n": [
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " ofSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.problems": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " problem"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " problems"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.route": [
+    {
+      "type": 0,
+      "value": "The approvers the initiator choosesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.runs": [
+    {
+      "type": 0,
+      "value": "RunsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.sla.due": [
+    {
+      "type": 0,
+      "value": "Due in "
+    },
+    {
+      "type": 1,
+      "value": "duration"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.sla.escalate.nextLevel": [
+    {
+      "type": 0,
+      "value": "moves to the next level "
+    },
+    {
+      "type": 1,
+      "value": "after"
+    },
+    {
+      "type": 0,
+      "value": " lateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.sla.escalate.notify": [
+    {
+      "type": 0,
+      "value": "the supervisor is told "
+    },
+    {
+      "type": 1,
+      "value": "after"
+    },
+    {
+      "type": 0,
+      "value": " lateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.sla.escalate.reassign": [
+    {
+      "type": 0,
+      "value": "moves to "
+    },
+    {
+      "type": 1,
+      "value": "to"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "after"
+    },
+    {
+      "type": 0,
+      "value": " lateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.sla.remindAfter": [
+    {
+      "type": 0,
+      "value": "reminders "
+    },
+    {
+      "type": 1,
+      "value": "durations"
+    },
+    {
+      "type": 0,
+      "value": " afterSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.sla.remindBefore": [
+    {
+      "type": 0,
+      "value": "reminder "
+    },
+    {
+      "type": 1,
+      "value": "duration"
+    },
+    {
+      "type": 0,
+      "value": " beforeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.start": [
+    {
+      "type": 0,
+      "value": "StartSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.stepAria": [
+    {
+      "type": 0,
+      "value": "Step "
+    },
+    {
+      "type": 1,
+      "value": "index"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ". "
+    },
+    {
+      "type": 1,
+      "value": "who"
+    },
+    {
+      "type": 0,
+      "value": " Leads to "
+    },
+    {
+      "type": 1,
+      "value": "next"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.stepHeading": [
+    {
+      "type": 1,
+      "value": "index"
+    },
+    {
+      "type": 0,
+      "value": ". "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.steps": [
+    {
+      "type": 0,
+      "value": "Steps, in the order they are writtenSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.tells": [
+    {
+      "type": 0,
+      "value": "TellsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.type.approve": [
+    {
+      "type": 0,
+      "value": "ApprovalSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.type.branch": [
+    {
+      "type": 0,
+      "value": "BranchSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.type.doa": [
+    {
+      "type": 0,
+      "value": "Delegation of authoritySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.type.forum": [
+    {
+      "type": 0,
+      "value": "Escalate to a forumSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.type.notify": [
+    {
+      "type": 0,
+      "value": "NotifySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.type.parallel": [
+    {
+      "type": 0,
+      "value": "Parallel decisionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.type.review": [
+    {
+      "type": 0,
+      "value": "ReviewSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.type.route": [
+    {
+      "type": 0,
+      "value": "RouteSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.type.sign": [
+    {
+      "type": 0,
+      "value": "SignatureSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.type.subworkflow": [
+    {
+      "type": 0,
+      "value": "Sub-workflowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.unknown": [
+    {
+      "type": 0,
+      "value": "Unknown ("
+    },
+    {
+      "type": 1,
+      "value": "id"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.view.diagram": [
+    {
+      "type": 0,
+      "value": "DiagramSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.view.json": [
+    {
+      "type": 0,
+      "value": "JSONSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.view.steps": [
+    {
+      "type": 0,
+      "value": "StepsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.views": [
+    {
+      "type": 0,
+      "value": "Views of this versionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "workflows.builtIn": [
     {
       "type": 0,

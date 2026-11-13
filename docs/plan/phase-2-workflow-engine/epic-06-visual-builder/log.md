@@ -21,3 +21,21 @@
     - the 31st call in a minute refused.
   - Matrix: `p2-e06-builder.yaml`.
   - The unit test `DefinitionSimulatorTest` named in the test plan was not written. DoA and queue steps in a simulation are exercised by the exit journey (T9) instead.
+- **T1 (diagram and Steps view, read-only):** the version page has three tabs: **Diagram**, **Steps** and **JSON**. Versions in review and published versions open on the diagram. Drafts open on JSON until editing arrives (T2).
+  - **Diagram:** React Flow 12.12.1 with dagre 3.1.3, top-down; positions are computed and never stored.
+    - Start, every step and End are focusable nodes, named for screen readers ("Step 1 of 5, Review, Credit review. The holder of Head of Credit Leads to By classification.").
+    - React Flow's own strings are localised through `ariaLabelConfig`.
+    - Nodes are not draggable.
+  - **Steps view:** an ordered list with a heading per step; who it goes to, the deadline in words, where it leads (branch conditions and otherwise), and a problem count from the JSON pointers.
+  - **Backend:** `VersionResponse.labels` names the people, positions, units and roles a body mentions. It uses `UserSummaries`, `OrgDirectory.positions`, a new `OrgNames.units` and `RoleHolders.names`.
+  - **Lint:** a `no-restricted-syntax` rule forbids `dangerouslySetInnerHTML` (threat E1).
+  - **Bundle:** React Flow and dagre load only with the workflow definition page (82 kB gzip in that route's chunk, plus 15 kB of CSS as a file). Nothing injects inline styles, so it runs under `style-src 'self'`; the E2E on the real stack confirms it.
+  - **Tests:**
+    - `model.test.ts`: graph shape, dangling edges, top-down layout, 100 steps, and fast-check properties (one edge per connection, the body untouched, every node placed);
+    - `describe.test.ts`: durations, assignees, deadlines and targets in words;
+    - `views.test.tsx`: the Steps view and the diagram, with axe;
+    - `workflows.test.tsx`: the review screen across the three tabs;
+    - E2E: the published "Credit facility" draws, names its first step, shows its deadline in the Steps view, and passes axe;
+    - `DefinitionSimulationIT`: labels.
+  - **jsdom stubs** for React Flow (`src/test/react-flow.ts`) are installed per test file, so other tests keep jsdom's real element sizes.
+  - **Not done:** an Arabic render test of the builder. Admin catalogue parts load lazily in component tests; `i18n:verify` checks the Arabic keys instead.

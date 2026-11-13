@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
 import { Download, Upload } from 'lucide-react'
-import { useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { useIntl, type MessageDescriptor } from 'react-intl'
 import {
   getWorkflowDefinitionOptions,
@@ -29,6 +29,11 @@ import { Button } from '@/components/ui/button'
 import { Dialog } from '@/components/ui/dialog'
 import { Field } from '@/components/ui/field'
 import { Textarea } from '@/components/ui/form-controls'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/misc'
+import { bm } from './builder/builder-messages'
+import { DefinitionDiagram } from './builder/DefinitionDiagram'
+import { asDefinition } from './builder/definition'
+import { StepsView } from './builder/StepsView'
 import { useToast } from '@/components/ui/toast-context'
 import { holds, PERMISSION, useMyAccess } from '@/features/access/access'
 import { useWithStepUp } from '@/features/auth/step-up-context'
@@ -36,6 +41,7 @@ import { DefinitionMigration } from './DefinitionMigration'
 import { stateLabels, wm, wmv } from './workflow-messages'
 
 type Decision = 'approve' | 'sendBack' | 'retire'
+type View = 'diagram' | 'steps' | 'json'
 
 /** Refusals that say what to do rather than 'reload'. */
 const REFUSALS: Partial<Record<string, MessageDescriptor>> = {
@@ -243,6 +249,15 @@ function VersionEditor({
   const [jsonError, setJsonError] = useState<string>()
   const [busy, setBusy] = useState(false)
   const [decision, setDecision] = useState<Decision>()
+  // Drafts open on the JSON view (the editor until the builder can edit, E06 T2); other versions on the diagram.
+  const [view, setView] = useState<View>(version.version.state === 'DRAFT' && manage ? 'json' : 'diagram')
+  const drawable = useMemo(() => {
+    try {
+      return asDefinition(JSON.parse(text))
+    } catch {
+      return undefined
+    }
+  }, [text])
   const state = version.version.state
   const editable = manage && state === 'DRAFT'
   const dirty = text !== original
@@ -336,23 +351,51 @@ function VersionEditor({
           <p className="whitespace-pre-wrap">{version.version.reviewRemark}</p>
         </div>
       ) : null}
-      <Field label={intl.formatMessage(wm.body)} hint={intl.formatMessage(wm.bodyHint)} error={jsonError}>
-        {(p) => (
-          <Textarea
-            {...p}
-            dir="ltr"
-            rows={18}
-            spellCheck={false}
-            readOnly={!editable}
-            className="font-mono text-xs"
-            value={text}
-            onChange={(e) => {
-              setText(e.target.value)
-              setJsonError(undefined)
-            }}
-          />
-        )}
-      </Field>
+      <Tabs
+        value={view}
+        onValueChange={(v) => {
+          setView(v as View)
+        }}
+      >
+        <TabsList aria-label={intl.formatMessage(bm.views)}>
+          <TabsTrigger value="diagram">{intl.formatMessage(bm.viewDiagram)}</TabsTrigger>
+          <TabsTrigger value="steps">{intl.formatMessage(bm.viewSteps)}</TabsTrigger>
+          <TabsTrigger value="json">{intl.formatMessage(bm.viewJson)}</TabsTrigger>
+        </TabsList>
+        <TabsContent value="diagram" className="pt-3">
+          {drawable ? (
+            <DefinitionDiagram body={drawable} labels={version.labels} problems={problems} />
+          ) : (
+            <p className="text-sm">{intl.formatMessage(bm.notReadable)}</p>
+          )}
+        </TabsContent>
+        <TabsContent value="steps" className="pt-3">
+          {drawable ? (
+            <StepsView body={drawable} labels={version.labels} problems={problems} />
+          ) : (
+            <p className="text-sm">{intl.formatMessage(bm.notReadable)}</p>
+          )}
+        </TabsContent>
+        <TabsContent value="json" className="pt-3">
+          <Field label={intl.formatMessage(wm.body)} hint={intl.formatMessage(wm.bodyHint)} error={jsonError}>
+            {(p) => (
+              <Textarea
+                {...p}
+                dir="ltr"
+                rows={18}
+                spellCheck={false}
+                readOnly={!editable}
+                className="font-mono text-xs"
+                value={text}
+                onChange={(e) => {
+                  setText(e.target.value)
+                  setJsonError(undefined)
+                }}
+              />
+            )}
+          </Field>
+        </TabsContent>
+      </Tabs>
       <section aria-labelledby="problems-title">
         <h3 id="problems-title" className="mb-1 text-sm font-semibold">
           {intl.formatMessage(wm.problems)}

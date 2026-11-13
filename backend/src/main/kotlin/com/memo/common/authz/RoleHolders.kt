@@ -18,4 +18,7 @@ interface RoleHolders {
 
     /** Whether the tenant has a role with [roleId]. */
     fun exists(roleId: UUID): Boolean
+
+    /** Every role of the tenant, built-in and custom, by id: its name (for display and the workflow builder). */
+    fun names(): Map<UUID, String>
 }

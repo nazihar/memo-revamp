@@ -91,6 +91,10 @@ Column meanings:
 | @types/node, @types/react, @types/react-dom | 24.19.2 / 19.3.0 / 19.3.0 | MIT | dev-only | Types | active | — |
 | Node.js | 24 LTS | MIT | dev-only | Toolchain runtime | active LTS | — |
 | pnpm | 10.18.1 | MIT | dev-only | Package manager | active | — (locked) |
+| @xyflow/react (React Flow) | 12.12.1 | MIT | runtime | The workflow builder's diagram (Phase 2 E06, ADR-0042); loaded only on the workflow definition page | 2026-11-02; very active (11 stable releases in 2026), webkid; Pro is support and examples only, the badge stays | elkjs-based own canvas (more code); form-only editor (misses the visual scope) |
+| @dagrejs/dagre | 3.1.3 | MIT | runtime | Top-down automatic layout of the builder's diagram; positions are never stored (ADR-0042) | 2026-10-24; active (2.0 to 3.1 in 11 months), three maintainers | elkjs 0.12 (EPL-2.0, about 28 times larger, asynchronous) |
+| fast-check | 4.10.2 | MIT | dev-only | Property-based tests of the builder's model, layout and (later) edits and diff | 2026-09-19; very active, one main maintainer | Hand-written example tables (miss edge cases) |
+| @fast-check/vitest | 0.5.0 | MIT | dev-only | `test.prop` for Vitest, with replayable seeds | 2026-09-11; same maintainer; peer Vitest 5 | fast-check's `fc.assert` alone (works; less readable) |
 
 ## Services (separate, unmodified processes)
 

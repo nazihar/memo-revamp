@@ -59,6 +59,14 @@ export default defineConfig(
       // Flags every obj[key]; with typed union keys (our usage) it is pure noise. XSS/injection is covered by React
       // escaping, CSP and the formatjs rules; re-evaluate if untyped user input is ever used as a key.
       'security/detect-object-injection': 'off',
+      // No raw HTML anywhere: names and notes written by people (workflow steps, memos) render as text (E06 threat E1).
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: "JSXAttribute[name.name='dangerouslySetInnerHTML']",
+          message: 'Render text, never raw HTML (threat model E06 E1).',
+        },
+      ],
     },
   },
   {

@@ -3772,6 +3772,12 @@
           "key" : {
             "type" : "string"
           },
+          "labels" : {
+            "additionalProperties" : {
+              "type" : "string"
+            },
+            "type" : "object"
+          },
           "problems" : {
             "items" : {
               "$ref" : "#/components/schemas/FieldProblem"
@@ -3787,7 +3793,7 @@
             "$ref" : "#/components/schemas/VersionSummary"
           }
         },
-        "required" : [ "body", "id", "key", "problems", "revision", "version" ],
+        "required" : [ "body", "id", "key", "labels", "problems", "revision", "version" ],
         "type" : "object"
       },
       "VersionSummary" : {

@@ -185,8 +185,8 @@ test.describe('as a tenant admin', () => {
     await page.getByRole('button', { name: 'Add memo type' }).click()
     const typeDialog = page.getByRole('dialog')
     await typeDialog.getByLabel('Name', { exact: true }).fill(typeName)
-    await typeDialog.getByLabel('Workflow').selectOption({ label: name })
-    await typeDialog.getByLabel('Approvers').selectOption({ label: 'The workflow names every step' })
+    await typeDialog.getByLabel('Workflow', { exact: true }).selectOption({ label: name })
+    await typeDialog.getByLabel('Approvers', { exact: true }).selectOption({ label: 'The workflow names every step' })
     await typeDialog.getByRole('button', { name: 'Save' }).click()
     await expect(page.getByRole('cell', { name: typeName })).toBeVisible()
 

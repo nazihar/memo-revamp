@@ -1,6 +1,6 @@
-# Phase 2 — retrospective (2026-11-13)
+# Phase 2 — retrospective (closed 2026-11-14)
 
-> **All six epics are built, merged and on dev** (E03–E06 merged 2026-11-13, PRs #41–#81). The phase closes when the owner's items under "Carried" are done.
+> **Closed on 2026-11-14 at the owner's instruction** (exit recorded in `overview.md §10`). All six epics are merged and on dev (PRs #34–#83); `ci`, the dev deploy and the nightly are green on `master`. The owner's in-person items under "Carried" stay open.
 
 ## Exit status (MASTER_PLAN Phase 2 exit criteria, overview §5)
 
@@ -20,7 +20,7 @@
 - the clearance re-check on assignment;
 - timers and escalations with a controlled clock (`TimersIT`, `EscalationIT`, `MutableClock`);
 - version pinning;
-- the 10,000-instance load test, which is built and awaits its first run.
+- the 10,000-instance load test (inbox p95 10 ms, 2026-11-14).
 
 **Generic exit items:**
 - **Demo script:** D1 in `epic-01-first-slice/demo.md`; the phase demo in `demo.md`.
@@ -60,6 +60,10 @@
   - the simulation used the wrong tenant host, lost its Secure cookies over plain HTTP, and signed in faster than the per-address limit allows.
 
   The lesson: a stage that only runs on `master` should be run by hand before the phase closes. The faults are in the phase log (2026-11-13).
+- **The nightly, after the merge** (it had been red since 2026-11-11, and the close needed it green):
+  - **PIT** scored 47 % on the engine against 70 %: the commands added after E01 were tested only through integration tests, which PIT does not run. New engine tests for every one of them bring it to 89 %. They found a bug: when a position that is a route entry changed holder, re-resolving it left the later route steps pending twice and put the entry after them. Fixed in `StaffChanges`.
+  - **Visual:** the memo view crashed on its mocked API, because E03–E05 added required fields that the untyped mocks lacked. The mocks are now typed with the generated API types, so the typecheck on every PR catches this. The org baselines predated E01's navigation and were re-rendered.
+  - The lesson: nightly-only stages need the same attention as the PR gate; a red nightly should stop the next merge.
 - **The E2E against dev:** dev's organisation was older than the demo approvers' seats, so the authority journey failed there until the seats were corrected.
 
 ## Carried
@@ -67,9 +71,10 @@
   - the phase demo (`demo.md`) and the D1 demo;
   - the builder usability walkthrough;
   - the manual keyboard and screen-reader pass (checklist in E06 `ux-review.md`).
-- **After #82 merges:** the weekly load run on `master` (Sundays 03:00 UTC).
+- **Weekly:** the load run on `master` (Sundays 03:00 UTC).
 - **On dev:** two "E2E authority" test memos wait on a staff member who cannot sign in (phase log, 2026-11-13). They are test data only.
 - **Follow-ups:**
+  - a step added for an administrator after a route approver recuses gets an ordinal after the later route steps, so those approvers cannot send back to it (found by the engine tests; the recusal path does not rebuild the waiting entries the way send back does);
   - a sweep for timers dropped after their retry limit (E05);
   - the inbox sorted by due time (E05);
   - a warning level for validation, such as overlapping conditions (E06);

@@ -26,3 +26,10 @@ History of the phase, newest last. `STATUS.md` keeps only the current position.
   3. Fifty initiators reached the upload limit (30 a minute each); the generator now waits as a client would after a 429.
   4. The simulation addressed the wrong tenant host. Over plain HTTP to 127.0.0.1, Gatling dropped the Secure cookies, so the scenario carries them itself. The CSRF endpoint answers 204. Fifty sign-ins in 30 seconds exceeded the 20 a minute per address, so the ramp now takes 165 seconds.
 - **Load measured:** 10,000 memos in review with their timers, generated in about six minutes. 50 approvers, 18,100 inbox reads, each checked for a full page of 25 due decisions. p95 10 ms against the 300 ms budget, no errors (run 43482461508). The fixes are PR #82; the weekly run on `master` starts once it is merged.
+
+## 2026-11-14
+- **#82 merged** (load stage fixed; inbox p95 10 ms with 10,000 memos in review). `ci` and the dev deploy green on `master`.
+- **Nightly made green for the close** (it had been red since 2026-11-11):
+  - **PIT** 47 % → 89 % on the engine: engine-package tests for every command added after E01. They found a bug, now fixed: a position that is a route entry, re-resolved after a holder change, left the later route steps pending twice and came after them. One smaller ordering problem after a recusal is carried as a follow-up (`retrospective.md`).
+  - **Visual:** the memo view's mocks lacked fields E03–E05 made required and crashed the page. The mocks are now typed with the generated API types. The org baselines were re-rendered with E01's navigation.
+- **Phase 2 closed** at the owner's instruction ("merge and close this phase"). Exit recorded in `overview.md §10`; `retrospective.md` final; STATUS condensed. **Carried, in person:** the D1 and phase demos, the builder walkthrough, and the manual keyboard and screen-reader pass.

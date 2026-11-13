@@ -15,6 +15,8 @@ export interface StepData extends Record<string, unknown> {
   who: string
   problems: number
   reached: boolean
+  /** Added or changed since the version it is compared with (design E06 §6). */
+  change?: 'added' | 'changed'
 }
 
 const SHORT = 40
@@ -31,6 +33,7 @@ export function diagram(
   problems: FieldProblem[],
   selected?: string,
   reached: ReadonlySet<string> = new Set(),
+  changes: ReadonlyMap<string, 'added' | 'changed'> = new Map(),
 ): { nodes: Node[]; edges: Edge[] } {
   const graph = toGraph(body)
   const positions = layout(graph)
@@ -58,6 +61,7 @@ export function diagram(
       who,
       problems: byStep.get(n.index)?.length ?? 0,
       reached: reached.has(n.id),
+      ...(changes.has(n.id) ? { change: changes.get(n.id) } : {}),
     }
     const described = intl.formatMessage(bmv.stepAria, {
       index: n.index + 1,
@@ -67,7 +71,13 @@ export function diagram(
       who,
       next: nextOf(step),
     })
-    const ariaLabel = data.reached ? intl.formatMessage(bmv.stepAriaReached, { label: described }) : described
+    const marked = data.reached ? intl.formatMessage(bmv.stepAriaReached, { label: described }) : described
+    const ariaLabel =
+      data.change === 'added'
+        ? intl.formatMessage(bmv.stepAriaAdded, { label: marked })
+        : data.change === 'changed'
+          ? intl.formatMessage(bmv.stepAriaChanged, { label: marked })
+          : marked
     return { id: n.id, type: 'step', position, data, ariaLabel, draggable: false, selected: n.id === selected }
   })
   const nodeName = (id: string) =>

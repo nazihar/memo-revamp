@@ -32,6 +32,7 @@ import { Textarea } from '@/components/ui/form-controls'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/misc'
 import { bm, bmv } from './builder/builder-messages'
 import { DefinitionDiagram } from './builder/DefinitionDiagram'
+import { ChangesView } from './builder/ChangesView'
 import { SimulationPanel } from './builder/SimulationPanel'
 import { StepsView } from './builder/StepsView'
 import { useBuilder, useLiveValidation } from './builder/useBuilder'
@@ -43,7 +44,7 @@ import { DefinitionMigration } from './DefinitionMigration'
 import { stateLabels, wm, wmv } from './workflow-messages'
 
 type Decision = 'approve' | 'sendBack' | 'retire'
-type View = 'diagram' | 'steps' | 'json'
+type View = 'diagram' | 'steps' | 'json' | 'changes'
 
 /** Refusals that say what to do rather than 'reload'. */
 const REFUSALS: Partial<Record<string, MessageDescriptor>> = {
@@ -145,6 +146,8 @@ export function WorkflowDefinitionPage({ definitionKey, version }: { definitionK
           builtIn={summary.builtIn}
           manage={manage}
           approve={approve}
+          versions={versions.map((v) => v.number)}
+          {...(summary.publishedVersion ? { published: summary.publishedVersion } : {})}
         />
       ) : null}
       {approve && summary.publishedVersion && !summary.fragment ? (
@@ -196,12 +199,16 @@ function VersionPanel({
   builtIn,
   manage,
   approve,
+  versions,
+  published,
 }: {
   definitionKey: string
   number: number
   builtIn: boolean
   manage: boolean
   approve: boolean
+  versions: number[]
+  published?: number
 }) {
   const intl = useIntl()
   const path = { key: definitionKey, number: String(number) }
@@ -223,6 +230,8 @@ function VersionPanel({
         builtIn={builtIn}
         manage={manage}
         approve={approve}
+        versions={versions}
+        {...(published ? { published } : {})}
       />
     </section>
   )
@@ -234,12 +243,16 @@ function VersionEditor({
   builtIn,
   manage,
   approve,
+  versions,
+  published,
 }: {
   definitionKey: string
   version: VersionResponse
   builtIn: boolean
   manage: boolean
   approve: boolean
+  versions: number[]
+  published?: number
 }) {
   const intl = useIntl()
   const toast = useToast()
@@ -254,7 +267,15 @@ function VersionEditor({
   const [busy, setBusy] = useState(false)
   const [decision, setDecision] = useState<Decision>()
   const [conflict, setConflict] = useState(false)
-  const [view, setView] = useState<View>('diagram')
+  // The review compares with the published version, or else the one before (design E06 §6).
+  const thisNumber = version.version.number
+  const compareWith =
+    published !== undefined && published !== thisNumber
+      ? published
+      : versions.filter((n) => n < thisNumber).sort((a, b) => b - a)[0]
+  const [view, setView] = useState<View>(
+    approve && version.version.state === 'IN_REVIEW' && compareWith !== undefined ? 'changes' : 'diagram',
+  )
   const state = version.version.state
   const editable = manage && state === 'DRAFT'
   const dirty = text !== original
@@ -428,7 +449,26 @@ function VersionEditor({
           <TabsTrigger value="diagram">{intl.formatMessage(bm.viewDiagram)}</TabsTrigger>
           <TabsTrigger value="steps">{intl.formatMessage(bm.viewSteps)}</TabsTrigger>
           <TabsTrigger value="json">{intl.formatMessage(bm.viewJson)}</TabsTrigger>
+          {compareWith !== undefined ? (
+            <TabsTrigger value="changes">{intl.formatMessage(bm.viewChanges)}</TabsTrigger>
+          ) : null}
         </TabsList>
+        {compareWith !== undefined ? (
+          <TabsContent value="changes" className="pt-3">
+            {drawable ? (
+              <ChangesView
+                definitionKey={definitionKey}
+                number={number}
+                body={drawable}
+                labels={labels}
+                versions={versions}
+                compareWith={compareWith}
+              />
+            ) : (
+              <p className="text-sm">{intl.formatMessage(bm.notReadable)}</p>
+            )}
+          </TabsContent>
+        ) : null}
         <TabsContent value="diagram" className="pt-3">
           {drawable ? (
             <DefinitionDiagram

@@ -64,6 +64,10 @@ export const bm = defineMessages({
   copy: { id: 'builder.copy', defaultMessage: 'Copy my changes as JSON' },
   copied: { id: 'builder.copied', defaultMessage: 'Copied.' },
   reached: { id: 'builder.reached', defaultMessage: 'Reached in the simulation' },
+  added: { id: 'builder.added', defaultMessage: 'Added' },
+  removed: { id: 'builder.removed', defaultMessage: 'Removed' },
+  changed: { id: 'builder.changed', defaultMessage: 'Changed' },
+  viewChanges: { id: 'builder.view.changes', defaultMessage: 'Changes' },
 })
 
 export const bmv = defineMessages<{
@@ -79,6 +83,8 @@ export const bmv = defineMessages<{
   edgeOtherwise: { from: string; to: string }
   stepAria: { index: number; count: number; type: string; name: string; who: string; next: string }
   stepAriaReached: { label: string }
+  stepAriaAdded: { label: string }
+  stepAriaChanged: { label: string }
   problems: { count: number }
   unknown: { id: string }
   position: { name: string }
@@ -119,6 +125,8 @@ export const bmv = defineMessages<{
     defaultMessage: 'Step {index} of {count}, {type}, {name}. {who} Leads to {next}.',
   },
   stepAriaReached: { id: 'builder.stepAria.reached', defaultMessage: '{label} Reached in the simulation.' },
+  stepAriaAdded: { id: 'builder.stepAria.added', defaultMessage: '{label} Added in this version.' },
+  stepAriaChanged: { id: 'builder.stepAria.changed', defaultMessage: '{label} Changed in this version.' },
   problems: {
     id: 'builder.problems',
     defaultMessage: '{count, plural, one {# problem} other {# problems}}',
@@ -185,4 +193,17 @@ export const stepTypeLabels = defineMessages<StepType>({
   subworkflow: { id: 'builder.type.subworkflow', defaultMessage: 'Sub-workflow' },
   'escalate-to-forum': { id: 'builder.type.forum', defaultMessage: 'Escalate to a forum' },
   sign: { id: 'builder.type.sign', defaultMessage: 'Signature' },
+})
+
+/** What a step lets its holder do (design E03 §4.4), by the definition's action name. */
+export const actionLabels = defineMessages({
+  APPROVE: { id: 'builder.action.approve', defaultMessage: 'Approve' },
+  RECOMMEND: { id: 'builder.action.recommend', defaultMessage: 'Recommend' },
+  RETURN: { id: 'builder.action.return', defaultMessage: 'Return to the initiator' },
+  REJECT: { id: 'builder.action.reject', defaultMessage: 'Reject' },
+  SEND_BACK: { id: 'builder.action.sendBack', defaultMessage: 'Send back to an earlier step' },
+  FORWARD: { id: 'builder.action.forward', defaultMessage: 'Forward' },
+  DELEGATE: { id: 'builder.action.delegate', defaultMessage: 'Delegate' },
+  ASK: { id: 'builder.action.ask', defaultMessage: 'Ask for opinions' },
+  REFER: { id: 'builder.action.refer', defaultMessage: 'Refer' },
 })

@@ -155,6 +155,11 @@ memo:
     password: ${MEMO_DEMO_PASSWORD:}
     # Base32 TOTP secret of the demo users (generated into .env); empty: they must enrol MFA themselves.
     totp-secret: ${MEMO_DEMO_TOTP_SECRET:}
+  volume:
+    # Synthetic volume V2 for load environments (E05): a `volume` tenant with this many memos in review and their timers;
+    # its users sign in with MEMO_DEMO_PASSWORD. Refused under the prod profile.
+    v2: ${MEMO_VOLUME_V2:false}
+    instances: ${MEMO_VOLUME_INSTANCES:10000}
   security:
     # argon2 (default) | pbkdf2 (FIPS-approved algorithms only) (ADR-0023).
     password-encoding: ${MEMO_PASSWORD_ENCODING:argon2}

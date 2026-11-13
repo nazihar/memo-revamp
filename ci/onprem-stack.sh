@@ -13,6 +13,10 @@ case "${1:-}" in
     BACKEND=${2:?backend image}; WEB=${3:?web image}; PORT=${4:-18100}
     mkdir -p "$STATE" && cp "$DIR/.env.example" "$STATE/.env"
     sed -i "s|^MEMO_BACKEND_IMAGE=.*|MEMO_BACKEND_IMAGE=$BACKEND|; s|^MEMO_WEB_IMAGE=.*|MEMO_WEB_IMAGE=$WEB|; s|^MEMO_WEB_PORT=.*|MEMO_WEB_PORT=$PORT|; s|^MEMO_WEB_BIND=.*|MEMO_WEB_BIND=0.0.0.0|; s|^COMPOSE_PROJECT_NAME=.*|COMPOSE_PROJECT_NAME=memo-nightly|; s|^MEMO_DEMO_SEED=.*|MEMO_DEMO_SEED=true|; s|^MEMO_SPRING_PROFILES=.*|MEMO_SPRING_PROFILES=ci|" "$STATE/.env"
+    # The weekly load stage asks for synthetic volume V2 (E05): MEMO_VOLUME_V2=true [MEMO_VOLUME_INSTANCES=n].
+    if [ "${MEMO_VOLUME_V2:-}" = true ]; then
+      sed -i "s|^MEMO_VOLUME_V2=.*|MEMO_VOLUME_V2=true|; s|^MEMO_VOLUME_INSTANCES=.*|MEMO_VOLUME_INSTANCES=${MEMO_VOLUME_INSTANCES:-10000}|" "$STATE/.env"
+    fi
     sh "$ROOT/deploy/scripts/gen-secrets.sh" "$STATE/.env" >/dev/null
     docker network inspect memo-edge >/dev/null 2>&1 || docker network create memo-edge >/dev/null
     dc up -d --wait --wait-timeout 300 postgres seaweedfs

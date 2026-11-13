@@ -44,14 +44,15 @@ class MemoSeeding(
     /** Whether [initiator] has created any memo yet (seeders run once per tenant). */
     fun hasMemos(initiator: UUID): Boolean = tx { lists.anyOf(initiator) }
 
-    /** A draft of the built-in General type, classified at [rank]. */
+    /** A draft of [typeId] (the built-in General type when null), classified at [rank]. */
     fun draft(
         subject: String,
         rank: Int = 0,
+        typeId: UUID? = null,
     ): UUID =
         tx {
-            val type = types.active().first { it.key == MemoTypeStore.GENERAL }
-            memos.create(MemoFields(subject, type.id, clearances.levels()[rank].id)).id
+            val type = typeId ?: types.active().first { it.key == MemoTypeStore.GENERAL }.id
+            memos.create(MemoFields(subject, type, clearances.levels()[rank].id)).id
         }
 
     /** The memo's document: its first file, or a new version of it. */
@@ -114,17 +115,29 @@ class MemoSeeding(
         }
     }
 
-    /** A memo type called [name] whose workflow [definitionKey] names every step (`FIXED`), unless the tenant has one. */
+    /**
+     * A memo type called [name] on workflow [definitionKey], unless the tenant has one: `FIXED` (the definition names every
+     * step) or, with [routed], chosen by the initiator. Returns its id.
+     */
     fun fixedType(
         name: String,
         definitionKey: String,
-    ) {
+        routed: Boolean = false,
+    ): UUID =
         tx {
-            if (types.all().none { it.name == name }) {
-                types.create(MemoTypeFields(name, null, stepUpOnApprove = true, active = true, definitionKey, RoutePolicy.FIXED))
-            }
+            types.all().firstOrNull { it.name == name }?.id
+                ?: types
+                    .create(
+                        MemoTypeFields(
+                            name,
+                            null,
+                            stepUpOnApprove = !routed,
+                            active = true,
+                            definitionKey,
+                            if (routed) RoutePolicy.INITIATOR_DEFINED else RoutePolicy.FIXED,
+                        ),
+                    ).id
         }
-    }
 
     private fun <T> tx(block: () -> T): T = transactions.inTenant(TenantContext.current(), block)
 

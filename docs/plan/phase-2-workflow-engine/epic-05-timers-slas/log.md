@@ -72,3 +72,14 @@
   - A task that moved on in the meantime is refused by the engine, and the timer still counts as fired.
   - The memo tells escalation targets cleared for it: they become participants and get `TASK_OVERDUE`.
   - Tests: `EscalationIT` (next level once even when run twice, as the workflow and audited; notify to a named person; the initiator is never a target, which gives a blocked task).
+- **T6 (volume and load):**
+  - **Generator:** `demo.WorkflowVolume` creates synthetic volume V2 through the real services, so every row is what production writes. It refuses under `prod`, and does nothing if the tenant exists.
+    - a tenant `volume` (MFA for administrators only, so approvers sign in with a password);
+    - 50 approvers and 50 initiators;
+    - a routed memo type whose route step has an SLA: due in 2 working days, reminders 4 hours before and 1 day after, escalation to the next level 2 days after;
+    - `memo.volume.instances` memos (10,000 by default) in review, spread evenly over the approvers, each with its due time and 4 timers.
+  - **Switch:** it runs at start-up when `memo.volume.v2` is on (`MEMO_VOLUME_V2`, passed through the on-prem compose file and `ci/onprem-stack.sh`). The users' password is `MEMO_DEMO_PASSWORD`.
+  - `MemoSeeding` gained typed drafts and routed types for it.
+  - **Load test:** Gatling `InboxLoadSimulation`. 50 approvers fetch the CSRF cookie, sign in, and read their inbox 20 times each. The tenant is chosen by the Host header. Assertions: inbox p95 under 300 ms (NFR P1) and under 1 % errors.
+  - **Weekly workflow** `load.yml` (Sunday 03:00, or by hand with the number of instances): it builds the images, starts the on-prem stack with V2, waits for "Volume V2 ready", runs the simulation and keeps the reports.
+  - **Not yet run:** the workflow runs only once it is on the default branch, so the first measurement comes after merge. The `WorkflowVolumeIT` check of the generator (60 memos) passes.

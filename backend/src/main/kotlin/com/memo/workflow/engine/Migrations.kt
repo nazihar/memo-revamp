@@ -52,6 +52,7 @@ internal object Migrations {
     private fun typeOf(step: Step): StepType =
         when {
             step.routeIndex != null -> StepType.ROUTE
+            step.doaGroup != null -> StepType.DOA
             step.kind == StepKind.REVIEW -> StepType.REVIEW
             step.kind == StepKind.PARALLEL -> StepType.PARALLEL
             else -> StepType.APPROVE

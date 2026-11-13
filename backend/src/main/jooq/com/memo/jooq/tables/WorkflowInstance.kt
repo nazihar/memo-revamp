@@ -6,16 +6,19 @@ package com.memo.jooq.tables
 
 import com.memo.jooq.Memo
 import com.memo.jooq.indexes.WORKFLOW_INSTANCE_DEFINITION_IDX
+import com.memo.jooq.indexes.WORKFLOW_INSTANCE_DOA_VERSION_IDX
 import com.memo.jooq.keys.WORKFLOW_ACTION__WORKFLOW_ACTION_TENANT_ID_INSTANCE_ID_FKEY
 import com.memo.jooq.keys.WORKFLOW_INSTANCE_PKEY
 import com.memo.jooq.keys.WORKFLOW_INSTANCE_TENANT_ID_ID_KEY
 import com.memo.jooq.keys.WORKFLOW_INSTANCE_TENANT_ID_SUBJECT_TYPE_SUBJECT_ID_KEY
+import com.memo.jooq.keys.WORKFLOW_INSTANCE__WORKFLOW_INSTANCE_DOA_VERSION_FK
 import com.memo.jooq.keys.WORKFLOW_INSTANCE__WORKFLOW_INSTANCE_TENANT_ID_DEFINITION_VERSION_ID_FKEY
 import com.memo.jooq.keys.WORKFLOW_ROUND__WORKFLOW_ROUND_TENANT_ID_INSTANCE_ID_FKEY
 import com.memo.jooq.keys.WORKFLOW_STEP__WORKFLOW_STEP_TENANT_ID_INSTANCE_ID_FKEY
 import com.memo.jooq.keys.WORKFLOW_TASK__WORKFLOW_TASK_TENANT_ID_INSTANCE_ID_FKEY
 import com.memo.jooq.tables.WorkflowAction.WorkflowActionPath
 import com.memo.jooq.tables.WorkflowDefinitionVersion.WorkflowDefinitionVersionPath
+import com.memo.jooq.tables.WorkflowDoaVersion.WorkflowDoaVersionPath
 import com.memo.jooq.tables.WorkflowRound.WorkflowRoundPath
 import com.memo.jooq.tables.WorkflowStep.WorkflowStepPath
 import com.memo.jooq.tables.WorkflowTask.WorkflowTaskPath
@@ -159,6 +162,11 @@ open class WorkflowInstance(
      */
     val CURRENT_STEP_NAME: TableField<WorkflowInstanceRecord, String?> = createField(DSL.name("current_step_name"), SQLDataType.CLOB, this, "")
 
+    /**
+     * The column <code>memo.workflow_instance.doa_version_id</code>.
+     */
+    val DOA_VERSION_ID: TableField<WorkflowInstanceRecord, UUID?> = createField(DSL.name("doa_version_id"), SQLDataType.UUID, this, "")
+
     private constructor(alias: Name, aliased: Table<WorkflowInstanceRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<WorkflowInstanceRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<WorkflowInstanceRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -191,10 +199,17 @@ open class WorkflowInstance(
         override fun `as`(alias: Table<*>): WorkflowInstancePath = WorkflowInstancePath(alias.qualifiedName, this)
     }
     override fun getSchema(): Schema? = if (aliased()) null else Memo.MEMO
-    override fun getIndexes(): List<Index> = listOf(WORKFLOW_INSTANCE_DEFINITION_IDX)
+    override fun getIndexes(): List<Index> = listOf(WORKFLOW_INSTANCE_DEFINITION_IDX, WORKFLOW_INSTANCE_DOA_VERSION_IDX)
     override fun getPrimaryKey(): UniqueKey<WorkflowInstanceRecord> = WORKFLOW_INSTANCE_PKEY
     override fun getUniqueKeys(): List<UniqueKey<WorkflowInstanceRecord>> = listOf(WORKFLOW_INSTANCE_TENANT_ID_ID_KEY, WORKFLOW_INSTANCE_TENANT_ID_SUBJECT_TYPE_SUBJECT_ID_KEY)
-    override fun getReferences(): List<ForeignKey<WorkflowInstanceRecord, *>> = listOf(WORKFLOW_INSTANCE__WORKFLOW_INSTANCE_TENANT_ID_DEFINITION_VERSION_ID_FKEY)
+    override fun getReferences(): List<ForeignKey<WorkflowInstanceRecord, *>> = listOf(WORKFLOW_INSTANCE__WORKFLOW_INSTANCE_DOA_VERSION_FK, WORKFLOW_INSTANCE__WORKFLOW_INSTANCE_TENANT_ID_DEFINITION_VERSION_ID_FKEY)
+
+    /**
+     * Get the implicit join path to the <code>memo.workflow_doa_version</code>
+     * table.
+     */
+    fun workflowDoaVersion(): WorkflowDoaVersionPath = workflowDoaVersion
+    val workflowDoaVersion: WorkflowDoaVersionPath by lazy { WorkflowDoaVersionPath(this, WORKFLOW_INSTANCE__WORKFLOW_INSTANCE_DOA_VERSION_FK, null) }
 
     /**
      * Get the implicit join path to the

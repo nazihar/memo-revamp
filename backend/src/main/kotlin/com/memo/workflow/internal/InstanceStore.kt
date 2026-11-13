@@ -44,6 +44,8 @@ data class LoadedInstance(
     val definition: Definition = DefinitionCompiler.SEQUENTIAL,
     /** The pinned definition version (ADR-0038); only a migration changes it. */
     val definitionVersionId: UUID? = null,
+    /** The pinned DoA version (design E04 §4.3), when the definition has a `doa` step and one was in force at the start. */
+    val doaVersionId: UUID? = null,
 )
 
 /**
@@ -135,6 +137,7 @@ class InstanceStore(
                     name = definition.stepsById[step.nodeId]?.name,
                     needed = step.needed,
                     claimedBy = step.claimedBy,
+                    doaGroup = step.doaGroup,
                     tasks =
                         tasks[step.id].orEmpty().map(::task),
                 )
@@ -153,6 +156,7 @@ class InstanceStore(
             state,
             definition,
             instance.definitionVersionId,
+            instance.doaVersionId,
         )
     }
 
@@ -240,6 +244,7 @@ class InstanceStore(
         definitionVersionId: UUID,
         state: InstanceState,
         now: OffsetDateTime,
+        doaVersionId: UUID? = null,
     ) {
         tenantDsl
             .current()
@@ -249,6 +254,7 @@ class InstanceStore(
             .set(WORKFLOW_INSTANCE.SUBJECT_TYPE, subjectType)
             .set(WORKFLOW_INSTANCE.SUBJECT_ID, subjectId)
             .set(WORKFLOW_INSTANCE.DEFINITION_VERSION_ID, definitionVersionId)
+            .set(WORKFLOW_INSTANCE.DOA_VERSION_ID, doaVersionId)
             .set(WORKFLOW_INSTANCE.INITIATOR_ID, state.initiator)
             .set(WORKFLOW_INSTANCE.STATUS, state.status.name)
             .set(WORKFLOW_INSTANCE.CURRENT_ROUND, state.round.number)

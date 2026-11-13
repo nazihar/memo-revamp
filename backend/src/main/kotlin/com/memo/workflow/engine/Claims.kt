@@ -15,7 +15,7 @@ internal object Claims {
         val step = state.findTask(command.taskId)?.first
         return when {
             step == null -> Refusal.TASK_NOT_FOUND
-            step.needed == null -> Refusal.NOT_SHARED
+            step.needed == null || step.kind == StepKind.PARALLEL -> Refusal.NOT_SHARED
             step.claimedBy != null -> Refusal.ALREADY_CLAIMED
             else -> null
         }

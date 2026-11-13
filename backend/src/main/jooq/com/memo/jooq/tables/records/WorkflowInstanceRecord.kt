@@ -75,6 +75,10 @@ open class WorkflowInstanceRecord private constructor() : UpdatableRecordImpl<Wo
         set(value): Unit = set(13, value)
         get(): String? = get(13) as String?
 
+    open var doaVersionId: UUID?
+        set(value): Unit = set(14, value)
+        get(): UUID? = get(14) as UUID?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -84,7 +88,7 @@ open class WorkflowInstanceRecord private constructor() : UpdatableRecordImpl<Wo
     /**
      * Create a detached, initialised WorkflowInstanceRecord
      */
-    constructor(id: UUID, tenantId: UUID, subjectType: String, subjectId: UUID, definitionVersionId: UUID, initiatorId: UUID, status: String, currentRound: Int, currentStepId: UUID? = null, currentAssignees: Array<UUID?>? = null, createdAt: OffsetDateTime, updatedAt: OffsetDateTime, version: Long? = null, currentStepName: String? = null): this() {
+    constructor(id: UUID, tenantId: UUID, subjectType: String, subjectId: UUID, definitionVersionId: UUID, initiatorId: UUID, status: String, currentRound: Int, currentStepId: UUID? = null, currentAssignees: Array<UUID?>? = null, createdAt: OffsetDateTime, updatedAt: OffsetDateTime, version: Long? = null, currentStepName: String? = null, doaVersionId: UUID? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.subjectType = subjectType
@@ -99,6 +103,7 @@ open class WorkflowInstanceRecord private constructor() : UpdatableRecordImpl<Wo
         this.updatedAt = updatedAt
         this.version = version
         this.currentStepName = currentStepName
+        this.doaVersionId = doaVersionId
         resetTouchedOnNotNull()
     }
 }

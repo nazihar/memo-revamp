@@ -45,7 +45,11 @@ internal class HandOns(
             }
         val closing = Effect.TaskClosed(task.id, TaskState.CANCELLED, null)
         val action = record(ActionKind.RECUSE, state, task.id, command.actor, command.remark)
-        if (closed.step(step.id).tasks.any { it.state == TaskState.OPEN && it.kind == TaskKind.DECIDE }) {
+        // The others carry on while they can still give the step the approvals it needs (a DoA group may need several).
+        val after = closed.step(step.id).tasks
+        val remaining = after.count { it.state == TaskState.OPEN && it.kind == TaskKind.DECIDE }
+        val approved = after.count { it.state == TaskState.COMPLETED && it.outcome == ActionKind.APPROVE }
+        if (remaining > 0 && approved + remaining >= (closed.step(step.id).needed ?: 1)) {
             return Outcome(state.copy(round = closed), action, listOf(closing))
         }
         val open = closed.step(step.id).tasks.filter { it.state == TaskState.OPEN }

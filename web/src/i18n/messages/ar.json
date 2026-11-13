@@ -48,6 +48,8 @@
   "access.permission.users": "إدارة المستخدمين",
   "access.permission.workflowDefinitionsApprove": "مراجعة تعريفات سير العمل ونشرها",
   "access.permission.workflowDefinitionsManage": "كتابة تعريفات سير العمل وإرسالها للمراجعة",
+  "access.permission.workflowDoaApprove": "مراجعة تفويض الصلاحيات ونشره",
+  "access.permission.workflowDoaManage": "صياغة تفويض الصلاحيات وإرساله للمراجعة",
   "access.permission.workflowInstancesCancel": "إلغاء مسارات العمل الجارية",
   "access.permission.workflowQueuesManage": "إدارة طوابير سير العمل",
   "access.permission.workflowTasksReassign": "إعادة إسناد مهام الموافقة",

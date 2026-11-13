@@ -41,6 +41,9 @@ class DefinitionChecks(
             ?.let { definition -> versions.versions(listOf(definition.id)).firstOrNull { it.state == VersionState.PUBLISHED } }
             ?.let { compiled.get(it.id) }
 
+    /** Whether the positions, roles, units and queues something names exist in the tenant. */
+    fun references(): DefinitionReferences = References()
+
     /** Positions, roles and units a definition names must exist in the tenant (design E04 §2). */
     private inner class References : DefinitionReferences {
         override fun positionExists(id: UUID) = directory.positions(listOf(id)).isNotEmpty()

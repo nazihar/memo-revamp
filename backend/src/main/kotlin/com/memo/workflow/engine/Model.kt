@@ -57,6 +57,8 @@ data class Step(
     val resolution: Map<String, Any?>? = null,
     /** The candidate who claimed a shared step; only their task decides it until they release it (invariant 20). */
     val claimedBy: UUID? = null,
+    /** Which approval group of its DoA rule the step is (0 first, design E04 §4.3); null for other steps. */
+    val doaGroup: Int? = null,
 ) {
     /** Decided by several holders: a parallel step, or one resolved to several candidates. */
     val shared: Boolean get() = kind == StepKind.PARALLEL || needed != null

@@ -51,6 +51,7 @@ class WorkflowRunner(
     private val effects: ActionEffects,
     private val resolvers: OrgResolvers,
     private val substitutes: SubstitutesInForce,
+    private val doa: DoaMatcher,
     private val ids: IdGenerator,
     private val json: JsonMapper,
     private val clock: Clock,
@@ -69,10 +70,15 @@ class WorkflowRunner(
         // New instances pin the newest published version (ADR-0038).
         val version = definitions.publishedVersion(definitionKey)
         val definition = compiled.get(version)
-        val outcome = accepted(transition(subject, subjectId, actor.userId, route, definition).start(actor.userId, route, remark))
+        // And the DoA version in force today, when the definition asks the DoA (design E04 §4.3).
+        val doaVersion = doa.pin(definition)
+        val outcome =
+            accepted(
+                transition(subject, subjectId, actor.userId, route, definition, doaVersion = doaVersion).start(actor.userId, route, remark),
+            )
         val instanceId = ids.next()
-        instances.insert(instanceId, subjectType, subjectId, version, outcome.state, now())
-        val loaded = LoadedInstance(instanceId, subjectType, subjectId, 0, outcome.state, definition)
+        instances.insert(instanceId, subjectType, subjectId, version, outcome.state, now(), doaVersion)
+        val loaded = LoadedInstance(instanceId, subjectType, subjectId, 0, outcome.state, definition, version, doaVersion)
         return record(loaded, null, subject, outcome, actor)
     }
 
@@ -101,7 +107,8 @@ class WorkflowRunner(
         val carried = carried(loaded, cmd, subject)
         val outcome =
             accepted(
-                transition(subject, loaded.subjectId, loaded.state.initiator, people, loaded.definition, carried).apply(loaded.state, cmd),
+                transition(subject, loaded.subjectId, loaded.state.initiator, people, loaded.definition, carried, loaded.doaVersionId)
+                    .apply(loaded.state, cmd),
             )
         return record(loaded, loaded.state, subject, outcome, actor)
     }
@@ -129,7 +136,14 @@ class WorkflowRunner(
         val command = Migrate(actor.userId, compiled.get(to.first), from.second, to.second)
         val outcome =
             accepted(
-                transition(subject, loaded.subjectId, loaded.state.initiator, emptyList(), loaded.definition).apply(loaded.state, command),
+                transition(
+                    subject,
+                    loaded.subjectId,
+                    loaded.state.initiator,
+                    emptyList(),
+                    loaded.definition,
+                    doaVersion = loaded.doaVersionId,
+                ).apply(loaded.state, command),
             )
         val view = record(loaded, loaded.state, subject, outcome, actor)
         instances.repin(instanceId, to.first)
@@ -181,6 +195,7 @@ class WorkflowRunner(
         people: Collection<UUID>,
         definition: Definition,
         carried: Set<Carried> = emptySet(),
+        doaVersion: UUID? = null,
     ): Transition {
         val named = definition.steps.flatMap { step -> listOfNotNull(step.assignee?.userId) + step.assignees.mapNotNull { it.userId } }
         val known = (people + named).toSet()
@@ -192,6 +207,7 @@ class WorkflowRunner(
             ineligible[person]
         }
         val interested = lazy { subject.interested(subjectId) }
+        val authority = lazy { doa.match(doaVersion, subject, subjectId, initiator) }
         val context =
             TransitionContext(
                 newId = ids::next,
@@ -204,6 +220,7 @@ class WorkflowRunner(
                 interested = interested::value,
                 // SOD-3: a substitute never acts on an item they initiated or have an interest in (design E04 §4.4).
                 substituteOf = { person -> substitutes.of(person)?.takeUnless { it == initiator || it in interested.value } },
+                doa = authority::value,
             )
         return Transition(context, definition)
     }

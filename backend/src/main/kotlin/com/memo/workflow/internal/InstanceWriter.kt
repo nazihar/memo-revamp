@@ -103,6 +103,7 @@ class InstanceWriter(
                 WORKFLOW_STEP.ROUTE_INDEX,
                 WORKFLOW_STEP.NEEDED,
                 WORKFLOW_STEP.RESOLUTION,
+                WORKFLOW_STEP.DOA_GROUP,
             )
         steps
             .fold(insert) { query, step ->
@@ -119,6 +120,7 @@ class InstanceWriter(
                     step.routeIndex,
                     step.needed,
                     step.resolution?.let { JSONB.valueOf(json.writeValueAsString(it)) },
+                    step.doaGroup,
                 )
             }.execute()
     }

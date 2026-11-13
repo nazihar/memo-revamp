@@ -314,6 +314,8 @@ class TransitionContext(
      * who may not act on this item (SOD-3). Their tasks go to the substitute, acting for the person.
      */
     val substituteOf: (UUID) -> UUID? = { null },
+    /** The delegation of authority for the instance's pinned version (design E04 §4.3), asked when a `doa` step activates. */
+    val doa: () -> DoaMatch = { DoaMatch.NONE },
 )
 
 /** An approval of [nodeId] by [person] that can carry over into the next round. */

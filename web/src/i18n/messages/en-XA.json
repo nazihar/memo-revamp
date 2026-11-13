@@ -701,6 +701,34 @@
       "value": "]"
     }
   ],
+  "access.permission.workflowDoaApprove": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗṽīḗḗẇ ȧȧƞḓ ƥŭŭƀŀīşħ ŧħḗḗ ḓḗḗŀḗḗɠȧȧŧīǿǿƞ ǿǿƒ ȧȧŭŭŧħǿǿřīŧẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "access.permission.workflowDoaManage": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓřȧȧƒŧ ŧħḗḗ ḓḗḗŀḗḗɠȧȧŧīǿǿƞ ǿǿƒ ȧȧŭŭŧħǿǿřīŧẏ ȧȧƞḓ şŭŭƀḿīŧ īŧ ƒǿǿř řḗḗṽīḗḗẇ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "access.permission.workflowInstancesCancel": [
     {
       "type": 0,

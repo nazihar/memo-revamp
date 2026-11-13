@@ -34,7 +34,12 @@ class WorkflowProblems {
         )
     }
 
-    @ExceptionHandler(DefinitionNotFoundException::class, QueueNotFoundException::class, SubstitutionNotFoundException::class)
+    @ExceptionHandler(
+        DefinitionNotFoundException::class,
+        QueueNotFoundException::class,
+        SubstitutionNotFoundException::class,
+        DoaNotFoundException::class,
+    )
     fun definitionNotFound(): ResponseEntity<ProblemDetail> =
         ResponseEntity.status(HttpStatus.NOT_FOUND).body(ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, "Not found"))
 
@@ -45,6 +50,16 @@ class WorkflowProblems {
             ProblemTypes.validation(ex.problems).apply {
                 status = HttpStatus.UNPROCESSABLE_CONTENT.value()
                 setProperty("reason", "DEFINITION_INVALID")
+            },
+        )
+
+    /** A DoA version that does not validate (design E04 §3): one entry per problem. */
+    @ExceptionHandler(DoaInvalidException::class)
+    fun doaInvalid(ex: DoaInvalidException): ResponseEntity<ProblemDetail> =
+        ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(
+            ProblemTypes.validation(ex.problems).apply {
+                status = HttpStatus.UNPROCESSABLE_CONTENT.value()
+                setProperty("reason", "DOA_INVALID")
             },
         )
 

@@ -71,6 +71,10 @@ open class WorkflowStepRecord private constructor() : UpdatableRecordImpl<Workfl
         set(value): Unit = set(12, value)
         get(): UUID? = get(12) as UUID?
 
+    open var doaGroup: Int?
+        set(value): Unit = set(13, value)
+        get(): Int? = get(13) as Int?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -80,7 +84,7 @@ open class WorkflowStepRecord private constructor() : UpdatableRecordImpl<Workfl
     /**
      * Create a detached, initialised WorkflowStepRecord
      */
-    constructor(id: UUID, tenantId: UUID, instanceId: UUID, roundId: UUID, ordinal: Int, type: String, assigneeId: UUID? = null, state: String, nodeId: String, routeIndex: Int? = null, needed: Int? = null, resolution: JSONB? = null, claimedBy: UUID? = null): this() {
+    constructor(id: UUID, tenantId: UUID, instanceId: UUID, roundId: UUID, ordinal: Int, type: String, assigneeId: UUID? = null, state: String, nodeId: String, routeIndex: Int? = null, needed: Int? = null, resolution: JSONB? = null, claimedBy: UUID? = null, doaGroup: Int? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.instanceId = instanceId
@@ -94,6 +98,7 @@ open class WorkflowStepRecord private constructor() : UpdatableRecordImpl<Workfl
         this.needed = needed
         this.resolution = resolution
         this.claimedBy = claimedBy
+        this.doaGroup = doaGroup
         resetTouchedOnNotNull()
     }
 }

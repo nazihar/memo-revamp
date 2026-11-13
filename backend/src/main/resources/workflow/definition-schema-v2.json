@@ -92,7 +92,7 @@
       "required": ["id", "type"],
       "properties": {
         "id": { "$ref": "#/$defs/stepId" },
-        "type": { "enum": ["route", "review", "approve", "parallel", "branch", "notify", "subworkflow", "escalate-to-forum", "sign"] },
+        "type": { "enum": ["route", "review", "approve", "parallel", "doa", "branch", "notify", "subworkflow", "escalate-to-forum", "sign"] },
         "name": { "$ref": "#/$defs/name" },
         "next": { "$ref": "#/$defs/target" },
         "assignee": { "$ref": "#/$defs/assignee" },
@@ -141,6 +141,10 @@
             "then": { "required": ["n"] },
             "else": { "not": { "required": ["n"] } }
           }
+        },
+        {
+          "if": { "properties": { "type": { "const": "doa" } } },
+          "then": { "required": ["next"], "propertyNames": { "enum": ["id", "type", "name", "next", "actions", "remarks", "sla"] } }
         },
         {
           "if": { "properties": { "type": { "const": "branch" } } },

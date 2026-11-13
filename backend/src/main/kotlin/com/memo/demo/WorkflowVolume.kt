@@ -3,6 +3,7 @@ package com.memo.demo
 import com.memo.common.context.Actor
 import com.memo.common.context.ActorContext
 import com.memo.common.context.ActorScope
+import com.memo.common.ratelimit.RateLimitedException
 import com.memo.common.tenant.TenantContext
 import com.memo.common.tenant.TenantId
 import com.memo.common.tenant.TenantTransactions
@@ -79,7 +80,7 @@ class WorkflowVolume(
             val initiator = people.initiators[n % INITIATORS]
             asUser(tenant, initiator) {
                 val memo = memos.draft("Volume memo ${n + 1}", typeId = type)
-                memos.document(memo, "memo.docx", document)
+                withinRateLimit { memos.document(memo, "memo.docx", document) }
                 memos.route(memo, listOf(people.approvers[n % APPROVERS]))
                 memos.submit(memo)
             }
@@ -97,6 +98,19 @@ class WorkflowVolume(
         val account = accounts.create("$name@volume.example", name.replaceFirstChar(Char::uppercase), tenantAdmin)
         accounts.setPassword(account.id, password)
         return account.id.value
+    }
+
+    /**
+     * Uploads are limited per person (UPLOAD_PER_USER), and the generator outpaces any person: it waits as a client
+     * would after a 429, then tries again. A refused upload writes nothing.
+     */
+    private fun <T> withinRateLimit(block: () -> T): T {
+        var result = runCatching(block)
+        while (true) {
+            val limited = result.exceptionOrNull() as? RateLimitedException ?: return result.getOrThrow()
+            Thread.sleep(limited.retryAfter.toMillis().coerceAtLeast(MIN_WAIT_MS))
+            result = runCatching(block)
+        }
     }
 
     private fun <T> asUser(
@@ -119,6 +133,7 @@ class WorkflowVolume(
         const val INITIATORS = 50
         const val MAX_INSTANCES = 20_000
         private const val PROGRESS = 500
+        private const val MIN_WAIT_MS = 100L
 
         /** One route step with an SLA: due in two working days, reminders before and after, escalation to the next level. */
         private val DEFINITION =

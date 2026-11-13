@@ -9,6 +9,8 @@ import { storageStateFor, type SignedInRole } from '../roles'
  * (credit review, then a branch on the classification, then the director), goes without a route; the reviewer asks the
  * director for an opinion, recommends, the director sends it back to the review, and after a second recommendation
  * approves it. Parallel steps and migrations are covered by the integration tests (`DefinitionRuntimeIT`, `MigrationIT`).
+ * E05 T8: the credit review has a deadline (a working day), shown to the reviewer; the business calendar admin adds
+ * and removes a holiday and previews a deadline.
  */
 async function as(browser: Browser, role: SignedInRole): Promise<Page> {
   const context = await browser.newContext({ storageState: storageStateFor(role) })
@@ -66,6 +68,8 @@ test.describe('as the initiator', () => {
     const head = await as(browser, 'headCredit')
     await head.goto(memoUrl)
     await expect(head.getByText('Step: Credit review')).toBeVisible()
+    // The step's SLA (one working day) gives the task a due time.
+    await expect(head.getByText(/^Due .*\d/)).toBeVisible()
     await act(head, memoUrl, 'Ask for opinions', {
       person: { search: 'Director', name: /Demo Director/ },
       remark: 'Is the collateral enough?',
@@ -96,8 +100,33 @@ test.describe('as a tenant admin', () => {
     await app.visit('/admin/workflows')
     await expect(page.getByRole('heading', { level: 1, name: 'Workflows' })).toBeVisible()
     await page.getByRole('link', { name: 'Credit facility' }).click()
-    await expect(page.getByRole('heading', { level: 2, name: /Version 1 · Published/ })).toBeVisible()
+    // Version 1 on a fresh stack; a stack seeded before E05 has the deadlines in version 2.
+    await expect(page.getByRole('heading', { level: 2, name: /Version \d+ · Published/ })).toBeVisible()
     await expect(page.getByRole('textbox', { name: /Definition/ })).toHaveAttribute('readonly')
     await app.checkA11y()
+  })
+
+  test('the business calendar adds and removes a holiday and previews a deadline', async ({ app, page }) => {
+    await app.visit('/admin/workflow/calendar')
+    await expect(page.getByRole('heading', { level: 1, name: 'Business calendar' })).toBeVisible()
+    await expect(page.getByText(/^Time zone: /).first()).toBeVisible()
+
+    // A holiday on the 28th of next month, removed again so that other journeys keep their due times.
+    const now = new Date()
+    const next = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth() + 1, 28))
+    const day = next.toISOString().slice(0, 10)
+    const note = `E2E holiday ${String(Date.now())}`
+    await page.getByRole('button', { name: 'Next month' }).click()
+    await page.getByLabel('First day').fill(day)
+    await page.getByLabel('Note', { exact: true }).fill(note)
+    await page.getByRole('button', { name: 'Add', exact: true }).click()
+    const line = page.getByRole('listitem').filter({ hasText: note })
+    await expect(line).toContainText('Closed')
+    await app.checkA11y()
+    await line.getByRole('button', { name: /^Remove / }).click()
+    await expect(line).toHaveCount(0)
+
+    await page.getByRole('button', { name: 'Calculate' }).click()
+    await expect(page.getByText(/^Due .*\d/)).toBeVisible()
   })
 })

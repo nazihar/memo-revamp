@@ -2,14 +2,15 @@
 
 > Read at the start of every session; update at the end (see `AGENTS.md §0`). Keep this page short and current. Move history into the phase folder's `log.md`.
 
-**Last updated:** 2026-11-11 (UTC+06:00) by Claude (agent)
+**Last updated:** 2026-11-14 (UTC+06:00) by Claude (agent)
 
 ## Current position
 - **Phase 1a closed on 2026-11-09** (owner instruction; `phase-1a-minimum-core/retrospective.md`, exit recorded in `overview.md §10`). All seven epics merged and on dev: E01 app frame, E02 platform kernel, E03 identity, sessions and step-up, E04 org directory and authorisation, E05 files, E06 notifications, E07 tenant lifecycle and administration (PRs #18–#30). Three exit items need the owner in person and are carried (Waiting for human).
 - **Phase 2 (workflow engine) started on 2026-11-09** at the owner's choice. The overview is approved (2026-11-09, Q1–Q5 answered, per-epic gate delegation kept): `phase-2-workflow-engine/overview.md` (six epics: E01 first slice / D1, E02 ONLYOFFICE editing, E03 definition model and runtime, E04 assignees and DoA, E05 timers and SLAs, E06 visual builder). Phase 1b is not started; it must finish before Phase 3 exits.
+- **Phase 2 is built, merged and on dev (2026-11-13):** E03–E06 (PRs #41–#81) merged in order at the owner's instruction. CI on `master` was green and the dev deploy succeeded. The eight Phase 2 journeys pass against dev, the builder exit journey among them. What is left needs the owner in person (Waiting for human).
 - **Dev environment:** https://dev.memo-revamp.naziharitsolution.com and the operator console https://admin.dev.memo-revamp.naziharitsolution.com on the VM 123.176.58.175. It deploys automatically after every green `ci` run on `master`. The owner's operator account is enrolled.
 - **Phase 0:** done (`docs/plan/phase-0-foundations/`). **Release:** `v0.1.0` (2026-10-15). **Product name:** `memo` everywhere except the repository name (A1).
-- **Branches:** `master` holds PRs #1–#39 (2026-11-11: #34 Phase 2 E01, #35 memo visual baselines, #36 web image CVE fix, #37 E02 plan, #38 E02 implementation, #39 forwarded scheme for the editor).
+- **Branches:** `master` holds PRs #1–#81 (2026-11-13: #41–#81 Phase 2 E03–E06, merged in order).
 
 ## State (Phase 2)
 - [x] Overview written (2026-11-09)
@@ -44,7 +45,7 @@
 - [x] E03 T9 events and history (stacked PR)
 - [x] E03 T10 web (stacked PR)
 - [x] E03 T11 close: demo "Credit facility" workflow and FIXED memo type, E2E journey (opinion, recommend, send back, approve) green locally, ASVS rows, runbook `workflow-definitions.md`, epic log
-- [ ] E03 merged (stacked PRs #41–#51, in order) and on dev
+- [x] E03 merged (#41–#51) and on dev (2026-11-13)
 - [x] E04 plan written (2026-11-12): research (R1, R5, R6, R12), ADR-0040, design, threat model, tasks T1–T10, test plan (`epic-04-assignees-doa/`)
 - [x] E04 T1 read facades (stacked PR)
 - [x] E04 T2 resolvers (stacked PR)
@@ -76,7 +77,9 @@
 - [x] E06 T8 accessibility pass: arrow keys along connections, Delete asks, announcements, diagram contrast, manual checklist (stacked PR)
 - [x] E06 T9 close: exit journey `builder.spec.ts`, demo reviewer account, phase `demo.md` and `retrospective.md`, runbook, ASVS rows (stacked PR) — **E06 complete** (PRs #72–#81, none merged yet)
 - [x] **Phase 2 built** (2026-11-13): exit status in `phase-2-workflow-engine/retrospective.md`
-- [ ] E03–E06 merged (#41 → #81, in order) and on dev; first weekly load report
+- [x] E03–E06 merged (#41 → #81, in order) and on dev (2026-11-13): `ci` and `deploy-dev` green; the eight Phase 2 journeys pass against dev; three demo seats on dev corrected (phase log)
+- [x] Load measured (2026-11-14, `load` run 43482461508 on PR #82's branch): 10,000 memos in review with their timers, 50 approvers signed in, 18,100 inbox reads, each a full page of due decisions; p95 10 ms (budget 300 ms), no errors. Getting there needed four fixes to the load stage itself (phase log); the weekly run on `master` follows once #82 is merged
+- [ ] Owner: merge #82 (load stage fixes, records of the merge and the dev check)
 - [ ] Owner: phase demo (`demo.md`), builder walkthrough, manual keyboard and screen-reader pass (carried)
 
 ## State (Phase 1a, closed)
@@ -88,14 +91,14 @@
 - [ ] Owner demo, moderated usability walkthrough, manual keyboard and screen-reader pass (carried)
 
 ## Next step
-1. Owner: merge E03–E06 in order (#41 → #81, each stacked on the one before); the agent then deploys them to dev, checks them there, and reads the first weekly load report.
+1. Owner: merge #82 (the load stage fixes and these records).
 1. Owner: the phase demo (`phase-2-workflow-engine/demo.md`), the builder walkthrough and the manual accessibility pass; then choose the next phase (Phase 1b must finish before Phase 3 exits).
 2. Owner: the D1 demo on dev (`phase-2-workflow-engine/epic-01-first-slice/demo.md`).
 3. Before 2026-11-22: take the rebuilt distroless digest from Renovate and delete the zlib entries in `.trivyignore`.
 4. Follow-ups (retrospective "Carried"): `AuditPerformanceIT`, `NotificationPerformanceIT`, the full-signature ClamAV corpus nightly, sample bodies for the remaining mutating matrix cells, upstream clean-ups (`apk upgrade` lines, Spring Session licence exceptions, Guava pin), Spring Boot 4.2 GA.
 
 ## Waiting for human
-- **D1 pilot demo** (Phase 2 E01): on dev once the release with PR #34 is deployed, following `phase-2-workflow-engine/epic-01-first-slice/demo.md`.
+- **Phase 2 in person:** the D1 demo (`phase-2-workflow-engine/epic-01-first-slice/demo.md`) and the phase demo (`phase-2-workflow-engine/demo.md`), both on dev; the builder usability walkthrough; the manual keyboard and screen-reader pass (checklist in `epic-06-visual-builder/ux-review.md`). Then choose the next phase.
 - **Carried from Phase 1a (in person, no rush):** the demo (`docs/plan/phase-1a-minimum-core/demo.md`), a moderated usability walkthrough (login + MFA, org editing, tenant administration) and a manual keyboard + screen-reader pass (NVDA or VoiceOver), including the E01 patterns gallery (`pnpm dev`, `/patterns`).
 - **GitHub setup:** required reviewers on the `release` environment (may need a paid plan on a private repository; meanwhile only the owner can push `v*` tags) and branch protection on `master`.
 
@@ -103,7 +106,7 @@
 - **A1 (resolved):** the product is `memo`. Package `com.memo`, Gradle group `com.memo`, application name `memo`, images `memo-backend` / `memo-web`. Only the repository keeps the name `memo-revamp`. The stored schema marker moved to `memo` with migration `system/V2`.
 
 ## Decisions taken
-ADR-0001 to ADR-0039 (`docs/adr/README.md`). Phase 2: ADR-0038 workflow definitions, ADR-0039 CEL conditions, ADR-0037 ONLYOFFICE editing integration, ADR-0034 own workflow engine, ADR-0035 workflow data model and concurrency, ADR-0036 memo document binding and approval step-up. Phase 1a: ADR-0017 tenant context, ADR-0018 jobs, ADR-0019 audit store, ADR-0020 cache invalidation, ADR-0021 modal dialogs, ADR-0022 tenant resolution and accounts, ADR-0023 local authentication and sessions, ADR-0024 TOTP MFA and step-up, ADR-0025 rate limiting, ADR-0026 org model, ADR-0027 authorisation model, ADR-0028 envelope encryption, ADR-0029 upload pipeline and range downloads, ADR-0030 notifications and email delivery, ADR-0031 platform operator path, ADR-0032 terminology overrides, ADR-0033 audit viewer and export.
+ADR-0001 to ADR-0042 (`docs/adr/README.md`). Phase 2: ADR-0042 visual workflow builder, ADR-0041 timers, SLAs and business calendars, ADR-0040 assignees, queues, DoA and acting for, ADR-0038 workflow definitions, ADR-0039 CEL conditions, ADR-0037 ONLYOFFICE editing integration, ADR-0034 own workflow engine, ADR-0035 workflow data model and concurrency, ADR-0036 memo document binding and approval step-up. Phase 1a: ADR-0017 tenant context, ADR-0018 jobs, ADR-0019 audit store, ADR-0020 cache invalidation, ADR-0021 modal dialogs, ADR-0022 tenant resolution and accounts, ADR-0023 local authentication and sessions, ADR-0024 TOTP MFA and step-up, ADR-0025 rate limiting, ADR-0026 org model, ADR-0027 authorisation model, ADR-0028 envelope encryption, ADR-0029 upload pipeline and range downloads, ADR-0030 notifications and email delivery, ADR-0031 platform operator path, ADR-0032 terminology overrides, ADR-0033 audit viewer and export.
 
 ## Environment notes (dev machine)
 - VS Code's Java extension builds the tree with its own Gradle and can hold the shared `build-logic/.gradle` lock, stalling CLI builds at "Calculating task graph". CLI builds use `MEMO_BUILD_ROOT=<repo>/.build-cli` (README); the git-ignored `.vscode/settings.json` sets the Java extension to LightWeight mode (owner agreed 2026-10-26; the owner does not code on this project).
@@ -113,7 +116,7 @@ ADR-0001 to ADR-0039 (`docs/adr/README.md`). Phase 2: ADR-0038 workflow definiti
 ## Milestone tracker
 | Milestone | Target | Status |
 |---|---|---|
-| D1 — Pilot demo: simple sequential memo approval | end of Phase 2 slice 1 | not started |
+| D1 — Pilot demo: simple sequential memo approval | end of Phase 2 slice 1 | built and on dev; owner demo pending |
 | M1 — Pilot memo go-live (incl. pen test) | end of Phase 3 | not started |
 | M2 — Committee meetings live | end of Phase 4 | not started |
 | M3 — Board-grade web | end of Phase 5 | not started |

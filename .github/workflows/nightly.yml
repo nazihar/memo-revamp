@@ -189,7 +189,7 @@ jobs:
         run: ci/onprem-stack.sh down
 
   fuzz:
-    name: Jazzer fuzzing (upload path, time-boxed)
+    name: Jazzer fuzzing (upload path, workflow definitions, time-boxed)
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
@@ -209,12 +209,17 @@ jobs:
           for target in clamdReply byteRanges contentTypes inspection fileNames; do
             ./gradlew :backend:test --tests "com.memo.files.internal.UploadPathFuzzTest.${target}" --console=plain
           done
+          # Workflow conditions and definition bodies (ADR-0039, threat model E03 D1/E1).
+          for target in conditions definitions; do
+            ./gradlew :backend:test --tests "com.memo.workflow.definition.DefinitionFuzzTest.${target}" --console=plain
+          done
       - if: failure()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: fuzz-findings
           path: |
             backend/src/test/resources/com/memo/files/internal/UploadPathFuzzTestInputs/**
+            backend/src/test/resources/com/memo/workflow/definition/DefinitionFuzzTestInputs/**
             backend/.cifuzz-corpus/**
           retention-days: 14
 

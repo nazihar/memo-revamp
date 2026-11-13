@@ -1,0 +1,1 @@
+{"schemaVersion":2,"start":"a","steps":[{"id":"a","type":"branch","branches":[{"when":"true","next":"end"}],"otherwise":"end"}]}

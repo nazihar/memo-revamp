@@ -315,6 +315,12 @@
       "value": "Cancel running workflowsSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "access.permission.workflowQueuesManage": [
+    {
+      "type": 0,
+      "value": "Manage workflow queuesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "access.permission.workflowTasksReassign": [
     {
       "type": 0,
@@ -2593,6 +2599,12 @@
       "value": "Approval carried over (document unchanged)SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.history.action.claim": [
+    {
+      "type": 0,
+      "value": "Took the taskSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.history.action.delegate": [
     {
       "type": 0,
@@ -2657,6 +2669,12 @@
     {
       "type": 0,
       "value": "RejectedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.history.action.release": [
+    {
+      "type": 0,
+      "value": "Gave the task backSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.history.action.resubmit": [

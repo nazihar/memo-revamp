@@ -72,6 +72,9 @@ enum class AssigneeKind(
 
     /** The holders of a role in a unit (the initiator's or [Assignee.unit]) or above it. */
     ROLE("role"),
+
+    /** The members of a queue (people, and the holders of member positions), [Assignee.queue] by key. */
+    QUEUE("queue"),
     ;
 
     companion object {
@@ -94,6 +97,8 @@ data class Assignee(
     /** Units above, for [AssigneeKind.UNIT_HEAD]. */
     val up: Int? = null,
     val roleId: UUID? = null,
+    /** A queue key, for [AssigneeKind.QUEUE]. */
+    val queue: String? = null,
 )
 
 data class Attribute(

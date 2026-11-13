@@ -269,6 +269,8 @@ interface DefinitionReferences {
 
     fun unitExists(id: UUID): Boolean
 
+    fun queueExists(key: String): Boolean
+
     companion object {
         val ANY =
             object : DefinitionReferences {
@@ -277,13 +279,15 @@ interface DefinitionReferences {
                 override fun roleExists(id: UUID) = true
 
                 override fun unitExists(id: UUID) = true
+
+                override fun queueExists(key: String) = true
             }
     }
 }
 
 /**
- * Who a step may go to (design E04 §2): the initiator only hears from notify steps, a fallback is a named person, and
- * positions, roles and units must exist in the tenant.
+ * Who a step may go to (design E04 §2): the initiator only hears from notify steps, a fallback is a named person or a
+ * queue, and positions, roles, units and queues must exist in the tenant.
  */
 private class AssigneeChecks(
     private val references: DefinitionReferences,
@@ -302,8 +306,8 @@ private class AssigneeChecks(
                 step.assignee?.takeIf { step.type.human && it.kind == AssigneeKind.INITIATOR }?.let {
                     DefinitionProblem("$at/assignee", "ASSIGNEE_KIND", "the initiator cannot decide on their own item")
                 },
-                step.fallback?.takeIf { it.kind != AssigneeKind.PERSON }?.let {
-                    DefinitionProblem("$at/fallback", "FALLBACK_KIND", "a fallback is a named person")
+                step.fallback?.takeIf { it.kind != AssigneeKind.PERSON && it.kind != AssigneeKind.QUEUE }?.let {
+                    DefinitionProblem("$at/fallback", "FALLBACK_KIND", "a fallback is a named person or a queue")
                 },
             ) +
                 step.assignees.mapIndexedNotNull { a, assignee ->
@@ -326,6 +330,9 @@ private class AssigneeChecks(
             },
             assignee.unit?.takeUnless(references::unitExists)?.let {
                 DefinitionProblem("$at/unit", "UNKNOWN_UNIT", "no unit $it in this organisation")
+            },
+            assignee.queue?.takeUnless(references::queueExists)?.let {
+                DefinitionProblem("$at/queue", "UNKNOWN_QUEUE", "no queue '$it' in this organisation")
             },
         )
 }

@@ -192,7 +192,7 @@ open class WorkflowAction(
     val workflowInstance: WorkflowInstancePath by lazy { WorkflowInstancePath(this, WORKFLOW_ACTION__WORKFLOW_ACTION_TENANT_ID_INSTANCE_ID_FKEY, null) }
     override fun getChecks(): List<Check<WorkflowActionRecord>> = listOf(
         Internal.createCheck(this, DSL.name("workflow_action_details_check"), "((octet_length((details)::text) <= 4096))", true),
-        Internal.createCheck(this, DSL.name("workflow_action_kind_check"), "((kind = ANY (ARRAY['SUBMIT'::text, 'APPROVE'::text, 'RETURN'::text, 'REJECT'::text, 'WITHDRAW'::text, 'RESUBMIT'::text, 'REASSIGN'::text, 'RECOMMEND'::text, 'ROUTE'::text, 'NOTIFY'::text, 'ESCALATE_TO_FORUM'::text, 'SEND_BACK'::text, 'FORWARD'::text, 'DELEGATE'::text, 'ASK'::text, 'ANSWER'::text, 'REFER'::text, 'OPINION'::text, 'RECALL'::text, 'CANCEL'::text, 'MIGRATE'::text, 'CARRY'::text])))", true),
+        Internal.createCheck(this, DSL.name("workflow_action_kind_check"), "((kind = ANY (ARRAY['SUBMIT'::text, 'APPROVE'::text, 'RETURN'::text, 'REJECT'::text, 'WITHDRAW'::text, 'RESUBMIT'::text, 'REASSIGN'::text, 'RECOMMEND'::text, 'ROUTE'::text, 'NOTIFY'::text, 'ESCALATE_TO_FORUM'::text, 'SEND_BACK'::text, 'FORWARD'::text, 'DELEGATE'::text, 'ASK'::text, 'ANSWER'::text, 'REFER'::text, 'OPINION'::text, 'RECALL'::text, 'CANCEL'::text, 'MIGRATE'::text, 'CARRY'::text, 'CLAIM'::text, 'RELEASE'::text])))", true),
         Internal.createCheck(this, DSL.name("workflow_action_remark_check"), "(((length(remark) >= 1) AND (length(remark) <= 4000)))", true),
         Internal.createCheck(this, DSL.name("workflow_action_round_check"), "((round >= 1))", true),
         Internal.createCheck(this, DSL.name("workflow_action_seq_check"), "((seq >= 1))", true),

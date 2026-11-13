@@ -228,13 +228,15 @@ class InstanceWriter(
     ) {
         val previous = before.steps.associateBy { it.id }
         after.steps
-            .filter { step -> previous[step.id]?.let { it.state != step.state || it.assignee != step.assignee } ?: false }
-            .forEach { step ->
+            .filter { step ->
+                previous[step.id]?.let { it.state != step.state || it.assignee != step.assignee || it.claimedBy != step.claimedBy } ?: false
+            }.forEach { step ->
                 tenantDsl
                     .current()
                     .update(WORKFLOW_STEP)
                     .set(WORKFLOW_STEP.STATE, step.state.name)
                     .set(WORKFLOW_STEP.ASSIGNEE_ID, step.assignee)
+                    .set(WORKFLOW_STEP.CLAIMED_BY, step.claimedBy)
                     .where(WORKFLOW_STEP.ID.eq(step.id))
                     .execute()
             }

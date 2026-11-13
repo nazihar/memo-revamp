@@ -715,6 +715,20 @@
       "value": "‬"
     }
   ],
+  "access.permission.workflowQueuesManage": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wɐuɐƃǝ ʍoɹʞɟʅoʍ bnǝnǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "access.permission.workflowTasksReassign": [
     {
       "type": 0,
@@ -5637,6 +5651,20 @@
       "value": "‬"
     }
   ],
+  "memo.history.action.claim": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ooʞ ʇɥǝ ʇɐsʞ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "memo.history.action.delegate": [
     {
       "type": 0,
@@ -5785,6 +5813,20 @@
     {
       "type": 0,
       "value": "ᴚǝɾǝɔʇǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.history.action.release": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅁ɐʌǝ ʇɥǝ ʇɐsʞ qɐɔʞ"
     },
     {
       "type": 0,

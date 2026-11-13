@@ -1,0 +1,15 @@
+# Phase 2 E04 assignees, routing rules and DoA (design E04 §5, §6). Task claims are the candidates' (the engine checks it);
+# random task ids are 404 for everyone allowed through.
+epic: P2-E04
+endpoints:
+  - { endpoint: "POST /api/v1/tasks/{taskId}/claim", rule: signedIn, headers: { Idempotency-Key: "{random}" } }
+  - { endpoint: "POST /api/v1/tasks/{taskId}/release", rule: signedIn, headers: { Idempotency-Key: "{random}" } }
+  - { endpoint: "POST /api/v1/admin/workflow/tasks/{taskId}/release", rule: tenantAdmin, headers: { Idempotency-Key: "{random}" } }
+  - { endpoint: "GET /api/v1/admin/workflow/queues", rule: tenantAdmin }
+  - endpoint: "POST /api/v1/admin/workflow/queues"
+    rule: tenantAdmin
+    body: { key: "matrix", name: "Matrix" }
+  - endpoint: "PUT /api/v1/admin/workflow/queues/{key}"
+    rule: tenantAdmin
+    body: { name: "Matrix" }
+    headers: { If-Match: "\"0\"" }

@@ -76,6 +76,22 @@ data class Reassign(
     val reason: String?,
 ) : TaskCommand
 
+/** A candidate takes a step shared by several people (design E04 §4.2): the others cannot decide it until it is released. */
+data class Claim(
+    override val actor: UUID,
+    override val taskId: UUID,
+) : TaskCommand
+
+/**
+ * Gives a claimed step back to all its candidates: by the claimer, or by an administrator ([byAdministrator]; the caller
+ * has checked `workflow.tasks.reassign`).
+ */
+data class Release(
+    override val actor: UUID,
+    override val taskId: UUID,
+    val byAdministrator: Boolean = false,
+) : TaskCommand
+
 /** Sends the item back to an earlier step of this round, which runs again (design E03 §4.4). */
 data class SendBack(
     override val actor: UUID,
@@ -152,6 +168,10 @@ enum class Refusal {
     NOT_AN_EARLIER_STEP,
     STEP_MISSING,
     STEP_CHANGED,
+    NOT_SHARED,
+    ALREADY_CLAIMED,
+    NOT_CLAIMED,
+    CLAIMED_BY_OTHER,
     WAITING_FOR_ANSWER,
     ALREADY_ON_STEP,
     TOO_MANY_REFERRALS,

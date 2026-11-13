@@ -930,7 +930,7 @@
             "type" : [ "integer", "null" ]
           },
           "kind" : {
-            "enum" : [ "SUBMIT", "APPROVE", "RETURN", "REJECT", "WITHDRAW", "RESUBMIT", "REASSIGN", "RECOMMEND", "ROUTE", "NOTIFY", "ESCALATE_TO_FORUM", "SEND_BACK", "FORWARD", "DELEGATE", "ASK", "ANSWER", "REFER", "OPINION", "RECALL", "CANCEL", "MIGRATE", "CARRY" ],
+            "enum" : [ "SUBMIT", "APPROVE", "RETURN", "REJECT", "WITHDRAW", "RESUBMIT", "REASSIGN", "RECOMMEND", "ROUTE", "NOTIFY", "ESCALATE_TO_FORUM", "SEND_BACK", "FORWARD", "DELEGATE", "ASK", "ANSWER", "REFER", "OPINION", "RECALL", "CANCEL", "MIGRATE", "CARRY", "CLAIM", "RELEASE" ],
             "type" : "string"
           },
           "occurredAt" : {
@@ -1440,7 +1440,7 @@
         "properties" : {
           "allowedActions" : {
             "items" : {
-              "enum" : [ "EDIT", "UPLOAD_DOCUMENT", "EDIT_ROUTE", "SUBMIT", "DISCARD", "RESUBMIT", "WITHDRAW", "APPROVE", "RETURN", "REJECT", "EDIT_DOCUMENT", "VIEW_DOCUMENT", "RECOMMEND", "SEND_BACK", "FORWARD", "DELEGATE", "ASK", "REFER", "ANSWER", "OPINION", "RECALL" ],
+              "enum" : [ "EDIT", "UPLOAD_DOCUMENT", "EDIT_ROUTE", "SUBMIT", "DISCARD", "RESUBMIT", "WITHDRAW", "APPROVE", "RETURN", "REJECT", "EDIT_DOCUMENT", "VIEW_DOCUMENT", "RECOMMEND", "SEND_BACK", "FORWARD", "DELEGATE", "ASK", "REFER", "ANSWER", "OPINION", "RECALL", "CLAIM", "RELEASE" ],
               "type" : "string"
             },
             "type" : "array"
@@ -2452,6 +2452,78 @@
         },
         "type" : "object"
       },
+      "QueueMemberRequest" : {
+        "properties" : {
+          "positionId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "userId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "QueueMemberView" : {
+        "properties" : {
+          "positionId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "positionTitle" : {
+            "type" : [ "string", "null" ]
+          },
+          "user" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/Person"
+            }, {
+              "type" : "null"
+            } ]
+          }
+        },
+        "type" : "object"
+      },
+      "QueueRequest" : {
+        "properties" : {
+          "key" : {
+            "type" : [ "string", "null" ]
+          },
+          "members" : {
+            "items" : {
+              "$ref" : "#/components/schemas/QueueMemberRequest"
+            },
+            "type" : "array"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "QueueResponse" : {
+        "properties" : {
+          "key" : {
+            "type" : "string"
+          },
+          "members" : {
+            "items" : {
+              "$ref" : "#/components/schemas/QueueMemberView"
+            },
+            "type" : "array"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "version" : {
+            "description" : "Send as If-Match on changes",
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "key", "members", "name", "version" ],
+        "type" : "object"
+      },
       "ReassignRequest" : {
         "properties" : {
           "newAssigneeId" : {
@@ -2783,6 +2855,13 @@
             "enum" : [ "NO_CLEARANCE", "INACTIVE", "UNRESOLVED" ],
             "type" : [ "string", "null" ]
           },
+          "claimedBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/Named"
+            }, {
+              "type" : "null"
+            } ]
+          },
           "id" : {
             "format" : "uuid",
             "type" : "string"
@@ -2791,6 +2870,9 @@
             "enum" : [ "DECIDE", "OPINION", "CLARIFY" ],
             "type" : "string"
           },
+          "shared" : {
+            "type" : "boolean"
+          },
           "stepName" : {
             "type" : [ "string", "null" ]
           },
@@ -2798,7 +2880,7 @@
             "type" : "boolean"
           }
         },
-        "required" : [ "id", "role", "waiting" ],
+        "required" : [ "id", "role", "shared", "waiting" ],
         "type" : "object"
       },
       "TenantPreferences" : {
@@ -4542,6 +4624,99 @@
         "tags" : [ "workflow" ]
       }
     },
+    "/api/v1/admin/workflow/queues" : {
+      "get" : {
+        "operationId" : "listWorkflowQueues",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/QueueResponse"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Queues and their members",
+        "tags" : [ "workflow" ]
+      },
+      "post" : {
+        "operationId" : "createWorkflowQueue",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/QueueRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/QueueResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Create a queue",
+        "tags" : [ "workflow" ]
+      }
+    },
+    "/api/v1/admin/workflow/queues/{key}" : {
+      "put" : {
+        "operationId" : "updateWorkflowQueue",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/QueueRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/QueueResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Rename a queue and replace its members",
+        "tags" : [ "workflow" ]
+      }
+    },
     "/api/v1/admin/workflow/tasks" : {
       "get" : {
         "operationId" : "listOpenTasks",
@@ -4636,6 +4811,41 @@
           }
         },
         "summary" : "Give an open task to someone else",
+        "tags" : [ "workflow" ]
+      }
+    },
+    "/api/v1/admin/workflow/tasks/{taskId}/release" : {
+      "post" : {
+        "operationId" : "releaseClaimedTask",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "taskId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/WorkflowView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Give a claimed step back to everyone it was offered to",
         "tags" : [ "workflow" ]
       }
     },
@@ -8360,6 +8570,41 @@
         "tags" : [ "memo" ]
       }
     },
+    "/api/v1/tasks/{taskId}/claim" : {
+      "post" : {
+        "operationId" : "claimTask",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "taskId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemoView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Take a step offered to several people; the others wait until you release it",
+        "tags" : [ "memo" ]
+      }
+    },
     "/api/v1/tasks/{taskId}/delegate" : {
       "post" : {
         "operationId" : "delegateTask",
@@ -8582,6 +8827,41 @@
           }
         },
         "summary" : "Reject the memo of a task",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/tasks/{taskId}/release" : {
+      "post" : {
+        "operationId" : "releaseTask",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "taskId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemoView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Give a step you claimed back to everyone it was offered to",
         "tags" : [ "memo" ]
       }
     },

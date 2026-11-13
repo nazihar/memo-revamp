@@ -51,6 +51,8 @@ import com.memo.jooq.tables.WorkflowAction
 import com.memo.jooq.tables.WorkflowDefinition
 import com.memo.jooq.tables.WorkflowDefinitionVersion
 import com.memo.jooq.tables.WorkflowInstance
+import com.memo.jooq.tables.WorkflowQueue
+import com.memo.jooq.tables.WorkflowQueueMember
 import com.memo.jooq.tables.WorkflowRound
 import com.memo.jooq.tables.WorkflowStep
 import com.memo.jooq.tables.WorkflowTask
@@ -286,6 +288,16 @@ val WORKFLOW_DEFINITION_VERSION: WorkflowDefinitionVersion = WorkflowDefinitionV
  * The table <code>memo.workflow_instance</code>.
  */
 val WORKFLOW_INSTANCE: WorkflowInstance = WorkflowInstance.WORKFLOW_INSTANCE
+
+/**
+ * The table <code>memo.workflow_queue</code>.
+ */
+val WORKFLOW_QUEUE: WorkflowQueue = WorkflowQueue.WORKFLOW_QUEUE
+
+/**
+ * The table <code>memo.workflow_queue_member</code>.
+ */
+val WORKFLOW_QUEUE_MEMBER: WorkflowQueueMember = WorkflowQueueMember.WORKFLOW_QUEUE_MEMBER
 
 /**
  * The table <code>memo.workflow_round</code>.

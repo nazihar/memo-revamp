@@ -55,6 +55,8 @@ data class Step(
     val name: String? = null,
     val needed: Int? = null,
     val resolution: Map<String, Any?>? = null,
+    /** The candidate who claimed a shared step; only their task decides it until they release it (invariant 20). */
+    val claimedBy: UUID? = null,
 ) {
     /** Decided by several holders: a parallel step, or one resolved to several candidates. */
     val shared: Boolean get() = kind == StepKind.PARALLEL || needed != null
@@ -97,7 +99,15 @@ data class InstanceState(
      * tasks not waiting for an answer, and whoever was asked. People asked for an opinion are consulted, not holders.
      */
     val currentAssignees: List<UUID>
-        get() = openTasks.filter { (it.kind == TaskKind.DECIDE && !it.waiting) || it.kind == TaskKind.CLARIFY }.mapNotNull { it.assignee }
+        get() =
+            round.steps.flatMap { step ->
+                step.tasks
+                    .filter { it.state == TaskState.OPEN }
+                    .filter { (it.kind == TaskKind.DECIDE && !it.waiting) || it.kind == TaskKind.CLARIFY }
+                    // A claimed step is held by its claimer alone (design E04 §4.2).
+                    .filter { it.kind != TaskKind.DECIDE || step.claimedBy == null || it.assignee == step.claimedBy }
+                    .mapNotNull { it.assignee }
+            }
 
     val activeStep: Step? get() = round.steps.firstOrNull { it.state == StepState.ACTIVE }
 

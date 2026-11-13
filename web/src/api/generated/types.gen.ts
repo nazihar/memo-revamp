@@ -389,7 +389,7 @@ export type HistoryAction = {
         [key: string]: unknown;
     };
     documentNumber?: number | null;
-    kind: 'SUBMIT' | 'APPROVE' | 'RETURN' | 'REJECT' | 'WITHDRAW' | 'RESUBMIT' | 'REASSIGN' | 'RECOMMEND' | 'ROUTE' | 'NOTIFY' | 'ESCALATE_TO_FORUM' | 'SEND_BACK' | 'FORWARD' | 'DELEGATE' | 'ASK' | 'ANSWER' | 'REFER' | 'OPINION' | 'RECALL' | 'CANCEL' | 'MIGRATE' | 'CARRY';
+    kind: 'SUBMIT' | 'APPROVE' | 'RETURN' | 'REJECT' | 'WITHDRAW' | 'RESUBMIT' | 'REASSIGN' | 'RECOMMEND' | 'ROUTE' | 'NOTIFY' | 'ESCALATE_TO_FORUM' | 'SEND_BACK' | 'FORWARD' | 'DELEGATE' | 'ASK' | 'ANSWER' | 'REFER' | 'OPINION' | 'RECALL' | 'CANCEL' | 'MIGRATE' | 'CARRY' | 'CLAIM' | 'RELEASE';
     occurredAt: string;
     remark?: string | null;
     seq: number;
@@ -572,7 +572,7 @@ export type MemoTypeRequest = {
 };
 
 export type MemoView = {
-    allowedActions: Array<'EDIT' | 'UPLOAD_DOCUMENT' | 'EDIT_ROUTE' | 'SUBMIT' | 'DISCARD' | 'RESUBMIT' | 'WITHDRAW' | 'APPROVE' | 'RETURN' | 'REJECT' | 'EDIT_DOCUMENT' | 'VIEW_DOCUMENT' | 'RECOMMEND' | 'SEND_BACK' | 'FORWARD' | 'DELEGATE' | 'ASK' | 'REFER' | 'ANSWER' | 'OPINION' | 'RECALL'>;
+    allowedActions: Array<'EDIT' | 'UPLOAD_DOCUMENT' | 'EDIT_ROUTE' | 'SUBMIT' | 'DISCARD' | 'RESUBMIT' | 'WITHDRAW' | 'APPROVE' | 'RETURN' | 'REJECT' | 'EDIT_DOCUMENT' | 'VIEW_DOCUMENT' | 'RECOMMEND' | 'SEND_BACK' | 'FORWARD' | 'DELEGATE' | 'ASK' | 'REFER' | 'ANSWER' | 'OPINION' | 'RECALL' | 'CLAIM' | 'RELEASE'>;
     classification: ClassificationView;
     createdAt: string;
     document?: DocumentView | null;
@@ -1011,6 +1011,33 @@ export type ProblemDetail = {
     type?: string;
 };
 
+export type QueueMemberRequest = {
+    positionId?: string | null;
+    userId?: string | null;
+};
+
+export type QueueMemberView = {
+    positionId?: string | null;
+    positionTitle?: string | null;
+    user?: Person | null;
+};
+
+export type QueueRequest = {
+    key?: string | null;
+    members?: Array<QueueMemberRequest>;
+    name?: string;
+};
+
+export type QueueResponse = {
+    key: string;
+    members: Array<QueueMemberView>;
+    name: string;
+    /**
+     * Send as If-Match on changes
+     */
+    version: number;
+};
+
 export type ReassignRequest = {
     newAssigneeId?: string;
     reason?: string | null;
@@ -1161,8 +1188,10 @@ export type StepUpRequest = {
 
 export type TaskRef = {
     blocked?: 'NO_CLEARANCE' | 'INACTIVE' | 'UNRESOLVED';
+    claimedBy?: Named | null;
     id: string;
     role: 'DECIDE' | 'OPINION' | 'CLARIFY';
+    shared: boolean;
     stepName?: string | null;
     waiting: boolean;
 };
@@ -2113,6 +2142,59 @@ export type CancelWorkflowResponses = {
 
 export type CancelWorkflowResponse = CancelWorkflowResponses[keyof CancelWorkflowResponses];
 
+export type ListWorkflowQueuesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/workflow/queues';
+};
+
+export type ListWorkflowQueuesResponses = {
+    /**
+     * OK
+     */
+    200: Array<QueueResponse>;
+};
+
+export type ListWorkflowQueuesResponse = ListWorkflowQueuesResponses[keyof ListWorkflowQueuesResponses];
+
+export type CreateWorkflowQueueData = {
+    body: QueueRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/workflow/queues';
+};
+
+export type CreateWorkflowQueueResponses = {
+    /**
+     * OK
+     */
+    200: QueueResponse;
+};
+
+export type CreateWorkflowQueueResponse = CreateWorkflowQueueResponses[keyof CreateWorkflowQueueResponses];
+
+export type UpdateWorkflowQueueData = {
+    body: QueueRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        key: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/workflow/queues/{key}';
+};
+
+export type UpdateWorkflowQueueResponses = {
+    /**
+     * OK
+     */
+    200: QueueResponse;
+};
+
+export type UpdateWorkflowQueueResponse = UpdateWorkflowQueueResponses[keyof UpdateWorkflowQueueResponses];
+
 export type ListOpenTasksData = {
     body?: never;
     path?: never;
@@ -2154,6 +2236,27 @@ export type ReassignTaskResponses = {
 };
 
 export type ReassignTaskResponse = ReassignTaskResponses[keyof ReassignTaskResponses];
+
+export type ReleaseClaimedTaskData = {
+    body?: never;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        taskId: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/workflow/tasks/{taskId}/release';
+};
+
+export type ReleaseClaimedTaskResponses = {
+    /**
+     * OK
+     */
+    200: WorkflowView;
+};
+
+export type ReleaseClaimedTaskResponse = ReleaseClaimedTaskResponses[keyof ReleaseClaimedTaskResponses];
 
 export type GetCsrfTokenData = {
     body?: never;
@@ -4353,6 +4456,27 @@ export type AskOnTaskResponses = {
 
 export type AskOnTaskResponse = AskOnTaskResponses[keyof AskOnTaskResponses];
 
+export type ClaimTaskData = {
+    body?: never;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        taskId: string;
+    };
+    query?: never;
+    url: '/api/v1/tasks/{taskId}/claim';
+};
+
+export type ClaimTaskResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type ClaimTaskResponse = ClaimTaskResponses[keyof ClaimTaskResponses];
+
 export type DelegateTaskData = {
     body: HandOnRequest;
     headers: {
@@ -4457,6 +4581,27 @@ export type RejectTaskResponses = {
 };
 
 export type RejectTaskResponse = RejectTaskResponses[keyof RejectTaskResponses];
+
+export type ReleaseTaskData = {
+    body?: never;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        taskId: string;
+    };
+    query?: never;
+    url: '/api/v1/tasks/{taskId}/release';
+};
+
+export type ReleaseTaskResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type ReleaseTaskResponse = ReleaseTaskResponses[keyof ReleaseTaskResponses];
 
 export type ReturnTaskData = {
     body: RemarkRequest;

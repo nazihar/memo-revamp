@@ -42,6 +42,10 @@ enum class ActionKind {
     CANCEL,
     MIGRATE,
     CARRY,
+
+    /** A candidate took a step shared by several people (design E04 §4.2); [RELEASE] gives it back. */
+    CLAIM,
+    RELEASE,
 }
 
 /**

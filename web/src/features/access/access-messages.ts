@@ -134,6 +134,10 @@ export const catalogue = defineMessages({
     id: 'access.permission.workflowInstancesCancel',
     defaultMessage: 'Cancel running workflows',
   },
+  'workflow.queues.manage': {
+    id: 'access.permission.workflowQueuesManage',
+    defaultMessage: 'Manage workflow queues',
+  },
 })
 
 export function catalogueLabel(intl: IntlShape, key: string, fallback?: string): string {

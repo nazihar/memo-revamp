@@ -47,7 +47,8 @@ class TaskDescriptions(
         val (step, task) = loaded.state.findTask(taskId)?.takeIf { it.second.state == TaskState.OPEN } ?: return null
         val node = loaded.definition.stepsById[step.nodeId]
         val positive = if (step.kind == StepKind.REVIEW) ActionKind.RECOMMEND else ActionKind.APPROVE
-        val decides = task.kind == TaskKind.DECIDE
+        // While another candidate has claimed the shared step, this holder can only wait (design E04 §4.2).
+        val decides = task.kind == TaskKind.DECIDE && (step.claimedBy == null || step.claimedBy == task.assignee)
         val targets =
             loaded.state.round.steps
                 .filter { it.state == StepState.DONE && it.ordinal < step.ordinal }
@@ -62,6 +63,8 @@ class TaskDescriptions(
             positive = positive,
             actions = if (decides) node?.offeredActions.orEmpty().map { ActionKind.valueOf(it.name) } else emptyList(),
             sendBackTargets = if (decides) targets else emptyList(),
+            shared = step.needed != null,
+            claimedBy = step.claimedBy,
         )
     }
 }

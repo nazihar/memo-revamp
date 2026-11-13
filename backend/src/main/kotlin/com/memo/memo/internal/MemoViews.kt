@@ -73,6 +73,10 @@ enum class MemoAction {
     ANSWER,
     OPINION,
     RECALL,
+
+    /** Take, or give back, a step shared by several candidates (design E04 §4.2). */
+    CLAIM,
+    RELEASE,
 }
 
 /**
@@ -86,6 +90,10 @@ data class TaskRef(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val role: TaskRole = TaskRole.DECIDE,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val waiting: Boolean = false,
     val stepName: String? = null,
+    /** Offered to several candidates; one of them may claim it (design E04 §4.2). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val shared: Boolean = false,
+    /** Who claimed the shared step, if anyone. */
+    val claimedBy: Named? = null,
 )
 
 /** An earlier step of this round the holder may send the memo back to, with who held it. */
@@ -135,8 +143,15 @@ class MemoViews(
         val user = (ActorContext.current().actor as? Actor.User)?.userId
         val open = if (workflow != null && user != null) workflows.myTask(MemoWorkflowSubject.TYPE, memo.id, user) else null
         val targets = open?.sendBackTargets.orEmpty()
-        val names = users.of(route + holders + memo.initiatorId + targets.map { it.holderId }).mapValues { it.value.displayName }
-        val myTask = open?.let { TaskRef(it.id, it.blocked, it.role, it.waiting, it.stepName) }
+        val names =
+            users
+                .of(route + holders + memo.initiatorId + targets.map { it.holderId } + listOfNotNull(open?.claimedBy))
+                .mapValues { it.value.displayName }
+        val myTask =
+            open?.let { task ->
+                val claimer = task.claimedBy?.let { Named(it, names[it].orEmpty()) }
+                TaskRef(task.id, task.blocked, task.role, task.waiting, task.stepName, task.shared, claimer)
+            }
         val level = clearances.level(memo.classificationId)
         val type = types.get(memo.typeId)
         // A FIXED type's definition names every step: its memos have no route to edit (design E03 §12).
@@ -188,7 +203,7 @@ class MemoViews(
         recallable: Boolean,
     ): List<MemoAction> =
         when {
-            task != null -> taskActions(task)
+            task != null -> taskActions(task) + claimActions(task, user)
             user != memo.initiatorId -> emptyList()
             memo.status == MemoStatus.DRAFT -> DRAFT
             memo.status == MemoStatus.RETURNED -> RETURNED
@@ -221,6 +236,18 @@ class MemoViews(
                         (task.delegated && (action == MemoAction.FORWARD || action == MemoAction.DELEGATE))
                 }
             }
+        }
+
+    /** Claim an unclaimed shared step; release one the user claimed (design E04 §4.2). */
+    private fun claimActions(
+        task: MyTask,
+        user: UUID?,
+    ): List<MemoAction> =
+        when {
+            !task.shared || task.blocked != null || task.role != TaskRole.DECIDE -> emptyList()
+            task.claimedBy == null -> listOf(MemoAction.CLAIM)
+            task.claimedBy == user -> listOf(MemoAction.RELEASE)
+            else -> emptyList()
         }
 
     /** Edit in the browser wherever a new version may be uploaded; everyone who sees the memo may view it there. */

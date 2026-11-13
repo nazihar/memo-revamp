@@ -523,3 +523,48 @@ class InboxController(
             .cacheControl(CacheControl.noStore())
             .body(transactions.readInTenant(TenantContext.current()) { inbox.tasks(cursor, limit) })
 }
+
+/**
+ * Claiming and releasing a memo task shared by several candidates (design E04 §4.2): the candidate who claims it decides
+ * it alone until they release it. Each needs an `Idempotency-Key`; the answer is the memo as it is now.
+ */
+@RestController
+@RequestMapping("/api/v1/tasks")
+@Tag(name = "memo")
+class MemoTaskClaimsController(
+    private val tasks: MemoTasks,
+    private val memos: Memos,
+    private val views: MemoViews,
+    private val idempotency: Idempotency,
+    private val transactions: TenantTransactions,
+) {
+    @PostMapping("/{taskId}/claim")
+    @SignedIn
+    @Operation(operationId = "claimTask", summary = "Take a step offered to several people; the others wait until you release it")
+    fun claim(
+        @PathVariable taskId: UUID,
+        @RequestHeader("Idempotency-Key") key: String,
+    ): ResponseEntity<MemoView> = act(key, "workflow.task.claim", taskId) { tasks.handOn(taskId) { it.claim(taskId) } }
+
+    @PostMapping("/{taskId}/release")
+    @SignedIn
+    @Operation(operationId = "releaseTask", summary = "Give a step you claimed back to everyone it was offered to")
+    fun release(
+        @PathVariable taskId: UUID,
+        @RequestHeader("Idempotency-Key") key: String,
+    ): ResponseEntity<MemoView> = act(key, "workflow.task.release", taskId) { tasks.handOn(taskId) { it.release(taskId) } }
+
+    private fun act(
+        key: String,
+        operation: String,
+        taskId: UUID,
+        action: () -> Memo,
+    ): ResponseEntity<MemoView> {
+        val view =
+            transactions.inTenant(TenantContext.current()) {
+                val memo = idempotency.once(operation, key, fingerprint("$taskId")) { action().id.toString() }
+                views.of(memos.get(UUID.fromString(memo)))
+            }
+        return ResponseEntity.ok().eTag(etagOf(view.version)).body(view)
+    }
+}

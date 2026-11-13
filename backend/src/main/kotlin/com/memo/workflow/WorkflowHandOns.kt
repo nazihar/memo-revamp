@@ -4,10 +4,12 @@ import com.memo.common.context.Actor
 import com.memo.common.context.ActorContext
 import com.memo.workflow.engine.Answer
 import com.memo.workflow.engine.Ask
+import com.memo.workflow.engine.Claim
 import com.memo.workflow.engine.Delegate
 import com.memo.workflow.engine.Forward
 import com.memo.workflow.engine.GiveOpinion
 import com.memo.workflow.engine.Refer
+import com.memo.workflow.engine.Release
 import com.memo.workflow.engine.SendBack
 import com.memo.workflow.internal.WorkflowRunner
 import org.springframework.stereotype.Service
@@ -68,6 +70,18 @@ class WorkflowHandOns(
         taskId: UUID,
         remark: String?,
     ): WorkflowView = runner.onTask(taskId, currentUser()) { actor -> GiveOpinion(actor, taskId, remark) }
+
+    /** Takes the shared step of [taskId] (design E04 §4.2): the other candidates cannot decide it until it is released. */
+    fun claim(taskId: UUID): WorkflowView = runner.onTask(taskId, currentUser()) { actor -> Claim(actor, taskId) }
+
+    /**
+     * Gives the claimed step of [taskId] back to all its candidates: by the claimer, or by an administrator when
+     * [byAdministrator] (the caller has checked `workflow.tasks.reassign`).
+     */
+    fun release(
+        taskId: UUID,
+        byAdministrator: Boolean = false,
+    ): WorkflowView = runner.onTask(taskId, currentUser()) { actor -> Release(actor, taskId, byAdministrator) }
 
     private fun currentUser(): Actor.User =
         ActorContext.current().actor as? Actor.User ?: throw IllegalStateException("workflow actions need a signed-in user")

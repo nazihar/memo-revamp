@@ -37,7 +37,7 @@ const memo: MemoView = {
   ],
   round: 2,
   holders: [{ id: 'u2', name: 'Bob Approver' }],
-  myTask: { id: 'k1', role: 'DECIDE', waiting: false },
+  myTask: { id: 'k1', role: 'DECIDE', waiting: false, shared: false },
   sendBackTargets: [],
   allowedActions: ['APPROVE', 'RETURN', 'REJECT'],
   createdAt: '2026-11-09T08:00:00Z',
@@ -280,7 +280,7 @@ describe('document editor', () => {
 describe('E03 task actions', () => {
   const review: MemoView = {
     ...memo,
-    myTask: { id: 'k1', role: 'DECIDE', waiting: false, stepName: 'Finance review' },
+    myTask: { id: 'k1', role: 'DECIDE', waiting: false, stepName: 'Finance review', shared: false },
     allowedActions: ['RECOMMEND', 'RETURN', 'SEND_BACK', 'FORWARD'],
     sendBackTargets: [{ stepId: 's1', name: 'Department review', holder: { id: 'u2', name: 'Bob Approver' } }],
   }

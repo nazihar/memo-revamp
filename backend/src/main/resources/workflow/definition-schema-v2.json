@@ -37,13 +37,14 @@
       "additionalProperties": false,
       "required": ["kind"],
       "properties": {
-        "kind": { "enum": ["person", "initiator", "position", "supervisor", "unitHead", "role"] },
+        "kind": { "enum": ["person", "initiator", "position", "supervisor", "unitHead", "role", "queue"] },
         "userId": { "type": "string", "format": "uuid" },
         "positionId": { "type": "string", "format": "uuid" },
         "levels": { "type": "integer", "minimum": 1, "maximum": 10 },
         "unit": { "$ref": "#/$defs/unitRef" },
         "up": { "type": "integer", "minimum": 0, "maximum": 10 },
-        "roleId": { "type": "string", "format": "uuid" }
+        "roleId": { "type": "string", "format": "uuid" },
+        "queue": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,99}$" }
       },
       "allOf": [
         {
@@ -69,6 +70,10 @@
         {
           "if": { "properties": { "kind": { "const": "role" } } },
           "then": { "required": ["roleId", "unit"], "propertyNames": { "enum": ["kind", "roleId", "unit"] } }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "queue" } } },
+          "then": { "required": ["queue"], "propertyNames": { "enum": ["kind", "queue"] } }
         }
       ]
     },

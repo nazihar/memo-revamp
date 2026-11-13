@@ -145,6 +145,11 @@ open class WorkflowStep(
      */
     val RESOLUTION: TableField<WorkflowStepRecord, JSONB?> = createField(DSL.name("resolution"), SQLDataType.JSONB, this, "")
 
+    /**
+     * The column <code>memo.workflow_step.claimed_by</code>.
+     */
+    val CLAIMED_BY: TableField<WorkflowStepRecord, UUID?> = createField(DSL.name("claimed_by"), SQLDataType.UUID, this, "")
+
     private constructor(alias: Name, aliased: Table<WorkflowStepRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<WorkflowStepRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<WorkflowStepRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)

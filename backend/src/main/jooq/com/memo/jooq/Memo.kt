@@ -49,6 +49,8 @@ import com.memo.jooq.tables.WorkflowAction
 import com.memo.jooq.tables.WorkflowDefinition
 import com.memo.jooq.tables.WorkflowDefinitionVersion
 import com.memo.jooq.tables.WorkflowInstance
+import com.memo.jooq.tables.WorkflowQueue
+import com.memo.jooq.tables.WorkflowQueueMember
 import com.memo.jooq.tables.WorkflowRound
 import com.memo.jooq.tables.WorkflowStep
 import com.memo.jooq.tables.WorkflowTask
@@ -306,6 +308,16 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val WORKFLOW_INSTANCE: WorkflowInstance get() = WorkflowInstance.WORKFLOW_INSTANCE
 
     /**
+     * The table <code>memo.workflow_queue</code>.
+     */
+    val WORKFLOW_QUEUE: WorkflowQueue get() = WorkflowQueue.WORKFLOW_QUEUE
+
+    /**
+     * The table <code>memo.workflow_queue_member</code>.
+     */
+    val WORKFLOW_QUEUE_MEMBER: WorkflowQueueMember get() = WorkflowQueueMember.WORKFLOW_QUEUE_MEMBER
+
+    /**
      * The table <code>memo.workflow_round</code>.
      */
     val WORKFLOW_ROUND: WorkflowRound get() = WorkflowRound.WORKFLOW_ROUND
@@ -369,6 +381,8 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         WorkflowDefinition.WORKFLOW_DEFINITION,
         WorkflowDefinitionVersion.WORKFLOW_DEFINITION_VERSION,
         WorkflowInstance.WORKFLOW_INSTANCE,
+        WorkflowQueue.WORKFLOW_QUEUE,
+        WorkflowQueueMember.WORKFLOW_QUEUE_MEMBER,
         WorkflowRound.WORKFLOW_ROUND,
         WorkflowStep.WORKFLOW_STEP,
         WorkflowTask.WORKFLOW_TASK

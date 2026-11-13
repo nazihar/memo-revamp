@@ -1,10 +1,15 @@
+import { useState } from 'react'
 import { useIntl } from 'react-intl'
 import type { FieldProblem } from '@/api/generated/types.gen'
 import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { bm, bmv } from './builder-messages'
 import type { DefinitionBody, StepJson } from './definition'
 import { describeSla, describeType, describeWho, stepName, targetName, type Labels } from './describe'
+import type { Command } from './edit'
+import { START_NODE } from './model'
 import { problemsByStep } from './problems'
+import { AddStep, StepPanel } from './StepPanel'
 
 /**
  * The Steps view (design E06 §7): the definition as an ordered list, one group per step with what the diagram shows,
@@ -14,15 +19,21 @@ export function StepsView({
   body,
   labels,
   problems,
+  onCommand,
 }: {
   body: DefinitionBody
   labels: Labels
   problems: FieldProblem[]
+  /** Set for a draft the user may change: each step gets its panel, and steps can be added at the start. */
+  onCommand?: (command: Command) => void
 }) {
   const intl = useIntl()
   const byStep = problemsByStep(problems)
   return (
     <div className="flex flex-col gap-3">
+      {onCommand ? (
+        <AddStep body={body} after={START_NODE} label={intl.formatMessage(bm.addFirst)} onCommand={onCommand} />
+      ) : null}
       <dl className="grid grid-cols-[auto_1fr] gap-x-3 text-sm">
         <dt className="font-medium">{intl.formatMessage(bm.start)}</dt>
         <dd dir="auto">{targetName(intl, body.steps, body.start)}</dd>
@@ -36,6 +47,9 @@ export function StepsView({
             steps={body.steps}
             labels={labels}
             problems={byStep.get(i)?.length ?? 0}
+            body={body}
+            allProblems={problems}
+            onCommand={onCommand}
           />
         ))}
       </ol>
@@ -49,15 +63,23 @@ function StepItem({
   steps,
   labels,
   problems,
+  body,
+  allProblems,
+  onCommand,
 }: {
   step: StepJson
   index: number
   steps: StepJson[]
   labels: Labels
   problems: number
+  body: DefinitionBody
+  allProblems: FieldProblem[]
+  onCommand?: (command: Command) => void
 }) {
   const intl = useIntl()
+  const [open, setOpen] = useState(false)
   const headingId = `step-${String(index)}-heading`
+  const panelId = `step-${String(index)}-panel`
   const who = describeWho(intl, labels, step)
   const target = (t: string | undefined) => targetName(intl, steps, t)
   return (
@@ -71,6 +93,20 @@ function StepItem({
         <code dir="ltr" className="text-xs text-muted-foreground">
           {step.id}
         </code>
+        {onCommand ? (
+          <Button
+            variant="outline"
+            className="ms-auto"
+            aria-expanded={open}
+            aria-controls={panelId}
+            aria-describedby={headingId}
+            onClick={() => {
+              setOpen(!open)
+            }}
+          >
+            {intl.formatMessage(open ? bm.doneEditing : bm.edit)}
+          </Button>
+        ) : null}
       </div>
       <dl className="mt-2 grid grid-cols-[auto_1fr] gap-x-3 gap-y-1 text-sm">
         {who ? (
@@ -112,6 +148,11 @@ function StepItem({
           </>
         )}
       </dl>
+      {onCommand && open ? (
+        <div id={panelId} className="mt-3 border-t pt-3">
+          <StepPanel body={body} step={step} problems={allProblems} onCommand={onCommand} />
+        </div>
+      ) : null}
     </li>
   )
 }

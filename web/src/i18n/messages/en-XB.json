@@ -15859,6 +15859,62 @@
       "value": "‬"
     }
   ],
+  "workflows.builder.add": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.addAfter": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp ɐ sʇǝd ɐɟʇǝɹ ʇɥıs ouǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.addCondition": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp ɐ ɔoupıʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.addFirst": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp ɐ sʇǝd ɐʇ ʇɥǝ sʇɐɹʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "workflows.builder.assignee.initiator": [
     {
       "type": 0,
@@ -16051,6 +16107,142 @@
       "value": "‬"
     }
   ],
+  "workflows.builder.cancel": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɐuɔǝʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.checked": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "No dɹoqʅǝɯs ɟonup."
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " dɹoqʅǝɯ ɟonup."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " dɹoqʅǝɯs ɟonup."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.checking": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥǝɔʞıuƃ…"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.conditionN": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄoupıʇıou "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.conflict": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Soɯǝouǝ ǝʅsǝ sɐʌǝp ʇɥıs pɹɐɟʇ ʍɥıʅǝ ʎon ʍǝɹǝ ɔɥɐuƃıuƃ ıʇ. ⅄onɹ ɔɥɐuƃǝs ɐɹǝ sʇıʅʅ ɥǝɹǝ: ɔodʎ ʇɥǝɯ, oɹ ɹǝʅoɐp ʇɥǝ sɐʌǝp ʌǝɹsıou."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.copied": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄodıǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.copy": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄodʎ ɯʎ ɔɥɐuƃǝs ɐs ſSON"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "workflows.builder.deadline": [
     {
       "type": 0,
@@ -16101,6 +16293,20 @@
     {
       "type": 0,
       "value": "⊥ɥǝ ɐddɹoʌɐʅ ƃɹonds oɟ ʇɥǝ pǝʅǝƃɐʇıou oɟ ɐnʇɥoɹıʇʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.doneEditing": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄʅosǝ"
     },
     {
       "type": 0,
@@ -16421,6 +16627,20 @@
       "value": "‬"
     }
   ],
+  "workflows.builder.edit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥɐuƃǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "workflows.builder.end": [
     {
       "type": 0,
@@ -16429,6 +16649,48 @@
     {
       "type": 0,
       "value": "Ǝup"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.field.condition": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄoupıʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.field.name": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nɐɯǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.field.type": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ʎdǝ oɟ sʇǝd"
     },
     {
       "type": 0,
@@ -16607,6 +16869,42 @@
       "value": "‬"
     }
   ],
+  "workflows.builder.leadsToN": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iɟ ɔoupıʇıou "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " ɥoʅps, ʅǝɐps ʇo"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.noSelection": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝʅǝɔʇ ɐ sʇǝd ıu ʇɥǝ pıɐƃɹɐɯ ʇo ɔɥɐuƃǝ ıʇ, oɹ nsǝ ʇɥǝ Sʇǝds ʌıǝʍ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "workflows.builder.notReadable": [
     {
       "type": 0,
@@ -16735,6 +17033,116 @@
       "value": "‬"
     }
   ],
+  "workflows.builder.redo": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝpo"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.reload": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝʅoɐp ʇɥǝ sɐʌǝp ʌǝɹsıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.remove": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯoʌǝ ʇɥıs sʇǝd"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.remove.confirm": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯoʌǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.remove.description": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɥɐʇ ʅǝp ʇo ʇɥıs sʇǝd ʍıʅʅ ʅǝɐp ʍɥǝɹǝ ıʇ ʅǝp, ʍɥǝu ʇɥɐʇ ıs ouǝ dʅɐɔǝ. ⅄on ɔɐu nupo ʇɥıs nuʇıʅ ʎon sɐʌǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.remove.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯoʌǝ “"
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "”?"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.removeCondition": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯoʌǝ ɔoupıʇıou "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "workflows.builder.route": [
     {
       "type": 0,
@@ -16757,6 +17165,20 @@
     {
       "type": 0,
       "value": "ᴚnus"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.selected": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝʅǝɔʇǝp sʇǝd"
     },
     {
       "type": 0,
@@ -16997,6 +17419,24 @@
       "value": "‬"
     }
   ],
+  "workflows.builder.stepProblems": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɹoqʅǝɯs ıu "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "workflows.builder.steps": [
     {
       "type": 0,
@@ -17019,6 +17459,20 @@
     {
       "type": 0,
       "value": "⊥ǝʅʅs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.tools": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥɐuƃǝ ʇɥǝ ʍoɹʞɟʅoʍ"
     },
     {
       "type": 0,
@@ -17159,6 +17613,20 @@
     {
       "type": 0,
       "value": "Snq-ʍoɹʞɟʅoʍ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.undo": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩upo"
     },
     {
       "type": 0,

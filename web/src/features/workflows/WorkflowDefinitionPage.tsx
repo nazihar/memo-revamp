@@ -1,7 +1,7 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from '@tanstack/react-router'
-import { Download, Upload } from 'lucide-react'
-import { useMemo, useRef, useState } from 'react'
+import { Download, Redo2, Undo2, Upload } from 'lucide-react'
+import { useRef, useState } from 'react'
 import { useIntl, type MessageDescriptor } from 'react-intl'
 import {
   getWorkflowDefinitionOptions,
@@ -30,10 +30,11 @@ import { Dialog } from '@/components/ui/dialog'
 import { Field } from '@/components/ui/field'
 import { Textarea } from '@/components/ui/form-controls'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/misc'
-import { bm } from './builder/builder-messages'
+import { bm, bmv } from './builder/builder-messages'
 import { DefinitionDiagram } from './builder/DefinitionDiagram'
-import { asDefinition } from './builder/definition'
 import { StepsView } from './builder/StepsView'
+import { useBuilder, useLiveValidation } from './builder/useBuilder'
+import { UnsavedBanner, UnsavedChangesGuard } from '@/components/page/FormPage'
 import { useToast } from '@/components/ui/toast-context'
 import { holds, PERMISSION, useMyAccess } from '@/features/access/access'
 import { useWithStepUp } from '@/features/auth/step-up-context'
@@ -244,26 +245,23 @@ function VersionEditor({
   const queryClient = useQueryClient()
   const file = useRef<HTMLInputElement>(null)
   const original = JSON.stringify(version.body, null, 2)
-  const [text, setText] = useState(original)
+  const builder = useBuilder(original)
+  const { text, setText } = builder
+  const drawable = builder.body
   const [problems, setProblems] = useState<FieldProblem[]>(version.problems)
   const [jsonError, setJsonError] = useState<string>()
   const [busy, setBusy] = useState(false)
   const [decision, setDecision] = useState<Decision>()
-  // Drafts open on the JSON view (the editor until the builder can edit, E06 T2); other versions on the diagram.
-  const [view, setView] = useState<View>(version.version.state === 'DRAFT' && manage ? 'json' : 'diagram')
-  const drawable = useMemo(() => {
-    try {
-      return asDefinition(JSON.parse(text))
-    } catch {
-      return undefined
-    }
-  }, [text])
+  const [conflict, setConflict] = useState(false)
+  const [view, setView] = useState<View>('diagram')
   const state = version.version.state
   const editable = manage && state === 'DRAFT'
   const dirty = text !== original
   const number = version.version.number
   const path = { key: definitionKey, number: String(number) }
   const ifMatch = { 'If-Match': `"${version.revision}"` }
+  const checking = useLiveValidation({ path, text, original, enabled: editable, onProblems: setProblems })
+  const onCommand = editable ? builder.edit : undefined
 
   const parsed = (): Record<string, unknown> | undefined => {
     try {
@@ -282,8 +280,13 @@ function VersionEditor({
     if (!next) await queryClient.invalidateQueries({ queryKey: getWorkflowDefinitionVersionQueryKey({ path }) })
   }
 
-  const fail = async (problem: unknown) => {
+  const fail = async (problem: unknown, saving = false) => {
     const p = isProblem(problem) ? problem : undefined
+    if (saving && p?.status === 412) {
+      // Someone saved this draft meanwhile: keep the local work and let the author choose (design E06 §3).
+      setConflict(true)
+      return
+    }
     const refusal = p?.reason ? REFUSALS[p.reason] : undefined
     if (p?.reason === 'DEFINITION_INVALID') {
       setProblems((p.errors ?? []).map((e) => ({ field: e.field, code: e.code ?? '', message: e.message })))
@@ -299,14 +302,18 @@ function VersionEditor({
     }
   }
 
-  const run = async (work: () => Promise<VersionResponse | undefined>, message: MessageDescriptor = wm.done) => {
+  const run = async (
+    work: () => Promise<VersionResponse | undefined>,
+    message: MessageDescriptor = wm.done,
+    saving = false,
+  ) => {
     setBusy(true)
     try {
       const next = await work()
       await refresh(next)
       toast.show(intl.formatMessage(message), 'success')
     } catch (problem) {
-      await fail(problem)
+      await fail(problem, saving)
     } finally {
       setBusy(false)
     }
@@ -319,6 +326,7 @@ function VersionEditor({
       async () =>
         (await replaceWorkflowDefinitionDraft({ path, headers: ifMatch, body: { body }, throwOnError: true })).data,
       wm.saved,
+      true,
     )
   }
 
@@ -351,6 +359,55 @@ function VersionEditor({
           <p className="whitespace-pre-wrap">{version.version.reviewRemark}</p>
         </div>
       ) : null}
+      {editable ? (
+        <div className="flex flex-wrap items-center gap-2">
+          <div role="toolbar" aria-label={intl.formatMessage(bm.editTools)} className="flex gap-2">
+            <Button variant="outline" disabled={!builder.canUndo} onClick={builder.undo}>
+              <Undo2 aria-hidden="true" />
+              {intl.formatMessage(bm.undo)}
+            </Button>
+            <Button variant="outline" disabled={!builder.canRedo} onClick={builder.redo}>
+              <Redo2 aria-hidden="true" />
+              {intl.formatMessage(bm.redo)}
+            </Button>
+          </div>
+          <UnsavedBanner visible={dirty} />
+          <p role="status" className="text-sm text-muted-foreground">
+            {checking
+              ? intl.formatMessage(bm.checking)
+              : dirty
+                ? intl.formatMessage(bmv.checked, { count: problems.length })
+                : null}
+          </p>
+        </div>
+      ) : null}
+      {conflict ? (
+        <div role="alert" className="flex flex-col gap-2 rounded-md border border-destructive p-3 text-sm">
+          <p>{intl.formatMessage(bm.conflict)}</p>
+          <div className="flex flex-wrap gap-2">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setConflict(false)
+                void refresh()
+              }}
+            >
+              {intl.formatMessage(bm.reload)}
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => {
+                void navigator.clipboard.writeText(text).then(() => {
+                  toast.show(intl.formatMessage(bm.copied), 'success')
+                })
+              }}
+            >
+              {intl.formatMessage(bm.copy)}
+            </Button>
+          </div>
+        </div>
+      ) : null}
+      <UnsavedChangesGuard when={editable && dirty} />
       <Tabs
         value={view}
         onValueChange={(v) => {
@@ -364,14 +421,14 @@ function VersionEditor({
         </TabsList>
         <TabsContent value="diagram" className="pt-3">
           {drawable ? (
-            <DefinitionDiagram body={drawable} labels={version.labels} problems={problems} />
+            <DefinitionDiagram body={drawable} labels={version.labels} problems={problems} onCommand={onCommand} />
           ) : (
             <p className="text-sm">{intl.formatMessage(bm.notReadable)}</p>
           )}
         </TabsContent>
         <TabsContent value="steps" className="pt-3">
           {drawable ? (
-            <StepsView body={drawable} labels={version.labels} problems={problems} />
+            <StepsView body={drawable} labels={version.labels} problems={problems} onCommand={onCommand} />
           ) : (
             <p className="text-sm">{intl.formatMessage(bm.notReadable)}</p>
           )}

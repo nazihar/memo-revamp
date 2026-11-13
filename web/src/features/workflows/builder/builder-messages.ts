@@ -34,10 +34,45 @@ export const bm = defineMessages({
   doaGroups: { id: 'workflows.builder.doa', defaultMessage: 'The approval groups of the delegation of authority' },
   parallelAll: { id: 'workflows.builder.parallel.all', defaultMessage: 'All of' },
   parallelAny: { id: 'workflows.builder.parallel.any', defaultMessage: 'Any one of' },
+  edit: { id: 'workflows.builder.edit', defaultMessage: 'Change' },
+  doneEditing: { id: 'workflows.builder.doneEditing', defaultMessage: 'Close' },
+  stepName: { id: 'workflows.builder.field.name', defaultMessage: 'Name' },
+  addAfter: { id: 'workflows.builder.addAfter', defaultMessage: 'Add a step after this one' },
+  addFirst: { id: 'workflows.builder.addFirst', defaultMessage: 'Add a step at the start' },
+  stepType: { id: 'workflows.builder.field.type', defaultMessage: 'Type of step' },
+  add: { id: 'workflows.builder.add', defaultMessage: 'Add' },
+  remove: { id: 'workflows.builder.remove', defaultMessage: 'Remove this step' },
+  removeConfirm: { id: 'workflows.builder.remove.confirm', defaultMessage: 'Remove' },
+  cancel: { id: 'workflows.builder.cancel', defaultMessage: 'Cancel' },
+  condition: { id: 'workflows.builder.field.condition', defaultMessage: 'Condition' },
+  addCondition: { id: 'workflows.builder.addCondition', defaultMessage: 'Add a condition' },
+  undo: { id: 'workflows.builder.undo', defaultMessage: 'Undo' },
+  redo: { id: 'workflows.builder.redo', defaultMessage: 'Redo' },
+  editTools: { id: 'workflows.builder.tools', defaultMessage: 'Change the workflow' },
+  selected: { id: 'workflows.builder.selected', defaultMessage: 'Selected step' },
+  noSelection: {
+    id: 'workflows.builder.noSelection',
+    defaultMessage: 'Select a step in the diagram to change it, or use the Steps view.',
+  },
+  checking: { id: 'workflows.builder.checking', defaultMessage: 'Checking…' },
+  conflict: {
+    id: 'workflows.builder.conflict',
+    defaultMessage:
+      'Someone else saved this draft while you were changing it. Your changes are still here: copy them, or reload the saved version.',
+  },
+  reload: { id: 'workflows.builder.reload', defaultMessage: 'Reload the saved version' },
+  copy: { id: 'workflows.builder.copy', defaultMessage: 'Copy my changes as JSON' },
+  copied: { id: 'workflows.builder.copied', defaultMessage: 'Copied.' },
 })
 
 export const bmv = defineMessages<{
   stepHeading: { index: number; name: string }
+  removeTitle: { name: string }
+  checked: { count: number }
+  conditionN: { n: number }
+  leadsToN: { n: number }
+  removeCondition: { n: number }
+  stepProblems: { name: string }
   edge: { from: string; to: string }
   edgeIf: { from: string; to: string; condition: string }
   edgeOtherwise: { from: string; to: string }
@@ -65,6 +100,15 @@ export const bmv = defineMessages<{
   escalateNextLevel: { after: string }
 }>({
   stepHeading: { id: 'workflows.builder.stepHeading', defaultMessage: '{index}. {name}' },
+  removeTitle: { id: 'workflows.builder.remove.title', defaultMessage: 'Remove “{name}”?' },
+  checked: {
+    id: 'workflows.builder.checked',
+    defaultMessage: '{count, plural, =0 {No problems found.} one {# problem found.} other {# problems found.}}',
+  },
+  conditionN: { id: 'workflows.builder.conditionN', defaultMessage: 'Condition {n}' },
+  leadsToN: { id: 'workflows.builder.leadsToN', defaultMessage: 'If condition {n} holds, leads to' },
+  removeCondition: { id: 'workflows.builder.removeCondition', defaultMessage: 'Remove condition {n}' },
+  stepProblems: { id: 'workflows.builder.stepProblems', defaultMessage: 'Problems in {name}' },
   edge: { id: 'workflows.builder.edge', defaultMessage: '{from} leads to {to}' },
   edgeIf: { id: 'workflows.builder.edge.if', defaultMessage: '{from} leads to {to} if {condition}' },
   edgeOtherwise: { id: 'workflows.builder.edge.otherwise', defaultMessage: '{from} otherwise leads to {to}' },

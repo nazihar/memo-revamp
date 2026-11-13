@@ -4,6 +4,7 @@ import io.gatling.javaapi.core.CoreDsl.StringBody
 import io.gatling.javaapi.core.CoreDsl.details
 import io.gatling.javaapi.core.CoreDsl.exec
 import io.gatling.javaapi.core.CoreDsl.global
+import io.gatling.javaapi.core.CoreDsl.jsonPath
 import io.gatling.javaapi.core.CoreDsl.rampUsers
 import io.gatling.javaapi.core.CoreDsl.scenario
 import io.gatling.javaapi.core.Simulation
@@ -61,7 +62,8 @@ class InboxLoadSimulation : Simulation() {
                     http(INBOX)
                         .get("/api/v1/inbox/tasks?limit=25")
                         .header("Cookie", "$SESSION_COOKIE=#{session}")
-                        .check(status().shouldBe(OK)),
+                        // A full page of real work: each approver holds 200 decisions, each with its due time.
+                        .check(status().shouldBe(OK), jsonPath("\$.items[24].dueAt").exists()),
                 ).pause(Duration.ofMillis(PAUSE_MS)),
             )
 

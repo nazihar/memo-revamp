@@ -5,7 +5,7 @@ import { CatalogueGate } from '@/i18n/CatalogueGate'
 /** The operator console (ADR-0031), served on its own host; its pages never touch the tenant API. */
 export const Route = createFileRoute('/platform')({
   component: () => (
-    <CatalogueGate part="platform">
+    <CatalogueGate parts={['platform']}>
       <PlatformFrame>
         <Outlet />
       </PlatformFrame>

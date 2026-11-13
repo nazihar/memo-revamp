@@ -44,6 +44,7 @@ export function formattingLocale(locale: AppLocale): string {
 const loaders: Record<CataloguePart, Record<string, () => Promise<Messages>>> = {
   core: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'core' }, import: 'default' }),
   admin: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'admin' }, import: 'default' }),
+  builder: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'builder' }, import: 'default' }),
   platform: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'platform' }, import: 'default' }),
   patterns: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'patterns' }, import: 'default' }),
 }

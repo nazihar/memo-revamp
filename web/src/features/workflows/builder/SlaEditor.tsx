@@ -10,40 +10,40 @@ import type { Labels } from './describe'
 import type { Command } from './edit'
 
 const sm = defineMessages({
-  has: { id: 'workflows.builder.sla.has', defaultMessage: 'This step has a deadline' },
-  due: { id: 'workflows.builder.sla.field.due', defaultMessage: 'Due after' },
+  has: { id: 'builder.sla.has', defaultMessage: 'This step has a deadline' },
+  due: { id: 'builder.sla.field.due', defaultMessage: 'Due after' },
   workingTime: {
-    id: 'workflows.builder.sla.field.workingTime',
+    id: 'builder.sla.field.workingTime',
     defaultMessage: 'Count working time only (the business calendar)',
   },
   remindBefore: {
-    id: 'workflows.builder.sla.field.remindBefore',
+    id: 'builder.sla.field.remindBefore',
     defaultMessage: 'Remind the holder before it is due',
   },
-  before: { id: 'workflows.builder.sla.field.before', defaultMessage: 'How long before' },
-  remindersAfter: { id: 'workflows.builder.sla.field.after', defaultMessage: 'Reminders after it is due' },
-  addReminder: { id: 'workflows.builder.sla.addReminder', defaultMessage: 'Add a reminder' },
-  escalation: { id: 'workflows.builder.sla.field.escalation', defaultMessage: 'When it is late' },
-  escalateNone: { id: 'workflows.builder.sla.escalate.none', defaultMessage: 'Nothing more' },
-  escalateNotify: { id: 'workflows.builder.sla.escalate.notifyOption', defaultMessage: 'Tell the holder’s supervisor' },
-  escalateReassign: { id: 'workflows.builder.sla.escalate.reassignOption', defaultMessage: 'Move the task to someone' },
+  before: { id: 'builder.sla.field.before', defaultMessage: 'How long before' },
+  remindersAfter: { id: 'builder.sla.field.after', defaultMessage: 'Reminders after it is due' },
+  addReminder: { id: 'builder.sla.addReminder', defaultMessage: 'Add a reminder' },
+  escalation: { id: 'builder.sla.field.escalation', defaultMessage: 'When it is late' },
+  escalateNone: { id: 'builder.sla.escalate.none', defaultMessage: 'Nothing more' },
+  escalateNotify: { id: 'builder.sla.escalate.notifyOption', defaultMessage: 'Tell the holder’s supervisor' },
+  escalateReassign: { id: 'builder.sla.escalate.reassignOption', defaultMessage: 'Move the task to someone' },
   escalateNextLevel: {
-    id: 'workflows.builder.sla.escalate.nextLevelOption',
+    id: 'builder.sla.escalate.nextLevelOption',
     defaultMessage: 'Move the task one level up',
   },
-  escalateAfter: { id: 'workflows.builder.sla.field.escalateAfter', defaultMessage: 'How long late' },
-  escalateTo: { id: 'workflows.builder.sla.field.escalateTo', defaultMessage: 'Move it to' },
-  amount: { id: 'workflows.builder.duration.amount', defaultMessage: 'Amount' },
-  unit: { id: 'workflows.builder.duration.unit', defaultMessage: 'Unit' },
-  unitDays: { id: 'workflows.builder.duration.unit.days', defaultMessage: 'days' },
-  unitHours: { id: 'workflows.builder.duration.unit.hours', defaultMessage: 'hours' },
-  unitMinutes: { id: 'workflows.builder.duration.unit.minutes', defaultMessage: 'minutes' },
-  iso: { id: 'workflows.builder.duration.iso', defaultMessage: 'Duration (ISO 8601, such as P1DT4H)' },
+  escalateAfter: { id: 'builder.sla.field.escalateAfter', defaultMessage: 'How long late' },
+  escalateTo: { id: 'builder.sla.field.escalateTo', defaultMessage: 'Move it to' },
+  amount: { id: 'builder.duration.amount', defaultMessage: 'Amount' },
+  unit: { id: 'builder.duration.unit', defaultMessage: 'Unit' },
+  unitDays: { id: 'builder.duration.unit.days', defaultMessage: 'days' },
+  unitHours: { id: 'builder.duration.unit.hours', defaultMessage: 'hours' },
+  unitMinutes: { id: 'builder.duration.unit.minutes', defaultMessage: 'minutes' },
+  iso: { id: 'builder.duration.iso', defaultMessage: 'Duration (ISO 8601, such as P1DT4H)' },
 })
 
 const smv = defineMessages<{ reminderN: { n: number }; removeReminder: { n: number } }>({
-  reminderN: { id: 'workflows.builder.sla.reminderN', defaultMessage: 'Reminder {n} after it is due' },
-  removeReminder: { id: 'workflows.builder.sla.removeReminder', defaultMessage: 'Remove reminder {n}' },
+  reminderN: { id: 'builder.sla.reminderN', defaultMessage: 'Reminder {n} after it is due' },
+  removeReminder: { id: 'builder.sla.removeReminder', defaultMessage: 'Remove reminder {n}' },
 })
 
 type Unit = 'D' | 'H' | 'M'

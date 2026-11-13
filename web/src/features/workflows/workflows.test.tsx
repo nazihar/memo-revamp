@@ -5,11 +5,13 @@ import { beforeAll, describe, expect, it } from 'vitest'
 import type {
   DefinitionResponse,
   DefinitionSummary,
+  DirectorySearchResult,
   MigrationResponse,
+  SimulationResponse,
   ValidationResponse,
   VersionResponse,
 } from '@/api/generated/types.gen'
-import { partForPath } from '@/i18n/catalogue-parts'
+import { partForPath, partsForPath } from '@/i18n/catalogue-parts'
 import { accessHandler, API_ORIGIN, csrfHandler, server, sessionHandler, signedInSession } from '@/test/msw'
 import { installReactFlowStubs } from '@/test/react-flow'
 import { expectNoA11yViolations, renderRoute } from '@/test/render'
@@ -188,6 +190,88 @@ describe('workflow definitions', () => {
     expect(screen.getByRole('button', { name: 'Reload the saved version' })).toBeInTheDocument()
   }, 20_000)
 
+  it('simulates the version for a sample item, and marks the steps it reaches', async () => {
+    const user = userEvent.setup()
+    const requests: unknown[] = []
+    const shown: VersionResponse = {
+      ...version(2, 'IN_REVIEW'),
+      body: {
+        schemaVersion: 2,
+        attributes: [{ name: 'classificationRank', type: 'int' }],
+        start: 'size',
+        steps: [
+          {
+            id: 'size',
+            type: 'branch',
+            name: 'By classification',
+            branches: [{ when: 'item.classificationRank >= 2', next: 'board' }],
+            otherwise: 'buyer',
+          },
+          { id: 'board', type: 'approve', name: 'Board', assignee: { kind: 'person', userId: 'u9' }, next: 'end' },
+          { id: 'buyer', type: 'approve', name: 'Buyer', assignee: { kind: 'person', userId: 'u8' }, next: 'end' },
+        ],
+      },
+    }
+    server.use(
+      ...handlers([APPROVE], shown),
+      http.get(`${API_ORIGIN}/api/v1/directory/search`, () =>
+        HttpResponse.json<DirectorySearchResult>({
+          users: [{ person: { id: 'u1', displayName: 'Amina Initiator', email: 'a@bank.example' } }],
+          positions: [],
+        }),
+      ),
+      http.post(`${API_ORIGIN}/api/v1/admin/workflow-definitions/purchase/versions/2/simulate`, async ({ request }) => {
+        requests.push(await request.json())
+        return HttpResponse.json<SimulationResponse>({
+          ended: 'BLOCKED',
+          steps: [
+            {
+              stepId: 'size',
+              name: 'By classification',
+              type: 'branch',
+              outcome: 'BRANCHED',
+              people: [],
+              branch: 0,
+              condition: 'item.classificationRank >= 2',
+              next: 'board',
+            },
+            {
+              stepId: 'board',
+              name: 'Board',
+              type: 'approve',
+              outcome: 'BLOCKED',
+              people: [],
+              blockedReason: 'NO_CLEARANCE',
+              sla: { due: 'P2D' },
+            },
+          ],
+        })
+      }),
+    )
+    renderRoute('/admin/workflows/purchase?version=2')
+
+    const panel = await screen.findByRole('region', { name: 'Simulate' }, { timeout: 5000 })
+    await user.click(within(panel).getByRole('button', { name: 'Simulate' }))
+    expect(within(panel).getByText('Choose who starts it.')).toBeInTheDocument()
+    await user.type(within(panel).getByRole('combobox', { name: /Started by/ }), 'Am')
+    await user.click(await screen.findByRole('option', { name: /Amina Initiator/ }))
+    await user.type(within(panel).getByLabelText('Classification rank'), '2')
+    await user.click(within(panel).getByRole('button', { name: 'Simulate' }))
+
+    expect(
+      await within(panel).findByText('It would stop and wait for an administrator: someone it reaches cannot take it.'),
+    ).toBeInTheDocument()
+    expect(requests[0]).toMatchObject({ initiatorId: 'u1', attributes: { classificationRank: 2 }, route: [] })
+    const path = within(panel).getByRole('list', { name: 'Steps it would reach, in order' })
+    expect(within(path).getByText('Condition 1 held: item.classificationRank >= 2')).toBeInTheDocument()
+    expect(within(path).getByText('Not cleared for this classification.')).toBeInTheDocument()
+    expect(within(path).getByText('Due in 2 working days')).toBeInTheDocument()
+
+    await user.click(screen.getByRole('tab', { name: 'Steps' }))
+    const steps = screen.getByRole('list', { name: 'Steps, in the order they are written' })
+    expect(within(steps).getAllByText('Reached in the simulation')).toHaveLength(2)
+  }, 20_000)
+
   it('previews memos on older versions with why some cannot move', async () => {
     const user = userEvent.setup()
     server.use(
@@ -233,5 +317,14 @@ describe('workflow definitions', () => {
     expect(partForPath('/admin/workflows/purchase')).toBe('admin')
     expect(partForPath('/administrator')).toBe('core')
     expect(partForPath('/platform')).toBe('platform')
+  })
+
+  it('loads the admin and builder parts of the Arabic catalogue for a definition', async () => {
+    server.use(...handlers([APPROVE]))
+    renderRoute('/admin/workflows/purchase?version=2', { locale: 'ar' })
+    expect(await screen.findByRole('tab', { name: 'المخطط' }, { timeout: 5000 })).toBeInTheDocument()
+    expect(screen.getByRole('region', { name: 'المحاكاة' })).toBeInTheDocument()
+    expect(partsForPath('/admin/workflows/purchase')).toEqual(['admin', 'builder'])
+    expect(partsForPath('/admin/users')).toEqual(['admin'])
   })
 })

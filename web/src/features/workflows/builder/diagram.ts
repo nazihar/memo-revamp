@@ -14,6 +14,7 @@ export interface StepData extends Record<string, unknown> {
   type: string
   who: string
   problems: number
+  reached: boolean
 }
 
 const SHORT = 40
@@ -29,6 +30,7 @@ export function diagram(
   labels: Labels,
   problems: FieldProblem[],
   selected?: string,
+  reached: ReadonlySet<string> = new Set(),
 ): { nodes: Node[]; edges: Edge[] } {
   const graph = toGraph(body)
   const positions = layout(graph)
@@ -55,8 +57,9 @@ export function diagram(
       type: describeType(intl, step),
       who,
       problems: byStep.get(n.index)?.length ?? 0,
+      reached: reached.has(n.id),
     }
-    const ariaLabel = intl.formatMessage(bmv.stepAria, {
+    const described = intl.formatMessage(bmv.stepAria, {
       index: n.index + 1,
       count,
       type: data.type,
@@ -64,6 +67,7 @@ export function diagram(
       who,
       next: nextOf(step),
     })
+    const ariaLabel = data.reached ? intl.formatMessage(bmv.stepAriaReached, { label: described }) : described
     return { id: n.id, type: 'step', position, data, ariaLabel, draggable: false, selected: n.id === selected }
   })
   const nodeName = (id: string) =>

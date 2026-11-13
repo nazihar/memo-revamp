@@ -16,7 +16,7 @@ import { StepDetails } from './StepDetails'
 
 const pm = defineMessages({
   removeDescription: {
-    id: 'workflows.builder.remove.description',
+    id: 'builder.remove.description',
     defaultMessage:
       'What led to this step will lead where it led, when that is one place. You can undo this until you save.',
   },

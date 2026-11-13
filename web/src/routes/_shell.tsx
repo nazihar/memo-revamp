@@ -5,7 +5,7 @@ import { AccountMenu } from '@/features/auth/AccountMenu'
 import { useMyAccess } from '@/features/access/access'
 import { useSession, viewerOf } from '@/features/auth/session'
 import { NotificationBell } from '@/features/notifications/NotificationBell'
-import { partForPath } from '@/i18n/catalogue-parts'
+import { partsForPath } from '@/i18n/catalogue-parts'
 import { CatalogueGate } from '@/i18n/CatalogueGate'
 
 /** The application frame; signed-in pages sit below `_signedIn`, the status page and the gallery do not. */
@@ -24,7 +24,7 @@ function ShellLayout() {
       notifications={<NotificationBell />}
     >
       <BrandingApplier />
-      <CatalogueGate part={partForPath(pathname)}>
+      <CatalogueGate parts={partsForPath(pathname)}>
         <Outlet />
       </CatalogueGate>
     </AppShell>

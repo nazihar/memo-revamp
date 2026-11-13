@@ -21,6 +21,7 @@ export function StepsView({
   problems,
   onCommand,
   onLabel,
+  reached,
 }: {
   body: DefinitionBody
   labels: Labels
@@ -29,6 +30,8 @@ export function StepsView({
   onCommand?: (command: Command) => void
   /** Names picked in a panel before the draft is saved. */
   onLabel?: (id: string, label: string) => void
+  /** Steps the last simulation reached. */
+  reached?: ReadonlySet<string>
 }) {
   const intl = useIntl()
   const byStep = problemsByStep(problems)
@@ -54,6 +57,7 @@ export function StepsView({
             allProblems={problems}
             onCommand={onCommand}
             onLabel={onLabel}
+            reached={reached?.has(step.id) ?? false}
           />
         ))}
       </ol>
@@ -71,6 +75,7 @@ function StepItem({
   allProblems,
   onCommand,
   onLabel,
+  reached,
 }: {
   step: StepJson
   index: number
@@ -81,6 +86,7 @@ function StepItem({
   allProblems: FieldProblem[]
   onCommand?: (command: Command) => void
   onLabel?: (id: string, label: string) => void
+  reached: boolean
 }) {
   const intl = useIntl()
   const [open, setOpen] = useState(false)
@@ -96,6 +102,7 @@ function StepItem({
         </h4>
         <Badge tone="neutral">{describeType(intl, step)}</Badge>
         {problems > 0 ? <Badge tone="danger">{intl.formatMessage(bmv.problems, { count: problems })}</Badge> : null}
+        {reached ? <Badge tone="ok">{intl.formatMessage(bm.reached)}</Badge> : null}
         <code dir="ltr" className="text-xs text-muted-foreground">
           {step.id}
         </code>

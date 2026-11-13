@@ -21,7 +21,7 @@ interface LocaleContextValue {
   request: (part: CataloguePart) => void
 }
 
-const ALL_PARTS: ReadonlySet<CataloguePart> = new Set(['core', 'admin', 'platform', 'patterns'])
+const ALL_PARTS: ReadonlySet<CataloguePart> = new Set(['core', 'admin', 'builder', 'platform', 'patterns'])
 
 const LocaleContext = createContext<LocaleContextValue | null>(null)
 
@@ -32,6 +32,18 @@ export function useLocale(): Pick<LocaleContextValue, 'locale' | 'setLocale'> {
 }
 
 /** Loads [part] of the catalogue for the pages that need it; true once its messages are there (E03 T10). */
+/** Whether all of [parts] have loaded; asks for the missing ones. */
+export function useCatalogueParts(parts: readonly CataloguePart[]): boolean {
+  const ctx = useContext(LocaleContext)
+  if (!ctx) throw new Error('useCatalogueParts must be used inside <LocaleProvider>')
+  const { request } = ctx
+  const key = parts.join(',')
+  useEffect(() => {
+    for (const part of key.split(',')) if (part) request(part as CataloguePart)
+  }, [request, key])
+  return parts.every((part) => ctx.loaded.has(part))
+}
+
 export function useCataloguePart(part: CataloguePart): boolean {
   const ctx = useContext(LocaleContext)
   if (!ctx) throw new Error('useCataloguePart must be used inside <LocaleProvider>')

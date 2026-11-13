@@ -2601,6 +2601,3838 @@
       "value": "‬"
     }
   ],
+  "builder.action.approve": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ddɹoʌǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.action.ask": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀sʞ ɟoɹ odıuıous"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.action.delegate": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝʅǝƃɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.action.forward": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎoɹʍɐɹp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.action.recommend": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɔoɯɯǝup"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.action.refer": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɟǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.action.reject": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɾǝɔʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.action.return": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝʇnɹu ʇo ʇɥǝ ıuıʇıɐʇoɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.action.sendBack": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝup qɐɔʞ ʇo ɐu ǝɐɹʅıǝɹ sʇǝd"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.actions": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɥɐʇ ʇɥǝ ɥoʅpǝɹ ɔɐu po"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.actions.hint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ıɔʞ “uǝǝps ɐ ɹǝɯɐɹʞ” ɟoɹ ɐɔʇıous ʇɥǝ ɥoʅpǝɹ ɯnsʇ ǝxdʅɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.actions.remark": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "uǝǝps ɐ ɹǝɯɐɹʞ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.actions.remarkFor": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "action"
+    },
+    {
+      "type": 0,
+      "value": " uǝǝps ɐ ɹǝɯɐɹʞ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.add": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.addAfter": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp ɐ sʇǝd ɐɟʇǝɹ ʇɥıs ouǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.addCondition": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp ɐ ɔoupıʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.addFirst": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp ɐ sʇǝd ɐʇ ʇɥǝ sʇɐɹʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.assignee.choose": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥoosǝ…"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.assignee.field.initiatorsUnit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ıuıʇıɐʇoɹ’s nuıʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.assignee.field.levels": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅂ǝʌǝʅs nd ʇɥǝ ɹǝdoɹʇıuƃ ʅıuǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.assignee.field.person": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁǝɹsou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.assignee.field.position": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁosıʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.assignee.field.queue": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ònǝnǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.assignee.field.role": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚoʅǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.assignee.field.unit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩uıʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.assignee.field.up": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩uıʇs ɐqoʌǝ ıʇ (0 ɟoɹ ʇɥǝ nuıʇ ıʇsǝʅɟ)"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.assignee.initiator": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ıuıʇıɐʇoɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.assignee.initiatorsUnit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ʇɥǝ ıuıʇıɐʇoɹ’s nuıʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.assignee.kind": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅁oǝs ʇo"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.assignee.kind.initiator": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ıuıʇıɐʇoɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.assignee.kind.person": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ dǝɹsou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.assignee.kind.position": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɥoʅpǝɹ oɟ ɐ dosıʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.assignee.kind.queue": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ bnǝnǝ (ʍɥoǝʌǝɹ ʇɐʞǝs ıʇ ɟıɹsʇ)"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.assignee.kind.role": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁǝodʅǝ ʍıʇɥ ɐ ɹoʅǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.assignee.kind.supervisor": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ıuıʇıɐʇoɹ’s sndǝɹʌısoɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.assignee.kind.unitHead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɥǝɐp oɟ ɐ nuıʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.assignee.position": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɥoʅpǝɹ oɟ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.assignee.queue": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ bnǝnǝ "
+    },
+    {
+      "type": 1,
+      "value": "queue"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.assignee.role": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "role"
+    },
+    {
+      "type": 0,
+      "value": " ıu "
+    },
+    {
+      "type": 1,
+      "value": "unit"
+    },
+    {
+      "type": 0,
+      "value": " oɹ ɐqoʌǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.assignee.supervisor": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "levels",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "⊥ɥǝ ıuıʇıɐʇoɹ’s sndǝɹʌısoɹ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "⊥ɥǝ ıuıʇıɐʇoɹ’s sndǝɹʌısoɹ, "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʅǝʌǝʅs nd"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.assignee.unitHead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "up",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "⊥ɥǝ ɥǝɐp oɟ "
+            },
+            {
+              "type": 1,
+              "value": "unit"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "⊥ɥǝ ɥǝɐp oɟ ʇɥǝ nuıʇ ɐqoʌǝ "
+            },
+            {
+              "type": 1,
+              "value": "unit"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "⊥ɥǝ ɥǝɐp oɟ ʇɥǝ nuıʇ "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʅǝʌǝʅs ɐqoʌǝ "
+            },
+            {
+              "type": 1,
+              "value": "unit"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.attribute.classificationRank": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄʅɐssıɟıɔɐʇıou ɹɐuʞ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.attribute.memoTypeId": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo ʇʎdǝ (ıp)"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.cancel": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɐuɔǝʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.checked": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "No dɹoqʅǝɯs ɟonup."
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " dɹoqʅǝɯ ɟonup."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " dɹoqʅǝɯs ɟonup."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.checking": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥǝɔʞıuƃ…"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.choose": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥoosǝ…"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.condition.addRow": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp ɐ ɔoɯdɐɹısou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.condition.asCel": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɹıʇǝ ıʇ ɐs ↃƎ⅂"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.condition.asSimple": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩sǝ ʇɥǝ sıɯdʅǝ ɟoɹɯ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.condition.attribute": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ʇʇɹıqnʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.condition.cel": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄoupıʇıou (ↃƎ⅂)"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.condition.celHint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ sıɯdʅǝ ɟoɹɯ ɔɐuuoʇ sɥoʍ ʇɥıs ɔoupıʇıou; ıʇ ıs ʞǝdʇ ǝxɐɔʇʅʎ ɐs ʍɹıʇʇǝu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.condition.comparison": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄoɯdɐɹısou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.condition.false": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.condition.join": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Hoʅps ʍɥǝu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.condition.join.all": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ɐʅʅ oɟ ʇɥǝsǝ ɐɹǝ ʇɹnǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.condition.join.any": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ɐuʎ oɟ ʇɥǝsǝ ıs ʇɹnǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.condition.noAttributes": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iʇǝɯs oɟ ʇɥıs ʞıup ɥɐʌǝ uo ɐʇʇɹıqnʇǝs ɐ ɔoupıʇıou ɔɐu ɔoɯdɐɹǝ. Mɹıʇǝ ʇɥǝ ɔoupıʇıou ɐs ↃƎ⅂."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.condition.removeRow": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯoʌǝ ɔoɯdɐɹısou "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.condition.row": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄoɯdɐɹısou "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.condition.true": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄ǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.condition.value": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ʌɐʅnǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.condition.valueList": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ʌɐʅnǝs, sǝdɐɹɐʇǝp qʎ ɔoɯɯɐs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.conditionN": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄoupıʇıou "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.conflict": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Soɯǝouǝ ǝʅsǝ sɐʌǝp ʇɥıs pɹɐɟʇ ʍɥıʅǝ ʎon ʍǝɹǝ ɔɥɐuƃıuƃ ıʇ. ⅄onɹ ɔɥɐuƃǝs ɐɹǝ sʇıʅʅ ɥǝɹǝ: ɔodʎ ʇɥǝɯ, oɹ ɹǝʅoɐp ʇɥǝ sɐʌǝp ʌǝɹsıou."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.copied": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄodıǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.copy": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄodʎ ɯʎ ɔɥɐuƃǝs ɐs ſSON"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.deadline": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɐpʅıuǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.diagram": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Moɹʞɟʅoʍ pıɐƃɹɐɯ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.diagram.hint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ Sʇǝds ʌıǝʍ sɥoʍs ʇɥǝ sɐɯǝ ʍoɹʞɟʅoʍ ɐs ɐ ʅısʇ, ɟoɹ ʞǝʎqoɐɹp ɐup sɔɹǝǝu ɹǝɐpǝɹ nsǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.doa": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɐddɹoʌɐʅ ƃɹonds oɟ ʇɥǝ pǝʅǝƃɐʇıou oɟ ɐnʇɥoɹıʇʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.doa.hint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅁oǝs ʇo ʇɥǝ ɐddɹoʌɐʅ ƃɹonds oɟ ʇɥǝ pǝʅǝƃɐʇıou oɟ ɐnʇɥoɹıʇʎ ıu ɟoɹɔǝ ʍɥǝu ʇɥǝ ɯǝɯo sʇɐɹʇs."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.doneEditing": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄʅosǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.duration.amount": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɯonuʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.duration.days": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "n",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " pɐʎ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " pɐʎs"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.duration.hours": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "n",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɥonɹ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɥonɹs"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.duration.iso": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡnɹɐʇıou (ISO 8601, snɔɥ ɐs Ԁ1ᗡ⊥4H)"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.duration.minutes": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "n",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɯıunʇǝ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɯıunʇǝs"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.duration.unit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩uıʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.duration.unit.days": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "pɐʎs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.duration.unit.hours": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ɥonɹs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.duration.unit.minutes": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ɯıunʇǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.duration.workingDays": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "n",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʍoɹʞıuƃ pɐʎ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʍoɹʞıuƃ pɐʎs"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.duration.workingHours": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "n",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʍoɹʞıuƃ ɥonɹ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʍoɹʞıuƃ ɥonɹs"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.duration.workingMinutes": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "n",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʍoɹʞıuƃ ɯıunʇǝ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʍoɹʞıuƃ ɯıunʇǝs"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.edge": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "from"
+    },
+    {
+      "type": 0,
+      "value": " ʅǝɐps ʇo "
+    },
+    {
+      "type": 1,
+      "value": "to"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.edge.if": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "from"
+    },
+    {
+      "type": 0,
+      "value": " ʅǝɐps ʇo "
+    },
+    {
+      "type": 1,
+      "value": "to"
+    },
+    {
+      "type": 0,
+      "value": " ıɟ "
+    },
+    {
+      "type": 1,
+      "value": "condition"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.edge.otherwise": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "from"
+    },
+    {
+      "type": 0,
+      "value": " oʇɥǝɹʍısǝ ʅǝɐps ʇo "
+    },
+    {
+      "type": 1,
+      "value": "to"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.edit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥɐuƃǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.end": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝup"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.field.condition": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄoupıʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.field.name": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nɐɯǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.field.type": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ʎdǝ oɟ sʇǝd"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.flow.controls": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡıɐƃɹɐɯ ɔouʇɹoʅs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.flow.edge": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɹǝss Ǝuʇǝɹ oɹ Sdɐɔǝ ʇo sǝʅǝɔʇ ɐ ɔouuǝɔʇıou, ɐup Ǝsɔɐdǝ ʇo ɔʅǝɐɹ ʇɥǝ sǝʅǝɔʇıou."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.flow.fitView": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎıʇ ʇɥǝ ʍoɹʞɟʅoʍ ʇo ʇɥǝ ʌıǝʍ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.flow.handle": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄouuǝɔʇıou doıuʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.flow.interactive": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥oƃƃʅǝ ıuʇǝɹɐɔʇıʌıʇʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.flow.node": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɹǝss Ǝuʇǝɹ oɹ Sdɐɔǝ ʇo sǝʅǝɔʇ ɐ sʇǝd, ɐup Ǝsɔɐdǝ ʇo ɔʅǝɐɹ ʇɥǝ sǝʅǝɔʇıou."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.flow.zoomIn": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Zooɯ ıu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.flow.zoomOut": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Zooɯ onʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.forum": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎoɹnɯ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.forum.field": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎoɹnɯ ʞǝʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.forward": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎoɹʍɐɹpıuƃ ıs ɐʅʅoʍǝp ʇo"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.forward.anyone": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀uʎouǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.forward.legalEntity": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɥoʅpǝɹ’s ʅǝƃɐʅ ǝuʇıʇʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.forward.none": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No ʅıɯıʇ sǝʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.forward.unit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɥoʅpǝɹ’s nuıʇ ɐup qǝʅoʍ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.goesTo": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅁oǝs ʇo"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.if": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iɟ "
+    },
+    {
+      "type": 1,
+      "value": "condition"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.leadsTo": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅂ǝɐps ʇo"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.leadsToN": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iɟ ɔoupıʇıou "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " ɥoʅps, ʅǝɐps ʇo"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.noSelection": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝʅǝɔʇ ɐ sʇǝd ıu ʇɥǝ pıɐƃɹɐɯ ʇo ɔɥɐuƃǝ ıʇ, oɹ nsǝ ʇɥǝ Sʇǝds ʌıǝʍ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.notReadable": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥıs qopʎ ɔɐuuoʇ qǝ pɹɐʍu: ıʇ uǝǝps ɐ sʇɐɹʇ ɐup ɐ ʅısʇ oɟ sʇǝds, ǝɐɔɥ ʍıʇɥ ɐu ıp ɐup ɐ ʇʎdǝ. ∩sǝ ʇɥǝ ſSON ʌıǝʍ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.notify.add": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp soɯǝouǝ ʇo ʇǝʅʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.notify.message": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝssɐƃǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.notify.messageHint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ʞǝʎ oɟ ʇɥǝ uoʇıɔǝ ʇo sǝup, snɔɥ ɐs ɔɹǝpıʇᗡǝɔıpǝp. ⊥ɥǝ uoʇıɔǝ uɐɯǝs ʇɥǝ ɯǝɯo ouʅʎ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.notify.recipientN": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ǝʅʅ "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.notify.remove": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯoʌǝ dǝɹsou oɹ ƃɹond "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " ʇo ʇǝʅʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.nowhere": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noʍɥǝɹǝ ʎǝʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.op.eq": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ıs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.op.ge": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ıs ɐʇ ʅǝɐsʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.op.gt": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ıs ɯoɹǝ ʇɥɐu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.op.in": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ıs ouǝ oɟ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.op.le": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ıs ɐʇ ɯosʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.op.lt": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ıs ʅǝss ʇɥɐu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.op.ne": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ıs uoʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.otherwise": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Oʇɥǝɹʍısǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.parallel.add": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp soɯǝouǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.parallel.all": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ʅʅ oɟ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.parallel.any": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀uʎ ouǝ oɟ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.parallel.assigneeN": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁǝɹsou oɹ ƃɹond "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.parallel.field.n": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Hoʍ ɯɐuʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.parallel.mode": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɔıpǝp ʍɥǝu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.parallel.mode.all": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝʌǝɹʎouǝ ɥɐs ɐddɹoʌǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.parallel.mode.any": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀uʎouǝ ɥɐs ɐddɹoʌǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.parallel.mode.n": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ unɯqǝɹ oɟ ʇɥǝɯ ɥɐʌǝ ɐddɹoʌǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.parallel.n": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " oɟ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.parallel.remove": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯoʌǝ dǝɹsou oɹ ƃɹond "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.problems": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " dɹoqʅǝɯ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " dɹoqʅǝɯs"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.reached": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɐɔɥǝp ıu ʇɥǝ sıɯnʅɐʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.redo": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝpo"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.reload": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝʅoɐp ʇɥǝ sɐʌǝp ʌǝɹsıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.remove": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯoʌǝ ʇɥıs sʇǝd"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.remove.confirm": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯoʌǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.remove.description": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɥɐʇ ʅǝp ʇo ʇɥıs sʇǝd ʍıʅʅ ʅǝɐp ʍɥǝɹǝ ıʇ ʅǝp, ʍɥǝu ʇɥɐʇ ıs ouǝ dʅɐɔǝ. ⅄on ɔɐu nupo ʇɥıs nuʇıʅ ʎon sɐʌǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.remove.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯoʌǝ “"
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "”?"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.removeCondition": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯoʌǝ ɔoupıʇıou "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.route": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɐddɹoʌǝɹs ʇɥǝ ıuıʇıɐʇoɹ ɔɥoosǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.route.hint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅁oǝs ʇo ʇɥǝ ɐddɹoʌǝɹs ʇɥǝ ıuıʇıɐʇoɹ ɔɥoosǝs, ouǝ ɐɟʇǝɹ ʇɥǝ oʇɥǝɹ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.runs": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚnus"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.selected": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝʅǝɔʇǝp sʇǝd"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.actingFor": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ɟoɹ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.addApprover": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp ɐu ɐddɹoʌǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.approved": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iʇ ʍonʅp qǝ ɐddɹoʌǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.approverN": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ddɹoʌǝɹ "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.blocked": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iʇ ʍonʅp sʇod ɐup ʍɐıʇ ɟoɹ ɐu ɐpɯıuısʇɹɐʇoɹ: soɯǝouǝ ıʇ ɹǝɐɔɥǝs ɔɐuuoʇ ʇɐʞǝ ıʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.classificationRank": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄʅɐssıɟıɔɐʇıou ɹɐuʞ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.conditionHeld": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄoupıʇıou "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " ɥǝʅp: "
+    },
+    {
+      "type": 1,
+      "value": "condition"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.failed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ sıɯnʅɐʇıou ɔonʅp uoʇ ɹnu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.false": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.group": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ddɹoʌɐʅ ƃɹond "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.inactive": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɐɔɔonuʇ ıs uoʇ ɐɔʇıʌǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.initiator": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sʇɐɹʇǝp qʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.invalid": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ʍoɹʞɟʅoʍ ɥɐs dɹoqʅǝɯs. Ⅎıx ʇɥǝɯ, ʇɥǝu sıɯnʅɐʇǝ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɥo ʇɥıs ʍoɹʞɟʅoʍ ʍonʅp ɹǝɐɔɥ ɟoɹ ɐu ıʇǝɯ ʅıʞǝ ʇɥıs, sʇɐɹʇǝp uoʍ, ıɟ ǝʌǝɹʎouǝ ɐddɹoʌǝs. Noʇɥıuƃ ıs sɐʌǝp oɹ sǝuʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.limit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iʇ ʇooʞ ʇoo ɯɐuʎ sʇǝds; ʇɥǝ sıɯnʅɐʇıou sʇoddǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.limited": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥oo ɯɐuʎ sıɯnʅɐʇıous. ⊥ɹʎ ɐƃɐıu ıu ɐ ɯıunʇǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.memoType": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo ʇʎdǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.needInitiator": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥoosǝ ʍɥo sʇɐɹʇs ıʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.noClearance": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noʇ ɔʅǝɐɹǝp ɟoɹ ʇɥıs ɔʅɐssıɟıɔɐʇıou."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.otherwise": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No ɔoupıʇıou ɥǝʅp: oʇɥǝɹʍısǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.outcome.blocked": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sʇods ɥǝɹǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.outcome.branched": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԑɹɐuɔɥ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.outcome.decided": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɔıpǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.outcome.notified": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥oʅp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.outcome.passed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɐssǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.path": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sʇǝds ıʇ ʍonʅp ɹǝɐɔɥ, ıu oɹpǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.removeApprover": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯoʌǝ ɐddɹoʌǝɹ "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.route": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ddɹoʌǝɹs ʇɥǝ ıuıʇıɐʇoɹ ɔɥoosǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.run": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sıɯnʅɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.running": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sıɯnʅɐʇıuƃ…"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sıɯnʅɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.true": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄ǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sim.unresolved": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noqopʎ ɔonʅp qǝ ɟonup ɟoɹ ʇɥıs sʇǝd."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sla.addReminder": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp ɐ ɹǝɯıupǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sla.due": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡnǝ ıu "
+    },
+    {
+      "type": 1,
+      "value": "duration"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sla.escalate.nextLevel": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ɯoʌǝs ʇo ʇɥǝ uǝxʇ ʅǝʌǝʅ "
+    },
+    {
+      "type": 1,
+      "value": "after"
+    },
+    {
+      "type": 0,
+      "value": " ʅɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sla.escalate.nextLevelOption": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Woʌǝ ʇɥǝ ʇɐsʞ ouǝ ʅǝʌǝʅ nd"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sla.escalate.none": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noʇɥıuƃ ɯoɹǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sla.escalate.notify": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ʇɥǝ sndǝɹʌısoɹ ıs ʇoʅp "
+    },
+    {
+      "type": 1,
+      "value": "after"
+    },
+    {
+      "type": 0,
+      "value": " ʅɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sla.escalate.notifyOption": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ǝʅʅ ʇɥǝ ɥoʅpǝɹ’s sndǝɹʌısoɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sla.escalate.reassign": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ɯoʌǝs ʇo "
+    },
+    {
+      "type": 1,
+      "value": "to"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "after"
+    },
+    {
+      "type": 0,
+      "value": " ʅɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sla.escalate.reassignOption": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Woʌǝ ʇɥǝ ʇɐsʞ ʇo soɯǝouǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sla.field.after": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯıupǝɹs ɐɟʇǝɹ ıʇ ıs pnǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sla.field.before": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Hoʍ ʅouƃ qǝɟoɹǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sla.field.due": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡnǝ ɐɟʇǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sla.field.escalateAfter": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Hoʍ ʅouƃ ʅɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sla.field.escalateTo": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Woʌǝ ıʇ ʇo"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sla.field.escalation": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɥǝu ıʇ ıs ʅɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sla.field.remindBefore": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯıup ʇɥǝ ɥoʅpǝɹ qǝɟoɹǝ ıʇ ıs pnǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sla.field.workingTime": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄonuʇ ʍoɹʞıuƃ ʇıɯǝ ouʅʎ (ʇɥǝ qnsıuǝss ɔɐʅǝupɐɹ)"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sla.has": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥıs sʇǝd ɥɐs ɐ pǝɐpʅıuǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sla.remindAfter": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ɹǝɯıupǝɹs "
+    },
+    {
+      "type": 1,
+      "value": "durations"
+    },
+    {
+      "type": 0,
+      "value": " ɐɟʇǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sla.remindBefore": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ɹǝɯıupǝɹ "
+    },
+    {
+      "type": 1,
+      "value": "duration"
+    },
+    {
+      "type": 0,
+      "value": " qǝɟoɹǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sla.reminderN": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯıupǝɹ "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " ɐɟʇǝɹ ıʇ ıs pnǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.sla.removeReminder": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯoʌǝ ɹǝɯıupǝɹ "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.start": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sʇɐɹʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.stepAria": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sʇǝd "
+    },
+    {
+      "type": 1,
+      "value": "index"
+    },
+    {
+      "type": 0,
+      "value": " oɟ "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ". "
+    },
+    {
+      "type": 1,
+      "value": "who"
+    },
+    {
+      "type": 0,
+      "value": " ⅂ǝɐps ʇo "
+    },
+    {
+      "type": 1,
+      "value": "next"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.stepAria.reached": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": " ᴚǝɐɔɥǝp ıu ʇɥǝ sıɯnʅɐʇıou."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.stepHeading": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "index"
+    },
+    {
+      "type": 0,
+      "value": ". "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.stepProblems": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɹoqʅǝɯs ıu "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.steps": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sʇǝds, ıu ʇɥǝ oɹpǝɹ ʇɥǝʎ ɐɹǝ ʍɹıʇʇǝu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.subworkflow.field": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Snq-ʍoɹʞɟʅoʍ ʇo ɹnu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.tells": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ǝʅʅs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.tools": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥɐuƃǝ ʇɥǝ ʍoɹʞɟʅoʍ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.type.approve": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ddɹoʌɐʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.type.branch": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԑɹɐuɔɥ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.type.doa": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝʅǝƃɐʇıou oɟ ɐnʇɥoɹıʇʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.type.forum": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝsɔɐʅɐʇǝ ʇo ɐ ɟoɹnɯ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.type.notify": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noʇıɟʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.type.parallel": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɐɹɐʅʅǝʅ pǝɔısıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.type.review": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝʌıǝʍ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.type.route": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚonʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.type.sign": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sıƃuɐʇnɹǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.type.subworkflow": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Snq-ʍoɹʞɟʅoʍ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.undo": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩upo"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.unknown": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩uʞuoʍu ("
+    },
+    {
+      "type": 1,
+      "value": "id"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.view.diagram": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡıɐƃɹɐɯ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.view.json": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ſSON"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.view.steps": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sʇǝds"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.views": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ʌıǝʍs oɟ ʇɥıs ʌǝɹsıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "dialog.close": [
     {
       "type": 0,
@@ -15853,3316 +19685,6 @@
     {
       "type": 0,
       "value": "⊥ɥıs ıs uoʇ ʌɐʅıp ſSON."
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.action.approve": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∀ddɹoʌǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.action.ask": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∀sʞ ɟoɹ odıuıous"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.action.delegate": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᗡǝʅǝƃɐʇǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.action.forward": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ⅎoɹʍɐɹp"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.action.recommend": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᴚǝɔoɯɯǝup"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.action.refer": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᴚǝɟǝɹ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.action.reject": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᴚǝɾǝɔʇ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.action.return": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᴚǝʇnɹu ʇo ʇɥǝ ıuıʇıɐʇoɹ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.action.sendBack": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Sǝup qɐɔʞ ʇo ɐu ǝɐɹʅıǝɹ sʇǝd"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.actions": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Mɥɐʇ ʇɥǝ ɥoʅpǝɹ ɔɐu po"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.actions.hint": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ıɔʞ “uǝǝps ɐ ɹǝɯɐɹʞ” ɟoɹ ɐɔʇıous ʇɥǝ ɥoʅpǝɹ ɯnsʇ ǝxdʅɐıu."
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.actions.remark": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "uǝǝps ɐ ɹǝɯɐɹʞ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.actions.remarkFor": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 1,
-      "value": "action"
-    },
-    {
-      "type": 0,
-      "value": " uǝǝps ɐ ɹǝɯɐɹʞ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.add": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∀pp"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.addAfter": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∀pp ɐ sʇǝd ɐɟʇǝɹ ʇɥıs ouǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.addCondition": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∀pp ɐ ɔoupıʇıou"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.addFirst": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∀pp ɐ sʇǝd ɐʇ ʇɥǝ sʇɐɹʇ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.assignee.choose": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ↄɥoosǝ…"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.assignee.field.initiatorsUnit": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥǝ ıuıʇıɐʇoɹ’s nuıʇ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.assignee.field.levels": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⅂ǝʌǝʅs nd ʇɥǝ ɹǝdoɹʇıuƃ ʅıuǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.assignee.field.person": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ԁǝɹsou"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.assignee.field.position": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ԁosıʇıou"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.assignee.field.queue": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ònǝnǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.assignee.field.role": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᴚoʅǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.assignee.field.unit": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∩uıʇ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.assignee.field.up": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∩uıʇs ɐqoʌǝ ıʇ (0 ɟoɹ ʇɥǝ nuıʇ ıʇsǝʅɟ)"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.assignee.initiator": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥǝ ıuıʇıɐʇoɹ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.assignee.initiatorsUnit": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ʇɥǝ ıuıʇıɐʇoɹ’s nuıʇ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.assignee.kind": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⅁oǝs ʇo"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.assignee.kind.initiator": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥǝ ıuıʇıɐʇoɹ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.assignee.kind.person": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∀ dǝɹsou"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.assignee.kind.position": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥǝ ɥoʅpǝɹ oɟ ɐ dosıʇıou"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.assignee.kind.queue": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∀ bnǝnǝ (ʍɥoǝʌǝɹ ʇɐʞǝs ıʇ ɟıɹsʇ)"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.assignee.kind.role": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ԁǝodʅǝ ʍıʇɥ ɐ ɹoʅǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.assignee.kind.supervisor": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥǝ ıuıʇıɐʇoɹ’s sndǝɹʌısoɹ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.assignee.kind.unitHead": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥǝ ɥǝɐp oɟ ɐ nuıʇ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.assignee.position": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥǝ ɥoʅpǝɹ oɟ "
-    },
-    {
-      "type": 1,
-      "value": "name"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.assignee.queue": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥǝ bnǝnǝ "
-    },
-    {
-      "type": 1,
-      "value": "queue"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.assignee.role": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 1,
-      "value": "role"
-    },
-    {
-      "type": 0,
-      "value": " ıu "
-    },
-    {
-      "type": 1,
-      "value": "unit"
-    },
-    {
-      "type": 0,
-      "value": " oɹ ɐqoʌǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.assignee.supervisor": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 6,
-      "value": "levels",
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "⊥ɥǝ ıuıʇıɐʇoɹ’s sndǝɹʌısoɹ"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "⊥ɥǝ ıuıʇıɐʇoɹ’s sndǝɹʌısoɹ, "
-            },
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " ʅǝʌǝʅs nd"
-            }
-          ]
-        }
-      },
-      "offset": 0,
-      "pluralType": "cardinal"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.assignee.unitHead": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 6,
-      "value": "up",
-      "options": {
-        "=0": {
-          "value": [
-            {
-              "type": 0,
-              "value": "⊥ɥǝ ɥǝɐp oɟ "
-            },
-            {
-              "type": 1,
-              "value": "unit"
-            }
-          ]
-        },
-        "one": {
-          "value": [
-            {
-              "type": 0,
-              "value": "⊥ɥǝ ɥǝɐp oɟ ʇɥǝ nuıʇ ɐqoʌǝ "
-            },
-            {
-              "type": 1,
-              "value": "unit"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "⊥ɥǝ ɥǝɐp oɟ ʇɥǝ nuıʇ "
-            },
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " ʅǝʌǝʅs ɐqoʌǝ "
-            },
-            {
-              "type": 1,
-              "value": "unit"
-            }
-          ]
-        }
-      },
-      "offset": 0,
-      "pluralType": "cardinal"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.attribute.classificationRank": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ↄʅɐssıɟıɔɐʇıou ɹɐuʞ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.attribute.memoTypeId": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Wǝɯo ʇʎdǝ (ıp)"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.cancel": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ↄɐuɔǝʅ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.checked": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 6,
-      "value": "count",
-      "options": {
-        "=0": {
-          "value": [
-            {
-              "type": 0,
-              "value": "No dɹoqʅǝɯs ɟonup."
-            }
-          ]
-        },
-        "one": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " dɹoqʅǝɯ ɟonup."
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " dɹoqʅǝɯs ɟonup."
-            }
-          ]
-        }
-      },
-      "offset": 0,
-      "pluralType": "cardinal"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.checking": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ↄɥǝɔʞıuƃ…"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.choose": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ↄɥoosǝ…"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.condition.addRow": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∀pp ɐ ɔoɯdɐɹısou"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.condition.asCel": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Mɹıʇǝ ıʇ ɐs ↃƎ⅂"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.condition.asSimple": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∩sǝ ʇɥǝ sıɯdʅǝ ɟoɹɯ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.condition.attribute": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∀ʇʇɹıqnʇǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.condition.cel": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ↄoupıʇıou (ↃƎ⅂)"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.condition.celHint": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥǝ sıɯdʅǝ ɟoɹɯ ɔɐuuoʇ sɥoʍ ʇɥıs ɔoupıʇıou; ıʇ ıs ʞǝdʇ ǝxɐɔʇʅʎ ɐs ʍɹıʇʇǝu."
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.condition.comparison": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ↄoɯdɐɹısou"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.condition.false": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "No"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.condition.join": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Hoʅps ʍɥǝu"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.condition.join.all": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ɐʅʅ oɟ ʇɥǝsǝ ɐɹǝ ʇɹnǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.condition.join.any": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ɐuʎ oɟ ʇɥǝsǝ ıs ʇɹnǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.condition.noAttributes": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Iʇǝɯs oɟ ʇɥıs ʞıup ɥɐʌǝ uo ɐʇʇɹıqnʇǝs ɐ ɔoupıʇıou ɔɐu ɔoɯdɐɹǝ. Mɹıʇǝ ʇɥǝ ɔoupıʇıou ɐs ↃƎ⅂."
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.condition.removeRow": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᴚǝɯoʌǝ ɔoɯdɐɹısou "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.condition.row": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ↄoɯdɐɹısou "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.condition.true": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⅄ǝs"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.condition.value": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ʌɐʅnǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.condition.valueList": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ʌɐʅnǝs, sǝdɐɹɐʇǝp qʎ ɔoɯɯɐs"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.conditionN": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ↄoupıʇıou "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.conflict": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Soɯǝouǝ ǝʅsǝ sɐʌǝp ʇɥıs pɹɐɟʇ ʍɥıʅǝ ʎon ʍǝɹǝ ɔɥɐuƃıuƃ ıʇ. ⅄onɹ ɔɥɐuƃǝs ɐɹǝ sʇıʅʅ ɥǝɹǝ: ɔodʎ ʇɥǝɯ, oɹ ɹǝʅoɐp ʇɥǝ sɐʌǝp ʌǝɹsıou."
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.copied": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ↄodıǝp."
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.copy": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ↄodʎ ɯʎ ɔɥɐuƃǝs ɐs ſSON"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.deadline": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᗡǝɐpʅıuǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.diagram": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Moɹʞɟʅoʍ pıɐƃɹɐɯ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.diagram.hint": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥǝ Sʇǝds ʌıǝʍ sɥoʍs ʇɥǝ sɐɯǝ ʍoɹʞɟʅoʍ ɐs ɐ ʅısʇ, ɟoɹ ʞǝʎqoɐɹp ɐup sɔɹǝǝu ɹǝɐpǝɹ nsǝ."
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.doa": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥǝ ɐddɹoʌɐʅ ƃɹonds oɟ ʇɥǝ pǝʅǝƃɐʇıou oɟ ɐnʇɥoɹıʇʎ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.doa.hint": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⅁oǝs ʇo ʇɥǝ ɐddɹoʌɐʅ ƃɹonds oɟ ʇɥǝ pǝʅǝƃɐʇıou oɟ ɐnʇɥoɹıʇʎ ıu ɟoɹɔǝ ʍɥǝu ʇɥǝ ɯǝɯo sʇɐɹʇs."
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.doneEditing": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ↄʅosǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.duration.amount": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∀ɯonuʇ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.duration.days": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 6,
-      "value": "n",
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " pɐʎ"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " pɐʎs"
-            }
-          ]
-        }
-      },
-      "offset": 0,
-      "pluralType": "cardinal"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.duration.hours": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 6,
-      "value": "n",
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " ɥonɹ"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " ɥonɹs"
-            }
-          ]
-        }
-      },
-      "offset": 0,
-      "pluralType": "cardinal"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.duration.iso": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᗡnɹɐʇıou (ISO 8601, snɔɥ ɐs Ԁ1ᗡ⊥4H)"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.duration.minutes": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 6,
-      "value": "n",
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " ɯıunʇǝ"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " ɯıunʇǝs"
-            }
-          ]
-        }
-      },
-      "offset": 0,
-      "pluralType": "cardinal"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.duration.unit": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∩uıʇ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.duration.unit.days": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "pɐʎs"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.duration.unit.hours": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ɥonɹs"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.duration.unit.minutes": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ɯıunʇǝs"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.duration.workingDays": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 6,
-      "value": "n",
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " ʍoɹʞıuƃ pɐʎ"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " ʍoɹʞıuƃ pɐʎs"
-            }
-          ]
-        }
-      },
-      "offset": 0,
-      "pluralType": "cardinal"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.duration.workingHours": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 6,
-      "value": "n",
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " ʍoɹʞıuƃ ɥonɹ"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " ʍoɹʞıuƃ ɥonɹs"
-            }
-          ]
-        }
-      },
-      "offset": 0,
-      "pluralType": "cardinal"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.duration.workingMinutes": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 6,
-      "value": "n",
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " ʍoɹʞıuƃ ɯıunʇǝ"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " ʍoɹʞıuƃ ɯıunʇǝs"
-            }
-          ]
-        }
-      },
-      "offset": 0,
-      "pluralType": "cardinal"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.edge": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 1,
-      "value": "from"
-    },
-    {
-      "type": 0,
-      "value": " ʅǝɐps ʇo "
-    },
-    {
-      "type": 1,
-      "value": "to"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.edge.if": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 1,
-      "value": "from"
-    },
-    {
-      "type": 0,
-      "value": " ʅǝɐps ʇo "
-    },
-    {
-      "type": 1,
-      "value": "to"
-    },
-    {
-      "type": 0,
-      "value": " ıɟ "
-    },
-    {
-      "type": 1,
-      "value": "condition"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.edge.otherwise": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 1,
-      "value": "from"
-    },
-    {
-      "type": 0,
-      "value": " oʇɥǝɹʍısǝ ʅǝɐps ʇo "
-    },
-    {
-      "type": 1,
-      "value": "to"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.edit": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ↄɥɐuƃǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.end": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ǝup"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.field.condition": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ↄoupıʇıou"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.field.name": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Nɐɯǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.field.type": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ʎdǝ oɟ sʇǝd"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.flow.controls": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᗡıɐƃɹɐɯ ɔouʇɹoʅs"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.flow.edge": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ԁɹǝss Ǝuʇǝɹ oɹ Sdɐɔǝ ʇo sǝʅǝɔʇ ɐ ɔouuǝɔʇıou, ɐup Ǝsɔɐdǝ ʇo ɔʅǝɐɹ ʇɥǝ sǝʅǝɔʇıou."
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.flow.fitView": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ⅎıʇ ʇɥǝ ʍoɹʞɟʅoʍ ʇo ʇɥǝ ʌıǝʍ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.flow.handle": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ↄouuǝɔʇıou doıuʇ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.flow.interactive": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥oƃƃʅǝ ıuʇǝɹɐɔʇıʌıʇʎ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.flow.node": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ԁɹǝss Ǝuʇǝɹ oɹ Sdɐɔǝ ʇo sǝʅǝɔʇ ɐ sʇǝd, ɐup Ǝsɔɐdǝ ʇo ɔʅǝɐɹ ʇɥǝ sǝʅǝɔʇıou."
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.flow.zoomIn": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Zooɯ ıu"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.flow.zoomOut": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Zooɯ onʇ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.forum": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ⅎoɹnɯ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.forum.field": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ⅎoɹnɯ ʞǝʎ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.forward": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ⅎoɹʍɐɹpıuƃ ıs ɐʅʅoʍǝp ʇo"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.forward.anyone": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∀uʎouǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.forward.legalEntity": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥǝ ɥoʅpǝɹ’s ʅǝƃɐʅ ǝuʇıʇʎ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.forward.none": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "No ʅıɯıʇ sǝʇ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.forward.unit": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥǝ ɥoʅpǝɹ’s nuıʇ ɐup qǝʅoʍ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.goesTo": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⅁oǝs ʇo"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.if": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Iɟ "
-    },
-    {
-      "type": 1,
-      "value": "condition"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.leadsTo": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⅂ǝɐps ʇo"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.leadsToN": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Iɟ ɔoupıʇıou "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": " ɥoʅps, ʅǝɐps ʇo"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.noSelection": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Sǝʅǝɔʇ ɐ sʇǝd ıu ʇɥǝ pıɐƃɹɐɯ ʇo ɔɥɐuƃǝ ıʇ, oɹ nsǝ ʇɥǝ Sʇǝds ʌıǝʍ."
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.notReadable": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥıs qopʎ ɔɐuuoʇ qǝ pɹɐʍu: ıʇ uǝǝps ɐ sʇɐɹʇ ɐup ɐ ʅısʇ oɟ sʇǝds, ǝɐɔɥ ʍıʇɥ ɐu ıp ɐup ɐ ʇʎdǝ. ∩sǝ ʇɥǝ ſSON ʌıǝʍ."
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.notify.add": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∀pp soɯǝouǝ ʇo ʇǝʅʅ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.notify.message": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Wǝssɐƃǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.notify.messageHint": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥǝ ʞǝʎ oɟ ʇɥǝ uoʇıɔǝ ʇo sǝup, snɔɥ ɐs ɔɹǝpıʇᗡǝɔıpǝp. ⊥ɥǝ uoʇıɔǝ uɐɯǝs ʇɥǝ ɯǝɯo ouʅʎ."
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.notify.recipientN": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ǝʅʅ "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.notify.remove": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᴚǝɯoʌǝ dǝɹsou oɹ ƃɹond "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": " ʇo ʇǝʅʅ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.nowhere": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Noʍɥǝɹǝ ʎǝʇ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.op.eq": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ıs"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.op.ge": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ıs ɐʇ ʅǝɐsʇ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.op.gt": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ıs ɯoɹǝ ʇɥɐu"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.op.in": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ıs ouǝ oɟ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.op.le": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ıs ɐʇ ɯosʇ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.op.lt": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ıs ʅǝss ʇɥɐu"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.op.ne": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ıs uoʇ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.otherwise": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Oʇɥǝɹʍısǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.parallel.add": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∀pp soɯǝouǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.parallel.all": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∀ʅʅ oɟ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.parallel.any": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∀uʎ ouǝ oɟ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.parallel.assigneeN": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ԁǝɹsou oɹ ƃɹond "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.parallel.field.n": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Hoʍ ɯɐuʎ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.parallel.mode": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᗡǝɔıpǝp ʍɥǝu"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.parallel.mode.all": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ǝʌǝɹʎouǝ ɥɐs ɐddɹoʌǝp"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.parallel.mode.any": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∀uʎouǝ ɥɐs ɐddɹoʌǝp"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.parallel.mode.n": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∀ unɯqǝɹ oɟ ʇɥǝɯ ɥɐʌǝ ɐddɹoʌǝp"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.parallel.n": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": " oɟ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.parallel.remove": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᴚǝɯoʌǝ dǝɹsou oɹ ƃɹond "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.problems": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 6,
-      "value": "count",
-      "options": {
-        "one": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " dɹoqʅǝɯ"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " dɹoqʅǝɯs"
-            }
-          ]
-        }
-      },
-      "offset": 0,
-      "pluralType": "cardinal"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.redo": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᴚǝpo"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.reload": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᴚǝʅoɐp ʇɥǝ sɐʌǝp ʌǝɹsıou"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.remove": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᴚǝɯoʌǝ ʇɥıs sʇǝd"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.remove.confirm": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᴚǝɯoʌǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.remove.description": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Mɥɐʇ ʅǝp ʇo ʇɥıs sʇǝd ʍıʅʅ ʅǝɐp ʍɥǝɹǝ ıʇ ʅǝp, ʍɥǝu ʇɥɐʇ ıs ouǝ dʅɐɔǝ. ⅄on ɔɐu nupo ʇɥıs nuʇıʅ ʎon sɐʌǝ."
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.remove.title": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᴚǝɯoʌǝ “"
-    },
-    {
-      "type": 1,
-      "value": "name"
-    },
-    {
-      "type": 0,
-      "value": "”?"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.removeCondition": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᴚǝɯoʌǝ ɔoupıʇıou "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.route": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥǝ ɐddɹoʌǝɹs ʇɥǝ ıuıʇıɐʇoɹ ɔɥoosǝs"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.route.hint": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⅁oǝs ʇo ʇɥǝ ɐddɹoʌǝɹs ʇɥǝ ıuıʇıɐʇoɹ ɔɥoosǝs, ouǝ ɐɟʇǝɹ ʇɥǝ oʇɥǝɹ."
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.runs": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᴚnus"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.selected": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Sǝʅǝɔʇǝp sʇǝd"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.sla.addReminder": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∀pp ɐ ɹǝɯıupǝɹ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.sla.due": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᗡnǝ ıu "
-    },
-    {
-      "type": 1,
-      "value": "duration"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.sla.escalate.nextLevel": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ɯoʌǝs ʇo ʇɥǝ uǝxʇ ʅǝʌǝʅ "
-    },
-    {
-      "type": 1,
-      "value": "after"
-    },
-    {
-      "type": 0,
-      "value": " ʅɐʇǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.sla.escalate.nextLevelOption": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Woʌǝ ʇɥǝ ʇɐsʞ ouǝ ʅǝʌǝʅ nd"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.sla.escalate.none": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Noʇɥıuƃ ɯoɹǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.sla.escalate.notify": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ʇɥǝ sndǝɹʌısoɹ ıs ʇoʅp "
-    },
-    {
-      "type": 1,
-      "value": "after"
-    },
-    {
-      "type": 0,
-      "value": " ʅɐʇǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.sla.escalate.notifyOption": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ǝʅʅ ʇɥǝ ɥoʅpǝɹ’s sndǝɹʌısoɹ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.sla.escalate.reassign": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ɯoʌǝs ʇo "
-    },
-    {
-      "type": 1,
-      "value": "to"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "type": 1,
-      "value": "after"
-    },
-    {
-      "type": 0,
-      "value": " ʅɐʇǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.sla.escalate.reassignOption": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Woʌǝ ʇɥǝ ʇɐsʞ ʇo soɯǝouǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.sla.field.after": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᴚǝɯıupǝɹs ɐɟʇǝɹ ıʇ ıs pnǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.sla.field.before": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Hoʍ ʅouƃ qǝɟoɹǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.sla.field.due": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᗡnǝ ɐɟʇǝɹ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.sla.field.escalateAfter": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Hoʍ ʅouƃ ʅɐʇǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.sla.field.escalateTo": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Woʌǝ ıʇ ʇo"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.sla.field.escalation": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Mɥǝu ıʇ ıs ʅɐʇǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.sla.field.remindBefore": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᴚǝɯıup ʇɥǝ ɥoʅpǝɹ qǝɟoɹǝ ıʇ ıs pnǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.sla.field.workingTime": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ↄonuʇ ʍoɹʞıuƃ ʇıɯǝ ouʅʎ (ʇɥǝ qnsıuǝss ɔɐʅǝupɐɹ)"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.sla.has": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ɥıs sʇǝd ɥɐs ɐ pǝɐpʅıuǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.sla.remindAfter": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ɹǝɯıupǝɹs "
-    },
-    {
-      "type": 1,
-      "value": "durations"
-    },
-    {
-      "type": 0,
-      "value": " ɐɟʇǝɹ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.sla.remindBefore": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ɹǝɯıupǝɹ "
-    },
-    {
-      "type": 1,
-      "value": "duration"
-    },
-    {
-      "type": 0,
-      "value": " qǝɟoɹǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.sla.reminderN": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᴚǝɯıupǝɹ "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": " ɐɟʇǝɹ ıʇ ıs pnǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.sla.removeReminder": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᴚǝɯoʌǝ ɹǝɯıupǝɹ "
-    },
-    {
-      "type": 1,
-      "value": "n"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.start": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Sʇɐɹʇ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.stepAria": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Sʇǝd "
-    },
-    {
-      "type": 1,
-      "value": "index"
-    },
-    {
-      "type": 0,
-      "value": " oɟ "
-    },
-    {
-      "type": 1,
-      "value": "count"
-    },
-    {
-      "type": 0,
-      "value": ", "
-    },
-    {
-      "type": 1,
-      "value": "type"
-    },
-    {
-      "type": 0,
-      "value": ", "
-    },
-    {
-      "type": 1,
-      "value": "name"
-    },
-    {
-      "type": 0,
-      "value": ". "
-    },
-    {
-      "type": 1,
-      "value": "who"
-    },
-    {
-      "type": 0,
-      "value": " ⅂ǝɐps ʇo "
-    },
-    {
-      "type": 1,
-      "value": "next"
-    },
-    {
-      "type": 0,
-      "value": "."
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.stepHeading": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 1,
-      "value": "index"
-    },
-    {
-      "type": 0,
-      "value": ". "
-    },
-    {
-      "type": 1,
-      "value": "name"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.stepProblems": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ԁɹoqʅǝɯs ıu "
-    },
-    {
-      "type": 1,
-      "value": "name"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.steps": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Sʇǝds, ıu ʇɥǝ oɹpǝɹ ʇɥǝʎ ɐɹǝ ʍɹıʇʇǝu"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.subworkflow.field": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Snq-ʍoɹʞɟʅoʍ ʇo ɹnu"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.tells": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "⊥ǝʅʅs"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.tools": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ↄɥɐuƃǝ ʇɥǝ ʍoɹʞɟʅoʍ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.type.approve": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∀ddɹoʌɐʅ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.type.branch": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ԑɹɐuɔɥ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.type.doa": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᗡǝʅǝƃɐʇıou oɟ ɐnʇɥoɹıʇʎ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.type.forum": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ǝsɔɐʅɐʇǝ ʇo ɐ ɟoɹnɯ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.type.notify": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Noʇıɟʎ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.type.parallel": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ԁɐɹɐʅʅǝʅ pǝɔısıou"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.type.review": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᴚǝʌıǝʍ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.type.route": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᴚonʇǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.type.sign": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Sıƃuɐʇnɹǝ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.type.subworkflow": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Snq-ʍoɹʞɟʅoʍ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.undo": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∩upo"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.unknown": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "∩uʞuoʍu ("
-    },
-    {
-      "type": 1,
-      "value": "id"
-    },
-    {
-      "type": 0,
-      "value": ")"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.view.diagram": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ᗡıɐƃɹɐɯ"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.view.json": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "ſSON"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.view.steps": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Sʇǝds"
-    },
-    {
-      "type": 0,
-      "value": "‬"
-    }
-  ],
-  "workflows.builder.views": [
-    {
-      "type": 0,
-      "value": "‮"
-    },
-    {
-      "type": 0,
-      "value": "Ʌıǝʍs oɟ ʇɥıs ʌǝɹsıou"
     },
     {
       "type": 0,

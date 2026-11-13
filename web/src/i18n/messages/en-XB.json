@@ -5813,6 +5813,24 @@
       "value": "‬"
     }
   ],
+  "memo.due": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡnǝ "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "memo.failed": [
     {
       "type": 0,
@@ -6773,6 +6791,24 @@
     {
       "type": 0,
       "value": "⅄onɹ odıuıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.overdue": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Oʌǝɹpnǝ sıuɔǝ "
+    },
+    {
+      "type": 1,
+      "value": "time"
     },
     {
       "type": 0,
@@ -8361,6 +8397,20 @@
     {
       "type": 0,
       "value": "Ԑɹɐupıuƃ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "nav.calendar": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԑnsıuǝss ɔɐʅǝupɐɹ"
     },
     {
       "type": 0,
@@ -15329,6 +15379,20 @@
       "value": "‬"
     }
   ],
+  "workflowTasks.col.due": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡnǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "workflowTasks.col.memo": [
     {
       "type": 0,
@@ -15393,6 +15457,20 @@
     {
       "type": 0,
       "value": "∀ʅʅ odǝu ʇɐsʞs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflowTasks.filter.overdue": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Oʌǝɹpnǝ"
     },
     {
       "type": 0,
@@ -15789,6 +15867,600 @@
     {
       "type": 0,
       "value": "Ԑnıʅʇ ıu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.add": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.addDays": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp ɐ pɐʎ oɹ ɐ ɹɐuƃǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.addPeriod": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp ɥonɹs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.calculate": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɐʅɔnʅɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.closed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄʅosǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.conflict": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Soɯǝouǝ ɔɥɐuƃǝp ʇɥǝ ɥonɹs ɯǝɐuʍɥıʅǝ. ⊥ɥǝʎ ɥɐʌǝ qǝǝu ɹǝʅoɐpǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.dayKind": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ pɐʎ ıs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.dayLine": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "day"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "hours"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.dayLineNote": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "day"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "hours"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "note"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.days": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Hoʅıpɐʎs ɐup sdǝɔıɐʅ pɐʎs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.defaulted": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noʇ sǝʇ ʎǝʇ: Snupɐʎ ʇo ⊥ɥnɹspɐʎ, 9:00 ʇo 17:00. Sɐʌǝ ʇo ʞǝǝd oɹ ɔɥɐuƃǝ ıʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.due": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡnǝ "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.duration": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɐpʅıuǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.failed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥɐʇ pıp uoʇ ʍoɹʞ. ⊥ɹʎ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.firstDay": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎıɹsʇ pɐʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.from": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎɹoɯ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.kind.closed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄʅosǝp (ɐ ɥoʅıpɐʎ)"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.kind.hours": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Moɹʞǝp, ʍıʇɥ ʇɥǝsǝ ɥonɹs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.lastDay": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅂ɐsʇ pɐʎ (ɟoɹ ɐ ɹɐuƃǝ)"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɐpʅıuǝs ıu ʍoɹʞıuƃ ʇıɯǝ ɔonuʇ ouʅʎ ʇɥǝsǝ ɥonɹs. Ↄɥɐuƃǝs ɐddʅʎ ʇo ʇɐsʞs ʇɥɐʇ sʇɐɹʇ ɐɟʇǝɹʍɐɹps; ʇɐsʞs ɐʅɹǝɐpʎ ʍɐıʇıuƃ ʞǝǝd ʇɥǝıɹ pnǝ ʇıɯǝs."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.nextMonth": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nǝxʇ ɯouʇɥ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.noDays": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No sdǝɔıɐʅ pɐʎs ʇɥıs ɯouʇɥ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.noWorkingTime": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No ʍoɹʞıuƃ ʇıɯǝ ɐɥǝɐp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.notWorked": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noʇ ʍoɹʞǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.note": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.periodFrom": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "day"
+    },
+    {
+      "type": 0,
+      "value": ", ɟɹoɯ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.periodUntil": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "day"
+    },
+    {
+      "type": 0,
+      "value": ", nuʇıʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.preview": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɥǝu ıs ıʇ pnǝ?"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.preview.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ pǝɐpʅıuǝ snɔɥ ɐs Ԁ2ᗡ (ʇʍo ʍoɹʞıuƃ pɐʎs) oɹ Ԁ⊥4H (ɟonɹ ʍoɹʞıuƃ ɥonɹs), ɔonuʇǝp ɟɹoɯ uoʍ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.previousMonth": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɹǝʌıons ɯouʇɥ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.removeDay": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯoʌǝ "
+    },
+    {
+      "type": 1,
+      "value": "day"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.removePeriod": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯoʌǝ ʇɥǝsǝ ɥonɹs ou "
+    },
+    {
+      "type": 1,
+      "value": "day"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.saveWeek": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sɐʌǝ ʍoɹʞıuƃ ɥonɹs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.saved": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sɐʌǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.timeZone": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ıɯǝ zouǝ: "
+    },
+    {
+      "type": 1,
+      "value": "zone"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԑnsıuǝss ɔɐʅǝupɐɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.until": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩uʇıʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.week": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Moɹʞıuƃ ɥonɹs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.calendar.workingTime": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄonuʇ ʍoɹʞıuƃ ʇıɯǝ ouʅʎ"
     },
     {
       "type": 0,

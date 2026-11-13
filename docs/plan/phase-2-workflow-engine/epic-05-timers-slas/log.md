@@ -83,3 +83,13 @@
   - **Load test:** Gatling `InboxLoadSimulation`. 50 approvers fetch the CSRF cookie, sign in, and read their inbox 20 times each. The tenant is chosen by the Host header. Assertions: inbox p95 under 300 ms (NFR P1) and under 1 % errors.
   - **Weekly workflow** `load.yml` (Sunday 03:00, or by hand with the number of instances): it builds the images, starts the on-prem stack with V2, waits for "Volume V2 ready", runs the simulation and keeps the reports.
   - **Not yet run:** the workflow runs only once it is on the default branch, so the first measurement comes after merge. The `WorkflowVolumeIT` check of the generator (60 memos) passes.
+- **T7 (web):** **Business calendar** (`/admin/workflow/calendar`, for holders of `workflow.calendar.manage`), in English and Arabic:
+  - working hours per weekday in the tenant's time zone, with several periods a day, saved with If-Match;
+  - holidays and special days by month (the previous and next month buttons mirror in Arabic): add a day or a range, closed or with its own hours and a note; remove a day;
+  - "When is it due?": a preview for a deadline counted from now.
+
+  **Due and overdue:** "Due …" or "Overdue since …" badges in the inbox, under the memo's current holders and in the admin open tasks (new **Overdue** filter and **Due** column). The browser's clock decides whether a due time has passed.
+  - Not done: sorting the inbox by due time. The inbox API pages by assignment time, so this is left for the E06 inbox work or later.
+  - The definition JSON editor gains no SLA form here; E06's builder edits SLAs.
+  - Tests: `calendar.test.tsx` (hours, special days, save with If-Match, preview, axe) and the inbox due badge.
+  - One full web run had five unrelated timeouts. They passed in a rerun of those files and in a second full run. This is the known flake under load, now with more tests; watch CI.

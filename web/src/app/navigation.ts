@@ -1,5 +1,6 @@
 import {
   Activity,
+  CalendarClock,
   FileClock,
   House,
   Inbox,
@@ -58,6 +59,7 @@ const messages = defineMessages({
   doa: { id: 'nav.doa', defaultMessage: 'Delegation of authority' },
   queues: { id: 'nav.queues', defaultMessage: 'Queues' },
   substitutions: { id: 'nav.substitutions', defaultMessage: 'Substitutions' },
+  calendar: { id: 'nav.calendar', defaultMessage: 'Business calendar' },
   status: { id: 'nav.status', defaultMessage: 'Status' },
   users: { id: 'nav.users', defaultMessage: 'Users' },
   org: { id: 'nav.org', defaultMessage: 'Organisation' },
@@ -220,6 +222,15 @@ export const navigation: NavItem[] = [
     icon: UserRoundCog,
     group: 'administration',
     audience: { permission: 'workflow.tasks.reassign' },
+    enabled: true,
+  },
+  {
+    id: 'calendar',
+    to: '/admin/workflow/calendar',
+    label: messages.calendar,
+    icon: CalendarClock,
+    group: 'administration',
+    audience: { permission: 'workflow.calendar.manage' },
     enabled: true,
   },
   {

@@ -217,11 +217,15 @@ export const mmv = defineMessages<{
   historyBranch: { inputs: string }
   claimedBy: { name: string }
   actingFor: { name: string }
+  dueAt: { time: string }
+  overdueSince: { time: string }
   doaGroup: { group: number; needed: number; covered: number }
   doaVersion: { version: number; rule: string }
 }>({
   claimedBy: { id: 'memo.claimedBy', defaultMessage: 'Claimed by {name}' },
   actingFor: { id: 'memo.actingFor', defaultMessage: 'For {name}' },
+  dueAt: { id: 'memo.due', defaultMessage: 'Due {time}' },
+  overdueSince: { id: 'memo.overdue', defaultMessage: 'Overdue since {time}' },
   doaGroup: {
     id: 'memo.doa.group',
     defaultMessage:

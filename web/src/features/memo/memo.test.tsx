@@ -95,6 +95,7 @@ const inbox: InboxPage = {
       stepName: 'Finance review',
       shared: true,
       actingFor: { id: 'u9', name: 'Rahim Uddin' },
+      dueAt: '2020-01-01T09:00:00Z',
     },
     {
       taskId: 'k2',
@@ -129,6 +130,7 @@ describe('inbox', () => {
     expect(screen.getByText('Restricted memo')).toBeInTheDocument()
     expect(screen.getByText('For Rahim Uddin')).toBeInTheDocument()
     expect(screen.getByText('Shared')).toBeInTheDocument()
+    expect(screen.getByText(/^Overdue since /)).toBeInTheDocument()
     expect(screen.getByRole('tab', { name: 'My tasks' })).toHaveAttribute('aria-selected', 'true')
     await expectNoA11yViolations(container)
   })

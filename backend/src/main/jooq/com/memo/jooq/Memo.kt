@@ -54,6 +54,7 @@ import com.memo.jooq.tables.WorkflowQueue
 import com.memo.jooq.tables.WorkflowQueueMember
 import com.memo.jooq.tables.WorkflowRound
 import com.memo.jooq.tables.WorkflowStep
+import com.memo.jooq.tables.WorkflowSubstitution
 import com.memo.jooq.tables.WorkflowTask
 
 import kotlin.collections.List
@@ -334,6 +335,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val WORKFLOW_STEP: WorkflowStep get() = WorkflowStep.WORKFLOW_STEP
 
     /**
+     * The table <code>memo.workflow_substitution</code>.
+     */
+    val WORKFLOW_SUBSTITUTION: WorkflowSubstitution get() = WorkflowSubstitution.WORKFLOW_SUBSTITUTION
+
+    /**
      * The table <code>memo.workflow_task</code>.
      */
     val WORKFLOW_TASK: WorkflowTask get() = WorkflowTask.WORKFLOW_TASK
@@ -392,6 +398,7 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         WorkflowQueueMember.WORKFLOW_QUEUE_MEMBER,
         WorkflowRound.WORKFLOW_ROUND,
         WorkflowStep.WORKFLOW_STEP,
+        WorkflowSubstitution.WORKFLOW_SUBSTITUTION,
         WorkflowTask.WORKFLOW_TASK
     )
 }

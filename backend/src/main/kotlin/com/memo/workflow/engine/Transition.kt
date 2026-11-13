@@ -76,6 +76,7 @@ class Transition(
             is Recall, is Cancel -> RoundControl.apply(state, command)
             is Migrate -> Migrations.apply(state, command)
             is Claim, is Release -> Claims.apply(state, command)
+            is Block, is Reresolve -> StaffChanges(rounds).apply(state, command)
         }
 
     /** A delegate's action is recorded as acting for the holder who delegated the task (design E03 §4.4, invariant 17). */
@@ -213,11 +214,11 @@ class Transition(
         command: Reassign,
     ): Outcome {
         val (step, task) = state.guardedTask(command.taskId)
-        val replacement = rounds.newTask(command.newAssignee)
+        val replacement = rounds.newTask(command.newAssignee).let { task -> command.onBehalfOf?.let { task.copy(onBehalfOf = it) } ?: task }
         val round =
             state.round.replaceStep(step.id) { current ->
                 current.copy(
-                    assignee = command.newAssignee,
+                    assignee = command.onBehalfOf ?: command.newAssignee,
                     tasks = current.tasks.map { if (it.id == task.id) it.copy(state = TaskState.REASSIGNED) else it } + replacement,
                 )
             }

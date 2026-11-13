@@ -50,6 +50,7 @@ class WorkflowRunner(
     private val subjects: List<WorkflowSubject>,
     private val effects: ActionEffects,
     private val resolvers: OrgResolvers,
+    private val substitutes: SubstitutesInForce,
     private val ids: IdGenerator,
     private val json: JsonMapper,
     private val clock: Clock,
@@ -68,7 +69,7 @@ class WorkflowRunner(
         // New instances pin the newest published version (ADR-0038).
         val version = definitions.publishedVersion(definitionKey)
         val definition = compiled.get(version)
-        val outcome = accepted(transition(subject, subjectId, route, definition).start(actor.userId, route, remark))
+        val outcome = accepted(transition(subject, subjectId, actor.userId, route, definition).start(actor.userId, route, remark))
         val instanceId = ids.next()
         instances.insert(instanceId, subjectType, subjectId, version, outcome.state, now())
         val loaded = LoadedInstance(instanceId, subjectType, subjectId, 0, outcome.state, definition)
@@ -98,7 +99,10 @@ class WorkflowRunner(
             loaded.state.round.steps
                 .mapNotNull { it.assignee } + newPeople(cmd)
         val carried = carried(loaded, cmd, subject)
-        val outcome = accepted(transition(subject, loaded.subjectId, people, loaded.definition, carried).apply(loaded.state, cmd))
+        val outcome =
+            accepted(
+                transition(subject, loaded.subjectId, loaded.state.initiator, people, loaded.definition, carried).apply(loaded.state, cmd),
+            )
         return record(loaded, loaded.state, subject, outcome, actor)
     }
 
@@ -123,11 +127,24 @@ class WorkflowRunner(
         }
         val loaded = checkNotNull(found)
         val command = Migrate(actor.userId, compiled.get(to.first), from.second, to.second)
-        val outcome = accepted(transition(subject, loaded.subjectId, emptyList(), loaded.definition).apply(loaded.state, command))
+        val outcome =
+            accepted(
+                transition(subject, loaded.subjectId, loaded.state.initiator, emptyList(), loaded.definition).apply(loaded.state, command),
+            )
         val view = record(loaded, loaded.state, subject, outcome, actor)
         instances.repin(instanceId, to.first)
         return view
     }
+
+    /**
+     * A staff change reaches a running instance (design E04 §4.6): [Block] for a deactivated holder, [Reresolve] for a
+     * step whose position changed holder; [actor] changed the organisation.
+     */
+    fun staffChange(
+        instanceId: UUID,
+        actor: Actor.User,
+        command: (UUID) -> Command,
+    ): WorkflowView = onInstance(instanceId, actor, command)
 
     /** Where the subject's instance is now, without locking it; null if it was never submitted. */
     fun viewOf(
@@ -160,6 +177,7 @@ class WorkflowRunner(
     private fun transition(
         subject: WorkflowSubject,
         subjectId: UUID,
+        initiator: UUID,
         people: Collection<UUID>,
         definition: Definition,
         carried: Set<Carried> = emptySet(),
@@ -173,6 +191,7 @@ class WorkflowRunner(
             if (asked.add(person)) ineligible.putAll(subject.ineligible(subjectId, listOf(person)))
             ineligible[person]
         }
+        val interested = lazy { subject.interested(subjectId) }
         val context =
             TransitionContext(
                 newId = ids::next,
@@ -182,7 +201,9 @@ class WorkflowRunner(
                 carried = carried,
                 resolver = resolvers.resolver(),
                 oncePerRound = settings.oncePerRound(),
-                interested = lazy { subject.interested(subjectId) }::value,
+                interested = interested::value,
+                // SOD-3: a substitute never acts on an item they initiated or have an interest in (design E04 §4.4).
+                substituteOf = { person -> substitutes.of(person)?.takeUnless { it == initiator || it in interested.value } },
             )
         return Transition(context, definition)
     }

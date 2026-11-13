@@ -22,3 +22,10 @@ endpoints:
     rule: signedIn
     body: { userId: "{random}", reason: "Matrix" }
   - { endpoint: "DELETE /api/v1/memos/{id}/interests/{userId}", rule: signedIn }
+  # Substitutions (design E04 §4.5); random people are refused as a bad request, random ids are 404.
+  - { endpoint: "GET /api/v1/admin/workflow/substitutions", rule: tenantAdmin }
+  - endpoint: "POST /api/v1/admin/workflow/substitutions"
+    rule: tenantAdmin
+    body: { principalId: "{random}", substituteId: "{random}", validFrom: "2026-01-01" }
+  - { endpoint: "POST /api/v1/admin/workflow/substitutions/{id}/end", rule: tenantAdmin }
+  - { endpoint: "POST /api/v1/admin/workflow/substitutions/{id}/apply", rule: tenantAdminStepUp }

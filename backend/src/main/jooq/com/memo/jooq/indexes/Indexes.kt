@@ -37,6 +37,7 @@ import com.memo.jooq.tables.WorkflowInstance
 import com.memo.jooq.tables.WorkflowQueueMember
 import com.memo.jooq.tables.WorkflowRound
 import com.memo.jooq.tables.WorkflowStep
+import com.memo.jooq.tables.WorkflowSubstitution
 import com.memo.jooq.tables.WorkflowTask
 
 import org.jooq.Index
@@ -99,6 +100,7 @@ val WORKFLOW_QUEUE_MEMBER_POSITION_IDX: Index = Internal.createIndex(DSL.name("w
 val WORKFLOW_QUEUE_MEMBER_USER_IDX: Index = Internal.createIndex(DSL.name("workflow_queue_member_user_idx"), WorkflowQueueMember.WORKFLOW_QUEUE_MEMBER, arrayOf(WorkflowQueueMember.WORKFLOW_QUEUE_MEMBER.TENANT_ID, WorkflowQueueMember.WORKFLOW_QUEUE_MEMBER.QUEUE_ID, WorkflowQueueMember.WORKFLOW_QUEUE_MEMBER.USER_ID), true)
 val WORKFLOW_ROUND_ONE_OPEN_IDX: Index = Internal.createIndex(DSL.name("workflow_round_one_open_idx"), WorkflowRound.WORKFLOW_ROUND, arrayOf(WorkflowRound.WORKFLOW_ROUND.TENANT_ID, WorkflowRound.WORKFLOW_ROUND.INSTANCE_ID), true)
 val WORKFLOW_STEP_INSTANCE_IDX: Index = Internal.createIndex(DSL.name("workflow_step_instance_idx"), WorkflowStep.WORKFLOW_STEP, arrayOf(WorkflowStep.WORKFLOW_STEP.TENANT_ID, WorkflowStep.WORKFLOW_STEP.INSTANCE_ID), false)
+val WORKFLOW_SUBSTITUTION_PRINCIPAL_IDX: Index = Internal.createIndex(DSL.name("workflow_substitution_principal_idx"), WorkflowSubstitution.WORKFLOW_SUBSTITUTION, arrayOf(WorkflowSubstitution.WORKFLOW_SUBSTITUTION.TENANT_ID, WorkflowSubstitution.WORKFLOW_SUBSTITUTION.PRINCIPAL_ID, WorkflowSubstitution.WORKFLOW_SUBSTITUTION.VALID_FROM), false)
 val WORKFLOW_TASK_INBOX_IDX: Index = Internal.createIndex(DSL.name("workflow_task_inbox_idx"), WorkflowTask.WORKFLOW_TASK, arrayOf(WorkflowTask.WORKFLOW_TASK.TENANT_ID, WorkflowTask.WORKFLOW_TASK.ASSIGNEE_ID, WorkflowTask.WORKFLOW_TASK.STATE, WorkflowTask.WORKFLOW_TASK.CREATED_AT.desc(), WorkflowTask.WORKFLOW_TASK.ID), false)
 val WORKFLOW_TASK_INSTANCE_IDX: Index = Internal.createIndex(DSL.name("workflow_task_instance_idx"), WorkflowTask.WORKFLOW_TASK, arrayOf(WorkflowTask.WORKFLOW_TASK.TENANT_ID, WorkflowTask.WORKFLOW_TASK.INSTANCE_ID), false)
 val WORKFLOW_TASK_ONE_OPEN_IDX: Index = Internal.createIndex(DSL.name("workflow_task_one_open_idx"), WorkflowTask.WORKFLOW_TASK, arrayOf(WorkflowTask.WORKFLOW_TASK.TENANT_ID, WorkflowTask.WORKFLOW_TASK.STEP_ID, WorkflowTask.WORKFLOW_TASK.ASSIGNEE_ID), true)

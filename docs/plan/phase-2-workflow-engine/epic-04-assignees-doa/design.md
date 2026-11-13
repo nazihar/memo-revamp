@@ -84,7 +84,7 @@ Route entries: `person`, `position` (resolved at the entry's activation, as §4.
 New permissions: `workflow.queues.manage`, `workflow.doa.manage`, `workflow.doa.approve` (privileged, tenant-wide, granted to tenant administrators). DoA approve needs maker ≠ checker and step-up. Matrix file `p2-e04-assignees.yaml`.
 
 ## 7. Audit
-`workflow.queue.created|updated`, `workflow.substitution.created|ended|applied`, `workflow.doa.created|draft_updated|submitted|sent_back|published`, `workflow.task.claimed|released|recused|reresolved`, `memo.interest.declared|removed`. Ids only.
+`workflow.queue.created|updated`, `workflow.substitution.created|ended|applied`, `workflow.doa.created|draft_updated|submitted|sent_back|published`, `workflow.task.claimed|released|recused` (a step resolved again after a staff change, or a task blocked for a deactivated holder, is `workflow.task.reassigned` with `cause` `HOLDER_CHANGED` or `INACTIVE`), `memo.interest.declared|removed`. Ids only.
 
 ## 8. Performance
 Resolution is a handful of indexed lookups per activation (org tables are small and the tree is cached); the DoA version and its rules are cached per version id (immutable once published). Inbox unchanged: candidates hold ordinary task rows.

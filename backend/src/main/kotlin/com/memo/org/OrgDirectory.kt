@@ -61,6 +61,9 @@ class OrgDirectory(
         date: LocalDate = today(),
     ): PositionRef? = positions.ofUnit(unitId).firstOrNull { it.head && it.openOn(date) }?.ref()
 
+    /** The position an assignment is to (for listeners of [OrgChanged] about an assignment). */
+    fun positionOfAssignment(assignmentId: UUID): UUID? = assignments.find(assignmentId)?.positionId
+
     /** Whether the tenant has a unit [unitId] (open or closed). */
     fun unitExists(unitId: UUID): Boolean = units.unit(unitId) != null
 

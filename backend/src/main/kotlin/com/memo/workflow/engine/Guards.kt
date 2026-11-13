@@ -79,6 +79,10 @@ internal object Guards {
                 taskAction(state, command.actor, command.taskId) ?: Claims.claimRefusal(state, command)
             }
 
+            is Block, is Reresolve -> {
+                StaffChanges.refusal(state, command)
+            }
+
             is Release -> {
                 (if (command.byAdministrator) null else taskAction(state, command.actor, command.taskId))
                     ?: Claims.releaseRefusal(state, command)

@@ -15859,6 +15859,192 @@
       "value": "]"
     }
   ],
+  "workflows.builder.action.approve": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƥƥřǿǿṽḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.action.ask": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧşķ ƒǿǿř ǿǿƥīƞīǿǿƞş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.action.delegate": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗŀḗḗɠȧȧŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.action.forward": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒǿǿřẇȧȧřḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.action.recommend": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƈǿǿḿḿḗḗƞḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.action.refer": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƒḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.action.reject": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗĵḗḗƈŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.action.return": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗŧŭŭřƞ ŧǿǿ ŧħḗḗ īƞīŧīȧȧŧǿǿř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.action.sendBack": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḗḗƞḓ ƀȧȧƈķ ŧǿǿ ȧȧƞ ḗḗȧȧřŀīḗḗř şŧḗḗƥ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.actions": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇħȧȧŧ ŧħḗḗ ħǿǿŀḓḗḗř ƈȧȧƞ ḓǿǿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.actions.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧīƈķ “ƞḗḗḗḗḓş ȧȧ řḗḗḿȧȧřķ” ƒǿǿř ȧȧƈŧīǿǿƞş ŧħḗḗ ħǿǿŀḓḗḗř ḿŭŭşŧ ḗḗẋƥŀȧȧīƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.actions.remark": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ƞḗḗḗḗḓş ȧȧ řḗḗḿȧȧřķ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.actions.remarkFor": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "action"
+    },
+    {
+      "type": 0,
+      "value": " ƞḗḗḗḗḓş ȧȧ řḗḗḿȧȧřķ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "workflows.builder.add": [
     {
       "type": 0,
@@ -15915,6 +16101,132 @@
       "value": "]"
     }
   ],
+  "workflows.builder.assignee.choose": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħǿǿǿǿşḗḗ…"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.assignee.field.initiatorsUnit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ īƞīŧīȧȧŧǿǿř’ş ŭŭƞīŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.assignee.field.levels": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀḗḗṽḗḗŀş ŭŭƥ ŧħḗḗ řḗḗƥǿǿřŧīƞɠ ŀīƞḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.assignee.field.person": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥḗḗřşǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.assignee.field.position": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥǿǿşīŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.assignee.field.queue": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɋŭŭḗḗŭŭḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.assignee.field.role": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řǿǿŀḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.assignee.field.unit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭƞīŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.assignee.field.up": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭƞīŧş ȧȧƀǿǿṽḗḗ īŧ (0 ƒǿǿř ŧħḗḗ ŭŭƞīŧ īŧşḗḗŀƒ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "workflows.builder.assignee.initiator": [
     {
       "type": 0,
@@ -15937,6 +16249,118 @@
     {
       "type": 0,
       "value": "ŧħḗḗ īƞīŧīȧȧŧǿǿř’ş ŭŭƞīŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.assignee.kind": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɠǿǿḗḗş ŧǿǿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.assignee.kind.initiator": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ īƞīŧīȧȧŧǿǿř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.assignee.kind.person": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ƥḗḗřşǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.assignee.kind.position": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ħǿǿŀḓḗḗř ǿǿƒ ȧȧ ƥǿǿşīŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.assignee.kind.queue": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ɋŭŭḗḗŭŭḗḗ (ẇħǿǿḗḗṽḗḗř ŧȧȧķḗḗş īŧ ƒīřşŧ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.assignee.kind.role": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥḗḗǿǿƥŀḗḗ ẇīŧħ ȧȧ řǿǿŀḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.assignee.kind.supervisor": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ īƞīŧīȧȧŧǿǿř’ş şŭŭƥḗḗřṽīşǿǿř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.assignee.kind.unitHead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ħḗḗȧȧḓ ǿǿƒ ȧȧ ŭŭƞīŧ"
     },
     {
       "type": 0,
@@ -16183,6 +16607,20 @@
       "value": "]"
     }
   ],
+  "workflows.builder.choose": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħǿǿǿǿşḗḗ…"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "workflows.builder.conditionN": [
     {
       "type": 0,
@@ -16293,6 +16731,20 @@
     {
       "type": 0,
       "value": "Ŧħḗḗ ȧȧƥƥřǿǿṽȧȧŀ ɠřǿǿŭŭƥş ǿǿƒ ŧħḗḗ ḓḗḗŀḗḗɠȧȧŧīǿǿƞ ǿǿƒ ȧȧŭŭŧħǿǿřīŧẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.doa.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɠǿǿḗḗş ŧǿǿ ŧħḗḗ ȧȧƥƥřǿǿṽȧȧŀ ɠřǿǿŭŭƥş ǿǿƒ ŧħḗḗ ḓḗḗŀḗḗɠȧȧŧīǿǿƞ ǿǿƒ ȧȧŭŭŧħǿǿřīŧẏ īƞ ƒǿǿřƈḗḗ ẇħḗḗƞ ŧħḗḗ ḿḗḗḿǿǿ şŧȧȧřŧş."
     },
     {
       "type": 0,
@@ -16823,6 +17275,90 @@
       "value": "]"
     }
   ],
+  "workflows.builder.forum.field": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒǿǿřŭŭḿ ķḗḗẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.forward": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒǿǿřẇȧȧřḓīƞɠ īş ȧȧŀŀǿǿẇḗḗḓ ŧǿǿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.forward.anyone": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƞẏǿǿƞḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.forward.legalEntity": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ħǿǿŀḓḗḗř’ş ŀḗḗɠȧȧŀ ḗḗƞŧīŧẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.forward.none": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ŀīḿīŧ şḗḗŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.forward.unit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ħǿǿŀḓḗḗř’ş ŭŭƞīŧ ȧȧƞḓ ƀḗḗŀǿǿẇ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "workflows.builder.goesTo": [
     {
       "type": 0,
@@ -16947,6 +17483,20 @@
       "value": "]"
     }
   ],
+  "workflows.builder.parallel.add": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧḓḓ şǿǿḿḗḗǿǿƞḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "workflows.builder.parallel.all": [
     {
       "type": 0,
@@ -16975,6 +17525,94 @@
       "value": "]"
     }
   ],
+  "workflows.builder.parallel.assigneeN": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥḗḗřşǿǿƞ ǿǿř ɠřǿǿŭŭƥ "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.parallel.field.n": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ħǿǿẇ ḿȧȧƞẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.parallel.mode": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗƈīḓḗḗḓ ẇħḗḗƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.parallel.mode.all": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗṽḗḗřẏǿǿƞḗḗ ħȧȧş ȧȧƥƥřǿǿṽḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.parallel.mode.any": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƞẏǿǿƞḗḗ ħȧȧş ȧȧƥƥřǿǿṽḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.parallel.mode.n": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ƞŭŭḿƀḗḗř ǿǿƒ ŧħḗḗḿ ħȧȧṽḗḗ ȧȧƥƥřǿǿṽḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "workflows.builder.parallel.n": [
     {
       "type": 0,
@@ -16987,6 +17625,24 @@
     {
       "type": 0,
       "value": " ǿǿƒ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.parallel.remove": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗḿǿǿṽḗḗ ƥḗḗřşǿǿƞ ǿǿř ɠřǿǿŭŭƥ "
+    },
+    {
+      "type": 1,
+      "value": "n"
     },
     {
       "type": 0,
@@ -17151,6 +17807,20 @@
     {
       "type": 0,
       "value": "Ŧħḗḗ ȧȧƥƥřǿǿṽḗḗřş ŧħḗḗ īƞīŧīȧȧŧǿǿř ƈħǿǿǿǿşḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.route.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɠǿǿḗḗş ŧǿǿ ŧħḗḗ ȧȧƥƥřǿǿṽḗḗřş ŧħḗḗ īƞīŧīȧȧŧǿǿř ƈħǿǿǿǿşḗḗş, ǿǿƞḗḗ ȧȧƒŧḗḗř ŧħḗḗ ǿǿŧħḗḗř."
     },
     {
       "type": 0,
@@ -17445,6 +18115,20 @@
     {
       "type": 0,
       "value": "Şŧḗḗƥş, īƞ ŧħḗḗ ǿǿřḓḗḗř ŧħḗḗẏ ȧȧřḗḗ ẇřīŧŧḗḗƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "workflows.builder.subworkflow.field": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŭŭƀ-ẇǿǿřķƒŀǿǿẇ ŧǿǿ řŭŭƞ"
     },
     {
       "type": 0,

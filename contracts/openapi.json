@@ -371,6 +371,42 @@
         },
         "type" : "object"
       },
+      "BuilderCatalogue" : {
+        "properties" : {
+          "fragments" : {
+            "items" : {
+              "$ref" : "#/components/schemas/CatalogueEntry"
+            },
+            "type" : "array"
+          },
+          "queues" : {
+            "items" : {
+              "$ref" : "#/components/schemas/CatalogueEntry"
+            },
+            "type" : "array"
+          },
+          "roles" : {
+            "items" : {
+              "$ref" : "#/components/schemas/CatalogueRole"
+            },
+            "type" : "array"
+          },
+          "stepTypes" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "subjectTypes" : {
+            "items" : {
+              "$ref" : "#/components/schemas/CatalogueSubjectType"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "fragments", "queues", "roles", "stepTypes", "subjectTypes" ],
+        "type" : "object"
+      },
       "CalendarDayResponse" : {
         "properties" : {
           "day" : {
@@ -470,6 +506,58 @@
             "type" : [ "string", "null" ]
           }
         },
+        "type" : "object"
+      },
+      "CatalogueAttribute" : {
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "name", "type" ],
+        "type" : "object"
+      },
+      "CatalogueEntry" : {
+        "properties" : {
+          "key" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "key", "name" ],
+        "type" : "object"
+      },
+      "CatalogueRole" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "id", "name" ],
+        "type" : "object"
+      },
+      "CatalogueSubjectType" : {
+        "properties" : {
+          "attributes" : {
+            "items" : {
+              "$ref" : "#/components/schemas/CatalogueAttribute"
+            },
+            "type" : "array"
+          },
+          "type" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "attributes", "type" ],
         "type" : "object"
       },
       "ChangePasswordRequest" : {
@@ -4793,6 +4881,25 @@
         },
         "summary" : "Lift a temporary lock",
         "tags" : [ "admin" ]
+      }
+    },
+    "/api/v1/admin/workflow-builder/catalogue" : {
+      "get" : {
+        "operationId" : "getBuilderCatalogue",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BuilderCatalogue"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Attributes, roles, queues and sub-workflows the builder offers",
+        "tags" : [ "workflow" ]
       }
     },
     "/api/v1/admin/workflow-definitions" : {

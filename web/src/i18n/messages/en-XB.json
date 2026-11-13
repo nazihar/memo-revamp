@@ -15859,6 +15859,192 @@
       "value": "‬"
     }
   ],
+  "workflows.builder.action.approve": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ddɹoʌǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.action.ask": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀sʞ ɟoɹ odıuıous"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.action.delegate": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝʅǝƃɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.action.forward": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎoɹʍɐɹp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.action.recommend": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɔoɯɯǝup"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.action.refer": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɟǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.action.reject": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɾǝɔʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.action.return": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝʇnɹu ʇo ʇɥǝ ıuıʇıɐʇoɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.action.sendBack": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝup qɐɔʞ ʇo ɐu ǝɐɹʅıǝɹ sʇǝd"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.actions": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɥɐʇ ʇɥǝ ɥoʅpǝɹ ɔɐu po"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.actions.hint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ıɔʞ “uǝǝps ɐ ɹǝɯɐɹʞ” ɟoɹ ɐɔʇıous ʇɥǝ ɥoʅpǝɹ ɯnsʇ ǝxdʅɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.actions.remark": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "uǝǝps ɐ ɹǝɯɐɹʞ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.actions.remarkFor": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "action"
+    },
+    {
+      "type": 0,
+      "value": " uǝǝps ɐ ɹǝɯɐɹʞ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "workflows.builder.add": [
     {
       "type": 0,
@@ -15915,6 +16101,132 @@
       "value": "‬"
     }
   ],
+  "workflows.builder.assignee.choose": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥoosǝ…"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.assignee.field.initiatorsUnit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ıuıʇıɐʇoɹ’s nuıʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.assignee.field.levels": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅂ǝʌǝʅs nd ʇɥǝ ɹǝdoɹʇıuƃ ʅıuǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.assignee.field.person": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁǝɹsou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.assignee.field.position": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁosıʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.assignee.field.queue": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ònǝnǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.assignee.field.role": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚoʅǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.assignee.field.unit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩uıʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.assignee.field.up": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩uıʇs ɐqoʌǝ ıʇ (0 ɟoɹ ʇɥǝ nuıʇ ıʇsǝʅɟ)"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "workflows.builder.assignee.initiator": [
     {
       "type": 0,
@@ -15937,6 +16249,118 @@
     {
       "type": 0,
       "value": "ʇɥǝ ıuıʇıɐʇoɹ’s nuıʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.assignee.kind": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅁oǝs ʇo"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.assignee.kind.initiator": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ıuıʇıɐʇoɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.assignee.kind.person": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ dǝɹsou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.assignee.kind.position": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɥoʅpǝɹ oɟ ɐ dosıʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.assignee.kind.queue": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ bnǝnǝ (ʍɥoǝʌǝɹ ʇɐʞǝs ıʇ ɟıɹsʇ)"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.assignee.kind.role": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁǝodʅǝ ʍıʇɥ ɐ ɹoʅǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.assignee.kind.supervisor": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ıuıʇıɐʇoɹ’s sndǝɹʌısoɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.assignee.kind.unitHead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɥǝɐp oɟ ɐ nuıʇ"
     },
     {
       "type": 0,
@@ -16183,6 +16607,20 @@
       "value": "‬"
     }
   ],
+  "workflows.builder.choose": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥoosǝ…"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "workflows.builder.conditionN": [
     {
       "type": 0,
@@ -16293,6 +16731,20 @@
     {
       "type": 0,
       "value": "⊥ɥǝ ɐddɹoʌɐʅ ƃɹonds oɟ ʇɥǝ pǝʅǝƃɐʇıou oɟ ɐnʇɥoɹıʇʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.doa.hint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅁oǝs ʇo ʇɥǝ ɐddɹoʌɐʅ ƃɹonds oɟ ʇɥǝ pǝʅǝƃɐʇıou oɟ ɐnʇɥoɹıʇʎ ıu ɟoɹɔǝ ʍɥǝu ʇɥǝ ɯǝɯo sʇɐɹʇs."
     },
     {
       "type": 0,
@@ -16823,6 +17275,90 @@
       "value": "‬"
     }
   ],
+  "workflows.builder.forum.field": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎoɹnɯ ʞǝʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.forward": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎoɹʍɐɹpıuƃ ıs ɐʅʅoʍǝp ʇo"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.forward.anyone": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀uʎouǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.forward.legalEntity": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɥoʅpǝɹ’s ʅǝƃɐʅ ǝuʇıʇʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.forward.none": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No ʅıɯıʇ sǝʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.forward.unit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɥoʅpǝɹ’s nuıʇ ɐup qǝʅoʍ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "workflows.builder.goesTo": [
     {
       "type": 0,
@@ -16947,6 +17483,20 @@
       "value": "‬"
     }
   ],
+  "workflows.builder.parallel.add": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀pp soɯǝouǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "workflows.builder.parallel.all": [
     {
       "type": 0,
@@ -16975,6 +17525,94 @@
       "value": "‬"
     }
   ],
+  "workflows.builder.parallel.assigneeN": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁǝɹsou oɹ ƃɹond "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.parallel.field.n": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Hoʍ ɯɐuʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.parallel.mode": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɔıpǝp ʍɥǝu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.parallel.mode.all": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝʌǝɹʎouǝ ɥɐs ɐddɹoʌǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.parallel.mode.any": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀uʎouǝ ɥɐs ɐddɹoʌǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.parallel.mode.n": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ unɯqǝɹ oɟ ʇɥǝɯ ɥɐʌǝ ɐddɹoʌǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "workflows.builder.parallel.n": [
     {
       "type": 0,
@@ -16987,6 +17625,24 @@
     {
       "type": 0,
       "value": " oɟ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.parallel.remove": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯoʌǝ dǝɹsou oɹ ƃɹond "
+    },
+    {
+      "type": 1,
+      "value": "n"
     },
     {
       "type": 0,
@@ -17151,6 +17807,20 @@
     {
       "type": 0,
       "value": "⊥ɥǝ ɐddɹoʌǝɹs ʇɥǝ ıuıʇıɐʇoɹ ɔɥoosǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.route.hint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅁oǝs ʇo ʇɥǝ ɐddɹoʌǝɹs ʇɥǝ ıuıʇıɐʇoɹ ɔɥoosǝs, ouǝ ɐɟʇǝɹ ʇɥǝ oʇɥǝɹ."
     },
     {
       "type": 0,
@@ -17445,6 +18115,20 @@
     {
       "type": 0,
       "value": "Sʇǝds, ıu ʇɥǝ oɹpǝɹ ʇɥǝʎ ɐɹǝ ʍɹıʇʇǝu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.subworkflow.field": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Snq-ʍoɹʞɟʅoʍ ʇo ɹnu"
     },
     {
       "type": 0,

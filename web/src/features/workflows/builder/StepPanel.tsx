@@ -8,9 +8,10 @@ import { Field } from '@/components/ui/field'
 import { Input, Select } from '@/components/ui/form-controls'
 import { bm, bmv, stepTypeLabels } from './builder-messages'
 import { END, type DefinitionBody, type StepJson, type StepType } from './definition'
-import { stepName } from './describe'
+import { stepName, type Labels } from './describe'
 import { newStep, PALETTE, type Command, type Slot } from './edit'
 import { problemsByStep } from './problems'
+import { StepDetails } from './StepDetails'
 
 const pm = defineMessages({
   removeDescription: {
@@ -117,11 +118,15 @@ export function StepPanel({
   body,
   step,
   problems,
+  labels,
+  onLabel,
   onCommand,
 }: {
   body: DefinitionBody
   step: StepJson
   problems: FieldProblem[]
+  labels: Labels
+  onLabel: (id: string, label: string) => void
   onCommand: (command: Command) => void
 }) {
   const intl = useIntl()
@@ -146,6 +151,7 @@ export function StepPanel({
           />
         )}
       </Field>
+      <StepDetails step={step} labels={labels} onLabel={onLabel} onCommand={onCommand} />
       {step.type === 'branch' ? (
         <BranchEditor body={body} step={step} onCommand={onCommand} />
       ) : (

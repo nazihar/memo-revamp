@@ -20,12 +20,15 @@ export function StepsView({
   labels,
   problems,
   onCommand,
+  onLabel,
 }: {
   body: DefinitionBody
   labels: Labels
   problems: FieldProblem[]
   /** Set for a draft the user may change: each step gets its panel, and steps can be added at the start. */
   onCommand?: (command: Command) => void
+  /** Names picked in a panel before the draft is saved. */
+  onLabel?: (id: string, label: string) => void
 }) {
   const intl = useIntl()
   const byStep = problemsByStep(problems)
@@ -50,6 +53,7 @@ export function StepsView({
             body={body}
             allProblems={problems}
             onCommand={onCommand}
+            onLabel={onLabel}
           />
         ))}
       </ol>
@@ -66,6 +70,7 @@ function StepItem({
   body,
   allProblems,
   onCommand,
+  onLabel,
 }: {
   step: StepJson
   index: number
@@ -75,6 +80,7 @@ function StepItem({
   body: DefinitionBody
   allProblems: FieldProblem[]
   onCommand?: (command: Command) => void
+  onLabel?: (id: string, label: string) => void
 }) {
   const intl = useIntl()
   const [open, setOpen] = useState(false)
@@ -150,11 +156,22 @@ function StepItem({
       </dl>
       {onCommand && open ? (
         <div id={panelId} className="mt-3 border-t pt-3">
-          <StepPanel body={body} step={step} problems={allProblems} onCommand={onCommand} />
+          <StepPanel
+            body={body}
+            step={step}
+            problems={allProblems}
+            labels={labels}
+            onLabel={onLabel ?? ignore}
+            onCommand={onCommand}
+          />
         </div>
       ) : null}
     </li>
   )
+}
+
+function ignore() {
+  // names are only shown, not kept, without a handler
 }
 
 function BranchLine({ condition, target }: { condition: string; target: string }) {

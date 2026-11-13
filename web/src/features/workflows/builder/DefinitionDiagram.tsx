@@ -87,12 +87,15 @@ export function DefinitionDiagram({
   labels,
   problems,
   onCommand,
+  onLabel,
 }: {
   body: DefinitionBody
   labels: Labels
   problems: FieldProblem[]
   /** Set for a draft the user may change: the selected step's panel opens beside the diagram. */
   onCommand?: (command: Command) => void
+  /** Names picked in a panel before the draft is saved. */
+  onLabel?: (id: string, label: string) => void
 }) {
   const intl = useIntl()
   const [selected, setSelected] = useState<string>()
@@ -166,7 +169,15 @@ export function DefinitionDiagram({
           {selectedStep ? stepName(selectedStep) : intl.formatMessage(bm.selected)}
         </h4>
         {selectedStep ? (
-          <StepPanel key={selectedStep.id} body={body} step={selectedStep} problems={problems} onCommand={onCommand} />
+          <StepPanel
+            key={selectedStep.id}
+            body={body}
+            step={selectedStep}
+            problems={problems}
+            labels={labels}
+            onLabel={onLabel ?? (() => undefined)}
+            onCommand={onCommand}
+          />
         ) : (
           <div className="flex flex-col gap-3">
             <p className="text-sm text-muted-foreground">{intl.formatMessage(bm.noSelection)}</p>

@@ -5,3 +5,4 @@ endpoints:
   - endpoint: "POST /api/v1/admin/workflow-definitions/{key}/versions/{number}/simulate"
     rule: tenantAdmin
     body: { initiatorId: "{random}", attributes: { classificationRank: 0 } }
+  - { endpoint: "GET /api/v1/admin/workflow-builder/catalogue", rule: tenantAdmin }

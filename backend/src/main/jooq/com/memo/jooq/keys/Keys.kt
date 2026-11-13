@@ -61,6 +61,7 @@ import com.memo.jooq.tables.WorkflowRound
 import com.memo.jooq.tables.WorkflowStep
 import com.memo.jooq.tables.WorkflowSubstitution
 import com.memo.jooq.tables.WorkflowTask
+import com.memo.jooq.tables.WorkflowTimer
 import com.memo.jooq.tables.records.AuditAnchorRecord
 import com.memo.jooq.tables.records.AuditChainHeadRecord
 import com.memo.jooq.tables.records.AuditEventRecord
@@ -117,6 +118,7 @@ import com.memo.jooq.tables.records.WorkflowRoundRecord
 import com.memo.jooq.tables.records.WorkflowStepRecord
 import com.memo.jooq.tables.records.WorkflowSubstitutionRecord
 import com.memo.jooq.tables.records.WorkflowTaskRecord
+import com.memo.jooq.tables.records.WorkflowTimerRecord
 
 import org.jooq.ForeignKey
 import org.jooq.UniqueKey
@@ -231,6 +233,8 @@ val WORKFLOW_SUBSTITUTION_PKEY: UniqueKey<WorkflowSubstitutionRecord> = Internal
 val WORKFLOW_SUBSTITUTION_TENANT_ID_ID_KEY: UniqueKey<WorkflowSubstitutionRecord> = Internal.createUniqueKey(WorkflowSubstitution.WORKFLOW_SUBSTITUTION, DSL.name("workflow_substitution_tenant_id_id_key"), arrayOf(WorkflowSubstitution.WORKFLOW_SUBSTITUTION.TENANT_ID, WorkflowSubstitution.WORKFLOW_SUBSTITUTION.ID), true)
 val WORKFLOW_TASK_PKEY: UniqueKey<WorkflowTaskRecord> = Internal.createUniqueKey(WorkflowTask.WORKFLOW_TASK, DSL.name("workflow_task_pkey"), arrayOf(WorkflowTask.WORKFLOW_TASK.ID), true)
 val WORKFLOW_TASK_TENANT_ID_ID_KEY: UniqueKey<WorkflowTaskRecord> = Internal.createUniqueKey(WorkflowTask.WORKFLOW_TASK, DSL.name("workflow_task_tenant_id_id_key"), arrayOf(WorkflowTask.WORKFLOW_TASK.TENANT_ID, WorkflowTask.WORKFLOW_TASK.ID), true)
+val WORKFLOW_TIMER_PKEY: UniqueKey<WorkflowTimerRecord> = Internal.createUniqueKey(WorkflowTimer.WORKFLOW_TIMER, DSL.name("workflow_timer_pkey"), arrayOf(WorkflowTimer.WORKFLOW_TIMER.ID), true)
+val WORKFLOW_TIMER_TENANT_ID_ID_KEY: UniqueKey<WorkflowTimerRecord> = Internal.createUniqueKey(WorkflowTimer.WORKFLOW_TIMER, DSL.name("workflow_timer_tenant_id_id_key"), arrayOf(WorkflowTimer.WORKFLOW_TIMER.TENANT_ID, WorkflowTimer.WORKFLOW_TIMER.ID), true)
 
 // -------------------------------------------------------------------------
 // FOREIGN KEY definitions
@@ -268,3 +272,4 @@ val WORKFLOW_STEP__WORKFLOW_STEP_TENANT_ID_INSTANCE_ID_FKEY: ForeignKey<Workflow
 val WORKFLOW_STEP__WORKFLOW_STEP_TENANT_ID_ROUND_ID_FKEY: ForeignKey<WorkflowStepRecord, WorkflowRoundRecord> = Internal.createForeignKey(WorkflowStep.WORKFLOW_STEP, DSL.name("workflow_step_tenant_id_round_id_fkey"), arrayOf(WorkflowStep.WORKFLOW_STEP.TENANT_ID, WorkflowStep.WORKFLOW_STEP.ROUND_ID), com.memo.jooq.keys.WORKFLOW_ROUND_TENANT_ID_ID_KEY, arrayOf(WorkflowRound.WORKFLOW_ROUND.TENANT_ID, WorkflowRound.WORKFLOW_ROUND.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val WORKFLOW_TASK__WORKFLOW_TASK_TENANT_ID_INSTANCE_ID_FKEY: ForeignKey<WorkflowTaskRecord, WorkflowInstanceRecord> = Internal.createForeignKey(WorkflowTask.WORKFLOW_TASK, DSL.name("workflow_task_tenant_id_instance_id_fkey"), arrayOf(WorkflowTask.WORKFLOW_TASK.TENANT_ID, WorkflowTask.WORKFLOW_TASK.INSTANCE_ID), com.memo.jooq.keys.WORKFLOW_INSTANCE_TENANT_ID_ID_KEY, arrayOf(WorkflowInstance.WORKFLOW_INSTANCE.TENANT_ID, WorkflowInstance.WORKFLOW_INSTANCE.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val WORKFLOW_TASK__WORKFLOW_TASK_TENANT_ID_STEP_ID_FKEY: ForeignKey<WorkflowTaskRecord, WorkflowStepRecord> = Internal.createForeignKey(WorkflowTask.WORKFLOW_TASK, DSL.name("workflow_task_tenant_id_step_id_fkey"), arrayOf(WorkflowTask.WORKFLOW_TASK.TENANT_ID, WorkflowTask.WORKFLOW_TASK.STEP_ID), com.memo.jooq.keys.WORKFLOW_STEP_TENANT_ID_ID_KEY, arrayOf(WorkflowStep.WORKFLOW_STEP.TENANT_ID, WorkflowStep.WORKFLOW_STEP.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
+val WORKFLOW_TIMER__WORKFLOW_TIMER_TENANT_ID_INSTANCE_ID_FKEY: ForeignKey<WorkflowTimerRecord, WorkflowInstanceRecord> = Internal.createForeignKey(WorkflowTimer.WORKFLOW_TIMER, DSL.name("workflow_timer_tenant_id_instance_id_fkey"), arrayOf(WorkflowTimer.WORKFLOW_TIMER.TENANT_ID, WorkflowTimer.WORKFLOW_TIMER.INSTANCE_ID), com.memo.jooq.keys.WORKFLOW_INSTANCE_TENANT_ID_ID_KEY, arrayOf(WorkflowInstance.WORKFLOW_INSTANCE.TENANT_ID, WorkflowInstance.WORKFLOW_INSTANCE.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)

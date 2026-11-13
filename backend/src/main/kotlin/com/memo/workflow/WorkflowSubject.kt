@@ -184,3 +184,23 @@ data class WorkflowEscalated(
     val taskId: UUID,
     val recipientId: UUID,
 ) : TenantScopedEvent
+
+/**
+ * A timer of an open decision task fired (design E05 §4.3): a reminder before the due time (`REMIND_BEFORE`), the task
+ * became overdue (`DUE`), or a reminder after it (`REMIND_AFTER`, [ordinal] counting them). Subjects tell the holder;
+ * escalations are the workflow's own. Ids only.
+ */
+data class WorkflowTimerFired(
+    override val tenantId: UUID,
+    val instanceId: UUID,
+    val subjectType: String,
+    val subjectId: UUID,
+    val taskId: UUID,
+    /** Null for a task nobody holds yet. */
+    val assigneeId: UUID?,
+    val kind: TimerKind,
+    val ordinal: Int,
+) : TenantScopedEvent
+
+/** What a timer is for (design E05 §4.2). */
+enum class TimerKind { REMIND_BEFORE, DUE, REMIND_AFTER, ESCALATE }

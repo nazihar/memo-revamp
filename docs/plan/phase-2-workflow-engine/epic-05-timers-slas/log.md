@@ -43,3 +43,14 @@
     - the memo view's `dueAt`: the earliest due time of the current step's open decisions (`WorkflowQueries.dueOf`).
   - SLA JSON moved to `SlaJson`; the definition printer was at its complexity limit.
   - Tests: validator cases, `SlaDueIT` (working and calendar time, kept on reassign, renewed after a send-back, none without an SLA).
+- **T3 (timers):** `workflow_timer` (migration `workflow/V13`, forced RLS, foreign key to the instance) holds one row per reminder, due notice and escalation of a decision task on an SLA step.
+  - **Scheduling:** each row has one db-scheduler execution (`workflow-timer`, data `(tenantId, timerId)`), scheduled in the action's transaction. `WorkflowTimers.plan` runs after the writer:
+    - new decision tasks on SLA steps get their timers;
+    - a task closed as reassigned or transferred passes its pending timers to the task replacing it on the same step;
+    - every other closed task's pending timers are cancelled. Cancelling marks the rows only; the executions then find them cancelled and do nothing.
+  - **Times:**
+    - the reminder before the due time counts back in calendar time, and is skipped if it would already be past;
+    - reminders after and the escalation count on from the due time in the step's working or calendar time.
+  - **Firing** locks the row and acts only if it is still pending and its task is still open; otherwise it marks the row cancelled. It then publishes `WorkflowTimerFired` (ids, kind and ordinal). T4 tells people, and T5 acts on `ESCALATE`. Retries and suspended tenants follow the `Jobs` conventions.
+  - `runDue()` fires due timers by the clock; tests construct `WorkflowTimers` with a `MutableClock`.
+  - Tests: `TimersIT` (order and once each, cancelled on close, passed on with reassignment, a stale execution does nothing).

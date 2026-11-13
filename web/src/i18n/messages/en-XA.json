@@ -4245,6 +4245,20 @@
       "value": "]"
     }
   ],
+  "mail.template.taskOverdue": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿǿǿ ǿǿṽḗḗřḓŭŭḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "mail.template.taskReassigned": [
     {
       "type": 0,
@@ -4253,6 +4267,20 @@
     {
       "type": 0,
       "value": "Ḿḗḗḿǿǿ ŧȧȧşķ řḗḗȧȧşşīɠƞḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.template.taskReminder": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗḿīƞḓḗḗř ȧȧƀǿǿŭŭŧ ȧȧ ḿḗḗḿǿǿ"
     },
     {
       "type": 0,
@@ -9079,6 +9107,28 @@
       "value": "]"
     }
   ],
+  "notifications.kind.taskOverdue": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿǿǿ "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " īş ǿǿṽḗḗřḓŭŭḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "notifications.kind.taskReassigned": [
     {
       "type": 0,
@@ -9095,6 +9145,28 @@
     {
       "type": 0,
       "value": " ẇȧȧş řḗḗȧȧşşīɠƞḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.kind.taskReminder": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗḿīƞḓḗḗř: ḿḗḗḿǿǿ "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " īş ẇȧȧīŧīƞɠ ƒǿǿř ẏǿǿŭŭř ḓḗḗƈīşīǿǿƞ"
     },
     {
       "type": 0,

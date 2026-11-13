@@ -54,3 +54,8 @@
   - **Firing** locks the row and acts only if it is still pending and its task is still open; otherwise it marks the row cancelled. It then publishes `WorkflowTimerFired` (ids, kind and ordinal). T4 tells people, and T5 acts on `ESCALATE`. Retries and suspended tenants follow the `Jobs` conventions.
   - `runDue()` fires due timers by the clock; tests construct `WorkflowTimers` with a `MutableClock`.
   - Tests: `TimersIT` (order and once each, cancelled on close, passed on with reassignment, a stale execution does nothing).
+- **T4 (reminders and overdue notices):** two new notification kinds, `TASK_REMINDER` and `TASK_OVERDUE`, in the workflow category. Mail templates are in English and Arabic with the reference and link only; in-app labels are in English and Arabic.
+  - `MemoNotifier` answers `WorkflowTimerFired` for memos: a reminder (before or after the due time) tells the holder, and the due time tells the holder and the initiator.
+  - Escalation timers are left to the workflow (T5).
+  - A task nobody holds (blocked `UNRESOLVED`) reminds nobody; its blocked notice already went to the reassigners.
+  - Tests: `MemoReminderIT` (reminder, then overdue to the approver and the initiator, in-app and by email, no subject in the emails).

@@ -41,6 +41,10 @@ enum class NotificationKind(
     // A definition's notify step (design E03 §2): parameters as above plus `message`, the step's message key.
     MEMO_UPDATE(NotificationCategory.WORKFLOW, MailTemplate.MEMO_UPDATE),
 
+    // SLAs (design E05 §4.3): a reminder to the holder, and the task overdue (holder and initiator); parameters as above.
+    TASK_REMINDER(NotificationCategory.WORKFLOW, MailTemplate.TASK_REMINDER),
+    TASK_OVERDUE(NotificationCategory.WORKFLOW, MailTemplate.TASK_OVERDUE),
+
     // In-browser editing (design E02 §3): a save that could not land; in-app only, parameter `name` (the file's name).
     EDIT_NOT_SAVED(NotificationCategory.WORKFLOW, null),
 }

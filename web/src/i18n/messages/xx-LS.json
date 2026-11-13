@@ -1901,10 +1901,22 @@
       "value": "Memo waiting for reassignmentSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "mail.template.taskOverdue": [
+    {
+      "type": 0,
+      "value": "Memo overdueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "mail.template.taskReassigned": [
     {
       "type": 0,
       "value": "Memo task reassignedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.taskReminder": [
+    {
+      "type": 0,
+      "value": "Reminder about a memoSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "mail.template.test": [
@@ -4335,6 +4347,20 @@
       "value": " is waiting for reassignmentSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "notifications.kind.taskOverdue": [
+    {
+      "type": 0,
+      "value": "Memo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " is overdueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "notifications.kind.taskReassigned": [
     {
       "type": 0,
@@ -4347,6 +4373,20 @@
     {
       "type": 0,
       "value": " was reassignedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.taskReminder": [
+    {
+      "type": 0,
+      "value": "Reminder: memo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " is waiting for your decisionSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "notifications.kind.unknown": [

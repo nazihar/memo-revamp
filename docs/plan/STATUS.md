@@ -65,6 +65,8 @@
 - [x] E05 T6 volume V2 generator, Gatling inbox simulation, weekly load workflow (stacked PR; first run after merge)
 - [x] E05 T7 web: business calendar admin, due and overdue in the inbox, memo view and open tasks (stacked PR)
 - [x] E05 T8 close: demo SLAs, E2E calendar and due-time journey, ASVS rows, runbook (stacked PR) — **E05 complete** (PRs #63–#71, none merged yet)
+- [x] E06 plan written (2026-11-13): research (R1 libraries, R9 builders and accessibility), ADR-0042, design, threat model, tasks T1–T9, test plan, UX flows (`epic-06-visual-builder/`)
+- [ ] E06 T5 simulation API · T1 diagram and Steps view · T2 editing · T3 panels 1 · T4 panels 2 · T6 simulation UI · T7 diff and review · T8 accessibility pass · T9 close (epic and phase)
 
 ## State (Phase 1a, closed)
 - [x] Overview approved (2026-10-18), Q1–Q8 answered, per-epic gate delegated
@@ -76,7 +78,7 @@
 
 ## Next step
 1. Owner: merge E03, E04 and E05 in order (#41 → #71, each stacked on the one before); agent then deploys and checks them on dev.
-1. Agent: E06 (visual workflow builder) plan under the delegated gate, then implementation stacked on the E05 PRs.
+1. Agent: E06 (visual workflow builder) implementation, slice by slice, stacked on the E05 PRs (T5 simulation API first, being backend only).
 2. Owner: the D1 demo on dev (`phase-2-workflow-engine/epic-01-first-slice/demo.md`).
 3. Before 2026-11-22: take the rebuilt distroless digest from Renovate and delete the zlib entries in `.trivyignore`.
 4. Follow-ups (retrospective "Carried"): `AuditPerformanceIT`, `NotificationPerformanceIT`, the full-signature ClamAV corpus nightly, sample bodies for the remaining mutating matrix cells, upstream clean-ups (`apk upgrade` lines, Spring Session licence exceptions, Guava pin), Spring Boot 4.2 GA.

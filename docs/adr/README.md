@@ -45,3 +45,4 @@ We use the MADR format (see [0001](0001-record-architecture-decisions.md)). Star
 | [0039](0039-condition-language-cel.md) | Condition language: CEL with declared attributes, no macros, recorded evaluations | accepted | 2026-11-11 |
 | [0040](0040-assignee-resolution-queues-doa-and-acting-for.md) | Assignee resolution, queues, DoA rules, separation of duties and acting for | accepted | 2026-11-12 |
 | [0041](0041-timers-slas-escalation-and-business-calendars.md) | Timers, SLAs, escalation and business calendars | accepted | 2026-11-13 |
+| [0042](0042-visual-workflow-builder.md) | Visual workflow builder: React Flow over the same body, server-side validation and simulation, structural diff | accepted | 2026-11-13 |

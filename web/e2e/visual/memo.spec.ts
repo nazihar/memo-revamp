@@ -1,11 +1,13 @@
 import type { Page } from '@playwright/test'
+import type { HistoryAction, HistoryRound, InboxPage, MemoView } from '../../src/api/generated/types.gen'
 import { expect, test } from '../fixtures'
 
 /**
  * Visual regression (nightly) of the memo screens (E01 test plan, T9): the memo view of an approver in round 2, light/dark
  * × LTR/RTL; the inbox; and the approver's phone layout (stacked memo view with the action bar at the bottom, the approve
  * dialog as a full-screen sheet). The API is mocked with fixed data; baselines are rendered on Linux in the Playwright
- * container (web/e2e/README.md).
+ * container (web/e2e/README.md). The mocks are typed with the generated API types, so a change to the API breaks the
+ * typecheck on every PR rather than the nightly screenshots.
  */
 const variants = [
   { name: 'light-ltr', theme: 'light', locale: 'en' },
@@ -14,7 +16,7 @@ const variants = [
   { name: 'dark-rtl', theme: 'dark', locale: 'ar' },
 ] as const
 
-const memo = {
+const memo: MemoView = {
   id: 'm1',
   reference: 'M-2026-00042',
   subject: 'Opening a branch in Sylhet',
@@ -39,14 +41,23 @@ const memo = {
   ],
   round: 2,
   holders: [{ id: 'u2', name: 'Demo Head of Credit' }],
-  myTask: { id: 'k1' },
+  myTask: { id: 'k1', role: 'DECIDE', shared: false, waiting: false },
+  interests: [],
+  sendBackTargets: [],
   allowedActions: ['APPROVE', 'RETURN', 'REJECT'],
   createdAt: '2026-11-08T08:00:00Z',
   updatedAt: '2026-11-09T09:31:00Z',
   version: 5,
 }
 
-const action = (seq: number, kind: string, actor: string, at: string, documentNumber: number, remark?: string) => ({
+const action = (
+  seq: number,
+  kind: HistoryAction['kind'],
+  actor: string,
+  at: string,
+  documentNumber: number,
+  remark?: string,
+): HistoryAction => ({
   seq,
   kind,
   actor: { id: actor, name: actor === 'u1' ? 'Demo User' : 'Demo Head of Credit' },
@@ -54,9 +65,11 @@ const action = (seq: number, kind: string, actor: string, at: string, documentNu
   documentNumber,
   sha256: 'a'.repeat(64),
   occurredAt: at,
+  to: [],
+  details: {},
 })
 
-const history = [
+const history: HistoryRound[] = [
   { round: 2, current: true, actions: [action(3, 'RESUBMIT', 'u1', '2026-11-09T09:31:00Z', 2, 'Annex B added.')] },
   {
     round: 1,
@@ -68,24 +81,30 @@ const history = [
   },
 ]
 
-const inbox = {
+const inbox: InboxPage = {
   items: [
     {
       taskId: 'k1',
       memo: { id: 'm1', reference: 'M-2026-00042', subject: 'Opening a branch in Sylhet', restricted: false },
       round: 2,
+      kind: 'DECIDE',
+      shared: false,
       assignedAt: '2026-11-09T09:31:00Z',
     },
     {
       taskId: 'k2',
       memo: { id: 'm2', reference: 'M-2026-00038', subject: 'Annual training budget', restricted: false },
       round: 1,
+      kind: 'DECIDE',
+      shared: false,
       assignedAt: '2026-11-07T11:00:00Z',
     },
     {
       taskId: 'k3',
       memo: { id: 'm3', restricted: true },
       round: 1,
+      kind: 'DECIDE',
+      shared: false,
       blocked: 'NO_CLEARANCE',
       assignedAt: '2026-11-05T10:00:00Z',
     },

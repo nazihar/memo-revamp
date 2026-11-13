@@ -142,6 +142,8 @@ services:
       MEMO_DEMO_SEED: ${MEMO_DEMO_SEED:-false}
       MEMO_DEMO_PASSWORD: ${MEMO_DEMO_PASSWORD:-}
       MEMO_DEMO_TOTP_SECRET: ${MEMO_DEMO_TOTP_SECRET:-}
+      MEMO_VOLUME_V2: ${MEMO_VOLUME_V2:-false}
+      MEMO_VOLUME_INSTANCES: ${MEMO_VOLUME_INSTANCES:-10000}
       MEMO_DATA_KEY: ${MEMO_DATA_KEY:?}
     # Upload spools (ciphertext; at most max-upload-bytes x concurrent uploads, 800 MiB by default) on disk, not in RAM.
     volumes: [spool:/var/lib/memo/spool]

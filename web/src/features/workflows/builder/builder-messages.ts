@@ -73,6 +73,9 @@ export const bmv = defineMessages<{
   leadsToN: { n: number }
   removeCondition: { n: number }
   stepProblems: { name: string }
+  edge: { from: string; to: string }
+  edgeIf: { from: string; to: string; condition: string }
+  edgeOtherwise: { from: string; to: string }
   stepAria: { index: number; count: number; type: string; name: string; who: string; next: string }
   problems: { count: number }
   unknown: { id: string }
@@ -106,6 +109,9 @@ export const bmv = defineMessages<{
   leadsToN: { id: 'workflows.builder.leadsToN', defaultMessage: 'If condition {n} holds, leads to' },
   removeCondition: { id: 'workflows.builder.removeCondition', defaultMessage: 'Remove condition {n}' },
   stepProblems: { id: 'workflows.builder.stepProblems', defaultMessage: 'Problems in {name}' },
+  edge: { id: 'workflows.builder.edge', defaultMessage: '{from} leads to {to}' },
+  edgeIf: { id: 'workflows.builder.edge.if', defaultMessage: '{from} leads to {to} if {condition}' },
+  edgeOtherwise: { id: 'workflows.builder.edge.otherwise', defaultMessage: '{from} otherwise leads to {to}' },
   stepAria: {
     id: 'workflows.builder.stepAria',
     defaultMessage: 'Step {index} of {count}, {type}, {name}. {who} Leads to {next}.',

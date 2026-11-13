@@ -16553,6 +16553,80 @@
       "value": "‬"
     }
   ],
+  "workflows.builder.edge": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "from"
+    },
+    {
+      "type": 0,
+      "value": " ʅǝɐps ʇo "
+    },
+    {
+      "type": 1,
+      "value": "to"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.edge.if": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "from"
+    },
+    {
+      "type": 0,
+      "value": " ʅǝɐps ʇo "
+    },
+    {
+      "type": 1,
+      "value": "to"
+    },
+    {
+      "type": 0,
+      "value": " ıɟ "
+    },
+    {
+      "type": 1,
+      "value": "condition"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflows.builder.edge.otherwise": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "from"
+    },
+    {
+      "type": 0,
+      "value": " oʇɥǝɹʍısǝ ʅǝɐps ʇo "
+    },
+    {
+      "type": 1,
+      "value": "to"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "workflows.builder.edit": [
     {
       "type": 0,

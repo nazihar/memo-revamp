@@ -129,6 +129,11 @@ open class WorkflowRound(
      */
     val START_SNAPSHOT: TableField<WorkflowRoundRecord, JSONB?> = createField(DSL.name("start_snapshot"), SQLDataType.JSONB.nullable(false).defaultValue(DSL.field(DSL.raw("'{}'::jsonb"), SQLDataType.JSONB)), this, "")
 
+    /**
+     * The column <code>memo.workflow_round.route</code>.
+     */
+    val ROUTE: TableField<WorkflowRoundRecord, Array<UUID?>?> = createField(DSL.name("route"), SQLDataType.UUID.array().nullable(false).defaultValue(DSL.field(DSL.raw("'{}'::uuid[]"), SQLDataType.UUID.array())), this, "")
+
     private constructor(alias: Name, aliased: Table<WorkflowRoundRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<WorkflowRoundRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<WorkflowRoundRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -191,7 +196,7 @@ open class WorkflowRound(
     override fun getChecks(): List<Check<WorkflowRoundRecord>> = listOf(
         Internal.createCheck(this, DSL.name("workflow_round_check"), "(((outcome = 'OPEN'::text) = (ended_at IS NULL)))", true),
         Internal.createCheck(this, DSL.name("workflow_round_number_check"), "((number >= 1))", true),
-        Internal.createCheck(this, DSL.name("workflow_round_outcome_check"), "((outcome = ANY (ARRAY['OPEN'::text, 'RETURNED'::text, 'APPROVED'::text, 'REJECTED'::text, 'WITHDRAWN'::text])))", true),
+        Internal.createCheck(this, DSL.name("workflow_round_outcome_check"), "((outcome = ANY (ARRAY['OPEN'::text, 'RETURNED'::text, 'APPROVED'::text, 'REJECTED'::text, 'WITHDRAWN'::text, 'RECALLED'::text, 'CANCELLED'::text])))", true),
         Internal.createCheck(this, DSL.name("workflow_round_start_snapshot_check"), "((octet_length((start_snapshot)::text) <= 4096))", true)
     )
     override fun `as`(alias: String): WorkflowRound = WorkflowRound(DSL.name(alias), this)

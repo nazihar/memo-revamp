@@ -57,7 +57,15 @@ class WorkflowInvariantProperties {
         Statistics.label("final status").collect(state.status)
         Statistics.label("rounds reached").collect(state.round.number.coerceAtMost(2))
         Statistics.label("final status").coverage { checker ->
-            InstanceStatus.entries.forEach { status -> checker.check(status).count(Predicate { n: Int -> n >= MIN_CASES }) }
+            // Cancellation is an administrator's command with its own tests (E03 T6); random scripts here never cancel.
+            (InstanceStatus.entries - InstanceStatus.CANCELLED).forEach { status ->
+                checker.check(status).count(
+                    Predicate { n: Int ->
+                        n >=
+                            MIN_CASES
+                    },
+                )
+            }
         }
         // Random scripts rarely chain several returns; many rounds are the next property's job.
         Statistics.label("rounds reached").coverage { checker -> checker.check(2).count(Predicate { n: Int -> n >= MIN_CASES }) }

@@ -124,6 +124,16 @@ open class WorkflowStep(
      */
     val STATE: TableField<WorkflowStepRecord, String?> = createField(DSL.name("state"), SQLDataType.CLOB.nullable(false), this, "")
 
+    /**
+     * The column <code>memo.workflow_step.node_id</code>.
+     */
+    val NODE_ID: TableField<WorkflowStepRecord, String?> = createField(DSL.name("node_id"), SQLDataType.CLOB.nullable(false), this, "")
+
+    /**
+     * The column <code>memo.workflow_step.route_index</code>.
+     */
+    val ROUTE_INDEX: TableField<WorkflowStepRecord, Int?> = createField(DSL.name("route_index"), SQLDataType.INTEGER, this, "")
+
     private constructor(alias: Name, aliased: Table<WorkflowStepRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<WorkflowStepRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<WorkflowStepRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -190,9 +200,11 @@ open class WorkflowStep(
     val workflowTask: WorkflowTaskPath
         get(): WorkflowTaskPath = workflowTask()
     override fun getChecks(): List<Check<WorkflowStepRecord>> = listOf(
+        Internal.createCheck(this, DSL.name("workflow_step_node_id_check"), "((node_id ~ '^[a-z][a-z0-9/-]{0,199}\$'::text))", true),
         Internal.createCheck(this, DSL.name("workflow_step_ordinal_check"), "((ordinal >= 1))", true),
+        Internal.createCheck(this, DSL.name("workflow_step_route_index_check"), "((route_index >= 0))", true),
         Internal.createCheck(this, DSL.name("workflow_step_state_check"), "((state = ANY (ARRAY['PENDING'::text, 'ACTIVE'::text, 'DONE'::text, 'SKIPPED'::text])))", true),
-        Internal.createCheck(this, DSL.name("workflow_step_type_check"), "((type = 'APPROVE'::text))", true)
+        Internal.createCheck(this, DSL.name("workflow_step_type_check"), "((type = ANY (ARRAY['APPROVE'::text, 'REVIEW'::text, 'PARALLEL'::text])))", true)
     )
     override fun `as`(alias: String): WorkflowStep = WorkflowStep(DSL.name(alias), this)
     override fun `as`(alias: Name): WorkflowStep = WorkflowStep(alias, this)

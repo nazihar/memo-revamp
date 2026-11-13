@@ -8,7 +8,7 @@ import tools.jackson.databind.JsonNode
  */
 object DefinitionCompiler {
     /** The E01 built-in body (schema 1): the initiator's route, then the end. */
-    private val SEQUENTIAL =
+    val SEQUENTIAL =
         Definition(start = "route", steps = listOf(StepDef(id = "route", type = StepType.ROUTE, next = Definition.END)))
 
     /** Reads a stored body of [schemaVersion]; schema-1 bodies are the E01 sequential approval. */

@@ -56,6 +56,10 @@ open class WorkflowRoundRecord private constructor() : UpdatableRecordImpl<Workf
         set(value): Unit = set(8, value)
         get(): JSONB? = get(8) as JSONB?
 
+    open var route: Array<UUID?>?
+        set(value): Unit = set(9, value)
+        get(): Array<UUID?>? = get(9) as Array<UUID?>?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -65,7 +69,7 @@ open class WorkflowRoundRecord private constructor() : UpdatableRecordImpl<Workf
     /**
      * Create a detached, initialised WorkflowRoundRecord
      */
-    constructor(id: UUID, tenantId: UUID, instanceId: UUID, number: Int, outcome: String, startedBy: UUID, startedAt: OffsetDateTime, endedAt: OffsetDateTime? = null, startSnapshot: JSONB? = null): this() {
+    constructor(id: UUID, tenantId: UUID, instanceId: UUID, number: Int, outcome: String, startedBy: UUID, startedAt: OffsetDateTime, endedAt: OffsetDateTime? = null, startSnapshot: JSONB? = null, route: Array<UUID?>? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.instanceId = instanceId
@@ -75,6 +79,7 @@ open class WorkflowRoundRecord private constructor() : UpdatableRecordImpl<Workf
         this.startedAt = startedAt
         this.endedAt = endedAt
         this.startSnapshot = startSnapshot
+        this.route = route
         resetTouchedOnNotNull()
     }
 }

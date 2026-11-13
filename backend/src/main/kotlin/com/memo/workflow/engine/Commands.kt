@@ -60,6 +60,7 @@ enum class Refusal {
     ROUTE_EMPTY,
     ROUTE_TOO_LONG,
     ROUTE_DUPLICATE,
+    ROUTE_NOT_USED,
     INITIATOR_AS_APPROVER,
     SAME_ASSIGNEE,
     ASSIGNEE_IN_ROUND,
@@ -91,6 +92,19 @@ sealed interface Effect {
     data class InstanceEnded(
         val status: InstanceStatus,
     ) : Effect
+
+    /** A notify step was passed: tell [recipients] (ids) with the definition's [message] key. */
+    data class Notify(
+        val nodeId: String,
+        val recipients: List<UUID>,
+        val message: String,
+    ) : Effect
+
+    /** An escalate-to-forum step was passed (Phase 4 acts on it). */
+    data class EscalateToForum(
+        val nodeId: String,
+        val forum: String,
+    ) : Effect
 }
 
 /** The `workflow_action` row of an accepted command; the service adds `seq`, time, acting-for and the subject snapshot. */
@@ -100,12 +114,16 @@ data class ActionRecord(
     val taskId: UUID?,
     val actor: UUID,
     val remark: String?,
+    /** What an automatic action was based on (a branch's inputs and result, a notification's recipients). */
+    val details: Map<String, Any?> = emptyMap(),
 )
 
+/** [followUps] are the automatic actions the command led to (branches taken, notifications), written after [action]. */
 data class Outcome(
     val state: InstanceState,
     val action: ActionRecord,
     val effects: List<Effect>,
+    val followUps: List<ActionRecord> = emptyList(),
 )
 
 sealed interface Decision {
@@ -126,4 +144,6 @@ class TransitionContext(
     val newId: () -> UUID,
     val eligibility: (UUID) -> BlockedReason?,
     val maxApprovers: Int,
+    /** The subject's attribute values, read only when a branch is evaluated. */
+    val attributes: () -> Map<String, Any?> = { emptyMap() },
 )

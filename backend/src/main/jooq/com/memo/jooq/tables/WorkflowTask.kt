@@ -9,6 +9,7 @@ import com.memo.jooq.indexes.WORKFLOW_TASK_INBOX_IDX
 import com.memo.jooq.indexes.WORKFLOW_TASK_INSTANCE_IDX
 import com.memo.jooq.indexes.WORKFLOW_TASK_ONE_OPEN_IDX
 import com.memo.jooq.indexes.WORKFLOW_TASK_OPEN_IDX
+import com.memo.jooq.indexes.WORKFLOW_TASK_PARENT_IDX
 import com.memo.jooq.indexes.WORKFLOW_TASK_STEP_IDX
 import com.memo.jooq.keys.WORKFLOW_TASK_PKEY
 import com.memo.jooq.keys.WORKFLOW_TASK_TENANT_ID_ID_KEY
@@ -141,6 +142,26 @@ open class WorkflowTask(
      */
     val VERSION: TableField<WorkflowTaskRecord, Long?> = createField(DSL.name("version"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BIGINT)), this, "")
 
+    /**
+     * The column <code>memo.workflow_task.kind</code>.
+     */
+    val KIND: TableField<WorkflowTaskRecord, String?> = createField(DSL.name("kind"), SQLDataType.CLOB.nullable(false).defaultValue(DSL.field(DSL.raw("'DECIDE'::text"), SQLDataType.CLOB)), this, "")
+
+    /**
+     * The column <code>memo.workflow_task.on_behalf_of</code>.
+     */
+    val ON_BEHALF_OF: TableField<WorkflowTaskRecord, UUID?> = createField(DSL.name("on_behalf_of"), SQLDataType.UUID, this, "")
+
+    /**
+     * The column <code>memo.workflow_task.waiting</code>.
+     */
+    val WAITING: TableField<WorkflowTaskRecord, Boolean?> = createField(DSL.name("waiting"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "")
+
+    /**
+     * The column <code>memo.workflow_task.parent_task_id</code>.
+     */
+    val PARENT_TASK_ID: TableField<WorkflowTaskRecord, UUID?> = createField(DSL.name("parent_task_id"), SQLDataType.UUID, this, "")
+
     private constructor(alias: Name, aliased: Table<WorkflowTaskRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<WorkflowTaskRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<WorkflowTaskRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -173,7 +194,7 @@ open class WorkflowTask(
         override fun `as`(alias: Table<*>): WorkflowTaskPath = WorkflowTaskPath(alias.qualifiedName, this)
     }
     override fun getSchema(): Schema? = if (aliased()) null else Memo.MEMO
-    override fun getIndexes(): List<Index> = listOf(WORKFLOW_TASK_INBOX_IDX, WORKFLOW_TASK_INSTANCE_IDX, WORKFLOW_TASK_ONE_OPEN_IDX, WORKFLOW_TASK_OPEN_IDX, WORKFLOW_TASK_STEP_IDX)
+    override fun getIndexes(): List<Index> = listOf(WORKFLOW_TASK_INBOX_IDX, WORKFLOW_TASK_INSTANCE_IDX, WORKFLOW_TASK_ONE_OPEN_IDX, WORKFLOW_TASK_OPEN_IDX, WORKFLOW_TASK_PARENT_IDX, WORKFLOW_TASK_STEP_IDX)
     override fun getPrimaryKey(): UniqueKey<WorkflowTaskRecord> = WORKFLOW_TASK_PKEY
     override fun getUniqueKeys(): List<UniqueKey<WorkflowTaskRecord>> = listOf(WORKFLOW_TASK_TENANT_ID_ID_KEY)
     override fun getReferences(): List<ForeignKey<WorkflowTaskRecord, *>> = listOf(WORKFLOW_TASK__WORKFLOW_TASK_TENANT_ID_INSTANCE_ID_FKEY, WORKFLOW_TASK__WORKFLOW_TASK_TENANT_ID_STEP_ID_FKEY)
@@ -194,8 +215,10 @@ open class WorkflowTask(
         Internal.createCheck(this, DSL.name("workflow_task_blocked_reason_check"), "((blocked_reason = ANY (ARRAY['NO_CLEARANCE'::text, 'INACTIVE'::text])))", true),
         Internal.createCheck(this, DSL.name("workflow_task_check"), "(((state = 'OPEN'::text) = (completed_at IS NULL)))", true),
         Internal.createCheck(this, DSL.name("workflow_task_check1"), "(((state = 'COMPLETED'::text) = (outcome IS NOT NULL)))", true),
-        Internal.createCheck(this, DSL.name("workflow_task_outcome_check"), "((outcome = ANY (ARRAY['APPROVE'::text, 'RETURN'::text, 'REJECT'::text])))", true),
-        Internal.createCheck(this, DSL.name("workflow_task_state_check"), "((state = ANY (ARRAY['OPEN'::text, 'COMPLETED'::text, 'CANCELLED'::text, 'REASSIGNED'::text])))", true)
+        Internal.createCheck(this, DSL.name("workflow_task_kind_check"), "((kind = ANY (ARRAY['DECIDE'::text, 'OPINION'::text, 'CLARIFY'::text])))", true),
+        Internal.createCheck(this, DSL.name("workflow_task_outcome_check"), "((outcome = ANY (ARRAY['APPROVE'::text, 'RECOMMEND'::text, 'RETURN'::text, 'REJECT'::text, 'SEND_BACK'::text, 'ANSWER'::text, 'OPINION'::text, 'CARRY'::text])))", true),
+        Internal.createCheck(this, DSL.name("workflow_task_parent_check"), "(((kind = 'DECIDE'::text) = (parent_task_id IS NULL)))", true),
+        Internal.createCheck(this, DSL.name("workflow_task_state_check"), "((state = ANY (ARRAY['OPEN'::text, 'COMPLETED'::text, 'CANCELLED'::text, 'REASSIGNED'::text, 'TRANSFERRED'::text])))", true)
     )
     override fun `as`(alias: String): WorkflowTask = WorkflowTask(DSL.name(alias), this)
     override fun `as`(alias: Name): WorkflowTask = WorkflowTask(alias, this)

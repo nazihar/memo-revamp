@@ -32,6 +32,7 @@ import com.memo.jooq.tables.SystemIdempotencyKey
 import com.memo.jooq.tables.TenancySetting
 import com.memo.jooq.tables.TenancyTerm
 import com.memo.jooq.tables.WorkflowAction
+import com.memo.jooq.tables.WorkflowDefinitionVersion
 import com.memo.jooq.tables.WorkflowInstance
 import com.memo.jooq.tables.WorkflowRound
 import com.memo.jooq.tables.WorkflowStep
@@ -90,11 +91,13 @@ val SYSTEM_IDEMPOTENCY_KEY_TENANT_CREATED_IDX: Index = Internal.createIndex(DSL.
 val TENANCY_SETTING_TENANT_KEY_UK: Index = Internal.createIndex(DSL.name("tenancy_setting_tenant_key_uk"), TenancySetting.TENANCY_SETTING, arrayOf(TenancySetting.TENANCY_SETTING.TENANT_ID, TenancySetting.TENANCY_SETTING.KEY), true)
 val TENANCY_TERM_TENANT_TERM_LOCALE_UK: Index = Internal.createIndex(DSL.name("tenancy_term_tenant_term_locale_uk"), TenancyTerm.TENANCY_TERM, arrayOf(TenancyTerm.TENANCY_TERM.TENANT_ID, TenancyTerm.TENANCY_TERM.TERM, TenancyTerm.TENANCY_TERM.LOCALE), true)
 val WORKFLOW_ACTION_TASK_IDX: Index = Internal.createIndex(DSL.name("workflow_action_task_idx"), WorkflowAction.WORKFLOW_ACTION, arrayOf(WorkflowAction.WORKFLOW_ACTION.TENANT_ID, WorkflowAction.WORKFLOW_ACTION.TASK_ID), false)
+val WORKFLOW_DEFINITION_VERSION_ONE_PUBLISHED_IDX: Index = Internal.createIndex(DSL.name("workflow_definition_version_one_published_idx"), WorkflowDefinitionVersion.WORKFLOW_DEFINITION_VERSION, arrayOf(WorkflowDefinitionVersion.WORKFLOW_DEFINITION_VERSION.TENANT_ID, WorkflowDefinitionVersion.WORKFLOW_DEFINITION_VERSION.DEFINITION_ID), true)
 val WORKFLOW_INSTANCE_DEFINITION_IDX: Index = Internal.createIndex(DSL.name("workflow_instance_definition_idx"), WorkflowInstance.WORKFLOW_INSTANCE, arrayOf(WorkflowInstance.WORKFLOW_INSTANCE.TENANT_ID, WorkflowInstance.WORKFLOW_INSTANCE.DEFINITION_VERSION_ID), false)
 val WORKFLOW_ROUND_ONE_OPEN_IDX: Index = Internal.createIndex(DSL.name("workflow_round_one_open_idx"), WorkflowRound.WORKFLOW_ROUND, arrayOf(WorkflowRound.WORKFLOW_ROUND.TENANT_ID, WorkflowRound.WORKFLOW_ROUND.INSTANCE_ID), true)
 val WORKFLOW_STEP_INSTANCE_IDX: Index = Internal.createIndex(DSL.name("workflow_step_instance_idx"), WorkflowStep.WORKFLOW_STEP, arrayOf(WorkflowStep.WORKFLOW_STEP.TENANT_ID, WorkflowStep.WORKFLOW_STEP.INSTANCE_ID), false)
 val WORKFLOW_TASK_INBOX_IDX: Index = Internal.createIndex(DSL.name("workflow_task_inbox_idx"), WorkflowTask.WORKFLOW_TASK, arrayOf(WorkflowTask.WORKFLOW_TASK.TENANT_ID, WorkflowTask.WORKFLOW_TASK.ASSIGNEE_ID, WorkflowTask.WORKFLOW_TASK.STATE, WorkflowTask.WORKFLOW_TASK.CREATED_AT.desc(), WorkflowTask.WORKFLOW_TASK.ID), false)
 val WORKFLOW_TASK_INSTANCE_IDX: Index = Internal.createIndex(DSL.name("workflow_task_instance_idx"), WorkflowTask.WORKFLOW_TASK, arrayOf(WorkflowTask.WORKFLOW_TASK.TENANT_ID, WorkflowTask.WORKFLOW_TASK.INSTANCE_ID), false)
-val WORKFLOW_TASK_ONE_OPEN_IDX: Index = Internal.createIndex(DSL.name("workflow_task_one_open_idx"), WorkflowTask.WORKFLOW_TASK, arrayOf(WorkflowTask.WORKFLOW_TASK.TENANT_ID, WorkflowTask.WORKFLOW_TASK.STEP_ID), true)
+val WORKFLOW_TASK_ONE_OPEN_IDX: Index = Internal.createIndex(DSL.name("workflow_task_one_open_idx"), WorkflowTask.WORKFLOW_TASK, arrayOf(WorkflowTask.WORKFLOW_TASK.TENANT_ID, WorkflowTask.WORKFLOW_TASK.STEP_ID, WorkflowTask.WORKFLOW_TASK.ASSIGNEE_ID), true)
 val WORKFLOW_TASK_OPEN_IDX: Index = Internal.createIndex(DSL.name("workflow_task_open_idx"), WorkflowTask.WORKFLOW_TASK, arrayOf(WorkflowTask.WORKFLOW_TASK.TENANT_ID, WorkflowTask.WORKFLOW_TASK.CREATED_AT.desc(), WorkflowTask.WORKFLOW_TASK.ID), false)
+val WORKFLOW_TASK_PARENT_IDX: Index = Internal.createIndex(DSL.name("workflow_task_parent_idx"), WorkflowTask.WORKFLOW_TASK, arrayOf(WorkflowTask.WORKFLOW_TASK.TENANT_ID, WorkflowTask.WORKFLOW_TASK.PARENT_TASK_ID), false)
 val WORKFLOW_TASK_STEP_IDX: Index = Internal.createIndex(DSL.name("workflow_task_step_idx"), WorkflowTask.WORKFLOW_TASK, arrayOf(WorkflowTask.WORKFLOW_TASK.TENANT_ID, WorkflowTask.WORKFLOW_TASK.STEP_ID), false)

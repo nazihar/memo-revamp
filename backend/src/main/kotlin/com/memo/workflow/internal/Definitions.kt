@@ -1,5 +1,7 @@
 package com.memo.workflow.internal
 
+import com.memo.common.cache.TenantCache
+import com.memo.common.cache.TenantCaches
 import com.memo.common.context.ActorContext
 import com.memo.common.id.IdGenerator
 import com.memo.common.tenant.TenantDsl
@@ -9,6 +11,8 @@ import com.memo.jooq.tables.references.WORKFLOW_DEFINITION
 import com.memo.jooq.tables.references.WORKFLOW_DEFINITION_VERSION
 import com.memo.tenancy.TenantCreated
 import com.memo.tenancy.TenantRegistry
+import com.memo.workflow.definition.Definition
+import com.memo.workflow.definition.DefinitionCompiler
 import org.jooq.JSONB
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
@@ -16,6 +20,7 @@ import org.springframework.context.event.EventListener
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.stereotype.Component
+import tools.jackson.databind.json.JsonMapper
 import java.time.Clock
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -109,5 +114,38 @@ class WorkflowBootstrapOnStartup(
         ActorContext.asSystem("workflow-bootstrap") {
             registry.listActiveIds().forEach { tenant -> transactions.inTenant(tenant) { definitions.ensureBuiltIn() } }
         }
+    }
+}
+
+/**
+ * Compiled definitions by version id, as instances run them (ADR-0038). Only published versions are pinned, and those
+ * never change, so entries need no eviction. Schema-1 bodies (the E01 built-in) read as the sequential definition.
+ */
+@Component
+class CompiledDefinitions(
+    private val tenantDsl: TenantDsl,
+    private val json: JsonMapper,
+    caches: TenantCaches,
+) {
+    private val cache: TenantCache<UUID, Definition> = caches.register(CACHE)
+
+    fun get(versionId: UUID): Definition =
+        cache.get(versionId) {
+            val row =
+                tenantDsl
+                    .current()
+                    .select(
+                        WORKFLOW_DEFINITION_VERSION.SCHEMA_VERSION,
+                        WORKFLOW_DEFINITION_VERSION.BODY,
+                        WORKFLOW_DEFINITION_VERSION.COMPILED,
+                    ).from(WORKFLOW_DEFINITION_VERSION)
+                    .where(WORKFLOW_DEFINITION_VERSION.ID.eq(versionId))
+                    .fetchSingle()
+            val body = json.readTree((row.value3() ?: row.value2()!!).data())
+            DefinitionCompiler.read(body, if (row.value3() != null) Definition.SCHEMA_VERSION else row.value1()!!)
+        }
+
+    private companion object {
+        const val CACHE = "workflow.definitions"
     }
 }

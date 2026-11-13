@@ -71,6 +71,10 @@ open class WorkflowInstanceRecord private constructor() : UpdatableRecordImpl<Wo
         set(value): Unit = set(12, value)
         get(): Long? = get(12) as Long?
 
+    open var currentStepName: String?
+        set(value): Unit = set(13, value)
+        get(): String? = get(13) as String?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -80,7 +84,7 @@ open class WorkflowInstanceRecord private constructor() : UpdatableRecordImpl<Wo
     /**
      * Create a detached, initialised WorkflowInstanceRecord
      */
-    constructor(id: UUID, tenantId: UUID, subjectType: String, subjectId: UUID, definitionVersionId: UUID, initiatorId: UUID, status: String, currentRound: Int, currentStepId: UUID? = null, currentAssignees: Array<UUID?>? = null, createdAt: OffsetDateTime, updatedAt: OffsetDateTime, version: Long? = null): this() {
+    constructor(id: UUID, tenantId: UUID, subjectType: String, subjectId: UUID, definitionVersionId: UUID, initiatorId: UUID, status: String, currentRound: Int, currentStepId: UUID? = null, currentAssignees: Array<UUID?>? = null, createdAt: OffsetDateTime, updatedAt: OffsetDateTime, version: Long? = null, currentStepName: String? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.subjectType = subjectType
@@ -94,6 +98,7 @@ open class WorkflowInstanceRecord private constructor() : UpdatableRecordImpl<Wo
         this.createdAt = createdAt
         this.updatedAt = updatedAt
         this.version = version
+        this.currentStepName = currentStepName
         resetTouchedOnNotNull()
     }
 }

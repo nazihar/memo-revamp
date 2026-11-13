@@ -52,6 +52,34 @@ open class WorkflowDefinitionVersionRecord private constructor() : UpdatableReco
         set(value): Unit = set(7, value)
         get(): OffsetDateTime = get(7) as OffsetDateTime
 
+    open var compiled: JSONB?
+        set(value): Unit = set(8, value)
+        get(): JSONB? = get(8) as JSONB?
+
+    open var submittedBy: UUID?
+        set(value): Unit = set(9, value)
+        get(): UUID? = get(9) as UUID?
+
+    open var submittedAt: OffsetDateTime?
+        set(value): Unit = set(10, value)
+        get(): OffsetDateTime? = get(10) as OffsetDateTime?
+
+    open var reviewedBy: UUID?
+        set(value): Unit = set(11, value)
+        get(): UUID? = get(11) as UUID?
+
+    open var reviewedAt: OffsetDateTime?
+        set(value): Unit = set(12, value)
+        get(): OffsetDateTime? = get(12) as OffsetDateTime?
+
+    open var reviewRemark: String?
+        set(value): Unit = set(13, value)
+        get(): String? = get(13) as String?
+
+    open var publishedAt: OffsetDateTime?
+        set(value): Unit = set(14, value)
+        get(): OffsetDateTime? = get(14) as OffsetDateTime?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -61,7 +89,7 @@ open class WorkflowDefinitionVersionRecord private constructor() : UpdatableReco
     /**
      * Create a detached, initialised WorkflowDefinitionVersionRecord
      */
-    constructor(id: UUID, tenantId: UUID, definitionId: UUID, number: Int, body: JSONB, schemaVersion: Int, state: String, createdAt: OffsetDateTime): this() {
+    constructor(id: UUID, tenantId: UUID, definitionId: UUID, number: Int, body: JSONB, schemaVersion: Int, state: String, createdAt: OffsetDateTime, compiled: JSONB? = null, submittedBy: UUID? = null, submittedAt: OffsetDateTime? = null, reviewedBy: UUID? = null, reviewedAt: OffsetDateTime? = null, reviewRemark: String? = null, publishedAt: OffsetDateTime? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.definitionId = definitionId
@@ -70,6 +98,13 @@ open class WorkflowDefinitionVersionRecord private constructor() : UpdatableReco
         this.schemaVersion = schemaVersion
         this.state = state
         this.createdAt = createdAt
+        this.compiled = compiled
+        this.submittedBy = submittedBy
+        this.submittedAt = submittedAt
+        this.reviewedBy = reviewedBy
+        this.reviewedAt = reviewedAt
+        this.reviewRemark = reviewRemark
+        this.publishedAt = publishedAt
         resetTouchedOnNotNull()
     }
 }

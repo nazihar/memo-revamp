@@ -109,6 +109,16 @@ open class WorkflowDefinition(
      */
     val CREATED_AT: TableField<WorkflowDefinitionRecord, OffsetDateTime?> = createField(DSL.name("created_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false), this, "")
 
+    /**
+     * The column <code>memo.workflow_definition.description</code>.
+     */
+    val DESCRIPTION: TableField<WorkflowDefinitionRecord, String?> = createField(DSL.name("description"), SQLDataType.CLOB, this, "")
+
+    /**
+     * The column <code>memo.workflow_definition.fragment</code>.
+     */
+    val FRAGMENT: TableField<WorkflowDefinitionRecord, Boolean?> = createField(DSL.name("fragment"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "")
+
     private constructor(alias: Name, aliased: Table<WorkflowDefinitionRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<WorkflowDefinitionRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<WorkflowDefinitionRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -160,6 +170,7 @@ open class WorkflowDefinition(
     val workflowDefinitionVersion: WorkflowDefinitionVersionPath
         get(): WorkflowDefinitionVersionPath = workflowDefinitionVersion()
     override fun getChecks(): List<Check<WorkflowDefinitionRecord>> = listOf(
+        Internal.createCheck(this, DSL.name("workflow_definition_description_check"), "((length(description) <= 2000))", true),
         Internal.createCheck(this, DSL.name("workflow_definition_key_check"), "((key ~ '^[a-z][a-z0-9-]{0,99}\$'::text))", true),
         Internal.createCheck(this, DSL.name("workflow_definition_name_check"), "(((length(name) >= 1) AND (length(name) <= 200)))", true)
     )

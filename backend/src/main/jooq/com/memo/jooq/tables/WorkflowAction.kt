@@ -142,6 +142,11 @@ open class WorkflowAction(
      */
     val OCCURRED_AT: TableField<WorkflowActionRecord, OffsetDateTime?> = createField(DSL.name("occurred_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false), this, "")
 
+    /**
+     * The column <code>memo.workflow_action.details</code>.
+     */
+    val DETAILS: TableField<WorkflowActionRecord, JSONB?> = createField(DSL.name("details"), SQLDataType.JSONB.nullable(false).defaultValue(DSL.field(DSL.raw("'{}'::jsonb"), SQLDataType.JSONB)), this, "")
+
     private constructor(alias: Name, aliased: Table<WorkflowActionRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<WorkflowActionRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<WorkflowActionRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -186,7 +191,8 @@ open class WorkflowAction(
     fun workflowInstance(): WorkflowInstancePath = workflowInstance
     val workflowInstance: WorkflowInstancePath by lazy { WorkflowInstancePath(this, WORKFLOW_ACTION__WORKFLOW_ACTION_TENANT_ID_INSTANCE_ID_FKEY, null) }
     override fun getChecks(): List<Check<WorkflowActionRecord>> = listOf(
-        Internal.createCheck(this, DSL.name("workflow_action_kind_check"), "((kind = ANY (ARRAY['SUBMIT'::text, 'APPROVE'::text, 'RETURN'::text, 'REJECT'::text, 'WITHDRAW'::text, 'RESUBMIT'::text, 'REASSIGN'::text])))", true),
+        Internal.createCheck(this, DSL.name("workflow_action_details_check"), "((octet_length((details)::text) <= 4096))", true),
+        Internal.createCheck(this, DSL.name("workflow_action_kind_check"), "((kind = ANY (ARRAY['SUBMIT'::text, 'APPROVE'::text, 'RETURN'::text, 'REJECT'::text, 'WITHDRAW'::text, 'RESUBMIT'::text, 'REASSIGN'::text, 'RECOMMEND'::text, 'ROUTE'::text, 'NOTIFY'::text, 'ESCALATE_TO_FORUM'::text, 'SEND_BACK'::text, 'FORWARD'::text, 'DELEGATE'::text, 'ASK'::text, 'ANSWER'::text, 'REFER'::text, 'OPINION'::text, 'RECALL'::text, 'CANCEL'::text, 'MIGRATE'::text, 'CARRY'::text])))", true),
         Internal.createCheck(this, DSL.name("workflow_action_remark_check"), "(((length(remark) >= 1) AND (length(remark) <= 4000)))", true),
         Internal.createCheck(this, DSL.name("workflow_action_round_check"), "((round >= 1))", true),
         Internal.createCheck(this, DSL.name("workflow_action_seq_check"), "((seq >= 1))", true),

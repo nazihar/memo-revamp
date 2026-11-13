@@ -2279,16 +2279,94 @@
       "value": "HistorySSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.history.action.answer": [
+    {
+      "type": 0,
+      "value": "AnsweredSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.history.action.approve": [
     {
       "type": 0,
       "value": "ApprovedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.history.action.ask": [
+    {
+      "type": 0,
+      "value": "Asked for clarificationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.history.action.cancel": [
+    {
+      "type": 0,
+      "value": "CancelledSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.history.action.carry": [
+    {
+      "type": 0,
+      "value": "Approval carried over (document unchanged)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.history.action.delegate": [
+    {
+      "type": 0,
+      "value": "DelegatedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.history.action.escalateToForum": [
+    {
+      "type": 0,
+      "value": "Escalated to a forumSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.history.action.forward": [
+    {
+      "type": 0,
+      "value": "ForwardedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.history.action.migrate": [
+    {
+      "type": 0,
+      "value": "Moved to a new workflow versionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.history.action.notify": [
+    {
+      "type": 0,
+      "value": "Notification sentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.history.action.opinion": [
+    {
+      "type": 0,
+      "value": "Gave an opinionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.history.action.reassign": [
     {
       "type": 0,
       "value": "ReassignedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.history.action.recall": [
+    {
+      "type": 0,
+      "value": "RecalledSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.history.action.recommend": [
+    {
+      "type": 0,
+      "value": "RecommendedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.history.action.refer": [
+    {
+      "type": 0,
+      "value": "Asked for opinionsSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.history.action.reject": [
@@ -2307,6 +2385,18 @@
     {
       "type": 0,
       "value": "ReturnedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.history.action.route": [
+    {
+      "type": 0,
+      "value": "Routed by the workflowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.history.action.sendBack": [
+    {
+      "type": 0,
+      "value": "Sent back to an earlier stepSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.history.action.submit": [

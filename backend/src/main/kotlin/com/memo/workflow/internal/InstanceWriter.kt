@@ -24,6 +24,7 @@ import com.memo.workflow.engine.TaskState
 import org.jooq.JSONB
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Component
+import tools.jackson.databind.json.JsonMapper
 import java.time.OffsetDateTime
 import java.util.UUID
 
@@ -35,6 +36,7 @@ import java.util.UUID
 class InstanceWriter(
     private val tenantDsl: TenantDsl,
     private val ids: IdGenerator,
+    private val json: JsonMapper,
 ) {
     /**
      * Writes an accepted [outcome] of [before] (null for a new instance): new round and steps, step changes, task changes,
@@ -50,18 +52,76 @@ class InstanceWriter(
         now: OffsetDateTime,
     ): Pair<UUID, Long> {
         val after = outcome.state
+        val sameRound = before != null && before.round.number == after.round.number
+        // Steps activated during this action come first: their tasks refer to them.
+        if (sameRound) insertSteps(instanceId, after.round, after.round.steps.filter { s -> before.round.steps.none { it.id == s.id } })
         outcome.effects.forEach { effect ->
             when (effect) {
                 is Effect.RoundStarted -> insertRound(instanceId, after.round, outcome.action.actor, snapshot, now)
                 is Effect.TaskCreated -> insertTask(instanceId, effect.stepId, effect.task, now)
                 is Effect.TaskClosed -> closeTask(effect, now)
                 is Effect.RoundEnded -> endRound(instanceId, effect, now)
-                is Effect.InstanceEnded -> Unit
+                is Effect.InstanceEnded, is Effect.Notify, is Effect.EscalateToForum -> Unit
             }
         }
-        if (before != null && before.round.number == after.round.number) updateSteps(before.round, after.round)
+        if (sameRound) updateSteps(before.round, after.round)
         val version = if (before == null) expectedVersion else updateInstance(instanceId, expectedVersion, after, now)
-        return appendAction(instanceId, outcome.action, snapshot, actingFor, now) to version
+        val actionId = appendAction(instanceId, outcome.action, snapshot, actingFor, now)
+        outcome.followUps.forEach { appendAction(instanceId, it, snapshot, null, now) }
+        return actionId to version
+    }
+
+    private fun insertSteps(
+        instanceId: UUID,
+        round: Round,
+        steps: List<Step>,
+    ) {
+        if (steps.isEmpty()) return
+        val dsl = tenantDsl.current()
+        val roundId =
+            dsl
+                .select(WORKFLOW_ROUND.ID)
+                .from(WORKFLOW_ROUND)
+                .where(WORKFLOW_ROUND.INSTANCE_ID.eq(instanceId), WORKFLOW_ROUND.NUMBER.eq(round.number))
+                .fetchSingle(WORKFLOW_ROUND.ID)!!
+        insertStepRows(instanceId, roundId, steps)
+    }
+
+    private fun insertStepRows(
+        instanceId: UUID,
+        roundId: UUID,
+        steps: List<Step>,
+    ) {
+        val tenant = tenantDsl.tenant().value
+        val insert =
+            tenantDsl.current().insertInto(
+                WORKFLOW_STEP,
+                WORKFLOW_STEP.ID,
+                WORKFLOW_STEP.TENANT_ID,
+                WORKFLOW_STEP.INSTANCE_ID,
+                WORKFLOW_STEP.ROUND_ID,
+                WORKFLOW_STEP.ORDINAL,
+                WORKFLOW_STEP.TYPE,
+                WORKFLOW_STEP.ASSIGNEE_ID,
+                WORKFLOW_STEP.STATE,
+                WORKFLOW_STEP.NODE_ID,
+                WORKFLOW_STEP.ROUTE_INDEX,
+            )
+        steps
+            .fold(insert) { query, step ->
+                query.values(
+                    step.id,
+                    tenant,
+                    instanceId,
+                    roundId,
+                    step.ordinal,
+                    step.kind.name,
+                    step.assignee,
+                    step.state.name,
+                    step.nodeId,
+                    step.routeIndex,
+                )
+            }.execute()
     }
 
     private fun insertRound(
@@ -84,23 +144,9 @@ class InstanceWriter(
             .set(WORKFLOW_ROUND.STARTED_BY, startedBy)
             .set(WORKFLOW_ROUND.STARTED_AT, now)
             .set(WORKFLOW_ROUND.START_SNAPSHOT, snapshot)
+            .set(WORKFLOW_ROUND.ROUTE, round.route.toTypedArray<UUID?>())
             .execute()
-        val insert =
-            dsl.insertInto(
-                WORKFLOW_STEP,
-                WORKFLOW_STEP.ID,
-                WORKFLOW_STEP.TENANT_ID,
-                WORKFLOW_STEP.INSTANCE_ID,
-                WORKFLOW_STEP.ROUND_ID,
-                WORKFLOW_STEP.ORDINAL,
-                WORKFLOW_STEP.TYPE,
-                WORKFLOW_STEP.ASSIGNEE_ID,
-                WORKFLOW_STEP.STATE,
-            )
-        round.steps
-            .fold(insert) { query, step ->
-                query.values(step.id, tenant, instanceId, roundId, step.ordinal, APPROVE_STEP, step.assignee, step.state.name)
-            }.execute()
+        if (round.steps.isNotEmpty()) insertStepRows(instanceId, roundId, round.steps)
     }
 
     private fun insertTask(
@@ -191,6 +237,7 @@ class InstanceWriter(
                 .set(WORKFLOW_INSTANCE.CURRENT_ROUND, after.round.number)
                 .set(WORKFLOW_INSTANCE.CURRENT_STEP_ID, after.activeStep?.id)
                 .set(WORKFLOW_INSTANCE.CURRENT_ASSIGNEES, after.currentAssignees.toTypedArray<UUID?>())
+                .set(WORKFLOW_INSTANCE.CURRENT_STEP_NAME, after.activeStep?.name)
                 .set(WORKFLOW_INSTANCE.UPDATED_AT, now)
                 .set(WORKFLOW_INSTANCE.VERSION, expectedVersion + 1)
                 .where(WORKFLOW_INSTANCE.ID.eq(instanceId))
@@ -229,6 +276,7 @@ class InstanceWriter(
             .set(WORKFLOW_ACTION.ACTING_FOR_ID, actingFor)
             .set(WORKFLOW_ACTION.REMARK, action.remark)
             .set(WORKFLOW_ACTION.SUBJECT_SNAPSHOT, snapshot)
+            .set(WORKFLOW_ACTION.DETAILS, JSONB.valueOf(json.writeValueAsString(action.details)))
             .set(WORKFLOW_ACTION.OCCURRED_AT, now)
             .execute()
         return id
@@ -236,9 +284,5 @@ class InstanceWriter(
 
     private fun conflictIf(condition: Boolean) {
         if (condition) throw RefusedException("CONFLICT", "The workflow changed meanwhile; reload and try again")
-    }
-
-    private companion object {
-        const val APPROVE_STEP = "APPROVE"
     }
 }

@@ -5019,6 +5019,20 @@
       "value": "‬"
     }
   ],
+  "memo.history.action.answer": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀usʍǝɹǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "memo.history.action.approve": [
     {
       "type": 0,
@@ -5033,6 +5047,132 @@
       "value": "‬"
     }
   ],
+  "memo.history.action.ask": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀sʞǝp ɟoɹ ɔʅɐɹıɟıɔɐʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.history.action.cancel": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɐuɔǝʅʅǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.history.action.carry": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ddɹoʌɐʅ ɔɐɹɹıǝp oʌǝɹ (poɔnɯǝuʇ nuɔɥɐuƃǝp)"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.history.action.delegate": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝʅǝƃɐʇǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.history.action.escalateToForum": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝsɔɐʅɐʇǝp ʇo ɐ ɟoɹnɯ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.history.action.forward": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎoɹʍɐɹpǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.history.action.migrate": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Woʌǝp ʇo ɐ uǝʍ ʍoɹʞɟʅoʍ ʌǝɹsıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.history.action.notify": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noʇıɟıɔɐʇıou sǝuʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.history.action.opinion": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅁ɐʌǝ ɐu odıuıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "memo.history.action.reassign": [
     {
       "type": 0,
@@ -5041,6 +5181,48 @@
     {
       "type": 0,
       "value": "ᴚǝɐssıƃuǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.history.action.recall": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɔɐʅʅǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.history.action.recommend": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɔoɯɯǝupǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.history.action.refer": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀sʞǝp ɟoɹ odıuıous"
     },
     {
       "type": 0,
@@ -5083,6 +5265,34 @@
     {
       "type": 0,
       "value": "ᴚǝʇnɹuǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.history.action.route": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚonʇǝp qʎ ʇɥǝ ʍoɹʞɟʅoʍ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "memo.history.action.sendBack": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝuʇ qɐɔʞ ʇo ɐu ǝɐɹʅıǝɹ sʇǝd"
     },
     {
       "type": 0,

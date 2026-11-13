@@ -92,8 +92,8 @@ class MemoPerformanceIT : IntegrationTest() {
             )
             dsl.execute(
                 """
-                insert into workflow_step (id, tenant_id, instance_id, round_id, ordinal, type, assignee_id, state)
-                select md5('s' || i)::uuid, '$t', md5('i' || i)::uuid, md5('r' || i)::uuid, 1, 'APPROVE', $assignee, 'ACTIVE'
+                insert into workflow_step (id, tenant_id, instance_id, round_id, ordinal, type, assignee_id, state, node_id, route_index)
+                select md5('s' || i)::uuid, '$t', md5('i' || i)::uuid, md5('r' || i)::uuid, 1, 'APPROVE', $assignee, 'ACTIVE', 'route', 0
                 from generate_series(1, $MEMOS) i
                 """,
             )

@@ -334,7 +334,7 @@ export type HistoryAction = {
     actingFor?: Named | null;
     actor: Named;
     documentNumber?: number | null;
-    kind: 'SUBMIT' | 'APPROVE' | 'RETURN' | 'REJECT' | 'WITHDRAW' | 'RESUBMIT' | 'REASSIGN';
+    kind: 'SUBMIT' | 'APPROVE' | 'RETURN' | 'REJECT' | 'WITHDRAW' | 'RESUBMIT' | 'REASSIGN' | 'RECOMMEND' | 'ROUTE' | 'NOTIFY' | 'ESCALATE_TO_FORUM' | 'SEND_BACK' | 'FORWARD' | 'DELEGATE' | 'ASK' | 'ANSWER' | 'REFER' | 'OPINION' | 'RECALL' | 'CANCEL' | 'MIGRATE' | 'CARRY';
     occurredAt: string;
     remark?: string | null;
     seq: number;
@@ -1137,7 +1137,7 @@ export type WorkflowView = {
     openTaskBlocked?: 'NO_CLEARANCE' | 'INACTIVE';
     openTaskId?: string | null;
     round: number;
-    status: 'RUNNING' | 'RETURNED' | 'APPROVED' | 'REJECTED' | 'WITHDRAWN';
+    status: 'RUNNING' | 'RETURNED' | 'APPROVED' | 'REJECTED' | 'WITHDRAWN' | 'CANCELLED';
     subjectId: string;
     subjectType: string;
     version: number;

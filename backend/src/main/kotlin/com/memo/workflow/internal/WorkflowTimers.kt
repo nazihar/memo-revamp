@@ -74,6 +74,7 @@ class WorkflowTimers(
     private val clock: Clock,
     @param:Qualifier("workflowTimerTask") private val task: OneTimeTask<TimerFire>,
     private val scheduler: ObjectProvider<SchedulerClient>,
+    private val escalations: ObjectProvider<TimerEscalations>,
 ) : TimerFiring {
     fun plan(
         instanceId: UUID,
@@ -127,6 +128,9 @@ class WorkflowTimers(
     override fun fire(timerId: UUID) {
         transactions.inTenant(TenantContext.current()) {
             val dsl = tenantDsl.current()
+            // An escalation acts on the instance: take its locks first, in the order actions take them.
+            val peek = dsl.selectFrom(WORKFLOW_TIMER).where(WORKFLOW_TIMER.ID.eq(timerId)).fetchOne()
+            if (peek?.kind == TimerKind.ESCALATE.name) escalations.getObject().lock(peek.instanceId)
             val timer =
                 dsl
                     .selectFrom(WORKFLOW_TIMER)
@@ -147,7 +151,11 @@ class WorkflowTimers(
                 .set(WORKFLOW_TIMER.FIRED_AT, at(clock.instant()))
                 .where(WORKFLOW_TIMER.ID.eq(timerId))
                 .execute()
-            if (open) announce(timer.instanceId, timer.taskId, holder.value2(), TimerKind.valueOf(timer.kind), timer.ordinal ?: 0)
+            if (open) {
+                val kind = TimerKind.valueOf(timer.kind)
+                announce(timer.instanceId, timer.taskId, holder.value2(), kind, timer.ordinal ?: 0)
+                if (kind == TimerKind.ESCALATE) escalations.getObject().escalate(timer.instanceId, timer.taskId)
+            }
         }
     }
 

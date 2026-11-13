@@ -1334,7 +1334,7 @@
             "type" : [ "integer", "null" ]
           },
           "kind" : {
-            "enum" : [ "SUBMIT", "APPROVE", "RETURN", "REJECT", "WITHDRAW", "RESUBMIT", "REASSIGN", "RECOMMEND", "ROUTE", "NOTIFY", "ESCALATE_TO_FORUM", "SEND_BACK", "FORWARD", "DELEGATE", "ASK", "ANSWER", "REFER", "OPINION", "RECALL", "CANCEL", "MIGRATE", "CARRY", "CLAIM", "RELEASE", "RECUSE" ],
+            "enum" : [ "SUBMIT", "APPROVE", "RETURN", "REJECT", "WITHDRAW", "RESUBMIT", "REASSIGN", "RECOMMEND", "ROUTE", "NOTIFY", "ESCALATE_TO_FORUM", "SEND_BACK", "FORWARD", "DELEGATE", "ASK", "ANSWER", "REFER", "OPINION", "RECALL", "CANCEL", "MIGRATE", "CARRY", "CLAIM", "RELEASE", "RECUSE", "ESCALATE" ],
             "type" : "string"
           },
           "occurredAt" : {

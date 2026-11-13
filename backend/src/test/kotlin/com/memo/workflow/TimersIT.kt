@@ -19,6 +19,7 @@ import com.memo.testsupport.WorkflowEventRecorder
 import com.memo.testsupport.aTenant
 import com.memo.workflow.internal.Calendars
 import com.memo.workflow.internal.DefinitionLifecycle
+import com.memo.workflow.internal.TimerEscalations
 import com.memo.workflow.internal.TimerFire
 import com.memo.workflow.internal.WorkflowTimers
 import org.assertj.core.api.Assertions.assertThat
@@ -65,6 +66,8 @@ class TimersIT : IntegrationTest() {
 
     @Autowired lateinit var scheduler: ObjectProvider<SchedulerClient>
 
+    @Autowired lateinit var escalations: ObjectProvider<TimerEscalations>
+
     private var tenant = TenantId(UUID(0, 0))
     private val clock = MutableClock()
     private val author = UUID.randomUUID()
@@ -73,7 +76,7 @@ class TimersIT : IntegrationTest() {
     private val admin = UUID.randomUUID()
 
     /** The timers with a clock the test moves; the application's own run on real time. */
-    private val timers by lazy { WorkflowTimers(tenantDsl, transactions, ids, calendars, events, clock, task, scheduler) }
+    private val timers by lazy { WorkflowTimers(tenantDsl, transactions, ids, calendars, events, clock, task, scheduler, escalations) }
 
     @BeforeEach
     fun definition() {

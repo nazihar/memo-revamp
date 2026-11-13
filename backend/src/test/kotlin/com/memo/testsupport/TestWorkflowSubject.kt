@@ -4,6 +4,7 @@ import com.memo.workflow.ActionKind
 import com.memo.workflow.AttributeType
 import com.memo.workflow.BlockedReason
 import com.memo.workflow.WorkflowActionTaken
+import com.memo.workflow.WorkflowEscalated
 import com.memo.workflow.WorkflowEscalatedToForum
 import com.memo.workflow.WorkflowInstanceEnded
 import com.memo.workflow.WorkflowNotifyRequested
@@ -111,6 +112,11 @@ class WorkflowEventRecorder {
         events += event
     }
 
+    @EventListener
+    fun on(event: WorkflowEscalated) {
+        events += event
+    }
+
     fun of(subjectId: UUID): List<Any> =
         events.filter {
             when (it) {
@@ -122,6 +128,7 @@ class WorkflowEventRecorder {
                 is WorkflowStepCompleted -> it.subjectId == subjectId
                 is WorkflowInstanceEnded -> it.subjectId == subjectId
                 is WorkflowTimerFired -> it.subjectId == subjectId
+                is WorkflowEscalated -> it.subjectId == subjectId
                 else -> false
             }
         }

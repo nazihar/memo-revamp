@@ -520,7 +520,7 @@ export type HistoryAction = {
         [key: string]: unknown;
     };
     documentNumber?: number | null;
-    kind: 'SUBMIT' | 'APPROVE' | 'RETURN' | 'REJECT' | 'WITHDRAW' | 'RESUBMIT' | 'REASSIGN' | 'RECOMMEND' | 'ROUTE' | 'NOTIFY' | 'ESCALATE_TO_FORUM' | 'SEND_BACK' | 'FORWARD' | 'DELEGATE' | 'ASK' | 'ANSWER' | 'REFER' | 'OPINION' | 'RECALL' | 'CANCEL' | 'MIGRATE' | 'CARRY' | 'CLAIM' | 'RELEASE' | 'RECUSE';
+    kind: 'SUBMIT' | 'APPROVE' | 'RETURN' | 'REJECT' | 'WITHDRAW' | 'RESUBMIT' | 'REASSIGN' | 'RECOMMEND' | 'ROUTE' | 'NOTIFY' | 'ESCALATE_TO_FORUM' | 'SEND_BACK' | 'FORWARD' | 'DELEGATE' | 'ASK' | 'ANSWER' | 'REFER' | 'OPINION' | 'RECALL' | 'CANCEL' | 'MIGRATE' | 'CARRY' | 'CLAIM' | 'RELEASE' | 'RECUSE' | 'ESCALATE';
     occurredAt: string;
     remark?: string | null;
     seq: number;

@@ -88,6 +88,10 @@ internal object Guards {
                 StaffChanges.refusal(state, command)
             }
 
+            is Escalate -> {
+                Escalations.refusal(state, command)
+            }
+
             is Release -> {
                 (if (command.byAdministrator) null else taskAction(state, command.actor, command.taskId))
                     ?: Claims.releaseRefusal(state, command)

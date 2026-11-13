@@ -410,6 +410,7 @@
   "memo.history.action.carry": "نُقلت الموافقة (المستند لم يتغير)",
   "memo.history.action.claim": "تولّى المهمة",
   "memo.history.action.delegate": "فوّض",
+  "memo.history.action.escalate": "صعّدها سير العمل: تجاوزت موعدها",
   "memo.history.action.escalateToForum": "أُحيلت إلى لجنة",
   "memo.history.action.forward": "أحال",
   "memo.history.action.migrate": "نُقلت إلى إصدار جديد من سير العمل",

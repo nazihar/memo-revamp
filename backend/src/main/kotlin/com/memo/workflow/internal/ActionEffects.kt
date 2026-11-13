@@ -5,6 +5,7 @@ import com.memo.common.tenant.TenantDsl
 import com.memo.workflow.ActionKind
 import com.memo.workflow.TaskClosure
 import com.memo.workflow.WorkflowActionTaken
+import com.memo.workflow.WorkflowEscalated
 import com.memo.workflow.WorkflowEscalatedToForum
 import com.memo.workflow.WorkflowInstanceEnded
 import com.memo.workflow.WorkflowNotifyRequested
@@ -194,6 +195,13 @@ class ActionEffects(
                     )
                 }
             }
+            (effect as? Effect.Escalated)?.let { escalated ->
+                escalated.recipients.forEach { recipient ->
+                    events.publishEvent(
+                        WorkflowEscalated(tenant, instance.id, instance.subjectType, instance.subjectId, escalated.taskId, recipient),
+                    )
+                }
+            }
             (effect as? Effect.EscalateToForum)?.let {
                 events.publishEvent(
                     WorkflowEscalatedToForum(tenant, instance.id, instance.subjectType, instance.subjectId, it.nodeId, it.forum),
@@ -217,6 +225,7 @@ class ActionEffects(
                 ActionKind.CLAIM to "workflow.task.claimed",
                 ActionKind.RELEASE to "workflow.task.released",
                 ActionKind.RECUSE to "workflow.task.recused",
+                ActionKind.ESCALATE to "workflow.task.escalated",
                 ActionKind.SEND_BACK to "workflow.task.sent_back",
                 ActionKind.FORWARD to "workflow.task.forwarded",
                 ActionKind.DELEGATE to "workflow.task.delegated",

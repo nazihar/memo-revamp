@@ -59,3 +59,16 @@
   - Escalation timers are left to the workflow (T5).
   - A task nobody holds (blocked `UNRESOLVED`) reminds nobody; its blocked notice already went to the reassigners.
   - Tests: `MemoReminderIT` (reminder, then overdue to the approver and the initiator, in-app and by email, no subject in the emails).
+- **T5 (escalation):** engine command `Escalate` (`Escalations`) and action `ESCALATE` (migration `workflow/V14`; audit `workflow.task.escalated`; web history "Escalated by the workflow: overdue", en/ar).
+  - **Move** (`reassign`, `nextLevel`): closes the task as reassigned and creates its successor. The successor is a blocked `UNRESOLVED` task when nobody is left. The timers move with it, and the step's due time is kept.
+  - **Notify:** the holder keeps the task, and an `Escalated` effect publishes `WorkflowEscalated` per target.
+  - **Targets** come from `TimerEscalations`:
+    - `notify`: the named assignee's people, else the holder's supervisor;
+    - `reassign`: the first person the named assignee resolves to;
+    - `nextLevel`: the holder of the position the holder's position reports to.
+    - The initiator and the holder are never targets.
+  - **Actor:** the workflow itself (`TimerEscalations.WORKFLOW_ACTOR`, a fixed id that is no user); the audit actor is the timer's system actor.
+  - **Lock order:** an escalation timer takes the subject and instance locks before its own row, the order actions use, so it cannot deadlock with a concurrent decision.
+  - A task that moved on in the meantime is refused by the engine, and the timer still counts as fired.
+  - The memo tells escalation targets cleared for it: they become participants and get `TASK_OVERDUE`.
+  - Tests: `EscalationIT` (next level once even when run twice, as the workflow and audited; notify to a named person; the initiator is never a target, which gives a blocked task).

@@ -34,13 +34,15 @@ annotation class SignedIn
 annotation class OperatorOnly
 
 /**
- * Needs [value] somewhere: tenant-wide for unscoped permissions, for some unit for scoped ones. The service then checks
- * the object's own unit with [Policy.require].
+ * Needs [value] (or one of [orAnyOf]) somewhere: tenant-wide for unscoped permissions, for some unit for scoped ones. The
+ * service then checks the object's own unit with [Policy.require].
  */
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION)
 @Retention(AnnotationRetention.RUNTIME)
 annotation class RequiresPermission(
     val value: Permission,
+    /** Alternatives that grant the same access (for example reading what either of two roles works on). */
+    val orAnyOf: Array<Permission> = [],
 )
 
 /**

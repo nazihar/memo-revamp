@@ -37,3 +37,24 @@ endpoints:
     rule: tenantAdminStepUp
     body: { reason: "Matrix" }
     headers: { Idempotency-Key: "{random}" }
+  # Definition lifecycle (T7): reading needs workflow.definitions.manage or .approve; authoring .manage; deciding .approve,
+  # approving and retiring after a fresh step-up. Unknown keys and version numbers are 404 for those allowed through.
+  - { endpoint: "GET /api/v1/admin/workflow-definitions", rule: tenantAdmin }
+  - endpoint: "POST /api/v1/admin/workflow-definitions"
+    rule: tenantAdmin
+    body: { key: "matrix", name: "Matrix", body: { schemaVersion: 2 } }
+  - { endpoint: "GET /api/v1/admin/workflow-definitions/{key}", rule: tenantAdmin }
+  - { endpoint: "POST /api/v1/admin/workflow-definitions/{key}/versions", rule: tenantAdmin }
+  - { endpoint: "GET /api/v1/admin/workflow-definitions/{key}/versions/{number}", rule: tenantAdmin }
+  - endpoint: "PUT /api/v1/admin/workflow-definitions/{key}/versions/{number}"
+    rule: tenantAdmin
+    body: { body: { schemaVersion: 2 } }
+    headers: { If-Match: "\"0\"" }
+  - { endpoint: "POST /api/v1/admin/workflow-definitions/{key}/versions/{number}/validate", rule: tenantAdmin }
+  - { endpoint: "POST /api/v1/admin/workflow-definitions/{key}/versions/{number}/submit", rule: tenantAdmin, headers: { If-Match: "\"0\"" } }
+  - { endpoint: "POST /api/v1/admin/workflow-definitions/{key}/versions/{number}/approve", rule: tenantAdminStepUp }
+  - endpoint: "POST /api/v1/admin/workflow-definitions/{key}/versions/{number}/send-back"
+    rule: tenantAdmin
+    body: { remark: "Matrix" }
+  - { endpoint: "POST /api/v1/admin/workflow-definitions/{key}/versions/{number}/retire", rule: tenantAdminStepUp }
+  - { endpoint: "GET /api/v1/admin/workflow-definitions/{key}/versions/{number}/export", rule: tenantAdmin }

@@ -12,6 +12,8 @@ import com.memo.common.web.FieldProblem
 import com.memo.common.web.refuseIf
 import com.memo.tenancy.TenantCreated
 import com.memo.tenancy.TenantRegistry
+import com.memo.workflow.WorkflowDefinitionUsage
+import com.memo.workflow.WorkflowDefinitions
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.context.event.EventListener
@@ -31,6 +33,7 @@ class MemoTypes(
     private val clearances: Clearances,
     private val policy: Policy,
     private val audit: AuditLog,
+    private val definitions: WorkflowDefinitions,
 ) {
     fun active(): List<MemoType> = store.all().filter { it.active }
 
@@ -71,11 +74,16 @@ class MemoTypes(
         id: UUID?,
     ) {
         val level = fields.defaultClassificationId
+        val definition = definitions.choice(fields.definitionKey)
         val problems =
             listOfNotNull(
                 FieldProblem("name", "duplicate", "Another memo type has this name.").takeIf { store.nameTaken(fields.name, id) },
                 FieldProblem("defaultClassificationId", "unknown", "No such classification level.").takeIf {
                     level != null && clearances.level(level) == null
+                },
+                FieldProblem("definitionKey", "unknown", "No published workflow definition has this key.").takeIf { definition == null },
+                FieldProblem("routePolicy", "mismatch", MISMATCH.getValue(fields.routePolicy)).takeIf {
+                    definition != null && definition.routed != fields.routePolicy.routed
                 },
             )
         if (problems.isNotEmpty()) throw MemoRejectedException(problems)
@@ -87,11 +95,27 @@ class MemoTypes(
             "defaultClassificationId" to defaultClassificationId?.toString(),
             "stepUpOnApprove" to stepUpOnApprove,
             "active" to active,
+            "definitionKey" to definitionKey,
+            "routePolicy" to routePolicy.name,
         )
 
     companion object {
         const val OBJECT_TYPE = "memo.type"
+        private val MISMATCH =
+            mapOf(
+                RoutePolicy.INITIATOR_DEFINED to "This definition has no route step for the initiator's approvers.",
+                RoutePolicy.BOTH to "This definition has no route step for the initiator's approvers.",
+                RoutePolicy.FIXED to "This definition takes the initiator's route; choose a policy with a route.",
+            )
     }
+}
+
+/** A workflow definition chosen by a memo type, active or not, cannot be retired (design E03 §5). */
+@Component
+class MemoDefinitionUsage(
+    private val store: MemoTypeStore,
+) : WorkflowDefinitionUsage {
+    override fun inUse(definitionKey: String): Boolean = store.all().any { it.definitionKey == definitionKey }
 }
 
 /** Gives every tenant the built-in "General memo" type: new tenants in their creating transaction, existing ones at start-up. */

@@ -6,6 +6,7 @@ package com.memo.jooq.tables
 
 import com.memo.jooq.Memo
 import com.memo.jooq.indexes.WORKFLOW_DEFINITION_VERSION_ONE_PUBLISHED_IDX
+import com.memo.jooq.indexes.WORKFLOW_DEFINITION_VERSION_OPEN_IDX
 import com.memo.jooq.keys.WORKFLOW_DEFINITION_VERSION_PKEY
 import com.memo.jooq.keys.WORKFLOW_DEFINITION_VERSION_TENANT_ID_DEFINITION_ID_NUMBER_KEY
 import com.memo.jooq.keys.WORKFLOW_DEFINITION_VERSION_TENANT_ID_ID_KEY
@@ -160,6 +161,11 @@ open class WorkflowDefinitionVersion(
      */
     val PUBLISHED_AT: TableField<WorkflowDefinitionVersionRecord, OffsetDateTime?> = createField(DSL.name("published_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
 
+    /**
+     * The column <code>memo.workflow_definition_version.revision</code>.
+     */
+    val REVISION: TableField<WorkflowDefinitionVersionRecord, Long?> = createField(DSL.name("revision"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BIGINT)), this, "")
+
     private constructor(alias: Name, aliased: Table<WorkflowDefinitionVersionRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<WorkflowDefinitionVersionRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<WorkflowDefinitionVersionRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -194,7 +200,7 @@ open class WorkflowDefinitionVersion(
         override fun `as`(alias: Table<*>): WorkflowDefinitionVersionPath = WorkflowDefinitionVersionPath(alias.qualifiedName, this)
     }
     override fun getSchema(): Schema? = if (aliased()) null else Memo.MEMO
-    override fun getIndexes(): List<Index> = listOf(WORKFLOW_DEFINITION_VERSION_ONE_PUBLISHED_IDX)
+    override fun getIndexes(): List<Index> = listOf(WORKFLOW_DEFINITION_VERSION_ONE_PUBLISHED_IDX, WORKFLOW_DEFINITION_VERSION_OPEN_IDX)
     override fun getPrimaryKey(): UniqueKey<WorkflowDefinitionVersionRecord> = WORKFLOW_DEFINITION_VERSION_PKEY
     override fun getUniqueKeys(): List<UniqueKey<WorkflowDefinitionVersionRecord>> = listOf(WORKFLOW_DEFINITION_VERSION_TENANT_ID_DEFINITION_ID_NUMBER_KEY, WORKFLOW_DEFINITION_VERSION_TENANT_ID_ID_KEY)
     override fun getReferences(): List<ForeignKey<WorkflowDefinitionVersionRecord, *>> = listOf(WORKFLOW_DEFINITION_VERSION__WORKFLOW_DEFINITION_VERSION_TENANT_ID_DEFINITION_ID_FKEY)
@@ -227,6 +233,7 @@ open class WorkflowDefinitionVersion(
         Internal.createCheck(this, DSL.name("workflow_definition_version_compiled_check"), "((octet_length((compiled)::text) <= 2097152))", true),
         Internal.createCheck(this, DSL.name("workflow_definition_version_number_check"), "((number >= 1))", true),
         Internal.createCheck(this, DSL.name("workflow_definition_version_review_remark_check"), "(((length(review_remark) >= 1) AND (length(review_remark) <= 4000)))", true),
+        Internal.createCheck(this, DSL.name("workflow_definition_version_revision_check"), "((revision >= 0))", true),
         Internal.createCheck(this, DSL.name("workflow_definition_version_schema_version_check"), "((schema_version >= 1))", true),
         Internal.createCheck(this, DSL.name("workflow_definition_version_state_check"), "((state = ANY (ARRAY['DRAFT'::text, 'IN_REVIEW'::text, 'PUBLISHED'::text, 'RETIRED'::text])))", true)
     )

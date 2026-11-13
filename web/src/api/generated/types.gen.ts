@@ -215,6 +215,16 @@ export type ComponentHealth = {
     status: 'UP' | 'DOWN' | 'DISABLED';
 };
 
+export type CreateDefinitionRequest = {
+    body?: {
+        [key: string]: unknown;
+    };
+    description?: string | null;
+    fragment?: boolean;
+    key?: string;
+    name?: string;
+};
+
 export type CreateOrgUnitRequest = {
     code: string;
     legalEntityId: string;
@@ -227,6 +237,21 @@ export type CreateOrgUnitRequest = {
      * Defaults to today
      */
     validFrom?: string | null;
+};
+
+export type DefinitionResponse = {
+    definition: DefinitionSummary;
+    versions: Array<VersionSummary>;
+};
+
+export type DefinitionSummary = {
+    builtIn: boolean;
+    description?: string | null;
+    fragment: boolean;
+    key: string;
+    name: string;
+    openVersion?: VersionSummary | null;
+    publishedVersion?: number | null;
 };
 
 export type DirectoryPosition = {
@@ -270,6 +295,12 @@ export type DocumentView = {
     versionId: string;
 };
 
+export type DraftRequest = {
+    body?: {
+        [key: string]: unknown;
+    } | null;
+};
+
 export type EditSessionView = {
     id: string;
     reason?: string | null;
@@ -279,6 +310,12 @@ export type EditSessionView = {
 
 export type EditingStatus = {
     enabled: boolean;
+};
+
+export type FieldProblem = {
+    code?: string;
+    field?: string;
+    message?: string;
 };
 
 export type FileVersionView = {
@@ -500,7 +537,7 @@ export type MemoType = {
     id: string;
     key?: string | null;
     name: string;
-    routePolicy: string;
+    routePolicy: 'INITIATOR_DEFINED' | 'FIXED' | 'BOTH';
     stepUpOnApprove: boolean;
     version: number;
 };
@@ -515,7 +552,9 @@ export type MemoTypeOption = {
 export type MemoTypeRequest = {
     active?: boolean;
     defaultClassificationId?: string | null;
+    definitionKey?: string | null;
     name?: string;
+    routePolicy?: string | null;
     stepUpOnApprove?: boolean;
 };
 
@@ -963,6 +1002,10 @@ export type ReportingLineRequest = {
     validTo?: string | null;
 };
 
+export type ReviewRequest = {
+    remark?: string | null;
+};
+
 export type Role = {
     /**
      * Key of a built-in role; absent for custom roles
@@ -1158,6 +1201,42 @@ export type UpdateOrgUnitRequest = {
 export type UserAccess = {
     clearance: ClassificationLevel;
     grants: Array<Grant>;
+};
+
+export type ValidateRequest = {
+    body?: {
+        [key: string]: unknown;
+    } | null;
+};
+
+export type ValidationResponse = {
+    problems: Array<FieldProblem>;
+    valid: boolean;
+};
+
+export type VersionResponse = {
+    body: {
+        [key: string]: unknown;
+    };
+    id: string;
+    key: string;
+    problems: Array<FieldProblem>;
+    /**
+     * Send as If-Match when changing or submitting a draft
+     */
+    revision: number;
+    version: VersionSummary;
+};
+
+export type VersionSummary = {
+    number: number;
+    publishedAt?: string | null;
+    reviewRemark?: string | null;
+    reviewedAt?: string | null;
+    reviewedBy?: Person | null;
+    state: 'DRAFT' | 'IN_REVIEW' | 'PUBLISHED' | 'RETIRED';
+    submittedAt?: string | null;
+    submittedBy?: Person | null;
 };
 
 export type WorkflowView = {
@@ -1695,6 +1774,232 @@ export type UnlockUserResponses = {
 };
 
 export type UnlockUserResponse = UnlockUserResponses[keyof UnlockUserResponses];
+
+export type ListWorkflowDefinitionsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/workflow-definitions';
+};
+
+export type ListWorkflowDefinitionsResponses = {
+    /**
+     * OK
+     */
+    200: Array<DefinitionSummary>;
+};
+
+export type ListWorkflowDefinitionsResponse = ListWorkflowDefinitionsResponses[keyof ListWorkflowDefinitionsResponses];
+
+export type CreateWorkflowDefinitionData = {
+    body: CreateDefinitionRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/workflow-definitions';
+};
+
+export type CreateWorkflowDefinitionResponses = {
+    /**
+     * OK
+     */
+    200: VersionResponse;
+};
+
+export type CreateWorkflowDefinitionResponse = CreateWorkflowDefinitionResponses[keyof CreateWorkflowDefinitionResponses];
+
+export type GetWorkflowDefinitionData = {
+    body?: never;
+    path: {
+        key: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/workflow-definitions/{key}';
+};
+
+export type GetWorkflowDefinitionResponses = {
+    /**
+     * OK
+     */
+    200: DefinitionResponse;
+};
+
+export type GetWorkflowDefinitionResponse = GetWorkflowDefinitionResponses[keyof GetWorkflowDefinitionResponses];
+
+export type NewWorkflowDefinitionDraftData = {
+    body?: DraftRequest;
+    path: {
+        key: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/workflow-definitions/{key}/versions';
+};
+
+export type NewWorkflowDefinitionDraftResponses = {
+    /**
+     * OK
+     */
+    200: VersionResponse;
+};
+
+export type NewWorkflowDefinitionDraftResponse = NewWorkflowDefinitionDraftResponses[keyof NewWorkflowDefinitionDraftResponses];
+
+export type GetWorkflowDefinitionVersionData = {
+    body?: never;
+    path: {
+        key: string;
+        number: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/workflow-definitions/{key}/versions/{number}';
+};
+
+export type GetWorkflowDefinitionVersionResponses = {
+    /**
+     * OK
+     */
+    200: VersionResponse;
+};
+
+export type GetWorkflowDefinitionVersionResponse = GetWorkflowDefinitionVersionResponses[keyof GetWorkflowDefinitionVersionResponses];
+
+export type ReplaceWorkflowDefinitionDraftData = {
+    body: DraftRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        key: string;
+        number: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/workflow-definitions/{key}/versions/{number}';
+};
+
+export type ReplaceWorkflowDefinitionDraftResponses = {
+    /**
+     * OK
+     */
+    200: VersionResponse;
+};
+
+export type ReplaceWorkflowDefinitionDraftResponse = ReplaceWorkflowDefinitionDraftResponses[keyof ReplaceWorkflowDefinitionDraftResponses];
+
+export type ApproveWorkflowDefinitionData = {
+    body?: ReviewRequest;
+    path: {
+        key: string;
+        number: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/workflow-definitions/{key}/versions/{number}/approve';
+};
+
+export type ApproveWorkflowDefinitionResponses = {
+    /**
+     * OK
+     */
+    200: VersionResponse;
+};
+
+export type ApproveWorkflowDefinitionResponse = ApproveWorkflowDefinitionResponses[keyof ApproveWorkflowDefinitionResponses];
+
+export type ExportWorkflowDefinitionData = {
+    body?: never;
+    path: {
+        key: string;
+        number: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/workflow-definitions/{key}/versions/{number}/export';
+};
+
+export type ExportWorkflowDefinitionResponses = {
+    /**
+     * OK
+     */
+    200: string;
+};
+
+export type ExportWorkflowDefinitionResponse = ExportWorkflowDefinitionResponses[keyof ExportWorkflowDefinitionResponses];
+
+export type RetireWorkflowDefinitionData = {
+    body?: never;
+    path: {
+        key: string;
+        number: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/workflow-definitions/{key}/versions/{number}/retire';
+};
+
+export type RetireWorkflowDefinitionResponses = {
+    /**
+     * OK
+     */
+    200: VersionResponse;
+};
+
+export type RetireWorkflowDefinitionResponse = RetireWorkflowDefinitionResponses[keyof RetireWorkflowDefinitionResponses];
+
+export type SendBackWorkflowDefinitionData = {
+    body: ReviewRequest;
+    path: {
+        key: string;
+        number: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/workflow-definitions/{key}/versions/{number}/send-back';
+};
+
+export type SendBackWorkflowDefinitionResponses = {
+    /**
+     * OK
+     */
+    200: VersionResponse;
+};
+
+export type SendBackWorkflowDefinitionResponse = SendBackWorkflowDefinitionResponses[keyof SendBackWorkflowDefinitionResponses];
+
+export type SubmitWorkflowDefinitionData = {
+    body?: never;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        key: string;
+        number: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/workflow-definitions/{key}/versions/{number}/submit';
+};
+
+export type SubmitWorkflowDefinitionResponses = {
+    /**
+     * OK
+     */
+    200: VersionResponse;
+};
+
+export type SubmitWorkflowDefinitionResponse = SubmitWorkflowDefinitionResponses[keyof SubmitWorkflowDefinitionResponses];
+
+export type ValidateWorkflowDefinitionData = {
+    body?: ValidateRequest;
+    path: {
+        key: string;
+        number: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/workflow-definitions/{key}/versions/{number}/validate';
+};
+
+export type ValidateWorkflowDefinitionResponses = {
+    /**
+     * OK
+     */
+    200: ValidationResponse;
+};
+
+export type ValidateWorkflowDefinitionResponse = ValidateWorkflowDefinitionResponses[keyof ValidateWorkflowDefinitionResponses];
 
 export type CancelWorkflowData = {
     body: CancelRequest;

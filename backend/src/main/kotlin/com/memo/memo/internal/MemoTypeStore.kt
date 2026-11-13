@@ -4,6 +4,7 @@ import com.memo.common.id.IdGenerator
 import com.memo.common.tenant.TenantDsl
 import com.memo.jooq.tables.records.MemoTypeRecord
 import com.memo.jooq.tables.references.MEMO_TYPE
+import com.memo.workflow.Workflows
 import io.swagger.v3.oas.annotations.media.Schema
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Repository
@@ -12,7 +13,24 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.util.UUID
 
-/** A memo type (design E01 §2). E01 routes every type through the initiator-defined sequential approval. */
+/** Who chooses a memo's approvers (design E03 §12): the initiator, the definition alone, or the initiator within the definition. */
+enum class RoutePolicy {
+    /** The definition takes the initiator's route (and may add steps around it). */
+    INITIATOR_DEFINED,
+
+    /** The definition names every step; memos of the type have no route. */
+    FIXED,
+
+    /** The definition has fixed steps and takes the initiator's route too; the route builder is shown. */
+    BOTH,
+
+    ;
+
+    /** Whether the definition has to have a `route` step. */
+    val routed: Boolean get() = this != FIXED
+}
+
+/** A memo type (design E01 §2, E03 §4.7): its workflow definition and who chooses the approvers. */
 data class MemoType(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val id: UUID,
     /** Built-in types only (`general`). */
@@ -20,7 +38,7 @@ data class MemoType(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val name: String,
     /** Null: the tenant's lowest classification level. */
     val defaultClassificationId: UUID?,
-    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val routePolicy: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val routePolicy: RoutePolicy,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val definitionKey: String,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val stepUpOnApprove: Boolean,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val active: Boolean,
@@ -33,6 +51,8 @@ data class MemoTypeFields(
     val defaultClassificationId: UUID?,
     val stepUpOnApprove: Boolean,
     val active: Boolean,
+    val definitionKey: String = Workflows.SEQUENTIAL_APPROVAL,
+    val routePolicy: RoutePolicy = RoutePolicy.INITIATOR_DEFINED,
 )
 
 /** Memo types (design E01 §2). Every method runs inside a tenant transaction. */
@@ -84,6 +104,8 @@ class MemoTypeStore(
             .set(MEMO_TYPE.DEFAULT_CLASSIFICATION_ID, fields.defaultClassificationId)
             .set(MEMO_TYPE.STEP_UP_ON_APPROVE, fields.stepUpOnApprove)
             .set(MEMO_TYPE.ACTIVE, fields.active)
+            .set(MEMO_TYPE.DEFINITION_KEY, fields.definitionKey)
+            .set(MEMO_TYPE.ROUTE_POLICY, fields.routePolicy.name)
             .set(MEMO_TYPE.CREATED_AT, now)
             .set(MEMO_TYPE.UPDATED_AT, now)
             .onConflictDoNothing()
@@ -104,6 +126,8 @@ class MemoTypeStore(
             .set(MEMO_TYPE.DEFAULT_CLASSIFICATION_ID, fields.defaultClassificationId)
             .set(MEMO_TYPE.STEP_UP_ON_APPROVE, fields.stepUpOnApprove)
             .set(MEMO_TYPE.ACTIVE, fields.active)
+            .set(MEMO_TYPE.DEFINITION_KEY, fields.definitionKey)
+            .set(MEMO_TYPE.ROUTE_POLICY, fields.routePolicy.name)
             .set(MEMO_TYPE.VERSION, MEMO_TYPE.VERSION.plus(1))
             .set(MEMO_TYPE.UPDATED_AT, now())
             .where(MEMO_TYPE.ID.eq(id), MEMO_TYPE.VERSION.eq(expectedVersion))
@@ -123,7 +147,7 @@ class MemoTypeStore(
             key = key,
             name = name,
             defaultClassificationId = defaultClassificationId,
-            routePolicy = routePolicy!!,
+            routePolicy = RoutePolicy.valueOf(routePolicy!!),
             definitionKey = definitionKey!!,
             stepUpOnApprove = stepUpOnApprove!!,
             active = active!!,

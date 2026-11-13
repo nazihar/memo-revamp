@@ -88,10 +88,21 @@ class AccessInterceptor(
     ) {
         val allowed =
             when (access) {
-                null -> false.also { log.error("Handler {} declares no access rule: refused", handler.shortLogMessage) }
-                is DeclaredAccess.Permission -> policy.holdsAnywhere(access.annotation.value)
-                DeclaredAccess.Operator -> SecurityContextHolder.getContext().authentication?.principal is AuthenticatedOperator
-                DeclaredAccess.Public, DeclaredAccess.Flow, DeclaredAccess.Signed -> true
+                null -> {
+                    false.also { log.error("Handler {} declares no access rule: refused", handler.shortLogMessage) }
+                }
+
+                is DeclaredAccess.Permission -> {
+                    (listOf(access.annotation.value) + access.annotation.orAnyOf).any(policy::holdsAnywhere)
+                }
+
+                DeclaredAccess.Operator -> {
+                    SecurityContextHolder.getContext().authentication?.principal is AuthenticatedOperator
+                }
+
+                DeclaredAccess.Public, DeclaredAccess.Flow, DeclaredAccess.Signed -> {
+                    true
+                }
             }
         if (!allowed) throw ForbiddenException((access as? DeclaredAccess.Permission)?.annotation?.value)
     }

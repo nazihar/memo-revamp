@@ -6,7 +6,10 @@ import com.memo.common.context.ActorContext
 import com.memo.docedit.DocumentEditing
 import com.memo.files.Files
 import com.memo.identity.UserSummaries
+import com.memo.workflow.ActionKind
 import com.memo.workflow.BlockedReason
+import com.memo.workflow.MyTask
+import com.memo.workflow.TaskRole
 import com.memo.workflow.WorkflowQueries
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.stereotype.Component
@@ -59,12 +62,36 @@ enum class MemoAction {
     REJECT,
     EDIT_DOCUMENT,
     VIEW_DOCUMENT,
+
+    // E03 (design §4.4): the positive action of a review step, hand-ons, and consultations.
+    RECOMMEND,
+    SEND_BACK,
+    FORWARD,
+    DELEGATE,
+    ASK,
+    REFER,
+    ANSWER,
+    OPINION,
 }
 
-/** The actor's open task on the memo; [blocked] set means it waits for reassignment and cannot be acted on. */
+/**
+ * The actor's open task on the memo; [blocked] set means it waits for reassignment and cannot be acted on. [role] says
+ * whether it is a decision, a request for an opinion or a question to answer; a decision [waiting] for an answer cannot
+ * be decided meanwhile.
+ */
 data class TaskRef(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val id: UUID,
     val blocked: BlockedReason?,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val role: TaskRole = TaskRole.DECIDE,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val waiting: Boolean = false,
+    val stepName: String? = null,
+)
+
+/** An earlier step of this round the holder may send the memo back to, with who held it. */
+data class SendBackTargetView(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val stepId: UUID,
+    val name: String?,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val holder: Named,
 )
 
 data class MemoView(
@@ -82,6 +109,8 @@ data class MemoView(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val holders: List<Named>,
     val myTask: TaskRef?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val allowedActions: List<MemoAction>,
+    /** Where the holder may send the memo back to (with SEND_BACK in [allowedActions]). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val sendBackTargets: List<SendBackTargetView> = emptyList(),
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val createdAt: Instant,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val updatedAt: Instant,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val version: Long,
@@ -102,9 +131,11 @@ class MemoViews(
         val route = routes.route(memo.id)
         val workflow = memo.workflowInstanceId?.let { workflows.viewOf(MemoWorkflowSubject.TYPE, memo.id) }
         val holders = workflow?.currentAssignees.orEmpty()
-        val names = users.of(route + holders + memo.initiatorId).mapValues { it.value.displayName }
         val user = (ActorContext.current().actor as? Actor.User)?.userId
-        val myTask = workflow?.openTaskId?.takeIf { user in holders }?.let { TaskRef(it, workflow.openTaskBlocked) }
+        val open = if (workflow != null && user != null) workflows.myTask(MemoWorkflowSubject.TYPE, memo.id, user) else null
+        val targets = open?.sendBackTargets.orEmpty()
+        val names = users.of(route + holders + memo.initiatorId + targets.map { it.holderId }).mapValues { it.value.displayName }
+        val myTask = open?.let { TaskRef(it.id, it.blocked, it.role, it.waiting, it.stepName) }
         val level = clearances.level(memo.classificationId)
         return MemoView(
             id = memo.id,
@@ -119,7 +150,8 @@ class MemoViews(
             round = memo.currentRound,
             holders = holders.map { Named(it, names[it].orEmpty()) },
             myTask = myTask,
-            allowedActions = actions(memo, user, myTask).let { it + documentActions(memo, it) },
+            allowedActions = actions(memo, user, open).let { it + documentActions(memo, it) },
+            sendBackTargets = targets.map { SendBackTargetView(it.stepId, it.name, Named(it.holderId, names[it.holderId].orEmpty())) },
             createdAt = memo.createdAt,
             updatedAt = memo.updatedAt,
             version = memo.version,
@@ -145,15 +177,42 @@ class MemoViews(
     private fun actions(
         memo: Memo,
         user: UUID?,
-        task: TaskRef?,
+        task: MyTask?,
     ): List<MemoAction> =
         when {
-            task != null -> if (task.blocked == null) APPROVER else emptyList()
+            task != null -> taskActions(task)
             user != memo.initiatorId -> emptyList()
             memo.status == MemoStatus.DRAFT -> DRAFT
             memo.status == MemoStatus.RETURNED -> RETURNED
             memo.status == MemoStatus.IN_REVIEW -> listOf(MemoAction.WITHDRAW)
             else -> emptyList()
+        }
+
+    /** What the holder can do with their task now (design E03 §4.4): the step's actions, an answer, or an opinion. */
+    private fun taskActions(task: MyTask): List<MemoAction> =
+        when {
+            task.blocked != null -> {
+                emptyList()
+            }
+
+            task.role == TaskRole.CLARIFY -> {
+                listOf(MemoAction.ANSWER)
+            }
+
+            task.role == TaskRole.OPINION -> {
+                listOf(MemoAction.OPINION)
+            }
+
+            task.waiting -> {
+                emptyList()
+            }
+
+            else -> {
+                task.actions.mapNotNull { DECISIONS[it] }.filterNot { action ->
+                    (action == MemoAction.SEND_BACK && task.sendBackTargets.isEmpty()) ||
+                        (task.delegated && (action == MemoAction.FORWARD || action == MemoAction.DELEGATE))
+                }
+            }
         }
 
     /** Edit in the browser wherever a new version may be uploaded; everyone who sees the memo may view it there. */
@@ -168,7 +227,18 @@ class MemoViews(
         }
 
     private companion object {
-        val APPROVER = listOf(MemoAction.APPROVE, MemoAction.RETURN, MemoAction.REJECT)
+        val DECISIONS =
+            mapOf(
+                ActionKind.APPROVE to MemoAction.APPROVE,
+                ActionKind.RECOMMEND to MemoAction.RECOMMEND,
+                ActionKind.RETURN to MemoAction.RETURN,
+                ActionKind.REJECT to MemoAction.REJECT,
+                ActionKind.SEND_BACK to MemoAction.SEND_BACK,
+                ActionKind.FORWARD to MemoAction.FORWARD,
+                ActionKind.DELEGATE to MemoAction.DELEGATE,
+                ActionKind.ASK to MemoAction.ASK,
+                ActionKind.REFER to MemoAction.REFER,
+            )
         val DRAFT = listOf(MemoAction.EDIT, MemoAction.UPLOAD_DOCUMENT, MemoAction.EDIT_ROUTE, MemoAction.SUBMIT, MemoAction.DISCARD)
         val RETURNED = listOf(MemoAction.EDIT, MemoAction.UPLOAD_DOCUMENT, MemoAction.EDIT_ROUTE, MemoAction.RESUBMIT, MemoAction.WITHDRAW)
     }

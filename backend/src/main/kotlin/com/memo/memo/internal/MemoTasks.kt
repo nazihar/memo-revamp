@@ -3,6 +3,8 @@ package com.memo.memo.internal
 import com.memo.common.authz.StepUpCheck
 import com.memo.identity.SecurityLimit
 import com.memo.identity.SecuritySettings
+import com.memo.workflow.ActionKind
+import com.memo.workflow.WorkflowHandOns
 import com.memo.workflow.WorkflowQueries
 import com.memo.workflow.Workflows
 import org.springframework.stereotype.Service
@@ -20,6 +22,7 @@ class MemoTasks(
     private val memos: Memos,
     private val types: MemoTypes,
     private val workflows: Workflows,
+    private val handOns: WorkflowHandOns,
     private val queries: WorkflowQueries,
     private val security: SecuritySettings,
     private val stepUp: StepUpCheck,
@@ -29,7 +32,9 @@ class MemoTasks(
         remark: String?,
     ): Memo {
         val memo = memoOf(taskId)
-        if (types.get(memo.typeId).stepUpOnApprove) {
+        // Step-up guards approvals only; a review step's Recommend is not an approval (design E03 §2).
+        val approving = queries.task(taskId)?.positive != ActionKind.RECOMMEND
+        if (approving && types.get(memo.typeId).stepUpOnApprove) {
             stepUp.require(Duration.ofMinutes(security.int(SecurityLimit.APPROVAL_STEP_UP_MINUTES).toLong()))
         }
         workflows.approve(taskId, remark)
@@ -51,6 +56,16 @@ class MemoTasks(
     ): Memo {
         val memo = memoOf(taskId)
         workflows.reject(taskId, remark)
+        return memos.get(memo.id)
+    }
+
+    /** A hand-on or consultation on the task (design E03 §4.4), after checking the actor may see its memo. */
+    fun handOn(
+        taskId: UUID,
+        action: (WorkflowHandOns) -> Unit,
+    ): Memo {
+        val memo = memoOf(taskId)
+        action(handOns)
         return memos.get(memo.id)
     }
 

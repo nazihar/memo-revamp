@@ -151,6 +151,10 @@ class WorkflowInvariantProperties {
             is Reassign -> {
                 assertThat(after.currentAssignees).containsExactly(command.newAssignee)
             }
+
+            is SendBack, is Forward, is Delegate, is Ask, is Answer, is Refer, is GiveOpinion -> {
+                throw AssertionError("the E01 scripts never generate E03 hand-on commands")
+            }
         }
         if (command is Resubmit) {
             assertThat(after.round.number).isEqualTo(before.round.number + 1)

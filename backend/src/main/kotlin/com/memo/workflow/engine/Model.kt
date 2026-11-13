@@ -16,13 +16,23 @@ enum class StepKind { APPROVE, REVIEW, PARALLEL }
 /** TRANSFERRED: handed on by its holder (forward, delegate, design E03 §4.4); REASSIGNED: moved by an administrator. */
 enum class TaskState { OPEN, COMPLETED, CANCELLED, REASSIGNED, TRANSFERRED }
 
-/** A piece of work for one person; [outcome] is APPROVE, RETURN or REJECT once COMPLETED. */
+/** A step's decision, or a consultation attached to a decision task (design E03 §4.4). */
+enum class TaskKind { DECIDE, OPINION, CLARIFY }
+
+/**
+ * A piece of work for one person; [outcome] is set once COMPLETED. A delegated task carries [onBehalfOf] (the holder who
+ * delegated it); a decision task [waiting] for an answer cannot be decided; consultations name their [parentTaskId].
+ */
 data class Task(
     val id: UUID,
     val assignee: UUID,
     val state: TaskState,
     val blocked: BlockedReason? = null,
     val outcome: ActionKind? = null,
+    val kind: TaskKind = TaskKind.DECIDE,
+    val onBehalfOf: UUID? = null,
+    val waiting: Boolean = false,
+    val parentTaskId: UUID? = null,
 )
 
 /**
@@ -70,8 +80,15 @@ data class InstanceState(
 ) {
     val openTasks: List<Task> get() = round.steps.flatMap { step -> step.tasks.filter { it.state == TaskState.OPEN } }
 
-    /** Who holds the instance now, for the denormalised inbox columns (ADR-0035). */
-    val currentAssignees: List<UUID> get() = openTasks.map { it.assignee }
+    /** Open decision tasks: what moves the instance on. */
+    val openDecisions: List<Task> get() = openTasks.filter { it.kind == TaskKind.DECIDE }
+
+    /**
+     * Who holds the instance now, for the denormalised inbox columns (ADR-0035, design E03 §4.5): the holders of decision
+     * tasks not waiting for an answer, and whoever was asked. People asked for an opinion are consulted, not holders.
+     */
+    val currentAssignees: List<UUID>
+        get() = openTasks.filter { (it.kind == TaskKind.DECIDE && !it.waiting) || it.kind == TaskKind.CLARIFY }.map { it.assignee }
 
     val activeStep: Step? get() = round.steps.firstOrNull { it.state == StepState.ACTIVE }
 

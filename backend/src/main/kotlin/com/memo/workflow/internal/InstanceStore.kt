@@ -24,6 +24,7 @@ import com.memo.workflow.engine.Step
 import com.memo.workflow.engine.StepKind
 import com.memo.workflow.engine.StepState
 import com.memo.workflow.engine.Task
+import com.memo.workflow.engine.TaskKind
 import com.memo.workflow.engine.TaskState
 import org.jooq.JSONB
 import org.jooq.impl.DSL
@@ -136,6 +137,10 @@ class InstanceStore(
                                 state = TaskState.valueOf(task.state),
                                 blocked = task.blockedReason?.let(BlockedReason::valueOf),
                                 outcome = task.outcome?.let(ActionKind::valueOf),
+                                kind = TaskKind.valueOf(task.kind!!),
+                                onBehalfOf = task.onBehalfOf,
+                                waiting = task.waiting == true,
+                                parentTaskId = task.parentTaskId,
                             )
                         },
                 )

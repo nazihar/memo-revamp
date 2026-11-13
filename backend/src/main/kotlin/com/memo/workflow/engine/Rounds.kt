@@ -55,6 +55,33 @@ internal class Rounds(
 
     fun newTask(assignee: UUID): Task = Task(context.newId(), assignee, TaskState.OPEN, context.eligibility(assignee))
 
+    /**
+     * [target] runs again after a send-back (design E03 §4.4): a route entry restarts there with the rest of the route
+     * waiting behind it, a parallel step asks all its holders again, any other step goes to the person who held it.
+     */
+    fun reactivate(
+        round: Round,
+        target: Step,
+    ): Walk {
+        val node = definition.step(target.nodeId)
+        val index = target.routeIndex
+        val (next, step) =
+            when {
+                index != null -> routeEntry(round, target.nodeId, index)
+                target.kind == StepKind.PARALLEL -> parallel(round, node).let { round.copy(steps = round.steps + it) to it }
+                else -> activated(round, node, target.kind, target.assignee, null).let { round.copy(steps = round.steps + it) to it }
+            }
+        return Walk(next, step.tasks.map { Effect.TaskCreated(step.id, it) }, emptyList(), finished = false)
+    }
+
+    private fun parallel(
+        round: Round,
+        node: StepDef,
+    ): Step {
+        val holders = node.assignees.map { checkNotNull(it.userId) }
+        return activated(round, node, StepKind.PARALLEL, holders.first(), null).copy(tasks = holders.map(::newTask))
+    }
+
     private tailrec fun enter(
         round: Round,
         at: String,
@@ -81,9 +108,7 @@ internal class Rounds(
             }
 
             StepType.PARALLEL -> {
-                val holders = node.assignees.map { checkNotNull(it.userId) }
-                val step =
-                    activated(round, node, StepKind.PARALLEL, holders.first(), null).copy(tasks = holders.map(::newTask))
+                val step = parallel(round, node)
                 Walk(round.copy(steps = round.steps + step), effects + step.tasks.map { Effect.TaskCreated(step.id, it) }, followUps, false)
             }
 

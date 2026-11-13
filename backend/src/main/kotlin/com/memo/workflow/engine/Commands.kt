@@ -10,23 +10,28 @@ sealed interface Command {
     val actor: UUID
 }
 
+/** A command on one task. */
+sealed interface TaskCommand : Command {
+    val taskId: UUID
+}
+
 data class Approve(
     override val actor: UUID,
-    val taskId: UUID,
+    override val taskId: UUID,
     val remark: String? = null,
-) : Command
+) : TaskCommand
 
 data class Return(
     override val actor: UUID,
-    val taskId: UUID,
+    override val taskId: UUID,
     val remark: String?,
-) : Command
+) : TaskCommand
 
 data class Reject(
     override val actor: UUID,
-    val taskId: UUID,
+    override val taskId: UUID,
     val remark: String?,
-) : Command
+) : TaskCommand
 
 data class Withdraw(
     override val actor: UUID,
@@ -42,10 +47,64 @@ data class Resubmit(
 
 data class Reassign(
     override val actor: UUID,
-    val taskId: UUID,
+    override val taskId: UUID,
     val newAssignee: UUID,
     val reason: String?,
-) : Command
+) : TaskCommand
+
+/** Sends the item back to an earlier step of this round, which runs again (design E03 §4.4). */
+data class SendBack(
+    override val actor: UUID,
+    override val taskId: UUID,
+    val targetStepId: UUID,
+    val remark: String?,
+) : TaskCommand
+
+/** Hands the task to [to], who then holds the step (responsibility moves). */
+data class Forward(
+    override val actor: UUID,
+    override val taskId: UUID,
+    val to: UUID,
+    val remark: String?,
+) : TaskCommand
+
+/** Hands the task to [to] to act for the holder (responsibility stays; the delegate's actions are recorded acting for them). */
+data class Delegate(
+    override val actor: UUID,
+    override val taskId: UUID,
+    val to: UUID,
+    val remark: String?,
+) : TaskCommand
+
+/** Asks [to] a question; the holder waits for the answer. */
+data class Ask(
+    override val actor: UUID,
+    override val taskId: UUID,
+    val to: UUID,
+    val remark: String?,
+) : TaskCommand
+
+/** Answers a clarification task. */
+data class Answer(
+    override val actor: UUID,
+    override val taskId: UUID,
+    val remark: String?,
+) : TaskCommand
+
+/** Asks [to] for their opinions; the holder keeps the task and decides when ready. */
+data class Refer(
+    override val actor: UUID,
+    override val taskId: UUID,
+    val to: List<UUID>,
+    val remark: String?,
+) : TaskCommand
+
+/** Gives the opinion an opinion task asked for. */
+data class GiveOpinion(
+    override val actor: UUID,
+    override val taskId: UUID,
+    val remark: String?,
+) : TaskCommand
 
 /** Why the engine refused a command; the service maps each to a Problem Details type. */
 enum class Refusal {
@@ -65,6 +124,12 @@ enum class Refusal {
     SAME_ASSIGNEE,
     ASSIGNEE_IN_ROUND,
     ASSIGNEE_NOT_ELIGIBLE,
+    ACTION_NOT_ALLOWED,
+    NOT_AN_EARLIER_STEP,
+    WAITING_FOR_ANSWER,
+    ALREADY_ON_STEP,
+    TOO_MANY_REFERRALS,
+    NOT_A_CONSULTATION,
 }
 
 /** What the service must write, in order. A task created with `blocked` set also means "notify for reassignment". */
@@ -93,6 +158,12 @@ sealed interface Effect {
         val status: InstanceStatus,
     ) : Effect
 
+    /** A decision task starts or stops waiting for an answer (ask / answer). */
+    data class TaskWaiting(
+        val taskId: UUID,
+        val waiting: Boolean,
+    ) : Effect
+
     /** A notify step was passed: tell [recipients] (ids) with the definition's [message] key. */
     data class Notify(
         val nodeId: String,
@@ -116,6 +187,8 @@ data class ActionRecord(
     val remark: String?,
     /** What an automatic action was based on (a branch's inputs and result, a notification's recipients). */
     val details: Map<String, Any?> = emptyMap(),
+    /** Set when a delegate acted: the holder they acted for (design E03 §4.4). */
+    val actingFor: UUID? = null,
 )
 
 /** [followUps] are the automatic actions the command led to (branches taken, notifications), written after [action]. */

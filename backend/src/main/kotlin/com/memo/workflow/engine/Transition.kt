@@ -17,6 +17,7 @@ class Transition(
     private val definition: Definition = DefinitionCompiler.SEQUENTIAL,
 ) {
     private val rounds = Rounds(context, definition)
+    private val handOns = HandOns(rounds)
 
     /** Whether the definition takes the initiator's route; without a route step the route must be empty. */
     private val routed = definition.steps.any { it.type == StepType.ROUTE }
@@ -55,8 +56,8 @@ class Transition(
         state: InstanceState,
         command: Command,
     ): Decision {
-        val refusal = Guards.refusal(state, command, context, routed)
-        return if (refusal != null) Decision.Refused(refusal) else Decision.Accepted(accept(state, command))
+        val refusal = Guards.refusal(state, command, context, definition, routed)
+        return if (refusal != null) Decision.Refused(refusal) else Decision.Accepted(actingFor(state, command, accept(state, command)))
     }
 
     private fun accept(
@@ -70,7 +71,25 @@ class Transition(
             is Withdraw -> withdraw(state, command)
             is Resubmit -> resubmit(state, command)
             is Reassign -> reassign(state, command)
+            is SendBack -> handOns.sendBack(state, command)
+            is Forward -> handOns.forward(state, command)
+            is Delegate -> handOns.delegate(state, command)
+            is Ask -> handOns.ask(state, command)
+            is Answer -> handOns.answer(state, command)
+            is Refer -> handOns.refer(state, command)
+            is GiveOpinion -> handOns.opinion(state, command)
         }
+
+    /** A delegate's action is recorded as acting for the holder who delegated the task (design E03 §4.4, invariant 17). */
+    private fun actingFor(
+        state: InstanceState,
+        command: Command,
+        outcome: Outcome,
+    ): Outcome {
+        val taskId = (command as? TaskCommand)?.taskId
+        val holder = taskId?.let { state.findTask(it)?.second?.onBehalfOf }
+        return if (holder == null) outcome else outcome.copy(action = outcome.action.copy(actingFor = holder))
+    }
 
     /** The positive action: Approve, or Recommend on a review step; then on to the next step that needs a person. */
     private fun approve(
@@ -201,7 +220,7 @@ class Transition(
     }
 }
 
-private fun record(
+internal fun record(
     kind: ActionKind,
     state: InstanceState,
     taskId: UUID?,
@@ -209,7 +228,7 @@ private fun record(
     remark: String?,
 ): ActionRecord = ActionRecord(kind, state.round.number, taskId, actor, Remarks.clean(remark))
 
-private fun Round.closeTask(
+internal fun Round.closeTask(
     stepId: UUID,
     taskId: UUID,
     outcome: ActionKind,
@@ -222,13 +241,13 @@ private fun Round.closeTask(
         )
     }
 
-private fun Round.skipPending(): Round =
+internal fun Round.skipPending(): Round =
     copy(steps = steps.map { if (it.state == StepState.PENDING) it.copy(state = StepState.SKIPPED) else it })
 
-private fun Round.step(id: UUID): Step = steps.first { it.id == id }
+internal fun Round.step(id: UUID): Step = steps.first { it.id == id }
 
 /** The step is done: its tasks still open (other parallel holders, consultations) are cancelled. */
-private fun Round.settle(stepId: UUID): Pair<Round, List<Effect>> {
+internal fun Round.settle(stepId: UUID): Pair<Round, List<Effect>> {
     val open = step(stepId).tasks.filter { it.state == TaskState.OPEN }
     val round =
         replaceStep(stepId) { step ->
@@ -241,7 +260,7 @@ private fun Round.settle(stepId: UUID): Pair<Round, List<Effect>> {
 }
 
 /** Every task still open in the round is cancelled (the round ends). */
-private fun Round.cancelOpen(): Pair<Round, List<Effect>> {
+internal fun Round.cancelOpen(): Pair<Round, List<Effect>> {
     val open = steps.flatMap { step -> step.tasks.filter { it.state == TaskState.OPEN } }
     val round =
         copy(
@@ -265,5 +284,5 @@ private fun Round.cancelOpen(): Pair<Round, List<Effect>> {
 }
 
 /** The task a command names; [Guards] has already refused commands whose task is missing. */
-private fun InstanceState.guardedTask(taskId: UUID): Pair<Step, Task> =
+internal fun InstanceState.guardedTask(taskId: UUID): Pair<Step, Task> =
     checkNotNull(findTask(taskId)) { "task $taskId passed the guards but is missing" }

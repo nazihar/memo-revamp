@@ -37,7 +37,8 @@
 - [x] E03 T1 definition model · T2 conditions (PR stacked on #41)
 - [x] E03 T3 runtime (stacked PR)
 - [x] E03 T4 parallel (stacked PR)
-- [ ] E03 T5 task actions · T6 round control · T7 lifecycle · T8 migration · T9 events · T10 web · T11 close
+- [x] E03 T5 task actions (stacked PR)
+- [ ] E03 T6 round control · T7 lifecycle · T8 migration · T9 events · T10 web · T11 close
 
 ## State (Phase 1a, closed)
 - [x] Overview approved (2026-10-18), Q1–Q8 answered, per-epic gate delegated

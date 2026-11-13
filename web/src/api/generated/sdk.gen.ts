@@ -2,7 +2,7 @@
 
 import type { Client, ClientMeta, Options as Options2, RequestResult, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AcceptInvitationData, AcceptInvitationErrors, AcceptInvitationResponses, AcceptPlatformEnrolmentData, AcceptPlatformEnrolmentErrors, AcceptPlatformEnrolmentResponses, ApproveTaskData, ApproveTaskResponses, AssignPositionData, AssignPositionResponses, CancelAssignmentData, CancelAssignmentResponses, CancelReportingLineData, CancelReportingLineResponses, ChangeMyPasswordData, ChangeMyPasswordErrors, ChangeMyPasswordResponses, CloseLegalEntityData, CloseLegalEntityResponses, CloseOrgUnitData, CloseOrgUnitResponses, ClosePositionData, ClosePositionResponses, CompletePasswordResetData, CompletePasswordResetErrors, CompletePasswordResetResponses, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentErrors, ConfirmMfaEnrolmentResponses, ConfirmPlatformMfaEnrolmentData, ConfirmPlatformMfaEnrolmentErrors, ConfirmPlatformMfaEnrolmentResponses, CreateClassificationLevelData, CreateClassificationLevelResponses, CreateLegalEntityData, CreateLegalEntityResponses, CreateMemoData, CreateMemoResponses, CreateMemoTypeData, CreateMemoTypeResponses, CreateOrgUnitData, CreateOrgUnitResponses, CreatePlatformTenantData, CreatePlatformTenantErrors, CreatePlatformTenantResponses, CreatePositionData, CreatePositionResponses, CreateReportingLineData, CreateReportingLineResponses, CreateRoleData, CreateRoleResponses, DeactivateUserData, DeactivateUserResponses, DeleteClassificationLevelData, DeleteClassificationLevelResponses, DeleteRoleData, DeleteRoleResponses, DiscardMemoData, DiscardMemoResponses, ExportAuditData, ExportAuditErrors, ExportAuditResponses, GetAdminBrandingData, GetAdminBrandingResponses, GetBrandingData, GetBrandingLogoData, GetBrandingLogoErrors, GetBrandingLogoResponses, GetBrandingResponses, GetCsrfTokenData, GetCsrfTokenResponses, GetEditingStatusData, GetEditingStatusResponses, GetEditSessionData, GetEditSessionResponses, GetFileContentData, GetFileContentResponses, GetFileData, GetFileResponses, GetFileVersionContentData, GetFileVersionContentResponses, GetHealthData, GetHealthErrors, GetHealthResponses, GetMailLogData, GetMailLogResponses, GetMailSettingsData, GetMailSettingsResponses, GetMeData, GetMemoData, GetMemoHistoryData, GetMemoHistoryResponses, GetMemoResponses, GetMeResponses, GetMyAccessData, GetMyAccessResponses, GetMyNotificationPreferencesData, GetMyNotificationPreferencesResponses, GetMyUnreadCountData, GetMyUnreadCountResponses, GetOrgHistoryData, GetOrgHistoryResponses, GetOrgUnitData, GetOrgUnitResponses, GetPlatformCsrfTokenData, GetPlatformCsrfTokenResponses, GetPlatformSessionData, GetPlatformSessionResponses, GetPlatformTenantData, GetPlatformTenantResponses, GetPositionData, GetPositionHolderData, GetPositionHolderResponses, GetPositionResponses, GetSecuritySettingsData, GetSecuritySettingsResponses, GetSessionData, GetSessionResponses, GetTenantPreferencesData, GetTenantPreferencesResponses, GetTermsData, GetTermsResponses, GetUserAccessData, GetUserAccessResponses, GetUserData, GetUserResponses, GrantRoleData, GrantRoleResponses, InvitePlatformTenantFirstAdminData, InvitePlatformTenantFirstAdminErrors, InvitePlatformTenantFirstAdminResponses, InviteUserData, InviteUserErrors, InviteUserResponses, ListAllMemoTypesData, ListAllMemoTypesResponses, ListClassificationLevelsData, ListClassificationLevelsResponses, ListLegalEntitiesData, ListLegalEntitiesResponses, ListMemoTypesData, ListMemoTypesResponses, ListMyMemosData, ListMyMemosResponses, ListMyNotificationsData, ListMyNotificationsResponses, ListMySessionsData, ListMySessionsResponses, ListMyTasksData, ListMyTasksResponses, ListOpenTasksData, ListOpenTasksResponses, ListOrgUnitsData, ListOrgUnitsResponses, ListPermissionsData, ListPermissionsResponses, ListPlatformTenantsData, ListPlatformTenantsResponses, ListRolesData, ListRolesResponses, ListUnitPositionsData, ListUnitPositionsResponses, ListUserAssignmentsData, ListUserAssignmentsResponses, ListUsersData, ListUsersResponses, LoginData, LoginErrors, LoginResponses, LogoutData, LogoutResponses, LookUpInvitationData, LookUpInvitationErrors, LookUpInvitationResponses, LookUpPlatformEnrolmentData, LookUpPlatformEnrolmentErrors, MarkAllNotificationsReadData, MarkAllNotificationsReadResponses, MarkNotificationReadData, MarkNotificationReadResponses, MoveOrgUnitData, MoveOrgUnitResponses, OpenEditorData, OpenEditorResponses, PlatformLoginData, PlatformLoginErrors, PlatformLoginResponses, PlatformLogoutData, PlatformLogoutResponses, PlatformStepUpData, PlatformStepUpErrors, PlatformStepUpResponses, QueryAuditData, QueryAuditResponses, QueryPlatformAuditData, QueryPlatformAuditResponses, ReactivateUserData, ReactivateUserResponses, ReassignTaskData, ReassignTaskResponses, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesErrors, RegenerateMyRecoveryCodesResponses, RejectTaskData, RejectTaskResponses, RemoveMailSettingsData, RemoveMailSettingsResponses, RenameClassificationLevelData, RenameClassificationLevelResponses, RenamePlatformTenantData, RenamePlatformTenantResponses, ReorderClassificationLevelsData, ReorderClassificationLevelsResponses, ReplaceMemoRouteData, ReplaceMemoRouteResponses, RequestPasswordResetData, RequestPasswordResetResponses, ResetUserMfaData, ResetUserMfaResponses, ResubmitMemoData, ResubmitMemoResponses, ResumePlatformTenantData, ResumePlatformTenantResponses, ReturnTaskData, ReturnTaskResponses, RevokeGrantData, RevokeGrantResponses, RevokeMySessionData, RevokeMySessionErrors, RevokeMySessionResponses, RevokeUserSessionsData, RevokeUserSessionsResponses, SearchDirectoryData, SearchDirectoryResponses, SetClearanceData, SetClearanceResponses, SetMailSettingsData, SetMailSettingsResponses, SetMyNotificationPreferencesData, SetMyNotificationPreferencesResponses, StartMfaEnrolmentData, StartMfaEnrolmentErrors, StartMfaEnrolmentResponses, StartPlatformMfaEnrolmentData, StartPlatformMfaEnrolmentErrors, StartPlatformMfaEnrolmentResponses, StepUpData, StepUpErrors, StepUpResponses, SubmitMemoData, SubmitMemoResponses, SuspendPlatformTenantData, SuspendPlatformTenantResponses, TestMailSettingsData, TestMailSettingsResponses, UnlockUserData, UnlockUserResponses, UpdateAssignmentData, UpdateAssignmentResponses, UpdateBrandingData, UpdateBrandingErrors, UpdateLegalEntityData, UpdateLegalEntityResponses, UpdateMemoData, UpdateMemoResponses, UpdateMemoTypeData, UpdateMemoTypeResponses, UpdateOrgUnitData, UpdateOrgUnitResponses, UpdatePositionData, UpdatePositionResponses, UpdateReportingLineData, UpdateReportingLineResponses, UpdateRoleData, UpdateRoleResponses, UpdateSecuritySettingsData, UpdateSecuritySettingsErrors, UpdateSecuritySettingsResponses, UpdateTenantPreferencesData, UpdateTenantPreferencesResponses, UpdateTermsData, UpdateTermsResponses, UploadFileData, UploadFileResponses, UploadFileVersionData, UploadFileVersionResponses, VerifyMfaData, VerifyMfaErrors, VerifyMfaResponses, VerifyPlatformMfaData, VerifyPlatformMfaErrors, VerifyPlatformMfaResponses, WithdrawMemoData, WithdrawMemoResponses } from './types.gen';
+import type { AcceptInvitationData, AcceptInvitationErrors, AcceptInvitationResponses, AcceptPlatformEnrolmentData, AcceptPlatformEnrolmentErrors, AcceptPlatformEnrolmentResponses, AnswerTaskData, AnswerTaskResponses, ApproveTaskData, ApproveTaskResponses, AskOnTaskData, AskOnTaskResponses, AssignPositionData, AssignPositionResponses, CancelAssignmentData, CancelAssignmentResponses, CancelReportingLineData, CancelReportingLineResponses, ChangeMyPasswordData, ChangeMyPasswordErrors, ChangeMyPasswordResponses, CloseLegalEntityData, CloseLegalEntityResponses, CloseOrgUnitData, CloseOrgUnitResponses, ClosePositionData, ClosePositionResponses, CompletePasswordResetData, CompletePasswordResetErrors, CompletePasswordResetResponses, ConfirmMfaEnrolmentData, ConfirmMfaEnrolmentErrors, ConfirmMfaEnrolmentResponses, ConfirmPlatformMfaEnrolmentData, ConfirmPlatformMfaEnrolmentErrors, ConfirmPlatformMfaEnrolmentResponses, CreateClassificationLevelData, CreateClassificationLevelResponses, CreateLegalEntityData, CreateLegalEntityResponses, CreateMemoData, CreateMemoResponses, CreateMemoTypeData, CreateMemoTypeResponses, CreateOrgUnitData, CreateOrgUnitResponses, CreatePlatformTenantData, CreatePlatformTenantErrors, CreatePlatformTenantResponses, CreatePositionData, CreatePositionResponses, CreateReportingLineData, CreateReportingLineResponses, CreateRoleData, CreateRoleResponses, DeactivateUserData, DeactivateUserResponses, DelegateTaskData, DelegateTaskResponses, DeleteClassificationLevelData, DeleteClassificationLevelResponses, DeleteRoleData, DeleteRoleResponses, DiscardMemoData, DiscardMemoResponses, ExportAuditData, ExportAuditErrors, ExportAuditResponses, ForwardTaskData, ForwardTaskResponses, GetAdminBrandingData, GetAdminBrandingResponses, GetBrandingData, GetBrandingLogoData, GetBrandingLogoErrors, GetBrandingLogoResponses, GetBrandingResponses, GetCsrfTokenData, GetCsrfTokenResponses, GetEditingStatusData, GetEditingStatusResponses, GetEditSessionData, GetEditSessionResponses, GetFileContentData, GetFileContentResponses, GetFileData, GetFileResponses, GetFileVersionContentData, GetFileVersionContentResponses, GetHealthData, GetHealthErrors, GetHealthResponses, GetMailLogData, GetMailLogResponses, GetMailSettingsData, GetMailSettingsResponses, GetMeData, GetMemoData, GetMemoHistoryData, GetMemoHistoryResponses, GetMemoResponses, GetMeResponses, GetMyAccessData, GetMyAccessResponses, GetMyNotificationPreferencesData, GetMyNotificationPreferencesResponses, GetMyUnreadCountData, GetMyUnreadCountResponses, GetOrgHistoryData, GetOrgHistoryResponses, GetOrgUnitData, GetOrgUnitResponses, GetPlatformCsrfTokenData, GetPlatformCsrfTokenResponses, GetPlatformSessionData, GetPlatformSessionResponses, GetPlatformTenantData, GetPlatformTenantResponses, GetPositionData, GetPositionHolderData, GetPositionHolderResponses, GetPositionResponses, GetSecuritySettingsData, GetSecuritySettingsResponses, GetSessionData, GetSessionResponses, GetTenantPreferencesData, GetTenantPreferencesResponses, GetTermsData, GetTermsResponses, GetUserAccessData, GetUserAccessResponses, GetUserData, GetUserResponses, GiveOpinionData, GiveOpinionResponses, GrantRoleData, GrantRoleResponses, InvitePlatformTenantFirstAdminData, InvitePlatformTenantFirstAdminErrors, InvitePlatformTenantFirstAdminResponses, InviteUserData, InviteUserErrors, InviteUserResponses, ListAllMemoTypesData, ListAllMemoTypesResponses, ListClassificationLevelsData, ListClassificationLevelsResponses, ListLegalEntitiesData, ListLegalEntitiesResponses, ListMemoTypesData, ListMemoTypesResponses, ListMyMemosData, ListMyMemosResponses, ListMyNotificationsData, ListMyNotificationsResponses, ListMySessionsData, ListMySessionsResponses, ListMyTasksData, ListMyTasksResponses, ListOpenTasksData, ListOpenTasksResponses, ListOrgUnitsData, ListOrgUnitsResponses, ListPermissionsData, ListPermissionsResponses, ListPlatformTenantsData, ListPlatformTenantsResponses, ListRolesData, ListRolesResponses, ListUnitPositionsData, ListUnitPositionsResponses, ListUserAssignmentsData, ListUserAssignmentsResponses, ListUsersData, ListUsersResponses, LoginData, LoginErrors, LoginResponses, LogoutData, LogoutResponses, LookUpInvitationData, LookUpInvitationErrors, LookUpInvitationResponses, LookUpPlatformEnrolmentData, LookUpPlatformEnrolmentErrors, MarkAllNotificationsReadData, MarkAllNotificationsReadResponses, MarkNotificationReadData, MarkNotificationReadResponses, MoveOrgUnitData, MoveOrgUnitResponses, OpenEditorData, OpenEditorResponses, PlatformLoginData, PlatformLoginErrors, PlatformLoginResponses, PlatformLogoutData, PlatformLogoutResponses, PlatformStepUpData, PlatformStepUpErrors, PlatformStepUpResponses, QueryAuditData, QueryAuditResponses, QueryPlatformAuditData, QueryPlatformAuditResponses, ReactivateUserData, ReactivateUserResponses, ReassignTaskData, ReassignTaskResponses, ReferTaskData, ReferTaskResponses, RegenerateMyRecoveryCodesData, RegenerateMyRecoveryCodesErrors, RegenerateMyRecoveryCodesResponses, RejectTaskData, RejectTaskResponses, RemoveMailSettingsData, RemoveMailSettingsResponses, RenameClassificationLevelData, RenameClassificationLevelResponses, RenamePlatformTenantData, RenamePlatformTenantResponses, ReorderClassificationLevelsData, ReorderClassificationLevelsResponses, ReplaceMemoRouteData, ReplaceMemoRouteResponses, RequestPasswordResetData, RequestPasswordResetResponses, ResetUserMfaData, ResetUserMfaResponses, ResubmitMemoData, ResubmitMemoResponses, ResumePlatformTenantData, ResumePlatformTenantResponses, ReturnTaskData, ReturnTaskResponses, RevokeGrantData, RevokeGrantResponses, RevokeMySessionData, RevokeMySessionErrors, RevokeMySessionResponses, RevokeUserSessionsData, RevokeUserSessionsResponses, SearchDirectoryData, SearchDirectoryResponses, SendBackTaskData, SendBackTaskResponses, SetClearanceData, SetClearanceResponses, SetMailSettingsData, SetMailSettingsResponses, SetMyNotificationPreferencesData, SetMyNotificationPreferencesResponses, StartMfaEnrolmentData, StartMfaEnrolmentErrors, StartMfaEnrolmentResponses, StartPlatformMfaEnrolmentData, StartPlatformMfaEnrolmentErrors, StartPlatformMfaEnrolmentResponses, StepUpData, StepUpErrors, StepUpResponses, SubmitMemoData, SubmitMemoResponses, SuspendPlatformTenantData, SuspendPlatformTenantResponses, TestMailSettingsData, TestMailSettingsResponses, UnlockUserData, UnlockUserResponses, UpdateAssignmentData, UpdateAssignmentResponses, UpdateBrandingData, UpdateBrandingErrors, UpdateLegalEntityData, UpdateLegalEntityResponses, UpdateMemoData, UpdateMemoResponses, UpdateMemoTypeData, UpdateMemoTypeResponses, UpdateOrgUnitData, UpdateOrgUnitResponses, UpdatePositionData, UpdatePositionResponses, UpdateReportingLineData, UpdateReportingLineResponses, UpdateRoleData, UpdateRoleResponses, UpdateSecuritySettingsData, UpdateSecuritySettingsErrors, UpdateSecuritySettingsResponses, UpdateTenantPreferencesData, UpdateTenantPreferencesResponses, UpdateTermsData, UpdateTermsResponses, UploadFileData, UploadFileResponses, UploadFileVersionData, UploadFileVersionResponses, VerifyMfaData, VerifyMfaErrors, VerifyMfaResponses, VerifyPlatformMfaData, VerifyPlatformMfaErrors, VerifyPlatformMfaResponses, WithdrawMemoData, WithdrawMemoResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -1131,10 +1131,82 @@ export const resumePlatformTenant = <ThrowOnError extends boolean = false>(optio
 export const suspendPlatformTenant = <ThrowOnError extends boolean = false>(options: Options<SuspendPlatformTenantData, ThrowOnError>): RequestResult<SuspendPlatformTenantResponses, unknown, ThrowOnError> => (options.client ?? client).post<SuspendPlatformTenantResponses, unknown, ThrowOnError>({ url: '/api/v1/platform/tenants/{id}/suspend', ...options });
 
 /**
+ * Answer the question this task asks
+ */
+export const answerTask = <ThrowOnError extends boolean = false>(options: Options<AnswerTaskData, ThrowOnError>): RequestResult<AnswerTaskResponses, unknown, ThrowOnError> => (options.client ?? client).post<AnswerTaskResponses, unknown, ThrowOnError>({
+    url: '/api/v1/tasks/{taskId}/answer',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
  * Approve the memo of a task
  */
 export const approveTask = <ThrowOnError extends boolean = false>(options: Options<ApproveTaskData, ThrowOnError>): RequestResult<ApproveTaskResponses, unknown, ThrowOnError> => (options.client ?? client).post<ApproveTaskResponses, unknown, ThrowOnError>({
     url: '/api/v1/tasks/{taskId}/approve',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Ask someone a question; the task waits for the answer
+ */
+export const askOnTask = <ThrowOnError extends boolean = false>(options: Options<AskOnTaskData, ThrowOnError>): RequestResult<AskOnTaskResponses, unknown, ThrowOnError> => (options.client ?? client).post<AskOnTaskResponses, unknown, ThrowOnError>({
+    url: '/api/v1/tasks/{taskId}/ask',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Hand the task to someone who acts for you
+ */
+export const delegateTask = <ThrowOnError extends boolean = false>(options: Options<DelegateTaskData, ThrowOnError>): RequestResult<DelegateTaskResponses, unknown, ThrowOnError> => (options.client ?? client).post<DelegateTaskResponses, unknown, ThrowOnError>({
+    url: '/api/v1/tasks/{taskId}/delegate',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Hand the task to someone else, who then holds the step
+ */
+export const forwardTask = <ThrowOnError extends boolean = false>(options: Options<ForwardTaskData, ThrowOnError>): RequestResult<ForwardTaskResponses, unknown, ThrowOnError> => (options.client ?? client).post<ForwardTaskResponses, unknown, ThrowOnError>({
+    url: '/api/v1/tasks/{taskId}/forward',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Give the opinion this task asks for
+ */
+export const giveOpinion = <ThrowOnError extends boolean = false>(options: Options<GiveOpinionData, ThrowOnError>): RequestResult<GiveOpinionResponses, unknown, ThrowOnError> => (options.client ?? client).post<GiveOpinionResponses, unknown, ThrowOnError>({
+    url: '/api/v1/tasks/{taskId}/opinion',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Ask people for their opinions; you keep the task
+ */
+export const referTask = <ThrowOnError extends boolean = false>(options: Options<ReferTaskData, ThrowOnError>): RequestResult<ReferTaskResponses, unknown, ThrowOnError> => (options.client ?? client).post<ReferTaskResponses, unknown, ThrowOnError>({
+    url: '/api/v1/tasks/{taskId}/refer',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -1159,6 +1231,18 @@ export const rejectTask = <ThrowOnError extends boolean = false>(options: Option
  */
 export const returnTask = <ThrowOnError extends boolean = false>(options: Options<ReturnTaskData, ThrowOnError>): RequestResult<ReturnTaskResponses, unknown, ThrowOnError> => (options.client ?? client).post<ReturnTaskResponses, unknown, ThrowOnError>({
     url: '/api/v1/tasks/{taskId}/return',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Send the memo back to an earlier step of this round
+ */
+export const sendBackTask = <ThrowOnError extends boolean = false>(options: Options<SendBackTaskData, ThrowOnError>): RequestResult<SendBackTaskResponses, unknown, ThrowOnError> => (options.client ?? client).post<SendBackTaskResponses, unknown, ThrowOnError>({
+    url: '/api/v1/tasks/{taskId}/send-back',
     ...options,
     headers: {
         'Content-Type': 'application/json',

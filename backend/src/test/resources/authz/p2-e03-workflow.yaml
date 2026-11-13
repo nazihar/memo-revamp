@@ -1,0 +1,33 @@
+# Phase 2 E03 workflow definitions and runtime (design E03 §5, §6). Task actions are the holder's (the engine checks it);
+# tasks of memos the actor cannot see are 404 like the memo, so the random ids here are 404 for everyone allowed through.
+# The per-holder behaviour (holder, other participants, strangers) is TaskActionsIT and the memo journey tests.
+epic: P2-E03
+endpoints:
+  - endpoint: "POST /api/v1/tasks/{taskId}/send-back"
+    rule: signedIn
+    body: { targetStepId: "{random}", remark: "Matrix" }
+    headers: { Idempotency-Key: "{random}" }
+  - endpoint: "POST /api/v1/tasks/{taskId}/forward"
+    rule: signedIn
+    body: { to: "{random}", remark: "Matrix" }
+    headers: { Idempotency-Key: "{random}" }
+  - endpoint: "POST /api/v1/tasks/{taskId}/delegate"
+    rule: signedIn
+    body: { to: "{random}", remark: "Matrix" }
+    headers: { Idempotency-Key: "{random}" }
+  - endpoint: "POST /api/v1/tasks/{taskId}/ask"
+    rule: signedIn
+    body: { to: "{random}", remark: "Matrix" }
+    headers: { Idempotency-Key: "{random}" }
+  - endpoint: "POST /api/v1/tasks/{taskId}/answer"
+    rule: signedIn
+    body: { remark: "Matrix" }
+    headers: { Idempotency-Key: "{random}" }
+  - endpoint: "POST /api/v1/tasks/{taskId}/refer"
+    rule: signedIn
+    body: { to: ["{random}"], remark: "Matrix" }
+    headers: { Idempotency-Key: "{random}" }
+  - endpoint: "POST /api/v1/tasks/{taskId}/opinion"
+    rule: signedIn
+    body: { remark: "Matrix" }
+    headers: { Idempotency-Key: "{random}" }

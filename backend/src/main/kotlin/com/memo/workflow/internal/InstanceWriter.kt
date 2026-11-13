@@ -61,6 +61,7 @@ class InstanceWriter(
                 is Effect.TaskCreated -> insertTask(instanceId, effect.stepId, effect.task, now)
                 is Effect.TaskClosed -> closeTask(effect, now)
                 is Effect.RoundEnded -> endRound(instanceId, effect, now)
+                is Effect.TaskWaiting -> markWaiting(effect)
                 is Effect.InstanceEnded, is Effect.Notify, is Effect.EscalateToForum -> Unit
             }
         }
@@ -71,27 +72,21 @@ class InstanceWriter(
         return actionId to version
     }
 
+    /** Inserts [steps] of [round]; [knownRoundId] when the caller has just written the round, else it is looked up. */
     private fun insertSteps(
         instanceId: UUID,
         round: Round,
         steps: List<Step>,
+        knownRoundId: UUID? = null,
     ) {
         if (steps.isEmpty()) return
-        val dsl = tenantDsl.current()
         val roundId =
-            dsl
+            knownRoundId ?: tenantDsl
+                .current()
                 .select(WORKFLOW_ROUND.ID)
                 .from(WORKFLOW_ROUND)
                 .where(WORKFLOW_ROUND.INSTANCE_ID.eq(instanceId), WORKFLOW_ROUND.NUMBER.eq(round.number))
                 .fetchSingle(WORKFLOW_ROUND.ID)!!
-        insertStepRows(instanceId, roundId, steps)
-    }
-
-    private fun insertStepRows(
-        instanceId: UUID,
-        roundId: UUID,
-        steps: List<Step>,
-    ) {
         val tenant = tenantDsl.tenant().value
         val insert =
             tenantDsl.current().insertInto(
@@ -146,7 +141,7 @@ class InstanceWriter(
             .set(WORKFLOW_ROUND.START_SNAPSHOT, snapshot)
             .set(WORKFLOW_ROUND.ROUTE, round.route.toTypedArray<UUID?>())
             .execute()
-        if (round.steps.isNotEmpty()) insertStepRows(instanceId, roundId, round.steps)
+        insertSteps(instanceId, round, round.steps, roundId)
     }
 
     private fun insertTask(
@@ -165,8 +160,26 @@ class InstanceWriter(
             .set(WORKFLOW_TASK.ASSIGNEE_ID, task.assignee)
             .set(WORKFLOW_TASK.STATE, task.state.name)
             .set(WORKFLOW_TASK.BLOCKED_REASON, task.blocked?.name)
+            .set(WORKFLOW_TASK.KIND, task.kind.name)
+            .set(WORKFLOW_TASK.ON_BEHALF_OF, task.onBehalfOf)
+            .set(WORKFLOW_TASK.WAITING, task.waiting)
+            .set(WORKFLOW_TASK.PARENT_TASK_ID, task.parentTaskId)
             .set(WORKFLOW_TASK.CREATED_AT, now)
             .execute()
+    }
+
+    /** Ask and answer: the decision task waits for an answer, or not; guarded on the task still being open. */
+    private fun markWaiting(effect: Effect.TaskWaiting) {
+        val updated =
+            tenantDsl
+                .current()
+                .update(WORKFLOW_TASK)
+                .set(WORKFLOW_TASK.WAITING, effect.waiting)
+                .set(WORKFLOW_TASK.VERSION, WORKFLOW_TASK.VERSION.plus(1))
+                .where(WORKFLOW_TASK.ID.eq(effect.taskId))
+                .and(WORKFLOW_TASK.STATE.eq(TaskState.OPEN.name))
+                .execute()
+        conflictIf(updated == 0)
     }
 
     private fun closeTask(
@@ -273,7 +286,7 @@ class InstanceWriter(
             .set(WORKFLOW_ACTION.TASK_ID, action.taskId)
             .set(WORKFLOW_ACTION.KIND, action.kind.name)
             .set(WORKFLOW_ACTION.ACTOR_ID, action.actor)
-            .set(WORKFLOW_ACTION.ACTING_FOR_ID, actingFor)
+            .set(WORKFLOW_ACTION.ACTING_FOR_ID, action.actingFor ?: actingFor)
             .set(WORKFLOW_ACTION.REMARK, action.remark)
             .set(WORKFLOW_ACTION.SUBJECT_SNAPSHOT, snapshot)
             .set(WORKFLOW_ACTION.DETAILS, JSONB.valueOf(json.writeValueAsString(action.details)))

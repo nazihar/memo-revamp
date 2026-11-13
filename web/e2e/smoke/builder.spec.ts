@@ -81,8 +81,8 @@ test.describe('as a tenant admin', () => {
     await panel.getByLabel('Goes to', { exact: true }).selectOption({ label: 'A person' })
     await pick(page, panel.getByRole('combobox', { name: 'Person' }), 'Director', /Demo Director/)
     await panel.getByRole('checkbox', { name: 'This step has a deadline' }).check()
-    await panel.getByLabel('Amount').fill('2')
-    await panel.getByLabel('When it is late').selectOption({ label: 'Tell the holder’s supervisor' })
+    await panel.getByLabel('Amount', { exact: true }).fill('2')
+    await panel.getByLabel('When it is late', { exact: true }).selectOption({ label: 'Tell the holder’s supervisor' })
     await panel.getByRole('button', { name: 'Close' }).click()
 
     // The credit committee: the director and the head of finance, all of them.
@@ -116,10 +116,12 @@ test.describe('as a tenant admin', () => {
       .getByLabel('Name', { exact: true })
       .fill('By classification')
     panel = step(/^1\. By classification$/)
-    await panel.getByLabel('Attribute').selectOption({ label: 'Classification rank' })
-    await panel.getByLabel('Comparison').selectOption({ label: 'is at least' })
+    await panel.getByLabel('Attribute', { exact: true }).selectOption({ label: 'Classification rank' })
+    await panel.getByLabel('Comparison', { exact: true }).selectOption({ label: 'is at least' })
     await panel.getByLabel('Value', { exact: true }).fill('2')
-    await panel.getByLabel('If condition 1 holds, leads to').selectOption({ label: 'Credit committee' })
+    await panel
+      .getByLabel('If condition 1 holds, leads to', { exact: true })
+      .selectOption({ label: 'Credit committee' })
     await panel.getByLabel('Otherwise', { exact: true }).selectOption({ label: 'Director' })
     await panel.getByRole('button', { name: 'Close' }).click()
 

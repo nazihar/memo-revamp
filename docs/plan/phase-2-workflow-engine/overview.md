@@ -255,6 +255,7 @@ Numbers are assigned when written, starting at ADR-0034. Each one uses MADR.
 
 | Item | By | Date | Notes |
 |---|---|---|---|
+| Phase 2 exit | Product owner (aradnazihar) | 2026-11-14 | Closed at the owner's instruction ("merge and close this phase"). All five exit criteria met with evidence (`retrospective.md`); all six epics merged and on dev (PRs #34–#83); `ci`, the dev deploy and the nightly green on `master`. **Carried:** the D1 and phase demos, the builder usability walkthrough and the manual keyboard and screen-reader pass, which need the owner in person. |
 | Phase 2 overview | Product owner (aradnazihar) | 2026-11-09 | Approved as recommended. The owner **kept the per-epic gate delegation**: the agent writes each epic plan in full, then implements it without waiting, stopping only for decisions that need the owner. The E01 screen flows (route builder, inbox, memo view) go to the owner before build. |
 
 ### Answers to open questions

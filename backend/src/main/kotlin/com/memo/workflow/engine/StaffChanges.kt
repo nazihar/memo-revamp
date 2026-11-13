@@ -48,7 +48,9 @@ internal class StaffChanges(
                 )
             }
         val closed = step.tasks.filter { it.state == TaskState.OPEN }.map { Effect.TaskClosed(it.id, TaskState.REASSIGNED, null) }
-        val walk = rounds.reactivate(replaced, step.copy(assignee = null), state.initiator)
+        // A route entry restarts with the rest of the route rebuilt behind it, as after a send back.
+        val restarted = if (step.routeIndex != null) replaced.skipPending() else replaced
+        val walk = rounds.reactivate(restarted, step.copy(assignee = null), state.initiator)
         val details = mapOf("step" to step.nodeId, "reason" to HOLDER_CHANGED, "from" to open.mapNotNull { it.assignee?.toString() })
         val action = record(ActionKind.REASSIGN, state, null, command.actor, null).copy(details = details)
         return Outcome(state.copy(round = walk.round), action, closed + walk.effects, walk.followUps)

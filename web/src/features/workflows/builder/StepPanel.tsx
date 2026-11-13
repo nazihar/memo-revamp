@@ -122,6 +122,7 @@ export function StepPanel({
   labels,
   onLabel,
   onCommand,
+  askRemove = false,
 }: {
   body: DefinitionBody
   step: StepJson
@@ -129,9 +130,11 @@ export function StepPanel({
   labels: Labels
   onLabel: (id: string, label: string) => void
   onCommand: (command: Command) => void
+  /** Opens with the removal question (Delete pressed on the step in the diagram). */
+  askRemove?: boolean
 }) {
   const intl = useIntl()
-  const [confirming, setConfirming] = useState(false)
+  const [confirming, setConfirming] = useState(askRemove)
   const index = body.steps.findIndex((s) => s.id === step.id)
   const own = problemsByStep(problems).get(index) ?? []
   const connect = (from: Slot) => (to: string) => {

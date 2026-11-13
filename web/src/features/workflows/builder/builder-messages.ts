@@ -64,6 +64,9 @@ export const bm = defineMessages({
   copy: { id: 'builder.copy', defaultMessage: 'Copy my changes as JSON' },
   copied: { id: 'builder.copied', defaultMessage: 'Copied.' },
   reached: { id: 'builder.reached', defaultMessage: 'Reached in the simulation' },
+  announceConnected: { id: 'builder.announce.connected', defaultMessage: 'Connection changed.' },
+  announceUndone: { id: 'builder.announce.undone', defaultMessage: 'Undone.' },
+  announceRedone: { id: 'builder.announce.redone', defaultMessage: 'Redone.' },
   added: { id: 'builder.added', defaultMessage: 'Added' },
   removed: { id: 'builder.removed', defaultMessage: 'Removed' },
   changed: { id: 'builder.changed', defaultMessage: 'Changed' },
@@ -83,6 +86,8 @@ export const bmv = defineMessages<{
   edgeOtherwise: { from: string; to: string }
   stepAria: { index: number; count: number; type: string; name: string; who: string; next: string }
   stepAriaReached: { label: string }
+  announceAdded: { name: string }
+  announceRemoved: { name: string }
   stepAriaAdded: { label: string }
   stepAriaChanged: { label: string }
   problems: { count: number }
@@ -125,6 +130,8 @@ export const bmv = defineMessages<{
     defaultMessage: 'Step {index} of {count}, {type}, {name}. {who} Leads to {next}.',
   },
   stepAriaReached: { id: 'builder.stepAria.reached', defaultMessage: '{label} Reached in the simulation.' },
+  announceAdded: { id: 'builder.announce.added', defaultMessage: '{name} added.' },
+  announceRemoved: { id: 'builder.announce.removed', defaultMessage: '{name} removed.' },
   stepAriaAdded: { id: 'builder.stepAria.added', defaultMessage: '{label} Added in this version.' },
   stepAriaChanged: { id: 'builder.stepAria.changed', defaultMessage: '{label} Changed in this version.' },
   problems: {

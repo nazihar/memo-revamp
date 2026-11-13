@@ -111,3 +111,15 @@
     - `diff.test.ts`: added, removed, changed; the moved part of a deadline; key order. Properties: a version against itself is empty; each step appears at most once, and only if it differs.
     - `changes.test.tsx`: the summary, the list in words (a person's name before and after, "Tell the author → Board", "none → Due in 2 working days"), the diagram's marks, comparing with another version; axe.
     - `workflows.test.tsx`: the reviewer lands on Changes.
+- **T8 (accessibility and language pass):**
+  - **Diagram keyboard:** the arrow keys follow the connections (`navigate.ts`): down to the first step a step leads to, up to the first step that leads to it, left and right between the steps the same step leads to. Nodes cannot be moved, so React Flow's own arrow handling stays off.
+  - **Delete:** on a focused step of a draft, Delete or Backspace opens its panel with the removal question; React Flow's own delete key is off.
+  - **Announcements:** adding, removing and connecting a step, and undo and redo, are announced in the editor's polite status line next to "Checking…" and the problem count. Typing in a field is not announced.
+  - **Contrast:** connections, handles, edge labels and the controls take the theme's muted foreground and background, which keep 3:1 or more in light and dark (WCAG 1.4.11). React Flow's greys did not, and its stylesheet loads after ours, hence a doubled class. A selected step gets a ring of its own.
+  - **Already in place from T1–T7:** the panel docks beside the diagram (2.4.11), names keep their own direction, nothing is colour alone, and the Steps view is a complete keyboard path.
+  - **Manual checklist** (NVDA and VoiceOver, English and Arabic, zoom to 400%) written in `ux-review.md`, to run at the phase demo.
+  - **Tests:**
+    - `navigate.test.ts`;
+    - `views.test.tsx`: arrow keys move the focus along connections and across; Delete asks, then removes;
+    - `workflows.test.tsx`: the announcement after adding a step, and axe on the Arabic definition page.
+  - **Not done here:** the keyboard-only E2E of building a workflow. It joins the exit journey (T9), which builds in the Steps view.

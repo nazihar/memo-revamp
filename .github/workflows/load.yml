@@ -49,12 +49,20 @@ jobs:
           ci/onprem-stack.sh up memo-backend:load memo-web:load 18100
       - name: Wait for volume V2
         run: |
-          for _ in $(seq 1 600); do
-            if docker compose -p memo-nightly logs backend 2>/dev/null | grep -q 'Volume V2 ready'; then exit 0; fi
+          # Progress once a minute (the generator logs every 500 memos), so a slow or stuck run shows where it is.
+          for i in $(seq 1 600); do
+            logs=$(docker compose -p memo-nightly logs backend 2>/dev/null)
+            if grep -q 'Volume V2 ready' <<<"$logs"; then grep -o 'Volume V2 ready[^"]*' <<<"$logs"; exit 0; fi
+            if [ $((i % 6)) -eq 0 ]; then echo "$(date -u +%H:%M) $(grep -o 'Volume V2: [^"]*' <<<"$logs" | tail -1)"; fi
             sleep 10
           done
-          docker compose -p memo-nightly logs --tail 80 backend >&2
           exit 1
+      - if: failure()
+        name: Backend log
+        run: |
+          mkdir -p perf/build/reports/gatling
+          docker compose -p memo-nightly logs --no-color backend > perf/build/reports/gatling/backend.log 2>&1 || true
+          grep -E '"level":"(WARN|ERROR)"' perf/build/reports/gatling/backend.log | tail -40 >&2 || true
       - name: Inbox load
         run: |
           # The volume users' password, generated into the stack's .env; never printed.

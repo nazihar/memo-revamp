@@ -11,6 +11,7 @@ import com.memo.workflow.internal.DoaRule
 import com.memo.workflow.internal.DoaRuleGroup
 import com.memo.workflow.internal.QueueMember
 import com.memo.workflow.internal.Queues
+import com.memo.workflow.internal.VersionState
 import org.springframework.stereotype.Service
 import tools.jackson.databind.json.JsonMapper
 import java.util.UUID
@@ -50,6 +51,28 @@ class WorkflowSeeding(
             lifecycle.submit(key, draft.version.number, draft.version.revision)
         }
     }
+
+    /**
+     * [body] as version 2 of [key], submitted for review by the current user, when the only version is the published
+     * version 1 and [stale] says its body needs it (a seeder's upgrade, E05 T8). Returns the new version's number, or
+     * null when nothing was submitted: a person has changed the definition since, or it is up to date.
+     */
+    fun revise(
+        key: String,
+        body: String,
+        stale: (String) -> Boolean,
+    ): Int? =
+        tx {
+            val definition = versions.definition(key)
+            val only = definition?.let { versions.versions(listOf(it.id)).singleOrNull() }
+            val seeded = only?.takeIf { it.number == 1 && it.state == VersionState.PUBLISHED }
+            if (seeded != null && stale(seeded.body)) {
+                val draft = lifecycle.newDraft(key, json.readTree(body))
+                lifecycle.submit(key, draft.version.number, draft.version.revision).version.number
+            } else {
+                null
+            }
+        }
 
     /** Publishes the version of [key] in review, approved by the current user (not the one who submitted it). */
     fun approve(

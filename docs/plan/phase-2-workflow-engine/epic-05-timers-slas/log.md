@@ -93,3 +93,21 @@
   - The definition JSON editor gains no SLA form here; E06's builder edits SLAs.
   - Tests: `calendar.test.tsx` (hours, special days, save with If-Match, preview, axe) and the inbox due badge.
   - One full web run had five unrelated timeouts. They passed in a rerun of those files and in a second full run. This is the known flake under load, now with more tests; watch CI.
+- **T8 (close):** The demo workflows have deadlines.
+  - "Credit facility": review in a working day (reminder two hours before), committee in two (reminder a day after), director in two (reminder four hours before, supervisor told a day late).
+  - "Credit under authority": desk in four working hours, authority in two working days.
+
+  A stack seeded before E05 gets them through the real lifecycle: the demo admin submits a version 2 and the org admin approves it (`WorkflowSeeding.revise`). This happens only while version 1 is the only version and has no SLA, so a definition someone has changed is left alone (`DemoWorkflowsIT` covers both paths).
+  - The seeder now always makes sure the memo types exist. `fixedType` is idempotent.
+  - E2E `workflow.spec.ts`:
+    - The head of credit sees the review's **Due …** badge.
+    - The tenant admin adds a holiday next month, sees it, removes it, and previews a deadline.
+    - The workflows screen accepts any published version number.
+  - Five ASVS rows. Runbook `docs/runbooks/workflow-deadlines.md`.
+- **E05 complete** (PRs #63–#71, stacked on E04; none merged yet).
+
+## Carried
+- A sweep for `PENDING` timers past their time whose execution was dropped after the retry limit. Today they are logged and counted in `memo.jobs.failed`, and the task still shows overdue.
+- Inbox sorted by due time (the inbox API pages by assignment time).
+- SLA form in the definition editor: E06's builder.
+- The first weekly load report, after merge to the default branch.

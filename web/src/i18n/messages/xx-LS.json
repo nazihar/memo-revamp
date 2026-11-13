@@ -2717,6 +2717,20 @@
       "value": "Done.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.due": [
+    {
+      "type": 0,
+      "value": "Due "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.failed": [
     {
       "type": 0,
@@ -3165,6 +3179,20 @@
     {
       "type": 0,
       "value": "Your opinionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.overdue": [
+    {
+      "type": 0,
+      "value": "Overdue since "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.refer.peopleRequired": [
@@ -3949,6 +3977,12 @@
     {
       "type": 0,
       "value": "BrandingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.calendar": [
+    {
+      "type": 0,
+      "value": "Business calendarSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "nav.classifications": [
@@ -7317,6 +7351,12 @@
       "value": "ApproverSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "workflowTasks.col.due": [
+    {
+      "type": 0,
+      "value": "DueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "workflowTasks.col.memo": [
     {
       "type": 0,
@@ -7345,6 +7385,12 @@
     {
       "type": 0,
       "value": "All open tasksSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflowTasks.filter.overdue": [
+    {
+      "type": 0,
+      "value": "OverdueSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "workflowTasks.lead": [
@@ -7521,6 +7567,312 @@
     {
       "type": 0,
       "value": "Built inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.add": [
+    {
+      "type": 0,
+      "value": "AddSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.addDays": [
+    {
+      "type": 0,
+      "value": "Add a day or a rangeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.addPeriod": [
+    {
+      "type": 0,
+      "value": "Add hoursSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.calculate": [
+    {
+      "type": 0,
+      "value": "CalculateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.closed": [
+    {
+      "type": 0,
+      "value": "ClosedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.conflict": [
+    {
+      "type": 0,
+      "value": "Someone changed the hours meanwhile. They have been reloaded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.dayKind": [
+    {
+      "type": 0,
+      "value": "The day isSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.dayLine": [
+    {
+      "type": 1,
+      "value": "day"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "hours"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.dayLineNote": [
+    {
+      "type": 1,
+      "value": "day"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "hours"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "note"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.days": [
+    {
+      "type": 0,
+      "value": "Holidays and special daysSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.defaulted": [
+    {
+      "type": 0,
+      "value": "Not set yet: Sunday to Thursday, 9:00 to 17:00. Save to keep or change it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.due": [
+    {
+      "type": 0,
+      "value": "Due "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.duration": [
+    {
+      "type": 0,
+      "value": "DeadlineSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.firstDay": [
+    {
+      "type": 0,
+      "value": "First daySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.from": [
+    {
+      "type": 0,
+      "value": "FromSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.kind.closed": [
+    {
+      "type": 0,
+      "value": "Closed (a holiday)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.kind.hours": [
+    {
+      "type": 0,
+      "value": "Worked, with these hoursSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.lastDay": [
+    {
+      "type": 0,
+      "value": "Last day (for a range)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.lead": [
+    {
+      "type": 0,
+      "value": "Deadlines in working time count only these hours. Changes apply to tasks that start afterwards; tasks already waiting keep their due times.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.nextMonth": [
+    {
+      "type": 0,
+      "value": "Next monthSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.noDays": [
+    {
+      "type": 0,
+      "value": "No special days this month.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.noWorkingTime": [
+    {
+      "type": 0,
+      "value": "No working time ahead.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.notWorked": [
+    {
+      "type": 0,
+      "value": "Not workedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.note": [
+    {
+      "type": 0,
+      "value": "NoteSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.periodFrom": [
+    {
+      "type": 1,
+      "value": "day"
+    },
+    {
+      "type": 0,
+      "value": ", fromSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.periodUntil": [
+    {
+      "type": 1,
+      "value": "day"
+    },
+    {
+      "type": 0,
+      "value": ", untilSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.preview": [
+    {
+      "type": 0,
+      "value": "When is it due?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.preview.lead": [
+    {
+      "type": 0,
+      "value": "A deadline such as P2D (two working days) or PT4H (four working hours), counted from now.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.previousMonth": [
+    {
+      "type": 0,
+      "value": "Previous monthSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.removeDay": [
+    {
+      "type": 0,
+      "value": "Remove "
+    },
+    {
+      "type": 1,
+      "value": "day"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.removePeriod": [
+    {
+      "type": 0,
+      "value": "Remove these hours on "
+    },
+    {
+      "type": 1,
+      "value": "day"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.saveWeek": [
+    {
+      "type": 0,
+      "value": "Save working hoursSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.saved": [
+    {
+      "type": 0,
+      "value": "Saved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.timeZone": [
+    {
+      "type": 0,
+      "value": "Time zone: "
+    },
+    {
+      "type": 1,
+      "value": "zone"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.title": [
+    {
+      "type": 0,
+      "value": "Business calendarSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.until": [
+    {
+      "type": 0,
+      "value": "UntilSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.week": [
+    {
+      "type": 0,
+      "value": "Working hoursSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.calendar.workingTime": [
+    {
+      "type": 0,
+      "value": "Count working time onlySSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "workflows.cancel": [

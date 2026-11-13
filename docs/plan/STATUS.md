@@ -63,7 +63,8 @@
 - [x] E05 T4 reminders and overdue notices (stacked PR)
 - [x] E05 T5 escalation (stacked PR)
 - [x] E05 T6 volume V2 generator, Gatling inbox simulation, weekly load workflow (stacked PR; first run after merge)
-- [ ] E05 T7 web · T8 close
+- [x] E05 T7 web: business calendar admin, due and overdue in the inbox, memo view and open tasks (stacked PR)
+- [ ] E05 T8 close
 
 ## State (Phase 1a, closed)
 - [x] Overview approved (2026-10-18), Q1–Q8 answered, per-epic gate delegated

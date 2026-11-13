@@ -9,6 +9,7 @@ import { EmptyState, ErrorState, LoadingState } from '@/components/page/States'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { dueLabel, isOverdue } from './due'
 import { isolated } from './memo-fields'
 import { mm, mmv, statusLabels } from './memo-messages'
 import { statusTone } from './memo-status'
@@ -125,6 +126,9 @@ function TaskRow({ item }: { item: InboxItem }) {
         {item.kind === 'OPINION' ? <Badge tone="neutral">{intl.formatMessage(mm.kindOpinion)}</Badge> : null}
         {item.kind === 'CLARIFY' ? <Badge tone="neutral">{intl.formatMessage(mm.kindClarify)}</Badge> : null}
         {item.blocked ? <Badge tone="warn">{intl.formatMessage(mm.blocked)}</Badge> : null}
+        {item.dueAt ? (
+          <Badge tone={isOverdue(item.dueAt) ? 'danger' : 'neutral'}>{dueLabel(intl, item.dueAt)}</Badge>
+        ) : null}
         {item.actingFor ? (
           <Badge tone="neutral">{intl.formatMessage(mmv.actingFor, { name: item.actingFor.name })}</Badge>
         ) : null}

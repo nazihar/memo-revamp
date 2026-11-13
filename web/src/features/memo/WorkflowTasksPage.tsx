@@ -16,6 +16,7 @@ import { Textarea } from '@/components/ui/form-controls'
 import { useToast } from '@/components/ui/toast-context'
 import { useWithStepUp } from '@/features/auth/step-up-context'
 import { PeoplePicker, type Picked } from '@/features/org/PeoplePicker'
+import { dueLabel, isOverdue } from './due'
 import { isolated } from './memo-fields'
 import { mm, mmv } from './memo-messages'
 import { newIdempotencyKey } from '@/lib/idempotency'
@@ -28,6 +29,8 @@ const m = defineMessages({
   },
   filterBlocked: { id: 'workflowTasks.filter.blocked', defaultMessage: 'Waiting for reassignment' },
   filterOpen: { id: 'workflowTasks.filter.open', defaultMessage: 'All open tasks' },
+  filterOverdue: { id: 'workflowTasks.filter.overdue', defaultMessage: 'Overdue' },
+  colDue: { id: 'workflowTasks.col.due', defaultMessage: 'Due' },
   caption: { id: 'workflowTasks.caption', defaultMessage: 'Open workflow tasks' },
   colMemo: { id: 'workflowTasks.col.memo', defaultMessage: 'Memo' },
   colAssignee: { id: 'workflowTasks.col.assignee', defaultMessage: 'Approver' },
@@ -61,7 +64,7 @@ const mv = defineMessages<{ reassignFor: { reference: string } }>({
 /** `/admin/workflow/tasks` (ux-review §7): open tasks, blocked first by filter, and reassignment with a reason. */
 export function WorkflowTasksPage() {
   const intl = useIntl()
-  const [filter, setFilter] = useState<'blocked' | 'open'>('blocked')
+  const [filter, setFilter] = useState<'blocked' | 'overdue' | 'open'>('blocked')
   const query = { query: { filter, limit: 50 } }
   const list = useQuery(listOpenTasksOptions(query))
   const [reassigning, setReassigning] = useState<AdminTaskResponse>()
@@ -96,6 +99,16 @@ export function WorkflowTasksPage() {
       ),
     },
     {
+      id: 'due',
+      header: intl.formatMessage(m.colDue),
+      cell: ({ row }) =>
+        row.original.dueAt ? (
+          <Badge tone={isOverdue(row.original.dueAt) ? 'danger' : 'neutral'}>
+            {dueLabel(intl, row.original.dueAt)}
+          </Badge>
+        ) : null,
+    },
+    {
       id: 'since',
       header: intl.formatMessage(m.colSince),
       cell: ({ row }) => intl.formatDate(row.original.createdAt, { dateStyle: 'medium', timeStyle: 'short' }),
@@ -123,7 +136,7 @@ export function WorkflowTasksPage() {
         description={intl.formatMessage(m.lead)}
       />
       <div className="mb-4 flex gap-2">
-        {(['blocked', 'open'] as const).map((f) => (
+        {(['blocked', 'overdue', 'open'] as const).map((f) => (
           <Button
             key={f}
             variant={f === filter ? 'default' : 'outline'}
@@ -132,7 +145,7 @@ export function WorkflowTasksPage() {
               setFilter(f)
             }}
           >
-            {intl.formatMessage(f === 'blocked' ? m.filterBlocked : m.filterOpen)}
+            {intl.formatMessage(f === 'blocked' ? m.filterBlocked : f === 'overdue' ? m.filterOverdue : m.filterOpen)}
           </Button>
         ))}
       </div>

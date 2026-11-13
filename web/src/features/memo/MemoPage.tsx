@@ -22,6 +22,7 @@ import { useToast } from '@/components/ui/toast-context'
 import { newIdempotencyKey } from '@/lib/idempotency'
 import { ActionDialog, type MemoActionKind } from './ActionDialog'
 import { DoaPreviewDialog } from './DoaPreviewDialog'
+import { dueLabel, isOverdue } from './due'
 import { EditMemoDialog } from './EditMemoDialog'
 import { MemoInterests } from './MemoInterests'
 import { MemoHistory } from './MemoHistory'
@@ -225,9 +226,14 @@ export function MemoPage({ memoId }: { memoId: string }) {
           </Section>
         </div>
         <div className="flex flex-col gap-6">
-          {view.holders.length > 0 || view.myTask ? (
+          {view.holders.length > 0 || view.myTask || view.dueAt ? (
             <Section title={intl.formatMessage(mm.holders)}>
               {view.holders.length > 0 ? <p className="text-sm">{view.holders.map((h) => h.name).join(', ')}</p> : null}
+              {view.dueAt ? (
+                <p className="mt-1">
+                  <Badge tone={isOverdue(view.dueAt) ? 'danger' : 'neutral'}>{dueLabel(intl, view.dueAt)}</Badge>
+                </p>
+              ) : null}
               {view.myTask?.stepName ? (
                 <p className="text-sm text-muted-foreground">
                   {intl.formatMessage(mmv.step, { step: view.myTask.stepName })}

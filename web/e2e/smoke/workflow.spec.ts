@@ -106,7 +106,8 @@ test.describe('as a tenant admin', () => {
     const diagram = page.getByRole('group', { name: 'Workflow diagram' })
     await expect(diagram.getByLabel(/^Step 1 of 5, Review, Credit review\./)).toBeVisible()
     await expect(diagram.getByLabel('End', { exact: true })).toBeVisible()
-    await expect(diagram.getByLabel('Tell the author leads to End')).toBeVisible()
+    // Connections are SVG groups: named, though Playwright counts them as hidden.
+    await expect(diagram.getByLabel('Tell the author leads to End')).toHaveCount(1)
     await app.checkA11y()
     await page.getByRole('tab', { name: 'Steps' }).click()
     const steps = page.getByRole('list', { name: 'Steps, in the order they are written' })

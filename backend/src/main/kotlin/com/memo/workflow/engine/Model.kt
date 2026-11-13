@@ -6,7 +6,7 @@ import com.memo.workflow.InstanceStatus
 import java.util.UUID
 
 /** How a round ended; OPEN while it runs (ADR-0035). */
-enum class RoundOutcome { OPEN, RETURNED, APPROVED, REJECTED, WITHDRAWN }
+enum class RoundOutcome { OPEN, RETURNED, APPROVED, REJECTED, WITHDRAWN, RECALLED, CANCELLED }
 
 enum class StepState { PENDING, ACTIVE, DONE, SKIPPED }
 

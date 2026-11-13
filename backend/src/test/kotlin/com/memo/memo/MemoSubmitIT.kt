@@ -84,7 +84,7 @@ class MemoSubmitIT : MemoIntegrationTest() {
         val memo = submitted.json()
         assertThat(memo["status"].asString()).isEqualTo("IN_REVIEW")
         assertThat(memo["round"].asInt()).isEqualTo(1)
-        assertThat(memo["allowedActions"].toString()).isEqualTo("""["WITHDRAW"]""")
+        assertThat(memo["allowedActions"].toString()).isEqualTo("""["WITHDRAW","RECALL"]""")
         assertThat(post("/api/v1/memos/$id/submit", alice.session, """{"remark":"Please review"}""", key).json()["status"].asString())
             .isEqualTo("IN_REVIEW")
         assertThat(post("/api/v1/memos/$id/submit", alice.session)).hasStatus(HttpStatus.CONFLICT)

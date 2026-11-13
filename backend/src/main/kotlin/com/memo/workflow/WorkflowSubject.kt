@@ -60,6 +60,8 @@ data class WorkflowView(
     /** Set while the open task waits for reassignment (invariant 12). */
     val openTaskBlocked: BlockedReason?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val version: Long,
+    /** The initiator may still recall it: nobody has acted in this round yet (design E03 §4.4). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val recallable: Boolean = false,
 )
 
 /** A subject as lists show it; [classificationRank] decides whether a reader may see the [title] (design E01 §5). */

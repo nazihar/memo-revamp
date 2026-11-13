@@ -4,6 +4,7 @@ import com.memo.common.context.Actor
 import com.memo.common.context.ActorContext
 import com.memo.common.web.Cursors
 import com.memo.workflow.internal.InstanceStore
+import com.memo.workflow.internal.TaskDescriptions
 import com.memo.workflow.internal.TaskQueryStore
 import com.memo.workflow.internal.WorkflowRunner
 import org.springframework.stereotype.Service
@@ -51,6 +52,7 @@ class WorkflowQueries(
     private val runner: WorkflowRunner,
     private val instances: InstanceStore,
     private val tasks: TaskQueryStore,
+    private val descriptions: TaskDescriptions,
 ) {
     /** Where the subject's instance is now; null if the subject was never submitted. */
     fun viewOf(
@@ -60,6 +62,9 @@ class WorkflowQueries(
 
     /** The subject a task is about, so the subject's module can check visibility before acting (404 for strangers). */
     fun subjectOfTask(taskId: UUID): SubjectRef? = instances.subjectOfTask(taskId)
+
+    /** The subject an instance routes. */
+    fun subjectOfInstance(instanceId: UUID): SubjectRef? = instances.subjectOfInstance(instanceId)
 
     /** The signed-in user's open tasks, newest first. */
     fun myTasks(
@@ -92,10 +97,10 @@ class WorkflowQueries(
         subjectType: String,
         subjectId: UUID,
         user: UUID,
-    ): MyTask? = runner.myTask(subjectType, subjectId, user)
+    ): MyTask? = descriptions.myTask(subjectType, subjectId, user)
 
     /** The open task [taskId] as its holder sees it; null if it is not open. */
-    fun task(taskId: UUID): MyTask? = runner.task(taskId)
+    fun task(taskId: UUID): MyTask? = descriptions.task(taskId)
 
     private fun page(
         limit: Int,

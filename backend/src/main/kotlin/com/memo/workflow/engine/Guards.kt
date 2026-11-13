@@ -67,6 +67,23 @@ internal object Guards {
                 HandOnGuards.refusal(state, command, context, definition)
             }
 
+            is Reassign -> {
+                reassign(state, command, context)
+            }
+
+            is Withdraw, is Resubmit, is Recall, is Cancel -> {
+                instance(state, command, context, routed)
+            }
+        }
+
+    /** Commands on the instance rather than a task: withdraw, resubmit, recall, cancel. */
+    private fun instance(
+        state: InstanceState,
+        command: Command,
+        context: TransitionContext,
+        routed: Boolean,
+    ): Refusal? =
+        when (command) {
             is Withdraw -> {
                 initiatorIn(state, command.actor, InstanceStatus.RUNNING, InstanceStatus.RETURNED)
                     ?: Remarks.refusal(command.remark, required = false)
@@ -78,10 +95,23 @@ internal object Guards {
                     ?: Remarks.refusal(command.remark, required = false)
             }
 
-            is Reassign -> {
-                reassign(state, command, context)
+            is Recall -> {
+                initiatorIn(state, command.actor, InstanceStatus.RUNNING) ?: recallable(state)
+                    ?: Remarks.refusal(command.remark, required = false)
+            }
+
+            else -> {
+                val stoppable = state.status == InstanceStatus.RUNNING || state.status == InstanceStatus.RETURNED
+                (if (stoppable) null else Refusal.WRONG_STATE) ?: Remarks.refusal((command as Cancel).remark, required = true)
             }
         }
+
+    /** Recall only before anyone acted in this round: every task is an untouched open decision (design E03 §4.4). */
+    private fun recallable(state: InstanceState): Refusal? {
+        val tasks = state.round.steps.flatMap { it.tasks }
+        val untouched = tasks.all { it.state == TaskState.OPEN && it.kind == TaskKind.DECIDE && !it.waiting }
+        return if (untouched) null else Refusal.NOT_RECALLABLE
+    }
 
     private fun decisionOf(
         state: InstanceState,

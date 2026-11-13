@@ -13,6 +13,7 @@ import com.memo.system.Idempotency
 import com.memo.workflow.BlockedReason
 import com.memo.workflow.TaskItem
 import com.memo.workflow.WorkflowQueries
+import com.memo.workflow.WorkflowRefusedException
 import com.memo.workflow.WorkflowSubject
 import com.memo.workflow.WorkflowView
 import com.memo.workflow.Workflows
@@ -155,4 +156,41 @@ class WorkflowAdminController(
     }
 
     private fun subjectOf(type: String) = subjects.singleOrNull { it.type == type }
+}
+
+data class CancelRequest(
+    /** Why the workflow stops; recorded in the history and shown to the people involved. */
+    val reason: String?,
+)
+
+/** Stopping a running workflow (design E03 §4.4, §5): administrators with `workflow.instances.cancel`, after a step-up. */
+@RestController
+@RequestMapping("/api/v1/admin/workflow/instances")
+@Tag(name = "workflow")
+class WorkflowInstancesAdminController(
+    private val queries: WorkflowQueries,
+    private val workflows: Workflows,
+    private val stepUp: StepUpCheck,
+    private val idempotency: Idempotency,
+    private val transactions: TenantTransactions,
+    private val json: JsonMapper,
+) {
+    @PostMapping("/{instanceId}/cancel")
+    @RequiresPermission(Permission.WORKFLOW_INSTANCES_CANCEL)
+    @Operation(operationId = "cancelWorkflow", summary = "Cancel a running workflow with a reason")
+    fun cancel(
+        @PathVariable instanceId: UUID,
+        @RequestHeader("Idempotency-Key") key: String,
+        @RequestBody body: CancelRequest,
+    ): WorkflowView {
+        stepUp.require()
+        return transactions.inTenant(TenantContext.current()) {
+            val user = (ActorContext.current().actor as? Actor.User)?.userId
+            idempotency.once("workflow.instance.cancel", key, "$user\n$instanceId\n${json.writeValueAsString(body)}") {
+                workflows.cancel(instanceId, body.reason).instanceId.toString()
+            }
+            val subject = queries.subjectOfInstance(instanceId) ?: throw WorkflowRefusedException("INSTANCE_NOT_FOUND")
+            checkNotNull(queries.viewOf(subject.type, subject.id))
+        }
+    }
 }

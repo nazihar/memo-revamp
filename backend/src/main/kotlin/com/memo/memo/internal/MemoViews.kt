@@ -72,6 +72,7 @@ enum class MemoAction {
     REFER,
     ANSWER,
     OPINION,
+    RECALL,
 }
 
 /**
@@ -150,7 +151,7 @@ class MemoViews(
             round = memo.currentRound,
             holders = holders.map { Named(it, names[it].orEmpty()) },
             myTask = myTask,
-            allowedActions = actions(memo, user, open).let { it + documentActions(memo, it) },
+            allowedActions = actions(memo, user, open, workflow?.recallable == true).let { it + documentActions(memo, it) },
             sendBackTargets = targets.map { SendBackTargetView(it.stepId, it.name, Named(it.holderId, names[it.holderId].orEmpty())) },
             createdAt = memo.createdAt,
             updatedAt = memo.updatedAt,
@@ -178,13 +179,14 @@ class MemoViews(
         memo: Memo,
         user: UUID?,
         task: MyTask?,
+        recallable: Boolean,
     ): List<MemoAction> =
         when {
             task != null -> taskActions(task)
             user != memo.initiatorId -> emptyList()
             memo.status == MemoStatus.DRAFT -> DRAFT
             memo.status == MemoStatus.RETURNED -> RETURNED
-            memo.status == MemoStatus.IN_REVIEW -> listOf(MemoAction.WITHDRAW)
+            memo.status == MemoStatus.IN_REVIEW -> listOfNotNull(MemoAction.WITHDRAW, MemoAction.RECALL.takeIf { recallable })
             else -> emptyList()
         }
 

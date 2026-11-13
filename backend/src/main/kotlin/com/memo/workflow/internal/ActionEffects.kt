@@ -172,6 +172,8 @@ class ActionEffects(
                 ActionKind.SUBMIT to "workflow.instance.started",
                 ActionKind.APPROVE to "workflow.task.approved",
                 ActionKind.RECOMMEND to "workflow.task.recommended",
+                ActionKind.RECALL to "workflow.instance.recalled",
+                ActionKind.CANCEL to "workflow.instance.cancelled",
                 ActionKind.SEND_BACK to "workflow.task.sent_back",
                 ActionKind.FORWARD to "workflow.task.forwarded",
                 ActionKind.DELEGATE to "workflow.task.delegated",

@@ -11,6 +11,21 @@ import java.util.UUID
 internal class HandOns(
     private val rounds: Rounds,
 ) {
+    /** One of the hand-on or consultation commands, already checked by [HandOnGuards]. */
+    fun apply(
+        state: InstanceState,
+        command: TaskCommand,
+    ): Outcome =
+        when (command) {
+            is SendBack -> sendBack(state, command)
+            is Forward -> forward(state, command)
+            is Delegate -> delegate(state, command)
+            is Ask -> ask(state, command)
+            is Answer -> answer(state, command)
+            is Refer -> refer(state, command)
+            else -> opinion(state, command as GiveOpinion)
+        }
+
     /** The task ends; open tasks of the round are cancelled; the target step runs again, and what followed it after that. */
     fun sendBack(
         state: InstanceState,

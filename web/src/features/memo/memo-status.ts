@@ -1,6 +1,7 @@
 import type { Tone } from '@/components/ui/badge'
 
-export type MemoStatus = 'DRAFT' | 'IN_REVIEW' | 'RETURNED' | 'APPROVED' | 'REJECTED' | 'WITHDRAWN' | 'DISCARDED'
+export type MemoStatus =
+  'DRAFT' | 'IN_REVIEW' | 'RETURNED' | 'APPROVED' | 'REJECTED' | 'WITHDRAWN' | 'DISCARDED' | 'CANCELLED'
 
 /** Badge tone per memo status: work in progress warns, approval is ok, rejection is danger, other endings are neutral. */
 export const statusTone: Record<MemoStatus, Tone> = {
@@ -11,4 +12,5 @@ export const statusTone: Record<MemoStatus, Tone> = {
   REJECTED: 'danger',
   WITHDRAWN: 'neutral',
   DISCARDED: 'neutral',
+  CANCELLED: 'neutral',
 }

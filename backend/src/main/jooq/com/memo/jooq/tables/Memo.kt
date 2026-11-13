@@ -246,7 +246,7 @@ open class Memo(
         Internal.createCheck(this, DSL.name("memo_classification_rank_check"), "((classification_rank >= 0))", true),
         Internal.createCheck(this, DSL.name("memo_current_round_check"), "((current_round >= 0))", true),
         Internal.createCheck(this, DSL.name("memo_reference_check"), "((reference ~ '^M-[0-9]{4}-[0-9]{5,}\$'::text))", true),
-        Internal.createCheck(this, DSL.name("memo_status_check"), "((status = ANY (ARRAY['DRAFT'::text, 'IN_REVIEW'::text, 'RETURNED'::text, 'APPROVED'::text, 'REJECTED'::text, 'WITHDRAWN'::text, 'DISCARDED'::text])))", true),
+        Internal.createCheck(this, DSL.name("memo_status_check"), "((status = ANY (ARRAY['DRAFT'::text, 'IN_REVIEW'::text, 'RETURNED'::text, 'APPROVED'::text, 'REJECTED'::text, 'WITHDRAWN'::text, 'DISCARDED'::text, 'CANCELLED'::text])))", true),
         Internal.createCheck(this, DSL.name("memo_subject_check"), "(((length(subject) >= 1) AND (length(subject) <= 300)))", true)
     )
     override fun `as`(alias: String): Memo = Memo(DSL.name(alias), this)

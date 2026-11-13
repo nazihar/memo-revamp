@@ -10,6 +10,18 @@ sealed interface Command {
     val actor: UUID
 }
 
+/** The initiator pulls the item back before anyone has acted in this round (design E03 §4.4). */
+data class Recall(
+    override val actor: UUID,
+    val remark: String? = null,
+) : Command
+
+/** An administrator stops the instance with a reason; the caller has checked the permission (design E03 §4.4). */
+data class Cancel(
+    override val actor: UUID,
+    val remark: String?,
+) : Command
+
 /** A command on one task. */
 sealed interface TaskCommand : Command {
     val taskId: UUID
@@ -130,6 +142,7 @@ enum class Refusal {
     ALREADY_ON_STEP,
     TOO_MANY_REFERRALS,
     NOT_A_CONSULTATION,
+    NOT_RECALLABLE,
 }
 
 /** What the service must write, in order. A task created with `blocked` set also means "notify for reassignment". */
@@ -219,4 +232,15 @@ class TransitionContext(
     val maxApprovers: Int,
     /** The subject's attribute values, read only when a branch is evaluated. */
     val attributes: () -> Map<String, Any?> = { emptyMap() },
+    /**
+     * Who approved which definition step in the previous round on the same subject snapshot, for the `skip-unchanged`
+     * resubmission policy (design E03 §4.6): their approval carries over instead of a new task.
+     */
+    val carried: Set<Carried> = emptySet(),
+)
+
+/** An approval of [nodeId] by [person] that can carry over into the next round. */
+data class Carried(
+    val nodeId: String,
+    val person: UUID,
 )

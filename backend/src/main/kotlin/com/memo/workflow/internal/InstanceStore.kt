@@ -154,6 +154,34 @@ class InstanceStore(
         return LoadedInstance(instance.id, instance.subjectType, instance.subjectId, instance.version!!, state, definition)
     }
 
+    /**
+     * The approvals and recommendations of [round] (carried ones included): which definition step, by whom (the holder a
+     * delegate acted for), and the subject snapshot they applied to. For the `skip-unchanged` policy (design E03 §4.6).
+     */
+    fun approvals(
+        instanceId: UUID,
+        round: Int,
+    ): List<Approval> =
+        tenantDsl
+            .current()
+            .select(
+                WORKFLOW_STEP.NODE_ID,
+                WORKFLOW_ACTION.DETAILS,
+                WORKFLOW_ACTION.ACTING_FOR_ID,
+                WORKFLOW_ACTION.ACTOR_ID,
+                WORKFLOW_ACTION.SUBJECT_SNAPSHOT,
+            ).from(WORKFLOW_ACTION)
+            .leftJoin(WORKFLOW_TASK)
+            .on(WORKFLOW_TASK.ID.eq(WORKFLOW_ACTION.TASK_ID))
+            .leftJoin(WORKFLOW_STEP)
+            .on(WORKFLOW_STEP.ID.eq(WORKFLOW_TASK.STEP_ID))
+            .where(WORKFLOW_ACTION.INSTANCE_ID.eq(instanceId), WORKFLOW_ACTION.ROUND.eq(round))
+            .and(WORKFLOW_ACTION.KIND.`in`(APPROVAL_KINDS))
+            .fetch { row ->
+                val node = row.value1() ?: CARRIED_STEP.find(row.value2()!!.data())?.groupValues?.get(1)
+                node?.let { Approval(it, row.value3() ?: row.value4()!!, row.value5()!!.data()) }
+            }.filterNotNull()
+
     /** The row of a new instance, before its first round is written by [write]. */
     fun insert(
         id: UUID,
@@ -181,4 +209,18 @@ class InstanceStore(
             .set(WORKFLOW_INSTANCE.UPDATED_AT, now)
             .execute()
     }
+
+    private companion object {
+        val APPROVAL_KINDS = listOf(ActionKind.APPROVE.name, ActionKind.RECOMMEND.name, ActionKind.CARRY.name)
+
+        /** The step a CARRY action names in its details (`{"step":"<id>"}`). */
+        val CARRIED_STEP = Regex(""""step"\s*:\s*"([^"]+)"""")
+    }
 }
+
+/** One approval of a round, for `skip-unchanged`: the definition step, the responsible person, the snapshot JSON. */
+data class Approval(
+    val nodeId: String,
+    val person: UUID,
+    val snapshot: String,
+)

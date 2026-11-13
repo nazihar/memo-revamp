@@ -3,7 +3,9 @@ package com.memo.workflow
 import com.memo.common.context.Actor
 import com.memo.common.context.ActorContext
 import com.memo.workflow.engine.Approve
+import com.memo.workflow.engine.Cancel
 import com.memo.workflow.engine.Reassign
+import com.memo.workflow.engine.Recall
 import com.memo.workflow.engine.Reject
 import com.memo.workflow.engine.Resubmit
 import com.memo.workflow.engine.Return
@@ -73,6 +75,18 @@ class Workflows(
         newAssignee: UUID,
         reason: String?,
     ): WorkflowView = runner.onTask(taskId, currentUser()) { actor -> Reassign(actor, taskId, newAssignee, reason) }
+
+    /** The initiator pulls the item back before anyone acted in this round; it returns to them (design E03 §4.4). */
+    fun recall(
+        instanceId: UUID,
+        remark: String? = null,
+    ): WorkflowView = runner.onInstance(instanceId, currentUser()) { actor -> Recall(actor, remark) }
+
+    /** Stops the instance with a [reason]; the caller has checked `workflow.instances.cancel` and step-up. */
+    fun cancel(
+        instanceId: UUID,
+        reason: String?,
+    ): WorkflowView = runner.onInstance(instanceId, currentUser()) { actor -> Cancel(actor, reason) }
 
     companion object {
         /** The built-in definition every tenant has: sequential approval of the initiator's route. */

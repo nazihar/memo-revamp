@@ -4,6 +4,7 @@ import com.memo.workflow.ActionKind
 import com.memo.workflow.InstanceStatus
 import com.memo.workflow.definition.Definition
 import com.memo.workflow.definition.DefinitionCompiler
+import com.memo.workflow.definition.ResubmitPolicy
 import com.memo.workflow.definition.StepType
 import java.util.UUID
 
@@ -71,13 +72,8 @@ class Transition(
             is Withdraw -> withdraw(state, command)
             is Resubmit -> resubmit(state, command)
             is Reassign -> reassign(state, command)
-            is SendBack -> handOns.sendBack(state, command)
-            is Forward -> handOns.forward(state, command)
-            is Delegate -> handOns.delegate(state, command)
-            is Ask -> handOns.ask(state, command)
-            is Answer -> handOns.answer(state, command)
-            is Refer -> handOns.refer(state, command)
-            is GiveOpinion -> handOns.opinion(state, command)
+            is SendBack, is Forward, is Delegate, is Ask, is Answer, is Refer, is GiveOpinion -> handOns.apply(state, command)
+            is Recall, is Cancel -> RoundControl.apply(state, command)
         }
 
     /** A delegate's action is recorded as acting for the holder who delegated the task (design E03 §4.4, invariant 17). */
@@ -196,7 +192,16 @@ class Transition(
         state: InstanceState,
         command: Resubmit,
     ): Outcome {
-        val walk = rounds.open(state.round.number + 1, command.route, People(state.initiator, command.actor))
+        val people = People(state.initiator, command.actor)
+        val number = state.round.number + 1
+        // `resume` starts again where the item was returned; otherwise from the start (design E03 §4.6).
+        val returning = state.round.steps.firstOrNull { step -> step.tasks.any { it.outcome == ActionKind.RETURN } }
+        val walk =
+            if (definition.resubmitPolicy == ResubmitPolicy.RESUME && returning != null) {
+                rounds.resume(number, command.route, people, returning)
+            } else {
+                rounds.open(number, command.route, people)
+            }
         val action = ActionRecord(ActionKind.RESUBMIT, walk.round.number, null, command.actor, Remarks.clean(command.remark))
         return opened(state.initiator, walk, action)
     }

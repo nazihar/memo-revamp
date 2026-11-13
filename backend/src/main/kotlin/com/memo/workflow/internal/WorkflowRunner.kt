@@ -3,6 +3,7 @@ package com.memo.workflow.internal
 import com.memo.common.context.Actor
 import com.memo.common.id.IdGenerator
 import com.memo.workflow.ActionKind
+import com.memo.workflow.InstanceStatus
 import com.memo.workflow.MyTask
 import com.memo.workflow.StepRef
 import com.memo.workflow.TaskRole
@@ -10,7 +11,9 @@ import com.memo.workflow.WorkflowRefusedException
 import com.memo.workflow.WorkflowSubject
 import com.memo.workflow.WorkflowView
 import com.memo.workflow.definition.Definition
+import com.memo.workflow.definition.ResubmitPolicy
 import com.memo.workflow.engine.Ask
+import com.memo.workflow.engine.Carried
 import com.memo.workflow.engine.Command
 import com.memo.workflow.engine.Decision
 import com.memo.workflow.engine.Delegate
@@ -28,6 +31,7 @@ import com.memo.workflow.engine.Transition
 import com.memo.workflow.engine.TransitionContext
 import org.jooq.JSONB
 import org.springframework.stereotype.Component
+import tools.jackson.databind.JsonNode
 import tools.jackson.databind.json.JsonMapper
 import java.time.Clock
 import java.time.OffsetDateTime
@@ -91,7 +95,8 @@ class WorkflowRunner(
         val people =
             loaded.state.round.steps
                 .map { it.assignee } + newPeople(cmd)
-        val outcome = accepted(transition(subject, loaded.subjectId, people, loaded.definition).apply(loaded.state, cmd))
+        val carried = carried(loaded, cmd, subject)
+        val outcome = accepted(transition(subject, loaded.subjectId, people, loaded.definition, carried).apply(loaded.state, cmd))
         return record(loaded, loaded.state, subject, outcome, actor)
     }
 
@@ -104,52 +109,6 @@ class WorkflowRunner(
             .instanceOfSubject(subjectType, subjectId)
             ?.let { instances.load(it, lock = false) }
             ?.let { view(it, it.state, it.version) }
-
-    /** The open task [user] holds on the subject, decisions first (design E03 §12). */
-    fun myTask(
-        subjectType: String,
-        subjectId: UUID,
-        user: UUID,
-    ): MyTask? {
-        val loaded = instances.instanceOfSubject(subjectType, subjectId)?.let { instances.load(it, lock = false) }
-        val task =
-            loaded
-                ?.state
-                ?.openTasks
-                ?.filter { it.assignee == user }
-                ?.minByOrNull { it.kind.ordinal }
-        return task?.let { describe(loaded, it.id) }
-    }
-
-    fun task(taskId: UUID): MyTask? {
-        val loaded = instances.instanceOfTask(taskId)?.let { instances.load(it, lock = false) }
-        return loaded?.let { describe(it, taskId) }
-    }
-
-    private fun describe(
-        loaded: LoadedInstance,
-        taskId: UUID,
-    ): MyTask? {
-        val (step, task) = loaded.state.findTask(taskId)?.takeIf { it.second.state == TaskState.OPEN } ?: return null
-        val node = loaded.definition.stepsById[step.nodeId]
-        val positive = if (step.kind == StepKind.REVIEW) ActionKind.RECOMMEND else ActionKind.APPROVE
-        val decides = task.kind == TaskKind.DECIDE
-        val targets =
-            loaded.state.round.steps
-                .filter { it.state == StepState.DONE && it.ordinal < step.ordinal }
-                .map { StepRef(it.id, it.name, it.assignee) }
-        return MyTask(
-            id = task.id,
-            role = TaskRole.valueOf(task.kind.name),
-            blocked = task.blocked,
-            waiting = task.waiting,
-            delegated = task.onBehalfOf != null,
-            stepName = step.name,
-            positive = positive,
-            actions = if (decides) node?.offeredActions.orEmpty().map { ActionKind.valueOf(it.name) } else emptyList(),
-            sendBackTargets = if (decides) targets else emptyList(),
-        )
-    }
 
     private fun record(
         instance: LoadedInstance,
@@ -174,11 +133,38 @@ class WorkflowRunner(
         subjectId: UUID,
         people: Collection<UUID>,
         definition: Definition,
+        carried: Set<Carried> = emptySet(),
     ): Transition {
         val named = definition.steps.flatMap { step -> listOfNotNull(step.assignee?.userId) + step.assignees.mapNotNull { it.userId } }
         val ineligible = subject.ineligible(subjectId, (people + named).toSet())
-        val context = TransitionContext(ids::next, { ineligible[it] }, settings.maxApprovers()) { subject.attributeValues(subjectId) }
+        val context =
+            TransitionContext(
+                newId = ids::next,
+                eligibility = { ineligible[it] },
+                maxApprovers = settings.maxApprovers(),
+                attributes = { subject.attributeValues(subjectId) },
+                carried = carried,
+            )
         return Transition(context, definition)
+    }
+
+    /**
+     * For `skip-unchanged` (design E03 §4.6): who approved which step in the round before the one being walked, on the
+     * subject as it is now (same snapshot), so the walk carries their approval over instead of asking again.
+     */
+    private fun carried(
+        loaded: LoadedInstance,
+        command: Command,
+        subject: WorkflowSubject,
+    ): Set<Carried> {
+        val previous = if (command is Resubmit) loaded.state.round.number else loaded.state.round.number - 1
+        if (loaded.definition.resubmitPolicy != ResubmitPolicy.SKIP_UNCHANGED || previous < 1) return emptySet()
+        val now = json.valueToTree<JsonNode>(subject.snapshot(loaded.subjectId))
+        return instances
+            .approvals(loaded.id, previous)
+            .filter { json.readTree(it.snapshot) == now }
+            .map { Carried(it.nodeId, it.person) }
+            .toSet()
     }
 
     private fun subject(type: String): WorkflowSubject =
@@ -215,7 +201,11 @@ private fun view(
     state: InstanceState,
     version: Long,
 ): WorkflowView {
-    val open = state.openTasks.firstOrNull()
+    val open = state.openDecisions.firstOrNull()
+    val untouched =
+        state.round.steps
+            .flatMap { it.tasks }
+            .all { it.state == TaskState.OPEN && it.kind == TaskKind.DECIDE && !it.waiting }
     return WorkflowView(
         instanceId = instance.id,
         subjectType = instance.subjectType,
@@ -226,5 +216,6 @@ private fun view(
         openTaskId = open?.id,
         openTaskBlocked = open?.blocked,
         version = version,
+        recallable = state.status == InstanceStatus.RUNNING && untouched,
     )
 }

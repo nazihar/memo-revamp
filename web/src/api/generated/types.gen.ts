@@ -108,7 +108,7 @@ export type BoxItem = {
     id: string;
     reference: string;
     round: number;
-    status: 'DRAFT' | 'IN_REVIEW' | 'RETURNED' | 'APPROVED' | 'REJECTED' | 'WITHDRAWN' | 'DISCARDED';
+    status: 'DRAFT' | 'IN_REVIEW' | 'RETURNED' | 'APPROVED' | 'REJECTED' | 'WITHDRAWN' | 'DISCARDED' | 'CANCELLED';
     subject: string;
     updatedAt: string;
 };
@@ -149,6 +149,10 @@ export type BrandingUpdate = {
      * A file uploaded with purpose tenant.logo; absent removes the logo
      */
     logoFileId?: string | null;
+};
+
+export type CancelRequest = {
+    reason?: string | null;
 };
 
 export type ChangePasswordRequest = {
@@ -516,7 +520,7 @@ export type MemoTypeRequest = {
 };
 
 export type MemoView = {
-    allowedActions: Array<'EDIT' | 'UPLOAD_DOCUMENT' | 'EDIT_ROUTE' | 'SUBMIT' | 'DISCARD' | 'RESUBMIT' | 'WITHDRAW' | 'APPROVE' | 'RETURN' | 'REJECT' | 'EDIT_DOCUMENT' | 'VIEW_DOCUMENT' | 'RECOMMEND' | 'SEND_BACK' | 'FORWARD' | 'DELEGATE' | 'ASK' | 'REFER' | 'ANSWER' | 'OPINION'>;
+    allowedActions: Array<'EDIT' | 'UPLOAD_DOCUMENT' | 'EDIT_ROUTE' | 'SUBMIT' | 'DISCARD' | 'RESUBMIT' | 'WITHDRAW' | 'APPROVE' | 'RETURN' | 'REJECT' | 'EDIT_DOCUMENT' | 'VIEW_DOCUMENT' | 'RECOMMEND' | 'SEND_BACK' | 'FORWARD' | 'DELEGATE' | 'ASK' | 'REFER' | 'ANSWER' | 'OPINION' | 'RECALL'>;
     classification: ClassificationView;
     createdAt: string;
     document?: DocumentView | null;
@@ -528,7 +532,7 @@ export type MemoView = {
     round: number;
     route: Array<RouteEntryView>;
     sendBackTargets: Array<SendBackTargetView>;
-    status: 'DRAFT' | 'IN_REVIEW' | 'RETURNED' | 'APPROVED' | 'REJECTED' | 'WITHDRAWN' | 'DISCARDED';
+    status: 'DRAFT' | 'IN_REVIEW' | 'RETURNED' | 'APPROVED' | 'REJECTED' | 'WITHDRAWN' | 'DISCARDED' | 'CANCELLED';
     subject: string;
     type: Named;
     updatedAt: string;
@@ -1161,6 +1165,7 @@ export type WorkflowView = {
     instanceId: string;
     openTaskBlocked?: 'NO_CLEARANCE' | 'INACTIVE';
     openTaskId?: string | null;
+    recallable: boolean;
     round: number;
     status: 'RUNNING' | 'RETURNED' | 'APPROVED' | 'REJECTED' | 'WITHDRAWN' | 'CANCELLED';
     subjectId: string;
@@ -1690,6 +1695,27 @@ export type UnlockUserResponses = {
 };
 
 export type UnlockUserResponse = UnlockUserResponses[keyof UnlockUserResponses];
+
+export type CancelWorkflowData = {
+    body: CancelRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        instanceId: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/workflow/instances/{instanceId}/cancel';
+};
+
+export type CancelWorkflowResponses = {
+    /**
+     * OK
+     */
+    200: WorkflowView;
+};
+
+export type CancelWorkflowResponse = CancelWorkflowResponses[keyof CancelWorkflowResponses];
 
 export type ListOpenTasksData = {
     body?: never;
@@ -2862,6 +2888,27 @@ export type GetMemoHistoryResponses = {
 };
 
 export type GetMemoHistoryResponse = GetMemoHistoryResponses[keyof GetMemoHistoryResponses];
+
+export type RecallMemoData = {
+    body?: RemarkRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/recall';
+};
+
+export type RecallMemoResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type RecallMemoResponse = RecallMemoResponses[keyof RecallMemoResponses];
 
 export type ResubmitMemoData = {
     body?: RemarkRequest;

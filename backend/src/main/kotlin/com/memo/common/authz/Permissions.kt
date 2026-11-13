@@ -45,6 +45,15 @@ enum class Permission(
 
     /** See open workflow tasks and reassign them, for example when an approver left (Phase 2 E01). */
     WORKFLOW_TASKS_REASSIGN("workflow.tasks.reassign", scopable = false, privileged = true),
+
+    /** Author workflow definitions and submit them for review (Phase 2 E03; maker of maker-checker). */
+    WORKFLOW_DEFINITIONS_MANAGE("workflow.definitions.manage", scopable = false, privileged = true),
+
+    /** Review, publish and retire workflow definitions, and move running items to a new version (Phase 2 E03; checker). */
+    WORKFLOW_DEFINITIONS_APPROVE("workflow.definitions.approve", scopable = false, privileged = true),
+
+    /** Cancel a running workflow with a reason (Phase 2 E03). */
+    WORKFLOW_INSTANCES_CANCEL("workflow.instances.cancel", scopable = false, privileged = true),
     ;
 
     companion object {

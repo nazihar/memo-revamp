@@ -53,7 +53,7 @@ class WorkflowVolume(
         val tenant =
             ActorContext.asSystem("volume-v2") {
                 if (registry.findBySlug(SLUG) != null) null else registry.create(slug = SLUG, name = "Synthetic volume V2").id
-            } ?: return null
+            } ?: return null.also { log.warn("Volume V2: the tenant exists, nothing generated (a failed run leaves it part-built)") }
         val people =
             TenantContext.call(tenant) {
                 ActorContext.asSystem("volume-v2") {

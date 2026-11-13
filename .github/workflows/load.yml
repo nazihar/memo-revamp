@@ -53,6 +53,8 @@ jobs:
           for i in $(seq 1 600); do
             logs=$(docker compose -p memo-nightly logs backend 2>/dev/null)
             if grep -q 'Volume V2 ready' <<<"$logs"; then grep -o 'Volume V2 ready[^"]*' <<<"$logs"; exit 0; fi
+            # A failed start restarts the backend, which then finds the tenant and generates nothing: stop here.
+            if grep -q 'Application run failed\|Volume V2: the tenant exists' <<<"$logs"; then echo 'the backend failed to generate volume V2' >&2; exit 1; fi
             if [ $((i % 6)) -eq 0 ]; then echo "$(date -u +%H:%M) $(grep -o 'Volume V2: [^"]*' <<<"$logs" | tail -1)"; fi
             sleep 10
           done

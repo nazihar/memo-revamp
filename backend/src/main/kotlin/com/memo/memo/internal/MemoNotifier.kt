@@ -11,10 +11,12 @@ import com.memo.tenancy.TenantRegistry
 import com.memo.workflow.ActionKind
 import com.memo.workflow.InstanceStatus
 import com.memo.workflow.TaskClosure
+import com.memo.workflow.TimerKind
 import com.memo.workflow.WorkflowActionTaken
 import com.memo.workflow.WorkflowNotifyRequested
 import com.memo.workflow.WorkflowTaskClosed
 import com.memo.workflow.WorkflowTaskCreated
+import com.memo.workflow.WorkflowTimerFired
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 import java.time.Clock
@@ -99,6 +101,28 @@ class MemoNotifier(
             OffsetDateTime.now(clock).withOffsetSameInstant(ZoneOffset.UTC),
         )
         notify(event.recipientId, NotificationKind.MEMO_UPDATE, memo.id, mapOf("message" to event.messageKey))
+    }
+
+    /**
+     * SLA timers (design E05 §4.3): reminders go to the holder; when the task becomes overdue the holder and the
+     * initiator are told. Escalations are the workflow's (they reassign or tell the escalation targets).
+     */
+    @EventListener
+    fun onTimer(event: WorkflowTimerFired) {
+        if (event.subjectType != MemoWorkflowSubject.TYPE) return
+        when (event.kind) {
+            TimerKind.REMIND_BEFORE, TimerKind.REMIND_AFTER -> {
+                notify(event.assigneeId, NotificationKind.TASK_REMINDER, event.subjectId)
+            }
+
+            TimerKind.DUE -> {
+                notify(event.assigneeId, NotificationKind.TASK_OVERDUE, event.subjectId)
+                store.find(event.subjectId)?.let { notify(it.initiatorId, NotificationKind.TASK_OVERDUE, it.id) }
+            }
+
+            // The workflow escalates on its own: it reassigns or tells the escalation targets.
+            TimerKind.ESCALATE -> {}
+        }
     }
 
     /** Tells [user] (nobody when null: a step without assignee, which the reassigners hear about instead). */

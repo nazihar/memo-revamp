@@ -70,7 +70,10 @@ jobs:
           # The volume users' password, generated into the stack's .env; never printed.
           MEMO_DEMO_PASSWORD=$(grep '^MEMO_DEMO_PASSWORD=' build/onprem-stack/.env | cut -d= -f2-)
           export MEMO_DEMO_PASSWORD
-          ./gradlew :perf:gatlingRun --simulation com.memo.perf.InboxLoadSimulation -DbaseUrl=http://127.0.0.1:18100 --console=plain
+          # Organisations are told apart by host: the volume tenant is volume.<base domain> of the stack.
+          domain=$(grep '^MEMO_TENANCY_BASE_DOMAIN=' build/onprem-stack/.env | cut -d= -f2-)
+          ./gradlew :perf:gatlingRun --simulation com.memo.perf.InboxLoadSimulation -DbaseUrl=http://127.0.0.1:18100 \
+            -DtenantHost="volume.$domain" --console=plain
       - if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:

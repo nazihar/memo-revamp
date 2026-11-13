@@ -7,8 +7,7 @@ import io.gatling.javaapi.core.CoreDsl.global
 import io.gatling.javaapi.core.CoreDsl.rampUsers
 import io.gatling.javaapi.core.CoreDsl.scenario
 import io.gatling.javaapi.core.Simulation
-import io.gatling.javaapi.http.HttpDsl.CookieKey
-import io.gatling.javaapi.http.HttpDsl.getCookieValue
+import io.gatling.javaapi.http.HttpDsl.headerRegex
 import io.gatling.javaapi.http.HttpDsl.http
 import io.gatling.javaapi.http.HttpDsl.status
 import java.time.Duration
@@ -38,21 +37,32 @@ class InboxLoadSimulation : Simulation() {
 
     private val approvers = (1..APPROVERS).map { mapOf<String, Any>("email" to "approver$it@volume.example") }.iterator()
 
+    /*
+     * The cookies are Secure, and Gatling's cookie jar sends Secure cookies over plain HTTP only to "localhost" names,
+     * not to 127.0.0.1 (the stack listens on IPv4 only). So the scenario carries them itself, from Set-Cookie.
+     */
     private val inbox =
         scenario("inbox")
             .feed(approvers)
-            .exec(http("GET /auth/csrf").get("/api/v1/auth/csrf").check(status().shouldBe(OK)))
-            .exec(getCookieValue(CookieKey("XSRF-TOKEN").saveAs("xsrf")))
             .exec(
+                http("GET /auth/csrf")
+                    .get("/api/v1/auth/csrf")
+                    .check(status().shouldBe(OK), headerRegex("Set-Cookie", "XSRF-TOKEN=([^;]+)").saveAs("xsrf")),
+            ).exec(
                 http("POST /auth/login")
                     .post("/api/v1/auth/login")
+                    .header("Cookie", "XSRF-TOKEN=#{xsrf}")
                     .header("X-XSRF-TOKEN", "#{xsrf}")
                     .body(StringBody { session -> """{"email":"${session.getString("email")}","password":"$password"}""" })
-                    .check(status().shouldBe(OK)),
+                    .check(status().shouldBe(OK), headerRegex("Set-Cookie", "$SESSION_COOKIE=([^;]+)").saveAs("session")),
             ).repeat(reads)
             .on(
-                exec(http(INBOX).get("/api/v1/inbox/tasks?limit=25").check(status().shouldBe(OK)))
-                    .pause(Duration.ofMillis(PAUSE_MS)),
+                exec(
+                    http(INBOX)
+                        .get("/api/v1/inbox/tasks?limit=25")
+                        .header("Cookie", "$SESSION_COOKIE=#{session}")
+                        .check(status().shouldBe(OK)),
+                ).pause(Duration.ofMillis(PAUSE_MS)),
             )
 
     init {
@@ -66,6 +76,7 @@ class InboxLoadSimulation : Simulation() {
 
     private companion object {
         const val INBOX = "GET /inbox/tasks"
+        const val SESSION_COOKIE = "MEMO_SESSION"
         const val APPROVERS = 50
         const val READS = 20
         const val PAUSE_MS = 500L

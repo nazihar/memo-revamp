@@ -102,6 +102,18 @@ test.describe('as a tenant admin', () => {
     await page.getByRole('link', { name: 'Credit facility' }).click()
     // Version 1 on a fresh stack; a stack seeded before E05 has the deadlines in version 2.
     await expect(page.getByRole('heading', { level: 2, name: /Version \d+ · Published/ })).toBeVisible()
+    // E06 T1: the diagram draws under the real CSP; the Steps view says the same in words.
+    const diagram = page.getByRole('group', { name: 'Workflow diagram' })
+    await expect(diagram.getByLabel(/^Step 1 of 5, Review, Credit review\./)).toBeVisible()
+    await expect(diagram.getByLabel('End', { exact: true })).toBeVisible()
+    // Connections are SVG groups: named, though Playwright counts them as hidden.
+    await expect(diagram.getByLabel('Tell the author leads to End')).toHaveCount(1)
+    await app.checkA11y()
+    await page.getByRole('tab', { name: 'Steps' }).click()
+    const steps = page.getByRole('list', { name: 'Steps, in the order they are written' })
+    await expect(steps.getByRole('heading', { name: '1. Credit review' })).toBeVisible()
+    await expect(steps.getByText(/^Due in 1 working day/)).toBeVisible()
+    await page.getByRole('tab', { name: 'JSON' }).click()
     await expect(page.getByRole('textbox', { name: /Definition/ })).toHaveAttribute('readonly')
     await app.checkA11y()
   })

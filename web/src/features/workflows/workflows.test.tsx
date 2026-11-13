@@ -1,7 +1,7 @@
 import { screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
-import { describe, expect, it } from 'vitest'
+import { beforeAll, describe, expect, it } from 'vitest'
 import type {
   DefinitionResponse,
   DefinitionSummary,
@@ -11,6 +11,7 @@ import type {
 } from '@/api/generated/types.gen'
 import { partForPath } from '@/i18n/catalogue-parts'
 import { accessHandler, API_ORIGIN, csrfHandler, server, sessionHandler, signedInSession } from '@/test/msw'
+import { installReactFlowStubs } from '@/test/react-flow'
 import { expectNoA11yViolations, renderRoute } from '@/test/render'
 
 const MANAGE = 'workflow.definitions.manage'
@@ -46,6 +47,7 @@ const version = (number: number, state: VersionResponse['version']['state']): Ve
   revision: 3,
   body: { schemaVersion: 2, start: 'route', steps: [{ id: 'route', type: 'route', next: 'end' }] },
   problems: [],
+  labels: {},
 })
 
 function handlers(permissions: string[], shown: VersionResponse = version(2, 'IN_REVIEW')) {
@@ -66,6 +68,8 @@ function handlers(permissions: string[], shown: VersionResponse = version(2, 'IN
 }
 
 describe('workflow definitions', () => {
+  beforeAll(installReactFlowStubs)
+
   it('lists definitions with their published and open versions', async () => {
     server.use(...handlers([MANAGE]))
     const { container } = renderRoute('/admin/workflows')
@@ -96,6 +100,13 @@ describe('workflow definitions', () => {
     const toolbar = await screen.findByRole('toolbar', { name: 'Versions' }, { timeout: 5000 })
     expect(within(toolbar).getByRole('button', { name: 'Approve and publish' })).toBeInTheDocument()
     expect(within(toolbar).queryByRole('button', { name: 'Save draft' })).toBeNull()
+    // A version in review opens on the diagram (E06 T1); the Steps view says the same in words.
+    expect(screen.getByRole('group', { name: 'Workflow diagram' })).toBeInTheDocument()
+    await user.click(screen.getByRole('tab', { name: 'Steps' }))
+    const steps = screen.getByRole('list', { name: 'Steps, in the order they are written' })
+    expect(within(steps).getByRole('heading', { name: '1. route' })).toBeInTheDocument()
+    expect(within(steps).getByText('The approvers the initiator chooses')).toBeInTheDocument()
+    await user.click(screen.getByRole('tab', { name: 'JSON' }))
     expect(screen.getByRole('textbox', { name: /Definition/ })).toHaveAttribute('readonly')
 
     await user.click(within(toolbar).getByRole('button', { name: 'Send back' }))

@@ -1515,6 +1515,9 @@ export type VersionResponse = {
     };
     id: string;
     key: string;
+    labels: {
+        [key: string]: string;
+    };
     problems: Array<FieldProblem>;
     /**
      * Send as If-Match when changing or submitting a draft

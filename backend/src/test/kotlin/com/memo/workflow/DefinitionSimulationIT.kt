@@ -87,6 +87,14 @@ class DefinitionSimulationIT : MemoIntegrationTest() {
     }
 
     @Test
+    fun `a version names the people its body mentions (E06 T1)`() {
+        val labels = read("$base/credit/versions/1", session).json()["labels"]
+        assertThat(labels[reviewer.id.toString()].asString()).isNotBlank()
+        assertThat(labels[director.id.toString()].asString()).isNotBlank()
+        assertThat(labels.has(author.id.toString())).isFalse()
+    }
+
+    @Test
     fun `simulations are limited per user`() {
         val statuses = (1..31).map { post("$base/credit/versions/1/simulate", session, request(0)).response.status }
         assertThat(statuses.take(30)).allMatch { it == HttpStatus.OK.value() }

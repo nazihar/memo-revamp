@@ -31,4 +31,13 @@ class AuthzRoleHolders(
             .toSet()
 
     override fun exists(roleId: UUID): Boolean = tenantDsl.current().fetchExists(AUTHZ_ROLE, AUTHZ_ROLE.ID.eq(roleId))
+
+    override fun names(): Map<UUID, String> =
+        tenantDsl
+            .current()
+            .select(AUTHZ_ROLE.ID, AUTHZ_ROLE.NAME)
+            .from(AUTHZ_ROLE)
+            .orderBy(AUTHZ_ROLE.NAME)
+            .fetch()
+            .associate { checkNotNull(it.value1()) to checkNotNull(it.value2()) }
 }

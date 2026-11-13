@@ -64,6 +64,8 @@ data class VersionResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val body: Map<String, Any?>,
     /** What submitting it would refuse (drafts and versions in review), with JSON pointers into [body]. */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val problems: List<FieldProblem>,
+    /** Names of the people, positions, units and roles the body mentions, by id (design E06 §5). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val labels: Map<UUID, String> = emptyMap(),
 )
 
 data class ValidationResponse(

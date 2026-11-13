@@ -59,6 +59,20 @@ class UnitStore(
             .orderBy(DSL.lower(ORG_UNIT.NAME), ORG_UNIT.ID)
             .fetch { it.toUnit() }
 
+    /** The names of the units of [ids] that exist. */
+    fun names(ids: Collection<UUID>): Map<UUID, String> =
+        if (ids.isEmpty()) {
+            emptyMap()
+        } else {
+            tenantDsl
+                .current()
+                .select(ORG_UNIT.ID, ORG_UNIT.NAME)
+                .from(ORG_UNIT)
+                .where(ORG_UNIT.ID.`in`(ids))
+                .fetch()
+                .associate { checkNotNull(it.value1()) to checkNotNull(it.value2()) }
+        }
+
     fun unit(id: UUID): OrgUnit? =
         tenantDsl
             .current()

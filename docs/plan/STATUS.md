@@ -59,7 +59,8 @@
 - [x] E05 plan written (2026-11-13): research (R7, business calendars), ADR-0041, design, threat model, tasks T1–T8, test plan (`epic-05-timers-slas/`)
 - [x] E05 T1 business calendar (stacked PR)
 - [x] E05 T2 SLA model and due times (stacked PR)
-- [ ] E05 T3 timers · T4 reminders · T5 escalation · T6 volume V2 · T7 web · T8 close
+- [x] E05 T3 timers (stacked PR)
+- [ ] E05 T4 reminders · T5 escalation · T6 volume V2 · T7 web · T8 close
 
 ## State (Phase 1a, closed)
 - [x] Overview approved (2026-10-18), Q1–Q8 answered, per-epic gate delegated

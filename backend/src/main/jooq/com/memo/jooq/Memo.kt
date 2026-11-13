@@ -60,6 +60,7 @@ import com.memo.jooq.tables.WorkflowRound
 import com.memo.jooq.tables.WorkflowStep
 import com.memo.jooq.tables.WorkflowSubstitution
 import com.memo.jooq.tables.WorkflowTask
+import com.memo.jooq.tables.WorkflowTimer
 
 import kotlin.collections.List
 
@@ -368,6 +369,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      */
     val WORKFLOW_TASK: WorkflowTask get() = WorkflowTask.WORKFLOW_TASK
 
+    /**
+     * The table <code>memo.workflow_timer</code>.
+     */
+    val WORKFLOW_TIMER: WorkflowTimer get() = WorkflowTimer.WORKFLOW_TIMER
+
     override fun getCatalog(): Catalog = DefaultCatalog.DEFAULT_CATALOG
 
     override fun getTables(): List<Table<*>> = listOf(
@@ -427,6 +433,7 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         WorkflowRound.WORKFLOW_ROUND,
         WorkflowStep.WORKFLOW_STEP,
         WorkflowSubstitution.WORKFLOW_SUBSTITUTION,
-        WorkflowTask.WORKFLOW_TASK
+        WorkflowTask.WORKFLOW_TASK,
+        WorkflowTimer.WORKFLOW_TIMER
     )
 }

@@ -62,6 +62,7 @@ import com.memo.jooq.tables.WorkflowRound
 import com.memo.jooq.tables.WorkflowStep
 import com.memo.jooq.tables.WorkflowSubstitution
 import com.memo.jooq.tables.WorkflowTask
+import com.memo.jooq.tables.WorkflowTimer
 
 
 
@@ -349,3 +350,8 @@ val WORKFLOW_SUBSTITUTION: WorkflowSubstitution = WorkflowSubstitution.WORKFLOW_
  * The table <code>memo.workflow_task</code>.
  */
 val WORKFLOW_TASK: WorkflowTask = WorkflowTask.WORKFLOW_TASK
+
+/**
+ * The table <code>memo.workflow_timer</code>.
+ */
+val WORKFLOW_TIMER: WorkflowTimer = WorkflowTimer.WORKFLOW_TIMER

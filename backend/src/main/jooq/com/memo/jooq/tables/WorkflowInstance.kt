@@ -16,12 +16,14 @@ import com.memo.jooq.keys.WORKFLOW_INSTANCE__WORKFLOW_INSTANCE_TENANT_ID_DEFINIT
 import com.memo.jooq.keys.WORKFLOW_ROUND__WORKFLOW_ROUND_TENANT_ID_INSTANCE_ID_FKEY
 import com.memo.jooq.keys.WORKFLOW_STEP__WORKFLOW_STEP_TENANT_ID_INSTANCE_ID_FKEY
 import com.memo.jooq.keys.WORKFLOW_TASK__WORKFLOW_TASK_TENANT_ID_INSTANCE_ID_FKEY
+import com.memo.jooq.keys.WORKFLOW_TIMER__WORKFLOW_TIMER_TENANT_ID_INSTANCE_ID_FKEY
 import com.memo.jooq.tables.WorkflowAction.WorkflowActionPath
 import com.memo.jooq.tables.WorkflowDefinitionVersion.WorkflowDefinitionVersionPath
 import com.memo.jooq.tables.WorkflowDoaVersion.WorkflowDoaVersionPath
 import com.memo.jooq.tables.WorkflowRound.WorkflowRoundPath
 import com.memo.jooq.tables.WorkflowStep.WorkflowStepPath
 import com.memo.jooq.tables.WorkflowTask.WorkflowTaskPath
+import com.memo.jooq.tables.WorkflowTimer.WorkflowTimerPath
 import com.memo.jooq.tables.records.WorkflowInstanceRecord
 
 import java.time.OffsetDateTime
@@ -281,6 +283,22 @@ open class WorkflowInstance(
 
     val workflowTask: WorkflowTaskPath
         get(): WorkflowTaskPath = workflowTask()
+
+    private lateinit var _workflowTimer: WorkflowTimerPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.workflow_timer</code> table
+     */
+    fun workflowTimer(): WorkflowTimerPath {
+        if (!this::_workflowTimer.isInitialized)
+            _workflowTimer = WorkflowTimerPath(this, null, WORKFLOW_TIMER__WORKFLOW_TIMER_TENANT_ID_INSTANCE_ID_FKEY.inverseKey)
+
+        return _workflowTimer;
+    }
+
+    val workflowTimer: WorkflowTimerPath
+        get(): WorkflowTimerPath = workflowTimer()
     override fun getChecks(): List<Check<WorkflowInstanceRecord>> = listOf(
         Internal.createCheck(this, DSL.name("workflow_instance_check"), "(((status = 'RUNNING'::text) = (current_step_id IS NOT NULL)))", true),
         Internal.createCheck(this, DSL.name("workflow_instance_current_round_check"), "((current_round >= 1))", true),

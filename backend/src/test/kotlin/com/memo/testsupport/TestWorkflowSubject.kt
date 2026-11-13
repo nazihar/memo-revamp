@@ -11,6 +11,7 @@ import com.memo.workflow.WorkflowStepCompleted
 import com.memo.workflow.WorkflowSubject
 import com.memo.workflow.WorkflowTaskClosed
 import com.memo.workflow.WorkflowTaskCreated
+import com.memo.workflow.WorkflowTimerFired
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 import java.util.UUID
@@ -105,6 +106,11 @@ class WorkflowEventRecorder {
         events += event
     }
 
+    @EventListener
+    fun on(event: WorkflowTimerFired) {
+        events += event
+    }
+
     fun of(subjectId: UUID): List<Any> =
         events.filter {
             when (it) {
@@ -115,6 +121,7 @@ class WorkflowEventRecorder {
                 is WorkflowEscalatedToForum -> it.subjectId == subjectId
                 is WorkflowStepCompleted -> it.subjectId == subjectId
                 is WorkflowInstanceEnded -> it.subjectId == subjectId
+                is WorkflowTimerFired -> it.subjectId == subjectId
                 else -> false
             }
         }

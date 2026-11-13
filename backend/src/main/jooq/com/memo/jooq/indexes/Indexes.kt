@@ -40,6 +40,7 @@ import com.memo.jooq.tables.WorkflowRound
 import com.memo.jooq.tables.WorkflowStep
 import com.memo.jooq.tables.WorkflowSubstitution
 import com.memo.jooq.tables.WorkflowTask
+import com.memo.jooq.tables.WorkflowTimer
 
 import org.jooq.Index
 import org.jooq.impl.DSL
@@ -112,3 +113,6 @@ val WORKFLOW_TASK_ONE_OPEN_IDX: Index = Internal.createIndex(DSL.name("workflow_
 val WORKFLOW_TASK_OPEN_IDX: Index = Internal.createIndex(DSL.name("workflow_task_open_idx"), WorkflowTask.WORKFLOW_TASK, arrayOf(WorkflowTask.WORKFLOW_TASK.TENANT_ID, WorkflowTask.WORKFLOW_TASK.CREATED_AT.desc(), WorkflowTask.WORKFLOW_TASK.ID), false)
 val WORKFLOW_TASK_PARENT_IDX: Index = Internal.createIndex(DSL.name("workflow_task_parent_idx"), WorkflowTask.WORKFLOW_TASK, arrayOf(WorkflowTask.WORKFLOW_TASK.TENANT_ID, WorkflowTask.WORKFLOW_TASK.PARENT_TASK_ID), false)
 val WORKFLOW_TASK_STEP_IDX: Index = Internal.createIndex(DSL.name("workflow_task_step_idx"), WorkflowTask.WORKFLOW_TASK, arrayOf(WorkflowTask.WORKFLOW_TASK.TENANT_ID, WorkflowTask.WORKFLOW_TASK.STEP_ID), false)
+val WORKFLOW_TIMER_DUE_IDX: Index = Internal.createIndex(DSL.name("workflow_timer_due_idx"), WorkflowTimer.WORKFLOW_TIMER, arrayOf(WorkflowTimer.WORKFLOW_TIMER.TENANT_ID, WorkflowTimer.WORKFLOW_TIMER.FIRES_AT), false)
+val WORKFLOW_TIMER_INSTANCE_IDX: Index = Internal.createIndex(DSL.name("workflow_timer_instance_idx"), WorkflowTimer.WORKFLOW_TIMER, arrayOf(WorkflowTimer.WORKFLOW_TIMER.TENANT_ID, WorkflowTimer.WORKFLOW_TIMER.INSTANCE_ID), false)
+val WORKFLOW_TIMER_TASK_IDX: Index = Internal.createIndex(DSL.name("workflow_timer_task_idx"), WorkflowTimer.WORKFLOW_TIMER, arrayOf(WorkflowTimer.WORKFLOW_TIMER.TENANT_ID, WorkflowTimer.WORKFLOW_TIMER.TASK_ID), false)

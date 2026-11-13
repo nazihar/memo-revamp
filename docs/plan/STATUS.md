@@ -74,7 +74,10 @@
 - [x] E06 T6 simulation UI: sample values, the path in the diagram and the Steps view, reasons in words; builder catalogue part (stacked PR)
 - [x] E06 T7 diff and review: the Changes tab against the published or any other version, in words and on the diagram (stacked PR)
 - [x] E06 T8 accessibility pass: arrow keys along connections, Delete asks, announcements, diagram contrast, manual checklist (stacked PR)
-- [ ] E06 T9 close (epic and phase)
+- [x] E06 T9 close: exit journey `builder.spec.ts`, demo reviewer account, phase `demo.md` and `retrospective.md`, runbook, ASVS rows (stacked PR) — **E06 complete** (PRs #72–#81, none merged yet)
+- [x] **Phase 2 built** (2026-11-13): exit status in `phase-2-workflow-engine/retrospective.md`
+- [ ] E03–E06 merged (#41 → #81, in order) and on dev; first weekly load report
+- [ ] Owner: phase demo (`demo.md`), builder walkthrough, manual keyboard and screen-reader pass (carried)
 
 ## State (Phase 1a, closed)
 - [x] Overview approved (2026-10-18), Q1–Q8 answered, per-epic gate delegated
@@ -85,8 +88,8 @@
 - [ ] Owner demo, moderated usability walkthrough, manual keyboard and screen-reader pass (carried)
 
 ## Next step
-1. Owner: merge E03, E04 and E05 in order (#41 → #71, each stacked on the one before); agent then deploys and checks them on dev.
-1. Agent: E06 (visual workflow builder) implementation, slice by slice, stacked on the E05 PRs (T5 simulation API first, being backend only).
+1. Owner: merge E03–E06 in order (#41 → #81, each stacked on the one before); the agent then deploys them to dev, checks them there, and reads the first weekly load report.
+1. Owner: the phase demo (`phase-2-workflow-engine/demo.md`), the builder walkthrough and the manual accessibility pass; then choose the next phase (Phase 1b must finish before Phase 3 exits).
 2. Owner: the D1 demo on dev (`phase-2-workflow-engine/epic-01-first-slice/demo.md`).
 3. Before 2026-11-22: take the rebuilt distroless digest from Renovate and delete the zlib entries in `.trivyignore`.
 4. Follow-ups (retrospective "Carried"): `AuditPerformanceIT`, `NotificationPerformanceIT`, the full-signature ClamAV corpus nightly, sample bodies for the remaining mutating matrix cells, upstream clean-ups (`apk upgrade` lines, Spring Session licence exceptions, Guava pin), Spring Boot 4.2 GA.

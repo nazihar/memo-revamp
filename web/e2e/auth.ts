@@ -10,6 +10,7 @@ import type { APIRequestContext, Page } from '@playwright/test'
  */
 export const DEMO_USERS = {
   tenantAdmin: 'admin@demo.example',
+  reviewer: 'reviewer@demo.example',
   orgAdmin: 'orgadmin@demo.example',
   branchAdmin: 'branchadmin@demo.example',
   auditor: 'auditor@demo.example',

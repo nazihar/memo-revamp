@@ -9,7 +9,15 @@ import { fileURLToPath } from 'node:url'
  * secretary and director.
  */
 export type SignedInRole =
-  'tenantAdmin' | 'orgAdmin' | 'branchAdmin' | 'auditor' | 'user' | 'headCredit' | 'director' | 'headFinance'
+  | 'tenantAdmin'
+  | 'reviewer'
+  | 'orgAdmin'
+  | 'branchAdmin'
+  | 'auditor'
+  | 'user'
+  | 'headCredit'
+  | 'director'
+  | 'headFinance'
 export type Role = 'anonymous' | SignedInRole
 
 export function authFile(role: SignedInRole): string {

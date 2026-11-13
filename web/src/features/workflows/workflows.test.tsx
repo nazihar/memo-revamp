@@ -102,7 +102,11 @@ describe('workflow definitions', () => {
     const toolbar = await screen.findByRole('toolbar', { name: 'Versions' }, { timeout: 5000 })
     expect(within(toolbar).getByRole('button', { name: 'Approve and publish' })).toBeInTheDocument()
     expect(within(toolbar).queryByRole('button', { name: 'Save draft' })).toBeNull()
-    // A version in review opens on the diagram (E06 T1); the Steps view says the same in words.
+    // A reviewer opens a version in review on its changes against the published one (E06 T7); this fixture has none.
+    expect(screen.getByRole('tab', { name: 'Changes' })).toHaveAttribute('aria-selected', 'true')
+    expect(await screen.findByText('Nothing changed between these versions.')).toBeInTheDocument()
+    // The diagram and the Steps view say the same in words.
+    await user.click(screen.getByRole('tab', { name: 'Diagram' }))
     expect(screen.getByRole('group', { name: 'Workflow diagram' })).toBeInTheDocument()
     await user.click(screen.getByRole('tab', { name: 'Steps' }))
     const steps = screen.getByRole('list', { name: 'Steps, in the order they are written' })

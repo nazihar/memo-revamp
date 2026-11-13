@@ -44,7 +44,8 @@ function StepBox({ data }: NodeProps<StepNode>) {
   return (
     <div
       data-reached={data.reached || undefined}
-      className="flex h-full flex-col gap-0.5 overflow-hidden rounded-md border-2 border-foreground/60 bg-background px-3 py-2 text-start text-xs data-[reached]:border-primary data-[reached]:ring-2 data-[reached]:ring-primary"
+      data-change={data.change}
+      className="flex h-full flex-col gap-0.5 overflow-hidden rounded-md border-2 border-foreground/60 bg-background px-3 py-2 text-start text-xs data-[reached]:border-primary data-[reached]:ring-2 data-[reached]:ring-primary data-[change]:border-dashed"
       style={{ width: NODE_WIDTH, height: NODE_HEIGHT }}
     >
       <Handle type="target" position={Position.Top} isConnectable={false} />
@@ -52,6 +53,11 @@ function StepBox({ data }: NodeProps<StepNode>) {
         <span className="font-medium text-muted-foreground">{data.type}</span>
         {data.problems > 0 ? (
           <Badge tone="danger">{intl.formatMessage(bmv.problems, { count: data.problems })}</Badge>
+        ) : null}
+        {data.change ? (
+          <Badge tone={data.change === 'added' ? 'ok' : 'warn'}>
+            {intl.formatMessage(data.change === 'added' ? bm.added : bm.changed)}
+          </Badge>
         ) : null}
         {data.reached ? (
           <Footprints aria-label={intl.formatMessage(bm.reached)} className="ms-auto size-3.5 text-primary" />
@@ -94,6 +100,7 @@ export function DefinitionDiagram({
   onCommand,
   onLabel,
   reached,
+  changes,
 }: {
   body: DefinitionBody
   labels: Labels
@@ -104,12 +111,14 @@ export function DefinitionDiagram({
   onLabel?: (id: string, label: string) => void
   /** Steps the last simulation reached. */
   reached?: ReadonlySet<string>
+  /** Steps added or changed since the version compared with. */
+  changes?: ReadonlyMap<string, 'added' | 'changed'>
 }) {
   const intl = useIntl()
   const [selected, setSelected] = useState<string>()
   const { nodes, edges } = useMemo(
-    () => diagram(intl, body, labels, problems, selected, reached),
-    [intl, body, labels, problems, selected, reached],
+    () => diagram(intl, body, labels, problems, selected, reached, changes),
+    [intl, body, labels, problems, selected, reached, changes],
   )
   const selectedStep = body.steps.find((s) => s.id === selected)
   const select = (id: string | undefined) => {

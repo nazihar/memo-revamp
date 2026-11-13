@@ -1251,6 +1251,12 @@
       "value": "Add a step at the startSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "builder.added": [
+    {
+      "type": 0,
+      "value": "AddedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "builder.assignee.choose": [
     {
       "type": 0,
@@ -1521,6 +1527,321 @@
     {
       "type": 0,
       "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.change.branch": [
+    {
+      "type": 0,
+      "value": "if "
+    },
+    {
+      "type": 1,
+      "value": "condition"
+    },
+    {
+      "type": 0,
+      "value": ", leads to "
+    },
+    {
+      "type": 1,
+      "value": "to"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.change.field.actions": [
+    {
+      "type": 0,
+      "value": "What the holder can doSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.change.field.attributes": [
+    {
+      "type": 0,
+      "value": "Attributes conditions may readSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.change.field.due": [
+    {
+      "type": 0,
+      "value": "Due afterSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.change.field.escalate": [
+    {
+      "type": 0,
+      "value": "When it is lateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.change.field.fallback": [
+    {
+      "type": 0,
+      "value": "If nobody is foundSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.change.field.forward": [
+    {
+      "type": 0,
+      "value": "ForwardingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.change.field.message": [
+    {
+      "type": 0,
+      "value": "MessageSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.change.field.mode": [
+    {
+      "type": 0,
+      "value": "Decided whenSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.change.field.n": [
+    {
+      "type": 0,
+      "value": "How manySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.change.field.name": [
+    {
+      "type": 0,
+      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.change.field.remarks": [
+    {
+      "type": 0,
+      "value": "Actions that need a remarkSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.change.field.remindAfter": [
+    {
+      "type": 0,
+      "value": "Reminders afterSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.change.field.remindBefore": [
+    {
+      "type": 0,
+      "value": "Reminder beforeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.change.field.resubmit": [
+    {
+      "type": 0,
+      "value": "When resubmittedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.change.field.start": [
+    {
+      "type": 0,
+      "value": "Starts atSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.change.field.type": [
+    {
+      "type": 0,
+      "value": "TypeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.change.field.workingTime": [
+    {
+      "type": 0,
+      "value": "Working time onlySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.change.no": [
+    {
+      "type": 0,
+      "value": "noSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.change.none": [
+    {
+      "type": 0,
+      "value": "noneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.change.yes": [
+    {
+      "type": 0,
+      "value": "yesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.changed": [
+    {
+      "type": 0,
+      "value": "ChangedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.changes.compareWith": [
+    {
+      "type": 0,
+      "value": "Compared withSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.changes.line": [
+    {
+      "type": 1,
+      "value": "before"
+    },
+    {
+      "type": 0,
+      "value": " → "
+    },
+    {
+      "type": 1,
+      "value": "after"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.changes.list": [
+    {
+      "type": 0,
+      "value": "Changes, step by stepSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.changes.same": [
+    {
+      "type": 0,
+      "value": "Nothing changed between these versions.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.changes.summary": [
+    {
+      "type": 6,
+      "value": "added",
+      "options": {
+        "=0": {
+          "value": []
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " step added. "
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " steps added. "
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 6,
+      "value": "removed",
+      "options": {
+        "=0": {
+          "value": []
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " step removed. "
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " steps removed. "
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 6,
+      "value": "changed",
+      "options": {
+        "=0": {
+          "value": []
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " step changed."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " steps changed."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.changes.unreadable": [
+    {
+      "type": 0,
+      "value": "That version cannot be compared: its body is not a workflow.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.changes.version": [
+    {
+      "type": 0,
+      "value": "Version "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.changes.workflow": [
+    {
+      "type": 0,
+      "value": "The workflow as a wholeSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "builder.checked": [
@@ -2537,6 +2858,12 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "builder.removed": [
+    {
+      "type": 0,
+      "value": "RemovedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "builder.route": [
     {
       "type": 0,
@@ -3071,6 +3398,26 @@
       "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "builder.stepAria.added": [
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": " Added in this version.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.stepAria.changed": [
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": " Changed in this version.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "builder.stepAria.reached": [
     {
       "type": 1,
@@ -3215,6 +3562,12 @@
     {
       "type": 0,
       "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.view.changes": [
+    {
+      "type": 0,
+      "value": "ChangesSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "builder.view.diagram": [

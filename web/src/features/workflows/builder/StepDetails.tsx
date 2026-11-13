@@ -7,6 +7,7 @@ import { Field } from '@/components/ui/field'
 import { Checkbox, Input, Select } from '@/components/ui/form-controls'
 import { AssigneeEditor } from './AssigneeEditor'
 import { HUMAN_STEPS, type AssigneeJson, type StepJson } from './definition'
+import { actionLabels } from './builder-messages'
 import type { Labels } from './describe'
 import type { Command } from './edit'
 import { SlaEditor } from './SlaEditor'
@@ -60,18 +61,6 @@ const dmv = defineMessages<{
   assigneeN: { id: 'builder.parallel.assigneeN', defaultMessage: 'Person or group {n}' },
   removeAssignee: { id: 'builder.parallel.remove', defaultMessage: 'Remove person or group {n}' },
   remarkFor: { id: 'builder.actions.remarkFor', defaultMessage: '{action} needs a remark' },
-})
-
-const actionLabels = defineMessages({
-  APPROVE: { id: 'builder.action.approve', defaultMessage: 'Approve' },
-  RECOMMEND: { id: 'builder.action.recommend', defaultMessage: 'Recommend' },
-  RETURN: { id: 'builder.action.return', defaultMessage: 'Return to the initiator' },
-  REJECT: { id: 'builder.action.reject', defaultMessage: 'Reject' },
-  SEND_BACK: { id: 'builder.action.sendBack', defaultMessage: 'Send back to an earlier step' },
-  FORWARD: { id: 'builder.action.forward', defaultMessage: 'Forward' },
-  DELEGATE: { id: 'builder.action.delegate', defaultMessage: 'Delegate' },
-  ASK: { id: 'builder.action.ask', defaultMessage: 'Ask for opinions' },
-  REFER: { id: 'builder.action.refer', defaultMessage: 'Refer' },
 })
 
 type Action = keyof typeof actionLabels

@@ -98,3 +98,16 @@
     - `workflows.test.tsx`: simulate from the page (the initiator required first, the request carrying the sample, the path with its condition, block reason and deadline, the Steps view marking both steps), and the Arabic definition page loading both parts;
     - `simulation.test.tsx`: the route inputs, 422 and 429, axe.
   - The full web suite passes apart from four files that time out under load and pass when rerun (the known flake).
+- **T7 (diff and review):**
+  - **The diff** (`diff.ts`, pure) matches steps by id. Added steps come in the newer version's order, removed ones after.
+    - A changed step lists the property paths that differ. Deadlines are compared one level down (`sla.due`, `sla.remind.before`) and conditions per branch (`branches[1].when`), so a change says which part moved.
+    - Key order is ignored.
+  - **In words** (`describe-change.ts`): what it was is named from the older version (a removed target still has its name), what it is from the newer one. People, positions, units and roles are by name, durations and deadlines in words, actions by their labels.
+  - **The Changes tab:**
+    - It appears when there is a version to compare with: the published one, or else the one before.
+    - A reviewer of a version in review opens on it. "Compared with" picks any other version.
+    - It shows a summary line, the diagram with added and changed steps marked (a dashed border and a word badge, plus the accessible name; never colour alone), changes to the workflow as a whole, and a list step by step, removed steps included.
+  - **Tests:**
+    - `diff.test.ts`: added, removed, changed; the moved part of a deadline; key order. Properties: a version against itself is empty; each step appears at most once, and only if it differs.
+    - `changes.test.tsx`: the summary, the list in words (a person's name before and after, "Tell the author → Board", "none → Due in 2 working days"), the diagram's marks, comparing with another version; axe.
+    - `workflows.test.tsx`: the reviewer lands on Changes.

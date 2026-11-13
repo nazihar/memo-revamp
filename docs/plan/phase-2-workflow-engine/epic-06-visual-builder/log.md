@@ -54,3 +54,19 @@
     - `workflows.test.tsx`: add a step from the Steps view, the debounced check and its badge, undo and redo, save with If-Match, and a 412 keeping the work.
     - `views.test.tsx`: selecting a diagram step opens its panel; renaming and connecting send their commands.
   - **Size:** the Arabic admin catalogue part is now 11.2 of its 15 KiB limit. T3 and T4 add strings; if it nears the limit, the builder's strings get their own part.
+- **T3 (panels: who and what):**
+  - **Catalogue:** `GET /api/v1/admin/workflow-builder/catalogue`, for authors and reviewers.
+    - It returns the attributes per item type, the tenant's roles and queues, published fragments only, and the step types without `sign`.
+    - It moved off `/workflow-definitions/catalogue`, which a definition keyed `catalogue` would have shadowed. The design is updated.
+  - **Assignee panel:** every kind.
+    - People and positions come from the existing directory picker. Units come from the directory; roles and queues from the catalogue.
+    - The supervisor's levels and a unit head's units-up are selects. Number fields clamped as you typed and made "2" hard to enter.
+    - The initiator is offered only where allowed (notices, T4).
+  - **Actions:** the positive action is fixed by the type, and a review cannot reject. Per action, "needs a remark". A forward limit appears when Forward is offered, and is cleared with it.
+  - **Parallel:** the mode (all, any, a number), n, and 2–20 people or groups, each with the assignee panel.
+  - **Other types:** the sub-workflow picks a published fragment; the forum key is a text field; DoA and route steps explain where they go.
+  - Names picked in a panel show in the views before the draft is saved.
+  - **Tests:**
+    - `BuilderCatalogueIT`: attributes, roles, a queue, a published fragment but not a draft one, no `sign`. Matrix row added.
+    - `panels.test.tsx`: a role in a unit, a queue, the supervisor's levels and a position through the picker each write the right JSON; actions, remarks and the forward limit; a parallel step's mode and people; axe.
+  - **Size:** the Arabic admin catalogue part is now 11.8 of 15 KiB.

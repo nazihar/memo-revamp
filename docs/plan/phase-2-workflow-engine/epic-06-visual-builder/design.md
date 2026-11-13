@@ -98,7 +98,7 @@ The page shows the path on the diagram and in the Steps view, and puts the deadl
 Permission: `workflow.definitions.manage` or `.approve`. Rate limit `RateLimit.WORKFLOW_SIMULATION_PER_USER`: 30 a minute per user. It is a read: no audit row, the same as the DoA simulator.
 
 ## 5. Catalogue and labels
-- `GET /api/v1/admin/workflow-definitions/catalogue`, for `.manage` or `.approve`, returns:
+- `GET /api/v1/admin/workflow-builder/catalogue`, for `.manage` or `.approve`, returns the following. It is not under `workflow-definitions/`, where `catalogue` could be a definition's key.
   - `subjectTypes`: the type, plus its attributes with their types (from `WorkflowSubject.attributes`);
   - `roles`: id and name;
   - `queues`: key and name;
@@ -137,7 +137,7 @@ The **Changes** view colours the diagram (added, removed, changed, each with an 
 
 | Endpoint | Permission | Notes |
 |---|---|---|
-| `GET …/catalogue` | `.manage` or `.approve` | Attributes, roles, queues, fragments, step types |
+| `GET /api/v1/admin/workflow-builder/catalogue` | `.manage` or `.approve` | Attributes, roles, queues, fragments, step types |
 | `POST …/{key}/versions/{n}/simulate` | `.manage` or `.approve` | 422 with problems when invalid; 429 over the limit |
 | `GET …/{key}/versions/{n}` | unchanged | Adds `labels` |
 | `PUT`, `validate`, `submit`, `approve`, `send-back` | unchanged (E03) | The builder uses them as they are |

@@ -262,6 +262,11 @@ function VersionEditor({
   const ifMatch = { 'If-Match': `"${version.revision}"` }
   const checking = useLiveValidation({ path, text, original, enabled: editable, onProblems: setProblems })
   const onCommand = editable ? builder.edit : undefined
+  const [picked, setPicked] = useState<Record<string, string>>({})
+  const labels = { ...version.labels, ...picked }
+  const onLabel = (id: string, label: string) => {
+    setPicked((current) => (current[id] === label ? current : { ...current, [id]: label }))
+  }
 
   const parsed = (): Record<string, unknown> | undefined => {
     try {
@@ -421,14 +426,20 @@ function VersionEditor({
         </TabsList>
         <TabsContent value="diagram" className="pt-3">
           {drawable ? (
-            <DefinitionDiagram body={drawable} labels={version.labels} problems={problems} onCommand={onCommand} />
+            <DefinitionDiagram
+              body={drawable}
+              labels={labels}
+              problems={problems}
+              onCommand={onCommand}
+              onLabel={onLabel}
+            />
           ) : (
             <p className="text-sm">{intl.formatMessage(bm.notReadable)}</p>
           )}
         </TabsContent>
         <TabsContent value="steps" className="pt-3">
           {drawable ? (
-            <StepsView body={drawable} labels={version.labels} problems={problems} onCommand={onCommand} />
+            <StepsView body={drawable} labels={labels} problems={problems} onCommand={onCommand} onLabel={onLabel} />
           ) : (
             <p className="text-sm">{intl.formatMessage(bm.notReadable)}</p>
           )}

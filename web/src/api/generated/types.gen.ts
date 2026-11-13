@@ -162,6 +162,14 @@ export type BrandingUpdate = {
     logoFileId?: string | null;
 };
 
+export type BuilderCatalogue = {
+    fragments: Array<CatalogueEntry>;
+    queues: Array<CatalogueEntry>;
+    roles: Array<CatalogueRole>;
+    stepTypes: Array<string>;
+    subjectTypes: Array<CatalogueSubjectType>;
+};
+
 export type CalendarDayResponse = {
     day: string;
     note?: string | null;
@@ -195,6 +203,26 @@ export type CalendarWeekRequest = {
 
 export type CancelRequest = {
     reason?: string | null;
+};
+
+export type CatalogueAttribute = {
+    name: string;
+    type: string;
+};
+
+export type CatalogueEntry = {
+    key: string;
+    name: string;
+};
+
+export type CatalogueRole = {
+    id: string;
+    name: string;
+};
+
+export type CatalogueSubjectType = {
+    attributes: Array<CatalogueAttribute>;
+    type: string;
 };
 
 export type ChangePasswordRequest = {
@@ -2088,6 +2116,22 @@ export type UnlockUserResponses = {
 };
 
 export type UnlockUserResponse = UnlockUserResponses[keyof UnlockUserResponses];
+
+export type GetBuilderCatalogueData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/workflow-builder/catalogue';
+};
+
+export type GetBuilderCatalogueResponses = {
+    /**
+     * OK
+     */
+    200: BuilderCatalogue;
+};
+
+export type GetBuilderCatalogueResponse = GetBuilderCatalogueResponses[keyof GetBuilderCatalogueResponses];
 
 export type ListWorkflowDefinitionsData = {
     body?: never;

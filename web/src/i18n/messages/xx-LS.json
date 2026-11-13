@@ -7563,6 +7563,88 @@
       "value": "This is not valid JSON.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "workflows.builder.action.approve": [
+    {
+      "type": 0,
+      "value": "ApproveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.action.ask": [
+    {
+      "type": 0,
+      "value": "Ask for opinionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.action.delegate": [
+    {
+      "type": 0,
+      "value": "DelegateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.action.forward": [
+    {
+      "type": 0,
+      "value": "ForwardSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.action.recommend": [
+    {
+      "type": 0,
+      "value": "RecommendSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.action.refer": [
+    {
+      "type": 0,
+      "value": "ReferSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.action.reject": [
+    {
+      "type": 0,
+      "value": "RejectSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.action.return": [
+    {
+      "type": 0,
+      "value": "Return to the initiatorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.action.sendBack": [
+    {
+      "type": 0,
+      "value": "Send back to an earlier stepSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.actions": [
+    {
+      "type": 0,
+      "value": "What the holder can doSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.actions.hint": [
+    {
+      "type": 0,
+      "value": "Tick “needs a remark” for actions the holder must explain.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.actions.remark": [
+    {
+      "type": 0,
+      "value": "needs a remarkSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.actions.remarkFor": [
+    {
+      "type": 1,
+      "value": "action"
+    },
+    {
+      "type": 0,
+      "value": " needs a remarkSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "workflows.builder.add": [
     {
       "type": 0,
@@ -7587,6 +7669,60 @@
       "value": "Add a step at the startSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "workflows.builder.assignee.choose": [
+    {
+      "type": 0,
+      "value": "Choose…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.assignee.field.initiatorsUnit": [
+    {
+      "type": 0,
+      "value": "The initiator’s unitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.assignee.field.levels": [
+    {
+      "type": 0,
+      "value": "Levels up the reporting lineSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.assignee.field.person": [
+    {
+      "type": 0,
+      "value": "PersonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.assignee.field.position": [
+    {
+      "type": 0,
+      "value": "PositionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.assignee.field.queue": [
+    {
+      "type": 0,
+      "value": "QueueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.assignee.field.role": [
+    {
+      "type": 0,
+      "value": "RoleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.assignee.field.unit": [
+    {
+      "type": 0,
+      "value": "UnitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.assignee.field.up": [
+    {
+      "type": 0,
+      "value": "Units above it (0 for the unit itself)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "workflows.builder.assignee.initiator": [
     {
       "type": 0,
@@ -7597,6 +7733,54 @@
     {
       "type": 0,
       "value": "the initiator’s unitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.assignee.kind": [
+    {
+      "type": 0,
+      "value": "Goes toSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.assignee.kind.initiator": [
+    {
+      "type": 0,
+      "value": "The initiatorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.assignee.kind.person": [
+    {
+      "type": 0,
+      "value": "A personSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.assignee.kind.position": [
+    {
+      "type": 0,
+      "value": "The holder of a positionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.assignee.kind.queue": [
+    {
+      "type": 0,
+      "value": "A queue (whoever takes it first)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.assignee.kind.role": [
+    {
+      "type": 0,
+      "value": "People with a roleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.assignee.kind.supervisor": [
+    {
+      "type": 0,
+      "value": "The initiator’s supervisorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.assignee.kind.unitHead": [
+    {
+      "type": 0,
+      "value": "The head of a unitSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "workflows.builder.assignee.position": [
@@ -7795,6 +7979,12 @@
       "value": "Checking…SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "workflows.builder.choose": [
+    {
+      "type": 0,
+      "value": "Choose…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "workflows.builder.conditionN": [
     {
       "type": 0,
@@ -7849,6 +8039,12 @@
     {
       "type": 0,
       "value": "The approval groups of the delegation of authoritySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.doa.hint": [
+    {
+      "type": 0,
+      "value": "Goes to the approval groups of the delegation of authority in force when the memo starts.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "workflows.builder.doneEditing": [
@@ -8157,6 +8353,42 @@
       "value": "ForumSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "workflows.builder.forum.field": [
+    {
+      "type": 0,
+      "value": "Forum keySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.forward": [
+    {
+      "type": 0,
+      "value": "Forwarding is allowed toSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.forward.anyone": [
+    {
+      "type": 0,
+      "value": "AnyoneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.forward.legalEntity": [
+    {
+      "type": 0,
+      "value": "The holder’s legal entitySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.forward.none": [
+    {
+      "type": 0,
+      "value": "No limit setSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.forward.unit": [
+    {
+      "type": 0,
+      "value": "The holder’s unit and belowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "workflows.builder.goesTo": [
     {
       "type": 0,
@@ -8221,6 +8453,12 @@
       "value": "OtherwiseSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "workflows.builder.parallel.add": [
+    {
+      "type": 0,
+      "value": "Add someoneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "workflows.builder.parallel.all": [
     {
       "type": 0,
@@ -8233,6 +8471,50 @@
       "value": "Any one ofSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "workflows.builder.parallel.assigneeN": [
+    {
+      "type": 0,
+      "value": "Person or group "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.parallel.field.n": [
+    {
+      "type": 0,
+      "value": "How manySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.parallel.mode": [
+    {
+      "type": 0,
+      "value": "Decided whenSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.parallel.mode.all": [
+    {
+      "type": 0,
+      "value": "Everyone has approvedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.parallel.mode.any": [
+    {
+      "type": 0,
+      "value": "Anyone has approvedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.parallel.mode.n": [
+    {
+      "type": 0,
+      "value": "A number of them have approvedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "workflows.builder.parallel.n": [
     {
       "type": 1,
@@ -8241,6 +8523,20 @@
     {
       "type": 0,
       "value": " ofSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.parallel.remove": [
+    {
+      "type": 0,
+      "value": "Remove person or group "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "workflows.builder.problems": [
@@ -8341,6 +8637,12 @@
     {
       "type": 0,
       "value": "The approvers the initiator choosesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.route.hint": [
+    {
+      "type": 0,
+      "value": "Goes to the approvers the initiator chooses, one after the other.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "workflows.builder.runs": [
@@ -8543,6 +8845,12 @@
     {
       "type": 0,
       "value": "Steps, in the order they are writtenSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "workflows.builder.subworkflow.field": [
+    {
+      "type": 0,
+      "value": "Sub-workflow to runSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "workflows.builder.tells": [

@@ -20,6 +20,10 @@ data class TaskItem(
     val round: Int,
     val blocked: BlockedReason?,
     val createdAt: Instant,
+    /** What the holder is asked for: a decision, an opinion or an answer (design E03 §4.5). */
+    val role: TaskRole = TaskRole.DECIDE,
+    /** The instance's active step, by name. */
+    val stepName: String? = null,
 )
 
 /** A page of tasks, newest first; [nextCursor] fetches the next one (null at the end). */

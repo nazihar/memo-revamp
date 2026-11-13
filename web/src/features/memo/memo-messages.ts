@@ -20,6 +20,8 @@ export const mm = defineMessages({
     defaultMessage: 'You are no longer cleared to read it. An administrator can reassign the task.',
   },
   blocked: { id: 'memo.blocked', defaultMessage: 'Waiting for reassignment' },
+  kindOpinion: { id: 'memo.inbox.kind.opinion', defaultMessage: 'Opinion asked' },
+  kindClarify: { id: 'memo.inbox.kind.clarify', defaultMessage: 'Question for you' },
 
   createTitle: { id: 'memo.create.title', defaultMessage: 'New memo' },
   createLead: {
@@ -74,7 +76,30 @@ export const mm = defineMessages({
   actionApprove: { id: 'memo.action.approve', defaultMessage: 'Approve' },
   actionReturn: { id: 'memo.action.return', defaultMessage: 'Return' },
   actionReject: { id: 'memo.action.reject', defaultMessage: 'Reject' },
+  actionRecommend: { id: 'memo.action.recommend', defaultMessage: 'Recommend' },
+  actionRecall: { id: 'memo.action.recall', defaultMessage: 'Recall' },
+  actionSendBack: { id: 'memo.action.sendBack', defaultMessage: 'Send back' },
+  actionForward: { id: 'memo.action.forward', defaultMessage: 'Forward' },
+  actionDelegate: { id: 'memo.action.delegate', defaultMessage: 'Delegate' },
+  actionAsk: { id: 'memo.action.ask', defaultMessage: 'Ask a question' },
+  actionRefer: { id: 'memo.action.refer', defaultMessage: 'Ask for opinions' },
+  actionAnswer: { id: 'memo.action.answer', defaultMessage: 'Answer' },
+  actionOpinion: { id: 'memo.action.opinion', defaultMessage: 'Give your opinion' },
   actions: { id: 'memo.actions', defaultMessage: 'Actions' },
+  sendBackTo: { id: 'memo.sendBack.to', defaultMessage: 'Send back to' },
+  handTo: { id: 'memo.handOn.to', defaultMessage: 'Person' },
+  referTo: { id: 'memo.refer.to', defaultMessage: 'People (up to 10)' },
+  personRequired: { id: 'memo.handOn.personRequired', defaultMessage: 'Choose a person.' },
+  peopleRequired: { id: 'memo.refer.peopleRequired', defaultMessage: 'Choose at least one person.' },
+  stepRequired: { id: 'memo.sendBack.stepRequired', defaultMessage: 'Choose a step.' },
+  answerText: { id: 'memo.answer.text', defaultMessage: 'Your answer' },
+  opinionText: { id: 'memo.opinion.text', defaultMessage: 'Your opinion' },
+  waitingForAnswer: {
+    id: 'memo.task.waiting',
+    defaultMessage: 'You asked a question. You can decide once it is answered.',
+  },
+  roleOpinion: { id: 'memo.task.role.opinion', defaultMessage: 'Your opinion is asked for' },
+  roleClarify: { id: 'memo.task.role.clarify', defaultMessage: 'A question for you' },
 
   remark: { id: 'memo.remark', defaultMessage: 'Remark' },
   remarkOptional: { id: 'memo.remark.optional', defaultMessage: 'Remark (optional)' },
@@ -149,6 +174,11 @@ export const mmv = defineMessages<{
   routeDown: { name: string }
   routeRemove: { name: string }
   historyDocument: { number: number }
+  sendBackTarget: { step: string; name: string }
+  step: { step: string }
+  historyTo: { names: string }
+  historyMigrated: { from: number; to: number }
+  historyBranch: { inputs: string }
 }>({
   round: { id: 'memo.round', defaultMessage: 'Round {round}' },
   assignedAt: { id: 'memo.assignedAt', defaultMessage: 'Waiting since {time}' },
@@ -161,6 +191,11 @@ export const mmv = defineMessages<{
   routeDown: { id: 'memo.route.down', defaultMessage: 'Move {name} down' },
   routeRemove: { id: 'memo.route.remove', defaultMessage: 'Remove {name}' },
   historyDocument: { id: 'memo.history.document', defaultMessage: 'Document version {number}' },
+  sendBackTarget: { id: 'memo.sendBack.target', defaultMessage: '{step} ({name})' },
+  step: { id: 'memo.step', defaultMessage: 'Step: {step}' },
+  historyTo: { id: 'memo.history.to', defaultMessage: 'To {names}' },
+  historyMigrated: { id: 'memo.history.migrated', defaultMessage: 'From version {from} to version {to}' },
+  historyBranch: { id: 'memo.history.branch', defaultMessage: 'Based on {inputs}' },
 })
 
 /** Action dialog titles; each may name the memo by its reference. */
@@ -172,7 +207,25 @@ export const dialogTitles = defineMessages<{
   approve: { reference: string }
   return: { reference: string }
   reject: { reference: string }
+  recommend: { reference: string }
+  recall: { reference: string }
+  sendBack: { reference: string }
+  forward: { reference: string }
+  delegate: { reference: string }
+  ask: { reference: string }
+  refer: { reference: string }
+  answer: { reference: string }
+  opinion: { reference: string }
 }>({
+  recommend: { id: 'memo.dialog.recommend', defaultMessage: 'Recommend {reference}?' },
+  recall: { id: 'memo.dialog.recall', defaultMessage: 'Recall {reference}?' },
+  sendBack: { id: 'memo.dialog.sendBack', defaultMessage: 'Send {reference} back?' },
+  forward: { id: 'memo.dialog.forward', defaultMessage: 'Forward {reference}?' },
+  delegate: { id: 'memo.dialog.delegate', defaultMessage: 'Delegate {reference}?' },
+  ask: { id: 'memo.dialog.ask', defaultMessage: 'Ask about {reference}?' },
+  refer: { id: 'memo.dialog.refer', defaultMessage: 'Ask for opinions on {reference}?' },
+  answer: { id: 'memo.dialog.answer', defaultMessage: 'Answer the question on {reference}' },
+  opinion: { id: 'memo.dialog.opinion', defaultMessage: 'Your opinion on {reference}' },
   submit: { id: 'memo.dialog.submit', defaultMessage: 'Submit for approval?' },
   resubmit: { id: 'memo.dialog.resubmit', defaultMessage: 'Resubmit?' },
   withdraw: { id: 'memo.dialog.withdraw', defaultMessage: 'Withdraw this memo?' },
@@ -191,7 +244,37 @@ export const dialogLeads = defineMessages<{
   approve: { number: number }
   return: { number: number }
   reject: { number: number }
+  recommend: { number: number }
+  recall: { number: number }
+  sendBack: { number: number }
+  forward: { number: number }
+  delegate: { number: number }
+  ask: { number: number }
+  refer: { number: number }
+  answer: { number: number }
+  opinion: { number: number }
 }>({
+  recommend: {
+    id: 'memo.dialog.recommend.lead',
+    defaultMessage: 'You recommend document version {number}. The next step gets it with your recommendation.',
+  },
+  recall: {
+    id: 'memo.dialog.recall.lead',
+    defaultMessage: 'Nobody has acted on it yet. It comes back to you to change and resubmit.',
+  },
+  sendBack: {
+    id: 'memo.dialog.sendBack.lead',
+    defaultMessage: 'The step you choose runs again, and the steps after it too. Say why.',
+  },
+  forward: { id: 'memo.dialog.forward.lead', defaultMessage: 'The person you choose holds the step instead of you.' },
+  delegate: {
+    id: 'memo.dialog.delegate.lead',
+    defaultMessage: 'The person you choose acts for you; the step stays yours.',
+  },
+  ask: { id: 'memo.dialog.ask.lead', defaultMessage: 'You can decide once your question is answered.' },
+  refer: { id: 'memo.dialog.refer.lead', defaultMessage: 'You keep the task and decide when you are ready.' },
+  answer: { id: 'memo.dialog.answer.lead', defaultMessage: 'Whoever asked can decide once you answer.' },
+  opinion: { id: 'memo.dialog.opinion.lead', defaultMessage: 'It goes into the history for whoever decides.' },
   submit: {
     id: 'memo.dialog.submit.lead',
     defaultMessage: 'The first approver gets it now. You cannot change it while it is in review.',
@@ -222,4 +305,13 @@ export const actionButtons = {
   approve: mm.actionApprove,
   return: mm.actionReturn,
   reject: mm.actionReject,
+  recommend: mm.actionRecommend,
+  recall: mm.actionRecall,
+  sendBack: mm.actionSendBack,
+  forward: mm.actionForward,
+  delegate: mm.actionDelegate,
+  ask: mm.actionAsk,
+  refer: mm.actionRefer,
+  answer: mm.actionAnswer,
+  opinion: mm.actionOpinion,
 }

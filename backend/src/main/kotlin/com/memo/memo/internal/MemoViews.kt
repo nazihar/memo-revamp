@@ -138,11 +138,17 @@ class MemoViews(
         val names = users.of(route + holders + memo.initiatorId + targets.map { it.holderId }).mapValues { it.value.displayName }
         val myTask = open?.let { TaskRef(it.id, it.blocked, it.role, it.waiting, it.stepName) }
         val level = clearances.level(memo.classificationId)
+        val type = types.get(memo.typeId)
+        // A FIXED type's definition names every step: its memos have no route to edit (design E03 §12).
+        val allowed =
+            actions(memo, user, open, workflow?.recallable == true)
+                .let { it + documentActions(memo, it) }
+                .filterNot { it == MemoAction.EDIT_ROUTE && type.routePolicy == RoutePolicy.FIXED }
         return MemoView(
             id = memo.id,
             reference = memo.reference,
             subject = memo.subject,
-            type = types.get(memo.typeId).let { Named(it.id, it.name) },
+            type = Named(type.id, type.name),
             classification = ClassificationView(memo.classificationId, memo.classificationRank, level?.name.orEmpty()),
             status = memo.status,
             initiator = Named(memo.initiatorId, names[memo.initiatorId].orEmpty()),
@@ -151,7 +157,7 @@ class MemoViews(
             round = memo.currentRound,
             holders = holders.map { Named(it, names[it].orEmpty()) },
             myTask = myTask,
-            allowedActions = actions(memo, user, open, workflow?.recallable == true).let { it + documentActions(memo, it) },
+            allowedActions = allowed,
             sendBackTargets = targets.map { SendBackTargetView(it.stepId, it.name, Named(it.holderId, names[it.holderId].orEmpty())) },
             createdAt = memo.createdAt,
             updatedAt = memo.updatedAt,

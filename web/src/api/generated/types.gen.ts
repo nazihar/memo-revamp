@@ -239,6 +239,12 @@ export type CreateOrgUnitRequest = {
     validFrom?: string | null;
 };
 
+export type DefinitionChoice = {
+    key: string;
+    name: string;
+    routed: boolean;
+};
+
 export type DefinitionResponse = {
     definition: DefinitionSummary;
     versions: Array<VersionSummary>;
@@ -401,8 +407,10 @@ export type HistoryRound = {
 export type InboxItem = {
     assignedAt: string;
     blocked?: 'NO_CLEARANCE' | 'INACTIVE';
+    kind: 'DECIDE' | 'OPINION' | 'CLARIFY';
     memo: InboxMemo;
     round: number;
+    stepName?: string | null;
     taskId: string;
 };
 
@@ -621,7 +629,7 @@ export type MigrationPreviewRequest = {
 };
 
 export type MigrationRequest = {
-    instanceIds?: Array<string>;
+    instanceIds: Array<string>;
 };
 
 export type MigrationResponse = {
@@ -1497,6 +1505,22 @@ export type CreateMemoTypeResponses = {
 };
 
 export type CreateMemoTypeResponse = CreateMemoTypeResponses[keyof CreateMemoTypeResponses];
+
+export type ListMemoTypeDefinitionsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/memo-types/definitions';
+};
+
+export type ListMemoTypeDefinitionsResponses = {
+    /**
+     * OK
+     */
+    200: Array<DefinitionChoice>;
+};
+
+export type ListMemoTypeDefinitionsResponse = ListMemoTypeDefinitionsResponses[keyof ListMemoTypeDefinitionsResponses];
 
 export type UpdateMemoTypeData = {
     body: MemoTypeRequest;

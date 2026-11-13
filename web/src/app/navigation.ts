@@ -4,6 +4,7 @@ import {
   House,
   Inbox,
   ListChecks,
+  Workflow,
   FileStack,
   Languages,
   LayoutTemplate,
@@ -50,6 +51,7 @@ const messages = defineMessages({
   inbox: { id: 'nav.inbox', defaultMessage: 'Inbox' },
   workflowTasks: { id: 'nav.workflowTasks', defaultMessage: 'Open tasks' },
   memoTypes: { id: 'nav.memoTypes', defaultMessage: 'Memo types' },
+  workflows: { id: 'nav.workflows', defaultMessage: 'Workflows' },
   status: { id: 'nav.status', defaultMessage: 'Status' },
   users: { id: 'nav.users', defaultMessage: 'Users' },
   org: { id: 'nav.org', defaultMessage: 'Organisation' },
@@ -80,6 +82,8 @@ export const ADMIN_PERMISSIONS = [
   'audit.read',
   'memo.types.manage',
   'workflow.tasks.reassign',
+  'workflow.definitions.manage',
+  'workflow.definitions.approve',
 ]
 
 export const navigation: NavItem[] = [
@@ -174,6 +178,15 @@ export const navigation: NavItem[] = [
     icon: ListChecks,
     group: 'administration',
     audience: { permission: 'workflow.tasks.reassign' },
+    enabled: true,
+  },
+  {
+    id: 'workflows',
+    to: '/admin/workflows',
+    label: messages.workflows,
+    icon: Workflow,
+    group: 'administration',
+    audience: { anyOf: ['workflow.definitions.manage', 'workflow.definitions.approve'] },
     enabled: true,
   },
   {

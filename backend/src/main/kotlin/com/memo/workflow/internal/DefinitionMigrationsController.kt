@@ -27,7 +27,7 @@ data class MigrationPreviewRequest(
 
 data class MigrationRequest(
     /** At most 100 instances. */
-    val instanceIds: List<UUID>,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val instanceIds: List<UUID>,
 )
 
 data class MigrationItem(

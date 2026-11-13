@@ -64,3 +64,5 @@ endpoints:
     rule: tenantAdminStepUp
     body: { instanceIds: ["{random}"] }
     headers: { Idempotency-Key: "{random}" }
+  # Memo types choose among the published definitions (T10).
+  - { endpoint: "GET /api/v1/admin/memo-types/definitions", rule: tenantAdmin }

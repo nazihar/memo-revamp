@@ -3,7 +3,9 @@ import { fileURLToPath, URL } from 'node:url'
 import tailwindcss from '@tailwindcss/vite'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import react from '@vitejs/plugin-react'
+import type { Plugin } from 'vite'
 import { defineConfig } from 'vitest/config'
+import { pick } from './scripts/catalogue-parts.mjs'
 
 /** Security headers shared with the production static server (E03 design §4). */
 const securityHeaders = Object.fromEntries(
@@ -54,8 +56,26 @@ const apiProxy = {
   },
 }
 
+/**
+ * `messages/<locale>.json?part=<part>` is that part of the catalogue (src/i18n/catalogue-parts.json), so each part is its
+ * own chunk. It answers with a JavaScript module (moduleType js), so the JSON handling does not parse it again.
+ */
+function catalogueParts(): Plugin {
+  return {
+    name: 'memo-catalogue-parts',
+    enforce: 'pre',
+    load(id) {
+      const [file, query] = id.split('?')
+      const part = new URLSearchParams(query).get('part')
+      if (!file || !part || !/[\\/]i18n[\\/]messages[\\/][^\\/]+\.json$/.test(file)) return null
+      const messages = pick(JSON.parse(readFileSync(file, 'utf8')) as Record<string, unknown>, part)
+      return { code: `export default ${JSON.stringify(messages)}`, moduleType: 'js' }
+    },
+  }
+}
+
 export default defineConfig({
-  plugins: [tanstackRouter({ target: 'react', autoCodeSplitting: true }), react(), tailwindcss()],
+  plugins: [catalogueParts(), tanstackRouter({ target: 'react', autoCodeSplitting: true }), react(), tailwindcss()],
   resolve: {
     alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
   },

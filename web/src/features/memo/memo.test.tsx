@@ -89,12 +89,15 @@ const inbox: InboxPage = {
       memo: { id: 'm1', reference: 'M-2026-00042', subject: 'Budget transfer to the treasury', restricted: false },
       round: 2,
       assignedAt: '2026-11-10T08:00:00Z',
+      kind: 'DECIDE',
+      stepName: 'Finance review',
     },
     {
       taskId: 'k2',
       memo: { id: 'm2', reference: null, subject: null, restricted: true },
       round: 1,
       assignedAt: '2026-11-09T08:00:00Z',
+      kind: 'OPINION',
     },
   ],
   nextCursor: null,
@@ -271,5 +274,61 @@ describe('document editor', () => {
     })
     await user.click(screen.getByRole('button', { name: 'Back to the memo' }))
     expect(await screen.findByRole('alert')).toHaveTextContent('Your changes could not be saved')
+  })
+})
+
+describe('E03 task actions', () => {
+  const review: MemoView = {
+    ...memo,
+    myTask: { id: 'k1', role: 'DECIDE', waiting: false, stepName: 'Finance review' },
+    allowedActions: ['RECOMMEND', 'RETURN', 'SEND_BACK', 'FORWARD'],
+    sendBackTargets: [{ stepId: 's1', name: 'Department review', holder: { id: 'u2', name: 'Bob Approver' } }],
+  }
+
+  it('shows the step and offers the actions of a review step', async () => {
+    server.use(sessionHandler(signedInSession()), accessHandler([]), ...memoHandlers(review))
+    const { container } = renderRoute('/memos/m1')
+
+    const actions = await screen.findByRole('toolbar', { name: 'Actions' }, { timeout: 5000 })
+    expect(
+      within(actions)
+        .getAllByRole('button')
+        .map((b) => b.textContent),
+    ).toEqual(['Recommend', 'Return', 'Send back', 'Forward'])
+    expect(screen.getByText('Step: Finance review')).toBeInTheDocument()
+    await expectNoA11yViolations(container)
+  })
+
+  it('sends the memo back to the chosen step with a remark, and asks whom to forward to', async () => {
+    const user = userEvent.setup()
+    const bodies: unknown[] = []
+    server.use(
+      sessionHandler(signedInSession()),
+      accessHandler([]),
+      ...memoHandlers(review),
+      http.get(`${API_ORIGIN}/api/v1/inbox/tasks`, () => HttpResponse.json<InboxPage>({ items: [], nextCursor: null })),
+      http.post(`${API_ORIGIN}/api/v1/tasks/k1/send-back`, async ({ request }) => {
+        bodies.push(await request.json())
+        return HttpResponse.json<MemoView>({ ...memo, myTask: undefined, allowedActions: [] })
+      }),
+    )
+    renderRoute('/memos/m1')
+
+    await user.click(await screen.findByRole('button', { name: 'Forward' }, { timeout: 5000 }))
+    const forward = await screen.findByRole('dialog', { name: /^Forward .?M-2026-00042.?[?]$/ })
+    await user.click(within(forward).getByRole('button', { name: 'Forward' }))
+    expect(within(forward).getByText('Choose a person.')).toBeInTheDocument()
+    expect(within(forward).getByText('A remark is required.')).toBeInTheDocument()
+    await user.click(within(forward).getByRole('button', { name: 'Cancel' }))
+
+    await user.click(screen.getByRole('button', { name: 'Send back' }))
+    const dialog = await screen.findByRole('dialog', { name: /^Send .?M-2026-00042.? back[?]$/ })
+    expect(within(dialog).getByRole('combobox', { name: /Send back to/ })).toHaveDisplayValue(
+      'Department review (Bob Approver)',
+    )
+    await user.type(within(dialog).getByRole('textbox', { name: /Remark/ }), 'Recheck the figures')
+    await user.click(within(dialog).getByRole('button', { name: 'Send back' }))
+    await screen.findByText('My tasks', {}, { timeout: 5000 })
+    expect(bodies).toEqual([{ targetStepId: 's1', remark: 'Recheck the figures' }])
   })
 })

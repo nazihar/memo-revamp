@@ -8,6 +8,7 @@ import com.memo.identity.UserSummaries
 import com.memo.workflow.ActionEntry
 import com.memo.workflow.ActionKind
 import com.memo.workflow.BlockedReason
+import com.memo.workflow.TaskRole
 import com.memo.workflow.WorkflowQueries
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.stereotype.Service
@@ -28,6 +29,10 @@ data class InboxItem(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val round: Int,
     val blocked: BlockedReason?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val assignedAt: Instant,
+    /** A decision, an opinion asked for, or a question to answer (design E03 §12). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val kind: TaskRole = TaskRole.DECIDE,
+    /** The step the memo is at, by name. */
+    val stepName: String? = null,
 )
 
 data class InboxPage(
@@ -120,6 +125,8 @@ class MemoInbox(
                     task.round,
                     task.blocked,
                     task.createdAt,
+                    task.role,
+                    task.stepName,
                 )
             }
         return InboxPage(items, page.nextCursor)

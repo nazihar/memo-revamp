@@ -1,5 +1,5 @@
 import type { MessageFormatElement } from 'react-intl'
-import en from './messages/en.json'
+import type { CataloguePart } from './catalogue-parts'
 
 export type Messages = Record<string, string> | Record<string, MessageFormatElement[]>
 
@@ -37,20 +37,20 @@ export function formattingLocale(locale: AppLocale): string {
   return (PSEUDO_LOCALES as readonly string[]).includes(locale) ? 'en' : locale
 }
 
-/** Messages per locale. English is bundled; other locales are code-split and loaded on demand. */
-export async function loadMessages(locale: AppLocale): Promise<Messages> {
-  switch (locale) {
-    case 'en':
-      return en
-    case 'ar':
-      return (await import('./messages/ar.json')).default
-    case 'en-XA':
-      return (await import('./messages/en-XA.json')).default
-    case 'xx-LS':
-      return (await import('./messages/xx-LS.json')).default
-    case 'en-XB':
-      return (await import('./messages/en-XB.json')).default
-  }
+/**
+ * The catalogue parts of each locale (catalogue-parts.json), each its own chunk, loaded on demand. English needs none:
+ * its messages are the source messages in the code, so react-intl shows them as they are.
+ */
+const loaders: Record<CataloguePart, Record<string, () => Promise<Messages>>> = {
+  core: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'core' }, import: 'default' }),
+  admin: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'admin' }, import: 'default' }),
+  platform: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'platform' }, import: 'default' }),
+  patterns: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'patterns' }, import: 'default' }),
 }
 
-export const sourceMessages: Messages = en
+/** [part] of [locale]'s messages; empty for English (the source locale). */
+export async function loadMessages(locale: AppLocale, part: CataloguePart): Promise<Messages> {
+  if (locale === DEFAULT_LOCALE) return {}
+  const loader = loaders[part][`./messages/${locale}.json`]
+  return loader ? loader() : {}
+}

@@ -42,7 +42,8 @@
 - [x] E03 T7 definition lifecycle (stacked PR)
 - [x] E03 T8 in-flight migration (stacked PR)
 - [x] E03 T9 events and history (stacked PR)
-- [ ] E03 T10 web · T11 close
+- [x] E03 T10 web (stacked PR)
+- [ ] E03 T11 close
 
 ## State (Phase 1a, closed)
 - [x] Overview approved (2026-10-18), Q1–Q8 answered, per-epic gate delegated

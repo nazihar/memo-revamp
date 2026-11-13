@@ -166,11 +166,12 @@ class DefinitionSimulator(
             val step = state.round.steps.firstOrNull { it.id == created.stepId } ?: return
             val task = created.task
             val before = reached[step.id] ?: SimulatedStep(step.nodeId, SimulatedOutcome.DECIDED, group = step.doaGroup)
+            val assignee = task.assignee
             reached[step.id] =
-                if (task.blocked != null || task.assignee == null) {
+                if (task.blocked != null || assignee == null) {
                     before.copy(outcome = SimulatedOutcome.BLOCKED, blockedReason = task.blocked ?: before.blockedReason)
                 } else {
-                    before.copy(people = before.people + SimulatedPerson(task.assignee, task.onBehalfOf))
+                    before.copy(people = before.people + SimulatedPerson(assignee, task.onBehalfOf))
                 }
         }
     }

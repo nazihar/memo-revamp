@@ -1,0 +1,69 @@
+package com.memo.workflow.engine
+
+import com.memo.workflow.BlockedReason
+import com.memo.workflow.definition.StepDef
+import com.memo.workflow.definition.StepType
+import java.util.UUID
+
+/** How [Rounds] activates a definition step: the step row, its tasks and its recorded resolution. Pure, like [Transition]. */
+internal class Activations(
+    private val context: TransitionContext,
+) {
+    fun newTask(assignee: UUID): Task = Task(context.newId(), assignee, TaskState.OPEN, context.eligibility(assignee))
+
+    /**
+     * A step for the people [found] (design E04 §4.1): one holder; several, of whom the step needs its parallel mode's
+     * count (a parallel step) or the first to decide (any other step); or too few, held by a task without assignee until
+     * an administrator assigns it (never skipped). The resolution is recorded on the step.
+     */
+    fun shaped(
+        round: Round,
+        node: StepDef,
+        found: Found,
+    ): Step {
+        val kind =
+            when (node.type) {
+                StepType.REVIEW -> StepKind.REVIEW
+                StepType.PARALLEL -> StepKind.PARALLEL
+                else -> StepKind.APPROVE
+            }
+        val people = found.people
+        val needed = if (kind == StepKind.PARALLEL) Parallel.needed(node, people.size) else 1
+        val step =
+            when {
+                people.isEmpty() || people.size < needed -> {
+                    activated(round, node, kind, null, null)
+                        .copy(tasks = listOf(Task(context.newId(), null, TaskState.OPEN, BlockedReason.UNRESOLVED)))
+                }
+
+                people.size == 1 && kind != StepKind.PARALLEL -> {
+                    activated(round, node, kind, people.single(), null)
+                }
+
+                else -> {
+                    activated(round, node, kind, people.first(), null)
+                        .copy(tasks = people.map(::newTask), needed = needed.takeIf { kind != StepKind.PARALLEL })
+                }
+            }
+        return step.copy(resolution = found.record)
+    }
+
+    fun activated(
+        round: Round,
+        node: StepDef,
+        kind: StepKind,
+        assignee: UUID?,
+        routeIndex: Int?,
+    ): Step =
+        Step(
+            id = context.newId(),
+            ordinal = (round.steps.maxOfOrNull { it.ordinal } ?: 0) + 1,
+            assignee = assignee,
+            state = StepState.ACTIVE,
+            tasks = listOfNotNull(assignee?.let(::newTask)),
+            nodeId = node.id,
+            kind = kind,
+            routeIndex = routeIndex,
+            name = node.name,
+        )
+}

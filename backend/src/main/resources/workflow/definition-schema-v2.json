@@ -29,17 +29,48 @@
     "target": { "type": "string", "pattern": "^([a-z][a-z0-9-]{0,39})$" },
     "name": { "type": "string", "minLength": 1, "maxLength": 200 },
     "action": { "enum": ["APPROVE", "RECOMMEND", "RETURN", "REJECT", "SEND_BACK", "FORWARD", "DELEGATE", "ASK", "REFER"] },
+    "unitRef": {
+      "anyOf": [{ "const": "initiator" }, { "type": "string", "format": "uuid" }]
+    },
     "assignee": {
       "type": "object",
       "additionalProperties": false,
       "required": ["kind"],
       "properties": {
-        "kind": { "enum": ["person", "initiator"] },
-        "userId": { "type": "string", "format": "uuid" }
+        "kind": { "enum": ["person", "initiator", "position", "supervisor", "unitHead", "role"] },
+        "userId": { "type": "string", "format": "uuid" },
+        "positionId": { "type": "string", "format": "uuid" },
+        "levels": { "type": "integer", "minimum": 1, "maximum": 10 },
+        "unit": { "$ref": "#/$defs/unitRef" },
+        "up": { "type": "integer", "minimum": 0, "maximum": 10 },
+        "roleId": { "type": "string", "format": "uuid" }
       },
-      "if": { "properties": { "kind": { "const": "person" } } },
-      "then": { "required": ["userId"] },
-      "else": { "not": { "required": ["userId"] } }
+      "allOf": [
+        {
+          "if": { "properties": { "kind": { "const": "person" } } },
+          "then": { "required": ["userId"], "propertyNames": { "enum": ["kind", "userId"] } }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "initiator" } } },
+          "then": { "propertyNames": { "enum": ["kind"] } }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "position" } } },
+          "then": { "required": ["positionId"], "propertyNames": { "enum": ["kind", "positionId"] } }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "supervisor" } } },
+          "then": { "required": ["levels"], "propertyNames": { "enum": ["kind", "levels"] } }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "unitHead" } } },
+          "then": { "required": ["unit"], "propertyNames": { "enum": ["kind", "unit", "up"] } }
+        },
+        {
+          "if": { "properties": { "kind": { "const": "role" } } },
+          "then": { "required": ["roleId", "unit"], "propertyNames": { "enum": ["kind", "roleId", "unit"] } }
+        }
+      ]
     },
     "sla": {
       "type": "object",
@@ -84,7 +115,8 @@
         "message": { "type": "string", "pattern": "^[a-z][A-Za-z0-9]{0,59}$" },
         "definition": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,99}$" },
         "forum": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,99}$" },
-        "sla": { "$ref": "#/$defs/sla" }
+        "sla": { "$ref": "#/$defs/sla" },
+        "fallback": { "$ref": "#/$defs/assignee" }
       },
       "allOf": [
         {
@@ -93,7 +125,7 @@
         },
         {
           "if": { "properties": { "type": { "enum": ["review", "approve", "sign"] } } },
-          "then": { "required": ["assignee", "next"], "propertyNames": { "enum": ["id", "type", "name", "next", "assignee", "actions", "remarks", "sla"] } }
+          "then": { "required": ["assignee", "next"], "propertyNames": { "enum": ["id", "type", "name", "next", "assignee", "fallback", "actions", "remarks", "sla"] } }
         },
         {
           "if": { "properties": { "type": { "const": "parallel" } } },

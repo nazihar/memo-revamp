@@ -61,6 +61,9 @@ class OrgDirectory(
         date: LocalDate = today(),
     ): PositionRef? = positions.ofUnit(unitId).firstOrNull { it.head && it.openOn(date) }?.ref()
 
+    /** Whether the tenant has a unit [unitId] (open or closed). */
+    fun unitExists(unitId: UUID): Boolean = units.unit(unitId) != null
+
     /** [unitId]'s ancestors, nearest first (empty for a root unit or an unknown one). */
     fun ancestors(unitId: UUID): List<UUID> =
         units

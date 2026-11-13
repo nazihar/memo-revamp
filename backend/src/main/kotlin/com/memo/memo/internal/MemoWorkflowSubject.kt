@@ -106,8 +106,9 @@ class MemoWorkflowListener(
     /** Approvers become participants when their task is created, so they can open the memo from then on. */
     @EventListener
     fun onTask(event: WorkflowTaskCreated) {
-        if (event.subjectType != MemoWorkflowSubject.TYPE) return
-        store.addParticipant(event.subjectId, event.assigneeId, ParticipantKind.APPROVER, now())
+        val assignee = event.assigneeId
+        if (event.subjectType != MemoWorkflowSubject.TYPE || assignee == null) return
+        store.addParticipant(event.subjectId, assignee, ParticipantKind.APPROVER, now())
     }
 
     private fun now() = OffsetDateTime.now(clock).withOffsetSameInstant(ZoneOffset.UTC)

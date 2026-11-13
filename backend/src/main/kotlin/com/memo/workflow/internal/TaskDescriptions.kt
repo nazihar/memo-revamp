@@ -51,7 +51,7 @@ class TaskDescriptions(
         val targets =
             loaded.state.round.steps
                 .filter { it.state == StepState.DONE && it.ordinal < step.ordinal }
-                .map { StepRef(it.id, it.name, it.assignee) }
+                .mapNotNull { done -> done.assignee?.let { StepRef(done.id, done.name, it) } }
         return MyTask(
             id = task.id,
             role = TaskRole.valueOf(task.kind.name),

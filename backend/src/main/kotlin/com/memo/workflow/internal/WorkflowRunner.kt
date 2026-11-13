@@ -49,6 +49,7 @@ class WorkflowRunner(
     private val settings: WorkflowSettings,
     private val subjects: List<WorkflowSubject>,
     private val effects: ActionEffects,
+    private val resolvers: OrgResolvers,
     private val ids: IdGenerator,
     private val json: JsonMapper,
     private val clock: Clock,
@@ -95,7 +96,7 @@ class WorkflowRunner(
         val cmd = command(actor.userId)
         val people =
             loaded.state.round.steps
-                .map { it.assignee } + newPeople(cmd)
+                .mapNotNull { it.assignee } + newPeople(cmd)
         val carried = carried(loaded, cmd, subject)
         val outcome = accepted(transition(subject, loaded.subjectId, people, loaded.definition, carried).apply(loaded.state, cmd))
         return record(loaded, loaded.state, subject, outcome, actor)
@@ -164,14 +165,22 @@ class WorkflowRunner(
         carried: Set<Carried> = emptySet(),
     ): Transition {
         val named = definition.steps.flatMap { step -> listOfNotNull(step.assignee?.userId) + step.assignees.mapNotNull { it.userId } }
-        val ineligible = subject.ineligible(subjectId, (people + named).toSet())
+        val known = (people + named).toSet()
+        val ineligible = subject.ineligible(subjectId, known).toMutableMap()
+        // People a resolver finds are not known in advance: asked about once each, when they get a task.
+        val asked = known.toMutableSet()
+        val eligibility = { person: UUID ->
+            if (asked.add(person)) ineligible.putAll(subject.ineligible(subjectId, listOf(person)))
+            ineligible[person]
+        }
         val context =
             TransitionContext(
                 newId = ids::next,
-                eligibility = { ineligible[it] },
+                eligibility = eligibility,
                 maxApprovers = settings.maxApprovers(),
                 attributes = { subject.attributeValues(subjectId) },
                 carried = carried,
+                resolver = resolvers.resolver(),
             )
         return Transition(context, definition)
     }

@@ -14113,6 +14113,20 @@
       "value": "‬"
     }
   ],
+  "workflowTasks.blocked.unresolved": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noqopʎ ɟonup ɟoɹ ʇɥıs sʇǝd"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "workflowTasks.caption": [
     {
       "type": 0,
@@ -14247,6 +14261,20 @@
     {
       "type": 0,
       "value": "Nǝʍ ɐddɹoʌǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "workflowTasks.nobody": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noqopʎ ʎǝʇ"
     },
     {
       "type": 0,

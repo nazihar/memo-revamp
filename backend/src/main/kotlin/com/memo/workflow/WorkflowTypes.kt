@@ -44,8 +44,11 @@ enum class ActionKind {
     CARRY,
 }
 
-/** Why a task was created but cannot be acted on until a tenant admin reassigns it (design E01 §2, invariant 12). */
-enum class BlockedReason { NO_CLEARANCE, INACTIVE }
+/**
+ * Why a task was created but cannot be acted on until a tenant admin reassigns it (design E01 §2, invariant 12): the holder
+ * cannot act, or nobody was found for the step (`UNRESOLVED`, design E04 §4.1).
+ */
+enum class BlockedReason { NO_CLEARANCE, INACTIVE, UNRESOLVED }
 
 /** How a task stopped being open, as published in [WorkflowTaskClosed]. */
 enum class TaskClosure { COMPLETED, CANCELLED, REASSIGNED, TRANSFERRED }

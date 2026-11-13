@@ -64,9 +64,9 @@ class ParallelProperties {
             if (task != null) {
                 val command =
                     when (case.choices[i]) {
-                        Choice.APPROVE -> Approve(task.assignee, task.id)
-                        Choice.REJECT -> Reject(task.assignee, task.id, "no")
-                        Choice.RETURN -> Return(task.assignee, task.id, "fix it")
+                        Choice.APPROVE -> Approve(task.assignee!!, task.id)
+                        Choice.REJECT -> Reject(task.assignee!!, task.id, "no")
+                        Choice.RETURN -> Return(task.assignee!!, task.id, "fix it")
                     }
                 val outcome = (transition.apply(state, command) as Decision.Accepted).outcome
                 roundsEnded += outcome.effects.count { it is Effect.RoundEnded }

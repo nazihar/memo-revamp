@@ -13,6 +13,9 @@ import java.util.UUID
 object DefinitionJson {
     private val nodes = JsonNodeFactory.instance
 
+    /** The `unit` of a unit-head or role assignee that means the initiator's unit. */
+    const val INITIATOR_UNIT = "initiator"
+
     fun parse(json: JsonNode): Definition =
         Definition(
             attributes = json.array("attributes").map { Attribute(it["name"].asString(), AttributeType.of(it["type"].asString())) },
@@ -53,10 +56,19 @@ object DefinitionJson {
             definition = json.text("definition"),
             forum = json.text("forum"),
             sla = json["sla"]?.let { Sla(it["due"].asString(), it["workingTime"]?.asBoolean()) },
+            fallback = json["fallback"]?.let(::assignee),
         )
 
     private fun assignee(json: JsonNode): Assignee =
-        Assignee(AssigneeKind.of(json["kind"].asString()), json.text("userId")?.let(UUID::fromString))
+        Assignee(
+            kind = AssigneeKind.of(json["kind"].asString()),
+            userId = json.text("userId")?.let(UUID::fromString),
+            positionId = json.text("positionId")?.let(UUID::fromString),
+            levels = json["levels"]?.asInt(),
+            unit = json.text("unit")?.takeUnless { it == INITIATOR_UNIT }?.let(UUID::fromString),
+            up = json["up"]?.asInt(),
+            roleId = json.text("roleId")?.let(UUID::fromString),
+        )
 
     private fun print(step: StepDef): ObjectNode {
         val out = nodes.objectNode().put("id", step.id).put("type", step.type.json)
@@ -72,6 +84,7 @@ object DefinitionJson {
         step: StepDef,
     ) {
         step.assignee?.let { out.set("assignee", print(it)) }
+        step.fallback?.let { out.set("fallback", print(it)) }
         if (step.assignees.isNotEmpty()) out.putArray("assignees").addAll(step.assignees.map(::print))
         step.mode?.let { out.put("mode", it.json) }
         step.n?.let { out.put("n", it) }
@@ -108,6 +121,13 @@ object DefinitionJson {
     private fun print(assignee: Assignee): ObjectNode {
         val out = nodes.objectNode().put("kind", assignee.kind.json)
         assignee.userId?.let { out.put("userId", it.toString()) }
+        assignee.positionId?.let { out.put("positionId", it.toString()) }
+        assignee.levels?.let { out.put("levels", it) }
+        if (assignee.kind == AssigneeKind.UNIT_HEAD || assignee.kind == AssigneeKind.ROLE) {
+            out.put("unit", assignee.unit?.toString() ?: INITIATOR_UNIT)
+        }
+        assignee.up?.let { out.put("up", it) }
+        assignee.roleId?.let { out.put("roleId", it.toString()) }
         return out
     }
 

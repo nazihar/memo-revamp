@@ -34,7 +34,7 @@ internal class HandOns(
         val (step, task) = state.guardedTask(command.taskId)
         val target = state.round.step(command.targetStepId)
         val (cancelledRound, cancelled) = state.round.closeTask(step.id, task.id, ActionKind.SEND_BACK, StepState.DONE).cancelOpen()
-        val walk = rounds.reactivate(cancelledRound.skipPending(), target)
+        val walk = rounds.reactivate(cancelledRound.skipPending(), target, state.initiator)
         val effects = listOf(Effect.TaskClosed(task.id, TaskState.COMPLETED, ActionKind.SEND_BACK)) + cancelled + walk.effects
         val details = mapOf("toStep" to target.nodeId, "toStepId" to target.id.toString())
         val action = record(ActionKind.SEND_BACK, state, task.id, command.actor, command.remark).copy(details = details)
@@ -149,7 +149,7 @@ internal class HandOns(
         val round =
             state.round.replaceStep(step.id) { current ->
                 current.copy(
-                    assignee = if (delegated || current.kind == StepKind.PARALLEL) current.assignee else to,
+                    assignee = if (delegated || current.shared) current.assignee else to,
                     tasks = current.tasks.map { if (it.id == task.id) it.copy(state = TaskState.TRANSFERRED) else it } + replacement,
                 )
             }

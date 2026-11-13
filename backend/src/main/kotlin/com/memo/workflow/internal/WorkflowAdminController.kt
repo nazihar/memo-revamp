@@ -50,7 +50,8 @@ data class Person(
 data class AdminTaskResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val taskId: UUID,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val subject: AdminTaskSubject,
-    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val assignee: Person,
+    /** Null while nobody is found for the step (blocked `UNRESOLVED`, design E04 §4.1). */
+    val assignee: Person?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val round: Int,
     val blocked: BlockedReason?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val createdAt: Instant,
@@ -124,12 +125,12 @@ class WorkflowAdminController(
 
     private fun responses(tasks: List<TaskItem>): List<AdminTaskResponse> {
         val shown = subjects.of(tasks.map { it.subject })
-        val names = users.of(tasks.map { it.assigneeId }.toSet())
+        val names = users.of(tasks.mapNotNull { it.assigneeId }.toSet())
         return tasks.map { task ->
             AdminTaskResponse(
                 taskId = task.taskId,
                 subject = shown.getValue(task.subject),
-                assignee = Person(task.assigneeId, names[task.assigneeId]?.displayName.orEmpty()),
+                assignee = task.assigneeId?.let { Person(it, names[it]?.displayName.orEmpty()) },
                 round = task.round,
                 blocked = task.blocked,
                 createdAt = task.createdAt,

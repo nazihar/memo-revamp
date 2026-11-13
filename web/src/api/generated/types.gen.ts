@@ -10,8 +10,8 @@ export type AdminTaskPage = {
 };
 
 export type AdminTaskResponse = {
-    assignee: Person;
-    blocked?: 'NO_CLEARANCE' | 'INACTIVE';
+    assignee?: Person | null;
+    blocked?: 'NO_CLEARANCE' | 'INACTIVE' | 'UNRESOLVED';
     createdAt: string;
     round: number;
     subject: AdminTaskSubject;
@@ -406,7 +406,7 @@ export type HistoryRound = {
 
 export type InboxItem = {
     assignedAt: string;
-    blocked?: 'NO_CLEARANCE' | 'INACTIVE';
+    blocked?: 'NO_CLEARANCE' | 'INACTIVE' | 'UNRESOLVED';
     kind: 'DECIDE' | 'OPINION' | 'CLARIFY';
     memo: InboxMemo;
     round: number;
@@ -1160,7 +1160,7 @@ export type StepUpRequest = {
 };
 
 export type TaskRef = {
-    blocked?: 'NO_CLEARANCE' | 'INACTIVE';
+    blocked?: 'NO_CLEARANCE' | 'INACTIVE' | 'UNRESOLVED';
     id: string;
     role: 'DECIDE' | 'OPINION' | 'CLARIFY';
     stepName?: string | null;
@@ -1278,7 +1278,7 @@ export type VersionSummary = {
 export type WorkflowView = {
     currentAssignees: Array<string>;
     instanceId: string;
-    openTaskBlocked?: 'NO_CLEARANCE' | 'INACTIVE';
+    openTaskBlocked?: 'NO_CLEARANCE' | 'INACTIVE' | 'UNRESOLVED';
     openTaskId?: string | null;
     recallable: boolean;
     round: number;

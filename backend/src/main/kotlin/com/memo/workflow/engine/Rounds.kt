@@ -1,7 +1,6 @@
 package com.memo.workflow.engine
 
 import com.memo.workflow.ActionKind
-import com.memo.workflow.definition.AssigneeKind
 import com.memo.workflow.definition.Definition
 import com.memo.workflow.definition.StepDef
 import com.memo.workflow.definition.StepType
@@ -18,7 +17,8 @@ internal data class Walk(
 
 /**
  * Walks a round through its definition (design E03 §4.2): from a step that just completed (or the start) through
- * branches, notifications and escalations to the next step that needs a person, or to the end. Pure, like [Transition].
+ * branches, notifications and escalations to the next step that needs a person, or to the end. Steps that need people
+ * go to whoever their assignees resolve to now (design E04 §4.1). Pure, like [Transition].
  */
 internal class Rounds(
     private val context: TransitionContext,
@@ -26,6 +26,8 @@ internal class Rounds(
 ) {
     private val branches = Branches(context, definition)
     private val carries = Carries(context.carried)
+    private val candidates = Candidates(context)
+    private val steps = Activations(context)
 
     /** A new round, entered at the definition's start. */
     fun open(
@@ -60,30 +62,41 @@ internal class Rounds(
         val round = Round(number, RoundOutcome.OPEN, emptyList(), route)
         val index = from.routeIndex
         return if (index != null && route.isNotEmpty()) {
-            val (next, step) = routeEntry(round, from.nodeId, route.indexOf(from.assignee).coerceAtLeast(0))
+            val (next, step) = routeEntry(round, from.nodeId, from.assignee?.let(route::indexOf)?.coerceAtLeast(0) ?: 0)
             Walk(next, listOf(Effect.TaskCreated(step.id, step.tasks.last())), emptyList(), finished = false)
         } else {
             enter(round, from.nodeId, people, emptyList(), emptyList())
         }
     }
 
-    fun newTask(assignee: UUID): Task = Task(context.newId(), assignee, TaskState.OPEN, context.eligibility(assignee))
+    fun newTask(assignee: UUID): Task = steps.newTask(assignee)
 
     /**
      * [target] runs again after a send-back (design E03 §4.4): a route entry restarts there with the rest of the route
-     * waiting behind it, a parallel step asks all its holders again, any other step goes to the person who held it.
+     * waiting behind it, a step with one holder goes to the person who held it, and a step shared by several people (or
+     * held by nobody) resolves its assignees again.
      */
     fun reactivate(
         round: Round,
         target: Step,
+        initiator: UUID,
     ): Walk {
         val node = definition.step(target.nodeId)
         val index = target.routeIndex
+        val holder = target.assignee
         val (next, step) =
             when {
-                index != null -> routeEntry(round, target.nodeId, index)
-                target.kind == StepKind.PARALLEL -> parallel(round, node).let { round.copy(steps = round.steps + it) to it }
-                else -> activated(round, node, target.kind, target.assignee, null).let { round.copy(steps = round.steps + it) to it }
+                index != null -> {
+                    routeEntry(round, target.nodeId, index)
+                }
+
+                target.shared || holder == null -> {
+                    steps.shaped(round, node, candidates.of(node, initiator)).let { round.copy(steps = round.steps + it) to it }
+                }
+
+                else -> {
+                    steps.activated(round, node, target.kind, holder, null).let { round.copy(steps = round.steps + it) to it }
+                }
             }
         return Walk(next, step.tasks.map { Effect.TaskCreated(step.id, it) }, emptyList(), finished = false)
     }
@@ -99,13 +112,31 @@ internal class Rounds(
         if (at == Definition.END) return Walk(round, effects, followUps, finished = true)
         val node = definition.step(at)
         return when (node.type) {
-            StepType.ROUTE, StepType.REVIEW, StepType.APPROVE, StepType.PARALLEL -> person(round, node, people, effects, followUps)
+            StepType.ROUTE -> route(round, node, people, effects, followUps)
+            StepType.REVIEW, StepType.APPROVE, StepType.PARALLEL -> person(round, node, people, effects, followUps)
             StepType.BRANCH, StepType.NOTIFY, StepType.ESCALATE_TO_FORUM -> pass(round, node, people, effects, followUps)
             else -> throw IllegalStateException("step type ${node.type.json} cannot run")
         }
     }
 
-    /** A step that needs people: its task(s) open, unless every approval it asks for carries over (then the walk goes on). */
+    /** The initiator's route: its first approver whose approval does not carry over, or on past it when all do. */
+    private fun route(
+        round: Round,
+        node: StepDef,
+        people: People,
+        effects: List<Effect>,
+        followUps: List<ActionRecord>,
+    ): Walk {
+        val (first, carried) = carries.uncarried(round, node.id, 0)
+        return if (first == null) {
+            enter(round, checkNotNull(node.next), people, effects, followUps + carried)
+        } else {
+            val (next, step) = routeEntry(round, node.id, first)
+            Walk(carries.skip(next, node.id, carried), effects + Effect.TaskCreated(step.id, step.tasks.last()), followUps + carried, false)
+        }
+    }
+
+    /** A step that needs people: its task(s) open, unless its one holder's approval carries over (then the walk goes on). */
     private fun person(
         round: Round,
         node: StepDef,
@@ -113,37 +144,13 @@ internal class Rounds(
         effects: List<Effect>,
         followUps: List<ActionRecord>,
     ): Walk {
-        val holder = node.assignee?.userId
-        return when {
-            node.type == StepType.ROUTE -> {
-                val (first, carried) = carries.uncarried(round, node.id, 0)
-                if (first == null) {
-                    enter(round, checkNotNull(node.next), people, effects, followUps + carried)
-                } else {
-                    val (next, step) = routeEntry(round, node.id, first)
-                    Walk(
-                        carries.skip(next, node.id, carried),
-                        effects + Effect.TaskCreated(step.id, step.tasks.last()),
-                        followUps + carried,
-                        false,
-                    )
-                }
-            }
-
-            node.type == StepType.PARALLEL -> {
-                val step = parallel(round, node)
-                Walk(round.copy(steps = round.steps + step), effects + step.tasks.map { Effect.TaskCreated(step.id, it) }, followUps, false)
-            }
-
-            holder != null && carries.carries(node.id, holder) -> {
-                enter(round, checkNotNull(node.next), people, effects, followUps + carries.record(node.id, holder, round.number))
-            }
-
-            else -> {
-                val kind = if (node.type == StepType.REVIEW) StepKind.REVIEW else StepKind.APPROVE
-                val step = activated(round, node, kind, checkNotNull(holder), null)
-                Walk(round.copy(steps = round.steps + step), effects + Effect.TaskCreated(step.id, step.tasks.last()), followUps, false)
-            }
+        val found = candidates.of(node, people.initiator)
+        val holder = found.people.singleOrNull()
+        return if (node.type != StepType.PARALLEL && holder != null && carries.carries(node.id, holder)) {
+            enter(round, checkNotNull(node.next), people, effects, followUps + carries.record(node.id, holder, round.number))
+        } else {
+            val step = steps.shaped(round, node, found)
+            Walk(round.copy(steps = round.steps + step), effects + step.tasks.map { Effect.TaskCreated(step.id, it) }, followUps, false)
         }
     }
 
@@ -162,19 +169,10 @@ internal class Rounds(
             }
 
             StepType.NOTIFY -> {
-                val recipients =
-                    node.recipients.map {
-                        if (it.kind ==
-                            AssigneeKind.INITIATOR
-                        ) {
-                            people.initiator
-                        } else {
-                            checkNotNull(it.userId)
-                        }
-                    }
+                val recipients = candidates.recipients(node, people.initiator)
                 val message = checkNotNull(node.message)
                 val record = automatic(ActionKind.NOTIFY, round.number, people.actor, mapOf("step" to node.id, "message" to message))
-                val notify = Effect.Notify(node.id, recipients.distinct(), message)
+                val notify = Effect.Notify(node.id, recipients, message)
                 enter(round, checkNotNull(node.next), people, effects + notify, followUps + record)
             }
 
@@ -185,14 +183,6 @@ internal class Rounds(
             }
         }
 
-    private fun parallel(
-        round: Round,
-        node: StepDef,
-    ): Step {
-        val holders = node.assignees.map { checkNotNull(it.userId) }
-        return activated(round, node, StepKind.PARALLEL, holders.first(), null).copy(tasks = holders.map(::newTask))
-    }
-
     /** The route entry [index] activated: its pending step if the round has one, else a new step. */
     private fun routeEntry(
         round: Round,
@@ -201,11 +191,11 @@ internal class Rounds(
     ): Pair<Round, Step> {
         val pending = round.steps.lastOrNull { it.nodeId == nodeId && it.routeIndex == index && it.state == StepState.PENDING }
         if (pending != null) {
-            val active = pending.copy(state = StepState.ACTIVE, tasks = pending.tasks + newTask(pending.assignee))
+            val active = pending.copy(state = StepState.ACTIVE, tasks = pending.tasks + newTask(checkNotNull(pending.assignee)))
             return round.replaceStep(pending.id) { active } to active
         }
         val node = definition.step(nodeId)
-        val step = activated(round, node, StepKind.APPROVE, round.route[index], index)
+        val step = steps.activated(round, node, StepKind.APPROVE, round.route[index], index)
         // The rest of the route waits as pending steps, so the round shows who comes next (as in E01).
         val waiting =
             (index + 1 until round.route.size).mapIndexed { offset, i ->
@@ -223,25 +213,6 @@ internal class Rounds(
             }
         return round.copy(steps = round.steps + step + waiting) to step
     }
-
-    private fun activated(
-        round: Round,
-        node: StepDef,
-        kind: StepKind,
-        assignee: UUID,
-        routeIndex: Int?,
-    ): Step =
-        Step(
-            id = context.newId(),
-            ordinal = (round.steps.maxOfOrNull { it.ordinal } ?: 0) + 1,
-            assignee = assignee,
-            state = StepState.ACTIVE,
-            tasks = listOf(newTask(assignee)),
-            nodeId = node.id,
-            kind = kind,
-            routeIndex = routeIndex,
-            name = node.name,
-        )
 }
 
 /** Who a walk acts for: the instance's initiator (notify recipients) and the person whose action led here. */

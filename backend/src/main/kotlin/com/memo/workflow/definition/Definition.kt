@@ -60,6 +60,18 @@ enum class AssigneeKind(
 ) {
     PERSON("person"),
     INITIATOR("initiator"),
+
+    /** The holder of a position (design E04 §2). */
+    POSITION("position"),
+
+    /** The holder of the position the initiator's position reports to, [Assignee.levels] up. */
+    SUPERVISOR("supervisor"),
+
+    /** The holder of a unit's head position: the initiator's unit or [Assignee.unit], [Assignee.up] levels above. */
+    UNIT_HEAD("unitHead"),
+
+    /** The holders of a role in a unit (the initiator's or [Assignee.unit]) or above it. */
+    ROLE("role"),
     ;
 
     companion object {
@@ -67,10 +79,21 @@ enum class AssigneeKind(
     }
 }
 
-/** Who a step goes to. E03 knows a named person and the initiator (notify only); E04 adds resolvers. */
+/**
+ * Who a step goes to (design E04 §2): a named person, the initiator (notify only), or a resolver over the organisation.
+ * Which fields are set depends on [kind]; the JSON Schema enforces the combinations.
+ */
 data class Assignee(
     val kind: AssigneeKind,
     val userId: UUID? = null,
+    val positionId: UUID? = null,
+    /** Reporting lines up, for [AssigneeKind.SUPERVISOR]. */
+    val levels: Int? = null,
+    /** A unit id, or null for the initiator's unit ([AssigneeKind.UNIT_HEAD], [AssigneeKind.ROLE]). */
+    val unit: UUID? = null,
+    /** Units above, for [AssigneeKind.UNIT_HEAD]. */
+    val up: Int? = null,
+    val roleId: UUID? = null,
 )
 
 data class Attribute(
@@ -108,6 +131,8 @@ data class StepDef(
     val definition: String? = null,
     val forum: String? = null,
     val sla: Sla? = null,
+    /** Who gets the step when [assignee] resolves to nobody (design E04 §4.1); without it the step waits for an administrator. */
+    val fallback: Assignee? = null,
 ) {
     /** Where this step can lead: `next`, or every branch and `otherwise`. */
     val targets: List<String> get() = listOfNotNull(next) + branches.map { it.next } + listOfNotNull(otherwise)

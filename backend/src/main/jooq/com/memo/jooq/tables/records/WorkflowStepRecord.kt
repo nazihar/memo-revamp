@@ -8,6 +8,7 @@ import com.memo.jooq.tables.WorkflowStep
 
 import java.util.UUID
 
+import org.jooq.JSONB
 import org.jooq.Record1
 import org.jooq.impl.UpdatableRecordImpl
 
@@ -42,9 +43,9 @@ open class WorkflowStepRecord private constructor() : UpdatableRecordImpl<Workfl
         set(value): Unit = set(5, value)
         get(): String = get(5) as String
 
-    open var assigneeId: UUID
+    open var assigneeId: UUID?
         set(value): Unit = set(6, value)
-        get(): UUID = get(6) as UUID
+        get(): UUID? = get(6) as UUID?
 
     open var state: String
         set(value): Unit = set(7, value)
@@ -58,6 +59,14 @@ open class WorkflowStepRecord private constructor() : UpdatableRecordImpl<Workfl
         set(value): Unit = set(9, value)
         get(): Int? = get(9) as Int?
 
+    open var needed: Int?
+        set(value): Unit = set(10, value)
+        get(): Int? = get(10) as Int?
+
+    open var resolution: JSONB?
+        set(value): Unit = set(11, value)
+        get(): JSONB? = get(11) as JSONB?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -67,7 +76,7 @@ open class WorkflowStepRecord private constructor() : UpdatableRecordImpl<Workfl
     /**
      * Create a detached, initialised WorkflowStepRecord
      */
-    constructor(id: UUID, tenantId: UUID, instanceId: UUID, roundId: UUID, ordinal: Int, type: String, assigneeId: UUID, state: String, nodeId: String, routeIndex: Int? = null): this() {
+    constructor(id: UUID, tenantId: UUID, instanceId: UUID, roundId: UUID, ordinal: Int, type: String, assigneeId: UUID? = null, state: String, nodeId: String, routeIndex: Int? = null, needed: Int? = null, resolution: JSONB? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.instanceId = instanceId
@@ -78,6 +87,8 @@ open class WorkflowStepRecord private constructor() : UpdatableRecordImpl<Workfl
         this.state = state
         this.nodeId = nodeId
         this.routeIndex = routeIndex
+        this.needed = needed
+        this.resolution = resolution
         resetTouchedOnNotNull()
     }
 }

@@ -251,6 +251,8 @@ class TransitionContext(
      * resubmission policy (design E03 §4.6): their approval carries over instead of a new task.
      */
     val carried: Set<Carried> = emptySet(),
+    /** Who a definition's assignees are now (design E04 §4.1). */
+    val resolver: Resolver = Resolver.NAMED,
 )
 
 /** An approval of [nodeId] by [person] that can carry over into the next round. */

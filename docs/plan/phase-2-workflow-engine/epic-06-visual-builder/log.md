@@ -4,3 +4,20 @@
   - Written under the delegated per-epic gate (overview §10, Q1): research (R9, plus the builder's libraries), ADR-0042, design, threat model, tasks T1–T9, test plan and UX flows.
   - E06 is Phase 2's last epic, so T9 also closes the phase: the demo script, the retrospective and the exit check.
   - The owner's usability walk-through and the manual screen-reader pass are recorded in `ux-review.md` at the phase demo.
+- **T5 (simulation API):** `POST …/{key}/versions/{n}/simulate` runs a stored version, or an unsaved body, through the pure engine in memory (`DefinitionSimulator`).
+  - It uses the organisation's resolvers, substitutes, settings and forward limits, and the DoA in force matched on the sample (`DoaMatcher.matchAt`).
+  - Eligibility comes from `WorkflowSubject.ineligibleAt`. For memos, that is an active account and clearance for the sample classification.
+  - Every open decision gets its positive action from its holder until the instance ends, a task is blocked, or 500 commands.
+  - Made-up ids carry a fixed high half, so they can never be mistaken for rows.
+  - The answer: steps in order, each with its outcome, people (names, acting-for), blocked reason, the branch taken (index, condition, next), DoA group and the SLA as written; plus `ended`.
+  - Invalid bodies get 422 `DEFINITION_INVALID` with the problems. `RateLimit.WORKFLOW_SIMULATION_PER_USER` allows 30 a minute.
+  - Tests: `DefinitionSimulationIT` covers:
+    - both branches;
+    - parallel all;
+    - notify recipients;
+    - an uncleared committee member blocking the step;
+    - 422;
+    - no instance, task or audit row written;
+    - the 31st call in a minute refused.
+  - Matrix: `p2-e06-builder.yaml`.
+  - The unit test `DefinitionSimulatorTest` named in the test plan was not written. DoA and queue steps in a simulation are exercised by the exit journey (T9) instead.

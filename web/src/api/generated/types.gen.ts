@@ -1352,6 +1352,45 @@ export type SessionUser = {
     tenantAdmin: boolean;
 };
 
+export type SimulatedPersonResponse = {
+    actingFor?: Person | null;
+    id: string;
+    name: string;
+};
+
+export type SimulatedStepResponse = {
+    blockedReason?: 'NO_CLEARANCE' | 'INACTIVE' | 'UNRESOLVED';
+    branch?: number | null;
+    condition?: string | null;
+    group?: number | null;
+    name: string;
+    next?: string | null;
+    outcome: 'DECIDED' | 'BLOCKED' | 'NOTIFIED' | 'BRANCHED' | 'PASSED';
+    people: Array<SimulatedPersonResponse>;
+    sla?: {
+        [key: string]: unknown;
+    } | null;
+    stepId: string;
+    type: string;
+};
+
+export type SimulationRequest = {
+    attributes?: {
+        [key: string]: unknown;
+    };
+    body?: {
+        [key: string]: unknown;
+    } | null;
+    initiatorId?: string;
+    route?: Array<RouteEntry>;
+    subjectType?: string;
+};
+
+export type SimulationResponse = {
+    ended: 'APPROVED' | 'BLOCKED' | 'LIMIT';
+    steps: Array<SimulatedStepResponse>;
+};
+
 /**
  * A TOTP or recovery code for users with MFA; the current password otherwise.
  */
@@ -2270,6 +2309,25 @@ export type SendBackWorkflowDefinitionResponses = {
 };
 
 export type SendBackWorkflowDefinitionResponse = SendBackWorkflowDefinitionResponses[keyof SendBackWorkflowDefinitionResponses];
+
+export type SimulateWorkflowDefinitionData = {
+    body: SimulationRequest;
+    path: {
+        key: string;
+        number: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/workflow-definitions/{key}/versions/{number}/simulate';
+};
+
+export type SimulateWorkflowDefinitionResponses = {
+    /**
+     * OK
+     */
+    200: SimulationResponse;
+};
+
+export type SimulateWorkflowDefinitionResponse = SimulateWorkflowDefinitionResponses[keyof SimulateWorkflowDefinitionResponses];
 
 export type SubmitWorkflowDefinitionData = {
     body?: never;

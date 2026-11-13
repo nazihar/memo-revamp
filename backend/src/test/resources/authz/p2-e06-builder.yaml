@@ -1,0 +1,7 @@
+# Phase 2 E06 visual workflow builder (design E06 §8). Simulation is a read for holders of
+# workflow.definitions.manage or .approve; tenant administrators hold both.
+epic: P2-E06
+endpoints:
+  - endpoint: "POST /api/v1/admin/workflow-definitions/{key}/versions/{number}/simulate"
+    rule: tenantAdmin
+    body: { initiatorId: "{random}", attributes: { classificationRank: 0 } }

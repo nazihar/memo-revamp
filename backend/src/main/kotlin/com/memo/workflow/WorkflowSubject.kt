@@ -25,6 +25,15 @@ interface WorkflowSubject {
      */
     fun snapshot(subjectId: UUID): Map<String, Any?>
 
+    /**
+     * Which of [users] could not hold a task on an item of this type with these [attributes] values, and why: the
+     * simulation's twin of [ineligible], with no item (design E06 §4). The default: everyone may.
+     */
+    fun ineligibleAt(
+        attributes: Map<String, Any?>,
+        users: Collection<UUID>,
+    ): Map<UUID, BlockedReason> = emptyMap()
+
     /** The item attributes definition conditions may read for this subject type (ADR-0039), by name. */
     val attributes: Map<String, AttributeType> get() = emptyMap()
 

@@ -9334,6 +9334,190 @@
       "value": "]"
     }
   ],
+  "memo.attachments": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŧŧȧȧƈħḿḗḗƞŧş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.attachments.downloadNamed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓǿǿẇƞŀǿǿȧȧḓ "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.attachments.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŭŭƥƥǿǿřŧīƞɠ ƥȧȧƥḗḗřş. Ḗȧȧƈħ ḿȧȧẏ ƀḗḗ ƈŀȧȧşşīƒīḗḗḓ ȧȧƀǿǿṽḗḗ ŧħḗḗ ḿḗḗḿǿǿ; řḗḗȧȧḓḗḗřş ƞǿǿŧ ƈŀḗḗȧȧřḗḗḓ ƒǿǿř īŧ şḗḗḗḗ ǿǿƞŀẏ ŧħȧȧŧ īŧ ḗḗẋīşŧş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.attachments.levelNamed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŀȧȧşşīƒīƈȧȧŧīǿǿƞ ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.attachments.none": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ȧȧŧŧȧȧƈħḿḗḗƞŧş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.attachments.previewNamed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥřḗḗṽīḗḗẇ "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.attachments.removeNamed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗḿǿǿṽḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.attachments.restricted": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗşŧřīƈŧḗḗḓ ȧȧŧŧȧȧƈħḿḗḗƞŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.attachments.restricted.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŀȧȧşşīƒīḗḗḓ ȧȧƀǿǿṽḗḗ ẏǿǿŭŭř ƈŀḗḗȧȧřȧȧƞƈḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.attachments.sameAsMemo": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şȧȧḿḗḗ ȧȧş ŧħḗḗ ḿḗḗḿǿǿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.attachments.upload": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧḓḓ ȧȧƞ ȧȧŧŧȧȧƈħḿḗḗƞŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.attachments.upload.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ƤḒƑ, īḿȧȧɠḗḗş, Ẇǿǿřḓ, Ḗẋƈḗḗŀ, ƤǿǿẇḗḗřƤǿǿīƞŧ, ǾƥḗḗƞḒǿǿƈŭŭḿḗḗƞŧ, ŧḗḗẋŧ ǿǿř ẐĪƤ; ŭŭƥ ŧǿǿ 50 ḾƁ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "memo.blocked": [
     {
       "type": 0,
@@ -9402,6 +9586,288 @@
     {
       "type": 0,
       "value": "Ƈŀǿǿşḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.coauthors": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿ-ȧȧŭŭŧħǿǿřş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.coauthors.add": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧḓḓ ȧȧ ƈǿǿ-ȧȧŭŭŧħǿǿř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.coauthors.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗẏ ḗḗḓīŧ ŧħḗḗ ḓǿǿƈŭŭḿḗḗƞŧ ȧȧƞḓ ŧħḗḗ ȧȧŧŧȧȧƈħḿḗḗƞŧş ẇīŧħ ẏǿǿŭŭ ẇħīŀḗḗ īŧ īş ȧȧ ḓřȧȧƒŧ. Ǿƞŀẏ ẏǿǿŭŭ şŭŭƀḿīŧ īŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.coauthors.none": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿƀǿǿḓẏ ẏḗḗŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.coauthors.remove": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗḿǿǿṽḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.coauthors.you": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ȧȧřḗḗ ȧȧ ƈǿǿ-ȧȧŭŭŧħǿǿř: ẏǿǿŭŭ ƈȧȧƞ ḗḗḓīŧ ŧħḗḗ ḓǿǿƈŭŭḿḗḗƞŧ ȧȧƞḓ ŧħḗḗ ȧȧŧŧȧȧƈħḿḗḗƞŧş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.compare.changes": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ƞǿǿ ƈħȧȧƞɠḗḗş"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƈħȧȧƞɠḗḗ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƈħȧȧƞɠḗḗş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.compare.from": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿŀḓḗḗř ṽḗḗřşīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.compare.legend": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗḿǿǿṽḗḗḓ ŧḗḗẋŧ īş şŧřŭŭƈķ ŧħřǿǿŭŭɠħ ǿǿƞ ŧħḗḗ ŀḗḗƒŧ; ȧȧḓḓḗḗḓ ŧḗḗẋŧ īş ŭŭƞḓḗḗřŀīƞḗḗḓ ǿǿƞ ŧħḗḗ řīɠħŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.compare.noText": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ŧḗḗẋŧ ǿǿƒ ŧħīş ṽḗḗřşīǿǿƞ īş ƞǿǿŧ ȧȧṽȧȧīŀȧȧƀŀḗḗ ẏḗḗŧ, ǿǿř ƈȧȧƞƞǿǿŧ ƀḗḗ řḗḗȧȧḓ ƒřǿǿḿ ŧħīş ķīƞḓ ǿǿƒ ƒīŀḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.compare.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿḿƥȧȧřḗḗ ṽḗḗřşīǿǿƞş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.compare.to": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞḗḗẇḗḗř ṽḗḗřşīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.compare.tooDifferent": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗşḗḗ ṽḗḗřşīǿǿƞş ȧȧřḗḗ ŧǿǿǿǿ ḓīƒƒḗḗřḗḗƞŧ ŧǿǿ ḿȧȧřķ ŧħḗḗ ƈħȧȧƞɠḗḗş; ƀǿǿŧħ ŧḗḗẋŧş ȧȧřḗḗ şħǿǿẇƞ şīḓḗḗ ƀẏ şīḓḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.compare.truncated": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƞŀẏ ŧħḗḗ ƀḗḗɠīƞƞīƞɠ ǿǿƒ ȧȧ ṽḗḗřẏ ŀǿǿƞɠ ŧḗḗẋŧ īş ƈǿǿḿƥȧȧřḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.compare.version": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ṽḗḗřşīǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "who"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.compare.working": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿḿƥȧȧřīƞɠ…"
     },
     {
       "type": 0,
@@ -10334,6 +10800,20 @@
     {
       "type": 0,
       "value": "Ḓǿǿƈŭŭḿḗḗƞŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.document.compare": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿḿƥȧȧřḗḗ ṽḗḗřşīǿǿƞş"
     },
     {
       "type": 0,
@@ -11786,6 +12266,116 @@
     {
       "type": 1,
       "value": "time"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.preview.failed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƥřḗḗṽīḗḗẇ ƈǿǿŭŭŀḓ ƞǿǿŧ ƀḗḗ şħǿǿẇƞ. Ḓǿǿẇƞŀǿǿȧȧḓ ŧħḗḗ ƒīŀḗḗ ŧǿǿ ǿǿƥḗḗƞ īŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.preview.loading": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀǿǿȧȧḓīƞɠ ŧħḗḗ ƥřḗḗṽīḗḗẇ…"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.preview.next": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞḗḗẋŧ ƥȧȧɠḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.preview.none": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ƒīŀḗḗ ƈȧȧƞƞǿǿŧ ƀḗḗ ƥřḗḗṽīḗḗẇḗḗḓ. Ḓǿǿẇƞŀǿǿȧȧḓ īŧ ŧǿǿ ǿǿƥḗḗƞ īŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.preview.page": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥȧȧɠḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "page"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "pages"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.preview.pending": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƥřḗḗṽīḗḗẇ īş ƀḗḗīƞɠ ƥřḗḗƥȧȧřḗḗḓ. Ŧřẏ ȧȧɠȧȧīƞ īƞ ȧȧ ḿǿǿḿḗḗƞŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.preview.previous": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥřḗḗṽīǿǿŭŭş ƥȧȧɠḗḗ"
     },
     {
       "type": 0,

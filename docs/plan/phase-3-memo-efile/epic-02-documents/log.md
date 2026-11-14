@@ -159,3 +159,21 @@
 - The two texts are read outside the resolving transaction.
 - `DocumentCompareIT`: pending state, texts after the worker runs, uploader and hash, audit, a stranger, an unknown file and an unknown version. Matrix entry.
 - The browser side (jsdiff in a worker, side-by-side view) is with the web work in T7.
+
+## 2026-11-14 — T7 web
+- **Attachments section** on the memo view (below the document):
+  - the list in order, with size; a restricted row says only that it exists and why;
+  - preview, download, and a classification select (stricter levels up to the user's clearance, or "Same as the memo") and remove for the initiator and co-authors while the memo may change;
+  - upload through the existing file control (purpose `memo.attachment`, owner the memo).
+- **Preview dialog:** a PDF (the original or its rendition) with PDF.js page by page, an image as an image, or "being prepared" or "cannot be previewed".
+  - PDF.js loads only when a preview opens (431 kB chunk).
+  - Its worker comes from our origin as a module; `useWasm: false`, no XFA, no scripting, so the CSP is unchanged.
+- **Compare versions:** a button in the Document section once there are two versions, opening a side-by-side table. Removed words are struck through (`del`) on the left and added words underlined (`ins`) on the right; each column is headed with the version, name and uploader; changes are counted.
+  - `version-diff.ts` diffs lines first, then words in lines changed in place, with a two-second and edit-length budget, beyond which both texts are shown unmarked.
+  - It runs in a worker (`version-diff.worker.ts`), or directly where there is none (tests).
+- **Co-authors** in the side column: the initiator of a draft adds people with the people picker and removes them; others see the list, and a co-author is told what they may do.
+- **Libraries:** `pdfjs-dist` 6.4.299 and `diff` 9.0.0, exact, in the register.
+- **Arabic:** all new strings, including the plural forms of the change count.
+- **Tests:** `version-diff.test.ts` (3); `memo-documents.test.tsx` (3: the list with a restricted row and a reclassify behind If-Match, with axe; comparison with marked words and the uploader, with axe; removing a co-author).
+  - The full web suite had four 5-second timeouts in unrelated features under load; those files pass alone (17 files, 67 tests), as seen before.
+- **Not done:** editing XLSX and DOCX attachments in the browser. The editor page and the adapter are still for the memo document (`.docx`); attachments are edited by download and a new version. This is carried to T8 or later and recorded as a gap against ADR-0047's spreadsheet line.

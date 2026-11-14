@@ -89,6 +89,7 @@ export const mm = defineMessages({
   sharedBadge: { id: 'memo.inbox.shared', defaultMessage: 'Shared' },
   actionRecuse: { id: 'memo.action.recuse', defaultMessage: 'Declare an interest' },
   actionClose: { id: 'memo.action.close', defaultMessage: 'Close' },
+  compareVersions: { id: 'memo.document.compare', defaultMessage: 'Compare versions' },
   actionClaim: { id: 'memo.action.claim', defaultMessage: 'Claim' },
   actionRelease: { id: 'memo.action.release', defaultMessage: 'Release' },
   claimed: { id: 'memo.claimed', defaultMessage: 'You claimed this task. The others cannot act until you release it.' },

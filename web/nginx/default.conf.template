@@ -62,6 +62,11 @@ server {
     # they get the matching cross-origin headers; our CSP is not applied to them (the editor is not our code). Only our own
     # pages may frame them: `frame-ancestors` alone, since next to it X-Frame-Options is ignored (Firefox says so on every
     # editor load). OFFICE_HEADERS in vite.config.ts mirrors this block for local runs.
+    # Document-server APIs no browser needs (ADR-0047): conversion, commands, DocBuilder, the AI proxy, info and the example
+    # and welcome pages. Only the backend calls the converter, on the internal network. vite.config.ts mirrors this list.
+    location ~* ^/office/(converter|convertservice\.ashx|docbuilder|coauthoring/commandservice\.ashx|command|info|example|welcome|ai-proxy)(/|$) {
+        return 403;
+    }
     location /office/ {
         resolver ${NGINX_RESOLVER} valid=30s ipv6=off;
         set $office ${OFFICE_URL};

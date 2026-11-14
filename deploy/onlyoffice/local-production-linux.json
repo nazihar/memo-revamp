@@ -1,0 +1,36 @@
+{
+  "externalRequest": {
+    "directIfIn": { "allowList": [], "jwtToken": true },
+    "action": { "allow": false, "blockPrivateIP": true }
+  },
+  "aiSettings": {
+    "providers": {},
+    "models": [],
+    "allowBrowserProxy": false,
+    "allowedCorsOrigins": []
+  },
+  "services": {
+    "CoAuthoring": {
+      "expire": {
+        "files": 3600,
+        "filesCron": "0 */10 * * * *",
+        "sessionidle": "1h",
+        "sessionabsolute": "12h"
+      },
+      "autoAssembly": { "enable": true, "interval": "5m", "step": "1m" },
+      "plugins": { "autostart": [] }
+    }
+  },
+  "queue": { "visibilityTimeout": 120 },
+  "FileConverter": {
+    "converter": {
+      "maxDownloadBytes": 104857600,
+      "inputLimits": [
+        { "type": "docx;dotx;docm;dotm", "zip": { "uncompressed": "50MB", "template": "*.xml" } },
+        { "type": "xlsx;xltx;xlsm;xltm", "zip": { "uncompressed": "100MB", "template": "*.xml" } },
+        { "type": "pptx;ppsx;potx;pptm;ppsm;potm", "zip": { "uncompressed": "50MB", "template": "*.xml" } },
+        { "type": "vsdx;vstx;vssx;vsdm;vstm;vssm", "zip": { "uncompressed": "50MB", "template": "*.xml" } }
+      ]
+    }
+  }
+}

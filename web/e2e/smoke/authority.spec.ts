@@ -138,7 +138,9 @@ test.describe('as a tenant admin', () => {
   test('the delegation of authority shows the published version and its rule', async ({ app, page }) => {
     await app.visit('/admin/workflow/doa')
     await expect(page.getByRole('heading', { level: 1, name: 'Delegation of authority' })).toBeVisible()
-    await expect(page.getByText('Rule 1 · Credit memos')).toBeVisible()
+    // Phase 3 E01 T8: the credit-proposal amount bands come first, then the rule for every memo.
+    await expect(page.getByText('Rule 1 · Credit proposals of BDT 5 million or more')).toBeVisible()
+    await expect(page.getByText('Rule 3 · Credit memos')).toBeVisible()
     await expect(page.getByRole('button', { name: 'Save draft' })).toHaveCount(0)
     await app.checkA11y()
   })

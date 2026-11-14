@@ -461,7 +461,7 @@ class MemoAttachments(
     ): List<AttachmentView> {
         val clearance = policy.clearanceRank()
         val shown = rows.filter { it.effectiveRank(memo.classificationRank) <= clearance }
-        val shownIds = shown.mapTo(HashSet()) { it.id }
+        val shownIds = shown.map { it.id }.toSet()
         val versions = files.currentVersions(shown.map { it.fileId })
         val levels = if (shown.any { it.classificationId != null }) clearances.levels().associateBy { it.id } else emptyMap()
         return rows.map { row ->

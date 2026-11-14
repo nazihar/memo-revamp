@@ -1,0 +1,15 @@
+# Phase 3 E01 memo types (design E01 §3, §4; ADR-0043). Rules: rules.yaml. memo.types.manage (maker) and
+# memo.types.approve (checker) are privileged: tenant admins hold both, so the maker-checker split itself (SAME_PERSON)
+# is MemoTypeVersionsIT. Random type ids are 404 for everyone allowed through.
+epic: P3-E01
+endpoints:
+  - { endpoint: "GET /api/v1/admin/memo-types/{typeId}/versions", rule: tenantAdmin }
+  - { endpoint: "GET /api/v1/admin/memo-types/{typeId}/versions/{number}", rule: tenantAdmin }
+  - { endpoint: "POST /api/v1/admin/memo-types/{typeId}/versions", rule: tenantAdmin }
+  - endpoint: "PUT /api/v1/admin/memo-types/{typeId}/versions/{number}"
+    rule: tenantAdmin
+    body: { name: "Matrix type", code: "MX", definitionKey: "sequential-approval", routePolicy: "INITIATOR_DEFINED" }
+    headers: { If-Match: "\"0\"" }
+  - { endpoint: "POST /api/v1/admin/memo-types/{typeId}/versions/{number}/submit", rule: tenantAdmin, headers: { If-Match: "\"0\"" } }
+  - { endpoint: "POST /api/v1/admin/memo-types/{typeId}/versions/{number}/approve", rule: tenantAdminStepUp }
+  - { endpoint: "POST /api/v1/admin/memo-types/{typeId}/versions/{number}/send-back", rule: tenantAdmin, body: { remark: "Matrix" } }

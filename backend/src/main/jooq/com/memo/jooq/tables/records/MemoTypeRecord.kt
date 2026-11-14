@@ -76,6 +76,14 @@ open class MemoTypeRecord private constructor() : UpdatableRecordImpl<MemoTypeRe
         set(value): Unit = set(13, value)
         get(): Boolean? = get(13) as Boolean?
 
+    open var code: String?
+        set(value): Unit = set(14, value)
+        get(): String? = get(14) as String?
+
+    open var publishedVersion: Int?
+        set(value): Unit = set(15, value)
+        get(): Int? = get(15) as Int?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -85,7 +93,7 @@ open class MemoTypeRecord private constructor() : UpdatableRecordImpl<MemoTypeRe
     /**
      * Create a detached, initialised MemoTypeRecord
      */
-    constructor(id: UUID, tenantId: UUID, key: String? = null, name: String, defaultClassificationId: UUID? = null, routePolicy: String? = null, definitionKey: String? = null, stepUpOnApprove: Boolean? = null, active: Boolean? = null, version: Long? = null, createdAt: OffsetDateTime, updatedAt: OffsetDateTime, allowedApprovers: JSONB? = null, doaCheck: Boolean? = null): this() {
+    constructor(id: UUID, tenantId: UUID, key: String? = null, name: String, defaultClassificationId: UUID? = null, routePolicy: String? = null, definitionKey: String? = null, stepUpOnApprove: Boolean? = null, active: Boolean? = null, version: Long? = null, createdAt: OffsetDateTime, updatedAt: OffsetDateTime, allowedApprovers: JSONB? = null, doaCheck: Boolean? = null, code: String? = null, publishedVersion: Int? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.key = key
@@ -100,6 +108,8 @@ open class MemoTypeRecord private constructor() : UpdatableRecordImpl<MemoTypeRe
         this.updatedAt = updatedAt
         this.allowedApprovers = allowedApprovers
         this.doaCheck = doaCheck
+        this.code = code
+        this.publishedVersion = publishedVersion
         resetTouchedOnNotNull()
     }
 }

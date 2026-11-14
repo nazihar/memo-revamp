@@ -118,6 +118,10 @@ export const catalogue = defineMessages({
   },
   'memo.create': { id: 'access.permission.memoCreate', defaultMessage: 'Write and submit memos' },
   'memo.types.manage': { id: 'access.permission.memoTypes', defaultMessage: 'Manage memo types' },
+  'memo.types.approve': {
+    id: 'access.permission.memoTypesApprove',
+    defaultMessage: 'Review and publish memo types',
+  },
   'workflow.tasks.reassign': {
     id: 'access.permission.workflowTasksReassign',
     defaultMessage: 'Reassign approval tasks',

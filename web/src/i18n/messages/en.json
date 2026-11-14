@@ -42,6 +42,7 @@
   "access.permission.legalEntities": "Manage legal entities",
   "access.permission.memoCreate": "Write and submit memos",
   "access.permission.memoTypes": "Manage memo types",
+  "access.permission.memoTypesApprove": "Review and publish memo types",
   "access.permission.notificationSettings": "Manage email delivery",
   "access.permission.orgManage": "Manage units, positions and assignments",
   "access.permission.roles": "Manage roles and grants",

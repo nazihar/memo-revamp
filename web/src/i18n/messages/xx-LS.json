@@ -273,6 +273,12 @@
       "value": "Manage memo typesSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "access.permission.memoTypesApprove": [
+    {
+      "type": 0,
+      "value": "Review and publish memo typesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "access.permission.notificationSettings": [
     {
       "type": 0,

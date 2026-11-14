@@ -50,6 +50,7 @@ const memo: MemoView = {
   links: [],
   linkedFrom: [],
   canLink: true,
+  coauthors: [],
 }
 
 const history: HistoryRound[] = [

@@ -92,6 +92,7 @@ const memo: MemoView = {
     },
   ],
   canLink: true,
+  coauthors: [],
 }
 
 function handlers(view: MemoView = memo) {

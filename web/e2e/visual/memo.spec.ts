@@ -65,6 +65,7 @@ const memo: MemoView = {
   ],
   linkedFrom: [],
   canLink: true,
+  coauthors: [],
   sendBackTargets: [],
   allowedActions: ['APPROVE', 'RETURN', 'REJECT'],
   createdAt: '2026-11-08T08:00:00Z',

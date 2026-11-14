@@ -62,7 +62,9 @@ test.describe('as a tenant admin', () => {
     // The second administrator sees the changes and publishes it (maker-checker, ADR-0043).
     const reviewer = await as(browser, 'reviewer')
     await reviewer.goto(typeUrl)
-    await expect(reviewer.getByText(/Facility amount/).first()).toBeVisible()
+    // A first version has nothing to compare with; the reviewer reads the form in its preview.
+    await reviewer.getByRole('tab', { name: 'Form' }).click()
+    await expect(reviewer.getByRole('textbox', { name: /Facility amount/ })).toBeVisible()
     await reviewer.getByRole('button', { name: 'Approve and publish' }).click()
     await confirmIfAsked(reviewer, demoSecret('MEMO_DEMO_TOTP_SECRET'))
     await expect(reviewer.getByRole('heading', { level: 2, name: /Version 1 · Published/ })).toBeVisible()

@@ -48,6 +48,12 @@ data class MemoTypeSettingsRequest(
     val raiseScope: RaiseScope = RaiseScope(),
     /** How its memos are numbered; left out: the `general` series format `M-YYYY-NNNNN`, numbered on submit. */
     val numbering: Numbering = Numbering(),
+    /** How long its memos are kept; left out: no policy yet. */
+    val retention: Retention? = null,
+    /** What it asks for in attachments. */
+    val attachmentRules: AttachmentRules = AttachmentRules(),
+    /** Close approved memos this many days after approval; left out: only by hand. */
+    val autoCloseDays: Int? = null,
 )
 
 /** One version of a memo type, with who made, submitted and reviewed it. */
@@ -66,6 +72,9 @@ data class MemoTypeVersionResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val fields: List<MemoField>,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val raiseScope: RaiseScope,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val numbering: Numbering,
+    val retention: Retention?,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val attachmentRules: AttachmentRules,
+    val autoCloseDays: Int?,
     /** The names of the allowed people and the titles of the allowed positions, by id. */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val allowedNames: Map<UUID, String>,
     /** Null: created by the system. */
@@ -221,6 +230,9 @@ class MemoTypeVersionsController(
                 fields = s.fields,
                 raiseScope = s.raiseScope,
                 numbering = s.numbering,
+                retention = s.retention,
+                attachmentRules = s.attachmentRules,
+                autoCloseDays = s.autoCloseDays,
                 allowedNames =
                     people.filterKeys { it in s.allowedApprovers.people } + positions.filterKeys { it in s.allowedApprovers.positions },
                 createdBy = named(v.createdBy),
@@ -254,6 +266,9 @@ class MemoTypeVersionsController(
             fields = fields.map { it.normalized() },
             raiseScope = raiseScope,
             numbering = numbering.copy(series = numbering.series.trim(), parts = numbering.parts.map { it.copy(text = it.text?.trim()) }),
+            retention = retention,
+            attachmentRules = attachmentRules.copy(note = attachmentRules.note?.trim()?.ifEmpty { null }),
+            autoCloseDays = autoCloseDays,
         )
     }
 }

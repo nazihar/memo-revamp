@@ -81,3 +81,23 @@
   - `NumberingConcurrencyIT`: 40 parallel transactions get 1..40, and a rollback gives its number back.
   - `MemoTypeBackfillIT`: extended for V8.
   - `MemoDraftIT`: drafts are unnumbered.
+
+## 2026-11-14 — T5 lifecycle
+- **Built:**
+  - `memo/V9`: the `CLOSED` status with `closed_at`; `approved_at`, set when the workflow approves and backfilled for approved memos; `memo_link`, where removal is recorded and nothing is deleted; and retention, attachment rules and auto-close days on the version.
+  - `MemoClosing`: closing by the initiator (`POST /memos/{id}/close`), plus the hourly `memo-auto-close-sweep`, which runs one task per tenant as the system and closes approved memos after their pinned version's days. It is idempotent.
+  - `MemoLinks`: add by number (`LINK_TARGET_UNREADABLE` for numbers the person cannot open, `LINK_EXISTS`, `LINK_LIMIT`, `SELF`); the creator removes a link while the memo is a draft or returned. Links and "linked from" are shown only to people who may open both memos.
+  - `MemoTypePolicies` for the checks. The view has `links`, `linkedFrom`, `canLink` and `closedAt`, and `CLOSE` is offered to the initiator of an approved memo.
+  - Web: the "Closed" status label and tone (the button comes with T7).
+- **Changed from the plan:**
+  - Only the **initiator** closes by hand. A tenant administrator is not a participant and cannot open the memo, so closing for them goes through auto-close. The design's "tenant admin" path is dropped.
+  - "Link" is a `canLink` flag on the view, not an action in `allowedActions`: links are not workflow steps, and the action list stays as the workflow defines it.
+  - The closing remark is not stored, only recorded as given or not. Audit entries never carry remarks.
+- **Fixed in passing:**
+  - Since the semgrep fix, `MemoTypeBackfillIT` seeds in one transaction, so seeded types shared one `now()` and duplicate codes were numbered in random order. Seeding now uses `clock_timestamp()`.
+  - Semgrep in CI had blocked T1 for the session-level `set_config` in that test; it now sets the tenant transaction-locally.
+  - SpotBugs in CI had blocked T2 for re-read nullable rule properties.
+  - From now on, SpotBugs and the semgrep rules are checked locally before each push.
+- **Tests:**
+  - `MemoLifecycleIT` (5): closing by the initiator only and only when approved; nothing after closing; auto-close with a test clock, as the system, idempotent; links by number both ways, unreadable and duplicate targets, link visibility, recorded removal; retention and attachment rules kept and checked.
+  - `MemoTypeBackfillIT` extended for V9.

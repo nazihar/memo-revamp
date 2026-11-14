@@ -210,6 +210,21 @@ open class MemoTypeVersion(
      */
     val NUMBERING: TableField<MemoTypeVersionRecord, JSONB?> = createField(DSL.name("numbering"), SQLDataType.JSONB.nullable(false).defaultValue(DSL.field(DSL.raw("'{\"parts\": [{\"kind\": \"TEXT\", \"text\": \"M-\"}, {\"kind\": \"YEAR\", \"digits\": 4}, {\"kind\": \"TEXT\", \"text\": \"-\"}, {\"kind\": \"SEQUENCE\", \"digits\": 5}], \"reset\": \"YEARLY\", \"moment\": \"ON_SUBMIT\", \"series\": \"general\", \"countPer\": \"SERIES\", \"fyStartMonth\": 7}'::jsonb"), SQLDataType.JSONB)), this, "")
 
+    /**
+     * The column <code>memo.memo_type_version.retention</code>.
+     */
+    val RETENTION: TableField<MemoTypeVersionRecord, JSONB?> = createField(DSL.name("retention"), SQLDataType.JSONB, this, "")
+
+    /**
+     * The column <code>memo.memo_type_version.attachment_rules</code>.
+     */
+    val ATTACHMENT_RULES: TableField<MemoTypeVersionRecord, JSONB?> = createField(DSL.name("attachment_rules"), SQLDataType.JSONB.nullable(false).defaultValue(DSL.field(DSL.raw("'{}'::jsonb"), SQLDataType.JSONB)), this, "")
+
+    /**
+     * The column <code>memo.memo_type_version.auto_close_days</code>.
+     */
+    val AUTO_CLOSE_DAYS: TableField<MemoTypeVersionRecord, Int?> = createField(DSL.name("auto_close_days"), SQLDataType.INTEGER, this, "")
+
     private constructor(alias: Name, aliased: Table<MemoTypeVersionRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<MemoTypeVersionRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<MemoTypeVersionRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -269,6 +284,8 @@ open class MemoTypeVersion(
         get(): MemoPath = memo()
     override fun getChecks(): List<Check<MemoTypeVersionRecord>> = listOf(
         Internal.createCheck(this, DSL.name("memo_type_version_allowed_approvers_check"), "(((jsonb_typeof(allowed_approvers) = 'object'::text) AND (octet_length((allowed_approvers)::text) <= 16384)))", true),
+        Internal.createCheck(this, DSL.name("memo_type_version_attachment_rules_check"), "(((jsonb_typeof(attachment_rules) = 'object'::text) AND (octet_length((attachment_rules)::text) <= 4096)))", true),
+        Internal.createCheck(this, DSL.name("memo_type_version_auto_close_days_check"), "(((auto_close_days >= 1) AND (auto_close_days <= 3650)))", true),
         Internal.createCheck(this, DSL.name("memo_type_version_check"), "(((reviewed_by IS NULL) OR (reviewed_by <> submitted_by)))", true),
         Internal.createCheck(this, DSL.name("memo_type_version_check1"), "(((state <> 'PUBLISHED'::text) OR (published_at IS NOT NULL)))", true),
         Internal.createCheck(this, DSL.name("memo_type_version_code_check"), "((code ~ '^[A-Z0-9][A-Z0-9-]{0,9}\$'::text))", true),
@@ -278,6 +295,7 @@ open class MemoTypeVersion(
         Internal.createCheck(this, DSL.name("memo_type_version_number_check"), "((number >= 1))", true),
         Internal.createCheck(this, DSL.name("memo_type_version_numbering_check"), "(((jsonb_typeof(numbering) = 'object'::text) AND (octet_length((numbering)::text) <= 4096)))", true),
         Internal.createCheck(this, DSL.name("memo_type_version_raise_scope_check"), "(((jsonb_typeof(raise_scope) = 'object'::text) AND (octet_length((raise_scope)::text) <= 16384)))", true),
+        Internal.createCheck(this, DSL.name("memo_type_version_retention_check"), "(((retention IS NULL) OR ((jsonb_typeof(retention) = 'object'::text) AND (octet_length((retention)::text) <= 1024))))", true),
         Internal.createCheck(this, DSL.name("memo_type_version_review_remark_check"), "(((length(review_remark) >= 1) AND (length(review_remark) <= 4000)))", true),
         Internal.createCheck(this, DSL.name("memo_type_version_route_policy_check"), "((route_policy = ANY (ARRAY['INITIATOR_DEFINED'::text, 'FIXED'::text, 'BOTH'::text])))", true),
         Internal.createCheck(this, DSL.name("memo_type_version_state_check"), "((state = ANY (ARRAY['DRAFT'::text, 'IN_REVIEW'::text, 'PUBLISHED'::text, 'RETIRED'::text])))", true)

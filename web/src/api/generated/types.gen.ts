@@ -65,6 +65,12 @@ export type AssignRequest = {
     validTo?: string | null;
 };
 
+export type AttachmentRules = {
+    min: number;
+    note?: string | null;
+    required: boolean;
+};
+
 /**
  * One audit entry (ADR-0033).
  */
@@ -119,7 +125,7 @@ export type BoxItem = {
     id: string;
     reference?: string | null;
     round: number;
-    status: 'DRAFT' | 'IN_REVIEW' | 'RETURNED' | 'APPROVED' | 'REJECTED' | 'WITHDRAWN' | 'DISCARDED' | 'CANCELLED';
+    status: 'DRAFT' | 'IN_REVIEW' | 'RETURNED' | 'APPROVED' | 'REJECTED' | 'WITHDRAWN' | 'DISCARDED' | 'CANCELLED' | 'CLOSED';
     subject: string;
     updatedAt: string;
 };
@@ -666,6 +672,11 @@ export type LegalEntityRequest = {
     validFrom?: string | null;
 };
 
+export type LinkRequest = {
+    kind?: 'REFERS_TO' | 'SUPERSEDES' | 'FOLLOWS_UP';
+    targetReference: string;
+};
+
 export type LoginRequest = {
     email: string;
     password: string;
@@ -746,6 +757,16 @@ export type MemoField = {
     type: 'TEXT' | 'LONG_TEXT' | 'NUMBER' | 'AMOUNT' | 'DATE' | 'UNIT' | 'PERSON' | 'CHOICE' | 'MULTI_CHOICE';
 };
 
+export type MemoLinkView = {
+    id: string;
+    kind: 'REFERS_TO' | 'SUPERSEDES' | 'FOLLOWS_UP';
+    memoId: string;
+    reference?: string | null;
+    removable: boolean;
+    status: 'DRAFT' | 'IN_REVIEW' | 'RETURNED' | 'APPROVED' | 'REJECTED' | 'WITHDRAWN' | 'DISCARDED' | 'CANCELLED' | 'CLOSED';
+    subject: string;
+};
+
 export type MemoRequest = {
     classificationId?: string | null;
     metadata?: {
@@ -804,6 +825,8 @@ export type MemoTypeRequest = {
 
 export type MemoTypeSettingsRequest = {
     allowedApprovers?: AllowedApprovers;
+    attachmentRules?: AttachmentRules;
+    autoCloseDays?: number | null;
     code?: string;
     defaultClassificationId?: string | null;
     definitionKey?: string;
@@ -812,6 +835,7 @@ export type MemoTypeSettingsRequest = {
     name?: string;
     numbering?: Numbering;
     raiseScope?: RaiseScope;
+    retention?: Retention | null;
     routePolicy?: string;
     stepUpOnApprove?: boolean;
 };
@@ -821,6 +845,8 @@ export type MemoTypeVersionResponse = {
     allowedNames: {
         [key: string]: string;
     };
+    attachmentRules: AttachmentRules;
+    autoCloseDays?: number | null;
     code: string;
     createdAt: string;
     createdBy?: Named | null;
@@ -833,6 +859,7 @@ export type MemoTypeVersionResponse = {
     numbering: Numbering;
     publishedAt?: string | null;
     raiseScope: RaiseScope;
+    retention?: Retention | null;
     reviewRemark?: string | null;
     reviewedAt?: string | null;
     reviewedBy?: Named | null;
@@ -845,8 +872,10 @@ export type MemoTypeVersionResponse = {
 };
 
 export type MemoView = {
-    allowedActions: Array<'EDIT' | 'UPLOAD_DOCUMENT' | 'EDIT_ROUTE' | 'SUBMIT' | 'DISCARD' | 'RESUBMIT' | 'WITHDRAW' | 'APPROVE' | 'RETURN' | 'REJECT' | 'EDIT_DOCUMENT' | 'VIEW_DOCUMENT' | 'RECOMMEND' | 'SEND_BACK' | 'FORWARD' | 'DELEGATE' | 'ASK' | 'REFER' | 'ANSWER' | 'OPINION' | 'RECALL' | 'CLAIM' | 'RELEASE' | 'RECUSE'>;
+    allowedActions: Array<'EDIT' | 'UPLOAD_DOCUMENT' | 'EDIT_ROUTE' | 'SUBMIT' | 'DISCARD' | 'RESUBMIT' | 'WITHDRAW' | 'APPROVE' | 'RETURN' | 'REJECT' | 'EDIT_DOCUMENT' | 'VIEW_DOCUMENT' | 'RECOMMEND' | 'SEND_BACK' | 'FORWARD' | 'DELEGATE' | 'ASK' | 'REFER' | 'ANSWER' | 'OPINION' | 'RECALL' | 'CLAIM' | 'RELEASE' | 'RECUSE' | 'CLOSE'>;
+    canLink: boolean;
     classification: ClassificationView;
+    closedAt?: string | null;
     createdAt: string;
     details: Array<MemoDetailView>;
     document?: DocumentView | null;
@@ -855,6 +884,8 @@ export type MemoView = {
     id: string;
     initiator: Named;
     interests: Array<Named>;
+    linkedFrom: Array<MemoLinkView>;
+    links: Array<MemoLinkView>;
     myTask?: TaskRef | null;
     numberedWhen?: 'ON_SUBMIT' | 'ON_APPROVAL';
     originUnit?: Named | null;
@@ -863,7 +894,7 @@ export type MemoView = {
     route: Array<RouteEntryView>;
     sendBackTargets: Array<SendBackTargetView>;
     staleDetails: Array<MemoDetailView>;
-    status: 'DRAFT' | 'IN_REVIEW' | 'RETURNED' | 'APPROVED' | 'REJECTED' | 'WITHDRAWN' | 'DISCARDED' | 'CANCELLED';
+    status: 'DRAFT' | 'IN_REVIEW' | 'RETURNED' | 'APPROVED' | 'REJECTED' | 'WITHDRAWN' | 'DISCARDED' | 'CANCELLED' | 'CLOSED';
     subject: string;
     type: Named;
     typeVersion?: number | null;
@@ -1403,7 +1434,7 @@ export type RegisterEntry = {
     memoId: string;
     number: string;
     sequence: number;
-    status: 'DRAFT' | 'IN_REVIEW' | 'RETURNED' | 'APPROVED' | 'REJECTED' | 'WITHDRAWN' | 'DISCARDED' | 'CANCELLED';
+    status: 'DRAFT' | 'IN_REVIEW' | 'RETURNED' | 'APPROVED' | 'REJECTED' | 'WITHDRAWN' | 'DISCARDED' | 'CANCELLED' | 'CLOSED';
     subject?: string | null;
     void: boolean;
 };
@@ -1416,6 +1447,11 @@ export type ReportingLineRequest = {
     reportsToPositionId: string;
     validFrom: string;
     validTo?: string | null;
+};
+
+export type Retention = {
+    from: 'APPROVAL' | 'CLOSURE';
+    years: number;
 };
 
 export type ReviewRequest = {
@@ -4371,6 +4407,27 @@ export type UpdateMemoResponses = {
 
 export type UpdateMemoResponse = UpdateMemoResponses[keyof UpdateMemoResponses];
 
+export type CloseMemoData = {
+    body?: RemarkRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/close';
+};
+
+export type CloseMemoResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type CloseMemoResponse = CloseMemoResponses[keyof CloseMemoResponses];
+
 export type DiscardMemoData = {
     body?: never;
     headers: {
@@ -4464,6 +4521,46 @@ export type RemoveMemoInterestResponses = {
 };
 
 export type RemoveMemoInterestResponse = RemoveMemoInterestResponses[keyof RemoveMemoInterestResponses];
+
+export type LinkMemoData = {
+    body: LinkRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/links';
+};
+
+export type LinkMemoResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type LinkMemoResponse = LinkMemoResponses[keyof LinkMemoResponses];
+
+export type UnlinkMemoData = {
+    body?: never;
+    path: {
+        id: string;
+        linkId: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/links/{linkId}';
+};
+
+export type UnlinkMemoResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type UnlinkMemoResponse = UnlinkMemoResponses[keyof UnlinkMemoResponses];
 
 export type RecallMemoData = {
     body?: RemarkRequest;

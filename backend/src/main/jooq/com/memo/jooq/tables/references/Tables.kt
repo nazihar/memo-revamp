@@ -29,6 +29,7 @@ import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
 import com.memo.jooq.tables.Memo
 import com.memo.jooq.tables.MemoInterest
+import com.memo.jooq.tables.MemoLink
 import com.memo.jooq.tables.MemoNumberCounter
 import com.memo.jooq.tables.MemoParticipant
 import com.memo.jooq.tables.MemoReferenceCounter
@@ -187,6 +188,11 @@ val MEMO_: Memo = Memo.MEMO_
  * The table <code>memo.memo_interest</code>.
  */
 val MEMO_INTEREST: MemoInterest = MemoInterest.MEMO_INTEREST
+
+/**
+ * The table <code>memo.memo_link</code>.
+ */
+val MEMO_LINK: MemoLink = MemoLink.MEMO_LINK
 
 /**
  * The table <code>memo.memo_number_counter</code>.

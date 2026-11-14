@@ -89,7 +89,7 @@ class MemoReviewIT : MemoIntegrationTest() {
         val carolTask = task(id, carol)
         val approved = act("approve", carolTask, carol)
         assertThat(approved.json()["status"].asString()).isEqualTo("APPROVED")
-        assertThat(get(id, alice.session).json()["allowedActions"]).isEmpty()
+        assertThat(get(id, alice.session).json()["allowedActions"].toString()).isEqualTo("""["CLOSE"]""")
 
         val instance = get(id, alice.session).json().let { UUID.fromString(it["id"].asString()) }.let { memoInstance(it) }
         val round2Hashes = snapshots(instance, round = 2)

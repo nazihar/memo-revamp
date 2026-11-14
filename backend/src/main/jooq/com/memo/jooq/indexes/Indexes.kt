@@ -21,6 +21,7 @@ import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
 import com.memo.jooq.tables.Memo
+import com.memo.jooq.tables.MemoLink
 import com.memo.jooq.tables.MemoParticipant
 import com.memo.jooq.tables.MemoType
 import com.memo.jooq.tables.MemoTypeVersion
@@ -77,8 +78,12 @@ val IDENTITY_OPERATOR_ENROLMENT_UK: Index = Internal.createIndex(DSL.name("ident
 val IDENTITY_RATE_LIMIT_BUCKET_EXPIRY_IDX: Index = Internal.createIndex(DSL.name("identity_rate_limit_bucket_expiry_idx"), IdentityRateLimitBucket.IDENTITY_RATE_LIMIT_BUCKET, arrayOf(IdentityRateLimitBucket.IDENTITY_RATE_LIMIT_BUCKET.EXPIRES_AT), false)
 val IDENTITY_RECOVERY_CODE_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("identity_recovery_code_tenant_user_idx"), IdentityRecoveryCode.IDENTITY_RECOVERY_CODE, arrayOf(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.TENANT_ID, IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.USER_ID), false)
 val IDENTITY_USER_TENANT_EMAIL_UK: Index = Internal.createIndex(DSL.name("identity_user_tenant_email_uk"), IdentityUser.IDENTITY_USER, arrayOf(IdentityUser.IDENTITY_USER.TENANT_ID, IdentityUser.IDENTITY_USER.EMAIL), true)
+val MEMO_LINK_STANDING_UK: Index = Internal.createIndex(DSL.name("memo_link_standing_uk"), MemoLink.MEMO_LINK, arrayOf(MemoLink.MEMO_LINK.TENANT_ID, MemoLink.MEMO_LINK.MEMO_ID, MemoLink.MEMO_LINK.TARGET_MEMO_ID), true)
+val MEMO_LINK_TENANT_MEMO_IDX: Index = Internal.createIndex(DSL.name("memo_link_tenant_memo_idx"), MemoLink.MEMO_LINK, arrayOf(MemoLink.MEMO_LINK.TENANT_ID, MemoLink.MEMO_LINK.MEMO_ID), false)
+val MEMO_LINK_TENANT_TARGET_IDX: Index = Internal.createIndex(DSL.name("memo_link_tenant_target_idx"), MemoLink.MEMO_LINK, arrayOf(MemoLink.MEMO_LINK.TENANT_ID, MemoLink.MEMO_LINK.TARGET_MEMO_ID), false)
 val MEMO_NUMBER_UK: Index = Internal.createIndex(DSL.name("memo_number_uk"), Memo.MEMO_, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.NUMBER_SERIES, Memo.MEMO_.NUMBER_PERIOD, Memo.MEMO_.NUMBER_SCOPE, Memo.MEMO_.NUMBER_SEQUENCE), true)
 val MEMO_PARTICIPANT_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("memo_participant_tenant_user_idx"), MemoParticipant.MEMO_PARTICIPANT, arrayOf(MemoParticipant.MEMO_PARTICIPANT.TENANT_ID, MemoParticipant.MEMO_PARTICIPANT.USER_ID, MemoParticipant.MEMO_PARTICIPANT.MEMO_ID), false)
+val MEMO_TENANT_APPROVED_IDX: Index = Internal.createIndex(DSL.name("memo_tenant_approved_idx"), Memo.MEMO_, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.APPROVED_AT), false)
 val MEMO_TENANT_INITIATOR_BOX_IDX: Index = Internal.createIndex(DSL.name("memo_tenant_initiator_box_idx"), Memo.MEMO_, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.INITIATOR_ID, Memo.MEMO_.STATUS, Memo.MEMO_.UPDATED_AT.desc(), Memo.MEMO_.ID), false)
 val MEMO_TENANT_TYPE_IDX: Index = Internal.createIndex(DSL.name("memo_tenant_type_idx"), Memo.MEMO_, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.MEMO_TYPE_ID), false)
 val MEMO_TENANT_TYPE_VERSION_IDX: Index = Internal.createIndex(DSL.name("memo_tenant_type_version_idx"), Memo.MEMO_, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.MEMO_TYPE_VERSION_ID), false)

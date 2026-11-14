@@ -112,6 +112,14 @@ open class MemoRecord private constructor() : UpdatableRecordImpl<MemoRecord>(Me
         set(value): Unit = set(22, value)
         get(): OffsetDateTime? = get(22) as OffsetDateTime?
 
+    open var approvedAt: OffsetDateTime?
+        set(value): Unit = set(23, value)
+        get(): OffsetDateTime? = get(23) as OffsetDateTime?
+
+    open var closedAt: OffsetDateTime?
+        set(value): Unit = set(24, value)
+        get(): OffsetDateTime? = get(24) as OffsetDateTime?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -121,7 +129,7 @@ open class MemoRecord private constructor() : UpdatableRecordImpl<MemoRecord>(Me
     /**
      * Create a detached, initialised MemoRecord
      */
-    constructor(id: UUID, tenantId: UUID, reference: String? = null, memoTypeId: UUID, subject: String, classificationId: UUID, classificationRank: Int, initiatorId: UUID, originUnitId: UUID? = null, status: String, documentFileId: UUID? = null, workflowInstanceId: UUID? = null, currentRound: Int? = null, version: Long? = null, createdAt: OffsetDateTime, updatedAt: OffsetDateTime, memoTypeVersionId: UUID? = null, metadata: JSONB? = null, numberSeries: String? = null, numberPeriod: String? = null, numberScope: String? = null, numberSequence: Long? = null, numberedAt: OffsetDateTime? = null): this() {
+    constructor(id: UUID, tenantId: UUID, reference: String? = null, memoTypeId: UUID, subject: String, classificationId: UUID, classificationRank: Int, initiatorId: UUID, originUnitId: UUID? = null, status: String, documentFileId: UUID? = null, workflowInstanceId: UUID? = null, currentRound: Int? = null, version: Long? = null, createdAt: OffsetDateTime, updatedAt: OffsetDateTime, memoTypeVersionId: UUID? = null, metadata: JSONB? = null, numberSeries: String? = null, numberPeriod: String? = null, numberScope: String? = null, numberSequence: Long? = null, numberedAt: OffsetDateTime? = null, approvedAt: OffsetDateTime? = null, closedAt: OffsetDateTime? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.reference = reference
@@ -145,6 +153,8 @@ open class MemoRecord private constructor() : UpdatableRecordImpl<MemoRecord>(Me
         this.numberScope = numberScope
         this.numberSequence = numberSequence
         this.numberedAt = numberedAt
+        this.approvedAt = approvedAt
+        this.closedAt = closedAt
         resetTouchedOnNotNull()
     }
 }

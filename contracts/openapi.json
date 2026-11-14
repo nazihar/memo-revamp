@@ -179,6 +179,22 @@
         "required" : [ "userId", "validFrom" ],
         "type" : "object"
       },
+      "AttachmentRules" : {
+        "properties" : {
+          "min" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "note" : {
+            "type" : [ "string", "null" ]
+          },
+          "required" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "min", "required" ],
+        "type" : "object"
+      },
       "AuditEvent" : {
         "description" : "One audit entry (ADR-0033).",
         "properties" : {
@@ -295,7 +311,7 @@
             "type" : "integer"
           },
           "status" : {
-            "enum" : [ "DRAFT", "IN_REVIEW", "RETURNED", "APPROVED", "REJECTED", "WITHDRAWN", "DISCARDED", "CANCELLED" ],
+            "enum" : [ "DRAFT", "IN_REVIEW", "RETURNED", "APPROVED", "REJECTED", "WITHDRAWN", "DISCARDED", "CANCELLED", "CLOSED" ],
             "type" : "string"
           },
           "subject" : {
@@ -1753,6 +1769,19 @@
         "required" : [ "name" ],
         "type" : "object"
       },
+      "LinkRequest" : {
+        "properties" : {
+          "kind" : {
+            "enum" : [ "REFERS_TO", "SUPERSEDES", "FOLLOWS_UP" ],
+            "type" : "string"
+          },
+          "targetReference" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "targetReference" ],
+        "type" : "object"
+      },
       "LoginRequest" : {
         "properties" : {
           "email" : {
@@ -1984,6 +2013,37 @@
         "required" : [ "attribute", "inbox", "key", "label", "required", "rules", "type" ],
         "type" : "object"
       },
+      "MemoLinkView" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "kind" : {
+            "enum" : [ "REFERS_TO", "SUPERSEDES", "FOLLOWS_UP" ],
+            "type" : "string"
+          },
+          "memoId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "reference" : {
+            "type" : [ "string", "null" ]
+          },
+          "removable" : {
+            "type" : "boolean"
+          },
+          "status" : {
+            "enum" : [ "DRAFT", "IN_REVIEW", "RETURNED", "APPROVED", "REJECTED", "WITHDRAWN", "DISCARDED", "CANCELLED", "CLOSED" ],
+            "type" : "string"
+          },
+          "subject" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "id", "kind", "memoId", "removable", "status", "subject" ],
+        "type" : "object"
+      },
       "MemoRequest" : {
         "properties" : {
           "classificationId" : {
@@ -2153,6 +2213,13 @@
           "allowedApprovers" : {
             "$ref" : "#/components/schemas/AllowedApprovers"
           },
+          "attachmentRules" : {
+            "$ref" : "#/components/schemas/AttachmentRules"
+          },
+          "autoCloseDays" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
           "code" : {
             "type" : "string"
           },
@@ -2181,6 +2248,13 @@
           "raiseScope" : {
             "$ref" : "#/components/schemas/RaiseScope"
           },
+          "retention" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/Retention"
+            }, {
+              "type" : "null"
+            } ]
+          },
           "routePolicy" : {
             "type" : "string"
           },
@@ -2200,6 +2274,13 @@
               "type" : "string"
             },
             "type" : "object"
+          },
+          "attachmentRules" : {
+            "$ref" : "#/components/schemas/AttachmentRules"
+          },
+          "autoCloseDays" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
           },
           "code" : {
             "type" : "string"
@@ -2248,6 +2329,13 @@
           "raiseScope" : {
             "$ref" : "#/components/schemas/RaiseScope"
           },
+          "retention" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/Retention"
+            }, {
+              "type" : "null"
+            } ]
+          },
           "reviewRemark" : {
             "type" : [ "string", "null" ]
           },
@@ -2289,20 +2377,27 @@
             } ]
           }
         },
-        "required" : [ "allowedApprovers", "allowedNames", "code", "createdAt", "definitionKey", "doaCheck", "fields", "name", "number", "numbering", "raiseScope", "revision", "routePolicy", "state", "stepUpOnApprove" ],
+        "required" : [ "allowedApprovers", "allowedNames", "attachmentRules", "code", "createdAt", "definitionKey", "doaCheck", "fields", "name", "number", "numbering", "raiseScope", "revision", "routePolicy", "state", "stepUpOnApprove" ],
         "type" : "object"
       },
       "MemoView" : {
         "properties" : {
           "allowedActions" : {
             "items" : {
-              "enum" : [ "EDIT", "UPLOAD_DOCUMENT", "EDIT_ROUTE", "SUBMIT", "DISCARD", "RESUBMIT", "WITHDRAW", "APPROVE", "RETURN", "REJECT", "EDIT_DOCUMENT", "VIEW_DOCUMENT", "RECOMMEND", "SEND_BACK", "FORWARD", "DELEGATE", "ASK", "REFER", "ANSWER", "OPINION", "RECALL", "CLAIM", "RELEASE", "RECUSE" ],
+              "enum" : [ "EDIT", "UPLOAD_DOCUMENT", "EDIT_ROUTE", "SUBMIT", "DISCARD", "RESUBMIT", "WITHDRAW", "APPROVE", "RETURN", "REJECT", "EDIT_DOCUMENT", "VIEW_DOCUMENT", "RECOMMEND", "SEND_BACK", "FORWARD", "DELEGATE", "ASK", "REFER", "ANSWER", "OPINION", "RECALL", "CLAIM", "RELEASE", "RECUSE", "CLOSE" ],
               "type" : "string"
             },
             "type" : "array"
           },
+          "canLink" : {
+            "type" : "boolean"
+          },
           "classification" : {
             "$ref" : "#/components/schemas/ClassificationView"
+          },
+          "closedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
           },
           "createdAt" : {
             "format" : "date-time",
@@ -2341,6 +2436,18 @@
           "interests" : {
             "items" : {
               "$ref" : "#/components/schemas/Named"
+            },
+            "type" : "array"
+          },
+          "linkedFrom" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MemoLinkView"
+            },
+            "type" : "array"
+          },
+          "links" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MemoLinkView"
             },
             "type" : "array"
           },
@@ -2388,7 +2495,7 @@
             "type" : "array"
           },
           "status" : {
-            "enum" : [ "DRAFT", "IN_REVIEW", "RETURNED", "APPROVED", "REJECTED", "WITHDRAWN", "DISCARDED", "CANCELLED" ],
+            "enum" : [ "DRAFT", "IN_REVIEW", "RETURNED", "APPROVED", "REJECTED", "WITHDRAWN", "DISCARDED", "CANCELLED", "CLOSED" ],
             "type" : "string"
           },
           "subject" : {
@@ -2410,7 +2517,7 @@
             "type" : "integer"
           }
         },
-        "required" : [ "allowedActions", "classification", "createdAt", "details", "holders", "id", "initiator", "interests", "round", "route", "sendBackTargets", "staleDetails", "status", "subject", "type", "updatedAt", "version" ],
+        "required" : [ "allowedActions", "canLink", "classification", "createdAt", "details", "holders", "id", "initiator", "interests", "linkedFrom", "links", "round", "route", "sendBackTargets", "staleDetails", "status", "subject", "type", "updatedAt", "version" ],
         "type" : "object"
       },
       "MfaEnrolment" : {
@@ -3677,7 +3784,7 @@
             "type" : "integer"
           },
           "status" : {
-            "enum" : [ "DRAFT", "IN_REVIEW", "RETURNED", "APPROVED", "REJECTED", "WITHDRAWN", "DISCARDED", "CANCELLED" ],
+            "enum" : [ "DRAFT", "IN_REVIEW", "RETURNED", "APPROVED", "REJECTED", "WITHDRAWN", "DISCARDED", "CANCELLED", "CLOSED" ],
             "type" : "string"
           },
           "subject" : {
@@ -3714,6 +3821,20 @@
           }
         },
         "required" : [ "reportsToPositionId", "validFrom" ],
+        "type" : "object"
+      },
+      "Retention" : {
+        "properties" : {
+          "from" : {
+            "enum" : [ "APPROVAL", "CLOSURE" ],
+            "type" : "string"
+          },
+          "years" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "from", "years" ],
         "type" : "object"
       },
       "ReviewRequest" : {
@@ -9027,6 +9148,50 @@
         "tags" : [ "memo" ]
       }
     },
+    "/api/v1/memos/{id}/close" : {
+      "post" : {
+        "operationId" : "closeMemo",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RemarkRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemoView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Close an approved memo for good",
+        "tags" : [ "memo" ]
+      }
+    },
     "/api/v1/memos/{id}/discard" : {
       "post" : {
         "operationId" : "discardMemo",
@@ -9192,6 +9357,87 @@
           }
         },
         "summary" : "Remove a declared interest",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/memos/{id}/links" : {
+      "post" : {
+        "operationId" : "linkMemo",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/LinkRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemoView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Link the memo to another one by its number",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/memos/{id}/links/{linkId}" : {
+      "delete" : {
+        "operationId" : "unlinkMemo",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "linkId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemoView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Remove a link you made while the memo is a draft or returned",
         "tags" : [ "memo" ]
       }
     },

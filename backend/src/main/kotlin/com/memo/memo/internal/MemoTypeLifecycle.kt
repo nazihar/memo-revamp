@@ -23,6 +23,7 @@ class MemoTypeLifecycle(
     private val versions: MemoTypeVersionStore,
     private val checks: MemoTypeChecks,
     private val audit: AuditLog,
+    private val attributes: MemoAttributes,
 ) {
     fun list(typeId: UUID): List<MemoTypeVersionRow> {
         type(typeId)
@@ -116,6 +117,8 @@ class MemoTypeLifecycle(
             throw ConcurrentModificationException("memo type version ${version.id}", version.revision)
         }
         mirror(type, version)
+        // Workflow conditions and DoA rules see the new fields from this commit on.
+        attributes.changed()
         return get(typeId, number).also { record("memo.type.published", it) }
     }
 

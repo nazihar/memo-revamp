@@ -25,11 +25,12 @@ class DefinitionChecks(
     private val directory: OrgDirectory,
     private val roles: RoleHolders,
     private val queues: Queues,
-    subjects: List<WorkflowSubject>,
+    private val subjects: List<WorkflowSubject>,
 ) {
-    private val catalogue = subjects.flatMap { it.attributes.entries }.associate { it.key to it.value }
+    /** The attributes every subject offers now, in this tenant (a memo type's fields among them, ADR-0043). */
+    private fun catalogue() = subjects.flatMap { it.attributes.entries }.associate { it.key to it.value }
 
-    fun validate(body: JsonNode): Validation = DefinitionValidator(catalogue, References(), ::fragment).validate(body)
+    fun validate(body: JsonNode): Validation = DefinitionValidator(catalogue(), References(), ::fragment).validate(body)
 
     /** What the runtime will read once [definition] is published: its fragments inlined, printed as schema-2 JSON. */
     fun compile(definition: Definition): JsonNode = DefinitionJson.print(DefinitionCompiler.inline(definition, ::fragment))

@@ -10,3 +10,6 @@ endpoints:
   # Content (T6): random ids are 404 for every signed-in subject.
   - { endpoint: "GET /api/v1/files/{fileId}/content", rule: signedIn }
   - { endpoint: "GET /api/v1/files/{fileId}/versions/{versionId}/content", rule: signedIn }
+  # Renditions (Phase 3 E02 T2, ADR-0045): the original's purpose decides; random ids are 404.
+  - { endpoint: "GET /api/v1/files/{fileId}/versions/{versionId}/renditions", rule: signedIn }
+  - { endpoint: "GET /api/v1/files/{fileId}/versions/{versionId}/renditions/pdf", rule: signedIn }

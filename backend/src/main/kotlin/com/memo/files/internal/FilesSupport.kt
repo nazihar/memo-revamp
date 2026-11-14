@@ -24,10 +24,18 @@ data class FilesProperties(
     val spoolDir: String = "",
     /** Uploads processed at once on this node; more get 503 with `Retry-After`. */
     val concurrentUploads: Int = DEFAULT_CONCURRENT_UPLOADS,
+    /** Renditions built at once on this node, per kind (ADR-0045): the document server is shared with editing. */
+    val renditionConcurrency: Int = DEFAULT_RENDITION_CONCURRENCY,
+    /** Extracted text is cut beyond this many characters and marked truncated. */
+    val maxTextChars: Long = DEFAULT_MAX_TEXT_CHARS,
+    /** The text-extraction service (Apache Tika server, ADR-0045); empty: text renditions are not possible. */
+    val tikaUrl: String = "",
 ) {
     companion object {
         const val DEFAULT_MAX_UPLOAD_BYTES = 100L shl 20
         const val DEFAULT_CONCURRENT_UPLOADS = 8
+        const val DEFAULT_RENDITION_CONCURRENCY = 2
+        const val DEFAULT_MAX_TEXT_CHARS = 5_000_000L
     }
 }
 

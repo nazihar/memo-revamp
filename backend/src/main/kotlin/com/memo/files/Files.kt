@@ -33,6 +33,9 @@ interface FilePurpose {
     /** Types served `inline`; everything else is an attachment. Only [FileType.INLINE_SAFE] types are honoured. */
     val inlineTypes: Set<FileType> get() = emptySet()
 
+    /** Derived content built for each new version (ADR-0045); none by default. */
+    val renditions: Set<RenditionKind> get() = emptySet()
+
     /** Whether the current actor may upload a file (or a new version) for [ownerId]. Called inside a tenant transaction. */
     fun mayUpload(ownerId: String?): Boolean
 

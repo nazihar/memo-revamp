@@ -16,6 +16,7 @@ import com.memo.jooq.tables.AuthzRolePermission
 import com.memo.jooq.tables.DoceditSession
 import com.memo.jooq.tables.FilesFile
 import com.memo.jooq.tables.FilesPendingUpload
+import com.memo.jooq.tables.FilesRendition
 import com.memo.jooq.tables.FilesTenantKeyset
 import com.memo.jooq.tables.FilesVersion
 import com.memo.jooq.tables.IdentityActionToken
@@ -146,6 +147,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      * The table <code>memo.files_pending_upload</code>.
      */
     val FILES_PENDING_UPLOAD: FilesPendingUpload get() = FilesPendingUpload.FILES_PENDING_UPLOAD
+
+    /**
+     * The table <code>memo.files_rendition</code>.
+     */
+    val FILES_RENDITION: FilesRendition get() = FilesRendition.FILES_RENDITION
 
     /**
      * The table <code>memo.files_tenant_keyset</code>.
@@ -407,6 +413,7 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         DoceditSession.DOCEDIT_SESSION,
         FilesFile.FILES_FILE,
         FilesPendingUpload.FILES_PENDING_UPLOAD,
+        FilesRendition.FILES_RENDITION,
         FilesTenantKeyset.FILES_TENANT_KEYSET,
         FilesVersion.FILES_VERSION,
         IdentityActionToken.IDENTITY_ACTION_TOKEN,

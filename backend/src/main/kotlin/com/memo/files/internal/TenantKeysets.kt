@@ -154,11 +154,36 @@ internal class FileCrypto(
         return channel.position(0)
     }
 
+    /** A rendition of [version] (ADR-0045): its own associated data, so it can never be read as the original or another kind. */
+    fun encryptingRendition(
+        tenant: TenantId,
+        version: UUID,
+        kind: String,
+        ciphertext: WritableByteChannel,
+    ): WritableByteChannel = keysets.cipher(tenant).aead.newEncryptingChannel(ciphertext, renditionData(tenant, version, kind))
+
+    fun decryptingRendition(
+        tenant: TenantId,
+        version: UUID,
+        kind: String,
+        ciphertext: SeekableByteChannel,
+    ): SeekableByteChannel {
+        val channel = keysets.cipher(tenant).aead.newSeekableDecryptingChannel(ciphertext, renditionData(tenant, version, kind))
+        channel.read(ByteBuffer.allocate(1))
+        return channel.position(0)
+    }
+
     companion object {
         fun associatedData(
             tenant: TenantId,
             file: UUID,
             version: UUID,
         ): ByteArray = "memo/file/v1/$tenant/$file/$version".toByteArray(Charsets.UTF_8)
+
+        fun renditionData(
+            tenant: TenantId,
+            version: UUID,
+            kind: String,
+        ): ByteArray = "memo/file-rendition/v1/$tenant/$version/$kind".toByteArray(Charsets.UTF_8)
     }
 }

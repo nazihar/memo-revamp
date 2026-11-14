@@ -6,6 +6,7 @@ import com.memo.files.FileInfo
 import com.memo.files.FilePurpose
 import com.memo.files.FileType
 import com.memo.files.FileVersionCreated
+import com.memo.files.RenditionKind
 import com.memo.files.StorageClass
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
@@ -63,6 +64,27 @@ class TestImagePurpose : FilePurpose {
 
     companion object {
         const val KEY = "test.image"
+    }
+}
+
+/** Like [TestDocumentPurpose], with both renditions (ADR-0045). */
+@Component
+class TestRenderedPurpose(
+    private val policy: Policy,
+) : FilePurpose {
+    override val key = KEY
+    override val allowedTypes = setOf(FileType.PDF, FileType.DOCX, FileType.XLSX, FileType.PNG, FileType.TEXT, FileType.ZIP)
+    override val maxBytes = 50L shl 20
+    override val storage = StorageClass.RECORD
+    override val auditReads = true
+    override val renditions = setOf(RenditionKind.PDF, RenditionKind.TEXT)
+
+    override fun mayUpload(ownerId: String?) = policy.holdsAnywhere(Permission.ORG_MANAGE)
+
+    override fun mayRead(file: FileInfo) = true
+
+    companion object {
+        const val KEY = "test.rendered"
     }
 }
 

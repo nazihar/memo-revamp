@@ -8,6 +8,7 @@ import com.memo.docedit.EditableFilePurpose
 import com.memo.files.FileInfo
 import com.memo.files.FileType
 import com.memo.files.FileVersionCreated
+import com.memo.files.RenditionKind
 import com.memo.files.StorageClass
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
@@ -31,6 +32,9 @@ class MemoDocumentPurpose(
     override val maxBytes = MAX_BYTES
     override val storage = StorageClass.RECORD
     override val auditReads = true
+
+    /** A PDF to preview and print, and the text to compare versions (ADR-0045). */
+    override val renditions = setOf(RenditionKind.PDF, RenditionKind.TEXT)
 
     override fun mayUpload(ownerId: String?): Boolean {
         val memo = memoOf(ownerId) ?: return false

@@ -2,6 +2,7 @@ package com.memo.files.internal
 
 import com.memo.audit.AuditLog
 import com.memo.common.authz.ForbiddenException
+import com.memo.common.storage.Bucket
 import com.memo.common.storage.ObjectStore
 import com.memo.common.tenant.TenantContext
 import com.memo.common.tenant.TenantId
@@ -9,6 +10,8 @@ import com.memo.common.tenant.TenantTransactions
 import com.memo.files.FilePurpose
 import com.memo.files.FileType
 import com.memo.files.FileVersionInfo
+import com.memo.files.RenditionKind
+import com.memo.files.RenditionState
 import jakarta.servlet.http.HttpSession
 import org.slf4j.LoggerFactory
 import org.springframework.http.ContentDisposition
@@ -58,8 +61,91 @@ internal class Downloads(
     private val crypto: FileCrypto,
     private val audit: AuditLog,
     private val clock: Clock,
+    private val renditions: RenditionStore,
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
+
+    /**
+     * The [kind] rendition of a version the actor may read (ADR-0045), when it is done; null otherwise. The read is audited
+     * like the original, naming the rendition.
+     */
+    fun openRendition(
+        fileId: UUID,
+        versionId: UUID,
+        kind: RenditionKind,
+        session: HttpSession?,
+    ): Pair<FileVersionInfo, RenditionRow>? =
+        transactions.inTenant(TenantContext.current()) {
+            val (version, purpose) = readableVersion(fileId, versionId)
+            val row = renditions.get(versionId, kind)?.takeIf { it.state == RenditionState.DONE }
+            if (row != null && purpose.auditReads && OpenMarks.firstOpen(session, markOf(versionId, kind), clock.millis())) {
+                audit.record(
+                    "file.opened",
+                    "file.version",
+                    versionId.toString(),
+                    after = mapOf("fileId" to fileId.toString(), "purpose" to purpose.key, "rendition" to kind.name),
+                )
+            }
+            row?.let { version to it }
+        }
+
+    /** The renditions of a version the actor may read. */
+    fun renditionsOf(
+        fileId: UUID,
+        versionId: UUID,
+    ): Pair<FileVersionInfo, List<RenditionRow>> =
+        transactions.inTenant(TenantContext.current()) {
+            val (version, _) = readableVersion(fileId, versionId)
+            version to renditions.of(versionId)
+        }
+
+    private fun readableVersion(
+        fileId: UUID,
+        versionId: UUID,
+    ): Pair<FileVersionInfo, FilePurpose> {
+        val info = store.info(fileId)
+        val purpose = info?.let { purposes[it.purpose] }
+        val version = store.version(versionId)?.takeIf { it.fileId == fileId }
+        if (info == null || purpose == null || version == null) throw FileNotFoundException()
+        if (!purpose.mayRead(info)) throw ForbiddenException(null)
+        return version to purpose
+    }
+
+    /** Writes [length] plaintext bytes of a done rendition from [first]; a failed authentication aborts the response. */
+    fun streamRendition(
+        row: RenditionRow,
+        first: Long,
+        length: Long,
+        out: OutputStream,
+    ) {
+        val tenant = TenantContext.current()
+        val ciphertext = objects.channel(Bucket.WORK, row.objectKey!!, null, row.ciphertextBytes!!, READ_CHUNK)
+        val plaintext =
+            try {
+                crypto.decryptingRendition(tenant, row.versionId, row.kind.name, ciphertext)
+            } catch (e: IOException) {
+                ciphertext.close()
+                throw FileIntegrityException(e)
+            }
+        plaintext.use { channel ->
+            channel.position(first)
+            val buffer = ByteBuffer.allocate(COPY_BUFFER)
+            var remaining = length
+            while (remaining > 0) {
+                buffer.clear().limit(minOf(COPY_BUFFER.toLong(), remaining).toInt())
+                val n = channel.read(buffer)
+                if (n < 0) throw FileIntegrityException(IOException("rendition ended early"))
+                if (!writeOrStop(out, buffer.array(), n)) return
+                remaining -= n
+            }
+        }
+    }
+
+    /** A marker per version and kind, so opening the preview and the original are audited separately. */
+    private fun markOf(
+        versionId: UUID,
+        kind: RenditionKind,
+    ): UUID = UUID.nameUUIDFromBytes("$versionId/${kind.name}".toByteArray(Charsets.UTF_8))
 
     /**
      * The version of [fileId] ([versionId], or the current one) if the actor may read it; audits the open when the purpose

@@ -1,0 +1,92 @@
+package com.memo.files
+
+import java.io.InputStream
+import java.io.OutputStream
+
+/** Derived content of a file version (ADR-0045): a PDF to preview, the text to compare and search. */
+enum class RenditionKind { PDF, TEXT }
+
+/** Where a rendition is: built in the background, then done, failed (after retries) or not possible for its type. */
+enum class RenditionState { PENDING, DONE, FAILED, NOT_POSSIBLE }
+
+/** The plaintext of a version as a port reads it: its type, its size and a fresh stream each time it is opened. */
+class RenditionInput(
+    val name: String,
+    val type: FileType,
+    val sizeBytes: Long,
+    private val opener: () -> InputStream,
+) {
+    fun open(): InputStream = opener()
+}
+
+/** What a port answers: the content was written, a failure that retrying cannot fix, or one worth retrying. */
+sealed interface RenditionOutcome {
+    /** The output was written; [truncated] when it was cut at a limit (text only). */
+    data class Written(
+        val truncated: Boolean = false,
+    ) : RenditionOutcome
+
+    /** [code] names why, for example SIZE, TIMEOUT, MALFORMED or UNSUPPORTED. */
+    data class Final(
+        val code: String,
+    ) : RenditionOutcome
+
+    data class Retry(
+        val code: String,
+    ) : RenditionOutcome
+}
+
+/**
+ * Converts a document to PDF (ADR-0045). Implemented by the editor adapter (ONLYOFFICE's conversion API); without an
+ * implementation, PDF renditions are not possible. Writes the PDF to [out]; never fetches anything by URL.
+ */
+interface RenditionConverter {
+    /** The types it can convert to PDF. */
+    val pdfTypes: Set<FileType>
+
+    fun toPdf(
+        input: RenditionInput,
+        key: String,
+        out: OutputStream,
+    ): RenditionOutcome
+}
+
+/**
+ * Extracts the plain text of a document (ADR-0045), through an isolated service. Writes UTF-8 text to [out], at most
+ * [maxChars] characters; longer text is cut and reported as truncated.
+ */
+interface TextExtractor {
+    val textTypes: Set<FileType>
+
+    fun text(
+        input: RenditionInput,
+        maxChars: Long,
+        out: OutputStream,
+    ): RenditionOutcome
+}
+
+/** A rendition's state as owning modules and the API see it. */
+data class RenditionInfo(
+    val kind: RenditionKind,
+    val state: RenditionState,
+    val error: String?,
+    val pages: Int?,
+    val sizeBytes: Long?,
+    val truncated: Boolean,
+)
+
+/**
+ * Derived content for owning modules (for example the memo's version comparison). Inside a tenant scope; no access check:
+ * the owning module has decided who may see the original.
+ */
+interface FileRenditions {
+    /** The renditions of [versionId] that exist (none for a purpose that wants none). In a tenant transaction. */
+    fun of(versionId: java.util.UUID): List<RenditionInfo>
+
+    /** Writes the plaintext of the [kind] rendition of [versionId] to [out]; false when it is not `DONE`. Outside a transaction. */
+    fun write(
+        versionId: java.util.UUID,
+        kind: RenditionKind,
+        out: OutputStream,
+    ): Boolean
+}

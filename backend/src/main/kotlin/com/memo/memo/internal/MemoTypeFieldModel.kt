@@ -178,7 +178,7 @@ class MemoFieldChecks(
                 listOfNotNull(
                     FieldProblem("$at/rules/maxLength", "RANGE", "1 to $limit characters.").takeIf { field.maxLength !in 1..limit },
                     FieldProblem("$at/rules/minLength", "RANGE", "0 up to the maximum length.").takeIf {
-                        r.minLength != null && r.minLength !in 0..field.maxLength
+                        r.minLength.let { it != null && it !in 0..field.maxLength }
                     },
                 )
             }
@@ -191,7 +191,9 @@ class MemoFieldChecks(
                         "0 to $MAX_DECIMALS decimals.",
                     ).takeIf { field.decimals !in 0..MAX_DECIMALS },
                     FieldProblem("$at/rules/min", "RANGE", "The minimum is above the maximum.").takeIf {
-                        r.min != null && r.max != null && r.min > r.max
+                        val min = r.min
+                        val max = r.max
+                        min != null && max != null && min > max
                     },
                     FieldProblem("$at/rules", "RANGE", "Limits within ±$LIMIT_TEXT.").takeIf {
                         listOfNotNull(r.min, r.max).any { it.abs() >= LIMIT }

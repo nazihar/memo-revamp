@@ -349,7 +349,14 @@ export type DirectoryPositionSummary = {
 
 export type DirectorySearchResult = {
     positions: Array<DirectoryPosition>;
+    units: Array<DirectoryUnit>;
     users: Array<DirectoryUser>;
+};
+
+export type DirectoryUnit = {
+    code: string;
+    id: string;
+    name: string;
 };
 
 export type DirectoryUser = {
@@ -477,10 +484,25 @@ export type EditingStatus = {
     enabled: boolean;
 };
 
+export type FieldChoice = {
+    key: string;
+    label: string;
+};
+
 export type FieldProblem = {
     code?: string;
     field?: string;
     message?: string;
+};
+
+export type FieldRules = {
+    choices?: Array<FieldChoice>;
+    currencies?: Array<string>;
+    decimals?: number | null;
+    max?: number | null;
+    maxLength?: number | null;
+    min?: number | null;
+    minLength?: number | null;
 };
 
 export type FileVersionView = {
@@ -705,8 +727,30 @@ export type Me = {
     tenantAdmin: boolean;
 };
 
+export type MemoDetailView = {
+    display?: string | null;
+    key: string;
+    label: string;
+    type: 'TEXT' | 'LONG_TEXT' | 'NUMBER' | 'AMOUNT' | 'DATE' | 'UNIT' | 'PERSON' | 'CHOICE' | 'MULTI_CHOICE';
+    value: unknown;
+};
+
+export type MemoField = {
+    attribute: boolean;
+    help?: string | null;
+    inbox: boolean;
+    key: string;
+    label: string;
+    required: boolean;
+    rules: FieldRules;
+    type: 'TEXT' | 'LONG_TEXT' | 'NUMBER' | 'AMOUNT' | 'DATE' | 'UNIT' | 'PERSON' | 'CHOICE' | 'MULTI_CHOICE';
+};
+
 export type MemoRequest = {
     classificationId?: string | null;
+    metadata?: {
+        [key: string]: unknown;
+    } | null;
     subject?: string;
     typeId?: string;
 };
@@ -730,8 +774,16 @@ export type MemoType = {
     version: number;
 };
 
+export type MemoTypeForm = {
+    fields: Array<MemoField>;
+    id: string;
+    name: string;
+    version: number;
+};
+
 export type MemoTypeOption = {
     defaultClassificationId?: string | null;
+    hasFields: boolean;
     id: string;
     name: string;
     stepUpOnApprove: boolean;
@@ -754,7 +806,9 @@ export type MemoTypeSettingsRequest = {
     defaultClassificationId?: string | null;
     definitionKey?: string;
     doaCheck?: boolean;
+    fields?: Array<MemoField>;
     name?: string;
+    raiseScope?: RaiseScope;
     routePolicy?: string;
     stepUpOnApprove?: boolean;
 };
@@ -770,9 +824,11 @@ export type MemoTypeVersionResponse = {
     defaultClassificationId?: string | null;
     definitionKey: string;
     doaCheck: boolean;
+    fields: Array<MemoField>;
     name: string;
     number: number;
     publishedAt?: string | null;
+    raiseScope: RaiseScope;
     reviewRemark?: string | null;
     reviewedAt?: string | null;
     reviewedBy?: Named | null;
@@ -788,6 +844,7 @@ export type MemoView = {
     allowedActions: Array<'EDIT' | 'UPLOAD_DOCUMENT' | 'EDIT_ROUTE' | 'SUBMIT' | 'DISCARD' | 'RESUBMIT' | 'WITHDRAW' | 'APPROVE' | 'RETURN' | 'REJECT' | 'EDIT_DOCUMENT' | 'VIEW_DOCUMENT' | 'RECOMMEND' | 'SEND_BACK' | 'FORWARD' | 'DELEGATE' | 'ASK' | 'REFER' | 'ANSWER' | 'OPINION' | 'RECALL' | 'CLAIM' | 'RELEASE' | 'RECUSE'>;
     classification: ClassificationView;
     createdAt: string;
+    details: Array<MemoDetailView>;
     document?: DocumentView | null;
     dueAt?: string | null;
     holders: Array<Named>;
@@ -795,13 +852,16 @@ export type MemoView = {
     initiator: Named;
     interests: Array<Named>;
     myTask?: TaskRef | null;
+    originUnit?: Named | null;
     reference: string;
     round: number;
     route: Array<RouteEntryView>;
     sendBackTargets: Array<SendBackTargetView>;
+    staleDetails: Array<MemoDetailView>;
     status: 'DRAFT' | 'IN_REVIEW' | 'RETURNED' | 'APPROVED' | 'REJECTED' | 'WITHDRAWN' | 'DISCARDED' | 'CANCELLED';
     subject: string;
     type: Named;
+    typeVersion?: number | null;
     updatedAt: string;
     version: number;
 };
@@ -1253,6 +1313,11 @@ export type QueueResponse = {
     version: number;
 };
 
+export type RaiseScope = {
+    roles?: Array<string>;
+    units?: Array<ScopeUnit>;
+};
+
 export type ReassignRequest = {
     newAssigneeId?: string;
     reason?: string | null;
@@ -1344,6 +1409,11 @@ export type RoutePositionView = {
 export type RouteRequest = {
     approvers?: Array<string>;
     entries?: Array<RouteEntry> | null;
+};
+
+export type ScopeUnit = {
+    id: string;
+    subtree: boolean;
 };
 
 export type SecuritySettingLimit = {
@@ -3608,7 +3678,7 @@ export type SearchDirectoryData = {
          */
         q: string;
         /**
-         * user, position, or both (default)
+         * user, position or unit; default user and position
          */
         kind?: Array<string>;
         limit?: number;
@@ -4057,6 +4127,24 @@ export type ListMemoTypesResponses = {
 };
 
 export type ListMemoTypesResponse = ListMemoTypesResponses[keyof ListMemoTypesResponses];
+
+export type GetMemoTypeFormData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memo-types/{id}/form';
+};
+
+export type GetMemoTypeFormResponses = {
+    /**
+     * OK
+     */
+    200: MemoTypeForm;
+};
+
+export type GetMemoTypeFormResponse = GetMemoTypeFormResponses[keyof GetMemoTypeFormResponses];
 
 export type ListMyMemosData = {
     body?: never;

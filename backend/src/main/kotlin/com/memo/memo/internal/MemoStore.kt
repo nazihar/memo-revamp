@@ -4,8 +4,11 @@ import com.memo.common.tenant.TenantDsl
 import com.memo.jooq.tables.records.MemoRecord
 import com.memo.jooq.tables.references.MEMO_PARTICIPANT
 import com.memo.jooq.tables.references.MEMO_REFERENCE_COUNTER
+import org.jooq.JSONB
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Repository
+import tools.jackson.core.type.TypeReference
+import tools.jackson.databind.json.JsonMapper
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.util.UUID
@@ -47,6 +50,10 @@ data class Memo(
     val createdAt: Instant,
     val updatedAt: Instant,
     val version: Long,
+    /** The type version the memo was submitted under (ADR-0043); null while it is a draft. */
+    val memoTypeVersionId: UUID? = null,
+    /** The values of its type's fields, in stored form ([MemoMetadata]). */
+    val metadata: Map<String, Any> = emptyMap(),
 )
 
 /** The fields of a new memo. */
@@ -59,12 +66,14 @@ data class NewMemo(
     val classificationRank: Int,
     val initiatorId: UUID,
     val originUnitId: UUID?,
+    val metadata: Map<String, Any> = emptyMap(),
 )
 
 /** Memos and their participants (design E01 §2). Every method runs inside a tenant transaction. */
 @Repository
 class MemoStore(
     private val tenantDsl: TenantDsl,
+    private val json: JsonMapper,
 ) {
     /** The next number of [year] in this tenant; the counter row stays locked until commit, so numbers never repeat. */
     fun nextNumber(year: Int): Int =
@@ -97,6 +106,7 @@ class MemoStore(
             .set(MEMO.CLASSIFICATION_RANK, memo.classificationRank)
             .set(MEMO.INITIATOR_ID, memo.initiatorId)
             .set(MEMO.ORIGIN_UNIT_ID, memo.originUnitId)
+            .set(MEMO.METADATA, json.jsonb(memo.metadata))
             .set(MEMO.STATUS, MemoStatus.DRAFT.name)
             .set(MEMO.CREATED_AT, now)
             .set(MEMO.UPDATED_AT, now)
@@ -139,7 +149,7 @@ class MemoStore(
                     .from(MEMO_PARTICIPANT)
                     .where(MEMO_PARTICIPANT.MEMO_ID.eq(MEMO.ID), MEMO_PARTICIPANT.USER_ID.eq(user)),
             ).fetchOne()
-            ?.toMemo()
+            ?.let(json::memo)
 
     /** The memo, without any visibility check (callers decide). */
     fun find(id: UUID): Memo? =
@@ -148,7 +158,7 @@ class MemoStore(
             .selectFrom(MEMO)
             .where(MEMO.ID.eq(id))
             .fetchOne()
-            ?.toMemo()
+            ?.let(json::memo)
 
     /** The memo with its row locked until commit, so uploads, submits and edits of one memo are serialised. */
     fun lock(id: UUID): Memo? =
@@ -158,9 +168,12 @@ class MemoStore(
             .where(MEMO.ID.eq(id))
             .forUpdate()
             .fetchOne()
-            ?.toMemo()
+            ?.let(json::memo)
 
-    /** Saves subject, type and classification, guarded on [expectedVersion]; false when the memo changed meanwhile. */
+    /**
+     * Saves subject, type, classification and metadata, guarded on [expectedVersion]; false when the memo changed meanwhile.
+     * The database refuses a change of type or metadata once the memo is pinned (`memo_pinned_guard`).
+     */
     fun updateFields(
         changed: Memo,
         expectedVersion: Long,
@@ -173,10 +186,34 @@ class MemoStore(
             .set(MEMO.MEMO_TYPE_ID, changed.typeId)
             .set(MEMO.CLASSIFICATION_ID, changed.classificationId)
             .set(MEMO.CLASSIFICATION_RANK, changed.classificationRank)
+            .set(MEMO.METADATA, json.jsonb(changed.metadata))
             .set(MEMO.VERSION, MEMO.VERSION.plus(1))
             .set(MEMO.UPDATED_AT, now)
             .where(MEMO.ID.eq(changed.id), MEMO.VERSION.eq(expectedVersion))
             .execute() == 1
+
+    /**
+     * Pins a draft to its type version [versionId] with its final [metadata] (ADR-0043), guarded on the draft state and
+     * [expectedVersion]; false when the memo changed meanwhile. The version is not bumped: the submit that pins it
+     * continues in the same transaction.
+     */
+    fun pin(
+        id: UUID,
+        expectedVersion: Long,
+        versionId: UUID,
+        metadata: Map<String, Any>,
+    ): Boolean =
+        tenantDsl
+            .current()
+            .update(MEMO)
+            .set(MEMO.MEMO_TYPE_VERSION_ID, versionId)
+            .set(MEMO.METADATA, json.jsonb(metadata))
+            .where(
+                MEMO.ID.eq(id),
+                MEMO.VERSION.eq(expectedVersion),
+                MEMO.STATUS.eq(MemoStatus.DRAFT.name),
+                MEMO.MEMO_TYPE_VERSION_ID.isNull,
+            ).execute() == 1
 
     /** Moves the memo from [from] to [to], guarded on both; false when it is no longer in [from] at [expectedVersion]. */
     fun changeStatus(
@@ -234,21 +271,29 @@ class MemoStore(
     }
 }
 
-private fun MemoRecord.toMemo() =
-    Memo(
-        id = id,
-        reference = reference,
-        typeId = memoTypeId,
-        subject = subject,
-        classificationId = classificationId,
-        classificationRank = classificationRank,
-        initiatorId = initiatorId,
-        originUnitId = originUnitId,
-        status = MemoStatus.valueOf(status),
-        documentFileId = documentFileId,
-        workflowInstanceId = workflowInstanceId,
-        currentRound = currentRound!!,
-        createdAt = createdAt.toInstant(),
-        updatedAt = updatedAt.toInstant(),
-        version = version!!,
-    )
+private fun JsonMapper.jsonb(metadata: Map<String, Any>): JSONB = JSONB.valueOf(writeValueAsString(metadata))
+
+private fun JsonMapper.memo(r: MemoRecord): Memo =
+    with(r) {
+        Memo(
+            id = id,
+            reference = reference,
+            typeId = memoTypeId,
+            subject = subject,
+            classificationId = classificationId,
+            classificationRank = classificationRank,
+            initiatorId = initiatorId,
+            originUnitId = originUnitId,
+            status = MemoStatus.valueOf(status),
+            documentFileId = documentFileId,
+            workflowInstanceId = workflowInstanceId,
+            currentRound = currentRound!!,
+            createdAt = createdAt.toInstant(),
+            updatedAt = updatedAt.toInstant(),
+            version = version!!,
+            memoTypeVersionId = memoTypeVersionId,
+            metadata = metadata?.let { readValue(it.data(), METADATA) } ?: emptyMap(),
+        )
+    }
+
+private val METADATA = object : TypeReference<Map<String, Any>>() {}

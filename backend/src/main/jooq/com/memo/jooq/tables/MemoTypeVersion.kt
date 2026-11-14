@@ -11,6 +11,8 @@ import com.memo.jooq.keys.MEMO_TYPE_VERSION_PKEY
 import com.memo.jooq.keys.MEMO_TYPE_VERSION_TENANT_ID_ID_KEY
 import com.memo.jooq.keys.MEMO_TYPE_VERSION_TENANT_ID_MEMO_TYPE_ID_NUMBER_KEY
 import com.memo.jooq.keys.MEMO_TYPE_VERSION__MEMO_TYPE_VERSION_TENANT_ID_MEMO_TYPE_ID_FKEY
+import com.memo.jooq.keys.MEMO__MEMO_TYPE_VERSION_FK
+import com.memo.jooq.tables.Memo.MemoPath
 import com.memo.jooq.tables.MemoType.MemoTypePath
 import com.memo.jooq.tables.records.MemoTypeVersionRecord
 
@@ -193,6 +195,16 @@ open class MemoTypeVersion(
      */
     val PUBLISHED_AT: TableField<MemoTypeVersionRecord, OffsetDateTime?> = createField(DSL.name("published_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
 
+    /**
+     * The column <code>memo.memo_type_version.fields</code>.
+     */
+    val FIELDS: TableField<MemoTypeVersionRecord, JSONB?> = createField(DSL.name("fields"), SQLDataType.JSONB.nullable(false).defaultValue(DSL.field(DSL.raw("'[]'::jsonb"), SQLDataType.JSONB)), this, "")
+
+    /**
+     * The column <code>memo.memo_type_version.raise_scope</code>.
+     */
+    val RAISE_SCOPE: TableField<MemoTypeVersionRecord, JSONB?> = createField(DSL.name("raise_scope"), SQLDataType.JSONB.nullable(false).defaultValue(DSL.field(DSL.raw("'{}'::jsonb"), SQLDataType.JSONB)), this, "")
+
     private constructor(alias: Name, aliased: Table<MemoTypeVersionRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<MemoTypeVersionRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<MemoTypeVersionRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -235,14 +247,31 @@ open class MemoTypeVersion(
      */
     fun memoType(): MemoTypePath = memoType
     val memoType: MemoTypePath by lazy { MemoTypePath(this, MEMO_TYPE_VERSION__MEMO_TYPE_VERSION_TENANT_ID_MEMO_TYPE_ID_FKEY, null) }
+
+    private lateinit var _memo: MemoPath
+
+    /**
+     * Get the implicit to-many join path to the <code>memo.memo</code> table
+     */
+    fun memo(): MemoPath {
+        if (!this::_memo.isInitialized)
+            _memo = MemoPath(this, null, MEMO__MEMO_TYPE_VERSION_FK.inverseKey)
+
+        return _memo;
+    }
+
+    val memo: MemoPath
+        get(): MemoPath = memo()
     override fun getChecks(): List<Check<MemoTypeVersionRecord>> = listOf(
         Internal.createCheck(this, DSL.name("memo_type_version_allowed_approvers_check"), "(((jsonb_typeof(allowed_approvers) = 'object'::text) AND (octet_length((allowed_approvers)::text) <= 16384)))", true),
         Internal.createCheck(this, DSL.name("memo_type_version_check"), "(((reviewed_by IS NULL) OR (reviewed_by <> submitted_by)))", true),
         Internal.createCheck(this, DSL.name("memo_type_version_check1"), "(((state <> 'PUBLISHED'::text) OR (published_at IS NOT NULL)))", true),
         Internal.createCheck(this, DSL.name("memo_type_version_code_check"), "((code ~ '^[A-Z0-9][A-Z0-9-]{0,9}\$'::text))", true),
         Internal.createCheck(this, DSL.name("memo_type_version_definition_key_check"), "((definition_key ~ '^[a-z][a-z0-9-]{0,99}\$'::text))", true),
+        Internal.createCheck(this, DSL.name("memo_type_version_fields_check"), "(((jsonb_typeof(fields) = 'array'::text) AND (octet_length((fields)::text) <= 65536)))", true),
         Internal.createCheck(this, DSL.name("memo_type_version_name_check"), "(((length(name) >= 1) AND (length(name) <= 200)))", true),
         Internal.createCheck(this, DSL.name("memo_type_version_number_check"), "((number >= 1))", true),
+        Internal.createCheck(this, DSL.name("memo_type_version_raise_scope_check"), "(((jsonb_typeof(raise_scope) = 'object'::text) AND (octet_length((raise_scope)::text) <= 16384)))", true),
         Internal.createCheck(this, DSL.name("memo_type_version_review_remark_check"), "(((length(review_remark) >= 1) AND (length(review_remark) <= 4000)))", true),
         Internal.createCheck(this, DSL.name("memo_type_version_route_policy_check"), "((route_policy = ANY (ARRAY['INITIATOR_DEFINED'::text, 'FIXED'::text, 'BOTH'::text])))", true),
         Internal.createCheck(this, DSL.name("memo_type_version_state_check"), "((state = ANY (ARRAY['DRAFT'::text, 'IN_REVIEW'::text, 'PUBLISHED'::text, 'RETIRED'::text])))", true)

@@ -7,6 +7,7 @@ import com.memo.docedit.DocumentEditing
 import com.memo.files.Files
 import com.memo.identity.UserSummaries
 import com.memo.org.OrgDirectory
+import com.memo.org.OrgUnitDirectory
 import com.memo.workflow.ActionKind
 import com.memo.workflow.BlockedReason
 import com.memo.workflow.GroupMode
@@ -124,6 +125,20 @@ data class SendBackTargetView(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val holder: Named,
 )
 
+/**
+ * One detail of a memo (ADR-0043): a field of its type with the value in stored form ([MemoMetadata]) and, for units,
+ * people and choices, the name or label to show.
+ */
+data class MemoDetailView(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val key: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val label: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val type: FieldType,
+    /** Text, a decimal string, `YYYY-MM-DD`, an id or a choice key; `{value, currency}` for an amount; a list of keys. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val value: Any,
+    /** The unit's or person's name, or the chosen options' labels. */
+    val display: String? = null,
+)
+
 data class MemoView(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val id: UUID,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val reference: String,
@@ -148,6 +163,14 @@ data class MemoView(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val interests: List<Named> = emptyList(),
     /** When the current step is due, from its SLA in working time (design E05 §4.4); null without one. */
     val dueAt: Instant? = null,
+    /** The values of the type's fields, in the order of the form (the pinned version's once submitted). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val details: List<MemoDetailView> = emptyList(),
+    /** A draft's values for fields its type no longer has; dropped when it is submitted (ADR-0043). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val staleDetails: List<MemoDetailView> = emptyList(),
+    /** The type version the memo was submitted under; null for a draft. */
+    val typeVersion: Int? = null,
+    /** The unit the memo comes from: the initiator's unit when it was created. */
+    val originUnit: Named? = null,
 )
 
 /** Builds [MemoView]s: names from identity, the document from files. Inside a tenant transaction. */
@@ -162,6 +185,7 @@ class MemoViews(
     private val editing: DocumentEditing,
     private val interestStore: MemoInterestStore,
     private val directory: OrgDirectory,
+    private val unitDirectory: OrgUnitDirectory,
 ) {
     fun of(memo: Memo): MemoView {
         val interests = interestStore.of(memo.id)
@@ -187,7 +211,8 @@ class MemoViews(
                 TaskRef(task.id, task.blocked, task.role, task.waiting, task.stepName, task.shared, claimer)
             }
         val level = clearances.level(memo.classificationId)
-        val type = types.get(memo.typeId)
+        val type = types.forMemo(memo)
+        val details = details(memo)
         // A FIXED type's definition names every step: its memos have no route to edit (design E03 §12).
         val allowed =
             actions(memo, user, open, workflow?.recallable == true)
@@ -225,11 +250,95 @@ class MemoViews(
             sendBackTargets = targets.map { SendBackTargetView(it.stepId, it.name, Named(it.holderId, names[it.holderId].orEmpty())) },
             interests = interests.map { Named(it, names[it].orEmpty()) }.sortedBy { it.name },
             dueAt = workflow?.let { workflows.dueOf(MemoWorkflowSubject.TYPE, memo.id) },
+            details = details.current,
+            staleDetails = details.stale,
+            typeVersion = details.pinnedVersion,
+            originUnit = originUnit(memo.originUnitId),
             createdAt = memo.createdAt,
             updatedAt = memo.updatedAt,
             version = memo.version,
         )
     }
+
+    private class Details(
+        val current: List<MemoDetailView>,
+        val stale: List<MemoDetailView>,
+        val pinnedVersion: Int?,
+    )
+
+    /**
+     * The memo's details: the fields of its version (pinned, else the type's published one) that have a value, in form
+     * order; a draft's values for fields its type dropped, labelled by the newest version that had them.
+     */
+    private fun details(memo: Memo): Details {
+        val version = types.versionFor(memo)
+        val fields = version?.settings?.fields.orEmpty()
+        val keys = fields.map { it.key }.toSet()
+        val staleKeys = memo.metadata.keys.filterNot { it in keys }
+        val older =
+            if (staleKeys.isEmpty()) {
+                emptyMap()
+            } else {
+                types
+                    .versions(memo.typeId)
+                    .flatMap { it.settings.fields }
+                    .filter { it.key in staleKeys }
+                    .distinctBy { it.key }
+                    .associateBy { it.key }
+            }
+        val shown = fields.filter { it.key in memo.metadata } + staleKeys.mapNotNull { older[it] }
+        val unitIds = shown.filter { it.type == FieldType.UNIT }.mapNotNull { uuid(memo.metadata[it.key]) }
+        val personIds = shown.filter { it.type == FieldType.PERSON }.mapNotNull { uuid(memo.metadata[it.key]) }
+        val units = unitDirectory.units(unitIds).mapValues { it.value.name }
+        val people = users.of(personIds.toSet()).mapValues { it.value.displayName }
+
+        fun view(field: MemoField): MemoDetailView? {
+            val value = memo.metadata[field.key] ?: return null
+            val display =
+                when (field.type) {
+                    FieldType.UNIT -> {
+                        uuid(value)?.let(units::get)
+                    }
+
+                    FieldType.PERSON -> {
+                        uuid(value)?.let(people::get)
+                    }
+
+                    FieldType.CHOICE -> {
+                        field.rules.choices
+                            .firstOrNull { it.key == value }
+                            ?.label
+                    }
+
+                    FieldType.MULTI_CHOICE -> {
+                        (value as? List<*>)
+                            ?.mapNotNull { k ->
+                                field.rules.choices
+                                    .firstOrNull { it.key == k }
+                                    ?.label
+                            }?.joinToString(", ")
+                    }
+
+                    else -> {
+                        null
+                    }
+                }
+            return MemoDetailView(field.key, field.label, field.type, value, display)
+        }
+        return Details(
+            current = fields.mapNotNull(::view),
+            stale =
+                staleKeys.mapNotNull { key ->
+                    older[key]?.let(::view)
+                        ?: memo.metadata[key]?.let { MemoDetailView(key, key, FieldType.TEXT, it) }
+                },
+            pinnedVersion = memo.memoTypeVersionId?.let { version?.number },
+        )
+    }
+
+    private fun originUnit(id: UUID?): Named? = id?.let { unitDirectory.units(listOf(it))[it] }?.let { Named(it.id, it.name) }
+
+    private fun uuid(value: Any?): UUID? = (value as? String)?.let { runCatching { UUID.fromString(it) }.getOrNull() }
 
     private fun document(fileId: UUID?): DocumentView? {
         val file = fileId?.let { files.info(it) }

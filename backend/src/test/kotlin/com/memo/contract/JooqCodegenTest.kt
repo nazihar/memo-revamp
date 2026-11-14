@@ -60,6 +60,7 @@ class JooqCodegenTest : IntegrationTest() {
                                         "notification_ensure_partitions",
                                         "notification_secure_partition",
                                         "files_version_guard",
+                                        "memo_pinned_guard",
                                     ).joinToString(" | "),
                                 ),
                         ).withGenerate(

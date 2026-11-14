@@ -29,7 +29,7 @@ import java.util.UUID
 class MemoRoutes(
     private val memos: Memos,
     private val routes: MemoRouteStore,
-    private val types: MemoTypeStore,
+    private val types: MemoTypes,
     private val users: UserSummaries,
     private val clearances: Clearances,
     private val interests: MemoInterestStore,
@@ -123,7 +123,7 @@ class MemoRoutes(
         private val interested = interests.of(memo.id)
         private val known = directory.positions(positions)
         private val holders = directory.holders(positions)
-        private val policy = types.find(memo.typeId)?.allowedApprovers ?: AllowedApprovers()
+        private val policy = types.forMemo(memo).allowedApprovers
 
         fun problem(
             index: Int,

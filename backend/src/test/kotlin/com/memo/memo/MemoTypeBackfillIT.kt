@@ -13,10 +13,10 @@ import java.sql.DriverManager
 import java.util.UUID
 
 /**
- * The memo V6 backfill (test plan E01, T1; ADR-0043, design E01 §7) on a database holding Phase 2 data: every type, in
- * every tenant, becomes published version 1 with the same settings and a unique code, and forced RLS is back on
- * afterwards. Runs the memo module's own migrations (its tables refer to no other module) on a fresh PostgreSQL, stopping
- * at V5 to add the data.
+ * The memo V6 and V7 backfills (test plan E01, T1, T2; ADR-0043, design E01 §7) on a database holding Phase 2 data: every
+ * type, in every tenant, becomes published version 1 with the same settings and a unique code; every submitted memo is
+ * pinned to it, drafts are not; and forced RLS is back on afterwards. Runs the memo module's own migrations (its tables
+ * refer to no other module) on a fresh PostgreSQL, stopping at V5 to add the data.
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class MemoTypeBackfillIT {
@@ -24,13 +24,17 @@ class MemoTypeBackfillIT {
     private val tenantA = UUID.randomUUID()
     private val tenantB = UUID.randomUUID()
     private val level = UUID.randomUUID()
+    private val inReview = UUID.randomUUID()
+    private val draft = UUID.randomUUID()
 
     @BeforeAll
     fun migrate() {
         db = TestDatabase.fresh()
         flyway("5").migrate()
         connect { c ->
-            type(c, tenantA, "General memo", key = "general")
+            val general = type(c, tenantA, "General memo", key = "general")
+            memo(c, tenantA, general, inReview, "IN_REVIEW", 1)
+            memo(c, tenantA, general, draft, "DRAFT", 2)
             type(c, tenantA, "Credit facility", policy = "FIXED", definition = "credit-facility", doa = true)
             type(c, tenantA, "Cash flow", classification = level, stepUp = false)
             type(c, tenantA, "--", active = false)
@@ -88,6 +92,22 @@ class MemoTypeBackfillIT {
     }
 
     @Test
+    fun `submitted memos are pinned to their type's version 1, drafts are not`() {
+        connect { c ->
+            tenant(c, tenantA)
+            val pinned =
+                c
+                    .createStatement()
+                    .executeQuery(
+                        """
+                        select m.id, v.number from memo m left join memo_type_version v on v.id = m.memo_type_version_id
+                        """.trimIndent(),
+                    ).use { rs -> buildMap { while (rs.next()) put(rs.getObject(1) as UUID, rs.getObject(2) as Int?) } }
+            assertThat(pinned).containsEntry(inReview, 1).containsEntry(draft, null)
+        }
+    }
+
+    @Test
     fun `each tenant sees only its own versions, and RLS is forced again`() {
         connect { c ->
             tenant(c, tenantB)
@@ -104,6 +124,12 @@ class MemoTypeBackfillIT {
                         "select relname, relforcerowsecurity from pg_class where relname in ('memo_type', 'memo_type_version')",
                     ).use { rs -> buildMap { while (rs.next()) put(rs.getString(1), rs.getBoolean(2)) } }
             assertThat(forced).containsEntry("memo_type", true).containsEntry("memo_type_version", true)
+            val memo =
+                c
+                    .createStatement()
+                    .executeQuery("select relforcerowsecurity from pg_class where relname = 'memo'")
+                    .use { rs -> rs.next() && rs.getBoolean(1) }
+            assertThat(memo).isTrue()
         }
     }
 
@@ -142,7 +168,8 @@ class MemoTypeBackfillIT {
         classification: UUID? = null,
         stepUp: Boolean = true,
         active: Boolean = true,
-    ) {
+    ): UUID {
+        val id = UUID.randomUUID()
         tenant(c, tenant)
         c
             .prepareStatement(
@@ -152,7 +179,7 @@ class MemoTypeBackfillIT {
                 values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now(), now())
                 """.trimIndent(),
             ).use {
-                it.setObject(1, UUID.randomUUID())
+                it.setObject(1, id)
                 it.setObject(2, tenant)
                 it.setString(3, key)
                 it.setString(4, name)
@@ -162,6 +189,39 @@ class MemoTypeBackfillIT {
                 it.setBoolean(8, stepUp)
                 it.setBoolean(9, active)
                 it.setBoolean(10, doa)
+                it.executeUpdate()
+            }
+        return id
+    }
+
+    @Suppress("LongParameterList")
+    private fun memo(
+        c: Connection,
+        tenant: UUID,
+        type: UUID,
+        id: UUID,
+        status: String,
+        number: Int,
+    ) {
+        tenant(c, tenant)
+        c
+            .prepareStatement(
+                """
+                insert into memo (id, tenant_id, reference, memo_type_id, subject, classification_id, classification_rank,
+                                  initiator_id, status, workflow_instance_id, current_round, created_at, updated_at)
+                values (?, ?, ?, ?, 'Memo', ?, 0, ?, ?, ?, ?, now(), now())
+                """.trimIndent(),
+            ).use {
+                val submitted = status != "DRAFT"
+                it.setObject(1, id)
+                it.setObject(2, tenant)
+                it.setString(3, "M-2026-%05d".format(number))
+                it.setObject(4, type)
+                it.setObject(5, UUID.randomUUID())
+                it.setObject(6, UUID.randomUUID())
+                it.setString(7, status)
+                it.setObject(8, if (submitted) UUID.randomUUID() else null)
+                it.setInt(9, if (submitted) 1 else 0)
                 it.executeUpdate()
             }
     }

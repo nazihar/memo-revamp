@@ -304,6 +304,10 @@ export type CloseRequest = {
     validTo: string;
 };
 
+export type CoauthorsRequest = {
+    userIds: Array<string>;
+};
+
 export type CodeRequest = {
     /**
      * 6-digit TOTP code, or a recovery code
@@ -891,6 +895,7 @@ export type MemoView = {
     canLink: boolean;
     classification: ClassificationView;
     closedAt?: string | null;
+    coauthors: Array<Named>;
     createdAt: string;
     details: Array<MemoDetailView>;
     document?: DocumentView | null;
@@ -4558,6 +4563,24 @@ export type CloseMemoResponses = {
 };
 
 export type CloseMemoResponse = CloseMemoResponses[keyof CloseMemoResponses];
+
+export type SetMemoCoauthorsData = {
+    body: CoauthorsRequest;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/coauthors';
+};
+
+export type SetMemoCoauthorsResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type SetMemoCoauthorsResponse = SetMemoCoauthorsResponses[keyof SetMemoCoauthorsResponses];
 
 export type DiscardMemoData = {
     body?: never;

@@ -95,7 +95,7 @@ class EditorCallbacks(
                     ?: refuse("unknown session or key")
             when {
                 callback.saves -> save(session, callback)
-                callback.status == EditorCallback.STATUS_CLOSED -> finish(session, SessionState.CLOSED, null)
+                callback.status == EditorCallback.STATUS_CLOSED -> finishRoom(session, SessionState.CLOSED)
                 callback.status == EditorCallback.STATUS_SAVE_ERROR -> finish(session, SessionState.FAILED, "EDITOR_SAVE_ERROR")
                 else -> inTenant(tenant) { store.touch(session.id, clock.instant()) }.let { CallbackOutcome.ACCEPTED }
             }
@@ -118,10 +118,12 @@ class EditorCallbacks(
             val file = inTenant(session.tenantId) { files.info(session.fileId) } ?: notSaved("GONE")
             if (file.currentVersionId != session.baseVersionId) notSaved("SUPERSEDED")
             val base = inTenant(session.tenantId) { files.version(session.baseVersionId) }
-            val key = "docedit:${session.id}:${callback.status}:${digest(callback.url)}"
+            // One callback per save for the whole room (ADR-0047): the key names the room, not the session it reached.
+            val key = "docedit:${session.documentKey}:${callback.status}:${digest(callback.url)}"
+            val saver = saverOf(session, callback)
             val saved =
                 runCatching {
-                    ActorContext.call(ActorScope(Actor.User(session.userId), null)) {
+                    ActorContext.call(ActorScope(Actor.User(saver), null)) {
                         TenantContext.call(TenantId(session.tenantId)) {
                             uploads.uploadVersion(session.fileId, file.version, base?.name ?: "document.docx", bytes, key)
                         }
@@ -130,32 +132,57 @@ class EditorCallbacks(
                     log.info("Edit session {} could not store its result: {}", session.id, it.javaClass.simpleName)
                     notSaved(LOCKED)
                 }
-            recordSave(session, callback, saved)
+            recordSave(session, callback, saved, saver)
             CallbackOutcome.SAVED
         } catch (e: NotSavedException) {
             finish(session, SessionState.FAILED, e.reason)
         }
 
+    /**
+     * Who saved: the first user the document server names who holds a session in the room, else the session's own user.
+     * A name from outside the room is ignored, so a callback can never save as someone who was not editing.
+     */
+    private fun saverOf(
+        session: EditSession,
+        callback: EditorCallback,
+    ): UUID {
+        val members = inTenant(session.tenantId) { store.room(session.documentKey) }.map { it.userId }.toSet()
+        return callback.users.mapNotNull { runCatching { UUID.fromString(it) }.getOrNull() }.firstOrNull { it in members }
+            ?: session.userId
+    }
+
     private fun recordSave(
         session: EditSession,
         callback: EditorCallback,
         saved: UUID,
+        saver: UUID,
     ) {
         val now = clock.instant()
         inTenant(session.tenantId) {
+            val room = store.room(session.documentKey).ifEmpty { listOf(session) }
+            // Every editor in the room builds on the saved version; a final save ends the room.
             val changed =
-                if (callback.status == EditorCallback.STATUS_SAVE) {
-                    store.finish(session.id, SessionState.SAVED, null, saved, now)
-                } else {
-                    store.rebase(session.id, saved, now)
-                }
+                room
+                    .map {
+                        if (callback.status == EditorCallback.STATUS_SAVE) {
+                            store.finish(it.id, SessionState.SAVED, null, saved, now)
+                        } else {
+                            store.rebase(it.id, saved, now)
+                        }
+                    }.any { it }
             // A repeated callback stored nothing new (the upload key): it is not a second save.
             if (changed) {
                 audit.record(
                     "docedit.version.saved",
                     EditSessions.OBJECT_TYPE,
                     session.id.toString(),
-                    after = mapOf("versionId" to saved.toString(), "status" to callback.status),
+                    after =
+                        mapOf(
+                            "versionId" to saved.toString(),
+                            "status" to callback.status,
+                            "savedBy" to saver.toString(),
+                            "members" to room.map { it.userId.toString() }.distinct().sorted(),
+                        ),
                 )
             }
         }
@@ -200,6 +227,16 @@ class EditorCallbacks(
             }
         }
         return if (state == SessionState.FAILED) CallbackOutcome.NOT_SAVED else CallbackOutcome.ACCEPTED
+    }
+
+    /** The document server closed the document: every session in its room ends (ADR-0047). */
+    private fun finishRoom(
+        session: EditSession,
+        state: SessionState,
+    ): CallbackOutcome {
+        val room = inTenant(session.tenantId) { store.room(session.documentKey) }.ifEmpty { listOf(session) }
+        room.forEach { finish(it, state, null) }
+        return CallbackOutcome.ACCEPTED
     }
 
     private fun refused(

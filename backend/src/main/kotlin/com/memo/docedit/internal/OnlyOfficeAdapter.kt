@@ -13,6 +13,8 @@ data class EditorCallback(
     /** Where the saved result can be fetched; statuses 2, 3, 6 and 7. */
     val url: String?,
     val forceSaveType: Int?,
+    /** The users the document server names (for a force save, who saved first); ids from the editor config. */
+    val users: List<String> = emptyList(),
 ) {
     /** A result to store: closed with changes, or an explicit force save (command or the Save button). */
     val saves: Boolean get() = status == STATUS_SAVE || (status == STATUS_FORCE_SAVE && forceSaveType in EXPLICIT_FORCE_SAVES)
@@ -130,7 +132,8 @@ class OnlyOfficeAdapter(
         val status = (payload["status"] as? Number)?.toInt() ?: refuse("no status")
         if (body["key"] != null && body["key"] != key) refuse("body and token differ")
         if (body["status"] != null && (body["status"] as? Number)?.toInt() != status) refuse("body and token differ")
-        return EditorCallback(key, status, payload["url"] as? String, (payload["forcesavetype"] as? Number)?.toInt())
+        val users = (payload["users"] as? List<*>).orEmpty().mapNotNull { it as? String }
+        return EditorCallback(key, status, payload["url"] as? String, (payload["forcesavetype"] as? Number)?.toInt(), users)
     }
 
     override fun verifyDownload(authorization: String?) {

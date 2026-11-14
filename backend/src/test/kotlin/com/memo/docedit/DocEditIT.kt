@@ -253,6 +253,84 @@ class DocEditIT : MemoIntegrationTest() {
         assertThat(get(id, alice.session).json()["allowedActions"].toString()).contains("EDIT_DOCUMENT", "VIEW_DOCUMENT")
     }
 
+    @Test
+    fun `co-authors share one room, a force save keeps it, is stored as the user who saved, and closing ends it for all`() {
+        val alice = person()
+        val bob = person()
+        val stranger = person()
+        val id = draftWithDocument(alice)
+        val file = fileOf(id, alice)
+        assertThat(put("/api/v1/memos/$id/coauthors", alice.session, """{"userIds":["${bob.id}"]}""", null)).hasStatusOk()
+        assertThat(get(id, bob.session).json()["coauthors"][0]["id"].asString()).isEqualTo(bob.id.toString())
+        Audit.assertAudited(tenant.id, "memo.coauthors.changed", id)
+
+        val first = openEditor(file, alice).json()
+        val second = openEditor(file, bob).json()
+        val key = first["config"]["document"]["key"].asString()
+        assertThat(second["config"]["document"]["key"].asString()).isEqualTo(key)
+        assertThat(second["sessionId"].asString()).isNotEqualTo(first["sessionId"].asString())
+        assertThat(openEditor(file, stranger)).hasStatus(HttpStatus.NOT_FOUND)
+
+        // Bob saves with the Save button; a name from outside the room would not count.
+        val saved = roomCallback(second["config"], STATUS_FORCE_SAVE, listOf(bob.id.toString()))
+        assertThat(saved["error"].asInt()).isZero()
+        val document = get(id, alice.session).json()["document"]
+        assertThat(document["number"].asInt()).isEqualTo(2)
+        assertThat(versionUploader(document["versionId"].asString())).isEqualTo(bob.id)
+        // The room stays: opening again joins it with the same key, on the saved version.
+        assertThat(openEditor(file, alice).json()["sessionId"].asString()).isEqualTo(first["sessionId"].asString())
+        val third = person()
+        put("/api/v1/memos/$id/coauthors", alice.session, """{"userIds":["${bob.id}","${third.id}"]}""", null)
+        assertThat(openEditor(file, third).json()["config"]["document"]["key"].asString()).isEqualTo(key)
+
+        // A co-author edits content only.
+        route(id, alice, stranger)
+        assertThat(post("/api/v1/memos/$id/submit", bob.session)).hasStatus(HttpStatus.FORBIDDEN)
+
+        roomCallback(first["config"], STATUS_CLOSED, emptyList())
+        for (session in listOf(first, second)) {
+            val state =
+                read(
+                    "/api/v1/edit-sessions/${session["sessionId"].asString()}",
+                    if (session ==
+                        first
+                    ) {
+                        alice.session
+                    } else {
+                        bob.session
+                    },
+                )
+            assertThat(state.json()["state"].asString()).isEqualTo("CLOSED")
+        }
+    }
+
+    /** A callback naming [users], as ONLYOFFICE sends for a room. */
+    private fun roomCallback(
+        config: JsonNode,
+        status: Int,
+        users: List<String>,
+    ): JsonNode {
+        val callbackUrl = config["editorConfig"]["callbackUrl"].asString()
+        val payload =
+            mapOf(
+                "key" to config["document"]["key"].asString(),
+                "status" to status,
+                "url" to SAVED_URL,
+                "users" to users,
+                "forcesavetype" to 1,
+            )
+        val result =
+            mvc
+                .post()
+                .uri(callbackUrl.substringAfter("8082"))
+                .with(internal())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json.writeValueAsString(payload + ("token" to jwt.sign(payload))))
+                .exchange()
+        assertThat(result).hasStatusOk()
+        return result.json()
+    }
+
     private fun documentXml(docx: ByteArray): String =
         ZipInputStream(docx.inputStream()).use { zip ->
             generateSequence { zip.nextEntry }.first { it.name == "word/document.xml" }
@@ -272,6 +350,7 @@ class DocEditIT : MemoIntegrationTest() {
         private const val INTERNAL_PORT = 8082
         private const val STATUS_SAVE = 2
         private const val STATUS_CLOSED = 4
+        private const val STATUS_FORCE_SAVE = 6
 
         /** The fake document server: serves the "edited" document from its cache path. */
         private val server: HttpServer =

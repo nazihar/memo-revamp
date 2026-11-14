@@ -24,7 +24,7 @@ Phase 2 (ADR-0037) edits the memo document in ONLYOFFICE 9.4, one author at a ti
 ## Decision outcome
 - **A — 10.0.0.1 first** (one month old, past the bake period; there is no patched 9.4). Conversion tokens carry `operation: "converter"`; the internal download sends an exact `Content-Length` (10.0 checks it).
 - **B — session-bound keys.**
-  - A file has at most one open **edit room**. Opening for editing joins the room if one is open (same key, same base version) and otherwise starts one with key HMAC(tenant, file, base version, room id).
+  - A file has at most one open **edit room**: the open edit sessions that share one key (no table of their own). Opening for editing joins the room when it is on the file's current version (same key, same base version), and otherwise starts one with key HMAC(tenant, file, base version). A version uploaded outside the editor leaves the room stale: its saves are refused as before, and the next opening starts a new room.
   - Force-saves (status 6) store new versions and keep the key; anyone opening later joins the same room. Status 2 or 4 closes the room; the next opening starts a new one.
   - A save is stored as the user ONLYOFFICE names in the callback, who must be a member of the room. The audit lists every member who connected.
   - Fast co-editing with `coEditing.change: false`, so nobody can switch to strict mode alone.
@@ -48,7 +48,7 @@ Phase 2 (ADR-0037) edits the memo document in ONLYOFFICE 9.4, one author at a ti
   - People who need desktop Word download, edit and upload a new version (audited, scanned, versioned). Revisit only by a new ADR with an SSO-integrated customer that accepts the endpoint risk.
 
 ### Consequences
-- Good: one shared session per file; no lost or split edits after a force-save.
+- Good: one shared session per file; no lost or split edits after a force-save. No new table: a room is its sessions' shared key.
 - Good: the document server can no longer be used to reach other addresses, and the AI proxy, macros and plugins are closed.
 - Bad: tokens in 10.0 are stricter; our signing needs the purpose claim, and a misconfiguration shows up as error -8 in conversions.
 - Bad: co-authors widen who holds a draft; the initiator alone still decides when it is submitted.
@@ -62,7 +62,7 @@ Phase 2 (ADR-0037) edits the memo document in ONLYOFFICE 9.4, one author at a ti
 - Upgrade: fixes the conversion and macro issues before E02 widens those paths; the breaking token change is small.
 - Wait: avoids a fresh major, but leaves known issues in the conversion path.
 ### B — session-bound keys vs version keys
-- Session-bound: correct co-editing; a little more state (`docedit_room`).
+- Session-bound: correct co-editing; the room is derived from the sessions' key.
 - Version keys: simpler; splits sessions after a force-save.
 ### C — desktop Word
 - Adopt: familiar to users.

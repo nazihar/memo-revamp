@@ -49,7 +49,7 @@ class EditSessions(
 ) : DocumentEditing {
     override val enabled: Boolean get() = properties.enabled
 
-    override fun beingEdited(fileId: UUID): Boolean = enabled && store.anyOpenEdit(fileId, clock.instant())
+    override fun beingEdited(fileId: UUID): Boolean = enabled && store.openRoom(fileId, clock.instant()) != null
 
     fun open(
         fileId: UUID,
@@ -65,54 +65,71 @@ class EditSessions(
         if (mode == EditMode.EDIT && !purpose.mayEdit(file)) throw ForbiddenException(null)
         val version = file.currentVersionId?.let { files.version(it) } ?: notFound()
         val now = clock.instant()
-        val reusable = if (mode == EditMode.EDIT) usableOpenEdit(fileId, user, version.id) else null
-        val session =
-            reusable ?: run {
-                refuseIf(mode == EditMode.EDIT && store.openEdits(now) >= properties.maxSessionsPerTenant, "TOO_MANY_EDITORS") {
-                    "Too many documents are open for editing in your organisation. Try again later."
-                }
-                val tenant = tenantDsl.tenant().value
-                EditSession(
-                    id = ids.next(),
-                    tenantId = tenant,
-                    fileId = fileId,
-                    baseVersionId = version.id,
-                    documentKey = keys.documentKey(tenant, fileId, version.id),
-                    mode = mode,
-                    userId = user,
-                    state = SessionState.OPEN,
-                    reason = null,
-                    savedVersionId = null,
-                    expiresAt = now.plus(properties.sessionLifetime),
-                ).also {
-                    store.insert(it, now)
-                    audit.record(
-                        "docedit.session.opened",
-                        OBJECT_TYPE,
-                        it.id.toString(),
-                        after = mapOf("fileId" to fileId.toString(), "versionId" to version.id.toString(), "mode" to mode.name),
-                    )
-                }
-            }
+        // ADR-0047: editors of one file share a room, the key and base version of the open session they join.
+        val room = if (mode == EditMode.EDIT) store.openRoom(fileId, now)?.takeIf { it.baseVersionId == version.id } else null
+        val reusable = if (mode == EditMode.EDIT) usableOpenEdit(fileId, user, room) else null
+        val session = reusable ?: start(fileId, mode, user, room?.baseVersionId ?: version.id, room, now)
         val name = users.of(user)?.displayName.orEmpty()
         return OpenedEditor(session.id, adapter.config(EditorSubject(session, version.name, name, language)))
+    }
+
+    /** A new session: in [room] when there is one (its key and base), else on [base] with a key of its own. */
+    private fun start(
+        fileId: UUID,
+        mode: EditMode,
+        user: UUID,
+        base: UUID,
+        room: EditSession?,
+        now: java.time.Instant,
+    ): EditSession {
+        refuseIf(mode == EditMode.EDIT && store.openEdits(now) >= properties.maxSessionsPerTenant, "TOO_MANY_EDITORS") {
+            "Too many documents are open for editing in your organisation. Try again later."
+        }
+        val tenant = tenantDsl.tenant().value
+        return EditSession(
+            id = ids.next(),
+            tenantId = tenant,
+            fileId = fileId,
+            baseVersionId = base,
+            documentKey = room?.documentKey ?: keys.documentKey(tenant, fileId, base),
+            mode = mode,
+            userId = user,
+            state = SessionState.OPEN,
+            reason = null,
+            savedVersionId = null,
+            expiresAt = now.plus(properties.sessionLifetime),
+        ).also {
+            store.insert(it, now)
+            audit.record(
+                "docedit.session.opened",
+                OBJECT_TYPE,
+                it.id.toString(),
+                after =
+                    mapOf(
+                        "fileId" to fileId.toString(),
+                        "versionId" to base.toString(),
+                        "mode" to mode.name,
+                        "joined" to (room != null),
+                    ),
+            )
+        }
     }
 
     /** The actor's own session, for the editor page to learn how the save went. */
     fun own(id: UUID): EditSession = store.find(id)?.takeIf { it.userId == currentUser() } ?: notFound()
 
     /**
-     * The user's open edit session of the file if it can be resumed: on the current version and not expired. Any other
-     * open one is closed first (expired, or left behind by a newer upload), so the one-open-session rule holds.
+     * The user's open edit session of the file if it can be resumed: in the file's open room and not expired. Any other
+     * open one is closed first (expired, or left behind by a room that ended), so the one-open-session rule holds.
      */
     private fun usableOpenEdit(
         file: UUID,
         user: UUID,
-        current: UUID,
+        room: EditSession?,
     ): EditSession? {
         val open = store.openEdit(file, user)
         val now = clock.instant()
-        val usable = open?.takeIf { it.baseVersionId == current && it.expiresAt.isAfter(now) }
+        val usable = open?.takeIf { room != null && it.documentKey == room.documentKey && it.expiresAt.isAfter(now) }
         if (open != null && usable == null) {
             val reason = if (open.expiresAt.isAfter(now)) "SUPERSEDED" else "EXPIRED"
             store.finish(open.id, SessionState.CLOSED, reason, null, now)

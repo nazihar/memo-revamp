@@ -294,19 +294,15 @@ class MemoTypesController(
         (ActorContext.current().actor as? Actor.User)?.userId ?: throw IllegalStateException("memo types are listed for signed-in users")
 }
 
-data class MemoTypeRequest(
-    val name: String,
-    val defaultClassificationId: UUID? = null,
-    val stepUpOnApprove: Boolean = true,
-    val active: Boolean = true,
-    /** A published workflow definition (design E03 §4.7); omitted: unchanged (`sequential-approval` for a new type). */
-    val definitionKey: String? = null,
-    /** `INITIATOR_DEFINED`, `FIXED` or `BOTH`; it has to fit the definition. Omitted: unchanged (`INITIATOR_DEFINED` when new). */
-    val routePolicy: String? = null,
-    /** Who may be on its routes (design E04 §4.7). Omitted: unchanged (anyone when new). */
-    val allowedApprovers: AllowedApprovers? = null,
-    /** Whether a route must satisfy the DoA at submit. Omitted: unchanged (off when new). */
-    val doaCheck: Boolean? = null,
+/** A new memo type: its name and short code (used in memo numbers); everything else is set on its draft. */
+data class NewMemoTypeRequest(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val name: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val code: String,
+)
+
+/** Whether a memo type is offered for new memos. */
+data class ActiveRequest(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val active: Boolean,
 )
 
 /** Memo-type administration (design E01 §5): since E03 a type chooses its workflow definition and route policy. */
@@ -321,6 +317,7 @@ class AdminMemoTypesController(
     private val idempotency: Idempotency,
     private val transactions: TenantTransactions,
     private val json: JsonMapper,
+    private val versions: MemoTypeVersionStore,
 ) {
     @GetMapping
     @RequiresPermission(Permission.MEMO_TYPES_MANAGE, orAnyOf = [Permission.MEMO_TYPES_APPROVE])
@@ -338,16 +335,19 @@ class AdminMemoTypesController(
 
     @PostMapping
     @RequiresPermission(Permission.MEMO_TYPES_MANAGE)
-    @Operation(operationId = "createMemoType", summary = "Create a memo type")
+    @Operation(operationId = "createMemoType", summary = "Start a memo type as draft version 1")
     fun create(
         @RequestHeader("Idempotency-Key") key: String,
-        @RequestBody body: MemoTypeRequest,
+        @RequestBody body: NewMemoTypeRequest,
     ): ResponseEntity<MemoType> {
         val type =
             transactions.inTenant(TenantContext.current()) {
                 val id =
                     idempotency.once("memo.type.create", key, fingerprint(json.writeValueAsString(body))) {
-                        types.create(body.fields()).id.toString()
+                        types
+                            .createDraft(body.name, body.code)
+                            .first.id
+                            .toString()
                     }
                 types.get(UUID.fromString(id))
             }
@@ -357,54 +357,36 @@ class AdminMemoTypesController(
             .body(type)
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/{id}/active")
     @RequiresPermission(Permission.MEMO_TYPES_MANAGE)
-    @Operation(operationId = "updateMemoType", summary = "Change a memo type")
-    fun update(
+    @Operation(operationId = "setMemoTypeActive", summary = "Switch a memo type on or off")
+    fun setActive(
         @PathVariable id: UUID,
         @RequestHeader("If-Match", required = false) ifMatch: String?,
-        @RequestBody body: MemoTypeRequest,
+        @RequestBody body: ActiveRequest,
     ): ResponseEntity<MemoType> {
         val version = ifMatchVersion(ifMatch)
-        val type = transactions.inTenant(TenantContext.current()) { types.update(id, version, body.fields(types.get(id))) }
+        val type = transactions.inTenant(TenantContext.current()) { types.setActive(id, version, body.active) }
         return ResponseEntity.ok().eTag(etagOf(type.version)).body(type)
     }
 
-    /** The types with the names of their allowed people and the titles of their allowed positions. */
+    /** The types with the names of their allowed people and positions, and their open versions. */
     private fun named(all: List<MemoType>): List<MemoType> {
-        val people = users.of(all.flatMap { it.allowedApprovers.people }.toSet()).mapValues { it.value.displayName }
+        val open = versions.open()
+        val people =
+            users
+                .of((all.flatMap { it.allowedApprovers.people } + open.values.mapNotNull { it.submittedBy }).toSet())
+                .mapValues { it.value.displayName }
         val positions = directory.positions(all.flatMap { it.allowedApprovers.positions }.toSet()).mapValues { it.value.title }
         return all.map { type ->
             val allowed = type.allowedApprovers
-            type.copy(allowedNames = (people.filterKeys { it in allowed.people } + positions.filterKeys { it in allowed.positions }))
+            val pending =
+                open[type.id]?.let { v -> PendingVersion(v.number, v.state, v.submittedBy?.let { Named(it, people[it].orEmpty()) }) }
+            type.copy(
+                allowedNames = (people.filterKeys { it in allowed.people } + positions.filterKeys { it in allowed.positions }),
+                pending = pending,
+            )
         }
-    }
-
-    /** The fields as the request gives them; the definition and route policy default to [current]'s (or the built-in ones). */
-    private fun MemoTypeRequest.fields(current: MemoType? = null): MemoTypeFields {
-        val trimmed = name.trim()
-        require(trimmed.length in 1..MAX_NAME) { "A name of 1 to $MAX_NAME characters is required." }
-        val policy = routePolicy ?: current?.routePolicy?.name ?: RoutePolicy.INITIATOR_DEFINED.name
-        require(RoutePolicy.entries.any { it.name == policy }) { "The route policy is INITIATOR_DEFINED, FIXED or BOTH." }
-        val allowed = allowedApprovers ?: current?.allowedApprovers ?: AllowedApprovers()
-        require(listOf(allowed.people, allowed.positions, allowed.roles).all { it.size <= MAX_ALLOWED }) {
-            "At most $MAX_ALLOWED people, positions and roles each."
-        }
-        return MemoTypeFields(
-            trimmed,
-            defaultClassificationId,
-            stepUpOnApprove,
-            active,
-            definitionKey?.trim() ?: current?.definitionKey ?: Workflows.SEQUENTIAL_APPROVAL,
-            RoutePolicy.valueOf(policy),
-            allowed,
-            doaCheck ?: current?.doaCheck ?: false,
-        )
-    }
-
-    private companion object {
-        const val MAX_NAME = 200
-        const val MAX_ALLOWED = 200
     }
 }
 

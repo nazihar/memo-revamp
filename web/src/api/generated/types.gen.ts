@@ -4,6 +4,10 @@ export type ClientOptions = {
     baseUrl: `${string}://${string}` | (string & {});
 };
 
+export type ActiveRequest = {
+    active: boolean;
+};
+
 export type AdminTaskPage = {
     items: Array<AdminTaskResponse>;
     nextCursor?: string | null;
@@ -789,6 +793,7 @@ export type MemoType = {
     id: string;
     key?: string | null;
     name: string;
+    pending?: PendingVersion | null;
     publishedVersion?: number | null;
     routePolicy: 'INITIATOR_DEFINED' | 'FIXED' | 'BOTH';
     stepUpOnApprove: boolean;
@@ -810,17 +815,6 @@ export type MemoTypeOption = {
     name: string;
     numberingMoment: 'ON_SUBMIT' | 'ON_APPROVAL';
     stepUpOnApprove: boolean;
-};
-
-export type MemoTypeRequest = {
-    active?: boolean;
-    allowedApprovers?: AllowedApprovers | null;
-    defaultClassificationId?: string | null;
-    definitionKey?: string | null;
-    doaCheck?: boolean | null;
-    name?: string;
-    routePolicy?: string | null;
-    stepUpOnApprove?: boolean;
 };
 
 export type MemoTypeSettingsRequest = {
@@ -991,6 +985,11 @@ export type Named = {
     name: string;
 };
 
+export type NewMemoTypeRequest = {
+    code: string;
+    name: string;
+};
+
 export type NotificationPage = {
     items: Array<NotificationView>;
     nextCursor?: string | null;
@@ -1050,7 +1049,6 @@ export type Numbering = {
     countPer: 'SERIES' | 'UNIT';
     fyStartMonth: number;
     moment: 'ON_SUBMIT' | 'ON_APPROVAL';
-    needsUnit?: boolean;
     parts: Array<NumberPart>;
     reset: 'NEVER' | 'YEARLY' | 'FINANCIAL_YEAR';
     series: string;
@@ -1218,6 +1216,12 @@ export type PasswordResetCompletion = {
 
 export type PasswordResetRequest = {
     email: string;
+};
+
+export type PendingVersion = {
+    number: number;
+    state: 'DRAFT' | 'IN_REVIEW' | 'PUBLISHED' | 'RETIRED';
+    submittedBy?: Named | null;
 };
 
 export type PeriodRequest = {
@@ -2053,7 +2057,7 @@ export type ListAllMemoTypesResponses = {
 export type ListAllMemoTypesResponse = ListAllMemoTypesResponses[keyof ListAllMemoTypesResponses];
 
 export type CreateMemoTypeData = {
-    body: MemoTypeRequest;
+    body: NewMemoTypeRequest;
     headers: {
         'Idempotency-Key': string;
     };
@@ -2103,8 +2107,8 @@ export type PreviewNumberingResponses = {
 
 export type PreviewNumberingResponse = PreviewNumberingResponses[keyof PreviewNumberingResponses];
 
-export type UpdateMemoTypeData = {
-    body: MemoTypeRequest;
+export type SetMemoTypeActiveData = {
+    body: ActiveRequest;
     headers?: {
         'If-Match'?: string;
     };
@@ -2112,17 +2116,17 @@ export type UpdateMemoTypeData = {
         id: string;
     };
     query?: never;
-    url: '/api/v1/admin/memo-types/{id}';
+    url: '/api/v1/admin/memo-types/{id}/active';
 };
 
-export type UpdateMemoTypeResponses = {
+export type SetMemoTypeActiveResponses = {
     /**
      * OK
      */
     200: MemoType;
 };
 
-export type UpdateMemoTypeResponse = UpdateMemoTypeResponses[keyof UpdateMemoTypeResponses];
+export type SetMemoTypeActiveResponse = SetMemoTypeActiveResponses[keyof SetMemoTypeActiveResponses];
 
 export type ListMemoTypeVersionsData = {
     body?: never;

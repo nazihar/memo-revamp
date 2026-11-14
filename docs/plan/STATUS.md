@@ -5,19 +5,21 @@
 **Last updated:** 2026-11-14 (UTC+06:00) by Claude (agent)
 
 ## Current position
-- **Phase 3 (memo and e-file management, milestone M1) started on 2026-11-14.** Overview approved the same day (`phase-3-memo-efile/overview.md §10`): no pilot bank (general features; representative configuration in the demo tenant), English only, order E01–E06 → Phase 1b → E07, per-epic gate delegation kept. **Current epic: E01 memo types, metadata and numbering**: backend T1–T5 built (PRs #86–#90) and the demo types seeded (T8 part, #91); the screens (T6, T7) wait for the owner's review of the screen flows.
+- **Phase 3 (memo and e-file management, milestone M1) started on 2026-11-14.** Overview approved the same day (`phase-3-memo-efile/overview.md §10`): no pilot bank (general features; representative configuration in the demo tenant), English only, order E01–E06 → Phase 1b → E07, per-epic gate delegation kept. **Current epic: E01 memo types, metadata and numbering**: backend T1–T5 built (PRs #86–#90) and the demo types seeded (T8 part, #91). The owner accepted the screen flows; the admin screens (T6) and the create form and memo view (T7) are built (#92). Next: the rest of T8, then E01 close-out.
 - **Phase 2 (workflow engine) closed on 2026-11-14** (owner instruction; `phase-2-workflow-engine/retrospective.md`, exit recorded in `overview.md §10`). All six epics merged and on dev: E01 first slice (D1), E02 ONLYOFFICE editing, E03 definition model and runtime, E04 assignees, queues and DoA, E05 timers and SLAs, E06 visual builder (PRs #34–#83). The eight Phase 2 journeys pass against dev; the load target is met (inbox p95 10 ms with 10,000 memos in review). Items that need the owner in person are carried (Waiting for human).
 - **Phase 1a closed on 2026-11-09** (`phase-1a-minimum-core/retrospective.md`). **Phase 1b** is not started; it runs after Phase 3 E06 and before E07 (Phase 3 Q4).
 - **Dev environment:** https://dev.memo-revamp.naziharitsolution.com and the operator console https://admin.dev.memo-revamp.naziharitsolution.com on the VM 123.176.58.175. It deploys automatically after every green `ci` run on `master`. The owner's operator account is enrolled.
 - **Phase 0:** done (`docs/plan/phase-0-foundations/`). **Release:** `v0.1.0` (2026-10-15). **Product name:** `memo` everywhere except the repository name (A1).
-- **Branches:** `master` holds PRs #1–#83. Open and stacked, to merge in order: #84 Phase 3 overview → #85 E01 plan → #86 T1 type versions → #87 T2 fields and metadata → #88 T3 attributes → #89 T4 numbering → #90 T5 lifecycle → #91 T8 demo types.
+- **Branches:** `master` holds PRs #1–#83. Open and stacked, to merge in order: #84 Phase 3 overview → #85 E01 plan → #86 T1 type versions → #87 T2 fields and metadata → #88 T3 attributes → #89 T4 numbering → #90 T5 lifecycle → #91 T8 demo types → #92 T6 admin screens and T7 create form and memo view.
 
 ## State (Phase 3, E01)
 - [x] Overview written (2026-11-14): seven epics (E01 memo types, metadata and numbering; E02 documents; E03 templates, note sheet and access; E04 PDF/A rendition; E05 inbox, search and dashboards; E06 legacy import; E07 go-live readiness and the M1 security gate)
 - [x] Overview approved (2026-11-14), Q1–Q4 answered; Q5 (pen tester, production environment, licence review) open until E07
 - [x] E01 plan written (2026-11-14): ADR-0043 memo-type versions and metadata, ADR-0044 numbering; tasks T1–T8 (`epic-01-types-metadata-numbering/`)
 - [x] E01 backend: T1 type versions with maker-checker (#86), T2 fields, metadata and pinning (#87), T3 fields as workflow attributes (#88), T4 gapless numbering (#89), T5 closing and links (#90); T8 representative demo types (#91). Full backend suite green locally on each; details in the epic log
-- [ ] Owner: review the E01 screen flows (`ux-review.md`, three questions); then T6 (admin screens) and T7 (create form and memo view)
+- [x] Owner reviewed the E01 screen flows (2026-11-14, accepted as drafted; `ux-review.md`)
+- [x] E01 web: T6 memo-type admin and numbering screens, T7 type chooser, create and edit form with details, memo view details, links and close (#92); E2E journey `memo-types.spec`
+- [ ] E01 T8 rest: the authority journey with an amount band, `EXPLAIN` of the register and link lookups, ASVS rows, the dev check of the rows `workflow/V3` did not backfill; then E01 close-out
 - [ ] T8 rest: E2E journeys (need T6/T7), `EXPLAIN` for the register and link lookups, ASVS rows, a dev check of Phase 2 rows that `workflow/V3` did not backfill
 
 ## State (Phase 2, closed)
@@ -36,13 +38,13 @@
 - [ ] Owner demo, moderated usability walkthrough, manual keyboard and screen-reader pass (carried)
 
 ## Next step
-1. Owner: review the E01 screen flows and answer the three questions (`phase-3-memo-efile/epic-01-types-metadata-numbering/ux-review.md`); then the agent builds T6 and T7 and finishes T8. Merge #84–#91 in order when convenient (CI on each).
+1. Agent: finish E01 T8 and close E01, then E02 documents. Owner: merge #84–#92 in order when convenient (CI on each).
 2. Owner, in person when convenient: the D1 and phase demos on dev, the builder walkthrough and the manual accessibility pass (Waiting for human).
 3. Before 2026-11-22: take the rebuilt distroless digest from Renovate and delete the zlib entries in `.trivyignore`.
 4. Follow-ups (both retrospectives, "Carried"): `AuditPerformanceIT`, `NotificationPerformanceIT`, the full-signature ClamAV corpus nightly, sample bodies for the remaining mutating matrix cells, upstream clean-ups (`apk upgrade` lines, Spring Session licence exceptions, Guava pin), Spring Boot 4.2 GA; from Phase 2: the step ordinal after a recusal (retrospective), a sweep for timers dropped after their retry limit, the inbox sorted by due time, a warning level for validation, saved simulation scenarios, React Flow 13, the web suite's timeouts under load.
 
 ## Waiting for human
-- **Phase 3:** the E01 screen flows and three questions (`epic-01-types-metadata-numbering/ux-review.md`); Q5 before E07 (pen tester, production environment, ONLYOFFICE licence review).
+- **Phase 3:** Q5 before E07 (pen tester, production environment, ONLYOFFICE licence review).
 - **Phase 2 in person:** the D1 demo (`phase-2-workflow-engine/epic-01-first-slice/demo.md`) and the phase demo (`phase-2-workflow-engine/demo.md`), both on dev; the builder usability walkthrough; the manual keyboard and screen-reader pass (checklist in `epic-06-visual-builder/ux-review.md`).
 - **Carried from Phase 1a (in person, no rush):** the demo (`docs/plan/phase-1a-minimum-core/demo.md`), a moderated usability walkthrough (login + MFA, org editing, tenant administration) and a manual keyboard + screen-reader pass (NVDA or VoiceOver), including the E01 patterns gallery (`pnpm dev`, `/patterns`).
 - **GitHub setup:** required reviewers on the `release` environment (may need a paid plan on a private repository; meanwhile only the owner can push `v*` tags) and branch protection on `master`.

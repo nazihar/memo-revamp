@@ -20,8 +20,8 @@ export interface Picked {
 }
 
 /**
- * The people picker (design E04 §13): an ARIA 1.2 combobox over `GET /directory/search`, debounced, for people or
- * positions. Up/Down move through the options, Enter picks, Escape closes.
+ * The people picker (design E04 §13): an ARIA 1.2 combobox over `GET /directory/search`, debounced, for people,
+ * positions or units (Phase 3 E01). Up/Down move through the options, Enter picks, Escape closes.
  */
 export function PeoplePicker({
   id,
@@ -32,7 +32,7 @@ export function PeoplePicker({
   describedBy,
 }: {
   id?: string
-  kind: 'user' | 'position'
+  kind: 'user' | 'position' | 'unit'
   value?: Picked
   onChange: (picked: Picked | undefined) => void
   invalid?: boolean
@@ -66,11 +66,13 @@ export function PeoplePicker({
           label: u.person.displayName,
           detail: u.position ? `${u.position.title} · ${u.position.unitName}` : u.person.email,
         }))
-      : (search.data?.positions ?? []).map((p) => ({
-          id: p.id,
-          label: p.title,
-          detail: `${p.unitName} · ${p.holder?.displayName ?? intl.formatMessage(m.vacant)}`,
-        }))
+      : kind === 'unit'
+        ? (search.data?.units ?? []).map((u) => ({ id: u.id, label: u.name, detail: u.code }))
+        : (search.data?.positions ?? []).map((p) => ({
+            id: p.id,
+            label: p.title,
+            detail: `${p.unitName} · ${p.holder?.displayName ?? intl.formatMessage(m.vacant)}`,
+          }))
 
   const pick = (option: Picked) => {
     onChange(option)

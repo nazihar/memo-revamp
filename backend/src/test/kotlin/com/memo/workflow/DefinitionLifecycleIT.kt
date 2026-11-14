@@ -138,14 +138,15 @@ class DefinitionLifecycleIT : MemoIntegrationTest() {
         val routed = (0 until choices.size()).associate { choices[it]["key"].asString() to choices[it]["routed"].asBoolean() }
         assertThat(routed).containsEntry("fixed", false).containsEntry("routed", true).containsEntry("sequential-approval", true)
 
-        val unknown = memoType("Unknown", """"definitionKey":"nothing","routePolicy":"INITIATOR_DEFINED"""")
-        assertThat(unknown.errors()).containsExactly("definitionKey:unknown")
-        assertThat(memoType("Wrong", """"definitionKey":"fixed","routePolicy":"BOTH"""").errors()).containsExactly("routePolicy:mismatch")
-        assertThat(memoType("Wrong too", """"definitionKey":"routed","routePolicy":"FIXED"""").errors())
-            .containsExactly("routePolicy:mismatch")
-        val type = memoType("Purchase", """"definitionKey":"fixed","routePolicy":"FIXED"""")
-        assertThat(type).hasStatus(HttpStatus.CREATED)
-        assertThat(type.json()["routePolicy"].asString()).isEqualTo("FIXED")
+        // Since Phase 3 E01 a type is set up in a draft version and published by a second administrator (ADR-0043).
+        assertThat(memoTypeDraft("Unknown", "UNK", "nothing", "INITIATOR_DEFINED").second.errors())
+            .containsExactly("definitionKey:unknown")
+        assertThat(memoTypeDraft("Wrong", "WR", "fixed", "BOTH").second.errors()).containsExactly("routePolicy:mismatch")
+        assertThat(memoTypeDraft("Wrong too", "WRT", "routed", "FIXED").second.errors()).containsExactly("routePolicy:mismatch")
+        val (typeId, draft) = memoTypeDraft("Purchase", "PUR", "fixed", "FIXED")
+        assertThat(draft).hasStatusOk()
+        assertThat(draft.json()["routePolicy"].asString()).isEqualTo("FIXED")
+        publishType(typeId, 1, revision(draft.json()))
         assertThat(reason(send(HttpMethod.POST, "$BASE/fixed/versions/1/retire", checker))).isEqualTo("IN_USE")
 
         // A memo of a FIXED type goes to the definition's approver without a route.
@@ -153,7 +154,7 @@ class DefinitionLifecycleIT : MemoIntegrationTest() {
         val memo =
             create(
                 initiator.session,
-                """{"subject":"Laptops","typeId":"${type.json()["id"].asString()}","classificationId":"${levels()[0].id}"}""",
+                """{"subject":"Laptops","typeId":"$typeId","classificationId":"${levels()[0].id}"}""",
             ).json()["id"].asString()
         val allowed = get(memo, initiator.session).json()["allowedActions"]
         assertThat((0 until allowed.size()).map { allowed[it].asString() }).contains("SUBMIT").doesNotContain("EDIT_ROUTE")
@@ -164,18 +165,10 @@ class DefinitionLifecycleIT : MemoIntegrationTest() {
         assertThat(inbox["kind"].asString()).isEqualTo("DECIDE")
         assertThat(inbox["stepName"].asString()).isEqualTo("Buyer")
 
-        // Edits that leave the definition out keep it (the E01 form does not send it).
-        val version = type.json()["version"].asLong()
-        val renamed = put("/api/v1/admin/memo-types/${type.json()["id"].asString()}", maker, """{"name":"Purchases"}""", version)
-        assertThat(renamed.json()["definitionKey"].asString()).isEqualTo("fixed")
-        val moved =
-            put(
-                "/api/v1/admin/memo-types/${type.json()["id"].asString()}",
-                maker,
-                """{"name":"Purchases","definitionKey":"routed","routePolicy":"INITIATOR_DEFINED"}""",
-                renamed.json()["version"].asLong(),
-            )
-        assertThat(moved).hasStatusOk()
+        // A new version moves the type to another definition; once published, the old one is no longer in use.
+        val moved = send(HttpMethod.POST, "$TYPES/$typeId/versions", maker, settings("Purchases", "PUR", "routed", "INITIATOR_DEFINED"))
+        assertThat(moved).hasStatus(HttpStatus.CREATED)
+        publishType(typeId, 2, revision(moved.json()))
         val retired = send(HttpMethod.POST, "$BASE/fixed/versions/1/retire", checker)
         assertThat(retired.json()["version"]["state"].asString()).isEqualTo("RETIRED")
         Audit.assertAudited(tenant.id, "workflow.definition.retired", retired.json()["id"].asString())
@@ -200,10 +193,35 @@ class DefinitionLifecycleIT : MemoIntegrationTest() {
         assertThat(send(HttpMethod.POST, "$BASE/$key/versions/$number/approve", checker)).hasStatusOk()
     }
 
-    private fun memoType(
+    /** A new memo type with [definitionKey] and [routePolicy] put in its draft version 1: its id, and the answer to the put. */
+    private fun memoTypeDraft(
         name: String,
-        definition: String,
-    ) = post("/api/v1/admin/memo-types", maker, """{"name":"$name",$definition}""")
+        code: String,
+        definitionKey: String,
+        routePolicy: String,
+    ): Pair<String, MvcTestResult> {
+        val created = post(TYPES, maker, """{"name":"$name","code":"$code"}""")
+        assertThat(created).hasStatus(HttpStatus.CREATED)
+        val id = created.json()["id"].asString()
+        val draft = read("$TYPES/$id/versions/1", maker).json()
+        return id to send(HttpMethod.PUT, "$TYPES/$id/versions/1", maker, settings(name, code, definitionKey, routePolicy), revision(draft))
+    }
+
+    private fun publishType(
+        id: String,
+        number: Int,
+        revision: String,
+    ) {
+        assertThat(send(HttpMethod.POST, "$TYPES/$id/versions/$number/submit", maker, ifMatch = revision)).hasStatusOk()
+        assertThat(send(HttpMethod.POST, "$TYPES/$id/versions/$number/approve", checker)).hasStatusOk()
+    }
+
+    private fun settings(
+        name: String,
+        code: String,
+        definitionKey: String,
+        routePolicy: String,
+    ) = """{"name":"$name","code":"$code","definitionKey":"$definitionKey","routePolicy":"$routePolicy"}"""
 
     private fun send(
         method: HttpMethod,
@@ -228,6 +246,7 @@ class DefinitionLifecycleIT : MemoIntegrationTest() {
 
     private companion object {
         const val BASE = "/api/v1/admin/workflow-definitions"
+        const val TYPES = "/api/v1/admin/memo-types"
         const val ROUTED = """{"schemaVersion":2,"start":"route","steps":[{"id":"route","type":"route","name":"Approvers","next":"end"}]}"""
     }
 }

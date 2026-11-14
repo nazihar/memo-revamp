@@ -45,6 +45,7 @@ const loaders: Record<CataloguePart, Record<string, () => Promise<Messages>>> = 
   core: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'core' }, import: 'default' }),
   admin: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'admin' }, import: 'default' }),
   builder: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'builder' }, import: 'default' }),
+  memoAdmin: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'memoAdmin' }, import: 'default' }),
   platform: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'platform' }, import: 'default' }),
   patterns: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'patterns' }, import: 'default' }),
 }

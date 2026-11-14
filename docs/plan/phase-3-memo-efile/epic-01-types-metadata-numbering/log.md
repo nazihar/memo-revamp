@@ -111,3 +111,46 @@
 - **The Phase 2 demo types are left as they were** ("Credit facility", "Credit under authority"): the existing E2E journeys create memos of them without details, and required fields would break those journeys.
 - `DemoWorkflowsIT` checks that each representative type is published once (version 2) with its fields and series, including after a second seed run.
 - **Open in T8:** the E2E journeys (they need the T6 and T7 screens), `EXPLAIN` for the register and link lookups, ASVS rows, and the dev check of the rows `workflow/V3` did not backfill.
+
+## 2026-11-14 — T6 admin screens
+- **Owner review:** "ok, keep working", recorded as acceptance of the screen flows with the defaults built for the three questions (`ux-review.md`).
+- **Backend:**
+  - `POST /admin/memo-types` now takes `{name, code}` and starts the type as draft version 1, so nobody can raise it until it is published.
+  - The Phase 2 direct edit (`PUT /admin/memo-types/{id}`) is gone; `PUT /admin/memo-types/{id}/active` switches a type on or off.
+  - The list carries each type's open version (`pending`), and version responses name the scope's units.
+  - `Numbering.needsUnit` is no longer written to JSON.
+  - `MemoTypes.create` publishes at once, for seeders and the built-in type only.
+- **Web:**
+  - `features/memo-types/`: the list with a New memo type dialog; the type page with version selector and the Settings, Form, Numbering and Changes tabs; save, submit, approve with step-up, send back, new draft and switch on/off; the numbering page with series, counters, the register with void numbers and completeness, and a starting number with step-up.
+  - `features/memo/MetadataFields.tsx`: the form controls per field type, used by the preview now and by the create form in T7.
+  - The people picker searches units too.
+  - New catalogue part `memoAdmin` (Arabic 3.5 KiB).
+  - `builder.spec` follows the new flow: draft, submit, the second admin approves with TOTP.
+- **Changed from the flows:** the field editor is a dialog, not a side sheet (the Sheet component is the navigation drawer).
+- **Tests:** `memo-types.test.tsx` (5): the list, editing a draft with a new field and saving with If-Match, the numbering sample, review and approve, and the register; axe on each. The web suite passed apart from one platform test, which timed out under load and passed alone (the known flake).
+
+## 2026-11-14 — T7 create form and memo view
+- **New memo** (`/memos/new`):
+  - The type comes first. Six or fewer types are radio choices, each saying when it is numbered and whether it asks for details. More types become a list labelled "Memo type".
+  - The type's fields follow under "{type} details", built by `MetadataFields` from `GET /memo-types/{id}/form`.
+  - A draft saves with required fields still empty; the server checks them at submit and names each field as `metadata.<key>`, shown under the field.
+  - Choosing another type clears the details.
+- **Edit dialog:** while the memo is a draft, it shows the type's fields filled from the memo's details (units and people keep their names) and sends them back. Another type starts its details afresh.
+- **Memo view:**
+  - A **Details** section shows each value as people read it: amounts with their currency code, dates in the reader's locale, and names for units, people and choices.
+  - A draft whose type dropped fields shows a notice and lists those values under "No longer on this form".
+  - The header reads "Unnumbered — numbered when submitted" or "… when finally approved" until the memo has its number.
+  - A **Linked memos** section lists links and the memos linking here. Links are added by number with a kind (refers to, supersedes, follows up), and a refusal shows under the number. Whoever added a link may remove it.
+  - A **Close** action and dialog, with an optional remark.
+- **E2E:** `e2e/memo-type.ts` `chooseMemoType` picks a type whichever way the page offers it. The four journeys that create memos use it.
+- **Tests:** `memo-create.test.tsx` (8):
+  - the type first, then details sent with the draft (axe);
+  - a field error from the server;
+  - details formatted, the numbering note and linked-from (axe);
+  - Arabic (axe);
+  - the stale-field notice;
+  - editing a draft's details;
+  - linking by number and a refused number;
+  - closing.
+
+  Long UI tests take the repo's 20-second timeout; under the full suite on this machine they ran just past 5 seconds.

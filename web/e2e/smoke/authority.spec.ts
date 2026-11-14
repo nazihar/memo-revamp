@@ -2,6 +2,7 @@ import type { Browser, Page } from '@playwright/test'
 import { confirmIfAsked, demoSecret } from '../auth'
 import { docx } from '../docx'
 import { expect, test } from '../fixtures'
+import { chooseMemoType } from '../memo-type'
 import { storageStateFor, type SignedInRole } from '../roles'
 
 /**
@@ -40,7 +41,7 @@ test.describe('as the initiator', () => {
     const subject = `E2E authority ${String(Date.now())}`
     await app.visit('/memos/new')
     await page.getByLabel('Subject').fill(subject)
-    await page.getByLabel('Memo type').selectOption({ label: 'Credit under authority' })
+    await chooseMemoType(page, 'Credit under authority')
     await page.getByRole('button', { name: 'Create draft' }).click()
     await expect(page.getByRole('heading', { level: 1, name: subject })).toBeVisible()
     const memoUrl = page.url()

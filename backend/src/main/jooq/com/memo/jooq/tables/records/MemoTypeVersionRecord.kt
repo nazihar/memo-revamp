@@ -120,6 +120,18 @@ open class MemoTypeVersionRecord private constructor() : UpdatableRecordImpl<Mem
         set(value): Unit = set(24, value)
         get(): JSONB? = get(24) as JSONB?
 
+    open var retention: JSONB?
+        set(value): Unit = set(25, value)
+        get(): JSONB? = get(25) as JSONB?
+
+    open var attachmentRules: JSONB?
+        set(value): Unit = set(26, value)
+        get(): JSONB? = get(26) as JSONB?
+
+    open var autoCloseDays: Int?
+        set(value): Unit = set(27, value)
+        get(): Int? = get(27) as Int?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -129,7 +141,7 @@ open class MemoTypeVersionRecord private constructor() : UpdatableRecordImpl<Mem
     /**
      * Create a detached, initialised MemoTypeVersionRecord
      */
-    constructor(id: UUID, tenantId: UUID, memoTypeId: UUID, number: Int, state: String, revision: Long? = null, name: String, code: String, defaultClassificationId: UUID? = null, definitionKey: String, routePolicy: String, allowedApprovers: JSONB? = null, doaCheck: Boolean? = null, stepUpOnApprove: Boolean? = null, createdBy: UUID? = null, createdAt: OffsetDateTime, submittedBy: UUID? = null, submittedAt: OffsetDateTime? = null, reviewedBy: UUID? = null, reviewedAt: OffsetDateTime? = null, reviewRemark: String? = null, publishedAt: OffsetDateTime? = null, fields: JSONB? = null, raiseScope: JSONB? = null, numbering: JSONB? = null): this() {
+    constructor(id: UUID, tenantId: UUID, memoTypeId: UUID, number: Int, state: String, revision: Long? = null, name: String, code: String, defaultClassificationId: UUID? = null, definitionKey: String, routePolicy: String, allowedApprovers: JSONB? = null, doaCheck: Boolean? = null, stepUpOnApprove: Boolean? = null, createdBy: UUID? = null, createdAt: OffsetDateTime, submittedBy: UUID? = null, submittedAt: OffsetDateTime? = null, reviewedBy: UUID? = null, reviewedAt: OffsetDateTime? = null, reviewRemark: String? = null, publishedAt: OffsetDateTime? = null, fields: JSONB? = null, raiseScope: JSONB? = null, numbering: JSONB? = null, retention: JSONB? = null, attachmentRules: JSONB? = null, autoCloseDays: Int? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.memoTypeId = memoTypeId
@@ -155,6 +167,9 @@ open class MemoTypeVersionRecord private constructor() : UpdatableRecordImpl<Mem
         this.fields = fields
         this.raiseScope = raiseScope
         this.numbering = numbering
+        this.retention = retention
+        this.attachmentRules = attachmentRules
+        this.autoCloseDays = autoCloseDays
         resetTouchedOnNotNull()
     }
 }

@@ -167,6 +167,7 @@ export const statusLabels = defineMessages({
   WITHDRAWN: { id: 'memo.status.withdrawn', defaultMessage: 'Withdrawn' },
   DISCARDED: { id: 'memo.status.discarded', defaultMessage: 'Discarded' },
   CANCELLED: { id: 'memo.status.cancelled', defaultMessage: 'Cancelled' },
+  CLOSED: { id: 'memo.status.closed', defaultMessage: 'Closed' },
 })
 
 export const actionLabels = defineMessages({

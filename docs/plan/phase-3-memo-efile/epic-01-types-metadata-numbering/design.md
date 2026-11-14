@@ -118,7 +118,7 @@ stateDiagram-v2
   IN_REVIEW --> WITHDRAWN
   RETURNED --> WITHDRAWN
   IN_REVIEW --> CANCELLED
-  APPROVED --> CLOSED: close (initiator or tenant admin) / auto-close after N days
+  APPROVED --> CLOSED: close (initiator) / auto-close after N days (system)
   CLOSED --> [*]
 ```
 
@@ -166,10 +166,10 @@ All under `/api/v1`; errors are RFC 9457 with `errors[{field, code, message}]`; 
 | `POST /admin/memo-numbering/{series}/start` | approve; step-up; Idempotency | `{period, scope, next}`; refused once a number exists (`ALREADY_STARTED`) |
 | `POST /memos` | `memo.create`; Idempotency | Adds `metadata`; checks raise scope; sets origin unit |
 | `PUT /memos/{id}` | initiator; If-Match | Adds `metadata` (DRAFT and RETURNED: subject, classification as before; metadata only in DRAFT) |
-| `GET /memos/{id}` | memo readers | Adds metadata with labels from the version (current for drafts, pinned otherwise), `reference` nullable, `numberingMoment`, `staleFields`, links, `linkedFrom`, `closedAt` |
+| `GET /memos/{id}` | memo readers | Adds metadata with labels from the version (current for drafts, pinned otherwise), `reference` nullable, `numberingMoment`, `staleDetails`, `links`, `linkedFrom`, `canLink`, `closedAt`, `numberedWhen` |
 | `POST /memos/{id}/links` | participant (any status but CLOSED); Idempotency | `{targetReference, kind}`; the target must be readable by the caller; at most 50 |
 | `DELETE /memos/{id}/links/{linkId}` | link creator, memo DRAFT or RETURNED | Records removal |
-| `POST /memos/{id}/close` | initiator or tenant admin; Idempotency | APPROVED → CLOSED, remark optional |
+| `POST /memos/{id}/close` | initiator; Idempotency | APPROVED → CLOSED, remark optional |
 
 Problem codes: `SAME_PERSON`, `DRAFT_EXISTS`, `NOT_PUBLISHED`, `ATTRIBUTE_CONFLICT`, `ATTRIBUTE_IN_USE`, `SERIES_OVERLAP`, `ALREADY_STARTED`, `NO_ORIGIN_UNIT`, `NOT_ALLOWED_TO_RAISE`, `FIELD_REQUIRED`, `FIELD_INVALID`, `LINK_LIMIT`, `LINK_TARGET_UNREADABLE`, `NOT_APPROVED`.
 
@@ -186,7 +186,7 @@ Problem codes: `SAME_PERSON`, `DRAFT_EXISTS`, `NOT_PUBLISHED`, `ATTRIBUTE_CONFLI
 | Fill or change metadata | ✓ in DRAFT | — | — | — | — | — |
 | Add a link | ✓ (not CLOSED) | ✓ (not CLOSED) | ✗ | ✗ unless participant | — | — |
 | Remove own link | ✓ in DRAFT or RETURNED | — | — | — | — | — |
-| Close | ✓ if APPROVED | ✗ | ✗ | ✓ if APPROVED | — | — |
+| Close | ✓ if APPROVED | ✗ | ✗ | ✗ (auto-close, T5 log) | — | — |
 
 The new permission `memo.types.approve` is added to the tenant-admin role template. The demo's `reviewer@` gets it, and `admin@` keeps manage, so maker-checker can be shown. Every new endpoint goes into `authz/p3-e01-memo-types.yaml`.
 

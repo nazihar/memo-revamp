@@ -6170,6 +6170,12 @@
       "value": "CancelledSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.status.closed": [
+    {
+      "type": 0,
+      "value": "ClosedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.status.discarded": [
     {
       "type": 0,

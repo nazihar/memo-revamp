@@ -796,6 +796,7 @@
   "memo.shared": "Others can act on this too. The first decision completes the step; claim it to work on it alone.",
   "memo.status.approved": "Approved",
   "memo.status.cancelled": "Cancelled",
+  "memo.status.closed": "Closed",
   "memo.status.discarded": "Discarded",
   "memo.status.draft": "Draft",
   "memo.status.inReview": "In review",

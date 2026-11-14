@@ -15,7 +15,8 @@ import java.util.UUID
 /**
  * The memo V6 and V7 backfills (test plan E01, T1, T2; ADR-0043, design E01 §7) on a database holding Phase 2 data: every
  * type, in every tenant, becomes published version 1 with the same settings and a unique code; every submitted memo is
- * pinned to it, drafts are not; and forced RLS is back on afterwards. Runs the memo module's own migrations (its tables
+ * pinned to it, drafts are not; existing references become numbers of the general series (V8); approved memos get their
+ * approval time (V9); and forced RLS is back on afterwards. Runs the memo module's own migrations (its tables
  * refer to no other module) on a fresh PostgreSQL, stopping at V5 to add the data.
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -26,6 +27,7 @@ class MemoTypeBackfillIT {
     private val level = UUID.randomUUID()
     private val inReview = UUID.randomUUID()
     private val draft = UUID.randomUUID()
+    private val approved = UUID.randomUUID()
 
     @BeforeAll
     fun migrate() {
@@ -35,7 +37,8 @@ class MemoTypeBackfillIT {
             val general = type(c, tenantA, "General memo", key = "general")
             memo(c, tenantA, general, inReview, "IN_REVIEW", 1)
             memo(c, tenantA, general, draft, "DRAFT", 2)
-            c.createStatement().use { it.executeUpdate("insert into memo_reference_counter values ('$tenantA', 2026, 2)") }
+            memo(c, tenantA, general, approved, "APPROVED", 3)
+            c.createStatement().use { it.executeUpdate("insert into memo_reference_counter values ('$tenantA', 2026, 3)") }
             type(c, tenantA, "Credit facility", policy = "FIXED", definition = "credit-facility", doa = true)
             type(c, tenantA, "Cash flow", classification = level, stepUp = false)
             type(c, tenantA, "--", active = false)
@@ -104,7 +107,13 @@ class MemoTypeBackfillIT {
                         select m.id, v.number from memo m left join memo_type_version v on v.id = m.memo_type_version_id
                         """.trimIndent(),
                     ).use { rs -> buildMap { while (rs.next()) put(rs.getObject(1) as UUID, rs.getObject(2) as Int?) } }
-            assertThat(pinned).containsEntry(inReview, 1).containsEntry(draft, null)
+            assertThat(pinned).containsEntry(inReview, 1).containsEntry(approved, 1).containsEntry(draft, null)
+            val approvedAt =
+                c.createStatement().executeQuery("select id, approved_at from memo").use { rs ->
+                    buildMap { while (rs.next()) put(rs.getObject(1) as UUID, rs.getObject(2)) }
+                }
+            assertThat(approvedAt[approved]).isNotNull()
+            assertThat(approvedAt[inReview]).isNull()
         }
     }
 
@@ -121,13 +130,14 @@ class MemoTypeBackfillIT {
             assertThat(numbers).containsExactly(
                 listOf("M-2026-00001", "general", "2026", "", "1"),
                 listOf("M-2026-00002", "general", "2026", "", "2"),
+                listOf("M-2026-00003", "general", "2026", "", "3"),
             )
             val counter =
                 c
                     .createStatement()
                     .executeQuery("select series, period, scope, last_number from memo_number_counter")
                     .use { rs -> buildList { while (rs.next()) add((1..4).map { rs.getObject(it).toString() }) } }
-            assertThat(counter).containsExactly(listOf("general", "2026", "", "2"))
+            assertThat(counter).containsExactly(listOf("general", "2026", "", "3"))
             val format =
                 c.createStatement().executeQuery("select distinct numbering->>'series' from memo_type_version").use { rs ->
                     buildList { while (rs.next()) add(rs.getString(1)) }
@@ -209,7 +219,7 @@ class MemoTypeBackfillIT {
                 """
                 insert into memo_type (id, tenant_id, key, name, default_classification_id, route_policy, definition_key,
                                        step_up_on_approve, active, doa_check, created_at, updated_at)
-                values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now(), now())
+                values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, clock_timestamp(), clock_timestamp())
                 """.trimIndent(),
             ).use {
                 it.setObject(1, id)

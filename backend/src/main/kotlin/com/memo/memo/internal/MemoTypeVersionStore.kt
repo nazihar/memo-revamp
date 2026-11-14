@@ -20,7 +20,7 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.util.UUID
 
-/** What a memo-type version says (ADR-0043, ADR-0044); E01 T5 adds the lifecycle settings. */
+/** What a memo-type version says (ADR-0043, ADR-0044). */
 data class MemoTypeSettings(
     val name: String,
     val code: String,
@@ -37,6 +37,12 @@ data class MemoTypeSettings(
     val raiseScope: RaiseScope = RaiseScope(),
     /** How its memos are numbered (E01 T4, ADR-0044). */
     val numbering: Numbering = Numbering(),
+    /** How long its memos are kept; null: no policy yet (E01 T5, acted on in Phase 7). */
+    val retention: Retention? = null,
+    /** What it asks for in attachments (E01 T5, enforced by E02). */
+    val attachmentRules: AttachmentRules = AttachmentRules(),
+    /** Approved memos close by themselves this many days after approval; null: only by hand (E01 T5). */
+    val autoCloseDays: Int? = null,
 )
 
 /** One version of a memo type. */
@@ -220,6 +226,9 @@ private fun JsonMapper.settingsFields(settings: MemoTypeSettings): Map<Field<*>,
         MEMO_TYPE_VERSION.FIELDS to JSONB.valueOf(writeValueAsString(settings.fields)),
         MEMO_TYPE_VERSION.RAISE_SCOPE to JSONB.valueOf(writeValueAsString(settings.raiseScope)),
         MEMO_TYPE_VERSION.NUMBERING to JSONB.valueOf(writeValueAsString(settings.numbering)),
+        MEMO_TYPE_VERSION.RETENTION to settings.retention?.let { JSONB.valueOf(writeValueAsString(it)) },
+        MEMO_TYPE_VERSION.ATTACHMENT_RULES to JSONB.valueOf(writeValueAsString(settings.attachmentRules)),
+        MEMO_TYPE_VERSION.AUTO_CLOSE_DAYS to settings.autoCloseDays,
     )
 
 private val FIELDS = object : TypeReference<List<MemoField>>() {}
@@ -245,6 +254,9 @@ private fun JsonMapper.row(v: MemoTypeVersionRecord): MemoTypeVersionRow =
                 fields = v.fields?.let { readValue(it.data(), FIELDS) }.orEmpty(),
                 raiseScope = v.raiseScope?.let { readValue(it.data(), RaiseScope::class.java) } ?: RaiseScope(),
                 numbering = v.numbering?.let { readValue(it.data(), Numbering::class.java) } ?: Numbering(),
+                retention = v.retention?.let { readValue(it.data(), Retention::class.java) },
+                attachmentRules = v.attachmentRules?.let { readValue(it.data(), AttachmentRules::class.java) } ?: AttachmentRules(),
+                autoCloseDays = v.autoCloseDays,
             ),
         createdBy = v.createdBy,
         createdAt = v.createdAt.toInstant(),

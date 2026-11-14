@@ -5,6 +5,7 @@ package com.memo.jooq.tables
 
 
 import com.memo.jooq.Memo
+import com.memo.jooq.indexes.MEMO_SUBMISSION_ATTACHMENT_ATTACHMENT_IDX
 import com.memo.jooq.keys.MEMO_SUBMISSION_ATTACHMENT_PKEY
 import com.memo.jooq.keys.MEMO_SUBMISSION_ATTACHMENT__MEMO_SUBMISSION_ATTACHMENT_TENANT_ID_ATTACHMENT_ID_FKEY
 import com.memo.jooq.keys.MEMO_SUBMISSION_ATTACHMENT__MEMO_SUBMISSION_ATTACHMENT_TENANT_ID_MEMO_ID_FKEY
@@ -21,6 +22,7 @@ import org.jooq.Check
 import org.jooq.Condition
 import org.jooq.Field
 import org.jooq.ForeignKey
+import org.jooq.Index
 import org.jooq.InverseForeignKey
 import org.jooq.Name
 import org.jooq.Path
@@ -148,6 +150,7 @@ open class MemoSubmissionAttachment(
         override fun `as`(alias: Table<*>): MemoSubmissionAttachmentPath = MemoSubmissionAttachmentPath(alias.qualifiedName, this)
     }
     override fun getSchema(): Schema? = if (aliased()) null else Memo.MEMO
+    override fun getIndexes(): List<Index> = listOf(MEMO_SUBMISSION_ATTACHMENT_ATTACHMENT_IDX)
     override fun getPrimaryKey(): UniqueKey<MemoSubmissionAttachmentRecord> = MEMO_SUBMISSION_ATTACHMENT_PKEY
     override fun getReferences(): List<ForeignKey<MemoSubmissionAttachmentRecord, *>> = listOf(MEMO_SUBMISSION_ATTACHMENT__MEMO_SUBMISSION_ATTACHMENT_TENANT_ID_ATTACHMENT_ID_FKEY, MEMO_SUBMISSION_ATTACHMENT__MEMO_SUBMISSION_ATTACHMENT_TENANT_ID_MEMO_ID_FKEY)
 

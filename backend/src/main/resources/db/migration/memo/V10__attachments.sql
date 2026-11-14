@@ -38,6 +38,8 @@ CREATE TABLE memo_submission_attachment (
     FOREIGN KEY (tenant_id, attachment_id) REFERENCES memo_attachment (tenant_id, id)
 );
 
+CREATE INDEX memo_submission_attachment_attachment_idx ON memo_submission_attachment (tenant_id, attachment_id);
+
 -- Attachments are removed by a flag, never deleted; a round's binding never changes.
 REVOKE DELETE, TRUNCATE ON memo_attachment FROM memo_app;
 REVOKE UPDATE, DELETE, TRUNCATE ON memo_submission_attachment FROM memo_app;

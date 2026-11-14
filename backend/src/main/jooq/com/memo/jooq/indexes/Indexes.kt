@@ -25,6 +25,7 @@ import com.memo.jooq.tables.Memo
 import com.memo.jooq.tables.MemoAttachment
 import com.memo.jooq.tables.MemoLink
 import com.memo.jooq.tables.MemoParticipant
+import com.memo.jooq.tables.MemoSubmissionAttachment
 import com.memo.jooq.tables.MemoType
 import com.memo.jooq.tables.MemoTypeVersion
 import com.memo.jooq.tables.NotificationItem
@@ -87,6 +88,7 @@ val MEMO_LINK_TENANT_MEMO_IDX: Index = Internal.createIndex(DSL.name("memo_link_
 val MEMO_LINK_TENANT_TARGET_IDX: Index = Internal.createIndex(DSL.name("memo_link_tenant_target_idx"), MemoLink.MEMO_LINK, arrayOf(MemoLink.MEMO_LINK.TENANT_ID, MemoLink.MEMO_LINK.TARGET_MEMO_ID), false)
 val MEMO_NUMBER_UK: Index = Internal.createIndex(DSL.name("memo_number_uk"), Memo.MEMO_, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.NUMBER_SERIES, Memo.MEMO_.NUMBER_PERIOD, Memo.MEMO_.NUMBER_SCOPE, Memo.MEMO_.NUMBER_SEQUENCE), true)
 val MEMO_PARTICIPANT_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("memo_participant_tenant_user_idx"), MemoParticipant.MEMO_PARTICIPANT, arrayOf(MemoParticipant.MEMO_PARTICIPANT.TENANT_ID, MemoParticipant.MEMO_PARTICIPANT.USER_ID, MemoParticipant.MEMO_PARTICIPANT.MEMO_ID), false)
+val MEMO_SUBMISSION_ATTACHMENT_ATTACHMENT_IDX: Index = Internal.createIndex(DSL.name("memo_submission_attachment_attachment_idx"), MemoSubmissionAttachment.MEMO_SUBMISSION_ATTACHMENT, arrayOf(MemoSubmissionAttachment.MEMO_SUBMISSION_ATTACHMENT.TENANT_ID, MemoSubmissionAttachment.MEMO_SUBMISSION_ATTACHMENT.ATTACHMENT_ID), false)
 val MEMO_TENANT_APPROVED_IDX: Index = Internal.createIndex(DSL.name("memo_tenant_approved_idx"), Memo.MEMO_, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.APPROVED_AT), false)
 val MEMO_TENANT_INITIATOR_BOX_IDX: Index = Internal.createIndex(DSL.name("memo_tenant_initiator_box_idx"), Memo.MEMO_, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.INITIATOR_ID, Memo.MEMO_.STATUS, Memo.MEMO_.UPDATED_AT.desc(), Memo.MEMO_.ID), false)
 val MEMO_TENANT_TYPE_IDX: Index = Internal.createIndex(DSL.name("memo_tenant_type_idx"), Memo.MEMO_, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.MEMO_TYPE_ID), false)

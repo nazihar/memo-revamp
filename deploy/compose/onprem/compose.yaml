@@ -174,14 +174,18 @@ services:
 
   onlyoffice:
     profiles: [documents]
-    image: ${MEMO_ONLYOFFICE_IMAGE:-onlyoffice/documentserver:9.4.0.1}
+    image: ${MEMO_ONLYOFFICE_IMAGE:-onlyoffice/documentserver:10.0.0.1}
     restart: unless-stopped
     environment:
       JWT_ENABLED: "true"
       JWT_SECRET: ${ONLYOFFICE_JWT_SECRET:?}
       JWT_HEADER: Authorization
-      # The backend is on a private address of the internal network; nothing else is reachable from there.
-      ALLOW_PRIVATE_IP_ADDRESS: "true"
+      PLUGINS_ENABLED: "false"
+    # Hardening (ADR-0047): only URLs inside our signed tokens are fetched, AI and plugins off, short cache life.
+    volumes: ["../../onlyoffice/local-production-linux.json:/etc/onlyoffice/documentserver/local-production-linux.json:ro"]
+    # The cache holds documents in plaintext while they are open: in memory only, gone on restart. Keep host swap off
+    # or encrypted.
+    tmpfs: ["/var/lib/onlyoffice:size=2g,mode=0755"]
     healthcheck:
       test: ["CMD-SHELL", "curl -fsS http://127.0.0.1/healthcheck | grep -q true"]
       interval: 15s

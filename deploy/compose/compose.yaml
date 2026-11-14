@@ -70,14 +70,17 @@ services:
       MP_SMTP_AUTH_ALLOW_INSECURE: "true"
 
   onlyoffice:
-    image: onlyoffice/documentserver:9.4.0.1
+    image: onlyoffice/documentserver:10.0.0.1
     profiles: [full]
     environment:
       JWT_ENABLED: "true"
       JWT_SECRET: ${ONLYOFFICE_JWT_SECRET:?}
       JWT_HEADER: Authorization
-      # The backend is reached through `backend-gateway`, a private address.
-      ALLOW_PRIVATE_IP_ADDRESS: "true"
+      PLUGINS_ENABLED: "false"
+    # Hardening (ADR-0047): only URLs inside our signed tokens are fetched, AI and plugins off, short cache life.
+    volumes: ["../onlyoffice/local-production-linux.json:/etc/onlyoffice/documentserver/local-production-linux.json:ro"]
+    # The cache holds documents in plaintext while they are open: in memory only, gone on restart.
+    tmpfs: ["/var/lib/onlyoffice:size=2g,mode=0755"]
     # No outbound network (AGENTS.md §3.4): attached only to an internal network shared with the backend proxy.
     networks: [docs-internal]
     healthcheck:

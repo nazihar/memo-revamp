@@ -106,6 +106,23 @@ services:
     extra_hosts: ["host.docker.internal:host-gateway"]
     networks: [default, docs-internal]
 
+  # Text extraction (ADR-0045): Apache Tika with the shared limits, on the internal network only.
+  tika:
+    image: apache/tika:4.2.0
+    profiles: [full]
+    command: ["-c", "/config/tika-config.json"]
+    volumes: ["../tika/tika-config.json:/config/tika-config.json:ro"]
+    networks: [docs-internal]
+    deploy: { resources: { limits: { memory: 3g } } }
+
+  # Gives the host-run backend a route to Tika, and nothing else.
+  tika-gateway:
+    image: alpine/socat:1.8.1.1
+    profiles: [full]
+    command: ["TCP-LISTEN:9998,fork,reuseaddr", "TCP:tika:9998"]
+    networks: [default, docs-internal]
+    ports: ["127.0.0.1:9998:9998"]
+
   clamav:
     image: clamav/clamav:1.5.4
     profiles: [full]

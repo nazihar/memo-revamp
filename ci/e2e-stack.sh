@@ -11,6 +11,7 @@ JAR=${BACKEND_JAR:-$ROOT/backend/build/libs/backend.jar}
 LOG=$ROOT/build/e2e-backend.log
 SIGNATURES=$ROOT/backend/src/test/resources/files/clamav
 OFFICE_IMAGE=onlyoffice/documentserver:10.0.0.1
+TIKA_IMAGE=apache/tika:4.2.0
 
 case "${1:-start}" in
   start)
@@ -44,6 +45,11 @@ case "${1:-start}" in
       done
       export MEMO_DOCSERVER_URL=http://127.0.0.1:8081 MEMO_DOCEDIT_JWT_SECRET="$OFFICE_SECRET" \
         MEMO_DOCEDIT_INTERNAL_URL=http://host.docker.internal:8082
+      # Text of documents (ADR-0045): the pinned Tika server with the shared limits.
+      docker rm -f memo-e2e-tika >/dev/null 2>&1 || true
+      docker run -d --name memo-e2e-tika -p 127.0.0.1:9998:9998 \
+        -v "$ROOT/deploy/tika/tika-config.json:/config/tika-config.json:ro" "$TIKA_IMAGE" -c /config/tika-config.json >/dev/null
+      export MEMO_TIKA_URL=http://127.0.0.1:9998
     fi
     mkdir -p "$(dirname "$LOG")"
     SPRING_PROFILES_ACTIVE=dev nohup java -jar "$JAR" >"$LOG" 2>&1 &
@@ -63,7 +69,7 @@ case "${1:-start}" in
     ;;
   stop)
     [ -f "$ROOT/build/e2e-backend.pid" ] && kill "$(cat "$ROOT/build/e2e-backend.pid")" 2>/dev/null || true
-    docker rm -f memo-e2e-clamd memo-e2e-office >/dev/null 2>&1 || true
+    docker rm -f memo-e2e-clamd memo-e2e-office memo-e2e-tika >/dev/null 2>&1 || true
     node "$ROOT/scripts/dev.mjs" down
     ;;
   *) echo "usage: $0 start|logs|stop" >&2; exit 2 ;;

@@ -28,9 +28,9 @@ open class MemoRecord private constructor() : UpdatableRecordImpl<MemoRecord>(Me
         set(value): Unit = set(1, value)
         get(): UUID = get(1) as UUID
 
-    open var reference: String
+    open var reference: String?
         set(value): Unit = set(2, value)
-        get(): String = get(2) as String
+        get(): String? = get(2) as String?
 
     open var memoTypeId: UUID
         set(value): Unit = set(3, value)
@@ -92,6 +92,26 @@ open class MemoRecord private constructor() : UpdatableRecordImpl<MemoRecord>(Me
         set(value): Unit = set(17, value)
         get(): JSONB? = get(17) as JSONB?
 
+    open var numberSeries: String?
+        set(value): Unit = set(18, value)
+        get(): String? = get(18) as String?
+
+    open var numberPeriod: String?
+        set(value): Unit = set(19, value)
+        get(): String? = get(19) as String?
+
+    open var numberScope: String?
+        set(value): Unit = set(20, value)
+        get(): String? = get(20) as String?
+
+    open var numberSequence: Long?
+        set(value): Unit = set(21, value)
+        get(): Long? = get(21) as Long?
+
+    open var numberedAt: OffsetDateTime?
+        set(value): Unit = set(22, value)
+        get(): OffsetDateTime? = get(22) as OffsetDateTime?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -101,7 +121,7 @@ open class MemoRecord private constructor() : UpdatableRecordImpl<MemoRecord>(Me
     /**
      * Create a detached, initialised MemoRecord
      */
-    constructor(id: UUID, tenantId: UUID, reference: String, memoTypeId: UUID, subject: String, classificationId: UUID, classificationRank: Int, initiatorId: UUID, originUnitId: UUID? = null, status: String, documentFileId: UUID? = null, workflowInstanceId: UUID? = null, currentRound: Int? = null, version: Long? = null, createdAt: OffsetDateTime, updatedAt: OffsetDateTime, memoTypeVersionId: UUID? = null, metadata: JSONB? = null): this() {
+    constructor(id: UUID, tenantId: UUID, reference: String? = null, memoTypeId: UUID, subject: String, classificationId: UUID, classificationRank: Int, initiatorId: UUID, originUnitId: UUID? = null, status: String, documentFileId: UUID? = null, workflowInstanceId: UUID? = null, currentRound: Int? = null, version: Long? = null, createdAt: OffsetDateTime, updatedAt: OffsetDateTime, memoTypeVersionId: UUID? = null, metadata: JSONB? = null, numberSeries: String? = null, numberPeriod: String? = null, numberScope: String? = null, numberSequence: Long? = null, numberedAt: OffsetDateTime? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.reference = reference
@@ -120,6 +140,11 @@ open class MemoRecord private constructor() : UpdatableRecordImpl<MemoRecord>(Me
         this.updatedAt = updatedAt
         this.memoTypeVersionId = memoTypeVersionId
         this.metadata = metadata
+        this.numberSeries = numberSeries
+        this.numberPeriod = numberPeriod
+        this.numberScope = numberScope
+        this.numberSequence = numberSequence
+        this.numberedAt = numberedAt
         resetTouchedOnNotNull()
     }
 }

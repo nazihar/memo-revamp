@@ -1,3 +1,6 @@
+import type { IntlShape } from 'react-intl'
+
+import { mm } from './memo-messages'
 /** What the create page and the edit dialog edit (design E01 §5). */
 export interface MemoFieldValues {
   subject: string
@@ -24,4 +27,12 @@ const PDI = String.fromCodePoint(0x2069)
  */
 export function isolated(reference: string | null | undefined): string {
   return FSI + (reference ?? '') + PDI
+}
+
+/**
+ * How a memo's number reads in text: the number, isolated, or "Unnumbered" while it has none (memos are numbered at
+ * submit or at final approval, as their type says).
+ */
+export function referenceOf(intl: IntlShape, reference: string | null | undefined): string {
+  return reference ? isolated(reference) : intl.formatMessage(mm.unnumbered)
 }

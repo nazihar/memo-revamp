@@ -120,11 +120,19 @@ class MemoWorkflowSubject(
 class MemoWorkflowListener(
     private val store: MemoStore,
     private val clock: Clock,
+    private val versions: MemoTypeVersionStore,
+    private val numbers: MemoNumbers,
 ) {
     @EventListener
     fun onAction(event: WorkflowActionTaken) {
         if (event.subjectType != MemoWorkflowSubject.TYPE) return
-        store.applyWorkflow(event.subjectId, event.instanceId, event.round, STATUS.getValue(event.status), now())
+        val status = STATUS.getValue(event.status)
+        store.applyWorkflow(event.subjectId, event.instanceId, event.round, status, now())
+        // A type that numbers on final approval numbers in the approval's transaction (ADR-0044).
+        if (status == MemoStatus.APPROVED) {
+            val memo = store.find(event.subjectId) ?: return
+            memo.memoTypeVersionId?.let(versions::byId)?.let { numbers.assign(memo, it, NumberMoment.ON_APPROVAL) }
+        }
     }
 
     /** Approvers become participants when their task is created, so they can open the memo from then on. */

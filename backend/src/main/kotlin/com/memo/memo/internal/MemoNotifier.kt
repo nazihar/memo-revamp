@@ -160,7 +160,8 @@ class MemoNotifier(
             recipient,
             kind,
             mapOf(
-                "reference" to memo.reference,
+                // Numbered on final approval: no number yet while in review (ADR-0044).
+                "reference" to (memo.reference ?: "–"),
                 "organisation" to tenant?.name.orEmpty(),
                 "link" to (tenant?.let { tenancy.publicUrl(it.slug) }.orEmpty() + link),
             ) + extra,

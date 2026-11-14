@@ -141,7 +141,8 @@ data class MemoDetailView(
 
 data class MemoView(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val id: UUID,
-    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val reference: String,
+    /** The memo's number; null until it is numbered (ADR-0044), see [numberedWhen]. */
+    val reference: String?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val subject: String,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val type: Named,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val classification: ClassificationView,
@@ -171,6 +172,8 @@ data class MemoView(
     val typeVersion: Int? = null,
     /** The unit the memo comes from: the initiator's unit when it was created. */
     val originUnit: Named? = null,
+    /** For a memo without a number: when it will get one (at submit or at final approval). */
+    val numberedWhen: NumberMoment? = null,
 )
 
 /** Builds [MemoView]s: names from identity, the document from files. Inside a tenant transaction. */
@@ -253,6 +256,7 @@ class MemoViews(
             details = details.current,
             staleDetails = details.stale,
             typeVersion = details.pinnedVersion,
+            numberedWhen = details.numberedWhen.takeIf { memo.reference == null },
             originUnit = originUnit(memo.originUnitId),
             createdAt = memo.createdAt,
             updatedAt = memo.updatedAt,
@@ -264,6 +268,7 @@ class MemoViews(
         val current: List<MemoDetailView>,
         val stale: List<MemoDetailView>,
         val pinnedVersion: Int?,
+        val numberedWhen: NumberMoment?,
     )
 
     /**
@@ -333,6 +338,7 @@ class MemoViews(
                         ?: memo.metadata[key]?.let { MemoDetailView(key, key, FieldType.TEXT, it) }
                 },
             pinnedVersion = memo.memoTypeVersionId?.let { version?.number },
+            numberedWhen = version?.settings?.numbering?.moment,
         )
     }
 

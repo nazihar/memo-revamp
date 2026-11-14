@@ -241,6 +241,8 @@ data class MemoTypeOption(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val stepUpOnApprove: Boolean,
     /** Whether the type has fields to fill in (fetch them with `getMemoTypeForm`). */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val hasFields: Boolean = false,
+    /** When memos of the type get their number (ADR-0044). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val numberingMoment: NumberMoment = NumberMoment.ON_SUBMIT,
 )
 
 /** The form of a memo type: its published version's fields, in order. */
@@ -249,6 +251,8 @@ data class MemoTypeForm(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val name: String,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val version: Int,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val fields: List<MemoField>,
+    /** When memos of the type get their number (ADR-0044). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val numberingMoment: NumberMoment,
 )
 
 @RestController
@@ -264,7 +268,14 @@ class MemoTypesController(
     fun list(): List<MemoTypeOption> =
         transactions.readInTenant(TenantContext.current()) {
             access.raisable(currentUser()).map { (type, version) ->
-                MemoTypeOption(type.id, type.name, type.defaultClassificationId, type.stepUpOnApprove, version.settings.fields.isNotEmpty())
+                MemoTypeOption(
+                    type.id,
+                    type.name,
+                    type.defaultClassificationId,
+                    type.stepUpOnApprove,
+                    version.settings.fields.isNotEmpty(),
+                    version.settings.numbering.moment,
+                )
             }
         }
 
@@ -276,7 +287,7 @@ class MemoTypesController(
     ): MemoTypeForm =
         transactions.readInTenant(TenantContext.current()) {
             val version = access.raisableVersion(id, currentUser())
-            MemoTypeForm(id, version.settings.name, version.number, version.settings.fields)
+            MemoTypeForm(id, version.settings.name, version.number, version.settings.fields, version.settings.numbering.moment)
         }
 
     private fun currentUser(): UUID =

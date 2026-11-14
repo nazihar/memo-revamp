@@ -3,7 +3,6 @@ package com.memo.memo.internal
 import com.memo.common.tenant.TenantDsl
 import com.memo.jooq.tables.records.MemoRecord
 import com.memo.jooq.tables.references.MEMO_PARTICIPANT
-import com.memo.jooq.tables.references.MEMO_REFERENCE_COUNTER
 import org.jooq.JSONB
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Repository
@@ -36,7 +35,8 @@ enum class ParticipantKind { INITIATOR, APPROVER, NOTIFIED }
 
 data class Memo(
     val id: UUID,
-    val reference: String,
+    /** The memo's number (ADR-0044); null until it is numbered, at submit or final approval as its type says. */
+    val reference: String?,
     val typeId: UUID,
     val subject: String,
     val classificationId: UUID,
@@ -59,7 +59,6 @@ data class Memo(
 /** The fields of a new memo. */
 data class NewMemo(
     val id: UUID,
-    val reference: String,
     val typeId: UUID,
     val subject: String,
     val classificationId: UUID,
@@ -75,21 +74,6 @@ class MemoStore(
     private val tenantDsl: TenantDsl,
     private val json: JsonMapper,
 ) {
-    /** The next number of [year] in this tenant; the counter row stays locked until commit, so numbers never repeat. */
-    fun nextNumber(year: Int): Int =
-        tenantDsl
-            .current()
-            .insertInto(MEMO_REFERENCE_COUNTER)
-            .set(MEMO_REFERENCE_COUNTER.TENANT_ID, tenantDsl.tenant().value)
-            .set(MEMO_REFERENCE_COUNTER.YEAR, year)
-            .set(MEMO_REFERENCE_COUNTER.LAST_NUMBER, 1)
-            .onConflict(MEMO_REFERENCE_COUNTER.TENANT_ID, MEMO_REFERENCE_COUNTER.YEAR)
-            .doUpdate()
-            .set(MEMO_REFERENCE_COUNTER.LAST_NUMBER, MEMO_REFERENCE_COUNTER.LAST_NUMBER.plus(1))
-            .returning(MEMO_REFERENCE_COUNTER.LAST_NUMBER)
-            .fetchSingle()
-            .lastNumber
-
     fun insert(
         memo: NewMemo,
         now: OffsetDateTime,
@@ -99,7 +83,6 @@ class MemoStore(
             .insertInto(MEMO)
             .set(MEMO.ID, memo.id)
             .set(MEMO.TENANT_ID, tenantDsl.tenant().value)
-            .set(MEMO.REFERENCE, memo.reference)
             .set(MEMO.MEMO_TYPE_ID, memo.typeId)
             .set(MEMO.SUBJECT, memo.subject)
             .set(MEMO.CLASSIFICATION_ID, memo.classificationId)

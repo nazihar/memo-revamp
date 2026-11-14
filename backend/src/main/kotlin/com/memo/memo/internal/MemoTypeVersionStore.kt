@@ -20,7 +20,7 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.util.UUID
 
-/** What a memo-type version says (ADR-0043); later E01 tasks add numbering and the lifecycle settings. */
+/** What a memo-type version says (ADR-0043, ADR-0044); E01 T5 adds the lifecycle settings. */
 data class MemoTypeSettings(
     val name: String,
     val code: String,
@@ -35,6 +35,8 @@ data class MemoTypeSettings(
     val fields: List<MemoField> = emptyList(),
     /** Who may raise memos of the type (E01 T2); empty: everyone with `memo.create`. */
     val raiseScope: RaiseScope = RaiseScope(),
+    /** How its memos are numbered (E01 T4, ADR-0044). */
+    val numbering: Numbering = Numbering(),
 )
 
 /** One version of a memo type. */
@@ -217,6 +219,7 @@ private fun JsonMapper.settingsFields(settings: MemoTypeSettings): Map<Field<*>,
         MEMO_TYPE_VERSION.STEP_UP_ON_APPROVE to settings.stepUpOnApprove,
         MEMO_TYPE_VERSION.FIELDS to JSONB.valueOf(writeValueAsString(settings.fields)),
         MEMO_TYPE_VERSION.RAISE_SCOPE to JSONB.valueOf(writeValueAsString(settings.raiseScope)),
+        MEMO_TYPE_VERSION.NUMBERING to JSONB.valueOf(writeValueAsString(settings.numbering)),
     )
 
 private val FIELDS = object : TypeReference<List<MemoField>>() {}
@@ -241,6 +244,7 @@ private fun JsonMapper.row(v: MemoTypeVersionRecord): MemoTypeVersionRow =
                 stepUpOnApprove = v.stepUpOnApprove != false,
                 fields = v.fields?.let { readValue(it.data(), FIELDS) }.orEmpty(),
                 raiseScope = v.raiseScope?.let { readValue(it.data(), RaiseScope::class.java) } ?: RaiseScope(),
+                numbering = v.numbering?.let { readValue(it.data(), Numbering::class.java) } ?: Numbering(),
             ),
         createdBy = v.createdBy,
         createdAt = v.createdAt.toInstant(),

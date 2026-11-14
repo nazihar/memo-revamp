@@ -65,7 +65,6 @@ class Memos(
         store.insert(
             NewMemo(
                 id,
-                "M-${now.year}-%05d".format(store.nextNumber(now.year)),
                 type.id,
                 subject,
                 level.id,

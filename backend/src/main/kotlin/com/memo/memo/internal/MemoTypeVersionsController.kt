@@ -46,6 +46,8 @@ data class MemoTypeSettingsRequest(
     val fields: List<MemoField> = emptyList(),
     /** Who may raise memos of the type; empty: everyone who may create memos. */
     val raiseScope: RaiseScope = RaiseScope(),
+    /** How its memos are numbered; left out: the `general` series format `M-YYYY-NNNNN`, numbered on submit. */
+    val numbering: Numbering = Numbering(),
 )
 
 /** One version of a memo type, with who made, submitted and reviewed it. */
@@ -63,6 +65,7 @@ data class MemoTypeVersionResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val stepUpOnApprove: Boolean,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val fields: List<MemoField>,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val raiseScope: RaiseScope,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val numbering: Numbering,
     /** The names of the allowed people and the titles of the allowed positions, by id. */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val allowedNames: Map<UUID, String>,
     /** Null: created by the system. */
@@ -217,6 +220,7 @@ class MemoTypeVersionsController(
                 stepUpOnApprove = s.stepUpOnApprove,
                 fields = s.fields,
                 raiseScope = s.raiseScope,
+                numbering = s.numbering,
                 allowedNames =
                     people.filterKeys { it in s.allowedApprovers.people } + positions.filterKeys { it in s.allowedApprovers.positions },
                 createdBy = named(v.createdBy),
@@ -249,6 +253,7 @@ class MemoTypeVersionsController(
             stepUpOnApprove = stepUpOnApprove,
             fields = fields.map { it.normalized() },
             raiseScope = raiseScope,
+            numbering = numbering.copy(series = numbering.series.trim(), parts = numbering.parts.map { it.copy(text = it.text?.trim()) }),
         )
     }
 }

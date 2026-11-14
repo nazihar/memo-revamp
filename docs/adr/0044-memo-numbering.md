@@ -16,7 +16,7 @@ Memos are numbered `M-YYYY-NNNNN` from one counter per tenant and UTC year, take
 - Existing memos keep their references; today's sequence continues.
 
 ## Considered options
-1. **The format in the memo-type version; counters per series, period and scope; the number taken as the last statement of the submit or final-approval transaction** (chosen).
+1. **The format in the memo-type version; counters per series, period and scope; the number taken late in the submit or final-approval transaction** (chosen).
 2. A separate numbering-scheme entity with its own versions and review. Cleaner sharing, but a second reviewed entity and screen for what is, in practice, one setting of a memo type. Sharing is covered by the series name.
 3. A PostgreSQL sequence per series. Not gapless.
 4. Numbering after commit in a background job. Gapless, but the approver of an on-submit type would see an unnumbered memo, and the job adds a failure mode.
@@ -33,11 +33,12 @@ Chosen option 1.
 
 ### Counters
 - `memo_number_counter (tenant_id, series, period, scope, last_number)` with the primary key on the first four columns. `period` is `ALL`, `2026` or `FY2026-27`; `scope` is empty or the unit id.
-- Taken with `INSERT … ON CONFLICT DO UPDATE SET last_number = last_number + 1 RETURNING last_number` in the business transaction, as its last statement before commit, so the row lock is held for as little time as possible. A rollback undoes the counter and the memo together.
+- Taken with `INSERT … ON CONFLICT DO UPDATE SET last_number = last_number + 1 RETURNING last_number` in the business transaction, late: on submit after the memo is pinned and just before the workflow starts (so the first task and its notification already carry the number), on approval in the approval's own transaction. The row lock is held from there to commit, and only on one series, period and scope. A rollback undoes the counter and the memo together.
 - **Starting number:** an admin with `memo.types.approve` and a fresh step-up may set the next number of a series, period and scope **once, before its first number is taken** (for continuing a legacy series). It is audited; afterwards it is refused (`ALREADY_STARTED`).
 
 ### Voids and the register
-- A number, once taken, belongs to its memo for ever. Numbers whose memo was later withdrawn or cancelled are shown as **void** in the register with the withdrawal or cancellation remark as the reason; they are never reused.
+- A number, once taken, belongs to its memo for ever. Numbers whose memo was later withdrawn or cancelled (or, for Phase 2 references, discarded as a draft) are shown as **void** in the register; they are never reused. The reason is in the memo's history (its withdrawal or cancellation remark).
+- While a memo of an on-approval type is in review it has no number: screens say "Unnumbered" and emails show a dash.
 - The register lists every number of a series and period in order, with memo status and void reason, readable by memo-type admins and auditors (memo ids and numbers only, no subject for memos the reader cannot see). A check counts the numbers in each period against the counter and reports any difference (a nightly test on generated data, and on demand in the register).
 
 ### Existing data

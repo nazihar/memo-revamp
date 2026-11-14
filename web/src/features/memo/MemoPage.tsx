@@ -26,6 +26,7 @@ import { dueLabel, isOverdue } from './due'
 import { EditMemoDialog } from './EditMemoDialog'
 import { MemoInterests } from './MemoInterests'
 import { MemoHistory } from './MemoHistory'
+import { referenceOf } from './memo-fields'
 import { actionButtons, mm, mmv, statusLabels } from './memo-messages'
 import { statusTone } from './memo-status'
 import { RouteEditor } from './RouteEditor'
@@ -156,7 +157,7 @@ export function MemoPage({ memoId }: { memoId: string }) {
     <section aria-labelledby="memo-title" className="pb-24 md:pb-0">
       <PageHeader
         title={<span id="memo-title">{view.subject}</span>}
-        description={`${view.reference} · ${view.type.name} · ${view.classification.name}`}
+        description={`${referenceOf(intl, view.reference)} · ${view.type.name} · ${view.classification.name}`}
         status={<Badge tone={statusTone[view.status]}>{intl.formatMessage(statusLabels[view.status])}</Badge>}
         actions={
           allowed.has('EDIT') ? (

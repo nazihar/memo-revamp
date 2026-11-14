@@ -14,3 +14,12 @@ endpoints:
   - { endpoint: "POST /api/v1/admin/memo-types/{typeId}/versions/{number}/submit", rule: tenantAdmin, headers: { If-Match: "\"0\"" } }
   - { endpoint: "POST /api/v1/admin/memo-types/{typeId}/versions/{number}/approve", rule: tenantAdminStepUp }
   - { endpoint: "POST /api/v1/admin/memo-types/{typeId}/versions/{number}/send-back", rule: tenantAdmin, body: { remark: "Matrix" } }
+  - { endpoint: GET /api/v1/admin/memo-numbering, rule: tenantAdmin }
+  - { endpoint: "GET /api/v1/admin/memo-numbering/{series}/register", rule: tenantAdmin }
+  - endpoint: "POST /api/v1/admin/memo-numbering/{series}/start"
+    rule: tenantAdminStepUp
+    body: { period: "2026", next: 1 }
+    headers: { Idempotency-Key: "{random}" }
+  - endpoint: POST /api/v1/admin/memo-types/numbering/preview
+    rule: tenantAdmin
+    body: { numbering: { series: "general" }, typeCode: "GM" }

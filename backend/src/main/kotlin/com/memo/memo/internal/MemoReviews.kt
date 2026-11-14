@@ -24,6 +24,7 @@ class MemoReviews(
     private val types: MemoTypes,
     private val metadata: MemoMetadata,
     private val audit: AuditLog,
+    private val numbers: MemoNumbers,
 ) {
     /**
      * Round 1: the memo needs a document, a valid route and its required details; the first approver gets the task. The
@@ -47,7 +48,7 @@ class MemoReviews(
             listOfNotNull(
                 FieldProblem("document", "required", "Upload the memo document first.").takeIf { memo.documentFileId == null },
                 FieldProblem("typeId", "inactive", "This memo type is no longer used.").takeIf { !type.active || version == null },
-            ) + checked.problems + problems(memo, type, route)
+            ) + checked.problems + version?.let { numbers.problems(memo, it) }.orEmpty() + problems(memo, type, route)
         if (problems.isNotEmpty()) throw MemoRejectedException(problems)
         val pinned = checkNotNull(version)
         if (!store.pin(id, memo.version, pinned.id, checked.values)) throw ConcurrentModificationException("memo $id", memo.version)
@@ -62,6 +63,8 @@ class MemoReviews(
                     "dropped" to (memo.metadata.keys - checked.values.keys).sorted(),
                 ),
         )
+        // A type that numbers on submit numbers now (ADR-0044); its counter stays locked until commit.
+        numbers.assign(memo.copy(memoTypeVersionId = pinned.id), pinned, NumberMoment.ON_SUBMIT)
         // The memo type's workflow (E03): new memos pin its newest published version.
         workflows.start(MemoWorkflowSubject.TYPE, id, emptyList(), remark, pinned.settings.definitionKey, route)
         return memos.get(id)

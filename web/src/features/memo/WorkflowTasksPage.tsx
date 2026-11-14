@@ -17,7 +17,7 @@ import { useToast } from '@/components/ui/toast-context'
 import { useWithStepUp } from '@/features/auth/step-up-context'
 import { PeoplePicker, type Picked } from '@/features/org/PeoplePicker'
 import { dueLabel, isOverdue } from './due'
-import { isolated } from './memo-fields'
+import { referenceOf } from './memo-fields'
 import { mm, mmv } from './memo-messages'
 import { newIdempotencyKey } from '@/lib/idempotency'
 
@@ -82,7 +82,10 @@ export function WorkflowTasksPage() {
               {s.restricted ? intl.formatMessage(mm.restricted) : s.title}
             </span>
             <span className="text-xs text-muted-foreground">
-              {intl.formatMessage(mmv.referenceRound, { reference: isolated(s.reference), round: row.original.round })}
+              {intl.formatMessage(mmv.referenceRound, {
+                reference: referenceOf(intl, s.reference),
+                round: row.original.round,
+              })}
             </span>
           </div>
         )
@@ -226,7 +229,7 @@ function ReassignDialog({
       onOpenChange={(open) => {
         if (!open) onClose()
       }}
-      title={intl.formatMessage(mv.reassignFor, { reference: isolated(task.subject.reference) })}
+      title={intl.formatMessage(mv.reassignFor, { reference: referenceOf(intl, task.subject.reference) })}
       description={intl.formatMessage(m.reassignLead)}
       footer={
         <>

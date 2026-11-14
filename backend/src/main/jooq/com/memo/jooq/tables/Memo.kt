@@ -4,6 +4,7 @@
 package com.memo.jooq.tables
 
 
+import com.memo.jooq.indexes.MEMO_NUMBER_UK
 import com.memo.jooq.indexes.MEMO_TENANT_INITIATOR_BOX_IDX
 import com.memo.jooq.indexes.MEMO_TENANT_TYPE_IDX
 import com.memo.jooq.indexes.MEMO_TENANT_TYPE_VERSION_IDX
@@ -105,7 +106,7 @@ open class Memo(
     /**
      * The column <code>memo.memo.reference</code>.
      */
-    val REFERENCE: TableField<MemoRecord, String?> = createField(DSL.name("reference"), SQLDataType.CLOB.nullable(false), this, "")
+    val REFERENCE: TableField<MemoRecord, String?> = createField(DSL.name("reference"), SQLDataType.CLOB, this, "")
 
     /**
      * The column <code>memo.memo.memo_type_id</code>.
@@ -182,6 +183,31 @@ open class Memo(
      */
     val METADATA: TableField<MemoRecord, JSONB?> = createField(DSL.name("metadata"), SQLDataType.JSONB.nullable(false).defaultValue(DSL.field(DSL.raw("'{}'::jsonb"), SQLDataType.JSONB)), this, "")
 
+    /**
+     * The column <code>memo.memo.number_series</code>.
+     */
+    val NUMBER_SERIES: TableField<MemoRecord, String?> = createField(DSL.name("number_series"), SQLDataType.CLOB, this, "")
+
+    /**
+     * The column <code>memo.memo.number_period</code>.
+     */
+    val NUMBER_PERIOD: TableField<MemoRecord, String?> = createField(DSL.name("number_period"), SQLDataType.CLOB, this, "")
+
+    /**
+     * The column <code>memo.memo.number_scope</code>.
+     */
+    val NUMBER_SCOPE: TableField<MemoRecord, String?> = createField(DSL.name("number_scope"), SQLDataType.CLOB, this, "")
+
+    /**
+     * The column <code>memo.memo.number_sequence</code>.
+     */
+    val NUMBER_SEQUENCE: TableField<MemoRecord, Long?> = createField(DSL.name("number_sequence"), SQLDataType.BIGINT, this, "")
+
+    /**
+     * The column <code>memo.memo.numbered_at</code>.
+     */
+    val NUMBERED_AT: TableField<MemoRecord, OffsetDateTime?> = createField(DSL.name("numbered_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
+
     private constructor(alias: Name, aliased: Table<MemoRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<MemoRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<MemoRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -214,7 +240,7 @@ open class Memo(
         override fun `as`(alias: Table<*>): MemoPath = MemoPath(alias.qualifiedName, this)
     }
     override fun getSchema(): Schema? = if (aliased()) null else com.memo.jooq.Memo.MEMO
-    override fun getIndexes(): List<Index> = listOf(MEMO_TENANT_INITIATOR_BOX_IDX, MEMO_TENANT_TYPE_IDX, MEMO_TENANT_TYPE_VERSION_IDX)
+    override fun getIndexes(): List<Index> = listOf(MEMO_NUMBER_UK, MEMO_TENANT_INITIATOR_BOX_IDX, MEMO_TENANT_TYPE_IDX, MEMO_TENANT_TYPE_VERSION_IDX)
     override fun getPrimaryKey(): UniqueKey<MemoRecord> = MEMO_PKEY
     override fun getUniqueKeys(): List<UniqueKey<MemoRecord>> = listOf(MEMO_TENANT_ID_DOCUMENT_FILE_ID_KEY, MEMO_TENANT_ID_ID_KEY, MEMO_TENANT_ID_REFERENCE_KEY)
     override fun getReferences(): List<ForeignKey<MemoRecord, *>> = listOf(MEMO__MEMO_TENANT_ID_MEMO_TYPE_ID_FKEY, MEMO__MEMO_TYPE_VERSION_FK)
@@ -285,7 +311,12 @@ open class Memo(
         Internal.createCheck(this, DSL.name("memo_classification_rank_check"), "((classification_rank >= 0))", true),
         Internal.createCheck(this, DSL.name("memo_current_round_check"), "((current_round >= 0))", true),
         Internal.createCheck(this, DSL.name("memo_metadata_check"), "(((jsonb_typeof(metadata) = 'object'::text) AND (octet_length((metadata)::text) <= 65536)))", true),
-        Internal.createCheck(this, DSL.name("memo_reference_check"), "((reference ~ '^M-[0-9]{4}-[0-9]{5,}\$'::text))", true),
+        Internal.createCheck(this, DSL.name("memo_number_parts"), "((((number_series IS NULL) = (number_period IS NULL)) AND ((number_series IS NULL) = (number_scope IS NULL)) AND ((number_series IS NULL) = (number_sequence IS NULL)) AND ((number_series IS NULL) OR (reference IS NOT NULL))))", true),
+        Internal.createCheck(this, DSL.name("memo_number_period_check"), "((number_period ~ '^(ALL|[0-9]{4}|FY[0-9]{4}-[0-9]{2})\$'::text))", true),
+        Internal.createCheck(this, DSL.name("memo_number_scope_check"), "((length(number_scope) <= 100))", true),
+        Internal.createCheck(this, DSL.name("memo_number_sequence_check"), "((number_sequence >= 1))", true),
+        Internal.createCheck(this, DSL.name("memo_number_series_check"), "((number_series ~ '^[a-z][a-z0-9-]{0,49}\$'::text))", true),
+        Internal.createCheck(this, DSL.name("memo_reference_length"), "(((length(reference) >= 1) AND (length(reference) <= 100)))", true),
         Internal.createCheck(this, DSL.name("memo_status_check"), "((status = ANY (ARRAY['DRAFT'::text, 'IN_REVIEW'::text, 'RETURNED'::text, 'APPROVED'::text, 'REJECTED'::text, 'WITHDRAWN'::text, 'DISCARDED'::text, 'CANCELLED'::text])))", true),
         Internal.createCheck(this, DSL.name("memo_subject_check"), "(((length(subject) >= 1) AND (length(subject) <= 300)))", true)
     )

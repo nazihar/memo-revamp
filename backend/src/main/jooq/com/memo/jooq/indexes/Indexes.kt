@@ -22,6 +22,7 @@ import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
 import com.memo.jooq.tables.Memo
+import com.memo.jooq.tables.MemoAttachment
 import com.memo.jooq.tables.MemoLink
 import com.memo.jooq.tables.MemoParticipant
 import com.memo.jooq.tables.MemoType
@@ -80,6 +81,7 @@ val IDENTITY_OPERATOR_ENROLMENT_UK: Index = Internal.createIndex(DSL.name("ident
 val IDENTITY_RATE_LIMIT_BUCKET_EXPIRY_IDX: Index = Internal.createIndex(DSL.name("identity_rate_limit_bucket_expiry_idx"), IdentityRateLimitBucket.IDENTITY_RATE_LIMIT_BUCKET, arrayOf(IdentityRateLimitBucket.IDENTITY_RATE_LIMIT_BUCKET.EXPIRES_AT), false)
 val IDENTITY_RECOVERY_CODE_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("identity_recovery_code_tenant_user_idx"), IdentityRecoveryCode.IDENTITY_RECOVERY_CODE, arrayOf(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.TENANT_ID, IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.USER_ID), false)
 val IDENTITY_USER_TENANT_EMAIL_UK: Index = Internal.createIndex(DSL.name("identity_user_tenant_email_uk"), IdentityUser.IDENTITY_USER, arrayOf(IdentityUser.IDENTITY_USER.TENANT_ID, IdentityUser.IDENTITY_USER.EMAIL), true)
+val MEMO_ATTACHMENT_PRESENT_IDX: Index = Internal.createIndex(DSL.name("memo_attachment_present_idx"), MemoAttachment.MEMO_ATTACHMENT, arrayOf(MemoAttachment.MEMO_ATTACHMENT.TENANT_ID, MemoAttachment.MEMO_ATTACHMENT.MEMO_ID, MemoAttachment.MEMO_ATTACHMENT.POSITION), false)
 val MEMO_LINK_STANDING_UK: Index = Internal.createIndex(DSL.name("memo_link_standing_uk"), MemoLink.MEMO_LINK, arrayOf(MemoLink.MEMO_LINK.TENANT_ID, MemoLink.MEMO_LINK.MEMO_ID, MemoLink.MEMO_LINK.TARGET_MEMO_ID), true)
 val MEMO_LINK_TENANT_MEMO_IDX: Index = Internal.createIndex(DSL.name("memo_link_tenant_memo_idx"), MemoLink.MEMO_LINK, arrayOf(MemoLink.MEMO_LINK.TENANT_ID, MemoLink.MEMO_LINK.MEMO_ID), false)
 val MEMO_LINK_TENANT_TARGET_IDX: Index = Internal.createIndex(DSL.name("memo_link_tenant_target_idx"), MemoLink.MEMO_LINK, arrayOf(MemoLink.MEMO_LINK.TENANT_ID, MemoLink.MEMO_LINK.TARGET_MEMO_ID), false)

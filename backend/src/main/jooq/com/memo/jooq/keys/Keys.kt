@@ -29,12 +29,14 @@ import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
 import com.memo.jooq.tables.Memo
+import com.memo.jooq.tables.MemoAttachment
 import com.memo.jooq.tables.MemoInterest
 import com.memo.jooq.tables.MemoLink
 import com.memo.jooq.tables.MemoNumberCounter
 import com.memo.jooq.tables.MemoParticipant
 import com.memo.jooq.tables.MemoReferenceCounter
 import com.memo.jooq.tables.MemoRouteEntry
+import com.memo.jooq.tables.MemoSubmissionAttachment
 import com.memo.jooq.tables.MemoType
 import com.memo.jooq.tables.MemoTypeVersion
 import com.memo.jooq.tables.NotificationItem
@@ -89,6 +91,7 @@ import com.memo.jooq.tables.records.IdentityOperatorRecord
 import com.memo.jooq.tables.records.IdentityRateLimitBucketRecord
 import com.memo.jooq.tables.records.IdentityRecoveryCodeRecord
 import com.memo.jooq.tables.records.IdentityUserRecord
+import com.memo.jooq.tables.records.MemoAttachmentRecord
 import com.memo.jooq.tables.records.MemoInterestRecord
 import com.memo.jooq.tables.records.MemoLinkRecord
 import com.memo.jooq.tables.records.MemoNumberCounterRecord
@@ -96,6 +99,7 @@ import com.memo.jooq.tables.records.MemoParticipantRecord
 import com.memo.jooq.tables.records.MemoRecord
 import com.memo.jooq.tables.records.MemoReferenceCounterRecord
 import com.memo.jooq.tables.records.MemoRouteEntryRecord
+import com.memo.jooq.tables.records.MemoSubmissionAttachmentRecord
 import com.memo.jooq.tables.records.MemoTypeRecord
 import com.memo.jooq.tables.records.MemoTypeVersionRecord
 import com.memo.jooq.tables.records.NotificationItemRecord
@@ -181,6 +185,9 @@ val MEMO_PKEY: UniqueKey<MemoRecord> = Internal.createUniqueKey(Memo.MEMO_, DSL.
 val MEMO_TENANT_ID_DOCUMENT_FILE_ID_KEY: UniqueKey<MemoRecord> = Internal.createUniqueKey(Memo.MEMO_, DSL.name("memo_tenant_id_document_file_id_key"), arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.DOCUMENT_FILE_ID), true)
 val MEMO_TENANT_ID_ID_KEY: UniqueKey<MemoRecord> = Internal.createUniqueKey(Memo.MEMO_, DSL.name("memo_tenant_id_id_key"), arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.ID), true)
 val MEMO_TENANT_ID_REFERENCE_KEY: UniqueKey<MemoRecord> = Internal.createUniqueKey(Memo.MEMO_, DSL.name("memo_tenant_id_reference_key"), arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.REFERENCE), true)
+val MEMO_ATTACHMENT_PKEY: UniqueKey<MemoAttachmentRecord> = Internal.createUniqueKey(MemoAttachment.MEMO_ATTACHMENT, DSL.name("memo_attachment_pkey"), arrayOf(MemoAttachment.MEMO_ATTACHMENT.ID), true)
+val MEMO_ATTACHMENT_TENANT_ID_FILE_ID_KEY: UniqueKey<MemoAttachmentRecord> = Internal.createUniqueKey(MemoAttachment.MEMO_ATTACHMENT, DSL.name("memo_attachment_tenant_id_file_id_key"), arrayOf(MemoAttachment.MEMO_ATTACHMENT.TENANT_ID, MemoAttachment.MEMO_ATTACHMENT.FILE_ID), true)
+val MEMO_ATTACHMENT_TENANT_ID_ID_KEY: UniqueKey<MemoAttachmentRecord> = Internal.createUniqueKey(MemoAttachment.MEMO_ATTACHMENT, DSL.name("memo_attachment_tenant_id_id_key"), arrayOf(MemoAttachment.MEMO_ATTACHMENT.TENANT_ID, MemoAttachment.MEMO_ATTACHMENT.ID), true)
 val MEMO_INTEREST_PKEY: UniqueKey<MemoInterestRecord> = Internal.createUniqueKey(MemoInterest.MEMO_INTEREST, DSL.name("memo_interest_pkey"), arrayOf(MemoInterest.MEMO_INTEREST.TENANT_ID, MemoInterest.MEMO_INTEREST.MEMO_ID, MemoInterest.MEMO_INTEREST.USER_ID), true)
 val MEMO_LINK_PKEY: UniqueKey<MemoLinkRecord> = Internal.createUniqueKey(MemoLink.MEMO_LINK, DSL.name("memo_link_pkey"), arrayOf(MemoLink.MEMO_LINK.ID), true)
 val MEMO_LINK_TENANT_ID_ID_KEY: UniqueKey<MemoLinkRecord> = Internal.createUniqueKey(MemoLink.MEMO_LINK, DSL.name("memo_link_tenant_id_id_key"), arrayOf(MemoLink.MEMO_LINK.TENANT_ID, MemoLink.MEMO_LINK.ID), true)
@@ -189,6 +196,7 @@ val MEMO_PARTICIPANT_PKEY: UniqueKey<MemoParticipantRecord> = Internal.createUni
 val MEMO_REFERENCE_COUNTER_PKEY: UniqueKey<MemoReferenceCounterRecord> = Internal.createUniqueKey(MemoReferenceCounter.MEMO_REFERENCE_COUNTER, DSL.name("memo_reference_counter_pkey"), arrayOf(MemoReferenceCounter.MEMO_REFERENCE_COUNTER.TENANT_ID, MemoReferenceCounter.MEMO_REFERENCE_COUNTER.YEAR), true)
 val MEMO_ROUTE_ENTRY_PKEY: UniqueKey<MemoRouteEntryRecord> = Internal.createUniqueKey(MemoRouteEntry.MEMO_ROUTE_ENTRY, DSL.name("memo_route_entry_pkey"), arrayOf(MemoRouteEntry.MEMO_ROUTE_ENTRY.TENANT_ID, MemoRouteEntry.MEMO_ROUTE_ENTRY.MEMO_ID, MemoRouteEntry.MEMO_ROUTE_ENTRY.ORDINAL), true)
 val MEMO_ROUTE_ENTRY_TENANT_ID_MEMO_ID_APPROVER_ID_KEY: UniqueKey<MemoRouteEntryRecord> = Internal.createUniqueKey(MemoRouteEntry.MEMO_ROUTE_ENTRY, DSL.name("memo_route_entry_tenant_id_memo_id_approver_id_key"), arrayOf(MemoRouteEntry.MEMO_ROUTE_ENTRY.TENANT_ID, MemoRouteEntry.MEMO_ROUTE_ENTRY.MEMO_ID, MemoRouteEntry.MEMO_ROUTE_ENTRY.APPROVER_ID), true)
+val MEMO_SUBMISSION_ATTACHMENT_PKEY: UniqueKey<MemoSubmissionAttachmentRecord> = Internal.createUniqueKey(MemoSubmissionAttachment.MEMO_SUBMISSION_ATTACHMENT, DSL.name("memo_submission_attachment_pkey"), arrayOf(MemoSubmissionAttachment.MEMO_SUBMISSION_ATTACHMENT.TENANT_ID, MemoSubmissionAttachment.MEMO_SUBMISSION_ATTACHMENT.MEMO_ID, MemoSubmissionAttachment.MEMO_SUBMISSION_ATTACHMENT.ROUND, MemoSubmissionAttachment.MEMO_SUBMISSION_ATTACHMENT.ATTACHMENT_ID), true)
 val MEMO_TYPE_PKEY: UniqueKey<MemoTypeRecord> = Internal.createUniqueKey(MemoType.MEMO_TYPE, DSL.name("memo_type_pkey"), arrayOf(MemoType.MEMO_TYPE.ID), true)
 val MEMO_TYPE_TENANT_ID_ID_KEY: UniqueKey<MemoTypeRecord> = Internal.createUniqueKey(MemoType.MEMO_TYPE, DSL.name("memo_type_tenant_id_id_key"), arrayOf(MemoType.MEMO_TYPE.TENANT_ID, MemoType.MEMO_TYPE.ID), true)
 val MEMO_TYPE_TENANT_ID_KEY_KEY: UniqueKey<MemoTypeRecord> = Internal.createUniqueKey(MemoType.MEMO_TYPE, DSL.name("memo_type_tenant_id_key_key"), arrayOf(MemoType.MEMO_TYPE.TENANT_ID, MemoType.MEMO_TYPE.KEY), true)
@@ -267,11 +275,14 @@ val IDENTITY_MFA__IDENTITY_MFA_TENANT_ID_USER_ID_FKEY: ForeignKey<IdentityMfaRec
 val IDENTITY_RECOVERY_CODE__IDENTITY_RECOVERY_CODE_TENANT_ID_USER_ID_FKEY: ForeignKey<IdentityRecoveryCodeRecord, IdentityUserRecord> = Internal.createForeignKey(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE, DSL.name("identity_recovery_code_tenant_id_user_id_fkey"), arrayOf(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.TENANT_ID, IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.USER_ID), com.memo.jooq.keys.IDENTITY_USER_TENANT_ID_ID_KEY, arrayOf(IdentityUser.IDENTITY_USER.TENANT_ID, IdentityUser.IDENTITY_USER.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val MEMO__MEMO_TENANT_ID_MEMO_TYPE_ID_FKEY: ForeignKey<MemoRecord, MemoTypeRecord> = Internal.createForeignKey(Memo.MEMO_, DSL.name("memo_tenant_id_memo_type_id_fkey"), arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.MEMO_TYPE_ID), com.memo.jooq.keys.MEMO_TYPE_TENANT_ID_ID_KEY, arrayOf(MemoType.MEMO_TYPE.TENANT_ID, MemoType.MEMO_TYPE.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val MEMO__MEMO_TYPE_VERSION_FK: ForeignKey<MemoRecord, MemoTypeVersionRecord> = Internal.createForeignKey(Memo.MEMO_, DSL.name("memo_type_version_fk"), arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.MEMO_TYPE_VERSION_ID), com.memo.jooq.keys.MEMO_TYPE_VERSION_TENANT_ID_ID_KEY, arrayOf(MemoTypeVersion.MEMO_TYPE_VERSION.TENANT_ID, MemoTypeVersion.MEMO_TYPE_VERSION.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
+val MEMO_ATTACHMENT__MEMO_ATTACHMENT_TENANT_ID_MEMO_ID_FKEY: ForeignKey<MemoAttachmentRecord, MemoRecord> = Internal.createForeignKey(MemoAttachment.MEMO_ATTACHMENT, DSL.name("memo_attachment_tenant_id_memo_id_fkey"), arrayOf(MemoAttachment.MEMO_ATTACHMENT.TENANT_ID, MemoAttachment.MEMO_ATTACHMENT.MEMO_ID), com.memo.jooq.keys.MEMO_TENANT_ID_ID_KEY, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val MEMO_INTEREST__MEMO_INTEREST_TENANT_ID_MEMO_ID_FKEY: ForeignKey<MemoInterestRecord, MemoRecord> = Internal.createForeignKey(MemoInterest.MEMO_INTEREST, DSL.name("memo_interest_tenant_id_memo_id_fkey"), arrayOf(MemoInterest.MEMO_INTEREST.TENANT_ID, MemoInterest.MEMO_INTEREST.MEMO_ID), com.memo.jooq.keys.MEMO_TENANT_ID_ID_KEY, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val MEMO_LINK__MEMO_LINK_TENANT_ID_MEMO_ID_FKEY: ForeignKey<MemoLinkRecord, MemoRecord> = Internal.createForeignKey(MemoLink.MEMO_LINK, DSL.name("memo_link_tenant_id_memo_id_fkey"), arrayOf(MemoLink.MEMO_LINK.TENANT_ID, MemoLink.MEMO_LINK.MEMO_ID), com.memo.jooq.keys.MEMO_TENANT_ID_ID_KEY, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val MEMO_LINK__MEMO_LINK_TENANT_ID_TARGET_MEMO_ID_FKEY: ForeignKey<MemoLinkRecord, MemoRecord> = Internal.createForeignKey(MemoLink.MEMO_LINK, DSL.name("memo_link_tenant_id_target_memo_id_fkey"), arrayOf(MemoLink.MEMO_LINK.TENANT_ID, MemoLink.MEMO_LINK.TARGET_MEMO_ID), com.memo.jooq.keys.MEMO_TENANT_ID_ID_KEY, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val MEMO_PARTICIPANT__MEMO_PARTICIPANT_TENANT_ID_MEMO_ID_FKEY: ForeignKey<MemoParticipantRecord, MemoRecord> = Internal.createForeignKey(MemoParticipant.MEMO_PARTICIPANT, DSL.name("memo_participant_tenant_id_memo_id_fkey"), arrayOf(MemoParticipant.MEMO_PARTICIPANT.TENANT_ID, MemoParticipant.MEMO_PARTICIPANT.MEMO_ID), com.memo.jooq.keys.MEMO_TENANT_ID_ID_KEY, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val MEMO_ROUTE_ENTRY__MEMO_ROUTE_ENTRY_TENANT_ID_MEMO_ID_FKEY: ForeignKey<MemoRouteEntryRecord, MemoRecord> = Internal.createForeignKey(MemoRouteEntry.MEMO_ROUTE_ENTRY, DSL.name("memo_route_entry_tenant_id_memo_id_fkey"), arrayOf(MemoRouteEntry.MEMO_ROUTE_ENTRY.TENANT_ID, MemoRouteEntry.MEMO_ROUTE_ENTRY.MEMO_ID), com.memo.jooq.keys.MEMO_TENANT_ID_ID_KEY, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
+val MEMO_SUBMISSION_ATTACHMENT__MEMO_SUBMISSION_ATTACHMENT_TENANT_ID_ATTACHMENT_ID_FKEY: ForeignKey<MemoSubmissionAttachmentRecord, MemoAttachmentRecord> = Internal.createForeignKey(MemoSubmissionAttachment.MEMO_SUBMISSION_ATTACHMENT, DSL.name("memo_submission_attachment_tenant_id_attachment_id_fkey"), arrayOf(MemoSubmissionAttachment.MEMO_SUBMISSION_ATTACHMENT.TENANT_ID, MemoSubmissionAttachment.MEMO_SUBMISSION_ATTACHMENT.ATTACHMENT_ID), com.memo.jooq.keys.MEMO_ATTACHMENT_TENANT_ID_ID_KEY, arrayOf(MemoAttachment.MEMO_ATTACHMENT.TENANT_ID, MemoAttachment.MEMO_ATTACHMENT.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
+val MEMO_SUBMISSION_ATTACHMENT__MEMO_SUBMISSION_ATTACHMENT_TENANT_ID_MEMO_ID_FKEY: ForeignKey<MemoSubmissionAttachmentRecord, MemoRecord> = Internal.createForeignKey(MemoSubmissionAttachment.MEMO_SUBMISSION_ATTACHMENT, DSL.name("memo_submission_attachment_tenant_id_memo_id_fkey"), arrayOf(MemoSubmissionAttachment.MEMO_SUBMISSION_ATTACHMENT.TENANT_ID, MemoSubmissionAttachment.MEMO_SUBMISSION_ATTACHMENT.MEMO_ID), com.memo.jooq.keys.MEMO_TENANT_ID_ID_KEY, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val MEMO_TYPE_VERSION__MEMO_TYPE_VERSION_TENANT_ID_MEMO_TYPE_ID_FKEY: ForeignKey<MemoTypeVersionRecord, MemoTypeRecord> = Internal.createForeignKey(MemoTypeVersion.MEMO_TYPE_VERSION, DSL.name("memo_type_version_tenant_id_memo_type_id_fkey"), arrayOf(MemoTypeVersion.MEMO_TYPE_VERSION.TENANT_ID, MemoTypeVersion.MEMO_TYPE_VERSION.MEMO_TYPE_ID), com.memo.jooq.keys.MEMO_TYPE_TENANT_ID_ID_KEY, arrayOf(MemoType.MEMO_TYPE.TENANT_ID, MemoType.MEMO_TYPE.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val ORG_ASSIGNMENT__ORG_ASSIGNMENT_TENANT_ID_POSITION_ID_FKEY: ForeignKey<OrgAssignmentRecord, OrgPositionRecord> = Internal.createForeignKey(OrgAssignment.ORG_ASSIGNMENT, DSL.name("org_assignment_tenant_id_position_id_fkey"), arrayOf(OrgAssignment.ORG_ASSIGNMENT.TENANT_ID, OrgAssignment.ORG_ASSIGNMENT.POSITION_ID), com.memo.jooq.keys.ORG_POSITION_TENANT_ID_ID_KEY, arrayOf(OrgPosition.ORG_POSITION.TENANT_ID, OrgPosition.ORG_POSITION.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val ORG_POSITION__ORG_POSITION_TENANT_ID_UNIT_ID_FKEY: ForeignKey<OrgPositionRecord, OrgUnitRecord> = Internal.createForeignKey(OrgPosition.ORG_POSITION, DSL.name("org_position_tenant_id_unit_id_fkey"), arrayOf(OrgPosition.ORG_POSITION.TENANT_ID, OrgPosition.ORG_POSITION.UNIT_ID), com.memo.jooq.keys.ORG_UNIT_TENANT_ID_ID_KEY, arrayOf(OrgUnit.ORG_UNIT.TENANT_ID, OrgUnit.ORG_UNIT.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)

@@ -9,21 +9,25 @@ import com.memo.jooq.indexes.MEMO_TENANT_APPROVED_IDX
 import com.memo.jooq.indexes.MEMO_TENANT_INITIATOR_BOX_IDX
 import com.memo.jooq.indexes.MEMO_TENANT_TYPE_IDX
 import com.memo.jooq.indexes.MEMO_TENANT_TYPE_VERSION_IDX
+import com.memo.jooq.keys.MEMO_ATTACHMENT__MEMO_ATTACHMENT_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_INTEREST__MEMO_INTEREST_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_LINK__MEMO_LINK_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_LINK__MEMO_LINK_TENANT_ID_TARGET_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_PARTICIPANT__MEMO_PARTICIPANT_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_PKEY
 import com.memo.jooq.keys.MEMO_ROUTE_ENTRY__MEMO_ROUTE_ENTRY_TENANT_ID_MEMO_ID_FKEY
+import com.memo.jooq.keys.MEMO_SUBMISSION_ATTACHMENT__MEMO_SUBMISSION_ATTACHMENT_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_TENANT_ID_DOCUMENT_FILE_ID_KEY
 import com.memo.jooq.keys.MEMO_TENANT_ID_ID_KEY
 import com.memo.jooq.keys.MEMO_TENANT_ID_REFERENCE_KEY
 import com.memo.jooq.keys.MEMO__MEMO_TENANT_ID_MEMO_TYPE_ID_FKEY
 import com.memo.jooq.keys.MEMO__MEMO_TYPE_VERSION_FK
+import com.memo.jooq.tables.MemoAttachment.MemoAttachmentPath
 import com.memo.jooq.tables.MemoInterest.MemoInterestPath
 import com.memo.jooq.tables.MemoLink.MemoLinkPath
 import com.memo.jooq.tables.MemoParticipant.MemoParticipantPath
 import com.memo.jooq.tables.MemoRouteEntry.MemoRouteEntryPath
+import com.memo.jooq.tables.MemoSubmissionAttachment.MemoSubmissionAttachmentPath
 import com.memo.jooq.tables.MemoType.MemoTypePath
 import com.memo.jooq.tables.MemoTypeVersion.MemoTypeVersionPath
 import com.memo.jooq.tables.records.MemoRecord
@@ -272,6 +276,22 @@ open class Memo(
     fun memoTypeVersion(): MemoTypeVersionPath = memoTypeVersion
     val memoTypeVersion: MemoTypeVersionPath by lazy { MemoTypeVersionPath(this, MEMO__MEMO_TYPE_VERSION_FK, null) }
 
+    private lateinit var _memoAttachment: MemoAttachmentPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.memo_attachment</code> table
+     */
+    fun memoAttachment(): MemoAttachmentPath {
+        if (!this::_memoAttachment.isInitialized)
+            _memoAttachment = MemoAttachmentPath(this, null, MEMO_ATTACHMENT__MEMO_ATTACHMENT_TENANT_ID_MEMO_ID_FKEY.inverseKey)
+
+        return _memoAttachment;
+    }
+
+    val memoAttachment: MemoAttachmentPath
+        get(): MemoAttachmentPath = memoAttachment()
+
     private lateinit var _memoInterest: MemoInterestPath
 
     /**
@@ -351,6 +371,22 @@ open class Memo(
 
     val memoRouteEntry: MemoRouteEntryPath
         get(): MemoRouteEntryPath = memoRouteEntry()
+
+    private lateinit var _memoSubmissionAttachment: MemoSubmissionAttachmentPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.memo_submission_attachment</code> table
+     */
+    fun memoSubmissionAttachment(): MemoSubmissionAttachmentPath {
+        if (!this::_memoSubmissionAttachment.isInitialized)
+            _memoSubmissionAttachment = MemoSubmissionAttachmentPath(this, null, MEMO_SUBMISSION_ATTACHMENT__MEMO_SUBMISSION_ATTACHMENT_TENANT_ID_MEMO_ID_FKEY.inverseKey)
+
+        return _memoSubmissionAttachment;
+    }
+
+    val memoSubmissionAttachment: MemoSubmissionAttachmentPath
+        get(): MemoSubmissionAttachmentPath = memoSubmissionAttachment()
     override fun getChecks(): List<Check<MemoRecord>> = listOf(
         Internal.createCheck(this, DSL.name("memo_check"), "(((status = ANY (ARRAY['DRAFT'::text, 'DISCARDED'::text])) = (workflow_instance_id IS NULL)))", true),
         Internal.createCheck(this, DSL.name("memo_check1"), "(((workflow_instance_id IS NULL) = (current_round = 0)))", true),

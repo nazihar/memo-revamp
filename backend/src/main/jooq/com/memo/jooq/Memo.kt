@@ -27,12 +27,14 @@ import com.memo.jooq.tables.IdentityOperator
 import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
+import com.memo.jooq.tables.MemoAttachment
 import com.memo.jooq.tables.MemoInterest
 import com.memo.jooq.tables.MemoLink
 import com.memo.jooq.tables.MemoNumberCounter
 import com.memo.jooq.tables.MemoParticipant
 import com.memo.jooq.tables.MemoReferenceCounter
 import com.memo.jooq.tables.MemoRouteEntry
+import com.memo.jooq.tables.MemoSubmissionAttachment
 import com.memo.jooq.tables.MemoType
 import com.memo.jooq.tables.MemoTypeVersion
 import com.memo.jooq.tables.NotificationItem
@@ -209,6 +211,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val MEMO_ : com.memo.jooq.tables.Memo get() = com.memo.jooq.tables.Memo.MEMO_
 
     /**
+     * The table <code>memo.memo_attachment</code>.
+     */
+    val MEMO_ATTACHMENT: MemoAttachment get() = MemoAttachment.MEMO_ATTACHMENT
+
+    /**
      * The table <code>memo.memo_interest</code>.
      */
     val MEMO_INTEREST: MemoInterest get() = MemoInterest.MEMO_INTEREST
@@ -237,6 +244,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      * The table <code>memo.memo_route_entry</code>.
      */
     val MEMO_ROUTE_ENTRY: MemoRouteEntry get() = MemoRouteEntry.MEMO_ROUTE_ENTRY
+
+    /**
+     * The table <code>memo.memo_submission_attachment</code>.
+     */
+    val MEMO_SUBMISSION_ATTACHMENT: MemoSubmissionAttachment get() = MemoSubmissionAttachment.MEMO_SUBMISSION_ATTACHMENT
 
     /**
      * The table <code>memo.memo_type</code>.
@@ -425,12 +437,14 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         IdentityRecoveryCode.IDENTITY_RECOVERY_CODE,
         IdentityUser.IDENTITY_USER,
         com.memo.jooq.tables.Memo.MEMO_,
+        MemoAttachment.MEMO_ATTACHMENT,
         MemoInterest.MEMO_INTEREST,
         MemoLink.MEMO_LINK,
         MemoNumberCounter.MEMO_NUMBER_COUNTER,
         MemoParticipant.MEMO_PARTICIPANT,
         MemoReferenceCounter.MEMO_REFERENCE_COUNTER,
         MemoRouteEntry.MEMO_ROUTE_ENTRY,
+        MemoSubmissionAttachment.MEMO_SUBMISSION_ATTACHMENT,
         MemoType.MEMO_TYPE,
         MemoTypeVersion.MEMO_TYPE_VERSION,
         NotificationItem.NOTIFICATION_ITEM,

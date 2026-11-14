@@ -5,6 +5,7 @@ import {
   answerTask,
   approveTask,
   askOnTask,
+  closeMemo,
   delegateTask,
   discardMemo,
   forwardTask,
@@ -49,6 +50,7 @@ export type MemoActionKind =
   | 'answer'
   | 'opinion'
   | 'recuse'
+  | 'close'
 
 const REMARK_MAX = 4000
 const REFER_MAX = 10
@@ -75,6 +77,7 @@ const remarkOf: Record<MemoActionKind, 'required' | 'optional' | 'none'> = {
   answer: 'required',
   opinion: 'required',
   recuse: 'required',
+  close: 'optional',
 }
 
 /** Who the action needs besides the remark: one person, several, or an earlier step to send the memo back to. */
@@ -159,6 +162,8 @@ export function ActionDialog({
         return (await giveOpinion({ ...taskPath, body })).data
       case 'recuse':
         return (await recuseFromTask({ ...taskPath, body })).data
+      case 'close':
+        return (await closeMemo({ ...memoPath, body })).data
     }
   }
 

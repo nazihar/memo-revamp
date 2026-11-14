@@ -1,15 +1,29 @@
+import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useIntl } from 'react-intl'
+import { getMemoTypeFormOptions, listMemoTypesOptions } from '@/api/generated/@tanstack/react-query.gen'
 import { updateMemo } from '@/api/generated/sdk.gen'
 import type { MemoView } from '@/api/generated/types.gen'
 import { isProblem, type Problem } from '@/api/http'
 import { Button } from '@/components/ui/button'
 import { Dialog } from '@/components/ui/dialog'
-import { fieldErrors, type MemoFieldValues } from './memo-fields'
+import {
+  EMPTY_METADATA,
+  fieldErrors,
+  metadataBody,
+  metadataStateOf,
+  type FormErrors,
+  type MemoFieldValues,
+  withValue,
+} from './memo-fields'
 import { MemoFields } from './MemoFields'
 import { mm } from './memo-messages'
+import { MetadataFields, type MetadataState } from './MetadataFields'
 
-/** Edits subject, type and classification behind `If-Match`; the classification is fixed once the memo was submitted. */
+/**
+ * Edits subject, type, classification and, while a draft, the type's details, behind `If-Match`. The classification and
+ * the details are fixed once the memo was submitted; another type starts its details afresh.
+ */
 export function EditMemoDialog({
   memo,
   onClose,
@@ -27,7 +41,21 @@ export function EditMemoDialog({
     typeId: memo.type.id,
     classificationId: memo.classification.id,
   })
-  const [errors, setErrors] = useState<Partial<Record<keyof MemoFieldValues, string>>>({})
+  const [metadata, setMetadata] = useState<MetadataState>(() => metadataStateOf(memo.details))
+  const [errors, setErrors] = useState<FormErrors>({})
+  const draft = memo.status === 'DRAFT'
+  const types = useQuery(listMemoTypesOptions())
+  const type = types.data?.find((t) => t.id === values.typeId)
+  const form = useQuery({
+    ...getMemoTypeFormOptions({ path: { id: values.typeId } }),
+    enabled: draft && type?.hasFields === true,
+  })
+  const fields = draft && type?.hasFields ? (form.data?.fields ?? []) : []
+
+  const change = (next: MemoFieldValues) => {
+    if (next.typeId !== values.typeId) setMetadata(EMPTY_METADATA)
+    setValues(next)
+  }
   const [busy, setBusy] = useState(false)
 
   const save = async () => {
@@ -44,6 +72,7 @@ export function EditMemoDialog({
           subject: values.subject.trim(),
           typeId: values.typeId,
           ...(values.classificationId ? { classificationId: values.classificationId } : {}),
+          ...(draft ? { metadata: metadataBody(metadata) } : {}),
         },
         throwOnError: true,
       })
@@ -75,7 +104,19 @@ export function EditMemoDialog({
         </>
       }
     >
-      <MemoFields values={values} onChange={setValues} errors={errors} classificationLocked={memo.status !== 'DRAFT'} />
+      <div className="flex flex-col gap-4">
+        <MemoFields values={values} onChange={change} errors={errors} classificationLocked={!draft} />
+        {fields.length > 0 ? (
+          <MetadataFields
+            fields={fields}
+            state={metadata}
+            errors={errors}
+            onChange={(field, value, label) => {
+              setMetadata((s) => withValue(s, field, value, label))
+            }}
+          />
+        ) : null}
+      </div>
     </Dialog>
   )
 }

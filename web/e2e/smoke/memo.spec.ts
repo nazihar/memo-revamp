@@ -2,6 +2,7 @@ import type { Browser, Page } from '@playwright/test'
 import { confirmIfAsked, demoSecret } from '../auth'
 import { docx } from '../docx'
 import { expect, test } from '../fixtures'
+import { chooseMemoType } from '../memo-type'
 import { storageStateFor, type SignedInRole } from '../roles'
 
 /**
@@ -45,7 +46,7 @@ test.describe('as the initiator', () => {
     await app.visit('/memos/new')
     await page.getByLabel('Subject').fill(subject)
     // The demo has a second type, Credit facility, whose workflow names every step (E03): this journey builds a route.
-    await page.getByLabel('Memo type').selectOption({ label: 'General memo' })
+    await chooseMemoType(page, 'General memo')
     await page.getByRole('button', { name: 'Create draft' }).click()
     await expect(page.getByRole('heading', { level: 1, name: subject })).toBeVisible()
     const memoUrl = page.url()

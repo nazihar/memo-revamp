@@ -52,6 +52,10 @@ class DemoMemosIT : FilesIntegrationTest() {
 
     @Autowired lateinit var queries: WorkflowQueries
 
+    @Autowired lateinit var uploads: com.memo.files.FileUploads
+
+    @Autowired lateinit var attachments: com.memo.memo.internal.MemoAttachments
+
     @Test
     fun `the demo memos cover every state, including a task waiting for reassignment, and are seeded once`() {
         val password = aPassword()
@@ -68,7 +72,7 @@ class DemoMemosIT : FilesIntegrationTest() {
             orgSeeding,
             operators,
         ).seed()
-        val seeder = DemoMemoSeeder(accounts, lifecycle, memoSeeding, transactions, password)
+        val seeder = DemoMemoSeeder(accounts, lifecycle, memoSeeding, transactions, uploads, password)
         seeder.seed()
         seeder.seed()
 
@@ -76,6 +80,9 @@ class DemoMemosIT : FilesIntegrationTest() {
 
         fun box(box: MemoBox) = asUser(author) { inbox.box(box, null, 50).items }
         assertThat(box(MemoBox.DRAFTS)).hasSize(1)
+        // The draft carries a quotation (E02 T8).
+        val draft = box(MemoBox.DRAFTS).single().id
+        assertThat(asUser(author) { attachments.list(draft) }.map { it.title }).containsExactly("laptop-quotation.pdf")
         assertThat(box(MemoBox.SENT).map { it.status.name }).containsOnly("IN_REVIEW", "RETURNED").hasSize(5)
         assertThat(box(MemoBox.CLOSED).map { it.status.name }).containsExactlyInAnyOrder("APPROVED", "REJECTED", "WITHDRAWN")
         assertThat(box(MemoBox.SENT).single { it.subject == "Office lease extension" }.round).isEqualTo(2)

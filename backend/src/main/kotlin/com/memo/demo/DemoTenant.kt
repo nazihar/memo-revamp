@@ -51,7 +51,8 @@ object DemoTenant {
             DemoUser("orgadmin@demo.example", "Demo Org Admin", BuiltInRole.ORG_ADMIN),
             DemoUser("branchadmin@demo.example", "Demo Branch Admin", BuiltInRole.ORG_ADMIN, scopeUnit = "REG-N"),
             DemoUser("auditor@demo.example", "Demo Auditor", BuiltInRole.AUDITOR),
-            DemoUser("user@demo.example", "Demo User", null),
+            // Cleared to Internal, above the approvers, so an attachment can be restricted from them (Phase 3 E02 T8).
+            DemoUser("user@demo.example", "Demo User", null, clearanceRank = 1),
             // Approvers of the demo memos (design E01 §15): two department heads and a director.
             DemoUser("head.credit@demo.example", "Demo Head of Credit", null),
             DemoUser("head.finance@demo.example", "Demo Head of Finance", null),
@@ -65,6 +66,8 @@ data class DemoUser(
     val displayName: String,
     val role: BuiltInRole?,
     val scopeUnit: String? = null,
+    /** The rank of the level the account is cleared to; 0, the lowest, needs no clearance row. */
+    val clearanceRank: Int = 0,
 ) {
     val tenantAdmin: Boolean get() = role == BuiltInRole.TENANT_ADMIN
 }
@@ -98,6 +101,9 @@ class DemoTenantSeeder(
                 seedOrg(demoAccounts)
                 DemoTenant.USERS.filter { it.role != null && !it.tenantAdmin }.forEach { user ->
                     access.grantBuiltIn(demoAccounts.getValue(user.email), user.role!!, user.scopeUnit?.let { DemoOrg.unitId(it) })
+                }
+                DemoTenant.USERS.filter { it.clearanceRank > 0 }.forEach { user ->
+                    access.ensureClearance(demoAccounts.getValue(user.email), user.clearanceRank)
                 }
             }
         }

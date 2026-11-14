@@ -1,11 +1,19 @@
 import type { Page } from '@playwright/test'
-import type { HistoryAction, HistoryRound, InboxPage, MemoView } from '../../src/api/generated/types.gen'
+import type {
+  AttachmentView,
+  HistoryAction,
+  HistoryRound,
+  InboxPage,
+  MemoView,
+  VersionComparison,
+} from '../../src/api/generated/types.gen'
 import { expect, test } from '../fixtures'
 
 /**
  * Visual regression (nightly) of the memo screens (E01 test plan, T9; Phase 3 E01 T8 adds the details and links): the
  * memo view of an approver in round 2, light/dark × LTR/RTL; the inbox; and the approver's phone layout (stacked memo
- * view with the action bar at the bottom, the approve dialog as a full-screen sheet). The API is mocked with fixed data;
+ * view with the action bar at the bottom, the approve dialog as a full-screen sheet). Phase 3 E02 T8 adds the attachments
+ * (one restricted), a co-author and the version comparison. The API is mocked with fixed data;
  * baselines are rendered on Linux in the Playwright container (web/e2e/README.md). The mocks are typed with the generated
  * API types, so a change to the API breaks the typecheck on every PR rather than the nightly screenshots.
  */
@@ -65,7 +73,7 @@ const memo: MemoView = {
   ],
   linkedFrom: [],
   canLink: true,
-  coauthors: [],
+  coauthors: [{ id: 'u5', name: 'Demo Branch Admin' }],
   sendBackTargets: [],
   allowedActions: ['APPROVE', 'RETURN', 'REJECT'],
   createdAt: '2026-11-08T08:00:00Z',
@@ -134,6 +142,58 @@ const inbox: InboxPage = {
   ],
 }
 
+const attachments: AttachmentView[] = [
+  {
+    id: 'a1',
+    restricted: false,
+    position: 0,
+    fileId: 'fa1',
+    title: 'site-survey-zindabazar.pdf',
+    mediaType: 'application/pdf',
+    sizeBytes: 812_400,
+    versionId: 'va1',
+    versionNumber: 1,
+    version: 0,
+  },
+  { id: 'a2', restricted: true, position: 1 },
+]
+
+const side = (number: number, uploadedAt: string, text: string): VersionComparison['from'] => ({
+  number,
+  versionId: 'v' + String(number),
+  name: 'branch-opening-sylhet.docx',
+  sha256: 'a'.repeat(64),
+  uploadedAt,
+  uploadedBy: { id: 'u1', name: 'Demo User' },
+  state: 'DONE',
+  truncated: false,
+  text,
+})
+
+const comparison: VersionComparison = {
+  from: side(
+    1,
+    '2026-11-08T08:00:00Z',
+    [
+      'Opening a branch in Sylhet',
+      'Estimated cost BDT 11.8 million',
+      'Planned opening 1 February 2027',
+      'Staff: 14',
+    ].join('\n'),
+  ),
+  to: side(
+    2,
+    '2026-11-09T09:30:00Z',
+    [
+      'Opening a branch in Sylhet',
+      'Estimated cost BDT 12.5 million',
+      'Planned opening 1 March 2027',
+      'Staff: 14',
+      'Annex B: lease terms',
+    ].join('\n'),
+  ),
+}
+
 async function setUp(page: Page, theme: string, locale: string) {
   await page.addInitScript(
     ({ t, l }) => {
@@ -165,6 +225,17 @@ async function setUp(page: Page, theme: string, locale: string) {
   )
   await page.route('**/api/v1/memos/m1', (route) => route.fulfill({ json: memo }))
   await page.route('**/api/v1/memos/m1/history', (route) => route.fulfill({ json: history }))
+  await page.route('**/api/v1/memos/m1/attachments', (route) => route.fulfill({ json: attachments }))
+  await page.route('**/api/v1/memos/m1/files/f1/compare?*', (route) => route.fulfill({ json: comparison }))
+  await page.route('**/api/v1/authz/classification-levels', (route) =>
+    route.fulfill({
+      json: [
+        { id: 'c0', name: 'Public', rank: 0 },
+        { id: 'c1', name: 'Internal', rank: 1 },
+        { id: 'c2', name: 'Confidential', rank: 2 },
+      ],
+    }),
+  )
   await page.route('**/api/v1/inbox/tasks?*', (route) => route.fulfill({ json: inbox }))
 }
 
@@ -175,6 +246,17 @@ for (const variant of variants) {
     await expect(page.getByRole('toolbar').getByRole('button')).toHaveCount(3)
     await expect(page.locator('section[aria-label] ol li')).toHaveCount(3)
     await expect(page).toHaveScreenshot(`view-${variant.name}.png`, { fullPage: true })
+  })
+}
+
+for (const variant of [variants[0], variants[2]]) {
+  test(`compare versions — ${variant.name}`, async ({ app, page }) => {
+    await setUp(page, variant.theme, variant.locale)
+    await app.visit('/memos/m1')
+    await page.getByRole('button', { name: /Compare versions|مقارنة/ }).click()
+    const dialog = page.getByRole('dialog')
+    await expect(dialog.locator('ins').first()).toBeVisible()
+    await expect(dialog).toHaveScreenshot(`compare-${variant.name}.png`)
   })
 }
 

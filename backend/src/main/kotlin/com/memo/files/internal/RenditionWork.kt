@@ -611,13 +611,17 @@ internal class FileRenditionsImpl(
         return true
     }
 
-    /** The plaintext of a done rendition as a stream. */
+    /** The plaintext of a done rendition as a stream, read from storage 1 MiB at a time (a whole text in a request or two). */
     fun open(
         tenant: TenantId,
         row: RenditionRow,
     ): java.io.InputStream {
-        val ciphertext = objects.channel(Bucket.WORK, row.objectKey!!, null, row.ciphertextBytes!!, 2 * TenantKeysets.SEGMENT_BYTES)
+        val ciphertext = objects.channel(Bucket.WORK, row.objectKey!!, null, row.ciphertextBytes!!, WHOLE_READ_CHUNK)
         return Channels.newInputStream(crypto.decryptingRendition(tenant, row.versionId, row.kind.name, ciphertext))
+    }
+
+    private companion object {
+        const val WHOLE_READ_CHUNK = 16 * TenantKeysets.SEGMENT_BYTES
     }
 }
 

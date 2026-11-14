@@ -75,6 +75,21 @@ internal class FileStore(
             .fetchOne()
             ?.toInfo()
 
+    override fun currentVersions(fileIds: Collection<UUID>): Map<UUID, FileVersionInfo> =
+        if (fileIds.isEmpty()) {
+            emptyMap()
+        } else {
+            dsl
+                .select(FILES_VERSION.asterisk())
+                .from(FILES_VERSION)
+                .join(FILES_FILE)
+                .on(FILES_FILE.TENANT_ID.eq(FILES_VERSION.TENANT_ID), FILES_FILE.CURRENT_VERSION_ID.eq(FILES_VERSION.ID))
+                .where(FILES_FILE.ID.`in`(fileIds))
+                .fetchInto(FILES_VERSION)
+                .map { it.toInfo() }
+                .associateBy { it.fileId }
+        }
+
     override fun versions(
         fileId: UUID,
         limit: Int,

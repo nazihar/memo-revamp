@@ -4806,6 +4806,12 @@
       "value": "They edit the document and the attachments with you while it is a draft. Only you submit it.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.coauthors.leadOthers": [
+    {
+      "type": 0,
+      "value": "The initiator named them to help write the draft.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.coauthors.none": [
     {
       "type": 0,
@@ -4885,7 +4891,7 @@
   "memo.compare.legend": [
     {
       "type": 0,
-      "value": "Removed text is struck through on the left; added text is underlined on the right.SSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": "Removed text is struck through in the older version; added text is underlined in the newer one.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.compare.noText": [

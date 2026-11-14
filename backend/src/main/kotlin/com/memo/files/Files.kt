@@ -98,6 +98,9 @@ interface Files {
 
     fun version(versionId: UUID): FileVersionInfo?
 
+    /** The current version of each of [fileIds] that has one, by file id, in one query (lists of attachments). */
+    fun currentVersions(fileIds: Collection<UUID>): Map<UUID, FileVersionInfo>
+
     /** Newest first, at most [limit], before version number [before] when given. */
     fun versions(
         fileId: UUID,

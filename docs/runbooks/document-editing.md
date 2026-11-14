@@ -1,6 +1,6 @@
 # In-browser document editing (ONLYOFFICE)
 
-**What it is:** memo initiators edit the memo's Word document in the browser while they hold the memo; everyone else who may see the memo reads it there. The editor is ONLYOFFICE Docs `10.0.0.1`, a separate, unmodified service (ADR-0037, ADR-0047, design `docs/plan/phase-2-workflow-engine/epic-02-onlyoffice-editing/`). A save becomes a new document version through the normal upload pipeline (scan, inspection, record lock), as the person who edited.
+**What it is:** memo initiators, and the co-authors they name, edit the memo's Word document in the browser while they hold the memo; everyone else who may see the memo reads it there. The editor is ONLYOFFICE Docs `10.0.0.1`, a separate, unmodified service (ADR-0037, ADR-0047, design `docs/plan/phase-2-workflow-engine/epic-02-onlyoffice-editing/`). A save becomes a new document version through the normal upload pipeline (scan, inspection, record lock), as the person who edited.
 
 ## Turning it on
 
@@ -35,7 +35,13 @@ Remove `MEMO_DOCSERVER_URL` (Compose: also drop the `documents` profile) and res
 | Submit answers "The document is open in the editor" | Someone still has the editor open. Closing it saves within about ten seconds. A forgotten editor stops blocking after `memo.docedit.session-lifetime` (12 h), when the expiry job marks it `EXPIRED`. |
 | `docedit.callback.refused` in the audit log | A callback failed the signature, the token or the download-path check. Many in a row mean the secrets differ (see rotation) or someone is probing the internal port. |
 
-**Cache:** ONLYOFFICE keeps working copies in its own volume and removes them itself (about a day after the last editor closes). Clearing the volume while editors are open loses their unsaved changes; otherwise it is safe.
+**Cache:** ONLYOFFICE keeps working copies in memory (a tmpfs, see Hardening) and removes them itself after the last editor closes. Restarting the container while editors are open loses their unsaved changes; otherwise it is safe.
+
+## Co-authors and shared editing (ADR-0047)
+- **Co-authors:** the initiator of a draft names up to ten people on the memo page. They may edit the document, add attachments and see the draft; they cannot submit, discard or change the route. Changes are audited as `memo.coauthors.changed`.
+- **One room per version:** people who open the editor on the same version join one live session and see each other's changes as they type. Each save of the room (a forced save while editing, and the final one after the last person closes the editor) becomes one new version, stored as the first person the document server names who is in the room. The audit entry `docedit.version.saved` lists everyone who was in the room.
+- **A new version arrived meanwhile** (for example someone uploaded one): the room's save is refused with `SUPERSEDED`, so an upload is never overwritten. The edit session ends as failed, and those edits are not stored: agree in the team not to upload while others are editing.
+- **Attachments** are not edited in the browser yet: download, change and upload a new version (`attachments-and-previews.md`).
 
 ## Licence (on-prem)
 

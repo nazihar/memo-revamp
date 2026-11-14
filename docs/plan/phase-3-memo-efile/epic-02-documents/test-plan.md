@@ -40,9 +40,9 @@
 - **Record integrity:** a round's binding cannot change (trigger test); removed attachments stay in older rounds' bindings.
 
 ## Exit checklist
-- [ ] Every test above green in its stage
+- [ ] Every test above green in its stage. Green locally: the unit, integration and matrix tests, and the visual tests (memo view with attachments and a co-author, the comparison). The smoke E2E (`attachments.spec`) runs in CI on the T8 PR. Not built yet, carried: `OnlyOfficeConversionIT` and `TikaExtractionIT` against the stack, and the hostile corpus through both services (nightly). The room tests are in `DocEditIT` and the co-author tests in `DocEditIT` and `MemoAttachmentsIT`, not separate classes
 - [ ] Matrix and audit coverage tests green with the new endpoints and actions
-- [ ] Spikes recorded in the log
-- [ ] ASVS rows updated (V2, V3, V8, V12, V14, V15, V16)
-- [ ] Dependency register: ONLYOFFICE 10.0.0.1, Tika 4.2.0 (service), `tika-core` 4.2.0, `diff` 9.0.0, `pdfjs-dist` 6.4.299
-- [ ] Licence brief in `docs/legal/` and named in STATUS for the owner
+- [x] Spikes recorded in the log
+- [x] ASVS rows updated (V2, V3, V8, V12, V14, V15, V16)
+- [x] Dependency register: ONLYOFFICE 10.0.0.1, Tika 4.2.0 (service), `tika-core` 4.2.0, `diff` 9.0.0, `pdfjs-dist` 6.4.299
+- [x] Licence brief in `docs/legal/` and named in STATUS for the owner

@@ -352,7 +352,7 @@ class MemoAttachments(
 ) {
     fun list(memoId: UUID): List<AttachmentView> {
         val memo = memos.get(memoId)
-        return store.present(memoId).map { view(it, memo) }
+        return views(store.present(memoId), memo)
     }
 
     /** What round [round] bound; restricted ones redacted. */
@@ -361,8 +361,8 @@ class MemoAttachments(
         round: Int,
     ): List<AttachmentView> {
         val memo = memos.get(memoId)
-        return store.bound(memoId, round).map { (bound, row) ->
-            val shown = view(row, memo)
+        val bound = store.bound(memoId, round)
+        return bound.zip(views(bound.map { it.second }, memo)) { (bound, _), shown ->
             if (shown.restricted) {
                 shown
             } else {
@@ -404,7 +404,7 @@ class MemoAttachments(
         if (next.title != row.title) {
             audit.record("memo.attachment.retitled", Memos.OBJECT_TYPE, memoId.toString(), after = mapOf("attachment" to id.toString()))
         }
-        return view(store.get(memoId, id)!!, memo)
+        return views(listOf(store.get(memoId, id)!!), memo).single()
     }
 
     private fun save(
@@ -454,27 +454,23 @@ class MemoAttachments(
         store.bind(memoId, round, bound)
     }
 
-    private fun view(
-        row: AttachmentRow,
+    /** [rows] as the actor may see them: restricted ones redacted; versions and levels read once for all (design §9). */
+    private fun views(
+        rows: List<AttachmentRow>,
         memo: Memo,
-    ): AttachmentView {
-        val restricted = row.effectiveRank(memo.classificationRank) > policy.clearanceRank()
-        if (restricted) return AttachmentView(row.id, true, row.position)
-        val version = files.info(row.fileId)?.currentVersionId?.let(files::version)
-        val level = row.classificationId?.let { clearances.level(it) }
-        return AttachmentView(
-            id = row.id,
-            restricted = false,
-            position = row.position,
-            fileId = row.fileId,
-            title = row.title,
-            mediaType = version?.mediaType,
-            sizeBytes = version?.sizeBytes,
-            versionId = version?.id,
-            versionNumber = version?.number,
-            classification = level?.let { Named(it.id, it.name) },
-            version = row.version,
-        )
+    ): List<AttachmentView> {
+        val clearance = policy.clearanceRank()
+        val shown = rows.filter { it.effectiveRank(memo.classificationRank) <= clearance }
+        val shownIds = shown.mapTo(HashSet()) { it.id }
+        val versions = files.currentVersions(shown.map { it.fileId })
+        val levels = if (shown.any { it.classificationId != null }) clearances.levels().associateBy { it.id } else emptyMap()
+        return rows.map { row ->
+            if (row.id in shownIds) {
+                view(row, versions[row.fileId], row.classificationId?.let(levels::get))
+            } else {
+                AttachmentView(row.id, true, row.position)
+            }
+        }
     }
 
     /** The memo if the actor is its initiator or a co-author and it is editable. */
@@ -523,3 +519,23 @@ data class AttachmentChange(
     val clearLevel: Boolean = false,
     val position: Int? = null,
 )
+
+/** An attachment the reader is cleared for, with its current version and stricter level. */
+private fun view(
+    row: AttachmentRow,
+    version: com.memo.files.FileVersionInfo?,
+    level: com.memo.common.authz.ClassificationLevelRef?,
+): AttachmentView =
+    AttachmentView(
+        id = row.id,
+        restricted = false,
+        position = row.position,
+        fileId = row.fileId,
+        title = row.title,
+        mediaType = version?.mediaType,
+        sizeBytes = version?.sizeBytes,
+        versionId = version?.id,
+        versionNumber = version?.number,
+        classification = level?.let { Named(it.id, it.name) },
+        version = row.version,
+    )

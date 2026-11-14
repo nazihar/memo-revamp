@@ -27,6 +27,11 @@ test.describe('as a tenant admin', () => {
     const stamp = String(Date.now())
     const typeName = `E2E typed ${stamp}`
     const series = `e2e-${stamp}`
+    // Each run's own prefix: two series that can print the same numbers are refused (ADR-0044), and a stack keeps the
+    // types of earlier runs and browsers.
+    const prefix = `TA${stamp.slice(-6)}-`
+    // The year the server numbers in (the stack runs on UTC).
+    const first = `${prefix}${String(new Date().getUTCFullYear())}-00001`
 
     await app.visit('/admin/memo-types')
     await page.getByRole('button', { name: 'New memo type' }).click()
@@ -47,11 +52,11 @@ test.describe('as a tenant admin', () => {
     await field.getByRole('button', { name: 'Keep field' }).click()
     await expect(page.getByRole('textbox', { name: /Facility amount/ })).toBeVisible()
 
-    // TA-<year>-00001 on a series of its own.
+    // <prefix><year>-00001 on a series of its own.
     await page.getByRole('tab', { name: 'Numbering' }).click()
-    await page.getByRole('textbox', { name: 'Text', exact: true }).first().fill('TA-')
+    await page.getByRole('textbox', { name: 'Text', exact: true }).first().fill(prefix)
     await page.getByLabel('Series', { exact: true }).fill(series)
-    await expect(page.getByText(/^TA-\d{4}-00001$/).first()).toBeVisible()
+    await expect(page.getByText(first, { exact: true }).first()).toBeVisible()
     await app.checkA11y()
 
     await page.getByRole('button', { name: 'Save', exact: true }).click()
@@ -99,6 +104,7 @@ test.describe('as a tenant admin', () => {
     await expect(author.getByText('Done.')).toBeVisible()
     await author.goto(memoUrl)
     // The first number of the new series.
-    await expect(author.getByText(/TA-\d{4}-00001/).first()).toBeVisible()
+    // A substring: the number is set apart with Unicode isolates in the header.
+    await expect(author.getByText(first).first()).toBeVisible()
   })
 })

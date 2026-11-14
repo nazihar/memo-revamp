@@ -14,6 +14,7 @@ export const PERMISSION = {
   notificationSettings: 'notification.settings.manage',
   memoCreate: 'memo.create',
   memoTypesManage: 'memo.types.manage',
+  memoTypesApprove: 'memo.types.approve',
   workflowTasksReassign: 'workflow.tasks.reassign',
   workflowDefinitionsManage: 'workflow.definitions.manage',
   workflowDefinitionsApprove: 'workflow.definitions.approve',

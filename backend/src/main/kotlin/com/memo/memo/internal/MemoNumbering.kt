@@ -1,5 +1,6 @@
 package com.memo.memo.internal
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.memo.common.web.FieldProblem
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDate
@@ -61,6 +62,7 @@ data class Numbering(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val fyStartMonth: Int = DEFAULT_FY_START,
 ) {
     /** Whether a number needs the memo's origin unit (its code, or a sequence per unit). */
+    @get:JsonIgnore
     val needsUnit: Boolean get() = countPer == NumberCountPer.UNIT || parts.any { it.kind == NumberPartKind.UNIT_CODE }
 
     companion object {

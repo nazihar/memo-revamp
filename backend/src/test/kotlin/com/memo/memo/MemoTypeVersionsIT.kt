@@ -149,15 +149,16 @@ class MemoTypeVersionsIT : IntegrationTest() {
     }
 
     @Test
-    fun `a direct edit from the Phase 2 screen records a new published version, an unchanged one does not`() {
-        val type = asUser(maker) { types.create(MemoTypeFields("Board paper", null, true, true)) }
-        val renamed = asUser(maker) { types.update(type.id, type.version, MemoTypeFields("Board papers", null, true, true)) }
-        assertThat(renamed.publishedVersion).isEqualTo(2)
-        val switchedOff = asUser(maker) { types.update(type.id, renamed.version, MemoTypeFields("Board papers", null, true, false)) }
-        assertThat(switchedOff.publishedVersion).isEqualTo(2)
-        assertThat(switchedOff.active).isFalse()
-        assertThat(asUser(maker) { lifecycle.list(type.id) }.map { it.state })
-            .containsExactly(ReviewState.PUBLISHED, ReviewState.RETIRED)
+    fun `a type started as a draft is offered once its version 1 is published`() {
+        val (type, number) = asUser(maker) { types.createDraft("Board paper", "BP") }
+        val draft = asUser(maker) { lifecycle.get(type.id, number) }
+        assertThat(draft.state).isEqualTo(ReviewState.DRAFT)
+        assertThat(asUser(maker) { types.active() }.map { it.name }).doesNotContain("Board paper")
+        val submitted = asUser(maker) { lifecycle.submit(type.id, number, draft.revision) }
+        asUser(checker) { lifecycle.approve(type.id, submitted.number, null) }
+        val published = asUser(maker) { types.get(type.id) }
+        assertThat(published.publishedVersion).isEqualTo(1)
+        assertThat(asUser(maker) { types.active() }.map { it.name }).contains("Board paper")
     }
 
     @Test

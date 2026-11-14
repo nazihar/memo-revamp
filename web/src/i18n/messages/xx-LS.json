@@ -4518,6 +4518,12 @@
       "value": "ClaimSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.action.close": [
+    {
+      "type": 0,
+      "value": "CloseSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.action.delegate": [
     {
       "type": 0,
@@ -4684,6 +4690,22 @@
       "value": "Someone acted on this memo meanwhile. It was reloaded.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.create.details": [
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": " detailsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.create.details.lead": [
+    {
+      "type": 0,
+      "value": "You can save the draft with gaps; everything marked * is needed before you submit.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.create.lead": [
     {
       "type": 0,
@@ -4700,6 +4722,24 @@
     {
       "type": 0,
       "value": "New memoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.details": [
+    {
+      "type": 0,
+      "value": "DetailsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.details.noLongerOnForm": [
+    {
+      "type": 0,
+      "value": "No longer on this formSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.details.stale": [
+    {
+      "type": 0,
+      "value": "This memo type changed since the draft was written. Check the details before you submit.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.dialog.answer": [
@@ -4768,6 +4808,26 @@
     {
       "type": 0,
       "value": "You can decide once your question is answered.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.close": [
+    {
+      "type": 0,
+      "value": "Close "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.dialog.close.lead": [
+    {
+      "type": 0,
+      "value": "Its work is done. It stays readable and keeps its number; nobody can act on it again.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.dialog.delegate": [
@@ -5230,6 +5290,12 @@
       "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.field.choose": [
+    {
+      "type": 0,
+      "value": "Choose…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.field.classification": [
     {
       "type": 0,
@@ -5246,6 +5312,18 @@
     {
       "type": 0,
       "value": "At least the type’s default, and at most your own clearance.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.field.currency": [
+    {
+      "type": 0,
+      "value": "CurrencySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.field.optional": [
+    {
+      "type": 0,
+      "value": "(optional)SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.field.subject": [
@@ -5650,6 +5728,116 @@
       "value": "Give a reason.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.links": [
+    {
+      "type": 0,
+      "value": "Linked memosSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.links.add": [
+    {
+      "type": 0,
+      "value": "LinkSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.links.added": [
+    {
+      "type": 0,
+      "value": "Linked.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.links.from": [
+    {
+      "type": 0,
+      "value": "Linked fromSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.links.from.followsUp": [
+    {
+      "type": 0,
+      "value": "Follows up this memoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.links.from.refersTo": [
+    {
+      "type": 0,
+      "value": "Refers to this memoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.links.from.supersedes": [
+    {
+      "type": 0,
+      "value": "Supersedes this memoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.links.kind": [
+    {
+      "type": 0,
+      "value": "How it relatesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.links.kind.followsUp": [
+    {
+      "type": 0,
+      "value": "Follows upSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.links.kind.refersTo": [
+    {
+      "type": 0,
+      "value": "Refers toSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.links.kind.supersedes": [
+    {
+      "type": 0,
+      "value": "SupersedesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.links.none": [
+    {
+      "type": 0,
+      "value": "None.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.links.number": [
+    {
+      "type": 0,
+      "value": "Memo numberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.links.number.hint": [
+    {
+      "type": 0,
+      "value": "The number of a memo you can open.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.links.number.required": [
+    {
+      "type": 0,
+      "value": "Enter a memo number.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.links.remove": [
+    {
+      "type": 0,
+      "value": "Remove the link to "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.links.removed": [
+    {
+      "type": 0,
+      "value": "Link removed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.loadMore": [
     {
       "type": 0,
@@ -5666,6 +5854,18 @@
     {
       "type": 0,
       "value": "This memo does not exist, or you cannot see it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.numberedWhen.approval": [
+    {
+      "type": 0,
+      "value": "Unnumbered — numbered when finally approvedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.numberedWhen.submit": [
+    {
+      "type": 0,
+      "value": "Unnumbered — numbered when submittedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.opinion.text": [
@@ -6244,6 +6444,30 @@
       "value": "You asked a question. You can decide once it is answered.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.type.hasFields": [
+    {
+      "type": 0,
+      "value": "Asks for detailsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.type.numberedOnApproval": [
+    {
+      "type": 0,
+      "value": "Numbered when finally approvedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.type.numberedOnSubmit": [
+    {
+      "type": 0,
+      "value": "Numbered when submittedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.type.question": [
+    {
+      "type": 0,
+      "value": "What kind of memo?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.unnumbered": [
     {
       "type": 0,
@@ -6264,6 +6488,260 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memoNumbering.caption": [
+    {
+      "type": 0,
+      "value": "Counters of the seriesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoNumbering.complete": [
+    {
+      "type": 0,
+      "value": "Complete: every number up to the last has its memo.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoNumbering.hidden": [
+    {
+      "type": 0,
+      "value": "Not visible to youSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoNumbering.last": [
+    {
+      "type": 0,
+      "value": "Last numberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoNumbering.lead": [
+    {
+      "type": 0,
+      "value": "Every number given, in order, by series and period. Numbers are never reused: those of withdrawn or cancelled memos are void.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoNumbering.memo": [
+    {
+      "type": 0,
+      "value": "MemoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoNumbering.missing": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " number has"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " numbers have"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " no memo: "
+    },
+    {
+      "type": 1,
+      "value": "first"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoNumbering.more": [
+    {
+      "type": 0,
+      "value": "Show moreSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoNumbering.none": [
+    {
+      "type": 0,
+      "value": "No numbers given yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoNumbering.number": [
+    {
+      "type": 0,
+      "value": "NumberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoNumbering.open": [
+    {
+      "type": 0,
+      "value": "RegisterSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoNumbering.period": [
+    {
+      "type": 0,
+      "value": "PeriodSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoNumbering.registerCaption": [
+    {
+      "type": 0,
+      "value": "Numbers in orderSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoNumbering.registerOf": [
+    {
+      "type": 0,
+      "value": "Register of "
+    },
+    {
+      "type": 1,
+      "value": "series"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "period"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoNumbering.registerOfUnit": [
+    {
+      "type": 0,
+      "value": "Register of "
+    },
+    {
+      "type": 1,
+      "value": "series"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "period"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "unit"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoNumbering.save": [
+    {
+      "type": 0,
+      "value": "SetSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoNumbering.series": [
+    {
+      "type": 0,
+      "value": "SeriesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoNumbering.start": [
+    {
+      "type": 0,
+      "value": "Set a starting numberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoNumbering.startLead": [
+    {
+      "type": 0,
+      "value": "To continue an existing paper or legacy series: the first number this counter gives. Possible only before it gives any.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoNumbering.startNext": [
+    {
+      "type": 0,
+      "value": "First numberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoNumbering.startPeriod": [
+    {
+      "type": 0,
+      "value": "Period (for example 2026 or FY2026-27)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoNumbering.startScope": [
+    {
+      "type": 0,
+      "value": "Unit id (only for a series counted per unit)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoNumbering.started": [
+    {
+      "type": 0,
+      "value": "Started by an administratorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoNumbering.status": [
+    {
+      "type": 0,
+      "value": "StatusSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoNumbering.title": [
+    {
+      "type": 0,
+      "value": "Memo numberingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoNumbering.unit": [
+    {
+      "type": 0,
+      "value": "UnitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoNumbering.usedByTypes": [
+    {
+      "type": 0,
+      "value": "Used by: "
+    },
+    {
+      "type": 1,
+      "value": "types"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoNumbering.void": [
+    {
+      "type": 0,
+      "value": "VoidSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memoTypes.active": [
     {
       "type": 0,
@@ -6273,7 +6751,7 @@
   "memoTypes.add": [
     {
       "type": 0,
-      "value": "Add memo typeSSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": "New memo typeSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memoTypes.allowed": [
@@ -6332,10 +6810,126 @@
       "value": "RoleSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memoTypes.approve": [
+    {
+      "type": 0,
+      "value": "Approve and publishSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.attachments": [
+    {
+      "type": 0,
+      "value": "Attachments are requiredSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.attachments.min": [
+    {
+      "type": 0,
+      "value": "At leastSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.attachments.note": [
+    {
+      "type": 0,
+      "value": "What to attachSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.autoClose": [
+    {
+      "type": 0,
+      "value": "Close approved memos automatically after (days)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.autoClose.hint": [
+    {
+      "type": 0,
+      "value": "Leave empty to close them only by hand.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.back": [
+    {
+      "type": 0,
+      "value": "All memo typesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memoTypes.caption": [
     {
       "type": 0,
       "value": "Memo types of the organisationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.changes.added": [
+    {
+      "type": 0,
+      "value": "AddedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.changes.changed": [
+    {
+      "type": 0,
+      "value": "ChangedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.changes.field": [
+    {
+      "type": 0,
+      "value": "Field “"
+    },
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.changes.first": [
+    {
+      "type": 0,
+      "value": "The first version of this type: everything is new.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.changes.lead": [
+    {
+      "type": 0,
+      "value": "What this version changes compared with the published one.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.changes.none": [
+    {
+      "type": 0,
+      "value": "No changes.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.changes.removed": [
+    {
+      "type": 0,
+      "value": "RemovedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.classification": [
+    {
+      "type": 0,
+      "value": "Default classificationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.code": [
+    {
+      "type": 0,
+      "value": "CodeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.code.hint": [
+    {
+      "type": 0,
+      "value": "Up to 10 capital letters, digits or hyphens; used in memo numbers.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memoTypes.col.actions": [
@@ -6344,10 +6938,16 @@
       "value": "ActionsSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "memoTypes.col.default": [
+  "memoTypes.col.changes": [
     {
       "type": 0,
-      "value": "Default classificationSSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": "ChangesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.col.code": [
+    {
+      "type": 0,
+      "value": "CodeSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memoTypes.col.name": [
@@ -6356,16 +6956,28 @@
       "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "memoTypes.col.stepUp": [
+  "memoTypes.col.published": [
     {
       "type": 0,
-      "value": "Confirm before approvingSSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": "PublishedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "memoTypes.col.workflow": [
+  "memoTypes.col.status": [
     {
       "type": 0,
-      "value": "WorkflowSSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": "StatusSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.conflict": [
+    {
+      "type": 0,
+      "value": "Someone else changed this version. It has been reloaded with their changes.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.create": [
+    {
+      "type": 0,
+      "value": "Create draftSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memoTypes.doaCheck": [
@@ -6374,7 +6986,13 @@
       "value": "The route must give the delegation of authority its approvals before the memo can be submittedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "memoTypes.edit": [
+  "memoTypes.done": [
+    {
+      "type": 0,
+      "value": "Saved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.editNamed": [
     {
       "type": 0,
       "value": "Edit "
@@ -6388,22 +7006,160 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memoTypes.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.field.attribute": [
+    {
+      "type": 0,
+      "value": "Use in workflow rulesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.field.choices": [
+    {
+      "type": 0,
+      "value": "OptionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.field.choices.hint": [
+    {
+      "type": 0,
+      "value": "One per line, as key = label (for example sme = Small business).SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.field.currencies": [
+    {
+      "type": 0,
+      "value": "CurrenciesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.field.currencies.hint": [
+    {
+      "type": 0,
+      "value": "ISO codes separated by commas; the first is the default.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.field.decimals": [
+    {
+      "type": 0,
+      "value": "DecimalsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.field.help": [
+    {
+      "type": 0,
+      "value": "Help textSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.field.inbox": [
+    {
+      "type": 0,
+      "value": "Show in inbox listsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.field.key": [
+    {
+      "type": 0,
+      "value": "KeySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.field.key.hint": [
+    {
+      "type": 0,
+      "value": "A letter, then letters or digits (for example amount). Rules use it; do not change it once published.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.field.label": [
+    {
+      "type": 0,
+      "value": "LabelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.field.max": [
+    {
+      "type": 0,
+      "value": "Largest valueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.field.maxLength": [
+    {
+      "type": 0,
+      "value": "Most charactersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.field.min": [
+    {
+      "type": 0,
+      "value": "Smallest valueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.field.required": [
+    {
+      "type": 0,
+      "value": "RequiredSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.field.save": [
+    {
+      "type": 0,
+      "value": "Keep fieldSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.field.type": [
+    {
+      "type": 0,
+      "value": "TypeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.fields.add": [
+    {
+      "type": 0,
+      "value": "Add fieldSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.fields.edit": [
+    {
+      "type": 0,
+      "value": "Edit fieldSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.fields.lead": [
+    {
+      "type": 0,
+      "value": "What the author fills in, in this order. The preview shows the form as they will see it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.fields.none": [
+    {
+      "type": 0,
+      "value": "No fields yet: memos of this type have a subject only.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.fields.preview": [
+    {
+      "type": 0,
+      "value": "PreviewSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memoTypes.inactive": [
     {
       "type": 0,
       "value": "Switched offSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "memoTypes.lastActive": [
+  "memoTypes.invalid": [
     {
       "type": 0,
-      "value": "Keep at least one memo type in use.SSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": "Fix these before saving:SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memoTypes.lead": [
     {
       "type": 0,
-      "value": "What people choose when they write a memo. A type is never deleted, only switched off.SSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": "What people choose when they write a memo: its form, numbering and approval. Every change is reviewed by a second administrator before it applies.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memoTypes.lowest": [
@@ -6412,10 +7168,274 @@
       "value": "Lowest levelSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "memoTypes.no": [
+  "memoTypes.moveDown": [
     {
       "type": 0,
-      "value": "NoSSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": "Move downSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.moveDownNamed": [
+    {
+      "type": 0,
+      "value": "Move "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " downSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.moveUp": [
+    {
+      "type": 0,
+      "value": "Move upSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.moveUpNamed": [
+    {
+      "type": 0,
+      "value": "Move "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " upSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.name": [
+    {
+      "type": 0,
+      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.newDraft": [
+    {
+      "type": 0,
+      "value": "New draftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.noChanges": [
+    {
+      "type": 0,
+      "value": "NoneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.notPublished": [
+    {
+      "type": 0,
+      "value": "Not yetSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.numbering.addText": [
+    {
+      "type": 0,
+      "value": "TextSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.numbering.count.series": [
+    {
+      "type": 0,
+      "value": "One sequence for the seriesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.numbering.count.unit": [
+    {
+      "type": 0,
+      "value": "One sequence per unitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.numbering.countPer": [
+    {
+      "type": 0,
+      "value": "CountSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.numbering.digits": [
+    {
+      "type": 0,
+      "value": "DigitsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.numbering.fyStart": [
+    {
+      "type": 0,
+      "value": "Financial year starts in monthSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.numbering.lead": [
+    {
+      "type": 0,
+      "value": "Numbers never repeat and leave no gaps. Types with the same series share one register.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.numbering.moment": [
+    {
+      "type": 0,
+      "value": "Give the number when the memo isSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.numbering.onApproval": [
+    {
+      "type": 0,
+      "value": "Finally approvedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.numbering.onSubmit": [
+    {
+      "type": 0,
+      "value": "SubmittedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.numbering.parts": [
+    {
+      "type": 0,
+      "value": "Number partsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.numbering.reset": [
+    {
+      "type": 0,
+      "value": "Start again at 1SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.numbering.reset.financial": [
+    {
+      "type": 0,
+      "value": "Every financial yearSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.numbering.reset.never": [
+    {
+      "type": 0,
+      "value": "NeverSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.numbering.reset.yearly": [
+    {
+      "type": 0,
+      "value": "Every yearSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.numbering.sample": [
+    {
+      "type": 0,
+      "value": "SampleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.numbering.series": [
+    {
+      "type": 0,
+      "value": "SeriesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.numbering.series.hint": [
+    {
+      "type": 0,
+      "value": "Lower-case letters, digits and hyphens.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.open": [
+    {
+      "type": 0,
+      "value": "OpenSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.part.financialYear": [
+    {
+      "type": 0,
+      "value": "Financial yearSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.part.sequence": [
+    {
+      "type": 0,
+      "value": "SequenceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.part.style.long": [
+    {
+      "type": 0,
+      "value": "2026-27SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.part.style.short": [
+    {
+      "type": 0,
+      "value": "FY27SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.part.text": [
+    {
+      "type": 0,
+      "value": "TextSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.part.typeCode": [
+    {
+      "type": 0,
+      "value": "Type codeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.part.unitCode": [
+    {
+      "type": 0,
+      "value": "Unit codeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.part.year": [
+    {
+      "type": 0,
+      "value": "YearSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.pending": [
+    {
+      "type": 0,
+      "value": "Version "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "state"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.pendingBy": [
+    {
+      "type": 0,
+      "value": "Version "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " in review, submitted by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memoTypes.policy": [
@@ -6442,10 +7462,238 @@
       "value": "The author chooses themSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memoTypes.readOnly": [
+    {
+      "type": 0,
+      "value": "Only a draft can be changed. Start a new draft to change this type.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.reason.alreadyStarted": [
+    {
+      "type": 0,
+      "value": "This counter has given numbers already; its first number cannot be set.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.reason.draftExists": [
+    {
+      "type": 0,
+      "value": "This type already has a draft or a version in review.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.reason.lastActive": [
+    {
+      "type": 0,
+      "value": "Keep at least one memo type in use.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.reason.samePerson": [
+    {
+      "type": 0,
+      "value": "Someone other than the submitter has to review it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.reason.wrongState": [
+    {
+      "type": 0,
+      "value": "This version has moved on. Reload and try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.remark": [
+    {
+      "type": 0,
+      "value": "RemarkSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.remark.hint": [
+    {
+      "type": 0,
+      "value": "Required to send it back; optional when approving.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.remove": [
+    {
+      "type": 0,
+      "value": "RemoveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.removeNamed": [
+    {
+      "type": 0,
+      "value": "Remove "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.required": [
+    {
+      "type": 0,
+      "value": "Required.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.retention": [
+    {
+      "type": 0,
+      "value": "Keep memos forSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.retention.approval": [
+    {
+      "type": 0,
+      "value": "ApprovalSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.retention.closure": [
+    {
+      "type": 0,
+      "value": "ClosureSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.retention.from": [
+    {
+      "type": 0,
+      "value": "Counted fromSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.retention.hint": [
+    {
+      "type": 0,
+      "value": "Recorded now; records management acts on it later.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.retention.none": [
+    {
+      "type": 0,
+      "value": "No policy yetSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.reviewRemark": [
+    {
+      "type": 0,
+      "value": "Reviewer’s remark: "
+    },
+    {
+      "type": 1,
+      "value": "remark"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.save": [
+    {
+      "type": 0,
+      "value": "SaveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.scope": [
+    {
+      "type": 0,
+      "value": "Who may raise itSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.scope.everyone": [
+    {
+      "type": 0,
+      "value": "Everyone who can create memosSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.scope.some": [
+    {
+      "type": 0,
+      "value": "Only people in these unitsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.scope.subtree": [
+    {
+      "type": 0,
+      "value": "with the units below itSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.scope.unit": [
+    {
+      "type": 0,
+      "value": "Add a unitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.sendBack": [
+    {
+      "type": 0,
+      "value": "Send backSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memoTypes.stepUp": [
     {
       "type": 0,
       "value": "Approvers confirm it is them before approvingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.submit": [
+    {
+      "type": 0,
+      "value": "Submit for reviewSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.submittedBy": [
+    {
+      "type": 0,
+      "value": "Submitted by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.switchOff": [
+    {
+      "type": 0,
+      "value": "Switch offSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.switchOn": [
+    {
+      "type": 0,
+      "value": "Switch onSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.tab.changes": [
+    {
+      "type": 0,
+      "value": "ChangesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.tab.form": [
+    {
+      "type": 0,
+      "value": "FormSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.tab.numbering": [
+    {
+      "type": 0,
+      "value": "NumberingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.tab.settings": [
+    {
+      "type": 0,
+      "value": "SettingsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.tabs": [
+    {
+      "type": 0,
+      "value": "Parts of the memo typeSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memoTypes.title": [
@@ -6454,16 +7702,110 @@
       "value": "Memo typesSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memoTypes.type.amount": [
+    {
+      "type": 0,
+      "value": "AmountSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.type.choice": [
+    {
+      "type": 0,
+      "value": "ChoiceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.type.date": [
+    {
+      "type": 0,
+      "value": "DateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.type.longText": [
+    {
+      "type": 0,
+      "value": "Long textSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.type.multiChoice": [
+    {
+      "type": 0,
+      "value": "Multiple choiceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.type.number": [
+    {
+      "type": 0,
+      "value": "NumberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.type.person": [
+    {
+      "type": 0,
+      "value": "PersonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.type.text": [
+    {
+      "type": 0,
+      "value": "TextSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.type.unit": [
+    {
+      "type": 0,
+      "value": "UnitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.unsaved": [
+    {
+      "type": 0,
+      "value": "Unsaved changes. Save before submitting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.version": [
+    {
+      "type": 0,
+      "value": "Version "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "state"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.version.label": [
+    {
+      "type": 0,
+      "value": "VersionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.workflow": [
+    {
+      "type": 0,
+      "value": "WorkflowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memoTypes.workflow.hint": [
     {
       "type": 0,
-      "value": "New memos of this type use its published version; memos in review keep theirs.SSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": "Memos submitted from now on use this version; memos already submitted keep theirs.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "memoTypes.yes": [
+  "memoTypes.years": [
     {
       "type": 0,
-      "value": "YesSSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": "YearsSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "nav.admin": [
@@ -6554,6 +7896,18 @@
     {
       "type": 0,
       "value": "DocumentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.memoNumbering": [
+    {
+      "type": 0,
+      "value": "Memo numberingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.memoType": [
+    {
+      "type": 0,
+      "value": "Memo typeSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "nav.memoTypes": [

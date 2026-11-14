@@ -40,6 +40,9 @@ class DemoWorkflowSeeder(
         publish(ids, KEY, NAME, definition(ids))
         asUser(ids.getValue(ADMIN)) { memos.fixedType(NAME, KEY) }
         seedAuthority(ids)
+        // Phase 3 E01 T8: representative bank memo types with fields and numbering (no pilot bank yet, Phase 3 Q2).
+        val types = TenantContext.call(DemoTenant.ID) { memos.representativeTypes(ids.getValue(ADMIN), ids.getValue(REVIEWER)) }
+        if (types > 0) log.info("Demo memo types seeded: {}", types)
     }
 
     /** [body] as [key], written by the demo admin and approved by the org admin; or as version 2 if version 1 lacks SLAs. */

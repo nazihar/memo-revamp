@@ -101,3 +101,13 @@
 - **Tests:**
   - `MemoLifecycleIT` (5): closing by the initiator only and only when approved; nothing after closing; auto-close with a test clock, as the system, idempotent; links by number both ways, unreadable and duplicate targets, link visibility, recorded removal; retention and attachment rules kept and checked.
   - `MemoTypeBackfillIT` extended for V9.
+
+## 2026-11-14 — T8 (first part): representative demo types
+- **Built:** `RepresentativeTypes`, seeded by `MemoSeeding.representativeTypes` from the demo workflow seeder. Each is published through the reviewed lifecycle: `admin@` drafts and submits, `orgadmin@` approves. The seed only fills gaps.
+  - **Credit proposal (CP):** customer, facility amount (attribute), purpose (attribute) and tenor; `CR/2026-27/0001`, restarting each financial year (July); retention 10 years from closure; step-up on approve.
+  - **Expense approval (EXP):** amount (attribute), cost centre (unit, attribute) and category; `EXP-2026-00001`, yearly; auto-close after 30 days; retention 7 years from approval.
+  - **Procurement (PRC):** estimated value (attribute), vendor and method (attribute); `PRC/2026-27/0001`, **numbered on final approval**; at least one attachment required (E02 enforces it); retention 10 years.
+  - **Policy approval (POL):** effective date and policy areas (multiple choice); `POL-2026-001`; auto-close after 90 days; retention 25 years.
+- **The Phase 2 demo types are left as they were** ("Credit facility", "Credit under authority"): the existing E2E journeys create memos of them without details, and required fields would break those journeys.
+- `DemoWorkflowsIT` checks that each representative type is published once (version 2) with its fields and series, including after a second seed run.
+- **Open in T8:** the E2E journeys (they need the T6 and T7 screens), `EXPLAIN` for the register and link lookups, ASVS rows, and the dev check of the rows `workflow/V3` did not backfill.

@@ -105,6 +105,14 @@ class DemoWorkflowsIT : IntegrationTest() {
                     assertThat(types.all().filter { it.name == DemoWorkflowSeeder.AUTHORITY_NAME }).hasSize(1)
                     assertThat(doa.list().map { it.state }).containsExactly(VersionState.PUBLISHED)
                     assertThat(queues.find(DemoWorkflowSeeder.DESK)?.members).hasSize(2)
+                    // Phase 3 E01 T8: representative bank memo types, each published once with its fields and numbering.
+                    for ((name, series) in REPRESENTATIVE) {
+                        val type = types.all().single { it.name == name }
+                        val version = checkNotNull(types.published(type.id)).settings
+                        assertThat(version.fields).describedAs(name).isNotEmpty()
+                        assertThat(version.numbering.series).isEqualTo(series)
+                        assertThat(type.publishedVersion).describedAs("$name published once").isEqualTo(2)
+                    }
                 }
             }
         }
@@ -132,5 +140,15 @@ class DemoWorkflowsIT : IntegrationTest() {
         asUser(admin) { workflowSeeding.submit(DemoWorkflowSeeder.KEY, DemoWorkflowSeeder.NAME, body) }
         asUser(reviewer) { workflowSeeding.approve(DemoWorkflowSeeder.KEY) }
         return true
+    }
+
+    private companion object {
+        val REPRESENTATIVE =
+            listOf(
+                "Credit proposal" to "credit",
+                "Expense approval" to "expense",
+                "Procurement" to "procurement",
+                "Policy approval" to "policy",
+            )
     }
 }

@@ -40,8 +40,11 @@ enum class Permission(
     /** Create and submit memos (Phase 2 E01); every active user holds it through the built-in user role. */
     MEMO_CREATE("memo.create", scopable = false, privileged = false),
 
-    /** Memo types: name, default classification, step-up before approve (Phase 2 E01). */
+    /** Memo types: draft and submit their versions (Phase 2 E01; maker of maker-checker since Phase 3 E01). */
     MEMO_TYPES_MANAGE("memo.types.manage", scopable = false, privileged = true),
+
+    /** Publish or send back a memo-type version someone else submitted (Phase 3 E01; checker); with a step-up. */
+    MEMO_TYPES_APPROVE("memo.types.approve", scopable = false, privileged = true),
 
     /** See open workflow tasks and reassign them, for example when an approver left (Phase 2 E01). */
     WORKFLOW_TASKS_REASSIGN("workflow.tasks.reassign", scopable = false, privileged = true),

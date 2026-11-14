@@ -2,6 +2,7 @@ package com.memo.memo.internal
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import com.memo.common.id.IdGenerator
+import com.memo.common.review.ReviewState
 import com.memo.common.tenant.TenantDsl
 import com.memo.jooq.tables.records.MemoTypeRecord
 import com.memo.jooq.tables.references.MEMO_TYPE
@@ -52,6 +53,10 @@ data class MemoType(
     /** Built-in types only (`general`). */
     val key: String?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val name: String,
+    /** The short code used in memo numbers (ADR-0044). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val code: String,
+    /** The published version (ADR-0043); null while the type has only a draft. */
+    val publishedVersion: Int?,
     /** Null: the tenant's lowest classification level. */
     val defaultClassificationId: UUID?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val routePolicy: RoutePolicy,
@@ -77,15 +82,24 @@ data class MemoTypeFields(
     val routePolicy: RoutePolicy = RoutePolicy.INITIATOR_DEFINED,
     val allowedApprovers: AllowedApprovers = AllowedApprovers(),
     val doaCheck: Boolean = false,
-)
+    /** Null: derived from the name when the type is created, unchanged on an edit. */
+    val code: String? = null,
+) {
+    fun settings(code: String): MemoTypeSettings =
+        MemoTypeSettings(name, code, defaultClassificationId, definitionKey, routePolicy, allowedApprovers, doaCheck, stepUpOnApprove)
+}
 
-/** Memo types (design E01 §2). Every method runs inside a tenant transaction. */
+/**
+ * Memo types (design E01 §2). Since Phase 3 E01 the settings live in versions (ADR-0043); the type row keeps the identity
+ * and a copy of its published version's settings, which every reader uses. Every method runs inside a tenant transaction.
+ */
 @Repository
 class MemoTypeStore(
     private val tenantDsl: TenantDsl,
     private val ids: IdGenerator,
     private val clock: Clock,
     private val json: JsonMapper,
+    private val versions: MemoTypeVersionStore,
 ) {
     /** Every type, by name. */
     fun all(): List<MemoType> =
@@ -113,38 +127,69 @@ class MemoTypeStore(
             DSL.lower(MEMO_TYPE.NAME).eq(name.lowercase()).and(except?.let { MEMO_TYPE.ID.ne(it) } ?: DSL.noCondition()),
         )
 
+    /** Whether a type other than [except] has [code]. */
+    fun codeTaken(
+        code: String,
+        except: UUID? = null,
+    ): Boolean =
+        tenantDsl.current().fetchExists(
+            MEMO_TYPE,
+            MEMO_TYPE.CODE.eq(code).and(except?.let { MEMO_TYPE.ID.ne(it) } ?: DSL.noCondition()),
+        )
+
+    /** A code for a type called [name] that no other type has: its initials, numbered if needed (as the V6 backfill). */
+    fun freeCode(name: String): String {
+        val base = MemoTypeCodes.initials(name)
+        return generateSequence(1) { it + 1 }.map { if (it == 1) base else "$base$it" }.first { !codeTaken(it) }
+    }
+
+    /**
+     * Inserts a type with [fields], published at once as version 1, created by [createdBy] (null: the system). Used for
+     * the built-in type and legacy direct creation; reviewed creation starts from a draft instead (E01 T6).
+     */
     fun insert(
         fields: MemoTypeFields,
         key: String? = null,
+        createdBy: UUID? = null,
     ): UUID {
         val id = ids.next()
         val now = now()
-        tenantDsl
-            .current()
-            .insertInto(MEMO_TYPE)
-            .set(MEMO_TYPE.ID, id)
-            .set(MEMO_TYPE.TENANT_ID, tenantDsl.tenant().value)
-            .set(MEMO_TYPE.KEY, key)
-            .set(MEMO_TYPE.NAME, fields.name)
-            .set(MEMO_TYPE.DEFAULT_CLASSIFICATION_ID, fields.defaultClassificationId)
-            .set(MEMO_TYPE.STEP_UP_ON_APPROVE, fields.stepUpOnApprove)
-            .set(MEMO_TYPE.ACTIVE, fields.active)
-            .set(MEMO_TYPE.DEFINITION_KEY, fields.definitionKey)
-            .set(MEMO_TYPE.ROUTE_POLICY, fields.routePolicy.name)
-            .set(MEMO_TYPE.ALLOWED_APPROVERS, JSONB.valueOf(json.writeValueAsString(fields.allowedApprovers)))
-            .set(MEMO_TYPE.DOA_CHECK, fields.doaCheck)
-            .set(MEMO_TYPE.CREATED_AT, now)
-            .set(MEMO_TYPE.UPDATED_AT, now)
-            .onConflictDoNothing()
-            .execute()
+        val code = fields.code ?: freeCode(fields.name)
+        val inserted =
+            tenantDsl
+                .current()
+                .insertInto(MEMO_TYPE)
+                .set(MEMO_TYPE.ID, id)
+                .set(MEMO_TYPE.TENANT_ID, tenantDsl.tenant().value)
+                .set(MEMO_TYPE.KEY, key)
+                .set(MEMO_TYPE.NAME, fields.name)
+                .set(MEMO_TYPE.DEFAULT_CLASSIFICATION_ID, fields.defaultClassificationId)
+                .set(MEMO_TYPE.STEP_UP_ON_APPROVE, fields.stepUpOnApprove)
+                .set(MEMO_TYPE.ACTIVE, fields.active)
+                .set(MEMO_TYPE.DEFINITION_KEY, fields.definitionKey)
+                .set(MEMO_TYPE.ROUTE_POLICY, fields.routePolicy.name)
+                .set(MEMO_TYPE.ALLOWED_APPROVERS, JSONB.valueOf(json.writeValueAsString(fields.allowedApprovers)))
+                .set(MEMO_TYPE.DOA_CHECK, fields.doaCheck)
+                .set(MEMO_TYPE.CODE, code)
+                .set(MEMO_TYPE.PUBLISHED_VERSION, 1)
+                .set(MEMO_TYPE.CREATED_AT, now)
+                .set(MEMO_TYPE.UPDATED_AT, now)
+                .onConflictDoNothing()
+                .execute()
+        // Another node created the built-in type meanwhile (or the name is taken): no row, no version.
+        if (inserted == 1) versions.insert(id, ReviewState.PUBLISHED, fields.settings(code), createdBy)
         return id
     }
 
-    /** Guarded on [expectedVersion]; false when the row changed meanwhile. */
+    /**
+     * Copies [fields] onto the type row, with its published version [publishedVersion]; guarded on [expectedVersion]
+     * when given. False when the row changed meanwhile.
+     */
     fun update(
         id: UUID,
-        expectedVersion: Long,
+        expectedVersion: Long?,
         fields: MemoTypeFields,
+        publishedVersion: Int,
     ): Boolean =
         tenantDsl
             .current()
@@ -157,9 +202,11 @@ class MemoTypeStore(
             .set(MEMO_TYPE.ROUTE_POLICY, fields.routePolicy.name)
             .set(MEMO_TYPE.ALLOWED_APPROVERS, JSONB.valueOf(json.writeValueAsString(fields.allowedApprovers)))
             .set(MEMO_TYPE.DOA_CHECK, fields.doaCheck)
+            .apply { fields.code?.let { set(MEMO_TYPE.CODE, it) } }
+            .set(MEMO_TYPE.PUBLISHED_VERSION, publishedVersion)
             .set(MEMO_TYPE.VERSION, MEMO_TYPE.VERSION.plus(1))
             .set(MEMO_TYPE.UPDATED_AT, now())
-            .where(MEMO_TYPE.ID.eq(id), MEMO_TYPE.VERSION.eq(expectedVersion))
+            .where(MEMO_TYPE.ID.eq(id), expectedVersion?.let { MEMO_TYPE.VERSION.eq(it) } ?: DSL.noCondition())
             .execute() == 1
 
     /** Creates the built-in "General memo" type unless the tenant has it (idempotent, safe on several nodes at once). */
@@ -175,6 +222,8 @@ class MemoTypeStore(
             id = id,
             key = key,
             name = name,
+            code = code ?: "",
+            publishedVersion = publishedVersion,
             defaultClassificationId = defaultClassificationId,
             routePolicy = RoutePolicy.valueOf(routePolicy!!),
             definitionKey = definitionKey!!,
@@ -191,4 +240,21 @@ class MemoTypeStore(
         const val GENERAL = "general"
         const val GENERAL_NAME = "General memo"
     }
+}
+
+/** Short memo-type codes (ADR-0044): upper-case letters and digits, at most ten characters. */
+object MemoTypeCodes {
+    val PATTERN = Regex("^[A-Z0-9][A-Z0-9-]{0,9}$")
+
+    /** The initials of [name]'s words, at most four; "T" when it has no letters or digits. */
+    fun initials(name: String): String =
+        name
+            .split(Regex("[^A-Za-z0-9]+"))
+            .filter { it.isNotEmpty() }
+            .joinToString("") { it.take(1) }
+            .uppercase()
+            .take(MAX_INITIALS)
+            .ifEmpty { "T" }
+
+    private const val MAX_INITIALS = 4
 }

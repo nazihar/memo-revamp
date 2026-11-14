@@ -212,7 +212,13 @@ Each is written in the business transaction and asserted in a test (`AuditAction
 - The auto-close job runs per tenant with `tenantId` in its data (ADR-0018).
 
 ## 7. Migrations (expand → migrate → contract)
-- **`memo/V6__type_versions.sql`** (expand):
+- **One migration per task** (each task ships the schema it uses):
+  - T1 `memo/V6__type_versions.sql`: `memo_type_version`, `memo_type.code` and `published_version`, and the backfill below;
+  - T2: `memo.memo_type_version_id`, `memo.metadata`, `memo.origin_unit_id` use, field columns on the version;
+  - T4: numbering columns, `memo_number_counter`, the `reference` change;
+  - T5: `memo_link`, CLOSED.
+- The backfill runs across tenants as the schema owner. FORCE ROW LEVEL SECURITY applies to the owner too, so the migration lifts FORCE for its own transaction and restores it before commit (`MemoTypeBackfillIT` checks both the data and that FORCE is back).
+- **Expand, in the order above:**
   - create `memo_type_version`;
   - add `memo_type.code` (backfilled from the key or name initials, made unique per tenant);
   - add the new memo columns (all nullable or defaulted);

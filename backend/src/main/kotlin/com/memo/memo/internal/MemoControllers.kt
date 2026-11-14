@@ -40,6 +40,12 @@ data class MemoRequest(
     val typeId: UUID,
     /** Null: the type's default classification. */
     val classificationId: UUID? = null,
+    /**
+     * The values of the type's fields by key (ADR-0043): text, numbers as decimal strings, dates as `YYYY-MM-DD`, unit and
+     * person ids, choice keys, `{value, currency}` for an amount, a list of keys for a multiple choice. On an edit, null
+     * leaves them unchanged. Required fields are checked at submit.
+     */
+    val metadata: Map<String, Any?>? = null,
 )
 
 /**
@@ -69,7 +75,7 @@ class MemosController(
             transactions.inTenant(TenantContext.current()) {
                 val id =
                     idempotency.once("memo.create", key, fingerprint(json.writeValueAsString(body))) {
-                        memos.create(MemoFields(body.subject, body.typeId, body.classificationId)).id.toString()
+                        memos.create(MemoFields(body.subject, body.typeId, body.classificationId, body.metadata)).id.toString()
                     }
                 views.of(memos.get(UUID.fromString(id)))
             }
@@ -104,7 +110,7 @@ class MemosController(
         val version = ifMatchVersion(ifMatch)
         val view =
             transactions.inTenant(TenantContext.current()) {
-                views.of(memos.update(id, version, MemoFields(body.subject, body.typeId, body.classificationId)))
+                views.of(memos.update(id, version, MemoFields(body.subject, body.typeId, body.classificationId, body.metadata)))
             }
         return ResponseEntity.ok().eTag(etagOf(view.version)).body(view)
     }
@@ -233,22 +239,48 @@ data class MemoTypeOption(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val name: String,
     val defaultClassificationId: UUID?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val stepUpOnApprove: Boolean,
+    /** Whether the type has fields to fill in (fetch them with `getMemoTypeForm`). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val hasFields: Boolean = false,
+)
+
+/** The form of a memo type: its published version's fields, in order. */
+data class MemoTypeForm(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val id: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val name: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val version: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val fields: List<MemoField>,
 )
 
 @RestController
 @RequestMapping("/api/v1/memo-types")
 @Tag(name = "memo")
 class MemoTypesController(
-    private val types: MemoTypes,
+    private val access: MemoTypeAccess,
     private val transactions: TenantTransactions,
 ) {
     @GetMapping
     @SignedIn
-    @Operation(operationId = "listMemoTypes", summary = "Active memo types")
+    @Operation(operationId = "listMemoTypes", summary = "The active memo types the caller may raise")
     fun list(): List<MemoTypeOption> =
         transactions.readInTenant(TenantContext.current()) {
-            types.active().map { MemoTypeOption(it.id, it.name, it.defaultClassificationId, it.stepUpOnApprove) }
+            access.raisable(currentUser()).map { (type, version) ->
+                MemoTypeOption(type.id, type.name, type.defaultClassificationId, type.stepUpOnApprove, version.settings.fields.isNotEmpty())
+            }
         }
+
+    @GetMapping("/{id}/form")
+    @SignedIn
+    @Operation(operationId = "getMemoTypeForm", summary = "The fields of a memo type the caller may raise")
+    fun form(
+        @PathVariable id: UUID,
+    ): MemoTypeForm =
+        transactions.readInTenant(TenantContext.current()) {
+            val version = access.raisableVersion(id, currentUser())
+            MemoTypeForm(id, version.settings.name, version.number, version.settings.fields)
+        }
+
+    private fun currentUser(): UUID =
+        (ActorContext.current().actor as? Actor.User)?.userId ?: throw IllegalStateException("memo types are listed for signed-in users")
 }
 
 data class MemoTypeRequest(

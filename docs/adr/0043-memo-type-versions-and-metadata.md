@@ -39,7 +39,7 @@ Chosen option 1.
 
 ### Fields
 - A field is `{key, label, help?, type, required, rules, attribute, inbox}`. Types: TEXT, LONG_TEXT, NUMBER, AMOUNT, DATE, UNIT, PERSON, CHOICE, MULTI_CHOICE. Rules by type: lengths; min, max and decimals; allowed currencies (ISO 4217); choices with stable keys and editable labels. At most 40 fields per type. Keys match `^[a-z][a-zA-Z0-9]{0,39}$` and must not collide with built-in attribute names.
-- The field list is validated by a JSON Schema (structure) and by Kotlin rules (meaning: unique keys, valid currencies, consistent bounds, choice keys unique).
+- The field list arrives as typed request objects, so the structure is checked when the request is read and is described in the OpenAPI contract. Kotlin rules check the meaning: unique keys, valid currencies, consistent bounds, unique choice keys. No separate JSON Schema is needed, unlike workflow definitions, which are imported as raw JSON.
 - Values live in `memo.metadata jsonb`: AMOUNT as `{value: "1250000.00", currency: "BDT"}` (a decimal string, never a float), DATE as `YYYY-MM-DD`, UNIT and PERSON as ids, CHOICE as a key, MULTI_CHOICE as a list of keys. Saving a draft checks types and rules; submit also checks required fields. Errors come as RFC 9457 field problems at `metadata.<key>`.
 - Labels are tenant content in the tenant's language (English only, Phase 3 Q3), not UI strings.
 

@@ -20,6 +20,7 @@ function backend(status: number, reply: object) {
       HttpResponse.json<DirectorySearchResult>({
         users: [{ person: { id: 'u1', displayName: 'Amina Initiator', email: 'a@bank.example' } }],
         positions: [],
+        units: [],
       }),
     ),
     http.post(`${API_ORIGIN}/api/v1/admin/workflow-definitions/purchase/versions/1/simulate`, () =>

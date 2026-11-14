@@ -12,6 +12,7 @@ import org.jooq.exception.IntegrityConstraintViolationException
 import org.jooq.impl.DSL
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.stereotype.Repository
+import tools.jackson.core.type.TypeReference
 import tools.jackson.databind.json.JsonMapper
 import java.time.Clock
 import java.time.Instant
@@ -19,7 +20,7 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.util.UUID
 
-/** What a memo-type version says (ADR-0043); later E01 tasks add fields, numbering and the lifecycle settings. */
+/** What a memo-type version says (ADR-0043); later E01 tasks add numbering and the lifecycle settings. */
 data class MemoTypeSettings(
     val name: String,
     val code: String,
@@ -30,6 +31,10 @@ data class MemoTypeSettings(
     val allowedApprovers: AllowedApprovers = AllowedApprovers(),
     val doaCheck: Boolean = false,
     val stepUpOnApprove: Boolean = true,
+    /** What the initiator fills in, in order (E01 T2). */
+    val fields: List<MemoField> = emptyList(),
+    /** Who may raise memos of the type (E01 T2); empty: everyone with `memo.create`. */
+    val raiseScope: RaiseScope = RaiseScope(),
 )
 
 /** One version of a memo type. */
@@ -70,7 +75,7 @@ class MemoTypeVersionStore(
             .selectFrom(MEMO_TYPE_VERSION)
             .where(MEMO_TYPE_VERSION.MEMO_TYPE_ID.eq(typeId))
             .orderBy(MEMO_TYPE_VERSION.NUMBER.desc())
-            .fetch(::row)
+            .fetch(json::row)
 
     fun version(
         typeId: UUID,
@@ -80,14 +85,21 @@ class MemoTypeVersionStore(
             .current()
             .selectFrom(MEMO_TYPE_VERSION)
             .where(MEMO_TYPE_VERSION.MEMO_TYPE_ID.eq(typeId), MEMO_TYPE_VERSION.NUMBER.eq(number))
-            .fetchOne(::row)
+            .fetchOne(json::row)
+
+    fun byId(id: UUID): MemoTypeVersionRow? =
+        tenantDsl
+            .current()
+            .selectFrom(MEMO_TYPE_VERSION)
+            .where(MEMO_TYPE_VERSION.ID.eq(id))
+            .fetchOne(json::row)
 
     fun published(typeId: UUID): MemoTypeVersionRow? =
         tenantDsl
             .current()
             .selectFrom(MEMO_TYPE_VERSION)
             .where(MEMO_TYPE_VERSION.MEMO_TYPE_ID.eq(typeId), MEMO_TYPE_VERSION.STATE.eq(ReviewState.PUBLISHED.name))
-            .fetchOne(::row)
+            .fetchOne(json::row)
 
     /** The draft or version in review of each type that has one, by type. */
     fun open(): Map<UUID, MemoTypeVersionRow> =
@@ -95,7 +107,7 @@ class MemoTypeVersionStore(
             .current()
             .selectFrom(MEMO_TYPE_VERSION)
             .where(MEMO_TYPE_VERSION.STATE.`in`(ReviewState.DRAFT.name, ReviewState.IN_REVIEW.name))
-            .fetch(::row)
+            .fetch(json::row)
             .associateBy { it.typeId }
 
     /**
@@ -124,7 +136,7 @@ class MemoTypeVersionStore(
                 .set(MEMO_TYPE_VERSION.MEMO_TYPE_ID, typeId)
                 .set(MEMO_TYPE_VERSION.NUMBER, newest + 1)
                 .set(MEMO_TYPE_VERSION.STATE, state.name)
-                .set(settingsFields(settings))
+                .set(json.settingsFields(settings))
                 .set(MEMO_TYPE_VERSION.CREATED_BY, createdBy)
                 .set(MEMO_TYPE_VERSION.CREATED_AT, now)
                 .set(MEMO_TYPE_VERSION.PUBLISHED_AT, now.takeIf { state == ReviewState.PUBLISHED })
@@ -142,7 +154,7 @@ class MemoTypeVersionStore(
         versionId: UUID,
         revision: Long,
         settings: MemoTypeSettings,
-    ): Boolean = move(versionId, ReviewState.DRAFT, ReviewState.DRAFT, revision, settingsFields(settings))
+    ): Boolean = move(versionId, ReviewState.DRAFT, ReviewState.DRAFT, revision, json.settingsFields(settings))
 
     /** Retires the published version of [typeId], if any (before another one is published). */
     fun retirePublished(typeId: UUID) {
@@ -183,45 +195,51 @@ class MemoTypeVersionStore(
     }
 
     fun now(): OffsetDateTime = OffsetDateTime.now(clock).withOffsetSameInstant(ZoneOffset.UTC)
-
-    private fun settingsFields(settings: MemoTypeSettings): Map<Field<*>, Any?> =
-        mapOf(
-            MEMO_TYPE_VERSION.NAME to settings.name,
-            MEMO_TYPE_VERSION.CODE to settings.code,
-            MEMO_TYPE_VERSION.DEFAULT_CLASSIFICATION_ID to settings.defaultClassificationId,
-            MEMO_TYPE_VERSION.DEFINITION_KEY to settings.definitionKey,
-            MEMO_TYPE_VERSION.ROUTE_POLICY to settings.routePolicy.name,
-            MEMO_TYPE_VERSION.ALLOWED_APPROVERS to JSONB.valueOf(json.writeValueAsString(settings.allowedApprovers)),
-            MEMO_TYPE_VERSION.DOA_CHECK to settings.doaCheck,
-            MEMO_TYPE_VERSION.STEP_UP_ON_APPROVE to settings.stepUpOnApprove,
-        )
-
-    private fun row(v: MemoTypeVersionRecord): MemoTypeVersionRow =
-        MemoTypeVersionRow(
-            id = v.id,
-            typeId = v.memoTypeId,
-            number = v.number,
-            state = ReviewState.valueOf(v.state),
-            revision = v.revision ?: 0,
-            settings =
-                MemoTypeSettings(
-                    name = v.name,
-                    code = v.code,
-                    defaultClassificationId = v.defaultClassificationId,
-                    definitionKey = v.definitionKey,
-                    routePolicy = RoutePolicy.valueOf(v.routePolicy),
-                    allowedApprovers =
-                        v.allowedApprovers?.let { json.readValue(it.data(), AllowedApprovers::class.java) } ?: AllowedApprovers(),
-                    doaCheck = v.doaCheck == true,
-                    stepUpOnApprove = v.stepUpOnApprove != false,
-                ),
-            createdBy = v.createdBy,
-            createdAt = v.createdAt.toInstant(),
-            submittedBy = v.submittedBy,
-            submittedAt = v.submittedAt?.toInstant(),
-            reviewedBy = v.reviewedBy,
-            reviewedAt = v.reviewedAt?.toInstant(),
-            reviewRemark = v.reviewRemark,
-            publishedAt = v.publishedAt?.toInstant(),
-        )
 }
+
+private fun JsonMapper.settingsFields(settings: MemoTypeSettings): Map<Field<*>, Any?> =
+    mapOf(
+        MEMO_TYPE_VERSION.NAME to settings.name,
+        MEMO_TYPE_VERSION.CODE to settings.code,
+        MEMO_TYPE_VERSION.DEFAULT_CLASSIFICATION_ID to settings.defaultClassificationId,
+        MEMO_TYPE_VERSION.DEFINITION_KEY to settings.definitionKey,
+        MEMO_TYPE_VERSION.ROUTE_POLICY to settings.routePolicy.name,
+        MEMO_TYPE_VERSION.ALLOWED_APPROVERS to JSONB.valueOf(writeValueAsString(settings.allowedApprovers)),
+        MEMO_TYPE_VERSION.DOA_CHECK to settings.doaCheck,
+        MEMO_TYPE_VERSION.STEP_UP_ON_APPROVE to settings.stepUpOnApprove,
+        MEMO_TYPE_VERSION.FIELDS to JSONB.valueOf(writeValueAsString(settings.fields)),
+        MEMO_TYPE_VERSION.RAISE_SCOPE to JSONB.valueOf(writeValueAsString(settings.raiseScope)),
+    )
+
+private val FIELDS = object : TypeReference<List<MemoField>>() {}
+
+private fun JsonMapper.row(v: MemoTypeVersionRecord): MemoTypeVersionRow =
+    MemoTypeVersionRow(
+        id = v.id,
+        typeId = v.memoTypeId,
+        number = v.number,
+        state = ReviewState.valueOf(v.state),
+        revision = v.revision ?: 0,
+        settings =
+            MemoTypeSettings(
+                name = v.name,
+                code = v.code,
+                defaultClassificationId = v.defaultClassificationId,
+                definitionKey = v.definitionKey,
+                routePolicy = RoutePolicy.valueOf(v.routePolicy),
+                allowedApprovers =
+                    v.allowedApprovers?.let { readValue(it.data(), AllowedApprovers::class.java) } ?: AllowedApprovers(),
+                doaCheck = v.doaCheck == true,
+                stepUpOnApprove = v.stepUpOnApprove != false,
+                fields = v.fields?.let { readValue(it.data(), FIELDS) }.orEmpty(),
+                raiseScope = v.raiseScope?.let { readValue(it.data(), RaiseScope::class.java) } ?: RaiseScope(),
+            ),
+        createdBy = v.createdBy,
+        createdAt = v.createdAt.toInstant(),
+        submittedBy = v.submittedBy,
+        submittedAt = v.submittedAt?.toInstant(),
+        reviewedBy = v.reviewedBy,
+        reviewedAt = v.reviewedAt?.toInstant(),
+        reviewRemark = v.reviewRemark,
+        publishedAt = v.publishedAt?.toInstant(),
+    )

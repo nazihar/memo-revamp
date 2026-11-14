@@ -129,6 +129,34 @@ class DirectorySearchIT : IntegrationTest() {
     }
 
     @Test
+    fun `units are found by name or code only when asked for (Phase 3 E01 unit picker)`() {
+        asAdmin {
+            val entity = entities.create("Units $unique", null, null, LocalDate.of(2026, 1, 1))
+            units.createUnit(entity.id, null, "LC$unique", "Loan Centre $unique", LocalDate.of(2026, 1, 1))
+        }
+        val session = mvc.signIn(tenant, person("Unit Searcher").email, password)
+
+        val byName = search(session, "centre $unique", "unit")
+        assertThat(byName)
+            .bodyJson()
+            .extractingPath("$.units[*].code")
+            .asArray()
+            .containsExactly("LC$unique")
+        assertThat(byName)
+            .bodyJson()
+            .extractingPath("$.users")
+            .asArray()
+            .isEmpty()
+        assertThat(search(session, "lc$unique", "unit")).bodyJson().extractingPath("$.units[0].name").isEqualTo("Loan Centre $unique")
+        assertThat(search(session, "centre $unique"))
+            .bodyJson()
+            .extractingPath("$.units")
+            .asArray()
+            .isEmpty()
+        assertThat(search(session, "centre $unique", "team")).hasStatus(HttpStatus.BAD_REQUEST)
+    }
+
+    @Test
     fun `Arabic names match without tatweel, and deactivated people are not offered`() {
         person("أحمد السيد$unique")
         val gone = person("Gone Person$unique")

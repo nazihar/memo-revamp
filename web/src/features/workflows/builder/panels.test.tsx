@@ -31,6 +31,7 @@ function backend() {
       HttpResponse.json<DirectorySearchResult>({
         users: [],
         positions: [{ id: 'p1', title: 'Head of Credit', unitId: 'crd', unitName: 'Credit Division' }],
+        units: [],
       }),
     ),
   )

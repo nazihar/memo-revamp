@@ -34,7 +34,7 @@ class MemoTasks(
         val memo = memoOf(taskId)
         // Step-up guards approvals only; a review step's Recommend is not an approval (design E03 §2).
         val approving = queries.task(taskId)?.positive != ActionKind.RECOMMEND
-        if (approving && types.get(memo.typeId).stepUpOnApprove) {
+        if (approving && types.forMemo(memo).stepUpOnApprove) {
             stepUp.require(Duration.ofMinutes(security.int(SecurityLimit.APPROVAL_STEP_UP_MINUTES).toLong()))
         }
         workflows.approve(taskId, remark)

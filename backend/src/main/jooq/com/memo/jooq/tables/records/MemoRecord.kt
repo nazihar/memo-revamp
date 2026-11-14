@@ -9,6 +9,7 @@ import com.memo.jooq.tables.Memo
 import java.time.OffsetDateTime
 import java.util.UUID
 
+import org.jooq.JSONB
 import org.jooq.Record1
 import org.jooq.impl.UpdatableRecordImpl
 
@@ -83,6 +84,14 @@ open class MemoRecord private constructor() : UpdatableRecordImpl<MemoRecord>(Me
         set(value): Unit = set(15, value)
         get(): OffsetDateTime = get(15) as OffsetDateTime
 
+    open var memoTypeVersionId: UUID?
+        set(value): Unit = set(16, value)
+        get(): UUID? = get(16) as UUID?
+
+    open var metadata: JSONB?
+        set(value): Unit = set(17, value)
+        get(): JSONB? = get(17) as JSONB?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -92,7 +101,7 @@ open class MemoRecord private constructor() : UpdatableRecordImpl<MemoRecord>(Me
     /**
      * Create a detached, initialised MemoRecord
      */
-    constructor(id: UUID, tenantId: UUID, reference: String, memoTypeId: UUID, subject: String, classificationId: UUID, classificationRank: Int, initiatorId: UUID, originUnitId: UUID? = null, status: String, documentFileId: UUID? = null, workflowInstanceId: UUID? = null, currentRound: Int? = null, version: Long? = null, createdAt: OffsetDateTime, updatedAt: OffsetDateTime): this() {
+    constructor(id: UUID, tenantId: UUID, reference: String, memoTypeId: UUID, subject: String, classificationId: UUID, classificationRank: Int, initiatorId: UUID, originUnitId: UUID? = null, status: String, documentFileId: UUID? = null, workflowInstanceId: UUID? = null, currentRound: Int? = null, version: Long? = null, createdAt: OffsetDateTime, updatedAt: OffsetDateTime, memoTypeVersionId: UUID? = null, metadata: JSONB? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.reference = reference
@@ -109,6 +118,8 @@ open class MemoRecord private constructor() : UpdatableRecordImpl<MemoRecord>(Me
         this.version = version
         this.createdAt = createdAt
         this.updatedAt = updatedAt
+        this.memoTypeVersionId = memoTypeVersionId
+        this.metadata = metadata
         resetTouchedOnNotNull()
     }
 }

@@ -153,7 +153,7 @@ class MemoTypeBackfillIT {
                 """
                 insert into memo_type (id, tenant_id, key, name, default_classification_id, route_policy, definition_key,
                                        step_up_on_approve, active, doa_check, created_at, updated_at)
-                values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, now(), now())
+                values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, clock_timestamp(), clock_timestamp())
                 """.trimIndent(),
             ).use {
                 it.setObject(1, UUID.randomUUID())

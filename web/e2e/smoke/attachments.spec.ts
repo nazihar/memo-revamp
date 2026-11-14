@@ -72,14 +72,14 @@ test.describe('as the initiator', () => {
     const coauthors = page.getByRole('region', { name: 'Co-authors' })
     await coauthors.getByRole('combobox', { name: 'Add a co-author' }).fill('Head of Cr')
     await page.getByRole('option', { name: /Demo Head of Credit/ }).click()
-    await expect(coauthors.getByText('Demo Head of Credit')).toBeVisible()
+    await expect(coauthors.getByRole('listitem').filter({ hasText: 'Demo Head of Credit' })).toBeVisible()
 
     // An attachment, previewed.
     const attachments = page.getByRole('region', { name: 'Attachments' })
     await attachments
       .getByLabel('Add an attachment')
       .setInputFiles({ name: 'quotation.pdf', mimeType: 'application/pdf', buffer: pdf() })
-    await expect(attachments.getByText('quotation.pdf')).toBeVisible()
+    await expect(attachments.getByRole('listitem').filter({ hasText: 'quotation.pdf' })).toBeVisible()
     await attachments.getByRole('button', { name: 'Preview quotation.pdf' }).click()
     const preview = page.getByRole('dialog', { name: 'quotation.pdf' })
     await expect(preview.getByText('Page 1 of 1')).toBeVisible()

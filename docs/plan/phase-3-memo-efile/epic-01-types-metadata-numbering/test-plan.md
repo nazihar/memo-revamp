@@ -83,11 +83,11 @@
 - Cross a financial-year boundary with the test clock and look at the register.
 
 ## Acceptance mapping
-The `tasks.md` acceptance criteria map to `MemoTypeVersionsIT` (T1), `MemoMetadataIT` (T2), `MemoAttributesIT` (T3), `NumberingIT` and `NumberingConcurrencyIT` (T4), `MemoCloseIT` (T5), and the web unit tests and `memo-types.spec.ts` (T6–T8).
+The `tasks.md` acceptance criteria map to `MemoTypeVersionsIT` (T1), `MemoMetadataIT` (T2), `MemoAttributesIT` (T3), `NumberingIT` and `NumberingConcurrencyIT` (T4), `MemoLifecycleIT` (T5), and the web unit tests and `memo-types.spec.ts` (T6–T8).
 
 ## Exit checklist
-- [ ] Every test above green in its stage; PIT ≥ 70 % on numbering
-- [ ] Matrix and audit coverage tests green with the new endpoints and actions
-- [ ] `EXPLAIN` recorded in the log
-- [ ] Owner's screen review recorded in `ux-review.md` before T6 and T7
-- [ ] ASVS rows updated (V2 business logic, V8, V16)
+- [x] Every test above green in its stage; PIT ≥ 70 % on numbering (84.7 %, T8)
+- [x] Matrix and audit coverage tests green with the new endpoints and actions
+- [x] `EXPLAIN` recorded in the log (T8, `NumberingPerformanceIT`)
+- [x] Owner's screen review recorded in `ux-review.md` before T6 and T7
+- [x] ASVS rows updated (V2 business logic, V8, V16, V3)

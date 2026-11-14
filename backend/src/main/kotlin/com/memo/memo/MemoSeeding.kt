@@ -147,28 +147,42 @@ class MemoSeeding(
 
     /**
      * The representative bank memo types (Phase 3 E01 T8): each created if missing and given its fields, numbering and
-     * policies through the reviewed lifecycle, drafted and submitted by [author] and approved by [reviewer]. Fills gaps
-     * only: a type whose published version has fields already is left alone. Returns how many types were published.
+     * policies through the reviewed lifecycle, drafted and submitted by [author] and approved by [reviewer]. A type whose
+     * code is in [definitions] runs on that workflow, which names every step (`FIXED`). Fills gaps only: a type whose
+     * published version has fields and the workflow asked for is left alone. Returns the types by code, and how many were
+     * published now.
      */
     fun representativeTypes(
         author: UUID,
         reviewer: UUID,
-    ): Int =
-        RepresentativeTypes.ALL.count { spec ->
-            val id =
-                asUser(author) {
-                    tx {
-                        types.all().firstOrNull { it.name == spec.name }?.id
-                            ?: types.create(MemoTypeFields(spec.name, null, true, true)).id
+        definitions: Map<String, String> = emptyMap(),
+    ): SeededTypes {
+        val ids = mutableMapOf<String, UUID>()
+        val published =
+            RepresentativeTypes.ALL.count { spec ->
+                val id =
+                    asUser(author) {
+                        tx {
+                            types.all().firstOrNull { it.name == spec.name }?.id
+                                ?: types.create(MemoTypeFields(spec.name, null, true, true)).id
+                        }
                     }
-                }
-            val published = asUser(author) { tx { types.published(id) } }
-            if (published == null || published.settings.fields.isNotEmpty()) return@count false
-            val draft = asUser(author) { tx { lifecycle.newDraft(id, spec.settings(published.settings.copy(code = spec.code))) } }
-            asUser(author) { tx { lifecycle.submit(id, draft.number, draft.revision) } }
-            asUser(reviewer) { tx { lifecycle.approve(id, draft.number, null) } }
-            true
-        }
+                ids[spec.code] = id
+                val current = asUser(author) { tx { types.published(id) } }
+                val definition = definitions[spec.code]
+                if (current == null) return@count false
+                val upToDate =
+                    current.settings.fields.isNotEmpty() && (definition == null || current.settings.definitionKey == definition)
+                if (upToDate) return@count false
+                val specced = spec.settings(current.settings.copy(code = spec.code))
+                val settings = definition?.let { specced.copy(definitionKey = it, routePolicy = RoutePolicy.FIXED) } ?: specced
+                val draft = asUser(author) { tx { lifecycle.newDraft(id, settings) } }
+                asUser(author) { tx { lifecycle.submit(id, draft.number, draft.revision) } }
+                asUser(reviewer) { tx { lifecycle.approve(id, draft.number, null) } }
+                true
+            }
+        return SeededTypes(ids, published)
+    }
 
     private fun <T> tx(block: () -> T): T = transactions.inTenant(TenantContext.current(), block)
 
@@ -178,6 +192,12 @@ class MemoSeeding(
         const val REJECT = "reject"
     }
 }
+
+/** The representative types by code, and how many of them were published by this run. */
+data class SeededTypes(
+    val ids: Map<String, UUID>,
+    val published: Int,
+)
 
 /** Runs [block] as [user] (seeders switch between the maker and the checker). */
 private fun <T> asUser(

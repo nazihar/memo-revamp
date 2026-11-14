@@ -26,7 +26,7 @@ const m = defineMessages<{ details: { type: string }; detailsLead: Record<string
   details: { id: 'memo.create.details', defaultMessage: '{type} details' },
   detailsLead: {
     id: 'memo.create.details.lead',
-    defaultMessage: 'You can save the draft with gaps; everything marked * is needed before you submit.',
+    defaultMessage: 'You can save the draft with gaps; every field not marked optional is needed before you submit.',
   },
 })
 

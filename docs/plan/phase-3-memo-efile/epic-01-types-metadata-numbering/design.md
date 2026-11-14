@@ -152,7 +152,7 @@ All under `/api/v1`; errors are RFC 9457 with `errors[{field, code, message}]`; 
 | `GET /memo-types/{id}/form` | signed in, may raise | The current published version's fields (for the create and edit forms) |
 | `GET /admin/memo-types` | `memo.types.manage` or `.approve` | Types with published version number, open draft state, active |
 | `POST /admin/memo-types` | manage; Idempotency | `{name, code}` creates the type and draft version 1 from defaults |
-| `GET /admin/memo-types/{id}` | manage or approve | Type with all versions (summary) |
+| `GET /admin/memo-types/{id}/versions` | manage or approve | All versions of the type, newest first (built in T1 instead of a type endpoint with summaries) |
 | `GET /admin/memo-types/{id}/versions/{n}` | manage or approve | Full version, ETag = revision |
 | `POST /admin/memo-types/{id}/versions` | manage; Idempotency | New draft copied from the published version (`DRAFT_EXISTS` if one is open) |
 | `PUT /admin/memo-types/{id}/versions/{n}` | manage; If-Match | Replace the draft body; validation problems as JSON pointers |
@@ -259,12 +259,12 @@ Each is written in the business transaction and asserted in a test (`AuditAction
    - Toolbar: Save, Submit, Approve, Send back, New draft.
    - Tabs:
      - Settings: workflow, route policy, approvers, classification, step-up, who may raise, retention, auto-close, attachment rules.
-     - Form: an ordered field list with up/down, add or edit a field in a side sheet, and a live preview of the create form.
+     - Form: an ordered field list with up/down, add or edit a field in a dialog (built so in T6: the Sheet component is the navigation drawer), and a live preview of the create form.
      - Numbering: format parts, series, reset, count per, moment, a live sample.
      - Changes: against the published version.
 3. **Numbering overview and register:** series → periods → numbers, with void reasons. "Set starting number" appears only while a period is unused.
 4. **Create memo:**
-   - Choose the type. With six or fewer types: radio cards with descriptions. With more: a searchable select.
+   - Choose the type. With six or fewer types: radio cards, each saying when it is numbered and whether it asks for details. With more: a list (the native select, which finds by typing).
    - Then subject, classification and the type's fields in one form.
    - "Save draft" keeps incomplete data; Submit lists missing required fields.
 5. **Memo view:**

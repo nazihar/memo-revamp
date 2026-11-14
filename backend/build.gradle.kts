@@ -137,8 +137,9 @@ tasks.withType<Test>().configureEach {
 pitest {
     pitestVersion = libs.versions.pitest.core
     junit5PluginVersion = libs.versions.pitest.junit5
-    targetClasses.set(listOf("com.memo.workflow.engine.*"))
-    targetTests.set(listOf("com.memo.workflow.engine.*"))
+    // The workflow engine (Phase 2) and the numbering formats (Phase 3 E01, ADR-0044): pure code where a surviving mutant is a bug.
+    targetClasses.set(listOf("com.memo.workflow.engine.*", "com.memo.memo.internal.NumberFormats*"))
+    targetTests.set(listOf("com.memo.workflow.engine.*", "com.memo.memo.internal.NumberFormatTest"))
     threads.set(4)
     outputFormats.set(listOf("HTML", "XML"))
     timestampedReports.set(false)

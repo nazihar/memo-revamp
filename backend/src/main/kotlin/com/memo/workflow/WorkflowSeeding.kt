@@ -9,6 +9,7 @@ import com.memo.workflow.internal.DoaLifecycle
 import com.memo.workflow.internal.DoaMember
 import com.memo.workflow.internal.DoaRule
 import com.memo.workflow.internal.DoaRuleGroup
+import com.memo.workflow.internal.DoaVersions
 import com.memo.workflow.internal.QueueMember
 import com.memo.workflow.internal.Queues
 import com.memo.workflow.internal.VersionState
@@ -23,6 +24,18 @@ data class DoaSeedGroup(
 )
 
 /**
+ * One rule of a seeded DoA (design E04 §4.3): for [subjectType] items, of memo type [memoTypeId] when given, whose
+ * [condition] holds (none: always), asking [groups] in order.
+ */
+data class DoaSeedRule(
+    val name: String,
+    val subjectType: String,
+    val groups: List<DoaSeedGroup>,
+    val memoTypeId: UUID? = null,
+    val condition: String? = null,
+)
+
+/**
  * Definitions for seeders (the demo tenant, test plan E03 T11), through the same lifecycle as the API: written and
  * submitted by one person, approved by another, as the user bound to the current unit of work. Never called from
  * requests. Each call is its own tenant transaction.
@@ -33,6 +46,7 @@ class WorkflowSeeding(
     private val lifecycle: DefinitionLifecycle,
     private val queues: Queues,
     private val doa: DoaLifecycle,
+    private val doaVersions: DoaVersions,
     private val directory: OrgDirectory,
     private val transactions: TenantTransactions,
     private val json: JsonMapper,
@@ -94,18 +108,27 @@ class WorkflowSeeding(
     /** Whether the tenant has a DoA version yet. */
     fun doaSeeded(): Boolean = tx { doa.list().isNotEmpty() }
 
+    /** Whether a DoA version is being written or reviewed (only one may be at a time). */
+    fun doaOpen(): Boolean = tx { doa.list().any { it.state == VersionState.DRAFT || it.state == VersionState.IN_REVIEW } }
+
+    /** The names of the rules of the DoA version in force today, in order; null when no version is in force. */
+    fun doaRulesInForce(): List<String>? =
+        tx { doaVersions.inForce(directory.today())?.let { version -> doaVersions.rules(version.id).map { it.name } } }
+
     /**
-     * A DoA version taking effect today with one rule, [name], for every [subjectType] item, asking [groups] in order;
-     * submitted for review by the current user. Returns the version's number.
+     * A DoA version taking effect today with [rules] ahead of the rules of the version in force (rules match in order,
+     * so the new ones come first); submitted for review by the current user. Returns the version's number.
      */
-    fun submitDoa(
-        subjectType: String,
-        name: String,
-        groups: List<DoaSeedGroup>,
-    ): Int =
+    fun submitDoa(rules: List<DoaSeedRule>): Int =
         tx {
-            val members = groups.map { g -> DoaRuleGroup(g.needed, g.positions.map { DoaMember("position", positionId = it) }) }
-            val draft = doa.create(directory.today(), listOf(DoaRule(name, subjectType, groups = members)))
+            val kept = doaVersions.inForce(directory.today())?.let { doaVersions.rules(it.id) }.orEmpty()
+            val added =
+                rules.map { rule ->
+                    val groups =
+                        rule.groups.map { g -> DoaRuleGroup(g.needed, g.positions.map { DoaMember("position", positionId = it) }) }
+                    DoaRule(rule.name, rule.subjectType, rule.memoTypeId, condition = rule.condition, groups = groups)
+                }
+            val draft = doa.create(directory.today(), added + kept)
             doa.submit(draft.version.number, draft.version.revision).version.number
         }
 

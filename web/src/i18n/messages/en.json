@@ -615,7 +615,7 @@
   "memo.close": "Close",
   "memo.conflict": "Someone acted on this memo meanwhile. It was reloaded.",
   "memo.create.details": "{type} details",
-  "memo.create.details.lead": "You can save the draft with gaps; everything marked * is needed before you submit.",
+  "memo.create.details.lead": "You can save the draft with gaps; every field not marked optional is needed before you submit.",
   "memo.create.lead": "Start with the subject and type. You add the document and the approvers next.",
   "memo.create.submit": "Create draft",
   "memo.create.title": "New memo",

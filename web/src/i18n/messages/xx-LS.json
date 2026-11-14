@@ -4703,7 +4703,7 @@
   "memo.create.details.lead": [
     {
       "type": 0,
-      "value": "You can save the draft with gaps; everything marked * is needed before you submit.SSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": "You can save the draft with gaps; every field not marked optional is needed before you submit.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.create.lead": [

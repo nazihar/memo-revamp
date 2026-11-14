@@ -5,17 +5,17 @@
 **Last updated:** 2026-11-14 (UTC+06:00) by Claude (agent)
 
 ## Current position
-- **Phase 3 (memo and e-file management, milestone M1) started on 2026-11-14** at the owner's instruction. The overview (`phase-3-memo-efile/overview.md`) is written and **waits for the owner's approval and answers to Q1–Q5**. No epic has started.
+- **Phase 3 (memo and e-file management, milestone M1) started on 2026-11-14.** Overview approved the same day (`phase-3-memo-efile/overview.md §10`): no pilot bank (general features; representative configuration in the demo tenant), English only, order E01–E06 → Phase 1b → E07, per-epic gate delegation kept. **Current epic: E01 memo types, metadata and numbering** (planning).
 - **Phase 2 (workflow engine) closed on 2026-11-14** (owner instruction; `phase-2-workflow-engine/retrospective.md`, exit recorded in `overview.md §10`). All six epics merged and on dev: E01 first slice (D1), E02 ONLYOFFICE editing, E03 definition model and runtime, E04 assignees, queues and DoA, E05 timers and SLAs, E06 visual builder (PRs #34–#83). The eight Phase 2 journeys pass against dev; the load target is met (inbox p95 10 ms with 10,000 memos in review). Items that need the owner in person are carried (Waiting for human).
-- **Phase 1a closed on 2026-11-09** (`phase-1a-minimum-core/retrospective.md`). **Phase 1b** is not started; it must finish before Phase 3 exits.
+- **Phase 1a closed on 2026-11-09** (`phase-1a-minimum-core/retrospective.md`). **Phase 1b** is not started; it runs after Phase 3 E06 and before E07 (Phase 3 Q4).
 - **Dev environment:** https://dev.memo-revamp.naziharitsolution.com and the operator console https://admin.dev.memo-revamp.naziharitsolution.com on the VM 123.176.58.175. It deploys automatically after every green `ci` run on `master`. The owner's operator account is enrolled.
 - **Phase 0:** done (`docs/plan/phase-0-foundations/`). **Release:** `v0.1.0` (2026-10-15). **Product name:** `memo` everywhere except the repository name (A1).
 - **Branches:** `master` holds PRs #1–#83 (2026-11-13/14: #41–#81 Phase 2 E03–E06 merged in order, #82 load stage, #83 phase close).
 
-## State (Phase 3, in planning)
-- [x] Overview written (2026-11-14): seven epics (E01 memo types, metadata and numbering; E02 documents; E03 templates, note sheet and access; E04 PDF/A rendition and complex scripts; E05 inbox, search and dashboards; E06 legacy import; E07 pilot readiness and the M1 security gate)
-- [ ] Owner: approve the overview, answer Q1–Q5
-- [ ] E01 plan (research, ADRs, design, threat model, tasks, test plan); the week-1 rendering research (R3) beside it
+## State (Phase 3, E01 planning)
+- [x] Overview written (2026-11-14): seven epics (E01 memo types, metadata and numbering; E02 documents; E03 templates, note sheet and access; E04 PDF/A rendition; E05 inbox, search and dashboards; E06 legacy import; E07 go-live readiness and the M1 security gate)
+- [x] Overview approved (2026-11-14), Q1–Q4 answered; Q5 (pen tester, production environment, licence review) open until E07
+- [ ] E01 plan (research, ADRs, design, threat model, tasks, test plan); its screen flows (memo-type admin, create form) go to the owner before build
 
 ## State (Phase 2, closed)
 - [x] Overview approved (2026-11-09), Q1–Q5 answered, per-epic gate delegated (E01 screen flows reviewed by the owner before build)
@@ -33,13 +33,13 @@
 - [ ] Owner demo, moderated usability walkthrough, manual keyboard and screen-reader pass (carried)
 
 ## Next step
-1. Owner: approve the Phase 3 overview and answer Q1–Q5 (`phase-3-memo-efile/overview.md §9`): gate delegation, pilot onboarding material, the pilot's languages, where Phase 1b goes, and external parties with lead time. Then the agent writes the E01 plan and starts the rendering research.
+1. Agent: write the E01 plan (memo types, metadata and numbering), then send the memo-type admin and create-form screen flows to the owner before building them.
 2. Owner, in person when convenient: the D1 and phase demos on dev, the builder walkthrough and the manual accessibility pass (Waiting for human).
 3. Before 2026-11-22: take the rebuilt distroless digest from Renovate and delete the zlib entries in `.trivyignore`.
 4. Follow-ups (both retrospectives, "Carried"): `AuditPerformanceIT`, `NotificationPerformanceIT`, the full-signature ClamAV corpus nightly, sample bodies for the remaining mutating matrix cells, upstream clean-ups (`apk upgrade` lines, Spring Session licence exceptions, Guava pin), Spring Boot 4.2 GA; from Phase 2: the step ordinal after a recusal (retrospective), a sweep for timers dropped after their retry limit, the inbox sorted by due time, a warning level for validation, saved simulation scenarios, React Flow 13, the web suite's timeouts under load.
 
 ## Waiting for human
-- **Phase 3 overview:** approval and Q1–Q5 (`phase-3-memo-efile/overview.md §9`).
+- **Phase 3:** Q5 before E07 (pen tester, production environment, ONLYOFFICE licence review); the E01 screen flows when the plan is written.
 - **Phase 2 in person:** the D1 demo (`phase-2-workflow-engine/epic-01-first-slice/demo.md`) and the phase demo (`phase-2-workflow-engine/demo.md`), both on dev; the builder usability walkthrough; the manual keyboard and screen-reader pass (checklist in `epic-06-visual-builder/ux-review.md`).
 - **Carried from Phase 1a (in person, no rush):** the demo (`docs/plan/phase-1a-minimum-core/demo.md`), a moderated usability walkthrough (login + MFA, org editing, tenant administration) and a manual keyboard + screen-reader pass (NVDA or VoiceOver), including the E01 patterns gallery (`pnpm dev`, `/patterns`).
 - **GitHub setup:** required reviewers on the `release` environment (may need a paid plan on a private repository; meanwhile only the owner can push `v*` tags) and branch protection on `master`.

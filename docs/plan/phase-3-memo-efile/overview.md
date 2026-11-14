@@ -2,13 +2,15 @@
 
 > Level-1 plan (see `AGENTS.md §5`). It splits the phase into epics, fixes their order and dependencies, lists the phase-level research and ADRs, and maps the exit criteria to epics. Each epic gets its own detailed plan (`epic-<NN>-<slug>/`: research, ADRs, design, threat model, tasks, test plan) just before it starts.
 >
-> **Status:** waiting for the owner's approval (§9). Written 2026-11-14.
+> **Status:** approved 2026-11-14 (see §10). Written 2026-11-14.
+>
+> **After approval (§10):** there is **no pilot bank** yet and memos are **English only**. Wherever this plan says "the pilot", the demo tenant's representative bank-style configuration stands in, and the items that need a real customer (their configuration, UAT, their production environment) are carried until one exists. Complex-script rendering is not built; generated pages go through one rendering interface so a shaping engine can be added when a customer needs it.
 
 ---
 
 ## 1. Phase goal (from `MASTER_PLAN.md`)
 
-The day-to-day memo system the pilot bank can run its approvals on. The phase ends at **milestone M1, pilot go-live**: after an external penetration test, ASVS L2 verification, UAT sign-off by the pilot, and a production deployment with monitoring, backups and runbooks.
+The day-to-day memo system the pilot bank can run its approvals on. The phase ends at **milestone M1, pilot go-live**: after an external penetration test, ASVS L2 verification, UAT sign-off by the pilot, and a production deployment with monitoring, backups and runbooks. With no pilot yet (§10), Phase 3 ends **ready for a first customer**: everything built, verified and deployable, with the customer-specific steps carried.
 
 ### What Phases 1a and 2 left us
 - **Memo (minimum):** subject, memo type, classification, initiator and origin unit; one main .docx with immutable versions and SHA-256 hashes; draft → in review (round N) → approved / rejected / withdrawn / cancelled, with returned as a loop back. Every action is bound to the document version and hash it applied to; the document is locked during review (ADR-0036).
@@ -40,10 +42,10 @@ Seven epics. Estimates are in team-weeks and size the scope. Phases 0–2 ran fa
 | E01 | **Memo types, metadata and numbering** | Full memo-type admin: metadata form builder (text, number, amount + currency, date, unit, person, choice, required attachments), numbering schemes, default template, workflow, classification and retention policy, maker-checker on publish. Configurable gapless numbering assigned on submit or on final approval, voids recorded. Metadata becomes workflow attributes (amount for DoA and conditions). Memo lifecycle completed: closed / archived, references and links between memos, related files | 4–5 wks | — |
 | E02 | **Documents: conversion, versions, attachments, editing** | Convert on upload (PDF rendition and text extraction as background jobs); attachments of any type with preview and stricter-only classification; version comparison (side-by-side text diff); ONLYOFFICE completed: .xlsx, co-editing while drafting, conversion API, and the hardening review; the desktop-Word round trip if research clears it | 5–6 wks | E01 (attachment rules on memo types) |
 | E03 | **Templates, note sheet and access** | Tenant .docx templates with placeholders filled on the server; note sheet with rich-text remarks, attachments, mentions and linked corrections; access model (classification + unit scope + workflow participation + explicit share); "copy to" distribution with read receipts; approval stamps with authentication context (e-signature v1) | 4–5 wks | E01, E02 |
-| E04 | **Final rendition (PDF/A) and complex scripts** | On final approval, an archival PDF/A combining the memo document, note sheet history, approval stamps and attachments, with bookmarks; stored in an object-locked bucket with its checksum in the audit log. Generated pages render Bengali, Arabic and other complex scripts correctly. **Its rendering research starts in week 1, beside E01** (§8 R2) | 4–5 wks | E02 (PDF renditions), E03 (note sheet, stamps) |
+| E04 | **Final rendition (PDF/A)** | On final approval, an archival PDF/A combining the memo document, note sheet history, approval stamps and attachments, with bookmarks; stored in an object-locked bucket with its checksum in the audit log. Generated pages are English only, drawn through one rendering interface so complex-script shaping can be added later (§10 Q3) | 3–4 wks | E02 (PDF renditions), E03 (note sheet, stamps) |
 | E05 | **Inbox, search and dashboards** | Inbox completed: watching, team view for unit heads, sorted by due time, non-decision bulk actions; full-text search over metadata, note sheet and extracted text, permission-filtered, one text-search configuration per language, saved searches; dashboards (pending by person and unit, average approval time per type, overdue, throughput); synthetic volume V1 (1,000,000 memos) and the search and inbox load tests | 4–5 wks | E02 (extracted text), E03 (access model) |
 | E06 | **Legacy import** | Bulk import of legacy memos from files plus a metadata spreadsheet: originals kept as the source of truth, PDF renditions and extracted text generated, numbers preserved, a dry run, and a reconciliation report | 3 wks | E01, E02, E04 |
-| E07 | **Pilot readiness and the M1 security gate** | The pilot's memo types, templates, numbering and DoA configured by admins without code; production deployment to the pilot's environment; backups with a restore drill; monitoring and alerting; runbooks, support process and training material; external pen test and ASVS L2 verification of Phases 0–3 (and 1b), findings fixed and retested; UAT sign-off | 4–6 wks (calendar time set by external parties) | E01–E06, Phase 1b |
+| E07 | **Go-live readiness and the M1 security gate** | Representative bank memo types, templates, numbering and DoA configured in the demo tenant by an admin without code; a production-grade deployment; backups with a restore drill; monitoring and alerting; runbooks, support process and training material; ASVS L2 verification of Phases 0–3 and 1b; the external pen test, findings fixed and retested. A customer's own configuration, UAT and production environment are carried until there is one (§10) | 4–6 wks (pen test time set by the tester) | E01–E06, Phase 1b |
 
 ### Order and parallelism
 
@@ -52,23 +54,19 @@ flowchart LR
   E01[E01 Memo types,<br/>metadata, numbering] --> E02[E02 Documents,<br/>conversion, editing]
   E01 --> E03[E03 Templates,<br/>note sheet, access]
   E02 --> E03
-  E02 --> E04[E04 Final rendition<br/>PDF/A, complex scripts]
+  E02 --> E04[E04 Final rendition<br/>PDF/A]
   E03 --> E04
-  RS([Rendering research<br/>week 1]) -.-> E04
   E02 --> E05[E05 Inbox, search,<br/>dashboards]
   E03 --> E05
   E04 --> E06[E06 Legacy import]
   E05 --> E07[E07 Pilot readiness<br/>+ M1 security gate]
-  E06 --> E07
-  P1B([Phase 1b]) --> E07
-  PILOT([Pilot onboarding<br/>material §9]) -. configures .-> E07
-  PILOT -. shapes .-> E01
+  E06 --> P1B([Phase 1b])
+  P1B --> E07
 ```
 
-- **Critical path:** E01 → E02 → E03 → E04 → E06 → E07, about 24–30 team-weeks plus the external parties' time in E07.
-- **The rendering question goes first.** PDFBox does not shape complex scripts, and every generated page (note sheet, stamps, rendition cover) depends on the answer. Its research and a throwaway prototype run in week 1, beside E01, so E04 starts with a decided approach (ADR-RENDER).
+- **Critical path:** E01 → E02 → E03 → E04 → E06 → E07, about 23–29 team-weeks, then Phase 1b, then E07 (§10 Q4).
 - **Parallel work:** E05 can start once E03's access model is merged, beside E04. E06's spreadsheet format and dry-run design can start once E01 is merged.
-- **E07 waits for Phase 1b.** The pen test must cover what the pilot will run, including SSO and key management. §9 Q4 proposes the order.
+- **Phase 1b comes after E06 and before E07** (§10 Q4). One pen test then covers everything a customer will run, including SSO and key management.
 - **Every epic extends Phase 2's memo.** Nothing replaces the Phase 2 tables. Changes to existing tables follow expand → migrate → contract, and existing memos on dev keep their `M-YYYY-NNNNN` references.
 
 ---
@@ -99,15 +97,15 @@ flowchart LR
 - **E-signature v1:** each approval recorded with its authentication context (MFA freshness, IP, device, document hash) and rendered as an approval stamp in the memo view and, from E04, in the rendition.
 - **Phase 2 follow-up:** the step ordinal after a recusal (retrospective, "Carried").
 
-### E04 — Final rendition (PDF/A) and complex scripts
-- **Rendering approach (ADR-RENDER):** decided in week 1 of the phase (R3): ONLYOFFICE Document Builder, an HTML-to-PDF engine with OpenType shaping, or another option, merged with PDFBox. Proven with Bengali and Arabic names and remarks before E04 starts.
+### E04 — Final rendition (PDF/A)
+- **Rendering approach (ADR-RENDER):** English only (§10 Q3). Generated pages (cover, note sheet, stamps) are drawn through one rendering interface; PDFBox with embedded fonts is enough for English. R3 records the options for complex scripts (ONLYOFFICE Document Builder, an HTML-to-PDF engine with shaping) so a later customer's languages plug in behind the interface.
 - **Final rendition:** on final approval, a background job builds one PDF/A file: the memo document (filled template), a cover page with metadata and number, the note sheet history by round, approval stamps, and the attachments (converted, or embedded as PDF/A-3 attachments where conversion is impossible), with bookmarks. Stored in an object-locked record bucket; its checksum in the audit log; validated by veraPDF in tests.
-- **Golden tests:** render-and-compare of generated pages with complex scripts in names, remarks and stamps (TESTING_STRATEGY §3.8), plus text-extraction checks.
+- **Golden tests:** render-and-compare of generated pages with English names, remarks and stamps (TESTING_STRATEGY §3.8), plus text-extraction checks. The complex-script golden tests wait for a customer language.
 - **Memo view:** download the rendition; the rendition's checksum and validation result shown to auditors.
 
 ### E05 — Inbox, search and dashboards
 - **Inbox completed:** watching (follow a memo), team view for unit heads (their unit's pending and overdue items, permission-filtered), sorted by due time (Phase 2 follow-up), and non-decision bulk actions.
-- **Search:** PostgreSQL full-text search with generated `tsvector` columns and GIN indexes over metadata, note sheet and extracted document text; a text-search configuration per language (R7: Bengali has no built-in PostgreSQL dictionary); filters on type, status, dates, unit, amount; permission-filtered through E03's access filter; saved searches; search is rate-limited and audited at query level. Extracted text is as confidential as the document.
+- **Search:** PostgreSQL full-text search with generated `tsvector` columns and GIN indexes over metadata, note sheet and extracted document text; a text-search configuration per language (English now, §10 Q3; the column design leaves room for more); filters on type, status, dates, unit, amount; permission-filtered through E03's access filter; saved searches; search is rate-limited and audited at query level. Extracted text is as confidential as the document.
 - **Dashboards:** pending by person and unit, average approval time per memo type, overdue, throughput over time; scoped by the viewer's rights.
 - **Volume:** the generator adds V1 (1,000,000 memos with history, extracted text and note sheets for a large tenant); Gatling tests for search and the inbox against it (NFR P1: p95 < 300 ms); `EXPLAIN` reviewed for every new list and search query. The threshold for introducing OpenSearch is recorded (R7).
 
@@ -116,11 +114,11 @@ flowchart LR
 - **Process:** a dry run that validates everything and reports problems without writing; then a background import, resumable and idempotent per row, preserving original documents as the source of truth, generating renditions and extracted text, keeping legacy numbers (marked as imported, outside the gapless series), and an audit entry per imported memo.
 - **Reconciliation report:** counts and checksums per row (files found, files imported, renditions made, rows rejected and why), downloadable and kept with the import.
 
-### E07 — Pilot readiness and the M1 security gate
-- **Pilot configuration:** the pilot's top memo types, templates, numbering and DoA configured by a tenant admin through the UI, with no code, from the onboarding material (§9 Q2). A sample of the pilot's legacy data imported with a reconciliation report.
-- **Production deployment** to the environment the pilot chooses (§9 Q5), from the same artifacts as dev; monitoring and alerting; backups with a **restore drill** (NFR A2–A4, audit-chain and object-lock checks after restore); runbooks; the support process; user training material (initiator, approver, tenant admin).
+### E07 — Go-live readiness and the M1 security gate
+- **Representative configuration:** a set of typical bank memo types (for example credit approval, expense, procurement, policy), with templates, numbering and DoA, configured by a tenant admin through the UI with no code, and a representative legacy sample imported with a reconciliation report. When a customer arrives, their own configuration replaces it (§10 Q2).
+- **Production-grade deployment** from the same artifacts as dev, to an environment the owner chooses (§9 Q5); monitoring and alerting; backups with a **restore drill** (NFR A2–A4, audit-chain and object-lock checks after restore); runbooks; the support process; user training material (initiator, approver, tenant admin).
 - **Security gate:** ASVS 5.0 L2 verification of everything built in Phases 0–3 and 1b, recorded in `docs/security/asvs-checklist.md`; an external penetration test; every critical and high finding fixed and retested before M1.
-- **UAT** with the pilot's users against their memo types, and their sign-off.
+- **UAT** with a customer's users is carried until there is a customer. Until then, the owner's acceptance walkthrough of the representative configuration stands in.
 
 ---
 
@@ -153,12 +151,12 @@ flowchart LR
 
 | Exit criterion (`MASTER_PLAN.md`) | Delivered by | Evidence |
 |---|---|---|
-| The pilot bank's top memo types run end to end with their real templates, numbering and DoA rules, configured by admins without code | E01, E03, **E07** | A Playwright journey per pilot memo type, configured through the admin UI only; needs the pilot material (§9 Q2) |
+| The pilot bank's top memo types run end to end with their real templates, numbering and DoA rules, configured by admins without code | E01, E03, **E07** | No pilot (§10 Q2): a Playwright journey per representative memo type, configured through the admin UI only. The customer's own types are carried |
 | Final PDF renditions validate as PDF/A and match the approved content; object lock verified | **E04** | veraPDF in CI; text-extraction match; object-lock retention check on the record bucket |
-| Legacy import of a sample of pilot data succeeds with a reconciliation report | E06, **E07** | Import IT on synthetic data (E06); the pilot sample's report (E07) |
-| Generated pages render the pilot's languages correctly (golden-file tests with real names and remarks) | **E04** | Render-and-compare golden tests (§9 Q3 fixes the languages) |
+| Legacy import of a sample of pilot data succeeds with a reconciliation report | E06, **E07** | Import IT on synthetic data (E06); a representative sample's report (E07); a customer sample is carried |
+| Generated pages render the pilot's languages correctly (golden-file tests with real names and remarks) | **E04** | English only (§10 Q3): render-and-compare golden tests in English |
 | External pen test and ASVS L2 verification complete; no open critical or high findings | **E07** | Pen test report and retest; `asvs-checklist.md` |
-| UAT sign-off by the pilot; production live with monitoring, backups (restore tested) and runbooks | **E07** | Signed UAT record; restore-drill report; runbooks in `docs/runbooks/` |
+| UAT sign-off by the pilot; production live with monitoring, backups (restore tested) and runbooks | **E07** | Restore-drill report; runbooks in `docs/runbooks/`; production-grade deployment. Customer UAT carried (§10 Q2) |
 
 **Phase-3 special tests** (`TESTING_STRATEGY.md §12`):
 
@@ -167,7 +165,7 @@ flowchart LR
 | ONLYOFFICE integration and security (forged callbacks rejected, no outbound network) | E02 (Phase 2 E02 covered the editing callbacks) |
 | Gapless numbering under concurrency (parallel submits and approvals, rollbacks leave no gap, voids recorded) | E01 |
 | PDF/A validation | E04 |
-| Complex-script golden tests with the pilot's languages | E04 |
+| Complex-script golden tests with the pilot's languages | E04 (English golden tests; complex scripts carried, §10 Q3) |
 | Permission-filtered search (no result, count, snippet or facet leaks an unreadable memo) | E05 |
 | Legacy import reconciliation | E06 |
 | External pen test + ASVS L2 verification before M1 | E07 |
@@ -195,11 +193,11 @@ Each item is answered in the `research.md` of the epic shown, with sources and a
 |---|---|---|
 | R1 | Current stable versions, licences and maintenance status of everything each epic adds: ONLYOFFICE Docs and its conversion API, Tika, PDFBox, veraPDF, the templating library (R4), the rich-text editor, the shaping engine (R3), Spring Boot 4.2 status | Every epic |
 | R2 | **Numbering in e-office and bank practice:** formats, financial-year resets, when numbers are taken, voids, continuing a legacy sequence; and the locking pattern under concurrency (counter row per scheme and period) | E01 |
-| R3 | **Complex-script rendering:** ONLYOFFICE Document Builder vs an HTML-to-PDF engine with HarfBuzz shaping (licences and on-prem footprint checked) vs other options; font licensing and embedding for PDF/A; validated with Bengali and Arabic | E04 (**runs in week 1**) |
+| R3 | **Generated-page rendering:** fonts and embedding for PDF/A in English; and, recorded for later, the complex-script options (ONLYOFFICE Document Builder, an HTML-to-PDF engine with HarfBuzz shaping) | E04 |
 | R4 | **Server-side .docx templating:** poi-tl vs docx4j vs ONLYOFFICE Document Builder; fidelity with real letterheads (headers, tables, images, fields), placeholder syntax admins can write, licences, maintenance | E03 |
 | R5 | **ONLYOFFICE Docs API, production depth:** co-editing modes, force-save, document keys, the conversion API and its limits, cache behaviour and cleanup, scaling and HA; AGPL plus additional-terms obligations for SaaS and on-prem (legal-review brief) | E02 |
 | R6 | **Desktop Word round trip:** WebDAV + `ms-word:` URI; token scoping, expiry, audit; Windows and macOS behaviour; whether it can meet our rules at all | E02 |
-| R7 | **Search:** permission-filtered full-text search in PostgreSQL at 1,000,000 memos (RLS + access filter + GIN), Bengali and English text-search configurations (simple vs custom dictionaries vs ICU-based tokenising), snippets that never leak, and the point at which OpenSearch would be needed | E05 |
+| R7 | **Search:** permission-filtered full-text search in PostgreSQL at 1,000,000 memos (RLS + access filter + GIN), the English text-search configuration and how another language would be added (simple vs custom dictionaries vs ICU-based tokenising), snippets that never leak, and the point at which OpenSearch would be needed | E05 |
 | R8 | **PDF/A for merged renditions:** PDF/A-2 vs PDF/A-3, converting arbitrary attachments vs embedding them, bookmarks, fonts; PDFBox + veraPDF | E04 |
 | R9 | **Rich text in an append-only record:** a sanitised editor and storage format (ProseMirror/Tiptap JSON vs restricted HTML), rendering into the PDF, XSS defence under the strict CSP | E03 |
 | R10 | **Industry practice:** memo-type configuration, "copy to" and file movement conventions, read receipts, note sheet corrections, team views and dashboards in e-office and memo products (extending Phase 2's R11 benchmark) | E01, E03, E05 |
@@ -219,7 +217,7 @@ Numbers are assigned when written, starting at ADR-0043. Each one uses MADR.
 | ADR-TEMPLATE | Template format, placeholder syntax and filling library | E03 |
 | ADR-NOTES | Note sheet entries: rich-text format, attachments, mentions, corrections, where they live | E03 |
 | ADR-ACCESS | Memo access model and its SQL filter (participants, shares, copy-to, unit scope, clearance, recusal) | E03 |
-| ADR-RENDER | Generated pages with complex scripts: the rendering engine and how it joins PDFBox | E04 (decided in week 1) |
+| ADR-RENDER | Generated pages: the rendering interface, fonts, and the path to complex scripts | E04 |
 | ADR-PDFA | Final rendition: PDF/A level, structure, attachments, storage and verification | E04 |
 | ADR-SEARCH | Full-text search design, language configurations, permission filtering, OpenSearch threshold | E05 |
 | ADR-IMPORT | Legacy import format, dry run, idempotency, legacy numbers | E06 |
@@ -228,8 +226,8 @@ Numbers are assigned when written, starting at ADR-0043. Each one uses MADR.
 
 | # | Risk | Mitigation |
 |---|---|---|
-| R1 | **No pilot onboarding material yet** (`MASTER_PLAN §9`). Phase 3 design should start from the pilot's memo types, templates, numbering and languages | E01–E06 are built as general, configurable features against the demo tenant and realistic bank-style samples; the pilot material shapes them as it arrives; their configuration and UAT are in E07. §9 Q2 lists what is needed first and by when |
-| R2 | Complex scripts render wrongly in generated pages (PDFBox does no shaping) | R3 and a prototype in week 1; ADR-RENDER before E04; golden tests with real names |
+| R1 | **No pilot bank** (§10 Q2), so no real memo types, templates or users shape the design | General, configurable features built against the demo tenant and realistic bank-style samples (R10 benchmark); the owner reviews key screens before build; customer configuration and UAT carried |
+| R2 | A later customer needs complex scripts, which PDFBox cannot shape | English only for now (§10 Q3); one rendering interface; R3 records the options |
 | R3 | The pen test finds high-severity issues late, or a tester cannot be booked in time | Book the tester early (§9 Q5); ASVS rows kept current per epic; ZAP and the security suite already in CI; a buffer in E07 for fixes and retest |
 | R4 | Phase 1b not done when Phase 3 is otherwise ready, delaying M1 | §9 Q4 places 1b before E07 so the pen test covers it once |
 | R5 | Search at 1,000,000 memos is slow once permission filters and RLS combine | R7 and a V1 prototype early in E05; `EXPLAIN` gates; OpenSearch threshold recorded rather than assumed |
@@ -252,8 +250,13 @@ Numbers are assigned when written, starting at ADR-0043. Each one uses MADR.
 
 | Item | By | Date | Notes |
 |---|---|---|---|
-| Phase 3 overview | — | — | Waiting for the owner |
+| Phase 3 overview | Product owner (aradnazihar) | 2026-11-14 | Approved as recommended. The owner **kept the per-epic gate delegation**: the agent writes each epic plan in full, then implements it without waiting. The screen flows for the memo-type admin and create form (E01), the note sheet and "copy to" (E03) and search (E05) go to the owner before build. |
 
 ### Answers to open questions
 | Q | Date | Answer |
 |---|---|---|
+| Q1 | 2026-11-14 | **Approved as recommended; delegation kept**, with the three screen-flow reviews above. |
+| Q2 | 2026-11-14 | **There is no pilot bank.** Build general features, as recommended. Wherever the master plan names the pilot, representative bank-style configuration in the demo tenant stands in (E07); a customer's own configuration, legacy sample and UAT are carried until there is one. |
+| Q3 | 2026-11-14 | **English only.** No complex-script rendering in Phase 3; generated pages go through one rendering interface so it can be added later. Arabic stays only as the right-to-left proof of the web layout (Phase 1a Q8). |
+| Q4 | 2026-11-14 | **As recommended:** Phase 3 E01–E06, then Phase 1b, then E07, so one pen test covers everything a customer will run. |
+| Q5 | — | Not answered yet; needed before E07 (pen tester, production environment, licence review). |

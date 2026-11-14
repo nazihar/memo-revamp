@@ -145,13 +145,17 @@ class MemoTypeBackfillIT {
             .apply { if (target != null) target(target) }
             .load()
 
+    /** One transaction (the tenant is set transaction-locally, never for the session, ADR-0006), committed at the end. */
     private fun <T> connect(block: (Connection) -> T): T =
-        DriverManager.getConnection(db.jdbcUrl, "memo_migrator", db.migratorPassword).use(block)
+        DriverManager.getConnection(db.jdbcUrl, "memo_migrator", db.migratorPassword).use { c ->
+            c.autoCommit = false
+            block(c).also { c.commit() }
+        }
 
     private fun tenant(
         c: Connection,
         tenant: UUID,
-    ) = c.prepareStatement("select set_config('app.tenant_id', ?, false)").use {
+    ) = c.prepareStatement("select set_config('app.tenant_id', ?, true)").use {
         it.setString(1, tenant.toString())
         it.execute()
     }

@@ -150,3 +150,12 @@
   The memo, docedit, authz, contract and tenancy suites pass (1,392 tests).
 - **Flaky plan checks:** in the shared test database (thousands of tenants) the planner may pick the tenant index instead of `memo_number_uk` for the register page, still at 18 ms. `NumberingPerformanceIT` now asserts an index and no sequential scan. `OrgPerformanceIT` failed once the same way and passed alone; it is left as it is.
 - **XLSX in the editor** (attachments): not in this task. The adapter's document type is fixed to DOCX; spreadsheets move with the web work in T7.
+
+## 2026-11-14 — T6 comparison (backend)
+- `GET /memos/{id}/files/{fileId}/compare?from&to`: the texts of two versions of the memo's document or of one of its attachments, each with number, name, SHA-256, uploader and time, and the text rendition's state.
+  - The text is included only when `DONE`; `truncated` says when it was cut.
+  - Readers of the memo may compare its document; an attachment also needs the reader's clearance for its effective level.
+  - Anything else, unknown versions included, is 404. Both reads are audited as `file.opened` with `channel: compare`.
+- The two texts are read outside the resolving transaction.
+- `DocumentCompareIT`: pending state, texts after the worker runs, uploader and hash, audit, a stranger, an unknown file and an unknown version. Matrix entry.
+- The browser side (jsdiff in a worker, side-by-side view) is with the web work in T7.

@@ -4673,6 +4673,18 @@
         "required" : [ "problems", "valid" ],
         "type" : "object"
       },
+      "VersionComparison" : {
+        "properties" : {
+          "from" : {
+            "$ref" : "#/components/schemas/VersionText"
+          },
+          "to" : {
+            "$ref" : "#/components/schemas/VersionText"
+          }
+        },
+        "required" : [ "from", "to" ],
+        "type" : "object"
+      },
       "VersionRenditions" : {
         "properties" : {
           "preview" : {
@@ -4767,6 +4779,47 @@
           }
         },
         "required" : [ "number", "state" ],
+        "type" : "object"
+      },
+      "VersionText" : {
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "number" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "sha256" : {
+            "type" : "string"
+          },
+          "state" : {
+            "enum" : [ "PENDING", "DONE", "FAILED", "NOT_POSSIBLE" ],
+            "type" : "string"
+          },
+          "text" : {
+            "type" : [ "string", "null" ]
+          },
+          "truncated" : {
+            "type" : "boolean"
+          },
+          "uploadedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "uploadedBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/Named"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "versionId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "name", "number", "sha256", "state", "truncated", "uploadedAt", "versionId" ],
         "type" : "object"
       },
       "WorkflowView" : {
@@ -9606,6 +9659,58 @@
           }
         },
         "summary" : "Who the delegation of authority asks to approve the memo",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/memos/{id}/files/{fileId}/compare" : {
+      "get" : {
+        "operationId" : "compareMemoFileVersions",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "fileId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "from",
+          "required" : true,
+          "schema" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        }, {
+          "in" : "query",
+          "name" : "to",
+          "required" : true,
+          "schema" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/VersionComparison"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The texts of two versions of the memo's document or an attachment",
         "tags" : [ "memo" ]
       }
     },

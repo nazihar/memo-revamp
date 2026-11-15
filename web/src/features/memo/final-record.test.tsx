@@ -92,7 +92,14 @@ describe('final record', () => {
   it('lets a keeper make a new version with a reason, keeping the earlier one', async () => {
     const user = userEvent.setup()
     server.use(accessHandler(['memo.rendition.regenerate']))
-    const v2 = { ...v1, version: 2, trigger: 'REGENERATE' as const, fileId: 'f1', versionId: 'fv2' }
+    const v2 = {
+      ...v1,
+      version: 2,
+      trigger: 'REGENERATE' as const,
+      fileId: 'f1',
+      versionId: 'fv2',
+      reason: 'Checking after a converter upgrade.',
+    }
     const earlier = { ...v1, reason: undefined }
     record({ state: 'READY', current: v2, versions: [v2, earlier] })
     let body: unknown
@@ -107,6 +114,9 @@ describe('final record', () => {
       'href',
       '/api/v1/files/f1/versions/fv1/content',
     )
+    // Version 1 is listed with the reason it was replaced (version 2's).
+    const box = await screen.findByRole('region', { name: 'Final record' })
+    expect(within(box).getByText(/^v1 · .* · Checking after a converter upgrade\.$/)).toBeInTheDocument()
     await user.click(await screen.findByRole('button', { name: 'Make a new version' }))
     const dialog = await screen.findByRole('dialog', { name: 'Make a new version of the final record' })
     const make = within(dialog).getByRole('button', { name: 'Make version 3' })

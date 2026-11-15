@@ -125,6 +125,13 @@ export function FinalRecord({
   if (!data || data.state === 'NONE') return null
   const current = data.current
   const earlier = data.versions.filter((v) => v.state === 'READY' && v.version !== current?.version)
+  // An earlier version is listed with the reason it was replaced: the reason given for the next version.
+  const replacedBecause = (version: number) => {
+    const next = data.versions
+      .filter((v) => v.version > version)
+      .reduce<(typeof data.versions)[number] | undefined>((a, v) => (!a || v.version < a.version ? v : a), undefined)
+    return next?.reason ? ` · ${next.reason}` : ''
+  }
   const time = (at: string) => intl.formatDate(at, { dateStyle: 'medium', timeStyle: 'short' })
 
   return (
@@ -172,7 +179,7 @@ export function FinalRecord({
                   {intl.formatMessage(mv.replaced, {
                     version: v.version,
                     time: time(v.createdAt),
-                    reason: v.reason ? ` · ${v.reason}` : '',
+                    reason: replacedBecause(v.version),
                   })}
                 </span>
                 {contentUrl(v) ? (

@@ -121,6 +121,10 @@ function memoHandlers(view: MemoView = memo) {
     http.get(`${API_ORIGIN}/api/v1/memos/m1/history`, () => HttpResponse.json<HistoryRound[]>(history)),
     http.get(`${API_ORIGIN}/api/v1/memos/m1/notes`, () => HttpResponse.json({ entries: [], canWrite: true })),
     http.get(`${API_ORIGIN}/api/v1/memos/m1/approvals`, () => HttpResponse.json([])),
+    http.get(`${API_ORIGIN}/api/v1/memos/m1/copies`, () =>
+      HttpResponse.json({ copies: [], canEdit: false, canAdd: false, memoVersion: view.version }),
+    ),
+    http.get(`${API_ORIGIN}/api/v1/memos/m1/shares`, () => HttpResponse.json([])),
   ]
 }
 

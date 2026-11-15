@@ -57,7 +57,14 @@ function handlers(shown: DoaVersionResponse[]) {
     ),
     http.get(`${API_ORIGIN}/api/v1/memo-types`, () =>
       HttpResponse.json<MemoTypeOption[]>([
-        { id: 't1', name: 'Credit memo', stepUpOnApprove: true, hasFields: false, numberingMoment: 'ON_SUBMIT' },
+        {
+          id: 't1',
+          name: 'Credit memo',
+          stepUpOnApprove: true,
+          hasFields: false,
+          numberingMoment: 'ON_SUBMIT',
+          template: false,
+        },
       ]),
     ),
     http.get(`${API_ORIGIN}/api/v1/org/units`, () => HttpResponse.json<OrgUnit[]>([])),

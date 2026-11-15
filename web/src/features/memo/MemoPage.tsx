@@ -12,7 +12,7 @@ import {
   listMyMemosInfiniteQueryKey,
   listMyTasksInfiniteQueryKey,
 } from '@/api/generated/@tanstack/react-query.gen'
-import { claimTask, releaseTask } from '@/api/generated/sdk.gen'
+import { claimTask, fillMemoDocumentFromTemplate, releaseTask } from '@/api/generated/sdk.gen'
 import type { MemoView } from '@/api/generated/types.gen'
 import { PROBLEM, type Problem } from '@/api/http'
 import { FileUpload } from '@/components/page/FileUpload'
@@ -26,6 +26,7 @@ import { ActionDialog, type MemoActionKind } from './ActionDialog'
 import { DoaPreviewDialog } from './DoaPreviewDialog'
 import { dueLabel, isOverdue } from './due'
 import { EditMemoDialog } from './EditMemoDialog'
+import { MemoAccess } from './MemoAccess'
 import { MemoAttachments } from './MemoAttachments'
 import { MemoCoauthors } from './MemoCoauthors'
 import { MemoDetails } from './MemoDetails'
@@ -97,6 +98,7 @@ export function MemoPage({ memoId }: { memoId: string }) {
   const [editing, setEditing] = useState(false)
   const [previewing, setPreviewing] = useState(false)
   const [claiming, setClaiming] = useState(false)
+  const [filling, setFilling] = useState(false)
   const [comparing, setComparing] = useState(false)
   const session = useSession()
 
@@ -161,6 +163,18 @@ export function MemoPage({ memoId }: { memoId: string }) {
       await onProblem(problem as Problem | undefined)
     } finally {
       setClaiming(false)
+    }
+  }
+  /** Fill the draft's first document from the type's template (ADR-0048). */
+  const fill = async () => {
+    setFilling(true)
+    try {
+      const next = await fillMemoDocumentFromTemplate({ path: { id: view.id }, throwOnError: true })
+      await replace(next.data)
+    } catch (problem) {
+      await onProblem(problem as Problem | undefined)
+    } finally {
+      setFilling(false)
     }
   }
   const claims = [
@@ -234,6 +248,14 @@ export function MemoPage({ memoId }: { memoId: string }) {
             ) : (
               <p className="text-sm text-muted-foreground">{intl.formatMessage(mm.documentNone)}</p>
             )}
+            {allowed.has('FILL_FROM_TEMPLATE') ? (
+              <div className="mt-3 flex flex-col items-start gap-1">
+                <Button variant="outline" disabled={filling} onClick={() => void fill()}>
+                  {intl.formatMessage(mm.fillFromTemplate)}
+                </Button>
+                <p className="text-xs text-muted-foreground">{intl.formatMessage(mm.fillFromTemplateHint)}</p>
+              </div>
+            ) : null}
             {allowed.has('UPLOAD_DOCUMENT') ? (
               <div className="mt-3">
                 <FileUpload
@@ -344,6 +366,7 @@ export function MemoPage({ memoId }: { memoId: string }) {
             onChanged={(next) => void replace(next)}
             onProblem={(p) => void onProblem(p)}
           />
+          <MemoAccess memo={view} onProblem={(p) => void onProblem(p)} />
           {allowed.has('EDIT') || view.interests.length > 0 ? (
             <Section title={intl.formatMessage(mm.interests)} lead={intl.formatMessage(mm.interestsLead)}>
               <MemoInterests

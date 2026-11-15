@@ -22,7 +22,15 @@ import { MemoFields } from './MemoFields'
 import { MemoTypeChooser } from './MemoTypeChooser'
 import { MetadataFields, type MetadataState } from './MetadataFields'
 
-const m = defineMessages<{ details: { type: string }; detailsLead: Record<string, never> }>({
+const m = defineMessages<{
+  details: { type: string }
+  detailsLead: Record<string, never>
+  template: { type: string }
+}>({
+  template: {
+    id: 'memo.create.template',
+    defaultMessage: 'The document starts from the {type} template, filled with what you enter here.',
+  },
   details: { id: 'memo.create.details', defaultMessage: '{type} details' },
   detailsLead: {
     id: 'memo.create.details.lead',
@@ -97,6 +105,11 @@ export function NewMemoPage() {
         {/* Only once the types are known: how many there are decides between choices and a list. */}
         {types.data ? (
           <MemoTypeChooser types={types.data} value={typeId} onChange={chooseType} error={errors.typeId} />
+        ) : null}
+        {type?.template ? (
+          <p role="note" className="text-sm text-muted-foreground">
+            {intl.formatMessage(m.template, { type: type.name })}
+          </p>
         ) : null}
         <MemoFields values={{ ...values, typeId }} onChange={setValues} errors={errors} showType={false} />
         {fields.length > 0 && type ? (

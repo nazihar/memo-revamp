@@ -921,6 +921,7 @@ export type MemoTypeOption = {
     name: string;
     numberingMoment: 'ON_SUBMIT' | 'ON_APPROVAL';
     stepUpOnApprove: boolean;
+    template: boolean;
 };
 
 export type MemoTypeSettingsRequest = {
@@ -942,6 +943,7 @@ export type MemoTypeSettingsRequest = {
 
 export type MemoTypeTemplateView = {
     available: Array<TemplateTagHelp>;
+    owner: string;
     template?: TemplateFileView | null;
 };
 
@@ -1922,6 +1924,7 @@ export type TemplateFileView = {
 
 export type TemplatePreviewView = {
     fileId: string;
+    versionId: string;
 };
 
 export type TemplateProblemView = {

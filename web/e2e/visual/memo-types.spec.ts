@@ -104,9 +104,30 @@ const type: MemoType = {
 }
 
 const options: MemoTypeOption[] = [
-  { id: 't0', name: 'General memo', hasFields: false, numberingMoment: 'ON_SUBMIT', stepUpOnApprove: true },
-  { id: 't1', name: 'Credit proposal', hasFields: true, numberingMoment: 'ON_SUBMIT', stepUpOnApprove: true },
-  { id: 't2', name: 'Procurement', hasFields: true, numberingMoment: 'ON_APPROVAL', stepUpOnApprove: true },
+  {
+    id: 't0',
+    name: 'General memo',
+    hasFields: false,
+    numberingMoment: 'ON_SUBMIT',
+    stepUpOnApprove: true,
+    template: false,
+  },
+  {
+    id: 't1',
+    name: 'Credit proposal',
+    hasFields: true,
+    numberingMoment: 'ON_SUBMIT',
+    stepUpOnApprove: true,
+    template: true,
+  },
+  {
+    id: 't2',
+    name: 'Procurement',
+    hasFields: true,
+    numberingMoment: 'ON_APPROVAL',
+    stepUpOnApprove: true,
+    template: false,
+  },
 ]
 
 const form: MemoTypeForm = { id: 't1', name: 'Credit proposal', version: 2, numberingMoment: 'ON_SUBMIT', fields }
@@ -146,6 +167,28 @@ async function setUp(page: Page, theme: string, locale: string) {
     route.fulfill({ json: [version, { ...version, number: 2, state: 'PUBLISHED', revision: 5 }] }),
   )
   await page.route('**/api/v1/admin/memo-types/t1/versions/*', (route) => route.fulfill({ json: version }))
+  await page.route('**/api/v1/admin/memo-types/t1/versions/*/template', (route) =>
+    route.fulfill({
+      json: {
+        owner: 'tv1',
+        template: {
+          fileId: 'f1',
+          versionId: 'fv1',
+          name: 'credit-letterhead.docx',
+          sizeBytes: 48128,
+          uploadedAt: '2026-11-09T08:00:00Z',
+          tags: ['reference', 'subject', 'facilityAmount'],
+          problems: [],
+          previewed: true,
+        },
+        available: [
+          { tag: 'reference', label: 'Reference', kind: 'VALUE' },
+          { tag: 'subject', label: 'Subject', kind: 'VALUE' },
+          { tag: 'facilityAmount', label: 'Facility amount', kind: 'VALUE' },
+        ],
+      },
+    }),
+  )
   await page.route('**/api/v1/admin/memo-types/definitions', (route) =>
     route.fulfill({
       json: [{ key: 'credit-authority', name: 'Credit under authority', routed: false }] satisfies DefinitionChoice[],

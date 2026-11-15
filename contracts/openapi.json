@@ -2502,9 +2502,12 @@
           },
           "stepUpOnApprove" : {
             "type" : "boolean"
+          },
+          "template" : {
+            "type" : "boolean"
           }
         },
-        "required" : [ "hasFields", "id", "name", "numberingMoment", "stepUpOnApprove" ],
+        "required" : [ "hasFields", "id", "name", "numberingMoment", "stepUpOnApprove", "template" ],
         "type" : "object"
       },
       "MemoTypeSettingsRequest" : {
@@ -2571,6 +2574,10 @@
             },
             "type" : "array"
           },
+          "owner" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
           "template" : {
             "oneOf" : [ {
               "$ref" : "#/components/schemas/TemplateFileView"
@@ -2579,7 +2586,7 @@
             } ]
           }
         },
-        "required" : [ "available" ],
+        "required" : [ "available", "owner" ],
         "type" : "object"
       },
       "MemoTypeVersionResponse" : {
@@ -5186,9 +5193,13 @@
           "fileId" : {
             "format" : "uuid",
             "type" : "string"
+          },
+          "versionId" : {
+            "format" : "uuid",
+            "type" : "string"
           }
         },
-        "required" : [ "fileId" ],
+        "required" : [ "fileId", "versionId" ],
         "type" : "object"
       },
       "TemplateProblemView" : {

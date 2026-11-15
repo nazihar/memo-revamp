@@ -60,6 +60,8 @@ data class TemplateFileView(
 
 /** The template block of a memo-type version: its template (if any) and the tags it may use. */
 data class MemoTypeTemplateView(
+    /** The version's id: the `owner` of a template upload. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val owner: UUID,
     val template: TemplateFileView?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val available: List<TemplateTagHelp>,
 )
@@ -67,6 +69,7 @@ data class MemoTypeTemplateView(
 data class TemplatePreviewView(
     /** A file of purpose `memo.template.preview`; open its PDF rendition. */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val fileId: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val versionId: UUID,
 )
 
 /**
@@ -90,9 +93,10 @@ class MemoTemplatesController(
         @PathVariable number: String,
     ): ResponseEntity<MemoTypeTemplateView> {
         val info = service.info(typeId, versionNumber(number))
-        val settings = transactions.readInTenant(TenantContext.current()) { lifecycle.get(typeId, versionNumber(number)).settings }
+        val row = transactions.readInTenant(TenantContext.current()) { lifecycle.get(typeId, versionNumber(number)) }
         val view =
             MemoTypeTemplateView(
+                owner = row.id,
                 template =
                     info?.let {
                         TemplateFileView(
@@ -108,7 +112,7 @@ class MemoTemplatesController(
                             it.previewed,
                         )
                     },
-                available = help(settings),
+                available = help(row.settings),
             )
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(view)
     }
@@ -119,7 +123,7 @@ class MemoTemplatesController(
     fun preview(
         @PathVariable typeId: UUID,
         @PathVariable number: String,
-    ): TemplatePreviewView = TemplatePreviewView(service.preview(typeId, versionNumber(number)))
+    ): TemplatePreviewView = service.preview(typeId, versionNumber(number)).let { (file, version) -> TemplatePreviewView(file, version) }
 
     @DeleteMapping("/api/v1/admin/memo-types/{typeId}/versions/{number}/template")
     @RequiresPermission(Permission.MEMO_TYPES_MANAGE)

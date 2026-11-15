@@ -60,6 +60,7 @@ const messages = defineMessages({
   workflows: { id: 'nav.workflows', defaultMessage: 'Workflows' },
   doa: { id: 'nav.doa', defaultMessage: 'Delegation of authority' },
   queues: { id: 'nav.queues', defaultMessage: 'Queues' },
+  distributionLists: { id: 'nav.distributionLists', defaultMessage: 'Distribution lists' },
   substitutions: { id: 'nav.substitutions', defaultMessage: 'Substitutions' },
   calendar: { id: 'nav.calendar', defaultMessage: 'Business calendar' },
   status: { id: 'nav.status', defaultMessage: 'Status' },
@@ -242,6 +243,15 @@ export const navigation: NavItem[] = [
     icon: FileStack,
     group: 'administration',
     audience: { anyOf: ['memo.types.manage', 'memo.types.approve'] },
+    enabled: true,
+  },
+  {
+    id: 'distributionLists',
+    to: '/admin/distribution-lists',
+    label: messages.distributionLists,
+    icon: Users,
+    group: 'administration',
+    audience: { permission: 'memo.distribution.manage' },
     enabled: true,
   },
   {

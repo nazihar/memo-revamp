@@ -66,6 +66,11 @@ export const mm = defineMessages({
   routeSaved: { id: 'memo.route.saved', defaultMessage: 'Approvers saved.' },
   history: { id: 'memo.history', defaultMessage: 'History' },
   noteSheet: { id: 'memo.noteSheet', defaultMessage: 'Note sheet' },
+  fillFromTemplate: { id: 'memo.document.fillFromTemplate', defaultMessage: 'Start from the template' },
+  fillFromTemplateHint: {
+    id: 'memo.document.fillFromTemplateHint',
+    defaultMessage: 'Fills the type’s template with this memo’s details. You can still upload your own file.',
+  },
   historyEmpty: { id: 'memo.history.empty', defaultMessage: 'Nothing has happened yet: the memo is a draft.' },
   historyEarlier: { id: 'memo.history.earlier', defaultMessage: 'Earlier round: its approvals no longer count.' },
   holders: { id: 'memo.holders', defaultMessage: 'Waiting for' },

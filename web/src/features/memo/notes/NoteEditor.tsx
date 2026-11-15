@@ -95,6 +95,8 @@ export default function NoteEditor({
         renderText: ({ node }) => `@${String(node.attrs.label)}`,
         suggestion: {
           char: '@',
+          // Names have spaces: "@Head of Cr" keeps searching.
+          allowSpaces: true,
           items: async ({ query }) => {
             if (query.trim().length < 2) return []
             const found = await searchDirectory({ query: { q: query, kind: ['user'], limit: 8 } })

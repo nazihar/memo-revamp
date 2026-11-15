@@ -6,6 +6,8 @@ import com.memo.common.context.ActorContext
 import com.memo.docedit.DocumentEditing
 import com.memo.files.Files
 import com.memo.identity.UserSummaries
+import com.memo.memo.internal.rendition.MemoRenditionQueries
+import com.memo.memo.internal.rendition.RecordState
 import com.memo.org.OrgDirectory
 import com.memo.org.OrgUnitDirectory
 import com.memo.workflow.ActionKind
@@ -201,6 +203,9 @@ data class MemoView(
     val readingAs: ParticipantKind? = null,
     /** When it was closed; null unless closed. */
     val closedAt: Instant? = null,
+    /** Where its final record is (ADR-0053): NONE until it is approved. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+    val rendition: RecordState = RecordState.NONE,
 )
 
 /** Builds [MemoView]s: names from identity, the document from files. Inside a tenant transaction. */
@@ -221,13 +226,13 @@ class MemoViews(
     private val templateStore: MemoTemplateStore,
     private val readable: MemoReadable,
     private val policy: com.memo.common.authz.Policy,
+    private val renditions: MemoRenditionQueries,
 ) {
     fun of(memo: Memo): MemoView {
         val interests = interestStore.of(memo.id)
         val coauthors = coauthorStore.coauthors(memo.id)
         val route = routes.route(memo.id)
         val positions = route.flatMap { it.positions }
-        val titles = directory.positions(positions)
         val holdersToday = directory.holders(positions)
         val workflow = memo.workflowInstanceId?.let { workflows.viewOf(MemoWorkflowSubject.TYPE, memo.id) }
         val holders = workflow?.currentAssignees.orEmpty()
@@ -259,7 +264,7 @@ class MemoViews(
             status = memo.status,
             initiator = Named(memo.initiatorId, names[memo.initiatorId].orEmpty()),
             document = document(memo.documentFileId),
-            route = routeViews(route, names, titles.mapValues { it.value.title }, holdersToday),
+            route = routeViews(route, names, directory.positions(positions).mapValues { it.value.title }, holdersToday),
             round = memo.currentRound,
             holders = holders.map { Named(it, names[it].orEmpty()) },
             myTask = open?.let { taskRef(it, names) },
@@ -276,6 +281,7 @@ class MemoViews(
             linkedFrom = links.second,
             canLink = memo.status !in MemoViewsRules.UNLINKABLE,
             readingAs = user?.let { readable.kindOf(memo.id, it) },
+            rendition = renditions.state(memo.id, approved = memo.approvedAt != null),
             closedAt = memo.closedAt,
             originUnit = originUnit(memo.originUnitId),
             createdAt = memo.createdAt,

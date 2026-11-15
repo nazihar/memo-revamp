@@ -2807,6 +2807,10 @@
           "reference" : {
             "type" : [ "string", "null" ]
           },
+          "rendition" : {
+            "enum" : [ "NONE", "PENDING", "READY", "FAILED" ],
+            "type" : "string"
+          },
           "round" : {
             "format" : "int32",
             "type" : "integer"
@@ -2852,7 +2856,7 @@
             "type" : "integer"
           }
         },
-        "required" : [ "allowedActions", "canLink", "classification", "coauthors", "createdAt", "details", "holders", "id", "initiator", "interests", "linkedFrom", "links", "round", "route", "sendBackTargets", "staleDetails", "status", "subject", "type", "updatedAt", "version" ],
+        "required" : [ "allowedActions", "canLink", "classification", "coauthors", "createdAt", "details", "holders", "id", "initiator", "interests", "linkedFrom", "links", "rendition", "round", "route", "sendBackTargets", "staleDetails", "status", "subject", "type", "updatedAt", "version" ],
         "type" : "object"
       },
       "MfaEnrolment" : {
@@ -4307,6 +4311,100 @@
         "required" : [ "id", "kind", "name" ],
         "type" : "object"
       },
+      "RecordAuditView" : {
+        "properties" : {
+          "compliant" : {
+            "type" : "boolean"
+          },
+          "failedRules" : {
+            "additionalProperties" : {
+              "format" : "int32",
+              "type" : "integer"
+            },
+            "type" : "object"
+          },
+          "placeholders" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "profile" : {
+            "type" : "string"
+          },
+          "rasterisedPages" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "renderer" : {
+            "type" : "string"
+          },
+          "sha256" : {
+            "type" : "string"
+          },
+          "validator" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "compliant", "failedRules", "placeholders", "profile", "rasterisedPages", "renderer", "sha256", "validator" ],
+        "type" : "object"
+      },
+      "RecordVersionView" : {
+        "properties" : {
+          "audit" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/RecordAuditView"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "classification" : {
+            "type" : [ "string", "null" ]
+          },
+          "createdAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "fileId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "finishedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "pages" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "readable" : {
+            "type" : "boolean"
+          },
+          "reason" : {
+            "type" : [ "string", "null" ]
+          },
+          "sizeBytes" : {
+            "format" : "int64",
+            "type" : [ "integer", "null" ]
+          },
+          "state" : {
+            "enum" : [ "PENDING", "BUILDING", "READY", "FAILED" ],
+            "type" : "string"
+          },
+          "trigger" : {
+            "enum" : [ "APPROVED", "BACKFILL", "REGENERATE", "RETRY" ],
+            "type" : "string"
+          },
+          "version" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "versionId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "createdAt", "readable", "state", "trigger", "version" ],
+        "type" : "object"
+      },
       "RecoveryCodes" : {
         "properties" : {
           "recoveryCodes" : {
@@ -4380,26 +4478,25 @@
       },
       "RenditionView" : {
         "properties" : {
-          "error" : {
-            "type" : [ "string", "null" ]
-          },
-          "kind" : {
-            "enum" : [ "PDF", "TEXT" ],
-            "type" : "string"
-          },
-          "pages" : {
-            "format" : "int32",
-            "type" : [ "integer", "null" ]
+          "current" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/RecordVersionView"
+            }, {
+              "type" : "null"
+            } ]
           },
           "state" : {
-            "enum" : [ "PENDING", "DONE", "FAILED", "NOT_POSSIBLE" ],
+            "enum" : [ "NONE", "PENDING", "READY", "FAILED" ],
             "type" : "string"
           },
-          "truncated" : {
-            "type" : "boolean"
+          "versions" : {
+            "items" : {
+              "$ref" : "#/components/schemas/RecordVersionView"
+            },
+            "type" : "array"
           }
         },
-        "required" : [ "kind", "state", "truncated" ],
+        "required" : [ "state", "versions" ],
         "type" : "object"
       },
       "ReportingLineRequest" : {
@@ -11293,6 +11390,34 @@
           }
         },
         "summary" : "Who received a copy and who has opened the memo",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/memos/{id}/rendition" : {
+      "get" : {
+        "operationId" : "getMemoRendition",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RenditionView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The memo's final record: its state and versions",
         "tags" : [ "memo" ]
       }
     },

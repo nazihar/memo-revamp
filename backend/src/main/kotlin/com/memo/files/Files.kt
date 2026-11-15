@@ -34,6 +34,12 @@ interface FilePurpose {
     /** Record purposes: years to retain each version; null uses the tenant setting `files.records.retention.years`. */
     val retentionYears: Int? get() = null
 
+    /**
+     * Years to retain a version uploaded for [ownerId], inside the upload's tenant transaction: [retentionYears] unless
+     * the owner decides (a memo's final record follows its memo type, ADR-0053).
+     */
+    fun retentionYears(ownerId: String?): Int? = retentionYears
+
     /** Whether opening a version is audited (`file.opened`); false only for non-sensitive content such as a logo. */
     val auditReads: Boolean
 
@@ -164,6 +170,24 @@ interface FileUploads {
         ownerId: String?,
         name: String,
         bytes: ByteArray,
+        idempotencyKey: String,
+    ): UUID
+
+    /** A new file of [purposeKey] for [ownerId], streamed from [file] (large generated files, such as final records). */
+    fun uploadFile(
+        purposeKey: String,
+        ownerId: String?,
+        name: String,
+        file: java.nio.file.Path,
+        idempotencyKey: String,
+    ): UUID
+
+    /** A new version of [fileId] streamed from [file], guarded on its [expectedFileVersion]. */
+    fun uploadVersionFile(
+        fileId: UUID,
+        expectedFileVersion: Long,
+        name: String,
+        file: java.nio.file.Path,
         idempotencyKey: String,
     ): UUID
 

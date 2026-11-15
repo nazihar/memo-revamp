@@ -150,7 +150,7 @@ internal class Uploads(
                     properties.maxUploadBytes,
                     settings.get(MAX_BYTES_SETTING)?.value?.toLongOrNull(),
                 ).min(),
-            retention = if (purpose.storage == StorageClass.RECORD) recordRetention(purpose) else null,
+            retention = if (purpose.storage == StorageClass.RECORD) recordRetention(purpose, ownerId) else null,
             allowedTypes = purpose.allowedTypesNow() intersect purpose.allowedTypes,
         )
     }
@@ -169,9 +169,12 @@ internal class Uploads(
         return purpose
     }
 
-    private fun recordRetention(purpose: FilePurpose): RecordRetention {
+    private fun recordRetention(
+        purpose: FilePurpose,
+        ownerId: String?,
+    ): RecordRetention {
         val mode = settings.get(RETENTION_MODE_SETTING)?.value?.let { value -> RetentionMode.entries.firstOrNull { it.name == value } }
-        val years = purpose.retentionYears ?: settings.get(RETENTION_YEARS_SETTING)?.value?.toIntOrNull()
+        val years = purpose.retentionYears(ownerId) ?: settings.get(RETENTION_YEARS_SETTING)?.value?.toIntOrNull()
         return RecordRetention(mode ?: RetentionMode.GOVERNANCE, years ?: DEFAULT_RETENTION_YEARS)
     }
 

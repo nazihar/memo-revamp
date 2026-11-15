@@ -27,3 +27,50 @@
   - PDFBox's jar has no sRGB profile; the output intent uses the JDK's own (`ICC_Profile.getInstance(CS_sRGB)`).
   - The record's metadata uses only predefined XMP properties. The number is `dc:identifier`; the hashes and versions are in `dc:description`. A custom `memo:` schema would need a PDF/A extension schema for no gain.
   - Noto Sans ships with Italic and Bold Italic too (notes can be italic), about 1.7 MB in all.
+
+## 2026-11-15 — T2 and T3 built
+- **T2, generated pages (#115):** `PageRenderer` and its page model; the PDFBox renderer with the four Noto Sans faces; golden images reviewed by eye; a jqwik property; veraPDF accepts generated pages with our metadata as 2u.
+- **T3, the assembler (#116):**
+  - parts are normalised and each uploaded PDF is checked by veraPDF on its own; the validator decides rasterising, not guesswork;
+  - encrypted or broken files become placeholders; images get one page each;
+  - one output intent, our metadata, bookmarks and page labels;
+  - a hostile PDF (JavaScript, forms, Helvetica not embedded, CMYK) ends up in a valid 2u record.
+
+## 2026-11-15 — T4 the final rendition job and API
+- **Migration `memo/V17`:**
+  - `memo_rendition` (versions, state, the stored file, hash, classification, validation, flags, renderer, attempts);
+  - `memo_rendition_part` (append-only);
+  - at most one open version per memo; column-level update grants.
+- **Planning (`RecordPlanner`):**
+  - reads everything as the system for the tenant, with no reader rule;
+  - the document is the one the final stamp binds, and a hash mismatch fails for good (`HASH_MISMATCH`);
+  - the attachments are those bound to the final round;
+  - the record's classification is the highest of the memo and its attachments;
+  - memo references to memos classified above this one print as "restricted".
+- **Pages (`RecordPages`):** a cover; approvals by round with authentication, document hash and the chain; the note sheet from `noteDoc/v1`; placeholders. English, times in UTC.
+- **Parts (`RecordSources`):** PDFs and pictures go in as they are; Office files are converted with `toPdfA`; anything else becomes a placeholder. A converter outage is retried.
+- **Building (`RecordBuilder`):**
+  - claim, plan, assemble, validate, text check;
+  - stored through the files pipeline as purpose `memo.rendition` (record storage, scanned, encrypted, locked);
+  - READY with its parts; `memo.rendition.created` audited.
+  - Up to 5 attempts; a task that starts before the approval commits finds no row and retries.
+- **Files module:**
+  - `FilePurpose.retentionYears(owner)`: the memo type's years when they count from approval;
+  - `FileUploads.uploadFile` and `uploadVersionFile`, streamed from a file.
+- **Jobs and API:**
+  - the approval's transaction asks for version 1;
+  - a backfill every 6 hours gives memos approved before E04 their version 1, 100 per tenant per run;
+  - `GET /memos/{id}/rendition`: auditors get the hash and validation; download only when cleared to the record's level;
+  - `MemoView.rendition` (NONE, PENDING, READY, FAILED).
+- **Tests:** `FinalRenditionIT`:
+  - approval → PENDING → build → READY;
+  - six parts in the expected modes;
+  - the downloaded file passes veraPDF;
+  - the audit events;
+  - the hash-mismatch failure stores nothing;
+  - the backfill runs once.
+
+  The test converter writes a PDF/A for `toPdfA`.
+- **Changes against the design:**
+  - The cover cannot say how many pages were rasterised, because it is drawn before the assembly. The flags are in the record row and the auditor's view.
+  - Retention counts from when the record is stored, minutes after approval. For backfilled memos that is later than approval, which errs on the longer side.

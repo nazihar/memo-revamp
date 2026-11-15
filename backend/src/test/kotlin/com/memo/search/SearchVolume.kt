@@ -21,10 +21,22 @@ class SearchVolume(
     private val level: UUID,
 ) {
     /** The units, by index (origin unit of memo i is unit i % [UNITS]). */
-    fun unit(index: Int): UUID = md5("su$index")
+    fun unit(index: Int): UUID = generated("su$index")
 
     /** The memo of index i (1-based). */
-    fun memo(index: Int): UUID = md5("sm$index")
+    fun memo(index: Int): UUID = generated("sm$index")
+
+    /** The id the generator wrote for [seed]: PostgreSQL's `md5(seed)::uuid`, computed by PostgreSQL. */
+    private fun generated(seed: String): UUID =
+        DriverManager.getConnection(TestDatabase.jdbcUrl, "memo_migrator", TestDatabase.migratorPassword).use { c ->
+            c.prepareStatement("select md5(?)::uuid").use { st ->
+                st.setString(1, seed)
+                st.executeQuery().use { rs ->
+                    rs.next()
+                    rs.getObject(1, UUID::class.java)
+                }
+            }
+        }
 
     fun generate(readerRows: Map<UUID, Int>) {
         owner { c ->
@@ -163,16 +175,6 @@ class SearchVolume(
         const val NEEDLE_DOCUMENT = "marigoldia"
 
         fun uuid(seed: String): UUID = UUID.nameUUIDFromBytes(seed.toByteArray())
-
-        /** The uuid PostgreSQL's `md5(seed)::uuid` gives (no version bits, unlike [uuid]). */
-        fun md5(seed: String): UUID {
-            val hex =
-                java.security.MessageDigest
-                    .getInstance("MD5")
-                    .digest(seed.toByteArray())
-                    .joinToString("") { "%02x".format(it) }
-            return UUID(java.lang.Long.parseUnsignedLong(hex.take(16), 16), java.lang.Long.parseUnsignedLong(hex.drop(16), 16))
-        }
 
         /** Most frequent first: word k is picked with probability falling steeply in k. */
         val VOCABULARY =

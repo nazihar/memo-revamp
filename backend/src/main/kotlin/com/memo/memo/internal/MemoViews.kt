@@ -82,6 +82,9 @@ enum class MemoAction {
     EDIT_DOCUMENT,
     VIEW_DOCUMENT,
 
+    /** Start the document from the type's template (ADR-0048): a draft without a document, of a type with one. */
+    FILL_FROM_TEMPLATE,
+
     // E03 (design §4.4): the positive action of a review step, hand-ons, and consultations.
     RECOMMEND,
     SEND_BACK,
@@ -204,6 +207,7 @@ class MemoViews(
     private val unitDirectory: OrgUnitDirectory,
     private val memoLinks: MemoLinks,
     private val coauthorStore: MemoCoauthorStore,
+    private val templateStore: MemoTemplateStore,
 ) {
     fun of(memo: Memo): MemoView {
         val interests = interestStore.of(memo.id)
@@ -445,11 +449,21 @@ class MemoViews(
         memo: Memo,
         actions: List<MemoAction>,
     ): List<MemoAction> =
-        if (!editing.enabled || memo.documentFileId == null) {
-            emptyList()
-        } else {
-            listOfNotNull(MemoAction.EDIT_DOCUMENT.takeIf { MemoAction.UPLOAD_DOCUMENT in actions }, MemoAction.VIEW_DOCUMENT)
+        when {
+            memo.documentFileId == null -> {
+                listOfNotNull(MemoAction.FILL_FROM_TEMPLATE.takeIf { MemoAction.UPLOAD_DOCUMENT in actions && hasTemplate(memo) })
+            }
+
+            !editing.enabled -> {
+                emptyList()
+            }
+
+            else -> {
+                listOfNotNull(MemoAction.EDIT_DOCUMENT.takeIf { MemoAction.UPLOAD_DOCUMENT in actions }, MemoAction.VIEW_DOCUMENT)
+            }
         }
+
+    private fun hasTemplate(memo: Memo): Boolean = types.versionFor(memo)?.let { templateStore.of(it.id)?.present } == true
 
     private companion object {
         val DECISIONS =

@@ -120,6 +120,10 @@ open class MemoRecord private constructor() : UpdatableRecordImpl<MemoRecord>(Me
         set(value): Unit = set(24, value)
         get(): OffsetDateTime? = get(24) as OffsetDateTime?
 
+    open var templateVersionId: UUID?
+        set(value): Unit = set(25, value)
+        get(): UUID? = get(25) as UUID?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -129,7 +133,7 @@ open class MemoRecord private constructor() : UpdatableRecordImpl<MemoRecord>(Me
     /**
      * Create a detached, initialised MemoRecord
      */
-    constructor(id: UUID, tenantId: UUID, reference: String? = null, memoTypeId: UUID, subject: String, classificationId: UUID, classificationRank: Int, initiatorId: UUID, originUnitId: UUID? = null, status: String, documentFileId: UUID? = null, workflowInstanceId: UUID? = null, currentRound: Int? = null, version: Long? = null, createdAt: OffsetDateTime, updatedAt: OffsetDateTime, memoTypeVersionId: UUID? = null, metadata: JSONB? = null, numberSeries: String? = null, numberPeriod: String? = null, numberScope: String? = null, numberSequence: Long? = null, numberedAt: OffsetDateTime? = null, approvedAt: OffsetDateTime? = null, closedAt: OffsetDateTime? = null): this() {
+    constructor(id: UUID, tenantId: UUID, reference: String? = null, memoTypeId: UUID, subject: String, classificationId: UUID, classificationRank: Int, initiatorId: UUID, originUnitId: UUID? = null, status: String, documentFileId: UUID? = null, workflowInstanceId: UUID? = null, currentRound: Int? = null, version: Long? = null, createdAt: OffsetDateTime, updatedAt: OffsetDateTime, memoTypeVersionId: UUID? = null, metadata: JSONB? = null, numberSeries: String? = null, numberPeriod: String? = null, numberScope: String? = null, numberSequence: Long? = null, numberedAt: OffsetDateTime? = null, approvedAt: OffsetDateTime? = null, closedAt: OffsetDateTime? = null, templateVersionId: UUID? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.reference = reference
@@ -155,6 +159,7 @@ open class MemoRecord private constructor() : UpdatableRecordImpl<MemoRecord>(Me
         this.numberedAt = numberedAt
         this.approvedAt = approvedAt
         this.closedAt = closedAt
+        this.templateVersionId = templateVersionId
         resetTouchedOnNotNull()
     }
 }

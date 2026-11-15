@@ -859,6 +859,11 @@ export type MemoTypeSettingsRequest = {
     stepUpOnApprove?: boolean;
 };
 
+export type MemoTypeTemplateView = {
+    available: Array<TemplateTagHelp>;
+    template?: TemplateFileView | null;
+};
+
 export type MemoTypeVersionResponse = {
     allowedApprovers: AllowedApprovers;
     allowedNames: {
@@ -891,7 +896,7 @@ export type MemoTypeVersionResponse = {
 };
 
 export type MemoView = {
-    allowedActions: Array<'EDIT' | 'UPLOAD_DOCUMENT' | 'EDIT_ROUTE' | 'SUBMIT' | 'DISCARD' | 'RESUBMIT' | 'WITHDRAW' | 'APPROVE' | 'RETURN' | 'REJECT' | 'EDIT_DOCUMENT' | 'VIEW_DOCUMENT' | 'RECOMMEND' | 'SEND_BACK' | 'FORWARD' | 'DELEGATE' | 'ASK' | 'REFER' | 'ANSWER' | 'OPINION' | 'RECALL' | 'CLAIM' | 'RELEASE' | 'RECUSE' | 'CLOSE'>;
+    allowedActions: Array<'EDIT' | 'UPLOAD_DOCUMENT' | 'EDIT_ROUTE' | 'SUBMIT' | 'DISCARD' | 'RESUBMIT' | 'WITHDRAW' | 'APPROVE' | 'RETURN' | 'REJECT' | 'EDIT_DOCUMENT' | 'VIEW_DOCUMENT' | 'FILL_FROM_TEMPLATE' | 'RECOMMEND' | 'SEND_BACK' | 'FORWARD' | 'DELEGATE' | 'ASK' | 'REFER' | 'ANSWER' | 'OPINION' | 'RECALL' | 'CLAIM' | 'RELEASE' | 'RECUSE' | 'CLOSE'>;
     canLink: boolean;
     classification: ClassificationView;
     closedAt?: string | null;
@@ -1709,6 +1714,36 @@ export type TaskRef = {
     waiting: boolean;
 };
 
+export type TemplateFileView = {
+    fileId: string;
+    name: string;
+    previewed: boolean;
+    problems: Array<TemplateProblemView>;
+    sizeBytes: number;
+    tags: Array<string>;
+    uploadedAt: string;
+    versionId: string;
+};
+
+export type TemplatePreviewView = {
+    fileId: string;
+};
+
+export type TemplateProblemView = {
+    code: 'MALFORMED_TAG' | 'UNSUPPORTED_TAG' | 'UNKNOWN_TAG' | 'UNBALANCED_SECTION' | 'LOOP_WITHOUT_ROW' | 'UNKNOWN_ROW_FIELD' | 'TAG_IN_LOOP_ROW' | 'TOO_MANY_TAGS';
+    excerpt: string;
+    paragraph: number;
+    part: string;
+    suggestion?: string | null;
+    tag?: string | null;
+};
+
+export type TemplateTagHelp = {
+    kind: string;
+    label: string;
+    tag: string;
+};
+
 /**
  * The organisation's default language and time zone.
  */
@@ -2320,6 +2355,64 @@ export type SubmitMemoTypeVersionResponses = {
 };
 
 export type SubmitMemoTypeVersionResponse = SubmitMemoTypeVersionResponses[keyof SubmitMemoTypeVersionResponses];
+
+export type RemoveMemoTypeTemplateData = {
+    body?: never;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        typeId: string;
+        number: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/memo-types/{typeId}/versions/{number}/template';
+};
+
+export type RemoveMemoTypeTemplateResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
+export type GetMemoTypeTemplateData = {
+    body?: never;
+    path: {
+        typeId: string;
+        number: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/memo-types/{typeId}/versions/{number}/template';
+};
+
+export type GetMemoTypeTemplateResponses = {
+    /**
+     * OK
+     */
+    200: MemoTypeTemplateView;
+};
+
+export type GetMemoTypeTemplateResponse = GetMemoTypeTemplateResponses[keyof GetMemoTypeTemplateResponses];
+
+export type PreviewMemoTypeTemplateData = {
+    body?: never;
+    path: {
+        typeId: string;
+        number: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/memo-types/{typeId}/versions/{number}/template/preview';
+};
+
+export type PreviewMemoTypeTemplateResponses = {
+    /**
+     * OK
+     */
+    200: TemplatePreviewView;
+};
+
+export type PreviewMemoTypeTemplateResponse = PreviewMemoTypeTemplateResponses[keyof PreviewMemoTypeTemplateResponses];
 
 export type GetTenantPreferencesData = {
     body?: never;
@@ -4637,6 +4730,24 @@ export type PreviewMemoDoaResponses = {
 };
 
 export type PreviewMemoDoaResponse = PreviewMemoDoaResponses[keyof PreviewMemoDoaResponses];
+
+export type FillMemoDocumentFromTemplateData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/document/from-template';
+};
+
+export type FillMemoDocumentFromTemplateResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type FillMemoDocumentFromTemplateResponse = FillMemoDocumentFromTemplateResponses[keyof FillMemoDocumentFromTemplateResponses];
 
 export type CompareMemoFileVersionsData = {
     body?: never;

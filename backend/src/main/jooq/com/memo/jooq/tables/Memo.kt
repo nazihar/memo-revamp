@@ -226,6 +226,11 @@ open class Memo(
      */
     val CLOSED_AT: TableField<MemoRecord, OffsetDateTime?> = createField(DSL.name("closed_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
 
+    /**
+     * The column <code>memo.memo.template_version_id</code>.
+     */
+    val TEMPLATE_VERSION_ID: TableField<MemoRecord, UUID?> = createField(DSL.name("template_version_id"), SQLDataType.UUID, this, "")
+
     private constructor(alias: Name, aliased: Table<MemoRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<MemoRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<MemoRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)

@@ -75,7 +75,7 @@ erDiagram
 - **Test fill:**
   - `POST …/template/preview` fills the template with sample values (field labels in brackets, today's date, "Sample approver") into a file of purpose `memo.template.preview`.
   - Its PDF rendition (ADR-0045) is shown in the existing preview dialog.
-  - Previews are kept for 24 hours, then deleted.
+  - Previews are kept for 24 hours, then deleted. (T2: previews are ordinary objects and are kept for now; deletion waits for a files deletion API, carried.)
 - **Submit for review** is refused while the template has problems or no successful preview.
 - **Create from template:**
   - `POST /memos` gets the filled document as version 1 when the type version has a template.

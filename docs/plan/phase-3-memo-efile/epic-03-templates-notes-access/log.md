@@ -41,3 +41,21 @@
 - **Deviations, recorded in ADR-0048:**
   - `.dotx` is refused by the existing type check for now; carried;
   - a package that passes every rule is stored as uploaded rather than re-serialised; fills are POI-written.
+
+## 2026-11-15 — T2 templates on memo types and create from template
+- **Built:**
+  - `memo/V12`: on the type version, the template file and exact file version, the cached scan of that version, and the version last previewed; on the memo, the template version it was filled from;
+  - `MemoTemplateListener`: each upload for a draft version points the version at it (vetoed once the version left draft) and resets the preview;
+  - admin API `GET|DELETE …/versions/{n}/template` (problems with part, paragraph, excerpt and suggestion, plus the tags the version may use) and `POST …/template/preview` (sample values into a `memo.template.preview` file with a PDF rendition);
+  - `MemoTemplateChecks` in submit-for-review: refused with `TEMPLATE_NOT_PREVIEWED` or `TEMPLATE_PROBLEMS`;
+  - a new draft copies the template, scan and preview of the version it starts from.
+- **Create from template:**
+  - `POST /memos` fills the published version's template after the memo is committed, as the initiator, through the full upload pipeline, into document v1, and records the template version (audit `memo.document.filled`);
+  - values: `MemoTemplateValues` (dates `d MMM yyyy`; amounts with currency and grouping; the page's display text for people, units and choices; "(number on submit)"; an empty approval table);
+  - a failed fill leaves the memo without a document, and the new memo action `FILL_FROM_TEMPLATE` (`POST /memos/{id}/document/from-template`) tries again.
+- **Choices:**
+  - the scan is cached per template version, so the check against the version's fields (which can change) needs no file read, and submit stays inside its transaction;
+  - the check runs again at each `GET`, preview and submit.
+- **Carried:**
+  - deleting previews after 24 hours: the files module has no deletion yet, so previews are ordinary objects kept for now;
+  - `.dotx` (T1).

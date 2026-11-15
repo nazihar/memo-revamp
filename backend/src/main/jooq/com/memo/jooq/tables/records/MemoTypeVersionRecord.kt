@@ -132,6 +132,26 @@ open class MemoTypeVersionRecord private constructor() : UpdatableRecordImpl<Mem
         set(value): Unit = set(27, value)
         get(): Int? = get(27) as Int?
 
+    open var templateFileId: UUID?
+        set(value): Unit = set(28, value)
+        get(): UUID? = get(28) as UUID?
+
+    open var templateVersionId: UUID?
+        set(value): Unit = set(29, value)
+        get(): UUID? = get(29) as UUID?
+
+    open var templateScan: JSONB?
+        set(value): Unit = set(30, value)
+        get(): JSONB? = get(30) as JSONB?
+
+    open var templateScanVersionId: UUID?
+        set(value): Unit = set(31, value)
+        get(): UUID? = get(31) as UUID?
+
+    open var templatePreviewedId: UUID?
+        set(value): Unit = set(32, value)
+        get(): UUID? = get(32) as UUID?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -141,7 +161,7 @@ open class MemoTypeVersionRecord private constructor() : UpdatableRecordImpl<Mem
     /**
      * Create a detached, initialised MemoTypeVersionRecord
      */
-    constructor(id: UUID, tenantId: UUID, memoTypeId: UUID, number: Int, state: String, revision: Long? = null, name: String, code: String, defaultClassificationId: UUID? = null, definitionKey: String, routePolicy: String, allowedApprovers: JSONB? = null, doaCheck: Boolean? = null, stepUpOnApprove: Boolean? = null, createdBy: UUID? = null, createdAt: OffsetDateTime, submittedBy: UUID? = null, submittedAt: OffsetDateTime? = null, reviewedBy: UUID? = null, reviewedAt: OffsetDateTime? = null, reviewRemark: String? = null, publishedAt: OffsetDateTime? = null, fields: JSONB? = null, raiseScope: JSONB? = null, numbering: JSONB? = null, retention: JSONB? = null, attachmentRules: JSONB? = null, autoCloseDays: Int? = null): this() {
+    constructor(id: UUID, tenantId: UUID, memoTypeId: UUID, number: Int, state: String, revision: Long? = null, name: String, code: String, defaultClassificationId: UUID? = null, definitionKey: String, routePolicy: String, allowedApprovers: JSONB? = null, doaCheck: Boolean? = null, stepUpOnApprove: Boolean? = null, createdBy: UUID? = null, createdAt: OffsetDateTime, submittedBy: UUID? = null, submittedAt: OffsetDateTime? = null, reviewedBy: UUID? = null, reviewedAt: OffsetDateTime? = null, reviewRemark: String? = null, publishedAt: OffsetDateTime? = null, fields: JSONB? = null, raiseScope: JSONB? = null, numbering: JSONB? = null, retention: JSONB? = null, attachmentRules: JSONB? = null, autoCloseDays: Int? = null, templateFileId: UUID? = null, templateVersionId: UUID? = null, templateScan: JSONB? = null, templateScanVersionId: UUID? = null, templatePreviewedId: UUID? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.memoTypeId = memoTypeId
@@ -170,6 +190,11 @@ open class MemoTypeVersionRecord private constructor() : UpdatableRecordImpl<Mem
         this.retention = retention
         this.attachmentRules = attachmentRules
         this.autoCloseDays = autoCloseDays
+        this.templateFileId = templateFileId
+        this.templateVersionId = templateVersionId
+        this.templateScan = templateScan
+        this.templateScanVersionId = templateScanVersionId
+        this.templatePreviewedId = templatePreviewedId
         resetTouchedOnNotNull()
     }
 }

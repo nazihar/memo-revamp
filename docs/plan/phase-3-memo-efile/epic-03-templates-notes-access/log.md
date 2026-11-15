@@ -136,3 +136,24 @@
   - removing unbound uploads after 24 hours, which needs files deletion, as for previews;
   - a stricter classification per note file;
   - search over notes (E05).
+
+## 2026-11-15 — T6 authenticated approvals
+- **Identity:** `AuthenticationContext.current()` gives the session's factors, when the password and the second factor were last proven, and the SHA-256 of the session id.
+- **`memo/V16`:** `memo_approval`, append-only. One row per approve, recommend, return and reject, written in the action's transaction by `MemoTasks`, under the memo's row lock. It holds:
+  - the round, the action's sequence, the decision, the actor, who they acted for, and their position;
+  - authentication: factors, the password and second-factor times, whether the step-up rule applied, the session hash;
+  - the client (IP and user agent);
+  - the content: the document version id, number and SHA-256, and each attachment bound to the round with its SHA-256;
+  - `record_hash`: SHA-256 of a canonical JSON (keys ordered, timestamps in microseconds) plus the previous record's hash, so the chain runs per memo.
+- **API:**
+  - `GET /memos/{id}/approvals` returns the stamps: name, position, decision, time, factors, the second-factor age, the short document hash; client fields only for `audit.read`;
+  - `POST …/approvals/check` recomputes the record hashes, the chain and the content hashes from storage, names what differs (`RECORD_CHANGED`, `CHAIN_BROKEN`, `DOCUMENT_CHANGED`, `DOCUMENT_MISSING`, `ATTACHMENT_CHANGED`), and is audited (`memo.approval.checked`).
+- **Wording:** `ApprovalWordingTest` fails if the web catalogues or the mail texts say "digital signature" or "e-signature", in English or Arabic.
+- **Phase 2 follow-up, recusal:**
+  - a route entry whose approver stands aside now restarts with the rest of the route rebuilt behind it, as send back and staff changes already did;
+  - the step that replaces it therefore keeps its place, and later approvers can send back to it;
+  - `SendBackAndRecuseTest` checks the order and the send back.
+- **Deviations:**
+  - the session id is hashed with plain SHA-256, not an HMAC with an install key: session ids are long random values, so the hash cannot be reversed, and no new secret is needed;
+  - the check is not rate-limited yet (carried; it reads only the memo's own rows);
+  - the deep check that re-reads content (`deep=true`) waits for E04's renditions.

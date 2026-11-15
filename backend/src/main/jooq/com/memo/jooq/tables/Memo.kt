@@ -10,6 +10,7 @@ import com.memo.jooq.indexes.MEMO_TENANT_INITIATOR_BOX_IDX
 import com.memo.jooq.indexes.MEMO_TENANT_ORIGIN_UNIT_IDX
 import com.memo.jooq.indexes.MEMO_TENANT_TYPE_IDX
 import com.memo.jooq.indexes.MEMO_TENANT_TYPE_VERSION_IDX
+import com.memo.jooq.keys.MEMO_APPROVAL__MEMO_APPROVAL_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_ATTACHMENT__MEMO_ATTACHMENT_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_COPY_DELIVERY__MEMO_COPY_DELIVERY_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_COPY__MEMO_COPY_TENANT_ID_MEMO_ID_FKEY
@@ -31,6 +32,7 @@ import com.memo.jooq.keys.MEMO_TENANT_ID_ID_KEY
 import com.memo.jooq.keys.MEMO_TENANT_ID_REFERENCE_KEY
 import com.memo.jooq.keys.MEMO__MEMO_TENANT_ID_MEMO_TYPE_ID_FKEY
 import com.memo.jooq.keys.MEMO__MEMO_TYPE_VERSION_FK
+import com.memo.jooq.tables.MemoApproval.MemoApprovalPath
 import com.memo.jooq.tables.MemoAttachment.MemoAttachmentPath
 import com.memo.jooq.tables.MemoCopy.MemoCopyPath
 import com.memo.jooq.tables.MemoCopyDelivery.MemoCopyDeliveryPath
@@ -297,6 +299,22 @@ open class Memo(
      */
     fun memoTypeVersion(): MemoTypeVersionPath = memoTypeVersion
     val memoTypeVersion: MemoTypeVersionPath by lazy { MemoTypeVersionPath(this, MEMO__MEMO_TYPE_VERSION_FK, null) }
+
+    private lateinit var _memoApproval: MemoApprovalPath
+
+    /**
+     * Get the implicit to-many join path to the <code>memo.memo_approval</code>
+     * table
+     */
+    fun memoApproval(): MemoApprovalPath {
+        if (!this::_memoApproval.isInitialized)
+            _memoApproval = MemoApprovalPath(this, null, MEMO_APPROVAL__MEMO_APPROVAL_TENANT_ID_MEMO_ID_FKEY.inverseKey)
+
+        return _memoApproval;
+    }
+
+    val memoApproval: MemoApprovalPath
+        get(): MemoApprovalPath = memoApproval()
 
     private lateinit var _memoAttachment: MemoAttachmentPath
 

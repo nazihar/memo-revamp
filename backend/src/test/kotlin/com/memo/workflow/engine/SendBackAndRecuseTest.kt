@@ -284,15 +284,17 @@ class SendBackAndRecuseTest {
         assertThat(entry.routeIndex).isEqualTo(0)
         assertThat(entry.tasks.single().blocked).isEqualTo(BlockedReason.UNRESOLVED)
         assertThat(entry.resolution).containsEntry("excluded", listOf(mapOf("person" to alice.toString(), "rule" to "SOD-4")))
-        assertThat(
-            recused.round.steps
-                .filter { it.state == StepState.PENDING }
-                .map { it.assignee },
-        ).containsExactly(bob)
+        // The rest of the route is rebuilt behind the entry (as after a send back), so it keeps its place before them.
+        assertThat(recused.round.steps.filter { it.state == StepState.PENDING }).isEmpty()
 
         val assigned = transition.apply(recused, Reassign(admin, entry.tasks.single().id, carol, "deputy")).accepted().state
         val atBob = approveAll(transition, assigned, carol)
         assertThat(atBob.currentAssignees).containsExactly(bob)
+        val later = atBob.round.steps.single { it.state == StepState.ACTIVE }
+        assertThat(entry.ordinal).isLessThan(later.ordinal)
+        val bobsTask = atBob.openTaskOf(bob).id
+        val carolsStep = atBob.round.steps.single { it.state == StepState.DONE && it.routeIndex == 0 && it.id == entry.id }
+        assertThat(transition.apply(atBob, SendBack(bob, bobsTask, carolsStep.id, "check the figures")).refusal()).isNull()
         assertThat(approveAll(transition, atBob, bob).status).isEqualTo(InstanceStatus.APPROVED)
     }
 

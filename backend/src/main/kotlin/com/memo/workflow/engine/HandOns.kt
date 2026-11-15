@@ -60,7 +60,10 @@ internal class HandOns(
                     tasks = current.tasks.map { if (it.state == TaskState.OPEN) it.copy(state = TaskState.CANCELLED) else it },
                 )
             }
-        val walk = rounds.reactivate(skipped, step, state.initiator, setOf(command.actor))
+        // A route entry restarts with the rest of the route rebuilt behind it, as after a send back or a staff change, so
+        // the step that replaces it keeps its place before the later entries (Phase 2 follow-up, ADR-0051).
+        val restarted = if (step.routeIndex != null) skipped.skipPending() else skipped
+        val walk = rounds.reactivate(restarted, step, state.initiator, setOf(command.actor))
         val cancelled = open.map { Effect.TaskClosed(it.id, TaskState.CANCELLED, null) }
         return Outcome(state.copy(round = walk.round), action, listOf(closing) + cancelled + walk.effects, walk.followUps)
     }

@@ -1841,6 +1841,39 @@ export type SimulationResponse = {
     steps: Array<SimulatedStepResponse>;
 };
 
+export type StampCheckProblem = {
+    approvalId: string;
+    code: string;
+    detail: string;
+};
+
+export type StampCheckView = {
+    checkedAt: string;
+    ok: boolean;
+    problems: Array<StampCheckProblem>;
+};
+
+export type StampClientView = {
+    ip?: string | null;
+    userAgent?: string | null;
+};
+
+export type StampView = {
+    actingFor?: Named | null;
+    client?: StampClientView | null;
+    decidedAt: string;
+    decision: string;
+    documentHash?: string | null;
+    documentNumber?: number | null;
+    factors: Array<string>;
+    id: string;
+    person: Named;
+    position?: string | null;
+    round: number;
+    secondFactorAgeSeconds?: number | null;
+    stepUpRequired: boolean;
+};
+
 /**
  * A TOTP or recovery code for users with MFA; the current password otherwise.
  */
@@ -4847,6 +4880,42 @@ export type UpdateMemoResponses = {
 };
 
 export type UpdateMemoResponse = UpdateMemoResponses[keyof UpdateMemoResponses];
+
+export type ListMemoApprovalsData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/approvals';
+};
+
+export type ListMemoApprovalsResponses = {
+    /**
+     * OK
+     */
+    200: Array<StampView>;
+};
+
+export type ListMemoApprovalsResponse = ListMemoApprovalsResponses[keyof ListMemoApprovalsResponses];
+
+export type CheckMemoApprovalsData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/approvals/check';
+};
+
+export type CheckMemoApprovalsResponses = {
+    /**
+     * OK
+     */
+    200: StampCheckView;
+};
+
+export type CheckMemoApprovalsResponse = CheckMemoApprovalsResponses[keyof CheckMemoApprovalsResponses];
 
 export type ListMemoAttachmentsData = {
     body?: never;

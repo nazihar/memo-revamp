@@ -35,3 +35,6 @@ endpoints:
   - { endpoint: "GET /api/v1/memos/{id}/notes/draft", rule: signedIn }
   - { endpoint: "PUT /api/v1/memos/{id}/notes/draft", rule: signedIn, body: { body: { type: "doc", content: [] } } }
   - { endpoint: "DELETE /api/v1/memos/{id}/notes/draft", rule: signedIn }
+  # Authenticated approvals (§6): stamps and their check follow the memo; unknown memos are 404.
+  - { endpoint: "GET /api/v1/memos/{id}/approvals", rule: signedIn }
+  - { endpoint: "POST /api/v1/memos/{id}/approvals/check", rule: signedIn }

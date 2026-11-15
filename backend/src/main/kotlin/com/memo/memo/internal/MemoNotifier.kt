@@ -145,6 +145,13 @@ class MemoNotifier(
         notify(event.recipientId, NotificationKind.TASK_OVERDUE, memo.id)
     }
 
+    /** Tells [user] about [memoId] with [kind] (copy-to, mentions). */
+    fun tell(
+        user: UUID,
+        kind: NotificationKind,
+        memoId: UUID,
+    ) = notify(user, kind, memoId)
+
     /** Tells [user] (nobody when null: a step without assignee, which the reassigners hear about instead). */
     private fun notify(
         user: UUID?,

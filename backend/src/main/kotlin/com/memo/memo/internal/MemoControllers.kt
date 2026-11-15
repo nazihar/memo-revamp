@@ -58,6 +58,7 @@ data class MemoRequest(
 class MemosController(
     private val memos: Memos,
     private val templates: MemoTemplateService,
+    private val copies: MemoCopies,
     private val routes: MemoRoutes,
     private val reviews: MemoReviews,
     private val views: MemoViews,
@@ -100,7 +101,15 @@ class MemosController(
     fun get(
         @PathVariable id: UUID,
     ): ResponseEntity<MemoView> {
-        val view = transactions.readInTenant(TenantContext.current()) { views.of(memos.get(id)) }
+        val (memo, view) =
+            transactions.readInTenant(TenantContext.current()) {
+                val memo = memos.get(id)
+                memo to views.of(memo)
+            }
+        // A copy recipient's or an approver's first open is a read receipt (ADR-0050), in a write of its own.
+        if (view.readingAs == ParticipantKind.COPY || view.readingAs == ParticipantKind.APPROVER) {
+            transactions.inTenant(TenantContext.current()) { copies.recordOpen(memo, view.document?.number) }
+        }
         return ResponseEntity
             .ok()
             .cacheControl(CacheControl.noStore())

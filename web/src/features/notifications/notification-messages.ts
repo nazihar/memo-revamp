@@ -94,6 +94,7 @@ const kindsWithValues = defineMessages<{
   taskBlocked: { reference: string }
   memoWithdrawn: { reference: string }
   memoUpdate: { reference: string }
+  memoCopied: { reference: string }
   taskReminder: { reference: string }
   taskOverdue: { reference: string }
   editNotSaved: { name: string }
@@ -114,6 +115,10 @@ const kindsWithValues = defineMessages<{
   taskBlocked: { id: 'notifications.kind.taskBlocked', defaultMessage: 'Memo {reference} is waiting for reassignment' },
   memoWithdrawn: { id: 'notifications.kind.memoWithdrawn', defaultMessage: 'Memo {reference} was withdrawn' },
   memoUpdate: { id: 'notifications.kind.memoUpdate', defaultMessage: 'There is news about memo {reference}' },
+  memoCopied: {
+    id: 'notifications.kind.memoCopied',
+    defaultMessage: 'Memo {reference} was copied to you for information',
+  },
   taskReminder: {
     id: 'notifications.kind.taskReminder',
     defaultMessage: 'Reminder: memo {reference} is waiting for your decision',
@@ -155,6 +160,8 @@ export function notificationText(intl: IntlShape, kind: string, params: Record<s
       return intl.formatMessage(kindsWithValues.memoWithdrawn, reference)
     case 'MEMO_UPDATE':
       return intl.formatMessage(kindsWithValues.memoUpdate, reference)
+    case 'MEMO_COPIED':
+      return intl.formatMessage(kindsWithValues.memoCopied, reference)
     case 'TASK_REMINDER':
       return intl.formatMessage(kindsWithValues.taskReminder, reference)
     case 'TASK_OVERDUE':
@@ -197,6 +204,7 @@ const mailTemplates = defineMessages({
   TASK_BLOCKED: { id: 'mail.template.taskBlocked', defaultMessage: 'Memo waiting for reassignment' },
   MEMO_WITHDRAWN: { id: 'mail.template.memoWithdrawn', defaultMessage: 'Memo withdrawn' },
   MEMO_UPDATE: { id: 'mail.template.memoUpdate', defaultMessage: 'News about a memo' },
+  MEMO_COPIED: { id: 'mail.template.memoCopied', defaultMessage: 'A memo copied to you' },
   TASK_REMINDER: { id: 'mail.template.taskReminder', defaultMessage: 'Reminder about a memo' },
   TASK_OVERDUE: { id: 'mail.template.taskOverdue', defaultMessage: 'Memo overdue' },
 })

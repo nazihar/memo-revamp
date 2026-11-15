@@ -85,3 +85,23 @@
   - the `MemoAccessChanged` event (no consumer before E05);
   - the "people with access" summary, which comes with copy-to in T5;
   - the memo list performance at 100,000 memos, which is in T9.
+
+## 2026-11-15 — T5 copy-to, receipts and distribution lists
+- **`memo/V14`:** `memo_copy` (person, position or list; at submit or after approval; only `sent_at` and the removal of an unsent copy change); `memo_copy_delivery` and `memo_receipt` (append-only records); `memo_distribution_list` and members.
+- **Copies:**
+  - `GET|PUT /memos/{id}/copies`: the initiator or a co-author, while the memo is a draft or returned, with If-Match on the memo; sent copies stay;
+  - `POST …/copies/additions`: after approval, for `memo.copy.add`; sent at once;
+  - each copy is resolved when sent: a position to its holder today, a list to its people and position holders;
+  - each person gets one delivery (`SENT`, `NOT_CLEARED`, `INACTIVE`); sent people become `COPY` participants;
+  - each person is notified once (`MEMO_COPIED`), however many copies reach them, and not at all if they could already read the memo.
+- **When copies go:**
+  - at submit (and resubmit), the "at submit" copies go in the submit's transaction; anyone they would reach who is not cleared refuses the submit, named, like an approver;
+  - at final approval, the "after approval" copies go in the approval's transaction;
+  - a rejected or withdrawn memo sends none, and shows them as not sent.
+- **Receipts:**
+  - written by `GET /memos/{id}` for copy recipients and approvers on first open, with the document version;
+  - `GET …/receipts` lists them, for the initiator, co-authors and `audit.read`.
+- **Distribution lists:** `/distribution-lists`; everyone reads them, `memo.distribution.manage` keeps them (If-Match); a delete only switches a list off; names are unique among active lists (409).
+- **Permissions:** `memo.copy.add` (granted on purpose) and `memo.distribution.manage` (in the administrator role).
+- **Memo view:** `readingAs` (the reader's participant kind; null for a unit reader) and the actions `EDIT_COPIES` and `ADD_COPIES`, for T8's screens.
+- **Deviation:** "after approval" copies are sent in the approval's transaction, not in a job. The writes are batched per person and idempotent through `sent_at`; the 500-recipient timing is measured in T9 (design §9 target: under 5 s).

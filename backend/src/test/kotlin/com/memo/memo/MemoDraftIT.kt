@@ -97,7 +97,8 @@ class MemoDraftIT : FilesIntegrationTest() {
         assertThat(memo["status"].asString()).isEqualTo("DRAFT")
         assertThat(memo["classification"]["rank"].asInt()).isZero()
         assertThat(memo["initiator"]["id"].asString()).isEqualTo(alice.id.value.toString())
-        assertThat(memo["allowedActions"].toString()).isEqualTo("""["EDIT","UPLOAD_DOCUMENT","EDIT_ROUTE","SUBMIT","DISCARD"]""")
+        val draftActions = """["EDIT","UPLOAD_DOCUMENT","EDIT_ROUTE","SUBMIT","DISCARD","EDIT_COPIES"]"""
+        assertThat(memo["allowedActions"].toString()).isEqualTo(draftActions)
         assertThat(created.response.getHeader(HttpHeaders.ETAG)).isEqualTo("\"0\"")
         val id = memo["id"].asString()
 

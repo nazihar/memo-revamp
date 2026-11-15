@@ -75,7 +75,8 @@ class MemoReviewIT : MemoIntegrationTest() {
         assertThat(returned).hasStatusOk()
         assertThat(returned.json()["status"].asString()).isEqualTo("RETURNED")
         val aliceView = get(id, alice.session).json()
-        assertThat(aliceView["allowedActions"].toString()).isEqualTo("""["EDIT","UPLOAD_DOCUMENT","EDIT_ROUTE","RESUBMIT","WITHDRAW"]""")
+        val returnedActions = """["EDIT","UPLOAD_DOCUMENT","EDIT_ROUTE","RESUBMIT","WITHDRAW","EDIT_COPIES"]"""
+        assertThat(aliceView["allowedActions"].toString()).isEqualTo(returnedActions)
 
         assertThat(uploadDocument(id, alice.session, Samples.docx("<doc>v2</doc>"))).hasStatus(HttpStatus.CREATED)
         val v2 = get(id, alice.session).json()["document"]

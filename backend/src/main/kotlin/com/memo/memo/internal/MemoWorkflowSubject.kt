@@ -122,6 +122,7 @@ class MemoWorkflowListener(
     private val clock: Clock,
     private val versions: MemoTypeVersionStore,
     private val numbers: MemoNumbers,
+    private val copies: MemoCopies,
 ) {
     @EventListener
     fun onAction(event: WorkflowActionTaken) {
@@ -132,6 +133,8 @@ class MemoWorkflowListener(
         if (status == MemoStatus.APPROVED) {
             val memo = store.find(event.subjectId) ?: return
             memo.memoTypeVersionId?.let(versions::byId)?.let { numbers.assign(memo, it, NumberMoment.ON_APPROVAL) }
+            // Copies "after approval" go in the approval's transaction (ADR-0050); a rejected or withdrawn memo sends none.
+            store.find(event.subjectId)?.let { copies.send(it, SendWhen.AFTER_APPROVAL) }
         }
     }
 

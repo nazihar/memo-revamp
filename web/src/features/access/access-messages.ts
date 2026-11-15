@@ -162,6 +162,14 @@ export const catalogue = defineMessages({
     id: 'access.permission.memoShareManage',
     defaultMessage: 'Revoke any share of a memo',
   },
+  'memo.copy.add': {
+    id: 'access.permission.memoCopyAdd',
+    defaultMessage: 'Copy approved memos to more people',
+  },
+  'memo.distribution.manage': {
+    id: 'access.permission.memoDistributionManage',
+    defaultMessage: 'Manage distribution lists',
+  },
 })
 
 export function catalogueLabel(intl: IntlShape, key: string, fallback?: string): string {

@@ -78,6 +78,12 @@ enum class Permission(
 
     /** Revoke any share of a memo one can read (Phase 3 E03, ADR-0050). Granted by tenants only. */
     MEMO_SHARE_MANAGE("memo.share.manage", scopable = false, privileged = true),
+
+    /** Add copy recipients to an approved memo one can read, for example a registry clerk (Phase 3 E03, ADR-0050). */
+    MEMO_COPY_ADD("memo.copy.add", scopable = false, privileged = true),
+
+    /** Keep the distribution lists copy-to can name (Phase 3 E03, ADR-0050). */
+    MEMO_DISTRIBUTION_MANAGE("memo.distribution.manage", scopable = false, privileged = true),
     ;
 
     companion object {
@@ -87,7 +93,7 @@ enum class Permission(
          * Permissions that open other people's memos (ADR-0050): a tenant grants them on purpose, through a role of its
          * own; the built-in administrator role does not carry them.
          */
-        val GRANTED_ON_PURPOSE: Set<Permission> get() = setOf(MEMO_READ_UNIT, MEMO_SHARE_MANAGE)
+        val GRANTED_ON_PURPOSE: Set<Permission> get() = setOf(MEMO_READ_UNIT, MEMO_SHARE_MANAGE, MEMO_COPY_ADD)
 
         fun ofKey(key: String): Permission? = BY_KEY[key]
     }

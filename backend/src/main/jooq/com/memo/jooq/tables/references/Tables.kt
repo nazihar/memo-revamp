@@ -30,10 +30,15 @@ import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
 import com.memo.jooq.tables.Memo
 import com.memo.jooq.tables.MemoAttachment
+import com.memo.jooq.tables.MemoCopy
+import com.memo.jooq.tables.MemoCopyDelivery
+import com.memo.jooq.tables.MemoDistributionList
+import com.memo.jooq.tables.MemoDistributionMember
 import com.memo.jooq.tables.MemoInterest
 import com.memo.jooq.tables.MemoLink
 import com.memo.jooq.tables.MemoNumberCounter
 import com.memo.jooq.tables.MemoParticipant
+import com.memo.jooq.tables.MemoReceipt
 import com.memo.jooq.tables.MemoReferenceCounter
 import com.memo.jooq.tables.MemoRouteEntry
 import com.memo.jooq.tables.MemoShare
@@ -199,6 +204,26 @@ val MEMO_: Memo = Memo.MEMO_
 val MEMO_ATTACHMENT: MemoAttachment = MemoAttachment.MEMO_ATTACHMENT
 
 /**
+ * The table <code>memo.memo_copy</code>.
+ */
+val MEMO_COPY: MemoCopy = MemoCopy.MEMO_COPY
+
+/**
+ * The table <code>memo.memo_copy_delivery</code>.
+ */
+val MEMO_COPY_DELIVERY: MemoCopyDelivery = MemoCopyDelivery.MEMO_COPY_DELIVERY
+
+/**
+ * The table <code>memo.memo_distribution_list</code>.
+ */
+val MEMO_DISTRIBUTION_LIST: MemoDistributionList = MemoDistributionList.MEMO_DISTRIBUTION_LIST
+
+/**
+ * The table <code>memo.memo_distribution_member</code>.
+ */
+val MEMO_DISTRIBUTION_MEMBER: MemoDistributionMember = MemoDistributionMember.MEMO_DISTRIBUTION_MEMBER
+
+/**
  * The table <code>memo.memo_interest</code>.
  */
 val MEMO_INTEREST: MemoInterest = MemoInterest.MEMO_INTEREST
@@ -217,6 +242,11 @@ val MEMO_NUMBER_COUNTER: MemoNumberCounter = MemoNumberCounter.MEMO_NUMBER_COUNT
  * The table <code>memo.memo_participant</code>.
  */
 val MEMO_PARTICIPANT: MemoParticipant = MemoParticipant.MEMO_PARTICIPANT
+
+/**
+ * The table <code>memo.memo_receipt</code>.
+ */
+val MEMO_RECEIPT: MemoReceipt = MemoReceipt.MEMO_RECEIPT
 
 /**
  * The table <code>memo.memo_reference_counter</code>.

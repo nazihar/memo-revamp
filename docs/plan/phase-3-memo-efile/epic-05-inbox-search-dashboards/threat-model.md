@@ -22,7 +22,7 @@
 | E2 | A bulk action does more than its items allow (a decision, or reassigning outside scope) | 3 | Only non-decisions accepted. Each item checked as if acted on alone. At most 100 items. Results per item | V8.2, V2.3 |
 | D1 | Expensive queries (short prefixes, huge OR lists, deep paging) exhaust the database | 1 | Prefix at least 3 characters and on the last term only. At most 200 characters and 12 terms. Candidate caps. `statement_timeout` 2 s. Per-user rate limit 30 a minute | V15.2, V2.4 |
 | D2 | Enumeration through many searches | 1 | Rate limit; audit of every search; alert on many distinct queries or deep paging by one person (runbook) | V16.2, V2.4 |
-| D3 | Chunk indexing of huge texts blocks the job pool | 2 | Chunks of at most 8,000 words; "too long" handled by splitting; one job per file version; the existing text cap of 5,000,000 characters (ADR-0045) | V15.2 |
+| D3 | Chunk indexing of huge texts blocks the job pool | 2 | Chunks of at most 2,000 words (and 200,000 characters), at most 500 per file; "too long" handled by splitting; one job per file version; the existing text cap of 5,000,000 characters (ADR-0045) | V15.2 |
 | R1 | Nobody can say who searched for what | 1 | `search.performed` with the terms, filters and page ids, in the hash-chained store | V16.2 |
 
 ## Residual risks

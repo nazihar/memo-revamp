@@ -349,6 +349,7 @@ class MemoAttachments(
     private val files: Files,
     private val editing: DocumentEditing,
     private val audit: AuditLog,
+    private val changes: MemoChangeLog,
 ) {
     fun list(memoId: UUID): List<AttachmentView> {
         val memo = memos.get(memoId)
@@ -393,6 +394,7 @@ class MemoAttachments(
             )
         save(next, expectedVersion)
         if (next.classificationRank != row.classificationRank) {
+            changes.file(memoId, row.fileId)
             audit.record(
                 "memo.attachment.reclassified",
                 Memos.OBJECT_TYPE,
@@ -419,8 +421,9 @@ class MemoAttachments(
         id: UUID,
     ) {
         editable(memoId)
-        store.get(memoId, id) ?: throw MemoNotFoundException()
+        val row = store.get(memoId, id) ?: throw MemoNotFoundException()
         if (store.remove(id, currentUser())) {
+            changes.file(memoId, row.fileId)
             audit.record("memo.attachment.removed", Memos.OBJECT_TYPE, memoId.toString(), after = mapOf("attachment" to id.toString()))
         }
     }

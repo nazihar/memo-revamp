@@ -65,6 +65,8 @@ CREATE INDEX search_note_memo_idx ON search_note (tenant_id, memo_id);
 
 CREATE TABLE search_chunk (
     tenant_id           uuid        NOT NULL,
+    -- One version of a file is searchable at a time (its current one): a new version's chunks replace the file's.
+    file_id             uuid        NOT NULL,
     file_version_id     uuid        NOT NULL,
     chunk               int         NOT NULL CHECK (chunk >= 0),
     memo_id             uuid        NOT NULL,
@@ -87,6 +89,7 @@ CREATE TABLE search_chunk (
 );
 CREATE INDEX search_chunk_tsv_idx ON search_chunk USING gin (tsv) WITH (fastupdate = on, gin_pending_list_limit = 2048);
 CREATE INDEX search_chunk_memo_idx ON search_chunk (tenant_id, memo_id);
+CREATE INDEX search_chunk_file_idx ON search_chunk (tenant_id, file_id);
 
 DO $$
 DECLARE t text;
@@ -159,33 +162,48 @@ BEGIN
     RETURN EXISTS (SELECT 1 FROM search_note WHERE tenant_id = p_tenant AND note_id = p_note);
 END $$;
 
--- Replaces a file version's chunks; an empty array removes them (a version that left the memo). False when the memo is
--- not indexed yet.
-CREATE FUNCTION search_put_chunks(p_tenant uuid, p_version uuid, p_memo uuid, p_rank int, p_chunks text[]) RETURNS boolean
+-- Replaces a file's chunks with those of its version p_version; an empty array removes them (a file that left the memo).
+-- False when the memo is not indexed yet.
+CREATE FUNCTION search_put_chunks(p_tenant uuid, p_file uuid, p_version uuid, p_memo uuid, p_rank int, p_chunks text[])
+    RETURNS boolean
     LANGUAGE plpgsql SECURITY DEFINER SET search_path = memo, pg_catalog
 AS $$
 BEGIN
     PERFORM search_tenant(p_tenant);
-    DELETE FROM search_chunk WHERE tenant_id = p_tenant AND file_version_id = p_version;
-    INSERT INTO search_chunk (tenant_id, file_version_id, chunk, memo_id, file_rank, classification_rank, origin_unit_id,
-                              status, type_id, memo_created_at, amount, body, tsv)
-    SELECT p_tenant, p_version, c.n - 1, p_memo, p_rank, greatest(p_rank, sm.classification_rank), sm.origin_unit_id,
+    DELETE FROM search_chunk WHERE tenant_id = p_tenant AND file_id = p_file;
+    INSERT INTO search_chunk (tenant_id, file_id, file_version_id, chunk, memo_id, file_rank, classification_rank,
+                              origin_unit_id, status, type_id, memo_created_at, amount, body, tsv)
+    SELECT p_tenant, p_file, p_version, c.n - 1, p_memo, p_rank, greatest(p_rank, sm.classification_rank), sm.origin_unit_id,
            sm.status, sm.type_id, sm.created_at, sm.amount, c.body, to_tsvector('english'::regconfig, c.body)
     FROM search_memo sm, unnest(p_chunks) WITH ORDINALITY AS c(body, n)
     WHERE sm.tenant_id = p_tenant AND sm.memo_id = p_memo;
     RETURN EXISTS (SELECT 1 FROM search_memo WHERE tenant_id = p_tenant AND memo_id = p_memo);
 END $$;
 
--- A file version reclassified (ADR-0046): its chunks take the new rank.
-CREATE FUNCTION search_set_chunk_rank(p_tenant uuid, p_version uuid, p_rank int) RETURNS void
+-- A file reclassified (ADR-0046): its chunks take the new rank.
+CREATE FUNCTION search_set_chunk_rank(p_tenant uuid, p_file uuid, p_rank int) RETURNS void
     LANGUAGE plpgsql SECURITY DEFINER SET search_path = memo, pg_catalog
 AS $$
 BEGIN
     PERFORM search_tenant(p_tenant);
     UPDATE search_chunk sc SET file_rank = p_rank, classification_rank = greatest(p_rank, sm.classification_rank)
     FROM search_memo sm
-    WHERE sc.tenant_id = p_tenant AND sc.file_version_id = p_version
+    WHERE sc.tenant_id = p_tenant AND sc.file_id = p_file
       AND sm.tenant_id = sc.tenant_id AND sm.memo_id = sc.memo_id;
+END $$;
+
+-- The backfill's work list: up to p_limit memos of the tenant with no search row yet, in id order.
+CREATE FUNCTION search_unindexed(p_tenant uuid, p_limit int) RETURNS SETOF uuid
+    LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path = memo, pg_catalog
+AS $$
+BEGIN
+    PERFORM search_tenant(p_tenant);
+    RETURN QUERY
+    SELECT m.id FROM memo m
+    WHERE m.tenant_id = p_tenant
+      AND NOT EXISTS (SELECT 1 FROM search_memo sm WHERE sm.tenant_id = p_tenant AND sm.memo_id = m.id)
+    ORDER BY m.id
+    LIMIT least(greatest(p_limit, 1), 1000);
 END $$;
 
 -- The query: websearch syntax over the English configuration, with the last word as a prefix when the caller asks
@@ -414,7 +432,7 @@ END $$;
 
 -- Only the entry points are callable by the application (new functions get EXECUTE through default privileges).
 REVOKE ALL ON FUNCTION search_tenant, search_query, search_keep, search_find_sql(boolean) FROM PUBLIC, memo_app;
-REVOKE ALL ON FUNCTION search_put_memo, search_put_note, search_put_chunks, search_set_chunk_rank, search_find, search_snippets
-    FROM PUBLIC;
-GRANT EXECUTE ON FUNCTION search_put_memo, search_put_note, search_put_chunks, search_set_chunk_rank, search_find, search_snippets
-    TO memo_app;
+REVOKE ALL ON FUNCTION search_put_memo, search_put_note, search_put_chunks, search_set_chunk_rank, search_unindexed,
+    search_find, search_snippets FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION search_put_memo, search_put_note, search_put_chunks, search_set_chunk_rank, search_unindexed,
+    search_find, search_snippets TO memo_app;

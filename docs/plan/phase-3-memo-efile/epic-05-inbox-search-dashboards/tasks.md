@@ -19,7 +19,7 @@
 - **T1:** given V1 and the four reader profiles, the `EXPLAIN` plans of the prototype (as `memo_app`) use the GIN indexes, and search p95 is recorded. If any profile exceeds 300 ms after tuning, the log says so and ADR-0054's fallback order is followed.
 - **T2:**
   - given a note posted, its row exists in the same transaction;
-  - given a 1 MB extracted text, it is split into chunks of at most 8,000 words, and a phrase near the end is found;
+  - given a 1 MB extracted text, it is split into chunks of at most 2,000 words (ADR-0054 amendment), and words near the end are found;
   - given an attachment reclassified above a reader's clearance, its chunks stop matching for that reader.
 - **T3:**
   - given a reader without access to a memo, no result, facet, count or snippet reveals it;

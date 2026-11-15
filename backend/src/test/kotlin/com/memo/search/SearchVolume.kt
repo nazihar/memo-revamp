@@ -118,9 +118,10 @@ class SearchVolume(
         val chunks = memos / 5
         c.exec(
             """
-            insert into search_chunk (tenant_id, file_version_id, chunk, memo_id, file_rank, classification_rank, origin_unit_id,
+            insert into search_chunk (tenant_id, file_id, file_version_id, chunk, memo_id, file_rank, classification_rank, origin_unit_id,
                                       status, type_id, memo_created_at, amount, body, tsv)
-            select '$tenant', v, 0, m, r, greatest(r, sm.classification_rank), sm.origin_unit_id, sm.status, sm.type_id,
+            select '$tenant', md5('sf' || v)::uuid, v, 0, m, r, greatest(r, sm.classification_rank), sm.origin_unit_id,
+                   sm.status, sm.type_id,
                    sm.created_at, sm.amount, b, to_tsvector('english', b) from (
                 select md5('sv' || j)::uuid as v, md5('sm' || (j * 5))::uuid as m,
                        case when j % 10 = 0 then 2 else 0 end as r,

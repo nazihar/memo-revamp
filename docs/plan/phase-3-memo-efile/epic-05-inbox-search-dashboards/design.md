@@ -44,7 +44,7 @@ erDiagram
   - It runs the three branches (metadata, notes, readable chunks), each capped at 2,000 candidates. It filters each by the access rule and clearance, combines and ranks, and pages by a keyset (score, memo id). Snippets come from the page's rows only.
 - **Indexing:**
   - **Metadata and notes:** listeners in the search module on `MemoChanged`, `MemoNotePosted` and the like (a memo-module event published in the same transaction) upsert rows in that transaction.
-  - **Chunks:** a listener on `RenditionDone(TEXT)` (files) schedules the `search-chunks` tenant job. The job splits the text into chunks of at most 8,000 words (catching "string is too long" and splitting further) and replaces the version's chunks. Classification changes of an attachment update its chunks' rank.
+  - **Chunks:** a listener on `RenditionDone(TEXT)` (files) schedules the `search-chunks` tenant job. The job splits the text into chunks of at most 2,000 words (catching "string is too long" and splitting further) and replaces the version's chunks. Classification changes of an attachment update its chunks' rank.
   - **Backfill:** `search-backfill`, in pages of 1,000 memos per tenant, until done.
 - **Saved searches:** `GET|POST /api/v1/saved-searches`, `PUT|DELETE /api/v1/saved-searches/{id}` (If-Match). Owner only.
 - **Audit:** `search.performed` (terms, filters, sort, count, page ids) and `search.saved` / `search.updated` / `search.deleted`.

@@ -28,9 +28,9 @@ open class SearchSetChunkRank : AbstractRoutine<java.lang.Void>("search_set_chun
         val P_TENANT: Parameter<UUID?> = Internal.createParameter("p_tenant", SQLDataType.UUID, false)
 
         /**
-         * The parameter <code>memo.search_set_chunk_rank.p_version</code>.
+         * The parameter <code>memo.search_set_chunk_rank.p_file</code>.
          */
-        val P_VERSION: Parameter<UUID?> = Internal.createParameter("p_version", SQLDataType.UUID, false)
+        val P_FILE: Parameter<UUID?> = Internal.createParameter("p_file", SQLDataType.UUID, false)
 
         /**
          * The parameter <code>memo.search_set_chunk_rank.p_rank</code>.
@@ -40,7 +40,7 @@ open class SearchSetChunkRank : AbstractRoutine<java.lang.Void>("search_set_chun
 
     init {
         addInParameter(SearchSetChunkRank.P_TENANT)
-        addInParameter(SearchSetChunkRank.P_VERSION)
+        addInParameter(SearchSetChunkRank.P_FILE)
         addInParameter(SearchSetChunkRank.P_RANK)
     }
 
@@ -52,10 +52,10 @@ open class SearchSetChunkRank : AbstractRoutine<java.lang.Void>("search_set_chun
     }
 
     /**
-     * Set the <code>p_version</code> parameter IN value to the routine
+     * Set the <code>p_file</code> parameter IN value to the routine
      */
-    fun setPVersion(value: UUID?): Unit {
-        setValue(SearchSetChunkRank.P_VERSION, value)
+    fun setPFile(value: UUID?): Unit {
+        setValue(SearchSetChunkRank.P_FILE, value)
     }
 
     /**

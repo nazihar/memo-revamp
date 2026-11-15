@@ -45,6 +45,7 @@ data class RegisterReader(
 class MemoNumberStore(
     private val tenantDsl: TenantDsl,
     private val readable: MemoReadable,
+    private val changes: MemoChangeLog,
 ) {
     /**
      * The next number of [key]: the counter row is created or incremented and stays locked until commit, so numbers of one
@@ -109,7 +110,9 @@ class MemoNumberStore(
             .set(MEMO.NUMBER_SEQUENCE, sequence)
             .set(MEMO.NUMBERED_AT, now)
             .where(MEMO.ID.eq(memoId), MEMO.REFERENCE.isNull)
-            .execute() == 1
+            .execute()
+            .let { it == 1 }
+            .also { if (it) changes.memo(memoId) }
 
     /** The numbers of [key] in order, after [after], at most [limit] (keyset paging). */
     fun issued(

@@ -43,3 +43,22 @@
 - **Over budget:** the unit head's search-as-you-type (prefix) is 307 ms against 300 ms. **Decision:** search-as-you-type asks for 200 candidates, not 2,000 (the box shows at most 8 suggestions); the full search keeps the 2,000 cap. Gatling at V1 in T8 measures it under concurrency. If the full search misses the budget there, the next step is a bitmap AND of the word index with the unit index before ADR-0054's fallbacks.
 - **Plan gate:** `SearchPerformanceIT` prepares `search_find_sql()` as the owner (the role the definer function runs as) and fails on a sequential scan of a search table for rare words, for every profile. `memo_app` is shown to have no direct access, and the functions refuse another tenant.
 - **Default run:** CI runs `SearchPerformanceIT` at 100,000 memos (about 4 minutes) with 2x budgets. V1 runs with `SEARCH_VOLUME=1000000`, `MEMO_TEST_PG_SETTINGS` and `--rerun`.
+
+## 2026-11-15 — T2: search index
+- **Built:**
+  - **Memo module:** `MemoChangeLog` collects the memos, posted notes and files changed in a transaction and publishes `MemoChanged`, `MemoNotePosted` and `MemoFileChanged` once each, just before commit. It is hooked into memo create, edit, pin, status, workflow, closing and numbering; note posting; and attachment reclassification and removal. `MemoSearchSource` gives the facts, posted notes and searchable files.
+  - **Files module:** `RenditionDone`, published in the transaction that records a DONE rendition.
+  - **Search module:**
+    - `SearchIndexing` writes memo and note rows in the change's transaction and follows a file's level or removal.
+    - It schedules the `search-chunks` job on a TEXT rendition. The job indexes only the file's current version, splits the text with `SearchChunker`, and splits again when PostgreSQL finds a chunk too long.
+    - The `search-backfill` job runs per tenant, swept hourly, in batches of 200 until done.
+  - **Migration:** `search_chunk.file_id` (a file's new version replaces its chunks), `search_set_chunk_rank` by file, and `search_unindexed` (a seventh definer function, in `RlsMetaTest`).
+  - **Semgrep rule** `memo-security-definer-only-in-search`: SECURITY DEFINER outside `db/migration/search/` fails the scan. The fixture is `.semgrep/rules.sql`, checked by a scan of a copy, because `semgrep --test` finds no tests in `.semgrep/` (also for the existing rules: carried).
+- **Found:**
+  - **256 positions per word:** a vector keeps at most 256 positions per word, so in 8,000-word chunks a phrase with a frequent word stops matching. Chunks are now at most 2,000 words (ADR-0054 amendment).
+  - **File names:** the parser reads `otter-notes.docx` as one file-name token, so words inside hyphenated file names are not found on their own (as in PostgreSQL generally).
+- **Tests:**
+  - `SearchIndexIT` (details and notes with the change, edits replace words, chunking of about 1 MB with the last line found, a new document version replacing the old text, a raised attachment hidden below its level and gone when removed, the backfill once);
+  - `SearchChunkerTest`;
+  - `RlsMetaTest`, `EventPayloadRulesTest`, `ModularityTest`, `ArchitectureRulesTest` and the memo attachment, note and lifecycle ITs.
+- **Fixed on the way:** the E04 journey failed in CI on #120–#122 because the Earlier versions list showed each version's own reason. It now shows the reason of the version that replaced it (E04 T7, merged up the stack). The T1 spike's Semgrep findings (session-level `SET`, MD5 in Kotlin) are fixed on T1.

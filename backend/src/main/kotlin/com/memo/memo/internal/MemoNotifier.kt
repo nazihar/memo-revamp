@@ -39,6 +39,7 @@ class MemoNotifier(
     private val tenancy: TenancyProperties,
     private val clearances: Clearances,
     private val clock: Clock,
+    private val watches: MemoWatchStore,
 ) {
     @EventListener
     fun onTaskCreated(event: WorkflowTaskCreated) {
@@ -145,12 +146,15 @@ class MemoNotifier(
         notify(event.recipientId, NotificationKind.TASK_OVERDUE, memo.id)
     }
 
-    /** Tells [user] about [memoId] with [kind] (copy-to, mentions). */
+    /** Tells [user] about [memoId] with [kind] (copy-to, mentions); a person mentioned follows the memo from then on. */
     fun tell(
         user: UUID,
         kind: NotificationKind,
         memoId: UUID,
-    ) = notify(user, kind, memoId)
+    ) {
+        if (kind == NotificationKind.MEMO_MENTIONED) watches.auto(memoId, user, WatchReason.MENTIONED)
+        notify(user, kind, memoId)
+    }
 
     /** Tells [user] (nobody when null: a step without assignee, which the reassigners hear about instead). */
     private fun notify(

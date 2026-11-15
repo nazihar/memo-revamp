@@ -8940,6 +8940,34 @@
       "value": "‬"
     }
   ],
+  "mail.template.watchDigest": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡɐıʅʎ snɯɯɐɹʎ oɟ ɟoʅʅoʍǝp ɯǝɯos"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "mail.template.watchUpdate": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nǝʍs ou ɐ ɯǝɯo ʎon ɟoʅʅoʍ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "mail.test": [
     {
       "type": 0,
@@ -19941,6 +19969,20 @@
       "value": "‬"
     }
   ],
+  "notifications.category.watching": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯos ʎon ɟoʅʅoʍ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "notifications.category.workflow": [
     {
       "type": 0,
@@ -20109,6 +20151,93 @@
     {
       "type": 1,
       "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.kind.memoWatched": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Nǝʍs"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ndpɐʇǝs"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " ou ɯǝɯo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 5,
+      "value": "reason",
+      "options": {
+        "INITIATED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ʎon sʇɐɹʇǝp ıʇ"
+            }
+          ]
+        },
+        "ACTED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ʎon ɐɔʇǝp ou ıʇ"
+            }
+          ]
+        },
+        "MENTIONED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ʎon ʍǝɹǝ ɯǝuʇıouǝp ou ıʇ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ʎon ɟoʅʅoʍ ıʇ"
+            }
+          ]
+        }
+      }
     },
     {
       "type": 0,

@@ -68,10 +68,17 @@ erDiagram
   - No notification to the actor about their own action.
   - Every notification says why ("you follow this", "you approved step 2") and carries one-click Unwatch.
 - **Sorting:** `GET /api/v1/inbox/tasks?sort=due|assigned`. By due: overdue first, then due soonest, then no due time; by assigned, as today.
-- **Bulk:** `POST /api/v1/inbox/bulk` `{action: WATCH|UNWATCH|CLAIM|RELEASE|REASSIGN, taskIds|memoIds, to?}`, at most 100 items.
+- **Bulk:** `POST /api/v1/inbox/bulk` `{action: WATCH|UNWATCH|CLAIM|RELEASE|REASSIGN, ids, to?, reason?}`, at most 100 items; `ids` are memo ids for WATCH and UNWATCH and task ids for the others (T4).
   - Each item is checked as if acted on alone. The response gives a result per item (`OK`, `FORBIDDEN`, `CHANGED`, `NOT_FOUND`) and nothing is rolled back across items.
   - Reassign needs `workflow.tasks.reassign` (Phase 2), or a team head within their scope.
   - No decision is ever accepted in bulk.
+- **Decided in T4:**
+  - **Watch settings** live with the memo module, as `GET|PUT /api/v1/me/watch-settings` (`autoWatch`, `email`: `DIGEST|IMMEDIATE|OFF`), not in identity's preferences.
+  - **In-app news:** `MEMO_WATCHED` in a new category `WATCHING`, with the memo's number, the count of news and why the person follows it.
+  - **Emails:** `WATCH_UPDATE` (at once) and `WATCH_DIGEST` (the count of followed memos with news, and a link to the Watching tab), without subjects.
+  - **Following status** of a memo is `GET /api/v1/memos/{id}/watch`.
+  - **Bulk reassign** follows the administrators' reassignment: the permission and step-up, not read access to the memo.
+  - **The access sweep** runs as each follower, so their own unit scopes count.
 
 ## 5. Team view
 - **Who:**

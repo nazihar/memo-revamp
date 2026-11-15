@@ -124,8 +124,9 @@ class MemoInbox(
     fun tasks(
         cursor: String?,
         limit: Int,
+        byDue: Boolean = false,
     ): InboxPage {
-        val page = queries.myTasks(cursor, limit)
+        val page = queries.myTasks(cursor, limit, byDue)
         val memoIds =
             page.items
                 .filter { it.subject.type == MemoWorkflowSubject.TYPE }

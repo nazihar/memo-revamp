@@ -97,6 +97,7 @@ class MemoStore(
     private val json: JsonMapper,
     private val readable: MemoReadable,
     private val changes: MemoChangeLog,
+    private val watches: MemoWatchStore,
 ) {
     fun insert(
         memo: NewMemo,
@@ -119,6 +120,7 @@ class MemoStore(
             .set(MEMO.UPDATED_AT, now)
             .execute()
         addParticipant(memo.id, memo.initiatorId, ParticipantKind.INITIATOR, now)
+        watches.auto(memo.id, memo.initiatorId, WatchReason.INITIATED)
         changes.memo(memo.id)
     }
 

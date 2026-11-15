@@ -620,15 +620,21 @@ class InboxController(
 ) {
     @GetMapping("/tasks")
     @SignedIn
-    @Operation(operationId = "listMyTasks", summary = "My open tasks")
+    @Operation(
+        operationId = "listMyTasks",
+        summary = "My open tasks: newest first, or with sort=due by due time (overdue first, those without a due time last)",
+    )
     fun tasks(
         @RequestParam(required = false) cursor: String?,
         @RequestParam(defaultValue = "25") limit: Int,
-    ): ResponseEntity<InboxPage> =
-        ResponseEntity
+        @RequestParam(defaultValue = "assigned") sort: String,
+    ): ResponseEntity<InboxPage> {
+        require(sort == "assigned" || sort == "due") { "sort is assigned or due" }
+        return ResponseEntity
             .ok()
             .cacheControl(CacheControl.noStore())
-            .body(transactions.readInTenant(TenantContext.current()) { inbox.tasks(cursor, limit) })
+            .body(transactions.readInTenant(TenantContext.current()) { inbox.tasks(cursor, limit, byDue = sort == "due") })
+    }
 }
 
 /**

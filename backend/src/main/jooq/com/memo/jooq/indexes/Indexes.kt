@@ -35,6 +35,8 @@ import com.memo.jooq.tables.MemoShare
 import com.memo.jooq.tables.MemoSubmissionAttachment
 import com.memo.jooq.tables.MemoType
 import com.memo.jooq.tables.MemoTypeVersion
+import com.memo.jooq.tables.MemoWatch
+import com.memo.jooq.tables.MemoWatchEvent
 import com.memo.jooq.tables.NotificationItem
 import com.memo.jooq.tables.NotificationMailOutbox
 import com.memo.jooq.tables.OrgAssignment
@@ -120,6 +122,10 @@ val MEMO_TENANT_TYPE_VERSION_IDX: Index = Internal.createIndex(DSL.name("memo_te
 val MEMO_TYPE_TENANT_CODE_UK: Index = Internal.createIndex(DSL.name("memo_type_tenant_code_uk"), MemoType.MEMO_TYPE, arrayOf(MemoType.MEMO_TYPE.TENANT_ID, MemoType.MEMO_TYPE.CODE), true)
 val MEMO_TYPE_VERSION_ONE_OPEN_IDX: Index = Internal.createIndex(DSL.name("memo_type_version_one_open_idx"), MemoTypeVersion.MEMO_TYPE_VERSION, arrayOf(MemoTypeVersion.MEMO_TYPE_VERSION.TENANT_ID, MemoTypeVersion.MEMO_TYPE_VERSION.MEMO_TYPE_ID), true)
 val MEMO_TYPE_VERSION_ONE_PUBLISHED_IDX: Index = Internal.createIndex(DSL.name("memo_type_version_one_published_idx"), MemoTypeVersion.MEMO_TYPE_VERSION, arrayOf(MemoTypeVersion.MEMO_TYPE_VERSION.TENANT_ID, MemoTypeVersion.MEMO_TYPE_VERSION.MEMO_TYPE_ID), true)
+val MEMO_WATCH_EVENT_MEMO_IDX: Index = Internal.createIndex(DSL.name("memo_watch_event_memo_idx"), MemoWatchEvent.MEMO_WATCH_EVENT, arrayOf(MemoWatchEvent.MEMO_WATCH_EVENT.TENANT_ID, MemoWatchEvent.MEMO_WATCH_EVENT.MEMO_ID), false)
+val MEMO_WATCH_EVENT_UNEMAILED_IDX: Index = Internal.createIndex(DSL.name("memo_watch_event_unemailed_idx"), MemoWatchEvent.MEMO_WATCH_EVENT, arrayOf(MemoWatchEvent.MEMO_WATCH_EVENT.TENANT_ID, MemoWatchEvent.MEMO_WATCH_EVENT.USER_ID), false)
+val MEMO_WATCH_EVENT_UNNOTIFIED_IDX: Index = Internal.createIndex(DSL.name("memo_watch_event_unnotified_idx"), MemoWatchEvent.MEMO_WATCH_EVENT, arrayOf(MemoWatchEvent.MEMO_WATCH_EVENT.TENANT_ID, MemoWatchEvent.MEMO_WATCH_EVENT.USER_ID, MemoWatchEvent.MEMO_WATCH_EVENT.MEMO_ID), false)
+val MEMO_WATCH_USER_IDX: Index = Internal.createIndex(DSL.name("memo_watch_user_idx"), MemoWatch.MEMO_WATCH, arrayOf(MemoWatch.MEMO_WATCH.TENANT_ID, MemoWatch.MEMO_WATCH.USER_ID, MemoWatch.MEMO_WATCH.CREATED_AT.desc(), MemoWatch.MEMO_WATCH.MEMO_ID), false)
 val NOTIFICATION_ITEM_UNREAD_IDX: Index = Internal.createIndex(DSL.name("notification_item_unread_idx"), NotificationItem.NOTIFICATION_ITEM, arrayOf(NotificationItem.NOTIFICATION_ITEM.TENANT_ID, NotificationItem.NOTIFICATION_ITEM.USER_ID), false)
 val NOTIFICATION_ITEM_USER_IDX: Index = Internal.createIndex(DSL.name("notification_item_user_idx"), NotificationItem.NOTIFICATION_ITEM, arrayOf(NotificationItem.NOTIFICATION_ITEM.TENANT_ID, NotificationItem.NOTIFICATION_ITEM.USER_ID, NotificationItem.NOTIFICATION_ITEM.CREATED_AT.desc(), NotificationItem.NOTIFICATION_ITEM.ID.desc()), false)
 val NOTIFICATION_MAIL_OUTBOX_TENANT_CREATED_IDX: Index = Internal.createIndex(DSL.name("notification_mail_outbox_tenant_created_idx"), NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX, arrayOf(NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.TENANT_ID, NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.CREATED_AT.desc(), NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.ID.desc()), false)

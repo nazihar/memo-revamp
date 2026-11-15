@@ -11,6 +11,9 @@ enum class NotificationCategory(
 
     /** Memo approvals (Phase 2 E01): users may switch email off; the in-app item stays the inbox's companion. */
     WORKFLOW(mandatory = false),
+
+    /** Memos the user follows (Phase 3 E05, flow J): what others did; the email is the user's watch setting (digest by default). */
+    WATCHING(mandatory = false),
 }
 
 /** Where a notification goes. `PUSH` is reserved for the mobile apps (Phase 6a) and not delivered yet. */
@@ -53,6 +56,10 @@ enum class NotificationKind(
 
     // In-browser editing (design E02 §3): a save that could not land; in-app only, parameter `name` (the file's name).
     EDIT_NOT_SAVED(NotificationCategory.WORKFLOW, null),
+
+    // Following (Phase 3 E05 T4): what happened to a followed memo, batched per memo; in-app only (the email is a digest
+    // or an update by the user's watch setting). Parameters `reference`, `count`, `reason` (why the user follows it).
+    MEMO_WATCHED(NotificationCategory.WATCHING, null),
 }
 
 /** Who receives a notification; the producer already holds the user, so `notification` never looks people up. */

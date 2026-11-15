@@ -31,7 +31,16 @@ data class MemoSearchFacts(
 data class MemoNoteText(
     val noteId: UUID,
     val memoId: UUID,
+    val authorId: UUID,
     val text: String,
+)
+
+/** What a search result shows of a memo (its number, subject and type's name). */
+data class MemoSearchSummary(
+    val memoId: UUID,
+    val reference: String?,
+    val subject: String,
+    val typeName: String,
 )
 
 /**
@@ -44,6 +53,8 @@ data class MemoFileFacts(
     val rank: Int,
     /** The version whose text is searchable: the file's current version. */
     val currentVersionId: UUID?,
+    /** The memo's document (true) or an attachment (false). */
+    val document: Boolean,
 )
 
 /** Memo facts for the search index, implemented by the memo module. Callers run inside a tenant transaction. */
@@ -62,6 +73,12 @@ interface MemoSearchSource {
 
     /** The searchable files of [memoId]: its document and its present attachments. */
     fun files(memoId: UUID): List<MemoFileFacts>
+
+    /** Summaries of the memos of [memoIds] that exist. No access check: the caller has applied the read rule. */
+    fun summaries(memoIds: Collection<UUID>): Map<UUID, MemoSearchSummary>
+
+    /** The names of the memo types of [typeIds] that exist. */
+    fun typeNames(typeIds: Collection<UUID>): Map<UUID, String>
 }
 
 /**

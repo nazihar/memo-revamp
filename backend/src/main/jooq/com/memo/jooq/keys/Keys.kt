@@ -61,6 +61,7 @@ import com.memo.jooq.tables.OrgLegalEntity
 import com.memo.jooq.tables.OrgPosition
 import com.memo.jooq.tables.OrgReportingLine
 import com.memo.jooq.tables.OrgUnit
+import com.memo.jooq.tables.SearchSaved
 import com.memo.jooq.tables.SystemIdempotencyKey
 import com.memo.jooq.tables.SystemInfo
 import com.memo.jooq.tables.TenancySetting
@@ -137,6 +138,7 @@ import com.memo.jooq.tables.records.OrgLegalEntityRecord
 import com.memo.jooq.tables.records.OrgPositionRecord
 import com.memo.jooq.tables.records.OrgReportingLineRecord
 import com.memo.jooq.tables.records.OrgUnitRecord
+import com.memo.jooq.tables.records.SearchSavedRecord
 import com.memo.jooq.tables.records.SystemIdempotencyKeyRecord
 import com.memo.jooq.tables.records.SystemInfoRecord
 import com.memo.jooq.tables.records.TenancySettingRecord
@@ -266,6 +268,8 @@ val ORG_REPORTING_LINE_PKEY: UniqueKey<OrgReportingLineRecord> = Internal.create
 val ORG_REPORTING_LINE_TENANT_ID_ID_KEY: UniqueKey<OrgReportingLineRecord> = Internal.createUniqueKey(OrgReportingLine.ORG_REPORTING_LINE, DSL.name("org_reporting_line_tenant_id_id_key"), arrayOf(OrgReportingLine.ORG_REPORTING_LINE.TENANT_ID, OrgReportingLine.ORG_REPORTING_LINE.ID), true)
 val ORG_UNIT_PKEY: UniqueKey<OrgUnitRecord> = Internal.createUniqueKey(OrgUnit.ORG_UNIT, DSL.name("org_unit_pkey"), arrayOf(OrgUnit.ORG_UNIT.ID), true)
 val ORG_UNIT_TENANT_ID_ID_KEY: UniqueKey<OrgUnitRecord> = Internal.createUniqueKey(OrgUnit.ORG_UNIT, DSL.name("org_unit_tenant_id_id_key"), arrayOf(OrgUnit.ORG_UNIT.TENANT_ID, OrgUnit.ORG_UNIT.ID), true)
+val SEARCH_SAVED_PKEY: UniqueKey<SearchSavedRecord> = Internal.createUniqueKey(SearchSaved.SEARCH_SAVED, DSL.name("search_saved_pkey"), arrayOf(SearchSaved.SEARCH_SAVED.ID), true)
+val SEARCH_SAVED_TENANT_ID_ID_KEY: UniqueKey<SearchSavedRecord> = Internal.createUniqueKey(SearchSaved.SEARCH_SAVED, DSL.name("search_saved_tenant_id_id_key"), arrayOf(SearchSaved.SEARCH_SAVED.TENANT_ID, SearchSaved.SEARCH_SAVED.ID), true)
 val SYSTEM_IDEMPOTENCY_KEY_PKEY: UniqueKey<SystemIdempotencyKeyRecord> = Internal.createUniqueKey(SystemIdempotencyKey.SYSTEM_IDEMPOTENCY_KEY, DSL.name("system_idempotency_key_pkey"), arrayOf(SystemIdempotencyKey.SYSTEM_IDEMPOTENCY_KEY.TENANT_ID, SystemIdempotencyKey.SYSTEM_IDEMPOTENCY_KEY.OPERATION, SystemIdempotencyKey.SYSTEM_IDEMPOTENCY_KEY.KEY), true)
 val SYSTEM_INFO_PKEY: UniqueKey<SystemInfoRecord> = Internal.createUniqueKey(SystemInfo.SYSTEM_INFO, DSL.name("system_info_pkey"), arrayOf(SystemInfo.SYSTEM_INFO.ID), true)
 val TENANCY_SETTING_PKEY: UniqueKey<TenancySettingRecord> = Internal.createUniqueKey(TenancySetting.TENANCY_SETTING, DSL.name("tenancy_setting_pkey"), arrayOf(TenancySetting.TENANCY_SETTING.ID), true)

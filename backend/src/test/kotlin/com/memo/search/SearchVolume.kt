@@ -19,18 +19,20 @@ class SearchVolume(
     private val memos: Int,
     private val type: UUID,
     private val level: UUID,
+    // Seeds of the generated ids: memo ids are a global key, so each test class uses its own.
+    private val seed: String = "s",
 ) {
     /** The units, by index (origin unit of memo i is unit i % [UNITS]). */
-    fun unit(index: Int): UUID = generated("su$index")
+    fun unit(index: Int): UUID = generated("${seed}u$index")
 
     /** The memo of index i (1-based). */
-    fun memo(index: Int): UUID = generated("sm$index")
+    fun memo(index: Int): UUID = generated("${seed}m$index")
 
-    /** The id the generator wrote for [seed]: PostgreSQL's `md5(seed)::uuid`, computed by PostgreSQL. */
-    private fun generated(seed: String): UUID =
+    /** The id the generator wrote for [key]: PostgreSQL's `md5(seed)::uuid`, computed by PostgreSQL. */
+    private fun generated(key: String): UUID =
         DriverManager.getConnection(TestDatabase.jdbcUrl, "memo_migrator", TestDatabase.migratorPassword).use { c ->
             c.prepareStatement("select md5(?)::uuid").use { st ->
-                st.setString(1, seed)
+                st.setString(1, key)
                 st.executeQuery().use { rs ->
                     rs.next()
                     rs.getObject(1, UUID::class.java)
@@ -61,10 +63,10 @@ class SearchVolume(
         c.exec(
             """
             create temp table gen as
-            select i, md5('sm' || i)::uuid as id,
+            select i, md5('${seed}m' || i)::uuid as id,
                    $subject || case when i % ${memos / NEEDLES} = 0 then ' $NEEDLE_SUBJECT' else '' end as subject,
                    (select string_agg(w[1 + floor(power(random(), 2) * n)::int], ' ') from words, generate_series(1, 8 + 0 * i)) as fields,
-                   md5('su' || (i % $UNITS))::uuid as unit,
+                   md5('${seed}u' || (i % $UNITS))::uuid as unit,
                    case when i % 20 = 0 then 2 when i % 7 = 0 then 1 else 0 end as rank,
                    (array['IN_REVIEW', 'APPROVED', 'RETURNED', 'DRAFT', 'REJECTED'])[1 + i % 5] as status,
                    (i % 1000) * 1000.00 as amount,
@@ -77,7 +79,7 @@ class SearchVolume(
             insert into memo (id, tenant_id, reference, memo_type_id, subject, classification_id, classification_rank,
                               initiator_id, origin_unit_id, status, current_round, created_at, updated_at)
             select id, '$tenant', 'M-2026-' || lpad(i::text, 7, '0'), '$type', left(subject, 300), '$level', 0,
-                   md5('si' || (i % 500))::uuid, unit, 'DRAFT', 0, at, at
+                   md5('${seed}i' || (i % 500))::uuid, unit, 'DRAFT', 0, at, at
             from gen
             """,
         )
@@ -85,7 +87,7 @@ class SearchVolume(
             """
             insert into search_memo (tenant_id, memo_id, classification_rank, origin_unit_id, status, type_id, initiator_id,
                                      amount, created_at, updated_at, ref_norm, ref_tail, subject, fields_text)
-            select '$tenant', id, rank, unit, status, '$type', md5('si' || (i % 500))::uuid, amount, at, at,
+            select '$tenant', id, rank, unit, status, '$type', md5('${seed}i' || (i % 500))::uuid, amount, at, at,
                    'M-2026-' || lpad(i::text, 7, '0'), i::text, left(subject, 300), fields
             from gen
             """,
@@ -93,7 +95,7 @@ class SearchVolume(
         c.exec(
             """
             insert into memo_participant (tenant_id, memo_id, user_id, kind, created_at)
-            select '$tenant', id, md5('si' || (i % 500))::uuid, 'INITIATOR', at from gen
+            select '$tenant', id, md5('${seed}i' || (i % 500))::uuid, 'INITIATOR', at from gen
             """,
         )
     }
@@ -104,12 +106,12 @@ class SearchVolume(
             """
             insert into search_note (tenant_id, note_id, memo_id, classification_rank, origin_unit_id, status, type_id,
                                      memo_created_at, amount, body)
-            select '$tenant', md5('sn' || j)::uuid, sm.memo_id, sm.classification_rank, sm.origin_unit_id, sm.status, sm.type_id,
+            select '$tenant', md5('${seed}n' || j)::uuid, sm.memo_id, sm.classification_rank, sm.origin_unit_id, sm.status, sm.type_id,
                    sm.created_at, sm.amount,
                    (select string_agg(w[1 + floor(power(random(), 3) * n)::int], ' ') from words, generate_series(1, 25 + 0 * j))
                        || case when j % ${notes / NEEDLES} = 0 then ' $NEEDLE_NOTE' else '' end
             from generate_series(1, $notes) j
-            join search_memo sm on sm.tenant_id = '$tenant' and sm.memo_id = md5('sm' || (1 + j % $memos))::uuid
+            join search_memo sm on sm.tenant_id = '$tenant' and sm.memo_id = md5('${seed}m' || (1 + j % $memos))::uuid
             """,
         )
     }
@@ -120,10 +122,10 @@ class SearchVolume(
             """
             insert into search_chunk (tenant_id, file_id, file_version_id, chunk, memo_id, file_rank, classification_rank, origin_unit_id,
                                       status, type_id, memo_created_at, amount, body, tsv)
-            select '$tenant', md5('sf' || v)::uuid, v, 0, m, r, greatest(r, sm.classification_rank), sm.origin_unit_id,
+            select '$tenant', md5('${seed}f' || v)::uuid, v, 0, m, r, greatest(r, sm.classification_rank), sm.origin_unit_id,
                    sm.status, sm.type_id,
                    sm.created_at, sm.amount, b, to_tsvector('english', b) from (
-                select md5('sv' || j)::uuid as v, md5('sm' || (j * 5))::uuid as m,
+                select md5('${seed}v' || j)::uuid as v, md5('${seed}m' || (j * 5))::uuid as m,
                        case when j % 10 = 0 then 2 else 0 end as r,
                        (select string_agg(w[1 + floor(power(random(), 2) * n)::int], ' ') from words, generate_series(1, 200 + 0 * j))
                            || case when j % ${chunks / NEEDLES} = 0 then ' $NEEDLE_DOCUMENT' else '' end as b
@@ -143,8 +145,8 @@ class SearchVolume(
             c.exec(
                 """
                 insert into memo_participant (tenant_id, memo_id, user_id, kind, granted_by, created_at)
-                select '$tenant', md5('sm' || (1 + (k * ${memos / rows.coerceAtLeast(1)}) % $memos))::uuid, '$reader', 'COPY',
-                       md5('si1')::uuid, now()
+                select '$tenant', md5('${seed}m' || (1 + (k * ${memos / rows.coerceAtLeast(1)}) % $memos))::uuid, '$reader', 'COPY',
+                       md5('${seed}i1')::uuid, now()
                 from generate_series(1, $rows) k
                 on conflict do nothing
                 """,

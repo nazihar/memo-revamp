@@ -22,7 +22,7 @@
 |---|---|---|
 | T1 | Spike (recorded) | V1 generation time; plans as `memo_app` for each profile; p95 per profile; `fastupdate` on vs off; ranking cap 1,000 / 2,000 / 5,000 |
 | T2 | Integration | `SearchIndexIT`: metadata and note rows in the source's transaction; chunking of a 1 MB text (a phrase near the end found); "too long" splits further; reclassification updates chunk rank; backfill fills a tenant once |
-| T2 | Persistence/RLS | The three tables have no grants to `memo_app`; `saved_search` has RLS forced; `RlsMetaTest` exceptions are exactly the three tables |
+| T2 | Persistence/RLS | The three tables have no grants to `memo_app`; `search_saved` has RLS forced; `RlsMetaTest` exceptions are exactly the three tables |
 | T3 | Property | Random memos, participants (active, revoked, lapsed), shares, unit scopes, classifications and chunks: `search.find` returns exactly the readable memos matching the terms; counts and facets equal those of that set; no snippet from a chunk above clearance |
 | T3 | Integration | `SearchIT`: identifiers (`M-…`, `00042`, `CR/2026/0001`); phrases, OR and `-`; prefix on the last term at 3+ characters; newest sort; cursor paging without repeats; capped count "2,000+"; input caps (422); rate limit (429); timeout (503); audit of every search |
 | T3 | Architecture | Semgrep: no SECURITY DEFINER function outside `search/`; `EXPLAIN` gate test runs as `memo_app` and fails on a sequential scan of a search table |

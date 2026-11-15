@@ -213,7 +213,8 @@ export function MemoAccess({ memo, onProblem }: { memo: MemoView; onProblem: (pr
         <CopyDialog
           memoId={memo.id}
           adding={!copies.data.canEdit}
-          memoVersion={copies.data.memoVersion}
+          // The memo as the page has it now: saving approvers or details moves its version after the copies were read.
+          memoVersion={memo.version}
           initial={copies.data.copies
             .filter((c) => !c.sentAt)
             .map((c) => ({ kind: c.recipient.kind, id: c.recipient.id, sendWhen: c.sendWhen, name: c.recipient.name }))}

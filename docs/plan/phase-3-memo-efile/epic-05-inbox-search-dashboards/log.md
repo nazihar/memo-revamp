@@ -9,3 +9,6 @@
   - PostgreSQL 18.7 (GIN fixes) is adopted on or after 2026-11-26;
   - PostgreSQL 19 (GA 2026-11-19) needs a search rebuild when adopted;
   - Recharts 3.10.1 is pinned (3.11 canaries skipped).
+
+## 2026-11-15 — Owner's review
+- The owner answered "approved as recommended. keep working". Flows H and I and the six recommended answers stand (`ux-review.md`). The web tasks T6 and T7 are unblocked.

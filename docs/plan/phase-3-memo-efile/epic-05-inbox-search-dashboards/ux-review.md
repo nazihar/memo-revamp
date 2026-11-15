@@ -119,3 +119,8 @@ Showing: Credit Division and its units, 1 Sep – 15 Nov 2026
    - Alternative: details and notes by default, documents on request (faster).
 6. **Dashboards: who sees unit scope?**
    - **Recommended:** heads for their subtree, and holders of `memo.dashboard.read`. Per-person figures only within that scope.
+
+## Owner's review
+| Date | Who | Outcome |
+|---|---|---|
+| 2026-11-15 | Product owner (aradnazihar) | "approved as recommended. keep working". Flows H and I are approved, and the six answers are the recommended ones: heads see their subtree automatically, plus a grantable `inbox.team.read`; bulk actions are Watch, Unwatch, Claim, Release and Reassign (no decisions); followed-memo email is a daily digest by default; saved searches are private; documents are searched by default, cleared text only; unit dashboards go to heads plus a grantable `memo.dashboard.read` |

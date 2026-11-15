@@ -57,12 +57,13 @@ test.describe('as the initiator', () => {
     // The definition names every step: there is no route to build.
     await expect(page.getByRole('button', { name: 'Save approvers' })).toHaveCount(0)
 
-    await page.getByLabel('Upload the document').setInputFiles({
+    // The demo's Credit facility has a letterhead (E03), so the draft may start with it as version 1.
+    await page.getByLabel(/^Upload (the document|a new version)$/).setInputFiles({
       name: 'credit.docx',
       mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
       buffer: docx('Credit facility for Example Ltd'),
     })
-    await expect(page.getByText(/^Version 1 ·/)).toBeVisible()
+    await expect(page.getByText(/^Version [12] · credit\.docx/)).toBeVisible()
     await act(page, memoUrl, 'Submit')
     await expect(status(page, 'In review')).toBeVisible()
 

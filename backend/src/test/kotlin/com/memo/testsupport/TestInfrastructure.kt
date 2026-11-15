@@ -18,6 +18,8 @@ fun randomSecret(): String {
 /**
  * A PostgreSQL container initialised with the same role script as Compose and on-prem installs
  * (`deploy/db/init/01-roles.sh`): Flyway runs as `memo_migrator`, the application connects as `memo_app`.
+ * `MEMO_TEST_PG_SETTINGS` (space-separated `name=value`) adds server settings, for volume runs that need production-like
+ * memory (E05 T1); unset, the image defaults apply.
  */
 class PostgresInstance : AutoCloseable {
     val migratorPassword = randomSecret()
@@ -31,7 +33,20 @@ class PostgresInstance : AutoCloseable {
             .withCopyFileToContainer(
                 MountableFile.forHostPath(repoRoot.resolve("deploy/db/init/01-roles.sh"), 0b111_101_101),
                 "/docker-entrypoint-initdb.d/01-roles.sh",
-            ).also { it.start() }
+            ).also { container ->
+                val settings =
+                    System
+                        .getenv("MEMO_TEST_PG_SETTINGS")
+                        ?.split(' ')
+                        ?.filter { it.contains('=') }
+                        .orEmpty()
+                if (settings.isNotEmpty()) {
+                    container
+                        .withSharedMemorySize(SHARED_MEMORY)
+                        .withCommand(*(listOf("postgres", "-c", "fsync=off") + settings.flatMap { listOf("-c", it) }).toTypedArray())
+                }
+                container.start()
+            }
 
     val jdbcUrl: String get() = container.jdbcUrl
 
@@ -39,6 +54,7 @@ class PostgresInstance : AutoCloseable {
 
     companion object {
         const val IMAGE = "postgres:18.6"
+        private const val SHARED_MEMORY = 1L shl 30
     }
 }
 

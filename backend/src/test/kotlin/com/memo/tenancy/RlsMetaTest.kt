@@ -30,8 +30,22 @@ class RlsMetaTest : IntegrationTest() {
     /** Tables whose names a framework fixes, exempt from the module-prefix rule. */
     private val frameworkTables = setOf("event_publication", "event_publication_archive")
 
-    /** SECURITY DEFINER functions allowed (none). */
-    private val allowedSecurityDefiner = emptySet<String>()
+    /**
+     * Search tables (ADR-0054): RLS enabled but not forced, so the search functions (owned by the schema owner) can use
+     * their GIN indexes; memo_app holds no privilege on them and reaches them only through [allowedSecurityDefiner].
+     */
+    private val searchTables = setOf("search_memo", "search_note", "search_chunk")
+
+    /** SECURITY DEFINER functions allowed: the search entry points only (ADR-0054). */
+    private val allowedSecurityDefiner =
+        setOf(
+            "search_put_memo",
+            "search_put_note",
+            "search_put_chunks",
+            "search_set_chunk_rank",
+            "search_find",
+            "search_snippets",
+        )
 
     private fun <T> query(
         sql: String,
@@ -75,9 +89,31 @@ class RlsMetaTest : IntegrationTest() {
                 where n.nspname = 'memo' and c.relkind in ('r', 'p') and c.relname not like 'flyway_schema_history%'
                 """,
             ) { Triple(it.getString(1), it.getBoolean(2), it.getBoolean(3)) }
-                .filter { (name, enabled, forced) -> name !in platformTables && !(enabled && forced) }
-                .map { it.first }
+                .filter { (name, enabled, forced) ->
+                    name !in platformTables && !(enabled && (forced || name in searchTables))
+                }.map { it.first }
         assertThat(violations).describedAs("tables without ENABLE + FORCE ROW LEVEL SECURITY").isEmpty()
+    }
+
+    @Test
+    fun `only the search tables have RLS without FORCE, and the app role holds nothing on them`() {
+        val unforced =
+            query(
+                """
+                select c.relname from pg_class c join pg_namespace n on n.oid = c.relnamespace
+                where n.nspname = 'memo' and c.relkind in ('r', 'p') and c.relrowsecurity and not c.relforcerowsecurity
+                """,
+            ) { it.getString(1) }
+        assertThat(unforced).containsExactlyInAnyOrderElementsOf(searchTables)
+        val granted =
+            query(
+                """
+                select table_name || ':' || privilege_type from information_schema.role_table_grants
+                where table_schema = 'memo' and grantee in ('memo_app', 'PUBLIC')
+                  and table_name in ('search_memo', 'search_note', 'search_chunk')
+                """,
+            ) { it.getString(1) }
+        assertThat(granted).describedAs("privileges on search tables").isEmpty()
     }
 
     @Test
@@ -145,7 +181,7 @@ class RlsMetaTest : IntegrationTest() {
     }
 
     @Test
-    fun `no SECURITY DEFINER functions`() {
+    fun `no SECURITY DEFINER functions but the search entry points`() {
         val definers =
             query(
                 """
@@ -154,6 +190,19 @@ class RlsMetaTest : IntegrationTest() {
                 """,
             ) { it.getString(1) }
         assertThat(definers.filterNot { it in allowedSecurityDefiner }).isEmpty()
+    }
+
+    @Test
+    fun `every SECURITY DEFINER function pins its search path`() {
+        val unpinned =
+            query(
+                """
+                select p.proname from pg_proc p join pg_namespace n on n.oid = p.pronamespace
+                where n.nspname = 'memo' and p.prosecdef
+                  and not coalesce('search_path=memo, pg_catalog' = any(p.proconfig), false)
+                """,
+            ) { it.getString(1) }
+        assertThat(unpinned).describedAs("definer functions without SET search_path = memo, pg_catalog").isEmpty()
     }
 
     @Test

@@ -35,15 +35,15 @@ Every table has row-level security, enabled and forced (ADR-0006). The E03 acces
   - tenant, memo, classification rank, origin unit, status, type, dates, amount, initiator;
   - `lang text`;
   - a stored `tsvector` (subject A, reference tokens B, type and field values C);
-  - `ref_norm` (the reference upper-cased, separators unified) with btree and `pg_trgm` GIN.
+  - `ref_norm` (the reference upper-cased, each run of separators one `-`) and `ref_tail` (its last digit group without leading zeros), each with a B-tree index. *(Amended by E05 T1: no `pg_trgm`.)*
 - **`search_note`:** one row per note: tenant, memo, note, stored vector of the note's text.
 - **`search_chunk`:** one row per (file version, chunk of at most 8,000 words). Columns: tenant, memo, file version, chunk number, the file version's effective classification rank, the text, and the vector computed by the indexer.
 - **Indexes and access:**
   - GIN on each vector, with `fastupdate` on and the pending-list limit set from the V1 measurement.
   - RLS is ENABLED on all three tables but not FORCED. Their owner (the schema owner) bypasses it inside the function. The application role has **no SELECT** on them, so its only way in is the function.
 
-**The function**, `search.find(...)`:
-- `SECURITY DEFINER`, with `search_path` pinned; EXECUTE is granted only to `memo_app`.
+**The functions**, `search_find(...)` and `search_snippets(...)`, with writers `search_put_memo`, `search_put_note`, `search_put_chunks` and `search_set_chunk_rank`:
+- `SECURITY DEFINER`, with `search_path` pinned; EXECUTE is granted only to `memo_app`. Writes go through the writer functions too: the application role holds no privilege on the tables.
 - It takes the tenant from the same `app.tenant_id` setting the policies trust, and checks it against its parameter.
 - **Filters:** the reader's clearance rank, the reader id, and the unit scopes of their `memo.read.unit` grants (computed by the application from the policy, exactly as `MemoReadable` does). It applies `classification_rank <= clearance`, then participant EXISTS (active, not lapsed) OR origin unit in scopes. The SQL is the same as the E03 rule, and an equivalence test checks it.
 - **Ranking:**
@@ -52,12 +52,12 @@ Every table has row-level security, enabled and forced (ADR-0006). The E03 acces
   - pages by a keyset cursor;
   - "Newest first" skips ranking.
 - **Snippets:** computed with `ts_headline` only for the page's rows, on one readable chunk, note or subject, with private-use delimiters.
-- **Timeout:** `SET LOCAL statement_timeout = '2s'`.
+- **Timeout:** 2 s, set by the caller as the query timeout. *(Amended by E05 T1: a `STABLE` function cannot run `SET`.)*
 
 **Input:**
 - `websearch_to_tsquery` per configured language, ORed together.
 - Prefix matching on the last term only, with at least 3 characters.
-- Input that looks like a reference also searches `ref_norm`.
+- Input that looks like a reference also looks up `ref_norm`, and input of digits alone also `ref_tail` (so `00042` finds `M-2026-00042`). An exact number match ranks first.
 - At most 200 characters and 12 terms.
 
 **Indexing:**
@@ -80,7 +80,7 @@ Every table has row-level security, enabled and forced (ADR-0006). The E03 acces
 
 **Upgrades.**
 - PostgreSQL 18.7 or later, which fixes GIN corruption, from 2026-11-26, when it is two weeks old.
-- A major upgrade (19 changes character classification and the English stemmer) rebuilds every FTS and trigram index and recomputes stored vectors. The runbook has the steps.
+- A major upgrade (19 changes character classification and the English stemmer) rebuilds every FTS index and recomputes stored vectors. The runbook has the steps.
 
 ### Consequences
 - Good: one store, no second copy of confidential text, and the access rule in one place, which an equivalence test keeps equal to E03's.
@@ -90,7 +90,7 @@ Every table has row-level security, enabled and forced (ADR-0006). The E03 acces
 - Neutral: relevance is `ts_rank_cd`, not BM25. Good enough for memo search; trigger 4 covers the rest.
 
 ### Confirmation
-- An `EXPLAIN` gate, run **as `memo_app`**: the function's plans use the GIN indexes for every reader profile, and fail the test if they fall back to a sequential scan at V1-scale statistics.
+- An `EXPLAIN` gate: the plans of the function's query, as the owner the definer function runs as, use the indexes for every reader profile (custom and generic plans) and fail the test on a sequential scan of a search table. `memo_app` is checked to have no direct access. *(Amended by E05 T1: plans inside a function are not visible to `EXPLAIN` of the call.)*
 - A property test: on random memos, participants, shares, unit scopes, classifications and chunks, the function returns exactly the memos the E03 rule allows and that match the terms. No count, facet or snippet comes from a hidden row or chunk.
 - Gatling at V1 (1,000,000 memos): search p95 under 300 ms for the four reader profiles.
 - The audit test (every search audited) and the rate-limit test.
@@ -111,6 +111,13 @@ Every table has row-level security, enabled and forced (ADR-0006). The E03 acces
 ### Option 5 — OpenSearch now
 - Good: analysers for Bengali and Arabic, BM25, facets.
 - Bad: a second confidential store, a 3-node cluster, access lists reindexed on every grant, and stale results.
+
+## Amendment — 2026-11-15 (E05 T1)
+- **No `pg_trgm`.** The migration role (`memo_migrator`) has no CREATE on the database, so a migration cannot create an extension (`deploy/db/init/01-roles.sh`), and an extension would add an install step for every customer. Numbers are found by B-tree lookups instead: `ref_norm` for a whole number in any spelling (`M-2026-00042`, `m/2026/00042`), `ref_tail` for its last digits (`00042`, `42`). Partial numbers inside a word (`2026-000`) are not supported; the words of a number still match through the vector.
+- **Two parts per source.** Each source (details, notes, documents) is searched once through the reader's active participant rows (one lookup per memo) and once through their unit scope, the second skipped when they have none. With an OR of the two, a reader with few memos scanned every match of a common word. Each part takes at most the cap before ranking.
+- **One table per part.** Note and chunk rows carry copies of their memo's rank, origin unit, status, type, creation date and amount, kept equal by `search_put_memo`. A part that had to join the memo row could not stop at the cap, so a common word read every chunk. A chunk keeps its file's own rank and the effective one (the higher of file and memo).
+- **Planned per call.** `search_find` runs its query with `EXECUTE … USING`, so it is planned with each call's values. A cached generic plan cannot tell a reader of 300 memos from a reader of the tenant, or a word in most memos from a rare one; in the spike it took a narrow reader's common-word search from 13 ms to 1.3 s. The query text is one function (`search_find_sql`), which the `EXPLAIN` gate prepares.
+- **Spike numbers** (E05 log, T1): at 1,000,000 memos with the database sized for a 16 GB VM, the p95 of one search is 9–14 ms for a narrow reader, 4–104 ms tenant-wide, 18–222 ms for a reader of 20,000 memos, and 48–248 ms for a unit head, except search-as-you-type at 307 ms. Search-as-you-type therefore takes 200 candidates, and the full search keeps 2,000. `fastupdate` stays on with a 2 MB pending list.
 
 ## More information
 - Research: `docs/plan/phase-3-memo-efile/epic-05-inbox-search-dashboards/research.md` (R7).

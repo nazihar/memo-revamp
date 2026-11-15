@@ -103,11 +103,16 @@ class MemoApprovalsIT : MemoIntegrationTest() {
 
         // As the schema owner (a test of tampering only): change the first record's decision.
         OwnerJdbc.connect { c ->
-            c.createStatement().use { it.execute("set app.tenant_id = '${tenant.id.value}'") }
+            c.autoCommit = false
+            c.prepareStatement("select set_config('app.tenant_id', ?, true)").use {
+                it.setString(1, tenant.id.value.toString())
+                it.execute()
+            }
             c.prepareStatement("update memo_approval set decision = 'REJECT' where memo_id = ? and decision = 'RETURN'").use {
                 it.setObject(1, UUID.fromString(memo))
                 assertThat(it.executeUpdate()).isEqualTo(1)
             }
+            c.commit()
         }
         val check = post("/api/v1/memos/$memo/approvals/check", alice.session).json()
         assertThat(check["ok"].asBoolean()).isFalse()

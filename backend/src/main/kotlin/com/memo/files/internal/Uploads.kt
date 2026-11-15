@@ -192,7 +192,7 @@ internal class Uploads(
                 inspector.inspect(
                     { crypto.decrypting(tenant, plan.fileId, versionId, FileChannel.open(spoolFile, StandardOpenOption.READ)) },
                     request.declaredName,
-                    InspectionRules(plan.allowedTypes, plan.purpose.maxPdfPages),
+                    InspectionRules(plan.allowedTypes, plan.purpose.maxPdfPages, plan.purpose::inspectContent),
                 )
             val now = clock.instant()
             val bucket = if (plan.retention != null) Bucket.RECORDS else Bucket.WORK

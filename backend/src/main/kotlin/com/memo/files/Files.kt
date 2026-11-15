@@ -1,6 +1,7 @@
 package com.memo.files
 
 import com.memo.common.events.TenantScopedEvent
+import java.nio.channels.SeekableByteChannel
 import java.time.Instant
 import java.util.UUID
 
@@ -48,10 +49,31 @@ interface FilePurpose {
     /** Whether the current actor may read [file]. Called inside a tenant transaction. */
     fun mayRead(file: FileInfo): Boolean
 
+    /**
+     * Checks an upload's content beyond its type, once the type is known (for example a template's parts, ADR-0048):
+     * throws [ContentRefused] to refuse it. [open] gives a fresh channel over the plaintext each time. Runs on the
+     * inspection pool under its time limit, with no transaction and no tenant bound: read nothing but the content.
+     */
+    fun inspectContent(
+        type: FileType,
+        open: () -> SeekableByteChannel,
+    ) = Unit
+
     companion object {
         const val DEFAULT_MAX_PDF_PAGES = 5_000
     }
 }
+
+/** One thing a purpose refuses in an upload's content: a stable [rule] code and where it is (a part name, a location). */
+data class ContentRefusal(
+    val rule: String,
+    val where: String,
+)
+
+/** Thrown by [FilePurpose.inspectContent]: the upload is refused with `CONTENT_REFUSED` and these [refusals]. */
+class ContentRefused(
+    val refusals: List<ContentRefusal>,
+) : RuntimeException("content refused: ${refusals.map { it.rule }.distinct()}")
 
 data class FileInfo(
     val id: UUID,

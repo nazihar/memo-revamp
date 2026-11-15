@@ -1,5 +1,6 @@
 package com.memo.files.internal
 
+import com.memo.files.ContentRefused
 import com.memo.files.FileType
 import org.apache.tika.io.TikaInputStream
 import org.apache.tika.metadata.Metadata
@@ -23,10 +24,11 @@ internal data class Inspected(
     val pdfPages: Int?,
 )
 
-/** What a purpose allows, for one inspection. */
+/** What a purpose allows, for one inspection, and its own check of the content (a no-op for most purposes). */
 internal data class InspectionRules(
     val allowed: Set<FileType>,
     val maxPdfPages: Int,
+    val content: (FileType, () -> SeekableByteChannel) -> Unit = { _, _ -> },
 )
 
 /**
@@ -65,6 +67,7 @@ internal class ContentInspector(
         } catch (e: ExecutionException) {
             val cause = e.cause
             if (cause is UploadRejected) throw UploadRejected(cause.reason, cause.detail, e)
+            if (cause is ContentRefused) refused(cause, e)
             if (cause is OutOfMemoryError ||
                 cause is StackOverflowError
             ) {
@@ -97,8 +100,19 @@ internal class ContentInspector(
             reject(RejectionReason.MALFORMED, "problem" to "polyglot", "detectedType" to type.mediaType)
         }
         val pages = if (type == FileType.PDF) open().use { PdfInspector.pages(it, rules.maxPdfPages) } else null
+        rules.content(type, open)
         return Inspected(type, pages)
     }
+
+    private fun refused(
+        cause: ContentRefused,
+        wrapper: Throwable,
+    ): Nothing =
+        reject(
+            RejectionReason.CONTENT_REFUSED,
+            "refusals" to cause.refusals.take(MAX_REFUSALS).map { mapOf("rule" to it.rule, "where" to it.where.take(MAX_WHERE)) },
+            cause = wrapper,
+        )
 
     /** Tika's magic detection on the first [HEAD] bytes: a media type, never taken from the name. */
     private fun detect(channel: SeekableByteChannel): String {
@@ -121,6 +135,8 @@ internal class ContentInspector(
         private val DEFAULT_TIMEOUT: Duration = Duration.ofSeconds(20)
         private const val THREADS = 4
         private const val HEAD = 64 * 1024
+        private const val MAX_REFUSALS = 50
+        private const val MAX_WHERE = 200
 
         /** Media types Tika gives zip containers; our zip reader decides which type they are. */
         private val ZIP_MEDIA_TYPES =

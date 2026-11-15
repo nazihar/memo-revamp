@@ -21,6 +21,9 @@ tink = "1.24.0"
 tika = "4.2.0"
 pdfbox = "3.0.8"
 commons-compress = "1.28.0"
+# Memo templates (ADR-0048, Phase 3 E03 T1 spike, 2026-11-15): poi-tl 1.12.2 runs on POI 6.0.0.
+poi = "6.0.0"
+poi-tl = "1.12.2"
 jazzer = "0.30.0"
 # Workflow conditions (ADR-0039) and definition schema validation (ADR-0038), verified 2026-11-11.
 cel = "0.15.0"
@@ -72,6 +75,8 @@ tink = { module = "com.google.crypto.tink:tink", version.ref = "tink" }
 tika-core = { module = "org.apache.tika:tika-core", version.ref = "tika" }
 commons-compress = { module = "org.apache.commons:commons-compress", version.ref = "commons-compress" }
 pdfbox = { module = "org.apache.pdfbox:pdfbox", version.ref = "pdfbox" }
+poi-ooxml = { module = "org.apache.poi:poi-ooxml", version.ref = "poi" }
+poi-tl = { module = "com.deepoove:poi-tl", version.ref = "poi-tl" }
 bucket4j-postgresql = { module = "com.bucket4j:bucket4j_jdk17-postgresql", version.ref = "bucket4j" }
 spring-modulith-starter-test = { module = "org.springframework.modulith:spring-modulith-starter-test" }
 spring-modulith-runtime = { module = "org.springframework.modulith:spring-modulith-runtime" }

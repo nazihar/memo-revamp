@@ -9,6 +9,9 @@ internal enum class RejectionReason {
     MALFORMED,
     ENCRYPTED,
     LIMIT_EXCEEDED,
+
+    /** The purpose refused something in the content (FilePurpose.inspectContent), for example macros in a template. */
+    CONTENT_REFUSED,
     SCAN_UNAVAILABLE,
 }
 

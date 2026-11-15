@@ -82,7 +82,8 @@ export function NoteSheet({ memoId, onChanged }: { memoId: string; onChanged: ()
     stamps.data,
     history.data.flatMap((r) => r.actions.map((a) => ({ ...a, round: r.round }))),
   )
-  const currentRound = history.data.find((r) => r.current)?.round
+  // A memo not yet submitted has no workflow round: its notes are in the newest round, which is current.
+  const currentRound = history.data.find((r) => r.current)?.round ?? rounds[0]?.[0]
 
   return (
     <div className="flex flex-col gap-4">

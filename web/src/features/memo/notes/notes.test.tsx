@@ -140,6 +140,17 @@ describe('note sheet', () => {
     expect(first.map((i) => i.kind)).toEqual(['event', 'note'])
   })
 
+  it('on a draft, with no workflow round yet, the notes are in the current round', async () => {
+    server.use(
+      http.get(`${API_ORIGIN}/api/v1/memos/m1/notes`, () => HttpResponse.json({ entries: [note()], canWrite: true })),
+      http.get(`${API_ORIGIN}/api/v1/memos/m1/approvals`, () => HttpResponse.json([])),
+      http.get(`${API_ORIGIN}/api/v1/memos/m1/history`, () => HttpResponse.json([])),
+    )
+    renderWithProviders(<NoteSheet memoId="m1" onChanged={() => undefined} />)
+    expect(await screen.findByRole('heading', { name: 'Round 1 (current)' })).toBeInTheDocument()
+    expect(screen.queryByText(/Earlier round/)).not.toBeInTheDocument()
+  })
+
   it('shows how a decision was authenticated, and the check says what it found', async () => {
     const user = userEvent.setup()
     server.use(

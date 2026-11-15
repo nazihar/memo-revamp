@@ -90,7 +90,7 @@ stateDiagram-v2
 4. **Assemble** with PDFBox:
    - merge;
    - one sRGB output intent;
-   - our XMP (`pdfaid` 2/U, Dublin Core, a `memo:` schema);
+   - our XMP (`pdfaid` 2/U, Dublin Core with the number as `dc:identifier` and the hashes and versions in `dc:description`; no extension schema);
    - remove actions, JavaScript, forms and banned annotations;
    - give transparency groups a colour space;
    - rebuild the outline and the page labels (C for the cover, D for the document, AP for approvals, N for notes, A1-, A2- for attachments);

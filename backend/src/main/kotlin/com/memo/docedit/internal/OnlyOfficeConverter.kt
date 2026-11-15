@@ -46,13 +46,27 @@ class OnlyOfficeConverter(
         input: RenditionInput,
         key: String,
         out: OutputStream,
+    ): RenditionOutcome = convert(input, key, out, "pdf")
+
+    /** The conversion API's `pdfa` output (listed for docx, xlsx, pptx and the ODF types). */
+    override fun toPdfA(
+        input: RenditionInput,
+        key: String,
+        out: OutputStream,
+    ): RenditionOutcome = convert(input, key, out, "pdfa")
+
+    private fun convert(
+        input: RenditionInput,
+        key: String,
+        out: OutputStream,
+        outputType: String,
     ): RenditionOutcome {
         val fileType = fileTypeOf(input) ?: return RenditionOutcome.Final("UNSUPPORTED")
         val params =
             mapOf(
                 "async" to true,
                 "filetype" to fileType,
-                "outputtype" to "pdf",
+                "outputtype" to outputType,
                 "key" to key,
                 "title" to "document.$fileType",
             )

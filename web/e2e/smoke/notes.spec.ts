@@ -42,7 +42,7 @@ test.describe('as the initiator', () => {
     await dialog.getByRole('button', { name: 'Share and mention' }).click()
     await expect(dialog).toBeHidden()
 
-    const sheet = page.getByRole('region', { name: 'Note sheet' })
+    const sheet = page.getByRole('region', { name: /^Round 1/ })
     await expect(sheet.getByText('Rent schedule', { exact: true })).toBeVisible()
     await expect(sheet.locator('strong', { hasText: 'Rent schedule' })).toBeVisible()
     await expect(sheet.getByText('@Demo Head of Credit')).toBeVisible()
@@ -53,7 +53,7 @@ test.describe('as the initiator', () => {
     await theirs.goto(memoUrl)
     await expect(theirs.getByRole('heading', { level: 1, name: subject })).toBeVisible()
     await expect(
-      theirs.getByRole('region', { name: 'Note sheet' }).getByText('Rent schedule', { exact: true }),
+      theirs.getByRole('region', { name: /^Round 1/ }).getByText('Rent schedule', { exact: true }),
     ).toBeVisible()
     await context.close()
   })

@@ -18,6 +18,7 @@ import java.util.UUID
 @Service
 class RoleGrants(
     private val roles: RoleStore,
+    private val catalog: RoleCatalog,
     private val tenantDsl: TenantDsl,
     private val invalidation: CacheInvalidation,
     private val audit: AuditLog,
@@ -55,6 +56,27 @@ class RoleGrants(
             "authz.grant",
             grant.toString(),
             after = mapOf("userId" to user.toString(), "role" to role.key, "scopeUnitId" to scopeUnit?.toString()),
+        )
+        invalidation.invalidate(AccessCaches.GRANTS, tenantDsl.tenant(), user.toString())
+    }
+
+    override fun grantCustom(
+        user: UUID,
+        roleName: String,
+        permissions: Set<Permission>,
+        scopeUnit: UUID?,
+    ) {
+        val existing = catalog.all().firstOrNull { it.builtIn == null && it.name.equals(roleName, ignoreCase = true) }
+        val roleId =
+            existing?.id ?: catalog.insert(roleName, null, permissions).also { id ->
+                audit.record("authz.role.created", "authz.role", id.toString(), after = mapOf("name" to roleName))
+            }
+        val grant = roles.insertGrant(user, roleId, scopeUnit) ?: return
+        audit.record(
+            "authz.grant.created",
+            "authz.grant",
+            grant.toString(),
+            after = mapOf("userId" to user.toString(), "roleId" to roleId.toString(), "scopeUnitId" to scopeUnit?.toString()),
         )
         invalidation.invalidate(AccessCaches.GRANTS, tenantDsl.tenant(), user.toString())
     }

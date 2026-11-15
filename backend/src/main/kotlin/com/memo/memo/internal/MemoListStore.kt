@@ -56,6 +56,20 @@ class MemoListStore(
 
     fun anyOf(initiator: UUID): Boolean = tenantDsl.current().fetchExists(MEMO, MEMO.INITIATOR_ID.eq(initiator))
 
+    /** For seeders: [initiator]'s first memo with exactly [subject]. */
+    fun bySubject(
+        initiator: UUID,
+        subject: String,
+    ): UUID? =
+        tenantDsl
+            .current()
+            .select(MEMO.ID)
+            .from(MEMO)
+            .where(MEMO.INITIATOR_ID.eq(initiator), MEMO.SUBJECT.eq(subject))
+            .orderBy(MEMO.CREATED_AT)
+            .limit(1)
+            .fetchOne(MEMO.ID)
+
     /** [initiator]'s memos in [statuses], most recently changed first, after the keyset position [after]. */
     fun box(
         initiator: UUID,

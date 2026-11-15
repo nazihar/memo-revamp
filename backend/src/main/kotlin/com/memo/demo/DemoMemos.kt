@@ -178,6 +178,7 @@ class DemoMemoSeeder(
 @ConditionalOnProperty("memo.demo.seed", havingValue = "true")
 class DemoMemoSeedOnStartup(
     private val seeder: DemoMemoSeeder,
+    private val access: DemoAccessSeeder,
     private val uploads: FileUploads,
 ) : ApplicationRunner {
     private val log = LoggerFactory.getLogger(javaClass)
@@ -196,6 +197,11 @@ class DemoMemoSeedOnStartup(
             seeder.seed()
         } catch (e: RuntimeException) {
             log.warn("Demo memos not seeded", e)
+        }
+        try {
+            access.seed()
+        } catch (e: RuntimeException) {
+            log.warn("Demo notes, access and templates not seeded", e)
         }
     }
 

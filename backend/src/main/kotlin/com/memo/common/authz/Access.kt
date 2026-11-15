@@ -61,6 +61,18 @@ interface AccessAdministration {
     )
 
     /**
+     * Grants the custom role called [roleName] to [user] for the subtree of [scopeUnit] (tenant-wide when null), creating
+     * the role with [permissions] when the tenant has none of that name. For seeding (the demo's unit reader, Phase 3 E03
+     * T9); audited like the same changes by an administrator.
+     */
+    fun grantCustom(
+        user: UUID,
+        roleName: String,
+        permissions: Set<Permission>,
+        scopeUnit: UUID? = null,
+    )
+
+    /**
      * Clears [user] to the level of [rank] unless they are already cleared to it or higher, for seeding (the demo's
      * reader cleared above another, Phase 3 E02 T8). Audited like a change by an administrator.
      */

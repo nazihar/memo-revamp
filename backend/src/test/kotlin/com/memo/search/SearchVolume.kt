@@ -158,6 +158,8 @@ class SearchVolume(
     private fun owner(block: (Connection) -> Unit) =
         DriverManager.getConnection(TestDatabase.jdbcUrl, "memo_migrator", TestDatabase.migratorPassword).use { c ->
             c.autoCommit = false
+            // A lock wait fails the test (with this statement) instead of stalling the whole suite.
+            c.createStatement().use { it.execute("set local lock_timeout = '30s'") }
             c.prepareStatement("select set_config('app.tenant_id', ?, true)").use {
                 it.setString(1, tenant.toString())
                 it.execute()

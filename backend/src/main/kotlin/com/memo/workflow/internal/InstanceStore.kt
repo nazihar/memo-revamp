@@ -62,6 +62,35 @@ class InstanceStore(
     private val definitions: CompiledDefinitions,
     private val json: JsonMapper,
 ) {
+    /** Instances of [subjectType] approved or rejected in [from, to): submitted (created) and decided (last updated). */
+    fun decided(
+        subjectType: String,
+        from: java.time.Instant,
+        to: java.time.Instant,
+    ): List<com.memo.workflow.DecidedInstance> =
+        tenantDsl
+            .current()
+            .select(WORKFLOW_INSTANCE.SUBJECT_ID, WORKFLOW_INSTANCE.CREATED_AT, WORKFLOW_INSTANCE.UPDATED_AT, WORKFLOW_INSTANCE.STATUS)
+            .from(WORKFLOW_INSTANCE)
+            .where(
+                WORKFLOW_INSTANCE.SUBJECT_TYPE.eq(subjectType),
+                WORKFLOW_INSTANCE.STATUS.`in`(
+                    com.memo.workflow.InstanceStatus.APPROVED.name,
+                    com.memo.workflow.InstanceStatus.REJECTED.name,
+                ),
+                WORKFLOW_INSTANCE.UPDATED_AT.ge(from.atOffset(java.time.ZoneOffset.UTC)),
+                WORKFLOW_INSTANCE.UPDATED_AT.lt(to.atOffset(java.time.ZoneOffset.UTC)),
+            ).fetch { r ->
+                com.memo.workflow.DecidedInstance(
+                    subjectId = requireNotNull(r.value1()),
+                    submittedAt = requireNotNull(r.value2()).toInstant(),
+                    decidedAt = requireNotNull(r.value3()).toInstant(),
+                    status =
+                        com.memo.workflow.InstanceStatus
+                            .valueOf(requireNotNull(r.value4())),
+                )
+            }
+
     fun instanceOfTask(taskId: UUID): UUID? =
         tenantDsl
             .current()

@@ -134,6 +134,19 @@
         "required" : [ "items" ],
         "type" : "object"
       },
+      "AgeBucket" : {
+        "properties" : {
+          "bucket" : {
+            "type" : "string"
+          },
+          "count" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "bucket", "count" ],
+        "type" : "object"
+      },
       "AllowedApprovers" : {
         "properties" : {
           "people" : {
@@ -168,6 +181,58 @@
           }
         },
         "required" : [ "moved" ],
+        "type" : "object"
+      },
+      "ApprovalsDashboard" : {
+        "properties" : {
+          "cycleTimes" : {
+            "items" : {
+              "$ref" : "#/components/schemas/CycleTime"
+            },
+            "type" : "array"
+          },
+          "from" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "overdue" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "pendingByAge" : {
+            "items" : {
+              "$ref" : "#/components/schemas/AgeBucket"
+            },
+            "type" : "array"
+          },
+          "pendingByPerson" : {
+            "items" : {
+              "$ref" : "#/components/schemas/PersonPending"
+            },
+            "type" : "array"
+          },
+          "scope" : {
+            "type" : "string"
+          },
+          "throughput" : {
+            "items" : {
+              "$ref" : "#/components/schemas/WeekThroughput"
+            },
+            "type" : "array"
+          },
+          "to" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "unit" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/Named"
+            }, {
+              "type" : "null"
+            } ]
+          }
+        },
+        "required" : [ "cycleTimes", "from", "overdue", "pendingByAge", "pendingByPerson", "scope", "throughput", "to" ],
         "type" : "object"
       },
       "AssignRequest" : {
@@ -982,6 +1047,27 @@
           }
         },
         "required" : [ "code", "legalEntityId", "name" ],
+        "type" : "object"
+      },
+      "CycleTime" : {
+        "properties" : {
+          "decided" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "medianDays" : {
+            "format" : "double",
+            "type" : "number"
+          },
+          "p90Days" : {
+            "format" : "double",
+            "type" : "number"
+          },
+          "type" : {
+            "$ref" : "#/components/schemas/Named"
+          }
+        },
+        "required" : [ "decided", "medianDays", "p90Days", "type" ],
         "type" : "object"
       },
       "DefinitionChoice" : {
@@ -3935,6 +4021,23 @@
         "required" : [ "id", "name" ],
         "type" : "object"
       },
+      "PersonPending" : {
+        "properties" : {
+          "overdue" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "pending" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "person" : {
+            "$ref" : "#/components/schemas/Named"
+          }
+        },
+        "required" : [ "overdue", "pending", "person" ],
+        "type" : "object"
+      },
       "PlatformAuditEvent" : {
         "description" : "One entry of the platform chain (ADR-0031, ADR-0033).",
         "properties" : {
@@ -5548,6 +5651,68 @@
         "required" : [ "id", "role", "shared", "waiting" ],
         "type" : "object"
       },
+      "TeamPage" : {
+        "properties" : {
+          "items" : {
+            "items" : {
+              "$ref" : "#/components/schemas/TeamTask"
+            },
+            "type" : "array"
+          },
+          "nextCursor" : {
+            "type" : [ "string", "null" ]
+          },
+          "units" : {
+            "items" : {
+              "$ref" : "#/components/schemas/Named"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "items", "units" ],
+        "type" : "object"
+      },
+      "TeamTask" : {
+        "properties" : {
+          "ageWorkingDays" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "assignedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "dueAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "holder" : {
+            "$ref" : "#/components/schemas/Named"
+          },
+          "memo" : {
+            "$ref" : "#/components/schemas/InboxMemo"
+          },
+          "overdue" : {
+            "type" : "boolean"
+          },
+          "stepName" : {
+            "type" : [ "string", "null" ]
+          },
+          "taskId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "unit" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/Named"
+            }, {
+              "type" : "null"
+            } ]
+          }
+        },
+        "required" : [ "ageWorkingDays", "assignedAt", "holder", "memo", "overdue", "taskId" ],
+        "type" : "object"
+      },
       "TemplateFileView" : {
         "properties" : {
           "fileId" : {
@@ -6006,6 +6171,24 @@
           }
         },
         "required" : [ "items" ],
+        "type" : "object"
+      },
+      "WeekThroughput" : {
+        "properties" : {
+          "completed" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "created" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "week" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        },
+        "required" : [ "completed", "created", "week" ],
         "type" : "object"
       },
       "WorkflowView" : {
@@ -9729,6 +9912,50 @@
         "tags" : [ "branding" ]
       }
     },
+    "/api/v1/dashboards/approvals" : {
+      "get" : {
+        "operationId" : "approvalsDashboard",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "scope",
+          "required" : false,
+          "schema" : {
+            "default" : "me",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "from",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "to",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ApprovalsDashboard"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Pending by age, overdue, cycle time and throughput, for me or a unit I oversee (default: the last 12 weeks)",
+        "tags" : [ "memo" ]
+      }
+    },
     "/api/v1/directory/search" : {
       "get" : {
         "operationId" : "searchDirectory",
@@ -10393,6 +10620,66 @@
           }
         },
         "summary" : "My open tasks: newest first, or with sort=due by due time (overdue first, those without a due time last)",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/inbox/team" : {
+      "get" : {
+        "operationId" : "listTeamTasks",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "unit",
+          "required" : false,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "status",
+          "required" : false,
+          "schema" : {
+            "default" : "pending",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "person",
+          "required" : false,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "cursor",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "required" : false,
+          "schema" : {
+            "default" : 25,
+            "format" : "int32",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TeamPage"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Open tasks of the people in the units I oversee, by due time (heads and holders of inbox.team.read)",
         "tags" : [ "memo" ]
       }
     },

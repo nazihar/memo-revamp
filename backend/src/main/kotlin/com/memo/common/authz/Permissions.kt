@@ -90,6 +90,15 @@ enum class Permission(
      * ADR-0053). Granted by tenants only: no built-in role holds it.
      */
     MEMO_RENDITION_REGENERATE("memo.rendition.regenerate", scopable = false, privileged = true),
+
+    /**
+     * See the open tasks of the people seated in a unit and its sub-units, and reassign them (Phase 3 E05 team view, for
+     * example a COO or a registry). Holders of a unit's head position have it for their subtree without a grant.
+     */
+    INBOX_TEAM_READ("inbox.team.read", scopable = true, privileged = true),
+
+    /** The approvals dashboard of a unit and its sub-units (Phase 3 E05); heads have it for their subtree without a grant. */
+    MEMO_DASHBOARD_READ("memo.dashboard.read", scopable = true, privileged = false),
     ;
 
     companion object {
@@ -99,7 +108,15 @@ enum class Permission(
          * Permissions that open other people's memos (ADR-0050): a tenant grants them on purpose, through a role of its
          * own; the built-in administrator role does not carry them.
          */
-        val GRANTED_ON_PURPOSE: Set<Permission> get() = setOf(MEMO_READ_UNIT, MEMO_SHARE_MANAGE, MEMO_COPY_ADD, MEMO_RENDITION_REGENERATE)
+        val GRANTED_ON_PURPOSE: Set<Permission> get() =
+            setOf(
+                MEMO_READ_UNIT,
+                MEMO_SHARE_MANAGE,
+                MEMO_COPY_ADD,
+                MEMO_RENDITION_REGENERATE,
+                INBOX_TEAM_READ,
+                MEMO_DASHBOARD_READ,
+            )
 
         fun ofKey(key: String): Permission? = BY_KEY[key]
     }

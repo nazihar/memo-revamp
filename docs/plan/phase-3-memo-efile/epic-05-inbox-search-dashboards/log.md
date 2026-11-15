@@ -123,3 +123,22 @@
   - **`InboxBulkIT`:** watch and unwatch per item; claims reported one by one; reassignment needs the permission, and a decided task reports `CHANGED`; no decisions, at most 100, a holder for reassignment.
   - **Matrix and coverage:** `p3-e05-inbox.yaml`, `EndpointCoverageTest`, `AuditActionCoverageTest`, `MailTemplatesTest` and `RlsMetaTest`.
 - **Carried:** a bulk claim of steps shared by several people (queue or position steps) is covered by `QueueClaimIT` at the workflow level; a bulk test with a shared memo step comes with T5's team data.
+
+## 2026-11-16 — T5: team view and dashboards (backend)
+- **Built:**
+  - **Permissions:** `inbox.team.read` and `memo.dashboard.read`, scopable and granted on purpose, with web labels in English and Arabic.
+  - **`TeamScopes`:** the subtree of the viewer's head seat plus the scopes of their grants.
+  - **Org:** `OrgUnitDirectory.seatedIn` and `allUnits`.
+  - **Workflow:** `WorkflowTeamQueries` (a team's open tasks, decided instances, working days by the business calendar including past exceptions, a task's holder), and `TaskQueryStore.open` for a set of holders.
+  - **`GET /api/v1/inbox/team`:** by due time, restricted memos masked, unit, status and person filters, 403 without a scope.
+  - **`GET /api/v1/dashboards/approvals`:** `scope=me|unit:{id}`, `from`, `to`; pending by age in working days (0–2, 3–5, 6–10, 10+), overdue, pending by person, cycle time median and P90 per type, throughput per week.
+  - **Bulk:** `REASSIGN` allowed for heads within their scope.
+- **Decisions taken while building:** see design §6 "Decided in T5".
+- **Tests:**
+  - **`TeamViewIT`:**
+    - a head's subtree by due time, with restricted memos and filters, and 403 outside the scope or for others;
+    - a grant's scope;
+    - a head's reassignment inside and outside the scope;
+    - the dashboard for `me` and a unit (memo figures only once the head may read the unit's memos), with 403 and 400.
+  - **Matrix and coverage:** `p3-e05-inbox.yaml` (team 403 for every matrix subject; dashboard for everyone), `ArchitectureRulesTest` and `BusinessCalendarTest`.
+- **The test plan's `DashboardIT`** is part of `TeamViewIT` (they share the organisation).

@@ -100,7 +100,14 @@ erDiagram
   - **`unit`:** heads (their subtree) and holders of `memo.dashboard.read` (scopable, granted on purpose).
   - Counts come from the server over memos the viewer may read, except "pending by person", which comes from tasks within the viewer's scope.
 - **Links:** every figure links to the inbox, team view or search list behind it.
-- **Data:** aggregates from indexed queries over `memo`, `workflow_task` and `workflow_action`. No new tables at first. A nightly materialised summary is added only if V1 misses the budget.
+- **Data:** aggregates from indexed queries over `memo`, `workflow_task` and `workflow_instance` (the workflow's public `WorkflowTeamQueries`). No new tables at first. A nightly materialised summary is added only if V1 misses the budget.
+- **Decided in T5:**
+  - **Memo figures** (cycle time, throughput) count memos the viewer may read: for `me`, those they take part in; for a unit, those from the unit (origin) that they may read. Pending tasks count the people seated in the unit, whatever the memo.
+  - **Cycle time** runs from the instance's start (submission) to its last update (the final decision) for approved or rejected memos decided in the period, in days, as median and P90 (nearest rank).
+  - **Throughput** weeks start on Monday in the tenant's time zone. The default period is the last 12 weeks; at most a year.
+  - **Team view filters:** `unit` narrows to that unit's subtree within the viewer's scope (403 outside it), `status=pending|overdue` and `person`; the answer lists the units overseen for the picker.
+  - **Heads** reassign through bulk `REASSIGN` (step-up, with a reason): a task whose holder sits in their scope.
+  - **Permissions:** `inbox.team.read` is privileged (it shows other people's work); `memo.dashboard.read` is not. Both are granted on purpose only.
 
 ## 7. API and authorisation matrix
 | Endpoint | Rule |

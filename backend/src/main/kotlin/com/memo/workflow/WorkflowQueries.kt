@@ -94,7 +94,7 @@ class WorkflowQueries(
     ): TaskPage {
         val user = (ActorContext.current().actor as? Actor.User)?.userId ?: return TaskPage(emptyList(), null)
         return page(limit, byDue) {
-            tasks.open(assignee = user, blockedOnly = false, after = cursor?.let(Cursors::decode), limit = it, byDue = byDue)
+            tasks.open(assignees = listOf(user), blockedOnly = false, after = cursor?.let(Cursors::decode), limit = it, byDue = byDue)
         }
     }
 
@@ -105,7 +105,7 @@ class WorkflowQueries(
         cursor: String?,
         limit: Int,
         overdueAt: Instant? = null,
-    ): TaskPage = page(limit) { tasks.open(assignee, blockedOnly, cursor?.let(Cursors::decode), it, overdueAt) }
+    ): TaskPage = page(limit) { tasks.open(assignee?.let(::listOf), blockedOnly, cursor?.let(Cursors::decode), it, overdueAt) }
 
     /** When the subject's current step is due (design E05 §4.4); null without an SLA or when nothing is open. */
     fun dueOf(
@@ -132,7 +132,7 @@ class WorkflowQueries(
     /** The open task [taskId] as its holder sees it; null if it is not open. */
     fun task(taskId: UUID): MyTask? = descriptions.task(taskId)
 
-    private fun page(
+    internal fun page(
         limit: Int,
         byDue: Boolean = false,
         fetch: (Int) -> List<TaskItem>,

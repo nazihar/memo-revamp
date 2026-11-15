@@ -575,6 +575,20 @@
       "value": "‬"
     }
   ],
+  "access.permission.inboxTeamRead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝǝ ɐup ɹǝɐssıƃu ʇɥǝ odǝu ʇɐsʞs oɟ ɐ ʇǝɐɯ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "access.permission.legalEntities": [
     {
       "type": 0,
@@ -611,6 +625,20 @@
     {
       "type": 0,
       "value": "Mɹıʇǝ ɐup snqɯıʇ ɯǝɯos"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "access.permission.memoDashboardRead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝǝ ʇɥǝ ɐddɹoʌɐʅs pɐsɥqoɐɹp oɟ ɐ nuıʇ"
     },
     {
       "type": 0,

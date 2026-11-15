@@ -123,7 +123,7 @@ class Substitutions(
         val row = find(id)
         refuseIf(!row.inForceOn(directory.today()), "NOT_IN_FORCE") { "This substitution is not in force today." }
         val actor = actor()
-        val open = tasks.open(row.principalId, blockedOnly = false, after = null, limit = MAX_APPLIED)
+        val open = tasks.open(listOf(row.principalId), blockedOnly = false, after = null, limit = MAX_APPLIED)
         val moved =
             open.count { task ->
                 runCatching {

@@ -6,11 +6,14 @@ import com.memo.common.authz.Permission
 import com.memo.common.authz.Policy
 import com.memo.common.authz.StepUpCheck
 import com.memo.common.concurrency.ConcurrentModificationException
+import com.memo.common.context.Actor
+import com.memo.common.context.ActorContext
 import com.memo.common.tenant.TenantContext
 import com.memo.common.tenant.TenantTransactions
 import com.memo.common.web.FieldProblem
 import com.memo.common.web.RefusedException
 import com.memo.workflow.WorkflowRefusedException
+import com.memo.workflow.WorkflowTeamQueries
 import com.memo.workflow.Workflows
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.stereotype.Service
@@ -64,12 +67,19 @@ class InboxBulk(
     private val stepUp: StepUpCheck,
     private val transactions: TenantTransactions,
     private val audit: AuditLog,
+    private val scopes: TeamScopes,
+    private val team: WorkflowTeamQueries,
 ) {
     fun perform(request: BulkRequest): BulkResponse {
         val action = check(request)
         if (action == BulkAction.REASSIGN) stepUp.require()
         val tenant = TenantContext.current()
-        val results = request.ids.distinct().map { id -> BulkItemResult(id, transactions.inTenant(tenant) { one(action, id, request) }) }
+        // Heads and holders of inbox.team.read may reassign the tasks of the people seated in their scope (design E05 §5).
+        val members by lazy { transactions.readInTenant(tenant) { scopes.seated(scopes.of(viewer(), Permission.INBOX_TEAM_READ)).keys } }
+        val results =
+            request.ids.distinct().map { id ->
+                BulkItemResult(id, transactions.inTenant(tenant) { one(action, id, request) { members } })
+            }
         transactions.inTenant(tenant) {
             audit.record(
                 "inbox.bulk.performed",
@@ -90,31 +100,10 @@ class InboxBulk(
         action: BulkAction,
         id: UUID,
         request: BulkRequest,
+        members: () -> Set<UUID>,
     ): BulkOutcome =
         try {
-            when (action) {
-                BulkAction.WATCH -> {
-                    watches.watch(id)
-                }
-
-                BulkAction.UNWATCH -> {
-                    watches.unwatch(id)
-                }
-
-                BulkAction.CLAIM -> {
-                    tasks.handOn(id) { it.claim(id) }
-                }
-
-                BulkAction.RELEASE -> {
-                    tasks.handOn(id) { it.release(id) }
-                }
-
-                // As the administrators' reassignment: the permission, not read access to the memo, decides.
-                BulkAction.REASSIGN -> {
-                    policy.require(Permission.WORKFLOW_TASKS_REASSIGN)
-                    workflows.reassign(id, requireNotNull(request.to), request.reason)
-                }
-            }
+            act(action, id, request, members)
             BulkOutcome.OK
         } catch (_: MemoNotFoundException) {
             BulkOutcome.NOT_FOUND
@@ -127,6 +116,45 @@ class InboxBulk(
         } catch (_: ConcurrentModificationException) {
             BulkOutcome.CHANGED
         }
+
+    private fun act(
+        action: BulkAction,
+        id: UUID,
+        request: BulkRequest,
+        members: () -> Set<UUID>,
+    ) {
+        when (action) {
+            BulkAction.WATCH -> {
+                watches.watch(id)
+            }
+
+            BulkAction.UNWATCH -> {
+                watches.unwatch(id)
+            }
+
+            BulkAction.CLAIM -> {
+                tasks.handOn(id) { it.claim(id) }
+            }
+
+            BulkAction.RELEASE -> {
+                tasks.handOn(id) { it.release(id) }
+            }
+
+            BulkAction.REASSIGN -> {
+                if (!mayReassign(id, members)) throw ForbiddenException(Permission.WORKFLOW_TASKS_REASSIGN)
+                workflows.reassign(id, requireNotNull(request.to), request.reason)
+            }
+        }
+    }
+
+    /**
+     * As the administrators' reassignment (the permission, not read access to the memo, decides), or a head reassigning
+     * the task of someone in their team (design E05 §5).
+     */
+    private fun mayReassign(
+        id: UUID,
+        members: () -> Set<UUID>,
+    ): Boolean = policy.allows(Permission.WORKFLOW_TASKS_REASSIGN) || team.holderOf(id)?.let { it in members() } == true
 
     /** The action, or 422: an unknown or decision action, no or too many items, or a reassignment without a holder. */
     private fun check(request: BulkRequest): BulkAction {
@@ -148,6 +176,9 @@ class InboxBulk(
         if (problems.isNotEmpty() || action == null) throw MemoRejectedException(problems)
         return action
     }
+
+    private fun viewer(): UUID =
+        checkNotNull((ActorContext.current().actor as? Actor.User)?.userId) { "bulk actions need a signed-in user" }
 
     companion object {
         const val MAX_ITEMS = 100

@@ -29,11 +29,11 @@ class TaskQueryStore(
     private val json: JsonMapper,
 ) {
     /**
-     * Open tasks of [assignee] (all when null) after the keyset position [after]: newest first, or with [byDue] by due time
+     * Open tasks of [assignees] (all when null) after the keyset position [after]: newest first, or with [byDue] by due time
      * (overdue first, then soonest, then those without a due time; the position's time is then the due time or [NO_DUE]).
      */
     fun open(
-        assignee: UUID?,
+        assignees: Collection<UUID>?,
         blockedOnly: Boolean,
         after: Pair<Instant, UUID>?,
         limit: Int,
@@ -46,7 +46,7 @@ class TaskQueryStore(
         val conditions =
             listOfNotNull(
                 t.STATE.eq(OPEN),
-                assignee?.let { t.ASSIGNEE_ID.eq(it) },
+                assignees?.let { t.ASSIGNEE_ID.`in`(it) },
                 t.BLOCKED_REASON.isNotNull.takeIf { blockedOnly },
                 overdueAt?.let { t.DUE_AT.lt(it.atOffset(ZoneOffset.UTC)) },
                 after?.let { after(it, byDue) },
@@ -163,6 +163,15 @@ class TaskQueryStore(
                 )
             }
     }
+
+    /** Who holds the open task [taskId]; null when it is not open or has no holder. */
+    fun holderOf(taskId: UUID): UUID? =
+        tenantDsl
+            .current()
+            .select(WORKFLOW_TASK.ASSIGNEE_ID)
+            .from(WORKFLOW_TASK)
+            .where(WORKFLOW_TASK.ID.eq(taskId), WORKFLOW_TASK.STATE.eq(OPEN))
+            .fetchOne(WORKFLOW_TASK.ASSIGNEE_ID)
 
     /** The keyset position [after] in the order of [open]. */
     private fun after(

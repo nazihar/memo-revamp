@@ -174,6 +174,14 @@ export const catalogue = defineMessages({
     id: 'access.permission.memoRenditionRegenerate',
     defaultMessage: 'Make a new version of a final record',
   },
+  'inbox.team.read': {
+    id: 'access.permission.inboxTeamRead',
+    defaultMessage: 'See and reassign the open tasks of a team',
+  },
+  'memo.dashboard.read': {
+    id: 'access.permission.memoDashboardRead',
+    defaultMessage: 'See the approvals dashboard of a unit',
+  },
 })
 
 export function catalogueLabel(intl: IntlShape, key: string, fallback?: string): string {

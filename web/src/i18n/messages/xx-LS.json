@@ -285,6 +285,12 @@
       "value": "Read the memos of a unitSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "access.permission.memoRenditionRegenerate": [
+    {
+      "type": 0,
+      "value": "Make a new version of a final recordSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "access.permission.memoShareManage": [
     {
       "type": 0,
@@ -7237,6 +7243,425 @@
     {
       "type": 0,
       "value": "Not opened yetSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.record.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.record.checked": [
+    {
+      "type": 1,
+      "value": "validator"
+    },
+    {
+      "type": 0,
+      "value": ", profile "
+    },
+    {
+      "type": 1,
+      "value": "profile"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.record.copied": [
+    {
+      "type": 0,
+      "value": "SHA-256 copied.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.record.copy": [
+    {
+      "type": 0,
+      "value": "Copy the SHA-256SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.record.dialogLead": [
+    {
+      "type": 0,
+      "value": "The current version stays as it is and can still be opened. Say why a new version is needed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.record.dialogTitle": [
+    {
+      "type": 0,
+      "value": "Make a new version of the final recordSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.record.done": [
+    {
+      "type": 0,
+      "value": "A new version is being made.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.record.download": [
+    {
+      "type": 0,
+      "value": "DownloadSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.record.downloadVersion": [
+    {
+      "type": 0,
+      "value": "Download version "
+    },
+    {
+      "type": 2,
+      "value": "version",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.record.earlier": [
+    {
+      "type": 0,
+      "value": "Earlier versionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.record.englishOnly": [
+    {
+      "type": 0,
+      "value": "The record itself is in English.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.record.failed": [
+    {
+      "type": 0,
+      "value": "The final record could not be made. Administrators have been told.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.record.failedRules": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " rule failed"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " rules failed"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.record.flags": [
+    {
+      "type": 6,
+      "value": "rasterised",
+      "options": {
+        "=0": {
+          "value": []
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " page without text"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " pages without text"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 5,
+      "value": "rasterised",
+      "options": {
+        "0": {
+          "value": []
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": " · "
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 6,
+      "value": "placeholders",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "no attachment kept as an original"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " attachment kept as an original"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " attachments kept as originals"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.record.invalid": [
+    {
+      "type": 0,
+      "value": "Not valid PDF/ASSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.record.made": [
+    {
+      "type": 0,
+      "value": "Made "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.record.madeWith": [
+    {
+      "type": 0,
+      "value": "Made with "
+    },
+    {
+      "type": 1,
+      "value": "renderer"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.record.makeVersion": [
+    {
+      "type": 0,
+      "value": "Make version "
+    },
+    {
+      "type": 2,
+      "value": "version",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.record.notCleared": [
+    {
+      "type": 0,
+      "value": "Version "
+    },
+    {
+      "type": 2,
+      "value": "version",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " · Classified "
+    },
+    {
+      "type": 1,
+      "value": "classification"
+    },
+    {
+      "type": 0,
+      "value": ". You are not cleared to open it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.record.pdfa": [
+    {
+      "type": 0,
+      "value": "PDF/ASSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.record.pending": [
+    {
+      "type": 0,
+      "value": "The final record is being prepared. It combines the approved document, the approvals, the note sheet and the attachments in one PDF/A file.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.record.ready": [
+    {
+      "type": 0,
+      "value": "Version "
+    },
+    {
+      "type": 2,
+      "value": "version",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 6,
+      "value": "pages",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " page"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " pages"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " · PDF/ASSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.record.reason": [
+    {
+      "type": 0,
+      "value": "ReasonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.record.regenerate": [
+    {
+      "type": 0,
+      "value": "Make a new versionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.record.replaced": [
+    {
+      "type": 0,
+      "value": "v"
+    },
+    {
+      "type": 2,
+      "value": "version",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.record.retry": [
+    {
+      "type": 0,
+      "value": "RetrySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.record.sha": [
+    {
+      "type": 0,
+      "value": "SHA-256SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.record.title": [
+    {
+      "type": 0,
+      "value": "Final recordSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.record.valid": [
+    {
+      "type": 0,
+      "value": "Valid PDF/ASSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.refer.peopleRequired": [

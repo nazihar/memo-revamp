@@ -645,6 +645,20 @@
       "value": "]"
     }
   ],
+  "access.permission.memoRenditionRegenerate": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿȧȧķḗḗ ȧȧ ƞḗḗẇ ṽḗḗřşīǿǿƞ ǿǿƒ ȧȧ ƒīƞȧȧŀ řḗḗƈǿǿřḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "access.permission.memoShareManage": [
     {
       "type": 0,
@@ -14245,6 +14259,625 @@
     {
       "type": 0,
       "value": "Ƞǿǿŧ ǿǿƥḗḗƞḗḗḓ ẏḗḗŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.record.cancel": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈȧȧƞƈḗḗŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.record.checked": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "validator"
+    },
+    {
+      "type": 0,
+      "value": ", ƥřǿǿƒīŀḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "profile"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.record.copied": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ŞĦȦ-256 ƈǿǿƥīḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.record.copy": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿƥẏ ŧħḗḗ ŞĦȦ-256"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.record.dialogLead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƈŭŭřřḗḗƞŧ ṽḗḗřşīǿǿƞ şŧȧȧẏş ȧȧş īŧ īş ȧȧƞḓ ƈȧȧƞ şŧīŀŀ ƀḗḗ ǿǿƥḗḗƞḗḗḓ. Şȧȧẏ ẇħẏ ȧȧ ƞḗḗẇ ṽḗḗřşīǿǿƞ īş ƞḗḗḗḗḓḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.record.dialogTitle": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿȧȧķḗḗ ȧȧ ƞḗḗẇ ṽḗḗřşīǿǿƞ ǿǿƒ ŧħḗḗ ƒīƞȧȧŀ řḗḗƈǿǿřḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.record.done": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ƞḗḗẇ ṽḗḗřşīǿǿƞ īş ƀḗḗīƞɠ ḿȧȧḓḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.record.download": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓǿǿẇƞŀǿǿȧȧḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.record.downloadVersion": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓǿǿẇƞŀǿǿȧȧḓ ṽḗḗřşīǿǿƞ "
+    },
+    {
+      "type": 2,
+      "value": "version",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.record.earlier": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗȧȧřŀīḗḗř ṽḗḗřşīǿǿƞş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.record.englishOnly": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ řḗḗƈǿǿřḓ īŧşḗḗŀƒ īş īƞ Ḗƞɠŀīşħ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.record.failed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƒīƞȧȧŀ řḗḗƈǿǿřḓ ƈǿǿŭŭŀḓ ƞǿǿŧ ƀḗḗ ḿȧȧḓḗḗ. Ȧḓḿīƞīşŧřȧȧŧǿǿřş ħȧȧṽḗḗ ƀḗḗḗḗƞ ŧǿǿŀḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.record.failedRules": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " řŭŭŀḗḗ ƒȧȧīŀḗḗḓ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " řŭŭŀḗḗş ƒȧȧīŀḗḗḓ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.record.flags": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "rasterised",
+      "options": {
+        "=0": {
+          "value": []
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƥȧȧɠḗḗ ẇīŧħǿǿŭŭŧ ŧḗḗẋŧ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƥȧȧɠḗḗş ẇīŧħǿǿŭŭŧ ŧḗḗẋŧ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 5,
+      "value": "rasterised",
+      "options": {
+        "0": {
+          "value": []
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": " · "
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 6,
+      "value": "placeholders",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ƞǿǿ ȧȧŧŧȧȧƈħḿḗḗƞŧ ķḗḗƥŧ ȧȧş ȧȧƞ ǿǿřīɠīƞȧȧŀ"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ȧȧŧŧȧȧƈħḿḗḗƞŧ ķḗḗƥŧ ȧȧş ȧȧƞ ǿǿřīɠīƞȧȧŀ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ȧȧŧŧȧȧƈħḿḗḗƞŧş ķḗḗƥŧ ȧȧş ǿǿřīɠīƞȧȧŀş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.record.invalid": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧ ṽȧȧŀīḓ ƤḒƑ/Ȧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.record.made": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿȧȧḓḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.record.madeWith": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿȧȧḓḗḗ ẇīŧħ "
+    },
+    {
+      "type": 1,
+      "value": "renderer"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.record.makeVersion": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿȧȧķḗḗ ṽḗḗřşīǿǿƞ "
+    },
+    {
+      "type": 2,
+      "value": "version",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.record.notCleared": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ṽḗḗřşīǿǿƞ "
+    },
+    {
+      "type": 2,
+      "value": "version",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " · Ƈŀȧȧşşīƒīḗḗḓ "
+    },
+    {
+      "type": 1,
+      "value": "classification"
+    },
+    {
+      "type": 0,
+      "value": ". Ẏǿǿŭŭ ȧȧřḗḗ ƞǿǿŧ ƈŀḗḗȧȧřḗḗḓ ŧǿǿ ǿǿƥḗḗƞ īŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.record.pdfa": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ƤḒƑ/Ȧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.record.pending": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƒīƞȧȧŀ řḗḗƈǿǿřḓ īş ƀḗḗīƞɠ ƥřḗḗƥȧȧřḗḗḓ. Īŧ ƈǿǿḿƀīƞḗḗş ŧħḗḗ ȧȧƥƥřǿǿṽḗḗḓ ḓǿǿƈŭŭḿḗḗƞŧ, ŧħḗḗ ȧȧƥƥřǿǿṽȧȧŀş, ŧħḗḗ ƞǿǿŧḗḗ şħḗḗḗḗŧ ȧȧƞḓ ŧħḗḗ ȧȧŧŧȧȧƈħḿḗḗƞŧş īƞ ǿǿƞḗḗ ƤḒƑ/Ȧ ƒīŀḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.record.ready": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ṽḗḗřşīǿǿƞ "
+    },
+    {
+      "type": 2,
+      "value": "version",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 6,
+      "value": "pages",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƥȧȧɠḗḗ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƥȧȧɠḗḗş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " · ƤḒƑ/Ȧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.record.reason": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗȧȧşǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.record.regenerate": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿȧȧķḗḗ ȧȧ ƞḗḗẇ ṽḗḗřşīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.record.replaced": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ṽ"
+    },
+    {
+      "type": 2,
+      "value": "version",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.record.retry": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗŧřẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.record.sha": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ŞĦȦ-256"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.record.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒīƞȧȧŀ řḗḗƈǿǿřḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.record.valid": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ṽȧȧŀīḓ ƤḒƑ/Ȧ"
     },
     {
       "type": 0,

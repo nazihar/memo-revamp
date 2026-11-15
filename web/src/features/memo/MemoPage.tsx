@@ -26,6 +26,7 @@ import { ActionDialog, type MemoActionKind } from './ActionDialog'
 import { DoaPreviewDialog } from './DoaPreviewDialog'
 import { dueLabel, isOverdue } from './due'
 import { EditMemoDialog } from './EditMemoDialog'
+import { FinalRecord } from './FinalRecord'
 import { MemoAccess } from './MemoAccess'
 import { MemoAttachments } from './MemoAttachments'
 import { MemoCoauthors } from './MemoCoauthors'
@@ -366,6 +367,7 @@ export function MemoPage({ memoId }: { memoId: string }) {
             onChanged={(next) => void replace(next)}
             onProblem={(p) => void onProblem(p)}
           />
+          {view.rendition !== 'NONE' ? <FinalRecord memo={view} onProblem={(p) => void onProblem(p)} /> : null}
           <MemoAccess memo={view} onProblem={(p) => void onProblem(p)} />
           {allowed.has('EDIT') || view.interests.length > 0 ? (
             <Section title={intl.formatMessage(mm.interests)} lead={intl.formatMessage(mm.interestsLead)}>

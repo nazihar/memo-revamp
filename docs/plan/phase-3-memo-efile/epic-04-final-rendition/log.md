@@ -111,3 +111,33 @@
 - **Tests:**
   - five unit tests: ready, not cleared, auditor's view, pending, and regenerate with a reason, keeping the earlier version;
   - visual baselines of the auditor's view (light LTR and dark RTL), reviewed.
+
+## 2026-11-15 — T7 close: journey, demo, performance, runbook and ASVS
+- **Journey (smoke) `final-record.spec`:**
+  - a memo is approved, its record is made in the background, and the initiator downloads it (a PDF);
+  - the initiator shares the memo with the demo admin;
+  - the admin, as "Records keeper", makes version 2 with a reason and a step-up;
+  - version 1 stays downloadable.
+  - PDF/A validity itself is proven by the backend tests with veraPDF; Node has no PDF/A validator. Not run locally (no stack on this machine); CI's smoke stage runs it.
+- **Demo:**
+  - `DemoAccessSeeder` gives the demo admin a custom "Records keeper" role (`memo.rendition.regenerate`);
+  - the backfill gives every approved demo memo its record within 6 hours of the first start after E04 (the sweep runs at start-up, then every 6 hours).
+- **Performance (`RenditionPerformanceIT`, local, without the converter; the converter's 2.1 s per document is from the T1 spike):**
+
+  | Measure | Result | Budget |
+  |---|---|---|
+  | Generated pages, 30 notes and 10 stamps | p95 191 ms | 1 s |
+  | Record of 63 pages (10-page document, pages, 5 attachments): assemble + validate | 847 ms + 217 ms | 30 s |
+  | veraPDF on 200 pages | 740 ms | 15 s |
+  | `GET /memos/{id}/rendition` | not measured separately (one indexed query) | 50 ms |
+
+  The end-to-end job time on dev is to be recorded once E04 is deployed (it needs the dev converter).
+- **Runbook:** `docs/runbooks/final-records.md` (what runs, settings, monitoring, incidents, regeneration, backfill, limits).
+- **ASVS:** six rows (V14 archived and checked, V2 exactly what was approved, V12 hostile PDFs, V8 classification and regeneration, V5 generated pages, V16 audit).
+- **Carried:**
+  - fixity sampling above 10,000 records;
+  - PAdES sealing;
+  - complex scripts;
+  - per-clearance variants;
+  - stamping the number on the document's first page;
+  - the end-to-end job time on dev.

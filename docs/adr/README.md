@@ -55,3 +55,5 @@ We use the MADR format (see [0001](0001-record-architecture-decisions.md)). Star
 | [0049](0049-note-sheet.md) | Note sheet: rich remarks as validated JSON in the memo module, append-only, corrections by reference | accepted | 2026-11-15 |
 | [0050](0050-memo-access-model-and-copy-to.md) | Memo access: participants, copy-to, shares and unit readers, under clearance, as one SQL filter | accepted | 2026-11-15 |
 | [0051](0051-authenticated-approvals-and-stamps.md) | Authenticated approvals (e-signature v1): the authentication context of each decision, shown as a stamp | accepted | 2026-11-15 |
+| [0052](0052-generated-pages-rendering.md) | Generated pages: one rendering interface, PDFBox with an embedded font for English | accepted | 2026-11-15 |
+| [0053](0053-final-rendition-pdfa.md) | Final rendition: one PDF/A-2u record per approved memo, validated, locked and re-hashed | accepted | 2026-11-15 |

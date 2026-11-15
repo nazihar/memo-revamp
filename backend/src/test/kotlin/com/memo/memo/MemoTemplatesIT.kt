@@ -95,6 +95,7 @@ class MemoTemplatesIT : MemoIntegrationTest() {
         assertThat(preview).hasStatusOk()
         assertThat(read("/api/v1/files/${preview.json()["fileId"].asString()}", session)).hasStatusOk()
         assertThat(read(base(typeId), session).json()["template"]["previewed"].asBoolean()).isTrue()
+        Audit.assertAudited(tenant.id, "memo.type.template_previewed", typeId.toString())
         assertThat(submit(typeId)).isNull()
         val checker = accounts.anActiveUser(transactions, tenant, aPassword(), tenantAdmin = true)
         asUser(checker) { lifecycle.approve(typeId, 1, null) }

@@ -58,6 +58,8 @@ test.describe('as a tenant admin', () => {
 
     const reviewer = await as(browser, 'reviewer')
     await reviewer.goto(typeUrl)
+    // A reviewer opens the version on its changes; the template is on the Settings tab.
+    await reviewer.getByRole('tab', { name: 'Settings' }).click()
     await expect(reviewer.getByRole('region', { name: 'Template' }).getByText(/letterhead\.docx/)).toBeVisible()
     await reviewer.getByRole('button', { name: 'Approve and publish' }).click()
     await confirmIfAsked(reviewer, demoSecret('MEMO_DEMO_TOTP_SECRET'))

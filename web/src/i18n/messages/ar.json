@@ -41,6 +41,8 @@
   "access.permission.directoryRead": "عرض الهيكل التنظيمي",
   "access.permission.legalEntities": "إدارة الكيانات القانونية",
   "access.permission.memoCreate": "كتابة المذكرات وإرسالها",
+  "access.permission.memoReadUnit": "قراءة مذكرات وحدة",
+  "access.permission.memoShareManage": "إلغاء أي مشاركة لمذكرة",
   "access.permission.memoTypes": "إدارة أنواع المذكرات",
   "access.permission.memoTypesApprove": "مراجعة أنواع المذكرات ونشرها",
   "access.permission.notificationSettings": "إدارة إرسال البريد الإلكتروني",

@@ -184,10 +184,11 @@ None of these is in the user role. The tenant-admin role template gets `memo.dis
   - `memo_note`, `memo_note_mention`, `memo_note_attachment`, `memo_receipt`, `memo_copy_delivery` and `memo_approval` revoke `UPDATE`/`DELETE`/`TRUNCATE` from `memo_app`, with a guard trigger as for `workflow_action`;
   - `memo_share` and `memo_copy` allow only the documented column updates (`revoked_*`, `sent_at`).
 - **Migrations:**
-  - `memo/V12__templates.sql`: the template columns on `memo_type_version` and `memo`;
-  - `memo/V13__notes.sql`;
-  - `memo/V14__access_and_copies.sql`: participant kinds and revocation, shares, copies, deliveries, receipts, lists;
-  - `memo/V15__approvals.sql`.
+  - `memo/V12__templates.sql`: the template columns on `memo_type_version` and `memo` (T2);
+  - `memo/V13__access.sql`: participant kinds, expiry and revocation, shares (T4, built before T3);
+  - `memo/V14`: copies, deliveries, receipts, lists (T5);
+  - `memo/V15`: notes (T3);
+  - `memo/V16`: approvals (T6).
   - All are expand-only. Old remarks are not backfilled (§4).
 - `files`: new purposes `memo.template`, `memo.template.preview` and `memo.note.attachment` (code, no migration).
 

@@ -2,7 +2,6 @@ package com.memo.memo.internal
 
 import com.memo.common.tenant.TenantDsl
 import com.memo.jooq.tables.references.MEMO_NUMBER_COUNTER
-import com.memo.jooq.tables.references.MEMO_PARTICIPANT
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Repository
 import java.time.OffsetDateTime
@@ -45,6 +44,7 @@ data class RegisterReader(
 @Repository
 class MemoNumberStore(
     private val tenantDsl: TenantDsl,
+    private val readable: MemoReadable,
 ) {
     /**
      * The next number of [key]: the counter row is created or incremented and stays locked until commit, so numbers of one
@@ -118,13 +118,7 @@ class MemoNumberStore(
         limit: Int,
         reader: RegisterReader,
     ): List<IssuedNumber> {
-        val reads =
-            DSL.exists(
-                DSL
-                    .selectOne()
-                    .from(MEMO_PARTICIPANT)
-                    .where(MEMO_PARTICIPANT.MEMO_ID.eq(MEMO.ID), MEMO_PARTICIPANT.USER_ID.eq(reader.user)),
-            )
+        val reads = readable.condition(reader.user, reader.clearanceRank)
         return tenantDsl
             .current()
             .select(MEMO.ID, MEMO.REFERENCE, MEMO.NUMBER_SEQUENCE, MEMO.STATUS, MEMO.SUBJECT, MEMO.CLASSIFICATION_RANK, DSL.field(reads))
@@ -133,7 +127,7 @@ class MemoNumberStore(
             .orderBy(MEMO.NUMBER_SEQUENCE)
             .limit(limit)
             .fetch { r ->
-                val visible = r.value7() == true && r.value6()!! <= reader.clearanceRank
+                val visible = r.value7() == true
                 IssuedNumber(r.value1()!!, r.value2()!!, r.value3()!!, MemoStatus.valueOf(r.value4()!!), r.value5().takeIf { visible })
             }
     }

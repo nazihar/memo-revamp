@@ -34,6 +34,7 @@ import com.memo.jooq.tables.MemoNumberCounter
 import com.memo.jooq.tables.MemoParticipant
 import com.memo.jooq.tables.MemoReferenceCounter
 import com.memo.jooq.tables.MemoRouteEntry
+import com.memo.jooq.tables.MemoShare
 import com.memo.jooq.tables.MemoSubmissionAttachment
 import com.memo.jooq.tables.MemoType
 import com.memo.jooq.tables.MemoTypeVersion
@@ -246,6 +247,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val MEMO_ROUTE_ENTRY: MemoRouteEntry get() = MemoRouteEntry.MEMO_ROUTE_ENTRY
 
     /**
+     * The table <code>memo.memo_share</code>.
+     */
+    val MEMO_SHARE: MemoShare get() = MemoShare.MEMO_SHARE
+
+    /**
      * The table <code>memo.memo_submission_attachment</code>.
      */
     val MEMO_SUBMISSION_ATTACHMENT: MemoSubmissionAttachment get() = MemoSubmissionAttachment.MEMO_SUBMISSION_ATTACHMENT
@@ -444,6 +450,7 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         MemoParticipant.MEMO_PARTICIPANT,
         MemoReferenceCounter.MEMO_REFERENCE_COUNTER,
         MemoRouteEntry.MEMO_ROUTE_ENTRY,
+        MemoShare.MEMO_SHARE,
         MemoSubmissionAttachment.MEMO_SUBMISSION_ATTACHMENT,
         MemoType.MEMO_TYPE,
         MemoTypeVersion.MEMO_TYPE_VERSION,

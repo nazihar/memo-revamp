@@ -41,6 +41,8 @@
   "access.permission.directoryRead": "See the org directory",
   "access.permission.legalEntities": "Manage legal entities",
   "access.permission.memoCreate": "Write and submit memos",
+  "access.permission.memoReadUnit": "Read the memos of a unit",
+  "access.permission.memoShareManage": "Revoke any share of a memo",
   "access.permission.memoTypes": "Manage memo types",
   "access.permission.memoTypesApprove": "Review and publish memo types",
   "access.permission.notificationSettings": "Manage email delivery",

@@ -75,11 +75,13 @@ class PolicyIT : IntegrationTest() {
     }
 
     @Test
-    fun `a tenant admin holds every permission tenant-wide, and classified resources need clearance`() {
+    fun `a tenant admin holds every permission tenant-wide except those granted on purpose, and classified resources need clearance`() {
         val admin = accounts.anActiveUser(transactions, tenant, password, tenantAdmin = true)
 
         asUser(admin) {
-            Permission.entries.forEach { assertThat(policy.allows(it)).describedAs(it.key).isTrue() }
+            (Permission.entries - Permission.GRANTED_ON_PURPOSE).forEach { assertThat(policy.allows(it)).describedAs(it.key).isTrue() }
+            // Permissions that open other people's memos are granted on purpose, never by the built-in role (ADR-0050).
+            Permission.GRANTED_ON_PURPOSE.forEach { assertThat(policy.allows(it)).describedAs(it.key).isFalse() }
             assertThat(policy.allows(Permission.ORG_MANAGE, Resource.Unit(UUID.randomUUID()))).isTrue()
             assertThat(policy.condition(Permission.ORG_MANAGE)).isEqualTo(DSL.trueCondition())
             // Clearance is the lowest level (no clearance row): rank 0 objects only.

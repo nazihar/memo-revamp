@@ -7,6 +7,7 @@ package com.memo.jooq.tables
 import com.memo.jooq.indexes.MEMO_NUMBER_UK
 import com.memo.jooq.indexes.MEMO_TENANT_APPROVED_IDX
 import com.memo.jooq.indexes.MEMO_TENANT_INITIATOR_BOX_IDX
+import com.memo.jooq.indexes.MEMO_TENANT_ORIGIN_UNIT_IDX
 import com.memo.jooq.indexes.MEMO_TENANT_TYPE_IDX
 import com.memo.jooq.indexes.MEMO_TENANT_TYPE_VERSION_IDX
 import com.memo.jooq.keys.MEMO_ATTACHMENT__MEMO_ATTACHMENT_TENANT_ID_MEMO_ID_FKEY
@@ -16,6 +17,7 @@ import com.memo.jooq.keys.MEMO_LINK__MEMO_LINK_TENANT_ID_TARGET_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_PARTICIPANT__MEMO_PARTICIPANT_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_PKEY
 import com.memo.jooq.keys.MEMO_ROUTE_ENTRY__MEMO_ROUTE_ENTRY_TENANT_ID_MEMO_ID_FKEY
+import com.memo.jooq.keys.MEMO_SHARE__MEMO_SHARE_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_SUBMISSION_ATTACHMENT__MEMO_SUBMISSION_ATTACHMENT_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_TENANT_ID_DOCUMENT_FILE_ID_KEY
 import com.memo.jooq.keys.MEMO_TENANT_ID_ID_KEY
@@ -27,6 +29,7 @@ import com.memo.jooq.tables.MemoInterest.MemoInterestPath
 import com.memo.jooq.tables.MemoLink.MemoLinkPath
 import com.memo.jooq.tables.MemoParticipant.MemoParticipantPath
 import com.memo.jooq.tables.MemoRouteEntry.MemoRouteEntryPath
+import com.memo.jooq.tables.MemoShare.MemoSharePath
 import com.memo.jooq.tables.MemoSubmissionAttachment.MemoSubmissionAttachmentPath
 import com.memo.jooq.tables.MemoType.MemoTypePath
 import com.memo.jooq.tables.MemoTypeVersion.MemoTypeVersionPath
@@ -263,7 +266,7 @@ open class Memo(
         override fun `as`(alias: Table<*>): MemoPath = MemoPath(alias.qualifiedName, this)
     }
     override fun getSchema(): Schema? = if (aliased()) null else com.memo.jooq.Memo.MEMO
-    override fun getIndexes(): List<Index> = listOf(MEMO_NUMBER_UK, MEMO_TENANT_APPROVED_IDX, MEMO_TENANT_INITIATOR_BOX_IDX, MEMO_TENANT_TYPE_IDX, MEMO_TENANT_TYPE_VERSION_IDX)
+    override fun getIndexes(): List<Index> = listOf(MEMO_NUMBER_UK, MEMO_TENANT_APPROVED_IDX, MEMO_TENANT_INITIATOR_BOX_IDX, MEMO_TENANT_ORIGIN_UNIT_IDX, MEMO_TENANT_TYPE_IDX, MEMO_TENANT_TYPE_VERSION_IDX)
     override fun getPrimaryKey(): UniqueKey<MemoRecord> = MEMO_PKEY
     override fun getUniqueKeys(): List<UniqueKey<MemoRecord>> = listOf(MEMO_TENANT_ID_DOCUMENT_FILE_ID_KEY, MEMO_TENANT_ID_ID_KEY, MEMO_TENANT_ID_REFERENCE_KEY)
     override fun getReferences(): List<ForeignKey<MemoRecord, *>> = listOf(MEMO__MEMO_TENANT_ID_MEMO_TYPE_ID_FKEY, MEMO__MEMO_TYPE_VERSION_FK)
@@ -376,6 +379,22 @@ open class Memo(
 
     val memoRouteEntry: MemoRouteEntryPath
         get(): MemoRouteEntryPath = memoRouteEntry()
+
+    private lateinit var _memoShare: MemoSharePath
+
+    /**
+     * Get the implicit to-many join path to the <code>memo.memo_share</code>
+     * table
+     */
+    fun memoShare(): MemoSharePath {
+        if (!this::_memoShare.isInitialized)
+            _memoShare = MemoSharePath(this, null, MEMO_SHARE__MEMO_SHARE_TENANT_ID_MEMO_ID_FKEY.inverseKey)
+
+        return _memoShare;
+    }
+
+    val memoShare: MemoSharePath
+        get(): MemoSharePath = memoShare()
 
     private lateinit var _memoSubmissionAttachment: MemoSubmissionAttachmentPath
 

@@ -69,10 +69,25 @@ enum class Permission(
 
     /** Set the business calendar SLAs count working time on (Phase 2 E05). */
     WORKFLOW_CALENDAR_MANAGE("workflow.calendar.manage", scopable = false, privileged = true),
+
+    /**
+     * Read the memos raised in a unit subtree (Phase 3 E03, ADR-0050), up to one's clearance; for example internal audit
+     * over a division. Granted by tenants only: no built-in role holds it.
+     */
+    MEMO_READ_UNIT("memo.read.unit", scopable = true, privileged = true),
+
+    /** Revoke any share of a memo one can read (Phase 3 E03, ADR-0050). Granted by tenants only. */
+    MEMO_SHARE_MANAGE("memo.share.manage", scopable = false, privileged = true),
     ;
 
     companion object {
         private val BY_KEY = entries.associateBy { it.key }
+
+        /**
+         * Permissions that open other people's memos (ADR-0050): a tenant grants them on purpose, through a role of its
+         * own; the built-in administrator role does not carry them.
+         */
+        val GRANTED_ON_PURPOSE: Set<Permission> get() = setOf(MEMO_READ_UNIT, MEMO_SHARE_MANAGE)
 
         fun ofKey(key: String): Permission? = BY_KEY[key]
     }
@@ -87,7 +102,7 @@ enum class BuiltInRole(
     val displayName: String,
     val permissions: Set<Permission>,
 ) {
-    TENANT_ADMIN("tenant_admin", "Organisation administrator", Permission.entries.toSet()),
+    TENANT_ADMIN("tenant_admin", "Organisation administrator", Permission.entries.toSet() - Permission.GRANTED_ON_PURPOSE),
     ORG_ADMIN("org_admin", "Org directory administrator", setOf(Permission.DIRECTORY_READ, Permission.ORG_MANAGE)),
     AUDITOR("auditor", "Auditor", setOf(Permission.DIRECTORY_READ, Permission.AUDIT_READ)),
     USER("user", "User", setOf(Permission.DIRECTORY_READ, Permission.MEMO_CREATE)),

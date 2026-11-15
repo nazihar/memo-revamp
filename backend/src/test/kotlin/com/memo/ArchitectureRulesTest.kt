@@ -230,4 +230,18 @@ class ArchitectureRulesTest {
             .because("template and memo code evaluates no expressions (ADR-0048)")
             .check(classes)
     }
+
+    @Test
+    fun `who reads a memo is decided by MemoReadable, and participant rows are written by their stores only`() {
+        // ADR-0050: one read rule for every get, list and search; a query of its own would miss shares, expiry or units.
+        noClasses()
+            .that()
+            .resideOutsideOfPackage("com.memo.jooq..")
+            .and()
+            .haveNameNotMatching("""com\.memo\.memo\.internal\.(MemoReadable|MemoStore|MemoCoauthorStore|MemoShareStore)(\$.*)?""")
+            .should()
+            .callMethod("com.memo.jooq.tables.references.TablesKt", "getMEMO_PARTICIPANT")
+            .because("memo visibility goes through MemoReadable (ADR-0050)")
+            .check(classes)
+    }
 }

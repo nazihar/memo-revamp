@@ -36,6 +36,7 @@ import com.memo.jooq.tables.MemoNumberCounter
 import com.memo.jooq.tables.MemoParticipant
 import com.memo.jooq.tables.MemoReferenceCounter
 import com.memo.jooq.tables.MemoRouteEntry
+import com.memo.jooq.tables.MemoShare
 import com.memo.jooq.tables.MemoSubmissionAttachment
 import com.memo.jooq.tables.MemoType
 import com.memo.jooq.tables.MemoTypeVersion
@@ -226,6 +227,11 @@ val MEMO_REFERENCE_COUNTER: MemoReferenceCounter = MemoReferenceCounter.MEMO_REF
  * The table <code>memo.memo_route_entry</code>.
  */
 val MEMO_ROUTE_ENTRY: MemoRouteEntry = MemoRouteEntry.MEMO_ROUTE_ENTRY
+
+/**
+ * The table <code>memo.memo_share</code>.
+ */
+val MEMO_SHARE: MemoShare = MemoShare.MEMO_SHARE
 
 /**
  * The table <code>memo.memo_submission_attachment</code>.

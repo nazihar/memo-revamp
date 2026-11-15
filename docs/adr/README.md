@@ -51,7 +51,7 @@ We use the MADR format (see [0001](0001-record-architecture-decisions.md)). Star
 | [0045](0045-document-renditions-and-text-extraction.md) | Document renditions and text extraction: background jobs, ONLYOFFICE conversion, a separate Tika server | accepted | 2026-11-14 |
 | [0046](0046-memo-attachments.md) | Memo attachments: typed by the tenant, stricter classification only, bound to each submission | accepted | 2026-11-14 |
 | [0047](0047-onlyoffice-10-co-editing-and-hardening.md) | ONLYOFFICE 10: co-editing by named co-authors with session-bound keys, spreadsheets, hardening; desktop Word not adopted | accepted | 2026-11-14 |
-| [0048](0048-memo-templates.md) | Memo templates: tenant .docx with typed tags, sanitised on upload, filled on the server | proposed | 2026-11-15 |
-| [0049](0049-note-sheet.md) | Note sheet: rich remarks as validated JSON in the memo module, append-only, corrections by reference | proposed | 2026-11-15 |
-| [0050](0050-memo-access-model-and-copy-to.md) | Memo access: participants, copy-to, shares and unit readers, under clearance, as one SQL filter | proposed | 2026-11-15 |
-| [0051](0051-authenticated-approvals-and-stamps.md) | Authenticated approvals (e-signature v1): the authentication context of each decision, shown as a stamp | proposed | 2026-11-15 |
+| [0048](0048-memo-templates.md) | Memo templates: tenant .docx with typed tags, sanitised on upload, filled on the server | accepted | 2026-11-15 |
+| [0049](0049-note-sheet.md) | Note sheet: rich remarks as validated JSON in the memo module, append-only, corrections by reference | accepted | 2026-11-15 |
+| [0050](0050-memo-access-model-and-copy-to.md) | Memo access: participants, copy-to, shares and unit readers, under clearance, as one SQL filter | accepted | 2026-11-15 |
+| [0051](0051-authenticated-approvals-and-stamps.md) | Authenticated approvals (e-signature v1): the authentication context of each decision, shown as a stamp | accepted | 2026-11-15 |

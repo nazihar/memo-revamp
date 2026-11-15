@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-11-15
 deciders: Product owner (delegated gate, Phase 3 Q1), agent
 ---

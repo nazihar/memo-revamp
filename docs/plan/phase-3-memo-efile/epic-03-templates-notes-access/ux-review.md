@@ -146,4 +146,10 @@ Template    letterhead-credit.docx (48 KB) · uploaded 15 Nov   [ Replace ] [ Re
 6. **Drafts of notes.** Recommended: kept privately on the server (survive a closed browser), not shown to anyone, and removed when posted.
 
 ## Owner feedback
-_(to be recorded here after the review)_
+**2026-11-15: "approved as recommended".** Flows C and D are approved as drawn, and the six questions take the recommended answers:
+1. Copies default to **after approval**; **at submit** is chosen per recipient.
+2. Copy recipients may **not** comment by default; a tenant setting allows it.
+3. A privileged **"Read memos of a unit"** permission (`memo.read.unit`), granted by tenants only. In the demo, the auditor holds it for the Credit Division.
+4. The name is **"authenticated approval"**. The words "digital signature" and "e-signature" are not used.
+5. The note sheet **replaces History**. Audit-style events stay as small grey lines.
+6. Note drafts are kept **privately on the server** and removed when the note is posted.

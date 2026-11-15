@@ -9,3 +9,8 @@
   - ADR-0051 authenticated approvals.
 - **Plan:** design, threat model, tasks T1–T9 and test plan written.
 - **Waiting for the owner:** flows C (note sheet) and D (sharing and copy-to) in `ux-review.md`, with six questions and recommended answers. The backend tasks T1–T6 do not depend on the answers except for defaults (copy timing, comments by copies), which are settings.
+
+## 2026-11-15 — Owner review of flows C and D
+- **Owner:** "approved as recommended". Recorded in `ux-review.md` (Owner feedback).
+- **ADRs:** 0049, 0050 and 0051 accepted. ADR-0048 stays proposed until the T1 spike chooses the engine.
+- **Build starts:** T1 (template engine spike) first.

@@ -1,4 +1,4 @@
-import type { Browser, Page } from '@playwright/test'
+import type { Browser, Locator, Page } from '@playwright/test'
 import { confirmIfAsked, demoSecret } from '../auth'
 import { docx } from '../docx'
 import { expect, test } from '../fixtures'
@@ -16,9 +16,10 @@ async function as(browser: Browser, role: SignedInRole): Promise<Page> {
   return context.newPage()
 }
 
-async function pick(page: Page, field: string, search: string, name: RegExp) {
-  await page.getByRole('combobox', { name: field }).fill(search)
-  await page.getByRole('option', { name }).click()
+/** Picks a person in the people picker labelled [field] inside [scope] (a dialog: the page has other pickers). */
+async function pick(scope: Locator, field: string, search: string, name: RegExp) {
+  await scope.getByRole('combobox', { name: field, exact: true }).fill(search)
+  await scope.getByRole('option', { name }).click()
 }
 
 function tomorrow(): string {
@@ -59,7 +60,7 @@ test.describe('as the initiator', () => {
     const access = page.getByRole('region', { name: 'People with access' })
     await access.getByRole('button', { name: 'Copy to…' }).click()
     const copyTo = page.getByRole('dialog', { name: 'Copy to' })
-    await pick(page, 'Add a person', 'Head of Fin', /Demo Head of Finance/)
+    await pick(copyTo, 'Add a person', 'Head of Fin', /Demo Head of Finance/)
     await expect(copyTo.getByRole('combobox', { name: 'When to send to Demo Head of Finance' })).toHaveValue(
       'AFTER_APPROVAL',
     )
@@ -71,7 +72,7 @@ test.describe('as the initiator', () => {
     // Share with the branch administrator until tomorrow, with a reason.
     await access.getByRole('button', { name: 'Share' }).click()
     const share = page.getByRole('dialog', { name: 'Share this memo' })
-    await pick(page, 'Person', 'Branch Ad', /Demo Branch Admin/)
+    await pick(share, 'Person', 'Branch Ad', /Demo Branch Admin/)
     await share.getByLabel('Reason').fill('Check of the branch premises')
     await share.getByLabel(/^Until/).fill(tomorrow())
     await share.getByRole('button', { name: 'Share' }).click()

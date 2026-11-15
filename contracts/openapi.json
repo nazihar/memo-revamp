@@ -1930,6 +1930,85 @@
         "required" : [ "displayName", "email", "tenantAdmin" ],
         "type" : "object"
       },
+      "JsonNode" : {
+        "properties" : {
+          "array" : {
+            "type" : "boolean"
+          },
+          "bigDecimal" : {
+            "type" : "boolean"
+          },
+          "bigInteger" : {
+            "type" : "boolean"
+          },
+          "binary" : {
+            "type" : "boolean"
+          },
+          "boolean" : {
+            "type" : "boolean"
+          },
+          "container" : {
+            "type" : "boolean"
+          },
+          "double" : {
+            "type" : "boolean"
+          },
+          "embeddedValue" : {
+            "type" : "boolean"
+          },
+          "empty" : {
+            "type" : "boolean"
+          },
+          "float" : {
+            "type" : "boolean"
+          },
+          "floatingPointNumber" : {
+            "type" : "boolean"
+          },
+          "int" : {
+            "type" : "boolean"
+          },
+          "integralNumber" : {
+            "type" : "boolean"
+          },
+          "long" : {
+            "type" : "boolean"
+          },
+          "missingNode" : {
+            "type" : "boolean"
+          },
+          "nodeType" : {
+            "enum" : [ "ARRAY", "BINARY", "BOOLEAN", "MISSING", "NULL", "NUMBER", "OBJECT", "POJO", "STRING" ],
+            "type" : "string"
+          },
+          "null" : {
+            "type" : "boolean"
+          },
+          "number" : {
+            "type" : "boolean"
+          },
+          "object" : {
+            "type" : "boolean"
+          },
+          "pojo" : {
+            "type" : "boolean"
+          },
+          "short" : {
+            "type" : "boolean"
+          },
+          "string" : {
+            "type" : "boolean"
+          },
+          "textual" : {
+            "deprecated" : true,
+            "type" : "boolean"
+          },
+          "valueNode" : {
+            "type" : "boolean"
+          }
+        },
+        "type" : "object"
+      },
       "LegalEntity" : {
         "properties" : {
           "id" : {
@@ -2986,6 +3065,148 @@
           }
         },
         "required" : [ "code", "name" ],
+        "type" : "object"
+      },
+      "NoteDraftRequest" : {
+        "properties" : {
+          "body" : {
+            "$ref" : "#/components/schemas/JsonNode"
+          }
+        },
+        "required" : [ "body" ],
+        "type" : "object"
+      },
+      "NoteDraftView" : {
+        "properties" : {
+          "body" : {
+            "$ref" : "#/components/schemas/JsonNode"
+          },
+          "updatedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "version" : {
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "body", "updatedAt", "version" ],
+        "type" : "object"
+      },
+      "NoteEntryView" : {
+        "properties" : {
+          "actingFor" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/Named"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "actionKind" : {
+            "type" : [ "string", "null" ]
+          },
+          "attachments" : {
+            "items" : {
+              "$ref" : "#/components/schemas/NoteFileView"
+            },
+            "type" : "array"
+          },
+          "author" : {
+            "$ref" : "#/components/schemas/Named"
+          },
+          "body" : {
+            "$ref" : "#/components/schemas/JsonNode"
+          },
+          "canCorrect" : {
+            "type" : "boolean"
+          },
+          "correctedBy" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "correctsId" : {
+            "type" : [ "string", "null" ]
+          },
+          "createdAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "id" : {
+            "type" : "string"
+          },
+          "kind" : {
+            "enum" : [ "REMARK", "COMMENT", "CORRECTION" ],
+            "type" : "string"
+          },
+          "readableMemos" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "round" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "text" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "attachments", "author", "body", "canCorrect", "correctedBy", "createdAt", "id", "kind", "readableMemos", "round", "text" ],
+        "type" : "object"
+      },
+      "NoteFileView" : {
+        "properties" : {
+          "fileId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "mediaType" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "fileId", "mediaType", "name" ],
+        "type" : "object"
+      },
+      "NoteRequest" : {
+        "properties" : {
+          "attachmentIds" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "body" : {
+            "$ref" : "#/components/schemas/JsonNode"
+          },
+          "correctsId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "attachmentIds", "body" ],
+        "type" : "object"
+      },
+      "NoteSheetView" : {
+        "properties" : {
+          "canWrite" : {
+            "type" : "boolean"
+          },
+          "entries" : {
+            "items" : {
+              "$ref" : "#/components/schemas/NoteEntryView"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "canWrite", "entries" ],
         "type" : "object"
       },
       "NotificationPage" : {
@@ -4139,6 +4360,13 @@
         "properties" : {
           "remark" : {
             "type" : [ "string", "null" ]
+          },
+          "remarkBody" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/JsonNode"
+            }, {
+              "type" : "null"
+            } ]
           }
         },
         "type" : "object"
@@ -10661,6 +10889,161 @@
           }
         },
         "summary" : "Remove a link you made while the memo is a draft or returned",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/memos/{id}/notes" : {
+      "get" : {
+        "operationId" : "listMemoNotes",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/NoteSheetView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The memo's note sheet: remarks, comments and corrections, oldest first",
+        "tags" : [ "memo" ]
+      },
+      "post" : {
+        "operationId" : "postMemoNote",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/NoteRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/NoteEntryView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Post a comment, or a correction of one of your entries",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/memos/{id}/notes/draft" : {
+      "delete" : {
+        "operationId" : "deleteMemoNoteDraft",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : { },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Throw your unposted note away",
+        "tags" : [ "memo" ]
+      },
+      "get" : {
+        "operationId" : "getMemoNoteDraft",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/NoteDraftView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Your unposted note on the memo (204 when there is none)",
+        "tags" : [ "memo" ]
+      },
+      "put" : {
+        "operationId" : "saveMemoNoteDraft",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/NoteDraftRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/NoteDraftView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Save your unposted note; If-Match once it exists",
         "tags" : [ "memo" ]
       }
     },

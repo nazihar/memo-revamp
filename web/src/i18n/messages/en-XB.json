@@ -8702,6 +8702,20 @@
       "value": "‬"
     }
   ],
+  "mail.template.memoMentioned": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄on ʍǝɹǝ ɯǝuʇıouǝp ou ɐ ɯǝɯo"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "mail.template.memoRejected": [
     {
       "type": 0,
@@ -17084,6 +17098,24 @@
     {
       "type": 0,
       "value": " ʍɐs ɔodıǝp ʇo ʎon ɟoɹ ıuɟoɹɯɐʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.kind.memoMentioned": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄on ʍǝɹǝ ɯǝuʇıouǝp ıu ɐ uoʇǝ ou ɯǝɯo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
     },
     {
       "type": 0,

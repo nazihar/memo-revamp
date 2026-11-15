@@ -105,3 +105,34 @@
 - **Permissions:** `memo.copy.add` (granted on purpose) and `memo.distribution.manage` (in the administrator role).
 - **Memo view:** `readingAs` (the reader's participant kind; null for a unit reader) and the actions `EDIT_COPIES` and `ADD_COPIES`, for T8's screens.
 - **Deviation:** "after approval" copies are sent in the approval's transaction, not in a job. The writes are batched per person and idempotent through `sent_at`; the 500-recipient timing is measured in T9 (design §9 target: under 5 s).
+
+## 2026-11-15 — T3 note sheet backend
+- **`memo/V15`:**
+  - `memo_note` (REMARK, COMMENT or CORRECTION; body `noteDoc/v1` with its plain text; a remark linked to its action by sequence; a correction by `corrects_id`);
+  - `memo_note_mention` and `memo_note_attachment`, which, with `memo_note`, are append-only by grants;
+  - `memo_note_draft` (private, mutable, one per person and memo).
+- **`NoteDoc`:** the validator and tree for `noteDoc/v1`:
+  - paragraphs, nested lists (at most 3), bold, italic, `https:` links, hard breaks, mentions and memo references;
+  - anything else is refused with its JSON path;
+  - limits on size, nodes, text, and on mentions, links and memo references;
+  - the canonical stored JSON, and the plain text.
+- **Endpoints:** `GET|POST /memos/{id}/notes`, and `GET|PUT|DELETE …/notes/draft` (If-Match once the draft exists; 204 when there is none).
+- **Who writes:**
+  - readers comment while the memo is not closed;
+  - copy recipients only with the tenant setting `memo.copy.comments` (off by default, owner's answer 2); unit readers never;
+  - authors (or the person they acted for) correct their own entries, with corrections nested at most 10 deep.
+- **Mentions:**
+  - the person must be an active participant cleared for the memo, or the post is refused with `MENTION_NO_ACCESS` per person (`mentions.<id>`), so the web can offer "Share and mention";
+  - those mentioned are notified (`MEMO_MENTIONED`, a new mail template in English and Arabic).
+- **Decision remarks:**
+  - submit, resubmit, withdraw, approve, return and reject accept `remarkBody` as well as `remark`; a plain remark becomes one paragraph;
+  - the note is checked first, the workflow receives its plain text, then the entry is written linked to the action, all in one transaction;
+  - remarks without an entry (before E03, or recall and hand-ons) are merged into the list from the workflow's actions, as `action-<seq>`.
+- **Files on a note:**
+  - purpose `memo.note.attachment` (the attachment types and size), owned by the memo, uploaded by someone who may write;
+  - bound to one entry when it is posted, at most five per entry.
+- **Audit:** `memo.note.posted`, `memo.note.corrected` and `memo.mentioned` (entry id and user ids, never the body).
+- **Carried:**
+  - removing unbound uploads after 24 hours, which needs files deletion, as for previews;
+  - a stricter classification per note file;
+  - search over notes (E05).

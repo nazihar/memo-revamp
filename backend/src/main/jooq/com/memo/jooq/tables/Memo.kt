@@ -16,6 +16,10 @@ import com.memo.jooq.keys.MEMO_COPY__MEMO_COPY_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_INTEREST__MEMO_INTEREST_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_LINK__MEMO_LINK_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_LINK__MEMO_LINK_TENANT_ID_TARGET_MEMO_ID_FKEY
+import com.memo.jooq.keys.MEMO_NOTE_ATTACHMENT__MEMO_NOTE_ATTACHMENT_TENANT_ID_MEMO_ID_FKEY
+import com.memo.jooq.keys.MEMO_NOTE_DRAFT__MEMO_NOTE_DRAFT_TENANT_ID_MEMO_ID_FKEY
+import com.memo.jooq.keys.MEMO_NOTE_MENTION__MEMO_NOTE_MENTION_TENANT_ID_MEMO_ID_FKEY
+import com.memo.jooq.keys.MEMO_NOTE__MEMO_NOTE_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_PARTICIPANT__MEMO_PARTICIPANT_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_PKEY
 import com.memo.jooq.keys.MEMO_RECEIPT__MEMO_RECEIPT_TENANT_ID_MEMO_ID_FKEY
@@ -32,6 +36,10 @@ import com.memo.jooq.tables.MemoCopy.MemoCopyPath
 import com.memo.jooq.tables.MemoCopyDelivery.MemoCopyDeliveryPath
 import com.memo.jooq.tables.MemoInterest.MemoInterestPath
 import com.memo.jooq.tables.MemoLink.MemoLinkPath
+import com.memo.jooq.tables.MemoNote.MemoNotePath
+import com.memo.jooq.tables.MemoNoteAttachment.MemoNoteAttachmentPath
+import com.memo.jooq.tables.MemoNoteDraft.MemoNoteDraftPath
+import com.memo.jooq.tables.MemoNoteMention.MemoNoteMentionPath
 import com.memo.jooq.tables.MemoParticipant.MemoParticipantPath
 import com.memo.jooq.tables.MemoReceipt.MemoReceiptPath
 import com.memo.jooq.tables.MemoRouteEntry.MemoRouteEntryPath
@@ -385,6 +393,70 @@ open class Memo(
 
     val memoLinkTenantIdTargetMemoIdFkey: MemoLinkPath
         get(): MemoLinkPath = memoLinkTenantIdTargetMemoIdFkey()
+
+    private lateinit var _memoNoteAttachment: MemoNoteAttachmentPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.memo_note_attachment</code> table
+     */
+    fun memoNoteAttachment(): MemoNoteAttachmentPath {
+        if (!this::_memoNoteAttachment.isInitialized)
+            _memoNoteAttachment = MemoNoteAttachmentPath(this, null, MEMO_NOTE_ATTACHMENT__MEMO_NOTE_ATTACHMENT_TENANT_ID_MEMO_ID_FKEY.inverseKey)
+
+        return _memoNoteAttachment;
+    }
+
+    val memoNoteAttachment: MemoNoteAttachmentPath
+        get(): MemoNoteAttachmentPath = memoNoteAttachment()
+
+    private lateinit var _memoNoteDraft: MemoNoteDraftPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.memo_note_draft</code> table
+     */
+    fun memoNoteDraft(): MemoNoteDraftPath {
+        if (!this::_memoNoteDraft.isInitialized)
+            _memoNoteDraft = MemoNoteDraftPath(this, null, MEMO_NOTE_DRAFT__MEMO_NOTE_DRAFT_TENANT_ID_MEMO_ID_FKEY.inverseKey)
+
+        return _memoNoteDraft;
+    }
+
+    val memoNoteDraft: MemoNoteDraftPath
+        get(): MemoNoteDraftPath = memoNoteDraft()
+
+    private lateinit var _memoNoteMention: MemoNoteMentionPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.memo_note_mention</code> table
+     */
+    fun memoNoteMention(): MemoNoteMentionPath {
+        if (!this::_memoNoteMention.isInitialized)
+            _memoNoteMention = MemoNoteMentionPath(this, null, MEMO_NOTE_MENTION__MEMO_NOTE_MENTION_TENANT_ID_MEMO_ID_FKEY.inverseKey)
+
+        return _memoNoteMention;
+    }
+
+    val memoNoteMention: MemoNoteMentionPath
+        get(): MemoNoteMentionPath = memoNoteMention()
+
+    private lateinit var _memoNote: MemoNotePath
+
+    /**
+     * Get the implicit to-many join path to the <code>memo.memo_note</code>
+     * table
+     */
+    fun memoNote(): MemoNotePath {
+        if (!this::_memoNote.isInitialized)
+            _memoNote = MemoNotePath(this, null, MEMO_NOTE__MEMO_NOTE_TENANT_ID_MEMO_ID_FKEY.inverseKey)
+
+        return _memoNote;
+    }
+
+    val memoNote: MemoNotePath
+        get(): MemoNotePath = memoNote()
 
     private lateinit var _memoParticipant: MemoParticipantPath
 

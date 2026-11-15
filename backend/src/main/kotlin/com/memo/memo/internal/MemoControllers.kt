@@ -56,6 +56,7 @@ data class MemoRequest(
 @RequestMapping("/api/v1/memos")
 @Tag(name = "memo")
 class MemosController(
+    private val notes: MemoNotes,
     private val memos: Memos,
     private val templates: MemoTemplateService,
     private val copies: MemoCopies,
@@ -162,7 +163,8 @@ class MemosController(
         @PathVariable id: UUID,
         @RequestHeader("Idempotency-Key") key: String,
         @RequestBody(required = false) body: RemarkRequest?,
-    ): ResponseEntity<MemoView> = act(key, "memo.submit", id, body) { reviews.submit(id, body?.remark) }
+    ): ResponseEntity<MemoView> =
+        act(key, "memo.submit", id, body) { notes.decision({ memos.get(id) }, body) { r -> reviews.submit(id, r) } }
 
     @PostMapping("/{id}/resubmit")
     @SignedIn
@@ -171,7 +173,10 @@ class MemosController(
         @PathVariable id: UUID,
         @RequestHeader("Idempotency-Key") key: String,
         @RequestBody(required = false) body: RemarkRequest?,
-    ): ResponseEntity<MemoView> = act(key, "memo.resubmit", id, body) { reviews.resubmit(id, body?.remark) }
+    ): ResponseEntity<MemoView> =
+        act(key, "memo.resubmit", id, body) {
+            notes.decision({ memos.get(id) }, body) { r -> reviews.resubmit(id, r) }
+        }
 
     @PostMapping("/{id}/withdraw")
     @SignedIn
@@ -180,7 +185,10 @@ class MemosController(
         @PathVariable id: UUID,
         @RequestHeader("Idempotency-Key") key: String,
         @RequestBody(required = false) body: RemarkRequest?,
-    ): ResponseEntity<MemoView> = act(key, "memo.withdraw", id, body) { reviews.withdraw(id, body?.remark) }
+    ): ResponseEntity<MemoView> =
+        act(key, "memo.withdraw", id, body) {
+            notes.decision({ memos.get(id) }, body) { r -> reviews.withdraw(id, r) }
+        }
 
     @PostMapping("/{id}/recall")
     @SignedIn
@@ -224,7 +232,10 @@ data class RouteRequest(
 )
 
 data class RemarkRequest(
+    /** Plain text; kept for older clients. Ignored when [remarkBody] is given. */
     val remark: String? = null,
+    /** The remark as a note, `noteDoc/v1` (ADR-0049); its plain text becomes the action's remark. */
+    val remarkBody: tools.jackson.databind.JsonNode? = null,
 )
 
 /** The request as [Idempotency] compares it: with the actor, so another user's replay of a key is refused (422). */
@@ -416,6 +427,7 @@ class AdminMemoTypesController(
 @RequestMapping("/api/v1/tasks")
 @Tag(name = "memo")
 class MemoTasksController(
+    private val notes: MemoNotes,
     private val tasks: MemoTasks,
     private val memos: Memos,
     private val views: MemoViews,
@@ -430,7 +442,10 @@ class MemoTasksController(
         @PathVariable taskId: UUID,
         @RequestHeader("Idempotency-Key") key: String,
         @RequestBody(required = false) body: RemarkRequest?,
-    ): ResponseEntity<MemoView> = act(key, "workflow.task.approve", taskId, body) { tasks.approve(taskId, body?.remark) }
+    ): ResponseEntity<MemoView> =
+        act(key, "workflow.task.approve", taskId, body) {
+            notes.decision({ tasks.memoOf(taskId) }, body) { r -> tasks.approve(taskId, r) }
+        }
 
     @PostMapping("/{taskId}/return")
     @SignedIn
@@ -439,7 +454,10 @@ class MemoTasksController(
         @PathVariable taskId: UUID,
         @RequestHeader("Idempotency-Key") key: String,
         @RequestBody body: RemarkRequest,
-    ): ResponseEntity<MemoView> = act(key, "workflow.task.return", taskId, body) { tasks.returnToInitiator(taskId, body.remark) }
+    ): ResponseEntity<MemoView> =
+        act(key, "workflow.task.return", taskId, body) {
+            notes.decision({ tasks.memoOf(taskId) }, body) { r -> tasks.returnToInitiator(taskId, r) }
+        }
 
     @PostMapping("/{taskId}/reject")
     @SignedIn
@@ -448,7 +466,10 @@ class MemoTasksController(
         @PathVariable taskId: UUID,
         @RequestHeader("Idempotency-Key") key: String,
         @RequestBody body: RemarkRequest,
-    ): ResponseEntity<MemoView> = act(key, "workflow.task.reject", taskId, body) { tasks.reject(taskId, body.remark) }
+    ): ResponseEntity<MemoView> =
+        act(key, "workflow.task.reject", taskId, body) {
+            notes.decision({ tasks.memoOf(taskId) }, body) { r -> tasks.reject(taskId, r) }
+        }
 
     @PostMapping("/{taskId}/send-back")
     @SignedIn

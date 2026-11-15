@@ -129,7 +129,6 @@ class SearchPerformanceIT : IntegrationTest() {
     @Test
     fun `the search query uses the indexes for rare words for every reader profile`() {
         owner { c ->
-            c.exec("set app.tenant_id = '${tenant.id.value}'")
             c.exec("set plan_cache_mode = force_custom_plan")
             c.exec("prepare find(${FIND_TYPES.joinToString()}) as ${c.lines("select search_find_sql(true)").single()}")
             c.exec("prepare find_many(${FIND_TYPES.joinToString()}) as ${c.lines("select search_find_sql(false)").single()}")
@@ -179,7 +178,6 @@ class SearchPerformanceIT : IntegrationTest() {
     fun `GIN fastupdate on and off, for the log`() {
         listOf(true, false).forEach { fast ->
             owner { c ->
-                c.exec("set app.tenant_id = '${tenant.id.value}'")
                 c.exec("alter index search_note_tsv_idx set (fastupdate = ${if (fast) "on" else "off"})")
                 val started = System.nanoTime()
                 c.exec(
@@ -242,8 +240,17 @@ class SearchPerformanceIT : IntegrationTest() {
         return times[(RUNS * 95 / 100) - 1]
     }
 
+    /** A transaction as the schema owner, bound to the tenant (transaction-local, as the application binds it). */
     private fun owner(block: (Connection) -> Unit) =
-        DriverManager.getConnection(TestDatabase.jdbcUrl, "memo_migrator", TestDatabase.migratorPassword).use(block)
+        DriverManager.getConnection(TestDatabase.jdbcUrl, "memo_migrator", TestDatabase.migratorPassword).use { c ->
+            c.autoCommit = false
+            c.prepareStatement("select set_config('app.tenant_id', ?, true)").use {
+                it.setString(1, tenant.id.value.toString())
+                it.execute()
+            }
+            block(c)
+            c.commit()
+        }
 
     private fun Connection.exec(sql: String) {
         createStatement().use { it.execute(sql) }

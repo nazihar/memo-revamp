@@ -28,7 +28,6 @@ class SearchVolume(
 
     fun generate(readerRows: Map<UUID, Int>) {
         owner { c ->
-            c.exec("set app.tenant_id = '$tenant'")
             c.exec("select setseed(0.42)")
             c.exec(
                 """
@@ -140,8 +139,17 @@ class SearchVolume(
         }
     }
 
+    /** A transaction as the schema owner, bound to the tenant (transaction-local, as the application binds it). */
     private fun owner(block: (Connection) -> Unit) =
-        DriverManager.getConnection(TestDatabase.jdbcUrl, "memo_migrator", TestDatabase.migratorPassword).use(block)
+        DriverManager.getConnection(TestDatabase.jdbcUrl, "memo_migrator", TestDatabase.migratorPassword).use { c ->
+            c.autoCommit = false
+            c.prepareStatement("select set_config('app.tenant_id', ?, true)").use {
+                it.setString(1, tenant.toString())
+                it.execute()
+            }
+            block(c)
+            c.commit()
+        }
 
     private fun Connection.exec(sql: String) {
         createStatement().use { it.execute(sql) }

@@ -22,6 +22,7 @@ import com.memo.memo.MemoSearchSource
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.ObjectProvider
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.event.EventListener
@@ -188,7 +189,9 @@ class SearchJobs {
             }
         }
 
+    /** On unless `memo.search.backfill-sweep` is false (integration tests: they create memos without search rows by SQL). */
     @Bean
+    @ConditionalOnProperty("memo.search.backfill-sweep", havingValue = "true", matchIfMissing = true)
     fun searchBackfillSweep(
         jobs: Jobs,
         tenants: ActiveTenants,

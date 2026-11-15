@@ -4,6 +4,7 @@ import { afterAll, afterEach, beforeAll, beforeEach, vi } from 'vitest'
 import { client } from '@/api/generated/client.gen'
 import { configureHttp } from '@/api/http'
 import { installDialogPolyfill } from './dialog-polyfill'
+import './prosemirror'
 import { API_ORIGIN, server } from './msw'
 
 installDialogPolyfill()

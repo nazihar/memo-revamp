@@ -12310,6 +12310,829 @@
       "value": "]"
     }
   ],
+  "memo.noteSheet": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧḗḗ şħḗḗḗḗŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.bold": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɓǿǿŀḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.bullets": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɓŭŭŀŀḗḗŧḗḗḓ ŀīşŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.check.ok": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħḗḗƈķḗḗḓ ĵŭŭşŧ ƞǿǿẇ: ŧħḗḗ ḓǿǿƈŭŭḿḗḗƞŧ ȧȧƞḓ ȧȧŧŧȧȧƈħḿḗḗƞŧş ḿȧȧŧƈħ ẇħȧȧŧ ẇȧȧş ȧȧƥƥřǿǿṽḗḗḓ, ȧȧƞḓ ŧħḗḗ řḗḗƈǿǿřḓ ħȧȧş ƞǿǿŧ ƈħȧȧƞɠḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.check.problems": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şǿǿḿḗḗŧħīƞɠ ḓǿǿḗḗş ƞǿǿŧ ḿȧȧŧƈħ:"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.check.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħḗḗƈķ ŧħḗḗ ȧȧŭŭŧħḗḗƞŧīƈȧȧŧḗḗḓ ȧȧƥƥřǿǿṽȧȧŀş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.close": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŀǿǿşḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.correct": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿřřḗḗƈŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.corrected": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿřřḗḗƈŧḗḗḓ ↓"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.correctionOf": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿřřḗḗƈŧīǿǿƞ ǿǿƒ ȧȧƞ ḗḗȧȧřŀīḗḗř ƞǿǿŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.count": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " / "
+    },
+    {
+      "type": 2,
+      "value": "max",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.current": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řǿǿŭŭƞḓ "
+    },
+    {
+      "type": 1,
+      "value": "round"
+    },
+    {
+      "type": 0,
+      "value": " (ƈŭŭřřḗḗƞŧ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.dialog.addFile": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧḓḓ ȧȧ ƒīŀḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.dialog.cancel": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈȧȧƞƈḗḗŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.dialog.correct": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿřřḗḗƈŧīǿǿƞ ǿǿƒ ẏǿǿŭŭř ƞǿǿŧḗḗ ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "when"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.dialog.failed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƞǿǿŧḗḗ ƈǿǿŭŭŀḓ ƞǿǿŧ ƀḗḗ ƥǿǿşŧḗḗḓ: "
+    },
+    {
+      "type": 1,
+      "value": "message"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.dialog.fileHint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭƥ ŧǿǿ "
+    },
+    {
+      "type": 2,
+      "value": "max",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " ƒīŀḗḗş, ȧȧş ƒǿǿř ȧȧŧŧȧȧƈħḿḗḗƞŧş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.dialog.final": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧḗḗş ƈȧȧƞƞǿǿŧ ƀḗḗ ḗḗḓīŧḗḗḓ. Ẏǿǿŭŭ ƈȧȧƞ ƥǿǿşŧ ȧȧ ƈǿǿřřḗḗƈŧīǿǿƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.dialog.label": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.dialog.noAccess": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "names"
+    },
+    {
+      "type": 0,
+      "value": " ƈȧȧƞƞǿǿŧ şḗḗḗḗ ŧħīş ḿḗḗḿǿǿ. Şħȧȧřḗḗ īŧ ẇīŧħ ŧħḗḗḿ?"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.dialog.post": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥǿǿşŧ ƞǿǿŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.dialog.reason": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗȧȧşǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.dialog.removeFile": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗḿǿǿṽḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.dialog.saved": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓřȧȧƒŧ şȧȧṽḗḗḓ "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    },
+    {
+      "type": 0,
+      "value": " · ǿǿƞŀẏ ẏǿǿŭŭ ƈȧȧƞ şḗḗḗḗ īŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.dialog.shareAndMention": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şħȧȧřḗḗ ȧȧƞḓ ḿḗḗƞŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.dialog.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇřīŧḗḗ ȧȧ ƞǿǿŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.empty": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧħīƞɠ ħȧȧş ƀḗḗḗḗƞ ẇřīŧŧḗḗƞ ǿǿƞ ŧħīş ḿḗḗḿǿǿ ẏḗḗŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.for": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ƒǿǿř "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.italic": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īŧȧȧŀīƈ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.kind.comment": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿḿḿḗḗƞŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.kind.correction": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿřřḗḗƈŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.link": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀīƞķ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.linkApply": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧḓḓ ŀīƞķ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.linkPrompt": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇḗḗƀ ȧȧḓḓřḗḗşş (ħŧŧƥş://…)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.memoRestricted": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿǿǿ (řḗḗşŧřīƈŧḗḗḓ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.mention": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗƞŧīǿǿƞ şǿǿḿḗḗǿǿƞḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.more": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿǿǿřḗḗ ȧȧƈŧīǿǿƞş ƒǿǿř ŧħīş ƞǿǿŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.noPeople": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧẏƥḗḗ ȧȧŧ ŀḗḗȧȧşŧ ŧẇǿǿ ŀḗḗŧŧḗḗřş ǿǿƒ ȧȧ ƞȧȧḿḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.numbers": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞŭŭḿƀḗḗřḗḗḓ ŀīşŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.people": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥḗḗǿǿƥŀḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.stamp.authenticated": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 5,
+      "value": "second",
+      "options": {
+        "yes": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ȧŭŭŧħḗḗƞŧīƈȧȧŧḗḗḓ ẇīŧħ ƥȧȧşşẇǿǿřḓ ȧȧƞḓ ȧȧŭŭŧħḗḗƞŧīƈȧȧŧǿǿř, "
+            },
+            {
+              "type": 6,
+              "value": "minutes",
+              "options": {
+                "=0": {
+                  "value": [
+                    {
+                      "type": 0,
+                      "value": "ṽḗḗřīƒīḗḗḓ ŀḗḗşş ŧħȧȧƞ ȧȧ ḿīƞŭŭŧḗḗ ƀḗḗƒǿǿřḗḗ"
+                    }
+                  ]
+                },
+                "one": {
+                  "value": [
+                    {
+                      "type": 0,
+                      "value": "ṽḗḗřīƒīḗḗḓ "
+                    },
+                    {
+                      "type": 7
+                    },
+                    {
+                      "type": 0,
+                      "value": " ḿīƞŭŭŧḗḗ ƀḗḗƒǿǿřḗḗ"
+                    }
+                  ]
+                },
+                "other": {
+                  "value": [
+                    {
+                      "type": 0,
+                      "value": "ṽḗḗřīƒīḗḗḓ "
+                    },
+                    {
+                      "type": 7
+                    },
+                    {
+                      "type": 0,
+                      "value": " ḿīƞŭŭŧḗḗş ƀḗḗƒǿǿřḗḗ"
+                    }
+                  ]
+                }
+              },
+              "offset": 0,
+              "pluralType": "cardinal"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ȧŭŭŧħḗḗƞŧīƈȧȧŧḗḗḓ ẇīŧħ ƥȧȧşşẇǿǿřḓ"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.stamp.check": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħḗḗƈķ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.stamp.client": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒřǿǿḿ "
+    },
+    {
+      "type": 1,
+      "value": "ip"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "agent"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.stamp.document": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓǿǿƈŭŭḿḗḗƞŧ ṽ"
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "hash"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.stamp.label": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "decision"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧḗḗ şħḗḗḗḗŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.toolbar": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒǿǿřḿȧȧŧŧīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.notes.write": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇřīŧḗḗ ȧȧ ƞǿǿŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "memo.numberedWhen.approval": [
     {
       "type": 0,

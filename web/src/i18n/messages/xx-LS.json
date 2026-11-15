@@ -6174,6 +6174,481 @@
       "value": "This memo does not exist, or you cannot see it.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.noteSheet": [
+    {
+      "type": 0,
+      "value": "Note sheetSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.bold": [
+    {
+      "type": 0,
+      "value": "BoldSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.bullets": [
+    {
+      "type": 0,
+      "value": "Bulleted listSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.check.ok": [
+    {
+      "type": 0,
+      "value": "Checked just now: the document and attachments match what was approved, and the record has not changed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.check.problems": [
+    {
+      "type": 0,
+      "value": "Something does not match:SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.check.title": [
+    {
+      "type": 0,
+      "value": "Check the authenticated approvalsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.close": [
+    {
+      "type": 0,
+      "value": "CloseSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.correct": [
+    {
+      "type": 0,
+      "value": "CorrectSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.corrected": [
+    {
+      "type": 0,
+      "value": "Corrected ↓SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.correctionOf": [
+    {
+      "type": 0,
+      "value": "Correction of an earlier noteSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.count": [
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " / "
+    },
+    {
+      "type": 2,
+      "value": "max",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.current": [
+    {
+      "type": 0,
+      "value": "Round "
+    },
+    {
+      "type": 1,
+      "value": "round"
+    },
+    {
+      "type": 0,
+      "value": " (current)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.dialog.addFile": [
+    {
+      "type": 0,
+      "value": "Add a fileSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.dialog.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.dialog.correct": [
+    {
+      "type": 0,
+      "value": "Correction of your note of "
+    },
+    {
+      "type": 1,
+      "value": "when"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.dialog.failed": [
+    {
+      "type": 0,
+      "value": "The note could not be posted: "
+    },
+    {
+      "type": 1,
+      "value": "message"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.dialog.fileHint": [
+    {
+      "type": 0,
+      "value": "Up to "
+    },
+    {
+      "type": 2,
+      "value": "max",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " files, as for attachments.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.dialog.final": [
+    {
+      "type": 0,
+      "value": "Notes cannot be edited. You can post a correction.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.dialog.label": [
+    {
+      "type": 0,
+      "value": "NoteSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.dialog.noAccess": [
+    {
+      "type": 1,
+      "value": "names"
+    },
+    {
+      "type": 0,
+      "value": " cannot see this memo. Share it with them?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.dialog.post": [
+    {
+      "type": 0,
+      "value": "Post noteSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.dialog.reason": [
+    {
+      "type": 0,
+      "value": "ReasonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.dialog.removeFile": [
+    {
+      "type": 0,
+      "value": "Remove "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.dialog.saved": [
+    {
+      "type": 0,
+      "value": "Draft saved "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    },
+    {
+      "type": 0,
+      "value": " · only you can see itSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.dialog.shareAndMention": [
+    {
+      "type": 0,
+      "value": "Share and mentionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.dialog.title": [
+    {
+      "type": 0,
+      "value": "Write a noteSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.empty": [
+    {
+      "type": 0,
+      "value": "Nothing has been written on this memo yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.for": [
+    {
+      "type": 0,
+      "value": "for "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.italic": [
+    {
+      "type": 0,
+      "value": "ItalicSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.kind.comment": [
+    {
+      "type": 0,
+      "value": "CommentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.kind.correction": [
+    {
+      "type": 0,
+      "value": "CorrectionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.link": [
+    {
+      "type": 0,
+      "value": "LinkSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.linkApply": [
+    {
+      "type": 0,
+      "value": "Add linkSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.linkPrompt": [
+    {
+      "type": 0,
+      "value": "Web address (https://…)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.memoRestricted": [
+    {
+      "type": 0,
+      "value": "Memo (restricted)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.mention": [
+    {
+      "type": 0,
+      "value": "Mention someoneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.more": [
+    {
+      "type": 0,
+      "value": "More actions for this noteSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.noPeople": [
+    {
+      "type": 0,
+      "value": "Type at least two letters of a name.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.numbers": [
+    {
+      "type": 0,
+      "value": "Numbered listSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.people": [
+    {
+      "type": 0,
+      "value": "PeopleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.stamp.authenticated": [
+    {
+      "type": 5,
+      "value": "second",
+      "options": {
+        "yes": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Authenticated with password and authenticator, "
+            },
+            {
+              "type": 6,
+              "value": "minutes",
+              "options": {
+                "=0": {
+                  "value": [
+                    {
+                      "type": 0,
+                      "value": "verified less than a minute before"
+                    }
+                  ]
+                },
+                "one": {
+                  "value": [
+                    {
+                      "type": 0,
+                      "value": "verified "
+                    },
+                    {
+                      "type": 7
+                    },
+                    {
+                      "type": 0,
+                      "value": " minute before"
+                    }
+                  ]
+                },
+                "other": {
+                  "value": [
+                    {
+                      "type": 0,
+                      "value": "verified "
+                    },
+                    {
+                      "type": 7
+                    },
+                    {
+                      "type": 0,
+                      "value": " minutes before"
+                    }
+                  ]
+                }
+              },
+              "offset": 0,
+              "pluralType": "cardinal"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Authenticated with password"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.stamp.check": [
+    {
+      "type": 0,
+      "value": "CheckSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.stamp.client": [
+    {
+      "type": 0,
+      "value": "From "
+    },
+    {
+      "type": 1,
+      "value": "ip"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "agent"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.stamp.document": [
+    {
+      "type": 0,
+      "value": "Document v"
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "hash"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.stamp.label": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "decision"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.title": [
+    {
+      "type": 0,
+      "value": "Note sheetSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.toolbar": [
+    {
+      "type": 0,
+      "value": "FormattingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.notes.write": [
+    {
+      "type": 0,
+      "value": "Write a noteSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.numberedWhen.approval": [
     {
       "type": 0,

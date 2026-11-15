@@ -5,6 +5,8 @@ import { useState } from 'react'
 import { useIntl } from 'react-intl'
 import {
   getMemoHistoryQueryKey,
+  listMemoApprovalsQueryKey,
+  listMemoNotesQueryKey,
   getMemoOptions,
   getMemoQueryKey,
   listMyMemosInfiniteQueryKey,
@@ -33,7 +35,7 @@ import { GitCompare } from 'lucide-react'
 import { unnumberedNote } from './memo-details'
 import { MemoLinks } from './MemoLinks'
 import { MemoInterests } from './MemoInterests'
-import { MemoHistory } from './MemoHistory'
+import { NoteSheet } from './notes/NoteSheet'
 import { referenceOf } from './memo-fields'
 import { actionButtons, mm, mmv, statusLabels } from './memo-messages'
 import { statusTone } from './memo-status'
@@ -102,6 +104,8 @@ export function MemoPage({ memoId }: { memoId: string }) {
     queryClient.setQueryData(getMemoQueryKey({ path: { id: memoId } }), next)
     await Promise.all([
       queryClient.invalidateQueries({ queryKey: getMemoHistoryQueryKey({ path: { id: memoId } }) }),
+      queryClient.invalidateQueries({ queryKey: listMemoNotesQueryKey({ path: { id: memoId } }) }),
+      queryClient.invalidateQueries({ queryKey: listMemoApprovalsQueryKey({ path: { id: memoId } }) }),
       queryClient.invalidateQueries({ queryKey: listMyTasksInfiniteQueryKey({ query: { limit: 25 } }) }),
       queryClient.invalidateQueries({ queryKey: listMyMemosInfiniteQueryKey({ query: { box: 'sent', limit: 25 } }) }),
     ])
@@ -254,8 +258,13 @@ export function MemoPage({ memoId }: { memoId: string }) {
               toast.show(message, 'success')
             }}
           />
-          <Section title={intl.formatMessage(mm.history)}>
-            <MemoHistory memoId={view.id} />
+          <Section title={intl.formatMessage(mm.noteSheet)}>
+            <NoteSheet
+              memoId={view.id}
+              onChanged={() =>
+                void queryClient.invalidateQueries({ queryKey: getMemoHistoryQueryKey({ path: { id: memoId } }) })
+              }
+            />
           </Section>
         </div>
         <div className="flex flex-col gap-6">

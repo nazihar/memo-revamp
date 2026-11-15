@@ -200,3 +200,15 @@ interface FileUploads {
         idempotencyKey: String,
     ): UUID
 }
+
+/**
+ * Extends the lock of record versions (ADR-0029, ADR-0053): a memo's final record kept until its memo's closure plus the
+ * type's retention. Later only; storage refuses anything shorter. Call outside a transaction, with the tenant bound.
+ */
+interface RecordRetentions {
+    /** Retains [versionId] at least until [until]; false when it is not a record version or is already retained as long. */
+    fun extend(
+        versionId: UUID,
+        until: Instant,
+    ): Boolean
+}

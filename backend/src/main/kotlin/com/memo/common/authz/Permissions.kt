@@ -84,6 +84,12 @@ enum class Permission(
 
     /** Keep the distribution lists copy-to can name (Phase 3 E03, ADR-0050). */
     MEMO_DISTRIBUTION_MANAGE("memo.distribution.manage", scopable = false, privileged = true),
+
+    /**
+     * Make a new version of a memo's final record, with a step-up and a reason, or retry a failed one (Phase 3 E04,
+     * ADR-0053). Granted by tenants only: no built-in role holds it.
+     */
+    MEMO_RENDITION_REGENERATE("memo.rendition.regenerate", scopable = false, privileged = true),
     ;
 
     companion object {
@@ -93,7 +99,7 @@ enum class Permission(
          * Permissions that open other people's memos (ADR-0050): a tenant grants them on purpose, through a role of its
          * own; the built-in administrator role does not carry them.
          */
-        val GRANTED_ON_PURPOSE: Set<Permission> get() = setOf(MEMO_READ_UNIT, MEMO_SHARE_MANAGE, MEMO_COPY_ADD)
+        val GRANTED_ON_PURPOSE: Set<Permission> get() = setOf(MEMO_READ_UNIT, MEMO_SHARE_MANAGE, MEMO_COPY_ADD, MEMO_RENDITION_REGENERATE)
 
         fun ofKey(key: String): Permission? = BY_KEY[key]
     }

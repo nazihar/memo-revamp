@@ -4434,6 +4434,15 @@
         "required" : [ "to" ],
         "type" : "object"
       },
+      "RegenerateRequest" : {
+        "properties" : {
+          "reason" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "reason" ],
+        "type" : "object"
+      },
       "RegisterEntry" : {
         "properties" : {
           "memoId" : {
@@ -11418,6 +11427,72 @@
           }
         },
         "summary" : "The memo's final record: its state and versions",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/memos/{id}/rendition/regenerate" : {
+      "post" : {
+        "operationId" : "regenerateMemoRendition",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RegenerateRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RenditionView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Make a new version of the final record, with a reason (step-up)",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/memos/{id}/rendition/retry" : {
+      "post" : {
+        "operationId" : "retryMemoRendition",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RenditionView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Try a failed final record again",
         "tags" : [ "memo" ]
       }
     },

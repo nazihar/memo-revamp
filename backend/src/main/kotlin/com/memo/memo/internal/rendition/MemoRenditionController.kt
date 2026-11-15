@@ -3,7 +3,9 @@ package com.memo.memo.internal.rendition
 import com.memo.common.authz.Clearances
 import com.memo.common.authz.Permission
 import com.memo.common.authz.Policy
+import com.memo.common.authz.RequiresPermission
 import com.memo.common.authz.SignedIn
+import com.memo.common.authz.StepUpCheck
 import com.memo.common.tenant.TenantContext
 import com.memo.common.tenant.TenantTransactions
 import com.memo.memo.internal.Memos
@@ -11,9 +13,12 @@ import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.CacheControl
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 import java.time.Instant
 import java.util.UUID
@@ -79,6 +84,12 @@ data class RenditionView(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val versions: List<RecordVersionView>,
 )
 
+/** Why a new version of a final record is made. */
+data class RegenerateRequest(
+    /** 1 to 500 characters. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val reason: String,
+)
+
 /** A memo's final record (ADR-0053, design E04 §5). Readers of the memo only; unknown or unreadable memos are 404. */
 @RestController
 @Tag(name = "memo")
@@ -88,6 +99,8 @@ class MemoRenditionController(
     private val clearances: Clearances,
     private val policy: Policy,
     private val transactions: TenantTransactions,
+    private val lifecycle: RecordLifecycle,
+    private val stepUp: StepUpCheck,
 ) {
     @GetMapping("/api/v1/memos/{id}/rendition")
     @SignedIn
@@ -101,6 +114,36 @@ class MemoRenditionController(
                 viewOf(renditions.of(memo.id))
             }
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(view)
+    }
+
+    @PostMapping("/api/v1/memos/{id}/rendition/regenerate")
+    @RequiresPermission(Permission.MEMO_RENDITION_REGENERATE)
+    @Operation(operationId = "regenerateMemoRendition", summary = "Make a new version of the final record, with a reason (step-up)")
+    fun regenerate(
+        @PathVariable id: UUID,
+        @RequestBody body: RegenerateRequest,
+    ): ResponseEntity<RenditionView> {
+        stepUp.require()
+        val view =
+            transactions.inTenant(TenantContext.current()) {
+                lifecycle.regenerate(id, body.reason)
+                viewOf(renditions.of(id))
+            }
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(view)
+    }
+
+    @PostMapping("/api/v1/memos/{id}/rendition/retry")
+    @RequiresPermission(Permission.MEMO_RENDITION_REGENERATE)
+    @Operation(operationId = "retryMemoRendition", summary = "Try a failed final record again")
+    fun retry(
+        @PathVariable id: UUID,
+    ): ResponseEntity<RenditionView> {
+        val view =
+            transactions.inTenant(TenantContext.current()) {
+                lifecycle.retry(id)
+                viewOf(renditions.of(id))
+            }
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(view)
     }
 
     private fun viewOf(versions: List<MemoRendition>): RenditionView {

@@ -3,3 +3,11 @@
 epic: P3-E04
 endpoints:
   - { endpoint: "GET /api/v1/memos/{id}/rendition", rule: signedIn }
+  # memo.rendition.regenerate is granted on purpose: no subject of the matrix holds it, so all signed-in subjects are 403.
+  - endpoint: "POST /api/v1/memos/{id}/rendition/regenerate"
+    rule: signedIn
+    body: { reason: "Matrix" }
+    expect: { user: 403, tenantAdmin: 403, tenantAdminStale: 403 }
+  - endpoint: "POST /api/v1/memos/{id}/rendition/retry"
+    rule: signedIn
+    expect: { user: 403, tenantAdmin: 403, tenantAdminStale: 403 }

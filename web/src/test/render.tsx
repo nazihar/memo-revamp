@@ -39,19 +39,20 @@ export function renderWithProviders(ui: ReactElement, options: { locale?: AppLoc
   )
 }
 
-/** Renders the real route tree (shell included) at [path]. */
-export function renderRoute(path = '/', options: { locale?: AppLocale } = {}): RenderResult {
+/** Renders the real route tree (shell included) at [path]; [router] lets a test read the address or go back. */
+export function renderRoute(path = '/', options: { locale?: AppLocale } = {}) {
   const queryClient = testQueryClient()
   const router = createRouter({
     routeTree,
     context: { queryClient },
     history: createMemoryHistory({ initialEntries: [path] }),
   })
-  return render(
+  const result = render(
     <Providers queryClient={queryClient} {...(options.locale ? { locale: options.locale } : {})}>
       <RouterProvider router={router} />
     </Providers>,
   )
+  return Object.assign(result, { router })
 }
 
 /** Zero serious/critical axe violations (TESTING_STRATEGY §4). Color contrast needs real layout: checked in e2e. */

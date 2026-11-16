@@ -1833,6 +1833,21 @@ export type SearchPageView = {
     results: Array<SearchResultView>;
 };
 
+export type SearchParams = {
+    amountMax?: number | null;
+    amountMin?: number | null;
+    cursor?: string | null;
+    from?: string | null;
+    in?: Array<string>;
+    limit?: number | null;
+    q?: string | null;
+    sort?: string | null;
+    status?: Array<string> | null;
+    to?: string | null;
+    type?: Array<string> | null;
+    unit?: Array<string> | null;
+};
+
 export type SearchQuery = {
     amountMax?: number | null;
     amountMin?: number | null;
@@ -2048,6 +2063,10 @@ export type SubstitutionResponse = {
     substitute: Person;
     validFrom: string;
     validTo?: string | null;
+};
+
+export type SuggestRequest = {
+    q: string;
 };
 
 export type SuggestionView = {
@@ -6924,25 +6943,9 @@ export type ReplaceSavedSearchResponses = {
 export type ReplaceSavedSearchResponse = ReplaceSavedSearchResponses[keyof ReplaceSavedSearchResponses];
 
 export type SearchData = {
-    body?: never;
+    body: SearchParams;
     path?: never;
-    query?: {
-        q?: string;
-        type?: Array<string>;
-        status?: Array<string>;
-        unit?: Array<string>;
-        from?: string;
-        to?: string;
-        amountMin?: number;
-        amountMax?: number;
-        /**
-         * Where to search: metadata, notes, documents (default all)
-         */
-        in?: Array<string>;
-        sort?: string;
-        cursor?: string;
-        limit?: number;
-    };
+    query?: never;
     url: '/api/v1/search';
 };
 
@@ -6956,11 +6959,9 @@ export type SearchResponses = {
 export type SearchResponse = SearchResponses[keyof SearchResponses];
 
 export type SuggestSearchData = {
-    body?: never;
+    body: SuggestRequest;
     path?: never;
-    query: {
-        q: string;
-    };
+    query?: never;
     url: '/api/v1/search/suggest';
 };
 

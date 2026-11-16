@@ -19,5 +19,9 @@
   "patterns": {
     "routes": ["/patterns"],
     "prefixes": ["patterns"]
+  },
+  "search": {
+    "routes": ["/search"],
+    "prefixes": ["search"]
   }
 }

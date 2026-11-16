@@ -136,7 +136,7 @@ class SearchIT : MemoIntegrationTest() {
         val alice = person()
         repeat(RATE) { assertThat(search(alice, "q=rent")).describedAs("search ${it + 1}").hasStatusOk() }
         assertThat(search(alice, "q=rent")).hasStatus(HttpStatus.TOO_MANY_REQUESTS)
-        assertThat(read("/api/v1/search/suggest?q=ren", alice.session)).hasStatus(HttpStatus.TOO_MANY_REQUESTS)
+        assertThat(suggest(alice, "ren")).hasStatus(HttpStatus.TOO_MANY_REQUESTS)
     }
 
     @Test
@@ -146,11 +146,11 @@ class SearchIT : MemoIntegrationTest() {
         val b = memo(alice, "Schedule of the rent review")
         memo(alice, "Office rent increase")
 
-        val found = read("/api/v1/search/suggest?q=sched", alice.session).json()
+        val found = suggest(alice, "sched").json()
         assertThat((0 until found.size()).map { found[it]["memoId"].asString() }).containsExactlyInAnyOrder(a, b)
-        assertThat(read("/api/v1/search/suggest?q=rent sch", alice.session).json().size()).isEqualTo(2)
+        assertThat(suggest(alice, "rent sch").json().size()).isEqualTo(2)
         // Two letters are not searched yet.
-        assertThat(read("/api/v1/search/suggest?q=sc", alice.session).json().size()).isZero()
+        assertThat(suggest(alice, "sc").json().size()).isZero()
     }
 
     private fun memo(
@@ -161,13 +161,32 @@ class SearchIT : MemoIntegrationTest() {
             .json()["id"]
             .asString()
 
-    // Raw text: the test client encodes the URI (it is a template).
     private fun q(text: String) = "q=$text"
 
+    /** POST /search with [query] written as a query string (`q=rent&status=X`), sent as its JSON body. */
     private fun search(
         who: Person,
         query: String,
-    ): MvcTestResult = read("/api/v1/search?$query", who.session)
+    ): MvcTestResult = post("/api/v1/search", who.session, body(query))
+
+    private fun suggest(
+        who: Person,
+        q: String,
+    ): MvcTestResult = post("/api/v1/search/suggest", who.session, json.writeValueAsString(mapOf("q" to q)))
+
+    private fun body(query: String): String {
+        val pairs = query.split('&').filter { it.isNotEmpty() }.map { it.substringBefore('=') to it.substringAfter('=', "") }
+        val lists = setOf("type", "status", "unit", "in")
+        val fields =
+            pairs.groupBy({ it.first }, { it.second }).mapValues { (key, values) ->
+                when (key) {
+                    in lists -> values
+                    "limit" -> values.single().toInt()
+                    else -> values.single()
+                }
+            }
+        return json.writeValueAsString(fields)
+    }
 
     private fun ids(result: MvcTestResult): List<String> = ids(result.json())
 

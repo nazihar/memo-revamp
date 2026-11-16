@@ -5008,6 +5008,64 @@
         "required" : [ "capped", "count", "facets", "results" ],
         "type" : "object"
       },
+      "SearchParams" : {
+        "properties" : {
+          "amountMax" : {
+            "type" : [ "number", "null" ]
+          },
+          "amountMin" : {
+            "type" : [ "number", "null" ]
+          },
+          "cursor" : {
+            "type" : [ "string", "null" ]
+          },
+          "from" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "in" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "limit" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "q" : {
+            "type" : [ "string", "null" ]
+          },
+          "sort" : {
+            "type" : [ "string", "null" ]
+          },
+          "status" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : [ "array", "null" ]
+          },
+          "to" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "type" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : [ "array", "null" ]
+          },
+          "unit" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : [ "array", "null" ]
+          }
+        },
+        "type" : "object"
+      },
       "SearchQuery" : {
         "properties" : {
           "amountMax" : {
@@ -5599,6 +5657,15 @@
           }
         },
         "required" : [ "id", "principal", "substitute", "validFrom" ],
+        "type" : "object"
+      },
+      "SuggestRequest" : {
+        "properties" : {
+          "q" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "q" ],
         "type" : "object"
       },
       "SuggestionView" : {
@@ -14353,111 +14420,18 @@
       }
     },
     "/api/v1/search" : {
-      "get" : {
+      "post" : {
         "operationId" : "search",
-        "parameters" : [ {
-          "in" : "query",
-          "name" : "q",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "in" : "query",
-          "name" : "type",
-          "required" : false,
-          "schema" : {
-            "items" : {
-              "format" : "uuid",
-              "type" : "string"
-            },
-            "type" : "array"
-          }
-        }, {
-          "in" : "query",
-          "name" : "status",
-          "required" : false,
-          "schema" : {
-            "items" : {
-              "type" : "string"
-            },
-            "type" : "array"
-          }
-        }, {
-          "in" : "query",
-          "name" : "unit",
-          "required" : false,
-          "schema" : {
-            "items" : {
-              "format" : "uuid",
-              "type" : "string"
-            },
-            "type" : "array"
-          }
-        }, {
-          "in" : "query",
-          "name" : "from",
-          "required" : false,
-          "schema" : {
-            "format" : "date",
-            "type" : "string"
-          }
-        }, {
-          "in" : "query",
-          "name" : "to",
-          "required" : false,
-          "schema" : {
-            "format" : "date",
-            "type" : "string"
-          }
-        }, {
-          "in" : "query",
-          "name" : "amountMin",
-          "required" : false,
-          "schema" : {
-            "type" : "number"
-          }
-        }, {
-          "in" : "query",
-          "name" : "amountMax",
-          "required" : false,
-          "schema" : {
-            "type" : "number"
-          }
-        }, {
-          "description" : "Where to search: metadata, notes, documents (default all)",
-          "in" : "query",
-          "name" : "in",
-          "required" : false,
-          "schema" : {
-            "items" : {
-              "type" : "string"
-            },
-            "type" : "array"
-          }
-        }, {
-          "in" : "query",
-          "name" : "sort",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "in" : "query",
-          "name" : "cursor",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "in" : "query",
-          "name" : "limit",
-          "required" : false,
-          "schema" : {
-            "format" : "int32",
-            "type" : "integer"
-          }
-        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/SearchParams"
+              }
+            }
+          },
+          "required" : true
+        },
         "responses" : {
           "200" : {
             "content" : {
@@ -14475,16 +14449,18 @@
       }
     },
     "/api/v1/search/suggest" : {
-      "get" : {
+      "post" : {
         "operationId" : "suggestSearch",
-        "parameters" : [ {
-          "in" : "query",
-          "name" : "q",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/SuggestRequest"
+              }
+            }
+          },
+          "required" : true
+        },
         "responses" : {
           "200" : {
             "content" : {

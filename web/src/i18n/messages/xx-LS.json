@@ -10075,6 +10075,18 @@
       "value": "RolesSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "nav.savedSearches": [
+    {
+      "type": 0,
+      "value": "Saved searchesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.search": [
+    {
+      "type": 0,
+      "value": "SearchSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "nav.security": [
     {
       "type": 0,
@@ -12502,6 +12514,769 @@
     {
       "type": 0,
       "value": "Too many requests. Wait a while and try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.activeFilters": [
+    {
+      "type": 0,
+      "value": "Active filtersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.amount": [
+    {
+      "type": 0,
+      "value": "AmountSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.amount.max": [
+    {
+      "type": 0,
+      "value": "MaximumSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.amount.min": [
+    {
+      "type": 0,
+      "value": "MinimumSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.apply": [
+    {
+      "type": 0,
+      "value": "Apply filtersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.cappedHint": [
+    {
+      "type": 0,
+      "value": "Showing the best matches among the first "
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": ". Add words or filters to narrow it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.chip": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.clearFilters": [
+    {
+      "type": 0,
+      "value": "Clear filtersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.count": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " memo"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " memos"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.countCapped": [
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "+ memosSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.date": [
+    {
+      "type": 0,
+      "value": "DateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.date.from": [
+    {
+      "type": 0,
+      "value": "FromSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.date.to": [
+    {
+      "type": 0,
+      "value": "ToSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.empty": [
+    {
+      "type": 0,
+      "value": "No memos match. Check the spelling, remove filters, or search all of the memo’s text.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.error.amount.belowMin": [
+    {
+      "type": 0,
+      "value": "The maximum is below the minimum.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.error.changed": [
+    {
+      "type": 0,
+      "value": "It was changed in another window. Reload the page and try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.error.criteria.tooLarge": [
+    {
+      "type": 0,
+      "value": "This search is too large to save. Remove some filters.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.error.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.error.filter": [
+    {
+      "type": 0,
+      "value": "Check this filter.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.error.filters.tooMany": [
+    {
+      "type": 0,
+      "value": "Too many values in one filter. Choose fewer.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.error.in.required": [
+    {
+      "type": 0,
+      "value": "Choose at least one place to search.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.error.limit": [
+    {
+      "type": 0,
+      "value": "You have as many saved searches as you can keep. Delete one on the Saved searches page first.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.error.name.required": [
+    {
+      "type": 0,
+      "value": "Enter a name.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.error.name.tooLong": [
+    {
+      "type": 0,
+      "value": "Use at most 100 characters.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.error.q.required": [
+    {
+      "type": 0,
+      "value": "Type at least one word.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.error.q.tooLong": [
+    {
+      "type": 0,
+      "value": "The search is too long. Use fewer words.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.error.q.tooManyTerms": [
+    {
+      "type": 0,
+      "value": "Too many words. Keep the most telling ones.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.error.to.beforeFrom": [
+    {
+      "type": 0,
+      "value": "The end date is before the start date.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.facet.status": [
+    {
+      "type": 0,
+      "value": "StatusSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.facet.type": [
+    {
+      "type": 0,
+      "value": "TypeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.facet.unit": [
+    {
+      "type": 0,
+      "value": "UnitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.facetOption": [
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.filters": [
+    {
+      "type": 0,
+      "value": "FiltersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.filtersButton": [
+    {
+      "type": 0,
+      "value": "Filters ("
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.foundIn.attachment": [
+    {
+      "type": 0,
+      "value": "Found in: attachment “"
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.foundIn.attachmentAny": [
+    {
+      "type": 0,
+      "value": "Found in: an attachmentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.foundIn.details": [
+    {
+      "type": 0,
+      "value": "Found in: detailsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.foundIn.document": [
+    {
+      "type": 0,
+      "value": "Found in: the documentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.foundIn.note": [
+    {
+      "type": 0,
+      "value": "Found in: note by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.foundIn.noteAnyone": [
+    {
+      "type": 0,
+      "value": "Found in: a noteSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.foundIn.number": [
+    {
+      "type": 0,
+      "value": "Found in: its numberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.in": [
+    {
+      "type": 0,
+      "value": "Search inSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.in.documents": [
+    {
+      "type": 0,
+      "value": "DocumentsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.in.metadata": [
+    {
+      "type": 0,
+      "value": "DetailsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.in.notes": [
+    {
+      "type": 0,
+      "value": "NotesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.invalid": [
+    {
+      "type": 0,
+      "value": "Check the search words and filters.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.loadMore": [
+    {
+      "type": 0,
+      "value": "Load moreSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.prompt": [
+    {
+      "type": 0,
+      "value": "Type words from a memo’s details, notes or documents, or a memo number.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.query": [
+    {
+      "type": 0,
+      "value": "Words to findSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.rateLimited": [
+    {
+      "type": 0,
+      "value": "Too many searches in a minute. Try again shortly.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.removeFilter": [
+    {
+      "type": 0,
+      "value": "Remove filter "
+    },
+    {
+      "type": 1,
+      "value": "filter"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.results": [
+    {
+      "type": 0,
+      "value": "ResultsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.save": [
+    {
+      "type": 0,
+      "value": "Save this searchSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.saveDialog.name": [
+    {
+      "type": 0,
+      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.saveDialog.privacy": [
+    {
+      "type": 0,
+      "value": "Only you see your saved searches. Each time you open one, it shows what you may read then.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.saveDialog.save": [
+    {
+      "type": 0,
+      "value": "SaveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.saveDialog.title": [
+    {
+      "type": 0,
+      "value": "Save this searchSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.saved": [
+    {
+      "type": 0,
+      "value": "Search saved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.savedLink": [
+    {
+      "type": 0,
+      "value": "Saved searchesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.savedPage.delete": [
+    {
+      "type": 0,
+      "value": "DeleteSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.savedPage.deleteFor": [
+    {
+      "type": 0,
+      "value": "Delete "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.savedPage.deleteLead": [
+    {
+      "type": 0,
+      "value": "Only the saved search goes; no memo is affected.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.savedPage.deleteTitle": [
+    {
+      "type": 0,
+      "value": "Delete “"
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "”?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.savedPage.deleted": [
+    {
+      "type": 0,
+      "value": "Saved search deleted.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.savedPage.empty": [
+    {
+      "type": 0,
+      "value": "No saved searches yet. Run a search and choose Save this search.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.savedPage.filterCount": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " filter"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " filters"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.savedPage.keep": [
+    {
+      "type": 0,
+      "value": "KeepSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.savedPage.lead": [
+    {
+      "type": 0,
+      "value": "Only you see these. Each one shows what you may read when you open it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.savedPage.rename": [
+    {
+      "type": 0,
+      "value": "RenameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.savedPage.renameFor": [
+    {
+      "type": 0,
+      "value": "Rename "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.savedPage.renameTitle": [
+    {
+      "type": 0,
+      "value": "Rename saved searchSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.savedPage.renamed": [
+    {
+      "type": 0,
+      "value": "Saved search renamed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.savedPage.title": [
+    {
+      "type": 0,
+      "value": "Saved searchesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.savedPage.words": [
+    {
+      "type": 0,
+      "value": "“"
+    },
+    {
+      "type": 1,
+      "value": "q"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.searching": [
+    {
+      "type": 0,
+      "value": "Searching…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.sort": [
+    {
+      "type": 0,
+      "value": "SortSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.sort.newest": [
+    {
+      "type": 0,
+      "value": "NewestSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.sort.relevance": [
+    {
+      "type": 0,
+      "value": "RelevanceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.submit": [
+    {
+      "type": 0,
+      "value": "SearchSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.timeout": [
+    {
+      "type": 0,
+      "value": "That search took too long. Add words or filters.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.title": [
+    {
+      "type": 0,
+      "value": "SearchSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.updated": [
+    {
+      "type": 0,
+      "value": "updated "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "searchBox.allSaved": [
+    {
+      "type": 0,
+      "value": "All saved searchesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "searchBox.group.memos": [
+    {
+      "type": 0,
+      "value": "MemosSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "searchBox.group.recent": [
+    {
+      "type": 0,
+      "value": "RecentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "searchBox.group.saved": [
+    {
+      "type": 0,
+      "value": "Saved searchesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "searchBox.label": [
+    {
+      "type": 0,
+      "value": "Search memosSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "searchBox.options": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "No suggestions"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " suggestion"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " suggestions"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "searchBox.placeholder": [
+    {
+      "type": 0,
+      "value": "Search memos, notes and documents…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "searchBox.searchFor": [
+    {
+      "type": 0,
+      "value": "Search for “"
+    },
+    {
+      "type": 1,
+      "value": "text"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "security.codes.done": [

@@ -26,6 +26,7 @@ import { Route as ShellSignedInIndexRouteImport } from './routes/_shell/_signedI
 import { Route as ShellSignedInInboxRouteImport } from './routes/_shell/_signedIn/inbox'
 import { Route as ShellSignedInNotificationsRouteImport } from './routes/_shell/_signedIn/notifications'
 import { Route as ShellSignedInOrgRouteImport } from './routes/_shell/_signedIn/org'
+import { Route as ShellSignedInSearchRouteImport } from './routes/_shell/_signedIn/search'
 import { Route as PlatformOperatorIndexRouteImport } from './routes/platform/_operator/index'
 import { Route as PlatformOperatorAuditRouteImport } from './routes/platform/_operator/audit'
 import { Route as ShellSignedInAdminIndexRouteImport } from './routes/_shell/_signedIn/admin.index'
@@ -43,6 +44,7 @@ import { Route as ShellSignedInMeNotificationsRouteImport } from './routes/_shel
 import { Route as ShellSignedInMeSecurityRouteImport } from './routes/_shell/_signedIn/me.security'
 import { Route as ShellSignedInMemosMemoIdRouteImport } from './routes/_shell/_signedIn/memos.$memoId'
 import { Route as ShellSignedInMemosNewRouteImport } from './routes/_shell/_signedIn/memos.new'
+import { Route as ShellSignedInSearchSavedRouteImport } from './routes/_shell/_signedIn/search_.saved'
 import { Route as PlatformOperatorTenantsTenantIdRouteImport } from './routes/platform/_operator/tenants.$tenantId'
 import { Route as PlatformOperatorTenantsNewRouteImport } from './routes/platform/_operator/tenants.new'
 import { Route as ShellSignedInAdminMemoTypesIndexRouteImport } from './routes/_shell/_signedIn/admin.memo-types.index'
@@ -140,6 +142,11 @@ const ShellSignedInOrgRoute = ShellSignedInOrgRouteImport.update({
   path: '/org',
   getParentRoute: () => ShellSignedInRoute,
 } as any)
+const ShellSignedInSearchRoute = ShellSignedInSearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => ShellSignedInRoute,
+} as any)
 const PlatformOperatorIndexRoute = PlatformOperatorIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -233,6 +240,12 @@ const ShellSignedInMemosNewRoute = ShellSignedInMemosNewRouteImport.update({
   path: '/memos/new',
   getParentRoute: () => ShellSignedInRoute,
 } as any)
+const ShellSignedInSearchSavedRoute =
+  ShellSignedInSearchSavedRouteImport.update({
+    id: '/search_/saved',
+    path: '/search/saved',
+    getParentRoute: () => ShellSignedInRoute,
+  } as any)
 const PlatformOperatorTenantsTenantIdRoute =
   PlatformOperatorTenantsTenantIdRouteImport.update({
     id: '/tenants/$tenantId',
@@ -332,6 +345,7 @@ export interface FileRoutesByFullPath {
   '/inbox': typeof ShellSignedInInboxRoute
   '/notifications': typeof ShellSignedInNotificationsRoute
   '/org': typeof ShellSignedInOrgRoute
+  '/search': typeof ShellSignedInSearchRoute
   '/platform/audit': typeof PlatformOperatorAuditRoute
   '/platform/': typeof PlatformOperatorIndexRoute
   '/admin/audit': typeof ShellSignedInAdminAuditRoute
@@ -348,6 +362,7 @@ export interface FileRoutesByFullPath {
   '/me/security': typeof ShellSignedInMeSecurityRoute
   '/memos/$memoId': typeof ShellSignedInMemosMemoIdRoute
   '/memos/new': typeof ShellSignedInMemosNewRoute
+  '/search/saved': typeof ShellSignedInSearchSavedRoute
   '/platform/tenants/$tenantId': typeof PlatformOperatorTenantsTenantIdRoute
   '/platform/tenants/new': typeof PlatformOperatorTenantsNewRoute
   '/admin/': typeof ShellSignedInAdminIndexRoute
@@ -378,6 +393,7 @@ export interface FileRoutesByTo {
   '/inbox': typeof ShellSignedInInboxRoute
   '/notifications': typeof ShellSignedInNotificationsRoute
   '/org': typeof ShellSignedInOrgRoute
+  '/search': typeof ShellSignedInSearchRoute
   '/platform/audit': typeof PlatformOperatorAuditRoute
   '/admin/audit': typeof ShellSignedInAdminAuditRoute
   '/admin/branding': typeof ShellSignedInAdminBrandingRoute
@@ -393,6 +409,7 @@ export interface FileRoutesByTo {
   '/me/security': typeof ShellSignedInMeSecurityRoute
   '/memos/$memoId': typeof ShellSignedInMemosMemoIdRoute
   '/memos/new': typeof ShellSignedInMemosNewRoute
+  '/search/saved': typeof ShellSignedInSearchSavedRoute
   '/platform/tenants/$tenantId': typeof PlatformOperatorTenantsTenantIdRoute
   '/platform/tenants/new': typeof PlatformOperatorTenantsNewRoute
   '/admin': typeof ShellSignedInAdminIndexRoute
@@ -427,6 +444,7 @@ export interface FileRoutesById {
   '/_shell/_signedIn/inbox': typeof ShellSignedInInboxRoute
   '/_shell/_signedIn/notifications': typeof ShellSignedInNotificationsRoute
   '/_shell/_signedIn/org': typeof ShellSignedInOrgRoute
+  '/_shell/_signedIn/search': typeof ShellSignedInSearchRoute
   '/platform/_operator/audit': typeof PlatformOperatorAuditRoute
   '/_shell/_signedIn/': typeof ShellSignedInIndexRoute
   '/platform/_operator/': typeof PlatformOperatorIndexRoute
@@ -444,6 +462,7 @@ export interface FileRoutesById {
   '/_shell/_signedIn/me/security': typeof ShellSignedInMeSecurityRoute
   '/_shell/_signedIn/memos/$memoId': typeof ShellSignedInMemosMemoIdRoute
   '/_shell/_signedIn/memos/new': typeof ShellSignedInMemosNewRoute
+  '/_shell/_signedIn/search_/saved': typeof ShellSignedInSearchSavedRoute
   '/platform/_operator/tenants/$tenantId': typeof PlatformOperatorTenantsTenantIdRoute
   '/platform/_operator/tenants/new': typeof PlatformOperatorTenantsNewRoute
   '/_shell/_signedIn/admin/': typeof ShellSignedInAdminIndexRoute
@@ -476,6 +495,7 @@ export interface FileRouteTypes {
     | '/inbox'
     | '/notifications'
     | '/org'
+    | '/search'
     | '/platform/audit'
     | '/platform/'
     | '/admin/audit'
@@ -492,6 +512,7 @@ export interface FileRouteTypes {
     | '/me/security'
     | '/memos/$memoId'
     | '/memos/new'
+    | '/search/saved'
     | '/platform/tenants/$tenantId'
     | '/platform/tenants/new'
     | '/admin/'
@@ -522,6 +543,7 @@ export interface FileRouteTypes {
     | '/inbox'
     | '/notifications'
     | '/org'
+    | '/search'
     | '/platform/audit'
     | '/admin/audit'
     | '/admin/branding'
@@ -537,6 +559,7 @@ export interface FileRouteTypes {
     | '/me/security'
     | '/memos/$memoId'
     | '/memos/new'
+    | '/search/saved'
     | '/platform/tenants/$tenantId'
     | '/platform/tenants/new'
     | '/admin'
@@ -570,6 +593,7 @@ export interface FileRouteTypes {
     | '/_shell/_signedIn/inbox'
     | '/_shell/_signedIn/notifications'
     | '/_shell/_signedIn/org'
+    | '/_shell/_signedIn/search'
     | '/platform/_operator/audit'
     | '/_shell/_signedIn/'
     | '/platform/_operator/'
@@ -587,6 +611,7 @@ export interface FileRouteTypes {
     | '/_shell/_signedIn/me/security'
     | '/_shell/_signedIn/memos/$memoId'
     | '/_shell/_signedIn/memos/new'
+    | '/_shell/_signedIn/search_/saved'
     | '/platform/_operator/tenants/$tenantId'
     | '/platform/_operator/tenants/new'
     | '/_shell/_signedIn/admin/'
@@ -731,6 +756,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShellSignedInOrgRouteImport
       parentRoute: typeof ShellSignedInRoute
     }
+    '/_shell/_signedIn/search': {
+      id: '/_shell/_signedIn/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof ShellSignedInSearchRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
     '/platform/_operator/': {
       id: '/platform/_operator/'
       path: '/'
@@ -848,6 +880,13 @@ declare module '@tanstack/react-router' {
       path: '/memos/new'
       fullPath: '/memos/new'
       preLoaderRoute: typeof ShellSignedInMemosNewRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
+    '/_shell/_signedIn/search_/saved': {
+      id: '/_shell/_signedIn/search_/saved'
+      path: '/search/saved'
+      fullPath: '/search/saved'
+      preLoaderRoute: typeof ShellSignedInSearchSavedRouteImport
       parentRoute: typeof ShellSignedInRoute
     }
     '/platform/_operator/tenants/$tenantId': {
@@ -971,6 +1010,7 @@ interface ShellSignedInRouteChildren {
   ShellSignedInInboxRoute: typeof ShellSignedInInboxRoute
   ShellSignedInNotificationsRoute: typeof ShellSignedInNotificationsRoute
   ShellSignedInOrgRoute: typeof ShellSignedInOrgRoute
+  ShellSignedInSearchRoute: typeof ShellSignedInSearchRoute
   ShellSignedInIndexRoute: typeof ShellSignedInIndexRoute
   ShellSignedInAdminAuditRoute: typeof ShellSignedInAdminAuditRoute
   ShellSignedInAdminBrandingRoute: typeof ShellSignedInAdminBrandingRoute
@@ -986,6 +1026,7 @@ interface ShellSignedInRouteChildren {
   ShellSignedInMeSecurityRoute: typeof ShellSignedInMeSecurityRoute
   ShellSignedInMemosMemoIdRoute: typeof ShellSignedInMemosMemoIdRoute
   ShellSignedInMemosNewRoute: typeof ShellSignedInMemosNewRoute
+  ShellSignedInSearchSavedRoute: typeof ShellSignedInSearchSavedRoute
   ShellSignedInAdminIndexRoute: typeof ShellSignedInAdminIndexRoute
   ShellSignedInAdminMemoTypesTypeIdRoute: typeof ShellSignedInAdminMemoTypesTypeIdRoute
   ShellSignedInAdminUsersUserIdRoute: typeof ShellSignedInAdminUsersUserIdRoute
@@ -1005,6 +1046,7 @@ const ShellSignedInRouteChildren: ShellSignedInRouteChildren = {
   ShellSignedInInboxRoute: ShellSignedInInboxRoute,
   ShellSignedInNotificationsRoute: ShellSignedInNotificationsRoute,
   ShellSignedInOrgRoute: ShellSignedInOrgRoute,
+  ShellSignedInSearchRoute: ShellSignedInSearchRoute,
   ShellSignedInIndexRoute: ShellSignedInIndexRoute,
   ShellSignedInAdminAuditRoute: ShellSignedInAdminAuditRoute,
   ShellSignedInAdminBrandingRoute: ShellSignedInAdminBrandingRoute,
@@ -1022,6 +1064,7 @@ const ShellSignedInRouteChildren: ShellSignedInRouteChildren = {
   ShellSignedInMeSecurityRoute: ShellSignedInMeSecurityRoute,
   ShellSignedInMemosMemoIdRoute: ShellSignedInMemosMemoIdRoute,
   ShellSignedInMemosNewRoute: ShellSignedInMemosNewRoute,
+  ShellSignedInSearchSavedRoute: ShellSignedInSearchSavedRoute,
   ShellSignedInAdminIndexRoute: ShellSignedInAdminIndexRoute,
   ShellSignedInAdminMemoTypesTypeIdRoute:
     ShellSignedInAdminMemoTypesTypeIdRoute,

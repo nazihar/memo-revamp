@@ -99,6 +99,7 @@ export function AppShell({
   viewer = ANONYMOUS,
   account,
   notifications,
+  search,
 }: {
   children: ReactNode
   /** Which menu entries to show (the server enforces access regardless). */
@@ -107,6 +108,8 @@ export function AppShell({
   account?: ReactNode
   /** The notifications entry of the top bar (E06): the bell, for signed-in users. */
   notifications?: ReactNode
+  /** The search box of the top bar (Phase 3 E05): for signed-in users; its own row on phones. */
+  search?: ReactNode
 }) {
   const intl = useIntl()
   const [menuOpen, setMenuOpen] = useState(false)
@@ -154,6 +157,9 @@ export function AppShell({
               <Menu aria-hidden="true" />
             </Button>
             <Breadcrumbs items={crumbs} className="min-w-0 flex-1" />
+            {search ? (
+              <div className="order-last w-full pb-1.5 md:order-none md:w-72 md:pb-0 xl:w-96">{search}</div>
+            ) : null}
             <div className="ms-auto flex items-center gap-1">
               <LocaleMenu />
               <ThemeMenu />

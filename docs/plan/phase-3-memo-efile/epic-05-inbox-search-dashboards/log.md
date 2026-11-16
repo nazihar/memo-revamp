@@ -142,3 +142,17 @@
     - the dashboard for `me` and a unit (memo figures only once the head may read the unit's memos), with 403 and 400.
   - **Matrix and coverage:** `p3-e05-inbox.yaml` (team 403 for every matrix subject; dashboard for everyone), `ArchitectureRulesTest` and `BusinessCalendarTest`.
 - **The test plan's `DashboardIT`** is part of `TeamViewIT` (they share the organisation).
+
+## 2026-11-16 — T6: search web
+- **Built:**
+  - **Top-bar search box** (flow H1), for signed-in users: `/` focuses it; suggestions from the last word (3+ characters, 300 ms); saved searches; recent words held in memory only (never in Web Storage).
+  - **Search page** `/search` (flow H2): filters and sort in the query string; a polite count with "2,000+"; removable chips; facets with counts; dates, amounts and "Search in"; snippets as text with `<mark>`; "Found in"; load more; empty, rate-limit, timeout and field-error states; the filters in a sheet on phones.
+  - **Save this search** (flow H3), and a **Saved searches** page `/search/saved` (open, rename, delete with If-Match), with a menu entry.
+  - **i18n:** a `search` catalogue part (it keeps the Arabic core part under its 15 KiB limit) and 93 keys in English and Arabic.
+  - **Tests and baselines:** 19 unit tests; a visual spec `e2e/visual/search.spec.ts` with baselines; the memo, org and memo-types baselines re-rendered (the top bar now has the box).
+- **Search words never travel in a URL** (AGENTS.md §3.4, threat model I4), found while building:
+  - search and suggestions are `POST` with a JSON body;
+  - the page keeps its words in the address fragment (`/search?status=…#q=…`), which browsers never send to a server; a `q` in the query string is dropped with a replace;
+  - the sign-in redirect keeps the path and filters but not the fragment.
+- **Built with a subagent** under a written brief; reviewed, re-checked and adjusted by the lead (the POST change and the fragment, baselines rendered and reviewed).
+- **Tooling note:** `e2e/update-visual-baselines.sh` deletes `web/e2e/__screenshots__` before copying back, and on a Windows mount the delete half-fails. Render into a separate folder and copy (as done here).

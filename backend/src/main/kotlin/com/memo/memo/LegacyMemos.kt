@@ -6,6 +6,9 @@ import java.time.ZoneId
 import java.util.Locale
 import java.util.UUID
 
+/** Where a memo comes from (ADR-0055): raised here, or imported in a final state from a legacy system. Stored by name. */
+enum class MemoOrigin { NATIVE, IMPORTED }
+
 /** The final statuses a legacy memo is imported in (ADR-0055); in-flight legacy memos are refused before this. */
 enum class LegacyStatus { APPROVED, REJECTED, WITHDRAWN, CANCELLED, CLOSED }
 

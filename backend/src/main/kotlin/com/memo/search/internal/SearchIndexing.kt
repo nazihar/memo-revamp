@@ -16,6 +16,7 @@ import com.memo.files.RenditionKind
 import com.memo.files.RenditionState
 import com.memo.memo.MemoChanged
 import com.memo.memo.MemoFileChanged
+import com.memo.memo.MemoFileFacts
 import com.memo.memo.MemoNotePosted
 import com.memo.memo.MemoSearchEvent
 import com.memo.memo.MemoSearchSource
@@ -69,8 +70,17 @@ class SearchIndexing(
         when (event) {
             is MemoChanged -> index.putMemo(event.memoId)
             is MemoNotePosted -> index.putNote(event.noteId)
-            is MemoFileChanged -> index.refreshFile(event.fileId)
+            is MemoFileChanged -> index.refreshFile(event.fileId)?.let(::chunkIfReady)
         }
+    }
+
+    /**
+     * A file joined a memo or changed level: its chunks are written again when its text is ready. An imported memo's
+     * originals are stored before the memo exists (design E06 §5.3), so their text may be ready before they are its files;
+     * then this is the only time they are chunked. For a native file it rewrites chunks the rendition already scheduled.
+     */
+    private fun chunkIfReady(file: MemoFileFacts) {
+        file.currentVersionId?.takeIf(::textReady)?.let { schedule(file.fileId, it) }
     }
 
     /** A memo file's text is ready: its chunks are written by a job (reading and splitting run outside the transaction). */
@@ -128,9 +138,7 @@ class SearchIndexing(
         memos.forEach { memoId ->
             index.putMemo(memoId)
             source.notes(memoId).forEach { index.putNote(it.noteId) }
-            source.files(memoId).forEach { file ->
-                file.currentVersionId?.takeIf(::textReady)?.let { schedule(file.fileId, it) }
-            }
+            source.files(memoId).forEach(::chunkIfReady)
         }
         return memos.size
     }

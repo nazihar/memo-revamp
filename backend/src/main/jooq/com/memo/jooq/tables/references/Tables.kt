@@ -453,6 +453,7 @@ fun SEARCH_FIND(
     , pInNotes: Boolean?
     , pInDocs: Boolean?
     , pCap: Int?
+    , pOrigins: Array<String?>?
 ): Result<SearchFindRecord> = configuration.dsl().selectFrom(com.memo.jooq.tables.SearchFind.SEARCH_FIND.call(
       pTenant
     , pReader
@@ -475,6 +476,7 @@ fun SEARCH_FIND(
     , pInNotes
     , pInDocs
     , pCap
+    , pOrigins
 )).fetch()
 
 /**
@@ -502,6 +504,7 @@ fun SEARCH_FIND(
     , pInNotes: Boolean?
     , pInDocs: Boolean?
     , pCap: Int?
+    , pOrigins: Array<String?>?
 ): SearchFind = com.memo.jooq.tables.SearchFind.SEARCH_FIND.call(
     pTenant,
     pReader,
@@ -523,7 +526,8 @@ fun SEARCH_FIND(
     pInMeta,
     pInNotes,
     pInDocs,
-    pCap
+    pCap,
+    pOrigins
 )
 
 /**
@@ -551,6 +555,7 @@ fun SEARCH_FIND(
     , pInNotes: Field<Boolean?>
     , pInDocs: Field<Boolean?>
     , pCap: Field<Int?>
+    , pOrigins: Field<Array<String?>?>
 ): SearchFind = com.memo.jooq.tables.SearchFind.SEARCH_FIND.call(
     pTenant,
     pReader,
@@ -572,7 +577,8 @@ fun SEARCH_FIND(
     pInMeta,
     pInNotes,
     pInDocs,
-    pCap
+    pCap,
+    pOrigins
 )
 
 /**

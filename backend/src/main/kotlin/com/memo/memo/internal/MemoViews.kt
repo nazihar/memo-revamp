@@ -6,6 +6,7 @@ import com.memo.common.context.ActorContext
 import com.memo.docedit.DocumentEditing
 import com.memo.files.Files
 import com.memo.identity.UserSummaries
+import com.memo.memo.MemoOrigin
 import com.memo.memo.internal.legacy.LegacyMemoView
 import com.memo.memo.internal.legacy.LegacyMemoViews
 import com.memo.memo.internal.rendition.MemoRenditionQueries
@@ -94,6 +95,12 @@ enum class MemoAction {
 
     /** Copy an approved memo to more people (`memo.copy.add`). */
     ADD_COPIES,
+
+    /** Append a correction to an imported memo's legacy facts or subject (`memo.import`, step-up; design E06 §11). */
+    CORRECT_LEGACY,
+
+    /** Raise an imported memo's classification (`memo.import`, step-up; design E06 §11). */
+    RECLASSIFY,
 
     // E03 (design §4.4): the positive action of a review step, hand-ons, and consultations.
     RECOMMEND,
@@ -404,8 +411,8 @@ class MemoViews(
         coauthor: Boolean,
     ): List<MemoAction> =
         when {
-            // An imported memo is final and never in a workflow: copy-to and following only (design E06 §11).
-            memo.imported -> emptyList()
+            // An imported memo is final and never in a workflow: corrections, copy-to and following only (design E06 §11).
+            memo.imported -> LEGACY.takeIf { policy.allows(com.memo.common.authz.Permission.MEMO_IMPORT) }.orEmpty()
 
             task != null -> taskActions(task) + claimActions(task, user) + recusal(task, user)
 
@@ -511,6 +518,7 @@ class MemoViews(
             )
         val DRAFT = listOf(MemoAction.EDIT, MemoAction.UPLOAD_DOCUMENT, MemoAction.EDIT_ROUTE, MemoAction.SUBMIT, MemoAction.DISCARD)
         val RETURNED = listOf(MemoAction.EDIT, MemoAction.UPLOAD_DOCUMENT, MemoAction.EDIT_ROUTE, MemoAction.RESUBMIT, MemoAction.WITHDRAW)
+        val LEGACY = listOf(MemoAction.CORRECT_LEGACY, MemoAction.RECLASSIFY)
     }
 }
 

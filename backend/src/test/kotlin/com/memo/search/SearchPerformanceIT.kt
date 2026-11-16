@@ -143,8 +143,13 @@ class SearchPerformanceIT : IntegrationTest() {
                         assertThat(plan).describedAs("$profile, $word").anyMatch { it.contains("search_memo_tsv_idx") }
                     }
                 }
-                // A word in most memos may be read sequentially (the planner's choice), but never past the cap.
                 val statement = if (profile == "heavy participant") "find_many" else "find"
+                // The Origin filter (E06 T4) narrows the rows an index finds; it is never a reason to scan.
+                val filtered = c.lines("explain execute $statement(${arguments(scope, SearchVolume.NEEDLE_SUBJECT, "array['IMPORTED']")})")
+                assertThat(filtered.filter { line -> SEARCH_TABLES.any { line.contains("Seq Scan on $it ") } })
+                    .describedAs("$profile, origin filter:\n${filtered.joinToString("\n")}")
+                    .isEmpty()
+                // A word in most memos may be read sequentially (the planner's choice), but never past the cap.
                 listOf("loan", "\"loan renewal\"").forEach { word ->
                     val analysed = c.lines("explain (analyze) execute $statement(${arguments(scope, word)})")
                     println("SearchPerformanceIT plan, $profile, $word:\n" + analysed.joinToString("\n"))
@@ -190,10 +195,14 @@ class SearchPerformanceIT : IntegrationTest() {
                 .toSet()
         }
 
-    /** The values of `search_find_sql()`'s parameters \$1 to \$21 for [scope] searching [word], as search_find passes them. */
+    /**
+     * The values of `search_find_sql()`'s parameters \$1 to \$22 for [scope] searching [word] in [origins] (SQL for a text
+     * array, or null for both), as search_find passes them.
+     */
     private fun arguments(
         scope: ReaderScope,
         word: String,
+        origins: String = "null",
     ): String =
         listOf(
             "'${tenant.id.value}'",
@@ -205,7 +214,7 @@ class SearchPerformanceIT : IntegrationTest() {
             "now()",
             "websearch_to_tsquery('english', '$word')",
         ).plus(List(FILTERS) { "null" })
-            .plus(listOf("true", "true", "true", "${SearchFinder.DEFAULT_CAP}"))
+            .plus(listOf("true", "true", "true", "${SearchFinder.DEFAULT_CAP}", "$origins::text[]"))
             .joinToString()
 
     private fun p95(call: () -> Unit): Long {
@@ -271,7 +280,7 @@ class SearchPerformanceIT : IntegrationTest() {
         /** The number keys and filters (\$9 to \$17): none in the plan gate. */
         const val FILTERS = 9
 
-        /** The types of `search_find_sql()`'s parameters \$1 to \$21. */
+        /** The types of `search_find_sql()`'s parameters \$1 to \$22 (the origins, E06 T4). */
         val FIND_TYPES =
             listOf(
                 "uuid",
@@ -295,6 +304,7 @@ class SearchPerformanceIT : IntegrationTest() {
                 "boolean",
                 "boolean",
                 "int",
+                "text[]",
             )
     }
 }

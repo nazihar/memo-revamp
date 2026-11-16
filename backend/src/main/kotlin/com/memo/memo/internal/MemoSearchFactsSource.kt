@@ -10,6 +10,7 @@ import com.memo.memo.MemoNoteText
 import com.memo.memo.MemoSearchFacts
 import com.memo.memo.MemoSearchSource
 import com.memo.memo.MemoSearchSummary
+import com.memo.memo.internal.legacy.LegacySearchSource
 import org.jooq.Record3
 import org.jooq.Record4
 import org.springframework.stereotype.Component
@@ -20,7 +21,8 @@ import com.memo.jooq.tables.references.MEMO_ as MEMO
 /**
  * The memo module's side of the search index (ADR-0054): a memo's facts, with the field values of the version it was
  * submitted under (the published version for a draft) flattened to text; its posted notes; its searchable files (the
- * document and present attachments); and what a result shows of it.
+ * document and present attachments, or an imported memo's originals); and what a result shows of it. An imported memo
+ * (design E06 §11) adds its legacy words and is dated by the day it was raised ([LegacySearchSource]).
  */
 @Component
 class MemoSearchFactsSource(
@@ -29,29 +31,31 @@ class MemoSearchFactsSource(
     private val versions: MemoTypeVersionStore,
     private val files: Files,
     private val tenantDsl: TenantDsl,
+    private val legacy: LegacySearchSource,
 ) : MemoSearchSource {
-    /**
-     * The memo's facts. Imported memos are not indexed yet: the index needs an initiator, and E06 T4 brings their origin,
-     * legacy names and raised-on date to it (design E06 §3.4, §11).
-     */
     override fun facts(memoId: UUID): MemoSearchFacts? =
-        memos.find(memoId)?.takeUnless { it.imported }?.let { memo ->
+        memos.find(memoId)?.let { memo ->
             val fields = (memo.memoTypeVersionId?.let(versions::byId) ?: versions.published(memo.typeId))?.settings?.fields.orEmpty()
             val typeName = types.find(memo.typeId)?.name
+            val legacyWords = if (memo.imported) legacy.words(memo.id) else null
             MemoSearchFacts(
                 memoId = memo.id,
                 classificationRank = memo.classificationRank,
                 originUnitId = memo.originUnitId,
                 status = memo.status.name,
                 typeId = memo.typeId,
-                initiatorId = checkNotNull(memo.initiatorId) { "a memo raised here has an initiator" },
+                initiatorId = memo.initiatorId,
                 amount = fields.firstOrNull { it.type == FieldType.AMOUNT }?.let { MemoFieldText.amount(memo.metadata[it.key]) },
-                createdAt = memo.createdAt,
+                createdAt = legacyWords?.raisedAt ?: memo.createdAt,
                 updatedAt = memo.updatedAt,
                 reference = memo.reference,
                 subject = memo.subject,
                 fieldsText =
-                    (listOfNotNull(typeName) + fields.mapNotNull { MemoFieldText.text(it, memo.metadata[it.key]) }).joinToString("\n"),
+                    (
+                        listOfNotNull(typeName) + fields.mapNotNull { MemoFieldText.text(it, memo.metadata[it.key]) } +
+                            legacyWords?.words.orEmpty()
+                    ).joinToString("\n"),
+                origin = memo.origin,
             )
         }
 
@@ -88,7 +92,7 @@ class MemoSearchFactsSource(
                 .from(MEMO)
                 .where(MEMO.DOCUMENT_FILE_ID.eq(fileId))
                 .fetchOne()
-        return row?.let { fileFacts(fileId, it, document = attachment == null) }
+        return row?.let { fileFacts(fileId, it, document = attachment == null) } ?: legacy.file(fileId)
     }
 
     override fun files(memoId: UUID): List<MemoFileFacts> {
@@ -102,7 +106,8 @@ class MemoSearchFactsSource(
                 .fetch { requireNotNull(it.value1()) to (it.value2() ?: memo.classificationRank) }
         val all = listOfNotNull(memo.documentFileId?.let { it to memo.classificationRank }) + attachments
         val current = files.currentVersions(all.map { it.first })
-        return all.map { (fileId, rank) -> MemoFileFacts(fileId, memoId, rank, current[fileId]?.id, fileId == memo.documentFileId) }
+        return all.map { (fileId, rank) -> MemoFileFacts(fileId, memoId, rank, current[fileId]?.id, fileId == memo.documentFileId) } +
+            legacy.files(memo)
     }
 
     override fun summaries(memoIds: Collection<UUID>): Map<UUID, MemoSearchSummary> =

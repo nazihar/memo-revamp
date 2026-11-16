@@ -1,5 +1,6 @@
 package com.memo.search.internal
 
+import com.memo.memo.MemoOrigin
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.Instant
 import java.util.Base64
@@ -33,6 +34,8 @@ data class SearchResultView(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val updatedAt: Instant,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val snippet: List<SnippetPart>,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val foundIn: FoundInView,
+    /** Raised here, or imported from a legacy system (shown with an "Imported" badge, design E06 §11). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val origin: MemoOrigin,
 )
 
 /** One value of a facet with the number of matching memos the reader may read. */

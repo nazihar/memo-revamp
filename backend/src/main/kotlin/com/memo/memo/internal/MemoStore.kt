@@ -3,6 +3,7 @@ package com.memo.memo.internal
 import com.memo.common.tenant.TenantDsl
 import com.memo.jooq.tables.records.MemoRecord
 import com.memo.jooq.tables.references.MEMO_PARTICIPANT
+import com.memo.memo.MemoOrigin
 import org.jooq.JSONB
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Repository
@@ -33,9 +34,6 @@ enum class MemoStatus {
     /** Fields, document and route may change only while the initiator holds the memo. */
     val editable: Boolean get() = this == DRAFT || this == RETURNED
 }
-
-/** Where a memo comes from (ADR-0055): raised here, or imported in a final state from a legacy system. Stored by name. */
-enum class MemoOrigin { NATIVE, IMPORTED }
 
 /**
  * How a reader came to read a memo (ADR-0050), strongest first. One row per reader: a stronger way in takes over a

@@ -1,6 +1,7 @@
 package com.memo.memo.internal
 
 import com.memo.common.tenant.TenantDsl
+import com.memo.memo.MemoOrigin
 import com.memo.workflow.SubjectSummary
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Repository

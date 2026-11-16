@@ -2199,6 +2199,22 @@
         "required" : [ "decision", "ordinal", "person" ],
         "type" : "object"
       },
+      "LegacyCorrectionRequest" : {
+        "properties" : {
+          "field" : {
+            "enum" : [ "SUBJECT", "RAISED_ON", "DECIDED_ON", "CLOSED_ON", "INITIATOR_NAME", "LEGACY_UNIT", "LEGACY_TYPE", "CLASSIFICATION" ],
+            "type" : "string"
+          },
+          "reason" : {
+            "type" : "string"
+          },
+          "value" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "field", "reason" ],
+        "type" : "object"
+      },
       "LegacyCorrectionView" : {
         "properties" : {
           "after" : {
@@ -2215,6 +2231,7 @@
             "$ref" : "#/components/schemas/Named"
           },
           "field" : {
+            "enum" : [ "SUBJECT", "RAISED_ON", "DECIDED_ON", "CLOSED_ON", "INITIATOR_NAME", "LEGACY_UNIT", "LEGACY_TYPE", "CLASSIFICATION" ],
             "type" : "string"
           },
           "reason" : {
@@ -2362,6 +2379,19 @@
           }
         },
         "required" : [ "name" ],
+        "type" : "object"
+      },
+      "LegacyReclassifyRequest" : {
+        "properties" : {
+          "classificationId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "reason" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "classificationId", "reason" ],
         "type" : "object"
       },
       "LegalEntity" : {
@@ -3064,7 +3094,7 @@
         "properties" : {
           "allowedActions" : {
             "items" : {
-              "enum" : [ "EDIT", "UPLOAD_DOCUMENT", "EDIT_ROUTE", "SUBMIT", "DISCARD", "RESUBMIT", "WITHDRAW", "APPROVE", "RETURN", "REJECT", "EDIT_DOCUMENT", "VIEW_DOCUMENT", "FILL_FROM_TEMPLATE", "EDIT_COPIES", "ADD_COPIES", "RECOMMEND", "SEND_BACK", "FORWARD", "DELEGATE", "ASK", "REFER", "ANSWER", "OPINION", "RECALL", "CLAIM", "RELEASE", "RECUSE", "CLOSE" ],
+              "enum" : [ "EDIT", "UPLOAD_DOCUMENT", "EDIT_ROUTE", "SUBMIT", "DISCARD", "RESUBMIT", "WITHDRAW", "APPROVE", "RETURN", "REJECT", "EDIT_DOCUMENT", "VIEW_DOCUMENT", "FILL_FROM_TEMPLATE", "EDIT_COPIES", "ADD_COPIES", "CORRECT_LEGACY", "RECLASSIFY", "RECOMMEND", "SEND_BACK", "FORWARD", "DELEGATE", "ASK", "REFER", "ANSWER", "OPINION", "RECALL", "CLAIM", "RELEASE", "RECUSE", "CLOSE" ],
               "type" : "string"
             },
             "type" : "array"
@@ -5239,6 +5269,13 @@
             "format" : "int32",
             "type" : [ "integer", "null" ]
           },
+          "origin" : {
+            "items" : {
+              "enum" : [ "NATIVE", "IMPORTED" ],
+              "type" : "string"
+            },
+            "type" : [ "array", "null" ]
+          },
           "q" : {
             "type" : [ "string", "null" ]
           },
@@ -5283,6 +5320,13 @@
           "from" : {
             "format" : "date",
             "type" : [ "string", "null" ]
+          },
+          "origins" : {
+            "items" : {
+              "enum" : [ "NATIVE", "IMPORTED" ],
+              "type" : "string"
+            },
+            "type" : "array"
           },
           "q" : {
             "type" : "string"
@@ -5337,6 +5381,10 @@
           "number" : {
             "type" : [ "string", "null" ]
           },
+          "origin" : {
+            "enum" : [ "NATIVE", "IMPORTED" ],
+            "type" : "string"
+          },
           "snippet" : {
             "items" : {
               "$ref" : "#/components/schemas/SnippetPart"
@@ -5368,7 +5416,7 @@
             "type" : "string"
           }
         },
-        "required" : [ "foundIn", "memoId", "snippet", "status", "subject", "typeId", "typeName", "updatedAt" ],
+        "required" : [ "foundIn", "memoId", "origin", "snippet", "status", "subject", "typeId", "typeName", "updatedAt" ],
         "type" : "object"
       },
       "SecuritySettingLimit" : {
@@ -12128,6 +12176,82 @@
           }
         },
         "summary" : "Remove a declared interest",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/memos/{id}/legacy/corrections" : {
+      "post" : {
+        "operationId" : "correctLegacyMemo",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/LegacyCorrectionRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemoView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Append a correction to an imported memo, with a reason (step-up)",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/memos/{id}/legacy/reclassify" : {
+      "post" : {
+        "operationId" : "reclassifyLegacyMemo",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/LegacyReclassifyRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemoView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Raise an imported memo's classification, with a reason (step-up)",
         "tags" : [ "memo" ]
       }
     },

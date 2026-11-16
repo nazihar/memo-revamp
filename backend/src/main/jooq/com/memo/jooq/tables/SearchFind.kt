@@ -118,6 +118,11 @@ open class SearchFind(
      */
     val UPDATED_AT: TableField<SearchFindRecord, OffsetDateTime?> = createField(DSL.name("updated_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
 
+    /**
+     * The column <code>memo.search_find.origin</code>.
+     */
+    val ORIGIN: TableField<SearchFindRecord, String?> = createField(DSL.name("origin"), SQLDataType.CLOB, this, "")
+
     private constructor(alias: Name, aliased: Table<SearchFindRecord>?): this(alias, null, null, null, aliased, arrayOf(
         DSL.value(null, SQLDataType.UUID),
         DSL.value(null, SQLDataType.UUID),
@@ -139,7 +144,8 @@ open class SearchFind(
         DSL.value(null, SQLDataType.BOOLEAN),
         DSL.value(null, SQLDataType.BOOLEAN),
         DSL.value(null, SQLDataType.BOOLEAN),
-        DSL.value(null, SQLDataType.INTEGER)
+        DSL.value(null, SQLDataType.INTEGER),
+        DSL.value(null, SQLDataType.CLOB.array().defaultValue(DSL.field(DSL.raw("NULL::text[]"), SQLDataType.CLOB.array())))
     ), null)
     private constructor(alias: Name, aliased: Table<SearchFindRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
 
@@ -202,6 +208,7 @@ open class SearchFind(
         , pInNotes: Boolean?
         , pInDocs: Boolean?
         , pCap: Int?
+        , pOrigins: Array<String?>?
     ): SearchFind = SearchFind(DSL.name("search_find"), null, arrayOf(
         DSL.value(pTenant, SQLDataType.UUID),
         DSL.value(pReader, SQLDataType.UUID),
@@ -223,7 +230,8 @@ open class SearchFind(
         DSL.value(pInMeta, SQLDataType.BOOLEAN),
         DSL.value(pInNotes, SQLDataType.BOOLEAN),
         DSL.value(pInDocs, SQLDataType.BOOLEAN),
-        DSL.value(pCap, SQLDataType.INTEGER)
+        DSL.value(pCap, SQLDataType.INTEGER),
+        DSL.value(pOrigins, SQLDataType.CLOB.array().defaultValue(DSL.field(DSL.raw("NULL::text[]"), SQLDataType.CLOB.array())))
     )).let { if (aliased()) it.`as`(unqualifiedName) else it }
 
     /**
@@ -251,6 +259,7 @@ open class SearchFind(
         , pInNotes: Field<Boolean?>
         , pInDocs: Field<Boolean?>
         , pCap: Field<Int?>
+        , pOrigins: Field<Array<String?>?>
     ): SearchFind = SearchFind(DSL.name("search_find"), null, arrayOf(
         pTenant,
         pReader,
@@ -272,6 +281,7 @@ open class SearchFind(
         pInMeta,
         pInNotes,
         pInDocs,
-        pCap
+        pCap,
+        pOrigins
     )).let { if (aliased()) it.`as`(unqualifiedName) else it }
 }

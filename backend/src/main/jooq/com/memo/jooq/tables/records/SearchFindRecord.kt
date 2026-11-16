@@ -62,10 +62,14 @@ open class SearchFindRecord private constructor() : TableRecordImpl<SearchFindRe
         set(value): Unit = set(10, value)
         get(): OffsetDateTime? = get(10) as OffsetDateTime?
 
+    open var origin: String?
+        set(value): Unit = set(11, value)
+        get(): String? = get(11) as String?
+
     /**
      * Create a detached, initialised SearchFindRecord
      */
-    constructor(memoId: UUID? = null, score: Float? = null, inMeta: Boolean? = null, inNotes: Boolean? = null, inDocs: Boolean? = null, inRef: Boolean? = null, status: String? = null, typeId: UUID? = null, originUnitId: UUID? = null, createdAt: OffsetDateTime? = null, updatedAt: OffsetDateTime? = null): this() {
+    constructor(memoId: UUID? = null, score: Float? = null, inMeta: Boolean? = null, inNotes: Boolean? = null, inDocs: Boolean? = null, inRef: Boolean? = null, status: String? = null, typeId: UUID? = null, originUnitId: UUID? = null, createdAt: OffsetDateTime? = null, updatedAt: OffsetDateTime? = null, origin: String? = null): this() {
         this.memoId = memoId
         this.score = score
         this.inMeta = inMeta
@@ -77,6 +81,7 @@ open class SearchFindRecord private constructor() : TableRecordImpl<SearchFindRe
         this.originUnitId = originUnitId
         this.createdAt = createdAt
         this.updatedAt = updatedAt
+        this.origin = origin
         resetTouchedOnNotNull()
     }
 }

@@ -14,8 +14,10 @@ import com.memo.memo.LegacyFileRole
 import com.memo.memo.LegacyMemoRow
 import com.memo.memo.LegacyNumbers
 import com.memo.memo.LegacyPerson
-import com.memo.memo.internal.MemoOrigin
+import com.memo.memo.MemoOrigin
+import com.memo.memo.internal.Memo
 import org.jooq.JSONB
+import org.jooq.impl.DSL
 import org.springframework.stereotype.Repository
 import tools.jackson.databind.json.JsonMapper
 import java.time.Instant
@@ -66,7 +68,7 @@ data class LegacyFileRow(
     fun effectiveRank(memoRank: Int): Int = maxOf(classificationRank ?: memoRank, memoRank)
 }
 
-/** A correction appended after import (E06 T4 writes them). */
+/** A correction appended after import ([LegacyCorrections]). */
 data class LegacyCorrectionRow(
     val id: UUID,
     val field: String,
@@ -226,6 +228,47 @@ class LegacyMemoWriter(
                 },
             ).execute()
     }
+
+    /** Appends [correction] (the legacy facts stay as given). */
+    fun correction(
+        correction: LegacyCorrection,
+        at: OffsetDateTime,
+    ) {
+        val c = MEMO_LEGACY_CORRECTION
+        tenantDsl
+            .current()
+            .insertInto(c)
+            .set(c.ID, ids.next())
+            .set(c.TENANT_ID, tenantDsl.tenant().value)
+            .set(c.MEMO_ID, correction.memoId)
+            .set(c.FIELD, correction.field.name)
+            .set(c.VALUE_BEFORE, correction.before)
+            .set(c.VALUE_AFTER, correction.after)
+            .set(c.REASON, correction.reason)
+            .set(c.CORRECTED_BY, correction.by)
+            .set(c.CORRECTED_AT, at)
+            .execute()
+    }
+
+    /**
+     * The only change an imported memo's row takes (`memo_imported_guard`): its subject and its classification at [rank],
+     * with a new version and update time; guarded on the version read. False when the memo changed meanwhile.
+     */
+    fun revise(
+        memo: Memo,
+        rank: Int,
+        at: OffsetDateTime,
+    ): Boolean =
+        tenantDsl
+            .current()
+            .update(MEMO)
+            .set(MEMO.SUBJECT, memo.subject)
+            .set(MEMO.CLASSIFICATION_ID, memo.classificationId)
+            .set(MEMO.CLASSIFICATION_RANK, rank)
+            .set(MEMO.VERSION, MEMO.VERSION.plus(1))
+            .set(MEMO.UPDATED_AT, at)
+            .where(MEMO.ID.eq(memo.id), MEMO.VERSION.eq(memo.version))
+            .execute() == 1
 }
 
 /** Reads imported memos' legacy rows. Inside a tenant transaction. */
@@ -279,6 +322,19 @@ class LegacyMemoReader(
             .selectFrom(MEMO_LEGACY_FILE)
             .where(MEMO_LEGACY_FILE.MEMO_ID.eq(memoId))
             .orderBy(MEMO_LEGACY_FILE.POSITION)
+            .fetch(::original)
+
+    /** Originals of every imported memo after [after] (by id), at most [limit]: the fixity check's pages. */
+    fun originalsAfter(
+        after: UUID?,
+        limit: Int,
+    ): List<LegacyFileRow> =
+        tenantDsl
+            .current()
+            .selectFrom(MEMO_LEGACY_FILE)
+            .where(after?.let { MEMO_LEGACY_FILE.ID.gt(it) } ?: DSL.noCondition())
+            .orderBy(MEMO_LEGACY_FILE.ID)
+            .limit(limit)
             .fetch(::original)
 
     fun original(fileId: UUID): LegacyFileRow? =

@@ -74,10 +74,18 @@ abstract class ImportedMemoTest : MemoIntegrationTest() {
         approvals: List<LegacyApproval> = listOf(LegacyApproval(1, LegacyPerson("Karim Ahmed"), "Approved", "Head of Credit")),
         dates: LegacyDates = LegacyDates(LocalDate.of(2019, 3, 14), LocalDate.of(2019, 3, 20), closedOn(status)),
         stored: Boolean = true,
+        /** The stored original's file name (the test text extractor answers "Text of <name>"). */
+        originalName: String = "memo.pdf",
     ): LegacyMemoRow {
         val memoId = UUID.randomUUID()
         rows++
-        val main = LegacyOriginal(LegacyFileRole.MAIN, "Memo", "memos/$number.pdf", fileId = if (stored) original(memoId) else null)
+        val main =
+            LegacyOriginal(
+                LegacyFileRole.MAIN,
+                "Memo",
+                "memos/$number.pdf",
+                fileId = if (stored) original(memoId, name = originalName) else null,
+            )
         return LegacyMemoRow(
             memoId = memoId,
             source = LegacySource(batch, rows, "LEGACY-DMS", number, fingerprint(number), zone, importer.id),

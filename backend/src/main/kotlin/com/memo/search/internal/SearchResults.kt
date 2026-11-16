@@ -47,6 +47,7 @@ class SearchResults(
                 updatedAt = c.updatedAt,
                 snippet = snippet?.text?.let(SnippetParts::of) ?: listOf(SnippetPart(summary.subject, false)),
                 foundIn = foundIn(c, snippet, authors),
+                origin = c.origin,
             )
         }
     }

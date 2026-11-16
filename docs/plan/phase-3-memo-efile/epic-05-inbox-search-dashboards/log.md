@@ -194,6 +194,7 @@
 - **Demo:** `DemoFollowingSeeder` gives Demo User follows of the memos they started (seeded before following existed) and the saved search "Lease and rent". Heads' team views need nothing more.
 - **Runbook:** `docs/runbooks/search.md` (what runs, sizing, missing document words, timeouts, harvesting, rebuilding the index, PostgreSQL upgrades, digests, team view).
 - **ASVS:** six rows (V8 search access, V2 bulk actions, V15 the definer path, V2 search limits, V14 words out of URLs and email, V16 audit). The threat model is corrected where the build went further: search is POST, and watch emails carry no subjects.
+- **CI stall watchdog:** the backend job reached its 30-minute limit once more on this branch (the run before it passed in 13 minutes), again with nothing to show where. `testsupport/StallWatchdog`, a JUnit launcher listener, now writes every thread's stack and the tests then running to `backend/build/test-stalls/` when no test event comes for 6 minutes; CI uploads the folder when the job fails or is cancelled at its limit. It closes the T2 entry's carried item without JUnit's separate-thread timeouts.
 - **Carried:**
   - PostgreSQL 18.7 (GIN fix) on or after 2026-11-26, then a V1 rerun;
   - an alert on search harvesting (the runbook describes the manual check);

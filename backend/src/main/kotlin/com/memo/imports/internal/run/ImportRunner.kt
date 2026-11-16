@@ -24,6 +24,7 @@ import com.memo.imports.internal.dryrun.ProblemSheet
 import com.memo.imports.internal.dryrun.ProblemStage
 import com.memo.imports.internal.dryrun.StageFindings
 import com.memo.imports.internal.dryrun.ValidationContext
+import com.memo.imports.internal.report.ImportJobs
 import com.memo.memo.LegacyMemos
 import org.springframework.beans.factory.ObjectProvider
 import org.springframework.context.annotation.Bean
@@ -58,6 +59,7 @@ class ImportRunner(
     private val views: ImportViews,
     private val audit: AuditLog,
     private val transactions: TenantTransactions,
+    private val jobs: ImportJobs,
 ) {
     /** Rows per step (`imports.chunk-rows`). */
     @Volatile var chunkRows: Int = ImportRunLimits.CHUNK_ROWS
@@ -124,7 +126,10 @@ class ImportRunner(
             findings = StageFindings(),
         )
 
-    /** No READY row is left: VERIFYING once no row is held either (else wait for it), audited `import.batch.finished`. */
+    /**
+     * No READY row is left: VERIFYING once no row is held either (else wait for it), audited `import.batch.finished`, and
+     * the verification scheduled in the same transaction.
+     */
     private fun done(batchId: UUID): Duration? {
         val tenant = TenantContext.current()
         if (transactions.readInTenant(tenant) { rows.inFlight(batchId) } > 0) return ImportRunLimits.HELD_WAIT
@@ -137,9 +142,9 @@ class ImportRunner(
                     before = mapOf("state" to BatchState.IMPORTING.name),
                     after = mapOf("state" to BatchState.VERIFYING.name, "rows" to views.rows(batchId)),
                 )
+                jobs.verify(batchId)
             }
         }
-        // T8: the verification job takes the batch from VERIFYING.
         return null
     }
 

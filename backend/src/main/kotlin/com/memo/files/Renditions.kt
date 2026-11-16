@@ -126,4 +126,10 @@ interface FileRenditions {
 
     /** How many renditions of [versionIds] are PENDING (an import's report waits for none, E06 §5.4). In a transaction. */
     fun pendingCount(versionIds: Collection<java.util.UUID>): Int
+
+    /**
+     * The state of each rendition of [versionIds] that exists, by version and kind, in one query (an import's report counts
+     * them, E06 §8). A version or kind without a rendition is absent. In a tenant transaction.
+     */
+    fun states(versionIds: Collection<java.util.UUID>): Map<java.util.UUID, Map<RenditionKind, RenditionState>>
 }

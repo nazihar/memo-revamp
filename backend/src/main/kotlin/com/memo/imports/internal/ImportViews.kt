@@ -10,11 +10,19 @@ import com.memo.jooq.tables.references.IMPORTS_ROW
 import io.swagger.v3.oas.annotations.media.Schema
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Component
+import tools.jackson.databind.json.JsonMapper
 import java.time.Instant
 import java.util.UUID
 
 /** What the batch's screen offers now (design E06 §10 `allowedActions`). */
-enum class BatchAction { EDIT, ATTACH_SOURCE, REGISTER_ORIGINALS, MAP, DRY_RUN, START, STOP, RESUME, FINISH }
+enum class BatchAction { EDIT, ATTACH_SOURCE, REGISTER_ORIGINALS, MAP, DRY_RUN, START, STOP, RESUME, FINISH, ABANDON, CLOSE }
+
+/** The report in a word (design E06 §8): whether it balances, and BagIt's complete and valid. */
+data class ImportReportSummary(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val balanced: Boolean,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val complete: Boolean,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val valid: Boolean,
+)
 
 /** A started import's progress (design E06 §10): the rows it took on (READY at the start) and how they ended so far. */
 data class ImportProgressView(
@@ -99,6 +107,17 @@ data class ImportBatchView(
     val finishedAt: Instant? = null,
     /** Present once the import started. */
     val progress: ImportProgressView? = null,
+    /** When the verification pass ended. */
+    val verifiedAt: Instant? = null,
+    /** When the report was stored and the batch COMPLETED. */
+    val completedAt: Instant? = null,
+    /** Present once COMPLETED; the parts come from `GET …/report`. */
+    val report: ImportReportSummary? = null,
+    /** When the batch was CLOSED or ABANDONED, and why. */
+    val closedAt: Instant? = null,
+    val closeReason: String? = null,
+    /** When its staged objects were purged (after it was closed or abandoned). */
+    val purgedAt: Instant? = null,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val allowedActions: List<BatchAction>,
 )
 
@@ -149,6 +168,7 @@ class ImportViews(
     private val files: Files,
     private val tenantDsl: TenantDsl,
     private val progress: RunProgress,
+    private val json: JsonMapper,
 ) {
     fun of(batch: ImportBatch): ImportBatchView {
         val counts = entries.counts(batch.id)
@@ -193,6 +213,15 @@ class ImportViews(
             stepUpAt = batch.run.stepUpAt,
             finishedAt = batch.run.finishedAt,
             progress = progress.of(batch),
+            verifiedAt = batch.end.verifiedAt,
+            completedAt = batch.end.completedAt,
+            report =
+                batch.end.report?.let { json.readTree(it) }?.let {
+                    ImportReportSummary(it["balanced"].asBoolean(), it["complete"].asBoolean(), it["valid"].asBoolean())
+                },
+            closedAt = batch.end.closedAt,
+            closeReason = batch.end.closeReason,
+            purgedAt = batch.end.purgedAt,
             allowedActions = actions(batch, problems, rows),
         )
     }
@@ -217,9 +246,13 @@ class ImportViews(
                 listOf(BatchAction.RESUME, BatchAction.FINISH)
             }
 
+            BatchState.COMPLETED -> {
+                listOf(BatchAction.CLOSE)
+            }
+
             else -> {
                 EDITING.filter { batch.state.editable && (it != BatchAction.DRY_RUN || batch.sources.isNotEmpty()) } +
-                    listOfNotNull(BatchAction.START.takeIf { startable })
+                    listOfNotNull(BatchAction.START.takeIf { startable }, BatchAction.ABANDON.takeIf { batch.state.editable })
             }
         }
     }

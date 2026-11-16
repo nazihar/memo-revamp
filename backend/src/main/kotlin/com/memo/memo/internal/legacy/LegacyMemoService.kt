@@ -4,6 +4,7 @@ import com.memo.audit.AuditLog
 import com.memo.common.authz.Clearances
 import com.memo.files.Files
 import com.memo.memo.ExistingImport
+import com.memo.memo.ImportedMemoRecord
 import com.memo.memo.LegacyMemoRefusedException
 import com.memo.memo.LegacyMemoRow
 import com.memo.memo.LegacyMemos
@@ -47,6 +48,7 @@ class LegacyMemoService(
     private val audit: AuditLog,
     private val clock: Clock,
     private val retention: LegacyRetention,
+    private val importedReader: ImportedMemoReader,
 ) : LegacyMemos {
     override fun check(row: LegacyMemoRow): List<LegacyProblem> = checks.problems(row)
 
@@ -120,6 +122,8 @@ class LegacyMemoService(
         legacyNumber: String,
     ): ExistingImport? = reader.existing(sourceCode, LegacyNumbers.key(legacyNumber))
 
+    override fun imported(memoIds: Collection<UUID>): Map<UUID, ImportedMemoRecord> = importedReader.of(memoIds)
+
     override fun series(): List<LiveSeries> = series.all()
 
     override fun retainOriginals(memoId: UUID): Int = retention.retain(memoId)
@@ -138,17 +142,6 @@ class LegacyMemoService(
         } catch (e: IntegrityConstraintViolationException) {
             throw takenOr(e)
         }
-    }
-
-    /**
-     * The unique row key or reference was taken meanwhile (the check runs first, the index is the last guard): a refusal
-     * naming which. Any other failure is returned as it is.
-     */
-    private fun takenOr(e: RuntimeException): RuntimeException {
-        val unique = e is DuplicateKeyException || (e is IntegrityConstraintViolationException && e.sqlState() == UNIQUE_VIOLATION)
-        if (!unique) return e
-        val code = if (e.message.orEmpty().contains(KEY_INDEX)) "ALREADY_IMPORTED" else "NUMBER_IN_USE"
-        return LegacyMemoRefusedException(listOf(LegacyProblem(code, "legacy_number")))
     }
 
     /** Each original with the hash and size of the version the files service stored. */
@@ -186,7 +179,19 @@ class LegacyMemoService(
 
     private companion object {
         val FINGERPRINT = Regex("^[0-9a-f]{64}$")
-        const val KEY_INDEX = "memo_legacy_key_uk"
-        const val UNIQUE_VIOLATION = "23505"
     }
+}
+
+private const val KEY_INDEX = "memo_legacy_key_uk"
+private const val UNIQUE_VIOLATION = "23505"
+
+/**
+ * The unique row key or reference was taken meanwhile (the check runs first, the index is the last guard): a refusal
+ * naming which. Any other failure is returned as it is.
+ */
+private fun takenOr(e: RuntimeException): RuntimeException {
+    val unique = e is DuplicateKeyException || (e is IntegrityConstraintViolationException && e.sqlState() == UNIQUE_VIOLATION)
+    if (!unique) return e
+    val code = if (e.message.orEmpty().contains(KEY_INDEX)) "ALREADY_IMPORTED" else "NUMBER_IN_USE"
+    return LegacyMemoRefusedException(listOf(LegacyProblem(code, "legacy_number")))
 }

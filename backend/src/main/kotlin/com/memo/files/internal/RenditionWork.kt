@@ -616,6 +616,8 @@ internal class FileRenditionsImpl(
 
     override fun pendingCount(versionIds: Collection<UUID>): Int = backlog.pending(versionIds)
 
+    override fun states(versionIds: Collection<UUID>): Map<UUID, Map<RenditionKind, RenditionState>> = backlog.states(versionIds)
+
     override fun write(
         versionId: UUID,
         kind: RenditionKind,

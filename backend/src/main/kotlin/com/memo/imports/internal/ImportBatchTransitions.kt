@@ -126,6 +126,69 @@ class ImportBatchTransitions(
             IMPORTS_BATCH.ID.ne(id).and(IMPORTS_BATCH.STATE.`in`(RUNNING.map { it.name })),
         )
 
+    /** A VERIFYING batch's verification ended with [verification] (JSON counts), once. Not a transition: no new version. */
+    fun verified(
+        id: UUID,
+        verification: String,
+    ): Boolean =
+        tenantDsl
+            .current()
+            .update(IMPORTS_BATCH)
+            .set(IMPORTS_BATCH.VERIFIED_AT, now())
+            .set(IMPORTS_BATCH.VERIFICATION, JSONB.valueOf(verification))
+            .set(IMPORTS_BATCH.UPDATED_AT, now())
+            .where(IMPORTS_BATCH.ID.eq(id), IMPORTS_BATCH.STATE.eq(BatchState.VERIFYING.name), IMPORTS_BATCH.VERIFIED_AT.isNull)
+            .execute() == 1
+
+    /** VERIFYING → COMPLETED with the stored [report] (JSON), once verified (design E06 §5.4). */
+    fun complete(
+        id: UUID,
+        report: String,
+    ): Boolean {
+        val now = now()
+        return tenantDsl
+            .current()
+            .update(IMPORTS_BATCH)
+            .set(IMPORTS_BATCH.STATE, BatchState.COMPLETED.name)
+            .set(IMPORTS_BATCH.REPORT, JSONB.valueOf(report))
+            .set(IMPORTS_BATCH.COMPLETED_AT, now)
+            .set(IMPORTS_BATCH.VERSION, IMPORTS_BATCH.VERSION.plus(1))
+            .set(IMPORTS_BATCH.UPDATED_AT, now)
+            .where(IMPORTS_BATCH.ID.eq(id), IMPORTS_BATCH.STATE.eq(BatchState.VERIFYING.name), IMPORTS_BATCH.VERIFIED_AT.isNotNull)
+            .execute() == 1
+    }
+
+    /** [from] → [to] (CLOSED or ABANDONED), with the time and [reason] (design E06 §4.1). */
+    fun end(
+        id: UUID,
+        from: Collection<BatchState>,
+        to: BatchState,
+        reason: String?,
+    ): Boolean {
+        require(to == BatchState.CLOSED || to == BatchState.ABANDONED) { "a batch ends CLOSED or ABANDONED" }
+        val now = now()
+        return tenantDsl
+            .current()
+            .update(IMPORTS_BATCH)
+            .set(IMPORTS_BATCH.STATE, to.name)
+            .set(IMPORTS_BATCH.CLOSED_AT, now)
+            .set(IMPORTS_BATCH.CLOSE_REASON, reason)
+            .setNull(IMPORTS_BATCH.THROTTLED_AT)
+            .set(IMPORTS_BATCH.VERSION, IMPORTS_BATCH.VERSION.plus(1))
+            .set(IMPORTS_BATCH.UPDATED_AT, now)
+            .where(IMPORTS_BATCH.ID.eq(id), IMPORTS_BATCH.STATE.`in`(from.map { it.name }))
+            .execute() == 1
+    }
+
+    /** Every staged object of the CLOSED or ABANDONED batch is purged, once. Not a transition: no new version. */
+    fun purged(id: UUID): Boolean =
+        tenantDsl
+            .current()
+            .update(IMPORTS_BATCH)
+            .set(IMPORTS_BATCH.PURGED_AT, now())
+            .where(IMPORTS_BATCH.ID.eq(id), IMPORTS_BATCH.STATE.`in`(ENDED.map { it.name }), IMPORTS_BATCH.PURGED_AT.isNull)
+            .execute() == 1
+
     private fun now(): OffsetDateTime = OffsetDateTime.now(clock).withOffsetSameInstant(ZoneOffset.UTC)
 
     companion object {
@@ -133,5 +196,8 @@ class ImportBatchTransitions(
 
         /** The states `imports_batch_one_running` allows once per tenant. */
         val RUNNING: List<BatchState> = listOf(BatchState.IMPORTING, BatchState.STOPPING, BatchState.VERIFYING)
+
+        /** The final states, after which only the staged objects' purge happens. */
+        val ENDED: List<BatchState> = listOf(BatchState.CLOSED, BatchState.ABANDONED)
     }
 }

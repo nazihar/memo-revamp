@@ -165,6 +165,12 @@ Legacy data is messy (overview risk R8). People have left. Statuses do not match
 - TIFF scans are download-only; ONLYOFFICE does not convert them.
 - The streaming reader applies the workbook's date system itself.
 
+## Amendment — 2026-11-16 (E06 T8, the report)
+- **Encrypted PowerPoint files are reported from their failed renditions, not refused by the dry run.** This replaces "the dry run reports the file `UNREADABLE` and its row cannot be imported" (Decision, encrypted documents) and the T1 amendment's "caught by the dry run". Nothing reads a staged original before promotion: intake versions have no renditions (a purgeable purpose may have none), and no Office file is parsed in the backend JVM. So such a file passes intake and the dry run, is imported with its row, and its PDF and TEXT renditions end FAILED (ONLYOFFICE -5, Tika 422).
+- **The reconciliation report names them:** the summary PDF's "Renditions failed" section and the workbook's Files sheet list every imported original whose rendition failed, by path and kind, and the renditions line counts them. The original stays the memo's record (download only); the admin replaces it through a later batch or a correction if a readable copy exists. The memo is still found by its metadata.
+- **The report's balance lines,** as built: rows; Files rows (matched, not received, ambiguous); originals registered (stored, refused, never uploaded) and stored (imported, held back, unreferenced); each rendition kind (done, failed, not possible, pending, not needed: a PDF or a picture is its own preview); and fixity. "Files received = imported + held back + unreferenced + refused" in the Decision is split into the two originals lines.
+- **The sources are kept as records when the report is stored**, not at start: they cannot change after the dry run (the batch is no longer editable) and are purged only when the batch is closed, after the report.
+
 ## More information
 - Research: `docs/plan/phase-3-memo-efile/epic-06-legacy-import/research.md` (R11, R1). Design: `epic-06-legacy-import/design.md`.
 - Apache POI security: https://poi.apache.org/security.html (accessed 2026-11-16).

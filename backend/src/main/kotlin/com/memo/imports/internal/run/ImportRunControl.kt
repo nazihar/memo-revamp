@@ -19,6 +19,7 @@ import com.memo.imports.internal.ImportRejectedException
 import com.memo.imports.internal.ImportViews
 import com.memo.imports.internal.dryrun.InputHash
 import com.memo.imports.internal.dryrun.ProblemLevel
+import com.memo.imports.internal.report.ImportJobs
 import org.jooq.exception.IntegrityConstraintViolationException
 import org.springframework.beans.factory.ObjectProvider
 import org.springframework.beans.factory.annotation.Qualifier
@@ -45,6 +46,7 @@ class ImportRunControl(
     private val tenantDsl: TenantDsl,
     private val scheduler: ObjectProvider<SchedulerClient>,
     @param:Qualifier("importsRunTask") private val task: ObjectProvider<CustomTask<ImportRunTask>>,
+    private val endJobs: ImportJobs,
 ) {
     /** False only while a test runs the job itself (test contexts share the scheduler table). */
     @Volatile var jobs: Boolean = true
@@ -131,6 +133,7 @@ class ImportRunControl(
             BatchState.VERIFYING,
             mapOf("rows" to views.rows(batchId), "notStarted" to notStarted),
         )
+        endJobs.verify(batchId)
         return checkNotNull(batches.find(batchId))
     }
 

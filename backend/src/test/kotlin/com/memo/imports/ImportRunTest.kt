@@ -1,6 +1,7 @@
 package com.memo.imports
 
 import com.memo.common.tenant.TenantContext
+import com.memo.imports.internal.report.ImportJobs
 import com.memo.imports.internal.run.ImportRunControl
 import com.memo.imports.internal.run.ImportRunLimits
 import com.memo.imports.internal.run.ImportRunner
@@ -31,15 +32,19 @@ abstract class ImportRunTest : DryRunTest() {
 
     @Autowired lateinit var runner: ImportRunner
 
+    @Autowired lateinit var endJobs: ImportJobs
+
     @BeforeEach
     fun importJobs() {
         control.jobs = false
+        endJobs.jobs = false
         clear(holder, CONFIDENTIAL)
     }
 
     @AfterEach
     fun importJobsBack() {
         control.jobs = true
+        endJobs.jobs = true
         runner.chunkRows = ImportRunLimits.CHUNK_ROWS
         runner.renditionBacklog = ImportRunLimits.RENDITION_BACKLOG
     }

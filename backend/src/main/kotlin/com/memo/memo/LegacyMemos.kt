@@ -131,6 +131,31 @@ data class ExistingImport(
     val fingerprint: String,
 )
 
+/** An original as bound to an imported memo: its `memo.legacy` file, the SHA-256 it was imported with, and its size. */
+data class BoundOriginal(
+    val fileId: UUID,
+    val relativePath: String,
+    /** Lower-case hex. */
+    val sha256: String,
+    val sizeBytes: Long,
+)
+
+/**
+ * An imported memo as stored (design E06 §5.4): where its legacy facts say it came from (batch, row, row key and
+ * fingerprint) and the originals bound to it, for the import's verification pass.
+ */
+data class ImportedMemoRecord(
+    val memoId: UUID,
+    val batchId: UUID,
+    val rowNumber: Int,
+    val sourceCode: String,
+    /** The legacy number as a row key ([LegacyNumbers.key]). */
+    val legacyNumberKey: String,
+    /** Lower-case hex SHA-256. */
+    val fingerprint: String,
+    val originals: List<BoundOriginal>,
+)
+
 /**
  * Imported memos (ADR-0055, design E06 §3.1), for the imports module. Every method runs inside a tenant transaction;
  * [create] writes in the caller's, and the others only read (so a dry run can call them in a read-only one).
@@ -151,6 +176,12 @@ interface LegacyMemos {
         sourceCode: String,
         legacyNumber: String,
     ): ExistingImport?
+
+    /**
+     * The imported memos among [memoIds] as stored, by memo id: only memos whose row exists with origin IMPORTED and whose
+     * legacy facts exist; any other id is left out (design E06 §5.4, the verification pass). Reads only.
+     */
+    fun imported(memoIds: Collection<UUID>): Map<UUID, ImportedMemoRecord>
 
     /** The number series of every published memo-type version, to keep legacy numbers out of numbers they may still give. */
     fun series(): List<LiveSeries>

@@ -170,3 +170,31 @@
   - **E2E smoke:** `dashboard.spec` as the Head of Credit; the charts draw for Me and for the unit with the CSP-violation fixture on, the keyboard reaches the chart, and axe passes.
   - **Visual:** `e2e/visual/inbox.spec.ts` (Watching, Team, a selection, the reassign dialog, the dashboard with and without tables, phone) and memo baselines re-rendered for the toggle; rendered in the Playwright Linux image and reviewed.
 - **Built with a subagent** under a written brief; reviewed and checked by the lead (lint, types, tests, licences, the chunk, the catalogue parts, and the baselines).
+
+## 2026-11-16 — T8 close: load, journeys, demo, runbook and ASVS
+- **Load stage (weekly `load` workflow, both run on this branch and passed):**
+  - **Volume V2 with a head:** the 50 approvers and 50 initiators sit in one division under a head (`VolumeOrg`), who reads it through a unit-scoped `memo.read.unit` grant and so signs in with a TOTP second factor (the first run found every head request 401: privileged permissions need MFA even under "admins only").
+  - **`SearchAndTeamLoadSimulation`** (GitHub-hosted runner, 4 vCPUs and 16 GB; on-prem stack; 10,000 memos in review; 50 approvers ramped over 165 s, each with 80 rounds of inbox by due, a search and their dashboard, about 18 searches a minute; the head from 120 s with 80 rounds of team view, unit dashboard and a search; no errors):
+
+    | Request | Executions | p50 | p95 | p99 | Budget (p95) |
+    |---|---|---|---|---|---|
+    | Inbox by due (`sort=due`) | 4,000 | 5 | 8 | 12 | 150 |
+    | Search, participant | 4,000 | 7 | 12 | 16 | 300 |
+    | Search, unit reader (10,000 memos) | 80 | 15 | 21 | 28 | 300 |
+    | Team view (10,000 tasks) | 81 | 14 | 32 | 41 | 300 |
+    | Dashboard, me | 4,000 | 8 | 12 | 16 | 800 |
+    | Dashboard, unit (10,000 tasks) | 80 | 50 | 63 | 70 | 800 |
+
+    (ms) The Phase 2 inbox simulation in the same run: p95 5 ms over 18,000 reads.
+  - **Search at V1 (`SearchPerformanceIT`, new weekly job `search-v1`):** 1,000,000 memos, 2,000,000 notes and 200,000 chunks generated in 218 s on the same runner type, PostgreSQL with the V1 settings. Mean p95 of the query mix: narrow participant 5 ms, unit head 128 ms, auditor 43 ms, low clearance 48 ms, heavy participant 102 ms. The slowest single queries are the unit head's phrase (245 ms) and prefix (221 ms) and the heavy participant's phrase (157 ms). The T1 laptop's 307 ms for the unit head's prefix is not reproduced; the budget holds for every profile. Cap (auditor, common word): 1,000 / 2,000 / 5,000 candidates take 13 / 27 / 54 ms.
+- **Database sizing (carried from T1):** the on-prem Compose file takes PostgreSQL's memory settings from `.env` (`MEMO_PG_*`); without them nothing changes. `.env.example` and the runbook give the V1 values.
+- **Journeys (smoke):**
+  - `search.spec`: a note's words find the memo from the top-bar box, and no request URL carries them; the head of finance, without access, finds nothing; the search is saved and reopened. An attachment's words find the memo once Tika has extracted them: that test needs the documents stack, so it skips on the PR stack and runs nightly (`nightly.yml`).
+  - `inbox-team.spec`: the head of credit finds Demo User's task in the Team tab and reassigns it to the head of finance with a reason and a step-up; a credit-desk task is claimed and released in bulk from My tasks.
+- **Demo:** `DemoFollowingSeeder` gives Demo User follows of the memos they started (seeded before following existed) and the saved search "Lease and rent". Heads' team views need nothing more.
+- **Runbook:** `docs/runbooks/search.md` (what runs, sizing, missing document words, timeouts, harvesting, rebuilding the index, PostgreSQL upgrades, digests, team view).
+- **ASVS:** six rows (V8 search access, V2 bulk actions, V15 the definer path, V2 search limits, V14 words out of URLs and email, V16 audit). The threat model is corrected where the build went further: search is POST, and watch emails carry no subjects.
+- **Carried:**
+  - PostgreSQL 18.7 (GIN fix) on or after 2026-11-26, then a V1 rerun;
+  - an alert on search harvesting (the runbook describes the manual check);
+  - the attachment-words journey's first nightly result.

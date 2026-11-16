@@ -62,10 +62,11 @@ test.describe('as the head of credit', () => {
     await expect(page.getByRole('tab', { name: 'Team', selected: true })).toBeVisible()
     const row = page.getByRole('listitem').filter({ has: page.getByRole('link', { name: subject }) })
     await expect(row).toBeVisible()
-    await expect(row.getByText(/^Demo User · /)).toBeVisible()
+    // The holder (a General memo's route step has no name or due time).
+    await expect(row.getByText('Demo User', { exact: true })).toBeVisible()
     await app.checkA11y()
 
-    await row.getByRole('checkbox', { name: `Select ${subject}` }).check()
+    await row.getByRole('checkbox', { name: /^Select / }).check()
     await page.getByRole('button', { name: 'Reassign…' }).click()
     const dialog = page.getByRole('dialog', { name: 'Reassign the selected tasks' })
     await dialog.getByLabel('New person').fill('Head of Fin')
@@ -99,7 +100,7 @@ test.describe('as the initiator', () => {
     await head.goto('/inbox')
     const row = head.getByRole('listitem').filter({ has: head.getByRole('link', { name: subject }) })
     await expect(row).toBeVisible()
-    await row.getByRole('checkbox', { name: `Select ${subject}` }).check()
+    await row.getByRole('checkbox', { name: /^Select / }).check()
     const bar = head.getByRole('toolbar', { name: 'Actions on the selected items' })
     // Watch, Claim and Release, never a decision.
     await expect(bar.getByRole('button', { name: /Approve|Reject|Recommend/ })).toHaveCount(0)
@@ -108,7 +109,7 @@ test.describe('as the initiator', () => {
 
     // The head now holds the desk task alone; it stays in their inbox and goes back to the desk in bulk.
     await head.reload()
-    await row.getByRole('checkbox', { name: `Select ${subject}` }).check()
+    await row.getByRole('checkbox', { name: /^Select / }).check()
     await bar.getByRole('button', { name: 'Release' }).click()
     await expect(head.getByText('1 released')).toBeVisible()
     await head.context().close()

@@ -605,8 +605,16 @@ internal class FileRenditionsImpl(
     private val objects: ObjectStore,
     private val crypto: FileCrypto,
     private val transactions: TenantTransactions,
+    private val backlog: RenditionBacklog,
 ) : FileRenditions {
     override fun of(versionId: UUID): List<RenditionInfo> = store.of(versionId).map { it.info() }
+
+    override fun pendingCount(
+        purposeKey: String,
+        atMost: Int,
+    ): Int = backlog.pending(purposeKey, atMost)
+
+    override fun pendingCount(versionIds: Collection<UUID>): Int = backlog.pending(versionIds)
 
     override fun write(
         versionId: UUID,

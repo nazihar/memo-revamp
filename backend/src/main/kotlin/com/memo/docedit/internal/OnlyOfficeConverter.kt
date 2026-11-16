@@ -183,6 +183,11 @@ class OnlyOfficeConverter(
                 FileType.ODS to listOf("ods"),
                 FileType.ODP to listOf("odp"),
                 FileType.TEXT to listOf("txt", "csv"),
+                // Legacy formats (ADR-0055, E06 T1 spike: about 1 s each). TIFF is refused (-7): scans are download-only.
+                FileType.DOC to listOf("doc"),
+                FileType.XLS to listOf("xls"),
+                FileType.PPT to listOf("ppt"),
+                FileType.RTF to listOf("rtf"),
             )
 
         private const val HTTP_OK = 200

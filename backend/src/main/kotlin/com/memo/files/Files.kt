@@ -1,6 +1,7 @@
 package com.memo.files
 
 import com.memo.common.events.TenantScopedEvent
+import com.memo.common.ratelimit.RateLimit
 import java.nio.channels.SeekableByteChannel
 import java.time.Instant
 import java.util.UUID
@@ -49,6 +50,22 @@ interface FilePurpose {
     /** Derived content built for each new version (ADR-0045); none by default. */
     val renditions: Set<RenditionKind> get() = emptySet()
 
+    /**
+     * Whether the purpose accepts the [FileType.LEGACY] formats (ADR-0055): old Office documents typed by the Tika server,
+     * RTF and TIFF. Only the purposes in [LEGACY_FORMAT_PURPOSES] may set it, and a purpose that allows a legacy type
+     * must; checked at start-up.
+     */
+    val acceptsLegacyFormats: Boolean get() = false
+
+    /**
+     * Whether versions may be purged ([FilePurges]): the object deleted, the row and its hash kept (ADR-0055, staged
+     * copies of an import). ORDINARY purposes without renditions only; checked at start-up.
+     */
+    val purgeable: Boolean get() = false
+
+    /** The per-user limit on uploads (ADR-0025): [RateLimit.UPLOAD_PER_USER], or the import intake's own. */
+    val uploadRateLimit: RateLimit get() = RateLimit.UPLOAD_PER_USER
+
     /** Whether the current actor may upload a file (or a new version) for [ownerId]. Called inside a tenant transaction. */
     fun mayUpload(ownerId: String?): Boolean
 
@@ -67,6 +84,12 @@ interface FilePurpose {
 
     companion object {
         const val DEFAULT_MAX_PDF_PAGES = 5_000
+
+        /** The only purposes that may accept legacy formats: an import's staged originals and the imported ones (ADR-0055). */
+        val LEGACY_FORMAT_PURPOSES: Set<String> = setOf("imports.intake", "memo.legacy")
+
+        /** The per-user limits a purpose may choose for its uploads. */
+        val UPLOAD_RATE_LIMITS: Set<RateLimit> = setOf(RateLimit.UPLOAD_PER_USER, RateLimit.IMPORT_INTAKE_PER_USER)
     }
 }
 
@@ -106,6 +129,8 @@ data class FileVersionInfo(
     val uploadedAt: Instant,
     /** Record versions: end of the object-lock retention. */
     val retainUntil: Instant?,
+    /** When its content was purged ([FilePurges]); the row and hash stay, the content is gone. */
+    val purgedAt: Instant? = null,
 )
 
 /**
@@ -118,6 +143,24 @@ data class FileVersionCreated(
     val ownerId: String?,
     val fileId: UUID,
     val versionId: UUID,
+) : TenantScopedEvent
+
+/**
+ * The pipeline refused an upload (audited as `file.upload.rejected`), published synchronously in the transaction that
+ * audits it, so the owning module can record why (for example an import's original, design E06 §5.1). Not published
+ * when the scanner or the type detector was unavailable: that refuses nothing, the client tries again.
+ */
+data class FileUploadRejected(
+    override val tenantId: UUID,
+    val purposeKey: String,
+    val ownerId: String?,
+    /** The existing file of a new version; null for a new file. */
+    val fileId: UUID?,
+    val idempotencyKey: String,
+    /** The stable reason code, as in the Problem Details: MALWARE, TYPE_NOT_ALLOWED, ENCRYPTED, HASH_MISMATCH, ... */
+    val reasonCode: String,
+    /** The scanner's signature for MALWARE, ENCRYPTED and LIMIT_EXCEEDED found by clamd; null otherwise. */
+    val signatureName: String?,
 ) : TenantScopedEvent
 
 /** Read access for owning modules. Inside a tenant transaction; no authorisation (the owner decides). */
@@ -199,6 +242,47 @@ interface FileUploads {
         bytes: ByteArray,
         idempotencyKey: String,
     ): UUID
+
+    /**
+     * A new file of [purposeKey] for [ownerId] holding the content of the stored version [versionId] (ADR-0055, an
+     * import's promotion): its plaintext is streamed back through the whole pipeline (a new scan, detection and
+     * inspection under the target purpose, encryption, storage), keeping its name. Refused with `HASH_MISMATCH` before
+     * anything is stored when the content's SHA-256 is not [expectedSha256] (hex); idempotent on [idempotencyKey] like
+     * any upload, and not counted against the actor's upload rate. The source is read without an access check (the
+     * caller decides). The target purpose's `mayUpload` applies to the bound actor. Throws [UploadRefusedException] when the pipeline refuses the content, and
+     * [IllegalArgumentException] for an unknown or purged source.
+     */
+    fun copyFrom(
+        versionId: UUID,
+        purposeKey: String,
+        ownerId: String?,
+        idempotencyKey: String,
+        expectedSha256: String,
+    ): UUID
+}
+
+/**
+ * The pipeline refused a copy ([FileUploads.copyFrom]) for [reason], the stable code of `file.upload.rejected` (MALWARE,
+ * TYPE_NOT_ALLOWED, ENCRYPTED, HASH_MISMATCH, ...). `SCAN_UNAVAILABLE` is worth retrying; every other reason is final
+ * for that content.
+ */
+class UploadRefusedException(
+    val reason: String,
+    cause: Throwable? = null,
+) : RuntimeException(reason, cause)
+
+/**
+ * Purges stored content of purposes that declare it (ADR-0055, design E06 §3.3): the object is deleted from the `work`
+ * bucket, the version's row, name and SHA-256 stay, downloads answer 410, and `file.version.purged` is audited. Record
+ * versions are never purged. Call outside a transaction, with the tenant bound.
+ */
+interface FilePurges {
+    /**
+     * Purges [versionId]: true when this call purged it, false when it already was (its object is deleted again, so a
+     * retry after a crash leaves nothing behind). Throws [IllegalArgumentException] for an unknown version, and
+     * [IllegalStateException] when its purpose is not purgeable.
+     */
+    fun purge(versionId: UUID): Boolean
 }
 
 /**

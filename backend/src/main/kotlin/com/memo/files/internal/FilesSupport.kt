@@ -2,6 +2,7 @@ package com.memo.files.internal
 
 import com.memo.files.FilePurpose
 import com.memo.files.FileType
+import com.memo.files.StorageClass
 import jakarta.annotation.PostConstruct
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.ObjectProvider
@@ -53,19 +54,35 @@ internal class Purposes(
         check(
             byKey.size == purposes.size,
         ) { "duplicate file purpose keys: ${purposes.groupBy { it.key }.filterValues { it.size > 1 }.keys}" }
-        purposes.forEach { purpose ->
-            check(KEY.matches(purpose.key)) { "invalid file purpose key '${purpose.key}'" }
-            check(purpose.allowedTypes.isNotEmpty() && purpose.allowedTypes.none { it in FileType.NEVER_ALLOWED }) {
-                "file purpose '${purpose.key}' allows no type, or a type that is never allowed"
-            }
-            check(purpose.maxBytes > 0) { "file purpose '${purpose.key}' needs a positive maxBytes" }
-        }
+        purposes.forEach(::verify)
     }
 
     operator fun get(key: String): FilePurpose? = byKey[key]
 
-    private companion object {
-        val KEY = Regex("^[a-z][a-z0-9.-]{0,99}$")
+    companion object {
+        private val KEY = Regex("^[a-z][a-z0-9.-]{0,99}$")
+
+        /** Throws [IllegalStateException] when [purpose] is declared wrongly (ADR-0029, ADR-0055). */
+        fun verify(purpose: FilePurpose) {
+            val key = purpose.key
+            check(KEY.matches(key)) { "invalid file purpose key '$key'" }
+            check(purpose.allowedTypes.isNotEmpty() && purpose.allowedTypes.none { it in FileType.NEVER_ALLOWED }) {
+                "file purpose '$key' allows no type, or a type that is never allowed"
+            }
+            check(purpose.maxBytes > 0) { "file purpose '$key' needs a positive maxBytes" }
+            // Legacy formats (ADR-0055): only the import's purposes, and a purpose that allows one must say so.
+            check(!purpose.acceptsLegacyFormats || key in FilePurpose.LEGACY_FORMAT_PURPOSES) {
+                "file purpose '$key' may not accept legacy formats"
+            }
+            check(purpose.acceptsLegacyFormats || purpose.allowedTypes.none { it in FileType.LEGACY }) {
+                "file purpose '$key' allows a legacy format without accepting legacy formats"
+            }
+            // Purging deletes content: never a record, and no renditions left behind in storage.
+            check(!purpose.purgeable || (purpose.storage == StorageClass.ORDINARY && purpose.renditions.isEmpty())) {
+                "file purpose '$key' may not be purgeable: only ordinary purposes without renditions are"
+            }
+            check(purpose.uploadRateLimit in FilePurpose.UPLOAD_RATE_LIMITS) { "file purpose '$key' names a limit that is not for uploads" }
+        }
     }
 }
 

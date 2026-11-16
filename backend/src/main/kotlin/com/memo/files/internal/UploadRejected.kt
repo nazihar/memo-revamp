@@ -12,6 +12,11 @@ internal enum class RejectionReason {
 
     /** The purpose refused something in the content (FilePurpose.inspectContent), for example macros in a template. */
     CONTENT_REFUSED,
+
+    /** A copy's content is not the expected one (FileUploads.copyFrom, ADR-0055): refused before anything is stored. */
+    HASH_MISMATCH,
+
+    /** The malware scanner, or the type detector a legacy format needs, could not be asked: nothing is refused for good. */
     SCAN_UNAVAILABLE,
 }
 

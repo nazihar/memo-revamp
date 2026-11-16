@@ -3,6 +3,7 @@ package com.memo.files.internal
 import com.memo.files.ContentRefusal
 import com.memo.files.ContentRefused
 import com.memo.files.FileType
+import com.memo.testsupport.LegacySamples
 import com.memo.testsupport.Samples
 import org.apache.commons.compress.utils.SeekableInMemoryByteChannel
 import org.assertj.core.api.Assertions.assertThat
@@ -128,5 +129,46 @@ class ContentInspectorTest {
         val many = Samples.zip(*Array(ZipInspector.MAX_ENTRIES + 1) { "f$it.txt" to ByteArray(0) })
 
         assertThat(rejection(many, "a.zip").detail).containsEntry("limit", "zip-entries")
+    }
+
+    @Test
+    fun `an OLE2 document is typed by the server only for purposes that accept legacy formats`() {
+        // ADR-0055: the magic sees only a container; the Tika server names what is inside, here a stand-in.
+        val xls = LegacySamples.xls()
+        val asked = mutableListOf<ByteArray>()
+        val legacy =
+            everything.copy(ole2 = { open ->
+                asked += open().use { it.readAllBytes() }
+                FileType.XLS
+            })
+
+        assertThat(inspect(xls, "ledger.xls", legacy).type).isEqualTo(FileType.XLS)
+        assertThat(asked.single()).isEqualTo(xls)
+        assertThat(rejection(xls, "ledger.doc", legacy).reason).isEqualTo(RejectionReason.TYPE_MISMATCH)
+        // Without the server's answer every OLE2 file stays a container, which no purpose allows.
+        assertThat(rejection(xls, "ledger.xls").detail["detectedType"]).isEqualTo(FileType.OLE2.mediaType)
+        // The server's refusal (an Outlook message) and its absence (fail closed) reach the uploader unchanged.
+        val outlook = "application/vnd.ms-outlook"
+        val refusing = everything.copy(ole2 = { _ -> reject(RejectionReason.TYPE_NOT_ALLOWED, "detectedType" to outlook) })
+        assertThat(rejection(LegacySamples.msg(), "minutes.msg", refusing).detail["detectedType"]).isEqualTo(outlook)
+        val down = everything.copy(ole2 = { _ -> reject(RejectionReason.SCAN_UNAVAILABLE, "scanner" to "unreachable") })
+        assertThat(rejection(LegacySamples.doc(), "minutes.doc", down).reason).isEqualTo(RejectionReason.SCAN_UNAVAILABLE)
+    }
+
+    @Test
+    fun `RTF and TIFF are recognised from content, and only a purpose that allows them takes them`() {
+        assertThat(inspect(LegacySamples.rtf, "letter.rtf").type).isEqualTo(FileType.RTF)
+        assertThat(inspect(LegacySamples.tiff(), "scan.tif").type).isEqualTo(FileType.TIFF)
+        assertThat(inspect(LegacySamples.tiff(), "scan.TIFF").type).isEqualTo(FileType.TIFF)
+        val modern = InspectionRules(FileType.entries.toSet() - FileType.NEVER_ALLOWED - FileType.LEGACY, maxPdfPages = 10)
+        assertThat(rejection(LegacySamples.rtf, "letter.rtf", modern).reason).isEqualTo(RejectionReason.TYPE_NOT_ALLOWED)
+        assertThat(rejection(LegacySamples.tiff(), "scan.tif", modern).detail["detectedType"]).isEqualTo("image/tiff")
+    }
+
+    @Test
+    fun `an old Office type named by its magic number alone is not taken`() {
+        // Word for DOS-era magic: Tika names it msword without any container; only the server may name a .doc.
+        val wordTwo = byteArrayOf(0xDB.toByte(), 0xA5.toByte(), 0x2D, 0x00) + ByteArray(1024)
+        assertThat(rejection(wordTwo, "old.doc").reason).isEqualTo(RejectionReason.TYPE_NOT_ALLOWED)
     }
 }

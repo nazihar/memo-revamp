@@ -79,4 +79,10 @@ class TikaClientTest {
         assertThat(TikaClient(FilesProperties(tikaUrl = "http://127.0.0.1:1")).text(input, 10, ByteArrayOutputStream()))
             .isEqualTo(RenditionOutcome.Retry("UNREACHABLE"))
     }
+
+    @Test
+    fun `legacy documents are extracted by the server, TIFF scans are not (no OCR)`() {
+        val types = TikaClient(FilesProperties(tikaUrl = "http://127.0.0.1:1")).textTypes
+        assertThat(types).contains(FileType.DOC, FileType.XLS, FileType.PPT, FileType.RTF).doesNotContain(FileType.TIFF)
+    }
 }

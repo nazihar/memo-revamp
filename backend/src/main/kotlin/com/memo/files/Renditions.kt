@@ -114,4 +114,16 @@ interface FileRenditions {
         kind: RenditionKind,
         out: OutputStream,
     ): Boolean
+
+    /**
+     * How many renditions of files of [purposeKey] are PENDING in the tenant, counted up to [atMost] and no further, so
+     * a backlog check stays cheap (an import's throttle, design E06 §5.3). In a tenant transaction.
+     */
+    fun pendingCount(
+        purposeKey: String,
+        atMost: Int,
+    ): Int
+
+    /** How many renditions of [versionIds] are PENDING (an import's report waits for none, E06 §5.4). In a transaction. */
+    fun pendingCount(versionIds: Collection<java.util.UUID>): Int
 }

@@ -246,6 +246,7 @@ internal class FileStore(
             uploadedBy = uploadedBy,
             uploadedAt = uploadedAt.toInstant(),
             retainUntil = retainUntil?.toInstant(),
+            purgedAt = purgedAt?.toInstant(),
         )
 }
 
@@ -316,3 +317,6 @@ internal data class PendingUpload(
 
 /** An unknown file or version id (also another tenant's: RLS hides it): 404. */
 internal class FileNotFoundException : RuntimeException("file not found")
+
+/** A purged version (ADR-0055): its row and hash are kept, its content is gone. 410. */
+internal class FileGoneException : RuntimeException("file version purged")

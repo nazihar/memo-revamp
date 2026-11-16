@@ -19,6 +19,7 @@ import com.memo.common.web.PreconditionRequiredException
 import com.memo.files.FileInfo
 import com.memo.files.FilePurpose
 import com.memo.files.FileType
+import com.memo.files.FileUploadRejected
 import com.memo.files.FileVersionCreated
 import com.memo.files.StorageClass
 import com.memo.system.Idempotency
@@ -46,7 +47,10 @@ import java.util.HexFormat
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicReference
 
-/** One upload as the API received it: a new file ([purposeKey]) or a new version of [fileId]. */
+/**
+ * One upload as the API received it: a new file ([purposeKey]) or a new version of [fileId]. A copy of stored content
+ * (FileUploads.copyFrom) gives the SHA-256 it must have ([expectedSha256], lower-case hex) and is not [rateLimited].
+ */
 internal data class UploadRequest(
     val purposeKey: String?,
     val ownerId: String?,
@@ -56,6 +60,8 @@ internal data class UploadRequest(
     val declaredLength: Long?,
     val idempotencyKey: String,
     val body: InputStream,
+    val expectedSha256: String? = null,
+    val rateLimited: Boolean = true,
 )
 
 /** The upload body ended before it was complete (the client went away): 400, nothing stored. */
@@ -82,6 +88,7 @@ internal class Uploads(
     private val crypto: FileCrypto,
     private val scanner: Scanner,
     private val inspector: ContentInspector,
+    private val detector: TikaDetector,
     private val objects: ObjectStore,
     private val retentions: Retentions,
     private val idempotency: Idempotency,
@@ -99,7 +106,7 @@ internal class Uploads(
         val plan = transactions.readInTenant(tenant) { plan(request) }
         val progress = Progress()
         try {
-            rateLimiter.consume(RateLimit.UPLOAD_PER_USER, user?.toString() ?: "anonymous")
+            if (request.rateLimited) rateLimiter.consume(plan.purpose.uploadRateLimit, user?.toString() ?: "anonymous")
             if (request.declaredLength != null && request.declaredLength > plan.maxBytes) {
                 reject(RejectionReason.TOO_LARGE, "maxBytes" to plan.maxBytes)
             }
@@ -132,6 +139,20 @@ internal class Uploads(
                         "bytesRead" to progress.bytes,
                     ),
         )
+        // The owner learns why (an import's original, design E06 §5.1); an unavailable checker refused nothing.
+        if (rejected.reason != RejectionReason.SCAN_UNAVAILABLE) {
+            events.publishEvent(
+                FileUploadRejected(
+                    tenantId = tenant.value,
+                    purposeKey = plan.purpose.key,
+                    ownerId = plan.ownerId,
+                    fileId = plan.fileId.takeUnless { plan.isNew },
+                    idempotencyKey = request.idempotencyKey,
+                    reasonCode = rejected.reason.name,
+                    signatureName = rejected.detail["signature"] as? String,
+                ),
+            )
+        }
     }
 
     private fun plan(request: UploadRequest): Plan {
@@ -191,11 +212,12 @@ internal class Uploads(
         val spoolFile = spool.create()
         try {
             val received = receive(tenant, plan, versionId, request.body, spoolFile, progress)
+            expectHash(request.expectedSha256, received.sha256)
             val inspected =
                 inspector.inspect(
                     { crypto.decrypting(tenant, plan.fileId, versionId, FileChannel.open(spoolFile, StandardOpenOption.READ)) },
                     request.declaredName,
-                    InspectionRules(plan.allowedTypes, plan.purpose.maxPdfPages, plan.purpose::inspectContent),
+                    inspectionRules(plan.purpose, plan.allowedTypes, detector),
                 )
             val now = clock.instant()
             val bucket = if (plan.retention != null) Bucket.RECORDS else Bucket.WORK
@@ -410,6 +432,30 @@ internal class Uploads(
         }
     }
 }
+
+/** A copy whose content is not the [expected] one is refused before anything is inspected or stored (ADR-0055). */
+private fun expectHash(
+    expected: String?,
+    received: ByteArray,
+) {
+    if (expected == null) return
+    val actual = HexFormat.of().formatHex(received)
+    if (!expected.equals(actual, ignoreCase = true)) {
+        reject(RejectionReason.HASH_MISMATCH, "expectedSha256" to expected.lowercase(), "sha256" to actual)
+    }
+}
+
+/** A purpose's rules; for purposes that accept legacy formats, the Tika server names OLE2 documents (ADR-0055). */
+private fun inspectionRules(
+    purpose: FilePurpose,
+    allowed: Set<FileType>,
+    detector: TikaDetector,
+) = InspectionRules(
+    allowed,
+    purpose.maxPdfPages,
+    purpose::inspectContent,
+    ole2 = if (purpose.acceptsLegacyFormats) detector::ole2Type else null,
+)
 
 private fun WritableByteChannel.writeFully(chunk: ByteBuffer) {
     while (chunk.hasRemaining()) write(chunk)

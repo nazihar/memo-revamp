@@ -18,6 +18,8 @@ abstract class FilesIntegrationTest : IntegrationTest() {
             registry.add("memo.storage.access-key") { TestObjectStorage.appKey }
             registry.add("memo.storage.secret-key") { TestObjectStorage.appSecret }
             TestMalwareScanner.properties().forEach { (key, value) -> registry.add(key) { value } }
+            // The Tika server's type detection for legacy formats (ADR-0055): a stand-in, switched off by its `down`.
+            TestTikaServer.properties().forEach { (key, value) -> registry.add(key) { value } }
             // Test JVMs share java.io.tmpdir: each gets its own spool, so one start-up sweep never removes another's uploads.
             registry.add("memo.files.spool-dir") { spoolDir.toString() }
         }

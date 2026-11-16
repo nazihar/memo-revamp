@@ -53,3 +53,7 @@ Chosen option 1.
 
 ## More information
 Research: `docs/plan/phase-3-memo-efile/epic-02-documents/research.md` §1, §3, §5. Related: ADR-0028 (encryption), ADR-0029 (upload pipeline), ADR-0037 (editor adapter), ADR-0047 (ONLYOFFICE 10 and hardening).
+
+## Amendment — 2026-11-16 (ADR-0055, E06 T2)
+- The Tika server's config enables a second endpoint, `detect`, beside `tika`. The upload pipeline asks `PUT /detect` which document is inside an OLE2 container, for the two legacy-import purposes only. It answers with a media type and nothing else; the server's limits are unchanged.
+- `.doc`, `.xls`, `.ppt` and `.rtf` get PDF renditions through ONLYOFFICE and text through Tika, like the modern formats. TIFF scans get neither: ONLYOFFICE refuses TIFF (-7) and there is no OCR, so both renditions are `NOT_POSSIBLE` and the scan is download-only.

@@ -39,4 +39,19 @@ class ClamdReplyTest {
         val verdict = ClamdReply.parse("stream: \u0001ÿ\nx")
         assertThat((verdict as ScanVerdict.Failed).reason).doesNotContain("\u0001", "\n")
     }
+
+    @ParameterizedTest
+    @CsvSource(
+        "Heuristics.OLE2.ContainsMacros.VBA, MALWARE",
+        "Heuristics.Encrypted.OLE2, ENCRYPTED",
+        "Heuristics.Encrypted.PDF, ENCRYPTED",
+        "Heuristics.Limits.Exceeded.MaxFileSize, LIMIT_EXCEEDED",
+        "Win.Test.EICAR_HDB-1, MALWARE",
+    )
+    fun `a macro in a legacy Office file is malware, an encrypted one is encrypted (ADR-0055, E06 T1 spike)`(
+        signature: String,
+        reason: String,
+    ) {
+        assertThat(reasonOf(signature).name).isEqualTo(reason)
+    }
 }

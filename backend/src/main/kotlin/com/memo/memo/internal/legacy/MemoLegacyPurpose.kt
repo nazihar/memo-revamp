@@ -8,6 +8,7 @@ import com.memo.files.FilePurpose
 import com.memo.files.FileType
 import com.memo.files.RenditionKind
 import com.memo.files.StorageClass
+import com.memo.memo.LegacyMemos
 import com.memo.memo.internal.MemoStore
 import com.memo.memo.internal.MemoTypes
 import org.springframework.stereotype.Component
@@ -80,7 +81,7 @@ class MemoLegacyPurpose(
     }
 
     companion object {
-        const val KEY = "memo.legacy"
+        const val KEY = LegacyMemos.ORIGINAL_PURPOSE
 
         /** The import job's system name (design E06 §12): the only actor that stores originals. */
         const val JOB = "legacy-import"

@@ -156,6 +156,10 @@ open class ImportsBatchRecord private constructor() : UpdatableRecordImpl<Import
         set(value): Unit = set(33, value)
         get(): JSONB? = get(33) as JSONB?
 
+    open var throttledAt: OffsetDateTime?
+        set(value): Unit = set(34, value)
+        get(): OffsetDateTime? = get(34) as OffsetDateTime?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -165,7 +169,7 @@ open class ImportsBatchRecord private constructor() : UpdatableRecordImpl<Import
     /**
      * Create a detached, initialised ImportsBatchRecord
      */
-    constructor(id: UUID, tenantId: UUID, name: String, sourceCode: String, timeZone: String, defaultClassificationId: UUID? = null, numberPrefix: String? = null, state: String? = null, version: Long? = null, createdBy: UUID, createdAt: OffsetDateTime, updatedAt: OffsetDateTime, sourceKind: String? = null, workbookFileId: UUID? = null, workbookVersionId: UUID? = null, memosFileId: UUID? = null, memosVersionId: UUID? = null, filesFileId: UUID? = null, filesVersionId: UUID? = null, approvalsFileId: UUID? = null, approvalsVersionId: UUID? = null, inputHash: ByteArray? = null, dryRunHash: ByteArray? = null, dryRunAt: OffsetDateTime? = null, startedBy: UUID? = null, startedAt: OffsetDateTime? = null, stepUpAt: OffsetDateTime? = null, finishedAt: OffsetDateTime? = null, completedAt: OffsetDateTime? = null, closedAt: OffsetDateTime? = null, closeReason: String? = null, maxRank: Int? = null, totals: JSONB? = null, report: JSONB? = null): this() {
+    constructor(id: UUID, tenantId: UUID, name: String, sourceCode: String, timeZone: String, defaultClassificationId: UUID? = null, numberPrefix: String? = null, state: String? = null, version: Long? = null, createdBy: UUID, createdAt: OffsetDateTime, updatedAt: OffsetDateTime, sourceKind: String? = null, workbookFileId: UUID? = null, workbookVersionId: UUID? = null, memosFileId: UUID? = null, memosVersionId: UUID? = null, filesFileId: UUID? = null, filesVersionId: UUID? = null, approvalsFileId: UUID? = null, approvalsVersionId: UUID? = null, inputHash: ByteArray? = null, dryRunHash: ByteArray? = null, dryRunAt: OffsetDateTime? = null, startedBy: UUID? = null, startedAt: OffsetDateTime? = null, stepUpAt: OffsetDateTime? = null, finishedAt: OffsetDateTime? = null, completedAt: OffsetDateTime? = null, closedAt: OffsetDateTime? = null, closeReason: String? = null, maxRank: Int? = null, totals: JSONB? = null, report: JSONB? = null, throttledAt: OffsetDateTime? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.name = name
@@ -200,6 +204,7 @@ open class ImportsBatchRecord private constructor() : UpdatableRecordImpl<Import
         this.maxRank = maxRank
         this.totals = totals
         this.report = report
+        this.throttledAt = throttledAt
         resetTouchedOnNotNull()
     }
 }

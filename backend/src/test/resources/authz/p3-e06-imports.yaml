@@ -58,3 +58,19 @@ endpoints:
     rule: signedIn
     headers: { If-Match: "\"0\"" }
     expect: { user: 403, tenantAdmin: 403, tenantAdminStale: 403 }
+  # The import: start and resume need a fresh step-up as well (T7). Their allowed paths, step-up and clearance refusals,
+  # one running import per tenant and the cross-tenant 404s are in ImportRunIT and ImportConcurrencyIT.
+  - endpoint: "POST /api/v1/admin/imports/{id}/start"
+    rule: signedIn
+    headers: { If-Match: "\"0\"" }
+    body: { expectedRows: 1 }
+    expect: { user: 403, tenantAdmin: 403, tenantAdminStale: 403 }
+  - endpoint: "POST /api/v1/admin/imports/{id}/stop"
+    rule: signedIn
+    expect: { user: 403, tenantAdmin: 403, tenantAdminStale: 403 }
+  - endpoint: "POST /api/v1/admin/imports/{id}/resume"
+    rule: signedIn
+    expect: { user: 403, tenantAdmin: 403, tenantAdminStale: 403 }
+  - endpoint: "POST /api/v1/admin/imports/{id}/finish"
+    rule: signedIn
+    expect: { user: 403, tenantAdmin: 403, tenantAdminStale: 403 }

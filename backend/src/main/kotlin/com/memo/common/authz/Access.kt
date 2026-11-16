@@ -1,6 +1,7 @@
 package com.memo.common.authz
 
 import java.time.Duration
+import java.time.Instant
 import java.util.UUID
 
 /**
@@ -135,4 +136,7 @@ data class GrantsChanged(
 interface StepUpCheck {
     /** [window] null: the tenant's step-up window; actions with their own window (approvals, ADR-0036) pass it. */
     fun require(window: Duration? = null)
+
+    /** When the session's step-up factor was last proven (an import records it, design E06 §12); null when unknown. */
+    fun provenAt(): Instant? = null
 }

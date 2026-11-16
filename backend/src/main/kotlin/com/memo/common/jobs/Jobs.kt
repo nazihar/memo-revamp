@@ -1,9 +1,11 @@
 package com.memo.common.jobs
 
+import com.github.kagkarlsson.scheduler.task.CompletionHandler
 import com.github.kagkarlsson.scheduler.task.ExecutionComplete
 import com.github.kagkarlsson.scheduler.task.ExecutionOperations
 import com.github.kagkarlsson.scheduler.task.FailureHandler
 import com.github.kagkarlsson.scheduler.task.SchedulableInstance
+import com.github.kagkarlsson.scheduler.task.helper.CustomTask
 import com.github.kagkarlsson.scheduler.task.helper.OneTimeTask
 import com.github.kagkarlsson.scheduler.task.helper.RecurringTask
 import com.github.kagkarlsson.scheduler.task.helper.Tasks
@@ -91,6 +93,41 @@ class Jobs(
                 }
                 val failures = context.execution.consecutiveFailures
                 TenantContext.call(tenant) { ActorContext.asSystem(name) { handler(data, failures) } }
+            }
+
+    /**
+     * A tenant task that runs one step of its work per execution and reschedules itself (the same instance) while there is
+     * more: the handler answers the delay before the next step, or null when the work is done (the execution is then
+     * removed). Long work is thus split into short executions that a stop request or another node can come between.
+     * Failures retry as for [tenantTask], and the handler learns how many failed before; a dead execution is revived.
+     */
+    fun <P : TenantScopedPayload> tenantStepTask(
+        name: String,
+        payload: Class<P>,
+        maxRetries: Int = DEFAULT_MAX_RETRIES,
+        handler: (P, Int) -> Duration?,
+    ): CustomTask<P> =
+        Tasks
+            .custom(name, payload)
+            .onFailure(retrying(name, maxRetries))
+            .onDeadExecutionRevive()
+            .execute { instance, context ->
+                val data =
+                    runCatching { instance.data }.getOrElse { throw PermanentJobFailure("task data of $name is unreadable") }
+                        ?: throw PermanentJobFailure("task $name has no data (no tenant)")
+                val tenant = TenantId(data.tenantId)
+                when (knownTenants.state(tenant)) {
+                    TenantState.UNKNOWN -> throw PermanentJobFailure("task $name names an unknown tenant")
+                    TenantState.SUSPENDED -> throw TenantSuspendedPause()
+                    TenantState.ACTIVE -> Unit
+                }
+                val failures = context.execution.consecutiveFailures
+                val next = TenantContext.call(tenant) { ActorContext.asSystem(name) { handler(data, failures) } }
+                if (next == null) {
+                    CompletionHandler.OnCompleteRemove<P>()
+                } else {
+                    CompletionHandler<P> { complete, operations -> operations.reschedule(complete, complete.timeDone.plus(next)) }
+                }
             }
 
     /**

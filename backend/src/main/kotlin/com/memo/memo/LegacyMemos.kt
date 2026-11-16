@@ -157,6 +157,19 @@ interface LegacyMemos {
 
     /** The memo types a row may map to (design E06 §6.3): active, with a published version, and that version's field keys. */
     fun types(): List<LegacyType>
+
+    /**
+     * Keeps the originals of the imported memo [memoId] for its type's retention years, counted from when each was stored
+     * (design E06 §10): promotion stores them before the memo exists, so they get the tenant's default first. Only ever
+     * lengthens a lock; safe to repeat. Returns how many versions were extended. Call outside a transaction (storage is
+     * called), with the tenant bound.
+     */
+    fun retainOriginals(memoId: UUID): Int
+
+    companion object {
+        /** The purpose of imported originals: the import promotes each staged original into it, owned by the memo's id. */
+        const val ORIGINAL_PURPOSE = "memo.legacy"
+    }
 }
 
 /** Legacy numbers as a row key (ADR-0055). */

@@ -74,9 +74,13 @@ class LegacyChecks(
         val mapped = row.mapped
         val version = types.published(mapped.typeId)
         val fields =
-            version?.let { metadata.check(it.settings.fields, mapped.metadata, requireAll = false).problems }.orEmpty().map {
-                LegacyProblem("FIELD_INVALID", "field:${it.field.removePrefix("metadata.")}")
-            }
+            version
+                ?.let { metadata.check(it.settings.fields, LegacyFieldText.typed(it.settings.fields, mapped.metadata), requireAll = false) }
+                ?.problems
+                .orEmpty()
+                .map {
+                    LegacyProblem("FIELD_INVALID", "field:${it.field.removePrefix("metadata.")}")
+                }
         return listOfNotNull(
             problem("TYPE_UNMAPPED", "memo_type") { version == null },
             problem("CLASSIFICATION_UNMAPPED", "classification") { clearances.level(mapped.classificationId) == null },

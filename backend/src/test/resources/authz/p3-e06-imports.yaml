@@ -2,7 +2,8 @@
 # it, so every signed-in subject is 403 before anything is read. Readers without the permission are 403, holders who
 # cannot read the memo 404, and holders without a fresh step-up 401 (LegacyCorrectionIT). The batch endpoints' allowed
 # paths, and the uploads of the three purposes (imports.source, imports.intake, imports.record: 403 without the
-# permission or for a batch that moved on), are in ImportBatchIT; POST /files itself is in e05-files.yaml.
+# permission or for a batch that moved on), are in ImportBatchIT; the dry run's and the mappings' in DryRunIT and
+# MappingIT; POST /files itself is in e05-files.yaml.
 epic: P3-E06
 endpoints:
   - endpoint: "POST /api/v1/memos/{id}/legacy/corrections"
@@ -39,4 +40,21 @@ endpoints:
     expect: { user: 403, tenantAdmin: 403, tenantAdminStale: 403 }
   - endpoint: "GET /api/v1/admin/imports/{id}/files"
     rule: signedIn
+    expect: { user: 403, tenantAdmin: 403, tenantAdminStale: 403 }
+  # The dry run, its problems and rows, and the mappings (T6).
+  - endpoint: "POST /api/v1/admin/imports/{id}/dry-run"
+    rule: signedIn
+    expect: { user: 403, tenantAdmin: 403, tenantAdminStale: 403 }
+  - endpoint: "GET /api/v1/admin/imports/{id}/problems"
+    rule: signedIn
+    expect: { user: 403, tenantAdmin: 403, tenantAdminStale: 403 }
+  - endpoint: "GET /api/v1/admin/imports/{id}/rows"
+    rule: signedIn
+    expect: { user: 403, tenantAdmin: 403, tenantAdminStale: 403 }
+  - endpoint: "GET /api/v1/admin/imports/{id}/mappings"
+    rule: signedIn
+    expect: { user: 403, tenantAdmin: 403, tenantAdminStale: 403 }
+  - endpoint: "PUT /api/v1/admin/imports/{id}/mappings/{kind}"
+    rule: signedIn
+    headers: { If-Match: "\"0\"" }
     expect: { user: 403, tenantAdmin: 403, tenantAdminStale: 403 }

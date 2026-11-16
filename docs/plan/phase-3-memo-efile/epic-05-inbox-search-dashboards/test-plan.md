@@ -44,5 +44,5 @@
 - [x] T1 spike recorded; ADR-0054 numbers confirmed or amended (log, 2026-11-15)
 - [ ] V1 load results recorded in the log with hardware and concurrency
 - [ ] ASVS rows (V2, V5, V8, V14, V15, V16)
-- [ ] Dependency register: Recharts and `react-is` (no `pg_trgm`: ADR-0054 amendment)
+- [x] Dependency register: Recharts and `react-is` (T7, 2026-11-16; no `pg_trgm`: ADR-0054 amendment)
 - [ ] Owner's review of flows H and I recorded in `ux-review.md`

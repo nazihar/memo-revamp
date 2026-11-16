@@ -1,6 +1,16 @@
 import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
-import type { Health, MyAccess, Session, Branding, PlatformSession, Term, Terms } from '@/api/generated/types.gen'
+import type {
+  Health,
+  MyAccess,
+  Session,
+  Branding,
+  PlatformSession,
+  Term,
+  Terms,
+  WatchSettings,
+  WatchStatus,
+} from '@/api/generated/types.gen'
 
 // jsdom has no origin for relative URLs; the generated client uses baseUrl "/" which resolves against this.
 export const API_ORIGIN = 'http://localhost:3000'
@@ -74,6 +84,20 @@ export const termsHandler = (terms: Term[] = []) =>
 export const platformSessionHandler = (body: PlatformSession = { state: 'ANONYMOUS' }) =>
   http.get(`${API_ORIGIN}/api/v1/platform/auth/session`, () => HttpResponse.json<PlatformSession>(body))
 
+/** The team view (E05): 403 unless a test gives the user a unit to oversee, so the inbox hides the Team tab. */
+export const noTeamHandler = () =>
+  http.get(`${API_ORIGIN}/api/v1/inbox/team`, () =>
+    HttpResponse.json({ type: 'about:blank', title: 'Forbidden', status: 403 }, { status: 403 }),
+  )
+
+/** Whether the user follows a memo (E05): not, unless a test says so. */
+export const watchStatusHandler = (body: WatchStatus = { watching: false }) =>
+  http.get(`${API_ORIGIN}/api/v1/memos/:id/watch`, () => HttpResponse.json<WatchStatus>(body))
+
+/** How the user follows memos (E05): the defaults, auto-follow on and a daily digest. */
+export const watchSettingsHandler = (body: WatchSettings = { autoWatch: true, email: 'DIGEST' }) =>
+  http.get(`${API_ORIGIN}/api/v1/me/watch-settings`, () => HttpResponse.json<WatchSettings>(body))
+
 export const server = setupServer(
   healthHandler(),
   sessionHandler(),
@@ -83,4 +107,7 @@ export const server = setupServer(
   brandingHandler(),
   termsHandler(),
   platformSessionHandler(),
+  noTeamHandler(),
+  watchStatusHandler(),
+  watchSettingsHandler(),
 )

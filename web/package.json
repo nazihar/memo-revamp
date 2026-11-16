@@ -48,6 +48,8 @@
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-intl": "12.1.4",
+    "react-is": "19.3.0",
+    "recharts": "3.10.1",
     "tailwind-merge": "3.7.0"
   },
   "devDependencies": {

@@ -3680,6 +3680,740 @@
       "value": "Views of this versionSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "dashboard.age.bucket": [
+    {
+      "type": 1,
+      "value": "bucket"
+    },
+    {
+      "type": 0,
+      "value": " daysSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.age.bucket0": [
+    {
+      "type": 0,
+      "value": "0–2 daysSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.age.bucket10": [
+    {
+      "type": 0,
+      "value": "Over 10 daysSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.age.bucket3": [
+    {
+      "type": 0,
+      "value": "3–5 daysSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.age.bucket6": [
+    {
+      "type": 0,
+      "value": "6–10 daysSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.age.colAge": [
+    {
+      "type": 0,
+      "value": "Waiting (working days)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.age.colTasks": [
+    {
+      "type": 0,
+      "value": "TasksSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.age.none": [
+    {
+      "type": 0,
+      "value": "Nothing is pending.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.age.summary": [
+    {
+      "type": 6,
+      "value": "total",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " task is pending"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " tasks are pending"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "; "
+    },
+    {
+      "type": 6,
+      "value": "older",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "none has"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " has"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " have"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " waited more than 5 working days.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.age.title": [
+    {
+      "type": 0,
+      "value": "Pending by ageSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.cycle.colDecided": [
+    {
+      "type": 0,
+      "value": "DecidedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.cycle.colMedian": [
+    {
+      "type": 0,
+      "value": "Median (days)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.cycle.colP90": [
+    {
+      "type": 0,
+      "value": "P90 (days)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.cycle.colType": [
+    {
+      "type": 0,
+      "value": "Memo typeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.cycle.median": [
+    {
+      "type": 0,
+      "value": "MedianSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.cycle.none": [
+    {
+      "type": 0,
+      "value": "No memo was decided in this period.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.cycle.p90": [
+    {
+      "type": 0,
+      "value": "P90SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.cycle.summary": [
+    {
+      "type": 6,
+      "value": "types",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Memos of "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " type were decided"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Memos of "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " types were decided"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "; the longest median is "
+    },
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": ", at "
+    },
+    {
+      "type": 1,
+      "value": "days"
+    },
+    {
+      "type": 0,
+      "value": " days.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.cycle.title": [
+    {
+      "type": 0,
+      "value": "Cycle time by memo typeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.cycle.value": [
+    {
+      "type": 1,
+      "value": "series"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.forbidden": [
+    {
+      "type": 0,
+      "value": "You may not see the figures of this unit. Choose Me or a unit you oversee.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.lead": [
+    {
+      "type": 0,
+      "value": "How approvals are moving: what is waiting and for how long, how long decisions take, and the flow per week.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.overdue.count": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " task"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " tasks"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.overdue.summary": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Nothing is past its due time."
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " task is past its due time."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " tasks are past their due time."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.overdue.title": [
+    {
+      "type": 0,
+      "value": "OverdueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.overdue.viewList": [
+    {
+      "type": 0,
+      "value": "View listSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.period": [
+    {
+      "type": 0,
+      "value": "PeriodSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.period.weeks": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Last week"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Last "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " weeks"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.person.colOverdue": [
+    {
+      "type": 0,
+      "value": "OverdueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.person.colPending": [
+    {
+      "type": 0,
+      "value": "PendingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.person.colPerson": [
+    {
+      "type": 0,
+      "value": "PersonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.person.label": [
+    {
+      "type": 1,
+      "value": "pending"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 6,
+      "value": "overdue",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "none overdue"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " overdue"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.person.none": [
+    {
+      "type": 0,
+      "value": "Nobody in this scope has pending tasks.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.person.summary": [
+    {
+      "type": 6,
+      "value": "people",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " person has pending tasks"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " people have pending tasks"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "; the most has "
+    },
+    {
+      "type": 1,
+      "value": "top"
+    },
+    {
+      "type": 0,
+      "value": ", with "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.person.title": [
+    {
+      "type": 0,
+      "value": "Pending by personSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.scope": [
+    {
+      "type": 0,
+      "value": "ScopeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.scope.me": [
+    {
+      "type": 0,
+      "value": "MeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.scope.unit": [
+    {
+      "type": 0,
+      "value": "Unit "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.showMine": [
+    {
+      "type": 0,
+      "value": "Show my figuresSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.showTable": [
+    {
+      "type": 0,
+      "value": "Show as tableSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.showing": [
+    {
+      "type": 0,
+      "value": "Showing: "
+    },
+    {
+      "type": 1,
+      "value": "scope"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "from"
+    },
+    {
+      "type": 0,
+      "value": " – "
+    },
+    {
+      "type": 1,
+      "value": "to"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.throughput.colWeek": [
+    {
+      "type": 0,
+      "value": "Week ofSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.throughput.completed": [
+    {
+      "type": 0,
+      "value": "CompletedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.throughput.created": [
+    {
+      "type": 0,
+      "value": "CreatedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.throughput.summary": [
+    {
+      "type": 6,
+      "value": "created",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " memo created"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " memos created"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " and "
+    },
+    {
+      "type": 6,
+      "value": "completed",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " completed"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " completed"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " in "
+    },
+    {
+      "type": 6,
+      "value": "weeks",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " week"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " weeks"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.throughput.title": [
+    {
+      "type": 0,
+      "value": "Throughput per weekSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "dashboard.title": [
+    {
+      "type": 0,
+      "value": "Approvals dashboardSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "dialog.close": [
     {
       "type": 0,
@@ -3820,6 +4554,68 @@
     {
       "type": 0,
       "value": "Too many attempts. Wait a minute and try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "follow.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "follow.follow": [
+    {
+      "type": 0,
+      "value": "FollowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "follow.following": [
+    {
+      "type": 0,
+      "value": "Following · you get updates on this memoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "follow.followingBecause": [
+    {
+      "type": 0,
+      "value": "Following · you get updates on this memo ("
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "follow.reason.acted": [
+    {
+      "type": 0,
+      "value": "you acted on itSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "follow.reason.initiated": [
+    {
+      "type": 0,
+      "value": "you started itSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "follow.reason.manual": [
+    {
+      "type": 0,
+      "value": "you follow thisSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "follow.reason.mentioned": [
+    {
+      "type": 0,
+      "value": "you were mentionedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "follow.unfollow": [
+    {
+      "type": 0,
+      "value": "UnfollowSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "form.leave.cancel": [
@@ -3980,6 +4776,820 @@
     {
       "type": 0,
       "value": "Invite people and manage their accounts.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.bulk.claim": [
+    {
+      "type": 0,
+      "value": "ClaimSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.bulk.clear": [
+    {
+      "type": 0,
+      "value": "Clear selectionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.bulk.count.changed": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " not changed"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " not changed"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ": it was decided or moved meanwhileSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.bulk.count.forbidden": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " not allowed"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " not allowed"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.bulk.count.notFound": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " no longer found"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " no longer found"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.bulk.dismiss": [
+    {
+      "type": 0,
+      "value": "DismissSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.bulk.done.claim": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " claimed"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " claimed"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.bulk.done.reassign": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " reassigned"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " reassigned"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.bulk.done.release": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " released"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " released"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.bulk.done.unwatch": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " unfollowed"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " unfollowed"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.bulk.done.watch": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " followed"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " followed"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.bulk.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.bulk.forbidden": [
+    {
+      "type": 0,
+      "value": "You may not do this.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.bulk.item.changed": [
+    {
+      "type": 0,
+      "value": "Not changed: it was decided or moved meanwhileSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.bulk.item.forbidden": [
+    {
+      "type": 0,
+      "value": "Not allowedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.bulk.item.notFound": [
+    {
+      "type": 0,
+      "value": "No longer foundSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.bulk.itemResult": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "result"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.bulk.label": [
+    {
+      "type": 0,
+      "value": "Actions on the selected itemsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.bulk.notDone": [
+    {
+      "type": 0,
+      "value": "Not doneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.bulk.reassign": [
+    {
+      "type": 0,
+      "value": "Reassign…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.bulk.release": [
+    {
+      "type": 0,
+      "value": "ReleaseSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.bulk.selected": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " selected"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " selected"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.bulk.unwatch": [
+    {
+      "type": 0,
+      "value": "UnfollowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.bulk.watch": [
+    {
+      "type": 0,
+      "value": "WatchSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.reassign.confirm": [
+    {
+      "type": 0,
+      "value": "ReassignSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.reassign.lead": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "The task goes"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "The "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " tasks go"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " to the person you choose. You confirm it is you before it is done.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.reassign.personRequired": [
+    {
+      "type": 0,
+      "value": "Choose the new person.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.reassign.reason": [
+    {
+      "type": 0,
+      "value": "ReasonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.reassign.reasonHint": [
+    {
+      "type": 0,
+      "value": "Both people are told, and the reason goes into the memo’s history.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.reassign.reasonRequired": [
+    {
+      "type": 0,
+      "value": "A reason is required.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.reassign.title": [
+    {
+      "type": 0,
+      "value": "Reassign the selected tasksSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.reassign.to": [
+    {
+      "type": 0,
+      "value": "New personSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.select": [
+    {
+      "type": 0,
+      "value": "Select "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.selectAll": [
+    {
+      "type": 0,
+      "value": "Select all shownSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.sort": [
+    {
+      "type": 0,
+      "value": "SortSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.sort.assigned": [
+    {
+      "type": 0,
+      "value": "AssignedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.sort.due": [
+    {
+      "type": 0,
+      "value": "DueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.tab.team": [
+    {
+      "type": 0,
+      "value": "TeamSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.tab.watching": [
+    {
+      "type": 0,
+      "value": "WatchingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.team.count": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " task"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " tasks"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 6,
+      "value": "overdue",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "none overdue"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " overdue"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.team.empty": [
+    {
+      "type": 0,
+      "value": "No task matches.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.team.filter.allTeams": [
+    {
+      "type": 0,
+      "value": "All the units I overseeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.team.filter.person": [
+    {
+      "type": 0,
+      "value": "PersonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.team.filter.status": [
+    {
+      "type": 0,
+      "value": "StatusSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.team.filter.team": [
+    {
+      "type": 0,
+      "value": "TeamSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.team.holderStep": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "step"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.team.noDue": [
+    {
+      "type": 0,
+      "value": "No due timeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.team.none": [
+    {
+      "type": 0,
+      "value": "The team view is for unit heads and people given it. You do not oversee a unit.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.team.referenceUnit": [
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "unit"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.team.status.overdue": [
+    {
+      "type": 0,
+      "value": "OverdueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.team.status.pending": [
+    {
+      "type": 0,
+      "value": "PendingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.team.waiting": [
+    {
+      "type": 6,
+      "value": "days",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Waiting since today"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Waiting "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working day"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Waiting "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working days"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.watching.empty": [
+    {
+      "type": 0,
+      "value": "You follow no memos. Open a memo and choose Follow to get its news here.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.watching.reason.acted": [
+    {
+      "type": 0,
+      "value": "You acted on itSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.watching.reason.initiated": [
+    {
+      "type": 0,
+      "value": "You started itSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.watching.reason.manual": [
+    {
+      "type": 0,
+      "value": "You follow thisSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.watching.reason.mentioned": [
+    {
+      "type": 0,
+      "value": "You were mentionedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "inbox.watching.since": [
+    {
+      "type": 0,
+      "value": "Following since "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "invitation.accept": [
@@ -9943,6 +11553,12 @@
       "value": "ClassificationSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "nav.dashboard": [
+    {
+      "type": 0,
+      "value": "DashboardSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "nav.distributionLists": [
     {
       "type": 0,
@@ -10606,6 +12222,12 @@
       "value": "Always on, to protect your accountSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "notifications.prefs.saveFailed": [
+    {
+      "type": 0,
+      "value": "That was not saved. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "notifications.prefs.saved": [
     {
       "type": 0,
@@ -10636,6 +12258,54 @@
     {
       "type": 0,
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.watch.auto": [
+    {
+      "type": 0,
+      "value": "Follow memos I create or act onSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.watch.autoHint": [
+    {
+      "type": 0,
+      "value": "You can still follow or unfollow any memo yourself.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.watch.email": [
+    {
+      "type": 0,
+      "value": "Email me about followed memosSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.watch.email.digest": [
+    {
+      "type": 0,
+      "value": "Daily digest (default)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.watch.email.immediate": [
+    {
+      "type": 0,
+      "value": "At onceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.watch.email.off": [
+    {
+      "type": 0,
+      "value": "NeverSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.watch.lead": [
+    {
+      "type": 0,
+      "value": "Followed memos tell you when a step is decided, a note is added or the memo closes. Anything that needs you always reaches you at once.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.watch.title": [
+    {
+      "type": 0,
+      "value": "Memos you followSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "org.addEntity": [

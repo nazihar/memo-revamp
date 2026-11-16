@@ -29,6 +29,8 @@ const ALL_PARTS: ReadonlySet<CataloguePart> = new Set([
   'platform',
   'patterns',
   'search',
+  'inbox',
+  'dashboard',
 ])
 
 const LocaleContext = createContext<LocaleContextValue | null>(null)

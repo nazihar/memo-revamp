@@ -138,5 +138,8 @@ export default defineConfig({
     include: ['src/**/*.test.{ts,tsx}'],
     restoreMocks: true,
     css: false,
+    // The first test of a file that renders the route tree loads every route's module; with one worker per core that
+    // took more than the default 5 s on a loaded 14-core machine (E05 T7), failing tests at random.
+    testTimeout: 15_000,
   },
 })

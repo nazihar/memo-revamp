@@ -11,6 +11,7 @@ import { ErrorState, LoadingState } from '@/components/page/States'
 import { Checkbox } from '@/components/ui/form-controls'
 import { useToast } from '@/components/ui/toast-context'
 import { categoryLabel, nm, nmv } from './notification-messages'
+import { WatchSettings } from './WatchSettings'
 
 const CHANNELS = ['IN_APP', 'EMAIL'] as const
 
@@ -94,6 +95,7 @@ export function NotificationPreferencesPage() {
           </table>
         </div>
       )}
+      <WatchSettings />
     </section>
   )
 }

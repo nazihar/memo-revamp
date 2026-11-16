@@ -23,6 +23,22 @@ export const nm = defineMessages({
   channelEmail: { id: 'notifications.prefs.email', defaultMessage: 'Email' },
   mandatory: { id: 'notifications.prefs.mandatory', defaultMessage: 'Always on, to protect your account' },
   saved: { id: 'notifications.prefs.saved', defaultMessage: 'Notification settings saved.' },
+  saveFailed: { id: 'notifications.prefs.saveFailed', defaultMessage: 'That was not saved. Try again.' },
+  watchTitle: { id: 'notifications.watch.title', defaultMessage: 'Memos you follow' },
+  watchLead: {
+    id: 'notifications.watch.lead',
+    defaultMessage:
+      'Followed memos tell you when a step is decided, a note is added or the memo closes. Anything that needs you always reaches you at once.',
+  },
+  autoWatch: { id: 'notifications.watch.auto', defaultMessage: 'Follow memos I create or act on' },
+  autoWatchHint: {
+    id: 'notifications.watch.autoHint',
+    defaultMessage: 'You can still follow or unfollow any memo yourself.',
+  },
+  watchEmail: { id: 'notifications.watch.email', defaultMessage: 'Email me about followed memos' },
+  watchEmailDIGEST: { id: 'notifications.watch.email.digest', defaultMessage: 'Daily digest (default)' },
+  watchEmailIMMEDIATE: { id: 'notifications.watch.email.immediate', defaultMessage: 'At once' },
+  watchEmailOFF: { id: 'notifications.watch.email.off', defaultMessage: 'Never' },
   categorySECURITY: { id: 'notifications.category.security', defaultMessage: 'Security' },
   categoryADMINISTRATION: { id: 'notifications.category.administration', defaultMessage: 'Access and administration' },
   categoryWORKFLOW: { id: 'notifications.category.workflow', defaultMessage: 'Memo approvals' },

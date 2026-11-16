@@ -49,6 +49,8 @@ const loaders: Record<CataloguePart, Record<string, () => Promise<Messages>>> = 
   platform: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'platform' }, import: 'default' }),
   patterns: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'patterns' }, import: 'default' }),
   search: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'search' }, import: 'default' }),
+  inbox: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'inbox' }, import: 'default' }),
+  dashboard: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'dashboard' }, import: 'default' }),
 }
 
 /** [part] of [locale]'s messages; empty for English (the source locale). */

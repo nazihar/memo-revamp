@@ -10,8 +10,9 @@ import type {
   MemoView,
   OpenEditorRequest,
   OpenEditorResponse,
+  WatchStatus,
 } from '@/api/generated/types.gen'
-import { accessHandler, API_ORIGIN, server, sessionHandler, signedInSession } from '@/test/msw'
+import { accessHandler, API_ORIGIN, server, sessionHandler, signedInSession, watchStatusHandler } from '@/test/msw'
 import { expectNoA11yViolations, renderRoute } from '@/test/render'
 
 const memo: MemoView = {
@@ -201,6 +202,47 @@ describe('memo view', () => {
     await screen.findByText('My tasks', {}, { timeout: 5000 })
     expect(keys).toHaveLength(1)
     expect(keys[0]).toMatch(/^[0-9a-f-]{36}$/)
+  })
+
+  it('follows the memo, says why updates come, and unfollows (flow J)', async () => {
+    const user = userEvent.setup()
+    const calls: string[] = []
+    server.use(
+      sessionHandler(signedInSession()),
+      accessHandler([]),
+      ...memoHandlers(),
+      watchStatusHandler({ watching: false }),
+      http.put(`${API_ORIGIN}/api/v1/memos/m1/watch`, () => {
+        calls.push('PUT')
+        return HttpResponse.json<WatchStatus>({ watching: true, reason: 'MANUAL' })
+      }),
+      http.delete(`${API_ORIGIN}/api/v1/memos/m1/watch`, () => {
+        calls.push('DELETE')
+        return new HttpResponse(null, { status: 204 })
+      }),
+    )
+    const { container } = renderRoute('/memos/m1')
+
+    await user.click(await screen.findByRole('button', { name: 'Follow' }, { timeout: 5000 }))
+    expect(await screen.findByText('Following · you get updates on this memo (you follow this)')).toBeInTheDocument()
+    await expectNoA11yViolations(container)
+    await user.click(screen.getByRole('button', { name: 'Unfollow' }))
+    expect(await screen.findByRole('button', { name: 'Follow' })).toBeInTheDocument()
+    expect(calls).toEqual(['PUT', 'DELETE'])
+  })
+
+  it('shows why a memo is followed automatically', async () => {
+    server.use(
+      sessionHandler(signedInSession()),
+      accessHandler([]),
+      ...memoHandlers(),
+      watchStatusHandler({ watching: true, reason: 'ACTED' }),
+    )
+    renderRoute('/memos/m1')
+    expect(
+      await screen.findByText('Following · you get updates on this memo (you acted on it)', {}, { timeout: 5000 }),
+    ).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Unfollow' })).toBeInTheDocument()
   })
 })
 

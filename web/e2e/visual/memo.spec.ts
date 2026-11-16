@@ -6,6 +6,7 @@ import type {
   InboxPage,
   MemoView,
   VersionComparison,
+  WatchStatus,
 } from '../../src/api/generated/types.gen'
 import { expect, test } from '../fixtures'
 
@@ -298,6 +299,13 @@ async function setUp(page: Page, theme: string, locale: string) {
   )
   await page.route('**/api/v1/memos/m1', (route) => route.fulfill({ json: memo }))
   await page.route('**/api/v1/memos/m1/history', (route) => route.fulfill({ json: history }))
+  // Phase 3 E05: the approver follows the memo because they acted on it; they oversee no team.
+  await page.route('**/api/v1/memos/m1/watch', (route) =>
+    route.fulfill({ json: { watching: true, reason: 'ACTED' } satisfies WatchStatus }),
+  )
+  await page.route('**/api/v1/inbox/team?*', (route) =>
+    route.fulfill({ status: 403, json: { type: 'about:blank', title: 'Forbidden', status: 403 } }),
+  )
   await page.route('**/api/v1/memos/m1/attachments', (route) => route.fulfill({ json: attachments }))
   await page.route('**/api/v1/memos/m1/notes', (route) => route.fulfill({ json: notes }))
   await page.route('**/api/v1/memos/m1/approvals', (route) => route.fulfill({ json: stamps }))

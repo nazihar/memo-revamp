@@ -156,3 +156,17 @@
   - the sign-in redirect keeps the path and filters but not the fragment.
 - **Built with a subagent** under a written brief; reviewed, re-checked and adjusted by the lead (the POST change and the fragment, baselines rendered and reviewed).
 - **Tooling note:** `e2e/update-visual-baselines.sh` deletes `web/e2e/__screenshots__` before copying back, and on a Windows mount the delete half-fails. Render into a separate folder and copy (as done here).
+
+## 2026-11-16 — T7: inbox and dashboards web
+- **Built:**
+  - **Following** (flow I): a Follow toggle on the memo page that shows why you follow (you started it, acted, were mentioned, or chose to); a **Watching** tab in the inbox; on the notification preferences page, automatic following on or off and the email for followed memos (daily digest by default, at once, or never).
+  - **Inbox:** My tasks by due time (`/inbox?sort=due`, overdue first); checkboxes and a bulk bar (Watch, Unwatch, Claim, Release and, for heads, Reassign; never decisions) with a result per item; the bar stays at the bottom on phones.
+  - **Team tab** (flow I, heads and `inbox.team.read`): the units in scope, status and person filters, tasks by due time, restricted memos shown without their subject, and reassignment with a reason.
+  - **Approvals dashboard** `/dashboards/approvals` (heads and `memo.dashboard.read`): scope and period in the address; pending by age, overdue, pending by person, cycle time (median and P90) per type and throughput per week. Each chart is a figure with a one-line summary, value labels and "Show as table".
+  - **Recharts 3.10.1** with `react-is` 19.3.0 (MIT): in the dependency register. The router's code splitting keeps it in the dashboard's chunk only (checked in the build).
+  - **i18n:** catalogue parts `inbox` and `dashboard` (Arabic core stays at 14.1 KiB of 15); English and Arabic.
+- **Tests:**
+  - **Unit:** `inbox.test` (9), `dashboard.test` (5), and new memo-page tests for the toggle; the suite has 42 files and 200 tests.
+  - **E2E smoke:** `dashboard.spec` as the Head of Credit; the charts draw for Me and for the unit with the CSP-violation fixture on, the keyboard reaches the chart, and axe passes.
+  - **Visual:** `e2e/visual/inbox.spec.ts` (Watching, Team, a selection, the reassign dialog, the dashboard with and without tables, phone) and memo baselines re-rendered for the toggle; rendered in the Playwright Linux image and reviewed.
+- **Built with a subagent** under a written brief; reviewed and checked by the lead (lint, types, tests, licences, the chunk, the catalogue parts, and the baselines).

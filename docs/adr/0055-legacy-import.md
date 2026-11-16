@@ -39,7 +39,7 @@ Legacy data is messy (overview risk R8). People have left. Statuses do not match
   - POI then runs under the JVM-wide `ZipSecureFile` limits that ADR-0048 set (64 MiB per entry, ratio 100), on a bounded pool with a 120-second limit, behind a catch-all that maps any failure to `MALFORMED`.
   - Caps: 20 MiB per file; 50,000 memo rows, 200,000 file rows and 250,000 approval rows per batch; Excel's 32,767 characters per cell.
   - A formula cell gives its cached value with a warning; no cached value is an error.
-  - Dates are real date cells (the workbook's 1900 or 1904 system) or ISO 8601 text. Nothing else is guessed.
+  - Dates are real date cells (the workbook's 1900 or 1904 system) or ISO 8601 text. Nothing else is guessed. POI's streaming handler formats dates in the 1900 system only, so the reader applies the workbook's own system (T1 spike).
 - **CSV:** Apache Commons CSV **1.14.1** (Apache-2.0, a new dependency).
   - RFC 4180 quoting; a header row naming our columns is required.
   - UTF-8 only, with or without a BOM, decoded strictly. Anything else is refused with "save as CSV UTF-8".
@@ -62,7 +62,7 @@ Legacy data is messy (overview risk R8). People have left. Statuses do not match
 1. **Intake.** Sources and originals arrive as files of ordinary (unlocked) staging purposes in the `work` bucket: scanned, typed, encrypted, hashed. The relative path is kept in the batch, NFC-normalised with `/` separators.
 2. **Dry run.** It runs only after intake, so it checks everything: the rows, the mappings and the files' content (type, hash, size).
    - The validators are the same ones the import uses.
-   - They run in transactions opened with `SET TRANSACTION READ ONLY`, so a business write fails by construction (SQLSTATE 25006).
+   - They run in `readInTenant` transactions, which reach PostgreSQL as read-only (the T1 spike: `transaction_read_only` is on, and a write fails with SQLSTATE 25006), so a business write fails by construction. A test keeps that true.
    - The dry run writes only its own staging rows and problem list, in separate transactions.
 3. **Import.** Each valid row's originals are streamed from staging back through the full upload pipeline into a **record** purpose owned by the memo.
    - That means a second scan with current signatures, and a fresh SHA-256 that must equal the intake hash or the file is refused before it is stored.
@@ -101,10 +101,10 @@ Legacy data is messy (overview risk R8). People have left. Statuses do not match
 - **Amends ADR-0029 and ADR-0046** for two purposes only: the intake staging purpose and the imported originals' record purpose. Elsewhere, OLE2 stays refused.
 - **Allowed there:** `.doc`, `.xls` and `.ppt` (OLE2), plus `.rtf` and `.tif`/`.tiff` scans.
 - **Why:** a legacy archive without .doc files is unrealistic, and originals must be kept as received. ADR-0029 refused OLE2 because macros could not be checked. Now they can, without parsing them in the backend:
-  - **Macros:** clamd's `AlertOLE2Macros=yes` (already set) flags VBA as `Heuristics.OLE2.ContainsMacros`, so such files are refused as `MALWARE`. Macro-enabled OOXML stays refused.
-  - **Subtype:** the in-process detector only sees a generic OLE2 container. For these two purposes the pipeline asks the isolated Tika server's `/detect/stream`, which names Word, Excel or PowerPoint. Anything else, such as Outlook `.msg`, is refused. If the Tika server is down, the upload fails closed.
-  - **Encrypted documents:** refused, as everywhere (ADR-0029).
-- **Renditions:** ONLYOFFICE converts doc, xls, ppt and rtf to PDF. TIFF is converted by ONLYOFFICE only if E06's spike shows it works; otherwise it is download-only. Nothing decodes these formats in the backend JVM.
+  - **Macros:** clamd's `AlertOLE2Macros=yes` (already set) flags VBA in Word, Excel and PowerPoint files as `Heuristics.OLE2.ContainsMacros.VBA` (T1 spike), so such files are refused as `MALWARE`, with the signature in the report. Macro-enabled OOXML stays refused.
+  - **Subtype:** the in-process detector only sees a generic OLE2 container. For these two purposes the pipeline asks the isolated Tika server's `PUT /detect` (Tika 4.2 has no `/detect/stream`), which names Word, Excel or PowerPoint; the server config enables the `detect` endpoint beside `tika` (ADR-0045's list grows by one). Anything else, such as Outlook `.msg` (`application/vnd.ms-outlook`), is refused. If the Tika server is down, the upload fails closed.
+  - **Encrypted documents:** refused, as everywhere (ADR-0029). clamd flags encrypted Word and Excel files (`Heuristics.Encrypted.OLE2`) at intake. A CryptoAPI-encrypted PowerPoint file passes clamd (T1 spike); its text extraction is refused (Tika 422) and so is its conversion (ONLYOFFICE -5), so the dry run reports the file `UNREADABLE` and its row cannot be imported until the file is replaced.
+- **Renditions:** ONLYOFFICE converts doc, xls, ppt and rtf to PDF (about 1 s each in the T1 spike). It refuses TIFF (-7), so **TIFF scans are download-only** in E06; a TIFF rendition from an isolated converter is carried. Nothing decodes these formats in the backend JVM.
 - A purpose opts in with a flag that only these two purposes may set; an architecture test checks it.
 
 ### Who
@@ -157,6 +157,13 @@ Legacy data is messy (overview risk R8). People have left. Statuses do not match
 ### Option 5 — one format only
 - Good: one parser.
 - Bad: CSV alone invites Excel corruption of numbers and dates; XLSX alone burdens legacy exports.
+
+## Amendment — 2026-11-16 (E06 T1 spike)
+- The dry run relies on `readInTenant`, which PostgreSQL already holds read-only; no explicit `SET TRANSACTION READ ONLY` is needed.
+- The Tika server's detection is `PUT /detect`, enabled in its config.
+- clamd's macro signature is `Heuristics.OLE2.ContainsMacros.VBA`; encrypted Word and Excel files are `Heuristics.Encrypted.OLE2`; encrypted PowerPoint files are caught by the dry run.
+- TIFF scans are download-only; ONLYOFFICE does not convert them.
+- The streaming reader applies the workbook's date system itself.
 
 ## More information
 - Research: `docs/plan/phase-3-memo-efile/epic-06-legacy-import/research.md` (R11, R1). Design: `epic-06-legacy-import/design.md`.

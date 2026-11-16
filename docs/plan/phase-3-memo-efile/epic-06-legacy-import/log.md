@@ -63,3 +63,7 @@
   - the reader applies the workbook's date system;
   - no explicit `SET TRANSACTION`.
 - **Dependency:** Commons CSV 1.14.1 (Apache-2.0, 2025-07-27, the latest release) is in the build for tests; T5 makes it a runtime dependency and adds the register row.
+
+## 2026-11-16 — CI stall, caught by the watchdog
+- The backend job on #131 reached its 30-minute limit again. This time the stall watchdog (E05 T8) left three dumps. The suite was in `SearchPerformanceIT` (100,000 memos) for over 21 minutes, against about 4 minutes normally, and the test worker was waiting in a socket read on PostgreSQL.
+- The dumps cut each stack at eight frames (`ThreadInfo.toString()`), above the waiting call. The watchdog now writes every frame, plus the shared database's activity: running statements, their wait events and `pg_blocking_pids`. The next stall will name the statement and what blocks it.

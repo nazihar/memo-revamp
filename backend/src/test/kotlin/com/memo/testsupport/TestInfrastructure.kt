@@ -60,7 +60,42 @@ class PostgresInstance : AutoCloseable {
 
 /** One shared PostgreSQL per test JVM (most tests); `fresh()` gives an isolated, empty one (e.g. migration tests). */
 object TestDatabase {
-    private val shared: PostgresInstance by lazy { PostgresInstance() }
+    private val sharedHolder = lazy { PostgresInstance() }
+    private val shared: PostgresInstance by sharedHolder
+
+    /**
+     * For the stall watchdog: what the shared database is doing (statements running, their wait events, and who blocks
+     * whom), read as the container's superuser. Empty when the database was never started.
+     */
+    fun activity(): String {
+        if (!sharedHolder.isInitialized()) return ""
+        val container = shared.container
+        return java.sql.DriverManager.getConnection(container.jdbcUrl, container.username, container.password).use { connection ->
+            connection.createStatement().use { statement ->
+                statement.queryTimeout = ACTIVITY_TIMEOUT_SECONDS
+                statement.executeQuery(ACTIVITY_SQL).use { rows ->
+                    buildString {
+                        while (rows.next()) {
+                            appendLine(
+                                "pid ${rows.getInt(1)} ${rows.getString(2)} wait ${rows.getString(3)}/${rows.getString(4)} " +
+                                    "for ${rows.getString(5)} blocked by ${rows.getString(6)}: ${rows.getString(7)}",
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private const val ACTIVITY_TIMEOUT_SECONDS = 10
+    private val ACTIVITY_SQL =
+        """
+        select pid, state, wait_event_type, wait_event, (now() - query_start)::text, pg_blocking_pids(pid)::text,
+               left(regexp_replace(query, '\s+', ' ', 'g'), 400)
+        from pg_stat_activity
+        where datname = current_database() and pid <> pg_backend_pid() and state <> 'idle'
+        order by query_start
+        """.trimIndent()
 
     val migratorPassword: String get() = shared.migratorPassword
     val appPassword: String get() = shared.appPassword

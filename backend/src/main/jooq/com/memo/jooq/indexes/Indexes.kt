@@ -21,6 +21,13 @@ import com.memo.jooq.tables.IdentityOperator
 import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
+import com.memo.jooq.tables.ImportsBatch
+import com.memo.jooq.tables.ImportsFile
+import com.memo.jooq.tables.ImportsProblem
+import com.memo.jooq.tables.ImportsRow
+import com.memo.jooq.tables.ImportsRowApproval
+import com.memo.jooq.tables.ImportsRowFile
+import com.memo.jooq.tables.ImportsStaged
 import com.memo.jooq.tables.Memo
 import com.memo.jooq.tables.MemoAttachment
 import com.memo.jooq.tables.MemoCopy
@@ -95,6 +102,23 @@ val IDENTITY_OPERATOR_ENROLMENT_UK: Index = Internal.createIndex(DSL.name("ident
 val IDENTITY_RATE_LIMIT_BUCKET_EXPIRY_IDX: Index = Internal.createIndex(DSL.name("identity_rate_limit_bucket_expiry_idx"), IdentityRateLimitBucket.IDENTITY_RATE_LIMIT_BUCKET, arrayOf(IdentityRateLimitBucket.IDENTITY_RATE_LIMIT_BUCKET.EXPIRES_AT), false)
 val IDENTITY_RECOVERY_CODE_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("identity_recovery_code_tenant_user_idx"), IdentityRecoveryCode.IDENTITY_RECOVERY_CODE, arrayOf(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.TENANT_ID, IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.USER_ID), false)
 val IDENTITY_USER_TENANT_EMAIL_UK: Index = Internal.createIndex(DSL.name("identity_user_tenant_email_uk"), IdentityUser.IDENTITY_USER, arrayOf(IdentityUser.IDENTITY_USER.TENANT_ID, IdentityUser.IDENTITY_USER.EMAIL), true)
+val IMPORTS_BATCH_LIST_IDX: Index = Internal.createIndex(DSL.name("imports_batch_list_idx"), ImportsBatch.IMPORTS_BATCH, arrayOf(ImportsBatch.IMPORTS_BATCH.TENANT_ID, ImportsBatch.IMPORTS_BATCH.CREATED_AT.desc(), ImportsBatch.IMPORTS_BATCH.ID.desc()), false)
+val IMPORTS_BATCH_ONE_RUNNING: Index = Internal.createIndex(DSL.name("imports_batch_one_running"), ImportsBatch.IMPORTS_BATCH, arrayOf(ImportsBatch.IMPORTS_BATCH.TENANT_ID), true)
+val IMPORTS_BATCH_STATE_IDX: Index = Internal.createIndex(DSL.name("imports_batch_state_idx"), ImportsBatch.IMPORTS_BATCH, arrayOf(ImportsBatch.IMPORTS_BATCH.TENANT_ID, ImportsBatch.IMPORTS_BATCH.STATE), false)
+val IMPORTS_FILE_FOLD_IDX: Index = Internal.createIndex(DSL.name("imports_file_fold_idx"), ImportsFile.IMPORTS_FILE, arrayOf(ImportsFile.IMPORTS_FILE.TENANT_ID, ImportsFile.IMPORTS_FILE.BATCH_ID, ImportsFile.IMPORTS_FILE.PATH_FOLD), false)
+val IMPORTS_FILE_PATH_UK: Index = Internal.createIndex(DSL.name("imports_file_path_uk"), ImportsFile.IMPORTS_FILE, arrayOf(ImportsFile.IMPORTS_FILE.TENANT_ID, ImportsFile.IMPORTS_FILE.BATCH_ID, ImportsFile.IMPORTS_FILE.PATH), true)
+val IMPORTS_FILE_STATE_IDX: Index = Internal.createIndex(DSL.name("imports_file_state_idx"), ImportsFile.IMPORTS_FILE, arrayOf(ImportsFile.IMPORTS_FILE.TENANT_ID, ImportsFile.IMPORTS_FILE.BATCH_ID, ImportsFile.IMPORTS_FILE.STATE, ImportsFile.IMPORTS_FILE.PATH), false)
+val IMPORTS_PROBLEM_FILE_IDX: Index = Internal.createIndex(DSL.name("imports_problem_file_idx"), ImportsProblem.IMPORTS_PROBLEM, arrayOf(ImportsProblem.IMPORTS_PROBLEM.TENANT_ID, ImportsProblem.IMPORTS_PROBLEM.FILE_ID), false)
+val IMPORTS_PROBLEM_LIST_IDX: Index = Internal.createIndex(DSL.name("imports_problem_list_idx"), ImportsProblem.IMPORTS_PROBLEM, arrayOf(ImportsProblem.IMPORTS_PROBLEM.TENANT_ID, ImportsProblem.IMPORTS_PROBLEM.BATCH_ID, ImportsProblem.IMPORTS_PROBLEM.LEVEL, ImportsProblem.IMPORTS_PROBLEM.CODE, ImportsProblem.IMPORTS_PROBLEM.ID), false)
+val IMPORTS_PROBLEM_ROW_IDX: Index = Internal.createIndex(DSL.name("imports_problem_row_idx"), ImportsProblem.IMPORTS_PROBLEM, arrayOf(ImportsProblem.IMPORTS_PROBLEM.TENANT_ID, ImportsProblem.IMPORTS_PROBLEM.ROW_ID), false)
+val IMPORTS_ROW_APPROVAL_ROW_IDX: Index = Internal.createIndex(DSL.name("imports_row_approval_row_idx"), ImportsRowApproval.IMPORTS_ROW_APPROVAL, arrayOf(ImportsRowApproval.IMPORTS_ROW_APPROVAL.TENANT_ID, ImportsRowApproval.IMPORTS_ROW_APPROVAL.ROW_ID, ImportsRowApproval.IMPORTS_ROW_APPROVAL.ORDINAL), false)
+val IMPORTS_ROW_FILE_FILE_IDX: Index = Internal.createIndex(DSL.name("imports_row_file_file_idx"), ImportsRowFile.IMPORTS_ROW_FILE, arrayOf(ImportsRowFile.IMPORTS_ROW_FILE.TENANT_ID, ImportsRowFile.IMPORTS_ROW_FILE.FILE_ID), false)
+val IMPORTS_ROW_FILE_KEY_IDX: Index = Internal.createIndex(DSL.name("imports_row_file_key_idx"), ImportsRowFile.IMPORTS_ROW_FILE, arrayOf(ImportsRowFile.IMPORTS_ROW_FILE.TENANT_ID, ImportsRowFile.IMPORTS_ROW_FILE.BATCH_ID, ImportsRowFile.IMPORTS_ROW_FILE.LEGACY_NUMBER_KEY), false)
+val IMPORTS_ROW_FILE_ROW_IDX: Index = Internal.createIndex(DSL.name("imports_row_file_row_idx"), ImportsRowFile.IMPORTS_ROW_FILE, arrayOf(ImportsRowFile.IMPORTS_ROW_FILE.TENANT_ID, ImportsRowFile.IMPORTS_ROW_FILE.ROW_ID), false)
+val IMPORTS_ROW_KEY_IDX: Index = Internal.createIndex(DSL.name("imports_row_key_idx"), ImportsRow.IMPORTS_ROW, arrayOf(ImportsRow.IMPORTS_ROW.TENANT_ID, ImportsRow.IMPORTS_ROW.BATCH_ID, ImportsRow.IMPORTS_ROW.LEGACY_NUMBER_KEY), false)
+val IMPORTS_ROW_NUMBER_UK: Index = Internal.createIndex(DSL.name("imports_row_number_uk"), ImportsRow.IMPORTS_ROW, arrayOf(ImportsRow.IMPORTS_ROW.TENANT_ID, ImportsRow.IMPORTS_ROW.BATCH_ID, ImportsRow.IMPORTS_ROW.ROW_NUMBER), true)
+val IMPORTS_ROW_RESULT_IDX: Index = Internal.createIndex(DSL.name("imports_row_result_idx"), ImportsRow.IMPORTS_ROW, arrayOf(ImportsRow.IMPORTS_ROW.TENANT_ID, ImportsRow.IMPORTS_ROW.BATCH_ID, ImportsRow.IMPORTS_ROW.RESULT, ImportsRow.IMPORTS_ROW.ROW_NUMBER), false)
+val IMPORTS_STAGED_BATCH_IDX: Index = Internal.createIndex(DSL.name("imports_staged_batch_idx"), ImportsStaged.IMPORTS_STAGED, arrayOf(ImportsStaged.IMPORTS_STAGED.TENANT_ID, ImportsStaged.IMPORTS_STAGED.BATCH_ID, ImportsStaged.IMPORTS_STAGED.PURGED_AT, ImportsStaged.IMPORTS_STAGED.SUPERSEDED_AT), false)
 val MEMO_ATTACHMENT_PRESENT_IDX: Index = Internal.createIndex(DSL.name("memo_attachment_present_idx"), MemoAttachment.MEMO_ATTACHMENT, arrayOf(MemoAttachment.MEMO_ATTACHMENT.TENANT_ID, MemoAttachment.MEMO_ATTACHMENT.MEMO_ID, MemoAttachment.MEMO_ATTACHMENT.POSITION), false)
 val MEMO_COPY_DELIVERY_TENANT_MEMO_IDX: Index = Internal.createIndex(DSL.name("memo_copy_delivery_tenant_memo_idx"), MemoCopyDelivery.MEMO_COPY_DELIVERY, arrayOf(MemoCopyDelivery.MEMO_COPY_DELIVERY.TENANT_ID, MemoCopyDelivery.MEMO_COPY_DELIVERY.MEMO_ID, MemoCopyDelivery.MEMO_COPY_DELIVERY.USER_ID), false)
 val MEMO_COPY_ONE_STANDING_IDX: Index = Internal.createIndex(DSL.name("memo_copy_one_standing_idx"), MemoCopy.MEMO_COPY, arrayOf(MemoCopy.MEMO_COPY.TENANT_ID, MemoCopy.MEMO_COPY.MEMO_ID, MemoCopy.MEMO_COPY.RECIPIENT_KIND, MemoCopy.MEMO_COPY.RECIPIENT_ID), true)

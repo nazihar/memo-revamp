@@ -46,6 +46,8 @@ class DemoAccessSeeder(
                 grants.grantCustom(ids.getValue(AUDITOR), UNIT_READER, setOf(Permission.MEMO_READ_UNIT), DemoOrg.unitId("CRD"))
                 // Phase 3 E04: the demo admin keeps final records (a new version with a reason, ADR-0053).
                 grants.grantCustom(ids.getValue(ADMIN), RECORDS_KEEPER, setOf(Permission.MEMO_RENDITION_REGENERATE))
+                // Phase 3 E06: the demo admin runs legacy imports (memo.import is in no built-in role, ADR-0055).
+                grants.grantCustom(ids.getValue(ADMIN), IMPORTER, setOf(Permission.MEMO_IMPORT))
             }
         }
         letterhead(ids)
@@ -132,6 +134,7 @@ class DemoAccessSeeder(
         const val LIST = "Credit committee"
         const val UNIT_READER = "Unit reader"
         const val RECORDS_KEEPER = "Records keeper"
+        const val IMPORTER = "Legacy importer"
         const val AUTHOR = "user@demo.example"
         const val HEAD_CREDIT = "head.credit@demo.example"
         const val HEAD_FINANCE = "head.finance@demo.example"

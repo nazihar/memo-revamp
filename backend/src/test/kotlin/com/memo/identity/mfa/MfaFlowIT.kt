@@ -54,10 +54,10 @@ class MfaFlowIT : IntegrationTest() {
 
     private fun state(result: MvcTestResult) = result.path("/state")
 
-    private fun code(
-        secret: String,
-        stepOffset: Long = 0,
-    ) = Totp.code(Totp.decodeBase32(secret), Totp.step(Instant.now()) + stepOffset)
+    /** The time step the last enrolment confirmed with (so a test does not depend on the clock staying in it). */
+    private var enrolmentStep = 0L
+
+    private fun code(secret: String) = Totp.code(Totp.decodeBase32(secret), Totp.step(Instant.now()))
 
     /** Signs in, enrols and confirms; returns the Base32 secret, the recovery codes and the complete session. */
     private fun enrolled(user: UserAccount): Triple<String, List<String>, Cookie> {
@@ -65,7 +65,9 @@ class MfaFlowIT : IntegrationTest() {
         val enrolment = mvc.postJson(tenant, "/api/v1/auth/mfa/enrolment", partial)
         assertThat(enrolment).hasStatus(HttpStatus.OK)
         val secret = enrolment.path("/secret")
-        val confirmed = mvc.postJson(tenant, "/api/v1/auth/mfa/enrolment/confirm", partial, """{"code":"${code(secret)}"}""")
+        enrolmentStep = Totp.step(Instant.now())
+        val enrolmentCode = Totp.code(Totp.decodeBase32(secret), enrolmentStep)
+        val confirmed = mvc.postJson(tenant, "/api/v1/auth/mfa/enrolment/confirm", partial, """{"code":"$enrolmentCode"}""")
         assertThat(confirmed).hasStatus(HttpStatus.OK)
         val node = json.readTree(confirmed.response.contentAsString).at("/recoveryCodes")
         val codes = (0 until node.size()).map { node.get(it).asString() }
@@ -124,8 +126,11 @@ class MfaFlowIT : IntegrationTest() {
         assertThat(state(login)).isEqualTo("MFA_REQUIRED")
         val partial = login.sessionCookie()!!
 
-        assertThat(mvc.postJson(tenant, "/api/v1/auth/mfa", partial, """{"code":"${code(secret)}"}""")).hasStatus(HttpStatus.UNAUTHORIZED)
-        val next = mvc.postJson(tenant, "/api/v1/auth/mfa", partial, """{"code":"${code(secret, stepOffset = 1)}"}""")
+        // The enrolment's own step is spent; the step after it is not (both stay in the accepted window).
+        val key = Totp.decodeBase32(secret)
+        val spent = Totp.code(key, enrolmentStep)
+        assertThat(mvc.postJson(tenant, "/api/v1/auth/mfa", partial, """{"code":"$spent"}""")).hasStatus(HttpStatus.UNAUTHORIZED)
+        val next = mvc.postJson(tenant, "/api/v1/auth/mfa", partial, """{"code":"${Totp.code(key, enrolmentStep + 1)}"}""")
         assertThat(next).hasStatus(HttpStatus.OK)
         assertThat(state(next)).isEqualTo("AUTHENTICATED")
     }

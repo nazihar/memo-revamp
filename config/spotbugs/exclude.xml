@@ -80,4 +80,17 @@
     <Class name="~com\.memo\.docedit\.internal\.InternalConnectorConfig.*"/>
     <Bug pattern="SPRING_CSRF_PROTECTION_DISABLED"/>
   </Match>
+
+  <!--
+    The legacy import's workbook reader (ADR-0055) parses sheet and workbook XML with Apache POI's `XMLHelper.newXMLReader`,
+    which disallows DOCTYPE declarations, external entities and external DTDs and enables secure processing; FindSecBugs
+    does not model that factory. ImportSheetFuzzTest and XlsxSheetReaderTest feed it DTDs and external entities.
+  -->
+  <Match>
+    <Or>
+      <Class name="com.memo.imports.internal.sheet.XlsxSheetReader"/>
+      <Class name="com.memo.imports.internal.sheet.XlsxSheetReader$Companion"/>
+    </Or>
+    <Bug pattern="XXE_XMLREADER"/>
+  </Match>
 </FindBugsFilter>

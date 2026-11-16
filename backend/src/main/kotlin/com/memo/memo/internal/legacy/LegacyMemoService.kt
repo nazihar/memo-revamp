@@ -10,6 +10,7 @@ import com.memo.memo.LegacyMemos
 import com.memo.memo.LegacyNumbers
 import com.memo.memo.LegacyProblem
 import com.memo.memo.LegacyStatus
+import com.memo.memo.LegacyType
 import com.memo.memo.LiveSeries
 import com.memo.memo.internal.MemoChangeLog
 import com.memo.memo.internal.MemoMetadata
@@ -118,6 +119,11 @@ class LegacyMemoService(
     ): ExistingImport? = reader.existing(sourceCode, LegacyNumbers.key(legacyNumber))
 
     override fun series(): List<LiveSeries> = series.all()
+
+    override fun types(): List<LegacyType> =
+        types.active().map { type ->
+            LegacyType(type.id, type.code, type.name, types.published(type.id)?.let { v -> v.settings.fields.map { it.key } }.orEmpty())
+        }
 
     /** Runs the writes; a unique key taken meanwhile becomes the matching refusal (as Spring or jOOQ reports it). */
     private fun uniquely(writes: () -> Unit) {

@@ -100,6 +100,7 @@ class ArchitectureRulesTest {
                 "Audit" to "audit",
                 "Workflow" to "workflow",
                 "Memo" to "memo",
+                "Imports" to "imports",
             )
         tableModules.forEach { (prefix, module) ->
             noClasses()

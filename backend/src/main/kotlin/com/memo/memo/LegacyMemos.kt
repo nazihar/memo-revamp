@@ -115,6 +115,14 @@ class LegacyMemoRefusedException(
     val problems: List<LegacyProblem>,
 ) : RuntimeException("legacy memo refused: ${problems.map { it.code }.distinct()}")
 
+/** A memo type an import may map to: its code and name as the template lists them, and its published version's field keys. */
+data class LegacyType(
+    val id: UUID,
+    val code: String,
+    val name: String,
+    val fieldKeys: List<String>,
+)
+
 /** A memo already imported under a row key, with the fingerprint it was imported with. */
 data class ExistingImport(
     val memoId: UUID,
@@ -146,6 +154,9 @@ interface LegacyMemos {
 
     /** The number series of every published memo-type version, to keep legacy numbers out of numbers they may still give. */
     fun series(): List<LiveSeries>
+
+    /** The memo types a row may map to (design E06 §6.3): active, with a published version, and that version's field keys. */
+    fun types(): List<LegacyType>
 }
 
 /** Legacy numbers as a row key (ADR-0055). */

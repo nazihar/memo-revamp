@@ -1,7 +1,8 @@
 # Phase 3 E06 legacy import (design E06 §10; ADR-0055). memo.import is granted on purpose: no subject of the matrix holds
-# it, so every signed-in subject is 403 before the memo is read. Readers without the permission are 403, holders who
-# cannot read the memo 404, and holders without a fresh step-up 401 (LegacyCorrectionIT). T5 adds the /admin/imports
-# endpoints and the three purposes' uploads.
+# it, so every signed-in subject is 403 before anything is read. Readers without the permission are 403, holders who
+# cannot read the memo 404, and holders without a fresh step-up 401 (LegacyCorrectionIT). The batch endpoints' allowed
+# paths, and the uploads of the three purposes (imports.source, imports.intake, imports.record: 403 without the
+# permission or for a batch that moved on), are in ImportBatchIT; POST /files itself is in e05-files.yaml.
 epic: P3-E06
 endpoints:
   - endpoint: "POST /api/v1/memos/{id}/legacy/corrections"
@@ -11,4 +12,31 @@ endpoints:
   - endpoint: "POST /api/v1/memos/{id}/legacy/reclassify"
     rule: signedIn
     body: { classificationId: "{random}", reason: "Matrix" }
+    expect: { user: 403, tenantAdmin: 403, tenantAdminStale: 403 }
+  # Batches and their intake (T5).
+  - endpoint: "GET /api/v1/admin/imports"
+    rule: signedIn
+    expect: { user: 403, tenantAdmin: 403, tenantAdminStale: 403 }
+  - endpoint: "POST /api/v1/admin/imports"
+    rule: signedIn
+    headers: { Idempotency-Key: "{random}" }
+    body: { name: "Matrix", sourceCode: "MATRIX", timeZone: "UTC" }
+    expect: { user: 403, tenantAdmin: 403, tenantAdminStale: 403 }
+  - endpoint: "GET /api/v1/admin/imports/{id}"
+    rule: signedIn
+    expect: { user: 403, tenantAdmin: 403, tenantAdminStale: 403 }
+  - endpoint: "PUT /api/v1/admin/imports/{id}"
+    rule: signedIn
+    headers: { If-Match: "\"0\"" }
+    body: { name: "Matrix", sourceCode: "MATRIX", timeZone: "UTC" }
+    expect: { user: 403, tenantAdmin: 403, tenantAdminStale: 403 }
+  - endpoint: "GET /api/v1/admin/imports/template"
+    rule: signedIn
+    expect: { user: 403, tenantAdmin: 403, tenantAdminStale: 403 }
+  - endpoint: "POST /api/v1/admin/imports/{id}/files"
+    rule: signedIn
+    body: { files: [{ path: "matrix.pdf", size: 1 }] }
+    expect: { user: 403, tenantAdmin: 403, tenantAdminStale: 403 }
+  - endpoint: "GET /api/v1/admin/imports/{id}/files"
+    rule: signedIn
     expect: { user: 403, tenantAdmin: 403, tenantAdminStale: 403 }

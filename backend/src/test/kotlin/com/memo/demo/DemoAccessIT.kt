@@ -90,6 +90,8 @@ class DemoAccessIT : FilesIntegrationTest() {
 
     @Autowired lateinit var savedSearches: SavedSearches
 
+    @Autowired lateinit var policy: com.memo.common.authz.Policy
+
     @Test
     fun `the auditor reads the Credit Division, Credit facility has a letterhead, and one memo shows notes, a share and copies`() {
         val password = aPassword()
@@ -130,6 +132,8 @@ class DemoAccessIT : FilesIntegrationTest() {
         assertThat(asUser(id(DemoAccessSeeder.AUDITOR)) { memos.get(memo).subject }).isEqualTo(DemoAccessSeeder.SUBJECT)
 
         val admin = id(DemoAccessSeeder.ADMIN)
+        // E06: the demo admin holds memo.import (a privileged permission no built-in role carries).
+        assertThat(asUser(admin) { policy.allows(com.memo.common.authz.Permission.MEMO_IMPORT) }).isTrue()
         val type = asUser(admin) { memoSeeding.fixedType(DemoWorkflowSeeder.NAME, DemoWorkflowSeeder.KEY) }
         assertThat(asUser(admin) { templateSeeding.hasTemplate(type) }).isTrue()
 

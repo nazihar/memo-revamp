@@ -8,11 +8,11 @@ import com.deepoove.poi.render.compute.EnvModel
 import com.deepoove.poi.render.compute.RenderDataCompute
 import com.deepoove.poi.resolver.DefaultElementTemplateFactory
 import com.deepoove.poi.template.run.RunTemplate
+import com.memo.common.poi.PoiLimits
 import com.memo.templating.FillFailure
 import com.memo.templating.TemplateData
 import com.memo.templating.TemplateFillException
 import com.memo.templating.TemplateFiller
-import org.apache.poi.openxml4j.util.ZipSecureFile
 import org.apache.poi.xwpf.usermodel.XWPFRun
 import org.springframework.beans.factory.DisposableBean
 import org.springframework.stereotype.Component
@@ -179,16 +179,10 @@ internal class PoiTlFiller(
         private val REFUSED_SIGNS = listOf('@', '#', '*', '+')
 
         /**
-         * POI's zip limits are JVM-wide statics: entries at most 64 MiB inflated and compressed at most 100 to 1 (the
-         * ratio the upload pipeline enforces), so a template that passed upload but is a bomb inside still fails here.
+         * POI's zip limits are JVM-wide statics, shared with the import's workbooks ([PoiLimits]): a template that passed
+         * upload but is a bomb inside still fails here.
          */
-        private const val MAX_ENTRY_BYTES = 64L shl 20
-        private const val MIN_INFLATE_RATIO = 0.01
-
-        fun limitZips() {
-            ZipSecureFile.setMaxEntrySize(MAX_ENTRY_BYTES)
-            ZipSecureFile.setMinInflateRatio(MIN_INFLATE_RATIO)
-        }
+        fun limitZips() = PoiLimits.apply()
 
         /** Maps what went wrong inside poi-tl or POI to a [FillFailure]. */
         fun failure(cause: Throwable): TemplateFillException {

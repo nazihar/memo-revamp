@@ -11,16 +11,17 @@ import com.memo.files.internal.UploadRequest
 import com.memo.files.internal.Uploads
 import com.memo.identity.UserAccount
 import com.memo.identity.UserAccounts
+import com.memo.imports.internal.ImportIntakePurpose
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
 import com.memo.testsupport.AppRoleJdbc
 import com.memo.testsupport.AppRoleJdbc.long
 import com.memo.testsupport.Audit
 import com.memo.testsupport.FilesIntegrationTest
+import com.memo.testsupport.ImportSupport
 import com.memo.testsupport.LegacySamples
 import com.memo.testsupport.Samples
 import com.memo.testsupport.TestDocumentPurpose
-import com.memo.testsupport.TestIntakePurpose
 import com.memo.testsupport.TestObjectStorage
 import com.memo.testsupport.TestRenderedPurpose
 import com.memo.testsupport.TestTenant
@@ -29,7 +30,6 @@ import com.memo.testsupport.aPassword
 import com.memo.testsupport.aTestTenant
 import com.memo.testsupport.anActiveUser
 import com.memo.testsupport.onHost
-import com.memo.testsupport.signIn
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.assertj.core.api.Assertions.catchThrowableOfType
@@ -70,9 +70,16 @@ class StagingIT : FilesIntegrationTest() {
 
     @Autowired internal lateinit var scheduling: RenditionScheduler
 
+    @Autowired lateinit var imports: ImportSupport
+
     private val tenant: TestTenant by lazy { registry.aTestTenant(transactions, settings, "staging", mfaRequired = false) }
 
-    private val admin: UserAccount by lazy { accounts.anActiveUser(transactions, tenant, aPassword(), tenantAdmin = true) }
+    /** A tenant admin (test documents) who also holds `memo.import` (the real intake purpose). */
+    private val admin: UserAccount by lazy {
+        accounts.anActiveUser(transactions, tenant, aPassword(), tenantAdmin = true).also { imports.grant(tenant, it.id.value) }
+    }
+
+    private val batch: UUID by lazy { imports.batch(tenant, admin.id.value) }
 
     private fun <T> asAdmin(block: () -> T): T =
         ActorContext.call(ActorScope(Actor.User(admin.id.value), null)) { TenantContext.call(tenant.id) { block() } }
@@ -80,11 +87,12 @@ class StagingIT : FilesIntegrationTest() {
     private fun stage(
         bytes: ByteArray,
         name: String,
-        purpose: String = TestIntakePurpose.KEY,
+        purpose: String = ImportIntakePurpose.KEY,
     ): FileVersionInfo =
         asAdmin {
             val key = UUID.randomUUID().toString()
-            val id = uploads.upload(UploadRequest(purpose, "intake-1", null, null, name, bytes.size.toLong(), key, bytes.inputStream()))
+            val owner = if (purpose == ImportIntakePurpose.KEY) imports.intakeOwner(tenant, admin.id.value, batch) else "intake-1"
+            val id = uploads.upload(UploadRequest(purpose, owner, null, null, name, bytes.size.toLong(), key, bytes.inputStream()))
             transactions.readInTenant(tenant.id) { store.version(id)!! }
         }
 
@@ -182,10 +190,10 @@ class StagingIT : FilesIntegrationTest() {
         assertThat(purged.purgedAt).isNotNull()
         val audit = Audit.entries(tenant.id).filter { it.action == "file.version.purged" && it.objectId == staged.id.toString() }
         assertThat(audit).hasSize(1)
-        assertThat(audit.single().canonical).contains(staged.sha256, TestIntakePurpose.KEY)
+        assertThat(audit.single().canonical).contains(staged.sha256, ImportIntakePurpose.KEY)
 
-        val password = aPassword()
-        val session = mvc.signIn(tenant, accounts.anActiveUser(transactions, tenant, password).email, password)
+        // Staged originals are read by holders of memo.import (who sign in with a second factor).
+        val session = imports.importer(mvc, tenant).second
         val download =
             mvc
                 .get()

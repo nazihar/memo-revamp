@@ -137,7 +137,7 @@ class DemoAccessIT : FilesIntegrationTest() {
         val following = DemoFollowingSeeder(watchSeeding, searchSeeding, accounts, transactions, password)
         following.seed()
         following.seed()
-        assertThat(asUser(author) { watchStore.followsAny(author) }).isTrue()
+        assertThat(asUser(author) { watchStore.reason(memo, author) }).isNotNull()
         assertThat(asUser(author) { savedSearches.list() }.map { it.name }).containsOnlyOnce("Lease and rent")
     }
 

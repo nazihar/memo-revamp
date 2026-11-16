@@ -20,10 +20,11 @@ class MemoWatchSeeding(
 ) {
     /**
      * [user] follows every memo they started, as automatic following would have made them, unless they already follow
-     * a memo; how many watches were added.
+     * one of them; how many watches were added.
      */
     fun followStarted(user: UUID): Int =
         transactions.inTenant(TenantContext.current()) {
-            if (store.followsAny(user)) 0 else lists.startedBy(user).count { store.add(it, user, WatchReason.INITIATED) }
+            val started = lists.startedBy(user)
+            if (started.any { store.reason(it, user) != null }) 0 else started.count { store.add(it, user, WatchReason.INITIATED) }
         }
 }

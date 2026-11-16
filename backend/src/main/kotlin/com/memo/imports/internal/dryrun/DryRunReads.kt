@@ -208,27 +208,32 @@ class CrossRowReads(
             .flatten()
             .toSet()
 
-    /** Memos rows whose originals share content (the same SHA-256) with another row's (`FILE_SHARED`). */
+    /**
+     * Memos rows whose originals share content (the same SHA-256) with another row's (`FILE_SHARED`). One pass: the
+     * distinct (content, row) pairs, then a window count of rows per content. (As built T10: an `IN` over a grouped
+     * subquery was planned as a nested loop on the statistics left by staging, and ran for minutes at 30,000 originals.)
+     */
     fun sharedRows(batchId: UUID): Set<UUID> {
         val f = IMPORTS_ROW_FILE
         val i = IMPORTS_FILE
-        val shared =
+        val pairs =
             DSL
-                .select(i.SHA256)
+                .selectDistinct(i.SHA256, f.ROW_ID)
                 .from(f)
                 .join(i)
                 .on(i.ID.eq(f.FILE_ID))
                 .where(f.BATCH_ID.eq(batchId), f.ROW_ID.isNotNull, i.SHA256.isNotNull)
-                .groupBy(i.SHA256)
-                .having(DSL.countDistinct(f.ROW_ID).gt(1))
+                .asTable("pairs")
+        val row = checkNotNull(pairs.field(f.ROW_ID))
+        val uses = DSL.count().over(DSL.partitionBy(pairs.field(i.SHA256))).`as`("uses")
+        val counted = DSL.select(row, uses).from(pairs).asTable("counted")
+        val countedRow = checkNotNull(counted.field(row))
         return tenantDsl
             .current()
-            .selectDistinct(f.ROW_ID)
-            .from(f)
-            .join(i)
-            .on(i.ID.eq(f.FILE_ID))
-            .where(f.BATCH_ID.eq(batchId), f.ROW_ID.isNotNull, i.SHA256.`in`(shared))
-            .fetch { it.value1()!! }
+            .selectDistinct(countedRow)
+            .from(counted)
+            .where(checkNotNull(counted.field(uses)).gt(1))
+            .fetch { checkNotNull(it.value1()) }
             .toSet()
     }
 

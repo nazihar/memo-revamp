@@ -83,8 +83,11 @@ jobs:
           E2E_DOCUMENTS: '1'
       - run: pnpm --filter web exec playwright install --with-deps chromium firefox webkit
       - run: pnpm --filter web exec playwright test --project=firefox --project=webkit --retries=1
-      # With the documents stack: in-browser editing, and search finding words in an attachment (Tika).
-      - run: pnpm --filter web exec playwright test --project=smoke --retries=1 e2e/smoke/document-editing.spec.ts e2e/smoke/search.spec.ts
+      # With the documents stack: in-browser editing, search finding words in an attachment (Tika), and a legacy import
+      # with a Word 97 .doc, which only the Tika server can type (ADR-0055).
+      - run: >-
+          pnpm --filter web exec playwright test --project=smoke --retries=1 e2e/smoke/document-editing.spec.ts
+          e2e/smoke/search.spec.ts e2e/smoke/legacy-import.spec.ts
       - if: always()
         run: ci/e2e-stack.sh logs
       # Screenshots, traces and error context of failed journeys, so a browser-only failure can be read afterwards.

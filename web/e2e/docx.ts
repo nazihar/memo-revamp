@@ -32,13 +32,14 @@ function crc32(data: Buffer): number {
   return (crc ^ 0xffffffff) >>> 0
 }
 
-function zip(entries: [string, string][]): Buffer {
+/** A ZIP archive of [entries] (name, content), stored without compression. */
+export function zip(entries: [string, string | Buffer][]): Buffer {
   const locals: Buffer[] = []
   const centrals: Buffer[] = []
   let offset = 0
   for (const [name, content] of entries) {
     const nameBytes = Buffer.from(name, 'utf8')
-    const data = Buffer.from(content, 'utf8')
+    const data = typeof content === 'string' ? Buffer.from(content, 'utf8') : content
     const crc = crc32(data)
     const local = Buffer.alloc(30)
     local.writeUInt32LE(0x04034b50, 0)

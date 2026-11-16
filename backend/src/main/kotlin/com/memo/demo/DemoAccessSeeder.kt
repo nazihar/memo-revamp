@@ -48,6 +48,8 @@ class DemoAccessSeeder(
                 grants.grantCustom(ids.getValue(ADMIN), RECORDS_KEEPER, setOf(Permission.MEMO_RENDITION_REGENERATE))
                 // Phase 3 E06: the demo admin runs legacy imports (memo.import is in no built-in role, ADR-0055).
                 grants.grantCustom(ids.getValue(ADMIN), IMPORTER, setOf(Permission.MEMO_IMPORT))
+                // An importer must be cleared to the highest level a batch writes: the legacy sample's is Confidential.
+                grants.ensureClearance(ids.getValue(ADMIN), IMPORTER_CLEARANCE)
             }
         }
         letterhead(ids)
@@ -135,6 +137,9 @@ class DemoAccessSeeder(
         const val UNIT_READER = "Unit reader"
         const val RECORDS_KEEPER = "Records keeper"
         const val IMPORTER = "Legacy importer"
+
+        /** Confidential among the default levels (Public 0, Internal 1, Confidential 2, Strictly Confidential 3). */
+        const val IMPORTER_CLEARANCE = 2
         const val AUTHOR = "user@demo.example"
         const val HEAD_CREDIT = "head.credit@demo.example"
         const val HEAD_FINANCE = "head.finance@demo.example"

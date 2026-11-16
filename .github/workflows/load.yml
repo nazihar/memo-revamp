@@ -3,7 +3,7 @@ name: load
 # Weekly load stage (TESTING_STRATEGY §7, phase 2 overview E05): synthetic volume V2 (10,000 memos in review with
 # their SLA timers, everyone seated in one division under a head) on the on-prem stack, then the Gatling simulations
 # against it: the inbox (NFR P1: p95 < 300 ms), and search, the inbox by due time, the team view and the dashboards
-# (Phase 3 E05 T8).
+# (Phase 3 E05 T8); search at volume V1 (E05 T8) and the legacy import at 10,000 memos (Phase 3 E06 T10).
 on:
   schedule:
     - cron: '0 3 * * 0'
@@ -124,4 +124,33 @@ jobs:
         with:
           name: search-v1-report
           path: backend/build/test-results/test/TEST-com.memo.search.SearchPerformanceIT.xml
+          retention-days: 30
+
+  import-volume:
+    # The legacy import at the stated volume (Phase 3 E06 T10, design E06 §14): 10,000 memos with 30,000 originals of
+    # 50 KB (about 1.5 GB) through the real pipeline in the test containers (clamd scans each original at intake and at
+    # promotion), and a 50,000-row metadata-only dry run. Asserts the dry run (< 5 min) and the import (< 2 h, renditions
+    # excluded); the intake, verification, report and purge times, the peak heap and the database size are printed in the
+    # uploaded test report.
+    name: Legacy import at volume (ImportVolumeIT)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: 25
+      - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
+        with:
+          cache-read-only: true
+      - name: ImportVolumeIT at 10,000 memos
+        env:
+          IMPORT_VOLUME: '10000'
+        run: ./gradlew :backend:test --tests com.memo.imports.ImportVolumeIT --rerun --console=plain
+      - if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: import-volume-report
+          path: backend/build/test-results/test/TEST-com.memo.imports.ImportVolumeIT.xml
           retention-days: 30

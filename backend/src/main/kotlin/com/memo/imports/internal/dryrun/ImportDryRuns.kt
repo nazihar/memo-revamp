@@ -69,9 +69,13 @@ class ImportDryRuns(
 
     /**
      * OPEN or VALIDATED → DRY_RUN, audited, and the job scheduled; a batch already in DRY_RUN is answered as it is (one dry
-     * run per batch at a time). Inside a tenant transaction.
+     * run per batch at a time). Inside a tenant transaction. A seeder that runs the dry run itself ([run]) passes
+     * [scheduleJob] false, so no job runs it a second time.
      */
-    fun request(batchId: UUID): ImportBatch {
+    fun request(
+        batchId: UUID,
+        scheduleJob: Boolean = true,
+    ): ImportBatch {
         val batch = batches.lock(batchId) ?: throw ImportBatchNotFoundException()
         if (batch.state == BatchState.DRY_RUN) return batch
         refuseIf(!batch.state.editable, "WRONG_STATE") { "A dry run runs only before the import starts." }
@@ -84,7 +88,7 @@ class ImportDryRuns(
             before = mapOf("state" to batch.state.name),
             after = mapOf("state" to BatchState.DRY_RUN.name),
         )
-        schedule(batchId, batch.version + 1)
+        if (scheduleJob) schedule(batchId, batch.version + 1)
         return checkNotNull(batches.find(batchId))
     }
 

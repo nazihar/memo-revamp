@@ -47,3 +47,12 @@
 - **Files promoted for a row that then fails** (a reference race between the pre-check and the commit) remain stored as locked records under an unused memo id. They are listed in the report as "stored, not bound"; the expected count is zero.
 - **A linked person who was never cleared** keeps a participant row that grants nothing (clearance applies). The report lists linked people per row.
 - **The browser carries the volume.** Very large migrations need the command-line uploader, which is not built; the runbook says when to ask for it.
+
+## As built (T10)
+Where the build differs from the table above (ASVS rows in `docs/security/asvs-checklist.md`, runbook `docs/runbooks/legacy-import.md`):
+- **T1:** the sources used are copied into `imports.record` when the report is built, not at start. They cannot change once the batch is VALIDATED and are purged only at close, after the report. The input hash is also taken again at start and compared with the dry run's (`DRY_RUN_STALE`).
+- **T7:** no explicit `SET TRANSACTION READ ONLY`. `readInTenant` already reaches PostgreSQL as `READ ONLY` (T1 spike), and the validator itself refuses a transaction that could write. The test writes inside one and expects SQLSTATE 25006 (`DryRunIT`).
+- **I5:** sources (at most 20 MiB) are decrypted into memory, not into a spool copy. POI keeps any part above 1 MiB in temporary files encrypted with a key held in memory (`PoiLimits`), and the report workbook's temporary data is encrypted the same way.
+- **D4 and residual risks, encrypted PowerPoint:** clamd does not flag an encrypted `.ppt` (CryptoAPI), and nothing parses a staged original before promotion. Such a file is imported with its row; its PDF and text renditions end FAILED, and the report names it under "Renditions failed" (ADR-0055, amendment of T8). It is never opened in the backend JVM. Encrypted Word and Excel files are still refused at intake (`Heuristics.Encrypted.OLE2`).
+- **I6:** closing and abandoning are two endpoints (`close` with a required reason, `abandon` with an optional one), and the purge is a job (`imports-purge`, 500 a step, then `import.batch.purged`). The hourly sweep closes and abandons as `System("legacy-import")`, and only a batch whose version and state are still those it read.
+- **D3:** the sweep acts only on batches quiet for 15 minutes, and the import job recovers its own stale rows at each step.

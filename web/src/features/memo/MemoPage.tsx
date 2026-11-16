@@ -28,6 +28,7 @@ import { dueLabel, isOverdue } from './due'
 import { EditMemoDialog } from './EditMemoDialog'
 import { FinalRecord } from './FinalRecord'
 import { FollowToggle } from './FollowToggle'
+import { ImportedMemo } from './ImportedMemo'
 import { MemoAccess } from './MemoAccess'
 import { MemoAttachments } from './MemoAttachments'
 import { MemoCoauthors } from './MemoCoauthors'
@@ -143,6 +144,17 @@ export function MemoPage({ memoId }: { memoId: string }) {
     )
   }
   const view = memo.data
+  // An imported memo has its own page (ux-review O1): no route, workflow, note sheet or action bar.
+  if (view.origin === 'IMPORTED' && view.legacy) {
+    return (
+      <ImportedMemo
+        view={view}
+        legacy={view.legacy}
+        onReplace={(next) => void replace(next)}
+        onProblem={(p) => void onProblem(p)}
+      />
+    )
+  }
   const allowed = new Set(view.allowedActions)
   const dialogs = view.allowedActions.flatMap((a) => (DIALOG_ACTIONS[a] ? [DIALOG_ACTIONS[a]] : []))
   const document = view.document

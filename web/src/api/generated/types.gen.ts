@@ -803,6 +803,14 @@ export type ImportMappingRequest = {
     target?: string | null;
 };
 
+export type ImportMappingTargetView = {
+    detail?: string | null;
+    id: string;
+    kind: 'STATUS' | 'TYPE' | 'CLASSIFICATION' | 'UNIT' | 'PERSON';
+    label: string;
+    rank?: number | null;
+};
+
 export type ImportMappingView = {
     confirmed: boolean;
     confirmedAt?: string | null;
@@ -818,6 +826,7 @@ export type ImportMappingView = {
 export type ImportMappingsView = {
     batchVersion: number;
     mappings: Array<ImportMappingView>;
+    targets: Array<ImportMappingTargetView>;
 };
 
 export type ImportOriginalsView = {

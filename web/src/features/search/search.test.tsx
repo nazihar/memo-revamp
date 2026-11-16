@@ -458,6 +458,7 @@ describe('save this search', () => {
         amountMin: null,
         amountMax: null,
         sources: ['NOTES'],
+        origins: [],
         sort: 'NEWEST',
       },
     })

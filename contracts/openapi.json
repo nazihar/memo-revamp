@@ -2234,6 +2234,29 @@
         "required" : [ "confirmed", "legacyValue" ],
         "type" : "object"
       },
+      "ImportMappingTargetView" : {
+        "properties" : {
+          "detail" : {
+            "type" : [ "string", "null" ]
+          },
+          "id" : {
+            "type" : "string"
+          },
+          "kind" : {
+            "enum" : [ "STATUS", "TYPE", "CLASSIFICATION", "UNIT", "PERSON" ],
+            "type" : "string"
+          },
+          "label" : {
+            "type" : "string"
+          },
+          "rank" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          }
+        },
+        "required" : [ "id", "kind", "label" ],
+        "type" : "object"
+      },
       "ImportMappingView" : {
         "properties" : {
           "confirmed" : {
@@ -2283,9 +2306,15 @@
               "$ref" : "#/components/schemas/ImportMappingView"
             },
             "type" : "array"
+          },
+          "targets" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ImportMappingTargetView"
+            },
+            "type" : "array"
           }
         },
-        "required" : [ "batchVersion", "mappings" ],
+        "required" : [ "batchVersion", "mappings", "targets" ],
         "type" : "object"
       },
       "ImportOriginalsView" : {

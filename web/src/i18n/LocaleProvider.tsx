@@ -31,6 +31,8 @@ const ALL_PARTS: ReadonlySet<CataloguePart> = new Set([
   'search',
   'inbox',
   'dashboard',
+  'imports',
+  'legacy',
 ])
 
 const LocaleContext = createContext<LocaleContextValue | null>(null)

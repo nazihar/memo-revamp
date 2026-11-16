@@ -169,6 +169,18 @@ Corrections (1)
 - Filters gain **Origin**: ☐ Created here ☐ Imported, with a chip "Imported".
 - Results show an "Imported" badge after the number.
 
+## As built (T9)
+The screens follow flows L to O and their wording; where they depart:
+- **L1:** the list has no "Memos" column (the batch summary carries no counts); the template is a plain download link on the list and on step 1.
+- **L3:** the stepper is a list of links; the step shown is not a link to itself but text with `aria-current="step"` (TanStack Router marks an active link `aria-current="page"` whatever it is given). The step is in the address (`?step=`). "Needs a new dry run" is a note on every step while the batch is OPEN after a dry run; settings are a dialog ("Settings").
+- **L4:** files over 100 MB are listed under "Too large" and neither registered nor sent; paths the server would refuse (and a second file with the same NFC path) are counted apart. Pause lets the files in flight finish. A refused file is not sent again at the same size (it would be refused again); one changed in size is. The upload lives with the page, not the step: moving between steps keeps it, a reload ends it ("… files are already here. Choose the same folder to send the rest."). Phones see "Use a computer to send a folder." with the counts and refusals.
+- **M1:** each tab saves its own kind ("Save mappings"); "Confirm all proposals" confirms and saves at once. Types, units and levels are offered from the batch's mapping targets (the API now names them, design §10 As built T9), so a holder of `memo.import` alone can map. People: a legacy id or email is linked through the people picker and unlinked with "Not linked: keep the name as text"; people given only by name have no row (the API lists none), so the tab says so in words without a count.
+- **M2:** the problem list has a Column column instead of "Legacy number" (a problem carries its sheet row, not the number); the legacy number is on the Rows tab, with the subject or "Restricted" as the API returns it. There is no "Download (XLSX)": no endpoint gives the dry run's problems as a file (the report's workbook has the Problems sheet).
+- **N1:** the dialog states the READY rows, the originals received (not the originals those rows use: no count gives it) and the warnings as problems of level WARNING, with the people kept as text from `PERSON_NOT_LINKED`. Refusals are said in the dialog. N2's time left is the rows left over the rate.
+- **N3:** each balance line is shown; the classification note names the level of the batch's `max_rank`.
+- **O1:** the batch's name in the banner shows only to holders of `memo.import` (the batches API needs it); other readers see the source code and the date. The memo's metadata fields, links to it, sharing and following stay as for any memo.
+- **O2:** Origin is one choice (All memos, Created here, Imported), in the address as `origin=` and kept in saved searches as `origins`; the chip reads "Origin: Imported"; the badge follows the number and subject.
+
 ## Questions and recommended answers (decided under the delegation)
 1. **In-flight legacy memos** (draft, pending, returned)?
    - **Recommended and decided:** refused, with the reason in the dry run. The bank finishes them in the old system or raises them anew.

@@ -4,6 +4,10 @@ import type { SearchParams as SearchBody, SearchQuery } from '@/api/generated/ty
 export type Source = 'metadata' | 'notes' | 'documents'
 export const SOURCES: readonly Source[] = ['metadata', 'notes', 'documents']
 
+/** Where a memo comes from (Phase 3 E06): created here or imported from an earlier system; both unless narrowed. */
+export type Origin = 'native' | 'imported'
+export const ORIGINS: readonly Origin[] = ['native', 'imported']
+
 /**
  * The Search page's filters and order, in the query string (flow H2), so a reload, a link and back/forward show the same
  * search. Defaults (relevance, all sources) are left out. The words are not here: they are in the fragment (see [qOf]).
@@ -18,6 +22,7 @@ export interface SearchParams {
   amountMin?: number
   amountMax?: number
   in?: Source[]
+  origin?: Origin
   sort?: 'newest'
 }
 
@@ -65,6 +70,7 @@ export function parseSearchParams(raw: Record<string, unknown>): SearchParams {
     amountMin: amount(raw.amountMin),
     amountMax: amount(raw.amountMax),
     in: sources(raw.in),
+    origin: raw.origin === 'native' || raw.origin === 'imported' ? raw.origin : undefined,
     sort: raw.sort === 'newest' ? 'newest' : undefined,
   })
 }
@@ -88,7 +94,15 @@ export const PAGE_SIZE = 20
 
 /** The body of `POST /search` for [q] and [params], without the cursor (each page adds its own). */
 export function searchBody(params: SearchParams, q: string): SearchBody {
-  return { q, ...compact(params), sort: params.sort ?? 'relevance', limit: PAGE_SIZE }
+  const { origin, ...rest } = params
+  const body: SearchBody = {
+    q,
+    ...(compact(rest) as Omit<SearchParams, 'origin'>),
+    ...(origin ? { origin: [origin === 'imported' ? ('IMPORTED' as const) : ('NATIVE' as const)] } : {}),
+    sort: params.sort ?? 'relevance',
+    limit: PAGE_SIZE,
+  }
+  return body
 }
 
 /** How many filters are set (the "Filters (n)" button); the words and the order are not filters. */
@@ -97,7 +111,9 @@ export function filterCount(params: SearchParams): number {
     (params.status?.length ?? 0) +
     (params.type?.length ?? 0) +
     (params.unit?.length ?? 0) +
-    [params.from, params.to, params.amountMin, params.amountMax, params.in].filter((v) => v !== undefined).length
+    [params.from, params.to, params.amountMin, params.amountMax, params.in, params.origin].filter(
+      (v) => v !== undefined,
+    ).length
   )
 }
 
@@ -118,6 +134,7 @@ export function criteriaOf(params: SearchParams, q: string): SearchQuery {
     amountMin: params.amountMin ?? null,
     amountMax: params.amountMax ?? null,
     sources: (params.in ?? SOURCES).map((s) => s.toUpperCase() as 'METADATA' | 'NOTES' | 'DOCUMENTS'),
+    origins: params.origin ? [params.origin === 'imported' ? 'IMPORTED' : 'NATIVE'] : [],
     sort: params.sort === 'newest' ? 'NEWEST' : 'RELEVANCE',
   }
 }
@@ -134,6 +151,7 @@ export function locationOf(criteria: SearchQuery): { search: SearchParams; hash:
       amountMin: criteria.amountMin ?? undefined,
       amountMax: criteria.amountMax ?? undefined,
       in: criteria.sources?.map((s) => s.toLowerCase()),
+      origin: criteria.origins?.length === 1 ? criteria.origins[0]?.toLowerCase() : undefined,
       sort: criteria.sort === 'NEWEST' ? 'newest' : undefined,
     }),
     hash: hashOf(criteria.q),

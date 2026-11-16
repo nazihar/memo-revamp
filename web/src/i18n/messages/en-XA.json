@@ -9120,6 +9120,5960 @@
       "value": "]"
     }
   ],
+  "imports.abandon": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƀȧȧƞḓǿǿƞ ƀȧȧŧƈħ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.abandon.text": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧħīƞɠ ħȧȧş ƀḗḗḗḗƞ īḿƥǿǿřŧḗḗḓ. Şŧȧȧɠḗḗḓ ƈǿǿƥīḗḗş ǿǿƒ ŧħḗḗ ƒīŀḗḗş ȧȧřḗḗ ḓḗḗŀḗḗŧḗḗḓ; ŧħḗḗ ƀȧȧŧƈħ şŧȧȧẏş ŀīşŧḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.abandon.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƀȧȧƞḓǿǿƞ ŧħīş ƀȧȧŧƈħ?"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.abandoned": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƀȧȧŧƈħ ẇȧȧş ȧȧƀȧȧƞḓǿǿƞḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.answer.anotherRunning": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƞǿǿŧħḗḗř ƀȧȧŧƈħ īş īḿƥǿǿřŧīƞɠ. Ǿƞŀẏ ǿǿƞḗḗ īḿƥǿǿřŧ řŭŭƞş ȧȧŧ ȧȧ ŧīḿḗḗ; ŧřẏ ȧȧɠȧȧīƞ ẇħḗḗƞ īŧ ħȧȧş ƒīƞīşħḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.answer.batchProblems": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƀȧȧŧƈħ ħȧȧş ƥřǿǿƀŀḗḗḿş ŧħȧȧŧ şŧǿǿƥ ŧħḗḗ īḿƥǿǿřŧ. Ƒīẋ ŧħḗḗḿ ȧȧƞḓ řŭŭƞ ŧħḗḗ ḓřẏ řŭŭƞ ȧȧɠȧȧīƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.answer.classificationOrder": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ şŧřīƈŧḗḗř ḿȧȧřķīƞɠ ḿȧȧƥş ŧǿǿ ȧȧ ŀǿǿẇḗḗř ŀḗḗṽḗḗŀ ŧħȧȧƞ ȧȧ ŀḗḗşş şŧřīƈŧ ǿǿƞḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.answer.cleared": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈȧȧƞƈḗḗŀŀḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.answer.dryRunStale": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şǿǿḿḗḗŧħīƞɠ ƈħȧȧƞɠḗḗḓ şīƞƈḗḗ ŧħḗḗ ḓřẏ řŭŭƞ. Řŭŭƞ ŧħḗḗ ḓřẏ řŭŭƞ ȧȧɠȧȧīƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.answer.forbidden": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ḿȧȧẏ ƞǿǿ ŀǿǿƞɠḗḗř şḗḗƞḓ ƒīŀḗḗş ŧǿǿ ŧħīş ƀȧȧŧƈħ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.answer.importerNotCleared": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ȧȧřḗḗ ƞǿǿŧ ƈŀḗḗȧȧřḗḗḓ ŧǿǿ ŧħḗḗ ħīɠħḗḗşŧ ƈŀȧȧşşīƒīƈȧȧŧīǿǿƞ ŧħīş ƀȧȧŧƈħ ẇřīŧḗḗş. Şǿǿḿḗḗǿǿƞḗḗ ƈŀḗḗȧȧřḗḗḓ ŧǿǿ īŧ ḿŭŭşŧ şŧȧȧřŧ ŧħḗḗ īḿƥǿǿřŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.answer.limitExceeded": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƀȧȧŧƈħ ẇǿǿŭŭŀḓ ħǿǿŀḓ ḿǿǿřḗḗ ŧħȧȧƞ 200,000 ǿǿřīɠīƞȧȧŀş ǿǿř 200 ƓƁ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.answer.mappingInvalid": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ḿȧȧƥƥīƞɠ īş ƞǿǿŧ ṽȧȧŀīḓ. Řḗḗŀǿǿȧȧḓ ȧȧƞḓ ŧřẏ ȧȧɠȧȧīƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.answer.nothingToImport": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ḿḗḗḿǿǿ īş řḗḗȧȧḓẏ ŧǿǿ īḿƥǿǿřŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.answer.numberPrefixInvalid": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭşḗḗ ŭŭƥ ŧǿǿ 20 ŀḗḗŧŧḗḗřş, ḓīɠīŧş ǿǿř / . _ -, şŧȧȧřŧīƞɠ ẇīŧħ ȧȧ ŀḗḗŧŧḗḗř ǿǿř ḓīɠīŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.answer.other": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħȧȧŧ ḓīḓ ƞǿǿŧ ẇǿǿřķ. Ŧřẏ ȧȧɠȧȧīƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.answer.pathDuplicate": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧẇǿǿ ƒīŀḗḗş ǿǿƒ ŧħḗḗ ƒǿǿŀḓḗḗř ħȧȧṽḗḗ ŧħḗḗ şȧȧḿḗḗ ƥȧȧŧħ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.answer.pathInvalid": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ƥȧȧŧħ īƞ ŧħḗḗ ƒǿǿŀḓḗḗř ƈȧȧƞƞǿǿŧ ƀḗḗ ŭŭşḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.answer.reportNotReady": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ řḗḗƥǿǿřŧ īş ƞǿǿŧ řḗḗȧȧḓẏ ẏḗḗŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.answer.required": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗɋŭŭīřḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.answer.rowsChanged": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƞŭŭḿƀḗḗř ǿǿƒ ḿḗḗḿǿǿş řḗḗȧȧḓẏ ƈħȧȧƞɠḗḗḓ. Řḗḗṽīḗḗẇ ŧħḗḗ ƀȧȧŧƈħ ȧȧɠȧȧīƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.answer.sizeInvalid": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ƒīŀḗḗ’ş şīẑḗḗ ƈǿǿŭŭŀḓ ƞǿǿŧ ƀḗḗ řḗḗȧȧḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.answer.sourceCodeInvalid": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭşḗḗ 1 ŧǿǿ 20 ƈȧȧƥīŧȧȧŀ ŀḗḗŧŧḗḗřş, ḓīɠīŧş ǿǿř \"-\", şŧȧȧřŧīƞɠ ẇīŧħ ȧȧ ŀḗḗŧŧḗḗř ǿǿř ḓīɠīŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.answer.sourceMissing": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭƥŀǿǿȧȧḓ ŧħḗḗ ḿḗḗŧȧȧḓȧȧŧȧȧ ƒīřşŧ: ȧȧ ẇǿǿřķƀǿǿǿǿķ, ǿǿř ŧħḗḗ Ḿḗḗḿǿǿş ȧȧƞḓ Ƒīŀḗḗş ƇŞṼ ƒīŀḗḗş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.answer.timeZoneInvalid": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħǿǿǿǿşḗḗ ȧȧ ŧīḿḗḗ ẑǿǿƞḗḗ ƒřǿǿḿ ŧħḗḗ ŀīşŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.answer.tooLong": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧǿǿǿǿ ŀǿǿƞɠ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.answer.tooManyBatches": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒīṽḗḗ ƀȧȧŧƈħḗḗş ȧȧřḗḗ ǿǿƥḗḗƞ ȧȧŀřḗḗȧȧḓẏ. Ƈŀǿǿşḗḗ ǿǿř ȧȧƀȧȧƞḓǿǿƞ ǿǿƞḗḗ ƒīřşŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.answer.wrongState": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƀȧȧŧƈħ ħȧȧş ḿǿǿṽḗḗḓ ǿǿƞ īƞ ŧħḗḗ ḿḗḗȧȧƞŧīḿḗḗ. Īŧ ħȧȧş ƀḗḗḗḗƞ řḗḗŀǿǿȧȧḓḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.batch.header": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "source"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.batch.state": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŧȧȧŧḗḗ: "
+    },
+    {
+      "type": 1,
+      "value": "state"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.cancel": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈȧȧƞƈḗḗŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.caption": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īḿƥǿǿřŧ ƀȧȧŧƈħḗḗş, ƞḗḗẇḗḗşŧ ƒīřşŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.close.text": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŧȧȧɠḗḗḓ ƈǿǿƥīḗḗş ǿǿƒ ŧħḗḗ ǿǿřīɠīƞȧȧŀş ȧȧřḗḗ ḓḗḗŀḗḗŧḗḗḓ. Ŧħḗḗ řḗḗƥǿǿřŧ ȧȧƞḓ īḿƥǿǿřŧḗḗḓ ḿḗḗḿǿǿş şŧȧȧẏ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.close.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŀǿǿşḗḗ ŧħīş ƀȧȧŧƈħ?"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.closeBatch": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŀǿǿşḗḗ ƀȧȧŧƈħ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.closed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƀȧȧŧƈħ ẇȧȧş ƈŀǿǿşḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.closedReason": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŀǿǿşḗḗḓ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.alreadyImported": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ḿḗḗḿǿǿ ẇȧȧş ȧȧŀřḗḗȧȧḓẏ īḿƥǿǿřŧḗḗḓ ŭŭƞƈħȧȧƞɠḗḗḓ; īŧ īş şķīƥƥḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.alreadyImportedChanged": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ḿḗḗḿǿǿ ẇȧȧş īḿƥǿǿřŧḗḗḓ ƀḗḗƒǿǿřḗḗ ẇīŧħ ǿǿŧħḗḗř ṽȧȧŀŭŭḗḗş. Ƈǿǿřřḗḗƈŧ ŧħḗḗ īḿƥǿǿřŧḗḗḓ ḿḗḗḿǿǿ īƞşŧḗḗȧȧḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.approvalOrderDuplicate": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧẇǿǿ ȧȧƥƥřǿǿṽȧȧŀş ǿǿƒ ŧħīş ḿḗḗḿǿǿ ħȧȧṽḗḗ ŧħḗḗ şȧȧḿḗḗ ǿǿřḓḗḗř."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.classificationBlank": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƈŀȧȧşşīƒīƈȧȧŧīǿǿƞ īş ƀŀȧȧƞķ ȧȧƞḓ ŧħḗḗ ƀȧȧŧƈħ ħȧȧş ƞǿǿ ḓḗḗƒȧȧŭŭŀŧ ŀḗḗṽḗḗŀ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.classificationDefaulted": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƈŀȧȧşşīƒīƈȧȧŧīǿǿƞ ẇȧȧş ƀŀȧȧƞķ; ŧħḗḗ ƀȧȧŧƈħ’ş ḓḗḗƒȧȧŭŭŀŧ ŀḗḗṽḗḗŀ īş ŭŭşḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.classificationUnmapped": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŀȧȧşşīƒīƈȧȧŧīǿǿƞ “"
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": "” īş ƞǿǿŧ ḿȧȧƥƥḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.columnDuplicate": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƈǿǿŀŭŭḿƞ "
+    },
+    {
+      "type": 1,
+      "value": "column"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧƥƥḗḗȧȧřş ŧẇīƈḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.columnRequired": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ řḗḗɋŭŭīřḗḗḓ ƈǿǿŀŭŭḿƞ "
+    },
+    {
+      "type": 1,
+      "value": "column"
+    },
+    {
+      "type": 0,
+      "value": " īş ḿīşşīƞɠ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.columnUnknown": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƈǿǿŀŭŭḿƞ "
+    },
+    {
+      "type": 1,
+      "value": "column"
+    },
+    {
+      "type": 0,
+      "value": " īş ƞǿǿŧ ǿǿƞḗḗ ẇḗḗ ķƞǿǿẇ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.dateFuture": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḓȧȧŧḗḗ īƞ "
+    },
+    {
+      "type": 1,
+      "value": "column"
+    },
+    {
+      "type": 0,
+      "value": " īş īƞ ŧħḗḗ ƒŭŭŧŭŭřḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.dateInvalid": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḓȧȧŧḗḗ īƞ "
+    },
+    {
+      "type": 1,
+      "value": "column"
+    },
+    {
+      "type": 0,
+      "value": " īş ƞǿǿŧ ȧȧ ḓȧȧŧḗḗ (ẏẏẏẏ-ḿḿ-ḓḓ), ǿǿř īş ƀḗḗƒǿǿřḗḗ 1900."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.dateOrder": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḓȧȧŧḗḗş ȧȧřḗḗ ǿǿŭŭŧ ǿǿƒ ǿǿřḓḗḗř: řȧȧīşḗḗḓ ǿǿƞ, ŧħḗḗƞ ḓḗḗƈīḓḗḗḓ ǿǿƞ, ŧħḗḗƞ ƈŀǿǿşḗḗḓ ǿǿƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.delimiterUnknown": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƇŞṼ ƒīŀḗḗ’ş ƈǿǿŀŭŭḿƞş ƈǿǿŭŭŀḓ ƞǿǿŧ ƀḗḗ ŧǿǿŀḓ ȧȧƥȧȧřŧ: şḗḗƥȧȧřȧȧŧḗḗ ŧħḗḗḿ ẇīŧħ ƈǿǿḿḿȧȧş ǿǿř şḗḗḿīƈǿǿŀǿǿƞş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.dryRunFailed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḓřẏ řŭŭƞ ƒȧȧīŀḗḗḓ. Ŧřẏ ȧȧɠȧȧīƞ; īƒ īŧ ƒȧȧīŀş ȧȧɠȧȧīƞ, ȧȧşķ ẏǿǿŭŭř şŭŭƥƥǿǿřŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.fieldInvalid": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ṽȧȧŀŭŭḗḗ īƞ "
+    },
+    {
+      "type": 1,
+      "value": "column"
+    },
+    {
+      "type": 0,
+      "value": " ḓǿǿḗḗş ƞǿǿŧ ƒīŧ ŧħḗḗ ḿḗḗḿǿǿ ŧẏƥḗḗ’ş ƒīḗḗŀḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.fileAmbiguous": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒīŀḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "path"
+    },
+    {
+      "type": 0,
+      "value": " ḿȧȧŧƈħḗḗş şḗḗṽḗḗřȧȧŀ ǿǿřīɠīƞȧȧŀş ŧħȧȧŧ ḓīƒƒḗḗř ǿǿƞŀẏ īƞ ƈȧȧşḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.fileClassificationLower": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ƒīŀḗḗ’ş ƈŀȧȧşşīƒīƈȧȧŧīǿǿƞ ḿŭŭşŧ ƀḗḗ şŧřīƈŧḗḗř ŧħȧȧƞ īŧş ḿḗḗḿǿǿ’ş, ǿǿř ƀŀȧȧƞķ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.fileEmpty": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒīŀḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "path"
+    },
+    {
+      "type": 0,
+      "value": " īş ḗḗḿƥŧẏ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.fileHashMismatch": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒīŀḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "path"
+    },
+    {
+      "type": 0,
+      "value": " īş ƞǿǿŧ ŧħḗḗ ǿǿƞḗḗ ŧħḗḗ şħḗḗḗḗŧ’ş ŞĦȦ-256 ḓḗḗşƈřīƀḗḗş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.fileNotReceived": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒīŀḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "path"
+    },
+    {
+      "type": 0,
+      "value": " ẇȧȧş ƞǿǿŧ řḗḗƈḗḗīṽḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.fileRefused": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒīŀḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "path"
+    },
+    {
+      "type": 0,
+      "value": " ẇȧȧş řḗḗƒŭŭşḗḗḓ: "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.fileShared": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƞǿǿŧħḗḗř ḿḗḗḿǿǿ ħȧȧş ȧȧ ƒīŀḗḗ ẇīŧħ ŧħḗḗ şȧȧḿḗḗ ƈǿǿƞŧḗḗƞŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.fileUnreferenced": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒīŀḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "path"
+    },
+    {
+      "type": 0,
+      "value": " īş ƞǿǿŧ ŭŭşḗḗḓ ƀẏ ȧȧƞẏ řǿǿẇ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.fixityMismatch": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ şŧǿǿřḗḗḓ ǿǿřīɠīƞȧȧŀ ƞǿǿ ŀǿǿƞɠḗḗř ḿȧȧŧƈħḗḗş ŧħḗḗ ŞĦȦ-256 ŧȧȧķḗḗƞ ẇħḗḗƞ īŧ ẇȧȧş řḗḗƈḗḗīṽḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.formulaCached": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ṽȧȧŀŭŭḗḗ īƞ "
+    },
+    {
+      "type": 1,
+      "value": "column"
+    },
+    {
+      "type": 0,
+      "value": " ƈǿǿḿḗḗş ƒřǿǿḿ ȧȧ ƒǿǿřḿŭŭŀȧȧ; īŧş şȧȧṽḗḗḓ ṽȧȧŀŭŭḗḗ īş ŭŭşḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.formulaNoValue": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƒǿǿřḿŭŭŀȧȧ īƞ "
+    },
+    {
+      "type": 1,
+      "value": "column"
+    },
+    {
+      "type": 0,
+      "value": " ħȧȧş ƞǿǿ şȧȧṽḗḗḓ ṽȧȧŀŭŭḗḗ. Ǿƥḗḗƞ ȧȧƞḓ şȧȧṽḗḗ ŧħḗḗ ẇǿǿřķƀǿǿǿǿķ īƞ Ḗẋƈḗḗŀ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.headerMissing": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿŀŭŭḿƞ "
+    },
+    {
+      "type": 1,
+      "value": "position"
+    },
+    {
+      "type": 0,
+      "value": " ħȧȧş ṽȧȧŀŭŭḗḗş ƀŭŭŧ ƞǿǿ ħḗḗȧȧḓḗḗř."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.importError": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḿḗḗḿǿǿ ƈǿǿŭŭŀḓ ƞǿǿŧ ƀḗḗ īḿƥǿǿřŧḗḗḓ ȧȧƒŧḗḗř ŧħřḗḗḗḗ ȧȧŧŧḗḗḿƥŧş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.inFlight": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ḿḗḗḿǿǿ’ş şŧȧȧŧŭŭş īş īƞ ƒŀīɠħŧ: ƒīƞīşħ īŧ īƞ ŧħḗḗ ǿǿŀḓ şẏşŧḗḗḿ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.mainFileMissing": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḿḗḗḿǿǿ ħȧȧş ƞǿǿ ḾȦĪȠ ƒīŀḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.mainFileMultiple": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḿḗḗḿǿǿ ħȧȧş ḿǿǿřḗḗ ŧħȧȧƞ ǿǿƞḗḗ ḾȦĪȠ ƒīŀḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.malformed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƒīŀḗḗ ƈǿǿŭŭŀḓ ƞǿǿŧ ƀḗḗ řḗḗȧȧḓ. Ƈħḗḗƈķ ŧħȧȧŧ īŧ īş ƞǿǿŧ ḓȧȧḿȧȧɠḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.mappingUnconfirmed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ "
+    },
+    {
+      "type": 5,
+      "value": "kind",
+      "options": {
+        "STATUS": {
+          "value": [
+            {
+              "type": 0,
+              "value": "şŧȧȧŧŭŭş"
+            }
+          ]
+        },
+        "TYPE": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ŧẏƥḗḗ"
+            }
+          ]
+        },
+        "UNIT": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ŭŭƞīŧ"
+            }
+          ]
+        },
+        "CLASSIFICATION": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ƈŀȧȧşşīƒīƈȧȧŧīǿǿƞ"
+            }
+          ]
+        },
+        "PERSON": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ƥḗḗřşǿǿƞ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ṽȧȧŀŭŭḗḗ"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": " “"
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": "” īş ƞǿǿŧ ƈǿǿƞƒīřḿḗḗḓ īƞ ŧħḗḗ ḿȧȧƥƥīƞɠş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.notUtf8": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƇŞṼ ƒīŀḗḗ īş ƞǿǿŧ ŬŦƑ-8. Şȧȧṽḗḗ īŧ ȧȧɠȧȧīƞ ȧȧş “ƇŞṼ ŬŦƑ-8”."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.numberDuplicate": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƞǿǿŧħḗḗř řǿǿẇ ǿǿƒ ŧħīş ƀȧȧŧƈħ ħȧȧş ŧħḗḗ şȧȧḿḗḗ ŀḗḗɠȧȧƈẏ ƞŭŭḿƀḗḗř."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.numberInLiveSeries": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ƞŭŭḿƀḗḗř ƈǿǿŭŭŀḓ ƀḗḗ ḿȧȧḓḗḗ ƀẏ ŧħḗḗ şḗḗřīḗḗş "
+    },
+    {
+      "type": 1,
+      "value": "format"
+    },
+    {
+      "type": 0,
+      "value": "; şḗḗŧ īŧş şŧȧȧřŧīƞɠ ƞŭŭḿƀḗḗř ƥȧȧşŧ īŧ, ǿǿř ŭŭşḗḗ ȧȧ ƥřḗḗƒīẋ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.numberInUse": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ḿḗḗḿǿǿ ẇīŧħ ŧħīş ƞŭŭḿƀḗḗř ȧȧŀřḗḗȧȧḓẏ ḗḗẋīşŧş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.numberNotText": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ṽȧȧŀŭŭḗḗ īƞ "
+    },
+    {
+      "type": 1,
+      "value": "column"
+    },
+    {
+      "type": 0,
+      "value": " īş ħḗḗŀḓ ȧȧş ȧȧ ƞŭŭḿƀḗḗř: ŀḗḗȧȧḓīƞɠ ẑḗḗřǿǿş ḿȧȧẏ ħȧȧṽḗḗ ƀḗḗḗḗƞ ŀǿǿşŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.numberSimilar": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƞǿǿŧħḗḗř ŀḗḗɠȧȧƈẏ ƞŭŭḿƀḗḗř ḓīƒƒḗḗřş ƒřǿǿḿ ŧħīş ǿǿƞḗḗ ǿǿƞŀẏ īƞ ƈȧȧşḗḗ ǿǿř şḗḗƥȧȧřȧȧŧǿǿřş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.numberTooLong": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ŀḗḗɠȧȧƈẏ ƞŭŭḿƀḗḗř īş ŧǿǿǿǿ ŀǿǿƞɠ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.orphanRow": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ Ḿḗḗḿǿǿş řǿǿẇ ħȧȧş ŧħḗḗ ŀḗḗɠȧȧƈẏ ƞŭŭḿƀḗḗř "
+    },
+    {
+      "type": 1,
+      "value": "legacyNumber"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.parseTimeout": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗȧȧḓīƞɠ ŧħḗḗ ƒīŀḗḗ ŧǿǿǿǿķ ŀǿǿƞɠḗḗř ŧħȧȧƞ "
+    },
+    {
+      "type": 1,
+      "value": "seconds"
+    },
+    {
+      "type": 0,
+      "value": " şḗḗƈǿǿƞḓş. Şƥŀīŧ īŧ, ǿǿř şīḿƥŀīƒẏ īŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.pathCaseMatch": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒīŀḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "path"
+    },
+    {
+      "type": 0,
+      "value": " ẇȧȧş ḿȧȧŧƈħḗḗḓ ŧǿǿ "
+    },
+    {
+      "type": 1,
+      "value": "matched"
+    },
+    {
+      "type": 0,
+      "value": ", ẇħīƈħ ḓīƒƒḗḗřş ǿǿƞŀẏ īƞ ƈȧȧşḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.pathCaseOnly": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒīŀḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "path"
+    },
+    {
+      "type": 0,
+      "value": " ḓīƒƒḗḗřş ƒřǿǿḿ ȧȧƞǿǿŧħḗḗř ǿǿƞŀẏ īƞ ƈȧȧşḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.personNotLinked": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƥḗḗřşǿǿƞ īƞ "
+    },
+    {
+      "type": 1,
+      "value": "column"
+    },
+    {
+      "type": 0,
+      "value": " īş ķḗḗƥŧ ȧȧş ŧḗḗẋŧ, ƞǿǿŧ ŀīƞķḗḗḓ ŧǿǿ ȧȧ ŭŭşḗḗř."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.personUnknown": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ŀīƞķḗḗḓ ƥḗḗřşǿǿƞ īş ƞǿǿŧ ȧȧ ŭŭşḗḗř ħḗḗřḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.sheetMissing": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ẇǿǿřķƀǿǿǿǿķ ƞḗḗḗḗḓş ŧħḗḗ şħḗḗḗḗŧş Ḿḗḗḿǿǿş ȧȧƞḓ Ƒīŀḗḗş (Ȧƥƥřǿǿṽȧȧŀş īş ǿǿƥŧīǿǿƞȧȧŀ)."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.sheetUnknown": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ şħḗḗḗḗŧ “"
+    },
+    {
+      "type": 1,
+      "value": "sheet"
+    },
+    {
+      "type": 0,
+      "value": "” īş ƞǿǿŧ ǿǿƞḗḗ ẇḗḗ ķƞǿǿẇ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.sourceKindMixed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ƒīŀḗḗ īş ǿǿƒ ŧħḗḗ ẇřǿǿƞɠ ķīƞḓ ƒǿǿř īŧş ŧȧȧƀŀḗḗ (ȧȧ ẇǿǿřķƀǿǿǿǿķ ȧȧş ȧȧ ƇŞṼ ƒīŀḗḗ, ǿǿř ŧħḗḗ řḗḗṽḗḗřşḗḗ)."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.sourceMissing": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḿḗḗŧȧȧḓȧȧŧȧȧ īş ḿīşşīƞɠ: ŭŭƥŀǿǿȧȧḓ ȧȧ ẇǿǿřķƀǿǿǿǿķ, ǿǿř ŧħḗḗ Ḿḗḗḿǿǿş ȧȧƞḓ Ƒīŀḗḗş ƇŞṼ ƒīŀḗḗş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.statusUnmapped": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŧȧȧŧŭŭş “"
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": "” īş ƞǿǿŧ ḿȧȧƥƥḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.subjectTooLong": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ şŭŭƀĵḗḗƈŧ īş ŀǿǿƞɠḗḗř ŧħȧȧƞ 300 ƈħȧȧřȧȧƈŧḗḗřş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.tooManyApprovals": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḿḗḗḿǿǿ ħȧȧş ḿǿǿřḗḗ ŧħȧȧƞ 50 ȧȧƥƥřǿǿṽȧȧŀş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.tooManyColumns": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧǿǿǿǿ ḿȧȧƞẏ ƈǿǿŀŭŭḿƞş: ȧȧŧ ḿǿǿşŧ "
+    },
+    {
+      "type": 1,
+      "value": "limit"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.tooManyFiles": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḿḗḗḿǿǿ ħȧȧş ḿǿǿřḗḗ ŧħȧȧƞ 51 ƒīŀḗḗş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.tooManyProblems": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿǿǿřḗḗ ŧħȧȧƞ "
+    },
+    {
+      "type": 1,
+      "value": "limit"
+    },
+    {
+      "type": 0,
+      "value": " ƥřǿǿƀŀḗḗḿş: ƒīẋ ŧħḗḗ ƒīřşŧ ǿǿƞḗḗş ȧȧƞḓ řŭŭƞ ŧħḗḗ ḓřẏ řŭŭƞ ȧȧɠȧȧīƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.tooManyRows": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧǿǿǿǿ ḿȧȧƞẏ řǿǿẇş: ȧȧŧ ḿǿǿşŧ "
+    },
+    {
+      "type": 1,
+      "value": "limit"
+    },
+    {
+      "type": 0,
+      "value": " īƞ ŧħīş ŧȧȧƀŀḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.typeUnmapped": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧẏƥḗḗ “"
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": "” īş ƞǿǿŧ ḿȧȧƥƥḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.unitUnmapped": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭƞīŧ “"
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": "” īş ƞǿǿŧ ḿȧȧƥƥḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.unknown": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥřǿǿƀŀḗḗḿ "
+    },
+    {
+      "type": 1,
+      "value": "code"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.valueInvalid": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ṽȧȧŀŭŭḗḗ īƞ "
+    },
+    {
+      "type": 1,
+      "value": "column"
+    },
+    {
+      "type": 0,
+      "value": " īş ƞǿǿŧ ṽȧȧŀīḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.valueRequired": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ṽȧȧŀŭŭḗḗ īş řḗḗɋŭŭīřḗḗḓ īƞ "
+    },
+    {
+      "type": 1,
+      "value": "column"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.valueTooLong": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ṽȧȧŀŭŭḗḗ īƞ "
+    },
+    {
+      "type": 1,
+      "value": "column"
+    },
+    {
+      "type": 0,
+      "value": " īş ŧǿǿǿǿ ŀǿǿƞɠ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.valueTooLongForFile": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ṽȧȧŀŭŭḗḗ īş ŀǿǿƞɠḗḗř ŧħȧȧƞ "
+    },
+    {
+      "type": 1,
+      "value": "limit"
+    },
+    {
+      "type": 0,
+      "value": " ƈħȧȧřȧȧƈŧḗḗřş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.verifyFactsDiffer": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ īḿƥǿǿřŧḗḗḓ ḿḗḗḿǿǿ ḓīƒƒḗḗřş ƒřǿǿḿ īŧş řǿǿẇ īƞ: "
+    },
+    {
+      "type": 1,
+      "value": "fields"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.verifyMemoMissing": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ īḿƥǿǿřŧḗḗḓ ḿḗḗḿǿǿ ẇȧȧş ƞǿǿŧ ƒǿǿŭŭƞḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.code.verifyOriginalUnbound": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 5,
+      "value": "reason",
+      "options": {
+        "VERSION": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ȧ şŧǿǿřḗḗḓ ǿǿřīɠīƞȧȧŀ īş ƞǿǿ ŀǿǿƞɠḗḗř ŧħḗḗ ƒīŀḗḗ’ş ƈŭŭřřḗḗƞŧ ṽḗḗřşīǿǿƞ."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ȧ şŧǿǿřḗḗḓ ǿǿřīɠīƞȧȧŀ īş ƞǿǿŧ ƀǿǿŭŭƞḓ ŧǿǿ īŧş ḿḗḗḿǿǿ."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.col.codes": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥřǿǿƀŀḗḗḿş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.col.column": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿŀŭŭḿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.col.confirmed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿƞƒīřḿḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.col.legacy": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀḗḗɠȧȧƈẏ ṽȧȧŀŭŭḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.col.legacyNumber": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀḗḗɠȧȧƈẏ ƞŭŭḿƀḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.col.level": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀḗḗṽḗḗŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.col.memos": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿǿǿş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.col.name": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞȧȧḿḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.col.order": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿřḓḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.col.ours": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿŭŭřş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.col.path": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥȧȧŧħ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.col.problem": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥřǿǿƀŀḗḗḿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.col.reason": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗȧȧşǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.col.result": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗşŭŭŀŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.col.row": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řǿǿẇ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.col.sheet": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şħḗḗḗḗŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.col.source": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şǿǿŭŭřƈḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.col.state": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŧȧȧŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.col.subject": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŭŭƀĵḗḗƈŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.col.updated": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭƥḓȧȧŧḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.conflict": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şǿǿḿḗḗǿǿƞḗḗ ḗḗŀşḗḗ ƈħȧȧƞɠḗḗḓ ŧħīş ƀȧȧŧƈħ. Īŧ ħȧȧş ƀḗḗḗḗƞ řḗḗŀǿǿȧȧḓḗḗḓ ẇīŧħ ŧħḗḗīř ƈħȧȧƞɠḗḗş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.create": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈřḗḗȧȧŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.dryRun.last": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀȧȧşŧ řŭŭƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " · ƞǿǿŧħīƞɠ ẇȧȧş īḿƥǿǿřŧḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.dryRun.never": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ḓřẏ řŭŭƞ ẏḗḗŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.dryRun.originals": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 2,
+      "value": "received",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " ǿǿřīɠīƞȧȧŀş řḗḗƈḗḗīṽḗḗḓ · "
+    },
+    {
+      "type": 2,
+      "value": "unused",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " ƞǿǿŧ ŭŭşḗḗḓ ƀẏ ȧȧƞẏ řǿǿẇ · "
+    },
+    {
+      "type": 2,
+      "value": "refused",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " řḗḗƒŭŭşḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.dryRun.run": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řŭŭƞ ḓřẏ řŭŭƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.dryRun.running": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḓřẏ řŭŭƞ īş řŭŭƞƞīƞɠ. Ƞǿǿŧħīƞɠ īş īḿƥǿǿřŧḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.dryRun.totals": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 2,
+      "value": "ready",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " ḿḗḗḿǿǿş řḗḗȧȧḓẏ · "
+    },
+    {
+      "type": 2,
+      "value": "rejected",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " řḗḗĵḗḗƈŧḗḗḓ · "
+    },
+    {
+      "type": 2,
+      "value": "warnings",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " ẇȧȧřƞīƞɠş · "
+    },
+    {
+      "type": 2,
+      "value": "already",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " ȧȧŀřḗḗȧȧḓẏ īḿƥǿǿřŧḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.empty": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ īḿƥǿǿřŧ ƀȧȧŧƈħḗḗş ẏḗḗŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.failed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħȧȧŧ ḓīḓ ƞǿǿŧ ẇǿǿřķ. Ŧřẏ ȧȧɠȧȧīƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.field.defaultClassification": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗƒȧȧŭŭŀŧ ƈŀȧȧşşīƒīƈȧȧŧīǿǿƞ ƒǿǿř ƀŀȧȧƞķ ƈḗḗŀŀş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.field.name": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞȧȧḿḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.field.noDefault": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿƞḗḗ: ƀŀȧȧƞķ īş ȧȧƞ ḗḗřřǿǿř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.field.numberPrefix": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞŭŭḿƀḗḗř ƥřḗḗƒīẋ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.field.numberPrefix.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƥŧīǿǿƞȧȧŀ. Ȧḓḓḗḗḓ ƀḗḗƒǿǿřḗḗ ḗḗṽḗḗřẏ ŀḗḗɠȧȧƈẏ ƞŭŭḿƀḗḗř, ƒǿǿř ḗḗẋȧȧḿƥŀḗḗ \"ĿḖƓ-\", īƒ ŧħḗḗẏ ƈŀȧȧşħ ẇīŧħ ǿǿŭŭřş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.field.sourceCode": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şǿǿŭŭřƈḗḗ ƈǿǿḓḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.field.sourceCode.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈȧȧƥīŧȧȧŀ ŀḗḗŧŧḗḗřş, ḓīɠīŧş ȧȧƞḓ \"-\". Ŧħḗḗ şȧȧḿḗḗ şǿǿŭŭřƈḗḗ ƈǿǿḓḗḗ ķḗḗḗḗƥş řḗḗ-řŭŭƞş ƒřǿǿḿ ḓŭŭƥŀīƈȧȧŧīƞɠ ḿḗḗḿǿǿş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.field.timeZone": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧīḿḗḗ ẑǿǿƞḗḗ ǿǿƒ ḓȧȧŧḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.filter.any": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƞẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.filter.code": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿḓḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.filter.level": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀḗḗṽḗḗŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.filter.levelCount": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "level"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.filter.result": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗşŭŭŀŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.filter.row": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řǿǿẇ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.filter.sheet": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şħḗḗḗḗŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.finish": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒīƞīşħ ẇīŧħǿǿŭŭŧ ŧħḗḗ řḗḗşŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.finish.text": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ řǿǿẇş ƞǿǿŧ īḿƥǿǿřŧḗḗḓ ẏḗḗŧ ȧȧřḗḗ ŀḗḗƒŧ ǿǿŭŭŧ (\"ƞǿǿŧ şŧȧȧřŧḗḗḓ\"); ŧħḗḗẏ ƈȧȧƞ ɠǿǿ īƞŧǿǿ ȧȧ ŀȧȧŧḗḗř ƀȧȧŧƈħ. Ŧħḗḗ īḿƥǿǿřŧḗḗḓ ḿḗḗḿǿǿş ȧȧřḗḗ ƈħḗḗƈķḗḗḓ ȧȧƞḓ ŧħḗḗ řḗḗƥǿǿřŧ īş ḿȧȧḓḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.finish.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒīƞīşħ ẇīŧħǿǿŭŭŧ ŧħḗḗ řḗḗşŧ?"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.hide": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ħīḓḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.kind.classification": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŀȧȧşşīƒīƈȧȧŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.kind.person": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥḗḗǿǿƥŀḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.kind.status": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŧȧȧŧŭŭşḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.kind.type": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧẏƥḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.kind.unit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭƞīŧş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɓřīƞɠ ḿḗḗḿǿǿş ƒřǿǿḿ ȧȧƞ ḗḗȧȧřŀīḗḗř şẏşŧḗḗḿ: ŧħḗḗīř ǿǿřīɠīƞȧȧŀş ȧȧƞḓ ȧȧ şƥřḗḗȧȧḓşħḗḗḗḗŧ ǿǿƒ ŧħḗḗīř ƒȧȧƈŧş. Ƞǿǿŧħīƞɠ īş īḿƥǿǿřŧḗḗḓ ŭŭƞŧīŀ ẏǿǿŭŭ ħȧȧṽḗḗ ƈħḗḗƈķḗḗḓ ȧȧ ḓřẏ řŭŭƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.level.batch": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɓȧȧŧƈħ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.level.error": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗřřǿǿřş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.level.file": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒīŀḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.level.info": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īƞƒǿǿřḿȧȧŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.level.warning": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇȧȧřƞīƞɠş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.loadMore": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀǿǿȧȧḓ ḿǿǿřḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.mappings.confirm": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿƞƒīřḿ “"
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": "”"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.mappings.confirmAll": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿƞƒīřḿ ȧȧŀŀ ƥřǿǿƥǿǿşȧȧŀş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.mappings.down": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿǿǿṽḗḗ “"
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": "” ḓǿǿẇƞ (şŧřīƈŧḗḗř)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.mappings.email": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗḿȧȧīŀ "
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.mappings.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şȧȧẏ ẇħȧȧŧ ḗḗȧȧƈħ ŀḗḗɠȧȧƈẏ ṽȧȧŀŭŭḗḗ ḿḗḗȧȧƞş ħḗḗřḗḗ. Ḗṽḗḗřẏ ṽȧȧŀŭŭḗḗ ḿŭŭşŧ ƀḗḗ ƈǿǿƞƒīřḿḗḗḓ; ŧħḗḗ ḓřẏ řŭŭƞ ƥřǿǿƥǿǿşḗḗş ẇħȧȧŧ īŧ ƈȧȧƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.mappings.legacyId": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀḗḗɠȧȧƈẏ īḓ "
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.mappings.linkPerson": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀīƞķ ŧǿǿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.mappings.linked": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀīƞķḗḗḓ: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.mappings.none": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řŭŭƞ ŧħḗḗ ḓřẏ řŭŭƞ ǿǿƞƈḗḗ ŧǿǿ ŀīşŧ ŧħḗḗ ŀḗḗɠȧȧƈẏ ṽȧȧŀŭŭḗḗş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.mappings.notLinked": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧ ŀīƞķḗḗḓ: ķḗḗḗḗƥ ŧħḗḗ ƞȧȧḿḗḗ ȧȧş ŧḗḗẋŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.mappings.notMapped": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħǿǿǿǿşḗḗ…"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.mappings.orderBreak": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "“"
+    },
+    {
+      "type": 1,
+      "value": "stricter"
+    },
+    {
+      "type": 0,
+      "value": "” īş şŧřīƈŧḗḗř ŧħȧȧƞ “"
+    },
+    {
+      "type": 1,
+      "value": "lessStrict"
+    },
+    {
+      "type": 0,
+      "value": "” ƀŭŭŧ ḿȧȧƥş ŧǿǿ ȧȧ ŀǿǿẇḗḗř ŀḗḗṽḗḗŀ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.mappings.orderLead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿřḓḗḗř ŧħḗḗ ŀḗḗɠȧȧƈẏ ḿȧȧřķīƞɠş ƒřǿǿḿ ŀḗḗȧȧşŧ ŧǿǿ ḿǿǿşŧ şŧřīƈŧ. Ȧ şŧřīƈŧḗḗř ḿȧȧřķīƞɠ ƈȧȧƞ ƞḗḗṽḗḗř ḿȧȧƥ ŧǿǿ ȧȧ ŀǿǿẇḗḗř ŀḗḗṽḗḗŀ ŧħȧȧƞ ȧȧ ŀḗḗşş şŧřīƈŧ ǿǿƞḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.mappings.peopleLead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƞ ḗḗḿȧȧīŀ ḗḗɋŭŭȧȧŀ ŧǿǿ ȧȧ ŭŭşḗḗř’ş īş ƥřǿǿƥǿǿşḗḗḓ; ȧȧ ŀḗḗɠȧȧƈẏ īḓ īş ŀīƞķḗḗḓ ŧħřǿǿŭŭɠħ ŧħḗḗ ƥḗḗǿǿƥŀḗḗ ƥīƈķḗḗř. Ƥḗḗǿǿƥŀḗḗ ɠīṽḗḗƞ ǿǿƞŀẏ ƀẏ ƞȧȧḿḗḗ ȧȧřḗḗ ķḗḗƥŧ ȧȧş ŧḗḗẋŧ (ƞǿǿ īḓḗḗƞŧīƒīḗḗř) ȧȧƞḓ ƈȧȧƞƞǿǿŧ ƀḗḗ ŀīƞķḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.mappings.proposed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥřǿǿƥǿǿşḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.mappings.save": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şȧȧṽḗḗ ḿȧȧƥƥīƞɠş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.mappings.target": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿŭŭřş ƒǿǿř “"
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": "”"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.mappings.up": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿǿǿṽḗḗ “"
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": "” ŭŭƥ (ŀḗḗşş şŧřīƈŧ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.metadata.csv": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ƇŞṼ ƒīŀḗḗş, ŬŦƑ-8, ǿǿƞḗḗ ƥḗḗř ŧȧȧƀŀḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.metadata.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭƥ ŧǿǿ 20 ḾƁ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.metadata.kind": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗŧȧȧḓȧȧŧȧȧ ȧȧş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.metadata.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭşḗḗ ǿǿŭŭř ŧḗḗḿƥŀȧȧŧḗḗ, ǿǿř ẏǿǿŭŭř ǿǿẇƞ ƒīŀḗḗ ẇīŧħ ŧħḗḗ şȧȧḿḗḗ ƈǿǿŀŭŭḿƞş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.metadata.none": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ḿḗḗŧȧȧḓȧȧŧȧȧ ŭŭƥŀǿǿȧȧḓḗḗḓ ẏḗḗŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.metadata.replace": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƥŀȧȧƈḗḗ: "
+    },
+    {
+      "type": 1,
+      "value": "table"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.metadata.source": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "table"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "size"
+    },
+    {
+      "type": 0,
+      "value": " · ŭŭƥŀǿǿȧȧḓḗḗḓ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.metadata.tip": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧīƥ: ƞḗḗṽḗḗř ǿǿƥḗḗƞ ȧȧ ŀḗḗɠȧȧƈẏ ƇŞṼ ḗḗẋƥǿǿřŧ īƞ Ḗẋƈḗḗŀ ƀḗḗƒǿǿřḗḗ ŭŭƥŀǿǿȧȧḓīƞɠ īŧ. Ḗẋƈḗḗŀ řḗḗḿǿǿṽḗḗş ŀḗḗȧȧḓīƞɠ ẑḗḗřǿǿş ƒřǿǿḿ ƞŭŭḿƀḗḗřş ȧȧƞḓ ƈħȧȧƞɠḗḗş ḓȧȧŧḗḗş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.metadata.workbook": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƞḗḗ ẇǿǿřķƀǿǿǿǿķ (.ẋŀşẋ) ẇīŧħ şħḗḗḗḗŧş Ḿḗḗḿǿǿş, Ƒīŀḗḗş, Ȧƥƥřǿǿṽȧȧŀş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.new.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞḗḗẇ īḿƥǿǿřŧ ƀȧȧŧƈħ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.newBatch": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞḗḗẇ ƀȧȧŧƈħ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.notFound": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ƀȧȧŧƈħ ḓǿǿḗḗş ƞǿǿŧ ḗḗẋīşŧ, ǿǿř īŧ īş ƞǿǿŧ ẏǿǿŭŭřş ŧǿǿ şḗḗḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.notImportedYet": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧħīƞɠ ħȧȧş ƀḗḗḗḗƞ īḿƥǿǿřŧḗḗḓ ẏḗḗŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.optional": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "(ǿǿƥŧīǿǿƞȧȧŀ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.originals.alreadyHere": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƒīŀḗḗ īş"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƒīŀḗḗş ȧȧřḗḗ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧŀřḗḗȧȧḓẏ ħḗḗřḗḗ. Ƈħǿǿǿǿşḗḗ ŧħḗḗ şȧȧḿḗḗ ƒǿǿŀḓḗḗř ŧǿǿ şḗḗƞḓ ŧħḗḗ řḗḗşŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.originals.alreadySkipped": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƒīŀḗḗ ẇȧȧş"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƒīŀḗḗş ẇḗḗřḗḗ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧŀřḗḗȧȧḓẏ ħḗḗřḗḗ ȧȧƞḓ ƞǿǿŧ şḗḗƞŧ ȧȧɠȧȧīƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.originals.choose": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħǿǿǿǿşḗḗ ƒǿǿŀḓḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.originals.done": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗṽḗḗřẏ ƒīŀḗḗ ǿǿƒ ŧħḗḗ ƒǿǿŀḓḗḗř ẇȧȧş şḗḗƞŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.originals.failedSend": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şǿǿḿḗḗ ƒīŀḗḗş ƈǿǿŭŭŀḓ ƞǿǿŧ ƀḗḗ şḗḗƞŧ. Ƈħǿǿǿǿşḗḗ ŧħḗḗ şȧȧḿḗḗ ƒǿǿŀḓḗḗř ȧȧɠȧȧīƞ ŧǿǿ şḗḗƞḓ ŧħḗḗḿ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.originals.folder": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒǿǿŀḓḗḗř: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 6,
+      "value": "files",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƒīŀḗḗ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƒīŀḗḗş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "size"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.originals.invalid": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥȧȧŧħş ŧħȧȧŧ ƈȧȧƞƞǿǿŧ ƀḗḗ ŭŭşḗḗḓ: "
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.originals.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭƞƥȧȧƈķ ŧħḗḗ ȧȧřƈħīṽḗḗ ǿǿƞ ẏǿǿŭŭř ƈǿǿḿƥŭŭŧḗḗř, ŧħḗḗƞ ƈħǿǿǿǿşḗḗ ŧħḗḗ ƒǿǿŀḓḗḗř. Ḗȧȧƈħ ƒīŀḗḗ īş şḗḗƞŧ ȧȧƞḓ ƈħḗḗƈķḗḗḓ ǿǿƞ īŧş ǿǿẇƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.originals.pause": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥȧȧŭŭşḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.originals.paused": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥȧȧŭŭşḗḗḓ. Ƞǿǿŧħīƞɠ īş ŀǿǿşŧ: řḗḗşŭŭḿḗḗ ẇħḗḗƞ ẏǿǿŭŭ ȧȧřḗḗ řḗḗȧȧḓẏ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.originals.pausing": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥȧȧŭŭşīƞɠ ȧȧƒŧḗḗř ŧħḗḗ ƒīŀḗḗş ƀḗḗīƞɠ şḗḗƞŧ…"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.originals.phone": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭşḗḗ ȧȧ ƈǿǿḿƥŭŭŧḗḗř ŧǿǿ şḗḗƞḓ ȧȧ ƒǿǿŀḓḗḗř."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.originals.received": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƈḗḗīṽḗḗḓ "
+    },
+    {
+      "type": 2,
+      "value": "received",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " · ẇȧȧīŧīƞɠ "
+    },
+    {
+      "type": 2,
+      "value": "expected",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " · řḗḗƒŭŭşḗḗḓ "
+    },
+    {
+      "type": 2,
+      "value": "refused",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "size"
+    },
+    {
+      "type": 0,
+      "value": " řḗḗƈḗḗīṽḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.originals.refused": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƒŭŭşḗḗḓ ("
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.originals.refusedCaption": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƒŭŭşḗḗḓ ǿǿřīɠīƞȧȧŀş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.originals.registerFailed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƒǿǿŀḓḗḗř ƈǿǿŭŭŀḓ ƞǿǿŧ ƀḗḗ ŀīşŧḗḗḓ: "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.originals.registering": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀīşŧīƞɠ ŧħḗḗ ƒǿǿŀḓḗḗř: "
+    },
+    {
+      "type": 2,
+      "value": "done",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƒ "
+    },
+    {
+      "type": 2,
+      "value": "total",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " ƥȧȧŧħş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.originals.resume": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗşŭŭḿḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.originals.sending": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 2,
+      "value": "done",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƒ "
+    },
+    {
+      "type": 2,
+      "value": "total",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " ƒīŀḗḗş · "
+    },
+    {
+      "type": 1,
+      "value": "sent"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "size"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.originals.skipped": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şķīƥƥḗḗḓ: "
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " şẏşŧḗḗḿ ƒīŀḗḗ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " şẏşŧḗḗḿ ƒīŀḗḗş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " (Ŧħŭŭḿƀş.ḓƀ, .ḒŞ_Şŧǿǿřḗḗ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.originals.stoppedReason": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḗḗƞḓīƞɠ şŧǿǿƥƥḗḗḓ: "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.originals.timeLeft": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƀǿǿŭŭŧ "
+    },
+    {
+      "type": 6,
+      "value": "minutes",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḿīƞŭŭŧḗḗ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḿīƞŭŭŧḗḗş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " ŀḗḗƒŧ · "
+    },
+    {
+      "type": 2,
+      "value": "parallel",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " ȧȧŧ ȧȧ ŧīḿḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.originals.tooLarge": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧǿǿǿǿ ŀȧȧřɠḗḗ (ǿǿṽḗḗř 100 ḾƁ): "
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.part.detail": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗŧȧȧīŀş (ẊĿŞẊ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.part.manifest": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿȧȧƞīƒḗḗşŧ (ŞĦȦ-256)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.part.sourceApprovals": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƥƥřǿǿṽȧȧŀş ƇŞṼ ŭŭşḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.part.sourceFiles": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒīŀḗḗş ƇŞṼ ŭŭşḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.part.sourceMemos": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿǿǿş ƇŞṼ ŭŭşḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.part.sourceWorkbook": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇǿǿřķƀǿǿǿǿķ ŭŭşḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.part.summary": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŭŭḿḿȧȧřẏ (ƤḒƑ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.problems": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥřǿǿƀŀḗḗḿş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.problems.caption": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥřǿǿƀŀḗḗḿş ƒǿǿŭŭƞḓ, ƀẏ ŀḗḗṽḗḗŀ ȧȧƞḓ ƈǿǿḓḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.problems.none": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ƥřǿǿƀŀḗḗḿ ḿȧȧŧƈħḗḗş ŧħḗḗşḗḗ ƒīŀŧḗḗřş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.progress.counts": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īḿƥǿǿřŧḗḗḓ "
+    },
+    {
+      "type": 2,
+      "value": "imported",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " · Şķīƥƥḗḗḓ "
+    },
+    {
+      "type": 2,
+      "value": "skipped",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " · Řḗḗĵḗḗƈŧḗḗḓ "
+    },
+    {
+      "type": 2,
+      "value": "rejected",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " · Ƒȧȧīŀḗḗḓ "
+    },
+    {
+      "type": 2,
+      "value": "failed",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " · Ƞǿǿŧ şŧȧȧřŧḗḗḓ "
+    },
+    {
+      "type": 2,
+      "value": "notStarted",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.progress.end": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īḿƥǿǿřŧīƞɠ · "
+    },
+    {
+      "type": 2,
+      "value": "done",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƒ "
+    },
+    {
+      "type": 2,
+      "value": "rows",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " ḿḗḗḿǿǿş · ȧȧƀǿǿŭŭŧ "
+    },
+    {
+      "type": 6,
+      "value": "minutes",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḿīƞŭŭŧḗḗ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḿīƞŭŭŧḗḗş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " ŀḗḗƒŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.progress.line": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īḿƥǿǿřŧīƞɠ · "
+    },
+    {
+      "type": 2,
+      "value": "done",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƒ "
+    },
+    {
+      "type": 2,
+      "value": "rows",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " ḿḗḗḿǿǿş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.progress.throttled": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇȧȧīŧīƞɠ ƒǿǿř ƥřḗḗṽīḗḗẇş ŧǿǿ ƈȧȧŧƈħ ŭŭƥ (şīƞƈḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    },
+    {
+      "type": 0,
+      "value": "). Ŧħḗḗ īḿƥǿǿřŧ řḗḗşŭŭḿḗḗş ƀẏ īŧşḗḗŀƒ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.readOnly": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ƀȧȧŧƈħ ƈȧȧƞ ƞǿǿ ŀǿǿƞɠḗḗř ƈħȧȧƞɠḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.reason": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗȧȧşǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.refusal.contentRefused": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īŧş ƈǿǿƞŧḗḗƞŧ īş ƞǿǿŧ ȧȧŀŀǿǿẇḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.refusal.encrypted": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥřǿǿŧḗḗƈŧḗḗḓ ƀẏ ȧȧ ƥȧȧşşẇǿǿřḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.refusal.hashMismatch": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īŧş ƈǿǿƞŧḗḗƞŧ ƈħȧȧƞɠḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.refusal.limitExceeded": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿṽḗḗř ȧȧ ŀīḿīŧ (ƥȧȧɠḗḗş, şīẑḗḗ ǿǿř ḓḗḗƥŧħ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.refusal.malformed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓȧȧḿȧȧɠḗḗḓ ǿǿř ŭŭƞřḗḗȧȧḓȧȧƀŀḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.refusal.malware": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿƞŧȧȧīƞş ḿȧȧƈřǿǿş ǿǿř ḿȧȧŀẇȧȧřḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.refusal.other": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƒŭŭşḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.refusal.scanUnavailable": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƈħḗḗƈķş ȧȧřḗḗ ŭŭƞȧȧṽȧȧīŀȧȧƀŀḗḗ; ŧřẏ ŀȧȧŧḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.refusal.tooLarge": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧǿǿǿǿ ŀȧȧřɠḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.refusal.typeMismatch": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƈǿǿƞŧḗḗƞŧ ḓǿǿḗḗş ƞǿǿŧ ḿȧȧŧƈħ īŧş ḗḗẋŧḗḗƞşīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.refusal.typeNotAllowed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ŧẏƥḗḗ īş ƞǿǿŧ ȧȧŀŀǿǿẇḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.report.balanced": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɓȧȧŀȧȧƞƈḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.report.classified": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŀȧȧşşīƒīḗḗḓ "
+    },
+    {
+      "type": 1,
+      "value": "level"
+    },
+    {
+      "type": 0,
+      "value": ": ǿǿƞŀẏ ƥḗḗǿǿƥŀḗḗ ƈŀḗḗȧȧřḗḗḓ ŧǿǿ īŧ ƈȧȧƞ ǿǿƥḗḗƞ ŧħḗḗşḗḗ ƒīŀḗḗş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.report.complete": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿḿƥŀḗḗŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.report.download": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓǿǿẇƞŀǿǿȧȧḓ "
+    },
+    {
+      "type": 1,
+      "value": "part"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.report.failing": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀīƞḗḗş ŧħȧȧŧ ḓǿǿ ƞǿǿŧ ƀȧȧŀȧȧƞƈḗḗ: "
+    },
+    {
+      "type": 1,
+      "value": "lines"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.report.files": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒīŀḗḗş řǿǿẇş "
+    },
+    {
+      "type": 2,
+      "value": "listed",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " = ḿȧȧŧƈħḗḗḓ "
+    },
+    {
+      "type": 2,
+      "value": "matched",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " + ƞǿǿŧ řḗḗƈḗḗīṽḗḗḓ "
+    },
+    {
+      "type": 2,
+      "value": "notReceived",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " + ȧȧḿƀīɠŭŭǿǿŭŭş "
+    },
+    {
+      "type": 2,
+      "value": "ambiguous",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.report.fixity": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒīẋīŧẏ: "
+    },
+    {
+      "type": 2,
+      "value": "verified",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " ǿǿřīɠīƞȧȧŀş řḗḗ-ƈħḗḗƈķḗḗḓ · "
+    },
+    {
+      "type": 2,
+      "value": "mismatches",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " ḿīşḿȧȧŧƈħḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.report.incomplete": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īƞƈǿǿḿƥŀḗḗŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.report.invalid": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧ ṽȧȧŀīḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.report.originals": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿřīɠīƞȧȧŀş řḗḗɠīşŧḗḗřḗḗḓ "
+    },
+    {
+      "type": 2,
+      "value": "registered",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " = īḿƥǿǿřŧḗḗḓ "
+    },
+    {
+      "type": 2,
+      "value": "imported",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " + ħḗḗŀḓ ƀȧȧƈķ "
+    },
+    {
+      "type": 2,
+      "value": "heldBack",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " + ƞǿǿŧ ŭŭşḗḗḓ "
+    },
+    {
+      "type": 2,
+      "value": "unreferenced",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " + řḗḗƒŭŭşḗḗḓ "
+    },
+    {
+      "type": 2,
+      "value": "refused",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " + ƞḗḗṽḗḗř şḗḗƞŧ "
+    },
+    {
+      "type": 2,
+      "value": "neverUploaded",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.report.pending": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ řḗḗƥǿǿřŧ īş ḿȧȧḓḗḗ ẇħḗḗƞ ŧħḗḗ ƥřḗḗṽīḗḗẇş ȧȧřḗḗ ḓǿǿƞḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.report.renditions": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥřḗḗṽīḗḗẇş ("
+    },
+    {
+      "type": 1,
+      "value": "kind"
+    },
+    {
+      "type": 0,
+      "value": "): "
+    },
+    {
+      "type": 2,
+      "value": "done",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " ḓǿǿƞḗḗ · "
+    },
+    {
+      "type": 2,
+      "value": "notPossible",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " ƞǿǿŧ ƥǿǿşşīƀŀḗḗ · "
+    },
+    {
+      "type": 2,
+      "value": "notNeeded",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " ƞǿǿŧ ƞḗḗḗḗḓḗḗḓ · "
+    },
+    {
+      "type": 2,
+      "value": "failed",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " ƒȧȧīŀḗḗḓ · "
+    },
+    {
+      "type": 2,
+      "value": "pending",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " ƥḗḗƞḓīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.report.rows": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řǿǿẇş řḗḗȧȧḓ "
+    },
+    {
+      "type": 2,
+      "value": "read",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " = īḿƥǿǿřŧḗḗḓ "
+    },
+    {
+      "type": 2,
+      "value": "imported",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " + řḗḗĵḗḗƈŧḗḗḓ "
+    },
+    {
+      "type": 2,
+      "value": "rejected",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " + şķīƥƥḗḗḓ "
+    },
+    {
+      "type": 2,
+      "value": "skipped",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " + ƒȧȧīŀḗḗḓ "
+    },
+    {
+      "type": 2,
+      "value": "failed",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " + ƞǿǿŧ şŧȧȧřŧḗḗḓ "
+    },
+    {
+      "type": 2,
+      "value": "notStarted",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.report.storedNotBound": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŧǿǿřḗḗḓ ƒǿǿř řǿǿẇş ŧħȧȧŧ ŧħḗḗƞ ƒȧȧīŀḗḗḓ: "
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.report.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƈǿǿƞƈīŀīȧȧŧīǿǿƞ řḗḗƥǿǿřŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.report.unbalanced": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭƞƀȧȧŀȧȧƞƈḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.report.valid": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ṽȧȧŀīḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.required": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗɋŭŭīřḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.rerun": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řŭŭƞ ŧħḗḗ ḓřẏ řŭŭƞ ȧȧɠȧȧīƞ ƀḗḗƒǿǿřḗḗ īḿƥǿǿřŧīƞɠ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.restricted": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗşŧřīƈŧḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.result.failed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒȧȧīŀḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.result.imported": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īḿƥǿǿřŧḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.result.importing": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īḿƥǿǿřŧīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.result.notStarted": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧ şŧȧȧřŧḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.result.pending": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧ ƈħḗḗƈķḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.result.ready": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗȧȧḓẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.result.rejected": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗĵḗḗƈŧḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.result.skipped": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şķīƥƥḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.resumeImport": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗşŭŭḿḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.rows": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řǿǿẇş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.rows.caption": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿǿǿş řǿǿẇş ȧȧƞḓ ŧħḗḗīř řḗḗşŭŭŀŧş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.rows.none": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ řǿǿẇ ḿȧȧŧƈħḗḗş ŧħīş ƒīŀŧḗḗř."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.save": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şȧȧṽḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.saved": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şȧȧṽḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.settings.edit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḗḗŧŧīƞɠş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.settings.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɓȧȧŧƈħ şḗḗŧŧīƞɠş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.sheet.approvals": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƥƥřǿǿṽȧȧŀş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.sheet.batch": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɓȧȧŧƈħ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.sheet.files": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒīŀḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.sheet.memos": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿǿǿş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.sheet.originals": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿřīɠīƞȧȧŀş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.stale": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şǿǿḿḗḗŧħīƞɠ ƈħȧȧƞɠḗḗḓ şīƞƈḗḗ ŧħḗḗ ŀȧȧşŧ ḓřẏ řŭŭƞ. Řŭŭƞ ŧħḗḗ ḓřẏ řŭŭƞ ȧȧɠȧȧīƞ ƀḗḗƒǿǿřḗḗ īḿƥǿǿřŧīƞɠ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.start": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īḿƥǿǿřŧ…"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.start.confirm": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿƞƒīřḿ ȧȧƞḓ ṽḗḗřīƒẏ īḓḗḗƞŧīŧẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.start.final": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īḿƥǿǿřŧḗḗḓ ḿḗḗḿǿǿş ȧȧřḗḗ ƒīƞȧȧŀ. Ŧħḗḗẏ ɠḗḗŧ ƞǿǿ ȧȧƥƥřǿǿṽȧȧŀş, ŧȧȧşķş, ƞǿǿŧīƒīƈȧȧŧīǿǿƞş ǿǿř ƒīƞȧȧŀ řḗḗƈǿǿřḓ. Ŧħḗḗīř ŀḗḗɠȧȧƈẏ ȧȧƥƥřǿǿṽȧȧŀş şħǿǿẇ ȧȧş ħīşŧǿǿřẏ, ƞǿǿŧ ṽḗḗřīƒīḗḗḓ ƀẏ ŧħīş şẏşŧḗḗḿ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.start.notYet": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řŭŭƞ ȧȧ ḓřẏ řŭŭƞ ŧħȧȧŧ ƒīƞḓş ƞǿǿ ƀȧȧŧƈħ ƥřǿǿƀŀḗḗḿ ȧȧƞḓ ȧȧŧ ŀḗḗȧȧşŧ ǿǿƞḗḗ řḗḗȧȧḓẏ ḿḗḗḿǿǿ ƒīřşŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.start.rows": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "ready",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḿḗḗḿǿǿ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḿḗḗḿǿǿş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " ẇīŀŀ ƀḗḗ īḿƥǿǿřŧḗḗḓ ẇīŧħ ŧħḗḗīř ǿǿřīɠīƞȧȧŀş ("
+    },
+    {
+      "type": 2,
+      "value": "received",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " ǿǿřīɠīƞȧȧŀş řḗḗƈḗḗīṽḗḗḓ). "
+    },
+    {
+      "type": 6,
+      "value": "rejected",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ƞǿǿ řǿǿẇ īş řḗḗĵḗḗƈŧḗḗḓ."
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " řḗḗĵḗḗƈŧḗḗḓ řǿǿẇ ẇīŀŀ ƞǿǿŧ."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " řḗḗĵḗḗƈŧḗḗḓ řǿǿẇş ẇīŀŀ ƞǿǿŧ."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.start.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īḿƥǿǿřŧ "
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḿḗḗḿǿǿ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḿḗḗḿǿǿş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.start.undo": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ƈȧȧƞƞǿǿŧ ƀḗḗ ŭŭƞḓǿǿƞḗḗ. Ƈǿǿřřḗḗƈŧīǿǿƞş ȧȧřḗḗ ȧȧḓḓḗḗḓ ŀȧȧŧḗḗř, ƞḗḗṽḗḗř ƀẏ ḓḗḗŀḗḗŧīƞɠ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.start.warnings": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḓřẏ řŭŭƞ ŀīşŧḗḗḓ "
+    },
+    {
+      "type": 6,
+      "value": "warnings",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ẇȧȧřƞīƞɠ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ẇȧȧřƞīƞɠş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " (ƒǿǿř ḗḗẋȧȧḿƥŀḗḗ "
+    },
+    {
+      "type": 2,
+      "value": "notLinked",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " ƥḗḗǿǿƥŀḗḗ ķḗḗƥŧ ȧȧş ŧḗḗẋŧ)."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.state.abandoned": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƀȧȧƞḓǿǿƞḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.state.closed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŀǿǿşḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.state.completed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿḿƥŀḗḗŧḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.state.dryRun": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓřẏ řŭŭƞ řŭŭƞƞīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.state.importing": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īḿƥǿǿřŧīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.state.open": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƥḗḗƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.state.stopped": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŧǿǿƥƥḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.state.stopping": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŧǿǿƥƥīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.state.validated": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓřẏ řŭŭƞ ḓǿǿƞḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.state.verifying": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħḗḗƈķīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.status.notImported": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧ īḿƥǿǿřŧḗḗḓ (īƞ ƒŀīɠħŧ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.step.doneLabel": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "step"
+    },
+    {
+      "type": 0,
+      "value": " (ḓǿǿƞḗḗ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.step.dryRun": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓřẏ řŭŭƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.step.import": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īḿƥǿǿřŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.step.mappings": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿȧȧƥƥīƞɠş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.step.metadata": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗŧȧȧḓȧȧŧȧȧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.step.originals": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿřīɠīƞȧȧŀş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.step.report": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƥǿǿřŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.steps": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŧḗḗƥş ǿǿƒ ŧħḗḗ īḿƥǿǿřŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.stop": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŧǿǿƥ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.stopped": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŧǿǿƥƥḗḗḓ. Řḗḗşŭŭḿḗḗ ŧħḗḗ īḿƥǿǿřŧ (ẏǿǿŭŭ ṽḗḗřīƒẏ ẏǿǿŭŭř īḓḗḗƞŧīŧẏ ȧȧɠȧȧīƞ), ǿǿř ƒīƞīşħ ẇīŧħǿǿŭŭŧ ŧħḗḗ řḗḗşŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.stopping": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŧǿǿƥƥīƞɠ ȧȧƒŧḗḗř ŧħḗḗ ƈŭŭřřḗḗƞŧ ƈħŭŭƞķ ǿǿƒ řǿǿẇş…"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.table.approvals": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƥƥřǿǿṽȧȧŀş (ƇŞṼ, ǿǿƥŧīǿǿƞȧȧŀ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.table.files": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒīŀḗḗş (ƇŞṼ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.table.memos": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿǿǿş (ƇŞṼ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.table.workbook": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇǿǿřķƀǿǿǿǿķ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.template": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓǿǿẇƞŀǿǿȧȧḓ ŧḗḗḿƥŀȧȧŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īḿƥǿǿřŧ ŀḗḗɠȧȧƈẏ ḿḗḗḿǿǿş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.verifying": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗṽḗḗřẏ īḿƥǿǿřŧḗḗḓ ḿḗḗḿǿǿ ȧȧƞḓ ǿǿřīɠīƞȧȧŀ īş ƀḗḗīƞɠ ƈħḗḗƈķḗḗḓ. Ŧħḗḗ řḗḗƥǿǿřŧ īş ḿȧȧḓḗḗ ẇħḗḗƞ ƥřḗḗṽīḗḗẇş ȧȧřḗḗ ḓǿǿƞḗḗ; ŧħīş ƈȧȧƞ ŧȧȧķḗḗ şǿǿḿḗḗ ħǿǿŭŭřş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.view": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ṽīḗḗẇ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "imports.viewAll": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ṽīḗḗẇ ȧȧŀŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "inbox.bulk.claim": [
     {
       "type": 0,
@@ -10500,6 +16454,1147 @@
     {
       "type": 0,
       "value": "Ŧǿǿǿǿ ḿȧȧƞẏ ȧȧŧŧḗḗḿƥŧş. Ẇȧȧīŧ ȧȧ ẇħīŀḗḗ ȧȧƞḓ ŧřẏ ȧȧɠȧȧīƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.annex": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƞƞḗḗẋ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.approvals": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀḗḗɠȧȧƈẏ ȧȧƥƥřǿǿṽȧȧŀ ħīşŧǿǿřẏ (īḿƥǿǿřŧḗḗḓ, ƞǿǿŧ ṽḗḗřīƒīḗḗḓ ƀẏ ŧħīş şẏşŧḗḗḿ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.approvals.none": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ȧȧƥƥřǿǿṽȧȧŀş ẇḗḗřḗḗ ɠīṽḗḗƞ īƞ ŧħḗḗ ḗḗȧȧřŀīḗḗř şẏşŧḗḗḿ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.asGiven": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": " (ŀḗḗɠȧȧƈẏ: “"
+    },
+    {
+      "type": 1,
+      "value": "given"
+    },
+    {
+      "type": 0,
+      "value": "”)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.cancel": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈȧȧƞƈḗḗŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.classification": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŀȧȧşşīƒīƈȧȧŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.closedOn": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŀǿǿşḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.col.date": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓȧȧŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.col.decision": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗƈīşīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.col.name": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞȧȧḿḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.col.order": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "#"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.col.position": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥǿǿşīŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.col.remark": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗḿȧȧřķ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.confirm": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿƞƒīřḿ ȧȧƞḓ ṽḗḗřīƒẏ īḓḗḗƞŧīŧẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.correct": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿřřḗḗƈŧ ȧȧ ŀḗḗɠȧȧƈẏ ḓḗḗŧȧȧīŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.correct.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ŀḗḗɠȧȧƈẏ řḗḗƈǿǿřḓ şŧȧȧẏş ȧȧş ɠīṽḗḗƞ; ŧħḗḗ ƈǿǿřřḗḗƈŧīǿǿƞ īş ȧȧḓḓḗḗḓ ẇīŧħ ẏǿǿŭŭř řḗḗȧȧşǿǿƞ ȧȧƞḓ ƞȧȧḿḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.corrected": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƈǿǿřřḗḗƈŧīǿǿƞ ẇȧȧş ȧȧḓḓḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.correction": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "field"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "before"
+    },
+    {
+      "type": 0,
+      "value": " → "
+    },
+    {
+      "type": 1,
+      "value": "after"
+    },
+    {
+      "type": 0,
+      "value": " · “"
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "” · "
+    },
+    {
+      "type": 1,
+      "value": "by"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.corrections": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿřřḗḗƈŧīǿǿƞş ("
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.decidedOn": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗƈīḓḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.details": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀḗḗɠȧȧƈẏ ḓḗḗŧȧȧīŀş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.download": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓǿǿẇƞŀǿǿȧȧḓ "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.error.aboveClearance": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ȧȧřḗḗ ƞǿǿŧ ƈŀḗḗȧȧřḗḗḓ ŧǿǿ ŧħȧȧŧ ŀḗḗṽḗḗŀ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.error.dateFuture": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḓȧȧŧḗḗ ƈȧȧƞƞǿǿŧ ƀḗḗ īƞ ŧħḗḗ ƒŭŭŧŭŭřḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.error.dateInvalid": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗƞŧḗḗř ȧȧ ḓȧȧŧḗḗ (ẏẏẏẏ-ḿḿ-ḓḓ) ȧȧƒŧḗḗř 1900."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.error.dateOrder": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḓȧȧŧḗḗş ḿŭŭşŧ şŧȧȧẏ īƞ ǿǿřḓḗḗř: řȧȧīşḗḗḓ ǿǿƞ, ŧħḗḗƞ ḓḗḗƈīḓḗḗḓ ǿǿƞ, ŧħḗḗƞ ƈŀǿǿşḗḗḓ ǿǿƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.error.notHigher": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħǿǿǿǿşḗḗ ȧȧ şŧřīƈŧḗḗř ŀḗḗṽḗḗŀ ŧħȧȧƞ ŧħḗḗ ḿḗḗḿǿǿ’ş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.error.notImported": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ḿḗḗḿǿǿ ẇȧȧş ƞǿǿŧ īḿƥǿǿřŧḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.error.other": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħȧȧŧ ḓīḓ ƞǿǿŧ ẇǿǿřķ. Ŧřẏ ȧȧɠȧȧīƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.error.required": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗɋŭŭīřḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.error.tooLong": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧǿǿǿǿ ŀǿǿƞɠ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.error.unchanged": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħȧȧŧ īş ȧȧŀřḗḗȧȧḓẏ ŧħḗḗ ṽȧȧŀŭŭḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.error.useReclassify": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭşḗḗ Řȧȧīşḗḗ ƈŀȧȧşşīƒīƈȧȧŧīǿǿƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.error.valueRequired": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ḓḗḗŧȧȧīŀ ƈȧȧƞƞǿǿŧ ƀḗḗ ḗḗḿƥŧẏ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.field": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗŧȧȧīŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.field.classification": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŀȧȧşşīƒīƈȧȧŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.field.closedOn": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŀǿǿşḗḗḓ ǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.field.decidedOn": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗƈīḓḗḗḓ ǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.field.initiatorName": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īƞīŧīȧȧŧǿǿř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.field.legacyType": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀḗḗɠȧȧƈẏ ŧẏƥḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.field.legacyUnit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀḗḗɠȧȧƈẏ ŭŭƞīŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.field.raisedOn": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řȧȧīşḗḗḓ ǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.field.subject": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŭŭƀĵḗḗƈŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.finalRecord": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒīƞȧȧŀ řḗḗƈǿǿřḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.imported": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īḿƥǿǿřŧḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.importedFrom": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īḿƥǿǿřŧḗḗḓ ƒřǿǿḿ "
+    },
+    {
+      "type": 1,
+      "value": "source"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.importedFromBatch": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īḿƥǿǿřŧḗḗḓ ƒřǿǿḿ "
+    },
+    {
+      "type": 1,
+      "value": "source"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " (“"
+    },
+    {
+      "type": 1,
+      "value": "batch"
+    },
+    {
+      "type": 0,
+      "value": "”)."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.initiator": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īƞīŧīȧȧŧǿǿř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.legacyNumber": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀḗḗɠȧȧƈẏ ƞŭŭḿƀḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.level": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞḗḗẇ ƈŀȧȧşşīƒīƈȧȧŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.level.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƞŀẏ ȧȧ şŧřīƈŧḗḗř ŀḗḗṽḗḗŀ. Řḗḗȧȧḓḗḗřş ƞǿǿŧ ƈŀḗḗȧȧřḗḗḓ ŧǿǿ īŧ ŀǿǿşḗḗ ȧȧƈƈḗḗşş ŧǿǿ ŧħḗḗ ḿḗḗḿǿǿ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.linkedPerson": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " (ŀīƞķḗḗḓ: "
+    },
+    {
+      "type": 1,
+      "value": "user"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.main": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿȧȧīƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.noFinalRecord": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ƒīƞȧȧŀ řḗḗƈǿǿřḓ: ƒǿǿř ȧȧƞ īḿƥǿǿřŧḗḗḓ ḿḗḗḿǿǿ ŧħḗḗ ǿǿřīɠīƞȧȧŀ ḓǿǿƈŭŭḿḗḗƞŧş ȧȧřḗḗ ŧħḗḗ řḗḗƈǿǿřḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.noHigher": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗřḗḗ īş ƞǿǿ şŧřīƈŧḗḗř ŀḗḗṽḗḗŀ ẏǿǿŭŭ ȧȧřḗḗ ƈŀḗḗȧȧřḗḗḓ ŧǿǿ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.noPreview": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓǿǿẇƞŀǿǿȧȧḓ ǿǿƞŀẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.notVerified": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈřḗḗȧȧŧḗḗḓ ȧȧƞḓ ḓḗḗƈīḓḗḗḓ īƞ ȧȧƞ ḗḗȧȧřŀīḗḗř şẏşŧḗḗḿ; ƞǿǿŧ ṽḗḗřīƒīḗḗḓ ƀẏ ŧħīş şẏşŧḗḗḿ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.originalLine": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "size"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.originals": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿřīɠīƞȧȧŀ ḓǿǿƈŭŭḿḗḗƞŧş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.preview": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥřḗḗṽīḗḗẇ "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.raisedOn": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řȧȧīşḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.reason": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗȧȧşǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.reason.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şħǿǿẇƞ ẇīŧħ ŧħḗḗ ƈǿǿřřḗḗƈŧīǿǿƞ ŧǿǿ ḗḗṽḗḗřẏǿǿƞḗḗ ẇħǿǿ řḗḗȧȧḓş ŧħḗḗ ḿḗḗḿǿǿ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.reclassified": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƈŀȧȧşşīƒīƈȧȧŧīǿǿƞ ẇȧȧş řȧȧīşḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.reclassify": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řȧȧīşḗḗ ƈŀȧȧşşīƒīƈȧȧŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.restricted": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗşŧřīƈŧḗḗḓ ǿǿřīɠīƞȧȧŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.status": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŧȧȧŧŭŭş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.type": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧẏƥḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.unit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭƞīŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.unlinkedPerson": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " (ȧȧş ɠīṽḗḗƞ; ƞǿǿŧ ŀīƞķḗḗḓ ŧǿǿ ȧȧ ŭŭşḗḗř)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.value": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿřřḗḗƈŧḗḗḓ ṽȧȧŀŭŭḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "legacy.value.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀḗḗȧȧṽḗḗ ḗḗḿƥŧẏ ŧǿǿ ƈŀḗḗȧȧř ȧȧ ḓḗḗƈīşīǿǿƞ ḓȧȧŧḗḗ ŧħḗḗ şŧȧȧŧŭŭş ḓǿǿḗḗş ƞǿǿŧ ƞḗḗḗḗḓ."
     },
     {
       "type": 0,
@@ -22051,6 +29146,34 @@
       "value": "]"
     }
   ],
+  "nav.importBatch": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īḿƥǿǿřŧ ƀȧȧŧƈħ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "nav.imports": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īḿƥǿǿřŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "nav.inbox": [
     {
       "type": 0,
@@ -27881,6 +35004,20 @@
       "value": "]"
     }
   ],
+  "search.imported": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īḿƥǿǿřŧḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "search.in": [
     {
       "type": 0,
@@ -27959,6 +35096,62 @@
     {
       "type": 0,
       "value": "Ŀǿǿȧȧḓ ḿǿǿřḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "search.origin": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿřīɠīƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "search.origin.all": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŀŀ ḿḗḗḿǿǿş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "search.origin.imported": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īḿƥǿǿřŧḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "search.origin.native": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈřḗḗȧȧŧḗḗḓ ħḗḗřḗḗ"
     },
     {
       "type": 0,

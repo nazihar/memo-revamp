@@ -38,6 +38,38 @@ class ImportMappings(
         return store.all(batchId, kind)
     }
 
+    /**
+     * What [kind]'s mappings (every kind's when null) can point at, named for the mapping screen (design E06 §10, as
+     * built T9): the active types with a published version, the units and the levels; for PERSON only the users that
+     * [mappings] already point at (the people picker finds the others). A holder of `memo.import` need hold no other
+     * permission that lists types, units or users. STATUS targets are fixed names and are not listed.
+     */
+    fun targets(
+        kind: MappingKind?,
+        mappings: List<ImportMapping>,
+    ): List<MappingTarget> {
+        fun wanted(k: MappingKind) = kind == null || kind == k
+        val found = mutableListOf<MappingTarget>()
+        if (wanted(MappingKind.TYPE)) {
+            legacy.types().sortedBy { it.name }.mapTo(found) { MappingTarget(MappingKind.TYPE, it.id.toString(), it.name, it.code) }
+        }
+        if (wanted(MappingKind.UNIT)) {
+            units.units(units.allUnits()).values.sortedBy { it.name }.mapTo(found) {
+                MappingTarget(MappingKind.UNIT, it.id.toString(), it.name, it.code)
+            }
+        }
+        if (wanted(MappingKind.CLASSIFICATION)) {
+            clearances.levels().mapTo(found) { MappingTarget(MappingKind.CLASSIFICATION, it.id.toString(), it.name, rank = it.rank) }
+        }
+        if (wanted(MappingKind.PERSON)) {
+            val ids = mappings.filter { it.kind == MappingKind.PERSON }.mapNotNull { it.target?.let(ImportIntake::uuidOrNull) }
+            users.of(ids).values.sortedBy { it.displayName }.mapTo(found) {
+                MappingTarget(MappingKind.PERSON, it.id.toString(), it.displayName, it.email)
+            }
+        }
+        return found
+    }
+
     /** Saves [changes] to [kind]'s mappings of the batch at [version]; returns the batch's new version. */
     fun save(
         batchId: UUID,
@@ -222,3 +254,15 @@ class ImportMappings(
         }
     }
 }
+
+/** Something a mapping can point at, with the name the screen shows (design E06 §10, as built T9). */
+data class MappingTarget(
+    val kind: MappingKind,
+    /** The value to send as a mapping's `target`. */
+    val id: String,
+    val label: String,
+    /** A type's or unit's code, or a user's email. */
+    val detail: String? = null,
+    /** CLASSIFICATION: the level's rank (higher is stricter). */
+    val rank: Int? = null,
+)

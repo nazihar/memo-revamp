@@ -51,6 +51,8 @@ const loaders: Record<CataloguePart, Record<string, () => Promise<Messages>>> = 
   search: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'search' }, import: 'default' }),
   inbox: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'inbox' }, import: 'default' }),
   dashboard: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'dashboard' }, import: 'default' }),
+  imports: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'imports' }, import: 'default' }),
+  legacy: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'legacy' }, import: 'default' }),
 }
 
 /** [part] of [locale]'s messages; empty for English (the source locale). */

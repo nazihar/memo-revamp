@@ -22,13 +22,17 @@ import { sm, smv } from './search-messages'
 import {
   filterCount,
   hashOf,
+  ORIGINS,
   searchBody,
   SOURCES,
   withoutFilters,
+  type Origin,
   type SearchParams,
   type Source,
 } from './search-params'
 import { searchFailure, type FieldErrors } from './search-problems'
+
+const originLabels: Record<Origin, MessageDescriptor> = { native: sm.originNative, imported: sm.originImported }
 
 const sourceLabels: Record<Source, MessageDescriptor> = {
   metadata: sm.sourceMetadata,
@@ -333,6 +337,14 @@ function Chips({
   if (params.to) single('to', sm.to, dateLabel(intl, params.to))
   if (params.amountMin !== undefined) single('amountMin', sm.amountMin, intl.formatNumber(params.amountMin))
   if (params.amountMax !== undefined) single('amountMax', sm.amountMax, intl.formatNumber(params.amountMax))
+  if (params.origin) {
+    chips.push({
+      key: 'origin',
+      name: intl.formatMessage(sm.origin),
+      value: intl.formatMessage(originLabels[params.origin]),
+      without: { ...params, origin: undefined },
+    })
+  }
   if (params.in) {
     chips.push({
       key: 'in',
@@ -380,6 +392,7 @@ interface Draft {
   amountMin: string
   amountMax: string
   in: Source[]
+  origin: Origin | ''
 }
 
 function draftOf(params: SearchParams): Draft {
@@ -392,6 +405,7 @@ function draftOf(params: SearchParams): Draft {
     amountMin: params.amountMin === undefined ? '' : String(params.amountMin),
     amountMax: params.amountMax === undefined ? '' : String(params.amountMax),
     in: params.in ?? [...SOURCES],
+    origin: params.origin ?? '',
   }
 }
 
@@ -456,6 +470,7 @@ function FilterPanel({
       amountMin: amountOf(draft.amountMin),
       amountMax: amountOf(draft.amountMax),
       in: draft.in.length < SOURCES.length ? SOURCES.filter((s) => draft.in.includes(s)) : undefined,
+      origin: draft.origin || undefined,
     })
   }
 
@@ -561,6 +576,23 @@ function FilterPanel({
           >
             {intl.formatMessage(sourceLabels[source])}
           </CheckRow>
+        ))}
+      </Group>
+      <Group legend={intl.formatMessage(sm.origin)}>
+        {(['', ...ORIGINS] as const).map((origin) => (
+          <label key={origin || 'all'} className="flex min-h-8 items-center gap-2 text-sm">
+            <input
+              type="radio"
+              name="origin"
+              value={origin}
+              checked={draft.origin === origin}
+              className="size-4 accent-primary"
+              onChange={() => {
+                setDraft((d) => ({ ...d, origin }))
+              }}
+            />
+            {origin ? intl.formatMessage(originLabels[origin]) : intl.formatMessage(sm.originAll)}
+          </label>
         ))}
       </Group>
       <Button type="submit">{intl.formatMessage(sm.apply)}</Button>
@@ -710,6 +742,11 @@ function ResultRow({ item }: { item: SearchResultView }) {
           >
             {[item.number, item.subject].filter(Boolean).join(' · ')}
           </Link>
+          {item.origin === 'IMPORTED' ? (
+            <Badge tone="neutral" className="ms-2 align-middle">
+              {intl.formatMessage(sm.imported)}
+            </Badge>
+          ) : null}
         </h3>
         <Badge tone={item.status in statusTone ? statusTone[item.status as MemoStatus] : 'neutral'}>
           {statusLabel(intl, item.status)}

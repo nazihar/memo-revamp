@@ -52,3 +52,6 @@ Chosen option 1.
 
 ## More information
 Design: `docs/plan/phase-3-memo-efile/epic-02-documents/design.md` §1–§3. Related: ADR-0029 (uploads), ADR-0043 (attachment rules on the type), ADR-0045 (renditions), ADR-0047 (co-authors).
+
+## Amendment — 2026-11-16 (ADR-0055)
+- Imported memos keep their originals in their own table (`memo_legacy_file`, purpose `memo.legacy`), not as attachments. That purpose accepts the legacy formats ADR-0055 allows (OLE2 `.doc`, `.xls`, `.ppt`, `.rtf`, TIFF); `memo.attachment` does not. The stricter-only rule for a file's classification applies to imported originals too.

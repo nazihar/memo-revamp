@@ -78,3 +78,7 @@ Chosen option: **1**.
 - https://raw.githubusercontent.com/Cisco-Talos/clamav/clamav-1.5.4/etc/clamd.conf.sample (accessed 2026-11-02)
 - https://nginx.org/en/docs/http/ngx_http_proxy_module.html#proxy_request_buffering (accessed 2026-11-02)
 - https://github.com/seaweedfs/seaweedfs/wiki/S3-Object-Lock-and-Retention (accessed 2026-11-02)
+
+## Amendment — 2026-11-16 (ADR-0055)
+- Legacy Office files (`.doc`, `.xls`, `.ppt` in OLE2 containers), `.rtf` and `.tif`/`.tiff` are allowed **only** in the two legacy-import purposes (`imports.intake` and `memo.legacy`), which opt in with a purpose flag no other purpose may set (architecture test). Everywhere else they stay refused.
+- For those purposes, a generic OLE2 container is typed by the isolated Tika server's `/detect/stream` (Word, Excel or PowerPoint; anything else, such as Outlook `.msg`, is refused; the upload fails closed if Tika is down). Macros are refused by clamd's `Heuristics.OLE2.ContainsMacros`, and encrypted documents as before. Nothing parses these formats in the backend JVM.

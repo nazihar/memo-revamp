@@ -196,7 +196,7 @@ class MemoTemplateService(
         val version = types.versionFor(memo)?.takeIf { memo.status.editable && memo.documentFileId == null } ?: return null
         val template = store.of(version.id)?.fileVersionId?.let(files::version)
         val view = views.of(memo)
-        val position = directory.positionsOf(listOf(memo.initiatorId))[memo.initiatorId]
+        val position = memo.initiatorId?.let { directory.positionsOf(listOf(it))[it] }
         val unit = position?.unitId?.let { units.units(listOf(it))[it]?.name }.orEmpty()
         val data = MemoTemplateValues.of(view, version.settings.fields, position?.title.orEmpty(), unit, directory.today())
         return FillJob(template, data, "${memo.subject.take(MAX_NAME)}.docx")

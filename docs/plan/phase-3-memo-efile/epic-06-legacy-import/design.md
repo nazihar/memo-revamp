@@ -75,6 +75,13 @@ erDiagram
   - `created_at` and `updated_at` are the import time (TNA: never reset dates silently; the legacy dates are kept as given in `memo_legacy`).
   - `closed_at` (CLOSED only) is the start of `closed_on` in the batch's time zone, because V9's CHECK needs it. The view shows the legacy date, never this instant.
   - `approved_at` stays null, so auto-close (`MemoClosing.due`) and E04's backfill never see imported memos (they also filter on `origin`).
+- **As built (T3):**
+  - `memo_imported_guard` compares the whole row as JSON less `subject`, `classification_id`, `classification_rank`, `updated_at` and `version`, so a column added later is locked too; a lower rank is refused.
+  - The three child tables reference `memo_legacy` (not `memo`): approvals, originals and corrections exist only beside legacy facts. `memo_legacy_file` has `UNIQUE (tenant_id, memo_id, position)` and `size_bytes > 0` (`FILE_EMPTY` rows are never imported).
+  - Optional legacy values that are blank are stored as null; emails are 1–320 characters (the service does not judge their form).
+  - `LegacyMemos` (package `com.memo.memo`) takes a `LegacyMemoRow` (`source`, `given`, `mapped`, `dates`, `initiator`, `approvals`, `originals`) and answers `LegacyProblem(code, field)`. `create` checks again, requires each original to be a `memo.legacy` file owned by the memo with a current version (`FILE_NOT_RECEIVED` otherwise), and turns a lost race on the row key or the reference into `ALREADY_IMPORTED` or `NUMBER_IN_USE`. Codes beyond §9: `PERSON_UNKNOWN` (a linked id that is no user of the tenant) and `VALUE_INVALID` (an approval order below 1).
+  - `series()` returns `LiveSeries` with `mayStillGive(number)`: the period and counter logic of §5.2 stays in the memo module, and T6 only calls it. A unit code no unit has yet counts as a counter at zero.
+  - A unit is "current" when it exists: the org directory has no open or closed state for units.
 
 ### 3.2 Imports module (`imports/V1__imports.sql`)
 - **`imports_batch`:**
@@ -323,6 +330,8 @@ All paths are under `/api/v1`. Bodies are JSON. Errors are RFC 9457 Problem Deta
 
 - `memo.legacy` retention: the memo type's retention years when set (whatever it counts from), else the tenant's default, counted from the import. This is never shorter than counting from the legacy dates; Phase 7's disposition reads the legacy dates.
 - `inline` display for PDF and images, as for attachments.
+- **As built (T3):** `MemoLegacyPurpose.retentionYears(owner)` gives the type's years only once the memo exists. Promotion (§5.3, step 5) stores an original before its memo is committed, so it gets the tenant's default. **T7** must apply the type's years when they are longer: after the row commits, extend each original's lock with `RecordRetentions.extend` (as closure does for final records), or give `copyFrom` the years.
+- **As built (T3):** `memo.import` is in the catalogue (`Permission.MEMO_IMPORT`, `GRANTED_ON_PURPOSE`), with English and Arabic labels in the web's access screens. The demo grant waits for T5, where its endpoints arrive.
 
 ## 11. Imported memos across the product
 - **`MemoView`:**
@@ -330,12 +339,19 @@ All paths are under `/api/v1`. Bodies are JSON. Errors are RFC 9457 Problem Deta
   - `initiator` becomes optional (null for an unlinked imported initiator). This is an OpenAPI change; the web client is regenerated in the same task;
   - `legacy`: source code, batch name, legacy number as given, `importedAt`; dates as given (`raisedOn`, `decidedOn`, `closedOn`); status, type, unit and classification as given; the initiator as given with the linked user if any; the approval history (ordinal, name, linked user, position, decision, date, remark); the originals (role, title, type, size, classification, readable or "Restricted original", renditions; SHA-256 for auditors); the corrections;
   - `allowedActions` on an imported memo: `CORRECT_LEGACY` and `RECLASSIFY` for holders of `memo.import`; share and copy-to as for any approved memo (ADR-0050); watch. Nothing else: no route, workflow, note, close, link from it, edit or final record.
+  - **As built (T3):**
+    - `legacy` (`LegacyMemoView`) carries the **batch id**, not its name: batches belong to the imports module, which the memo module does not read. The page names the batch through the imports API (T9).
+    - People appear by **name and linked user only**. Their legacy emails and ids are kept in `memo_legacy` for the import's audit and report, not shown to every reader.
+    - Originals show role, position, title, media type, size, the current version (for the rendition and download endpoints), a stricter level, and the SHA-256 to `audit.read` holders. One above the reader's clearance is `restricted` with none of these.
+    - `allowedActions` is empty for an imported memo except `ADD_COPIES` (with `memo.copy.add`); shares and following have their own endpoints, as for any memo. `CORRECT_LEGACY` and `RECLASSIFY` arrive with their endpoints in T4. `canLink` is false.
+    - The server refuses closing (409 `IMPORTED`), comments (403) and links from the memo (409 `WRONG_STATE`), not only the buttons.
 - **Lists and boxes:** the initiator's Drafts, Sent and Closed boxes filter `origin = 'NATIVE'`; imported memos are found by search. They show an "Imported" badge wherever they appear (search results, links, related files).
 - **Search (ADR-0054):**
   - `MemoSearchFacts` gains `origin`, a nullable `initiatorId`, and for imported memos `createdAt` = the start of `raised_on` in the batch's time zone, so the date filter finds them by when they were raised;
   - `fieldsText` adds the legacy number as given, the initiator's and approvers' names, the legacy unit and type, so people who left can be found by name;
   - `MemoSearchSource.files` includes `memo_legacy_file` originals at their effective rank;
   - the Search page gets an **Origin** filter (Created here, Imported) and a chip.
+  - **As built (T3):** `LegacyMemos.create` publishes `MemoChanged` and `MemoFileChanged` as designed, but `MemoSearchFacts.initiatorId` and `search_memo.initiator_id` stay non-null until `search/V3`. Until then the memo module answers no search facts for an imported memo, so the index skips it. T4 indexes imported memos, and its backfill picks up any imported before.
 - **Dashboards (E05):** throughput's "created" counts `origin = 'NATIVE'` only. Cycle time and pending come from workflow instances and tasks, which imported memos do not have.
 - **Watching (E05):** no auto-watch on import; nothing notifies. A reader may follow an imported memo by hand; nothing will happen to it except corrections, which publish no watch news.
 - **Final record (E04):** none. The backfill and `MemoWorkflowSubject` skip `origin = 'IMPORTED'`. The memo page says "No final record: for an imported memo the original documents are the record."

@@ -164,7 +164,9 @@ class MemoLinks(
     ): UUID {
         val memo = memos.get(memoId)
         val user = actor()
-        refuseIf(memo.status in MemoViewsRules.UNLINKABLE, "WRONG_STATE") { "A closed or discarded memo takes no new links." }
+        refuseIf(memo.status in MemoViewsRules.UNLINKABLE || memo.imported, "WRONG_STATE") {
+            "A closed, discarded or imported memo takes no new links."
+        }
         // A number the reader cannot open answers like one that does not exist.
         val target =
             store.byReference(targetReference.trim())?.takeIf { memoStore.visible(it, user, policy.clearanceRank()) != null }

@@ -45,6 +45,7 @@
   "access.permission.memoCreate": "Write and submit memos",
   "access.permission.memoDashboardRead": "See the approvals dashboard of a unit",
   "access.permission.memoDistributionManage": "Manage distribution lists",
+  "access.permission.memoImport": "Import memos from a legacy system",
   "access.permission.memoReadUnit": "Read the memos of a unit",
   "access.permission.memoRenditionRegenerate": "Make a new version of a final record",
   "access.permission.memoShareManage": "Revoke any share of a memo",

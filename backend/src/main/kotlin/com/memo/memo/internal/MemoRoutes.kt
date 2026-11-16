@@ -98,7 +98,8 @@ class MemoRoutes(
         route: List<RouteEntry>,
     ): List<FieldProblem> {
         if (type?.doaCheck != true) return emptyList()
-        val shortfalls = authority.shortfalls(MemoWorkflowSubject.TYPE, memo.id, memo.initiatorId, route)
+        val initiator = checkNotNull(memo.initiatorId) { "a memo with a route has an initiator" }
+        val shortfalls = authority.shortfalls(MemoWorkflowSubject.TYPE, memo.id, initiator, route)
         val names = users.of(shortfalls.flatMap { it.people }.toSet()).mapValues { it.value.displayName }
         return shortfalls.map { gap ->
             val who =

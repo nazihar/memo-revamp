@@ -4,6 +4,7 @@ import com.memo.common.tenant.TenantDsl
 import com.memo.jooq.tables.references.MEMO_
 import com.memo.jooq.tables.references.MEMO_RENDITION
 import com.memo.jooq.tables.references.MEMO_RENDITION_PART
+import com.memo.memo.internal.MemoOrigin
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Repository
 import java.util.UUID
@@ -66,6 +67,8 @@ class MemoRenditionQueries(
             .from(MEMO_)
             .where(
                 MEMO_.APPROVED_AT.isNotNull,
+                // The originals are an imported memo's record: it never gets one of ours (design E06 §11).
+                MEMO_.ORIGIN.eq(MemoOrigin.NATIVE.name),
                 DSL.notExists(DSL.selectOne().from(MEMO_RENDITION).where(MEMO_RENDITION.MEMO_ID.eq(MEMO_.ID))),
             ).orderBy(MEMO_.APPROVED_AT)
             .limit(limit)

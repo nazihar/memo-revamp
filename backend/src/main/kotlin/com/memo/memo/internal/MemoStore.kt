@@ -34,6 +34,9 @@ enum class MemoStatus {
     val editable: Boolean get() = this == DRAFT || this == RETURNED
 }
 
+/** Where a memo comes from (ADR-0055): raised here, or imported in a final state from a legacy system. Stored by name. */
+enum class MemoOrigin { NATIVE, IMPORTED }
+
 /**
  * How a reader came to read a memo (ADR-0050), strongest first. One row per reader: a stronger way in takes over a
  * weaker one, so revoking a share never takes away an approver's or co-author's access. Stored by name.
@@ -59,7 +62,8 @@ data class Memo(
     val subject: String,
     val classificationId: UUID,
     val classificationRank: Int,
-    val initiatorId: UUID,
+    /** Who raised it; null only for an imported memo whose initiator is not linked to a user here (ADR-0055). */
+    val initiatorId: UUID?,
     val originUnitId: UUID?,
     val status: MemoStatus,
     val documentFileId: UUID?,
@@ -76,7 +80,11 @@ data class Memo(
     val approvedAt: Instant? = null,
     /** When it was closed; null unless closed. */
     val closedAt: Instant? = null,
-)
+    /** Raised here, or imported from a legacy system (ADR-0055). */
+    val origin: MemoOrigin = MemoOrigin.NATIVE,
+) {
+    val imported: Boolean get() = origin == MemoOrigin.IMPORTED
+}
 
 /** The fields of a new memo. */
 data class NewMemo(
@@ -330,6 +338,7 @@ private fun JsonMapper.memo(r: MemoRecord): Memo =
             metadata = metadata?.let { readValue(it.data(), METADATA) } ?: emptyMap(),
             approvedAt = approvedAt?.toInstant(),
             closedAt = closedAt?.toInstant(),
+            origin = MemoOrigin.valueOf(origin!!),
         )
     }
 

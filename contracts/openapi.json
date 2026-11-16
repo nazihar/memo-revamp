@@ -2173,6 +2173,197 @@
         },
         "type" : "object"
       },
+      "LegacyApprovalView" : {
+        "properties" : {
+          "decidedOn" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "decision" : {
+            "type" : "string"
+          },
+          "ordinal" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "person" : {
+            "$ref" : "#/components/schemas/LegacyPersonView"
+          },
+          "position" : {
+            "type" : [ "string", "null" ]
+          },
+          "remark" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "decision", "ordinal", "person" ],
+        "type" : "object"
+      },
+      "LegacyCorrectionView" : {
+        "properties" : {
+          "after" : {
+            "type" : [ "string", "null" ]
+          },
+          "before" : {
+            "type" : [ "string", "null" ]
+          },
+          "correctedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "correctedBy" : {
+            "$ref" : "#/components/schemas/Named"
+          },
+          "field" : {
+            "type" : "string"
+          },
+          "reason" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "correctedAt", "correctedBy", "field", "reason" ],
+        "type" : "object"
+      },
+      "LegacyMemoView" : {
+        "properties" : {
+          "approvals" : {
+            "items" : {
+              "$ref" : "#/components/schemas/LegacyApprovalView"
+            },
+            "type" : "array"
+          },
+          "batchId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "classification" : {
+            "type" : [ "string", "null" ]
+          },
+          "closedOn" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "corrections" : {
+            "items" : {
+              "$ref" : "#/components/schemas/LegacyCorrectionView"
+            },
+            "type" : "array"
+          },
+          "decidedOn" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "importedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "initiator" : {
+            "$ref" : "#/components/schemas/LegacyPersonView"
+          },
+          "legacyNumber" : {
+            "type" : "string"
+          },
+          "originals" : {
+            "items" : {
+              "$ref" : "#/components/schemas/LegacyOriginalView"
+            },
+            "type" : "array"
+          },
+          "raisedOn" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "rowNumber" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "sourceCode" : {
+            "type" : "string"
+          },
+          "status" : {
+            "type" : "string"
+          },
+          "subject" : {
+            "type" : "string"
+          },
+          "timeZone" : {
+            "type" : "string"
+          },
+          "type" : {
+            "type" : "string"
+          },
+          "unit" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "approvals", "batchId", "corrections", "importedAt", "initiator", "legacyNumber", "originals", "raisedOn", "rowNumber", "sourceCode", "status", "subject", "timeZone", "type", "unit" ],
+        "type" : "object"
+      },
+      "LegacyOriginalView" : {
+        "properties" : {
+          "classification" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/Named"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "fileId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "mediaType" : {
+            "type" : [ "string", "null" ]
+          },
+          "position" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "restricted" : {
+            "type" : "boolean"
+          },
+          "role" : {
+            "enum" : [ "MAIN", "ATTACHMENT" ],
+            "type" : "string"
+          },
+          "sha256" : {
+            "type" : [ "string", "null" ]
+          },
+          "sizeBytes" : {
+            "format" : "int64",
+            "type" : [ "integer", "null" ]
+          },
+          "title" : {
+            "type" : [ "string", "null" ]
+          },
+          "versionId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "id", "position", "restricted", "role" ],
+        "type" : "object"
+      },
+      "LegacyPersonView" : {
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "user" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/Named"
+            }, {
+              "type" : "null"
+            } ]
+          }
+        },
+        "required" : [ "name" ],
+        "type" : "object"
+      },
       "LegalEntity" : {
         "properties" : {
           "id" : {
@@ -2926,13 +3117,24 @@
             "type" : "string"
           },
           "initiator" : {
-            "$ref" : "#/components/schemas/Named"
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/Named"
+            }, {
+              "type" : "null"
+            } ]
           },
           "interests" : {
             "items" : {
               "$ref" : "#/components/schemas/Named"
             },
             "type" : "array"
+          },
+          "legacy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/LegacyMemoView"
+            }, {
+              "type" : "null"
+            } ]
           },
           "linkedFrom" : {
             "items" : {
@@ -2956,6 +3158,10 @@
           "numberedWhen" : {
             "enum" : [ "ON_SUBMIT", "ON_APPROVAL" ],
             "type" : [ "string", "null" ]
+          },
+          "origin" : {
+            "enum" : [ "NATIVE", "IMPORTED" ],
+            "type" : "string"
           },
           "originUnit" : {
             "oneOf" : [ {
@@ -3020,7 +3226,7 @@
             "type" : "integer"
           }
         },
-        "required" : [ "allowedActions", "canLink", "classification", "coauthors", "createdAt", "details", "holders", "id", "initiator", "interests", "linkedFrom", "links", "rendition", "round", "route", "sendBackTargets", "staleDetails", "status", "subject", "type", "updatedAt", "version" ],
+        "required" : [ "allowedActions", "canLink", "classification", "coauthors", "createdAt", "details", "holders", "id", "interests", "linkedFrom", "links", "origin", "rendition", "round", "route", "sendBackTargets", "staleDetails", "status", "subject", "type", "updatedAt", "version" ],
         "type" : "object"
       },
       "MfaEnrolment" : {

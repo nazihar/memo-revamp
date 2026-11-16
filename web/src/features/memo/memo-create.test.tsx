@@ -65,6 +65,7 @@ const creditForm: MemoTypeForm = {
 }
 
 const memo: MemoView = {
+  origin: 'NATIVE',
   id: 'm1',
   reference: null,
   numberedWhen: 'ON_APPROVAL',

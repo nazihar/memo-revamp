@@ -26,6 +26,7 @@ const variants = [
 ] as const
 
 const memo: MemoView = {
+  origin: 'NATIVE',
   id: 'm1',
   reference: 'M-2026-00042',
   subject: 'Opening a branch in Sylhet',

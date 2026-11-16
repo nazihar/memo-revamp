@@ -16,6 +16,7 @@ import { accessHandler, API_ORIGIN, server, sessionHandler, signedInSession, wat
 import { expectNoA11yViolations, renderRoute } from '@/test/render'
 
 const memo: MemoView = {
+  origin: 'NATIVE',
   id: 'm1',
   reference: 'M-2026-00042',
   subject: 'Budget transfer to the treasury',

@@ -13,6 +13,7 @@ import { accessHandler, API_ORIGIN, csrfHandler, server, sessionHandler, signedI
 import { expectNoA11yViolations, renderRoute } from '@/test/render'
 
 const memo: MemoView = {
+  origin: 'NATIVE',
   id: 'm1',
   reference: null,
   numberedWhen: 'ON_SUBMIT',

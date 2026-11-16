@@ -127,7 +127,8 @@ class MemoWorkflowListener(
 ) {
     @EventListener
     fun onAction(event: WorkflowActionTaken) {
-        if (event.subjectType != MemoWorkflowSubject.TYPE) return
+        // An imported memo never enters a workflow (ADR-0055); nothing of one may follow it.
+        if (event.subjectType != MemoWorkflowSubject.TYPE || store.find(event.subjectId)?.imported == true) return
         val status = STATUS.getValue(event.status)
         store.applyWorkflow(event.subjectId, event.instanceId, event.round, status, now())
         // A type that numbers on final approval numbers in the approval's transaction (ADR-0044).

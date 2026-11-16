@@ -25,6 +25,9 @@ import com.memo.jooq.tables.Memo
 import com.memo.jooq.tables.MemoAttachment
 import com.memo.jooq.tables.MemoCopy
 import com.memo.jooq.tables.MemoCopyDelivery
+import com.memo.jooq.tables.MemoLegacy
+import com.memo.jooq.tables.MemoLegacyCorrection
+import com.memo.jooq.tables.MemoLegacyFile
 import com.memo.jooq.tables.MemoLink
 import com.memo.jooq.tables.MemoNote
 import com.memo.jooq.tables.MemoNoteAttachment
@@ -96,6 +99,11 @@ val MEMO_ATTACHMENT_PRESENT_IDX: Index = Internal.createIndex(DSL.name("memo_att
 val MEMO_COPY_DELIVERY_TENANT_MEMO_IDX: Index = Internal.createIndex(DSL.name("memo_copy_delivery_tenant_memo_idx"), MemoCopyDelivery.MEMO_COPY_DELIVERY, arrayOf(MemoCopyDelivery.MEMO_COPY_DELIVERY.TENANT_ID, MemoCopyDelivery.MEMO_COPY_DELIVERY.MEMO_ID, MemoCopyDelivery.MEMO_COPY_DELIVERY.USER_ID), false)
 val MEMO_COPY_ONE_STANDING_IDX: Index = Internal.createIndex(DSL.name("memo_copy_one_standing_idx"), MemoCopy.MEMO_COPY, arrayOf(MemoCopy.MEMO_COPY.TENANT_ID, MemoCopy.MEMO_COPY.MEMO_ID, MemoCopy.MEMO_COPY.RECIPIENT_KIND, MemoCopy.MEMO_COPY.RECIPIENT_ID), true)
 val MEMO_COPY_TENANT_MEMO_IDX: Index = Internal.createIndex(DSL.name("memo_copy_tenant_memo_idx"), MemoCopy.MEMO_COPY, arrayOf(MemoCopy.MEMO_COPY.TENANT_ID, MemoCopy.MEMO_COPY.MEMO_ID, MemoCopy.MEMO_COPY.ADDED_AT), false)
+val MEMO_LEGACY_BATCH_IDX: Index = Internal.createIndex(DSL.name("memo_legacy_batch_idx"), MemoLegacy.MEMO_LEGACY, arrayOf(MemoLegacy.MEMO_LEGACY.TENANT_ID, MemoLegacy.MEMO_LEGACY.BATCH_ID), false)
+val MEMO_LEGACY_CORRECTION_MEMO_IDX: Index = Internal.createIndex(DSL.name("memo_legacy_correction_memo_idx"), MemoLegacyCorrection.MEMO_LEGACY_CORRECTION, arrayOf(MemoLegacyCorrection.MEMO_LEGACY_CORRECTION.TENANT_ID, MemoLegacyCorrection.MEMO_LEGACY_CORRECTION.MEMO_ID, MemoLegacyCorrection.MEMO_LEGACY_CORRECTION.CORRECTED_AT), false)
+val MEMO_LEGACY_FILE_MAIN_UK: Index = Internal.createIndex(DSL.name("memo_legacy_file_main_uk"), MemoLegacyFile.MEMO_LEGACY_FILE, arrayOf(MemoLegacyFile.MEMO_LEGACY_FILE.TENANT_ID, MemoLegacyFile.MEMO_LEGACY_FILE.MEMO_ID), true)
+val MEMO_LEGACY_FILE_MEMO_IDX: Index = Internal.createIndex(DSL.name("memo_legacy_file_memo_idx"), MemoLegacyFile.MEMO_LEGACY_FILE, arrayOf(MemoLegacyFile.MEMO_LEGACY_FILE.TENANT_ID, MemoLegacyFile.MEMO_LEGACY_FILE.MEMO_ID, MemoLegacyFile.MEMO_LEGACY_FILE.POSITION), true)
+val MEMO_LEGACY_KEY_UK: Index = Internal.createIndex(DSL.name("memo_legacy_key_uk"), MemoLegacy.MEMO_LEGACY, arrayOf(MemoLegacy.MEMO_LEGACY.TENANT_ID, MemoLegacy.MEMO_LEGACY.SOURCE_CODE, MemoLegacy.MEMO_LEGACY.LEGACY_NUMBER_KEY), true)
 val MEMO_LINK_STANDING_UK: Index = Internal.createIndex(DSL.name("memo_link_standing_uk"), MemoLink.MEMO_LINK, arrayOf(MemoLink.MEMO_LINK.TENANT_ID, MemoLink.MEMO_LINK.MEMO_ID, MemoLink.MEMO_LINK.TARGET_MEMO_ID), true)
 val MEMO_LINK_TENANT_MEMO_IDX: Index = Internal.createIndex(DSL.name("memo_link_tenant_memo_idx"), MemoLink.MEMO_LINK, arrayOf(MemoLink.MEMO_LINK.TENANT_ID, MemoLink.MEMO_LINK.MEMO_ID), false)
 val MEMO_LINK_TENANT_TARGET_IDX: Index = Internal.createIndex(DSL.name("memo_link_tenant_target_idx"), MemoLink.MEMO_LINK, arrayOf(MemoLink.MEMO_LINK.TENANT_ID, MemoLink.MEMO_LINK.TARGET_MEMO_ID), false)
@@ -115,6 +123,7 @@ val MEMO_SHARE_TENANT_MEMO_IDX: Index = Internal.createIndex(DSL.name("memo_shar
 val MEMO_SHARE_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("memo_share_tenant_user_idx"), MemoShare.MEMO_SHARE, arrayOf(MemoShare.MEMO_SHARE.TENANT_ID, MemoShare.MEMO_SHARE.USER_ID), false)
 val MEMO_SUBMISSION_ATTACHMENT_ATTACHMENT_IDX: Index = Internal.createIndex(DSL.name("memo_submission_attachment_attachment_idx"), MemoSubmissionAttachment.MEMO_SUBMISSION_ATTACHMENT, arrayOf(MemoSubmissionAttachment.MEMO_SUBMISSION_ATTACHMENT.TENANT_ID, MemoSubmissionAttachment.MEMO_SUBMISSION_ATTACHMENT.ATTACHMENT_ID), false)
 val MEMO_TENANT_APPROVED_IDX: Index = Internal.createIndex(DSL.name("memo_tenant_approved_idx"), Memo.MEMO_, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.APPROVED_AT), false)
+val MEMO_TENANT_IMPORTED_IDX: Index = Internal.createIndex(DSL.name("memo_tenant_imported_idx"), Memo.MEMO_, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.CREATED_AT), false)
 val MEMO_TENANT_INITIATOR_BOX_IDX: Index = Internal.createIndex(DSL.name("memo_tenant_initiator_box_idx"), Memo.MEMO_, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.INITIATOR_ID, Memo.MEMO_.STATUS, Memo.MEMO_.UPDATED_AT.desc(), Memo.MEMO_.ID), false)
 val MEMO_TENANT_ORIGIN_UNIT_IDX: Index = Internal.createIndex(DSL.name("memo_tenant_origin_unit_idx"), Memo.MEMO_, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.ORIGIN_UNIT_ID), false)
 val MEMO_TENANT_TYPE_IDX: Index = Internal.createIndex(DSL.name("memo_tenant_type_idx"), Memo.MEMO_, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.MEMO_TYPE_ID), false)

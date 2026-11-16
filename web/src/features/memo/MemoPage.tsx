@@ -384,7 +384,7 @@ export function MemoPage({ memoId }: { memoId: string }) {
             </Section>
           ) : null}
           <div className="text-sm text-muted-foreground">
-            {intl.formatMessage(mmv.from, { name: view.initiator.name })}
+            {intl.formatMessage(mmv.from, { name: view.initiator?.name ?? view.legacy?.initiator.name ?? '' })}
           </div>
         </div>
       </div>

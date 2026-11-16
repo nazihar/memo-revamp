@@ -99,6 +99,12 @@ enum class Permission(
 
     /** The approvals dashboard of a unit and its sub-units (Phase 3 E05); heads have it for their subtree without a grant. */
     MEMO_DASHBOARD_READ("memo.dashboard.read", scopable = true, privileged = false),
+
+    /**
+     * Import memos from a legacy system: batches, mappings, the dry run, the import (with a step-up) and its report, and
+     * corrections of imported memos (Phase 3 E06, ADR-0055). Granted by tenants only: no built-in role holds it.
+     */
+    MEMO_IMPORT("memo.import", scopable = false, privileged = true),
     ;
 
     companion object {
@@ -116,6 +122,7 @@ enum class Permission(
                 MEMO_RENDITION_REGENERATE,
                 INBOX_TEAM_READ,
                 MEMO_DASHBOARD_READ,
+                MEMO_IMPORT,
             )
 
         fun ofKey(key: String): Permission? = BY_KEY[key]

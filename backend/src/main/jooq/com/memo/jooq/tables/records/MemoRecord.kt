@@ -48,9 +48,9 @@ open class MemoRecord private constructor() : UpdatableRecordImpl<MemoRecord>(Me
         set(value): Unit = set(6, value)
         get(): Int = get(6) as Int
 
-    open var initiatorId: UUID
+    open var initiatorId: UUID?
         set(value): Unit = set(7, value)
-        get(): UUID = get(7) as UUID
+        get(): UUID? = get(7) as UUID?
 
     open var originUnitId: UUID?
         set(value): Unit = set(8, value)
@@ -124,6 +124,10 @@ open class MemoRecord private constructor() : UpdatableRecordImpl<MemoRecord>(Me
         set(value): Unit = set(25, value)
         get(): UUID? = get(25) as UUID?
 
+    open var origin: String?
+        set(value): Unit = set(26, value)
+        get(): String? = get(26) as String?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -133,7 +137,7 @@ open class MemoRecord private constructor() : UpdatableRecordImpl<MemoRecord>(Me
     /**
      * Create a detached, initialised MemoRecord
      */
-    constructor(id: UUID, tenantId: UUID, reference: String? = null, memoTypeId: UUID, subject: String, classificationId: UUID, classificationRank: Int, initiatorId: UUID, originUnitId: UUID? = null, status: String, documentFileId: UUID? = null, workflowInstanceId: UUID? = null, currentRound: Int? = null, version: Long? = null, createdAt: OffsetDateTime, updatedAt: OffsetDateTime, memoTypeVersionId: UUID? = null, metadata: JSONB? = null, numberSeries: String? = null, numberPeriod: String? = null, numberScope: String? = null, numberSequence: Long? = null, numberedAt: OffsetDateTime? = null, approvedAt: OffsetDateTime? = null, closedAt: OffsetDateTime? = null, templateVersionId: UUID? = null): this() {
+    constructor(id: UUID, tenantId: UUID, reference: String? = null, memoTypeId: UUID, subject: String, classificationId: UUID, classificationRank: Int, initiatorId: UUID? = null, originUnitId: UUID? = null, status: String, documentFileId: UUID? = null, workflowInstanceId: UUID? = null, currentRound: Int? = null, version: Long? = null, createdAt: OffsetDateTime, updatedAt: OffsetDateTime, memoTypeVersionId: UUID? = null, metadata: JSONB? = null, numberSeries: String? = null, numberPeriod: String? = null, numberScope: String? = null, numberSequence: Long? = null, numberedAt: OffsetDateTime? = null, approvedAt: OffsetDateTime? = null, closedAt: OffsetDateTime? = null, templateVersionId: UUID? = null, origin: String? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.reference = reference
@@ -160,6 +164,7 @@ open class MemoRecord private constructor() : UpdatableRecordImpl<MemoRecord>(Me
         this.approvedAt = approvedAt
         this.closedAt = closedAt
         this.templateVersionId = templateVersionId
+        this.origin = origin
         resetTouchedOnNotNull()
     }
 }

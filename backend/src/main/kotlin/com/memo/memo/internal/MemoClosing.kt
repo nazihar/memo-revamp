@@ -50,6 +50,7 @@ class MemoClosingStore(
             .where(
                 MEMO.ID.eq(id),
                 MEMO.STATUS.eq(MemoStatus.APPROVED.name),
+                MEMO.ORIGIN.eq(MemoOrigin.NATIVE.name),
                 expectedVersion?.let { MEMO.VERSION.eq(it) } ?: DSL.noCondition(),
             ).execute()
             .let { it == 1 }
@@ -73,6 +74,8 @@ class MemoClosingStore(
             .on(MEMO_TYPE_VERSION.TENANT_ID.eq(MEMO.TENANT_ID), MEMO_TYPE_VERSION.ID.eq(MEMO.MEMO_TYPE_VERSION_ID))
             .where(
                 MEMO.STATUS.eq(MemoStatus.APPROVED.name),
+                // Imported memos have no approval time and are never closed here (design E06 §11).
+                MEMO.ORIGIN.eq(MemoOrigin.NATIVE.name),
                 MEMO_TYPE_VERSION.AUTO_CLOSE_DAYS.isNotNull,
                 MEMO.APPROVED_AT.lt(
                     DSL.field(
@@ -105,6 +108,7 @@ class MemoClosing(
         remark: String?,
     ): Memo {
         val memo = memos.own(id)
+        refuseIf(memo.imported, "IMPORTED") { "An imported memo keeps the state it was imported in." }
         refuseIf(memo.status != MemoStatus.APPROVED, "NOT_APPROVED") { "Only an approved memo can be closed." }
         if (!store.close(id, memo.version, now())) throw ConcurrentModificationException("memo $id", memo.version)
         // The final record is kept from closure when the type says so (ADR-0053).

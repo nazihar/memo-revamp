@@ -45,6 +45,7 @@
   "access.permission.memoCreate": "كتابة المذكرات وإرسالها",
   "access.permission.memoDashboardRead": "عرض لوحة الموافقات لوحدة",
   "access.permission.memoDistributionManage": "إدارة قوائم التوزيع",
+  "access.permission.memoImport": "استيراد المذكرات من نظام سابق",
   "access.permission.memoReadUnit": "قراءة مذكرات وحدة",
   "access.permission.memoRenditionRegenerate": "إنشاء إصدار جديد من السجل النهائي",
   "access.permission.memoShareManage": "إلغاء أي مشاركة لمذكرة",

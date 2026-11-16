@@ -26,8 +26,8 @@ import java.time.Duration
  * (the words never travel in a URL) and is limited to 30 a minute per person: each person searches about once in three
  * seconds.
  *
- * `-DbaseUrl`, `-DtenantHost` (`volume.localhost` by default) and the volume users' password in `MEMO_DEMO_PASSWORD`
- * (never on the command line), as for [InboxLoadSimulation].
+ * `-DbaseUrl`, `-DtenantHost` (`volume.localhost` by default), the volume users' password in `MEMO_DEMO_PASSWORD` and
+ * the head's TOTP secret in `MEMO_DEMO_TOTP_SECRET` (both never on the command line), as for [InboxLoadSimulation].
  */
 class SearchAndTeamLoadSimulation : Simulation() {
     private val baseUrl = System.getProperty("baseUrl", "http://localhost:8080")
@@ -35,6 +35,7 @@ class SearchAndTeamLoadSimulation : Simulation() {
     private val users = Integer.getInteger("users", APPROVERS)
     private val rounds = Integer.getInteger("rounds", ROUNDS)
     private val password = requireNotNull(System.getenv("MEMO_DEMO_PASSWORD")) { "set MEMO_DEMO_PASSWORD" }
+    private val totpSecret = requireNotNull(System.getenv("MEMO_DEMO_TOTP_SECRET")) { "set MEMO_DEMO_TOTP_SECRET" }
 
     private val protocol =
         http
@@ -104,6 +105,14 @@ class SearchAndTeamLoadSimulation : Simulation() {
             .exec { session -> session.set("email", "head@volume.example") }
             .exec(signIn())
             .exec(
+                // The head holds a privileged permission, so a second factor: the volume enrols them with the demo secret.
+                http("POST /auth/mfa")
+                    .post("/api/v1/auth/mfa")
+                    .header("Cookie", "$SESSION_COOKIE=#{session}; XSRF-TOKEN=#{xsrf}")
+                    .header("X-XSRF-TOKEN", "#{xsrf}")
+                    .body(StringBody { _ -> """{"code":"${Totp.code(totpSecret, System.currentTimeMillis() / MILLIS)}"}""" })
+                    .check(status().shouldBe(OK), headerRegex("Set-Cookie", "$SESSION_COOKIE=([^;]+)").optional().saveAs("session")),
+            ).exec(
                 read(TEAM, "/api/v1/inbox/team?limit=25")
                     .check(status().shouldBe(OK), jsonPath("\$.units[0].id").saveAs("unit")),
             ).repeat(rounds, "round")
@@ -158,5 +167,6 @@ class SearchAndTeamLoadSimulation : Simulation() {
         const val TEAM_BUDGET_MS = 300
         const val DASHBOARD_BUDGET_MS = 800
         const val MAX_ERROR_PERCENT = 1.0
+        const val MILLIS = 1000L
     }
 }

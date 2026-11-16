@@ -82,7 +82,9 @@ jobs:
         if: ${{ !cancelled() && steps.volume.outcome == 'success' }}
         run: |
           MEMO_DEMO_PASSWORD=$(grep '^MEMO_DEMO_PASSWORD=' build/onprem-stack/.env | cut -d= -f2-)
-          export MEMO_DEMO_PASSWORD
+          # The volume's head holds a privileged permission and signs in with a TOTP code from this secret.
+          MEMO_DEMO_TOTP_SECRET=$(grep '^MEMO_DEMO_TOTP_SECRET=' build/onprem-stack/.env | cut -d= -f2-)
+          export MEMO_DEMO_PASSWORD MEMO_DEMO_TOTP_SECRET
           domain=$(grep '^MEMO_TENANCY_BASE_DOMAIN=' build/onprem-stack/.env | cut -d= -f2-)
           ./gradlew :perf:gatlingRun --simulation com.memo.perf.SearchAndTeamLoadSimulation -DbaseUrl=http://127.0.0.1:18100 \
             -DtenantHost="volume.$domain" --console=plain

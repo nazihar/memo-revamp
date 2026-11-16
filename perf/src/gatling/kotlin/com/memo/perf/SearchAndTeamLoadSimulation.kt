@@ -14,6 +14,7 @@ import io.gatling.javaapi.core.Simulation
 import io.gatling.javaapi.http.HttpDsl.headerRegex
 import io.gatling.javaapi.http.HttpDsl.http
 import io.gatling.javaapi.http.HttpDsl.status
+import java.time.Clock
 import java.time.Duration
 
 /**
@@ -35,6 +36,7 @@ class SearchAndTeamLoadSimulation : Simulation() {
     private val users = Integer.getInteger("users", APPROVERS)
     private val rounds = Integer.getInteger("rounds", ROUNDS)
     private val password = requireNotNull(System.getenv("MEMO_DEMO_PASSWORD")) { "set MEMO_DEMO_PASSWORD" }
+    private val clock = Clock.systemUTC()
     private val totpSecret = requireNotNull(System.getenv("MEMO_DEMO_TOTP_SECRET")) { "set MEMO_DEMO_TOTP_SECRET" }
 
     private val protocol =
@@ -110,7 +112,7 @@ class SearchAndTeamLoadSimulation : Simulation() {
                     .post("/api/v1/auth/mfa")
                     .header("Cookie", "$SESSION_COOKIE=#{session}; XSRF-TOKEN=#{xsrf}")
                     .header("X-XSRF-TOKEN", "#{xsrf}")
-                    .body(StringBody { _ -> """{"code":"${Totp.code(totpSecret, System.currentTimeMillis() / MILLIS)}"}""" })
+                    .body(StringBody { _ -> """{"code":"${Totp.code(totpSecret, clock.instant().epochSecond)}"}""" })
                     .check(status().shouldBe(OK), headerRegex("Set-Cookie", "$SESSION_COOKIE=([^;]+)").optional().saveAs("session")),
             ).exec(
                 read(TEAM, "/api/v1/inbox/team?limit=25")
@@ -167,6 +169,5 @@ class SearchAndTeamLoadSimulation : Simulation() {
         const val TEAM_BUDGET_MS = 300
         const val DASHBOARD_BUDGET_MS = 800
         const val MAX_ERROR_PERCENT = 1.0
-        const val MILLIS = 1000L
     }
 }

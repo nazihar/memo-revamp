@@ -179,6 +179,7 @@ class DemoMemoSeeder(
 class DemoMemoSeedOnStartup(
     private val seeder: DemoMemoSeeder,
     private val access: DemoAccessSeeder,
+    private val following: DemoFollowingSeeder,
     private val uploads: FileUploads,
 ) : ApplicationRunner {
     private val log = LoggerFactory.getLogger(javaClass)
@@ -202,6 +203,11 @@ class DemoMemoSeedOnStartup(
             access.seed()
         } catch (e: RuntimeException) {
             log.warn("Demo notes, access and templates not seeded", e)
+        }
+        try {
+            following.seed()
+        } catch (e: RuntimeException) {
+            log.warn("Demo following and saved searches not seeded", e)
         }
     }
 

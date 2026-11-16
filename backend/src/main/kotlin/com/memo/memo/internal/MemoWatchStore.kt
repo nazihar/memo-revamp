@@ -66,6 +66,9 @@ class MemoWatchStore(
             .onConflictDoNothing()
             .execute() == 1
 
+    /** Whether [user] follows any memo. */
+    fun followsAny(user: UUID): Boolean = tenantDsl.current().fetchExists(MEMO_WATCH, MEMO_WATCH.USER_ID.eq(user))
+
     /** An automatic watch (initiated, acted, mentioned), unless the person turned automatic following off. */
     fun auto(
         memo: UUID,

@@ -3,7 +3,7 @@
 > Step 4 of `AGENTS.md §5`. STRIDE over the new data flows, with mitigations mapped to OWASP ASVS 5.0 requirement areas. Builds on E03 (the access rule) and E02 (extracted text).
 
 ## Data flows
-1. **Search:** reader → `GET /search` → rate limit → policy (clearance, unit scopes) → `search.find` (SECURITY DEFINER) → search tables → results, facets, snippets → audit.
+1. **Search:** reader → `POST /search` (words in the body, T6) → rate limit → policy (clearance, unit scopes) → `search.find` (SECURITY DEFINER) → search tables → results, facets, snippets → audit.
 2. **Indexing:** memo and note events → search rows in the same transaction; TEXT rendition done → chunk job → `search_chunk`.
 3. **Inbox:** watch, bulk, team view → workflow tasks → notifications (immediate or digest).
 4. **Dashboards:** reader → aggregates over memos, tasks and actions within scope.
@@ -28,4 +28,4 @@
 ## Residual risks
 - **The definer function is a single privileged path.** Its correctness rests on the equivalence test and review. A change to the E03 rule must change the function, so the test fails until they agree.
 - **Search tables hold derived confidential text** outside FORCE RLS. Only the function reads them, and the database's encryption at rest applies. The pen test (E07) covers them.
-- **Watch digests** put subjects of followed memos in email, as notifications already do. Classified memos above the tenant's email threshold (ADR-0030) are named "a memo you follow" only.
+- **Watch emails** carry the memo's number and a link, never its subject; the daily digest carries only a count (decided in T4, stricter than planned).

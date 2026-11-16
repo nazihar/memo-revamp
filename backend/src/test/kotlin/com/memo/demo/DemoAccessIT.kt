@@ -13,13 +13,17 @@ import com.memo.identity.operator.OperatorMfa
 import com.memo.memo.MemoAccessSeeding
 import com.memo.memo.MemoSeeding
 import com.memo.memo.MemoTemplateSeeding
+import com.memo.memo.MemoWatchSeeding
 import com.memo.memo.internal.MemoCopies
 import com.memo.memo.internal.MemoCopyStore
 import com.memo.memo.internal.MemoNotes
 import com.memo.memo.internal.MemoShares
+import com.memo.memo.internal.MemoWatchStore
 import com.memo.memo.internal.Memos
 import com.memo.memo.internal.NoteKind
 import com.memo.org.OrgSeeding
+import com.memo.search.SearchSeeding
+import com.memo.search.internal.SavedSearches
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
 import com.memo.testsupport.FilesIntegrationTest
@@ -31,7 +35,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.env.Environment
 import java.util.UUID
 
-/** Phase 3 E03 demo data (T9): the unit reader, the letterhead, and a memo with notes, a share and read copies, once. */
+/**
+ * Phase 3 E03 demo data (T9): the unit reader, the letterhead, and a memo with notes, a share and read copies, once. Phase
+ * 3 E05 (T8): Demo User follows their memos and has one saved search.
+ */
 class DemoAccessIT : FilesIntegrationTest() {
     @Autowired lateinit var registry: TenantRegistry
 
@@ -75,6 +82,14 @@ class DemoAccessIT : FilesIntegrationTest() {
 
     @Autowired lateinit var copyStore: MemoCopyStore
 
+    @Autowired lateinit var watchSeeding: MemoWatchSeeding
+
+    @Autowired lateinit var searchSeeding: SearchSeeding
+
+    @Autowired lateinit var watchStore: MemoWatchStore
+
+    @Autowired lateinit var savedSearches: SavedSearches
+
     @Test
     fun `the auditor reads the Credit Division, Credit facility has a letterhead, and one memo shows notes, a share and copies`() {
         val password = aPassword()
@@ -117,6 +132,13 @@ class DemoAccessIT : FilesIntegrationTest() {
         val admin = id(DemoAccessSeeder.ADMIN)
         val type = asUser(admin) { memoSeeding.fixedType(DemoWorkflowSeeder.NAME, DemoWorkflowSeeder.KEY) }
         assertThat(asUser(admin) { templateSeeding.hasTemplate(type) }).isTrue()
+
+        // E05: following and a saved search, once.
+        val following = DemoFollowingSeeder(watchSeeding, searchSeeding, accounts, transactions, password)
+        following.seed()
+        following.seed()
+        assertThat(asUser(author) { watchStore.followsAny(author) }).isTrue()
+        assertThat(asUser(author) { savedSearches.list() }.map { it.name }).containsOnlyOnce("Lease and rent")
     }
 
     private fun <T> asUser(

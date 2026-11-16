@@ -73,16 +73,24 @@ object TestDatabase {
         return java.sql.DriverManager.getConnection(container.jdbcUrl, container.username, container.password).use { connection ->
             connection.createStatement().use { statement ->
                 statement.queryTimeout = ACTIVITY_TIMEOUT_SECONDS
-                statement.executeQuery(ACTIVITY_SQL).use { rows ->
-                    buildString {
-                        while (rows.next()) {
-                            appendLine(
-                                "pid ${rows.getInt(1)} ${rows.getString(2)} wait ${rows.getString(3)}/${rows.getString(4)} " +
-                                    "for ${rows.getString(5)} blocked by ${rows.getString(6)}: ${rows.getString(7)}",
-                            )
+                val activity =
+                    statement.executeQuery(ACTIVITY_SQL).use { rows ->
+                        buildString {
+                            while (rows.next()) {
+                                appendLine(
+                                    "pid ${rows.getInt(1)} ${rows.getString(2)} wait ${rows.getString(3)}/${rows.getString(4)} " +
+                                        "for ${rows.getString(5)} blocked by ${rows.getString(6)}: ${rows.getString(7)}",
+                                )
+                            }
                         }
                     }
-                }
+                val tables =
+                    statement.executeQuery(TABLES_SQL).use { rows ->
+                        buildString {
+                            while (rows.next()) appendLine("  ${rows.getString(1)}: ${rows.getString(2)}")
+                        }
+                    }
+                "$activity\nLargest tables (live, dead, size, last analysed):\n$tables"
             }
         }
     }
@@ -95,6 +103,14 @@ object TestDatabase {
         from pg_stat_activity
         where datname = current_database() and pid <> pg_backend_pid() and state <> 'idle'
         order by query_start
+        """.trimIndent()
+    private val TABLES_SQL =
+        """
+        select relname, n_live_tup || ' live, ' || n_dead_tup || ' dead, ' || pg_size_pretty(pg_total_relation_size(relid))
+               || ', analysed ' || coalesce(greatest(last_analyze, last_autoanalyze)::text, 'never')
+        from pg_stat_user_tables
+        order by pg_total_relation_size(relid) desc
+        limit 12
         """.trimIndent()
 
     val migratorPassword: String get() = shared.migratorPassword

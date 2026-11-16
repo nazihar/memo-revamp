@@ -1,6 +1,9 @@
 package com.memo.search
 
 import com.memo.testsupport.TestDatabase
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.StandardOpenOption
 import java.sql.Connection
 import java.sql.DriverManager
 import java.util.UUID
@@ -175,8 +178,10 @@ class SearchVolume(
     private fun owner(block: (Connection) -> Unit) =
         DriverManager.getConnection(TestDatabase.jdbcUrl, "memo_migrator", TestDatabase.migratorPassword).use { c ->
             c.autoCommit = false
-            // A lock wait fails the test (with this statement) instead of stalling the whole suite.
+            // A lock wait or a runaway plan fails the test (with its statement) instead of stalling the whole suite.
             c.createStatement().use { it.execute("set local lock_timeout = '30s'") }
+            val minutes = if (memos > SUITE_SCALE) VOLUME_TIMEOUT_MINUTES else SUITE_TIMEOUT_MINUTES
+            c.createStatement().use { it.execute("set local statement_timeout = '${minutes}min'") }
             c.prepareStatement("select set_config('app.tenant_id', ?, true)").use {
                 it.setString(1, tenant.toString())
                 it.execute()
@@ -185,11 +190,31 @@ class SearchVolume(
             c.commit()
         }
 
+    /**
+     * Runs [sql]; an insert's plan is first written to `build/test-stalls/` (uploaded when CI fails), because a stall
+     * here ran on CPU for many minutes in a full suite and never alone, and a temp table's plan cannot be read from
+     * another session.
+     */
     private fun Connection.exec(sql: String) {
+        if (sql.trimStart().startsWith("insert", ignoreCase = true)) {
+            val plan =
+                createStatement().use { st ->
+                    st.executeQuery("explain $sql").use { rows -> buildString { while (rows.next()) appendLine(rows.getString(1)) } }
+                }
+            runCatching {
+                val dir = Path.of("build", "test-stalls").also(Files::createDirectories)
+                val text = "${sql.trim().lineSequence().first()} …\n$plan\n"
+                Files.writeString(dir.resolve("search-volume-plans.txt"), text, StandardOpenOption.CREATE, StandardOpenOption.APPEND)
+            }
+        }
         createStatement().use { it.execute(sql) }
     }
 
     companion object {
+        /** The suite's volume; above it (the weekly V1 run) statements may take longer. */
+        private const val SUITE_SCALE = 100_000
+        private const val SUITE_TIMEOUT_MINUTES = 8
+        private const val VOLUME_TIMEOUT_MINUTES = 60
         const val UNITS = 20
         const val NEEDLES = 50
         const val NEEDLE_SUBJECT = "zephyrine"

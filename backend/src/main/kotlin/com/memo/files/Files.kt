@@ -249,8 +249,8 @@ interface FileUploads {
      * inspection under the target purpose, encryption, storage), keeping its name. Refused with `HASH_MISMATCH` before
      * anything is stored when the content's SHA-256 is not [expectedSha256] (hex); idempotent on [idempotencyKey] like
      * any upload, and not counted against the actor's upload rate. The source is read without an access check (the
-     * caller decides). The target purpose's `mayUpload` applies to the bound actor. Throws [UploadRefusedException] when the pipeline refuses the content, and
-     * [IllegalArgumentException] for an unknown or purged source.
+     * caller decides). The target purpose's `mayUpload` applies to the bound actor. Throws [UploadRefusedException] when
+     * the pipeline refuses the content, and [IllegalArgumentException] for an unknown or purged source.
      */
     fun copyFrom(
         versionId: UUID,

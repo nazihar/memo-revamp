@@ -349,6 +349,8 @@ class ImportSheetSpikeIT {
         private var baseline = 0L
         private lateinit var sampler: Thread
 
+        // A collection first, so the baseline is the live heap, not the garbage left by writing the workbook.
+        @Suppress("ExplicitGarbageCollectionCall")
         fun start() {
             System.gc()
             baseline = ManagementFactory.getMemoryMXBean().heapMemoryUsage.used

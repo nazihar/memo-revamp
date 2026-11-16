@@ -28,9 +28,9 @@ import javax.imageio.ImageIO
  * `PUT /detect` (Tika 4.2 has no `/detect/stream`, and serves it only when the config enables the `detect` endpoint)
  * and ONLYOFFICE make of old Office files, Outlook messages, encrypted files, RTF and multi-page TIFF.
  * The .rtf is made by ONLYOFFICE from a document POI writes; the .doc, .xls and .ppt samples (with and without macros),
- * the message and the encrypted files are Apache POI's public test files, fetched into `MEMO_SPIKE_FIXTURES` (never committed). Runs only against
- * local services: `MEMO_SPIKE_CLAMD` (host:port), `MEMO_SPIKE_TIKA`, `MEMO_SPIKE_DOCSERVER` and `MEMO_SPIKE_JWT`. The
- * results are recorded in the E06 log.
+ * the message and the encrypted files are Apache POI's public test files, fetched into `MEMO_SPIKE_FIXTURES` (never
+ * committed). Runs only against local services: `MEMO_SPIKE_CLAMD` (host:port), `MEMO_SPIKE_TIKA`, `MEMO_SPIKE_DOCSERVER`
+ * and `MEMO_SPIKE_JWT`. The results are recorded in the E06 log.
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @EnabledIfEnvironmentVariable(named = "MEMO_SPIKE_FIXTURES", matches = ".+")

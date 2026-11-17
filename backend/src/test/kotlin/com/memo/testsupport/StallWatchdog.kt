@@ -66,7 +66,15 @@ class StallWatchdog : TestExecutionListener {
                 appendLine("No test event for ${Duration.between(lastEvent, now).toSeconds()} s at $now. Running:")
                 running.entries.sortedBy { it.value }.forEach { (name, since) -> appendLine("  $name (since $since)") }
                 appendLine()
-                ManagementFactory.getThreadMXBean().dumpAllThreads(true, true).forEach { append(it.toString()) }
+                appendLine("Database activity:")
+                append(runCatching { TestDatabase.activity() }.getOrElse { "  (not read: ${it.javaClass.simpleName}: ${it.message})\n" })
+                appendLine()
+                // Every frame: ThreadInfo.toString() stops at eight, above the call that is waiting.
+                ManagementFactory.getThreadMXBean().dumpAllThreads(true, true).forEach { thread ->
+                    appendLine("\"${thread.threadName}\" ${thread.threadState}${thread.lockName?.let { " on $it" }.orEmpty()}")
+                    thread.stackTrace.forEach { frame -> appendLine("    at $frame") }
+                    appendLine()
+                }
             }
         runCatching {
             val dir = Path.of("build", "test-stalls").also(Files::createDirectories)

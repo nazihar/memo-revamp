@@ -57,7 +57,7 @@
 ## Exit checklist
 - [ ] Every test above green in its stage
 - [ ] Matrix and audit coverage green with the new endpoints and actions (`import.*`, `memo.imported`, `memo.legacy.*`, `file.version.purged`)
-- [ ] T1 spike recorded in the log; ADR-0055 confirmed or amended (TIFF previews, parse limits, read-only check)
+- [x] T1 spike recorded in the log; ADR-0055 confirmed or amended (TIFF previews, parse limits, read-only check) (2026-11-16: amended)
 - [ ] Hostile corpus (XLSX, CSV, OLE2) green nightly against clamd, Tika and ONLYOFFICE
 - [ ] Jazzer targets `ImportSheetFuzzTest` and `ImportPathFuzzTest` in the nightly set, with no open crash
 - [ ] Import volume results recorded in the log with hardware and settings

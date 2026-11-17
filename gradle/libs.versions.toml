@@ -27,6 +27,7 @@ commons-compress = "1.28.0"
 poi = "6.0.0"
 poi-tl = "1.12.2"
 jazzer = "0.30.0"
+commons-csv = "1.14.1"
 # Workflow conditions (ADR-0039) and definition schema validation (ADR-0038), verified 2026-11-11.
 cel = "0.15.0"
 json-schema-validator = "3.0.8"
@@ -81,6 +82,7 @@ xmpbox = { module = "org.apache.pdfbox:xmpbox", version.ref = "pdfbox" }
 verapdf-validation = { module = "org.verapdf:validation-model-jakarta", version.ref = "verapdf" }
 poi-ooxml = { module = "org.apache.poi:poi-ooxml", version.ref = "poi" }
 poi-tl = { module = "com.deepoove:poi-tl", version.ref = "poi-tl" }
+commons-csv = { module = "org.apache.commons:commons-csv", version.ref = "commons-csv" }
 bucket4j-postgresql = { module = "com.bucket4j:bucket4j_jdk17-postgresql", version.ref = "bucket4j" }
 spring-modulith-starter-test = { module = "org.springframework.modulith:spring-modulith-starter-test" }
 spring-modulith-runtime = { module = "org.springframework.modulith:spring-modulith-runtime" }

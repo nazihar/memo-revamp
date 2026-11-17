@@ -1,6 +1,9 @@
 package com.memo.search
 
 import com.memo.testsupport.TestDatabase
+import java.nio.file.Files
+import java.nio.file.Path
+import java.nio.file.StandardOpenOption
 import java.sql.Connection
 import java.sql.DriverManager
 import java.util.UUID
@@ -102,38 +105,55 @@ class SearchVolume(
 
     private fun notes(c: Connection) {
         val notes = memos * 2
+        // The text is made once into a temp table and analysed before the join: joined directly, a plan built on stale
+        // statistics re-ran the per-row text for every memo (the CI stall, E06 log "CI stall").
+        c.exec(
+            """
+            create temp table note_gen as
+            select md5('${seed}n' || j)::uuid as note_id, md5('${seed}m' || (1 + j % $memos))::uuid as memo_id,
+                   (select string_agg(w[1 + floor(power(random(), 3) * n)::int], ' ') from words, generate_series(1, 25 + 0 * j))
+                       || case when j % ${notes / NEEDLES} = 0 then ' $NEEDLE_NOTE' else '' end as body
+            from generate_series(1, $notes) j
+            """,
+        )
+        c.exec("analyze note_gen, search_memo")
         c.exec(
             """
             insert into search_note (tenant_id, note_id, memo_id, classification_rank, origin_unit_id, status, type_id,
                                      memo_created_at, amount, body)
-            select '$tenant', md5('${seed}n' || j)::uuid, sm.memo_id, sm.classification_rank, sm.origin_unit_id, sm.status, sm.type_id,
-                   sm.created_at, sm.amount,
-                   (select string_agg(w[1 + floor(power(random(), 3) * n)::int], ' ') from words, generate_series(1, 25 + 0 * j))
-                       || case when j % ${notes / NEEDLES} = 0 then ' $NEEDLE_NOTE' else '' end
-            from generate_series(1, $notes) j
-            join search_memo sm on sm.tenant_id = '$tenant' and sm.memo_id = md5('${seed}m' || (1 + j % $memos))::uuid
+            select '$tenant', g.note_id, sm.memo_id, sm.classification_rank, sm.origin_unit_id, sm.status, sm.type_id,
+                   sm.created_at, sm.amount, g.body
+            from note_gen g
+            join search_memo sm on sm.tenant_id = '$tenant' and sm.memo_id = g.memo_id
             """,
         )
+        c.exec("drop table note_gen")
     }
 
     private fun chunks(c: Connection) {
         val chunks = memos / 5
         c.exec(
             """
+            create temp table chunk_gen as
+            select md5('${seed}v' || j)::uuid as v, md5('${seed}m' || (j * 5))::uuid as m,
+                   case when j % 10 = 0 then 2 else 0 end as r,
+                   (select string_agg(w[1 + floor(power(random(), 2) * n)::int], ' ') from words, generate_series(1, 200 + 0 * j))
+                       || case when j % ${chunks / NEEDLES} = 0 then ' $NEEDLE_DOCUMENT' else '' end as b
+            from generate_series(1, $chunks) j
+            """,
+        )
+        c.exec("analyze chunk_gen")
+        c.exec(
+            """
             insert into search_chunk (tenant_id, file_id, file_version_id, chunk, memo_id, file_rank, classification_rank, origin_unit_id,
                                       status, type_id, memo_created_at, amount, body, tsv)
             select '$tenant', md5('${seed}f' || v)::uuid, v, 0, m, r, greatest(r, sm.classification_rank), sm.origin_unit_id,
-                   sm.status, sm.type_id,
-                   sm.created_at, sm.amount, b, to_tsvector('english', b) from (
-                select md5('${seed}v' || j)::uuid as v, md5('${seed}m' || (j * 5))::uuid as m,
-                       case when j % 10 = 0 then 2 else 0 end as r,
-                       (select string_agg(w[1 + floor(power(random(), 2) * n)::int], ' ') from words, generate_series(1, 200 + 0 * j))
-                           || case when j % ${chunks / NEEDLES} = 0 then ' $NEEDLE_DOCUMENT' else '' end as b
-                from generate_series(1, $chunks) j
-            ) s
+                   sm.status, sm.type_id, sm.created_at, sm.amount, b, to_tsvector('english', b)
+            from chunk_gen s
             join search_memo sm on sm.tenant_id = '$tenant' and sm.memo_id = s.m
             """,
         )
+        c.exec("drop table chunk_gen")
     }
 
     /** Copies for each reader: [readerRows] rows spread evenly over the volume. */
@@ -158,8 +178,10 @@ class SearchVolume(
     private fun owner(block: (Connection) -> Unit) =
         DriverManager.getConnection(TestDatabase.jdbcUrl, "memo_migrator", TestDatabase.migratorPassword).use { c ->
             c.autoCommit = false
-            // A lock wait fails the test (with this statement) instead of stalling the whole suite.
+            // A lock wait or a runaway plan fails the test (with its statement) instead of stalling the whole suite.
             c.createStatement().use { it.execute("set local lock_timeout = '30s'") }
+            val minutes = if (memos > SUITE_SCALE) VOLUME_TIMEOUT_MINUTES else SUITE_TIMEOUT_MINUTES
+            c.createStatement().use { it.execute("set local statement_timeout = '${minutes}min'") }
             c.prepareStatement("select set_config('app.tenant_id', ?, true)").use {
                 it.setString(1, tenant.toString())
                 it.execute()
@@ -168,11 +190,31 @@ class SearchVolume(
             c.commit()
         }
 
+    /**
+     * Runs [sql]; an insert's plan is first written to `build/test-stalls/` (uploaded when CI fails), because a stall
+     * here ran on CPU for many minutes in a full suite and never alone, and a temp table's plan cannot be read from
+     * another session.
+     */
     private fun Connection.exec(sql: String) {
+        if (sql.trimStart().startsWith("insert", ignoreCase = true)) {
+            val plan =
+                createStatement().use { st ->
+                    st.executeQuery("explain $sql").use { rows -> buildString { while (rows.next()) appendLine(rows.getString(1)) } }
+                }
+            runCatching {
+                val dir = Path.of("build", "test-stalls").also(Files::createDirectories)
+                val text = "${sql.trim().lineSequence().first()} …\n$plan\n"
+                Files.writeString(dir.resolve("search-volume-plans.txt"), text, StandardOpenOption.CREATE, StandardOpenOption.APPEND)
+            }
+        }
         createStatement().use { it.execute(sql) }
     }
 
     companion object {
+        /** The suite's volume; above it (the weekly V1 run) statements may take longer. */
+        private const val SUITE_SCALE = 100_000
+        private const val SUITE_TIMEOUT_MINUTES = 8
+        private const val VOLUME_TIMEOUT_MINUTES = 60
         const val UNITS = 20
         const val NEEDLES = 50
         const val NEEDLE_SUBJECT = "zephyrine"

@@ -27,6 +27,7 @@
       - MEMO_MAILPIT_PORT
       - MEMO_CLAMAV_HOST
       - MEMO_DOCSERVER_URL
+      - MEMO_TIKA_URL
     memo_mailpit_ports:
       dev: 8025
       staging: 8125

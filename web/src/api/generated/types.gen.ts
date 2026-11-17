@@ -808,12 +808,18 @@ export type LegacyApprovalView = {
     remark?: string | null;
 };
 
+export type LegacyCorrectionRequest = {
+    field: 'SUBJECT' | 'RAISED_ON' | 'DECIDED_ON' | 'CLOSED_ON' | 'INITIATOR_NAME' | 'LEGACY_UNIT' | 'LEGACY_TYPE' | 'CLASSIFICATION';
+    reason: string;
+    value?: string | null;
+};
+
 export type LegacyCorrectionView = {
     after?: string | null;
     before?: string | null;
     correctedAt: string;
     correctedBy: Named;
-    field: string;
+    field: 'SUBJECT' | 'RAISED_ON' | 'DECIDED_ON' | 'CLOSED_ON' | 'INITIATOR_NAME' | 'LEGACY_UNIT' | 'LEGACY_TYPE' | 'CLASSIFICATION';
     reason: string;
 };
 
@@ -855,6 +861,11 @@ export type LegacyOriginalView = {
 export type LegacyPersonView = {
     name: string;
     user?: Named | null;
+};
+
+export type LegacyReclassifyRequest = {
+    classificationId: string;
+    reason: string;
 };
 
 export type LegalEntity = {
@@ -1088,7 +1099,7 @@ export type MemoTypeVersionResponse = {
 };
 
 export type MemoView = {
-    allowedActions: Array<'EDIT' | 'UPLOAD_DOCUMENT' | 'EDIT_ROUTE' | 'SUBMIT' | 'DISCARD' | 'RESUBMIT' | 'WITHDRAW' | 'APPROVE' | 'RETURN' | 'REJECT' | 'EDIT_DOCUMENT' | 'VIEW_DOCUMENT' | 'FILL_FROM_TEMPLATE' | 'EDIT_COPIES' | 'ADD_COPIES' | 'RECOMMEND' | 'SEND_BACK' | 'FORWARD' | 'DELEGATE' | 'ASK' | 'REFER' | 'ANSWER' | 'OPINION' | 'RECALL' | 'CLAIM' | 'RELEASE' | 'RECUSE' | 'CLOSE'>;
+    allowedActions: Array<'EDIT' | 'UPLOAD_DOCUMENT' | 'EDIT_ROUTE' | 'SUBMIT' | 'DISCARD' | 'RESUBMIT' | 'WITHDRAW' | 'APPROVE' | 'RETURN' | 'REJECT' | 'EDIT_DOCUMENT' | 'VIEW_DOCUMENT' | 'FILL_FROM_TEMPLATE' | 'EDIT_COPIES' | 'ADD_COPIES' | 'CORRECT_LEGACY' | 'RECLASSIFY' | 'RECOMMEND' | 'SEND_BACK' | 'FORWARD' | 'DELEGATE' | 'ASK' | 'REFER' | 'ANSWER' | 'OPINION' | 'RECALL' | 'CLAIM' | 'RELEASE' | 'RECUSE' | 'CLOSE'>;
     canLink: boolean;
     classification: ClassificationView;
     closedAt?: string | null;
@@ -1900,6 +1911,7 @@ export type SearchParams = {
     from?: string | null;
     in?: Array<string>;
     limit?: number | null;
+    origin?: Array<'NATIVE' | 'IMPORTED'> | null;
     q?: string | null;
     sort?: string | null;
     status?: Array<string> | null;
@@ -1912,6 +1924,7 @@ export type SearchQuery = {
     amountMax?: number | null;
     amountMin?: number | null;
     from?: string | null;
+    origins?: Array<'NATIVE' | 'IMPORTED'>;
     q?: string;
     sort?: 'RELEVANCE' | 'NEWEST';
     sources?: Array<'METADATA' | 'NOTES' | 'DOCUMENTS'>;
@@ -1925,6 +1938,7 @@ export type SearchResultView = {
     foundIn: FoundInView;
     memoId: string;
     number?: string | null;
+    origin: 'NATIVE' | 'IMPORTED';
     snippet: Array<SnippetPart>;
     status: string;
     subject: string;
@@ -5597,6 +5611,42 @@ export type RemoveMemoInterestResponses = {
 };
 
 export type RemoveMemoInterestResponse = RemoveMemoInterestResponses[keyof RemoveMemoInterestResponses];
+
+export type CorrectLegacyMemoData = {
+    body: LegacyCorrectionRequest;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/legacy/corrections';
+};
+
+export type CorrectLegacyMemoResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type CorrectLegacyMemoResponse = CorrectLegacyMemoResponses[keyof CorrectLegacyMemoResponses];
+
+export type ReclassifyLegacyMemoData = {
+    body: LegacyReclassifyRequest;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/legacy/reclassify';
+};
+
+export type ReclassifyLegacyMemoResponses = {
+    /**
+     * OK
+     */
+    200: MemoView;
+};
+
+export type ReclassifyLegacyMemoResponse = ReclassifyLegacyMemoResponses[keyof ReclassifyLegacyMemoResponses];
 
 export type LinkMemoData = {
     body: LinkRequest;

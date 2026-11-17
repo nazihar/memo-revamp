@@ -13,6 +13,7 @@ import com.memo.common.tenant.TenantTransactions
 import com.memo.files.FileContents
 import com.memo.files.Files
 import com.memo.memo.internal.Memos
+import com.memo.memo.internal.legacy.LegacyMemoReader
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.ObjectProvider
 import org.springframework.beans.factory.annotation.Qualifier
@@ -31,21 +32,25 @@ data class RecordFixityTask(
     override val tenantId: UUID,
 ) : TenantScopedPayload
 
-/** What a fixity run found. */
+/** What a fixity run found: final records, and the originals of imported memos (design E06 §11). */
 data class FixityResult(
     val checked: Int,
     val mismatched: Int,
+    val originalsChecked: Int = 0,
+    val originalsMismatched: Int = 0,
 )
 
 /**
- * The weekly fixity check of final records (ADR-0053, design E04 §6; threat model T1): every made version is read back
- * through the files service, decrypted and re-hashed, and compared with the hash recorded when it was made. A mismatch is
- * audited on its own (a security incident, see the runbook); each run is audited with its counts. Outside a transaction
- * except for the reads and the audit; pages of [PAGE] so a large tenant never holds one long transaction.
+ * The weekly fixity check (ADR-0053, design E04 §6; threat model T1): every made version of a final record, and every
+ * original of an imported memo (ADR-0055: the originals are its record, design E06 §11), is read back through the files
+ * service, decrypted and re-hashed, and compared with the hash recorded when it was made or imported. A mismatch is
+ * audited on its own (a security incident, see the runbook); each part of a run is audited with its counts. Outside a
+ * transaction except for the reads and the audit; pages of [PAGE] so a large tenant never holds one long transaction.
  */
 @Component
 class RecordFixity(
     private val queries: MemoRenditionQueries,
+    private val legacy: LegacyMemoReader,
     private val files: Files,
     private val contents: FileContents,
     private val transactions: TenantTransactions,
@@ -54,39 +59,96 @@ class RecordFixity(
     private val log = LoggerFactory.getLogger(javaClass)
 
     fun verify(): FixityResult {
+        val records = records()
+        val originals = originals()
+        return FixityResult(records.checked, records.mismatched, originals.checked, originals.mismatched)
+    }
+
+    /** Final records: each made version against the hash recorded when it was made. */
+    private fun records(): FixityResult {
         val tenant = TenantContext.current()
+        val result =
+            paged({ after -> transactions.readInTenant(tenant) { queries.ready(after, PAGE) } }, { it.id }) { page ->
+                page.count { record ->
+                    val actual = hashOf(record.fileVersionId)
+                    val mismatch = actual == null || !actual.equals(record.sha256, ignoreCase = true)
+                    if (mismatch) {
+                        log.error("Final record {} of memo {} does not match its recorded hash", record.version, record.memoId)
+                        transactions.inTenant(tenant) {
+                            audit.record(
+                                "memo.rendition.mismatch",
+                                Memos.OBJECT_TYPE,
+                                record.memoId.toString(),
+                                after = mapOf("version" to record.version, "expected" to record.sha256, "actual" to actual),
+                            )
+                        }
+                    }
+                    mismatch
+                }
+            }
+        counted("memo.rendition.verified", result)
+        return result
+    }
+
+    /** Imported originals: each file's stored version against the SHA-256 it was imported with. */
+    private fun originals(): FixityResult {
+        val tenant = TenantContext.current()
+        val result =
+            paged({ after -> transactions.readInTenant(tenant) { legacy.originalsAfter(after, PAGE) } }, { it.id }) { page ->
+                val versions = transactions.readInTenant(tenant) { files.currentVersions(page.map { it.fileId }) }
+                page.count { original ->
+                    val version = versions[original.fileId]?.id
+                    val actual = version?.let(::hashOf)
+                    val mismatch = actual == null || !actual.equals(original.sha256, ignoreCase = true)
+                    if (mismatch) {
+                        log.error("Original {} of imported memo {} does not match its imported hash", original.fileId, original.memoId)
+                        transactions.inTenant(tenant) {
+                            audit.record(
+                                "memo.legacy.mismatch",
+                                Memos.OBJECT_TYPE,
+                                original.memoId.toString(),
+                                after =
+                                    mapOf(
+                                        "fileId" to original.fileId.toString(),
+                                        "versionId" to version?.toString(),
+                                        "expected" to original.sha256,
+                                        "actual" to actual,
+                                    ),
+                            )
+                        }
+                    }
+                    mismatch
+                }
+            }
+        counted("memo.legacy.verified", result)
+        return result
+    }
+
+    /** Runs [check] (which answers how many mismatched) over every page [load] gives after the last item's [id]. */
+    private fun <T> paged(
+        load: (UUID?) -> List<T>,
+        id: (T) -> UUID,
+        check: (List<T>) -> Int,
+    ): FixityResult {
         var after: UUID? = null
         var checked = 0
         var mismatched = 0
         do {
-            val page = transactions.readInTenant(tenant) { queries.ready(after, PAGE) }
-            page.forEach { record ->
-                checked++
-                val actual = hashOf(record.fileVersionId)
-                if (actual == null || !actual.equals(record.sha256, ignoreCase = true)) {
-                    mismatched++
-                    log.error("Final record {} of memo {} does not match its recorded hash", record.version, record.memoId)
-                    transactions.inTenant(tenant) {
-                        audit.record(
-                            "memo.rendition.mismatch",
-                            Memos.OBJECT_TYPE,
-                            record.memoId.toString(),
-                            after = mapOf("version" to record.version, "expected" to record.sha256, "actual" to actual),
-                        )
-                    }
-                }
-            }
-            after = page.lastOrNull()?.id
+            val page = load(after)
+            checked += page.size
+            mismatched += check(page)
+            after = page.lastOrNull()?.let(id)
         } while (page.size == PAGE)
-        transactions.inTenant(tenant) {
-            audit.record(
-                "memo.rendition.verified",
-                Memos.OBJECT_TYPE,
-                null,
-                after = mapOf("checked" to checked, "mismatched" to mismatched),
-            )
-        }
         return FixityResult(checked, mismatched)
+    }
+
+    private fun counted(
+        action: String,
+        result: FixityResult,
+    ) {
+        transactions.inTenant(TenantContext.current()) {
+            audit.record(action, Memos.OBJECT_TYPE, null, after = mapOf("checked" to result.checked, "mismatched" to result.mismatched))
+        }
     }
 
     /** SHA-256 of the stored plaintext, or null when it cannot be read at all. */

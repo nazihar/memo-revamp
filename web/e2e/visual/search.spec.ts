@@ -33,6 +33,7 @@ const results: SearchPageView = {
         { text: ' for floors 3 and 4…', match: false },
       ],
       foundIn: { kind: 'NOTE', name: 'Demo Head of Credit' },
+      origin: 'NATIVE',
     },
     {
       memoId: 'm1',
@@ -50,6 +51,7 @@ const results: SearchPageView = {
         { text: ' attached…', match: false },
       ],
       foundIn: { kind: 'ATTACHMENT', name: 'annex-b.pdf' },
+      origin: 'NATIVE',
     },
     {
       memoId: 'm7',
@@ -63,6 +65,7 @@ const results: SearchPageView = {
       updatedAt: '2026-10-28T08:15:00Z',
       snippet: [{ text: 'Branch rent review 2027', match: false }],
       foundIn: { kind: 'DETAILS' },
+      origin: 'NATIVE',
     },
   ],
   count: 23,

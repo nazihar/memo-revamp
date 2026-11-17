@@ -11,6 +11,7 @@ import com.memo.common.web.FieldProblem
 import com.memo.common.web.ProblemTypes
 import com.memo.common.web.etagOf
 import com.memo.common.web.ifMatchVersion
+import com.memo.memo.MemoOrigin
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -56,6 +57,8 @@ data class SearchParams(
     val sources: List<String>? = null,
     /** `relevance` (default) or `newest`. */
     val sort: String? = null,
+    /** Memos raised here (`NATIVE`), imported from a legacy system (`IMPORTED`), or both (absent or empty). */
+    val origin: List<MemoOrigin>? = null,
     val cursor: String? = null,
     val limit: Int? = null,
 ) {
@@ -79,6 +82,7 @@ data class SearchParams(
             amountMax = amountMax,
             sources = sources.filterNotNull().distinct().ifEmpty { if (this.sources == null) SearchSource.entries else emptyList() },
             sort = sort ?: SearchSort.RELEVANCE,
+            origins = origin.orEmpty().distinct(),
         )
     }
 }

@@ -51,7 +51,8 @@ data class LegacyOriginalView(
 
 /** A correction appended after import, with its reason. */
 data class LegacyCorrectionView(
-    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val field: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val field: LegacyCorrectionField,
+    /** As stored: text, a date as `yyyy-mm-dd`, or a level's name (CLASSIFICATION); null for a date that was or became empty. */
     val before: String? = null,
     val after: String? = null,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val reason: String,
@@ -141,7 +142,7 @@ class LegacyMemoViews(
             corrections =
                 corrections.map {
                     LegacyCorrectionView(
-                        it.field,
+                        LegacyCorrectionField.valueOf(it.field),
                         it.before,
                         it.after,
                         it.reason,

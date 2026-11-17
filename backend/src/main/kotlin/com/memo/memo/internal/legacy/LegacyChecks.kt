@@ -183,7 +183,7 @@ class LegacyChecks(
         failed: () -> Boolean,
     ): LegacyProblem? = LegacyProblem(code, field).takeIf { failed() }
 
-    private companion object {
+    internal companion object {
         val EARLIEST: LocalDate = LocalDate.of(1900, 1, 1)
         val SOURCE_CODE = Regex("^[A-Z0-9][A-Z0-9-]{0,19}$")
         const val MAX_TEXT = 200

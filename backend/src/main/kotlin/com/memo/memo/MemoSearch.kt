@@ -7,7 +7,9 @@ import java.util.UUID
 
 /**
  * What the search index holds about a memo (ADR-0054, design E05 §3): its details, with the type's field values flattened
- * to text. The search module derives its rows from these; the memo module stays the source of truth.
+ * to text. The search module derives its rows from these; the memo module stays the source of truth. For an imported memo
+ * (design E06 §11) [createdAt] is the start of its legacy raised-on day in the batch's time zone, so the date filter finds
+ * it by when it was raised, and [fieldsText] adds its legacy number, people, unit and type as given (and as corrected).
  */
 data class MemoSearchFacts(
     val memoId: UUID,
@@ -15,7 +17,8 @@ data class MemoSearchFacts(
     val originUnitId: UUID?,
     val status: String,
     val typeId: UUID,
-    val initiatorId: UUID,
+    /** Null for an imported memo whose legacy initiator is linked to nobody here. */
+    val initiatorId: UUID?,
     /** The value of the type's first amount field, if any (the search filter "Amount"). */
     val amount: BigDecimal?,
     val createdAt: Instant,
@@ -25,6 +28,7 @@ data class MemoSearchFacts(
     val subject: String,
     /** The type's name and the readable field values, one per line. */
     val fieldsText: String,
+    val origin: MemoOrigin = MemoOrigin.NATIVE,
 )
 
 /** A posted note's plain text (drafts are private and never indexed). */
@@ -44,8 +48,9 @@ data class MemoSearchSummary(
 )
 
 /**
- * A memo file whose text the index may hold: the memo's document or a present attachment. [rank] is the file's own
- * classification (an attachment's stricter level, else the memo's); the index takes the higher of it and the memo's.
+ * A memo file whose text the index may hold: the memo's document, a present attachment, or an original of an imported
+ * memo. [rank] is the file's own classification (an attachment's or original's stricter level, else the memo's); the index
+ * takes the higher of it and the memo's.
  */
 data class MemoFileFacts(
     val fileId: UUID,
@@ -53,7 +58,7 @@ data class MemoFileFacts(
     val rank: Int,
     /** The version whose text is searchable: the file's current version. */
     val currentVersionId: UUID?,
-    /** The memo's document (true) or an attachment (false). */
+    /** The memo's document or an imported memo's main original (true), or an attachment (false). */
     val document: Boolean,
 )
 
@@ -71,7 +76,7 @@ interface MemoSearchSource {
     /** [fileId] as a searchable memo file; null when it is not one (any more): removed, or not a memo's file. */
     fun file(fileId: UUID): MemoFileFacts?
 
-    /** The searchable files of [memoId]: its document and its present attachments. */
+    /** The searchable files of [memoId]: its document and its present attachments, or an imported memo's originals. */
     fun files(memoId: UUID): List<MemoFileFacts>
 
     /** Summaries of the memos of [memoIds] that exist. No access check: the caller has applied the read rule. */

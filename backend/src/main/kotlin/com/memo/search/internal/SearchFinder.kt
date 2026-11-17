@@ -3,6 +3,7 @@ package com.memo.search.internal
 import com.memo.common.tenant.TenantDsl
 import com.memo.jooq.tables.references.SEARCH_FIND
 import com.memo.jooq.tables.references.SEARCH_SNIPPETS
+import com.memo.memo.MemoOrigin
 import org.springframework.dao.DataAccessException
 import org.springframework.stereotype.Component
 import java.math.BigDecimal
@@ -28,6 +29,8 @@ data class SearchCriteria(
     val inDetails: Boolean = true,
     val inNotes: Boolean = true,
     val inDocuments: Boolean = true,
+    /** Memos raised here, imported ones (design E06 §11), or both (null). */
+    val origins: Set<MemoOrigin>? = null,
 )
 
 /** A memo that matched, with where it matched; the caller pages, counts and facets these. */
@@ -43,6 +46,7 @@ data class SearchCandidate(
     val originUnitId: UUID?,
     val createdAt: Instant,
     val updatedAt: Instant,
+    val origin: MemoOrigin = MemoOrigin.NATIVE,
 ) {
     companion object {
         /** A position in an order (a cursor), not a result. */
@@ -105,6 +109,7 @@ class SearchFinder(
                 criteria.inNotes,
                 criteria.inDocuments,
                 cap,
+                criteria.origins?.map { it.name }?.toTypedArray<String?>(),
             )
         return timed {
             tenantDsl.current().selectFrom(call).queryTimeout(TIMEOUT_SECONDS).fetch { r ->
@@ -120,6 +125,7 @@ class SearchFinder(
                     originUnitId = r.originUnitId,
                     createdAt = requireNotNull(r.createdAt).toInstant(),
                     updatedAt = requireNotNull(r.updatedAt).toInstant(),
+                    origin = MemoOrigin.valueOf(requireNotNull(r.origin)),
                 )
             }
         }

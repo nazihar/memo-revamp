@@ -33,6 +33,7 @@ const lease: SearchResultView = {
     { text: ' for floors <b>3</b> and 4…', match: false },
   ],
   foundIn: { kind: 'NOTE', name: 'Demo Head of Credit' },
+  origin: 'NATIVE',
 }
 
 const credit: SearchResultView = {
@@ -51,6 +52,7 @@ const credit: SearchResultView = {
     { text: ' attached…', match: false },
   ],
   foundIn: { kind: 'ATTACHMENT', name: 'annex-b.pdf' },
+  origin: 'NATIVE',
 }
 
 const results = (over: Partial<SearchPageView> = {}): SearchPageView => ({

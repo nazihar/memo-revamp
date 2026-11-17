@@ -1,6 +1,7 @@
 package com.memo.search.internal
 
 import com.memo.common.web.FieldProblem
+import com.memo.memo.MemoOrigin
 import java.math.BigDecimal
 import java.time.LocalDate
 import java.util.UUID
@@ -23,6 +24,8 @@ data class SearchQuery(
     val amountMax: BigDecimal? = null,
     val sources: List<SearchSource> = SearchSource.entries,
     val sort: SearchSort = SearchSort.RELEVANCE,
+    /** Memos raised here, imported ones, or both when empty (design E06 §11). */
+    val origins: List<MemoOrigin> = emptyList(),
 )
 
 /** A search or saved search the rules refuse (422 `validation`). */

@@ -136,6 +136,11 @@ open class SearchFind : AbstractRoutine<Record>("search_find", Memo.MEMO, DSL.co
         val P_CAP: Parameter<Int?> = Internal.createParameter("p_cap", SQLDataType.INTEGER, false)
 
         /**
+         * The parameter <code>memo.search_find.p_origins</code>.
+         */
+        val P_ORIGINS: Parameter<Array<String?>?> = Internal.createParameter("p_origins", SQLDataType.CLOB.array().defaultValue(DSL.field(DSL.raw("NULL::text[]"), SQLDataType.CLOB.array())), false)
+
+        /**
          * The parameter <code>memo.search_find.memo_id</code>.
          */
         val MEMO_ID: Parameter<UUID?> = Internal.createParameter("memo_id", SQLDataType.UUID, false)
@@ -189,6 +194,11 @@ open class SearchFind : AbstractRoutine<Record>("search_find", Memo.MEMO, DSL.co
          * The parameter <code>memo.search_find.updated_at</code>.
          */
         val UPDATED_AT: Parameter<OffsetDateTime?> = Internal.createParameter("updated_at", SQLDataType.TIMESTAMPWITHTIMEZONE(6), false)
+
+        /**
+         * The parameter <code>memo.search_find.origin</code>.
+         */
+        val ORIGIN: Parameter<String?> = Internal.createParameter("origin", SQLDataType.CLOB, false)
     }
 
     init {
@@ -214,6 +224,7 @@ open class SearchFind : AbstractRoutine<Record>("search_find", Memo.MEMO, DSL.co
         addInParameter(SearchFind.P_IN_NOTES)
         addInParameter(SearchFind.P_IN_DOCS)
         addInParameter(SearchFind.P_CAP)
+        addInParameter(SearchFind.P_ORIGINS)
         addOutParameter(SearchFind.MEMO_ID)
         addOutParameter(SearchFind.SCORE)
         addOutParameter(SearchFind.IN_META)
@@ -225,6 +236,7 @@ open class SearchFind : AbstractRoutine<Record>("search_find", Memo.MEMO, DSL.co
         addOutParameter(SearchFind.ORIGIN_UNIT_ID)
         addOutParameter(SearchFind.CREATED_AT)
         addOutParameter(SearchFind.UPDATED_AT)
+        addOutParameter(SearchFind.ORIGIN)
     }
 
     /**
@@ -375,6 +387,13 @@ open class SearchFind : AbstractRoutine<Record>("search_find", Memo.MEMO, DSL.co
     }
 
     /**
+     * Set the <code>p_origins</code> parameter IN value to the routine
+     */
+    fun setPOrigins(value: Array<String?>?): Unit {
+        setValue(SearchFind.P_ORIGINS, value)
+    }
+
+    /**
      * Get the <code>memo_id</code> parameter OUT value from the routine
      */
     fun getMemoId(): UUID? = get(SearchFind.MEMO_ID)
@@ -428,4 +447,9 @@ open class SearchFind : AbstractRoutine<Record>("search_find", Memo.MEMO, DSL.co
      * Get the <code>updated_at</code> parameter OUT value from the routine
      */
     fun getUpdatedAt(): OffsetDateTime? = get(SearchFind.UPDATED_AT)
+
+    /**
+     * Get the <code>origin</code> parameter OUT value from the routine
+     */
+    fun getOrigin(): String? = get(SearchFind.ORIGIN)
 }

@@ -4,7 +4,7 @@ import com.memo.common.tenant.TenantDsl
 import com.memo.jooq.tables.references.MEMO_
 import com.memo.jooq.tables.references.MEMO_RENDITION
 import com.memo.jooq.tables.references.MEMO_RENDITION_PART
-import com.memo.memo.internal.MemoOrigin
+import com.memo.memo.MemoOrigin
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Repository
 import java.util.UUID

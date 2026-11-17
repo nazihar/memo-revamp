@@ -14,6 +14,7 @@ import com.memo.common.tenant.TenantDsl
 import com.memo.common.tenant.TenantTransactions
 import com.memo.common.web.refuseIf
 import com.memo.jooq.tables.references.MEMO_TYPE_VERSION
+import com.memo.memo.MemoOrigin
 import org.jooq.impl.DSL
 import org.springframework.beans.factory.ObjectProvider
 import org.springframework.context.annotation.Bean

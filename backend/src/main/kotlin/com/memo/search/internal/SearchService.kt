@@ -96,6 +96,7 @@ class SearchService(
             "amountMin" to query.amountMin?.toPlainString(),
             "amountMax" to query.amountMax?.toPlainString(),
             "in" to query.sources.map { it.name },
+            "origin" to query.origins.map { it.name },
         ).filterValues { it != null && it != emptyList<Any>() }
 
     private fun reader(): UUID = checkNotNull((ActorContext.current().actor as? Actor.User)?.userId) { "search needs a signed-in user" }
@@ -130,6 +131,7 @@ class SearchService(
                 inDetails = SearchSource.METADATA in query.sources,
                 inNotes = SearchSource.NOTES in query.sources,
                 inDocuments = SearchSource.DOCUMENTS in query.sources,
+                origins = query.origins.toSet().ifEmpty { null },
             )
     }
 }

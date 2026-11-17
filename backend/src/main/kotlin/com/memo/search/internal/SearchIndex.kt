@@ -31,14 +31,18 @@ class SearchIndex(
         return searchPutNote(tenantDsl.current().configuration(), tenant(), note.noteId, note.memoId, note.text) == true
     }
 
-    /** Follows a memo file's level, or drops its chunks when it is no longer a memo's file (an attachment removed). */
-    fun refreshFile(fileId: UUID) {
+    /**
+     * Follows a memo file's level, or drops its chunks when it is no longer a memo's file (an attachment removed). Returns
+     * the file as the memo module describes it now; null when it is not a memo's file.
+     */
+    fun refreshFile(fileId: UUID): MemoFileFacts? {
         val file = source.file(fileId)
         if (file == null) {
             dropFile(fileId)
         } else {
             searchSetChunkRank(tenantDsl.current().configuration(), tenant(), fileId, file.rank)
         }
+        return file
     }
 
     /** Replaces [file]'s chunks with [chunks] of its version [versionId]; false when its memo is not indexed yet. */
@@ -87,6 +91,7 @@ class SearchIndex(
             facts.reference?.let(SearchReferences::tail),
             facts.subject,
             facts.fieldsText,
+            facts.origin.name,
         )
     }
 

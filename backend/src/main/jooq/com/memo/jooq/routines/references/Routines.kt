@@ -114,6 +114,7 @@ fun searchPutMemo(
     , pRefTail: String?
     , pSubject: String?
     , pFields: String?
+    , pOrigin: String?
 ): Unit {
     val p = SearchPutMemo()
     p.setPTenant(pTenant)
@@ -130,6 +131,7 @@ fun searchPutMemo(
     p.setPRefTail(pRefTail)
     p.setPSubject(pSubject)
     p.setPFields(pFields)
+    p.setPOrigin(pOrigin)
 
     p.execute(configuration)
 }
@@ -254,6 +256,7 @@ fun searchFind(
     , pInNotes: Boolean?
     , pInDocs: Boolean?
     , pCap: Int?
+    , pOrigins: Array<String?>?
 ): Result<SearchFindRecord> = configuration.dsl().selectFrom(com.memo.jooq.tables.SearchFind.SEARCH_FIND.call(
       pTenant
     , pReader
@@ -276,6 +279,7 @@ fun searchFind(
     , pInNotes
     , pInDocs
     , pCap
+    , pOrigins
 )).fetch()
 
 /**
@@ -303,6 +307,7 @@ fun searchFind(
     , pInNotes: Boolean?
     , pInDocs: Boolean?
     , pCap: Int?
+    , pOrigins: Array<String?>?
 ): SearchFind = com.memo.jooq.tables.SearchFind.SEARCH_FIND.call(
     pTenant,
     pReader,
@@ -324,7 +329,8 @@ fun searchFind(
     pInMeta,
     pInNotes,
     pInDocs,
-    pCap
+    pCap,
+    pOrigins
 )
 
 /**
@@ -352,6 +358,7 @@ fun searchFind(
     , pInNotes: Field<Boolean?>
     , pInDocs: Field<Boolean?>
     , pCap: Field<Int?>
+    , pOrigins: Field<Array<String?>?>
 ): SearchFind = com.memo.jooq.tables.SearchFind.SEARCH_FIND.call(
     pTenant,
     pReader,
@@ -373,7 +380,8 @@ fun searchFind(
     pInMeta,
     pInNotes,
     pInDocs,
-    pCap
+    pCap,
+    pOrigins
 )
 
 /**

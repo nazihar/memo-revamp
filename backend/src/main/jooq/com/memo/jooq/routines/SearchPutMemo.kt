@@ -93,6 +93,11 @@ open class SearchPutMemo : AbstractRoutine<java.lang.Void>("search_put_memo", Me
          * The parameter <code>memo.search_put_memo.p_fields</code>.
          */
         val P_FIELDS: Parameter<String?> = Internal.createParameter("p_fields", SQLDataType.CLOB, false)
+
+        /**
+         * The parameter <code>memo.search_put_memo.p_origin</code>.
+         */
+        val P_ORIGIN: Parameter<String?> = Internal.createParameter("p_origin", SQLDataType.CLOB.defaultValue(DSL.field(DSL.raw("'NATIVE'::text"), SQLDataType.CLOB)), false)
     }
 
     init {
@@ -110,6 +115,7 @@ open class SearchPutMemo : AbstractRoutine<java.lang.Void>("search_put_memo", Me
         addInParameter(SearchPutMemo.P_REF_TAIL)
         addInParameter(SearchPutMemo.P_SUBJECT)
         addInParameter(SearchPutMemo.P_FIELDS)
+        addInParameter(SearchPutMemo.P_ORIGIN)
     }
 
     /**
@@ -208,5 +214,12 @@ open class SearchPutMemo : AbstractRoutine<java.lang.Void>("search_put_memo", Me
      */
     fun setPFields(value: String?): Unit {
         setValue(SearchPutMemo.P_FIELDS, value)
+    }
+
+    /**
+     * Set the <code>p_origin</code> parameter IN value to the routine
+     */
+    fun setPOrigin(value: String?): Unit {
+        setValue(SearchPutMemo.P_ORIGIN, value)
     }
 }

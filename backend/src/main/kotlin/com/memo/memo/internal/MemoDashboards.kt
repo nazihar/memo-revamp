@@ -7,6 +7,7 @@ import com.memo.common.context.ActorContext
 import com.memo.common.tenant.TenantDsl
 import com.memo.identity.UserSummaries
 import com.memo.jooq.tables.references.MEMO_TYPE
+import com.memo.memo.MemoOrigin
 import com.memo.org.OrgDirectory
 import com.memo.org.OrgUnitDirectory
 import com.memo.workflow.DecidedInstance

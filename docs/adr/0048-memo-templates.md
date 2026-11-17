@@ -55,6 +55,7 @@ The template author is partly trusted. A .docx can carry macros, ActiveX, OLE ob
 - **Where it lives:**
   - The template is a file of purpose `memo.template` owned by the memo-type version. Changing it is a type-version change under maker-checker (ADR-0043).
   - A memo records the template version it was filled from, so the final fill (E04) uses the same template and the snapshot of the memo's data.
+- **Second fill dropped (2026-11-15, ADR-0053):** the final record does not fill the template again; it would change the document the stamps bind (ADR-0051). The number and the approvals appear on the record's generated pages.
 - **First fill:** at create, the filled template becomes the memo's document version 1, by the initiator. A type without a template behaves as today (upload or blank).
 - **The spike chose poi-tl 1.12.2 on POI 6.0.0** (E03 T1, 2026-11-15; `epic-03-templates-notes-access/log.md`). On both POI 5.5.1 and 6.0.0 it handled tags split across runs, headers, footers and the loop row. A letterhead fill took 11–13 ms at p50 and under 20 ms at p95 on the dev machine. It also works with Batik excluded. POI 6.0.0 was chosen for its extra zip hardening. Option 3 stays the fallback if poi-tl stalls on a later POI.
 

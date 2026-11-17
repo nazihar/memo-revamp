@@ -1,6 +1,9 @@
 package com.memo.memo
 
 import com.memo.common.authz.Clearances
+import com.memo.common.context.Actor
+import com.memo.common.context.ActorContext
+import com.memo.common.context.ActorScope
 import com.memo.common.tenant.TenantContext
 import com.memo.common.tenant.TenantTransactions
 import com.memo.files.FileUploads
@@ -11,10 +14,12 @@ import com.memo.memo.internal.MemoListStore
 import com.memo.memo.internal.MemoReviews
 import com.memo.memo.internal.MemoRoutes
 import com.memo.memo.internal.MemoTypeFields
+import com.memo.memo.internal.MemoTypeLifecycle
 import com.memo.memo.internal.MemoTypeStore
 import com.memo.memo.internal.MemoTypes
 import com.memo.memo.internal.MemoWorkflowSubject
 import com.memo.memo.internal.Memos
+import com.memo.memo.internal.RepresentativeTypes
 import com.memo.memo.internal.RoutePolicy
 import com.memo.workflow.RouteEntry
 import com.memo.workflow.WorkflowQueries
@@ -40,6 +45,7 @@ class MemoSeeding(
     private val files: Files,
     private val uploads: FileUploads,
     private val transactions: TenantTransactions,
+    private val lifecycle: MemoTypeLifecycle,
 ) {
     /** Whether [initiator] has created any memo yet (seeders run once per tenant). */
     fun hasMemos(initiator: UUID): Boolean = tx { lists.anyOf(initiator) }
@@ -139,6 +145,31 @@ class MemoSeeding(
                     ).id
         }
 
+    /**
+     * The representative bank memo types (Phase 3 E01 T8): each created if missing and given its fields, numbering and
+     * policies through the reviewed lifecycle, drafted and submitted by [author] and approved by [reviewer]. Fills gaps
+     * only: a type whose published version has fields already is left alone. Returns how many types were published.
+     */
+    fun representativeTypes(
+        author: UUID,
+        reviewer: UUID,
+    ): Int =
+        RepresentativeTypes.ALL.count { spec ->
+            val id =
+                asUser(author) {
+                    tx {
+                        types.all().firstOrNull { it.name == spec.name }?.id
+                            ?: types.create(MemoTypeFields(spec.name, null, true, true)).id
+                    }
+                }
+            val published = asUser(author) { tx { types.published(id) } }
+            if (published == null || published.settings.fields.isNotEmpty()) return@count false
+            val draft = asUser(author) { tx { lifecycle.newDraft(id, spec.settings(published.settings.copy(code = spec.code))) } }
+            asUser(author) { tx { lifecycle.submit(id, draft.number, draft.revision) } }
+            asUser(reviewer) { tx { lifecycle.approve(id, draft.number, null) } }
+            true
+        }
+
     private fun <T> tx(block: () -> T): T = transactions.inTenant(TenantContext.current(), block)
 
     companion object {
@@ -147,3 +178,9 @@ class MemoSeeding(
         const val REJECT = "reject"
     }
 }
+
+/** Runs [block] as [user] (seeders switch between the maker and the checker). */
+private fun <T> asUser(
+    user: UUID,
+    block: () -> T,
+): T = ActorContext.call(ActorScope(Actor.User(user), null), block)

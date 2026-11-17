@@ -46,6 +46,7 @@ class LegacyMemoService(
     private val changes: MemoChangeLog,
     private val audit: AuditLog,
     private val clock: Clock,
+    private val retention: LegacyRetention,
 ) : LegacyMemos {
     override fun check(row: LegacyMemoRow): List<LegacyProblem> = checks.problems(row)
 
@@ -120,6 +121,8 @@ class LegacyMemoService(
     ): ExistingImport? = reader.existing(sourceCode, LegacyNumbers.key(legacyNumber))
 
     override fun series(): List<LiveSeries> = series.all()
+
+    override fun retainOriginals(memoId: UUID): Int = retention.retain(memoId)
 
     override fun types(): List<LegacyType> =
         types.active().map { type ->

@@ -79,6 +79,18 @@ data class ImportBatch(
     val maxRank: Int?,
     /** SHA-256 (hex) of what the last dry run read: sources, received originals, mappings and settings (design E06 §5.2). */
     val dryRunHash: String? = null,
+    /** The import (design E06 §5.3): who started it, when, and when their step-up was proven. */
+    val run: BatchRun = BatchRun(),
+)
+
+/** A batch's import as far as it went (design E06 §5.3): all null until it starts. */
+data class BatchRun(
+    val startedBy: UUID? = null,
+    val startedAt: Instant? = null,
+    val stepUpAt: Instant? = null,
+    val finishedAt: Instant? = null,
+    /** Since when the job has waited for the `memo.legacy` renditions to catch up; null while it is not waiting. */
+    val throttledAt: Instant? = null,
 )
 
 /** How a dry run ended, as the batch records it. */
@@ -239,6 +251,14 @@ class ImportBatchStore(
             dryRunAt = r.dryRunAt?.toInstant(),
             maxRank = r.maxRank,
             dryRunHash = r.dryRunHash?.let { HexFormat.of().formatHex(it) },
+            run =
+                BatchRun(
+                    startedBy = r.startedBy,
+                    startedAt = r.startedAt?.toInstant(),
+                    stepUpAt = r.stepUpAt?.toInstant(),
+                    finishedAt = r.finishedAt?.toInstant(),
+                    throttledAt = r.throttledAt?.toInstant(),
+                ),
         )
 
     private fun sources(r: ImportsBatchRecord): List<BatchSource> =

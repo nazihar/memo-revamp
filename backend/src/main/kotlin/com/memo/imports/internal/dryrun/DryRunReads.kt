@@ -66,6 +66,15 @@ class ChunkReads(
             .limit(limit)
             .fetch { StoredMemo(it.value1()!!, it.value2()!!, cells(it.value3()?.data())) }
 
+    /** The Memos row [rowId] (the import reads its rows one at a time, design E06 §5.3). */
+    fun memo(rowId: UUID): StoredMemo? =
+        tenantDsl
+            .current()
+            .select(IMPORTS_ROW.ID, IMPORTS_ROW.ROW_NUMBER, IMPORTS_ROW.DATA)
+            .from(IMPORTS_ROW)
+            .where(IMPORTS_ROW.ID.eq(rowId))
+            .fetchOne { StoredMemo(it.value1()!!, it.value2()!!, cells(it.value3()?.data())) }
+
     fun files(rowIds: Collection<UUID>): List<StoredFile> {
         if (rowIds.isEmpty()) return emptyList()
         val f = IMPORTS_ROW_FILE
@@ -149,10 +158,12 @@ class ChunkReads(
             }
     }
 
-    private fun cells(data: String?): Map<String, String> = data?.let { json.readValue(it, DATA)[StagingStore.CELLS] }.orEmpty()
+    /** The row's cells; the data also holds the rank the dry run recorded (a number), which is not a cell. */
+    private fun cells(data: String?): Map<String, String> =
+        data?.let { json.readTree(it).get(StagingStore.CELLS) }?.let { json.convertValue(it, CELLS) }.orEmpty()
 
     private companion object {
-        val DATA = object : TypeReference<Map<String, Map<String, String>>>() {}
+        val CELLS = object : TypeReference<Map<String, String>>() {}
     }
 }
 

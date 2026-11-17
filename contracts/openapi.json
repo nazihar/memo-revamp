@@ -2009,7 +2009,7 @@
         "properties" : {
           "allowedActions" : {
             "items" : {
-              "enum" : [ "EDIT", "ATTACH_SOURCE", "REGISTER_ORIGINALS", "MAP", "DRY_RUN" ],
+              "enum" : [ "EDIT", "ATTACH_SOURCE", "REGISTER_ORIGINALS", "MAP", "DRY_RUN", "START", "STOP", "RESUME", "FINISH" ],
               "type" : "string"
             },
             "type" : "array"
@@ -2033,9 +2033,17 @@
           "dryRunHash" : {
             "type" : [ "string", "null" ]
           },
+          "finishedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
           "id" : {
             "format" : "uuid",
             "type" : "string"
+          },
+          "maxRank" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
           },
           "name" : {
             "type" : "string"
@@ -2052,6 +2060,13 @@
               "type" : "integer"
             },
             "type" : "object"
+          },
+          "progress" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/ImportProgressView"
+            }, {
+              "type" : "null"
+            } ]
           },
           "rows" : {
             "additionalProperties" : {
@@ -2073,9 +2088,21 @@
             },
             "type" : "array"
           },
+          "startedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "startedBy" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
           "state" : {
             "enum" : [ "OPEN", "DRY_RUN", "VALIDATED", "IMPORTING", "STOPPING", "STOPPED", "VERIFYING", "COMPLETED", "CLOSED", "ABANDONED" ],
             "type" : "string"
+          },
+          "stepUpAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
           },
           "timeZone" : {
             "type" : "string"
@@ -2268,6 +2295,59 @@
         "required" : [ "code", "id", "level", "params", "stage" ],
         "type" : "object"
       },
+      "ImportProgressView" : {
+        "properties" : {
+          "done" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "estimatedEnd" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "failed" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "imported" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "left" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "notStarted" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "ratePerMinute" : {
+            "format" : "double",
+            "type" : "number"
+          },
+          "rejected" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "rows" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "skipped" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "throttled" : {
+            "type" : "boolean"
+          },
+          "throttledSince" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "done", "failed", "imported", "left", "notStarted", "ratePerMinute", "rejected", "rows", "skipped", "throttled" ],
+        "type" : "object"
+      },
       "ImportRowPage" : {
         "properties" : {
           "next" : {
@@ -2358,6 +2438,16 @@
           }
         },
         "required" : [ "fileId", "name", "sha256", "sizeBytes", "table", "uploadedAt", "versionId" ],
+        "type" : "object"
+      },
+      "ImportStartRequest" : {
+        "properties" : {
+          "expectedRows" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "expectedRows" ],
         "type" : "object"
       },
       "InboxItem" : {
@@ -7543,6 +7633,34 @@
         "tags" : [ "imports" ]
       }
     },
+    "/api/v1/admin/imports/{id}/finish" : {
+      "post" : {
+        "operationId" : "finishImport",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ImportBatchView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Finish a stopped import: the rows left are not started, and verification follows",
+        "tags" : [ "imports" ]
+      }
+    },
     "/api/v1/admin/imports/{id}/mappings" : {
       "get" : {
         "operationId" : "listImportMappings",
@@ -7718,6 +7836,34 @@
         "tags" : [ "imports" ]
       }
     },
+    "/api/v1/admin/imports/{id}/resume" : {
+      "post" : {
+        "operationId" : "resumeImport",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ImportBatchView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Resume a stopped import (step-up)",
+        "tags" : [ "imports" ]
+      }
+    },
     "/api/v1/admin/imports/{id}/rows" : {
       "get" : {
         "operationId" : "listImportRows",
@@ -7770,6 +7916,79 @@
           }
         },
         "summary" : "A batch's Memos rows with their results, in row order",
+        "tags" : [ "imports" ]
+      }
+    },
+    "/api/v1/admin/imports/{id}/start" : {
+      "post" : {
+        "operationId" : "startImport",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ImportStartRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ImportBatchView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Start the import of a validated batch (step-up; a job imports the rows)",
+        "tags" : [ "imports" ]
+      }
+    },
+    "/api/v1/admin/imports/{id}/stop" : {
+      "post" : {
+        "operationId" : "stopImport",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ImportBatchView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Stop a running import between two chunks of rows",
         "tags" : [ "imports" ]
       }
     },

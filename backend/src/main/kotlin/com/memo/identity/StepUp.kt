@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.stereotype.Component
 import java.time.Clock
 import java.time.Duration
+import java.time.Instant
 
 /**
  * Step-up for sensitive actions (ADR-0024): call [require] at the start of the action. It passes when the session's
@@ -24,10 +25,14 @@ class StepUp(
     private val clock: Clock,
 ) : StepUpCheck {
     override fun require(window: Duration?) {
-        val principal = SecurityContextHolder.getContext().authentication?.principal as? SessionPrincipal
         val effective = window ?: transactions.readInTenant(TenantContext.current()) { settings.stepUpWindow() }
-        val proven = principal?.let { it.factor(strongest(it))?.issuedAt }
+        val proven = provenAt()
         if (proven == null || proven.plus(effective).isBefore(clock.instant())) throw StepUpRequiredException(effective)
+    }
+
+    override fun provenAt(): Instant? {
+        val principal = SecurityContextHolder.getContext().authentication?.principal as? SessionPrincipal
+        return principal?.let { it.factor(strongest(it))?.issuedAt }
     }
 
     companion object {

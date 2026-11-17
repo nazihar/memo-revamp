@@ -2,6 +2,9 @@ package com.memo.imports.internal
 
 import com.memo.common.tenant.TenantDsl
 import com.memo.files.Files
+import com.memo.imports.internal.dryrun.ProblemLevel
+import com.memo.imports.internal.dryrun.RowResult
+import com.memo.imports.internal.run.RunProgress
 import com.memo.jooq.tables.references.IMPORTS_PROBLEM
 import com.memo.jooq.tables.references.IMPORTS_ROW
 import io.swagger.v3.oas.annotations.media.Schema
@@ -10,8 +13,34 @@ import org.springframework.stereotype.Component
 import java.time.Instant
 import java.util.UUID
 
-/** What the batch's screen offers now (design E06 §10 `allowedActions`). The import adds its own (T7). */
-enum class BatchAction { EDIT, ATTACH_SOURCE, REGISTER_ORIGINALS, MAP, DRY_RUN }
+/** What the batch's screen offers now (design E06 §10 `allowedActions`). */
+enum class BatchAction { EDIT, ATTACH_SOURCE, REGISTER_ORIGINALS, MAP, DRY_RUN, START, STOP, RESUME, FINISH }
+
+/** A started import's progress (design E06 §10): the rows it took on (READY at the start) and how they ended so far. */
+data class ImportProgressView(
+    /** Rows the import took on: those READY when it started. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val rows: Int,
+    /** Imported, skipped, rejected or failed. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val done: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val imported: Int,
+    /** Already imported unchanged by an earlier batch. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val skipped: Int,
+    /** A check failed at import time (`ALREADY_IMPORTED_CHANGED`, a number taken since the dry run, ...). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val rejected: Int,
+    /** An original was refused, or the row failed after its last attempt. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val failed: Int,
+    /** Not reached: the import was finished after a stop. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val notStarted: Int,
+    /** Still to import (ready, or being imported now). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val left: Int,
+    /** Rows done a minute, over the last ten minutes. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val ratePerMinute: Double,
+    /** At that rate; absent when nothing is left, nothing moved lately, or the import is not running. */
+    val estimatedEnd: Instant? = null,
+    /** The job waits for the previews of imported originals to catch up (design E06 §5.3). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val throttled: Boolean,
+    val throttledSince: Instant? = null,
+)
 
 data class ImportSourceView(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val table: SourceTable,
@@ -53,13 +82,23 @@ data class ImportBatchView(
     val sourceKind: SourceKind?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val sources: List<ImportSourceView>,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val originals: ImportOriginalsView,
-    /** Problems of the last dry run by level (BATCH, ERROR, WARNING, FILE, INFO). */
+    /** Problems of the last dry run and of the import by level (BATCH, ERROR, WARNING, FILE, INFO). */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val problems: Map<String, Int>,
     /** Memos rows by result (PENDING, READY, REJECTED, ...). */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val rows: Map<String, Int>,
     val dryRunAt: Instant?,
     /** SHA-256 (hex) of what the last dry run read: sources, received originals, mappings and settings. */
     val dryRunHash: String? = null,
+    /** The highest classification rank the import writes (the importer must be cleared to it). */
+    val maxRank: Int? = null,
+    /** Who started the import, when, and when their step-up was proven. */
+    val startedBy: UUID? = null,
+    val startedAt: Instant? = null,
+    val stepUpAt: Instant? = null,
+    /** When the import ended (its last row, or finished after a stop). */
+    val finishedAt: Instant? = null,
+    /** Present once the import started. */
+    val progress: ImportProgressView? = null,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val allowedActions: List<BatchAction>,
 )
 
@@ -109,11 +148,14 @@ class ImportViews(
     private val entries: ImportFileStore,
     private val files: Files,
     private val tenantDsl: TenantDsl,
+    private val progress: RunProgress,
 ) {
     fun of(batch: ImportBatch): ImportBatchView {
         val counts = entries.counts(batch.id)
 
         fun count(state: IntakeState) = counts[state] ?: IntakeCount(0, 0)
+        val problems = problems(batch.id)
+        val rows = rows(batch.id)
         val versions = batch.sources.associateWith { files.version(it.versionId) }
         return ImportBatchView(
             id = batch.id,
@@ -141,21 +183,46 @@ class ImportViews(
                     expectedBytes = count(IntakeState.EXPECTED).bytes,
                     receivedBytes = count(IntakeState.RECEIVED).bytes,
                 ),
-            problems = problems(batch.id),
-            rows = rows(batch.id),
+            problems = problems,
+            rows = rows,
             dryRunAt = batch.dryRunAt,
             dryRunHash = batch.dryRunHash,
-            allowedActions = actions(batch),
+            maxRank = batch.maxRank,
+            startedBy = batch.run.startedBy,
+            startedAt = batch.run.startedAt,
+            stepUpAt = batch.run.stepUpAt,
+            finishedAt = batch.run.finishedAt,
+            progress = progress.of(batch),
+            allowedActions = actions(batch, problems, rows),
         )
     }
 
-    /** Every editing action while the batch is OPEN or VALIDATED; the dry run once its metadata is there. */
-    private fun actions(batch: ImportBatch): List<BatchAction> =
-        when {
-            !batch.state.editable -> emptyList()
-            batch.sources.isEmpty() -> BatchAction.entries - BatchAction.DRY_RUN
-            else -> BatchAction.entries
+    /**
+     * Every editing action while the batch is OPEN or VALIDATED, the dry run once its metadata is there, and the start of a
+     * VALIDATED batch with READY rows and no batch problem; then stop while importing, and resume or finish once stopped.
+     */
+    private fun actions(
+        batch: ImportBatch,
+        problems: Map<String, Int>,
+        rows: Map<String, Int>,
+    ): List<BatchAction> {
+        val startable =
+            batch.state == BatchState.VALIDATED && (rows[RowResult.READY.name] ?: 0) > 0 && (problems[ProblemLevel.BATCH.name] ?: 0) == 0
+        return when (batch.state) {
+            BatchState.IMPORTING -> {
+                listOf(BatchAction.STOP)
+            }
+
+            BatchState.STOPPED -> {
+                listOf(BatchAction.RESUME, BatchAction.FINISH)
+            }
+
+            else -> {
+                EDITING.filter { batch.state.editable && (it != BatchAction.DRY_RUN || batch.sources.isNotEmpty()) } +
+                    listOfNotNull(BatchAction.START.takeIf { startable })
+            }
         }
+    }
 
     fun summary(batch: ImportBatch) =
         ImportBatchSummary(
@@ -181,7 +248,7 @@ class ImportViews(
             receivedAt = entry.receivedAt,
         )
 
-    /** Problems of the last dry run by level. */
+    /** Problems of the last dry run and of the import by level. */
     fun problems(batchId: UUID): Map<String, Int> =
         tenantDsl
             .current()
@@ -202,4 +269,10 @@ class ImportViews(
             .groupBy(IMPORTS_ROW.RESULT)
             .fetch { r -> r.value1().orEmpty() to (r.value2() ?: 0) }
             .toMap()
+
+    private companion object {
+        /** The actions of a batch before its import starts. */
+        val EDITING =
+            listOf(BatchAction.EDIT, BatchAction.ATTACH_SOURCE, BatchAction.REGISTER_ORIGINALS, BatchAction.MAP, BatchAction.DRY_RUN)
+    }
 }

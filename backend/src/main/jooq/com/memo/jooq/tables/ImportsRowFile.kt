@@ -149,6 +149,16 @@ open class ImportsRowFile(
      */
     val MATCH: TableField<ImportsRowFileRecord, String?> = createField(DSL.name("match"), SQLDataType.CLOB, this, "")
 
+    /**
+     * The column <code>memo.imports_row_file.stored_file_id</code>.
+     */
+    val STORED_FILE_ID: TableField<ImportsRowFileRecord, UUID?> = createField(DSL.name("stored_file_id"), SQLDataType.UUID, this, "")
+
+    /**
+     * The column <code>memo.imports_row_file.stored_version_id</code>.
+     */
+    val STORED_VERSION_ID: TableField<ImportsRowFileRecord, UUID?> = createField(DSL.name("stored_version_id"), SQLDataType.UUID, this, "")
+
     private constructor(alias: Name, aliased: Table<ImportsRowFileRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<ImportsRowFileRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<ImportsRowFileRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -210,6 +220,7 @@ open class ImportsRowFile(
         Internal.createCheck(this, DSL.name("imports_row_file_path_check"), "(((length(path) >= 1) AND (length(path) <= 32767)))", true),
         Internal.createCheck(this, DSL.name("imports_row_file_role_check"), "(((length(role) >= 1) AND (length(role) <= 32767)))", true),
         Internal.createCheck(this, DSL.name("imports_row_file_row_number_check"), "((row_number >= 1))", true),
+        Internal.createCheck(this, DSL.name("imports_row_file_stored"), "(((stored_file_id IS NULL) = (stored_version_id IS NULL)))", true),
         Internal.createCheck(this, DSL.name("imports_row_file_title_check"), "(((length(title) >= 1) AND (length(title) <= 32767)))", true)
     )
     override fun `as`(alias: String): ImportsRowFile = ImportsRowFile(DSL.name(alias), this)

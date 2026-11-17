@@ -143,7 +143,7 @@ class RowAssembly(
                 legacyNumber = number,
                 fingerprint = RowFingerprint.of(cells, approvals, files),
                 timeZone = ctx.batch.settings.timeZone,
-                startedBy = ctx.batch.createdBy,
+                startedBy = ctx.batch.run.startedBy ?: ctx.batch.createdBy,
             )
 
         private fun given() =

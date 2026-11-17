@@ -70,6 +70,14 @@ open class ImportsRowFileRecord private constructor() : UpdatableRecordImpl<Impo
         set(value): Unit = set(12, value)
         get(): String? = get(12) as String?
 
+    open var storedFileId: UUID?
+        set(value): Unit = set(13, value)
+        get(): UUID? = get(13) as UUID?
+
+    open var storedVersionId: UUID?
+        set(value): Unit = set(14, value)
+        get(): UUID? = get(14) as UUID?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -79,7 +87,7 @@ open class ImportsRowFileRecord private constructor() : UpdatableRecordImpl<Impo
     /**
      * Create a detached, initialised ImportsRowFileRecord
      */
-    constructor(id: UUID, tenantId: UUID, batchId: UUID, rowNumber: Int, legacyNumberKey: String? = null, path: String? = null, role: String? = null, title: String? = null, expectedSha256: String? = null, classification: String? = null, rowId: UUID? = null, fileId: UUID? = null, match: String? = null): this() {
+    constructor(id: UUID, tenantId: UUID, batchId: UUID, rowNumber: Int, legacyNumberKey: String? = null, path: String? = null, role: String? = null, title: String? = null, expectedSha256: String? = null, classification: String? = null, rowId: UUID? = null, fileId: UUID? = null, match: String? = null, storedFileId: UUID? = null, storedVersionId: UUID? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.batchId = batchId
@@ -93,6 +101,8 @@ open class ImportsRowFileRecord private constructor() : UpdatableRecordImpl<Impo
         this.rowId = rowId
         this.fileId = fileId
         this.match = match
+        this.storedFileId = storedFileId
+        this.storedVersionId = storedVersionId
         resetTouchedOnNotNull()
     }
 }

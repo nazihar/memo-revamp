@@ -735,26 +735,32 @@ export type ImportBatchSummary = {
 };
 
 export type ImportBatchView = {
-    allowedActions: Array<'EDIT' | 'ATTACH_SOURCE' | 'REGISTER_ORIGINALS' | 'MAP' | 'DRY_RUN'>;
+    allowedActions: Array<'EDIT' | 'ATTACH_SOURCE' | 'REGISTER_ORIGINALS' | 'MAP' | 'DRY_RUN' | 'START' | 'STOP' | 'RESUME' | 'FINISH'>;
     createdAt: string;
     createdBy: string;
     defaultClassificationId?: string | null;
     dryRunAt?: string | null;
     dryRunHash?: string | null;
+    finishedAt?: string | null;
     id: string;
+    maxRank?: number | null;
     name: string;
     numberPrefix?: string | null;
     originals: ImportOriginalsView;
     problems: {
         [key: string]: number;
     };
+    progress?: ImportProgressView | null;
     rows: {
         [key: string]: number;
     };
     sourceCode: string;
     sourceKind?: 'XLSX' | 'CSV';
     sources: Array<ImportSourceView>;
+    startedAt?: string | null;
+    startedBy?: string | null;
     state: 'OPEN' | 'DRY_RUN' | 'VALIDATED' | 'IMPORTING' | 'STOPPING' | 'STOPPED' | 'VERIFYING' | 'COMPLETED' | 'CLOSED' | 'ABANDONED';
+    stepUpAt?: string | null;
     timeZone: string;
     updatedAt: string;
     version: number;
@@ -819,6 +825,21 @@ export type ImportProblemView = {
     stage: 'DRY_RUN' | 'IMPORT' | 'VERIFY';
 };
 
+export type ImportProgressView = {
+    done: number;
+    estimatedEnd?: string | null;
+    failed: number;
+    imported: number;
+    left: number;
+    notStarted: number;
+    ratePerMinute: number;
+    rejected: number;
+    rows: number;
+    skipped: number;
+    throttled: boolean;
+    throttledSince?: string | null;
+};
+
 export type ImportRowPage = {
     next?: string | null;
     rows: Array<ImportRowView>;
@@ -845,6 +866,10 @@ export type ImportSourceView = {
     table: 'WORKBOOK' | 'MEMOS' | 'FILES' | 'APPROVALS';
     uploadedAt: string;
     versionId: string;
+};
+
+export type ImportStartRequest = {
+    expectedRows: number;
 };
 
 export type InboxItem = {
@@ -2798,6 +2823,24 @@ export type RegisterImportOriginalsResponses = {
 
 export type RegisterImportOriginalsResponse = RegisterImportOriginalsResponses[keyof RegisterImportOriginalsResponses];
 
+export type FinishImportData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/imports/{id}/finish';
+};
+
+export type FinishImportResponses = {
+    /**
+     * OK
+     */
+    200: ImportBatchView;
+};
+
+export type FinishImportResponse = FinishImportResponses[keyof FinishImportResponses];
+
 export type ListImportMappingsData = {
     body?: never;
     path: {
@@ -2874,6 +2917,24 @@ export type ListImportProblemsResponses = {
 
 export type ListImportProblemsResponse = ListImportProblemsResponses[keyof ListImportProblemsResponses];
 
+export type ResumeImportData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/imports/{id}/resume';
+};
+
+export type ResumeImportResponses = {
+    /**
+     * OK
+     */
+    200: ImportBatchView;
+};
+
+export type ResumeImportResponse = ResumeImportResponses[keyof ResumeImportResponses];
+
 export type ListImportRowsData = {
     body?: never;
     path: {
@@ -2898,6 +2959,45 @@ export type ListImportRowsResponses = {
 };
 
 export type ListImportRowsResponse = ListImportRowsResponses[keyof ListImportRowsResponses];
+
+export type StartImportData = {
+    body: ImportStartRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/imports/{id}/start';
+};
+
+export type StartImportResponses = {
+    /**
+     * OK
+     */
+    200: ImportBatchView;
+};
+
+export type StartImportResponse = StartImportResponses[keyof StartImportResponses];
+
+export type StopImportData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/imports/{id}/stop';
+};
+
+export type StopImportResponses = {
+    /**
+     * OK
+     */
+    200: ImportBatchView;
+};
+
+export type StopImportResponse = StopImportResponses[keyof StopImportResponses];
 
 export type GetMailLogData = {
     body?: never;

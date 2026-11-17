@@ -265,6 +265,11 @@ open class ImportsBatch(
      */
     val REPORT: TableField<ImportsBatchRecord, JSONB?> = createField(DSL.name("report"), SQLDataType.JSONB, this, "")
 
+    /**
+     * The column <code>memo.imports_batch.throttled_at</code>.
+     */
+    val THROTTLED_AT: TableField<ImportsBatchRecord, OffsetDateTime?> = createField(DSL.name("throttled_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
+
     private constructor(alias: Name, aliased: Table<ImportsBatchRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<ImportsBatchRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<ImportsBatchRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)

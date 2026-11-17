@@ -25,3 +25,38 @@ endpoints:
     rule: tenantAdmin
     body: { rule: { minimum: 2 }, members: [{ role: "CHAIR", present: true }, { role: "MEMBER", present: true }] }
   - { endpoint: GET /api/v1/admin/workflow/escalation-targets, rule: tenantAdmin }
+  - { endpoint: GET /api/v1/forums, rule: signedIn }
+  - endpoint: POST /api/v1/forums
+    rule: tenantAdmin
+    body: { key: "matrix-committee", code: "MXC", name: "Matrix committee", shortName: "Matrix", typeId: "{random}" }
+    headers: { Idempotency-Key: "{random}" }
+  - { endpoint: "GET /api/v1/forums/{forumId}", rule: signedIn }
+  - endpoint: "PATCH /api/v1/forums/{forumId}"
+    rule: tenantAdmin
+    body: { key: "matrix-committee", code: "MXC", name: "Matrix committee", shortName: "Matrix", typeId: "{random}" }
+    headers: { If-Match: "\"0\"" }
+  - endpoint: "POST /api/v1/forums/{forumId}/dissolve"
+    rule: tenantAdmin
+    body: { reason: "Matrix" }
+    headers: { If-Match: "\"0\"" }
+  - endpoint: "POST /api/v1/forums/{forumId}/clone"
+    rule: tenantAdmin
+    body: { key: "matrix-clone", code: "MXK", name: "Matrix clone", shortName: "Clone" }
+    headers: { Idempotency-Key: "{random}" }
+  - { endpoint: "GET /api/v1/forums/{forumId}/members", rule: signedIn }
+  - endpoint: "POST /api/v1/forums/{forumId}/members"
+    rule: signedIn
+    body: { userId: "{random}", role: "MEMBER" }
+    headers: { Idempotency-Key: "{random}" }
+  - endpoint: "PATCH /api/v1/forums/{forumId}/members/{memberId}"
+    rule: signedIn
+    body: { voting: true }
+    headers: { If-Match: "\"0\"" }
+  - endpoint: "POST /api/v1/forums/{forumId}/members/{memberId}/end"
+    rule: signedIn
+    body: { reason: "RESIGNED" }
+    headers: { If-Match: "\"0\"" }
+  - { endpoint: "POST /api/v1/forums/{forumId}/members/{memberId}/renew", rule: signedIn }
+  - { endpoint: "POST /api/v1/forums/{forumId}/members/{memberId}/change-role", rule: signedIn, body: { role: "VICE_CHAIR" } }
+  - { endpoint: "POST /api/v1/forums/{forumId}/members/{memberId}/withdraw", rule: signedIn }
+  - { endpoint: GET /api/v1/me/forums, rule: signedIn }

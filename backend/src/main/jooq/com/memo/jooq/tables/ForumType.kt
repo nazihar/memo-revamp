@@ -9,6 +9,8 @@ import com.memo.jooq.keys.FORUM_TYPE_PKEY
 import com.memo.jooq.keys.FORUM_TYPE_TENANT_ID_CODE_KEY
 import com.memo.jooq.keys.FORUM_TYPE_TENANT_ID_ID_KEY
 import com.memo.jooq.keys.FORUM_TYPE_VERSION__FORUM_TYPE_VERSION_TENANT_ID_FORUM_TYPE_ID_FKEY
+import com.memo.jooq.keys.FORUM__FORUM_TENANT_ID_FORUM_TYPE_ID_FKEY
+import com.memo.jooq.tables.Forum.ForumPath
 import com.memo.jooq.tables.ForumTypeVersion.ForumTypeVersionPath
 import com.memo.jooq.tables.records.ForumTypeRecord
 
@@ -153,6 +155,21 @@ open class ForumType(
     override fun getSchema(): Schema? = if (aliased()) null else Memo.MEMO
     override fun getPrimaryKey(): UniqueKey<ForumTypeRecord> = FORUM_TYPE_PKEY
     override fun getUniqueKeys(): List<UniqueKey<ForumTypeRecord>> = listOf(FORUM_TYPE_TENANT_ID_CODE_KEY, FORUM_TYPE_TENANT_ID_ID_KEY)
+
+    private lateinit var _forum: ForumPath
+
+    /**
+     * Get the implicit to-many join path to the <code>memo.forum</code> table
+     */
+    fun forum(): ForumPath {
+        if (!this::_forum.isInitialized)
+            _forum = ForumPath(this, null, FORUM__FORUM_TENANT_ID_FORUM_TYPE_ID_FKEY.inverseKey)
+
+        return _forum;
+    }
+
+    val forum: ForumPath
+        get(): ForumPath = forum()
 
     private lateinit var _forumTypeVersion: ForumTypeVersionPath
 

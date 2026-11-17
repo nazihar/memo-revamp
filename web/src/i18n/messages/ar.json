@@ -2622,5 +2622,9 @@
   "workflows.versionState": "الإصدار {number} · {state}",
   "workflows.versions": "الإصدارات",
   "workflows.versions.caption": "الإصدارات، الأحدث أولًا",
-  "workflows.yes": "نعم"
+  "workflows.yes": "نعم",
+  "mail.template.forumMembershipChanged": "تغيّرت عضوية لجنة",
+  "mail.template.forumTermEnding": "انتهاء فترة عضوية",
+  "notifications.kind.forumMembershipChanged": "تغيّرت عضوية {committee}",
+  "notifications.kind.forumTermEnding": "تنتهي قريبًا فترة عضوية {member} في {committee}"
 }

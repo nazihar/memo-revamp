@@ -29,6 +29,8 @@ import java.time.ZoneOffset
  *   organisation, reference, link (never the memo's subject or a remark, design E01 §12)
  * - WATCH_UPDATE: name, organisation, reference, link (a followed memo changed; the user asked for updates at once)
  * - WATCH_DIGEST: name, organisation, count (followed memos with news), link (the Watching tab)
+ * - FORUM_MEMBERSHIP_CHANGED: name, organisation, committee, link
+ * - FORUM_TERM_ENDING: name, organisation, committee, member, link
  */
 enum class MailTemplate {
     INVITATION,
@@ -52,6 +54,8 @@ enum class MailTemplate {
     TASK_OVERDUE,
     WATCH_UPDATE,
     WATCH_DIGEST,
+    FORUM_MEMBERSHIP_CHANGED,
+    FORUM_TERM_ENDING,
 }
 
 /**

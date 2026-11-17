@@ -20,6 +20,9 @@ import com.memo.jooq.tables.FilesPendingUpload
 import com.memo.jooq.tables.FilesRendition
 import com.memo.jooq.tables.FilesTenantKeyset
 import com.memo.jooq.tables.FilesVersion
+import com.memo.jooq.tables.Forum
+import com.memo.jooq.tables.ForumMember
+import com.memo.jooq.tables.ForumTermReminder
 import com.memo.jooq.tables.ForumType
 import com.memo.jooq.tables.ForumTypeVersion
 import com.memo.jooq.tables.IdentityActionToken
@@ -191,6 +194,21 @@ val FILES_TENANT_KEYSET: FilesTenantKeyset = FilesTenantKeyset.FILES_TENANT_KEYS
  * The table <code>memo.files_version</code>.
  */
 val FILES_VERSION: FilesVersion = FilesVersion.FILES_VERSION
+
+/**
+ * The table <code>memo.forum</code>.
+ */
+val FORUM: Forum = Forum.FORUM
+
+/**
+ * The table <code>memo.forum_member</code>.
+ */
+val FORUM_MEMBER: ForumMember = ForumMember.FORUM_MEMBER
+
+/**
+ * The table <code>memo.forum_term_reminder</code>.
+ */
+val FORUM_TERM_REMINDER: ForumTermReminder = ForumTermReminder.FORUM_TERM_REMINDER
 
 /**
  * The table <code>memo.forum_type</code>.

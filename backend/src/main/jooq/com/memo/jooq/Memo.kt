@@ -19,6 +19,9 @@ import com.memo.jooq.tables.FilesPendingUpload
 import com.memo.jooq.tables.FilesRendition
 import com.memo.jooq.tables.FilesTenantKeyset
 import com.memo.jooq.tables.FilesVersion
+import com.memo.jooq.tables.Forum
+import com.memo.jooq.tables.ForumMember
+import com.memo.jooq.tables.ForumTermReminder
 import com.memo.jooq.tables.ForumType
 import com.memo.jooq.tables.ForumTypeVersion
 import com.memo.jooq.tables.IdentityActionToken
@@ -208,6 +211,21 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      * The table <code>memo.files_version</code>.
      */
     val FILES_VERSION: FilesVersion get() = FilesVersion.FILES_VERSION
+
+    /**
+     * The table <code>memo.forum</code>.
+     */
+    val FORUM: Forum get() = Forum.FORUM
+
+    /**
+     * The table <code>memo.forum_member</code>.
+     */
+    val FORUM_MEMBER: ForumMember get() = ForumMember.FORUM_MEMBER
+
+    /**
+     * The table <code>memo.forum_term_reminder</code>.
+     */
+    val FORUM_TERM_REMINDER: ForumTermReminder get() = ForumTermReminder.FORUM_TERM_REMINDER
 
     /**
      * The table <code>memo.forum_type</code>.
@@ -906,6 +924,9 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         FilesRendition.FILES_RENDITION,
         FilesTenantKeyset.FILES_TENANT_KEYSET,
         FilesVersion.FILES_VERSION,
+        Forum.FORUM,
+        ForumMember.FORUM_MEMBER,
+        ForumTermReminder.FORUM_TERM_REMINDER,
         ForumType.FORUM_TYPE,
         ForumTypeVersion.FORUM_TYPE_VERSION,
         IdentityActionToken.IDENTITY_ACTION_TOKEN,

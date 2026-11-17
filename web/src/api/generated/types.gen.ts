@@ -294,6 +294,12 @@ export type ChangePasswordRequest = {
     newPassword: string;
 };
 
+export type ChangeRoleRequest = {
+    from?: string | null;
+    role?: 'CHAIR' | 'VICE_CHAIR' | 'SECRETARY' | 'MEMBER' | 'STANDING_INVITEE' | 'OBSERVER';
+    voting?: boolean | null;
+};
+
 export type ClassificationLevel = {
     description?: string | null;
     id: string;
@@ -328,6 +334,15 @@ export type ClassificationView = {
 
 export type ClearanceRequest = {
     levelId: string;
+};
+
+export type CloneRequest = {
+    code?: string;
+    key?: string;
+    name?: string;
+    shortName?: string;
+    startsOn?: string | null;
+    withMembers?: boolean;
 };
 
 export type CloseRequest = {
@@ -476,6 +491,11 @@ export type DirectoryUser = {
     position?: DirectoryPositionSummary | null;
 };
 
+export type DissolveRequest = {
+    dissolvedOn?: string | null;
+    reason?: string;
+};
+
 export type DistributionListRequest = {
     members: Array<ListMember>;
     name: string;
@@ -605,6 +625,12 @@ export type EditingStatus = {
     enabled: boolean;
 };
 
+export type EndMemberRequest = {
+    endedOn?: string | null;
+    note?: string | null;
+    reason?: 'RESIGNED' | 'TERM_COMPLETED' | 'REMOVED' | 'RENEWED' | 'ROLE_CHANGED' | 'WITHDRAWN' | 'OTHER';
+};
+
 export type EscalationTarget = {
     code?: string;
     key?: string;
@@ -680,6 +706,40 @@ export type FixityTotals = {
     promotionMismatches: number;
     verified: number;
     verifyProblems: number;
+};
+
+export type ForumRequest = {
+    classificationId?: string | null;
+    code?: string;
+    key?: string;
+    name?: string;
+    parentId?: string | null;
+    shortName?: string;
+    typeId?: string;
+};
+
+export type ForumResponse = {
+    canManage: boolean;
+    canManageMembers: boolean;
+    chair?: PersonRef | null;
+    classificationId?: string | null;
+    code: string;
+    dissolvedOn?: string | null;
+    dissolvedReason?: string | null;
+    id: string;
+    key: string;
+    memberCount: number;
+    myRole?: 'CHAIR' | 'VICE_CHAIR' | 'SECRETARY' | 'MEMBER' | 'STANDING_INVITEE' | 'OBSERVER';
+    name: string;
+    parentId?: string | null;
+    parentName?: string | null;
+    secretaries: Array<PersonRef>;
+    shortName: string;
+    status: 'ACTIVE' | 'DISSOLVED';
+    termWarnings: number;
+    typeId: string;
+    typeName: string;
+    version: number;
 };
 
 export type ForumRetention = {
@@ -1293,6 +1353,53 @@ export type MemberAttribute = {
     label?: string;
 };
 
+export type MemberChangeResponse = {
+    beyondMaxTerms: boolean;
+    member: MemberResponse;
+};
+
+export type MemberEditRequest = {
+    alternateUserId?: string | null;
+    attributes?: Array<string>;
+    authority?: string | null;
+    termEndsOn?: string | null;
+    voting?: boolean;
+};
+
+export type MemberRequest = {
+    alternateUserId?: string | null;
+    attributes?: Array<string>;
+    authority?: string | null;
+    positionId?: string | null;
+    role?: 'CHAIR' | 'VICE_CHAIR' | 'SECRETARY' | 'MEMBER' | 'STANDING_INVITEE' | 'OBSERVER';
+    startsOn?: string | null;
+    termEndsOn?: string | null;
+    userId?: string | null;
+    voting?: boolean | null;
+};
+
+export type MemberResponse = {
+    alternate?: PersonRef | null;
+    attributes: Array<string>;
+    authority?: string | null;
+    endNote?: string | null;
+    endReason?: 'RESIGNED' | 'TERM_COMPLETED' | 'REMOVED' | 'RENEWED' | 'ROLE_CHANGED' | 'WITHDRAWN' | 'OTHER';
+    endedOn?: string | null;
+    id: string;
+    kind: 'PERSON' | 'POSITION';
+    person?: PersonRef | null;
+    positionId?: string | null;
+    positionTitle?: string | null;
+    role: 'CHAIR' | 'VICE_CHAIR' | 'SECRETARY' | 'MEMBER' | 'STANDING_INVITEE' | 'OBSERVER';
+    startsOn: string;
+    state: 'UPCOMING' | 'IN_OFFICE' | 'TERM_ENDED' | 'ENDED';
+    termEndsInDays?: number | null;
+    termEndsOn?: string | null;
+    termNumber: number;
+    version: number;
+    voting: boolean;
+};
+
 export type MemoDetailView = {
     display?: string | null;
     key: string;
@@ -1517,6 +1624,22 @@ export type MyAccess = {
 export type MyClearance = {
     name: string;
     rank: number;
+};
+
+export type MyForumResponse = {
+    attributes: Array<string>;
+    canOpen: boolean;
+    code: string;
+    endedOn?: string | null;
+    forumId: string;
+    name: string;
+    role: 'CHAIR' | 'VICE_CHAIR' | 'SECRETARY' | 'MEMBER' | 'STANDING_INVITEE' | 'OBSERVER';
+    startsOn: string;
+    state: 'UPCOMING' | 'IN_OFFICE' | 'TERM_ENDED' | 'ENDED';
+    status: 'ACTIVE' | 'DISSOLVED';
+    termEndsOn?: string | null;
+    termNumber: number;
+    voting: boolean;
 };
 
 export type MyPermission = {
@@ -2197,6 +2320,11 @@ export type RenditionView = {
     current?: RecordVersionView | null;
     state: 'NONE' | 'PENDING' | 'READY' | 'FAILED';
     versions: Array<RecordVersionView>;
+};
+
+export type RenewRequest = {
+    authority?: string | null;
+    termEndsOn?: string | null;
 };
 
 export type ReportTotals = {
@@ -5916,6 +6044,41 @@ export type GetFileVersionPdfResponses = {
     200: unknown;
 };
 
+export type ListForumsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/forums';
+};
+
+export type ListForumsResponses = {
+    /**
+     * OK
+     */
+    200: Array<ForumResponse>;
+};
+
+export type ListForumsResponse = ListForumsResponses[keyof ListForumsResponses];
+
+export type CreateForumData = {
+    body: ForumRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/v1/forums';
+};
+
+export type CreateForumResponses = {
+    /**
+     * OK
+     */
+    200: ForumResponse;
+};
+
+export type CreateForumResponse = CreateForumResponses[keyof CreateForumResponses];
+
 export type PreviewQuorumData = {
     body: QuorumPreviewRequest;
     path?: never;
@@ -5931,6 +6094,230 @@ export type PreviewQuorumResponses = {
 };
 
 export type PreviewQuorumResponse = PreviewQuorumResponses[keyof PreviewQuorumResponses];
+
+export type GetForumData = {
+    body?: never;
+    path: {
+        forumId: string;
+    };
+    query?: never;
+    url: '/api/v1/forums/{forumId}';
+};
+
+export type GetForumResponses = {
+    /**
+     * OK
+     */
+    200: ForumResponse;
+};
+
+export type GetForumResponse = GetForumResponses[keyof GetForumResponses];
+
+export type UpdateForumData = {
+    body: ForumRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        forumId: string;
+    };
+    query?: never;
+    url: '/api/v1/forums/{forumId}';
+};
+
+export type UpdateForumResponses = {
+    /**
+     * OK
+     */
+    200: ForumResponse;
+};
+
+export type UpdateForumResponse = UpdateForumResponses[keyof UpdateForumResponses];
+
+export type CloneForumData = {
+    body: CloneRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        forumId: string;
+    };
+    query?: never;
+    url: '/api/v1/forums/{forumId}/clone';
+};
+
+export type CloneForumResponses = {
+    /**
+     * OK
+     */
+    200: ForumResponse;
+};
+
+export type CloneForumResponse = CloneForumResponses[keyof CloneForumResponses];
+
+export type DissolveForumData = {
+    body: DissolveRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        forumId: string;
+    };
+    query?: never;
+    url: '/api/v1/forums/{forumId}/dissolve';
+};
+
+export type DissolveForumResponses = {
+    /**
+     * OK
+     */
+    200: ForumResponse;
+};
+
+export type DissolveForumResponse = DissolveForumResponses[keyof DissolveForumResponses];
+
+export type ListForumMembersData = {
+    body?: never;
+    path: {
+        forumId: string;
+    };
+    query?: {
+        on?: string;
+        history?: boolean;
+    };
+    url: '/api/v1/forums/{forumId}/members';
+};
+
+export type ListForumMembersResponses = {
+    /**
+     * OK
+     */
+    200: Array<MemberResponse>;
+};
+
+export type ListForumMembersResponse = ListForumMembersResponses[keyof ListForumMembersResponses];
+
+export type AddForumMemberData = {
+    body: MemberRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        forumId: string;
+    };
+    query?: never;
+    url: '/api/v1/forums/{forumId}/members';
+};
+
+export type AddForumMemberResponses = {
+    /**
+     * OK
+     */
+    200: MemberChangeResponse;
+};
+
+export type AddForumMemberResponse = AddForumMemberResponses[keyof AddForumMemberResponses];
+
+export type EditForumMemberData = {
+    body: MemberEditRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        forumId: string;
+        memberId: string;
+    };
+    query?: never;
+    url: '/api/v1/forums/{forumId}/members/{memberId}';
+};
+
+export type EditForumMemberResponses = {
+    /**
+     * OK
+     */
+    200: MemberChangeResponse;
+};
+
+export type EditForumMemberResponse = EditForumMemberResponses[keyof EditForumMemberResponses];
+
+export type ChangeForumMemberRoleData = {
+    body: ChangeRoleRequest;
+    path: {
+        forumId: string;
+        memberId: string;
+    };
+    query?: never;
+    url: '/api/v1/forums/{forumId}/members/{memberId}/change-role';
+};
+
+export type ChangeForumMemberRoleResponses = {
+    /**
+     * OK
+     */
+    200: MemberChangeResponse;
+};
+
+export type ChangeForumMemberRoleResponse = ChangeForumMemberRoleResponses[keyof ChangeForumMemberRoleResponses];
+
+export type EndForumMemberData = {
+    body: EndMemberRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        forumId: string;
+        memberId: string;
+    };
+    query?: never;
+    url: '/api/v1/forums/{forumId}/members/{memberId}/end';
+};
+
+export type EndForumMemberResponses = {
+    /**
+     * OK
+     */
+    200: MemberChangeResponse;
+};
+
+export type EndForumMemberResponse = EndForumMemberResponses[keyof EndForumMemberResponses];
+
+export type RenewForumMemberData = {
+    body?: RenewRequest;
+    path: {
+        forumId: string;
+        memberId: string;
+    };
+    query?: never;
+    url: '/api/v1/forums/{forumId}/members/{memberId}/renew';
+};
+
+export type RenewForumMemberResponses = {
+    /**
+     * OK
+     */
+    200: MemberChangeResponse;
+};
+
+export type RenewForumMemberResponse = RenewForumMemberResponses[keyof RenewForumMemberResponses];
+
+export type WithdrawForumMemberData = {
+    body?: never;
+    path: {
+        forumId: string;
+        memberId: string;
+    };
+    query?: never;
+    url: '/api/v1/forums/{forumId}/members/{memberId}/withdraw';
+};
+
+export type WithdrawForumMemberResponses = {
+    /**
+     * OK
+     */
+    200: MemberChangeResponse;
+};
+
+export type WithdrawForumMemberResponse = WithdrawForumMemberResponses[keyof WithdrawForumMemberResponses];
 
 export type GetHealthData = {
     body?: never;
@@ -6065,6 +6452,22 @@ export type GetMyAccessResponses = {
 };
 
 export type GetMyAccessResponse = GetMyAccessResponses[keyof GetMyAccessResponses];
+
+export type ListMyForumsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/me/forums';
+};
+
+export type ListMyForumsResponses = {
+    /**
+     * OK
+     */
+    200: Array<MyForumResponse>;
+};
+
+export type ListMyForumsResponse = ListMyForumsResponses[keyof ListMyForumsResponses];
 
 export type GetMyNotificationPreferencesData = {
     body?: never;

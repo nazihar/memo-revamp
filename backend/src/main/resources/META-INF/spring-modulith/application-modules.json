@@ -231,23 +231,6 @@
     "shared" : false,
     "type" : "closed"
   },
-  "forum" : {
-    "basePackage" : "com.memo.forum",
-    "dependencies" : [ {
-      "target" : "audit",
-      "types" : [ "USES_COMPONENT" ]
-    }, {
-      "target" : "common",
-      "types" : [ "USES_COMPONENT" ]
-    }, {
-      "target" : "identity",
-      "types" : [ "USES_COMPONENT" ]
-    } ],
-    "displayName" : "Forum",
-    "nested" : [ ],
-    "shared" : false,
-    "type" : "closed"
-  },
   "org" : {
     "basePackage" : "com.memo.org",
     "dependencies" : [ {
@@ -313,6 +296,38 @@
       "types" : [ "EVENT_LISTENER", "USES_COMPONENT" ]
     } ],
     "displayName" : "Workflow",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  },
+  "forum" : {
+    "basePackage" : "com.memo.forum",
+    "dependencies" : [ {
+      "target" : "audit",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "common",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "identity",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "notification",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "org",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "system",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "tenancy",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "workflow",
+      "types" : [ "DEFAULT" ]
+    } ],
+    "displayName" : "Forum",
     "nested" : [ ],
     "shared" : false,
     "type" : "closed"

@@ -24,7 +24,12 @@ import { ActionDialog, type MemoActionKind } from './ActionDialog'
 import { DoaPreviewDialog } from './DoaPreviewDialog'
 import { dueLabel, isOverdue } from './due'
 import { EditMemoDialog } from './EditMemoDialog'
+import { MemoAttachments } from './MemoAttachments'
+import { MemoCoauthors } from './MemoCoauthors'
 import { MemoDetails } from './MemoDetails'
+import { CompareVersions } from './CompareVersions'
+import { useSession } from '@/features/auth/session'
+import { GitCompare } from 'lucide-react'
 import { unnumberedNote } from './memo-details'
 import { MemoLinks } from './MemoLinks'
 import { MemoInterests } from './MemoInterests'
@@ -90,6 +95,8 @@ export function MemoPage({ memoId }: { memoId: string }) {
   const [editing, setEditing] = useState(false)
   const [previewing, setPreviewing] = useState(false)
   const [claiming, setClaiming] = useState(false)
+  const [comparing, setComparing] = useState(false)
+  const session = useSession()
 
   const replace = async (next: MemoView) => {
     queryClient.setQueryData(getMemoQueryKey({ path: { id: memoId } }), next)
@@ -200,6 +207,17 @@ export function MemoPage({ memoId }: { memoId: string }) {
                     </Link>
                   </Button>
                 ) : null}
+                {document.number > 1 ? (
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setComparing(true)
+                    }}
+                  >
+                    <GitCompare aria-hidden="true" />
+                    {intl.formatMessage(mm.compareVersions)}
+                  </Button>
+                ) : null}
                 {allowed.has('VIEW_DOCUMENT') ? (
                   <Button variant="outline" className={allowed.has('EDIT_DOCUMENT') ? 'sm:hidden' : undefined} asChild>
                     <Link to="/memos/$memoId/document" params={{ memoId: view.id }} search={{ mode: 'view' }}>
@@ -227,6 +245,7 @@ export function MemoPage({ memoId }: { memoId: string }) {
               </div>
             ) : null}
           </Section>
+          <MemoAttachments memo={view} onProblem={(p) => void onProblem(p)} />
           <MemoLinks
             memo={view}
             onChanged={(next) => void replace(next)}
@@ -310,6 +329,12 @@ export function MemoPage({ memoId }: { memoId: string }) {
               ) : null}
             </Section>
           ) : null}
+          <MemoCoauthors
+            memo={view}
+            me={session.data?.user?.id}
+            onChanged={(next) => void replace(next)}
+            onProblem={(p) => void onProblem(p)}
+          />
           {allowed.has('EDIT') || view.interests.length > 0 ? (
             <Section title={intl.formatMessage(mm.interests)} lead={intl.formatMessage(mm.interestsLead)}>
               <MemoInterests
@@ -374,6 +399,16 @@ export function MemoPage({ memoId }: { memoId: string }) {
           onProblem={(p) => {
             setDialog(undefined)
             void onProblem(p)
+          }}
+        />
+      ) : null}
+      {comparing && document ? (
+        <CompareVersions
+          memoId={view.id}
+          fileId={document.fileId}
+          versions={document.number}
+          onClose={() => {
+            setComparing(false)
           }}
         />
       ) : null}

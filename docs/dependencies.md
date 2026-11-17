@@ -65,6 +65,8 @@ Column meanings:
 | @tanstack/react-router | 1.170.44 | MIT | runtime | SPA routing (file-based) | 2026-10; very active | — (locked) |
 | @tanstack/react-query | 5.104.2 | MIT | runtime | Server state | 2026-10; very active | — (locked) |
 | react-intl / @formatjs/cli | 12.1.4 / 6.16.34 | BSD-3-Clause / MIT | runtime / dev-only | ICU i18n, extraction, pseudo-locales, verify (ADR-0010) | 2026-10; FormatJS, very active | i18next + ICU, Lingui |
+| pdfjs-dist | 6.4.299 | Apache-2.0 | runtime | Previews of PDFs and PDF renditions on a canvas (ADR-0045), loaded only when a preview opens; worker from our own origin, `useWasm: false`, no XFA, no scripting, so the CSP is unchanged | 2026-10-03 (6.5.x skipped for the bake period); Mozilla, very active | The browser's PDF viewer in a frame (needs frame/object CSP changes, uneven on phones); page images rendered on the server |
+| diff (jsdiff) | 9.0.0 | BSD-3-Clause | runtime | Comparing two versions' text in a worker, lines then words, with a time and edit budget (design E02 §3) | 2026-04-13; active | diff-match-patch (archived); react-diff-viewer (injects styles, breaks the CSP) |
 | radix-ui (via shadcn/ui sources) | 1.8.1 | MIT | runtime | Accessible primitives (menus) | 2026-10; very active | — (locked) |
 | @tanstack/react-table | 9.3.1 | MIT | runtime | List template (`DataTable`): sorting, selection (E01) | 2026-10-12; very active; 9.0 GA 2026-08 | — (locked); v8 frozen since 2025-04 |
 | @tanstack/react-form | 1.33.5 | MIT | runtime | Form template state and validation (E01) | 2026-08; very active | — (locked) |

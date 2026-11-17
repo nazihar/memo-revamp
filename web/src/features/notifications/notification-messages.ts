@@ -10,7 +10,6 @@ export const nm = defineMessages({
     id: 'notifications.empty',
     defaultMessage: 'Nothing new. Notifications about your account and work appear here.',
   },
-  bellMore: { id: 'notifications.bellMore', defaultMessage: '9+' },
 
   prefsTitle: { id: 'notifications.prefs.title', defaultMessage: 'Notification settings' },
   prefsLead: {
@@ -84,16 +83,11 @@ export const nm = defineMessages({
 
 /** Messages with values (typed, so a missing value is a compile error). */
 export const nmv = defineMessages<{
-  bell: { count: number }
   unreadItem: { text: string }
   prefCell: { category: string; channel: string }
   testFailed: { detail: string }
   mailInvalid: { detail: string }
 }>({
-  bell: {
-    id: 'notifications.bell',
-    defaultMessage: '{count, plural, =0 {Notifications} one {Notifications, # unread} other {Notifications, # unread}}',
-  },
   unreadItem: { id: 'notifications.unreadItem', defaultMessage: 'Unread: {text}' },
   prefCell: { id: 'notifications.prefs.cell', defaultMessage: '{category}: {channel}' },
   testFailed: { id: 'mail.testFailed', defaultMessage: 'The mail server did not accept the test email ({detail}).' },

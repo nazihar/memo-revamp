@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { defineMessages } from 'react-intl'
 import { BatchPage } from '@/features/imports/BatchPage'
-import { STEPS, type StepId } from '@/features/imports/steps'
+import { STEPS, type StepId } from '@/features/imports/batch-params'
 
 const crumbs = defineMessages({
   page: { id: 'nav.importBatch', defaultMessage: 'Import batch' },

@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { defineMessages } from 'react-intl'
 import { ApprovalsDashboardPage } from '@/features/dashboard/ApprovalsDashboardPage'
-import { parseDashboardSearch } from '@/features/dashboard/scope'
+import { parseDashboardSearch } from '@/features/dashboard/dashboard-params'
 
 const crumbs = defineMessages({
   page: { id: 'nav.dashboard', defaultMessage: 'Dashboard' },

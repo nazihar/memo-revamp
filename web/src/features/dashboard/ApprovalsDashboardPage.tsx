@@ -12,7 +12,8 @@ import { Select } from '@/components/ui/form-controls'
 import { AgeChart, ChartLegend, CycleChart, PersonChart, ThroughputChart } from './charts'
 import { dm, dmv } from './dashboard-messages'
 import { DataTableOf, Figure } from './Figure'
-import { formatDay, periodStart, PERIODS, unitOf, useScopeOptions, type DashboardSearch, type Weeks } from './scope'
+import { PERIODS, type DashboardSearch, type Weeks } from './dashboard-params'
+import { formatDay, periodStart, unitOf, useScopeOptions } from './scope'
 
 const BUCKETS: Partial<Record<string, { label: MessageDescriptor; older: boolean }>> = {
   '0-2': { label: dm.bucket0, older: false },

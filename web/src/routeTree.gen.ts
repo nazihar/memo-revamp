@@ -32,6 +32,7 @@ import { Route as ShellSignedInAdminIndexRouteImport } from './routes/_shell/_si
 import { Route as ShellSignedInAdminAuditRouteImport } from './routes/_shell/_signedIn/admin.audit'
 import { Route as ShellSignedInAdminBrandingRouteImport } from './routes/_shell/_signedIn/admin.branding'
 import { Route as ShellSignedInAdminClassificationsRouteImport } from './routes/_shell/_signedIn/admin.classifications'
+import { Route as ShellSignedInAdminDistributionListsRouteImport } from './routes/_shell/_signedIn/admin.distribution-lists'
 import { Route as ShellSignedInAdminEmailRouteImport } from './routes/_shell/_signedIn/admin.email'
 import { Route as ShellSignedInAdminLanguageRouteImport } from './routes/_shell/_signedIn/admin.language'
 import { Route as ShellSignedInAdminMemoNumberingRouteImport } from './routes/_shell/_signedIn/admin.memo-numbering'
@@ -169,6 +170,12 @@ const ShellSignedInAdminClassificationsRoute =
   ShellSignedInAdminClassificationsRouteImport.update({
     id: '/admin/classifications',
     path: '/admin/classifications',
+    getParentRoute: () => ShellSignedInRoute,
+  } as any)
+const ShellSignedInAdminDistributionListsRoute =
+  ShellSignedInAdminDistributionListsRouteImport.update({
+    id: '/admin/distribution-lists',
+    path: '/admin/distribution-lists',
     getParentRoute: () => ShellSignedInRoute,
   } as any)
 const ShellSignedInAdminEmailRoute = ShellSignedInAdminEmailRouteImport.update({
@@ -330,6 +337,7 @@ export interface FileRoutesByFullPath {
   '/admin/audit': typeof ShellSignedInAdminAuditRoute
   '/admin/branding': typeof ShellSignedInAdminBrandingRoute
   '/admin/classifications': typeof ShellSignedInAdminClassificationsRoute
+  '/admin/distribution-lists': typeof ShellSignedInAdminDistributionListsRoute
   '/admin/email': typeof ShellSignedInAdminEmailRoute
   '/admin/language': typeof ShellSignedInAdminLanguageRoute
   '/admin/memo-numbering': typeof ShellSignedInAdminMemoNumberingRoute
@@ -374,6 +382,7 @@ export interface FileRoutesByTo {
   '/admin/audit': typeof ShellSignedInAdminAuditRoute
   '/admin/branding': typeof ShellSignedInAdminBrandingRoute
   '/admin/classifications': typeof ShellSignedInAdminClassificationsRoute
+  '/admin/distribution-lists': typeof ShellSignedInAdminDistributionListsRoute
   '/admin/email': typeof ShellSignedInAdminEmailRoute
   '/admin/language': typeof ShellSignedInAdminLanguageRoute
   '/admin/memo-numbering': typeof ShellSignedInAdminMemoNumberingRoute
@@ -424,6 +433,7 @@ export interface FileRoutesById {
   '/_shell/_signedIn/admin/audit': typeof ShellSignedInAdminAuditRoute
   '/_shell/_signedIn/admin/branding': typeof ShellSignedInAdminBrandingRoute
   '/_shell/_signedIn/admin/classifications': typeof ShellSignedInAdminClassificationsRoute
+  '/_shell/_signedIn/admin/distribution-lists': typeof ShellSignedInAdminDistributionListsRoute
   '/_shell/_signedIn/admin/email': typeof ShellSignedInAdminEmailRoute
   '/_shell/_signedIn/admin/language': typeof ShellSignedInAdminLanguageRoute
   '/_shell/_signedIn/admin/memo-numbering': typeof ShellSignedInAdminMemoNumberingRoute
@@ -471,6 +481,7 @@ export interface FileRouteTypes {
     | '/admin/audit'
     | '/admin/branding'
     | '/admin/classifications'
+    | '/admin/distribution-lists'
     | '/admin/email'
     | '/admin/language'
     | '/admin/memo-numbering'
@@ -515,6 +526,7 @@ export interface FileRouteTypes {
     | '/admin/audit'
     | '/admin/branding'
     | '/admin/classifications'
+    | '/admin/distribution-lists'
     | '/admin/email'
     | '/admin/language'
     | '/admin/memo-numbering'
@@ -564,6 +576,7 @@ export interface FileRouteTypes {
     | '/_shell/_signedIn/admin/audit'
     | '/_shell/_signedIn/admin/branding'
     | '/_shell/_signedIn/admin/classifications'
+    | '/_shell/_signedIn/admin/distribution-lists'
     | '/_shell/_signedIn/admin/email'
     | '/_shell/_signedIn/admin/language'
     | '/_shell/_signedIn/admin/memo-numbering'
@@ -758,6 +771,13 @@ declare module '@tanstack/react-router' {
       path: '/admin/classifications'
       fullPath: '/admin/classifications'
       preLoaderRoute: typeof ShellSignedInAdminClassificationsRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
+    '/_shell/_signedIn/admin/distribution-lists': {
+      id: '/_shell/_signedIn/admin/distribution-lists'
+      path: '/admin/distribution-lists'
+      fullPath: '/admin/distribution-lists'
+      preLoaderRoute: typeof ShellSignedInAdminDistributionListsRouteImport
       parentRoute: typeof ShellSignedInRoute
     }
     '/_shell/_signedIn/admin/email': {
@@ -955,6 +975,7 @@ interface ShellSignedInRouteChildren {
   ShellSignedInAdminAuditRoute: typeof ShellSignedInAdminAuditRoute
   ShellSignedInAdminBrandingRoute: typeof ShellSignedInAdminBrandingRoute
   ShellSignedInAdminClassificationsRoute: typeof ShellSignedInAdminClassificationsRoute
+  ShellSignedInAdminDistributionListsRoute: typeof ShellSignedInAdminDistributionListsRoute
   ShellSignedInAdminEmailRoute: typeof ShellSignedInAdminEmailRoute
   ShellSignedInAdminLanguageRoute: typeof ShellSignedInAdminLanguageRoute
   ShellSignedInAdminMemoNumberingRoute: typeof ShellSignedInAdminMemoNumberingRoute
@@ -989,6 +1010,8 @@ const ShellSignedInRouteChildren: ShellSignedInRouteChildren = {
   ShellSignedInAdminBrandingRoute: ShellSignedInAdminBrandingRoute,
   ShellSignedInAdminClassificationsRoute:
     ShellSignedInAdminClassificationsRoute,
+  ShellSignedInAdminDistributionListsRoute:
+    ShellSignedInAdminDistributionListsRoute,
   ShellSignedInAdminEmailRoute: ShellSignedInAdminEmailRoute,
   ShellSignedInAdminLanguageRoute: ShellSignedInAdminLanguageRoute,
   ShellSignedInAdminMemoNumberingRoute: ShellSignedInAdminMemoNumberingRoute,

@@ -272,6 +272,8 @@ data class MemoTypeOption(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val hasFields: Boolean = false,
     /** When memos of the type get their number (ADR-0044). */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val numberingMoment: NumberMoment = NumberMoment.ON_SUBMIT,
+    /** Whether a new memo of the type starts its document from the type's template (ADR-0048). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val template: Boolean = false,
 )
 
 /** The form of a memo type: its published version's fields, in order. */
@@ -289,6 +291,7 @@ data class MemoTypeForm(
 @Tag(name = "memo")
 class MemoTypesController(
     private val access: MemoTypeAccess,
+    private val templates: MemoTemplateStore,
     private val transactions: TenantTransactions,
 ) {
     @GetMapping
@@ -304,6 +307,7 @@ class MemoTypesController(
                     type.stepUpOnApprove,
                     version.settings.fields.isNotEmpty(),
                     version.settings.numbering.moment,
+                    templates.of(version.id)?.present == true,
                 )
             }
         }

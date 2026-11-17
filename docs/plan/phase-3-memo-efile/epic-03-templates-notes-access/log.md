@@ -189,3 +189,21 @@
 - **Carried:**
   - inserting a memo reference with `#` needs a lookup by number, which comes with E05 search; references already render;
   - the mention list does not yet sort the people who can read the memo first.
+
+## 2026-11-15 — T8 web: access, copies, distribution lists and templates
+
+- **People with access (`MemoAccess`, flow D1):** a box on every memo for everyone who reads it:
+  - approvers from the route; copies as "N people · M read", which opens the receipts; shares with who granted them, the reason and the end date;
+  - Share for the initiator, co-authors and approvers; Revoke where the server says `canRevoke`;
+  - Copy to… when the server allows editing or adding copies;
+  - a copy recipient sees "You received a copy of this memo for information"; the server already hides actions and "Write a note" from them.
+- **Share dialog:** person (only people cleared for the classification), reason (required), optional end date (at most a year, checked by the server).
+- **Copy-to dialog (flow D2):** people, positions and distribution lists. Before approval, each unsent recipient has At submit or After approval (default after approval), saved with If-Match on the memo version; sent copies are listed and cannot change. After approval, recipients can only be added, and go at once.
+- **Receipts dialog:** copies and approvers, when each opened the memo and which document version; recipients not sent the copy (not cleared, inactive) say so.
+- **Distribution lists page:** `/admin/distribution-lists`, in the menu for `memo.distribution.manage`: name and members (people and positions), with switch off.
+- **Templates (flow A):**
+  - a Template block on the memo-type Settings tab: upload (owner is the type version, now in `MemoTypeTemplateView.owner`), the check's problems with part, paragraph, excerpt and suggestion, the tags used, the tags available with copy buttons, Preview as PDF (held back while there are problems), Remove; read-only outside a draft;
+  - the preview response now carries the preview's file version too, so the PDF opens directly;
+  - the create page says "The document starts from the X template" (`MemoTypeOption.template`);
+  - a draft without a document offers "Start from the template" (`FILL_FROM_TEMPLATE`).
+- **Tests:** unit tests for the access box, the share, copy-to and receipts dialogs, the template block and the lists page; English and Arabic texts; the memo and new-memo visual baselines re-rendered with the new boxes.

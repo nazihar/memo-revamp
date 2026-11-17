@@ -300,6 +300,50 @@ async function setUp(page: Page, theme: string, locale: string) {
   await page.route('**/api/v1/memos/m1/attachments', (route) => route.fulfill({ json: attachments }))
   await page.route('**/api/v1/memos/m1/notes', (route) => route.fulfill({ json: notes }))
   await page.route('**/api/v1/memos/m1/approvals', (route) => route.fulfill({ json: stamps }))
+  await page.route('**/api/v1/memos/m1/copies', (route) =>
+    route.fulfill({
+      json: {
+        canEdit: false,
+        canAdd: false,
+        memoVersion: 4,
+        copies: [
+          {
+            id: 'c1',
+            recipient: { kind: 'LIST', id: 'l1', name: 'Credit committee' },
+            sendWhen: 'AFTER_APPROVAL',
+            sent: 0,
+            read: 0,
+            addedAt: '2026-11-09T08:00:00Z',
+            addedBy: { id: 'u1', name: 'Demo User' },
+          },
+          {
+            id: 'c2',
+            recipient: { kind: 'USER', id: 'u5', name: 'Demo Auditor' },
+            sendWhen: 'AT_SUBMIT',
+            sent: 1,
+            read: 1,
+            sentAt: '2026-11-09T09:00:00Z',
+            addedAt: '2026-11-09T08:00:00Z',
+            addedBy: { id: 'u1', name: 'Demo User' },
+          },
+        ],
+      },
+    }),
+  )
+  await page.route('**/api/v1/memos/m1/shares', (route) =>
+    route.fulfill({
+      json: [
+        {
+          id: 's1',
+          person: { id: 'u7', name: 'Demo Legal Counsel' },
+          grantedBy: { id: 'u1', name: 'Demo User' },
+          reason: 'Review of the guarantee',
+          grantedAt: '2026-11-09T08:00:00Z',
+          canRevoke: false,
+        },
+      ],
+    }),
+  )
   await page.route('**/api/v1/memos/m1/files/f1/compare?*', (route) => route.fulfill({ json: comparison }))
   await page.route('**/api/v1/authz/classification-levels', (route) =>
     route.fulfill({

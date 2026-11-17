@@ -14,8 +14,22 @@ import { accessHandler, API_ORIGIN, csrfHandler, server, sessionHandler, signedI
 import { expectNoA11yViolations, renderRoute } from '@/test/render'
 
 const types: MemoTypeOption[] = [
-  { id: 't0', name: 'General memo', hasFields: false, numberingMoment: 'ON_SUBMIT', stepUpOnApprove: true },
-  { id: 't1', name: 'Credit proposal', hasFields: true, numberingMoment: 'ON_APPROVAL', stepUpOnApprove: true },
+  {
+    id: 't0',
+    name: 'General memo',
+    hasFields: false,
+    numberingMoment: 'ON_SUBMIT',
+    stepUpOnApprove: true,
+    template: false,
+  },
+  {
+    id: 't1',
+    name: 'Credit proposal',
+    hasFields: true,
+    numberingMoment: 'ON_APPROVAL',
+    stepUpOnApprove: true,
+    template: false,
+  },
 ]
 
 const creditForm: MemoTypeForm = {

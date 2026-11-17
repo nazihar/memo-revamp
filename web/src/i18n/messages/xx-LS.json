@@ -4516,6 +4516,141 @@
       "value": "User nameSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.access.approvers": [
+    {
+      "type": 0,
+      "value": "ApproversSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.access.copies": [
+    {
+      "type": 0,
+      "value": "CopiesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.access.copiesCount": [
+    {
+      "type": 6,
+      "value": "sent",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " person"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " people"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 2,
+      "value": "read",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " readSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.access.copyNotice": [
+    {
+      "type": 0,
+      "value": "You received a copy of this memo for information. You cannot act on it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.access.copyTo": [
+    {
+      "type": 0,
+      "value": "Copy to…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.access.nobody": [
+    {
+      "type": 0,
+      "value": "NobodySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.access.revoke": [
+    {
+      "type": 0,
+      "value": "RevokeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.access.share": [
+    {
+      "type": 0,
+      "value": "ShareSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.access.shared": [
+    {
+      "type": 0,
+      "value": "Shared withSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.access.sharedBy": [
+    {
+      "type": 0,
+      "value": "by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ": “"
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.access.sharedUntil": [
+    {
+      "type": 0,
+      "value": "until "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.access.title": [
+    {
+      "type": 0,
+      "value": "People with accessSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.actingFor": [
     {
       "type": 0,
@@ -5002,6 +5137,100 @@
       "value": "Someone acted on this memo meanwhile. It was reloaded.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.copy.addList": [
+    {
+      "type": 0,
+      "value": "Add a distribution listSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.copy.addPerson": [
+    {
+      "type": 0,
+      "value": "Add a personSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.copy.addPosition": [
+    {
+      "type": 0,
+      "value": "Add a positionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.copy.afterApproval": [
+    {
+      "type": 0,
+      "value": "After approvalSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.copy.atSubmit": [
+    {
+      "type": 0,
+      "value": "At submitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.copy.chooseList": [
+    {
+      "type": 0,
+      "value": "Choose a listSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.copy.kind.list": [
+    {
+      "type": 0,
+      "value": "listSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.copy.kind.position": [
+    {
+      "type": 0,
+      "value": "positionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.copy.lead": [
+    {
+      "type": 0,
+      "value": "Copies can read the memo and its notes. They cannot act on it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.copy.remove": [
+    {
+      "type": 0,
+      "value": "Remove "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.copy.save": [
+    {
+      "type": 0,
+      "value": "SaveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.copy.sendWhen": [
+    {
+      "type": 0,
+      "value": "When to send to "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.copy.title": [
+    {
+      "type": 0,
+      "value": "Copy toSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.create.details": [
     {
       "type": 1,
@@ -5028,6 +5257,20 @@
     {
       "type": 0,
       "value": "Create draftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.create.template": [
+    {
+      "type": 0,
+      "value": "The document starts from the "
+    },
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": " template, filled with what you enter here.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.create.title": [
@@ -5528,6 +5771,18 @@
     {
       "type": 0,
       "value": "Edit in the browserSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.document.fillFromTemplate": [
+    {
+      "type": 0,
+      "value": "Start from the templateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.document.fillFromTemplateHint": [
+    {
+      "type": 0,
+      "value": "Fills the type’s template with this memo’s details. You can still upload your own file.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.document.hint": [
@@ -6156,6 +6411,178 @@
       "value": "Link removed.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.lists.add": [
+    {
+      "type": 0,
+      "value": "Add listSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.lists.addMember": [
+    {
+      "type": 0,
+      "value": "Add memberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.lists.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.lists.caption": [
+    {
+      "type": 0,
+      "value": "Distribution listsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.lists.col.actions": [
+    {
+      "type": 0,
+      "value": "ActionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.lists.col.members": [
+    {
+      "type": 0,
+      "value": "MembersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.lists.col.name": [
+    {
+      "type": 0,
+      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.lists.conflict": [
+    {
+      "type": 0,
+      "value": "Someone changed this list meanwhile. Open it again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.lists.done": [
+    {
+      "type": 0,
+      "value": "Saved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.lists.edit": [
+    {
+      "type": 0,
+      "value": "EditSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.lists.editName": [
+    {
+      "type": 0,
+      "value": "Edit "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.lists.empty": [
+    {
+      "type": 0,
+      "value": "No distribution lists yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.lists.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.lists.lead": [
+    {
+      "type": 0,
+      "value": "Named groups of people and positions to copy memos to. A list is expanded when the copy is sent: whoever holds a position then gets it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.lists.member": [
+    {
+      "type": 0,
+      "value": "MemberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.lists.memberKind": [
+    {
+      "type": 0,
+      "value": "Add aSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.lists.name": [
+    {
+      "type": 0,
+      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.lists.noMembers": [
+    {
+      "type": 0,
+      "value": "No members yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.lists.person": [
+    {
+      "type": 0,
+      "value": "PersonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.lists.position": [
+    {
+      "type": 0,
+      "value": "PositionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.lists.remove": [
+    {
+      "type": 0,
+      "value": "Remove "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.lists.required": [
+    {
+      "type": 0,
+      "value": "A name and at least one member are required.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.lists.save": [
+    {
+      "type": 0,
+      "value": "SaveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.lists.switchOff": [
+    {
+      "type": 0,
+      "value": "Switch offSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.lists.switchedOff": [
+    {
+      "type": 0,
+      "value": "The list is switched off. Memos that used it keep it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.lists.title": [
+    {
+      "type": 0,
+      "value": "Distribution listsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.loadMore": [
     {
       "type": 0,
@@ -6739,6 +7166,79 @@
       "value": "Previous pageSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.receipts.close": [
+    {
+      "type": 0,
+      "value": "CloseSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.receipts.outcome": [
+    {
+      "type": 5,
+      "value": "outcome",
+      "options": {
+        "NOT_CLEARED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Not sent: not cleared"
+            }
+          ]
+        },
+        "INACTIVE": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Not sent: inactive"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Sent"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.receipts.readAt": [
+    {
+      "type": 1,
+      "value": "time"
+    },
+    {
+      "type": 0,
+      "value": " (v"
+    },
+    {
+      "type": 2,
+      "value": "version",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.receipts.title": [
+    {
+      "type": 0,
+      "value": "Copies and receiptsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.receipts.unread": [
+    {
+      "type": 0,
+      "value": "Not opened yetSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.refer.peopleRequired": [
     {
       "type": 0,
@@ -7201,6 +7701,42 @@
     {
       "type": 0,
       "value": "Send back toSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.share.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.share.hint": [
+    {
+      "type": 0,
+      "value": "Only people cleared for the memo’s classification can be chosen.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.share.person": [
+    {
+      "type": 0,
+      "value": "PersonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.share.reason": [
+    {
+      "type": 0,
+      "value": "ReasonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.share.title": [
+    {
+      "type": 0,
+      "value": "Share this memoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.share.until": [
+    {
+      "type": 0,
+      "value": "Until (optional, at most a year)SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.shared": [
@@ -8547,6 +9083,275 @@
       "value": "Parts of the memo typeSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memoTypes.template.available": [
+    {
+      "type": 0,
+      "value": "Tags you can useSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.template.copied": [
+    {
+      "type": 0,
+      "value": "Tag copied.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.template.copy": [
+    {
+      "type": 0,
+      "value": "Copy "
+    },
+    {
+      "type": 1,
+      "value": "tag"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.template.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.template.file": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "size"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.template.hint": [
+    {
+      "type": 0,
+      "value": "A .docx file, at most 10 MB. Macros and templates (.dotx) are refused.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.template.lead": [
+    {
+      "type": 0,
+      "value": "A Word file with tags such as "
+    },
+    {
+      "type": 1,
+      "value": "example"
+    },
+    {
+      "type": 0,
+      "value": ". A new memo of this type starts its document from it, filled with the memo’s details.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.template.none": [
+    {
+      "type": 0,
+      "value": "No template. New memos start without a document.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.template.notPreviewed": [
+    {
+      "type": 0,
+      "value": "Preview it before submitting the versionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.template.preview": [
+    {
+      "type": 0,
+      "value": "Preview as PDFSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.template.previewTitle": [
+    {
+      "type": 0,
+      "value": "Template preview with sample valuesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.template.previewed": [
+    {
+      "type": 0,
+      "value": "PreviewedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.template.problem": [
+    {
+      "type": 5,
+      "value": "code",
+      "options": {
+        "MALFORMED_TAG": {
+          "value": [
+            {
+              "type": 0,
+              "value": "A tag is not written correctly"
+            }
+          ]
+        },
+        "UNSUPPORTED_TAG": {
+          "value": [
+            {
+              "type": 0,
+              "value": "This kind of tag is not supported: "
+            },
+            {
+              "type": 1,
+              "value": "tag"
+            }
+          ]
+        },
+        "UNKNOWN_TAG": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Unknown tag "
+            },
+            {
+              "type": 1,
+              "value": "tag"
+            }
+          ]
+        },
+        "UNBALANCED_SECTION": {
+          "value": [
+            {
+              "type": 0,
+              "value": "A section is opened and not closed, or closed and not opened"
+            }
+          ]
+        },
+        "LOOP_WITHOUT_ROW": {
+          "value": [
+            {
+              "type": 0,
+              "value": "The approvals list must be inside a table row"
+            }
+          ]
+        },
+        "UNKNOWN_ROW_FIELD": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Unknown field of an approval row: "
+            },
+            {
+              "type": 1,
+              "value": "tag"
+            }
+          ]
+        },
+        "TAG_IN_LOOP_ROW": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Only approval fields can go in the approvals row: "
+            },
+            {
+              "type": 1,
+              "value": "tag"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Too many tags"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.template.problems": [
+    {
+      "type": 0,
+      "value": "Problems to fix in WordSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.template.remove": [
+    {
+      "type": 0,
+      "value": "RemoveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.template.replace": [
+    {
+      "type": 0,
+      "value": "Replace the templateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.template.suggestion": [
+    {
+      "type": 0,
+      "value": "Did you mean "
+    },
+    {
+      "type": 1,
+      "value": "suggestion"
+    },
+    {
+      "type": 0,
+      "value": "?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.template.title": [
+    {
+      "type": 0,
+      "value": "TemplateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.template.upload": [
+    {
+      "type": 0,
+      "value": "Upload a templateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.template.used": [
+    {
+      "type": 0,
+      "value": "Tags it usesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memoTypes.template.where": [
+    {
+      "type": 1,
+      "value": "part"
+    },
+    {
+      "type": 0,
+      "value": ", paragraph "
+    },
+    {
+      "type": 2,
+      "value": "paragraph",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": ": “"
+    },
+    {
+      "type": 1,
+      "value": "excerpt"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memoTypes.title": [
     {
       "type": 0,
@@ -8687,6 +9492,12 @@
     {
       "type": 0,
       "value": "ClassificationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.distributionLists": [
+    {
+      "type": 0,
+      "value": "Distribution listsSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "nav.doa": [

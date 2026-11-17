@@ -95,7 +95,7 @@ class MemoTemplateService(
     fun preview(
         typeId: UUID,
         number: Int,
-    ): UUID {
+    ): Pair<UUID, UUID> {
         val (row, state, file) =
             inTenant {
                 policy.require(Permission.MEMO_TYPES_MANAGE)
@@ -127,7 +127,7 @@ class MemoTemplateService(
                 )
             }
         }
-        return inTenant { checkNotNull(files.version(previewId)).fileId }
+        return inTenant { checkNotNull(files.version(previewId)).fileId } to previewId
     }
 
     /** Takes the template off a draft; [revision] is the client's `If-Match` on the version. */

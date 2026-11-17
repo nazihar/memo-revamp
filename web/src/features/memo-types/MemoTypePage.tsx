@@ -37,6 +37,7 @@ import { FieldsTab } from './FieldsTab'
 import { tm, tmv } from './messages'
 import { NumberingTab } from './NumberingTab'
 import { SettingsTab } from './SettingsTab'
+import { TemplateBlock } from './TemplateBlock'
 import { changesBetween, settingsOf, type TypeSettings } from './settings'
 
 const tones: Record<MemoTypeVersionResponse['state'], Tone> = {
@@ -309,6 +310,9 @@ function VersionEditor({
             names={v.allowedNames}
             errors={problems}
           />
+          <div className="mt-6">
+            <TemplateBlock typeId={typeId} number={v.number} revision={v.revision} draft={draft} />
+          </div>
         </TabsContent>
         <TabsContent value="form" className="pt-4">
           <FieldsTab

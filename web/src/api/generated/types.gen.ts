@@ -735,11 +735,12 @@ export type ImportBatchSummary = {
 };
 
 export type ImportBatchView = {
-    allowedActions: Array<'EDIT' | 'ATTACH_SOURCE' | 'REGISTER_ORIGINALS'>;
+    allowedActions: Array<'EDIT' | 'ATTACH_SOURCE' | 'REGISTER_ORIGINALS' | 'MAP' | 'DRY_RUN'>;
     createdAt: string;
     createdBy: string;
     defaultClassificationId?: string | null;
     dryRunAt?: string | null;
+    dryRunHash?: string | null;
     id: string;
     name: string;
     numberPrefix?: string | null;
@@ -759,6 +760,30 @@ export type ImportBatchView = {
     version: number;
 };
 
+export type ImportMappingRequest = {
+    confirmed: boolean;
+    legacyOrder?: number | null;
+    legacyValue: string;
+    target?: string | null;
+};
+
+export type ImportMappingView = {
+    confirmed: boolean;
+    confirmedAt?: string | null;
+    confirmedBy?: string | null;
+    kind: 'STATUS' | 'TYPE' | 'CLASSIFICATION' | 'UNIT' | 'PERSON';
+    legacyOrder?: number | null;
+    legacyValue: string;
+    proposed: boolean;
+    rowCount: number;
+    target?: string | null;
+};
+
+export type ImportMappingsView = {
+    batchVersion: number;
+    mappings: Array<ImportMappingView>;
+};
+
 export type ImportOriginalsView = {
     expected: number;
     expectedBytes: number;
@@ -766,6 +791,50 @@ export type ImportOriginalsView = {
     received: number;
     receivedBytes: number;
     refused: number;
+};
+
+export type ImportProblemPage = {
+    byCode: {
+        [key: string]: number;
+    };
+    byLevel: {
+        [key: string]: number;
+    };
+    next?: string | null;
+    problems: Array<ImportProblemView>;
+};
+
+export type ImportProblemView = {
+    code: string;
+    column?: string | null;
+    id: string;
+    intakeId?: string | null;
+    level: 'BATCH' | 'ERROR' | 'WARNING' | 'FILE' | 'INFO';
+    params: {
+        [key: string]: unknown;
+    };
+    rowId?: string | null;
+    rowNumber?: number | null;
+    sheet?: 'MEMOS' | 'FILES' | 'APPROVALS' | 'ORIGINALS' | 'BATCH';
+    stage: 'DRY_RUN' | 'IMPORT' | 'VERIFY';
+};
+
+export type ImportRowPage = {
+    next?: string | null;
+    rows: Array<ImportRowView>;
+};
+
+export type ImportRowView = {
+    codes: Array<string>;
+    errors: number;
+    legacyNumber?: string | null;
+    memoId?: string | null;
+    restricted: boolean;
+    result: 'PENDING' | 'READY' | 'REJECTED' | 'IMPORTING' | 'IMPORTED' | 'SKIPPED' | 'FAILED' | 'NOT_STARTED';
+    rowId: string;
+    rowNumber: number;
+    subject?: string | null;
+    warnings: number;
 };
 
 export type ImportSourceView = {
@@ -2668,6 +2737,24 @@ export type UpdateImportBatchResponses = {
 
 export type UpdateImportBatchResponse = UpdateImportBatchResponses[keyof UpdateImportBatchResponses];
 
+export type StartImportDryRunData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/imports/{id}/dry-run';
+};
+
+export type StartImportDryRunResponses = {
+    /**
+     * OK
+     */
+    200: ImportBatchView;
+};
+
+export type StartImportDryRunResponse = StartImportDryRunResponses[keyof StartImportDryRunResponses];
+
 export type ListImportOriginalsData = {
     body?: never;
     path: {
@@ -2710,6 +2797,107 @@ export type RegisterImportOriginalsResponses = {
 };
 
 export type RegisterImportOriginalsResponse = RegisterImportOriginalsResponses[keyof RegisterImportOriginalsResponses];
+
+export type ListImportMappingsData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: {
+        kind?: 'STATUS' | 'TYPE' | 'CLASSIFICATION' | 'UNIT' | 'PERSON';
+    };
+    url: '/api/v1/admin/imports/{id}/mappings';
+};
+
+export type ListImportMappingsResponses = {
+    /**
+     * OK
+     */
+    200: ImportMappingsView;
+};
+
+export type ListImportMappingsResponse = ListImportMappingsResponses[keyof ListImportMappingsResponses];
+
+export type SaveImportMappingsData = {
+    body: Array<ImportMappingRequest>;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+        kind: 'STATUS' | 'TYPE' | 'CLASSIFICATION' | 'UNIT' | 'PERSON';
+    };
+    query?: never;
+    url: '/api/v1/admin/imports/{id}/mappings/{kind}';
+};
+
+export type SaveImportMappingsResponses = {
+    /**
+     * OK
+     */
+    200: ImportMappingsView;
+};
+
+export type SaveImportMappingsResponse = SaveImportMappingsResponses[keyof SaveImportMappingsResponses];
+
+export type ListImportProblemsData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: {
+        /**
+         * Comma-separated levels (BATCH, ERROR, WARNING, FILE, INFO).
+         */
+        level?: Array<'BATCH' | 'ERROR' | 'WARNING' | 'FILE' | 'INFO'>;
+        /**
+         * Comma-separated codes.
+         */
+        code?: Array<string>;
+        sheet?: 'MEMOS' | 'FILES' | 'APPROVALS' | 'ORIGINALS' | 'BATCH';
+        /**
+         * The sheet's row number.
+         */
+        row?: number;
+        cursor?: string;
+        limit?: number;
+    };
+    url: '/api/v1/admin/imports/{id}/problems';
+};
+
+export type ListImportProblemsResponses = {
+    /**
+     * OK
+     */
+    200: ImportProblemPage;
+};
+
+export type ListImportProblemsResponse = ListImportProblemsResponses[keyof ListImportProblemsResponses];
+
+export type ListImportRowsData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: {
+        /**
+         * Comma-separated results (READY, REJECTED, ...).
+         */
+        result?: Array<'PENDING' | 'READY' | 'REJECTED' | 'IMPORTING' | 'IMPORTED' | 'SKIPPED' | 'FAILED' | 'NOT_STARTED'>;
+        cursor?: string;
+        limit?: number;
+    };
+    url: '/api/v1/admin/imports/{id}/rows';
+};
+
+export type ListImportRowsResponses = {
+    /**
+     * OK
+     */
+    200: ImportRowPage;
+};
+
+export type ListImportRowsResponse = ListImportRowsResponses[keyof ListImportRowsResponses];
 
 export type GetMailLogData = {
     body?: never;

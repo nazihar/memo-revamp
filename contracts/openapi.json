@@ -2009,7 +2009,7 @@
         "properties" : {
           "allowedActions" : {
             "items" : {
-              "enum" : [ "EDIT", "ATTACH_SOURCE", "REGISTER_ORIGINALS" ],
+              "enum" : [ "EDIT", "ATTACH_SOURCE", "REGISTER_ORIGINALS", "MAP", "DRY_RUN" ],
               "type" : "string"
             },
             "type" : "array"
@@ -2028,6 +2028,9 @@
           },
           "dryRunAt" : {
             "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "dryRunHash" : {
             "type" : [ "string", "null" ]
           },
           "id" : {
@@ -2089,6 +2092,79 @@
         "required" : [ "allowedActions", "createdAt", "createdBy", "id", "name", "originals", "problems", "rows", "sourceCode", "sources", "state", "timeZone", "updatedAt", "version" ],
         "type" : "object"
       },
+      "ImportMappingRequest" : {
+        "properties" : {
+          "confirmed" : {
+            "type" : "boolean"
+          },
+          "legacyOrder" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "legacyValue" : {
+            "type" : "string"
+          },
+          "target" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "confirmed", "legacyValue" ],
+        "type" : "object"
+      },
+      "ImportMappingView" : {
+        "properties" : {
+          "confirmed" : {
+            "type" : "boolean"
+          },
+          "confirmedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "confirmedBy" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "kind" : {
+            "enum" : [ "STATUS", "TYPE", "CLASSIFICATION", "UNIT", "PERSON" ],
+            "type" : "string"
+          },
+          "legacyOrder" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "legacyValue" : {
+            "type" : "string"
+          },
+          "proposed" : {
+            "type" : "boolean"
+          },
+          "rowCount" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "target" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "confirmed", "kind", "legacyValue", "proposed", "rowCount" ],
+        "type" : "object"
+      },
+      "ImportMappingsView" : {
+        "properties" : {
+          "batchVersion" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "mappings" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ImportMappingView"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "batchVersion", "mappings" ],
+        "type" : "object"
+      },
       "ImportOriginalsView" : {
         "properties" : {
           "expected" : {
@@ -2117,6 +2193,139 @@
           }
         },
         "required" : [ "expected", "expectedBytes", "purged", "received", "receivedBytes", "refused" ],
+        "type" : "object"
+      },
+      "ImportProblemPage" : {
+        "properties" : {
+          "byCode" : {
+            "additionalProperties" : {
+              "format" : "int32",
+              "type" : "integer"
+            },
+            "type" : "object"
+          },
+          "byLevel" : {
+            "additionalProperties" : {
+              "format" : "int32",
+              "type" : "integer"
+            },
+            "type" : "object"
+          },
+          "next" : {
+            "type" : [ "string", "null" ]
+          },
+          "problems" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ImportProblemView"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "byCode", "byLevel", "problems" ],
+        "type" : "object"
+      },
+      "ImportProblemView" : {
+        "properties" : {
+          "code" : {
+            "type" : "string"
+          },
+          "column" : {
+            "type" : [ "string", "null" ]
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "intakeId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "level" : {
+            "enum" : [ "BATCH", "ERROR", "WARNING", "FILE", "INFO" ],
+            "type" : "string"
+          },
+          "params" : {
+            "additionalProperties" : { },
+            "type" : "object"
+          },
+          "rowId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "rowNumber" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "sheet" : {
+            "enum" : [ "MEMOS", "FILES", "APPROVALS", "ORIGINALS", "BATCH" ],
+            "type" : [ "string", "null" ]
+          },
+          "stage" : {
+            "enum" : [ "DRY_RUN", "IMPORT", "VERIFY" ],
+            "type" : "string"
+          }
+        },
+        "required" : [ "code", "id", "level", "params", "stage" ],
+        "type" : "object"
+      },
+      "ImportRowPage" : {
+        "properties" : {
+          "next" : {
+            "type" : [ "string", "null" ]
+          },
+          "rows" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ImportRowView"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "rows" ],
+        "type" : "object"
+      },
+      "ImportRowView" : {
+        "properties" : {
+          "codes" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "errors" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "legacyNumber" : {
+            "type" : [ "string", "null" ]
+          },
+          "memoId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "restricted" : {
+            "type" : "boolean"
+          },
+          "result" : {
+            "enum" : [ "PENDING", "READY", "REJECTED", "IMPORTING", "IMPORTED", "SKIPPED", "FAILED", "NOT_STARTED" ],
+            "type" : "string"
+          },
+          "rowId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "rowNumber" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "subject" : {
+            "type" : [ "string", "null" ]
+          },
+          "warnings" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "codes", "errors", "restricted", "result", "rowId", "rowNumber", "warnings" ],
         "type" : "object"
       },
       "ImportSourceView" : {
@@ -7212,6 +7421,34 @@
         "tags" : [ "imports" ]
       }
     },
+    "/api/v1/admin/imports/{id}/dry-run" : {
+      "post" : {
+        "operationId" : "startImportDryRun",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ImportBatchView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Run the dry run (a job; the batch is DRY_RUN until it ends)",
+        "tags" : [ "imports" ]
+      }
+    },
     "/api/v1/admin/imports/{id}/files" : {
       "get" : {
         "operationId" : "listImportOriginals",
@@ -7303,6 +7540,236 @@
           }
         },
         "summary" : "Register originals' paths (1 to 1,000 at a time)",
+        "tags" : [ "imports" ]
+      }
+    },
+    "/api/v1/admin/imports/{id}/mappings" : {
+      "get" : {
+        "operationId" : "listImportMappings",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "kind",
+          "required" : false,
+          "schema" : {
+            "enum" : [ "STATUS", "TYPE", "CLASSIFICATION", "UNIT", "PERSON" ],
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ImportMappingsView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A batch's mappings with their row counts and proposals",
+        "tags" : [ "imports" ]
+      }
+    },
+    "/api/v1/admin/imports/{id}/mappings/{kind}" : {
+      "put" : {
+        "operationId" : "saveImportMappings",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "kind",
+          "required" : true,
+          "schema" : {
+            "enum" : [ "STATUS", "TYPE", "CLASSIFICATION", "UNIT", "PERSON" ],
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "items" : {
+                  "$ref" : "#/components/schemas/ImportMappingRequest"
+                },
+                "type" : "array"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ImportMappingsView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Confirm or change mappings of one kind (the batch then needs a new dry run)",
+        "tags" : [ "imports" ]
+      }
+    },
+    "/api/v1/admin/imports/{id}/problems" : {
+      "get" : {
+        "operationId" : "listImportProblems",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "description" : "Comma-separated levels (BATCH, ERROR, WARNING, FILE, INFO).",
+          "in" : "query",
+          "name" : "level",
+          "required" : false,
+          "schema" : {
+            "items" : {
+              "enum" : [ "BATCH", "ERROR", "WARNING", "FILE", "INFO" ],
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        }, {
+          "description" : "Comma-separated codes.",
+          "in" : "query",
+          "name" : "code",
+          "required" : false,
+          "schema" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        }, {
+          "in" : "query",
+          "name" : "sheet",
+          "required" : false,
+          "schema" : {
+            "enum" : [ "MEMOS", "FILES", "APPROVALS", "ORIGINALS", "BATCH" ],
+            "type" : "string"
+          }
+        }, {
+          "description" : "The sheet's row number.",
+          "in" : "query",
+          "name" : "row",
+          "required" : false,
+          "schema" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        }, {
+          "in" : "query",
+          "name" : "cursor",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "required" : false,
+          "schema" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ImportProblemPage"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A batch's problems, filtered, 100 a page",
+        "tags" : [ "imports" ]
+      }
+    },
+    "/api/v1/admin/imports/{id}/rows" : {
+      "get" : {
+        "operationId" : "listImportRows",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "description" : "Comma-separated results (READY, REJECTED, ...).",
+          "in" : "query",
+          "name" : "result",
+          "required" : false,
+          "schema" : {
+            "items" : {
+              "enum" : [ "PENDING", "READY", "REJECTED", "IMPORTING", "IMPORTED", "SKIPPED", "FAILED", "NOT_STARTED" ],
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        }, {
+          "in" : "query",
+          "name" : "cursor",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "required" : false,
+          "schema" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ImportRowPage"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A batch's Memos rows with their results, in row order",
         "tags" : [ "imports" ]
       }
     },

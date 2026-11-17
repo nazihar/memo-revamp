@@ -64,11 +64,22 @@ class Jobs(
         payload: Class<P>,
         maxRetries: Int = DEFAULT_MAX_RETRIES,
         handler: (P) -> Unit,
+    ): OneTimeTask<P> = tenantTaskCounting(name, payload, maxRetries) { data, _ -> handler(data) }
+
+    /**
+     * [tenantTask] whose handler also learns how many times this execution failed before (0 on the first try), so it can
+     * record a final failure itself on its last attempt (the retry handler only stops the execution).
+     */
+    fun <P : TenantScopedPayload> tenantTaskCounting(
+        name: String,
+        payload: Class<P>,
+        maxRetries: Int = DEFAULT_MAX_RETRIES,
+        handler: (P, Int) -> Unit,
     ): OneTimeTask<P> =
         Tasks
             .oneTime(name, payload)
             .onFailure(retrying(name, maxRetries))
-            .execute { instance, _ ->
+            .execute { instance, context ->
                 val data =
                     runCatching { instance.data }.getOrElse { throw PermanentJobFailure("task data of $name is unreadable") }
                         ?: throw PermanentJobFailure("task $name has no data (no tenant)")
@@ -78,7 +89,8 @@ class Jobs(
                     TenantState.SUSPENDED -> throw TenantSuspendedPause()
                     TenantState.ACTIVE -> Unit
                 }
-                TenantContext.call(tenant) { ActorContext.asSystem(name) { handler(data) } }
+                val failures = context.execution.consecutiveFailures
+                TenantContext.call(tenant) { ActorContext.asSystem(name) { handler(data, failures) } }
             }
 
     /**

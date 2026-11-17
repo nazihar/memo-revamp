@@ -56,7 +56,8 @@ class LegacyMemoService(
         val now = OffsetDateTime.now(clock).withOffsetSameInstant(ZoneOffset.UTC)
         val version = checkNotNull(types.published(row.mapped.typeId))
         val rank = checkNotNull(clearances.level(row.mapped.classificationId)).rank
-        val values = metadata.check(version.settings.fields, row.mapped.metadata, requireAll = false).values
+        val fields = version.settings.fields
+        val values = metadata.check(fields, LegacyFieldText.typed(fields, row.mapped.metadata), requireAll = false).values
         val closedAt =
             row.dates.closedOn
                 ?.takeIf { row.mapped.status == LegacyStatus.CLOSED }

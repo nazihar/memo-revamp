@@ -11,6 +11,7 @@ import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneId
 import java.time.ZoneOffset
+import java.util.HexFormat
 import java.util.UUID
 
 /** A batch's lifecycle (design E06 §4.1). */
@@ -75,6 +76,20 @@ data class ImportBatch(
     val sourceKind: SourceKind?,
     val sources: List<BatchSource>,
     val dryRunAt: Instant?,
+    val maxRank: Int?,
+    /** SHA-256 (hex) of what the last dry run read: sources, received originals, mappings and settings (design E06 §5.2). */
+    val dryRunHash: String? = null,
+)
+
+/** How a dry run ended, as the batch records it. */
+data class DryRunOutcome(
+    val state: BatchState,
+    /** What the validation read (lower-case hex SHA-256). */
+    val dryRunHash: String,
+    /** The same, read again when the dry run ended; different only if something changed meanwhile. */
+    val inputHash: String,
+    /** The totals as JSON (rows by result, problems by level, Files rows by match). */
+    val totals: String,
     val maxRank: Int?,
 )
 
@@ -223,6 +238,7 @@ class ImportBatchStore(
             sources = sources(r),
             dryRunAt = r.dryRunAt?.toInstant(),
             maxRank = r.maxRank,
+            dryRunHash = r.dryRunHash?.let { HexFormat.of().formatHex(it) },
         )
 
     private fun sources(r: ImportsBatchRecord): List<BatchSource> =

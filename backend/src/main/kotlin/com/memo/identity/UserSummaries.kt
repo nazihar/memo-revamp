@@ -43,6 +43,23 @@ class UserSummaries(
     fun of(id: UUID): UserSummary? = of(listOf(id))[id]
 
     /**
+     * Users of any status (a deactivated leaver too) whose email is one of [emails], by email (E06 legacy import: people
+     * are linked only by an explicit identifier). [emails] are normalised as accounts store them: trimmed, lower case.
+     */
+    fun byEmails(emails: Collection<String>): Map<String, UserSummary> =
+        emails
+            .toSet()
+            .chunked(LOOKUP_CHUNK)
+            .flatMap { chunk ->
+                tenantDsl
+                    .current()
+                    .select(IDENTITY_USER.ID, IDENTITY_USER.DISPLAY_NAME, IDENTITY_USER.EMAIL, IDENTITY_USER.STATUS)
+                    .from(IDENTITY_USER)
+                    .where(IDENTITY_USER.EMAIL.`in`(chunk))
+                    .fetch { UserSummary(it.value1()!!, it.value2()!!, it.value3()!!, UserStatus.valueOf(it.value4()!!)) }
+            }.associateBy { it.email }
+
+    /**
      * Active and invited users whose name has a word starting with [term], or whose email starts with it (people picker,
      * E04 research R14). [term] is already normalised (lower case, NFC); at most [limit] results, by name.
      */
@@ -67,3 +84,5 @@ class UserSummaries(
             .fetch { UserSummary(it.value1()!!, it.value2()!!, it.value3()!!, UserStatus.valueOf(it.value4()!!)) }
     }
 }
+
+private const val LOOKUP_CHUNK = 1_000

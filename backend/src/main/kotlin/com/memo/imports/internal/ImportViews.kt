@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component
 import java.time.Instant
 import java.util.UUID
 
-/** What the batch's screen offers now (design E06 §10 `allowedActions`). The dry run and import add theirs (T6, T7). */
-enum class BatchAction { EDIT, ATTACH_SOURCE, REGISTER_ORIGINALS }
+/** What the batch's screen offers now (design E06 §10 `allowedActions`). The import adds its own (T7). */
+enum class BatchAction { EDIT, ATTACH_SOURCE, REGISTER_ORIGINALS, MAP, DRY_RUN }
 
 data class ImportSourceView(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val table: SourceTable,
@@ -58,6 +58,8 @@ data class ImportBatchView(
     /** Memos rows by result (PENDING, READY, REJECTED, ...). */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val rows: Map<String, Int>,
     val dryRunAt: Instant?,
+    /** SHA-256 (hex) of what the last dry run read: sources, received originals, mappings and settings. */
+    val dryRunHash: String? = null,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val allowedActions: List<BatchAction>,
 )
 
@@ -142,9 +144,18 @@ class ImportViews(
             problems = problems(batch.id),
             rows = rows(batch.id),
             dryRunAt = batch.dryRunAt,
-            allowedActions = if (batch.state.editable) BatchAction.entries else emptyList(),
+            dryRunHash = batch.dryRunHash,
+            allowedActions = actions(batch),
         )
     }
+
+    /** Every editing action while the batch is OPEN or VALIDATED; the dry run once its metadata is there. */
+    private fun actions(batch: ImportBatch): List<BatchAction> =
+        when {
+            !batch.state.editable -> emptyList()
+            batch.sources.isEmpty() -> BatchAction.entries - BatchAction.DRY_RUN
+            else -> BatchAction.entries
+        }
 
     fun summary(batch: ImportBatch) =
         ImportBatchSummary(
@@ -170,7 +181,8 @@ class ImportViews(
             receivedAt = entry.receivedAt,
         )
 
-    private fun problems(batchId: UUID): Map<String, Int> =
+    /** Problems of the last dry run by level. */
+    fun problems(batchId: UUID): Map<String, Int> =
         tenantDsl
             .current()
             .select(IMPORTS_PROBLEM.LEVEL, DSL.count())
@@ -180,7 +192,8 @@ class ImportViews(
             .fetch { r -> r.value1().orEmpty() to (r.value2() ?: 0) }
             .toMap()
 
-    private fun rows(batchId: UUID): Map<String, Int> =
+    /** Memos rows by result. */
+    fun rows(batchId: UUID): Map<String, Int> =
         tenantDsl
             .current()
             .select(IMPORTS_ROW.RESULT, DSL.count())

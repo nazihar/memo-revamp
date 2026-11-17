@@ -104,6 +104,9 @@ class MemoTypes(
                     fields = current?.settings?.fields.orEmpty(),
                     raiseScope = current?.settings?.raiseScope ?: RaiseScope(),
                     numbering = current?.settings?.numbering ?: Numbering(),
+                    retention = current?.settings?.retention,
+                    attachmentRules = current?.settings?.attachmentRules ?: AttachmentRules(),
+                    autoCloseDays = current?.settings?.autoCloseDays,
                 )
         checks.require(settings, id)
         refuseIf(before.active && !fields.active && active().none { it.id != id }, "LAST_ACTIVE") {
@@ -185,7 +188,7 @@ class MemoTypeChecks(
                 listOf(allowed.people, allowed.positions, allowed.roles).any { it.size > MAX_ALLOWED }
             },
         ) + fieldChecks.problems(settings.fields, settings.raiseScope) + attributeChecks.problems(settings, id) +
-            numberingChecks.problems(settings, id)
+            numberingChecks.problems(settings, id) + MemoTypePolicies.problems(settings)
     }
 
     companion object {
@@ -224,6 +227,9 @@ class MemoTypeChecks(
                         "countPer" to settings.numbering.countPer.name,
                         "moment" to settings.numbering.moment.name,
                     ),
+                "retention" to settings.retention?.let { "${it.years}y from ${it.from}" },
+                "attachmentRules" to mapOf("required" to settings.attachmentRules.required, "min" to settings.attachmentRules.min),
+                "autoCloseDays" to settings.autoCloseDays,
             )
     }
 }

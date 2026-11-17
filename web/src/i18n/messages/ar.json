@@ -796,6 +796,7 @@
   "memo.shared": "يستطيع آخرون التصرف في هذه أيضًا. أول قرار يُكمل الخطوة؛ استلمها لتعمل عليها وحدك.",
   "memo.status.approved": "تمت الموافقة",
   "memo.status.cancelled": "ملغاة",
+  "memo.status.closed": "مغلقة",
   "memo.status.discarded": "مُتجاهَلة",
   "memo.status.draft": "مسودة",
   "memo.status.inReview": "قيد المراجعة",

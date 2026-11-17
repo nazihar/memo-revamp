@@ -12298,6 +12298,20 @@
       "value": "]"
     }
   ],
+  "memo.status.closed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŀǿǿşḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "memo.status.discarded": [
     {
       "type": 0,

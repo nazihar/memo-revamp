@@ -23,3 +23,9 @@ endpoints:
   - endpoint: POST /api/v1/admin/memo-types/numbering/preview
     rule: tenantAdmin
     body: { numbering: { series: "general" }, typeCode: "GM" }
+  - { endpoint: "POST /api/v1/memos/{id}/close", rule: signedIn, headers: { Idempotency-Key: "{random}" } }
+  - endpoint: "POST /api/v1/memos/{id}/links"
+    rule: signedIn
+    body: { targetReference: "M-2026-00001" }
+    headers: { Idempotency-Key: "{random}" }
+  - { endpoint: "DELETE /api/v1/memos/{id}/links/{linkId}", rule: signedIn }

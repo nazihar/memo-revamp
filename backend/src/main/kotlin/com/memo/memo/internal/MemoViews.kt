@@ -99,6 +99,9 @@ enum class MemoAction {
 
     /** Declare an interest and stand aside (SOD-4). */
     RECUSE,
+
+    /** Close an approved memo for good (Phase 3 E01). */
+    CLOSE,
 }
 
 /**
@@ -174,6 +177,14 @@ data class MemoView(
     val originUnit: Named? = null,
     /** For a memo without a number: when it will get one (at submit or at final approval). */
     val numberedWhen: NumberMoment? = null,
+    /** Links from this memo to memos the reader may open (Phase 3 E01). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val links: List<MemoLinkView> = emptyList(),
+    /** Links to this memo from memos the reader may open ("related files"). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val linkedFrom: List<MemoLinkView> = emptyList(),
+    /** Whether the reader may link this memo to another one (it is not closed or discarded). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val canLink: Boolean = false,
+    /** When it was closed; null unless closed. */
+    val closedAt: Instant? = null,
 )
 
 /** Builds [MemoView]s: names from identity, the document from files. Inside a tenant transaction. */
@@ -189,6 +200,7 @@ class MemoViews(
     private val interestStore: MemoInterestStore,
     private val directory: OrgDirectory,
     private val unitDirectory: OrgUnitDirectory,
+    private val memoLinks: MemoLinks,
 ) {
     fun of(memo: Memo): MemoView {
         val interests = interestStore.of(memo.id)
@@ -208,14 +220,10 @@ class MemoViews(
                         listOfNotNull(open?.claimedBy) +
                         interests,
                 ).mapValues { it.value.displayName }
-        val myTask =
-            open?.let { task ->
-                val claimer = task.claimedBy?.let { Named(it, names[it].orEmpty()) }
-                TaskRef(task.id, task.blocked, task.role, task.waiting, task.stepName, task.shared, claimer)
-            }
         val level = clearances.level(memo.classificationId)
         val type = types.forMemo(memo)
         val details = details(memo)
+        val links = memoLinks.of(memo)
         // A FIXED type's definition names every step: its memos have no route to edit (design E03 §12).
         val allowed =
             actions(memo, user, open, workflow?.recallable == true)
@@ -230,25 +238,10 @@ class MemoViews(
             status = memo.status,
             initiator = Named(memo.initiatorId, names[memo.initiatorId].orEmpty()),
             document = document(memo.documentFileId),
-            route =
-                route.mapIndexed { index, entry ->
-                    fun view(
-                        ordinal: Int,
-                        e: RouteEntry,
-                    ): RouteEntryView =
-                        RouteEntryView(
-                            ordinal,
-                            e.userId?.let { Named(it, names[it].orEmpty()) },
-                            e.positionId?.let { p ->
-                                RoutePositionView(p, titles[p]?.title.orEmpty(), holdersToday[p]?.let { Named(it, names[it].orEmpty()) })
-                            },
-                            e.group?.let { g -> RouteGroupView(g.mode, g.members.mapIndexed { i, m -> view(i + 1, m) }) },
-                        )
-                    view(index + 1, entry)
-                },
+            route = routeViews(route, names, titles.mapValues { it.value.title }, holdersToday),
             round = memo.currentRound,
             holders = holders.map { Named(it, names[it].orEmpty()) },
-            myTask = myTask,
+            myTask = open?.let { taskRef(it, names) },
             allowedActions = allowed,
             sendBackTargets = targets.map { SendBackTargetView(it.stepId, it.name, Named(it.holderId, names[it.holderId].orEmpty())) },
             interests = interests.map { Named(it, names[it].orEmpty()) }.sortedBy { it.name },
@@ -257,6 +250,10 @@ class MemoViews(
             staleDetails = details.stale,
             typeVersion = details.pinnedVersion,
             numberedWhen = details.numberedWhen.takeIf { memo.reference == null },
+            links = links.first,
+            linkedFrom = links.second,
+            canLink = memo.status !in MemoViewsRules.UNLINKABLE,
+            closedAt = memo.closedAt,
             originUnit = originUnit(memo.originUnitId),
             createdAt = memo.createdAt,
             updatedAt = memo.updatedAt,
@@ -374,6 +371,7 @@ class MemoViews(
             memo.status == MemoStatus.DRAFT -> DRAFT
             memo.status == MemoStatus.RETURNED -> RETURNED
             memo.status == MemoStatus.IN_REVIEW -> listOfNotNull(MemoAction.WITHDRAW, MemoAction.RECALL.takeIf { recallable })
+            memo.status == MemoStatus.APPROVED -> listOf(MemoAction.CLOSE)
             else -> emptyList()
         }
 
@@ -454,4 +452,32 @@ class MemoViews(
         val DRAFT = listOf(MemoAction.EDIT, MemoAction.UPLOAD_DOCUMENT, MemoAction.EDIT_ROUTE, MemoAction.SUBMIT, MemoAction.DISCARD)
         val RETURNED = listOf(MemoAction.EDIT, MemoAction.UPLOAD_DOCUMENT, MemoAction.EDIT_ROUTE, MemoAction.RESUBMIT, MemoAction.WITHDRAW)
     }
+}
+
+/** The route as shown: each entry with its person, or its position with today's holder, or its group. */
+private fun routeViews(
+    route: List<RouteEntry>,
+    names: Map<UUID, String>,
+    titles: Map<UUID, String>,
+    holders: Map<UUID, UUID>,
+): List<RouteEntryView> {
+    fun view(
+        ordinal: Int,
+        e: RouteEntry,
+    ): RouteEntryView =
+        RouteEntryView(
+            ordinal,
+            e.userId?.let { Named(it, names[it].orEmpty()) },
+            e.positionId?.let { p -> RoutePositionView(p, titles[p].orEmpty(), holders[p]?.let { Named(it, names[it].orEmpty()) }) },
+            e.group?.let { g -> RouteGroupView(g.mode, g.members.mapIndexed { i, m -> view(i + 1, m) }) },
+        )
+    return route.mapIndexed { index, entry -> view(index + 1, entry) }
+}
+
+private fun taskRef(
+    task: MyTask,
+    names: Map<UUID, String>,
+): TaskRef {
+    val claimer = task.claimedBy?.let { Named(it, names[it].orEmpty()) }
+    return TaskRef(task.id, task.blocked, task.role, task.waiting, task.stepName, task.shared, claimer)
 }

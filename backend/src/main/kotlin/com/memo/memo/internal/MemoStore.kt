@@ -25,6 +25,9 @@ enum class MemoStatus {
 
     /** An administrator cancelled the workflow (design E03 §4.4). */
     CANCELLED,
+
+    /** Approved and done with: read-only for good (Phase 3 E01, design §1). */
+    CLOSED,
     ;
 
     /** Fields, document and route may change only while the initiator holds the memo. */
@@ -54,6 +57,10 @@ data class Memo(
     val memoTypeVersionId: UUID? = null,
     /** The values of its type's fields, in stored form ([MemoMetadata]). */
     val metadata: Map<String, Any> = emptyMap(),
+    /** When its approval completed; null unless approved (or closed after approval). */
+    val approvedAt: Instant? = null,
+    /** When it was closed; null unless closed. */
+    val closedAt: Instant? = null,
 )
 
 /** The fields of a new memo. */
@@ -247,6 +254,7 @@ class MemoStore(
             .set(MEMO.WORKFLOW_INSTANCE_ID, instanceId)
             .set(MEMO.CURRENT_ROUND, round)
             .set(MEMO.STATUS, status.name)
+            .apply { if (status == MemoStatus.APPROVED) set(MEMO.APPROVED_AT, now) }
             .set(MEMO.VERSION, MEMO.VERSION.plus(1))
             .set(MEMO.UPDATED_AT, now)
             .where(MEMO.ID.eq(id))
@@ -276,6 +284,8 @@ private fun JsonMapper.memo(r: MemoRecord): Memo =
             version = version!!,
             memoTypeVersionId = memoTypeVersionId,
             metadata = metadata?.let { readValue(it.data(), METADATA) } ?: emptyMap(),
+            approvedAt = approvedAt?.toInstant(),
+            closedAt = closedAt?.toInstant(),
         )
     }
 

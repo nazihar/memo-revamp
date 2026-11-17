@@ -47,6 +47,9 @@ const memo: MemoView = {
   interests: [],
   details: [],
   staleDetails: [],
+  links: [],
+  linkedFrom: [],
+  canLink: true,
 }
 
 const history: HistoryRound[] = [

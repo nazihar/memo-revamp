@@ -23,5 +23,13 @@
   "search": {
     "routes": ["/search"],
     "prefixes": ["search"]
+  },
+  "inbox": {
+    "routes": ["/inbox"],
+    "prefixes": ["inbox"]
+  },
+  "dashboard": {
+    "routes": ["/dashboards"],
+    "prefixes": ["dashboard"]
   }
 }

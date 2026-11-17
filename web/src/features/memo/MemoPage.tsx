@@ -27,6 +27,7 @@ import { DoaPreviewDialog } from './DoaPreviewDialog'
 import { dueLabel, isOverdue } from './due'
 import { EditMemoDialog } from './EditMemoDialog'
 import { FinalRecord } from './FinalRecord'
+import { FollowToggle } from './FollowToggle'
 import { MemoAccess } from './MemoAccess'
 import { MemoAttachments } from './MemoAttachments'
 import { MemoCoauthors } from './MemoCoauthors'
@@ -190,16 +191,19 @@ export function MemoPage({ memoId }: { memoId: string }) {
         description={`${unnumberedNote(intl, view) ?? referenceOf(intl, view.reference)} · ${view.type.name} · ${view.classification.name}`}
         status={<Badge tone={statusTone[view.status]}>{intl.formatMessage(statusLabels[view.status])}</Badge>}
         actions={
-          allowed.has('EDIT') ? (
-            <Button
-              variant="outline"
-              onClick={() => {
-                setEditing(true)
-              }}
-            >
-              {intl.formatMessage(mm.actionEdit)}
-            </Button>
-          ) : null
+          <>
+            <FollowToggle memoId={view.id} />
+            {allowed.has('EDIT') ? (
+              <Button
+                variant="outline"
+                onClick={() => {
+                  setEditing(true)
+                }}
+              >
+                {intl.formatMessage(mm.actionEdit)}
+              </Button>
+            ) : null}
+          </>
         }
       />
       <div className="grid gap-6 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">

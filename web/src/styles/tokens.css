@@ -41,6 +41,10 @@
   --status-degraded: var(--status-warn-fg);
   --status-down: var(--status-danger-fg);
   --status-disabled: var(--status-neutral-fg);
+
+  /* Chart series (E05 T7): categorical slots 1 and 2, validated for colour-vision deficiency and 3:1 on the card. */
+  --chart-1: #2a78d6;
+  --chart-2: #c4561f;
 }
 
 .dark {
@@ -68,4 +72,7 @@
   --status-danger-fg: #f5a3a3;
   --status-neutral-bg: #252e3b;
   --status-neutral-fg: #c3cbd7;
+
+  --chart-1: #3987e5;
+  --chart-2: #d95926;
 }

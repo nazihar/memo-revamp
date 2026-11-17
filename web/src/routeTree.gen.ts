@@ -40,6 +40,7 @@ import { Route as ShellSignedInAdminMemoNumberingRouteImport } from './routes/_s
 import { Route as ShellSignedInAdminRolesRouteImport } from './routes/_shell/_signedIn/admin.roles'
 import { Route as ShellSignedInAdminSecurityRouteImport } from './routes/_shell/_signedIn/admin.security'
 import { Route as ShellSignedInAdminUsersRouteImport } from './routes/_shell/_signedIn/admin.users'
+import { Route as ShellSignedInDashboardsApprovalsRouteImport } from './routes/_shell/_signedIn/dashboards.approvals'
 import { Route as ShellSignedInMeNotificationsRouteImport } from './routes/_shell/_signedIn/me.notifications'
 import { Route as ShellSignedInMeSecurityRouteImport } from './routes/_shell/_signedIn/me.security'
 import { Route as ShellSignedInMemosMemoIdRouteImport } from './routes/_shell/_signedIn/memos.$memoId'
@@ -218,6 +219,12 @@ const ShellSignedInAdminUsersRoute = ShellSignedInAdminUsersRouteImport.update({
   path: '/admin/users',
   getParentRoute: () => ShellSignedInRoute,
 } as any)
+const ShellSignedInDashboardsApprovalsRoute =
+  ShellSignedInDashboardsApprovalsRouteImport.update({
+    id: '/dashboards/approvals',
+    path: '/dashboards/approvals',
+    getParentRoute: () => ShellSignedInRoute,
+  } as any)
 const ShellSignedInMeNotificationsRoute =
   ShellSignedInMeNotificationsRouteImport.update({
     id: '/me/notifications',
@@ -358,6 +365,7 @@ export interface FileRoutesByFullPath {
   '/admin/roles': typeof ShellSignedInAdminRolesRoute
   '/admin/security': typeof ShellSignedInAdminSecurityRoute
   '/admin/users': typeof ShellSignedInAdminUsersRoute
+  '/dashboards/approvals': typeof ShellSignedInDashboardsApprovalsRoute
   '/me/notifications': typeof ShellSignedInMeNotificationsRoute
   '/me/security': typeof ShellSignedInMeSecurityRoute
   '/memos/$memoId': typeof ShellSignedInMemosMemoIdRoute
@@ -405,6 +413,7 @@ export interface FileRoutesByTo {
   '/admin/roles': typeof ShellSignedInAdminRolesRoute
   '/admin/security': typeof ShellSignedInAdminSecurityRoute
   '/admin/users': typeof ShellSignedInAdminUsersRoute
+  '/dashboards/approvals': typeof ShellSignedInDashboardsApprovalsRoute
   '/me/notifications': typeof ShellSignedInMeNotificationsRoute
   '/me/security': typeof ShellSignedInMeSecurityRoute
   '/memos/$memoId': typeof ShellSignedInMemosMemoIdRoute
@@ -458,6 +467,7 @@ export interface FileRoutesById {
   '/_shell/_signedIn/admin/roles': typeof ShellSignedInAdminRolesRoute
   '/_shell/_signedIn/admin/security': typeof ShellSignedInAdminSecurityRoute
   '/_shell/_signedIn/admin/users': typeof ShellSignedInAdminUsersRoute
+  '/_shell/_signedIn/dashboards/approvals': typeof ShellSignedInDashboardsApprovalsRoute
   '/_shell/_signedIn/me/notifications': typeof ShellSignedInMeNotificationsRoute
   '/_shell/_signedIn/me/security': typeof ShellSignedInMeSecurityRoute
   '/_shell/_signedIn/memos/$memoId': typeof ShellSignedInMemosMemoIdRoute
@@ -508,6 +518,7 @@ export interface FileRouteTypes {
     | '/admin/roles'
     | '/admin/security'
     | '/admin/users'
+    | '/dashboards/approvals'
     | '/me/notifications'
     | '/me/security'
     | '/memos/$memoId'
@@ -555,6 +566,7 @@ export interface FileRouteTypes {
     | '/admin/roles'
     | '/admin/security'
     | '/admin/users'
+    | '/dashboards/approvals'
     | '/me/notifications'
     | '/me/security'
     | '/memos/$memoId'
@@ -607,6 +619,7 @@ export interface FileRouteTypes {
     | '/_shell/_signedIn/admin/roles'
     | '/_shell/_signedIn/admin/security'
     | '/_shell/_signedIn/admin/users'
+    | '/_shell/_signedIn/dashboards/approvals'
     | '/_shell/_signedIn/me/notifications'
     | '/_shell/_signedIn/me/security'
     | '/_shell/_signedIn/memos/$memoId'
@@ -854,6 +867,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShellSignedInAdminUsersRouteImport
       parentRoute: typeof ShellSignedInRoute
     }
+    '/_shell/_signedIn/dashboards/approvals': {
+      id: '/_shell/_signedIn/dashboards/approvals'
+      path: '/dashboards/approvals'
+      fullPath: '/dashboards/approvals'
+      preLoaderRoute: typeof ShellSignedInDashboardsApprovalsRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
     '/_shell/_signedIn/me/notifications': {
       id: '/_shell/_signedIn/me/notifications'
       path: '/me/notifications'
@@ -1022,6 +1042,7 @@ interface ShellSignedInRouteChildren {
   ShellSignedInAdminRolesRoute: typeof ShellSignedInAdminRolesRoute
   ShellSignedInAdminSecurityRoute: typeof ShellSignedInAdminSecurityRoute
   ShellSignedInAdminUsersRoute: typeof ShellSignedInAdminUsersRoute
+  ShellSignedInDashboardsApprovalsRoute: typeof ShellSignedInDashboardsApprovalsRoute
   ShellSignedInMeNotificationsRoute: typeof ShellSignedInMeNotificationsRoute
   ShellSignedInMeSecurityRoute: typeof ShellSignedInMeSecurityRoute
   ShellSignedInMemosMemoIdRoute: typeof ShellSignedInMemosMemoIdRoute
@@ -1060,6 +1081,7 @@ const ShellSignedInRouteChildren: ShellSignedInRouteChildren = {
   ShellSignedInAdminRolesRoute: ShellSignedInAdminRolesRoute,
   ShellSignedInAdminSecurityRoute: ShellSignedInAdminSecurityRoute,
   ShellSignedInAdminUsersRoute: ShellSignedInAdminUsersRoute,
+  ShellSignedInDashboardsApprovalsRoute: ShellSignedInDashboardsApprovalsRoute,
   ShellSignedInMeNotificationsRoute: ShellSignedInMeNotificationsRoute,
   ShellSignedInMeSecurityRoute: ShellSignedInMeSecurityRoute,
   ShellSignedInMemosMemoIdRoute: ShellSignedInMemosMemoIdRoute,

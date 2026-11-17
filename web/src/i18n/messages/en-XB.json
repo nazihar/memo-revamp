@@ -7240,6 +7240,1092 @@
       "value": "‬"
     }
   ],
+  "dashboard.age.bucket": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "bucket"
+    },
+    {
+      "type": 0,
+      "value": " pɐʎs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.age.bucket0": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "0–2 pɐʎs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.age.bucket10": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Oʌǝɹ 10 pɐʎs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.age.bucket3": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "3–5 pɐʎs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.age.bucket6": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "6–10 pɐʎs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.age.colAge": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɐıʇıuƃ (ʍoɹʞıuƃ pɐʎs)"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.age.colTasks": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɐsʞs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.age.none": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noʇɥıuƃ ıs dǝupıuƃ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.age.summary": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "total",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʇɐsʞ ıs dǝupıuƃ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʇɐsʞs ɐɹǝ dǝupıuƃ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "; "
+    },
+    {
+      "type": 6,
+      "value": "older",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "uouǝ ɥɐs"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɥɐs"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɥɐʌǝ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " ʍɐıʇǝp ɯoɹǝ ʇɥɐu 5 ʍoɹʞıuƃ pɐʎs."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.age.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁǝupıuƃ qʎ ɐƃǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.cycle.colDecided": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɔıpǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.cycle.colMedian": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝpıɐu (pɐʎs)"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.cycle.colP90": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁ90 (pɐʎs)"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.cycle.colType": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo ʇʎdǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.cycle.median": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝpıɐu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.cycle.none": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No ɯǝɯo ʍɐs pǝɔıpǝp ıu ʇɥıs dǝɹıop."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.cycle.p90": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁ90"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.cycle.summary": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "types",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Wǝɯos oɟ "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʇʎdǝ ʍǝɹǝ pǝɔıpǝp"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Wǝɯos oɟ "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʇʎdǝs ʍǝɹǝ pǝɔıpǝp"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "; ʇɥǝ ʅouƃǝsʇ ɯǝpıɐu ıs "
+    },
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": ", ɐʇ "
+    },
+    {
+      "type": 1,
+      "value": "days"
+    },
+    {
+      "type": 0,
+      "value": " pɐʎs."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.cycle.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄʎɔʅǝ ʇıɯǝ qʎ ɯǝɯo ʇʎdǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.cycle.value": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "series"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.forbidden": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄on ɯɐʎ uoʇ sǝǝ ʇɥǝ ɟıƃnɹǝs oɟ ʇɥıs nuıʇ. Ↄɥoosǝ Wǝ oɹ ɐ nuıʇ ʎon oʌǝɹsǝǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Hoʍ ɐddɹoʌɐʅs ɐɹǝ ɯoʌıuƃ: ʍɥɐʇ ıs ʍɐıʇıuƃ ɐup ɟoɹ ɥoʍ ʅouƃ, ɥoʍ ʅouƃ pǝɔısıous ʇɐʞǝ, ɐup ʇɥǝ ɟʅoʍ dǝɹ ʍǝǝʞ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.overdue.count": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʇɐsʞ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʇɐsʞs"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.overdue.summary": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Noʇɥıuƃ ıs dɐsʇ ıʇs pnǝ ʇıɯǝ."
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʇɐsʞ ıs dɐsʇ ıʇs pnǝ ʇıɯǝ."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʇɐsʞs ɐɹǝ dɐsʇ ʇɥǝıɹ pnǝ ʇıɯǝ."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.overdue.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Oʌǝɹpnǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.overdue.viewList": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ʌıǝʍ ʅısʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.period": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁǝɹıop"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.period.weeks": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "⅂ɐsʇ ʍǝǝʞ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "⅂ɐsʇ "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʍǝǝʞs"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.person.colOverdue": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Oʌǝɹpnǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.person.colPending": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁǝupıuƃ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.person.colPerson": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁǝɹsou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.person.label": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "pending"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 6,
+      "value": "overdue",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "uouǝ oʌǝɹpnǝ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " oʌǝɹpnǝ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.person.none": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noqopʎ ıu ʇɥıs sɔodǝ ɥɐs dǝupıuƃ ʇɐsʞs."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.person.summary": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "people",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " dǝɹsou ɥɐs dǝupıuƃ ʇɐsʞs"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " dǝodʅǝ ɥɐʌǝ dǝupıuƃ ʇɐsʞs"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "; ʇɥǝ ɯosʇ ɥɐs "
+    },
+    {
+      "type": 1,
+      "value": "top"
+    },
+    {
+      "type": 0,
+      "value": ", ʍıʇɥ "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.person.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁǝupıuƃ qʎ dǝɹsou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.scope": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sɔodǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.scope.me": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.scope.unit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩uıʇ "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.showMine": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sɥoʍ ɯʎ ɟıƃnɹǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.showTable": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sɥoʍ ɐs ʇɐqʅǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.showing": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sɥoʍıuƃ: "
+    },
+    {
+      "type": 1,
+      "value": "scope"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "from"
+    },
+    {
+      "type": 0,
+      "value": " – "
+    },
+    {
+      "type": 1,
+      "value": "to"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.throughput.colWeek": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mǝǝʞ oɟ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.throughput.completed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄoɯdʅǝʇǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.throughput.created": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɹǝɐʇǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.throughput.summary": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "created",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɯǝɯo ɔɹǝɐʇǝp"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɯǝɯos ɔɹǝɐʇǝp"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " ɐup "
+    },
+    {
+      "type": 6,
+      "value": "completed",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɔoɯdʅǝʇǝp"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɔoɯdʅǝʇǝp"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " ıu "
+    },
+    {
+      "type": 6,
+      "value": "weeks",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʍǝǝʞ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʍǝǝʞs"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.throughput.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥɹonƃɥdnʇ dǝɹ ʍǝǝʞ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "dashboard.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ddɹoʌɐʅs pɐsɥqoɐɹp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "dialog.close": [
     {
       "type": 0,
@@ -7536,6 +8622,140 @@
     {
       "type": 0,
       "value": "⊥oo ɯɐuʎ ɐʇʇǝɯdʇs. Mɐıʇ ɐ ɯıunʇǝ ɐup ʇɹʎ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "follow.failed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥɐʇ pıp uoʇ ʍoɹʞ. ⊥ɹʎ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "follow.follow": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎoʅʅoʍ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "follow.following": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎoʅʅoʍıuƃ · ʎon ƃǝʇ ndpɐʇǝs ou ʇɥıs ɯǝɯo"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "follow.followingBecause": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎoʅʅoʍıuƃ · ʎon ƃǝʇ ndpɐʇǝs ou ʇɥıs ɯǝɯo ("
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "follow.reason.acted": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ʎon ɐɔʇǝp ou ıʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "follow.reason.initiated": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ʎon sʇɐɹʇǝp ıʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "follow.reason.manual": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ʎon ɟoʅʅoʍ ʇɥıs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "follow.reason.mentioned": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ʎon ʍǝɹǝ ɯǝuʇıouǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "follow.unfollow": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩uɟoʅʅoʍ"
     },
     {
       "type": 0,
@@ -7880,6 +9100,1232 @@
     {
       "type": 0,
       "value": "Iuʌıʇǝ dǝodʅǝ ɐup ɯɐuɐƃǝ ʇɥǝıɹ ɐɔɔonuʇs."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.bulk.claim": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄʅɐıɯ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.bulk.clear": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄʅǝɐɹ sǝʅǝɔʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.bulk.count.changed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " uoʇ ɔɥɐuƃǝp"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " uoʇ ɔɥɐuƃǝp"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ": ıʇ ʍɐs pǝɔıpǝp oɹ ɯoʌǝp ɯǝɐuʍɥıʅǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.bulk.count.forbidden": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " uoʇ ɐʅʅoʍǝp"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " uoʇ ɐʅʅoʍǝp"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.bulk.count.notFound": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " uo ʅouƃǝɹ ɟonup"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " uo ʅouƃǝɹ ɟonup"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.bulk.dismiss": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡısɯıss"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.bulk.done.claim": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɔʅɐıɯǝp"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɔʅɐıɯǝp"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.bulk.done.reassign": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɹǝɐssıƃuǝp"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɹǝɐssıƃuǝp"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.bulk.done.release": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɹǝʅǝɐsǝp"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɹǝʅǝɐsǝp"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.bulk.done.unwatch": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " nuɟoʅʅoʍǝp"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " nuɟoʅʅoʍǝp"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.bulk.done.watch": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɟoʅʅoʍǝp"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɟoʅʅoʍǝp"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.bulk.failed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥɐʇ pıp uoʇ ʍoɹʞ. ⊥ɹʎ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.bulk.forbidden": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄on ɯɐʎ uoʇ po ʇɥıs."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.bulk.item.changed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noʇ ɔɥɐuƃǝp: ıʇ ʍɐs pǝɔıpǝp oɹ ɯoʌǝp ɯǝɐuʍɥıʅǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.bulk.item.forbidden": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noʇ ɐʅʅoʍǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.bulk.item.notFound": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No ʅouƃǝɹ ɟonup"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.bulk.itemResult": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "result"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.bulk.label": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔʇıous ou ʇɥǝ sǝʅǝɔʇǝp ıʇǝɯs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.bulk.notDone": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noʇ pouǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.bulk.reassign": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɐssıƃu…"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.bulk.release": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝʅǝɐsǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.bulk.selected": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " sǝʅǝɔʇǝp"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " sǝʅǝɔʇǝp"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.bulk.unwatch": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∩uɟoʅʅoʍ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.bulk.watch": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɐʇɔɥ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.cancel": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɐuɔǝʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.reassign.confirm": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɐssıƃu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.reassign.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "⊥ɥǝ ʇɐsʞ ƃoǝs"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "⊥ɥǝ "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʇɐsʞs ƃo"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " ʇo ʇɥǝ dǝɹsou ʎon ɔɥoosǝ. ⅄on ɔouɟıɹɯ ıʇ ıs ʎon qǝɟoɹǝ ıʇ ıs pouǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.reassign.personRequired": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥoosǝ ʇɥǝ uǝʍ dǝɹsou."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.reassign.reason": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɐsou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.reassign.reasonHint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԑoʇɥ dǝodʅǝ ɐɹǝ ʇoʅp, ɐup ʇɥǝ ɹǝɐsou ƃoǝs ıuʇo ʇɥǝ ɯǝɯo’s ɥısʇoɹʎ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.reassign.reasonRequired": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ ɹǝɐsou ıs ɹǝbnıɹǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.reassign.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɐssıƃu ʇɥǝ sǝʅǝɔʇǝp ʇɐsʞs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.reassign.to": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nǝʍ dǝɹsou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.select": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝʅǝɔʇ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.selectAll": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝʅǝɔʇ ɐʅʅ sɥoʍu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.sort": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Soɹʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.sort.assigned": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ssıƃuǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.sort.due": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡnǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.tab.team": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ǝɐɯ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.tab.watching": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɐʇɔɥıuƃ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.team.count": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʇɐsʞ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʇɐsʞs"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 6,
+      "value": "overdue",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "uouǝ oʌǝɹpnǝ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " oʌǝɹpnǝ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.team.empty": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No ʇɐsʞ ɯɐʇɔɥǝs."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.team.filter.allTeams": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ʅʅ ʇɥǝ nuıʇs I oʌǝɹsǝǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.team.filter.person": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁǝɹsou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.team.filter.status": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sʇɐʇns"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.team.filter.team": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ǝɐɯ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.team.holderStep": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "step"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.team.noDue": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No pnǝ ʇıɯǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.team.none": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ʇǝɐɯ ʌıǝʍ ıs ɟoɹ nuıʇ ɥǝɐps ɐup dǝodʅǝ ƃıʌǝu ıʇ. ⅄on po uoʇ oʌǝɹsǝǝ ɐ nuıʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.team.referenceUnit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "unit"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.team.status.overdue": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Oʌǝɹpnǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.team.status.pending": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁǝupıuƃ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.team.waiting": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "days",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Mɐıʇıuƃ sıuɔǝ ʇopɐʎ"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Mɐıʇıuƃ "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʍoɹʞıuƃ pɐʎ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Mɐıʇıuƃ "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʍoɹʞıuƃ pɐʎs"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.watching.empty": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄on ɟoʅʅoʍ uo ɯǝɯos. Odǝu ɐ ɯǝɯo ɐup ɔɥoosǝ Ⅎoʅʅoʍ ʇo ƃǝʇ ıʇs uǝʍs ɥǝɹǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.watching.reason.acted": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄on ɐɔʇǝp ou ıʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.watching.reason.initiated": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄on sʇɐɹʇǝp ıʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.watching.reason.manual": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄on ɟoʅʅoʍ ʇɥıs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.watching.reason.mentioned": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄on ʍǝɹǝ ɯǝuʇıouǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "inbox.watching.since": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎoʅʅoʍıuƃ sıuɔǝ "
+    },
+    {
+      "type": 1,
+      "value": "time"
     },
     {
       "type": 0,
@@ -19479,6 +21925,20 @@
       "value": "‬"
     }
   ],
+  "nav.dashboard": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡɐsɥqoɐɹp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "nav.distributionLists": [
     {
       "type": 0,
@@ -20658,6 +23118,20 @@
       "value": "‬"
     }
   ],
+  "notifications.prefs.saveFailed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥɐʇ ʍɐs uoʇ sɐʌǝp. ⊥ɹʎ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "notifications.prefs.saved": [
     {
       "type": 0,
@@ -20712,6 +23186,118 @@
     {
       "type": 1,
       "value": "text"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.watch.auto": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎoʅʅoʍ ɯǝɯos I ɔɹǝɐʇǝ oɹ ɐɔʇ ou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.watch.autoHint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄on ɔɐu sʇıʅʅ ɟoʅʅoʍ oɹ nuɟoʅʅoʍ ɐuʎ ɯǝɯo ʎonɹsǝʅɟ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.watch.email": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝɯɐıʅ ɯǝ ɐqonʇ ɟoʅʅoʍǝp ɯǝɯos"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.watch.email.digest": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡɐıʅʎ pıƃǝsʇ (pǝɟɐnʅʇ)"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.watch.email.immediate": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ʇ ouɔǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.watch.email.off": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nǝʌǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.watch.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎoʅʅoʍǝp ɯǝɯos ʇǝʅʅ ʎon ʍɥǝu ɐ sʇǝd ıs pǝɔıpǝp, ɐ uoʇǝ ıs ɐppǝp oɹ ʇɥǝ ɯǝɯo ɔʅosǝs. ∀uʎʇɥıuƃ ʇɥɐʇ uǝǝps ʎon ɐʅʍɐʎs ɹǝɐɔɥǝs ʎon ɐʇ ouɔǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.watch.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯos ʎon ɟoʅʅoʍ"
     },
     {
       "type": 0,

@@ -99,6 +99,37 @@
   --xy-controls-button-border-color-default: var(--border);
 }
 
+/*
+ * Dashboard charts (E05 T7, Recharts). Series take their colour from these classes and draw with currentColor; text and
+ * grid use the page's tokens, so both themes and the CSP (no inline style attribute) are respected.
+ */
+.memo-chart .series-1 {
+  color: var(--chart-1);
+}
+.memo-chart .series-2 {
+  color: var(--chart-2);
+}
+.memo-chart .recharts-cartesian-grid line {
+  stroke: var(--border);
+}
+.memo-chart .recharts-cartesian-axis-line,
+.memo-chart .recharts-cartesian-axis-tick-line {
+  stroke: var(--input);
+}
+.memo-chart .recharts-cartesian-axis-tick-value,
+.memo-chart .recharts-text {
+  fill: var(--muted-foreground);
+  font-size: 0.75rem;
+}
+.memo-chart .recharts-label-list .recharts-text {
+  fill: var(--foreground);
+  font-weight: 500;
+}
+.memo-chart .recharts-surface:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
 .react-flow__node.selected > div {
   box-shadow: 0 0 0 3px var(--primary);
 }

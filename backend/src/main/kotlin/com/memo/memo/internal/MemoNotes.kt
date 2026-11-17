@@ -72,7 +72,8 @@ class MemoNotes(
     fun mayWrite(memo: Memo): Boolean {
         val kind = signedIn()?.let { readable.kindOf(memo.id, it) }
         val copiesMay = settings.get(COPY_COMMENTS_SETTING)?.value == "true"
-        return kind != null && memo.status != MemoStatus.CLOSED && (kind != ParticipantKind.COPY || copiesMay)
+        // Note-sheet comments on imported memos are carried (design E06 §1).
+        return kind != null && !memo.imported && memo.status != MemoStatus.CLOSED && (kind != ParticipantKind.COPY || copiesMay)
     }
 
     /** Posts a comment, or a correction of [correctsId]; the draft is removed. */

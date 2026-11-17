@@ -799,6 +799,64 @@ export type JsonNode = {
     valueNode?: boolean;
 };
 
+export type LegacyApprovalView = {
+    decidedOn?: string | null;
+    decision: string;
+    ordinal: number;
+    person: LegacyPersonView;
+    position?: string | null;
+    remark?: string | null;
+};
+
+export type LegacyCorrectionView = {
+    after?: string | null;
+    before?: string | null;
+    correctedAt: string;
+    correctedBy: Named;
+    field: string;
+    reason: string;
+};
+
+export type LegacyMemoView = {
+    approvals: Array<LegacyApprovalView>;
+    batchId: string;
+    classification?: string | null;
+    closedOn?: string | null;
+    corrections: Array<LegacyCorrectionView>;
+    decidedOn?: string | null;
+    importedAt: string;
+    initiator: LegacyPersonView;
+    legacyNumber: string;
+    originals: Array<LegacyOriginalView>;
+    raisedOn: string;
+    rowNumber: number;
+    sourceCode: string;
+    status: string;
+    subject: string;
+    timeZone: string;
+    type: string;
+    unit: string;
+};
+
+export type LegacyOriginalView = {
+    classification?: Named | null;
+    fileId?: string | null;
+    id: string;
+    mediaType?: string | null;
+    position: number;
+    restricted: boolean;
+    role: 'MAIN' | 'ATTACHMENT';
+    sha256?: string | null;
+    sizeBytes?: number | null;
+    title?: string | null;
+    versionId?: string | null;
+};
+
+export type LegacyPersonView = {
+    name: string;
+    user?: Named | null;
+};
+
 export type LegalEntity = {
     id: string;
     name: string;
@@ -1041,12 +1099,14 @@ export type MemoView = {
     dueAt?: string | null;
     holders: Array<Named>;
     id: string;
-    initiator: Named;
+    initiator?: Named | null;
     interests: Array<Named>;
+    legacy?: LegacyMemoView | null;
     linkedFrom: Array<MemoLinkView>;
     links: Array<MemoLinkView>;
     myTask?: TaskRef | null;
     numberedWhen?: 'ON_SUBMIT' | 'ON_APPROVAL';
+    origin: 'NATIVE' | 'IMPORTED';
     originUnit?: Named | null;
     readingAs?: 'INITIATOR' | 'COAUTHOR' | 'APPROVER' | 'NOTIFIED' | 'COPY' | 'SHARED';
     reference?: string | null;

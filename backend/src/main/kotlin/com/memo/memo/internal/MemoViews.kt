@@ -6,6 +6,8 @@ import com.memo.common.context.ActorContext
 import com.memo.docedit.DocumentEditing
 import com.memo.files.Files
 import com.memo.identity.UserSummaries
+import com.memo.memo.internal.legacy.LegacyMemoView
+import com.memo.memo.internal.legacy.LegacyMemoViews
 import com.memo.memo.internal.rendition.MemoRenditionQueries
 import com.memo.memo.internal.rendition.RecordState
 import com.memo.org.OrgDirectory
@@ -161,7 +163,8 @@ data class MemoView(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val type: Named,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val classification: ClassificationView,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val status: MemoStatus,
-    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val initiator: Named,
+    /** Who raised it; null for an imported memo whose legacy initiator is not linked to a user here (see [legacy]). */
+    val initiator: Named?,
     val document: DocumentView?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val route: List<RouteEntryView>,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val round: Int,
@@ -203,9 +206,14 @@ data class MemoView(
     val readingAs: ParticipantKind? = null,
     /** When it was closed; null unless closed. */
     val closedAt: Instant? = null,
-    /** Where its final record is (ADR-0053): NONE until it is approved. */
+    /** Where its final record is (ADR-0053): NONE until it is approved, and always for an imported memo. */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED)
     val rendition: RecordState = RecordState.NONE,
+    /** Raised here, or imported in a final state from a legacy system (ADR-0055). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED)
+    val origin: MemoOrigin = MemoOrigin.NATIVE,
+    /** For an imported memo: what the legacy system said, as given and not verified by this system. */
+    val legacy: LegacyMemoView? = null,
 )
 
 /** Builds [MemoView]s: names from identity, the document from files. Inside a tenant transaction. */
@@ -227,6 +235,7 @@ class MemoViews(
     private val readable: MemoReadable,
     private val policy: com.memo.common.authz.Policy,
     private val renditions: MemoRenditionQueries,
+    private val legacyViews: LegacyMemoViews,
 ) {
     fun of(memo: Memo): MemoView {
         val interests = interestStore.of(memo.id)
@@ -239,13 +248,10 @@ class MemoViews(
         val user = (ActorContext.current().actor as? Actor.User)?.userId
         val open = if (workflow != null && user != null) workflows.myTask(MemoWorkflowSubject.TYPE, memo.id, user) else null
         val targets = open?.sendBackTargets.orEmpty()
-        val names =
-            users
-                .of(
-                    route.flatMap { it.people } + holdersToday.values + holders + memo.initiatorId + targets.map { it.holderId } +
-                        listOfNotNull(open?.claimedBy) +
-                        interests + coauthors,
-                ).mapValues { it.value.displayName }
+        val people =
+            route.flatMap { it.people } + holdersToday.values + holders + listOfNotNull(memo.initiatorId, open?.claimedBy) +
+                targets.map { it.holderId } + interests + coauthors
+        val names = users.of(people).mapValues { it.value.displayName }
         val level = clearances.level(memo.classificationId)
         val type = types.forMemo(memo)
         val details = details(memo)
@@ -262,7 +268,7 @@ class MemoViews(
             type = Named(type.id, type.name),
             classification = ClassificationView(memo.classificationId, memo.classificationRank, level?.name.orEmpty()),
             status = memo.status,
-            initiator = Named(memo.initiatorId, names[memo.initiatorId].orEmpty()),
+            initiator = memo.initiatorId?.let { Named(it, names[it].orEmpty()) },
             document = document(memo.documentFileId),
             route = routeViews(route, names, directory.positions(positions).mapValues { it.value.title }, holdersToday),
             round = memo.currentRound,
@@ -279,7 +285,7 @@ class MemoViews(
             numberedWhen = details.numberedWhen.takeIf { memo.reference == null },
             links = links.first,
             linkedFrom = links.second,
-            canLink = memo.status !in MemoViewsRules.UNLINKABLE,
+            canLink = memo.status !in MemoViewsRules.UNLINKABLE && !memo.imported,
             readingAs = user?.let { readable.kindOf(memo.id, it) },
             rendition = renditions.state(memo.id, approved = memo.approvedAt != null),
             closedAt = memo.closedAt,
@@ -287,6 +293,8 @@ class MemoViews(
             createdAt = memo.createdAt,
             updatedAt = memo.updatedAt,
             version = memo.version,
+            origin = memo.origin,
+            legacy = legacyViews.of(memo),
         )
     }
 
@@ -396,6 +404,9 @@ class MemoViews(
         coauthor: Boolean,
     ): List<MemoAction> =
         when {
+            // An imported memo is final and never in a workflow: copy-to and following only (design E06 §11).
+            memo.imported -> emptyList()
+
             task != null -> taskActions(task) + claimActions(task, user) + recusal(task, user)
 
             // A co-author edits the content only (ADR-0047).

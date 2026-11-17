@@ -94,6 +94,8 @@ class MemoListStore(
             .where(
                 listOfNotNull(
                     MEMO.INITIATOR_ID.eq(initiator),
+                    // Imported memos are found by search, not in the initiator's boxes (design E06 §11).
+                    MEMO.ORIGIN.eq(MemoOrigin.NATIVE.name),
                     MEMO.STATUS.`in`(statuses.map { it.name }),
                     after?.let { (at, id) -> DSL.row(MEMO.UPDATED_AT, MEMO.ID).lt(at.atOffset(ZoneOffset.UTC), id) },
                 ),

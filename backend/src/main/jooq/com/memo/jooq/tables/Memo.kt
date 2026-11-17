@@ -6,6 +6,7 @@ package com.memo.jooq.tables
 
 import com.memo.jooq.indexes.MEMO_NUMBER_UK
 import com.memo.jooq.indexes.MEMO_TENANT_APPROVED_IDX
+import com.memo.jooq.indexes.MEMO_TENANT_IMPORTED_IDX
 import com.memo.jooq.indexes.MEMO_TENANT_INITIATOR_BOX_IDX
 import com.memo.jooq.indexes.MEMO_TENANT_ORIGIN_UNIT_IDX
 import com.memo.jooq.indexes.MEMO_TENANT_TYPE_IDX
@@ -15,6 +16,7 @@ import com.memo.jooq.keys.MEMO_ATTACHMENT__MEMO_ATTACHMENT_TENANT_ID_MEMO_ID_FKE
 import com.memo.jooq.keys.MEMO_COPY_DELIVERY__MEMO_COPY_DELIVERY_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_COPY__MEMO_COPY_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_INTEREST__MEMO_INTEREST_TENANT_ID_MEMO_ID_FKEY
+import com.memo.jooq.keys.MEMO_LEGACY__MEMO_LEGACY_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_LINK__MEMO_LINK_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_LINK__MEMO_LINK_TENANT_ID_TARGET_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_NOTE_ATTACHMENT__MEMO_NOTE_ATTACHMENT_TENANT_ID_MEMO_ID_FKEY
@@ -40,6 +42,7 @@ import com.memo.jooq.tables.MemoAttachment.MemoAttachmentPath
 import com.memo.jooq.tables.MemoCopy.MemoCopyPath
 import com.memo.jooq.tables.MemoCopyDelivery.MemoCopyDeliveryPath
 import com.memo.jooq.tables.MemoInterest.MemoInterestPath
+import com.memo.jooq.tables.MemoLegacy.MemoLegacyPath
 import com.memo.jooq.tables.MemoLink.MemoLinkPath
 import com.memo.jooq.tables.MemoNote.MemoNotePath
 import com.memo.jooq.tables.MemoNoteAttachment.MemoNoteAttachmentPath
@@ -164,7 +167,7 @@ open class Memo(
     /**
      * The column <code>memo.memo.initiator_id</code>.
      */
-    val INITIATOR_ID: TableField<MemoRecord, UUID?> = createField(DSL.name("initiator_id"), SQLDataType.UUID.nullable(false), this, "")
+    val INITIATOR_ID: TableField<MemoRecord, UUID?> = createField(DSL.name("initiator_id"), SQLDataType.UUID, this, "")
 
     /**
      * The column <code>memo.memo.origin_unit_id</code>.
@@ -256,6 +259,11 @@ open class Memo(
      */
     val TEMPLATE_VERSION_ID: TableField<MemoRecord, UUID?> = createField(DSL.name("template_version_id"), SQLDataType.UUID, this, "")
 
+    /**
+     * The column <code>memo.memo.origin</code>.
+     */
+    val ORIGIN: TableField<MemoRecord, String?> = createField(DSL.name("origin"), SQLDataType.CLOB.nullable(false).defaultValue(DSL.field(DSL.raw("'NATIVE'::text"), SQLDataType.CLOB)), this, "")
+
     private constructor(alias: Name, aliased: Table<MemoRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<MemoRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<MemoRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -288,7 +296,7 @@ open class Memo(
         override fun `as`(alias: Table<*>): MemoPath = MemoPath(alias.qualifiedName, this)
     }
     override fun getSchema(): Schema? = if (aliased()) null else com.memo.jooq.Memo.MEMO
-    override fun getIndexes(): List<Index> = listOf(MEMO_NUMBER_UK, MEMO_TENANT_APPROVED_IDX, MEMO_TENANT_INITIATOR_BOX_IDX, MEMO_TENANT_ORIGIN_UNIT_IDX, MEMO_TENANT_TYPE_IDX, MEMO_TENANT_TYPE_VERSION_IDX)
+    override fun getIndexes(): List<Index> = listOf(MEMO_NUMBER_UK, MEMO_TENANT_APPROVED_IDX, MEMO_TENANT_IMPORTED_IDX, MEMO_TENANT_INITIATOR_BOX_IDX, MEMO_TENANT_ORIGIN_UNIT_IDX, MEMO_TENANT_TYPE_IDX, MEMO_TENANT_TYPE_VERSION_IDX)
     override fun getPrimaryKey(): UniqueKey<MemoRecord> = MEMO_PKEY
     override fun getUniqueKeys(): List<UniqueKey<MemoRecord>> = listOf(MEMO_TENANT_ID_DOCUMENT_FILE_ID_KEY, MEMO_TENANT_ID_ID_KEY, MEMO_TENANT_ID_REFERENCE_KEY)
     override fun getReferences(): List<ForeignKey<MemoRecord, *>> = listOf(MEMO__MEMO_TENANT_ID_MEMO_TYPE_ID_FKEY, MEMO__MEMO_TYPE_VERSION_FK)
@@ -385,6 +393,22 @@ open class Memo(
 
     val memoInterest: MemoInterestPath
         get(): MemoInterestPath = memoInterest()
+
+    private lateinit var _memoLegacy: MemoLegacyPath
+
+    /**
+     * Get the implicit to-many join path to the <code>memo.memo_legacy</code>
+     * table
+     */
+    fun memoLegacy(): MemoLegacyPath {
+        if (!this::_memoLegacy.isInitialized)
+            _memoLegacy = MemoLegacyPath(this, null, MEMO_LEGACY__MEMO_LEGACY_TENANT_ID_MEMO_ID_FKEY.inverseKey)
+
+        return _memoLegacy;
+    }
+
+    val memoLegacy: MemoLegacyPath
+        get(): MemoLegacyPath = memoLegacy()
 
     private lateinit var _memoLinkTenantIdMemoIdFkey: MemoLinkPath
 
@@ -610,20 +634,23 @@ open class Memo(
     val memoWatch: MemoWatchPath
         get(): MemoWatchPath = memoWatch()
     override fun getChecks(): List<Check<MemoRecord>> = listOf(
-        Internal.createCheck(this, DSL.name("memo_check"), "(((status = ANY (ARRAY['DRAFT'::text, 'DISCARDED'::text])) = (workflow_instance_id IS NULL)))", true),
         Internal.createCheck(this, DSL.name("memo_check1"), "(((workflow_instance_id IS NULL) = (current_round = 0)))", true),
         Internal.createCheck(this, DSL.name("memo_classification_rank_check"), "((classification_rank >= 0))", true),
         Internal.createCheck(this, DSL.name("memo_closed_at"), "(((status = 'CLOSED'::text) = (closed_at IS NOT NULL)))", true),
         Internal.createCheck(this, DSL.name("memo_current_round_check"), "((current_round >= 0))", true),
+        Internal.createCheck(this, DSL.name("memo_imported_shape"), "(((origin = 'NATIVE'::text) OR ((status = ANY (ARRAY['APPROVED'::text, 'REJECTED'::text, 'WITHDRAWN'::text, 'CANCELLED'::text, 'CLOSED'::text])) AND (workflow_instance_id IS NULL) AND (current_round = 0) AND (reference IS NOT NULL) AND (number_series IS NULL) AND (document_file_id IS NULL) AND (approved_at IS NULL) AND (memo_type_version_id IS NOT NULL))))", true),
+        Internal.createCheck(this, DSL.name("memo_initiator_native"), "(((origin = 'IMPORTED'::text) OR (initiator_id IS NOT NULL)))", true),
         Internal.createCheck(this, DSL.name("memo_metadata_check"), "(((jsonb_typeof(metadata) = 'object'::text) AND (octet_length((metadata)::text) <= 65536)))", true),
         Internal.createCheck(this, DSL.name("memo_number_parts"), "((((number_series IS NULL) = (number_period IS NULL)) AND ((number_series IS NULL) = (number_scope IS NULL)) AND ((number_series IS NULL) = (number_sequence IS NULL)) AND ((number_series IS NULL) OR (reference IS NOT NULL))))", true),
         Internal.createCheck(this, DSL.name("memo_number_period_check"), "((number_period ~ '^(ALL|[0-9]{4}|FY[0-9]{4}-[0-9]{2})\$'::text))", true),
         Internal.createCheck(this, DSL.name("memo_number_scope_check"), "((length(number_scope) <= 100))", true),
         Internal.createCheck(this, DSL.name("memo_number_sequence_check"), "((number_sequence >= 1))", true),
         Internal.createCheck(this, DSL.name("memo_number_series_check"), "((number_series ~ '^[a-z][a-z0-9-]{0,49}\$'::text))", true),
+        Internal.createCheck(this, DSL.name("memo_origin_check"), "((origin = ANY (ARRAY['NATIVE'::text, 'IMPORTED'::text])))", true),
         Internal.createCheck(this, DSL.name("memo_reference_length"), "(((length(reference) >= 1) AND (length(reference) <= 100)))", true),
         Internal.createCheck(this, DSL.name("memo_status_check"), "((status = ANY (ARRAY['DRAFT'::text, 'IN_REVIEW'::text, 'RETURNED'::text, 'APPROVED'::text, 'REJECTED'::text, 'WITHDRAWN'::text, 'DISCARDED'::text, 'CANCELLED'::text, 'CLOSED'::text])))", true),
-        Internal.createCheck(this, DSL.name("memo_subject_check"), "(((length(subject) >= 1) AND (length(subject) <= 300)))", true)
+        Internal.createCheck(this, DSL.name("memo_subject_check"), "(((length(subject) >= 1) AND (length(subject) <= 300)))", true),
+        Internal.createCheck(this, DSL.name("memo_workflow_by_status"), "(((origin = 'IMPORTED'::text) OR ((status = ANY (ARRAY['DRAFT'::text, 'DISCARDED'::text])) = (workflow_instance_id IS NULL))))", true)
     )
     override fun `as`(alias: String): Memo = Memo(DSL.name(alias), this)
     override fun `as`(alias: Name): Memo = Memo(alias, this)

@@ -182,6 +182,10 @@ export const catalogue = defineMessages({
     id: 'access.permission.memoDashboardRead',
     defaultMessage: 'See the approvals dashboard of a unit',
   },
+  'memo.import': {
+    id: 'access.permission.memoImport',
+    defaultMessage: 'Import memos from a legacy system',
+  },
 })
 
 export function catalogueLabel(intl: IntlShape, key: string, fallback?: string): string {

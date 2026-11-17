@@ -49,9 +49,10 @@ class MemoDoaController(
     ): DoaPreviewView =
         transactions.readInTenant(TenantContext.current()) {
             val memo = memos.own(id)
-            val preview = authority.preview(MemoWorkflowSubject.TYPE, memo.id, memo.initiatorId)
+            val initiator = checkNotNull(memo.initiatorId) { "the memo is the actor's own" }
+            val preview = authority.preview(MemoWorkflowSubject.TYPE, memo.id, initiator)
             val route = routes.route(memo.id)
-            val gaps = authority.shortfalls(MemoWorkflowSubject.TYPE, memo.id, memo.initiatorId, route).associateBy { it.group }
+            val gaps = authority.shortfalls(MemoWorkflowSubject.TYPE, memo.id, initiator, route).associateBy { it.group }
             val names = users.of(preview.groups.flatMap { it.people }.toSet()).mapValues { it.value.displayName }
             DoaPreviewView(
                 preview.version,

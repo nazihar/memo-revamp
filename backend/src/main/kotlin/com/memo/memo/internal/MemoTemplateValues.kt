@@ -67,7 +67,7 @@ object MemoTemplateValues {
                 "memo.subject" to view.subject,
                 "memo.classification" to view.classification.name,
                 "memo.type" to view.type.name,
-                "initiator.name" to view.initiator.name,
+                "initiator.name" to view.initiator?.name.orEmpty(),
                 "initiator.position" to initiatorPosition,
                 "initiator.unit" to initiatorUnit,
             ) + fields.associate { f -> MemoTemplateTags.field(f.key) to (details[f.key]?.let { field(f, it) } ?: "") }

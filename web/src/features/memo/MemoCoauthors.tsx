@@ -50,7 +50,7 @@ export function MemoCoauthors({
   const intl = useIntl()
   const pickerId = useId()
   const [busy, setBusy] = useState(false)
-  const editable = memo.status === 'DRAFT' && memo.initiator.id === me
+  const editable = memo.status === 'DRAFT' && memo.initiator?.id === me
   if (!editable && memo.coauthors.length === 0) return null
 
   const save = async (ids: string[]) => {
@@ -107,7 +107,7 @@ export function MemoCoauthors({
             id={pickerId}
             kind="user"
             onChange={(picked) => {
-              if (picked && !ids.includes(picked.id) && picked.id !== memo.initiator.id) void save([...ids, picked.id])
+              if (picked && !ids.includes(picked.id) && picked.id !== memo.initiator?.id) void save([...ids, picked.id])
             }}
           />
         </div>

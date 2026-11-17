@@ -204,6 +204,8 @@ class MemoDashboards(
                 .where(
                     MEMO.CREATED_AT.ge(start.atStartOfDay(zone).toOffsetDateTime()),
                     MEMO.CREATED_AT.lt(end.plusDays(1).atStartOfDay(zone).toOffsetDateTime()),
+                    // Imported memos were created elsewhere: their import is no throughput (design E06 §11).
+                    MEMO.ORIGIN.eq(MemoOrigin.NATIVE.name),
                     memos,
                 ).fetch { week(requireNotNull(it.value1()).atZoneSameInstant(zone).toLocalDate()) }
                 .groupingBy { it }

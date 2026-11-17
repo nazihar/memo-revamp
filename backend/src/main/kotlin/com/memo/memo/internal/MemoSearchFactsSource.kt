@@ -30,8 +30,12 @@ class MemoSearchFactsSource(
     private val files: Files,
     private val tenantDsl: TenantDsl,
 ) : MemoSearchSource {
+    /**
+     * The memo's facts. Imported memos are not indexed yet: the index needs an initiator, and E06 T4 brings their origin,
+     * legacy names and raised-on date to it (design E06 §3.4, §11).
+     */
     override fun facts(memoId: UUID): MemoSearchFacts? =
-        memos.find(memoId)?.let { memo ->
+        memos.find(memoId)?.takeUnless { it.imported }?.let { memo ->
             val fields = (memo.memoTypeVersionId?.let(versions::byId) ?: versions.published(memo.typeId))?.settings?.fields.orEmpty()
             val typeName = types.find(memo.typeId)?.name
             MemoSearchFacts(
@@ -40,7 +44,7 @@ class MemoSearchFactsSource(
                 originUnitId = memo.originUnitId,
                 status = memo.status.name,
                 typeId = memo.typeId,
-                initiatorId = memo.initiatorId,
+                initiatorId = checkNotNull(memo.initiatorId) { "a memo raised here has an initiator" },
                 amount = fields.firstOrNull { it.type == FieldType.AMOUNT }?.let { MemoFieldText.amount(memo.metadata[it.key]) },
                 createdAt = memo.createdAt,
                 updatedAt = memo.updatedAt,

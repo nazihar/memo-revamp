@@ -175,7 +175,7 @@ class RecordPlanner(
         val people =
             stamps.flatMap { listOfNotNull(it.actorId, it.actingForId) } +
                 noteList.flatMap { listOfNotNull(it.authorId, it.actingForId) } +
-                legacy.flatMap { listOfNotNull(it.actorId, it.actingForId) } + memo.initiatorId
+                legacy.flatMap { listOfNotNull(it.actorId, it.actingForId) } + listOfNotNull(memo.initiatorId)
         val names = users.names(people)
         val levels = clearances.levels()
         return Facts(

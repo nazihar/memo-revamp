@@ -291,6 +291,12 @@
       "value": "Manage distribution listsSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "access.permission.memoImport": [
+    {
+      "type": 0,
+      "value": "Import memos from a legacy systemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "access.permission.memoReadUnit": [
     {
       "type": 0,

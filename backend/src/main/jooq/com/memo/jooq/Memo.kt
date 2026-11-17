@@ -34,6 +34,10 @@ import com.memo.jooq.tables.MemoCopyDelivery
 import com.memo.jooq.tables.MemoDistributionList
 import com.memo.jooq.tables.MemoDistributionMember
 import com.memo.jooq.tables.MemoInterest
+import com.memo.jooq.tables.MemoLegacy
+import com.memo.jooq.tables.MemoLegacyApproval
+import com.memo.jooq.tables.MemoLegacyCorrection
+import com.memo.jooq.tables.MemoLegacyFile
 import com.memo.jooq.tables.MemoLink
 import com.memo.jooq.tables.MemoNote
 import com.memo.jooq.tables.MemoNoteAttachment
@@ -274,6 +278,26 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      * The table <code>memo.memo_interest</code>.
      */
     val MEMO_INTEREST: MemoInterest get() = MemoInterest.MEMO_INTEREST
+
+    /**
+     * The table <code>memo.memo_legacy</code>.
+     */
+    val MEMO_LEGACY: MemoLegacy get() = MemoLegacy.MEMO_LEGACY
+
+    /**
+     * The table <code>memo.memo_legacy_approval</code>.
+     */
+    val MEMO_LEGACY_APPROVAL: MemoLegacyApproval get() = MemoLegacyApproval.MEMO_LEGACY_APPROVAL
+
+    /**
+     * The table <code>memo.memo_legacy_correction</code>.
+     */
+    val MEMO_LEGACY_CORRECTION: MemoLegacyCorrection get() = MemoLegacyCorrection.MEMO_LEGACY_CORRECTION
+
+    /**
+     * The table <code>memo.memo_legacy_file</code>.
+     */
+    val MEMO_LEGACY_FILE: MemoLegacyFile get() = MemoLegacyFile.MEMO_LEGACY_FILE
 
     /**
      * The table <code>memo.memo_link</code>.
@@ -832,6 +856,10 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         MemoDistributionList.MEMO_DISTRIBUTION_LIST,
         MemoDistributionMember.MEMO_DISTRIBUTION_MEMBER,
         MemoInterest.MEMO_INTEREST,
+        MemoLegacy.MEMO_LEGACY,
+        MemoLegacyApproval.MEMO_LEGACY_APPROVAL,
+        MemoLegacyCorrection.MEMO_LEGACY_CORRECTION,
+        MemoLegacyFile.MEMO_LEGACY_FILE,
         MemoLink.MEMO_LINK,
         MemoNote.MEMO_NOTE,
         MemoNoteAttachment.MEMO_NOTE_ATTACHMENT,

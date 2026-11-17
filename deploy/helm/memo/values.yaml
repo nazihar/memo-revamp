@@ -81,9 +81,13 @@ web:
     limits: { memory: 128Mi }
 
 migrations:
+  # The job starts the whole application. Until the module order was precomputed (META-INF/spring-modulith, checked by
+  # ModuleMetadataIT), Spring Modulith built its module model (an ArchUnit import of the classes) to order the
+  # per-module migrations: about 550 MiB of live heap at the peak, 1.16 GiB in all (measured 2026-11-17, Phase 3 code),
+  # so 1Gi was OOM-killed. The limit stays at 1536Mi until the job is measured without it.
   resources:
-    requests: { cpu: 250m, memory: 512Mi }
-    limits: { memory: 1Gi }
+    requests: { cpu: 250m, memory: 1Gi }
+    limits: { memory: 1536Mi }
 
 ingress:
   enabled: false

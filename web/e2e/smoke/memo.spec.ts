@@ -1,20 +1,15 @@
-import type { Browser, Page } from '@playwright/test'
+import type { Page } from '@playwright/test'
 import { confirmIfAsked, demoSecret } from '../auth'
 import { docx } from '../docx'
 import { expect, test } from '../fixtures'
 import { chooseMemoType } from '../memo-type'
-import { storageStateFor, type SignedInRole } from '../roles'
+import { pageAs } from '../roles'
 
 /**
  * The first-slice journey (E01 test plan, T10; D1 scenario): create → upload → route → submit → return → version 2 →
  * resubmit → round 2 → approve → Approved, across three people, plus the admin's reassignment screen. Each run writes a
  * new memo, so it does not depend on the seeded ones.
  */
-async function as(browser: Browser, role: SignedInRole): Promise<Page> {
-  const context = await browser.newContext({ storageState: storageStateFor(role) })
-  return context.newPage()
-}
-
 async function upload(page: Page, label: string, text: string) {
   await page.getByLabel(label).setInputFiles({
     name: 'memo.docx',
@@ -34,7 +29,7 @@ async function act(page: Page, memoUrl: string, button: string, remark?: string)
   const dialog = page.getByRole('dialog')
   if (remark) await dialog.getByRole('textbox', { name: /Remark/ }).fill(remark)
   await dialog.getByRole('button', { name: button }).click()
-  await confirmIfAsked(page, demoSecret('MEMO_DEMO_TOTP_SECRET'))
+  await confirmIfAsked(page, demoSecret('MEMO_DEMO_TOTP_SECRET'), page.getByText('Done.'))
   await expect(page.getByText('Done.')).toBeVisible()
 }
 
@@ -67,7 +62,7 @@ test.describe('as the initiator', () => {
     await act(page, memoUrl, 'Submit')
     await expect(status(page, 'In review')).toBeVisible()
 
-    const head = await as(browser, 'headCredit')
+    const head = await pageAs(browser, 'headCredit')
     await act(head, memoUrl, 'Return', 'Please add the annex.')
 
     await page.goto(memoUrl)
@@ -78,7 +73,7 @@ test.describe('as the initiator', () => {
     await expect(page.getByText('Earlier round: its approvals no longer count.')).toBeVisible()
 
     await act(head, memoUrl, 'Approve')
-    const director = await as(browser, 'director')
+    const director = await pageAs(browser, 'director')
     await act(director, memoUrl, 'Approve')
 
     await page.goto(memoUrl)

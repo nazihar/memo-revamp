@@ -1,6 +1,6 @@
 import { expect, test } from '../fixtures'
 import { chooseMemoType } from '../memo-type'
-import { storageStateFor } from '../roles'
+import { pageAs } from '../roles'
 
 /**
  * The note sheet (Phase 3 E03 T7, ADR-0049): a note with bold text and a mention of someone who cannot see the memo
@@ -48,13 +48,12 @@ test.describe('as the initiator', () => {
     await expect(sheet.getByText('@Demo Head of Credit')).toBeVisible()
 
     // The person mentioned now reads the memo and the note.
-    const context = await browser.newContext({ storageState: storageStateFor('headCredit') })
-    const theirs = await context.newPage()
+    const theirs = await pageAs(browser, 'headCredit')
     await theirs.goto(memoUrl)
     await expect(theirs.getByRole('heading', { level: 1, name: subject })).toBeVisible()
     await expect(
       theirs.getByRole('region', { name: /^Round 1/ }).getByText('Rent schedule', { exact: true }),
     ).toBeVisible()
-    await context.close()
+    await theirs.context().close()
   })
 })

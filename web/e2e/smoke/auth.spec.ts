@@ -37,7 +37,7 @@ test.describe('as a tenant admin', () => {
     await invite.getByLabel('Full name').fill(name)
     await app.checkA11y()
     await invite.getByRole('button', { name: 'Send invitation' }).click()
-    await confirmIfAsked(page, adminSecret)
+    await confirmIfAsked(page, adminSecret, page.getByText(`Invitation sent to ${email}.`))
     await expect(page.getByText(`Invitation sent to ${email}.`)).toBeVisible()
 
     // The invitee, in their own browser.
@@ -75,7 +75,7 @@ test.describe('as a tenant admin', () => {
       .getByRole('alertdialog', { name: `Deactivate ${name}?` })
       .getByRole('button', { name: 'Deactivate' })
       .click()
-    await confirmIfAsked(page, adminSecret)
+    await confirmIfAsked(page, adminSecret, page.getByText('Done.'))
     await expect(page.getByText('Done.')).toBeVisible()
 
     await inviteePage.reload()

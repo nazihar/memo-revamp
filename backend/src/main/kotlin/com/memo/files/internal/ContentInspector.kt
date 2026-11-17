@@ -130,17 +130,26 @@ internal class ContentInspector(
             cause = wrapper,
         )
 
-    /** Tika's magic detection on the first [HEAD] bytes: a media type, never taken from the name. */
+    /**
+     * Tika's magic detection on the first [HEAD] bytes: a media type, never taken from the name. Tika's magic also names
+     * Word, Excel and PowerPoint from a stream name it finds in the first sectors of an OLE2 container (a directory
+     * written early, as in many real files). That is still a container: it is reported as one, so only the Tika server
+     * names the document inside, for purposes that accept legacy formats (ADR-0055).
+     */
     private fun detect(channel: SeekableByteChannel): String {
         val head = ByteBuffer.allocate(minOf(HEAD.toLong(), channel.size()).toInt())
         while (head.hasRemaining()) {
             if (channel.read(head) < 0) break
         }
-        return TikaInputStream
-            .get(head.array().copyOf(head.position()))
-            .use { mimeTypes.detect(it, Metadata(), ParseContext()) }
-            .baseType
-            .toString()
+        val bytes = head.array().copyOf(head.position())
+        val detected =
+            TikaInputStream
+                .get(bytes)
+                .use { mimeTypes.detect(it, Metadata(), ParseContext()) }
+                .baseType
+                .toString()
+        val inContainer = bytes.size >= OLE2_SIGNATURE.size && bytes.copyOf(OLE2_SIGNATURE.size).contentEquals(OLE2_SIGNATURE)
+        return if (inContainer && FileType.ofMediaType(detected) in FileType.OLE2_DOCUMENTS) FileType.OLE2.mediaType else detected
     }
 
     override fun destroy() {
@@ -153,6 +162,9 @@ internal class ContentInspector(
         private const val HEAD = 64 * 1024
         private const val MAX_REFUSALS = 50
         private const val MAX_WHERE = 200
+
+        /** The first eight bytes of every OLE2 compound file. */
+        private val OLE2_SIGNATURE = intArrayOf(0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1).map { it.toByte() }.toByteArray()
 
         /** Media types Tika gives zip containers; our zip reader decides which type they are. */
         private val ZIP_MEDIA_TYPES =

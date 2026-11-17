@@ -1,6 +1,6 @@
 import AxeBuilder from '@axe-core/playwright'
 import { test as base, expect, type Page } from '@playwright/test'
-import { storageStateFor, type Role } from './roles'
+import { keepSession, sessionsSaved, storageStateFor, type Role } from './roles'
 
 /**
  * WebKit (Playwright 1.64's build) reports CSP violations for its own internals: an inline style in the shadow tree of
@@ -48,9 +48,16 @@ export async function assertNoA11yViolations(page: Page): Promise<void> {
 export const test = base.extend<Fixtures>({
   role: ['anonymous', { option: true }],
 
-  // Role → storage state written by the global setup's real sign-ins (Phase 0 Q5).
+  // Role → this worker slot's session of that role, from a real sign-in (Phase 0 Q5; roles.ts).
   storageState: async ({ role }, use) => {
-    await use(storageStateFor(role))
+    await use(await storageStateFor(role))
+  },
+
+  // A step-up in the test moves the role's session to a new id; it is saved for the slot's next test.
+  context: async ({ context, role }, use) => {
+    if (role !== 'anonymous') keepSession(context, role)
+    await use(context)
+    await sessionsSaved()
   },
 
   cspViolations: [

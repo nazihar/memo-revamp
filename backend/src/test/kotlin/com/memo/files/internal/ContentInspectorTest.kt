@@ -6,6 +6,10 @@ import com.memo.files.FileType
 import com.memo.testsupport.LegacySamples
 import com.memo.testsupport.Samples
 import org.apache.commons.compress.utils.SeekableInMemoryByteChannel
+import org.apache.tika.io.TikaInputStream
+import org.apache.tika.metadata.Metadata
+import org.apache.tika.mime.MimeTypes
+import org.apache.tika.parser.ParseContext
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowableOfType
 import org.junit.jupiter.api.AfterAll
@@ -170,5 +174,22 @@ class ContentInspectorTest {
         // Word for DOS-era magic: Tika names it msword without any container; only the server may name a .doc.
         val wordTwo = byteArrayOf(0xDB.toByte(), 0xA5.toByte(), 0x2D, 0x00) + ByteArray(1024)
         assertThat(rejection(wordTwo, "old.doc").reason).isEqualTo(RejectionReason.TYPE_NOT_ALLOWED)
+    }
+
+    @Test
+    fun `an OLE2 file whose directory comes first is still a container, typed by the server`() {
+        // The directory in sector 1, its first entry the Word stream: Tika's magic names msword from that name alone.
+        val doc = ByteArray(4096)
+        intArrayOf(0xD0, 0xCF, 0x11, 0xE0, 0xA1, 0xB1, 0x1A, 0xE1).forEachIndexed { i, b -> doc[i] = b.toByte() }
+        "WordDocument".toByteArray(Charsets.UTF_16LE).copyInto(doc, destinationOffset = 1152)
+        val magic = TikaInputStream.get(doc).use { MimeTypes.getDefaultMimeTypes().detect(it, Metadata(), ParseContext()) }
+        assertThat(magic.baseType.toString()).isEqualTo(FileType.DOC.mediaType)
+
+        var asked = 0
+        val legacy = everything.copy(ole2 = { _ -> FileType.DOC.also { asked++ } })
+        assertThat(inspect(doc, "memo.doc", legacy).type).isEqualTo(FileType.DOC)
+        assertThat(asked).isEqualTo(1)
+        // A purpose that does not accept legacy formats refuses it as the container it is.
+        assertThat(rejection(doc, "memo.doc").detail["detectedType"]).isEqualTo(FileType.OLE2.mediaType)
     }
 }

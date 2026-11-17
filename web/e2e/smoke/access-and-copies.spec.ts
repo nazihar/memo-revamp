@@ -1,9 +1,9 @@
-import type { Browser, Locator, Page } from '@playwright/test'
+import type { Locator } from '@playwright/test'
 import { confirmIfAsked, demoSecret } from '../auth'
 import { docx } from '../docx'
 import { expect, test } from '../fixtures'
 import { chooseMemoType } from '../memo-type'
-import { storageStateFor, type SignedInRole } from '../roles'
+import { pageAs } from '../roles'
 
 /**
  * Access and copies (Phase 3 E03 test plan, T9; ADR-0050): the initiator copies the memo to the head of finance after
@@ -11,11 +11,6 @@ import { storageStateFor, type SignedInRole } from '../roles'
  * finance, who reads it for information, and the receipt shows they opened it. The auditor reads it as a unit reader for
  * the Credit Division (the demo seed). Each run writes a new memo.
  */
-async function as(browser: Browser, role: SignedInRole): Promise<Page> {
-  const context = await browser.newContext({ storageState: storageStateFor(role) })
-  return context.newPage()
-}
-
 /** Picks a person in the people picker labelled [field] inside [scope] (a dialog: the page has other pickers). */
 async function pick(scope: Locator, field: string, search: string, name: RegExp) {
   await scope.getByRole('combobox', { name: field, exact: true }).fill(search)
@@ -84,15 +79,15 @@ test.describe('as the initiator', () => {
     await page.getByRole('dialog').getByRole('button', { name: 'Submit' }).click()
     await expect(page.getByText('Done.')).toBeVisible()
 
-    const head = await as(browser, 'headCredit')
+    const head = await pageAs(browser, 'headCredit')
     await head.goto(memoUrl)
     await head.getByRole('toolbar', { name: 'Actions' }).getByRole('button', { name: 'Approve' }).click()
     await head.getByRole('dialog').getByRole('button', { name: 'Approve' }).click()
-    await confirmIfAsked(head, demoSecret('MEMO_DEMO_TOTP_SECRET'))
+    await confirmIfAsked(head, demoSecret('MEMO_DEMO_TOTP_SECRET'), head.getByText('Done.'))
     await expect(head.getByText('Done.')).toBeVisible()
 
     // The copy reached the head of finance, who reads it for information only.
-    const finance = await as(browser, 'headFinance')
+    const finance = await pageAs(browser, 'headFinance')
     await finance.goto(memoUrl)
     await expect(finance.getByRole('heading', { level: 1, name: subject })).toBeVisible()
     await expect(finance.getByRole('note').filter({ hasText: 'You received a copy of this memo' })).toBeVisible()
@@ -106,7 +101,7 @@ test.describe('as the initiator', () => {
     await expect(receipts.getByText(/\(v1\)/).first()).toBeVisible()
 
     // The auditor reads memos raised in the Credit Division (the demo's unit reader); the initiator sits in Retail Credit.
-    const auditor = await as(browser, 'auditor')
+    const auditor = await pageAs(browser, 'auditor')
     await expect(async () => {
       await auditor.goto(memoUrl)
       await expect(auditor.getByRole('heading', { level: 1, name: subject })).toBeVisible({ timeout: 3000 })

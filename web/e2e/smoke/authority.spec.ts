@@ -1,9 +1,9 @@
-import type { Browser, Page } from '@playwright/test'
+import type { Page } from '@playwright/test'
 import { confirmIfAsked, demoSecret } from '../auth'
 import { docx } from '../docx'
 import { expect, test } from '../fixtures'
 import { chooseMemoType } from '../memo-type'
-import { storageStateFor, type SignedInRole } from '../roles'
+import { pageAs } from '../roles'
 
 /**
  * The E04 journey (test plan T10): a memo of the demo "Credit under authority" type goes to the credit desk, a queue of
@@ -12,11 +12,6 @@ import { storageStateFor, type SignedInRole } from '../roles'
  * seat), then the chief financial officer. Re-resolution after a holder change, recusal and substitution are covered
  * by the integration tests (`StaffChangeIT`, `SeparationOfDutiesIT`, `SubstitutionIT`).
  */
-async function as(browser: Browser, role: SignedInRole): Promise<Page> {
-  const context = await browser.newContext({ storageState: storageStateFor(role) })
-  return context.newPage()
-}
-
 function status(page: Page, text: string) {
   return page.locator('[data-tone]', { hasText: text })
 }
@@ -30,7 +25,7 @@ async function act(page: Page, memoUrl: string, button: string) {
   await page.goto(memoUrl)
   await toolbar(page).getByRole('button', { name: button }).click()
   await page.getByRole('dialog').getByRole('button', { name: button }).click()
-  await confirmIfAsked(page, demoSecret('MEMO_DEMO_TOTP_SECRET'))
+  await confirmIfAsked(page, demoSecret('MEMO_DEMO_TOTP_SECRET'), page.getByText('Done.'))
   await expect(page.getByText('Done.')).toBeVisible()
 }
 
@@ -54,13 +49,13 @@ test.describe('as the initiator', () => {
     await act(page, memoUrl, 'Submit')
     await expect(status(page, 'In review')).toBeVisible()
 
-    const head = await as(browser, 'headCredit')
+    const head = await pageAs(browser, 'headCredit')
     await head.goto(memoUrl)
     await expect(head.getByText(/Others can act on this too/)).toBeVisible()
     await toolbar(head).getByRole('button', { name: 'Claim' }).click()
     await expect(head.getByText(/You claimed this task/)).toBeVisible()
 
-    const director = await as(browser, 'director')
+    const director = await pageAs(browser, 'director')
     await director.goto(memoUrl)
     await expect(director.getByText('Claimed by Demo Head of Credit')).toBeVisible()
 
@@ -70,7 +65,7 @@ test.describe('as the initiator', () => {
 
     // The authority: the managing director's seat first, then the chief financial officer's.
     await act(director, memoUrl, 'Approve')
-    const finance = await as(browser, 'headFinance')
+    const finance = await pageAs(browser, 'headFinance')
     await act(finance, memoUrl, 'Approve')
 
     await page.goto(memoUrl)
@@ -109,9 +104,9 @@ test.describe('as the initiator', () => {
       return memoUrl
     }
 
-    const head = await as(browser, 'headCredit')
-    const director = await as(browser, 'director')
-    const finance = await as(browser, 'headFinance')
+    const head = await pageAs(browser, 'headCredit')
+    const director = await pageAs(browser, 'director')
+    const finance = await pageAs(browser, 'headFinance')
 
     // Under the band: after the desk, only the chief financial officer.
     const small = await raise('2000000')

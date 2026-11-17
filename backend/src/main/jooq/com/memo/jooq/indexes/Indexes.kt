@@ -14,6 +14,7 @@ import com.memo.jooq.tables.FilesFile
 import com.memo.jooq.tables.FilesPendingUpload
 import com.memo.jooq.tables.FilesRendition
 import com.memo.jooq.tables.FilesVersion
+import com.memo.jooq.tables.ForumTypeVersion
 import com.memo.jooq.tables.IdentityActionToken
 import com.memo.jooq.tables.IdentityHttpSession
 import com.memo.jooq.tables.IdentityMfa
@@ -92,6 +93,8 @@ val FILES_FILE_TENANT_OWNER_IDX: Index = Internal.createIndex(DSL.name("files_fi
 val FILES_PENDING_UPLOAD_TENANT_CREATED_IDX: Index = Internal.createIndex(DSL.name("files_pending_upload_tenant_created_idx"), FilesPendingUpload.FILES_PENDING_UPLOAD, arrayOf(FilesPendingUpload.FILES_PENDING_UPLOAD.TENANT_ID, FilesPendingUpload.FILES_PENDING_UPLOAD.CREATED_AT), false)
 val FILES_RENDITION_PENDING_IDX: Index = Internal.createIndex(DSL.name("files_rendition_pending_idx"), FilesRendition.FILES_RENDITION, arrayOf(FilesRendition.FILES_RENDITION.TENANT_ID, FilesRendition.FILES_RENDITION.CREATED_AT), false)
 val FILES_VERSION_TENANT_PROVISIONAL_IDX: Index = Internal.createIndex(DSL.name("files_version_tenant_provisional_idx"), FilesVersion.FILES_VERSION, arrayOf(FilesVersion.FILES_VERSION.TENANT_ID, FilesVersion.FILES_VERSION.UPLOADED_AT), false)
+val FORUM_TYPE_VERSION_ONE_OPEN_IDX: Index = Internal.createIndex(DSL.name("forum_type_version_one_open_idx"), ForumTypeVersion.FORUM_TYPE_VERSION, arrayOf(ForumTypeVersion.FORUM_TYPE_VERSION.TENANT_ID, ForumTypeVersion.FORUM_TYPE_VERSION.FORUM_TYPE_ID), true)
+val FORUM_TYPE_VERSION_ONE_PUBLISHED_IDX: Index = Internal.createIndex(DSL.name("forum_type_version_one_published_idx"), ForumTypeVersion.FORUM_TYPE_VERSION, arrayOf(ForumTypeVersion.FORUM_TYPE_VERSION.TENANT_ID, ForumTypeVersion.FORUM_TYPE_VERSION.FORUM_TYPE_ID), true)
 val IDENTITY_ACTION_TOKEN_TENANT_HASH_UK: Index = Internal.createIndex(DSL.name("identity_action_token_tenant_hash_uk"), IdentityActionToken.IDENTITY_ACTION_TOKEN, arrayOf(IdentityActionToken.IDENTITY_ACTION_TOKEN.TENANT_ID, IdentityActionToken.IDENTITY_ACTION_TOKEN.TOKEN_HASH), true)
 val IDENTITY_ACTION_TOKEN_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("identity_action_token_tenant_user_idx"), IdentityActionToken.IDENTITY_ACTION_TOKEN, arrayOf(IdentityActionToken.IDENTITY_ACTION_TOKEN.TENANT_ID, IdentityActionToken.IDENTITY_ACTION_TOKEN.USER_ID), false)
 val IDENTITY_HTTP_SESSION_EXPIRY_IDX: Index = Internal.createIndex(DSL.name("identity_http_session_expiry_idx"), IdentityHttpSession.IDENTITY_HTTP_SESSION, arrayOf(IdentityHttpSession.IDENTITY_HTTP_SESSION.EXPIRY_TIME), false)

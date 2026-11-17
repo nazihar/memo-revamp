@@ -391,6 +391,12 @@ export type CreateDefinitionRequest = {
     name?: string;
 };
 
+export type CreateForumTypeRequest = {
+    code?: string;
+    name?: string;
+    preset?: 'BOARD' | 'BOARD_COMMITTEE' | 'MANAGEMENT_COMMITTEE';
+};
+
 export type CreateOrgUnitRequest = {
     code: string;
     legalEntityId: string;
@@ -599,6 +605,12 @@ export type EditingStatus = {
     enabled: boolean;
 };
 
+export type EscalationTarget = {
+    code?: string;
+    key?: string;
+    name?: string;
+};
+
 export type FacetView = {
     count: number;
     label: string;
@@ -668,6 +680,61 @@ export type FixityTotals = {
     promotionMismatches: number;
     verified: number;
     verifyProblems: number;
+};
+
+export type ForumRetention = {
+    from?: string;
+    years?: number;
+};
+
+export type ForumTypePresetResponse = {
+    key: 'BOARD' | 'BOARD_COMMITTEE' | 'MANAGEMENT_COMMITTEE';
+    name: string;
+    settings: ForumTypeSettingsRequest;
+};
+
+export type ForumTypeResponse = {
+    active: boolean;
+    code: string;
+    id: string;
+    name: string;
+    openState?: 'DRAFT' | 'IN_REVIEW' | 'PUBLISHED' | 'RETIRED';
+    openSubmittedBy?: PersonRef | null;
+    openVersion?: number | null;
+    publishedVersion?: number | null;
+};
+
+export type ForumTypeSettingsRequest = {
+    defaultClassificationId?: string | null;
+    description?: string | null;
+    memberAttributes?: Array<MemberAttribute>;
+    name?: string;
+    outcomes?: Array<Outcome>;
+    quorum?: QuorumRule;
+    retention?: ForumRetention | null;
+    termPolicy?: TermPolicy;
+};
+
+export type ForumTypeVersionResponse = {
+    createdAt: string;
+    createdBy?: PersonRef | null;
+    defaultClassificationId?: string | null;
+    description?: string | null;
+    memberAttributes: Array<MemberAttribute>;
+    name: string;
+    number: number;
+    outcomes: Array<Outcome>;
+    publishedAt?: string | null;
+    quorum: QuorumRule;
+    retention?: ForumRetention | null;
+    reviewRemark?: string | null;
+    reviewedAt?: string | null;
+    reviewedBy?: PersonRef | null;
+    revision: number;
+    state: 'DRAFT' | 'IN_REVIEW' | 'PUBLISHED' | 'RETIRED';
+    submittedAt?: string | null;
+    submittedBy?: PersonRef | null;
+    termPolicy: TermPolicy;
 };
 
 export type FoundInView = {
@@ -1221,6 +1288,11 @@ export type Me = {
     tenantAdmin: boolean;
 };
 
+export type MemberAttribute = {
+    key?: string;
+    label?: string;
+};
+
 export type MemoDetailView = {
     display?: string | null;
     key: string;
@@ -1751,6 +1823,12 @@ export type OriginalTotals = {
     unreferenced: FilesAndBytes;
 };
 
+export type Outcome = {
+    kind?: 'APPROVED' | 'APPROVED_WITH_CONDITIONS' | 'REJECTED' | 'DEFERRED' | 'RETURNED' | 'REFERRED' | 'NOTED' | 'WITHDRAWN';
+    label?: string;
+    resolution?: boolean;
+};
+
 export type PasswordResetCompletion = {
     newPassword: string;
     /**
@@ -1798,6 +1876,11 @@ export type PersonPending = {
     overdue: number;
     pending: number;
     person: Named;
+};
+
+export type PersonRef = {
+    id: string;
+    name: string;
 };
 
 /**
@@ -1963,6 +2046,56 @@ export type QueueResponse = {
     version: number;
 };
 
+export type QuorumComposition = {
+    atLeast?: number | null;
+    attribute?: string;
+    majority?: boolean;
+};
+
+export type QuorumPreviewRequest = {
+    attributes?: Array<string>;
+    members?: Array<QuorumSampleMember>;
+    rule?: QuorumRule;
+};
+
+export type QuorumResult = {
+    basis?: number;
+    needed?: number;
+    present?: number;
+    quorate?: boolean;
+    unmet?: Array<UnmetCondition>;
+};
+
+export type QuorumRule = {
+    alternatesCount?: boolean;
+    basis?: 'IN_OFFICE' | 'SEATS';
+    composition?: Array<QuorumComposition>;
+    counts?: 'VOTING' | 'ALL';
+    minimum?: number;
+    recusedCount?: boolean;
+    remoteCounts?: boolean;
+    required?: Array<Array<'CHAIR' | 'VICE_CHAIR' | 'SECRETARY' | 'MEMBER' | 'STANDING_INVITEE' | 'OBSERVER'>>;
+    seats?: number | null;
+    threshold?: QuorumThreshold;
+};
+
+export type QuorumSampleMember = {
+    attributes?: Array<string>;
+    byAlternate?: boolean;
+    present?: boolean;
+    recused?: boolean;
+    remote?: boolean;
+    role?: 'CHAIR' | 'VICE_CHAIR' | 'SECRETARY' | 'MEMBER' | 'STANDING_INVITEE' | 'OBSERVER';
+    voting?: boolean | null;
+};
+
+export type QuorumThreshold = {
+    count?: number | null;
+    denominator?: number | null;
+    kind?: 'MAJORITY' | 'FRACTION' | 'COUNT';
+    numerator?: number | null;
+};
+
 export type RaiseScope = {
     roles?: Array<string>;
     units?: Array<ScopeUnit>;
@@ -2091,6 +2224,10 @@ export type ReportingLineRequest = {
 export type Retention = {
     from: 'APPROVAL' | 'CLOSURE';
     years: number;
+};
+
+export type ReviewRemarkRequest = {
+    remark?: string | null;
 };
 
 export type ReviewRequest = {
@@ -2549,6 +2686,12 @@ export type Term = {
     term: string;
 };
 
+export type TermPolicy = {
+    maxTerms?: number | null;
+    reminderDays?: Array<number>;
+    termMonths?: number | null;
+};
+
 /**
  * The organisation's own words for this language; terms not listed use the defaults.
  */
@@ -2564,6 +2707,15 @@ export type Terms = {
 export type TermsUpdate = {
     locale: string;
     terms: Array<Term>;
+};
+
+export type UnmetCondition = {
+    actual?: number;
+    attribute?: string | null;
+    kind?: 'COUNT' | 'ROLE' | 'COMPOSITION';
+    majority?: boolean;
+    needed?: number;
+    roles?: Array<'CHAIR' | 'VICE_CHAIR' | 'SECRETARY' | 'MEMBER' | 'STANDING_INVITEE' | 'OBSERVER'>;
 };
 
 export type UnreadCount = {
@@ -2781,6 +2933,245 @@ export type UpdateBrandingErrors = {
 };
 
 export type UpdateBrandingError = UpdateBrandingErrors[keyof UpdateBrandingErrors];
+
+export type ListForumTypesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/forum-types';
+};
+
+export type ListForumTypesResponses = {
+    /**
+     * OK
+     */
+    200: Array<ForumTypeResponse>;
+};
+
+export type ListForumTypesResponse = ListForumTypesResponses[keyof ListForumTypesResponses];
+
+export type CreateForumTypeData = {
+    body: CreateForumTypeRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/forum-types';
+};
+
+export type CreateForumTypeResponses = {
+    /**
+     * OK
+     */
+    200: ForumTypeResponse;
+};
+
+export type CreateForumTypeResponse = CreateForumTypeResponses[keyof CreateForumTypeResponses];
+
+export type ListForumTypePresetsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/forum-types/presets';
+};
+
+export type ListForumTypePresetsResponses = {
+    /**
+     * OK
+     */
+    200: Array<ForumTypePresetResponse>;
+};
+
+export type ListForumTypePresetsResponse = ListForumTypePresetsResponses[keyof ListForumTypePresetsResponses];
+
+export type GetForumTypeData = {
+    body?: never;
+    path: {
+        typeId: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/forum-types/{typeId}';
+};
+
+export type GetForumTypeResponses = {
+    /**
+     * OK
+     */
+    200: ForumTypeResponse;
+};
+
+export type GetForumTypeResponse = GetForumTypeResponses[keyof GetForumTypeResponses];
+
+export type ActivateForumTypeData = {
+    body?: never;
+    path: {
+        typeId: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/forum-types/{typeId}/activate';
+};
+
+export type ActivateForumTypeResponses = {
+    /**
+     * OK
+     */
+    200: ForumTypeResponse;
+};
+
+export type ActivateForumTypeResponse = ActivateForumTypeResponses[keyof ActivateForumTypeResponses];
+
+export type DeactivateForumTypeData = {
+    body?: never;
+    path: {
+        typeId: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/forum-types/{typeId}/deactivate';
+};
+
+export type DeactivateForumTypeResponses = {
+    /**
+     * OK
+     */
+    200: ForumTypeResponse;
+};
+
+export type DeactivateForumTypeResponse = DeactivateForumTypeResponses[keyof DeactivateForumTypeResponses];
+
+export type ListForumTypeVersionsData = {
+    body?: never;
+    path: {
+        typeId: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/forum-types/{typeId}/versions';
+};
+
+export type ListForumTypeVersionsResponses = {
+    /**
+     * OK
+     */
+    200: Array<ForumTypeVersionResponse>;
+};
+
+export type ListForumTypeVersionsResponse = ListForumTypeVersionsResponses[keyof ListForumTypeVersionsResponses];
+
+export type CreateForumTypeDraftData = {
+    body?: never;
+    path: {
+        typeId: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/forum-types/{typeId}/versions';
+};
+
+export type CreateForumTypeDraftResponses = {
+    /**
+     * OK
+     */
+    200: ForumTypeVersionResponse;
+};
+
+export type CreateForumTypeDraftResponse = CreateForumTypeDraftResponses[keyof CreateForumTypeDraftResponses];
+
+export type GetForumTypeVersionData = {
+    body?: never;
+    path: {
+        typeId: string;
+        number: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/forum-types/{typeId}/versions/{number}';
+};
+
+export type GetForumTypeVersionResponses = {
+    /**
+     * OK
+     */
+    200: ForumTypeVersionResponse;
+};
+
+export type GetForumTypeVersionResponse = GetForumTypeVersionResponses[keyof GetForumTypeVersionResponses];
+
+export type ReplaceForumTypeDraftData = {
+    body: ForumTypeSettingsRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        typeId: string;
+        number: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/forum-types/{typeId}/versions/{number}';
+};
+
+export type ReplaceForumTypeDraftResponses = {
+    /**
+     * OK
+     */
+    200: ForumTypeVersionResponse;
+};
+
+export type ReplaceForumTypeDraftResponse = ReplaceForumTypeDraftResponses[keyof ReplaceForumTypeDraftResponses];
+
+export type ApproveForumTypeVersionData = {
+    body?: ReviewRemarkRequest;
+    path: {
+        typeId: string;
+        number: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/forum-types/{typeId}/versions/{number}/approve';
+};
+
+export type ApproveForumTypeVersionResponses = {
+    /**
+     * OK
+     */
+    200: ForumTypeVersionResponse;
+};
+
+export type ApproveForumTypeVersionResponse = ApproveForumTypeVersionResponses[keyof ApproveForumTypeVersionResponses];
+
+export type SendBackForumTypeVersionData = {
+    body: ReviewRemarkRequest;
+    path: {
+        typeId: string;
+        number: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/forum-types/{typeId}/versions/{number}/send-back';
+};
+
+export type SendBackForumTypeVersionResponses = {
+    /**
+     * OK
+     */
+    200: ForumTypeVersionResponse;
+};
+
+export type SendBackForumTypeVersionResponse = SendBackForumTypeVersionResponses[keyof SendBackForumTypeVersionResponses];
+
+export type SubmitForumTypeVersionData = {
+    body?: never;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        typeId: string;
+        number: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/forum-types/{typeId}/versions/{number}/submit';
+};
+
+export type SubmitForumTypeVersionResponses = {
+    /**
+     * OK
+     */
+    200: ForumTypeVersionResponse;
+};
+
+export type SubmitForumTypeVersionResponse = SubmitForumTypeVersionResponses[keyof SubmitForumTypeVersionResponses];
 
 export type ListImportBatchesData = {
     body?: never;
@@ -4421,6 +4812,22 @@ export type SubmitDoaVersionResponses = {
 
 export type SubmitDoaVersionResponse = SubmitDoaVersionResponses[keyof SubmitDoaVersionResponses];
 
+export type ListEscalationTargetsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/workflow/escalation-targets';
+};
+
+export type ListEscalationTargetsResponses = {
+    /**
+     * OK
+     */
+    200: Array<EscalationTarget>;
+};
+
+export type ListEscalationTargetsResponse = ListEscalationTargetsResponses[keyof ListEscalationTargetsResponses];
+
 export type CancelWorkflowData = {
     body: CancelRequest;
     headers: {
@@ -5508,6 +5915,22 @@ export type GetFileVersionPdfResponses = {
      */
     200: unknown;
 };
+
+export type PreviewQuorumData = {
+    body: QuorumPreviewRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/forums/quorum-preview';
+};
+
+export type PreviewQuorumResponses = {
+    /**
+     * OK
+     */
+    200: QuorumResult;
+};
+
+export type PreviewQuorumResponse = PreviewQuorumResponses[keyof PreviewQuorumResponses];
 
 export type GetHealthData = {
     body?: never;

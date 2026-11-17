@@ -1021,6 +1021,21 @@
         },
         "type" : "object"
       },
+      "CreateForumTypeRequest" : {
+        "properties" : {
+          "code" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "preset" : {
+            "enum" : [ "BOARD", "BOARD_COMMITTEE", "MANAGEMENT_COMMITTEE" ],
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
       "CreateOrgUnitRequest" : {
         "properties" : {
           "code" : {
@@ -1617,6 +1632,20 @@
         "required" : [ "enabled" ],
         "type" : "object"
       },
+      "EscalationTarget" : {
+        "properties" : {
+          "code" : {
+            "type" : "string"
+          },
+          "key" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
       "FacetView" : {
         "properties" : {
           "count" : {
@@ -1835,6 +1864,205 @@
           }
         },
         "required" : [ "importedOriginals", "mismatches", "promotionMismatches", "verified", "verifyProblems" ],
+        "type" : "object"
+      },
+      "ForumRetention" : {
+        "properties" : {
+          "from" : {
+            "type" : "string"
+          },
+          "years" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "type" : "object"
+      },
+      "ForumTypePresetResponse" : {
+        "properties" : {
+          "key" : {
+            "enum" : [ "BOARD", "BOARD_COMMITTEE", "MANAGEMENT_COMMITTEE" ],
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "settings" : {
+            "$ref" : "#/components/schemas/ForumTypeSettingsRequest"
+          }
+        },
+        "required" : [ "key", "name", "settings" ],
+        "type" : "object"
+      },
+      "ForumTypeResponse" : {
+        "properties" : {
+          "active" : {
+            "type" : "boolean"
+          },
+          "code" : {
+            "type" : "string"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "openState" : {
+            "enum" : [ "DRAFT", "IN_REVIEW", "PUBLISHED", "RETIRED" ],
+            "type" : [ "string", "null" ]
+          },
+          "openSubmittedBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/PersonRef"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "openVersion" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "publishedVersion" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          }
+        },
+        "required" : [ "active", "code", "id", "name" ],
+        "type" : "object"
+      },
+      "ForumTypeSettingsRequest" : {
+        "properties" : {
+          "defaultClassificationId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "description" : {
+            "type" : [ "string", "null" ]
+          },
+          "memberAttributes" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MemberAttribute"
+            },
+            "type" : "array"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "outcomes" : {
+            "items" : {
+              "$ref" : "#/components/schemas/Outcome"
+            },
+            "type" : "array"
+          },
+          "quorum" : {
+            "$ref" : "#/components/schemas/QuorumRule"
+          },
+          "retention" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/ForumRetention"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "termPolicy" : {
+            "$ref" : "#/components/schemas/TermPolicy"
+          }
+        },
+        "type" : "object"
+      },
+      "ForumTypeVersionResponse" : {
+        "properties" : {
+          "createdAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "createdBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/PersonRef"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "defaultClassificationId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "description" : {
+            "type" : [ "string", "null" ]
+          },
+          "memberAttributes" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MemberAttribute"
+            },
+            "type" : "array"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "number" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "outcomes" : {
+            "items" : {
+              "$ref" : "#/components/schemas/Outcome"
+            },
+            "type" : "array"
+          },
+          "publishedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "quorum" : {
+            "$ref" : "#/components/schemas/QuorumRule"
+          },
+          "retention" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/ForumRetention"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "reviewRemark" : {
+            "type" : [ "string", "null" ]
+          },
+          "reviewedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "reviewedBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/PersonRef"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "revision" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "state" : {
+            "enum" : [ "DRAFT", "IN_REVIEW", "PUBLISHED", "RETIRED" ],
+            "type" : "string"
+          },
+          "submittedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "submittedBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/PersonRef"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "termPolicy" : {
+            "$ref" : "#/components/schemas/TermPolicy"
+          }
+        },
+        "required" : [ "createdAt", "memberAttributes", "name", "number", "outcomes", "quorum", "revision", "state", "termPolicy" ],
         "type" : "object"
       },
       "FoundInView" : {
@@ -3473,6 +3701,17 @@
         "required" : [ "displayName", "email", "id", "mfaEnrolled", "tenantAdmin" ],
         "type" : "object"
       },
+      "MemberAttribute" : {
+        "properties" : {
+          "key" : {
+            "type" : "string"
+          },
+          "label" : {
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
       "MemoDetailView" : {
         "properties" : {
           "display" : {
@@ -4991,6 +5230,21 @@
         "required" : [ "heldBack", "imported", "neverUploaded", "refused", "registered", "stored", "unreferenced" ],
         "type" : "object"
       },
+      "Outcome" : {
+        "properties" : {
+          "kind" : {
+            "enum" : [ "APPROVED", "APPROVED_WITH_CONDITIONS", "REJECTED", "DEFERRED", "RETURNED", "REFERRED", "NOTED", "WITHDRAWN" ],
+            "type" : "string"
+          },
+          "label" : {
+            "type" : "string"
+          },
+          "resolution" : {
+            "type" : "boolean"
+          }
+        },
+        "type" : "object"
+      },
       "PasswordResetCompletion" : {
         "properties" : {
           "newPassword" : {
@@ -5099,6 +5353,19 @@
           }
         },
         "required" : [ "overdue", "pending", "person" ],
+        "type" : "object"
+      },
+      "PersonRef" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "id", "name" ],
         "type" : "object"
       },
       "PlatformAuditEvent" : {
@@ -5464,6 +5731,169 @@
           }
         },
         "required" : [ "key", "members", "name", "version" ],
+        "type" : "object"
+      },
+      "QuorumComposition" : {
+        "properties" : {
+          "atLeast" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "attribute" : {
+            "type" : "string"
+          },
+          "majority" : {
+            "type" : "boolean"
+          }
+        },
+        "type" : "object"
+      },
+      "QuorumPreviewRequest" : {
+        "properties" : {
+          "attributes" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array",
+            "uniqueItems" : true
+          },
+          "members" : {
+            "items" : {
+              "$ref" : "#/components/schemas/QuorumSampleMember"
+            },
+            "type" : "array"
+          },
+          "rule" : {
+            "$ref" : "#/components/schemas/QuorumRule"
+          }
+        },
+        "type" : "object"
+      },
+      "QuorumResult" : {
+        "properties" : {
+          "basis" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "needed" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "present" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "quorate" : {
+            "type" : "boolean"
+          },
+          "unmet" : {
+            "items" : {
+              "$ref" : "#/components/schemas/UnmetCondition"
+            },
+            "type" : "array"
+          }
+        },
+        "type" : "object"
+      },
+      "QuorumRule" : {
+        "properties" : {
+          "alternatesCount" : {
+            "type" : "boolean"
+          },
+          "basis" : {
+            "enum" : [ "IN_OFFICE", "SEATS" ],
+            "type" : "string"
+          },
+          "composition" : {
+            "items" : {
+              "$ref" : "#/components/schemas/QuorumComposition"
+            },
+            "type" : "array"
+          },
+          "counts" : {
+            "enum" : [ "VOTING", "ALL" ],
+            "type" : "string"
+          },
+          "minimum" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "recusedCount" : {
+            "type" : "boolean"
+          },
+          "remoteCounts" : {
+            "type" : "boolean"
+          },
+          "required" : {
+            "items" : {
+              "items" : {
+                "enum" : [ "CHAIR", "VICE_CHAIR", "SECRETARY", "MEMBER", "STANDING_INVITEE", "OBSERVER" ],
+                "type" : "string"
+              },
+              "type" : "array"
+            },
+            "type" : "array"
+          },
+          "seats" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "threshold" : {
+            "$ref" : "#/components/schemas/QuorumThreshold"
+          }
+        },
+        "type" : "object"
+      },
+      "QuorumSampleMember" : {
+        "properties" : {
+          "attributes" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array",
+            "uniqueItems" : true
+          },
+          "byAlternate" : {
+            "type" : "boolean"
+          },
+          "present" : {
+            "type" : "boolean"
+          },
+          "recused" : {
+            "type" : "boolean"
+          },
+          "remote" : {
+            "type" : "boolean"
+          },
+          "role" : {
+            "enum" : [ "CHAIR", "VICE_CHAIR", "SECRETARY", "MEMBER", "STANDING_INVITEE", "OBSERVER" ],
+            "type" : "string"
+          },
+          "voting" : {
+            "type" : [ "boolean", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "QuorumThreshold" : {
+        "properties" : {
+          "count" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "denominator" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "kind" : {
+            "enum" : [ "MAJORITY", "FRACTION", "COUNT" ],
+            "type" : "string"
+          },
+          "numerator" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          }
+        },
         "type" : "object"
       },
       "RaiseScope" : {
@@ -5850,6 +6280,14 @@
           }
         },
         "required" : [ "from", "years" ],
+        "type" : "object"
+      },
+      "ReviewRemarkRequest" : {
+        "properties" : {
+          "remark" : {
+            "type" : [ "string", "null" ]
+          }
+        },
         "type" : "object"
       },
       "ReviewRequest" : {
@@ -7114,6 +7552,26 @@
         "required" : [ "one", "other", "term" ],
         "type" : "object"
       },
+      "TermPolicy" : {
+        "properties" : {
+          "maxTerms" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "reminderDays" : {
+            "items" : {
+              "format" : "int32",
+              "type" : "integer"
+            },
+            "type" : "array"
+          },
+          "termMonths" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          }
+        },
+        "type" : "object"
+      },
       "Terms" : {
         "description" : "The organisation's own words for this language; terms not listed use the defaults.",
         "properties" : {
@@ -7148,6 +7606,36 @@
           }
         },
         "required" : [ "locale", "terms" ],
+        "type" : "object"
+      },
+      "UnmetCondition" : {
+        "properties" : {
+          "actual" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "attribute" : {
+            "type" : [ "string", "null" ]
+          },
+          "kind" : {
+            "enum" : [ "COUNT", "ROLE", "COMPOSITION" ],
+            "type" : "string"
+          },
+          "majority" : {
+            "type" : "boolean"
+          },
+          "needed" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "roles" : {
+            "items" : {
+              "enum" : [ "CHAIR", "VICE_CHAIR", "SECRETARY", "MEMBER", "STANDING_INVITEE", "OBSERVER" ],
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        },
         "type" : "object"
       },
       "UnreadCount" : {
@@ -7689,6 +8177,434 @@
         },
         "summary" : "Change colours and logo (If-Match); colours must keep their contrast",
         "tags" : [ "admin-settings" ]
+      }
+    },
+    "/api/v1/admin/forum-types" : {
+      "get" : {
+        "operationId" : "listForumTypes",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/ForumTypeResponse"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Committee types with their published and open versions",
+        "tags" : [ "forum" ]
+      },
+      "post" : {
+        "operationId" : "createForumType",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CreateForumTypeRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ForumTypeResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Create a committee type as draft version 1, blank or from a preset",
+        "tags" : [ "forum" ]
+      }
+    },
+    "/api/v1/admin/forum-types/presets" : {
+      "get" : {
+        "operationId" : "listForumTypePresets",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/ForumTypePresetResponse"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The presets a new committee type can start from",
+        "tags" : [ "forum" ]
+      }
+    },
+    "/api/v1/admin/forum-types/{typeId}" : {
+      "get" : {
+        "operationId" : "getForumType",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "typeId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ForumTypeResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "One committee type",
+        "tags" : [ "forum" ]
+      }
+    },
+    "/api/v1/admin/forum-types/{typeId}/activate" : {
+      "post" : {
+        "operationId" : "activateForumType",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "typeId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ForumTypeResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Let new committees use this type",
+        "tags" : [ "forum" ]
+      }
+    },
+    "/api/v1/admin/forum-types/{typeId}/deactivate" : {
+      "post" : {
+        "operationId" : "deactivateForumType",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "typeId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ForumTypeResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Stop new committees using this type; existing ones keep it",
+        "tags" : [ "forum" ]
+      }
+    },
+    "/api/v1/admin/forum-types/{typeId}/versions" : {
+      "get" : {
+        "operationId" : "listForumTypeVersions",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "typeId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/ForumTypeVersionResponse"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A committee type's versions, newest first",
+        "tags" : [ "forum" ]
+      },
+      "post" : {
+        "operationId" : "createForumTypeDraft",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "typeId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ForumTypeVersionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Start a new draft from the published version",
+        "tags" : [ "forum" ]
+      }
+    },
+    "/api/v1/admin/forum-types/{typeId}/versions/{number}" : {
+      "get" : {
+        "operationId" : "getForumTypeVersion",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "typeId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "number",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ForumTypeVersionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "One version of a committee type",
+        "tags" : [ "forum" ]
+      },
+      "put" : {
+        "operationId" : "replaceForumTypeDraft",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "typeId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "number",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ForumTypeSettingsRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ForumTypeVersionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Replace a draft's policy",
+        "tags" : [ "forum" ]
+      }
+    },
+    "/api/v1/admin/forum-types/{typeId}/versions/{number}/approve" : {
+      "post" : {
+        "operationId" : "approveForumTypeVersion",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "typeId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "number",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ReviewRemarkRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ForumTypeVersionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Publish a version in review (not your own submission)",
+        "tags" : [ "forum" ]
+      }
+    },
+    "/api/v1/admin/forum-types/{typeId}/versions/{number}/send-back" : {
+      "post" : {
+        "operationId" : "sendBackForumTypeVersion",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "typeId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "number",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ReviewRemarkRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ForumTypeVersionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Return a version in review to draft, saying why",
+        "tags" : [ "forum" ]
+      }
+    },
+    "/api/v1/admin/forum-types/{typeId}/versions/{number}/submit" : {
+      "post" : {
+        "operationId" : "submitForumTypeVersion",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "typeId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "number",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ForumTypeVersionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Send a draft for review",
+        "tags" : [ "forum" ]
       }
     },
     "/api/v1/admin/imports" : {
@@ -10684,6 +11600,28 @@
         "tags" : [ "workflow" ]
       }
     },
+    "/api/v1/admin/workflow/escalation-targets" : {
+      "get" : {
+        "operationId" : "listEscalationTargets",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/EscalationTarget"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Active committees a workflow step can escalate to",
+        "tags" : [ "workflow" ]
+      }
+    },
     "/api/v1/admin/workflow/instances/{instanceId}/cancel" : {
       "post" : {
         "operationId" : "cancelWorkflow",
@@ -12516,6 +13454,35 @@
         },
         "summary" : "The PDF to preview a version: the original if it is a PDF, else its rendition",
         "tags" : [ "files" ]
+      }
+    },
+    "/api/v1/forums/quorum-preview" : {
+      "post" : {
+        "operationId" : "previewQuorum",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/QuorumPreviewRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/QuorumResult"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Evaluate a quorum rule on sample members; nothing is saved",
+        "tags" : [ "forum" ]
       }
     },
     "/api/v1/health" : {

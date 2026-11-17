@@ -105,6 +105,12 @@ enum class Permission(
      * corrections of imported memos (Phase 3 E06, ADR-0055). Granted by tenants only: no built-in role holds it.
      */
     MEMO_IMPORT("memo.import", scopable = false, privileged = true),
+
+    /** Committee (forum) types: draft and submit their versions (Phase 4 E01, ADR-0056; maker). */
+    FORUM_TYPES_MANAGE("forum.types.manage", scopable = false, privileged = true),
+
+    /** Publish or send back a forum-type version someone else submitted (Phase 4 E01; checker); with a step-up. */
+    FORUM_TYPES_APPROVE("forum.types.approve", scopable = false, privileged = true),
     ;
 
     companion object {

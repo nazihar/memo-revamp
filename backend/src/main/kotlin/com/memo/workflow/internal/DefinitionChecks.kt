@@ -2,6 +2,7 @@ package com.memo.workflow.internal
 
 import com.memo.common.authz.RoleHolders
 import com.memo.org.OrgDirectory
+import com.memo.workflow.EscalationTargets
 import com.memo.workflow.WorkflowSubject
 import com.memo.workflow.definition.Definition
 import com.memo.workflow.definition.DefinitionCompiler
@@ -26,6 +27,7 @@ class DefinitionChecks(
     private val roles: RoleHolders,
     private val queues: Queues,
     private val subjects: List<WorkflowSubject>,
+    private val forums: List<EscalationTargets>,
 ) {
     /** The attributes every subject offers now, in this tenant (a memo type's fields among them, ADR-0043). */
     private fun catalogue() = subjects.flatMap { it.attributes.entries }.associate { it.key to it.value }
@@ -54,5 +56,7 @@ class DefinitionChecks(
         override fun unitExists(id: UUID) = directory.unitExists(id)
 
         override fun queueExists(key: String) = queues.find(key) != null
+
+        override fun forumExists(key: String) = forums.isEmpty() || forums.any { key in it.active(setOf(key)) }
     }
 }

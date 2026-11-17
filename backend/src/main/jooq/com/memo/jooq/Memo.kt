@@ -19,6 +19,8 @@ import com.memo.jooq.tables.FilesPendingUpload
 import com.memo.jooq.tables.FilesRendition
 import com.memo.jooq.tables.FilesTenantKeyset
 import com.memo.jooq.tables.FilesVersion
+import com.memo.jooq.tables.ForumType
+import com.memo.jooq.tables.ForumTypeVersion
 import com.memo.jooq.tables.IdentityActionToken
 import com.memo.jooq.tables.IdentityHttpSession
 import com.memo.jooq.tables.IdentityHttpSessionAttributes
@@ -206,6 +208,16 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      * The table <code>memo.files_version</code>.
      */
     val FILES_VERSION: FilesVersion get() = FilesVersion.FILES_VERSION
+
+    /**
+     * The table <code>memo.forum_type</code>.
+     */
+    val FORUM_TYPE: ForumType get() = ForumType.FORUM_TYPE
+
+    /**
+     * The table <code>memo.forum_type_version</code>.
+     */
+    val FORUM_TYPE_VERSION: ForumTypeVersion get() = ForumTypeVersion.FORUM_TYPE_VERSION
 
     /**
      * The table <code>memo.identity_action_token</code>.
@@ -894,6 +906,8 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         FilesRendition.FILES_RENDITION,
         FilesTenantKeyset.FILES_TENANT_KEYSET,
         FilesVersion.FILES_VERSION,
+        ForumType.FORUM_TYPE,
+        ForumTypeVersion.FORUM_TYPE_VERSION,
         IdentityActionToken.IDENTITY_ACTION_TOKEN,
         IdentityHttpSession.IDENTITY_HTTP_SESSION,
         IdentityHttpSessionAttributes.IDENTITY_HTTP_SESSION_ATTRIBUTES,

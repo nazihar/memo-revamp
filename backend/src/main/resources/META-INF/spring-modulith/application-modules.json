@@ -23,14 +23,6 @@
     "shared" : false,
     "type" : "open"
   },
-  "forum" : {
-    "basePackage" : "com.memo.forum",
-    "dependencies" : [ ],
-    "displayName" : "Forum",
-    "nested" : [ ],
-    "shared" : false,
-    "type" : "closed"
-  },
   "meeting" : {
     "basePackage" : "com.memo.meeting",
     "dependencies" : [ ],
@@ -235,6 +227,23 @@
       "types" : [ "USES_COMPONENT" ]
     } ],
     "displayName" : "Document editing",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  },
+  "forum" : {
+    "basePackage" : "com.memo.forum",
+    "dependencies" : [ {
+      "target" : "audit",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "common",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "identity",
+      "types" : [ "USES_COMPONENT" ]
+    } ],
+    "displayName" : "Forum",
     "nested" : [ ],
     "shared" : false,
     "type" : "closed"

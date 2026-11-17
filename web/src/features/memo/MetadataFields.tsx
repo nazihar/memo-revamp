@@ -26,16 +26,13 @@ export interface MetadataState {
   labels: Record<string, string>
 }
 
-/** The mark after a required field's label (not read out: the control says it is required). */
-const REQUIRED_MARK = ' *'
-
 /** Choices up to this many show as radio buttons; more as a list. */
 const RADIO_LIMIT = 5
 
 /**
  * The details of a memo type (ADR-0043): one control per field, in the type's order, built from the field's type and
  * rules. Used by the create form and the edit dialog, and as the live preview of the memo-type admin. Required fields are
- * marked but checked at submit; [errors] come from the server by `metadata.<key>`.
+ * checked at submit; [errors] come from the server by `metadata.<key>`.
  */
 export function MetadataFields({
   fields,
@@ -97,11 +94,8 @@ function MetadataControl({
       >
         <legend className="text-sm font-medium">
           {field.label}
-          {field.required ? (
-            <span aria-hidden="true">{REQUIRED_MARK}</span>
-          ) : (
-            <span className="text-muted-foreground"> {optional}</span>
-          )}
+          {/* As every form here: optional fields say so, required ones carry no mark. */}
+          {field.required ? null : <span className="text-muted-foreground"> {optional}</span>}
         </legend>
         {field.help ? (
           <p id={`${groupId}-hint`} className="text-xs text-muted-foreground">

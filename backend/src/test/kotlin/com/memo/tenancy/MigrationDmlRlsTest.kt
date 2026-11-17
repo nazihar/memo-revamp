@@ -26,8 +26,8 @@ class MigrationDmlRlsTest : IntegrationTest() {
     private val known =
         mapOf(
             "workflow/V3__definitions_runtime.sql" to
-                "Phase 2 E03: its two backfills ran under FORCE and changed no row; rounds and steps from before E03 keep the " +
-                "defaults (Phase 3 E01 log, 2026-11-14)",
+                "Phase 2 E03: its two backfills ran under FORCE and changed no row; workflow/V15 repeats them for the rounds " +
+                "and steps from before E03 (Phase 3 E01 log, 2026-11-14)",
         )
 
     private val dml = Regex("""(?im)^\s*(?:UPDATE|INSERT\s+INTO|DELETE\s+FROM)\s+([a-z_][a-z0-9_]*)""")

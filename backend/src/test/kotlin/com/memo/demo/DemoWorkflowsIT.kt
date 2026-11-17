@@ -113,6 +113,11 @@ class DemoWorkflowsIT : IntegrationTest() {
                         assertThat(version.numbering.series).isEqualTo(series)
                         assertThat(type.publishedVersion).describedAs("$name published once").isEqualTo(2)
                     }
+                    // Credit proposals run under the authority; their amount picks the DoA band, ahead of the rule for every memo.
+                    val credit = types.all().single { it.name == DemoWorkflowSeeder.CREDIT_PROPOSAL }
+                    assertThat(checkNotNull(types.published(credit.id)).settings.definitionKey).isEqualTo(DemoWorkflowSeeder.AUTHORITY_KEY)
+                    assertThat(workflowSeeding.doaRulesInForce())
+                        .containsExactly(DemoWorkflowSeeder.LARGE_CREDIT, DemoWorkflowSeeder.SMALL_CREDIT, DemoWorkflowSeeder.EVERY_MEMO)
                 }
             }
         }

@@ -154,3 +154,45 @@
   - closing.
 
   Long UI tests take the repo's 20-second timeout; under the full suite on this machine they ran just past 5 seconds.
+
+## 2026-11-14 — T8 (rest): journeys, volume, ASVS, the V3 rows on dev
+- **E2E journeys:**
+  - `memo-types.spec` (built with T7): an admin builds a type with a required amount and a `TA-` format, a second admin publishes it, a user raises a memo, and the memo is numbered `TA-<year>-00001` on submit.
+  - `authority.spec` gains the amount band. A credit proposal under BDT 5 million goes from the desk to the chief financial officer alone; at 8 million the managing director decides first, and the chief financial officer has no task until then.
+- **Demo seed:**
+  - "Credit proposal" now runs on the credit-authority workflow (`FIXED`).
+  - The DoA gets two rules ahead of the E04 rule for every memo: credit proposals of BDT 5 million or more (`item.amount >= 5000000.0`) ask the managing director, then the chief financial officer; smaller ones ask the chief financial officer only.
+  - On a fresh tenant the DoA is created with all three rules. A tenant seeded earlier (dev) gets the bands in a new DoA version taking effect today, and the credit proposal type gets a new version on the authority workflow; nothing is done while a DoA version is being written or reviewed. This upgrade path has no test of its own (the IT seeds a fresh tenant), so it is checked on dev after deploy; a seeding failure is logged and never stops start-up.
+  - `DemoWorkflowsIT` checks the type's workflow and the order of the rules, after two seed runs.
+  - `WorkflowSeeding.submitDoa` now takes rules with a memo type and a condition, placed ahead of the rules in force.
+  - `MemoSeeding.representativeTypes` takes the workflow for a type code and returns the type ids.
+  - The bands compare the amount whatever its currency; the demo's credit proposals are in BDT. A bank's real bands would add `item.amountCurrency == "BDT"` or one rule per currency.
+- **Volume and `EXPLAIN`** (`NumberingPerformanceIT`, 100,000 numbers in one period, every 50th void):
+  - Register page with the completeness check: p95 81 ms locally (budget 300 ms).
+  - Lookup by number: p95 4 ms (budget 50 ms).
+  - Plans:
+    ```
+    Limit (actual rows=51)
+      -> Index Scan using memo_number_uk on memo m (actual time=0.042..0.051 rows=51)
+           Index Cond: tenant_id, number_series, number_period, number_scope, number_sequence > 73000
+           Buffers: shared hit=8
+    Execution Time: 0.072 ms
+
+    Index Scan using memo_tenant_id_reference_key on memo (actual time=0.034..0.035 rows=1)
+      Index Cond: tenant_id, reference = 'P-2026-073000'
+      Buffers: shared hit=4
+    Execution Time: 0.047 ms
+    ```
+  - Most of the register's time is the completeness check (`generate_series` with an index probe per number); it stays inside the budget at this volume.
+- **The rows `workflow/V3` did not backfill**, checked on dev (read-only, as the database owner):
+  - 16 rounds still had an empty route, 6 of them open;
+  - 17 route steps had no route index, 7 of them active or pending;
+  - 7 open instances were affected.
+
+  An active route step without its index cannot find the next entry, so those memos would have ended their route early. New migration `workflow/V15__route_backfill.sql` repeats both backfills, lifting FORCE for the transaction, only for rounds whose steps all still carry the pre-E03 defaults. `RouteBackfillIT` reproduces the dev state: V3 changes nothing, V15 fixes the old round, leaves a round started since E03 alone, and FORCE is back on. `MigrationDmlRlsTest`'s note on V3 points to V15. After deploy, check on dev that the three counts are zero.
+- **ASVS:** seven rows for E01 in `docs/security/asvs-checklist.md`: maker-checker and step-up for types, pinned versions and values, numbering integrity, bounded forms, link and register visibility, audit, and labels rendered as text.
+- **PIT:** `NumberFormats` joins the engine in the mutation-testing targets (threshold 70 %). Locally: numbering 84.7 % (72 of 85 mutants killed), engine 89.3 %.
+- **Visual baselines (nightly):** the memo view now shows Details and Linked memos, so its six images were re-rendered. New `visual/memo-types.spec`: the type page's Form tab with the preview (light/dark × LTR/RTL) and the new-memo form with details (LTR, RTL, phone). Rendered in the Playwright container and reviewed.
+- **Required marks:** choice fields were marked required with "*" while other fields carried no mark. They now follow the app's convention (optional fields say so; required ones carry no mark), and the details lead text says "every field not marked optional".
+- **Runbook:** `docs/runbooks/memo-types-and-numbering.md` covers publishing a type, continuing a legacy series with a starting number, checking the register, and the refusals.
+- **Dependency register:** unchanged; no dependency changes since master.

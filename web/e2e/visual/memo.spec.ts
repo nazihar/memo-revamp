@@ -3,11 +3,11 @@ import type { HistoryAction, HistoryRound, InboxPage, MemoView } from '../../src
 import { expect, test } from '../fixtures'
 
 /**
- * Visual regression (nightly) of the memo screens (E01 test plan, T9): the memo view of an approver in round 2, light/dark
- * × LTR/RTL; the inbox; and the approver's phone layout (stacked memo view with the action bar at the bottom, the approve
- * dialog as a full-screen sheet). The API is mocked with fixed data; baselines are rendered on Linux in the Playwright
- * container (web/e2e/README.md). The mocks are typed with the generated API types, so a change to the API breaks the
- * typecheck on every PR rather than the nightly screenshots.
+ * Visual regression (nightly) of the memo screens (E01 test plan, T9; Phase 3 E01 T8 adds the details and links): the
+ * memo view of an approver in round 2, light/dark × LTR/RTL; the inbox; and the approver's phone layout (stacked memo
+ * view with the action bar at the bottom, the approve dialog as a full-screen sheet). The API is mocked with fixed data;
+ * baselines are rendered on Linux in the Playwright container (web/e2e/README.md). The mocks are typed with the generated
+ * API types, so a change to the API breaks the typecheck on every PR rather than the nightly screenshots.
  */
 const variants = [
   { name: 'light-ltr', theme: 'light', locale: 'en' },
@@ -43,9 +43,26 @@ const memo: MemoView = {
   holders: [{ id: 'u2', name: 'Demo Head of Credit' }],
   myTask: { id: 'k1', role: 'DECIDE', shared: false, waiting: false },
   interests: [],
-  details: [],
+  // Phase 3 E01 T8: the Details section and the links.
+  typeVersion: 2,
+  details: [
+    { key: 'amount', label: 'Estimated cost', type: 'AMOUNT', value: { value: '12500000.00', currency: 'BDT' } },
+    { key: 'branch', label: 'Branch', type: 'UNIT', value: 'b1', display: 'Sylhet Zindabazar' },
+    { key: 'opening', label: 'Planned opening', type: 'DATE', value: '2027-03-01' },
+    { key: 'kind', label: 'Kind of branch', type: 'CHOICE', value: 'full', display: 'Full-service branch' },
+  ],
   staleDetails: [],
-  links: [],
+  links: [
+    {
+      id: 'l1',
+      kind: 'FOLLOWS_UP',
+      memoId: 'm7',
+      reference: 'M-2026-00007',
+      subject: 'Branch expansion plan 2026',
+      status: 'APPROVED',
+      removable: false,
+    },
+  ],
   linkedFrom: [],
   canLink: true,
   sendBackTargets: [],

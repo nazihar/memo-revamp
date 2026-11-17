@@ -76,7 +76,7 @@ describe('delegation of authority', () => {
     expect(screen.queryByRole('button', { name: 'Save draft' })).not.toBeInTheDocument()
     expect(partForPath('/admin/workflow/doa')).toBe('admin')
     await expectNoA11yViolations(container)
-  })
+  }, 20_000)
 
   it('edits a draft and saves its rules with the revision it was read at', async () => {
     const user = userEvent.setup()

@@ -8,6 +8,7 @@ import com.memo.common.tenant.TenantTransactions
 import com.memo.identity.UserAccounts
 import com.memo.memo.MemoSeeding
 import com.memo.workflow.DoaSeedGroup
+import com.memo.workflow.DoaSeedRule
 import com.memo.workflow.WorkflowSeeding
 import org.slf4j.LoggerFactory
 import org.springframework.boot.ApplicationArguments
@@ -40,9 +41,14 @@ class DemoWorkflowSeeder(
         publish(ids, KEY, NAME, definition(ids))
         asUser(ids.getValue(ADMIN)) { memos.fixedType(NAME, KEY) }
         seedAuthority(ids)
-        // Phase 3 E01 T8: representative bank memo types with fields and numbering (no pilot bank yet, Phase 3 Q2).
-        val types = TenantContext.call(DemoTenant.ID) { memos.representativeTypes(ids.getValue(ADMIN), ids.getValue(REVIEWER)) }
-        if (types > 0) log.info("Demo memo types seeded: {}", types)
+        // Phase 3 E01 T8: representative bank memo types with fields and numbering (no pilot bank yet, Phase 3 Q2); credit
+        // proposals run under the authority, so their amount picks the DoA band.
+        val types =
+            TenantContext.call(DemoTenant.ID) {
+                memos.representativeTypes(ids.getValue(ADMIN), ids.getValue(REVIEWER), mapOf(CREDIT_PROPOSAL_CODE to AUTHORITY_KEY))
+            }
+        if (types.published > 0) log.info("Demo memo types seeded: {}", types.published)
+        seedDoa(ids, types.ids[CREDIT_PROPOSAL_CODE])
     }
 
     /** [body] as [key], written by the demo admin and approved by the org admin; or as version 2 if version 1 lacks SLAs. */
@@ -68,26 +74,61 @@ class DemoWorkflowSeeder(
 
     /**
      * E04 T10: "Credit under authority": the credit desk (a queue of the head of credit and the director; one claims,
-     * the first decision completes it), then the delegation of authority (the managing director, then the chief
-     * financial officer, by their positions), and the author is told. The DoA is maker-checked like the definition.
+     * the first decision completes it), then the delegation of authority, and the author is told.
      * E05 T8: the desk has four working hours (a reminder an hour before), the authority two working days (a reminder a
      * day after the due time).
      */
     private fun seedAuthority(ids: Map<String, UUID>) {
         val author = ids.getValue(ADMIN)
-        val reviewer = ids.getValue(REVIEWER)
         asUser(author) { workflows.queue(DESK, "Credit desk", listOf(ids.getValue(HEAD_CREDIT), ids.getValue(DIRECTOR))) }
         publish(ids, AUTHORITY_KEY, AUTHORITY_NAME, authority())
-        if (!asUser(author) { workflows.doaSeeded() }) {
-            val groups =
-                listOf(
-                    DoaSeedGroup(1, listOf(DemoOrg.unitByCode("CEO").headPosition)),
-                    DoaSeedGroup(1, listOf(DemoOrg.unitByCode("FIN").headPosition)),
-                )
-            val number = asUser(author) { workflows.submitDoa("memo", "Credit memos", groups) }
-            asUser(reviewer) { workflows.approveDoa(number) }
-        }
         asUser(author) { memos.fixedType(AUTHORITY_NAME, AUTHORITY_KEY) }
+    }
+
+    /**
+     * The delegation of authority, maker-checked like the definitions. E04 T10: every memo asks the managing director,
+     * then the chief financial officer (by their positions). Phase 3 E01 T8 puts amount bands for credit proposals
+     * ahead of it: BDT 5 million or more asks both, less asks the chief financial officer only. A tenant seeded before
+     * the bands gets them in a new version taking effect today, unless a version is being written or reviewed.
+     */
+    private fun seedDoa(
+        ids: Map<String, UUID>,
+        creditProposal: UUID?,
+    ) {
+        val author = ids.getValue(ADMIN)
+        val director = DoaSeedGroup(1, listOf(DemoOrg.unitByCode("CEO").headPosition))
+        val finance = DoaSeedGroup(1, listOf(DemoOrg.unitByCode("FIN").headPosition))
+        val bands =
+            creditProposal
+                ?.let { credit ->
+                    listOf(
+                        DoaSeedRule(LARGE_CREDIT, "memo", listOf(director, finance), credit, "item.amount >= $CREDIT_BAND"),
+                        DoaSeedRule(SMALL_CREDIT, "memo", listOf(finance), credit),
+                    )
+                }.orEmpty()
+        val inForce = asUser(author) { workflows.doaRulesInForce() }
+        val rules =
+            when {
+                asUser(author) { workflows.doaOpen() } -> {
+                    emptyList()
+                }
+
+                inForce == null && !asUser(author) { workflows.doaSeeded() } -> {
+                    bands + DoaSeedRule(EVERY_MEMO, "memo", listOf(director, finance))
+                }
+
+                inForce != null && LARGE_CREDIT !in inForce -> {
+                    bands
+                }
+
+                else -> {
+                    emptyList()
+                }
+            }
+        if (rules.isEmpty()) return
+        val number = asUser(author) { workflows.submitDoa(rules) }
+        asUser(ids.getValue(REVIEWER)) { workflows.approveDoa(number) }
+        log.info("Demo delegation of authority seeded: version {}", number)
     }
 
     private fun authority(): String =
@@ -137,6 +178,12 @@ class DemoWorkflowSeeder(
         const val KEY = "credit-facility"
         const val AUTHORITY_KEY = "credit-authority"
         const val AUTHORITY_NAME = "Credit under authority"
+        const val CREDIT_PROPOSAL = "Credit proposal"
+        const val CREDIT_PROPOSAL_CODE = "CP"
+        const val LARGE_CREDIT = "Credit proposals of BDT 5 million or more"
+        const val SMALL_CREDIT = "Credit proposals under BDT 5 million"
+        const val CREDIT_BAND = "5000000.0"
+        const val EVERY_MEMO = "Credit memos"
         const val DESK = "credit-desk"
         const val NAME = "Credit facility"
         const val ADMIN = "admin@demo.example"

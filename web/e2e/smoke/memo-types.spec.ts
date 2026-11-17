@@ -1,20 +1,14 @@
-import type { Browser, Page } from '@playwright/test'
 import { confirmIfAsked, demoSecret } from '../auth'
 import { docx } from '../docx'
 import { expect, test } from '../fixtures'
 import { chooseMemoType } from '../memo-type'
-import { storageStateFor, type SignedInRole } from '../roles'
+import { pageAs } from '../roles'
 
 /**
  * The Phase 3 E01 journey (test plan, T8): an administrator builds a memo type with a required amount and a `TA-` number
  * format on its own series; a second administrator publishes it with a step-up; a user raises a memo of it, whose
  * details read back formatted, and submitting it gives the first number of the series. Each run uses a new series.
  */
-async function as(browser: Browser, role: SignedInRole): Promise<Page> {
-  const context = await browser.newContext({ storageState: storageStateFor(role) })
-  return context.newPage()
-}
-
 test.describe('as a tenant admin', () => {
   test.use({ role: 'tenantAdmin' })
 
@@ -65,17 +59,21 @@ test.describe('as a tenant admin', () => {
     await expect(page.getByRole('heading', { level: 2, name: /Version 1 · In review/ })).toBeVisible()
 
     // The second administrator sees the changes and publishes it (maker-checker, ADR-0043).
-    const reviewer = await as(browser, 'reviewer')
+    const reviewer = await pageAs(browser, 'reviewer')
     await reviewer.goto(typeUrl)
     // A first version has nothing to compare with; the reviewer reads the form in its preview.
     await reviewer.getByRole('tab', { name: 'Form' }).click()
     await expect(reviewer.getByRole('textbox', { name: /Facility amount/ })).toBeVisible()
     await reviewer.getByRole('button', { name: 'Approve and publish' }).click()
-    await confirmIfAsked(reviewer, demoSecret('MEMO_DEMO_TOTP_SECRET'))
+    await confirmIfAsked(
+      reviewer,
+      demoSecret('MEMO_DEMO_TOTP_SECRET'),
+      reviewer.getByRole('heading', { level: 2, name: /Version 1 · Published/ }),
+    )
     await expect(reviewer.getByRole('heading', { level: 2, name: /Version 1 · Published/ })).toBeVisible()
 
     // A user raises one: the type first, then its details.
-    const author = await as(browser, 'user')
+    const author = await pageAs(browser, 'user')
     await author.goto('/memos/new')
     await chooseMemoType(author, typeName)
     await author.getByLabel('Subject').fill(`E2E typed memo ${stamp}`)

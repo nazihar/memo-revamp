@@ -16,8 +16,8 @@ test.describe('as a tenant admin', () => {
     const dialog = page.getByRole('dialog', { name: 'Give a role' })
     await dialog.getByLabel(/^Role/).selectOption({ label: 'Auditor' })
     await dialog.getByRole('button', { name: 'Give a role' }).click()
-    await confirmIfAsked(page, secret)
     const grants = page.getByRole('table', { name: 'Roles given to this person' })
+    await confirmIfAsked(page, secret, grants.getByRole('row', { name: /Auditor/ }))
     await expect(grants.getByRole('row', { name: /Auditor/ })).toBeVisible()
     await app.checkA11y()
 
@@ -26,7 +26,7 @@ test.describe('as a tenant admin', () => {
       .getByRole('button', { name: 'Revoke' })
       .click()
     await page.getByRole('alertdialog', { name: 'Revoke this role?' }).getByRole('button', { name: 'Revoke' }).click()
-    await confirmIfAsked(page, secret)
+    await confirmIfAsked(page, secret, async () => (await grants.getByRole('row', { name: /Auditor/ }).count()) === 0)
     await expect(grants.getByRole('row', { name: /Auditor/ })).toHaveCount(0)
   })
 

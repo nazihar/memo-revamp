@@ -1,5 +1,6 @@
 import { docx } from '../docx'
 import { expect, test } from '../fixtures'
+import { chooseMemoType } from '../memo-type'
 
 /**
  * In-browser editing (E02 test plan, T5): the initiator opens the memo's document in ONLYOFFICE under `/office/`,
@@ -17,6 +18,8 @@ test.describe('as the initiator', () => {
     const subject = `E2E edit ${String(Date.now())}`
     await app.visit('/memos/new')
     await page.getByLabel('Subject').fill(subject)
+    // A type without a template, so the memo starts with no document (the demo's Credit facility starts from one).
+    await chooseMemoType(page, 'General memo')
     await page.getByRole('button', { name: 'Create draft' }).click()
     await expect(page.getByRole('heading', { level: 1, name: subject })).toBeVisible()
     await page.getByLabel('Upload the document').setInputFiles({

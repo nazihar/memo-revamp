@@ -1,9 +1,9 @@
-import type { Browser, Locator, Page } from '@playwright/test'
+import type { Locator, Page } from '@playwright/test'
 import { confirmIfAsked, demoSecret } from '../auth'
 import { docx } from '../docx'
 import { expect, test } from '../fixtures'
 import { chooseMemoType } from '../memo-type'
-import { storageStateFor, type SignedInRole } from '../roles'
+import { pageAs } from '../roles'
 
 /**
  * The Phase 2 exit journey (E06 T9, overview §5): a tenant administrator builds a workflow in the builder's Steps view
@@ -11,16 +11,11 @@ import { storageStateFor, type SignedInRole } from '../roles'
  * simulates both branches, submits it; a second administrator approves it; a memo type uses it; and a memo routes
  * through it to Approved. Built with the keyboard-path view, not by dragging.
  */
-async function as(browser: Browser, role: SignedInRole): Promise<Page> {
-  const context = await browser.newContext({ storageState: storageStateFor(role) })
-  return context.newPage()
-}
-
 async function act(page: Page, memoUrl: string, button: string) {
   await page.goto(memoUrl)
   await page.getByRole('toolbar', { name: 'Actions' }).getByRole('button', { name: button }).click()
   await page.getByRole('dialog').getByRole('button', { name: button }).click()
-  await confirmIfAsked(page, demoSecret('MEMO_DEMO_TOTP_SECRET'))
+  await confirmIfAsked(page, demoSecret('MEMO_DEMO_TOTP_SECRET'), page.getByText('Done.'))
   await expect(page.getByText('Done.')).toBeVisible()
 }
 
@@ -167,7 +162,7 @@ test.describe('as a tenant admin', () => {
     await expect(page.getByRole('heading', { level: 2, name: /Version 1 · In review/ })).toBeVisible()
 
     // A second administrator approves and publishes it (maker-checker, with a step-up).
-    const reviewer = await as(browser, 'reviewer')
+    const reviewer = await pageAs(browser, 'reviewer')
     await reviewer.goto(definitionUrl)
     await reviewer
       .getByRole('toolbar', { name: 'Versions' })
@@ -177,7 +172,11 @@ test.describe('as a tenant admin', () => {
       .getByRole('dialog', { name: 'Publish this version?' })
       .getByRole('button', { name: 'Approve and publish' })
       .click()
-    await confirmIfAsked(reviewer, demoSecret('MEMO_DEMO_TOTP_SECRET'))
+    await confirmIfAsked(
+      reviewer,
+      demoSecret('MEMO_DEMO_TOTP_SECRET'),
+      reviewer.getByRole('heading', { level: 2, name: /Version 1 · Published/ }),
+    )
     await expect(reviewer.getByRole('heading', { level: 2, name: /Version 1 · Published/ })).toBeVisible()
 
     // A memo type runs on it.
@@ -199,11 +198,15 @@ test.describe('as a tenant admin', () => {
     await expect(page.getByRole('heading', { level: 2, name: /Version 1 · In review/ })).toBeVisible()
     await reviewer.goto(typeUrl)
     await reviewer.getByRole('button', { name: 'Approve and publish' }).click()
-    await confirmIfAsked(reviewer, demoSecret('MEMO_DEMO_TOTP_SECRET'))
+    await confirmIfAsked(
+      reviewer,
+      demoSecret('MEMO_DEMO_TOTP_SECRET'),
+      reviewer.getByRole('heading', { level: 2, name: /Version 1 · Published/ }),
+    )
     await expect(reviewer.getByRole('heading', { level: 2, name: /Version 1 · Published/ })).toBeVisible()
 
     // A memo of that type goes review → branch (rank 0) → director → Approved.
-    const author = await as(browser, 'user')
+    const author = await pageAs(browser, 'user')
     await author.goto('/memos/new')
     await author.getByLabel('Subject').fill(`E2E built workflow ${stamp}`)
     await chooseMemoType(author, typeName)
@@ -217,8 +220,8 @@ test.describe('as a tenant admin', () => {
     })
     await expect(author.getByText(/^Version 1 ·/)).toBeVisible()
     await act(author, memoUrl, 'Submit')
-    await act(await as(browser, 'headCredit'), memoUrl, 'Recommend')
-    const director = await as(browser, 'director')
+    await act(await pageAs(browser, 'headCredit'), memoUrl, 'Recommend')
+    const director = await pageAs(browser, 'director')
     await director.goto(memoUrl)
     await expect(director.getByText(/^Due /)).toBeVisible()
     await act(director, memoUrl, 'Approve')

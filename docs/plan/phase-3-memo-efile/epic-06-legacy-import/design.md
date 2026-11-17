@@ -433,6 +433,8 @@ All paths are under `/api/v1`. Bodies are JSON. Errors are RFC 9457 Problem Deta
   - `BatchView` gains `verifiedAt`, `completedAt`, `report` (`{balanced, complete, valid}`), `closedAt`, `closeReason` and `purgedAt`; `allowedActions` gains `ABANDON` (OPEN or VALIDATED) and `CLOSE` (COMPLETED).
   - **Matrix:** the three endpoints are in `p3-e06-imports.yaml`: close and abandon 403 for every subject; the report 403 for the plain user and 404 for the tenant administrator (who holds `audit.read`; the id is random). Allowed paths, clearance refusals (an uncleared holder and auditor), the plain reader and the cross-tenant 404s are in `ReconciliationIT` and `ImportCloseIT`.
 
+- **As built (T9):** `ImportMappingsView` gains `targets` (`{kind, id, label, detail, rank}`): for the kinds listed, the active types with a published version (code as detail), every unit (code), the levels (rank), and for PERSON only the users the mappings already point at (email). A holder of `memo.import` need hold no permission that lists types, units or users, and the screen can name a linked person. STATUS targets are fixed and not listed. `GET …/mappings` and `PUT …/mappings/{kind}` both answer them; `MappingIT` checks them.
+
 ## 11. Imported memos across the product
 - **`MemoView`:**
   - `origin` (`NATIVE` or `IMPORTED`);
@@ -567,6 +569,12 @@ Every payload carries `tenantId` (`TenantScopedPayload`); the actor `System("leg
 - **Search:** the Origin filter and an "Imported" badge.
 - **i18n:** a catalogue part `imports` in English and Arabic; problem messages by code; paths, legacy numbers and hashes shown left-to-right in isolation (`<bdi dir="ltr">`) inside Arabic text. The report is English only (§10 Q3).
 - **Accessibility:** the stepper is a list of links with `aria-current="step"`; progress is a `progressbar` with a polite live region updated at most every 5%; the problem table is a real table with sortable headers; nothing relies on colour alone.
+
+- **As built (T9)** (`web/src/features/imports`, `features/memo/ImportedMemo.tsx`, the Search page):
+  - Routes `/admin/imports` and `/admin/imports/$batchId?step=`; the menu entry "Import" for holders of `memo.import` (who also see the administration overview). Catalogue parts `imports` (`/admin/imports`) and `legacy` (`/memos`), so the core part does not grow.
+  - The folder upload is plain logic (`folder.ts`: system files, path rules, NFC, chunks of 1,000, the resume rule; `upload-queue.ts`: three at a time, pause, retries with back-off, refusals, stop) driven by a per-batch session outside React (`intake-session.ts`). Sources and originals go through the generated `uploadFile` (originals with `Idempotency-Key: imp-{intakeId}-{size}`).
+  - Problem and refusal messages are built from code and params (`codes.ts`) in English and Arabic; paths, columns, formats and legacy numbers are `<bdi dir="ltr">`, typed values `<bdi>`. Radix Tabs are given the page's direction: they default to LTR, which turned the mapping and problem tables left to right in Arabic (the memo-type page has the same flaw, not fixed here).
+  - Start and resume use the step-up (`useWithStepUp`); start sends `If-Match` and `expectedRows` = the READY count shown.
 
 ## 17. Decided in planning (beyond the research)
 1. **A separate module `imports`** owns batches and staging; the memo module owns what an imported memo is, behind `LegacyMemos`.

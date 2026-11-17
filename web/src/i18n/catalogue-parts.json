@@ -31,5 +31,13 @@
   "dashboard": {
     "routes": ["/dashboards"],
     "prefixes": ["dashboard"]
+  },
+  "imports": {
+    "routes": ["/admin/imports"],
+    "prefixes": ["imports"]
+  },
+  "legacy": {
+    "routes": ["/memos"],
+    "prefixes": ["legacy"]
   }
 }

@@ -5,7 +5,17 @@ import definition from './catalogue-parts.json'
  * splits the catalogues with scripts/catalogue-parts.mjs).
  */
 export type CataloguePart =
-  'core' | 'admin' | 'builder' | 'memoAdmin' | 'platform' | 'patterns' | 'search' | 'inbox' | 'dashboard'
+  | 'core'
+  | 'admin'
+  | 'builder'
+  | 'memoAdmin'
+  | 'platform'
+  | 'patterns'
+  | 'search'
+  | 'inbox'
+  | 'dashboard'
+  | 'imports'
+  | 'legacy'
 
 const routes = Object.entries(definition)
   .filter(([name]) => !name.startsWith('$'))

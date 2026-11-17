@@ -108,6 +108,20 @@ data class ImportMappingsView(
     /** The batch's version after the call: send it back in `If-Match`. */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val batchVersion: Long,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val mappings: List<ImportMappingView>,
+    /** What the listed kinds can point at, named (as built T9): types, units, levels, and the users already linked. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val targets: List<ImportMappingTargetView> = emptyList(),
+)
+
+/** A possible mapping target and its name (as built T9). */
+data class ImportMappingTargetView(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val kind: MappingKind,
+    /** Send it as a mapping's `target`. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val id: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val label: String,
+    /** A type's or unit's code, or a user's email. */
+    val detail: String? = null,
+    /** CLASSIFICATION: the level's rank (higher is stricter). */
+    val rank: Int? = null,
 )
 
 /** One mapping to save. */
@@ -224,7 +238,8 @@ class ImportDryRunController(
     ): ResponseEntity<ImportMappingsView> {
         val view =
             transactions.readInTenant(TenantContext.current()) {
-                ImportMappingsView(batches.get(id).version, mappings.list(id, kind).map(::mapping))
+                val found = mappings.list(id, kind)
+                ImportMappingsView(batches.get(id).version, found.map(::mapping), mappings.targets(kind, found).map(::target))
             }
         return ResponseEntity
             .ok()
@@ -255,7 +270,8 @@ class ImportDryRunController(
         val view =
             transactions.inTenant(TenantContext.current()) {
                 val saved = mappings.save(id, version, kind, changes)
-                ImportMappingsView(saved, mappings.list(id, kind).map(::mapping))
+                val found = mappings.list(id, kind)
+                ImportMappingsView(saved, found.map(::mapping), mappings.targets(kind, found).map(::target))
             }
         return ResponseEntity.ok().eTag(etagOf(view.batchVersion)).body(view)
     }
@@ -265,6 +281,8 @@ class ImportDryRunController(
 
     private fun mapping(m: ImportMapping) =
         ImportMappingView(m.kind, m.legacyValue, m.rowCount, m.legacyOrder, m.target, m.proposed, m.confirmed, m.confirmedBy, m.confirmedAt)
+
+    private fun target(t: MappingTarget) = ImportMappingTargetView(t.kind, t.id, t.label, t.detail, t.rank)
 
     private companion object {
         const val PAGE = 100

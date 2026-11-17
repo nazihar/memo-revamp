@@ -4784,6 +4784,3432 @@
       "value": "Invite people and manage their accounts.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "imports.abandon": [
+    {
+      "type": 0,
+      "value": "Abandon batchSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.abandon.text": [
+    {
+      "type": 0,
+      "value": "Nothing has been imported. Staged copies of the files are deleted; the batch stays listed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.abandon.title": [
+    {
+      "type": 0,
+      "value": "Abandon this batch?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.abandoned": [
+    {
+      "type": 0,
+      "value": "The batch was abandoned.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.answer.anotherRunning": [
+    {
+      "type": 0,
+      "value": "Another batch is importing. Only one import runs at a time; try again when it has finished.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.answer.batchProblems": [
+    {
+      "type": 0,
+      "value": "The batch has problems that stop the import. Fix them and run the dry run again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.answer.classificationOrder": [
+    {
+      "type": 0,
+      "value": "A stricter marking maps to a lower level than a less strict one.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.answer.cleared": [
+    {
+      "type": 0,
+      "value": "Cancelled.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.answer.dryRunStale": [
+    {
+      "type": 0,
+      "value": "Something changed since the dry run. Run the dry run again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.answer.forbidden": [
+    {
+      "type": 0,
+      "value": "You may no longer send files to this batch.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.answer.importerNotCleared": [
+    {
+      "type": 0,
+      "value": "You are not cleared to the highest classification this batch writes. Someone cleared to it must start the import.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.answer.limitExceeded": [
+    {
+      "type": 0,
+      "value": "The batch would hold more than 200,000 originals or 200 GB.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.answer.mappingInvalid": [
+    {
+      "type": 0,
+      "value": "A mapping is not valid. Reload and try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.answer.nothingToImport": [
+    {
+      "type": 0,
+      "value": "No memo is ready to import.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.answer.numberPrefixInvalid": [
+    {
+      "type": 0,
+      "value": "Use up to 20 letters, digits or / . _ -, starting with a letter or digit.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.answer.other": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.answer.pathDuplicate": [
+    {
+      "type": 0,
+      "value": "Two files of the folder have the same path.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.answer.pathInvalid": [
+    {
+      "type": 0,
+      "value": "A path in the folder cannot be used.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.answer.reportNotReady": [
+    {
+      "type": 0,
+      "value": "The report is not ready yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.answer.required": [
+    {
+      "type": 0,
+      "value": "Required.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.answer.rowsChanged": [
+    {
+      "type": 0,
+      "value": "The number of memos ready changed. Review the batch again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.answer.sizeInvalid": [
+    {
+      "type": 0,
+      "value": "A file’s size could not be read.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.answer.sourceCodeInvalid": [
+    {
+      "type": 0,
+      "value": "Use 1 to 20 capital letters, digits or \"-\", starting with a letter or digit.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.answer.sourceMissing": [
+    {
+      "type": 0,
+      "value": "Upload the metadata first: a workbook, or the Memos and Files CSV files.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.answer.timeZoneInvalid": [
+    {
+      "type": 0,
+      "value": "Choose a time zone from the list.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.answer.tooLong": [
+    {
+      "type": 0,
+      "value": "Too long.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.answer.tooManyBatches": [
+    {
+      "type": 0,
+      "value": "Five batches are open already. Close or abandon one first.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.answer.wrongState": [
+    {
+      "type": 0,
+      "value": "The batch has moved on in the meantime. It has been reloaded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.batch.header": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "source"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.batch.state": [
+    {
+      "type": 0,
+      "value": "State: "
+    },
+    {
+      "type": 1,
+      "value": "state"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.caption": [
+    {
+      "type": 0,
+      "value": "Import batches, newest firstSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.close.text": [
+    {
+      "type": 0,
+      "value": "Staged copies of the originals are deleted. The report and imported memos stay.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.close.title": [
+    {
+      "type": 0,
+      "value": "Close this batch?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.closeBatch": [
+    {
+      "type": 0,
+      "value": "Close batchSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.closed": [
+    {
+      "type": 0,
+      "value": "The batch was closed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.closedReason": [
+    {
+      "type": 0,
+      "value": "Closed "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.alreadyImported": [
+    {
+      "type": 0,
+      "value": "This memo was already imported unchanged; it is skipped.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.alreadyImportedChanged": [
+    {
+      "type": 0,
+      "value": "This memo was imported before with other values. Correct the imported memo instead.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.approvalOrderDuplicate": [
+    {
+      "type": 0,
+      "value": "Two approvals of this memo have the same order.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.classificationBlank": [
+    {
+      "type": 0,
+      "value": "The classification is blank and the batch has no default level.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.classificationDefaulted": [
+    {
+      "type": 0,
+      "value": "The classification was blank; the batch’s default level is used.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.classificationUnmapped": [
+    {
+      "type": 0,
+      "value": "Classification “"
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": "” is not mapped.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.columnDuplicate": [
+    {
+      "type": 0,
+      "value": "The column "
+    },
+    {
+      "type": 1,
+      "value": "column"
+    },
+    {
+      "type": 0,
+      "value": " appears twice.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.columnRequired": [
+    {
+      "type": 0,
+      "value": "The required column "
+    },
+    {
+      "type": 1,
+      "value": "column"
+    },
+    {
+      "type": 0,
+      "value": " is missing.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.columnUnknown": [
+    {
+      "type": 0,
+      "value": "The column "
+    },
+    {
+      "type": 1,
+      "value": "column"
+    },
+    {
+      "type": 0,
+      "value": " is not one we know.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.dateFuture": [
+    {
+      "type": 0,
+      "value": "The date in "
+    },
+    {
+      "type": 1,
+      "value": "column"
+    },
+    {
+      "type": 0,
+      "value": " is in the future.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.dateInvalid": [
+    {
+      "type": 0,
+      "value": "The date in "
+    },
+    {
+      "type": 1,
+      "value": "column"
+    },
+    {
+      "type": 0,
+      "value": " is not a date (yyyy-mm-dd), or is before 1900.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.dateOrder": [
+    {
+      "type": 0,
+      "value": "The dates are out of order: raised on, then decided on, then closed on.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.delimiterUnknown": [
+    {
+      "type": 0,
+      "value": "The CSV file’s columns could not be told apart: separate them with commas or semicolons.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.dryRunFailed": [
+    {
+      "type": 0,
+      "value": "The dry run failed. Try again; if it fails again, ask your support.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.fieldInvalid": [
+    {
+      "type": 0,
+      "value": "The value in "
+    },
+    {
+      "type": 1,
+      "value": "column"
+    },
+    {
+      "type": 0,
+      "value": " does not fit the memo type’s field.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.fileAmbiguous": [
+    {
+      "type": 0,
+      "value": "File "
+    },
+    {
+      "type": 1,
+      "value": "path"
+    },
+    {
+      "type": 0,
+      "value": " matches several originals that differ only in case.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.fileClassificationLower": [
+    {
+      "type": 0,
+      "value": "A file’s classification must be stricter than its memo’s, or blank.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.fileEmpty": [
+    {
+      "type": 0,
+      "value": "File "
+    },
+    {
+      "type": 1,
+      "value": "path"
+    },
+    {
+      "type": 0,
+      "value": " is empty.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.fileHashMismatch": [
+    {
+      "type": 0,
+      "value": "File "
+    },
+    {
+      "type": 1,
+      "value": "path"
+    },
+    {
+      "type": 0,
+      "value": " is not the one the sheet’s SHA-256 describes.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.fileNotReceived": [
+    {
+      "type": 0,
+      "value": "File "
+    },
+    {
+      "type": 1,
+      "value": "path"
+    },
+    {
+      "type": 0,
+      "value": " was not received.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.fileRefused": [
+    {
+      "type": 0,
+      "value": "File "
+    },
+    {
+      "type": 1,
+      "value": "path"
+    },
+    {
+      "type": 0,
+      "value": " was refused: "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.fileShared": [
+    {
+      "type": 0,
+      "value": "Another memo has a file with the same content.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.fileUnreferenced": [
+    {
+      "type": 0,
+      "value": "File "
+    },
+    {
+      "type": 1,
+      "value": "path"
+    },
+    {
+      "type": 0,
+      "value": " is not used by any row.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.fixityMismatch": [
+    {
+      "type": 0,
+      "value": "A stored original no longer matches the SHA-256 taken when it was received.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.formulaCached": [
+    {
+      "type": 0,
+      "value": "The value in "
+    },
+    {
+      "type": 1,
+      "value": "column"
+    },
+    {
+      "type": 0,
+      "value": " comes from a formula; its saved value is used.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.formulaNoValue": [
+    {
+      "type": 0,
+      "value": "The formula in "
+    },
+    {
+      "type": 1,
+      "value": "column"
+    },
+    {
+      "type": 0,
+      "value": " has no saved value. Open and save the workbook in Excel.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.headerMissing": [
+    {
+      "type": 0,
+      "value": "Column "
+    },
+    {
+      "type": 1,
+      "value": "position"
+    },
+    {
+      "type": 0,
+      "value": " has values but no header.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.importError": [
+    {
+      "type": 0,
+      "value": "The memo could not be imported after three attempts.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.inFlight": [
+    {
+      "type": 0,
+      "value": "This memo’s status is in flight: finish it in the old system.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.mainFileMissing": [
+    {
+      "type": 0,
+      "value": "The memo has no MAIN file.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.mainFileMultiple": [
+    {
+      "type": 0,
+      "value": "The memo has more than one MAIN file.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.malformed": [
+    {
+      "type": 0,
+      "value": "The file could not be read. Check that it is not damaged.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.mappingUnconfirmed": [
+    {
+      "type": 0,
+      "value": "The "
+    },
+    {
+      "type": 5,
+      "value": "kind",
+      "options": {
+        "STATUS": {
+          "value": [
+            {
+              "type": 0,
+              "value": "status"
+            }
+          ]
+        },
+        "TYPE": {
+          "value": [
+            {
+              "type": 0,
+              "value": "type"
+            }
+          ]
+        },
+        "UNIT": {
+          "value": [
+            {
+              "type": 0,
+              "value": "unit"
+            }
+          ]
+        },
+        "CLASSIFICATION": {
+          "value": [
+            {
+              "type": 0,
+              "value": "classification"
+            }
+          ]
+        },
+        "PERSON": {
+          "value": [
+            {
+              "type": 0,
+              "value": "person"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "value"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": " “"
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": "” is not confirmed in the mappings.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.notUtf8": [
+    {
+      "type": 0,
+      "value": "The CSV file is not UTF-8. Save it again as “CSV UTF-8”.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.numberDuplicate": [
+    {
+      "type": 0,
+      "value": "Another row of this batch has the same legacy number.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.numberInLiveSeries": [
+    {
+      "type": 0,
+      "value": "This number could be made by the series "
+    },
+    {
+      "type": 1,
+      "value": "format"
+    },
+    {
+      "type": 0,
+      "value": "; set its starting number past it, or use a prefix.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.numberInUse": [
+    {
+      "type": 0,
+      "value": "A memo with this number already exists.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.numberNotText": [
+    {
+      "type": 0,
+      "value": "The value in "
+    },
+    {
+      "type": 1,
+      "value": "column"
+    },
+    {
+      "type": 0,
+      "value": " is held as a number: leading zeros may have been lost.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.numberSimilar": [
+    {
+      "type": 0,
+      "value": "Another legacy number differs from this one only in case or separators.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.numberTooLong": [
+    {
+      "type": 0,
+      "value": "The legacy number is too long.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.orphanRow": [
+    {
+      "type": 0,
+      "value": "No Memos row has the legacy number "
+    },
+    {
+      "type": 1,
+      "value": "legacyNumber"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.parseTimeout": [
+    {
+      "type": 0,
+      "value": "Reading the file took longer than "
+    },
+    {
+      "type": 1,
+      "value": "seconds"
+    },
+    {
+      "type": 0,
+      "value": " seconds. Split it, or simplify it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.pathCaseMatch": [
+    {
+      "type": 0,
+      "value": "File "
+    },
+    {
+      "type": 1,
+      "value": "path"
+    },
+    {
+      "type": 0,
+      "value": " was matched to "
+    },
+    {
+      "type": 1,
+      "value": "matched"
+    },
+    {
+      "type": 0,
+      "value": ", which differs only in case.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.pathCaseOnly": [
+    {
+      "type": 0,
+      "value": "File "
+    },
+    {
+      "type": 1,
+      "value": "path"
+    },
+    {
+      "type": 0,
+      "value": " differs from another only in case.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.personNotLinked": [
+    {
+      "type": 0,
+      "value": "The person in "
+    },
+    {
+      "type": 1,
+      "value": "column"
+    },
+    {
+      "type": 0,
+      "value": " is kept as text, not linked to a user.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.personUnknown": [
+    {
+      "type": 0,
+      "value": "A linked person is not a user here.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.sheetMissing": [
+    {
+      "type": 0,
+      "value": "The workbook needs the sheets Memos and Files (Approvals is optional).SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.sheetUnknown": [
+    {
+      "type": 0,
+      "value": "The sheet “"
+    },
+    {
+      "type": 1,
+      "value": "sheet"
+    },
+    {
+      "type": 0,
+      "value": "” is not one we know.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.sourceKindMixed": [
+    {
+      "type": 0,
+      "value": "A file is of the wrong kind for its table (a workbook as a CSV file, or the reverse).SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.sourceMissing": [
+    {
+      "type": 0,
+      "value": "The metadata is missing: upload a workbook, or the Memos and Files CSV files.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.statusUnmapped": [
+    {
+      "type": 0,
+      "value": "Status “"
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": "” is not mapped.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.subjectTooLong": [
+    {
+      "type": 0,
+      "value": "The subject is longer than 300 characters.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.tooManyApprovals": [
+    {
+      "type": 0,
+      "value": "The memo has more than 50 approvals.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.tooManyColumns": [
+    {
+      "type": 0,
+      "value": "Too many columns: at most "
+    },
+    {
+      "type": 1,
+      "value": "limit"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.tooManyFiles": [
+    {
+      "type": 0,
+      "value": "The memo has more than 51 files.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.tooManyProblems": [
+    {
+      "type": 0,
+      "value": "More than "
+    },
+    {
+      "type": 1,
+      "value": "limit"
+    },
+    {
+      "type": 0,
+      "value": " problems: fix the first ones and run the dry run again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.tooManyRows": [
+    {
+      "type": 0,
+      "value": "Too many rows: at most "
+    },
+    {
+      "type": 1,
+      "value": "limit"
+    },
+    {
+      "type": 0,
+      "value": " in this table.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.typeUnmapped": [
+    {
+      "type": 0,
+      "value": "Type “"
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": "” is not mapped.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.unitUnmapped": [
+    {
+      "type": 0,
+      "value": "Unit “"
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": "” is not mapped.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.unknown": [
+    {
+      "type": 0,
+      "value": "Problem "
+    },
+    {
+      "type": 1,
+      "value": "code"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.valueInvalid": [
+    {
+      "type": 0,
+      "value": "The value in "
+    },
+    {
+      "type": 1,
+      "value": "column"
+    },
+    {
+      "type": 0,
+      "value": " is not valid.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.valueRequired": [
+    {
+      "type": 0,
+      "value": "A value is required in "
+    },
+    {
+      "type": 1,
+      "value": "column"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.valueTooLong": [
+    {
+      "type": 0,
+      "value": "The value in "
+    },
+    {
+      "type": 1,
+      "value": "column"
+    },
+    {
+      "type": 0,
+      "value": " is too long.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.valueTooLongForFile": [
+    {
+      "type": 0,
+      "value": "A value is longer than "
+    },
+    {
+      "type": 1,
+      "value": "limit"
+    },
+    {
+      "type": 0,
+      "value": " characters.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.verifyFactsDiffer": [
+    {
+      "type": 0,
+      "value": "The imported memo differs from its row in: "
+    },
+    {
+      "type": 1,
+      "value": "fields"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.verifyMemoMissing": [
+    {
+      "type": 0,
+      "value": "The imported memo was not found.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.code.verifyOriginalUnbound": [
+    {
+      "type": 5,
+      "value": "reason",
+      "options": {
+        "VERSION": {
+          "value": [
+            {
+              "type": 0,
+              "value": "A stored original is no longer the file’s current version."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "A stored original is not bound to its memo."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.col.codes": [
+    {
+      "type": 0,
+      "value": "ProblemsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.col.column": [
+    {
+      "type": 0,
+      "value": "ColumnSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.col.confirmed": [
+    {
+      "type": 0,
+      "value": "ConfirmedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.col.legacy": [
+    {
+      "type": 0,
+      "value": "Legacy valueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.col.legacyNumber": [
+    {
+      "type": 0,
+      "value": "Legacy numberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.col.level": [
+    {
+      "type": 0,
+      "value": "LevelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.col.memos": [
+    {
+      "type": 0,
+      "value": "MemosSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.col.name": [
+    {
+      "type": 0,
+      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.col.order": [
+    {
+      "type": 0,
+      "value": "OrderSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.col.ours": [
+    {
+      "type": 0,
+      "value": "OursSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.col.path": [
+    {
+      "type": 0,
+      "value": "PathSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.col.problem": [
+    {
+      "type": 0,
+      "value": "ProblemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.col.reason": [
+    {
+      "type": 0,
+      "value": "ReasonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.col.result": [
+    {
+      "type": 0,
+      "value": "ResultSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.col.row": [
+    {
+      "type": 0,
+      "value": "RowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.col.sheet": [
+    {
+      "type": 0,
+      "value": "SheetSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.col.source": [
+    {
+      "type": 0,
+      "value": "SourceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.col.state": [
+    {
+      "type": 0,
+      "value": "StateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.col.subject": [
+    {
+      "type": 0,
+      "value": "SubjectSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.col.updated": [
+    {
+      "type": 0,
+      "value": "UpdatedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.conflict": [
+    {
+      "type": 0,
+      "value": "Someone else changed this batch. It has been reloaded with their changes.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.create": [
+    {
+      "type": 0,
+      "value": "CreateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.dryRun.last": [
+    {
+      "type": 0,
+      "value": "Last run "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " · nothing was importedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.dryRun.never": [
+    {
+      "type": 0,
+      "value": "No dry run yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.dryRun.originals": [
+    {
+      "type": 2,
+      "value": "received",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " originals received · "
+    },
+    {
+      "type": 2,
+      "value": "unused",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " not used by any row · "
+    },
+    {
+      "type": 2,
+      "value": "refused",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " refusedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.dryRun.run": [
+    {
+      "type": 0,
+      "value": "Run dry runSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.dryRun.running": [
+    {
+      "type": 0,
+      "value": "The dry run is running. Nothing is imported.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.dryRun.totals": [
+    {
+      "type": 2,
+      "value": "ready",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " memos ready · "
+    },
+    {
+      "type": 2,
+      "value": "rejected",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " rejected · "
+    },
+    {
+      "type": 2,
+      "value": "warnings",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " warnings · "
+    },
+    {
+      "type": 2,
+      "value": "already",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " already importedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.empty": [
+    {
+      "type": 0,
+      "value": "No import batches yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.field.defaultClassification": [
+    {
+      "type": 0,
+      "value": "Default classification for blank cellsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.field.name": [
+    {
+      "type": 0,
+      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.field.noDefault": [
+    {
+      "type": 0,
+      "value": "None: blank is an errorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.field.numberPrefix": [
+    {
+      "type": 0,
+      "value": "Number prefixSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.field.numberPrefix.hint": [
+    {
+      "type": 0,
+      "value": "Optional. Added before every legacy number, for example \"LEG-\", if they clash with ours.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.field.sourceCode": [
+    {
+      "type": 0,
+      "value": "Source codeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.field.sourceCode.hint": [
+    {
+      "type": 0,
+      "value": "Capital letters, digits and \"-\". The same source code keeps re-runs from duplicating memos.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.field.timeZone": [
+    {
+      "type": 0,
+      "value": "Time zone of datesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.filter.any": [
+    {
+      "type": 0,
+      "value": "AnySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.filter.code": [
+    {
+      "type": 0,
+      "value": "CodeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.filter.level": [
+    {
+      "type": 0,
+      "value": "LevelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.filter.levelCount": [
+    {
+      "type": 1,
+      "value": "level"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.filter.result": [
+    {
+      "type": 0,
+      "value": "ResultSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.filter.row": [
+    {
+      "type": 0,
+      "value": "RowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.filter.sheet": [
+    {
+      "type": 0,
+      "value": "SheetSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.finish": [
+    {
+      "type": 0,
+      "value": "Finish without the restSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.finish.text": [
+    {
+      "type": 0,
+      "value": "The rows not imported yet are left out (\"not started\"); they can go into a later batch. The imported memos are checked and the report is made.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.finish.title": [
+    {
+      "type": 0,
+      "value": "Finish without the rest?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.hide": [
+    {
+      "type": 0,
+      "value": "HideSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.kind.classification": [
+    {
+      "type": 0,
+      "value": "ClassificationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.kind.person": [
+    {
+      "type": 0,
+      "value": "PeopleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.kind.status": [
+    {
+      "type": 0,
+      "value": "StatusesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.kind.type": [
+    {
+      "type": 0,
+      "value": "TypesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.kind.unit": [
+    {
+      "type": 0,
+      "value": "UnitsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.lead": [
+    {
+      "type": 0,
+      "value": "Bring memos from an earlier system: their originals and a spreadsheet of their facts. Nothing is imported until you have checked a dry run.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.level.batch": [
+    {
+      "type": 0,
+      "value": "BatchSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.level.error": [
+    {
+      "type": 0,
+      "value": "ErrorsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.level.file": [
+    {
+      "type": 0,
+      "value": "FilesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.level.info": [
+    {
+      "type": 0,
+      "value": "InformationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.level.warning": [
+    {
+      "type": 0,
+      "value": "WarningsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.loadMore": [
+    {
+      "type": 0,
+      "value": "Load moreSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.mappings.confirm": [
+    {
+      "type": 0,
+      "value": "Confirm “"
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.mappings.confirmAll": [
+    {
+      "type": 0,
+      "value": "Confirm all proposalsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.mappings.down": [
+    {
+      "type": 0,
+      "value": "Move “"
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": "” down (stricter)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.mappings.email": [
+    {
+      "type": 0,
+      "value": "Email "
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.mappings.lead": [
+    {
+      "type": 0,
+      "value": "Say what each legacy value means here. Every value must be confirmed; the dry run proposes what it can.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.mappings.legacyId": [
+    {
+      "type": 0,
+      "value": "Legacy id "
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.mappings.linkPerson": [
+    {
+      "type": 0,
+      "value": "Link toSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.mappings.linked": [
+    {
+      "type": 0,
+      "value": "Linked: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.mappings.none": [
+    {
+      "type": 0,
+      "value": "Run the dry run once to list the legacy values.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.mappings.notLinked": [
+    {
+      "type": 0,
+      "value": "Not linked: keep the name as textSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.mappings.notMapped": [
+    {
+      "type": 0,
+      "value": "Choose…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.mappings.orderBreak": [
+    {
+      "type": 0,
+      "value": "“"
+    },
+    {
+      "type": 1,
+      "value": "stricter"
+    },
+    {
+      "type": 0,
+      "value": "” is stricter than “"
+    },
+    {
+      "type": 1,
+      "value": "lessStrict"
+    },
+    {
+      "type": 0,
+      "value": "” but maps to a lower level.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.mappings.orderLead": [
+    {
+      "type": 0,
+      "value": "Order the legacy markings from least to most strict. A stricter marking can never map to a lower level than a less strict one.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.mappings.peopleLead": [
+    {
+      "type": 0,
+      "value": "An email equal to a user’s is proposed; a legacy id is linked through the people picker. People given only by name are kept as text (no identifier) and cannot be linked.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.mappings.proposed": [
+    {
+      "type": 0,
+      "value": "ProposedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.mappings.save": [
+    {
+      "type": 0,
+      "value": "Save mappingsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.mappings.target": [
+    {
+      "type": 0,
+      "value": "Ours for “"
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.mappings.up": [
+    {
+      "type": 0,
+      "value": "Move “"
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": "” up (less strict)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.metadata.csv": [
+    {
+      "type": 0,
+      "value": "CSV files, UTF-8, one per tableSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.metadata.hint": [
+    {
+      "type": 0,
+      "value": "Up to 20 MB.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.metadata.kind": [
+    {
+      "type": 0,
+      "value": "Metadata asSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.metadata.lead": [
+    {
+      "type": 0,
+      "value": "Use our template, or your own file with the same columns.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.metadata.none": [
+    {
+      "type": 0,
+      "value": "No metadata uploaded yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.metadata.replace": [
+    {
+      "type": 0,
+      "value": "Replace: "
+    },
+    {
+      "type": 1,
+      "value": "table"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.metadata.source": [
+    {
+      "type": 1,
+      "value": "table"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "size"
+    },
+    {
+      "type": 0,
+      "value": " · uploaded "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.metadata.tip": [
+    {
+      "type": 0,
+      "value": "Tip: never open a legacy CSV export in Excel before uploading it. Excel removes leading zeros from numbers and changes dates.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.metadata.workbook": [
+    {
+      "type": 0,
+      "value": "One workbook (.xlsx) with sheets Memos, Files, ApprovalsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.new.title": [
+    {
+      "type": 0,
+      "value": "New import batchSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.newBatch": [
+    {
+      "type": 0,
+      "value": "New batchSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.notFound": [
+    {
+      "type": 0,
+      "value": "This batch does not exist, or it is not yours to see.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.notImportedYet": [
+    {
+      "type": 0,
+      "value": "Nothing has been imported yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.optional": [
+    {
+      "type": 0,
+      "value": "(optional)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.originals.alreadyHere": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " file is"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " files are"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " already here. Choose the same folder to send the rest.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.originals.alreadySkipped": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " file was"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " files were"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " already here and not sent again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.originals.choose": [
+    {
+      "type": 0,
+      "value": "Choose folderSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.originals.done": [
+    {
+      "type": 0,
+      "value": "Every file of the folder was sent.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.originals.failedSend": [
+    {
+      "type": 0,
+      "value": "Some files could not be sent. Choose the same folder again to send them.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.originals.folder": [
+    {
+      "type": 0,
+      "value": "Folder: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 6,
+      "value": "files",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " file"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " files"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "size"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.originals.invalid": [
+    {
+      "type": 0,
+      "value": "Paths that cannot be used: "
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.originals.lead": [
+    {
+      "type": 0,
+      "value": "Unpack the archive on your computer, then choose the folder. Each file is sent and checked on its own.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.originals.pause": [
+    {
+      "type": 0,
+      "value": "PauseSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.originals.paused": [
+    {
+      "type": 0,
+      "value": "Paused. Nothing is lost: resume when you are ready.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.originals.pausing": [
+    {
+      "type": 0,
+      "value": "Pausing after the files being sent…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.originals.phone": [
+    {
+      "type": 0,
+      "value": "Use a computer to send a folder.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.originals.received": [
+    {
+      "type": 0,
+      "value": "Received "
+    },
+    {
+      "type": 2,
+      "value": "received",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " · waiting "
+    },
+    {
+      "type": 2,
+      "value": "expected",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " · refused "
+    },
+    {
+      "type": 2,
+      "value": "refused",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "size"
+    },
+    {
+      "type": 0,
+      "value": " receivedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.originals.refused": [
+    {
+      "type": 0,
+      "value": "Refused ("
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.originals.refusedCaption": [
+    {
+      "type": 0,
+      "value": "Refused originalsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.originals.registerFailed": [
+    {
+      "type": 0,
+      "value": "The folder could not be listed: "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.originals.registering": [
+    {
+      "type": 0,
+      "value": "Listing the folder: "
+    },
+    {
+      "type": 2,
+      "value": "done",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 2,
+      "value": "total",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " pathsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.originals.resume": [
+    {
+      "type": 0,
+      "value": "ResumeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.originals.sending": [
+    {
+      "type": 2,
+      "value": "done",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 2,
+      "value": "total",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " files · "
+    },
+    {
+      "type": 1,
+      "value": "sent"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "size"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.originals.skipped": [
+    {
+      "type": 0,
+      "value": "Skipped: "
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " system file"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " system files"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " (Thumbs.db, .DS_Store)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.originals.stoppedReason": [
+    {
+      "type": 0,
+      "value": "Sending stopped: "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.originals.timeLeft": [
+    {
+      "type": 0,
+      "value": "About "
+    },
+    {
+      "type": 6,
+      "value": "minutes",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " minute"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " minutes"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " left · "
+    },
+    {
+      "type": 2,
+      "value": "parallel",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " at a timeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.originals.tooLarge": [
+    {
+      "type": 0,
+      "value": "Too large (over 100 MB): "
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.part.detail": [
+    {
+      "type": 0,
+      "value": "Details (XLSX)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.part.manifest": [
+    {
+      "type": 0,
+      "value": "Manifest (SHA-256)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.part.sourceApprovals": [
+    {
+      "type": 0,
+      "value": "Approvals CSV usedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.part.sourceFiles": [
+    {
+      "type": 0,
+      "value": "Files CSV usedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.part.sourceMemos": [
+    {
+      "type": 0,
+      "value": "Memos CSV usedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.part.sourceWorkbook": [
+    {
+      "type": 0,
+      "value": "Workbook usedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.part.summary": [
+    {
+      "type": 0,
+      "value": "Summary (PDF)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.problems": [
+    {
+      "type": 0,
+      "value": "ProblemsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.problems.caption": [
+    {
+      "type": 0,
+      "value": "Problems found, by level and codeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.problems.none": [
+    {
+      "type": 0,
+      "value": "No problem matches these filters.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.progress.counts": [
+    {
+      "type": 0,
+      "value": "Imported "
+    },
+    {
+      "type": 2,
+      "value": "imported",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " · Skipped "
+    },
+    {
+      "type": 2,
+      "value": "skipped",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " · Rejected "
+    },
+    {
+      "type": 2,
+      "value": "rejected",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " · Failed "
+    },
+    {
+      "type": 2,
+      "value": "failed",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " · Not started "
+    },
+    {
+      "type": 2,
+      "value": "notStarted",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.progress.end": [
+    {
+      "type": 0,
+      "value": "Importing · "
+    },
+    {
+      "type": 2,
+      "value": "done",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 2,
+      "value": "rows",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " memos · about "
+    },
+    {
+      "type": 6,
+      "value": "minutes",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " minute"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " minutes"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " leftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.progress.line": [
+    {
+      "type": 0,
+      "value": "Importing · "
+    },
+    {
+      "type": 2,
+      "value": "done",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 2,
+      "value": "rows",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " memosSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.progress.throttled": [
+    {
+      "type": 0,
+      "value": "Waiting for previews to catch up (since "
+    },
+    {
+      "type": 1,
+      "value": "time"
+    },
+    {
+      "type": 0,
+      "value": "). The import resumes by itself.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.readOnly": [
+    {
+      "type": 0,
+      "value": "This batch can no longer change.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.reason": [
+    {
+      "type": 0,
+      "value": "ReasonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.refusal.contentRefused": [
+    {
+      "type": 0,
+      "value": "Its content is not allowedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.refusal.encrypted": [
+    {
+      "type": 0,
+      "value": "Protected by a passwordSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.refusal.hashMismatch": [
+    {
+      "type": 0,
+      "value": "Its content changedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.refusal.limitExceeded": [
+    {
+      "type": 0,
+      "value": "Over a limit (pages, size or depth)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.refusal.malformed": [
+    {
+      "type": 0,
+      "value": "Damaged or unreadableSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.refusal.malware": [
+    {
+      "type": 0,
+      "value": "Contains macros or malwareSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.refusal.other": [
+    {
+      "type": 0,
+      "value": "RefusedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.refusal.scanUnavailable": [
+    {
+      "type": 0,
+      "value": "The checks are unavailable; try laterSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.refusal.tooLarge": [
+    {
+      "type": 0,
+      "value": "Too largeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.refusal.typeMismatch": [
+    {
+      "type": 0,
+      "value": "The content does not match its extensionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.refusal.typeNotAllowed": [
+    {
+      "type": 0,
+      "value": "This type is not allowedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.report.balanced": [
+    {
+      "type": 0,
+      "value": "BalancedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.report.classified": [
+    {
+      "type": 0,
+      "value": "Classified "
+    },
+    {
+      "type": 1,
+      "value": "level"
+    },
+    {
+      "type": 0,
+      "value": ": only people cleared to it can open these files.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.report.complete": [
+    {
+      "type": 0,
+      "value": "CompleteSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.report.download": [
+    {
+      "type": 0,
+      "value": "Download "
+    },
+    {
+      "type": 1,
+      "value": "part"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.report.failing": [
+    {
+      "type": 0,
+      "value": "Lines that do not balance: "
+    },
+    {
+      "type": 1,
+      "value": "lines"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.report.files": [
+    {
+      "type": 0,
+      "value": "Files rows "
+    },
+    {
+      "type": 2,
+      "value": "listed",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " = matched "
+    },
+    {
+      "type": 2,
+      "value": "matched",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " + not received "
+    },
+    {
+      "type": 2,
+      "value": "notReceived",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " + ambiguous "
+    },
+    {
+      "type": 2,
+      "value": "ambiguous",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.report.fixity": [
+    {
+      "type": 0,
+      "value": "Fixity: "
+    },
+    {
+      "type": 2,
+      "value": "verified",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " originals re-checked · "
+    },
+    {
+      "type": 2,
+      "value": "mismatches",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " mismatchesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.report.incomplete": [
+    {
+      "type": 0,
+      "value": "IncompleteSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.report.invalid": [
+    {
+      "type": 0,
+      "value": "Not validSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.report.originals": [
+    {
+      "type": 0,
+      "value": "Originals registered "
+    },
+    {
+      "type": 2,
+      "value": "registered",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " = imported "
+    },
+    {
+      "type": 2,
+      "value": "imported",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " + held back "
+    },
+    {
+      "type": 2,
+      "value": "heldBack",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " + not used "
+    },
+    {
+      "type": 2,
+      "value": "unreferenced",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " + refused "
+    },
+    {
+      "type": 2,
+      "value": "refused",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " + never sent "
+    },
+    {
+      "type": 2,
+      "value": "neverUploaded",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.report.pending": [
+    {
+      "type": 0,
+      "value": "The report is made when the previews are done.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.report.renditions": [
+    {
+      "type": 0,
+      "value": "Previews ("
+    },
+    {
+      "type": 1,
+      "value": "kind"
+    },
+    {
+      "type": 0,
+      "value": "): "
+    },
+    {
+      "type": 2,
+      "value": "done",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " done · "
+    },
+    {
+      "type": 2,
+      "value": "notPossible",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " not possible · "
+    },
+    {
+      "type": 2,
+      "value": "notNeeded",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " not needed · "
+    },
+    {
+      "type": 2,
+      "value": "failed",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " failed · "
+    },
+    {
+      "type": 2,
+      "value": "pending",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " pendingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.report.rows": [
+    {
+      "type": 0,
+      "value": "Rows read "
+    },
+    {
+      "type": 2,
+      "value": "read",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " = imported "
+    },
+    {
+      "type": 2,
+      "value": "imported",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " + rejected "
+    },
+    {
+      "type": 2,
+      "value": "rejected",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " + skipped "
+    },
+    {
+      "type": 2,
+      "value": "skipped",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " + failed "
+    },
+    {
+      "type": 2,
+      "value": "failed",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " + not started "
+    },
+    {
+      "type": 2,
+      "value": "notStarted",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.report.storedNotBound": [
+    {
+      "type": 0,
+      "value": "Stored for rows that then failed: "
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.report.title": [
+    {
+      "type": 0,
+      "value": "Reconciliation reportSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.report.unbalanced": [
+    {
+      "type": 0,
+      "value": "UnbalancedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.report.valid": [
+    {
+      "type": 0,
+      "value": "ValidSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.required": [
+    {
+      "type": 0,
+      "value": "Required.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.rerun": [
+    {
+      "type": 0,
+      "value": "Run the dry run again before importing.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.restricted": [
+    {
+      "type": 0,
+      "value": "RestrictedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.result.failed": [
+    {
+      "type": 0,
+      "value": "FailedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.result.imported": [
+    {
+      "type": 0,
+      "value": "ImportedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.result.importing": [
+    {
+      "type": 0,
+      "value": "ImportingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.result.notStarted": [
+    {
+      "type": 0,
+      "value": "Not startedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.result.pending": [
+    {
+      "type": 0,
+      "value": "Not checkedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.result.ready": [
+    {
+      "type": 0,
+      "value": "ReadySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.result.rejected": [
+    {
+      "type": 0,
+      "value": "RejectedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.result.skipped": [
+    {
+      "type": 0,
+      "value": "SkippedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.resumeImport": [
+    {
+      "type": 0,
+      "value": "ResumeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.rows": [
+    {
+      "type": 0,
+      "value": "RowsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.rows.caption": [
+    {
+      "type": 0,
+      "value": "Memos rows and their resultsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.rows.none": [
+    {
+      "type": 0,
+      "value": "No row matches this filter.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.save": [
+    {
+      "type": 0,
+      "value": "SaveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.saved": [
+    {
+      "type": 0,
+      "value": "Saved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.settings.edit": [
+    {
+      "type": 0,
+      "value": "SettingsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.settings.title": [
+    {
+      "type": 0,
+      "value": "Batch settingsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.sheet.approvals": [
+    {
+      "type": 0,
+      "value": "ApprovalsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.sheet.batch": [
+    {
+      "type": 0,
+      "value": "BatchSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.sheet.files": [
+    {
+      "type": 0,
+      "value": "FilesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.sheet.memos": [
+    {
+      "type": 0,
+      "value": "MemosSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.sheet.originals": [
+    {
+      "type": 0,
+      "value": "OriginalsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.stale": [
+    {
+      "type": 0,
+      "value": "Something changed since the last dry run. Run the dry run again before importing.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.start": [
+    {
+      "type": 0,
+      "value": "Import…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.start.confirm": [
+    {
+      "type": 0,
+      "value": "Confirm and verify identitySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.start.final": [
+    {
+      "type": 0,
+      "value": "Imported memos are final. They get no approvals, tasks, notifications or final record. Their legacy approvals show as history, not verified by this system.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.start.notYet": [
+    {
+      "type": 0,
+      "value": "Run a dry run that finds no batch problem and at least one ready memo first.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.start.rows": [
+    {
+      "type": 6,
+      "value": "ready",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " memo"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " memos"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " will be imported with their originals ("
+    },
+    {
+      "type": 2,
+      "value": "received",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " originals received). "
+    },
+    {
+      "type": 6,
+      "value": "rejected",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "No row is rejected."
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " rejected row will not."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " rejected rows will not."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.start.title": [
+    {
+      "type": 0,
+      "value": "Import "
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " memo"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " memos"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.start.undo": [
+    {
+      "type": 0,
+      "value": "This cannot be undone. Corrections are added later, never by deleting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.start.warnings": [
+    {
+      "type": 0,
+      "value": "The dry run listed "
+    },
+    {
+      "type": 6,
+      "value": "warnings",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " warning"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " warnings"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " (for example "
+    },
+    {
+      "type": 2,
+      "value": "notLinked",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": " people kept as text).SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.state.abandoned": [
+    {
+      "type": 0,
+      "value": "AbandonedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.state.closed": [
+    {
+      "type": 0,
+      "value": "ClosedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.state.completed": [
+    {
+      "type": 0,
+      "value": "CompletedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.state.dryRun": [
+    {
+      "type": 0,
+      "value": "Dry run runningSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.state.importing": [
+    {
+      "type": 0,
+      "value": "ImportingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.state.open": [
+    {
+      "type": 0,
+      "value": "OpenSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.state.stopped": [
+    {
+      "type": 0,
+      "value": "StoppedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.state.stopping": [
+    {
+      "type": 0,
+      "value": "StoppingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.state.validated": [
+    {
+      "type": 0,
+      "value": "Dry run doneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.state.verifying": [
+    {
+      "type": 0,
+      "value": "CheckingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.status.notImported": [
+    {
+      "type": 0,
+      "value": "Not imported (in flight)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.step.doneLabel": [
+    {
+      "type": 1,
+      "value": "step"
+    },
+    {
+      "type": 0,
+      "value": " (done)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.step.dryRun": [
+    {
+      "type": 0,
+      "value": "Dry runSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.step.import": [
+    {
+      "type": 0,
+      "value": "ImportSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.step.mappings": [
+    {
+      "type": 0,
+      "value": "MappingsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.step.metadata": [
+    {
+      "type": 0,
+      "value": "MetadataSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.step.originals": [
+    {
+      "type": 0,
+      "value": "OriginalsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.step.report": [
+    {
+      "type": 0,
+      "value": "ReportSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.steps": [
+    {
+      "type": 0,
+      "value": "Steps of the importSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.stop": [
+    {
+      "type": 0,
+      "value": "StopSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.stopped": [
+    {
+      "type": 0,
+      "value": "Stopped. Resume the import (you verify your identity again), or finish without the rest.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.stopping": [
+    {
+      "type": 0,
+      "value": "Stopping after the current chunk of rows…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.table.approvals": [
+    {
+      "type": 0,
+      "value": "Approvals (CSV, optional)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.table.files": [
+    {
+      "type": 0,
+      "value": "Files (CSV)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.table.memos": [
+    {
+      "type": 0,
+      "value": "Memos (CSV)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.table.workbook": [
+    {
+      "type": 0,
+      "value": "WorkbookSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.template": [
+    {
+      "type": 0,
+      "value": "Download templateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.title": [
+    {
+      "type": 0,
+      "value": "Import legacy memosSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.verifying": [
+    {
+      "type": 0,
+      "value": "Every imported memo and original is being checked. The report is made when previews are done; this can take some hours.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.view": [
+    {
+      "type": 0,
+      "value": "ViewSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "imports.viewAll": [
+    {
+      "type": 0,
+      "value": "View allSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "inbox.bulk.claim": [
     {
       "type": 0,
@@ -5680,6 +9106,587 @@
     {
       "type": 0,
       "value": "Too many attempts. Wait a while and try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.annex": [
+    {
+      "type": 0,
+      "value": "AnnexSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.approvals": [
+    {
+      "type": 0,
+      "value": "Legacy approval history (imported, not verified by this system)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.approvals.none": [
+    {
+      "type": 0,
+      "value": "No approvals were given in the earlier system.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.asGiven": [
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": " (legacy: “"
+    },
+    {
+      "type": 1,
+      "value": "given"
+    },
+    {
+      "type": 0,
+      "value": "”)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.classification": [
+    {
+      "type": 0,
+      "value": "ClassificationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.closedOn": [
+    {
+      "type": 0,
+      "value": "ClosedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.col.date": [
+    {
+      "type": 0,
+      "value": "DateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.col.decision": [
+    {
+      "type": 0,
+      "value": "DecisionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.col.name": [
+    {
+      "type": 0,
+      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.col.order": [
+    {
+      "type": 0,
+      "value": "#SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.col.position": [
+    {
+      "type": 0,
+      "value": "PositionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.col.remark": [
+    {
+      "type": 0,
+      "value": "RemarkSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.confirm": [
+    {
+      "type": 0,
+      "value": "Confirm and verify identitySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.correct": [
+    {
+      "type": 0,
+      "value": "Correct a legacy detailSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.correct.lead": [
+    {
+      "type": 0,
+      "value": "The legacy record stays as given; the correction is added with your reason and name.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.corrected": [
+    {
+      "type": 0,
+      "value": "The correction was added.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.correction": [
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "field"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "before"
+    },
+    {
+      "type": 0,
+      "value": " → "
+    },
+    {
+      "type": 1,
+      "value": "after"
+    },
+    {
+      "type": 0,
+      "value": " · “"
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "” · "
+    },
+    {
+      "type": 1,
+      "value": "by"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.corrections": [
+    {
+      "type": 0,
+      "value": "Corrections ("
+    },
+    {
+      "type": 2,
+      "value": "count",
+      "style": null
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.decidedOn": [
+    {
+      "type": 0,
+      "value": "DecidedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.details": [
+    {
+      "type": 0,
+      "value": "Legacy detailsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.download": [
+    {
+      "type": 0,
+      "value": "Download "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.error.aboveClearance": [
+    {
+      "type": 0,
+      "value": "You are not cleared to that level.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.error.dateFuture": [
+    {
+      "type": 0,
+      "value": "The date cannot be in the future.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.error.dateInvalid": [
+    {
+      "type": 0,
+      "value": "Enter a date (yyyy-mm-dd) after 1900.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.error.dateOrder": [
+    {
+      "type": 0,
+      "value": "The dates must stay in order: raised on, then decided on, then closed on.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.error.notHigher": [
+    {
+      "type": 0,
+      "value": "Choose a stricter level than the memo’s.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.error.notImported": [
+    {
+      "type": 0,
+      "value": "This memo was not imported.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.error.other": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.error.required": [
+    {
+      "type": 0,
+      "value": "Required.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.error.tooLong": [
+    {
+      "type": 0,
+      "value": "Too long.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.error.unchanged": [
+    {
+      "type": 0,
+      "value": "That is already the value.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.error.useReclassify": [
+    {
+      "type": 0,
+      "value": "Use Raise classification.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.error.valueRequired": [
+    {
+      "type": 0,
+      "value": "This detail cannot be empty.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.field": [
+    {
+      "type": 0,
+      "value": "DetailSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.field.classification": [
+    {
+      "type": 0,
+      "value": "ClassificationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.field.closedOn": [
+    {
+      "type": 0,
+      "value": "Closed onSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.field.decidedOn": [
+    {
+      "type": 0,
+      "value": "Decided onSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.field.initiatorName": [
+    {
+      "type": 0,
+      "value": "InitiatorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.field.legacyType": [
+    {
+      "type": 0,
+      "value": "Legacy typeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.field.legacyUnit": [
+    {
+      "type": 0,
+      "value": "Legacy unitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.field.raisedOn": [
+    {
+      "type": 0,
+      "value": "Raised onSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.field.subject": [
+    {
+      "type": 0,
+      "value": "SubjectSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.finalRecord": [
+    {
+      "type": 0,
+      "value": "Final recordSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.imported": [
+    {
+      "type": 0,
+      "value": "ImportedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.importedFrom": [
+    {
+      "type": 0,
+      "value": "Imported from "
+    },
+    {
+      "type": 1,
+      "value": "source"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.importedFromBatch": [
+    {
+      "type": 0,
+      "value": "Imported from "
+    },
+    {
+      "type": 1,
+      "value": "source"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " (“"
+    },
+    {
+      "type": 1,
+      "value": "batch"
+    },
+    {
+      "type": 0,
+      "value": "”).SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.initiator": [
+    {
+      "type": 0,
+      "value": "InitiatorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.legacyNumber": [
+    {
+      "type": 0,
+      "value": "Legacy numberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.level": [
+    {
+      "type": 0,
+      "value": "New classificationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.level.hint": [
+    {
+      "type": 0,
+      "value": "Only a stricter level. Readers not cleared to it lose access to the memo.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.linkedPerson": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " (linked: "
+    },
+    {
+      "type": 1,
+      "value": "user"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.main": [
+    {
+      "type": 0,
+      "value": "MainSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.noFinalRecord": [
+    {
+      "type": 0,
+      "value": "No final record: for an imported memo the original documents are the record.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.noHigher": [
+    {
+      "type": 0,
+      "value": "There is no stricter level you are cleared to.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.noPreview": [
+    {
+      "type": 0,
+      "value": "Download onlySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.notVerified": [
+    {
+      "type": 0,
+      "value": "Created and decided in an earlier system; not verified by this system.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.originalLine": [
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "size"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.originals": [
+    {
+      "type": 0,
+      "value": "Original documentsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.preview": [
+    {
+      "type": 0,
+      "value": "Preview "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.raisedOn": [
+    {
+      "type": 0,
+      "value": "RaisedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.reason": [
+    {
+      "type": 0,
+      "value": "ReasonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.reason.hint": [
+    {
+      "type": 0,
+      "value": "Shown with the correction to everyone who reads the memo.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.reclassified": [
+    {
+      "type": 0,
+      "value": "The classification was raised.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.reclassify": [
+    {
+      "type": 0,
+      "value": "Raise classificationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.restricted": [
+    {
+      "type": 0,
+      "value": "Restricted originalSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.status": [
+    {
+      "type": 0,
+      "value": "StatusSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.type": [
+    {
+      "type": 0,
+      "value": "TypeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.unit": [
+    {
+      "type": 0,
+      "value": "UnitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.unlinkedPerson": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " (as given; not linked to a user)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.value": [
+    {
+      "type": 0,
+      "value": "Corrected valueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "legacy.value.hint": [
+    {
+      "type": 0,
+      "value": "Leave empty to clear a decision date the status does not need.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "locale.label": [
@@ -11607,6 +15614,18 @@
       "value": "HomeSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "nav.importBatch": [
+    {
+      "type": 0,
+      "value": "Import batchSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.imports": [
+    {
+      "type": 0,
+      "value": "ImportSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "nav.inbox": [
     {
       "type": 0,
@@ -14537,6 +18556,12 @@
       "value": "Found in: its numberSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "search.imported": [
+    {
+      "type": 0,
+      "value": "ImportedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "search.in": [
     {
       "type": 0,
@@ -14571,6 +18596,30 @@
     {
       "type": 0,
       "value": "Load moreSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.origin": [
+    {
+      "type": 0,
+      "value": "OriginSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.origin.all": [
+    {
+      "type": 0,
+      "value": "All memosSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.origin.imported": [
+    {
+      "type": 0,
+      "value": "ImportedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "search.origin.native": [
+    {
+      "type": 0,
+      "value": "Created hereSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "search.prompt": [

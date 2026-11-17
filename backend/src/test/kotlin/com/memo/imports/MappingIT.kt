@@ -20,6 +20,27 @@ class MappingIT : DryRunTest() {
             list.associateBy { it["legacyValue"].asString() }
         }
 
+    /** The targets, named for the screen (as built T9): a holder of memo.import may not list types, units or users. */
+    private fun targets(
+        id: String,
+        generalName: String,
+        linked: List<String>,
+    ) {
+        val targets = mappings(id)["targets"].items().groupBy { it["kind"].asString() }
+        assertThat(targets.getValue("TYPE").single { it["id"].asString() == generalTypeId().toString() }["label"].asString())
+            .isEqualTo(generalName)
+        assertThat(targets.getValue("UNIT").single { it["id"].asString() == unit.toString() }["detail"].asString())
+            .isEqualToIgnoringCase("crd")
+        assertThat(targets.getValue("CLASSIFICATION").map { it["id"].asString() })
+            .containsExactlyElementsOf(levels().map { it.id.toString() })
+        assertThat(targets.getValue("PERSON").map { it["id"].asString() })
+            .describedAs("only the users already linked")
+            .containsExactlyInAnyOrderElementsOf(linked)
+        assertThat(targets).doesNotContainKey("STATUS")
+        val onlyTypes = read("/api/v1/admin/imports/$id/mappings?kind=TYPE", session).json()["targets"].items()
+        assertThat(onlyTypes.map { it["kind"].asString() }.toSet()).containsExactly("TYPE")
+    }
+
     private fun JsonNode.target(): String? = get("target")?.takeUnless { it.isNull }?.asString()
 
     @Test
@@ -78,6 +99,8 @@ class MappingIT : DryRunTest() {
         )
         assertThat(people.getValue("id:EMP-7").target()).describedAs("a legacy id is never proposed").isNull()
         assertThat(people.keys).describedAs("a name alone has no mapping").hasSize(3)
+
+        targets(id, generalName, listOf(active.id.toString(), leaver.id.toString()))
     }
 
     @Test

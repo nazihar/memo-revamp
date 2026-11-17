@@ -12,6 +12,7 @@ import {
   UserRoundCog,
   Workflow,
   FileStack,
+  FileInput,
   Hash,
   Languages,
   LayoutTemplate,
@@ -78,6 +79,7 @@ const messages = defineMessages({
   branding: { id: 'nav.branding', defaultMessage: 'Branding' },
   language: { id: 'nav.language', defaultMessage: 'Language and terms' },
   audit: { id: 'nav.audit', defaultMessage: 'Audit' },
+  imports: { id: 'nav.imports', defaultMessage: 'Import' },
   patterns: { id: 'nav.patterns', defaultMessage: 'Patterns' },
 })
 
@@ -99,6 +101,7 @@ export const ADMIN_PERMISSIONS = [
   'workflow.tasks.reassign',
   'workflow.definitions.manage',
   'workflow.definitions.approve',
+  'memo.import',
 ]
 
 export const navigation: NavItem[] = [
@@ -283,6 +286,15 @@ export const navigation: NavItem[] = [
     icon: Hash,
     group: 'administration',
     audience: { anyOf: ['memo.types.manage', 'memo.types.approve', 'audit.read'] },
+    enabled: true,
+  },
+  {
+    id: 'imports',
+    to: '/admin/imports',
+    label: messages.imports,
+    icon: FileInput,
+    group: 'administration',
+    audience: { permission: 'memo.import' },
     enabled: true,
   },
   {

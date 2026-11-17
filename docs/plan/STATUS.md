@@ -39,7 +39,9 @@
 - [x] E01 plan written (2026-11-18): research (portals, published bank charters, Basel CGO10), ADR-0056 forum types, forums and membership, ADR-0057 quorum rules, design, threat model, tasks T1–T6, test plan, screen flows J–L (`epic-01-forum-types-forums/`)
 - [ ] Owner: E01 screen flows J–L (before T4 and T5)
 - [x] E01 T1 committee types and quorum rules (#155, merged); T2 committees and terms of office with T3 reminders and the workflow link (one PR)
-- [ ] E01 web T4–T5 (after the owner's screen review); close T6 (demo committees, journeys, runbook, ASVS)
+- [ ] E01 web T4–T5 (after the owner's screen review); T6 demo committees merged (#157); journeys, runbook, ASVS with the web
+- [x] E02 plan written (2026-11-18): research, ADR-0058 waiting forum step, ADR-0059 submissions and triage, design, threat model, tasks T1–T5, test plan, flow M (`epic-02-submissions/`)
+- [ ] E02 backend T1–T3, T5; web T4 after the owner's review with E03
 
 ## State (Phase 1b)
 - [x] Overview written (2026-11-17): ten epics (E01 federated sign-in; E02 passkeys and the sign-in policy; E03 mobile token issuer; E04 organisation in full; E05 HR sync; E06 key management; E07 break-glass; E08 export and offboarding; E09 admin console completion; E10 close-out and ASVS L2 of 1a + 1b) (#141)

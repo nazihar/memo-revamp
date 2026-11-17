@@ -61,3 +61,5 @@ We use the MADR format (see [0001](0001-record-architecture-decisions.md)). Star
 | [0055](0055-legacy-import.md) | Legacy import: a metadata workbook and a folder of originals, a read-only dry run, idempotent rows, legacy numbers outside the register | accepted | 2026-11-16 |
 | [0056](0056-forum-types-forums-and-membership.md) | Forum types (reviewed policy templates), forums and membership by term of office; access follows membership | accepted | 2026-11-18 |
 | [0057](0057-quorum-rules.md) | Quorum rules: a structured list of conditions, evaluated by one pure function and echoed as a sentence | accepted | 2026-11-18 |
+| [0058](0058-waiting-forum-step.md) | The waiting forum step: a memo waits at an escalate-to-forum step (wait: true) until the committee decides; fixed outcome effects | accepted | 2026-11-18 |
+| [0059](0059-forum-submissions-and-triage.md) | Forum submissions: a referral row per escalation, direct papers as memos, secretary triage, forum officers as memo readers | accepted | 2026-11-18 |

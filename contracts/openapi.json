@@ -799,6 +799,93 @@
         "required" : [ "name", "status" ],
         "type" : "object"
       },
+      "CopiesRequest" : {
+        "properties" : {
+          "copies" : {
+            "items" : {
+              "$ref" : "#/components/schemas/CopyRecipient"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "copies" ],
+        "type" : "object"
+      },
+      "CopiesView" : {
+        "properties" : {
+          "canAdd" : {
+            "type" : "boolean"
+          },
+          "canEdit" : {
+            "type" : "boolean"
+          },
+          "copies" : {
+            "items" : {
+              "$ref" : "#/components/schemas/CopyView"
+            },
+            "type" : "array"
+          },
+          "memoVersion" : {
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "canAdd", "canEdit", "copies", "memoVersion" ],
+        "type" : "object"
+      },
+      "CopyRecipient" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "kind" : {
+            "enum" : [ "USER", "POSITION", "LIST" ],
+            "type" : "string"
+          },
+          "sendWhen" : {
+            "enum" : [ "AT_SUBMIT", "AFTER_APPROVAL" ],
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "CopyView" : {
+        "properties" : {
+          "addedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "addedBy" : {
+            "$ref" : "#/components/schemas/Named"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "read" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "recipient" : {
+            "$ref" : "#/components/schemas/RecipientView"
+          },
+          "sendWhen" : {
+            "enum" : [ "AT_SUBMIT", "AFTER_APPROVAL" ],
+            "type" : "string"
+          },
+          "sent" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "sentAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "addedAt", "addedBy", "id", "read", "recipient", "sendWhen", "sent" ],
+        "type" : "object"
+      },
       "CreateDefinitionRequest" : {
         "properties" : {
           "body" : {
@@ -1009,6 +1096,44 @@
           }
         },
         "required" : [ "person" ],
+        "type" : "object"
+      },
+      "DistributionListRequest" : {
+        "properties" : {
+          "members" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ListMember"
+            },
+            "type" : "array"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "members", "name" ],
+        "type" : "object"
+      },
+      "DistributionListView" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "members" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ListMemberView"
+            },
+            "type" : "array"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "version" : {
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "id", "members", "name", "version" ],
         "type" : "object"
       },
       "DoaDraftRequest" : {
@@ -1873,6 +1998,37 @@
         "required" : [ "targetReference" ],
         "type" : "object"
       },
+      "ListMember" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "kind" : {
+            "enum" : [ "USER", "POSITION" ],
+            "type" : "string"
+          }
+        },
+        "required" : [ "id", "kind" ],
+        "type" : "object"
+      },
+      "ListMemberView" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "kind" : {
+            "enum" : [ "USER", "POSITION" ],
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "id", "kind", "name" ],
+        "type" : "object"
+      },
       "LoginRequest" : {
         "properties" : {
           "email" : {
@@ -2467,7 +2623,7 @@
         "properties" : {
           "allowedActions" : {
             "items" : {
-              "enum" : [ "EDIT", "UPLOAD_DOCUMENT", "EDIT_ROUTE", "SUBMIT", "DISCARD", "RESUBMIT", "WITHDRAW", "APPROVE", "RETURN", "REJECT", "EDIT_DOCUMENT", "VIEW_DOCUMENT", "FILL_FROM_TEMPLATE", "RECOMMEND", "SEND_BACK", "FORWARD", "DELEGATE", "ASK", "REFER", "ANSWER", "OPINION", "RECALL", "CLAIM", "RELEASE", "RECUSE", "CLOSE" ],
+              "enum" : [ "EDIT", "UPLOAD_DOCUMENT", "EDIT_ROUTE", "SUBMIT", "DISCARD", "RESUBMIT", "WITHDRAW", "APPROVE", "RETURN", "REJECT", "EDIT_DOCUMENT", "VIEW_DOCUMENT", "FILL_FROM_TEMPLATE", "EDIT_COPIES", "ADD_COPIES", "RECOMMEND", "SEND_BACK", "FORWARD", "DELEGATE", "ASK", "REFER", "ANSWER", "OPINION", "RECALL", "CLAIM", "RELEASE", "RECUSE", "CLOSE" ],
               "type" : "string"
             },
             "type" : "array"
@@ -2557,6 +2713,10 @@
             }, {
               "type" : "null"
             } ]
+          },
+          "readingAs" : {
+            "enum" : [ "INITIATOR", "COAUTHOR", "APPROVER", "NOTIFIED", "COPY", "SHARED" ],
+            "type" : [ "string", "null" ]
           },
           "reference" : {
             "type" : [ "string", "null" ]
@@ -3858,6 +4018,65 @@
             "type" : [ "string", "null" ]
           }
         },
+        "type" : "object"
+      },
+      "ReceiptView" : {
+        "properties" : {
+          "documentVersion" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "openedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "outcome" : {
+            "enum" : [ "SENT", "NOT_CLEARED", "INACTIVE" ],
+            "type" : [ "string", "null" ]
+          },
+          "person" : {
+            "$ref" : "#/components/schemas/Named"
+          },
+          "via" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "person" ],
+        "type" : "object"
+      },
+      "ReceiptsView" : {
+        "properties" : {
+          "approvers" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ReceiptView"
+            },
+            "type" : "array"
+          },
+          "copies" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ReceiptView"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "approvers", "copies" ],
+        "type" : "object"
+      },
+      "RecipientView" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "kind" : {
+            "enum" : [ "USER", "POSITION", "LIST" ],
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "id", "kind", "name" ],
         "type" : "object"
       },
       "RecoveryCodes" : {
@@ -8748,6 +8967,153 @@
         "tags" : [ "directory" ]
       }
     },
+    "/api/v1/distribution-lists" : {
+      "get" : {
+        "operationId" : "listDistributionLists",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/DistributionListView"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The active distribution lists, for picking copy recipients",
+        "tags" : [ "memo" ]
+      },
+      "post" : {
+        "operationId" : "createDistributionList",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/DistributionListRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DistributionListView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A new distribution list",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/distribution-lists/{id}" : {
+      "delete" : {
+        "operationId" : "deactivateDistributionList",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : { },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Switch a list off (it is kept)",
+        "tags" : [ "memo" ]
+      },
+      "get" : {
+        "operationId" : "getDistributionList",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DistributionListView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "One distribution list with its members",
+        "tags" : [ "memo" ]
+      },
+      "put" : {
+        "operationId" : "replaceDistributionList",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/DistributionListRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DistributionListView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Rename a list or change its members",
+        "tags" : [ "memo" ]
+      }
+    },
     "/api/v1/edit-sessions/{id}" : {
       "get" : {
         "operationId" : "getEditSession",
@@ -9860,6 +10226,115 @@
         "tags" : [ "memo" ]
       }
     },
+    "/api/v1/memos/{id}/copies" : {
+      "get" : {
+        "operationId" : "listMemoCopies",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CopiesView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Who the memo is copied to, when, and how many have read it",
+        "tags" : [ "memo" ]
+      },
+      "put" : {
+        "operationId" : "replaceMemoCopies",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CopiesRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CopiesView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Set the copy list of a draft or returned memo",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/memos/{id}/copies/additions" : {
+      "post" : {
+        "operationId" : "addMemoCopies",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CopiesRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CopiesView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Copy an approved memo to more people (memo.copy.add); sent at once",
+        "tags" : [ "memo" ]
+      }
+    },
     "/api/v1/memos/{id}/discard" : {
       "post" : {
         "operationId" : "discardMemo",
@@ -10230,6 +10705,34 @@
           }
         },
         "summary" : "Pull a memo back before any approver acted",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/memos/{id}/receipts" : {
+      "get" : {
+        "operationId" : "listMemoReceipts",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ReceiptsView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Who received a copy and who has opened the memo",
         "tags" : [ "memo" ]
       }
     },

@@ -28,10 +28,15 @@ import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
 import com.memo.jooq.tables.MemoAttachment
+import com.memo.jooq.tables.MemoCopy
+import com.memo.jooq.tables.MemoCopyDelivery
+import com.memo.jooq.tables.MemoDistributionList
+import com.memo.jooq.tables.MemoDistributionMember
 import com.memo.jooq.tables.MemoInterest
 import com.memo.jooq.tables.MemoLink
 import com.memo.jooq.tables.MemoNumberCounter
 import com.memo.jooq.tables.MemoParticipant
+import com.memo.jooq.tables.MemoReceipt
 import com.memo.jooq.tables.MemoReferenceCounter
 import com.memo.jooq.tables.MemoRouteEntry
 import com.memo.jooq.tables.MemoShare
@@ -217,6 +222,26 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val MEMO_ATTACHMENT: MemoAttachment get() = MemoAttachment.MEMO_ATTACHMENT
 
     /**
+     * The table <code>memo.memo_copy</code>.
+     */
+    val MEMO_COPY: MemoCopy get() = MemoCopy.MEMO_COPY
+
+    /**
+     * The table <code>memo.memo_copy_delivery</code>.
+     */
+    val MEMO_COPY_DELIVERY: MemoCopyDelivery get() = MemoCopyDelivery.MEMO_COPY_DELIVERY
+
+    /**
+     * The table <code>memo.memo_distribution_list</code>.
+     */
+    val MEMO_DISTRIBUTION_LIST: MemoDistributionList get() = MemoDistributionList.MEMO_DISTRIBUTION_LIST
+
+    /**
+     * The table <code>memo.memo_distribution_member</code>.
+     */
+    val MEMO_DISTRIBUTION_MEMBER: MemoDistributionMember get() = MemoDistributionMember.MEMO_DISTRIBUTION_MEMBER
+
+    /**
      * The table <code>memo.memo_interest</code>.
      */
     val MEMO_INTEREST: MemoInterest get() = MemoInterest.MEMO_INTEREST
@@ -235,6 +260,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      * The table <code>memo.memo_participant</code>.
      */
     val MEMO_PARTICIPANT: MemoParticipant get() = MemoParticipant.MEMO_PARTICIPANT
+
+    /**
+     * The table <code>memo.memo_receipt</code>.
+     */
+    val MEMO_RECEIPT: MemoReceipt get() = MemoReceipt.MEMO_RECEIPT
 
     /**
      * The table <code>memo.memo_reference_counter</code>.
@@ -444,10 +474,15 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         IdentityUser.IDENTITY_USER,
         com.memo.jooq.tables.Memo.MEMO_,
         MemoAttachment.MEMO_ATTACHMENT,
+        MemoCopy.MEMO_COPY,
+        MemoCopyDelivery.MEMO_COPY_DELIVERY,
+        MemoDistributionList.MEMO_DISTRIBUTION_LIST,
+        MemoDistributionMember.MEMO_DISTRIBUTION_MEMBER,
         MemoInterest.MEMO_INTEREST,
         MemoLink.MEMO_LINK,
         MemoNumberCounter.MEMO_NUMBER_COUNTER,
         MemoParticipant.MEMO_PARTICIPANT,
+        MemoReceipt.MEMO_RECEIPT,
         MemoReferenceCounter.MEMO_REFERENCE_COUNTER,
         MemoRouteEntry.MEMO_ROUTE_ENTRY,
         MemoShare.MEMO_SHARE,

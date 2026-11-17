@@ -13,3 +13,17 @@ endpoints:
     rule: signedIn
     body: { userId: "{random}", reason: "Matrix" }
   - { endpoint: "DELETE /api/v1/memos/{id}/shares/{shareId}", rule: signedIn }
+  # Copy-to and receipts follow the memo (§5): unknown memos are 404 for every signed-in user.
+  - { endpoint: "GET /api/v1/memos/{id}/copies", rule: signedIn }
+  - { endpoint: "PUT /api/v1/memos/{id}/copies", rule: signedIn, body: { copies: [] }, headers: { If-Match: "\"0\"" } }
+  - { endpoint: "POST /api/v1/memos/{id}/copies/additions", rule: signedIn, body: { copies: [] } }
+  - { endpoint: "GET /api/v1/memos/{id}/receipts", rule: signedIn }
+  # Distribution lists: everyone reads them to pick recipients (random ids are 404); memo.distribution.manage keeps them.
+  - { endpoint: "GET /api/v1/distribution-lists", rule: signedIn }
+  - { endpoint: "GET /api/v1/distribution-lists/{id}", rule: signedIn }
+  - { endpoint: "POST /api/v1/distribution-lists", rule: tenantAdmin, body: { name: "Matrix {random}", members: [] } }
+  - endpoint: "PUT /api/v1/distribution-lists/{id}"
+    rule: tenantAdmin
+    body: { name: "Matrix", members: [] }
+    headers: { If-Match: "\"0\"" }
+  - { endpoint: "DELETE /api/v1/distribution-lists/{id}", rule: tenantAdmin, headers: { If-Match: "\"0\"" } }

@@ -273,6 +273,7 @@ class MemoStore(
      * Follows the memo's workflow (T4, T5): its instance, round and status, from [WorkflowActionTaken] in the same
      * transaction. Not guarded by version: the workflow serialises actions on its instance row.
      */
+
     fun applyWorkflow(
         id: UUID,
         instanceId: UUID,

@@ -26,6 +26,7 @@ class MemoReviews(
     private val audit: AuditLog,
     private val numbers: MemoNumbers,
     private val attachments: MemoAttachments,
+    private val copies: MemoCopies,
 ) {
     /**
      * Round 1: the memo needs a document, a valid route and its required details; the first approver gets the task. The
@@ -50,7 +51,8 @@ class MemoReviews(
                 FieldProblem("document", "required", "Upload the memo document first.").takeIf { memo.documentFileId == null },
                 FieldProblem("typeId", "inactive", "This memo type is no longer used.").takeIf { !type.active || version == null },
             ) + checked.problems + version?.let { numbers.problems(memo, it) }.orEmpty() +
-                version?.let { attachments.problems(memo, it.settings.attachmentRules) }.orEmpty() + problems(memo, type, route)
+                version?.let { attachments.problems(memo, it.settings.attachmentRules) }.orEmpty() + problems(memo, type, route) +
+                copies.problemsAtSubmit(memo)
         if (problems.isNotEmpty()) throw MemoRejectedException(problems)
         val pinned = checkNotNull(version)
         if (!store.pin(id, memo.version, pinned.id, checked.values)) throw ConcurrentModificationException("memo $id", memo.version)
@@ -69,8 +71,11 @@ class MemoReviews(
         numbers.assign(memo.copy(memoTypeVersionId = pinned.id), pinned, NumberMoment.ON_SUBMIT)
         // The memo type's workflow (E03): new memos pin its newest published version.
         workflows.start(MemoWorkflowSubject.TYPE, id, emptyList(), remark, pinned.settings.definitionKey, route)
-        // What this round's approvers see (ADR-0046).
-        return memos.get(id).also { attachments.bind(id, it.currentRound) }
+        // What this round's approvers see (ADR-0046); copies for information during review go now (ADR-0050).
+        return memos.get(id).also {
+            attachments.bind(id, it.currentRound)
+            copies.send(it, SendWhen.AT_SUBMIT)
+        }
     }
 
     /** Round N+1 after a return (design E01 §3): from the first approver of the route as it is now; earlier approvals lapse. */
@@ -86,10 +91,14 @@ class MemoReviews(
         val route = route(memo, type)
         val problems =
             problems(memo, type, route) +
-                types.versionFor(memo)?.let { attachments.problems(memo, it.settings.attachmentRules) }.orEmpty()
+                types.versionFor(memo)?.let { attachments.problems(memo, it.settings.attachmentRules) }.orEmpty() +
+                copies.problemsAtSubmit(memo)
         if (problems.isNotEmpty()) throw MemoRejectedException(problems)
         workflows.resubmit(checkNotNull(memo.workflowInstanceId), emptyList(), remark, route)
-        return memos.get(id).also { attachments.bind(id, it.currentRound) }
+        return memos.get(id).also {
+            attachments.bind(id, it.currentRound)
+            copies.send(it, SendWhen.AT_SUBMIT)
+        }
     }
 
     /** Ends the approval for good, in review or returned; the open task, if any, is cancelled. */

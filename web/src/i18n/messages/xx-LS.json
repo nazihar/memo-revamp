@@ -261,10 +261,22 @@
       "value": "Manage legal entitiesSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "access.permission.memoCopyAdd": [
+    {
+      "type": 0,
+      "value": "Copy approved memos to more peopleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "access.permission.memoCreate": [
     {
       "type": 0,
       "value": "Write and submit memosSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.permission.memoDistributionManage": [
+    {
+      "type": 0,
+      "value": "Manage distribution listsSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "access.permission.memoReadUnit": [
@@ -4338,6 +4350,12 @@
     {
       "type": 0,
       "value": "Memo approvedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.memoCopied": [
+    {
+      "type": 0,
+      "value": "A memo copied to youSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "mail.template.memoRejected": [
@@ -8472,6 +8490,20 @@
     {
       "type": 0,
       "value": " was approvedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.memoCopied": [
+    {
+      "type": 0,
+      "value": "Memo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " was copied to you for informationSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "notifications.kind.memoRejected": [

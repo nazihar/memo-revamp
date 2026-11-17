@@ -11,11 +11,14 @@ import com.memo.jooq.indexes.MEMO_TENANT_ORIGIN_UNIT_IDX
 import com.memo.jooq.indexes.MEMO_TENANT_TYPE_IDX
 import com.memo.jooq.indexes.MEMO_TENANT_TYPE_VERSION_IDX
 import com.memo.jooq.keys.MEMO_ATTACHMENT__MEMO_ATTACHMENT_TENANT_ID_MEMO_ID_FKEY
+import com.memo.jooq.keys.MEMO_COPY_DELIVERY__MEMO_COPY_DELIVERY_TENANT_ID_MEMO_ID_FKEY
+import com.memo.jooq.keys.MEMO_COPY__MEMO_COPY_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_INTEREST__MEMO_INTEREST_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_LINK__MEMO_LINK_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_LINK__MEMO_LINK_TENANT_ID_TARGET_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_PARTICIPANT__MEMO_PARTICIPANT_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_PKEY
+import com.memo.jooq.keys.MEMO_RECEIPT__MEMO_RECEIPT_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_ROUTE_ENTRY__MEMO_ROUTE_ENTRY_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_SHARE__MEMO_SHARE_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_SUBMISSION_ATTACHMENT__MEMO_SUBMISSION_ATTACHMENT_TENANT_ID_MEMO_ID_FKEY
@@ -25,9 +28,12 @@ import com.memo.jooq.keys.MEMO_TENANT_ID_REFERENCE_KEY
 import com.memo.jooq.keys.MEMO__MEMO_TENANT_ID_MEMO_TYPE_ID_FKEY
 import com.memo.jooq.keys.MEMO__MEMO_TYPE_VERSION_FK
 import com.memo.jooq.tables.MemoAttachment.MemoAttachmentPath
+import com.memo.jooq.tables.MemoCopy.MemoCopyPath
+import com.memo.jooq.tables.MemoCopyDelivery.MemoCopyDeliveryPath
 import com.memo.jooq.tables.MemoInterest.MemoInterestPath
 import com.memo.jooq.tables.MemoLink.MemoLinkPath
 import com.memo.jooq.tables.MemoParticipant.MemoParticipantPath
+import com.memo.jooq.tables.MemoReceipt.MemoReceiptPath
 import com.memo.jooq.tables.MemoRouteEntry.MemoRouteEntryPath
 import com.memo.jooq.tables.MemoShare.MemoSharePath
 import com.memo.jooq.tables.MemoSubmissionAttachment.MemoSubmissionAttachmentPath
@@ -300,6 +306,38 @@ open class Memo(
     val memoAttachment: MemoAttachmentPath
         get(): MemoAttachmentPath = memoAttachment()
 
+    private lateinit var _memoCopyDelivery: MemoCopyDeliveryPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.memo_copy_delivery</code> table
+     */
+    fun memoCopyDelivery(): MemoCopyDeliveryPath {
+        if (!this::_memoCopyDelivery.isInitialized)
+            _memoCopyDelivery = MemoCopyDeliveryPath(this, null, MEMO_COPY_DELIVERY__MEMO_COPY_DELIVERY_TENANT_ID_MEMO_ID_FKEY.inverseKey)
+
+        return _memoCopyDelivery;
+    }
+
+    val memoCopyDelivery: MemoCopyDeliveryPath
+        get(): MemoCopyDeliveryPath = memoCopyDelivery()
+
+    private lateinit var _memoCopy: MemoCopyPath
+
+    /**
+     * Get the implicit to-many join path to the <code>memo.memo_copy</code>
+     * table
+     */
+    fun memoCopy(): MemoCopyPath {
+        if (!this::_memoCopy.isInitialized)
+            _memoCopy = MemoCopyPath(this, null, MEMO_COPY__MEMO_COPY_TENANT_ID_MEMO_ID_FKEY.inverseKey)
+
+        return _memoCopy;
+    }
+
+    val memoCopy: MemoCopyPath
+        get(): MemoCopyPath = memoCopy()
+
     private lateinit var _memoInterest: MemoInterestPath
 
     /**
@@ -363,6 +401,22 @@ open class Memo(
 
     val memoParticipant: MemoParticipantPath
         get(): MemoParticipantPath = memoParticipant()
+
+    private lateinit var _memoReceipt: MemoReceiptPath
+
+    /**
+     * Get the implicit to-many join path to the <code>memo.memo_receipt</code>
+     * table
+     */
+    fun memoReceipt(): MemoReceiptPath {
+        if (!this::_memoReceipt.isInitialized)
+            _memoReceipt = MemoReceiptPath(this, null, MEMO_RECEIPT__MEMO_RECEIPT_TENANT_ID_MEMO_ID_FKEY.inverseKey)
+
+        return _memoReceipt;
+    }
+
+    val memoReceipt: MemoReceiptPath
+        get(): MemoReceiptPath = memoReceipt()
 
     private lateinit var _memoRouteEntry: MemoRouteEntryPath
 

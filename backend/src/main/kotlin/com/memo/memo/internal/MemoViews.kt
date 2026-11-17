@@ -85,6 +85,12 @@ enum class MemoAction {
     /** Start the document from the type's template (ADR-0048): a draft without a document, of a type with one. */
     FILL_FROM_TEMPLATE,
 
+    /** Change the copy list (ADR-0050): the initiator or a co-author of a draft or returned memo. */
+    EDIT_COPIES,
+
+    /** Copy an approved memo to more people (`memo.copy.add`). */
+    ADD_COPIES,
+
     // E03 (design §4.4): the positive action of a review step, hand-ons, and consultations.
     RECOMMEND,
     SEND_BACK,
@@ -188,6 +194,11 @@ data class MemoView(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val linkedFrom: List<MemoLinkView> = emptyList(),
     /** Whether the reader may link this memo to another one (it is not closed or discarded). */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val canLink: Boolean = false,
+    /**
+     * How the reader takes part (ADR-0050): their participant kind (`COPY` shows the "copy for information" notice);
+     * null for a reader through a unit grant.
+     */
+    val readingAs: ParticipantKind? = null,
     /** When it was closed; null unless closed. */
     val closedAt: Instant? = null,
 )
@@ -208,6 +219,8 @@ class MemoViews(
     private val memoLinks: MemoLinks,
     private val coauthorStore: MemoCoauthorStore,
     private val templateStore: MemoTemplateStore,
+    private val readable: MemoReadable,
+    private val policy: com.memo.common.authz.Policy,
 ) {
     fun of(memo: Memo): MemoView {
         val interests = interestStore.of(memo.id)
@@ -235,7 +248,7 @@ class MemoViews(
         // A FIXED type's definition names every step: its memos have no route to edit (design E03 §12).
         val allowed =
             actions(memo, user, open, workflow?.recallable == true, user != null && user in coauthors)
-                .let { it + documentActions(memo, it) }
+                .let { it + documentActions(memo, it) + copyActions(memo, user, user != null && user in coauthors, policy) }
                 .filterNot { it == MemoAction.EDIT_ROUTE && type.routePolicy == RoutePolicy.FIXED }
         return MemoView(
             id = memo.id,
@@ -262,6 +275,7 @@ class MemoViews(
             links = links.first,
             linkedFrom = links.second,
             canLink = memo.status !in MemoViewsRules.UNLINKABLE,
+            readingAs = user?.let { readable.kindOf(memo.id, it) },
             closedAt = memo.closedAt,
             originUnit = originUnit(memo.originUnitId),
             createdAt = memo.createdAt,
@@ -510,3 +524,17 @@ private fun taskRef(
     val claimer = task.claimedBy?.let { Named(it, names[it].orEmpty()) }
     return TaskRef(task.id, task.blocked, task.role, task.waiting, task.stepName, task.shared, claimer)
 }
+
+/** Copy-list actions (ADR-0050): editing while the memo is editable, adding after approval with `memo.copy.add`. */
+private fun copyActions(
+    memo: Memo,
+    user: UUID?,
+    coauthor: Boolean,
+    policy: com.memo.common.authz.Policy,
+): List<MemoAction> =
+    listOfNotNull(
+        MemoAction.EDIT_COPIES.takeIf { memo.status.editable && (user == memo.initiatorId || coauthor) },
+        MemoAction.ADD_COPIES.takeIf {
+            memo.status in MemoCopies.AFTER_APPROVAL_STATES && policy.allows(com.memo.common.authz.Permission.MEMO_COPY_ADD)
+        },
+    )

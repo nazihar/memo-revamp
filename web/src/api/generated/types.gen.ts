@@ -320,6 +320,34 @@ export type ComponentHealth = {
     status: 'UP' | 'DOWN' | 'DISABLED';
 };
 
+export type CopiesRequest = {
+    copies: Array<CopyRecipient>;
+};
+
+export type CopiesView = {
+    canAdd: boolean;
+    canEdit: boolean;
+    copies: Array<CopyView>;
+    memoVersion: number;
+};
+
+export type CopyRecipient = {
+    id?: string;
+    kind?: 'USER' | 'POSITION' | 'LIST';
+    sendWhen?: 'AT_SUBMIT' | 'AFTER_APPROVAL';
+};
+
+export type CopyView = {
+    addedAt: string;
+    addedBy: Named;
+    id: string;
+    read: number;
+    recipient: RecipientView;
+    sendWhen: 'AT_SUBMIT' | 'AFTER_APPROVAL';
+    sent: number;
+    sentAt?: string | null;
+};
+
 export type CreateDefinitionRequest = {
     body?: {
         [key: string]: unknown;
@@ -400,6 +428,18 @@ export type DirectoryUser = {
      * Primary position today
      */
     position?: DirectoryPositionSummary | null;
+};
+
+export type DistributionListRequest = {
+    members: Array<ListMember>;
+    name: string;
+};
+
+export type DistributionListView = {
+    id: string;
+    members: Array<ListMemberView>;
+    name: string;
+    version: number;
 };
 
 export type DoaDraftRequest = {
@@ -706,6 +746,17 @@ export type LinkRequest = {
     targetReference: string;
 };
 
+export type ListMember = {
+    id: string;
+    kind: 'USER' | 'POSITION';
+};
+
+export type ListMemberView = {
+    id: string;
+    kind: 'USER' | 'POSITION';
+    name: string;
+};
+
 export type LoginRequest = {
     email: string;
     password: string;
@@ -896,7 +947,7 @@ export type MemoTypeVersionResponse = {
 };
 
 export type MemoView = {
-    allowedActions: Array<'EDIT' | 'UPLOAD_DOCUMENT' | 'EDIT_ROUTE' | 'SUBMIT' | 'DISCARD' | 'RESUBMIT' | 'WITHDRAW' | 'APPROVE' | 'RETURN' | 'REJECT' | 'EDIT_DOCUMENT' | 'VIEW_DOCUMENT' | 'FILL_FROM_TEMPLATE' | 'RECOMMEND' | 'SEND_BACK' | 'FORWARD' | 'DELEGATE' | 'ASK' | 'REFER' | 'ANSWER' | 'OPINION' | 'RECALL' | 'CLAIM' | 'RELEASE' | 'RECUSE' | 'CLOSE'>;
+    allowedActions: Array<'EDIT' | 'UPLOAD_DOCUMENT' | 'EDIT_ROUTE' | 'SUBMIT' | 'DISCARD' | 'RESUBMIT' | 'WITHDRAW' | 'APPROVE' | 'RETURN' | 'REJECT' | 'EDIT_DOCUMENT' | 'VIEW_DOCUMENT' | 'FILL_FROM_TEMPLATE' | 'EDIT_COPIES' | 'ADD_COPIES' | 'RECOMMEND' | 'SEND_BACK' | 'FORWARD' | 'DELEGATE' | 'ASK' | 'REFER' | 'ANSWER' | 'OPINION' | 'RECALL' | 'CLAIM' | 'RELEASE' | 'RECUSE' | 'CLOSE'>;
     canLink: boolean;
     classification: ClassificationView;
     closedAt?: string | null;
@@ -914,6 +965,7 @@ export type MemoView = {
     myTask?: TaskRef | null;
     numberedWhen?: 'ON_SUBMIT' | 'ON_APPROVAL';
     originUnit?: Named | null;
+    readingAs?: 'INITIATOR' | 'COAUTHOR' | 'APPROVER' | 'NOTIFIED' | 'COPY' | 'SHARED';
     reference?: string | null;
     round: number;
     route: Array<RouteEntryView>;
@@ -1451,6 +1503,25 @@ export type RaiseScope = {
 export type ReassignRequest = {
     newAssigneeId?: string;
     reason?: string | null;
+};
+
+export type ReceiptView = {
+    documentVersion?: number | null;
+    openedAt?: string | null;
+    outcome?: 'SENT' | 'NOT_CLEARED' | 'INACTIVE';
+    person: Named;
+    via?: string | null;
+};
+
+export type ReceiptsView = {
+    approvers: Array<ReceiptView>;
+    copies: Array<ReceiptView>;
+};
+
+export type RecipientView = {
+    id: string;
+    kind: 'USER' | 'POSITION' | 'LIST';
+    name: string;
 };
 
 export type RecoveryCodes = {
@@ -4047,6 +4118,96 @@ export type SearchDirectoryResponses = {
 
 export type SearchDirectoryResponse = SearchDirectoryResponses[keyof SearchDirectoryResponses];
 
+export type ListDistributionListsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/distribution-lists';
+};
+
+export type ListDistributionListsResponses = {
+    /**
+     * OK
+     */
+    200: Array<DistributionListView>;
+};
+
+export type ListDistributionListsResponse = ListDistributionListsResponses[keyof ListDistributionListsResponses];
+
+export type CreateDistributionListData = {
+    body: DistributionListRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/distribution-lists';
+};
+
+export type CreateDistributionListResponses = {
+    /**
+     * OK
+     */
+    200: DistributionListView;
+};
+
+export type CreateDistributionListResponse = CreateDistributionListResponses[keyof CreateDistributionListResponses];
+
+export type DeactivateDistributionListData = {
+    body?: never;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/distribution-lists/{id}';
+};
+
+export type DeactivateDistributionListResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
+export type GetDistributionListData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/distribution-lists/{id}';
+};
+
+export type GetDistributionListResponses = {
+    /**
+     * OK
+     */
+    200: DistributionListView;
+};
+
+export type GetDistributionListResponse = GetDistributionListResponses[keyof GetDistributionListResponses];
+
+export type ReplaceDistributionListData = {
+    body: DistributionListRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/distribution-lists/{id}';
+};
+
+export type ReplaceDistributionListResponses = {
+    /**
+     * OK
+     */
+    200: DistributionListView;
+};
+
+export type ReplaceDistributionListResponse = ReplaceDistributionListResponses[keyof ReplaceDistributionListResponses];
+
 export type GetEditSessionData = {
     body?: never;
     path: {
@@ -4708,6 +4869,63 @@ export type SetMemoCoauthorsResponses = {
 
 export type SetMemoCoauthorsResponse = SetMemoCoauthorsResponses[keyof SetMemoCoauthorsResponses];
 
+export type ListMemoCopiesData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/copies';
+};
+
+export type ListMemoCopiesResponses = {
+    /**
+     * OK
+     */
+    200: CopiesView;
+};
+
+export type ListMemoCopiesResponse = ListMemoCopiesResponses[keyof ListMemoCopiesResponses];
+
+export type ReplaceMemoCopiesData = {
+    body: CopiesRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/copies';
+};
+
+export type ReplaceMemoCopiesResponses = {
+    /**
+     * OK
+     */
+    200: CopiesView;
+};
+
+export type ReplaceMemoCopiesResponse = ReplaceMemoCopiesResponses[keyof ReplaceMemoCopiesResponses];
+
+export type AddMemoCopiesData = {
+    body: CopiesRequest;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/copies/additions';
+};
+
+export type AddMemoCopiesResponses = {
+    /**
+     * OK
+     */
+    200: CopiesView;
+};
+
+export type AddMemoCopiesResponse = AddMemoCopiesResponses[keyof AddMemoCopiesResponses];
+
 export type DiscardMemoData = {
     body?: never;
     headers: {
@@ -4902,6 +5120,24 @@ export type RecallMemoResponses = {
 };
 
 export type RecallMemoResponse = RecallMemoResponses[keyof RecallMemoResponses];
+
+export type ListMemoReceiptsData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/receipts';
+};
+
+export type ListMemoReceiptsResponses = {
+    /**
+     * OK
+     */
+    200: ReceiptsView;
+};
+
+export type ListMemoReceiptsResponse = ListMemoReceiptsResponses[keyof ListMemoReceiptsResponses];
 
 export type ResubmitMemoData = {
     body?: RemarkRequest;

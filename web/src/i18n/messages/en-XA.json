@@ -589,6 +589,20 @@
       "value": "]"
     }
   ],
+  "access.permission.memoCopyAdd": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿƥẏ ȧȧƥƥřǿǿṽḗḗḓ ḿḗḗḿǿǿş ŧǿǿ ḿǿǿřḗḗ ƥḗḗǿǿƥŀḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "access.permission.memoCreate": [
     {
       "type": 0,
@@ -597,6 +611,20 @@
     {
       "type": 0,
       "value": "Ẇřīŧḗḗ ȧȧƞḓ şŭŭƀḿīŧ ḿḗḗḿǿǿş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "access.permission.memoDistributionManage": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿȧȧƞȧȧɠḗḗ ḓīşŧřīƀŭŭŧīǿǿƞ ŀīşŧş"
     },
     {
       "type": 0,
@@ -8654,6 +8682,20 @@
     {
       "type": 0,
       "value": "Ḿḗḗḿǿǿ ȧȧƥƥřǿǿṽḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.template.memoCopied": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ḿḗḗḿǿǿ ƈǿǿƥīḗḗḓ ŧǿǿ ẏǿǿŭŭ"
     },
     {
       "type": 0,
@@ -17020,6 +17062,28 @@
     {
       "type": 0,
       "value": " ẇȧȧş ȧȧƥƥřǿǿṽḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.kind.memoCopied": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿǿǿ "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " ẇȧȧş ƈǿǿƥīḗḗḓ ŧǿǿ ẏǿǿŭŭ ƒǿǿř īƞƒǿǿřḿȧȧŧīǿǿƞ"
     },
     {
       "type": 0,

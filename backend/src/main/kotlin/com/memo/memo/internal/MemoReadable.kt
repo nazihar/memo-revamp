@@ -2,6 +2,7 @@ package com.memo.memo.internal
 
 import com.memo.common.authz.Permission
 import com.memo.common.authz.Policy
+import com.memo.common.tenant.TenantDsl
 import com.memo.jooq.tables.references.MEMO_PARTICIPANT
 import org.jooq.Condition
 import org.jooq.Field
@@ -23,6 +24,7 @@ import com.memo.jooq.tables.references.MEMO_ as MEMO
 class MemoReadable(
     private val policy: Policy,
     private val clock: Clock,
+    private val tenantDsl: TenantDsl,
 ) {
     /** Rows of `memo` that [user], the actor, may read at [clearanceRank]. */
     fun condition(
@@ -42,6 +44,19 @@ class MemoReadable(
     /** An active participant row: not revoked, and not a lapsed share. */
     fun active(): Condition =
         MEMO_PARTICIPANT.REVOKED_AT.isNull.and(MEMO_PARTICIPANT.EXPIRES_AT.isNull.or(MEMO_PARTICIPANT.EXPIRES_AT.gt(now())))
+
+    /** The kind of [user]'s active participant row of [memoId]; null when they read it through a unit grant, or not at all. */
+    fun kindOf(
+        memoId: UUID,
+        user: UUID,
+    ): ParticipantKind? =
+        tenantDsl
+            .current()
+            .select(MEMO_PARTICIPANT.KIND)
+            .from(MEMO_PARTICIPANT)
+            .where(MEMO_PARTICIPANT.MEMO_ID.eq(memoId), MEMO_PARTICIPANT.USER_ID.eq(user), active())
+            .fetchOne(MEMO_PARTICIPANT.KIND)
+            ?.let(ParticipantKind::valueOf)
 
     /** Memos whose origin unit is in one of the actor's `memo.read.unit` scopes (none for most people). */
     private fun units(): Condition =

@@ -6,8 +6,6 @@ import com.memo.files.StorageClass
 import jakarta.annotation.PostConstruct
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.ObjectProvider
-import org.springframework.boot.ApplicationArguments
-import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.stereotype.Component
 import java.nio.file.FileSystems
@@ -88,12 +86,14 @@ internal class Purposes(
 
 /**
  * The private directory of upload spools (ADR-0029). Spools hold ciphertext only; still, the directory is owner-only,
- * files are removed when an upload ends, and whatever a crash left behind is removed at start.
+ * files are removed when an upload ends, and whatever a crash left behind is removed at start: when this bean is made,
+ * before anything that uploads exists. (As an application runner it raced the demo seeder's uploads, which start from
+ * another runner, and deleted a spool in use.)
  */
 @Component
 internal class Spool(
     properties: FilesProperties,
-) : ApplicationRunner {
+) {
     private val log = LoggerFactory.getLogger(javaClass)
     private val posix = "posix" in FileSystems.getDefault().supportedFileAttributeViews()
 
@@ -121,7 +121,8 @@ internal class Spool(
     }
 
     /** Removes leftovers of uploads interrupted by a crash or a kill. */
-    override fun run(args: ApplicationArguments) {
+    @PostConstruct
+    fun removeLeftovers() {
         if (!Files.isDirectory(directory)) return
         Files.list(directory).use { files -> files.filter { it.fileName?.toString()?.endsWith(".spool") == true }.forEach(::delete) }
     }

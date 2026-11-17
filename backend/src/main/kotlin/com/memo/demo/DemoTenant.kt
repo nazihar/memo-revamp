@@ -57,6 +57,10 @@ object DemoTenant {
             DemoUser("head.credit@demo.example", "Demo Head of Credit", null),
             DemoUser("head.finance@demo.example", "Demo Head of Finance", null),
             DemoUser("director@demo.example", "Demo Director", null),
+            // Committees (Phase 4 E01 T6): the company secretary of every demo committee, and an independent director who
+            // chairs the board committees. Neither holds an org seat, so the seats on dev stay as they are.
+            DemoUser("secretary@demo.example", "Demo Company Secretary", null),
+            DemoUser("board.member@demo.example", "Demo Board Member", null),
         )
 }
 

@@ -47,3 +47,19 @@ test('the app loads nothing from third-party origins', async ({ app, page }) => 
   await app.visit('/')
   expect([...origins].filter((o) => o !== new URL(page.url()).origin)).toEqual([])
 })
+
+test('the document server’s conversion, command and AI paths are not reachable from browsers', async ({ request }) => {
+  // ADR-0047: only the backend converts, on the internal network; the web proxy refuses these paths (nginx, and Vite here).
+  for (const path of [
+    '/office/converter',
+    '/office/converter/from-file',
+    '/office/ConvertService.ashx',
+    '/office/coauthoring/CommandService.ashx',
+    '/office/docbuilder',
+    '/office/ai-proxy',
+    '/office/info/info.json',
+    '/office/example/',
+  ]) {
+    expect((await request.post(path, { data: {} })).status(), path).toBe(403)
+  }
+})

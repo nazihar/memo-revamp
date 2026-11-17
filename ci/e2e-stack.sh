@@ -10,7 +10,7 @@ ROOT=$(cd "$(dirname "$0")/.." && pwd)
 JAR=${BACKEND_JAR:-$ROOT/backend/build/libs/backend.jar}
 LOG=$ROOT/build/e2e-backend.log
 SIGNATURES=$ROOT/backend/src/test/resources/files/clamav
-OFFICE_IMAGE=onlyoffice/documentserver:9.4.0.1
+OFFICE_IMAGE=onlyoffice/documentserver:10.0.0.1
 
 case "${1:-start}" in
   start)
@@ -35,8 +35,9 @@ case "${1:-start}" in
       OFFICE_SECRET=$(openssl rand -hex 32)
       docker rm -f memo-e2e-office >/dev/null 2>&1 || true
       docker run -d --name memo-e2e-office -p 127.0.0.1:8081:80 --add-host host.docker.internal:host-gateway \
-        -e JWT_ENABLED=true -e JWT_SECRET="$OFFICE_SECRET" -e JWT_HEADER=Authorization -e ALLOW_PRIVATE_IP_ADDRESS=true \
-        "$OFFICE_IMAGE" >/dev/null
+        -e JWT_ENABLED=true -e JWT_SECRET="$OFFICE_SECRET" -e JWT_HEADER=Authorization -e PLUGINS_ENABLED=false \
+        -v "$ROOT/deploy/onlyoffice/local-production-linux.json:/etc/onlyoffice/documentserver/local-production-linux.json:ro" \
+        --tmpfs /var/lib/onlyoffice:size=2g,mode=0755 "$OFFICE_IMAGE" >/dev/null
       for _ in $(seq 1 120); do
         if curl -fs http://127.0.0.1:8081/healthcheck | grep -q true; then echo "ONLYOFFICE is up"; break; fi
         sleep 3

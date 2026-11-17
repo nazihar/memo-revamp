@@ -1,6 +1,6 @@
 # In-browser document editing (ONLYOFFICE)
 
-**What it is:** memo initiators edit the memo's Word document in the browser while they hold the memo; everyone else who may see the memo reads it there. The editor is ONLYOFFICE Docs `9.4.0.1`, a separate, unmodified service (ADR-0037, design `docs/plan/phase-2-workflow-engine/epic-02-onlyoffice-editing/`). A save becomes a new document version through the normal upload pipeline (scan, inspection, record lock), as the person who edited.
+**What it is:** memo initiators edit the memo's Word document in the browser while they hold the memo; everyone else who may see the memo reads it there. The editor is ONLYOFFICE Docs `10.0.0.1`, a separate, unmodified service (ADR-0037, ADR-0047, design `docs/plan/phase-2-workflow-engine/epic-02-onlyoffice-editing/`). A save becomes a new document version through the normal upload pipeline (scan, inspection, record lock), as the person who edited.
 
 ## Turning it on
 
@@ -39,4 +39,18 @@ Remove `MEMO_DOCSERVER_URL` (Compose: also drop the `documents` profile) and res
 
 ## Licence (on-prem)
 
-ONLYOFFICE Docs Community is AGPL-3.0 with additional terms. We ship the vendor's unmodified image; its source for the pinned release is at https://github.com/ONLYOFFICE/DocumentServer (tag `v9.4.0.1`). Keep its notices and this pointer with any on-prem delivery. Legal review is required before on-prem distribution (`docs/dependencies.md`).
+ONLYOFFICE Docs Community is AGPL-3.0 with additional terms. We ship the vendor's unmodified image; its source for the pinned release is at https://github.com/ONLYOFFICE/DocumentServer (tag `v10.0.0.1`). Keep its notices and this pointer with any on-prem delivery. Legal review is required before on-prem distribution (`docs/dependencies.md`; the brief for the lawyer is `docs/legal/onlyoffice-licence-brief.md`).
+
+## Hardening (ADR-0047)
+- **Configuration file:** every install mounts `deploy/onlyoffice/local-production-linux.json` over the image's defaults. It sets:
+  - `externalRequest.action.allow: false`: the server fetches only URLs inside our signed tokens, so an image inserted by URL, or any other address, is refused;
+  - no AI providers and no browser AI proxy;
+  - no plugin autostart;
+  - cache files kept one hour, cleaned every ten minutes;
+  - sessions at most 12 hours, one hour idle;
+  - auto-assembly every five minutes, a checkpoint against restarts;
+  - conversion: 120 s timeout, 100 MiB input, 100 MB uncompressed spreadsheets.
+- **Environment:** `PLUGINS_ENABLED=false`. Do **not** set `ALLOW_PRIVATE_IP_ADDRESS` (it was needed before 10.0 only to let the server reach the backend; signed URLs now go direct).
+- **Cache:** a 2 GiB tmpfs at `/var/lib/onlyoffice`. Documents being edited are in memory only and gone on restart. Keep host swap off or encrypted.
+- **Proxy:** the web container refuses `/office/` paths for conversion, commands, DocBuilder, the AI proxy, info and the example and welcome pages (403). Only the backend converts, on the internal network. A customer proxy in front must not route those paths either.
+- **One instance:** the Community Edition keeps its state in memory. A restart ends open editing sessions; changes since the last checkpoint (at most five minutes) are lost. High availability needs the commercial edition.

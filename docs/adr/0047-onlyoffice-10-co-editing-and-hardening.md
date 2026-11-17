@@ -35,8 +35,8 @@ Phase 2 (ADR-0037) edits the memo document in ONLYOFFICE 9.4, one author at a ti
   - JWT on configs, browser requests, inbox and outbox, with the token purpose checked.
   - Callbacks only on the internal connector.
   - `ALLOW_PRIVATE_IP_ADDRESS` removed; instead `externalRequest.directIfIn.allowList` = our internal connector and `externalRequest.action.allow: false`.
-  - Macros, plugins and AI off, in the server configuration and in every editor config (`aiSettings.enable: false`).
-  - DocBuilder off. The browser-facing `/office/` path blocks the converter, command, DocBuilder, info and example paths.
+  - Macros, plugins and AI off: no AI providers and no browser AI proxy in the server configuration, and `macros`, `macrosMode`, `plugins` and `ai.disabled` in every editor config. The `aiSettings.enable`, `docbuilderEnable` and `convertServiceEnable` switches named in research are not in 10.0.0.1 (T1 checked the tagged source).
+  - The browser-facing `/office/` path refuses the converter, command, DocBuilder, AI proxy, info, example and welcome paths (403).
   - Cache on a size-capped tmpfs with files kept one hour.
   - CPU and memory limits.
   - Sessions at most 12 hours absolute and one hour idle.

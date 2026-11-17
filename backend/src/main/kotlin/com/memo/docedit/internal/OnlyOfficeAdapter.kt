@@ -98,11 +98,15 @@ class OnlyOfficeAdapter(
                         "lang" to subject.language,
                         "callbackUrl" to callback,
                         "user" to mapOf("id" to session.userId.toString(), "name" to subject.userName),
+                        // Co-authors share one live session (ADR-0047); nobody may switch to strict mode alone.
+                        "coEditing" to mapOf("mode" to "fast", "change" to false),
                         "customization" to
                             mapOf(
                                 "forcesave" to true,
                                 "plugins" to false,
                                 "macros" to false,
+                                "macrosMode" to "disable",
+                                "ai" to mapOf("disabled" to true),
                                 "help" to false,
                                 "feedback" to false,
                                 "goback" to false,

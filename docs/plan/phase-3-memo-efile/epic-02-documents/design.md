@@ -167,7 +167,7 @@ erDiagram
 
 ## 10. Deployment and configuration
 - **ONLYOFFICE 10.0.0.1** in every deploy path (Compose dev, on-prem Compose, Helm, the E2E stack):
-  - `ALLOW_PRIVATE_IP_ADDRESS` dropped; a `local.json` override sets `externalRequest`, `aiSettings`, `docbuilderEnable`, `expire`, `autoAssembly`, the `inputLimits` and `queue.visibilityTimeout`;
+  - `ALLOW_PRIVATE_IP_ADDRESS` dropped; an override file (`deploy/onlyoffice/local-production-linux.json`, loaded after the image's `local.json`) sets `externalRequest`, `aiSettings` (no providers, no browser proxy), `expire`, `autoAssembly`, the plugin autostart list, the `inputLimits` and `queue.visibilityTimeout`;
   - `PLUGINS_ENABLED=false`;
   - the cache on a tmpfs of 2 GiB;
   - resource limits.

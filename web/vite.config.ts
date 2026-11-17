@@ -57,6 +57,33 @@ const apiProxy = {
 }
 
 /**
+ * Document-server APIs no browser needs (ADR-0047): conversion, commands, DocBuilder, the AI proxy, info and the example
+ * and welcome pages. The web container's nginx refuses the same paths; this mirrors it for local runs and the E2E stack.
+ */
+const OFFICE_DENIED =
+  /^\/office\/(converter|convertservice\.ashx|docbuilder|coauthoring\/commandservice\.ashx|command|info|example|welcome|ai-proxy)(\/|\?|$)/i
+
+function officeDeny(): Plugin {
+  const deny = (req: { url?: string }, res: { statusCode: number; end: () => void }, next: () => void) => {
+    if (OFFICE_DENIED.test(req.url ?? '')) {
+      res.statusCode = 403
+      res.end()
+    } else {
+      next()
+    }
+  }
+  return {
+    name: 'memo-office-deny',
+    configureServer(server) {
+      server.middlewares.use(deny)
+    },
+    configurePreviewServer(server) {
+      server.middlewares.use(deny)
+    },
+  }
+}
+
+/**
  * `messages/<locale>.json?part=<part>` is that part of the catalogue (src/i18n/catalogue-parts.json), so each part is its
  * own chunk. It answers with a JavaScript module (moduleType js), so the JSON handling does not parse it again.
  */
@@ -75,7 +102,13 @@ function catalogueParts(): Plugin {
 }
 
 export default defineConfig({
-  plugins: [catalogueParts(), tanstackRouter({ target: 'react', autoCodeSplitting: true }), react(), tailwindcss()],
+  plugins: [
+    officeDeny(),
+    catalogueParts(),
+    tanstackRouter({ target: 'react', autoCodeSplitting: true }),
+    react(),
+    tailwindcss(),
+  ],
   resolve: {
     alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
   },

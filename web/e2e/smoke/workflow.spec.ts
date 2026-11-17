@@ -1,9 +1,9 @@
-import type { Browser, Page } from '@playwright/test'
+import type { Page } from '@playwright/test'
 import { confirmIfAsked, demoSecret } from '../auth'
 import { docx } from '../docx'
 import { expect, test } from '../fixtures'
 import { chooseMemoType } from '../memo-type'
-import { storageStateFor, type SignedInRole } from '../roles'
+import { pageAs } from '../roles'
 
 /**
  * The E03 journey (test plan T11): a memo of the demo "Credit facility" type, whose definition names every step
@@ -13,11 +13,6 @@ import { storageStateFor, type SignedInRole } from '../roles'
  * E05 T8: the credit review has a deadline (a working day), shown to the reviewer; the business calendar admin adds
  * and removes a holiday and previews a deadline.
  */
-async function as(browser: Browser, role: SignedInRole): Promise<Page> {
-  const context = await browser.newContext({ storageState: storageStateFor(role) })
-  return context.newPage()
-}
-
 function status(page: Page, text: string) {
   return page.locator('[data-tone]', { hasText: text })
 }
@@ -39,7 +34,7 @@ async function act(
   if (fill.remark) await dialog.getByRole('textbox', { name: /Remark/ }).fill(fill.remark)
   if (fill.text) await dialog.getByRole('textbox', { name: fill.text.label }).fill(fill.text.value)
   await dialog.getByRole('button', { name: button }).click()
-  await confirmIfAsked(page, demoSecret('MEMO_DEMO_TOTP_SECRET'))
+  await confirmIfAsked(page, demoSecret('MEMO_DEMO_TOTP_SECRET'), page.getByText('Done.'))
   await expect(page.getByText('Done.')).toBeVisible()
 }
 
@@ -67,7 +62,7 @@ test.describe('as the initiator', () => {
     await act(page, memoUrl, 'Submit')
     await expect(status(page, 'In review')).toBeVisible()
 
-    const head = await as(browser, 'headCredit')
+    const head = await pageAs(browser, 'headCredit')
     await head.goto(memoUrl)
     await expect(head.getByText('Step: Credit review')).toBeVisible()
     // The step's SLA (one working day) gives the task a due time.
@@ -77,7 +72,7 @@ test.describe('as the initiator', () => {
       remark: 'Is the collateral enough?',
     })
 
-    const director = await as(browser, 'director')
+    const director = await pageAs(browser, 'director')
     await act(director, memoUrl, 'Give your opinion', {
       text: { label: /Your opinion/, value: 'Enough, with the guarantee.' },
     })

@@ -1,20 +1,14 @@
-import type { Browser, Page } from '@playwright/test'
 import { confirmIfAsked, demoSecret } from '../auth'
 import { docx } from '../docx'
 import { expect, test } from '../fixtures'
 import { chooseMemoType } from '../memo-type'
-import { storageStateFor, type SignedInRole } from '../roles'
+import { pageAs } from '../roles'
 
 /**
  * Templates (Phase 3 E03 test plan, T9; ADR-0048): an administrator gives a new memo type a Word template with tags, sees
  * the tags it uses, previews it and submits; a second administrator publishes it; a user's new memo of the type starts
  * with the filled template as its document. Each run builds its own type.
  */
-async function as(browser: Browser, role: SignedInRole): Promise<Page> {
-  const context = await browser.newContext({ storageState: storageStateFor(role) })
-  return context.newPage()
-}
-
 test.describe('as a tenant admin', () => {
   test.use({ role: 'tenantAdmin' })
 
@@ -56,16 +50,20 @@ test.describe('as a tenant admin', () => {
     await page.getByRole('button', { name: 'Submit for review' }).click()
     await expect(page.getByRole('heading', { level: 2, name: /Version 1 · In review/ })).toBeVisible()
 
-    const reviewer = await as(browser, 'reviewer')
+    const reviewer = await pageAs(browser, 'reviewer')
     await reviewer.goto(typeUrl)
     // A reviewer opens the version on its changes; the template is on the Settings tab.
     await reviewer.getByRole('tab', { name: 'Settings' }).click()
     await expect(reviewer.getByRole('region', { name: 'Template' }).getByText(/letterhead\.docx/)).toBeVisible()
     await reviewer.getByRole('button', { name: 'Approve and publish' }).click()
-    await confirmIfAsked(reviewer, demoSecret('MEMO_DEMO_TOTP_SECRET'))
+    await confirmIfAsked(
+      reviewer,
+      demoSecret('MEMO_DEMO_TOTP_SECRET'),
+      reviewer.getByRole('heading', { level: 2, name: /Version 1 · Published/ }),
+    )
     await expect(reviewer.getByRole('heading', { level: 2, name: /Version 1 · Published/ })).toBeVisible()
 
-    const author = await as(browser, 'user')
+    const author = await pageAs(browser, 'user')
     await author.goto('/memos/new')
     await chooseMemoType(author, typeName)
     await expect(author.getByText(`The document starts from the ${typeName} template`, { exact: false })).toBeVisible()

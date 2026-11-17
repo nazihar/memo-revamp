@@ -5,7 +5,7 @@ import { confirmIfAsked, demoSecret } from '../auth'
 import { docx } from '../docx'
 import { expect, test } from '../fixtures'
 import { folder, legacyDoc, pdf, xlsx } from '../legacy'
-import { storageStateFor } from '../roles'
+import { pageAs } from '../roles'
 
 /**
  * The legacy import (Phase 3 E06 test plan T10, ADR-0055, flows L to O), as the demo admin, who holds `memo.import` and
@@ -176,10 +176,7 @@ test.describe('as the tenant administrator', () => {
     await page.getByTestId('step-import').click()
     await page.getByTestId('start-import').click()
     await page.getByTestId('start-confirm').click()
-    await expect(
-      page.getByRole('dialog', { name: 'Confirm it is you' }).or(page.getByTestId('import-progress')),
-    ).toBeVisible()
-    await confirmIfAsked(page, demoSecret('MEMO_DEMO_TOTP_SECRET'))
+    await confirmIfAsked(page, demoSecret('MEMO_DEMO_TOTP_SECRET'), page.getByTestId('import-progress'))
     await expect(page.getByTestId('batch-state')).toHaveText('State: Completed', { timeout: 180_000 })
 
     await page.getByTestId('step-report').click()
@@ -204,7 +201,7 @@ test.describe('as the tenant administrator', () => {
 
     // A reader (Demo User, linked as an approver) finds the memo by the name of its initiator, who left before the
     // move and never had an account here, with the Origin filter. The administrator does not read other people's memos.
-    const reader = await (await browser.newContext({ storageState: storageStateFor('user') })).newPage()
+    const reader = await pageAs(browser, 'user')
     await reader.goto('/inbox')
     const box = reader.getByRole('combobox', { name: 'Search memos' })
     await box.fill(surname)

@@ -1,7 +1,7 @@
-import type { Browser, Page } from '@playwright/test'
+import type { Page } from '@playwright/test'
 import { expect, test } from '../fixtures'
 import { chooseMemoType } from '../memo-type'
-import { storageStateFor, type SignedInRole } from '../roles'
+import { pageAs } from '../roles'
 
 /**
  * Search (Phase 3 E05 test plan T8, ADR-0054): a note's words find the memo for its initiator, through the box in the
@@ -10,11 +10,6 @@ import { storageStateFor, type SignedInRole } from '../roles'
  * runs with the documents stack (nightly and on dev), so that test skips itself on the PR stack, as the editing journey
  * does. Each run writes a new memo with words of its own.
  */
-async function as(browser: Browser, role: SignedInRole): Promise<Page> {
-  const context = await browser.newContext({ storageState: storageStateFor(role) })
-  return context.newPage()
-}
-
 /** Searches from the top-bar box: the words go in the page's address fragment, never in a request's URL. */
 async function searchFor(page: Page, words: string) {
   const box = page.getByRole('combobox', { name: 'Search memos' })
@@ -74,7 +69,7 @@ test.describe('as the initiator', () => {
     await expect(page.getByRole('link', { name: subject })).toBeVisible()
 
     // The head of finance takes no part in the memo and may not read it: nothing is found.
-    const other = await as(browser, 'headFinance')
+    const other = await pageAs(browser, 'headFinance')
     await other.goto('/inbox')
     await searchFor(other, word)
     await expect(other.getByText(/^No memos match\./)).toBeVisible()

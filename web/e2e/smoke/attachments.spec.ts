@@ -1,8 +1,7 @@
-import type { Browser, Page } from '@playwright/test'
 import { docx } from '../docx'
 import { expect, test } from '../fixtures'
 import { chooseMemoType } from '../memo-type'
-import { storageStateFor, type SignedInRole } from '../roles'
+import { pageAs } from '../roles'
 
 /**
  * The Phase 3 E02 journey (test plan T8): an initiator names a co-author, attaches a PDF, previews it and classifies it
@@ -11,11 +10,6 @@ import { storageStateFor, type SignedInRole } from '../roles'
  * text service, so the comparison says the text is not available; the nightly stack with ONLYOFFICE and Tika marks the
  * changes.
  */
-async function as(browser: Browser, role: SignedInRole): Promise<Page> {
-  const context = await browser.newContext({ storageState: storageStateFor(role) })
-  return context.newPage()
-}
-
 /** A one-page PDF, written by hand like the DOCX helper. */
 function pdf(): Buffer {
   const body = [
@@ -101,7 +95,7 @@ test.describe('as the initiator', () => {
     await compare.getByRole('button', { name: 'Close' }).first().click()
 
     // The co-author sees the draft and may add to it, but not submit it.
-    const coauthor = await as(browser, 'headCredit')
+    const coauthor = await pageAs(browser, 'headCredit')
     await coauthor.goto(memoUrl)
     await expect(coauthor.getByRole('heading', { level: 1, name: subject })).toBeVisible()
     await expect(coauthor.getByText(/You are a co-author/)).toBeVisible()

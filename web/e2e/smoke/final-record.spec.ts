@@ -1,9 +1,9 @@
-import type { Browser, Page } from '@playwright/test'
+import type { Page } from '@playwright/test'
 import { confirmIfAsked, demoSecret } from '../auth'
 import { docx } from '../docx'
 import { expect, test } from '../fixtures'
 import { chooseMemoType } from '../memo-type'
-import { storageStateFor, type SignedInRole } from '../roles'
+import { pageAs } from '../roles'
 
 /**
  * The final record (Phase 3 E04 test plan, T7; ADR-0053): once the memo is approved, a background job makes its PDF/A
@@ -11,11 +11,6 @@ import { storageStateFor, type SignedInRole } from '../roles'
  * the memo through a share, makes version 2 with a reason and a step-up; version 1 stays downloadable. Each run writes a
  * new memo. The PDF/A validation itself is proven by the backend's tests (veraPDF); here the file is a PDF.
  */
-async function as(browser: Browser, role: SignedInRole): Promise<Page> {
-  const context = await browser.newContext({ storageState: storageStateFor(role) })
-  return context.newPage()
-}
-
 /** Reloads [page] until the Final record box offers [link] (the job runs in the background). */
 async function waitForRecord(page: Page, url: string, link: string) {
   await expect(async () => {
@@ -57,11 +52,11 @@ test.describe('as the initiator', () => {
     await page.getByRole('dialog').getByRole('button', { name: 'Submit' }).click()
     await expect(page.getByText('Done.')).toBeVisible()
 
-    const head = await as(browser, 'headCredit')
+    const head = await pageAs(browser, 'headCredit')
     await head.goto(memoUrl)
     await head.getByRole('toolbar', { name: 'Actions' }).getByRole('button', { name: 'Approve' }).click()
     await head.getByRole('dialog').getByRole('button', { name: 'Approve' }).click()
-    await confirmIfAsked(head, demoSecret('MEMO_DEMO_TOTP_SECRET'))
+    await confirmIfAsked(head, demoSecret('MEMO_DEMO_TOTP_SECRET'), head.getByText('Done.'))
     await expect(head.getByText('Done.')).toBeVisible()
 
     // The record is made in the background, then offered for download.
@@ -83,7 +78,7 @@ test.describe('as the initiator', () => {
     await share.getByRole('button', { name: 'Share' }).click()
     await expect(share).toBeHidden()
 
-    const keeper = await as(browser, 'tenantAdmin')
+    const keeper = await pageAs(browser, 'tenantAdmin')
     await waitForRecord(keeper, memoUrl, 'Download')
     await keeper
       .getByRole('region', { name: 'Final record' })
@@ -92,7 +87,7 @@ test.describe('as the initiator', () => {
     const dialog = keeper.getByRole('dialog', { name: 'Make a new version of the final record' })
     await dialog.getByLabel(/Reason/).fill('Checking the record after a converter upgrade.')
     await dialog.getByRole('button', { name: 'Make version 2' }).click()
-    await confirmIfAsked(keeper, demoSecret('MEMO_DEMO_TOTP_SECRET'))
+    await confirmIfAsked(keeper, demoSecret('MEMO_DEMO_TOTP_SECRET'), async () => !(await dialog.isVisible()))
     await expect(dialog).toBeHidden()
 
     // Version 2 is made; version 1 stays, listed with the reason and downloadable.

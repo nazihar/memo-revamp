@@ -50,7 +50,7 @@ What should the record be, how is it built, and how is it kept?
      - anything else (ZIP, unknown types, encrypted or broken files) gets a **placeholder page**, and the original stays a locked record file of its own, named by its hash.
 - **Normalising inputs:**
   - One sRGB output intent.
-  - Our XMP: `pdfaid` part 2 and conformance U, Dublin Core, and a `memo:` schema holding the number, the document hash and the renderer versions.
+  - Our XMP: `pdfaid` part 2 and conformance U, Dublin Core, XMP basic and Adobe PDF properties only (no extension schema). The number is `dc:identifier`; the document hash and the renderer versions are in `dc:description`. The output intent uses the JDK's sRGB profile.
   - Actions, JavaScript, `AA`, forms and banned annotations are removed.
   - Transparency groups get a colour space.
   - A part that still breaks a rule (fonts not embedded, CMYK, encryption) is **rasterised** at 150 dpi as sRGB and flagged on the cover. Its text is excluded from the text check.

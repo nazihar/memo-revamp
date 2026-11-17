@@ -58,6 +58,12 @@ dependencies {
     implementation(libs.tika.core)
     implementation(libs.commons.compress)
     implementation(libs.pdfbox)
+    // Final records (ADR-0053): PDF/A metadata, and veraPDF to validate each record in the job and in tests.
+    implementation(libs.xmpbox)
+    // stax-utils (BSD-4-Clause, not on our allow-list) only writes veraPDF's XML reports, which we never produce.
+    implementation(libs.verapdf.validation) {
+        exclude(group = "net.java.dev.stax-utils")
+    }
     // .docx templates (ADR-0048): poi-tl with its default tag grammar only, on Apache POI. Batik (SVG pictures) is unused.
     implementation(libs.poi.tl) {
         exclude(group = "org.apache.xmlgraphics")

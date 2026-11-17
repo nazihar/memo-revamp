@@ -49,6 +49,16 @@ interface RenditionConverter {
         key: String,
         out: OutputStream,
     ): RenditionOutcome
+
+    /**
+     * Converts to an archival PDF (PDF/A) for final records (ADR-0053); which part and level the converter writes is
+     * checked by the caller's validator. [key] must differ from the one used for [toPdf]. Unsupported by default.
+     */
+    fun toPdfA(
+        input: RenditionInput,
+        key: String,
+        out: OutputStream,
+    ): RenditionOutcome = RenditionOutcome.Final("UNSUPPORTED")
 }
 
 /**

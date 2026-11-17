@@ -111,6 +111,15 @@ enum class Permission(
 
     /** Publish or send back a forum-type version someone else submitted (Phase 4 E01; checker); with a step-up. */
     FORUM_TYPES_APPROVE("forum.types.approve", scopable = false, privileged = true),
+
+    /** Create, edit, dissolve and clone committees, and manage any committee's members (Phase 4 E01, ADR-0056). */
+    FORUMS_MANAGE("forums.manage", scopable = false, privileged = true),
+
+    /**
+     * See every committee and its members up to one's clearance, for example internal audit (Phase 4 E01, ADR-0056).
+     * Granted by tenants only: no built-in role holds it.
+     */
+    FORUM_READ("forum.read", scopable = false, privileged = true),
     ;
 
     companion object {
@@ -129,6 +138,7 @@ enum class Permission(
                 INBOX_TEAM_READ,
                 MEMO_DASHBOARD_READ,
                 MEMO_IMPORT,
+                FORUM_READ,
             )
 
         fun ofKey(key: String): Permission? = BY_KEY[key]

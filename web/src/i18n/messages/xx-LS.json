@@ -9981,6 +9981,18 @@
       "value": "Mail server saved.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "mail.template.forumMembershipChanged": [
+    {
+      "type": 0,
+      "value": "Committee membership changedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.forumTermEnding": [
+    {
+      "type": 0,
+      "value": "Term of office endingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "mail.template.invitation": [
     {
       "type": 0,
@@ -15876,6 +15888,42 @@
     {
       "type": 0,
       "value": " in the browser editor could not be savedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.forumMembershipChanged": [
+    {
+      "type": 0,
+      "value": "The membership of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " changedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.forumTermEnding": [
+    {
+      "type": 0,
+      "value": "The term of "
+    },
+    {
+      "type": 1,
+      "value": "member"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ends soonSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "notifications.kind.memoApproved": [

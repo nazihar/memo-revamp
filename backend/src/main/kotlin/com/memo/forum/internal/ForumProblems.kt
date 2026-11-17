@@ -47,3 +47,6 @@ internal fun actor(): UUID = checkNotNull(actorOrNull()) { "forums are changed b
 internal fun requireNoProblems(problems: List<FieldProblem>) {
     if (problems.isNotEmpty()) throw ForumRejectedException(problems)
 }
+
+/** The request as [com.memo.system.Idempotency] compares it: with the actor, so another user's replay of a key is refused. */
+internal fun fingerprint(request: String): String = "${actorOrNull()}\n$request"

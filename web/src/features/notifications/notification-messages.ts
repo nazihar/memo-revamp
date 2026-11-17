@@ -111,6 +111,8 @@ const kindsWithValues = defineMessages<{
   taskOverdue: { reference: string }
   editNotSaved: { name: string }
   memoWatched: { reference: string; count: number; reason: string }
+  forumMembershipChanged: { committee: string }
+  forumTermEnding: { committee: string; member: string }
 }>({
   signInAlert: { id: 'notifications.kind.signInAlert', defaultMessage: 'New sign-in to your account from {device}' },
   roleGranted: { id: 'notifications.kind.roleGranted', defaultMessage: 'You were given the role {role}' },
@@ -149,6 +151,14 @@ const kindsWithValues = defineMessages<{
     id: 'notifications.kind.memoWatched',
     defaultMessage:
       '{count, plural, one {News} other {# updates}} on memo {reference}: {reason, select, INITIATED {you started it} ACTED {you acted on it} MENTIONED {you were mentioned on it} other {you follow it}}',
+  },
+  forumMembershipChanged: {
+    id: 'notifications.kind.forumMembershipChanged',
+    defaultMessage: 'The membership of {committee} changed',
+  },
+  forumTermEnding: {
+    id: 'notifications.kind.forumTermEnding',
+    defaultMessage: 'The term of {member} on {committee} ends soon',
   },
 })
 
@@ -198,6 +208,13 @@ export function notificationText(intl: IntlShape, kind: string, params: Record<s
         count: Number(params.count ?? '1'),
         reason: params.reason ?? 'MANUAL',
       })
+    case 'FORUM_MEMBERSHIP_CHANGED':
+      return intl.formatMessage(kindsWithValues.forumMembershipChanged, { committee: params.committee ?? '' })
+    case 'FORUM_TERM_ENDING':
+      return intl.formatMessage(kindsWithValues.forumTermEnding, {
+        committee: params.committee ?? '',
+        member: params.member ?? '',
+      })
     case 'PASSWORD_CHANGED':
       return intl.formatMessage(kinds.passwordChanged)
     case 'MFA_RESET':
@@ -241,6 +258,11 @@ const mailTemplates = defineMessages({
   TASK_OVERDUE: { id: 'mail.template.taskOverdue', defaultMessage: 'Memo overdue' },
   WATCH_UPDATE: { id: 'mail.template.watchUpdate', defaultMessage: 'News on a memo you follow' },
   WATCH_DIGEST: { id: 'mail.template.watchDigest', defaultMessage: 'Daily summary of followed memos' },
+  FORUM_MEMBERSHIP_CHANGED: {
+    id: 'mail.template.forumMembershipChanged',
+    defaultMessage: 'Committee membership changed',
+  },
+  FORUM_TERM_ENDING: { id: 'mail.template.forumTermEnding', defaultMessage: 'Term of office ending' },
 })
 
 const templateMessages: Record<string, MessageDescriptor | undefined> = mailTemplates

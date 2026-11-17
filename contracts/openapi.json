@@ -784,6 +784,22 @@
         "required" : [ "currentPassword", "newPassword" ],
         "type" : "object"
       },
+      "ChangeRoleRequest" : {
+        "properties" : {
+          "from" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "role" : {
+            "enum" : [ "CHAIR", "VICE_CHAIR", "SECRETARY", "MEMBER", "STANDING_INVITEE", "OBSERVER" ],
+            "type" : "string"
+          },
+          "voting" : {
+            "type" : [ "boolean", "null" ]
+          }
+        },
+        "type" : "object"
+      },
       "ClassificationLevel" : {
         "properties" : {
           "description" : {
@@ -863,6 +879,30 @@
           }
         },
         "required" : [ "levelId" ],
+        "type" : "object"
+      },
+      "CloneRequest" : {
+        "properties" : {
+          "code" : {
+            "type" : "string"
+          },
+          "key" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "shortName" : {
+            "type" : "string"
+          },
+          "startsOn" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "withMembers" : {
+            "type" : "boolean"
+          }
+        },
         "type" : "object"
       },
       "CloseRequest" : {
@@ -1246,6 +1286,18 @@
           }
         },
         "required" : [ "person" ],
+        "type" : "object"
+      },
+      "DissolveRequest" : {
+        "properties" : {
+          "dissolvedOn" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "reason" : {
+            "type" : "string"
+          }
+        },
         "type" : "object"
       },
       "DistributionListRequest" : {
@@ -1632,6 +1684,22 @@
         "required" : [ "enabled" ],
         "type" : "object"
       },
+      "EndMemberRequest" : {
+        "properties" : {
+          "endedOn" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "note" : {
+            "type" : [ "string", "null" ]
+          },
+          "reason" : {
+            "enum" : [ "RESIGNED", "TERM_COMPLETED", "REMOVED", "RENEWED", "ROLE_CHANGED", "WITHDRAWN", "OTHER" ],
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
       "EscalationTarget" : {
         "properties" : {
           "code" : {
@@ -1864,6 +1932,121 @@
           }
         },
         "required" : [ "importedOriginals", "mismatches", "promotionMismatches", "verified", "verifyProblems" ],
+        "type" : "object"
+      },
+      "ForumRequest" : {
+        "properties" : {
+          "classificationId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "code" : {
+            "type" : "string"
+          },
+          "key" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "parentId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "shortName" : {
+            "type" : "string"
+          },
+          "typeId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "ForumResponse" : {
+        "properties" : {
+          "canManage" : {
+            "type" : "boolean"
+          },
+          "canManageMembers" : {
+            "type" : "boolean"
+          },
+          "chair" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/PersonRef"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "classificationId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "code" : {
+            "type" : "string"
+          },
+          "dissolvedOn" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "dissolvedReason" : {
+            "type" : [ "string", "null" ]
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "key" : {
+            "type" : "string"
+          },
+          "memberCount" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "myRole" : {
+            "enum" : [ "CHAIR", "VICE_CHAIR", "SECRETARY", "MEMBER", "STANDING_INVITEE", "OBSERVER" ],
+            "type" : [ "string", "null" ]
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "parentId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "parentName" : {
+            "type" : [ "string", "null" ]
+          },
+          "secretaries" : {
+            "items" : {
+              "$ref" : "#/components/schemas/PersonRef"
+            },
+            "type" : "array"
+          },
+          "shortName" : {
+            "type" : "string"
+          },
+          "status" : {
+            "enum" : [ "ACTIVE", "DISSOLVED" ],
+            "type" : "string"
+          },
+          "termWarnings" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "typeId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "typeName" : {
+            "type" : "string"
+          },
+          "version" : {
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "canManage", "canManageMembers", "code", "id", "key", "memberCount", "name", "secretaries", "shortName", "status", "termWarnings", "typeId", "typeName", "version" ],
         "type" : "object"
       },
       "ForumRetention" : {
@@ -3712,6 +3895,172 @@
         },
         "type" : "object"
       },
+      "MemberChangeResponse" : {
+        "properties" : {
+          "beyondMaxTerms" : {
+            "type" : "boolean"
+          },
+          "member" : {
+            "$ref" : "#/components/schemas/MemberResponse"
+          }
+        },
+        "required" : [ "beyondMaxTerms", "member" ],
+        "type" : "object"
+      },
+      "MemberEditRequest" : {
+        "properties" : {
+          "alternateUserId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "attributes" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array",
+            "uniqueItems" : true
+          },
+          "authority" : {
+            "type" : [ "string", "null" ]
+          },
+          "termEndsOn" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "voting" : {
+            "type" : "boolean"
+          }
+        },
+        "type" : "object"
+      },
+      "MemberRequest" : {
+        "properties" : {
+          "alternateUserId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "attributes" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array",
+            "uniqueItems" : true
+          },
+          "authority" : {
+            "type" : [ "string", "null" ]
+          },
+          "positionId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "role" : {
+            "enum" : [ "CHAIR", "VICE_CHAIR", "SECRETARY", "MEMBER", "STANDING_INVITEE", "OBSERVER" ],
+            "type" : "string"
+          },
+          "startsOn" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "termEndsOn" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "userId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "voting" : {
+            "type" : [ "boolean", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "MemberResponse" : {
+        "properties" : {
+          "alternate" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/PersonRef"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "attributes" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "authority" : {
+            "type" : [ "string", "null" ]
+          },
+          "endNote" : {
+            "type" : [ "string", "null" ]
+          },
+          "endReason" : {
+            "enum" : [ "RESIGNED", "TERM_COMPLETED", "REMOVED", "RENEWED", "ROLE_CHANGED", "WITHDRAWN", "OTHER" ],
+            "type" : [ "string", "null" ]
+          },
+          "endedOn" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "kind" : {
+            "enum" : [ "PERSON", "POSITION" ],
+            "type" : "string"
+          },
+          "person" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/PersonRef"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "positionId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "positionTitle" : {
+            "type" : [ "string", "null" ]
+          },
+          "role" : {
+            "enum" : [ "CHAIR", "VICE_CHAIR", "SECRETARY", "MEMBER", "STANDING_INVITEE", "OBSERVER" ],
+            "type" : "string"
+          },
+          "startsOn" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "state" : {
+            "enum" : [ "UPCOMING", "IN_OFFICE", "TERM_ENDED", "ENDED" ],
+            "type" : "string"
+          },
+          "termEndsInDays" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "termEndsOn" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "termNumber" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "version" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "voting" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "attributes", "id", "kind", "role", "startsOn", "state", "termNumber", "version", "voting" ],
+        "type" : "object"
+      },
       "MemoDetailView" : {
         "properties" : {
           "display" : {
@@ -4441,6 +4790,62 @@
           }
         },
         "required" : [ "name", "rank" ],
+        "type" : "object"
+      },
+      "MyForumResponse" : {
+        "properties" : {
+          "attributes" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "canOpen" : {
+            "type" : "boolean"
+          },
+          "code" : {
+            "type" : "string"
+          },
+          "endedOn" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "forumId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "role" : {
+            "enum" : [ "CHAIR", "VICE_CHAIR", "SECRETARY", "MEMBER", "STANDING_INVITEE", "OBSERVER" ],
+            "type" : "string"
+          },
+          "startsOn" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "state" : {
+            "enum" : [ "UPCOMING", "IN_OFFICE", "TERM_ENDED", "ENDED" ],
+            "type" : "string"
+          },
+          "status" : {
+            "enum" : [ "ACTIVE", "DISSOLVED" ],
+            "type" : "string"
+          },
+          "termEndsOn" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "termNumber" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "voting" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "attributes", "canOpen", "code", "forumId", "name", "role", "startsOn", "state", "status", "termNumber", "voting" ],
         "type" : "object"
       },
       "MyPermission" : {
@@ -6210,6 +6615,18 @@
           }
         },
         "required" : [ "state", "versions" ],
+        "type" : "object"
+      },
+      "RenewRequest" : {
+        "properties" : {
+          "authority" : {
+            "type" : [ "string", "null" ]
+          },
+          "termEndsOn" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          }
+        },
         "type" : "object"
       },
       "ReportTotals" : {
@@ -13456,6 +13873,63 @@
         "tags" : [ "files" ]
       }
     },
+    "/api/v1/forums" : {
+      "get" : {
+        "operationId" : "listForums",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/ForumResponse"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The committees the user may see",
+        "tags" : [ "forum" ]
+      },
+      "post" : {
+        "operationId" : "createForum",
+        "parameters" : [ {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ForumRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ForumResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Create a committee (forums.manage)",
+        "tags" : [ "forum" ]
+      }
+    },
     "/api/v1/forums/quorum-preview" : {
       "post" : {
         "operationId" : "previewQuorum",
@@ -13482,6 +13956,490 @@
           }
         },
         "summary" : "Evaluate a quorum rule on sample members; nothing is saved",
+        "tags" : [ "forum" ]
+      }
+    },
+    "/api/v1/forums/{forumId}" : {
+      "get" : {
+        "operationId" : "getForum",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ForumResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "One committee",
+        "tags" : [ "forum" ]
+      },
+      "patch" : {
+        "operationId" : "updateForum",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ForumRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ForumResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Change a committee's name, code, parent or classification",
+        "tags" : [ "forum" ]
+      }
+    },
+    "/api/v1/forums/{forumId}/clone" : {
+      "post" : {
+        "operationId" : "cloneForum",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CloneRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ForumResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A new committee with this one's type and settings, and its members if asked",
+        "tags" : [ "forum" ]
+      }
+    },
+    "/api/v1/forums/{forumId}/dissolve" : {
+      "post" : {
+        "operationId" : "dissolveForum",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/DissolveRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ForumResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Dissolve a committee; its history stays",
+        "tags" : [ "forum" ]
+      }
+    },
+    "/api/v1/forums/{forumId}/members" : {
+      "get" : {
+        "operationId" : "listForumMembers",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "on",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "history",
+          "required" : false,
+          "schema" : {
+            "default" : false,
+            "type" : "boolean"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/MemberResponse"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Members in office on a date (default today), or every row with history",
+        "tags" : [ "forum" ]
+      },
+      "post" : {
+        "operationId" : "addForumMember",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MemberRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemberChangeResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Add a person or a position to a committee",
+        "tags" : [ "forum" ]
+      }
+    },
+    "/api/v1/forums/{forumId}/members/{memberId}" : {
+      "patch" : {
+        "operationId" : "editForumMember",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "memberId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MemberEditRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemberChangeResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Change a member's vote, attributes, alternate, term end or authority",
+        "tags" : [ "forum" ]
+      }
+    },
+    "/api/v1/forums/{forumId}/members/{memberId}/change-role" : {
+      "post" : {
+        "operationId" : "changeForumMemberRole",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "memberId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ChangeRoleRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemberChangeResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Give a member another role from a date; the term continues",
+        "tags" : [ "forum" ]
+      }
+    },
+    "/api/v1/forums/{forumId}/members/{memberId}/end" : {
+      "post" : {
+        "operationId" : "endForumMember",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "memberId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/EndMemberRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemberChangeResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "End a membership on a date, with a reason",
+        "tags" : [ "forum" ]
+      }
+    },
+    "/api/v1/forums/{forumId}/members/{memberId}/renew" : {
+      "post" : {
+        "operationId" : "renewForumMember",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "memberId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RenewRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemberChangeResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Start the member's next term the day after this one ends",
+        "tags" : [ "forum" ]
+      }
+    },
+    "/api/v1/forums/{forumId}/members/{memberId}/withdraw" : {
+      "post" : {
+        "operationId" : "withdrawForumMember",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "memberId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemberChangeResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Withdraw a membership that has not started",
         "tags" : [ "forum" ]
       }
     },
@@ -13720,6 +14678,28 @@
         },
         "summary" : "My permissions and clearance",
         "tags" : [ "me" ]
+      }
+    },
+    "/api/v1/me/forums" : {
+      "get" : {
+        "operationId" : "listMyForums",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/MyForumResponse"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The committees the user sits on, will sit on, or sat on",
+        "tags" : [ "forum" ]
       }
     },
     "/api/v1/me/notification-preferences" : {

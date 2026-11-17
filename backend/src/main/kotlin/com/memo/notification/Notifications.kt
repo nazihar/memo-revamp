@@ -60,6 +60,11 @@ enum class NotificationKind(
     // Following (Phase 3 E05 T4): what happened to a followed memo, batched per memo; in-app only (the email is a digest
     // or an update by the user's watch setting). Parameters `reference`, `count`, `reason` (why the user follows it).
     MEMO_WATCHED(NotificationCategory.WATCHING, null),
+
+    // Committees (Phase 4 E01, design E01 §9): a membership changed (the chair, the secretaries, the member), and a term of
+    // office ends soon (the secretaries). Parameters `committee`, `organisation`, `link`; `member` for the term reminder.
+    FORUM_MEMBERSHIP_CHANGED(NotificationCategory.ADMINISTRATION, MailTemplate.FORUM_MEMBERSHIP_CHANGED),
+    FORUM_TERM_ENDING(NotificationCategory.ADMINISTRATION, MailTemplate.FORUM_TERM_ENDING),
 }
 
 /** Who receives a notification; the producer already holds the user, so `notification` never looks people up. */

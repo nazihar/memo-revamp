@@ -16,6 +16,7 @@ import com.memo.tenancy.TenantCreated
 import com.memo.tenancy.TenantRegistry
 import com.memo.workflow.WorkflowDefinitionUsage
 import com.memo.workflow.WorkflowDefinitions
+import com.memo.workflow.Workflows
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.context.event.EventListener
@@ -30,9 +31,9 @@ import java.util.UUID
  * `memo.types.manage` holders create and edit them, audited. A type is never deleted, only deactivated. Inside a tenant
  * transaction.
  *
- * Since Phase 3 E01 a type changes through reviewed versions ([MemoTypeLifecycle], ADR-0043). [create] and [update] are
- * the Phase 2 direct path, kept for the current admin screen until E01 T6 replaces it: each direct change is recorded as
- * a new published version, so the version history stays complete.
+ * Since Phase 3 E01 a type changes through reviewed versions ([MemoTypeLifecycle], ADR-0043): [createDraft] starts a type
+ * from a draft version 1, which is used once a second administrator publishes it. [create] publishes version 1 at once,
+ * for seeders and the built-in type only (no endpoint). [setActive] switches a type on or off, which changes no memo.
  */
 @Service
 class MemoTypes(
@@ -88,41 +89,36 @@ class MemoTypes(
         return type
     }
 
-    fun update(
+    /**
+     * A new type as draft version 1 (ADR-0043): named [name] with [code], on the built-in sequential workflow, everything
+     * else at its default. Nobody can raise it until a version is published.
+     */
+    fun createDraft(
+        name: String,
+        code: String,
+    ): Pair<MemoType, Int> {
+        policy.require(Permission.MEMO_TYPES_MANAGE)
+        val settings = MemoTypeSettings(name.trim(), code.trim(), null, Workflows.SEQUENTIAL_APPROVAL, RoutePolicy.INITIATOR_DEFINED)
+        checks.require(settings, null)
+        val id = store.insertDraftType(settings)
+        val number = versions.insert(id, ReviewState.DRAFT, settings, actorOrNull())
+        val type = get(id)
+        audit.record("memo.type.created", OBJECT_TYPE, id.toString(), after = type.audited() + ("draft" to number))
+        return type to number
+    }
+
+    /** Switches a type on or off ([expectedVersion]: the client's `If-Match`); at least one published type stays on. */
+    fun setActive(
         id: UUID,
         expectedVersion: Long,
-        fields: MemoTypeFields,
+        active: Boolean,
     ): MemoType {
         policy.require(Permission.MEMO_TYPES_MANAGE)
         val before = get(id)
-        val current = versions.published(id)
-        // The Phase 2 screen knows nothing of fields and scope: they carry over from the published version.
-        val settings =
-            fields
-                .settings(fields.code ?: before.code)
-                .copy(
-                    fields = current?.settings?.fields.orEmpty(),
-                    raiseScope = current?.settings?.raiseScope ?: RaiseScope(),
-                    numbering = current?.settings?.numbering ?: Numbering(),
-                    retention = current?.settings?.retention,
-                    attachmentRules = current?.settings?.attachmentRules ?: AttachmentRules(),
-                    autoCloseDays = current?.settings?.autoCloseDays,
-                )
-        checks.require(settings, id)
-        refuseIf(before.active && !fields.active && active().none { it.id != id }, "LAST_ACTIVE") {
+        refuseIf(before.active && !active && active().none { it.id != id }, "LAST_ACTIVE") {
             "Keep at least one memo type active, or people cannot create memos."
         }
-        if (before.version != expectedVersion) throw ConcurrentModificationException("memo type $id", expectedVersion)
-        val published =
-            if (current != null && current.settings == settings) {
-                current.number
-            } else {
-                versions.retirePublished(id)
-                versions.insert(id, ReviewState.PUBLISHED, settings, actorOrNull())
-            }
-        if (!store.update(id, expectedVersion, fields.copy(code = settings.code), published)) {
-            throw ConcurrentModificationException("memo type $id", expectedVersion)
-        }
+        if (!store.setActive(id, expectedVersion, active)) throw ConcurrentModificationException("memo type $id", expectedVersion)
         val after = get(id)
         audit.record("memo.type.updated", OBJECT_TYPE, id.toString(), before.audited(), after.audited())
         return after

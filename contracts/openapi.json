@@ -1,6 +1,15 @@
 {
   "components" : {
     "schemas" : {
+      "ActiveRequest" : {
+        "properties" : {
+          "active" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "active" ],
+        "type" : "object"
+      },
       "AdminTaskPage" : {
         "properties" : {
           "items" : {
@@ -2101,6 +2110,13 @@
           "name" : {
             "type" : "string"
           },
+          "pending" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/PendingVersion"
+            }, {
+              "type" : "null"
+            } ]
+          },
           "publishedVersion" : {
             "format" : "int32",
             "type" : [ "integer", "null" ]
@@ -2172,40 +2188,6 @@
           }
         },
         "required" : [ "hasFields", "id", "name", "numberingMoment", "stepUpOnApprove" ],
-        "type" : "object"
-      },
-      "MemoTypeRequest" : {
-        "properties" : {
-          "active" : {
-            "type" : "boolean"
-          },
-          "allowedApprovers" : {
-            "oneOf" : [ {
-              "$ref" : "#/components/schemas/AllowedApprovers"
-            }, {
-              "type" : "null"
-            } ]
-          },
-          "defaultClassificationId" : {
-            "format" : "uuid",
-            "type" : [ "string", "null" ]
-          },
-          "definitionKey" : {
-            "type" : [ "string", "null" ]
-          },
-          "doaCheck" : {
-            "type" : [ "boolean", "null" ]
-          },
-          "name" : {
-            "type" : "string"
-          },
-          "routePolicy" : {
-            "type" : [ "string", "null" ]
-          },
-          "stepUpOnApprove" : {
-            "type" : "boolean"
-          }
-        },
         "type" : "object"
       },
       "MemoTypeSettingsRequest" : {
@@ -2727,6 +2709,18 @@
         "required" : [ "id", "name" ],
         "type" : "object"
       },
+      "NewMemoTypeRequest" : {
+        "properties" : {
+          "code" : {
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "code", "name" ],
+        "type" : "object"
+      },
       "NotificationPage" : {
         "properties" : {
           "items" : {
@@ -2907,9 +2901,6 @@
           "moment" : {
             "enum" : [ "ON_SUBMIT", "ON_APPROVAL" ],
             "type" : "string"
-          },
-          "needsUnit" : {
-            "type" : "boolean"
           },
           "parts" : {
             "items" : {
@@ -3298,6 +3289,27 @@
           }
         },
         "required" : [ "email" ],
+        "type" : "object"
+      },
+      "PendingVersion" : {
+        "properties" : {
+          "number" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "state" : {
+            "enum" : [ "DRAFT", "IN_REVIEW", "PUBLISHED", "RETIRED" ],
+            "type" : "string"
+          },
+          "submittedBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/Named"
+            }, {
+              "type" : "null"
+            } ]
+          }
+        },
+        "required" : [ "number", "state" ],
         "type" : "object"
       },
       "PeriodRequest" : {
@@ -5150,7 +5162,7 @@
           "content" : {
             "application/json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/MemoTypeRequest"
+                "$ref" : "#/components/schemas/NewMemoTypeRequest"
               }
             }
           },
@@ -5168,7 +5180,7 @@
             "description" : "OK"
           }
         },
-        "summary" : "Create a memo type",
+        "summary" : "Start a memo type as draft version 1",
         "tags" : [ "memo" ]
       }
     },
@@ -5223,9 +5235,9 @@
         "tags" : [ "memo" ]
       }
     },
-    "/api/v1/admin/memo-types/{id}" : {
+    "/api/v1/admin/memo-types/{id}/active" : {
       "put" : {
-        "operationId" : "updateMemoType",
+        "operationId" : "setMemoTypeActive",
         "parameters" : [ {
           "in" : "path",
           "name" : "id",
@@ -5246,7 +5258,7 @@
           "content" : {
             "application/json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/MemoTypeRequest"
+                "$ref" : "#/components/schemas/ActiveRequest"
               }
             }
           },
@@ -5264,7 +5276,7 @@
             "description" : "OK"
           }
         },
-        "summary" : "Change a memo type",
+        "summary" : "Switch a memo type on or off",
         "tags" : [ "memo" ]
       }
     },

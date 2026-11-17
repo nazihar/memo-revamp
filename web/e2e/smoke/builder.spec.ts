@@ -2,6 +2,7 @@ import type { Browser, Locator, Page } from '@playwright/test'
 import { confirmIfAsked, demoSecret } from '../auth'
 import { docx } from '../docx'
 import { expect, test } from '../fixtures'
+import { chooseMemoType } from '../memo-type'
 import { storageStateFor, type SignedInRole } from '../roles'
 
 /**
@@ -181,20 +182,31 @@ test.describe('as a tenant admin', () => {
 
     // A memo type runs on it.
     const typeName = `E2E built ${stamp}`
+    // Phase 3 E01: a type starts as a draft, and a second administrator publishes it (maker-checker, ADR-0043).
     await app.visit('/admin/memo-types')
-    await page.getByRole('button', { name: 'Add memo type' }).click()
+    await page.getByRole('button', { name: 'New memo type' }).click()
     const typeDialog = page.getByRole('dialog')
     await typeDialog.getByLabel('Name', { exact: true }).fill(typeName)
-    await typeDialog.getByLabel('Workflow', { exact: true }).selectOption({ label: name })
-    await typeDialog.getByLabel('Approvers', { exact: true }).selectOption({ label: 'The workflow names every step' })
-    await typeDialog.getByRole('button', { name: 'Save' }).click()
-    await expect(page.getByRole('cell', { name: typeName })).toBeVisible()
+    await typeDialog.getByLabel('Code', { exact: true }).fill(`B${stamp.slice(-8)}`)
+    await typeDialog.getByRole('button', { name: 'Create draft' }).click()
+    await expect(page.getByRole('heading', { level: 2, name: /Version 1 · Draft/ })).toBeVisible()
+    const typeUrl = page.url()
+    await page.getByLabel('Workflow', { exact: true }).selectOption({ label: name })
+    await page.getByLabel('Approvers', { exact: true }).selectOption({ label: 'The workflow names every step' })
+    await page.getByRole('button', { name: 'Save', exact: true }).click()
+    await expect(page.getByText('Saved.')).toBeVisible()
+    await page.getByRole('button', { name: 'Submit for review' }).click()
+    await expect(page.getByRole('heading', { level: 2, name: /Version 1 · In review/ })).toBeVisible()
+    await reviewer.goto(typeUrl)
+    await reviewer.getByRole('button', { name: 'Approve and publish' }).click()
+    await confirmIfAsked(reviewer, demoSecret('MEMO_DEMO_TOTP_SECRET'))
+    await expect(reviewer.getByRole('heading', { level: 2, name: /Version 1 · Published/ })).toBeVisible()
 
     // A memo of that type goes review → branch (rank 0) → director → Approved.
     const author = await as(browser, 'user')
     await author.goto('/memos/new')
     await author.getByLabel('Subject').fill(`E2E built workflow ${stamp}`)
-    await author.getByLabel('Memo type').selectOption({ label: typeName })
+    await chooseMemoType(author, typeName)
     await author.getByRole('button', { name: 'Create draft' }).click()
     await expect(author.getByRole('heading', { level: 1, name: `E2E built workflow ${stamp}` })).toBeVisible()
     const memoUrl = author.url()

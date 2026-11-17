@@ -24,6 +24,9 @@ import { ActionDialog, type MemoActionKind } from './ActionDialog'
 import { DoaPreviewDialog } from './DoaPreviewDialog'
 import { dueLabel, isOverdue } from './due'
 import { EditMemoDialog } from './EditMemoDialog'
+import { MemoDetails } from './MemoDetails'
+import { unnumberedNote } from './memo-details'
+import { MemoLinks } from './MemoLinks'
 import { MemoInterests } from './MemoInterests'
 import { MemoHistory } from './MemoHistory'
 import { referenceOf } from './memo-fields'
@@ -54,6 +57,7 @@ const DIALOG_ACTIONS: Partial<Record<MemoView['allowedActions'][number], MemoAct
   ASK: 'ask',
   REFER: 'refer',
   RECUSE: 'recuse',
+  CLOSE: 'close',
 }
 
 /** The main action of the bar; the others are outlined. */
@@ -157,7 +161,7 @@ export function MemoPage({ memoId }: { memoId: string }) {
     <section aria-labelledby="memo-title" className="pb-24 md:pb-0">
       <PageHeader
         title={<span id="memo-title">{view.subject}</span>}
-        description={`${referenceOf(intl, view.reference)} · ${view.type.name} · ${view.classification.name}`}
+        description={`${unnumberedNote(intl, view) ?? referenceOf(intl, view.reference)} · ${view.type.name} · ${view.classification.name}`}
         status={<Badge tone={statusTone[view.status]}>{intl.formatMessage(statusLabels[view.status])}</Badge>}
         actions={
           allowed.has('EDIT') ? (
@@ -174,6 +178,7 @@ export function MemoPage({ memoId }: { memoId: string }) {
       />
       <div className="grid gap-6 md:grid-cols-[minmax(0,2fr)_minmax(0,1fr)]">
         <div className="flex flex-col gap-6">
+          <MemoDetails memo={view} />
           <Section title={intl.formatMessage(mm.document)}>
             {document ? (
               <div className="flex flex-wrap items-center gap-3">
@@ -222,6 +227,14 @@ export function MemoPage({ memoId }: { memoId: string }) {
               </div>
             ) : null}
           </Section>
+          <MemoLinks
+            memo={view}
+            onChanged={(next) => void replace(next)}
+            onProblem={(p) => void onProblem(p)}
+            onDone={(message) => {
+              toast.show(message, 'success')
+            }}
+          />
           <Section title={intl.formatMessage(mm.history)}>
             <MemoHistory memoId={view.id} />
           </Section>

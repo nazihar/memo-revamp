@@ -148,4 +148,4 @@ Linked from       —
 ## Owner review
 | Date | Reviewer | Outcome |
 |---|---|---|
-| — | Product owner | Waiting |
+| 2026-11-14 | Product owner | **Accepted as drafted** ("ok, keep working"). The three questions were not answered separately; the defaults built stand: (1) the field editor with a live preview beside the list (the field editor opens in a dialog rather than a side sheet, because the Sheet component is the navigation drawer); (2) "number on final approval" stays as an option; (3) closing both by hand and automatically after the days a type sets. The owner can change any of them later. |

@@ -11,6 +11,7 @@ import com.memo.common.web.etagOf
 import com.memo.common.web.ifMatchVersion
 import com.memo.identity.UserSummaries
 import com.memo.org.OrgDirectory
+import com.memo.org.OrgUnitDirectory
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -75,7 +76,7 @@ data class MemoTypeVersionResponse(
     val retention: Retention?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val attachmentRules: AttachmentRules,
     val autoCloseDays: Int?,
-    /** The names of the allowed people and the titles of the allowed positions, by id. */
+    /** The names of the allowed people, the titles of the allowed positions and the names of the scope's units, by id. */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val allowedNames: Map<UUID, String>,
     /** Null: created by the system. */
     val createdBy: Named?,
@@ -100,6 +101,7 @@ class MemoTypeVersionsController(
     private val lifecycle: MemoTypeLifecycle,
     private val users: UserSummaries,
     private val directory: OrgDirectory,
+    private val unitDirectory: OrgUnitDirectory,
     private val stepUp: StepUpCheck,
     private val transactions: TenantTransactions,
 ) {
@@ -211,6 +213,14 @@ class MemoTypeVersionsController(
                 .positions(
                     versions.flatMap { it.settings.allowedApprovers.positions }.toSet(),
                 ).mapValues { it.value.title }
+        val units =
+            unitDirectory
+                .units(
+                    versions.flatMap { v ->
+                        v.settings.raiseScope.units
+                            .map { it.id }
+                    },
+                ).mapValues { it.value.name }
 
         fun named(id: UUID?) = id?.let { Named(it, people[it].orEmpty()) }
         return versions.map { v ->
@@ -234,7 +244,8 @@ class MemoTypeVersionsController(
                 attachmentRules = s.attachmentRules,
                 autoCloseDays = s.autoCloseDays,
                 allowedNames =
-                    people.filterKeys { it in s.allowedApprovers.people } + positions.filterKeys { it in s.allowedApprovers.positions },
+                    people.filterKeys { it in s.allowedApprovers.people } + positions.filterKeys { it in s.allowedApprovers.positions } +
+                        units.filterKeys { id -> s.raiseScope.units.any { it.id == id } },
                 createdBy = named(v.createdBy),
                 createdAt = v.createdAt,
                 submittedBy = named(v.submittedBy),

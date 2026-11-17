@@ -4,7 +4,7 @@ import { listClassificationLevelsOptions, listMemoTypesOptions } from '@/api/gen
 import { Field } from '@/components/ui/field'
 import { Input, Select } from '@/components/ui/form-controls'
 import { useMyAccess } from '@/features/access/access'
-import { SUBJECT_MAX, type MemoFieldValues } from './memo-fields'
+import { SUBJECT_MAX, type FormErrors, type MemoFieldValues } from './memo-fields'
 import { mm } from './memo-messages'
 
 /**
@@ -16,11 +16,14 @@ export function MemoFields({
   onChange,
   errors,
   classificationLocked,
+  showType = true,
 }: {
   values: MemoFieldValues
   onChange: (values: MemoFieldValues) => void
-  errors: Partial<Record<keyof MemoFieldValues, string>>
+  errors: FormErrors
   classificationLocked?: boolean
+  /** False when the page chooses the type itself (the create page). */
+  showType?: boolean
 }) {
   const intl = useIntl()
   const types = useQuery(listMemoTypesOptions())
@@ -42,24 +45,26 @@ export function MemoFields({
           />
         )}
       </Field>
-      <Field label={intl.formatMessage(mm.type)} required error={errors.typeId}>
-        {(p) => (
-          <Select
-            {...p}
-            name="typeId"
-            value={values.typeId}
-            onChange={(e) => {
-              onChange({ ...values, typeId: e.target.value })
-            }}
-          >
-            {(types.data ?? []).map((t) => (
-              <option key={t.id} value={t.id}>
-                {t.name}
-              </option>
-            ))}
-          </Select>
-        )}
-      </Field>
+      {showType ? (
+        <Field label={intl.formatMessage(mm.type)} required error={errors.typeId}>
+          {(p) => (
+            <Select
+              {...p}
+              name="typeId"
+              value={values.typeId}
+              onChange={(e) => {
+                onChange({ ...values, typeId: e.target.value })
+              }}
+            >
+              {(types.data ?? []).map((t) => (
+                <option key={t.id} value={t.id}>
+                  {t.name}
+                </option>
+              ))}
+            </Select>
+          )}
+        </Field>
+      ) : null}
       <Field
         label={intl.formatMessage(mm.classification)}
         hint={intl.formatMessage(mm.classificationHint)}

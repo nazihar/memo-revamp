@@ -88,6 +88,7 @@ export const mm = defineMessages({
   actionOpinion: { id: 'memo.action.opinion', defaultMessage: 'Give your opinion' },
   sharedBadge: { id: 'memo.inbox.shared', defaultMessage: 'Shared' },
   actionRecuse: { id: 'memo.action.recuse', defaultMessage: 'Declare an interest' },
+  actionClose: { id: 'memo.action.close', defaultMessage: 'Close' },
   actionClaim: { id: 'memo.action.claim', defaultMessage: 'Claim' },
   actionRelease: { id: 'memo.action.release', defaultMessage: 'Release' },
   claimed: { id: 'memo.claimed', defaultMessage: 'You claimed this task. The others cannot act until you release it.' },
@@ -271,7 +272,9 @@ export const dialogTitles = defineMessages<{
   answer: { reference: string }
   opinion: { reference: string }
   recuse: { reference: string }
+  close: { reference: string }
 }>({
+  close: { id: 'memo.dialog.close', defaultMessage: 'Close {reference}?' },
   recuse: { id: 'memo.dialog.recuse', defaultMessage: 'Stand aside from {reference}?' },
   recommend: { id: 'memo.dialog.recommend', defaultMessage: 'Recommend {reference}?' },
   recall: { id: 'memo.dialog.recall', defaultMessage: 'Recall {reference}?' },
@@ -310,7 +313,12 @@ export const dialogLeads = defineMessages<{
   answer: { number: number }
   opinion: { number: number }
   recuse: { number: number }
+  close: { number: number }
 }>({
+  close: {
+    id: 'memo.dialog.close.lead',
+    defaultMessage: 'Its work is done. It stays readable and keeps its number; nobody can act on it again.',
+  },
   recuse: {
     id: 'memo.dialog.recuse.lead',
     defaultMessage: 'Say what your interest is. The task leaves you and the step goes to someone else.',
@@ -376,4 +384,5 @@ export const actionButtons = {
   answer: mm.actionAnswer,
   opinion: mm.actionOpinion,
   recuse: mm.actionRecuse,
+  close: mm.actionClose,
 }

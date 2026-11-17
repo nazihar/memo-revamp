@@ -34,7 +34,7 @@ import { Route as ShellSignedInAdminBrandingRouteImport } from './routes/_shell/
 import { Route as ShellSignedInAdminClassificationsRouteImport } from './routes/_shell/_signedIn/admin.classifications'
 import { Route as ShellSignedInAdminEmailRouteImport } from './routes/_shell/_signedIn/admin.email'
 import { Route as ShellSignedInAdminLanguageRouteImport } from './routes/_shell/_signedIn/admin.language'
-import { Route as ShellSignedInAdminMemoTypesRouteImport } from './routes/_shell/_signedIn/admin.memo-types'
+import { Route as ShellSignedInAdminMemoNumberingRouteImport } from './routes/_shell/_signedIn/admin.memo-numbering'
 import { Route as ShellSignedInAdminRolesRouteImport } from './routes/_shell/_signedIn/admin.roles'
 import { Route as ShellSignedInAdminSecurityRouteImport } from './routes/_shell/_signedIn/admin.security'
 import { Route as ShellSignedInAdminUsersRouteImport } from './routes/_shell/_signedIn/admin.users'
@@ -44,6 +44,8 @@ import { Route as ShellSignedInMemosMemoIdRouteImport } from './routes/_shell/_s
 import { Route as ShellSignedInMemosNewRouteImport } from './routes/_shell/_signedIn/memos.new'
 import { Route as PlatformOperatorTenantsTenantIdRouteImport } from './routes/platform/_operator/tenants.$tenantId'
 import { Route as PlatformOperatorTenantsNewRouteImport } from './routes/platform/_operator/tenants.new'
+import { Route as ShellSignedInAdminMemoTypesIndexRouteImport } from './routes/_shell/_signedIn/admin.memo-types.index'
+import { Route as ShellSignedInAdminMemoTypesTypeIdRouteImport } from './routes/_shell/_signedIn/admin.memo-types.$typeId'
 import { Route as ShellSignedInAdminUsersUserIdRouteImport } from './routes/_shell/_signedIn/admin.users_.$userId'
 import { Route as ShellSignedInAdminWorkflowCalendarRouteImport } from './routes/_shell/_signedIn/admin.workflow.calendar'
 import { Route as ShellSignedInAdminWorkflowDoaRouteImport } from './routes/_shell/_signedIn/admin.workflow.doa'
@@ -180,10 +182,10 @@ const ShellSignedInAdminLanguageRoute =
     path: '/admin/language',
     getParentRoute: () => ShellSignedInRoute,
   } as any)
-const ShellSignedInAdminMemoTypesRoute =
-  ShellSignedInAdminMemoTypesRouteImport.update({
-    id: '/admin/memo-types',
-    path: '/admin/memo-types',
+const ShellSignedInAdminMemoNumberingRoute =
+  ShellSignedInAdminMemoNumberingRouteImport.update({
+    id: '/admin/memo-numbering',
+    path: '/admin/memo-numbering',
     getParentRoute: () => ShellSignedInRoute,
   } as any)
 const ShellSignedInAdminRolesRoute = ShellSignedInAdminRolesRouteImport.update({
@@ -235,6 +237,18 @@ const PlatformOperatorTenantsNewRoute =
     id: '/tenants/new',
     path: '/tenants/new',
     getParentRoute: () => PlatformOperatorRoute,
+  } as any)
+const ShellSignedInAdminMemoTypesIndexRoute =
+  ShellSignedInAdminMemoTypesIndexRouteImport.update({
+    id: '/admin/memo-types/',
+    path: '/admin/memo-types/',
+    getParentRoute: () => ShellSignedInRoute,
+  } as any)
+const ShellSignedInAdminMemoTypesTypeIdRoute =
+  ShellSignedInAdminMemoTypesTypeIdRouteImport.update({
+    id: '/admin/memo-types/$typeId',
+    path: '/admin/memo-types/$typeId',
+    getParentRoute: () => ShellSignedInRoute,
   } as any)
 const ShellSignedInAdminUsersUserIdRoute =
   ShellSignedInAdminUsersUserIdRouteImport.update({
@@ -318,7 +332,7 @@ export interface FileRoutesByFullPath {
   '/admin/classifications': typeof ShellSignedInAdminClassificationsRoute
   '/admin/email': typeof ShellSignedInAdminEmailRoute
   '/admin/language': typeof ShellSignedInAdminLanguageRoute
-  '/admin/memo-types': typeof ShellSignedInAdminMemoTypesRoute
+  '/admin/memo-numbering': typeof ShellSignedInAdminMemoNumberingRoute
   '/admin/roles': typeof ShellSignedInAdminRolesRoute
   '/admin/security': typeof ShellSignedInAdminSecurityRoute
   '/admin/users': typeof ShellSignedInAdminUsersRoute
@@ -329,6 +343,7 @@ export interface FileRoutesByFullPath {
   '/platform/tenants/$tenantId': typeof PlatformOperatorTenantsTenantIdRoute
   '/platform/tenants/new': typeof PlatformOperatorTenantsNewRoute
   '/admin/': typeof ShellSignedInAdminIndexRoute
+  '/admin/memo-types/$typeId': typeof ShellSignedInAdminMemoTypesTypeIdRoute
   '/admin/users/$userId': typeof ShellSignedInAdminUsersUserIdRoute
   '/admin/workflow/calendar': typeof ShellSignedInAdminWorkflowCalendarRoute
   '/admin/workflow/doa': typeof ShellSignedInAdminWorkflowDoaRoute
@@ -338,6 +353,7 @@ export interface FileRoutesByFullPath {
   '/admin/workflows/$key': typeof ShellSignedInAdminWorkflowsKeyRoute
   '/memos/$memoId/document': typeof ShellSignedInMemosMemoIdDocumentRoute
   '/org/positions/$positionId': typeof ShellSignedInOrgPositionsPositionIdRoute
+  '/admin/memo-types/': typeof ShellSignedInAdminMemoTypesIndexRoute
   '/admin/workflows/': typeof ShellSignedInAdminWorkflowsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -360,7 +376,7 @@ export interface FileRoutesByTo {
   '/admin/classifications': typeof ShellSignedInAdminClassificationsRoute
   '/admin/email': typeof ShellSignedInAdminEmailRoute
   '/admin/language': typeof ShellSignedInAdminLanguageRoute
-  '/admin/memo-types': typeof ShellSignedInAdminMemoTypesRoute
+  '/admin/memo-numbering': typeof ShellSignedInAdminMemoNumberingRoute
   '/admin/roles': typeof ShellSignedInAdminRolesRoute
   '/admin/security': typeof ShellSignedInAdminSecurityRoute
   '/admin/users': typeof ShellSignedInAdminUsersRoute
@@ -371,6 +387,7 @@ export interface FileRoutesByTo {
   '/platform/tenants/$tenantId': typeof PlatformOperatorTenantsTenantIdRoute
   '/platform/tenants/new': typeof PlatformOperatorTenantsNewRoute
   '/admin': typeof ShellSignedInAdminIndexRoute
+  '/admin/memo-types/$typeId': typeof ShellSignedInAdminMemoTypesTypeIdRoute
   '/admin/users/$userId': typeof ShellSignedInAdminUsersUserIdRoute
   '/admin/workflow/calendar': typeof ShellSignedInAdminWorkflowCalendarRoute
   '/admin/workflow/doa': typeof ShellSignedInAdminWorkflowDoaRoute
@@ -380,6 +397,7 @@ export interface FileRoutesByTo {
   '/admin/workflows/$key': typeof ShellSignedInAdminWorkflowsKeyRoute
   '/memos/$memoId/document': typeof ShellSignedInMemosMemoIdDocumentRoute
   '/org/positions/$positionId': typeof ShellSignedInOrgPositionsPositionIdRoute
+  '/admin/memo-types': typeof ShellSignedInAdminMemoTypesIndexRoute
   '/admin/workflows': typeof ShellSignedInAdminWorkflowsIndexRoute
 }
 export interface FileRoutesById {
@@ -408,7 +426,7 @@ export interface FileRoutesById {
   '/_shell/_signedIn/admin/classifications': typeof ShellSignedInAdminClassificationsRoute
   '/_shell/_signedIn/admin/email': typeof ShellSignedInAdminEmailRoute
   '/_shell/_signedIn/admin/language': typeof ShellSignedInAdminLanguageRoute
-  '/_shell/_signedIn/admin/memo-types': typeof ShellSignedInAdminMemoTypesRoute
+  '/_shell/_signedIn/admin/memo-numbering': typeof ShellSignedInAdminMemoNumberingRoute
   '/_shell/_signedIn/admin/roles': typeof ShellSignedInAdminRolesRoute
   '/_shell/_signedIn/admin/security': typeof ShellSignedInAdminSecurityRoute
   '/_shell/_signedIn/admin/users': typeof ShellSignedInAdminUsersRoute
@@ -419,6 +437,7 @@ export interface FileRoutesById {
   '/platform/_operator/tenants/$tenantId': typeof PlatformOperatorTenantsTenantIdRoute
   '/platform/_operator/tenants/new': typeof PlatformOperatorTenantsNewRoute
   '/_shell/_signedIn/admin/': typeof ShellSignedInAdminIndexRoute
+  '/_shell/_signedIn/admin/memo-types/$typeId': typeof ShellSignedInAdminMemoTypesTypeIdRoute
   '/_shell/_signedIn/admin/users_/$userId': typeof ShellSignedInAdminUsersUserIdRoute
   '/_shell/_signedIn/admin/workflow/calendar': typeof ShellSignedInAdminWorkflowCalendarRoute
   '/_shell/_signedIn/admin/workflow/doa': typeof ShellSignedInAdminWorkflowDoaRoute
@@ -428,6 +447,7 @@ export interface FileRoutesById {
   '/_shell/_signedIn/admin/workflows/$key': typeof ShellSignedInAdminWorkflowsKeyRoute
   '/_shell/_signedIn/memos/$memoId_/document': typeof ShellSignedInMemosMemoIdDocumentRoute
   '/_shell/_signedIn/org_/positions/$positionId': typeof ShellSignedInOrgPositionsPositionIdRoute
+  '/_shell/_signedIn/admin/memo-types/': typeof ShellSignedInAdminMemoTypesIndexRoute
   '/_shell/_signedIn/admin/workflows/': typeof ShellSignedInAdminWorkflowsIndexRoute
 }
 export interface FileRouteTypes {
@@ -453,7 +473,7 @@ export interface FileRouteTypes {
     | '/admin/classifications'
     | '/admin/email'
     | '/admin/language'
-    | '/admin/memo-types'
+    | '/admin/memo-numbering'
     | '/admin/roles'
     | '/admin/security'
     | '/admin/users'
@@ -464,6 +484,7 @@ export interface FileRouteTypes {
     | '/platform/tenants/$tenantId'
     | '/platform/tenants/new'
     | '/admin/'
+    | '/admin/memo-types/$typeId'
     | '/admin/users/$userId'
     | '/admin/workflow/calendar'
     | '/admin/workflow/doa'
@@ -473,6 +494,7 @@ export interface FileRouteTypes {
     | '/admin/workflows/$key'
     | '/memos/$memoId/document'
     | '/org/positions/$positionId'
+    | '/admin/memo-types/'
     | '/admin/workflows/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -495,7 +517,7 @@ export interface FileRouteTypes {
     | '/admin/classifications'
     | '/admin/email'
     | '/admin/language'
-    | '/admin/memo-types'
+    | '/admin/memo-numbering'
     | '/admin/roles'
     | '/admin/security'
     | '/admin/users'
@@ -506,6 +528,7 @@ export interface FileRouteTypes {
     | '/platform/tenants/$tenantId'
     | '/platform/tenants/new'
     | '/admin'
+    | '/admin/memo-types/$typeId'
     | '/admin/users/$userId'
     | '/admin/workflow/calendar'
     | '/admin/workflow/doa'
@@ -515,6 +538,7 @@ export interface FileRouteTypes {
     | '/admin/workflows/$key'
     | '/memos/$memoId/document'
     | '/org/positions/$positionId'
+    | '/admin/memo-types'
     | '/admin/workflows'
   id:
     | '__root__'
@@ -542,7 +566,7 @@ export interface FileRouteTypes {
     | '/_shell/_signedIn/admin/classifications'
     | '/_shell/_signedIn/admin/email'
     | '/_shell/_signedIn/admin/language'
-    | '/_shell/_signedIn/admin/memo-types'
+    | '/_shell/_signedIn/admin/memo-numbering'
     | '/_shell/_signedIn/admin/roles'
     | '/_shell/_signedIn/admin/security'
     | '/_shell/_signedIn/admin/users'
@@ -553,6 +577,7 @@ export interface FileRouteTypes {
     | '/platform/_operator/tenants/$tenantId'
     | '/platform/_operator/tenants/new'
     | '/_shell/_signedIn/admin/'
+    | '/_shell/_signedIn/admin/memo-types/$typeId'
     | '/_shell/_signedIn/admin/users_/$userId'
     | '/_shell/_signedIn/admin/workflow/calendar'
     | '/_shell/_signedIn/admin/workflow/doa'
@@ -562,6 +587,7 @@ export interface FileRouteTypes {
     | '/_shell/_signedIn/admin/workflows/$key'
     | '/_shell/_signedIn/memos/$memoId_/document'
     | '/_shell/_signedIn/org_/positions/$positionId'
+    | '/_shell/_signedIn/admin/memo-types/'
     | '/_shell/_signedIn/admin/workflows/'
   fileRoutesById: FileRoutesById
 }
@@ -748,11 +774,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShellSignedInAdminLanguageRouteImport
       parentRoute: typeof ShellSignedInRoute
     }
-    '/_shell/_signedIn/admin/memo-types': {
-      id: '/_shell/_signedIn/admin/memo-types'
-      path: '/admin/memo-types'
-      fullPath: '/admin/memo-types'
-      preLoaderRoute: typeof ShellSignedInAdminMemoTypesRouteImport
+    '/_shell/_signedIn/admin/memo-numbering': {
+      id: '/_shell/_signedIn/admin/memo-numbering'
+      path: '/admin/memo-numbering'
+      fullPath: '/admin/memo-numbering'
+      preLoaderRoute: typeof ShellSignedInAdminMemoNumberingRouteImport
       parentRoute: typeof ShellSignedInRoute
     }
     '/_shell/_signedIn/admin/roles': {
@@ -817,6 +843,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/platform/tenants/new'
       preLoaderRoute: typeof PlatformOperatorTenantsNewRouteImport
       parentRoute: typeof PlatformOperatorRoute
+    }
+    '/_shell/_signedIn/admin/memo-types/': {
+      id: '/_shell/_signedIn/admin/memo-types/'
+      path: '/admin/memo-types'
+      fullPath: '/admin/memo-types/'
+      preLoaderRoute: typeof ShellSignedInAdminMemoTypesIndexRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
+    '/_shell/_signedIn/admin/memo-types/$typeId': {
+      id: '/_shell/_signedIn/admin/memo-types/$typeId'
+      path: '/admin/memo-types/$typeId'
+      fullPath: '/admin/memo-types/$typeId'
+      preLoaderRoute: typeof ShellSignedInAdminMemoTypesTypeIdRouteImport
+      parentRoute: typeof ShellSignedInRoute
     }
     '/_shell/_signedIn/admin/users_/$userId': {
       id: '/_shell/_signedIn/admin/users_/$userId'
@@ -917,7 +957,7 @@ interface ShellSignedInRouteChildren {
   ShellSignedInAdminClassificationsRoute: typeof ShellSignedInAdminClassificationsRoute
   ShellSignedInAdminEmailRoute: typeof ShellSignedInAdminEmailRoute
   ShellSignedInAdminLanguageRoute: typeof ShellSignedInAdminLanguageRoute
-  ShellSignedInAdminMemoTypesRoute: typeof ShellSignedInAdminMemoTypesRoute
+  ShellSignedInAdminMemoNumberingRoute: typeof ShellSignedInAdminMemoNumberingRoute
   ShellSignedInAdminRolesRoute: typeof ShellSignedInAdminRolesRoute
   ShellSignedInAdminSecurityRoute: typeof ShellSignedInAdminSecurityRoute
   ShellSignedInAdminUsersRoute: typeof ShellSignedInAdminUsersRoute
@@ -926,6 +966,7 @@ interface ShellSignedInRouteChildren {
   ShellSignedInMemosMemoIdRoute: typeof ShellSignedInMemosMemoIdRoute
   ShellSignedInMemosNewRoute: typeof ShellSignedInMemosNewRoute
   ShellSignedInAdminIndexRoute: typeof ShellSignedInAdminIndexRoute
+  ShellSignedInAdminMemoTypesTypeIdRoute: typeof ShellSignedInAdminMemoTypesTypeIdRoute
   ShellSignedInAdminUsersUserIdRoute: typeof ShellSignedInAdminUsersUserIdRoute
   ShellSignedInAdminWorkflowCalendarRoute: typeof ShellSignedInAdminWorkflowCalendarRoute
   ShellSignedInAdminWorkflowDoaRoute: typeof ShellSignedInAdminWorkflowDoaRoute
@@ -935,6 +976,7 @@ interface ShellSignedInRouteChildren {
   ShellSignedInAdminWorkflowsKeyRoute: typeof ShellSignedInAdminWorkflowsKeyRoute
   ShellSignedInMemosMemoIdDocumentRoute: typeof ShellSignedInMemosMemoIdDocumentRoute
   ShellSignedInOrgPositionsPositionIdRoute: typeof ShellSignedInOrgPositionsPositionIdRoute
+  ShellSignedInAdminMemoTypesIndexRoute: typeof ShellSignedInAdminMemoTypesIndexRoute
   ShellSignedInAdminWorkflowsIndexRoute: typeof ShellSignedInAdminWorkflowsIndexRoute
 }
 
@@ -949,7 +991,7 @@ const ShellSignedInRouteChildren: ShellSignedInRouteChildren = {
     ShellSignedInAdminClassificationsRoute,
   ShellSignedInAdminEmailRoute: ShellSignedInAdminEmailRoute,
   ShellSignedInAdminLanguageRoute: ShellSignedInAdminLanguageRoute,
-  ShellSignedInAdminMemoTypesRoute: ShellSignedInAdminMemoTypesRoute,
+  ShellSignedInAdminMemoNumberingRoute: ShellSignedInAdminMemoNumberingRoute,
   ShellSignedInAdminRolesRoute: ShellSignedInAdminRolesRoute,
   ShellSignedInAdminSecurityRoute: ShellSignedInAdminSecurityRoute,
   ShellSignedInAdminUsersRoute: ShellSignedInAdminUsersRoute,
@@ -958,6 +1000,8 @@ const ShellSignedInRouteChildren: ShellSignedInRouteChildren = {
   ShellSignedInMemosMemoIdRoute: ShellSignedInMemosMemoIdRoute,
   ShellSignedInMemosNewRoute: ShellSignedInMemosNewRoute,
   ShellSignedInAdminIndexRoute: ShellSignedInAdminIndexRoute,
+  ShellSignedInAdminMemoTypesTypeIdRoute:
+    ShellSignedInAdminMemoTypesTypeIdRoute,
   ShellSignedInAdminUsersUserIdRoute: ShellSignedInAdminUsersUserIdRoute,
   ShellSignedInAdminWorkflowCalendarRoute:
     ShellSignedInAdminWorkflowCalendarRoute,
@@ -970,6 +1014,7 @@ const ShellSignedInRouteChildren: ShellSignedInRouteChildren = {
   ShellSignedInMemosMemoIdDocumentRoute: ShellSignedInMemosMemoIdDocumentRoute,
   ShellSignedInOrgPositionsPositionIdRoute:
     ShellSignedInOrgPositionsPositionIdRoute,
+  ShellSignedInAdminMemoTypesIndexRoute: ShellSignedInAdminMemoTypesIndexRoute,
   ShellSignedInAdminWorkflowsIndexRoute: ShellSignedInAdminWorkflowsIndexRoute,
 }
 

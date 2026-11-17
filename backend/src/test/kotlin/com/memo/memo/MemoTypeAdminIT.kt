@@ -91,25 +91,31 @@ class MemoTypeAdminIT : IntegrationTest() {
     }
 
     @Test
-    fun `types have unique names and real levels, edits are guarded and audited, and one type stays active`() {
+    fun `types start as drafts with unique names, switching off is guarded and audited, and one type stays active`() {
         val levels = asUser(admin) { clearances.levels() }
-        val created = asUser(admin) { types.create(fields("Payment memo", levels[2].id)) }
-        Audit.assertAudited(tenant.id, "memo.type.created", created.id.toString(), admin.id.value.toString())
-        assertThat(problem { types.create(fields("payment MEMO")) }).isEqualTo("name:duplicate")
+        val (draft, number) = asUser(admin) { types.createDraft("Payment memo", "PAY") }
+        assertThat(number).isEqualTo(1)
+        assertThat(draft.publishedVersion).isNull()
+        Audit.assertAudited(tenant.id, "memo.type.created", draft.id.toString(), admin.id.value.toString())
+        // Nobody can raise it before a version is published.
+        assertThat(asUser(person) { types.active() }.map { it.name }).doesNotContain("Payment memo")
+        assertThat(problem { types.createDraft("payment MEMO", "PM") }).isEqualTo("name:duplicate")
+        assertThat(problem { types.createDraft("Other", "PAY") }).isEqualTo("code:duplicate")
         assertThat(problem { types.create(fields("Other", java.util.UUID.randomUUID())) }).isEqualTo("defaultClassificationId:unknown")
 
-        val renamed = asUser(admin) { types.update(created.id, created.version, fields("Payment request", levels[1].id, stepUp = false)) }
-        assertThat(renamed.version).isEqualTo(created.version + 1)
-        assertThat(renamed.stepUpOnApprove).isFalse()
+        val created = asUser(admin) { types.create(fields("Payment request", levels[1].id)) }
+        val off = asUser(admin) { types.setActive(created.id, created.version, false) }
+        assertThat(off.active).isFalse()
+        assertThat(off.version).isEqualTo(created.version + 1)
         Audit.assertAudited(tenant.id, "memo.type.updated", created.id.toString(), admin.id.value.toString())
-        assertThatThrownBy { asUser(admin) { types.update(created.id, created.version, fields("Stale")) } }
+        assertThatThrownBy { asUser(admin) { types.setActive(created.id, created.version, true) } }
             .isInstanceOf(ConcurrentModificationException::class.java)
+        val on = asUser(admin) { types.setActive(created.id, off.version, true) }
 
         val general = asUser(admin) { types.all() }.first { it.key == "general" }
-        asUser(admin) { types.update(general.id, general.version, fields(general.name, active = false)) }
+        asUser(admin) { types.setActive(general.id, general.version, false) }
         assertThat(asUser(person) { types.active() }.map { it.name }).containsExactly("Payment request")
-        val last = asUser(admin) { types.get(created.id) }
-        assertThatThrownBy { asUser(admin) { types.update(last.id, last.version, fields(last.name, active = false)) } }
+        assertThatThrownBy { asUser(admin) { types.setActive(on.id, on.version, false) } }
             .isInstanceOfSatisfying(RefusedException::class.java) { assertThat(it.reason).isEqualTo("LAST_ACTIVE") }
     }
 

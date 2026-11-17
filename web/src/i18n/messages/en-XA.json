@@ -9050,6 +9050,20 @@
       "value": "]"
     }
   ],
+  "memo.action.close": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŀǿǿşḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "memo.action.delegate": [
     {
       "type": 0,
@@ -9408,6 +9422,38 @@
       "value": "]"
     }
   ],
+  "memo.create.details": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": " ḓḗḗŧȧȧīŀş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.create.details.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ƈȧȧƞ şȧȧṽḗḗ ŧħḗḗ ḓřȧȧƒŧ ẇīŧħ ɠȧȧƥş; ḗḗṽḗḗřẏŧħīƞɠ ḿȧȧřķḗḗḓ * īş ƞḗḗḗḗḓḗḗḓ ƀḗḗƒǿǿřḗḗ ẏǿǿŭŭ şŭŭƀḿīŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "memo.create.lead": [
     {
       "type": 0,
@@ -9444,6 +9490,48 @@
     {
       "type": 0,
       "value": "Ƞḗḗẇ ḿḗḗḿǿǿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.details": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗŧȧȧīŀş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.details.noLongerOnForm": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ŀǿǿƞɠḗḗř ǿǿƞ ŧħīş ƒǿǿřḿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.details.stale": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ḿḗḗḿǿǿ ŧẏƥḗḗ ƈħȧȧƞɠḗḗḓ şīƞƈḗḗ ŧħḗḗ ḓřȧȧƒŧ ẇȧȧş ẇřīŧŧḗḗƞ. Ƈħḗḗƈķ ŧħḗḗ ḓḗḗŧȧȧīŀş ƀḗḗƒǿǿřḗḗ ẏǿǿŭŭ şŭŭƀḿīŧ."
     },
     {
       "type": 0,
@@ -9556,6 +9644,42 @@
     {
       "type": 0,
       "value": "Ẏǿǿŭŭ ƈȧȧƞ ḓḗḗƈīḓḗḗ ǿǿƞƈḗḗ ẏǿǿŭŭř ɋŭŭḗḗşŧīǿǿƞ īş ȧȧƞşẇḗḗřḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.dialog.close": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŀǿǿşḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.dialog.close.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īŧş ẇǿǿřķ īş ḓǿǿƞḗḗ. Īŧ şŧȧȧẏş řḗḗȧȧḓȧȧƀŀḗḗ ȧȧƞḓ ķḗḗḗḗƥş īŧş ƞŭŭḿƀḗḗř; ƞǿǿƀǿǿḓẏ ƈȧȧƞ ȧȧƈŧ ǿǿƞ īŧ ȧȧɠȧȧīƞ."
     },
     {
       "type": 0,
@@ -10386,6 +10510,20 @@
       "value": "]"
     }
   ],
+  "memo.field.choose": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħǿǿǿǿşḗḗ…"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "memo.field.classification": [
     {
       "type": 0,
@@ -10422,6 +10560,34 @@
     {
       "type": 0,
       "value": "Ȧŧ ŀḗḗȧȧşŧ ŧħḗḗ ŧẏƥḗḗ’ş ḓḗḗƒȧȧŭŭŀŧ, ȧȧƞḓ ȧȧŧ ḿǿǿşŧ ẏǿǿŭŭř ǿǿẇƞ ƈŀḗḗȧȧřȧȧƞƈḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.field.currency": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŭŭřřḗḗƞƈẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.field.optional": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "(ǿǿƥŧīǿǿƞȧȧŀ)"
     },
     {
       "type": 0,
@@ -11282,6 +11448,248 @@
       "value": "]"
     }
   ],
+  "memo.links": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀīƞķḗḗḓ ḿḗḗḿǿǿş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.links.add": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀīƞķ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.links.added": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀīƞķḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.links.from": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀīƞķḗḗḓ ƒřǿǿḿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.links.from.followsUp": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒǿǿŀŀǿǿẇş ŭŭƥ ŧħīş ḿḗḗḿǿǿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.links.from.refersTo": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƒḗḗřş ŧǿǿ ŧħīş ḿḗḗḿǿǿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.links.from.supersedes": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŭŭƥḗḗřşḗḗḓḗḗş ŧħīş ḿḗḗḿǿǿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.links.kind": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ħǿǿẇ īŧ řḗḗŀȧȧŧḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.links.kind.followsUp": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒǿǿŀŀǿǿẇş ŭŭƥ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.links.kind.refersTo": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƒḗḗřş ŧǿǿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.links.kind.supersedes": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŭŭƥḗḗřşḗḗḓḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.links.none": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿƞḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.links.number": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿǿǿ ƞŭŭḿƀḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.links.number.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƞŭŭḿƀḗḗř ǿǿƒ ȧȧ ḿḗḗḿǿǿ ẏǿǿŭŭ ƈȧȧƞ ǿǿƥḗḗƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.links.number.required": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗƞŧḗḗř ȧȧ ḿḗḗḿǿǿ ƞŭŭḿƀḗḗř."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.links.remove": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗḿǿǿṽḗḗ ŧħḗḗ ŀīƞķ ŧǿǿ "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.links.removed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀīƞķ řḗḗḿǿǿṽḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "memo.loadMore": [
     {
       "type": 0,
@@ -11318,6 +11726,34 @@
     {
       "type": 0,
       "value": "Ŧħīş ḿḗḗḿǿǿ ḓǿǿḗḗş ƞǿǿŧ ḗḗẋīşŧ, ǿǿř ẏǿǿŭŭ ƈȧȧƞƞǿǿŧ şḗḗḗḗ īŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.numberedWhen.approval": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭƞƞŭŭḿƀḗḗřḗḗḓ — ƞŭŭḿƀḗḗřḗḗḓ ẇħḗḗƞ ƒīƞȧȧŀŀẏ ȧȧƥƥřǿǿṽḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.numberedWhen.submit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭƞƞŭŭḿƀḗḗřḗḗḓ — ƞŭŭḿƀḗḗřḗḗḓ ẇħḗḗƞ şŭŭƀḿīŧŧḗḗḓ"
     },
     {
       "type": 0,
@@ -12456,6 +12892,62 @@
       "value": "]"
     }
   ],
+  "memo.type.hasFields": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧşķş ƒǿǿř ḓḗḗŧȧȧīŀş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.type.numberedOnApproval": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞŭŭḿƀḗḗřḗḗḓ ẇħḗḗƞ ƒīƞȧȧŀŀẏ ȧȧƥƥřǿǿṽḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.type.numberedOnSubmit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞŭŭḿƀḗḗřḗḗḓ ẇħḗḗƞ şŭŭƀḿīŧŧḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.type.question": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇħȧȧŧ ķīƞḓ ǿǿƒ ḿḗḗḿǿǿ?"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "memo.unnumbered": [
     {
       "type": 0,
@@ -12488,6 +12980,468 @@
       "value": "]"
     }
   ],
+  "memoNumbering.caption": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿŭŭƞŧḗḗřş ǿǿƒ ŧħḗḗ şḗḗřīḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoNumbering.complete": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿḿƥŀḗḗŧḗḗ: ḗḗṽḗḗřẏ ƞŭŭḿƀḗḗř ŭŭƥ ŧǿǿ ŧħḗḗ ŀȧȧşŧ ħȧȧş īŧş ḿḗḗḿǿǿ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoNumbering.hidden": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧ ṽīşīƀŀḗḗ ŧǿǿ ẏǿǿŭŭ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoNumbering.last": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀȧȧşŧ ƞŭŭḿƀḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoNumbering.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗṽḗḗřẏ ƞŭŭḿƀḗḗř ɠīṽḗḗƞ, īƞ ǿǿřḓḗḗř, ƀẏ şḗḗřīḗḗş ȧȧƞḓ ƥḗḗřīǿǿḓ. Ƞŭŭḿƀḗḗřş ȧȧřḗḗ ƞḗḗṽḗḗř řḗḗŭŭşḗḗḓ: ŧħǿǿşḗḗ ǿǿƒ ẇīŧħḓřȧȧẇƞ ǿǿř ƈȧȧƞƈḗḗŀŀḗḗḓ ḿḗḗḿǿǿş ȧȧřḗḗ ṽǿǿīḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoNumbering.memo": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿǿǿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoNumbering.missing": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƞŭŭḿƀḗḗř ħȧȧş"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƞŭŭḿƀḗḗřş ħȧȧṽḗḗ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " ƞǿǿ ḿḗḗḿǿǿ: "
+    },
+    {
+      "type": 1,
+      "value": "first"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoNumbering.more": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şħǿǿẇ ḿǿǿřḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoNumbering.none": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ƞŭŭḿƀḗḗřş ɠīṽḗḗƞ ẏḗḗŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoNumbering.number": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞŭŭḿƀḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoNumbering.open": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗɠīşŧḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoNumbering.period": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥḗḗřīǿǿḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoNumbering.registerCaption": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞŭŭḿƀḗḗřş īƞ ǿǿřḓḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoNumbering.registerOf": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗɠīşŧḗḗř ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "series"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "period"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoNumbering.registerOfUnit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗɠīşŧḗḗř ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "series"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "period"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "unit"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoNumbering.save": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḗḗŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoNumbering.series": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḗḗřīḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoNumbering.start": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḗḗŧ ȧȧ şŧȧȧřŧīƞɠ ƞŭŭḿƀḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoNumbering.startLead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧǿǿ ƈǿǿƞŧīƞŭŭḗḗ ȧȧƞ ḗḗẋīşŧīƞɠ ƥȧȧƥḗḗř ǿǿř ŀḗḗɠȧȧƈẏ şḗḗřīḗḗş: ŧħḗḗ ƒīřşŧ ƞŭŭḿƀḗḗř ŧħīş ƈǿǿŭŭƞŧḗḗř ɠīṽḗḗş. Ƥǿǿşşīƀŀḗḗ ǿǿƞŀẏ ƀḗḗƒǿǿřḗḗ īŧ ɠīṽḗḗş ȧȧƞẏ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoNumbering.startNext": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒīřşŧ ƞŭŭḿƀḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoNumbering.startPeriod": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥḗḗřīǿǿḓ (ƒǿǿř ḗḗẋȧȧḿƥŀḗḗ 2026 ǿǿř ƑẎ2026-27)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoNumbering.startScope": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭƞīŧ īḓ (ǿǿƞŀẏ ƒǿǿř ȧȧ şḗḗřīḗḗş ƈǿǿŭŭƞŧḗḗḓ ƥḗḗř ŭŭƞīŧ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoNumbering.started": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŧȧȧřŧḗḗḓ ƀẏ ȧȧƞ ȧȧḓḿīƞīşŧřȧȧŧǿǿř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoNumbering.status": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŧȧȧŧŭŭş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoNumbering.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿǿǿ ƞŭŭḿƀḗḗřīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoNumbering.unit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭƞīŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoNumbering.usedByTypes": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭşḗḗḓ ƀẏ: "
+    },
+    {
+      "type": 1,
+      "value": "types"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoNumbering.void": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ṽǿǿīḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "memoTypes.active": [
     {
       "type": 0,
@@ -12509,7 +13463,7 @@
     },
     {
       "type": 0,
-      "value": "Ȧḓḓ ḿḗḗḿǿǿ ŧẏƥḗḗ"
+      "value": "Ƞḗḗẇ ḿḗḗḿǿǿ ŧẏƥḗḗ"
     },
     {
       "type": 0,
@@ -12632,6 +13586,118 @@
       "value": "]"
     }
   ],
+  "memoTypes.approve": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƥƥřǿǿṽḗḗ ȧȧƞḓ ƥŭŭƀŀīşħ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.attachments": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŧŧȧȧƈħḿḗḗƞŧş ȧȧřḗḗ řḗḗɋŭŭīřḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.attachments.min": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŧ ŀḗḗȧȧşŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.attachments.note": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇħȧȧŧ ŧǿǿ ȧȧŧŧȧȧƈħ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.autoClose": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŀǿǿşḗḗ ȧȧƥƥřǿǿṽḗḗḓ ḿḗḗḿǿǿş ȧȧŭŭŧǿǿḿȧȧŧīƈȧȧŀŀẏ ȧȧƒŧḗḗř (ḓȧȧẏş)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.autoClose.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀḗḗȧȧṽḗḗ ḗḗḿƥŧẏ ŧǿǿ ƈŀǿǿşḗḗ ŧħḗḗḿ ǿǿƞŀẏ ƀẏ ħȧȧƞḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.back": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŀŀ ḿḗḗḿǿǿ ŧẏƥḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.cancel": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈȧȧƞƈḗḗŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "memoTypes.caption": [
     {
       "type": 0,
@@ -12640,6 +13706,154 @@
     {
       "type": 0,
       "value": "Ḿḗḗḿǿǿ ŧẏƥḗḗş ǿǿƒ ŧħḗḗ ǿǿřɠȧȧƞīşȧȧŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.changes.added": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧḓḓḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.changes.changed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħȧȧƞɠḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.changes.field": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒīḗḗŀḓ “"
+    },
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": "”"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.changes.first": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƒīřşŧ ṽḗḗřşīǿǿƞ ǿǿƒ ŧħīş ŧẏƥḗḗ: ḗḗṽḗḗřẏŧħīƞɠ īş ƞḗḗẇ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.changes.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇħȧȧŧ ŧħīş ṽḗḗřşīǿǿƞ ƈħȧȧƞɠḗḗş ƈǿǿḿƥȧȧřḗḗḓ ẇīŧħ ŧħḗḗ ƥŭŭƀŀīşħḗḗḓ ǿǿƞḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.changes.none": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ƈħȧȧƞɠḗḗş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.changes.removed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗḿǿǿṽḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.classification": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗƒȧȧŭŭŀŧ ƈŀȧȧşşīƒīƈȧȧŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.code": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿḓḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.code.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭƥ ŧǿǿ 10 ƈȧȧƥīŧȧȧŀ ŀḗḗŧŧḗḗřş, ḓīɠīŧş ǿǿř ħẏƥħḗḗƞş; ŭŭşḗḗḓ īƞ ḿḗḗḿǿǿ ƞŭŭḿƀḗḗřş."
     },
     {
       "type": 0,
@@ -12660,14 +13874,28 @@
       "value": "]"
     }
   ],
-  "memoTypes.col.default": [
+  "memoTypes.col.changes": [
     {
       "type": 0,
       "value": "["
     },
     {
       "type": 0,
-      "value": "Ḓḗḗƒȧȧŭŭŀŧ ƈŀȧȧşşīƒīƈȧȧŧīǿǿƞ"
+      "value": "Ƈħȧȧƞɠḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.col.code": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿḓḗḗ"
     },
     {
       "type": 0,
@@ -12688,28 +13916,56 @@
       "value": "]"
     }
   ],
-  "memoTypes.col.stepUp": [
+  "memoTypes.col.published": [
     {
       "type": 0,
       "value": "["
     },
     {
       "type": 0,
-      "value": "Ƈǿǿƞƒīřḿ ƀḗḗƒǿǿřḗḗ ȧȧƥƥřǿǿṽīƞɠ"
+      "value": "Ƥŭŭƀŀīşħḗḗḓ"
     },
     {
       "type": 0,
       "value": "]"
     }
   ],
-  "memoTypes.col.workflow": [
+  "memoTypes.col.status": [
     {
       "type": 0,
       "value": "["
     },
     {
       "type": 0,
-      "value": "Ẇǿǿřķƒŀǿǿẇ"
+      "value": "Şŧȧȧŧŭŭş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.conflict": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şǿǿḿḗḗǿǿƞḗḗ ḗḗŀşḗḗ ƈħȧȧƞɠḗḗḓ ŧħīş ṽḗḗřşīǿǿƞ. Īŧ ħȧȧş ƀḗḗḗḗƞ řḗḗŀǿǿȧȧḓḗḗḓ ẇīŧħ ŧħḗḗīř ƈħȧȧƞɠḗḗş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.create": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈřḗḗȧȧŧḗḗ ḓřȧȧƒŧ"
     },
     {
       "type": 0,
@@ -12730,7 +13986,21 @@
       "value": "]"
     }
   ],
-  "memoTypes.edit": [
+  "memoTypes.done": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şȧȧṽḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.editNamed": [
     {
       "type": 0,
       "value": "["
@@ -12742,6 +14012,328 @@
     {
       "type": 1,
       "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.failed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħȧȧŧ ḓīḓ ƞǿǿŧ ẇǿǿřķ. Ŧřẏ ȧȧɠȧȧīƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.field.attribute": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭşḗḗ īƞ ẇǿǿřķƒŀǿǿẇ řŭŭŀḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.field.choices": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƥŧīǿǿƞş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.field.choices.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƞḗḗ ƥḗḗř ŀīƞḗḗ, ȧȧş ķḗḗẏ = ŀȧȧƀḗḗŀ (ƒǿǿř ḗḗẋȧȧḿƥŀḗḗ şḿḗḗ = Şḿȧȧŀŀ ƀŭŭşīƞḗḗşş)."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.field.currencies": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŭŭřřḗḗƞƈīḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.field.currencies.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ĪŞǾ ƈǿǿḓḗḗş şḗḗƥȧȧřȧȧŧḗḗḓ ƀẏ ƈǿǿḿḿȧȧş; ŧħḗḗ ƒīřşŧ īş ŧħḗḗ ḓḗḗƒȧȧŭŭŀŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.field.decimals": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗƈīḿȧȧŀş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.field.help": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ħḗḗŀƥ ŧḗḗẋŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.field.inbox": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şħǿǿẇ īƞ īƞƀǿǿẋ ŀīşŧş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.field.key": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ķḗḗẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.field.key.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ŀḗḗŧŧḗḗř, ŧħḗḗƞ ŀḗḗŧŧḗḗřş ǿǿř ḓīɠīŧş (ƒǿǿř ḗḗẋȧȧḿƥŀḗḗ ȧȧḿǿǿŭŭƞŧ). Řŭŭŀḗḗş ŭŭşḗḗ īŧ; ḓǿǿ ƞǿǿŧ ƈħȧȧƞɠḗḗ īŧ ǿǿƞƈḗḗ ƥŭŭƀŀīşħḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.field.label": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀȧȧƀḗḗŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.field.max": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀȧȧřɠḗḗşŧ ṽȧȧŀŭŭḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.field.maxLength": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿǿǿşŧ ƈħȧȧřȧȧƈŧḗḗřş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.field.min": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḿȧȧŀŀḗḗşŧ ṽȧȧŀŭŭḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.field.required": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗɋŭŭīřḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.field.save": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ķḗḗḗḗƥ ƒīḗḗŀḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.field.type": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧẏƥḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.fields.add": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧḓḓ ƒīḗḗŀḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.fields.edit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗḓīŧ ƒīḗḗŀḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.fields.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇħȧȧŧ ŧħḗḗ ȧȧŭŭŧħǿǿř ƒīŀŀş īƞ, īƞ ŧħīş ǿǿřḓḗḗř. Ŧħḗḗ ƥřḗḗṽīḗḗẇ şħǿǿẇş ŧħḗḗ ƒǿǿřḿ ȧȧş ŧħḗḗẏ ẇīŀŀ şḗḗḗḗ īŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.fields.none": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ƒīḗḗŀḓş ẏḗḗŧ: ḿḗḗḿǿǿş ǿǿƒ ŧħīş ŧẏƥḗḗ ħȧȧṽḗḗ ȧȧ şŭŭƀĵḗḗƈŧ ǿǿƞŀẏ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.fields.preview": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥřḗḗṽīḗḗẇ"
     },
     {
       "type": 0,
@@ -12762,14 +14354,14 @@
       "value": "]"
     }
   ],
-  "memoTypes.lastActive": [
+  "memoTypes.invalid": [
     {
       "type": 0,
       "value": "["
     },
     {
       "type": 0,
-      "value": "Ķḗḗḗḗƥ ȧȧŧ ŀḗḗȧȧşŧ ǿǿƞḗḗ ḿḗḗḿǿǿ ŧẏƥḗḗ īƞ ŭŭşḗḗ."
+      "value": "Ƒīẋ ŧħḗḗşḗḗ ƀḗḗƒǿǿřḗḗ şȧȧṽīƞɠ:"
     },
     {
       "type": 0,
@@ -12783,7 +14375,7 @@
     },
     {
       "type": 0,
-      "value": "Ẇħȧȧŧ ƥḗḗǿǿƥŀḗḗ ƈħǿǿǿǿşḗḗ ẇħḗḗƞ ŧħḗḗẏ ẇřīŧḗḗ ȧȧ ḿḗḗḿǿǿ. Ȧ ŧẏƥḗḗ īş ƞḗḗṽḗḗř ḓḗḗŀḗḗŧḗḗḓ, ǿǿƞŀẏ şẇīŧƈħḗḗḓ ǿǿƒƒ."
+      "value": "Ẇħȧȧŧ ƥḗḗǿǿƥŀḗḗ ƈħǿǿǿǿşḗḗ ẇħḗḗƞ ŧħḗḗẏ ẇřīŧḗḗ ȧȧ ḿḗḗḿǿǿ: īŧş ƒǿǿřḿ, ƞŭŭḿƀḗḗřīƞɠ ȧȧƞḓ ȧȧƥƥřǿǿṽȧȧŀ. Ḗṽḗḗřẏ ƈħȧȧƞɠḗḗ īş řḗḗṽīḗḗẇḗḗḓ ƀẏ ȧȧ şḗḗƈǿǿƞḓ ȧȧḓḿīƞīşŧřȧȧŧǿǿř ƀḗḗƒǿǿřḗḗ īŧ ȧȧƥƥŀīḗḗş."
     },
     {
       "type": 0,
@@ -12804,14 +14396,558 @@
       "value": "]"
     }
   ],
-  "memoTypes.no": [
+  "memoTypes.moveDown": [
     {
       "type": 0,
       "value": "["
     },
     {
       "type": 0,
-      "value": "Ƞǿǿ"
+      "value": "Ḿǿǿṽḗḗ ḓǿǿẇƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.moveDownNamed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿǿǿṽḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ḓǿǿẇƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.moveUp": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿǿǿṽḗḗ ŭŭƥ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.moveUpNamed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿǿǿṽḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ŭŭƥ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.name": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞȧȧḿḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.newDraft": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞḗḗẇ ḓřȧȧƒŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.noChanges": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿƞḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.notPublished": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧ ẏḗḗŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.numbering.addText": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧḗḗẋŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.numbering.count.series": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƞḗḗ şḗḗɋŭŭḗḗƞƈḗḗ ƒǿǿř ŧħḗḗ şḗḗřīḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.numbering.count.unit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƞḗḗ şḗḗɋŭŭḗḗƞƈḗḗ ƥḗḗř ŭŭƞīŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.numbering.countPer": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿŭŭƞŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.numbering.digits": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓīɠīŧş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.numbering.fyStart": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒīƞȧȧƞƈīȧȧŀ ẏḗḗȧȧř şŧȧȧřŧş īƞ ḿǿǿƞŧħ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.numbering.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞŭŭḿƀḗḗřş ƞḗḗṽḗḗř řḗḗƥḗḗȧȧŧ ȧȧƞḓ ŀḗḗȧȧṽḗḗ ƞǿǿ ɠȧȧƥş. Ŧẏƥḗḗş ẇīŧħ ŧħḗḗ şȧȧḿḗḗ şḗḗřīḗḗş şħȧȧřḗḗ ǿǿƞḗḗ řḗḗɠīşŧḗḗř."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.numbering.moment": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɠīṽḗḗ ŧħḗḗ ƞŭŭḿƀḗḗř ẇħḗḗƞ ŧħḗḗ ḿḗḗḿǿǿ īş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.numbering.onApproval": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒīƞȧȧŀŀẏ ȧȧƥƥřǿǿṽḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.numbering.onSubmit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŭŭƀḿīŧŧḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.numbering.parts": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞŭŭḿƀḗḗř ƥȧȧřŧş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.numbering.reset": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŧȧȧřŧ ȧȧɠȧȧīƞ ȧȧŧ 1"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.numbering.reset.financial": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗṽḗḗřẏ ƒīƞȧȧƞƈīȧȧŀ ẏḗḗȧȧř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.numbering.reset.never": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞḗḗṽḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.numbering.reset.yearly": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗṽḗḗřẏ ẏḗḗȧȧř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.numbering.sample": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şȧȧḿƥŀḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.numbering.series": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḗḗřīḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.numbering.series.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀǿǿẇḗḗř-ƈȧȧşḗḗ ŀḗḗŧŧḗḗřş, ḓīɠīŧş ȧȧƞḓ ħẏƥħḗḗƞş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.open": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƥḗḗƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.part.financialYear": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒīƞȧȧƞƈīȧȧŀ ẏḗḗȧȧř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.part.sequence": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḗḗɋŭŭḗḗƞƈḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.part.style.long": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "2026-27"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.part.style.short": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ƑẎ27"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.part.text": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧḗḗẋŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.part.typeCode": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧẏƥḗḗ ƈǿǿḓḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.part.unitCode": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭƞīŧ ƈǿǿḓḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.part.year": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏḗḗȧȧř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.pending": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ṽḗḗřşīǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "state"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.pendingBy": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ṽḗḗřşīǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " īƞ řḗḗṽīḗḗẇ, şŭŭƀḿīŧŧḗḗḓ ƀẏ "
+    },
+    {
+      "type": 1,
+      "value": "name"
     },
     {
       "type": 0,
@@ -12874,6 +15010,364 @@
       "value": "]"
     }
   ],
+  "memoTypes.readOnly": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƞŀẏ ȧȧ ḓřȧȧƒŧ ƈȧȧƞ ƀḗḗ ƈħȧȧƞɠḗḗḓ. Şŧȧȧřŧ ȧȧ ƞḗḗẇ ḓřȧȧƒŧ ŧǿǿ ƈħȧȧƞɠḗḗ ŧħīş ŧẏƥḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.reason.alreadyStarted": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ƈǿǿŭŭƞŧḗḗř ħȧȧş ɠīṽḗḗƞ ƞŭŭḿƀḗḗřş ȧȧŀřḗḗȧȧḓẏ; īŧş ƒīřşŧ ƞŭŭḿƀḗḗř ƈȧȧƞƞǿǿŧ ƀḗḗ şḗḗŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.reason.draftExists": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ŧẏƥḗḗ ȧȧŀřḗḗȧȧḓẏ ħȧȧş ȧȧ ḓřȧȧƒŧ ǿǿř ȧȧ ṽḗḗřşīǿǿƞ īƞ řḗḗṽīḗḗẇ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.reason.lastActive": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ķḗḗḗḗƥ ȧȧŧ ŀḗḗȧȧşŧ ǿǿƞḗḗ ḿḗḗḿǿǿ ŧẏƥḗḗ īƞ ŭŭşḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.reason.samePerson": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şǿǿḿḗḗǿǿƞḗḗ ǿǿŧħḗḗř ŧħȧȧƞ ŧħḗḗ şŭŭƀḿīŧŧḗḗř ħȧȧş ŧǿǿ řḗḗṽīḗḗẇ īŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.reason.wrongState": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ṽḗḗřşīǿǿƞ ħȧȧş ḿǿǿṽḗḗḓ ǿǿƞ. Řḗḗŀǿǿȧȧḓ ȧȧƞḓ ŧřẏ ȧȧɠȧȧīƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.remark": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗḿȧȧřķ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.remark.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗɋŭŭīřḗḗḓ ŧǿǿ şḗḗƞḓ īŧ ƀȧȧƈķ; ǿǿƥŧīǿǿƞȧȧŀ ẇħḗḗƞ ȧȧƥƥřǿǿṽīƞɠ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.remove": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗḿǿǿṽḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.removeNamed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗḿǿǿṽḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.required": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗɋŭŭīřḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.retention": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ķḗḗḗḗƥ ḿḗḗḿǿǿş ƒǿǿř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.retention.approval": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƥƥřǿǿṽȧȧŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.retention.closure": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŀǿǿşŭŭřḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.retention.from": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿŭŭƞŧḗḗḓ ƒřǿǿḿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.retention.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƈǿǿřḓḗḗḓ ƞǿǿẇ; řḗḗƈǿǿřḓş ḿȧȧƞȧȧɠḗḗḿḗḗƞŧ ȧȧƈŧş ǿǿƞ īŧ ŀȧȧŧḗḗř."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.retention.none": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ƥǿǿŀīƈẏ ẏḗḗŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.reviewRemark": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗṽīḗḗẇḗḗř’ş řḗḗḿȧȧřķ: "
+    },
+    {
+      "type": 1,
+      "value": "remark"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.save": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şȧȧṽḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.scope": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇħǿǿ ḿȧȧẏ řȧȧīşḗḗ īŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.scope.everyone": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗṽḗḗřẏǿǿƞḗḗ ẇħǿǿ ƈȧȧƞ ƈřḗḗȧȧŧḗḗ ḿḗḗḿǿǿş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.scope.some": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƞŀẏ ƥḗḗǿǿƥŀḗḗ īƞ ŧħḗḗşḗḗ ŭŭƞīŧş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.scope.subtree": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ẇīŧħ ŧħḗḗ ŭŭƞīŧş ƀḗḗŀǿǿẇ īŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.scope.unit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧḓḓ ȧȧ ŭŭƞīŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.sendBack": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḗḗƞḓ ƀȧȧƈķ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "memoTypes.stepUp": [
     {
       "type": 0,
@@ -12882,6 +15376,136 @@
     {
       "type": 0,
       "value": "Ȧƥƥřǿǿṽḗḗřş ƈǿǿƞƒīřḿ īŧ īş ŧħḗḗḿ ƀḗḗƒǿǿřḗḗ ȧȧƥƥřǿǿṽīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.submit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŭŭƀḿīŧ ƒǿǿř řḗḗṽīḗḗẇ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.submittedBy": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŭŭƀḿīŧŧḗḗḓ ƀẏ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.switchOff": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şẇīŧƈħ ǿǿƒƒ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.switchOn": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şẇīŧƈħ ǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.tab.changes": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħȧȧƞɠḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.tab.form": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒǿǿřḿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.tab.numbering": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞŭŭḿƀḗḗřīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.tab.settings": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḗḗŧŧīƞɠş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.tabs": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥȧȧřŧş ǿǿƒ ŧħḗḗ ḿḗḗḿǿǿ ŧẏƥḗḗ"
     },
     {
       "type": 0,
@@ -12902,6 +15526,200 @@
       "value": "]"
     }
   ],
+  "memoTypes.type.amount": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧḿǿǿŭŭƞŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.type.choice": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħǿǿīƈḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.type.date": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓȧȧŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.type.longText": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀǿǿƞɠ ŧḗḗẋŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.type.multiChoice": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿŭŭŀŧīƥŀḗḗ ƈħǿǿīƈḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.type.number": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞŭŭḿƀḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.type.person": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥḗḗřşǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.type.text": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧḗḗẋŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.type.unit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭƞīŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.unsaved": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭƞşȧȧṽḗḗḓ ƈħȧȧƞɠḗḗş. Şȧȧṽḗḗ ƀḗḗƒǿǿřḗḗ şŭŭƀḿīŧŧīƞɠ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.version": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ṽḗḗřşīǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "state"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.version.label": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ṽḗḗřşīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memoTypes.workflow": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇǿǿřķƒŀǿǿẇ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "memoTypes.workflow.hint": [
     {
       "type": 0,
@@ -12909,21 +15727,21 @@
     },
     {
       "type": 0,
-      "value": "Ƞḗḗẇ ḿḗḗḿǿǿş ǿǿƒ ŧħīş ŧẏƥḗḗ ŭŭşḗḗ īŧş ƥŭŭƀŀīşħḗḗḓ ṽḗḗřşīǿǿƞ; ḿḗḗḿǿǿş īƞ řḗḗṽīḗḗẇ ķḗḗḗḗƥ ŧħḗḗīřş."
+      "value": "Ḿḗḗḿǿǿş şŭŭƀḿīŧŧḗḗḓ ƒřǿǿḿ ƞǿǿẇ ǿǿƞ ŭŭşḗḗ ŧħīş ṽḗḗřşīǿǿƞ; ḿḗḗḿǿǿş ȧȧŀřḗḗȧȧḓẏ şŭŭƀḿīŧŧḗḗḓ ķḗḗḗḗƥ ŧħḗḗīřş."
     },
     {
       "type": 0,
       "value": "]"
     }
   ],
-  "memoTypes.yes": [
+  "memoTypes.years": [
     {
       "type": 0,
       "value": "["
     },
     {
       "type": 0,
-      "value": "Ẏḗḗş"
+      "value": "Ẏḗḗȧȧřş"
     },
     {
       "type": 0,
@@ -13134,6 +15952,34 @@
     {
       "type": 0,
       "value": "Ḓǿǿƈŭŭḿḗḗƞŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "nav.memoNumbering": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿǿǿ ƞŭŭḿƀḗḗřīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "nav.memoType": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿǿǿ ŧẏƥḗḗ"
     },
     {
       "type": 0,

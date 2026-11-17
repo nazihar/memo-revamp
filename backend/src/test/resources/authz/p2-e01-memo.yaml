@@ -8,11 +8,11 @@ endpoints:
   - { endpoint: GET /api/v1/admin/memo-types, rule: tenantAdmin }
   - endpoint: POST /api/v1/admin/memo-types
     rule: tenantAdmin
-    body: { name: "Matrix type {random}" }
+    body: { name: "Matrix type {random}", code: "MX" }
     headers: { Idempotency-Key: "{random}" }
-  - endpoint: "PUT /api/v1/admin/memo-types/{id}"
+  - endpoint: "PUT /api/v1/admin/memo-types/{id}/active"
     rule: tenantAdmin
-    body: { name: "Matrix type" }
+    body: { active: true }
     headers: { If-Match: "\"0\"" }
   - endpoint: POST /api/v1/memos
     rule: signedIn

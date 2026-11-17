@@ -70,6 +70,15 @@ data class MemoType(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val doaCheck: Boolean = false,
     /** For administrators: the names of the allowed people and the titles of the allowed positions, by id. */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val allowedNames: Map<UUID, String> = emptyMap(),
+    /** For administrators: the type's draft or version in review, if it has one (ADR-0043). */
+    val pending: PendingVersion? = null,
+)
+
+/** A memo type's open version: its number, state and who submitted it (in review). */
+data class PendingVersion(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val number: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val state: com.memo.common.review.ReviewState,
+    val submittedBy: Named? = null,
 )
 
 /** The fields an administrator edits. */
@@ -137,12 +146,6 @@ class MemoTypeStore(
             MEMO_TYPE.CODE.eq(code).and(except?.let { MEMO_TYPE.ID.ne(it) } ?: DSL.noCondition()),
         )
 
-    /** A code for a type called [name] that no other type has: its initials, numbered if needed (as the V6 backfill). */
-    fun freeCode(name: String): String {
-        val base = MemoTypeCodes.initials(name)
-        return generateSequence(1) { it + 1 }.map { if (it == 1) base else "$base$it" }.first { !codeTaken(it) }
-    }
-
     /**
      * Inserts a type with [fields], published at once as version 1, created by [createdBy] (null: the system). Used for
      * the built-in type and legacy direct creation; reviewed creation starts from a draft instead (E01 T6).
@@ -209,6 +212,41 @@ class MemoTypeStore(
             .where(MEMO_TYPE.ID.eq(id), expectedVersion?.let { MEMO_TYPE.VERSION.eq(it) } ?: DSL.noCondition())
             .execute() == 1
 
+    /** Inserts a type whose only version will be a draft (no published version yet); the caller adds the draft. */
+    fun insertDraftType(settings: MemoTypeSettings): UUID {
+        val id = ids.next()
+        val now = now()
+        tenantDsl
+            .current()
+            .insertInto(MEMO_TYPE)
+            .set(MEMO_TYPE.ID, id)
+            .set(MEMO_TYPE.TENANT_ID, tenantDsl.tenant().value)
+            .set(MEMO_TYPE.NAME, settings.name)
+            .set(MEMO_TYPE.CODE, settings.code)
+            .set(MEMO_TYPE.DEFINITION_KEY, settings.definitionKey)
+            .set(MEMO_TYPE.ROUTE_POLICY, settings.routePolicy.name)
+            .set(MEMO_TYPE.ACTIVE, true)
+            .set(MEMO_TYPE.CREATED_AT, now)
+            .set(MEMO_TYPE.UPDATED_AT, now)
+            .execute()
+        return id
+    }
+
+    /** Switches the type on or off, guarded on [expectedVersion]; false when it changed meanwhile. */
+    fun setActive(
+        id: UUID,
+        expectedVersion: Long,
+        active: Boolean,
+    ): Boolean =
+        tenantDsl
+            .current()
+            .update(MEMO_TYPE)
+            .set(MEMO_TYPE.ACTIVE, active)
+            .set(MEMO_TYPE.VERSION, MEMO_TYPE.VERSION.plus(1))
+            .set(MEMO_TYPE.UPDATED_AT, now())
+            .where(MEMO_TYPE.ID.eq(id), MEMO_TYPE.VERSION.eq(expectedVersion))
+            .execute() == 1
+
     /** Creates the built-in "General memo" type unless the tenant has it (idempotent, safe on several nodes at once). */
     fun ensureGeneral() {
         if (tenantDsl.current().fetchExists(MEMO_TYPE, MEMO_TYPE.KEY.eq(GENERAL))) return
@@ -240,6 +278,12 @@ class MemoTypeStore(
         const val GENERAL = "general"
         const val GENERAL_NAME = "General memo"
     }
+}
+
+/** A code for a type called [name] that no other type has: its initials, numbered if needed (as the V6 backfill). */
+fun MemoTypeStore.freeCode(name: String): String {
+    val base = MemoTypeCodes.initials(name)
+    return generateSequence(1) { it + 1 }.map { if (it == 1) base else "$base$it" }.first { !codeTaken(it) }
 }
 
 /** Short memo-type codes (ADR-0044): upper-case letters and digits, at most ten characters. */

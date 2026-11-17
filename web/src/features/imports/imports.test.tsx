@@ -419,6 +419,35 @@ describe('mappings (flow M1)', () => {
     expect(onChanged).toHaveBeenCalled()
   }, 20_000)
 
+  it('saves one kind at a time, so a second save carries the version the first one left', async () => {
+    let release: () => void = () => undefined
+    const held = new Promise<void>((resolve) => {
+      release = resolve
+    })
+    server.use(
+      ...base(),
+      http.get(`${API_ORIGIN}/api/v1/admin/imports/b1/mappings`, () => HttpResponse.json(mappings)),
+      http.put(`${API_ORIGIN}/api/v1/admin/imports/b1/mappings/:kind`, async ({ params }) => {
+        await held
+        return HttpResponse.json<ImportMappingsView>({
+          batchVersion: 10,
+          mappings: mappings.mappings.filter((m) => m.kind === params.kind).map((m) => ({ ...m, confirmed: true })),
+          targets: [],
+        })
+      }),
+    )
+    const user = userEvent.setup()
+    renderStep(<MappingsStep batch={validated} onChanged={vi.fn()} />)
+    await user.click(await screen.findByTestId('confirm-all-STATUS'))
+    await user.click(screen.getByTestId('mappings-tab-PERSON'))
+    // While the status save is on its way, the people tab cannot save behind the same version.
+    expect(await screen.findByTestId('confirm-all-PERSON')).toBeDisabled()
+    release()
+    await vi.waitFor(() => {
+      expect(screen.getByTestId('confirm-all-PERSON')).toBeEnabled()
+    })
+  }, 20_000)
+
   it('orders the classification markings with Up and Down, and names the pair that breaks the rule', async () => {
     const saved: ImportMappingRequest[][] = []
     server.use(

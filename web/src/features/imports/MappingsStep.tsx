@@ -66,6 +66,9 @@ export function MappingsStep({ batch, onChanged }: { batch: ImportBatchView; onC
   const intl = useIntl()
   const mappings = useQuery(listImportMappingsOptions({ path: { id: batch.id } }))
   const [tab, setTab] = useState<MappingKind>('STATUS')
+  // One save at a time across the tabs: each save moves the batch version, so a second one sent before the first returns
+  // would carry the old version and be refused as changed meanwhile.
+  const [saving, setSaving] = useState(false)
   // Radix Tabs set their own `dir` (ltr unless told), which would turn the tables left to right in Arabic.
   const dir = directionOf(useLocale().locale)
   if (mappings.isPending) return <LoadingState />
@@ -101,6 +104,8 @@ export function MappingsStep({ batch, onChanged }: { batch: ImportBatchView; onC
                 batch={batch}
                 kind={kind}
                 view={view}
+                saving={saving}
+                onSaving={setSaving}
                 onSaved={onChanged}
               />
             </TabsContent>
@@ -115,11 +120,16 @@ function KindEditor({
   batch,
   kind,
   view,
+  saving: busy,
+  onSaving: setBusy,
   onSaved,
 }: {
   batch: ImportBatchView
   kind: MappingKind
   view: ImportMappingsView
+  /** A save of any kind is on its way; this one waits. */
+  saving: boolean
+  onSaving: (saving: boolean) => void
   onSaved: () => void
 }) {
   const intl = useIntl()
@@ -130,7 +140,6 @@ function KindEditor({
   const ordered = kind === 'CLASSIFICATION' ? inLegacyOrder(server) : server
   const [rows, setRows] = useState<Draft[]>(() => draftOf(ordered))
   const [error, setError] = useState<string>()
-  const [busy, setBusy] = useState(false)
   const [picked, setPicked] = useState<Record<string, string>>({})
   const targets = view.targets.filter((t) => t.kind === kind)
   const byId = new Map(targets.map((t) => [t.id, t]))

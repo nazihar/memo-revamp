@@ -57,6 +57,7 @@ data class MemoRequest(
 @Tag(name = "memo")
 class MemosController(
     private val memos: Memos,
+    private val templates: MemoTemplateService,
     private val routes: MemoRoutes,
     private val reviews: MemoReviews,
     private val views: MemoViews,
@@ -71,13 +72,21 @@ class MemosController(
         @RequestHeader("Idempotency-Key") key: String,
         @RequestBody body: MemoRequest,
     ): ResponseEntity<MemoView> {
-        val view =
+        val created =
             transactions.inTenant(TenantContext.current()) {
                 val id =
                     idempotency.once("memo.create", key, fingerprint(json.writeValueAsString(body))) {
                         memos.create(MemoFields(body.subject, body.typeId, body.classificationId, body.metadata)).id.toString()
                     }
                 views.of(memos.get(UUID.fromString(id)))
+            }
+        // ADR-0048: a type with a template starts the document from it, after the memo is committed. A fill that fails
+        // leaves the memo without a document and offers FILL_FROM_TEMPLATE.
+        val view =
+            if (MemoAction.FILL_FROM_TEMPLATE in created.allowedActions && templates.fillDocument(created.id) == TemplateFill.FILLED) {
+                transactions.inTenant(TenantContext.current()) { views.of(memos.get(created.id)) }
+            } else {
+                created
             }
         return ResponseEntity
             .created(URI.create("/api/v1/memos/${view.id}"))

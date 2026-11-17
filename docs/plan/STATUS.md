@@ -10,7 +10,7 @@
 - **Phase 1a closed on 2026-11-09** (`phase-1a-minimum-core/retrospective.md`). **Phase 1b** is not started; it runs after Phase 3 E06 and before E07 (Phase 3 Q4).
 - **Dev environment:** https://dev.memo-revamp.naziharitsolution.com and the operator console https://admin.dev.memo-revamp.naziharitsolution.com on the VM 123.176.58.175. It deploys automatically after every green `ci` run on `master`. The owner's operator account is enrolled.
 - **Phase 0:** done (`docs/plan/phase-0-foundations/`). **Release:** `v0.1.0` (2026-10-15). **Product name:** `memo` everywhere except the repository name (A1).
-- **Branches:** `master` holds PRs #1–#83. Open and stacked, to merge in order (#104 E03 T1 follows #103): #84 Phase 3 overview → #85 E01 plan → #86 T1 type versions → #87 T2 fields and metadata → #88 T3 attributes → #89 T4 numbering → #90 T5 lifecycle → #91 T8 demo types → #92 T6 admin screens and T7 create form and memo view → #93 T8 close → #94 E02 plan → #95 T1 ONLYOFFICE 10 → #96 T2 renditions → #97 T3 Tika → #98 T4 attachments → #99 T5 co-authors and rooms → #100 T6 comparison → #101 T7 web → #102 T8 close → #103 E03 plan.
+- **Branches:** `master` holds PRs #1–#83. Open and stacked, to merge in order (#104 E03 T1 and #105 T2 follow #103): #84 Phase 3 overview → #85 E01 plan → #86 T1 type versions → #87 T2 fields and metadata → #88 T3 attributes → #89 T4 numbering → #90 T5 lifecycle → #91 T8 demo types → #92 T6 admin screens and T7 create form and memo view → #93 T8 close → #94 E02 plan → #95 T1 ONLYOFFICE 10 → #96 T2 renditions → #97 T3 Tika → #98 T4 attachments → #99 T5 co-authors and rooms → #100 T6 comparison → #101 T7 web → #102 T8 close → #103 E03 plan.
 
 ## State (Phase 3)
 - [x] Overview written (2026-11-14): seven epics (E01 memo types, metadata and numbering; E02 documents; E03 templates, note sheet and access; E04 PDF/A rendition; E05 inbox, search and dashboards; E06 legacy import; E07 go-live readiness and the M1 security gate)
@@ -24,7 +24,7 @@
 - [x] E02 built: T1 ONLYOFFICE 10.0.0.1 and hardening (#95), T2 renditions (#96), T3 Tika (#97), T4 attachments (#98), T5 co-authors and edit rooms (#99), T6 comparison (#100), T7 web (#101), T8 close (#102): journey `attachments.spec`, demo clearance and quotation, performance (attachment list 23–27 ms, comparison 229 ms), runbook `attachments-and-previews.md`, ASVS rows
 - [x] E03 plan written (2026-11-15): research R4 and R9 with industry practice, ADR-0048 to ADR-0051 (proposed), design, threat model, tasks T1–T9, test plan, screen flows (#103)
 - [x] Owner approved E03 flows C and D and the six answers as recommended (2026-11-15); ADR-0049 to ADR-0051 accepted
-- [ ] E03 built: T1 template engine (poi-tl 1.12.2 on POI 6.0.0 after the spike; scanner, checks, fill, `memo.template` purpose; #104); T2–T9 to come
+- [ ] E03 built: T1 template engine (poi-tl 1.12.2 on POI 6.0.0 after the spike; scanner, checks, fill, `memo.template` purpose; #104); T2 templates on memo types, preview, maker-checker rules and create from template (#105); T3–T9 to come
 - [ ] E02 carried: `OnlyOfficeConversionIT` and `TikaExtractionIT` against the stack, the hostile corpus through both services (nightly), the two conversion timings on dev, editing attachments in the browser (gap against ADR-0047)
 - [ ] E01/E02 close-out on dev, after #84–#102 are merged and deployed: re-run Ansible so `MEMO_TIKA_URL` is set; check on dev that no pre-E03 round or step is left at the defaults and that the demo DoA has the credit bands
 

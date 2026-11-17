@@ -225,6 +225,31 @@ open class MemoTypeVersion(
      */
     val AUTO_CLOSE_DAYS: TableField<MemoTypeVersionRecord, Int?> = createField(DSL.name("auto_close_days"), SQLDataType.INTEGER, this, "")
 
+    /**
+     * The column <code>memo.memo_type_version.template_file_id</code>.
+     */
+    val TEMPLATE_FILE_ID: TableField<MemoTypeVersionRecord, UUID?> = createField(DSL.name("template_file_id"), SQLDataType.UUID, this, "")
+
+    /**
+     * The column <code>memo.memo_type_version.template_version_id</code>.
+     */
+    val TEMPLATE_VERSION_ID: TableField<MemoTypeVersionRecord, UUID?> = createField(DSL.name("template_version_id"), SQLDataType.UUID, this, "")
+
+    /**
+     * The column <code>memo.memo_type_version.template_scan</code>.
+     */
+    val TEMPLATE_SCAN: TableField<MemoTypeVersionRecord, JSONB?> = createField(DSL.name("template_scan"), SQLDataType.JSONB, this, "")
+
+    /**
+     * The column <code>memo.memo_type_version.template_scan_version_id</code>.
+     */
+    val TEMPLATE_SCAN_VERSION_ID: TableField<MemoTypeVersionRecord, UUID?> = createField(DSL.name("template_scan_version_id"), SQLDataType.UUID, this, "")
+
+    /**
+     * The column <code>memo.memo_type_version.template_previewed_id</code>.
+     */
+    val TEMPLATE_PREVIEWED_ID: TableField<MemoTypeVersionRecord, UUID?> = createField(DSL.name("template_previewed_id"), SQLDataType.UUID, this, "")
+
     private constructor(alias: Name, aliased: Table<MemoTypeVersionRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<MemoTypeVersionRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<MemoTypeVersionRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -298,7 +323,10 @@ open class MemoTypeVersion(
         Internal.createCheck(this, DSL.name("memo_type_version_retention_check"), "(((retention IS NULL) OR ((jsonb_typeof(retention) = 'object'::text) AND (octet_length((retention)::text) <= 1024))))", true),
         Internal.createCheck(this, DSL.name("memo_type_version_review_remark_check"), "(((length(review_remark) >= 1) AND (length(review_remark) <= 4000)))", true),
         Internal.createCheck(this, DSL.name("memo_type_version_route_policy_check"), "((route_policy = ANY (ARRAY['INITIATOR_DEFINED'::text, 'FIXED'::text, 'BOTH'::text])))", true),
-        Internal.createCheck(this, DSL.name("memo_type_version_state_check"), "((state = ANY (ARRAY['DRAFT'::text, 'IN_REVIEW'::text, 'PUBLISHED'::text, 'RETIRED'::text])))", true)
+        Internal.createCheck(this, DSL.name("memo_type_version_state_check"), "((state = ANY (ARRAY['DRAFT'::text, 'IN_REVIEW'::text, 'PUBLISHED'::text, 'RETIRED'::text])))", true),
+        Internal.createCheck(this, DSL.name("memo_type_version_template"), "(((template_file_id IS NULL) = (template_version_id IS NULL)))", true),
+        Internal.createCheck(this, DSL.name("memo_type_version_template_scan"), "(((template_scan IS NULL) = (template_scan_version_id IS NULL)))", true),
+        Internal.createCheck(this, DSL.name("memo_type_version_template_scan_check"), "(((template_scan IS NULL) OR ((jsonb_typeof(template_scan) = 'object'::text) AND (octet_length((template_scan)::text) <= 1048576))))", true)
     )
     override fun `as`(alias: String): MemoTypeVersion = MemoTypeVersion(DSL.name(alias), this)
     override fun `as`(alias: Name): MemoTypeVersion = MemoTypeVersion(alias, this)

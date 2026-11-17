@@ -2328,6 +2328,25 @@
         },
         "type" : "object"
       },
+      "MemoTypeTemplateView" : {
+        "properties" : {
+          "available" : {
+            "items" : {
+              "$ref" : "#/components/schemas/TemplateTagHelp"
+            },
+            "type" : "array"
+          },
+          "template" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/TemplateFileView"
+            }, {
+              "type" : "null"
+            } ]
+          }
+        },
+        "required" : [ "available" ],
+        "type" : "object"
+      },
       "MemoTypeVersionResponse" : {
         "properties" : {
           "allowedApprovers" : {
@@ -2448,7 +2467,7 @@
         "properties" : {
           "allowedActions" : {
             "items" : {
-              "enum" : [ "EDIT", "UPLOAD_DOCUMENT", "EDIT_ROUTE", "SUBMIT", "DISCARD", "RESUBMIT", "WITHDRAW", "APPROVE", "RETURN", "REJECT", "EDIT_DOCUMENT", "VIEW_DOCUMENT", "RECOMMEND", "SEND_BACK", "FORWARD", "DELEGATE", "ASK", "REFER", "ANSWER", "OPINION", "RECALL", "CLAIM", "RELEASE", "RECUSE", "CLOSE" ],
+              "enum" : [ "EDIT", "UPLOAD_DOCUMENT", "EDIT_ROUTE", "SUBMIT", "DISCARD", "RESUBMIT", "WITHDRAW", "APPROVE", "RETURN", "REJECT", "EDIT_DOCUMENT", "VIEW_DOCUMENT", "FILL_FROM_TEMPLATE", "RECOMMEND", "SEND_BACK", "FORWARD", "DELEGATE", "ASK", "REFER", "ANSWER", "OPINION", "RECALL", "CLAIM", "RELEASE", "RECUSE", "CLOSE" ],
               "type" : "string"
             },
             "type" : "array"
@@ -4521,6 +4540,97 @@
         "required" : [ "id", "role", "shared", "waiting" ],
         "type" : "object"
       },
+      "TemplateFileView" : {
+        "properties" : {
+          "fileId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "previewed" : {
+            "type" : "boolean"
+          },
+          "problems" : {
+            "items" : {
+              "$ref" : "#/components/schemas/TemplateProblemView"
+            },
+            "type" : "array"
+          },
+          "sizeBytes" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "tags" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "uploadedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "versionId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "fileId", "name", "previewed", "problems", "sizeBytes", "tags", "uploadedAt", "versionId" ],
+        "type" : "object"
+      },
+      "TemplatePreviewView" : {
+        "properties" : {
+          "fileId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "fileId" ],
+        "type" : "object"
+      },
+      "TemplateProblemView" : {
+        "properties" : {
+          "code" : {
+            "enum" : [ "MALFORMED_TAG", "UNSUPPORTED_TAG", "UNKNOWN_TAG", "UNBALANCED_SECTION", "LOOP_WITHOUT_ROW", "UNKNOWN_ROW_FIELD", "TAG_IN_LOOP_ROW", "TOO_MANY_TAGS" ],
+            "type" : "string"
+          },
+          "excerpt" : {
+            "type" : "string"
+          },
+          "paragraph" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "part" : {
+            "type" : "string"
+          },
+          "suggestion" : {
+            "type" : [ "string", "null" ]
+          },
+          "tag" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "code", "excerpt", "paragraph", "part" ],
+        "type" : "object"
+      },
+      "TemplateTagHelp" : {
+        "properties" : {
+          "kind" : {
+            "type" : "string"
+          },
+          "label" : {
+            "type" : "string"
+          },
+          "tag" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "kind", "label", "tag" ],
+        "type" : "object"
+      },
       "TenantPreferences" : {
         "description" : "The organisation's default language and time zone.",
         "properties" : {
@@ -5740,6 +5850,110 @@
           }
         },
         "summary" : "Send a draft for review",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/admin/memo-types/{typeId}/versions/{number}/template" : {
+      "delete" : {
+        "operationId" : "removeMemoTypeTemplate",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "typeId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "number",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : { },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Take the template off a draft",
+        "tags" : [ "memo" ]
+      },
+      "get" : {
+        "operationId" : "getMemoTypeTemplate",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "typeId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "number",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemoTypeTemplateView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A version's template, checked, and the tags it may use",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/admin/memo-types/{typeId}/versions/{number}/template/preview" : {
+      "post" : {
+        "operationId" : "previewMemoTypeTemplate",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "typeId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "number",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/TemplatePreviewView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Fill a draft's template with sample values, for its PDF preview",
         "tags" : [ "memo" ]
       }
     },
@@ -9659,6 +9873,34 @@
           }
         },
         "summary" : "Who the delegation of authority asks to approve the memo",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/memos/{id}/document/from-template" : {
+      "post" : {
+        "operationId" : "fillMemoDocumentFromTemplate",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemoView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Fill a draft's document from its type's template",
         "tags" : [ "memo" ]
       }
     },

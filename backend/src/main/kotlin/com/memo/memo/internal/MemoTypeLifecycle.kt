@@ -22,6 +22,8 @@ class MemoTypeLifecycle(
     private val types: MemoTypeStore,
     private val versions: MemoTypeVersionStore,
     private val checks: MemoTypeChecks,
+    private val templates: MemoTemplateStore,
+    private val templateChecks: MemoTemplateChecks,
     private val audit: AuditLog,
     private val attributes: MemoAttributes,
 ) {
@@ -46,6 +48,10 @@ class MemoTypeLifecycle(
         val body = settings ?: checkNotNull(all.firstOrNull { it.state == ReviewState.PUBLISHED } ?: all.firstOrNull()).settings
         checks.require(body, typeId)
         val number = versions.insert(typeId, ReviewState.DRAFT, body, actor())
+        val draft = get(typeId, number)
+        // The draft starts with the template of the version it copies (the published one, else the newest).
+        val source = all.firstOrNull { it.state == ReviewState.PUBLISHED } ?: all.firstOrNull()
+        source?.let { templates.copy(it.id, draft.id) }
         return get(typeId, number).also { record("memo.type.draft_created", it) }
     }
 
@@ -79,6 +85,7 @@ class MemoTypeLifecycle(
         val version = get(typeId, number)
         ReviewRules.requireState(version.state, ReviewState.DRAFT, "submitted")
         checks.require(version.settings, typeId)
+        templateChecks.requireReady(version)
         val fields =
             mapOf(
                 MEMO_TYPE_VERSION.SUBMITTED_BY to actor(),

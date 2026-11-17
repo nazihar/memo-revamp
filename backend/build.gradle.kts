@@ -124,6 +124,12 @@ fun registerUpdateTask(
 }
 
 registerUpdateTask("updateContract", "*OpenApiContractTest", "contracts.update", "/contracts/openapi.json")
+registerUpdateTask(
+    "updateModuleMetadata",
+    "*ModuleMetadataIT",
+    "modules.update",
+    "the precomputed Spring Modulith module metadata",
+)
 registerUpdateTask("updateJooq", "*JooqCodegenTest", "jooq.update", "backend/src/main/jooq from the migrated schema")
 registerUpdateTask(
     "updateBreachedPasswords",

@@ -1,0 +1,439 @@
+{
+  "actions" : {
+    "basePackage" : "com.memo.actions",
+    "dependencies" : [ ],
+    "displayName" : "Action items",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  },
+  "book" : {
+    "basePackage" : "com.memo.book",
+    "dependencies" : [ ],
+    "displayName" : "Board book",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  },
+  "common" : {
+    "basePackage" : "com.memo.common",
+    "dependencies" : [ ],
+    "displayName" : "Common",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "open"
+  },
+  "forum" : {
+    "basePackage" : "com.memo.forum",
+    "dependencies" : [ ],
+    "displayName" : "Forum",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  },
+  "meeting" : {
+    "basePackage" : "com.memo.meeting",
+    "dependencies" : [ ],
+    "displayName" : "Meeting",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  },
+  "minutes" : {
+    "basePackage" : "com.memo.minutes",
+    "dependencies" : [ ],
+    "displayName" : "Minutes",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  },
+  "signature" : {
+    "basePackage" : "com.memo.signature",
+    "dependencies" : [ ],
+    "displayName" : "Signature",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  },
+  "voting" : {
+    "basePackage" : "com.memo.voting",
+    "dependencies" : [ ],
+    "displayName" : "Voting",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  },
+  "audit" : {
+    "basePackage" : "com.memo.audit",
+    "dependencies" : [ {
+      "target" : "common",
+      "types" : [ "USES_COMPONENT" ]
+    } ],
+    "displayName" : "Audit",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  },
+  "system" : {
+    "basePackage" : "com.memo.system",
+    "dependencies" : [ {
+      "target" : "common",
+      "types" : [ "USES_COMPONENT" ]
+    } ],
+    "displayName" : "System",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  },
+  "templating" : {
+    "basePackage" : "com.memo.templating",
+    "dependencies" : [ {
+      "target" : "common",
+      "types" : [ "DEFAULT" ]
+    } ],
+    "displayName" : "Document templates",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  },
+  "tenancy" : {
+    "basePackage" : "com.memo.tenancy",
+    "dependencies" : [ {
+      "target" : "audit",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "common",
+      "types" : [ "USES_COMPONENT" ]
+    } ],
+    "displayName" : "Tenancy",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  },
+  "files" : {
+    "basePackage" : "com.memo.files",
+    "dependencies" : [ {
+      "target" : "audit",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "common",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "system",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "tenancy",
+      "types" : [ "USES_COMPONENT" ]
+    } ],
+    "displayName" : "Files",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  },
+  "notification" : {
+    "basePackage" : "com.memo.notification",
+    "dependencies" : [ {
+      "target" : "audit",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "common",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "tenancy",
+      "types" : [ "USES_COMPONENT" ]
+    } ],
+    "displayName" : "Notification",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  },
+  "branding" : {
+    "basePackage" : "com.memo.branding",
+    "dependencies" : [ {
+      "target" : "common",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "files",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "tenancy",
+      "types" : [ "USES_COMPONENT" ]
+    } ],
+    "displayName" : "Branding",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  },
+  "identity" : {
+    "basePackage" : "com.memo.identity",
+    "dependencies" : [ {
+      "target" : "audit",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "common",
+      "types" : [ "EVENT_LISTENER", "USES_COMPONENT" ]
+    }, {
+      "target" : "notification",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "system",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "tenancy",
+      "types" : [ "EVENT_LISTENER", "USES_COMPONENT" ]
+    } ],
+    "displayName" : "Identity",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  },
+  "authz" : {
+    "basePackage" : "com.memo.authz",
+    "dependencies" : [ {
+      "target" : "audit",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "common",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "identity",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "notification",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "system",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "tenancy",
+      "types" : [ "EVENT_LISTENER", "USES_COMPONENT" ]
+    } ],
+    "displayName" : "Authorization",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  },
+  "docedit" : {
+    "basePackage" : "com.memo.docedit",
+    "dependencies" : [ {
+      "target" : "audit",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "common",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "files",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "identity",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "notification",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "system",
+      "types" : [ "USES_COMPONENT" ]
+    } ],
+    "displayName" : "Document editing",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  },
+  "org" : {
+    "basePackage" : "com.memo.org",
+    "dependencies" : [ {
+      "target" : "audit",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "common",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "identity",
+      "types" : [ "EVENT_LISTENER", "USES_COMPONENT" ]
+    }, {
+      "target" : "system",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "tenancy",
+      "types" : [ "USES_COMPONENT" ]
+    } ],
+    "displayName" : "Organization",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  },
+  "platform" : {
+    "basePackage" : "com.memo.platform",
+    "dependencies" : [ {
+      "target" : "audit",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "common",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "identity",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "tenancy",
+      "types" : [ "USES_COMPONENT" ]
+    } ],
+    "displayName" : "Platform console",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  },
+  "workflow" : {
+    "basePackage" : "com.memo.workflow",
+    "dependencies" : [ {
+      "target" : "audit",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "common",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "identity",
+      "types" : [ "EVENT_LISTENER", "USES_COMPONENT" ]
+    }, {
+      "target" : "org",
+      "types" : [ "EVENT_LISTENER", "USES_COMPONENT" ]
+    }, {
+      "target" : "system",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "tenancy",
+      "types" : [ "EVENT_LISTENER", "USES_COMPONENT" ]
+    } ],
+    "displayName" : "Workflow",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  },
+  "memo" : {
+    "basePackage" : "com.memo.memo",
+    "dependencies" : [ {
+      "target" : "audit",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "common",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "docedit",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "files",
+      "types" : [ "EVENT_LISTENER", "USES_COMPONENT" ]
+    }, {
+      "target" : "identity",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "notification",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "org",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "system",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "templating",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "tenancy",
+      "types" : [ "EVENT_LISTENER", "USES_COMPONENT" ]
+    }, {
+      "target" : "workflow",
+      "types" : [ "EVENT_LISTENER", "USES_COMPONENT" ]
+    } ],
+    "displayName" : "Memo",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  },
+  "imports" : {
+    "basePackage" : "com.memo.imports",
+    "dependencies" : [ {
+      "target" : "audit",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "common",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "files",
+      "types" : [ "EVENT_LISTENER", "USES_COMPONENT" ]
+    }, {
+      "target" : "identity",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "memo",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "org",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "system",
+      "types" : [ "USES_COMPONENT" ]
+    } ],
+    "displayName" : "Imports",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  },
+  "search" : {
+    "basePackage" : "com.memo.search",
+    "dependencies" : [ {
+      "target" : "audit",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "common",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "files",
+      "types" : [ "EVENT_LISTENER", "USES_COMPONENT" ]
+    }, {
+      "target" : "memo",
+      "types" : [ "EVENT_LISTENER", "USES_COMPONENT" ]
+    }, {
+      "target" : "org",
+      "types" : [ "USES_COMPONENT" ]
+    } ],
+    "displayName" : "Search",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  },
+  "demo" : {
+    "basePackage" : "com.memo.demo",
+    "dependencies" : [ {
+      "target" : "common",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "files",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "identity",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "imports",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "memo",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "org",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "search",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "tenancy",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "workflow",
+      "types" : [ "USES_COMPONENT" ]
+    } ],
+    "displayName" : "Demo data",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  }
+}

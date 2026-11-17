@@ -58,3 +58,4 @@ We use the MADR format (see [0001](0001-record-architecture-decisions.md)). Star
 | [0052](0052-generated-pages-rendering.md) | Generated pages: one rendering interface, PDFBox with an embedded font for English | accepted | 2026-11-15 |
 | [0053](0053-final-rendition-pdfa.md) | Final rendition: one PDF/A-2u record per approved memo, validated, locked and re-hashed | accepted | 2026-11-15 |
 | [0054](0054-full-text-search.md) | Full-text search: PostgreSQL search tables behind one audited function, OpenSearch only on measured triggers | accepted | 2026-11-15 |
+| [0055](0055-legacy-import.md) | Legacy import: a metadata workbook and a folder of originals, a read-only dry run, idempotent rows, legacy numbers outside the register | accepted | 2026-11-16 |

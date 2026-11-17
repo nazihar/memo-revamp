@@ -1,10 +1,21 @@
 import { useQuery } from '@tanstack/react-query'
 import { Link } from '@tanstack/react-router'
 import { Bell } from 'lucide-react'
-import { useIntl } from 'react-intl'
+import { defineMessages, useIntl, type NoMessageValues } from 'react-intl'
 import { getMyUnreadCountOptions } from '@/api/generated/@tanstack/react-query.gen'
 import { useSession } from '@/features/auth/session'
-import { nm, nmv } from './notification-messages'
+
+/**
+ * The bell's own texts, not the notification centre's (notification-messages.ts): the bell is in the top bar of every
+ * page, so what it imports loads with every first page (the first-route JS budget, NFR P5).
+ */
+const messages = defineMessages<{ bell: { count: number }; bellMore: NoMessageValues }>({
+  bell: {
+    id: 'notifications.bell',
+    defaultMessage: '{count, plural, =0 {Notifications} one {Notifications, # unread} other {Notifications, # unread}}',
+  },
+  bellMore: { id: 'notifications.bellMore', defaultMessage: '9+' },
+})
 
 /** How often the badge asks for the unread count while the page is visible (1a polls; real time arrives in Phase 5). */
 export const UNREAD_POLL_MS = 60_000
@@ -28,7 +39,7 @@ export function NotificationBell() {
   return (
     <Link
       to="/notifications"
-      aria-label={intl.formatMessage(nmv.bell, { count })}
+      aria-label={intl.formatMessage(messages.bell, { count })}
       className="relative inline-flex size-10 items-center justify-center rounded-md hover:bg-accent hover:text-accent-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
     >
       <Bell aria-hidden="true" className="size-5" />
@@ -37,7 +48,7 @@ export function NotificationBell() {
           aria-hidden="true"
           className="absolute -end-0.5 -top-0.5 min-w-5 rounded-full bg-destructive px-1 text-center text-xs font-semibold leading-5 text-destructive-foreground"
         >
-          {count > 9 ? intl.formatMessage(nm.bellMore) : count}
+          {count > 9 ? intl.formatMessage(messages.bellMore) : count}
         </span>
       ) : null}
     </Link>

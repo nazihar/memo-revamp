@@ -1,9 +1,7 @@
 import type { MessageDescriptor } from 'react-intl'
 import type { ImportBatchView } from '@/api/generated/types.gen'
+import type { StepId } from './batch-params'
 import { im } from './messages'
-
-export const STEPS = ['metadata', 'originals', 'mappings', 'dryRun', 'import', 'report'] as const
-export type StepId = (typeof STEPS)[number]
 
 export const stepLabels: Record<StepId, MessageDescriptor> = {
   metadata: im.stepMetadata,

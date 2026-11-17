@@ -5,24 +5,9 @@ import type { Named } from '@/api/generated/types.gen'
 import { holds, PERMISSION, useMyAccess } from '@/features/access/access'
 import { useTeamAccess } from '@/features/inbox/team'
 import { dm, dmv } from './dashboard-messages'
+import type { Weeks } from './dashboard-params'
 
 export const DASHBOARD_READ = 'memo.dashboard.read'
-
-export type Weeks = 4 | 12 | 26
-export const PERIODS: readonly Weeks[] = [4, 12, 26]
-
-/** The dashboard's address: `scope=me|unit:<id>` and the period in weeks (12 when absent). */
-export interface DashboardSearch {
-  scope?: string
-  weeks?: Weeks
-}
-
-export function parseDashboardSearch(search: Record<string, unknown>): DashboardSearch {
-  const scope =
-    typeof search.scope === 'string' && /^(me|unit:[\w-]{1,64})$/.test(search.scope) ? search.scope : undefined
-  const weeks = PERIODS.find((w) => w === Number(search.weeks))
-  return { ...(scope && scope !== 'me' ? { scope } : {}), ...(weeks && weeks !== 12 ? { weeks } : {}) }
-}
 
 /** The unit id of a `unit:<id>` scope. */
 export function unitOf(scope: string): string | undefined {

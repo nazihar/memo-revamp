@@ -28,7 +28,8 @@ import { im, imv } from './messages'
 import { OriginalsStep } from './OriginalsStep'
 import { ReasonDialog } from './ReasonDialog'
 import { ReportStep } from './ReportStep'
-import { defaultStep, STEPS, stepDone, stepLabels, type StepId } from './steps'
+import { STEPS, type StepId } from './batch-params'
+import { defaultStep, stepDone, stepLabels } from './steps'
 
 /**
  * `/admin/imports/$batchId` (ux-review L3 to N3): the batch's settings and state, and a stepper from the metadata to

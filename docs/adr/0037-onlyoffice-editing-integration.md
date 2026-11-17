@@ -56,3 +56,5 @@ Chosen option 1.
 
 ## More information
 Sources (accessed 2026-11-11): https://api.onlyoffice.com/docs/docs-api/usage-api/callback-handler/, https://api.onlyoffice.com/docs/docs-api/additional-api/signature/, https://api.onlyoffice.com/docs/docs-api/usage-api/config/document/, https://helpcenter.onlyoffice.com/installation/docs-community-proxy.aspx
+
+**Amended 2026-11-14 by ADR-0047:** the document key is bound to the editing session (edit room), not derived from the file version, so co-editing survives force-saves; the rest of this decision stands.

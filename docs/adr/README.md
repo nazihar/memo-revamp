@@ -48,3 +48,6 @@ We use the MADR format (see [0001](0001-record-architecture-decisions.md)). Star
 | [0042](0042-visual-workflow-builder.md) | Visual workflow builder: React Flow over the same body, server-side validation and simulation, structural diff | accepted | 2026-11-13 |
 | [0043](0043-memo-type-versions-and-metadata.md) | Memo-type versions with maker-checker, metadata fields, pinning at submit, fields as workflow attributes | accepted | 2026-11-14 |
 | [0044](0044-memo-numbering.md) | Memo numbering: formats in the type version, series counters, taken at submit or approval, voids and register | accepted | 2026-11-14 |
+| [0045](0045-document-renditions-and-text-extraction.md) | Document renditions and text extraction: background jobs, ONLYOFFICE conversion, a separate Tika server | accepted | 2026-11-14 |
+| [0046](0046-memo-attachments.md) | Memo attachments: typed by the tenant, stricter classification only, bound to each submission | accepted | 2026-11-14 |
+| [0047](0047-onlyoffice-10-co-editing-and-hardening.md) | ONLYOFFICE 10: co-editing by named co-authors with session-bound keys, spreadsheets, hardening; desktop Word not adopted | accepted | 2026-11-14 |

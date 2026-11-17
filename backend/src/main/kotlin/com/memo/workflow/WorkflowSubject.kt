@@ -34,7 +34,10 @@ interface WorkflowSubject {
         users: Collection<UUID>,
     ): Map<UUID, BlockedReason> = emptyMap()
 
-    /** The item attributes definition conditions may read for this subject type (ADR-0039), by name. */
+    /**
+     * The item attributes definition conditions and DoA rules may read for this subject type (ADR-0039), by name. Read
+     * inside the tenant transaction each time: they may depend on the tenant's configuration (memo-type fields, ADR-0043).
+     */
     val attributes: Map<String, AttributeType> get() = emptyMap()
 
     /** The current values of [attributes] for [subjectId]; a missing value sends a condition to its branch's `otherwise`. */

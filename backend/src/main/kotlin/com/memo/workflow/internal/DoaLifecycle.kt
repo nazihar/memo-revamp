@@ -38,9 +38,10 @@ data class LoadedDoa(
 class DoaChecks(
     private val checks: DefinitionChecks,
     private val directory: OrgDirectory,
-    subjects: List<WorkflowSubject>,
+    private val subjects: List<WorkflowSubject>,
 ) {
-    private val attributes = subjects.associate { subject -> subject.type to subject.attributes.map { Attribute(it.key, it.value) } }
+    /** Each subject type's attributes now, in this tenant (a memo type's fields among them, ADR-0043). */
+    private fun attributes() = subjects.associate { subject -> subject.type to subject.attributes.map { Attribute(it.key, it.value) } }
 
     /** Throws [DoaInvalidException] listing what is wrong with [rules], if anything. */
     fun require(rules: List<DoaRule>) {
@@ -48,15 +49,17 @@ class DoaChecks(
         if (problems.isNotEmpty()) throw DoaInvalidException(problems)
     }
 
-    fun problems(rules: List<DoaRule>): List<FieldProblem> =
-        listOfNotNull(FieldProblem("rules", "TOO_MANY", "At most $MAX_RULES rules.").takeIf { rules.size > MAX_RULES }) +
-            rules.flatMapIndexed { i, rule -> rule("rules/$i", rule) }
+    fun problems(rules: List<DoaRule>): List<FieldProblem> {
+        val attributes = attributes()
+        return listOfNotNull(FieldProblem("rules", "TOO_MANY", "At most $MAX_RULES rules.").takeIf { rules.size > MAX_RULES }) +
+            rules.flatMapIndexed { i, rule -> rule("rules/$i", rule, attributes[rule.subjectType]) }
+    }
 
     private fun rule(
         at: String,
         rule: DoaRule,
+        declared: List<Attribute>?,
     ): List<FieldProblem> {
-        val declared = attributes[rule.subjectType]
         val condition = rule.condition?.let { text -> declared?.let { Conditions.compile(text, it).second } }
         return listOfNotNull(
             FieldProblem("$at/name", "LENGTH", "A name of 1 to 200 characters.").takeIf { rule.name.isBlank() || rule.name.length > NAME },

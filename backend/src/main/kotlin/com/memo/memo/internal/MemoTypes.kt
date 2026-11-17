@@ -142,6 +142,7 @@ class MemoTypeChecks(
     private val clearances: Clearances,
     private val definitions: WorkflowDefinitions,
     private val fieldChecks: MemoFieldChecks,
+    private val attributeChecks: MemoAttributeChecks,
 ) {
     /** Throws [MemoRejectedException] listing what is wrong with [settings] for type [id] (null: a new type). */
     fun require(
@@ -178,7 +179,7 @@ class MemoTypeChecks(
             FieldProblem("allowedApprovers", "TOO_MANY", "At most $MAX_ALLOWED people, positions and roles each.").takeIf {
                 listOf(allowed.people, allowed.positions, allowed.roles).any { it.size > MAX_ALLOWED }
             },
-        ) + fieldChecks.problems(settings.fields, settings.raiseScope)
+        ) + fieldChecks.problems(settings.fields, settings.raiseScope) + attributeChecks.problems(settings, id)
     }
 
     companion object {

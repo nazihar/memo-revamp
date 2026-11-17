@@ -101,6 +101,14 @@ class MemoTypeVersionStore(
             .where(MEMO_TYPE_VERSION.MEMO_TYPE_ID.eq(typeId), MEMO_TYPE_VERSION.STATE.eq(ReviewState.PUBLISHED.name))
             .fetchOne(json::row)
 
+    /** The published version of every type, active or not. */
+    fun publishedAll(): List<MemoTypeVersionRow> =
+        tenantDsl
+            .current()
+            .selectFrom(MEMO_TYPE_VERSION)
+            .where(MEMO_TYPE_VERSION.STATE.eq(ReviewState.PUBLISHED.name))
+            .fetch(json::row)
+
     /** The draft or version in review of each type that has one, by type. */
     fun open(): Map<UUID, MemoTypeVersionRow> =
         tenantDsl

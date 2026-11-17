@@ -32,6 +32,8 @@ class MemoWorkflowSubject(
     private val users: UserSummaries,
     private val clearances: Clearances,
     private val interests: MemoInterestStore,
+    private val memoAttributes: MemoAttributes,
+    private val types: MemoTypeVersionStore,
 ) : WorkflowSubject {
     override val type = TYPE
 
@@ -76,11 +78,16 @@ class MemoWorkflowSubject(
         store.lock(subjectId)
     }
 
-    override val attributes: Map<String, AttributeType> =
-        mapOf("memoTypeId" to AttributeType.STRING, "classificationRank" to AttributeType.INT)
+    /** The built-ins and every memo type's attribute fields, in this tenant (ADR-0043). */
+    override val attributes: Map<String, AttributeType> get() = memoAttributes.catalogue()
 
-    override fun attributeValues(subjectId: UUID): Map<String, Any?> =
-        store.find(subjectId)?.let { mapOf("memoTypeId" to it.typeId.toString(), "classificationRank" to it.classificationRank) }.orEmpty()
+    /** The built-ins and the memo's values of its version's attribute fields (pinned once submitted). */
+    override fun attributeValues(subjectId: UUID): Map<String, Any?> {
+        val memo = store.find(subjectId) ?: return emptyMap()
+        val version = memo.memoTypeVersionId?.let { types.byId(it) } ?: types.published(memo.typeId)
+        return mapOf("memoTypeId" to memo.typeId.toString(), "classificationRank" to memo.classificationRank) +
+            memoAttributes.values(memo, version?.settings?.fields.orEmpty())
+    }
 
     override fun snapshot(subjectId: UUID): Map<String, Any?> {
         val version =

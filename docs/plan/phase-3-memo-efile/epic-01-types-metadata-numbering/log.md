@@ -41,3 +41,14 @@
 - **Tests:**
   - The full backend suite passed apart from two tests. `MemoTaskActionsIT` was a real fixture fault: it switched a type's workflow by SQL on `memo_type` only, and submit now reads the published version, so the fixture now updates the version too. `FilesMaintenanceIT` got one S3 400 from the test storage and passed when re-run alone.
   - After the detekt refactors (`MemoTypeAccess`, `MetadataValues`, `OrgUnitDirectory`), every memo test and the cross-cutting checks passed again: 1,233 tests in 24 suites, plus `ArchitectureRulesTest`.
+
+## 2026-11-14 — T3 fields as workflow attributes
+- **Built:**
+  - `MemoAttributes`: the per-tenant catalogue (built-ins plus the attribute fields of every type's published version), cached as `memo.attributes` and invalidated when a version is published; memo values as conditions read them (amount as `double` plus `<key>Currency`, a date as a timestamp at the start of the day in the tenant's zone).
+  - `MemoAttributeChecks`: `ATTRIBUTE_CONFLICT` (one type per key across the tenant; an amount's currency name kept free) and `ATTRIBUTE_IN_USE`.
+  - `WorkflowDefinitions.attributesInUse(subjectType)`: attributes declared by published definitions and fragments, with their types, plus names read by published DoA rule conditions.
+  - `DefinitionChecks` and `DoaChecks` read subject attributes per call. Before, they captured them once at start-up, which would have hidden every field published later.
+- **Decided while building:**
+  - The catalogue includes **inactive** types' published versions, so switching a type off cannot silently break a rule (ADR-0043 updated).
+  - `ATTRIBUTE_IN_USE` only concerns attributes memos offer now. A name declared for another subject (the test subject in workflow tests) is not the memo's to keep.
+- **Tests:** `MemoAttributesIT` covers the catalogue and the builder catalogue, a DoA band on the amount (6,000,000 needs the director; 4,000,000 and no amount match no rule), dropping or un-marking an attribute the rule reads, and key conflicts.

@@ -368,6 +368,46 @@ for (const variant of variants) {
   })
 }
 
+for (const variant of [variants[0], variants[3]]) {
+  test(`final record, the auditor view — ${variant.name}`, async ({ app, page }) => {
+    await setUp(page, variant.theme, variant.locale)
+    // An approved memo whose record is made (ADR-0053); the auditor sees its hash and validation.
+    await page.route('**/api/v1/memos/m1', (route) =>
+      route.fulfill({ json: { ...memo, status: 'APPROVED', allowedActions: [], myTask: null, rendition: 'READY' } }),
+    )
+    const v1 = {
+      version: 1,
+      state: 'READY',
+      trigger: 'APPROVED',
+      createdAt: '2026-11-09T14:20:00Z',
+      finishedAt: '2026-11-09T14:22:00Z',
+      pages: 62,
+      sizeBytes: 812_000,
+      classification: 'Internal',
+      readable: true,
+      fileId: 'r1',
+      versionId: 'rv1',
+      audit: {
+        sha256: '3f9a1c07d2e84b6a9c0e5f7a1b2c3d4e5f60718293a4b5c6d7e8f90a1b2c3d4e',
+        compliant: true,
+        profile: '2u',
+        validator: 'veraPDF 1.30.3',
+        failedRules: {},
+        rasterisedPages: 2,
+        placeholders: 1,
+        renderer: 'PDFBox 3.0.8 with Noto Sans 2.015',
+      },
+    }
+    await page.route('**/api/v1/memos/m1/rendition', (route) =>
+      route.fulfill({ json: { state: 'READY', current: v1, versions: [v1] } }),
+    )
+    await app.visit('/memos/m1')
+    const box = page.locator('section[aria-labelledby="final-record"]')
+    await expect(box.getByText('3f9a1c07', { exact: false })).toBeVisible()
+    await expect(box).toHaveScreenshot(`final-record-${variant.name}.png`)
+  })
+}
+
 for (const variant of [variants[0], variants[2]]) {
   test(`compare versions — ${variant.name}`, async ({ app, page }) => {
     await setUp(page, variant.theme, variant.locale)

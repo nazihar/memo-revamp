@@ -98,3 +98,16 @@
   - closure under a 25-year type extends the lock past the 10-year default, and doing it again extends nothing;
   - the fixity check passes, then finds a changed hash.
   - Matrix entries for the two endpoints.
+
+## 2026-11-15 — T6 web: the Final record box
+- **`FinalRecord` on the memo page**, shown once the memo has a record (`MemoView.rendition` not NONE):
+  - being prepared, polled every 10 seconds while pending;
+  - ready, with Download;
+  - not cleared: says the record exists and its classification, with no download;
+  - failed: holders of the permission get Retry.
+- **Auditors** see the SHA-256 with a copy button, the PDF/A verdict with the validator and profile, the rasterised pages and originals kept, and the renderer.
+- **Holders of `memo.rendition.regenerate`** get "Make a new version", a dialog that asks for a reason and goes through the step-up. Earlier versions are listed with their reasons and stay downloadable.
+- **Arabic:** all texts are translated. In Arabic the box notes that the record itself is in English (§10 Q3).
+- **Tests:**
+  - five unit tests: ready, not cleared, auditor's view, pending, and regenerate with a reason, keeping the earlier version;
+  - visual baselines of the auditor's view (light LTR and dark RTL), reviewed.

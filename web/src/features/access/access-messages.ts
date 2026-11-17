@@ -170,6 +170,10 @@ export const catalogue = defineMessages({
     id: 'access.permission.memoDistributionManage',
     defaultMessage: 'Manage distribution lists',
   },
+  'memo.rendition.regenerate': {
+    id: 'access.permission.memoRenditionRegenerate',
+    defaultMessage: 'Make a new version of a final record',
+  },
 })
 
 export function catalogueLabel(intl: IntlShape, key: string, fallback?: string): string {

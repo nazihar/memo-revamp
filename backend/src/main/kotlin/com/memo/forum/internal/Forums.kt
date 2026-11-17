@@ -171,6 +171,7 @@ class Forums(
         val shortName = input.shortName.trim()
         val type = types.find(input.typeId)
         val published = type?.let { versions.published(it.id) }
+        val level = input.classificationId
         return listOfNotNull(
             FieldProblem("key", "FORMAT", "A lower-case letter, then lower-case letters, digits or hyphens.")
                 .takeUnless { KEY.matches(key) },
@@ -186,7 +187,7 @@ class Forums(
                 existing == null && type != null && (!type.active || published == null)
             },
             FieldProblem("classificationId", "unknown", "No such classification level.").takeIf {
-                input.classificationId != null && clearances.level(input.classificationId) == null
+                level != null && clearances.level(level) == null
             },
             parentProblem(input.parentId, id),
         )

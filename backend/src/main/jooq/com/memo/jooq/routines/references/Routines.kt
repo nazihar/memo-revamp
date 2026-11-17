@@ -5,12 +5,199 @@
 package com.memo.jooq.routines.references
 
 
+import com.memo.jooq.routines.SearchPutChunks
+import com.memo.jooq.routines.SearchPutMemo
+import com.memo.jooq.routines.SearchPutNote
+import com.memo.jooq.routines.SearchSetChunkRank
 import com.memo.jooq.routines.TenancySettingCount
+import com.memo.jooq.tables.SearchFind
+import com.memo.jooq.tables.SearchSnippets
+import com.memo.jooq.tables.records.SearchFindRecord
+import com.memo.jooq.tables.records.SearchSnippetsRecord
+
+import java.math.BigDecimal
+import java.time.OffsetDateTime
+import java.util.UUID
 
 import org.jooq.Configuration
 import org.jooq.Field
+import org.jooq.Result
 
 
+
+/**
+ * Call <code>memo.search_put_chunks</code>
+ */
+fun searchPutChunks(
+      configuration: Configuration
+    , pTenant: UUID?
+    , pVersion: UUID?
+    , pMemo: UUID?
+    , pRank: Int?
+    , pChunks: Array<String?>?
+): Boolean? {
+    val f = SearchPutChunks()
+    f.setPTenant(pTenant)
+    f.setPVersion(pVersion)
+    f.setPMemo(pMemo)
+    f.setPRank(pRank)
+    f.setPChunks(pChunks)
+
+    f.execute(configuration)
+    return f.returnValue
+}
+
+/**
+ * Get <code>memo.search_put_chunks</code> as a field.
+ */
+fun searchPutChunks(
+      pTenant: UUID?
+    , pVersion: UUID?
+    , pMemo: UUID?
+    , pRank: Int?
+    , pChunks: Array<String?>?
+): Field<Boolean?> {
+    val f = SearchPutChunks()
+    f.setPTenant(pTenant)
+    f.setPVersion(pVersion)
+    f.setPMemo(pMemo)
+    f.setPRank(pRank)
+    f.setPChunks(pChunks)
+
+    return f.asField()
+}
+
+/**
+ * Get <code>memo.search_put_chunks</code> as a field.
+ */
+fun searchPutChunks(
+      pTenant: Field<UUID?>
+    , pVersion: Field<UUID?>
+    , pMemo: Field<UUID?>
+    , pRank: Field<Int?>
+    , pChunks: Field<Array<String?>?>
+): Field<Boolean?> {
+    val f = SearchPutChunks()
+    f.setPTenant(pTenant)
+    f.setPVersion(pVersion)
+    f.setPMemo(pMemo)
+    f.setPRank(pRank)
+    f.setPChunks(pChunks)
+
+    return f.asField()
+}
+
+/**
+ * Call <code>memo.search_put_memo</code>
+ */
+fun searchPutMemo(
+      configuration: Configuration
+    , pTenant: UUID?
+    , pMemo: UUID?
+    , pRank: Int?
+    , pUnit: UUID?
+    , pStatus: String?
+    , pType: UUID?
+    , pInitiator: UUID?
+    , pAmount: BigDecimal?
+    , pCreated: OffsetDateTime?
+    , pUpdated: OffsetDateTime?
+    , pRefNorm: String?
+    , pRefTail: String?
+    , pSubject: String?
+    , pFields: String?
+): Unit {
+    val p = SearchPutMemo()
+    p.setPTenant(pTenant)
+    p.setPMemo(pMemo)
+    p.setPRank(pRank)
+    p.setPUnit(pUnit)
+    p.setPStatus(pStatus)
+    p.setPType(pType)
+    p.setPInitiator(pInitiator)
+    p.setPAmount(pAmount)
+    p.setPCreated(pCreated)
+    p.setPUpdated(pUpdated)
+    p.setPRefNorm(pRefNorm)
+    p.setPRefTail(pRefTail)
+    p.setPSubject(pSubject)
+    p.setPFields(pFields)
+
+    p.execute(configuration)
+}
+
+/**
+ * Call <code>memo.search_put_note</code>
+ */
+fun searchPutNote(
+      configuration: Configuration
+    , pTenant: UUID?
+    , pNote: UUID?
+    , pMemo: UUID?
+    , pBody: String?
+): Boolean? {
+    val f = SearchPutNote()
+    f.setPTenant(pTenant)
+    f.setPNote(pNote)
+    f.setPMemo(pMemo)
+    f.setPBody(pBody)
+
+    f.execute(configuration)
+    return f.returnValue
+}
+
+/**
+ * Get <code>memo.search_put_note</code> as a field.
+ */
+fun searchPutNote(
+      pTenant: UUID?
+    , pNote: UUID?
+    , pMemo: UUID?
+    , pBody: String?
+): Field<Boolean?> {
+    val f = SearchPutNote()
+    f.setPTenant(pTenant)
+    f.setPNote(pNote)
+    f.setPMemo(pMemo)
+    f.setPBody(pBody)
+
+    return f.asField()
+}
+
+/**
+ * Get <code>memo.search_put_note</code> as a field.
+ */
+fun searchPutNote(
+      pTenant: Field<UUID?>
+    , pNote: Field<UUID?>
+    , pMemo: Field<UUID?>
+    , pBody: Field<String?>
+): Field<Boolean?> {
+    val f = SearchPutNote()
+    f.setPTenant(pTenant)
+    f.setPNote(pNote)
+    f.setPMemo(pMemo)
+    f.setPBody(pBody)
+
+    return f.asField()
+}
+
+/**
+ * Call <code>memo.search_set_chunk_rank</code>
+ */
+fun searchSetChunkRank(
+      configuration: Configuration
+    , pTenant: UUID?
+    , pVersion: UUID?
+    , pRank: Int?
+): Unit {
+    val p = SearchSetChunkRank()
+    p.setPTenant(pTenant)
+    p.setPVersion(pVersion)
+    p.setPRank(pRank)
+
+    p.execute(configuration)
+}
 
 /**
  * Call <code>memo.tenancy_setting_count</code>
@@ -32,3 +219,227 @@ fun tenancySettingCount(): Field<Long?> {
 
     return f.asField()
 }
+
+/**
+ * Call <code>memo.search_find</code>.
+ */
+fun searchFind(
+      configuration: Configuration
+    , pTenant: UUID?
+    , pReader: UUID?
+    , pRank: Int?
+    , pUnits: Array<UUID?>?
+    , pAllUnits: Boolean?
+    , pNow: OffsetDateTime?
+    , pQuery: String?
+    , pPrefix: String?
+    , pRefNorm: String?
+    , pRefTail: String?
+    , pStatus: Array<String?>?
+    , pTypes: Array<UUID?>?
+    , pOriginUnits: Array<UUID?>?
+    , pFrom: OffsetDateTime?
+    , pTo: OffsetDateTime?
+    , pAmountMin: BigDecimal?
+    , pAmountMax: BigDecimal?
+    , pInMeta: Boolean?
+    , pInNotes: Boolean?
+    , pInDocs: Boolean?
+    , pCap: Int?
+): Result<SearchFindRecord> = configuration.dsl().selectFrom(com.memo.jooq.tables.SearchFind.SEARCH_FIND.call(
+      pTenant
+    , pReader
+    , pRank
+    , pUnits
+    , pAllUnits
+    , pNow
+    , pQuery
+    , pPrefix
+    , pRefNorm
+    , pRefTail
+    , pStatus
+    , pTypes
+    , pOriginUnits
+    , pFrom
+    , pTo
+    , pAmountMin
+    , pAmountMax
+    , pInMeta
+    , pInNotes
+    , pInDocs
+    , pCap
+)).fetch()
+
+/**
+ * Get <code>memo.search_find</code> as a table.
+ */
+fun searchFind(
+      pTenant: UUID?
+    , pReader: UUID?
+    , pRank: Int?
+    , pUnits: Array<UUID?>?
+    , pAllUnits: Boolean?
+    , pNow: OffsetDateTime?
+    , pQuery: String?
+    , pPrefix: String?
+    , pRefNorm: String?
+    , pRefTail: String?
+    , pStatus: Array<String?>?
+    , pTypes: Array<UUID?>?
+    , pOriginUnits: Array<UUID?>?
+    , pFrom: OffsetDateTime?
+    , pTo: OffsetDateTime?
+    , pAmountMin: BigDecimal?
+    , pAmountMax: BigDecimal?
+    , pInMeta: Boolean?
+    , pInNotes: Boolean?
+    , pInDocs: Boolean?
+    , pCap: Int?
+): SearchFind = com.memo.jooq.tables.SearchFind.SEARCH_FIND.call(
+    pTenant,
+    pReader,
+    pRank,
+    pUnits,
+    pAllUnits,
+    pNow,
+    pQuery,
+    pPrefix,
+    pRefNorm,
+    pRefTail,
+    pStatus,
+    pTypes,
+    pOriginUnits,
+    pFrom,
+    pTo,
+    pAmountMin,
+    pAmountMax,
+    pInMeta,
+    pInNotes,
+    pInDocs,
+    pCap
+)
+
+/**
+ * Get <code>memo.search_find</code> as a table.
+ */
+fun searchFind(
+      pTenant: Field<UUID?>
+    , pReader: Field<UUID?>
+    , pRank: Field<Int?>
+    , pUnits: Field<Array<UUID?>?>
+    , pAllUnits: Field<Boolean?>
+    , pNow: Field<OffsetDateTime?>
+    , pQuery: Field<String?>
+    , pPrefix: Field<String?>
+    , pRefNorm: Field<String?>
+    , pRefTail: Field<String?>
+    , pStatus: Field<Array<String?>?>
+    , pTypes: Field<Array<UUID?>?>
+    , pOriginUnits: Field<Array<UUID?>?>
+    , pFrom: Field<OffsetDateTime?>
+    , pTo: Field<OffsetDateTime?>
+    , pAmountMin: Field<BigDecimal?>
+    , pAmountMax: Field<BigDecimal?>
+    , pInMeta: Field<Boolean?>
+    , pInNotes: Field<Boolean?>
+    , pInDocs: Field<Boolean?>
+    , pCap: Field<Int?>
+): SearchFind = com.memo.jooq.tables.SearchFind.SEARCH_FIND.call(
+    pTenant,
+    pReader,
+    pRank,
+    pUnits,
+    pAllUnits,
+    pNow,
+    pQuery,
+    pPrefix,
+    pRefNorm,
+    pRefTail,
+    pStatus,
+    pTypes,
+    pOriginUnits,
+    pFrom,
+    pTo,
+    pAmountMin,
+    pAmountMax,
+    pInMeta,
+    pInNotes,
+    pInDocs,
+    pCap
+)
+
+/**
+ * Call <code>memo.search_snippets</code>.
+ */
+fun searchSnippets(
+      configuration: Configuration
+    , pTenant: UUID?
+    , pReader: UUID?
+    , pRank: Int?
+    , pUnits: Array<UUID?>?
+    , pAllUnits: Boolean?
+    , pNow: OffsetDateTime?
+    , pMemos: Array<UUID?>?
+    , pQuery: String?
+    , pPrefix: String?
+): Result<SearchSnippetsRecord> = configuration.dsl().selectFrom(com.memo.jooq.tables.SearchSnippets.SEARCH_SNIPPETS.call(
+      pTenant
+    , pReader
+    , pRank
+    , pUnits
+    , pAllUnits
+    , pNow
+    , pMemos
+    , pQuery
+    , pPrefix
+)).fetch()
+
+/**
+ * Get <code>memo.search_snippets</code> as a table.
+ */
+fun searchSnippets(
+      pTenant: UUID?
+    , pReader: UUID?
+    , pRank: Int?
+    , pUnits: Array<UUID?>?
+    , pAllUnits: Boolean?
+    , pNow: OffsetDateTime?
+    , pMemos: Array<UUID?>?
+    , pQuery: String?
+    , pPrefix: String?
+): SearchSnippets = com.memo.jooq.tables.SearchSnippets.SEARCH_SNIPPETS.call(
+    pTenant,
+    pReader,
+    pRank,
+    pUnits,
+    pAllUnits,
+    pNow,
+    pMemos,
+    pQuery,
+    pPrefix
+)
+
+/**
+ * Get <code>memo.search_snippets</code> as a table.
+ */
+fun searchSnippets(
+      pTenant: Field<UUID?>
+    , pReader: Field<UUID?>
+    , pRank: Field<Int?>
+    , pUnits: Field<Array<UUID?>?>
+    , pAllUnits: Field<Boolean?>
+    , pNow: Field<OffsetDateTime?>
+    , pMemos: Field<Array<UUID?>?>
+    , pQuery: Field<String?>
+    , pPrefix: Field<String?>
+): SearchSnippets = com.memo.jooq.tables.SearchSnippets.SEARCH_SNIPPETS.call(
+    pTenant,
+    pReader,
+    pRank,
+    pUnits,
+    pAllUnits,
+    pNow,
+    pMemos,
+    pQuery,
+    pPrefix
+)

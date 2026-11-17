@@ -27,7 +27,8 @@ erDiagram
 ```
 - **`search_memo`, `search_note`, `search_chunk` (search module):** derived rows, rebuilt from their sources (ADR-0054). The invariants:
   - every memo has exactly one `search_memo` row;
-  - a chunk's rank is the effective classification of its file version;
+  - a chunk's rank is the effective classification of its file version (the higher of the file's and the memo's);
+  - note and chunk rows carry their memo's rank, origin unit, status, type, creation date and amount, equal to the memo row's (`search_put_memo` updates them; ADR-0054 amendment);
   - a deleted or superseded file version leaves no chunks behind.
 - **`saved_search` (search module):** id, tenant, owner, name (1–100), criteria (jsonb: q, filters, sort; at most 4 KB), created and updated. Private to the owner, at most 50 per person. A saved search keeps criteria, never results.
 - **`memo_watch` (memo module):** tenant, memo, user, reason (`MANUAL`, `INITIATED`, `ACTED`, `MENTIONED`), created. Unique per (memo, user). Auto-watch follows the person's preference (`notifications.autoWatch`, default on for memos they initiate or act on).
@@ -36,6 +37,7 @@ erDiagram
 - **API:** `GET /api/v1/search?q=&type=&status=&unit=&from=&to=&amountMin=&amountMax=&in=metadata,notes,documents&sort=relevance|newest&cursor=`
   - **Returns:** results (memo id, number, subject, type, status, unit, updated, a snippet with `<mark>` delimiters as data, "found in" flags), a count that is exact up to 2,000 and "2,000+" above it, facets (status, type, unit) counted on the same permitted set, and a cursor.
   - **Errors:** 422 (query too long, too many terms, bad filter), 429 (rate limit), 503 (`SEARCH_TIMEOUT`).
+  - **Search as you type** (the top-bar box): `GET /api/v1/search/suggest?q=` matches the last word as a prefix (3+ characters) over 200 candidates and returns at most 8 memos, without facets or count (E05 T1: the unit head's prefix search over 2,000 candidates was 307 ms at V1).
 - **Function `search.find`:**
   - Its parameters are the tenant, the reader, the clearance rank, the unit scopes, the parsed query terms, the filters, the sort, the cursor and the limit.
   - The application computes the unit scopes from the policy, as `MemoReadable` does.
@@ -90,6 +92,7 @@ erDiagram
 | Endpoint | Rule |
 |---|---|
 | `GET /search` | signed in; results filtered by the access rule; rate-limited |
+| `GET /search/suggest` | signed in; as `GET /search` (same rule, same rate limit) |
 | `GET/POST/PUT/DELETE /saved-searches` | signed in; owner only (others 404) |
 | `PUT/DELETE /memos/{id}/watch` | readers of the memo (others 404) |
 | `GET /inbox/watching` | signed in (own) |
@@ -120,8 +123,8 @@ erDiagram
 - **`search/V1`** (new module `search`):
   - `search_memo`, `search_note`, `search_chunk` with RLS ENABLED but not FORCED, owned by the schema owner, with no grants to `memo_app`;
   - `saved_search` with RLS ENABLED and FORCED;
-  - the `search.find` function (SECURITY DEFINER, `search_path` pinned, EXECUTE to `memo_app` only);
-  - `CREATE EXTENSION pg_trgm` (contrib; the owner needs it in the install script, and Ansible already provisions extensions);
+  - the search functions (`search_find`, `search_snippets` and the writers; SECURITY DEFINER, `search_path` pinned, EXECUTE to `memo_app` only);
+  - B-tree indexes on `ref_norm` and `ref_tail` for numbers (no `pg_trgm`: the migration role cannot create extensions; ADR-0054 amendment);
   - `RlsMetaTest` gains a documented exception list for the three search tables.
 - **`memo/V18`:** `memo_watch` (RLS ENABLED and FORCED); indexes for the due-time sort and the team view.
 - **`identity`:** the notification preferences gain `autoWatch` and `watchEmail` (`DIGEST|IMMEDIATE|OFF`). Code only, if they live in the existing jsonb preferences.

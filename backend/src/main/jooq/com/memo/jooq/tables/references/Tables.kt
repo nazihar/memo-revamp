@@ -61,6 +61,8 @@ import com.memo.jooq.tables.OrgLegalEntity
 import com.memo.jooq.tables.OrgPosition
 import com.memo.jooq.tables.OrgReportingLine
 import com.memo.jooq.tables.OrgUnit
+import com.memo.jooq.tables.SearchFind
+import com.memo.jooq.tables.SearchSnippets
 import com.memo.jooq.tables.SystemIdempotencyKey
 import com.memo.jooq.tables.SystemInfo
 import com.memo.jooq.tables.TenancySetting
@@ -82,6 +84,16 @@ import com.memo.jooq.tables.WorkflowStep
 import com.memo.jooq.tables.WorkflowSubstitution
 import com.memo.jooq.tables.WorkflowTask
 import com.memo.jooq.tables.WorkflowTimer
+import com.memo.jooq.tables.records.SearchFindRecord
+import com.memo.jooq.tables.records.SearchSnippetsRecord
+
+import java.math.BigDecimal
+import java.time.OffsetDateTime
+import java.util.UUID
+
+import org.jooq.Configuration
+import org.jooq.Field
+import org.jooq.Result
 
 
 
@@ -364,6 +376,240 @@ val ORG_REPORTING_LINE: OrgReportingLine = OrgReportingLine.ORG_REPORTING_LINE
  * The table <code>memo.org_unit</code>.
  */
 val ORG_UNIT: OrgUnit = OrgUnit.ORG_UNIT
+
+/**
+ * The table <code>memo.search_find</code>.
+ */
+val SEARCH_FIND: SearchFind = SearchFind.SEARCH_FIND
+
+/**
+ * Call <code>memo.search_find</code>.
+ */
+fun SEARCH_FIND(
+      configuration: Configuration
+    , pTenant: UUID?
+    , pReader: UUID?
+    , pRank: Int?
+    , pUnits: Array<UUID?>?
+    , pAllUnits: Boolean?
+    , pNow: OffsetDateTime?
+    , pQuery: String?
+    , pPrefix: String?
+    , pRefNorm: String?
+    , pRefTail: String?
+    , pStatus: Array<String?>?
+    , pTypes: Array<UUID?>?
+    , pOriginUnits: Array<UUID?>?
+    , pFrom: OffsetDateTime?
+    , pTo: OffsetDateTime?
+    , pAmountMin: BigDecimal?
+    , pAmountMax: BigDecimal?
+    , pInMeta: Boolean?
+    , pInNotes: Boolean?
+    , pInDocs: Boolean?
+    , pCap: Int?
+): Result<SearchFindRecord> = configuration.dsl().selectFrom(com.memo.jooq.tables.SearchFind.SEARCH_FIND.call(
+      pTenant
+    , pReader
+    , pRank
+    , pUnits
+    , pAllUnits
+    , pNow
+    , pQuery
+    , pPrefix
+    , pRefNorm
+    , pRefTail
+    , pStatus
+    , pTypes
+    , pOriginUnits
+    , pFrom
+    , pTo
+    , pAmountMin
+    , pAmountMax
+    , pInMeta
+    , pInNotes
+    , pInDocs
+    , pCap
+)).fetch()
+
+/**
+ * Get <code>memo.search_find</code> as a table.
+ */
+fun SEARCH_FIND(
+      pTenant: UUID?
+    , pReader: UUID?
+    , pRank: Int?
+    , pUnits: Array<UUID?>?
+    , pAllUnits: Boolean?
+    , pNow: OffsetDateTime?
+    , pQuery: String?
+    , pPrefix: String?
+    , pRefNorm: String?
+    , pRefTail: String?
+    , pStatus: Array<String?>?
+    , pTypes: Array<UUID?>?
+    , pOriginUnits: Array<UUID?>?
+    , pFrom: OffsetDateTime?
+    , pTo: OffsetDateTime?
+    , pAmountMin: BigDecimal?
+    , pAmountMax: BigDecimal?
+    , pInMeta: Boolean?
+    , pInNotes: Boolean?
+    , pInDocs: Boolean?
+    , pCap: Int?
+): SearchFind = com.memo.jooq.tables.SearchFind.SEARCH_FIND.call(
+    pTenant,
+    pReader,
+    pRank,
+    pUnits,
+    pAllUnits,
+    pNow,
+    pQuery,
+    pPrefix,
+    pRefNorm,
+    pRefTail,
+    pStatus,
+    pTypes,
+    pOriginUnits,
+    pFrom,
+    pTo,
+    pAmountMin,
+    pAmountMax,
+    pInMeta,
+    pInNotes,
+    pInDocs,
+    pCap
+)
+
+/**
+ * Get <code>memo.search_find</code> as a table.
+ */
+fun SEARCH_FIND(
+      pTenant: Field<UUID?>
+    , pReader: Field<UUID?>
+    , pRank: Field<Int?>
+    , pUnits: Field<Array<UUID?>?>
+    , pAllUnits: Field<Boolean?>
+    , pNow: Field<OffsetDateTime?>
+    , pQuery: Field<String?>
+    , pPrefix: Field<String?>
+    , pRefNorm: Field<String?>
+    , pRefTail: Field<String?>
+    , pStatus: Field<Array<String?>?>
+    , pTypes: Field<Array<UUID?>?>
+    , pOriginUnits: Field<Array<UUID?>?>
+    , pFrom: Field<OffsetDateTime?>
+    , pTo: Field<OffsetDateTime?>
+    , pAmountMin: Field<BigDecimal?>
+    , pAmountMax: Field<BigDecimal?>
+    , pInMeta: Field<Boolean?>
+    , pInNotes: Field<Boolean?>
+    , pInDocs: Field<Boolean?>
+    , pCap: Field<Int?>
+): SearchFind = com.memo.jooq.tables.SearchFind.SEARCH_FIND.call(
+    pTenant,
+    pReader,
+    pRank,
+    pUnits,
+    pAllUnits,
+    pNow,
+    pQuery,
+    pPrefix,
+    pRefNorm,
+    pRefTail,
+    pStatus,
+    pTypes,
+    pOriginUnits,
+    pFrom,
+    pTo,
+    pAmountMin,
+    pAmountMax,
+    pInMeta,
+    pInNotes,
+    pInDocs,
+    pCap
+)
+
+/**
+ * The table <code>memo.search_snippets</code>.
+ */
+val SEARCH_SNIPPETS: SearchSnippets = SearchSnippets.SEARCH_SNIPPETS
+
+/**
+ * Call <code>memo.search_snippets</code>.
+ */
+fun SEARCH_SNIPPETS(
+      configuration: Configuration
+    , pTenant: UUID?
+    , pReader: UUID?
+    , pRank: Int?
+    , pUnits: Array<UUID?>?
+    , pAllUnits: Boolean?
+    , pNow: OffsetDateTime?
+    , pMemos: Array<UUID?>?
+    , pQuery: String?
+    , pPrefix: String?
+): Result<SearchSnippetsRecord> = configuration.dsl().selectFrom(com.memo.jooq.tables.SearchSnippets.SEARCH_SNIPPETS.call(
+      pTenant
+    , pReader
+    , pRank
+    , pUnits
+    , pAllUnits
+    , pNow
+    , pMemos
+    , pQuery
+    , pPrefix
+)).fetch()
+
+/**
+ * Get <code>memo.search_snippets</code> as a table.
+ */
+fun SEARCH_SNIPPETS(
+      pTenant: UUID?
+    , pReader: UUID?
+    , pRank: Int?
+    , pUnits: Array<UUID?>?
+    , pAllUnits: Boolean?
+    , pNow: OffsetDateTime?
+    , pMemos: Array<UUID?>?
+    , pQuery: String?
+    , pPrefix: String?
+): SearchSnippets = com.memo.jooq.tables.SearchSnippets.SEARCH_SNIPPETS.call(
+    pTenant,
+    pReader,
+    pRank,
+    pUnits,
+    pAllUnits,
+    pNow,
+    pMemos,
+    pQuery,
+    pPrefix
+)
+
+/**
+ * Get <code>memo.search_snippets</code> as a table.
+ */
+fun SEARCH_SNIPPETS(
+      pTenant: Field<UUID?>
+    , pReader: Field<UUID?>
+    , pRank: Field<Int?>
+    , pUnits: Field<Array<UUID?>?>
+    , pAllUnits: Field<Boolean?>
+    , pNow: Field<OffsetDateTime?>
+    , pMemos: Field<Array<UUID?>?>
+    , pQuery: Field<String?>
+    , pPrefix: Field<String?>
+): SearchSnippets = com.memo.jooq.tables.SearchSnippets.SEARCH_SNIPPETS.call(
+    pTenant,
+    pReader,
+    pRank,
+    pUnits,
+    pAllUnits,
+    pNow,
+    pMemos,
+    pQuery,
+    pPrefix
+)
 
 /**
  * The table <code>memo.system_idempotency_key</code>.

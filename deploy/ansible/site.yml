@@ -12,6 +12,8 @@
   vars:
     memo_base: /opt/memo
     memo_envs: [dev, staging]
+    # The keys written to each environment's .env, from `memo_env_settings` below. A setting added there but not here is
+    # never written (MEMO_TIKA_URL, E02 to 2026-11-17). The CI deploy does not run this playbook: run it by hand after a change.
     memo_env_keys:
       - COMPOSE_PROJECT_NAME
       - MEMO_WEB_PORT

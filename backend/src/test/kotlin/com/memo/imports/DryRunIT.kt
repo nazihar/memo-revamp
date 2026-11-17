@@ -615,9 +615,12 @@ class DryRunIT : DryRunTest() {
                     ).use { st -> st.executeQuery().use { rs -> generateSequence { if (rs.next()) rs.getString(1) else null }.toList() } }
             assertThat(tables).describedAs("tables under RLS").contains("memo", "memo_legacy")
             tables.associateWith { table ->
+                // The rendition worker updates its rows (state, attempts) for the originals uploaded above, at any moment;
+                // only a row added or removed there would be the dry run's.
+                val checksum = if (table == WORKER_TABLE) "''" else "coalesce(md5(string_agg(t::text, '|' order by t::text)), '')"
                 c
                     .prepareStatement(
-                        "select count(*) || ':' || coalesce(md5(string_agg(t::text, '|' order by t::text)), '') from $table t",
+                        "select count(*) || ':' || $checksum from $table t",
                     ).use { st ->
                         st.executeQuery().use { rs ->
                             rs.next()
@@ -630,5 +633,6 @@ class DryRunIT : DryRunTest() {
     private companion object {
         const val SHA256_HEX = 64
         const val COUNTER = 100L
+        const val WORKER_TABLE = "files_rendition"
     }
 }

@@ -50,6 +50,7 @@ import java.util.concurrent.atomic.AtomicReference
 /**
  * One upload as the API received it: a new file ([purposeKey]) or a new version of [fileId]. A copy of stored content
  * (FileUploads.copyFrom) gives the SHA-256 it must have ([expectedSha256], lower-case hex) and is not [rateLimited].
+ * A [rateLimited] upload by the system actor is not counted either (ADR-0025 amendment).
  */
 internal data class UploadRequest(
     val purposeKey: String?,
@@ -102,12 +103,15 @@ internal class Uploads(
     /** Stores the upload and returns the id of the version that holds it (on an idempotent replay: the first one's). */
     fun upload(request: UploadRequest): UUID {
         val tenant = TenantContext.current()
-        val user = (ActorContext.current().actor as? Actor.User)?.userId
+        val actor = ActorContext.current().actor
+        val user = (actor as? Actor.User)?.userId
         val plan = transactions.readInTenant(tenant) { plan(request) }
         val progress = Progress()
         try {
-            if (request.rateLimited) rateLimiter.consume(plan.purpose.uploadRateLimit, user?.toString() ?: "anonymous")
-            if (request.declaredLength != null && request.declaredLength > plan.maxBytes) {
+            val subject = actor.uploadRateSubject()
+            if (request.rateLimited && subject != null) rateLimiter.consume(plan.purpose.uploadRateLimit, subject)
+            val declaredLength = request.declaredLength
+            if (declaredLength != null && declaredLength > plan.maxBytes) {
                 reject(RejectionReason.TOO_LARGE, "maxBytes" to plan.maxBytes)
             }
             return slots.withSlot { process(tenant, user, request, plan, progress) }
@@ -432,6 +436,21 @@ internal class Uploads(
         }
     }
 }
+
+/**
+ * Whom an upload by this actor counts against (ADR-0025): the signed-in person; none for the system's own work (a job, an
+ * event listener, a seeder), which is no person to throttle and would otherwise share one cluster-wide bucket with every
+ * other tenant's. Only those entry points bind [Actor.System]: a request is a user, an operator or [Actor.Anonymous], and
+ * anything but a user counts against the one anonymous bucket.
+ */
+private fun Actor.uploadRateSubject(): String? =
+    when (this) {
+        is Actor.User -> userId.toString()
+        is Actor.System -> null
+        else -> ANONYMOUS_UPLOADER
+    }
+
+private const val ANONYMOUS_UPLOADER = "anonymous"
 
 /** A copy whose content is not the [expected] one is refused before anything is inspected or stored (ADR-0055). */
 private fun expectHash(

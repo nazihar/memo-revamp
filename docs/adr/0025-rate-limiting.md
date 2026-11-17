@@ -34,3 +34,9 @@ Chosen option: **1**.
 
 ### Confirmation
 - `RateLimiterIT` (limits across two app contexts, `Retry-After`), `LoginRateLimitIT`; RLS meta-test allow-list entry.
+
+## Amendment — 2026-11-17 (uploads by the system)
+- **The upload limit throttles people only.** An upload counts against the signed-in user's bucket (`UPLOAD_PER_USER`, or the purpose's own limit such as `IMPORT_INTAKE_PER_USER`). An upload by `Actor.System` (a db-scheduler job, an event listener, a seeder) counts against none, like a copy of stored content (`FileUploads.copyFrom`, ADR-0055). Any other actor (`Actor.Anonymous`, a platform operator) still counts against the one `anonymous` bucket.
+- Why: buckets are keyed by `<limit>:<subject>` with no tenant, so every system upload of every tenant (final records, E04; import reports, E06 T8) shared one bucket of 30 a minute. A burst of memo closings would have pushed final records into retries and, after five attempts, `FAILED`. The nightly build hit it first (`ImportedMemoIT`).
+- Only jobs, listeners and seeders bind `Actor.System` (ADR-0017); an HTTP request is a user, an operator or anonymous, so no request reaches the unlimited path. System uploads stay bounded by the work that causes them and by the per-node upload semaphore.
+- Confirmation: `UploadIT` (a user's 31st upload in a minute is refused; 40 system uploads are not; anonymous uploads stay limited).

@@ -201,7 +201,8 @@ interface FileContents {
 /**
  * Stores files through the full upload pipeline (scan, inspection, encryption, purpose checks) for callers that are not
  * HTTP requests, such as seeders acting as a user (ADR-0029). Call outside a transaction, with the tenant and the acting
- * user bound; the purpose's `mayUpload` applies as for the API. Returns the new version's id.
+ * user bound; the purpose's `mayUpload` applies as for the API. Returns the new version's id. A user's uploads count
+ * against their upload rate (ADR-0025); the system's own (a job, a listener, a seeder: `Actor.System`) count against none.
  */
 interface FileUploads {
     /** Whether uploads can be scanned now: a malware scanner is configured and answers (uploads fail closed without one). */

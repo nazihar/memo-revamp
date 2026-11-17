@@ -10,3 +10,7 @@ History of the phase, newest last. `STATUS.md` keeps only the current position.
   - The workflow's `escalate-to-forum` step does not wait: it publishes `WorkflowEscalatedToForum` and continues (Phase 2 E03 design §2), and nothing consumes the event. The exit criterion's chain needs the decision to come back to the memo, hence Q3 and ADR-ESCALATE.
   - Memo numbering (ADR-0044) lives inside the memo type and `memo_number_counter`. Resolution numbering needs it as a shared service (R9, ADR-RESOLUTION).
   - Mail on dev goes only to Mailpit, so the "accepted by common clients" special test needs real mailboxes (Q5).
+
+## 2026-11-18
+- The owner approved the overview and answered Q1–Q6 as recommended ("I'm relying on you on the questions"). They asked that the recommendations rest on industry best practice and user-friendliness. Each epic's research checks them against sourced practice; any change goes through an ADR and is reported.
+- Order now: Phase 4 → Phase 1b → Phase 3 E07 (Q2). Next: the E01 plan (forum types and forums).

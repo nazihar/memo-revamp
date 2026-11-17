@@ -2,7 +2,7 @@
 
 > Level-1 plan (see `AGENTS.md §5`). It splits the phase into epics, fixes their order and dependencies, lists the phase-level research and ADRs, and maps the exit criteria to epics. Each epic gets its own detailed plan (`epic-<NN>-<slug>/`: research, ADRs, design, threat model, tasks, test plan) just before it starts.
 >
-> **Status:** written 2026-11-17; waiting for the owner's approval (§10).
+> **Status:** approved 2026-11-18, every question answered as recommended (see §10). Written 2026-11-17.
 >
 > **Where Phase 4 sits:** the owner asked on 2026-11-17 to start Phase 4 now. That is ahead of the agreed order (Phase 3 E01–E06 → Phase 1b → Phase 3 E07, Phase 3 Q4). Phase 3 E01–E06 are built and merged. The Phase 1b overview (#141) is written but not approved, and Phase 3 E07 (the M1 security gate) has not started. Phase 4 needs the memo, workflow, document and search APIs, all of which exist; it does not need anything from 1b. §9 Q2 asks where 1b and E07 go now.
 
@@ -365,14 +365,14 @@ Numbers are assigned when written, starting at ADR-0056. Each one uses MADR.
 
 | Item | By | Date | Notes |
 |---|---|---|---|
-| Phase 4 overview | | | |
+| Phase 4 overview | Product owner (aradnazihar) | 2026-11-18 | Approved, with every question answered as recommended: "I'm relying on you on the questions. I hope your recommendations are based on industry best practices and also user friendliness." The owner **kept the per-epic gate delegation**. Because the recommendations rest on the agent's reading, each epic's research checks them against sourced industry practice and usability. A finding that contradicts one is recorded in an ADR and reported to the owner. |
 
 ### Answers to open questions
 | Q | Date | Answer |
 |---|---|---|
-| Q1 | | |
-| Q2 | | |
-| Q3 | | |
-| Q4 | | |
-| Q5 | | |
-| Q6 | | |
+| Q1 | 2026-11-18 | **Approved as recommended; delegation kept.** The screen flows for forum-type and forum admin (E01), the secretary's queue, the agenda builder and the meeting page (E02, E03), and minutes with resolutions (E06) go to the owner before build. |
+| Q2 | 2026-11-18 | **(a):** Phase 4 now, then Phase 1b, then Phase 3 E07, with one pen test over Phases 0–4 and 1b. The 1b overview (#141) waits as written. |
+| Q3 | 2026-11-18 | **(a):** the forum step waits for the decision, and the outcome resumes the route. A step marked "for information" keeps today's behaviour. |
+| Q4 | 2026-11-18 | **(a):** direct submissions are memos of a "committee paper" type. The secretary adds procedural items without a memo. |
+| Q5 | 2026-11-18 | **(a):** at E05 the agent asks for an Outlook and a Gmail mailbox and a relay for one recorded run. If none is available then, the real-client check is carried. |
+| Q6 | 2026-11-18 | **(a):** declarations per item, with a prompt when the agenda is published. A standing register waits for a customer with the data. |

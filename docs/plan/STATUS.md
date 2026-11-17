@@ -10,8 +10,19 @@
 - **Phase 2 (workflow engine) closed on 2026-11-14** (owner instruction; `phase-2-workflow-engine/retrospective.md`, exit recorded in `overview.md §10`). All six epics merged and on dev: E01 first slice (D1), E02 ONLYOFFICE editing, E03 definition model and runtime, E04 assignees, queues and DoA, E05 timers and SLAs, E06 visual builder (PRs #34–#83). The eight Phase 2 journeys pass against dev; the load target is met (inbox p95 10 ms with 10,000 memos in review). Items that need the owner in person are carried (Waiting for human).
 - **Phase 1a closed on 2026-11-09** (`phase-1a-minimum-core/retrospective.md`). **Phase 1b** started on 2026-11-17, after Phase 3 E06 and before E07 (Phase 3 Q4).
 - **Dev environment:** https://dev.memo-revamp.naziharitsolution.com and the operator console https://admin.dev.memo-revamp.naziharitsolution.com on the VM 123.176.58.175. It deploys automatically after every green `ci` run on `master`. The owner's operator account is enrolled.
+  - The CI deploy does not re-run the Ansible playbook. After a change to `deploy/ansible/site.yml` or `deploy/scripts/*`, run it by hand.
+  - A new env setting needs both its value and its name in `memo_env_keys`.
 - **Phase 0:** done (`docs/plan/phase-0-foundations/`). **Release:** `v0.1.0` (2026-10-15). **Product name:** `memo` everywhere except the repository name (A1).
-- **Branches:** `master` holds PRs #1–#83. Open and stacked, to merge in order (#104 E03 T1, #105 T2, #106 T4, #107 T5, #108 T3, #109 T6, #110 T7, #111 T8, #112 T9, #113 E04 plan, #114 T1, #115 T2, #116 T3, #117 T4, #118 T5, #119 T6, #120 T7 and #121 E05 plan, #122 E05 T1, #123 E05 T2, #124 E05 T3, #125 E05 T4, #126 E05 T5, #127 E05 T6, #128 E05 T7, #129 E05 T8, #130 E06 plan, #131 E06 T1, #132 E06 T2, #133 E06 T3, #134 E06 T4, #135 E06 T5, #136 E06 T6, #137 E06 T7, #138 E06 T8, #139 E06 T9, #140 E06 T10 and #141 Phase 1b overview follow #103): #84 Phase 3 overview → #85 E01 plan → #86 T1 type versions → #87 T2 fields and metadata → #88 T3 attributes → #89 T4 numbering → #90 T5 lifecycle → #91 T8 demo types → #92 T6 admin screens and T7 create form and memo view → #93 T8 close → #94 E02 plan → #95 T1 ONLYOFFICE 10 → #96 T2 renditions → #97 T3 Tika → #98 T4 attachments → #99 T5 co-authors and rooms → #100 T6 comparison → #101 T7 web → #102 T8 close → #103 E03 plan.
+- **Branches:** `master` holds PRs #1–#145; nothing is open. #84–#141 (Phase 3 E01–E06 and the Phase 1b overview) were merged in order on 2026-11-17 at the owner's instruction and deployed to dev.
+- **After the merge (2026-11-17):** the first `master` runs found what the PR stage could not, fixed in #142–#145:
+  - #142: `BusinessCalendarIT` used fixed holiday dates that had become the past.
+  - #143: the playbook never wrote `MEMO_TIKA_URL`, so dev ran without Tika from E02 on. Applied to dev.
+  - #144: the first page's script had grown to 264 KB gzip, over NFR P5; it is now about 242 KB.
+  - #145: three backend fixes.
+    - System uploads shared one cluster-wide rate-limit bucket of 30 a minute, which could fail final records; ADR-0025 is amended.
+    - The spool clean-up at start-up raced the first uploads.
+    - A flaky dry-run write check.
+  - The weekly `load` stage, run by hand on `master`, passed: `ImportVolumeIT` at 10,000 memos imported in 7 minutes on a CI runner.
 
 ## State (Phase 1b)
 - [x] Overview written (2026-11-17): ten epics (E01 federated sign-in; E02 passkeys and the sign-in policy; E03 mobile token issuer; E04 organisation in full; E05 HR sync; E06 key management; E07 break-glass; E08 export and offboarding; E09 admin console completion; E10 close-out and ASVS L2 of 1a + 1b) (#141)
@@ -38,7 +49,10 @@
 - [x] E04 built: T1 spike, PDF/A conversion and validator (#114); T2 generated pages (#115); T3 assembler (#116); T4 job and API (#117); T5 regeneration, retry, retention and fixity (#118); T6 web (#119); T7 close (#120)
 - [x] E03 built: T1 template engine (poi-tl 1.12.2 on POI 6.0.0 after the spike; scanner, checks, fill, `memo.template` purpose; #104); T2 templates on memo types, preview, maker-checker rules and create from template (#105); T4 access model and shares (#106); T5 copy-to, receipts and distribution lists (#107); T3 note sheet backend (#108); T6 authenticated approvals and the recusal follow-up (#109); T7 note sheet web (#110); T8 access, copy-to, distribution lists and templates web (#111); T9 close: journeys, demo seed, performance, runbook and ASVS (#112)
 - [ ] E02 carried: `OnlyOfficeConversionIT` and `TikaExtractionIT` against the stack, the hostile corpus through both services (nightly), the two conversion timings on dev, editing attachments in the browser (gap against ADR-0047)
-- [ ] E01/E02 close-out on dev, after #84–#102 are merged and deployed: re-run Ansible so `MEMO_TIKA_URL` is set; check on dev that no pre-E03 round or step is left at the defaults and that the demo DoA has the credit bands
+- [ ] E01/E02 close-out on dev (merged and deployed 2026-11-17).
+  - Done: Ansible re-run with `MEMO_TIKA_URL` written (#143), the backend redeployed with Tika, and the demo batch "Legacy DMS sample, 2019–2021" COMPLETED and verified on dev. Its `.doc` and `.xls` rows stay rejected: they were seeded before Tika was connected, and seeders only fill gaps.
+  - Left: check on dev that no pre-E03 round or step is left at the defaults and that the demo DoA has the credit bands.
+- [ ] Nightly green on `master` after #144 and #145 (the first run, 2026-11-17, found both faults and skipped the browser jobs)
 
 ## State (Phase 2, closed)
 - [x] Overview approved (2026-11-09), Q1–Q5 answered, per-epic gate delegated (E01 screen flows reviewed by the owner before build)
@@ -56,7 +70,7 @@
 - [ ] Owner demo, moderated usability walkthrough, manual keyboard and screen-reader pass (carried)
 
 ## Next step
-1. Owner: **approve the Phase 1b overview and answer Q1–Q5** (`phase-1b-enterprise-identity/overview.md §9`, PR #141). Then the agent writes the E01 plan (federated sign-in). Owner, also: merge #84–#141 in order when convenient (CI on each); after E03 is on dev, the demo seed adds the unit reader, the Credit facility letterhead and the "Credit line renewal for Meghna Agro" memo; after E06 (#131–#140), it adds the "Legacy DMS sample, 2019–2021" import batch and clears `admin@` to Confidential. Run `load` by hand on the E06 branch once (`gh workflow run load --ref …`), since scheduled workflows run only on `master`.
+1. Owner: **approve the Phase 1b overview and answer Q1–Q5** (`phase-1b-enterprise-identity/overview.md §9`, PR #141). Then the agent writes the E01 plan (federated sign-in). Agent, meanwhile: the nightly run on `master` after #144 and #145, and the E01/E02 close-out checks on dev.
 2. Owner, in person when convenient: the D1 and phase demos on dev, the builder walkthrough and the manual accessibility pass (Waiting for human).
 3. Before 2026-11-22: take the rebuilt distroless digest from Renovate and delete the zlib entries in `.trivyignore`.
 4. Follow-ups (both retrospectives, "Carried"): `AuditPerformanceIT`, `NotificationPerformanceIT`, the full-signature ClamAV corpus nightly, sample bodies for the remaining mutating matrix cells, upstream clean-ups (`apk upgrade` lines, Spring Session licence exceptions, Guava pin), Spring Boot 4.2 GA; from Phase 2: the step ordinal after a recusal (retrospective), a sweep for timers dropped after their retry limit, a warning level for validation, saved simulation scenarios, React Flow 13, the web suite's timeouts under load.

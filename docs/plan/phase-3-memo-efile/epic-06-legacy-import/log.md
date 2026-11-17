@@ -323,3 +323,37 @@
 - **Phase demo script** `docs/plan/phase-3-memo-efile/demo.md` (new): E01–E05 in short, E06 in full (the seeded batch, imported memos, a live mini-import, a correction, what does not happen).
 - **Known local-only flake, `MailDeliveryIT`:** it failed in the full local runs of T6 and T8 and passes alone. It fails only in a full local suite under Docker load, when the Mailpit container stalls past the 10-second SMTP timeout; it has never failed in CI. Production timeouts are not changed for it. Likewise the web suite's `admin.test.tsx` ("shows the allowed range…") timed out once while the volume test ran beside it, and passes alone.
 - **Checks:** full `:backend:check --continue` locally: 2,617 tests, no failure (`MailDeliveryIT` passed this time), SpotBugs clean; ktlint (`when` bracing, a chain) and detekt (a long test method, `ReturnCount` in the demo seeder, and `TooManyFunctions` in `ImportBatchStore`, so the seeder looks its batch up itself) fixed, then ktlint, detekt, SpotBugs and the touched tests (`DemoAccessIT`, `DryRunIT`, `ImportVolumeIT` at 80 memos, `ModularityTest`, `ArchitectureRulesTest`) green again. Custom Semgrep rules: no finding. Web: `pnpm typecheck`, `pnpm lint`, `pnpm format:check` clean; `pnpm test` 250 passed (one screen test timed out under the volume run once, see above). `actionlint` on the workflows: clean.
+
+## 2026-11-17 — After the merge
+
+The owner merged #84–#141 in order. The first runs on `master` found what the PR stage could not.
+
+### Weekly `load`, run by hand on `master` (run 44027544488)
+All three jobs passed. `ImportVolumeIT` at 10,000 memos and 30,000 originals of 50 KB (1,430 MB) on a standard CI runner, against the laptop's T10 numbers:
+
+| Stage | CI runner | Laptop (T10) | Budget |
+|---|---|---|---|
+| Intake, 8 holders | 319 s (5,647 originals/min) | 445 s | — |
+| Dry run (proposals / confirmed) | 30 s / 13 s | 83 s / 60 s | < 5 min |
+| Import | 420 s (1,429 memos/min, 4,289 originals/min) | 34.6 min | < 2 h |
+| Verification | 56 s (32,206 originals/min) | 332 s | — |
+| Report | 5.3 s | 8 s | — |
+| Purge (30,001 staged versions) | 67 s | 379 s | — |
+
+- Peak heap was 1,036 MB; the database ended at 441 MB.
+- The 50,000-row metadata-only workbook dry-runs in 169 s with proposals and 49 s once confirmed.
+
+### The first nightly run on `master` (run 44027540396)
+- **Jazzer** passed, including `ImportSheetFuzzTest`.
+- **`ImportedMemoIT` failed with `RateLimitedException`.**
+  - System uploads were keyed `"anonymous"`, one bucket of 30 a minute shared by every tenant. That affects final records and the import report.
+  - Fixed in #145: system uploads count against no limit, and anonymous and operator uploads stay limited. ADR-0025 is amended.
+- **Lighthouse failed:** the first page's script was 264 KB gzip, over NFR P5. The route validators of the dashboard and the import batch page pulled their message files into the entry, among other growth. Fixed in #144; it is now about 242 KB.
+- **The browser jobs were skipped**, so the journey's `.doc` part has not run yet. It is to check on the next nightly run.
+
+### Found on the way
+- **#145's e2e run hit a start-up race.** The spool's clean-up of crash leftovers was an application runner, with no fixed order against the demo seeder's runner. It deleted a spool still in use, and the demo memo seeder died before the access seeder ran. The clean-up now runs when the `Spool` bean is made (#145).
+- **`DryRunIT`'s write check was flaky.** It now compares `files_rendition` by row count only, because the rendition worker updates its rows at any moment (#145).
+- **Dev had no Tika since E02.** The playbook's `memo_env_keys` lacked `MEMO_TIKA_URL`. Fixed and applied to dev (#143).
+  - The demo batch on dev is COMPLETED and verified.
+  - Its `.doc` and `.xls` rows were refused `SCAN_UNAVAILABLE` at seeding and stay rejected, because seeders only fill gaps.

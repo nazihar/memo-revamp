@@ -39,10 +39,10 @@
 | T8 | Load (weekly) | Gatling at V1: search p95 < 300 ms per reader profile; inbox by due < 150 ms; team view < 300 ms; dashboard < 800 ms |
 
 ## Exit checklist
-- [ ] Every test above green in its stage
-- [ ] Matrix and audit coverage green with the new endpoints and actions
+- [x] Every test above green in its stage (#129 CI, 2026-11-16: backend, e2e with `search.spec` and `inbox-team.spec`; the weekly load jobs on the branch; the attachment-words journey runs nightly)
+- [x] Matrix and audit coverage green with the new endpoints and actions (`EndpointCoverageTest`, `AuditActionCoverageTest`, #129 CI)
 - [x] T1 spike recorded; ADR-0054 numbers confirmed or amended (log, 2026-11-15)
-- [ ] V1 load results recorded in the log with hardware and concurrency
-- [ ] ASVS rows (V2, V5, V8, V14, V15, V16)
+- [x] V1 load results recorded in the log with hardware and concurrency (T8, 2026-11-16)
+- [x] ASVS rows (T8, 2026-11-16: V8 search access, V2 bulk actions and search limits, V15 the definer path, V14 words out of URLs and email, V16 audit; V5 is covered by the definer row's parameters and the snippets as text)
 - [x] Dependency register: Recharts and `react-is` (T7, 2026-11-16; no `pg_trgm`: ADR-0054 amendment)
-- [ ] Owner's review of flows H and I recorded in `ux-review.md`
+- [x] Owner's review of flows H and I recorded in `ux-review.md` (2026-11-15)

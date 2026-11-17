@@ -7,11 +7,9 @@ import com.memo.common.ratelimit.RateLimitedException
 import com.memo.common.tenant.TenantContext
 import com.memo.common.tenant.TenantId
 import com.memo.common.tenant.TenantTransactions
-import com.memo.identity.SecuritySettings
 import com.memo.identity.UserAccounts
 import com.memo.memo.MemoSeeding
 import com.memo.tenancy.TenantRegistry
-import com.memo.tenancy.TenantSettings
 import com.memo.workflow.WorkflowSeeding
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Value
@@ -27,7 +25,7 @@ import java.util.UUID
 
 /**
  * Synthetic volume V2 (phase overview E05, TESTING_STRATEGY §7): a tenant `volume` with [APPROVERS] approvers and
- * [INITIATORS] initiators, a routed memo type whose definition has an SLA (due, reminders, escalation), and [instances]
+ * [INITIATORS] initiators seated in one division under a head ([VolumeOrg], Phase 3 E05), a routed memo type whose definition has an SLA (due, reminders, escalation), and [instances]
  * memos in review, each with its timers, spread evenly over the approvers' inboxes. Built through the real services, so
  * every row is what production writes. Deterministic names, synthetic data only; refuses under the `prod` profile and
  * does nothing if the tenant exists.
@@ -35,7 +33,7 @@ import java.util.UUID
 @Component
 class WorkflowVolume(
     private val registry: TenantRegistry,
-    private val settings: TenantSettings,
+    private val org: VolumeOrg,
     private val accounts: UserAccounts,
     private val workflows: WorkflowSeeding,
     private val memos: MemoSeeding,
@@ -59,16 +57,18 @@ class WorkflowVolume(
             TenantContext.call(tenant) {
                 ActorContext.asSystem("volume-v2") {
                     transactions.inTenant(tenant) {
-                        // Password sign-in only, so the load test needs no authenticator.
-                        settings.put(SecuritySettings.MFA_REQUIRED, SecuritySettings.MFA_ADMINS_ONLY)
                         val admin = user("admin", password, tenantAdmin = true)
                         val checker = user("checker", password, tenantAdmin = true)
-                        Users(
-                            admin,
-                            checker,
-                            (1..APPROVERS).map { user("approver$it", password) },
-                            (1..INITIATORS).map { user("initiator$it", password) },
-                        )
+                        val users =
+                            Users(
+                                admin,
+                                checker,
+                                (1..APPROVERS).map { user("approver$it", password) },
+                                (1..INITIATORS).map { user("initiator$it", password) },
+                            )
+                        // Seated before any memo exists, so every memo comes from the division.
+                        org.prepare(user("head", password), users.approvers + users.initiators)
+                        users
                     }
                 }
             }

@@ -55,6 +55,14 @@ jobs:
             backend/build/reports/
             shared/build/reports/
           retention-days: 7
+      # Thread dumps from the stall watchdog (testsupport/StallWatchdog), also when the job reaches its time limit.
+      - if: failure() || cancelled()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: backend-test-stalls
+          path: backend/build/test-stalls/
+          if-no-files-found: ignore
+          retention-days: 14
 
   web:
     name: web (lint · typecheck · unit · i18n + client drift · build)

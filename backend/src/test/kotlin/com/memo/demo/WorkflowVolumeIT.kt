@@ -4,6 +4,7 @@ import com.memo.common.context.ActorContext
 import com.memo.common.tenant.TenantContext
 import com.memo.common.tenant.TenantDsl
 import com.memo.common.tenant.TenantTransactions
+import com.memo.jooq.tables.references.ORG_ASSIGNMENT
 import com.memo.jooq.tables.references.WORKFLOW_TASK
 import com.memo.jooq.tables.references.WORKFLOW_TIMER
 import com.memo.tenancy.TenantRegistry
@@ -14,10 +15,12 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.DefaultApplicationArguments
 import java.util.concurrent.atomic.AtomicReference
+import com.memo.jooq.tables.references.MEMO_ as MEMO
 
 /**
  * Synthetic volume V2 (test plan T6), small: memos in review through the real services, spread over the approvers,
- * each decision due with its timers; a second run does nothing. The first run goes through the start-up runner with no
+ * each decision due with its timers, everyone seated in one division under a head (Phase 3 E05 T8: the team view and
+ * the unit dashboard); a second run does nothing. The first run goes through the start-up runner with no
  * actor bound, as in the weekly load stage (its first run crashed there: tenant creation is audited).
  */
 class WorkflowVolumeIT : FilesIntegrationTest() {
@@ -50,6 +53,10 @@ class WorkflowVolumeIT : FilesIntegrationTest() {
                     assertThat(open).allSatisfy { assertThat(it.dueAt).isNotNull() }
                     assertThat(open.map { it.assigneeId }.toSet()).hasSize(WorkflowVolume.APPROVERS)
                     assertThat(dsl.fetchCount(WORKFLOW_TIMER, WORKFLOW_TIMER.STATE.eq("PENDING"))).isEqualTo(60 * 4)
+                    // The head, the approvers and the initiators are seated; every memo comes from their division.
+                    assertThat(dsl.fetchCount(ORG_ASSIGNMENT)).isEqualTo(1 + WorkflowVolume.APPROVERS + WorkflowVolume.INITIATORS)
+                    val origins = dsl.selectDistinct(MEMO.ORIGIN_UNIT_ID).from(MEMO).fetch(MEMO.ORIGIN_UNIT_ID)
+                    assertThat(origins).hasSize(1).doesNotContainNull()
                 }
             }
         }

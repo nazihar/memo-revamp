@@ -1,7 +1,9 @@
 name: load
 
 # Weekly load stage (TESTING_STRATEGY §7, phase 2 overview E05): synthetic volume V2 (10,000 memos in review with
-# their SLA timers) on the on-prem stack, then the Gatling inbox simulation against it (NFR P1: p95 < 300 ms).
+# their SLA timers, everyone seated in one division under a head) on the on-prem stack, then the Gatling simulations
+# against it: the inbox (NFR P1: p95 < 300 ms), and search, the inbox by due time, the team view and the dashboards
+# (Phase 3 E05 T8).
 on:
   schedule:
     - cron: '0 3 * * 0'
@@ -20,7 +22,7 @@ concurrency:
 
 jobs:
   inbox-v2:
-    name: Volume V2 + Gatling inbox (on-prem stack)
+    name: Volume V2 + Gatling inbox, search and team (on-prem stack)
     runs-on: ubuntu-24.04
     timeout-minutes: 150
     steps:
@@ -48,6 +50,7 @@ jobs:
           docker build -f web/Dockerfile -t memo-web:load .
           ci/onprem-stack.sh up memo-backend:load memo-web:load 18100
       - name: Wait for volume V2
+        id: volume
         run: |
           # Progress once a minute (the generator logs every 500 memos), so a slow or stuck run shows where it is.
           for i in $(seq 1 600); do
@@ -74,6 +77,17 @@ jobs:
           domain=$(grep '^MEMO_TENANCY_BASE_DOMAIN=' build/onprem-stack/.env | cut -d= -f2-)
           ./gradlew :perf:gatlingRun --simulation com.memo.perf.InboxLoadSimulation -DbaseUrl=http://127.0.0.1:18100 \
             -DtenantHost="volume.$domain" --console=plain
+      - name: Search, team view and dashboards load
+        # Runs even when the inbox simulation misses its budget, as long as the volume is there.
+        if: ${{ !cancelled() && steps.volume.outcome == 'success' }}
+        run: |
+          MEMO_DEMO_PASSWORD=$(grep '^MEMO_DEMO_PASSWORD=' build/onprem-stack/.env | cut -d= -f2-)
+          # The volume's head holds a privileged permission and signs in with a TOTP code from this secret.
+          MEMO_DEMO_TOTP_SECRET=$(grep '^MEMO_DEMO_TOTP_SECRET=' build/onprem-stack/.env | cut -d= -f2-)
+          export MEMO_DEMO_PASSWORD MEMO_DEMO_TOTP_SECRET
+          domain=$(grep '^MEMO_TENANCY_BASE_DOMAIN=' build/onprem-stack/.env | cut -d= -f2-)
+          ./gradlew :perf:gatlingRun --simulation com.memo.perf.SearchAndTeamLoadSimulation -DbaseUrl=http://127.0.0.1:18100 \
+            -DtenantHost="volume.$domain" --console=plain
       - if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
@@ -82,3 +96,32 @@ jobs:
           retention-days: 30
       - if: always()
         run: ci/onprem-stack.sh down
+
+  search-v1:
+    # Search at volume V1 (Phase 3 E05 T8, ADR-0054): the T1 spike, 1,000,000 memos, 2,000,000 notes and 200,000
+    # document chunks in one tenant, five reader profiles, with the database settings of the runbook's V1 sizing
+    # (docs/runbooks/search.md). Budgets have 2x headroom for shared runners; the measured p95 per profile and query is
+    # in the uploaded test report.
+    name: Search at volume V1 (SearchPerformanceIT)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: 25
+      - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
+        with:
+          cache-read-only: true
+      - name: SearchPerformanceIT at 1,000,000 memos
+        env:
+          SEARCH_VOLUME: '1000000'
+          MEMO_TEST_PG_SETTINGS: 'shared_buffers=3GB effective_cache_size=8GB work_mem=32MB random_page_cost=1.1 maintenance_work_mem=512MB'
+        run: ./gradlew :backend:test --tests com.memo.search.SearchPerformanceIT --rerun --console=plain
+      - if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: search-v1-report
+          path: backend/build/test-results/test/TEST-com.memo.search.SearchPerformanceIT.xml
+          retention-days: 30

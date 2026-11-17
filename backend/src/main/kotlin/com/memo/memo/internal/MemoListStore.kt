@@ -56,6 +56,16 @@ class MemoListStore(
 
     fun anyOf(initiator: UUID): Boolean = tenantDsl.current().fetchExists(MEMO, MEMO.INITIATOR_ID.eq(initiator))
 
+    /** For seeders: every memo [initiator] started. */
+    fun startedBy(initiator: UUID): List<UUID> =
+        tenantDsl
+            .current()
+            .select(MEMO.ID)
+            .from(MEMO)
+            .where(MEMO.INITIATOR_ID.eq(initiator))
+            .fetch(MEMO.ID)
+            .filterNotNull()
+
     /** For seeders: [initiator]'s first memo with exactly [subject]. */
     fun bySubject(
         initiator: UUID,

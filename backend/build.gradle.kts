@@ -140,6 +140,8 @@ tasks.withType<Test>().configureEach {
     val repoRoot = rootProject.layout.projectDirectory
     // Tests read the committed contract and the same deploy scripts (DB roles, bucket bootstrap) that real installs use.
     systemProperty("repo.root", repoRoot.asFile.absolutePath)
+    // The stall watchdog's quiet period (testsupport/StallWatchdog), e.g. -Pmemo.test.stall-minutes=1 to try it.
+    providers.gradleProperty("memo.test.stall-minutes").orNull?.let { systemProperty("memo.test.stall-minutes", it) }
     inputs.dir(repoRoot.dir("deploy/db")).withPathSensitivity(PathSensitivity.RELATIVE)
     inputs.dir(repoRoot.dir("deploy/seaweedfs")).withPathSensitivity(PathSensitivity.RELATIVE)
     inputs.files(repoRoot.file("contracts/openapi.json")).withPathSensitivity(PathSensitivity.RELATIVE).optional()

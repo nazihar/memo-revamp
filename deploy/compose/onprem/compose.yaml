@@ -53,6 +53,21 @@ services:
     image: ${MEMO_POSTGRES_IMAGE:?set in .env}
     # postgres needs a few writable runtime dirs besides its data volume.
     tmpfs: [/tmp, /var/run/postgresql]
+    # Memory settings from .env; the defaults are PostgreSQL's own. Past about 100,000 memos, search needs the V1 sizing
+    # in .env.example (docs/runbooks/search.md, ADR-0054).
+    command:
+      - postgres
+      - -c
+      - shared_buffers=${MEMO_PG_SHARED_BUFFERS:-128MB}
+      - -c
+      - effective_cache_size=${MEMO_PG_EFFECTIVE_CACHE_SIZE:-4GB}
+      - -c
+      - work_mem=${MEMO_PG_WORK_MEM:-4MB}
+      - -c
+      - maintenance_work_mem=${MEMO_PG_MAINTENANCE_WORK_MEM:-64MB}
+      - -c
+      - random_page_cost=${MEMO_PG_RANDOM_PAGE_COST:-4}
+    shm_size: ${MEMO_PG_SHM_SIZE:-64m}
     cap_add: [CHOWN, DAC_OVERRIDE, FOWNER, SETGID, SETUID]
     environment:
       POSTGRES_DB: memo
@@ -67,7 +82,7 @@ services:
       interval: 5s
       timeout: 3s
       retries: 30
-    deploy: { resources: { limits: { memory: 1g } } }
+    deploy: { resources: { limits: { memory: '${MEMO_PG_MEMORY_LIMIT:-1g}' } } }
 
   seaweedfs:
     <<: *hardening

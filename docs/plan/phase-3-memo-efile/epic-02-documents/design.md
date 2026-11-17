@@ -11,8 +11,7 @@ erDiagram
   memo_attachment }o--|| files_file : "file (memo.attachment)"
   memo ||--o{ memo_submission_attachment : "bound per round"
   memo ||--o{ memo_participant : "COAUTHOR added"
-  files_file ||--o{ docedit_room : "one open at a time"
-  docedit_room ||--o{ docedit_session : members
+  files_file ||--o{ docedit_session : "open edit sessions sharing a key form its room"
   files_rendition {
     uuid tenant_id
     uuid version_id
@@ -50,16 +49,6 @@ erDiagram
     uuid file_version_id
     text sha256
   }
-  docedit_room {
-    uuid id
-    uuid tenant_id
-    uuid file_id
-    uuid base_version_id
-    text document_key
-    text state "OPEN CLOSED"
-    timestamptz opened_at
-    timestamptz closed_at
-  }
 ```
 
 ### Invariants
@@ -67,7 +56,7 @@ erDiagram
 2. An attachment's own rank, when set, is strictly above the memo's rank at the time it is set; its **effective** rank is `max(own, memo)`.
 3. Attachments change (add, new version, retitle, reclassify, remove) only while the memo is `DRAFT` or `RETURNED`, by the initiator or a co-author. Rows are never deleted.
 4. Every submit and resubmit writes one `memo_submission_attachment` row per attachment present, with the version and SHA-256 at that moment; rows of a round never change (append-only trigger).
-5. At most one `OPEN` room per file (partial unique index); every open `EDIT` session of the file belongs to it.
+5. A room is the set of live `EDIT` sessions with one key; opening joins the file's open room when it is on the current version (built in T5 without a table of its own, ADR-0047).
 6. A submit is refused while a room is open on the memo document or on one of its attachments.
 7. Co-authors are memo participants of kind `COAUTHOR`: at most ten, never the initiator, added and removed only in `DRAFT`.
 
@@ -102,7 +91,7 @@ erDiagram
 - **Submit / resubmit:** checks the type version's `attachmentRules` (`ATTACHMENTS_REQUIRED`), refuses while a room is open, then writes the round's binding.
 
 ### Edit room (ADR-0047)
-- **Open (EDIT):** if the file has an open room, the session joins it (its key and base version); otherwise a room opens with key HMAC(tenant, file, base version, room id).
+- **Open (EDIT):** if the file has an open, unexpired edit session on the current version, the new session takes its key and base version; otherwise it starts a room with key HMAC(tenant, file, base version).
 - **Callback** by key → room:
   - status 6 (types 0, 1) stores a version as the user named in `users[0]`, who must hold a session in the room; the room stays open.
   - status 2 stores and closes the room.
@@ -151,8 +140,8 @@ erDiagram
 
 ## 8. Migrations
 - `files/V2`: `files_rendition`.
-- `memo/V10`: `memo_attachment`, `memo_submission_attachment` (append-only trigger), the participant kind `COAUTHOR`.
-- `docedit/V2`: `docedit_room`, plus `room_id` on sessions, with a backfill of open sessions into rooms (lifting FORCE, as `MigrationDmlRlsTest` requires).
+- `memo/V10`: `memo_attachment`, `memo_submission_attachment` (no updates or deletes for the app role).
+- `memo/V11`: the participant kind `COAUTHOR` (rooms need no migration: they are the sessions sharing a key).
 - Expand only.
 
 ## 9. Performance budget

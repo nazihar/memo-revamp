@@ -219,6 +219,7 @@ class MemoAttachmentStore(
 @Component
 class MemoAttachmentPurpose(
     private val memos: MemoStore,
+    private val coauthors: MemoCoauthorStore,
     private val attachments: MemoAttachmentStore,
     private val policy: Policy,
     private val settings: TenantSettings,
@@ -244,7 +245,8 @@ class MemoAttachmentPurpose(
 
     override fun mayUpload(ownerId: String?): Boolean {
         val memo = memoOf(ownerId) ?: return false
-        return memo.initiatorId == currentUser() && memo.status.editable
+        val user = currentUser()
+        return (memo.initiatorId == user || (user != null && coauthors.isCoauthor(memo.id, user))) && memo.status.editable
     }
 
     override fun mayRead(file: FileInfo): Boolean {
@@ -341,6 +343,7 @@ data class AttachmentView(
 class MemoAttachments(
     private val store: MemoAttachmentStore,
     private val memos: Memos,
+    private val coauthors: MemoCoauthorStore,
     private val clearances: Clearances,
     private val policy: Policy,
     private val files: Files,
@@ -474,8 +477,14 @@ class MemoAttachments(
         )
     }
 
+    /** The memo if the actor is its initiator or a co-author and it is editable. */
     private fun editable(memoId: UUID): Memo {
-        val memo = memos.own(memoId)
+        val memo = memos.get(memoId)
+        val user = currentUser()
+        if (memo.initiatorId != user && !coauthors.isCoauthor(memoId, user)) {
+            throw com.memo.common.authz
+                .ForbiddenException(null)
+        }
         refuseIf(!memo.status.editable, "WRONG_STATE") { "Attachments can change only while the memo is a draft or returned to you." }
         return memo
     }

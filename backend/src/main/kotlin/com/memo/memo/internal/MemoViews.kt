@@ -165,6 +165,8 @@ data class MemoView(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val version: Long,
     /** People with a declared interest, who are never asked to decide on the memo (SOD-4, design E04 §4.4). */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val interests: List<Named> = emptyList(),
+    /** People the initiator named to edit the draft's document and attachments with them (ADR-0047). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val coauthors: List<Named> = emptyList(),
     /** When the current step is due, from its SLA in working time (design E05 §4.4); null without one. */
     val dueAt: Instant? = null,
     /** The values of the type's fields, in the order of the form (the pinned version's once submitted). */
@@ -201,9 +203,11 @@ class MemoViews(
     private val directory: OrgDirectory,
     private val unitDirectory: OrgUnitDirectory,
     private val memoLinks: MemoLinks,
+    private val coauthorStore: MemoCoauthorStore,
 ) {
     fun of(memo: Memo): MemoView {
         val interests = interestStore.of(memo.id)
+        val coauthors = coauthorStore.coauthors(memo.id)
         val route = routes.route(memo.id)
         val positions = route.flatMap { it.positions }
         val titles = directory.positions(positions)
@@ -218,7 +222,7 @@ class MemoViews(
                 .of(
                     route.flatMap { it.people } + holdersToday.values + holders + memo.initiatorId + targets.map { it.holderId } +
                         listOfNotNull(open?.claimedBy) +
-                        interests,
+                        interests + coauthors,
                 ).mapValues { it.value.displayName }
         val level = clearances.level(memo.classificationId)
         val type = types.forMemo(memo)
@@ -226,7 +230,7 @@ class MemoViews(
         val links = memoLinks.of(memo)
         // A FIXED type's definition names every step: its memos have no route to edit (design E03 §12).
         val allowed =
-            actions(memo, user, open, workflow?.recallable == true)
+            actions(memo, user, open, workflow?.recallable == true, user != null && user in coauthors)
                 .let { it + documentActions(memo, it) }
                 .filterNot { it == MemoAction.EDIT_ROUTE && type.routePolicy == RoutePolicy.FIXED }
         return MemoView(
@@ -245,6 +249,7 @@ class MemoViews(
             allowedActions = allowed,
             sendBackTargets = targets.map { SendBackTargetView(it.stepId, it.name, Named(it.holderId, names[it.holderId].orEmpty())) },
             interests = interests.map { Named(it, names[it].orEmpty()) }.sortedBy { it.name },
+            coauthors = coauthors.map { Named(it, names[it].orEmpty()) },
             dueAt = workflow?.let { workflows.dueOf(MemoWorkflowSubject.TYPE, memo.id) },
             details = details.current,
             staleDetails = details.stale,
@@ -364,14 +369,24 @@ class MemoViews(
         user: UUID?,
         task: MyTask?,
         recallable: Boolean,
+        coauthor: Boolean,
     ): List<MemoAction> =
         when {
             task != null -> taskActions(task) + claimActions(task, user) + recusal(task, user)
+
+            // A co-author edits the content only (ADR-0047).
+            coauthor && memo.status.editable -> listOf(MemoAction.UPLOAD_DOCUMENT)
+
             user != memo.initiatorId -> emptyList()
+
             memo.status == MemoStatus.DRAFT -> DRAFT
+
             memo.status == MemoStatus.RETURNED -> RETURNED
+
             memo.status == MemoStatus.IN_REVIEW -> listOfNotNull(MemoAction.WITHDRAW, MemoAction.RECALL.takeIf { recallable })
+
             memo.status == MemoStatus.APPROVED -> listOf(MemoAction.CLOSE)
+
             else -> emptyList()
         }
 

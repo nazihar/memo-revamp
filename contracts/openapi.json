@@ -762,6 +762,19 @@
         "required" : [ "validTo" ],
         "type" : "object"
       },
+      "CoauthorsRequest" : {
+        "properties" : {
+          "userIds" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "userIds" ],
+        "type" : "object"
+      },
       "CodeRequest" : {
         "properties" : {
           "code" : {
@@ -2450,6 +2463,12 @@
             "format" : "date-time",
             "type" : [ "string", "null" ]
           },
+          "coauthors" : {
+            "items" : {
+              "$ref" : "#/components/schemas/Named"
+            },
+            "type" : "array"
+          },
           "createdAt" : {
             "format" : "date-time",
             "type" : "string"
@@ -2568,7 +2587,7 @@
             "type" : "integer"
           }
         },
-        "required" : [ "allowedActions", "canLink", "classification", "createdAt", "details", "holders", "id", "initiator", "interests", "linkedFrom", "links", "round", "route", "sendBackTargets", "staleDetails", "status", "subject", "type", "updatedAt", "version" ],
+        "required" : [ "allowedActions", "canLink", "classification", "coauthors", "createdAt", "details", "holders", "id", "initiator", "interests", "linkedFrom", "links", "round", "route", "sendBackTargets", "staleDetails", "status", "subject", "type", "updatedAt", "version" ],
         "type" : "object"
       },
       "MfaEnrolment" : {
@@ -9486,6 +9505,44 @@
           }
         },
         "summary" : "Close an approved memo for good",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/memos/{id}/coauthors" : {
+      "put" : {
+        "operationId" : "setMemoCoauthors",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CoauthorsRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemoView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Name the people who may edit a draft's document and attachments",
         "tags" : [ "memo" ]
       }
     },

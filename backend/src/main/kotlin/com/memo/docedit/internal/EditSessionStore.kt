@@ -88,19 +88,33 @@ class EditSessionStore(
             .fetchOne()
             ?.toSession()
 
-    /** Whether any edit session of [file] is open and not expired at [now]. */
-    fun anyOpenEdit(
+    /**
+     * The open room of [file] (ADR-0047): an open, unexpired edit session of anyone, whose key and base version every
+     * other editor joins. Null when nobody is editing it.
+     */
+    fun openRoom(
         file: UUID,
         now: Instant,
-    ): Boolean =
-        tenantDsl.current().fetchExists(
-            DOCEDIT_SESSION,
-            DOCEDIT_SESSION.FILE_ID
-                .eq(file)
-                .and(DOCEDIT_SESSION.STATE.eq(SessionState.OPEN.name))
-                .and(DOCEDIT_SESSION.MODE.eq(EditMode.EDIT.name))
-                .and(DOCEDIT_SESSION.EXPIRES_AT.gt(utc(now))),
-        )
+    ): EditSession? =
+        tenantDsl
+            .current()
+            .selectFrom(DOCEDIT_SESSION)
+            .where(DOCEDIT_SESSION.FILE_ID.eq(file), DOCEDIT_SESSION.STATE.eq(SessionState.OPEN.name))
+            .and(DOCEDIT_SESSION.MODE.eq(EditMode.EDIT.name))
+            .and(DOCEDIT_SESSION.EXPIRES_AT.gt(utc(now)))
+            .orderBy(DOCEDIT_SESSION.CREATED_AT)
+            .limit(1)
+            .fetchOne()
+            ?.toSession()
+
+    /** The live sessions sharing [key]: one editing room. */
+    fun room(key: String): List<EditSession> =
+        tenantDsl
+            .current()
+            .selectFrom(DOCEDIT_SESSION)
+            .where(DOCEDIT_SESSION.DOCUMENT_KEY.eq(key), DOCEDIT_SESSION.STATE.`in`(LIVE))
+            .and(DOCEDIT_SESSION.MODE.eq(EditMode.EDIT.name))
+            .fetch { it.toSession() }
 
     /** Open, unexpired edit sessions in the tenant (the cap of design E02 §10). */
     fun openEdits(now: Instant): Int =

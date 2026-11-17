@@ -34,7 +34,7 @@ enum class MemoStatus {
     val editable: Boolean get() = this == DRAFT || this == RETURNED
 }
 
-enum class ParticipantKind { INITIATOR, APPROVER, NOTIFIED }
+enum class ParticipantKind { INITIATOR, APPROVER, NOTIFIED, COAUTHOR }
 
 data class Memo(
     val id: UUID,

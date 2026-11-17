@@ -25,6 +25,7 @@ import java.util.UUID
 @Component
 class MemoDocumentPurpose(
     private val store: MemoStore,
+    private val coauthors: MemoCoauthorStore,
     private val policy: Policy,
 ) : EditableFilePurpose {
     override val key = KEY
@@ -38,7 +39,9 @@ class MemoDocumentPurpose(
 
     override fun mayUpload(ownerId: String?): Boolean {
         val memo = memoOf(ownerId) ?: return false
-        return memo.initiatorId == currentUser() && memo.status.editable
+        val user = currentUser()
+        // The initiator and the draft's co-authors (ADR-0047).
+        return (memo.initiatorId == user || (user != null && coauthors.isCoauthor(memo.id, user))) && memo.status.editable
     }
 
     override fun mayRead(file: FileInfo): Boolean = memoOf(file.ownerId) != null

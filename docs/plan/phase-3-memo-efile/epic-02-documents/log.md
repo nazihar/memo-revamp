@@ -127,3 +127,26 @@
 
   Also: matrix `p3-e02-attachments.yaml`, audit coverage, contract.
 - **Web** for attachments is T7.
+
+## 2026-11-14 — T5 co-editing and co-authors (backend)
+- **Co-authors:**
+  - `memo/V11` adds the participant kind `COAUTHOR`. `MemoCoauthorStore` holds the queries.
+  - `PUT /memos/{id}/coauthors {userIds}` is for the initiator of a draft: at most ten active people, never the initiator. It replaces the list and audits `memo.coauthors.changed` with before and after.
+  - Co-authors read the memo (participants), upload versions of the document and attachments, open the editor, and change or remove attachments while the memo is editable. They cannot submit or change subject, details, route or classification (403).
+  - `MemoView.coauthors`; a co-author's allowed actions are `UPLOAD_DOCUMENT` (with `EDIT_DOCUMENT` when editing is on).
+- **Rooms (ADR-0047), simpler than designed:** a room is the live edit sessions sharing one key; there is no table.
+  - Opening for editing joins the file's open, unexpired room when it is on the current version, taking its key and base. Otherwise a new key starts a room.
+  - A force save stores the version as the user the callback names, when that user holds a session in the room (else the session's own user). It rebases every session in the room, which stays open.
+  - A final save ends the room's sessions as `SAVED`; a close (status 4) ends them as `CLOSED`.
+  - The upload's idempotency key names the room's key, so one save is stored once whichever member's callback URL it reaches.
+  - `docedit.version.saved` records `savedBy` and the room's members. `docedit.session.opened` records whether the session joined a room.
+  - The design and ADR-0047 are updated (no `docedit_room`, no `docedit/V2`).
+- **Tests:** `DocEditIT` gains the room journey:
+  - co-authors named; two editors share a key;
+  - a force save naming the co-author stores a version as them and keeps the room;
+  - a third co-author joins the same key; a stranger cannot open;
+  - a co-author cannot submit; closing ends both sessions.
+
+  The memo, docedit, authz, contract and tenancy suites pass (1,392 tests).
+- **Flaky plan checks:** in the shared test database (thousands of tenants) the planner may pick the tenant index instead of `memo_number_uk` for the register page, still at 18 ms. `NumberingPerformanceIT` now asserts an index and no sequential scan. `OrgPerformanceIT` failed once the same way and passed alone; it is left as it is.
+- **XLSX in the editor** (attachments): not in this task. The adapter's document type is fixed to DOCX; spreadsheets move with the web work in T7.

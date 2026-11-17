@@ -124,8 +124,34 @@ private fun OrgPosition.ref() = PositionRef(id, unitId, title, head)
 @Service
 class OrgUnitDirectory(
     private val units: UnitStore,
+    private val positions: PositionStore,
+    private val assignments: AssignmentStore,
+    private val calendar: OrgCalendar,
 ) {
     /** The units of [ids] that exist, open or not. */
     fun units(ids: Collection<UUID>): Map<UUID, UnitRef> =
         ids.toSet().mapNotNull { id -> units.unit(id)?.let { id to UnitRef(it.id, it.code, it.name) } }.toMap()
+
+    /** Every unit of the tenant, open or not (a tenant-wide scope). */
+    fun allUnits(): Set<UUID> = units.units().map { it.id }.toSet()
+
+    /**
+     * Who sits in [unitIds] on [date] (Phase 3 E05 team view): each holder of an open position of those units, with that
+     * position.
+     */
+    fun seatedIn(
+        unitIds: Collection<UUID>,
+        date: LocalDate = calendar.today(),
+    ): Map<UUID, PositionRef> {
+        val open =
+            unitIds
+                .toSet()
+                .flatMap { positions.ofUnit(it) }
+                .filter { it.openOn(date) }
+                .associateBy { it.id }
+        return assignments
+            .holdersOn(open.keys, date)
+            .mapNotNull { (position, assignment) -> open[position]?.let { assignment.userId to it.ref() } }
+            .toMap()
+    }
 }

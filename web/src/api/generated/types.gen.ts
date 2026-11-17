@@ -53,6 +53,11 @@ export type AdminUserPage = {
     nextCursor?: string | null;
 };
 
+export type AgeBucket = {
+    bucket: string;
+    count: number;
+};
+
 export type AllowedApprovers = {
     people?: Array<string>;
     positions?: Array<string>;
@@ -61,6 +66,18 @@ export type AllowedApprovers = {
 
 export type AppliedResponse = {
     moved: number;
+};
+
+export type ApprovalsDashboard = {
+    cycleTimes: Array<CycleTime>;
+    from: string;
+    overdue: number;
+    pendingByAge: Array<AgeBucket>;
+    pendingByPerson: Array<PersonPending>;
+    scope: string;
+    throughput: Array<WeekThroughput>;
+    to: string;
+    unit?: Named | null;
 };
 
 export type AssignRequest = {
@@ -386,6 +403,13 @@ export type CreateOrgUnitRequest = {
      * Defaults to today
      */
     validFrom?: string | null;
+};
+
+export type CycleTime = {
+    decided: number;
+    medianDays: number;
+    p90Days: number;
+    type: Named;
 };
 
 export type DefinitionChoice = {
@@ -1436,6 +1460,12 @@ export type Person = {
     name: string;
 };
 
+export type PersonPending = {
+    overdue: number;
+    pending: number;
+    person: Named;
+};
+
 /**
  * One entry of the platform chain (ADR-0031, ADR-0033).
  */
@@ -2036,6 +2066,24 @@ export type TaskRef = {
     waiting: boolean;
 };
 
+export type TeamPage = {
+    items: Array<TeamTask>;
+    nextCursor?: string | null;
+    units: Array<Named>;
+};
+
+export type TeamTask = {
+    ageWorkingDays: number;
+    assignedAt: string;
+    dueAt?: string | null;
+    holder: Named;
+    memo: InboxMemo;
+    overdue: boolean;
+    stepName?: string | null;
+    taskId: string;
+    unit?: Named | null;
+};
+
 export type TemplateFileView = {
     fileId: string;
     name: string;
@@ -2221,6 +2269,12 @@ export type WatchingItem = {
 export type WatchingPage = {
     items: Array<WatchingItem>;
     nextCursor?: string | null;
+};
+
+export type WeekThroughput = {
+    completed: number;
+    created: number;
+    week: string;
 };
 
 export type WorkflowView = {
@@ -4351,6 +4405,26 @@ export type GetBrandingLogoResponses = {
     200: unknown;
 };
 
+export type ApprovalsDashboardData = {
+    body?: never;
+    path?: never;
+    query?: {
+        scope?: string;
+        from?: string;
+        to?: string;
+    };
+    url: '/api/v1/dashboards/approvals';
+};
+
+export type ApprovalsDashboardResponses = {
+    /**
+     * OK
+     */
+    200: ApprovalsDashboard;
+};
+
+export type ApprovalsDashboardResponse = ApprovalsDashboardResponses[keyof ApprovalsDashboardResponses];
+
 export type SearchDirectoryData = {
     body?: never;
     path?: never;
@@ -4718,6 +4792,28 @@ export type ListMyTasksResponses = {
 };
 
 export type ListMyTasksResponse = ListMyTasksResponses[keyof ListMyTasksResponses];
+
+export type ListTeamTasksData = {
+    body?: never;
+    path?: never;
+    query?: {
+        unit?: string;
+        status?: string;
+        person?: string;
+        cursor?: string;
+        limit?: number;
+    };
+    url: '/api/v1/inbox/team';
+};
+
+export type ListTeamTasksResponses = {
+    /**
+     * OK
+     */
+    200: TeamPage;
+};
+
+export type ListTeamTasksResponse = ListTeamTasksResponses[keyof ListTeamTasksResponses];
 
 export type ListWatchingData = {
     body?: never;

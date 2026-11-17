@@ -9,3 +9,9 @@ endpoints:
   - { endpoint: "POST /api/v1/inbox/bulk", rule: signedIn, body: { action: "WATCH", ids: ["{random}"] } }
   - { endpoint: "GET /api/v1/me/watch-settings", rule: signedIn }
   - { endpoint: "PUT /api/v1/me/watch-settings", rule: signedIn, body: { autoWatch: true, email: "DIGEST" } }
+  # The team view needs a head seat or inbox.team.read (granted on purpose): no matrix subject has either.
+  - endpoint: "GET /api/v1/inbox/team"
+    rule: signedIn
+    expect: { user: 403, tenantAdmin: 403, tenantAdminStale: 403 }
+  # The default scope is the viewer's own work, open to everyone signed in; a unit needs a head seat or memo.dashboard.read.
+  - { endpoint: "GET /api/v1/dashboards/approvals", rule: signedIn }

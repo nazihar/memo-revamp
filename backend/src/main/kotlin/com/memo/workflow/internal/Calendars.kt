@@ -163,6 +163,22 @@ class Calendars(
         }
     }
 
+    /**
+     * The working days after [from] up to and including [to] (the age of a task in working days, design E05 §6): the weekly
+     * hours with the exceptions of those days (a day with no periods is closed).
+     */
+    fun workingDays(
+        from: LocalDate,
+        to: LocalDate,
+    ): Int {
+        if (!to.isAfter(from)) return 0
+        val week = week().week
+        val exceptions = days(from.plusDays(1), to).associate { it.day to it.periods.isNotEmpty() }
+        return generateSequence(from.plusDays(1)) { it.plusDays(1) }
+            .takeWhile { !it.isAfter(to) }
+            .count { day -> exceptions[day] ?: week[day.dayOfWeek].orEmpty().isNotEmpty() }
+    }
+
     /** The calendar for due times from today on: the weekly hours, the exceptions ahead and the tenant's zone. */
     fun calendar(): BusinessCalendar {
         val today = directory.today()

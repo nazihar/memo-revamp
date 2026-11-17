@@ -255,6 +255,12 @@
       "value": "See the org directorySSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "access.permission.inboxTeamRead": [
+    {
+      "type": 0,
+      "value": "See and reassign the open tasks of a teamSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "access.permission.legalEntities": [
     {
       "type": 0,
@@ -271,6 +277,12 @@
     {
       "type": 0,
       "value": "Write and submit memosSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.permission.memoDashboardRead": [
+    {
+      "type": 0,
+      "value": "See the approvals dashboard of a unitSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "access.permission.memoDistributionManage": [

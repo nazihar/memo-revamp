@@ -188,6 +188,25 @@
         "required" : [ "userId", "validFrom" ],
         "type" : "object"
       },
+      "AttachmentChangeRequest" : {
+        "properties" : {
+          "classificationId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "position" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "sameAsMemo" : {
+            "type" : "boolean"
+          },
+          "title" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
       "AttachmentRules" : {
         "properties" : {
           "min" : {
@@ -202,6 +221,56 @@
           }
         },
         "required" : [ "min", "required" ],
+        "type" : "object"
+      },
+      "AttachmentView" : {
+        "properties" : {
+          "classification" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/Named"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "fileId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "mediaType" : {
+            "type" : [ "string", "null" ]
+          },
+          "position" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "restricted" : {
+            "type" : "boolean"
+          },
+          "sizeBytes" : {
+            "format" : "int64",
+            "type" : [ "integer", "null" ]
+          },
+          "title" : {
+            "type" : [ "string", "null" ]
+          },
+          "version" : {
+            "format" : "int64",
+            "type" : [ "integer", "null" ]
+          },
+          "versionId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "versionNumber" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          }
+        },
+        "required" : [ "id", "position", "restricted" ],
         "type" : "object"
       },
       "AuditEvent" : {
@@ -9265,6 +9334,117 @@
         "tags" : [ "memo" ]
       }
     },
+    "/api/v1/memos/{id}/attachments" : {
+      "get" : {
+        "operationId" : "listMemoAttachments",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/AttachmentView"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The memo's attachments, in order; restricted ones without details",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/memos/{id}/attachments/{attachmentId}" : {
+      "delete" : {
+        "operationId" : "removeMemoAttachment",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "attachmentId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "summary" : "Remove an attachment while the memo is a draft or returned",
+        "tags" : [ "memo" ]
+      },
+      "patch" : {
+        "operationId" : "changeMemoAttachment",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "attachmentId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/AttachmentChangeRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AttachmentView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Retitle, reclassify (stricter only) or move an attachment",
+        "tags" : [ "memo" ]
+      }
+    },
     "/api/v1/memos/{id}/close" : {
       "post" : {
         "operationId" : "closeMemo",
@@ -9643,6 +9823,45 @@
           }
         },
         "summary" : "Start the next round after a return",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/memos/{id}/rounds/{round}/attachments" : {
+      "get" : {
+        "operationId" : "listMemoRoundAttachments",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "round",
+          "required" : true,
+          "schema" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/AttachmentView"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The attachments a submission bound, with their versions",
         "tags" : [ "memo" ]
       }
     },

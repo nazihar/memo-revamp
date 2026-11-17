@@ -94,3 +94,36 @@
 - **`tika-core` 4.1.0 → 4.2.0** for upload detection, so detection and extraction agree.
 - **Tests:** `TikaClientTest` (4) against a stand-in server: the request, truncation at the limit and exactly at it, status mapping, an unreachable server.
 - **Not done here:** the hostile corpus is generated in tests and refused at upload, so none of it reaches the parsers. Upload inspection already bounds what can (OOXML expansion 100:1, PDF pages). A corpus aimed at the parsers themselves (deep XML, huge spreadsheets, malformed PDFs that pass inspection), run nightly against both services, moves to T8.
+
+## 2026-11-14 — T4 attachments (backend)
+- **Model (`memo/V10`):**
+  - `memo_attachment`: memo, file, title, optional stricter level, position, added and removed by and at, version. Removed by flag, never deleted.
+  - `memo_submission_attachment`: per round, the attachment, its file version and SHA-256. No updates or deletes for the app role.
+  - No foreign keys to the files module, as with the other memo tables.
+- **Purpose `memo.attachment`:**
+  - the safe types (PDF, images, text and CSV, ZIP, OOXML, ODF), narrowed by the tenant setting `memo.attachments.types` (a list of extensions);
+  - 50 MiB, records, reads audited, PDF and text renditions;
+  - upload by the initiator while the memo is editable;
+  - reading needs the memo and the attachment's effective level (the higher of its own and the memo's).
+  - `FilePurpose.allowedTypesNow()` is the new hook the upload plan uses, inside the tenant transaction.
+- **Adding** is an upload with the memo as owner. The listener records the attachment under the memo's row lock (still editable, at most 50) and audits `memo.attachment.added`.
+- **API:**
+  - `GET /memos/{id}/attachments`: restricted rows have no title, type, size or file;
+  - `PATCH …/{attachmentId}`: title, stricter level or back to the memo's, position; If-Match. `NOT_STRICTER` and `above-clearance` are refused.
+  - `DELETE …/{attachmentId}`: removes by flag.
+  - `GET /memos/{id}/rounds/{n}/attachments`: what that round bound.
+  - Audits: `memo.attachment.reclassified`, `.retitled`, `.removed`.
+- **Submit and resubmit:**
+  - the type version's `attachmentRules` (`ATTACHMENTS_REQUIRED`);
+  - `DOCUMENT_BEING_EDITED` also when an attachment is open in the editor;
+  - after the workflow starts, the round's binding is written.
+- **Behaviour note:** an upload once the memo is not editable is refused by the purpose (403) before the listener's check (409). Contents of an attachment the reader is not cleared for are 403, as for any file a purpose does not let them open. ADR-0046 is reworded to match.
+- **Tests:** `MemoAttachmentsIT` (5):
+  - add and list, with audit;
+  - stricter-only, retitle, a restricted row for an uncleared approver, content refused;
+  - rules at submit;
+  - locked during review, and both rounds' bindings after a return, removal and new version;
+  - tenant type list, and another user cannot attach.
+
+  Also: matrix `p3-e02-attachments.yaml`, audit coverage, contract.
+- **Web** for attachments is T7.

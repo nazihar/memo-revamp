@@ -17,6 +17,12 @@ interface FilePurpose {
 
     val allowedTypes: Set<FileType>
 
+    /**
+     * The types allowed for an upload now, inside its tenant transaction: [allowedTypes], or fewer when the tenant narrows
+     * them by a setting (Phase 3 E02, memo attachments). Never more than [allowedTypes].
+     */
+    fun allowedTypesNow(): Set<FileType> = allowedTypes
+
     /** Largest upload in bytes; the tenant setting and the platform ceiling can only lower it. */
     val maxBytes: Long
 

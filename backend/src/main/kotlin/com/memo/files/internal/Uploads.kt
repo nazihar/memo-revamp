@@ -18,6 +18,7 @@ import com.memo.common.tenant.TenantTransactions
 import com.memo.common.web.PreconditionRequiredException
 import com.memo.files.FileInfo
 import com.memo.files.FilePurpose
+import com.memo.files.FileType
 import com.memo.files.FileVersionCreated
 import com.memo.files.StorageClass
 import com.memo.system.Idempotency
@@ -150,6 +151,7 @@ internal class Uploads(
                     settings.get(MAX_BYTES_SETTING)?.value?.toLongOrNull(),
                 ).min(),
             retention = if (purpose.storage == StorageClass.RECORD) recordRetention(purpose) else null,
+            allowedTypes = purpose.allowedTypesNow() intersect purpose.allowedTypes,
         )
     }
 
@@ -190,7 +192,7 @@ internal class Uploads(
                 inspector.inspect(
                     { crypto.decrypting(tenant, plan.fileId, versionId, FileChannel.open(spoolFile, StandardOpenOption.READ)) },
                     request.declaredName,
-                    InspectionRules(plan.purpose.allowedTypes, plan.purpose.maxPdfPages),
+                    InspectionRules(plan.allowedTypes, plan.purpose.maxPdfPages),
                 )
             val now = clock.instant()
             val bucket = if (plan.retention != null) Bucket.RECORDS else Bucket.WORK
@@ -342,6 +344,7 @@ internal class Uploads(
         val ownerId: String?,
         val maxBytes: Long,
         val retention: RecordRetention?,
+        val allowedTypes: Set<FileType>,
     )
 
     private data class RecordRetention(

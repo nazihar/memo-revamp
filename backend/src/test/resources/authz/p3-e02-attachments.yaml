@@ -1,0 +1,12 @@
+# Phase 3 E02 memo attachments (design E02 §4, §5; ADR-0046). Rules: rules.yaml. Every signed-in user reaches them;
+# the memo then decides (404 for memos the actor may not see, 403 for changes by anyone but the initiator), and the
+# attachment's own level decides what a reader sees: MemoAttachmentsIT. Random memo ids are 404 here.
+epic: P3-E02
+endpoints:
+  - { endpoint: "GET /api/v1/memos/{id}/attachments", rule: signedIn }
+  - endpoint: "PATCH /api/v1/memos/{id}/attachments/{attachmentId}"
+    rule: signedIn
+    body: { title: "Matrix" }
+    headers: { If-Match: "\"0\"" }
+  - { endpoint: "DELETE /api/v1/memos/{id}/attachments/{attachmentId}", rule: signedIn }
+  - { endpoint: "GET /api/v1/memos/{id}/rounds/{round}/attachments", rule: signedIn }

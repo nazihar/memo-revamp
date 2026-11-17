@@ -25,6 +25,7 @@ class MemoReviews(
     private val metadata: MemoMetadata,
     private val audit: AuditLog,
     private val numbers: MemoNumbers,
+    private val attachments: MemoAttachments,
 ) {
     /**
      * Round 1: the memo needs a document, a valid route and its required details; the first approver gets the task. The
@@ -48,7 +49,8 @@ class MemoReviews(
             listOfNotNull(
                 FieldProblem("document", "required", "Upload the memo document first.").takeIf { memo.documentFileId == null },
                 FieldProblem("typeId", "inactive", "This memo type is no longer used.").takeIf { !type.active || version == null },
-            ) + checked.problems + version?.let { numbers.problems(memo, it) }.orEmpty() + problems(memo, type, route)
+            ) + checked.problems + version?.let { numbers.problems(memo, it) }.orEmpty() +
+                version?.let { attachments.problems(memo, it.settings.attachmentRules) }.orEmpty() + problems(memo, type, route)
         if (problems.isNotEmpty()) throw MemoRejectedException(problems)
         val pinned = checkNotNull(version)
         if (!store.pin(id, memo.version, pinned.id, checked.values)) throw ConcurrentModificationException("memo $id", memo.version)
@@ -67,7 +69,8 @@ class MemoReviews(
         numbers.assign(memo.copy(memoTypeVersionId = pinned.id), pinned, NumberMoment.ON_SUBMIT)
         // The memo type's workflow (E03): new memos pin its newest published version.
         workflows.start(MemoWorkflowSubject.TYPE, id, emptyList(), remark, pinned.settings.definitionKey, route)
-        return memos.get(id)
+        // What this round's approvers see (ADR-0046).
+        return memos.get(id).also { attachments.bind(id, it.currentRound) }
     }
 
     /** Round N+1 after a return (design E01 §3): from the first approver of the route as it is now; earlier approvals lapse. */
@@ -81,10 +84,12 @@ class MemoReviews(
         // The version the memo was submitted under, not today's (ADR-0043).
         val type = types.forMemo(memo)
         val route = route(memo, type)
-        val problems = problems(memo, type, route)
+        val problems =
+            problems(memo, type, route) +
+                types.versionFor(memo)?.let { attachments.problems(memo, it.settings.attachmentRules) }.orEmpty()
         if (problems.isNotEmpty()) throw MemoRejectedException(problems)
         workflows.resubmit(checkNotNull(memo.workflowInstanceId), emptyList(), remark, route)
-        return memos.get(id)
+        return memos.get(id).also { attachments.bind(id, it.currentRound) }
     }
 
     /** Ends the approval for good, in review or returned; the open task, if any, is cancelled. */
@@ -131,7 +136,7 @@ class MemoReviews(
 
     /** A review never starts on a document that may still change in an open editor (ADR-0037). */
     private fun notBeingEdited(memo: Memo) {
-        refuseIf(memo.documentFileId?.let(editing::beingEdited) == true, "DOCUMENT_BEING_EDITED") {
+        refuseIf(memo.documentFileId?.let(editing::beingEdited) == true || attachments.beingEdited(memo.id), "DOCUMENT_BEING_EDITED") {
             "The document is open in the editor. Close it, wait for the save, then submit."
         }
     }

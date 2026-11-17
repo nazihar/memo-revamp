@@ -69,10 +69,31 @@ export type AssignRequest = {
     validTo?: string | null;
 };
 
+export type AttachmentChangeRequest = {
+    classificationId?: string | null;
+    position?: number | null;
+    sameAsMemo?: boolean;
+    title?: string | null;
+};
+
 export type AttachmentRules = {
     min: number;
     note?: string | null;
     required: boolean;
+};
+
+export type AttachmentView = {
+    classification?: Named | null;
+    fileId?: string | null;
+    id: string;
+    mediaType?: string | null;
+    position: number;
+    restricted: boolean;
+    sizeBytes?: number | null;
+    title?: string | null;
+    version?: number | null;
+    versionId?: string | null;
+    versionNumber?: number | null;
 };
 
 /**
@@ -4460,6 +4481,63 @@ export type UpdateMemoResponses = {
 
 export type UpdateMemoResponse = UpdateMemoResponses[keyof UpdateMemoResponses];
 
+export type ListMemoAttachmentsData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/attachments';
+};
+
+export type ListMemoAttachmentsResponses = {
+    /**
+     * OK
+     */
+    200: Array<AttachmentView>;
+};
+
+export type ListMemoAttachmentsResponse = ListMemoAttachmentsResponses[keyof ListMemoAttachmentsResponses];
+
+export type RemoveMemoAttachmentData = {
+    body?: never;
+    path: {
+        id: string;
+        attachmentId: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/attachments/{attachmentId}';
+};
+
+export type RemoveMemoAttachmentResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
+export type ChangeMemoAttachmentData = {
+    body: AttachmentChangeRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+        attachmentId: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/attachments/{attachmentId}';
+};
+
+export type ChangeMemoAttachmentResponses = {
+    /**
+     * OK
+     */
+    200: AttachmentView;
+};
+
+export type ChangeMemoAttachmentResponse = ChangeMemoAttachmentResponses[keyof ChangeMemoAttachmentResponses];
+
 export type CloseMemoData = {
     body?: RemarkRequest;
     headers: {
@@ -4656,6 +4734,25 @@ export type ResubmitMemoResponses = {
 };
 
 export type ResubmitMemoResponse = ResubmitMemoResponses[keyof ResubmitMemoResponses];
+
+export type ListMemoRoundAttachmentsData = {
+    body?: never;
+    path: {
+        id: string;
+        round: number;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/rounds/{round}/attachments';
+};
+
+export type ListMemoRoundAttachmentsResponses = {
+    /**
+     * OK
+     */
+    200: Array<AttachmentView>;
+};
+
+export type ListMemoRoundAttachmentsResponse = ListMemoRoundAttachmentsResponses[keyof ListMemoRoundAttachmentsResponses];
 
 export type ReplaceMemoRouteData = {
     body: RouteRequest;

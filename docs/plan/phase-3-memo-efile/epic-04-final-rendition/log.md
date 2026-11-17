@@ -74,3 +74,27 @@
 - **Changes against the design:**
   - The cover cannot say how many pages were rasterised, because it is drawn before the assembly. The flags are in the record row and the auditor's view.
   - Retention counts from when the record is stored, minutes after approval. For backfilled memos that is later than approval, which errs on the longer side.
+
+## 2026-11-15 — T5 regeneration, retry, retention and fixity
+- **Permission:** `memo.rendition.regenerate`, privileged and granted on purpose, so no built-in role holds it. Its label is in English and Arabic.
+- **Regenerate:**
+  - `POST /memos/{id}/rendition/regenerate` needs the permission, a fresh step-up, a reason of 1–500 characters, and an approved or closed memo with no version being made;
+  - it makes version 2 as a new version of the same record file;
+  - version 1 stays READY and openable, and `memo.rendition.superseded` names both hashes and the reason.
+- **Retry:** `POST /memos/{id}/rendition/retry` takes the failed newest version back to PENDING with its attempts reset.
+- **Retention at closure:**
+  - closing (by the initiator or automatically) schedules `memo-rendition-retention`;
+  - when the type counts retention from closure, every made version is kept until closure plus its years;
+  - files gains `RecordRetentions.extend`, which extends storage first and then the row; files/V3 lets the append-only guard accept a later `retain_until`, and nothing else;
+  - audited as `file.retention.extended` and `memo.rendition.retention_extended`.
+- **Fixity:**
+  - `memo-rendition-fixity` runs weekly per tenant;
+  - it reads every READY version through the files service in pages of 100, decrypts, re-hashes and compares with the recorded hash;
+  - `memo.rendition.mismatch` for each bad one, and `memo.rendition.verified` per run.
+  - The sampling switch above 10,000 records (design §6) is carried; every record is checked for now.
+- **Tests:** `RecordLifecycleIT`:
+  - regenerate is refused without the permission (403), without access to the memo (404) and without a reason (422), then version 2 is made and version 1 still opens;
+  - a failed version is retried;
+  - closure under a 25-year type extends the lock past the 10-year default, and doing it again extends nothing;
+  - the fixity check passes, then finds a changed hash.
+  - Matrix entries for the two endpoints.

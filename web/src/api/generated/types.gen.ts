@@ -1642,6 +1642,10 @@ export type ReferRequest = {
     to: Array<string>;
 };
 
+export type RegenerateRequest = {
+    reason: string;
+};
+
 export type RegisterEntry = {
     memoId: string;
     number: string;
@@ -5422,6 +5426,42 @@ export type GetMemoRenditionResponses = {
 };
 
 export type GetMemoRenditionResponse = GetMemoRenditionResponses[keyof GetMemoRenditionResponses];
+
+export type RegenerateMemoRenditionData = {
+    body: RegenerateRequest;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/rendition/regenerate';
+};
+
+export type RegenerateMemoRenditionResponses = {
+    /**
+     * OK
+     */
+    200: RenditionView;
+};
+
+export type RegenerateMemoRenditionResponse = RegenerateMemoRenditionResponses[keyof RegenerateMemoRenditionResponses];
+
+export type RetryMemoRenditionData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/rendition/retry';
+};
+
+export type RetryMemoRenditionResponses = {
+    /**
+     * OK
+     */
+    200: RenditionView;
+};
+
+export type RetryMemoRenditionResponse = RetryMemoRenditionResponses[keyof RetryMemoRenditionResponses];
 
 export type ResubmitMemoData = {
     body?: RemarkRequest;

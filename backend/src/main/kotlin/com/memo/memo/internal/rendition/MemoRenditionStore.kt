@@ -167,6 +167,7 @@ class MemoRenditionStore(
             .current()
             .update(MEMO_RENDITION)
             .set(MEMO_RENDITION.STATE, RenditionState.PENDING.name)
+            .set(MEMO_RENDITION.ATTEMPTS, 0)
             .set(MEMO_RENDITION.ERROR, null as String?)
             .set(MEMO_RENDITION.FINISHED_AT, null as OffsetDateTime?)
             .where(MEMO_RENDITION.ID.eq(id), MEMO_RENDITION.STATE.eq(RenditionState.FAILED.name))

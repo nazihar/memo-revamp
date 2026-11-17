@@ -89,6 +89,7 @@ class MemoClosing(
     private val store: MemoClosingStore,
     private val audit: AuditLog,
     private val clock: Clock,
+    private val records: com.memo.memo.internal.rendition.RecordLifecycle,
 ) {
     fun close(
         id: UUID,
@@ -97,6 +98,8 @@ class MemoClosing(
         val memo = memos.own(id)
         refuseIf(memo.status != MemoStatus.APPROVED, "NOT_APPROVED") { "Only an approved memo can be closed." }
         if (!store.close(id, memo.version, now())) throw ConcurrentModificationException("memo $id", memo.version)
+        // The final record is kept from closure when the type says so (ADR-0053).
+        records.closed(id)
         audit.record(
             "memo.closed",
             Memos.OBJECT_TYPE,
@@ -115,7 +118,10 @@ class MemoClosing(
         val now = now()
         return store.due(now, BATCH).count { id ->
             store.close(id, null, now).also { closed ->
-                if (closed) audit.record("memo.closed", Memos.OBJECT_TYPE, id.toString(), after = mapOf("by" to "auto"))
+                if (closed) {
+                    audit.record("memo.closed", Memos.OBJECT_TYPE, id.toString(), after = mapOf("by" to "auto"))
+                    records.closed(id)
+                }
             }
         }
     }

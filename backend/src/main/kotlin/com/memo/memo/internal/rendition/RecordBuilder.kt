@@ -47,7 +47,9 @@ class RecordBuilder(
             val plan = tx { planner.plan(rendition.memoId, rendition.version, renderer.name, clock.instant()) }
             val built = make(rendition, plan, spool)
             tx {
+                val earlier = store.of(rendition.memoId).firstOrNull { it.state == RenditionState.READY }
                 store.ready(rendition.id, built)
+                earlier?.let { superseded(it, rendition, built) }
                 audit.record(
                     "memo.rendition.created",
                     Memos.OBJECT_TYPE,
@@ -155,6 +157,21 @@ class RecordBuilder(
         } else {
             uploads.uploadVersionFile(earlier.id, earlier.version, plan.fileName, out, key)
         }
+    }
+
+    /** A later version replaces [earlier] as the record of reference; both stay stored and locked. */
+    private fun superseded(
+        earlier: MemoRendition,
+        rendition: MemoRendition,
+        built: BuiltRecord,
+    ) {
+        audit.record(
+            "memo.rendition.superseded",
+            Memos.OBJECT_TYPE,
+            rendition.memoId.toString(),
+            before = mapOf("version" to earlier.version, "sha256" to earlier.sha256),
+            after = mapOf("version" to rendition.version, "sha256" to built.sha256, "reason" to rendition.reason),
+        )
     }
 
     /** Back to PENDING and [cause] rethrown for the scheduler's next try, or FAILED for good once the attempts run out. */

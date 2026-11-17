@@ -71,4 +71,32 @@ class MemoRenditionQueries(
             .limit(limit)
             .fetch(MEMO_.ID)
             .filterNotNull()
+
+    /** A made record version, as the fixity check reads it. */
+    data class ReadyRecord(
+        val id: UUID,
+        val memoId: UUID,
+        val version: Int,
+        val fileVersionId: UUID,
+        val sha256: String,
+    )
+
+    /** Made versions after [after] (by id), at most [limit]: the fixity check's pages. */
+    fun ready(
+        after: UUID?,
+        limit: Int,
+    ): List<ReadyRecord> =
+        tenantDsl
+            .current()
+            .select(
+                MEMO_RENDITION.ID,
+                MEMO_RENDITION.MEMO_ID,
+                MEMO_RENDITION.VERSION,
+                MEMO_RENDITION.FILE_VERSION_ID,
+                MEMO_RENDITION.SHA256,
+            ).from(MEMO_RENDITION)
+            .where(MEMO_RENDITION.STATE.eq(RenditionState.READY.name), after?.let { MEMO_RENDITION.ID.gt(it) } ?: DSL.noCondition())
+            .orderBy(MEMO_RENDITION.ID)
+            .limit(limit)
+            .fetch { r -> ReadyRecord(r.value1()!!, r.value2()!!, r.value3()!!, r.value4()!!, r.value5()!!) }
 }

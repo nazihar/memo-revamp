@@ -47,6 +47,8 @@ class MemoLifecycleIT : MemoIntegrationTest() {
 
     @Autowired lateinit var audit: AuditLog
 
+    @Autowired lateinit var records: com.memo.memo.internal.rendition.RecordLifecycle
+
     private lateinit var checker: UserAccount
 
     @BeforeEach
@@ -89,7 +91,7 @@ class MemoLifecycleIT : MemoIntegrationTest() {
         val bob = person()
         val id = approved(alice, bob, type)
         val clock = MutableClock()
-        val closing = MemoClosing(memos, closingStore, audit, clock)
+        val closing = MemoClosing(memos, closingStore, audit, clock, records)
 
         clock.advance(Duration.ofDays(29))
         assertThat(asUser(admin) { closing.closeDue() }).isZero()

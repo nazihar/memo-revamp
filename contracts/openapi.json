@@ -1482,6 +1482,22 @@
         "required" : [ "enabled" ],
         "type" : "object"
       },
+      "FacetView" : {
+        "properties" : {
+          "count" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "label" : {
+            "type" : "string"
+          },
+          "value" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "count", "label", "value" ],
+        "type" : "object"
+      },
       "FieldChoice" : {
         "properties" : {
           "key" : {
@@ -1622,6 +1638,19 @@
           }
         },
         "required" : [ "id", "purpose", "version", "versionCount", "versions" ],
+        "type" : "object"
+      },
+      "FoundInView" : {
+        "properties" : {
+          "kind" : {
+            "enum" : [ "DETAILS", "NUMBER", "NOTE", "DOCUMENT", "ATTACHMENT" ],
+            "type" : "string"
+          },
+          "name" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "kind" ],
         "type" : "object"
       },
       "Grant" : {
@@ -4725,6 +4754,46 @@
         },
         "type" : "object"
       },
+      "SavedSearchRequest" : {
+        "properties" : {
+          "criteria" : {
+            "$ref" : "#/components/schemas/SearchQuery"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "criteria", "name" ],
+        "type" : "object"
+      },
+      "SavedSearchView" : {
+        "properties" : {
+          "createdAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "criteria" : {
+            "$ref" : "#/components/schemas/SearchQuery"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "updatedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "version" : {
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "createdAt", "criteria", "id", "name", "updatedAt", "version" ],
+        "type" : "object"
+      },
       "ScopeUnit" : {
         "properties" : {
           "id" : {
@@ -4736,6 +4805,154 @@
           }
         },
         "required" : [ "id", "subtree" ],
+        "type" : "object"
+      },
+      "SearchFacetsView" : {
+        "properties" : {
+          "status" : {
+            "items" : {
+              "$ref" : "#/components/schemas/FacetView"
+            },
+            "type" : "array"
+          },
+          "type" : {
+            "items" : {
+              "$ref" : "#/components/schemas/FacetView"
+            },
+            "type" : "array"
+          },
+          "unit" : {
+            "items" : {
+              "$ref" : "#/components/schemas/FacetView"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "status", "type", "unit" ],
+        "type" : "object"
+      },
+      "SearchPageView" : {
+        "properties" : {
+          "capped" : {
+            "type" : "boolean"
+          },
+          "count" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "cursor" : {
+            "type" : [ "string", "null" ]
+          },
+          "facets" : {
+            "$ref" : "#/components/schemas/SearchFacetsView"
+          },
+          "results" : {
+            "items" : {
+              "$ref" : "#/components/schemas/SearchResultView"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "capped", "count", "facets", "results" ],
+        "type" : "object"
+      },
+      "SearchQuery" : {
+        "properties" : {
+          "amountMax" : {
+            "type" : [ "number", "null" ]
+          },
+          "amountMin" : {
+            "type" : [ "number", "null" ]
+          },
+          "from" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "q" : {
+            "type" : "string"
+          },
+          "sort" : {
+            "enum" : [ "RELEVANCE", "NEWEST" ],
+            "type" : "string"
+          },
+          "sources" : {
+            "items" : {
+              "enum" : [ "METADATA", "NOTES", "DOCUMENTS" ],
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "statuses" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "to" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "types" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "units" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        },
+        "type" : "object"
+      },
+      "SearchResultView" : {
+        "properties" : {
+          "foundIn" : {
+            "$ref" : "#/components/schemas/FoundInView"
+          },
+          "memoId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "number" : {
+            "type" : [ "string", "null" ]
+          },
+          "snippet" : {
+            "items" : {
+              "$ref" : "#/components/schemas/SnippetPart"
+            },
+            "type" : "array"
+          },
+          "status" : {
+            "type" : "string"
+          },
+          "subject" : {
+            "type" : "string"
+          },
+          "typeId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "typeName" : {
+            "type" : "string"
+          },
+          "unitId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "unitName" : {
+            "type" : [ "string", "null" ]
+          },
+          "updatedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          }
+        },
+        "required" : [ "foundIn", "memoId", "snippet", "status", "subject", "typeId", "typeName", "updatedAt" ],
         "type" : "object"
       },
       "SecuritySettingLimit" : {
@@ -5047,6 +5264,18 @@
         "required" : [ "ended", "steps" ],
         "type" : "object"
       },
+      "SnippetPart" : {
+        "properties" : {
+          "match" : {
+            "type" : "boolean"
+          },
+          "text" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "match", "text" ],
+        "type" : "object"
+      },
       "StampCheckProblem" : {
         "properties" : {
           "approvalId" : {
@@ -5218,6 +5447,22 @@
           }
         },
         "required" : [ "id", "principal", "substitute", "validFrom" ],
+        "type" : "object"
+      },
+      "SuggestionView" : {
+        "properties" : {
+          "memoId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "number" : {
+            "type" : [ "string", "null" ]
+          },
+          "subject" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "memoId", "subject" ],
         "type" : "object"
       },
       "TaskRef" : {
@@ -13391,6 +13636,279 @@
         },
         "summary" : "Suspend: the host refuses every request, sessions end, jobs wait",
         "tags" : [ "platform-tenants" ]
+      }
+    },
+    "/api/v1/saved-searches" : {
+      "get" : {
+        "operationId" : "listSavedSearches",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/SavedSearchView"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "My saved searches, by name",
+        "tags" : [ "search" ]
+      },
+      "post" : {
+        "operationId" : "createSavedSearch",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/SavedSearchRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SavedSearchView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Save a search (at most 50 per person)",
+        "tags" : [ "search" ]
+      }
+    },
+    "/api/v1/saved-searches/{id}" : {
+      "delete" : {
+        "operationId" : "deleteSavedSearch",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : { },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Delete a saved search",
+        "tags" : [ "search" ]
+      },
+      "put" : {
+        "operationId" : "replaceSavedSearch",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/SavedSearchRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SavedSearchView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Rename a saved search or change its criteria",
+        "tags" : [ "search" ]
+      }
+    },
+    "/api/v1/search" : {
+      "get" : {
+        "operationId" : "search",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "q",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "type",
+          "required" : false,
+          "schema" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        }, {
+          "in" : "query",
+          "name" : "status",
+          "required" : false,
+          "schema" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        }, {
+          "in" : "query",
+          "name" : "unit",
+          "required" : false,
+          "schema" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        }, {
+          "in" : "query",
+          "name" : "from",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "to",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "amountMin",
+          "required" : false,
+          "schema" : {
+            "type" : "number"
+          }
+        }, {
+          "in" : "query",
+          "name" : "amountMax",
+          "required" : false,
+          "schema" : {
+            "type" : "number"
+          }
+        }, {
+          "description" : "Where to search: metadata, notes, documents (default all)",
+          "in" : "query",
+          "name" : "in",
+          "required" : false,
+          "schema" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        }, {
+          "in" : "query",
+          "name" : "sort",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "cursor",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "required" : false,
+          "schema" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SearchPageView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Memos the reader may read that match, with counts, facets and snippets",
+        "tags" : [ "search" ]
+      }
+    },
+    "/api/v1/search/suggest" : {
+      "get" : {
+        "operationId" : "suggestSearch",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "q",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/SuggestionView"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Up to 8 memos while typing: the last word matches as a prefix",
+        "tags" : [ "search" ]
       }
     },
     "/api/v1/tasks/{taskId}/answer" : {

@@ -36,6 +36,9 @@ enum class RateLimit(
     AUDIT_QUERY_PER_USER(60, Duration.ofMinutes(1)),
     AUDIT_EXPORT_PER_TENANT(5, Duration.ofHours(1)),
     WORKFLOW_SIMULATION_PER_USER(30, Duration.ofMinutes(1)),
+
+    // Searches of one person (design E05 §3): the 31st in a minute is refused.
+    SEARCH_PER_USER(30, Duration.ofMinutes(1)),
     ;
 
     internal val configuration: BucketConfiguration by lazy {

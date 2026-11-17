@@ -21,7 +21,7 @@ erDiagram
   MEMO ||--|| SEARCH_MEMO : "indexed as"
   MEMO_NOTE ||--|| SEARCH_NOTE : "indexed as"
   FILES_VERSION ||--o{ SEARCH_CHUNK : "text in chunks"
-  USER ||--o{ SAVED_SEARCH : keeps
+  USER ||--o{ SEARCH_SAVED : keeps
   USER ||--o{ MEMO_WATCH : follows
   MEMO ||--o{ MEMO_WATCH : "followed by"
 ```
@@ -30,13 +30,20 @@ erDiagram
   - a chunk's rank is the effective classification of its file version (the higher of the file's and the memo's);
   - note and chunk rows carry their memo's rank, origin unit, status, type, creation date and amount, equal to the memo row's (`search_put_memo` updates them; ADR-0054 amendment);
   - a deleted or superseded file version leaves no chunks behind.
-- **`saved_search` (search module):** id, tenant, owner, name (1–100), criteria (jsonb: q, filters, sort; at most 4 KB), created and updated. Private to the owner, at most 50 per person. A saved search keeps criteria, never results.
+- **`search_saved` (search module; tables carry their module's prefix):** id, tenant, owner, name (1–100), criteria (jsonb: q, filters, sort; at most 4 KB), created and updated. Private to the owner, at most 50 per person. A saved search keeps criteria, never results.
 - **`memo_watch` (memo module):** tenant, memo, user, reason (`MANUAL`, `INITIATED`, `ACTED`, `MENTIONED`), created. Unique per (memo, user). Auto-watch follows the person's preference (`notifications.autoWatch`, default on for memos they initiate or act on).
 
 ## 3. Search (ADR-0054)
 - **API:** `GET /api/v1/search?q=&type=&status=&unit=&from=&to=&amountMin=&amountMax=&in=metadata,notes,documents&sort=relevance|newest&cursor=`
   - **Returns:** results (memo id, number, subject, type, status, unit, updated, a snippet with `<mark>` delimiters as data, "found in" flags), a count that is exact up to 2,000 and "2,000+" above it, facets (status, type, unit) counted on the same permitted set, and a cursor.
-  - **Errors:** 422 (query too long, too many terms, bad filter), 429 (rate limit), 503 (`SEARCH_TIMEOUT`).
+  - **Errors:** 422 (no words, query too long, too many terms, bad filter), 400 (malformed cursor or value), 429 (rate limit), 503 (`SEARCH_TIMEOUT`).
+  - **Decided in T3:**
+    - A search needs words: filters alone narrow a search, they do not list memos (the memo lists do that).
+    - "Newest first" orders the same candidate set (the best 2,000 matches) by last update.
+    - Results page by a keyset over that set (score or update time, then memo id), recomputed per request.
+    - Snippets come as text parts with a `match` flag, never as HTML.
+    - Search-as-you-type is audited like a search (`mode: suggest`).
+    - A stale `If-Match` on a saved search is 412, as everywhere else.
   - **Search as you type** (the top-bar box): `GET /api/v1/search/suggest?q=` matches the last word as a prefix (3+ characters) over 200 candidates and returns at most 8 memos, without facets or count (E05 T1: the unit head's prefix search over 2,000 candidates was 307 ms at V1).
 - **Function `search.find`:**
   - Its parameters are the tenant, the reader, the clearance rank, the unit scopes, the parsed query terms, the filters, the sort, the cursor and the limit.

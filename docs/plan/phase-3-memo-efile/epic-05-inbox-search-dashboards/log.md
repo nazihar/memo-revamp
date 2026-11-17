@@ -62,3 +62,30 @@
   - `SearchChunkerTest`;
   - `RlsMetaTest`, `EventPayloadRulesTest`, `ModularityTest`, `ArchitectureRulesTest` and the memo attachment, note and lifecycle ITs.
 - **Fixed on the way:** the E04 journey failed in CI on #120–#122 because the Earlier versions list showed each version's own reason. It now shows the reason of the version that replaced it (E04 T7, merged up the stack). The T1 spike's Semgrep findings (session-level `SET`, MD5 in Kotlin) are fixed on T1.
+
+## 2026-11-16 — T3: search API and saved searches
+- **Built:**
+  - **`GET /api/v1/search`:**
+    - words, filters (type, status, unit, dates in the tenant's time zone, amount), where to search (`in`), sort and cursor;
+    - a count exact up to 2,000 and `capped` above it;
+    - facets over the same permitted candidate set;
+    - snippets for the page only, as text parts;
+    - "found in": details, number, a note and its author, the document, or an attachment by name.
+  - **`GET /api/v1/search/suggest`:** the last word as a prefix over 200 candidates, at most 8.
+  - **Saved searches:** `GET|POST /api/v1/saved-searches` and `PUT|DELETE /api/v1/saved-searches/{id}` (If-Match). Owner only (others 404), at most 50 per person (409 `SAVED_SEARCH_LIMIT`), names of 1–100 characters, criteria checked as a search's and at most 4 KB; table `search_saved` (`search/V2`, RLS forced).
+  - **Limits:** the input caps (200 characters, 12 words, 20 values per filter) are 422; the rate limit `SEARCH_PER_USER` is 30 a minute (429); a 2-second query timeout gives 503 `SEARCH_TIMEOUT`.
+  - **Audit:** `search.performed` (mode, terms, filters, sort, count, capped, the page's memo ids), and `search.saved`, `search.updated` and `search.deleted`.
+  - **Contract:** `contracts/openapi.json` and the web client are regenerated (the `in` parameter is named so).
+- **Decisions taken while building:** see design §3 "Decided in T3".
+- **Tests:**
+  - **`SearchIT`:**
+    - words, a phrase, OR and minus, with snippets, facets and audit, and nothing for a stranger;
+    - a note found with its author, and `in` filters;
+    - a number found first in three spellings;
+    - keyset paging without repeats, and newest first;
+    - "2,000+" with facet totals of 2,000 (4,000 generated memos);
+    - the input caps, the 31st search refused, and suggestions while typing.
+  - **`SavedSearchIT`:** CRUD with audit, a stale version 412, owner only, name and criteria checks, the limit of 50.
+  - **`SearchEquivalenceIT`:** 4 seeds × 40 random readers and queries over 120 memos each, with ranks, units, active, revoked and lapsed participants, notes, and chunks above their memo. `search_find` returns exactly what the E03 rule allows and the query matches, and no snippet comes from an unreadable memo or a chunk above clearance.
+  - **Other:** `SearchIndexIT` checks an attachment's "found in" through the API; the matrix (`p3-e05-search.yaml`), `EndpointCoverageTest` and `AuditActionCoverageTest` pass.
+- **Not tested:** the 503 on a real timeout (a query of 2 s cannot be made reliably in CI). The mapping of PostgreSQL's 57014 is in `SearchFinder`. The Gatling run at V1 (T8) shows how often searches near the limit.

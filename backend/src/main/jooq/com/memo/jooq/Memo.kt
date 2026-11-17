@@ -60,6 +60,7 @@ import com.memo.jooq.tables.OrgPosition
 import com.memo.jooq.tables.OrgReportingLine
 import com.memo.jooq.tables.OrgUnit
 import com.memo.jooq.tables.SearchFind
+import com.memo.jooq.tables.SearchSaved
 import com.memo.jooq.tables.SearchSnippets
 import com.memo.jooq.tables.SearchUnindexed
 import com.memo.jooq.tables.SystemIdempotencyKey
@@ -550,6 +551,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     )
 
     /**
+     * The table <code>memo.search_saved</code>.
+     */
+    val SEARCH_SAVED: SearchSaved get() = SearchSaved.SEARCH_SAVED
+
+    /**
      * The table <code>memo.search_snippets</code>.
      */
     val SEARCH_SNIPPETS: SearchSnippets get() = SearchSnippets.SEARCH_SNIPPETS
@@ -834,6 +840,7 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         OrgReportingLine.ORG_REPORTING_LINE,
         OrgUnit.ORG_UNIT,
         SearchFind.SEARCH_FIND,
+        SearchSaved.SEARCH_SAVED,
         SearchSnippets.SEARCH_SNIPPETS,
         SearchUnindexed.SEARCH_UNINDEXED,
         SystemIdempotencyKey.SYSTEM_IDEMPOTENCY_KEY,

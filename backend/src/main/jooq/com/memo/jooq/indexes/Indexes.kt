@@ -41,6 +41,7 @@ import com.memo.jooq.tables.OrgAssignment
 import com.memo.jooq.tables.OrgPosition
 import com.memo.jooq.tables.OrgReportingLine
 import com.memo.jooq.tables.OrgUnit
+import com.memo.jooq.tables.SearchSaved
 import com.memo.jooq.tables.SystemIdempotencyKey
 import com.memo.jooq.tables.TenancySetting
 import com.memo.jooq.tables.TenancyTerm
@@ -132,6 +133,7 @@ val ORG_REPORTING_LINE_TENANT_REPORTS_TO_IDX: Index = Internal.createIndex(DSL.n
 val ORG_UNIT_ANCESTORS_IDX: Index = Internal.createIndex(DSL.name("org_unit_ancestors_idx"), OrgUnit.ORG_UNIT, arrayOf(OrgUnit.ORG_UNIT.ANCESTORS), false)
 val ORG_UNIT_TENANT_ENTITY_IDX: Index = Internal.createIndex(DSL.name("org_unit_tenant_entity_idx"), OrgUnit.ORG_UNIT, arrayOf(OrgUnit.ORG_UNIT.TENANT_ID, OrgUnit.ORG_UNIT.LEGAL_ENTITY_ID), false)
 val ORG_UNIT_TENANT_PARENT_IDX: Index = Internal.createIndex(DSL.name("org_unit_tenant_parent_idx"), OrgUnit.ORG_UNIT, arrayOf(OrgUnit.ORG_UNIT.TENANT_ID, OrgUnit.ORG_UNIT.PARENT_ID), false)
+val SEARCH_SAVED_OWNER_IDX: Index = Internal.createIndex(DSL.name("search_saved_owner_idx"), SearchSaved.SEARCH_SAVED, arrayOf(SearchSaved.SEARCH_SAVED.TENANT_ID, SearchSaved.SEARCH_SAVED.OWNER_ID, SearchSaved.SEARCH_SAVED.NAME), false)
 val SYSTEM_IDEMPOTENCY_KEY_TENANT_CREATED_IDX: Index = Internal.createIndex(DSL.name("system_idempotency_key_tenant_created_idx"), SystemIdempotencyKey.SYSTEM_IDEMPOTENCY_KEY, arrayOf(SystemIdempotencyKey.SYSTEM_IDEMPOTENCY_KEY.TENANT_ID, SystemIdempotencyKey.SYSTEM_IDEMPOTENCY_KEY.CREATED_AT), false)
 val TENANCY_SETTING_TENANT_KEY_UK: Index = Internal.createIndex(DSL.name("tenancy_setting_tenant_key_uk"), TenancySetting.TENANCY_SETTING, arrayOf(TenancySetting.TENANCY_SETTING.TENANT_ID, TenancySetting.TENANCY_SETTING.KEY), true)
 val TENANCY_TERM_TENANT_TERM_LOCALE_UK: Index = Internal.createIndex(DSL.name("tenancy_term_tenant_term_locale_uk"), TenancyTerm.TENANCY_TERM, arrayOf(TenancyTerm.TENANCY_TERM.TENANT_ID, TenancyTerm.TENANCY_TERM.TERM, TenancyTerm.TENANCY_TERM.LOCALE), true)

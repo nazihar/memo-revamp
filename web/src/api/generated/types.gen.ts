@@ -559,6 +559,12 @@ export type EditingStatus = {
     enabled: boolean;
 };
 
+export type FacetView = {
+    count: number;
+    label: string;
+    value: string;
+};
+
 export type FieldChoice = {
     key: string;
     label: string;
@@ -602,6 +608,11 @@ export type FileView = {
     version: number;
     versionCount: number;
     versions: Array<FileVersionView>;
+};
+
+export type FoundInView = {
+    kind: 'DETAILS' | 'NUMBER' | 'NOTE' | 'DOCUMENT' | 'ATTACHMENT';
+    name?: string | null;
 };
 
 export type Grant = {
@@ -1743,9 +1754,64 @@ export type RouteRequest = {
     entries?: Array<RouteEntry> | null;
 };
 
+export type SavedSearchRequest = {
+    criteria: SearchQuery;
+    name: string;
+};
+
+export type SavedSearchView = {
+    createdAt: string;
+    criteria: SearchQuery;
+    id: string;
+    name: string;
+    updatedAt: string;
+    version: number;
+};
+
 export type ScopeUnit = {
     id: string;
     subtree: boolean;
+};
+
+export type SearchFacetsView = {
+    status: Array<FacetView>;
+    type: Array<FacetView>;
+    unit: Array<FacetView>;
+};
+
+export type SearchPageView = {
+    capped: boolean;
+    count: number;
+    cursor?: string | null;
+    facets: SearchFacetsView;
+    results: Array<SearchResultView>;
+};
+
+export type SearchQuery = {
+    amountMax?: number | null;
+    amountMin?: number | null;
+    from?: string | null;
+    q?: string;
+    sort?: 'RELEVANCE' | 'NEWEST';
+    sources?: Array<'METADATA' | 'NOTES' | 'DOCUMENTS'>;
+    statuses?: Array<string>;
+    to?: string | null;
+    types?: Array<string>;
+    units?: Array<string>;
+};
+
+export type SearchResultView = {
+    foundIn: FoundInView;
+    memoId: string;
+    number?: string | null;
+    snippet: Array<SnippetPart>;
+    status: string;
+    subject: string;
+    typeId: string;
+    typeName: string;
+    unitId?: string | null;
+    unitName?: string | null;
+    updatedAt: string;
 };
 
 export type SecuritySettingLimit = {
@@ -1875,6 +1941,11 @@ export type SimulationResponse = {
     steps: Array<SimulatedStepResponse>;
 };
 
+export type SnippetPart = {
+    match: boolean;
+    text: string;
+};
+
 export type StampCheckProblem = {
     approvalId: string;
     code: string;
@@ -1931,6 +2002,12 @@ export type SubstitutionResponse = {
     substitute: Person;
     validFrom: string;
     validTo?: string | null;
+};
+
+export type SuggestionView = {
+    memoId: string;
+    number?: string | null;
+    subject: string;
 };
 
 export type TaskRef = {
@@ -6518,6 +6595,128 @@ export type SuspendPlatformTenantResponses = {
 };
 
 export type SuspendPlatformTenantResponse = SuspendPlatformTenantResponses[keyof SuspendPlatformTenantResponses];
+
+export type ListSavedSearchesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/saved-searches';
+};
+
+export type ListSavedSearchesResponses = {
+    /**
+     * OK
+     */
+    200: Array<SavedSearchView>;
+};
+
+export type ListSavedSearchesResponse = ListSavedSearchesResponses[keyof ListSavedSearchesResponses];
+
+export type CreateSavedSearchData = {
+    body: SavedSearchRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/saved-searches';
+};
+
+export type CreateSavedSearchResponses = {
+    /**
+     * OK
+     */
+    200: SavedSearchView;
+};
+
+export type CreateSavedSearchResponse = CreateSavedSearchResponses[keyof CreateSavedSearchResponses];
+
+export type DeleteSavedSearchData = {
+    body?: never;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/saved-searches/{id}';
+};
+
+export type DeleteSavedSearchResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
+export type ReplaceSavedSearchData = {
+    body: SavedSearchRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/saved-searches/{id}';
+};
+
+export type ReplaceSavedSearchResponses = {
+    /**
+     * OK
+     */
+    200: SavedSearchView;
+};
+
+export type ReplaceSavedSearchResponse = ReplaceSavedSearchResponses[keyof ReplaceSavedSearchResponses];
+
+export type SearchData = {
+    body?: never;
+    path?: never;
+    query?: {
+        q?: string;
+        type?: Array<string>;
+        status?: Array<string>;
+        unit?: Array<string>;
+        from?: string;
+        to?: string;
+        amountMin?: number;
+        amountMax?: number;
+        /**
+         * Where to search: metadata, notes, documents (default all)
+         */
+        in?: Array<string>;
+        sort?: string;
+        cursor?: string;
+        limit?: number;
+    };
+    url: '/api/v1/search';
+};
+
+export type SearchResponses = {
+    /**
+     * OK
+     */
+    200: SearchPageView;
+};
+
+export type SearchResponse = SearchResponses[keyof SearchResponses];
+
+export type SuggestSearchData = {
+    body?: never;
+    path?: never;
+    query: {
+        q: string;
+    };
+    url: '/api/v1/search/suggest';
+};
+
+export type SuggestSearchResponses = {
+    /**
+     * OK
+     */
+    200: Array<SuggestionView>;
+};
+
+export type SuggestSearchResponse = SuggestSearchResponses[keyof SuggestSearchResponses];
 
 export type AnswerTaskData = {
     body: RemarkRequest;

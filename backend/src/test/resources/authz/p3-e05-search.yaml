@@ -1,0 +1,14 @@
+# Phase 3 E05 search and saved searches (design E05 §3, §7; ADR-0054). Search is open to every signed-in user; what it
+# returns follows the read rule (SearchIT, SearchEquivalenceIT). Saved searches are their owner's: someone else's is 404.
+# Without `q` a search is refused as input (422/400), after authorisation.
+epic: P3-E05
+endpoints:
+  - { endpoint: "GET /api/v1/search", rule: signedIn }
+  - { endpoint: "GET /api/v1/search/suggest", rule: signedIn }
+  - { endpoint: "GET /api/v1/saved-searches", rule: signedIn }
+  - { endpoint: "POST /api/v1/saved-searches", rule: signedIn, body: { name: "Matrix {random}", criteria: { q: "matrix" } } }
+  - endpoint: "PUT /api/v1/saved-searches/{id}"
+    rule: signedIn
+    body: { name: "Matrix", criteria: { q: "matrix" } }
+    headers: { If-Match: "\"0\"" }
+  - { endpoint: "DELETE /api/v1/saved-searches/{id}", rule: signedIn, headers: { If-Match: "\"0\"" } }

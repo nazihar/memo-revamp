@@ -62,6 +62,7 @@ import com.memo.jooq.tables.OrgPosition
 import com.memo.jooq.tables.OrgReportingLine
 import com.memo.jooq.tables.OrgUnit
 import com.memo.jooq.tables.SearchFind
+import com.memo.jooq.tables.SearchSaved
 import com.memo.jooq.tables.SearchSnippets
 import com.memo.jooq.tables.SearchUnindexed
 import com.memo.jooq.tables.SystemIdempotencyKey
@@ -531,6 +532,11 @@ fun SEARCH_FIND(
     pInDocs,
     pCap
 )
+
+/**
+ * The table <code>memo.search_saved</code>.
+ */
+val SEARCH_SAVED: SearchSaved = SearchSaved.SEARCH_SAVED
 
 /**
  * The table <code>memo.search_snippets</code>.

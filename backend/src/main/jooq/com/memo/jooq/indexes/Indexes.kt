@@ -26,6 +26,9 @@ import com.memo.jooq.tables.MemoAttachment
 import com.memo.jooq.tables.MemoCopy
 import com.memo.jooq.tables.MemoCopyDelivery
 import com.memo.jooq.tables.MemoLink
+import com.memo.jooq.tables.MemoNote
+import com.memo.jooq.tables.MemoNoteAttachment
+import com.memo.jooq.tables.MemoNoteMention
 import com.memo.jooq.tables.MemoParticipant
 import com.memo.jooq.tables.MemoShare
 import com.memo.jooq.tables.MemoSubmissionAttachment
@@ -92,6 +95,12 @@ val MEMO_COPY_TENANT_MEMO_IDX: Index = Internal.createIndex(DSL.name("memo_copy_
 val MEMO_LINK_STANDING_UK: Index = Internal.createIndex(DSL.name("memo_link_standing_uk"), MemoLink.MEMO_LINK, arrayOf(MemoLink.MEMO_LINK.TENANT_ID, MemoLink.MEMO_LINK.MEMO_ID, MemoLink.MEMO_LINK.TARGET_MEMO_ID), true)
 val MEMO_LINK_TENANT_MEMO_IDX: Index = Internal.createIndex(DSL.name("memo_link_tenant_memo_idx"), MemoLink.MEMO_LINK, arrayOf(MemoLink.MEMO_LINK.TENANT_ID, MemoLink.MEMO_LINK.MEMO_ID), false)
 val MEMO_LINK_TENANT_TARGET_IDX: Index = Internal.createIndex(DSL.name("memo_link_tenant_target_idx"), MemoLink.MEMO_LINK, arrayOf(MemoLink.MEMO_LINK.TENANT_ID, MemoLink.MEMO_LINK.TARGET_MEMO_ID), false)
+val MEMO_NOTE_ATTACHMENT_TENANT_MEMO_IDX: Index = Internal.createIndex(DSL.name("memo_note_attachment_tenant_memo_idx"), MemoNoteAttachment.MEMO_NOTE_ATTACHMENT, arrayOf(MemoNoteAttachment.MEMO_NOTE_ATTACHMENT.TENANT_ID, MemoNoteAttachment.MEMO_NOTE_ATTACHMENT.MEMO_ID), false)
+val MEMO_NOTE_MENTION_TENANT_MEMO_IDX: Index = Internal.createIndex(DSL.name("memo_note_mention_tenant_memo_idx"), MemoNoteMention.MEMO_NOTE_MENTION, arrayOf(MemoNoteMention.MEMO_NOTE_MENTION.TENANT_ID, MemoNoteMention.MEMO_NOTE_MENTION.MEMO_ID), false)
+val MEMO_NOTE_MENTION_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("memo_note_mention_tenant_user_idx"), MemoNoteMention.MEMO_NOTE_MENTION, arrayOf(MemoNoteMention.MEMO_NOTE_MENTION.TENANT_ID, MemoNoteMention.MEMO_NOTE_MENTION.USER_ID), false)
+val MEMO_NOTE_ONE_REMARK_IDX: Index = Internal.createIndex(DSL.name("memo_note_one_remark_idx"), MemoNote.MEMO_NOTE, arrayOf(MemoNote.MEMO_NOTE.TENANT_ID, MemoNote.MEMO_NOTE.MEMO_ID, MemoNote.MEMO_NOTE.ACTION_SEQ), true)
+val MEMO_NOTE_TENANT_CORRECTS_IDX: Index = Internal.createIndex(DSL.name("memo_note_tenant_corrects_idx"), MemoNote.MEMO_NOTE, arrayOf(MemoNote.MEMO_NOTE.TENANT_ID, MemoNote.MEMO_NOTE.CORRECTS_ID), false)
+val MEMO_NOTE_TENANT_MEMO_IDX: Index = Internal.createIndex(DSL.name("memo_note_tenant_memo_idx"), MemoNote.MEMO_NOTE, arrayOf(MemoNote.MEMO_NOTE.TENANT_ID, MemoNote.MEMO_NOTE.MEMO_ID, MemoNote.MEMO_NOTE.CREATED_AT), false)
 val MEMO_NUMBER_UK: Index = Internal.createIndex(DSL.name("memo_number_uk"), Memo.MEMO_, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.NUMBER_SERIES, Memo.MEMO_.NUMBER_PERIOD, Memo.MEMO_.NUMBER_SCOPE, Memo.MEMO_.NUMBER_SEQUENCE), true)
 val MEMO_PARTICIPANT_ACTIVE_IDX: Index = Internal.createIndex(DSL.name("memo_participant_active_idx"), MemoParticipant.MEMO_PARTICIPANT, arrayOf(MemoParticipant.MEMO_PARTICIPANT.TENANT_ID, MemoParticipant.MEMO_PARTICIPANT.USER_ID, MemoParticipant.MEMO_PARTICIPANT.MEMO_ID), false)
 val MEMO_PARTICIPANT_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("memo_participant_tenant_user_idx"), MemoParticipant.MEMO_PARTICIPANT, arrayOf(MemoParticipant.MEMO_PARTICIPANT.TENANT_ID, MemoParticipant.MEMO_PARTICIPANT.USER_ID, MemoParticipant.MEMO_PARTICIPANT.MEMO_ID), false)

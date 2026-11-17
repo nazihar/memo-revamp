@@ -95,6 +95,7 @@ const kindsWithValues = defineMessages<{
   memoWithdrawn: { reference: string }
   memoUpdate: { reference: string }
   memoCopied: { reference: string }
+  memoMentioned: { reference: string }
   taskReminder: { reference: string }
   taskOverdue: { reference: string }
   editNotSaved: { name: string }
@@ -118,6 +119,10 @@ const kindsWithValues = defineMessages<{
   memoCopied: {
     id: 'notifications.kind.memoCopied',
     defaultMessage: 'Memo {reference} was copied to you for information',
+  },
+  memoMentioned: {
+    id: 'notifications.kind.memoMentioned',
+    defaultMessage: 'You were mentioned in a note on memo {reference}',
   },
   taskReminder: {
     id: 'notifications.kind.taskReminder',
@@ -162,6 +167,8 @@ export function notificationText(intl: IntlShape, kind: string, params: Record<s
       return intl.formatMessage(kindsWithValues.memoUpdate, reference)
     case 'MEMO_COPIED':
       return intl.formatMessage(kindsWithValues.memoCopied, reference)
+    case 'MEMO_MENTIONED':
+      return intl.formatMessage(kindsWithValues.memoMentioned, reference)
     case 'TASK_REMINDER':
       return intl.formatMessage(kindsWithValues.taskReminder, reference)
     case 'TASK_OVERDUE':
@@ -205,6 +212,7 @@ const mailTemplates = defineMessages({
   MEMO_WITHDRAWN: { id: 'mail.template.memoWithdrawn', defaultMessage: 'Memo withdrawn' },
   MEMO_UPDATE: { id: 'mail.template.memoUpdate', defaultMessage: 'News about a memo' },
   MEMO_COPIED: { id: 'mail.template.memoCopied', defaultMessage: 'A memo copied to you' },
+  MEMO_MENTIONED: { id: 'mail.template.memoMentioned', defaultMessage: 'You were mentioned on a memo' },
   TASK_REMINDER: { id: 'mail.template.taskReminder', defaultMessage: 'Reminder about a memo' },
   TASK_OVERDUE: { id: 'mail.template.taskOverdue', defaultMessage: 'Memo overdue' },
 })

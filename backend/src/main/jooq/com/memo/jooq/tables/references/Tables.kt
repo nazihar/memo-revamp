@@ -36,6 +36,10 @@ import com.memo.jooq.tables.MemoDistributionList
 import com.memo.jooq.tables.MemoDistributionMember
 import com.memo.jooq.tables.MemoInterest
 import com.memo.jooq.tables.MemoLink
+import com.memo.jooq.tables.MemoNote
+import com.memo.jooq.tables.MemoNoteAttachment
+import com.memo.jooq.tables.MemoNoteDraft
+import com.memo.jooq.tables.MemoNoteMention
 import com.memo.jooq.tables.MemoNumberCounter
 import com.memo.jooq.tables.MemoParticipant
 import com.memo.jooq.tables.MemoReceipt
@@ -232,6 +236,26 @@ val MEMO_INTEREST: MemoInterest = MemoInterest.MEMO_INTEREST
  * The table <code>memo.memo_link</code>.
  */
 val MEMO_LINK: MemoLink = MemoLink.MEMO_LINK
+
+/**
+ * The table <code>memo.memo_note</code>.
+ */
+val MEMO_NOTE: MemoNote = MemoNote.MEMO_NOTE
+
+/**
+ * The table <code>memo.memo_note_attachment</code>.
+ */
+val MEMO_NOTE_ATTACHMENT: MemoNoteAttachment = MemoNoteAttachment.MEMO_NOTE_ATTACHMENT
+
+/**
+ * The table <code>memo.memo_note_draft</code>.
+ */
+val MEMO_NOTE_DRAFT: MemoNoteDraft = MemoNoteDraft.MEMO_NOTE_DRAFT
+
+/**
+ * The table <code>memo.memo_note_mention</code>.
+ */
+val MEMO_NOTE_MENTION: MemoNoteMention = MemoNoteMention.MEMO_NOTE_MENTION
 
 /**
  * The table <code>memo.memo_number_counter</code>.

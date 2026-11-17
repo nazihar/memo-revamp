@@ -34,6 +34,10 @@ import com.memo.jooq.tables.MemoDistributionList
 import com.memo.jooq.tables.MemoDistributionMember
 import com.memo.jooq.tables.MemoInterest
 import com.memo.jooq.tables.MemoLink
+import com.memo.jooq.tables.MemoNote
+import com.memo.jooq.tables.MemoNoteAttachment
+import com.memo.jooq.tables.MemoNoteDraft
+import com.memo.jooq.tables.MemoNoteMention
 import com.memo.jooq.tables.MemoNumberCounter
 import com.memo.jooq.tables.MemoParticipant
 import com.memo.jooq.tables.MemoReceipt
@@ -250,6 +254,26 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      * The table <code>memo.memo_link</code>.
      */
     val MEMO_LINK: MemoLink get() = MemoLink.MEMO_LINK
+
+    /**
+     * The table <code>memo.memo_note</code>.
+     */
+    val MEMO_NOTE: MemoNote get() = MemoNote.MEMO_NOTE
+
+    /**
+     * The table <code>memo.memo_note_attachment</code>.
+     */
+    val MEMO_NOTE_ATTACHMENT: MemoNoteAttachment get() = MemoNoteAttachment.MEMO_NOTE_ATTACHMENT
+
+    /**
+     * The table <code>memo.memo_note_draft</code>.
+     */
+    val MEMO_NOTE_DRAFT: MemoNoteDraft get() = MemoNoteDraft.MEMO_NOTE_DRAFT
+
+    /**
+     * The table <code>memo.memo_note_mention</code>.
+     */
+    val MEMO_NOTE_MENTION: MemoNoteMention get() = MemoNoteMention.MEMO_NOTE_MENTION
 
     /**
      * The table <code>memo.memo_number_counter</code>.
@@ -480,6 +504,10 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         MemoDistributionMember.MEMO_DISTRIBUTION_MEMBER,
         MemoInterest.MEMO_INTEREST,
         MemoLink.MEMO_LINK,
+        MemoNote.MEMO_NOTE,
+        MemoNoteAttachment.MEMO_NOTE_ATTACHMENT,
+        MemoNoteDraft.MEMO_NOTE_DRAFT,
+        MemoNoteMention.MEMO_NOTE_MENTION,
         MemoNumberCounter.MEMO_NUMBER_COUNTER,
         MemoParticipant.MEMO_PARTICIPANT,
         MemoReceipt.MEMO_RECEIPT,

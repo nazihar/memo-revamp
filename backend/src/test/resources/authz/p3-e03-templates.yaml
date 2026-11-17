@@ -27,3 +27,11 @@ endpoints:
     body: { name: "Matrix", members: [] }
     headers: { If-Match: "\"0\"" }
   - { endpoint: "DELETE /api/v1/distribution-lists/{id}", rule: tenantAdmin, headers: { If-Match: "\"0\"" } }
+  # The note sheet (§4) follows the memo: unknown memos are 404 for every signed-in user.
+  - { endpoint: "GET /api/v1/memos/{id}/notes", rule: signedIn }
+  - endpoint: "POST /api/v1/memos/{id}/notes"
+    rule: signedIn
+    body: { body: { type: "doc", content: [ { type: "paragraph", content: [ { type: "text", text: "Matrix" } ] } ] } }
+  - { endpoint: "GET /api/v1/memos/{id}/notes/draft", rule: signedIn }
+  - { endpoint: "PUT /api/v1/memos/{id}/notes/draft", rule: signedIn, body: { body: { type: "doc", content: [] } } }
+  - { endpoint: "DELETE /api/v1/memos/{id}/notes/draft", rule: signedIn }

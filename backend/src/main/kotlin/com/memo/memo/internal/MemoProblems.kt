@@ -36,6 +36,22 @@ class MemoProblems {
             },
         )
 
+    /** A note that is not valid `noteDoc/v1` (ADR-0049): 422 with each problem's JSON path as the field. */
+    @ExceptionHandler(NoteRejectedException::class)
+    fun note(ex: NoteRejectedException): ResponseEntity<ProblemDetail> =
+        ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(
+            ProblemTypes
+                .validation(
+                    ex.problems.map {
+                        FieldProblem(
+                            "body" + if (it.path.isEmpty()) "" else ".${it.path}",
+                            it.code,
+                            "Not allowed in a note.",
+                        )
+                    },
+                ).apply { status = HttpStatus.UNPROCESSABLE_CONTENT.value() },
+        )
+
     @ExceptionHandler(IllegalArgumentException::class)
     fun invalid(ex: IllegalArgumentException): ResponseEntity<ProblemDetail> =
         ResponseEntity.badRequest().body(ProblemTypes.of(HttpStatus.BAD_REQUEST, ProblemTypes.VALIDATION, ex.message ?: "Invalid request."))

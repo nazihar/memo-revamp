@@ -718,6 +718,36 @@ export type InviteUserRequest = {
     tenantAdmin: boolean;
 };
 
+export type JsonNode = {
+    array?: boolean;
+    bigDecimal?: boolean;
+    bigInteger?: boolean;
+    binary?: boolean;
+    boolean?: boolean;
+    container?: boolean;
+    double?: boolean;
+    embeddedValue?: boolean;
+    empty?: boolean;
+    float?: boolean;
+    floatingPointNumber?: boolean;
+    int?: boolean;
+    integralNumber?: boolean;
+    long?: boolean;
+    missingNode?: boolean;
+    nodeType?: 'ARRAY' | 'BINARY' | 'BOOLEAN' | 'MISSING' | 'NULL' | 'NUMBER' | 'OBJECT' | 'POJO' | 'STRING';
+    null?: boolean;
+    number?: boolean;
+    object?: boolean;
+    pojo?: boolean;
+    short?: boolean;
+    string?: boolean;
+    /**
+     * @deprecated
+     */
+    textual?: boolean;
+    valueNode?: boolean;
+};
+
 export type LegalEntity = {
     id: string;
     name: string;
@@ -1071,6 +1101,50 @@ export type Named = {
 export type NewMemoTypeRequest = {
     code: string;
     name: string;
+};
+
+export type NoteDraftRequest = {
+    body: JsonNode;
+};
+
+export type NoteDraftView = {
+    body: JsonNode;
+    updatedAt: string;
+    version: number;
+};
+
+export type NoteEntryView = {
+    actingFor?: Named | null;
+    actionKind?: string | null;
+    attachments: Array<NoteFileView>;
+    author: Named;
+    body: JsonNode;
+    canCorrect: boolean;
+    correctedBy: Array<string>;
+    correctsId?: string | null;
+    createdAt: string;
+    id: string;
+    kind: 'REMARK' | 'COMMENT' | 'CORRECTION';
+    readableMemos: Array<string>;
+    round: number;
+    text: string;
+};
+
+export type NoteFileView = {
+    fileId: string;
+    mediaType: string;
+    name: string;
+};
+
+export type NoteRequest = {
+    attachmentIds: Array<string>;
+    body: JsonNode;
+    correctsId?: string | null;
+};
+
+export type NoteSheetView = {
+    canWrite: boolean;
+    entries: Array<NoteEntryView>;
 };
 
 export type NotificationPage = {
@@ -1547,6 +1621,7 @@ export type RegisterEntry = {
 
 export type RemarkRequest = {
     remark?: string | null;
+    remarkBody?: JsonNode | null;
 };
 
 export type RenditionView = {
@@ -5099,6 +5174,97 @@ export type UnlinkMemoResponses = {
 };
 
 export type UnlinkMemoResponse = UnlinkMemoResponses[keyof UnlinkMemoResponses];
+
+export type ListMemoNotesData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/notes';
+};
+
+export type ListMemoNotesResponses = {
+    /**
+     * OK
+     */
+    200: NoteSheetView;
+};
+
+export type ListMemoNotesResponse = ListMemoNotesResponses[keyof ListMemoNotesResponses];
+
+export type PostMemoNoteData = {
+    body: NoteRequest;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/notes';
+};
+
+export type PostMemoNoteResponses = {
+    /**
+     * OK
+     */
+    200: NoteEntryView;
+};
+
+export type PostMemoNoteResponse = PostMemoNoteResponses[keyof PostMemoNoteResponses];
+
+export type DeleteMemoNoteDraftData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/notes/draft';
+};
+
+export type DeleteMemoNoteDraftResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
+export type GetMemoNoteDraftData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/notes/draft';
+};
+
+export type GetMemoNoteDraftResponses = {
+    /**
+     * OK
+     */
+    200: NoteDraftView;
+};
+
+export type GetMemoNoteDraftResponse = GetMemoNoteDraftResponses[keyof GetMemoNoteDraftResponses];
+
+export type SaveMemoNoteDraftData = {
+    body: NoteDraftRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/notes/draft';
+};
+
+export type SaveMemoNoteDraftResponses = {
+    /**
+     * OK
+     */
+    200: NoteDraftView;
+};
+
+export type SaveMemoNoteDraftResponse = SaveMemoNoteDraftResponses[keyof SaveMemoNoteDraftResponses];
 
 export type RecallMemoData = {
     body?: RemarkRequest;

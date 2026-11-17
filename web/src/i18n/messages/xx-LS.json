@@ -4460,6 +4460,18 @@
       "value": "Test emailSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "mail.template.watchDigest": [
+    {
+      "type": 0,
+      "value": "Daily summary of followed memosSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.watchUpdate": [
+    {
+      "type": 0,
+      "value": "News on a memo you followSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "mail.test": [
     {
       "type": 0,
@@ -10169,6 +10181,12 @@
       "value": "SecuritySSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "notifications.category.watching": [
+    {
+      "type": 0,
+      "value": "Memos you followSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "notifications.category.workflow": [
     {
       "type": 0,
@@ -10273,6 +10291,89 @@
     {
       "type": 1,
       "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.memoWatched": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "News"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " updates"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " on memo "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 5,
+      "value": "reason",
+      "options": {
+        "INITIATED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "you started it"
+            }
+          ]
+        },
+        "ACTED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "you acted on it"
+            }
+          ]
+        },
+        "MENTIONED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "you were mentioned on it"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "you follow it"
+            }
+          ]
+        }
+      }
     },
     {
       "type": 0,

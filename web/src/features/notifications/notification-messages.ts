@@ -26,6 +26,7 @@ export const nm = defineMessages({
   categorySECURITY: { id: 'notifications.category.security', defaultMessage: 'Security' },
   categoryADMINISTRATION: { id: 'notifications.category.administration', defaultMessage: 'Access and administration' },
   categoryWORKFLOW: { id: 'notifications.category.workflow', defaultMessage: 'Memo approvals' },
+  categoryWATCHING: { id: 'notifications.category.watching', defaultMessage: 'Memos you follow' },
 
   mailTitle: { id: 'mail.title', defaultMessage: 'Email delivery' },
   mailLead: {
@@ -99,6 +100,7 @@ const kindsWithValues = defineMessages<{
   taskReminder: { reference: string }
   taskOverdue: { reference: string }
   editNotSaved: { name: string }
+  memoWatched: { reference: string; count: number; reason: string }
 }>({
   signInAlert: { id: 'notifications.kind.signInAlert', defaultMessage: 'New sign-in to your account from {device}' },
   roleGranted: { id: 'notifications.kind.roleGranted', defaultMessage: 'You were given the role {role}' },
@@ -132,6 +134,11 @@ const kindsWithValues = defineMessages<{
   editNotSaved: {
     id: 'notifications.kind.editNotSaved',
     defaultMessage: 'Your changes to {name} in the browser editor could not be saved',
+  },
+  memoWatched: {
+    id: 'notifications.kind.memoWatched',
+    defaultMessage:
+      '{count, plural, one {News} other {# updates}} on memo {reference}: {reason, select, INITIATED {you started it} ACTED {you acted on it} MENTIONED {you were mentioned on it} other {you follow it}}',
   },
 })
 
@@ -175,6 +182,12 @@ export function notificationText(intl: IntlShape, kind: string, params: Record<s
       return intl.formatMessage(kindsWithValues.taskOverdue, reference)
     case 'EDIT_NOT_SAVED':
       return intl.formatMessage(kindsWithValues.editNotSaved, { name: params.name ?? '' })
+    case 'MEMO_WATCHED':
+      return intl.formatMessage(kindsWithValues.memoWatched, {
+        reference: params.reference ?? '',
+        count: Number(params.count ?? '1'),
+        reason: params.reason ?? 'MANUAL',
+      })
     case 'PASSWORD_CHANGED':
       return intl.formatMessage(kinds.passwordChanged)
     case 'MFA_RESET':
@@ -188,6 +201,7 @@ const categoryMessages: Record<string, MessageDescriptor | undefined> = {
   SECURITY: nm.categorySECURITY,
   ADMINISTRATION: nm.categoryADMINISTRATION,
   WORKFLOW: nm.categoryWORKFLOW,
+  WATCHING: nm.categoryWATCHING,
 }
 
 export function categoryLabel(intl: IntlShape, category: string): string {
@@ -215,6 +229,8 @@ const mailTemplates = defineMessages({
   MEMO_MENTIONED: { id: 'mail.template.memoMentioned', defaultMessage: 'You were mentioned on a memo' },
   TASK_REMINDER: { id: 'mail.template.taskReminder', defaultMessage: 'Reminder about a memo' },
   TASK_OVERDUE: { id: 'mail.template.taskOverdue', defaultMessage: 'Memo overdue' },
+  WATCH_UPDATE: { id: 'mail.template.watchUpdate', defaultMessage: 'News on a memo you follow' },
+  WATCH_DIGEST: { id: 'mail.template.watchDigest', defaultMessage: 'Daily summary of followed memos' },
 })
 
 const templateMessages: Record<string, MessageDescriptor | undefined> = mailTemplates

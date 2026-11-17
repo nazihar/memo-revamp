@@ -1,0 +1,11 @@
+# Phase 3 E05 inbox: following memos, the Watching tab, watch settings and bulk actions (design E05 §4, §7). Following
+# needs read access to the memo (unknown memos are 404 for every signed-in user); bulk actions are checked per item.
+epic: P3-E05
+endpoints:
+  - { endpoint: "GET /api/v1/memos/{id}/watch", rule: signedIn }
+  - { endpoint: "PUT /api/v1/memos/{id}/watch", rule: signedIn }
+  - { endpoint: "DELETE /api/v1/memos/{id}/watch", rule: signedIn }
+  - { endpoint: "GET /api/v1/inbox/watching", rule: signedIn }
+  - { endpoint: "POST /api/v1/inbox/bulk", rule: signedIn, body: { action: "WATCH", ids: ["{random}"] } }
+  - { endpoint: "GET /api/v1/me/watch-settings", rule: signedIn }
+  - { endpoint: "PUT /api/v1/me/watch-settings", rule: signedIn, body: { autoWatch: true, email: "DIGEST" } }

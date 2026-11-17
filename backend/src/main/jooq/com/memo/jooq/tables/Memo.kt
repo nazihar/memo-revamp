@@ -31,6 +31,8 @@ import com.memo.jooq.keys.MEMO_SUBMISSION_ATTACHMENT__MEMO_SUBMISSION_ATTACHMENT
 import com.memo.jooq.keys.MEMO_TENANT_ID_DOCUMENT_FILE_ID_KEY
 import com.memo.jooq.keys.MEMO_TENANT_ID_ID_KEY
 import com.memo.jooq.keys.MEMO_TENANT_ID_REFERENCE_KEY
+import com.memo.jooq.keys.MEMO_WATCH_EVENT__MEMO_WATCH_EVENT_TENANT_ID_MEMO_ID_FKEY
+import com.memo.jooq.keys.MEMO_WATCH__MEMO_WATCH_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO__MEMO_TENANT_ID_MEMO_TYPE_ID_FKEY
 import com.memo.jooq.keys.MEMO__MEMO_TYPE_VERSION_FK
 import com.memo.jooq.tables.MemoApproval.MemoApprovalPath
@@ -51,6 +53,8 @@ import com.memo.jooq.tables.MemoShare.MemoSharePath
 import com.memo.jooq.tables.MemoSubmissionAttachment.MemoSubmissionAttachmentPath
 import com.memo.jooq.tables.MemoType.MemoTypePath
 import com.memo.jooq.tables.MemoTypeVersion.MemoTypeVersionPath
+import com.memo.jooq.tables.MemoWatch.MemoWatchPath
+import com.memo.jooq.tables.MemoWatchEvent.MemoWatchEventPath
 import com.memo.jooq.tables.records.MemoRecord
 
 import java.time.OffsetDateTime
@@ -573,6 +577,38 @@ open class Memo(
 
     val memoSubmissionAttachment: MemoSubmissionAttachmentPath
         get(): MemoSubmissionAttachmentPath = memoSubmissionAttachment()
+
+    private lateinit var _memoWatchEvent: MemoWatchEventPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.memo_watch_event</code> table
+     */
+    fun memoWatchEvent(): MemoWatchEventPath {
+        if (!this::_memoWatchEvent.isInitialized)
+            _memoWatchEvent = MemoWatchEventPath(this, null, MEMO_WATCH_EVENT__MEMO_WATCH_EVENT_TENANT_ID_MEMO_ID_FKEY.inverseKey)
+
+        return _memoWatchEvent;
+    }
+
+    val memoWatchEvent: MemoWatchEventPath
+        get(): MemoWatchEventPath = memoWatchEvent()
+
+    private lateinit var _memoWatch: MemoWatchPath
+
+    /**
+     * Get the implicit to-many join path to the <code>memo.memo_watch</code>
+     * table
+     */
+    fun memoWatch(): MemoWatchPath {
+        if (!this::_memoWatch.isInitialized)
+            _memoWatch = MemoWatchPath(this, null, MEMO_WATCH__MEMO_WATCH_TENANT_ID_MEMO_ID_FKEY.inverseKey)
+
+        return _memoWatch;
+    }
+
+    val memoWatch: MemoWatchPath
+        get(): MemoWatchPath = memoWatch()
     override fun getChecks(): List<Check<MemoRecord>> = listOf(
         Internal.createCheck(this, DSL.name("memo_check"), "(((status = ANY (ARRAY['DRAFT'::text, 'DISCARDED'::text])) = (workflow_instance_id IS NULL)))", true),
         Internal.createCheck(this, DSL.name("memo_check1"), "(((workflow_instance_id IS NULL) = (current_round = 0)))", true),

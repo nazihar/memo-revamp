@@ -52,6 +52,9 @@ import com.memo.jooq.tables.MemoShare
 import com.memo.jooq.tables.MemoSubmissionAttachment
 import com.memo.jooq.tables.MemoType
 import com.memo.jooq.tables.MemoTypeVersion
+import com.memo.jooq.tables.MemoWatch
+import com.memo.jooq.tables.MemoWatchEvent
+import com.memo.jooq.tables.MemoWatchSetting
 import com.memo.jooq.tables.NotificationItem
 import com.memo.jooq.tables.NotificationMailOutbox
 import com.memo.jooq.tables.NotificationPreference
@@ -334,6 +337,21 @@ val MEMO_TYPE: MemoType = MemoType.MEMO_TYPE
  * The table <code>memo.memo_type_version</code>.
  */
 val MEMO_TYPE_VERSION: MemoTypeVersion = MemoTypeVersion.MEMO_TYPE_VERSION
+
+/**
+ * The table <code>memo.memo_watch</code>.
+ */
+val MEMO_WATCH: MemoWatch = MemoWatch.MEMO_WATCH
+
+/**
+ * The table <code>memo.memo_watch_event</code>.
+ */
+val MEMO_WATCH_EVENT: MemoWatchEvent = MemoWatchEvent.MEMO_WATCH_EVENT
+
+/**
+ * The table <code>memo.memo_watch_setting</code>.
+ */
+val MEMO_WATCH_SETTING: MemoWatchSetting = MemoWatchSetting.MEMO_WATCH_SETTING
 
 /**
  * The table <code>memo.notification_item</code>.

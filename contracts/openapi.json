@@ -501,6 +501,55 @@
         "required" : [ "fragments", "queues", "roles", "stepTypes", "subjectTypes" ],
         "type" : "object"
       },
+      "BulkItemResult" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "outcome" : {
+            "enum" : [ "OK", "FORBIDDEN", "CHANGED", "NOT_FOUND" ],
+            "type" : "string"
+          }
+        },
+        "required" : [ "id", "outcome" ],
+        "type" : "object"
+      },
+      "BulkRequest" : {
+        "properties" : {
+          "action" : {
+            "type" : "string"
+          },
+          "ids" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "reason" : {
+            "type" : [ "string", "null" ]
+          },
+          "to" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "action", "ids" ],
+        "type" : "object"
+      },
+      "BulkResponse" : {
+        "properties" : {
+          "results" : {
+            "items" : {
+              "$ref" : "#/components/schemas/BulkItemResult"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "results" ],
+        "type" : "object"
+      },
       "CalendarDayResponse" : {
         "properties" : {
           "day" : {
@@ -5895,6 +5944,70 @@
         "required" : [ "name", "number", "sha256", "state", "truncated", "uploadedAt", "versionId" ],
         "type" : "object"
       },
+      "WatchSettings" : {
+        "properties" : {
+          "autoWatch" : {
+            "type" : "boolean"
+          },
+          "email" : {
+            "enum" : [ "DIGEST", "IMMEDIATE", "OFF" ],
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "WatchStatus" : {
+        "properties" : {
+          "reason" : {
+            "enum" : [ "MANUAL", "INITIATED", "ACTED", "MENTIONED" ],
+            "type" : [ "string", "null" ]
+          },
+          "watching" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "watching" ],
+        "type" : "object"
+      },
+      "WatchingItem" : {
+        "properties" : {
+          "memoId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "reason" : {
+            "enum" : [ "MANUAL", "INITIATED", "ACTED", "MENTIONED" ],
+            "type" : "string"
+          },
+          "reference" : {
+            "type" : [ "string", "null" ]
+          },
+          "since" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "subject" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "memoId", "reason", "since", "subject" ],
+        "type" : "object"
+      },
+      "WatchingPage" : {
+        "properties" : {
+          "items" : {
+            "items" : {
+              "$ref" : "#/components/schemas/WatchingItem"
+            },
+            "type" : "array"
+          },
+          "nextCursor" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "items" ],
+        "type" : "object"
+      },
       "WorkflowView" : {
         "properties" : {
           "currentAssignees" : {
@@ -10210,9 +10323,82 @@
         "tags" : [ "system" ]
       }
     },
+    "/api/v1/inbox/bulk" : {
+      "post" : {
+        "operationId" : "inboxBulk",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/BulkRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/BulkResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Watch, unwatch, claim, release or reassign up to 100 items, each as if alone (never a decision)",
+        "tags" : [ "memo" ]
+      }
+    },
     "/api/v1/inbox/tasks" : {
       "get" : {
         "operationId" : "listMyTasks",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "cursor",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "required" : false,
+          "schema" : {
+            "default" : 25,
+            "format" : "int32",
+            "type" : "integer"
+          }
+        }, {
+          "in" : "query",
+          "name" : "sort",
+          "required" : false,
+          "schema" : {
+            "default" : "assigned",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/InboxPage"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "My open tasks: newest first, or with sort=due by due time (overdue first, those without a due time last)",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/inbox/watching" : {
+      "get" : {
+        "operationId" : "listWatching",
         "parameters" : [ {
           "in" : "query",
           "name" : "cursor",
@@ -10235,14 +10421,14 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/InboxPage"
+                  "$ref" : "#/components/schemas/WatchingPage"
                 }
               }
             },
             "description" : "OK"
           }
         },
-        "summary" : "My open tasks",
+        "summary" : "Memos I follow that I may still read, newest first",
         "tags" : [ "memo" ]
       }
     },
@@ -10529,6 +10715,52 @@
         },
         "summary" : "Sign out one of my sessions",
         "tags" : [ "me" ]
+      }
+    },
+    "/api/v1/me/watch-settings" : {
+      "get" : {
+        "operationId" : "getWatchSettings",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/WatchSettings"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Whether I follow memos I initiate or act on, and how I get email about them",
+        "tags" : [ "memo" ]
+      },
+      "put" : {
+        "operationId" : "saveWatchSettings",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/WatchSettings"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/WatchSettings"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Change how I follow memos",
+        "tags" : [ "memo" ]
       }
     },
     "/api/v1/memo-types" : {
@@ -12007,6 +12239,80 @@
           }
         },
         "summary" : "Send a draft to its first approver",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/memos/{id}/watch" : {
+      "delete" : {
+        "operationId" : "unwatchMemo",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : { },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Stop following this memo",
+        "tags" : [ "memo" ]
+      },
+      "get" : {
+        "operationId" : "getMemoWatch",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/WatchStatus"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Whether I follow this memo, and why",
+        "tags" : [ "memo" ]
+      },
+      "put" : {
+        "operationId" : "watchMemo",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/WatchStatus"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Follow this memo",
         "tags" : [ "memo" ]
       }
     },

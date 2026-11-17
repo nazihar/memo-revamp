@@ -89,3 +89,37 @@
   - **`SearchEquivalenceIT`:** 4 seeds × 40 random readers and queries over 120 memos each, with ranks, units, active, revoked and lapsed participants, notes, and chunks above their memo. `search_find` returns exactly what the E03 rule allows and the query matches, and no snippet comes from an unreadable memo or a chunk above clearance.
   - **Other:** `SearchIndexIT` checks an attachment's "found in" through the API; the matrix (`p3-e05-search.yaml`), `EndpointCoverageTest` and `AuditActionCoverageTest` pass.
 - **Not tested:** the 503 on a real timeout (a query of 2 s cannot be made reliably in CI). The mapping of PostgreSQL's 57014 is in `SearchFinder`. The Gatling run at V1 (T8) shows how often searches near the limit.
+
+## 2026-11-16 — T2 in CI: stalls
+- **What happened:** the T2 backend job ran into the 30-minute CI limit twice, while T1 and T3 finished in about 12 minutes. JUnit runs classes and methods in random order (`junit-platform.properties`), so the stall depends on order.
+- **Changes:**
+  - The search backfill sweep is off in integration tests (`memo.search.backfill-sweep`).
+  - The spike's `fastupdate` measurement, an `ALTER INDEX` on a table every memo test now writes, is gone.
+  - The search tests' owner connections set `lock_timeout` to 30 s, so a lock wait fails with its statement instead of stalling the suite.
+- **Carried:** a default JUnit timeout with a thread dump would name any stall, but it needs the separate-thread mode, which the thread-bound test context rules out without care.
+
+## 2026-11-16 — T4: following, due sort, bulk
+- **Built:**
+  - **`memo/V18`:** `memo_watch`, `memo_watch_event` and `memo_watch_setting`, all with RLS forced.
+  - **Following by hand:** `GET|PUT|DELETE /api/v1/memos/{id}/watch` (readers only, audited `memo.watch.added` and `memo.watch.removed`).
+  - **Watching list and settings:** `GET /api/v1/inbox/watching` (filtered by the read rule), and `GET|PUT /api/v1/me/watch-settings` (audited `memo.watch.settings_changed`).
+  - **Automatic following:** the initiator on create, those who decide a step, and those mentioned in a note, unless they turned it off.
+  - **News:** a step decided, a note posted, the memo closed, the final record ready; never to the person who acted.
+  - **Jobs:**
+    - a flush every minute: one in-app `MEMO_WATCHED` per memo after 3 quiet minutes, and `WATCH_UPDATE` for those who chose "at once";
+    - the digest at 08:00 in the tenant's time zone (`WATCH_DIGEST`);
+    - the nightly access sweep, run as each follower.
+  - **Due sort:** `GET /api/v1/inbox/tasks?sort=due`: overdue first, then soonest, then no due time, with keyset paging.
+  - **Bulk:** `POST /api/v1/inbox/bulk` with results per item (`OK`, `FORBIDDEN`, `CHANGED`, `NOT_FOUND`), each item in its own transaction, at most 100, no decisions (422), reassignment with the permission and step-up, and one audit entry `inbox.bulk.performed`.
+  - **Web:** strings for the new notification kind, category and templates (English and Arabic); contract and client regenerated.
+- **Decisions taken while building:** see design §4 "Decided in T4".
+- **Tests:**
+  - **`MemoWatchIT`:**
+    - by hand, readers only;
+    - automatic following unless off;
+    - news to others only, in-app after the quiet spell, at once by email or in the digest, the digest once;
+    - a person mentioned follows; a watch is hidden and swept after access is lost;
+    - due sort with paging.
+  - **`InboxBulkIT`:** watch and unwatch per item; claims reported one by one; reassignment needs the permission, and a decided task reports `CHANGED`; no decisions, at most 100, a holder for reassignment.
+  - **Matrix and coverage:** `p3-e05-inbox.yaml`, `EndpointCoverageTest`, `AuditActionCoverageTest`, `MailTemplatesTest` and `RlsMetaTest`.
+- **Carried:** a bulk claim of steps shared by several people (queue or position steps) is covered by `QueueClaimIT` at the workflow level; a bulk test with a shared memo step comes with T5's team data.

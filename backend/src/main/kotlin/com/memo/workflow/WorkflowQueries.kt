@@ -90,9 +90,12 @@ class WorkflowQueries(
     fun myTasks(
         cursor: String?,
         limit: Int,
+        byDue: Boolean = false,
     ): TaskPage {
         val user = (ActorContext.current().actor as? Actor.User)?.userId ?: return TaskPage(emptyList(), null)
-        return page(limit) { tasks.open(assignee = user, blockedOnly = false, after = cursor?.let(Cursors::decode), limit = it) }
+        return page(limit, byDue) {
+            tasks.open(assignee = user, blockedOnly = false, after = cursor?.let(Cursors::decode), limit = it, byDue = byDue)
+        }
     }
 
     /** Every open task of the tenant, or only the blocked ones (or those overdue at [overdueAt]), optionally of one assignee. */
@@ -131,12 +134,14 @@ class WorkflowQueries(
 
     private fun page(
         limit: Int,
+        byDue: Boolean = false,
         fetch: (Int) -> List<TaskItem>,
     ): TaskPage {
         val size = limit.coerceIn(1, MAX_LIMIT)
         val rows = fetch(size + 1)
         val items = rows.take(size)
-        return TaskPage(items, if (rows.size > size) items.last().let { Cursors.encode(it.createdAt, it.taskId) } else null)
+        val position = { task: TaskItem -> if (byDue) task.dueAt ?: TaskQueryStore.NO_DUE else task.createdAt }
+        return TaskPage(items, if (rows.size > size) items.last().let { Cursors.encode(position(it), it.taskId) } else null)
     }
 
     private companion object {

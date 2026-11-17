@@ -201,6 +201,22 @@ export type BuilderCatalogue = {
     subjectTypes: Array<CatalogueSubjectType>;
 };
 
+export type BulkItemResult = {
+    id: string;
+    outcome: 'OK' | 'FORBIDDEN' | 'CHANGED' | 'NOT_FOUND';
+};
+
+export type BulkRequest = {
+    action: string;
+    ids: Array<string>;
+    reason?: string | null;
+    to?: string | null;
+};
+
+export type BulkResponse = {
+    results: Array<BulkItemResult>;
+};
+
 export type CalendarDayResponse = {
     day: string;
     note?: string | null;
@@ -2182,6 +2198,29 @@ export type VersionText = {
     uploadedAt: string;
     uploadedBy?: Named | null;
     versionId: string;
+};
+
+export type WatchSettings = {
+    autoWatch?: boolean;
+    email?: 'DIGEST' | 'IMMEDIATE' | 'OFF';
+};
+
+export type WatchStatus = {
+    reason?: 'MANUAL' | 'INITIATED' | 'ACTED' | 'MENTIONED';
+    watching: boolean;
+};
+
+export type WatchingItem = {
+    memoId: string;
+    reason: 'MANUAL' | 'INITIATED' | 'ACTED' | 'MENTIONED';
+    reference?: string | null;
+    since: string;
+    subject: string;
+};
+
+export type WatchingPage = {
+    items: Array<WatchingItem>;
+    nextCursor?: string | null;
 };
 
 export type WorkflowView = {
@@ -4644,12 +4683,29 @@ export type GetHealthResponses = {
 
 export type GetHealthResponse = GetHealthResponses[keyof GetHealthResponses];
 
+export type InboxBulkData = {
+    body: BulkRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/inbox/bulk';
+};
+
+export type InboxBulkResponses = {
+    /**
+     * OK
+     */
+    200: BulkResponse;
+};
+
+export type InboxBulkResponse = InboxBulkResponses[keyof InboxBulkResponses];
+
 export type ListMyTasksData = {
     body?: never;
     path?: never;
     query?: {
         cursor?: string;
         limit?: number;
+        sort?: string;
     };
     url: '/api/v1/inbox/tasks';
 };
@@ -4662,6 +4718,25 @@ export type ListMyTasksResponses = {
 };
 
 export type ListMyTasksResponse = ListMyTasksResponses[keyof ListMyTasksResponses];
+
+export type ListWatchingData = {
+    body?: never;
+    path?: never;
+    query?: {
+        cursor?: string;
+        limit?: number;
+    };
+    url: '/api/v1/inbox/watching';
+};
+
+export type ListWatchingResponses = {
+    /**
+     * OK
+     */
+    200: WatchingPage;
+};
+
+export type ListWatchingResponse = ListWatchingResponses[keyof ListWatchingResponses];
 
 export type GetMeData = {
     body?: never;
@@ -4880,6 +4955,38 @@ export type RevokeMySessionResponses = {
 };
 
 export type RevokeMySessionResponse = RevokeMySessionResponses[keyof RevokeMySessionResponses];
+
+export type GetWatchSettingsData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/me/watch-settings';
+};
+
+export type GetWatchSettingsResponses = {
+    /**
+     * OK
+     */
+    200: WatchSettings;
+};
+
+export type GetWatchSettingsResponse = GetWatchSettingsResponses[keyof GetWatchSettingsResponses];
+
+export type SaveWatchSettingsData = {
+    body: WatchSettings;
+    path?: never;
+    query?: never;
+    url: '/api/v1/me/watch-settings';
+};
+
+export type SaveWatchSettingsResponses = {
+    /**
+     * OK
+     */
+    200: WatchSettings;
+};
+
+export type SaveWatchSettingsResponse = SaveWatchSettingsResponses[keyof SaveWatchSettingsResponses];
 
 export type ListMemoTypesData = {
     body?: never;
@@ -5674,6 +5781,58 @@ export type SubmitMemoResponses = {
 };
 
 export type SubmitMemoResponse = SubmitMemoResponses[keyof SubmitMemoResponses];
+
+export type UnwatchMemoData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/watch';
+};
+
+export type UnwatchMemoResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
+export type GetMemoWatchData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/watch';
+};
+
+export type GetMemoWatchResponses = {
+    /**
+     * OK
+     */
+    200: WatchStatus;
+};
+
+export type GetMemoWatchResponse = GetMemoWatchResponses[keyof GetMemoWatchResponses];
+
+export type WatchMemoData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/watch';
+};
+
+export type WatchMemoResponses = {
+    /**
+     * OK
+     */
+    200: WatchStatus;
+};
+
+export type WatchMemoResponse = WatchMemoResponses[keyof WatchMemoResponses];
 
 export type WithdrawMemoData = {
     body?: RemarkRequest;

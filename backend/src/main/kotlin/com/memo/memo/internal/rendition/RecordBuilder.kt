@@ -5,7 +5,9 @@ import com.memo.common.tenant.TenantContext
 import com.memo.common.tenant.TenantTransactions
 import com.memo.files.FileUploads
 import com.memo.files.Files
+import com.memo.memo.internal.MemoWatchNews
 import com.memo.memo.internal.Memos
+import com.memo.memo.internal.WatchEventKind
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import java.nio.file.Path
@@ -33,6 +35,7 @@ class RecordBuilder(
     private val transactions: TenantTransactions,
     private val audit: AuditLog,
     private val clock: Clock,
+    private val news: MemoWatchNews,
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
 
@@ -50,6 +53,8 @@ class RecordBuilder(
                 val earlier = store.of(rendition.memoId).firstOrNull { it.state == RenditionState.READY }
                 store.ready(rendition.id, built)
                 earlier?.let { superseded(it, rendition, built) }
+                // Followers hear that the final record is ready (made by the system: everyone following is told).
+                news.happened(rendition.memoId, WatchEventKind.RECORD_READY, actor = null)
                 audit.record(
                     "memo.rendition.created",
                     Memos.OBJECT_TYPE,

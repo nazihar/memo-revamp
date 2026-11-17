@@ -12,6 +12,7 @@ import com.memo.workflow.SubjectRef
 import com.memo.workflow.TaskItem
 import com.memo.workflow.TaskRole
 import com.memo.workflow.engine.StepKind
+import org.jooq.Condition
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Component
 import tools.jackson.databind.json.JsonMapper
@@ -27,13 +28,17 @@ class TaskQueryStore(
     private val definitions: CompiledDefinitions,
     private val json: JsonMapper,
 ) {
-    /** Open tasks newest first, of [assignee] (all when null), after the keyset position [after]. */
+    /**
+     * Open tasks of [assignee] (all when null) after the keyset position [after]: newest first, or with [byDue] by due time
+     * (overdue first, then soonest, then those without a due time; the position's time is then the due time or [NO_DUE]).
+     */
     fun open(
         assignee: UUID?,
         blockedOnly: Boolean,
         after: Pair<Instant, UUID>?,
         limit: Int,
         overdueAt: Instant? = null,
+        byDue: Boolean = false,
     ): List<TaskItem> {
         val t = WORKFLOW_TASK
         val i = WORKFLOW_INSTANCE
@@ -44,7 +49,7 @@ class TaskQueryStore(
                 assignee?.let { t.ASSIGNEE_ID.eq(it) },
                 t.BLOCKED_REASON.isNotNull.takeIf { blockedOnly },
                 overdueAt?.let { t.DUE_AT.lt(it.atOffset(ZoneOffset.UTC)) },
-                after?.let { (at, id) -> DSL.row(t.CREATED_AT, t.ID).lt(at.atOffset(ZoneOffset.UTC), id) },
+                after?.let { after(it, byDue) },
             )
         return tenantDsl
             .current()
@@ -70,7 +75,7 @@ class TaskQueryStore(
             .join(s)
             .on(s.ID.eq(t.STEP_ID))
             .where(conditions)
-            .orderBy(t.CREATED_AT.desc(), t.ID.desc())
+            .orderBy(if (byDue) listOf(due().asc(), t.ID.asc()) else listOf(t.CREATED_AT.desc(), t.ID.desc()))
             .limit(limit)
             .fetch { r ->
                 TaskItem(
@@ -159,8 +164,32 @@ class TaskQueryStore(
             }
     }
 
-    private companion object {
-        const val OPEN = "OPEN"
-        const val DECIDE = "DECIDE"
+    /** The keyset position [after] in the order of [open]. */
+    private fun after(
+        after: Pair<Instant, UUID>,
+        byDue: Boolean,
+    ): Condition {
+        val (at, id) = after
+        val t = WORKFLOW_TASK
+        return if (byDue) {
+            DSL
+                .row(
+                    due(),
+                    t.ID,
+                ).gt(at.atOffset(ZoneOffset.UTC), id)
+        } else {
+            DSL.row(t.CREATED_AT, t.ID).lt(at.atOffset(ZoneOffset.UTC), id)
+        }
+    }
+
+    /** The due time, with tasks that have none after every due time. */
+    private fun due() = DSL.coalesce(WORKFLOW_TASK.DUE_AT, NO_DUE.atOffset(ZoneOffset.UTC))
+
+    companion object {
+        private const val OPEN = "OPEN"
+        private const val DECIDE = "DECIDE"
+
+        /** The due time of a task without one, in the due order (and in its cursors). */
+        val NO_DUE: Instant = Instant.parse("9999-12-31T00:00:00Z")
     }
 }

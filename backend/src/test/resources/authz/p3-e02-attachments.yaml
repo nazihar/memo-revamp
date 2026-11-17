@@ -12,3 +12,5 @@ endpoints:
   - { endpoint: "GET /api/v1/memos/{id}/rounds/{round}/attachments", rule: signedIn }
   # Co-authors (T5, ADR-0047): the initiator of a draft names them; others get 403, unknown memos 404 (DocEditIT).
   - { endpoint: "PUT /api/v1/memos/{id}/coauthors", rule: signedIn, body: { userIds: [] } }
+  # Comparison (T6): the memo's readers, and the attachment's level; random ids are 404 (DocumentCompareIT).
+  - { endpoint: "GET /api/v1/memos/{id}/files/{fileId}/compare", rule: signedIn }

@@ -1792,6 +1792,11 @@ export type ValidationResponse = {
     valid: boolean;
 };
 
+export type VersionComparison = {
+    from: VersionText;
+    to: VersionText;
+};
+
 export type VersionRenditions = {
     preview: 'PDF' | 'IMAGE' | 'PENDING' | 'NONE';
     renditions: Array<RenditionView>;
@@ -1823,6 +1828,18 @@ export type VersionSummary = {
     state: 'DRAFT' | 'IN_REVIEW' | 'PUBLISHED' | 'RETIRED';
     submittedAt?: string | null;
     submittedBy?: Person | null;
+};
+
+export type VersionText = {
+    name: string;
+    number: number;
+    sha256: string;
+    state: 'PENDING' | 'DONE' | 'FAILED' | 'NOT_POSSIBLE';
+    text?: string | null;
+    truncated: boolean;
+    uploadedAt: string;
+    uploadedBy?: Named | null;
+    versionId: string;
 };
 
 export type WorkflowView = {
@@ -4620,6 +4637,28 @@ export type PreviewMemoDoaResponses = {
 };
 
 export type PreviewMemoDoaResponse = PreviewMemoDoaResponses[keyof PreviewMemoDoaResponses];
+
+export type CompareMemoFileVersionsData = {
+    body?: never;
+    path: {
+        id: string;
+        fileId: string;
+    };
+    query: {
+        from: number;
+        to: number;
+    };
+    url: '/api/v1/memos/{id}/files/{fileId}/compare';
+};
+
+export type CompareMemoFileVersionsResponses = {
+    /**
+     * OK
+     */
+    200: VersionComparison;
+};
+
+export type CompareMemoFileVersionsResponse = CompareMemoFileVersionsResponses[keyof CompareMemoFileVersionsResponses];
 
 export type GetMemoHistoryData = {
     body?: never;

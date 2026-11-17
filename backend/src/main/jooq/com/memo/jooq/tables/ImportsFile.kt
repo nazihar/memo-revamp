@@ -8,6 +8,7 @@ import com.memo.jooq.Memo
 import com.memo.jooq.indexes.IMPORTS_FILE_FOLD_IDX
 import com.memo.jooq.indexes.IMPORTS_FILE_PATH_UK
 import com.memo.jooq.indexes.IMPORTS_FILE_STATE_IDX
+import com.memo.jooq.indexes.IMPORTS_FILE_VERSION_IDX
 import com.memo.jooq.keys.IMPORTS_FILE_PKEY
 import com.memo.jooq.keys.IMPORTS_FILE_TENANT_ID_ID_KEY
 import com.memo.jooq.keys.IMPORTS_FILE__IMPORTS_FILE_TENANT_ID_BATCH_ID_FKEY
@@ -193,7 +194,7 @@ open class ImportsFile(
         override fun `as`(alias: Table<*>): ImportsFilePath = ImportsFilePath(alias.qualifiedName, this)
     }
     override fun getSchema(): Schema? = if (aliased()) null else Memo.MEMO
-    override fun getIndexes(): List<Index> = listOf(IMPORTS_FILE_FOLD_IDX, IMPORTS_FILE_PATH_UK, IMPORTS_FILE_STATE_IDX)
+    override fun getIndexes(): List<Index> = listOf(IMPORTS_FILE_FOLD_IDX, IMPORTS_FILE_PATH_UK, IMPORTS_FILE_STATE_IDX, IMPORTS_FILE_VERSION_IDX)
     override fun getPrimaryKey(): UniqueKey<ImportsFileRecord> = IMPORTS_FILE_PKEY
     override fun getUniqueKeys(): List<UniqueKey<ImportsFileRecord>> = listOf(IMPORTS_FILE_TENANT_ID_ID_KEY)
     override fun getReferences(): List<ForeignKey<ImportsFileRecord, *>> = listOf(IMPORTS_FILE__IMPORTS_FILE_TENANT_ID_BATCH_ID_FKEY)

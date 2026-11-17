@@ -136,7 +136,7 @@ class ImportBatchIT : MemoIntegrationTest() {
         assertThat(listOf("state", "sourceCode", "numberPrefix").map { body[it].asString() }).containsExactly("OPEN", "LEGACY-DMS", "L-")
         assertThat(body["originals"]["expected"].asInt()).isZero()
         val actions = body["allowedActions"].items().map { it.asString() }
-        assertThat(actions).containsExactly("EDIT", "ATTACH_SOURCE", "REGISTER_ORIGINALS", "MAP")
+        assertThat(actions).containsExactly("EDIT", "ATTACH_SOURCE", "REGISTER_ORIGINALS", "MAP", "ABANDON")
         // The same key gives the same batch.
         assertThat(createBatch(key = key, extra = ""","numberPrefix":"L-"""").json()["id"].asString()).isEqualTo(id)
         Audit.assertAudited(tenant.id, "import.batch.created", id, importer.toString())

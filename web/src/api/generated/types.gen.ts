@@ -626,6 +626,13 @@ export type FieldRules = {
     minLength?: number | null;
 };
 
+export type FileRowTotals = {
+    ambiguous: number;
+    listed: number;
+    matched: number;
+    notReceived: number;
+};
+
 export type FileVersionView = {
     fileId: string;
     mediaType: string;
@@ -648,6 +655,19 @@ export type FileView = {
     version: number;
     versionCount: number;
     versions: Array<FileVersionView>;
+};
+
+export type FilesAndBytes = {
+    bytes: number;
+    files: number;
+};
+
+export type FixityTotals = {
+    importedOriginals: number;
+    mismatches: number;
+    promotionMismatches: number;
+    verified: number;
+    verifyProblems: number;
 };
 
 export type FoundInView = {
@@ -735,7 +755,10 @@ export type ImportBatchSummary = {
 };
 
 export type ImportBatchView = {
-    allowedActions: Array<'EDIT' | 'ATTACH_SOURCE' | 'REGISTER_ORIGINALS' | 'MAP' | 'DRY_RUN' | 'START' | 'STOP' | 'RESUME' | 'FINISH'>;
+    allowedActions: Array<'EDIT' | 'ATTACH_SOURCE' | 'REGISTER_ORIGINALS' | 'MAP' | 'DRY_RUN' | 'START' | 'STOP' | 'RESUME' | 'FINISH' | 'ABANDON' | 'CLOSE'>;
+    closeReason?: string | null;
+    closedAt?: string | null;
+    completedAt?: string | null;
     createdAt: string;
     createdBy: string;
     defaultClassificationId?: string | null;
@@ -751,6 +774,8 @@ export type ImportBatchView = {
         [key: string]: number;
     };
     progress?: ImportProgressView | null;
+    purgedAt?: string | null;
+    report?: ImportReportSummary | null;
     rows: {
         [key: string]: number;
     };
@@ -763,7 +788,12 @@ export type ImportBatchView = {
     stepUpAt?: string | null;
     timeZone: string;
     updatedAt: string;
+    verifiedAt?: string | null;
     version: number;
+};
+
+export type ImportCloseRequest = {
+    reason?: string | null;
 };
 
 export type ImportMappingRequest = {
@@ -838,6 +868,33 @@ export type ImportProgressView = {
     skipped: number;
     throttled: boolean;
     throttledSince?: string | null;
+};
+
+export type ImportReportPartView = {
+    fileId: string;
+    kind: string;
+    name: string;
+    sha256: string;
+    size: number;
+    versionId: string;
+};
+
+export type ImportReportSummary = {
+    balanced: boolean;
+    complete: boolean;
+    valid: boolean;
+};
+
+export type ImportReportView = {
+    balanced: boolean;
+    batchId: string;
+    complete: boolean;
+    completedAt?: string | null;
+    failing: Array<string>;
+    parts: Array<ImportReportPartView>;
+    state: 'OPEN' | 'DRY_RUN' | 'VALIDATED' | 'IMPORTING' | 'STOPPING' | 'STOPPED' | 'VERIFYING' | 'COMPLETED' | 'CLOSED' | 'ABANDONED';
+    totals: ReportTotals;
+    valid: boolean;
 };
 
 export type ImportRowPage = {
@@ -1675,6 +1732,16 @@ export type OrgUserPosition = {
     validTo?: string | null;
 };
 
+export type OriginalTotals = {
+    heldBack: FilesAndBytes;
+    imported: FilesAndBytes;
+    neverUploaded: FilesAndBytes;
+    refused: FilesAndBytes;
+    registered: FilesAndBytes;
+    stored: FilesAndBytes;
+    unreferenced: FilesAndBytes;
+};
+
 export type PasswordResetCompletion = {
     newPassword: string;
     /**
@@ -1975,10 +2042,35 @@ export type RemarkRequest = {
     remarkBody?: JsonNode | null;
 };
 
+export type RenditionTotals = {
+    done: number;
+    failed: number;
+    notNeeded: number;
+    notPossible: number;
+    originals: number;
+    pending: number;
+};
+
 export type RenditionView = {
     current?: RecordVersionView | null;
     state: 'NONE' | 'PENDING' | 'READY' | 'FAILED';
     versions: Array<RecordVersionView>;
+};
+
+export type ReportTotals = {
+    files: FileRowTotals;
+    fixity: FixityTotals;
+    originals: OriginalTotals;
+    problems: {
+        [key: string]: {
+            [key: string]: number;
+        };
+    };
+    renditions: {
+        [key: string]: RenditionTotals;
+    };
+    rows: RowTotals;
+    storedNotBound: number;
 };
 
 export type ReportingLineRequest = {
@@ -2056,6 +2148,18 @@ export type RoutePositionView = {
 export type RouteRequest = {
     approvers?: Array<string>;
     entries?: Array<RouteEntry> | null;
+};
+
+export type RowTotals = {
+    failed: number;
+    imported: number;
+    notStarted: number;
+    read: number;
+    rejected: number;
+    rejectedByCode: {
+        [key: string]: number;
+    };
+    skipped: number;
 };
 
 export type SavedSearchRequest = {
@@ -2762,6 +2866,42 @@ export type UpdateImportBatchResponses = {
 
 export type UpdateImportBatchResponse = UpdateImportBatchResponses[keyof UpdateImportBatchResponses];
 
+export type AbandonImportData = {
+    body?: ImportCloseRequest;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/imports/{id}/abandon';
+};
+
+export type AbandonImportResponses = {
+    /**
+     * OK
+     */
+    200: ImportBatchView;
+};
+
+export type AbandonImportResponse = AbandonImportResponses[keyof AbandonImportResponses];
+
+export type CloseImportData = {
+    body: ImportCloseRequest;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/imports/{id}/close';
+};
+
+export type CloseImportResponses = {
+    /**
+     * OK
+     */
+    200: ImportBatchView;
+};
+
+export type CloseImportResponse = CloseImportResponses[keyof CloseImportResponses];
+
 export type StartImportDryRunData = {
     body?: never;
     path: {
@@ -2916,6 +3056,24 @@ export type ListImportProblemsResponses = {
 };
 
 export type ListImportProblemsResponse = ListImportProblemsResponses[keyof ListImportProblemsResponses];
+
+export type GetImportReportData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/imports/{id}/report';
+};
+
+export type GetImportReportResponses = {
+    /**
+     * OK
+     */
+    200: ImportReportView;
+};
+
+export type GetImportReportResponse = GetImportReportResponses[keyof GetImportReportResponses];
 
 export type ResumeImportData = {
     body?: never;

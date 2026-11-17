@@ -1,6 +1,7 @@
 package com.memo.testsupport
 
 import com.memo.common.authz.AccessAdministration
+import com.memo.common.authz.BuiltInRole
 import com.memo.common.authz.Permission
 import com.memo.common.context.Actor
 import com.memo.common.context.ActorContext
@@ -81,10 +82,28 @@ class ImportSupport(
     fun importer(
         mvc: MockMvcTester,
         tenant: TestTenant,
+    ): Pair<UUID, Cookie> = withSecondFactor(mvc, tenant) { grant(tenant, it) }
+
+    /** A new auditor (`audit.read`, privileged, so also signed in with TOTP), who may read import reports when cleared. */
+    fun auditor(
+        mvc: MockMvcTester,
+        tenant: TestTenant,
+    ): Pair<UUID, Cookie> =
+        withSecondFactor(mvc, tenant) { user ->
+            ActorContext.asSystem("test-imports") {
+                transactions.inTenant(tenant.id) { access.grantBuiltIn(user, BuiltInRole.AUDITOR) }
+            }
+        }
+
+    /** A new user given [grant], signed in with password and TOTP. */
+    private fun withSecondFactor(
+        mvc: MockMvcTester,
+        tenant: TestTenant,
+        grant: (UUID) -> Unit,
     ): Pair<UUID, Cookie> {
         val password = aPassword()
         val account = accounts.anActiveUser(transactions, tenant, password)
-        grant(tenant, account.id.value)
+        grant(account.id.value)
         val secret = Totp.base32(Totp.newSecret())
         transactions.inTenant(tenant.id) { mfaSeeding.ensureTotp(account.id, secret) }
         val partial = requireNotNull(mvc.login(tenant, account.email, password).sessionCookie())

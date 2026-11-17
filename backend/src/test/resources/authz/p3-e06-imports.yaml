@@ -74,3 +74,18 @@ endpoints:
   - endpoint: "POST /api/v1/admin/imports/{id}/finish"
     rule: signedIn
     expect: { user: 403, tenantAdmin: 403, tenantAdminStale: 403 }
+  # Verification, the report and closing (T8). The report is for memo.import or audit.read holders cleared to the batch's
+  # highest level: the tenant administrator holds audit.read, so a random id is 404 for them. Close and abandon need
+  # memo.import. Their allowed paths, the clearance refusals and the cross-tenant 404s are in ReconciliationIT and
+  # ImportCloseIT.
+  - endpoint: "GET /api/v1/admin/imports/{id}/report"
+    rule: signedIn
+    expect: { user: 403, tenantAdmin: 404, tenantAdminStale: 404 }
+  - endpoint: "POST /api/v1/admin/imports/{id}/close"
+    rule: signedIn
+    body: { reason: "Matrix" }
+    expect: { user: 403, tenantAdmin: 403, tenantAdminStale: 403 }
+  - endpoint: "POST /api/v1/admin/imports/{id}/abandon"
+    rule: signedIn
+    body: { reason: "Matrix" }
+    expect: { user: 403, tenantAdmin: 403, tenantAdminStale: 403 }

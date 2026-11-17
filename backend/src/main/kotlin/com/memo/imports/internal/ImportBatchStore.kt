@@ -81,6 +81,22 @@ data class ImportBatch(
     val dryRunHash: String? = null,
     /** The import (design E06 §5.3): who started it, when, and when their step-up was proven. */
     val run: BatchRun = BatchRun(),
+    /** Verification, the report and closing (design E06 §5.4, §8, §4.1): all null until each happens. */
+    val end: BatchEnd = BatchEnd(),
+)
+
+/** How a batch ended (design E06 §5.4, §8, §4.1). */
+data class BatchEnd(
+    val verifiedAt: Instant? = null,
+    /** The verification's counts as JSON (memos, originals, problems, mismatches). */
+    val verification: String? = null,
+    val completedAt: Instant? = null,
+    /** The report as JSON: its totals, balance, completeness, validity and parts. */
+    val report: String? = null,
+    val closedAt: Instant? = null,
+    val closeReason: String? = null,
+    /** When every staged object of the closed or abandoned batch was purged. */
+    val purgedAt: Instant? = null,
 )
 
 /** A batch's import as far as it went (design E06 §5.3): all null until it starts. */
@@ -258,6 +274,16 @@ class ImportBatchStore(
                     stepUpAt = r.stepUpAt?.toInstant(),
                     finishedAt = r.finishedAt?.toInstant(),
                     throttledAt = r.throttledAt?.toInstant(),
+                ),
+            end =
+                BatchEnd(
+                    verifiedAt = r.verifiedAt?.toInstant(),
+                    verification = r.verification?.data(),
+                    completedAt = r.completedAt?.toInstant(),
+                    report = r.report?.data(),
+                    closedAt = r.closedAt?.toInstant(),
+                    closeReason = r.closeReason,
+                    purgedAt = r.purgedAt?.toInstant(),
                 ),
         )
 

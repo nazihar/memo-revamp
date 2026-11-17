@@ -160,6 +160,18 @@ open class ImportsBatchRecord private constructor() : UpdatableRecordImpl<Import
         set(value): Unit = set(34, value)
         get(): OffsetDateTime? = get(34) as OffsetDateTime?
 
+    open var verifiedAt: OffsetDateTime?
+        set(value): Unit = set(35, value)
+        get(): OffsetDateTime? = get(35) as OffsetDateTime?
+
+    open var verification: JSONB?
+        set(value): Unit = set(36, value)
+        get(): JSONB? = get(36) as JSONB?
+
+    open var purgedAt: OffsetDateTime?
+        set(value): Unit = set(37, value)
+        get(): OffsetDateTime? = get(37) as OffsetDateTime?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -169,7 +181,7 @@ open class ImportsBatchRecord private constructor() : UpdatableRecordImpl<Import
     /**
      * Create a detached, initialised ImportsBatchRecord
      */
-    constructor(id: UUID, tenantId: UUID, name: String, sourceCode: String, timeZone: String, defaultClassificationId: UUID? = null, numberPrefix: String? = null, state: String? = null, version: Long? = null, createdBy: UUID, createdAt: OffsetDateTime, updatedAt: OffsetDateTime, sourceKind: String? = null, workbookFileId: UUID? = null, workbookVersionId: UUID? = null, memosFileId: UUID? = null, memosVersionId: UUID? = null, filesFileId: UUID? = null, filesVersionId: UUID? = null, approvalsFileId: UUID? = null, approvalsVersionId: UUID? = null, inputHash: ByteArray? = null, dryRunHash: ByteArray? = null, dryRunAt: OffsetDateTime? = null, startedBy: UUID? = null, startedAt: OffsetDateTime? = null, stepUpAt: OffsetDateTime? = null, finishedAt: OffsetDateTime? = null, completedAt: OffsetDateTime? = null, closedAt: OffsetDateTime? = null, closeReason: String? = null, maxRank: Int? = null, totals: JSONB? = null, report: JSONB? = null, throttledAt: OffsetDateTime? = null): this() {
+    constructor(id: UUID, tenantId: UUID, name: String, sourceCode: String, timeZone: String, defaultClassificationId: UUID? = null, numberPrefix: String? = null, state: String? = null, version: Long? = null, createdBy: UUID, createdAt: OffsetDateTime, updatedAt: OffsetDateTime, sourceKind: String? = null, workbookFileId: UUID? = null, workbookVersionId: UUID? = null, memosFileId: UUID? = null, memosVersionId: UUID? = null, filesFileId: UUID? = null, filesVersionId: UUID? = null, approvalsFileId: UUID? = null, approvalsVersionId: UUID? = null, inputHash: ByteArray? = null, dryRunHash: ByteArray? = null, dryRunAt: OffsetDateTime? = null, startedBy: UUID? = null, startedAt: OffsetDateTime? = null, stepUpAt: OffsetDateTime? = null, finishedAt: OffsetDateTime? = null, completedAt: OffsetDateTime? = null, closedAt: OffsetDateTime? = null, closeReason: String? = null, maxRank: Int? = null, totals: JSONB? = null, report: JSONB? = null, throttledAt: OffsetDateTime? = null, verifiedAt: OffsetDateTime? = null, verification: JSONB? = null, purgedAt: OffsetDateTime? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.name = name
@@ -205,6 +217,9 @@ open class ImportsBatchRecord private constructor() : UpdatableRecordImpl<Import
         this.totals = totals
         this.report = report
         this.throttledAt = throttledAt
+        this.verifiedAt = verifiedAt
+        this.verification = verification
+        this.purgedAt = purgedAt
         resetTouchedOnNotNull()
     }
 }

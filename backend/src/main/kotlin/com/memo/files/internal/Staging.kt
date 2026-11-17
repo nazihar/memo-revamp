@@ -10,6 +10,7 @@ import com.memo.common.tenant.TenantDsl
 import com.memo.common.tenant.TenantId
 import com.memo.common.tenant.TenantTransactions
 import com.memo.files.FilePurges
+import com.memo.files.RenditionKind
 import com.memo.files.RenditionState
 import com.memo.files.StorageClass
 import com.memo.jooq.tables.references.FILES_FILE
@@ -117,6 +118,21 @@ internal class RenditionBacklog(
                 FILES_RENDITION,
                 FILES_RENDITION.STATE.eq(RenditionState.PENDING.name).and(FILES_RENDITION.VERSION_ID.`in`(versionIds)),
             )
+        }
+
+    /** The state of each rendition of [versionIds] that exists, by version and kind (an import's report, E06 §8). */
+    fun states(versionIds: Collection<UUID>): Map<UUID, Map<RenditionKind, RenditionState>> =
+        if (versionIds.isEmpty()) {
+            emptyMap()
+        } else {
+            tenantDsl
+                .current()
+                .select(FILES_RENDITION.VERSION_ID, FILES_RENDITION.KIND, FILES_RENDITION.STATE)
+                .from(FILES_RENDITION)
+                .where(FILES_RENDITION.VERSION_ID.`in`(versionIds))
+                .fetch { Triple(it.value1()!!, RenditionKind.valueOf(it.value2()!!), RenditionState.valueOf(it.value3()!!)) }
+                .groupBy({ it.first }, { it.second to it.third })
+                .mapValues { (_, states) -> states.toMap() }
         }
 }
 

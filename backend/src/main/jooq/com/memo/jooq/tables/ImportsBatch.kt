@@ -270,6 +270,21 @@ open class ImportsBatch(
      */
     val THROTTLED_AT: TableField<ImportsBatchRecord, OffsetDateTime?> = createField(DSL.name("throttled_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
 
+    /**
+     * The column <code>memo.imports_batch.verified_at</code>.
+     */
+    val VERIFIED_AT: TableField<ImportsBatchRecord, OffsetDateTime?> = createField(DSL.name("verified_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
+
+    /**
+     * The column <code>memo.imports_batch.verification</code>.
+     */
+    val VERIFICATION: TableField<ImportsBatchRecord, JSONB?> = createField(DSL.name("verification"), SQLDataType.JSONB, this, "")
+
+    /**
+     * The column <code>memo.imports_batch.purged_at</code>.
+     */
+    val PURGED_AT: TableField<ImportsBatchRecord, OffsetDateTime?> = createField(DSL.name("purged_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
+
     private constructor(alias: Name, aliased: Table<ImportsBatchRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<ImportsBatchRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<ImportsBatchRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -430,12 +445,15 @@ open class ImportsBatch(
         Internal.createCheck(this, DSL.name("imports_batch_max_rank_check"), "((max_rank >= 0))", true),
         Internal.createCheck(this, DSL.name("imports_batch_name_check"), "(((length(name) >= 1) AND (length(name) <= 200)))", true),
         Internal.createCheck(this, DSL.name("imports_batch_number_prefix_check"), "((number_prefix ~ '^[A-Za-z0-9][A-Za-z0-9/._-]{0,19}\$'::text))", true),
+        Internal.createCheck(this, DSL.name("imports_batch_purged"), "(((purged_at IS NULL) OR (state = ANY (ARRAY['CLOSED'::text, 'ABANDONED'::text]))))", true),
         Internal.createCheck(this, DSL.name("imports_batch_report_check"), "(((jsonb_typeof(report) = 'object'::text) AND (octet_length((report)::text) <= 16384)))", true),
         Internal.createCheck(this, DSL.name("imports_batch_source_code_check"), "((source_code ~ '^[A-Z0-9][A-Z0-9-]{0,19}\$'::text))", true),
         Internal.createCheck(this, DSL.name("imports_batch_source_kind_check"), "((source_kind = ANY (ARRAY['XLSX'::text, 'CSV'::text])))", true),
         Internal.createCheck(this, DSL.name("imports_batch_state_check"), "((state = ANY (ARRAY['OPEN'::text, 'DRY_RUN'::text, 'VALIDATED'::text, 'IMPORTING'::text, 'STOPPING'::text, 'STOPPED'::text, 'VERIFYING'::text, 'COMPLETED'::text, 'CLOSED'::text, 'ABANDONED'::text])))", true),
         Internal.createCheck(this, DSL.name("imports_batch_time_zone_check"), "(((length(time_zone) >= 1) AND (length(time_zone) <= 64)))", true),
-        Internal.createCheck(this, DSL.name("imports_batch_totals_check"), "(((jsonb_typeof(totals) = 'object'::text) AND (octet_length((totals)::text) <= 16384)))", true)
+        Internal.createCheck(this, DSL.name("imports_batch_totals_check"), "(((jsonb_typeof(totals) = 'object'::text) AND (octet_length((totals)::text) <= 16384)))", true),
+        Internal.createCheck(this, DSL.name("imports_batch_verification_check"), "(((jsonb_typeof(verification) = 'object'::text) AND (octet_length((verification)::text) <= 4096)))", true),
+        Internal.createCheck(this, DSL.name("imports_batch_verified"), "(((verified_at IS NULL) = (verification IS NULL)))", true)
     )
     override fun `as`(alias: String): ImportsBatch = ImportsBatch(DSL.name(alias), this)
     override fun `as`(alias: Name): ImportsBatch = ImportsBatch(alias, this)

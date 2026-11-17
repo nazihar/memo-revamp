@@ -11,6 +11,10 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
+import java.time.Clock
+import java.time.DayOfWeek
+import java.time.LocalDate
+import java.time.temporal.TemporalAdjusters
 
 /**
  * The business calendar API (design E05 §5, test plan T1): the default week until someone sets one, If-Match on the
@@ -42,30 +46,35 @@ class BusinessCalendarIT : MemoIntegrationTest() {
     @Test
     fun `holidays and ranges move due times, and a day can follow the week again`() {
         val session = adminSession()
-        // 2026-11-12 is a Thursday; Friday and Saturday are off by default.
-        val preview = """{"start":"2026-11-12T09:00:00Z","due":"P1D"}"""
-        assertThat(post("$base/preview", session, preview).json()["due"].asString()).isEqualTo("2026-11-15T09:00:00Z")
+        // A Thursday at least a week ahead: due times read the special days from yesterday on, so fixed dates expire.
+        // Friday and Saturday are off by default, so a day's work started on Thursday is due on Sunday.
+        val thursday = LocalDate.now(clock).plusWeeks(1).with(TemporalAdjusters.nextOrSame(DayOfWeek.THURSDAY))
+        val sunday = thursday.plusDays(3)
+        val preview = """{"start":"${thursday}T09:00:00Z","due":"P1D"}"""
+        assertThat(post("$base/preview", session, preview).json()["due"].asString()).isEqualTo("${sunday}T09:00:00Z")
 
-        val eid = post("$base/days", session, """{"from":"2026-11-15","to":"2026-11-17","note":"Eid"}""")
+        val eid = post("$base/days", session, """{"from":"$sunday","to":"${sunday.plusDays(2)}","note":"Eid"}""")
         assertThat(eid).hasStatusOk()
         assertThat(eid.json().size()).isEqualTo(3)
         Audit.assertAudited(tenant.id, "workflow.calendar.day_set", tenant.id.toString())
-        assertThat(post("$base/preview", session, preview).json()["due"].asString()).isEqualTo("2026-11-18T09:00:00Z")
+        assertThat(post("$base/preview", session, preview).json()["due"].asString()).isEqualTo("${sunday.plusDays(3)}T09:00:00Z")
 
-        val listed = read("$base/days?from=2026-11-01&to=2026-11-30", session)
+        val listed = read("$base/days?from=${sunday.minusDays(14)}&to=${sunday.plusDays(14)}", session)
         assertThat(listed.json().size()).isEqualTo(3)
         assertThat(listed.json()[0]["note"].asString()).isEqualTo("Eid")
 
-        val removed = mvc.sendJson(HttpMethod.DELETE, tenant, "$base/days/2026-11-15", session)
+        val removed = mvc.sendJson(HttpMethod.DELETE, tenant, "$base/days/$sunday", session)
         assertThat(removed).hasStatus(HttpStatus.NO_CONTENT)
         Audit.assertAudited(tenant.id, "workflow.calendar.day_removed", tenant.id.toString())
-        assertThat(post("$base/preview", session, preview).json()["due"].asString()).isEqualTo("2026-11-15T09:00:00Z")
+        assertThat(post("$base/preview", session, preview).json()["due"].asString()).isEqualTo("${sunday}T09:00:00Z")
 
         assertThat(post("$base/days", session, """{"from":"2026-01-01","to":"2027-06-01"}""")).hasStatus(HttpStatus.BAD_REQUEST)
         assertThat(post("$base/preview", session, """{"due":"two days"}""")).hasStatus(HttpStatus.BAD_REQUEST)
     }
 
     @Autowired lateinit var mfaSeeding: MfaSeeding
+
+    @Autowired lateinit var clock: Clock
 
     /** A tenant administrator past MFA (they hold `workflow.calendar.manage`). */
     private fun adminSession(): Cookie = mvc.adminSession(tenant, accounts, transactions, mfaSeeding)

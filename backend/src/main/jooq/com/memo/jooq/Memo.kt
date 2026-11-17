@@ -43,6 +43,8 @@ import com.memo.jooq.tables.MemoNumberCounter
 import com.memo.jooq.tables.MemoParticipant
 import com.memo.jooq.tables.MemoReceipt
 import com.memo.jooq.tables.MemoReferenceCounter
+import com.memo.jooq.tables.MemoRendition
+import com.memo.jooq.tables.MemoRenditionPart
 import com.memo.jooq.tables.MemoRouteEntry
 import com.memo.jooq.tables.MemoShare
 import com.memo.jooq.tables.MemoSubmissionAttachment
@@ -302,6 +304,16 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val MEMO_REFERENCE_COUNTER: MemoReferenceCounter get() = MemoReferenceCounter.MEMO_REFERENCE_COUNTER
 
     /**
+     * The table <code>memo.memo_rendition</code>.
+     */
+    val MEMO_RENDITION: MemoRendition get() = MemoRendition.MEMO_RENDITION
+
+    /**
+     * The table <code>memo.memo_rendition_part</code>.
+     */
+    val MEMO_RENDITION_PART: MemoRenditionPart get() = MemoRenditionPart.MEMO_RENDITION_PART
+
+    /**
      * The table <code>memo.memo_route_entry</code>.
      */
     val MEMO_ROUTE_ENTRY: MemoRouteEntry get() = MemoRouteEntry.MEMO_ROUTE_ENTRY
@@ -519,6 +531,8 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         MemoParticipant.MEMO_PARTICIPANT,
         MemoReceipt.MEMO_RECEIPT,
         MemoReferenceCounter.MEMO_REFERENCE_COUNTER,
+        MemoRendition.MEMO_RENDITION,
+        MemoRenditionPart.MEMO_RENDITION_PART,
         MemoRouteEntry.MEMO_ROUTE_ENTRY,
         MemoShare.MEMO_SHARE,
         MemoSubmissionAttachment.MEMO_SUBMISSION_ATTACHMENT,

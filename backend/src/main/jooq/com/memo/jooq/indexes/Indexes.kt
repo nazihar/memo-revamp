@@ -30,6 +30,7 @@ import com.memo.jooq.tables.MemoNote
 import com.memo.jooq.tables.MemoNoteAttachment
 import com.memo.jooq.tables.MemoNoteMention
 import com.memo.jooq.tables.MemoParticipant
+import com.memo.jooq.tables.MemoRendition
 import com.memo.jooq.tables.MemoShare
 import com.memo.jooq.tables.MemoSubmissionAttachment
 import com.memo.jooq.tables.MemoType
@@ -104,6 +105,8 @@ val MEMO_NOTE_TENANT_MEMO_IDX: Index = Internal.createIndex(DSL.name("memo_note_
 val MEMO_NUMBER_UK: Index = Internal.createIndex(DSL.name("memo_number_uk"), Memo.MEMO_, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.NUMBER_SERIES, Memo.MEMO_.NUMBER_PERIOD, Memo.MEMO_.NUMBER_SCOPE, Memo.MEMO_.NUMBER_SEQUENCE), true)
 val MEMO_PARTICIPANT_ACTIVE_IDX: Index = Internal.createIndex(DSL.name("memo_participant_active_idx"), MemoParticipant.MEMO_PARTICIPANT, arrayOf(MemoParticipant.MEMO_PARTICIPANT.TENANT_ID, MemoParticipant.MEMO_PARTICIPANT.USER_ID, MemoParticipant.MEMO_PARTICIPANT.MEMO_ID), false)
 val MEMO_PARTICIPANT_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("memo_participant_tenant_user_idx"), MemoParticipant.MEMO_PARTICIPANT, arrayOf(MemoParticipant.MEMO_PARTICIPANT.TENANT_ID, MemoParticipant.MEMO_PARTICIPANT.USER_ID, MemoParticipant.MEMO_PARTICIPANT.MEMO_ID), false)
+val MEMO_RENDITION_ONE_OPEN_IDX: Index = Internal.createIndex(DSL.name("memo_rendition_one_open_idx"), MemoRendition.MEMO_RENDITION, arrayOf(MemoRendition.MEMO_RENDITION.TENANT_ID, MemoRendition.MEMO_RENDITION.MEMO_ID), true)
+val MEMO_RENDITION_READY_IDX: Index = Internal.createIndex(DSL.name("memo_rendition_ready_idx"), MemoRendition.MEMO_RENDITION, arrayOf(MemoRendition.MEMO_RENDITION.TENANT_ID, MemoRendition.MEMO_RENDITION.CREATED_AT), false)
 val MEMO_SHARE_TENANT_EXPIRY_IDX: Index = Internal.createIndex(DSL.name("memo_share_tenant_expiry_idx"), MemoShare.MEMO_SHARE, arrayOf(MemoShare.MEMO_SHARE.TENANT_ID, MemoShare.MEMO_SHARE.EXPIRES_AT), false)
 val MEMO_SHARE_TENANT_MEMO_IDX: Index = Internal.createIndex(DSL.name("memo_share_tenant_memo_idx"), MemoShare.MEMO_SHARE, arrayOf(MemoShare.MEMO_SHARE.TENANT_ID, MemoShare.MEMO_SHARE.MEMO_ID, MemoShare.MEMO_SHARE.GRANTED_AT), false)
 val MEMO_SHARE_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("memo_share_tenant_user_idx"), MemoShare.MEMO_SHARE, arrayOf(MemoShare.MEMO_SHARE.TENANT_ID, MemoShare.MEMO_SHARE.USER_ID), false)

@@ -74,6 +74,7 @@ const memo: MemoView = {
   linkedFrom: [],
   canLink: true,
   coauthors: [{ id: 'u5', name: 'Demo Branch Admin' }],
+  rendition: 'NONE',
   sendBackTargets: [],
   allowedActions: ['APPROVE', 'RETURN', 'REJECT'],
   createdAt: '2026-11-08T08:00:00Z',

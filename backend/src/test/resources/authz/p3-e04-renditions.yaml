@@ -1,0 +1,5 @@
+# Phase 3 E04 final records (design E04 §5, §7; ADR-0053). The record follows the memo: unknown memos are 404 for every
+# signed-in user. Downloads go through the files API (purpose memo.rendition), covered by the files matrix.
+epic: P3-E04
+endpoints:
+  - { endpoint: "GET /api/v1/memos/{id}/rendition", rule: signedIn }

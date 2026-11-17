@@ -999,6 +999,7 @@ export type MemoView = {
     originUnit?: Named | null;
     readingAs?: 'INITIATOR' | 'COAUTHOR' | 'APPROVER' | 'NOTIFIED' | 'COPY' | 'SHARED';
     reference?: string | null;
+    rendition: 'NONE' | 'PENDING' | 'READY' | 'FAILED';
     round: number;
     route: Array<RouteEntryView>;
     sendBackTargets: Array<SendBackTargetView>;
@@ -1600,6 +1601,35 @@ export type RecipientView = {
     name: string;
 };
 
+export type RecordAuditView = {
+    compliant: boolean;
+    failedRules: {
+        [key: string]: number;
+    };
+    placeholders: number;
+    profile: string;
+    rasterisedPages: number;
+    renderer: string;
+    sha256: string;
+    validator: string;
+};
+
+export type RecordVersionView = {
+    audit?: RecordAuditView | null;
+    classification?: string | null;
+    createdAt: string;
+    fileId?: string | null;
+    finishedAt?: string | null;
+    pages?: number | null;
+    readable: boolean;
+    reason?: string | null;
+    sizeBytes?: number | null;
+    state: 'PENDING' | 'BUILDING' | 'READY' | 'FAILED';
+    trigger: 'APPROVED' | 'BACKFILL' | 'REGENERATE' | 'RETRY';
+    version: number;
+    versionId?: string | null;
+};
+
 export type RecoveryCodes = {
     /**
      * Shown once; the previous codes stop working
@@ -1627,11 +1657,9 @@ export type RemarkRequest = {
 };
 
 export type RenditionView = {
-    error?: string | null;
-    kind: 'PDF' | 'TEXT';
-    pages?: number | null;
-    state: 'PENDING' | 'DONE' | 'FAILED' | 'NOT_POSSIBLE';
-    truncated: boolean;
+    current?: RecordVersionView | null;
+    state: 'NONE' | 'PENDING' | 'READY' | 'FAILED';
+    versions: Array<RecordVersionView>;
 };
 
 export type ReportingLineRequest = {
@@ -5376,6 +5404,24 @@ export type ListMemoReceiptsResponses = {
 };
 
 export type ListMemoReceiptsResponse = ListMemoReceiptsResponses[keyof ListMemoReceiptsResponses];
+
+export type GetMemoRenditionData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/rendition';
+};
+
+export type GetMemoRenditionResponses = {
+    /**
+     * OK
+     */
+    200: RenditionView;
+};
+
+export type GetMemoRenditionResponse = GetMemoRenditionResponses[keyof GetMemoRenditionResponses];
 
 export type ResubmitMemoData = {
     body?: RemarkRequest;

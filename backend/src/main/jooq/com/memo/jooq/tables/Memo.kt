@@ -24,6 +24,7 @@ import com.memo.jooq.keys.MEMO_NOTE__MEMO_NOTE_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_PARTICIPANT__MEMO_PARTICIPANT_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_PKEY
 import com.memo.jooq.keys.MEMO_RECEIPT__MEMO_RECEIPT_TENANT_ID_MEMO_ID_FKEY
+import com.memo.jooq.keys.MEMO_RENDITION__MEMO_RENDITION_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_ROUTE_ENTRY__MEMO_ROUTE_ENTRY_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_SHARE__MEMO_SHARE_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_SUBMISSION_ATTACHMENT__MEMO_SUBMISSION_ATTACHMENT_TENANT_ID_MEMO_ID_FKEY
@@ -44,6 +45,7 @@ import com.memo.jooq.tables.MemoNoteDraft.MemoNoteDraftPath
 import com.memo.jooq.tables.MemoNoteMention.MemoNoteMentionPath
 import com.memo.jooq.tables.MemoParticipant.MemoParticipantPath
 import com.memo.jooq.tables.MemoReceipt.MemoReceiptPath
+import com.memo.jooq.tables.MemoRendition.MemoRenditionPath
 import com.memo.jooq.tables.MemoRouteEntry.MemoRouteEntryPath
 import com.memo.jooq.tables.MemoShare.MemoSharePath
 import com.memo.jooq.tables.MemoSubmissionAttachment.MemoSubmissionAttachmentPath
@@ -507,6 +509,22 @@ open class Memo(
 
     val memoReceipt: MemoReceiptPath
         get(): MemoReceiptPath = memoReceipt()
+
+    private lateinit var _memoRendition: MemoRenditionPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.memo_rendition</code> table
+     */
+    fun memoRendition(): MemoRenditionPath {
+        if (!this::_memoRendition.isInitialized)
+            _memoRendition = MemoRenditionPath(this, null, MEMO_RENDITION__MEMO_RENDITION_TENANT_ID_MEMO_ID_FKEY.inverseKey)
+
+        return _memoRendition;
+    }
+
+    val memoRendition: MemoRenditionPath
+        get(): MemoRenditionPath = memoRendition()
 
     private lateinit var _memoRouteEntry: MemoRouteEntryPath
 

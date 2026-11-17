@@ -5,12 +5,19 @@ import com.memo.files.RenditionConverter
 import com.memo.files.RenditionInput
 import com.memo.files.RenditionOutcome
 import com.memo.files.TextExtractor
+import com.memo.memo.internal.rendition.Block
+import com.memo.memo.internal.rendition.PageDocument
+import com.memo.memo.internal.rendition.PdfBoxPageRenderer
+import com.memo.memo.internal.rendition.PdfaMetadata
+import com.memo.memo.internal.rendition.RecordMetadata
+import org.apache.pdfbox.Loader
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.PDPage
 import org.springframework.context.annotation.Primary
 import org.springframework.stereotype.Component
 import java.io.ByteArrayOutputStream
 import java.io.OutputStream
+import java.time.Instant
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -35,6 +42,13 @@ class FakeRenditionServices :
         key: String,
         out: OutputStream,
     ): RenditionOutcome = scripted(input, "pdf") { out.write(PDF) }
+
+    /** The final record's conversion (ADR-0053): a one-page PDF/A-2u naming the file, scripted like [toPdf]. */
+    override fun toPdfA(
+        input: RenditionInput,
+        key: String,
+        out: OutputStream,
+    ): RenditionOutcome = scripted(input, "pdfa") { out.write(pdfa(input.name)) }
 
     override fun text(
         input: RenditionInput,
@@ -75,6 +89,19 @@ class FakeRenditionServices :
 
     companion object {
         private const val LARGE_LINES = 18_000
+
+        /** "Converted <name>" on one page, with the PDF/A metadata, so the record's text check and veraPDF see a real part. */
+        fun pdfa(name: String): ByteArray {
+            val raw = ByteArrayOutputStream()
+            PdfBoxPageRenderer().render(PageDocument(name, "Converted", listOf(Block.Paragraph("Converted $name"))), raw)
+            return Loader.loadPDF(raw.toByteArray()).use { doc ->
+                PdfaMetadata.apply(
+                    doc,
+                    RecordMetadata(name, name, "Converted $name", "test", "test", Instant.parse("2026-01-01T00:00:00Z")),
+                )
+                ByteArrayOutputStream().also { doc.save(it) }.toByteArray()
+            }
+        }
 
         val PDF: ByteArray =
             PDDocument().use { document ->

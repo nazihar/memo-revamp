@@ -45,6 +45,8 @@ import com.memo.jooq.tables.MemoNumberCounter
 import com.memo.jooq.tables.MemoParticipant
 import com.memo.jooq.tables.MemoReceipt
 import com.memo.jooq.tables.MemoReferenceCounter
+import com.memo.jooq.tables.MemoRendition
+import com.memo.jooq.tables.MemoRenditionPart
 import com.memo.jooq.tables.MemoRouteEntry
 import com.memo.jooq.tables.MemoShare
 import com.memo.jooq.tables.MemoSubmissionAttachment
@@ -282,6 +284,16 @@ val MEMO_RECEIPT: MemoReceipt = MemoReceipt.MEMO_RECEIPT
  * The table <code>memo.memo_reference_counter</code>.
  */
 val MEMO_REFERENCE_COUNTER: MemoReferenceCounter = MemoReferenceCounter.MEMO_REFERENCE_COUNTER
+
+/**
+ * The table <code>memo.memo_rendition</code>.
+ */
+val MEMO_RENDITION: MemoRendition = MemoRendition.MEMO_RENDITION
+
+/**
+ * The table <code>memo.memo_rendition_part</code>.
+ */
+val MEMO_RENDITION_PART: MemoRenditionPart = MemoRenditionPart.MEMO_RENDITION_PART
 
 /**
  * The table <code>memo.memo_route_entry</code>.

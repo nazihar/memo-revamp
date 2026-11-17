@@ -46,6 +46,7 @@ const memo: MemoView = {
   linkedFrom: [],
   canLink: true,
   coauthors: [{ id: 'u2', name: 'Bob Builder' }],
+  rendition: 'NONE',
 }
 
 const attachments: AttachmentView[] = [

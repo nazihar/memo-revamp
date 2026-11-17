@@ -123,6 +123,7 @@ class MemoWorkflowListener(
     private val versions: MemoTypeVersionStore,
     private val numbers: MemoNumbers,
     private val copies: MemoCopies,
+    private val renditions: com.memo.memo.internal.rendition.MemoRenditions,
 ) {
     @EventListener
     fun onAction(event: WorkflowActionTaken) {
@@ -135,6 +136,8 @@ class MemoWorkflowListener(
             memo.memoTypeVersionId?.let(versions::byId)?.let { numbers.assign(memo, it, NumberMoment.ON_APPROVAL) }
             // Copies "after approval" go in the approval's transaction (ADR-0050); a rejected or withdrawn memo sends none.
             store.find(event.subjectId)?.let { copies.send(it, SendWhen.AFTER_APPROVAL) }
+            // The final record (ADR-0053): version 1 is asked for in the approval's transaction and built by a job.
+            renditions.first(event.subjectId, com.memo.memo.internal.rendition.RenditionTrigger.APPROVED)
         }
     }
 

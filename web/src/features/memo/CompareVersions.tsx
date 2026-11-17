@@ -24,7 +24,7 @@ const m = defineMessages({
   truncated: { id: 'memo.compare.truncated', defaultMessage: 'Only the beginning of a very long text is compared.' },
   legend: {
     id: 'memo.compare.legend',
-    defaultMessage: 'Removed text is struck through on the left; added text is underlined on the right.',
+    defaultMessage: 'Removed text is struck through in the older version; added text is underlined in the newer one.',
   },
 })
 

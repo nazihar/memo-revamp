@@ -32,6 +32,7 @@ class DemoMemoSeeder(
     private val lifecycle: UserLifecycle,
     private val memos: MemoSeeding,
     private val transactions: TenantTransactions,
+    private val uploads: FileUploads,
     @param:Value("\${memo.demo.password:}") private val demoPassword: String,
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
@@ -45,8 +46,8 @@ class DemoMemoSeeder(
         val finance = ids.getValue(HEAD_FINANCE)
         val director = ids.getValue(DIRECTOR)
 
-        // A draft with its document and route, ready to submit in the demo.
-        draft("Laptop refresh for the credit team", listOf(credit, director))
+        // A draft with its document, a quotation attached and its route, ready to submit in the demo.
+        draft("Laptop refresh for the credit team", listOf(credit, director)).also { attach(it, "laptop-quotation.pdf", QUOTATION) }
         // In review at step 1, and at step 2.
         submitted("Opening a branch in Sylhet", listOf(credit, finance, director))
         submitted("Annual training budget", listOf(credit, director)).also { act(credit, it, MemoSeeding.APPROVE, "Supported.") }
@@ -106,6 +107,15 @@ class DemoMemoSeeder(
         }
     }
 
+    /** An attachment on [memo], uploaded by the author through the full pipeline (ADR-0046). */
+    private fun attach(
+        memo: UUID,
+        name: String,
+        lines: List<String>,
+    ) = asUser(authorId()) {
+        uploads.upload(ATTACHMENT_PURPOSE, memo.toString(), name, DemoPdf.of(lines.first(), lines.drop(1)), UUID.randomUUID().toString())
+    }
+
     private fun submitted(
         subject: String,
         route: List<UUID>,
@@ -144,6 +154,17 @@ class DemoMemoSeeder(
         const val DIRECTOR = "director@demo.example"
         const val ADMIN = "admin@demo.example"
         const val LEAVER = "leaver@demo.example"
+
+        /** The memo module's attachment purpose (ADR-0046). */
+        const val ATTACHMENT_PURPOSE = "memo.attachment"
+
+        private val QUOTATION =
+            listOf(
+                "Quotation: laptop refresh",
+                "12 laptops, 14-inch, 16 GB memory, 512 GB storage, three years on-site warranty.",
+                "Unit price BDT 118,500; total BDT 1,422,000 including VAT.",
+                "Delivery within three weeks of the purchase order. Valid for 30 days.",
+            )
     }
 }
 

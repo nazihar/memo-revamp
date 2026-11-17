@@ -177,3 +177,38 @@
 - **Tests:** `version-diff.test.ts` (3); `memo-documents.test.tsx` (3: the list with a restricted row and a reclassify behind If-Match, with axe; comparison with marked words and the uploader, with axe; removing a co-author).
   - The full web suite had four 5-second timeouts in unrelated features under load; those files pass alone (17 files, 67 tests), as seen before.
 - **Not done:** editing XLSX and DOCX attachments in the browser. The editor page and the adapter are still for the memo document (`.docx`); attachments are edited by download and a new version. This is carried to T8 or later and recorded as a gap against ADR-0047's spreadsheet line.
+
+## 2026-11-15 — T8 close
+- **E2E journey** `attachments.spec` (smoke). The initiator:
+  - creates a General memo and uploads two versions of its document;
+  - names "Demo Head of Credit" as a co-author;
+  - attaches a PDF, previews it ("Page 1 of 1") and classifies it Internal, above the memo (Public);
+  - opens Compare versions. On the smoke stack there is no Tika, so it says the text is not available; the nightly stack marks the changes.
+
+  The co-author then sees the draft and the attachment control, sees the attachment only as "Restricted attachment" (not cleared for Internal), and has no Submit.
+- **Two editors in one room:** covered by `DocEditIT` (join, save as a room member, finish the room), not by E2E. Driving two ONLYOFFICE frames at once on shared runners was judged too flaky for its value.
+- **Demo seed:**
+  - `user@` is now cleared to Internal (`DemoUser.clearanceRank`, through the new `AccessAdministration.ensureClearance`, audited as `authz.clearance.changed`). That makes an attachment restricted from the approvers possible.
+  - The draft "Laptop refresh for the credit team" carries `laptop-quotation.pdf` (`DemoPdf`).
+  - The seeder only fills gaps: on dev, the clearance appears at the next start, but the attachment does not (the demo memos exist already).
+- **Performance (design §9),** measured locally:
+
+| Budget | Target | Result |
+|---|---|---|
+| Attachment list, 50 attachments | p95 < 50 ms | 129 ms at first: two file queries and a level lookup per row. Now one query for all current versions (`Files.currentVersions`) and the levels read once: **23–27 ms** |
+| Compare endpoint, two texts of about 1 MB | p95 < 300 ms | 343 ms at first: the texts were fetched in 128 KiB ranges, about eight requests each. Whole texts are now read in 1 MiB ranges: **229 ms** |
+| Browser diff, two 50-page texts | < 2 s | about 40 ms (`version-diff.test.ts`) |
+| Rendition scheduled after upload | < 1 s after commit | The task row is written in the upload's transaction, so it is scheduled at commit. It **starts** within db-scheduler's polling interval (10 s, no immediate execution), and the preview says "being prepared" until then. Shortening the interval is left as a follow-up, because it applies to every job. |
+| DOCX of 20 pages to PDF; text of a 20-page DOCX | p95 < 10 s; < 5 s | Need the real services. Carried to the dev check after deploy (nightly stack). |
+
+  `DocumentsPerformanceIT` asserts the first two with 2x headroom and prints the p95s.
+- **Runbooks:**
+  - `attachments-and-previews.md` (new): services, settings, monitoring, rebuilding renditions, known limits;
+  - `document-editing.md`: co-authors and shared rooms, and the stale cache paragraph corrected (tmpfs).
+- **ASVS:** eight E02 rows (V2, V3, V8 ×2, V12, V14, V15, V16).
+- **Carried:**
+  - the hostile parser corpus through ONLYOFFICE and Tika (nightly), not built yet;
+  - editing XLSX and DOCX attachments in the browser (gap against ADR-0047);
+  - the two service timings above;
+  - re-run Ansible on the dev VM after the merge so `MEMO_TIKA_URL` is set;
+  - shortening the scheduler's polling interval, or immediate execution, for renditions.

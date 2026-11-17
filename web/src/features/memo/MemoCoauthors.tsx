@@ -13,6 +13,10 @@ const m = defineMessages({
     id: 'memo.coauthors.lead',
     defaultMessage: 'They edit the document and the attachments with you while it is a draft. Only you submit it.',
   },
+  leadOthers: {
+    id: 'memo.coauthors.leadOthers',
+    defaultMessage: 'The initiator named them to help write the draft.',
+  },
   none: { id: 'memo.coauthors.none', defaultMessage: 'Nobody yet.' },
   add: { id: 'memo.coauthors.add', defaultMessage: 'Add a co-author' },
   you: {
@@ -67,7 +71,7 @@ export function MemoCoauthors({
       <h2 id="memo-coauthors" className="text-base font-semibold">
         {intl.formatMessage(m.title)}
       </h2>
-      <p className="mb-3 text-sm text-muted-foreground">{intl.formatMessage(m.lead)}</p>
+      <p className="mb-3 text-sm text-muted-foreground">{intl.formatMessage(editable ? m.lead : m.leadOthers)}</p>
       {me && ids.includes(me) ? (
         <p role="note" className="mb-2 text-sm">
           {intl.formatMessage(m.you)}

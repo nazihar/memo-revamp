@@ -38,6 +38,8 @@ class DemoTenantSeedIT : IntegrationTest() {
 
     @Autowired lateinit var access: AccessAdministration
 
+    @Autowired lateinit var clearances: com.memo.common.authz.Clearances
+
     @Autowired lateinit var orgSeeding: com.memo.org.OrgSeeding
 
     @Autowired lateinit var operators: com.memo.identity.operator.OperatorMfa
@@ -62,6 +64,11 @@ class DemoTenantSeedIT : IntegrationTest() {
             assertThat(settings.list().associate { it.key to it.value }).containsAllEntriesOf(DemoTenant.SETTINGS)
             assertThat(settings.list().map { it.version }).allMatch { it == 0L }
             assertThat(DemoTenant.USERS).allSatisfy { assertThat(accounts.findByEmail(it.email)).isNotNull() }
+            // The initiator is cleared above the approvers, once however often the seeder runs (E02 T8).
+            val ids = DemoTenant.USERS.associate { it.email to accounts.findByEmail(it.email)!!.id.value }
+            assertThat(clearances.rankOf(ids.values))
+                .containsEntry(ids.getValue("user@demo.example"), 1)
+                .containsEntry(ids.getValue("head.credit@demo.example"), 0)
         }
     }
 

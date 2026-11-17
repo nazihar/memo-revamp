@@ -21,7 +21,27 @@ class RoleGrants(
     private val tenantDsl: TenantDsl,
     private val invalidation: CacheInvalidation,
     private val audit: AuditLog,
+    private val levels: ClassificationStore,
 ) : AccessAdministration {
+    override fun ensureClearance(
+        user: UUID,
+        rank: Int,
+    ) {
+        val all = levels.list()
+        val target = requireNotNull(all.firstOrNull { it.rank == rank }) { "no classification level of rank $rank" }
+        val before = levels.clearanceOf(user)?.let { id -> all.firstOrNull { it.id == id } } ?: all.first()
+        if (before.rank >= rank) return
+        levels.setClearance(user, target.id)
+        audit.record(
+            "authz.clearance.changed",
+            "authz.clearance",
+            user.toString(),
+            mapOf("levelId" to before.id.toString(), "rank" to before.rank),
+            mapOf("levelId" to target.id.toString(), "rank" to target.rank),
+        )
+        invalidation.invalidate(AccessCaches.GRANTS, tenantDsl.tenant(), user.toString())
+    }
+
     override fun grantBuiltIn(
         user: UUID,
         role: BuiltInRole,

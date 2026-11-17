@@ -23,6 +23,24 @@ describe('compareTexts (design E02 §3)', () => {
     })
   })
 
+  it('compares two 50-page texts within the two-second budget (design E02 §9)', () => {
+    // About 50 pages of 40 lines; every 25th line edited and a paragraph inserted every 400 lines.
+    const older = Array.from(
+      { length: 2000 },
+      (_, i) => `Line ${String(i)}: the branch budget, the timeline and the risks.`,
+    )
+    const newer = older.flatMap((line, i) => {
+      const edited = i % 25 === 0 ? line.replace('budget', 'revised budget') : line
+      return i % 400 === 0 ? [edited, `A new paragraph after line ${String(i)}.`] : [edited]
+    })
+    const start = performance.now()
+    const result = compareTexts(older.join('\n'), newer.join('\n'))
+    const elapsed = performance.now() - start
+    expect(elapsed).toBeLessThan(2000)
+    expect(result.compared).toBe(true)
+    expect(result.changes).toBeGreaterThan(0)
+  })
+
   it('identical texts have no changes', () => {
     const same = compareTexts('A\nB', 'A\nB')
     expect(same.changes).toBe(0)

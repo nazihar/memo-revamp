@@ -40,7 +40,17 @@ class FakeRenditionServices :
         input: RenditionInput,
         maxChars: Long,
         out: OutputStream,
-    ): RenditionOutcome = scripted(input, "text") { out.write("Text of ${input.name}".toByteArray()) }
+    ): RenditionOutcome = scripted(input, "text") { out.write(textOf(input.name).toByteArray()) }
+
+    /** One line, or for `large-…` about 1 MB of numbered lines that name the file in every 500th (performance budget). */
+    private fun textOf(name: String): String =
+        if (name.startsWith("large-")) {
+            (1..LARGE_LINES).joinToString("\n") { i ->
+                if (i % 500 == 0) "Line $i of $name" else "Line $i: the branch budget, the timeline and the risks."
+            }
+        } else {
+            "Text of $name"
+        }
 
     fun calls(
         name: String,
@@ -64,6 +74,8 @@ class FakeRenditionServices :
     }
 
     companion object {
+        private const val LARGE_LINES = 18_000
+
         val PDF: ByteArray =
             PDDocument().use { document ->
                 document.addPage(PDPage())

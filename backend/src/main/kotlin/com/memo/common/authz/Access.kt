@@ -60,6 +60,15 @@ interface AccessAdministration {
         scopeUnit: UUID? = null,
     )
 
+    /**
+     * Clears [user] to the level of [rank] unless they are already cleared to it or higher, for seeding (the demo's
+     * reader cleared above another, Phase 3 E02 T8). Audited like a change by an administrator.
+     */
+    fun ensureClearance(
+        user: UUID,
+        rank: Int,
+    )
+
     /** Which of [users] hold a tenant-wide [BuiltInRole.TENANT_ADMIN] grant. */
     fun tenantAdmins(users: Collection<UUID>): Set<UUID>
 

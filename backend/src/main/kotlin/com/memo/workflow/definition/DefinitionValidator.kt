@@ -32,7 +32,7 @@ data class Validation(
  */
 class DefinitionValidator(
     private val catalogue: Map<String, AttributeType>?,
-    references: DefinitionReferences = DefinitionReferences.ANY,
+    private val references: DefinitionReferences = DefinitionReferences.ANY,
     private val fragments: (String) -> Definition?,
 ) {
     private val assignees = AssigneeChecks(references)
@@ -137,6 +137,8 @@ class DefinitionValidator(
                 StepType.SUBWORKFLOW -> fragment(at, step)
                 else -> Unit
             }
+            val forum = step.forum?.takeIf { step.type == StepType.ESCALATE_TO_FORUM }
+            if (forum != null && !references.forumExists(forum)) add("$at/forum", "UNKNOWN_FORUM", "no active committee '$forum'")
             problems += assignees.problems(at, step)
             if (step.type.human) actions(at, step)
             step.sla?.let { problems += slaProblems("$at/sla", it) }
@@ -272,6 +274,9 @@ interface DefinitionReferences {
     fun unitExists(id: UUID): Boolean
 
     fun queueExists(key: String): Boolean
+
+    /** Whether an `escalate-to-forum` step may name [key]: an active forum (Phase 4, ADR-0056); any key by default. */
+    fun forumExists(key: String): Boolean = true
 
     companion object {
         val ANY =

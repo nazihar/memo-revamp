@@ -1,0 +1,27 @@
+# Phase 4 E01 forum types and forums (design E01 §3, §4; ADR-0056, ADR-0057). Rules: rules.yaml. forum.types.manage
+# (maker) and forum.types.approve (checker) are privileged: tenant admins hold both, so the maker-checker split itself
+# (SAME_PERSON) is ForumTypesIT. Random type ids are 404 for everyone allowed through.
+epic: P4-E01
+endpoints:
+  - { endpoint: GET /api/v1/admin/forum-types, rule: tenantAdmin }
+  - { endpoint: GET /api/v1/admin/forum-types/presets, rule: tenantAdmin }
+  - endpoint: POST /api/v1/admin/forum-types
+    rule: tenantAdmin
+    body: { code: "MX", name: "Matrix committee type", preset: "BOARD_COMMITTEE" }
+  - { endpoint: "GET /api/v1/admin/forum-types/{typeId}", rule: tenantAdmin }
+  - { endpoint: "POST /api/v1/admin/forum-types/{typeId}/activate", rule: tenantAdmin }
+  - { endpoint: "POST /api/v1/admin/forum-types/{typeId}/deactivate", rule: tenantAdmin }
+  - { endpoint: "GET /api/v1/admin/forum-types/{typeId}/versions", rule: tenantAdmin }
+  - { endpoint: "GET /api/v1/admin/forum-types/{typeId}/versions/{number}", rule: tenantAdmin }
+  - { endpoint: "POST /api/v1/admin/forum-types/{typeId}/versions", rule: tenantAdmin }
+  - endpoint: "PUT /api/v1/admin/forum-types/{typeId}/versions/{number}"
+    rule: tenantAdmin
+    body: { name: "Matrix type", outcomes: [{ kind: "APPROVED", label: "Approved", resolution: true }] }
+    headers: { If-Match: "\"0\"" }
+  - { endpoint: "POST /api/v1/admin/forum-types/{typeId}/versions/{number}/submit", rule: tenantAdmin, headers: { If-Match: "\"0\"" } }
+  - { endpoint: "POST /api/v1/admin/forum-types/{typeId}/versions/{number}/approve", rule: tenantAdminStepUp }
+  - { endpoint: "POST /api/v1/admin/forum-types/{typeId}/versions/{number}/send-back", rule: tenantAdmin, body: { remark: "Matrix" } }
+  - endpoint: POST /api/v1/forums/quorum-preview
+    rule: tenantAdmin
+    body: { rule: { minimum: 2 }, members: [{ role: "CHAIR", present: true }, { role: "MEMBER", present: true }] }
+  - { endpoint: GET /api/v1/admin/workflow/escalation-targets, rule: tenantAdmin }

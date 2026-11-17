@@ -259,4 +259,42 @@ class UploadIT : FilesIntegrationTest() {
             )
         }.isInstanceOf(RateLimitedException::class.java)
     }
+
+    @Test
+    fun `the system's own uploads count against no rate limit`() {
+        // Jobs of every tenant (final records, import reports) once shared one bucket of 30 a minute.
+        repeat(40) {
+            assertThat(rejection { tooLargeAs(Actor.System("files-test")) }.reason).isEqualTo(RejectionReason.TOO_LARGE)
+        }
+    }
+
+    @Test
+    fun `an anonymous upload is not the system's and stays rate limited`() {
+        // The anonymous bucket is shared by the whole context, so the limit may be reached before the 31st.
+        val outcomes = (1..31).map { runCatching { tooLargeAs(Actor.Anonymous) }.exceptionOrNull() }
+
+        assertThat(outcomes).allMatch { it is UploadRejected || it is RateLimitedException }
+        assertThat(outcomes).anyMatch { it is RateLimitedException }
+    }
+
+    /** An upload by [actor] of an image over the purpose's limit: refused by its declared length, before the body is read. */
+    private fun tooLargeAs(actor: Actor): UUID {
+        val tooBig = ByteArray(3 shl 20)
+        return ActorContext.call(ActorScope(actor, null)) {
+            TenantContext.call(tenant.id) {
+                uploads.upload(
+                    UploadRequest(
+                        purposeKey = TestImagePurpose.KEY,
+                        ownerId = null,
+                        fileId = null,
+                        expectedFileVersion = null,
+                        declaredName = "a.png",
+                        declaredLength = tooBig.size.toLong(),
+                        idempotencyKey = UUID.randomUUID().toString(),
+                        body = tooBig.inputStream(),
+                    ),
+                )
+            }
+        }
+    }
 }

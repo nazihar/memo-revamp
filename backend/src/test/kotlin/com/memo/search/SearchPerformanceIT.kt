@@ -25,8 +25,9 @@ import java.util.UUID
 /**
  * The E05 T1 search spike (ADR-0054, test plan T1): [SearchVolume] at `SEARCH_VOLUME` memos (100,000 by default; the V1
  * run sets 1,000,000) and the four reader profiles of the test plan. Records p95 per profile over a query mix, checks that
- * the search query plans use the indexes for every profile (custom and generic plans), and measures the candidate cap and
- * GIN `fastupdate`. Budgets have 2x headroom for shared runners; the measured values are printed for the log.
+ * the search query plans use the indexes for rare words for every profile, and measures the candidate cap (GIN
+ * `fastupdate` was measured once in the T1 spike, E05 log). Budgets have 2x headroom for shared runners; the measured values
+ * are printed for the log.
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SearchPerformanceIT : IntegrationTest() {
@@ -174,27 +175,6 @@ class SearchPerformanceIT : IntegrationTest() {
         }.rootCause().hasMessageContaining("tenant mismatch")
     }
 
-    @Test
-    fun `GIN fastupdate on and off, for the log`() {
-        listOf(true, false).forEach { fast ->
-            owner { c ->
-                c.exec("alter index search_note_tsv_idx set (fastupdate = ${if (fast) "on" else "off"})")
-                val started = System.nanoTime()
-                c.exec(
-                    """
-                    insert into search_note (tenant_id, note_id, memo_id, classification_rank, status, type_id, memo_created_at, body)
-                    select '${tenant.id.value}', gen_random_uuid(), md5('sm' || (1 + j % $memos))::uuid, 0, 'DRAFT',
-                           gen_random_uuid(), now(), 'a timed note about the loan renewal and the rent schedule number ' || j
-                    from generate_series(1, $FASTUPDATE_ROWS) j
-                    """,
-                )
-                val ms = (System.nanoTime() - started) / NANOS_PER_MILLI
-                println("SearchPerformanceIT $memos memos, $FASTUPDATE_ROWS note rows with fastupdate=$fast: $ms ms")
-            }
-        }
-        owner { it.exec("alter index search_note_tsv_idx set (fastupdate = on)") }
-    }
-
     private fun search(
         text: String,
         scope: ReaderScope,
@@ -244,6 +224,8 @@ class SearchPerformanceIT : IntegrationTest() {
     private fun owner(block: (Connection) -> Unit) =
         DriverManager.getConnection(TestDatabase.jdbcUrl, "memo_migrator", TestDatabase.migratorPassword).use { c ->
             c.autoCommit = false
+            // A lock wait fails the test (with this statement) instead of stalling the whole suite.
+            c.createStatement().use { it.execute("set local lock_timeout = '30s'") }
             c.prepareStatement("select set_config('app.tenant_id', ?, true)").use {
                 it.setString(1, tenant.id.value.toString())
                 it.execute()
@@ -268,7 +250,6 @@ class SearchPerformanceIT : IntegrationTest() {
         const val BUDGET_MS = 300L
         const val CAP_SMALL = 1_000
         const val CAP_LARGE = 5_000
-        const val FASTUPDATE_ROWS = 5_000
         const val WARM_UP = 3
         const val RUNS = 20
         const val NANOS_PER_MILLI = 1_000_000L

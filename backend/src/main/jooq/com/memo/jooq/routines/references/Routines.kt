@@ -12,8 +12,10 @@ import com.memo.jooq.routines.SearchSetChunkRank
 import com.memo.jooq.routines.TenancySettingCount
 import com.memo.jooq.tables.SearchFind
 import com.memo.jooq.tables.SearchSnippets
+import com.memo.jooq.tables.SearchUnindexed
 import com.memo.jooq.tables.records.SearchFindRecord
 import com.memo.jooq.tables.records.SearchSnippetsRecord
+import com.memo.jooq.tables.records.SearchUnindexedRecord
 
 import java.math.BigDecimal
 import java.time.OffsetDateTime
@@ -31,6 +33,7 @@ import org.jooq.Result
 fun searchPutChunks(
       configuration: Configuration
     , pTenant: UUID?
+    , pFile: UUID?
     , pVersion: UUID?
     , pMemo: UUID?
     , pRank: Int?
@@ -38,6 +41,7 @@ fun searchPutChunks(
 ): Boolean? {
     val f = SearchPutChunks()
     f.setPTenant(pTenant)
+    f.setPFile(pFile)
     f.setPVersion(pVersion)
     f.setPMemo(pMemo)
     f.setPRank(pRank)
@@ -52,6 +56,7 @@ fun searchPutChunks(
  */
 fun searchPutChunks(
       pTenant: UUID?
+    , pFile: UUID?
     , pVersion: UUID?
     , pMemo: UUID?
     , pRank: Int?
@@ -59,6 +64,7 @@ fun searchPutChunks(
 ): Field<Boolean?> {
     val f = SearchPutChunks()
     f.setPTenant(pTenant)
+    f.setPFile(pFile)
     f.setPVersion(pVersion)
     f.setPMemo(pMemo)
     f.setPRank(pRank)
@@ -72,6 +78,7 @@ fun searchPutChunks(
  */
 fun searchPutChunks(
       pTenant: Field<UUID?>
+    , pFile: Field<UUID?>
     , pVersion: Field<UUID?>
     , pMemo: Field<UUID?>
     , pRank: Field<Int?>
@@ -79,6 +86,7 @@ fun searchPutChunks(
 ): Field<Boolean?> {
     val f = SearchPutChunks()
     f.setPTenant(pTenant)
+    f.setPFile(pFile)
     f.setPVersion(pVersion)
     f.setPMemo(pMemo)
     f.setPRank(pRank)
@@ -188,12 +196,12 @@ fun searchPutNote(
 fun searchSetChunkRank(
       configuration: Configuration
     , pTenant: UUID?
-    , pVersion: UUID?
+    , pFile: UUID?
     , pRank: Int?
 ): Unit {
     val p = SearchSetChunkRank()
     p.setPTenant(pTenant)
-    p.setPVersion(pVersion)
+    p.setPFile(pFile)
     p.setPRank(pRank)
 
     p.execute(configuration)
@@ -442,4 +450,38 @@ fun searchSnippets(
     pMemos,
     pQuery,
     pPrefix
+)
+
+/**
+ * Call <code>memo.search_unindexed</code>.
+ */
+fun searchUnindexed(
+      configuration: Configuration
+    , pTenant: UUID?
+    , pLimit: Int?
+): Result<SearchUnindexedRecord> = configuration.dsl().selectFrom(com.memo.jooq.tables.SearchUnindexed.SEARCH_UNINDEXED.call(
+      pTenant
+    , pLimit
+)).fetch()
+
+/**
+ * Get <code>memo.search_unindexed</code> as a table.
+ */
+fun searchUnindexed(
+      pTenant: UUID?
+    , pLimit: Int?
+): SearchUnindexed = com.memo.jooq.tables.SearchUnindexed.SEARCH_UNINDEXED.call(
+    pTenant,
+    pLimit
+)
+
+/**
+ * Get <code>memo.search_unindexed</code> as a table.
+ */
+fun searchUnindexed(
+      pTenant: Field<UUID?>
+    , pLimit: Field<Int?>
+): SearchUnindexed = com.memo.jooq.tables.SearchUnindexed.SEARCH_UNINDEXED.call(
+    pTenant,
+    pLimit
 )

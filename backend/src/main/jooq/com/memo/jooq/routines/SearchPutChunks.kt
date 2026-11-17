@@ -34,6 +34,11 @@ open class SearchPutChunks : AbstractRoutine<Boolean>("search_put_chunks", Memo.
         val P_TENANT: Parameter<UUID?> = Internal.createParameter("p_tenant", SQLDataType.UUID, false)
 
         /**
+         * The parameter <code>memo.search_put_chunks.p_file</code>.
+         */
+        val P_FILE: Parameter<UUID?> = Internal.createParameter("p_file", SQLDataType.UUID, false)
+
+        /**
          * The parameter <code>memo.search_put_chunks.p_version</code>.
          */
         val P_VERSION: Parameter<UUID?> = Internal.createParameter("p_version", SQLDataType.UUID, false)
@@ -57,6 +62,7 @@ open class SearchPutChunks : AbstractRoutine<Boolean>("search_put_chunks", Memo.
     init {
         returnParameter = SearchPutChunks.RETURN_VALUE
         addInParameter(SearchPutChunks.P_TENANT)
+        addInParameter(SearchPutChunks.P_FILE)
         addInParameter(SearchPutChunks.P_VERSION)
         addInParameter(SearchPutChunks.P_MEMO)
         addInParameter(SearchPutChunks.P_RANK)
@@ -76,6 +82,21 @@ open class SearchPutChunks : AbstractRoutine<Boolean>("search_put_chunks", Memo.
      */
     fun setPTenant(field: Field<UUID?>): Unit {
         setField(SearchPutChunks.P_TENANT, field)
+    }
+
+    /**
+     * Set the <code>p_file</code> parameter IN value to the routine
+     */
+    fun setPFile(value: UUID?): Unit {
+        setValue(SearchPutChunks.P_FILE, value)
+    }
+
+    /**
+     * Set the <code>p_file</code> parameter to the function to be used with a
+     * {@link org.jooq.Select} statement
+     */
+    fun setPFile(field: Field<UUID?>): Unit {
+        setField(SearchPutChunks.P_FILE, field)
     }
 
     /**

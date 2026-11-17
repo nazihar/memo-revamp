@@ -71,3 +71,14 @@ rules:
       - pattern: sessionStorage.setItem(...)
       - pattern: window.localStorage.setItem(...)
       - pattern: window.sessionStorage.setItem(...)
+
+  - id: memo-security-definer-only-in-search
+    languages: [generic]
+    paths:
+      include: ['*.sql']
+      exclude: ['**/db/migration/search/**']
+    severity: ERROR
+    message: >-
+      SECURITY DEFINER functions bypass row-level security. Only the search module's audited functions may use them
+      (ADR-0054), and RlsMetaTest lists each one.
+    pattern-regex: (?im)^(?!\s*--).*\bsecurity\s+definer\b

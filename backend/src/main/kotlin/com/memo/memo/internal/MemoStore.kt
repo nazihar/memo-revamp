@@ -96,6 +96,7 @@ class MemoStore(
     private val tenantDsl: TenantDsl,
     private val json: JsonMapper,
     private val readable: MemoReadable,
+    private val changes: MemoChangeLog,
 ) {
     fun insert(
         memo: NewMemo,
@@ -118,6 +119,7 @@ class MemoStore(
             .set(MEMO.UPDATED_AT, now)
             .execute()
         addParticipant(memo.id, memo.initiatorId, ParticipantKind.INITIATOR, now)
+        changes.memo(memo.id)
     }
 
     /**
@@ -212,7 +214,9 @@ class MemoStore(
             .set(MEMO.VERSION, MEMO.VERSION.plus(1))
             .set(MEMO.UPDATED_AT, now)
             .where(MEMO.ID.eq(changed.id), MEMO.VERSION.eq(expectedVersion))
-            .execute() == 1
+            .execute()
+            .let { it == 1 }
+            .also { if (it) changes.memo(changed.id) }
 
     /**
      * Pins a draft to its type version [versionId] with its final [metadata] (ADR-0043), guarded on the draft state and
@@ -235,7 +239,9 @@ class MemoStore(
                 MEMO.VERSION.eq(expectedVersion),
                 MEMO.STATUS.eq(MemoStatus.DRAFT.name),
                 MEMO.MEMO_TYPE_VERSION_ID.isNull,
-            ).execute() == 1
+            ).execute()
+            .let { it == 1 }
+            .also { if (it) changes.memo(id) }
 
     /** Moves the memo from [from] to [to], guarded on both; false when it is no longer in [from] at [expectedVersion]. */
     fun changeStatus(
@@ -252,7 +258,9 @@ class MemoStore(
             .set(MEMO.VERSION, MEMO.VERSION.plus(1))
             .set(MEMO.UPDATED_AT, now)
             .where(MEMO.ID.eq(id), MEMO.VERSION.eq(expectedVersion), MEMO.STATUS.eq(from.name))
-            .execute() == 1
+            .execute()
+            .let { it == 1 }
+            .also { if (it) changes.memo(id) }
 
     /** Records the memo's document file (its first upload); the version is not bumped, so the client's `If-Match` stays valid. */
     fun setDocument(
@@ -292,6 +300,7 @@ class MemoStore(
             .set(MEMO.UPDATED_AT, now)
             .where(MEMO.ID.eq(id))
             .execute()
+        changes.memo(id)
     }
 }
 

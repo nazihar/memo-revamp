@@ -43,6 +43,7 @@ class RlsMetaTest : IntegrationTest() {
             "search_put_note",
             "search_put_chunks",
             "search_set_chunk_rank",
+            "search_unindexed",
             "search_find",
             "search_snippets",
         )

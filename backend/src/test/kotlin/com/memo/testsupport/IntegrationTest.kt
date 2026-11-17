@@ -25,6 +25,8 @@ abstract class IntegrationTest {
             TestDatabase.properties().forEach { (key, value) -> registry.add(key) { value } }
             // Jobs scheduled "now" run within a poll; keep that short so job tests wait on conditions, not intervals.
             registry.add("db-scheduler.polling-interval") { "500ms" }
+            // Tests create memos by SQL without search rows: the search backfill sweep would index them all in the background.
+            registry.add("memo.search.backfill-sweep") { "false" }
         }
     }
 }

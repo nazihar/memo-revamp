@@ -63,6 +63,7 @@ import com.memo.jooq.tables.OrgReportingLine
 import com.memo.jooq.tables.OrgUnit
 import com.memo.jooq.tables.SearchFind
 import com.memo.jooq.tables.SearchSnippets
+import com.memo.jooq.tables.SearchUnindexed
 import com.memo.jooq.tables.SystemIdempotencyKey
 import com.memo.jooq.tables.SystemInfo
 import com.memo.jooq.tables.TenancySetting
@@ -86,6 +87,7 @@ import com.memo.jooq.tables.WorkflowTask
 import com.memo.jooq.tables.WorkflowTimer
 import com.memo.jooq.tables.records.SearchFindRecord
 import com.memo.jooq.tables.records.SearchSnippetsRecord
+import com.memo.jooq.tables.records.SearchUnindexedRecord
 
 import java.math.BigDecimal
 import java.time.OffsetDateTime
@@ -609,6 +611,45 @@ fun SEARCH_SNIPPETS(
     pMemos,
     pQuery,
     pPrefix
+)
+
+/**
+ * The table <code>memo.search_unindexed</code>.
+ */
+val SEARCH_UNINDEXED: SearchUnindexed = SearchUnindexed.SEARCH_UNINDEXED
+
+/**
+ * Call <code>memo.search_unindexed</code>.
+ */
+fun SEARCH_UNINDEXED(
+      configuration: Configuration
+    , pTenant: UUID?
+    , pLimit: Int?
+): Result<SearchUnindexedRecord> = configuration.dsl().selectFrom(com.memo.jooq.tables.SearchUnindexed.SEARCH_UNINDEXED.call(
+      pTenant
+    , pLimit
+)).fetch()
+
+/**
+ * Get <code>memo.search_unindexed</code> as a table.
+ */
+fun SEARCH_UNINDEXED(
+      pTenant: UUID?
+    , pLimit: Int?
+): SearchUnindexed = com.memo.jooq.tables.SearchUnindexed.SEARCH_UNINDEXED.call(
+    pTenant,
+    pLimit
+)
+
+/**
+ * Get <code>memo.search_unindexed</code> as a table.
+ */
+fun SEARCH_UNINDEXED(
+      pTenant: Field<UUID?>
+    , pLimit: Field<Int?>
+): SearchUnindexed = com.memo.jooq.tables.SearchUnindexed.SEARCH_UNINDEXED.call(
+    pTenant,
+    pLimit
 )
 
 /**

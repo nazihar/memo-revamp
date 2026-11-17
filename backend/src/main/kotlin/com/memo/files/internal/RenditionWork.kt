@@ -17,6 +17,7 @@ import com.memo.files.FileRenditions
 import com.memo.files.FileType
 import com.memo.files.FileVersionCreated
 import com.memo.files.RenditionConverter
+import com.memo.files.RenditionDone
 import com.memo.files.RenditionInfo
 import com.memo.files.RenditionInput
 import com.memo.files.RenditionKind
@@ -28,6 +29,7 @@ import io.micrometer.core.instrument.MeterRegistry
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.ObjectProvider
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.event.EventListener
@@ -241,6 +243,7 @@ internal class RenditionRetry(
  */
 @Component
 internal class RenditionWorker(
+    private val events: ApplicationEventPublisher,
     private val files: FileStore,
     private val store: RenditionStore,
     private val purposes: Purposes,
@@ -433,7 +436,13 @@ internal class RenditionWorker(
         val key = "t/$tenant/r/${Uploads.base32(ByteArray(KEY_BYTES).also(random::nextBytes))}"
         objects.put(Bucket.WORK, key, spoolFile, CIPHERTEXT_TYPE, null)
         val result = RenditionResult(key, sizeBytes, Files.size(spoolFile), sha256, crypto.primaryKeyId(tenant), pages, truncated)
-        transactions.inTenant(tenant) { store.done(versionId, kind, result) }
+        transactions.inTenant(tenant) {
+            store.done(versionId, kind, result)
+            val file = files.version(versionId)?.let { files.info(it.fileId) }
+            if (file != null) {
+                events.publishEvent(RenditionDone(tenant.value, file.purpose, file.ownerId, file.id, versionId, kind))
+            }
+        }
         outcomes(kind, "done").increment()
     }
 

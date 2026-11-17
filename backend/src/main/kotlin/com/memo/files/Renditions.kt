@@ -1,13 +1,28 @@
 package com.memo.files
 
+import com.memo.common.events.TenantScopedEvent
 import java.io.InputStream
 import java.io.OutputStream
+import java.util.UUID
 
 /** Derived content of a file version (ADR-0045): a PDF to preview, the text to compare and search. */
 enum class RenditionKind { PDF, TEXT }
 
 /** Where a rendition is: built in the background, then done, failed (after retries) or not possible for its type. */
 enum class RenditionState { PENDING, DONE, FAILED, NOT_POSSIBLE }
+
+/**
+ * A rendition became DONE, published synchronously in the transaction that records it: the owning module may use it (for
+ * example the search index reads a TEXT rendition, ADR-0054). Ids only.
+ */
+data class RenditionDone(
+    override val tenantId: UUID,
+    val purposeKey: String,
+    val ownerId: String?,
+    val fileId: UUID,
+    val versionId: UUID,
+    val kind: RenditionKind,
+) : TenantScopedEvent
 
 /** The plaintext of a version as a port reads it: its type, its size and a fresh stream each time it is opened. */
 class RenditionInput(

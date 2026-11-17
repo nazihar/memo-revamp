@@ -56,6 +56,7 @@ data class NoteDraft(
 class MemoNoteStore(
     private val tenantDsl: TenantDsl,
     private val ids: IdGenerator,
+    private val changes: MemoChangeLog,
 ) {
     fun insert(
         note: NewNote,
@@ -106,6 +107,7 @@ class MemoNoteStore(
                 )
             files.withIndex().fold(insert) { q, (i, file) -> q.values(tenant, id, note.memoId, file, i) }.execute()
         }
+        changes.note(note.memoId, id)
         return id
     }
 

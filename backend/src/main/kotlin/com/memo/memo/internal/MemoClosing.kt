@@ -31,6 +31,7 @@ import com.memo.jooq.tables.references.MEMO_ as MEMO
 @Repository
 class MemoClosingStore(
     private val tenantDsl: TenantDsl,
+    private val changes: MemoChangeLog,
 ) {
     /** APPROVED → CLOSED, guarded on the status and, when given, [expectedVersion]; false when the memo moved on. */
     fun close(
@@ -49,7 +50,9 @@ class MemoClosingStore(
                 MEMO.ID.eq(id),
                 MEMO.STATUS.eq(MemoStatus.APPROVED.name),
                 expectedVersion?.let { MEMO.VERSION.eq(it) } ?: DSL.noCondition(),
-            ).execute() == 1
+            ).execute()
+            .let { it == 1 }
+            .also { if (it) changes.memo(id) }
 
     /** Approved memos whose pinned version closes them after its days, approved before then, at most [limit]. */
     fun due(

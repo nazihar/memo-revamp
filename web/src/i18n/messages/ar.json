@@ -42,6 +42,7 @@
   "access.permission.legalEntities": "إدارة الكيانات القانونية",
   "access.permission.memoCreate": "كتابة المذكرات وإرسالها",
   "access.permission.memoTypes": "إدارة أنواع المذكرات",
+  "access.permission.memoTypesApprove": "مراجعة أنواع المذكرات ونشرها",
   "access.permission.notificationSettings": "إدارة إرسال البريد الإلكتروني",
   "access.permission.orgManage": "إدارة الوحدات والوظائف والتعيينات",
   "access.permission.roles": "إدارة الأدوار والمنح",

@@ -1894,6 +1894,9 @@
             },
             "type" : "object"
           },
+          "code" : {
+            "type" : "string"
+          },
           "defaultClassificationId" : {
             "format" : "uuid",
             "type" : [ "string", "null" ]
@@ -1914,6 +1917,10 @@
           "name" : {
             "type" : "string"
           },
+          "publishedVersion" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
           "routePolicy" : {
             "enum" : [ "INITIATOR_DEFINED", "FIXED", "BOTH" ],
             "type" : "string"
@@ -1926,7 +1933,7 @@
             "type" : "integer"
           }
         },
-        "required" : [ "active", "allowedApprovers", "allowedNames", "definitionKey", "doaCheck", "id", "name", "routePolicy", "stepUpOnApprove", "version" ],
+        "required" : [ "active", "allowedApprovers", "allowedNames", "code", "definitionKey", "doaCheck", "id", "name", "routePolicy", "stepUpOnApprove", "version" ],
         "type" : "object"
       },
       "MemoTypeOption" : {
@@ -1981,6 +1988,126 @@
             "type" : "boolean"
           }
         },
+        "type" : "object"
+      },
+      "MemoTypeSettingsRequest" : {
+        "properties" : {
+          "allowedApprovers" : {
+            "$ref" : "#/components/schemas/AllowedApprovers"
+          },
+          "code" : {
+            "type" : "string"
+          },
+          "defaultClassificationId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "definitionKey" : {
+            "type" : "string"
+          },
+          "doaCheck" : {
+            "type" : "boolean"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "routePolicy" : {
+            "type" : "string"
+          },
+          "stepUpOnApprove" : {
+            "type" : "boolean"
+          }
+        },
+        "type" : "object"
+      },
+      "MemoTypeVersionResponse" : {
+        "properties" : {
+          "allowedApprovers" : {
+            "$ref" : "#/components/schemas/AllowedApprovers"
+          },
+          "allowedNames" : {
+            "additionalProperties" : {
+              "type" : "string"
+            },
+            "type" : "object"
+          },
+          "code" : {
+            "type" : "string"
+          },
+          "createdAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "createdBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/Named"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "defaultClassificationId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "definitionKey" : {
+            "type" : "string"
+          },
+          "doaCheck" : {
+            "type" : "boolean"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "number" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "publishedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "reviewRemark" : {
+            "type" : [ "string", "null" ]
+          },
+          "reviewedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "reviewedBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/Named"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "revision" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "routePolicy" : {
+            "enum" : [ "INITIATOR_DEFINED", "FIXED", "BOTH" ],
+            "type" : "string"
+          },
+          "state" : {
+            "enum" : [ "DRAFT", "IN_REVIEW", "PUBLISHED", "RETIRED" ],
+            "type" : "string"
+          },
+          "stepUpOnApprove" : {
+            "type" : "boolean"
+          },
+          "submittedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "submittedBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/Named"
+            }, {
+              "type" : "null"
+            } ]
+          }
+        },
+        "required" : [ "allowedApprovers", "allowedNames", "code", "createdAt", "definitionKey", "doaCheck", "name", "number", "revision", "routePolicy", "state", "stepUpOnApprove" ],
         "type" : "object"
       },
       "MemoView" : {
@@ -4415,6 +4542,288 @@
           }
         },
         "summary" : "Change a memo type",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/admin/memo-types/{typeId}/versions" : {
+      "get" : {
+        "operationId" : "listMemoTypeVersions",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "typeId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/MemoTypeVersionResponse"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A memo type's versions, newest first",
+        "tags" : [ "memo" ]
+      },
+      "post" : {
+        "operationId" : "createMemoTypeDraft",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "typeId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MemoTypeSettingsRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemoTypeVersionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Start a new draft, from the given settings or the published version",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/admin/memo-types/{typeId}/versions/{number}" : {
+      "get" : {
+        "operationId" : "getMemoTypeVersion",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "typeId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "number",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemoTypeVersionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "One version of a memo type",
+        "tags" : [ "memo" ]
+      },
+      "put" : {
+        "operationId" : "replaceMemoTypeDraft",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "typeId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "number",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MemoTypeSettingsRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemoTypeVersionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Replace a draft's settings",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/admin/memo-types/{typeId}/versions/{number}/approve" : {
+      "post" : {
+        "operationId" : "approveMemoTypeVersion",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "typeId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "number",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RemarkRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemoTypeVersionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Publish a version in review (not your own submission)",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/admin/memo-types/{typeId}/versions/{number}/send-back" : {
+      "post" : {
+        "operationId" : "sendBackMemoTypeVersion",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "typeId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "number",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RemarkRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemoTypeVersionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Return a version in review to draft, saying why",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/admin/memo-types/{typeId}/versions/{number}/submit" : {
+      "post" : {
+        "operationId" : "submitMemoTypeVersion",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "typeId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "number",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemoTypeVersionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Send a draft for review",
         "tags" : [ "memo" ]
       }
     },

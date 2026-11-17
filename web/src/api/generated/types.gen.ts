@@ -717,12 +717,14 @@ export type MemoType = {
     allowedNames: {
         [key: string]: string;
     };
+    code: string;
     defaultClassificationId?: string | null;
     definitionKey: string;
     doaCheck: boolean;
     id: string;
     key?: string | null;
     name: string;
+    publishedVersion?: number | null;
     routePolicy: 'INITIATOR_DEFINED' | 'FIXED' | 'BOTH';
     stepUpOnApprove: boolean;
     version: number;
@@ -744,6 +746,42 @@ export type MemoTypeRequest = {
     name?: string;
     routePolicy?: string | null;
     stepUpOnApprove?: boolean;
+};
+
+export type MemoTypeSettingsRequest = {
+    allowedApprovers?: AllowedApprovers;
+    code?: string;
+    defaultClassificationId?: string | null;
+    definitionKey?: string;
+    doaCheck?: boolean;
+    name?: string;
+    routePolicy?: string;
+    stepUpOnApprove?: boolean;
+};
+
+export type MemoTypeVersionResponse = {
+    allowedApprovers: AllowedApprovers;
+    allowedNames: {
+        [key: string]: string;
+    };
+    code: string;
+    createdAt: string;
+    createdBy?: Named | null;
+    defaultClassificationId?: string | null;
+    definitionKey: string;
+    doaCheck: boolean;
+    name: string;
+    number: number;
+    publishedAt?: string | null;
+    reviewRemark?: string | null;
+    reviewedAt?: string | null;
+    reviewedBy?: Named | null;
+    revision: number;
+    routePolicy: 'INITIATOR_DEFINED' | 'FIXED' | 'BOTH';
+    state: 'DRAFT' | 'IN_REVIEW' | 'PUBLISHED' | 'RETIRED';
+    stepUpOnApprove: boolean;
+    submittedAt?: string | null;
+    submittedBy?: Named | null;
 };
 
 export type MemoView = {
@@ -1832,6 +1870,143 @@ export type UpdateMemoTypeResponses = {
 };
 
 export type UpdateMemoTypeResponse = UpdateMemoTypeResponses[keyof UpdateMemoTypeResponses];
+
+export type ListMemoTypeVersionsData = {
+    body?: never;
+    path: {
+        typeId: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/memo-types/{typeId}/versions';
+};
+
+export type ListMemoTypeVersionsResponses = {
+    /**
+     * OK
+     */
+    200: Array<MemoTypeVersionResponse>;
+};
+
+export type ListMemoTypeVersionsResponse = ListMemoTypeVersionsResponses[keyof ListMemoTypeVersionsResponses];
+
+export type CreateMemoTypeDraftData = {
+    body?: MemoTypeSettingsRequest;
+    path: {
+        typeId: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/memo-types/{typeId}/versions';
+};
+
+export type CreateMemoTypeDraftResponses = {
+    /**
+     * OK
+     */
+    200: MemoTypeVersionResponse;
+};
+
+export type CreateMemoTypeDraftResponse = CreateMemoTypeDraftResponses[keyof CreateMemoTypeDraftResponses];
+
+export type GetMemoTypeVersionData = {
+    body?: never;
+    path: {
+        typeId: string;
+        number: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/memo-types/{typeId}/versions/{number}';
+};
+
+export type GetMemoTypeVersionResponses = {
+    /**
+     * OK
+     */
+    200: MemoTypeVersionResponse;
+};
+
+export type GetMemoTypeVersionResponse = GetMemoTypeVersionResponses[keyof GetMemoTypeVersionResponses];
+
+export type ReplaceMemoTypeDraftData = {
+    body: MemoTypeSettingsRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        typeId: string;
+        number: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/memo-types/{typeId}/versions/{number}';
+};
+
+export type ReplaceMemoTypeDraftResponses = {
+    /**
+     * OK
+     */
+    200: MemoTypeVersionResponse;
+};
+
+export type ReplaceMemoTypeDraftResponse = ReplaceMemoTypeDraftResponses[keyof ReplaceMemoTypeDraftResponses];
+
+export type ApproveMemoTypeVersionData = {
+    body?: RemarkRequest;
+    path: {
+        typeId: string;
+        number: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/memo-types/{typeId}/versions/{number}/approve';
+};
+
+export type ApproveMemoTypeVersionResponses = {
+    /**
+     * OK
+     */
+    200: MemoTypeVersionResponse;
+};
+
+export type ApproveMemoTypeVersionResponse = ApproveMemoTypeVersionResponses[keyof ApproveMemoTypeVersionResponses];
+
+export type SendBackMemoTypeVersionData = {
+    body: RemarkRequest;
+    path: {
+        typeId: string;
+        number: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/memo-types/{typeId}/versions/{number}/send-back';
+};
+
+export type SendBackMemoTypeVersionResponses = {
+    /**
+     * OK
+     */
+    200: MemoTypeVersionResponse;
+};
+
+export type SendBackMemoTypeVersionResponse = SendBackMemoTypeVersionResponses[keyof SendBackMemoTypeVersionResponses];
+
+export type SubmitMemoTypeVersionData = {
+    body?: never;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        typeId: string;
+        number: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/memo-types/{typeId}/versions/{number}/submit';
+};
+
+export type SubmitMemoTypeVersionResponses = {
+    /**
+     * OK
+     */
+    200: MemoTypeVersionResponse;
+};
+
+export type SubmitMemoTypeVersionResponse = SubmitMemoTypeVersionResponses[keyof SubmitMemoTypeVersionResponses];
 
 export type GetTenantPreferencesData = {
     body?: never;

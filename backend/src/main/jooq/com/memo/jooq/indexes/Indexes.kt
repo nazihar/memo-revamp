@@ -22,6 +22,8 @@ import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
 import com.memo.jooq.tables.Memo
 import com.memo.jooq.tables.MemoParticipant
+import com.memo.jooq.tables.MemoType
+import com.memo.jooq.tables.MemoTypeVersion
 import com.memo.jooq.tables.NotificationItem
 import com.memo.jooq.tables.NotificationMailOutbox
 import com.memo.jooq.tables.OrgAssignment
@@ -78,6 +80,9 @@ val IDENTITY_USER_TENANT_EMAIL_UK: Index = Internal.createIndex(DSL.name("identi
 val MEMO_PARTICIPANT_TENANT_USER_IDX: Index = Internal.createIndex(DSL.name("memo_participant_tenant_user_idx"), MemoParticipant.MEMO_PARTICIPANT, arrayOf(MemoParticipant.MEMO_PARTICIPANT.TENANT_ID, MemoParticipant.MEMO_PARTICIPANT.USER_ID, MemoParticipant.MEMO_PARTICIPANT.MEMO_ID), false)
 val MEMO_TENANT_INITIATOR_BOX_IDX: Index = Internal.createIndex(DSL.name("memo_tenant_initiator_box_idx"), Memo.MEMO_, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.INITIATOR_ID, Memo.MEMO_.STATUS, Memo.MEMO_.UPDATED_AT.desc(), Memo.MEMO_.ID), false)
 val MEMO_TENANT_TYPE_IDX: Index = Internal.createIndex(DSL.name("memo_tenant_type_idx"), Memo.MEMO_, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.MEMO_TYPE_ID), false)
+val MEMO_TYPE_TENANT_CODE_UK: Index = Internal.createIndex(DSL.name("memo_type_tenant_code_uk"), MemoType.MEMO_TYPE, arrayOf(MemoType.MEMO_TYPE.TENANT_ID, MemoType.MEMO_TYPE.CODE), true)
+val MEMO_TYPE_VERSION_ONE_OPEN_IDX: Index = Internal.createIndex(DSL.name("memo_type_version_one_open_idx"), MemoTypeVersion.MEMO_TYPE_VERSION, arrayOf(MemoTypeVersion.MEMO_TYPE_VERSION.TENANT_ID, MemoTypeVersion.MEMO_TYPE_VERSION.MEMO_TYPE_ID), true)
+val MEMO_TYPE_VERSION_ONE_PUBLISHED_IDX: Index = Internal.createIndex(DSL.name("memo_type_version_one_published_idx"), MemoTypeVersion.MEMO_TYPE_VERSION, arrayOf(MemoTypeVersion.MEMO_TYPE_VERSION.TENANT_ID, MemoTypeVersion.MEMO_TYPE_VERSION.MEMO_TYPE_ID), true)
 val NOTIFICATION_ITEM_UNREAD_IDX: Index = Internal.createIndex(DSL.name("notification_item_unread_idx"), NotificationItem.NOTIFICATION_ITEM, arrayOf(NotificationItem.NOTIFICATION_ITEM.TENANT_ID, NotificationItem.NOTIFICATION_ITEM.USER_ID), false)
 val NOTIFICATION_ITEM_USER_IDX: Index = Internal.createIndex(DSL.name("notification_item_user_idx"), NotificationItem.NOTIFICATION_ITEM, arrayOf(NotificationItem.NOTIFICATION_ITEM.TENANT_ID, NotificationItem.NOTIFICATION_ITEM.USER_ID, NotificationItem.NOTIFICATION_ITEM.CREATED_AT.desc(), NotificationItem.NOTIFICATION_ITEM.ID.desc()), false)
 val NOTIFICATION_MAIL_OUTBOX_TENANT_CREATED_IDX: Index = Internal.createIndex(DSL.name("notification_mail_outbox_tenant_created_idx"), NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX, arrayOf(NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.TENANT_ID, NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.CREATED_AT.desc(), NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.ID.desc()), false)

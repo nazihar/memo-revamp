@@ -280,7 +280,7 @@ class AdminMemoTypesController(
     private val json: JsonMapper,
 ) {
     @GetMapping
-    @RequiresPermission(Permission.MEMO_TYPES_MANAGE)
+    @RequiresPermission(Permission.MEMO_TYPES_MANAGE, orAnyOf = [Permission.MEMO_TYPES_APPROVE])
     @Operation(operationId = "listAllMemoTypes", summary = "Every memo type, active or not")
     fun list(): ResponseEntity<List<MemoType>> =
         ResponseEntity
@@ -289,7 +289,7 @@ class AdminMemoTypesController(
             .body(transactions.readInTenant(TenantContext.current()) { named(types.all()) })
 
     @GetMapping("/definitions")
-    @RequiresPermission(Permission.MEMO_TYPES_MANAGE)
+    @RequiresPermission(Permission.MEMO_TYPES_MANAGE, orAnyOf = [Permission.MEMO_TYPES_APPROVE])
     @Operation(operationId = "listMemoTypeDefinitions", summary = "Published workflow definitions a memo type can run on")
     fun definitions(): List<DefinitionChoice> = transactions.readInTenant(TenantContext.current()) { definitions.published() }
 

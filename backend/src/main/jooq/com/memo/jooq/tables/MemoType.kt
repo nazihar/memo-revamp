@@ -5,11 +5,14 @@ package com.memo.jooq.tables
 
 
 import com.memo.jooq.Memo
+import com.memo.jooq.indexes.MEMO_TYPE_TENANT_CODE_UK
 import com.memo.jooq.keys.MEMO_TYPE_PKEY
 import com.memo.jooq.keys.MEMO_TYPE_TENANT_ID_ID_KEY
 import com.memo.jooq.keys.MEMO_TYPE_TENANT_ID_KEY_KEY
+import com.memo.jooq.keys.MEMO_TYPE_VERSION__MEMO_TYPE_VERSION_TENANT_ID_MEMO_TYPE_ID_FKEY
 import com.memo.jooq.keys.MEMO__MEMO_TENANT_ID_MEMO_TYPE_ID_FKEY
 import com.memo.jooq.tables.Memo.MemoPath
+import com.memo.jooq.tables.MemoTypeVersion.MemoTypeVersionPath
 import com.memo.jooq.tables.records.MemoTypeRecord
 
 import java.time.OffsetDateTime
@@ -22,6 +25,7 @@ import org.jooq.Check
 import org.jooq.Condition
 import org.jooq.Field
 import org.jooq.ForeignKey
+import org.jooq.Index
 import org.jooq.InverseForeignKey
 import org.jooq.JSONB
 import org.jooq.Name
@@ -150,6 +154,16 @@ open class MemoType(
      */
     val DOA_CHECK: TableField<MemoTypeRecord, Boolean?> = createField(DSL.name("doa_check"), SQLDataType.BOOLEAN.nullable(false).defaultValue(DSL.field(DSL.raw("false"), SQLDataType.BOOLEAN)), this, "")
 
+    /**
+     * The column <code>memo.memo_type.code</code>.
+     */
+    val CODE: TableField<MemoTypeRecord, String?> = createField(DSL.name("code"), SQLDataType.CLOB, this, "")
+
+    /**
+     * The column <code>memo.memo_type.published_version</code>.
+     */
+    val PUBLISHED_VERSION: TableField<MemoTypeRecord, Int?> = createField(DSL.name("published_version"), SQLDataType.INTEGER, this, "")
+
     private constructor(alias: Name, aliased: Table<MemoTypeRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<MemoTypeRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<MemoTypeRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -182,6 +196,7 @@ open class MemoType(
         override fun `as`(alias: Table<*>): MemoTypePath = MemoTypePath(alias.qualifiedName, this)
     }
     override fun getSchema(): Schema? = if (aliased()) null else Memo.MEMO
+    override fun getIndexes(): List<Index> = listOf(MEMO_TYPE_TENANT_CODE_UK)
     override fun getPrimaryKey(): UniqueKey<MemoTypeRecord> = MEMO_TYPE_PKEY
     override fun getUniqueKeys(): List<UniqueKey<MemoTypeRecord>> = listOf(MEMO_TYPE_TENANT_ID_ID_KEY, MEMO_TYPE_TENANT_ID_KEY_KEY)
 
@@ -199,11 +214,29 @@ open class MemoType(
 
     val memo: MemoPath
         get(): MemoPath = memo()
+
+    private lateinit var _memoTypeVersion: MemoTypeVersionPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.memo_type_version</code> table
+     */
+    fun memoTypeVersion(): MemoTypeVersionPath {
+        if (!this::_memoTypeVersion.isInitialized)
+            _memoTypeVersion = MemoTypeVersionPath(this, null, MEMO_TYPE_VERSION__MEMO_TYPE_VERSION_TENANT_ID_MEMO_TYPE_ID_FKEY.inverseKey)
+
+        return _memoTypeVersion;
+    }
+
+    val memoTypeVersion: MemoTypeVersionPath
+        get(): MemoTypeVersionPath = memoTypeVersion()
     override fun getChecks(): List<Check<MemoTypeRecord>> = listOf(
         Internal.createCheck(this, DSL.name("memo_type_allowed_approvers_check"), "(((jsonb_typeof(allowed_approvers) = 'object'::text) AND (octet_length((allowed_approvers)::text) <= 16384)))", true),
+        Internal.createCheck(this, DSL.name("memo_type_code_check"), "((code ~ '^[A-Z0-9][A-Z0-9-]{0,9}\$'::text))", true),
         Internal.createCheck(this, DSL.name("memo_type_definition_key_check"), "((definition_key ~ '^[a-z][a-z0-9-]{0,99}\$'::text))", true),
         Internal.createCheck(this, DSL.name("memo_type_key_check"), "((key ~ '^[a-z][a-z0-9-]{0,49}\$'::text))", true),
         Internal.createCheck(this, DSL.name("memo_type_name_check"), "(((length(name) >= 1) AND (length(name) <= 200)))", true),
+        Internal.createCheck(this, DSL.name("memo_type_published_version_check"), "((published_version >= 1))", true),
         Internal.createCheck(this, DSL.name("memo_type_route_policy_check"), "((route_policy = ANY (ARRAY['INITIATOR_DEFINED'::text, 'FIXED'::text, 'BOTH'::text])))", true)
     )
     override fun `as`(alias: String): MemoType = MemoType(DSL.name(alias), this)

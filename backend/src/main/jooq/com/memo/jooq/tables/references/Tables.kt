@@ -33,6 +33,7 @@ import com.memo.jooq.tables.MemoParticipant
 import com.memo.jooq.tables.MemoReferenceCounter
 import com.memo.jooq.tables.MemoRouteEntry
 import com.memo.jooq.tables.MemoType
+import com.memo.jooq.tables.MemoTypeVersion
 import com.memo.jooq.tables.NotificationItem
 import com.memo.jooq.tables.NotificationMailOutbox
 import com.memo.jooq.tables.NotificationPreference
@@ -205,6 +206,11 @@ val MEMO_ROUTE_ENTRY: MemoRouteEntry = MemoRouteEntry.MEMO_ROUTE_ENTRY
  * The table <code>memo.memo_type</code>.
  */
 val MEMO_TYPE: MemoType = MemoType.MEMO_TYPE
+
+/**
+ * The table <code>memo.memo_type_version</code>.
+ */
+val MEMO_TYPE_VERSION: MemoTypeVersion = MemoTypeVersion.MEMO_TYPE_VERSION
 
 /**
  * The table <code>memo.notification_item</code>.

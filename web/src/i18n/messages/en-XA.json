@@ -617,6 +617,20 @@
       "value": "]"
     }
   ],
+  "access.permission.memoTypesApprove": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗṽīḗḗẇ ȧȧƞḓ ƥŭŭƀŀīşħ ḿḗḗḿǿǿ ŧẏƥḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "access.permission.notificationSettings": [
     {
       "type": 0,

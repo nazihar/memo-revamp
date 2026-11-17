@@ -45,6 +45,11 @@ internal class TikaClient(
             FileType.ODS,
             FileType.ODP,
             FileType.TEXT,
+            // Legacy formats (ADR-0055): parsed in the server's forked JVMs, never in ours. TIFF has no text (no OCR).
+            FileType.DOC,
+            FileType.XLS,
+            FileType.PPT,
+            FileType.RTF,
         )
 
     override fun text(

@@ -99,6 +99,14 @@ open class FilesVersionRecord private constructor() : UpdatableRecordImpl<FilesV
         set(value): Unit = set(19, value)
         get(): OffsetDateTime = get(19) as OffsetDateTime
 
+    open var purgedAt: OffsetDateTime?
+        set(value): Unit = set(20, value)
+        get(): OffsetDateTime? = get(20) as OffsetDateTime?
+
+    open var purgedBy: UUID?
+        set(value): Unit = set(21, value)
+        get(): UUID? = get(21) as UUID?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -108,7 +116,7 @@ open class FilesVersionRecord private constructor() : UpdatableRecordImpl<FilesV
     /**
      * Create a detached, initialised FilesVersionRecord
      */
-    constructor(id: UUID, tenantId: UUID, fileId: UUID, number: Int, originalName: String, mediaType: String, sizeBytes: Long, sha256: ByteArray, bucket: String, objectKey: String, objectVersion: String? = null, ciphertextBytes: Long, keysetKeyId: Long, scanEngine: String, pdfPages: Int? = null, lockState: String, retainUntil: OffsetDateTime? = null, retentionMode: String? = null, uploadedBy: UUID? = null, uploadedAt: OffsetDateTime): this() {
+    constructor(id: UUID, tenantId: UUID, fileId: UUID, number: Int, originalName: String, mediaType: String, sizeBytes: Long, sha256: ByteArray, bucket: String, objectKey: String, objectVersion: String? = null, ciphertextBytes: Long, keysetKeyId: Long, scanEngine: String, pdfPages: Int? = null, lockState: String, retainUntil: OffsetDateTime? = null, retentionMode: String? = null, uploadedBy: UUID? = null, uploadedAt: OffsetDateTime, purgedAt: OffsetDateTime? = null, purgedBy: UUID? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.fileId = fileId
@@ -129,6 +137,8 @@ open class FilesVersionRecord private constructor() : UpdatableRecordImpl<FilesV
         this.retentionMode = retentionMode
         this.uploadedBy = uploadedBy
         this.uploadedAt = uploadedAt
+        this.purgedAt = purgedAt
+        this.purgedBy = purgedBy
         resetTouchedOnNotNull()
     }
 }

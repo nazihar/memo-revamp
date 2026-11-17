@@ -32,6 +32,10 @@ enum class RateLimit(
     INVITATION_PER_IP(10, Duration.ofHours(1)),
     DIRECTORY_SEARCH_PER_USER(60, Duration.ofMinutes(1)),
     UPLOAD_PER_USER(30, Duration.ofMinutes(1)),
+
+    // Uploads of a legacy import's originals (design E06 §5.1), for purposes that ask for it: at 30 a minute a folder of
+    // 25,000 files would take 14 hours.
+    IMPORT_INTAKE_PER_USER(600, Duration.ofMinutes(1)),
     MAIL_TEST_PER_TENANT(5, Duration.ofHours(1)),
     AUDIT_QUERY_PER_USER(60, Duration.ofMinutes(1)),
     AUDIT_EXPORT_PER_TENANT(5, Duration.ofHours(1)),

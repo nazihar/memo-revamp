@@ -35,6 +35,7 @@ internal class OwnerContents(
         val readable =
             transactions.readInTenant(TenantContext.current()) {
                 val info = requireNotNull(store.info(version.fileId)) { "unknown file" }
+                if (store.version(version.id)?.purgedAt != null) throw FileGoneException()
                 Readable(
                     version,
                     requireNotNull(purposes[info.purpose]) { "unknown purpose" },

@@ -9,6 +9,7 @@ import org.apache.tika.parser.ParseContext
 import org.springframework.beans.factory.DisposableBean
 import org.springframework.stereotype.Component
 import java.nio.ByteBuffer
+import java.nio.channels.Channels
 import java.nio.channels.SeekableByteChannel
 import java.time.Duration
 import java.util.concurrent.ExecutionException
@@ -24,11 +25,16 @@ internal data class Inspected(
     val pdfPages: Int?,
 )
 
-/** What a purpose allows, for one inspection, and its own check of the content (a no-op for most purposes). */
+/**
+ * What a purpose allows, for one inspection, and its own check of the content (a no-op for most purposes). [ole2] names
+ * the document inside an OLE2 container (the Tika server, ADR-0055); null for purposes that do not accept legacy
+ * formats, which refuse every OLE2 file.
+ */
 internal data class InspectionRules(
     val allowed: Set<FileType>,
     val maxPdfPages: Int,
     val content: (FileType, () -> SeekableByteChannel) -> Unit = { _, _ -> },
+    val ole2: ((() -> java.io.InputStream) -> FileType)? = null,
 )
 
 /**
@@ -83,12 +89,7 @@ internal class ContentInspector(
         rules: InspectionRules,
     ): Inspected {
         val mediaType = open().use { detect(it) }
-        val type =
-            if (mediaType in ZIP_MEDIA_TYPES) {
-                open().use { ZipInspector.classify(it, FileType.ofMediaType(mediaType)) }
-            } else {
-                FileType.ofMediaType(mediaType)
-            }
+        val type = typeOf(mediaType, open, rules.ole2)
         if (type == null || type in FileType.NEVER_ALLOWED || type !in rules.allowed) {
             reject(RejectionReason.TYPE_NOT_ALLOWED, "detectedType" to (type?.mediaType ?: mediaType))
         }
@@ -103,6 +104,21 @@ internal class ContentInspector(
         rules.content(type, open)
         return Inspected(type, pages)
     }
+
+    /** The type behind [mediaType]: our zip reader for containers, the Tika server ([ole2]) for OLE2 documents. */
+    private fun typeOf(
+        mediaType: String,
+        open: () -> SeekableByteChannel,
+        ole2: ((() -> java.io.InputStream) -> FileType)?,
+    ): FileType? =
+        when {
+            mediaType in ZIP_MEDIA_TYPES -> open().use { ZipInspector.classify(it, FileType.ofMediaType(mediaType)) }
+
+            mediaType == FileType.OLE2.mediaType && ole2 != null -> ole2 { Channels.newInputStream(open()) }
+
+            // Old Office types are named only from inside an OLE2 container, never by a magic number alone.
+            else -> FileType.ofMediaType(mediaType)?.takeUnless { it in FileType.OLE2_DOCUMENTS }
+        }
 
     private fun refused(
         cause: ContentRefused,

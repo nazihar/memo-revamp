@@ -244,4 +244,30 @@ class ArchitectureRulesTest {
             .because("memo visibility goes through MemoReadable (ADR-0050)")
             .check(classes)
     }
+
+    @Test
+    fun `only the import's purposes accept legacy formats, purge content or take the intake's upload rate`() {
+        // ADR-0055: OLE2 documents, RTF and TIFF only for the import's staging and imported originals; purging only for
+        // its staged copies. The start-up check names the keys (Purposes.verify); this keeps the declarations in place.
+        val owners =
+            mapOf(
+                "getAcceptsLegacyFormats" to listOf("com.memo.imports", "com.memo.memo"),
+                "getPurgeable" to listOf("com.memo.imports"),
+                "getUploadRateLimit" to listOf("com.memo.imports"),
+            )
+        val purpose = com.memo.files.FilePurpose::class.java
+        val offenders =
+            classes
+                .filter { !it.isInterface && it.isAssignableTo(purpose) }
+                .flatMap { owner ->
+                    owner.methods
+                        .filter { it.name in owners && it.owner == owner }
+                        // Kotlin compiles a bridge to the interface's default into every purpose: not a declaration.
+                        .filterNot { method ->
+                            method.methodCallsFromSelf.any { it.name == method.name && it.targetOwner.isAssignableTo(purpose) }
+                        }.map { owner to it.name }
+                }.filterNot { (owner, method) -> owners.getValue(method).any { owner.packageName.startsWith(it) } }
+                .map { (owner, method) -> "${owner.name}.$method" }
+        assertThat(offenders).describedAs("purpose declarations outside the import's modules").isEmpty()
+    }
 }

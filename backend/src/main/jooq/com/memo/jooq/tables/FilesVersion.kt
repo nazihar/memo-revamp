@@ -184,6 +184,16 @@ open class FilesVersion(
      */
     val UPLOADED_AT: TableField<FilesVersionRecord, OffsetDateTime?> = createField(DSL.name("uploaded_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false), this, "")
 
+    /**
+     * The column <code>memo.files_version.purged_at</code>.
+     */
+    val PURGED_AT: TableField<FilesVersionRecord, OffsetDateTime?> = createField(DSL.name("purged_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
+
+    /**
+     * The column <code>memo.files_version.purged_by</code>.
+     */
+    val PURGED_BY: TableField<FilesVersionRecord, UUID?> = createField(DSL.name("purged_by"), SQLDataType.UUID, this, "")
+
     private constructor(alias: Name, aliased: Table<FilesVersionRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<FilesVersionRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<FilesVersionRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -255,6 +265,8 @@ open class FilesVersion(
         Internal.createCheck(this, DSL.name("files_version_object_version_check"), "(((length(object_version) >= 1) AND (length(object_version) <= 1024)))", true),
         Internal.createCheck(this, DSL.name("files_version_original_name_check"), "(((length(original_name) >= 1) AND (length(original_name) <= 255)))", true),
         Internal.createCheck(this, DSL.name("files_version_pdf_pages_check"), "((pdf_pages >= 0))", true),
+        Internal.createCheck(this, DSL.name("files_version_purged_by"), "(((purged_by IS NULL) OR (purged_at IS NOT NULL)))", true),
+        Internal.createCheck(this, DSL.name("files_version_purged_work"), "(((purged_at IS NULL) OR ((bucket = 'work'::text) AND (lock_state = 'NONE'::text))))", true),
         Internal.createCheck(this, DSL.name("files_version_retention_mode_check"), "((retention_mode = ANY (ARRAY['GOVERNANCE'::text, 'COMPLIANCE'::text])))", true),
         Internal.createCheck(this, DSL.name("files_version_scan_engine_check"), "(((length(scan_engine) >= 1) AND (length(scan_engine) <= 200)))", true),
         Internal.createCheck(this, DSL.name("files_version_sha256_check"), "((length(sha256) = 32))", true),

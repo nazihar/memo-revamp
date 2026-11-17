@@ -95,6 +95,23 @@ class OnlyOfficeConverterTest {
     }
 
     @Test
+    fun `legacy Office files and RTF are converted under their own names, TIFF scans are not`() {
+        // ADR-0055 and the E06 T1 spike: ONLYOFFICE converts doc, xls, ppt and rtf; it refuses TIFF (-7).
+        val properties = DocEditProperties(documentServerUrl = "http://127.0.0.1:1", jwtSecret = secret)
+        val types = OnlyOfficeConverter(properties, json, Clock.systemUTC()).pdfTypes
+        assertThat(types).contains(FileType.DOC, FileType.XLS, FileType.PPT, FileType.RTF).doesNotContain(FileType.TIFF)
+
+        val pdf = "%PDF-1.7 test".toByteArray()
+        val legacy = RenditionInput("minutes.doc", FileType.DOC, 5) { "hello".byteInputStream() }
+        assertThat(converter(listOf("application/pdf" to pdf)).toPdf(legacy, "r1-doc", ByteArrayOutputStream()))
+            .isEqualTo(RenditionOutcome.Written())
+        assertThat(requests.single()).contains("\"filetype\":\"doc\"")
+        val tiff = RenditionInput("scan.tiff", FileType.TIFF, 1) { ByteArray(1).inputStream() }
+        assertThat(OnlyOfficeConverter(properties, json, Clock.systemUTC()).toPdf(tiff, "k", ByteArrayOutputStream()))
+            .isEqualTo(RenditionOutcome.Final("UNSUPPORTED"))
+    }
+
+    @Test
     fun `a type it cannot convert is not sent`() {
         val image = RenditionInput("photo.png", FileType.PNG, 1) { ByteArray(1).inputStream() }
         val properties = DocEditProperties(documentServerUrl = "http://127.0.0.1:1", jwtSecret = secret)

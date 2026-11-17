@@ -81,4 +81,4 @@ Chosen option: **1**.
 
 ## Amendment — 2026-11-16 (ADR-0055)
 - Legacy Office files (`.doc`, `.xls`, `.ppt` in OLE2 containers), `.rtf` and `.tif`/`.tiff` are allowed **only** in the two legacy-import purposes (`imports.intake` and `memo.legacy`), which opt in with a purpose flag no other purpose may set (architecture test). Everywhere else they stay refused.
-- For those purposes, a generic OLE2 container is typed by the isolated Tika server's `/detect/stream` (Word, Excel or PowerPoint; anything else, such as Outlook `.msg`, is refused; the upload fails closed if Tika is down). Macros are refused by clamd's `Heuristics.OLE2.ContainsMacros`, and encrypted documents as before. Nothing parses these formats in the backend JVM.
+- For those purposes, a generic OLE2 container is typed by the isolated Tika server's `PUT /detect` (Word, Excel or PowerPoint; anything else, such as Outlook `.msg`, is refused; the upload fails closed if Tika is down). Macros are refused by clamd's `Heuristics.OLE2.ContainsMacros.VBA`, and encrypted documents as before. Nothing parses these formats in the backend JVM.

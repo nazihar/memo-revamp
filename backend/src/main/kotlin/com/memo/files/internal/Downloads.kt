@@ -163,6 +163,7 @@ internal class Downloads(
             if (!purpose.mayRead(info)) throw ForbiddenException(null)
             val version = (versionId ?: info.currentVersionId)?.let(store::version)?.takeIf { it.fileId == fileId }
             val stored = version?.let { store.storedObject(it.id) } ?: throw FileNotFoundException()
+            if (version.purgedAt != null) throw FileGoneException()
             if (purpose.auditReads && OpenMarks.firstOpen(session, version.id, clock.millis())) {
                 audit.record(
                     "file.opened",

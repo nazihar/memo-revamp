@@ -18,5 +18,5 @@
     }
   },
   "pipes": { "numClients": 2, "forkedJvmArgs": ["-Xmx1g"] },
-  "server": { "allowPerRequestConfig": false, "allowPipes": false, "endpoints": ["tika"] }
+  "server": { "allowPerRequestConfig": false, "allowPipes": false, "endpoints": ["tika", "detect"] }
 }

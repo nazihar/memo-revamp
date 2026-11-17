@@ -64,6 +64,15 @@ internal class FilesProblems {
     fun notFound(): ResponseEntity<ProblemDetail> =
         ResponseEntity.status(HttpStatus.NOT_FOUND).body(ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, "File not found"))
 
+    /** A purged version (ADR-0055): its row and hash are kept, its content is gone for good. */
+    @ExceptionHandler(FileGoneException::class)
+    fun gone(): ResponseEntity<ProblemDetail> =
+        ResponseEntity.status(HttpStatus.GONE).body(
+            ProblemDetail.forStatusAndDetail(HttpStatus.GONE, "The content of this file version was removed.").apply {
+                setProperty("reason", "PURGED")
+            },
+        )
+
     private fun unavailable(message: String): ResponseEntity<ProblemDetail> =
         ResponseEntity
             .status(HttpStatus.SERVICE_UNAVAILABLE)
@@ -85,6 +94,7 @@ internal class FilesProblems {
                 RejectionReason.LIMIT_EXCEEDED to "The file is too complex to be checked safely.",
                 RejectionReason.SCAN_UNAVAILABLE to "Files cannot be checked right now. Try again shortly.",
                 RejectionReason.CONTENT_REFUSED to "The file contains content that is not allowed here.",
+                RejectionReason.HASH_MISMATCH to "The file's content is not what was expected.",
             )
     }
 }

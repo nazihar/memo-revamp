@@ -2,9 +2,11 @@ package com.memo.testsupport
 
 import com.memo.common.authz.Permission
 import com.memo.common.authz.Policy
+import com.memo.common.ratelimit.RateLimit
 import com.memo.files.FileInfo
 import com.memo.files.FilePurpose
 import com.memo.files.FileType
+import com.memo.files.FileUploadRejected
 import com.memo.files.FileVersionCreated
 import com.memo.files.RenditionKind
 import com.memo.files.StorageClass
@@ -88,6 +90,43 @@ class TestRenderedPurpose(
     }
 }
 
+/**
+ * A stand-in for the legacy import's staging purpose (ADR-0055, design E06 §10) until the imports module brings the real
+ * one (E06 T5, which removes this): legacy formats, purgeable, ordinary, with the intake's own upload rate. The key is
+ * the real one because only `imports.intake` and `memo.legacy` may accept legacy formats.
+ */
+@Component
+class TestIntakePurpose : FilePurpose {
+    override val key = KEY
+    override val allowedTypes =
+        setOf(
+            FileType.PDF,
+            FileType.DOCX,
+            FileType.XLSX,
+            FileType.PNG,
+            FileType.TEXT,
+            FileType.DOC,
+            FileType.XLS,
+            FileType.PPT,
+            FileType.RTF,
+            FileType.TIFF,
+        )
+    override val maxBytes = 100L shl 20
+    override val storage = StorageClass.ORDINARY
+    override val auditReads = true
+    override val acceptsLegacyFormats = true
+    override val purgeable = true
+    override val uploadRateLimit = RateLimit.IMPORT_INTAKE_PER_USER
+
+    override fun mayUpload(ownerId: String?) = true
+
+    override fun mayRead(file: FileInfo) = true
+
+    companion object {
+        const val KEY = "imports.intake"
+    }
+}
+
 /** An owner that vetoes uploads for the owner id [VETO], to prove the business transaction rolls back as a whole. */
 @Component
 class VetoingFileOwner {
@@ -98,5 +137,18 @@ class VetoingFileOwner {
 
     companion object {
         const val VETO = "veto"
+    }
+}
+
+/** Every [FileUploadRejected] published in this JVM's contexts, for tests that check what an owner learns (ADR-0055). */
+@Component
+class UploadRejections {
+    @EventListener
+    fun on(event: FileUploadRejected) {
+        seen += event
+    }
+
+    companion object {
+        val seen: MutableList<FileUploadRejected> = java.util.concurrent.CopyOnWriteArrayList()
     }
 }

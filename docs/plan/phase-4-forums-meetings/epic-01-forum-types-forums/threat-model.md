@@ -27,7 +27,7 @@
 | I2 | Escalation targets list forums to workflow authors | 6 | Accepted: only holders of `workflow.definitions.manage` (privileged administrators) see keys and names of active forums; documented in the runbook | V8 |
 | I3 | Reminder or membership emails reveal the committee in the subject | 7, 4 | Subjects take no parameters (ADR-0030); bodies stay inside the tenant's relay | V14 data protection |
 | I4 | A member's position seat resolves to the wrong person after a reorganisation | 5 | Holders read from the org directory on the date asked; roster cache evicted on `OrgChanged`; a vacant seat is a vacancy, never a fallback person | V8 |
-| D1 | Huge rules or attribute lists slow previews | 8, 1 | Typed request objects with caps (8 attributes, 3 required sets, 3 composition conditions, 8 outcomes; JSON ≤ 16 KiB); the preview roster is capped at 100 members; rate limit on the preview | V2 input validation, V13 |
+| D1 | Huge rules or attribute lists slow previews | 8, 1 | Typed request objects with caps (8 attributes, 3 required sets, 3 composition conditions, 8 outcomes; JSON ≤ 16 KiB); the preview roster is capped at 100 members, and the preview is a pure computation with no query | V2 input validation, V13 |
 | D2 | The reminder job floods mail after downtime | 7 | Only `term_ends_on = today + r` is matched, so missed days are skipped, not batched; the reminder table keeps it idempotent | V2 |
 | E1 | A `forum.read` grant opens meeting papers later | 5 | `forum.read` covers forum metadata and rosters only; papers (E03) have their own rule (ADR-PAPERS) | V8 |
 | E2 | A cross-tenant reference (a forum of tenant A naming a type or user of tenant B) | 3, 4 | Composite foreign keys with `tenant_id`; RLS FORCED; cross-tenant tests | V8 (multi-tenancy) |

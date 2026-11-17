@@ -152,7 +152,7 @@ erDiagram
 All endpoints follow these rules:
 - under `/api/v1`, with RFC 9457 errors;
 - If-Match on updates;
-- `Idempotency-Key` accepted on every POST;
+- `Idempotency-Key` required on the POSTs that create rows (forums, members, clones); the other changes are guarded by state, `If-Match` or a unique index;
 - cursor pagination where lists can grow (members, forums).
 
 | Method and path | Access | Notes |
@@ -166,7 +166,6 @@ All endpoints follow these rules:
 | `POST …/versions/{n}/approve` | `forum.types.approve` + step-up | `SAME_PERSON`; publishes; retires the previous version |
 | `POST …/versions/{n}/send-back` | `forum.types.approve` | Remark required |
 | `POST /admin/forum-types/{id}/drafts` | `forum.types.manage` | New draft from the published version |
-| `GET /admin/forum-types/{id}/versions/{n}/changes` | as list | Changes against the published version, line by line |
 | `POST /admin/forum-types/{id}/activate`, `/deactivate` | `forum.types.manage` | Direct, audited |
 | `GET /admin/forum-types/presets` | `forum.types.manage` | Preset names and contents |
 | `POST /forums/quorum-preview` | signed in, any of the admin permissions or a secretary | `{rule, attributes, roster? or forumId?, attendance}` → evaluation (no write) |
@@ -211,7 +210,7 @@ All endpoints follow these rules:
 
 ## 5. Audit events
 All of them are written in the business transaction with before and after where relevant:
-- `forum.type.created`, `forum.type.version.saved`, `forum.type.version.submitted`, `forum.type.version.published`, `forum.type.version.sent_back`, `forum.type.activated`, `forum.type.deactivated`;
+- `forum.type.created`, `forum.type.draft_created`, `forum.type.version.saved`, `forum.type.version.submitted`, `forum.type.version.published`, `forum.type.version.sent_back`, `forum.type.activated`, `forum.type.deactivated`;
 - `forum.created`, `forum.updated`, `forum.dissolved`, `forum.cloned`;
 - `forum.member.added`, `forum.member.updated`, `forum.member.ended`, `forum.member.renewed`, `forum.member.role_changed`, `forum.member.withdrawn`;
 - `forum.term.reminded`.

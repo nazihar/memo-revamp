@@ -21,7 +21,7 @@
 | Task | Layer | Tests |
 |---|---|---|
 | T1 | Unit | `ForumTypeRulesTest`: each field rule and its problem code (attributes, outcomes, term policy, caps); `ForumTypeLifecycleTest`: every allowed and forbidden transition through `common.review` |
-| T1 | Unit + property | `QuorumTest`: each building block with charter examples (HSBC two including the chair, Barclays two independents, Exim two-thirds including the chair, JPMorgan one-third rounded up, Catalyst two and two, the Charity Commission steps through MAJORITY); `QuorumProperties`: adding an attendee never turns quorate into not quorate; the needed number is monotonic in n; MAJORITY is `floor(n/2)+1`; the FRACTION result matches exact rational arithmetic; the result is independent of attendance order |
+| T1 | Unit + property | `QuorumTest`: each building block with charter examples (HSBC two including the chair, Barclays two independents, Exim two-thirds including the chair, JPMorgan one-third rounded up, Catalyst two and two, the Charity Commission steps through MAJORITY); `QuorumProperties`: for rules without a "majority" composition condition, adding an attendee never turns quorate into not quorate; the needed number is monotonic in n; MAJORITY is `floor(n/2)+1`; the FRACTION result matches exact rational arithmetic; the result is independent of attendance order |
 | T1 | Integration | `ForumTypesIT`: create from each preset → draft 1; save with If-Match (412 on a stale revision); submit; approve needs step-up; `SAME_PERSON`; send-back needs a remark; new draft from published; `DRAFT_EXISTS`; changes view; activate and deactivate; audit for each |
 | T1 | Persistence/RLS | `RlsMetaTest` picks up the tables; `ForumCrossTenantIT` (types part) |
 | T1 | Mutation and fuzz | PIT on `forum.internal.quorum` nightly (≥ 70 %); Jazzer on reading the rule JSON (nightly, time-boxed) |
@@ -55,7 +55,7 @@ Derived from design §4. Every cell is a test, and the meta-test fails on any en
 ## Security tests
 - `SECRETARY_LIMIT` cases.
 - The 404-not-403 rule for invisible forums.
-- Rule caps and rate limit on the preview.
+- Rule caps on the preview.
 - No forum names in notification subjects (template check).
 - ZAP baseline picks up the new endpoints.
 

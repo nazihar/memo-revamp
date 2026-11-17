@@ -29,6 +29,7 @@ import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
 import com.memo.jooq.tables.Memo
+import com.memo.jooq.tables.MemoApproval
 import com.memo.jooq.tables.MemoAttachment
 import com.memo.jooq.tables.MemoCopy
 import com.memo.jooq.tables.MemoCopyDelivery
@@ -201,6 +202,11 @@ val IDENTITY_USER: IdentityUser = IdentityUser.IDENTITY_USER
  * The table <code>memo.memo</code>.
  */
 val MEMO_: Memo = Memo.MEMO_
+
+/**
+ * The table <code>memo.memo_approval</code>.
+ */
+val MEMO_APPROVAL: MemoApproval = MemoApproval.MEMO_APPROVAL
 
 /**
  * The table <code>memo.memo_attachment</code>.

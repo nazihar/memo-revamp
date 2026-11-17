@@ -27,6 +27,7 @@ import com.memo.jooq.tables.IdentityOperator
 import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
+import com.memo.jooq.tables.MemoApproval
 import com.memo.jooq.tables.MemoAttachment
 import com.memo.jooq.tables.MemoCopy
 import com.memo.jooq.tables.MemoCopyDelivery
@@ -219,6 +220,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      * The table <code>memo.memo</code>.
      */
     val MEMO_ : com.memo.jooq.tables.Memo get() = com.memo.jooq.tables.Memo.MEMO_
+
+    /**
+     * The table <code>memo.memo_approval</code>.
+     */
+    val MEMO_APPROVAL: MemoApproval get() = MemoApproval.MEMO_APPROVAL
 
     /**
      * The table <code>memo.memo_attachment</code>.
@@ -497,6 +503,7 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         IdentityRecoveryCode.IDENTITY_RECOVERY_CODE,
         IdentityUser.IDENTITY_USER,
         com.memo.jooq.tables.Memo.MEMO_,
+        MemoApproval.MEMO_APPROVAL,
         MemoAttachment.MEMO_ATTACHMENT,
         MemoCopy.MEMO_COPY,
         MemoCopyDelivery.MEMO_COPY_DELIVERY,

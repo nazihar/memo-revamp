@@ -26,6 +26,7 @@ class MemoTasks(
     private val queries: WorkflowQueries,
     private val security: SecuritySettings,
     private val stepUp: StepUpCheck,
+    private val approvals: MemoApprovals,
 ) {
     fun approve(
         taskId: UUID,
@@ -38,6 +39,7 @@ class MemoTasks(
             stepUp.require(Duration.ofMinutes(security.int(SecurityLimit.APPROVAL_STEP_UP_MINUTES).toLong()))
         }
         workflows.approve(taskId, remark)
+        approvals.record(memo.id)
         return memos.get(memo.id)
     }
 
@@ -47,6 +49,7 @@ class MemoTasks(
     ): Memo {
         val memo = memoOf(taskId)
         workflows.returnToInitiator(taskId, remark)
+        approvals.record(memo.id)
         return memos.get(memo.id)
     }
 
@@ -56,6 +59,7 @@ class MemoTasks(
     ): Memo {
         val memo = memoOf(taskId)
         workflows.reject(taskId, remark)
+        approvals.record(memo.id)
         return memos.get(memo.id)
     }
 

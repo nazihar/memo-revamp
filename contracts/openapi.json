@@ -4934,6 +4934,113 @@
         "required" : [ "ended", "steps" ],
         "type" : "object"
       },
+      "StampCheckProblem" : {
+        "properties" : {
+          "approvalId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "code" : {
+            "type" : "string"
+          },
+          "detail" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "approvalId", "code", "detail" ],
+        "type" : "object"
+      },
+      "StampCheckView" : {
+        "properties" : {
+          "checkedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "ok" : {
+            "type" : "boolean"
+          },
+          "problems" : {
+            "items" : {
+              "$ref" : "#/components/schemas/StampCheckProblem"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "checkedAt", "ok", "problems" ],
+        "type" : "object"
+      },
+      "StampClientView" : {
+        "properties" : {
+          "ip" : {
+            "type" : [ "string", "null" ]
+          },
+          "userAgent" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "StampView" : {
+        "properties" : {
+          "actingFor" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/Named"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "client" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/StampClientView"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "decidedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "decision" : {
+            "type" : "string"
+          },
+          "documentHash" : {
+            "type" : [ "string", "null" ]
+          },
+          "documentNumber" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "factors" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "person" : {
+            "$ref" : "#/components/schemas/Named"
+          },
+          "position" : {
+            "type" : [ "string", "null" ]
+          },
+          "round" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "secondFactorAgeSeconds" : {
+            "format" : "int64",
+            "type" : [ "integer", "null" ]
+          },
+          "stepUpRequired" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "decidedAt", "decision", "factors", "id", "person", "round", "stepUpRequired" ],
+        "type" : "object"
+      },
       "StepUpRequest" : {
         "description" : "A TOTP or recovery code for users with MFA; the current password otherwise.",
         "properties" : {
@@ -10258,6 +10365,65 @@
           }
         },
         "summary" : "Change a memo's subject, type or classification",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/memos/{id}/approvals" : {
+      "get" : {
+        "operationId" : "listMemoApprovals",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/StampView"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The memo's authenticated approvals, as stamps",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/memos/{id}/approvals/check" : {
+      "post" : {
+        "operationId" : "checkMemoApprovals",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/StampCheckView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Recompute the approvals' hashes and chain from storage",
         "tags" : [ "memo" ]
       }
     },

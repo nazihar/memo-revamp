@@ -29,6 +29,7 @@ import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
 import com.memo.jooq.tables.Memo
+import com.memo.jooq.tables.MemoApproval
 import com.memo.jooq.tables.MemoAttachment
 import com.memo.jooq.tables.MemoCopy
 import com.memo.jooq.tables.MemoCopyDelivery
@@ -101,6 +102,7 @@ import com.memo.jooq.tables.records.IdentityOperatorRecord
 import com.memo.jooq.tables.records.IdentityRateLimitBucketRecord
 import com.memo.jooq.tables.records.IdentityRecoveryCodeRecord
 import com.memo.jooq.tables.records.IdentityUserRecord
+import com.memo.jooq.tables.records.MemoApprovalRecord
 import com.memo.jooq.tables.records.MemoAttachmentRecord
 import com.memo.jooq.tables.records.MemoCopyDeliveryRecord
 import com.memo.jooq.tables.records.MemoCopyRecord
@@ -205,6 +207,9 @@ val MEMO_PKEY: UniqueKey<MemoRecord> = Internal.createUniqueKey(Memo.MEMO_, DSL.
 val MEMO_TENANT_ID_DOCUMENT_FILE_ID_KEY: UniqueKey<MemoRecord> = Internal.createUniqueKey(Memo.MEMO_, DSL.name("memo_tenant_id_document_file_id_key"), arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.DOCUMENT_FILE_ID), true)
 val MEMO_TENANT_ID_ID_KEY: UniqueKey<MemoRecord> = Internal.createUniqueKey(Memo.MEMO_, DSL.name("memo_tenant_id_id_key"), arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.ID), true)
 val MEMO_TENANT_ID_REFERENCE_KEY: UniqueKey<MemoRecord> = Internal.createUniqueKey(Memo.MEMO_, DSL.name("memo_tenant_id_reference_key"), arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.REFERENCE), true)
+val MEMO_APPROVAL_PKEY: UniqueKey<MemoApprovalRecord> = Internal.createUniqueKey(MemoApproval.MEMO_APPROVAL, DSL.name("memo_approval_pkey"), arrayOf(MemoApproval.MEMO_APPROVAL.ID), true)
+val MEMO_APPROVAL_TENANT_ID_ID_KEY: UniqueKey<MemoApprovalRecord> = Internal.createUniqueKey(MemoApproval.MEMO_APPROVAL, DSL.name("memo_approval_tenant_id_id_key"), arrayOf(MemoApproval.MEMO_APPROVAL.TENANT_ID, MemoApproval.MEMO_APPROVAL.ID), true)
+val MEMO_APPROVAL_TENANT_ID_MEMO_ID_ACTION_SEQ_KEY: UniqueKey<MemoApprovalRecord> = Internal.createUniqueKey(MemoApproval.MEMO_APPROVAL, DSL.name("memo_approval_tenant_id_memo_id_action_seq_key"), arrayOf(MemoApproval.MEMO_APPROVAL.TENANT_ID, MemoApproval.MEMO_APPROVAL.MEMO_ID, MemoApproval.MEMO_APPROVAL.ACTION_SEQ), true)
 val MEMO_ATTACHMENT_PKEY: UniqueKey<MemoAttachmentRecord> = Internal.createUniqueKey(MemoAttachment.MEMO_ATTACHMENT, DSL.name("memo_attachment_pkey"), arrayOf(MemoAttachment.MEMO_ATTACHMENT.ID), true)
 val MEMO_ATTACHMENT_TENANT_ID_FILE_ID_KEY: UniqueKey<MemoAttachmentRecord> = Internal.createUniqueKey(MemoAttachment.MEMO_ATTACHMENT, DSL.name("memo_attachment_tenant_id_file_id_key"), arrayOf(MemoAttachment.MEMO_ATTACHMENT.TENANT_ID, MemoAttachment.MEMO_ATTACHMENT.FILE_ID), true)
 val MEMO_ATTACHMENT_TENANT_ID_ID_KEY: UniqueKey<MemoAttachmentRecord> = Internal.createUniqueKey(MemoAttachment.MEMO_ATTACHMENT, DSL.name("memo_attachment_tenant_id_id_key"), arrayOf(MemoAttachment.MEMO_ATTACHMENT.TENANT_ID, MemoAttachment.MEMO_ATTACHMENT.ID), true)
@@ -310,6 +315,7 @@ val IDENTITY_MFA__IDENTITY_MFA_TENANT_ID_USER_ID_FKEY: ForeignKey<IdentityMfaRec
 val IDENTITY_RECOVERY_CODE__IDENTITY_RECOVERY_CODE_TENANT_ID_USER_ID_FKEY: ForeignKey<IdentityRecoveryCodeRecord, IdentityUserRecord> = Internal.createForeignKey(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE, DSL.name("identity_recovery_code_tenant_id_user_id_fkey"), arrayOf(IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.TENANT_ID, IdentityRecoveryCode.IDENTITY_RECOVERY_CODE.USER_ID), com.memo.jooq.keys.IDENTITY_USER_TENANT_ID_ID_KEY, arrayOf(IdentityUser.IDENTITY_USER.TENANT_ID, IdentityUser.IDENTITY_USER.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val MEMO__MEMO_TENANT_ID_MEMO_TYPE_ID_FKEY: ForeignKey<MemoRecord, MemoTypeRecord> = Internal.createForeignKey(Memo.MEMO_, DSL.name("memo_tenant_id_memo_type_id_fkey"), arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.MEMO_TYPE_ID), com.memo.jooq.keys.MEMO_TYPE_TENANT_ID_ID_KEY, arrayOf(MemoType.MEMO_TYPE.TENANT_ID, MemoType.MEMO_TYPE.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val MEMO__MEMO_TYPE_VERSION_FK: ForeignKey<MemoRecord, MemoTypeVersionRecord> = Internal.createForeignKey(Memo.MEMO_, DSL.name("memo_type_version_fk"), arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.MEMO_TYPE_VERSION_ID), com.memo.jooq.keys.MEMO_TYPE_VERSION_TENANT_ID_ID_KEY, arrayOf(MemoTypeVersion.MEMO_TYPE_VERSION.TENANT_ID, MemoTypeVersion.MEMO_TYPE_VERSION.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
+val MEMO_APPROVAL__MEMO_APPROVAL_TENANT_ID_MEMO_ID_FKEY: ForeignKey<MemoApprovalRecord, MemoRecord> = Internal.createForeignKey(MemoApproval.MEMO_APPROVAL, DSL.name("memo_approval_tenant_id_memo_id_fkey"), arrayOf(MemoApproval.MEMO_APPROVAL.TENANT_ID, MemoApproval.MEMO_APPROVAL.MEMO_ID), com.memo.jooq.keys.MEMO_TENANT_ID_ID_KEY, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val MEMO_ATTACHMENT__MEMO_ATTACHMENT_TENANT_ID_MEMO_ID_FKEY: ForeignKey<MemoAttachmentRecord, MemoRecord> = Internal.createForeignKey(MemoAttachment.MEMO_ATTACHMENT, DSL.name("memo_attachment_tenant_id_memo_id_fkey"), arrayOf(MemoAttachment.MEMO_ATTACHMENT.TENANT_ID, MemoAttachment.MEMO_ATTACHMENT.MEMO_ID), com.memo.jooq.keys.MEMO_TENANT_ID_ID_KEY, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val MEMO_COPY__MEMO_COPY_TENANT_ID_MEMO_ID_FKEY: ForeignKey<MemoCopyRecord, MemoRecord> = Internal.createForeignKey(MemoCopy.MEMO_COPY, DSL.name("memo_copy_tenant_id_memo_id_fkey"), arrayOf(MemoCopy.MEMO_COPY.TENANT_ID, MemoCopy.MEMO_COPY.MEMO_ID), com.memo.jooq.keys.MEMO_TENANT_ID_ID_KEY, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val MEMO_COPY_DELIVERY__MEMO_COPY_DELIVERY_TENANT_ID_COPY_ID_FKEY: ForeignKey<MemoCopyDeliveryRecord, MemoCopyRecord> = Internal.createForeignKey(MemoCopyDelivery.MEMO_COPY_DELIVERY, DSL.name("memo_copy_delivery_tenant_id_copy_id_fkey"), arrayOf(MemoCopyDelivery.MEMO_COPY_DELIVERY.TENANT_ID, MemoCopyDelivery.MEMO_COPY_DELIVERY.COPY_ID), com.memo.jooq.keys.MEMO_COPY_TENANT_ID_ID_KEY, arrayOf(MemoCopy.MEMO_COPY.TENANT_ID, MemoCopy.MEMO_COPY.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)

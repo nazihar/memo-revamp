@@ -1,5 +1,5 @@
 import { X } from 'lucide-react'
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { useIntl } from 'react-intl'
 import {
   answerTask,
@@ -31,6 +31,20 @@ import { Select, Textarea } from '@/components/ui/form-controls'
 import { referenceOf } from './memo-fields'
 import { actionButtons, dialogLeads, dialogTitles, mm, mmv } from './memo-messages'
 import { newIdempotencyKey } from '@/lib/idempotency'
+import { plainText, type NoteDoc } from './notes/note-doc'
+
+const NoteEditor = lazy(() => import('./notes/NoteEditor'))
+
+/** Decisions whose remark is a note on the note sheet (ADR-0049): written with the note editor, sent as `remarkBody`. */
+const RICH: ReadonlySet<MemoActionKind> = new Set([
+  'submit',
+  'resubmit',
+  'withdraw',
+  'approve',
+  'recommend',
+  'return',
+  'reject',
+])
 
 export type MemoActionKind =
   | 'submit'
@@ -111,6 +125,7 @@ export function ActionDialog({
   const withStepUp = useWithStepUp()
   const [key] = useState(() => newIdempotencyKey())
   const [remark, setRemark] = useState('')
+  const [remarkDoc, setRemarkDoc] = useState<NoteDoc>()
   const [picked, setPicked] = useState<Picked>()
   const [people, setPeople] = useState<Picked[]>([])
   const [step, setStep] = useState(memo.sendBackTargets[0]?.stepId ?? '')
@@ -123,7 +138,8 @@ export function ActionDialog({
   const call = async (): Promise<MemoView> => {
     const headers = { 'Idempotency-Key': key }
     const text = remark.trim() || undefined
-    const body = { remark: text }
+    // A decision's remark goes as a note; its plain text is what the workflow keeps.
+    const body = RICH.has(kind) && remarkDoc && text ? { remarkBody: remarkDoc as never } : { remark: text }
     const memoPath = { path: { id: memo.id }, headers, throwOnError: true as const }
     const taskPath = { path: { taskId: memo.myTask?.id ?? '' }, headers, throwOnError: true as const }
     const to = picked?.id ?? ''
@@ -282,18 +298,31 @@ export function ActionDialog({
             required={needs === 'required'}
             error={error}
           >
-            {(p) => (
-              <Textarea
-                {...p}
-                rows={4}
-                maxLength={REMARK_MAX}
-                value={remark}
-                onChange={(e) => {
-                  setRemark(e.target.value)
-                  setError(undefined)
-                }}
-              />
-            )}
+            {(p) =>
+              RICH.has(kind) ? (
+                <Suspense fallback={null}>
+                  <NoteEditor
+                    label={intl.formatMessage(needs === 'required' ? remarkLabel(kind) : mm.remarkOptional)}
+                    onChange={(doc) => {
+                      setRemarkDoc(doc)
+                      setRemark(plainText(doc))
+                      setError(undefined)
+                    }}
+                  />
+                </Suspense>
+              ) : (
+                <Textarea
+                  {...p}
+                  rows={4}
+                  maxLength={REMARK_MAX}
+                  value={remark}
+                  onChange={(e) => {
+                    setRemark(e.target.value)
+                    setError(undefined)
+                  }}
+                />
+              )
+            }
           </Field>
         )}
       </div>

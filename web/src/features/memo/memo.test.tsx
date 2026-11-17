@@ -119,6 +119,8 @@ function memoHandlers(view: MemoView = memo) {
   return [
     http.get(`${API_ORIGIN}/api/v1/memos/m1`, () => HttpResponse.json<MemoView>(view)),
     http.get(`${API_ORIGIN}/api/v1/memos/m1/history`, () => HttpResponse.json<HistoryRound[]>(history)),
+    http.get(`${API_ORIGIN}/api/v1/memos/m1/notes`, () => HttpResponse.json({ entries: [], canWrite: true })),
+    http.get(`${API_ORIGIN}/api/v1/memos/m1/approvals`, () => HttpResponse.json([])),
   ]
 }
 
@@ -189,7 +191,7 @@ describe('memo view', () => {
     expect(within(dialog).getByText('A remark is required.')).toBeInTheDocument()
     expect(keys).toEqual([])
 
-    await user.type(within(dialog).getByRole('textbox', { name: /Remark/ }), 'Please add annex B')
+    await user.type(await within(dialog).findByRole('textbox', { name: /Remark/ }), 'Please add annex B')
     await user.click(within(dialog).getByRole('button', { name: 'Return' }))
     await screen.findByText('My tasks', {}, { timeout: 5000 })
     expect(keys).toHaveLength(1)

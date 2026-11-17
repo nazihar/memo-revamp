@@ -102,3 +102,49 @@
 .react-flow__node.selected > div {
   box-shadow: 0 0 0 3px var(--primary);
 }
+
+/*
+ * The note editor (ADR-0049): Tiptap runs with injectCSS false, because our CSP allows no inline <style>. These are its
+ * core ProseMirror rules, plus lists inside the editor.
+ */
+.ProseMirror {
+  position: relative;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  white-space: break-spaces;
+  font-variant-ligatures: none;
+  font-feature-settings: 'liga' 0;
+}
+.ProseMirror [contenteditable='false'] {
+  white-space: normal;
+}
+.ProseMirror pre {
+  white-space: pre-wrap;
+}
+.ProseMirror-hideselection *::selection {
+  background: transparent;
+}
+.ProseMirror-hideselection {
+  caret-color: transparent;
+}
+.ProseMirror img.ProseMirror-separator {
+  display: inline !important;
+  border: none !important;
+  margin: 0 !important;
+}
+.ProseMirror-gapcursor {
+  display: none;
+  pointer-events: none;
+  position: absolute;
+}
+.ProseMirror ul {
+  list-style: disc;
+  padding-inline-start: 1.25rem;
+}
+.ProseMirror ol {
+  list-style: decimal;
+  padding-inline-start: 1.25rem;
+}
+.ProseMirror a {
+  text-decoration: underline;
+}

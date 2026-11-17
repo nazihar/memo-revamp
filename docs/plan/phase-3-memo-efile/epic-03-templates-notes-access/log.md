@@ -157,3 +157,35 @@
   - the session id is hashed with plain SHA-256, not an HMAC with an install key: session ids are long random values, so the hash cannot be reversed, and no new secret is needed;
   - the check is not rate-limited yet (carried; it reads only the memo's own rows);
   - the deep check that re-reads content (`deep=true`) waits for E04's renditions.
+
+## 2026-11-15 — T7 web: note sheet, editor and stamps
+- **Dependencies:** Tiptap 3.32.2, MIT packages only. Versions released in the last two weeks were skipped; research had named 3.34.0.
+- **Editor (`NoteEditor`, lazy):**
+  - StarterKit cut down to the format's nodes, plus Mention;
+  - `injectCSS: false`, with Tiptap's core ProseMirror rules in our stylesheet;
+  - `https:` links only;
+  - mentions picked from the directory in an ARIA listbox (arrow keys, Enter, Escape);
+  - a text count against 4,000.
+- **`toNoteDoc`:** drops what Tiptap adds (a link's `target`, `rel` and `class`, a mention's `mentionSuggestionChar`, empty texts), so the server's strict check sees only the format.
+- **`NoteRender`:** our own React walk, no HTML from the server. Links get `rel="noopener noreferrer nofollow"`; a memo reference is a link only when the reader may open the memo, otherwise "Memo (restricted)".
+- **`NoteSheet` replaces History:**
+  - rounds newest first, with the earlier-round notice;
+  - comments, remarks and corrections; a corrected entry is greyed and struck through, with "Corrected ↓";
+  - decisions are boxed stamps carrying their remark (or the plain remark of older actions), the authentication line, the short document hash and Check;
+  - the other workflow events are small grey lines;
+  - client fields appear when the server sends them (auditors).
+- **`WriteNoteDialog`:**
+  - the private draft is saved 3 seconds after a change, with If-Match;
+  - up to five files;
+  - corrections start from the corrected text;
+  - when someone mentioned cannot see the memo, it offers "Share and mention" with a reason, which shares the memo, then posts.
+- **Decision dialogs:** submit, resubmit, withdraw, approve, recommend, return and reject use the editor and send `remarkBody`; the other actions keep plain text.
+- **Tests:**
+  - unit: the format, rendering, rounds, and the stamp with its check;
+  - `memo.test` updated (the editor in the return dialog);
+  - jsdom shims for ProseMirror's layout calls;
+  - smoke E2E `notes.spec`: a bold note, a mention, share and mention, the person mentioned reads it, with the fixture failing on any CSP violation;
+  - visual baselines for the memo page re-rendered with mode `all` (view in light and dark, LTR and RTL, and the phone approve sheet, which now waits for the lazy editor) and checked.
+- **Carried:**
+  - inserting a memo reference with `#` needs a lookup by number, which comes with E05 search; references already render;
+  - the mention list does not yet sort the people who can read the memo first.

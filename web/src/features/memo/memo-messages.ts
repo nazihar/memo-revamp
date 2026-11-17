@@ -65,6 +65,7 @@ export const mm = defineMessages({
   routeSave: { id: 'memo.route.save', defaultMessage: 'Save approvers' },
   routeSaved: { id: 'memo.route.saved', defaultMessage: 'Approvers saved.' },
   history: { id: 'memo.history', defaultMessage: 'History' },
+  noteSheet: { id: 'memo.noteSheet', defaultMessage: 'Note sheet' },
   historyEmpty: { id: 'memo.history.empty', defaultMessage: 'Nothing has happened yet: the memo is a draft.' },
   historyEarlier: { id: 'memo.history.earlier', defaultMessage: 'Earlier round: its approvals no longer count.' },
   holders: { id: 'memo.holders', defaultMessage: 'Waiting for' },

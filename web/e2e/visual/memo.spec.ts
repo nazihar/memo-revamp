@@ -142,6 +142,78 @@ const inbox: InboxPage = {
   ],
 }
 
+/** The note sheet (Phase 3 E03 T7): a comment with bold text and a mention, a corrected entry, and one stamp. */
+const p = (...content: unknown[]) => ({ type: 'paragraph', content })
+const notes = {
+  canWrite: true,
+  entries: [
+    {
+      id: 'n1',
+      kind: 'COMMENT',
+      round: 2,
+      author: { id: 'u2', name: 'Demo Head of Credit' },
+      body: {
+        type: 'doc',
+        content: [
+          p(
+            { type: 'text', text: 'Thanks. ' },
+            { type: 'text', text: 'Rent schedule', marks: [{ type: 'bold' }] },
+            { type: 'text', text: ' seen, ' },
+            { type: 'mention', attrs: { id: 'u1', label: 'Demo User' } },
+          ),
+        ],
+      },
+      text: 'Thanks. Rent schedule seen, @Demo User',
+      createdAt: '2026-11-09T11:02:00Z',
+      correctedBy: [],
+      attachments: [],
+      readableMemos: [],
+      canCorrect: false,
+    },
+    {
+      id: 'n2',
+      kind: 'COMMENT',
+      round: 1,
+      author: { id: 'u1', name: 'Demo User' },
+      body: { type: 'doc', content: [p({ type: 'text', text: 'Annex B to follow.' })] },
+      text: 'Annex B to follow.',
+      createdAt: '2026-11-08T15:00:00Z',
+      correctedBy: ['n3'],
+      attachments: [],
+      readableMemos: [],
+      canCorrect: true,
+    },
+    {
+      id: 'n3',
+      kind: 'CORRECTION',
+      round: 1,
+      author: { id: 'u1', name: 'Demo User' },
+      correctsId: 'n2',
+      body: { type: 'doc', content: [p({ type: 'text', text: 'Annex B and the rent schedule to follow.' })] },
+      text: 'Annex B and the rent schedule to follow.',
+      createdAt: '2026-11-08T15:05:00Z',
+      correctedBy: [],
+      attachments: [],
+      readableMemos: [],
+      canCorrect: true,
+    },
+  ],
+}
+const stamps = [
+  {
+    id: 's1',
+    decision: 'RETURN',
+    round: 1,
+    person: { id: 'u2', name: 'Demo Head of Credit' },
+    decidedAt: '2026-11-08T14:20:00Z',
+    factors: ['PASSWORD', 'TOTP'],
+    secondFactorAgeSeconds: 125,
+    stepUpRequired: false,
+    documentNumber: 1,
+    documentHash: '3f9a1c07',
+  },
+]
+
 const attachments: AttachmentView[] = [
   {
     id: 'a1',
@@ -226,6 +298,8 @@ async function setUp(page: Page, theme: string, locale: string) {
   await page.route('**/api/v1/memos/m1', (route) => route.fulfill({ json: memo }))
   await page.route('**/api/v1/memos/m1/history', (route) => route.fulfill({ json: history }))
   await page.route('**/api/v1/memos/m1/attachments', (route) => route.fulfill({ json: attachments }))
+  await page.route('**/api/v1/memos/m1/notes', (route) => route.fulfill({ json: notes }))
+  await page.route('**/api/v1/memos/m1/approvals', (route) => route.fulfill({ json: stamps }))
   await page.route('**/api/v1/memos/m1/files/f1/compare?*', (route) => route.fulfill({ json: comparison }))
   await page.route('**/api/v1/authz/classification-levels', (route) =>
     route.fulfill({
@@ -244,7 +318,7 @@ for (const variant of variants) {
     await setUp(page, variant.theme, variant.locale)
     await app.visit('/memos/m1')
     await expect(page.getByRole('toolbar').getByRole('button')).toHaveCount(3)
-    await expect(page.locator('section[aria-label] ol li')).toHaveCount(3)
+    await expect(page.locator('section[aria-label] ol li')).toHaveCount(6)
     await expect(page).toHaveScreenshot(`view-${variant.name}.png`, { fullPage: true })
   })
 }
@@ -277,10 +351,12 @@ test.describe('phone', () => {
       await setUp(page, variant.theme, variant.locale)
       await app.visit('/memos/m1')
       await expect(page.getByRole('toolbar').getByRole('button')).toHaveCount(3)
-      await expect(page.locator('section[aria-label] ol li')).toHaveCount(3)
+      await expect(page.locator('section[aria-label] ol li')).toHaveCount(6)
       await expect(page).toHaveScreenshot(`phone-view-${variant.name}.png`)
       await page.getByRole('toolbar').getByRole('button').first().click()
       await expect(page.getByRole('dialog')).toBeVisible()
+      // The remark editor loads lazily (ADR-0049).
+      await expect(page.getByRole('dialog').getByRole('toolbar')).toBeVisible()
       await expect(page).toHaveScreenshot(`phone-approve-${variant.name}.png`)
     })
   }

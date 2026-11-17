@@ -207,3 +207,37 @@
   - the create page says "The document starts from the X template" (`MemoTypeOption.template`);
   - a draft without a document offers "Start from the template" (`FILL_FROM_TEMPLATE`).
 - **Tests:** unit tests for the access box, the share, copy-to and receipts dialogs, the template block and the lists page; English and Arabic texts; the memo and new-memo visual baselines re-rendered with the new boxes.
+
+## 2026-11-15 — T9 close: journeys, demo seed, performance, runbook and ASVS
+
+- **Demo seed (`DemoAccessSeeder`, fills gaps, runs after the demo memos once the scanner answers):**
+  - the auditor holds a custom "Unit reader" role (`memo.read.unit`) for the Credit Division. `AccessAdministration.grantCustom` was added for seeders; it is audited like an administrator's change;
+  - Credit facility gets a letterhead template (number, date, subject, initiator, classification) through a new version: maker uploads and previews, checker approves;
+  - "Credit line renewal for Meghna Agro":
+    - copies to the "Credit committee" list (head of finance and auditor), sent at approval;
+    - a note from the head of credit mentioning the initiator, and the initiator's note with its correction;
+    - a 30-day share with the branch administrator, with a reason;
+    - approved by the head of credit and the director;
+    - the head of finance has opened their copy (receipt); the auditor has not.
+  - `DemoAccessIT` checks all of it, and that a second run adds nothing.
+- **Journeys (smoke):**
+  - `access-and-copies.spec`:
+    - copy to the head of finance after approval, and a share with the branch administrator until tomorrow;
+    - submit and approve; the head of finance reads it as a copy (notice, no actions);
+    - the receipt shows their open with the document version;
+    - the auditor reads the memo as a unit reader.
+  - `templates.spec`: a new type gets a template, its tags show, it is previewed, submitted and published by the second administrator; the create page names the template and the new memo starts with document v1.
+  - Neither journey has been run locally (no stack on this machine); CI's smoke stage runs them.
+- **Performance (`NotesAccessPerformanceIT`, design §9, local PostgreSQL):**
+
+  | Measure | p95 | Budget |
+  |---|---|---|
+  | Note sheet, 200 notes | 13 ms | 100 ms |
+  | Post a note | 24 ms | 150 ms |
+  | 25 newest readable memos, at 100,000 memos and 20,000 shares and copies | 24 ms | 100 ms |
+  | Receipts of a memo, 500 recipients | 9 ms | 50 ms |
+
+  - **Not measured in their own test:** template fill and validation (bounded by the filler's timeout and covered functionally by `MemoTemplatesIT`), the approval check, and copies to 500 people.
+  - The unit-reader branch of the read rule uses the `(tenant_id, origin_unit_id)` index; it was not measured at volume.
+- **Runbook:** `docs/runbooks/templates-notes-and-access.md` (what must run, settings, the template checks, monitoring, answering "who could read this", known limits).
+- **ASVS:** seven rows for E03 (template files, template review, the note format, the read rule, shares and copies, approvals, auditing).

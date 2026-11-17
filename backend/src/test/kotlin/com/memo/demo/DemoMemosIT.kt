@@ -84,7 +84,9 @@ class DemoMemosIT : FilesIntegrationTest() {
         val draft = box(MemoBox.DRAFTS).single().id
         assertThat(asUser(author) { attachments.list(draft) }.map { it.title }).containsExactly("laptop-quotation.pdf")
         assertThat(box(MemoBox.SENT).map { it.status.name }).containsOnly("IN_REVIEW", "RETURNED").hasSize(5)
-        assertThat(box(MemoBox.CLOSED).map { it.status.name }).containsExactlyInAnyOrder("APPROVED", "REJECTED", "WITHDRAWN")
+        // The E03 demo memo (DemoAccessIT, when it ran first) is approved too; it is not one of the D1 states.
+        assertThat(box(MemoBox.CLOSED).filter { it.subject != DemoAccessSeeder.SUBJECT }.map { it.status.name })
+            .containsExactlyInAnyOrder("APPROVED", "REJECTED", "WITHDRAWN")
         assertThat(box(MemoBox.SENT).single { it.subject == "Office lease extension" }.round).isEqualTo(2)
 
         val admin = transactions.inTenant(DemoTenant.ID) { accounts.findByEmail(DemoMemoSeeder.ADMIN)!!.id.value }

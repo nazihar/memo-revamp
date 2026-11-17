@@ -149,16 +149,23 @@ test.describe('as the tenant administrator', () => {
     // A first dry run proposes the mappings; the unit has no proposal and is mapped by hand; then a second dry run.
     await dryRun(page)
     await page.getByTestId('step-mappings').click()
+    // Each save moves the batch version and reloads the tabs, so the next one starts only once it has returned.
+    const saved = (kind: string) =>
+      page.waitForResponse((r) => r.request().method() === 'PUT' && r.url().endsWith(`/mappings/${kind}`))
     for (const kind of ['STATUS', 'TYPE', 'CLASSIFICATION', 'PERSON']) {
       await page.getByTestId(`mappings-tab-${kind}`).click()
+      const response = saved(kind)
       await page.getByTestId(`confirm-all-${kind}`).click()
+      expect((await response).status()).toBe(200)
       await expect(page.getByTestId(`confirm-all-${kind}`)).toBeDisabled()
     }
     await page.getByTestId('mappings-tab-UNIT').click()
     const unit = page.getByTestId('mapping-UNIT-HO-FINANCE')
     await unit.getByLabel('Ours for “HO-FINANCE”').selectOption({ label: 'Finance Division (FIN)' })
     await unit.getByLabel('Confirm “HO-FINANCE”').check()
+    const unitSaved = saved('UNIT')
     await page.getByRole('button', { name: 'Save mappings' }).click()
+    expect((await unitSaved).status()).toBe(200)
     await expect(page.getByTestId('mapping-error')).toHaveCount(0)
     await expect(unit.getByLabel('Confirm “HO-FINANCE”')).toBeChecked()
     await app.checkA11y()

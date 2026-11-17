@@ -31,6 +31,7 @@ internal class FilesProblems {
                 setProperty("reason", ex.reason.name)
                 ex.detail["maxBytes"]?.let { setProperty("maxBytes", it) }
                 ex.detail["detectedType"]?.let { setProperty("detectedType", it) }
+                ex.detail["refusals"]?.let { setProperty("refusals", it) }
             }
         return ResponseEntity
             .status(status)
@@ -83,6 +84,7 @@ internal class FilesProblems {
                 RejectionReason.ENCRYPTED to "Password-protected files cannot be checked and are not accepted.",
                 RejectionReason.LIMIT_EXCEEDED to "The file is too complex to be checked safely.",
                 RejectionReason.SCAN_UNAVAILABLE to "Files cannot be checked right now. Try again shortly.",
+                RejectionReason.CONTENT_REFUSED to "The file contains content that is not allowed here.",
             )
     }
 }

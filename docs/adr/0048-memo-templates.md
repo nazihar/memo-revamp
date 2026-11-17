@@ -1,5 +1,5 @@
 ---
-status: proposed
+status: accepted
 date: 2026-11-15
 deciders: Product owner (delegated gate, Phase 3 Q1), agent
 ---
@@ -33,18 +33,20 @@ The template author is partly trusted. A .docx can carry macros, ActiveX, OLE ob
   - `{{initiator.name}}`, `{{initiator.position}}`, `{{initiator.unit}}`;
   - `{{meta.<fieldKey>}}` for the type's fields, pre-formatted (amounts with currency, dates in the tenant's format);
   - `{{?meta.<fieldKey>}}…{{/meta.<fieldKey>}}` for a block shown only when the field has a value;
-  - the approval table: `{{approvals}}` in the row above a template row containing `[name]`, `[position]`, `[decision]`, `[decidedAt]`.
+  - the approval table: `{{approvals}}` in a cell of the header row (for example "Approver{{approvals}}"), and the row below it with `[name]`, `[position]`, `[decision]`, `[decidedAt]`. Only these fields may be in that row; a `{{tag}}` there is a problem.
   - ASCII keys only.
 - **Engine use:**
-  - Only poi-tl's default expression engine. `useSpringEL()` is banned by an ArchUnit rule.
+  - None of poi-tl's expression engines: our own lookup answers each tag from a flat map of text, with no reflection (so not even the default dot-path engine runs). `useSpringEL()` and the SpEL classes are banned by an ArchUnit rule, and only the templating module may use poi-tl.
+  - Picture, table, list and include tags (`@`, `#`, `*`, `+`) are refused at fill as well as at upload.
   - Data is a map of pre-formatted strings, and a list of maps for the approval table.
   - A missing or invalid tag fails the fill; nothing is printed blank silently.
   - Fills run on a bounded executor with a timeout.
 - **Sanitising on upload:**
   - The size is limited (10 MiB), and POI's `ZipSecureFile` limits are lowered at startup.
-  - Only the `.docx` and `.dotx` main content types are accepted.
+  - Only the `.docx` main content type is accepted for now. A `.dotx` is refused by the upload pipeline's type check; admins save it as `.docx`. Accepting `.dotx` (rewriting its content type) is carried.
   - The upload is **refused** (not cleaned silently) if it contains macros (`vbaProject.bin`), ActiveX, OLE objects, `altChunk`, `attachedTemplate`, external relationships other than hyperlinks, or `INCLUDE*`/`LINK`/`DDE` field codes.
-  - The re-serialised package is what is stored and filled. The upload still goes through the files pipeline (scan, inspection, encryption; ADR-0029).
+  - The checks run as the purpose's content inspection inside the files pipeline (scan, inspection, encryption; ADR-0029), on its bounded pool and time limit. A package that passes every rule is stored as uploaded. Everything filled from it is written by POI, so what reaches ONLYOFFICE and initiators is always re-serialised.
+  - Relationship types are an allow-list: a type that is neither known-safe nor known-dangerous is refused as unsupported.
 - **Validating on upload:**
   - a tag inventory over the body, headers, footers and footnotes, and the loop row;
   - every tag must be on the memo type's allow-list (the standard tags plus its field keys);
@@ -54,7 +56,7 @@ The template author is partly trusted. A .docx can carry macros, ActiveX, OLE ob
   - The template is a file of purpose `memo.template` owned by the memo-type version. Changing it is a type-version change under maker-checker (ADR-0043).
   - A memo records the template version it was filled from, so the final fill (E04) uses the same template and the snapshot of the memo's data.
 - **First fill:** at create, the filled template becomes the memo's document version 1, by the initiator. A type without a template behaves as today (upload or blank).
-- **The spike decides poi-tl** (research, lead's checks). It checks poi-tl 1.12.2 on POI 5.5.x and 6.0.0, split runs, headers, footers, the loop row and timing. If it fails, T1 builds option 3 with the same tags.
+- **The spike chose poi-tl 1.12.2 on POI 6.0.0** (E03 T1, 2026-11-15; `epic-03-templates-notes-access/log.md`). On both POI 5.5.1 and 6.0.0 it handled tags split across runs, headers, footers and the loop row. A letterhead fill took 11–13 ms at p50 and under 20 ms at p95 on the dev machine. It also works with Batik excluded. POI 6.0.0 was chosen for its extra zip hardening. Option 3 stays the fallback if poi-tl stalls on a later POI.
 
 ### Consequences
 - Good: admins write templates in Word with tags they copy from the screen, and errors appear at upload with locations.
@@ -65,7 +67,7 @@ The template author is partly trusted. A .docx can carry macros, ActiveX, OLE ob
 
 ### Confirmation
 - Unit tests: tag inventory and malformed tags (split runs included); every refusal rule, with a crafted .docx per rule; data escaping (a value with `{{`, `<`, `&` comes out as text).
-- ArchUnit: no `useSpringEL`, `Configure.builder().useSpringEL`, or SpEL imports in the template code.
+- ArchUnit: no call to `useSpringEL`, no use of poi-tl's SpEL classes, no `org.springframework.expression` in the templating and memo modules, and poi-tl only in the templating module.
 - Integration test: upload → validate → test fill → maker-checker → create from template gives document version 1 with the values.
 - Performance: fill p95 under 1.5 s for a 5-page template (design §9).
 

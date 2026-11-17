@@ -34,6 +34,7 @@ class ModularityTest {
                 "docedit",
                 "workflow",
                 "memo",
+                "templating",
                 "forum",
                 "meeting",
                 "book",

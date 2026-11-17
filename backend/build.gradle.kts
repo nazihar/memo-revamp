@@ -58,6 +58,11 @@ dependencies {
     implementation(libs.tika.core)
     implementation(libs.commons.compress)
     implementation(libs.pdfbox)
+    // .docx templates (ADR-0048): poi-tl with its default tag grammar only, on Apache POI. Batik (SVG pictures) is unused.
+    implementation(libs.poi.tl) {
+        exclude(group = "org.apache.xmlgraphics")
+    }
+    implementation(libs.poi.ooxml)
     // Workflow definitions: JSON Schema validation (ADR-0038) and CEL conditions without macros (ADR-0039).
     implementation(libs.json.schema.validator)
     implementation(libs.cel)

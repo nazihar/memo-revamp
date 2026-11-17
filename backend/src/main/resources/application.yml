@@ -130,6 +130,11 @@ springdoc:
   # Responses are JSON unless an endpoint says otherwise (problem details declare application/problem+json).
   default-produces-media-type: application/json
 
+logging:
+  level:
+    # poi-tl logs every tag of every fill at INFO (ADR-0048); its warnings and errors are enough.
+    com.deepoove.poi: warn
+
 memo:
   # Tenant resolution from the request host (ADR-0022).
   tenancy:

@@ -1,5 +1,7 @@
 package com.memo.files.internal
 
+import com.memo.files.ContentRefusal
+import com.memo.files.ContentRefused
 import com.memo.files.FileType
 import com.memo.testsupport.Samples
 import org.apache.commons.compress.utils.SeekableInMemoryByteChannel
@@ -49,6 +51,24 @@ class ContentInspectorTest {
             assertThat(inspect(bytes).type).describedAs(type.name).isEqualTo(type)
         }
         assertThat(inspect(Samples.pdf(3)).pdfPages).isEqualTo(3)
+    }
+
+    @Test
+    fun `a purpose's own content check refuses with its rules and where they are, after the type is known`() {
+        val seen = mutableListOf<FileType>()
+        val rules =
+            everything.copy(content = { type, _ ->
+                seen += type
+                if (type == FileType.DOCX) throw ContentRefused(listOf(ContentRefusal("MACROS", "word/vbaProject.bin")))
+            })
+        val rejected = rejection(Samples.docx(), "letterhead.docx", rules)
+        assertThat(rejected.reason).isEqualTo(RejectionReason.CONTENT_REFUSED)
+        assertThat(rejected.detail["refusals"]).isEqualTo(listOf(mapOf("rule" to "MACROS", "where" to "word/vbaProject.bin")))
+        assertThat(inspect(Samples.pdf(), "a.pdf", rules).type).isEqualTo(FileType.PDF)
+        assertThat(seen).containsExactly(FileType.DOCX, FileType.PDF)
+        // A type the purpose does not allow is refused before its content check runs.
+        assertThat(rejection(Samples.docm(), "a.docx", rules).reason).isEqualTo(RejectionReason.TYPE_NOT_ALLOWED)
+        assertThat(seen).hasSize(2)
     }
 
     @Test

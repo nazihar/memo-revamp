@@ -197,4 +197,37 @@ class ArchitectureRulesTest {
             .because("@Scheduled runs on every node and carries no tenant (ADR-0018)")
             .check(classes)
     }
+
+    @Test
+    fun `templates are filled by the templating module only, and never with SpEL`() {
+        // ADR-0048: poi-tl stays behind TemplateFiller, and its SpEL mode (unrestricted evaluation) is never switched on.
+        noClasses()
+            .that()
+            .resideOutsideOfPackage("com.memo.templating..")
+            .should()
+            .dependOnClassesThat()
+            .resideInAPackage("com.deepoove.poi..")
+            .because("poi-tl is used only behind TemplateFiller (ADR-0048)")
+            .check(classes)
+        noClasses()
+            .should()
+            .callMethodWhere(
+                com.tngtech.archunit.core.domain.JavaCall.Predicates.target(
+                    com.tngtech.archunit.core.domain.properties.HasName.Predicates
+                        .name("useSpringEL"),
+                ),
+            ).orShould()
+            .dependOnClassesThat()
+            .haveSimpleNameStartingWith("SpELRenderDataCompute")
+            .because("template tags must never be evaluated as expressions (ADR-0048, threat T2)")
+            .check(classes)
+        noClasses()
+            .that()
+            .resideInAnyPackage("com.memo.templating..", "com.memo.memo..")
+            .should()
+            .dependOnClassesThat()
+            .resideInAPackage("org.springframework.expression..")
+            .because("template and memo code evaluates no expressions (ADR-0048)")
+            .check(classes)
+    }
 }

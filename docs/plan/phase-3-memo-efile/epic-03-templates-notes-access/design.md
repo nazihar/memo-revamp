@@ -70,7 +70,7 @@ erDiagram
 ## 3. Templates (ADR-0048)
 - **Upload:**
   - The admin uploads through the files API (`purpose=memo.template`, `owner=<typeVersionId>`) while the version is a draft.
-  - The purpose's `inspect` hook runs the sanitiser. It refuses with a list of problems, or stores the re-serialised package.
+  - The purpose's content hook (`FilePurpose.inspectContent`) runs the scanner of the `templating` module. It refuses the upload with `CONTENT_REFUSED` and the list of rules broken and where, or lets the package through as uploaded (T1). Fills are always written by POI.
   - A listener then builds the tag inventory and the problem list and stores them on the version.
 - **Test fill:**
   - `POST …/template/preview` fills the template with sample values (field labels in brackets, today's date, "Sample approver") into a file of purpose `memo.template.preview`.

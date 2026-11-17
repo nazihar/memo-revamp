@@ -15,6 +15,7 @@
   - per-file classification raises after import, and note-sheet comments on imported memos (carried);
   - OCR of scans (no OCR anywhere; ADR-0045);
   - a customer's own legacy sample (no pilot, §10 Q2; E07 imports a representative one).
+- **As built (T10):** the synthetic legacy sample is `com.memo.demo.SyntheticLegacy`: a deterministic workbook (1904 date system) and folder (.docx, .pdf, a Word 97 .doc, an Excel 97 .xls, a three-page TIFF, a .zip, a case-only pair, `Thumbs.db`) with messy rows. `DemoLegacySeeder` imports it into the demo tenant through `ImportSeeding` (new public API of the module, for seeders only): the batch is created, the sources and originals go through the upload pipeline, the dry run runs in the seeder's thread (`ImportDryRuns.request(…, scheduleJob = false)`), every mapping is confirmed with the sample's choices, and the import is started without a step-up (`stepUpAt` null: there is no session); the `imports-run`, `imports-verify` and `imports-report` jobs then finish it as for any batch. The demo admin is cleared to Confidential (the sample's highest level).
 
 ## 2. Modules
 - **`imports` (new module, package `com.memo.imports`):** batches, staging, parsing, mappings, the dry run, the import job, verification and the report. Tables `imports_*`, migrations `db/migration/imports/`. It depends on `memo`, `files`, `org`, `identity`, `authz` (through `common.authz`) and `audit`. Nothing depends on it.
@@ -521,6 +522,8 @@ All paths are under `/api/v1`. Bodies are JSON. Errors are RFC 9457 Problem Deta
 
 - **As built (T8):** `imports.report.max-wait` (72 hours), `imports.keep-staged-days` (30) and `imports.idle-days` (30), the report's wait between looks (10 minutes), and the pages of the verification, the report's reads and the purge (500) are constants in `ImportEndLimits`, not settings yet. "Idle" is the latest of the batch's update time, its last staged upload and its last registered path.
 
+- **As built (T10):** the report's wait between looks is the setting `memo.imports.report-wait` (`MEMO_IMPORTS_REPORT_WAIT`, default 10 minutes), so test stacks and local development can shorten it (15 seconds in `scripts/dev.mjs`, which the e2e stack uses); the other constants stay.
+
 ## 14. Performance budget
 | Operation | Target | How |
 |---|---|---|
@@ -534,6 +537,8 @@ All paths are under `/api/v1`. Bodies are JSON. Errors are RFC 9457 Problem Deta
 | Promotion of a 5 MB original | p95 < 2 s | one pipeline pass (scan, encrypt, store) |
 | Memo view of an imported memo | p95 < 150 ms | indexes on the legacy tables by memo |
 | Search with the Origin filter | within ADR-0054's 300 ms | the `origin` column on each part's table |
+
+- **As built (T10):** measured by `ImportVolumeIT` (E06 log, T10): the dry run, the import (renditions excluded), the verification, the report and the purge at 10,000 memos and 30,000 originals, and a 50,000-row metadata-only dry run.
 
 ## 15. Background work
 | Job | Kind | Trigger | Retries and idempotency |

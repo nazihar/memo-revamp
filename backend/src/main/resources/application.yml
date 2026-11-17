@@ -209,6 +209,10 @@ memo:
     max-text-chars: ${MEMO_FILES_MAX_TEXT_CHARS:5000000}
     # The Apache Tika server for text (internal network only); empty: text renditions are not possible.
     tika-url: ${MEMO_TIKA_URL:}
+  # Legacy import (ADR-0055): how long the report job waits between looks while the imported originals' renditions are
+  # pending (at most 72 hours after the import). Test stacks shorten it, so a journey does not wait ten minutes.
+  imports:
+    report-wait: ${MEMO_IMPORTS_REPORT_WAIT:PT10M}
   mail:
     host: ${MEMO_SMTP_HOST:}
     port: ${MEMO_SMTP_PORT:25}

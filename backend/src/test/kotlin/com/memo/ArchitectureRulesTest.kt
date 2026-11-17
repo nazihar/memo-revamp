@@ -180,6 +180,18 @@ class ArchitectureRulesTest {
     }
 
     @Test
+    fun `only the demo data seeds import batches`() {
+        noClasses()
+            .that()
+            .resideOutsideOfPackages("com.memo.demo..", "com.memo.imports")
+            .should()
+            .dependOnClassesThat()
+            .haveFullyQualifiedName("com.memo.imports.ImportSeeding")
+            .because("it starts an import without a step-up; requests go through the controllers, which require one (Phase 3 E06 T10)")
+            .check(classes)
+    }
+
+    @Test
     fun `no coroutines on the backend`() {
         noClasses()
             .should()

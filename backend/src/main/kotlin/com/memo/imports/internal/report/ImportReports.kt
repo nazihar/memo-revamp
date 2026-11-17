@@ -16,6 +16,7 @@ import com.memo.imports.internal.ImportBatchTransitions
 import com.memo.imports.internal.ImportBatches
 import com.memo.imports.internal.ImportRecordPurpose
 import com.memo.memo.ReportPages
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import tools.jackson.databind.json.JsonMapper
 import java.io.ByteArrayOutputStream
@@ -23,6 +24,7 @@ import java.nio.file.Path
 import java.security.DigestInputStream
 import java.security.MessageDigest
 import java.time.Clock
+import java.time.Duration
 import java.time.Instant
 import java.util.HexFormat
 import java.util.UUID
@@ -53,7 +55,7 @@ data class StoredReport(
 
 /**
  * The `imports-report` job (ADR-0055, design E06 §5.4, §8): once the batch is verified, it waits (looking again every
- * [ImportEndLimits.REPORT_WAIT]) until no rendition of an imported original is pending, or [ImportEndLimits.REPORT_MAX_WAIT]
+ * [reportWait], `memo.imports.report-wait`, by default [ImportEndLimits.REPORT_WAIT]) until no rendition of an imported original is pending, or [ImportEndLimits.REPORT_MAX_WAIT]
  * after the import finished, whichever is first. Then it keeps each source used as a record (`copyFrom`, the chain of
  * custody), builds the summary PDF, the workbook and the manifest, stores them as records of the batch (`imports.record`),
  * and moves the batch to COMPLETED with the report, audited `import.batch.completed` with each part's SHA-256 and the
@@ -77,6 +79,7 @@ class ImportReports(
     private val transactions: TenantTransactions,
     private val json: JsonMapper,
     private val clock: Clock,
+    @param:Value("\${memo.imports.report-wait:PT10M}") private val reportWait: Duration = ImportEndLimits.REPORT_WAIT,
 ) {
     /** One look at [batchId]'s report: the delay before the next, or null when it is stored (or there is nothing to do). */
     fun step(batchId: UUID) =
@@ -93,7 +96,7 @@ class ImportReports(
                 }
 
                 waiting(batch) -> {
-                    ImportEndLimits.REPORT_WAIT
+                    reportWait
                 }
 
                 else -> {

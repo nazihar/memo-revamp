@@ -180,6 +180,7 @@ class DemoMemoSeedOnStartup(
     private val seeder: DemoMemoSeeder,
     private val access: DemoAccessSeeder,
     private val following: DemoFollowingSeeder,
+    private val legacy: DemoLegacySeeder,
     private val uploads: FileUploads,
 ) : ApplicationRunner {
     private val log = LoggerFactory.getLogger(javaClass)
@@ -194,20 +195,18 @@ class DemoMemoSeedOnStartup(
             log.warn("Demo memos not seeded: the malware scanner did not answer")
             return
         }
-        try {
-            seeder.seed()
-        } catch (e: RuntimeException) {
-            log.warn("Demo memos not seeded", e)
-        }
-        try {
-            access.seed()
-        } catch (e: RuntimeException) {
-            log.warn("Demo notes, access and templates not seeded", e)
-        }
-        try {
-            following.seed()
-        } catch (e: RuntimeException) {
-            log.warn("Demo following and saved searches not seeded", e)
+        // In this order: the access seeder needs the demo memos, and the legacy import its grant, clearance and the leaver.
+        listOf<Pair<String, () -> Any?>>(
+            "Demo memos" to seeder::seed,
+            "Demo notes, access and templates" to access::seed,
+            "Demo following and saved searches" to following::seed,
+            "Demo legacy import" to legacy::seed,
+        ).forEach { (what, step) ->
+            try {
+                step()
+            } catch (e: RuntimeException) {
+                log.warn("{} not seeded", what, e)
+            }
         }
     }
 

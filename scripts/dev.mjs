@@ -114,6 +114,8 @@ export function backendEnv(env, { core }) {
     MEMO_DEMO_PASSWORD: env.MEMO_DEMO_PASSWORD,
     MEMO_DEMO_TOTP_SECRET: env.MEMO_DEMO_TOTP_SECRET,
     MEMO_DATA_KEY: env.MEMO_DATA_KEY,
+    // A legacy import's report looks again every 15 s, not every 10 minutes, while its previews are made (E06 T10).
+    MEMO_IMPORTS_REPORT_WAIT: 'PT15S',
     // The local stack publishes the ONLYOFFICE gateway on 8081, the backend's default management port (ADR-0016).
     MEMO_MANAGEMENT_PORT: '8091',
   }

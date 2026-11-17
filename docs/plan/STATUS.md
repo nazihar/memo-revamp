@@ -13,7 +13,7 @@
   - The CI deploy does not re-run the Ansible playbook. After a change to `deploy/ansible/site.yml` or `deploy/scripts/*`, run it by hand.
   - A new env setting needs both its value and its name in `memo_env_keys`.
 - **Phase 0:** done (`docs/plan/phase-0-foundations/`). **Release:** `v0.1.0` (2026-10-15). **Product name:** `memo` everywhere except the repository name (A1).
-- **Branches:** `master` holds PRs #1–#145; nothing is open. #84–#141 (Phase 3 E01–E06 and the Phase 1b overview) were merged in order on 2026-11-17 at the owner's instruction and deployed to dev.
+- **Branches:** `master` holds PRs #1–#152. #148 (the Phase 4 overview) is open, from another session. #84–#141 (Phase 3 E01–E06 and the Phase 1b overview) were merged in order on 2026-11-17 at the owner's instruction and deployed to dev.
 - **After the merge (2026-11-17):** the first `master` runs found what the PR stage could not, fixed in #142–#145:
   - #142: `BusinessCalendarIT` used fixed holiday dates that had become the past.
   - #143: the playbook never wrote `MEMO_TIKA_URL`, so dev ran without Tika from E02 on. Applied to dev.
@@ -23,6 +23,14 @@
     - The spool clean-up at start-up raced the first uploads.
     - A flaky dry-run write check.
   - The weekly `load` stage, run by hand on `master`, passed: `ImportVolumeIT` at 10,000 memos imported in 7 minutes on a CI runner.
+  - #146 refreshed these docs. #147: mapping saves on the import screen go one at a time.
+  - The next nightly runs found three more, fixed in #149, #150 and #152 (E06 log, "The nightly runs after #144 and #145"):
+    - the Helm migrate job needed 1536Mi;
+    - the browser smoke lost sessions after step-ups;
+    - a legacy `.doc` was refused by the magic check;
+    - a property test met a ligature.
+  - **Nightly run 44113229080 on 8a6c68c is green in every job.**
+  - #151: the Spring Modulith module order is precomputed, so no start builds the module model. The dev backend fell from 1.044 GiB to about 645 MiB.
 
 ## State (Phase 1b)
 - [x] Overview written (2026-11-17): ten epics (E01 federated sign-in; E02 passkeys and the sign-in policy; E03 mobile token issuer; E04 organisation in full; E05 HR sync; E06 key management; E07 break-glass; E08 export and offboarding; E09 admin console completion; E10 close-out and ASVS L2 of 1a + 1b) (#141)
@@ -52,7 +60,7 @@
 - [ ] E01/E02 close-out on dev (merged and deployed 2026-11-17).
   - Done: Ansible re-run with `MEMO_TIKA_URL` written (#143), the backend redeployed with Tika, and the demo batch "Legacy DMS sample, 2019–2021" COMPLETED and verified on dev. Its `.doc` and `.xls` rows stay rejected: they were seeded before Tika was connected, and seeders only fill gaps.
   - Left: check on dev that no pre-E03 round or step is left at the defaults and that the demo DoA has the credit bands.
-- [ ] Nightly green on `master` after #144 and #145 (the first run, 2026-11-17, found both faults and skipped the browser jobs)
+- [x] Nightly green on `master` (run 44113229080 on 8a6c68c, 2026-11-17, after #149, #150 and #152)
 
 ## State (Phase 2, closed)
 - [x] Overview approved (2026-11-09), Q1–Q5 answered, per-epic gate delegated (E01 screen flows reviewed by the owner before build)
@@ -70,10 +78,10 @@
 - [ ] Owner demo, moderated usability walkthrough, manual keyboard and screen-reader pass (carried)
 
 ## Next step
-1. Owner: **approve the Phase 1b overview and answer Q1–Q5** (`phase-1b-enterprise-identity/overview.md §9`, PR #141). Then the agent writes the E01 plan (federated sign-in). Agent, meanwhile: the nightly run on `master` after #144 and #145, and the E01/E02 close-out checks on dev.
+1. Owner: **approve the Phase 1b overview and answer Q1–Q5** (`phase-1b-enterprise-identity/overview.md §9`, PR #141). Then the agent writes the E01 plan (federated sign-in). Agent, meanwhile: the E01/E02 close-out checks on dev.
 2. Owner, in person when convenient: the D1 and phase demos on dev, the builder walkthrough and the manual accessibility pass (Waiting for human).
 3. Before 2026-11-22: take the rebuilt distroless digest from Renovate and delete the zlib entries in `.trivyignore`.
-4. Follow-ups (both retrospectives, "Carried"): `AuditPerformanceIT`, `NotificationPerformanceIT`, the full-signature ClamAV corpus nightly, sample bodies for the remaining mutating matrix cells, upstream clean-ups (`apk upgrade` lines, Spring Session licence exceptions, Guava pin), Spring Boot 4.2 GA; from Phase 2: the step ordinal after a recusal (retrospective), a sweep for timers dropped after their retry limit, a warning level for validation, saved simulation scenarios, React Flow 13, the web suite's timeouts under load.
+4. Follow-ups (both retrospectives, "Carried"): `AuditPerformanceIT`, `NotificationPerformanceIT`, the full-signature ClamAV corpus nightly, sample bodies for the remaining mutating matrix cells, upstream clean-ups (`apk upgrade` lines, Spring Session licence exceptions, Guava pin), Spring Boot 4.2 GA; from Phase 2: the step ordinal after a recusal (retrospective), a sweep for timers dropped after their retry limit, a warning level for validation, saved simulation scenarios, React Flow 13, the web suite's timeouts under load; from 2026-11-17: `MemoPerformanceIT`'s inbox budget (300 ms p95) missed twice on CI runners (434 and 363 ms; reruns passed), and the backend and migrate job limits to re-measure under load now that the module model is gone.
 
 ## Waiting for human
 - **Phase 1b overview (#141):** approval and Q1–Q5: Q1 gate delegation and the screen flows to review; Q2 an Entra ID test tenant and an ADFS server for the exit criterion (recommended: Entra ID from the owner, ADFS emulated and carried); Q3 the HR sync's first source (recommended: a canonical snapshot by upload, push or drop location); Q4 break-glass approver and scope; Q5 what offboarding deletes.

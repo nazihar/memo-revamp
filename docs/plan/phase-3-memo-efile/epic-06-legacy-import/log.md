@@ -351,6 +351,15 @@ All three jobs passed. `ImportVolumeIT` at 10,000 memos and 30,000 originals of 
 - **Lighthouse failed:** the first page's script was 264 KB gzip, over NFR P5. The route validators of the dashboard and the import batch page pulled their message files into the entry, among other growth. Fixed in #144; it is now about 242 KB.
 - **The browser jobs were skipped**, so the journey's `.doc` part has not run yet. It is to check on the next nightly run.
 
+### The nightly runs after #144 and #145
+- **Runs 44059501898 and 44063279857** failed the same tests in two jobs:
+  - **Firefox + WebKit smoke.** A step-up moves the session to a new id, and the harness signed each role in once per run, so after a role's first step-up its later tests landed on Sign in. Phase 3 made the run long enough (about 31 minutes) to pass the 5-minute step-up window. Each project and worker slot now keeps its own session per role and saves it back after any sign-in or step-up call (#150).
+  - **A legacy `.doc` was refused** (`TYPE_NOT_ALLOWED`, `application/msword`). Tika's magic names Word from the stream name when an OLE2 directory sits early in the file. Such a file is now reported as the OLE2 container it is, so legacy purposes ask the Tika server and other purposes refuse it (#150). Real legacy files with that layout would have been refused too.
+  - **Helm on kind:** the migrate job was OOM-killed at 1Gi; its limit is 1536Mi (#149).
+- **Run 44093738739** failed in the backend build: with 1,000 tries, `PageRendererProperties` met a ligature, which the text stripper gives back as "fl". The test was at fault (#152).
+- **Run 44113229080 on 8a6c68c is green in every job**, including the Firefox + WebKit smoke, the documents run with the journey's `.doc` part, and Helm on kind.
+- **Found on the way:** every start built Spring Modulith's module model (an ArchUnit import) only to learn the module order. The order is now precomputed (#151), and the dev backend dropped from 1.044 GiB to about 645 MiB at a similar uptime.
+
 ### Found on the way
 - **#145's e2e run hit a start-up race.** The spool's clean-up of crash leftovers was an application runner, with no fixed order against the demo seeder's runner. It deleted a spool still in use, and the demo memo seeder died before the access seeder ran. The clean-up now runs when the `Spool` bean is made (#145).
 - **`DryRunIT`'s write check was flaky.** It now compares `files_rendition` by row count only, because the rendition worker updates its rows at any moment (#145).

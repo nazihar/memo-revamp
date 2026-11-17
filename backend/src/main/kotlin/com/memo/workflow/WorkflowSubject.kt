@@ -84,7 +84,8 @@ data class WorkflowView(
 
 /** A subject as lists show it; [classificationRank] decides whether a reader may see the [title] (design E01 §5). */
 data class SubjectSummary(
-    val reference: String,
+    /** Null until the memo is numbered (ADR-0044). */
+    val reference: String?,
     val title: String,
     val classificationRank: Int,
 )

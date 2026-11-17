@@ -52,3 +52,32 @@
   - The catalogue includes **inactive** types' published versions, so switching a type off cannot silently break a rule (ADR-0043 updated).
   - `ATTRIBUTE_IN_USE` only concerns attributes memos offer now. A name declared for another subject (the test subject in workflow tests) is not the memo's to keep.
 - **Tests:** `MemoAttributesIT` covers the catalogue and the builder catalogue, a DoA band on the amount (6,000,000 needs the director; 4,000,000 and no amount match no rule), dropping or un-marking an attribute the rule reads, and key conflicts.
+
+## 2026-11-14 — T4 numbering
+- **Built:**
+  - `memo/V8`:
+    - numbering on the version (default: the Phase 2 format in the series `general`);
+    - nullable `memo.reference` with a length check;
+    - number parts on the memo with a unique index per counter;
+    - `memo_number_counter`;
+    - the `memo_number_guard` trigger;
+    - the backfill turning existing `M-YYYY-NNNNN` references into `general` numbers and copying `memo_reference_counter`.
+  - The numbering model and `NumberFormats`: periods, rendering, skeletons, checks.
+  - `MemoNumberingChecks`: `SERIES_OVERLAP` and `SERIES_MISMATCH`.
+  - `MemoNumbers`: numbering at submit (after pinning, before the workflow starts) or at final approval (in the approval's listener, same transaction), and `NO_ORIGIN_UNIT`.
+  - The register, completeness check, starting number and preview: `MemoNumberingAdmin` and `/api/v1/admin/memo-numbering`.
+  - The numbering moment on the type list, form and memo view.
+  - On the web, "Unnumbered" wherever a reference is shown (`referenceOf`).
+- **Changed from the plan:**
+  - The number is taken just before the workflow starts, not as the very last statement. That way the first task, its notification and its email already carry the number. The lock still covers only one counter (ADR-0044 updated).
+  - The starting number is `POST … /start` with an idempotency key, the actions' convention, rather than `PUT`.
+  - Discarded Phase 2 drafts with references count as void numbers too.
+  - The register shows the void flag and status. The reason stays in the memo's history rather than being copied.
+- **Rollout note:** while a node on the previous release runs beside a new one, the old node still numbers drafts from `memo_reference_counter`, and the new one numbers `general` from `memo_number_counter`. The unique reference index turns a clash into a refused request, never a duplicate. Deploys to dev and production replace all nodes, so the overlap lasts seconds.
+- **Bug caught by the tests:** `select min(...)` read with `Long::class.java` (primitive) turned "no number" into 0, so `ALREADY_STARTED` fired on an unused counter. It now uses the boxed type.
+- **Tests:**
+  - `NumberFormatTest`: examples, plus properties (distinct sequences give distinct numbers; a financial year turns over exactly on its first day).
+  - `NumberingIT`: submit and approval moments, resubmission, `NO_ORIGIN_UNIT`, register, void numbers, completeness, starting number, overlap and mismatch.
+  - `NumberingConcurrencyIT`: 40 parallel transactions get 1..40, and a rollback gives its number back.
+  - `MemoTypeBackfillIT`: extended for V8.
+  - `MemoDraftIT`: drafts are unnumbered.

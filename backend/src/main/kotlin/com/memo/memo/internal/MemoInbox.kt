@@ -50,7 +50,8 @@ data class InboxPage(
 
 data class BoxItem(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val id: UUID,
-    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val reference: String,
+    /** Null until the memo is numbered (ADR-0044). */
+    val reference: String?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val subject: String,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val status: MemoStatus,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val round: Int,

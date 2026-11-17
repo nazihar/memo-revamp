@@ -806,6 +806,7 @@
   "memo.task.role.clarify": "A question for you",
   "memo.task.role.opinion": "Your opinion is asked for",
   "memo.task.waiting": "You asked a question. You can decide once it is answered.",
+  "memo.unnumbered": "Unnumbered",
   "memo.updatedAt": "Changed {time}",
   "memoTypes.active": "In use",
   "memoTypes.add": "Add memo type",

@@ -29,6 +29,7 @@ import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
 import com.memo.jooq.tables.Memo
 import com.memo.jooq.tables.MemoInterest
+import com.memo.jooq.tables.MemoNumberCounter
 import com.memo.jooq.tables.MemoParticipant
 import com.memo.jooq.tables.MemoReferenceCounter
 import com.memo.jooq.tables.MemoRouteEntry
@@ -86,6 +87,7 @@ import com.memo.jooq.tables.records.IdentityRateLimitBucketRecord
 import com.memo.jooq.tables.records.IdentityRecoveryCodeRecord
 import com.memo.jooq.tables.records.IdentityUserRecord
 import com.memo.jooq.tables.records.MemoInterestRecord
+import com.memo.jooq.tables.records.MemoNumberCounterRecord
 import com.memo.jooq.tables.records.MemoParticipantRecord
 import com.memo.jooq.tables.records.MemoRecord
 import com.memo.jooq.tables.records.MemoReferenceCounterRecord
@@ -175,6 +177,7 @@ val MEMO_TENANT_ID_DOCUMENT_FILE_ID_KEY: UniqueKey<MemoRecord> = Internal.create
 val MEMO_TENANT_ID_ID_KEY: UniqueKey<MemoRecord> = Internal.createUniqueKey(Memo.MEMO_, DSL.name("memo_tenant_id_id_key"), arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.ID), true)
 val MEMO_TENANT_ID_REFERENCE_KEY: UniqueKey<MemoRecord> = Internal.createUniqueKey(Memo.MEMO_, DSL.name("memo_tenant_id_reference_key"), arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.REFERENCE), true)
 val MEMO_INTEREST_PKEY: UniqueKey<MemoInterestRecord> = Internal.createUniqueKey(MemoInterest.MEMO_INTEREST, DSL.name("memo_interest_pkey"), arrayOf(MemoInterest.MEMO_INTEREST.TENANT_ID, MemoInterest.MEMO_INTEREST.MEMO_ID, MemoInterest.MEMO_INTEREST.USER_ID), true)
+val MEMO_NUMBER_COUNTER_PKEY: UniqueKey<MemoNumberCounterRecord> = Internal.createUniqueKey(MemoNumberCounter.MEMO_NUMBER_COUNTER, DSL.name("memo_number_counter_pkey"), arrayOf(MemoNumberCounter.MEMO_NUMBER_COUNTER.TENANT_ID, MemoNumberCounter.MEMO_NUMBER_COUNTER.SERIES, MemoNumberCounter.MEMO_NUMBER_COUNTER.PERIOD, MemoNumberCounter.MEMO_NUMBER_COUNTER.SCOPE), true)
 val MEMO_PARTICIPANT_PKEY: UniqueKey<MemoParticipantRecord> = Internal.createUniqueKey(MemoParticipant.MEMO_PARTICIPANT, DSL.name("memo_participant_pkey"), arrayOf(MemoParticipant.MEMO_PARTICIPANT.TENANT_ID, MemoParticipant.MEMO_PARTICIPANT.MEMO_ID, MemoParticipant.MEMO_PARTICIPANT.USER_ID), true)
 val MEMO_REFERENCE_COUNTER_PKEY: UniqueKey<MemoReferenceCounterRecord> = Internal.createUniqueKey(MemoReferenceCounter.MEMO_REFERENCE_COUNTER, DSL.name("memo_reference_counter_pkey"), arrayOf(MemoReferenceCounter.MEMO_REFERENCE_COUNTER.TENANT_ID, MemoReferenceCounter.MEMO_REFERENCE_COUNTER.YEAR), true)
 val MEMO_ROUTE_ENTRY_PKEY: UniqueKey<MemoRouteEntryRecord> = Internal.createUniqueKey(MemoRouteEntry.MEMO_ROUTE_ENTRY, DSL.name("memo_route_entry_pkey"), arrayOf(MemoRouteEntry.MEMO_ROUTE_ENTRY.TENANT_ID, MemoRouteEntry.MEMO_ROUTE_ENTRY.MEMO_ID, MemoRouteEntry.MEMO_ROUTE_ENTRY.ORDINAL), true)

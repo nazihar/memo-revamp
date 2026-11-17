@@ -56,7 +56,9 @@ function handlers(shown: DoaVersionResponse[]) {
       HttpResponse.json<DoaVersionResponse>(shown.find((v) => String(v.number) === params.number) ?? published),
     ),
     http.get(`${API_ORIGIN}/api/v1/memo-types`, () =>
-      HttpResponse.json<MemoTypeOption[]>([{ id: 't1', name: 'Credit memo', stepUpOnApprove: true, hasFields: false }]),
+      HttpResponse.json<MemoTypeOption[]>([
+        { id: 't1', name: 'Credit memo', stepUpOnApprove: true, hasFields: false, numberingMoment: 'ON_SUBMIT' },
+      ]),
     ),
     http.get(`${API_ORIGIN}/api/v1/org/units`, () => HttpResponse.json<OrgUnit[]>([])),
     http.get(`${API_ORIGIN}/api/v1/authz/roles`, () => HttpResponse.json<Role[]>([])),

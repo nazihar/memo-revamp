@@ -117,7 +117,7 @@ export type AuditPage = {
 export type BoxItem = {
     holders: Array<Named>;
     id: string;
-    reference: string;
+    reference?: string | null;
     round: number;
     status: 'DRAFT' | 'IN_REVIEW' | 'RETURNED' | 'APPROVED' | 'REJECTED' | 'WITHDRAWN' | 'DISCARDED' | 'CANCELLED';
     subject: string;
@@ -778,6 +778,7 @@ export type MemoTypeForm = {
     fields: Array<MemoField>;
     id: string;
     name: string;
+    numberingMoment: 'ON_SUBMIT' | 'ON_APPROVAL';
     version: number;
 };
 
@@ -786,6 +787,7 @@ export type MemoTypeOption = {
     hasFields: boolean;
     id: string;
     name: string;
+    numberingMoment: 'ON_SUBMIT' | 'ON_APPROVAL';
     stepUpOnApprove: boolean;
 };
 
@@ -808,6 +810,7 @@ export type MemoTypeSettingsRequest = {
     doaCheck?: boolean;
     fields?: Array<MemoField>;
     name?: string;
+    numbering?: Numbering;
     raiseScope?: RaiseScope;
     routePolicy?: string;
     stepUpOnApprove?: boolean;
@@ -827,6 +830,7 @@ export type MemoTypeVersionResponse = {
     fields: Array<MemoField>;
     name: string;
     number: number;
+    numbering: Numbering;
     publishedAt?: string | null;
     raiseScope: RaiseScope;
     reviewRemark?: string | null;
@@ -852,8 +856,9 @@ export type MemoView = {
     initiator: Named;
     interests: Array<Named>;
     myTask?: TaskRef | null;
+    numberedWhen?: 'ON_SUBMIT' | 'ON_APPROVAL';
     originUnit?: Named | null;
-    reference: string;
+    reference?: string | null;
     round: number;
     route: Array<RouteEntryView>;
     sendBackTargets: Array<SendBackTargetView>;
@@ -970,6 +975,65 @@ export type NotificationView = {
         [key: string]: string;
     };
     read: boolean;
+};
+
+export type NumberCounterView = {
+    lastNumber: number;
+    period: string;
+    scope: string;
+    scopeName?: string | null;
+    startedByAdmin: boolean;
+};
+
+export type NumberPart = {
+    digits?: number | null;
+    kind: 'TEXT' | 'TYPE_CODE' | 'UNIT_CODE' | 'YEAR' | 'FINANCIAL_YEAR' | 'SEQUENCE';
+    style?: 'LONG' | 'SHORT';
+    text?: string | null;
+};
+
+export type NumberRegisterView = {
+    entries: Array<RegisterEntry>;
+    lastNumber: number;
+    missing: Array<number>;
+    missingCount: number;
+    next?: number | null;
+    period: string;
+    scope: string;
+    series: string;
+};
+
+export type NumberSeriesView = {
+    counters: Array<NumberCounterView>;
+    series: string;
+    types: Array<Named>;
+};
+
+export type NumberStartRequest = {
+    next: number;
+    period: string;
+    scope?: string;
+};
+
+export type Numbering = {
+    countPer: 'SERIES' | 'UNIT';
+    fyStartMonth: number;
+    moment: 'ON_SUBMIT' | 'ON_APPROVAL';
+    needsUnit?: boolean;
+    parts: Array<NumberPart>;
+    reset: 'NEVER' | 'YEARLY' | 'FINANCIAL_YEAR';
+    series: string;
+};
+
+export type NumberingPreview = {
+    problems: Array<FieldProblem>;
+    samples: Array<string>;
+};
+
+export type NumberingPreviewRequest = {
+    numbering: Numbering;
+    typeCode: string;
+    unitCode?: string | null;
 };
 
 export type OpenEditorRequest = {
@@ -1333,6 +1397,15 @@ export type RecoveryCodes = {
 export type ReferRequest = {
     remark?: string | null;
     to: Array<string>;
+};
+
+export type RegisterEntry = {
+    memoId: string;
+    number: string;
+    sequence: number;
+    status: 'DRAFT' | 'IN_REVIEW' | 'RETURNED' | 'APPROVED' | 'REJECTED' | 'WITHDRAWN' | 'DISCARDED' | 'CANCELLED';
+    subject?: string | null;
+    void: boolean;
 };
 
 export type RemarkRequest = {
@@ -1869,6 +1942,64 @@ export type TestMailSettingsResponses = {
 
 export type TestMailSettingsResponse = TestMailSettingsResponses[keyof TestMailSettingsResponses];
 
+export type ListNumberSeriesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/memo-numbering';
+};
+
+export type ListNumberSeriesResponses = {
+    /**
+     * OK
+     */
+    200: Array<NumberSeriesView>;
+};
+
+export type ListNumberSeriesResponse = ListNumberSeriesResponses[keyof ListNumberSeriesResponses];
+
+export type GetNumberRegisterData = {
+    body?: never;
+    path: {
+        series: string;
+    };
+    query: {
+        period: string;
+        scope?: string;
+        after?: number;
+        limit?: number;
+    };
+    url: '/api/v1/admin/memo-numbering/{series}/register';
+};
+
+export type GetNumberRegisterResponses = {
+    /**
+     * OK
+     */
+    200: NumberRegisterView;
+};
+
+export type GetNumberRegisterResponse = GetNumberRegisterResponses[keyof GetNumberRegisterResponses];
+
+export type StartNumberCounterData = {
+    body: NumberStartRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        series: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/memo-numbering/{series}/start';
+};
+
+export type StartNumberCounterResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
 export type ListAllMemoTypesData = {
     body?: never;
     path?: never;
@@ -1919,6 +2050,22 @@ export type ListMemoTypeDefinitionsResponses = {
 };
 
 export type ListMemoTypeDefinitionsResponse = ListMemoTypeDefinitionsResponses[keyof ListMemoTypeDefinitionsResponses];
+
+export type PreviewNumberingData = {
+    body: NumberingPreviewRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/memo-types/numbering/preview';
+};
+
+export type PreviewNumberingResponses = {
+    /**
+     * OK
+     */
+    200: NumberingPreview;
+};
+
+export type PreviewNumberingResponse = PreviewNumberingResponses[keyof PreviewNumberingResponses];
 
 export type UpdateMemoTypeData = {
     body: MemoTypeRequest;

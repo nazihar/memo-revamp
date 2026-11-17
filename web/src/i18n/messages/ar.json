@@ -806,6 +806,7 @@
   "memo.task.role.clarify": "سؤال موجّه إليك",
   "memo.task.role.opinion": "مطلوب رأيك",
   "memo.task.waiting": "طرحت سؤالًا. يمكنك اتخاذ القرار بعد الإجابة عنه.",
+  "memo.unnumbered": "بلا رقم",
   "memo.updatedAt": "تغيّرت {time}",
   "memoTypes.active": "مستخدم",
   "memoTypes.add": "إضافة نوع مذكرة",

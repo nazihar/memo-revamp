@@ -10,7 +10,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { dueLabel, isOverdue } from './due'
-import { isolated } from './memo-fields'
+import { referenceOf } from './memo-fields'
 import { mm, mmv, statusLabels } from './memo-messages'
 import { statusTone } from './memo-status'
 
@@ -118,7 +118,10 @@ function TaskRow({ item }: { item: InboxItem }) {
       <span className="flex min-w-0 flex-1 flex-col">
         <span className="truncate font-medium">{item.memo.subject}</span>
         <span className="text-xs text-muted-foreground">
-          {intl.formatMessage(mmv.referenceRound, { reference: isolated(item.memo.reference), round: item.round })}
+          {intl.formatMessage(mmv.referenceRound, {
+            reference: referenceOf(intl, item.memo.reference),
+            round: item.round,
+          })}
         </span>
       </span>
       <span className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -179,8 +182,8 @@ function BoxRow({ item }: { item: BoxItem }) {
         <span className="truncate font-medium">{item.subject}</span>
         <span className="text-xs text-muted-foreground">
           {holders
-            ? intl.formatMessage(mmv.referenceHolders, { reference: isolated(item.reference), names: holders })
-            : item.reference}
+            ? intl.formatMessage(mmv.referenceHolders, { reference: referenceOf(intl, item.reference), names: holders })
+            : referenceOf(intl, item.reference)}
         </span>
       </span>
       <span className="flex items-center gap-2 text-xs text-muted-foreground">

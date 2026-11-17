@@ -100,7 +100,11 @@ class MemoTypes(
         val settings =
             fields
                 .settings(fields.code ?: before.code)
-                .copy(fields = current?.settings?.fields.orEmpty(), raiseScope = current?.settings?.raiseScope ?: RaiseScope())
+                .copy(
+                    fields = current?.settings?.fields.orEmpty(),
+                    raiseScope = current?.settings?.raiseScope ?: RaiseScope(),
+                    numbering = current?.settings?.numbering ?: Numbering(),
+                )
         checks.require(settings, id)
         refuseIf(before.active && !fields.active && active().none { it.id != id }, "LAST_ACTIVE") {
             "Keep at least one memo type active, or people cannot create memos."
@@ -143,6 +147,7 @@ class MemoTypeChecks(
     private val definitions: WorkflowDefinitions,
     private val fieldChecks: MemoFieldChecks,
     private val attributeChecks: MemoAttributeChecks,
+    private val numberingChecks: MemoNumberingChecks,
 ) {
     /** Throws [MemoRejectedException] listing what is wrong with [settings] for type [id] (null: a new type). */
     fun require(
@@ -179,7 +184,8 @@ class MemoTypeChecks(
             FieldProblem("allowedApprovers", "TOO_MANY", "At most $MAX_ALLOWED people, positions and roles each.").takeIf {
                 listOf(allowed.people, allowed.positions, allowed.roles).any { it.size > MAX_ALLOWED }
             },
-        ) + fieldChecks.problems(settings.fields, settings.raiseScope) + attributeChecks.problems(settings, id)
+        ) + fieldChecks.problems(settings.fields, settings.raiseScope) + attributeChecks.problems(settings, id) +
+            numberingChecks.problems(settings, id)
     }
 
     companion object {
@@ -210,6 +216,14 @@ class MemoTypeChecks(
                 "doaCheck" to settings.doaCheck,
                 "fields" to settings.fields.map { "${it.key}:${it.type}${if (it.required) "*" else ""}" },
                 "raiseScope" to mapOf("units" to settings.raiseScope.units.size, "roles" to settings.raiseScope.roles.size),
+                "numbering" to
+                    mapOf(
+                        "series" to settings.numbering.series,
+                        "format" to NumberFormats.skeleton(settings.numbering, settings.code),
+                        "reset" to settings.numbering.reset.name,
+                        "countPer" to settings.numbering.countPer.name,
+                        "moment" to settings.numbering.moment.name,
+                    ),
             )
     }
 }

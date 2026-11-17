@@ -8,7 +8,7 @@ import { getEditSession, openEditor } from '@/api/generated/sdk.gen'
 import { ErrorState, LoadingState } from '@/components/page/States'
 import { Button } from '@/components/ui/button'
 import { newIdempotencyKey } from '@/lib/idempotency'
-import { isolated } from './memo-fields'
+import { referenceOf } from './memo-fields'
 
 const m = defineMessages({
   back: { id: 'editor.back', defaultMessage: 'Back to the memo' },
@@ -149,7 +149,9 @@ export function DocumentEditorPage({ memoId, mode }: { memoId: string; mode: 'ed
           {intl.formatMessage(m.back)}
         </Button>
         <h1 id="editor-title" className="text-lg font-semibold">
-          {intl.formatMessage(mode === 'edit' ? titles.editing : titles.viewing, { reference: isolated(reference) })}
+          {intl.formatMessage(mode === 'edit' ? titles.editing : titles.viewing, {
+            reference: referenceOf(intl, reference),
+          })}
         </h1>
       </div>
       {state === 'saving' ? (

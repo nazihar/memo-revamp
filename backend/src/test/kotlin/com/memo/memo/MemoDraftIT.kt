@@ -44,7 +44,7 @@ import tools.jackson.databind.json.JsonMapper
 import java.util.UUID
 
 /**
- * Draft memos over HTTP (test plan E01, T3): create with a reference and a classification between the type's default and
+ * Draft memos over HTTP (test plan E01, T3): create, unnumbered, with a classification between the type's default and
  * the initiator's clearance, edits behind `If-Match`, discard, idempotent creation bound to the actor, visibility (404
  * for others), and the `memo.document` purpose (DOCX only, one file per memo, initiator only while they hold the memo).
  */
@@ -86,12 +86,14 @@ class MemoDraftIT : FilesIntegrationTest() {
     }
 
     @Test
-    fun `a draft gets a reference and the type's default classification, and only its initiator sees it`() {
+    fun `a draft is unnumbered until submit, takes the type's default classification, and only its initiator sees it`() {
         val general = generalType()
         val created = create(aliceSession, """{"subject":"Budget transfer","typeId":"$general"}""")
         assertThat(created).hasStatus(HttpStatus.CREATED)
         val memo = created.json()
-        assertThat(memo["reference"].asString()).matches("^M-\\d{4}-\\d{5}$")
+        // Numbered when submitted (ADR-0044), so drafts no longer use up numbers.
+        assertThat(memo.get("reference")?.isNull ?: true).isTrue()
+        assertThat(memo["numberedWhen"].asString()).isEqualTo("ON_SUBMIT")
         assertThat(memo["status"].asString()).isEqualTo("DRAFT")
         assertThat(memo["classification"]["rank"].asInt()).isZero()
         assertThat(memo["initiator"]["id"].asString()).isEqualTo(alice.id.value.toString())
@@ -102,8 +104,6 @@ class MemoDraftIT : FilesIntegrationTest() {
         assertThat(get(id, aliceSession)).hasStatusOk()
         assertThat(get(id, bobSession)).hasStatus(HttpStatus.NOT_FOUND)
         assertThat(get(UUID.randomUUID().toString(), aliceSession)).hasStatus(HttpStatus.NOT_FOUND)
-        val second = create(aliceSession, """{"subject":"Another","typeId":"$general"}""").json()
-        assertThat(second["reference"].asString()).isNotEqualTo(memo["reference"].asString())
         Audit.assertAudited(tenant.id, "memo.created", id, alice.id.value.toString())
     }
 

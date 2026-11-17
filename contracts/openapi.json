@@ -288,7 +288,7 @@
             "type" : "string"
           },
           "reference" : {
-            "type" : "string"
+            "type" : [ "string", "null" ]
           },
           "round" : {
             "format" : "int32",
@@ -306,7 +306,7 @@
             "type" : "string"
           }
         },
-        "required" : [ "holders", "id", "reference", "round", "status", "subject", "updatedAt" ],
+        "required" : [ "holders", "id", "round", "status", "subject", "updatedAt" ],
         "type" : "object"
       },
       "BoxPage" : {
@@ -2075,12 +2075,16 @@
           "name" : {
             "type" : "string"
           },
+          "numberingMoment" : {
+            "enum" : [ "ON_SUBMIT", "ON_APPROVAL" ],
+            "type" : "string"
+          },
           "version" : {
             "format" : "int32",
             "type" : "integer"
           }
         },
-        "required" : [ "fields", "id", "name", "version" ],
+        "required" : [ "fields", "id", "name", "numberingMoment", "version" ],
         "type" : "object"
       },
       "MemoTypeOption" : {
@@ -2099,11 +2103,15 @@
           "name" : {
             "type" : "string"
           },
+          "numberingMoment" : {
+            "enum" : [ "ON_SUBMIT", "ON_APPROVAL" ],
+            "type" : "string"
+          },
           "stepUpOnApprove" : {
             "type" : "boolean"
           }
         },
-        "required" : [ "hasFields", "id", "name", "stepUpOnApprove" ],
+        "required" : [ "hasFields", "id", "name", "numberingMoment", "stepUpOnApprove" ],
         "type" : "object"
       },
       "MemoTypeRequest" : {
@@ -2167,6 +2175,9 @@
           "name" : {
             "type" : "string"
           },
+          "numbering" : {
+            "$ref" : "#/components/schemas/Numbering"
+          },
           "raiseScope" : {
             "$ref" : "#/components/schemas/RaiseScope"
           },
@@ -2227,6 +2238,9 @@
             "format" : "int32",
             "type" : "integer"
           },
+          "numbering" : {
+            "$ref" : "#/components/schemas/Numbering"
+          },
           "publishedAt" : {
             "format" : "date-time",
             "type" : [ "string", "null" ]
@@ -2275,7 +2289,7 @@
             } ]
           }
         },
-        "required" : [ "allowedApprovers", "allowedNames", "code", "createdAt", "definitionKey", "doaCheck", "fields", "name", "number", "raiseScope", "revision", "routePolicy", "state", "stepUpOnApprove" ],
+        "required" : [ "allowedApprovers", "allowedNames", "code", "createdAt", "definitionKey", "doaCheck", "fields", "name", "number", "numbering", "raiseScope", "revision", "routePolicy", "state", "stepUpOnApprove" ],
         "type" : "object"
       },
       "MemoView" : {
@@ -2337,6 +2351,10 @@
               "type" : "null"
             } ]
           },
+          "numberedWhen" : {
+            "enum" : [ "ON_SUBMIT", "ON_APPROVAL" ],
+            "type" : [ "string", "null" ]
+          },
           "originUnit" : {
             "oneOf" : [ {
               "$ref" : "#/components/schemas/Named"
@@ -2345,7 +2363,7 @@
             } ]
           },
           "reference" : {
-            "type" : "string"
+            "type" : [ "string", "null" ]
           },
           "round" : {
             "format" : "int32",
@@ -2392,7 +2410,7 @@
             "type" : "integer"
           }
         },
-        "required" : [ "allowedActions", "classification", "createdAt", "details", "holders", "id", "initiator", "interests", "reference", "round", "route", "sendBackTargets", "staleDetails", "status", "subject", "type", "updatedAt", "version" ],
+        "required" : [ "allowedActions", "classification", "createdAt", "details", "holders", "id", "initiator", "interests", "round", "route", "sendBackTargets", "staleDetails", "status", "subject", "type", "updatedAt", "version" ],
         "type" : "object"
       },
       "MfaEnrolment" : {
@@ -2647,6 +2665,193 @@
           }
         },
         "required" : [ "category", "createdAt", "id", "kind", "params", "read" ],
+        "type" : "object"
+      },
+      "NumberCounterView" : {
+        "properties" : {
+          "lastNumber" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "period" : {
+            "type" : "string"
+          },
+          "scope" : {
+            "type" : "string"
+          },
+          "scopeName" : {
+            "type" : [ "string", "null" ]
+          },
+          "startedByAdmin" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "lastNumber", "period", "scope", "startedByAdmin" ],
+        "type" : "object"
+      },
+      "NumberPart" : {
+        "properties" : {
+          "digits" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "kind" : {
+            "enum" : [ "TEXT", "TYPE_CODE", "UNIT_CODE", "YEAR", "FINANCIAL_YEAR", "SEQUENCE" ],
+            "type" : "string"
+          },
+          "style" : {
+            "enum" : [ "LONG", "SHORT" ],
+            "type" : [ "string", "null" ]
+          },
+          "text" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "kind" ],
+        "type" : "object"
+      },
+      "NumberRegisterView" : {
+        "properties" : {
+          "entries" : {
+            "items" : {
+              "$ref" : "#/components/schemas/RegisterEntry"
+            },
+            "type" : "array"
+          },
+          "lastNumber" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "missing" : {
+            "items" : {
+              "format" : "int64",
+              "type" : "integer"
+            },
+            "type" : "array"
+          },
+          "missingCount" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "next" : {
+            "format" : "int64",
+            "type" : [ "integer", "null" ]
+          },
+          "period" : {
+            "type" : "string"
+          },
+          "scope" : {
+            "type" : "string"
+          },
+          "series" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "entries", "lastNumber", "missing", "missingCount", "period", "scope", "series" ],
+        "type" : "object"
+      },
+      "NumberSeriesView" : {
+        "properties" : {
+          "counters" : {
+            "items" : {
+              "$ref" : "#/components/schemas/NumberCounterView"
+            },
+            "type" : "array"
+          },
+          "series" : {
+            "type" : "string"
+          },
+          "types" : {
+            "items" : {
+              "$ref" : "#/components/schemas/Named"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "counters", "series", "types" ],
+        "type" : "object"
+      },
+      "NumberStartRequest" : {
+        "properties" : {
+          "next" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "period" : {
+            "type" : "string"
+          },
+          "scope" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "next", "period" ],
+        "type" : "object"
+      },
+      "Numbering" : {
+        "properties" : {
+          "countPer" : {
+            "enum" : [ "SERIES", "UNIT" ],
+            "type" : "string"
+          },
+          "fyStartMonth" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "moment" : {
+            "enum" : [ "ON_SUBMIT", "ON_APPROVAL" ],
+            "type" : "string"
+          },
+          "needsUnit" : {
+            "type" : "boolean"
+          },
+          "parts" : {
+            "items" : {
+              "$ref" : "#/components/schemas/NumberPart"
+            },
+            "type" : "array"
+          },
+          "reset" : {
+            "enum" : [ "NEVER", "YEARLY", "FINANCIAL_YEAR" ],
+            "type" : "string"
+          },
+          "series" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "countPer", "fyStartMonth", "moment", "parts", "reset", "series" ],
+        "type" : "object"
+      },
+      "NumberingPreview" : {
+        "properties" : {
+          "problems" : {
+            "items" : {
+              "$ref" : "#/components/schemas/FieldProblem"
+            },
+            "type" : "array"
+          },
+          "samples" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "problems", "samples" ],
+        "type" : "object"
+      },
+      "NumberingPreviewRequest" : {
+        "properties" : {
+          "numbering" : {
+            "$ref" : "#/components/schemas/Numbering"
+          },
+          "typeCode" : {
+            "type" : "string"
+          },
+          "unitCode" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "numbering", "typeCode" ],
         "type" : "object"
       },
       "OpenEditorRequest" : {
@@ -3456,6 +3661,33 @@
           }
         },
         "required" : [ "to" ],
+        "type" : "object"
+      },
+      "RegisterEntry" : {
+        "properties" : {
+          "memoId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "number" : {
+            "type" : "string"
+          },
+          "sequence" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "status" : {
+            "enum" : [ "DRAFT", "IN_REVIEW", "RETURNED", "APPROVED", "REJECTED", "WITHDRAWN", "DISCARDED", "CANCELLED" ],
+            "type" : "string"
+          },
+          "subject" : {
+            "type" : [ "string", "null" ]
+          },
+          "void" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "memoId", "number", "sequence", "status", "void" ],
         "type" : "object"
       },
       "RemarkRequest" : {
@@ -4643,6 +4875,125 @@
         "tags" : [ "notifications" ]
       }
     },
+    "/api/v1/admin/memo-numbering" : {
+      "get" : {
+        "operationId" : "listNumberSeries",
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/NumberSeriesView"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Numbering series with the types numbering in them and their counters",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/admin/memo-numbering/{series}/register" : {
+      "get" : {
+        "operationId" : "getNumberRegister",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "series",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "period",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "scope",
+          "required" : false,
+          "schema" : {
+            "default" : "",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "after",
+          "required" : false,
+          "schema" : {
+            "default" : 0,
+            "format" : "int64",
+            "type" : "integer"
+          }
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "required" : false,
+          "schema" : {
+            "default" : 50,
+            "format" : "int32",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/NumberRegisterView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The numbers of a counter in order, with the numbers no memo has",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/admin/memo-numbering/{series}/start" : {
+      "post" : {
+        "operationId" : "startNumberCounter",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "series",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/NumberStartRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "summary" : "Set the first number of a counter that has given none",
+        "tags" : [ "memo" ]
+      }
+    },
     "/api/v1/admin/memo-types" : {
       "get" : {
         "operationId" : "listAllMemoTypes",
@@ -4719,6 +5070,35 @@
           }
         },
         "summary" : "Published workflow definitions a memo type can run on",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/admin/memo-types/numbering/preview" : {
+      "post" : {
+        "operationId" : "previewNumbering",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/NumberingPreviewRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/NumberingPreview"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Sample numbers for a numbering, or what is wrong with it",
         "tags" : [ "memo" ]
       }
     },

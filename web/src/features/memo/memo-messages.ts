@@ -2,6 +2,7 @@ import { defineMessages } from 'react-intl'
 
 /** Texts of the memo screens (design E01 §13, ux-review.md). */
 export const mm = defineMessages({
+  unnumbered: { id: 'memo.unnumbered', defaultMessage: 'Unnumbered' },
   inboxTitle: { id: 'memo.inbox.title', defaultMessage: 'Inbox' },
   inboxLead: { id: 'memo.inbox.lead', defaultMessage: 'Memos waiting for you, and the memos you write.' },
   tabTasks: { id: 'memo.inbox.tab.tasks', defaultMessage: 'My tasks' },

@@ -27,7 +27,7 @@ import { Button } from '@/components/ui/button'
 import { Dialog } from '@/components/ui/dialog'
 import { Field } from '@/components/ui/field'
 import { Select, Textarea } from '@/components/ui/form-controls'
-import { isolated } from './memo-fields'
+import { referenceOf } from './memo-fields'
 import { actionButtons, dialogLeads, dialogTitles, mm, mmv } from './memo-messages'
 import { newIdempotencyKey } from '@/lib/idempotency'
 
@@ -191,7 +191,7 @@ export function ActionDialog({
       onOpenChange={(open) => {
         if (!open) onClose()
       }}
-      title={intl.formatMessage(dialogTitles[kind], { reference: isolated(memo.reference) })}
+      title={intl.formatMessage(dialogTitles[kind], { reference: referenceOf(intl, memo.reference) })}
       description={intl.formatMessage(dialogLeads[kind], { number: memo.document?.number ?? 0 })}
       className="max-md:h-dvh max-md:max-h-none max-md:w-screen max-md:max-w-none max-md:rounded-none"
       footer={

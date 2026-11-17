@@ -163,7 +163,7 @@ All under `/api/v1`; errors are RFC 9457 with `errors[{field, code, message}]`; 
 | `POST /admin/memo-types/numbering/preview` | manage or approve | `{numbering, typeCode, unitCode?, at?}` → sample numbers (now, next period) and problems |
 | `GET /admin/memo-numbering` | manage, approve, or `audit.read` | Series with their periods, scopes, last numbers and the types using them |
 | `GET /admin/memo-numbering/{series}/register` | manage, approve, or `audit.read` | `?period&scope&cursor`: numbers in order with memo id, status, void reason; subject only if the reader may see the memo |
-| `PUT /admin/memo-numbering/{series}/start` | approve; step-up; Idempotency | `{period, scope, next}`; refused once a number exists (`ALREADY_STARTED`) |
+| `POST /admin/memo-numbering/{series}/start` | approve; step-up; Idempotency | `{period, scope, next}`; refused once a number exists (`ALREADY_STARTED`) |
 | `POST /memos` | `memo.create`; Idempotency | Adds `metadata`; checks raise scope; sets origin unit |
 | `PUT /memos/{id}` | initiator; If-Match | Adds `metadata` (DRAFT and RETURNED: subject, classification as before; metadata only in DRAFT) |
 | `GET /memos/{id}` | memo readers | Adds metadata with labels from the version (current for drafts, pinned otherwise), `reference` nullable, `numberingMoment`, `staleFields`, links, `linkedFrom`, `closedAt` |
@@ -240,7 +240,7 @@ Each is written in the business transaction and asserted in a test (`AuditAction
 |---|---|---|
 | `GET /memo-types`, `/form` | p95 < 50 ms | Caffeine cache per tenant (published versions), invalidated on publish |
 | Create and save draft | p95 < 200 ms | Validation in memory against the cached version |
-| Submit with numbering | p95 < 300 ms; counter lock held < 20 ms | Number taken as the last statement; one counter row per series, period and scope |
+| Submit with numbering | p95 < 300 ms; counter lock held < 20 ms | Number taken late in the transaction (just before the workflow starts); one counter row per series, period and scope |
 | Numbering under contention | 50 parallel submits on one series: all succeed, sequences 1..50, no gaps | `NumberingConcurrencyIT` |
 | Register page | p95 < 300 ms at 100,000 numbers in a period | Index `(tenant_id, number_series, number_period, number_scope, number_sequence)`; keyset paging |
 | Link lookup by number | p95 < 50 ms | Unique `(tenant_id, reference)` |

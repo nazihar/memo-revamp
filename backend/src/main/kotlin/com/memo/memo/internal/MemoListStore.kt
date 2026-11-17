@@ -13,7 +13,8 @@ import com.memo.jooq.tables.references.MEMO_ as MEMO
 /** A row of a box (drafts, sent, closed). */
 data class MemoListItem(
     val id: UUID,
-    val reference: String,
+    /** Null until the memo is numbered (ADR-0044). */
+    val reference: String?,
     val subject: String,
     val status: MemoStatus,
     val round: Int,
@@ -33,7 +34,7 @@ class MemoListStore(
             .from(MEMO)
             .where(MEMO.ID.`in`(ids))
             .fetch()
-            .associate { it.value1()!! to SubjectSummary(it.value2()!!, it.value3()!!, it.value4()!!) }
+            .associate { it.value1()!! to SubjectSummary(it.value2(), it.value3()!!, it.value4()!!) }
     }
 
     /** Which of [ids] [user] takes part in and is cleared for ([clearanceRank]). */
@@ -79,7 +80,7 @@ class MemoListStore(
             .fetch {
                 MemoListItem(
                     it.value1()!!,
-                    it.value2()!!,
+                    it.value2(),
                     it.value3()!!,
                     MemoStatus.valueOf(it.value4()!!),
                     it.value5()!!,

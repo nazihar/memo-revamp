@@ -205,6 +205,11 @@ open class MemoTypeVersion(
      */
     val RAISE_SCOPE: TableField<MemoTypeVersionRecord, JSONB?> = createField(DSL.name("raise_scope"), SQLDataType.JSONB.nullable(false).defaultValue(DSL.field(DSL.raw("'{}'::jsonb"), SQLDataType.JSONB)), this, "")
 
+    /**
+     * The column <code>memo.memo_type_version.numbering</code>.
+     */
+    val NUMBERING: TableField<MemoTypeVersionRecord, JSONB?> = createField(DSL.name("numbering"), SQLDataType.JSONB.nullable(false).defaultValue(DSL.field(DSL.raw("'{\"parts\": [{\"kind\": \"TEXT\", \"text\": \"M-\"}, {\"kind\": \"YEAR\", \"digits\": 4}, {\"kind\": \"TEXT\", \"text\": \"-\"}, {\"kind\": \"SEQUENCE\", \"digits\": 5}], \"reset\": \"YEARLY\", \"moment\": \"ON_SUBMIT\", \"series\": \"general\", \"countPer\": \"SERIES\", \"fyStartMonth\": 7}'::jsonb"), SQLDataType.JSONB)), this, "")
+
     private constructor(alias: Name, aliased: Table<MemoTypeVersionRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<MemoTypeVersionRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<MemoTypeVersionRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -271,6 +276,7 @@ open class MemoTypeVersion(
         Internal.createCheck(this, DSL.name("memo_type_version_fields_check"), "(((jsonb_typeof(fields) = 'array'::text) AND (octet_length((fields)::text) <= 65536)))", true),
         Internal.createCheck(this, DSL.name("memo_type_version_name_check"), "(((length(name) >= 1) AND (length(name) <= 200)))", true),
         Internal.createCheck(this, DSL.name("memo_type_version_number_check"), "((number >= 1))", true),
+        Internal.createCheck(this, DSL.name("memo_type_version_numbering_check"), "(((jsonb_typeof(numbering) = 'object'::text) AND (octet_length((numbering)::text) <= 4096)))", true),
         Internal.createCheck(this, DSL.name("memo_type_version_raise_scope_check"), "(((jsonb_typeof(raise_scope) = 'object'::text) AND (octet_length((raise_scope)::text) <= 16384)))", true),
         Internal.createCheck(this, DSL.name("memo_type_version_review_remark_check"), "(((length(review_remark) >= 1) AND (length(review_remark) <= 4000)))", true),
         Internal.createCheck(this, DSL.name("memo_type_version_route_policy_check"), "((route_policy = ANY (ARRAY['INITIATOR_DEFINED'::text, 'FIXED'::text, 'BOTH'::text])))", true),

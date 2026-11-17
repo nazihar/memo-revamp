@@ -35,6 +35,7 @@ class MemoTypeBackfillIT {
             val general = type(c, tenantA, "General memo", key = "general")
             memo(c, tenantA, general, inReview, "IN_REVIEW", 1)
             memo(c, tenantA, general, draft, "DRAFT", 2)
+            c.createStatement().use { it.executeUpdate("insert into memo_reference_counter values ('$tenantA', 2026, 2)") }
             type(c, tenantA, "Credit facility", policy = "FIXED", definition = "credit-facility", doa = true)
             type(c, tenantA, "Cash flow", classification = level, stepUp = false)
             type(c, tenantA, "--", active = false)
@@ -104,6 +105,34 @@ class MemoTypeBackfillIT {
                         """.trimIndent(),
                     ).use { rs -> buildMap { while (rs.next()) put(rs.getObject(1) as UUID, rs.getObject(2) as Int?) } }
             assertThat(pinned).containsEntry(inReview, 1).containsEntry(draft, null)
+        }
+    }
+
+    @Test
+    fun `existing references become numbers of the general series, whose counter continues`() {
+        connect { c ->
+            tenant(c, tenantA)
+            val numbers =
+                c
+                    .createStatement()
+                    .executeQuery(
+                        "select reference, number_series, number_period, number_scope, number_sequence from memo order by reference",
+                    ).use { rs -> buildList { while (rs.next()) add((1..5).map { rs.getObject(it)?.toString() }) } }
+            assertThat(numbers).containsExactly(
+                listOf("M-2026-00001", "general", "2026", "", "1"),
+                listOf("M-2026-00002", "general", "2026", "", "2"),
+            )
+            val counter =
+                c
+                    .createStatement()
+                    .executeQuery("select series, period, scope, last_number from memo_number_counter")
+                    .use { rs -> buildList { while (rs.next()) add((1..4).map { rs.getObject(it).toString() }) } }
+            assertThat(counter).containsExactly(listOf("general", "2026", "", "2"))
+            val format =
+                c.createStatement().executeQuery("select distinct numbering->>'series' from memo_type_version").use { rs ->
+                    buildList { while (rs.next()) add(rs.getString(1)) }
+                }
+            assertThat(format).containsExactly("general")
         }
     }
 

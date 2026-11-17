@@ -48,6 +48,7 @@ const loaders: Record<CataloguePart, Record<string, () => Promise<Messages>>> = 
   memoAdmin: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'memoAdmin' }, import: 'default' }),
   platform: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'platform' }, import: 'default' }),
   patterns: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'patterns' }, import: 'default' }),
+  search: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'search' }, import: 'default' }),
 }
 
 /** [part] of [locale]'s messages; empty for English (the source locale). */

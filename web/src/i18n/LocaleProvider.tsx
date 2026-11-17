@@ -21,7 +21,15 @@ interface LocaleContextValue {
   request: (part: CataloguePart) => void
 }
 
-const ALL_PARTS: ReadonlySet<CataloguePart> = new Set(['core', 'admin', 'builder', 'memoAdmin', 'platform', 'patterns'])
+const ALL_PARTS: ReadonlySet<CataloguePart> = new Set([
+  'core',
+  'admin',
+  'builder',
+  'memoAdmin',
+  'platform',
+  'patterns',
+  'search',
+])
 
 const LocaleContext = createContext<LocaleContextValue | null>(null)
 

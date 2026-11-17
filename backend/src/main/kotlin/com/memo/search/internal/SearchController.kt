@@ -1,5 +1,6 @@
 package com.memo.search.internal
 
+import com.fasterxml.jackson.annotation.JsonProperty
 import com.memo.common.authz.SignedIn
 import com.memo.common.context.ActorContext
 import com.memo.common.ratelimit.RateLimit
@@ -11,29 +12,23 @@ import com.memo.common.web.ProblemTypes
 import com.memo.common.web.etagOf
 import com.memo.common.web.ifMatchVersion
 import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.Parameter
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.tags.Tag
-import org.springdoc.core.annotations.ParameterObject
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
-import org.springframework.format.annotation.DateTimeFormat
 import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.ProblemDetail
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.BindParam
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.ModelAttribute
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestHeader
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import java.math.BigDecimal
@@ -41,19 +36,23 @@ import java.time.Instant
 import java.time.LocalDate
 import java.util.UUID
 
-/** The query string of `GET /search` (design E05 §3): repeated parameters for several values (`status=A&status=B`). */
+/**
+ * The body of `POST /search` (design E05 §3). A body, not a query string: search terms (names, account numbers) must not
+ * reach access logs or browser history (AGENTS.md §3.4; threat model E05 I4).
+ */
 data class SearchParams(
     val q: String? = null,
     val type: List<UUID>? = null,
     val status: List<String>? = null,
     val unit: List<UUID>? = null,
-    @param:DateTimeFormat(iso = DateTimeFormat.ISO.DATE) val from: LocalDate? = null,
-    @param:DateTimeFormat(iso = DateTimeFormat.ISO.DATE) val to: LocalDate? = null,
+    val from: LocalDate? = null,
+    val to: LocalDate? = null,
     val amountMin: BigDecimal? = null,
     val amountMax: BigDecimal? = null,
     /** Where to search: `metadata`, `notes`, `documents` (default all). */
-    @param:BindParam("in")
-    @field:Parameter(name = "in", description = "Where to search: metadata, notes, documents (default all)")
+    @param:JsonProperty("in")
+    @get:JsonProperty("in")
+    @field:Schema(name = "in")
     val sources: List<String>? = null,
     /** `relevance` (default) or `newest`. */
     val sort: String? = null,
@@ -84,6 +83,11 @@ data class SearchParams(
     }
 }
 
+/** The body of `POST /search/suggest`: what has been typed so far. */
+data class SuggestRequest(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val q: String,
+)
+
 data class SavedSearchRequest(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val name: String,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val criteria: SearchQuery,
@@ -111,11 +115,11 @@ class SearchController(
     private val transactions: TenantTransactions,
     private val limiter: RateLimiter,
 ) {
-    @GetMapping("/search")
+    @PostMapping("/search")
     @SignedIn
     @Operation(operationId = "search", summary = "Memos the reader may read that match, with counts, facets and snippets")
     fun search(
-        @ParameterObject @ModelAttribute params: SearchParams,
+        @RequestBody params: SearchParams,
     ): ResponseEntity<SearchPageView> {
         limit()
         val query = params.query()
@@ -126,14 +130,14 @@ class SearchController(
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(page)
     }
 
-    @GetMapping("/search/suggest")
+    @PostMapping("/search/suggest")
     @SignedIn
     @Operation(operationId = "suggestSearch", summary = "Up to 8 memos while typing: the last word matches as a prefix")
     fun suggest(
-        @RequestParam q: String,
+        @RequestBody body: SuggestRequest,
     ): ResponseEntity<List<SuggestionView>> {
         limit()
-        val found = transactions.inTenant(TenantContext.current()) { search.suggest(q) }
+        val found = transactions.inTenant(TenantContext.current()) { search.suggest(body.q) }
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(found)
     }
 

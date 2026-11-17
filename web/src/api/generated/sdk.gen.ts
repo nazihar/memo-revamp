@@ -1978,12 +1978,26 @@ export const replaceSavedSearch = <ThrowOnError extends boolean = false>(options
 /**
  * Memos the reader may read that match, with counts, facets and snippets
  */
-export const search = <ThrowOnError extends boolean = false>(options?: Options<SearchData, ThrowOnError>): RequestResult<SearchResponses, unknown, ThrowOnError> => (options?.client ?? client).get<SearchResponses, unknown, ThrowOnError>({ url: '/api/v1/search', ...options });
+export const search = <ThrowOnError extends boolean = false>(options: Options<SearchData, ThrowOnError>): RequestResult<SearchResponses, unknown, ThrowOnError> => (options.client ?? client).post<SearchResponses, unknown, ThrowOnError>({
+    url: '/api/v1/search',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
 
 /**
  * Up to 8 memos while typing: the last word matches as a prefix
  */
-export const suggestSearch = <ThrowOnError extends boolean = false>(options: Options<SuggestSearchData, ThrowOnError>): RequestResult<SuggestSearchResponses, unknown, ThrowOnError> => (options.client ?? client).get<SuggestSearchResponses, unknown, ThrowOnError>({ url: '/api/v1/search/suggest', ...options });
+export const suggestSearch = <ThrowOnError extends boolean = false>(options: Options<SuggestSearchData, ThrowOnError>): RequestResult<SuggestSearchResponses, unknown, ThrowOnError> => (options.client ?? client).post<SuggestSearchResponses, unknown, ThrowOnError>({
+    url: '/api/v1/search/suggest',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
 
 /**
  * Answer the question this task asks

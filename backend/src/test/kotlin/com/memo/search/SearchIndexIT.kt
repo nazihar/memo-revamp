@@ -115,7 +115,7 @@ class SearchIndexIT : MemoIntegrationTest() {
         chunks(fileId, alice)
         assertThat(search(alice, "quokka", rank = 0).single().inDocuments).isTrue()
         // The API names the attachment it was found in.
-        val foundIn = read("/api/v1/search?q=quokka", alice.session).json()["results"][0]["foundIn"]
+        val foundIn = post("/api/v1/search", alice.session, """{"q":"quokka"}""").json()["results"][0]["foundIn"]
         assertThat(foundIn["kind"].asString()).isEqualTo("ATTACHMENT")
         assertThat(foundIn["name"].asString()).isEqualTo("quokka annex.docx")
 

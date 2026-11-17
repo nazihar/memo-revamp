@@ -1,5 +1,6 @@
 import {
   Activity,
+  Bookmark,
   CalendarClock,
   FileClock,
   House,
@@ -54,6 +55,7 @@ export const ANONYMOUS: Viewer = { signedIn: false, permissions: [] }
 const messages = defineMessages({
   home: { id: 'nav.home', defaultMessage: 'Home' },
   inbox: { id: 'nav.inbox', defaultMessage: 'Inbox' },
+  savedSearches: { id: 'nav.savedSearches', defaultMessage: 'Saved searches' },
   workflowTasks: { id: 'nav.workflowTasks', defaultMessage: 'Open tasks' },
   memoTypes: { id: 'nav.memoTypes', defaultMessage: 'Memo types' },
   memoNumbering: { id: 'nav.memoNumbering', defaultMessage: 'Memo numbering' },
@@ -100,6 +102,15 @@ export const ADMIN_PERMISSIONS = [
 export const navigation: NavItem[] = [
   { id: 'home', to: '/', label: messages.home, icon: House, group: 'work', audience: 'signedIn', enabled: true },
   { id: 'inbox', to: '/inbox', label: messages.inbox, icon: Inbox, group: 'work', audience: 'signedIn', enabled: true },
+  {
+    id: 'savedSearches',
+    to: '/search/saved',
+    label: messages.savedSearches,
+    icon: Bookmark,
+    group: 'work',
+    audience: 'signedIn',
+    enabled: true,
+  },
   {
     id: 'status',
     to: '/status',

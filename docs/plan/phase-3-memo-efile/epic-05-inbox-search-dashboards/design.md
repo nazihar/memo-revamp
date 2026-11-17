@@ -34,7 +34,8 @@ erDiagram
 - **`memo_watch` (memo module):** tenant, memo, user, reason (`MANUAL`, `INITIATED`, `ACTED`, `MENTIONED`), created. Unique per (memo, user). Auto-watch follows the person's preference (`notifications.autoWatch`, default on for memos they initiate or act on).
 
 ## 3. Search (ADR-0054)
-- **API:** `GET /api/v1/search?q=&type=&status=&unit=&from=&to=&amountMin=&amountMax=&in=metadata,notes,documents&sort=relevance|newest&cursor=`
+- **API:** `POST /api/v1/search` with a JSON body `{q, type[], status[], unit[], from, to, amountMin, amountMax, in[metadata|notes|documents], sort: relevance|newest, cursor, limit}`. It is a body, not a query string, so search terms never reach access logs (threat model I4, AGENTS.md §3.4; changed in T6).
+  - **The Search page's address** keeps the filters and the sort in the query string and the words in the fragment (`/search?status=IN_REVIEW#q=rent%20schedule`). Browsers never send the fragment to a server, and reload, back and links still work (T6).
   - **Returns:** results (memo id, number, subject, type, status, unit, updated, a snippet with `<mark>` delimiters as data, "found in" flags), a count that is exact up to 2,000 and "2,000+" above it, facets (status, type, unit) counted on the same permitted set, and a cursor.
   - **Errors:** 422 (no words, query too long, too many terms, bad filter), 400 (malformed cursor or value), 429 (rate limit), 503 (`SEARCH_TIMEOUT`).
   - **Decided in T3:**
@@ -44,7 +45,7 @@ erDiagram
     - Snippets come as text parts with a `match` flag, never as HTML.
     - Search-as-you-type is audited like a search (`mode: suggest`).
     - A stale `If-Match` on a saved search is 412, as everywhere else.
-  - **Search as you type** (the top-bar box): `GET /api/v1/search/suggest?q=` matches the last word as a prefix (3+ characters) over 200 candidates and returns at most 8 memos, without facets or count (E05 T1: the unit head's prefix search over 2,000 candidates was 307 ms at V1).
+  - **Search as you type** (the top-bar box): `POST /api/v1/search/suggest` `{q}` matches the last word as a prefix (3+ characters) over 200 candidates and returns at most 8 memos, without facets or count (E05 T1: the unit head's prefix search over 2,000 candidates was 307 ms at V1).
 - **Function `search.find`:**
   - Its parameters are the tenant, the reader, the clearance rank, the unit scopes, the parsed query terms, the filters, the sort, the cursor and the limit.
   - The application computes the unit scopes from the policy, as `MemoReadable` does.
@@ -112,8 +113,8 @@ erDiagram
 ## 7. API and authorisation matrix
 | Endpoint | Rule |
 |---|---|
-| `GET /search` | signed in; results filtered by the access rule; rate-limited |
-| `GET /search/suggest` | signed in; as `GET /search` (same rule, same rate limit) |
+| `POST /search` | signed in; results filtered by the access rule; rate-limited |
+| `POST /search/suggest` | signed in; as `POST /search` (same rule, same rate limit) |
 | `GET/POST/PUT/DELETE /saved-searches` | signed in; owner only (others 404) |
 | `PUT/DELETE /memos/{id}/watch` | readers of the memo (others 404) |
 | `GET /inbox/watching` | signed in (own) |

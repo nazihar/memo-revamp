@@ -5,6 +5,7 @@ import { AccountMenu } from '@/features/auth/AccountMenu'
 import { useMyAccess } from '@/features/access/access'
 import { useSession, viewerOf } from '@/features/auth/session'
 import { NotificationBell } from '@/features/notifications/NotificationBell'
+import { SearchBox } from '@/features/search/SearchBox'
 import { partsForPath } from '@/i18n/catalogue-parts'
 import { CatalogueGate } from '@/i18n/CatalogueGate'
 
@@ -22,6 +23,7 @@ function ShellLayout() {
       viewer={viewerOf(session.data, access.data)}
       account={<AccountMenu />}
       notifications={<NotificationBell />}
+      search={session.data?.state === 'AUTHENTICATED' ? <SearchBox /> : undefined}
     >
       <BrandingApplier />
       <CatalogueGate parts={partsForPath(pathname)}>

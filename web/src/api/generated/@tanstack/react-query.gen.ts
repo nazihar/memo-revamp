@@ -4618,71 +4618,39 @@ export const replaceSavedSearchMutation = (options?: Partial<Options<ReplaceSave
     return mutationOptions;
 };
 
-export const searchQueryKey = (options?: Options<SearchData>) => createQueryKey('search', options);
-
 /**
  * Memos the reader may read that match, with counts, facets and snippets
  */
-export const searchOptions = (options?: Options<SearchData>) => queryOptions<SearchResponse, DefaultError, SearchResponse, ReturnType<typeof searchQueryKey>>({
-    queryFn: async ({ queryKey, signal }) => {
-        const { data } = await search({
-            ...options,
-            ...queryKey[0],
-            signal,
-            throwOnError: true
-        });
-        return data;
-    },
-    queryKey: searchQueryKey(options)
-});
-
-export const searchInfiniteQueryKey = (options?: Options<SearchData>): QueryKey<Options<SearchData>> => createQueryKey('search', options, true);
-
-/**
- * Memos the reader may read that match, with counts, facets and snippets
- */
-export const searchInfiniteOptions = (options?: Options<SearchData>) => {
-    const opts = infiniteQueryOptions<SearchResponse, DefaultError, InfiniteData<SearchResponse>, QueryKey<Options<SearchData>>, string | Pick<QueryKey<Options<SearchData>>[0], 'body' | 'headers' | 'path' | 'query'>>(
-    // @ts-ignore
-    {
-        queryFn: async ({ pageParam, queryKey, signal }) => {
-            // @ts-ignore
-            const page: Pick<QueryKey<Options<SearchData>>[0], 'body' | 'headers' | 'path' | 'query'> = typeof pageParam === 'object' ? pageParam : {
-                query: {
-                    cursor: pageParam
-                }
-            };
-            const params = createInfiniteParams(queryKey, page);
+export const searchMutation = (options?: Partial<Options<SearchData>>): UseMutationOptions<SearchResponse, DefaultError, Options<SearchData>> => {
+    const mutationOptions: UseMutationOptions<SearchResponse, DefaultError, Options<SearchData>> = {
+        mutationFn: async (fnOptions) => {
             const { data } = await search({
                 ...options,
-                ...params,
-                signal,
+                ...fnOptions,
                 throwOnError: true
             });
             return data;
-        },
-        queryKey: searchInfiniteQueryKey(options)
-    });
-    return opts as Omit<typeof opts, 'initialData'>;
+        }
+    };
+    return mutationOptions;
 };
-
-export const suggestSearchQueryKey = (options: Options<SuggestSearchData>) => createQueryKey('suggestSearch', options);
 
 /**
  * Up to 8 memos while typing: the last word matches as a prefix
  */
-export const suggestSearchOptions = (options: Options<SuggestSearchData>) => queryOptions<SuggestSearchResponse, DefaultError, SuggestSearchResponse, ReturnType<typeof suggestSearchQueryKey>>({
-    queryFn: async ({ queryKey, signal }) => {
-        const { data } = await suggestSearch({
-            ...options,
-            ...queryKey[0],
-            signal,
-            throwOnError: true
-        });
-        return data;
-    },
-    queryKey: suggestSearchQueryKey(options)
-});
+export const suggestSearchMutation = (options?: Partial<Options<SuggestSearchData>>): UseMutationOptions<SuggestSearchResponse, DefaultError, Options<SuggestSearchData>> => {
+    const mutationOptions: UseMutationOptions<SuggestSearchResponse, DefaultError, Options<SuggestSearchData>> = {
+        mutationFn: async (fnOptions) => {
+            const { data } = await suggestSearch({
+                ...options,
+                ...fnOptions,
+                throwOnError: true
+            });
+            return data;
+        }
+    };
+    return mutationOptions;
+};
 
 /**
  * Answer the question this task asks

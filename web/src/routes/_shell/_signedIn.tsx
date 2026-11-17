@@ -12,8 +12,10 @@ export const Route = createFileRoute('/_shell/_signedIn')({
     if (!session) return
     // eslint-disable-next-line @typescript-eslint/only-throw-error -- TanStack Router's redirect() is designed to be thrown
     if (session.state === 'MFA_ENROLMENT_REQUIRED') throw redirect({ to: '/login/enrol-mfa' })
+    // The fragment stays behind: it may hold search words (#q=…), which must not go into the query string of `next`.
+    const next = location.pathname + location.searchStr
     // eslint-disable-next-line @typescript-eslint/only-throw-error -- as above
-    if (session.state !== 'AUTHENTICATED') throw redirect({ to: '/login', search: { next: location.href } })
+    if (session.state !== 'AUTHENTICATED') throw redirect({ to: '/login', search: { next } })
   },
   component: Outlet,
 })

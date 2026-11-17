@@ -39,6 +39,18 @@ open class MemoParticipantRecord private constructor() : UpdatableRecordImpl<Mem
         set(value): Unit = set(4, value)
         get(): OffsetDateTime = get(4) as OffsetDateTime
 
+    open var grantedBy: UUID?
+        set(value): Unit = set(5, value)
+        get(): UUID? = get(5) as UUID?
+
+    open var expiresAt: OffsetDateTime?
+        set(value): Unit = set(6, value)
+        get(): OffsetDateTime? = get(6) as OffsetDateTime?
+
+    open var revokedAt: OffsetDateTime?
+        set(value): Unit = set(7, value)
+        get(): OffsetDateTime? = get(7) as OffsetDateTime?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -48,12 +60,15 @@ open class MemoParticipantRecord private constructor() : UpdatableRecordImpl<Mem
     /**
      * Create a detached, initialised MemoParticipantRecord
      */
-    constructor(tenantId: UUID, memoId: UUID, userId: UUID, kind: String, createdAt: OffsetDateTime): this() {
+    constructor(tenantId: UUID, memoId: UUID, userId: UUID, kind: String, createdAt: OffsetDateTime, grantedBy: UUID? = null, expiresAt: OffsetDateTime? = null, revokedAt: OffsetDateTime? = null): this() {
         this.tenantId = tenantId
         this.memoId = memoId
         this.userId = userId
         this.kind = kind
         this.createdAt = createdAt
+        this.grantedBy = grantedBy
+        this.expiresAt = expiresAt
+        this.revokedAt = revokedAt
         resetTouchedOnNotNull()
     }
 }

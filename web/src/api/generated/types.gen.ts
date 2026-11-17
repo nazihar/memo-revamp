@@ -1640,6 +1640,22 @@ export type SessionUser = {
     tenantAdmin: boolean;
 };
 
+export type ShareRequest = {
+    expiresAt?: string | null;
+    reason: string;
+    userId: string;
+};
+
+export type ShareView = {
+    canRevoke: boolean;
+    expiresAt?: string | null;
+    grantedAt: string;
+    grantedBy: Named;
+    id: string;
+    person: Named;
+    reason: string;
+};
+
 export type SimulatedPersonResponse = {
     actingFor?: Person | null;
     id: string;
@@ -4947,6 +4963,59 @@ export type ReplaceMemoRouteResponses = {
 };
 
 export type ReplaceMemoRouteResponse = ReplaceMemoRouteResponses[keyof ReplaceMemoRouteResponses];
+
+export type ListMemoSharesData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/shares';
+};
+
+export type ListMemoSharesResponses = {
+    /**
+     * OK
+     */
+    200: Array<ShareView>;
+};
+
+export type ListMemoSharesResponse = ListMemoSharesResponses[keyof ListMemoSharesResponses];
+
+export type ShareMemoData = {
+    body: ShareRequest;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/shares';
+};
+
+export type ShareMemoResponses = {
+    /**
+     * OK
+     */
+    200: ShareView;
+};
+
+export type ShareMemoResponse = ShareMemoResponses[keyof ShareMemoResponses];
+
+export type RevokeMemoShareData = {
+    body?: never;
+    path: {
+        id: string;
+        shareId: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{id}/shares/{shareId}';
+};
+
+export type RevokeMemoShareResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
 
 export type SubmitMemoData = {
     body?: RemarkRequest;

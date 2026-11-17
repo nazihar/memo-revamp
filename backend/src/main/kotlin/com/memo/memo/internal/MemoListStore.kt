@@ -1,7 +1,6 @@
 package com.memo.memo.internal
 
 import com.memo.common.tenant.TenantDsl
-import com.memo.jooq.tables.references.MEMO_PARTICIPANT
 import com.memo.workflow.SubjectSummary
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Repository
@@ -25,6 +24,7 @@ data class MemoListItem(
 @Repository
 class MemoListStore(
     private val tenantDsl: TenantDsl,
+    private val readable: MemoReadable,
 ) {
     fun summaries(ids: Collection<UUID>): Map<UUID, SubjectSummary> {
         if (ids.isEmpty()) return emptyMap()
@@ -48,9 +48,7 @@ class MemoListStore(
             .current()
             .select(MEMO.ID)
             .from(MEMO)
-            .join(MEMO_PARTICIPANT)
-            .on(MEMO_PARTICIPANT.MEMO_ID.eq(MEMO.ID), MEMO_PARTICIPANT.USER_ID.eq(user))
-            .where(MEMO.ID.`in`(ids), MEMO.CLASSIFICATION_RANK.le(clearanceRank))
+            .where(MEMO.ID.`in`(ids), readable.condition(user, clearanceRank))
             .fetchSet(MEMO.ID)
             .filterNotNull()
             .toSet()

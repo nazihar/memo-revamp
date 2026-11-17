@@ -8,7 +8,6 @@ import com.memo.common.tenant.TenantDsl
 import com.memo.common.web.FieldProblem
 import com.memo.common.web.refuseIf
 import com.memo.jooq.tables.references.MEMO_LINK
-import com.memo.jooq.tables.references.MEMO_PARTICIPANT
 import io.swagger.v3.oas.annotations.media.Schema
 import org.jooq.Field
 import org.jooq.impl.DSL
@@ -46,6 +45,7 @@ private data class LinkRow(
 class MemoLinkStore(
     private val tenantDsl: TenantDsl,
     private val ids: IdGenerator,
+    private val readable: MemoReadable,
 ) {
     fun insert(
         memoId: UUID,
@@ -119,13 +119,8 @@ class MemoLinkStore(
             .from(MEMO_LINK)
             .join(MEMO)
             .on(MEMO.TENANT_ID.eq(MEMO_LINK.TENANT_ID), MEMO.ID.eq(other))
-            .where(here.eq(memoId), MEMO_LINK.REMOVED_AT.isNull, MEMO.CLASSIFICATION_RANK.le(reader.clearanceRank))
-            .andExists(
-                DSL
-                    .selectOne()
-                    .from(MEMO_PARTICIPANT)
-                    .where(MEMO_PARTICIPANT.MEMO_ID.eq(MEMO.ID), MEMO_PARTICIPANT.USER_ID.eq(reader.user)),
-            ).orderBy(MEMO_LINK.CREATED_AT)
+            .where(here.eq(memoId), MEMO_LINK.REMOVED_AT.isNull, readable.condition(reader.user, reader.clearanceRank))
+            .orderBy(MEMO_LINK.CREATED_AT)
             .fetch { r ->
                 MemoLinkView(
                     r.value1()!!,

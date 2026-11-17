@@ -59,3 +59,29 @@
 - **Carried:**
   - deleting previews after 24 hours: the files module has no deletion yet, so previews are ordinary objects kept for now;
   - `.dotx` (T1).
+
+## 2026-11-15 — T4 access model and shares (built before T3, as the plan prefers)
+- **Read rule** (`MemoReadable`): classification at most the reader's clearance, and either an active participant row (not revoked, a share not past its expiry) or a `memo.read.unit` grant whose scope covers the memo's origin unit (`Policy.condition` over `memo.origin_unit_id`). It is used by the memo get (and so every endpoint behind it), the inbox's visible-among filter, links and the numbering register. An ArchUnit rule keeps `memo_participant` in `MemoReadable` and the three stores that write it.
+- **`memo/V13`:**
+  - participant kinds `COPY` and `SHARED`, with `granted_by`, `expires_at` (shares only) and `revoked_at`;
+  - a partial index on active rows, and `memo (tenant_id, origin_unit_id)`;
+  - `memo_share`: only its revocation columns may change; never deleted.
+- **One row per reader:** a stronger way in (initiator > co-author > approver > notified > copy > share) takes over a weaker or revoked row. A revoked share therefore never takes away an approver's access; a test checks this.
+- **Shares:**
+  - `GET|POST /memos/{id}/shares`, `DELETE …/{shareId}`;
+  - given by the initiator, co-authors and approvers, to an active person cleared for the memo, with a reason (1–500) and an optional end within a year;
+  - revoked by the giver, the initiator or `memo.share.manage`;
+  - a daily job records expiries (the rule already ignores them);
+  - audited `memo.share.granted|revoked|expired`.
+- **Permissions:**
+  - `memo.read.unit` (scopable) and `memo.share.manage`, both privileged;
+  - the built-in administrator role no longer carries the permissions that open other people's memos (`Permission.GRANTED_ON_PURPOSE`);
+  - web labels in English and Arabic.
+- **Tests:**
+  - `MemoAccessIT`: shares; validation; a lapsed share; approver over a share; a unit reader with TOTP (the grant ends their sessions) up to their clearance; a tenant admin sees nothing;
+  - `MemoReadableIT`: the SQL rule equals a Kotlin reference over random memos, ways in and readers, 3 seeds;
+  - ArchUnit, PolicyIT, the matrix.
+- **Not yet:**
+  - the `MemoAccessChanged` event (no consumer before E05);
+  - the "people with access" summary, which comes with copy-to in T5;
+  - the memo list performance at 100,000 memos, which is in T9.

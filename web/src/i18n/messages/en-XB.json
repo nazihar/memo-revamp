@@ -603,6 +603,34 @@
       "value": "‬"
     }
   ],
+  "access.permission.memoReadUnit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɐp ʇɥǝ ɯǝɯos oɟ ɐ nuıʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "access.permission.memoShareManage": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝʌoʞǝ ɐuʎ sɥɐɹǝ oɟ ɐ ɯǝɯo"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "access.permission.memoTypes": [
     {
       "type": 0,

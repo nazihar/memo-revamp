@@ -154,6 +154,14 @@ export const catalogue = defineMessages({
     id: 'access.permission.workflowCalendarManage',
     defaultMessage: 'Set the business calendar for deadlines',
   },
+  'memo.read.unit': {
+    id: 'access.permission.memoReadUnit',
+    defaultMessage: 'Read the memos of a unit',
+  },
+  'memo.share.manage': {
+    id: 'access.permission.memoShareManage',
+    defaultMessage: 'Revoke any share of a memo',
+  },
 })
 
 export function catalogueLabel(intl: IntlShape, key: string, fallback?: string): string {

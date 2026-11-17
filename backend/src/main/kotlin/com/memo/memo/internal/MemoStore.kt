@@ -34,7 +34,22 @@ enum class MemoStatus {
     val editable: Boolean get() = this == DRAFT || this == RETURNED
 }
 
-enum class ParticipantKind { INITIATOR, APPROVER, NOTIFIED, COAUTHOR }
+/**
+ * How a reader came to read a memo (ADR-0050), strongest first. One row per reader: a stronger way in takes over a
+ * weaker one, so revoking a share never takes away an approver's or co-author's access. Stored by name.
+ */
+enum class ParticipantKind {
+    INITIATOR,
+    COAUTHOR,
+    APPROVER,
+    NOTIFIED,
+    COPY,
+    SHARED,
+    ;
+
+    /** Lower is stronger. */
+    val strength: Int get() = ordinal
+}
 
 data class Memo(
     val id: UUID,
@@ -80,6 +95,7 @@ data class NewMemo(
 class MemoStore(
     private val tenantDsl: TenantDsl,
     private val json: JsonMapper,
+    private val readable: MemoReadable,
 ) {
     fun insert(
         memo: NewMemo,
@@ -104,25 +120,46 @@ class MemoStore(
         addParticipant(memo.id, memo.initiatorId, ParticipantKind.INITIATOR, now)
     }
 
+    /**
+     * Makes [user] a reader of [memo] as [kind]. An existing row is taken over when it was revoked or is a weaker way in;
+     * otherwise it stays as it is. [expiresAt] applies to shares only.
+     */
     fun addParticipant(
         memo: UUID,
         user: UUID,
         kind: ParticipantKind,
         now: OffsetDateTime,
+        grantedBy: UUID? = null,
+        expiresAt: OffsetDateTime? = null,
     ) {
+        val p = MEMO_PARTICIPANT
         tenantDsl
             .current()
-            .insertInto(MEMO_PARTICIPANT)
-            .set(MEMO_PARTICIPANT.TENANT_ID, tenantDsl.tenant().value)
-            .set(MEMO_PARTICIPANT.MEMO_ID, memo)
-            .set(MEMO_PARTICIPANT.USER_ID, user)
-            .set(MEMO_PARTICIPANT.KIND, kind.name)
-            .set(MEMO_PARTICIPANT.CREATED_AT, now)
-            .onConflictDoNothing()
+            .insertInto(p)
+            .set(p.TENANT_ID, tenantDsl.tenant().value)
+            .set(p.MEMO_ID, memo)
+            .set(p.USER_ID, user)
+            .set(p.KIND, kind.name)
+            .set(p.CREATED_AT, now)
+            .set(p.GRANTED_BY, grantedBy)
+            .set(p.EXPIRES_AT, expiresAt)
+            .onConflict(p.TENANT_ID, p.MEMO_ID, p.USER_ID)
+            .doUpdate()
+            .set(p.KIND, DSL.excluded(p.KIND))
+            .set(p.GRANTED_BY, DSL.excluded(p.GRANTED_BY))
+            .set(p.EXPIRES_AT, DSL.excluded(p.EXPIRES_AT))
+            .set(p.REVOKED_AT, null as OffsetDateTime?)
+            .where(p.REVOKED_AT.isNotNull.or(strength(p.KIND).gt(kind.strength)))
             .execute()
     }
 
-    /** The memo if [user] takes part in it and is cleared for its classification ([clearanceRank]); else null. */
+    private fun strength(kind: org.jooq.Field<String?>): org.jooq.Field<Int> =
+        DSL
+            .case_(kind)
+            .mapValues(ParticipantKind.entries.associate { it.name to it.strength })
+            .coerce(Int::class.java)
+
+    /** The memo if [user], the actor, may read it at [clearanceRank] (ADR-0050, [MemoReadable]); else null. */
     fun visible(
         id: UUID,
         user: UUID,
@@ -132,13 +169,8 @@ class MemoStore(
             .current()
             .selectFrom(MEMO)
             .where(MEMO.ID.eq(id))
-            .and(MEMO.CLASSIFICATION_RANK.le(clearanceRank))
-            .andExists(
-                DSL
-                    .selectOne()
-                    .from(MEMO_PARTICIPANT)
-                    .where(MEMO_PARTICIPANT.MEMO_ID.eq(MEMO.ID), MEMO_PARTICIPANT.USER_ID.eq(user)),
-            ).fetchOne()
+            .and(readable.condition(user, clearanceRank))
+            .fetchOne()
             ?.let(json::memo)
 
     /** The memo, without any visibility check (callers decide). */

@@ -5,6 +5,7 @@ package com.memo.jooq.tables
 
 
 import com.memo.jooq.Memo
+import com.memo.jooq.indexes.MEMO_PARTICIPANT_ACTIVE_IDX
 import com.memo.jooq.indexes.MEMO_PARTICIPANT_TENANT_USER_IDX
 import com.memo.jooq.keys.MEMO_PARTICIPANT_PKEY
 import com.memo.jooq.keys.MEMO_PARTICIPANT__MEMO_PARTICIPANT_TENANT_ID_MEMO_ID_FKEY
@@ -104,6 +105,21 @@ open class MemoParticipant(
      */
     val CREATED_AT: TableField<MemoParticipantRecord, OffsetDateTime?> = createField(DSL.name("created_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false), this, "")
 
+    /**
+     * The column <code>memo.memo_participant.granted_by</code>.
+     */
+    val GRANTED_BY: TableField<MemoParticipantRecord, UUID?> = createField(DSL.name("granted_by"), SQLDataType.UUID, this, "")
+
+    /**
+     * The column <code>memo.memo_participant.expires_at</code>.
+     */
+    val EXPIRES_AT: TableField<MemoParticipantRecord, OffsetDateTime?> = createField(DSL.name("expires_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
+
+    /**
+     * The column <code>memo.memo_participant.revoked_at</code>.
+     */
+    val REVOKED_AT: TableField<MemoParticipantRecord, OffsetDateTime?> = createField(DSL.name("revoked_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
+
     private constructor(alias: Name, aliased: Table<MemoParticipantRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<MemoParticipantRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<MemoParticipantRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -136,7 +152,7 @@ open class MemoParticipant(
         override fun `as`(alias: Table<*>): MemoParticipantPath = MemoParticipantPath(alias.qualifiedName, this)
     }
     override fun getSchema(): Schema? = if (aliased()) null else Memo.MEMO
-    override fun getIndexes(): List<Index> = listOf(MEMO_PARTICIPANT_TENANT_USER_IDX)
+    override fun getIndexes(): List<Index> = listOf(MEMO_PARTICIPANT_ACTIVE_IDX, MEMO_PARTICIPANT_TENANT_USER_IDX)
     override fun getPrimaryKey(): UniqueKey<MemoParticipantRecord> = MEMO_PARTICIPANT_PKEY
     override fun getReferences(): List<ForeignKey<MemoParticipantRecord, *>> = listOf(MEMO_PARTICIPANT__MEMO_PARTICIPANT_TENANT_ID_MEMO_ID_FKEY)
 
@@ -146,7 +162,8 @@ open class MemoParticipant(
     fun memo(): MemoPath = memo
     val memo: MemoPath by lazy { MemoPath(this, MEMO_PARTICIPANT__MEMO_PARTICIPANT_TENANT_ID_MEMO_ID_FKEY, null) }
     override fun getChecks(): List<Check<MemoParticipantRecord>> = listOf(
-        Internal.createCheck(this, DSL.name("memo_participant_kind_check"), "((kind = ANY (ARRAY['INITIATOR'::text, 'APPROVER'::text, 'NOTIFIED'::text, 'COAUTHOR'::text])))", true)
+        Internal.createCheck(this, DSL.name("memo_participant_expiry"), "(((expires_at IS NULL) OR (kind = 'SHARED'::text)))", true),
+        Internal.createCheck(this, DSL.name("memo_participant_kind_check"), "((kind = ANY (ARRAY['INITIATOR'::text, 'APPROVER'::text, 'NOTIFIED'::text, 'COAUTHOR'::text, 'COPY'::text, 'SHARED'::text])))", true)
     )
     override fun `as`(alias: String): MemoParticipant = MemoParticipant(DSL.name(alias), this)
     override fun `as`(alias: Name): MemoParticipant = MemoParticipant(alias, this)

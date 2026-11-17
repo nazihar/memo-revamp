@@ -267,6 +267,18 @@
       "value": "Write and submit memosSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "access.permission.memoReadUnit": [
+    {
+      "type": 0,
+      "value": "Read the memos of a unitSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "access.permission.memoShareManage": [
+    {
+      "type": 0,
+      "value": "Revoke any share of a memoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "access.permission.memoTypes": [
     {
       "type": 0,

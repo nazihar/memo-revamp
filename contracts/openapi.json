@@ -4331,6 +4331,53 @@
         "required" : [ "displayName", "email", "id", "tenantAdmin" ],
         "type" : "object"
       },
+      "ShareRequest" : {
+        "properties" : {
+          "expiresAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "reason" : {
+            "type" : "string"
+          },
+          "userId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "reason", "userId" ],
+        "type" : "object"
+      },
+      "ShareView" : {
+        "properties" : {
+          "canRevoke" : {
+            "type" : "boolean"
+          },
+          "expiresAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "grantedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "grantedBy" : {
+            "$ref" : "#/components/schemas/Named"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "person" : {
+            "$ref" : "#/components/schemas/Named"
+          },
+          "reason" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "canRevoke", "grantedAt", "grantedBy", "id", "person", "reason" ],
+        "type" : "object"
+      },
       "SimulatedPersonResponse" : {
         "properties" : {
           "actingFor" : {
@@ -10311,6 +10358,103 @@
           }
         },
         "summary" : "Set the ordered approvers of a memo",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/memos/{id}/shares" : {
+      "get" : {
+        "operationId" : "listMemoShares",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/ShareView"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Who the memo is shared with now, by whom and why",
+        "tags" : [ "memo" ]
+      },
+      "post" : {
+        "operationId" : "shareMemo",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ShareRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ShareView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Share the memo with one person, with a reason and an optional end",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/memos/{id}/shares/{shareId}" : {
+      "delete" : {
+        "operationId" : "revokeMemoShare",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "shareId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : { },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Revoke a share",
         "tags" : [ "memo" ]
       }
     },

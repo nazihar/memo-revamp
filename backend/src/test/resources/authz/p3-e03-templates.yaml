@@ -1,4 +1,4 @@
-# Phase 3 E03 templates (design E03 §3, §7; ADR-0048). Rules: rules.yaml. memo.types.manage and memo.types.approve are
+# Phase 3 E03 templates (design E03 §3, §7; ADR-0048) and shares (§5; ADR-0050). Rules: rules.yaml. memo.types.manage and memo.types.approve are
 # privileged and held by tenant admins; reviewers may read a template, only makers preview or remove it (MemoTemplatesIT).
 # Random type ids are 404 for everyone allowed through. Filling a memo's document follows the memo: unknown memos are 404.
 epic: P3-E03
@@ -7,3 +7,9 @@ endpoints:
   - { endpoint: "POST /api/v1/admin/memo-types/{typeId}/versions/{number}/template/preview", rule: tenantAdmin }
   - { endpoint: "DELETE /api/v1/admin/memo-types/{typeId}/versions/{number}/template", rule: tenantAdmin, headers: { If-Match: "\"0\"" } }
   - { endpoint: "POST /api/v1/memos/{id}/document/from-template", rule: signedIn }
+  # Shares follow the memo: unknown memos are 404 for every signed-in user.
+  - { endpoint: "GET /api/v1/memos/{id}/shares", rule: signedIn }
+  - endpoint: "POST /api/v1/memos/{id}/shares"
+    rule: signedIn
+    body: { userId: "{random}", reason: "Matrix" }
+  - { endpoint: "DELETE /api/v1/memos/{id}/shares/{shareId}", rule: signedIn }

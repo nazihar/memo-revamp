@@ -46,3 +46,5 @@ We use the MADR format (see [0001](0001-record-architecture-decisions.md)). Star
 | [0040](0040-assignee-resolution-queues-doa-and-acting-for.md) | Assignee resolution, queues, DoA rules, separation of duties and acting for | accepted | 2026-11-12 |
 | [0041](0041-timers-slas-escalation-and-business-calendars.md) | Timers, SLAs, escalation and business calendars | accepted | 2026-11-13 |
 | [0042](0042-visual-workflow-builder.md) | Visual workflow builder: React Flow over the same body, server-side validation and simulation, structural diff | accepted | 2026-11-13 |
+| [0043](0043-memo-type-versions-and-metadata.md) | Memo-type versions with maker-checker, metadata fields, pinning at submit, fields as workflow attributes | accepted | 2026-11-14 |
+| [0044](0044-memo-numbering.md) | Memo numbering: formats in the type version, series counters, taken at submit or approval, voids and register | accepted | 2026-11-14 |

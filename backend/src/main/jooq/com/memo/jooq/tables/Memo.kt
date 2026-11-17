@@ -6,6 +6,7 @@ package com.memo.jooq.tables
 
 import com.memo.jooq.indexes.MEMO_TENANT_INITIATOR_BOX_IDX
 import com.memo.jooq.indexes.MEMO_TENANT_TYPE_IDX
+import com.memo.jooq.indexes.MEMO_TENANT_TYPE_VERSION_IDX
 import com.memo.jooq.keys.MEMO_INTEREST__MEMO_INTEREST_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_PARTICIPANT__MEMO_PARTICIPANT_TENANT_ID_MEMO_ID_FKEY
 import com.memo.jooq.keys.MEMO_PKEY
@@ -14,10 +15,12 @@ import com.memo.jooq.keys.MEMO_TENANT_ID_DOCUMENT_FILE_ID_KEY
 import com.memo.jooq.keys.MEMO_TENANT_ID_ID_KEY
 import com.memo.jooq.keys.MEMO_TENANT_ID_REFERENCE_KEY
 import com.memo.jooq.keys.MEMO__MEMO_TENANT_ID_MEMO_TYPE_ID_FKEY
+import com.memo.jooq.keys.MEMO__MEMO_TYPE_VERSION_FK
 import com.memo.jooq.tables.MemoInterest.MemoInterestPath
 import com.memo.jooq.tables.MemoParticipant.MemoParticipantPath
 import com.memo.jooq.tables.MemoRouteEntry.MemoRouteEntryPath
 import com.memo.jooq.tables.MemoType.MemoTypePath
+import com.memo.jooq.tables.MemoTypeVersion.MemoTypeVersionPath
 import com.memo.jooq.tables.records.MemoRecord
 
 import java.time.OffsetDateTime
@@ -32,6 +35,7 @@ import org.jooq.Field
 import org.jooq.ForeignKey
 import org.jooq.Index
 import org.jooq.InverseForeignKey
+import org.jooq.JSONB
 import org.jooq.Name
 import org.jooq.Path
 import org.jooq.PlainSQL
@@ -168,6 +172,16 @@ open class Memo(
      */
     val UPDATED_AT: TableField<MemoRecord, OffsetDateTime?> = createField(DSL.name("updated_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6).nullable(false), this, "")
 
+    /**
+     * The column <code>memo.memo.memo_type_version_id</code>.
+     */
+    val MEMO_TYPE_VERSION_ID: TableField<MemoRecord, UUID?> = createField(DSL.name("memo_type_version_id"), SQLDataType.UUID, this, "")
+
+    /**
+     * The column <code>memo.memo.metadata</code>.
+     */
+    val METADATA: TableField<MemoRecord, JSONB?> = createField(DSL.name("metadata"), SQLDataType.JSONB.nullable(false).defaultValue(DSL.field(DSL.raw("'{}'::jsonb"), SQLDataType.JSONB)), this, "")
+
     private constructor(alias: Name, aliased: Table<MemoRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<MemoRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<MemoRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -200,16 +214,23 @@ open class Memo(
         override fun `as`(alias: Table<*>): MemoPath = MemoPath(alias.qualifiedName, this)
     }
     override fun getSchema(): Schema? = if (aliased()) null else com.memo.jooq.Memo.MEMO
-    override fun getIndexes(): List<Index> = listOf(MEMO_TENANT_INITIATOR_BOX_IDX, MEMO_TENANT_TYPE_IDX)
+    override fun getIndexes(): List<Index> = listOf(MEMO_TENANT_INITIATOR_BOX_IDX, MEMO_TENANT_TYPE_IDX, MEMO_TENANT_TYPE_VERSION_IDX)
     override fun getPrimaryKey(): UniqueKey<MemoRecord> = MEMO_PKEY
     override fun getUniqueKeys(): List<UniqueKey<MemoRecord>> = listOf(MEMO_TENANT_ID_DOCUMENT_FILE_ID_KEY, MEMO_TENANT_ID_ID_KEY, MEMO_TENANT_ID_REFERENCE_KEY)
-    override fun getReferences(): List<ForeignKey<MemoRecord, *>> = listOf(MEMO__MEMO_TENANT_ID_MEMO_TYPE_ID_FKEY)
+    override fun getReferences(): List<ForeignKey<MemoRecord, *>> = listOf(MEMO__MEMO_TENANT_ID_MEMO_TYPE_ID_FKEY, MEMO__MEMO_TYPE_VERSION_FK)
 
     /**
      * Get the implicit join path to the <code>memo.memo_type</code> table.
      */
     fun memoType(): MemoTypePath = memoType
     val memoType: MemoTypePath by lazy { MemoTypePath(this, MEMO__MEMO_TENANT_ID_MEMO_TYPE_ID_FKEY, null) }
+
+    /**
+     * Get the implicit join path to the <code>memo.memo_type_version</code>
+     * table.
+     */
+    fun memoTypeVersion(): MemoTypeVersionPath = memoTypeVersion
+    val memoTypeVersion: MemoTypeVersionPath by lazy { MemoTypeVersionPath(this, MEMO__MEMO_TYPE_VERSION_FK, null) }
 
     private lateinit var _memoInterest: MemoInterestPath
 
@@ -263,6 +284,7 @@ open class Memo(
         Internal.createCheck(this, DSL.name("memo_check1"), "(((workflow_instance_id IS NULL) = (current_round = 0)))", true),
         Internal.createCheck(this, DSL.name("memo_classification_rank_check"), "((classification_rank >= 0))", true),
         Internal.createCheck(this, DSL.name("memo_current_round_check"), "((current_round >= 0))", true),
+        Internal.createCheck(this, DSL.name("memo_metadata_check"), "(((jsonb_typeof(metadata) = 'object'::text) AND (octet_length((metadata)::text) <= 65536)))", true),
         Internal.createCheck(this, DSL.name("memo_reference_check"), "((reference ~ '^M-[0-9]{4}-[0-9]{5,}\$'::text))", true),
         Internal.createCheck(this, DSL.name("memo_status_check"), "((status = ANY (ARRAY['DRAFT'::text, 'IN_REVIEW'::text, 'RETURNED'::text, 'APPROVED'::text, 'REJECTED'::text, 'WITHDRAWN'::text, 'DISCARDED'::text, 'CANCELLED'::text])))", true),
         Internal.createCheck(this, DSL.name("memo_subject_check"), "(((length(subject) >= 1) AND (length(subject) <= 300)))", true)

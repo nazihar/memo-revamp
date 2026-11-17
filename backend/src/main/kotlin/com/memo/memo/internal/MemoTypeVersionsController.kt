@@ -42,6 +42,10 @@ data class MemoTypeSettingsRequest(
     val allowedApprovers: AllowedApprovers = AllowedApprovers(),
     val doaCheck: Boolean = false,
     val stepUpOnApprove: Boolean = true,
+    /** What the initiator fills in, in order. */
+    val fields: List<MemoField> = emptyList(),
+    /** Who may raise memos of the type; empty: everyone who may create memos. */
+    val raiseScope: RaiseScope = RaiseScope(),
 )
 
 /** One version of a memo type, with who made, submitted and reviewed it. */
@@ -57,6 +61,8 @@ data class MemoTypeVersionResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val allowedApprovers: AllowedApprovers,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val doaCheck: Boolean,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val stepUpOnApprove: Boolean,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val fields: List<MemoField>,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val raiseScope: RaiseScope,
     /** The names of the allowed people and the titles of the allowed positions, by id. */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val allowedNames: Map<UUID, String>,
     /** Null: created by the system. */
@@ -209,6 +215,8 @@ class MemoTypeVersionsController(
                 allowedApprovers = s.allowedApprovers,
                 doaCheck = s.doaCheck,
                 stepUpOnApprove = s.stepUpOnApprove,
+                fields = s.fields,
+                raiseScope = s.raiseScope,
                 allowedNames =
                     people.filterKeys { it in s.allowedApprovers.people } + positions.filterKeys { it in s.allowedApprovers.positions },
                 createdBy = named(v.createdBy),
@@ -239,6 +247,8 @@ class MemoTypeVersionsController(
             allowedApprovers = allowedApprovers,
             doaCheck = doaCheck,
             stepUpOnApprove = stepUpOnApprove,
+            fields = fields.map { it.normalized() },
+            raiseScope = raiseScope,
         )
     }
 }

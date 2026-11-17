@@ -855,6 +855,12 @@
             },
             "type" : "array"
           },
+          "units" : {
+            "items" : {
+              "$ref" : "#/components/schemas/DirectoryUnit"
+            },
+            "type" : "array"
+          },
           "users" : {
             "items" : {
               "$ref" : "#/components/schemas/DirectoryUser"
@@ -862,7 +868,23 @@
             "type" : "array"
           }
         },
-        "required" : [ "positions", "users" ],
+        "required" : [ "positions", "units", "users" ],
+        "type" : "object"
+      },
+      "DirectoryUnit" : {
+        "properties" : {
+          "code" : {
+            "type" : "string"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "code", "id", "name" ],
         "type" : "object"
       },
       "DirectoryUser" : {
@@ -1228,6 +1250,18 @@
         "required" : [ "enabled" ],
         "type" : "object"
       },
+      "FieldChoice" : {
+        "properties" : {
+          "key" : {
+            "type" : "string"
+          },
+          "label" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "key", "label" ],
+        "type" : "object"
+      },
       "FieldProblem" : {
         "properties" : {
           "code" : {
@@ -1238,6 +1272,41 @@
           },
           "message" : {
             "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "FieldRules" : {
+        "properties" : {
+          "choices" : {
+            "items" : {
+              "$ref" : "#/components/schemas/FieldChoice"
+            },
+            "type" : "array"
+          },
+          "currencies" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "decimals" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "max" : {
+            "type" : [ "number", "null" ]
+          },
+          "maxLength" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "min" : {
+            "type" : [ "number", "null" ]
+          },
+          "minLength" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
           }
         },
         "type" : "object"
@@ -1864,11 +1933,66 @@
         "required" : [ "displayName", "email", "id", "mfaEnrolled", "tenantAdmin" ],
         "type" : "object"
       },
+      "MemoDetailView" : {
+        "properties" : {
+          "display" : {
+            "type" : [ "string", "null" ]
+          },
+          "key" : {
+            "type" : "string"
+          },
+          "label" : {
+            "type" : "string"
+          },
+          "type" : {
+            "enum" : [ "TEXT", "LONG_TEXT", "NUMBER", "AMOUNT", "DATE", "UNIT", "PERSON", "CHOICE", "MULTI_CHOICE" ],
+            "type" : "string"
+          },
+          "value" : { }
+        },
+        "required" : [ "key", "label", "type", "value" ],
+        "type" : "object"
+      },
+      "MemoField" : {
+        "properties" : {
+          "attribute" : {
+            "type" : "boolean"
+          },
+          "help" : {
+            "type" : [ "string", "null" ]
+          },
+          "inbox" : {
+            "type" : "boolean"
+          },
+          "key" : {
+            "type" : "string"
+          },
+          "label" : {
+            "type" : "string"
+          },
+          "required" : {
+            "type" : "boolean"
+          },
+          "rules" : {
+            "$ref" : "#/components/schemas/FieldRules"
+          },
+          "type" : {
+            "enum" : [ "TEXT", "LONG_TEXT", "NUMBER", "AMOUNT", "DATE", "UNIT", "PERSON", "CHOICE", "MULTI_CHOICE" ],
+            "type" : "string"
+          }
+        },
+        "required" : [ "attribute", "inbox", "key", "label", "required", "rules", "type" ],
+        "type" : "object"
+      },
       "MemoRequest" : {
         "properties" : {
           "classificationId" : {
             "format" : "uuid",
             "type" : [ "string", "null" ]
+          },
+          "metadata" : {
+            "additionalProperties" : { },
+            "type" : [ "object", "null" ]
           },
           "subject" : {
             "type" : "string"
@@ -1936,11 +2060,37 @@
         "required" : [ "active", "allowedApprovers", "allowedNames", "code", "definitionKey", "doaCheck", "id", "name", "routePolicy", "stepUpOnApprove", "version" ],
         "type" : "object"
       },
+      "MemoTypeForm" : {
+        "properties" : {
+          "fields" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MemoField"
+            },
+            "type" : "array"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "version" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "fields", "id", "name", "version" ],
+        "type" : "object"
+      },
       "MemoTypeOption" : {
         "properties" : {
           "defaultClassificationId" : {
             "format" : "uuid",
             "type" : [ "string", "null" ]
+          },
+          "hasFields" : {
+            "type" : "boolean"
           },
           "id" : {
             "format" : "uuid",
@@ -1953,7 +2103,7 @@
             "type" : "boolean"
           }
         },
-        "required" : [ "id", "name", "stepUpOnApprove" ],
+        "required" : [ "hasFields", "id", "name", "stepUpOnApprove" ],
         "type" : "object"
       },
       "MemoTypeRequest" : {
@@ -2008,8 +2158,17 @@
           "doaCheck" : {
             "type" : "boolean"
           },
+          "fields" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MemoField"
+            },
+            "type" : "array"
+          },
           "name" : {
             "type" : "string"
+          },
+          "raiseScope" : {
+            "$ref" : "#/components/schemas/RaiseScope"
           },
           "routePolicy" : {
             "type" : "string"
@@ -2055,6 +2214,12 @@
           "doaCheck" : {
             "type" : "boolean"
           },
+          "fields" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MemoField"
+            },
+            "type" : "array"
+          },
           "name" : {
             "type" : "string"
           },
@@ -2065,6 +2230,9 @@
           "publishedAt" : {
             "format" : "date-time",
             "type" : [ "string", "null" ]
+          },
+          "raiseScope" : {
+            "$ref" : "#/components/schemas/RaiseScope"
           },
           "reviewRemark" : {
             "type" : [ "string", "null" ]
@@ -2107,7 +2275,7 @@
             } ]
           }
         },
-        "required" : [ "allowedApprovers", "allowedNames", "code", "createdAt", "definitionKey", "doaCheck", "name", "number", "revision", "routePolicy", "state", "stepUpOnApprove" ],
+        "required" : [ "allowedApprovers", "allowedNames", "code", "createdAt", "definitionKey", "doaCheck", "fields", "name", "number", "raiseScope", "revision", "routePolicy", "state", "stepUpOnApprove" ],
         "type" : "object"
       },
       "MemoView" : {
@@ -2125,6 +2293,12 @@
           "createdAt" : {
             "format" : "date-time",
             "type" : "string"
+          },
+          "details" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MemoDetailView"
+            },
+            "type" : "array"
           },
           "document" : {
             "oneOf" : [ {
@@ -2163,6 +2337,13 @@
               "type" : "null"
             } ]
           },
+          "originUnit" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/Named"
+            }, {
+              "type" : "null"
+            } ]
+          },
           "reference" : {
             "type" : "string"
           },
@@ -2182,6 +2363,12 @@
             },
             "type" : "array"
           },
+          "staleDetails" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MemoDetailView"
+            },
+            "type" : "array"
+          },
           "status" : {
             "enum" : [ "DRAFT", "IN_REVIEW", "RETURNED", "APPROVED", "REJECTED", "WITHDRAWN", "DISCARDED", "CANCELLED" ],
             "type" : "string"
@@ -2192,6 +2379,10 @@
           "type" : {
             "$ref" : "#/components/schemas/Named"
           },
+          "typeVersion" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
           "updatedAt" : {
             "format" : "date-time",
             "type" : "string"
@@ -2201,7 +2392,7 @@
             "type" : "integer"
           }
         },
-        "required" : [ "allowedActions", "classification", "createdAt", "holders", "id", "initiator", "interests", "reference", "round", "route", "sendBackTargets", "status", "subject", "type", "updatedAt", "version" ],
+        "required" : [ "allowedActions", "classification", "createdAt", "details", "holders", "id", "initiator", "interests", "reference", "round", "route", "sendBackTargets", "staleDetails", "status", "subject", "type", "updatedAt", "version" ],
         "type" : "object"
       },
       "MfaEnrolment" : {
@@ -3208,6 +3399,24 @@
         "required" : [ "key", "members", "name", "version" ],
         "type" : "object"
       },
+      "RaiseScope" : {
+        "properties" : {
+          "roles" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "units" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ScopeUnit"
+            },
+            "type" : "array"
+          }
+        },
+        "type" : "object"
+      },
       "ReassignRequest" : {
         "properties" : {
           "newAssigneeId" : {
@@ -3458,6 +3667,19 @@
             "type" : [ "array", "null" ]
           }
         },
+        "type" : "object"
+      },
+      "ScopeUnit" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "subtree" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "id", "subtree" ],
         "type" : "object"
       },
       "SecuritySettingLimit" : {
@@ -7535,7 +7757,7 @@
             "type" : "string"
           }
         }, {
-          "description" : "user, position, or both (default)",
+          "description" : "user, position or unit; default user and position",
           "in" : "query",
           "name" : "kind",
           "required" : false,
@@ -7567,7 +7789,7 @@
             "description" : "OK"
           }
         },
-        "summary" : "Find people and positions by the start of a word in their name or title",
+        "summary" : "Find people, positions and units by the start of a word in their name or title",
         "tags" : [ "directory" ]
       }
     },
@@ -8244,7 +8466,35 @@
             "description" : "OK"
           }
         },
-        "summary" : "Active memo types",
+        "summary" : "The active memo types the caller may raise",
+        "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/memo-types/{id}/form" : {
+      "get" : {
+        "operationId" : "getMemoTypeForm",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MemoTypeForm"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The fields of a memo type the caller may raise",
         "tags" : [ "memo" ]
       }
     },

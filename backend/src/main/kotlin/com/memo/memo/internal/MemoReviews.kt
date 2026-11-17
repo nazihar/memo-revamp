@@ -1,5 +1,7 @@
 package com.memo.memo.internal
 
+import com.memo.audit.AuditLog
+import com.memo.common.concurrency.ConcurrentModificationException
 import com.memo.common.web.FieldProblem
 import com.memo.common.web.refuseIf
 import com.memo.docedit.DocumentEditing
@@ -19,9 +21,15 @@ class MemoReviews(
     private val routes: MemoRoutes,
     private val workflows: Workflows,
     private val editing: DocumentEditing,
-    private val types: MemoTypeStore,
+    private val types: MemoTypes,
+    private val metadata: MemoMetadata,
+    private val audit: AuditLog,
 ) {
-    /** Round 1: the memo needs a document and a valid route; the first approver gets the task. */
+    /**
+     * Round 1: the memo needs a document, a valid route and its required details; the first approver gets the task. The
+     * memo is pinned to its type's published version with its final metadata (ADR-0043): values for fields that version
+     * no longer has are dropped and recorded.
+     */
     fun submit(
         id: UUID,
         remark: String?,
@@ -29,14 +37,33 @@ class MemoReviews(
         val memo = locked(id)
         refuseIf(memo.status != MemoStatus.DRAFT, "WRONG_STATE") { "Only a draft can be submitted." }
         notBeingEdited(memo)
-        val type = types.find(memo.typeId)
+        val type = types.get(memo.typeId)
+        val version = types.published(memo.typeId)
         val route = route(memo, type)
+        val fields = version?.settings?.fields.orEmpty()
+        val keys = fields.map { it.key }.toSet()
+        val checked = metadata.check(fields, memo.metadata.filterKeys { it in keys }, requireAll = true)
         val problems =
-            listOfNotNull(FieldProblem("document", "required", "Upload the memo document first.").takeIf { memo.documentFileId == null }) +
-                problems(memo, type, route)
+            listOfNotNull(
+                FieldProblem("document", "required", "Upload the memo document first.").takeIf { memo.documentFileId == null },
+                FieldProblem("typeId", "inactive", "This memo type is no longer used.").takeIf { !type.active || version == null },
+            ) + checked.problems + problems(memo, type, route)
         if (problems.isNotEmpty()) throw MemoRejectedException(problems)
+        val pinned = checkNotNull(version)
+        if (!store.pin(id, memo.version, pinned.id, checked.values)) throw ConcurrentModificationException("memo $id", memo.version)
+        audit.record(
+            "memo.type_pinned",
+            Memos.OBJECT_TYPE,
+            id.toString(),
+            after =
+                mapOf(
+                    "typeId" to type.id.toString(),
+                    "version" to pinned.number,
+                    "dropped" to (memo.metadata.keys - checked.values.keys).sorted(),
+                ),
+        )
         // The memo type's workflow (E03): new memos pin its newest published version.
-        workflows.start(MemoWorkflowSubject.TYPE, id, emptyList(), remark, type?.definitionKey ?: Workflows.SEQUENTIAL_APPROVAL, route)
+        workflows.start(MemoWorkflowSubject.TYPE, id, emptyList(), remark, pinned.settings.definitionKey, route)
         return memos.get(id)
     }
 
@@ -48,7 +75,8 @@ class MemoReviews(
         val memo = locked(id)
         refuseIf(memo.status != MemoStatus.RETURNED, "WRONG_STATE") { "Only a memo returned to you can be resubmitted." }
         notBeingEdited(memo)
-        val type = types.find(memo.typeId)
+        // The version the memo was submitted under, not today's (ADR-0043).
+        val type = types.forMemo(memo)
         val route = route(memo, type)
         val problems = problems(memo, type, route)
         if (problems.isNotEmpty()) throw MemoRejectedException(problems)

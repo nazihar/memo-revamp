@@ -50,6 +50,14 @@ class MemoTaskActionsIT : MemoIntegrationTest() {
                 it.setObject(1, typeId)
                 it.executeUpdate()
             }
+            // Since Phase 3 E01 the published version is what a submit uses (ADR-0043); the type row is its copy.
+            c
+                .prepareStatement(
+                    "update memo_type_version set definition_key = 'consult' where memo_type_id = ? and state = 'PUBLISHED'",
+                ).use {
+                    it.setObject(1, typeId)
+                    it.executeUpdate()
+                }
             c.commit()
         }
     }

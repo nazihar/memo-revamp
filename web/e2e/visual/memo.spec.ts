@@ -43,6 +43,8 @@ const memo: MemoView = {
   holders: [{ id: 'u2', name: 'Demo Head of Credit' }],
   myTask: { id: 'k1', role: 'DECIDE', shared: false, waiting: false },
   interests: [],
+  details: [],
+  staleDetails: [],
   sendBackTargets: [],
   allowedActions: ['APPROVE', 'RETURN', 'REJECT'],
   createdAt: '2026-11-08T08:00:00Z',

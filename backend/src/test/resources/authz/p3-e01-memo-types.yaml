@@ -3,6 +3,7 @@
 # is MemoTypeVersionsIT. Random type ids are 404 for everyone allowed through.
 epic: P3-E01
 endpoints:
+  - { endpoint: "GET /api/v1/memo-types/{id}/form", rule: signedIn }
   - { endpoint: "GET /api/v1/admin/memo-types/{typeId}/versions", rule: tenantAdmin }
   - { endpoint: "GET /api/v1/admin/memo-types/{typeId}/versions/{number}", rule: tenantAdmin }
   - { endpoint: "POST /api/v1/admin/memo-types/{typeId}/versions", rule: tenantAdmin }

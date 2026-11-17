@@ -108,6 +108,14 @@ open class MemoTypeVersionRecord private constructor() : UpdatableRecordImpl<Mem
         set(value): Unit = set(21, value)
         get(): OffsetDateTime? = get(21) as OffsetDateTime?
 
+    open var fields: JSONB?
+        set(value): Unit = set(22, value)
+        get(): JSONB? = get(22) as JSONB?
+
+    open var raiseScope: JSONB?
+        set(value): Unit = set(23, value)
+        get(): JSONB? = get(23) as JSONB?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -117,7 +125,7 @@ open class MemoTypeVersionRecord private constructor() : UpdatableRecordImpl<Mem
     /**
      * Create a detached, initialised MemoTypeVersionRecord
      */
-    constructor(id: UUID, tenantId: UUID, memoTypeId: UUID, number: Int, state: String, revision: Long? = null, name: String, code: String, defaultClassificationId: UUID? = null, definitionKey: String, routePolicy: String, allowedApprovers: JSONB? = null, doaCheck: Boolean? = null, stepUpOnApprove: Boolean? = null, createdBy: UUID? = null, createdAt: OffsetDateTime, submittedBy: UUID? = null, submittedAt: OffsetDateTime? = null, reviewedBy: UUID? = null, reviewedAt: OffsetDateTime? = null, reviewRemark: String? = null, publishedAt: OffsetDateTime? = null): this() {
+    constructor(id: UUID, tenantId: UUID, memoTypeId: UUID, number: Int, state: String, revision: Long? = null, name: String, code: String, defaultClassificationId: UUID? = null, definitionKey: String, routePolicy: String, allowedApprovers: JSONB? = null, doaCheck: Boolean? = null, stepUpOnApprove: Boolean? = null, createdBy: UUID? = null, createdAt: OffsetDateTime, submittedBy: UUID? = null, submittedAt: OffsetDateTime? = null, reviewedBy: UUID? = null, reviewedAt: OffsetDateTime? = null, reviewRemark: String? = null, publishedAt: OffsetDateTime? = null, fields: JSONB? = null, raiseScope: JSONB? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.memoTypeId = memoTypeId
@@ -140,6 +148,8 @@ open class MemoTypeVersionRecord private constructor() : UpdatableRecordImpl<Mem
         this.reviewedAt = reviewedAt
         this.reviewRemark = reviewRemark
         this.publishedAt = publishedAt
+        this.fields = fields
+        this.raiseScope = raiseScope
         resetTouchedOnNotNull()
     }
 }

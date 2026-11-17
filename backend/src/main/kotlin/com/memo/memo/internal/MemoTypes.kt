@@ -44,6 +44,34 @@ class MemoTypes(
 ) {
     fun active(): List<MemoType> = store.all().filter { it.active && it.publishedVersion != null }
 
+    /** The versions of [typeId], newest first. */
+    fun versions(typeId: UUID): List<MemoTypeVersionRow> = versions.versions(typeId)
+
+    /** The published version of [typeId], if it has one. */
+    fun published(typeId: UUID): MemoTypeVersionRow? = versions.published(typeId)
+
+    /**
+     * The type as [memo] uses it: its pinned version's settings once submitted (ADR-0043), else the type as published now.
+     * Approvers, route policy, DoA check and step-up of a memo in review never change with later versions.
+     */
+    fun forMemo(memo: Memo): MemoType {
+        val type = get(memo.typeId)
+        val s = memo.memoTypeVersionId?.let { versions.byId(it) }?.settings ?: return type
+        return type.copy(
+            name = s.name,
+            code = s.code,
+            defaultClassificationId = s.defaultClassificationId,
+            routePolicy = s.routePolicy,
+            definitionKey = s.definitionKey,
+            stepUpOnApprove = s.stepUpOnApprove,
+            allowedApprovers = s.allowedApprovers,
+            doaCheck = s.doaCheck,
+        )
+    }
+
+    /** The fields [memo] is shown and checked with: its pinned version's, else the type's published ones. */
+    fun versionFor(memo: Memo): MemoTypeVersionRow? = memo.memoTypeVersionId?.let { versions.byId(it) } ?: versions.published(memo.typeId)
+
     fun all(): List<MemoType> {
         if (!policy.allows(Permission.MEMO_TYPES_APPROVE)) policy.require(Permission.MEMO_TYPES_MANAGE)
         return store.all()
@@ -67,13 +95,17 @@ class MemoTypes(
     ): MemoType {
         policy.require(Permission.MEMO_TYPES_MANAGE)
         val before = get(id)
-        val settings = fields.settings(fields.code ?: before.code)
+        val current = versions.published(id)
+        // The Phase 2 screen knows nothing of fields and scope: they carry over from the published version.
+        val settings =
+            fields
+                .settings(fields.code ?: before.code)
+                .copy(fields = current?.settings?.fields.orEmpty(), raiseScope = current?.settings?.raiseScope ?: RaiseScope())
         checks.require(settings, id)
         refuseIf(before.active && !fields.active && active().none { it.id != id }, "LAST_ACTIVE") {
             "Keep at least one memo type active, or people cannot create memos."
         }
         if (before.version != expectedVersion) throw ConcurrentModificationException("memo type $id", expectedVersion)
-        val current = versions.published(id)
         val published =
             if (current != null && current.settings == settings) {
                 current.number
@@ -109,6 +141,7 @@ class MemoTypeChecks(
     private val store: MemoTypeStore,
     private val clearances: Clearances,
     private val definitions: WorkflowDefinitions,
+    private val fieldChecks: MemoFieldChecks,
 ) {
     /** Throws [MemoRejectedException] listing what is wrong with [settings] for type [id] (null: a new type). */
     fun require(
@@ -145,7 +178,7 @@ class MemoTypeChecks(
             FieldProblem("allowedApprovers", "TOO_MANY", "At most $MAX_ALLOWED people, positions and roles each.").takeIf {
                 listOf(allowed.people, allowed.positions, allowed.roles).any { it.size > MAX_ALLOWED }
             },
-        )
+        ) + fieldChecks.problems(settings.fields, settings.raiseScope)
     }
 
     companion object {
@@ -174,6 +207,8 @@ class MemoTypeChecks(
                         "roles" to settings.allowedApprovers.roles.size,
                     ),
                 "doaCheck" to settings.doaCheck,
+                "fields" to settings.fields.map { "${it.key}:${it.type}${if (it.required) "*" else ""}" },
+                "raiseScope" to mapOf("units" to settings.raiseScope.units.size, "roles" to settings.raiseScope.roles.size),
             )
     }
 }

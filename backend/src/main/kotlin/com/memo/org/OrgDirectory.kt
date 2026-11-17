@@ -20,6 +20,13 @@ data class PositionRef(
     val head: Boolean,
 )
 
+/** A unit as other modules see it: its short code (used in memo numbers) and its name. */
+data class UnitRef(
+    val id: UUID,
+    val code: String,
+    val name: String,
+)
+
 /**
  * Read-only questions about the organisation for other modules (design E04 §1), such as the workflow's assignee
  * resolvers: who holds a position, which position a person holds, a unit's head and ancestors, and the reporting line
@@ -112,3 +119,13 @@ class OrgDirectory(
 }
 
 private fun OrgPosition.ref() = PositionRef(id, unitId, title, head)
+
+/** Units by id for other modules (Phase 3 E01): their codes for memo numbers and their names for display. */
+@Service
+class OrgUnitDirectory(
+    private val units: UnitStore,
+) {
+    /** The units of [ids] that exist, open or not. */
+    fun units(ids: Collection<UUID>): Map<UUID, UnitRef> =
+        ids.toSet().mapNotNull { id -> units.unit(id)?.let { id to UnitRef(it.id, it.code, it.name) } }.toMap()
+}

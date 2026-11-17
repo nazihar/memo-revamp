@@ -118,6 +118,7 @@ describe('people picker', () => {
             { person: { id: 'u2', displayName: 'Leila Haddad', email: 'lh@bank.example' } },
           ],
           positions: [],
+          units: [],
         })
       }),
     )

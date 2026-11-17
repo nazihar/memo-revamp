@@ -50,10 +50,19 @@ data class DirectoryPositionSummary(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val unitName: String,
 )
 
+@Schema(name = "DirectoryUnit")
+data class DirectoryUnitResponse(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val id: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val code: String,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val name: String,
+)
+
 @Schema(name = "DirectorySearchResult")
 data class DirectorySearchResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val users: List<DirectoryUserResponse>,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val positions: List<DirectoryPositionResponse>,
+    /** Open units whose name or code has a word starting with the query (kind `unit`, Phase 3 E01). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val units: List<DirectoryUnitResponse> = emptyList(),
 )
 
 /**
@@ -79,6 +88,7 @@ class DirectorySearch(
         val today = calendar.today()
         val foundUsers = if ("user" in kinds) users.search(term, size) else emptyList()
         val foundPositions = if ("position" in kinds) positionsMatching(term, size, today) else emptyList()
+        val foundUnits = if ("unit" in kinds) unitsMatching(term, size, today) else emptyList()
 
         val userAssignments = assignments.heldBy(foundUsers.map { it.id }, today)
         val holders = assignments.holdersOn(foundPositions.map { it.first }, today)
@@ -104,7 +114,31 @@ class DirectorySearch(
                     holder?.let { PersonResponse(it.id, it.displayName, it.email) },
                 )
             },
+            foundUnits,
         )
+    }
+
+    private fun unitsMatching(
+        term: String,
+        limit: Int,
+        today: LocalDate,
+    ): List<DirectoryUnitResponse> {
+        val escaped = term.replace("\\", "\\\\").replace("%", "\\%").replace("_", "\\_")
+        val name = DSL.lower(ORG_UNIT.NAME)
+        val code = DSL.lower(ORG_UNIT.CODE)
+        return tenantDsl
+            .current()
+            .select(ORG_UNIT.ID, ORG_UNIT.CODE, ORG_UNIT.NAME)
+            .from(ORG_UNIT)
+            .where(validOn(ORG_UNIT.VALID_FROM, ORG_UNIT.VALID_TO, today))
+            .and(
+                name
+                    .like("$escaped%", '\\')
+                    .or(name.like("% $escaped%", '\\'))
+                    .or(code.like("$escaped%", '\\')),
+            ).orderBy(name, ORG_UNIT.ID)
+            .limit(limit)
+            .fetch { DirectoryUnitResponse(it.value1()!!, it.value2()!!, it.value3()!!) }
     }
 
     private fun positionsMatching(
@@ -164,17 +198,17 @@ class DirectoryController(
 ) {
     @GetMapping("/api/v1/directory/search")
     @RequiresPermission(Permission.DIRECTORY_READ)
-    @Operation(operationId = "searchDirectory", summary = "Find people and positions by the start of a word in their name or title")
+    @Operation(operationId = "searchDirectory", summary = "Find people, positions and units by the start of a word in their name or title")
     fun search(
         @Parameter(description = "At least 2 characters") @RequestParam q: String,
-        @Parameter(description = "user, position, or both (default)") @RequestParam(required = false) kind: List<String>?,
+        @Parameter(description = "user, position or unit; default user and position") @RequestParam(required = false) kind: List<String>?,
         @RequestParam(required = false, defaultValue = "10") limit: Int,
     ): ResponseEntity<DirectorySearchResponse> {
         val user = (ActorContext.currentOrNull()?.actor as? Actor.User)?.userId ?: throw ForbiddenException(null)
         limiter.consume(RateLimit.DIRECTORY_SEARCH_PER_USER, "${TenantContext.current()}:$user")
         require(DirectorySearch.normalise(q).length >= MIN_QUERY) { "Type at least $MIN_QUERY characters." }
         val kinds = (kind ?: listOf("user", "position")).toSet()
-        require(kinds.all { it == "user" || it == "position" }) { "kind is user or position." }
+        require(kinds.all { it == "user" || it == "position" || it == "unit" }) { "kind is user, position or unit." }
         val body = transactions.readInTenant(TenantContext.current()) { search.search(q, kinds, limit) }
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(body)
     }

@@ -119,6 +119,7 @@ export function backendEnv(env, { core }) {
   }
   if (!core) {
     out.MEMO_DOCSERVER_URL = 'http://localhost:8081'
+    out.MEMO_TIKA_URL = 'http://localhost:9998'
     // In-browser editing (ADR-0037): the same secret as ONLYOFFICE; it reaches this backend through `backend-gateway`.
     out.MEMO_DOCEDIT_JWT_SECRET = env.ONLYOFFICE_JWT_SECRET
     out.MEMO_DOCEDIT_INTERNAL_URL = 'http://backend-gateway:8082'

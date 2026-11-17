@@ -1,0 +1,22 @@
+{
+  "parsers": ["default-parser"],
+  "parse-context": {
+    "embedded-limits": { "maxDepth": 3, "throwOnMaxDepth": false, "maxCount": 500, "throwOnMaxCount": false },
+    "output-limits": {
+      "writeLimit": 5000001,
+      "throwOnWriteLimit": false,
+      "maxXmlDepth": 100,
+      "zipBombThreshold": 1000000,
+      "zipBombRatio": 100
+    },
+    "timeout-limits": { "totalTaskTimeoutMillis": 120000, "progressTimeoutMillis": 60000 },
+    "standard-metadata-limiter-factory": {
+      "maxTotalBytes": 1048576,
+      "maxFieldSize": 102400,
+      "maxKeySize": 1024,
+      "maxValuesPerField": 100
+    }
+  },
+  "pipes": { "numClients": 2, "forkedJvmArgs": ["-Xmx1g"] },
+  "server": { "allowPerRequestConfig": false, "allowPipes": false, "endpoints": ["tika"] }
+}

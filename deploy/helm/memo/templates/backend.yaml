@@ -61,6 +61,8 @@ spec:
                   name: {{ required "integrations.documentServer.jwtSecret is required with documentServerUrl" .Values.integrations.documentServer.jwtSecret }}
                   key: jwtSecret
             {{- end }}
+            - name: MEMO_TIKA_URL
+              value: {{ .Values.integrations.tikaUrl | quote }}
             - name: MEMO_CLAMAV_HOST
               value: {{ .Values.integrations.malwareScannerHost | quote }}
             - name: MEMO_FILES_MAX_UPLOAD_BYTES

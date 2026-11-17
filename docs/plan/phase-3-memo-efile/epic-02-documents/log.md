@@ -69,3 +69,28 @@
 - **Nightly on the T1 branch:**
   - the document-editing journey passed on ONLYOFFICE 10.0.0.1 in Firefox and WebKit;
   - in WebKit only, every tenant-admin journey failed, unlike the master nightly. No artifacts were kept, so the cross-browser job now uploads its Playwright results on failure, and the next run will show why.
+
+## 2026-11-14 — T3 text extraction
+- **Service:** the unmodified Apache Tika server 4.2.0 (standard image) with `deploy/tika/tika-config.json`:
+  - two forked parsers with a 1 GiB heap each;
+  - tasks at most 120 s, 60 s without progress;
+  - embedded documents at most 3 deep and 500 in all; zip-bomb ratio 100;
+  - write limit 5,000,001 characters;
+  - metadata limits;
+  - per-request config and pipes off, and only the `/tika` endpoint.
+- **Deploy:**
+  - on-prem Compose: `tika` service in the `documents` profile, internal network only, 3 GB limit. Ansible sets `MEMO_TIKA_URL` for dev; re-run Ansible after merge so the VM's `.env` gets it.
+  - dev Compose: `tika` plus a socat gateway on 9998.
+  - E2E stack: Tika when `E2E_DOCUMENTS=1`.
+  - Helm: `integrations.tikaUrl` (the chart does not run Tika, as with ONLYOFFICE).
+  - Settings: `memo.files.tika-url`, `max-text-chars`, `rendition-concurrency`.
+- **Client:** `TikaClient` (present only when the URL is set) sends `PUT /tika/text` with the bytes streamed and their type, keeps at most 5,000,000 characters and marks the rest as truncated.
+  - 422 → `MALFORMED`, 413 → `SIZE`, 415 → `UNSUPPORTED`: all final.
+  - 429 (every fork busy), 503 (a fork crashed) and network errors are retried.
+- **Spike** (local, 4.2.0 with the config):
+  - The config is used (log: `numClients=2`, heap user-set), and the other endpoints answer 404.
+  - DOCX and PDF give their text; random bytes sent as DOCX, and an empty body, answer 422.
+  - About 0.5 GiB idle.
+- **`tika-core` 4.1.0 → 4.2.0** for upload detection, so detection and extraction agree.
+- **Tests:** `TikaClientTest` (4) against a stand-in server: the request, truncation at the limit and exactly at it, status mapping, an unreachable server.
+- **Not done here:** the hostile corpus is generated in tests and refused at upload, so none of it reaches the parsers. Upload inspection already bounds what can (OOXML expansion 100:1, PDF pages). A corpus aimed at the parsers themselves (deep XML, huge spreadsheets, malformed PDFs that pass inspection), run nightly against both services, moves to T8.

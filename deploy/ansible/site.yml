@@ -141,6 +141,8 @@
           # ClamAV from E05 (Phase 1a Q7). ONLYOFFICE on dev only (Phase 2 E02), since the VM has 16 GB (Phase 2 Q2).
           COMPOSE_PROFILES: "{{ 'devtools,antivirus,documents' if item.0 == 'dev' else 'devtools,antivirus' }}"
           MEMO_DOCSERVER_URL: "{{ 'http://onlyoffice' if item.0 == 'dev' else '' }}"
+          # Text of documents (Phase 3 E02, ADR-0045), with the documents profile.
+          MEMO_TIKA_URL: "{{ 'http://tika:9998' if item.0 == 'dev' else '' }}"
           MEMO_CLAMAV_HOST: clamav
           MEMO_SMTP_HOST: mailpit
           MEMO_SMTP_PORT: "1025"

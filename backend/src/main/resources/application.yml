@@ -199,6 +199,11 @@ memo:
     # Ciphertext spools of uploads in progress; needs max-upload-bytes x concurrent-uploads of free space.
     spool-dir: ${MEMO_FILES_SPOOL_DIR:}
     concurrent-uploads: ${MEMO_FILES_CONCURRENT_UPLOADS:8}
+    # Renditions (ADR-0045): built at once per kind and node; text cut beyond max-text-chars.
+    rendition-concurrency: ${MEMO_FILES_RENDITION_CONCURRENCY:2}
+    max-text-chars: ${MEMO_FILES_MAX_TEXT_CHARS:5000000}
+    # The Apache Tika server for text (internal network only); empty: text renditions are not possible.
+    tika-url: ${MEMO_TIKA_URL:}
   mail:
     host: ${MEMO_SMTP_HOST:}
     port: ${MEMO_SMTP_PORT:25}

@@ -39,6 +39,8 @@ x-backend-env: &backend-env
   MEMO_DOCSERVER_URL: ${MEMO_DOCSERVER_URL:-}
   MEMO_DOCEDIT_JWT_SECRET: ${ONLYOFFICE_JWT_SECRET:-}
   MEMO_DOCEDIT_INTERNAL_URL: http://backend:8082
+  # Text of documents (ADR-0045) with the `documents` profile: MEMO_TIKA_URL=http://tika:9998 turns it on.
+  MEMO_TIKA_URL: ${MEMO_TIKA_URL:-}
   # `clamav` with the antivirus profile; without a scanner every upload is refused (ADR-0029).
   MEMO_CLAMAV_HOST: ${MEMO_CLAMAV_HOST:-}
   LOGGING_STRUCTURED_FORMAT_CONSOLE: ecs
@@ -194,6 +196,18 @@ services:
     # No outbound network (AGENTS.md §3.4): internal network shared with the backend only.
     networks: [docs-internal]
     deploy: { resources: { limits: { memory: 4g } } }
+
+  # Text extraction (ADR-0045): the unmodified Apache Tika server, parsing in forked JVMs with the limits of
+  # deploy/tika/tika-config.json; no outbound network, reachable from the backend only, no authentication of its own.
+  tika:
+    profiles: [documents]
+    image: ${MEMO_TIKA_IMAGE:-apache/tika:4.2.0}
+    restart: unless-stopped
+    command: ["-c", "/config/tika-config.json"]
+    volumes: ["../../tika/tika-config.json:/config/tika-config.json:ro"]
+    networks: [docs-internal]
+    # Two forks of 1 GiB heap each, and the server itself.
+    deploy: { resources: { limits: { memory: 3g } } }
 
   clamav:
     profiles: [antivirus]

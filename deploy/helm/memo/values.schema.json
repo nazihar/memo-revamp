@@ -152,6 +152,9 @@
         "malwareScannerHost": {
           "type": "string"
         },
+        "tikaUrl": {
+          "type": "string"
+        },
         "smtpHost": {
           "type": "string"
         },

@@ -49,6 +49,8 @@ integrations:
     dnsResolver: kube-dns.kube-system.svc.cluster.local # nginx resolves the document server per request
   # clamd host, configured with deploy/clamav/clamd.env (ADR-0029). Empty: every upload is refused (fail closed).
   malwareScannerHost: ""
+  # Apache Tika server for the text of documents (ADR-0045; deploy/tika/tika-config.json), internal only. Empty: no text.
+  tikaUrl: ""
   smtpHost: ""
   smtpPort: 25
   smtpFrom: ""

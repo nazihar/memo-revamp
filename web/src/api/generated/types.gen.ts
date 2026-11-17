@@ -1447,6 +1447,14 @@ export type RemarkRequest = {
     remark?: string | null;
 };
 
+export type RenditionView = {
+    error?: string | null;
+    kind: 'PDF' | 'TEXT';
+    pages?: number | null;
+    state: 'PENDING' | 'DONE' | 'FAILED' | 'NOT_POSSIBLE';
+    truncated: boolean;
+};
+
 export type ReportingLineRequest = {
     reportsToPositionId: string;
     validFrom: string;
@@ -1756,6 +1764,11 @@ export type ValidateRequest = {
 export type ValidationResponse = {
     problems: Array<FieldProblem>;
     valid: boolean;
+};
+
+export type VersionRenditions = {
+    preview: 'PDF' | 'IMAGE' | 'PENDING' | 'NONE';
+    renditions: Array<RenditionView>;
 };
 
 export type VersionResponse = {
@@ -4031,6 +4044,42 @@ export type GetFileVersionContentData = {
 };
 
 export type GetFileVersionContentResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
+export type GetFileVersionRenditionsData = {
+    body?: never;
+    path: {
+        fileId: string;
+        versionId: string;
+    };
+    query?: never;
+    url: '/api/v1/files/{fileId}/versions/{versionId}/renditions';
+};
+
+export type GetFileVersionRenditionsResponses = {
+    /**
+     * OK
+     */
+    200: VersionRenditions;
+};
+
+export type GetFileVersionRenditionsResponse = GetFileVersionRenditionsResponses[keyof GetFileVersionRenditionsResponses];
+
+export type GetFileVersionPdfData = {
+    body?: never;
+    path: {
+        fileId: string;
+        versionId: string;
+    };
+    query?: never;
+    url: '/api/v1/files/{fileId}/versions/{versionId}/renditions/pdf';
+};
+
+export type GetFileVersionPdfResponses = {
     /**
      * OK
      */

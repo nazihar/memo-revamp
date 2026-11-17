@@ -94,7 +94,10 @@ export function NewMemoPage() {
         description={intl.formatMessage(mm.createLead)}
       />
       <form noValidate onSubmit={(e) => void submit(e)} className="flex flex-col gap-6">
-        <MemoTypeChooser types={types.data ?? []} value={typeId} onChange={chooseType} error={errors.typeId} />
+        {/* Only once the types are known: how many there are decides between choices and a list. */}
+        {types.data ? (
+          <MemoTypeChooser types={types.data} value={typeId} onChange={chooseType} error={errors.typeId} />
+        ) : null}
         <MemoFields values={{ ...values, typeId }} onChange={setValues} errors={errors} showType={false} />
         {fields.length > 0 && type ? (
           <fieldset className="flex flex-col gap-4 border-t pt-4">

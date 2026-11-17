@@ -38,3 +38,34 @@
 - **Research corrections:** `aiSettings.enable`, `docbuilderEnable` and `convertServiceEnable` are not in the 10.0.0.1 tag (`Common/config/default.json`). They come later. ADR-0047 and the design now name the settings that exist; the proxy covers the rest.
 - **Backend:** the internal download already sends the exact `Content-Length` that 10.0's checksum check needs. The `docedit` tests pass.
 - **Docs:** dependency register, `document-editing.md` hardening section, `nfr.md` memory.
+
+## 2026-11-14 — T2 renditions
+- **Model:**
+  - `files/V2`: `files_rendition` per version and kind, with state, attempts, error code, encrypted object, size, hash, pages and a truncated flag. RLS forced; no deletes.
+  - `FilePurpose.renditions` opts in; the memo document wants PDF and TEXT.
+  - Public ports `RenditionConverter` and `TextExtractor`, and `FileRenditions` for owning modules.
+- **Scheduling:** a `FileVersionCreated` listener records the rows in the upload's transaction and schedules one task per rendition, with instance id `<version>:<kind>`, so one rendition never runs twice at once.
+  - A PDF original or an image needs no PDF rendition.
+  - A type no service handles is `NOT_POSSIBLE` (`UNSUPPORTED`, or `NO_SERVICE` when the port is missing).
+  - A recovery task every five minutes re-schedules pending rows older than five minutes.
+- **Worker:**
+  - waits for one of two slots per kind and node before it claims an attempt, so a busy node costs no attempt;
+  - streams the decrypted original to the port and encrypts the port's output into a spool (rendition-specific associated data);
+  - checks a PDF with `PdfInspector` (page limit);
+  - stores the result in `work` under `t/<tenant>/r/<random>`.
+  - Final errors fail at once and are audited (`file.rendition.failed`); transient ones are retried by the scheduler's backoff, up to four attempts.
+- **ONLYOFFICE converter** (`docedit`, only when a document server is configured): `/converter/from-file`, async with a per-tenant, per-version key, the token carrying `operation: converter`, polling every two seconds up to 150 s.
+  - Errors -2, -5, -7, -8, -9 and -10 are final; the others are retried.
+  - HTTP 413 means size; an unreachable server is retried.
+- **API:**
+  - `GET /files/{id}/versions/{v}/renditions` (preview kind and states);
+  - `GET …/renditions/pdf`: the rendition, or the original when it is a PDF, with ranges, sandboxed CSP and no sniffing.
+  - Reads are audited as `file.opened` with `rendition`, separately from the original.
+- **Tests:**
+  - `RenditionIT` (7): done and read through the original's rules with audit and ranges; a final error; a retry; the attempt limit; an image; a PDF original; recovery; another tenant.
+  - `OnlyOfficeConverterTest` (4): the multipart request, token claims, polling and error mapping, against a stand-in server.
+- **Test infrastructure found:** test contexts share the scheduler table, so a task scheduled by one context may run in another. A plain context has no object storage and fails it. `FakeRenditionServices` is therefore in every test context, and `RenditionIT` runs the worker itself with `memo.files.rendition-jobs=false`.
+- **Also fixed:** the new-memo page rendered an empty choice group before the types loaded. The E2E helper took the radio path and then waited for a radio that never came (nightly Firefox and WebKit, `memo-types.spec`). The chooser now waits for the types, and the helper waits for a choice or the list.
+- **Nightly on the T1 branch:**
+  - the document-editing journey passed on ONLYOFFICE 10.0.0.1 in Firefox and WebKit;
+  - in WebKit only, every tenant-admin journey failed, unlike the master nightly. No artifacts were kept, so the cross-browser job now uploads its Playwright results on failure, and the next run will show why.

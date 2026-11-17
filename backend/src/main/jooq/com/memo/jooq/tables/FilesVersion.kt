@@ -6,12 +6,14 @@ package com.memo.jooq.tables
 
 import com.memo.jooq.Memo
 import com.memo.jooq.indexes.FILES_VERSION_TENANT_PROVISIONAL_IDX
+import com.memo.jooq.keys.FILES_RENDITION__FILES_RENDITION_TENANT_ID_VERSION_ID_FKEY
 import com.memo.jooq.keys.FILES_VERSION_PKEY
 import com.memo.jooq.keys.FILES_VERSION_TENANT_ID_BUCKET_OBJECT_KEY_KEY
 import com.memo.jooq.keys.FILES_VERSION_TENANT_ID_FILE_ID_NUMBER_KEY
 import com.memo.jooq.keys.FILES_VERSION_TENANT_ID_ID_KEY
 import com.memo.jooq.keys.FILES_VERSION__FILES_VERSION_TENANT_ID_FILE_ID_FKEY
 import com.memo.jooq.tables.FilesFile.FilesFilePath
+import com.memo.jooq.tables.FilesRendition.FilesRenditionPath
 import com.memo.jooq.tables.records.FilesVersionRecord
 
 import java.time.OffsetDateTime
@@ -224,6 +226,22 @@ open class FilesVersion(
      */
     fun filesFile(): FilesFilePath = filesFile
     val filesFile: FilesFilePath by lazy { FilesFilePath(this, FILES_VERSION__FILES_VERSION_TENANT_ID_FILE_ID_FKEY, null) }
+
+    private lateinit var _filesRendition: FilesRenditionPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.files_rendition</code> table
+     */
+    fun filesRendition(): FilesRenditionPath {
+        if (!this::_filesRendition.isInitialized)
+            _filesRendition = FilesRenditionPath(this, null, FILES_RENDITION__FILES_RENDITION_TENANT_ID_VERSION_ID_FKEY.inverseKey)
+
+        return _filesRendition;
+    }
+
+    val filesRendition: FilesRenditionPath
+        get(): FilesRenditionPath = filesRendition()
     override fun getChecks(): List<Check<FilesVersionRecord>> = listOf(
         Internal.createCheck(this, DSL.name("files_version_bucket_check"), "((bucket = ANY (ARRAY['records'::text, 'work'::text])))", true),
         Internal.createCheck(this, DSL.name("files_version_check"), "(((bucket = 'records'::text) = (lock_state <> 'NONE'::text)))", true),

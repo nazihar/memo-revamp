@@ -86,6 +86,15 @@ jobs:
       - run: pnpm --filter web exec playwright test --project=smoke --retries=1 e2e/smoke/document-editing.spec.ts
       - if: always()
         run: ci/e2e-stack.sh logs
+      # Screenshots, traces and error context of failed journeys, so a browser-only failure can be read afterwards.
+      - if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: cross-browser-playwright-report
+          path: |
+            web/playwright-report/
+            web/test-results/
+          retention-days: 14
 
   helm-kind:
     name: Helm chart on kind (migration hook, probes, health)

@@ -8,7 +8,8 @@ import { expect } from './fixtures'
 export async function chooseMemoType(page: Page, name: string) {
   const list = page.getByRole('combobox', { name: 'Memo type' })
   const choices = page.getByRole('group', { name: /^Memo type/ })
-  await expect(list.or(choices)).toBeVisible()
+  // Wait for the loaded types: a list, or at least one choice (an empty group means they are still loading).
+  await expect(list.or(choices.getByRole('radio').first())).toBeVisible()
   if (await list.isVisible()) {
     await list.selectOption({ label: name })
   } else {

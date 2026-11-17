@@ -3817,6 +3817,30 @@
         },
         "type" : "object"
       },
+      "RenditionView" : {
+        "properties" : {
+          "error" : {
+            "type" : [ "string", "null" ]
+          },
+          "kind" : {
+            "enum" : [ "PDF", "TEXT" ],
+            "type" : "string"
+          },
+          "pages" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "state" : {
+            "enum" : [ "PENDING", "DONE", "FAILED", "NOT_POSSIBLE" ],
+            "type" : "string"
+          },
+          "truncated" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "kind", "state", "truncated" ],
+        "type" : "object"
+      },
       "ReportingLineRequest" : {
         "properties" : {
           "reportsToPositionId" : {
@@ -4559,6 +4583,22 @@
           }
         },
         "required" : [ "problems", "valid" ],
+        "type" : "object"
+      },
+      "VersionRenditions" : {
+        "properties" : {
+          "preview" : {
+            "enum" : [ "PDF", "IMAGE", "PENDING", "NONE" ],
+            "type" : "string"
+          },
+          "renditions" : {
+            "items" : {
+              "$ref" : "#/components/schemas/RenditionView"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "preview", "renditions" ],
         "type" : "object"
       },
       "VersionResponse" : {
@@ -8607,6 +8647,71 @@
           }
         },
         "summary" : "Content of one version (supports Range)",
+        "tags" : [ "files" ]
+      }
+    },
+    "/api/v1/files/{fileId}/versions/{versionId}/renditions" : {
+      "get" : {
+        "operationId" : "getFileVersionRenditions",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "fileId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "versionId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/VersionRenditions"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "How a version can be previewed, and its renditions",
+        "tags" : [ "files" ]
+      }
+    },
+    "/api/v1/files/{fileId}/versions/{versionId}/renditions/pdf" : {
+      "get" : {
+        "operationId" : "getFileVersionPdf",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "fileId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "versionId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "summary" : "The PDF to preview a version: the original if it is a PDF, else its rendition",
         "tags" : [ "files" ]
       }
     },

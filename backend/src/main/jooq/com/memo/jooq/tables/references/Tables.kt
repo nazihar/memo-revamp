@@ -17,6 +17,7 @@ import com.memo.jooq.tables.AuthzRolePermission
 import com.memo.jooq.tables.DoceditSession
 import com.memo.jooq.tables.FilesFile
 import com.memo.jooq.tables.FilesPendingUpload
+import com.memo.jooq.tables.FilesRendition
 import com.memo.jooq.tables.FilesTenantKeyset
 import com.memo.jooq.tables.FilesVersion
 import com.memo.jooq.tables.IdentityActionToken
@@ -128,6 +129,11 @@ val FILES_FILE: FilesFile = FilesFile.FILES_FILE
  * The table <code>memo.files_pending_upload</code>.
  */
 val FILES_PENDING_UPLOAD: FilesPendingUpload = FilesPendingUpload.FILES_PENDING_UPLOAD
+
+/**
+ * The table <code>memo.files_rendition</code>.
+ */
+val FILES_RENDITION: FilesRendition = FilesRendition.FILES_RENDITION
 
 /**
  * The table <code>memo.files_tenant_keyset</code>.

@@ -69,6 +69,8 @@ dependencies {
         exclude(group = "org.apache.xmlgraphics")
     }
     implementation(libs.poi.ooxml)
+    // Legacy import metadata as CSV (ADR-0055): the strict RFC 4180 profile, UTF-8 only.
+    implementation(libs.commons.csv)
     // Workflow definitions: JSON Schema validation (ADR-0038) and CEL conditions without macros (ADR-0039).
     implementation(libs.json.schema.validator)
     implementation(libs.cel)
@@ -99,8 +101,6 @@ dependencies {
     testImplementation(libs.jqwik)
     // Fuzz targets (TESTING_STRATEGY §3.6): regression inputs in the PR stage, time-boxed fuzzing in the nightly.
     testImplementation(libs.jazzer.junit)
-    // E06 T1 spike only; T5 makes it a runtime dependency of the imports module (ADR-0055).
-    testImplementation(libs.commons.csv)
     testImplementation(libs.jooq.codegen)
     testImplementation(libs.jooq.meta)
 }

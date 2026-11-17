@@ -13,15 +13,16 @@ import com.memo.files.internal.UploadRequest
 import com.memo.files.internal.Uploads
 import com.memo.identity.UserAccount
 import com.memo.identity.UserAccounts
+import com.memo.imports.internal.ImportIntakePurpose
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
 import com.memo.testsupport.Audit
 import com.memo.testsupport.FilesIntegrationTest
+import com.memo.testsupport.ImportSupport
 import com.memo.testsupport.LegacySamples
 import com.memo.testsupport.Samples
 import com.memo.testsupport.TestDocumentPurpose
 import com.memo.testsupport.TestImagePurpose
-import com.memo.testsupport.TestIntakePurpose
 import com.memo.testsupport.TestObjectStorage
 import com.memo.testsupport.TestTenant
 import com.memo.testsupport.TestTikaServer
@@ -34,7 +35,6 @@ import com.memo.testsupport.csrfToken
 import com.memo.testsupport.fromIp
 import com.memo.testsupport.onHost
 import com.memo.testsupport.sendingCsrf
-import com.memo.testsupport.signIn
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.catchThrowableOfType
 import org.junit.jupiter.api.Test
@@ -68,22 +68,34 @@ class LegacyFormatsIT : FilesIntegrationTest() {
 
     @Autowired internal lateinit var store: FileStore
 
+    @Autowired lateinit var imports: ImportSupport
+
     private val tenant: TestTenant by lazy { registry.aTestTenant(transactions, settings, "legacy", mfaRequired = false) }
 
-    /** A fresh uploader per test: upload rates are per user. Admins may upload test documents. */
-    private fun anUploader(): UserAccount = accounts.anActiveUser(transactions, tenant, aPassword(), tenantAdmin = true)
+    /**
+     * A fresh uploader per test: upload rates are per user. Admins may upload test documents; originals need `memo.import`
+     * and a registered path of an open batch (the real `imports.intake` purpose).
+     */
+    private fun anUploader(): UserAccount =
+        accounts.anActiveUser(transactions, tenant, aPassword(), tenantAdmin = true).also { imports.grant(tenant, it.id.value) }
+
+    private val batch: UUID by lazy { imports.batch(tenant, anUploader().id.value) }
+
+    /** A newly registered original: the owner of an intake upload. */
+    private fun anOriginal(uploader: UserAccount): String = imports.intakeOwner(tenant, uploader.id.value, batch)
 
     private fun upload(
         bytes: ByteArray,
         name: String,
         uploader: UserAccount = anUploader(),
-        purpose: String = TestIntakePurpose.KEY,
+        purpose: String = ImportIntakePurpose.KEY,
         declaredLength: Long = bytes.size.toLong(),
         key: String = UUID.randomUUID().toString(),
+        owner: String = if (purpose == ImportIntakePurpose.KEY) anOriginal(uploader) else "intake-1",
     ): UUID =
         ActorContext.call(ActorScope(Actor.User(uploader.id.value), null)) {
             TenantContext.call(tenant.id) {
-                uploads.upload(UploadRequest(purpose, "intake-1", null, null, name, declaredLength, key, bytes.inputStream()))
+                uploads.upload(UploadRequest(purpose, owner, null, null, name, declaredLength, key, bytes.inputStream()))
             }
         }
 
@@ -124,16 +136,18 @@ class LegacyFormatsIT : FilesIntegrationTest() {
     fun `an Outlook message is not allowed, and the owner learns why`() {
         val key = "imp-${UUID.randomUUID()}"
         val before = workObjects()
+        val uploader = anUploader()
+        val owner = anOriginal(uploader)
 
-        val refused = rejection { upload(LegacySamples.msg(), "minutes.msg", key = key) }
+        val refused = rejection { upload(LegacySamples.msg(), "minutes.msg", uploader, key = key, owner = owner) }
 
         assertThat(refused.reason).isEqualTo(RejectionReason.TYPE_NOT_ALLOWED)
         assertThat(refused.detail["detectedType"]).isEqualTo("application/vnd.ms-outlook")
         assertThat(workObjects()).isEqualTo(before)
         val event = UploadRejections.seen.single { it.idempotencyKey == key }
         assertThat(event.tenantId).isEqualTo(tenant.id.value)
-        assertThat(event.purposeKey).isEqualTo(TestIntakePurpose.KEY)
-        assertThat(event.ownerId).isEqualTo("intake-1")
+        assertThat(event.purposeKey).isEqualTo(ImportIntakePurpose.KEY)
+        assertThat(event.ownerId).isEqualTo(owner)
         assertThat(event.reasonCode).isEqualTo("TYPE_NOT_ALLOWED")
         assertThat(event.fileId).isNull()
         assertThat(Audit.entries(tenant.id).last { it.action == "file.upload.rejected" }.canonical).contains("vnd.ms-outlook")
@@ -164,15 +178,16 @@ class LegacyFormatsIT : FilesIntegrationTest() {
 
     @Test
     fun `with the Tika server unreachable an OLE2 upload fails closed with 503, and other legacy files still go in`() {
-        val password = aPassword()
-        val session = mvc.signIn(tenant, accounts.anActiveUser(transactions, tenant, password).email, password)
+        val (importer, session) = imports.importer(mvc, tenant)
+        val doc = imports.intakeOwner(tenant, importer, batch)
         val key = UUID.randomUUID().toString()
         val before = workObjects()
 
         TestTikaServer.down = true
         val (refused, rtf) =
             try {
-                post(session, LegacySamples.doc(), "minutes.doc", key) to post(session, LegacySamples.rtf, "letter.rtf")
+                post(session, doc, LegacySamples.doc(), "minutes.doc", key) to
+                    post(session, imports.intakeOwner(tenant, importer, batch), LegacySamples.rtf, "letter.rtf")
             } finally {
                 TestTikaServer.down = false
             }
@@ -184,17 +199,18 @@ class LegacyFormatsIT : FilesIntegrationTest() {
         assertThat(UploadRejections.seen.none { it.idempotencyKey == key }).isTrue()
         assertThat(rtf).hasStatus(HttpStatus.CREATED)
         assertThat(workObjects()).isEqualTo(before + 1)
-        assertThat(post(session, LegacySamples.doc(), "minutes.doc", key)).hasStatus(HttpStatus.CREATED)
+        assertThat(post(session, doc, LegacySamples.doc(), "minutes.doc", key)).hasStatus(HttpStatus.CREATED)
     }
 
     private fun post(
         session: jakarta.servlet.http.Cookie,
+        owner: String,
         bytes: ByteArray,
         name: String,
         key: String = UUID.randomUUID().toString(),
     ) = mvc
         .post()
-        .uri("/api/v1/files?purpose=${TestIntakePurpose.KEY}&owner=intake-2")
+        .uri("/api/v1/files?purpose=${ImportIntakePurpose.KEY}&owner=$owner")
         .with(onHost(tenant.slug))
         .with(fromIp(aClientIp()))
         .with(sendingCsrf(mvc.csrfToken(tenant), session))
@@ -208,8 +224,9 @@ class LegacyFormatsIT : FilesIntegrationTest() {
     fun `the intake has its own upload rate of 600 a minute, and other purposes keep 30`() {
         val uploader = anUploader()
         // Refused by their declared length before anything is read: each still takes a token.
-        val intake = TestIntakePurpose().maxBytes + 1
-        assertThat(takenUntilLimited { upload(Samples.text, "a.txt", uploader, declaredLength = intake) })
+        val intake = ImportIntakePurpose.MAX_BYTES + 1
+        val owner = anOriginal(uploader)
+        assertThat(takenUntilLimited { upload(Samples.text, "a.txt", uploader, declaredLength = intake, owner = owner) })
             .isBetween(INTAKE_RATE.toLong(), INTAKE_RATE + refilledIntake)
 
         // The same person's other uploads are untouched by the intake, and still stop at 30.

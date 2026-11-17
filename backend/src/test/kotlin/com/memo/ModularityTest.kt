@@ -44,6 +44,7 @@ class ModularityTest {
                 "signature",
                 "notification",
                 "search",
+                "imports",
                 "system",
                 "demo",
                 "platform",

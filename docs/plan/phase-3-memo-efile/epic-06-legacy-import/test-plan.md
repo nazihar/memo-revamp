@@ -36,7 +36,7 @@
 | T4 | Matrix | `p3-e06-imports.yaml`: the two memo endpoints × subjects (readers without the permission 403, non-readers 404, no step-up refused) |
 | T5 | Unit | `XlsxSheetReaderTest`, `CsvSheetReaderTest`: header matching (case, spaces, `-`, `_`), `field:` columns, unknown and duplicate columns, caps, dates (date cells in both systems, ISO text, nothing guessed), cached formulas, `NUMBER_NOT_TEXT`, delimiter detection, BOMs, strict UTF-8; `PathRulesTest`: NFC, `/`, `..`, control characters, length and depth, case-only pairs |
 | T5 | Property | Paths: any string either normalises to a valid path that round-trips or is refused; never a path outside the folder |
-| T5 | Fuzz (nightly) | Jazzer `ImportSheetFuzzTest` (targets `xlsx`, `csv`) and `ImportPathFuzzTest`: no exception escapes the catch-all, no thread is lost, time per input bounded |
+| T5 | Fuzz (nightly) | Jazzer `ImportSheetFuzzTest` (targets `xlsx`, `csv` and, as built, `paths` in place of a separate `ImportPathFuzzTest`): no exception escapes the catch-all, no thread is lost, time per input bounded |
 | T5 | Integration | `ImportBatchIT`: create, settings, list; source binding (workbook or CSV, not both); path registration (1,000 per call, duplicates, limits), listing by state, resume by size; intake binding and refusals recorded with the reason; template download (sheets, Text format, lists); the hostile corpus ends as batch problems; cross-tenant on every table and endpoint |
 | T5 | Matrix | `p3-e06-imports.yaml`: every `/admin/imports` endpoint and the three purposes' uploads × subjects (403 without `memo.import`) |
 | T6 | Integration | `DryRunIT`: business tables unchanged (counts and checksums) and SQLSTATE 25006 on a write in a validation transaction; every ERROR and WARNING code from a crafted workbook; path matching exact, case and ambiguous; cross-row checks (duplicates, in use, similar, shared content); the live-series check for current, past and future periods and unit-scoped counters; staleness after a source, original, mapping or setting change |
@@ -59,9 +59,9 @@
 - [ ] Matrix and audit coverage green with the new endpoints and actions (`import.*`, `memo.imported`, `memo.legacy.*`, `file.version.purged`)
 - [x] T1 spike recorded in the log; ADR-0055 confirmed or amended (TIFF previews, parse limits, read-only check) (2026-11-16: amended)
 - [ ] Hostile corpus (XLSX, CSV, OLE2) green nightly against clamd, Tika and ONLYOFFICE
-- [ ] Jazzer targets `ImportSheetFuzzTest` and `ImportPathFuzzTest` in the nightly set, with no open crash
+- [ ] Jazzer targets `ImportSheetFuzzTest` (`xlsx`, `csv`, `paths`; T5) in the nightly set, with no open crash
 - [ ] Import volume results recorded in the log with hardware and settings
-- [ ] Dependency register: Apache Commons CSV 1.14.1
+- [x] Dependency register: Apache Commons CSV 1.14.1 (T5)
 - [ ] ASVS rows (V1, V2, V5, V8, V14, V15, V16)
 - [ ] Runbook `docs/runbooks/legacy-import.md` (rehearsal on a non-production tenant first, sizing the `work` bucket, throttling, stuck batches, fixity mismatch, the command-line uploader threshold)
 - [ ] Phase demo script `docs/plan/phase-3-memo-efile/demo.md` (overview §5)

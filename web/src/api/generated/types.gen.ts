@@ -711,6 +711,73 @@ export type HistoryRound = {
     round: number;
 };
 
+export type ImportBatchPage = {
+    batches: Array<ImportBatchSummary>;
+    next?: string | null;
+};
+
+export type ImportBatchRequest = {
+    defaultClassificationId?: string | null;
+    name: string;
+    numberPrefix?: string | null;
+    sourceCode: string;
+    timeZone: string;
+};
+
+export type ImportBatchSummary = {
+    createdAt: string;
+    createdBy: string;
+    id: string;
+    name: string;
+    sourceCode: string;
+    state: 'OPEN' | 'DRY_RUN' | 'VALIDATED' | 'IMPORTING' | 'STOPPING' | 'STOPPED' | 'VERIFYING' | 'COMPLETED' | 'CLOSED' | 'ABANDONED';
+    updatedAt: string;
+};
+
+export type ImportBatchView = {
+    allowedActions: Array<'EDIT' | 'ATTACH_SOURCE' | 'REGISTER_ORIGINALS'>;
+    createdAt: string;
+    createdBy: string;
+    defaultClassificationId?: string | null;
+    dryRunAt?: string | null;
+    id: string;
+    name: string;
+    numberPrefix?: string | null;
+    originals: ImportOriginalsView;
+    problems: {
+        [key: string]: number;
+    };
+    rows: {
+        [key: string]: number;
+    };
+    sourceCode: string;
+    sourceKind?: 'XLSX' | 'CSV';
+    sources: Array<ImportSourceView>;
+    state: 'OPEN' | 'DRY_RUN' | 'VALIDATED' | 'IMPORTING' | 'STOPPING' | 'STOPPED' | 'VERIFYING' | 'COMPLETED' | 'CLOSED' | 'ABANDONED';
+    timeZone: string;
+    updatedAt: string;
+    version: number;
+};
+
+export type ImportOriginalsView = {
+    expected: number;
+    expectedBytes: number;
+    purged: number;
+    received: number;
+    receivedBytes: number;
+    refused: number;
+};
+
+export type ImportSourceView = {
+    fileId: string;
+    name: string;
+    sha256: string;
+    sizeBytes: number;
+    table: 'WORKBOOK' | 'MEMOS' | 'FILES' | 'APPROVALS';
+    uploadedAt: string;
+    versionId: string;
+};
+
 export type InboxItem = {
     actingFor?: Named | null;
     assignedAt: string;
@@ -735,6 +802,32 @@ export type InboxMemo = {
 export type InboxPage = {
     items: Array<InboxItem>;
     nextCursor?: string | null;
+};
+
+export type IntakeEntryView = {
+    intakeId: string;
+    mediaType?: string | null;
+    path: string;
+    receivedAt?: string | null;
+    refusal?: string | null;
+    refusalSignature?: string | null;
+    sha256?: string | null;
+    size: number;
+    state: 'EXPECTED' | 'RECEIVED' | 'REFUSED' | 'PURGED';
+};
+
+export type IntakePage = {
+    files: Array<IntakeEntryView>;
+    next?: string | null;
+};
+
+export type IntakePathRequest = {
+    path: string;
+    size: number;
+};
+
+export type IntakeRegistrationRequest = {
+    files: Array<IntakePathRequest>;
 };
 
 export type InterestRequest = {
@@ -2481,6 +2574,142 @@ export type UpdateBrandingErrors = {
 };
 
 export type UpdateBrandingError = UpdateBrandingErrors[keyof UpdateBrandingErrors];
+
+export type ListImportBatchesData = {
+    body?: never;
+    path?: never;
+    query?: {
+        cursor?: string;
+        limit?: number;
+    };
+    url: '/api/v1/admin/imports';
+};
+
+export type ListImportBatchesResponses = {
+    /**
+     * OK
+     */
+    200: ImportBatchPage;
+};
+
+export type ListImportBatchesResponse = ListImportBatchesResponses[keyof ListImportBatchesResponses];
+
+export type CreateImportBatchData = {
+    body: ImportBatchRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/imports';
+};
+
+export type CreateImportBatchResponses = {
+    /**
+     * OK
+     */
+    200: ImportBatchView;
+};
+
+export type CreateImportBatchResponse = CreateImportBatchResponses[keyof CreateImportBatchResponses];
+
+export type GetImportTemplateData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/imports/template';
+};
+
+export type GetImportTemplateResponses = {
+    /**
+     * OK
+     */
+    200: string;
+};
+
+export type GetImportTemplateResponse = GetImportTemplateResponses[keyof GetImportTemplateResponses];
+
+export type GetImportBatchData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/imports/{id}';
+};
+
+export type GetImportBatchResponses = {
+    /**
+     * OK
+     */
+    200: ImportBatchView;
+};
+
+export type GetImportBatchResponse = GetImportBatchResponses[keyof GetImportBatchResponses];
+
+export type UpdateImportBatchData = {
+    body: ImportBatchRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/imports/{id}';
+};
+
+export type UpdateImportBatchResponses = {
+    /**
+     * OK
+     */
+    200: ImportBatchView;
+};
+
+export type UpdateImportBatchResponse = UpdateImportBatchResponses[keyof UpdateImportBatchResponses];
+
+export type ListImportOriginalsData = {
+    body?: never;
+    path: {
+        id: string;
+    };
+    query?: {
+        /**
+         * Comma-separated states (EXPECTED, RECEIVED, REFUSED, PURGED); all when absent.
+         */
+        state?: Array<'EXPECTED' | 'RECEIVED' | 'REFUSED' | 'PURGED'>;
+        cursor?: string;
+        limit?: number;
+    };
+    url: '/api/v1/admin/imports/{id}/files';
+};
+
+export type ListImportOriginalsResponses = {
+    /**
+     * OK
+     */
+    200: IntakePage;
+};
+
+export type ListImportOriginalsResponse = ListImportOriginalsResponses[keyof ListImportOriginalsResponses];
+
+export type RegisterImportOriginalsData = {
+    body: IntakeRegistrationRequest;
+    path: {
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/imports/{id}/files';
+};
+
+export type RegisterImportOriginalsResponses = {
+    /**
+     * OK
+     */
+    200: Array<IntakeEntryView>;
+};
+
+export type RegisterImportOriginalsResponse = RegisterImportOriginalsResponses[keyof RegisterImportOriginalsResponses];
 
 export type GetMailLogData = {
     body?: never;

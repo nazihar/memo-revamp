@@ -28,6 +28,14 @@ import com.memo.jooq.tables.IdentityOperator
 import com.memo.jooq.tables.IdentityRateLimitBucket
 import com.memo.jooq.tables.IdentityRecoveryCode
 import com.memo.jooq.tables.IdentityUser
+import com.memo.jooq.tables.ImportsBatch
+import com.memo.jooq.tables.ImportsFile
+import com.memo.jooq.tables.ImportsMapping
+import com.memo.jooq.tables.ImportsProblem
+import com.memo.jooq.tables.ImportsRow
+import com.memo.jooq.tables.ImportsRowApproval
+import com.memo.jooq.tables.ImportsRowFile
+import com.memo.jooq.tables.ImportsStaged
 import com.memo.jooq.tables.Memo
 import com.memo.jooq.tables.MemoApproval
 import com.memo.jooq.tables.MemoAttachment
@@ -221,6 +229,46 @@ val IDENTITY_RECOVERY_CODE: IdentityRecoveryCode = IdentityRecoveryCode.IDENTITY
  * The table <code>memo.identity_user</code>.
  */
 val IDENTITY_USER: IdentityUser = IdentityUser.IDENTITY_USER
+
+/**
+ * The table <code>memo.imports_batch</code>.
+ */
+val IMPORTS_BATCH: ImportsBatch = ImportsBatch.IMPORTS_BATCH
+
+/**
+ * The table <code>memo.imports_file</code>.
+ */
+val IMPORTS_FILE: ImportsFile = ImportsFile.IMPORTS_FILE
+
+/**
+ * The table <code>memo.imports_mapping</code>.
+ */
+val IMPORTS_MAPPING: ImportsMapping = ImportsMapping.IMPORTS_MAPPING
+
+/**
+ * The table <code>memo.imports_problem</code>.
+ */
+val IMPORTS_PROBLEM: ImportsProblem = ImportsProblem.IMPORTS_PROBLEM
+
+/**
+ * The table <code>memo.imports_row</code>.
+ */
+val IMPORTS_ROW: ImportsRow = ImportsRow.IMPORTS_ROW
+
+/**
+ * The table <code>memo.imports_row_approval</code>.
+ */
+val IMPORTS_ROW_APPROVAL: ImportsRowApproval = ImportsRowApproval.IMPORTS_ROW_APPROVAL
+
+/**
+ * The table <code>memo.imports_row_file</code>.
+ */
+val IMPORTS_ROW_FILE: ImportsRowFile = ImportsRowFile.IMPORTS_ROW_FILE
+
+/**
+ * The table <code>memo.imports_staged</code>.
+ */
+val IMPORTS_STAGED: ImportsStaged = ImportsStaged.IMPORTS_STAGED
 
 /**
  * The table <code>memo.memo</code>.

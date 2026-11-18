@@ -5,7 +5,7 @@ import com.memo.common.authz.Policy
 import com.memo.common.context.Actor
 import com.memo.common.context.ActorContext
 import com.memo.common.tenant.TenantDsl
-import com.memo.jooq.tables.references.MEMO_PARTICIPANT
+import com.memo.memo.internal.MemoForumReaderStore
 import com.memo.memo.internal.MemoReadable
 import com.memo.memo.internal.MemoStore
 import com.memo.memo.internal.MemoWorkflowSubject
@@ -33,6 +33,7 @@ data class MemoBrief(
 @Service
 class MemoReaders(
     private val store: MemoStore,
+    private val forumRows: MemoForumReaderStore,
     private val readable: MemoReadable,
     private val policy: Policy,
     private val tenantDsl: TenantDsl,
@@ -69,36 +70,14 @@ class MemoReaders(
         val added = users - current
         val retired = current - users
         added.sorted().forEach { store.addParticipant(memoId, it, ParticipantKind.FORUM, now, grantedBy = actor()) }
-        if (retired.isNotEmpty()) {
-            tenantDsl
-                .current()
-                .update(MEMO_PARTICIPANT)
-                .set(MEMO_PARTICIPANT.REVOKED_AT, now)
-                .where(
-                    MEMO_PARTICIPANT.MEMO_ID.eq(memoId),
-                    MEMO_PARTICIPANT.USER_ID.`in`(retired),
-                    MEMO_PARTICIPANT.KIND.eq(ParticipantKind.FORUM.name),
-                    MEMO_PARTICIPANT.REVOKED_AT.isNull,
-                ).execute()
-        }
+        forumRows.retire(memoId, retired, now)
         // Added people who already read it another way keep that row; only the rows written as FORUM are audited.
         val granted = forumReaders(memoId).intersect(added)
         if (granted.isNotEmpty()) audited("memo.reader.forum_added", memoId, granted)
         if (retired.isNotEmpty()) audited("memo.reader.forum_retired", memoId, retired)
     }
 
-    private fun forumReaders(memoId: UUID): Set<UUID> =
-        tenantDsl
-            .current()
-            .select(MEMO_PARTICIPANT.USER_ID)
-            .from(MEMO_PARTICIPANT)
-            .where(
-                MEMO_PARTICIPANT.MEMO_ID.eq(memoId),
-                MEMO_PARTICIPANT.KIND.eq(ParticipantKind.FORUM.name),
-                MEMO_PARTICIPANT.REVOKED_AT.isNull,
-            ).fetch(MEMO_PARTICIPANT.USER_ID)
-            .filterNotNull()
-            .toSet()
+    private fun forumReaders(memoId: UUID): Set<UUID> = forumRows.active(memoId)
 
     private fun audited(
         action: String,

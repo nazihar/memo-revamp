@@ -247,11 +247,13 @@ class ArchitectureRulesTest {
     @Test
     fun `who reads a memo is decided by MemoReadable, and participant rows are written by their stores only`() {
         // ADR-0050: one read rule for every get, list and search; a query of its own would miss shares, expiry or units.
+        // ADR-0059 adds the committee readers' store.
+        val stores = "MemoReadable|MemoStore|MemoCoauthorStore|MemoShareStore|MemoForumReaderStore"
         noClasses()
             .that()
             .resideOutsideOfPackage("com.memo.jooq..")
             .and()
-            .haveNameNotMatching("""com\.memo\.memo\.internal\.(MemoReadable|MemoStore|MemoCoauthorStore|MemoShareStore)(\$.*)?""")
+            .haveNameNotMatching("""com\.memo\.memo\.internal\.($stores)(\$.*)?""")
             .should()
             .callMethod("com.memo.jooq.tables.references.TablesKt", "getMEMO_PARTICIPANT")
             .because("memo visibility goes through MemoReadable (ADR-0050)")

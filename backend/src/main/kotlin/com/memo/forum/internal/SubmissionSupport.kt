@@ -27,6 +27,7 @@ class SubmissionSupport(
     private val org: OrgDirectory,
     private val audit: AuditLog,
     private val events: ApplicationEventPublisher,
+    private val readers: SubmissionReaders,
 ) {
     /** The forum's chair or secretary in office, or an administrator. */
     fun officer(forum: ForumRow): Boolean =
@@ -75,7 +76,11 @@ class SubmissionSupport(
         return after
     }
 
-    fun changed(row: SubmissionRow) = events.publishEvent(ForumSubmissionChanged(forums.tenant(), row.id))
+    /** Keeps the memo's committee readers in step (ADR-0059) and publishes the change. */
+    fun changed(row: SubmissionRow) {
+        readers.sync(row.subjectType, row.subjectId)
+        events.publishEvent(ForumSubmissionChanged(forums.tenant(), row.id))
+    }
 
     fun requiredReason(reason: String?): String {
         val text = reason?.trim()?.ifEmpty { null }

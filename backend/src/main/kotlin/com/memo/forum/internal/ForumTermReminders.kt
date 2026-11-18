@@ -112,10 +112,11 @@ class ForumReminderJobs {
     fun forumTermReminderTask(
         jobs: Jobs,
         reminders: ForumTermReminders,
+        submissions: SubmissionReminders,
         transactions: TenantTransactions,
     ): OneTimeTask<ForumRemindTenantTask> =
         jobs.tenantTask(REMIND, ForumRemindTenantTask::class.java) {
-            transactions.inTenant(TenantContext.current()) { reminders.remindDue() }
+            transactions.inTenant(TenantContext.current()) { reminders.remindDue() + submissions.remindWaiting() }
         }
 
     @Bean

@@ -115,6 +115,7 @@ const kindsWithValues = defineMessages<{
   forumTermEnding: { committee: string; member: string }
   forumSubmissionReceived: { committee: string }
   forumSubmissionTriaged: { committee: string }
+  forumSubmissionWaiting: { committee: string }
 }>({
   signInAlert: { id: 'notifications.kind.signInAlert', defaultMessage: 'New sign-in to your account from {device}' },
   roleGranted: { id: 'notifications.kind.roleGranted', defaultMessage: 'You were given the role {role}' },
@@ -169,6 +170,10 @@ const kindsWithValues = defineMessages<{
   forumSubmissionTriaged: {
     id: 'notifications.kind.forumSubmissionTriaged',
     defaultMessage: 'News from {committee} on your paper',
+  },
+  forumSubmissionWaiting: {
+    id: 'notifications.kind.forumSubmissionWaiting',
+    defaultMessage: 'A paper for {committee} is still waiting for triage',
   },
 })
 
@@ -229,6 +234,8 @@ export function notificationText(intl: IntlShape, kind: string, params: Record<s
       return intl.formatMessage(kindsWithValues.forumSubmissionReceived, { committee: params.committee ?? '' })
     case 'FORUM_SUBMISSION_TRIAGED':
       return intl.formatMessage(kindsWithValues.forumSubmissionTriaged, { committee: params.committee ?? '' })
+    case 'FORUM_SUBMISSION_WAITING':
+      return intl.formatMessage(kindsWithValues.forumSubmissionWaiting, { committee: params.committee ?? '' })
     case 'PASSWORD_CHANGED':
       return intl.formatMessage(kinds.passwordChanged)
     case 'MFA_RESET':
@@ -282,6 +289,7 @@ const mailTemplates = defineMessages({
     defaultMessage: 'Paper sent to a committee',
   },
   FORUM_SUBMISSION_TRIAGED: { id: 'mail.template.forumSubmissionTriaged', defaultMessage: 'Committee news on a paper' },
+  FORUM_SUBMISSION_WAITING: { id: 'mail.template.forumSubmissionWaiting', defaultMessage: 'Paper waiting for triage' },
 })
 
 const templateMessages: Record<string, MessageDescriptor | undefined> = mailTemplates

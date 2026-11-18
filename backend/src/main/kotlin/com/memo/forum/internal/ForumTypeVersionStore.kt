@@ -8,6 +8,7 @@ import com.memo.forum.ForumRetention
 import com.memo.forum.MemberAttribute
 import com.memo.forum.Outcome
 import com.memo.forum.QuorumRule
+import com.memo.forum.SubmissionPolicy
 import com.memo.forum.TermPolicy
 import com.memo.jooq.tables.records.ForumTypeVersionRecord
 import com.memo.jooq.tables.references.FORUM_TYPE_VERSION
@@ -160,6 +161,7 @@ private fun JsonMapper.settingsFields(settings: ForumTypeSettings): Map<Field<*>
         FORUM_TYPE_VERSION.QUORUM to jsonb(settings.quorum),
         FORUM_TYPE_VERSION.OUTCOMES to jsonb(settings.outcomes),
         FORUM_TYPE_VERSION.TERM_POLICY to jsonb(settings.termPolicy),
+        FORUM_TYPE_VERSION.SUBMISSION_POLICY to jsonb(settings.submissionPolicy),
     )
 
 private val ATTRIBUTES = object : TypeReference<List<MemberAttribute>>() {}
@@ -182,6 +184,8 @@ private fun JsonMapper.row(v: ForumTypeVersionRecord): ForumTypeVersionRow =
                 quorum = readValue(v.quorum.data(), QuorumRule::class.java),
                 outcomes = readValue(v.outcomes.data(), OUTCOMES),
                 termPolicy = v.termPolicy?.let { readValue(it.data(), TermPolicy::class.java) } ?: TermPolicy(),
+                submissionPolicy =
+                    v.submissionPolicy?.let { readValue(it.data(), SubmissionPolicy::class.java) } ?: SubmissionPolicy(),
             ),
         createdBy = v.createdBy,
         createdAt = v.createdAt.toInstant(),

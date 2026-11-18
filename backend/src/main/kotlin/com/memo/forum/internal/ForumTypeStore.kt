@@ -8,6 +8,7 @@ import com.memo.forum.ForumRetention
 import com.memo.forum.MemberAttribute
 import com.memo.forum.Outcome
 import com.memo.forum.QuorumRule
+import com.memo.forum.SubmissionPolicy
 import com.memo.forum.TermPolicy
 import com.memo.jooq.tables.records.ForumTypeRecord
 import com.memo.jooq.tables.references.FORUM_TYPE
@@ -31,6 +32,7 @@ data class ForumTypeSettings(
     val quorum: QuorumRule = QuorumRule(),
     val outcomes: List<Outcome> = emptyList(),
     val termPolicy: TermPolicy = TermPolicy(),
+    val submissionPolicy: SubmissionPolicy = SubmissionPolicy(),
 )
 
 /** A forum type's identity. */

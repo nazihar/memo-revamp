@@ -25,3 +25,5 @@ endpoints:
     rule: signedIn
     body: { forumId: "{random}", reason: "Matrix" }
     headers: { If-Match: "\"0\"" }
+  # A random memo is unreadable to everyone: 404; readers and clearance are ForumReadersIT.
+  - { endpoint: "GET /api/v1/memos/{memoId}/forum-submissions", rule: signedIn }

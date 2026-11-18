@@ -55,6 +55,7 @@ class ForumMembers(
     private val org: OrgDirectory,
     private val notifier: ForumNotifier,
     private val audit: AuditLog,
+    private val readers: SubmissionReaders,
 ) {
     fun add(
         forumId: UUID,
@@ -239,6 +240,8 @@ class ForumMembers(
     ): MemberChange {
         audit.record(action, OBJECT_TYPE, row.id.toString(), before = before?.let { audited(it) }, after = audited(row))
         notifier.membershipChanged(forum, row)
+        // A chair or secretary joining or leaving changes who reads the memos in the queue (ADR-0059).
+        if (listOfNotNull(row.role, before?.role).any { it == ForumRole.CHAIR || it == ForumRole.SECRETARY }) readers.resync(forum.id)
         return MemberChange(row)
     }
 

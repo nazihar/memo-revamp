@@ -9999,6 +9999,12 @@
       "value": "Committee news on a paperSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "mail.template.forumSubmissionWaiting": [
+    {
+      "type": 0,
+      "value": "Paper waiting for triageSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "mail.template.forumTermEnding": [
     {
       "type": 0,
@@ -15954,6 +15960,20 @@
     {
       "type": 0,
       "value": " on your paperSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.forumSubmissionWaiting": [
+    {
+      "type": 0,
+      "value": "A paper for "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " is still waiting for triageSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "notifications.kind.forumTermEnding": [

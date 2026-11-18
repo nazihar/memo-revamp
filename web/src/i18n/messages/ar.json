@@ -2632,5 +2632,7 @@
   "notifications.kind.forumSubmissionReceived": "ورقة بانتظار {committee}",
   "notifications.kind.forumSubmissionTriaged": "مستجدات من {committee} على ورقتك",
   "mail.template.forumSubmissionReceived": "ورقة أُرسلت إلى لجنة",
-  "mail.template.forumSubmissionTriaged": "مستجدات لجنة على ورقة"
+  "mail.template.forumSubmissionTriaged": "مستجدات لجنة على ورقة",
+  "notifications.kind.forumSubmissionWaiting": "ورقة إلى {committee} ما زالت تنتظر الفرز",
+  "mail.template.forumSubmissionWaiting": "ورقة تنتظر الفرز"
 }

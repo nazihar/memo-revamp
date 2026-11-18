@@ -26,10 +26,12 @@ type Language = (typeof LANGUAGES)[number]
 /** Languages whose messages agree with a term's gender (ADR-0032). */
 const GENDERED: readonly Language[] = ['ar']
 
-const termLabels = { unit: am.termUnit, position: am.termPosition, memo: am.termMemo } satisfies Record<
-  TermKey,
-  unknown
->
+const termLabels = {
+  unit: am.termUnit,
+  position: am.termPosition,
+  memo: am.termMemo,
+  forum: am.termForum,
+} satisfies Record<TermKey, unknown>
 
 function nativeName(code: string): string {
   return new Intl.DisplayNames([code], { type: 'language' }).of(code) ?? code

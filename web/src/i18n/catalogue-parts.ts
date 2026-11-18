@@ -9,6 +9,7 @@ export type CataloguePart =
   | 'admin'
   | 'builder'
   | 'memoAdmin'
+  | 'forumAdmin'
   | 'platform'
   | 'patterns'
   | 'search'

@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Sheet } from '@/components/ui/dialog'
 import { Breadcrumbs, type Crumb } from '@/components/ui/misc'
 import { ToastProvider } from '@/components/ui/toast'
+import { useTerms } from '@/features/terms/terms'
 import { LocaleMenu } from './LocaleMenu'
 import { ThemeMenu } from './ThemeMenu'
 
@@ -52,6 +53,7 @@ function TenantIdentity() {
 
 function NavigationList({ viewer, onNavigate }: { viewer: Viewer; onNavigate?: () => void }) {
   const intl = useIntl()
+  const terms = useTerms()
   return (
     <div className="flex flex-col gap-4">
       {navigationGroups(viewer).map(({ group, items }) => (
@@ -69,7 +71,7 @@ function NavigationList({ viewer, onNavigate }: { viewer: Viewer; onNavigate?: (
                   className="flex min-h-10 items-center gap-2.5 rounded-md px-2.5 text-sm hover:bg-accent hover:text-accent-foreground data-[status=active]:bg-accent data-[status=active]:font-semibold data-[status=active]:text-accent-foreground"
                 >
                   <item.icon aria-hidden="true" className="size-4 shrink-0" />
-                  {intl.formatMessage(item.label)}
+                  {intl.formatMessage(item.label, terms)}
                 </Link>
               </li>
             ))}
@@ -82,10 +84,11 @@ function NavigationList({ viewer, onNavigate }: { viewer: Viewer; onNavigate?: (
 
 function useCrumbs(): Crumb[] {
   const intl = useIntl()
+  const terms = useTerms()
   return useMatches()
     .flatMap((m) => (m.staticData.crumb ? [{ crumb: m.staticData.crumb, pathname: m.pathname }] : []))
     .map(({ crumb, pathname }, i, all) => ({
-      label: intl.formatMessage(crumb),
+      label: intl.formatMessage(crumb, terms),
       href: i < all.length - 1 ? pathname : undefined,
     }))
 }

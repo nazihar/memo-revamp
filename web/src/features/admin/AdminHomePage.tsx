@@ -5,6 +5,7 @@ import { adminItems } from '@/app/navigation'
 import { PageHeader } from '@/components/page/PageHeader'
 import { useMyAccess } from '@/features/access/access'
 import { useSession, viewerOf } from '@/features/auth/session'
+import { useTerms } from '@/features/terms/terms'
 import { am } from './admin-messages'
 
 const descriptions: Record<string, MessageDescriptor> = {
@@ -22,6 +23,7 @@ const descriptions: Record<string, MessageDescriptor> = {
 export function AdminHomePage() {
   const intl = useIntl()
   const session = useSession()
+  const terms = useTerms()
   const access = useMyAccess(session.data?.state === 'AUTHENTICATED')
   const items = adminItems(viewerOf(session.data, access.data))
   return (
@@ -42,7 +44,7 @@ export function AdminHomePage() {
               >
                 <Icon aria-hidden="true" className="mt-0.5 size-5 shrink-0 text-primary" />
                 <span className="flex flex-col gap-1">
-                  <span className="font-medium">{intl.formatMessage(item.label)}</span>
+                  <span className="font-medium">{intl.formatMessage(item.label, terms)}</span>
                   {description ? (
                     <span className="text-sm text-muted-foreground">{intl.formatMessage(description)}</span>
                   ) : null}

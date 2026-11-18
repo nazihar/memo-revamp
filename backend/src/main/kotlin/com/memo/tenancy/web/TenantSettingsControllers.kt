@@ -55,7 +55,7 @@ data class TenantPreferencesView(
 
 @Schema(name = "Term")
 data class TermBody(
-    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED, description = "unit, position or memo")
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED, description = "unit, position, memo or forum")
     val term: String,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED, maxLength = 40, description = "Singular, as used mid-sentence")
     val one: String,

@@ -25,12 +25,17 @@ import { MembersTab } from './MembersTab'
 import { MemberSheet } from './MemberSheet'
 import { fm, fmt, fmv } from './messages'
 import { PolicyTab } from './PolicyTab'
+import { sm, smv } from './submission-messages'
+import { seesPapers } from './submissions'
+import { openPapersOptions } from './papers'
+import { SubmissionsTab } from './SubmissionsTab'
 import { formatDay, today } from './shared'
 
 /** What a row menu or the page menu opened. */
 export type MemberAction = 'renew' | 'changeRole' | 'edit' | 'end' | 'withdraw'
-/** The page's tabs; `?tab=meetings` opens the meetings (a meeting's page links back to them). */
-export type ForumTab = 'members' | 'meetings' | 'history' | 'policy'
+/** The page's tabs; `?tab=meetings` opens the meetings, `?tab=submissions` the papers (notifications, a paper's page). */
+export type ForumTab = 'members' | 'meetings' | 'submissions' | 'history' | 'policy'
+
 type Open =
   { kind: 'add' } | { kind: 'clone' | 'editForum' | 'dissolve' } | { kind: MemberAction; member: MemberResponse }
 
@@ -46,6 +51,8 @@ export function ForumPage({ forumId, tab }: { forumId: string; tab?: ForumTab })
   const [on, setOn] = useState(today())
   const policy = useQuery({ ...getForumPolicyOptions({ path: { forumId }, query: { on } }), enabled: Boolean(on) })
   const [open, setOpen] = useState<Open>()
+  const officer = forum.data ? seesPapers(forum.data) : false
+  const papers = useQuery({ ...openPapersOptions(forumId), enabled: officer })
   // Stable, so the member tables keep their columns (and an open row menu) across renders.
   const act = useCallback((kind: MemberAction, member: MemberResponse) => {
     setOpen({ kind, member })
@@ -119,10 +126,17 @@ export function ForumPage({ forumId, tab }: { forumId: string; tab?: ForumTab })
       <Link to="/committees" className="w-fit text-sm underline-offset-4 hover:underline">
         {intl.formatMessage(fmt.back, terms)}
       </Link>
-      <Tabs defaultValue={tab ?? 'members'}>
+      <Tabs defaultValue={tab === 'submissions' && !officer ? 'members' : (tab ?? 'members')}>
         <TabsList aria-label={intl.formatMessage(fmt.tabs, terms)}>
           <TabsTrigger value="members">{intl.formatMessage(fm.tabMembers)}</TabsTrigger>
           <TabsTrigger value="meetings">{intl.formatMessage(mm.tab)}</TabsTrigger>
+          {officer ? (
+            <TabsTrigger value="submissions">
+              {papers.data?.length
+                ? intl.formatMessage(smv.tabCount, { count: papers.data.length })
+                : intl.formatMessage(sm.tab)}
+            </TabsTrigger>
+          ) : null}
           <TabsTrigger value="history">{intl.formatMessage(fm.tabHistory)}</TabsTrigger>
           <TabsTrigger value="policy">{intl.formatMessage(fm.tabPolicy)}</TabsTrigger>
         </TabsList>
@@ -132,6 +146,11 @@ export function ForumPage({ forumId, tab }: { forumId: string; tab?: ForumTab })
         <TabsContent value="meetings" className="pt-4">
           <MeetingsTab forum={f} policy={policy.data} />
         </TabsContent>
+        {officer ? (
+          <TabsContent value="submissions" className="pt-4">
+            <SubmissionsTab forum={f} policy={policy.data} />
+          </TabsContent>
+        ) : null}
         <TabsContent value="history" className="pt-4">
           <HistoryTab forum={f} onAction={act} />
         </TabsContent>

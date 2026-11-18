@@ -12,6 +12,7 @@ import type { HistoryAction, NoteEntryView, StampView } from '@/api/generated/ty
 import { ErrorState, LoadingState } from '@/components/page/States'
 import { Button } from '@/components/ui/button'
 import { Dialog } from '@/components/ui/dialog'
+import { pmv } from '@/features/forums/papers-messages'
 import { cn } from '@/lib/utils'
 import { actionLabels, mm, mmv } from '../memo-messages'
 import { NoteRender } from './NoteRender'
@@ -195,6 +196,13 @@ function Byline({ name, actingFor, label, at }: { name: string; actingFor?: stri
 function noteLabel(intl: IntlShape, note: NoteEntryView): string {
   if (note.kind === 'COMMENT') return intl.formatMessage(m.comment)
   if (note.kind === 'CORRECTION') return intl.formatMessage(m.correction)
+  // A committee's return, decline or decision (ADR-0058): "Returned by the Management Credit Committee".
+  if (note.committee) {
+    return intl.formatMessage(pmv.committeeNote, {
+      outcome: note.committeeOutcome ?? 'other',
+      committee: note.committee,
+    })
+  }
   const kind = note.actionKind as keyof typeof actionLabels | undefined
   return kind && kind in actionLabels ? intl.formatMessage(actionLabels[kind]) : intl.formatMessage(m.comment)
 }

@@ -44,6 +44,7 @@ Chosen option 1.
   - The result is the larger of that value and `minimum`.
 - **Present** means a counting member who attends, plus the alternates counted for absent members. Remote attendees count only when `remoteCounts` is set. For an item, recused members count only when `recusedCount` is set.
 - **Quorate** when the number present is at least the needed number, every required role set has someone present, and every composition condition holds over those counted present.
+- *(Amended by ADR-0064, Phase 4 E05: a seat present by its alternate counts towards the needed number only; it never satisfies a required role set or a composition condition, a person counts for at most one seat, and a recused member's alternate does not stand in for that item.)*
 - `required` names roles. Attributes come from the forum type's member attributes, and a rule naming an unknown attribute is refused at save (`UNKNOWN_ATTRIBUTE`).
 
 ### Evaluation

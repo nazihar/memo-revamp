@@ -7,7 +7,7 @@ import type { BuilderCatalogue, EscalationTarget, FieldProblem } from '@/api/gen
 import { API_ORIGIN, server } from '@/test/msw'
 import { expectNoA11yViolations, renderWithProviders } from '@/test/render'
 import type { DefinitionBody } from './definition'
-import { apply } from './edit'
+import { apply, newStep } from './edit'
 import { StepPanel } from './StepPanel'
 
 function backend() {
@@ -24,15 +24,24 @@ function backend() {
   )
 }
 
-const body = (forum: string): DefinitionBody => ({
+const body = (forum: string, wait?: boolean): DefinitionBody => ({
   schemaVersion: 2,
   start: 'committee',
-  steps: [{ id: 'committee', type: 'escalate-to-forum', name: 'Credit committee', forum, next: 'end' }],
+  steps: [
+    {
+      id: 'committee',
+      type: 'escalate-to-forum',
+      name: 'Credit committee',
+      forum,
+      ...(wait === undefined ? {} : { wait }),
+      next: 'end',
+    },
+  ],
 })
 
-function render(forum: string, problems: FieldProblem[] = []) {
+function render(forum: string, problems: FieldProblem[] = [], wait?: boolean) {
   backend()
-  const latest = { body: body(forum) }
+  const latest = { body: body(forum, wait) }
   function Harness() {
     const [current, setCurrent] = useState(latest.body)
     const step = current.steps[0]
@@ -81,5 +90,41 @@ describe('the escalate-to-committee step (Phase 4 E01 T5, flow L2)', () => {
     ])
     expect(await screen.findByText('This committee does not exist or is dissolved.')).toBeInTheDocument()
     expect(screen.queryByText("no active committee 'board-risk'")).toBeNull()
+  })
+})
+
+describe('waiting for the committee’s decision (Phase 4 E02 T4, flow M4)', () => {
+  it('starts a new committee step waiting', () => {
+    expect(newStep({ schemaVersion: 2, start: 'end', steps: [] }, 'escalate-to-forum', 'Credit committee')).toEqual({
+      id: 'forum',
+      type: 'escalate-to-forum',
+      name: 'Credit committee',
+      forum: '',
+      wait: true,
+    })
+  })
+
+  it('switches between waiting and sending for information, saying what each does', async () => {
+    const user = userEvent.setup()
+    const { latest, container } = render('mcc', [], true)
+    const wait = screen.getByRole('switch', { name: 'Wait for the committee’s decision' })
+    expect(wait).toBeChecked()
+    expect(wait).toHaveAccessibleDescription(
+      'On: the memo waits here until the committee decides; nobody else acts on it meanwhile.',
+    )
+    await user.click(wait)
+    expect(latest.body.steps[0]?.wait).toBe(false)
+    expect(wait).not.toBeChecked()
+    expect(wait).toHaveAccessibleDescription(
+      'Off: the memo is sent to the committee for information and its route continues.',
+    )
+    await user.click(wait)
+    expect(latest.body.steps[0]?.wait).toBe(true)
+    await expectNoA11yViolations(container)
+  })
+
+  it('reads a step saved before E02 (no wait) as sent for information', () => {
+    render('mcc')
+    expect(screen.getByRole('switch', { name: 'Wait for the committee’s decision' })).not.toBeChecked()
   })
 })

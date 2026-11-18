@@ -221,6 +221,30 @@ export const ft = defineMessages({
   noReminders: { id: 'forumTypes.terms.reminders.none', defaultMessage: 'No reminders.' },
   addReminder: { id: 'forumTypes.terms.reminders.add', defaultMessage: 'Add a reminder' },
   daysBefore: { id: 'forumTypes.terms.daysBefore', defaultMessage: 'days before a term ends' },
+  // Papers for meetings (Phase 4 E02 T4, ADR-0059)
+  papers: { id: 'forumTypes.papers', defaultMessage: 'Papers for meetings' },
+  papersLead: {
+    id: 'forumTypes.papers.lead',
+    defaultMessage: 'Working days follow the organisation’s business calendar.',
+  },
+  deadline: { id: 'forumTypes.papers.deadline', defaultMessage: 'Papers due (working days before a meeting)' },
+  deadlineHint: {
+    id: 'forumTypes.papers.deadline.hint',
+    defaultMessage: 'From 0 (the day of the meeting) to 30. A paper aimed at a closer meeting is late.',
+  },
+  lateMode: { id: 'forumTypes.papers.lateMode', defaultMessage: 'Late papers' },
+  lateHint: {
+    id: 'forumTypes.papers.lateMode.hint',
+    defaultMessage: 'Applies when a paper goes on an agenda after the deadline.',
+  },
+  ALLOW: { id: 'forumTypes.papers.late.allow', defaultMessage: 'Allowed, marked late' },
+  BLOCK: { id: 'forumTypes.papers.late.block', defaultMessage: 'Held for the next meeting' },
+  CHAIR_APPROVAL: { id: 'forumTypes.papers.late.chair', defaultMessage: 'Allowed only if the chair agrees' },
+  triage: { id: 'forumTypes.papers.triage', defaultMessage: 'Remind the secretaries after (working days)' },
+  triageHint: {
+    id: 'forumTypes.papers.triage.hint',
+    defaultMessage: 'From 1 to 30. One reminder when a paper has waited this long without being triaged.',
+  },
   // Changes
   changesLead: {
     id: 'forumTypes.changes.lead',

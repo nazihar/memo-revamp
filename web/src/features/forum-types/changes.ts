@@ -92,6 +92,25 @@ export function changesBetween(
     return list.length ? intl.formatList(list.map(String)) : none
   }
   scalar('reminders', intl.formatMessage(ft.whatReminders), days(before), days(after))
+  const papers = (s: TypeSettings) => s.submissionPolicy
+  scalar(
+    'deadline',
+    intl.formatMessage(ft.deadline),
+    text(papers(before).deadlineWorkingDays),
+    text(papers(after).deadlineWorkingDays),
+  )
+  scalar(
+    'lateMode',
+    intl.formatMessage(ft.lateMode),
+    intl.formatMessage(ft[papers(before).lateMode]),
+    intl.formatMessage(ft[papers(after).lateMode]),
+  )
+  scalar(
+    'triage',
+    intl.formatMessage(ft.triage),
+    text(papers(before).triageWorkingDays),
+    text(papers(after).triageWorkingDays),
+  )
   agendaChanges(intl, before, after, yesNo, changes)
   return changes
 }

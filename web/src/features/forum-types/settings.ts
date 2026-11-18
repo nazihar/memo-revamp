@@ -58,10 +58,27 @@ export interface TypeSettings {
   termMonths: number | null
   maxTerms: number | null
   reminderDays: (number | null)[]
-  /** Papers for meetings (ADR-0059); kept as loaded until the Terms tab edits it (E02 T4). */
-  submissionPolicy: SubmissionPolicy
+  /** Papers for meetings (ADR-0059), edited on the Terms tab; empty numbers being typed are null. */
+  submissionPolicy: Papers
   /** The agenda template and the chair's agreement (ADR-0060); kept as loaded until the Agenda tab edits it (E03 T7). */
   agenda: AgendaPolicy
+}
+
+/** The submission policy as the editor holds it: every part present, the server's defaults filled in. */
+export interface Papers {
+  deadlineWorkingDays: number | null
+  lateMode: NonNullable<SubmissionPolicy['lateMode']>
+  triageWorkingDays: number | null
+}
+
+export const LATE_MODES: Papers['lateMode'][] = ['CHAIR_APPROVAL', 'ALLOW', 'BLOCK']
+
+export function papersOf(p: SubmissionPolicy | undefined): Papers {
+  return {
+    deadlineWorkingDays: p?.deadlineWorkingDays ?? 5,
+    lateMode: p?.lateMode ?? 'CHAIR_APPROVAL',
+    triageWorkingDays: p?.triageWorkingDays ?? 5,
+  }
 }
 
 /** The rule with the server's defaults (ADR-0057) filled in. */
@@ -103,7 +120,7 @@ export function settingsOf(v: ForumTypeVersionResponse): TypeSettings {
     termMonths: v.termPolicy.termMonths ?? null,
     maxTerms: v.termPolicy.maxTerms ?? null,
     reminderDays: v.termPolicy.reminderDays ?? [],
-    submissionPolicy: v.submissionPolicy,
+    submissionPolicy: papersOf(v.submissionPolicy),
     agenda: v.agenda,
   }
 }
@@ -146,7 +163,12 @@ export function settingsRequest(s: TypeSettings): ForumTypeSettingsRequest {
       maxTerms: s.maxTerms,
       reminderDays: s.reminderDays.filter((d): d is number => d != null),
     },
-    submissionPolicy: s.submissionPolicy,
+    // An empty number goes as -1, so the server names the field (RANGE) instead of quietly using its default.
+    submissionPolicy: {
+      deadlineWorkingDays: s.submissionPolicy.deadlineWorkingDays ?? -1,
+      lateMode: s.submissionPolicy.lateMode,
+      triageWorkingDays: s.submissionPolicy.triageWorkingDays ?? -1,
+    },
     agenda: s.agenda,
   }
 }

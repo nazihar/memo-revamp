@@ -58,6 +58,8 @@ export interface StepJson {
   message?: string
   definition?: string
   forum?: string
+  /** Escalate-to-forum only: the memo waits for the decision (ADR-0058); absent means false, as before E02. */
+  wait?: boolean
   sla?: SlaJson
   fallback?: AssigneeJson
   [other: string]: unknown

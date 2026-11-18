@@ -8,7 +8,7 @@ import { apiSignIn, DEMO_USERS } from './auth'
  * Per-role authenticated sessions as Playwright storage states (TESTING_STRATEGY §4, Phase 0 Q5). The demo
  * organisation's users sign in through the real API, password and TOTP; there is deliberately no test-only auth bypass
  * in the application. E04 added the org administrator, a branch administrator scoped to North Region, and the auditor;
- * later phases add initiator, approver, secretary and director.
+ * Phase 2 the approvers (head of credit, head of finance, director); Phase 4 E02 the company secretary.
  *
  * A step-up moves the session to a new id (ASVS V7.2.4; `SessionStore.upgrade`), so tests that run at the same time
  * cannot share one session per role: the first one asked to confirm would sign the others out. Each worker slot
@@ -28,6 +28,7 @@ export type SignedInRole =
   | 'headCredit'
   | 'director'
   | 'headFinance'
+  | 'secretary'
 export type Role = 'anonymous' | SignedInRole
 
 function sessionFile(role: SignedInRole): string {

@@ -1745,6 +1745,12 @@
       "value": "TypeSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "builder.change.field.wait": [
+    {
+      "type": 0,
+      "value": "Waits for the decisionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "builder.change.field.workingTime": [
     {
       "type": 0,
@@ -2613,7 +2619,7 @@
   "builder.forum.pick.hint": [
     {
       "type": 0,
-      "value": "The memo waits here for the decision. Only active "
+      "value": "Only active "
     },
     {
       "type": 1,
@@ -2660,6 +2666,66 @@
     {
       "type": 0,
       "value": " (not found)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.forum.wait": [
+    {
+      "type": 0,
+      "value": "Wait for the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "’s decisionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.forum.wait.off": [
+    {
+      "type": 0,
+      "value": "Off: the memo is sent to the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " for information and its route continues.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.forum.wait.on": [
+    {
+      "type": 0,
+      "value": "On: the memo waits here until the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " decides; nobody else acts on it meanwhile.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.forum.waits": [
+    {
+      "type": 0,
+      "value": "Waits for the decisionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.forum.waits.no": [
+    {
+      "type": 0,
+      "value": "No: sent for information, the route continuesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.forum.waits.yes": [
+    {
+      "type": 0,
+      "value": "Yes: the memo waits hereSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "builder.forward": [
@@ -5619,6 +5685,72 @@
     {
       "type": 0,
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.papers": [
+    {
+      "type": 0,
+      "value": "Papers for meetingsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.papers.deadline": [
+    {
+      "type": 0,
+      "value": "Papers due (working days before a meeting)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.papers.deadline.hint": [
+    {
+      "type": 0,
+      "value": "From 0 (the day of the meeting) to 30. A paper aimed at a closer meeting is late.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.papers.late.allow": [
+    {
+      "type": 0,
+      "value": "Allowed, marked lateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.papers.late.block": [
+    {
+      "type": 0,
+      "value": "Held for the next meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.papers.late.chair": [
+    {
+      "type": 0,
+      "value": "Allowed only if the chair agreesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.papers.lateMode": [
+    {
+      "type": 0,
+      "value": "Late papersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.papers.lateMode.hint": [
+    {
+      "type": 0,
+      "value": "Applies when a paper goes on an agenda after the deadline.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.papers.lead": [
+    {
+      "type": 0,
+      "value": "Working days follow the organisation’s business calendar.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.papers.triage": [
+    {
+      "type": 0,
+      "value": "Remind the secretaries after (working days)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.papers.triage.hint": [
+    {
+      "type": 0,
+      "value": "From 1 to 30. One reminder when a paper has waited this long without being triaged.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "forumTypes.pending.draft": [
@@ -8884,6 +9016,812 @@
     {
       "type": 0,
       "value": "DissolvedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.accept": [
+    {
+      "type": 0,
+      "value": "Accept…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.accept.lead": [
+    {
+      "type": 0,
+      "value": "The paper is ready for a meeting. The memo keeps waiting for the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "’s decision, and its author is told.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.accept.submit": [
+    {
+      "type": 0,
+      "value": "AcceptSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.accept.title": [
+    {
+      "type": 0,
+      "value": "Accept the paperSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.age": [
+    {
+      "type": 6,
+      "value": "days",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Today"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " day"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " days"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.back": [
+    {
+      "type": 0,
+      "value": "All papers of the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.caption": [
+    {
+      "type": 0,
+      "value": "Papers sent to "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.choose": [
+    {
+      "type": 0,
+      "value": "Choose…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.col.actions": [
+    {
+      "type": 0,
+      "value": "ActionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.col.flags": [
+    {
+      "type": 0,
+      "value": "FlagsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.col.from": [
+    {
+      "type": 0,
+      "value": "FromSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.col.memo": [
+    {
+      "type": 0,
+      "value": "MemoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.col.purpose": [
+    {
+      "type": 0,
+      "value": "PurposeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.col.status": [
+    {
+      "type": 0,
+      "value": "StatusSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.col.waiting": [
+    {
+      "type": 0,
+      "value": "WaitingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.cover.lead": [
+    {
+      "type": 0,
+      "value": "What the meeting sees about this paper. Nothing here changes the memo.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.cover.title": [
+    {
+      "type": 0,
+      "value": "Cover sheetSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.coverSheet": [
+    {
+      "type": 0,
+      "value": "Edit cover sheet…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.deadline": [
+    {
+      "type": 0,
+      "value": "Papers are due "
+    },
+    {
+      "type": 6,
+      "value": "days",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "by the day of the meeting"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working day before it"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " working days before it"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ". "
+    },
+    {
+      "type": 5,
+      "value": "mode",
+      "options": {
+        "ALLOW": {
+          "value": [
+            {
+              "type": 0,
+              "value": "A later paper can still go on the agenda, marked late."
+            }
+          ]
+        },
+        "BLOCK": {
+          "value": [
+            {
+              "type": 0,
+              "value": "A later paper waits for the next meeting."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Late: the chair’s approval will be needed when it goes on the agenda."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.decline": [
+    {
+      "type": 0,
+      "value": "Decline…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.decline.lead": [
+    {
+      "type": 0,
+      "value": "The "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " will not take this paper. The memo goes back to its author with your reason.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.decline.submit": [
+    {
+      "type": 0,
+      "value": "DeclineSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.decline.title": [
+    {
+      "type": 0,
+      "value": "Decline the paperSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.defer": [
+    {
+      "type": 0,
+      "value": "Defer…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.defer.lead": [
+    {
+      "type": 0,
+      "value": "The paper stays with the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " for a later meeting. The memo keeps waiting, and its author is told why.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.defer.submit": [
+    {
+      "type": 0,
+      "value": "DeferSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.defer.title": [
+    {
+      "type": 0,
+      "value": "Defer the paperSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.done.accepted": [
+    {
+      "type": 0,
+      "value": "Paper accepted.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.done.declined": [
+    {
+      "type": 0,
+      "value": "Paper declined.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.done.deferred": [
+    {
+      "type": 0,
+      "value": "Paper deferred.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.done.referred": [
+    {
+      "type": 0,
+      "value": "Paper referred.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.done.returned": [
+    {
+      "type": 0,
+      "value": "Memo returned to its author.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.done.saved": [
+    {
+      "type": 0,
+      "value": "Cover sheet saved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.empty.accepted": [
+    {
+      "type": 0,
+      "value": "No accepted papers.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.empty.closed": [
+    {
+      "type": 0,
+      "value": "No closed papers yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.empty.deferred": [
+    {
+      "type": 0,
+      "value": "No deferred papers.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.empty.waiting": [
+    {
+      "type": 0,
+      "value": "No papers are waiting for triage.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.filter.accepted": [
+    {
+      "type": 0,
+      "value": "AcceptedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.filter.closed": [
+    {
+      "type": 0,
+      "value": "ClosedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.filter.count": [
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.filter.deferred": [
+    {
+      "type": 0,
+      "value": "DeferredSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.filter.waiting": [
+    {
+      "type": 0,
+      "value": "WaitingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.flag.information": [
+    {
+      "type": 0,
+      "value": "For information onlySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.flag.resubmitted": [
+    {
+      "type": 0,
+      "value": "Sent againSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.flag.waitingLong": [
+    {
+      "type": 0,
+      "value": "Waiting too longSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.lead.infoOnly": [
+    {
+      "type": 0,
+      "value": "The memo was sent for information: its route has moved on, and this does not change the memo.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.memo": [
+    {
+      "type": 0,
+      "value": "MemoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.notFound": [
+    {
+      "type": 0,
+      "value": "This paper does not exist or you may not see it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.open": [
+    {
+      "type": 0,
+      "value": "Open the paperSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.openMemo": [
+    {
+      "type": 0,
+      "value": "Open the memoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.presenter": [
+    {
+      "type": 0,
+      "value": "PresenterSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.problem.conflict": [
+    {
+      "type": 0,
+      "value": "Someone changed this paper meanwhile. The list is up to date now; try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.problem.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.problem.sameForum": [
+    {
+      "type": 5,
+      "value": "forumGender",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Choose another "
+            },
+            {
+              "type": 1,
+              "value": "forum"
+            },
+            {
+              "type": 0,
+              "value": "."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.problem.targetInPast": [
+    {
+      "type": 0,
+      "value": "Choose today or a later date.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.problem.unknownForum": [
+    {
+      "type": 5,
+      "value": "forumGender",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "This "
+            },
+            {
+              "type": 1,
+              "value": "forum"
+            },
+            {
+              "type": 0,
+              "value": " does not exist or is dissolved."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.problem.wrongState": [
+    {
+      "type": 0,
+      "value": "Someone has already dealt with this paper. The list now shows where it stands.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.purpose": [
+    {
+      "type": 0,
+      "value": "PurposeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.reason": [
+    {
+      "type": 0,
+      "value": "ReasonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.reason.hint": [
+    {
+      "type": 0,
+      "value": "The memo’s author sees this reason.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.refer": [
+    {
+      "type": 5,
+      "value": "forumGender",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Refer to another "
+            },
+            {
+              "type": 1,
+              "value": "forum"
+            },
+            {
+              "type": 0,
+              "value": "…"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.refer.lead": [
+    {
+      "type": 0,
+      "value": "The paper moves to the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " you choose, with your reason. The memo keeps waiting for a decision there.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.refer.submit": [
+    {
+      "type": 0,
+      "value": "ReferSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.refer.title": [
+    {
+      "type": 5,
+      "value": "forumGender",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Refer to another "
+            },
+            {
+              "type": 1,
+              "value": "forum"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.refer.to": [
+    {
+      "type": 1,
+      "value": "Forum"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.remindedAt": [
+    {
+      "type": 0,
+      "value": "Waiting too long: the secretaries were reminded on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.required": [
+    {
+      "type": 0,
+      "value": "Give a reason.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.resolutionSought": [
+    {
+      "type": 0,
+      "value": "Resolution soughtSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.resolutionSought.hint": [
+    {
+      "type": 0,
+      "value": "What the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " is asked to decide, in a sentence or two.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.return": [
+    {
+      "type": 0,
+      "value": "Return for more information…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.return.hint": [
+    {
+      "type": 0,
+      "value": "Say what the author must add or change.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.return.lead": [
+    {
+      "type": 0,
+      "value": "The memo goes back to its author to complete. They see your reason on the note sheet and can send it again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.return.submit": [
+    {
+      "type": 0,
+      "value": "Return to the authorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.return.title": [
+    {
+      "type": 0,
+      "value": "Return the memo for more informationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.save": [
+    {
+      "type": 0,
+      "value": "SaveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.sentBy": [
+    {
+      "type": 0,
+      "value": "Sent bySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.show": [
+    {
+      "type": 0,
+      "value": "ShowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.status": [
+    {
+      "type": 0,
+      "value": "StatusSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.tab": [
+    {
+      "type": 0,
+      "value": "SubmissionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.tab.count": [
+    {
+      "type": 0,
+      "value": "Submissions ("
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.targetDate": [
+    {
+      "type": 0,
+      "value": "Target meeting dateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.title": [
+    {
+      "type": 0,
+      "value": "Paper for "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.triage": [
+    {
+      "type": 0,
+      "value": "TriageSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.sub.triageFor": [
+    {
+      "type": 0,
+      "value": "Triage "
+    },
+    {
+      "type": 1,
+      "value": "memo"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "forums.tab.history": [
@@ -19303,6 +20241,24 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "memo.referenceWithForum": [
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " · With the "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.refused.beingEdited": [
     {
       "type": 0,
@@ -21544,6 +22500,12 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "nav.forumPaper": [
+    {
+      "type": 0,
+      "value": "PaperSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "nav.forumType": [
     {
       "type": 1,
@@ -23365,6 +24327,438 @@
     {
       "type": 0,
       "value": "VacantSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.event.accepted": [
+    {
+      "type": 0,
+      "value": "Accepted for a meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.event.acceptedFor": [
+    {
+      "type": 0,
+      "value": "Accepted for the meeting of "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.event.by": [
+    {
+      "type": 0,
+      "value": "by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.event.decided": [
+    {
+      "type": 0,
+      "value": "Decided: "
+    },
+    {
+      "type": 1,
+      "value": "outcome"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.event.declined": [
+    {
+      "type": 0,
+      "value": "Declined: "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.event.deferred": [
+    {
+      "type": 0,
+      "value": "Deferred: "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.event.deferredTo": [
+    {
+      "type": 0,
+      "value": "Deferred to "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.event.referred": [
+    {
+      "type": 0,
+      "value": "Referred elsewhere: "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.event.returned": [
+    {
+      "type": 0,
+      "value": "Returned: "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.event.sent": [
+    {
+      "type": 0,
+      "value": "Sent to the "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.event.sentInfo": [
+    {
+      "type": 0,
+      "value": "Sent to the "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " for informationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.event.withdrawn": [
+    {
+      "type": 0,
+      "value": "Withdrawn with the memoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.forInformation": [
+    {
+      "type": 0,
+      "value": "Sent for information: the memo’s route did not wait.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.next.accepted": [
+    {
+      "type": 0,
+      "value": "Next: decided at a meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.next.deferred": [
+    {
+      "type": 0,
+      "value": "Next: considered at a later meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.next.queued": [
+    {
+      "type": 0,
+      "value": "Next: the secretary looks at the paperSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.note.committee": [
+    {
+      "type": 5,
+      "value": "outcome",
+      "options": {
+        "APPROVED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Approved by the "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            }
+          ]
+        },
+        "APPROVED_WITH_CONDITIONS": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Approved with conditions by the "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            }
+          ]
+        },
+        "NOTED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Noted by the "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            }
+          ]
+        },
+        "REJECTED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Rejected by the "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            }
+          ]
+        },
+        "RETURNED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Returned by the "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            }
+          ]
+        },
+        "DECLINED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Declined by the "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Decided by the "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.outcome.approved": [
+    {
+      "type": 0,
+      "value": "approvedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.outcome.approvedWithConditions": [
+    {
+      "type": 0,
+      "value": "approved with conditionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.outcome.noted": [
+    {
+      "type": 0,
+      "value": "notedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.outcome.rejected": [
+    {
+      "type": 0,
+      "value": "rejectedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.outcome.returned": [
+    {
+      "type": 0,
+      "value": "returned to the authorSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.panel.lead": [
+    {
+      "type": 0,
+      "value": "Where this memo stands with each "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " it was sent to, newest first.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.panel.title": [
+    {
+      "type": 1,
+      "value": "Forums"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.purpose.decision": [
+    {
+      "type": 0,
+      "value": "For decisionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.purpose.discussion": [
+    {
+      "type": 0,
+      "value": "For discussionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.purpose.information": [
+    {
+      "type": 0,
+      "value": "For notingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.restricted": [
+    {
+      "type": 0,
+      "value": "RestrictedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.restricted.hint": [
+    {
+      "type": 0,
+      "value": "You are not cleared to read this memo.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.status.accepted": [
+    {
+      "type": 0,
+      "value": "AcceptedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.status.decided": [
+    {
+      "type": 0,
+      "value": "DecidedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.status.declined": [
+    {
+      "type": 0,
+      "value": "DeclinedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.status.deferred": [
+    {
+      "type": 0,
+      "value": "DeferredSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.status.queued": [
+    {
+      "type": 0,
+      "value": "Waiting for triageSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.status.referred": [
+    {
+      "type": 0,
+      "value": "ReferredSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.status.returned": [
+    {
+      "type": 0,
+      "value": "ReturnedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.status.withdrawn": [
+    {
+      "type": 0,
+      "value": "WithdrawnSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.timeline": [
+    {
+      "type": 0,
+      "value": "What has happened to the paperSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "papers.withForum": [
+    {
+      "type": 0,
+      "value": "With the "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "password.breached": [

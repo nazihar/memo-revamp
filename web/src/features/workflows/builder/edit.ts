@@ -179,7 +179,8 @@ export function newStep(body: DefinitionBody, type: StepType, name: string): Ste
     case 'subworkflow':
       return { id, type, name, definition: '' }
     case 'escalate-to-forum':
-      return { id, type, name, forum: '' }
+      // New committee steps wait for the decision (flow M4); older definitions without `wait` pass through.
+      return { id, type, name, forum: '', wait: true }
     default:
       return { id, type, name }
   }

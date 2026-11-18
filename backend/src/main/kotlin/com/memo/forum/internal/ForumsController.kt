@@ -11,6 +11,7 @@ import com.memo.forum.ForumStatus
 import com.memo.forum.MemberAttribute
 import com.memo.forum.Outcome
 import com.memo.forum.QuorumRule
+import com.memo.forum.SubmissionPolicy
 import com.memo.forum.TermPolicy
 import com.memo.system.Idempotency
 import io.swagger.v3.oas.annotations.Operation
@@ -173,6 +174,8 @@ data class ForumPolicyResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val quorum: QuorumRule,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val outcomes: List<Outcome>,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val termPolicy: TermPolicy,
+    /** Papers for meetings (ADR-0059): the deadline, the late-paper rule and the triage reminder. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val submissionPolicy: SubmissionPolicy,
     /** On the date asked: the members who count towards quorum, or the fixed seats. */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val quorumBasis: Int,
     /** On the date asked: how many of them must attend. */

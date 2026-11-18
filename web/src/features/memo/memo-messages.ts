@@ -216,6 +216,7 @@ export const mmv = defineMessages<{
   updatedAt: { time: string }
   referenceRound: { reference: string; round: number }
   referenceHolders: { reference: string; names: string }
+  referenceWithForum: { reference: string; committee: string }
   from: { name: string }
   documentVersion: { number: number; name: string }
   routeUp: { name: string }
@@ -249,6 +250,7 @@ export const mmv = defineMessages<{
   updatedAt: { id: 'memo.updatedAt', defaultMessage: 'Changed {time}' },
   referenceRound: { id: 'memo.referenceRound', defaultMessage: '{reference} · Round {round}' },
   referenceHolders: { id: 'memo.referenceHolders', defaultMessage: '{reference} · With {names}' },
+  referenceWithForum: { id: 'memo.referenceWithForum', defaultMessage: '{reference} · With the {committee}' },
   from: { id: 'memo.from', defaultMessage: 'From {name}' },
   documentVersion: { id: 'memo.document.version', defaultMessage: 'Version {number} · {name}' },
   routeUp: { id: 'memo.route.up', defaultMessage: 'Move {name} up' },

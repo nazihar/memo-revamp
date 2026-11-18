@@ -3797,6 +3797,20 @@
       "value": "‬"
     }
   ],
+  "builder.change.field.wait": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɐıʇs ɟoɹ ʇɥǝ pǝɔısıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "builder.change.field.workingTime": [
     {
       "type": 0,
@@ -5193,7 +5207,7 @@
     },
     {
       "type": 0,
-      "value": "⊥ɥǝ ɯǝɯo ʍɐıʇs ɥǝɹǝ ɟoɹ ʇɥǝ pǝɔısıou. Ouʅʎ ɐɔʇıʌǝ "
+      "value": "Ouʅʎ ɐɔʇıʌǝ "
     },
     {
       "type": 1,
@@ -5252,6 +5266,114 @@
     {
       "type": 0,
       "value": " (uoʇ ɟonup)"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.forum.wait": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɐıʇ ɟoɹ ʇɥǝ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "’s pǝɔısıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.forum.wait.off": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Oɟɟ: ʇɥǝ ɯǝɯo ıs sǝuʇ ʇo ʇɥǝ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " ɟoɹ ıuɟoɹɯɐʇıou ɐup ıʇs ɹonʇǝ ɔouʇıunǝs."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.forum.wait.on": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ou: ʇɥǝ ɯǝɯo ʍɐıʇs ɥǝɹǝ nuʇıʅ ʇɥǝ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " pǝɔıpǝs; uoqopʎ ǝʅsǝ ɐɔʇs ou ıʇ ɯǝɐuʍɥıʅǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.forum.waits": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɐıʇs ɟoɹ ʇɥǝ pǝɔısıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.forum.waits.no": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No: sǝuʇ ɟoɹ ıuɟoɹɯɐʇıou, ʇɥǝ ɹonʇǝ ɔouʇıunǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "builder.forum.waits.yes": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄ǝs: ʇɥǝ ɯǝɯo ʍɐıʇs ɥǝɹǝ"
     },
     {
       "type": 0,
@@ -10567,6 +10689,160 @@
     {
       "type": 1,
       "value": "meaning"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.papers": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɐdǝɹs ɟoɹ ɯǝǝʇıuƃs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.papers.deadline": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɐdǝɹs pnǝ (ʍoɹʞıuƃ pɐʎs qǝɟoɹǝ ɐ ɯǝǝʇıuƃ)"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.papers.deadline.hint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎɹoɯ 0 (ʇɥǝ pɐʎ oɟ ʇɥǝ ɯǝǝʇıuƃ) ʇo 30. ∀ dɐdǝɹ ɐıɯǝp ɐʇ ɐ ɔʅosǝɹ ɯǝǝʇıuƃ ıs ʅɐʇǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.papers.late.allow": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ʅʅoʍǝp, ɯɐɹʞǝp ʅɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.papers.late.block": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Hǝʅp ɟoɹ ʇɥǝ uǝxʇ ɯǝǝʇıuƃ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.papers.late.chair": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ʅʅoʍǝp ouʅʎ ıɟ ʇɥǝ ɔɥɐıɹ ɐƃɹǝǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.papers.lateMode": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅂ɐʇǝ dɐdǝɹs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.papers.lateMode.hint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ddʅıǝs ʍɥǝu ɐ dɐdǝɹ ƃoǝs ou ɐu ɐƃǝupɐ ɐɟʇǝɹ ʇɥǝ pǝɐpʅıuǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.papers.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Moɹʞıuƃ pɐʎs ɟoʅʅoʍ ʇɥǝ oɹƃɐuısɐʇıou’s qnsıuǝss ɔɐʅǝupɐɹ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.papers.triage": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯıup ʇɥǝ sǝɔɹǝʇɐɹıǝs ɐɟʇǝɹ (ʍoɹʞıuƃ pɐʎs)"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.papers.triage.hint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎɹoɯ 1 ʇo 30. Ouǝ ɹǝɯıupǝɹ ʍɥǝu ɐ dɐdǝɹ ɥɐs ʍɐıʇǝp ʇɥıs ʅouƃ ʍıʇɥonʇ qǝıuƃ ʇɹıɐƃǝp."
     },
     {
       "type": 0,
@@ -16196,6 +16472,1440 @@
     {
       "type": 0,
       "value": "ᗡıssoʅʌǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.accept": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔɔǝdʇ…"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.accept.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ dɐdǝɹ ıs ɹǝɐpʎ ɟoɹ ɐ ɯǝǝʇıuƃ. ⊥ɥǝ ɯǝɯo ʞǝǝds ʍɐıʇıuƃ ɟoɹ ʇɥǝ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "’s pǝɔısıou, ɐup ıʇs ɐnʇɥoɹ ıs ʇoʅp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.accept.submit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔɔǝdʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.accept.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔɔǝdʇ ʇɥǝ dɐdǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.age": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 6,
+      "value": "days",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "⊥opɐʎ"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " pɐʎ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " pɐʎs"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.back": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ʅʅ dɐdǝɹs oɟ ʇɥǝ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.caption": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɐdǝɹs sǝuʇ ʇo "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.choose": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥoosǝ…"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.col.actions": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔʇıous"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.col.flags": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎʅɐƃs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.col.from": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎɹoɯ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.col.memo": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.col.purpose": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁnɹdosǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.col.status": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sʇɐʇns"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.col.waiting": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɐıʇıuƃ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.cover.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɥɐʇ ʇɥǝ ɯǝǝʇıuƃ sǝǝs ɐqonʇ ʇɥıs dɐdǝɹ. Noʇɥıuƃ ɥǝɹǝ ɔɥɐuƃǝs ʇɥǝ ɯǝɯo."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.cover.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄoʌǝɹ sɥǝǝʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.coverSheet": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ǝpıʇ ɔoʌǝɹ sɥǝǝʇ…"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.deadline": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɐdǝɹs ɐɹǝ pnǝ "
+    },
+    {
+      "type": 6,
+      "value": "days",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "qʎ ʇɥǝ pɐʎ oɟ ʇɥǝ ɯǝǝʇıuƃ"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʍoɹʞıuƃ pɐʎ qǝɟoɹǝ ıʇ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ʍoɹʞıuƃ pɐʎs qǝɟoɹǝ ıʇ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ". "
+    },
+    {
+      "type": 5,
+      "value": "mode",
+      "options": {
+        "ALLOW": {
+          "value": [
+            {
+              "type": 0,
+              "value": "∀ ʅɐʇǝɹ dɐdǝɹ ɔɐu sʇıʅʅ ƃo ou ʇɥǝ ɐƃǝupɐ, ɯɐɹʞǝp ʅɐʇǝ."
+            }
+          ]
+        },
+        "BLOCK": {
+          "value": [
+            {
+              "type": 0,
+              "value": "∀ ʅɐʇǝɹ dɐdǝɹ ʍɐıʇs ɟoɹ ʇɥǝ uǝxʇ ɯǝǝʇıuƃ."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "⅂ɐʇǝ: ʇɥǝ ɔɥɐıɹ’s ɐddɹoʌɐʅ ʍıʅʅ qǝ uǝǝpǝp ʍɥǝu ıʇ ƃoǝs ou ʇɥǝ ɐƃǝupɐ."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.decline": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɔʅıuǝ…"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.decline.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " ʍıʅʅ uoʇ ʇɐʞǝ ʇɥıs dɐdǝɹ. ⊥ɥǝ ɯǝɯo ƃoǝs qɐɔʞ ʇo ıʇs ɐnʇɥoɹ ʍıʇɥ ʎonɹ ɹǝɐsou."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.decline.submit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɔʅıuǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.decline.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɔʅıuǝ ʇɥǝ dɐdǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.defer": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɟǝɹ…"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.defer.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ dɐdǝɹ sʇɐʎs ʍıʇɥ ʇɥǝ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " ɟoɹ ɐ ʅɐʇǝɹ ɯǝǝʇıuƃ. ⊥ɥǝ ɯǝɯo ʞǝǝds ʍɐıʇıuƃ, ɐup ıʇs ɐnʇɥoɹ ıs ʇoʅp ʍɥʎ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.defer.submit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɟǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.defer.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɟǝɹ ʇɥǝ dɐdǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.done.accepted": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɐdǝɹ ɐɔɔǝdʇǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.done.declined": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɐdǝɹ pǝɔʅıuǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.done.deferred": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɐdǝɹ pǝɟǝɹɹǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.done.referred": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɐdǝɹ ɹǝɟǝɹɹǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.done.returned": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo ɹǝʇnɹuǝp ʇo ıʇs ɐnʇɥoɹ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.done.saved": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄoʌǝɹ sɥǝǝʇ sɐʌǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.empty.accepted": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No ɐɔɔǝdʇǝp dɐdǝɹs."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.empty.closed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No ɔʅosǝp dɐdǝɹs ʎǝʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.empty.deferred": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No pǝɟǝɹɹǝp dɐdǝɹs."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.empty.waiting": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No dɐdǝɹs ɐɹǝ ʍɐıʇıuƃ ɟoɹ ʇɹıɐƃǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.filter.accepted": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔɔǝdʇǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.filter.closed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄʅosǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.filter.count": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.filter.deferred": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɟǝɹɹǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.filter.waiting": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɐıʇıuƃ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.flag.information": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎoɹ ıuɟoɹɯɐʇıou ouʅʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.flag.resubmitted": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝuʇ ɐƃɐıu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.flag.waitingLong": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɐıʇıuƃ ʇoo ʅouƃ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.lead.infoOnly": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɯǝɯo ʍɐs sǝuʇ ɟoɹ ıuɟoɹɯɐʇıou: ıʇs ɹonʇǝ ɥɐs ɯoʌǝp ou, ɐup ʇɥıs poǝs uoʇ ɔɥɐuƃǝ ʇɥǝ ɯǝɯo."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.memo": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝɯo"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.notFound": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥıs dɐdǝɹ poǝs uoʇ ǝxısʇ oɹ ʎon ɯɐʎ uoʇ sǝǝ ıʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.open": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Odǝu ʇɥǝ dɐdǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.openMemo": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Odǝu ʇɥǝ ɯǝɯo"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.presenter": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɹǝsǝuʇǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.problem.conflict": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Soɯǝouǝ ɔɥɐuƃǝp ʇɥıs dɐdǝɹ ɯǝɐuʍɥıʅǝ. ⊥ɥǝ ʅısʇ ıs nd ʇo pɐʇǝ uoʍ; ʇɹʎ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.problem.failed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥɐʇ pıp uoʇ ʍoɹʞ. ⊥ɹʎ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.problem.sameForum": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 5,
+      "value": "forumGender",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ↄɥoosǝ ɐuoʇɥǝɹ "
+            },
+            {
+              "type": 1,
+              "value": "forum"
+            },
+            {
+              "type": 0,
+              "value": "."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.problem.targetInPast": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɥoosǝ ʇopɐʎ oɹ ɐ ʅɐʇǝɹ pɐʇǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.problem.unknownForum": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 5,
+      "value": "forumGender",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "⊥ɥıs "
+            },
+            {
+              "type": 1,
+              "value": "forum"
+            },
+            {
+              "type": 0,
+              "value": " poǝs uoʇ ǝxısʇ oɹ ıs pıssoʅʌǝp."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.problem.wrongState": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Soɯǝouǝ ɥɐs ɐʅɹǝɐpʎ pǝɐʅʇ ʍıʇɥ ʇɥıs dɐdǝɹ. ⊥ɥǝ ʅısʇ uoʍ sɥoʍs ʍɥǝɹǝ ıʇ sʇɐups."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.purpose": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁnɹdosǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.reason": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɐsou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.reason.hint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɯǝɯo’s ɐnʇɥoɹ sǝǝs ʇɥıs ɹǝɐsou."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.refer": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 5,
+      "value": "forumGender",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ᴚǝɟǝɹ ʇo ɐuoʇɥǝɹ "
+            },
+            {
+              "type": 1,
+              "value": "forum"
+            },
+            {
+              "type": 0,
+              "value": "…"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.refer.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ dɐdǝɹ ɯoʌǝs ʇo ʇɥǝ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " ʎon ɔɥoosǝ, ʍıʇɥ ʎonɹ ɹǝɐsou. ⊥ɥǝ ɯǝɯo ʞǝǝds ʍɐıʇıuƃ ɟoɹ ɐ pǝɔısıou ʇɥǝɹǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.refer.submit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɟǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.refer.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 5,
+      "value": "forumGender",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ᴚǝɟǝɹ ʇo ɐuoʇɥǝɹ "
+            },
+            {
+              "type": 1,
+              "value": "forum"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.refer.to": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "Forum"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.remindedAt": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɐıʇıuƃ ʇoo ʅouƃ: ʇɥǝ sǝɔɹǝʇɐɹıǝs ʍǝɹǝ ɹǝɯıupǝp ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.required": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅁ıʌǝ ɐ ɹǝɐsou."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.resolutionSought": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝsoʅnʇıou sonƃɥʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.resolutionSought.hint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɥɐʇ ʇɥǝ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " ıs ɐsʞǝp ʇo pǝɔıpǝ, ıu ɐ sǝuʇǝuɔǝ oɹ ʇʍo."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.return": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝʇnɹu ɟoɹ ɯoɹǝ ıuɟoɹɯɐʇıou…"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.return.hint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sɐʎ ʍɥɐʇ ʇɥǝ ɐnʇɥoɹ ɯnsʇ ɐpp oɹ ɔɥɐuƃǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.return.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɯǝɯo ƃoǝs qɐɔʞ ʇo ıʇs ɐnʇɥoɹ ʇo ɔoɯdʅǝʇǝ. ⊥ɥǝʎ sǝǝ ʎonɹ ɹǝɐsou ou ʇɥǝ uoʇǝ sɥǝǝʇ ɐup ɔɐu sǝup ıʇ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.return.submit": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝʇnɹu ʇo ʇɥǝ ɐnʇɥoɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.return.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝʇnɹu ʇɥǝ ɯǝɯo ɟoɹ ɯoɹǝ ıuɟoɹɯɐʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.save": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sɐʌǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.sentBy": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝuʇ qʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.show": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sɥoʍ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.status": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sʇɐʇns"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.tab": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Snqɯıssıous"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.tab.count": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Snqɯıssıous ("
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.targetDate": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɐɹƃǝʇ ɯǝǝʇıuƃ pɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɐdǝɹ ɟoɹ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.triage": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɹıɐƃǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forums.sub.triageFor": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɹıɐƃǝ "
+    },
+    {
+      "type": 1,
+      "value": "memo"
     },
     {
       "type": 0,
@@ -35095,6 +36805,28 @@
       "value": "‬"
     }
   ],
+  "memo.referenceWithForum": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": " · Mıʇɥ ʇɥǝ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "memo.refused.beingEdited": [
     {
       "type": 0,
@@ -39632,6 +41364,20 @@
       "value": "‬"
     }
   ],
+  "nav.forumPaper": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɐdǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "nav.forumType": [
     {
       "type": 0,
@@ -42925,6 +44671,702 @@
     {
       "type": 0,
       "value": "Ʌɐɔɐuʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.event.accepted": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔɔǝdʇǝp ɟoɹ ɐ ɯǝǝʇıuƃ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.event.acceptedFor": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔɔǝdʇǝp ɟoɹ ʇɥǝ ɯǝǝʇıuƃ oɟ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.event.by": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "qʎ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.event.decided": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɔıpǝp: "
+    },
+    {
+      "type": 1,
+      "value": "outcome"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.event.declined": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɔʅıuǝp: "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.event.deferred": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɟǝɹɹǝp: "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.event.deferredTo": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɟǝɹɹǝp ʇo "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.event.referred": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɟǝɹɹǝp ǝʅsǝʍɥǝɹǝ: "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.event.returned": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝʇnɹuǝp: "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.event.sent": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝuʇ ʇo ʇɥǝ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.event.sentInfo": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝuʇ ʇo ʇɥǝ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ɟoɹ ıuɟoɹɯɐʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.event.withdrawn": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mıʇɥpɹɐʍu ʍıʇɥ ʇɥǝ ɯǝɯo"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.forInformation": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Sǝuʇ ɟoɹ ıuɟoɹɯɐʇıou: ʇɥǝ ɯǝɯo’s ɹonʇǝ pıp uoʇ ʍɐıʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.next.accepted": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nǝxʇ: pǝɔıpǝp ɐʇ ɐ ɯǝǝʇıuƃ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.next.deferred": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nǝxʇ: ɔousıpǝɹǝp ɐʇ ɐ ʅɐʇǝɹ ɯǝǝʇıuƃ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.next.queued": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nǝxʇ: ʇɥǝ sǝɔɹǝʇɐɹʎ ʅooʞs ɐʇ ʇɥǝ dɐdǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.note.committee": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 5,
+      "value": "outcome",
+      "options": {
+        "APPROVED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "∀ddɹoʌǝp qʎ ʇɥǝ "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            }
+          ]
+        },
+        "APPROVED_WITH_CONDITIONS": {
+          "value": [
+            {
+              "type": 0,
+              "value": "∀ddɹoʌǝp ʍıʇɥ ɔoupıʇıous qʎ ʇɥǝ "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            }
+          ]
+        },
+        "NOTED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Noʇǝp qʎ ʇɥǝ "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            }
+          ]
+        },
+        "REJECTED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ᴚǝɾǝɔʇǝp qʎ ʇɥǝ "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            }
+          ]
+        },
+        "RETURNED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ᴚǝʇnɹuǝp qʎ ʇɥǝ "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            }
+          ]
+        },
+        "DECLINED": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ᗡǝɔʅıuǝp qʎ ʇɥǝ "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ᗡǝɔıpǝp qʎ ʇɥǝ "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.outcome.approved": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ɐddɹoʌǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.outcome.approvedWithConditions": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ɐddɹoʌǝp ʍıʇɥ ɔoupıʇıous"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.outcome.noted": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "uoʇǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.outcome.rejected": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ɹǝɾǝɔʇǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.outcome.returned": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ɹǝʇnɹuǝp ʇo ʇɥǝ ɐnʇɥoɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.panel.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɥǝɹǝ ʇɥıs ɯǝɯo sʇɐups ʍıʇɥ ǝɐɔɥ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " ıʇ ʍɐs sǝuʇ ʇo, uǝʍǝsʇ ɟıɹsʇ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.panel.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "Forums"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.purpose.decision": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎoɹ pǝɔısıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.purpose.discussion": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎoɹ pısɔnssıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.purpose.information": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ⅎoɹ uoʇıuƃ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.restricted": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝsʇɹıɔʇǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.restricted.hint": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄on ɐɹǝ uoʇ ɔʅǝɐɹǝp ʇo ɹǝɐp ʇɥıs ɯǝɯo."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.status.accepted": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ɔɔǝdʇǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.status.decided": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɔıpǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.status.declined": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɔʅıuǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.status.deferred": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɟǝɹɹǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.status.queued": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɐıʇıuƃ ɟoɹ ʇɹıɐƃǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.status.referred": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɟǝɹɹǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.status.returned": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝʇnɹuǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.status.withdrawn": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mıʇɥpɹɐʍu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.timeline": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɥɐʇ ɥɐs ɥɐddǝuǝp ʇo ʇɥǝ dɐdǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "papers.withForum": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mıʇɥ ʇɥǝ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
     },
     {
       "type": 0,

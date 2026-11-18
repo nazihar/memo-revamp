@@ -28,6 +28,9 @@ poi = "6.0.0"
 poi-tl = "1.12.2"
 jazzer = "0.30.0"
 commons-csv = "1.14.1"
+# Meeting invitations (ADR-0063, Phase 4 E05 T1 spike, 2026-11-18): ical4j writes and validates; biweekly re-parses in tests.
+ical4j = "4.4.0"
+biweekly = "0.6.8"
 # Workflow conditions (ADR-0039) and definition schema validation (ADR-0038), verified 2026-11-11.
 cel = "0.15.0"
 json-schema-validator = "3.0.8"
@@ -83,6 +86,7 @@ verapdf-validation = { module = "org.verapdf:validation-model-jakarta", version.
 poi-ooxml = { module = "org.apache.poi:poi-ooxml", version.ref = "poi" }
 poi-tl = { module = "com.deepoove:poi-tl", version.ref = "poi-tl" }
 commons-csv = { module = "org.apache.commons:commons-csv", version.ref = "commons-csv" }
+ical4j = { module = "org.mnode.ical4j:ical4j", version.ref = "ical4j" }
 bucket4j-postgresql = { module = "com.bucket4j:bucket4j_jdk17-postgresql", version.ref = "bucket4j" }
 spring-modulith-starter-test = { module = "org.springframework.modulith:spring-modulith-starter-test" }
 spring-modulith-runtime = { module = "org.springframework.modulith:spring-modulith-runtime" }
@@ -106,6 +110,7 @@ testcontainers-postgresql = { module = "org.testcontainers:testcontainers-postgr
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 jqwik = { module = "net.jqwik:jqwik", version.ref = "jqwik" }
 jazzer-junit = { module = "com.code-intelligence:jazzer-junit", version.ref = "jazzer" }
+biweekly = { module = "net.sf.biweekly:biweekly", version.ref = "biweekly" }
 
 # Gradle plugins used by build-logic
 kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }

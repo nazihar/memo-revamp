@@ -36,6 +36,8 @@ const ALIASES = new Map(
     'bsd license 3': 'BSD-3-Clause',
     'the bsd license': 'BSD-3-Clause',
     'new bsd license': 'BSD-3-Clause',
+    // ical4j's POM names its LICENSE.txt, which is the BSD-3-Clause text (meeting invitations, ADR-0063).
+    'ical4j - license': 'BSD-3-Clause',
     // The Go project's licence is the BSD-3-Clause text (RE2/J, pulled by CEL for ADR-0039).
     'go license': 'BSD-3-Clause',
     'bsd-2-clause': 'BSD-2-Clause',

@@ -22,6 +22,8 @@ data class ForumTypePolicy(
     val defaultClassificationId: UUID?,
     val quorum: QuorumRule,
     val submission: SubmissionPolicy,
+    /** Invitations, replies and the quorum override (design E05 §1.8). */
+    val meetings: MeetingPolicy,
     val outcomes: List<Outcome>,
     /** The agenda template and the chair's agreement (ADR-0060). */
     val agenda: AgendaPolicy,
@@ -80,6 +82,7 @@ class ForumPolicies(
             defaultClassificationId = settings.defaultClassificationId,
             quorum = settings.quorum,
             submission = settings.submissionPolicy,
+            meetings = settings.meetings,
             outcomes = settings.outcomes,
             agenda = settings.agenda,
         )

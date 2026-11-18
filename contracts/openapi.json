@@ -2742,6 +2742,9 @@
           "description" : {
             "type" : [ "string", "null" ]
           },
+          "meetings" : {
+            "$ref" : "#/components/schemas/MeetingPolicy"
+          },
           "memberAttributes" : {
             "items" : {
               "$ref" : "#/components/schemas/MemberAttribute"
@@ -2798,6 +2801,9 @@
           },
           "description" : {
             "type" : [ "string", "null" ]
+          },
+          "meetings" : {
+            "$ref" : "#/components/schemas/MeetingPolicy"
           },
           "memberAttributes" : {
             "items" : {
@@ -2872,7 +2878,7 @@
             "$ref" : "#/components/schemas/TermPolicy"
           }
         },
-        "required" : [ "agenda", "createdAt", "memberAttributes", "name", "number", "outcomes", "quorum", "revision", "state", "submissionPolicy", "termPolicy" ],
+        "required" : [ "agenda", "createdAt", "meetings", "memberAttributes", "name", "number", "outcomes", "quorum", "revision", "state", "submissionPolicy", "termPolicy" ],
         "type" : "object"
       },
       "FoundInView" : {
@@ -4585,6 +4591,32 @@
           }
         },
         "required" : [ "items" ],
+        "type" : "object"
+      },
+      "MeetingPolicy" : {
+        "properties" : {
+          "invitationTitle" : {
+            "enum" : [ "NAME", "NEUTRAL" ],
+            "type" : "string"
+          },
+          "meetingReminder" : {
+            "type" : "boolean"
+          },
+          "neutralTitle" : {
+            "type" : "string"
+          },
+          "quorumOverride" : {
+            "enum" : [ "NEVER", "WITH_REASON" ],
+            "type" : "string"
+          },
+          "replyDeadlineWorkingDays" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "replyReminder" : {
+            "type" : "boolean"
+          }
+        },
         "type" : "object"
       },
       "MeetingRequest" : {

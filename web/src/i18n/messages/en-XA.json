@@ -9717,6 +9717,60 @@
       "value": "]"
     }
   ],
+  "forumTypes.changes.invitationName": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḿḗḗḗḗŧīƞɠ'ş ŧīŧŀḗḗ ǿǿř ŧħḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "'ş ƞȧȧḿḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forumTypes.changes.invitationNeutral": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ƞḗḗŭŭŧřȧȧŀ ŧīŧŀḗḗ: "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forumTypes.changes.invitationTitle": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īƞṽīŧȧȧŧīǿǿƞ ŧīŧŀḗḗ īƞ ƈȧȧŀḗḗƞḓȧȧřş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "forumTypes.changes.lead": [
     {
       "type": 0,
@@ -9739,6 +9793,20 @@
     {
       "type": 0,
       "value": "Ƈħȧȧƞɠḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forumTypes.changes.meetingReminder": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗḿīƞḓḗḗř ŧħḗḗ ẇǿǿřķīƞɠ ḓȧȧẏ ƀḗḗƒǿǿřḗḗ"
     },
     {
       "type": 0,
@@ -9839,6 +9907,48 @@
       "value": "]"
     }
   ],
+  "forumTypes.changes.quorumOverride": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗƈīşīǿǿƞş ẇīŧħǿǿŭŭŧ ȧȧ ɋŭŭǿǿřŭŭḿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forumTypes.changes.quorumOverride.never": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞḗḗṽḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forumTypes.changes.quorumOverride.withReason": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇīŧħ ȧȧ řḗḗȧȧşǿǿƞ, ŧǿǿ ƀḗḗ řȧȧŧīƒīḗḗḓ ŀȧȧŧḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "forumTypes.changes.reminders": [
     {
       "type": 0,
@@ -9861,6 +9971,34 @@
     {
       "type": 0,
       "value": "Řḗḗḿǿǿṽḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forumTypes.changes.replyDeadline": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƥŀẏ ḓḗḗȧȧḓŀīƞḗḗ (ẇǿǿřķīƞɠ ḓȧȧẏş ƀḗḗƒǿǿřḗḗ ȧȧ ḿḗḗḗḗŧīƞɠ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forumTypes.changes.replyReminder": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗḿīƞḓḗḗř ŧǿǿ řḗḗƥŀẏ"
     },
     {
       "type": 0,
@@ -41986,6 +42124,20 @@
     {
       "type": 0,
       "value": "Ȧƈƈḗḗşş ȧȧƞḓ ȧȧḓḿīƞīşŧřȧȧŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.category.calendar": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḗḗŧīƞɠ īƞṽīŧȧȧŧīǿǿƞş"
     },
     {
       "type": 0,

@@ -9,6 +9,7 @@ import com.memo.common.tenant.TenantDsl
 import com.memo.common.tenant.TenantTransactions
 import com.memo.jooq.tables.records.NotificationMailOutboxRecord
 import com.memo.jooq.tables.references.NOTIFICATION_MAIL_OUTBOX
+import com.memo.notification.CalendarMethod
 import com.memo.notification.Mail
 import com.memo.notification.MailTemplate
 import org.eclipse.angus.mail.smtp.SMTPAddressFailedException
@@ -51,6 +52,9 @@ data class MailSettings(
     val starttls: Boolean = true,
     val allowInsecure: Boolean = false,
 )
+
+/** The platform relay's from address: `MEMO_SMTP_FROM`, else `memo@` the relay's host. */
+internal fun platformFrom(settings: MailSettings): String = settings.from.ifBlank { "memo@${settings.host.ifBlank { "localhost" }}" }
 
 @Configuration(proxyBeanMethods = false)
 @EnableConfigurationProperties(MailSettings::class)
@@ -147,16 +151,22 @@ class MailDelivery internal constructor(
         val params = readParams(keys.decrypt(message.paramsEnc!!, Mail.aad(tenant.toString(), message.id.toString())))
         val sender = if (relay != null) relays.sender(relay) else platformSender
         val text = texts.body(template, locale, params)
+        val calendarEnc = message.calendarEnc
+        val calendar = calendarEnc?.let { keys.decrypt(it, Mail.calendarAad(tenant.toString(), message.id.toString())) }
         val mime = sender.createMimeMessage()
-        MimeMessageHelper(mime, true, Charsets.UTF_8.name()).apply {
+        MimeMessageHelper(mime, calendar == null, Charsets.UTF_8.name()).apply {
             if (relay != null) {
                 if (relay.fromName != null) setFrom(relay.fromAddress, relay.fromName) else setFrom(relay.fromAddress)
             } else {
-                setFrom(settings.from.ifBlank { "memo@${settings.host}" })
+                setFrom(platformFrom(settings))
             }
             setTo(message.toAddress)
             setSubject(texts.subject(template, locale))
-            setText(text + "\n\n" + texts.footer(locale), texts.html(text, locale))
+            if (calendar == null) setText(text + "\n\n" + texts.footer(locale), texts.html(text, locale))
+        }
+        if (calendar != null) {
+            val method = CalendarMethod.valueOf(message.calendarMethod ?: error("a calendar part without its method"))
+            Imip.layout(mime, text + "\n\n" + texts.footer(locale), texts.html(text, locale), method, calendar)
         }
         sender.send(mime)
     }
@@ -205,6 +215,7 @@ class MailDelivery internal constructor(
                         .set(NOTIFICATION_MAIL_OUTBOX.STATUS, "SENT")
                         .set(NOTIFICATION_MAIL_OUTBOX.SENT_AT, now)
                         .setNull(NOTIFICATION_MAIL_OUTBOX.PARAMS_ENC)
+                        .setNull(NOTIFICATION_MAIL_OUTBOX.CALENDAR_ENC)
                         .setNull(NOTIFICATION_MAIL_OUTBOX.SMTP_CODE)
                         .setNull(NOTIFICATION_MAIL_OUTBOX.ERROR_CLASS)
                 }
@@ -237,6 +248,7 @@ class MailDelivery internal constructor(
         .set(NOTIFICATION_MAIL_OUTBOX.SMTP_CODE, code)
         .set(NOTIFICATION_MAIL_OUTBOX.ERROR_CLASS, errorClass)
         .setNull(NOTIFICATION_MAIL_OUTBOX.PARAMS_ENC)
+        .setNull(NOTIFICATION_MAIL_OUTBOX.CALENDAR_ENC)
 
     @Suppress("UNCHECKED_CAST")
     private fun readParams(bytes: ByteArray): Map<String, String> = json.readValue(bytes, Map::class.java) as Map<String, String>

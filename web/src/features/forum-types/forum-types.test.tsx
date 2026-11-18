@@ -79,6 +79,14 @@ const published: ForumTypeVersionResponse = {
       { title: 'For decision', kind: 'STANDARD', membersOnly: false, receivesSubmissions: true, items: [] },
     ],
   },
+  meetings: {
+    invitationTitle: 'NAME',
+    neutralTitle: 'Committee meeting',
+    replyDeadlineWorkingDays: 2,
+    replyReminder: true,
+    meetingReminder: true,
+    quorumOverride: 'NEVER',
+  },
   retention: { years: 10, from: 'MEETING' },
   createdAt: '2026-11-18T08:00:00Z',
 }
@@ -92,6 +100,7 @@ const inReview: ForumTypeVersionResponse = {
     { kind: 'APPROVED', label: 'Sanctioned', resolution: true },
     { kind: 'NOTED', label: 'Noted', resolution: false },
   ],
+  meetings: { ...published.meetings, invitationTitle: 'NEUTRAL', neutralTitle: 'Board committee meeting' },
   submittedBy: { id: 'u2', name: 'Admin Two' },
   submittedAt: '2026-11-18T10:20:00Z',
 }
@@ -236,6 +245,7 @@ describe('committee types (Phase 4 E01 T4, flow J)', () => {
       outcomes: { kind: string }[]
       submissionPolicy: unknown
       agenda: unknown
+      meetings: unknown
     }[] = []
     server.use(
       ...handlers([draft, published]),
@@ -268,6 +278,8 @@ describe('committee types (Phase 4 E01 T4, flow J)', () => {
     expect(bodies[0]?.submissionPolicy).toEqual(draft.submissionPolicy)
     // So is the agenda policy (ADR-0060) until the Agenda tab edits it (E03 T7).
     expect(bodies[0]?.agenda).toEqual(draft.agenda)
+    // Likewise the meeting policy (Phase 4 E05) until its tab comes (E05 T8).
+    expect(bodies[0]?.meetings).toEqual(draft.meetings)
     await expectNoA11yViolations(container)
   }, 20_000)
 
@@ -365,7 +377,9 @@ describe('committee types (Phase 4 E01 T4, flow J)', () => {
 
     expect(await screen.findByText(/^Submitted by Admin Two/, {}, { timeout: 5000 })).toBeInTheDocument()
     expect(screen.getByText('Changes apply to every committee of this type from its next meeting.')).toBeInTheDocument()
-    expect(screen.getByRole('tab', { name: 'Changes (2)' })).toHaveAttribute('aria-selected', 'true')
+    expect(screen.getByRole('tab', { name: 'Changes (3)' })).toHaveAttribute('aria-selected', 'true')
+    expect(screen.getByText('Invitation title in calendars:')).toBeInTheDocument()
+    expect(screen.getByText('A neutral title: Board committee meeting')).toBeInTheDocument()
     expect(screen.getByText('Outcome “Approved” label:')).toBeInTheDocument()
     expect(screen.getByText('Sanctioned')).toBeInTheDocument()
     expect(screen.getByText(/^Two-thirds of the voting members in office, rounded up/)).toBeInTheDocument()

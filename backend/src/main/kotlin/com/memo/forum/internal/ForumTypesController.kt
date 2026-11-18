@@ -12,6 +12,7 @@ import com.memo.common.web.ifMatchVersion
 import com.memo.forum.AgendaPolicy
 import com.memo.forum.ForumRetention
 import com.memo.forum.ForumRole
+import com.memo.forum.MeetingPolicy
 import com.memo.forum.MemberAttribute
 import com.memo.forum.Outcome
 import com.memo.forum.Quorum
@@ -57,6 +58,8 @@ data class ForumTypeSettingsRequest(
     val termPolicy: TermPolicy = TermPolicy(),
     val submissionPolicy: SubmissionPolicy = SubmissionPolicy(),
     val agenda: AgendaPolicy = AgendaPolicy(),
+    /** Invitations, replies and the quorum override (Phase 4 E05); left out: the defaults. */
+    val meetings: MeetingPolicy = MeetingPolicy(),
 )
 
 data class CreateForumTypeRequest(
@@ -81,6 +84,7 @@ data class ForumTypeVersionResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val termPolicy: TermPolicy,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val submissionPolicy: SubmissionPolicy,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val agenda: AgendaPolicy,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val meetings: MeetingPolicy,
     val createdBy: PersonRef?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val createdAt: Instant,
     val submittedBy: PersonRef?,
@@ -359,6 +363,7 @@ class ForumTypeResponses(
                 termPolicy = s.termPolicy,
                 submissionPolicy = s.submissionPolicy,
                 agenda = s.agenda,
+                meetings = s.meetings,
                 createdBy = named(v.createdBy),
                 createdAt = v.createdAt,
                 submittedBy = named(v.submittedBy),
@@ -387,6 +392,7 @@ internal fun ForumTypeSettingsRequest.settings() =
         termPolicy = termPolicy,
         submissionPolicy = submissionPolicy,
         agenda = agenda.trimmed(),
+        meetings = meetings.copy(neutralTitle = meetings.neutralTitle.trim()),
     )
 
 internal fun ForumTypeSettings.request() =
@@ -401,6 +407,7 @@ internal fun ForumTypeSettings.request() =
         termPolicy,
         submissionPolicy,
         agenda,
+        meetings,
     )
 
 private fun number(path: String): Int = path.toIntOrNull() ?: throw ForumNotFoundException("forum type version")

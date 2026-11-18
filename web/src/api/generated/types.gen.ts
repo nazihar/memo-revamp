@@ -947,6 +947,7 @@ export type ForumTypeSettingsRequest = {
     agenda?: AgendaPolicy;
     defaultClassificationId?: string | null;
     description?: string | null;
+    meetings?: MeetingPolicy;
     memberAttributes?: Array<MemberAttribute>;
     name?: string;
     outcomes?: Array<Outcome>;
@@ -962,6 +963,7 @@ export type ForumTypeVersionResponse = {
     createdBy?: PersonRef | null;
     defaultClassificationId?: string | null;
     description?: string | null;
+    meetings: MeetingPolicy;
     memberAttributes: Array<MemberAttribute>;
     name: string;
     number: number;
@@ -1556,6 +1558,15 @@ export type MeetingGuestResponse = {
 export type MeetingPageResponse = {
     items: Array<MeetingSummaryResponse>;
     nextCursor?: string | null;
+};
+
+export type MeetingPolicy = {
+    invitationTitle?: 'NAME' | 'NEUTRAL';
+    meetingReminder?: boolean;
+    neutralTitle?: string;
+    quorumOverride?: 'NEVER' | 'WITH_REASON';
+    replyDeadlineWorkingDays?: number;
+    replyReminder?: boolean;
 };
 
 export type MeetingRequest = {

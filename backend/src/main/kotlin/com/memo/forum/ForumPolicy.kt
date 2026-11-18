@@ -77,6 +77,34 @@ data class SubmissionPolicy(
 /** A working week, the usual board-pack lead time (research E02 §2). */
 private const val DEFAULT_SUBMISSION_DAYS = 5
 
+/** What a meeting invitation is called in calendars (ADR-0063): the meeting's title or committee's name, or a neutral one. */
+enum class InvitationTitle { NAME, NEUTRAL }
+
+/** Whether a decision may be recorded without a quorum, with a reason, to be ratified later (ADR-0064). */
+enum class QuorumOverride { NEVER, WITH_REASON }
+
+/**
+ * A committee type's meeting policy (design E05 §1.8, ADR-0063, ADR-0064), part of each type version and pinned with it
+ * on each meeting: what invitations are called in calendars ([neutralTitle] when [invitationTitle] is NEUTRAL, with the
+ * file marked private), the reply deadline in working days before the meeting (0: none) and its reminder, the reminder
+ * the working day before, and whether a missing quorum may be overridden.
+ */
+data class MeetingPolicy(
+    val invitationTitle: InvitationTitle = InvitationTitle.NAME,
+    val neutralTitle: String = DEFAULT_NEUTRAL_TITLE,
+    val replyDeadlineWorkingDays: Int = DEFAULT_REPLY_DAYS,
+    val replyReminder: Boolean = true,
+    val meetingReminder: Boolean = true,
+    val quorumOverride: QuorumOverride = QuorumOverride.NEVER,
+) {
+    companion object {
+        const val DEFAULT_NEUTRAL_TITLE = "Committee meeting"
+    }
+}
+
+/** Two working days before the meeting (design E05 §1.8). */
+private const val DEFAULT_REPLY_DAYS = 2
+
 /** How long meeting records of the forum are kept; stored only, acted on in Phase 7. */
 data class ForumRetention(
     val years: Int,

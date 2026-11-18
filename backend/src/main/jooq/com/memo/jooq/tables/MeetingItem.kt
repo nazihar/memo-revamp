@@ -16,9 +16,14 @@ import com.memo.jooq.keys.MEETING_ITEM__MEETING_ITEM_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_ITEM__MEETING_ITEM_TENANT_ID_PARENT_ID_FKEY
 import com.memo.jooq.keys.MEETING_ITEM__MEETING_ITEM_TENANT_ID_SECTION_ID_FKEY
 import com.memo.jooq.keys.MEETING_PAPER__MEETING_PAPER_TENANT_ID_ITEM_ID_FKEY
+import com.memo.jooq.keys.MEETING_REVISION_ITEM__MEETING_REVISION_ITEM_TENANT_ID_ITEM_ID_FKEY
+import com.memo.jooq.keys.MEETING_REVISION_ITEM__MEETING_REVISION_ITEM_TENANT_ID_PARENT_ITEM_ID_FKEY
+import com.memo.jooq.keys.MEETING_REVISION_PAPER__MEETING_REVISION_PAPER_TENANT_ID_ITEM_ID_FKEY
 import com.memo.jooq.tables.MeetingAgenda.MeetingAgendaPath
 import com.memo.jooq.tables.MeetingItemAttendee.MeetingItemAttendeePath
 import com.memo.jooq.tables.MeetingPaper.MeetingPaperPath
+import com.memo.jooq.tables.MeetingRevisionItem.MeetingRevisionItemPath
+import com.memo.jooq.tables.MeetingRevisionPaper.MeetingRevisionPaperPath
 import com.memo.jooq.tables.MeetingSection.MeetingSectionPath
 import com.memo.jooq.tables.records.MeetingItemRecord
 
@@ -313,6 +318,56 @@ open class MeetingItem(
 
     val meetingPaper: MeetingPaperPath
         get(): MeetingPaperPath = meetingPaper()
+
+    private lateinit var _meetingRevisionItemTenantIdItemIdFkey: MeetingRevisionItemPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.meeting_revision_item</code> table, via the
+     * <code>meeting_revision_item_tenant_id_item_id_fkey</code> key
+     */
+    fun meetingRevisionItemTenantIdItemIdFkey(): MeetingRevisionItemPath {
+        if (!this::_meetingRevisionItemTenantIdItemIdFkey.isInitialized)
+            _meetingRevisionItemTenantIdItemIdFkey = MeetingRevisionItemPath(this, null, MEETING_REVISION_ITEM__MEETING_REVISION_ITEM_TENANT_ID_ITEM_ID_FKEY.inverseKey)
+
+        return _meetingRevisionItemTenantIdItemIdFkey;
+    }
+
+    val meetingRevisionItemTenantIdItemIdFkey: MeetingRevisionItemPath
+        get(): MeetingRevisionItemPath = meetingRevisionItemTenantIdItemIdFkey()
+
+    private lateinit var _meetingRevisionItemTenantIdParentItemIdFkey: MeetingRevisionItemPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.meeting_revision_item</code> table, via the
+     * <code>meeting_revision_item_tenant_id_parent_item_id_fkey</code> key
+     */
+    fun meetingRevisionItemTenantIdParentItemIdFkey(): MeetingRevisionItemPath {
+        if (!this::_meetingRevisionItemTenantIdParentItemIdFkey.isInitialized)
+            _meetingRevisionItemTenantIdParentItemIdFkey = MeetingRevisionItemPath(this, null, MEETING_REVISION_ITEM__MEETING_REVISION_ITEM_TENANT_ID_PARENT_ITEM_ID_FKEY.inverseKey)
+
+        return _meetingRevisionItemTenantIdParentItemIdFkey;
+    }
+
+    val meetingRevisionItemTenantIdParentItemIdFkey: MeetingRevisionItemPath
+        get(): MeetingRevisionItemPath = meetingRevisionItemTenantIdParentItemIdFkey()
+
+    private lateinit var _meetingRevisionPaper: MeetingRevisionPaperPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.meeting_revision_paper</code> table
+     */
+    fun meetingRevisionPaper(): MeetingRevisionPaperPath {
+        if (!this::_meetingRevisionPaper.isInitialized)
+            _meetingRevisionPaper = MeetingRevisionPaperPath(this, null, MEETING_REVISION_PAPER__MEETING_REVISION_PAPER_TENANT_ID_ITEM_ID_FKEY.inverseKey)
+
+        return _meetingRevisionPaper;
+    }
+
+    val meetingRevisionPaper: MeetingRevisionPaperPath
+        get(): MeetingRevisionPaperPath = meetingRevisionPaper()
     override fun getChecks(): List<Check<MeetingItemRecord>> = listOf(
         Internal.createCheck(this, DSL.name("meeting_item_added_after_revision_check"), "((added_after_revision >= 0))", true),
         Internal.createCheck(this, DSL.name("meeting_item_check"), "(((kind = 'STANDING'::text) = (standing_kind IS NOT NULL)))", true),

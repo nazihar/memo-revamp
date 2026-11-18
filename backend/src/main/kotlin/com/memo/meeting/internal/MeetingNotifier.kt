@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component
 import java.util.UUID
 
 /**
- * Tells a meeting's audience what changed for them (design E03 §1.1, §9), in the change's transaction (ADR-0030): the
- * subject carries nothing; the body names the committee and the meeting's date and links to the meeting. The actor is
- * never told about their own change. E05 adds the calendar invitations.
+ * Tells a meeting's audience and officers what changed for them (design E03 §1.1, §1.4, §9), in the transaction that
+ * calls it (ADR-0030): the subject carries nothing; the body names the committee and the meeting's date and links to the
+ * meeting, never an item's title. The actor is never told about their own change. E05 adds the calendar invitations.
  */
 @Component
 class MeetingNotifier(
@@ -42,10 +42,45 @@ class MeetingNotifier(
         meeting: MeetingRow,
         forum: ForumRef,
     ) {
-        val seats = directory.membersOn(forum.id)
-        val chair = (seats.firstOrNull { it.role == ForumRole.CHAIR } ?: seats.firstOrNull { it.role == ForumRole.VICE_CHAIR })?.userId
-        chair?.let { notify(it, NotificationKind.MEETING_LATE_PAPER, meeting, forum) }
+        chairOf(forum.id)?.let { notify(it, NotificationKind.MEETING_LATE_PAPER, meeting, forum) }
     }
+
+    /** An item of the published agenda left it (its submission was withdrawn or returned): the secretaries publish again. */
+    fun itemWithdrawn(
+        meeting: MeetingRow,
+        forum: ForumRef,
+    ) {
+        secretaries(forum.id).forEach { notify(it, NotificationKind.MEETING_ITEM_WITHDRAWN, meeting, forum) }
+    }
+
+    /** The chair commented on the draft: the secretaries are told in the app (the comment is on the meeting). */
+    fun chairCommented(
+        meeting: MeetingRow,
+        forum: ForumRef,
+    ) {
+        secretaries(forum.id).forEach { notify(it, NotificationKind.MEETING_CHAIR_COMMENTED, meeting, forum) }
+    }
+
+    /** A revision of the agenda, to one person of the audience (design E03 §9): its first publication, or a change they see. */
+    fun agenda(
+        user: UUID,
+        kind: NotificationKind,
+        meeting: MeetingRow,
+        forum: ForumRef,
+    ) = notify(user, kind, meeting, forum)
+
+    /** The chair in office, else the vice-chair. */
+    fun chairOf(forumId: UUID): UUID? {
+        val seats = directory.membersOn(forumId)
+        return (seats.firstOrNull { it.role == ForumRole.CHAIR } ?: seats.firstOrNull { it.role == ForumRole.VICE_CHAIR })?.userId
+    }
+
+    private fun secretaries(forumId: UUID): Set<UUID> =
+        directory
+            .membersOn(forumId)
+            .filter { it.role == ForumRole.SECRETARY }
+            .map { it.userId }
+            .toSet() - setOfNotNull(actorOrNull())
 
     private fun notify(
         user: UUID,

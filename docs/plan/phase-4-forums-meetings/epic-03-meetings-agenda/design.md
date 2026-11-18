@@ -113,6 +113,13 @@ stateDiagram-v2
     - the change flags against the previous revision: ADDED, REMOVED (kept as a struck line in "What changed", not in the body), MOVED (with the old number), RETITLED, TIME_CHANGED, PAPER_ADDED, PAPER_REPLACED, PAPER_REMOVED, LATE, TABLED.
 - Restriction changes are recorded on the revision but never shown as change flags to members.
 - Revisions are append-only. The app role has no UPDATE or DELETE on them.
+- As built (T3):
+  - The tables are `meeting_revision` (number, when, by whom, note, notified, and revision 1's chair agreement), `meeting_revision_section`, `meeting_revision_item` and `meeting_revision_paper`; they have no UPDATE, DELETE or TRUNCATE for the app role. A revision item keeps `parent_item_id` (a declaration on an item covers its sub-items, E04), the section's `members_only`, the item attendees and its previous number. Items and papers a revision took off are rows with `removed` (the struck lines of "What changed"), never in the body.
+  - `NOTHING_TO_PUBLISH` compares the copy with the last revision's body, not the `dirty` flag, so a change undone before publishing publishes nothing; a restriction change alone is something to publish, without a flag.
+  - **MOVED** is an item outside the longest run of items kept in the same order, or one now in another section or under another item, so moving item 5 to position 3 flags it alone ("was 5") and the knock-on renumbering of items 3 and 4 is not a move (their previous number is still kept). **TIME_CHANGED** is a change of the item's own duration; a knock-on shift of start times is not a flag (the times shown are the current ones).
+  - Lateness as members read it (`late`: NONE, LATE, TABLED) is decided when an item or paper is first published and carried afterwards: TABLED for what was tabled; LATE for what was placed late (ALLOW) or agreed by the chair, and for an item with papers, or a paper, first published after the deadline. LATE and TABLED are flags only in the revision that first carries them.
+  - A refusal is checked in the order of design §1.3 (`RevisionRules.refusal`): `FROZEN`, `MEETING_NOT_SCHEDULED`, `CHAIR_AGREEMENT_REQUIRED`, `PAPER_NOT_READABLE` (with `paperIds`), `NOTHING_TO_PUBLISH`; the note is checked first (422 `note` `NOTE_REQUIRED` from revision 2, `LENGTH` over 500).
+  - The meeting's number is taken at the first publication from the counter row (inserted if missing, then `SELECT … FOR UPDATE`), in the calendar year of the meeting's date in its zone (the owner confirmed calendar year on 2026-11-18); a meeting the next year starts again at 1. The forum's code locks in the same transaction (`ForumCodes.lock`). Audited `meeting.numbered`.
 
 ### 1.4 Late papers and the chair (E02 policy, enforced here)
 - **Paper deadline** = the end of the working day that is `deadlineWorkingDays` working days before the meeting's date, in the meeting's zone, on the tenant's business calendar (`WorkingDays.before`, new).
@@ -123,6 +130,7 @@ stateDiagram-v2
     - Agree: `CHAIR_AGREED`, published in the next revision with "Late paper".
     - Decline: the item is removed and the submission returns to the tray.
     - The secretary can record the chair's answer on their behalf ("by email on …").
+    - As built (T3): the chair's answers carry the agenda's version (If-Match), so the chair agrees to what they read. An answer recorded on the chair's behalf needs a note (422 `note` `NOTE_REQUIRED`) and names the chair in office as `by`, with the secretary as `onBehalfBy`; with no chair or vice-chair in office it is refused (409 `NO_CHAIR`). A second agreement is 409 `ALREADY_AGREED`, and one after revision 1 `WRONG_STATE`. Late uploads waiting on the paper are decided with `POST …/agenda/papers/{pid}/late-decision`. An answer on something not waiting is 409 `WRONG_STATE`. Audited `meeting.agenda.chair_agreed`, `meeting.late.agreed` and `meeting.late.declined`; the agreement does not lapse when the draft changes before revision 1.
 - **During the meeting** (IN_PROGRESS) the secretary may add an item or paper as TABLED. No late mode applies; it is marked "Tabled at the meeting".
 - Secretary items without papers (standing items, breaks, procedural items) are never late.
 
@@ -179,6 +187,8 @@ sequenceDiagram
 - **Pinning:** papers pin the current file version at each publication. The memo cannot change while it waits (ADR-0058), so in practice the version is the one submitted.
 - **Removing a SUBMISSION item** in the builder clears the forum's placement. The submission returns to the tray, ACCEPTED.
 - **Deciding the item** is E06 (`ForumDecisions.decide`). Deferral at the meeting is an E06 outcome that requeues the submission.
+- **Lock order** (as built in T3; it fixes T2's deadlock between a triage and a removal or a cancellation): every transaction that may place or unplace a submission takes the rows in this order: the submission rows (`SubmissionPlacements.lock`, `lockOn`; in id order), then the meeting's (`FOR NO KEY UPDATE` when it changes the meeting), then the agenda's. A triage already does (the forum updates the submission, then `ForumSubmissionChanged` reaches the agenda); placing, removing an item, the chair's decline, cancelling and rescheduling now lock the submissions first, and publishing locks the meeting before the agenda, as a cancellation does. A builder change reads the meeting again under the agenda's lock, so one that waited on a cancellation sees it (`FROZEN`). `AgendaConcurrencyIT` races a return against a placement, a removal and a cancellation of the same submission.
+- As built (T3): when a submission item that is on the published agenda leaves the draft, its secretaries are told to publish a new revision (`MEETING_ITEM_WITHDRAWN`, English and Arabic); members read it in the published revision until then.
 
 ### 1.9 The paper access rule (ADR-0061)
 One rule, written once as jOOQ conditions in `PaperAccess`, is used by every read path:
@@ -353,6 +363,7 @@ erDiagram
     - `PaperAccess` (the rule, ADR-0061: `itemCondition(user)`, `paperCondition(user)`, `canSeePaper(paperId, revision)`);
     - `PaperExclusions` (the E04 hook, an interface with `NoExclusions` as the E03 implementation);
     - the events `MeetingChanged(tenantId, meetingId, change)` and `AgendaPublished(tenantId, meetingId, revision)`, for E04–E07.
+  - As built (T3): `MeetingChanged(tenantId, meetingId, change)` is published in the changing transaction with `change` one of CREATED, UPDATED, SCHEDULED, RESCHEDULED, STARTED, ENDED, CANCELLED, NUMBERED and GUESTS; `AgendaPublished(tenantId, meetingId, revision)` in the publishing transaction. Both are in `com.memo.meeting` (`MeetingEvents.kt`). `PaperAccess` and `PaperExclusions` come with T4.
   - Internals in `com.memo.meeting.internal`.
   - Depends on `forum`, `memo` (`MemoReaders`), `files`, `workflow` (`WorkingDays`), `org`, `notification`, `audit` and `tenancy`, through `common`.
 - **`forum` changes (published, no behaviour change for E02):**
@@ -413,6 +424,7 @@ All endpoints follow the conventions:
 - 409 as built (T1) also `ALREADY_GUEST`, `CODE_LOCKED` (forum) and `TYPE_NOT_PUBLISHED`;
 - 412 on a stale If-Match.
 - As built (T2): every builder change answers the whole draft (`AgendaDraftResponse`) with the agenda's new version as the ETag; creates (start, section, item, paper) need an `Idempotency-Key`; builder writes are rate-limited per user (`AGENDA_WRITE_PER_USER`). Also 409 `AGENDA_STARTED`, `SECTION_NOT_EMPTY`, `ALREADY_IN_PACK`, `WRONG_KIND` (papers on a break), and 422 `meetingId` `unknown` / `SAME_MEETING` / `NO_AGENDA` for a copy, `standingKind` `duplicate`, `restrictedTo` `REQUIRED` (an empty list). Also 409 `NO_AGENDA` for a builder change before the agenda is started, and 422 `sectionId` `REQUIRED` (no section yet), `minutes` `RANGE` / `ONE_LEVEL` (a sub-item has no time), `submissionId` `REQUIRED` / `CLASSIFICATION` (above the actor's clearance), `presenters` `FORMAT`, `attendees` `unknown` / `CLASSIFICATION`, `fileId` `unknown` / `TOO_MANY`. Raising an item's level raises its papers below it.
+- As built (T3): the chair's agreement and late decisions carry `If-Match` and answer the draft; publishing and chair comments need an `Idempotency-Key` and answer 201 with the draft. The draft gains `state`, `chairAgreement` (`by`, `at`, `onBehalfBy`, `note`), `canAgree` (the viewer is the chair in office, or the vice-chair when there is none), `chairComments` and `revisions` (number, when, by whom, note, notified). New: `POST …/agenda/papers/{pid}/late-decision` (late uploads wait on the paper) and `GET …/agenda/publish-preview` for officers (the next revision's number, whether a note is needed, `meetingNotScheduled`, `chairAgreementMissing`, `nothingToPublish`, `unreadablePapers`, `awaitingChair`, and the change summary with flags and previous numbers, for T7's publish dialog). Also 409 `ALREADY_AGREED`, `NO_CHAIR`, `WRONG_STATE` (an answer on something not waiting, or an agreement after revision 1) and `PAPER_NOT_READABLE` with `paperIds`; 422 `note` `NOTE_REQUIRED` / `LENGTH` and `text` `LENGTH` (a chair comment, 1 to 2,000 characters).
 
 ## 4. Authorisation matrix
 Columns:
@@ -478,6 +490,7 @@ All of them are written in the business transaction, with before and after where
   - Unique `(tenant_id, submission_id) WHERE removed_at IS NULL`.
 - **`meeting/V3__revisions.sql`** (T3): the revision tables, `consent_lift_request`, `meeting_reader_state`.
   - Indexes: `(tenant_id, meeting_id, number)`, revision items `(tenant_id, revision_id, position)`, revision papers `(tenant_id, revision_id, item_id)`, and `(tenant_id, paper_id, revision_id)` for paper opens.
+  - As built (T3): `meeting_revision`, `meeting_revision_section`, `meeting_revision_item` (with `parent_item_id`), `meeting_revision_paper`, `meeting_revision_notice` (who was told of which revision, the notifications' dedupe key) and `meeting_chair_comment`; no UPDATE, DELETE or TRUNCATE for the app role on any of them. Indexes as above, plus `(tenant_id, item_id)` and `(tenant_id, parent_item_id)` on revision items for E04, and one per foreign key. `consent_lift_request` and `meeting_reader_state` move to T4's migration (whichever of T4 and E04 T1 merges first takes `meeting/V4`, as the E04 plan says), with the code that uses them.
 - All expand-only. No existing column changes meaning. The demo seed adds rows in T9.
 
 ## 8. Performance budget
@@ -506,6 +519,7 @@ All of them are written in the business transaction, with before and after where
   - (a) the paper deadline has passed and the agenda is not published → `MEETING_AGENDA_DUE` to the secretaries, once;
   - (b) a meeting is still SCHEDULED a day after `endsAt` → flagged, with `MEETING_NOT_HELD` to the secretaries, once;
   - (c) audience rows whose `until` has passed are left in place; the rule compares `until` with today, so nothing needs deleting.
+- As built (T3): the notifications of a revision are a db-scheduler task (`meeting-agenda-notices`, one instance per revision, ADR-0018) scheduled by a listener of `AgendaPublished` in the publishing transaction, so a rolled-back publication tells nobody and the task runs after the commit, with the tenant in its data; the codebase has no `@Async` listeners. Each person is recorded in `meeting_revision_notice` before being told, so a retried task tells nobody twice. Revision 1 goes to everyone still in the audience and cleared for the meeting, but the publisher; a later revision to those who see an item or paper it flagged (a removed row judged as it was published before). The visibility check (`AgendaVisibility`) is the notification half of the paper rule; T4's `PaperAccess` takes it over. `MEETING_ITEM_WITHDRAWN` (to the secretaries, synchronous) and `MEETING_CHAIR_COMMENTED` (in the app only) are new kinds too.
 - **No file work:** papers reuse the renditions built at upload (ADR-0045). `meeting.paper` uploads get PDF and text renditions like attachments.
 
 ## 10. UX flows (`ux-review.md`)

@@ -7,6 +7,7 @@ import com.memo.common.authz.Policy
 import com.memo.common.concurrency.ConcurrentModificationException
 import com.memo.common.web.FieldProblem
 import com.memo.common.web.refuseIf
+import com.memo.forum.SubmissionPlacements
 import com.memo.identity.UserStatus
 import com.memo.identity.UserSummaries
 import org.springframework.stereotype.Component
@@ -46,6 +47,8 @@ class AgendaGuard(
     private val items: ItemStore,
     private val papers: PaperStore,
     private val audience: AudienceStore,
+    private val meetings: MeetingStore,
+    private val placements: SubmissionPlacements,
 ) {
     /** The meeting, if the actor may read its draft (an officer); 404 when they do not see it, 403 when they only see it. */
     fun requireReader(meetingId: UUID): MeetingRow {
@@ -60,19 +63,52 @@ class AgendaGuard(
     /**
      * Opens a change of [meetingId]'s agenda by its secretary: the agenda locked and at [version] (else 412), and the
      * meeting's status allowing it ([AgendaRules.requireChange]; [tabled] for additions while it is in progress).
+     *
+     * The lock order (design E03 §1.8, as built in T3): the rows of [submissions] the change may place or unplace are
+     * locked first, then the agenda, as a triage takes the submission and then, through `ForumSubmissionChanged`, the
+     * agenda. The meeting is read again under the agenda's lock, so a change waiting on a cancellation sees it.
      */
     fun edit(
         meetingId: UUID,
         version: Long,
         tabled: Boolean = false,
+        submissions: Collection<UUID> = emptyList(),
     ): AgendaEdit {
-        val meeting = guard.requireManaged(meetingId)
+        val managed = guard.requireManaged(meetingId)
+        placements.lock(submissions)
+        return locked(managed, version, tabled)
+    }
+
+    /**
+     * Opens the chair's answer on [meetingId]'s agenda (agreement, a late paper): by the chair in office (the vice-chair
+     * when there is none), or [onBehalf] by its secretary or `forums.manage`; 404 when the meeting is invisible, 403 when
+     * the actor is neither. Locked and at [version], with [submissions] locked first as for [edit].
+     */
+    fun answer(
+        meetingId: UUID,
+        version: Long,
+        onBehalf: Boolean,
+        submissions: Collection<UUID> = emptyList(),
+    ): AgendaEdit {
+        val (meeting, _) = guard.requireVisible(meetingId)
+        val allowed = if (onBehalf) access.manages(meeting.forumId) else access.chairs(meeting.forumId)
+        if (!allowed) throw ForbiddenException(Permission.FORUMS_MANAGE)
+        placements.lock(submissions)
+        return locked(meeting, version, tabled = true)
+    }
+
+    private fun locked(
+        meeting: MeetingRow,
+        version: Long,
+        tabled: Boolean,
+    ): AgendaEdit {
         val agenda = agendas.lock(meeting.id)
         refuseIf(agenda == null, "NO_AGENDA") { "Start the agenda first." }
         val locked = checkNotNull(agenda)
         if (locked.version != version) throw ConcurrentModificationException("agenda ${meeting.id}", version)
-        AgendaRules.requireChange(meeting.status, tabled)
-        return AgendaEdit(meeting, rowsOf(locked))
+        val current = meetings.find(meeting.id) ?: throw MeetingNotFoundException()
+        AgendaRules.requireChange(current.status, tabled)
+        return AgendaEdit(current, rowsOf(locked))
     }
 
     /** Opens a change made by the system (a submission left, the meeting was cancelled): locked, no version, no officer. */

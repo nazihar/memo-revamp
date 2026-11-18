@@ -14,9 +14,11 @@ import com.memo.forum.internal.Forums
 import com.memo.forum.internal.MemberInput
 import com.memo.identity.UserAccount
 import com.memo.identity.UserAccounts
+import com.memo.meeting.internal.AgendaChair
 import com.memo.meeting.internal.AgendaDraftViews
 import com.memo.meeting.internal.AgendaItems
 import com.memo.meeting.internal.AgendaOrigin
+import com.memo.meeting.internal.AgendaPublisher
 import com.memo.meeting.internal.AgendaStart
 import com.memo.meeting.internal.ItemInput
 import com.memo.meeting.internal.ItemKind
@@ -80,6 +82,10 @@ class MeetingCrossTenantIT : IntegrationTest() {
     @Autowired lateinit var items: AgendaItems
 
     @Autowired lateinit var views: AgendaDraftViews
+
+    @Autowired lateinit var chairing: AgendaChair
+
+    @Autowired lateinit var publisher: AgendaPublisher
 
     private class Side(
         val tenant: TestTenant,
@@ -243,6 +249,111 @@ class MeetingCrossTenantIT : IntegrationTest() {
                 runCatching { AppRoleJdbc.inTransaction(a.tenant.id) { c -> c.update("delete from $table where $column = ?", id) } }
             assertThat(deleted.exceptionOrNull()).describedAs(table).isInstanceOf(SQLException::class.java)
         }
+    }
+
+    @Test
+    fun `another tenant neither sees nor writes revisions, notices or chair comments, and nobody changes a revision`() {
+        val a = side("revisiona")
+        val b = side("revisionb")
+        val (ofA, revision) = published(a)
+
+        // B's administrator gets 404 for A's publication and chair actions.
+        assertThatThrownBy { asUser(b.tenant, b.admin) { publisher.publish(ofA, 1, null, true) } }
+            .isInstanceOf(MeetingNotFoundException::class.java)
+        assertThatThrownBy { asUser(b.tenant, b.admin) { publisher.preview(ofA) } }.isInstanceOf(MeetingNotFoundException::class.java)
+        assertThatThrownBy { asUser(b.tenant, b.admin) { chairing.agree(ofA, 1, true, "by email") } }
+            .isInstanceOf(MeetingNotFoundException::class.java)
+
+        // Through SQL as the app role: none of A's rows is visible to B, none written for A or pointing at A's.
+        val tables =
+            listOf(
+                "meeting_revision",
+                "meeting_revision_section",
+                "meeting_revision_item",
+                "meeting_revision_paper",
+                "meeting_revision_notice",
+                "meeting_chair_comment",
+            )
+        AppRoleJdbc.inTransaction(a.tenant.id) { c ->
+            assertThat(c.long("select count(*) from meeting_revision_item where revision_id = ?", revision)).isGreaterThan(0)
+        }
+        AppRoleJdbc.inTransaction(b.tenant.id) { c ->
+            tables.forEach { table ->
+                assertThat(c.long("select count(*) from $table where tenant_id = ?", a.tenant.id.value)).describedAs(table).isZero()
+            }
+        }
+        val now = OffsetDateTime.now(ZoneOffset.UTC)
+        val writes =
+            listOf(
+                "insert into meeting_revision_notice (tenant_id, revision_id, user_id, kind, notified_at) " +
+                    "values (?, ?, ?, 'MEETING_AGENDA_PUBLISHED', ?)" to listOf<Any>(a.tenant.id.value, revision, b.member.id.value, now),
+                "insert into meeting_revision_notice (tenant_id, revision_id, user_id, kind, notified_at) " +
+                    "values (?, ?, ?, 'MEETING_AGENDA_PUBLISHED', ?)" to listOf<Any>(b.tenant.id.value, revision, b.member.id.value, now),
+                "insert into meeting_chair_comment (id, tenant_id, meeting_id, text, created_at) values (?, ?, ?, 'x', ?)" to
+                    listOf<Any>(UUID.randomUUID(), b.tenant.id.value, ofA, now),
+            )
+        writes.forEach { (sql, params) ->
+            val written = runCatching { AppRoleJdbc.inTransaction(b.tenant.id) { c -> c.update(sql, *params.toTypedArray()) } }
+            assertThat(written.exceptionOrNull()).describedAs(sql).isInstanceOf(SQLException::class.java)
+        }
+
+        assertAppendOnly(a, ofA, revision)
+    }
+
+    /** A published revision of a meeting of [a], with a chair comment: the meeting and the revision. */
+    private fun published(a: Side): Pair<UUID, UUID> {
+        val chair = accounts.anActiveUser(transactions, a.tenant, aPassword())
+        asUser(a.tenant, a.admin) { members.add(a.forum, MemberInput(userId = chair.id.value, role = ForumRole.CHAIR)) }
+        val ofA = meeting(a)
+        val item =
+            asUser(a.tenant, a.admin) {
+                starts.start(ofA, AgendaOrigin.TEMPLATE, null)
+                items.add(ofA, views.draft(ofA).version, ItemInput(ItemKind.ITEM, title = "Capital plan"))
+            }
+        asUser(a.tenant, chair) { chairing.comment(ofA, "Fine by me") }
+        asUser(a.tenant, chair) { chairing.agree(ofA, views.draft(ofA).version, false, null) }
+        asUser(a.tenant, a.admin) { publisher.publish(ofA, views.draft(ofA).version, null, true) }
+        val revision =
+            AppRoleJdbc.inTransaction(a.tenant.id) { c ->
+                c.prepareStatement("select id from meeting_revision where meeting_id = ?").use { st ->
+                    st.setObject(1, ofA)
+                    st.executeQuery().use { rs ->
+                        rs.next()
+                        rs.getObject(1, UUID::class.java)
+                    }
+                }
+            }
+        assertThat(item).isNotNull()
+        return ofA to revision
+    }
+
+    /** Revisions, notices and comments are append-only: the app role neither updates nor deletes them, in its own tenant. */
+    private fun assertAppendOnly(
+        a: Side,
+        ofA: UUID,
+        revision: UUID,
+    ) {
+        val changes =
+            listOf(
+                "update meeting_revision set note = 'x' where id = ?",
+                "update meeting_revision_item set title = 'x' where revision_id = ?",
+                "update meeting_revision_section set title = 'x' where revision_id = ?",
+                "delete from meeting_revision_item where revision_id = ?",
+                "delete from meeting_revision_paper where revision_id = ?",
+                "delete from meeting_revision_notice where revision_id = ?",
+                "delete from meeting_revision where id = ?",
+            )
+        changes.forEach { sql ->
+            val changed = runCatching { AppRoleJdbc.inTransaction(a.tenant.id) { c -> c.update(sql, revision) } }
+            assertThat(changed.exceptionOrNull()).describedAs(sql).isInstanceOf(SQLException::class.java)
+        }
+        val comment =
+            runCatching {
+                AppRoleJdbc.inTransaction(
+                    a.tenant.id,
+                ) { c -> c.update("update meeting_chair_comment set text = 'x' where meeting_id = ?", ofA) }
+            }
+        assertThat(comment.exceptionOrNull()).isInstanceOf(SQLException::class.java)
     }
 
     private fun <T> asUser(

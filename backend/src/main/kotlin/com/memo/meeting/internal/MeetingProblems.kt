@@ -23,6 +23,11 @@ class MeetingRejectedException(
     val problems: List<FieldProblem>,
 ) : RuntimeException("meeting request rejected: ${problems.joinToString { "${it.field}:${it.code}" }}")
 
+/** Publishing refused: these papers have no readable PDF (their rendition failed or is not possible), 409 `PAPER_NOT_READABLE`. */
+class PaperNotReadableException(
+    val paperIds: List<UUID>,
+) : RuntimeException("papers not readable: $paperIds")
+
 /** Problems of the meeting endpoints. */
 @RestControllerAdvice(basePackageClasses = [MeetingProblems::class])
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -35,6 +40,17 @@ class MeetingProblems {
     fun rejected(ex: MeetingRejectedException): ResponseEntity<ProblemDetail> =
         ResponseEntity.status(HttpStatus.UNPROCESSABLE_CONTENT).body(
             ProblemTypes.validation(ex.problems).apply { status = HttpStatus.UNPROCESSABLE_CONTENT.value() },
+        )
+
+    @ExceptionHandler(PaperNotReadableException::class)
+    fun notReadable(ex: PaperNotReadableException): ResponseEntity<ProblemDetail> =
+        ResponseEntity.status(HttpStatus.CONFLICT).body(
+            ProblemTypes
+                .of(HttpStatus.CONFLICT, ProblemTypes.CONFLICT, "Some papers cannot be read as PDF: replace or remove them first.")
+                .apply {
+                    setProperty("reason", "PAPER_NOT_READABLE")
+                    setProperty("paperIds", ex.paperIds.map { it.toString() })
+                },
         )
 }
 

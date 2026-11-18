@@ -72,7 +72,8 @@ class MeetingAccess(
         }
     }
 
-    private fun chairs(forumId: UUID): Boolean =
+    /** The chair of the forum in office today, or the vice-chair when there is no chair (design E03 §4). */
+    fun chairs(forumId: UUID): Boolean =
         when (role(forumId)) {
             ForumRole.CHAIR -> true
             ForumRole.VICE_CHAIR -> directory.membersOn(forumId).none { it.role == ForumRole.CHAIR }

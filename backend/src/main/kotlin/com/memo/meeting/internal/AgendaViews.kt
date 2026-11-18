@@ -101,6 +101,34 @@ data class CopyReportResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val skipped: List<String>,
 )
 
+/** The chair's agreement to the first publication: in the app, or recorded by a secretary on the chair's behalf. */
+data class ChairAgreementResponse(
+    val by: PersonResponse?,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val at: Instant,
+    /** The secretary who recorded it; null when the chair agreed in the app. */
+    val onBehalfBy: PersonResponse?,
+    /** How it was given ("by email on 4 Dec"). */
+    val note: String?,
+)
+
+data class ChairCommentResponse(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val id: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val text: String,
+    val by: PersonResponse?,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val at: Instant,
+)
+
+/** A published revision, as officers list it. */
+data class RevisionResponse(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val number: Int,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val publishedAt: Instant,
+    val publishedBy: PersonResponse?,
+    /** What changed, in one line (from revision 2). */
+    val note: String?,
+    /** Whether the audience was told. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val notified: Boolean,
+)
+
 /** The working draft for officers (design E03 §3): numbers, times, totals, the paper deadline and the tray's size. */
 data class AgendaDraftResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val meetingId: UUID,
@@ -133,6 +161,16 @@ data class AgendaDraftResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val traySize: Int,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val sections: List<AgendaSectionResponse>,
     val template: AgendaPolicy?,
+    /** DRAFT until revision 1 is published. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val state: AgendaState,
+    /** The chair's agreement to the first publication, once given. */
+    val chairAgreement: ChairAgreementResponse?,
+    /** Whether the viewer is the chair in office (the vice-chair when there is none): they agree and decide late papers. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val canAgree: Boolean,
+    /** The chair's comments to the secretaries, the oldest first. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val chairComments: List<ChairCommentResponse>,
+    /** The published revisions, the first first. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val revisions: List<RevisionResponse>,
     /** Only in the answer to a copy. */
     val copied: CopyReportResponse?,
     /** The agenda's version: send it as If-Match with every change. */
@@ -149,6 +187,9 @@ class AgendaDraftViews(
     private val memoPapers: MemoPapers,
     private val files: Files,
     private val users: UserSummaries,
+    private val access: MeetingAccess,
+    private val comments: ChairCommentStore,
+    private val revisions: RevisionStore,
 ) {
     fun draft(
         meetingId: UUID,
@@ -182,6 +223,11 @@ class AgendaDraftViews(
             traySize = placements.ready(meeting.forumId, meeting.date).size,
             sections = rows?.let { sections(it, times, meeting.zone) }.orEmpty(),
             template = if (rows == null) start.template(meeting) else null,
+            state = rows?.agenda?.state ?: AgendaState.DRAFT,
+            chairAgreement = rows?.agenda?.chairAgreement?.let { agreement(it) },
+            canAgree = access.chairs(meeting.forumId),
+            chairComments = if (rows == null) emptyList() else commentsOf(meeting.id),
+            revisions = if (rows == null) emptyList() else revisionsOf(meeting.id),
             copied = copied?.let { report -> CopyReportResponse(people(report.dropped), report.skipped) },
             version = rows?.agenda?.version ?: 0,
         )
@@ -228,6 +274,30 @@ class AgendaDraftViews(
     private fun people(ids: Collection<UUID>): List<PersonResponse> {
         val names = users.names(ids)
         return ids.sorted().map { PersonResponse(it, names[it].orEmpty()) }
+    }
+
+    private fun agreement(agreement: ChairAgreement): ChairAgreementResponse {
+        val names = users.names(listOfNotNull(agreement.by, agreement.onBehalfBy))
+        return ChairAgreementResponse(
+            by = agreement.by?.let { PersonResponse(it, names[it].orEmpty()) },
+            at = agreement.at,
+            onBehalfBy = agreement.onBehalfBy?.let { PersonResponse(it, names[it].orEmpty()) },
+            note = agreement.note,
+        )
+    }
+
+    private fun commentsOf(meetingId: UUID): List<ChairCommentResponse> {
+        val all = comments.of(meetingId)
+        val names = users.names(all.mapNotNull { it.by })
+        return all.map { c -> ChairCommentResponse(c.id, c.text, c.by?.let { PersonResponse(it, names[it].orEmpty()) }, c.at) }
+    }
+
+    private fun revisionsOf(meetingId: UUID): List<RevisionResponse> {
+        val heads = revisions.heads(meetingId)
+        val names = users.names(heads.mapNotNull { it.publishedBy })
+        return heads.map { h ->
+            RevisionResponse(h.number, h.publishedAt, h.publishedBy?.let { PersonResponse(it, names[it].orEmpty()) }, h.note, h.notified)
+        }
     }
 }
 

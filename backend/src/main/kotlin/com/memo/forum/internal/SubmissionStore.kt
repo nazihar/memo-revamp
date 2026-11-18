@@ -278,6 +278,34 @@ class SubmissionPlacementStore(
             .where(FORUM_SUBMISSION.MEETING_ID.eq(meetingId), FORUM_SUBMISSION.MEETING_DATE.ne(date))
             .execute()
 
+    /**
+     * Locks the rows of [ids] for this transaction (`SELECT … FOR UPDATE`), in id order. The lock order of placements
+     * (design E03 §1.8): a submission's row before the meeting's and the agenda's.
+     */
+    fun lock(ids: Collection<UUID>) {
+        if (ids.isEmpty()) return
+        tenantDsl
+            .current()
+            .select(FORUM_SUBMISSION.ID)
+            .from(FORUM_SUBMISSION)
+            .where(FORUM_SUBMISSION.ID.`in`(ids))
+            .orderBy(FORUM_SUBMISSION.ID)
+            .forUpdate()
+            .fetch()
+    }
+
+    /** Locks the rows of the submissions placed on [meetingId], in id order, as [lock] does. */
+    fun lockOn(meetingId: UUID) {
+        tenantDsl
+            .current()
+            .select(FORUM_SUBMISSION.ID)
+            .from(FORUM_SUBMISSION)
+            .where(FORUM_SUBMISSION.MEETING_ID.eq(meetingId))
+            .orderBy(FORUM_SUBMISSION.ID)
+            .forUpdate()
+            .fetch()
+    }
+
     /** The open submissions of [forumId] placed on an agenda. */
     fun placed(forumId: UUID): List<SubmissionRow> =
         tenantDsl

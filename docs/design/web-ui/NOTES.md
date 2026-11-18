@@ -26,6 +26,13 @@ Last seen (memo view, inbox, watching)
 11. Unread — inbox task and watching items carry unread: true when the memo has news since the person last opened it. Opening the memo clears it.
 Next task and the reading pane need nothing new: they follow the inbox order the client already has, fetching the next page by cursor when needed.
 
+Admin pages (/api/v1/admin)
+Nothing new. Each area note says what it reads; the overview’s “Waiting for you” reads existing lists, in several calls.
+
+Operator console (/api/v1/platform)
+12. Organisations list — hasAdmin on each row (today only the single view has it), and status and hasAdmin filters, for the Administrator column and the All / Active / Suspended / No administrator tabs.
+13. Platform audit — the organisation’s name with each entry that concerns one, so the Object column can name it and link to it.
+
 ## Behaviour notes
 
 • Team tab appears only for people who oversee a unit (as today); everyone else sees five tabs.
@@ -34,7 +41,7 @@ Next task and the reading pane need nothing new: they follow the inbox order the
 • Row "⋯" menu: Claim, Release, Watch for that one task (existing endpoints).
 • Show more loads the next batch by cursor; 50 per batch on desktop, 25 on phones.
 • Forms validate in the app (TanStack Form), never with browser HTML validation: noValidate on every form, our own messages under the field, focus to the first error, submit stays enabled.
-• New states the app does not handle yet: Page not found (unknown address), Connection lost (offline bar) and Signed out (session ended mid-task). See the Page states row.
+• New states the app does not handle yet: Page not found (unknown address), No access to this page (a page the person’s roles do not allow; today the API answers 403), Connection lost (offline bar) and Signed out (session ended mid-task). See the Page states row.
 • Next task: “Open my next task after this” sits in every decision dialog, on by default and remembered per person. It follows My tasks in its current sort and filters, and skips restricted and blocked tasks. After the last one: “That was your last task: My tasks is clear.” and back to Inbox.
 • Opened from My tasks, the memo header shows “1 of 7 in My tasks” with previous and next (J and K).
 • Since you last looked: shown on a memo you have opened before when something changed. It starts with what you asked for last time, then resubmission, document versions (with Compare), attachments and new notes. Notes added since your last visit carry a “New” tag on the note sheet.

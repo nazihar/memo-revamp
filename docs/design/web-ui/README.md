@@ -1,24 +1,24 @@
 # Web UI redesign (design canvas)
 
-A redesign of the web app's user-facing screens: every non-admin route, desktop and phone side by side, in light and dark. It is a **design**, not code. The app is built from it with shadcn/ui components (see "Building from this design" below).
+A redesign of the web app: every route of the organisation app (user and administration pages) and of the operator console, desktop and phone side by side, in light and dark. Committees (`/committees`, `/me/committees`, `/admin/committee-types`), added to the app after this design started, are not designed yet. It is a **design**, not code. The app is built from it with shadcn/ui components (see "Building from this design" below).
 
 - Live canvas: a private claude.ai Design artifact, `https://claude.ai/artifact/VRTQYT81opA8eMovd2rDo6`. It needs to be shared before others can open it.
-- Snapshot in this folder: 2026-11-18, canvas version 104.
+- Snapshot in this folder: 2026-11-18, canvas version 105.
 
 ## What is here
 
 ```
 canvas/project/      The design itself: what the live canvas holds
   canvas.json        Board positions, sizes, titles, the side notes and the canvas pages
-  *.dc.html          One board each: 33 screens, desktop and phone, plus Rules.dc.html (the design rules page)
+  *.dc.html          One board each: 122 boards. 61 screens, each desktop and phone (InboxReading has no phone board), plus Rules.dc.html (the design rules page)
 tools/               Python scripts and HTML fragments that produced or changed the boards
-NOTES.md             The canvas side notes as text: API changes the design needs, behaviour notes, build note
+NOTES.md             The canvas side notes as text: the API changes the design needs (user, admin and operator), behaviour notes, build note, one section per admin area and the operator console
 IMPROVEMENTS.md      UX improvement backlog: ideas to design and build later, with what each needs from the API
 ```
 
 The `.dc.html` files are the source of truth. Each is an HTML template for the Design artifact type: markup with `{{holes}}`, `<sc-for>`/`<sc-if>`, and a `class Component extends DCLogic { renderVals() … }` script that supplies the data and the interactions. The `data-props` attribute declares the tweaks a board offers, for example `theme`, `errors`, `dialog` or `state`. Boards load `./support.js` and render only inside the Design artifact; opened in a browser on their own they show raw template text.
 
-Start with `Rules.dc.html`. It holds the admin and settings patterns (section 9) and the principles, colour tokens, type, spacing, layout and breakpoints, component rules, wording and accessibility rules every board follows. The shadcn/ui component for each pattern is listed in its first section.
+Start with `Rules.dc.html`. It holds the principles, colour tokens, type, spacing, layout and breakpoints, component rules, wording and accessibility rules every board follows, then the admin and settings patterns (section 9) and the operator console's (section 10). The shadcn/ui component for each pattern is listed in its first section.
 
 ## Boards on the canvas
 
@@ -34,7 +34,7 @@ On the **Screens** page, in canvas order (`tools/layout.py`):
 | Account | My security (`Security`), Notification settings (`Prefs`), Sign in (`SignIn`) |
 | Platform | Platform status (`Status`), Page states (`States`) |
 
-The **Admin** canvas page holds every administration screen of the app, desktop and phone: the Administration overview (`AdminOverview`, at the top; it is also the grouped Administration menu), Open tasks (`Tasks`), Users, User detail, Roles, Classification (`Classifications`), Memo types, the memo type editor (`MemoTypeEditor`), Memo numbering, Distribution lists, Workflows, the workflow builder (`WorkflowBuilder`), Delegation of authority (`Doa`), Queues, Substitutions, Business calendar, Security, Email, Branding and Language and terms (`OrgSecurity`, `OrgEmail`, `OrgBranding`, `OrgLanguage`), Audit, Import (`Imports`) and one import batch (`ImportBatch`). Pages of one area share a row of section links: People and access, Memos, Workflows, Organisation-wide settings, Records. The **Operator** canvas page is for the operator console (6 pages, none designed yet). The **Design rules** page holds `Rules`.
+The **Admin** canvas page holds every administration screen of the app, desktop and phone: the Administration overview (`AdminOverview`, at the top; it is also the grouped Administration menu), Open tasks (`Tasks`), Users, User detail, Roles, Classification (`Classifications`), Memo types, the memo type editor (`MemoTypeEditor`), Memo numbering, Distribution lists, Workflows, the workflow builder (`WorkflowBuilder`), Delegation of authority (`Doa`), Queues, Substitutions, Business calendar, Security, Email, Branding and Language and terms (`OrgSecurity`, `OrgEmail`, `OrgBranding`, `OrgLanguage`), Audit, Import (`Imports`) and one import batch (`ImportBatch`). Pages of one area share a row of section links: People and access, Memos, Workflows, Organisation-wide settings, Records. The **Operator** canvas page holds the operator console, desktop and phone: Operator sign-in (`OpSignIn`), two-step setup from the invitation link (`OpEnrol`), Organisations (`OpTenants`), New organisation (`OpNewTenant`), Organisation detail (`OpTenant`) and Platform audit (`OpAudit`). The **Design rules** page holds `Rules`.
 
 Each desktop board `X.dc.html` has a phone board `XPhone.dc.html`, except `Main` (its phone board is `Phone`) and `InboxReading` (wide screens only; a note stands in its phone column).
 
@@ -75,6 +75,9 @@ These can be rerun safely, and reproduce the committed boards exactly:
 | `tools/persona.py` | Who is signed in on the boards: trims the Administration group on user boards to what Farhana Rahman's roles allow (Overview, Audit), puts Arif Rahman in the admin shell's top bar, and sets the Inbox phone titles to 18px. Skips what is already done | — |
 | `tools/op_console.py` | `OpSignIn`, `OpEnrol`, `OpTenants`, `OpNewTenant`, `OpTenant`, `OpAudit` and their phone boards, the operator console on the Operator page (copy from `features/platform/*` and `features/auth/StepUpProvider.tsx`; audit actions from the backend; the sign-in frame from `SignIn`). Not named `operator.py`, which would hide Python's own `operator` module | — |
 | `tools/rules_admin.py` | Adds section 9 (admin and settings patterns) and four wording rules to `Rules`. Skips it when already there | — |
+| `tools/states_access.py` | Adds the No access to this page state to `States` and `StatesPhone`, and to the behaviour note. Skips it when already there | — |
+| `tools/rules_operator.py` | Adds section 10 (operator console patterns) to `Rules`, after `rules_admin.py`. Skips it when already there | — |
+| `tools/api_notes.py` | Adds the admin and operator items to the API changes note and to `NOTES.md`. Skips them when already there | — |
 | `tools/smoke.py` | Nothing; checks a board | — |
 | `tools/preview.py` | Nothing; renders a board to a PNG outside the canvas, for checking it by eye (`python3 tools/preview.py Users.dc.html out.png '{"props":{"dialog":"invite"}}'`; needs Node and the Playwright Chromium) | — |
 

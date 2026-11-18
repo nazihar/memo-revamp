@@ -112,3 +112,17 @@ Use shadcn/ui components for everything: Button, Input, InputOTP, Select, Combob
 - Branding: the logo on light and dark, and both colours with the contrast checks from `lib/contrast.ts` (4.5:1 on the page, 3:1 on panels) shown as "Readable" or "Too little contrast" with the ratio. A preview of the top bar and sign-in in both themes. The error example uses #5b9bd5, which fails (2.96:1).
 - Language and terms: Defaults (language, time zone) and Your terms each save on their own, as in the app. Terms per language; Arabic adds grammatical gender and right-to-left fields. An example sentence shows the English terms in use (new copy).
 - API: nothing new.
+
+## Admin · Overview, Audit, Import
+
+- Administration overview: the full Administration menu. All 18 admin entries of `app/navigation.ts` are listed in five groups (People and access, Memos, Workflows, Organisation-wide settings, Records), each with one line on what it is for. People see only the entries their roles allow.
+  - "Waiting for you" lists what needs an administrator now: tasks waiting for reassignment, versions to review, failed email, locked accounts. The same counts show as small badges on the entries.
+  - This needs no new API, but several calls, since it reads existing lists. The section is new; the badges and descriptions for entries the app has no description for are new copy.
+- Sidebar proposal (not applied to the boards): the Administration group becomes Overview, People and access, Memos, Workflows, Open tasks, Settings, Records, each opening the first page of its section. The boards still show today's six entries.
+- Audit: the app's filters (From, To, Action starts with, Object type). Details shows Field / Before / After for one entry. Export asks first; when filters are on, it warns that the export cannot prove that nothing is missing (new copy, from the app's hint).
+- Import: the batches with their state. One batch is a six-step page (Metadata, Originals, Mappings, Dry run, Import, Report) with done steps ticked.
+  - The `run` tweak shows a batch ready to import, importing, stopped, and completed with its reconciliation report.
+  - "Import…" asks first, with the app's wording on what is final and cannot be undone.
+  - Abandon and Close need a reason.
+  - Phones say "Use a computer to send a folder."
+- API: nothing new.

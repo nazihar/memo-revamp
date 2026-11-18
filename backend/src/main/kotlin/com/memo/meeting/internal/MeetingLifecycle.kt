@@ -3,14 +3,19 @@ package com.memo.meeting.internal
 import com.memo.audit.AuditLog
 import com.memo.common.concurrency.ConcurrentModificationException
 import com.memo.common.id.IdGenerator
+import com.memo.common.tenant.TenantContext
 import com.memo.common.web.refuseIf
 import com.memo.forum.ForumDirectory
 import com.memo.forum.ForumPolicies
 import com.memo.forum.ForumRef
 import com.memo.forum.ForumStatus
+import com.memo.forum.SubmissionPlacements
+import com.memo.meeting.MeetingChange
+import com.memo.meeting.MeetingChanged
 import com.memo.meeting.MeetingKind
 import com.memo.meeting.MeetingStatus
 import com.memo.org.OrgDirectory
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 import java.util.UUID
@@ -47,6 +52,8 @@ class MeetingLifecycle(
     private val org: OrgDirectory,
     private val ids: IdGenerator,
     private val audit: AuditLog,
+    private val placements: SubmissionPlacements,
+    private val events: ApplicationEventPublisher,
 ) {
     fun create(
         forumId: UUID,
@@ -89,6 +96,7 @@ class MeetingLifecycle(
         store.insert(row)
         val created = checkNotNull(store.find(row.id))
         audit.record("meeting.created", OBJECT_TYPE, row.id.toString(), after = audited(created))
+        changed(created.id, MeetingChange.CREATED)
         audience.recompute(created)
         return created
     }
@@ -143,6 +151,8 @@ class MeetingLifecycle(
         requireNoProblems(problems + listOfNotNull(reasonProblem?.takeIf { needsReason || text != null }))
         val at = checkNotNull(resolved)
         val after = before.copy(startsAt = at.startsAt, endsAt = at.endsAt, zone = at.zone)
+        // The placements follow the new date: their rows are locked before the meeting's (design E03 §1.8).
+        placements.lockOn(before.id)
         val saved = save("meeting.rescheduled", before, after, version, mapOf("reason" to text))
         audience.recompute(saved)
         placing.redate(saved)
@@ -178,6 +188,8 @@ class MeetingLifecycle(
         val status = MeetingAction.CANCEL.next(before.status)
         val (text, problem) = MeetingFields.reason(reason)
         requireNoProblems(listOfNotNull(problem))
+        // Its submissions go back to the tray: their rows are locked before the meeting's and the agenda's (design E03 §1.8).
+        placements.lockOn(before.id)
         val saved = save("meeting.cancelled", before, before.copy(status = status, statusReason = text), version)
         placing.released(saved)
         if (before.status == MeetingStatus.SCHEDULED) notifier.cancelled(saved, forum(saved))
@@ -194,13 +206,30 @@ class MeetingLifecycle(
         if (!store.update(after, before.status, version)) throw ConcurrentModificationException("meeting ${before.id}", version)
         val saved = checkNotNull(store.find(before.id))
         audit.record(action, OBJECT_TYPE, before.id.toString(), before = audited(before), after = audited(saved) + extra)
+        changed(saved.id, CHANGES.getValue(action))
         return saved
     }
+
+    /** Publishes [MeetingChanged] for E04–E07, in the changing transaction. */
+    private fun changed(
+        id: UUID,
+        change: MeetingChange,
+    ) = events.publishEvent(MeetingChanged(TenantContext.current().value, id, change))
 
     private fun forum(meeting: MeetingRow): ForumRef = checkNotNull(directory.forum(meeting.forumId)) { "forum ${meeting.forumId}" }
 
     companion object {
         const val OBJECT_TYPE = "meeting"
+
+        private val CHANGES =
+            mapOf(
+                "meeting.updated" to MeetingChange.UPDATED,
+                "meeting.scheduled" to MeetingChange.SCHEDULED,
+                "meeting.rescheduled" to MeetingChange.RESCHEDULED,
+                "meeting.started" to MeetingChange.STARTED,
+                "meeting.ended" to MeetingChange.ENDED,
+                "meeting.cancelled" to MeetingChange.CANCELLED,
+            )
 
         fun audited(meeting: MeetingRow): Map<String, Any?> =
             mapOf(

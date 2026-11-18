@@ -85,6 +85,19 @@ enum class NotificationKind(
     // A late paper waits for the chair's agreement (design E03 §1.4): to the chair (the vice-chair when there is none).
     // Parameters `committee`, `date`, `organisation`, `link`; never the item's title (ADR-0030).
     MEETING_LATE_PAPER(NotificationCategory.WORKFLOW, MailTemplate.MEETING_LATE_PAPER),
+
+    // Agenda revisions (design E03 §9): the first publication, and a later revision changing what the person sees; to each
+    // person of the audience once per revision. Parameters `committee`, `date`, `organisation`, `link`; never an item's title.
+    MEETING_AGENDA_PUBLISHED(NotificationCategory.WORKFLOW, MailTemplate.MEETING_AGENDA_PUBLISHED),
+    MEETING_AGENDA_CHANGED(NotificationCategory.WORKFLOW, MailTemplate.MEETING_AGENDA_CHANGED),
+
+    // An item of the published agenda left it (its submission was returned or withdrawn): to the secretaries, to publish a
+    // revision. Parameters as above.
+    MEETING_ITEM_WITHDRAWN(NotificationCategory.WORKFLOW, MailTemplate.MEETING_ITEM_WITHDRAWN),
+
+    // The chair commented on the draft agenda: to the secretaries, in the app only (the comment is on the meeting).
+    // Parameters `committee`, `date`.
+    MEETING_CHAIR_COMMENTED(NotificationCategory.WORKFLOW, null),
 }
 
 /** Who receives a notification; the producer already holds the user, so `notification` never looks people up. */

@@ -15565,10 +15565,28 @@
       "value": "InvitationSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "mail.template.meetingAgendaChanged": [
+    {
+      "type": 0,
+      "value": "Meeting agenda changedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.meetingAgendaPublished": [
+    {
+      "type": 0,
+      "value": "Meeting agenda publishedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "mail.template.meetingCancelled": [
     {
       "type": 0,
       "value": "Meeting cancelledSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.meetingItemWithdrawn": [
+    {
+      "type": 0,
+      "value": "Item left a published agendaSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "mail.template.meetingLatePaper": [
@@ -23004,6 +23022,50 @@
       "value": " ends soonSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "notifications.kind.meetingAgendaChanged": [
+    {
+      "type": 0,
+      "value": "The agenda for "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " has changedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.meetingAgendaPublished": [
+    {
+      "type": 0,
+      "value": "The agenda for "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " was publishedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "notifications.kind.meetingCancelled": [
     {
       "type": 0,
@@ -23024,6 +23086,50 @@
     {
       "type": 0,
       "value": " was cancelledSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.meetingChairCommented": [
+    {
+      "type": 0,
+      "value": "The chair commented on the agenda for "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.meetingItemWithdrawn": [
+    {
+      "type": 0,
+      "value": "A paper left the published agenda for "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ": publish a new revisionSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "notifications.kind.meetingLatePaper": [

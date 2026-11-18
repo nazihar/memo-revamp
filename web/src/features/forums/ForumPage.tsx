@@ -141,7 +141,14 @@ export function ForumPage({ forumId, tab }: { forumId: string; tab?: ForumTab })
           <TabsTrigger value="policy">{intl.formatMessage(fm.tabPolicy)}</TabsTrigger>
         </TabsList>
         <TabsContent value="members" className="pt-4">
-          <MembersTab forum={f} policy={policy.data} on={on} onDate={setOn} onAction={act} />
+          <MembersTab
+            forum={f}
+            policy={policy.data}
+            policyPending={policy.isPending}
+            on={on}
+            onDate={setOn}
+            onAction={act}
+          />
         </TabsContent>
         <TabsContent value="meetings" className="pt-4">
           <MeetingsTab forum={f} policy={policy.data} />

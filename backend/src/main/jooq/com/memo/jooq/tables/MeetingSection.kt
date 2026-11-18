@@ -8,11 +8,15 @@ import com.memo.jooq.Memo
 import com.memo.jooq.indexes.MEETING_SECTION_MEETING_IDX
 import com.memo.jooq.indexes.MEETING_SECTION_RECEIVES_UK
 import com.memo.jooq.keys.MEETING_ITEM__MEETING_ITEM_TENANT_ID_SECTION_ID_FKEY
+import com.memo.jooq.keys.MEETING_REVISION_ITEM__MEETING_REVISION_ITEM_TENANT_ID_SECTION_ID_FKEY
+import com.memo.jooq.keys.MEETING_REVISION_SECTION__MEETING_REVISION_SECTION_TENANT_ID_SECTION_ID_FKEY
 import com.memo.jooq.keys.MEETING_SECTION_PKEY
 import com.memo.jooq.keys.MEETING_SECTION_TENANT_ID_ID_KEY
 import com.memo.jooq.keys.MEETING_SECTION__MEETING_SECTION_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.tables.MeetingAgenda.MeetingAgendaPath
 import com.memo.jooq.tables.MeetingItem.MeetingItemPath
+import com.memo.jooq.tables.MeetingRevisionItem.MeetingRevisionItemPath
+import com.memo.jooq.tables.MeetingRevisionSection.MeetingRevisionSectionPath
 import com.memo.jooq.tables.records.MeetingSectionRecord
 
 import java.time.OffsetDateTime
@@ -196,6 +200,38 @@ open class MeetingSection(
 
     val meetingItem: MeetingItemPath
         get(): MeetingItemPath = meetingItem()
+
+    private lateinit var _meetingRevisionItem: MeetingRevisionItemPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.meeting_revision_item</code> table
+     */
+    fun meetingRevisionItem(): MeetingRevisionItemPath {
+        if (!this::_meetingRevisionItem.isInitialized)
+            _meetingRevisionItem = MeetingRevisionItemPath(this, null, MEETING_REVISION_ITEM__MEETING_REVISION_ITEM_TENANT_ID_SECTION_ID_FKEY.inverseKey)
+
+        return _meetingRevisionItem;
+    }
+
+    val meetingRevisionItem: MeetingRevisionItemPath
+        get(): MeetingRevisionItemPath = meetingRevisionItem()
+
+    private lateinit var _meetingRevisionSection: MeetingRevisionSectionPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.meeting_revision_section</code> table
+     */
+    fun meetingRevisionSection(): MeetingRevisionSectionPath {
+        if (!this::_meetingRevisionSection.isInitialized)
+            _meetingRevisionSection = MeetingRevisionSectionPath(this, null, MEETING_REVISION_SECTION__MEETING_REVISION_SECTION_TENANT_ID_SECTION_ID_FKEY.inverseKey)
+
+        return _meetingRevisionSection;
+    }
+
+    val meetingRevisionSection: MeetingRevisionSectionPath
+        get(): MeetingRevisionSectionPath = meetingRevisionSection()
     override fun getChecks(): List<Check<MeetingSectionRecord>> = listOf(
         Internal.createCheck(this, DSL.name("meeting_section_kind_check"), "((kind = ANY (ARRAY['STANDARD'::text, 'CONSENT'::text])))", true),
         Internal.createCheck(this, DSL.name("meeting_section_position_check"), "((\"position\" >= 0))", true),

@@ -45,11 +45,17 @@ import com.memo.jooq.tables.ImportsStaged
 import com.memo.jooq.tables.Meeting
 import com.memo.jooq.tables.MeetingAgenda
 import com.memo.jooq.tables.MeetingAudience
+import com.memo.jooq.tables.MeetingChairComment
 import com.memo.jooq.tables.MeetingCounter
 import com.memo.jooq.tables.MeetingGuest
 import com.memo.jooq.tables.MeetingItem
 import com.memo.jooq.tables.MeetingItemAttendee
 import com.memo.jooq.tables.MeetingPaper
+import com.memo.jooq.tables.MeetingRevision
+import com.memo.jooq.tables.MeetingRevisionItem
+import com.memo.jooq.tables.MeetingRevisionNotice
+import com.memo.jooq.tables.MeetingRevisionPaper
+import com.memo.jooq.tables.MeetingRevisionSection
 import com.memo.jooq.tables.MeetingSection
 import com.memo.jooq.tables.Memo
 import com.memo.jooq.tables.MemoApproval
@@ -331,6 +337,11 @@ val MEETING_AGENDA: MeetingAgenda = MeetingAgenda.MEETING_AGENDA
 val MEETING_AUDIENCE: MeetingAudience = MeetingAudience.MEETING_AUDIENCE
 
 /**
+ * The table <code>memo.meeting_chair_comment</code>.
+ */
+val MEETING_CHAIR_COMMENT: MeetingChairComment = MeetingChairComment.MEETING_CHAIR_COMMENT
+
+/**
  * The table <code>memo.meeting_counter</code>.
  */
 val MEETING_COUNTER: MeetingCounter = MeetingCounter.MEETING_COUNTER
@@ -354,6 +365,31 @@ val MEETING_ITEM_ATTENDEE: MeetingItemAttendee = MeetingItemAttendee.MEETING_ITE
  * The table <code>memo.meeting_paper</code>.
  */
 val MEETING_PAPER: MeetingPaper = MeetingPaper.MEETING_PAPER
+
+/**
+ * The table <code>memo.meeting_revision</code>.
+ */
+val MEETING_REVISION: MeetingRevision = MeetingRevision.MEETING_REVISION
+
+/**
+ * The table <code>memo.meeting_revision_item</code>.
+ */
+val MEETING_REVISION_ITEM: MeetingRevisionItem = MeetingRevisionItem.MEETING_REVISION_ITEM
+
+/**
+ * The table <code>memo.meeting_revision_notice</code>.
+ */
+val MEETING_REVISION_NOTICE: MeetingRevisionNotice = MeetingRevisionNotice.MEETING_REVISION_NOTICE
+
+/**
+ * The table <code>memo.meeting_revision_paper</code>.
+ */
+val MEETING_REVISION_PAPER: MeetingRevisionPaper = MeetingRevisionPaper.MEETING_REVISION_PAPER
+
+/**
+ * The table <code>memo.meeting_revision_section</code>.
+ */
+val MEETING_REVISION_SECTION: MeetingRevisionSection = MeetingRevisionSection.MEETING_REVISION_SECTION
 
 /**
  * The table <code>memo.meeting_section</code>.

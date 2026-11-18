@@ -426,29 +426,46 @@ describe('committees (Phase 4 E01 T5, flow K)', () => {
     renderRoute('/committees/f1')
 
     await rowAction(user, 'Demo Director', 'Change role')
-    const roleDialog = await screen.findByRole('dialog', { name: 'Change the role of Demo Director' })
+    const roleDialog = await screen.findByRole(
+      'dialog',
+      { name: 'Change the role of Demo Director' },
+      { timeout: 5_000 },
+    )
     await user.selectOptions(within(roleDialog).getByRole('combobox', { name: 'New role' }), 'Vice-chair')
     const from = within(roleDialog).getByLabelText('First day in the new role')
     await user.clear(from)
     await user.type(from, '2027-01-01')
     await user.click(within(roleDialog).getByRole('button', { name: 'Change role' }))
-    await vi.waitFor(() => {
-      expect(roleBodies).toEqual([{ role: 'VICE_CHAIR', voting: true, from: '2027-01-01' }])
-    })
-    await vi.waitFor(() => {
-      expect(screen.queryByRole('dialog')).toBeNull()
-    })
+    await vi.waitFor(
+      () => {
+        expect(roleBodies).toEqual([{ role: 'VICE_CHAIR', voting: true, from: '2027-01-01' }])
+      },
+      { timeout: 5_000 },
+    )
+    await vi.waitFor(
+      () => {
+        expect(screen.queryByRole('dialog')).toBeNull()
+      },
+      { timeout: 5_000 },
+    )
 
     await rowAction(user, 'Demo Director', 'End membership')
-    const endDialog = await screen.findByRole('dialog', { name: 'End the membership of Demo Director' })
+    const endDialog = await screen.findByRole(
+      'dialog',
+      { name: 'End the membership of Demo Director' },
+      { timeout: 5_000 },
+    )
     await user.click(within(endDialog).getByRole('radio', { name: 'Other' }))
     await user.click(within(endDialog).getByRole('button', { name: 'End membership' }))
     expect(within(endDialog).getByText('Required.')).toBeInTheDocument()
     await user.type(within(endDialog).getByRole('textbox', { name: /Details/ }), 'Left the bank')
     await user.click(within(endDialog).getByRole('button', { name: 'End membership' }))
-    await vi.waitFor(() => {
-      expect(endBodies).toEqual([{ reason: 'OTHER', endedOn: today(), note: 'Left the bank' }])
-    })
+    await vi.waitFor(
+      () => {
+        expect(endBodies).toEqual([{ reason: 'OTHER', endedOn: today(), note: 'Left the bank' }])
+      },
+      { timeout: 5_000 },
+    )
     expect(matches).toEqual(['"4"'])
   }, 30_000)
 

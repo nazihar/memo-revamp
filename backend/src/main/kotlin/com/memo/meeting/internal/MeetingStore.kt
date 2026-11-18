@@ -129,6 +129,36 @@ class MeetingStore(
             .where(MEETING.ID.eq(row.id), MEETING.STATUS.eq(from.name), MEETING.VERSION.eq(version))
             .execute() == 1
 
+    /**
+     * The meeting locked for this transaction (`SELECT … FOR NO KEY UPDATE`, which rows referring to it do not wait on).
+     * The lock order (design E03 §1.8): placed submissions, then the meeting, then its agenda.
+     */
+    fun lock(id: UUID): MeetingRow? =
+        tenantDsl
+            .current()
+            .selectFrom(MEETING)
+            .where(MEETING.ID.eq(id))
+            .forNoKeyUpdate()
+            .fetchOne { it.row() }
+
+    /** Gives the meeting its [number] of [year] and its [label], once (when its agenda is first published). */
+    fun number(
+        id: UUID,
+        number: Int,
+        year: Int,
+        label: String,
+    ): Boolean =
+        tenantDsl
+            .current()
+            .update(MEETING)
+            .set(MEETING.NUMBER, number)
+            .set(MEETING.NUMBER_YEAR, year)
+            .set(MEETING.LABEL, label)
+            .set(MEETING.UPDATED_AT, now())
+            .set(MEETING.VERSION, MEETING.VERSION.plus(1))
+            .where(MEETING.ID.eq(id), MEETING.NUMBER.isNull)
+            .execute() == 1
+
     fun now(): OffsetDateTime = OffsetDateTime.now(clock).withOffsetSameInstant(ZoneOffset.UTC)
 
     private fun fields(row: MeetingRow): Map<org.jooq.Field<*>, Any?> =

@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/vitest'
-import { cleanup } from '@testing-library/react'
+import { cleanup, configure } from '@testing-library/react'
 import { afterAll, afterEach, beforeAll, beforeEach, vi } from 'vitest'
 import { client } from '@/api/generated/client.gen'
 import { configureHttp } from '@/api/http'
@@ -9,6 +9,10 @@ import { API_ORIGIN, server } from './msw'
 
 installDialogPolyfill()
 configureHttp()
+
+// A busy CI runner or a laptop running Gradle beside the tests can take more than Testing Library's default second to
+// render a page; five seconds only delays a failure that is real.
+configure({ asyncUtilTimeout: 5_000 })
 
 /** jsdom has no matchMedia; tests can flip `prefersDark` to simulate the OS theme. */
 export const media = { prefersDark: false }

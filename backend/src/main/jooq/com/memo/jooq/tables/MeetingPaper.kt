@@ -13,8 +13,10 @@ import com.memo.jooq.keys.MEETING_PAPER_PKEY
 import com.memo.jooq.keys.MEETING_PAPER_TENANT_ID_ID_KEY
 import com.memo.jooq.keys.MEETING_PAPER__MEETING_PAPER_TENANT_ID_ITEM_ID_FKEY
 import com.memo.jooq.keys.MEETING_PAPER__MEETING_PAPER_TENANT_ID_MEETING_ID_FKEY
+import com.memo.jooq.keys.MEETING_REVISION_PAPER__MEETING_REVISION_PAPER_TENANT_ID_PAPER_ID_FKEY
 import com.memo.jooq.tables.MeetingAgenda.MeetingAgendaPath
 import com.memo.jooq.tables.MeetingItem.MeetingItemPath
+import com.memo.jooq.tables.MeetingRevisionPaper.MeetingRevisionPaperPath
 import com.memo.jooq.tables.records.MeetingPaperRecord
 
 import java.time.OffsetDateTime
@@ -218,6 +220,22 @@ open class MeetingPaper(
      */
     fun meetingAgenda(): MeetingAgendaPath = meetingAgenda
     val meetingAgenda: MeetingAgendaPath by lazy { MeetingAgendaPath(this, MEETING_PAPER__MEETING_PAPER_TENANT_ID_MEETING_ID_FKEY, null) }
+
+    private lateinit var _meetingRevisionPaper: MeetingRevisionPaperPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.meeting_revision_paper</code> table
+     */
+    fun meetingRevisionPaper(): MeetingRevisionPaperPath {
+        if (!this::_meetingRevisionPaper.isInitialized)
+            _meetingRevisionPaper = MeetingRevisionPaperPath(this, null, MEETING_REVISION_PAPER__MEETING_REVISION_PAPER_TENANT_ID_PAPER_ID_FKEY.inverseKey)
+
+        return _meetingRevisionPaper;
+    }
+
+    val meetingRevisionPaper: MeetingRevisionPaperPath
+        get(): MeetingRevisionPaperPath = meetingRevisionPaper()
     override fun getChecks(): List<Check<MeetingPaperRecord>> = listOf(
         Internal.createCheck(this, DSL.name("meeting_paper_added_after_revision_check"), "((added_after_revision >= 0))", true),
         Internal.createCheck(this, DSL.name("meeting_paper_late_check"), "((late = ANY (ARRAY['NONE'::text, 'LATE'::text, 'AWAITING_CHAIR'::text, 'CHAIR_AGREED'::text, 'TABLED'::text])))", true),

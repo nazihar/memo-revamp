@@ -3,10 +3,14 @@ package com.memo.meeting.internal
 import com.memo.audit.AuditLog
 import com.memo.common.authz.Clearances
 import com.memo.common.id.IdGenerator
+import com.memo.common.tenant.TenantContext
 import com.memo.common.web.FieldProblem
 import com.memo.common.web.refuseIf
 import com.memo.identity.UserStatus
 import com.memo.identity.UserSummaries
+import com.memo.meeting.MeetingChange
+import com.memo.meeting.MeetingChanged
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import java.util.UUID
 
@@ -24,6 +28,7 @@ class MeetingGuests(
     private val clearances: Clearances,
     private val ids: IdGenerator,
     private val audit: AuditLog,
+    private val events: ApplicationEventPublisher,
 ) {
     fun add(
         meetingId: UUID,
@@ -53,6 +58,7 @@ class MeetingGuests(
             after = mapOf("userId" to userId.toString(), "note" to text),
         )
         audience.recompute(meeting)
+        events.publishEvent(MeetingChanged(TenantContext.current().value, meeting.id, MeetingChange.GUESTS))
         return meeting
     }
 
@@ -71,6 +77,7 @@ class MeetingGuests(
                 mapOf("userId" to userId.toString()),
         )
         audience.recompute(meeting)
+        events.publishEvent(MeetingChanged(TenantContext.current().value, meeting.id, MeetingChange.GUESTS))
         return meeting
     }
 }

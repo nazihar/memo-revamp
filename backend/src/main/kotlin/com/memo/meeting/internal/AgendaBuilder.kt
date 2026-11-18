@@ -155,6 +155,18 @@ class AgendaWrites(
         )
     }
 
+    /** Takes [paper] out of its item, the item's other papers keeping dense positions. */
+    fun removePaper(
+        edit: AgendaEdit,
+        paper: PaperRow,
+    ) {
+        papers.remove(listOf(paper.id), actorOrNull())
+        edit.rows.papers
+            .filter { it.itemId == paper.itemId && it.id != paper.id }
+            .sortedBy { it.position }
+            .forEachIndexed { i, p -> if (p.position != i) papers.update(p.copy(position = i)) }
+    }
+
     fun record(
         action: String,
         meetingId: UUID,

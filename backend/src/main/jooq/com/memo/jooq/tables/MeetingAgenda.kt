@@ -10,12 +10,16 @@ import com.memo.jooq.keys.MEETING_AGENDA_PKEY
 import com.memo.jooq.keys.MEETING_AGENDA_TENANT_ID_MEETING_ID_KEY
 import com.memo.jooq.keys.MEETING_AGENDA__MEETING_AGENDA_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_AGENDA__MEETING_AGENDA_TENANT_ID_SOURCE_MEETING_ID_FKEY
+import com.memo.jooq.keys.MEETING_CHAIR_COMMENT__MEETING_CHAIR_COMMENT_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_ITEM__MEETING_ITEM_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_PAPER__MEETING_PAPER_TENANT_ID_MEETING_ID_FKEY
+import com.memo.jooq.keys.MEETING_REVISION__MEETING_REVISION_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_SECTION__MEETING_SECTION_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.tables.Meeting.MeetingPath
+import com.memo.jooq.tables.MeetingChairComment.MeetingChairCommentPath
 import com.memo.jooq.tables.MeetingItem.MeetingItemPath
 import com.memo.jooq.tables.MeetingPaper.MeetingPaperPath
+import com.memo.jooq.tables.MeetingRevision.MeetingRevisionPath
 import com.memo.jooq.tables.MeetingSection.MeetingSectionPath
 import com.memo.jooq.tables.records.MeetingAgendaRecord
 
@@ -199,6 +203,22 @@ open class MeetingAgenda(
     fun meetingAgendaTenantIdSourceMeetingIdFkey(): MeetingPath = meetingAgendaTenantIdSourceMeetingIdFkey
     val meetingAgendaTenantIdSourceMeetingIdFkey: MeetingPath by lazy { MeetingPath(this, MEETING_AGENDA__MEETING_AGENDA_TENANT_ID_SOURCE_MEETING_ID_FKEY, null) }
 
+    private lateinit var _meetingChairComment: MeetingChairCommentPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.meeting_chair_comment</code> table
+     */
+    fun meetingChairComment(): MeetingChairCommentPath {
+        if (!this::_meetingChairComment.isInitialized)
+            _meetingChairComment = MeetingChairCommentPath(this, null, MEETING_CHAIR_COMMENT__MEETING_CHAIR_COMMENT_TENANT_ID_MEETING_ID_FKEY.inverseKey)
+
+        return _meetingChairComment;
+    }
+
+    val meetingChairComment: MeetingChairCommentPath
+        get(): MeetingChairCommentPath = meetingChairComment()
+
     private lateinit var _meetingItem: MeetingItemPath
 
     /**
@@ -230,6 +250,22 @@ open class MeetingAgenda(
 
     val meetingPaper: MeetingPaperPath
         get(): MeetingPaperPath = meetingPaper()
+
+    private lateinit var _meetingRevision: MeetingRevisionPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.meeting_revision</code> table
+     */
+    fun meetingRevision(): MeetingRevisionPath {
+        if (!this::_meetingRevision.isInitialized)
+            _meetingRevision = MeetingRevisionPath(this, null, MEETING_REVISION__MEETING_REVISION_TENANT_ID_MEETING_ID_FKEY.inverseKey)
+
+        return _meetingRevision;
+    }
+
+    val meetingRevision: MeetingRevisionPath
+        get(): MeetingRevisionPath = meetingRevision()
 
     private lateinit var _meetingSection: MeetingSectionPath
 

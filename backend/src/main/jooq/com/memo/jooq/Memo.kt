@@ -44,11 +44,17 @@ import com.memo.jooq.tables.ImportsStaged
 import com.memo.jooq.tables.Meeting
 import com.memo.jooq.tables.MeetingAgenda
 import com.memo.jooq.tables.MeetingAudience
+import com.memo.jooq.tables.MeetingChairComment
 import com.memo.jooq.tables.MeetingCounter
 import com.memo.jooq.tables.MeetingGuest
 import com.memo.jooq.tables.MeetingItem
 import com.memo.jooq.tables.MeetingItemAttendee
 import com.memo.jooq.tables.MeetingPaper
+import com.memo.jooq.tables.MeetingRevision
+import com.memo.jooq.tables.MeetingRevisionItem
+import com.memo.jooq.tables.MeetingRevisionNotice
+import com.memo.jooq.tables.MeetingRevisionPaper
+import com.memo.jooq.tables.MeetingRevisionSection
 import com.memo.jooq.tables.MeetingSection
 import com.memo.jooq.tables.MemoApproval
 import com.memo.jooq.tables.MemoAttachment
@@ -348,6 +354,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val MEETING_AUDIENCE: MeetingAudience get() = MeetingAudience.MEETING_AUDIENCE
 
     /**
+     * The table <code>memo.meeting_chair_comment</code>.
+     */
+    val MEETING_CHAIR_COMMENT: MeetingChairComment get() = MeetingChairComment.MEETING_CHAIR_COMMENT
+
+    /**
      * The table <code>memo.meeting_counter</code>.
      */
     val MEETING_COUNTER: MeetingCounter get() = MeetingCounter.MEETING_COUNTER
@@ -371,6 +382,31 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      * The table <code>memo.meeting_paper</code>.
      */
     val MEETING_PAPER: MeetingPaper get() = MeetingPaper.MEETING_PAPER
+
+    /**
+     * The table <code>memo.meeting_revision</code>.
+     */
+    val MEETING_REVISION: MeetingRevision get() = MeetingRevision.MEETING_REVISION
+
+    /**
+     * The table <code>memo.meeting_revision_item</code>.
+     */
+    val MEETING_REVISION_ITEM: MeetingRevisionItem get() = MeetingRevisionItem.MEETING_REVISION_ITEM
+
+    /**
+     * The table <code>memo.meeting_revision_notice</code>.
+     */
+    val MEETING_REVISION_NOTICE: MeetingRevisionNotice get() = MeetingRevisionNotice.MEETING_REVISION_NOTICE
+
+    /**
+     * The table <code>memo.meeting_revision_paper</code>.
+     */
+    val MEETING_REVISION_PAPER: MeetingRevisionPaper get() = MeetingRevisionPaper.MEETING_REVISION_PAPER
+
+    /**
+     * The table <code>memo.meeting_revision_section</code>.
+     */
+    val MEETING_REVISION_SECTION: MeetingRevisionSection get() = MeetingRevisionSection.MEETING_REVISION_SECTION
 
     /**
      * The table <code>memo.meeting_section</code>.
@@ -1009,11 +1045,17 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         Meeting.MEETING,
         MeetingAgenda.MEETING_AGENDA,
         MeetingAudience.MEETING_AUDIENCE,
+        MeetingChairComment.MEETING_CHAIR_COMMENT,
         MeetingCounter.MEETING_COUNTER,
         MeetingGuest.MEETING_GUEST,
         MeetingItem.MEETING_ITEM,
         MeetingItemAttendee.MEETING_ITEM_ATTENDEE,
         MeetingPaper.MEETING_PAPER,
+        MeetingRevision.MEETING_REVISION,
+        MeetingRevisionItem.MEETING_REVISION_ITEM,
+        MeetingRevisionNotice.MEETING_REVISION_NOTICE,
+        MeetingRevisionPaper.MEETING_REVISION_PAPER,
+        MeetingRevisionSection.MEETING_REVISION_SECTION,
         MeetingSection.MEETING_SECTION,
         com.memo.jooq.tables.Memo.MEMO_,
         MemoApproval.MEMO_APPROVAL,

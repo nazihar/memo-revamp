@@ -27823,6 +27823,34 @@
       "value": "‬"
     }
   ],
+  "mail.template.meetingAgendaChanged": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝǝʇıuƃ ɐƃǝupɐ ɔɥɐuƃǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "mail.template.meetingAgendaPublished": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝǝʇıuƃ ɐƃǝupɐ dnqʅısɥǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "mail.template.meetingCancelled": [
     {
       "type": 0,
@@ -27831,6 +27859,20 @@
     {
       "type": 0,
       "value": "Wǝǝʇıuƃ ɔɐuɔǝʅʅǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "mail.template.meetingItemWithdrawn": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iʇǝɯ ʅǝɟʇ ɐ dnqʅısɥǝp ɐƃǝupɐ"
     },
     {
       "type": 0,
@@ -42184,6 +42226,66 @@
       "value": "‬"
     }
   ],
+  "notifications.kind.meetingAgendaChanged": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɐƃǝupɐ ɟoɹ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ɥɐs ɔɥɐuƃǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.kind.meetingAgendaPublished": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɐƃǝupɐ ɟoɹ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ʍɐs dnqʅısɥǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "notifications.kind.meetingCancelled": [
     {
       "type": 0,
@@ -42208,6 +42310,62 @@
     {
       "type": 0,
       "value": " ʍɐs ɔɐuɔǝʅʅǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.kind.meetingChairCommented": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɔɥɐıɹ ɔoɯɯǝuʇǝp ou ʇɥǝ ɐƃǝupɐ ɟoɹ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.kind.meetingItemWithdrawn": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ dɐdǝɹ ʅǝɟʇ ʇɥǝ dnqʅısɥǝp ɐƃǝupɐ ɟoɹ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ": dnqʅısɥ ɐ uǝʍ ɹǝʌısıou"
     },
     {
       "type": 0,

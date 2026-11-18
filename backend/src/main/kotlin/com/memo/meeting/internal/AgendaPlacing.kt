@@ -97,6 +97,7 @@ class AgendaPlacing(
     private val items: ItemStore,
     private val papers: PaperStore,
     private val meetings: MeetingStore,
+    private val revisions: RevisionStore,
     private val ids: IdGenerator,
 ) {
     /** Places the submission of [input] on the draft open in [edit]: accepted first when queued (design E03 §1.8). */
@@ -191,7 +192,11 @@ class AgendaPlacing(
     /**
      * A submission changed in the forum (ADR-0059): returned, declined, referred, deferred or withdrawn, it leaves the
      * draft of a meeting not yet started, and the forum clears its placement. Once the meeting has started the item stays:
-     * what happens to it at the meeting is E06's.
+     * what happens to it at the meeting is E06's. When it was on the published agenda, the secretaries are told to publish
+     * a new revision (`MEETING_ITEM_WITHDRAWN`).
+     *
+     * The forum has locked the submission's row; the agenda's is taken next. Every change that places or unplaces a
+     * submission takes the two in this order (design E03 §1.8, as built in T3), so none waits on this one in a cycle.
      */
     @EventListener
     fun onSubmissionChanged(event: ForumSubmissionChanged) {
@@ -202,6 +207,8 @@ class AgendaPlacing(
         val live = edit?.rows?.items?.firstOrNull { it.id == item.id }
         if (edit != null && live != null) {
             writes.removeItem(edit, live, RemovalReason.SUBMISSION_CHANGED)
+            // Members still read it in the published revision: the secretaries publish a new one.
+            if (revisions.inLatest(edit.meeting.id, live.id)) notifier.itemWithdrawn(edit.meeting, lateness.forum(edit.meeting))
             guard.done(edit.meeting.id)
         }
     }

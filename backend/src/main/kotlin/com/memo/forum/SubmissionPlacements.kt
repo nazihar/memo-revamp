@@ -63,6 +63,16 @@ class SubmissionPlacements(
     fun find(id: UUID): SubmissionRef? = store.find(id)?.ref()
 
     /**
+     * Locks the rows of [submissionIds] for the transaction, in id order. The lock order of placements (design E03 §1.8,
+     * as built in T3): a change that may place or unplace a submission takes its row first, then the meeting's and the
+     * agenda's, as a triage does (the submission, then the agenda through [ForumSubmissionChanged]); never the reverse.
+     */
+    fun lock(submissionIds: Collection<UUID>) = placementStore.lock(submissionIds)
+
+    /** Locks the rows of the submissions placed on [meetingId], as [lock] does (cancelling or rescheduling the meeting). */
+    fun lockOn(meetingId: UUID) = placementStore.lockOn(meetingId)
+
+    /**
      * Places [submissionId] of [forumId] on [meetingId], held on [meetingDate]. A QUEUED submission is accepted first (by
      * the actor, audited as `forum.submission.accepted`); anything else but ACCEPTED is refused (`SUBMISSION_STATE`), and
      * so is one already placed (`ONE_PLACEMENT`). Unknown, or of another forum: 404.

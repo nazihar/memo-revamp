@@ -118,6 +118,10 @@ const kindsWithValues = defineMessages<{
   forumSubmissionWaiting: { committee: string }
   meetingCancelled: { committee: string; date: string }
   meetingLatePaper: { committee: string; date: string }
+  meetingAgendaPublished: { committee: string; date: string }
+  meetingAgendaChanged: { committee: string; date: string }
+  meetingItemWithdrawn: { committee: string; date: string }
+  meetingChairCommented: { committee: string; date: string }
 }>({
   signInAlert: { id: 'notifications.kind.signInAlert', defaultMessage: 'New sign-in to your account from {device}' },
   roleGranted: { id: 'notifications.kind.roleGranted', defaultMessage: 'You were given the role {role}' },
@@ -185,6 +189,22 @@ const kindsWithValues = defineMessages<{
     id: 'notifications.kind.meetingLatePaper',
     defaultMessage: 'A late paper for {committee} on {date} needs your agreement',
   },
+  meetingAgendaPublished: {
+    id: 'notifications.kind.meetingAgendaPublished',
+    defaultMessage: 'The agenda for {committee} on {date} was published',
+  },
+  meetingAgendaChanged: {
+    id: 'notifications.kind.meetingAgendaChanged',
+    defaultMessage: 'The agenda for {committee} on {date} has changed',
+  },
+  meetingItemWithdrawn: {
+    id: 'notifications.kind.meetingItemWithdrawn',
+    defaultMessage: 'A paper left the published agenda for {committee} on {date}: publish a new revision',
+  },
+  meetingChairCommented: {
+    id: 'notifications.kind.meetingChairCommented',
+    defaultMessage: 'The chair commented on the agenda for {committee} on {date}',
+  },
 })
 
 const kinds = defineMessages({
@@ -192,6 +212,11 @@ const kinds = defineMessages({
   mfaReset: { id: 'notifications.kind.mfaReset', defaultMessage: 'An administrator reset your two-step sign-in' },
   unknown: { id: 'notifications.kind.unknown', defaultMessage: 'Something changed in your account' },
 })
+
+/** The values of the meeting kinds: the committee and the meeting's date (never an item's title, ADR-0030). */
+function meetingValues(params: Record<string, string>): { committee: string; date: string } {
+  return { committee: params.committee ?? '', date: params.date ?? '' }
+}
 
 /** The text of a notification of [kind] (ADR-0030); unknown kinds (a newer server) fall back to a generic text. */
 export function notificationText(intl: IntlShape, kind: string, params: Record<string, string>): string {
@@ -252,10 +277,15 @@ export function notificationText(intl: IntlShape, kind: string, params: Record<s
         date: params.date ?? '',
       })
     case 'MEETING_LATE_PAPER':
-      return intl.formatMessage(kindsWithValues.meetingLatePaper, {
-        committee: params.committee ?? '',
-        date: params.date ?? '',
-      })
+      return intl.formatMessage(kindsWithValues.meetingLatePaper, meetingValues(params))
+    case 'MEETING_AGENDA_PUBLISHED':
+      return intl.formatMessage(kindsWithValues.meetingAgendaPublished, meetingValues(params))
+    case 'MEETING_AGENDA_CHANGED':
+      return intl.formatMessage(kindsWithValues.meetingAgendaChanged, meetingValues(params))
+    case 'MEETING_ITEM_WITHDRAWN':
+      return intl.formatMessage(kindsWithValues.meetingItemWithdrawn, meetingValues(params))
+    case 'MEETING_CHAIR_COMMENTED':
+      return intl.formatMessage(kindsWithValues.meetingChairCommented, meetingValues(params))
     case 'PASSWORD_CHANGED':
       return intl.formatMessage(kinds.passwordChanged)
     case 'MFA_RESET':
@@ -312,6 +342,9 @@ const mailTemplates = defineMessages({
   FORUM_SUBMISSION_WAITING: { id: 'mail.template.forumSubmissionWaiting', defaultMessage: 'Paper waiting for triage' },
   MEETING_CANCELLED: { id: 'mail.template.meetingCancelled', defaultMessage: 'Meeting cancelled' },
   MEETING_LATE_PAPER: { id: 'mail.template.meetingLatePaper', defaultMessage: 'Late paper for the chair' },
+  MEETING_AGENDA_PUBLISHED: { id: 'mail.template.meetingAgendaPublished', defaultMessage: 'Meeting agenda published' },
+  MEETING_AGENDA_CHANGED: { id: 'mail.template.meetingAgendaChanged', defaultMessage: 'Meeting agenda changed' },
+  MEETING_ITEM_WITHDRAWN: { id: 'mail.template.meetingItemWithdrawn', defaultMessage: 'Item left a published agenda' },
 })
 
 const templateMessages: Record<string, MessageDescriptor | undefined> = mailTemplates

@@ -4,6 +4,7 @@ import com.memo.common.tenant.TenantDsl
 import com.memo.forum.AgendaSectionKind
 import com.memo.forum.StandingKind
 import com.memo.forum.SubmissionPurpose
+import com.memo.jooq.tables.records.MeetingAgendaRecord
 import com.memo.jooq.tables.records.MeetingItemRecord
 import com.memo.jooq.tables.records.MeetingPaperRecord
 import com.memo.jooq.tables.references.MEETING_AGENDA
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Repository
 import tools.jackson.core.type.TypeReference
 import tools.jackson.databind.json.JsonMapper
 import java.time.Clock
+import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.util.UUID
@@ -24,15 +26,32 @@ import java.util.UUID
 /** How an agenda was started (design E03 §1.7). */
 enum class AgendaOrigin { TEMPLATE, MEETING }
 
+/** Whether any revision of the agenda was published (design E03 §1.3). */
+enum class AgendaState { DRAFT, PUBLISHED }
+
+/**
+ * The chair's agreement to the agenda's first publication (design E03 §1.4): by the chair ([by]), recorded in the app or
+ * by a secretary on the chair's behalf ([onBehalfBy], with how it was given in [note], "by email on 4 Dec").
+ */
+data class ChairAgreement(
+    val by: UUID? = null,
+    val at: Instant = Instant.EPOCH,
+    val onBehalfBy: UUID? = null,
+    val note: String? = null,
+)
+
 /** A meeting's agenda: the working draft's head row, locked by every builder change (ADR-0060). */
 data class AgendaRow(
     val meetingId: UUID,
     val origin: AgendaOrigin,
     val sourceMeetingId: UUID?,
-    /** The last published revision (T3); 0 before the first. */
+    /** The last published revision; 0 before the first. */
     val currentRevision: Int,
+    /** Changes since the last revision. */
     val dirty: Boolean,
     val version: Long,
+    val state: AgendaState = AgendaState.DRAFT,
+    val chairAgreement: ChairAgreement? = null,
 )
 
 /** An unnumbered heading of the agenda. */
@@ -110,13 +129,14 @@ data class AgendaRows(
 class AgendaStore(
     private val tenantDsl: TenantDsl,
     private val clock: Clock,
+    private val json: JsonMapper,
 ) {
     fun find(meetingId: UUID): AgendaRow? =
         tenantDsl
             .current()
             .selectFrom(MEETING_AGENDA)
             .where(MEETING_AGENDA.MEETING_ID.eq(meetingId))
-            .fetchOne { it.row() }
+            .fetchOne { row(it) }
 
     /** The agenda of [meetingId] locked for this transaction (`SELECT … FOR UPDATE`); null when it has none. */
     fun lock(meetingId: UUID): AgendaRow? =
@@ -125,7 +145,7 @@ class AgendaStore(
             .selectFrom(MEETING_AGENDA)
             .where(MEETING_AGENDA.MEETING_ID.eq(meetingId))
             .forUpdate()
-            .fetchOne { it.row() }
+            .fetchOne { row(it) }
 
     /** Starts the agenda of [meetingId]; false when it already has one (the primary key decides under concurrency). */
     fun insert(
@@ -161,7 +181,49 @@ class AgendaStore(
             .execute()
     }
 
+    /** Records the chair's agreement to the first publication (under the lock; the caller then [touch]es). */
+    fun agree(
+        meetingId: UUID,
+        agreement: ChairAgreement,
+    ) {
+        tenantDsl
+            .current()
+            .update(MEETING_AGENDA)
+            .set(MEETING_AGENDA.CHAIR_AGREEMENT, JSONB.valueOf(json.writeValueAsString(agreement)))
+            .where(MEETING_AGENDA.MEETING_ID.eq(meetingId))
+            .execute()
+    }
+
+    /** Revision [revision] was published (under the lock): the draft is clean and the version moves on. */
+    fun published(
+        meetingId: UUID,
+        revision: Int,
+    ) {
+        tenantDsl
+            .current()
+            .update(MEETING_AGENDA)
+            .set(MEETING_AGENDA.STATE, AgendaState.PUBLISHED.name)
+            .set(MEETING_AGENDA.CURRENT_REVISION, revision)
+            .set(MEETING_AGENDA.DIRTY, false)
+            .set(MEETING_AGENDA.VERSION, MEETING_AGENDA.VERSION.plus(1))
+            .set(MEETING_AGENDA.UPDATED_AT, now())
+            .where(MEETING_AGENDA.MEETING_ID.eq(meetingId))
+            .execute()
+    }
+
     fun now(): OffsetDateTime = OffsetDateTime.now(clock).withOffsetSameInstant(ZoneOffset.UTC)
+
+    private fun row(r: MeetingAgendaRecord) =
+        AgendaRow(
+            meetingId = r.meetingId,
+            origin = AgendaOrigin.valueOf(r.startedFrom),
+            sourceMeetingId = r.sourceMeetingId,
+            currentRevision = r.currentRevision ?: 0,
+            dirty = r.dirty == true,
+            version = r.version ?: 0,
+            state = AgendaState.valueOf(r.state ?: AgendaState.DRAFT.name),
+            chairAgreement = r.chairAgreement?.let { json.readValue(it.data(), ChairAgreement::class.java) },
+        )
 }
 
 /** Sections of agendas, inside a tenant transaction; a removal records its time. */
@@ -247,6 +309,14 @@ class ItemStore(
             .where(MEETING_ITEM.MEETING_ID.eq(meetingId), MEETING_ITEM.REMOVED_AT.isNull)
             .orderBy(MEETING_ITEM.POSITION, MEETING_ITEM.ID)
             .fetch { row(it) }
+
+    /** The live item [id] (read without a lock: callers lock its submission, then the agenda, and read it again). */
+    fun find(id: UUID): ItemRow? =
+        tenantDsl
+            .current()
+            .selectFrom(MEETING_ITEM)
+            .where(MEETING_ITEM.ID.eq(id), MEETING_ITEM.REMOVED_AT.isNull)
+            .fetchOne { row(it) }
 
     /** The live item [submissionId] is placed on, if any (at most one: `ONE_PLACEMENT`). */
     fun ofSubmission(submissionId: UUID): ItemRow? =
@@ -491,13 +561,3 @@ class PaperStore(
 }
 
 private val PRESENTERS = object : TypeReference<List<Presenter>>() {}
-
-private fun com.memo.jooq.tables.records.MeetingAgendaRecord.row() =
-    AgendaRow(
-        meetingId = meetingId,
-        origin = AgendaOrigin.valueOf(startedFrom),
-        sourceMeetingId = sourceMeetingId,
-        currentRevision = currentRevision ?: 0,
-        dirty = dirty == true,
-        version = version ?: 0,
-    )

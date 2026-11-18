@@ -137,11 +137,7 @@ class AgendaPapers(
     ) {
         val edit = guard.edit(meetingId, version)
         val paper = edit.paper(paperId)
-        papers.remove(listOf(paper.id), actorOrNull())
-        edit.rows.papers
-            .filter { it.itemId == paper.itemId && it.id != paper.id }
-            .sortedBy { it.position }
-            .forEachIndexed { i, p -> if (p.position != i) papers.update(p.copy(position = i)) }
+        writes.removePaper(edit, paper)
         writes.record("meeting.agenda.paper_removed", meetingId, before = audited(paper))
         guard.done(meetingId)
     }

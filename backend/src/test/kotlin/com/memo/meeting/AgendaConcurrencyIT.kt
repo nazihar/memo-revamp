@@ -8,6 +8,7 @@ import com.memo.common.tenant.TenantContext
 import com.memo.common.tenant.TenantTransactions
 import com.memo.common.web.RefusedException
 import com.memo.forum.ForumRole
+import com.memo.forum.SubmissionStatus
 import com.memo.forum.internal.ForumInput
 import com.memo.forum.internal.ForumMembers
 import com.memo.forum.internal.ForumSubmissions
@@ -15,6 +16,7 @@ import com.memo.forum.internal.ForumTypePreset
 import com.memo.forum.internal.ForumTypes
 import com.memo.forum.internal.Forums
 import com.memo.forum.internal.MemberInput
+import com.memo.forum.internal.SubmissionTriage
 import com.memo.identity.UserAccount
 import com.memo.identity.UserAccounts
 import com.memo.meeting.internal.AgendaDraftViews
@@ -28,7 +30,9 @@ import com.memo.meeting.internal.ItemInput
 import com.memo.meeting.internal.ItemKind
 import com.memo.meeting.internal.MeetingInput
 import com.memo.meeting.internal.MeetingLifecycle
+import com.memo.meeting.internal.MeetingNotFoundException
 import com.memo.meeting.internal.MeetingPlace
+import com.memo.meeting.internal.MeetingReads
 import com.memo.meeting.internal.MoveInput
 import com.memo.meeting.internal.TimesInput
 import com.memo.tenancy.TenantRegistry
@@ -93,6 +97,10 @@ class AgendaConcurrencyIT : IntegrationTest() {
     @Autowired lateinit var views: AgendaDraftViews
 
     @Autowired lateinit var controller: AgendaItemsController
+
+    @Autowired lateinit var triage: SubmissionTriage
+
+    @Autowired lateinit var reads: MeetingReads
 
     private lateinit var tenant: TestTenant
     private lateinit var admin: UserAccount
@@ -190,6 +198,100 @@ class AgendaConcurrencyIT : IntegrationTest() {
         assertThat(titles.count { it == "Strategy update" }).isEqualTo(1)
     }
 
+    /**
+     * The lock order (design E03 §1.8, as built in T3): every path that changes a placement takes the submission's row
+     * before the agenda's, as a return does (the submission, then the agenda through `ForumSubmissionChanged`). Each round
+     * races the two once; a deadlock would surface as an exception other than the refusals of a lost race.
+     */
+    @Test
+    fun `a return racing a placement of the same submission completes without a deadlock`() {
+        repeat(ROUNDS) { round ->
+            val submission = submission()
+            val meeting = meeting(30L + round)
+
+            val outcomes =
+                parallel(
+                    { asUser(secretary) { place(meeting, submission) } },
+                    { asUser(other) { returned(submission) } },
+                )
+
+            assertOnlyRefusals(outcomes)
+            val after = asUser(secretary) { submissions.get(credit, submission) }
+            if (after.status == SubmissionStatus.RETURNED) {
+                assertThat(liveItem(submission) to after.meetingId).isEqualTo(null to null)
+            } else {
+                assertThat(liveItem(submission)).isNotNull()
+                assertThat(after.meetingId).isEqualTo(meeting)
+            }
+        }
+    }
+
+    @Test
+    fun `a return racing the removal of its item or the meeting's cancellation completes without a deadlock`() {
+        repeat(ROUNDS) { round ->
+            val submission = submission()
+            val meeting = meeting(30L + round)
+            asUser(secretary) { place(meeting, submission) }
+            val item = checkNotNull(liveItem(submission))
+            val version = asUser(secretary) { views.draft(meeting) }.version
+
+            val removal =
+                parallel(
+                    { asUser(secretary) { items.remove(meeting, item, version) } },
+                    { asUser(other) { returned(submission) } },
+                )
+
+            assertOnlyRefusals(removal)
+            assertThat(liveItem(submission)).isNull()
+            assertThat(asUser(secretary) { submissions.get(credit, submission) }.meetingId).isNull()
+        }
+        repeat(ROUNDS) { round ->
+            val submission = submission()
+            val meeting = meeting(50L + round)
+            asUser(secretary) { place(meeting, submission) }
+            val current = asUser(secretary) { reads.get(meeting) }
+
+            val cancellation =
+                parallel(
+                    { asUser(secretary) { lifecycle.cancel(meeting, current.version, "No quorum") } },
+                    { asUser(other) { returned(submission) } },
+                )
+
+            assertOnlyRefusals(cancellation)
+            assertThat(liveItem(submission)).isNull()
+            assertThat(asUser(secretary) { submissions.get(credit, submission) }.meetingId).isNull()
+        }
+    }
+
+    /** A new submission of the committee, queued. */
+    private fun submission(): UUID {
+        val subject = UUID.randomUUID()
+        asUser(initiator) { workflows.start(TestWorkflowSubject.TYPE, subject, emptyList(), definitionKey = "straight-to-committee") }
+        return asUser(secretary) { submissions.queue(credit, emptySet()) }.single { it.subjectId == subject }.id
+    }
+
+    private fun returned(submission: UUID) =
+        triage.returnForInformation(credit, submission, submissions.get(credit, submission).version, "Add the valuation")
+
+    private fun liveItem(submission: UUID): UUID? =
+        AppRoleJdbc.inTransaction(tenant.id) { c ->
+            c.prepareStatement("select id from meeting_item where submission_id = ? and removed_at is null").use { st ->
+                st.setObject(1, submission)
+                st.executeQuery().use { if (it.next()) it.getObject(1, UUID::class.java) else null }
+            }
+        }
+
+    /** Only the refusals a lost race may give: a stale version, a submission no longer open, an item or a meeting gone. */
+    private fun assertOnlyRefusals(outcomes: List<Throwable?>) {
+        assertThat(outcomes.filterNotNull()).allSatisfy {
+            assertThat(
+                it is ConcurrentModificationException ||
+                    it is MeetingNotFoundException ||
+                    (it is RefusedException && it.reason in setOf("SUBMISSION_STATE", "WRONG_STATE", "FROZEN")),
+            ).describedAs("unexpected outcome %s", it).isTrue()
+        }
+    }
+
     private fun place(
         meeting: UUID,
         submission: UUID,
@@ -240,5 +342,6 @@ class AgendaConcurrencyIT : IntegrationTest() {
 
     private companion object {
         const val WAIT_SECONDS = 60L
+        const val ROUNDS = 6
     }
 }

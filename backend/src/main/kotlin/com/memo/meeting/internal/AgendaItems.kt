@@ -65,7 +65,7 @@ class AgendaItems(
         version: Long,
         input: ItemInput,
     ): UUID {
-        val edit = guard.edit(meetingId, version, tabled = true)
+        val edit = guard.edit(meetingId, version, tabled = true, submissions = listOfNotNull(input.submissionId))
         val id = if (input.kind == ItemKind.SUBMISSION) placing.place(edit, input) else addOwn(edit, input)
         guard.done(meetingId)
         return id
@@ -136,7 +136,8 @@ class AgendaItems(
         itemId: UUID,
         version: Long,
     ) {
-        val edit = guard.edit(meetingId, version)
+        // The submission of a SUBMISSION item is unplaced: its row is locked before the agenda (design E03 §1.8).
+        val edit = guard.edit(meetingId, version, submissions = listOfNotNull(items.find(itemId)?.submissionId))
         writes.removeItem(edit, edit.item(itemId), RemovalReason.REMOVED)
         guard.done(meetingId)
     }

@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sign in</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+.th{color-scheme:light;--bg:#ffffff;--fg:#0a0a0a;--subtle:#fafafa;--muted:#f5f5f5;--hover:#f0f0f0;--active:#ebebeb;--chip:#e5e5e5;--border:#e5e5e5;--border-strong:#d4d4d4;--muted-fg:#737373;--text-1:#262626;--text-2:#404040;--text-3:#525252;--primary:#171717;--primary-fg:#fafafa;--primary-hover:#262626;--primary-divider:#404040;--primary-muted:#a3a3a3;--ring:#a3a3a3;--destructive:#dc2626;--destructive-hover:#b91c1c;--on-destructive:#ffffff;--danger-fg:#b91c1c;--danger-bg:#fef2f2;--danger-border:#fecaca;--warn-bg:#fffbeb;--warn-fg:#92400e;--warn-border:#fcd34d;--ok-bg:#f0fdf4;--ok-fg:#166534;--ok-border:#bbf7d0;--info-bg:#eff6ff;--info-fg:#1d4ed8}
+.th.dark{color-scheme:dark;--bg:#0a0a0a;--fg:#fafafa;--subtle:#141414;--muted:#262626;--hover:#1f1f1f;--active:#262626;--chip:#333333;--border:#2e2e2e;--border-strong:#525252;--muted-fg:#a3a3a3;--text-1:#e5e5e5;--text-2:#d4d4d4;--text-3:#a3a3a3;--primary:#e5e5e5;--primary-fg:#171717;--primary-hover:#d4d4d4;--primary-divider:#a3a3a3;--primary-muted:#525252;--ring:#737373;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#450a0a;--danger-border:#7f1d1d;--warn-bg:#422006;--warn-fg:#fcd34d;--warn-border:#78350f;--ok-bg:#052e16;--ok-fg:#86efac;--ok-border:#14532d;--info-bg:#172554;--info-fg:#93c5fd}
+@media (prefers-color-scheme: dark){.th.system{color-scheme:dark;--bg:#0a0a0a;--fg:#fafafa;--subtle:#141414;--muted:#262626;--hover:#1f1f1f;--active:#262626;--chip:#333333;--border:#2e2e2e;--border-strong:#525252;--muted-fg:#a3a3a3;--text-1:#e5e5e5;--text-2:#d4d4d4;--text-3:#a3a3a3;--primary:#e5e5e5;--primary-fg:#171717;--primary-hover:#d4d4d4;--primary-divider:#a3a3a3;--primary-muted:#525252;--ring:#737373;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#450a0a;--danger-border:#7f1d1d;--warn-bg:#422006;--warn-fg:#fcd34d;--warn-border:#78350f;--ok-bg:#052e16;--ok-fg:#86efac;--ok-border:#14532d;--info-bg:#172554;--info-fg:#93c5fd}}
+body:has(.th.dark){background:#0a0a0a}
+@media (prefers-color-scheme: dark){body:has(.th.system){background:#0a0a0a}}
+body{margin:0;background:#ffffff}
+a{color:var(--fg)}
+button,input{font-family:inherit}
+.ghost:hover{background:var(--muted)}
+@keyframes caret-blink{0%,70%,100%{opacity:1}20%,50%{opacity:0}}
+.otp-caret{animation:caret-blink 1.2s ease-out infinite}
+@media (prefers-reduced-motion: reduce){.otp-caret{animation:none}}
+</style>
+</helmet>
+<div class="th {{themeClass}}" style="display: flex; flex-direction: column; min-height: 900px; background: var(--subtle); color: var(--fg); font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 20px">
+    <div style="display: flex; justify-content: flex-end; gap: 4px; padding: 8px 12px">
+      <button type="button" class="ghost" aria-label="Language: English" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 10px; border: 0; border-radius: 8px; background: transparent; color: var(--fg); font-size: 13px; cursor: pointer">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6"></path><path d="m4 14 6-6 2-3"></path><path d="M2 5h12"></path><path d="M7 2h1"></path><path d="m22 22-5-10-5 10"></path><path d="M14 18h6"></path></svg>
+        English
+      </button>
+      <button type="button" class="ghost" aria-label="Theme: System" style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: 0; border-radius: 8px; background: transparent; color: var(--fg); cursor: pointer">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"></rect><line x1="8" x2="16" y1="21" y2="21"></line><line x1="12" x2="12" y1="17" y2="21"></line></svg>
+      </button>
+    </div>
+  <main style="flex: 1; display: flex; justify-content: center; padding: 0 16px">
+    <div style="width: 100%; max-width: 400px; box-sizing: border-box; margin-top: 64px; margin-bottom: 48px; padding: 28px; align-self: flex-start; border: 1px solid var(--border); border-radius: 12px; background: var(--bg); box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 24px">
+        <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 10px; background: var(--primary); color: var(--primary-fg); font-weight: 600; font-size: 16px">N</span>
+        <span style="display: flex; flex-direction: column">
+          <span style="font-weight: 600">[Organisation name]</span>
+          <span style="font-size: 12px; color: var(--muted-fg)">Memo &amp; Meetings</span>
+        </span>
+      </div>
+      <sc-if value="{{is.signin}}" hint-placeholder-val="{{true}}">
+      <form novalidate onSubmit="{{go.signin}}" style="display: flex; flex-direction: column; gap: 18px">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Sign in</h1>
+          <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">Use your work email and password.</p>
+        </div>
+        <sc-if value="{{sso}}" hint-placeholder-val="{{false}}">
+          <button type="button" onClick="{{go.sso}}" style="width: 100%; height: 36px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 14px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px">
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="20" x="4" y="2" rx="2" ry="2"></rect><path d="M9 22v-4h6v4"></path><path d="M8 6h.01"></path><path d="M16 6h.01"></path><path d="M12 6h.01"></path><path d="M12 10h.01"></path><path d="M12 14h.01"></path><path d="M16 10h.01"></path><path d="M16 14h.01"></path><path d="M8 10h.01"></path><path d="M8 14h.01"></path></svg>
+            Sign in with [Organisation name] single sign-on
+          </button>
+          <div aria-hidden="true" style="display: flex; align-items: center; gap: 12px; font-size: 12px; color: var(--muted-fg)"><span style="flex: 1; height: 1px; background: var(--border)"></span>or with email<span style="flex: 1; height: 1px; background: var(--border)"></span></div>
+        </sc-if>
+        <sc-if value="{{showError}}" hint-placeholder-val="{{false}}">
+          <div role="alert" style="display: flex; gap: 8px; padding: 10px 12px; border: 1px solid var(--danger-border); border-radius: 8px; background: var(--danger-bg); color: var(--danger-fg); font-size: 13px; line-height: 18px">
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 1px"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>
+            <span>{{errorText}}</span>
+          </div>
+        </sc-if>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="si-email" style="font-size: 14px; font-weight: 500">Email</label>
+          <input id="si-email" type="email" autocomplete="username" value="f.rahman@[domain]"  style="width: 100%; height: 36px; padding: 0 12px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <span style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px"><label for="si-pass" style="font-size: 14px; font-weight: 500">Password</label><button type="button" onClick="{{go.forgot}}" style="padding: 0; border: 0; background: transparent; color: var(--fg); font-size: 13px; font-weight: 500; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">Forgot your password?</button></span>
+          <input id="si-pass" type="password" autocomplete="current-password"  style="width: 100%; height: 36px; padding: 0 12px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+        </div>
+        <button type="submit" style="width: 100%; height: 36px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 14px; font-weight: 500; cursor: pointer">Sign in</button>
+      </form>
+      </sc-if>
+      <sc-if value="{{is.code}}" hint-placeholder-val="{{false}}">
+      <form novalidate onSubmit="{{go.code}}" style="display: flex; flex-direction: column; gap: 18px">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Enter your code</h1>
+          <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">Open your authenticator app and enter the 6-digit code for memo.</p>
+        </div>
+        <sc-if value="{{showError}}" hint-placeholder-val="{{false}}">
+          <div role="alert" style="display: flex; gap: 8px; padding: 10px 12px; border: 1px solid var(--danger-border); border-radius: 8px; background: var(--danger-bg); color: var(--danger-fg); font-size: 13px; line-height: 18px">
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 1px"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>
+            <span>{{errorText}}</span>
+          </div>
+        </sc-if>
+        <div style="display: flex; flex-direction: column; gap: 6px; align-items: center; text-align: center">
+          <label for="si-code" style="font-size: 14px; font-weight: 500">Code</label>
+          <div style="position: relative; align-self: center; display: inline-flex; align-items: center; gap: 8px">
+    <input id="si-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" value="{{otp.si_code.value}}" onChange="{{otp.si_code.onInput}}" onFocus="{{otp.si_code.onFocus}}" onBlur="{{otp.si_code.onBlur}}" disabled="{{otp.si_code.disabled}}" aria-invalid="{{otp.si_code.invalid}}" aria-describedby="{{otp.si_code.describedBy}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 2; width: 100%; height: 100%; margin: 0; padding: 0; border: 0; opacity: 0; background: transparent; color: transparent; caret-color: transparent; font-size: 16px; cursor: text">
+    <span aria-hidden="true" style="display: flex">
+      <sc-for list="{{otp.si_code.a}}" as="sl" hint-placeholder-count="3">
+        <span style="{{sl.style}}">{{sl.ch}}<sc-if value="{{sl.caret}}" hint-placeholder-val="{{false}}"><span class="otp-caret" style="position: absolute; width: 1px; height: 45%; background: var(--fg)"></span></sc-if></span>
+      </sc-for>
+    </span>
+    <span aria-hidden="true" style="display: flex; color: var(--muted-fg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"></path></svg></span>
+    <span aria-hidden="true" style="display: flex">
+      <sc-for list="{{otp.si_code.b}}" as="sl" hint-placeholder-count="3">
+        <span style="{{sl.style}}">{{sl.ch}}<sc-if value="{{sl.caret}}" hint-placeholder-val="{{false}}"><span class="otp-caret" style="position: absolute; width: 1px; height: 45%; background: var(--fg)"></span></sc-if></span>
+      </sc-for>
+    </span>
+  </div>
+        </div>
+        <button type="submit" style="width: 100%; height: 36px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 14px; font-weight: 500; cursor: pointer">Continue</button>
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px"><button type="button" onClick="{{go.useRecovery}}" style="padding: 0; border: 0; background: transparent; color: var(--fg); font-size: 13px; font-weight: 500; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">Use a recovery code instead</button><button type="button" onClick="{{go.back}}" style="padding: 0; border: 0; background: transparent; color: var(--fg); font-size: 13px; font-weight: 500; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">Sign in as someone else</button></div>
+      </form>
+      </sc-if>
+      <sc-if value="{{is.recovery}}" hint-placeholder-val="{{false}}">
+      <form novalidate onSubmit="{{go.recovery}}" style="display: flex; flex-direction: column; gap: 18px">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Enter your code</h1>
+          <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">Enter one of the recovery codes you saved when you set up two-step sign-in. Each code works once.</p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="si-rec" style="font-size: 14px; font-weight: 500">Recovery code</label>
+          <input id="si-rec" type="text" autocomplete="one-time-code" placeholder="XXXX-XXXX"  style="width: 100%; height: 36px; padding: 0 12px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); font-family: 'Geist Mono', ui-monospace, monospace; letter-spacing: 0.2em">
+        </div>
+        <button type="submit" style="width: 100%; height: 36px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 14px; font-weight: 500; cursor: pointer">Continue</button>
+        <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px"><button type="button" onClick="{{go.useCode}}" style="padding: 0; border: 0; background: transparent; color: var(--fg); font-size: 13px; font-weight: 500; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">Use the code from my app</button><button type="button" onClick="{{go.back}}" style="padding: 0; border: 0; background: transparent; color: var(--fg); font-size: 13px; font-weight: 500; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">Sign in as someone else</button></div>
+      </form>
+      </sc-if>
+      <sc-if value="{{is.reset}}" hint-placeholder-val="{{false}}">
+      <form novalidate onSubmit="{{go.reset}}" style="display: flex; flex-direction: column; gap: 18px">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Reset your password</h1>
+          <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">Enter your work email. If it has an account, we will email you a link.</p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="rs-email" style="font-size: 14px; font-weight: 500">Email</label>
+          <input id="rs-email" type="email" autocomplete="username"  style="width: 100%; height: 36px; padding: 0 12px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+        </div>
+        <button type="submit" style="width: 100%; height: 36px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 14px; font-weight: 500; cursor: pointer">Email me a link</button>
+        <div style="display: flex; justify-content: center"><button type="button" onClick="{{go.back}}" style="padding: 0; border: 0; background: transparent; color: var(--fg); font-size: 13px; font-weight: 500; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">Back to sign in</button></div>
+      </form>
+      </sc-if>
+      <sc-if value="{{is.sent}}" hint-placeholder-val="{{false}}">
+      <form novalidate onSubmit="{{go.sent}}" style="display: flex; flex-direction: column; gap: 18px">
+        <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 10px; background: var(--muted)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg></span>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Check your email</h1>
+          <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">If an account exists for that address, a link is on its way. It works once and expires in 30 minutes.</p>
+        </div>
+        <div style="display: flex; justify-content: center"><button type="button" onClick="{{go.back}}" style="padding: 0; border: 0; background: transparent; color: var(--fg); font-size: 13px; font-weight: 500; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">Back to sign in</button></div>
+      </form>
+      </sc-if>
+      <sc-if value="{{is.newpw}}" hint-placeholder-val="{{false}}">
+      <form novalidate onSubmit="{{go.newpw}}" style="display: flex; flex-direction: column; gap: 18px">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Choose a new password</h1>
+          <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">Use at least 12 characters. A long phrase is easier to remember than a complex word.</p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="rs-new" style="font-size: 14px; font-weight: 500">New password</label>
+          <input id="rs-new" type="password" autocomplete="new-password"  style="width: 100%; height: 36px; padding: 0 12px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+        </div>
+        <button type="submit" style="width: 100%; height: 36px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 14px; font-weight: 500; cursor: pointer">Set password</button>
+      </form>
+      </sc-if>
+      <sc-if value="{{is.done}}" hint-placeholder-val="{{false}}">
+      <form novalidate onSubmit="{{go.done}}" style="display: flex; flex-direction: column; gap: 18px">
+        <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 10px; background: var(--ok-bg); color: var(--ok-fg)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></span>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Password changed</h1>
+          <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">You were signed out everywhere. Sign in with your new password.</p>
+        </div>
+        <button type="submit" style="width: 100%; height: 36px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 14px; font-weight: 500; cursor: pointer">Go to sign in</button>
+      </form>
+      </sc-if>
+      <sc-if value="{{is.enrol}}" hint-placeholder-val="{{false}}">
+      <form novalidate onSubmit="{{go.enrol}}" style="display: flex; flex-direction: column; gap: 18px">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Set up two-step sign-in</h1>
+          <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">Scan the QR code with an authenticator app (for example Microsoft Authenticator, Google Authenticator or 1Password), then enter the code it shows.</p>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 16px">
+          <svg role="img" aria-label="QR code for your authenticator app" width="132" height="132" viewBox="0 0 21 21" style="flex-shrink: 0; padding: 8px; border: 1px solid var(--border); border-radius: 8px; background: #ffffff" shape-rendering="crispEdges">
+            <path fill="#0a0a0a" d="M0 0h7v7H0zM14 0h7v7h-7zM0 14h7v7H0z"></path>
+            <path fill="#ffffff" d="M1 1h5v5H1zM15 1h5v5h-5zM1 15h5v5H1z"></path>
+            <path fill="#0a0a0a" d="M2 2h3v3H2zM16 2h3v3h-3zM2 16h3v3H2zM8 0h1v1H8zM10 1h2v1h-2zM9 3h1v2H9zM11 4h1v1h-1zM8 6h1v1H8zM10 6h1v1h-1zM12 6h1v1h-1zM0 8h1v1H0zM2 8h2v1H2zM6 8h3v1H6zM11 8h2v1h-2zM15 8h1v1h-1zM18 8h3v1h-3zM1 10h2v1H1zM5 9h1v2H5zM8 10h2v1H8zM12 10h1v2h-1zM14 9h2v1h-2zM17 10h2v1h-2zM0 12h1v1H0zM3 12h2v1H3zM7 12h1v1H7zM9 12h2v1H9zM14 12h1v2h-1zM16 12h3v1h-3zM20 11h1v2h-1zM8 14h2v1H8zM11 14h1v1h-1zM9 16h1v2H9zM12 16h2v1h-2zM8 18h1v3H8zM10 19h2v1h-2zM14 15h1v1h-1zM16 14h2v1h-2zM19 15h2v1h-2zM15 17h2v1h-2zM18 17h1v2h-1zM14 19h2v2h-2zM17 20h4v1h-4zM20 18h1v1h-1z"></path>
+          </svg>
+          <div style="display: flex; flex-direction: column; gap: 6px; min-width: 0; flex: 1 1 160px">
+            <span style="font-size: 13px; color: var(--muted-fg)">Cannot scan? Enter this key in the app instead:</span>
+            <code style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 14px; letter-spacing: 0.06em; word-break: break-all">JBSW Y3DP EHPK 3PXP K4MX 2QTA</code>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px; align-items: center; text-align: center">
+          <label for="en-code" style="font-size: 14px; font-weight: 500">Code from the app</label>
+          <div style="position: relative; align-self: center; display: inline-flex; align-items: center; gap: 8px">
+    <input id="en-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" value="{{otp.en_code.value}}" onChange="{{otp.en_code.onInput}}" onFocus="{{otp.en_code.onFocus}}" onBlur="{{otp.en_code.onBlur}}" disabled="{{otp.en_code.disabled}}" aria-invalid="{{otp.en_code.invalid}}" aria-describedby="{{otp.en_code.describedBy}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 2; width: 100%; height: 100%; margin: 0; padding: 0; border: 0; opacity: 0; background: transparent; color: transparent; caret-color: transparent; font-size: 16px; cursor: text">
+    <span aria-hidden="true" style="display: flex">
+      <sc-for list="{{otp.en_code.a}}" as="sl" hint-placeholder-count="3">
+        <span style="{{sl.style}}">{{sl.ch}}<sc-if value="{{sl.caret}}" hint-placeholder-val="{{false}}"><span class="otp-caret" style="position: absolute; width: 1px; height: 45%; background: var(--fg)"></span></sc-if></span>
+      </sc-for>
+    </span>
+    <span aria-hidden="true" style="display: flex; color: var(--muted-fg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"></path></svg></span>
+    <span aria-hidden="true" style="display: flex">
+      <sc-for list="{{otp.en_code.b}}" as="sl" hint-placeholder-count="3">
+        <span style="{{sl.style}}">{{sl.ch}}<sc-if value="{{sl.caret}}" hint-placeholder-val="{{false}}"><span class="otp-caret" style="position: absolute; width: 1px; height: 45%; background: var(--fg)"></span></sc-if></span>
+      </sc-for>
+    </span>
+  </div>
+        </div>
+        <button type="submit" style="width: 100%; height: 36px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 14px; font-weight: 500; cursor: pointer">Turn on two-step sign-in</button>
+      </form>
+      </sc-if>
+      <sc-if value="{{is.codes}}" hint-placeholder-val="{{false}}">
+      <form novalidate onSubmit="{{go.codes}}" style="display: flex; flex-direction: column; gap: 18px">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Save your recovery codes</h1>
+          <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">If you lose your phone, each of these codes lets you sign in once. Store them somewhere safe, such as a password manager. They are shown only now.</p>
+        </div>
+        <ol aria-label="Recovery codes" style="margin: 0; padding: 14px 16px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 24px; list-style: none; border-radius: 8px; background: var(--subtle); border: 1px solid var(--border); font-family: 'Geist Mono', ui-monospace, monospace; font-size: 14px; letter-spacing: 0.04em">
+          <sc-for list="{{codes}}" as="c" hint-placeholder-count="10"><li>{{c}}</li></sc-for>
+        </ol>
+        <div style="display: flex; gap: 8px">
+          <button type="button" onClick="{{copy}}" style="height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer">{{copyLabel}}</button>
+          <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer">Download as text</button>
+        </div>
+        <label style="display: flex; align-items: center; gap: 10px; font-size: 14px; cursor: pointer">
+          <input type="checkbox" checked="{{savedCodes}}" onChange="{{toggleSaved}}" style="margin: 0; width: 16px; height: 16px; accent-color: var(--primary)">
+          I have saved my recovery codes
+        </label>
+        <button type="submit" disabled="{{codesNotSaved}}" style="{{continueStyle}}">Continue</button>
+      </form>
+      </sc-if>
+      <sc-if value="{{is.invite}}" hint-placeholder-val="{{false}}">
+      <form novalidate onSubmit="{{go.invite}}" style="display: flex; flex-direction: column; gap: 18px">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Join [Organisation name]</h1>
+          <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">You were invited as Farhana Rahman (f.rahman@[domain]). Choose a password to finish.</p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="in-pass" style="font-size: 14px; font-weight: 500">Password</label>
+          <input id="in-pass" type="password" autocomplete="new-password"  aria-describedby="in-pass-hint" style="width: 100%; height: 36px; padding: 0 12px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+          <span id="in-pass-hint" style="font-size: 12px; color: var(--muted-fg)">At least 12 characters. A long phrase is easier to remember than a complex word.</span>
+        </div>
+        <button type="submit" style="width: 100%; height: 36px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 14px; font-weight: 500; cursor: pointer">Set password and continue</button>
+      </form>
+      </sc-if>
+      <sc-if value="{{is.expired}}" hint-placeholder-val="{{false}}">
+      <form novalidate onSubmit="{{go.expired}}" style="display: flex; flex-direction: column; gap: 18px">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">This invitation is no longer valid</h1>
+          <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">It was already used or has expired. Ask your administrator to send a new one.</p>
+        </div>
+        <button type="submit" style="width: 100%; height: 36px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 14px; font-weight: 500; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px">Go to sign in</button>
+      </form>
+      </sc-if>
+    </div>
+  </main>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"screen":{"editor":"enum","options":["signin","code","recovery","reset","sent","newpw","done","enrol","codes","invite","expired"],"default":"signin"},"sso":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const screen = st.screen || this.props.screen || 'signin';
+    const to = (s) => (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ screen: s, tried: false }); };
+    const names = ['signin', 'code', 'recovery', 'reset', 'sent', 'newpw', 'done', 'enrol', 'codes', 'invite', 'expired'];
+    const is = {};
+    names.forEach((n) => { is[n] = n === screen; });
+    const next = { signin: 'code', code: 'enrol', recovery: 'enrol', reset: 'sent', sent: 'newpw', newpw: 'done', done: 'signin', enrol: 'codes', codes: 'signin', invite: 'enrol', expired: 'signin' };
+    const go = {};
+    names.forEach((n) => { go[n] = to(next[n]); });
+    go.signin = (e) => {
+      if (e && e.preventDefault) e.preventDefault();
+      if (!st.tried) { this.setState({ tried: true }); return; }
+      this.setState({ screen: 'code', tried: false });
+    };
+    go.forgot = to('reset'); go.back = to('signin'); go.useRecovery = to('recovery'); go.useCode = to('code'); go.sso = to('signin');
+    const saved = !!st.savedCodes;
+    const steps = [['signin', 'Sign in'], ['code', 'Code'], ['recovery', 'Recovery code'], ['reset', 'Reset'], ['sent', 'Email sent'], ['newpw', 'New password'], ['done', 'Changed'], ['enrol', 'Set up two-step'], ['codes', 'Recovery codes'], ['invite', 'Invitation'], ['expired', 'Invitation expired']];
+    // One-time code: six boxes in two groups of three (shadcn InputOTP); the real input sits on top, invisible.
+    const mkOtp = (k, fid, o) => {
+      const raw = st['otp_' + k] !== undefined ? st['otp_' + k] : (o.init || '');
+      const v = String(raw).replace(/\D/g, '').slice(0, 6);
+      const focused = !!st['otpF_' + k] && !o.disabled;
+      const line = o.error ? 'var(--destructive)' : 'var(--border-strong)';
+      const slot = (i) => {
+        const active = focused && i === Math.min(v.length, 5);
+        const first = i % 3 === 0, last = i % 3 === 2;
+        return {
+          ch: v[i] || '', caret: active && !v[i],
+          style: 'position: relative; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; box-sizing: border-box; '
+            + 'border-top: 1px solid ' + line + '; border-bottom: 1px solid ' + line + '; border-right: 1px solid ' + line + '; '
+            + (first ? 'border-left: 1px solid ' + line + '; border-radius: 8px 0 0 8px; ' : '') + (last ? 'border-radius: 0 8px 8px 0; ' : '')
+            + "font-family: 'Geist Mono', ui-monospace, monospace; font-size: 16px; font-weight: 500; box-shadow: 0 1px 2px rgba(0,0,0,0.05); "
+            + (o.disabled ? 'background: var(--muted); color: var(--muted-fg); ' : 'background: var(--bg); color: var(--fg); ')
+            + (active ? 'z-index: 1; box-shadow: 0 0 0 2px ' + (o.error ? 'var(--destructive)' : 'var(--ring)') + '; ' : '')
+        };
+      };
+      const slots = [0, 1, 2, 3, 4, 5].map(slot);
+      return {
+        a: slots.slice(0, 3), b: slots.slice(3), value: v,
+        disabled: !!o.disabled, invalid: o.error ? 'true' : 'false', describedBy: o.error ? fid + '-err' : '',
+        onInput: (ev) => { const n = {}; n['otp_' + k] = ev && ev.target ? String(ev.target.value).replace(/\D/g, '').slice(0, 6) : ''; this.setState(n); },
+        onFocus: () => { const n = {}; n['otpF_' + k] = true; this.setState(n); },
+        onBlur: () => { const n = {}; n['otpF_' + k] = false; this.setState(n); }
+      };
+    };
+    const OTP = {
+      si_code: mkOtp('si_code', 'si-code', {}),
+      en_code: mkOtp('en_code', 'en-code', {})
+    };
+    return Object.assign({ otp: OTP }, {
+      themeClass: (this.state && this.state.theme) || this.props.theme || 'system',
+      is: is, go: go,
+      sso: !!this.props.sso,
+      showError: is.signin && !!st.tried,
+      errorText: 'The email or password is incorrect, or the account is temporarily locked. Try again or reset your password.',
+      codes: ['7KQ4-M9TX', 'B2ZP-4HWN', 'R8DC-JV3E', 'Q5LN-7YFA', 'T3GW-K6PM', 'H9XE-2RUC', 'V4MJ-8NDS', 'C6YT-5BQL', 'P2HF-9WKA', 'E7NR-3ZGV'],
+      copyLabel: st.copied ? 'Copied' : 'Copy all',
+      copy: () => this.setState({ copied: true }),
+      savedCodes: saved,
+      toggleSaved: () => this.setState({ savedCodes: !saved }),
+      codesNotSaved: !saved,
+      continueStyle: 'width: 100%; height: 36px; border: 0; border-radius: 8px; font-size: 14px; font-weight: 500; ' + (saved ? 'background: var(--primary); color: var(--primary-fg); cursor: pointer' : 'background: var(--muted); color: var(--muted-fg); cursor: not-allowed'),
+      steps: steps.map((s) => ({ label: s[1], aria: s[0] === screen ? 'true' : 'false', pick: () => this.setState({ screen: s[0], tried: false }), style: 'height: 26px; padding: 0 8px; border-radius: 6px; font-size: 12px; cursor: pointer; ' + (s[0] === screen ? 'border: 1px solid var(--border-strong); background: var(--bg); color: var(--fg); font-weight: 500' : 'border: 1px solid transparent; background: transparent; color: var(--muted-fg)') }))
+    });
+  }
+}
+</script>
+</body>
+</html>

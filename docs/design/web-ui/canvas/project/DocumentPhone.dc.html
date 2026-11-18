@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Document on a phone</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Source+Serif+4:wght@400;600&amp;display=swap">
+<style>
+.th{color-scheme:light;--bg:#ffffff;--fg:#0a0a0a;--subtle:#fafafa;--muted:#f5f5f5;--hover:#f0f0f0;--active:#ebebeb;--chip:#e5e5e5;--border:#e5e5e5;--border-strong:#d4d4d4;--muted-fg:#737373;--text-1:#262626;--text-2:#404040;--text-3:#525252;--primary:#171717;--primary-fg:#fafafa;--primary-hover:#262626;--primary-divider:#404040;--primary-muted:#a3a3a3;--ring:#a3a3a3;--destructive:#dc2626;--destructive-hover:#b91c1c;--on-destructive:#ffffff;--danger-fg:#b91c1c;--danger-bg:#fef2f2;--danger-border:#fecaca;--warn-bg:#fffbeb;--warn-fg:#92400e;--warn-border:#fcd34d;--ok-bg:#f0fdf4;--ok-fg:#166534;--ok-border:#bbf7d0;--info-bg:#eff6ff;--info-fg:#1d4ed8}
+.th.dark{color-scheme:dark;--bg:#0a0a0a;--fg:#fafafa;--subtle:#141414;--muted:#262626;--hover:#1f1f1f;--active:#262626;--chip:#333333;--border:#2e2e2e;--border-strong:#525252;--muted-fg:#a3a3a3;--text-1:#e5e5e5;--text-2:#d4d4d4;--text-3:#a3a3a3;--primary:#e5e5e5;--primary-fg:#171717;--primary-hover:#d4d4d4;--primary-divider:#a3a3a3;--primary-muted:#525252;--ring:#737373;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#450a0a;--danger-border:#7f1d1d;--warn-bg:#422006;--warn-fg:#fcd34d;--warn-border:#78350f;--ok-bg:#052e16;--ok-fg:#86efac;--ok-border:#14532d;--info-bg:#172554;--info-fg:#93c5fd}
+@media (prefers-color-scheme: dark){.th.system{color-scheme:dark;--bg:#0a0a0a;--fg:#fafafa;--subtle:#141414;--muted:#262626;--hover:#1f1f1f;--active:#262626;--chip:#333333;--border:#2e2e2e;--border-strong:#525252;--muted-fg:#a3a3a3;--text-1:#e5e5e5;--text-2:#d4d4d4;--text-3:#a3a3a3;--primary:#e5e5e5;--primary-fg:#171717;--primary-hover:#d4d4d4;--primary-divider:#a3a3a3;--primary-muted:#525252;--ring:#737373;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#450a0a;--danger-border:#7f1d1d;--warn-bg:#422006;--warn-fg:#fcd34d;--warn-border:#78350f;--ok-bg:#052e16;--ok-fg:#86efac;--ok-border:#14532d;--info-bg:#172554;--info-fg:#93c5fd}}
+body:has(.th.dark){background:#0a0a0a}
+@media (prefers-color-scheme: dark){body:has(.th.system){background:#0a0a0a}}
+body{margin:0;background:#ffffff}
+a{color:var(--fg)}
+button{font-family:inherit}
+.ghost:active{background:var(--muted)}
+</style>
+</helmet>
+<div class="th {{themeClass}}" style="position: relative; width: 390px; height: 844px; overflow: hidden; display: flex; flex-direction: column; background: var(--bg); color: var(--fg); font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 20px">
+
+  <header style="flex-shrink: 0; display: flex; align-items: center; gap: 4px; height: 56px; padding: 0 8px; border-bottom: 1px solid var(--border); box-sizing: border-box">
+    <a href="MemoPhone.dc.html" class="ghost" aria-label="Back to the memo" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 8px; color: var(--fg)">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
+    </a>
+    <span style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+      <h1 style="margin: 0; font-size: 15px; line-height: 20px; font-weight: 600">Reading CR/2026/0142</h1>
+      <span style="font-size: 12px; color: var(--muted-fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Version 3 · Credit memo — Meghna Agro.docx</span>
+    </span>
+    <a href="#" class="ghost" aria-label="Download" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 8px; color: var(--fg)">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"></path><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path></svg>
+    </a>
+  </header>
+
+  <main style="flex: 1; min-height: 0; overflow-y: auto; padding: 12px; background: var(--muted)">
+    <article aria-label="{{pageLabel}}" style="box-sizing: border-box; min-height: 560px; padding: 28px 22px; background: #ffffff; color: #1a1a1a; box-shadow: 0 1px 3px rgba(0,0,0,0.12); font-family: 'Source Serif 4', Georgia, serif; font-size: 13px; line-height: 20px">
+      <sc-if value="{{page1}}" hint-placeholder-val="{{true}}">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 18px; font-family: 'Geist', sans-serif; font-size: 10px; color: #555"><span>[Organisation name]</span><span>CR/2026/0142 · Confidential</span></div>
+        <h2 style="margin: 0 0 4px; font-size: 17px; line-height: 23px; font-weight: 600">Credit line renewal for Meghna Agro Ltd.</h2>
+        <p style="margin: 0 0 16px; font-family: 'Geist', sans-serif; font-size: 10px; color: #666">Credit proposal · Tanvir Ahmed · 14 November 2026</p>
+        <h3 style="margin: 0 0 6px; font-size: 14px; font-weight: 600">1. Summary</h3>
+        <p style="margin: 0 0 12px">We propose to renew the revolving credit line of Meghna Agro Ltd. at BDT 250,000,000 for twelve months, on the same pricing. The client has repaid on time for 36 months.</p>
+        <h3 style="margin: 0 0 6px; font-size: 14px; font-weight: 600">2. Security</h3>
+        <p style="margin: 0">A first charge over the Narsingdi warehouse and hypothecation of stock. The October 2026 valuation gives security cover of 1.4×.</p>
+      </sc-if>
+      <sc-if value="{{page2}}" hint-placeholder-val="{{false}}">
+        <h3 style="margin: 0 0 6px; font-size: 14px; font-weight: 600">3. Financial position</h3>
+        <p style="margin: 0 0 12px">Revenue grew 11% in FY2025 to BDT 1.9 billion; the current ratio stands at 1.35 and interest cover at 3.2×.</p>
+        <h3 style="margin: 0 0 6px; font-size: 14px; font-weight: 600">4. Recommendation</h3>
+        <p style="margin: 0">Renew at the proposed limit, subject to a review of security cover at six months.</p>
+      </sc-if>
+    </article>
+  </main>
+
+  <nav aria-label="Pages" style="flex-shrink: 0; display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 12px; border-top: 1px solid var(--border); background: var(--bg)">
+    <button type="button" class="ghost" aria-label="Previous page" disabled="{{onFirst}}" onClick="{{prev}}" style="{{prevStyle}}">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
+    </button>
+    <span style="font-size: 13px; color: var(--text-2); font-variant-numeric: tabular-nums">{{pageText}}</span>
+    <button type="button" class="ghost" aria-label="Next page" disabled="{{onLast}}" onClick="{{next}}" style="{{nextStyle}}">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"></path></svg>
+    </button>
+  </nav>
+  <p style="flex-shrink: 0; margin: 0; padding: 0 16px 10px; background: var(--bg); text-align: center; font-size: 12px; color: var(--muted-fg)">Editing the document needs a computer.</p>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const page = (this.state && this.state.page) || 1;
+    const btn = 'display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); ';
+    return {
+      themeClass: (this.state && this.state.theme) || this.props.theme || 'system',
+      page1: page === 1,
+      page2: page === 2,
+      pageLabel: 'Document page ' + page,
+      pageText: 'Page ' + page + ' of 2',
+      onFirst: page === 1,
+      onLast: page === 2,
+      prev: () => this.setState({ page: 1 }),
+      next: () => this.setState({ page: 2 }),
+      prevStyle: btn + (page === 1 ? 'color: var(--border-strong)' : 'color: var(--fg)'),
+      nextStyle: btn + (page === 2 ? 'color: var(--border-strong)' : 'color: var(--fg)')
+    };
+  }
+}
+</script>
+</body>
+</html>

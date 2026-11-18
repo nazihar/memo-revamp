@@ -1,0 +1,264 @@
+    <main style="flex: 1; padding: 16px 24px 0; display: flex; flex-direction: column; gap: 16px; min-width: 0">
+
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <a href="Main.dc.html" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; font-size: 13px; color: var(--muted-fg); text-decoration: none">
+          <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
+          Inbox
+        </a>
+        <h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">New memo</h1>
+        <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">Start with the type and subject. You add the document and the approvers next.</p>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 20px; flex: 1">
+
+        <!-- Form -->
+        <form novalidate onSubmit="{{submit}}" aria-labelledby="nm-title" style="flex: 999 1 520px; max-width: 760px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+          <span id="nm-title" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">New memo</span>
+
+          <!-- Type -->
+          <fieldset style="margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 8px; min-width: 0">
+            <legend style="padding: 0; margin-bottom: 8px; display: flex; flex-direction: column">
+              <span style="font-size: 14px; font-weight: 600">Memo type</span>
+              <span style="font-size: 13px; color: var(--muted-fg)">What kind of memo? The type decides the template, the details asked and how it is numbered.</span>
+            </legend>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 8px">
+              <sc-for list="{{types}}" as="t" hint-placeholder-count="6">
+                <label style="{{t.cardStyle}}">
+                  <input type="radio" name="typeId" value="{{t.id}}" checked="{{t.checked}}" onChange="{{t.pick}}" style="margin: 2px 0 0; width: 16px; height: 16px; accent-color: var(--primary); flex-shrink: 0">
+                  <span style="display: flex; flex-direction: column; min-width: 0">
+                    <span style="font-size: 14px; font-weight: 500">{{t.name}}</span>
+                    <span style="font-size: 12px; line-height: 16px; color: var(--muted-fg)">{{t.lines}}</span>
+                  </span>
+                </label>
+              </sc-for>
+            </div>
+            <sc-if value="{{hasTemplate}}" hint-placeholder-val="{{true}}">
+              <p role="note" style="margin: 4px 0 0; display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-3)">
+                <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path></svg>
+                The document starts from the {{typeName}} template, filled with what you enter here.
+              </p>
+            </sc-if>
+          </fieldset>
+
+          <!-- Subject + classification -->
+          <div style="display: flex; flex-direction: column; gap: 16px; padding-top: 20px; border-top: 1px solid var(--border)">
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <label for="nm-subject" style="font-size: 14px; font-weight: 500">Subject</label>
+              <input id="nm-subject" type="text" value="{{subject}}" onChange="{{onSubject}}" aria-invalid="{{subjectInvalid}}" aria-describedby="nm-subject-msg" placeholder="e.g. Credit line renewal for [client]" style="{{subjectStyle}}">
+              <sc-if value="{{subjectError}}" hint-placeholder-val="{{false}}">
+                <span id="nm-subject-msg" style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--danger-fg)">
+                  <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>
+                  Required.
+                </span>
+              </sc-if>
+              <sc-if value="{{subjectOk}}" hint-placeholder-val="{{true}}">
+                <span id="nm-subject-msg" style="font-size: 12px; color: var(--muted-fg)">Readers see this first in their inbox. Keep it short and specific.</span>
+              </sc-if>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 6px; max-width: 360px">
+              <label for="nm-class" style="font-size: 14px; font-weight: 500">Classification</label>
+              <select id="nm-class" aria-describedby="nm-class-hint" style="height: 32px; padding: 0 8px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+                <option>The type’s default ({{typeDefault}})</option>
+                <option>Internal</option>
+                <option>Confidential</option>
+                <option>Strictly confidential</option>
+              </select>
+              <span id="nm-class-hint" style="font-size: 12px; color: var(--muted-fg)">At least the type’s default, and at most your own clearance.</span>
+            </div>
+          </div>
+
+          <!-- Type details -->
+          <sc-if value="{{hasFields}}" hint-placeholder-val="{{true}}">
+            <fieldset style="margin: 0; padding: 20px 0 0; border: 0; border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 16px; min-width: 0">
+              <legend style="float: left; width: 100%; padding: 0; display: flex; flex-direction: column; gap: 2px">
+                <span style="font-size: 14px; font-weight: 600">{{typeName}} details</span>
+                <span style="font-size: 13px; color: var(--muted-fg)">You can save the draft with gaps; every field not marked optional is needed before you submit.</span>
+              </legend>
+              <div style="clear: both; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 20px">
+                <sc-for list="{{fields}}" as="f" hint-placeholder-count="6">
+                  <div style="{{f.cellStyle}}">
+                    <label for="{{f.id}}" style="font-size: 14px; font-weight: 500">{{f.label}} <sc-if value="{{f.optional}}" hint-placeholder-val="{{false}}"><span style="font-weight: 400; color: var(--muted-fg)">(optional)</span></sc-if></label>
+                    <sc-if value="{{f.isText}}" hint-placeholder-val="{{true}}">
+                      <input id="{{f.id}}" type="text" placeholder="{{f.placeholder}}" style="height: 32px; padding: 0 10px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); outline: none">
+                    </sc-if>
+                    <sc-if value="{{f.isChoice}}" hint-placeholder-val="{{false}}">
+                      <select id="{{f.id}}" style="height: 32px; padding: 0 8px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+                        <option>Choose…</option>
+                        <sc-for list="{{f.options}}" as="o" hint-placeholder-count="3"><option>{{o}}</option></sc-for>
+                      </select>
+                    </sc-if>
+                    <sc-if value="{{f.isAmount}}" hint-placeholder-val="{{false}}">
+                      <span style="display: flex; height: 32px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); box-shadow: 0 1px 2px rgba(0,0,0,0.05); overflow: hidden">
+                        <span style="display: flex; align-items: center; padding: 0 10px; border-right: 1px solid var(--border); background: var(--muted); font-size: 13px; color: var(--text-3)">{{f.unit}}</span>
+                        <input id="{{f.id}}" type="text" inputmode="decimal" placeholder="0" style="flex: 1; min-width: 0; padding: 0 10px; border: 0; background: transparent; color: var(--fg); font-family: inherit; font-size: 14px; font-variant-numeric: tabular-nums; text-align: right; outline: none">
+                      </span>
+                    </sc-if>
+                    <sc-if value="{{f.isNumber}}" hint-placeholder-val="{{false}}">
+                      <span style="display: flex; height: 32px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); box-shadow: 0 1px 2px rgba(0,0,0,0.05); overflow: hidden">
+                        <input id="{{f.id}}" type="number" min="1" placeholder="12" style="flex: 1; min-width: 0; padding: 0 10px; border: 0; background: transparent; color: var(--fg); font-family: inherit; font-size: 14px; outline: none">
+                        <span style="display: flex; align-items: center; padding: 0 10px; border-left: 1px solid var(--border); background: var(--muted); font-size: 13px; color: var(--text-3)">{{f.unit}}</span>
+                      </span>
+                    </sc-if>
+                    <sc-if value="{{f.isDate}}" hint-placeholder-val="{{false}}">
+                      <input id="{{f.id}}" type="date" style="height: 32px; padding: 0 10px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+                    </sc-if>
+                    <sc-if value="{{f.isPicker}}" hint-placeholder-val="{{false}}">
+                      <button id="{{f.id}}" type="button" aria-haspopup="listbox" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--muted-fg); font-size: 14px; text-align: left; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+                        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+                        <span style="flex: 1">{{f.placeholder}}</span>
+                        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 15 5 5 5-5"></path><path d="m7 9 5-5 5 5"></path></svg>
+                      </button>
+                    </sc-if>
+                    <sc-if value="{{f.isLong}}" hint-placeholder-val="{{false}}">
+                      <textarea id="{{f.id}}" rows="3" placeholder="{{f.placeholder}}" style="padding: 8px 10px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; line-height: 20px; resize: vertical; box-shadow: 0 1px 2px rgba(0,0,0,0.05); outline: none"></textarea>
+                    </sc-if>
+                    <sc-if value="{{f.hasHint}}" hint-placeholder-val="{{false}}">
+                      <span style="font-size: 12px; color: var(--muted-fg)">{{f.hint}}</span>
+                    </sc-if>
+                  </div>
+                </sc-for>
+              </div>
+            </fieldset>
+          </sc-if>
+
+          <!-- Sticky footer -->
+          <div style="position: sticky; bottom: 0; z-index: 2; display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin: 0 -24px; padding: 12px 24px; border-top: 1px solid var(--border); background: var(--bg)">
+            <span style="flex: 1; font-size: 12px; color: var(--muted-fg)">Saved as a draft. Nobody else sees it until you submit.</span>
+            <a href="Main.dc.html" style="display: inline-flex; align-items: center; height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 14px; font-weight: 500; text-decoration: none">Cancel</a>
+            <button type="submit" style="height: 32px; padding: 0 14px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 14px; font-weight: 500; cursor: pointer">Create draft</button>
+          </div>
+        </form>
+
+        <!-- Next steps -->
+        <aside aria-labelledby="nm-steps" style="flex: 1 1 260px; max-width: 320px; min-width: 0; display: flex; flex-direction: column; gap: 12px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 10px">
+          <h2 id="nm-steps" style="margin: 0; font-size: 14px; font-weight: 600">From draft to decision</h2>
+          <ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column">
+            <sc-for list="{{steps}}" as="s" hint-placeholder-count="4">
+              <li style="display: flex; gap: 10px">
+                <div aria-hidden="true" style="display: flex; flex-direction: column; align-items: center; width: 20px; flex-shrink: 0">
+                  <span style="{{s.dotStyle}}">{{s.n}}</span>
+                  <sc-if value="{{s.hasLine}}" hint-placeholder-val="{{true}}">
+                    <span style="flex: 1; width: 2px; min-height: 12px; margin: 2px 0; background: var(--chip)"></span>
+                  </sc-if>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 1px; padding-bottom: 12px; min-width: 0">
+                  <span style="{{s.titleStyle}}">{{s.title}}</span>
+                  <span style="font-size: 12px; line-height: 16px; color: var(--muted-fg)">{{s.text}}</span>
+                </div>
+              </li>
+            </sc-for>
+          </ol>
+        </aside>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const typeId = st.typeId || 'credit';
+    const subject = st.subject !== undefined ? st.subject : '';
+    const tried = !!st.tried;
+    const navOpen = !!st.navOpen;
+    const collapsed = !!st.collapsed;
+
+    const typeDefs = [
+      { id: 'credit', name: 'Credit proposal', numbering: 'Numbered when submitted', fields: true, template: true, def: 'Confidential' },
+      { id: 'budget', name: 'Budget request', numbering: 'Numbered when submitted', fields: true, template: true, def: 'Internal' },
+      { id: 'procurement', name: 'Procurement', numbering: 'Numbered when finally approved', fields: false, template: true, def: 'Internal' },
+      { id: 'policy', name: 'Policy', numbering: 'Numbered when finally approved', fields: false, template: false, def: 'Internal' },
+      { id: 'hr', name: 'HR request', numbering: 'Numbered when submitted', fields: false, template: true, def: 'Confidential' },
+      { id: 'general', name: 'General memo', numbering: 'Numbered when submitted', fields: false, template: false, def: 'Internal' }
+    ];
+    const type = typeDefs.find((t) => t.id === typeId) || typeDefs[0];
+    const cardBase = 'display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border-radius: 8px; cursor: pointer; ';
+    const types = typeDefs.map((t) => ({
+      id: t.id,
+      name: t.name,
+      lines: t.numbering + (t.fields ? ' · Asks for details' : ''),
+      checked: t.id === typeId,
+      cardStyle: cardBase + (t.id === typeId ? 'border: 1px solid var(--primary); background: var(--muted)' : 'border: 1px solid var(--border); background: var(--bg)'),
+      pick: () => this.setState({ typeId: t.id })
+    }));
+
+    const F = (id, label, kind, extra) => Object.assign({ id: 'nm-f-' + id, label: label, kind: kind, placeholder: '', unit: '', options: [], optional: false, hint: '', full: false }, extra || {});
+    const fieldSets = {
+      credit: [
+        F('borrower', 'Borrower', 'text', { placeholder: 'Legal name of the client' }),
+        F('facility', 'Facility', 'choice', { options: ['Revolving credit line', 'Term loan', 'Overdraft', 'Bank guarantee'] }),
+        F('amount', 'Amount', 'amount', { unit: 'BDT' }),
+        F('tenor', 'Tenor', 'number', { unit: 'months' }),
+        F('unit', 'Originating unit', 'picker', { placeholder: 'Find a unit' }),
+        F('expiry', 'Current facility expires', 'date', { optional: true }),
+        F('purpose', 'Purpose', 'long', { placeholder: 'What the facility is for, in a sentence or two', optional: true, full: true, hint: 'Appears in the template’s summary section.' })
+      ],
+      budget: [
+        F('costcentre', 'Cost centre', 'picker', { placeholder: 'Find a cost centre' }),
+        F('fiscal', 'Fiscal year', 'choice', { options: ['2026', '2027'] }),
+        F('amount', 'Amount', 'amount', { unit: 'BDT' }),
+        F('owner', 'Budget owner', 'picker', { placeholder: 'Find a person' }),
+        F('reason', 'Reason', 'long', { placeholder: 'Why this spend, and why now', full: true })
+      ]
+    };
+    const fields = (fieldSets[type.id] || []).map((f) => Object.assign({}, f, {
+      isText: f.kind === 'text', isChoice: f.kind === 'choice', isAmount: f.kind === 'amount', isNumber: f.kind === 'number',
+      isDate: f.kind === 'date', isPicker: f.kind === 'picker', isLong: f.kind === 'long', hasHint: !!f.hint,
+      cellStyle: 'display: flex; flex-direction: column; gap: 6px; min-width: 0' + (f.full ? '; grid-column: 1 / -1' : '')
+    }));
+
+    const subjectError = tried && !subject.trim();
+    const inputBase = 'height: 32px; padding: 0 10px; box-sizing: border-box; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); outline: none; ';
+
+    const stepDefs = [
+      ['Details', 'Type, subject, classification and the type’s fields.'],
+      ['Document', 'Upload a Word file, or start from the template.'],
+      ['Approvers', 'In order. “Who approves this?” shows the delegation-of-authority rule.'],
+      ['Submit', type.numbering === 'Numbered when submitted' ? 'The memo gets its number and goes to the first approver.' : 'It goes to the first approver; the number comes with final approval.']
+    ];
+    const steps = stepDefs.map((s, i) => ({
+      n: String(i + 1),
+      title: s[0],
+      text: s[1],
+      hasLine: i < stepDefs.length - 1,
+      dotStyle: 'display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; box-sizing: border-box; border-radius: 50%; font-size: 11px; font-weight: 600; ' + (i === 0 ? 'background: var(--primary); color: var(--primary-fg)' : 'border: 1.5px solid var(--border-strong); color: var(--muted-fg)'),
+      titleStyle: 'font-size: 13px; font-weight: 500; ' + (i === 0 ? 'color: var(--fg)' : 'color: var(--text-3)')
+    }));
+
+    const closeNav = () => this.setState({ navOpen: false });
+    const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent || '');
+
+    return {
+      themeClass: (this.state && this.state.theme) || this.props.theme || 'system',
+      types: types,
+      typeName: type.name,
+      typeDefault: type.def,
+      hasTemplate: type.template,
+      hasFields: fields.length > 0,
+      fields: fields,
+      subject: subject,
+      onSubject: (e) => this.setState({ subject: e && e.target ? e.target.value : '' }),
+      subjectError: subjectError,
+      subjectOk: !subjectError,
+      subjectInvalid: subjectError ? 'true' : 'false',
+      subjectStyle: inputBase + (subjectError ? 'border: 1px solid var(--destructive)' : 'border: 1px solid var(--border)'),
+      submit: (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ tried: true }); },
+      steps: steps,
+      shortcut: isMac ? '⌘K' : 'Ctrl K',
+      sidebarClass: 'sidebar' + (navOpen ? ' open' : '') + (collapsed && !navOpen ? ' collapsed' : ''),
+      scrimClass: 'scrim' + (navOpen ? ' open' : ''),
+      navAria: (navOpen || !collapsed) ? 'true' : 'false',
+      toggleNav: () => {
+        const narrow = typeof window !== 'undefined' && window.innerWidth <= 860;
+        if (narrow) this.setState({ navOpen: !navOpen });
+        else this.setState({ collapsed: !collapsed });
+      },
+      closeNav: closeNav,
+      navKey: (ev) => { if (ev && ev.key === 'Escape') closeNav(); }
+    };
+  }
+}
+</script>
+</body>
+</html>

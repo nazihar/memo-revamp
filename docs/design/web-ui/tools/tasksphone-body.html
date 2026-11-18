@@ -1,0 +1,192 @@
+  <main style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column">
+    <div style="display: flex; flex-direction: column; gap: 2px; padding: 12px 16px 8px">
+      <h1 style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Open tasks</h1>
+      <span style="font-size: 13px; color: var(--muted-fg)">Give a task to someone else when its approver cannot act.</span>
+    </div>
+    <div class="chips" role="tablist" aria-label="Show" style="flex-shrink: 0; display: flex; gap: 6px; padding: 4px 16px 12px; overflow-x: auto; scrollbar-width: none">
+      <sc-for list="{{filters}}" as="f" hint-placeholder-count="3">
+        <button type="button" role="tab" aria-selected="{{f.aria}}" onClick="{{f.pick}}" style="{{f.style}}">
+          {{f.label}}
+          <span style="{{f.countStyle}}">{{f.count}}</span>
+        </button>
+      </sc-for>
+    </div>
+    <ul style="list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--hover)">
+      <sc-for list="{{rows}}" as="r" hint-placeholder-count="8">
+        <li style="{{r.rowStyle}}">
+          <div style="display: flex; align-items: flex-start; gap: 8px">
+            <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+              <sc-if value="{{r.restricted}}" hint-placeholder-val="{{false}}">
+                <span style="font-size: 15px; font-weight: 500; color: var(--text-3)">Restricted memo</span>
+              </sc-if>
+              <sc-if value="{{r.open}}" hint-placeholder-val="{{true}}">
+                <span style="font-size: 15px; font-weight: 500">{{r.subject}}</span>
+              </sc-if>
+              <span style="font-size: 12px; color: var(--muted-fg)">{{r.meta}}</span>
+            </span>
+            <sc-if value="{{r.overdue}}" hint-placeholder-val="{{false}}">
+              <span style="flex-shrink: 0; display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; background: var(--destructive); color: var(--on-destructive); font-size: 12px; font-weight: 500">{{r.due}}</span>
+            </sc-if>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px">
+            <span aria-hidden="true" style="{{r.avatarStyle}}">{{r.initials}}</span>
+            <span style="flex: 1; min-width: 0; display: flex; flex-direction: column">
+              <span style="{{r.nameStyle}}">{{r.assignee}}</span>
+              <sc-if value="{{r.blocked}}" hint-placeholder-val="{{false}}">
+                <span style="font-size: 12px; font-weight: 500; color: var(--warn-fg)">{{r.blockedLabel}}</span>
+              </sc-if>
+              <sc-if value="{{r.justMoved}}" hint-placeholder-val="{{false}}">
+                <span style="font-size: 12px; font-weight: 500; color: var(--ok-fg)">Reassigned just now</span>
+              </sc-if>
+              <sc-if value="{{r.plain}}" hint-placeholder-val="{{true}}">
+                <span style="font-size: 12px; color: var(--muted-fg)">Waiting since {{r.since}}</span>
+              </sc-if>
+            </span>
+            <button type="button" onClick="{{r.reassign}}" aria-label="{{r.reassignLabel}}" style="{{r.btnStyle}}">Reassign</button>
+          </div>
+        </li>
+      </sc-for>
+    </ul>
+    <div style="display: flex; justify-content: center; padding: 16px">
+      <button type="button" class="ghost" style="height: 40px; padding: 0 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 14px; font-weight: 500">Show more</button>
+    </div>
+  </main>
+
+  <sc-if value="{{dlgOpen}}" hint-placeholder-val="{{false}}">
+    <button type="button" tabIndex="-1" aria-label="Close" onClick="{{closeDlg}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 20; border: 0; padding: 0; background: rgba(0,0,0,0.5)"></button>
+    <form role="dialog" aria-modal="true" aria-labelledby="pra-title" aria-describedby="pra-desc" novalidate onSubmit="{{doReassign}}" onKeyDown="{{dlgKey}}" style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 21; max-height: 88%; display: flex; flex-direction: column; border-radius: 16px 16px 0 0; background: var(--bg); box-shadow: 0 -8px 32px rgba(0,0,0,0.2)">
+      <div style="display: flex; flex-direction: column; gap: 4px; padding: 8px 16px 12px">
+        <span aria-hidden="true" style="align-self: center; width: 40px; height: 4px; margin-bottom: 6px; border-radius: 2px; background: var(--chip)"></span>
+        <h2 id="pra-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Reassign {{dlg.ref}}</h2>
+        <p id="pra-desc" style="margin: 0; font-size: 13px; color: var(--muted-fg)">Now with {{dlg.assignee}}<sc-if value="{{dlg.blocked}}" hint-placeholder-val="{{false}}"> · {{dlg.blockedLabel}}</sc-if>. The new approver must be active and cleared for the memo. Both approvers are told.</p>
+      </div>
+      <div style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; padding: 0 16px 12px">
+        <fieldset style="margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 8px">
+          <legend style="padding: 0; margin-bottom: 6px; font-size: 14px; font-weight: 500">New approver</legend>
+          <input type="search" aria-label="Find a person" value="Kar" style="height: 44px; padding: 0 12px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--muted); color: var(--fg); font-family: inherit; font-size: 16px; outline: none">
+          <div role="radiogroup" aria-label="People found" style="display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 8px; overflow: hidden">
+            <sc-for list="{{people}}" as="p" hint-placeholder-count="3">
+              <label style="{{p.rowStyle}}">
+                <input type="radio" name="pra-person" checked="{{p.on}}" disabled="{{p.off}}" onChange="{{p.pick}}" style="margin: 0; width: 18px; height: 18px; accent-color: var(--primary)">
+                <span style="display: flex; flex-direction: column; min-width: 0; flex: 1">
+                  <span style="font-size: 15px; font-weight: 500">{{p.name}}</span>
+                  <span style="{{p.noteStyle}}">{{p.note}}</span>
+                </span>
+              </label>
+            </sc-for>
+          </div>
+        </fieldset>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="pra-reason" style="font-size: 14px; font-weight: 500">Reason</label>
+          <textarea id="pra-reason" rows="2" placeholder="e.g. Nasir Uddin left the bank" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 16px; line-height: 22px; resize: none; outline: none"></textarea>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px; padding: 10px 16px 16px; border-top: 1px solid var(--border)">
+        <button type="submit" disabled="{{noPick}}" style="{{submitStyle}}">Reassign</button>
+        <button type="button" class="ghost" onClick="{{closeDlg}}" style="height: 44px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 15px; font-weight: 500">Cancel</button>
+      </div>
+    </form>
+  </sc-if>
+
+  <sc-if value="{{toast}}" hint-placeholder-val="{{false}}">
+    <div role="status" style="position: absolute; left: 16px; right: 16px; bottom: 16px; z-index: 15; display: flex; align-items: center; gap: 10px; padding: 10px 8px 10px 14px; border-radius: 10px; background: var(--primary); color: var(--primary-fg); font-size: 14px; box-shadow: 0 8px 24px rgba(0,0,0,0.2)">
+      <span style="flex: 1">{{toast}}</span>
+      <button type="button" aria-label="Dismiss" onClick="{{hideToast}}" style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border: 0; border-radius: 6px; background: transparent; color: var(--primary-fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+      </button>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const filter = st.filter || 'open';
+    const moved = st.moved || {};
+    const dlg = st.dlg || '';
+    const pick = st.pick || '';
+    const navOpen = !!st.navOpen;
+    const closeNav = () => this.setState({ navOpen: false });
+    const data = [
+      { id: 't1', subject: 'Q4 branch expansion budget', ref: 'FIN/2026/0311', type: 'Budget request', assignee: 'Nasir Uddin', blocked: 'Cannot sign in', since: '3 Nov', due: 'Overdue 6d', overdue: true },
+      { id: 't2', subject: 'Vendor onboarding: core banking support services', ref: 'PRC/2026/0087', type: 'Procurement', assignee: '', blocked: 'Nobody found for this step', since: '12 Nov' },
+      { id: 't3', restricted: true, type: 'Board paper', assignee: 'Kamal Hasan', blocked: 'Not cleared', since: '14 Nov' },
+      { id: 't4', subject: 'Credit line renewal for Meghna Agro', ref: 'CR/2026/0142', type: 'Credit proposal', assignee: 'Farhana Rahman', since: '16 Nov', due: 'Overdue 1d', overdue: true },
+      { id: 't5', subject: 'Staff loan exception — branch operations', ref: 'HR/2026/0129', type: 'HR request', assignee: 'Imran Hossain', since: '14 Nov' },
+      { id: 't6', subject: 'ATM fleet replacement, phase 2', ref: 'FIN/2026/0298', type: 'Capital expenditure', assignee: 'Shirin Akter', since: '13 Nov' },
+      { id: 't7', subject: 'Internal audit plan 2027', ref: 'AUD/2026/0021', type: 'Audit', assignee: 'Abdul Kader', since: '12 Nov' },
+      { id: 't8', subject: 'Remote access standard, revision 4', ref: 'IT/2026/0054', type: 'Policy', assignee: 'Nusrat Jahan', since: '15 Nov' }
+    ].map((d) => moved[d.id] ? Object.assign({}, d, { assignee: moved[d.id], blocked: '', justMoved: true }) : d);
+    const blockedN = data.filter((d) => d.blocked).length;
+    const overdueN = data.filter((d) => d.overdue).length;
+    const pill = 'flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px; border-radius: 18px; font-size: 13px; font-weight: 500; white-space: nowrap; ';
+    const filters = [
+      { id: 'open', label: 'All', count: data.length },
+      { id: 'blocked', label: 'Waiting for reassignment', count: blockedN },
+      { id: 'overdue', label: 'Overdue', count: overdueN }
+    ].map((f) => {
+      const on = f.id === filter;
+      return {
+        label: f.label, count: String(f.count), aria: on ? 'true' : 'false',
+        style: pill + (on ? 'border: 1px solid var(--primary); background: var(--primary); color: var(--primary-fg)' : 'border: 1px solid var(--border); background: var(--bg); color: var(--text-2)'),
+        countStyle: 'display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 9px; font-size: 11px; ' + (on ? 'background: var(--primary-divider); color: var(--primary-fg)' : 'background: var(--muted); color: var(--text-2)'),
+        pick: () => this.setState({ filter: f.id })
+      };
+    });
+    const ini = (n) => n ? n.split(' ').map((p) => p[0]).join('').slice(0, 2) : '?';
+    const rows = data.filter((d) => filter === 'open' || (filter === 'blocked' ? d.blocked : d.overdue)).map((d, i) => ({
+      subject: d.subject, restricted: !!d.restricted, open: !d.restricted,
+      meta: (d.restricted ? '' : d.ref + ' · ') + d.type,
+      due: d.due || '', overdue: !!d.overdue,
+      assignee: d.assignee || 'Nobody yet', initials: ini(d.assignee), since: d.since,
+      blocked: !!d.blocked, blockedLabel: d.blocked || '', justMoved: !!d.justMoved, plain: !d.blocked && !d.justMoved,
+      avatarStyle: 'flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; font-size: 11px; font-weight: 600; ' + (d.assignee ? 'background: var(--muted); color: var(--text-2)' : 'border: 1.5px dashed var(--border-strong); color: var(--muted-fg)'),
+      nameStyle: 'font-size: 14px; ' + (d.assignee ? 'color: var(--fg)' : 'color: var(--muted-fg); font-style: italic'),
+      reassignLabel: 'Reassign ' + (d.restricted ? 'restricted memo' : d.ref),
+      btnStyle: 'flex-shrink: 0; height: 40px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; ' + (d.blocked ? 'border: 0; background: var(--primary); color: var(--primary-fg)' : 'border: 1px solid var(--border); background: var(--bg); color: var(--fg)'),
+      rowStyle: 'display: flex; flex-direction: column; gap: 10px; padding: 12px 16px; border-bottom: 1px solid var(--hover)' + (d.blocked ? '; background: var(--subtle)' : ''),
+      reassign: () => this.setState({ dlg: d.id, pick: '' })
+    }));
+    const cur = data.find((d) => d.id === dlg) || data[0];
+    const people = [
+      { id: 'mk', name: 'Mahmud Karim', note: 'Already on the route', ok: false },
+      { id: 'kr', name: 'Karim Reza', note: 'Deputy CFO · cleared · active', ok: true },
+      { id: 'ak', name: 'Akash Karmakar', note: 'Not cleared for this memo', ok: false }
+    ].map((p, i) => ({
+      name: p.name, note: p.note, on: pick === p.id, off: !p.ok,
+      pick: () => this.setState({ pick: p.id }),
+      rowStyle: 'display: flex; align-items: center; gap: 12px; min-height: 56px; padding: 6px 12px; box-sizing: border-box; ' + (i > 0 ? 'border-top: 1px solid var(--hover); ' : '') + (p.ok ? '' : 'opacity: 0.75') + (pick === p.id ? '; background: var(--muted)' : ''),
+      noteStyle: 'font-size: 12px; ' + (p.ok ? 'color: var(--ok-fg)' : 'color: var(--muted-fg)')
+    }));
+    const closeDlg = () => this.setState({ dlg: '' });
+    return {
+      themeClass: (this.state && this.state.theme) || this.props.theme || 'system',
+      navOpen: navOpen,
+      navAria: navOpen ? 'true' : 'false',
+      openNav: () => this.setState({ navOpen: true }),
+      closeNav: closeNav,
+      navKey: (ev) => { if (ev && ev.key === 'Escape') closeNav(); },
+      filters: filters,
+      rows: rows,
+      dlgOpen: !!dlg,
+      dlg: { ref: cur.restricted ? 'a restricted memo' : cur.ref, assignee: cur.assignee || 'nobody', blocked: !!cur.blocked, blockedLabel: cur.blocked || '' },
+      people: people,
+      noPick: !pick,
+      submitStyle: 'height: 44px; border: 0; border-radius: 8px; font-size: 15px; font-weight: 500; ' + (pick ? 'background: var(--primary); color: var(--primary-fg)' : 'background: var(--muted); color: var(--muted-fg)'),
+      closeDlg: closeDlg,
+      dlgKey: (ev) => { if (ev && ev.key === 'Escape') closeDlg(); },
+      doReassign: (e) => {
+        if (e && e.preventDefault) e.preventDefault();
+        if (!pick) return;
+        const m = Object.assign({}, moved); m[dlg] = 'Karim Reza';
+        this.setState({ moved: m, dlg: '', toast: 'Reassigned to Karim Reza. Both approvers were told.' });
+      },
+      toast: st.toast || '',
+      hideToast: () => this.setState({ toast: '' })
+    };
+  }
+}
+</script>
+</body>
+</html>

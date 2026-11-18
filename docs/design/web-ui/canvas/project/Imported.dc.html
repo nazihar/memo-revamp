@@ -1,0 +1,431 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Imported memo</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+.th{color-scheme:light;--bg:#ffffff;--fg:#0a0a0a;--subtle:#fafafa;--muted:#f5f5f5;--hover:#f0f0f0;--active:#ebebeb;--chip:#e5e5e5;--border:#e5e5e5;--border-strong:#d4d4d4;--muted-fg:#737373;--text-1:#262626;--text-2:#404040;--text-3:#525252;--primary:#171717;--primary-fg:#fafafa;--primary-hover:#262626;--primary-divider:#404040;--primary-muted:#a3a3a3;--ring:#a3a3a3;--destructive:#dc2626;--destructive-hover:#b91c1c;--on-destructive:#ffffff;--danger-fg:#b91c1c;--danger-bg:#fef2f2;--danger-border:#fecaca;--warn-bg:#fffbeb;--warn-fg:#92400e;--warn-border:#fcd34d;--ok-bg:#f0fdf4;--ok-fg:#166534;--ok-border:#bbf7d0;--info-bg:#eff6ff;--info-fg:#1d4ed8}
+.th.dark{color-scheme:dark;--bg:#0a0a0a;--fg:#fafafa;--subtle:#141414;--muted:#262626;--hover:#1f1f1f;--active:#262626;--chip:#333333;--border:#2e2e2e;--border-strong:#525252;--muted-fg:#a3a3a3;--text-1:#e5e5e5;--text-2:#d4d4d4;--text-3:#a3a3a3;--primary:#e5e5e5;--primary-fg:#171717;--primary-hover:#d4d4d4;--primary-divider:#a3a3a3;--primary-muted:#525252;--ring:#737373;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#450a0a;--danger-border:#7f1d1d;--warn-bg:#422006;--warn-fg:#fcd34d;--warn-border:#78350f;--ok-bg:#052e16;--ok-fg:#86efac;--ok-border:#14532d;--info-bg:#172554;--info-fg:#93c5fd}
+@media (prefers-color-scheme: dark){.th.system{color-scheme:dark;--bg:#0a0a0a;--fg:#fafafa;--subtle:#141414;--muted:#262626;--hover:#1f1f1f;--active:#262626;--chip:#333333;--border:#2e2e2e;--border-strong:#525252;--muted-fg:#a3a3a3;--text-1:#e5e5e5;--text-2:#d4d4d4;--text-3:#a3a3a3;--primary:#e5e5e5;--primary-fg:#171717;--primary-hover:#d4d4d4;--primary-divider:#a3a3a3;--primary-muted:#525252;--ring:#737373;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#450a0a;--danger-border:#7f1d1d;--warn-bg:#422006;--warn-fg:#fcd34d;--warn-border:#78350f;--ok-bg:#052e16;--ok-fg:#86efac;--ok-border:#14532d;--info-bg:#172554;--info-fg:#93c5fd}}
+body:has(.th.dark){background:#0a0a0a}
+@media (prefers-color-scheme: dark){body:has(.th.system){background:#0a0a0a}}
+body{margin:0;background:#ffffff}
+a{color:var(--fg)}a:hover{color:var(--text-2)}
+button{font-family:inherit}
+textarea{font-family:inherit}
+.nav-item:hover{background:var(--hover)}
+.ghost:hover{background:var(--muted)}
+.tab:hover{color:var(--fg)}
+.lrow:hover{background:var(--subtle)}
+.primary:hover{background:var(--primary-hover)}
+.danger:hover{background:var(--destructive-hover)}
+.sidebar.collapsed{flex-basis:56px !important}
+.sidebar.collapsed .lbl{display:none !important}
+.sidebar.collapsed .nav-item{justify-content:center !important;padding:0 !important}
+.sidebar.collapsed .org{padding:8px 0 !important;justify-content:center}
+.sidebar.collapsed .grp-label{visibility:hidden;height:12px !important}
+.scrim{display:none !important}
+.drawer-close{display:none !important}
+@media (max-width: 1024px){.acct-name{display:none !important}}
+@media (max-width: 860px){
+.sidebar{display:none !important}
+.sidebar.open{display:flex !important;position:fixed;top:0;bottom:0;left:0;width:280px;z-index:40;box-shadow:0 10px 40px rgba(0,0,0,0.2)}
+.scrim.open{display:block !important}
+.drawer-close{display:inline-flex !important}
+.global-search{width:auto !important;flex:1;min-width:0}
+.kbd{display:none !important}
+}
+</style>
+</helmet>
+<div class="th {{themeClass}}" style="display: flex; flex-wrap: wrap; min-height: 1000px; background: var(--bg); color: var(--fg); font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 20px">
+
+  <button type="button" class="{{scrimClass}}" tabIndex="-1" aria-label="Close navigation" onClick="{{closeNav}}" style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 30; border: 0; padding: 0; background: rgba(0,0,0,0.4); cursor: default"></button>
+
+  <!-- Sidebar (same as Inbox) -->
+  <nav class="{{sidebarClass}}" aria-label="Main navigation" onKeyDown="{{navKey}}" style="flex: 0 0 240px; display: flex; flex-direction: column; background: var(--subtle); border-right: 1px solid var(--border); box-sizing: border-box; padding: 8px; overflow: hidden; position: relative">
+    <button type="button" class="drawer-close ghost" aria-label="Close navigation" onClick="{{closeNav}}" style="position: absolute; top: 14px; right: 12px; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--text-3)">
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+    </button>
+    <div class="org" title="[Organisation name]" style="display: flex; align-items: center; gap: 8px; padding: 8px; color: var(--fg)">
+      <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-weight: 600; font-size: 14px; flex-shrink: 0">N</span>
+      <span class="lbl" style="display: flex; flex-direction: column; min-width: 0; flex: 1">
+        <span style="font-weight: 600; font-size: 14px; line-height: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">[Organisation name]</span>
+        <span style="font-size: 12px; line-height: 16px; color: var(--muted-fg)">Memo &amp; Meetings</span>
+      </span>
+    </div>
+    <div style="display: flex; flex-direction: column; padding: 8px 0 0">
+      <div class="grp-label" style="height: 32px; display: flex; align-items: center; padding: 0 8px; font-size: 12px; font-weight: 500; color: var(--muted-fg); white-space: nowrap">Work</div>
+      <a href="Home.dc.html" class="nav-item" title="Home" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+        <span class="lbl">Home</span>
+      </a>
+      <a href="Main.dc.html" class="nav-item" title="Inbox" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+        <span class="lbl" style="flex: 1">Inbox</span>
+        <span class="lbl" style="font-size: 12px; font-weight: 500; color: var(--text-3); font-variant-numeric: tabular-nums">8</span>
+      </a>
+      <a href="#" class="nav-item" title="Saved searches" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>
+        <span class="lbl">Saved searches</span>
+      </a>
+      <a href="#" class="nav-item" title="Dashboard" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg>
+        <span class="lbl">Dashboard</span>
+      </a>
+      <a href="Status.dc.html" class="nav-item" title="Status" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path></svg>
+        <span class="lbl">Status</span>
+      </a>
+      <a href="Org.dc.html" class="nav-item" title="Organisation" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="16" y="16" width="6" height="6" rx="1"></rect><rect x="2" y="16" width="6" height="6" rx="1"></rect><rect x="9" y="2" width="6" height="6" rx="1"></rect><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"></path><path d="M12 12V8"></path></svg>
+        <span class="lbl">Organisation</span>
+      </a>
+    </div>
+    <div style="display: flex; flex-direction: column; padding: 8px 0 0">
+      <div class="grp-label" style="height: 32px; display: flex; align-items: center; padding: 0 8px; font-size: 12px; font-weight: 500; color: var(--muted-fg); white-space: nowrap">Administration</div>
+      <a href="#" class="nav-item" title="Overview" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
+        <span class="lbl">Overview</span>
+      </a>
+      <a href="#" class="nav-item" title="Users" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        <span class="lbl">Users</span>
+      </a>
+      <a href="#" class="nav-item" title="Memo types" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+        <span class="lbl">Memo types</span>
+      </a>
+      <a href="#" class="nav-item" title="Workflows" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="8" x="3" y="3" rx="2"></rect><path d="M7 11v4a2 2 0 0 0 2 2h4"></path><rect width="8" height="8" x="13" y="13" rx="2"></rect></svg>
+        <span class="lbl">Workflows</span>
+      </a>
+      <a href="#" class="nav-item" title="Open tasks" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 2 2 4-4"></path><path d="m3 7 2 2 4-4"></path><path d="M13 6h8"></path><path d="M13 12h8"></path><path d="M13 18h8"></path></svg>
+        <span class="lbl">Open tasks</span>
+      </a>
+      <a href="#" class="nav-item" title="Security" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>
+        <span class="lbl">Security</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main column -->
+  <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+
+    <!-- Top bar (same as Inbox) -->
+    <header style="position: relative; z-index: 5; height: 48px; display: flex; align-items: center; gap: 8px; padding: 0 16px; border-bottom: 1px solid var(--border); box-sizing: border-box; background: var(--bg)">
+      <button type="button" class="ghost" aria-label="Toggle navigation" aria-expanded="{{navAria}}" onClick="{{toggleNav}}" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; flex-shrink: 0; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M9 3v18"></path></svg>
+      </button>
+      <span aria-hidden="true" style="width: 1px; height: 16px; background: var(--chip); margin: 0 4px; flex-shrink: 0"></span>
+      <button type="button" class="global-search" style="display: flex; align-items: center; gap: 8px; width: 280px; height: 32px; padding: 0 6px 0 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--muted-fg); font-size: 14px; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        <span style="flex: 1; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Search memos…</span>
+        <kbd class="kbd" style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 11px; line-height: 16px; padding: 1px 5px; border: 1px solid var(--border); border-radius: 4px; background: var(--muted); color: var(--text-3)">{{shortcut}}</kbd>
+      </button>
+      <span style="flex: 1"></span>
+      <a href="Notifications.dc.html" class="ghost" aria-label="Notifications, 4 unread" style="position: relative; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; flex-shrink: 0; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg>
+        <span aria-hidden="true" style="position: absolute; top: 6px; right: 7px; width: 7px; height: 7px; border-radius: 50%; background: var(--destructive); border: 1.5px solid var(--bg)"></span>
+      </a>
+      <span aria-hidden="true" style="width: 1px; height: 16px; background: var(--chip); margin: 0 4px; flex-shrink: 0"></span>
+      <button type="button" class="ghost" aria-label="Account menu, Farhana Rahman" aria-haspopup="menu" style="display: inline-flex; align-items: center; gap: 8px; height: 32px; flex-shrink: 0; padding: 0 6px 0 2px; border: 0; background: transparent; border-radius: 8px; cursor: pointer; color: var(--fg)">
+        <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--chip); color: var(--fg); font-weight: 500; font-size: 11px; flex-shrink: 0">FR</span>
+        <span class="acct-name" style="display: flex; flex-direction: column; align-items: flex-start; line-height: 14px">
+          <span style="font-size: 13px; font-weight: 500; line-height: 16px">Farhana Rahman</span>
+          <span style="font-size: 11px; color: var(--muted-fg)">f.rahman@[domain]</span>
+        </span>
+        <svg style="color: var(--muted-fg)" class="acct-name" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+      </button>
+    </header>
+
+    <!-- Content -->
+    <main style="flex: 1; padding: 16px 24px 32px; display: flex; flex-direction: column; gap: 16px; min-width: 0">
+
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <a href="Search.dc.html" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; font-size: 13px; color: var(--muted-fg); text-decoration: none">
+          <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
+          Search
+        </a>
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 12px">
+          <div style="display: flex; flex-direction: column; gap: 6px; min-width: 0; flex: 1 1 480px">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+              <h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Meghna Agro overdraft</h1>
+              <span style="display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 8px; border-radius: 6px; background: var(--muted); color: var(--fg); font-size: 12px; font-weight: 500">
+                <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="5" x="2" y="3" rx="1"></rect><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"></path><path d="M10 12h4"></path></svg>
+                Imported
+              </span>
+              <span style="display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; border: 1px solid var(--border); color: var(--text-2); font-size: 12px; font-weight: 500">Approved (legacy status)</span>
+            </div>
+            <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 13px; color: var(--muted-fg)">
+              <span style="font-family: 'Geist Mono', ui-monospace, monospace; color: var(--text-2)">CR/2019/1180</span>
+              <span aria-hidden="true">·</span><span>Credit Proposal (form CP-3)</span>
+              <span aria-hidden="true">·</span><span>Corporate Banking</span>
+              <span aria-hidden="true">·</span>
+              <span style="display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 6px; background: var(--muted); color: var(--fg); font-size: 12px; font-weight: 500">Confidential</span>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px">
+            <button type="button" class="ghost" onClick="{{openCorrect}}" aria-haspopup="dialog" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); font-size: 13px; font-weight: 500; color: var(--fg); cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+              <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"></path></svg>
+              Correct a legacy detail
+            </button>
+            <button type="button" class="ghost" aria-label="More options: raise classification" style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Outcome strip: neutral, because nothing here was decided in this system -->
+      <div role="note" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 12px 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--subtle); font-size: 13px; color: var(--text-1)">
+        <span style="display: inline-flex; align-items: center; gap: 8px; font-weight: 600">
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--muted-fg)"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+          Created and decided in an earlier system; not verified by this system.
+        </span>
+        <span style="color: var(--muted-fg)">Imported 2 Oct 2026 from “Legacy DMS sample, 2019–2021”, row 118. Read only: no approvers, decisions or notes here.</span>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 20px">
+        <div style="flex: 999 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+          <div role="tablist" aria-label="Memo sections" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 2px; height: 36px; padding: 3px; box-sizing: border-box; border-radius: 10px; background: var(--muted); max-width: 100%; overflow-x: auto">
+            <sc-for list="{{tabs}}" as="t" hint-placeholder-count="4">
+              <button type="button" role="tab" class="tab" aria-selected="{{t.ariaSel}}" onClick="{{t.pick}}" style="{{t.style}}">
+                {{t.label}}
+                <sc-if value="{{t.hasCount}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 9px; background: var(--chip); color: var(--text-2); font-size: 11px; font-weight: 500">{{t.count}}</span></sc-if>
+              </button>
+            </sc-for>
+          </div>
+
+          <sc-if value="{{isOverview}}" hint-placeholder-val="{{true}}">
+            <div style="display: flex; flex-direction: column; gap: 12px">
+              <section aria-labelledby="im-main" style="border: 1px solid var(--border-strong); border-radius: 10px; padding: 14px 16px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+                <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px; background: var(--danger-bg); color: var(--danger-fg); font-size: 10px; font-weight: 700">PDF</span>
+                <div style="display: flex; flex-direction: column; min-width: 0; flex: 1 1 240px">
+                  <h2 id="im-main" style="margin: 0; font-size: 14px; font-weight: 500">Main original · CR-2019-1180 overdraft memo.pdf</h2>
+                  <span style="font-size: 12px; color: var(--muted-fg)">2.1 MB · <span style="font-family: 'Geist Mono', ui-monospace, monospace">SHA-256 4be1…09ac</span></span>
+                </div>
+                <a href="#" style="display: inline-flex; align-items: center; height: 32px; padding: 0 12px; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 13px; font-weight: 500; text-decoration: none">Open</a>
+                <a href="#" class="ghost" aria-label="Download the main original" style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; color: var(--fg)">
+                  <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"></path><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path></svg>
+                </a>
+              </section>
+
+              <section aria-labelledby="im-details" style="border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px">
+                <h2 id="im-details" style="margin: 0 0 10px; font-size: 14px; font-weight: 600">Legacy details</h2>
+                <dl style="margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 24px">
+                  <sc-for list="{{details}}" as="d" hint-placeholder-count="9">
+                    <div style="display: flex; flex-direction: column; gap: 2px">
+                      <dt style="font-size: 12px; color: var(--muted-fg)">{{d.label}}</dt>
+                      <dd style="margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px">{{d.value}}
+                        <sc-if value="{{d.corrected}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; height: 18px; padding: 0 6px; border-radius: 6px; border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg); font-size: 11px; font-weight: 500">Corrected</span></sc-if>
+                      </dd>
+                    </div>
+                  </sc-for>
+                </dl>
+              </section>
+
+              <section aria-labelledby="im-corr" style="border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px">
+                <h2 id="im-corr" style="margin: 0; font-size: 14px; font-weight: 600">Corrections</h2>
+                <span style="font-size: 12px; color: var(--muted-fg)">The legacy record stays as given; each correction is added with its reason and who made it.</span>
+                <sc-for list="{{corrections}}" as="c" hint-placeholder-count="1">
+                  <div style="display: flex; flex-direction: column; gap: 4px; padding-top: 8px; border-top: 1px solid var(--hover)">
+                    <span style="font-size: 13px"><strong style="font-weight: 500">{{c.field}}</strong>: <span style="text-decoration: line-through; color: var(--muted-fg)">{{c.from}}</span> → {{c.to}}</span>
+                    <span style="font-size: 13px; color: var(--text-1)">“{{c.reason}}”</span>
+                    <span style="font-size: 12px; color: var(--muted-fg)">{{c.who}} · {{c.when}}</span>
+                  </div>
+                </sc-for>
+              </section>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{isOriginals}}" hint-placeholder-val="{{false}}">
+            <ul style="list-style: none; margin: 0; padding: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden">
+              <sc-for list="{{originals}}" as="o" hint-placeholder-count="4">
+                <li style="{{o.rowStyle}}">
+                  <span style="width: 56px; flex-shrink: 0; font-size: 12px; color: var(--muted-fg)">{{o.role}}</span>
+                  <div style="display: flex; flex-direction: column; min-width: 0; flex: 1">
+                    <span style="font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{o.name}}</span>
+                    <span style="font-size: 12px; color: var(--muted-fg)">{{o.meta}}</span>
+                  </div>
+                  <sc-if value="{{o.restricted}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 6px; background: var(--muted); font-size: 11px; font-weight: 500">Restricted original</span></sc-if>
+                  <sc-if value="{{o.downloadOnly}}" hint-placeholder-val="{{false}}"><span style="font-size: 12px; color: var(--muted-fg)">Download only</span></sc-if>
+                  <sc-if value="{{o.canOpen}}" hint-placeholder-val="{{true}}"><a href="#" class="ghost" style="display: inline-flex; align-items: center; height: 28px; padding: 0 10px; border: 1px solid var(--border); border-radius: 6px; color: var(--fg); font-size: 12px; font-weight: 500; text-decoration: none">Open</a></sc-if>
+                  <sc-if value="{{o.canDownload}}" hint-placeholder-val="{{true}}">
+                    <a href="#" class="ghost" aria-label="{{o.dlLabel}}" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 6px; color: var(--text-3)">
+                      <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"></path><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path></svg>
+                    </a>
+                  </sc-if>
+                </li>
+              </sc-for>
+            </ul>
+          </sc-if>
+
+          <sc-if value="{{isLinks}}" hint-placeholder-val="{{false}}">
+            <section style="border: 1px solid var(--border); border-radius: 10px">
+              <a href="#" class="lrow" style="display: flex; align-items: center; gap: 12px; padding: 10px 16px; text-decoration: none; color: var(--fg)">
+                <span style="width: 92px; flex-shrink: 0; font-size: 12px; color: var(--muted-fg)">Followed up by</span>
+                <span style="display: flex; flex-direction: column; min-width: 0; flex: 1"><span style="font-weight: 500">Credit line for Meghna Agro, 2025</span><span style="font-size: 12px; color: var(--muted-fg); font-family: 'Geist Mono', ui-monospace, monospace">CR/2025/0388</span></span>
+                <span style="display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; border: 1px solid var(--border); color: var(--text-2); font-size: 12px; font-weight: 500">Approved</span>
+              </a>
+            </section>
+          </sc-if>
+
+          <sc-if value="{{isHistory}}" hint-placeholder-val="{{false}}">
+            <ol style="list-style: none; margin: 0; padding: 8px 16px; border: 1px solid var(--border); border-radius: 10px">
+              <sc-for list="{{history}}" as="h" hint-placeholder-count="4">
+                <li style="display: flex; align-items: baseline; gap: 12px; padding: 7px 0; border-bottom: 1px solid var(--hover); font-size: 13px">
+                  <span style="width: 96px; flex-shrink: 0; color: var(--muted-fg)">{{h.time}}</span>
+                  <span style="flex: 1"><span style="font-weight: 500">{{h.who}}</span> {{h.what}}</span>
+                </li>
+              </sc-for>
+            </ol>
+          </sc-if>
+        </div>
+
+        <aside aria-label="Legacy approvals" style="flex: 1 1 320px; max-width: 380px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+          <section aria-labelledby="im-appr" style="border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px">
+            <h2 id="im-appr" style="margin: 0; font-size: 14px; font-weight: 600">Legacy approval history</h2>
+            <span style="font-size: 12px; color: var(--muted-fg)">Imported, not verified by this system.</span>
+            <ol style="list-style: none; margin: 0; padding: 0">
+              <sc-for list="{{approvals}}" as="a" hint-placeholder-count="2">
+                <li style="display: flex; gap: 10px; padding: 8px 0; border-top: 1px solid var(--hover)">
+                  <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; margin-top: 1px; box-sizing: border-box; border-radius: 50%; border: 1.5px solid var(--border-strong); color: var(--text-3); font-size: 11px; font-weight: 600; flex-shrink: 0">{{a.n}}</span>
+                  <span style="display: flex; flex-direction: column; gap: 1px; min-width: 0">
+                    <span style="font-size: 13px"><strong style="font-weight: 500">{{a.name}}</strong> <span style="color: var(--muted-fg)">· {{a.decision}}</span></span>
+                    <span style="font-size: 12px; color: var(--muted-fg)">{{a.position}} · {{a.date}}</span>
+                    <sc-if value="{{a.hasRemark}}" hint-placeholder-val="{{false}}"><span style="font-size: 13px; color: var(--text-1)">“{{a.remark}}”</span></sc-if>
+                  </span>
+                </li>
+              </sc-for>
+            </ol>
+          </section>
+          <section aria-labelledby="im-rec" style="border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px">
+            <h2 id="im-rec" style="margin: 0; font-size: 14px; font-weight: 600">The record</h2>
+            <span style="font-size: 13px; color: var(--text-1)">No final record: for an imported memo the original documents are the record.</span>
+          </section>
+          <section aria-labelledby="im-people" style="border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px">
+            <h2 id="im-people" style="margin: 0; font-size: 14px; font-weight: 600">Access</h2>
+            <dl style="margin: 0; display: grid; grid-template-columns: 112px minmax(0, 1fr); gap: 8px 12px; font-size: 13px">
+              <dt style="color: var(--muted-fg)">Classification</dt><dd style="margin: 0">Confidential</dd>
+              <dt style="color: var(--muted-fg)">Can read</dt><dd style="margin: 0">People cleared to Confidential in Corporate Banking and Credit</dd>
+            </dl>
+          </section>
+        </aside>
+      </div>
+    </main>
+  </div>
+
+  <!-- Correct a legacy detail -->
+  <sc-if value="{{correctOpen}}" hint-placeholder-val="{{false}}">
+    <div style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 16px; box-sizing: border-box">
+      <button type="button" tabIndex="-1" aria-label="Close dialog" onClick="{{closeCorrect}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; border: 0; padding: 0; background: rgba(0,0,0,0.5); cursor: default"></button>
+      <form role="dialog" aria-modal="true" aria-labelledby="cr-title" aria-describedby="cr-desc" novalidate onSubmit="{{submitCorrect}}" onKeyDown="{{correctKey}}" style="position: relative; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--bg); box-shadow: 0 16px 48px rgba(0,0,0,0.2)">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h2 id="cr-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Correct a legacy detail</h2>
+          <p id="cr-desc" style="margin: 0; font-size: 14px; color: var(--muted-fg)">The legacy record stays as given; the correction is added with your reason and name.</p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="cr-field" style="font-size: 14px; font-weight: 500">Detail</label>
+          <select id="cr-field" style="height: 36px; padding: 0 8px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px">
+            <option>Closed on</option><option>Subject</option><option>Raised on</option><option>Decided on</option><option>Initiator</option><option>Legacy unit</option><option>Legacy type</option>
+          </select>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="cr-value" style="font-size: 14px; font-weight: 500">Corrected value</label>
+          <input id="cr-value" type="date" value="2020-06-29" style="height: 36px; padding: 0 10px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px">
+          <span style="font-size: 12px; color: var(--muted-fg)">Now 30 Jun 2020. The dates must stay in order: raised on, then decided on, then closed on.</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="cr-reason" style="font-size: 14px; font-weight: 500">Reason</label>
+          <textarea id="cr-reason" rows="2" style="width: 100%; box-sizing: border-box; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; line-height: 20px; resize: vertical; outline: none"></textarea>
+          <span style="font-size: 12px; color: var(--muted-fg)">Shown with the correction to everyone who reads the memo.</span>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px">
+          <button type="button" class="ghost" onClick="{{closeCorrect}}" style="height: 36px; padding: 0 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); font-size: 14px; font-weight: 500; color: var(--fg); cursor: pointer">Cancel</button>
+          <button type="submit" style="height: 36px; padding: 0 14px; border: 0; border-radius: 8px; background: var(--primary); font-size: 14px; font-weight: 500; color: var(--primary-fg); cursor: pointer">Confirm and verify identity</button>
+        </div>
+      </form>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const tab = st.tab || 'overview';
+    const navOpen = !!st.navOpen, collapsed = !!st.collapsed;
+    const tabBase = 'display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 10px; border-radius: 7px; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; ';
+    const tabs = [
+      { id: 'overview', label: 'Overview' },
+      { id: 'originals', label: 'Original documents', count: 4 },
+      { id: 'links', label: 'Linked memos', count: 1 },
+      { id: 'history', label: 'History' }
+    ].map((t) => ({
+      label: t.label, count: t.count, hasCount: !!t.count, ariaSel: t.id === tab ? 'true' : 'false',
+      style: tabBase + (t.id === tab ? 'border: 1px solid var(--border); background: var(--bg); color: var(--fg); box-shadow: 0 1px 2px rgba(0,0,0,0.06)' : 'border: 1px solid transparent; background: transparent; color: var(--muted-fg)'),
+      pick: () => this.setState({ tab: t.id })
+    }));
+    const details = [
+      ['Type', 'Credit Proposal (form CP-3)'], ['Classification', 'Confidential'], ['Unit', 'Corporate Banking'],
+      ['Raised', '2 Apr 2019'], ['Decided', '9 Apr 2019', true], ['Closed', '30 Jun 2020'],
+      ['Status', 'Approved'], ['Legacy number', 'CR/2019/1180'], ['Initiator', 'Kamrul Islam, Relationship Manager']
+    ].map((d) => ({ label: d[0], value: d[1], corrected: !!d[2] }));
+    const corrections = [{ field: 'Decided on', from: '12 Apr 2019', to: '9 Apr 2019', reason: 'Date taken from the signed minute in the main original, page 3.', who: 'Rashed Alam, Records Manager', when: '3 Nov 2026' }];
+    const originals = [
+      { role: 'Main', name: 'CR-2019-1180 overdraft memo.pdf', meta: 'PDF · 2.1 MB', canOpen: true },
+      { role: 'Annex', name: 'Stock audit report, March 2019.pdf', meta: 'PDF · 840 KB', canOpen: true },
+      { role: 'Annex', name: 'Board extract 2019-04.tif', meta: 'TIFF image · 5.6 MB', downloadOnly: true },
+      { role: 'Annex', name: 'Borrower KYC file', meta: 'Classified Strictly confidential · you are not cleared to open it', restricted: true }
+    ].map((o, i) => ({
+      role: o.role, name: o.name, meta: o.meta,
+      restricted: !!o.restricted, downloadOnly: !!o.downloadOnly, canOpen: !!o.canOpen, canDownload: !o.restricted,
+      dlLabel: 'Download ' + o.name,
+      rowStyle: 'display: flex; align-items: center; gap: 12px; padding: 10px 12px 10px 16px' + (i > 0 ? '; border-top: 1px solid var(--hover)' : '')
+    }));
+    const approvals = [
+      { name: 'M. Haque', position: 'Head of Credit', decision: 'Approved', date: '7 Apr 2019', remark: 'OK subject to stock audit.' },
+      { name: 'S. Rahman', position: 'Managing Director', decision: 'Approved', date: '9 Apr 2019', remark: '' }
+    ].map((a, i) => Object.assign({}, a, { n: String(i + 1), hasRemark: !!a.remark }));
+    const history = [
+      { time: '3 Nov 2026', who: 'Rashed Alam', what: 'corrected “Decided on” (12 Apr → 9 Apr 2019)' },
+      { time: '2 Oct 2026', who: 'Import', what: 'brought in from “Legacy DMS sample, 2019–2021”, row 118, with 4 originals' }
+    ];
+    const closeCorrect = () => this.setState({ correct: false });
+    const closeNav = () => this.setState({ navOpen: false });
+    return {
+      themeClass: (this.state && this.state.theme) || this.props.theme || 'system',
+      tabs: tabs,
+      isOverview: tab === 'overview', isOriginals: tab === 'originals', isLinks: tab === 'links', isHistory: tab === 'history',
+      details: details, corrections: corrections, originals: originals, approvals: approvals, history: history,
+      correctOpen: !!st.correct,
+      openCorrect: () => this.setState({ correct: true }),
+      closeCorrect: closeCorrect,
+      correctKey: (ev) => { if (ev && ev.key === 'Escape') closeCorrect(); },
+      submitCorrect: (e) => { if (e && e.preventDefault) e.preventDefault(); closeCorrect(); },
+      shortcut: (typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent || '')) ? '⌘K' : 'Ctrl K',
+      sidebarClass: 'sidebar' + (navOpen ? ' open' : '') + (collapsed && !navOpen ? ' collapsed' : ''),
+      scrimClass: 'scrim' + (navOpen ? ' open' : ''),
+      navAria: (navOpen || !collapsed) ? 'true' : 'false',
+      toggleNav: () => {
+        const narrow = typeof window !== 'undefined' && window.innerWidth <= 860;
+        if (narrow) this.setState({ navOpen: !navOpen });
+        else this.setState({ collapsed: !collapsed });
+      },
+      closeNav: closeNav,
+      navKey: (ev) => { if (ev && ev.key === 'Escape') closeNav(); }
+    };
+  }
+}
+</script>
+</body>
+</html>

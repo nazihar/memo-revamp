@@ -1,0 +1,246 @@
+    <main style="flex: 1; padding: 20px 24px 32px; display: flex; flex-direction: column; gap: 16px; min-width: 0">
+
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px">
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Search</h1>
+          <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">Type words from a memo’s details, notes or documents, or a memo number.</p>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px">
+          <a href="#" class="ghost" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 8px; color: var(--fg); font-size: 13px; font-weight: 500; text-decoration: none">
+            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>
+            Saved searches
+          </a>
+          <button type="button" class="ghost" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">Save this search</button>
+        </div>
+      </div>
+
+      <!-- Query -->
+      <form role="search" onSubmit="{{noop}}" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 12px; border: 1px solid var(--border); border-radius: 10px">
+        <label style="position: relative; display: flex; align-items: center; flex: 1 1 360px; min-width: 0">
+          <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Words to find</span>
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--muted-fg); position: absolute; left: 12px"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+          <input type="search" value="Meghna valuation" style="width: 100%; height: 36px; padding: 0 12px 0 36px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 15px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); outline: none">
+        </label>
+        <fieldset style="margin: 0; padding: 0; border: 0; display: flex; align-items: center; gap: 8px">
+          <legend style="float: left; margin-right: 4px; padding: 0; font-size: 13px; color: var(--muted-fg)">Search in</legend>
+          <sc-for list="{{sources}}" as="s" hint-placeholder-count="3">
+            <label style="{{s.style}}">
+              <input type="checkbox" checked="{{s.on}}" onChange="{{s.toggle}}" style="margin: 0; width: 14px; height: 14px; accent-color: var(--primary)">
+              {{s.label}}
+            </label>
+          </sc-for>
+        </fieldset>
+        <button type="submit" style="height: 36px; padding: 0 16px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 14px; font-weight: 500; cursor: pointer">Search</button>
+      </form>
+
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 24px">
+
+        <!-- Filters -->
+        <aside aria-label="Filters" style="flex: 0 0 240px; display: flex; flex-direction: column; gap: 20px">
+          <sc-for list="{{facets}}" as="fc" hint-placeholder-count="3">
+            <fieldset style="margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 2px">
+              <legend style="padding: 0; margin-bottom: 6px; font-size: 13px; font-weight: 600">{{fc.title}}</legend>
+              <sc-for list="{{fc.options}}" as="o" hint-placeholder-count="3">
+                <label class="ghost" style="display: flex; align-items: center; gap: 8px; height: 30px; padding: 0 6px; margin: 0 -6px; border-radius: 6px; font-size: 13px; cursor: pointer">
+                  <input type="checkbox" checked="{{o.on}}" onChange="{{o.toggle}}" style="margin: 0; width: 14px; height: 14px; accent-color: var(--primary)">
+                  <span style="flex: 1">{{o.label}}</span>
+                  <span style="font-size: 12px; color: var(--muted-fg); font-variant-numeric: tabular-nums">{{o.count}}</span>
+                </label>
+              </sc-for>
+            </fieldset>
+          </sc-for>
+
+          <fieldset style="margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 6px">
+            <legend style="padding: 0; margin-bottom: 6px; font-size: 13px; font-weight: 600">Date</legend>
+            <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+              <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted-fg)">From
+                <input type="date" style="height: 32px; padding: 0 6px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 13px">
+              </label>
+              <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted-fg)">To
+                <input type="date" style="height: 32px; padding: 0 6px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 13px">
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset style="margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 6px">
+            <legend style="padding: 0; margin-bottom: 6px; font-size: 13px; font-weight: 600">Amount (BDT)</legend>
+            <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+              <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted-fg)">Minimum
+                <input type="text" inputmode="decimal" placeholder="0" style="height: 32px; padding: 0 8px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 13px; text-align: right">
+              </label>
+              <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted-fg)">Maximum
+                <input type="text" inputmode="decimal" placeholder="Any" style="height: 32px; padding: 0 8px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 13px; text-align: right">
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset style="margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 2px">
+            <legend style="padding: 0; margin-bottom: 6px; font-size: 13px; font-weight: 600">Origin</legend>
+            <sc-for list="{{origins}}" as="o" hint-placeholder-count="3">
+              <label style="display: flex; align-items: center; gap: 8px; height: 28px; font-size: 13px; cursor: pointer">
+                <input type="radio" name="origin" checked="{{o.on}}" onChange="{{o.pick}}" style="margin: 0; width: 14px; height: 14px; accent-color: var(--primary)">
+                {{o.label}}
+              </label>
+            </sc-for>
+          </fieldset>
+        </aside>
+
+        <!-- Results -->
+        <section aria-labelledby="s-results" style="flex: 999 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
+            <h2 id="s-results" style="margin: 0; font-size: 14px; font-weight: 600">{{countLabel}}</h2>
+            <sc-for list="{{chips}}" as="c" hint-placeholder-count="2">
+              <button type="button" onClick="{{c.remove}}" aria-label="{{c.removeLabel}}" style="display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 6px 0 8px; border: 1px solid var(--border); border-radius: 12px; background: var(--muted); color: var(--fg); font-size: 12px; font-weight: 500; cursor: pointer">
+                {{c.label}}
+                <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+              </button>
+            </sc-for>
+            <sc-if value="{{hasChips}}" hint-placeholder-val="{{false}}">
+              <button type="button" class="ghost" onClick="{{clearFilters}}" style="height: 24px; padding: 0 6px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); font-size: 12px; font-weight: 500; cursor: pointer">Clear filters</button>
+            </sc-if>
+            <span style="flex: 1"></span>
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted-fg)">Sort
+              <select onChange="{{onSort}}" style="height: 32px; padding: 0 8px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 13px">
+                <option value="relevance">Relevance</option>
+                <option value="newest">Newest</option>
+              </select>
+            </label>
+          </div>
+
+          <sc-if value="{{hasResults}}" hint-placeholder-val="{{true}}">
+            <ul style="list-style: none; margin: 0; padding: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden">
+              <sc-for list="{{results}}" as="r" hint-placeholder-count="6">
+                <li class="lrow" style="{{r.rowStyle}}">
+                  <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px">
+                    <a href="{{r.href}}" style="font-size: 15px; font-weight: 500; color: var(--fg); text-decoration: none">{{r.subject}}</a>
+                    <span style="{{r.statusStyle}}">{{r.status}}</span>
+                    <sc-if value="{{r.imported}}" hint-placeholder-val="{{false}}">
+                      <span style="display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 6px; background: var(--muted); color: var(--text-2); font-size: 11px; font-weight: 500">Imported</span>
+                    </sc-if>
+                  </div>
+                  <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 12px; color: var(--muted-fg)">
+                    <span style="font-family: 'Geist Mono', ui-monospace, monospace; color: var(--text-2)">{{r.number}}</span>
+                    <span aria-hidden="true">·</span><span>{{r.type}}</span>
+                    <span aria-hidden="true">·</span><span>{{r.unit}}</span>
+                    <span aria-hidden="true">·</span><span>Updated {{r.updated}}</span>
+                  </div>
+                  <p style="margin: 2px 0 0; font-size: 13px; line-height: 20px; color: var(--text-1)">
+                    <sc-for list="{{r.snippet}}" as="p" hint-placeholder-count="3"><sc-if value="{{p.match}}" hint-placeholder-val="{{false}}"><mark style="padding: 0 2px; border-radius: 3px; background: var(--warn-bg); color: var(--fg); font-weight: 600">{{p.text}}</mark></sc-if><sc-if value="{{p.plain}}" hint-placeholder-val="{{true}}">{{p.text}}</sc-if></sc-for>
+                  </p>
+                  <span style="font-size: 12px; color: var(--muted-fg)">{{r.foundIn}}</span>
+                </li>
+              </sc-for>
+            </ul>
+            <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px">
+              <span style="font-size: 12px; color: var(--muted-fg)">Only memos you are cleared to read are shown.</span>
+              <button type="button" class="ghost" style="height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer">Show more</button>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{noResults}}" hint-placeholder-val="{{false}}">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 48px 24px; border: 1px dashed var(--border); border-radius: 10px; text-align: center">
+              <span style="font-weight: 500; font-size: 16px">No memos match</span>
+              <span style="font-size: 14px; color: var(--muted-fg); max-width: 420px">Check the spelling, remove filters, or search all of the memo’s text.</span>
+              <button type="button" onClick="{{clearFilters}}" style="height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer">Clear filters</button>
+            </div>
+          </sc-if>
+        </section>
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  data() {
+    const S = (t) => t.split('*').map((text, i) => ({ text: text, match: i % 2 === 1, plain: i % 2 === 0 }));
+    return [
+      { id: 'r1', subject: 'Credit line renewal for Meghna Agro', number: 'CR/2026/0142', status: 'In review', type: 'Credit proposal', unit: 'Corporate Banking', updated: '16 Nov 2026', order: 1, src: 'notes', foundIn: 'Found in: a note by Sadia Islam', href: 'Memo.dc.html', snippet: S('…Updated *valuation* from the panel valuer is attached. Security cover is now 1.4×. Recommend renewal…') },
+      { id: 'r2', subject: 'Meghna Agro collateral revaluation', number: 'RSK/2026/0031', status: 'Closed', type: 'General memo', unit: 'Credit Risk', updated: '3 Oct 2026', order: 3, src: 'documents', foundIn: 'Found in: the document', href: '#', snippet: S('…the panel *valuation* of the Narsingdi warehouse held as security for *Meghna* Agro Ltd. puts the market value at…') },
+      { id: 'r3', subject: 'Credit line for Meghna Agro, 2025', number: 'CR/2025/0388', status: 'Approved', type: 'Credit proposal', unit: 'Corporate Banking', updated: '2 Dec 2025', order: 4, src: 'metadata', foundIn: 'Found in: details', href: '#', snippet: S('Borrower: *Meghna* Agro Ltd. · Facility: revolving credit line · BDT 250,000,000') },
+      { id: 'r4', subject: 'Agro sector exposure limits', number: 'RSK/2026/0012', status: 'Closed', type: 'Policy', unit: 'Credit Risk', updated: '28 Jul 2026', order: 5, src: 'documents', foundIn: 'Found in: an attachment, Exposure by borrower.xlsx', href: '#', snippet: S('…largest exposures, including *Meghna* Agro and two related borrowers, stay within…') },
+      { id: 'r5', subject: 'Panel valuer appointments 2026', number: 'PRC/2026/0040', status: 'Approved', type: 'Procurement', unit: 'Procurement', updated: '14 Feb 2026', order: 6, src: 'metadata', foundIn: 'Found in: details', href: '#', snippet: S('Scope: property and collateral *valuation* services for the credit division…') },
+      { id: 'r6', subject: 'Meghna Agro overdraft', number: 'CR/2019/1180', status: 'Approved', type: 'Credit proposal', unit: 'Corporate Banking', updated: '9 Apr 2019', order: 2, src: 'documents', foundIn: 'Found in: the document', href: '#', imported: true, snippet: S('…overdraft facility for *Meghna* Agro Ltd. against hypothecation of stock, subject to annual *valuation*…') }
+    ];
+  }
+  renderVals() {
+    const st = this.state || {};
+    const sel = st.sel || { status: {}, type: {}, unit: {} };
+    const sources = st.sources || { metadata: true, notes: true, documents: true };
+    const origin = st.origin || 'all';
+    const sort = st.sort || 'relevance';
+    const all = this.data();
+    const inFacet = (key, r) => { const s = sel[key]; const on = Object.keys(s).filter((k) => s[k]); return on.length === 0 || on.indexOf(r[key]) >= 0; };
+    const base = all.filter((r) => sources[r.src] && (origin === 'all' || (origin === 'imported' ? r.imported : !r.imported)));
+    const shown = base.filter((r) => inFacet('status', r) && inFacet('type', r) && inFacet('unit', r))
+      .slice().sort((a, b) => sort === 'newest' ? (b.updated.slice(-4) + b.order).localeCompare(a.updated.slice(-4) + a.order) * -1 + 0 : a.order - b.order);
+
+    const setFacet = (key, value) => { const next = JSON.parse(JSON.stringify(sel)); next[key][value] = !next[key][value]; this.setState({ sel: next }); };
+    const facetDefs = [{ key: 'status', title: 'Status' }, { key: 'type', title: 'Type' }, { key: 'unit', title: 'Unit' }];
+    const facets = facetDefs.map((f) => {
+      const values = [];
+      base.forEach((r) => { if (values.indexOf(r[f.key]) < 0) values.push(r[f.key]); });
+      return {
+        title: f.title,
+        options: values.map((v) => ({
+          label: v,
+          count: String(base.filter((r) => r[f.key] === v).length),
+          on: !!sel[f.key][v],
+          toggle: () => setFacet(f.key, v)
+        }))
+      };
+    });
+    const chips = [];
+    facetDefs.forEach((f) => Object.keys(sel[f.key]).forEach((v) => { if (sel[f.key][v]) chips.push({ label: f.title + ': ' + v, removeLabel: 'Remove filter ' + f.title + ' ' + v, remove: () => setFacet(f.key, v) }); }));
+    if (origin !== 'all') chips.push({ label: origin === 'imported' ? 'Imported' : 'Created here', removeLabel: 'Remove origin filter', remove: () => this.setState({ origin: 'all' }) });
+
+    const statusStyles = {
+      'In review': 'border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg)',
+      'Approved': 'border: 1px solid var(--ok-border); background: var(--ok-bg); color: var(--ok-fg)',
+      'Closed': 'border: 1px solid var(--ok-border); background: var(--ok-bg); color: var(--ok-fg)'
+    };
+    const results = shown.map((r, i) => Object.assign({}, r, {
+      imported: !!r.imported,
+      rowStyle: 'display: flex; flex-direction: column; gap: 4px; padding: 12px 16px' + (i > 0 ? '; border-top: 1px solid var(--hover)' : ''),
+      statusStyle: 'display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 6px; font-size: 11px; font-weight: 500; ' + (statusStyles[r.status] || 'border: 1px solid var(--border); color: var(--text-2)')
+    }));
+    const srcDefs = [{ id: 'metadata', label: 'Details' }, { id: 'notes', label: 'Notes' }, { id: 'documents', label: 'Documents' }];
+    const navOpen = !!st.navOpen;
+    const collapsed = !!st.collapsed;
+    const closeNav = () => this.setState({ navOpen: false });
+    const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent || '');
+    return {
+      themeClass: (this.state && this.state.theme) || this.props.theme || 'system',
+      noop: (e) => { if (e && e.preventDefault) e.preventDefault(); },
+      sources: srcDefs.map((s) => ({
+        label: s.label, on: !!sources[s.id],
+        style: 'display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: 14px; font-size: 13px; cursor: pointer; ' + (sources[s.id] ? 'border: 1px solid var(--border-strong); background: var(--muted); color: var(--fg)' : 'border: 1px solid var(--border); background: var(--bg); color: var(--muted-fg)'),
+        toggle: () => { const n = Object.assign({}, sources); n[s.id] = !n[s.id]; this.setState({ sources: n }); }
+      })),
+      facets: facets,
+      origins: [{ id: 'all', label: 'All memos' }, { id: 'native', label: 'Created here' }, { id: 'imported', label: 'Imported' }].map((o) => ({ label: o.label, on: o.id === origin, pick: () => this.setState({ origin: o.id }) })),
+      chips: chips,
+      hasChips: chips.length > 0,
+      clearFilters: () => this.setState({ sel: { status: {}, type: {}, unit: {} }, origin: 'all' }),
+      onSort: (e) => this.setState({ sort: e && e.target ? e.target.value : 'relevance' }),
+      countLabel: shown.length === 1 ? '1 result' : shown.length + ' results',
+      results: results,
+      hasResults: shown.length > 0,
+      noResults: shown.length === 0,
+      shortcut: isMac ? '⌘K' : 'Ctrl K',
+      sidebarClass: 'sidebar' + (navOpen ? ' open' : '') + (collapsed && !navOpen ? ' collapsed' : ''),
+      scrimClass: 'scrim' + (navOpen ? ' open' : ''),
+      navAria: (navOpen || !collapsed) ? 'true' : 'false',
+      toggleNav: () => {
+        const narrow = typeof window !== 'undefined' && window.innerWidth <= 860;
+        if (narrow) this.setState({ navOpen: !navOpen });
+        else this.setState({ collapsed: !collapsed });
+      },
+      closeNav: closeNav,
+      navKey: (ev) => { if (ev && ev.key === 'Escape') closeNav(); }
+    };
+  }
+}
+</script>
+</body>
+</html>

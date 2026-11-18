@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Position on a phone</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+.th{color-scheme:light;--bg:#ffffff;--fg:#0a0a0a;--subtle:#fafafa;--muted:#f5f5f5;--hover:#f0f0f0;--active:#ebebeb;--chip:#e5e5e5;--border:#e5e5e5;--border-strong:#d4d4d4;--muted-fg:#737373;--text-1:#262626;--text-2:#404040;--text-3:#525252;--primary:#171717;--primary-fg:#fafafa;--primary-hover:#262626;--primary-divider:#404040;--primary-muted:#a3a3a3;--ring:#a3a3a3;--destructive:#dc2626;--destructive-hover:#b91c1c;--on-destructive:#ffffff;--danger-fg:#b91c1c;--danger-bg:#fef2f2;--danger-border:#fecaca;--warn-bg:#fffbeb;--warn-fg:#92400e;--warn-border:#fcd34d;--ok-bg:#f0fdf4;--ok-fg:#166534;--ok-border:#bbf7d0;--info-bg:#eff6ff;--info-fg:#1d4ed8}
+.th.dark{color-scheme:dark;--bg:#0a0a0a;--fg:#fafafa;--subtle:#141414;--muted:#262626;--hover:#1f1f1f;--active:#262626;--chip:#333333;--border:#2e2e2e;--border-strong:#525252;--muted-fg:#a3a3a3;--text-1:#e5e5e5;--text-2:#d4d4d4;--text-3:#a3a3a3;--primary:#e5e5e5;--primary-fg:#171717;--primary-hover:#d4d4d4;--primary-divider:#a3a3a3;--primary-muted:#525252;--ring:#737373;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#450a0a;--danger-border:#7f1d1d;--warn-bg:#422006;--warn-fg:#fcd34d;--warn-border:#78350f;--ok-bg:#052e16;--ok-fg:#86efac;--ok-border:#14532d;--info-bg:#172554;--info-fg:#93c5fd}
+@media (prefers-color-scheme: dark){.th.system{color-scheme:dark;--bg:#0a0a0a;--fg:#fafafa;--subtle:#141414;--muted:#262626;--hover:#1f1f1f;--active:#262626;--chip:#333333;--border:#2e2e2e;--border-strong:#525252;--muted-fg:#a3a3a3;--text-1:#e5e5e5;--text-2:#d4d4d4;--text-3:#a3a3a3;--primary:#e5e5e5;--primary-fg:#171717;--primary-hover:#d4d4d4;--primary-divider:#a3a3a3;--primary-muted:#525252;--ring:#737373;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#450a0a;--danger-border:#7f1d1d;--warn-bg:#422006;--warn-fg:#fcd34d;--warn-border:#78350f;--ok-bg:#052e16;--ok-fg:#86efac;--ok-border:#14532d;--info-bg:#172554;--info-fg:#93c5fd}}
+body:has(.th.dark){background:#0a0a0a}
+@media (prefers-color-scheme: dark){body:has(.th.system){background:#0a0a0a}}
+body{margin:0;background:#ffffff}
+a{color:var(--fg)}
+button,input{font-family:inherit}
+.ghost:active{background:var(--muted)}
+</style>
+</helmet>
+<div class="th {{themeClass}}" style="position: relative; width: 390px; height: 844px; overflow: hidden; display: flex; flex-direction: column; background: var(--bg); color: var(--fg); font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 20px">
+  <header style="flex-shrink: 0; height: 56px; display: flex; align-items: center; gap: 4px; padding: 0 8px; border-bottom: 1px solid var(--border); box-sizing: border-box">
+    <a href="OrgPhone.dc.html" class="ghost" aria-label="Back to Credit Risk" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 8px; color: var(--fg)">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
+    </a>
+    <span style="flex: 1; min-width: 0; font-size: 15px; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Credit Risk</span>
+    <sc-if value="{{manage}}" hint-placeholder-val="{{true}}">
+      <button type="button" class="ghost" aria-haspopup="dialog" onClick="{{openMore}}" aria-label="More for this position" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; border-radius: 8px; background: transparent; color: var(--fg); cursor: pointer">
+        <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+      </button>
+    </sc-if>
+  </header>
+
+  <main style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; padding: 16px 16px 24px">
+    <div style="display: flex; flex-direction: column; gap: 4px">
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
+        <h1 style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Credit Risk Manager</h1>
+        <sc-if value="{{closed}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; border: 1px solid var(--border); background: var(--muted); color: var(--text-2); font-size: 12px; font-weight: 500">Closed</span></sc-if>
+      </div>
+      <span style="font-size: 13px; color: var(--muted-fg)"><span style="font-family: 'Geist Mono', ui-monospace, monospace; color: var(--text-2)">CR-M1</span> · {{sinceText}}</span>
+    </div>
+
+    <dl style="margin: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden">
+      <div style="display: flex; align-items: center; gap: 10px; min-height: 56px; padding: 8px 12px">
+        <dt style="width: 84px; flex-shrink: 0; font-size: 13px; color: var(--muted-fg)">Held by</dt>
+        <dd style="margin: 0; flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px">
+          <sc-if value="{{holder.filled}}" hint-placeholder-val="{{true}}"><span style="display: flex; flex-direction: column"><span style="font-weight: 500">{{holder.name}}</span><span style="font-size: 12px; color: var(--muted-fg)">{{holder.since}}</span></span></sc-if>
+          <sc-if value="{{holder.vacant}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg); font-size: 12px; font-weight: 500">Vacant</span><span style="font-size: 12px; color: var(--muted-fg)">{{holder.since}}</span></sc-if>
+          <sc-if value="{{holder.none}}" hint-placeholder-val="{{false}}"><span style="color: var(--muted-fg)">Nobody</span></sc-if>
+        </dd>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px; min-height: 56px; padding: 8px 4px 8px 12px; border-top: 1px solid var(--hover)">
+        <dt style="width: 84px; flex-shrink: 0; font-size: 13px; color: var(--muted-fg)">Reports to</dt>
+        <dd style="margin: 0; flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px">
+          <sc-if value="{{hasReports}}" hint-placeholder-val="{{true}}"><span style="flex: 1; display: flex; flex-direction: column"><a href="#" style="font-weight: 500; color: var(--fg)">{{reports.title}}</a><span style="font-size: 12px; color: var(--muted-fg)">{{reports.since}}</span></span></sc-if>
+          <sc-if value="{{noReports}}" hint-placeholder-val="{{false}}"><span style="flex: 1; color: var(--muted-fg)">Reports to nobody</span></sc-if>
+          <sc-if value="{{manage}}" hint-placeholder-val="{{true}}">
+            <button type="button" class="ghost" onClick="{{openLine}}" aria-label="Change reporting line" style="flex-shrink: 0; height: 44px; padding: 0 10px; border: 0; border-radius: 8px; background: transparent; color: var(--fg); font-size: 14px; font-weight: 500; cursor: pointer">Change</button>
+          </sc-if>
+        </dd>
+      </div>
+      <a href="OrgPhone.dc.html" style="display: flex; align-items: center; gap: 10px; min-height: 56px; padding: 8px 8px 8px 12px; border-top: 1px solid var(--hover); text-decoration: none; color: var(--fg)">
+        <span style="width: 84px; flex-shrink: 0; font-size: 13px; color: var(--muted-fg)">Unit</span>
+        <span style="flex: 1; display: flex; flex-direction: column"><span style="font-weight: 500">Credit Risk</span><span style="font-size: 12px; color: var(--muted-fg)">Head Office › Credit Risk</span></span>
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--muted-fg)"><path d="m9 18 6-6-6-6"></path></svg>
+      </a>
+    </dl>
+
+    <sc-if value="{{manage}}" hint-placeholder-val="{{true}}">
+      <button type="button" onClick="{{openAssign}}" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 44px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 15px; font-weight: 500; cursor: pointer">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M19 8v6"></path><path d="M22 11h-6"></path></svg>
+        Assign person
+      </button>
+    </sc-if>
+
+    <section aria-labelledby="pp-holders" style="display: flex; flex-direction: column; gap: 8px">
+      <h2 id="pp-holders" style="margin: 0; font-size: 14px; font-weight: 600">Held by, over time</h2>
+      <ul style="list-style: none; margin: 0; padding: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden">
+        <sc-for list="{{assignments}}" as="a" hint-placeholder-count="4">
+          <li style="{{a.rowStyle}}">
+            <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px">
+              <span style="display: flex; align-items: center; gap: 8px"><span style="{{a.nameStyle}}">{{a.person}}</span><span style="{{a.chipStyle}}">{{a.status}}</span></span>
+              <span style="font-size: 12px; color: var(--muted-fg)">{{a.from}} – {{a.until}}</span>
+            </span>
+            <sc-if value="{{a.hasActions}}" hint-placeholder-val="{{true}}">
+              <button type="button" class="ghost" aria-haspopup="dialog" onClick="{{a.more}}" aria-label="{{a.moreLabel}}" style="flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; border-radius: 8px; background: transparent; color: var(--muted-fg); cursor: pointer">
+                <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+              </button>
+            </sc-if>
+          </li>
+        </sc-for>
+      </ul>
+    </section>
+
+    <div style="border: 1px solid var(--border); border-radius: 10px; overflow: hidden">
+      <button type="button" class="ghost" aria-expanded="{{histAria}}" aria-controls="pp-hist" onClick="{{toggleHist}}" style="display: flex; align-items: center; gap: 8px; width: 100%; height: 48px; padding: 0 12px; border: 0; background: transparent; color: var(--fg); font-size: 14px; font-weight: 500; text-align: left; cursor: pointer">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="{{histChev}}"><path d="m9 18 6-6-6-6"></path></svg>
+        Change history
+      </button>
+      <sc-if value="{{histOpen}}" hint-placeholder-val="{{false}}">
+        <ol id="pp-hist" aria-label="Changes, newest first" style="list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--border)">
+          <sc-for list="{{history}}" as="h" hint-placeholder-count="3">
+            <li style="{{h.rowStyle}}">
+              <span style="font-size: 13px">{{h.change}}</span>
+              <span style="font-size: 12px; color: var(--muted-fg)">{{h.by}} · {{h.when}}</span>
+            </li>
+          </sc-for>
+        </ol>
+      </sc-if>
+    </div>
+  </main>
+
+  <sc-if value="{{moreSheet}}" hint-placeholder-val="{{false}}">
+    <button type="button" tabIndex="-1" aria-label="Close" onClick="{{closeDlg}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 30; border: 0; padding: 0; background: rgba(0,0,0,0.5)"></button>
+    <div role="dialog" aria-modal="true" aria-labelledby="pp-more" onKeyDown="{{dlgKey}}" style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 31; display: flex; flex-direction: column; padding: 8px 16px 16px; border-radius: 16px 16px 0 0; background: var(--bg); box-shadow: 0 -8px 32px rgba(0,0,0,0.2)">
+      <span aria-hidden="true" style="align-self: center; width: 40px; height: 4px; margin-bottom: 8px; border-radius: 2px; background: var(--chip)"></span>
+      <h2 id="pp-more" style="margin: 0 4px 6px; font-size: 16px; font-weight: 600">Credit Risk Manager</h2>
+      <button type="button" class="ghost" onClick="{{openEdit}}" style="{{sheetBtnStyle}}">Edit</button>
+      <button type="button" class="ghost" onClick="{{openClose}}" style="{{sheetBtnStyle}}">Close</button>
+      <button type="button" onClick="{{closeDlg}}" style="margin-top: 8px; height: 44px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 15px; font-weight: 500; cursor: pointer">Cancel</button>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{rowSheet}}" hint-placeholder-val="{{false}}">
+    <button type="button" tabIndex="-1" aria-label="Close" onClick="{{closeDlg}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 30; border: 0; padding: 0; background: rgba(0,0,0,0.5)"></button>
+    <div role="dialog" aria-modal="true" aria-labelledby="pp-row" onKeyDown="{{dlgKey}}" style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 31; display: flex; flex-direction: column; padding: 8px 16px 16px; border-radius: 16px 16px 0 0; background: var(--bg); box-shadow: 0 -8px 32px rgba(0,0,0,0.2)">
+      <span aria-hidden="true" style="align-self: center; width: 40px; height: 4px; margin-bottom: 8px; border-radius: 2px; background: var(--chip)"></span>
+      <h2 id="pp-row" style="margin: 0 4px 6px; font-size: 16px; font-weight: 600">{{rowSheetTitle}}</h2>
+      <sc-if value="{{rowCanEnd}}" hint-placeholder-val="{{true}}"><button type="button" class="ghost" onClick="{{sheetEnd}}" style="{{sheetBtnStyle}}">End</button></sc-if>
+      <button type="button" class="ghost" onClick="{{sheetCancel}}" style="{{sheetDangerStyle}}">Cancel record</button>
+      <button type="button" onClick="{{closeDlg}}" style="margin-top: 8px; height: 44px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 15px; font-weight: 500; cursor: pointer">Close</button>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{dialogOpen}}" hint-placeholder-val="{{false}}">
+    <button type="button" tabIndex="-1" aria-label="Close" onClick="{{closeDlg}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 30; border: 0; padding: 0; background: rgba(0,0,0,0.5)"></button>
+    <form role="{{dialog.role}}" aria-modal="true" aria-labelledby="ppd-title" novalidate onSubmit="{{submitDlg}}" onKeyDown="{{dlgKey}}" style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 31; display: flex; flex-direction: column; gap: 14px; padding: 8px 16px 16px; border-radius: 16px 16px 0 0; background: var(--bg); box-shadow: 0 -8px 32px rgba(0,0,0,0.2)">
+      <span aria-hidden="true" style="align-self: center; width: 40px; height: 4px; border-radius: 2px; background: var(--chip)"></span>
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <h2 id="ppd-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">{{dialog.title}}</h2>
+        <sc-if value="{{dialog.hasLead}}" hint-placeholder-val="{{false}}"><p style="margin: 0; font-size: 14px; color: var(--muted-fg)">{{dialog.lead}}</p></sc-if>
+      </div>
+        <sc-if value="{{dialog.hasAlert}}" hint-placeholder-val="{{false}}">
+        <div role="alert" style="display: flex; gap: 10px; padding: 10px 12px; border: 1px solid var(--danger-border); border-radius: 8px; background: var(--danger-bg); color: var(--danger-fg); font-size: 13px">
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>
+          <span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-weight: 600">{{dialog.alertTitle}}</strong><span>{{dialog.alertText}}</span></span>
+        </div>
+      </sc-if>
+      <sc-for list="{{dialog.fields}}" as="f" hint-placeholder-count="2">
+        <sc-if value="{{f.isText}}" hint-placeholder-val="{{false}}">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label for="{{f.id}}" style="font-size: 14px; font-weight: 500">{{f.label}}</label>
+            <input id="{{f.id}}" type="text" value="{{f.value}}" onChange="{{f.onInput}}" aria-invalid="{{f.invalid}}" aria-describedby="{{f.describedBy}}" style="{{f.inputStyle}}">
+            <sc-if value="{{f.hasError}}" hint-placeholder-val="{{false}}"><span id="{{f.errId}}" style="font-size: 12px; color: var(--danger-fg)">{{f.error}}</span></sc-if>
+          </div>
+        </sc-if>
+        <sc-if value="{{f.isDate}}" hint-placeholder-val="{{false}}">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label for="{{f.id}}" style="font-size: 14px; font-weight: 500">{{f.label}}</label>
+            <input id="{{f.id}}" type="date" value="{{f.value}}" onChange="{{f.onInput}}" aria-invalid="{{f.invalid}}" aria-describedby="{{f.describedBy}}" style="{{f.inputStyle}}">
+            <sc-if value="{{f.hasError}}" hint-placeholder-val="{{false}}"><span id="{{f.errId}}" style="font-size: 12px; color: var(--danger-fg)">{{f.error}}</span></sc-if>
+          </div>
+        </sc-if>
+        <sc-if value="{{f.isPicker}}" hint-placeholder-val="{{true}}">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label for="{{f.id}}" style="font-size: 14px; font-weight: 500">{{f.label}}</label>
+            <span style="position: relative; display: flex; align-items: center">
+              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; left: 10px; color: var(--muted-fg)"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+              <input id="{{f.id}}" type="text" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-invalid="{{f.invalid}}" aria-describedby="{{f.describedBy}}" placeholder="{{f.placeholder}}" value="{{f.value}}" onChange="{{f.onInput}}" style="{{f.inputStyle}}">
+            </span>
+            <sc-if value="{{f.hasError}}" hint-placeholder-val="{{false}}"><span id="{{f.errId}}" style="font-size: 12px; color: var(--danger-fg)">{{f.error}}</span></sc-if>
+            <sc-if value="{{f.hasHint}}" hint-placeholder-val="{{true}}"><span id="{{f.hintId}}" style="font-size: 12px; color: var(--muted-fg)">{{f.hint}}</span></sc-if>
+          </div>
+        </sc-if>
+        <sc-if value="{{f.isCheck}}" hint-placeholder-val="{{false}}">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label style="display: flex; align-items: center; gap: 8px; min-height: 24px; font-size: 14px; font-weight: 500; cursor: pointer">
+              <input type="checkbox" checked="{{f.checked}}" onChange="{{f.onInput}}" aria-invalid="{{f.invalid}}" aria-describedby="{{f.describedBy}}" style="{{f.checkStyle}}">
+              {{f.label}}
+            </label>
+            <sc-if value="{{f.hasError}}" hint-placeholder-val="{{false}}"><span id="{{f.errId}}" style="font-size: 12px; color: var(--danger-fg)">{{f.error}}</span></sc-if>
+          </div>
+        </sc-if>
+        <sc-if value="{{f.isSelect}}" hint-placeholder-val="{{false}}">
+          <div style="display: flex; flex-direction: column; gap: 6px">
+            <label for="{{f.id}}" style="font-size: 14px; font-weight: 500">{{f.label}}</label>
+            <span style="position: relative; display: flex; align-items: center">
+              <select id="{{f.id}}" aria-invalid="{{f.invalid}}" aria-describedby="{{f.describedBy}}" onChange="{{f.onInput}}" style="{{f.inputStyle}}">
+                <option value="">Choose a unit</option>
+                <sc-for list="{{f.options}}" as="o" hint-placeholder-count="4">
+                  <option value="{{o.value}}" selected="{{o.selected}}">{{o.label}}</option>
+                </sc-for>
+              </select>
+              <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; right: 10px; color: var(--muted-fg); pointer-events: none"><path d="m6 9 6 6 6-6"></path></svg>
+            </span>
+            <sc-if value="{{f.hasError}}" hint-placeholder-val="{{false}}"><span id="{{f.errId}}" style="font-size: 12px; color: var(--danger-fg)">{{f.error}}</span></sc-if>
+          </div>
+        </sc-if>
+      </sc-for>
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <button type="submit" style="{{dialog.submitStyle}}">{{dialog.submit}}</button>
+        <button type="button" class="ghost" onClick="{{closeDlg}}" style="{{dialog.dismissStyle}}">{{dialog.dismiss}}</button>
+      </div>
+    </form>
+  </sc-if>
+
+  <sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}">
+    <div role="status" style="position: absolute; left: 16px; right: 16px; bottom: 16px; z-index: 20; display: flex; align-items: center; gap: 10px; padding: 10px 8px 10px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg); box-shadow: 0 8px 24px rgba(0,0,0,0.12); font-size: 14px">
+      <span style="flex: 1">{{toast}}</span>
+      <button type="button" class="ghost" aria-label="Dismiss" onClick="{{dismissToast}}" style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border: 0; border-radius: 6px; background: transparent; color: var(--muted-fg); cursor: pointer"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"state":{"editor":"enum","options":["filled","vacant","closed"],"default":"filled"},"canEdit":{"editor":"boolean","default":true},"dialog":{"editor":"enum","options":["none","assign","edit","close","end","cancel","line"],"default":"none"},"error":{"editor":"enum","options":["none","required","refused","changed","failed"],"default":"none"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const PHONE = true;
+    const canEdit = this.props.canEdit !== false;
+    const variant = this.props.state || 'filled';
+    const closed = variant === 'closed', vacantNow = variant !== 'filled';
+    const manage = canEdit && !closed;
+    const dlg = st.dialog !== undefined ? st.dialog : (this.props.dialog || 'none');
+    const target = st.target || 'a1';
+    const raw = [
+      { id: 'a1', person: 'Nusrat Jahan', from: '15 Aug 2024', until: vacantNow ? '1 Nov 2026' : '', status: vacantNow ? 'past' : 'current' },
+      { id: 'a2', person: 'Kamal Uddin', from: '1 Aug 2024', until: '', status: 'cancelled' },
+      { id: 'a3', person: 'Rezaul Karim', from: '1 Jan 2021', until: '15 Aug 2024', status: 'past' },
+      { id: 'a4', person: 'Shirin Akter', from: '1 Jan 2018', until: '1 Jan 2021', status: 'past' }
+    ];
+    const chip = 'display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; ';
+    const tone = {
+      current: { label: 'Current', style: chip + 'border: 1px solid var(--ok-border); background: var(--ok-bg); color: var(--ok-fg)' },
+      upcoming: { label: 'Upcoming', style: chip + 'border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg)' },
+      past: { label: 'Past', style: chip + 'border: 1px solid var(--border); background: var(--muted); color: var(--text-2)' },
+      cancelled: { label: 'Cancelled', style: chip + 'border: 1px dashed var(--border-strong); background: transparent; color: var(--muted-fg)' }
+    };
+    const open = (d, t) => this.setState({ dialog: d, target: t || target, toast: '', err: 'none', q: '', typed: {} });
+    const initials = (n) => n.split(' ').map((x) => x[0]).join('');
+    const assignments = raw.map((a, i) => {
+      const live = a.status !== 'cancelled';
+      return {
+        person: a.person, initials: initials(a.person), from: a.from,
+        until: a.until || (live ? 'Ongoing' : '—'),
+        status: tone[a.status].label, chipStyle: tone[a.status].style,
+        cancelled: !live,
+        nameStyle: live ? 'font-weight: 500' : 'font-weight: 500; color: var(--muted-fg); text-decoration: line-through',
+        canEnd: manage && live && !a.until, canCancel: manage && live,
+        hasActions: manage && live,
+        end: () => open('end', a.id), cancel: () => open('cancel', a.id),
+        more: () => open('row', a.id),
+        endLabel: 'End ' + a.person + '’s assignment', cancelLabel: 'Cancel the record for ' + a.person, moreLabel: 'Actions for ' + a.person,
+        rowStyle: (PHONE ? 'display: flex; align-items: center; gap: 10px; padding: 10px 8px 10px 12px' : '') + (i > 0 ? (PHONE ? '; ' : '') + 'border-top: 1px solid var(--hover)' : '')
+      };
+    });
+    const who = raw.find((a) => a.id === target) || raw[0];
+    const input = 'width: 100%; height: ' + (PHONE ? '44px' : '36px') + '; padding: 0 10px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: ' + (PHONE ? '16px' : '14px') + '; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)';
+    const err = st.err !== undefined ? st.err : (this.props.error || 'none');
+    const F = (kind, label, extra) => Object.assign({ kind: kind, label: label, id: 'f-' + label.replace(/\W+/g, '').toLowerCase(), value: '', hint: '', placeholder: '', required: false, error: '' }, extra || {});
+    const q = st.q || '';
+    const defs = {
+      assign: { title: 'Assign a person to Credit Risk Manager', submit: 'Assign person', refused: { field: 'From', text: 'Someone else holds this position in that period.', values: { Person: 'Arif Hasan', From: '2026-11-17' } }, fields: [F('picker', 'Person', { placeholder: 'Search people', hint: 'Type at least two letters of a name or title.', required: true, value: q }), F('date', 'From', { value: '2026-11-17', required: true })] },
+      edit: { title: 'Edit position', submit: 'Save', refused: { field: 'Code (optional)', text: 'Another open unit or position has this code.', values: { 'Code (optional)': 'CR-H' } }, required: { Title: '' }, fields: [F('text', 'Title', { value: 'Credit Risk Manager', required: true }), F('text', 'Code (optional)', { value: 'CR-M1' }), F('check', 'Head of the unit', { checked: false })] },
+      close: { title: 'Close Credit Risk Manager', lead: 'It stays in the history. Give the first day it no longer exists.', submit: 'Close', refused: { alert: 'Close or end what is still inside it first.' }, fields: [F('date', 'Closes on', { value: '2026-12-01', required: true })] },
+      end: { title: 'End ' + who.person + '’s assignment', submit: 'End', refused: { field: 'First day without the position', text: 'Those dates do not fit.', values: { 'First day without the position': '2024-08-01' } }, fields: [F('date', 'First day without the position', { value: '2026-12-01', required: true })] },
+      line: { title: 'Who does Credit Risk Manager report to?', lead: 'The current line ends where the new one starts.', submit: 'Save', refused: { field: 'Position', text: 'That would make it its own parent or manager.', values: { Position: 'Credit Risk Analyst' } }, fields: [F('picker', 'Position', { placeholder: 'Search positions', hint: 'Type at least two letters of a name or title.', required: true, value: q }), F('date', 'From', { value: '2026-11-17', required: true })] },
+      cancel: { alert: true, title: 'Cancel this record?', lead: 'Use this for an assignment entered by mistake. It stays visible as cancelled.', submit: 'Cancel record', dismiss: 'Keep', destructive: true, refused: { alert: 'A cancelled record cannot change.' }, fields: [] }
+    };
+    const d0 = defs[dlg];
+    const alerts = { changed: 'Someone changed this meanwhile. It was reloaded.', failed: 'That did not work. Try again.', forbidden: 'You cannot change this part of the organisation.' };
+    let alertText = '';
+    const d = d0 && Object.assign({}, d0, { fields: d0.fields.map((f) => {
+      const g = Object.assign({}, f);
+      if (st.typed && g.id in st.typed) { if (g.kind === 'check') g.checked = st.typed[g.id]; else g.value = st.typed[g.id]; }
+      if (err === 'required' && g.required) {
+        if (g.kind === 'picker' || (d0.required && g.label in d0.required)) { g.value = ''; g.error = 'Required.'; }
+        else if (g.kind === 'date' && !(d0.fields.some((x) => x.kind === 'picker' || (d0.required && x.label in d0.required)))) { g.value = ''; g.error = 'Required.'; }
+      }
+      if (err === 'refused' && d0.refused) {
+        const r = d0.refused;
+        if (r.values && g.label in r.values) g.value = r.values[g.label];
+        if (r.field === g.label) g.error = r.text;
+      }
+      return g;
+    }) });
+    if (d0) {
+      if (err === 'refused' && d0.refused && d0.refused.alert) alertText = d0.refused.alert;
+      if (alerts[err]) alertText = alerts[err];
+    }
+    const closeDlg = () => this.setState({ dialog: 'none', err: 'none', q: '', typed: {} });
+    const btn = 'height: ' + (PHONE ? '44px' : '36px') + '; padding: 0 14px; border-radius: 8px; font-size: ' + (PHONE ? '15px' : '14px') + '; font-weight: 500; cursor: pointer; ';
+    const dialog = d ? {
+      title: d.title, lead: d.lead || '', hasLead: !!d.lead, role: d.alert ? 'alertdialog' : 'dialog',
+      fields: d.fields.map((f) => Object.assign({}, f, {
+        isText: f.kind === 'text', isDate: f.kind === 'date', isPicker: f.kind === 'picker', isCheck: f.kind === 'check', isSelect: false, options: [], checked: !!f.checked,
+        hasHint: !!f.hint, hintId: f.id + '-hint', errId: f.id + '-err', hasError: !!f.error,
+        invalid: f.error ? 'true' : 'false', describedBy: f.error ? f.id + '-err' : (f.hint ? f.id + '-hint' : ''),
+        onInput: f.kind === 'picker' ? (ev) => this.setState({ q: ev && ev.target ? ev.target.value : '', err: 'none' }) : (ev) => { const t = Object.assign({}, st.typed || {}); t[f.id] = ev && ev.target ? (f.kind === 'check' ? ev.target.checked : ev.target.value) : ''; this.setState({ typed: t }); },
+        inputStyle: input + (f.kind === 'picker' ? '; padding-left: 32px' : '') + (f.error ? '; border-color: var(--destructive)' : ''),
+        checkStyle: 'width: 16px; height: 16px; margin: 0; accent-color: var(--primary)' + (f.error ? '; outline: 2px solid var(--destructive); outline-offset: 1px' : '')
+      })),
+      hasAlert: !!alertText, alertText: alertText,
+      alertTitle: 'Not saved',
+      submit: d.submit, dismiss: d.dismiss || 'Cancel',
+      submitStyle: btn + 'border: 0; ' + (d.destructive ? 'background: var(--destructive); color: var(--on-destructive)' : 'background: var(--primary); color: var(--primary-fg)'),
+      dismissStyle: btn + 'border: 1px solid var(--border); background: var(--bg); color: var(--fg)'
+    } : null;
+    const rowSheet = dlg === 'row';
+    const reports = closed ? null : { title: 'Head of Credit', since: 'Since 1 Mar 2023' };
+    const navOpen = !!st.navOpen, collapsed = !!st.collapsed;
+    const closeNav = () => this.setState({ navOpen: false });
+    const sheetBtn = 'display: flex; align-items: center; min-height: 52px; padding: 0 4px; border: 0; border-top: 1px solid var(--hover); background: transparent; color: var(--fg); font-size: 15px; text-align: left; cursor: pointer';
+    return {
+      themeClass: (this.state && this.state.theme) || this.props.theme || 'system',
+      manage: manage,
+      closed: closed, closedText: 'Closed on 1 Nov 2026',
+      sinceText: closed ? 'Closed on 1 Nov 2026' : 'Since 1 Jan 2018',
+      holder: { filled: !vacantNow, vacant: vacantNow && !closed, none: closed, name: 'Nusrat Jahan', initials: 'NJ', since: vacantNow ? 'Since 1 Nov 2026' : 'Since 15 Aug 2024' },
+      hasReports: !!reports, noReports: !reports, reports: reports || { title: '', since: '' },
+      assignments: assignments,
+      openAssign: () => open('assign'), openEdit: () => open('edit'), openClose: () => open('close'), openLine: () => open('line'),
+      openMore: () => open('more'), moreSheet: dlg === 'more',
+      menuOpen: dlg === 'more', menuAria: dlg === 'more' ? 'true' : 'false',
+      rowSheet: rowSheet, rowSheetTitle: who.person,
+      rowCanEnd: !who.until && who.status !== 'cancelled',
+      sheetEnd: () => open('end'), sheetCancel: () => open('cancel'),
+      sheetBtnStyle: sheetBtn, sheetDangerStyle: sheetBtn + '; color: var(--danger-fg)',
+      dialogOpen: !!dialog, dialog: dialog || { title: '', lead: '', hasLead: false, role: 'dialog', fields: [], submit: '', dismiss: '', submitStyle: '', dismissStyle: '', hasAlert: false, alertText: '', alertTitle: '' },
+      closeDlg: closeDlg,
+      dlgKey: (ev) => { if (ev && ev.key === 'Escape') closeDlg(); },
+      submitDlg: (ev) => {
+        if (ev && ev.preventDefault) ev.preventDefault();
+        const missing = d && d.fields.some((f) => f.kind === 'picker' && f.required && q.trim().length < 2);
+        if (missing) { this.setState({ err: 'required' }); return; }
+        if (err === 'refused' || err === 'changed' || err === 'failed' || err === 'forbidden') { this.setState({ err: err }); return; }
+        this.setState({ dialog: 'none', err: 'none', q: '', toast: 'Saved.' });
+      },
+      toast: st.toast || '', hasToast: !!st.toast, dismissToast: () => this.setState({ toast: '' }),
+      histOpen: !!st.hist, histAria: st.hist ? 'true' : 'false', toggleHist: () => this.setState({ hist: !st.hist }),
+      histChev: 'transition: transform 0.15s; color: var(--muted-fg); transform: rotate(' + (st.hist ? '90deg' : '0') + ')',
+      history: [
+        { when: '15 Aug 2024, 11:20', change: 'Changed (holder: Rezaul Karim → Nusrat Jahan)', by: 'Rafiq Chowdhury' },
+        { when: '1 Aug 2024, 16:05', change: 'Changed (assignment for Kamal Uddin cancelled)', by: 'Rafiq Chowdhury' },
+        { when: '1 Jan 2018, 09:00', change: 'Created', by: 'System' }
+      ].map((h, i) => Object.assign({}, h, { rowStyle: 'display: flex; flex-direction: column; gap: 2px; padding: 10px 12px' + (i ? '; border-top: 1px solid var(--hover)' : '') })),
+      shortcut: (typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent || '')) ? '⌘K' : 'Ctrl K',
+      sidebarClass: 'sidebar' + (navOpen ? ' open' : '') + (collapsed && !navOpen ? ' collapsed' : ''),
+      scrimClass: 'scrim' + (navOpen ? ' open' : ''),
+      navAria: (navOpen || !collapsed) ? 'true' : 'false',
+      toggleNav: () => {
+        const narrow = typeof window !== 'undefined' && window.innerWidth <= 860;
+        if (narrow) this.setState({ navOpen: !navOpen });
+        else this.setState({ collapsed: !collapsed });
+      },
+      closeNav: closeNav,
+      navKey: (ev) => { if (ev && ev.key === 'Escape') closeNav(); }
+    };
+  }
+}
+</script>
+</body>
+</html>

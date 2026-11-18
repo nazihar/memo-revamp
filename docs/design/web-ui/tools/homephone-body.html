@@ -1,0 +1,118 @@
+  <main style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; padding: 14px 16px 24px">
+    <div style="display: flex; flex-direction: column; gap: 2px">
+      <span style="font-size: 13px; color: var(--muted-fg)">Tuesday, 17 November</span>
+      <h1 style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Good morning, Farhana</h1>
+    </div>
+
+    <nav aria-label="At a glance" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+      <sc-for list="{{tiles}}" as="k" hint-placeholder-count="4">
+        <a href="{{k.href}}" style="display: flex; flex-direction: column; gap: 2px; min-height: 76px; padding: 12px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 10px; text-decoration: none; color: var(--fg)">
+          <span style="font-size: 12px; color: var(--muted-fg)">{{k.label}}</span>
+          <span style="{{k.valueStyle}}">{{k.value}}</span>
+        </a>
+      </sc-for>
+    </nav>
+
+    <section aria-labelledby="ph-tasks" style="display: flex; flex-direction: column; gap: 8px">
+      <div style="display: flex; align-items: center; justify-content: space-between">
+        <h2 id="ph-tasks" style="margin: 0; font-size: 14px; font-weight: 600">Needs your decision</h2>
+        <a href="Phone.dc.html" style="display: inline-flex; align-items: center; min-height: 36px; font-size: 13px; font-weight: 500">Inbox</a>
+      </div>
+      <ul style="list-style: none; margin: 0; padding: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden">
+        <sc-for list="{{tasks}}" as="t" hint-placeholder-count="3">
+          <li style="{{t.rowStyle}}">
+            <a href="MemoPhone.dc.html" style="display: flex; align-items: flex-start; gap: 8px; padding: 12px; text-decoration: none; color: var(--fg)">
+              <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+                <span style="font-size: 15px; font-weight: 500">{{t.subject}}</span>
+                <span style="font-size: 12px; color: var(--muted-fg)">{{t.action}} · {{t.ref}}</span>
+              </span>
+              <span style="{{t.dueStyle}}">{{t.due}}</span>
+            </a>
+          </li>
+        </sc-for>
+      </ul>
+    </section>
+
+    <section aria-labelledby="ph-mine" style="display: flex; flex-direction: column; gap: 8px">
+      <h2 id="ph-mine" style="margin: 0; font-size: 14px; font-weight: 600">Your memos</h2>
+      <ul style="list-style: none; margin: 0; padding: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden">
+        <sc-for list="{{mine}}" as="m" hint-placeholder-count="3">
+          <li style="{{m.rowStyle}}">
+            <a href="{{m.href}}" style="display: flex; align-items: flex-start; gap: 8px; padding: 12px; text-decoration: none; color: var(--fg)">
+              <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+                <span style="font-size: 15px; font-weight: 500">{{m.subject}}</span>
+                <span style="font-size: 12px; color: var(--muted-fg)">{{m.where}}</span>
+              </span>
+              <span style="{{m.badgeStyle}}">{{m.status}}</span>
+            </a>
+          </li>
+        </sc-for>
+      </ul>
+    </section>
+
+    <section aria-labelledby="ph-notif" style="display: flex; flex-direction: column; gap: 8px">
+      <div style="display: flex; align-items: center; justify-content: space-between">
+        <h2 id="ph-notif" style="margin: 0; font-size: 14px; font-weight: 600">Notifications</h2>
+        <a href="NotificationsPhone.dc.html" style="display: inline-flex; align-items: center; min-height: 36px; font-size: 13px; font-weight: 500">See all</a>
+      </div>
+      <ul style="list-style: none; margin: 0; padding: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden">
+        <sc-for list="{{notes}}" as="n" hint-placeholder-count="3">
+          <li style="{{n.rowStyle}}">
+            <span aria-hidden="true" style="{{n.dotStyle}}"></span>
+            <span style="display: flex; flex-direction: column; gap: 2px">
+              <span style="{{n.textStyle}}">{{n.text}}</span>
+              <span style="font-size: 12px; color: var(--muted-fg)">{{n.time}}</span>
+            </span>
+          </li>
+        </sc-for>
+      </ul>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const navOpen = !!(this.state && this.state.navOpen);
+    const closeNav = () => this.setState({ navOpen: false });
+    const val = 'font-size: 24px; line-height: 30px; font-weight: 600; font-variant-numeric: tabular-nums; ';
+    const tiles = [
+      { label: 'Waiting for you', value: '8', href: 'Phone.dc.html' },
+      { label: 'Overdue', value: '2', href: 'Phone.dc.html', color: 'color: var(--danger-fg)' },
+      { label: 'In review', value: '3', href: 'Phone.dc.html' },
+      { label: 'Returned to you', value: '1', href: 'ReturnedPhone.dc.html', color: 'color: var(--warn-fg)' }
+    ].map((k) => Object.assign({}, k, { valueStyle: val + (k.color || '') }));
+    const dueBase = 'flex-shrink: 0; display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; ';
+    const tasks = [
+      { subject: 'Credit line renewal for Meghna Agro', ref: 'CR/2026/0142', action: 'Approve', due: 'Overdue 1d', s: 'background: var(--destructive); color: var(--on-destructive)' },
+      { subject: 'Q4 branch expansion budget', ref: 'FIN/2026/0311', action: 'Approve', due: 'Tomorrow', s: 'border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg)' },
+      { subject: 'Vendor onboarding: core banking support', ref: 'PRC/2026/0087', action: 'Give opinion', due: 'In 3 days', s: 'border: 1px solid var(--border); color: var(--text-2)' }
+    ].map((t, i) => Object.assign({}, t, { dueStyle: dueBase + t.s, rowStyle: i > 0 ? 'border-top: 1px solid var(--hover)' : '' }));
+    const badgeBase = 'flex-shrink: 0; display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; ';
+    const mine = [
+      { subject: 'Branch network risk review, Q3', where: 'Back with you since yesterday', status: 'Returned', href: 'ReturnedPhone.dc.html', s: 'border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg)', strong: true },
+      { subject: 'Credit policy update for SME lending', where: 'Waiting for Rafiq Chowdhury', status: 'In review', href: '#', s: 'border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg)' },
+      { subject: 'Credit committee calendar 2027', where: 'Not submitted', status: 'Draft', href: 'DraftPhone.dc.html', s: 'border: 1px solid var(--border); color: var(--text-2)' }
+    ].map((m, i) => Object.assign({}, m, { badgeStyle: badgeBase + m.s, rowStyle: (i > 0 ? 'border-top: 1px solid var(--hover)' : '') + (m.strong ? '; background: var(--subtle)' : '') }));
+    const notes = [
+      { text: 'You were mentioned in a note on memo PRC/2026/0087', time: '08:42', unread: true },
+      { text: 'Memo CR/2026/0142 is overdue', time: '08:00', unread: true, urgent: true },
+      { text: 'Memo RSK/2026/0044 was returned to you', time: 'Yesterday', unread: true }
+    ].map((n, i) => ({
+      text: n.text, time: n.time,
+      rowStyle: 'display: flex; align-items: flex-start; gap: 10px; padding: 12px 12px 12px 10px' + (i > 0 ? '; border-top: 1px solid var(--hover)' : ''),
+      dotStyle: 'width: 8px; height: 8px; margin-top: 6px; border-radius: 50%; flex-shrink: 0; background: ' + (n.urgent ? 'var(--destructive)' : 'var(--primary)'),
+      textStyle: 'font-size: 14px; line-height: 20px; font-weight: 600'
+    }));
+    return {
+      themeClass: (this.state && this.state.theme) || this.props.theme || 'system',
+      navOpen: navOpen, navAria: navOpen ? 'true' : 'false',
+      openNav: () => this.setState({ navOpen: true }), closeNav: closeNav,
+      navKey: (ev) => { if (ev && ev.key === 'Escape') closeNav(); },
+      tiles: tiles, tasks: tasks, mine: mine, notes: notes
+    };
+  }
+}
+</script>
+</body>
+</html>

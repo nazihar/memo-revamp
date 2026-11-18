@@ -1,0 +1,212 @@
+    <main style="flex: 1; padding: 20px 24px 32px; display: flex; flex-direction: column; gap: 16px; min-width: 0">
+      <div style="width: 100%; max-width: 760px; display: flex; flex-direction: column; gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">My security</h1>
+          <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">How you sign in, and where you are signed in.</p>
+        </div>
+
+        <!-- Password -->
+        <section aria-labelledby="s-pw" style="border: 1px solid var(--border); border-radius: 10px">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px; padding: 14px 16px">
+            <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: var(--muted); color: var(--text-2); flex-shrink: 0">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="5.5"></circle><path d="m21 2-9.6 9.6"></path><path d="m15.5 7.5 3 3L22 7l-3-3"></path></svg>
+            </span>
+            <div style="display: flex; flex-direction: column; flex: 1 1 280px; min-width: 0">
+              <h2 id="s-pw" style="margin: 0; font-size: 14px; font-weight: 600">Password</h2>
+              <span style="font-size: 13px; color: var(--muted-fg)">Changing it signs you out on every other device.</span>
+            </div>
+            <sc-if value="{{pwClosed}}" hint-placeholder-val="{{true}}">
+              <button type="button" onClick="{{openPw}}" aria-expanded="false" aria-controls="pw-form" style="height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer">Change password</button>
+            </sc-if>
+          </div>
+          <sc-if value="{{pwOpen}}" hint-placeholder-val="{{false}}">
+            <form id="pw-form" novalidate onSubmit="{{submitPw}}" style="display: flex; flex-direction: column; gap: 14px; padding: 16px; border-top: 1px solid var(--border)">
+              <div style="display: flex; flex-direction: column; gap: 6px; max-width: 360px">
+                <label for="pw-cur" style="font-size: 14px; font-weight: 500">Current password</label>
+                <input id="pw-cur" type="password" autocomplete="current-password" value="{{curVal}}" onChange="{{onCur}}" aria-invalid="{{curInvalid}}" aria-describedby="pw-cur-msg" style="{{curStyle}}">
+                <sc-if value="{{curError}}" hint-placeholder-val="{{false}}"><span id="pw-cur-msg" role="alert" style="font-size: 12px; color: var(--danger-fg)">Enter your current password.</span></sc-if>
+              </div>
+              <div style="display: flex; flex-direction: column; gap: 6px; max-width: 360px">
+                <label for="pw-new" style="font-size: 14px; font-weight: 500">New password</label>
+                <input id="pw-new" type="password" autocomplete="new-password" value="{{newVal}}" onChange="{{onNew}}" aria-invalid="{{newInvalid}}" aria-describedby="pw-new-msg" style="{{newStyle}}">
+                <span id="pw-new-msg" style="{{newMsgStyle}}">{{newMsg}}</span>
+              </div>
+              <div style="display: flex; gap: 8px">
+                <button type="submit" style="height: 32px; padding: 0 12px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 13px; font-weight: 500; cursor: pointer">Change password</button>
+                <button type="button" class="ghost" onClick="{{closePw}}" style="height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer">Cancel</button>
+              </div>
+            </form>
+          </sc-if>
+        </section>
+
+        <!-- Two-step -->
+        <section aria-labelledby="s-mfa" style="border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; display: flex; flex-direction: column; gap: 12px">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">
+            <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: var(--muted); color: var(--text-2); flex-shrink: 0">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"></rect><path d="M12 18h.01"></path></svg>
+            </span>
+            <div style="display: flex; flex-direction: column; flex: 1 1 280px; min-width: 0">
+              <span style="display: flex; align-items: center; gap: 8px">
+                <h2 id="s-mfa" style="margin: 0; font-size: 14px; font-weight: 600">Two-step sign-in</h2>
+                <span style="display: inline-flex; align-items: center; gap: 4px; height: 20px; padding: 0 6px; border-radius: 6px; border: 1px solid var(--ok-border); background: var(--ok-bg); color: var(--ok-fg); font-size: 11px; font-weight: 500">
+                  <svg aria-hidden="true" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+                  On
+                </span>
+              </span>
+              <span style="font-size: 13px; color: var(--muted-fg)">You confirm each sign-in with a code from your authenticator app.</span>
+            </div>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; padding-left: 44px">
+            <button type="button" onClick="{{openCodes}}" aria-haspopup="dialog" style="height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer">New recovery codes</button>
+            <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer">Set up a new authenticator</button>
+          </div>
+        </section>
+
+        <!-- Devices -->
+        <section aria-labelledby="s-dev" style="display: flex; flex-direction: column; gap: 8px">
+          <div style="display: flex; flex-direction: column; gap: 2px">
+            <h2 id="s-dev" style="margin: 0; font-size: 14px; font-weight: 600">Signed-in devices</h2>
+            <span style="font-size: 13px; color: var(--muted-fg)">Sign out any device you do not recognise.</span>
+          </div>
+          <div style="border: 1px solid var(--border); border-radius: 10px; overflow-x: auto">
+            <table style="width: 100%; min-width: 640px; border-collapse: collapse; font-size: 14px">
+              <thead>
+                <tr style="border-bottom: 1px solid var(--border); text-align: left; color: var(--muted-fg); font-size: 13px">
+                  <th scope="col" style="height: 40px; padding: 0 16px; font-weight: 500">Device</th>
+                  <th scope="col" style="padding: 0 12px; font-weight: 500">Address</th>
+                  <th scope="col" style="padding: 0 12px; font-weight: 500">Signed in</th>
+                  <th scope="col" style="padding: 0 12px; font-weight: 500">Last active</th>
+                  <th scope="col" style="padding: 0 16px 0 12px; font-weight: 500; text-align: right"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Actions</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{devices}}" as="d" hint-placeholder-count="4">
+                  <tr style="border-top: 1px solid var(--hover)">
+                    <td style="padding: 10px 16px">
+                      <span style="display: flex; align-items: center; gap: 8px">
+                        <span>{{d.name}}</span>
+                        <sc-if value="{{d.current}}" hint-placeholder-val="{{false}}">
+                          <span style="display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 6px; background: var(--muted); font-size: 11px; font-weight: 500">This device</span>
+                        </sc-if>
+                      </span>
+                    </td>
+                    <td style="padding: 0 12px; color: var(--text-2); font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px">{{d.ip}}</td>
+                    <td style="padding: 0 12px; color: var(--muted-fg); white-space: nowrap">{{d.signedIn}}</td>
+                    <td style="padding: 0 12px; color: var(--muted-fg); white-space: nowrap">{{d.last}}</td>
+                    <td style="padding: 0 16px 0 12px; text-align: right">
+                      <sc-if value="{{d.other}}" hint-placeholder-val="{{true}}">
+                        <button type="button" onClick="{{d.signOut}}" aria-label="{{d.signOutLabel}}" style="height: 28px; padding: 0 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--danger-fg); font-size: 12px; font-weight: 500; cursor: pointer">Sign out</button>
+                      </sc-if>
+                    </td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- Recovery codes -->
+  <sc-if value="{{codesOpen}}" hint-placeholder-val="{{false}}">
+    <div style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 16px; box-sizing: border-box">
+      <span aria-hidden="true" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; background: rgba(0,0,0,0.5)"></span>
+      <div role="alertdialog" aria-modal="true" aria-labelledby="rc-title" aria-describedby="rc-desc" style="position: relative; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--bg); box-shadow: 0 16px 48px rgba(0,0,0,0.2)">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h2 id="rc-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Your new recovery codes</h2>
+          <p id="rc-desc" style="margin: 0; font-size: 14px; color: var(--muted-fg)">Your previous codes no longer work. Store these somewhere safe; they are shown only now.</p>
+        </div>
+        <ol aria-label="Recovery codes" style="margin: 0; padding: 14px 16px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 24px; list-style: none; border-radius: 8px; background: var(--subtle); border: 1px solid var(--border); font-family: 'Geist Mono', ui-monospace, monospace; font-size: 14px; letter-spacing: 0.04em">
+          <sc-for list="{{codes}}" as="c" hint-placeholder-count="10"><li>{{c}}</li></sc-for>
+        </ol>
+        <div style="display: flex; gap: 8px">
+          <button type="button" onClick="{{copyCodes}}" style="height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer">{{copyLabel}}</button>
+          <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer">Download as text</button>
+        </div>
+        <div style="display: flex; justify-content: flex-end">
+          <button type="button" onClick="{{closeCodes}}" style="height: 36px; padding: 0 14px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 14px; font-weight: 500; cursor: pointer">I have saved them</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{toast}}" hint-placeholder-val="{{false}}">
+    <div role="status" style="position: fixed; right: 24px; bottom: 24px; z-index: 40; display: flex; align-items: center; gap: 10px; padding: 10px 10px 10px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg); box-shadow: 0 8px 24px rgba(0,0,0,0.12); font-size: 14px">
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--ok-fg)"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
+      <span>{{toast}}</span>
+      <button type="button" class="ghost" aria-label="Dismiss" onClick="{{hideToast}}" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--muted-fg); cursor: pointer">
+        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+      </button>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const out = st.out || {};
+    const pwOpen = !!st.pwOpen;
+    const cur = st.cur || '';
+    const nw = st.nw || '';
+    const tried = !!st.tried;
+    const curError = tried && !cur;
+    const tooShort = nw.length < 12;
+    const input = 'height: 36px; padding: 0 10px; box-sizing: border-box; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); border: 1px solid ';
+    const devices = [
+      { id: 'd1', name: 'Chrome on Windows', ip: '10.20.4.17', signedIn: 'Today, 08:31', last: 'Now', current: true },
+      { id: 'd2', name: 'Safari on iPhone', ip: '10.20.9.112', signedIn: '15 Nov, 19:02', last: 'Yesterday, 21:40' },
+      { id: 'd3', name: 'Edge on Windows', ip: '10.20.4.33', signedIn: '12 Nov, 09:10', last: '14 Nov, 17:55' },
+      { id: 'd4', name: 'Unknown device', ip: 'Not recorded', signedIn: '9 Nov, 23:48', last: '9 Nov, 23:52' }
+    ].filter((d) => !out[d.id]).map((d) => Object.assign({}, d, {
+      current: !!d.current, other: !d.current,
+      signOutLabel: 'Sign out ' + d.name,
+      signOut: () => { const o = Object.assign({}, out); o[d.id] = true; this.setState({ out: o, toast: 'The device was signed out.' }); }
+    }));
+    return {
+      themeClass: (this.state && this.state.theme) || this.props.theme || 'system',
+      pwOpen: pwOpen, pwClosed: !pwOpen,
+      openPw: () => this.setState({ pwOpen: true, tried: false, cur: '', nw: '' }),
+      closePw: () => this.setState({ pwOpen: false }),
+      curVal: cur, newVal: nw,
+      onCur: (e) => this.setState({ cur: e && e.target ? e.target.value : '' }),
+      onNew: (e) => this.setState({ nw: e && e.target ? e.target.value : '' }),
+      curError: curError,
+      curInvalid: curError ? 'true' : 'false',
+      curStyle: input + (curError ? 'var(--destructive)' : 'var(--border)'),
+      newInvalid: (tried && tooShort) ? 'true' : 'false',
+      newStyle: input + ((tried && tooShort) ? 'var(--destructive)' : 'var(--border)'),
+      newMsg: (tried && tooShort) ? 'Use at least 12 characters.' : 'At least 12 characters. A long phrase is easier to remember than a complex word.',
+      newMsgStyle: 'font-size: 12px; ' + ((tried && tooShort) ? 'color: var(--danger-fg)' : 'color: var(--muted-fg)'),
+      submitPw: (e) => {
+        if (e && e.preventDefault) e.preventDefault();
+        if (cur && nw.length >= 12) this.setState({ pwOpen: false, toast: 'Password changed. Other devices were signed out.', out: { d2: true, d3: true, d4: true } });
+        else this.setState({ tried: true });
+      },
+      codesOpen: !!st.codes,
+      openCodes: () => this.setState({ codes: true, copied: false }),
+      closeCodes: () => this.setState({ codes: false }),
+      codes: ['7KQ4-M9TX', 'B2ZP-4HWN', 'R8DC-JV3E', 'Q5LN-7YFA', 'T3GW-K6PM', 'H9XE-2RUC', 'V4MJ-8NDS', 'C6YT-5BQL', 'P2HF-9WKA', 'E7NR-3ZGV'],
+      copyLabel: st.copied ? 'Copied' : 'Copy all',
+      copyCodes: () => this.setState({ copied: true }),
+      devices: devices,
+      toast: st.toast || '',
+      hideToast: () => this.setState({ toast: '' }),
+      shortcut: (typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent || '')) ? '⌘K' : 'Ctrl K',
+      sidebarClass: 'sidebar' + (st.navOpen ? ' open' : '') + (st.collapsed && !st.navOpen ? ' collapsed' : ''),
+      scrimClass: 'scrim' + (st.navOpen ? ' open' : ''),
+      navAria: (st.navOpen || !st.collapsed) ? 'true' : 'false',
+      toggleNav: () => {
+        const narrow = typeof window !== 'undefined' && window.innerWidth <= 860;
+        if (narrow) this.setState({ navOpen: !st.navOpen });
+        else this.setState({ collapsed: !st.collapsed });
+      },
+      closeNav: () => this.setState({ navOpen: false }),
+      navKey: (ev) => { if (ev && ev.key === 'Escape') this.setState({ navOpen: false }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

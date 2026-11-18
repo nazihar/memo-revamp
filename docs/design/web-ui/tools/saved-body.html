@@ -1,0 +1,176 @@
+    <main style="flex: 1; padding: 20px 24px 32px; display: flex; flex-direction: column; gap: 16px; min-width: 0">
+      <div style="width: 100%; max-width: 920px; display: flex; flex-direction: column; gap: 16px">
+
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px">
+          <div style="display: flex; flex-direction: column; gap: 2px">
+            <h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Saved searches</h1>
+            <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">Only you see these. Each one shows what you may read when you open it.</p>
+          </div>
+          <a href="Search.dc.html" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 14px; font-weight: 500; text-decoration: none">
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            New search
+          </a>
+        </div>
+
+        <sc-if value="{{hasItems}}" hint-placeholder-val="{{true}}">
+          <ul style="list-style: none; margin: 0; padding: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden">
+            <sc-for list="{{items}}" as="s" hint-placeholder-count="5">
+              <li class="lrow" style="{{s.rowStyle}}">
+                <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: var(--muted); color: var(--text-2); flex-shrink: 0">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>
+                </span>
+                <div style="display: flex; flex-direction: column; gap: 6px; min-width: 0; flex: 1">
+                  <sc-if value="{{s.viewing}}" hint-placeholder-val="{{true}}">
+                    <a href="Search.dc.html" style="font-size: 15px; font-weight: 500; color: var(--fg); text-decoration: none">{{s.name}}</a>
+                  </sc-if>
+                  <sc-if value="{{s.editing}}" hint-placeholder-val="{{false}}">
+                    <form onSubmit="{{s.saveName}}" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
+                      <label style="display: flex; flex-direction: column; gap: 4px; flex: 1 1 280px; min-width: 0">
+                        <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Name</span>
+                        <input type="text" value="{{s.draft}}" onChange="{{s.onDraft}}" maxlength="100" aria-describedby="{{s.hintId}}" style="height: 32px; padding: 0 10px; box-sizing: border-box; border: 1px solid var(--ring); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 0 0 3px rgba(163,163,163,0.25)">
+                        <span id="{{s.hintId}}" style="font-size: 12px; color: var(--muted-fg)">Up to 100 characters.</span>
+                      </label>
+                      <button type="submit" style="height: 32px; padding: 0 12px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 13px; font-weight: 500; cursor: pointer; align-self: flex-start">Save</button>
+                      <button type="button" class="ghost" onClick="{{s.cancel}}" style="height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer; align-self: flex-start">Cancel</button>
+                    </form>
+                  </sc-if>
+                  <div style="display: flex; flex-wrap: wrap; gap: 6px">
+                    <sc-for list="{{s.criteria}}" as="c" hint-placeholder-count="3">
+                      <span style="{{c.style}}">{{c.text}}</span>
+                    </sc-for>
+                  </div>
+                  <span style="font-size: 12px; color: var(--muted-fg)">{{s.meta}}</span>
+                </div>
+                <sc-if value="{{s.viewing}}" hint-placeholder-val="{{true}}">
+                  <div style="display: flex; align-items: center; gap: 4px; flex-shrink: 0">
+                    <a href="Search.dc.html" class="ghost" style="display: inline-flex; align-items: center; height: 28px; padding: 0 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--fg); font-size: 12px; font-weight: 500; text-decoration: none">Open</a>
+                    <button type="button" class="ghost" onClick="{{s.rename}}" aria-label="{{s.renameLabel}}" title="Rename" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-3); cursor: pointer">
+                      <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"></path></svg>
+                    </button>
+                    <button type="button" class="ghost" onClick="{{s.askDelete}}" aria-label="{{s.deleteLabel}}" title="Delete" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-3); cursor: pointer">
+                      <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path></svg>
+                    </button>
+                  </div>
+                </sc-if>
+              </li>
+            </sc-for>
+          </ul>
+          <span style="font-size: 12px; color: var(--muted-fg)">Newest first. Each saved search keeps its words, filters and sort; results are worked out again when you open it.</span>
+        </sc-if>
+
+        <sc-if value="{{empty}}" hint-placeholder-val="{{false}}">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 56px 24px; border: 1px dashed var(--border); border-radius: 10px; text-align: center">
+            <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 8px; background: var(--muted); color: var(--fg)">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>
+            </span>
+            <span style="font-weight: 500; font-size: 16px">No saved searches yet</span>
+            <span style="font-size: 14px; color: var(--muted-fg); max-width: 380px">Run a search and choose Save this search.</span>
+            <a href="Search.dc.html" style="display: inline-flex; align-items: center; height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 14px; font-weight: 500; text-decoration: none">Go to Search</a>
+          </div>
+        </sc-if>
+      </div>
+    </main>
+  </div>
+
+  <!-- Delete confirm -->
+  <sc-if value="{{confirmOpen}}" hint-placeholder-val="{{false}}">
+    <div style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 16px; box-sizing: border-box">
+      <button type="button" tabIndex="-1" aria-label="Close dialog" onClick="{{keep}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; border: 0; padding: 0; background: rgba(0,0,0,0.5); cursor: default"></button>
+      <div role="alertdialog" aria-modal="true" aria-labelledby="sd-title" aria-describedby="sd-desc" onKeyDown="{{confirmKey}}" style="position: relative; width: 100%; max-width: 420px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--bg); box-shadow: 0 16px 48px rgba(0,0,0,0.2)">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h2 id="sd-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Delete “{{confirmName}}”?</h2>
+          <p id="sd-desc" style="margin: 0; font-size: 14px; color: var(--muted-fg)">Only the saved search goes; no memo is affected.</p>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px">
+          <button type="button" class="ghost" onClick="{{keep}}" style="height: 36px; padding: 0 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); font-size: 14px; font-weight: 500; color: var(--fg); cursor: pointer">Keep</button>
+          <button type="button" onClick="{{doDelete}}" style="height: 36px; padding: 0 14px; border: 0; border-radius: 8px; background: var(--destructive); font-size: 14px; font-weight: 500; color: var(--on-destructive); cursor: pointer">Delete</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"empty":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  base() {
+    return [
+      { id: 's1', name: 'Meghna Agro — everything', meta: 'Saved 12 Nov · changed 14 Nov', criteria: [['q', 'Meghna'], ['in', 'Details, notes, documents'], ['sort', 'Relevance']] },
+      { id: 's2', name: 'Credit renewals in review', meta: 'Saved 3 Nov', criteria: [['q', 'renewal'], ['f', 'Status: In review'], ['f', 'Type: Credit proposal'], ['sort', 'Newest first']] },
+      { id: 's3', name: 'Large exposures this year', meta: 'Saved 21 Oct', criteria: [['q', 'exposure'], ['f', 'Amount ≥ BDT 100,000,000'], ['f', 'From 1 Jan 2026'], ['sort', 'Newest first']] },
+      { id: 's4', name: 'Legacy credit files (imported)', meta: 'Saved 9 Sep', criteria: [['q', 'overdraft'], ['in', 'Documents only'], ['f', 'Origin: Imported'], ['sort', 'Relevance']] },
+      { id: 's5', name: 'Audit findings, Internal Audit', meta: 'Saved 2 Aug · changed 30 Aug', criteria: [['q', 'audit finding'], ['f', 'Type: Audit'], ['f', 'Unit: Internal Audit'], ['sort', 'Relevance']] }
+    ];
+  }
+  renderVals() {
+    const st = this.state || {};
+    const names = st.names || {};
+    const deleted = st.deleted || {};
+    const editing = st.editing || '';
+    const confirm = st.confirm || '';
+    const list = this.props.empty ? [] : this.base().filter((s) => !deleted[s.id]);
+    const chipStyles = {
+      q: "display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; background: var(--muted); color: var(--fg); font-size: 12px; font-weight: 600",
+      in: 'display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; border: 1px solid var(--border); color: var(--text-2); font-size: 12px',
+      f: 'display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; border: 1px solid var(--border); color: var(--text-2); font-size: 12px',
+      sort: 'display: inline-flex; align-items: center; height: 22px; padding: 0 2px; color: var(--muted-fg); font-size: 12px'
+    };
+    const items = list.map((s, i) => {
+      const name = names[s.id] || s.name;
+      const isEditing = editing === s.id;
+      return {
+        name: name,
+        meta: s.meta,
+        viewing: !isEditing,
+        editing: isEditing,
+        draft: st.draft !== undefined && isEditing ? st.draft : name,
+        hintId: 'sd-hint-' + s.id,
+        onDraft: (e) => this.setState({ draft: e && e.target ? e.target.value : '' }),
+        saveName: (e) => {
+          if (e && e.preventDefault) e.preventDefault();
+          const v = (st.draft !== undefined ? st.draft : name).trim();
+          const n = Object.assign({}, names);
+          if (v) n[s.id] = v;
+          this.setState({ names: n, editing: '', draft: undefined });
+        },
+        cancel: () => this.setState({ editing: '', draft: undefined }),
+        rename: () => this.setState({ editing: s.id, draft: name }),
+        askDelete: () => this.setState({ confirm: s.id }),
+        renameLabel: 'Rename ' + name,
+        deleteLabel: 'Delete ' + name,
+        criteria: s.criteria.map((c) => ({ text: c[0] === 'q' ? '“' + c[1] + '”' : (c[0] === 'in' ? 'In: ' + c[1] : (c[0] === 'sort' ? '· ' + c[1] : c[1])), style: chipStyles[c[0]] })),
+        rowStyle: 'display: flex; align-items: flex-start; gap: 12px; padding: 14px 12px 14px 16px' + (i > 0 ? '; border-top: 1px solid var(--hover)' : '')
+      };
+    });
+    const confirmItem = this.base().find((s) => s.id === confirm);
+    const keep = () => this.setState({ confirm: '' });
+    const navOpen = !!st.navOpen;
+    const collapsed = !!st.collapsed;
+    const closeNav = () => this.setState({ navOpen: false });
+    const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent || '');
+    return {
+      themeClass: (this.state && this.state.theme) || this.props.theme || 'system',
+      items: items,
+      hasItems: items.length > 0,
+      empty: items.length === 0,
+      confirmOpen: !!confirm,
+      confirmName: confirmItem ? (names[confirmItem.id] || confirmItem.name) : '',
+      keep: keep,
+      confirmKey: (ev) => { if (ev && ev.key === 'Escape') keep(); },
+      doDelete: () => { const d = Object.assign({}, deleted); d[confirm] = true; this.setState({ deleted: d, confirm: '' }); },
+      shortcut: isMac ? '⌘K' : 'Ctrl K',
+      sidebarClass: 'sidebar' + (navOpen ? ' open' : '') + (collapsed && !navOpen ? ' collapsed' : ''),
+      scrimClass: 'scrim' + (navOpen ? ' open' : ''),
+      navAria: (navOpen || !collapsed) ? 'true' : 'false',
+      toggleNav: () => {
+        const narrow = typeof window !== 'undefined' && window.innerWidth <= 860;
+        if (narrow) this.setState({ navOpen: !navOpen });
+        else this.setState({ collapsed: !collapsed });
+      },
+      closeNav: closeNav,
+      navKey: (ev) => { if (ev && ev.key === 'Escape') closeNav(); }
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Document</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;family=Source+Serif+4:wght@400;600&amp;display=swap">
+<style>
+.th{color-scheme:light;--bg:#ffffff;--fg:#0a0a0a;--subtle:#fafafa;--muted:#f5f5f5;--hover:#f0f0f0;--active:#ebebeb;--chip:#e5e5e5;--border:#e5e5e5;--border-strong:#d4d4d4;--muted-fg:#737373;--text-1:#262626;--text-2:#404040;--text-3:#525252;--primary:#171717;--primary-fg:#fafafa;--primary-hover:#262626;--primary-divider:#404040;--primary-muted:#a3a3a3;--ring:#a3a3a3;--destructive:#dc2626;--destructive-hover:#b91c1c;--on-destructive:#ffffff;--danger-fg:#b91c1c;--danger-bg:#fef2f2;--danger-border:#fecaca;--warn-bg:#fffbeb;--warn-fg:#92400e;--warn-border:#fcd34d;--ok-bg:#f0fdf4;--ok-fg:#166534;--ok-border:#bbf7d0;--info-bg:#eff6ff;--info-fg:#1d4ed8}
+.th.dark{color-scheme:dark;--bg:#0a0a0a;--fg:#fafafa;--subtle:#141414;--muted:#262626;--hover:#1f1f1f;--active:#262626;--chip:#333333;--border:#2e2e2e;--border-strong:#525252;--muted-fg:#a3a3a3;--text-1:#e5e5e5;--text-2:#d4d4d4;--text-3:#a3a3a3;--primary:#e5e5e5;--primary-fg:#171717;--primary-hover:#d4d4d4;--primary-divider:#a3a3a3;--primary-muted:#525252;--ring:#737373;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#450a0a;--danger-border:#7f1d1d;--warn-bg:#422006;--warn-fg:#fcd34d;--warn-border:#78350f;--ok-bg:#052e16;--ok-fg:#86efac;--ok-border:#14532d;--info-bg:#172554;--info-fg:#93c5fd}
+@media (prefers-color-scheme: dark){.th.system{color-scheme:dark;--bg:#0a0a0a;--fg:#fafafa;--subtle:#141414;--muted:#262626;--hover:#1f1f1f;--active:#262626;--chip:#333333;--border:#2e2e2e;--border-strong:#525252;--muted-fg:#a3a3a3;--text-1:#e5e5e5;--text-2:#d4d4d4;--text-3:#a3a3a3;--primary:#e5e5e5;--primary-fg:#171717;--primary-hover:#d4d4d4;--primary-divider:#a3a3a3;--primary-muted:#525252;--ring:#737373;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#450a0a;--danger-border:#7f1d1d;--warn-bg:#422006;--warn-fg:#fcd34d;--warn-border:#78350f;--ok-bg:#052e16;--ok-fg:#86efac;--ok-border:#14532d;--info-bg:#172554;--info-fg:#93c5fd}}
+body:has(.th.dark){background:#0a0a0a}
+@media (prefers-color-scheme: dark){body:has(.th.system){background:#0a0a0a}}
+body{margin:0;background:#ffffff}
+a{color:var(--fg)}
+button{font-family:inherit}
+.ghost:hover{background:var(--muted)}
+</style>
+</helmet>
+<div class="th {{themeClass}}" style="display: flex; flex-direction: column; min-height: 900px; height: 100vh; background: var(--bg); color: var(--fg); font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 20px">
+
+  <!-- Slim header: the editor gets the rest of the screen -->
+  <header style="flex-shrink: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; min-height: 52px; padding: 8px 16px; border-bottom: 1px solid var(--border); box-sizing: border-box">
+    <a href="{{backHref}}" class="ghost" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 10px 0 6px; border-radius: 8px; font-size: 13px; font-weight: 500; text-decoration: none; color: var(--fg)">
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
+      Back to the memo
+    </a>
+    <span aria-hidden="true" style="width: 1px; height: 20px; background: var(--border)"></span>
+    <div style="display: flex; flex-direction: column; min-width: 0; flex: 1 1 320px">
+      <h1 style="margin: 0; font-size: 15px; line-height: 20px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{title}}</h1>
+      <span style="font-size: 12px; color: var(--muted-fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Credit memo — Meghna Agro.docx · {{versionLine}}</span>
+    </div>
+
+    <sc-if value="{{editing}}" hint-placeholder-val="{{true}}">
+      <span role="status" style="{{statusStyle}}">
+        <sc-if value="{{isSaved}}" hint-placeholder-val="{{true}}"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg></sc-if>
+        <sc-if value="{{isSaving}}" hint-placeholder-val="{{false}}"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"></path></svg></sc-if>
+        {{statusText}}
+      </span>
+      <span style="display: flex; align-items: center" aria-label="Also editing: Nusrat Jahan" role="img">
+        <span style="display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; background: var(--chip); color: var(--fg); font-size: 10px; font-weight: 600; box-shadow: 0 0 0 2px var(--bg)">TA</span>
+        <span style="display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; margin-left: -6px; border-radius: 50%; background: var(--info-bg); color: var(--info-fg); font-size: 10px; font-weight: 600; box-shadow: 0 0 0 2px var(--bg)">NJ</span>
+      </span>
+      <a href="Returned.dc.html" style="display: inline-flex; align-items: center; height: 32px; padding: 0 14px; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 13px; font-weight: 500; text-decoration: none">Done</a>
+    </sc-if>
+
+    <sc-if value="{{reading}}" hint-placeholder-val="{{false}}">
+      <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted-fg)">Version
+        <select style="height: 32px; padding: 0 8px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 13px">
+          <option>3 · 14 Nov (current)</option><option>2 · 4 Nov</option><option>1 · 3 Nov</option>
+        </select>
+      </label>
+      <button type="button" class="ghost" style="height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer">Compare versions</button>
+      <a href="#" class="ghost" aria-label="Download" style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg)">
+        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"></path><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path></svg>
+      </a>
+    </sc-if>
+  </header>
+
+  <sc-if value="{{editing}}" hint-placeholder-val="{{true}}">
+    <div role="note" style="flex-shrink: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 8px 16px; border-bottom: 1px solid var(--border); background: var(--subtle); font-size: 13px; color: var(--text-2)">
+      <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--muted-fg)"><circle cx="12" cy="12" r="10"></circle><path d="M12 16v-4"></path><path d="M12 8h.01"></path></svg>
+      Changes save on their own. Closing saves them as version 3. The memo cannot be submitted while the document is open here.
+    </div>
+  </sc-if>
+
+  <sc-if value="{{failed}}" hint-placeholder-val="{{false}}">
+    <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 48px 24px; text-align: center">
+      <span style="font-weight: 500; font-size: 16px">The editor could not be opened.</span>
+      <span style="font-size: 14px; color: var(--muted-fg); max-width: 420px">Your document is safe. Try again, or download it and upload a new version from the memo page.</span>
+      <div style="display: flex; gap: 8px">
+        <button type="button" onClick="{{retry}}" style="height: 32px; padding: 0 12px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 13px; font-weight: 500; cursor: pointer">Try again</button>
+        <a href="#" style="display: inline-flex; align-items: center; height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; color: var(--fg); font-size: 13px; font-weight: 500; text-decoration: none">Download</a>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- Editor area (ONLYOFFICE, embedded) -->
+  <sc-if value="{{notFailed}}" hint-placeholder-val="{{true}}">
+    <div style="flex: 1; min-height: 0; display: flex; flex-direction: column; background: var(--muted)">
+      <sc-if value="{{editing}}" hint-placeholder-val="{{true}}">
+        <div aria-hidden="true" style="flex-shrink: 0; display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 16px; border-bottom: 1px solid var(--border); background: var(--bg); font-size: 12px; color: var(--muted-fg)">
+          <span style="display: inline-block; width: 18px; height: 18px; border-radius: 4px; background: var(--chip)"></span>
+          <span style="display: inline-block; width: 18px; height: 18px; border-radius: 4px; background: var(--chip)"></span>
+          <span style="display: inline-block; width: 18px; height: 18px; border-radius: 4px; background: var(--chip)"></span>
+          <span style="width: 1px; height: 18px; background: var(--border); margin: 0 4px"></span>
+          <span style="display: inline-block; width: 64px; height: 18px; border-radius: 4px; background: var(--chip)"></span>
+          <span style="display: inline-block; width: 18px; height: 18px; border-radius: 4px; background: var(--chip)"></span>
+          <span style="display: inline-block; width: 18px; height: 18px; border-radius: 4px; background: var(--chip)"></span>
+          <span style="margin-left: auto">Editor toolbar (ONLYOFFICE)</span>
+        </div>
+      </sc-if>
+      <div style="flex: 1; min-height: 0; overflow-y: auto; display: flex; justify-content: center; padding: 24px 16px">
+        <article aria-label="Document page 1" style="width: 100%; max-width: 760px; min-height: 980px; box-sizing: border-box; padding: 64px 72px; background: #ffffff; color: #1a1a1a; box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 8px 24px rgba(0,0,0,0.06); font-family: 'Source Serif 4', Georgia, serif; font-size: 15px; line-height: 24px">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 32px; font-family: 'Geist', sans-serif; font-size: 12px; color: #555">
+            <span>[Organisation name]<br>Credit Risk</span>
+            <span style="text-align: right">CR/2026/0142<br>Confidential</span>
+          </div>
+          <h2 style="margin: 0 0 4px; font-size: 22px; line-height: 30px; font-weight: 600">Credit line renewal for Meghna Agro Ltd.</h2>
+          <p style="margin: 0 0 24px; font-family: 'Geist', sans-serif; font-size: 12px; color: #666">Credit proposal · Prepared by Tanvir Ahmed, Relationship Manager · 14 November 2026</p>
+          <h3 style="margin: 0 0 8px; font-size: 16px; font-weight: 600">1. Summary</h3>
+          <p style="margin: 0 0 16px">We propose to renew the revolving credit line of Meghna Agro Ltd. at BDT 250,000,000 for twelve months, on the same pricing. The client has used the line within its limit throughout the last term and repaid on time for 36 months.</p>
+          <h3 style="margin: 0 0 8px; font-size: 16px; font-weight: 600">2. Security</h3>
+          <p style="margin: 0 0 16px">The line is secured by a first charge over the Narsingdi warehouse and hypothecation of stock. The panel valuer’s report of October 2026 puts the market value of the warehouse at BDT 350,000,000, giving security cover of 1.4×.</p>
+          <h3 style="margin: 0 0 8px; font-size: 16px; font-weight: 600">3. Recommendation</h3>
+          <p style="margin: 0">Renew at the proposed limit, subject to a review of security cover at six months.</p>
+        </article>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"mode":{"editor":"enum","options":["edit","view"],"default":"edit"},"state":{"editor":"enum","options":["saved","saving","failed"],"default":"saved"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const mode = this.props.mode || 'edit';
+    const state = st.retried ? 'saved' : (this.props.state || 'saved');
+    const editing = mode === 'edit';
+    const saving = state === 'saving';
+    return {
+      themeClass: (this.state && this.state.theme) || this.props.theme || 'system',
+      title: (editing ? 'Editing ' : 'Reading ') + 'CR/2026/0142',
+      versionLine: editing ? 'version 2 · your changes become version 3' : 'version 3 of 3',
+      backHref: editing ? 'Returned.dc.html' : 'Memo.dc.html',
+      editing: editing,
+      reading: !editing,
+      failed: state === 'failed',
+      notFailed: state !== 'failed',
+      isSaved: !saving,
+      isSaving: saving,
+      statusText: saving ? 'Saving your changes as a new version…' : 'All changes saved',
+      statusStyle: 'display: inline-flex; align-items: center; gap: 6px; font-size: 12px; ' + (saving ? 'color: var(--text-2)' : 'color: var(--muted-fg)'),
+      retry: () => this.setState({ retried: true })
+    };
+  }
+}
+</script>
+</body>
+</html>

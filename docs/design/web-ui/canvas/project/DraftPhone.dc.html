@@ -1,0 +1,262 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Draft memo on a phone</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+.th{color-scheme:light;--bg:#ffffff;--fg:#0a0a0a;--subtle:#fafafa;--muted:#f5f5f5;--hover:#f0f0f0;--active:#ebebeb;--chip:#e5e5e5;--border:#e5e5e5;--border-strong:#d4d4d4;--muted-fg:#737373;--text-1:#262626;--text-2:#404040;--text-3:#525252;--primary:#171717;--primary-fg:#fafafa;--primary-hover:#262626;--primary-divider:#404040;--primary-muted:#a3a3a3;--ring:#a3a3a3;--destructive:#dc2626;--destructive-hover:#b91c1c;--on-destructive:#ffffff;--danger-fg:#b91c1c;--danger-bg:#fef2f2;--danger-border:#fecaca;--warn-bg:#fffbeb;--warn-fg:#92400e;--warn-border:#fcd34d;--ok-bg:#f0fdf4;--ok-fg:#166534;--ok-border:#bbf7d0;--info-bg:#eff6ff;--info-fg:#1d4ed8}
+.th.dark{color-scheme:dark;--bg:#0a0a0a;--fg:#fafafa;--subtle:#141414;--muted:#262626;--hover:#1f1f1f;--active:#262626;--chip:#333333;--border:#2e2e2e;--border-strong:#525252;--muted-fg:#a3a3a3;--text-1:#e5e5e5;--text-2:#d4d4d4;--text-3:#a3a3a3;--primary:#e5e5e5;--primary-fg:#171717;--primary-hover:#d4d4d4;--primary-divider:#a3a3a3;--primary-muted:#525252;--ring:#737373;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#450a0a;--danger-border:#7f1d1d;--warn-bg:#422006;--warn-fg:#fcd34d;--warn-border:#78350f;--ok-bg:#052e16;--ok-fg:#86efac;--ok-border:#14532d;--info-bg:#172554;--info-fg:#93c5fd}
+@media (prefers-color-scheme: dark){.th.system{color-scheme:dark;--bg:#0a0a0a;--fg:#fafafa;--subtle:#141414;--muted:#262626;--hover:#1f1f1f;--active:#262626;--chip:#333333;--border:#2e2e2e;--border-strong:#525252;--muted-fg:#a3a3a3;--text-1:#e5e5e5;--text-2:#d4d4d4;--text-3:#a3a3a3;--primary:#e5e5e5;--primary-fg:#171717;--primary-hover:#d4d4d4;--primary-divider:#a3a3a3;--primary-muted:#525252;--ring:#737373;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#450a0a;--danger-border:#7f1d1d;--warn-bg:#422006;--warn-fg:#fcd34d;--warn-border:#78350f;--ok-bg:#052e16;--ok-fg:#86efac;--ok-border:#14532d;--info-bg:#172554;--info-fg:#93c5fd}}
+body:has(.th.dark){background:#0a0a0a}
+@media (prefers-color-scheme: dark){body:has(.th.system){background:#0a0a0a}}
+body{margin:0;background:#ffffff}
+a{color:var(--fg)}
+button{font-family:inherit}
+textarea{font-family:inherit}
+.ghost:active{background:var(--muted)}
+</style>
+</helmet>
+<div class="th {{themeClass}}" style="position: relative; width: 390px; height: 844px; overflow: hidden; display: flex; flex-direction: column; background: var(--bg); color: var(--fg); font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 20px">
+
+  <header style="flex-shrink: 0; height: 56px; display: flex; align-items: center; gap: 4px; padding: 0 8px; border-bottom: 1px solid var(--border); box-sizing: border-box">
+    <a href="Phone.dc.html" class="ghost" aria-label="Back to Drafts" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 8px; color: var(--fg)">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
+    </a>
+    <span style="flex: 1; font-size: 15px; font-weight: 600">Draft</span>
+    <button type="button" class="ghost" aria-label="Edit details" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: transparent; border-radius: 8px; color: var(--fg)">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"></path><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"></path></svg>
+    </button>
+  </header>
+
+  <main style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; padding: 16px">
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <div style="display: flex; flex-wrap: wrap; gap: 6px">
+        <span style="display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; border: 1px solid var(--border); color: var(--text-2); font-size: 12px; font-weight: 500">Draft</span>
+        <span style="display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; background: var(--muted); color: var(--fg); font-size: 12px; font-weight: 500">Confidential</span>
+      </div>
+      <h1 style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600; letter-spacing: -0.01em">Credit line renewal for Meghna Agro</h1>
+      <span style="font-size: 13px; color: var(--muted-fg)">Credit proposal · numbered when submitted</span>
+    </div>
+
+    <!-- Readiness -->
+    <section aria-labelledby="pd-ready" style="padding: 12px; border: 1px solid var(--border-strong); border-radius: 10px; display: flex; flex-direction: column; gap: 8px">
+      <h2 id="pd-ready" style="margin: 0; font-size: 14px; font-weight: 600">{{readyTitle}}</h2>
+      <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px">
+        <sc-for list="{{checks}}" as="c" hint-placeholder-count="4">
+          <li style="display: flex; align-items: center; gap: 10px; font-size: 13px">
+            <sc-if value="{{c.ok}}" hint-placeholder-val="{{true}}">
+              <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: var(--primary); color: var(--primary-fg); flex-shrink: 0">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+              </span>
+            </sc-if>
+            <sc-if value="{{c.todo}}" hint-placeholder-val="{{false}}">
+              <span aria-hidden="true" style="width: 18px; height: 18px; box-sizing: border-box; border-radius: 50%; border: 1.5px dashed var(--border-strong); flex-shrink: 0"></span>
+            </sc-if>
+            <span style="flex: 1; min-width: 0"><span style="font-weight: 500">{{c.title}}</span><span style="color: var(--muted-fg)"> · {{c.text}}</span></span>
+          </li>
+        </sc-for>
+      </ul>
+    </section>
+
+    <!-- Document -->
+    <section aria-labelledby="pd-doc" style="padding: 12px; border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; gap: 10px">
+      <h2 id="pd-doc" style="margin: 0; font-size: 14px; font-weight: 600">Document</h2>
+      <sc-if value="{{noDoc}}" hint-placeholder-val="{{true}}">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <button type="button" onClick="{{useTemplate}}" style="display: flex; align-items: center; justify-content: center; gap: 8px; height: 44px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 15px; font-weight: 500">Start from the template</button>
+          <button type="button" onClick="{{useTemplate}}" class="ghost" style="height: 44px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 15px; font-weight: 500">Upload a Word file</button>
+          <span style="font-size: 12px; color: var(--muted-fg)">The template is filled with this memo’s details. Editing the document needs a computer; on a phone you can read it.</span>
+        </div>
+      </sc-if>
+      <sc-if value="{{hasDoc}}" hint-placeholder-val="{{false}}">
+        <div style="display: flex; align-items: center; gap: 10px">
+          <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; background: var(--info-bg); color: var(--info-fg); flex-shrink: 0">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+          </span>
+          <span style="display: flex; flex-direction: column; min-width: 0; flex: 1">
+            <span style="font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Credit memo — Meghna Agro.docx</span>
+            <span style="font-size: 12px; color: var(--muted-fg)">Version 1 · from the template</span>
+          </span>
+          <a href="#" style="display: inline-flex; align-items: center; height: 36px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; color: var(--fg); font-size: 13px; font-weight: 500; text-decoration: none">Read</a>
+        </div>
+      </sc-if>
+    </section>
+
+    <!-- Approvers -->
+    <section aria-labelledby="pd-route" style="padding: 12px; border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; flex-direction: column">
+        <h2 id="pd-route" style="margin: 0; font-size: 14px; font-weight: 600">Approvers</h2>
+        <span style="font-size: 12px; color: var(--muted-fg)">In order, top to bottom.</span>
+      </div>
+      <ol style="list-style: none; margin: 0; padding: 0; border: 1px solid var(--border); border-radius: 8px; overflow: hidden">
+        <sc-for list="{{route}}" as="e" hint-placeholder-count="4">
+          <li style="display: flex; align-items: center; gap: 10px; padding: 4px 4px 4px 12px; border-bottom: 1px solid var(--hover)">
+            <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: var(--muted); color: var(--text-2); font-size: 11px; font-weight: 600; flex-shrink: 0">{{e.n}}</span>
+            <span style="display: flex; flex-direction: column; min-width: 0; flex: 1; padding: 6px 0">
+              <span style="font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{e.title}}</span>
+              <span style="font-size: 12px; color: var(--muted-fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{e.kind}} · {{e.sub}}</span>
+            </span>
+            <button type="button" class="ghost" aria-label="{{e.menuLabel}}" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; border-radius: 8px; background: transparent; color: var(--text-3)">
+              <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+            </button>
+          </li>
+        </sc-for>
+      </ol>
+      <sc-if value="{{doaMissing}}" hint-placeholder-val="{{true}}">
+        <div role="status" style="display: flex; flex-direction: column; gap: 8px; padding: 10px 12px; border: 1px solid var(--warn-border); border-radius: 8px; background: var(--warn-bg); color: var(--warn-fg); font-size: 13px">
+          <span>For credit above BDT 200 million, the delegation of authority ends with the <strong>Managing Director</strong>.</span>
+          <button type="button" onClick="{{addMd}}" style="align-self: flex-start; height: 36px; padding: 0 12px; border: 1px solid var(--warn-border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500">Add Managing Director</button>
+        </div>
+      </sc-if>
+      <button type="button" class="ghost" style="display: inline-flex; align-items: center; justify-content: center; gap: 6px; height: 40px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 14px; font-weight: 500">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+        Add approver
+      </button>
+    </section>
+
+    <!-- Details -->
+    <section aria-labelledby="pd-det" style="padding: 12px; border: 1px solid var(--border); border-radius: 10px">
+      <h2 id="pd-det" style="margin: 0 0 6px; font-size: 14px; font-weight: 600">Details</h2>
+      <dl style="margin: 0; display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 8px 12px; font-size: 13px; align-items: center">
+        <dt style="color: var(--muted-fg)">Borrower</dt><dd style="margin: 0">Meghna Agro Ltd.</dd>
+        <dt style="color: var(--muted-fg)">Facility</dt><dd style="margin: 0">Revolving credit line</dd>
+        <dt style="color: var(--muted-fg)">Amount</dt><dd style="margin: 0">BDT 250,000,000</dd>
+        <dt style="color: var(--muted-fg)">Tenor</dt>
+        <dd style="margin: 0">
+          <sc-if value="{{tenorMissing}}" hint-placeholder-val="{{true}}">
+            <span style="display: flex; align-items: center; justify-content: space-between; gap: 8px">
+              <span style="color: var(--warn-fg); font-weight: 500">Needed</span>
+              <button type="button" onClick="{{fillTenor}}" style="height: 36px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500">Add</button>
+            </span>
+          </sc-if>
+          <sc-if value="{{tenorSet}}" hint-placeholder-val="{{false}}">12 months</sc-if>
+        </dd>
+        <dt style="color: var(--muted-fg)">Unit</dt><dd style="margin: 0">Corporate Banking</dd>
+      </dl>
+    </section>
+
+    <!-- Optional -->
+    <section aria-labelledby="pd-more" style="border: 1px solid var(--border); border-radius: 10px; overflow: hidden">
+      <h2 id="pd-more" style="margin: 0; padding: 12px 12px 4px; font-size: 14px; font-weight: 600">Optional</h2>
+      <sc-for list="{{extras}}" as="x" hint-placeholder-count="4">
+        <a href="#" style="display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 6px 8px 6px 12px; border-top: 1px solid var(--hover); text-decoration: none; color: var(--fg)">
+          <span style="display: flex; flex-direction: column; min-width: 0; flex: 1">
+            <span style="font-weight: 500">{{x.title}}</span>
+            <span style="font-size: 12px; color: var(--muted-fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{x.value}}</span>
+          </span>
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--muted-fg); flex-shrink: 0"><path d="m9 18 6-6-6-6"></path></svg>
+        </a>
+      </sc-for>
+    </section>
+  </main>
+
+  <!-- Bottom bar -->
+  <div style="flex-shrink: 0; display: flex; flex-direction: column; gap: 4px; padding: 10px 16px 12px; border-top: 1px solid var(--border); background: var(--bg)">
+    <div style="display: flex; gap: 8px">
+      <button type="button" class="ghost" aria-label="More: discard draft" onClick="{{openDiscard}}" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; flex-shrink: 0; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+      </button>
+      <button type="button" onClick="{{openSubmit}}" disabled="{{notReady}}" style="{{submitStyle}}">Submit for approval</button>
+    </div>
+    <span style="text-align: center; font-size: 12px; color: var(--muted-fg)">{{submitNote}}</span>
+  </div>
+
+  <!-- Sheet -->
+  <sc-if value="{{dialogOpen}}" hint-placeholder-val="{{false}}">
+    <button type="button" tabIndex="-1" aria-label="Close" onClick="{{closeDialog}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 20; border: 0; padding: 0; background: rgba(0,0,0,0.5)"></button>
+    <div role="dialog" aria-modal="true" aria-labelledby="pdd-title" aria-describedby="pdd-desc" onKeyDown="{{dialogKey}}" style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 21; display: flex; flex-direction: column; gap: 14px; padding: 8px 16px 16px; border-radius: 16px 16px 0 0; background: var(--bg); box-shadow: 0 -8px 32px rgba(0,0,0,0.2)">
+      <span aria-hidden="true" style="align-self: center; width: 40px; height: 4px; border-radius: 2px; background: var(--chip)"></span>
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <h2 id="pdd-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">{{dlg.title}}</h2>
+        <p id="pdd-desc" style="margin: 0; font-size: 14px; color: var(--muted-fg)">{{dlg.desc}}</p>
+      </div>
+      <sc-if value="{{dlg.remark}}" hint-placeholder-val="{{true}}">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="pdd-remark" style="font-size: 14px; font-weight: 500">Covering note (optional)</label>
+          <textarea id="pdd-remark" rows="3" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 16px; line-height: 22px; resize: none; outline: none"></textarea>
+        </div>
+      </sc-if>
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <button type="button" onClick="{{closeDialog}}" style="{{dlg.btnStyle}}">{{dlg.confirm}}</button>
+        <button type="button" class="ghost" onClick="{{closeDialog}}" style="height: 44px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); font-size: 15px; font-weight: 500; color: var(--fg)">Cancel</button>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const hasDoc = !!st.hasDoc;
+    const tenor = !!st.tenor;
+    const hasMd = !!st.md;
+    const dialog = st.dialog || '';
+
+    const base = [
+      { kind: 'Position', title: 'Head of Corporate Banking', sub: 'now Mahmud Karim' },
+      { kind: 'Group', title: 'Credit risk analysts · any one', sub: 'Sadia Islam, Imran Hossain' },
+      { kind: 'Position', title: 'Head of Credit', sub: 'now Farhana Rahman' },
+      { kind: 'Person', title: 'Shirin Akter', sub: 'Chief Risk Officer' }
+    ];
+    const list = hasMd ? base.concat([{ kind: 'Position', title: 'Managing Director', sub: 'now Abdul Kader' }]) : base;
+    const route = list.map((e, i) => Object.assign({}, e, { n: String(i + 1), menuLabel: 'Move or remove ' + e.title }));
+
+    const checks = [
+      { ok: true, title: 'Subject and type', text: 'Done' },
+      { ok: tenor, title: 'Details', text: tenor ? 'Done' : 'Tenor is empty' },
+      { ok: hasDoc, title: 'Document', text: hasDoc ? 'Version 1' : 'None yet' },
+      { ok: hasMd, title: 'Approvers', text: hasMd ? list.length + ' approvers' : 'Managing Director needed' }
+    ].map((c) => Object.assign({}, c, { todo: !c.ok }));
+    const left = checks.filter((c) => !c.ok).length;
+    const ready = left === 0;
+
+    const primaryBtn = 'height: 44px; border: 0; border-radius: 8px; background: var(--primary); font-size: 15px; font-weight: 500; color: var(--primary-fg)';
+    const dangerBtn = 'height: 44px; border: 0; border-radius: 8px; background: var(--destructive); font-size: 15px; font-weight: 500; color: var(--on-destructive)';
+    const dialogs = {
+      submit: { title: 'Submit for approval?', desc: 'The memo gets its number and goes to the Head of Corporate Banking, now Mahmud Karim. You can withdraw it until someone acts.', confirm: 'Submit', btnStyle: primaryBtn, remark: true },
+      discard: { title: 'Discard this draft?', desc: 'It moves to Closed and cannot be submitted. The record of it is kept.', confirm: 'Discard draft', btnStyle: dangerBtn, remark: false }
+    };
+    const closeDialog = () => this.setState({ dialog: '' });
+
+    return {
+      themeClass: (this.state && this.state.theme) || this.props.theme || 'system',
+      readyTitle: ready ? 'Ready to submit' : (left === 1 ? '1 thing before you submit' : left + ' things before you submit'),
+      checks: checks,
+      noDoc: !hasDoc,
+      hasDoc: hasDoc,
+      useTemplate: () => this.setState({ hasDoc: true }),
+      route: route,
+      doaMissing: !hasMd,
+      addMd: () => this.setState({ md: true }),
+      tenorMissing: !tenor,
+      tenorSet: tenor,
+      fillTenor: () => this.setState({ tenor: true }),
+      extras: [
+        { title: 'Attachments', value: 'None yet' },
+        { title: 'Linked memos', value: 'Follows up CR/2025/0388' },
+        { title: 'Co-authors', value: 'Nusrat Jahan' },
+        { title: 'Copies', value: 'Nobody copied' }
+      ],
+      notReady: !ready,
+      submitStyle: 'flex: 1; height: 44px; border: 0; border-radius: 8px; font-size: 15px; font-weight: 500; ' + (ready ? 'background: var(--primary); color: var(--primary-fg)' : 'background: var(--muted); color: var(--muted-fg)'),
+      submitNote: ready ? 'Goes to Mahmud Karim first.' : 'Finish the list at the top to submit.',
+      openSubmit: () => { if (ready) this.setState({ dialog: 'submit' }); },
+      openDiscard: () => this.setState({ dialog: 'discard' }),
+      dialogOpen: !!dialog,
+      dlg: dialogs[dialog] || dialogs.submit,
+      closeDialog: closeDialog,
+      dialogKey: (ev) => { if (ev && ev.key === 'Escape') closeDialog(); }
+    };
+  }
+}
+</script>
+</body>
+</html>

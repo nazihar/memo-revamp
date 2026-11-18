@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Design rules</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+.th{color-scheme:light;--bg:#ffffff;--fg:#0a0a0a;--subtle:#fafafa;--muted:#f5f5f5;--hover:#f0f0f0;--active:#ebebeb;--chip:#e5e5e5;--border:#e5e5e5;--border-strong:#d4d4d4;--muted-fg:#737373;--text-1:#262626;--text-2:#404040;--text-3:#525252;--primary:#171717;--primary-fg:#fafafa;--primary-hover:#262626;--primary-divider:#404040;--primary-muted:#a3a3a3;--ring:#a3a3a3;--destructive:#dc2626;--destructive-hover:#b91c1c;--on-destructive:#ffffff;--danger-fg:#b91c1c;--danger-bg:#fef2f2;--danger-border:#fecaca;--warn-bg:#fffbeb;--warn-fg:#92400e;--warn-border:#fcd34d;--ok-bg:#f0fdf4;--ok-fg:#166534;--ok-border:#bbf7d0;--info-bg:#eff6ff;--info-fg:#1d4ed8}
+.th.dark{color-scheme:dark;--bg:#0a0a0a;--fg:#fafafa;--subtle:#141414;--muted:#262626;--hover:#1f1f1f;--active:#262626;--chip:#333333;--border:#2e2e2e;--border-strong:#525252;--muted-fg:#a3a3a3;--text-1:#e5e5e5;--text-2:#d4d4d4;--text-3:#a3a3a3;--primary:#e5e5e5;--primary-fg:#171717;--primary-hover:#d4d4d4;--primary-divider:#a3a3a3;--primary-muted:#525252;--ring:#737373;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#450a0a;--danger-border:#7f1d1d;--warn-bg:#422006;--warn-fg:#fcd34d;--warn-border:#78350f;--ok-bg:#052e16;--ok-fg:#86efac;--ok-border:#14532d;--info-bg:#172554;--info-fg:#93c5fd}
+@media (prefers-color-scheme: dark){.th.system{color-scheme:dark;--bg:#0a0a0a;--fg:#fafafa;--subtle:#141414;--muted:#262626;--hover:#1f1f1f;--active:#262626;--chip:#333333;--border:#2e2e2e;--border-strong:#525252;--muted-fg:#a3a3a3;--text-1:#e5e5e5;--text-2:#d4d4d4;--text-3:#a3a3a3;--primary:#e5e5e5;--primary-fg:#171717;--primary-hover:#d4d4d4;--primary-divider:#a3a3a3;--primary-muted:#525252;--ring:#737373;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#450a0a;--danger-border:#7f1d1d;--warn-bg:#422006;--warn-fg:#fcd34d;--warn-border:#78350f;--ok-bg:#052e16;--ok-fg:#86efac;--ok-border:#14532d;--info-bg:#172554;--info-fg:#93c5fd}}
+body:has(.th.dark){background:#0a0a0a}
+@media (prefers-color-scheme: dark){body:has(.th.system){background:#0a0a0a}}
+body{margin:0;background:#ffffff}
+a{color:var(--fg)}a:hover{color:var(--text-2)}
+button{font-family:inherit}
+</style>
+</helmet>
+<div class="th {{themeClass}}" style="background: var(--bg); color: var(--fg); font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 20px">
+<div style="max-width: 1200px; margin: 0 auto; padding: 48px 24px 64px; display: flex; flex-direction: column; gap: 48px">
+
+  <!-- Intro -->
+  <header style="display: flex; flex-direction: column; gap: 8px">
+    <span style="font-size: 13px; color: var(--muted-fg)">Memo &amp; Meetings · web app</span>
+    <h1 style="margin: 0; font-size: 32px; line-height: 40px; font-weight: 600; letter-spacing: -0.02em">Design rules</h1>
+    <p style="margin: 0; max-width: 720px; font-size: 15px; line-height: 24px; color: var(--text-2)">Default shadcn/ui components on the neutral palette, kept compact. Every screen follows these rules. To do something new, change the rule here first, then the screen.</p>
+  </header>
+
+  <!-- Principles -->
+  <section aria-labelledby="r-principles" style="display: flex; flex-direction: column; gap: 16px">
+    <h2 id="r-principles" style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600">1. Principles</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px">
+      <div style="padding: 16px; border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; gap: 4px">
+        <span style="font-weight: 600">Compact, not cramped</span>
+        <span style="color: var(--text-3)">32px controls and 14px text on desktop; 44px touch targets on phones.</span>
+      </div>
+      <div style="padding: 16px; border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; gap: 4px">
+        <span style="font-weight: 600">One primary action per view</span>
+        <span style="color: var(--text-3)">The dark button is the thing this person came to do. Everything else is outline, ghost or in a menu.</span>
+      </div>
+      <div style="padding: 16px; border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; gap: 4px">
+        <span style="font-weight: 600">Same job, same place</span>
+        <span style="color: var(--text-3)">Filters above lists, decisions top right (bottom bar on phones), page actions beside the title.</span>
+      </div>
+      <div style="padding: 16px; border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; gap: 4px">
+        <span style="font-weight: 600">The server is the truth</span>
+        <span style="color: var(--text-3)">Show only actions the API allows and counts the API returns. Hide, don't disable, what a person may never do.</span>
+      </div>
+    </div>
+    <div style="padding: 16px; border: 1px solid var(--border-strong); border-radius: 10px; display: flex; flex-direction: column; gap: 12px; background: var(--subtle)">
+      <span style="font-weight: 600">Build with shadcn/ui components, not hand-written markup</span>
+      <span style="color: var(--text-1)">These screens are hand-written HTML only because the canvas cannot run React. In the app, every control is a shadcn/ui component in <code>components/ui</code>, themed with the colour tokens below. Do not copy the canvas’s inline styles. If a component is missing, add it with <code>npx shadcn@latest add &lt;name&gt;</code> before writing anything of your own. The app already has Button, Badge, Dialog, DropdownMenu, Field and Toast; add the rest.</span>
+      <dl style="margin: 0; display: grid; grid-template-columns: minmax(180px, 260px) minmax(0, 1fr); gap: 6px 16px; font-size: 13px"><div style="display: contents"><dt style="color: var(--text-3)">Buttons</dt><dd style="margin: 0; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: var(--fg)">Button (default, outline, ghost, destructive)</dd></div><div style="display: contents"><dt style="color: var(--text-3)">Text fields and remarks</dt><dd style="margin: 0; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: var(--fg)">Input, Textarea, Label (the app’s Field)</dd></div><div style="display: contents"><dt style="color: var(--text-3)">Codes from an authenticator app</dt><dd style="margin: 0; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: var(--fg)">InputOTP: six slots in two groups of three</dd></div><div style="display: contents"><dt style="color: var(--text-3)">Fixed choices</dt><dd style="margin: 0; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: var(--fg)">Select · RadioGroup · Checkbox · Switch</dd></div><div style="display: contents"><dt style="color: var(--text-3)">Pick a person, position or unit</dt><dd style="margin: 0; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: var(--fg)">Combobox (Popover + Command)</dd></div><div style="display: contents"><dt style="color: var(--text-3)">Dates</dt><dd style="margin: 0; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: var(--fg)">Date picker (Popover + Calendar)</dd></div><div style="display: contents"><dt style="color: var(--text-3)">Memo sections, Inbox tabs</dt><dd style="margin: 0; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: var(--fg)">Tabs</dd></div><div style="display: contents"><dt style="color: var(--text-3)">Lists of records</dt><dd style="margin: 0; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: var(--fg)">Table (with TanStack Table for selection and sort)</dd></div><div style="display: contents"><dt style="color: var(--text-3)">Short forms</dt><dd style="margin: 0; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: var(--fg)">Dialog on desktop, Drawer on phones</dd></div><div style="display: contents"><dt style="color: var(--text-3)">Confirming something that ends</dt><dd style="margin: 0; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: var(--fg)">AlertDialog</dd></div><div style="display: contents"><dt style="color: var(--text-3)">Row ⋯, account menu</dt><dd style="margin: 0; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: var(--fg)">DropdownMenu</dd></div><div style="display: contents"><dt style="color: var(--text-3)">Bell, filter pickers</dt><dd style="margin: 0; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: var(--fg)">Popover</dd></div><div style="display: contents"><dt style="color: var(--text-3)">Status and due chips</dt><dd style="margin: 0; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: var(--fg)">Badge</dd></div><div style="display: contents"><dt style="color: var(--text-3)">Loading · problems · results</dt><dd style="margin: 0; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: var(--fg)">Skeleton · Alert · Sonner (toast)</dd></div><div style="display: contents"><dt style="color: var(--text-3)">Shell</dt><dd style="margin: 0; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: var(--fg)">Sidebar, Breadcrumb, Tooltip, Separator, ScrollArea, Command (⌘K)</dd></div></dl>
+    </div>
+  </section>
+
+  <!-- Colour -->
+  <section aria-labelledby="r-colour" style="display: flex; flex-direction: column; gap: 16px">
+    <div style="display: flex; flex-direction: column; gap: 4px">
+      <h2 id="r-colour" style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600">2. Colour tokens</h2>
+      <p style="margin: 0; color: var(--text-3); max-width: 760px">Use the token, never a raw hex. Names match <span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px">web/src/styles/tokens.css</span>; values move to shadcn neutral. Theme follows the system by default; every screen is checked in both themes.</p>
+    </div>
+    <div style="border: 1px solid var(--border); border-radius: 10px; overflow-x: auto">
+      <table style="width: 100%; min-width: 760px; border-collapse: collapse; font-size: 13px">
+        <thead>
+          <tr style="border-bottom: 1px solid var(--border); text-align: left; color: var(--muted-fg)">
+            <th scope="col" style="padding: 10px 16px; font-weight: 500">Token</th>
+            <th scope="col" style="padding: 10px 12px; font-weight: 500; width: 150px">Light</th>
+            <th scope="col" style="padding: 10px 12px; font-weight: 500; width: 150px">Dark</th>
+            <th scope="col" style="padding: 10px 16px; font-weight: 500">Use for</th>
+          </tr>
+        </thead>
+        <tbody>
+          <sc-for list="{{colours}}" as="c" hint-placeholder-count="18">
+            <tr style="border-bottom: 1px solid var(--hover)">
+              <td style="padding: 8px 16px; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px">{{c.token}}</td>
+              <td style="padding: 8px 12px">
+                <span style="display: flex; align-items: center; gap: 8px">
+                  <span aria-hidden="true" style="{{c.lightChip}}"></span>
+                  <span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: var(--text-3)">{{c.light}}</span>
+                </span>
+              </td>
+              <td style="padding: 8px 12px">
+                <span style="display: flex; align-items: center; gap: 8px">
+                  <span aria-hidden="true" style="{{c.darkChip}}"></span>
+                  <span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: var(--text-3)">{{c.dark}}</span>
+                </span>
+              </td>
+              <td style="padding: 8px 16px; color: var(--text-2)">{{c.use}}</td>
+            </tr>
+          </sc-for>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin: 0; font-size: 13px; color: var(--text-3)">Tenant branding may replace <span style="font-family: 'Geist Mono', ui-monospace, monospace">--primary</span> only if it keeps 4.5:1 contrast with <span style="font-family: 'Geist Mono', ui-monospace, monospace">--primary-foreground</span>; otherwise the brand colour is used for the logo only.</p>
+
+    <div style="display: flex; flex-direction: column; gap: 4px; margin-top: 8px">
+      <h3 style="margin: 0; font-size: 16px; line-height: 24px; font-weight: 600">Chart colours</h3>
+      <p style="margin: 0; color: var(--text-3); max-width: 760px">Charts get their own colours, separate from the interface tokens above. Hues are assigned in this fixed order and never cycled; a colour follows its series, so filtering never repaints what is left.</p>
+    </div>
+    <div style="border: 1px solid var(--border); border-radius: 10px; overflow-x: auto">
+      <table style="width: 100%; min-width: 760px; border-collapse: collapse; font-size: 13px">
+        <thead>
+          <tr style="border-bottom: 1px solid var(--border); text-align: left; color: var(--muted-fg)">
+            <th scope="col" style="padding: 10px 16px; font-weight: 500">Token</th>
+            <th scope="col" style="padding: 10px 12px; font-weight: 500; width: 150px">Light</th>
+            <th scope="col" style="padding: 10px 12px; font-weight: 500; width: 150px">Dark</th>
+            <th scope="col" style="padding: 10px 16px; font-weight: 500">Use for</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style="border-bottom: 1px solid var(--hover)">
+            <td style="padding: 8px 16px; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px">--series-1</td>
+            <td style="padding: 8px 12px"><span style="display: flex; align-items: center; gap: 8px"><span aria-hidden="true" style="display: inline-block; width: 20px; height: 20px; border-radius: 5px; border: 1px solid rgba(0,0,0,0.12); background: #2a78d6"></span><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: var(--text-3)">#2a78d6</span></span></td>
+            <td style="padding: 8px 12px"><span style="display: flex; align-items: center; gap: 8px"><span aria-hidden="true" style="display: inline-block; width: 20px; height: 20px; border-radius: 5px; border: 1px solid rgba(0,0,0,0.12); background: #3987e5"></span><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: var(--text-3)">#3987e5</span></span></td>
+            <td style="padding: 8px 16px; color: var(--text-2)">First series, and the only colour of a single-series chart (pending by age, created, median)</td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--hover)">
+            <td style="padding: 8px 16px; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px">--series-2</td>
+            <td style="padding: 8px 12px"><span style="display: flex; align-items: center; gap: 8px"><span aria-hidden="true" style="display: inline-block; width: 20px; height: 20px; border-radius: 5px; border: 1px solid rgba(0,0,0,0.12); background: #eb6834"></span><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: var(--text-3)">#eb6834</span></span></td>
+            <td style="padding: 8px 12px"><span style="display: flex; align-items: center; gap: 8px"><span aria-hidden="true" style="display: inline-block; width: 20px; height: 20px; border-radius: 5px; border: 1px solid rgba(0,0,0,0.12); background: #d95926"></span><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: var(--text-3)">#d95926</span></span></td>
+            <td style="padding: 8px 16px; color: var(--text-2)">Second series (completed, P90)</td>
+          </tr>
+          <tr style="border-bottom: 1px solid var(--hover)">
+            <td style="padding: 8px 16px; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px">--critical</td>
+            <td style="padding: 8px 12px"><span style="display: flex; align-items: center; gap: 8px"><span aria-hidden="true" style="display: inline-block; width: 20px; height: 20px; border-radius: 5px; border: 1px solid rgba(0,0,0,0.12); background: #d03b3b"></span><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: var(--text-3)">#d03b3b</span></span></td>
+            <td style="padding: 8px 12px"><span style="display: flex; align-items: center; gap: 8px"><span aria-hidden="true" style="display: inline-block; width: 20px; height: 20px; border-radius: 5px; border: 1px solid rgba(0,0,0,0.12); background: #d03b3b"></span><span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: var(--text-3)">#d03b3b</span></span></td>
+            <td style="padding: 8px 16px; color: var(--text-2)">Status only: overdue. Always with an icon or a label, never as a third series</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 12px">
+      <div style="padding: 16px; border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; gap: 8px">
+        <span style="font-weight: 600">Colour rules</span>
+        <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--text-1)">
+          <li>Blue then orange pass the colour-blindness and contrast checks in both themes (worst pair ΔE 24.7 light, 26.8 dark). Check any new colour with the palette validator before using it.</li>
+          <li>More series take the next hues of the validated order (aqua, yellow, magenta, green, violet, red), checked again. Past eight, group the rest into “Other” or split into small charts.</li>
+          <li>Text is never in a series colour: values, labels and legends use the text tokens, with a coloured mark beside them.</li>
+          <li>Status colours (good, warning, serious, critical) are not series colours and always come with an icon and words.</li>
+        </ul>
+      </div>
+      <div style="padding: 16px; border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; gap: 8px">
+        <span style="font-weight: 600">Marks and reading aids</span>
+        <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--text-1)">
+          <li>Bars at most 24px thick, 4px rounded at the value end, square at the baseline; a 2px gap between touching segments.</li>
+          <li>Lines 2px; dots at least 8px with a 2px ring in the page colour. Grid lines are 1px hairlines in <span style="font-family: 'Geist Mono', ui-monospace, monospace">--hover</span>.</li>
+          <li>One value axis per chart, never two. Two measures on different scales are two charts.</li>
+          <li>Two or more series always have a legend; a single series is named by its title. Label sparingly: line ends, bar tips, never every point.</li>
+          <li>Every chart has a hover tooltip and a <strong>Show as table</strong> button, so nothing depends on colour or hovering alone.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Type -->
+  <section aria-labelledby="r-type" style="display: flex; flex-direction: column; gap: 16px">
+    <div style="display: flex; flex-direction: column; gap: 4px">
+      <h2 id="r-type" style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600">3. Type</h2>
+      <p style="margin: 0; color: var(--text-3)">Geist for everything; Geist Mono for memo references, file hashes and codes. Sentence case everywhere.</p>
+    </div>
+    <div style="border: 1px solid var(--border); border-radius: 10px">
+      <sc-for list="{{typeScale}}" as="ty" hint-placeholder-count="8">
+        <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 24px; padding: 12px 16px; border-bottom: 1px solid var(--hover)">
+          <span style="width: 160px; flex-shrink: 0; font-size: 13px; font-weight: 500">{{ty.name}}</span>
+          <span style="width: 220px; flex-shrink: 0; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px; color: var(--text-3)">{{ty.spec}}</span>
+          <span style="{{ty.sample}}">{{ty.example}}</span>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- Spacing / size -->
+  <section aria-labelledby="r-size" style="display: flex; flex-direction: column; gap: 16px">
+    <h2 id="r-size" style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600">4. Spacing, size, corners, shadows</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 12px">
+      <div style="padding: 16px; border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; gap: 10px">
+        <span style="font-weight: 600">Spacing (4px grid)</span>
+        <dl style="margin: 0; display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 6px 12px; font-size: 13px">
+          <dt style="font-family: 'Geist Mono', ui-monospace, monospace; color: var(--text-3)">6</dt><dd style="margin: 0">Icon to its label</dd>
+          <dt style="font-family: 'Geist Mono', ui-monospace, monospace; color: var(--text-3)">8</dt><dd style="margin: 0">Controls in a row; items in a menu</dd>
+          <dt style="font-family: 'Geist Mono', ui-monospace, monospace; color: var(--text-3)">12</dt><dd style="margin: 0">Cards in a stack; cell padding</dd>
+          <dt style="font-family: 'Geist Mono', ui-monospace, monospace; color: var(--text-3)">16</dt><dd style="margin: 0">Between page blocks; phone page padding</dd>
+          <dt style="font-family: 'Geist Mono', ui-monospace, monospace; color: var(--text-3)">20</dt><dd style="margin: 0">Between columns</dd>
+          <dt style="font-family: 'Geist Mono', ui-monospace, monospace; color: var(--text-3)">24</dt><dd style="margin: 0">Desktop page padding (sides)</dd>
+        </dl>
+      </div>
+      <div style="padding: 16px; border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; gap: 10px">
+        <span style="font-weight: 600">Control heights</span>
+        <dl style="margin: 0; display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 6px 12px; font-size: 13px">
+          <dt style="font-family: 'Geist Mono', ui-monospace, monospace; color: var(--text-3)">28</dt><dd style="margin: 0">Small: inside tables, footers, row menus</dd>
+          <dt style="font-family: 'Geist Mono', ui-monospace, monospace; color: var(--text-3)">32</dt><dd style="margin: 0">Default on desktop: buttons, inputs, tabs list 36</dd>
+          <dt style="font-family: 'Geist Mono', ui-monospace, monospace; color: var(--text-3)">36</dt><dd style="margin: 0">Decision buttons (Approve, Return, Reject) and dialog buttons</dd>
+          <dt style="font-family: 'Geist Mono', ui-monospace, monospace; color: var(--text-3)">40</dt><dd style="margin: 0">Phone secondary buttons and inputs (16px text)</dd>
+          <dt style="font-family: 'Geist Mono', ui-monospace, monospace; color: var(--text-3)">44</dt><dd style="margin: 0">Phone minimum for anything tappable</dd>
+        </dl>
+      </div>
+      <div style="padding: 16px; border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; gap: 10px">
+        <span style="font-weight: 600">Corners</span>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px">
+          <sc-for list="{{radii}}" as="r" hint-placeholder-count="6">
+            <span style="display: flex; flex-direction: column; align-items: center; gap: 4px; width: 76px; text-align: center">
+              <span aria-hidden="true" style="{{r.box}}"></span>
+              <span style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 12px">{{r.px}}</span>
+              <span style="font-size: 11px; line-height: 14px; color: var(--text-3)">{{r.use}}</span>
+            </span>
+          </sc-for>
+        </div>
+      </div>
+      <div style="padding: 16px; border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; gap: 10px">
+        <span style="font-weight: 600">Borders, shadows, icons</span>
+        <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--text-1)">
+          <li>Borders are 1px <span style="font-family: 'Geist Mono', ui-monospace, monospace">--border</span>; row dividers one step lighter.</li>
+          <li>Three shadows only: hairline on inputs and outline buttons; menus; dialogs and floating bars.</li>
+          <li>Lucide icons, stroke 2: 16px in desktop controls, 14px in 28–32px buttons and badges, 18–20px on phones.</li>
+          <li>Icon-only buttons always carry an accessible name.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Layout -->
+  <section aria-labelledby="r-layout" style="display: flex; flex-direction: column; gap: 16px">
+    <h2 id="r-layout" style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600">5. Layout and breakpoints</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 12px">
+      <div style="padding: 16px; border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; gap: 12px">
+        <span style="font-weight: 600">App shell</span>
+        <div aria-hidden="true" style="display: flex; height: 150px; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; font-size: 11px; color: var(--text-3)">
+          <div style="width: 70px; background: var(--subtle); border-right: 1px solid var(--border); padding: 6px; box-sizing: border-box">Sidebar 240<br>→ 56<br>→ drawer</div>
+          <div style="flex: 1; display: flex; flex-direction: column">
+            <div style="height: 22px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 6px; padding: 0 6px">
+              <span>☰</span><span style="flex: 1; max-width: 90px; height: 12px; border: 1px solid var(--border); border-radius: 3px"></span><span style="flex: 1"></span><span>bell · account</span>
+            </div>
+            <div style="flex: 1; padding: 8px; display: flex; flex-direction: column; gap: 6px">
+              <span>Title · meta · page actions</span>
+              <span style="flex: 1; display: flex; gap: 6px"><span style="flex: 2; border: 1px dashed var(--border-strong); border-radius: 4px; padding: 4px">Content</span><span style="flex: 1; border: 1px dashed var(--border-strong); border-radius: 4px; padding: 4px">Aside 320–380</span></span>
+            </div>
+          </div>
+        </div>
+        <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--text-1)">
+          <li>Top bar 48px: navigation toggle, search, then bell and account at the right.</li>
+          <li>Bell: a dot while anything is unread. On desktop it opens a dropdown of the five latest notifications with Mark all as read, See all and settings; on phones it opens the Notifications page.</li>
+          <li>No breadcrumbs on top-level pages. Deeper pages show a "‹ Back" link above the title.</li>
+          <li>Phones: every top-level page (Home, Inbox, Search, Notifications, Saved searches, Dashboard, Status, Organisation) has the same top bar with the menu button. Only pages opened from a list (a memo, a new memo, a draft) show a back button, and it returns to that list.</li>
+          <li>Account menu holds My security, Notification settings, Language, Theme and Sign out.</li>
+        </ul>
+      </div>
+      <div style="padding: 16px; border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; gap: 10px">
+        <span style="font-weight: 600">Breakpoints</span>
+        <dl style="margin: 0; display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 8px 12px; font-size: 13px">
+          <dt style="font-family: 'Geist Mono', ui-monospace, monospace; color: var(--text-3)">≥ 1024</dt><dd style="margin: 0">Full shell. Detail pages in two columns.</dd>
+          <dt style="font-family: 'Geist Mono', ui-monospace, monospace; color: var(--text-3)">860–1023</dt><dd style="margin: 0">Account shows the avatar only. The aside drops below the content.</dd>
+          <dt style="font-family: 'Geist Mono', ui-monospace, monospace; color: var(--text-3)">640–859</dt><dd style="margin: 0">Sidebar becomes a drawer; search fills the top bar.</dd>
+          <dt style="font-family: 'Geist Mono', ui-monospace, monospace; color: var(--text-3)">&lt; 640</dt><dd style="margin: 0">Phone layout: tables become lists, tabs scroll as pills, decisions move to a bottom bar, menus and dialogs open as bottom sheets.</dd>
+        </dl>
+      </div>
+    </div>
+    <div style="padding: 16px; border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; gap: 10px">
+      <span style="font-weight: 600">Memo pages</span>
+      <ul style="margin: 0; padding-left: 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 6px 32px; font-size: 13px; color: var(--text-1)">
+        <li>Every memo page you read (in review, returned, approved, rejected, withdrawn, cancelled, discarded, closed) has the same parts in the same order: header, outcome bar once it has ended, tabs, and a right column.</li>
+        <li>Outcome bar colour: green for approved, red for rejected, neutral grey for withdrawn, cancelled, discarded and closed. Ended pages then show the reason or remark when one was given, and what you can do next (a follow-up memo; for a discarded draft, a new memo, since it cannot be linked).</li>
+        <li>Tabs, always these and always in this order: <strong>Overview, Note sheet, Attachments, Linked memos, History</strong>. Counts only on tabs that have items; an empty tab says what will appear there.</li>
+        <li>Overview starts with what the reader came for: the decision to make, the final record, or the reason it was rejected. Then the document and the details.</li>
+        <li>The right column holds the task or the approvals, then people and access. Nothing else. For the initiator of a memo in review, the task card becomes “Waiting for approval”: who has it now, Recall while nobody has acted in the round, and Withdraw.</li>
+        <li>Only the draft uses stacked sections instead of tabs, because the document, approvers and details must be visible together while preparing it.</li>
+        <li>Imported memos follow the same layout with what they have: tabs Overview, Original documents, Linked memos, History; a neutral “not verified by this system” bar; legacy approvals in the right column. No note sheet, decisions or final record.</li>
+        <li>On phones every memo page is one column: header, the main card, then rows that open the note sheet, attachments, linked memos and history.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Components -->
+  <section aria-labelledby="r-components" style="display: flex; flex-direction: column; gap: 16px">
+    <h2 id="r-components" style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600">6. Components</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 12px">
+
+      <div style="padding: 16px; border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; gap: 12px">
+        <span style="font-weight: 600">Buttons</span>
+        <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
+          <button type="button" style="height: 32px; padding: 0 12px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 13px; font-weight: 500">Primary</button>
+          <button type="button" style="height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">Outline</button>
+          <button type="button" style="height: 32px; padding: 0 12px; border: 0; border-radius: 8px; background: var(--muted); color: var(--fg); font-size: 13px; font-weight: 500">Ghost (hover)</button>
+          <button type="button" style="height: 32px; padding: 0 12px; border: 0; border-radius: 8px; background: var(--destructive); color: var(--on-destructive); font-size: 13px; font-weight: 500">Destructive</button>
+          <button type="button" aria-label="More" style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg)">
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+          </button>
+        </div>
+        <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--text-1)">
+          <li>Destructive only for the action that ends something (Reject, Discard), and only inside its confirm dialog. On the page it is outline with red text.</li>
+          <li>Secondary actions beyond two go in a "⋯" menu, each with a one-line hint.</li>
+        </ul>
+      </div>
+
+      <div style="padding: 16px; border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; gap: 12px">
+        <span style="font-weight: 600">Badges: meaning, not decoration</span>
+        <div style="display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 8px 12px; align-items: center; font-size: 13px">
+          <span style="display: inline-flex; align-items: center; justify-self: start; height: 22px; padding: 0 8px; border-radius: 6px; border: 1px solid var(--border); color: var(--text-2); font-size: 12px; font-weight: 500">Draft</span><span>Neutral: Draft, Withdrawn, Discarded, Cancelled</span>
+          <span style="display: inline-flex; align-items: center; justify-self: start; height: 22px; padding: 0 8px; border-radius: 6px; border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg); font-size: 12px; font-weight: 500">In review</span><span>Warn: In review, Returned, Due soon</span>
+          <span style="display: inline-flex; align-items: center; justify-self: start; height: 22px; padding: 0 8px; border-radius: 6px; border: 1px solid var(--ok-border); background: var(--ok-bg); color: var(--ok-fg); font-size: 12px; font-weight: 500">Approved</span><span>OK: Approved, Closed</span>
+          <span style="display: inline-flex; align-items: center; justify-self: start; height: 22px; padding: 0 8px; border-radius: 6px; border: 1px solid var(--danger-border); background: var(--danger-bg); color: var(--danger-fg); font-size: 12px; font-weight: 500">Rejected</span><span>Danger: Rejected</span>
+          <span style="display: inline-flex; align-items: center; justify-self: start; height: 22px; padding: 0 8px; border-radius: 6px; background: var(--destructive); color: var(--on-destructive); font-size: 12px; font-weight: 500">Overdue 1 day</span><span>Solid red is kept for overdue only: the one thing that needs action now</span>
+          <span style="display: inline-flex; align-items: center; justify-self: start; height: 20px; padding: 0 6px; border-radius: 6px; background: var(--muted); color: var(--fg); font-size: 11px; font-weight: 500">Recommended</span><span>Muted: note actions, classification</span>
+        </div>
+      </div>
+
+      <div style="padding: 16px; border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; gap: 12px">
+        <span style="font-weight: 600">Tabs, filters, sort</span>
+        <div style="display: inline-flex; align-self: flex-start; gap: 2px; height: 36px; padding: 3px; box-sizing: border-box; border-radius: 10px; background: var(--muted)">
+          <span style="display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 10px; box-sizing: border-box; border-radius: 7px; border: 1px solid var(--border); background: var(--bg); font-size: 13px; font-weight: 500; box-shadow: 0 1px 2px rgba(0,0,0,0.06)">Selected <span style="display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 9px; background: var(--chip); font-size: 11px">8</span></span>
+          <span style="display: inline-flex; align-items: center; height: 30px; padding: 0 10px; font-size: 13px; font-weight: 500; color: var(--muted-fg)">Other</span>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px">
+          <span style="display: inline-flex; align-items: center; height: 32px; padding: 0 10px; border: 1px dashed var(--border-strong); border-radius: 8px; font-size: 13px; font-weight: 500">⊕ Facet filter</span>
+          <span style="display: inline-flex; align-items: center; height: 32px; padding: 0 10px; border: 1px solid var(--border); border-radius: 8px; font-size: 13px; font-weight: 500"><span style="color: var(--muted-fg); font-weight: 400; margin-right: 4px">Sort:</span> Due first</span>
+        </div>
+        <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--text-1)">
+          <li>Tabs switch views of the same thing; counts only when the server returns a total.</li>
+          <li>Filters are dashed buttons that show their chosen value; sort is a solid button that names its order.</li>
+        </ul>
+      </div>
+
+      <div style="padding: 16px; border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; gap: 10px">
+        <span style="font-weight: 600">Lists and tables</span>
+        <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--text-1)">
+          <li>Desktop: a table in a bordered box; 40px header in muted text; rows two lines at most (title, then reference · round in 12px).</li>
+          <li>The whole row opens the item; checkboxes and "⋯" do not.</li>
+          <li>Load more with <strong>Show more</strong> (cursor). Never page numbers or rows-per-page.</li>
+          <li>Codes (sign-in, step-up, setting up the authenticator) are six boxes in two groups of three (InputOTP). One real input underneath takes typing, paste and the phone’s one-time-code autofill; the boxes only show it.</li>
+          <li>States: skeletons, not spinners, in the shape of what is loading. Empty says what will appear and offers the one action that fills it; with filters on, offer Clear filters. Errors give a plain title, the reference for support and Try again; if only one section fails, only that section shows it. A missing memo and one you may not see read the same: “This memo does not exist, or you cannot see it.” See the Page states row.</li>
+          <li>Every page uses the full content width: lists, settings (My security, Notification settings), dashboards. The one exception is a page that is a single form from top to bottom (New memo), capped at 760px. Inside full-width pages, single fields keep their own sensible width (about 360px) instead of stretching.</li>
+          <li>Phone: a list, not a table. Title (two lines max) with the due badge on the right, then reference · type, then action · sender · relative time.</li>
+          <li>Selection: always-visible checkboxes on desktop; a <strong>Select</strong> mode on phones. Bulk actions appear in a dark bar at the bottom; decisions are never bulk.</li>
+        </ul>
+      </div>
+
+      <div style="padding: 16px; border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; gap: 10px">
+        <span style="font-weight: 600">Menus, dialogs, sheets</span>
+        <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--text-1)">
+          <li>Short forms (up to about three fields: change password, rename, reassign, save a search) open in a dialog on desktop and a bottom sheet on phones. Never expand a form inside a card or a list row: it pushes the page around. Only a page that is one long form (New memo) is a page of its own.</li>
+          <li>Menus close on Esc and on a click outside; keyboard focus returns to the button that opened them.</li>
+          <li>Every decision opens a confirm dialog (a bottom sheet on phones) that says what happens next and takes a remark: optional for approve, required for return and reject.</li>
+          <li>Dialog widths: 460px for a short form, 560px when it holds a list or an editor, 900px for previews and comparisons. Title 18px, description, fields, then Cancel and the action on the right.</li>
+          <li>Errors stay inside the dialog or sheet, never in a toast behind it. A problem with one field shows under that field (red border, short message). A problem with the whole form (it changed meanwhile, something inside must close first, it did not work) shows as a red alert above the fields. Keep what the person typed; the dialog stays open.</li>
+          <li><strong style="font-weight: 600">Validation is form validation, not HTML validation.</strong> Every form sets <code>noValidate</code>; inputs carry no <code>required</code>, <code>pattern</code>, <code>min</code>/<code>max</code> or email checks that make the browser show its own bubbles. The form (TanStack Form, already in the app) checks the values on submit, then again as the person types in a field that already shows an error. Messages are ours and short ("Required.", "Those dates do not fit."), shown under the field with <code>aria-invalid</code> and <code>aria-describedby</code>, and focus moves to the first field with an error. The submit button stays enabled and says what is missing instead of greying out. Refusals from the server go on the field they concern, otherwise in the alert above the fields.</li>
+        </ul>
+      </div>
+
+      <div style="padding: 16px; border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; gap: 10px">
+        <span style="font-weight: 600">Empty, loading, error</span>
+        <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--text-1)">
+          <li>Empty: icon tile, one-line title, one sentence on what will appear here. Add a button only when it creates the missing thing.</li>
+          <li>Loading: skeleton rows at the real row height; never a full-page spinner.</li>
+          <li>Error: say what failed and offer Retry; keep what was already loaded on screen.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Content -->
+  <section aria-labelledby="r-content" style="display: flex; flex-direction: column; gap: 16px">
+    <h2 id="r-content" style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600">7. Words, dates, numbers</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 12px">
+      <div style="padding: 16px; border: 1px solid var(--border); border-radius: 10px">
+        <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--text-1)">
+          <li>Buttons are plain verbs that name the outcome: Approve, Return, Show more. Not "Submit decision" or "Click here".</li>
+          <li>Sentence case for everything, including titles and tabs.</li>
+          <li>All copy goes through react-intl; the same action uses the same word on every screen.</li>
+          <li>Tenant terms (memo, forum) come from the Language and terms settings, never hard-coded.</li>
+        </ul>
+      </div>
+      <div style="padding: 16px; border: 1px solid var(--border); border-radius: 10px">
+        <ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--text-1)">
+          <li>Desktop tables: "16 Nov, 14:20". Phone lists: relative ("Yesterday", "3 days ago"), exact time on the detail screen.</li>
+          <li>Due: "Overdue 1 day", "Due tomorrow", "Due in 3 days", then "Due 28 Nov".</li>
+          <li>Amounts with currency code and grouping, tabular numbers: BDT 250,000,000.</li>
+          <li>References in Geist Mono: CR/2026/0142.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Accessibility -->
+  <section aria-labelledby="r-a11y" style="display: flex; flex-direction: column; gap: 16px">
+    <h2 id="r-a11y" style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600">8. Accessibility (WCAG 2.2 AA)</h2>
+    <div style="padding: 16px; border: 1px solid var(--border); border-radius: 10px">
+      <ul style="margin: 0; padding-left: 18px; display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 6px 32px; font-size: 13px; color: var(--text-1)">
+        <li>Real buttons and links; never click handlers on divs.</li>
+        <li>Text contrast at least 4.5:1, including grey meta text, in both themes.</li>
+        <li>Status is never colour alone: every badge has words.</li>
+        <li>Visible focus: 3px ring in <span style="font-family: 'Geist Mono', ui-monospace, monospace">--ring</span> at 50%.</li>
+        <li>Tabs use arrow keys; menus and dialogs trap and return focus.</li>
+        <li>Logical properties only (start/end), so layouts mirror for right-to-left languages.</li>
+        <li>Touch targets 44px on phones; 24px minimum anywhere.</li>
+        <li>Every icon-only button and checkbox has an accessible name that includes the item ("Select Q4 branch expansion budget").</li>
+      </ul>
+    </div>
+  </section>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"$preview":{"width":1440,"height":3500}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const chip = (hex) => 'display: inline-block; width: 20px; height: 20px; border-radius: 5px; border: 1px solid rgba(0,0,0,0.12); background: ' + hex;
+    const colours = [
+      ['--background', '#ffffff', '#0a0a0a', 'Page background'],
+      ['--foreground', '#0a0a0a', '#fafafa', 'Body text, headings'],
+      ['--card', '#ffffff', '#0a0a0a', 'Cards, tables, menus, dialogs (set apart by borders)'],
+      ['--muted', '#f5f5f5', '#262626', 'Tabs track, muted badges, hover, selected rows'],
+      ['--muted-foreground', '#737373', '#a3a3a3', 'Meta text, labels, placeholders'],
+      ['--border', '#e5e5e5', '#2e2e2e', 'Card and table borders'],
+      ['--input', '#e5e5e5', '#2e2e2e', 'Input and outline button borders'],
+      ['--primary', '#171717', '#e5e5e5', 'Primary button, checked checkbox, done step'],
+      ['--primary-foreground', '#fafafa', '#171717', 'Text on primary'],
+      ['--sidebar', '#fafafa', '#141414', 'Sidebar, round headers, row hover'],
+      ['--ring', '#a3a3a3', '#737373', 'Focus ring'],
+      ['--destructive', '#dc2626', '#dc2626', 'Reject button, overdue badge, unread dot (white text in both themes)'],
+      ['--status-ok-bg / fg', '#f0fdf4', '#052e16', 'Approved, Closed (text #166534 / #86efac)'],
+      ['--status-warn-bg / fg', '#fffbeb', '#422006', 'In review, Returned, due soon (text #92400e / #fcd34d)'],
+      ['--status-danger-bg / fg', '#fef2f2', '#450a0a', 'Rejected (text #b91c1c / #f87171)'],
+      ['--status-neutral-bg / fg', '#f5f5f5', '#262626', 'Draft, Withdrawn, notes (text #171717 / #e5e5e5)']
+    ].map((c) => ({ token: c[0], light: c[1], dark: c[2], use: c[3], lightChip: chip(c[1]), darkChip: chip(c[2]) }));
+
+    const typeScale = [
+      { name: 'Page title', spec: '20/28 · 600 · −1%', sample: 'font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em', example: 'Credit line renewal for Meghna Agro' },
+      { name: 'Page title, phone', spec: '18/26 · 600', sample: 'font-size: 18px; line-height: 26px; font-weight: 600', example: 'Inbox' },
+      { name: 'Section title', spec: '14/20 · 600', sample: 'font-size: 14px; line-height: 20px; font-weight: 600', example: 'Approvers' },
+      { name: 'Body', spec: '14/20 · 400', sample: 'font-size: 14px; line-height: 20px', example: 'Memos waiting for you, and the memos you write.' },
+      { name: 'Secondary', spec: '13/18 · 400–500', sample: 'font-size: 13px; line-height: 18px; color: var(--text-3)', example: 'Head of Credit review · step 3 of 5' },
+      { name: 'Caption', spec: '12/16 · 400', sample: 'font-size: 12px; line-height: 16px; color: var(--muted-fg)', example: 'Version 3 · 248 KB · uploaded 14 Nov, 16:02' },
+      { name: 'Badge', spec: '11–12/16 · 500', sample: 'font-size: 12px; line-height: 16px; font-weight: 500', example: 'Overdue 1 day' },
+      { name: 'Reference', spec: 'Geist Mono 12–14 · 400–500', sample: "font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px", example: 'CR/2026/0142' }
+    ];
+
+    const radii = [
+      ['4', 'Checkbox'], ['6', 'Badge, menu item'], ['8', 'Button, input'], ['10', 'Card, table'], ['12', 'Dialog, bulk bar'], ['16', 'Bottom sheet']
+    ].map((r) => ({ px: r[0] + 'px', use: r[1], box: 'display: block; width: 44px; height: 44px; border: 1.5px solid var(--primary); background: var(--muted); border-radius: ' + r[0] + 'px' }));
+
+    return {
+      themeClass: (this.state && this.state.theme) || this.props.theme || 'system', colours: colours, typeScale: typeScale, radii: radii };
+  }
+}
+</script>
+</body>
+</html>

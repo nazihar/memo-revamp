@@ -1,0 +1,162 @@
+    <main style="flex: 1; padding: 20px 24px 32px; display: flex; flex-direction: column; gap: 16px; min-width: 0">
+      <a href="Org.dc.html" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; font-size: 13px; color: var(--muted-fg); text-decoration: none">
+        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
+        Back to Credit Risk
+      </a>
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 12px; margin-top: -8px">
+        <div style="display: flex; flex-direction: column; gap: 4px; min-width: 0">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
+            <h1 id="pos-title" style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Credit Risk Manager</h1>
+            <sc-if value="{{closed}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; border: 1px solid var(--border); background: var(--muted); color: var(--text-2); font-size: 12px; font-weight: 500">Closed</span></sc-if>
+          </div>
+          <span style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; font-size: 13px; color: var(--muted-fg)">
+            <span>Code <span style="font-family: 'Geist Mono', ui-monospace, monospace; color: var(--text-2)">CR-M1</span></span>
+            <span aria-hidden="true">·</span><span>{{sinceText}}</span>
+          </span>
+        </div>
+        <sc-if value="{{manage}}" hint-placeholder-val="{{true}}">
+          <div style="display: flex; flex-wrap: wrap; gap: 8px">
+            <button type="button" onClick="{{openAssign}}" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 13px; font-weight: 500; cursor: pointer">
+              <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M19 8v6"></path><path d="M22 11h-6"></path></svg>
+              Assign person
+            </button>
+            <button type="button" class="ghost" onClick="{{openEdit}}" style="height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">Edit</button>
+            <button type="button" class="ghost" onClick="{{openClose}}" style="height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">Close</button>
+          </div>
+        </sc-if>
+      </div>
+
+      <dl style="margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); border: 1px solid var(--border); border-radius: 10px; overflow: hidden">
+        <div style="display: flex; flex-direction: column; gap: 6px; padding: 12px 16px">
+          <dt style="font-size: 12px; font-weight: 500; color: var(--muted-fg)">Held by</dt>
+          <dd style="margin: 0; display: flex; align-items: center; gap: 8px; min-height: 28px">
+            <sc-if value="{{holder.filled}}" hint-placeholder-val="{{true}}">
+              <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--muted); color: var(--text-2); font-size: 11px; font-weight: 600">{{holder.initials}}</span>
+              <span style="display: flex; flex-direction: column"><span style="font-weight: 500">{{holder.name}}</span><span style="font-size: 12px; color: var(--muted-fg)">{{holder.since}}</span></span>
+            </sc-if>
+            <sc-if value="{{holder.vacant}}" hint-placeholder-val="{{false}}">
+              <span style="display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg); font-size: 12px; font-weight: 500">Vacant</span>
+              <span style="font-size: 12px; color: var(--muted-fg)">{{holder.since}}</span>
+            </sc-if>
+            <sc-if value="{{holder.none}}" hint-placeholder-val="{{false}}"><span style="color: var(--muted-fg)">Nobody</span></sc-if>
+          </dd>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px; padding: 12px 16px; border-left: 1px solid var(--border)">
+          <dt style="font-size: 12px; font-weight: 500; color: var(--muted-fg)">Reports to</dt>
+          <dd style="margin: 0; display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 28px">
+            <sc-if value="{{hasReports}}" hint-placeholder-val="{{true}}">
+              <span style="display: flex; flex-direction: column"><a href="#" style="font-weight: 500; color: var(--fg)">{{reports.title}}</a><span style="font-size: 12px; color: var(--muted-fg)">{{reports.since}}</span></span>
+            </sc-if>
+            <sc-if value="{{noReports}}" hint-placeholder-val="{{false}}"><span style="color: var(--muted-fg)">Reports to nobody</span></sc-if>
+            <sc-if value="{{manage}}" hint-placeholder-val="{{true}}">
+              <button type="button" class="ghost" onClick="{{openLine}}" style="flex-shrink: 0; height: 28px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer; text-decoration: underline; text-underline-offset: 3px">Change reporting line</button>
+            </sc-if>
+          </dd>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px; padding: 12px 16px; border-left: 1px solid var(--border)">
+          <dt style="font-size: 12px; font-weight: 500; color: var(--muted-fg)">Unit</dt>
+          <dd style="margin: 0; display: flex; flex-direction: column; min-height: 28px"><a href="Org.dc.html" style="font-weight: 500; color: var(--fg)">Credit Risk</a><span style="font-size: 12px; color: var(--muted-fg)">Head Office › Credit Risk</span></dd>
+        </div>
+      </dl>
+
+      <section aria-labelledby="pos-holders" style="display: flex; flex-direction: column; gap: 8px">
+        <h2 id="pos-holders" style="margin: 0; font-size: 14px; font-weight: 600">Held by, over time</h2>
+        <div style="border: 1px solid var(--border); border-radius: 10px; overflow-x: auto">
+          <table style="width: 100%; min-width: 640px; border-collapse: collapse; font-size: 14px">
+            <caption style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Who held this position</caption>
+            <thead>
+              <tr style="border-bottom: 1px solid var(--border); text-align: left; color: var(--muted-fg); font-size: 13px">
+                <th scope="col" style="height: 40px; padding: 0 16px; font-weight: 500">Person</th>
+                <th scope="col" style="padding: 0 12px; font-weight: 500; width: 140px">From</th>
+                <th scope="col" style="padding: 0 12px; font-weight: 500; width: 140px">Until</th>
+                <th scope="col" style="padding: 0 12px; font-weight: 500; width: 120px">Status</th>
+                <th scope="col" style="padding: 0 16px 0 12px; width: 200px"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Actions</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{assignments}}" as="a" hint-placeholder-count="4">
+                <tr style="{{a.rowStyle}}">
+                  <td style="height: 48px; padding: 0 16px">
+                    <span style="display: flex; align-items: center; gap: 8px"><span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: var(--muted); color: var(--text-2); font-size: 10px; font-weight: 600">{{a.initials}}</span><span style="{{a.nameStyle}}">{{a.person}}</span></span>
+                  </td>
+                  <td style="padding: 0 12px; color: var(--text-1); white-space: nowrap">{{a.from}}</td>
+                  <td style="padding: 0 12px; color: var(--text-1); white-space: nowrap">{{a.until}}</td>
+                  <td style="padding: 0 12px"><span style="{{a.chipStyle}}">{{a.status}}</span></td>
+                  <td style="padding: 0 12px 0 12px; text-align: right; white-space: nowrap">
+                    <sc-if value="{{a.canEnd}}" hint-placeholder-val="{{true}}">
+                      <button type="button" class="ghost" onClick="{{a.end}}" aria-label="{{a.endLabel}}" style="height: 30px; padding: 0 10px; border: 0; border-radius: 6px; background: transparent; color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer">End</button>
+                    </sc-if>
+                    <sc-if value="{{a.canCancel}}" hint-placeholder-val="{{true}}">
+                      <button type="button" class="ghost" onClick="{{a.cancel}}" aria-label="{{a.cancelLabel}}" style="height: 30px; padding: 0 10px; border: 0; border-radius: 6px; background: transparent; color: var(--muted-fg); font-size: 13px; font-weight: 500; cursor: pointer">Cancel record</button>
+                    </sc-if>
+                  </td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <div style="border: 1px solid var(--border); border-radius: 10px; overflow: hidden">
+        <button type="button" class="ghost" aria-expanded="{{histAria}}" aria-controls="pos-hist" onClick="{{toggleHist}}" style="display: flex; align-items: center; gap: 8px; width: 100%; height: 44px; padding: 0 16px; border: 0; background: transparent; color: var(--fg); font-size: 14px; font-weight: 500; text-align: left; cursor: pointer">
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="{{histChev}}"><path d="m9 18 6-6-6-6"></path></svg>
+          Change history
+        </button>
+        <sc-if value="{{histOpen}}" hint-placeholder-val="{{false}}">
+          <div id="pos-hist" style="border-top: 1px solid var(--border); overflow-x: auto">
+            <table style="width: 100%; min-width: 560px; border-collapse: collapse; font-size: 13px">
+              <caption style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Changes, newest first</caption>
+              <thead>
+                <tr style="text-align: left; color: var(--muted-fg)">
+                  <th scope="col" style="height: 36px; padding: 0 16px; font-weight: 500; width: 160px">When</th>
+                  <th scope="col" style="padding: 0 12px; font-weight: 500">Change</th>
+                  <th scope="col" style="padding: 0 16px 0 12px; font-weight: 500; width: 160px">By</th>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{history}}" as="h" hint-placeholder-count="3">
+                  <tr style="border-top: 1px solid var(--hover)">
+                    <td style="padding: 8px 16px; color: var(--muted-fg); white-space: nowrap">{{h.when}}</td>
+                    <td style="padding: 8px 12px">{{h.change}}</td>
+                    <td style="padding: 8px 16px 8px 12px">{{h.by}}</td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+        </sc-if>
+      </div>
+    </main>
+  </div>
+
+  <sc-if value="{{dialogOpen}}" hint-placeholder-val="{{false}}">
+    <div style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 16px; box-sizing: border-box">
+      <button type="button" tabIndex="-1" aria-label="Close dialog" onClick="{{closeDlg}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; border: 0; padding: 0; background: rgba(0,0,0,0.5); cursor: default"></button>
+      <form role="{{dialog.role}}" aria-modal="true" aria-labelledby="pd-title" novalidate onSubmit="{{submitDlg}}" onKeyDown="{{dlgKey}}" style="position: relative; width: 100%; max-width: 440px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--bg); box-shadow: 0 16px 48px rgba(0,0,0,0.2)">
+        <button type="button" class="ghost" aria-label="Close" onClick="{{closeDlg}}" style="position: absolute; top: 12px; right: 12px; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--muted-fg)">
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+        </button>
+        <div style="display: flex; flex-direction: column; gap: 6px; padding-right: 24px">
+          <h2 id="pd-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">{{dialog.title}}</h2>
+          <sc-if value="{{dialog.hasLead}}" hint-placeholder-val="{{false}}"><p style="margin: 0; font-size: 14px; color: var(--muted-fg)">{{dialog.lead}}</p></sc-if>
+        </div>
+/*FIELDS*/        <div style="display: flex; justify-content: flex-end; gap: 8px">
+          <button type="button" class="ghost" onClick="{{closeDlg}}" style="{{dialog.dismissStyle}}">{{dialog.dismiss}}</button>
+          <button type="submit" style="{{dialog.submitStyle}}">{{dialog.submit}}</button>
+        </div>
+      </form>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}">
+    <div role="status" style="position: fixed; right: 24px; bottom: 24px; z-index: 40; display: flex; align-items: center; gap: 10px; padding: 10px 10px 10px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg); box-shadow: 0 8px 24px rgba(0,0,0,0.12); font-size: 14px">
+      {{toast}}
+      <button type="button" class="ghost" aria-label="Dismiss" onClick="{{dismissToast}}" style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border: 0; border-radius: 6px; background: transparent; color: var(--muted-fg); cursor: pointer"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"state":{"editor":"enum","options":["filled","vacant","closed"],"default":"filled"},"canEdit":{"editor":"boolean","default":true},"dialog":{"editor":"enum","options":["none","assign","edit","close","end","cancel","line"],"default":"none"},"error":{"editor":"enum","options":["none","required","refused","changed","failed"],"default":"none"},"$preview":{"width":1440,"height":900}}'>
+/*LOGIC*/</script>
+</body>
+</html>

@@ -389,11 +389,14 @@ describe('the meeting page (Phase 4 E03 T8, flow P)', () => {
     pdf.urls = []
     pdf.status = undefined
     server.use(...handlers())
-    renderRoute('/meetings/m1')
+    const { router } = renderRoute('/meetings/m1')
 
     const paper = await screen.findByRole('button', { name: 'Paper: CR/HO-CR/2026-27/0042 · 9 pages' })
     await user.click(paper)
     const viewer = await screen.findByRole('dialog', { name: 'Paper: CR/HO-CR/2026-27/0042' })
+    // The open paper has its own address, pushed onto the history.
+    expect(router.state.location.search).toEqual({ paper: 'p1', revision: 2 })
+    expect(router.history.length).toBe(2)
     expect(within(viewer).getByRole('button', { name: 'Back to the agenda' })).toBeInTheDocument()
     expect(await within(viewer).findByRole('img', { name: 'Paper: CR/HO-CR/2026-27/0042' })).toBeInTheDocument()
     expect(within(viewer).queryByRole('link', { name: /download/i })).toBeNull()
@@ -404,7 +407,71 @@ describe('the meeting page (Phase 4 E03 T8, flow P)', () => {
       expect(screen.queryByRole('dialog')).toBeNull()
     })
     expect(paper).toHaveFocus()
+    expect(router.state.location.search).toEqual({})
+    expect(router.history.location.pathname).toBe('/meetings/m1')
     expect(itemNamed('5 Term loan, Delta Textiles')).toHaveTextContent('Opened')
+  }, 20_000)
+
+  it('closes the paper with the browser’s Back and gives focus back to its button', async () => {
+    const user = userEvent.setup()
+    pdf.urls = []
+    pdf.status = undefined
+    server.use(...handlers())
+    const { router } = renderRoute('/meetings/m1')
+
+    const paper = await screen.findByRole('button', { name: 'Compliance report Q3 · 12 pages' })
+    await user.click(paper)
+    await screen.findByRole('dialog', { name: 'Compliance report Q3' })
+    expect(router.state.location.search).toEqual({ paper: 'p8', revision: 2 })
+
+    router.history.back()
+    await waitFor(() => {
+      expect(router.state.location.search).toEqual({})
+    })
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).toBeNull()
+    })
+    expect(paper).toHaveFocus()
+    expect(screen.getByRole('region', { name: 'Agenda' })).toBeInTheDocument()
+
+    // Escape closes it too, back to the same address.
+    await user.click(paper)
+    await screen.findByRole('dialog', { name: 'Compliance report Q3' })
+    await user.keyboard('{Escape}')
+    await waitFor(() => {
+      expect(router.state.location.search).toEqual({})
+    })
+    expect(paper).toHaveFocus()
+  }, 20_000)
+
+  it('opens the paper of a pasted link, and closing it stays on the meeting page', async () => {
+    const user = userEvent.setup()
+    pdf.urls = []
+    pdf.status = undefined
+    server.use(...handlers())
+    const { router } = renderRoute('/meetings/m1?paper=p1&revision=2')
+
+    const viewer = await screen.findByRole('dialog', { name: 'Paper: CR/HO-CR/2026-27/0042' })
+    await within(viewer).findByRole('img', { name: 'Paper: CR/HO-CR/2026-27/0042' })
+    expect(pdf.urls).toEqual(['/api/v1/meetings/m1/papers/p1/content?revision=2&kind=PDF'])
+
+    await user.click(within(viewer).getByRole('button', { name: 'Back to the agenda' }))
+    await waitFor(() => {
+      expect(router.state.location.search).toEqual({})
+    })
+    expect(router.history.location.pathname).toBe('/meetings/m1')
+    expect(await screen.findByRole('button', { name: 'Paper: CR/HO-CR/2026-27/0042 · 9 pages' })).toHaveFocus()
+  }, 20_000)
+
+  it('shows the agenda with a short message for a paper it does not carry', async () => {
+    pdf.urls = []
+    server.use(...handlers())
+    renderRoute('/meetings/m1?paper=p-unknown')
+
+    expect(await screen.findByText('That paper is not on this agenda, or it is not shown to you.')).toBeInTheDocument()
+    expect(screen.queryByRole('dialog')).toBeNull()
+    expect(itemNamed('5 Term loan, Delta Textiles')).toBeInTheDocument()
+    expect(pdf.urls).toEqual([])
   }, 20_000)
 
   it('says in words when a paper’s PDF is still being prepared (409 PAPER_NOT_READY)', async () => {

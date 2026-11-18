@@ -55,7 +55,11 @@ export function PaperViewer({
             url={paperUrl(meetingId, paper.id, revision)}
             title={paper.title}
             onLoaded={onOpened}
-            failedText={(status) => intl.formatMessage(status === 409 ? pm.notReady : pm.viewerFailed)}
+            failedText={(status) =>
+              intl.formatMessage(
+                status === 409 ? pm.notReady : status === 403 || status === 404 ? pm.paperMissing : pm.viewerFailed,
+              )
+            }
           />
         </Suspense>
       </div>

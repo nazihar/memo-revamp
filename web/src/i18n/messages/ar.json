@@ -1699,6 +1699,7 @@
   "meetingPage.paper.back": "العودة إلى جدول الأعمال",
   "meetingPage.paper.failed": "تعذر عرض الورقة. حاول مجددًا، أو اسأل أمين السر.",
   "meetingPage.paper.loading": "جارٍ تحميل الورقة…",
+  "meetingPage.paper.missing": "هذه الورقة ليست في جدول الأعمال هذا، أو أنها لا تُعرض عليك.",
   "meetingPage.paper.notReady": "ما زالت هذه الورقة قيد الإعداد. حاول مجددًا بعد بضع دقائق.",
   "meetingPage.paper.notReadyHint": "قيد الإعداد: يمكن قراءتها بعد قليل.",
   "meetingPage.paper.opened": "فُتحت",

@@ -42,6 +42,10 @@ export const pm = defineMessages({
     id: 'meetingPage.paper.failed',
     defaultMessage: 'The paper could not be shown. Try again, or ask the secretary.',
   },
+  paperMissing: {
+    id: 'meetingPage.paper.missing',
+    defaultMessage: 'That paper is not on this agenda, or it is not shown to you.',
+  },
   loadingPaper: { id: 'meetingPage.paper.loading', defaultMessage: 'Loading the paper…' },
   // Consent
   askItem: { id: 'meetingPage.ask.item', defaultMessage: 'Ask to discuss this item' },

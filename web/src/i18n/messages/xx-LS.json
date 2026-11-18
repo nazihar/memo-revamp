@@ -16093,6 +16093,12 @@
       "value": "Loading the paper…SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "meetingPage.paper.missing": [
+    {
+      "type": 0,
+      "value": "That paper is not on this agenda, or it is not shown to you.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "meetingPage.paper.notReady": [
     {
       "type": 0,

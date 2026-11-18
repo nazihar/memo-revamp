@@ -1699,6 +1699,7 @@
   "meetingPage.paper.back": "Back to the agenda",
   "meetingPage.paper.failed": "The paper could not be shown. Try again, or ask the secretary.",
   "meetingPage.paper.loading": "Loading the paper…",
+  "meetingPage.paper.missing": "That paper is not on this agenda, or it is not shown to you.",
   "meetingPage.paper.notReady": "This paper is still being prepared. Try again in a few minutes.",
   "meetingPage.paper.notReadyHint": "Being prepared: it can be read shortly.",
   "meetingPage.paper.opened": "Opened",

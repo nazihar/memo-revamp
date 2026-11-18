@@ -241,6 +241,7 @@ function Paper({
       <Button
         variant="outline"
         className="h-auto min-h-11 max-w-full justify-start whitespace-normal py-2 text-start text-base"
+        data-paper-id={paper.id}
         disabled={!actions.onOpenPaper}
         onClick={() => actions.onOpenPaper?.(paper, item)}
       >

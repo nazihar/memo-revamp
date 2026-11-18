@@ -1,4 +1,5 @@
-import { useQuery, useQueryClient, type QueryClient } from '@tanstack/react-query'
+import { keepPreviousData, useQuery, useQueryClient, type QueryClient } from '@tanstack/react-query'
+import { useNavigate, useRouter, useSearch } from '@tanstack/react-router'
 import { Info, Printer } from 'lucide-react'
 import { useEffect, useId, useRef, useState } from 'react'
 import { useIntl, type IntlShape } from 'react-intl'
@@ -33,6 +34,34 @@ const longDate = { day: 'numeric', month: 'long', year: 'numeric' } as const
 /** The latest revision's query key: consent requests answer it. */
 const latestKey = (meetingId: string) => getMeetingAgendaQueryKey({ path: { meetingId } })
 
+interface AgendaKey {
+  _id?: string
+  path?: { meetingId?: string }
+  query?: { revision?: number }
+}
+
+/** Whether [key] is one of [meetingId]'s agenda queries; with [revision], one that reads it (or the latest). */
+function agendaQuery(key: readonly unknown[], meetingId: string, revision?: number | null): boolean {
+  const k = key[0] as AgendaKey | undefined
+  if (k?._id !== 'getMeetingAgenda' || k.path?.meetingId !== meetingId) return false
+  return revision === undefined || k.query?.revision === undefined || k.query.revision === revision
+}
+
+/** Puts the latest revision the server answered into every query that reads it. */
+function putLatest(queryClient: QueryClient, meetingId: string, answer: MemberAgendaResponse): void {
+  queryClient.setQueriesData<MemberAgendaResponse>(
+    { predicate: (query) => agendaQuery(query.queryKey, meetingId, answer.revision) },
+    answer,
+  )
+}
+
+/** The paper [paperId] of [agenda], wherever it is. */
+function findPaper(agenda: MemberAgendaResponse, paperId: string): MemberPaperResponse | undefined {
+  const inItem = (i: MemberItemResponse): MemberPaperResponse | undefined =>
+    i.papers.find((p) => p.id === paperId) ?? i.subItems.map(inItem).find(Boolean)
+  return agenda.sections.flatMap((s) => s.items.map(inItem)).find(Boolean)
+}
+
 /** Reloads "My meetings" (the cards' "changes since you last looked"). */
 function refreshMine(queryClient: QueryClient): Promise<void> {
   return queryClient.invalidateQueries({
@@ -66,12 +95,18 @@ export function MeetingAgenda({ meetingId }: { meetingId: string }) {
   const queryClient = useQueryClient()
   const toast = useToast()
   const titleId = useId()
-  const [chosen, setChosen] = useState<number>()
+  const router = useRouter()
+  const navigate = useNavigate({ from: '/meetings/$meetingId' })
+  const search = useSearch({ from: '/_shell/_signedIn/meetings/$meetingId' })
+  // The latest revision asked for by its number reads the same as the latest, so it shares the latest's cache (opening
+  // a paper puts its revision in the address without reloading the agenda).
+  const latestKnown = queryClient.getQueryData<MemberAgendaResponse>(latestKey(meetingId))?.latestRevision
+  const chosen = search.revision !== undefined && search.revision !== latestKnown ? search.revision : undefined
   const options = getMeetingAgendaOptions({
     path: { meetingId },
     ...(chosen === undefined ? {} : { query: { revision: chosen } }),
   })
-  const agenda = useQuery(options)
+  const agenda = useQuery({ ...options, placeholderData: keepPreviousData })
   const data = agenda.data
   const latest = data ? data.revision == null || data.revision === data.latestRevision : true
   const revisions = useQuery({
@@ -98,7 +133,22 @@ export function MeetingAgenda({ meetingId }: { meetingId: string }) {
     )
   }, [meetingId, shown, lastSeen, queryClient])
 
-  const [paper, setPaper] = useState<MemberPaperResponse>()
+  // The open paper is in the address (`?paper=`), so Back closes the viewer. [pushed] says this page opened it (closing
+  // goes back), not a link or a reload (closing replaces the address). When the paper leaves the address, however it
+  // left, focus returns to its button.
+  const pushed = useRef(false)
+  const lastPaper = useRef<string | undefined>(undefined)
+  useEffect(() => {
+    if (search.paper) {
+      lastPaper.current = search.paper
+      return
+    }
+    pushed.current = false
+    const id = lastPaper.current
+    lastPaper.current = undefined
+    if (id) document.querySelector<HTMLElement>(`[data-paper-id="${id}"]`)?.focus()
+  }, [search.paper])
+
   const [showChanges, setShowChanges] = useState(false)
   const [asking, setAsking] = useState<MemberItemResponse>()
   const [busyItem, setBusyItem] = useState<string>()
@@ -107,10 +157,27 @@ export function MeetingAgenda({ meetingId }: { meetingId: string }) {
   if (agenda.isError || !data) return <ErrorState onRetry={() => void agenda.refetch()} />
 
   const markOpened = (paperId: string) => {
-    queryClient.setQueryData<MemberAgendaResponse>(options.queryKey, (current) =>
-      current ? withPaperOpened(current, paperId) : current,
+    queryClient.setQueriesData<MemberAgendaResponse>(
+      { predicate: (query) => agendaQuery(query.queryKey, meetingId) },
+      (current) => (current ? withPaperOpened(current, paperId) : current),
     )
   }
+
+  /** The address without the paper: the revision stays only when it is an earlier one. */
+  const reading = data.revision != null && data.revision !== data.latestRevision ? data.revision : undefined
+  const openPaper = (p: MemberPaperResponse) => {
+    pushed.current = true
+    void navigate({ search: { paper: p.id, ...(data.revision != null ? { revision: data.revision } : {}) } })
+  }
+  const closePaper = () => {
+    if (pushed.current) {
+      pushed.current = false
+      router.history.back()
+    } else {
+      void navigate({ search: reading === undefined ? {} : { revision: reading }, replace: true })
+    }
+  }
+  const paper = search.paper ? findPaper(data, search.paper) : undefined
 
   const withdraw = async (item: MemberItemResponse) => {
     setBusyItem(item.id)
@@ -119,10 +186,10 @@ export function MeetingAgenda({ meetingId }: { meetingId: string }) {
         path: { meetingId, itemId: item.id },
         throwOnError: true,
       })
-      queryClient.setQueryData(latestKey(meetingId), answer.data)
+      putLatest(queryClient, meetingId, answer.data)
       toast.show(intl.formatMessage(pm.withdrawn), 'success')
     } catch (problem) {
-      await queryClient.invalidateQueries({ queryKey: latestKey(meetingId) })
+      await queryClient.invalidateQueries({ predicate: (query) => agendaQuery(query.queryKey, meetingId) })
       toast.show(refusal(intl, problem), 'error')
     } finally {
       setBusyItem(undefined)
@@ -167,9 +234,17 @@ export function MeetingAgenda({ meetingId }: { meetingId: string }) {
               value={revision}
               latest={data.latestRevision}
               onChange={(next) => {
-                setChosen(next === data.latestRevision ? undefined : next)
+                void navigate({ search: next === data.latestRevision ? {} : { revision: next }, replace: true })
               }}
             />
+          ) : null}
+          {search.paper && !paper ? (
+            <p
+              role="status"
+              className="rounded-md border border-status-warn-fg/40 bg-status-warn-bg p-4 text-lg text-status-warn-fg"
+            >
+              {intl.formatMessage(pm.paperMissing)}
+            </p>
           ) : null}
           {latest ? (
             <div className="flex flex-col gap-2 rounded-md border bg-accent/40 p-4 text-lg print:hidden">
@@ -205,7 +280,7 @@ export function MeetingAgenda({ meetingId }: { meetingId: string }) {
                 variant="outline"
                 className="min-h-11"
                 onClick={() => {
-                  setChosen(undefined)
+                  void navigate({ search: {}, replace: true })
                 }}
               >
                 {intl.formatMessage(pm.readLatest)}
@@ -216,9 +291,7 @@ export function MeetingAgenda({ meetingId }: { meetingId: string }) {
             agenda={data}
             latest={latest}
             actions={{
-              onOpenPaper: (p) => {
-                setPaper(p)
-              },
+              onOpenPaper: openPaper,
               onAsk: (item) => {
                 setAsking(item)
               },
@@ -230,15 +303,14 @@ export function MeetingAgenda({ meetingId }: { meetingId: string }) {
       )}
       {paper && revision != null ? (
         <PaperViewer
+          key={paper.id}
           meetingId={meetingId}
           revision={revision}
           paper={paper}
           onOpened={() => {
             markOpened(paper.id)
           }}
-          onClose={() => {
-            setPaper(undefined)
-          }}
+          onClose={closePaper}
         />
       ) : null}
       {showChanges && changes ? (
@@ -332,13 +404,13 @@ function AskDialog({ meetingId, item, onClose }: { meetingId: string; item: Memb
         headers: { 'Idempotency-Key': key },
         throwOnError: true,
       })
-      queryClient.setQueryData(latestKey(meetingId), answer.data)
+      putLatest(queryClient, meetingId, answer.data)
       toast.show(intl.formatMessage(pm.asked), 'success')
       onClose()
       return undefined
     } catch (problem) {
       if (isProblem(problem) && (problem.status === 409 || problem.status === 404)) {
-        await queryClient.invalidateQueries({ queryKey: latestKey(meetingId) })
+        await queryClient.invalidateQueries({ predicate: (query) => agendaQuery(query.queryKey, meetingId) })
       }
       return refusal(intl, problem)
     }

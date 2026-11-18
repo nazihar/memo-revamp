@@ -2,13 +2,16 @@ import { Plus, Trash2 } from 'lucide-react'
 import { useIntl } from 'react-intl'
 import { Button } from '@/components/ui/button'
 import { Field } from '@/components/ui/field'
+import { Select } from '@/components/ui/form-controls'
 import { ft, ftv } from './messages'
 import { NumberInput } from './NumberInput'
-import { MAX_REMINDERS, type TypeSettings } from './settings'
+import { LATE_MODES, MAX_REMINDERS, type Papers, type TypeSettings } from './settings'
 
 /**
  * The Terms tab (flow J6): the usual term of office, the most consecutive terms (a warning, never a block) and when the
- * secretary is reminded before a term ends. Read-only unless the version is a draft ([onChange] set).
+ * secretary is reminded before a term ends; then papers for meetings (Phase 4 E02 T4, flow M, ADR-0059): when papers are
+ * due, what happens to a late one, and when the secretaries are reminded of a paper waiting for triage. Read-only unless
+ * the version is a draft ([onChange] set).
  */
 export function TermsTab({
   settings,
@@ -22,6 +25,10 @@ export function TermsTab({
   const intl = useIntl()
   const set = (next: Partial<TypeSettings>) => onChange?.(next)
   const days = settings.reminderDays
+  const papers = settings.submissionPolicy
+  const setPapers = (next: Partial<Papers>) => {
+    set({ submissionPolicy: { ...papers, ...next } })
+  }
   return (
     <fieldset disabled={!onChange} className="flex max-w-2xl flex-col gap-4">
       <legend className="sr-only">{intl.formatMessage(ft.tabTerms)}</legend>
@@ -112,6 +119,64 @@ export function TermsTab({
             </Button>
           </div>
         ) : null}
+      </fieldset>
+      <fieldset className="flex flex-col gap-4 border-t pt-4" aria-describedby="papers-lead">
+        <legend className="text-base font-semibold">{intl.formatMessage(ft.papers)}</legend>
+        <p id="papers-lead" className="text-xs text-muted-foreground">
+          {intl.formatMessage(ft.papersLead)}
+        </p>
+        <Field
+          label={intl.formatMessage(ft.deadline)}
+          hint={intl.formatMessage(ft.deadlineHint)}
+          error={errors['submissionPolicy.deadlineWorkingDays']}
+        >
+          {(p) => (
+            <NumberInput
+              {...p}
+              min={0}
+              max={30}
+              value={papers.deadlineWorkingDays}
+              onChange={(deadlineWorkingDays) => {
+                setPapers({ deadlineWorkingDays })
+              }}
+            />
+          )}
+        </Field>
+        <Field label={intl.formatMessage(ft.lateMode)} hint={intl.formatMessage(ft.lateHint)}>
+          {(p) => (
+            <Select
+              {...p}
+              className="w-auto max-w-full"
+              value={papers.lateMode}
+              onChange={(e) => {
+                setPapers({ lateMode: LATE_MODES.find((m) => m === e.target.value) ?? 'CHAIR_APPROVAL' })
+              }}
+            >
+              {LATE_MODES.map((m) => (
+                <option key={m} value={m}>
+                  {intl.formatMessage(ft[m])}
+                </option>
+              ))}
+            </Select>
+          )}
+        </Field>
+        <Field
+          label={intl.formatMessage(ft.triage)}
+          hint={intl.formatMessage(ft.triageHint)}
+          error={errors['submissionPolicy.triageWorkingDays']}
+        >
+          {(p) => (
+            <NumberInput
+              {...p}
+              min={1}
+              max={30}
+              value={papers.triageWorkingDays}
+              onChange={(triageWorkingDays) => {
+                setPapers({ triageWorkingDays })
+              }}
+            />
+          )}
+        </Field>
       </fieldset>
     </fieldset>
   )

@@ -36,6 +36,7 @@ class ForumPolicies(
             quorum = settings.quorum,
             outcomes = settings.outcomes,
             termPolicy = settings.termPolicy,
+            submissionPolicy = settings.submissionPolicy,
             quorumBasis = quorum.basis,
             quorumNeeded = quorum.needed,
         )

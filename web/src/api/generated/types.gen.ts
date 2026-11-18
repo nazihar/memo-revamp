@@ -728,6 +728,7 @@ export type ForumPolicyResponse = {
     quorum: QuorumRule;
     quorumBasis: number;
     quorumNeeded: number;
+    submissionPolicy: SubmissionPolicy;
     termPolicy: TermPolicy;
     typeId: string;
     typeName: string;
@@ -2320,6 +2321,11 @@ export type ReferRequest = {
     to: Array<string>;
 };
 
+export type ReferSubmissionRequest = {
+    forumId: string;
+    reason?: string | null;
+};
+
 export type RegenerateRequest = {
     reason: string;
 };
@@ -2735,6 +2741,7 @@ export type SubmissionResponse = {
     previousId?: string | null;
     purpose: 'DECISION' | 'DISCUSSION' | 'INFORMATION';
     reason?: string | null;
+    remindedAt?: string | null;
     resolutionSought?: string | null;
     status: 'QUEUED' | 'ACCEPTED' | 'DEFERRED' | 'DECIDED' | 'RETURNED' | 'DECLINED' | 'WITHDRAWN' | 'REFERRED';
     subjectId: string;
@@ -6539,7 +6546,7 @@ export type DeferForumSubmissionResponses = {
 export type DeferForumSubmissionResponse = DeferForumSubmissionResponses[keyof DeferForumSubmissionResponses];
 
 export type ReferForumSubmissionData = {
-    body: ReferRequest;
+    body: ReferSubmissionRequest;
     headers?: {
         'If-Match'?: string;
     };

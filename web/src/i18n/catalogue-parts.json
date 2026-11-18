@@ -21,6 +21,11 @@
     "routes": ["/committees", "/me/committees"],
     "prefixes": ["forums"]
   },
+  "papers": {
+    "$comment": "A paper sent to a committee (Phase 4 E02 T4): its status and timeline, on the committee pages and on the memo page.",
+    "routes": ["/committees", "/memos"],
+    "prefixes": ["papers"]
+  },
   "platform": {
     "routes": ["/platform"],
     "prefixes": ["platform"]

@@ -7,6 +7,7 @@ import {
   getMemoHistoryQueryKey,
   listMemoApprovalsQueryKey,
   listMemoNotesQueryKey,
+  listMemoForumSubmissionsQueryKey,
   getMemoOptions,
   getMemoQueryKey,
   listMyMemosInfiniteQueryKey,
@@ -32,9 +33,11 @@ import { ImportedMemo } from './ImportedMemo'
 import { MemoAccess } from './MemoAccess'
 import { MemoAttachments } from './MemoAttachments'
 import { MemoCoauthors } from './MemoCoauthors'
+import { MemoCommittees } from './MemoCommittees'
 import { MemoDetails } from './MemoDetails'
 import { CompareVersions } from './CompareVersions'
 import { useSession } from '@/features/auth/session'
+import { pmv } from '@/features/forums/papers-messages'
 import { GitCompare } from 'lucide-react'
 import { unnumberedNote } from './memo-details'
 import { MemoLinks } from './MemoLinks'
@@ -111,6 +114,7 @@ export function MemoPage({ memoId }: { memoId: string }) {
       queryClient.invalidateQueries({ queryKey: getMemoHistoryQueryKey({ path: { id: memoId } }) }),
       queryClient.invalidateQueries({ queryKey: listMemoNotesQueryKey({ path: { id: memoId } }) }),
       queryClient.invalidateQueries({ queryKey: listMemoApprovalsQueryKey({ path: { id: memoId } }) }),
+      queryClient.invalidateQueries({ queryKey: listMemoForumSubmissionsQueryKey({ path: { memoId } }) }),
       queryClient.invalidateQueries({ queryKey: listMyTasksInfiniteQueryKey({ query: { limit: 25 } }) }),
       queryClient.invalidateQueries({ queryKey: listMyMemosInfiniteQueryKey({ query: { box: 'sent', limit: 25 } }) }),
     ])
@@ -307,9 +311,15 @@ export function MemoPage({ memoId }: { memoId: string }) {
           </Section>
         </div>
         <div className="flex flex-col gap-6">
-          {view.holders.length > 0 || view.myTask || view.dueAt ? (
+          {view.holders.length > 0 || view.myTask || view.dueAt || view.withForum ? (
             <Section title={intl.formatMessage(mm.holders)}>
               {view.holders.length > 0 ? <p className="text-sm">{view.holders.map((h) => h.name).join(', ')}</p> : null}
+              {/* A memo waiting for a committee's decision has no holder (ADR-0058): the committee holds it. */}
+              {view.withForum ? (
+                <p className="text-sm font-medium">
+                  {intl.formatMessage(pmv.withForum, { committee: view.withForum })}
+                </p>
+              ) : null}
               {view.dueAt ? (
                 <p className="mt-1">
                   <Badge tone={isOverdue(view.dueAt) ? 'danger' : 'neutral'}>{dueLabel(intl, view.dueAt)}</Badge>
@@ -342,6 +352,7 @@ export function MemoPage({ memoId }: { memoId: string }) {
               ) : null}
             </Section>
           ) : null}
+          <MemoCommittees memoId={view.id} />
           {allowed.has('EDIT_ROUTE') || view.route.length > 0 ? (
             <Section title={intl.formatMessage(mm.route)} lead={intl.formatMessage(mm.routeLead)}>
               {allowed.has('EDIT_ROUTE') ? (

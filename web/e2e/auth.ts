@@ -18,6 +18,8 @@ export const DEMO_USERS = {
   headCredit: 'head.credit@demo.example',
   director: 'director@demo.example',
   headFinance: 'head.finance@demo.example',
+  // The company secretary of every demo committee (Phase 4 E01 T6), who triages their papers (E02 T4).
+  secretary: 'secretary@demo.example',
 } as const
 
 const envFile = fileURLToPath(new URL('../../deploy/compose/.env', import.meta.url))

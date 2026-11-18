@@ -5,6 +5,7 @@ import type {
   MyAccess,
   MyForumResponse,
   Session,
+  SubmissionResponse,
   Branding,
   PlatformSession,
   Term,
@@ -103,6 +104,10 @@ export const watchSettingsHandler = (body: WatchSettings = { autoWatch: true, em
 export const myForumsHandler = (body: MyForumResponse[] = []) =>
   http.get(`${API_ORIGIN}/api/v1/me/forums`, () => HttpResponse.json<MyForumResponse[]>(body))
 
+/** A memo's committee papers (Phase 4 E02): none, unless a test says so; the memo page asks for them. */
+export const memoPapersHandler = (body: SubmissionResponse[] = []) =>
+  http.get(`${API_ORIGIN}/api/v1/memos/:memoId/forum-submissions`, () => HttpResponse.json<SubmissionResponse[]>(body))
+
 export const server = setupServer(
   healthHandler(),
   sessionHandler(),
@@ -116,4 +121,5 @@ export const server = setupServer(
   watchStatusHandler(),
   watchSettingsHandler(),
   myForumsHandler(),
+  memoPapersHandler(),
 )

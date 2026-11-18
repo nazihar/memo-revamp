@@ -1998,6 +1998,9 @@
             "format" : "int32",
             "type" : "integer"
           },
+          "submissionPolicy" : {
+            "$ref" : "#/components/schemas/SubmissionPolicy"
+          },
           "termPolicy" : {
             "$ref" : "#/components/schemas/TermPolicy"
           },
@@ -2013,7 +2016,7 @@
             "type" : "integer"
           }
         },
-        "required" : [ "memberAttributes", "outcomes", "quorum", "quorumBasis", "quorumNeeded", "termPolicy", "typeId", "typeName", "version" ],
+        "required" : [ "memberAttributes", "outcomes", "quorum", "quorumBasis", "quorumNeeded", "submissionPolicy", "termPolicy", "typeId", "typeName", "version" ],
         "type" : "object"
       },
       "ForumRequest" : {
@@ -6610,6 +6613,19 @@
         "required" : [ "to" ],
         "type" : "object"
       },
+      "ReferSubmissionRequest" : {
+        "properties" : {
+          "forumId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "reason" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "forumId" ],
+        "type" : "object"
+      },
       "RegenerateRequest" : {
         "properties" : {
           "reason" : {
@@ -7807,6 +7823,10 @@
             "type" : "string"
           },
           "reason" : {
+            "type" : [ "string", "null" ]
+          },
+          "remindedAt" : {
+            "format" : "date-time",
             "type" : [ "string", "null" ]
           },
           "resolutionSought" : {
@@ -15033,7 +15053,7 @@
           "content" : {
             "application/json" : {
               "schema" : {
-                "$ref" : "#/components/schemas/ReferRequest"
+                "$ref" : "#/components/schemas/ReferSubmissionRequest"
               }
             }
           },

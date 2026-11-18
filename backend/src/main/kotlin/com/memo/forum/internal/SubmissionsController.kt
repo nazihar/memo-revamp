@@ -49,6 +49,8 @@ data class SubmissionResponse(
     val reason: String?,
     val outcome: ForumOutcome?,
     val decidedAt: Instant?,
+    /** When the secretaries were reminded that it waited past the type's triage days (once; design E02 §9). */
+    val remindedAt: Instant?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val version: Long,
 )
 
@@ -75,8 +77,13 @@ data class TriageRequest(
     val targetDate: LocalDate? = null,
 )
 
+/**
+ * Named apart from the memo module's `ReferRequest` (refer for opinion): springdoc keys schemas by simple class name, so
+ * the two collided and the contract described this body as the memo's.
+ */
+@Schema(name = "ReferSubmissionRequest")
 data class ReferRequest(
-    val forumId: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val forumId: UUID,
     val reason: String? = null,
 )
 
@@ -253,6 +260,7 @@ class SubmissionResponses(
                 reason = it.reason,
                 outcome = it.outcome,
                 decidedAt = it.decidedAt,
+                remindedAt = it.remindedAt,
                 version = it.version,
             )
         }

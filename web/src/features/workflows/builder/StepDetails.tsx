@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { Plus, Trash2 } from 'lucide-react'
+import { useId } from 'react'
 import { defineMessages, useIntl, type MessageDescriptor } from 'react-intl'
 import { getBuilderCatalogueOptions, listEscalationTargetsOptions } from '@/api/generated/@tanstack/react-query.gen'
 import type { FieldProblem } from '@/api/generated/types.gen'
@@ -52,11 +53,27 @@ const dm = defineMessages({
 })
 
 /** The committee picker (flow L2) names the committee in the organisation's words (ADR-0032). */
-const dmt = defineMessages<{ forum: TermValues; forumHint: TermValues; unknownForum: TermValues }>({
+const dmt = defineMessages<{
+  forum: TermValues
+  forumHint: TermValues
+  unknownForum: TermValues
+  wait: TermValues
+  waitOn: TermValues
+  waitOff: TermValues
+}>({
   forum: { id: 'builder.forum.pick', defaultMessage: '{Forum}' },
   forumHint: {
     id: 'builder.forum.pick.hint',
-    defaultMessage: 'The memo waits here for the decision. Only active {forums} are listed.',
+    defaultMessage: 'Only active {forums} are listed.',
+  },
+  wait: { id: 'builder.forum.wait', defaultMessage: 'Wait for the {forum}’s decision' },
+  waitOn: {
+    id: 'builder.forum.wait.on',
+    defaultMessage: 'On: the memo waits here until the {forum} decides; nobody else acts on it meanwhile.',
+  },
+  waitOff: {
+    id: 'builder.forum.wait.off',
+    defaultMessage: 'Off: the memo is sent to the {forum} for information and its route continues.',
   },
   unknownForum: {
     id: 'builder.forum.unknown',
@@ -420,7 +437,12 @@ export function StepDetails({
           )}
         </Field>
       ) : null}
-      {step.type === 'escalate-to-forum' ? <ForumPicker step={step} problems={problems} onCommand={onCommand} /> : null}
+      {step.type === 'escalate-to-forum' ? (
+        <>
+          <ForumPicker step={step} problems={problems} onCommand={onCommand} />
+          <WaitSwitch step={step} onCommand={onCommand} />
+        </>
+      ) : null}
     </div>
   )
 }
@@ -472,5 +494,35 @@ function ForumPicker({
         </Select>
       )}
     </Field>
+  )
+}
+
+/**
+ * "Wait for the committee's decision" (flow M4, ADR-0058): on, the memo waits at this step for the decision; off, it is
+ * sent for information and the route continues. New steps start on; a step saved before E02 has no `wait` and is off.
+ */
+function WaitSwitch({ step, onCommand }: { step: StepJson; onCommand: (command: Command) => void }) {
+  const intl = useIntl()
+  const terms = useTerms()
+  const id = useId()
+  const on = step.wait === true
+  return (
+    <div className="flex flex-col gap-1">
+      <label className="flex min-h-11 items-center gap-3 text-sm font-medium">
+        <Checkbox
+          role="switch"
+          className="size-5"
+          checked={on}
+          aria-describedby={id}
+          onChange={(e) => {
+            onCommand({ kind: 'set', id: step.id, patch: { wait: e.target.checked } })
+          }}
+        />
+        {intl.formatMessage(dmt.wait, terms)}
+      </label>
+      <p id={id} className="text-xs text-muted-foreground">
+        {intl.formatMessage(on ? dmt.waitOn : dmt.waitOff, terms)}
+      </p>
+    </div>
   )
 }

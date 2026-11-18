@@ -308,9 +308,17 @@ function BoxRow({ item }: { item: BoxItem }) {
       <span className="flex min-w-0 flex-1 flex-col">
         <span className="truncate font-medium">{item.subject}</span>
         <span className="text-xs text-muted-foreground">
-          {holders
-            ? intl.formatMessage(mmv.referenceHolders, { reference: referenceOf(intl, item.reference), names: holders })
-            : referenceOf(intl, item.reference)}
+          {item.withForum
+            ? intl.formatMessage(mmv.referenceWithForum, {
+                reference: referenceOf(intl, item.reference),
+                committee: item.withForum,
+              })
+            : holders
+              ? intl.formatMessage(mmv.referenceHolders, {
+                  reference: referenceOf(intl, item.reference),
+                  names: holders,
+                })
+              : referenceOf(intl, item.reference)}
         </span>
       </span>
       <span className="flex items-center gap-2 text-xs text-muted-foreground">

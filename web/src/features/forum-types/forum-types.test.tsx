@@ -228,9 +228,46 @@ describe('committee types (Phase 4 E01 T4, flow J)', () => {
     expect(bodies[0]?.name).toBe('Board committees')
     expect(bodies[0]?.quorum.threshold).toEqual({ kind: 'FRACTION', numerator: 2, denominator: 3 })
     expect(bodies[0]?.outcomes.map((o) => o.kind)).toEqual(['APPROVED', 'DEFERRED', 'NOTED'])
-    // The submission policy (ADR-0059) has no fields yet; a save keeps it as loaded rather than resetting it.
+    // Untouched on the Terms tab, the submission policy (ADR-0059) is saved as loaded.
     expect(bodies[0]?.submissionPolicy).toEqual(draft.submissionPolicy)
     await expectNoA11yViolations(container)
+  }, 20_000)
+
+  it('papers for meetings are set on the Terms tab and listed among the changes (Phase 4 E02 T4)', async () => {
+    const user = userEvent.setup()
+    const bodies: { submissionPolicy: unknown }[] = []
+    server.use(
+      ...handlers([draft, published]),
+      http.put(`${BASE}/t1/versions/3`, async ({ request }) => {
+        bodies.push((await request.json()) as (typeof bodies)[number])
+        return HttpResponse.json<ForumTypeVersionResponse>({ ...draft, revision: 6 })
+      }),
+    )
+    const { container } = renderRoute('/admin/committee-types/t1?version=3')
+
+    await user.click(await screen.findByRole('tab', { name: 'Terms' }, { timeout: 5000 }))
+    const papers = screen.getByRole('group', { name: 'Papers for meetings' })
+    const deadline = within(papers).getByRole('spinbutton', { name: /Papers due/ })
+    expect(deadline).toHaveValue(5)
+    expect(deadline).toHaveAccessibleDescription(/From 0 \(the day of the meeting\) to 30/)
+    await user.clear(deadline)
+    await user.type(deadline, '3')
+    const late = within(papers).getByRole('combobox', { name: /Late papers/ })
+    expect(late).toHaveDisplayValue('Allowed only if the chair agrees')
+    await user.selectOptions(late, 'Held for the next meeting')
+    const triage = within(papers).getByRole('spinbutton', { name: /Remind the secretaries after/ })
+    await user.clear(triage)
+    await user.type(triage, '7')
+    await expectNoA11yViolations(container)
+
+    await user.click(screen.getByRole('tab', { name: /Changes/ }))
+    expect(screen.getByText('Papers due (working days before a meeting):')).toBeInTheDocument()
+    expect(screen.getByText('Late papers:')).toBeInTheDocument()
+    expect(screen.getByText('Held for the next meeting')).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Save' }))
+    await screen.findByText('Saved.')
+    expect(bodies[0]?.submissionPolicy).toEqual({ deadlineWorkingDays: 3, lateMode: 'BLOCK', triageWorkingDays: 7 })
   }, 20_000)
 
   it('the quorum tab reads the rule as a sentence, with the server’s example and tester', async () => {

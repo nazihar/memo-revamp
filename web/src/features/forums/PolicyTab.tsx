@@ -5,14 +5,15 @@ import { PERMISSION, holds, useMyAccess } from '@/features/access/access'
 import { meaningLabels } from '@/features/forum-types/labels'
 import { ft } from '@/features/forum-types/messages'
 import { quorumNotes, quorumSentence } from '@/features/forum-types/quorum-words'
-import { ruleOf } from '@/features/forum-types/settings'
+import { papersOf, ruleOf } from '@/features/forum-types/settings'
 import { useTerms } from '@/features/terms/terms'
 import { fm, fmt, fmv } from './messages'
 import { attributeNames } from './shared'
+import { smv } from './submission-messages'
 
 /**
  * Policy (flow K2): the committee type's published policy, to read: the quorum in words, the decisions it records,
- * its member attributes and its terms of office. Administrators of committee types get a link to the type.
+ * its member attributes, its terms of office and when papers are due. Administrators of committee types get a link to the type.
  */
 export function PolicyTab({ policy }: { policy: ForumPolicyResponse }) {
   const intl = useIntl()
@@ -22,6 +23,7 @@ export function PolicyTab({ policy }: { policy: ForumPolicyResponse }) {
   const labels = attributeNames(policy)
   const typeAdmin = holds(access.data, PERMISSION.forumTypesManage) || holds(access.data, PERMISSION.forumTypesApprove)
   const t = policy.termPolicy
+  const papers = papersOf(policy.submissionPolicy)
   return (
     <div className="flex max-w-3xl flex-col gap-6">
       <p className="flex flex-wrap gap-x-2 text-sm text-muted-foreground">
@@ -100,6 +102,14 @@ export function PolicyTab({ policy }: { policy: ForumPolicyResponse }) {
             </li>
           ) : null}
         </ul>
+      </section>
+      <section aria-labelledby="policy-papers" className="flex flex-col gap-2">
+        <h2 id="policy-papers" className="text-base font-semibold">
+          {intl.formatMessage(ft.papers)}
+        </h2>
+        <p className="text-sm">
+          {intl.formatMessage(smv.deadline, { days: papers.deadlineWorkingDays ?? 5, mode: papers.lateMode })}
+        </p>
       </section>
     </div>
   )

@@ -11,6 +11,7 @@ export type CataloguePart =
   | 'memoAdmin'
   | 'forumAdmin'
   | 'forums'
+  | 'papers'
   | 'platform'
   | 'patterns'
   | 'search'

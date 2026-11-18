@@ -50,7 +50,7 @@ Built by `InviteWriter` (ical4j 4.4.0, `timezone.update.enabled=false`, strict v
 | `SEQUENCE` | per §1.3 | per §1.3 | per §1.3 | the meeting's current |
 | `DTSTAMP` | now, UTC | now | now | now |
 | `DTSTART`, `DTEND` | `TZID=<zone>` local times | same (as last sent) | same | same |
-| `VTIMEZONE` | from `ZoneRules`, observances in force from one year before to one year after | same | same | same |
+| `VTIMEZONE` | from `ZoneRules`: one fixed observance, or yearly RRULEs, when that describes the year before to the year after; else only the observance in force at the start (after the standard one when it is daylight saving) and any change during the meeting, so the last observance is the one in force (T1) | same | same | same |
 | `ORGANIZER` | `CN=<committee name>:mailto:<tenant sending address>` | same | same | same |
 | `ATTENDEE` | the recipient only: `CN`, `ROLE` (REQ-PARTICIPANT; OPT-PARTICIPANT for guests), `PARTSTAT=NEEDS-ACTION`, `RSVP=FALSE` | the recipient | the recipient | none (RFC 5546 §3.2.1) |
 | `SUMMARY` | meeting title, else committee name; the type's neutral title when set | same | same | same |

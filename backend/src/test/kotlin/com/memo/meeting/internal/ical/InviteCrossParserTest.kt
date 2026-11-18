@@ -47,7 +47,45 @@ class InviteCrossParserTest {
         }
     }
 
+    /**
+     * Zones whose offsets changed by one-off decisions, with a meeting between two changes (and one across a change).
+     * CI found the first: with the change of December 2020 also listed, biweekly read a Volgograd meeting on 1 January
+     * 2020 at +03 instead of +04, taking the last observance's offset. The file now ends with the observance in force.
+     */
+    @Test
+    fun `meetings between one-off offset changes are read at the offset in force`() {
+        ONE_OFF.forEach { (zoneId, local, hours) ->
+            val zone = ZoneId.of(zoneId)
+            val start = LocalDateTime.parse(local).atZone(zone).toInstant()
+            val event = brc.copy(startsAt = start, endsAt = start.plusSeconds(hours * HOUR), zone = zone)
+            InviteKind.entries.forEach { kind ->
+                val parsed = InviteChecks.valid(writer.write(InviteFixtures.of(kind, event)), kind)
+                assertThat(parsed.start).describedAs("$zoneId $local").isEqualTo(event.startsAt)
+                assertThat(parsed.end).describedAs("$zoneId $local").isEqualTo(event.endsAt)
+            }
+        }
+    }
+
     private companion object {
+        const val HOUR = 3600L
+        val ONE_OFF =
+            listOf(
+                // +04 from 2018-10-28 until 2020-12-27, then +03.
+                Triple("Europe/Volgograd", "2020-01-01T04:00", 1L),
+                // Across the change back to +03 at 02:00 on 27 December 2020.
+                Triple("Europe/Volgograd", "2020-12-27T01:00", 3L),
+                // +03 from 2010-10-31, +04 again from 2011-03-27.
+                Triple("Europe/Samara", "2011-06-01T12:00", 2L),
+                // +08:30 from 2015-08-15 until 2018-05-04.
+                Triple("Asia/Pyongyang", "2016-06-01T10:00", 2L),
+                // -04:30 from 2007-12-09 until 2016-05-01.
+                Triple("America/Caracas", "2016-01-01T09:30", 2L),
+                // +03 until 2021-02-01, then +02.
+                Triple("Africa/Juba", "2020-06-01T10:00", 2L),
+                // Daylight saving whose October change is at 24:00, which RRULE cannot say: explicit, with STANDARD first.
+                Triple("Africa/Cairo", "2027-05-02T01:00", 2L),
+                Triple("Africa/Cairo", "2027-01-10T10:00", 2L),
+            )
         const val MONTHS = 12
         const val TWO_HOURS = 7200L
         val ZONES =

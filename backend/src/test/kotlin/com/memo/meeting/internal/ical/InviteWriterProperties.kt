@@ -79,14 +79,37 @@ class InviteWriterProperties {
         @ForAll("instants") at: Instant,
     ) {
         val zone = ZoneId.of(zoneId)
-        val vtimezone: VTimeZone = VTimezones.of(zone, at)
+        val end = at.plusSeconds(MEETING)
+        val vtimezone: VTimeZone = VTimezones.of(zone, at, end)
+        val observances = vtimezone.observances
+        // Unless yearly rules describe the zone, the last observance is the one in force when the meeting starts (or the
+        // change during it): a reader that takes the last offset, as biweekly does, still reads the meeting right.
+        val yearly = observances.any { it.getProperty<IcalProperty>(IcalProperty.RRULE).isPresent }
+        if (!yearly) {
+            val changes =
+                zone.rules
+                    .nextTransition(at)
+                    ?.instant
+                    ?.isAfter(end) == false
+            assertThat(observances.last().getRequiredProperty<TzOffsetTo>(IcalProperty.TZOFFSETTO).offset)
+                .describedAs("$zone: the last observance for a meeting at $at")
+                .isEqualTo(zone.rules.getOffset(if (changes) end else at))
+        }
+        // Yearly and fixed observances describe the whole window around the meeting; one-off ones describe the meeting.
+        val quiet =
+            zone.rules
+                .nextTransition(at.minus(WINDOW))
+                ?.instant
+                ?.isAfter(at.plus(WINDOW)) != false
+        val covered =
+            if (yearly || quiet) (-11L..11L).map { at.plusSeconds(it * MONTH) } + at else listOf(at, at.plusSeconds(MEETING / 2), end)
         // The meeting's instant, and instants across the window the observances cover, through ical4j's own choice of the
         // observance in force. Two ical4j 4.4.0 weaknesses found in the E05 T1 spike shape this oracle: its
         // java.util.TimeZone adapter misreports zones whose standard offset changes (Antarctica/Casey) although it picks
         // the right observance, and that choice can come up to a day early before a change in zones far west of UTC
         // (America/Adak). So instants within two days of a change are left out here; the exact instants of every change
         // are checked when the VTIMEZONE is built (VTimezones compares the RRULE's dates with the JVM's transitions).
-        (-11L..11L).map { at.plusSeconds(it * MONTH) }.plus(at).filterNot { nearChange(zone, it) }.forEach { instant ->
+        covered.filterNot { nearChange(zone, it) }.forEach { instant ->
             val observance = vtimezone.getApplicableObservance(instant)
             assertThat(observance).describedAs("$zone at $instant").isNotNull()
             assertThat(observance!!.getRequiredProperty<TzOffsetTo>(IcalProperty.TZOFFSETTO).offset)
@@ -165,6 +188,8 @@ class InviteWriterProperties {
         const val MONTH = 30L * 24 * 3600
         const val HOUR = 3600L
         val NEAR: Duration = Duration.ofDays(2)
+        val WINDOW: Duration = Duration.ofDays(366)
+        const val MEETING = 3L * 3600
         const val MINUTE = 60L
         val FROM: Instant = Instant.parse("2020-01-01T00:00:00Z")
         val TO: Instant = Instant.parse("2040-12-31T00:00:00Z")

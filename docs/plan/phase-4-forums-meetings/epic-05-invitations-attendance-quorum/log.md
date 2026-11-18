@@ -48,7 +48,7 @@
   - **ical4j's `TimeZone` adapter misreports zones whose standard offset changes** (Antarctica/Casey), although it picks the right observance. Its choice of observance can also switch up to a day early before a change in zones far west of UTC (America/Adak), with the same VTIMEZONE that works for America/New_York. The property oracle therefore leaves out instants within two days of a change. The exact change instants are checked when each VTIMEZONE is built: the RRULE dates, expanded by ical4j's `Recur`, must equal the JVM's transitions.
   - **biweekly assumes one hour of daylight saving.** In Australia/Lord_Howe (30 minutes) and Antarctica/Troll (2 hours) summer time it misplaces times, so there only ical4j is compared with `java.time`.
   - **ical4j registers zone ids of its own (`ical4j~…`) in `ZoneId.getAvailableZoneIds()` as it parses**, and they have no rules. Only tests parse; the generators leave them out.
-  - **The VTIMEZONE:** a zone with no change in the window around the meeting (one year before to one year after; Asia/Dhaka) has one STANDARD observance from 1970. A zone whose yearly rules govern the window has one observance per rule with a yearly RRULE, starting the year before the window opens (Europe/London: `BYDAY=-1SU`, the form clients know). A zone whose rules change within the window (Antarctica/Casey, Africa/Casablanca) gets one observance per transition. TZNAME is numeric (`+06`, `+0530`).
+  - **The VTIMEZONE:** a zone with no change in the window around the meeting (one year before to one year after; Asia/Dhaka) has one STANDARD observance from 1970. A zone whose yearly rules govern the window has one observance per rule with a yearly RRULE, starting the year before the window opens (Europe/London: `BYDAY=-1SU`, the form clients know). A zone whose rules change within the window (Antarctica/Casey, Africa/Casablanca) gets explicit observances without RRULE (narrowed after CI, see below). TZNAME is numeric (`+06`, `+0530`).
 - **Deviations from the plan, recorded here:**
   - The CANCEL description has no reason at all: E03's cancellation reason is free text with no category, and the design forbids the text.
   - The design's "board-level credit preset" does not exist (the presets are Board, Board committee and Management committee). Every preset uses the name and never overrides a quorum; a neutral title is set per type.
@@ -56,3 +56,24 @@
   - The reply instructions name only the answers the meeting's mode offers (in person, online, or both).
   - `SendingAddress` is a published addition the design did not list: the writer needs the tenant's from address as ORGANIZER. Its platform fallback is `memo@localhost` when no host is set, where the platform relay sends nothing anyway.
   - The design's "changes view" is the web's Changes tab: it lists the meeting policy's changes now; the tab that edits it is T8.
+
+## 2026-11-18 (T1, after the first CI run)
+- **CI found a wrong reading in `InviteWriterProperties`** (run 44333621213): a Europe/Volgograd meeting on 1 January 2020 at 04:00 local (+04) was read by biweekly at +03, an hour late.
+  - Our file was correct by RFC 5545. It had a STANDARD observance from 28 October 2018 at +04 and one from 27 December 2020 at +03. ical4j and `java.time` agreed on +04.
+  - biweekly 0.6.8 ignores the onsets of observances without RRULE and applies the last one's offset. America/Caracas (‑04:30 until May 2016) showed the same.
+  - A calendar client could do the same, so **the writer changed, not the test**. For zones whose offsets change by one-off decisions (no yearly rule covering the window), the VTIMEZONE now lists only the observance in force at the start and any change during the meeting. The last observance is then the one in force. Changes outside the meeting say nothing about it.
+- **The property tests then found a second biweekly quirk** (Africa/Cairo, whose October change at 24:00 cannot be said in RRULE, so it is explicit). With a lone DAYLIGHT observance, biweekly had no standard offset to add its hour to and read the time two hours off.
+  - A VTIMEZONE without STANDARD is also unusual for clients (Outlook expects one). When the observance in force is daylight saving, the standard one before it now comes first.
+- **Handled in the test, with the reason in `InviteChecks`:** a meeting across a one-off change (a change during the meeting, in a file without RRULE). There biweekly still reads the start at the later observance's offset, which no single VTIMEZONE can avoid. Its start is compared with nothing but ical4j, which agrees with `java.time`. Daylight saving that is not one hour (Lord Howe, Troll) stays as before.
+- **Added as fixed examples** (`InviteCrossParserTest`, every method through both parsers):
+  - Europe/Volgograd 2020-01-01, and a meeting across its change on 27 December 2020;
+  - Europe/Samara 2011-06-01;
+  - Asia/Pyongyang 2016-06-01;
+  - America/Caracas 2016-01-01;
+  - Africa/Juba 2020-06-01;
+  - Africa/Cairo in summer and in winter 2027.
+- **New property assertion:** without yearly rules, the last observance is the one in force at the start (or at the end, after a change during the meeting). The coverage check now spans the window only for yearly or fixed observances and the meeting itself otherwise.
+- **Checked:**
+  - a one-off sweep (not committed) of every JVM zone at quarterly dates from 2016 to 2027 through both parsers: 28,986 cases, no failure;
+  - the property tests six more times with fresh seeds, all green;
+  - the golden files are unchanged.

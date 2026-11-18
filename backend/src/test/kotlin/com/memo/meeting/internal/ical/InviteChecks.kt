@@ -57,7 +57,21 @@ object InviteChecks {
         val zone = ical4j.tzid?.let { runCatching { ZoneId.of(it) }.getOrNull() }
         val wholeHour =
             zone == null || listOf(ical4j.start, ical4j.end).all { zone.rules.getDaylightSavings(it).seconds in setOf(0L, HOUR) }
-        val compared = if (wholeHour) biweekly else biweekly.copy(start = ical4j.start, end = ical4j.end)
+        // biweekly 0.6.8 also ignores the onsets of observances without RRULE and reads every time at the last observance's
+        // offset. The writer therefore ends a one-off zone's VTIMEZONE with the observance in force (VTimezones), which only
+        // a meeting across a one-off change (a change during the meeting, in a file without RRULE) cannot satisfy: there
+        // biweekly's start is checked against nothing but ical4j, which agrees with java.time (E05 T1, CI run 44333621213).
+        val oneOffChangeDuring =
+            zone != null && "RRULE:" !in text && zone.rules
+                .nextTransition(ical4j.start)
+                ?.instant
+                ?.isAfter(ical4j.end) == false
+        val compared =
+            when {
+                !wholeHour -> biweekly.copy(start = ical4j.start, end = ical4j.end)
+                oneOffChangeDuring -> biweekly.copy(start = ical4j.start)
+                else -> biweekly
+            }
         assertThat(compared).describedAs("biweekly reads what ical4j reads").isEqualTo(ical4j)
         return ical4j
     }

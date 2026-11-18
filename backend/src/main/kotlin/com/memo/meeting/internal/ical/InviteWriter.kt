@@ -76,7 +76,7 @@ class InviteWriter(
             add<Calendar>(Version(ParameterList(), Version.VALUE_2_0))
             add<Calendar>(CalScale(CalScale.VALUE_GREGORIAN))
             add<Calendar>(Method(invite.kind.method))
-            add<Calendar>(VTimezones.of(event.zone, event.startsAt))
+            add<Calendar>(VTimezones.of(event.zone, event.startsAt, event.endsAt))
             add<Calendar>(vevent(invite, meetingUrl.toString(), joinUrl?.toString()))
         }
     }

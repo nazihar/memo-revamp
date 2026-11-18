@@ -26,20 +26,28 @@ import kotlin.math.abs
  * A VTIMEZONE built from the JVM's zone rules (ADR-0063), so the invitation describes exactly the offsets the app used
  * for the meeting's instants; ical4j's bundled definitions and its tzurl.org updater are never involved.
  *
- * The observances cover one year before to one year after the meeting:
+ * Which form, decided over a window of one year before to one year after the meeting:
  * - no transition in that window (Asia/Dhaka): one STANDARD observance from 1970 at the zone's offset;
  * - a zone whose current yearly rules govern the whole window (Europe/London): one observance per rule with a yearly
  *   RRULE, the form every client reads, checked against the rules' own transitions before it is used;
- * - otherwise (a zone whose rules change within the window): one observance per transition, without RRULE.
+ * - otherwise (a zone whose offsets change by one-off decisions, such as Europe/Volgograd or America/Caracas): only the
+ *   observance in force when the meeting starts, and one for each change during the meeting, without RRULE. The
+ *   observance in force is then the last one in the file. A reader that takes the last observance's offset instead of
+ *   the one whose onset precedes the time still reads the meeting right: biweekly 0.6.8 does that (it read a Volgograd
+ *   meeting of 1 January 2020 at +03 from a file that also listed the change of December 2020), and a calendar client
+ *   may too. Changes outside the meeting say nothing about it.
  */
 internal object VTimezones {
     private val WINDOW: Duration = Duration.ofDays(366)
     private val EPOCH: LocalDateTime = LocalDateTime.of(1970, 1, 1, 0, 0)
     private const val CHECK_YEARS = 3L
+    private const val MAX_LOOK_BACK = 8
 
+    /** The VTIMEZONE for a meeting from [at] to [until] (the same instant when only one time is described). */
     fun of(
         zone: ZoneId,
         at: Instant,
+        until: Instant = at,
     ): VTimeZone {
         val rules = zone.rules
         val from = at.minus(WINDOW)
@@ -47,7 +55,7 @@ internal object VTimezones {
         val observances =
             when {
                 rules.nextTransition(from)?.instant?.isAfter(to) != false -> listOf(fixed(rules.getOffset(at)))
-                else -> recurring(rules, from, to) ?: explicit(rules, from, to)
+                else -> recurring(rules, from, to) ?: explicit(rules, at, maxOf(at, until))
             }
         return VTimeZone().apply {
             add<VTimeZone>(TzId(zone.id))
@@ -115,40 +123,59 @@ internal object VTimezones {
 
                 dow == null -> "BYMONTHDAY=$day"
 
-                day == -1 -> "BYDAY=-1${code(dow)}"
+                day == -1 -> "BYDAY=-1${dow.code}"
 
-                day < 0 -> "BYDAY=${code(dow)};BYMONTHDAY=${(day - DAYS_IN_WEEK + 1..day).joinToString(",")}"
+                day < 0 -> "BYDAY=${dow.code};BYMONTHDAY=${(day - DAYS_IN_WEEK + 1..day).joinToString(",")}"
 
-                (day - 1) % DAYS_IN_WEEK == 0 -> "BYDAY=${(day - 1) / DAYS_IN_WEEK + 1}${code(dow)}"
+                (day - 1) % DAYS_IN_WEEK == 0 -> "BYDAY=${(day - 1) / DAYS_IN_WEEK + 1}${dow.code}"
 
                 // "On or after the 25th" of a 31-day month is "the last": the form clients know (BYDAY=-1SU).
-                month.minLength() == month.maxLength() && lastWeek == month.maxLength() -> "BYDAY=-1${code(dow)}"
+                month.minLength() == month.maxLength() && lastWeek == month.maxLength() -> "BYDAY=-1${dow.code}"
 
-                lastWeek <= month.minLength() -> "BYDAY=${code(dow)};BYMONTHDAY=${(day..lastWeek).joinToString(",")}"
+                lastWeek <= month.minLength() -> "BYDAY=${dow.code};BYMONTHDAY=${(day..lastWeek).joinToString(",")}"
 
                 else -> null
             }
         return byDay?.let { Recur("FREQ=YEARLY;BYMONTH=${month.value};$it") }
     }
 
-    /** One observance per transition in the window, after the observance in force when the window opens. */
+    /**
+     * The observance in force at [start], and one per change up to [end]. When the one in force is daylight saving, the
+     * standard observance before it comes first: a VTIMEZONE without STANDARD is unusual for clients, and biweekly takes
+     * its base offset from STANDARD (the E05 T1 property tests found a lone DAYLIGHT for Africa/Cairo read two hours off).
+     */
     private fun explicit(
         rules: ZoneRules,
-        from: Instant,
-        to: Instant,
+        start: Instant,
+        end: Instant,
     ): List<Observance> {
-        val before = rules.previousTransition(from)
-        val opening =
-            if (before == null) {
-                fixed(rules.getOffset(from))
-            } else {
-                observance(rules.isDaylightSavings(before.instant), before.dateTimeBefore, before.offsetBefore, before.offsetAfter)
+        // The change that set the offset in force at the start (at the start itself counts), then any during the meeting.
+        val opening = rules.previousTransition(start.plusNanos(1))
+        val first =
+            when {
+                opening == null -> listOf(fixed(rules.getOffset(start)))
+                rules.isDaylightSavings(opening.instant) -> listOf(standardBefore(rules, opening), observance(rules, opening))
+                else -> listOf(observance(rules, opening))
             }
-        return listOf(opening) +
-            transitions(rules, from, to).map {
-                observance(rules.isDaylightSavings(it.instant), it.dateTimeBefore, it.offsetBefore, it.offsetAfter)
-            }
+        return first + transitions(rules, start.plusNanos(1), end).map { observance(rules, it) }
     }
+
+    /** The latest change into standard time before [daylight], else a standard observance from 1970. */
+    private fun standardBefore(
+        rules: ZoneRules,
+        daylight: ZoneOffsetTransition,
+    ): Observance {
+        val standard =
+            generateSequence(rules.previousTransition(daylight.instant)) { rules.previousTransition(it.instant) }
+                .take(MAX_LOOK_BACK)
+                .firstOrNull { !rules.isDaylightSavings(it.instant) }
+        return if (standard == null) fixed(daylight.offsetBefore) else observance(rules, standard)
+    }
+
+    private fun observance(
+        rules: ZoneRules,
+        change: ZoneOffsetTransition,
+    ): Observance = observance(rules.isDaylightSavings(change.instant), change.dateTimeBefore, change.offsetBefore, change.offsetAfter)
 
     private fun transitions(
         rules: ZoneRules,
@@ -181,7 +208,7 @@ internal object VTimezones {
         return if (minutes == 0) "%s%02d".format(sign, hours) else "%s%02d%02d".format(sign, hours, minutes)
     }
 
-    private fun code(dow: DayOfWeek): String = dow.name.take(2)
+    private val DayOfWeek.code: String get() = name.take(2)
 
     private const val DAYS_IN_WEEK = 7
     private const val SECONDS_PER_HOUR = 3600

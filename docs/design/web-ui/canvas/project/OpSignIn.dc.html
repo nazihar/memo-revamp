@@ -42,15 +42,32 @@ textarea{font-family:inherit}
 .global-search{width:auto !important;flex:1;min-width:0}
 .kbd{display:none !important}
 }
+.th{--bar-bg:#18181b;--bar-fg:#fafafa;--bar-muted:#a1a1aa;--bar-line:rgba(255,255,255,0.14)}
 .ed-main>*{flex-shrink:0}
 </style>
 </helmet>
-<div class="th {{themeClass}}" style="position: relative; min-height: 1000px; display: flex; flex-direction: column; background: var(--bg); color: var(--fg); font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 20px">
-  <main style="flex: 1; display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 64px 24px; background: var(--subtle)">
-    <div style="display: flex; align-items: center; gap: 10px"><span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-weight: 700">m</span><span style="display: flex; flex-direction: column"><span style="font-weight: 600">Platform administration</span><span style="font-size: 12px; color: var(--muted-fg)">For the people who run the platform, not for an organisation’s users</span></span></div>
-    <div style="width: 100%; max-width: 400px; box-sizing: border-box; display: flex; flex-direction: column; gap: 16px; padding: 28px; border: 1px solid var(--border); border-radius: 14px; background: var(--card); box-shadow: 0 1px 3px rgba(0,0,0,0.06)">
-      <sc-if value="{{isPassword}}" hint-placeholder-val="{{true}}"><form novalidate onSubmit="{{si.submit}}" style="display: flex; flex-direction: column; gap: 16px">
-      <div style="display: flex; flex-direction: column; gap: 6px"><h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600">Operator sign-in</h1><p style="margin: 0; font-size: 14px; color: var(--muted-fg)">Platform operators only. Two-step sign-in is always required.</p></div>
+<div class="th {{themeClass}}" style="display: flex; flex-direction: column; min-height: 900px; background: var(--subtle); color: var(--fg); font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 20px">
+    <div style="display: flex; justify-content: flex-end; gap: 4px; padding: 8px 12px">
+      <button type="button" class="ghost" aria-label="Language: English" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 10px; border: 0; border-radius: 8px; background: transparent; color: var(--fg); font-size: 13px; cursor: pointer">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m5 8 6 6"></path><path d="m4 14 6-6 2-3"></path><path d="M2 5h12"></path><path d="M7 2h1"></path><path d="m22 22-5-10-5 10"></path><path d="M14 18h6"></path></svg>
+        English
+      </button>
+      <button type="button" class="ghost" aria-label="Theme: System" style="display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border: 0; border-radius: 8px; background: transparent; color: var(--fg); cursor: pointer">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"></rect><line x1="8" x2="16" y1="21" y2="21"></line><line x1="12" x2="12" y1="17" y2="21"></line></svg>
+      </button>
+    </div>
+  <main style="flex: 1; display: flex; justify-content: center; padding: 0 16px">
+    <div style="width: 100%; max-width: 400px; box-sizing: border-box; margin-top: 64px; margin-bottom: 48px; padding: 28px; align-self: flex-start; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 24px">
+        <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 10px; background: var(--primary); color: var(--primary-fg); font-weight: 600; font-size: 16px">M</span>
+        <span style="display: flex; flex-direction: column">
+          <span style="font-weight: 600">Memo &amp; Meetings</span>
+          <span style="font-size: 12px; color: var(--muted-fg)">Platform administration</span>
+        </span>
+      </div>
+      <sc-if value="{{is.signin}}" hint-placeholder-val="{{true}}">
+      <form novalidate onSubmit="{{si.submit}}" style="display: flex; flex-direction: column; gap: 18px">
+        <div style="display: flex; flex-direction: column; gap: 6px"><h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Operator sign-in</h1><p style="margin: 0; font-size: 14px; color: var(--muted-fg)">Platform operators only. Two-step sign-in is always required.</p></div>
         <sc-if value="{{si.hasAlert}}" hint-placeholder-val="{{false}}">
           <div role="alert" style="display: flex; gap: 10px; padding: 10px 12px; border: 1px solid var(--danger-border); border-radius: 8px; background: var(--danger-bg); color: var(--danger-fg); font-size: 13px"><span style="flex-shrink: 0; margin-top: 1px"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg></span><span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-weight: 600">Not done</strong><span>{{si.alert}}</span></span></div>
         </sc-if>
@@ -64,19 +81,23 @@ textarea{font-family:inherit}
           <input id="si-password" type="password" autocomplete="current-password" value="{{si.password}}" onChange="{{si.on_password}}" aria-invalid="{{si.passwordInvalid}}" aria-describedby="si-password-msg" style="width: 100%; height: 36px; padding: 0 10px; box-sizing: border-box; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); border: 1px solid {{si.passwordBorder}}">
           <sc-if value="{{si.passwordHasErr}}" hint-placeholder-val="{{false}}"><span id="si-password-msg" style="font-size: 12px; color: var(--danger-fg)">{{si.passwordErr}}</span></sc-if>
         </div>
-      <button type="submit" style="width: 100%; height: 36px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 14px; font-weight: 500; cursor: pointer">Sign in</button>
-      </form></sc-if>
-      <sc-if value="{{isCode}}" hint-placeholder-val="{{false}}"><form novalidate onSubmit="{{sc.submit}}" style="display: flex; flex-direction: column; gap: 16px">
-      <div style="display: flex; flex-direction: column; gap: 6px"><h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600">Enter your code</h1><p style="margin: 0; font-size: 14px; color: var(--muted-fg)">Enter the 6-digit code from your authenticator app.</p></div>
+        <button type="submit" style="width: 100%; height: 36px; border: 0; background: var(--primary); color: var(--primary-fg); border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer">Sign in</button>
+      </form>
+      </sc-if>
+      <sc-if value="{{is.code}}" hint-placeholder-val="{{false}}">
+      <form novalidate onSubmit="{{sc.submit}}" style="display: flex; flex-direction: column; gap: 18px">
+        <div style="display: flex; flex-direction: column; gap: 6px"><h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Enter your code</h1><p style="margin: 0; font-size: 14px; color: var(--muted-fg)">Enter the 6-digit code from your authenticator app.</p></div>
         <sc-if value="{{sc.hasAlert}}" hint-placeholder-val="{{false}}">
           <div role="alert" style="display: flex; gap: 10px; padding: 10px 12px; border: 1px solid var(--danger-border); border-radius: 8px; background: var(--danger-bg); color: var(--danger-fg); font-size: 13px"><span style="flex-shrink: 0; margin-top: 1px"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg></span><span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-weight: 600">Not done</strong><span>{{sc.alert}}</span></span></div>
         </sc-if>
-      <div style="display: flex; flex-direction: column; gap: 6px; align-items: center; text-align: center"><label for="op-code" style="font-size: 14px; font-weight: 500">Code</label><div style="position: relative; align-self: center; display: inline-flex; align-items: center; gap: 8px"><input id="op-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" value="{{otp.si_code.value}}" onChange="{{otp.si_code.onInput}}" onFocus="{{otp.si_code.onFocus}}" onBlur="{{otp.si_code.onBlur}}" aria-invalid="{{otp.si_code.invalid}}" aria-describedby="{{otp.si_code.describedBy}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 2; width: 100%; height: 100%; margin: 0; padding: 0; border: 0; opacity: 0; background: transparent; color: transparent; caret-color: transparent; font-size: 16px; cursor: text"><span aria-hidden="true" style="display: flex"><sc-for list="{{otp.si_code.a}}" as="sl" hint-placeholder-count="3"><span style="{{sl.style}}">{{sl.ch}}<sc-if value="{{sl.caret}}" hint-placeholder-val="{{false}}"><span class="otp-caret" style="position: absolute; width: 1px; height: 45%; background: var(--fg)"></span></sc-if></span></sc-for></span><span aria-hidden="true" style="display: flex; color: var(--muted-fg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"></path></svg></span><span aria-hidden="true" style="display: flex"><sc-for list="{{otp.si_code.b}}" as="sl" hint-placeholder-count="3"><span style="{{sl.style}}">{{sl.ch}}<sc-if value="{{sl.caret}}" hint-placeholder-val="{{false}}"><span class="otp-caret" style="position: absolute; width: 1px; height: 45%; background: var(--fg)"></span></sc-if></span></sc-for></span></div><sc-if value="{{codeHasErr}}" hint-placeholder-val="{{false}}"><span id="op-code-err" style="font-size: 12px; color: var(--danger-fg)">{{codeErr}}</span></sc-if></div>
-      <button type="submit" style="width: 100%; height: 36px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 14px; font-weight: 500; cursor: pointer">Continue</button>
-      <div style="display: flex; justify-content: center"><button type="button" onClick="{{backToPassword}}" style="padding: 0; border: 0; background: transparent; color: var(--fg); font-size: 13px; font-weight: 500; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">Sign in as someone else</button></div>
-      </form></sc-if>
+        <div style="display: flex; flex-direction: column; gap: 6px; align-items: center; text-align: center"><label for="op-code" style="font-size: 14px; font-weight: 500">Code</label><div style="position: relative; align-self: center; display: inline-flex; align-items: center; gap: 8px"><input id="op-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" value="{{otp.si_code.value}}" onChange="{{otp.si_code.onInput}}" onFocus="{{otp.si_code.onFocus}}" onBlur="{{otp.si_code.onBlur}}" aria-invalid="{{otp.si_code.invalid}}" aria-describedby="{{otp.si_code.describedBy}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 2; width: 100%; height: 100%; margin: 0; padding: 0; border: 0; opacity: 0; background: transparent; color: transparent; caret-color: transparent; font-size: 16px; cursor: text"><span aria-hidden="true" style="display: flex"><sc-for list="{{otp.si_code.a}}" as="sl" hint-placeholder-count="3"><span style="{{sl.style}}">{{sl.ch}}<sc-if value="{{sl.caret}}" hint-placeholder-val="{{false}}"><span class="otp-caret" style="position: absolute; width: 1px; height: 45%; background: var(--fg)"></span></sc-if></span></sc-for></span><span aria-hidden="true" style="display: flex; color: var(--muted-fg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"></path></svg></span><span aria-hidden="true" style="display: flex"><sc-for list="{{otp.si_code.b}}" as="sl" hint-placeholder-count="3"><span style="{{sl.style}}">{{sl.ch}}<sc-if value="{{sl.caret}}" hint-placeholder-val="{{false}}"><span class="otp-caret" style="position: absolute; width: 1px; height: 45%; background: var(--fg)"></span></sc-if></span></sc-for></span></div><sc-if value="{{codeHasErr}}" hint-placeholder-val="{{false}}"><span id="op-code-err" style="font-size: 12px; color: var(--danger-fg)">{{codeErr}}</span></sc-if></div>
+        <button type="submit" style="width: 100%; height: 36px; border: 0; background: var(--primary); color: var(--primary-fg); border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer">Continue</button>
+        <div style="display: flex; justify-content: flex-end"><button type="button" onClick="{{go.back}}" style="padding: 0; border: 0; background: transparent; color: var(--fg); font-size: 13px; font-weight: 500; text-decoration: underline; text-underline-offset: 3px; cursor: pointer">Sign in as someone else</button></div>
+        <p style="margin: 0; padding: 10px 12px; border-radius: 8px; background: var(--subtle); font-size: 13px; color: var(--text-2)"><strong style="font-weight: 600; color: var(--fg)">Lost your authenticator app?</strong> Operators have no recovery codes. Ask whoever runs the platform’s servers to reset your two-step sign-in.</p>
+      </form>
+      </sc-if>
+      <p style="margin: 24px 0 0; padding-top: 16px; border-top: 1px solid var(--hover); font-size: 12px; color: var(--muted-fg)">For the people who run the platform. Organisations sign in at their own address, such as <span style="white-space: nowrap">meghna-leasing.memo.[domain]</span>.</p>
     </div>
-    <span style="max-width: 400px; text-align: center; font-size: 12px; color: var(--muted-fg)">Organisations sign in at their own address, such as <span style="white-space: nowrap">meghna-leasing.memo.[domain]</span>.</span>
   </main>
   <sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}">
     <div role="status" style="position: fixed; right: 24px; bottom: 24px; z-index: 40; display: flex; align-items: center; gap: 10px; padding: 10px 10px 10px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); box-shadow: 0 8px 24px rgba(0,0,0,0.12); font-size: 14px">
@@ -86,7 +107,7 @@ textarea{font-family:inherit}
   </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"step":{"editor":"enum","options":["password","code"],"default":"password"},"error":{"editor":"enum","options":["none","required","invalid","tooMany","codeInvalid","failed"],"default":"none"},"$preview":{"width":1440,"height":900}}'>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"screen":{"editor":"enum","options":["signin","code"],"default":"signin"},"error":{"editor":"enum","options":["none","required","invalid","tooMany","codeInvalid","failed"],"default":"none"},"$preview":{"width":1440,"height":900}}'>
 class Component extends DCLogic {
   renderVals() {
     const st = this.state || {};
@@ -136,21 +157,22 @@ class Component extends DCLogic {
       };
     };
 
-    const step = st.step || this.props.step || 'password';
+    const scr = st.screen || this.props.screen || 'signin';
     const tried = !!form.tried || err === 'required';
     const email = form.email !== undefined ? form.email : (err === 'required' ? '' : 't.chowdhury@[platform]');
     const password = form.password !== undefined ? form.password : (err === 'required' ? '' : 'correct horse battery');
     const SI = { invalid: 'The email or password is incorrect, or the account is locked for a while.', tooMany: 'Too many attempts. Wait a few minutes and try again.', failed: 'That did not work. Try again.' };
-    const siAlert = step === 'password' ? (SI[err] || '') : '';
-    const codeErr = err === 'codeInvalid' && step === 'code' ? 'That code is not valid. Try the next one.' : '';
+    const siAlert = scr === 'signin' ? (SI[err] || '') : '';
+    const codeErr = err === 'codeInvalid' && scr === 'code' ? 'That code is not valid. Try the next one.' : '';
     const vals = Object.assign(base, {
-      isPassword: step === 'password', isCode: step === 'code', backToPassword: () => this.setState({ step: 'password', err: 'none' }),
+      is: { signin: scr === 'signin', code: scr === 'code' }, go: { back: () => this.setState({ screen: 'signin', err: 'none' }) },
       otp: { si_code: mkOtp('si_code', 'op-code', { init: err === 'codeInvalid' ? '481920' : '4819', error: !!codeErr }) }, codeHasErr: !!codeErr, codeErr: codeErr,
       si: Object.assign({ on_email: setForm('email'), on_password: setForm('password'), hasAlert: !!siAlert, alert: siAlert,
         submit: (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); if (!email.trim() || !password) { this.setState({ form: Object.assign({}, form, { email: email, password: password, tried: true }) }); return; }
-          if (siAlert) { this.setState({ err: err }); return; } this.setState({ step: 'code', err: 'none' }); } },
+          if (siAlert) { this.setState({ err: err }); return; } this.setState({ screen: 'code', err: 'none' }); } },
         fieldVals('si', 'email', email, tried && !email.trim() ? 'Required.' : ''), fieldVals('si', 'password', password, tried && !password ? 'Required.' : '')),
-      sc: { hasAlert: step === 'code' && err === 'failed', alert: 'That did not work. Try again.', submit: (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); if (codeErr) { this.setState({ err: err }); return; } this.setState({ toast: 'Signed in.' }); } }
+      // On success the app opens Organisations; there is no message.
+      sc: { hasAlert: scr === 'code' && err === 'failed', alert: 'That did not work. Try again.', submit: (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); if (codeErr) this.setState({ err: err }); } }
     });
     return Object.assign(vals, { themeClass: st.theme || this.props.theme || 'system' });
   }

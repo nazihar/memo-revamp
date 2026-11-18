@@ -79,14 +79,14 @@ def ov_badges(s):
 AUDIT_JS = r"""
     const E = (time, who, action, object, change, detail) => ({ time: time, who: who, action: action, object: object, change: change, detail: detail });
     const ROWS = [
-      E('Today, 09:41', 'Shirin Akter', 'memo.type.version.submitted', 'memo_type CR · version 5', 'Submitted for review', [['state', 'DRAFT', 'IN_REVIEW']]),
+      E('Today, 09:41', 'Shirin Akter', 'memo.type.submitted', 'memo_type CR · version 5', 'Submitted for review', [['state', 'DRAFT', 'IN_REVIEW']]),
       E('Today, 09:12', 'Arif Rahman', 'authz.grant.created', 'grant · Farhana Rahman', 'Dashboard viewer, Credit Risk', [['role', '—', 'Dashboard viewer'], ['scope', '—', 'Credit Risk']]),
-      E('Today, 08:40', 'System', 'mail.delivery.failed', 'mail · l.begum@[domain]', 'Invitation, attempt 5', [['status', 'PENDING', 'FAILED']]),
-      E('Today, 08:02', 'Not signed in', 'identity.signin.failed', 'user · k.hasan@[domain]', 'Wrong password (20th in a row)', []),
+      E('Today, 08:40', 'Arif Rahman', 'identity.user.invitation_resent', 'user · Lutfa Begum', 'Invitation sent again', []),
+      E('Today, 08:02', 'Not signed in', 'identity.login.failed', 'user · k.hasan@[domain]', 'Wrong password (20th in a row)', []),
       E('Today, 08:02', 'System', 'identity.user.locked', 'user · Kamal Hasan', 'Locked for 30 minutes', [['status', 'ACTIVE', 'LOCKED']]),
-      E('Yesterday, 17:20', 'Arif Rahman', 'tenant.settings.updated', 'settings · security', 'Shortest password 12 → 14', [['security.password.min.length', '12', '14']]),
+      E('Yesterday, 17:20', 'Arif Rahman', 'tenant.setting.changed', 'settings · security', 'Shortest password 12 → 14', [['security.password.min.length', '12', '14']]),
       E('Yesterday, 16:05', 'Shirin Akter', 'authz.classification.reordered', 'classification', 'New order of 4 levels', [['order', 'Internal, Confidential, Restricted, Strictly confidential', 'Internal, Restricted, Confidential, Strictly confidential']]),
-      E('Yesterday, 11:40', 'Platform operator', 'tenant.plan.updated', 'tenant', 'Storage limit raised', [['storage', '200 GB', '500 GB']])
+      E('Yesterday, 11:40', 'Platform operator', 'tenant.renamed', 'tenant', 'Name changed', [['name', '[Organisation name] Limited', '[Organisation name]']])
     ];
     const open = st.open !== undefined ? st.open : (this.props.details === false ? -1 : 0);
     const rows = ROWS.map((r, i) => ({ time: r.time, who: r.who, action: r.action, object: r.object, change: r.change, isOpen: open === i, hasDetail: r.detail.length > 0,

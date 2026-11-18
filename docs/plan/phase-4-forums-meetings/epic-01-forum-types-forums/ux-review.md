@@ -179,6 +179,6 @@ Meetings and papers appear on this card from E03.
 ## Owner review
 | Flow | Date | Result |
 |---|---|---|
-| J committee types | | |
-| K committees | | |
-| L my committees, builder picker | | |
+| J committee types | 2026-11-18 | Approved as drawn ("ok") |
+| K committees | 2026-11-18 | Approved as drawn ("ok") |
+| L my committees, builder picker | 2026-11-18 | Approved as drawn ("ok") |

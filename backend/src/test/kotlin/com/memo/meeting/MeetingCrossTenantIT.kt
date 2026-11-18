@@ -14,12 +14,19 @@ import com.memo.forum.internal.Forums
 import com.memo.forum.internal.MemberInput
 import com.memo.identity.UserAccount
 import com.memo.identity.UserAccounts
+import com.memo.meeting.internal.AgendaDraftViews
+import com.memo.meeting.internal.AgendaItems
+import com.memo.meeting.internal.AgendaOrigin
+import com.memo.meeting.internal.AgendaStart
+import com.memo.meeting.internal.ItemInput
+import com.memo.meeting.internal.ItemKind
 import com.memo.meeting.internal.MeetingGuests
 import com.memo.meeting.internal.MeetingInput
 import com.memo.meeting.internal.MeetingLifecycle
 import com.memo.meeting.internal.MeetingNotFoundException
 import com.memo.meeting.internal.MeetingPlace
 import com.memo.meeting.internal.MeetingReads
+import com.memo.meeting.internal.MeetingRejectedException
 import com.memo.meeting.internal.TimesInput
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
@@ -67,6 +74,12 @@ class MeetingCrossTenantIT : IntegrationTest() {
     @Autowired lateinit var guests: MeetingGuests
 
     @Autowired lateinit var reads: MeetingReads
+
+    @Autowired lateinit var starts: AgendaStart
+
+    @Autowired lateinit var items: AgendaItems
+
+    @Autowired lateinit var views: AgendaDraftViews
 
     private class Side(
         val tenant: TestTenant,
@@ -166,6 +179,70 @@ class MeetingCrossTenantIT : IntegrationTest() {
                     }
                 assertThat(deleted.exceptionOrNull()).describedAs(table).isInstanceOf(SQLException::class.java)
             }
+    }
+
+    @Test
+    fun `another tenant neither sees nor writes agendas, sections, items, attendees or papers`() {
+        val a = side("agendaa")
+        val b = side("agendab")
+        val ofA = meeting(a)
+        val ofB = meeting(b)
+        val itemA =
+            asUser(a.tenant, a.admin) {
+                starts.start(ofA, AgendaOrigin.TEMPLATE, null)
+                items.add(ofA, views.draft(ofA).version, ItemInput(ItemKind.ITEM, title = "Capital plan"))
+            }
+        val versionA = asUser(a.tenant, a.admin) { views.draft(ofA).version }
+        asUser(b.tenant, b.admin) { starts.start(ofB, AgendaOrigin.TEMPLATE, null) }
+
+        // Through the services: B's administrator gets 404 for A's agenda, and copying it is refused as unknown.
+        assertThatThrownBy { asUser(b.tenant, b.admin) { views.draft(ofA) } }.isInstanceOf(MeetingNotFoundException::class.java)
+        assertThatThrownBy { asUser(b.tenant, b.admin) { starts.start(ofA, AgendaOrigin.TEMPLATE, null) } }
+            .isInstanceOf(MeetingNotFoundException::class.java)
+        assertThatThrownBy {
+            asUser(
+                b.tenant,
+                b.admin,
+            ) { items.remove(ofA, itemA, versionA) }
+        }.isInstanceOf(MeetingNotFoundException::class.java)
+        val another = meeting(b)
+        val copy = runCatching { asUser(b.tenant, b.admin) { starts.start(another, AgendaOrigin.MEETING, ofA) } }.exceptionOrNull()
+        assertThat((copy as MeetingRejectedException).problems.map { "${it.field}:${it.code}" }).containsExactly("meetingId:unknown")
+
+        // Through SQL as the app role: none of A's rows is visible to B, none written for A, none pointing at A's.
+        val tables = listOf("meeting_agenda", "meeting_section", "meeting_item", "meeting_item_attendee", "meeting_paper")
+        AppRoleJdbc.inTransaction(b.tenant.id) { c ->
+            tables.forEach { table ->
+                assertThat(c.long("select count(*) from $table where tenant_id = ?", a.tenant.id.value)).describedAs(table).isZero()
+            }
+            assertThat(c.update("update meeting_item set title = 'x' where id = ?", itemA)).isZero()
+        }
+        val now = OffsetDateTime.now(ZoneOffset.UTC)
+        val sectionB = asUser(b.tenant, b.admin) { views.draft(ofB) }.sections.first().id
+        val writes =
+            listOf(
+                // A's tenant id: refused by the policy.
+                "insert into meeting_item_attendee (tenant_id, item_id, user_id, added_at) values (?, ?, ?, ?)" to
+                    listOf<Any>(a.tenant.id.value, itemA, b.member.id.value, now),
+                // B's tenant id pointing at A's item: refused by the composite foreign key.
+                "insert into meeting_item_attendee (tenant_id, item_id, user_id, added_at) values (?, ?, ?, ?)" to
+                    listOf<Any>(b.tenant.id.value, itemA, b.member.id.value, now),
+                "insert into meeting_item (id, tenant_id, meeting_id, section_id, position, kind, title, classification_id, " +
+                    "created_at, updated_at, purpose) values (?, ?, ?, ?, 0, 'ITEM', 'x', ?, ?, ?, 'DECISION')" to
+                    listOf<Any>(UUID.randomUUID(), b.tenant.id.value, ofA, sectionB, UUID.randomUUID(), now, now),
+            )
+        writes.forEach { (sql, params) ->
+            val written = runCatching { AppRoleJdbc.inTransaction(b.tenant.id) { c -> c.update(sql, *params.toTypedArray()) } }
+            assertThat(written.exceptionOrNull()).describedAs(sql).isInstanceOf(SQLException::class.java)
+        }
+
+        // The app role deletes nothing from the agenda tables, even in its own tenant.
+        tables.forEach { table ->
+            val (column, id) = if (table == "meeting_item_attendee") "item_id" to itemA else "meeting_id" to ofA
+            val deleted =
+                runCatching { AppRoleJdbc.inTransaction(a.tenant.id) { c -> c.update("delete from $table where $column = ?", id) } }
+            assertThat(deleted.exceptionOrNull()).describedAs(table).isInstanceOf(SQLException::class.java)
+        }
     }
 
     private fun <T> asUser(

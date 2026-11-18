@@ -4,10 +4,12 @@ import com.memo.common.authz.ForbiddenException
 import com.memo.common.authz.Permission
 import com.memo.common.web.refuseIf
 import com.memo.forum.SubmissionStatus
+import com.memo.forum.trayOrder
 import com.memo.memo.MemoReaders
 import com.memo.workflow.ForumOutcome
 import com.memo.workflow.WorkflowForums
 import org.springframework.stereotype.Service
+import java.time.LocalDate
 import java.util.UUID
 
 /**
@@ -23,6 +25,7 @@ class ForumSubmissions(
     private val workflow: WorkflowForums,
     private val forums: ForumStore,
     private val memoReaders: MemoReaders,
+    private val placements: SubmissionPlacementStore,
 ) {
     /** The forum's queue in [statuses] (none: the open ones), for its officers. */
     fun queue(
@@ -32,6 +35,16 @@ class ForumSubmissions(
         val forum = access.requireVisible(forumId)
         if (!support.officer(forum)) throw ForbiddenException(Permission.FORUMS_MANAGE)
         return store.queue(forum.id, statuses.ifEmpty { OPEN }, MAX_QUEUE)
+    }
+
+    /** The tray (design E03 §1.7), for the forum's officers: accepted and not on an agenda, those due by [on] first. */
+    fun ready(
+        forumId: UUID,
+        on: LocalDate?,
+    ): List<SubmissionRow> {
+        val forum = access.requireVisible(forumId)
+        if (!support.officer(forum)) throw ForbiddenException(Permission.FORUMS_MANAGE)
+        return trayOrder(placements.ready(forum.id, MAX_QUEUE), on)
     }
 
     /** One submission: for its author and presenter, for readers of its memo cleared for the forum, and for the forum's officers. */

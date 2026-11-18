@@ -1,13 +1,16 @@
 package com.memo.forum.internal
 
+import com.memo.forum.AgendaPolicy
 import com.memo.forum.ForumRetention
 import com.memo.forum.ForumRole
+import com.memo.forum.MANAGEMENT_AGENDA
 import com.memo.forum.MemberAttribute
 import com.memo.forum.Outcome
 import com.memo.forum.OutcomeKind
 import com.memo.forum.QuorumComposition
 import com.memo.forum.QuorumRule
 import com.memo.forum.QuorumThreshold
+import com.memo.forum.STANDARD_AGENDA
 import com.memo.forum.TermPolicy
 import com.memo.forum.ThresholdKind
 
@@ -36,6 +39,7 @@ enum class ForumTypePreset(
                     OutcomeKind.NOTED to false,
                 ),
             termPolicy = TermPolicy(termMonths = 36, maxTerms = 3),
+            agenda = AgendaPolicy(sections = STANDARD_AGENDA),
         ),
     ),
     BOARD_COMMITTEE(
@@ -62,6 +66,7 @@ enum class ForumTypePreset(
                     OutcomeKind.NOTED to false,
                 ),
             termPolicy = TermPolicy(termMonths = 36, maxTerms = 3),
+            agenda = AgendaPolicy(sections = STANDARD_AGENDA),
         ),
     ),
     MANAGEMENT_COMMITTEE(
@@ -88,6 +93,7 @@ enum class ForumTypePreset(
                     OutcomeKind.NOTED to false,
                 ),
             termPolicy = TermPolicy(),
+            agenda = AgendaPolicy(sections = MANAGEMENT_AGENDA),
         ),
     ),
 }

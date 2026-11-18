@@ -223,6 +223,26 @@ class SubmissionsController(
         transactions.inTenant(TenantContext.current()) { responses.of(listOf(block())).single() }
 }
 
+/** The tray, "Ready for an agenda" (design E03 §1.7): read by the committee's officers when they build an agenda. */
+@RestController
+@Tag(name = "forum")
+class SubmissionTrayController(
+    private val submissions: ForumSubmissions,
+    private val responses: SubmissionResponses,
+    private val transactions: TenantTransactions,
+) {
+    @GetMapping("/api/v1/forums/{forumId}/submissions/ready")
+    @SignedIn
+    @Operation(operationId = "listReadySubmissions", summary = "Ready for an agenda: accepted submissions not yet placed, those due first")
+    fun ready(
+        @PathVariable forumId: UUID,
+        @RequestParam(required = false) on: LocalDate?,
+    ): ResponseEntity<List<SubmissionResponse>> =
+        ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(
+            transactions.readInTenant(TenantContext.current()) { responses.of(submissions.ready(forumId, on)) },
+        )
+}
+
 /** Submission responses with names, one lookup per call. */
 @Component
 class SubmissionResponses(

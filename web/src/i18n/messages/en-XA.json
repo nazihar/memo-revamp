@@ -9456,6 +9456,203 @@
       "value": "]"
     }
   ],
+  "forumTypes.changes.agendaItem": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧɠḗḗƞḓȧȧ īŧḗḗḿ “"
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "” ("
+    },
+    {
+      "type": 1,
+      "value": "section"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forumTypes.changes.agendaItemValue": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 5,
+      "value": "purpose",
+      "options": {
+        "DECISION": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ƒǿǿř ḓḗḗƈīşīǿǿƞ"
+            }
+          ]
+        },
+        "DISCUSSION": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ƒǿǿř ḓīşƈŭŭşşīǿǿƞ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ƒǿǿř ƞǿǿŧīƞɠ"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 5,
+      "value": "minutes",
+      "options": {
+        "none": {
+          "value": []
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": ", "
+            },
+            {
+              "type": 1,
+              "value": "minutes"
+            },
+            {
+              "type": 0,
+              "value": " ḿīƞ"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forumTypes.changes.agendaOrder": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧɠḗḗƞḓȧȧ: ǿǿřḓḗḗř ǿǿƒ ŧħḗḗ şḗḗƈŧīǿǿƞş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forumTypes.changes.agendaSection": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧɠḗḗƞḓȧȧ şḗḗƈŧīǿǿƞ “"
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "”"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forumTypes.changes.agendaSectionValue": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 5,
+      "value": "kind",
+      "options": {
+        "CONSENT": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ƈǿǿƞşḗḗƞŧ şḗḗƈŧīǿǿƞ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Şḗḗƈŧīǿǿƞ"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 5,
+      "value": "membersOnly",
+      "options": {
+        "true": {
+          "value": [
+            {
+              "type": 0,
+              "value": ", ḿḗḗḿƀḗḗřş ǿǿƞŀẏ"
+            }
+          ]
+        },
+        "other": {
+          "value": []
+        }
+      }
+    },
+    {
+      "type": 5,
+      "value": "receives",
+      "options": {
+        "true": {
+          "value": [
+            {
+              "type": 0,
+              "value": ", ƞḗḗẇ īŧḗḗḿş ŀȧȧƞḓ ħḗḗřḗḗ"
+            }
+          ]
+        },
+        "other": {
+          "value": []
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "forumTypes.changes.attribute": [
     {
       "type": 0,
@@ -9472,6 +9669,20 @@
     {
       "type": 0,
       "value": "”"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forumTypes.changes.chairAgreement": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧɠḗḗƞḓȧȧ: ŧħḗḗ ƈħȧȧīř ȧȧɠřḗḗḗḗş īŧ ƀḗḗƒǿǿřḗḗ īŧ īş ƒīřşŧ ƥŭŭƀŀīşħḗḗḓ"
     },
     {
       "type": 0,
@@ -27626,6 +27837,20 @@
       "value": "]"
     }
   ],
+  "mail.template.meetingLatePaper": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀȧȧŧḗḗ ƥȧȧƥḗḗř ƒǿǿř ŧħḗḗ ƈħȧȧīř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "mail.template.memoApproved": [
     {
       "type": 0,
@@ -41983,6 +42208,36 @@
     {
       "type": 0,
       "value": " ẇȧȧş ƈȧȧƞƈḗḗŀŀḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.kind.meetingLatePaper": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ŀȧȧŧḗḗ ƥȧȧƥḗḗř ƒǿǿř "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ƞḗḗḗḗḓş ẏǿǿŭŭř ȧȧɠřḗḗḗḗḿḗḗƞŧ"
     },
     {
       "type": 0,

@@ -98,6 +98,26 @@ class SubmissionPlacements(
         return store.find(submissionId)?.ref()
     }
 
+    /**
+     * The tray, "Ready for an agenda" (design E03 §1.7): [forumId]'s accepted submissions not placed on an agenda, those
+     * meant for a meeting on or before [on] first (by their target date), then the rest by age.
+     */
+    fun ready(
+        forumId: UUID,
+        on: LocalDate?,
+    ): List<SubmissionRef> = trayOrder(placementStore.ready(forumId, MAX_TRAY), on).map { it.ref() }
+
+    /**
+     * The meeting [meetingId] moved to [date]: its placements follow, so the memo's forum panel shows the new date. A
+     * derived field: the meeting's own `meeting.rescheduled` audit records the change.
+     */
+    fun redate(
+        meetingId: UUID,
+        date: LocalDate,
+    ) {
+        placementStore.redate(meetingId, date)
+    }
+
     /** The ids of [forumId]'s open submissions placed on an agenda. */
     fun placed(forumId: UUID): Set<UUID> = placementStore.placed(forumId).map { it.id }.toSet()
 
@@ -108,6 +128,23 @@ class SubmissionPlacements(
             "meetingId" to row.meetingId?.toString(),
             "meetingDate" to row.meetingDate?.toString(),
         )
+}
+
+/** The most entries the tray lists. */
+private const val MAX_TRAY = 500
+
+/** The tray's order (design E03 §1.7): due on or before [on] first, by target date; then by when they were submitted. */
+internal fun trayOrder(
+    rows: List<SubmissionRow>,
+    on: LocalDate?,
+): List<SubmissionRow> {
+    fun due(row: SubmissionRow): Boolean {
+        val target = row.targetDate
+        return target != null && (on == null || !target.isAfter(on))
+    }
+    return rows.sortedWith(
+        compareBy<SubmissionRow>({ if (due(it)) 0 else 1 }, { if (due(it)) it.targetDate else null }, { it.submittedAt }, { it.id }),
+    )
 }
 
 private fun SubmissionRow.ref() =

@@ -1,0 +1,43 @@
+# Phase 4 E03 T2 the agenda draft (design E03 §3, §4; ADR-0060, ADR-0061). Meeting, section, item and paper ids are
+# random here, so every subject allowed through is answered 404 before the officer check. Who may do what on a real
+# agenda (the committee's secretary, the chair reading only, forums.manage, a member, a user without a role) is
+# AgendaBuilderIT and AgendaPlacementIT; two secretaries at once AgendaConcurrencyIT; another tenant MeetingCrossTenantIT.
+epic: P4-E03
+endpoints:
+  - { endpoint: "GET /api/v1/forums/{forumId}/submissions/ready", rule: signedIn }
+  - { endpoint: "GET /api/v1/meetings/{meetingId}/agenda/draft", rule: signedIn }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/agenda"
+    rule: signedIn
+    body: { from: "TEMPLATE" }
+    headers: { Idempotency-Key: "{random}" }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/agenda/sections"
+    rule: signedIn
+    body: { title: "Strategy" }
+    headers: { If-Match: "\"0\"", Idempotency-Key: "{random}" }
+  - endpoint: "PATCH /api/v1/meetings/{meetingId}/agenda/sections/{sectionId}"
+    rule: signedIn
+    body: { title: "Strategy" }
+    headers: { If-Match: "\"0\"" }
+  - { endpoint: "POST /api/v1/meetings/{meetingId}/agenda/sections/{sectionId}/remove", rule: signedIn, headers: { If-Match: "\"0\"" } }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/agenda/moves"
+    rule: signedIn
+    body: { itemId: "{random}", toPosition: 0 }
+    headers: { If-Match: "\"0\"" }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/agenda/items"
+    rule: signedIn
+    body: { kind: "ITEM", title: "Strategy update" }
+    headers: { If-Match: "\"0\"", Idempotency-Key: "{random}" }
+  - endpoint: "PATCH /api/v1/meetings/{meetingId}/agenda/items/{itemId}"
+    rule: signedIn
+    body: { title: "Strategy update" }
+    headers: { If-Match: "\"0\"" }
+  - { endpoint: "POST /api/v1/meetings/{meetingId}/agenda/items/{itemId}/remove", rule: signedIn, headers: { If-Match: "\"0\"" } }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/agenda/items/{itemId}/papers"
+    rule: signedIn
+    body: { fileId: "{random}" }
+    headers: { If-Match: "\"0\"", Idempotency-Key: "{random}" }
+  - endpoint: "PATCH /api/v1/meetings/{meetingId}/agenda/papers/{paperId}"
+    rule: signedIn
+    body: { title: "Valuation", classificationId: "{random}" }
+    headers: { If-Match: "\"0\"" }
+  - { endpoint: "POST /api/v1/meetings/{meetingId}/agenda/papers/{paperId}/remove", rule: signedIn, headers: { If-Match: "\"0\"" } }

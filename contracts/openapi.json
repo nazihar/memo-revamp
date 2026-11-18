@@ -156,6 +156,507 @@
         "required" : [ "bucket", "count" ],
         "type" : "object"
       },
+      "AgendaDraftResponse" : {
+        "properties" : {
+          "canEdit" : {
+            "type" : "boolean"
+          },
+          "chairAgreementRequired" : {
+            "type" : "boolean"
+          },
+          "changes" : {
+            "enum" : [ "ANY", "TABLED_ONLY", "NONE" ],
+            "type" : "string"
+          },
+          "copied" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/CopyReportResponse"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "currentRevision" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "deadlinePassed" : {
+            "type" : "boolean"
+          },
+          "dirty" : {
+            "type" : "boolean"
+          },
+          "endsAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "lateMode" : {
+            "enum" : [ "ALLOW", "BLOCK", "CHAIR_APPROVAL" ],
+            "type" : "string"
+          },
+          "meetingId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "origin" : {
+            "enum" : [ "TEMPLATE", "MEETING" ],
+            "type" : [ "string", "null" ]
+          },
+          "overrun" : {
+            "type" : "boolean"
+          },
+          "paperDeadline" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "plannedEndsAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "sections" : {
+            "items" : {
+              "$ref" : "#/components/schemas/AgendaSectionResponse"
+            },
+            "type" : "array"
+          },
+          "sourceMeetingId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "started" : {
+            "type" : "boolean"
+          },
+          "startsAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "template" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/AgendaPolicy"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "timeZone" : {
+            "type" : "string"
+          },
+          "totalMinutes" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "traySize" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "version" : {
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "canEdit", "chairAgreementRequired", "changes", "currentRevision", "deadlinePassed", "dirty", "endsAt", "lateMode", "meetingId", "overrun", "plannedEndsAt", "sections", "started", "startsAt", "timeZone", "totalMinutes", "traySize", "version" ],
+        "type" : "object"
+      },
+      "AgendaItemChangeRequest" : {
+        "properties" : {
+          "attendees" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "classificationId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "description" : {
+            "type" : [ "string", "null" ]
+          },
+          "minutes" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "presenters" : {
+            "items" : {
+              "$ref" : "#/components/schemas/Presenter"
+            },
+            "type" : "array"
+          },
+          "purpose" : {
+            "enum" : [ "DECISION", "DISCUSSION", "INFORMATION" ],
+            "type" : [ "string", "null" ]
+          },
+          "resolutionSought" : {
+            "type" : [ "string", "null" ]
+          },
+          "restrictedTo" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : [ "array", "null" ]
+          },
+          "title" : {
+            "type" : [ "string", "null" ]
+          },
+          "titleHidden" : {
+            "type" : "boolean"
+          }
+        },
+        "type" : "object"
+      },
+      "AgendaItemRequest" : {
+        "properties" : {
+          "kind" : {
+            "enum" : [ "SUBMISSION", "STANDING", "ITEM", "BREAK" ],
+            "type" : "string"
+          },
+          "minutes" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "parentId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "position" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "purpose" : {
+            "enum" : [ "DECISION", "DISCUSSION", "INFORMATION" ],
+            "type" : [ "string", "null" ]
+          },
+          "sectionId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "standingKind" : {
+            "enum" : [ "APOLOGIES", "DECLARATIONS", "PREVIOUS_MINUTES", "MATTERS_ARISING", "AOB" ],
+            "type" : [ "string", "null" ]
+          },
+          "submissionId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "title" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "AgendaItemResponse" : {
+        "properties" : {
+          "attendees" : {
+            "items" : {
+              "$ref" : "#/components/schemas/PersonResponse"
+            },
+            "type" : "array"
+          },
+          "classificationId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "description" : {
+            "type" : [ "string", "null" ]
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "kind" : {
+            "enum" : [ "SUBMISSION", "STANDING", "ITEM", "BREAK" ],
+            "type" : "string"
+          },
+          "late" : {
+            "enum" : [ "NONE", "LATE", "AWAITING_CHAIR", "CHAIR_AGREED", "TABLED" ],
+            "type" : "string"
+          },
+          "localStartsAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "memoId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "memoReference" : {
+            "type" : [ "string", "null" ]
+          },
+          "minutes" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "number" : {
+            "type" : [ "string", "null" ]
+          },
+          "outOfPack" : {
+            "items" : {
+              "$ref" : "#/components/schemas/PackFileResponse"
+            },
+            "type" : "array"
+          },
+          "papers" : {
+            "items" : {
+              "$ref" : "#/components/schemas/AgendaPaperResponse"
+            },
+            "type" : "array"
+          },
+          "presenters" : {
+            "items" : {
+              "$ref" : "#/components/schemas/PresenterResponse"
+            },
+            "type" : "array"
+          },
+          "purpose" : {
+            "enum" : [ "DECISION", "DISCUSSION", "INFORMATION" ],
+            "type" : [ "string", "null" ]
+          },
+          "resolutionSought" : {
+            "type" : [ "string", "null" ]
+          },
+          "restrictedTo" : {
+            "items" : {
+              "$ref" : "#/components/schemas/PersonResponse"
+            },
+            "type" : [ "array", "null" ]
+          },
+          "standingKind" : {
+            "enum" : [ "APOLOGIES", "DECLARATIONS", "PREVIOUS_MINUTES", "MATTERS_ARISING", "AOB" ],
+            "type" : [ "string", "null" ]
+          },
+          "startsAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "subItems" : {
+            "items" : {
+              "$ref" : "#/components/schemas/AgendaItemResponse"
+            },
+            "type" : "array"
+          },
+          "submissionId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "titleHidden" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "attendees", "classificationId", "id", "kind", "late", "outOfPack", "papers", "presenters", "subItems", "title", "titleHidden" ],
+        "type" : "object"
+      },
+      "AgendaMoveRequest" : {
+        "properties" : {
+          "itemId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "sectionId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "toParentId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "toPosition" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "toSectionId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "AgendaPaperChangeRequest" : {
+        "properties" : {
+          "classificationId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "restrictedTo" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : [ "array", "null" ]
+          },
+          "title" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "AgendaPaperRequest" : {
+        "properties" : {
+          "classificationId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "fileId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "restrictedTo" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : [ "array", "null" ]
+          },
+          "title" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "AgendaPaperResponse" : {
+        "properties" : {
+          "classificationId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "fileId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "fileName" : {
+            "type" : [ "string", "null" ]
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "late" : {
+            "enum" : [ "NONE", "LATE", "AWAITING_CHAIR", "CHAIR_AGREED", "TABLED" ],
+            "type" : "string"
+          },
+          "mediaType" : {
+            "type" : [ "string", "null" ]
+          },
+          "pages" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "restrictedTo" : {
+            "items" : {
+              "$ref" : "#/components/schemas/PersonResponse"
+            },
+            "type" : [ "array", "null" ]
+          },
+          "sizeBytes" : {
+            "format" : "int64",
+            "type" : [ "integer", "null" ]
+          },
+          "source" : {
+            "enum" : [ "MEMO_DOCUMENT", "MEMO_ATTACHMENT", "MEMO_RECORD", "UPLOAD" ],
+            "type" : "string"
+          },
+          "title" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "classificationId", "fileId", "id", "late", "source", "title" ],
+        "type" : "object"
+      },
+      "AgendaPolicy" : {
+        "properties" : {
+          "chairAgreement" : {
+            "type" : "boolean"
+          },
+          "sections" : {
+            "items" : {
+              "$ref" : "#/components/schemas/AgendaTemplateSection"
+            },
+            "type" : "array"
+          }
+        },
+        "type" : "object"
+      },
+      "AgendaSectionResponse" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "items" : {
+            "items" : {
+              "$ref" : "#/components/schemas/AgendaItemResponse"
+            },
+            "type" : "array"
+          },
+          "kind" : {
+            "enum" : [ "STANDARD", "CONSENT" ],
+            "type" : "string"
+          },
+          "membersOnly" : {
+            "type" : "boolean"
+          },
+          "minutes" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "receivesSubmissions" : {
+            "type" : "boolean"
+          },
+          "title" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "id", "items", "kind", "membersOnly", "minutes", "receivesSubmissions", "title" ],
+        "type" : "object"
+      },
+      "AgendaTemplateItem" : {
+        "properties" : {
+          "minutes" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "purpose" : {
+            "enum" : [ "DECISION", "DISCUSSION", "INFORMATION" ],
+            "type" : "string"
+          },
+          "standingKind" : {
+            "enum" : [ "APOLOGIES", "DECLARATIONS", "PREVIOUS_MINUTES", "MATTERS_ARISING", "AOB" ],
+            "type" : [ "string", "null" ]
+          },
+          "title" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "title" ],
+        "type" : "object"
+      },
+      "AgendaTemplateSection" : {
+        "properties" : {
+          "items" : {
+            "items" : {
+              "$ref" : "#/components/schemas/AgendaTemplateItem"
+            },
+            "type" : "array"
+          },
+          "kind" : {
+            "enum" : [ "STANDARD", "CONSENT" ],
+            "type" : "string"
+          },
+          "membersOnly" : {
+            "type" : "boolean"
+          },
+          "receivesSubmissions" : {
+            "type" : "boolean"
+          },
+          "title" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "title" ],
+        "type" : "object"
+      },
       "AllowedApprovers" : {
         "properties" : {
           "people" : {
@@ -1022,6 +1523,24 @@
             "type" : "string"
           }
         },
+        "type" : "object"
+      },
+      "CopyReportResponse" : {
+        "properties" : {
+          "dropped" : {
+            "items" : {
+              "$ref" : "#/components/schemas/PersonResponse"
+            },
+            "type" : "array"
+          },
+          "skipped" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "dropped", "skipped" ],
         "type" : "object"
       },
       "CopyView" : {
@@ -2213,6 +2732,9 @@
       },
       "ForumTypeSettingsRequest" : {
         "properties" : {
+          "agenda" : {
+            "$ref" : "#/components/schemas/AgendaPolicy"
+          },
           "defaultClassificationId" : {
             "format" : "uuid",
             "type" : [ "string", "null" ]
@@ -2256,6 +2778,9 @@
       },
       "ForumTypeVersionResponse" : {
         "properties" : {
+          "agenda" : {
+            "$ref" : "#/components/schemas/AgendaPolicy"
+          },
           "createdAt" : {
             "format" : "date-time",
             "type" : "string"
@@ -2347,7 +2872,7 @@
             "$ref" : "#/components/schemas/TermPolicy"
           }
         },
-        "required" : [ "createdAt", "memberAttributes", "name", "number", "outcomes", "quorum", "revision", "state", "submissionPolicy", "termPolicy" ],
+        "required" : [ "agenda", "createdAt", "memberAttributes", "name", "number", "outcomes", "quorum", "revision", "state", "submissionPolicy", "termPolicy" ],
         "type" : "object"
       },
       "FoundInView" : {
@@ -6042,6 +6567,27 @@
         },
         "type" : "object"
       },
+      "PackFileResponse" : {
+        "properties" : {
+          "classificationId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "fileId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "source" : {
+            "enum" : [ "MEMO_DOCUMENT", "MEMO_ATTACHMENT", "MEMO_RECORD", "UPLOAD" ],
+            "type" : "string"
+          },
+          "title" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "classificationId", "fileId", "source", "title" ],
+        "type" : "object"
+      },
       "PasswordResetCompletion" : {
         "properties" : {
           "newPassword" : {
@@ -6153,6 +6699,19 @@
         "type" : "object"
       },
       "PersonRef" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "id", "name" ],
+        "type" : "object"
+      },
+      "PersonResponse" : {
         "properties" : {
           "id" : {
             "format" : "uuid",
@@ -6429,6 +6988,31 @@
           }
         },
         "required" : [ "category", "channel", "enabled", "mandatory" ],
+        "type" : "object"
+      },
+      "Presenter" : {
+        "properties" : {
+          "name" : {
+            "type" : [ "string", "null" ]
+          },
+          "userId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "PresenterResponse" : {
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "userId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "name" ],
         "type" : "object"
       },
       "ProblemDetail" : {
@@ -7630,6 +8214,28 @@
         "required" : [ "foundIn", "memoId", "origin", "snippet", "status", "subject", "typeId", "typeName", "updatedAt" ],
         "type" : "object"
       },
+      "SectionRequest" : {
+        "properties" : {
+          "kind" : {
+            "enum" : [ "STANDARD", "CONSENT" ],
+            "type" : "string"
+          },
+          "membersOnly" : {
+            "type" : "boolean"
+          },
+          "position" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "receivesSubmissions" : {
+            "type" : "boolean"
+          },
+          "title" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
       "SecuritySettingLimit" : {
         "properties" : {
           "default" : {
@@ -8056,6 +8662,19 @@
           }
         },
         "required" : [ "decidedAt", "decision", "factors", "id", "person", "round", "stepUpRequired" ],
+        "type" : "object"
+      },
+      "StartAgendaRequest" : {
+        "properties" : {
+          "from" : {
+            "enum" : [ "TEMPLATE", "MEETING" ],
+            "type" : "string"
+          },
+          "meetingId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          }
+        },
         "type" : "object"
       },
       "StepUpRequest" : {
@@ -15202,6 +15821,45 @@
         "tags" : [ "forum" ]
       }
     },
+    "/api/v1/forums/{forumId}/submissions/ready" : {
+      "get" : {
+        "operationId" : "listReadySubmissions",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "on",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/SubmissionResponse"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Ready for an agenda: accepted submissions not yet placed, those due first",
+        "tags" : [ "forum" ]
+      }
+    },
     "/api/v1/forums/{forumId}/submissions/{id}" : {
       "get" : {
         "operationId" : "getForumSubmission",
@@ -16204,6 +16862,576 @@
           }
         },
         "summary" : "Change a meeting's title, kind, place, link or classification",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/agenda" : {
+      "post" : {
+        "operationId" : "startAgenda",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/StartAgendaRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AgendaDraftResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Start a meeting's agenda from the committee's template or an earlier meeting",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/agenda/draft" : {
+      "get" : {
+        "operationId" : "getAgendaDraft",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AgendaDraftResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The working draft of a meeting's agenda, for its officers",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/agenda/items" : {
+      "post" : {
+        "operationId" : "addAgendaItem",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/AgendaItemRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AgendaDraftResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Add an item, sub-item or break, or place a submission from the tray",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/agenda/items/{itemId}" : {
+      "patch" : {
+        "operationId" : "updateAgendaItem",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "itemId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/AgendaItemChangeRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AgendaDraftResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Change an item's details, people, restriction, hidden title or level",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/agenda/items/{itemId}/papers" : {
+      "post" : {
+        "operationId" : "addAgendaPaper",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "itemId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/AgendaPaperRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AgendaDraftResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Put a memo file back into the pack, or add an uploaded meeting paper",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/agenda/items/{itemId}/remove" : {
+      "post" : {
+        "operationId" : "removeAgendaItem",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "itemId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AgendaDraftResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Take an item off the draft (a submission goes back to the tray)",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/agenda/moves" : {
+      "post" : {
+        "operationId" : "moveAgendaRow",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/AgendaMoveRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AgendaDraftResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Move an item (to a position, a section or under an item) or a section",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/agenda/papers/{paperId}" : {
+      "patch" : {
+        "operationId" : "updateAgendaPaper",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "paperId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/AgendaPaperChangeRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AgendaDraftResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Change a paper's title, restriction or level",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/agenda/papers/{paperId}/remove" : {
+      "post" : {
+        "operationId" : "removeAgendaPaper",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "paperId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AgendaDraftResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Take a paper out of its item",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/agenda/sections" : {
+      "post" : {
+        "operationId" : "addAgendaSection",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/SectionRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AgendaDraftResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Add a section to the draft agenda",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/agenda/sections/{sectionId}" : {
+      "patch" : {
+        "operationId" : "updateAgendaSection",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "sectionId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/SectionRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AgendaDraftResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Rename a section, or change its kind and flags",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/agenda/sections/{sectionId}/remove" : {
+      "post" : {
+        "operationId" : "removeAgendaSection",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "sectionId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AgendaDraftResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Remove an empty section",
         "tags" : [ "meeting" ]
       }
     },

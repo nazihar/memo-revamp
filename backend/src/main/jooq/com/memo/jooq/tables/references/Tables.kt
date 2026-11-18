@@ -43,9 +43,14 @@ import com.memo.jooq.tables.ImportsRowApproval
 import com.memo.jooq.tables.ImportsRowFile
 import com.memo.jooq.tables.ImportsStaged
 import com.memo.jooq.tables.Meeting
+import com.memo.jooq.tables.MeetingAgenda
 import com.memo.jooq.tables.MeetingAudience
 import com.memo.jooq.tables.MeetingCounter
 import com.memo.jooq.tables.MeetingGuest
+import com.memo.jooq.tables.MeetingItem
+import com.memo.jooq.tables.MeetingItemAttendee
+import com.memo.jooq.tables.MeetingPaper
+import com.memo.jooq.tables.MeetingSection
 import com.memo.jooq.tables.Memo
 import com.memo.jooq.tables.MemoApproval
 import com.memo.jooq.tables.MemoAttachment
@@ -316,6 +321,11 @@ val IMPORTS_STAGED: ImportsStaged = ImportsStaged.IMPORTS_STAGED
 val MEETING: Meeting = Meeting.MEETING
 
 /**
+ * The table <code>memo.meeting_agenda</code>.
+ */
+val MEETING_AGENDA: MeetingAgenda = MeetingAgenda.MEETING_AGENDA
+
+/**
  * The table <code>memo.meeting_audience</code>.
  */
 val MEETING_AUDIENCE: MeetingAudience = MeetingAudience.MEETING_AUDIENCE
@@ -329,6 +339,26 @@ val MEETING_COUNTER: MeetingCounter = MeetingCounter.MEETING_COUNTER
  * The table <code>memo.meeting_guest</code>.
  */
 val MEETING_GUEST: MeetingGuest = MeetingGuest.MEETING_GUEST
+
+/**
+ * The table <code>memo.meeting_item</code>.
+ */
+val MEETING_ITEM: MeetingItem = MeetingItem.MEETING_ITEM
+
+/**
+ * The table <code>memo.meeting_item_attendee</code>.
+ */
+val MEETING_ITEM_ATTENDEE: MeetingItemAttendee = MeetingItemAttendee.MEETING_ITEM_ATTENDEE
+
+/**
+ * The table <code>memo.meeting_paper</code>.
+ */
+val MEETING_PAPER: MeetingPaper = MeetingPaper.MEETING_PAPER
+
+/**
+ * The table <code>memo.meeting_section</code>.
+ */
+val MEETING_SECTION: MeetingSection = MeetingSection.MEETING_SECTION
 
 /**
  * The table <code>memo.memo</code>.

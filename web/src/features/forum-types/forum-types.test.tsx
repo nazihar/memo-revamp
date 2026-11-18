@@ -66,6 +66,19 @@ const published: ForumTypeVersionResponse = {
   ],
   termPolicy: { termMonths: 36, maxTerms: 3, reminderDays: [42, 1] },
   submissionPolicy: { deadlineWorkingDays: 5, lateMode: 'CHAIR_APPROVAL', triageWorkingDays: 5 },
+  agenda: {
+    chairAgreement: true,
+    sections: [
+      {
+        title: 'Opening',
+        kind: 'STANDARD',
+        membersOnly: false,
+        receivesSubmissions: false,
+        items: [{ title: 'Welcome and apologies', standingKind: 'APOLOGIES', purpose: 'INFORMATION', minutes: 5 }],
+      },
+      { title: 'For decision', kind: 'STANDARD', membersOnly: false, receivesSubmissions: true, items: [] },
+    ],
+  },
   retention: { years: 10, from: 'MEETING' },
   createdAt: '2026-11-18T08:00:00Z',
 }
@@ -165,6 +178,28 @@ describe('committee types (Phase 4 E01 T4, flow J)', () => {
     await expectNoA11yViolations(container)
   }, 20_000)
 
+  it('words the changes to the agenda policy in the changes view (flow R)', async () => {
+    const user = userEvent.setup()
+    const sections = published.agenda.sections ?? []
+    const changed: ForumTypeVersionResponse = {
+      ...draft,
+      agenda: {
+        chairAgreement: false,
+        sections: [
+          ...sections,
+          { title: 'Strategy', kind: 'CONSENT', membersOnly: true, receivesSubmissions: false, items: [] },
+        ],
+      },
+    }
+    server.use(...handlers([changed, published]))
+    renderRoute('/admin/committee-types/t1?version=3')
+
+    await user.click(await screen.findByRole('tab', { name: /Changes/ }, { timeout: 5000 }))
+    expect(screen.getByText('Agenda: the chair agrees it before it is first published:')).toBeInTheDocument()
+    expect(screen.getByText('Agenda section “Strategy”:')).toBeInTheDocument()
+    expect(document.body.textContent).toContain('Consent section, members only')
+  }, 20_000)
+
   it('creates a type from a preset and opens its draft version 1', async () => {
     const user = userEvent.setup()
     const bodies: unknown[] = []
@@ -200,6 +235,7 @@ describe('committee types (Phase 4 E01 T4, flow J)', () => {
       quorum: { threshold: unknown }
       outcomes: { kind: string }[]
       submissionPolicy: unknown
+      agenda: unknown
     }[] = []
     server.use(
       ...handlers([draft, published]),
@@ -230,6 +266,8 @@ describe('committee types (Phase 4 E01 T4, flow J)', () => {
     expect(bodies[0]?.outcomes.map((o) => o.kind)).toEqual(['APPROVED', 'DEFERRED', 'NOTED'])
     // Untouched on the Terms tab, the submission policy (ADR-0059) is saved as loaded.
     expect(bodies[0]?.submissionPolicy).toEqual(draft.submissionPolicy)
+    // So is the agenda policy (ADR-0060) until the Agenda tab edits it (E03 T7).
+    expect(bodies[0]?.agenda).toEqual(draft.agenda)
     await expectNoA11yViolations(container)
   }, 20_000)
 

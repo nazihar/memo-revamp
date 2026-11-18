@@ -42,9 +42,14 @@ import com.memo.jooq.tables.ImportsRowApproval
 import com.memo.jooq.tables.ImportsRowFile
 import com.memo.jooq.tables.ImportsStaged
 import com.memo.jooq.tables.Meeting
+import com.memo.jooq.tables.MeetingAgenda
 import com.memo.jooq.tables.MeetingAudience
 import com.memo.jooq.tables.MeetingCounter
 import com.memo.jooq.tables.MeetingGuest
+import com.memo.jooq.tables.MeetingItem
+import com.memo.jooq.tables.MeetingItemAttendee
+import com.memo.jooq.tables.MeetingPaper
+import com.memo.jooq.tables.MeetingSection
 import com.memo.jooq.tables.MemoApproval
 import com.memo.jooq.tables.MemoAttachment
 import com.memo.jooq.tables.MemoCopy
@@ -333,6 +338,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val MEETING: Meeting get() = Meeting.MEETING
 
     /**
+     * The table <code>memo.meeting_agenda</code>.
+     */
+    val MEETING_AGENDA: MeetingAgenda get() = MeetingAgenda.MEETING_AGENDA
+
+    /**
      * The table <code>memo.meeting_audience</code>.
      */
     val MEETING_AUDIENCE: MeetingAudience get() = MeetingAudience.MEETING_AUDIENCE
@@ -346,6 +356,26 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      * The table <code>memo.meeting_guest</code>.
      */
     val MEETING_GUEST: MeetingGuest get() = MeetingGuest.MEETING_GUEST
+
+    /**
+     * The table <code>memo.meeting_item</code>.
+     */
+    val MEETING_ITEM: MeetingItem get() = MeetingItem.MEETING_ITEM
+
+    /**
+     * The table <code>memo.meeting_item_attendee</code>.
+     */
+    val MEETING_ITEM_ATTENDEE: MeetingItemAttendee get() = MeetingItemAttendee.MEETING_ITEM_ATTENDEE
+
+    /**
+     * The table <code>memo.meeting_paper</code>.
+     */
+    val MEETING_PAPER: MeetingPaper get() = MeetingPaper.MEETING_PAPER
+
+    /**
+     * The table <code>memo.meeting_section</code>.
+     */
+    val MEETING_SECTION: MeetingSection get() = MeetingSection.MEETING_SECTION
 
     /**
      * The table <code>memo.memo</code>.
@@ -977,9 +1007,14 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         ImportsRowFile.IMPORTS_ROW_FILE,
         ImportsStaged.IMPORTS_STAGED,
         Meeting.MEETING,
+        MeetingAgenda.MEETING_AGENDA,
         MeetingAudience.MEETING_AUDIENCE,
         MeetingCounter.MEETING_COUNTER,
         MeetingGuest.MEETING_GUEST,
+        MeetingItem.MEETING_ITEM,
+        MeetingItemAttendee.MEETING_ITEM_ATTENDEE,
+        MeetingPaper.MEETING_PAPER,
+        MeetingSection.MEETING_SECTION,
         com.memo.jooq.tables.Memo.MEMO_,
         MemoApproval.MEMO_APPROVAL,
         MemoAttachment.MEMO_ATTACHMENT,

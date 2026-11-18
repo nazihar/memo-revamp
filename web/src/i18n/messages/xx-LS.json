@@ -4996,6 +4996,171 @@
       "value": "AddedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "forumTypes.changes.agendaItem": [
+    {
+      "type": 0,
+      "value": "Agenda item “"
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "” ("
+    },
+    {
+      "type": 1,
+      "value": "section"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.agendaItemValue": [
+    {
+      "type": 5,
+      "value": "purpose",
+      "options": {
+        "DECISION": {
+          "value": [
+            {
+              "type": 0,
+              "value": "For decision"
+            }
+          ]
+        },
+        "DISCUSSION": {
+          "value": [
+            {
+              "type": 0,
+              "value": "For discussion"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "For noting"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 5,
+      "value": "minutes",
+      "options": {
+        "none": {
+          "value": []
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": ", "
+            },
+            {
+              "type": 1,
+              "value": "minutes"
+            },
+            {
+              "type": 0,
+              "value": " min"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.agendaOrder": [
+    {
+      "type": 0,
+      "value": "Agenda: order of the sectionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.agendaSection": [
+    {
+      "type": 0,
+      "value": "Agenda section “"
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.agendaSectionValue": [
+    {
+      "type": 5,
+      "value": "kind",
+      "options": {
+        "CONSENT": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Consent section"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Section"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 5,
+      "value": "membersOnly",
+      "options": {
+        "true": {
+          "value": [
+            {
+              "type": 0,
+              "value": ", members only"
+            }
+          ]
+        },
+        "other": {
+          "value": []
+        }
+      }
+    },
+    {
+      "type": 5,
+      "value": "receives",
+      "options": {
+        "true": {
+          "value": [
+            {
+              "type": 0,
+              "value": ", new items land here"
+            }
+          ]
+        },
+        "other": {
+          "value": []
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "forumTypes.changes.attribute": [
     {
       "type": 0,
@@ -5008,6 +5173,12 @@
     {
       "type": 0,
       "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.chairAgreement": [
+    {
+      "type": 0,
+      "value": "Agenda: the chair agrees it before it is first publishedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "forumTypes.changes.empty": [
@@ -15330,6 +15501,12 @@
       "value": "Meeting cancelledSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "mail.template.meetingLatePaper": [
+    {
+      "type": 0,
+      "value": "Late paper for the chairSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "mail.template.memoApproved": [
     {
       "type": 0,
@@ -22771,6 +22948,28 @@
     {
       "type": 0,
       "value": " was cancelledSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.meetingLatePaper": [
+    {
+      "type": 0,
+      "value": "A late paper for "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " needs your agreementSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "notifications.kind.memoApproved": [

@@ -250,6 +250,34 @@ class SubmissionPlacementStore(
             .where(FORUM_SUBMISSION.ID.eq(id), FORUM_SUBMISSION.MEETING_ID.isNotNull)
             .execute() == 1
 
+    /** [forumId]'s accepted submissions not placed on an agenda, oldest first, at most [limit]. */
+    fun ready(
+        forumId: UUID,
+        limit: Int,
+    ): List<SubmissionRow> =
+        tenantDsl
+            .current()
+            .selectFrom(FORUM_SUBMISSION)
+            .where(
+                FORUM_SUBMISSION.FORUM_ID.eq(forumId),
+                FORUM_SUBMISSION.STATUS.eq(SubmissionStatus.ACCEPTED.name),
+                FORUM_SUBMISSION.MEETING_ID.isNull,
+            ).orderBy(FORUM_SUBMISSION.SUBMITTED_AT, FORUM_SUBMISSION.ID)
+            .limit(limit)
+            .fetch { it.row() }
+
+    /** Moves the placements on [meetingId] to its new [date] (the meeting was rescheduled); the number of rows moved. */
+    fun redate(
+        meetingId: UUID,
+        date: LocalDate,
+    ): Int =
+        tenantDsl
+            .current()
+            .update(FORUM_SUBMISSION)
+            .set(FORUM_SUBMISSION.MEETING_DATE, date)
+            .where(FORUM_SUBMISSION.MEETING_ID.eq(meetingId), FORUM_SUBMISSION.MEETING_DATE.ne(date))
+            .execute()
+
     /** The open submissions of [forumId] placed on an agenda. */
     fun placed(forumId: UUID): List<SubmissionRow> =
         tenantDsl

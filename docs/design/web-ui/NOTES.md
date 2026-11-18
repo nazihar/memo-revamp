@@ -39,7 +39,7 @@ Next task and the reading pane need nothing new: they follow the inbox order the
 • Opened from My tasks, the memo header shows “1 of 7 in My tasks” with previous and next (J and K).
 • Since you last looked: shown on a memo you have opened before when something changed. It starts with what you asked for last time, then resubmission, document versions (with Compare), attachments and new notes. Notes added since your last visit carry a “New” tag on the note sheet.
 • Unread: a blue dot and a heavier subject on My tasks and Watching rows; screen readers hear “Unread”. Opening the memo clears it.
-• Reading pane: at 1400px and wider, the Inbox shows the list and the selected memo side by side, with the same decision buttons. Narrower screens and phones keep list → page.
+• Reading pane: off by default. A “Reading pane” switch in the My tasks toolbar (shown at 1400px and wider) turns it on; the choice is remembered per person. When on, the list and the selected memo sit side by side with the same decision buttons. Links from notifications, search and Home still open the full page; narrower screens and phones always use list → page.
 
 ## Build note
 

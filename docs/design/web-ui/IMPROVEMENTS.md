@@ -16,7 +16,7 @@ Priority: **High** = do first; **Medium** = worth doing; **Low** = nice to have.
 | 2 | **"Since you last looked"** at the top of a memo opened before. Shows what you asked for last time, the resubmission and its remark, document versions (with Compare), attachments added and new notes. | Re-reviewing a returned memo is where approvers lose the most time. | API item 10: record when each person opens a memo and return what changed since. Version comparison already exists. | High | Designed |
 | 3 | **Unread markers.** A blue dot and a heavier subject on My tasks and Watching rows with news since you last opened the memo, and a "New" tag on notes added since your last visit. | You see at a glance what moved. | API items 10–11: last seen, and `unread` on inbox and watching items. | High | Designed |
 | 4 | **Approve straight from a notification on the phone.** A notification opens the decision sheet directly, and step-up uses Face ID or fingerprint. | Senior approvers approve on the go instead of waiting until they are at a desk. | **Web:** decision links such as `/memos/<id>?decide=approve` (frontend only); passkey step-up with Phase 1b E02. **Mobile app:** push notification to the decision screen with biometric step-up; needs the mobile token issuer (Phase 1b E03). Push may only say "1 memo is waiting for your decision". | High | Idea |
-| 5 | **Reading pane on wide screens.** At 1400px and wider, Inbox shows the list and the selected memo side by side, with the decision bar. | Scan and act without leaving the list. | Frontend only. | High | Designed (open question below) |
+| 5 | **Reading pane on wide screens.** At 1400px and wider, Inbox shows the list and the selected memo side by side, with the decision bar. | Scan and act without leaving the list. | Frontend only. | High | Designed: a per-person switch, off by default |
 | 6 | **Inline document preview** on the memo page (first pages of the PDF rendering). | Most approvers never need to open the full viewer. | Frontend only; renderings exist. | Medium | Idea |
 | 7 | **Keyboard shortcuts:** J/K move in Inbox, Enter opens, A / R / X open Approve / Return / Reject, / searches, ? lists them. | Faster for people who approve many memos a day. | Frontend only. | Medium | Idea (J/K hinted on the canvas) |
 | 8 | **Saved remarks:** pick from your own common return reasons. | Less retyping of the same reasons. | New: per-person remark snippets. | Low | Idea |
@@ -63,9 +63,6 @@ Priority: **High** = do first; **Medium** = worth doing; **Low** = nice to have.
 | 24 | **Remember last choices:** the Inbox tab, sort and filters per person. | Frontend only (browser storage). | Idea |
 | 25 | **Relative dates for recent things** ("2 hours ago"), absolute for older, applied the same way on every screen. | Frontend only. | Idea |
 
-## Open questions
+## Decisions
 
-- **Reading pane (5): default on or off?** As designed, Inbox at 1400px and wider always opens the selected memo in the pane. The pane covers the common case: overview, document, latest note and the decision bar. "Open the full page" is for the note sheet, attachments, linked memos and history. Links from notifications, search and elsewhere still open the full page. Options:
-  - **(a) A per-person toggle** in the Inbox toolbar ("Reading pane: on / off"), remembered. Recommended, off by default at first.
-  - **(b) Always on** at that width.
-  - **(c) Give the pane the memo's tabs**, so the full page is rarely needed.
+- **Reading pane (5): a per-person switch, off by default** (2026-11-18). A "Reading pane" switch in the My tasks toolbar, shown only at 1400px and wider, turns it on and is remembered per person. When on, the list and the selected memo sit side by side with the decision bar; "Open the full page" covers the note sheet, attachments, linked memos and history. Links from notifications, search and Home still open the full page.

@@ -19,6 +19,7 @@ import com.memo.workflow.GroupMode
 import com.memo.workflow.MyTask
 import com.memo.workflow.RouteEntry
 import com.memo.workflow.TaskRole
+import com.memo.workflow.WorkflowForums
 import com.memo.workflow.WorkflowQueries
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.stereotype.Component
@@ -221,6 +222,8 @@ data class MemoView(
     val origin: MemoOrigin = MemoOrigin.NATIVE,
     /** For an imported memo: what the legacy system said, as given and not verified by this system. */
     val legacy: LegacyMemoView? = null,
+    /** The committee the memo waits on (ADR-0058), by name: "With the Credit Committee"; null otherwise. */
+    val withForum: String? = null,
 )
 
 /** Builds [MemoView]s: names from identity, the document from files. Inside a tenant transaction. */
@@ -232,6 +235,7 @@ class MemoViews(
     private val files: Files,
     private val users: UserSummaries,
     private val workflows: WorkflowQueries,
+    private val forumWaits: WorkflowForums,
     private val editing: DocumentEditing,
     private val interestStore: MemoInterestStore,
     private val directory: OrgDirectory,
@@ -302,6 +306,7 @@ class MemoViews(
             version = memo.version,
             origin = memo.origin,
             legacy = legacyViews.of(memo),
+            withForum = workflow?.let { forumWaits.waitingOn(MemoWorkflowSubject.TYPE, listOf(memo.id))[memo.id]?.name },
         )
     }
 

@@ -25860,6 +25860,20 @@
       "value": "‬"
     }
   ],
+  "mail.template.forumSubmissionWaiting": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɐdǝɹ ʍɐıʇıuƃ ɟoɹ ʇɹıɐƃǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "mail.template.forumTermEnding": [
     {
       "type": 0,
@@ -37469,6 +37483,28 @@
     {
       "type": 0,
       "value": " ou ʎonɹ dɐdǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.kind.forumSubmissionWaiting": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ dɐdǝɹ ɟoɹ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ıs sʇıʅʅ ʍɐıʇıuƃ ɟoɹ ʇɹıɐƃǝ"
     },
     {
       "type": 0,

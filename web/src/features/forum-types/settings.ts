@@ -4,6 +4,7 @@ import type {
   Outcome,
   QuorumRule,
   QuorumSampleMember,
+  SubmissionPolicy,
 } from '@/api/generated/types.gen'
 
 export type Role = NonNullable<QuorumSampleMember['role']>
@@ -56,6 +57,8 @@ export interface TypeSettings {
   termMonths: number | null
   maxTerms: number | null
   reminderDays: (number | null)[]
+  /** Papers for meetings (ADR-0059); kept as loaded until the Terms tab edits it (E02 T4). */
+  submissionPolicy: SubmissionPolicy
 }
 
 /** The rule with the server's defaults (ADR-0057) filled in. */
@@ -97,6 +100,7 @@ export function settingsOf(v: ForumTypeVersionResponse): TypeSettings {
     termMonths: v.termPolicy.termMonths ?? null,
     maxTerms: v.termPolicy.maxTerms ?? null,
     reminderDays: v.termPolicy.reminderDays ?? [],
+    submissionPolicy: v.submissionPolicy,
   }
 }
 
@@ -138,6 +142,7 @@ export function settingsRequest(s: TypeSettings): ForumTypeSettingsRequest {
       maxTerms: s.maxTerms,
       reminderDays: s.reminderDays.filter((d): d is number => d != null),
     },
+    submissionPolicy: s.submissionPolicy,
   }
 }
 

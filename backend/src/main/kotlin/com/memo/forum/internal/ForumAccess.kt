@@ -48,7 +48,10 @@ class ForumAccess(
         }
     }
 
-    fun visible(forum: ForumRow): Boolean = policy.clearanceRank() >= rank(forum) && (readsAll() || ownRows(forum).isNotEmpty())
+    /** Whether the actor's clearance reaches [forum]'s classification: enough to see its name where they follow a paper. */
+    fun cleared(forum: ForumRow): Boolean = policy.clearanceRank() >= rank(forum)
+
+    fun visible(forum: ForumRow): Boolean = cleared(forum) && (readsAll() || ownRows(forum).isNotEmpty())
 
     /** The forum, if the actor may see it; otherwise 404 whether or not it exists. */
     fun requireVisible(id: UUID): ForumRow = store.find(id)?.takeIf { visible(it) } ?: throw ForumNotFoundException()

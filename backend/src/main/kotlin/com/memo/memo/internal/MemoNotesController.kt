@@ -9,6 +9,8 @@ import com.memo.common.tenant.TenantTransactions
 import com.memo.common.web.etagOf
 import com.memo.files.Files
 import com.memo.identity.UserSummaries
+import com.memo.workflow.ActionKind
+import com.memo.workflow.WorkflowForums
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Schema
 import io.swagger.v3.oas.annotations.tags.Tag
@@ -27,6 +29,9 @@ import tools.jackson.databind.JsonNode
 import tools.jackson.databind.json.JsonMapper
 import java.time.Instant
 import java.util.UUID
+
+/** A committee's decision or decline, shown on the note sheet with the committee's name (ADR-0058). */
+private val FORUM_ACTIONS = setOf(ActionKind.FORUM_DECIDED, ActionKind.FORUM_DECLINED)
 
 data class NoteRequest(
     /** The note in `noteDoc/v1` (ADR-0049). */
@@ -74,6 +79,10 @@ data class NoteEntryView(
     /** The memos it refers to that the reader may open (others show as "Memo (restricted)"). */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val readableMemos: List<UUID> = emptyList(),
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val canCorrect: Boolean = false,
+    /** A committee's decision or decline (ADR-0058): the committee, by name: "Returned by the Credit Committee". */
+    val committee: String? = null,
+    /** Its outcome: APPROVED, APPROVED_WITH_CONDITIONS, NOTED, REJECTED, RETURNED, or DECLINED. */
+    val committeeOutcome: String? = null,
 )
 
 data class NoteSheetView(
@@ -94,6 +103,7 @@ class MemoNotesController(
     private val policy: Policy,
     private val json: JsonMapper,
     private val transactions: TenantTransactions,
+    private val workflow: WorkflowForums,
 ) {
     @GetMapping("/api/v1/memos/{id}/notes")
     @SignedIn
@@ -200,9 +210,11 @@ class MemoNotesController(
                     canCorrect = writable && actor != null && (n.authorId == actor || n.actingForId == actor),
                 )
             }
+        val forumNames by lazy { workflow.forumNames() }
         val legacy =
             sheet.legacy.map { a ->
                 val text = a.remark.orEmpty()
+                val forum = (a.details["forum"] as? String)?.takeIf { a.kind in FORUM_ACTIONS }
                 NoteEntryView(
                     id = "action-${a.seq}",
                     kind = NoteKind.REMARK,
@@ -213,6 +225,9 @@ class MemoNotesController(
                     body = NoteDoc.json(NoteDocument.ofText(text), json),
                     text = text,
                     createdAt = a.occurredAt,
+                    committee = forum?.let { forumNames[it] ?: it },
+                    committeeOutcome =
+                        forum?.let { if (a.kind == ActionKind.FORUM_DECLINED) "DECLINED" else a.details["outcome"] as? String },
                 )
             }
         return (entries + legacy).sortedBy { it.createdAt }

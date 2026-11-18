@@ -63,3 +63,5 @@ We use the MADR format (see [0001](0001-record-architecture-decisions.md)). Star
 | [0057](0057-quorum-rules.md) | Quorum rules: a structured list of conditions, evaluated by one pure function and echoed as a sentence | accepted | 2026-11-18 |
 | [0058](0058-waiting-forum-step.md) | The waiting forum step: a memo waits at an escalate-to-forum step (wait: true) until the committee decides; fixed outcome effects | accepted | 2026-11-18 |
 | [0059](0059-forum-submissions-and-triage.md) | Forum submissions: a referral row per escalation, direct papers as memos, secretary triage, forum officers as memo readers | accepted | 2026-11-18 |
+| [0060](0060-meetings-and-the-agenda-model.md) | Meetings and the agenda model: a working draft and immutable published revisions; sections, items and sub-items; consent sections; chair agreement and late papers | accepted | 2026-11-18 |
+| [0061](0061-meeting-papers-and-access.md) | Meeting papers: pinned file versions served by the meeting module after one access rule with the recusal hook; members read papers, not the memo | accepted | 2026-11-18 |

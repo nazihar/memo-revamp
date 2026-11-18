@@ -33,7 +33,7 @@ class ForumTypeChecks(
             },
             FieldProblem("retention.from", "unknown", "MEETING.").takeIf { settings.retention?.let { it.from != "MEETING" } == true },
         ) + attributeProblems(settings) + QuorumChecks.problems(settings.quorum, settings.memberAttributes.map { it.key }.toSet()) +
-            outcomeProblems(settings) + termProblems(settings)
+            outcomeProblems(settings) + termProblems(settings) + submissionProblems(settings)
     }
 
     private fun attributeProblems(settings: ForumTypeSettings): List<FieldProblem> {
@@ -95,6 +95,18 @@ class ForumTypeChecks(
         )
     }
 
+    private fun submissionProblems(settings: ForumTypeSettings): List<FieldProblem> {
+        val policy = settings.submissionPolicy
+        return listOfNotNull(
+            FieldProblem("submissionPolicy.deadlineWorkingDays", "RANGE", "0 to $MAX_SUBMISSION_DAYS working days.").takeIf {
+                policy.deadlineWorkingDays !in 0..MAX_SUBMISSION_DAYS
+            },
+            FieldProblem("submissionPolicy.triageWorkingDays", "RANGE", "1 to $MAX_SUBMISSION_DAYS working days.").takeIf {
+                policy.triageWorkingDays !in 1..MAX_SUBMISSION_DAYS
+            },
+        )
+    }
+
     companion object {
         const val MAX_NAME = 200
         const val MAX_DESCRIPTION = 2000
@@ -105,6 +117,7 @@ class ForumTypeChecks(
         const val MAX_TERMS = 20
         const val MAX_REMINDERS = 3
         const val MAX_REMINDER_DAYS = 365
+        const val MAX_SUBMISSION_DAYS = 30
         val ATTRIBUTE_KEY = Regex("^[a-z][a-zA-Z0-9]{0,29}$")
         val CODE = Regex("^[A-Z0-9][A-Z0-9-]{0,9}$")
     }

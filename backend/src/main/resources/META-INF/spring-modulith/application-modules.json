@@ -300,38 +300,6 @@
     "shared" : false,
     "type" : "closed"
   },
-  "forum" : {
-    "basePackage" : "com.memo.forum",
-    "dependencies" : [ {
-      "target" : "audit",
-      "types" : [ "USES_COMPONENT" ]
-    }, {
-      "target" : "common",
-      "types" : [ "USES_COMPONENT" ]
-    }, {
-      "target" : "identity",
-      "types" : [ "USES_COMPONENT" ]
-    }, {
-      "target" : "notification",
-      "types" : [ "USES_COMPONENT" ]
-    }, {
-      "target" : "org",
-      "types" : [ "USES_COMPONENT" ]
-    }, {
-      "target" : "system",
-      "types" : [ "USES_COMPONENT" ]
-    }, {
-      "target" : "tenancy",
-      "types" : [ "USES_COMPONENT" ]
-    }, {
-      "target" : "workflow",
-      "types" : [ "EVENT_LISTENER", "USES_COMPONENT" ]
-    } ],
-    "displayName" : "Forum",
-    "nested" : [ ],
-    "shared" : false,
-    "type" : "closed"
-  },
   "memo" : {
     "basePackage" : "com.memo.memo",
     "dependencies" : [ {
@@ -369,6 +337,41 @@
       "types" : [ "EVENT_LISTENER", "USES_COMPONENT" ]
     } ],
     "displayName" : "Memo",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  },
+  "forum" : {
+    "basePackage" : "com.memo.forum",
+    "dependencies" : [ {
+      "target" : "audit",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "common",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "identity",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "memo",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "notification",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "org",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "system",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "tenancy",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "workflow",
+      "types" : [ "EVENT_LISTENER", "USES_COMPONENT" ]
+    } ],
+    "displayName" : "Forum",
     "nested" : [ ],
     "shared" : false,
     "type" : "closed"

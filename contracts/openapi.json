@@ -472,6 +472,9 @@
           "updatedAt" : {
             "format" : "date-time",
             "type" : "string"
+          },
+          "withForum" : {
+            "type" : [ "string", "null" ]
           }
         },
         "required" : [ "holders", "id", "round", "status", "subject", "updatedAt" ],
@@ -2228,6 +2231,9 @@
               "type" : "null"
             } ]
           },
+          "submissionPolicy" : {
+            "$ref" : "#/components/schemas/SubmissionPolicy"
+          },
           "termPolicy" : {
             "$ref" : "#/components/schemas/TermPolicy"
           }
@@ -2309,6 +2315,9 @@
             "enum" : [ "DRAFT", "IN_REVIEW", "PUBLISHED", "RETIRED" ],
             "type" : "string"
           },
+          "submissionPolicy" : {
+            "$ref" : "#/components/schemas/SubmissionPolicy"
+          },
           "submittedAt" : {
             "format" : "date-time",
             "type" : [ "string", "null" ]
@@ -2324,7 +2333,7 @@
             "$ref" : "#/components/schemas/TermPolicy"
           }
         },
-        "required" : [ "createdAt", "memberAttributes", "name", "number", "outcomes", "quorum", "revision", "state", "termPolicy" ],
+        "required" : [ "createdAt", "memberAttributes", "name", "number", "outcomes", "quorum", "revision", "state", "submissionPolicy", "termPolicy" ],
         "type" : "object"
       },
       "FoundInView" : {
@@ -4668,7 +4677,7 @@
             } ]
           },
           "readingAs" : {
-            "enum" : [ "INITIATOR", "COAUTHOR", "APPROVER", "NOTIFIED", "COPY", "SHARED" ],
+            "enum" : [ "INITIATOR", "COAUTHOR", "APPROVER", "NOTIFIED", "COPY", "SHARED", "FORUM" ],
             "type" : [ "string", "null" ]
           },
           "reference" : {
@@ -4721,6 +4730,9 @@
           "version" : {
             "format" : "int64",
             "type" : "integer"
+          },
+          "withForum" : {
+            "type" : [ "string", "null" ]
           }
         },
         "required" : [ "allowedActions", "canLink", "classification", "coauthors", "createdAt", "details", "holders", "id", "interests", "linkedFrom", "links", "origin", "rendition", "round", "route", "sendBackTargets", "staleDetails", "status", "subject", "type", "updatedAt", "version" ],
@@ -5053,6 +5065,12 @@
           },
           "canCorrect" : {
             "type" : "boolean"
+          },
+          "committee" : {
+            "type" : [ "string", "null" ]
+          },
+          "committeeOutcome" : {
+            "type" : [ "string", "null" ]
           },
           "correctedBy" : {
             "items" : {
@@ -7728,6 +7746,23 @@
         },
         "type" : "object"
       },
+      "SubmissionPolicy" : {
+        "properties" : {
+          "deadlineWorkingDays" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "lateMode" : {
+            "enum" : [ "ALLOW", "BLOCK", "CHAIR_APPROVAL" ],
+            "type" : "string"
+          },
+          "triageWorkingDays" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "type" : "object"
+      },
       "SubmissionResponse" : {
         "properties" : {
           "decidedAt" : {
@@ -7738,9 +7773,19 @@
             "format" : "uuid",
             "type" : "string"
           },
+          "forumName" : {
+            "type" : "string"
+          },
           "id" : {
             "format" : "uuid",
             "type" : "string"
+          },
+          "memo" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/SubmittedMemo"
+            }, {
+              "type" : "null"
+            } ]
           },
           "outcome" : {
             "enum" : [ "APPROVED", "APPROVED_WITH_CONDITIONS", "NOTED", "REJECTED", "RETURNED" ],
@@ -7808,7 +7853,23 @@
             "type" : "boolean"
           }
         },
-        "required" : [ "forumId", "id", "purpose", "status", "subjectId", "subjectType", "submittedAt", "submittedBy", "version", "waits" ],
+        "required" : [ "forumId", "forumName", "id", "purpose", "status", "subjectId", "subjectType", "submittedAt", "submittedBy", "version", "waits" ],
+        "type" : "object"
+      },
+      "SubmittedMemo" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "reference" : {
+            "type" : [ "string", "null" ]
+          },
+          "subject" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "id", "subject" ],
         "type" : "object"
       },
       "SubstitutionRequest" : {
@@ -17270,6 +17331,37 @@
         },
         "summary" : "Withdraw a memo from review",
         "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/memos/{memoId}/forum-submissions" : {
+      "get" : {
+        "operationId" : "listMemoForumSubmissions",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "memoId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/SubmissionResponse"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Where a memo stands with committees, newest first",
+        "tags" : [ "forum" ]
       }
     },
     "/api/v1/org/assignments/{id}" : {

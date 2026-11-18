@@ -36,6 +36,21 @@ class SubmissionNotifier(
         send(secretaries - setOfNotNull(actorOrNull()), NotificationKind.FORUM_SUBMISSION_RECEIVED, forum, row)
     }
 
+    /** The waiting reminder: to the forum's secretaries in office, or the holders of [fallback] when it has none. */
+    fun waiting(
+        forum: ForumRow,
+        row: SubmissionRow,
+        fallback: () -> Collection<UUID>,
+    ) {
+        val secretaries =
+            directory
+                .membersOn(forum.id)
+                .filter { it.role == ForumRole.SECRETARY }
+                .map { it.userId }
+                .toSet()
+        send(secretaries.ifEmpty { fallback().toSet() }, NotificationKind.FORUM_SUBMISSION_WAITING, forum, row)
+    }
+
     fun triaged(row: SubmissionRow) {
         val forum = store.find(row.forumId) ?: return
         send(

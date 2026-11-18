@@ -30,6 +30,7 @@ const ALL_PARTS: ReadonlySet<CataloguePart> = new Set([
   'forums',
   'papers',
   'meetings',
+  'meetingPage',
   'platform',
   'patterns',
   'search',

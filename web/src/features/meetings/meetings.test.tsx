@@ -10,6 +10,7 @@ import type {
   MeetingRequest,
   MeetingResponse,
   MeetingSummaryResponse,
+  MemberAgendaResponse,
   MemberResponse,
   MyForumResponse,
 } from '@/api/generated/types.gen'
@@ -175,6 +176,19 @@ function handlers(forum: ForumResponse = brc, seen: Seen = { listQueries: [] }) 
         nextCursor: null,
       })
     }),
+    // The agenda (T8) before it is published.
+    http.get(`${API}/meetings/:id/agenda`, ({ params }) =>
+      HttpResponse.json<MemberAgendaResponse>({
+        meetingId: String(params.id),
+        status: 'SCHEDULED',
+        startsAt: scheduled.startsAt,
+        endsAt: scheduled.endsAt,
+        timeZone: scheduled.timeZone,
+        latestRevision: 0,
+        preview: false,
+        sections: [],
+      }),
+    ),
     http.get(`${API}/meetings/:id`, ({ params }) =>
       HttpResponse.json<MeetingResponse>([scheduled, draft, cancelled].find((m) => m.id === params.id) ?? scheduled),
     ),
@@ -426,7 +440,7 @@ describe('the meeting’s page (flow N2: reschedule, cancel, guests)', () => {
 
     const title = await screen.findByRole('heading', { level: 1 }, { timeout: 5000 })
     expect(title).toHaveTextContent('Board Risk Committee — BRC 3/2026')
-    expect(screen.getByText('Sat, Dec 12, 2026')).toBeInTheDocument()
+    expect(screen.getByText('Saturday, December 12, 2026')).toBeInTheDocument()
     expect(screen.getByText('Board Room, Level 12, Head Office')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /Join the meeting/ })).toHaveAttribute('href', 'https://meet.example/abc')
     expect(await screen.findByText('Confidential')).toBeInTheDocument()

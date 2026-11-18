@@ -54,10 +54,7 @@ export const mm = defineMessages({
   },
   joinDetails: { id: 'meetings.joinDetails', defaultMessage: 'Joining instructions' },
   classification: { id: 'meetings.classification', defaultMessage: 'Classification' },
-  agendaLater: {
-    id: 'meetings.agendaLater',
-    defaultMessage: 'The agenda appears here once the secretary publishes it.',
-  },
+  cardAgenda: { id: 'meetings.card.agenda', defaultMessage: 'Agenda published' },
   guests: { id: 'meetings.guests', defaultMessage: 'Guests' },
   guestsHint: {
     id: 'meetings.guests.hint',
@@ -247,7 +244,12 @@ export const mmv = defineMessages<{
   notScheduled: { reason: string }
   guestsFailed: { count: number }
   nextMeeting: { when: string }
+  cardChanges: { count: number }
 }>({
+  cardChanges: {
+    id: 'meetings.card.changes',
+    defaultMessage: '{count, plural, one {# change} other {# changes}} since you last looked',
+  },
   caption: { id: 'meetings.caption', defaultMessage: 'Meetings of {name}' },
   newTitle: { id: 'meetings.new.title', defaultMessage: 'New meeting of {name}' },
   actionsFor: { id: 'meetings.actionsFor', defaultMessage: 'Actions for {name}' },

@@ -28321,6 +28321,1318 @@
       "value": "]"
     }
   ],
+  "meetingPage.agenda": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧɠḗḗƞḓȧȧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.ask.done": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭř řḗḗɋŭŭḗḗşŧ ħȧȧş ƀḗḗḗḗƞ şḗḗƞŧ ŧǿǿ ŧħḗḗ şḗḗƈřḗḗŧȧȧřẏ ȧȧƞḓ ŧħḗḗ ƈħȧȧīř."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.ask.explain": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ şḗḗƈřḗḗŧȧȧřẏ ȧȧƞḓ ŧħḗḗ ƈħȧȧīř ẇīŀŀ ƀḗḗ ŧǿǿŀḓ. Ẏǿǿŭŭ ƈȧȧƞ ẇīŧħḓřȧȧẇ ŧħīş ŭŭƞŧīŀ ŧħḗḗ ḿḗḗḗḗŧīƞɠ şŧȧȧřŧş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.ask.item": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧşķ ŧǿǿ ḓīşƈŭŭşş ŧħīş īŧḗḗḿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.ask.named": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧşķ ŧǿǿ ḓīşƈŭŭşş ŧħīş īŧḗḗḿ: "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.ask.submit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧşķ ŧǿǿ ḓīşƈŭŭşş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.ask.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧşķ ƒǿǿř īŧḗḗḿ "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " ŧǿǿ ƀḗḗ ḓīşƈŭŭşşḗḗḓ şḗḗƥȧȧřȧȧŧḗḗŀẏ?"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.break": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɓřḗḗȧȧķ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.cancel": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈȧȧƞƈḗḗŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.changed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħȧȧƞɠḗḗḓ: "
+    },
+    {
+      "type": 1,
+      "value": "changes"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.changes.count": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƈħȧȧƞɠḗḗ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƈħȧȧƞɠḗḗş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " şīƞƈḗḗ ẏǿǿŭŭ ŀȧȧşŧ ŀǿǿǿǿķḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.changes.line": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "line"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "changes"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.changes.of": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗṽīşīǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.changes.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħȧȧƞɠḗḗş şīƞƈḗḗ ẏǿǿŭŭ ŀȧȧşŧ ŀǿǿǿǿķḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.close": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŀǿǿşḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.consentHint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧȧȧķḗḗƞ ŧǿǿɠḗḗŧħḗḗř ẇīŧħǿǿŭŭŧ ḓīşƈŭŭşşīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.flag.added": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ȧȧḓḓḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.flag.late": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ŀȧȧŧḗḗ ƥȧȧƥḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.flag.moved": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ḿǿǿṽḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.flag.movedFrom": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ḿǿǿṽḗḗḓ (ẇȧȧş īŧḗḗḿ "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.flag.paperAdded": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ƥȧȧƥḗḗř ȧȧḓḓḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.flag.paperRemoved": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ƥȧȧƥḗḗř řḗḗḿǿǿṽḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.flag.paperReplaced": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ƥȧȧƥḗḗř řḗḗƥŀȧȧƈḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.flag.removed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "řḗḗḿǿǿṽḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.flag.retitled": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "řḗḗƞȧȧḿḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.flag.tabled": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ŧȧȧƀŀḗḗḓ ȧȧŧ ŧħḗḗ ḿḗḗḗḗŧīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.flag.timeChanged": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ŧīḿḗḗ ƈħȧȧƞɠḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.late": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀȧȧŧḗḗ ƥȧȧƥḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.liftedBy": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀīƒŧḗḗḓ ƒǿǿř ḓīşƈŭŭşşīǿǿƞ ȧȧŧ ŧħḗḗ řḗḗɋŭŭḗḗşŧ ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "names"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.membersOnly": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿƀḗḗřş ǿǿƞŀẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.minutes": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "minutes"
+    },
+    {
+      "type": 0,
+      "value": " ḿīƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.notPublished": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ȧȧɠḗḗƞḓȧȧ ħȧȧş ƞǿǿŧ ƀḗḗḗḗƞ ƥŭŭƀŀīşħḗḗḓ ẏḗḗŧ. Īŧ ȧȧƥƥḗḗȧȧřş ħḗḗřḗḗ ẇħḗḗƞ ŧħḗḗ şḗḗƈřḗḗŧȧȧřẏ ƥŭŭƀŀīşħḗḗş īŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.nothingShown": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ īŧḗḗḿ ǿǿƒ ŧħīş ȧȧɠḗḗƞḓȧȧ īş şħǿǿẇƞ ŧǿǿ ẏǿǿŭŭ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.numbered": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.paper": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 6,
+      "value": "pages",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƥȧȧɠḗḗ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƥȧȧɠḗḗş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.paper.back": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɓȧȧƈķ ŧǿǿ ŧħḗḗ ȧȧɠḗḗƞḓȧȧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.paper.failed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƥȧȧƥḗḗř ƈǿǿŭŭŀḓ ƞǿǿŧ ƀḗḗ şħǿǿẇƞ. Ŧřẏ ȧȧɠȧȧīƞ, ǿǿř ȧȧşķ ŧħḗḗ şḗḗƈřḗḗŧȧȧřẏ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.paper.loading": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀǿǿȧȧḓīƞɠ ŧħḗḗ ƥȧȧƥḗḗř…"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.paper.notReady": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ƥȧȧƥḗḗř īş şŧīŀŀ ƀḗḗīƞɠ ƥřḗḗƥȧȧřḗḗḓ. Ŧřẏ ȧȧɠȧȧīƞ īƞ ȧȧ ƒḗḗẇ ḿīƞŭŭŧḗḗş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.paper.notReadyHint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɓḗḗīƞɠ ƥřḗḗƥȧȧřḗḗḓ: īŧ ƈȧȧƞ ƀḗḗ řḗḗȧȧḓ şħǿǿřŧŀẏ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.paper.opened": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƥḗḗƞḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.paperFlag.added": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ȧȧḓḓḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.paperFlag.late": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ŀȧȧŧḗḗ ƥȧȧƥḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.paperFlag.removed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "řḗḗḿǿǿṽḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.paperFlag.replaced": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "řḗḗƥŀȧȧƈḗḗḓ ẇīŧħ ȧȧ ƞḗḗẇ ṽḗḗřşīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.paperFlag.tabled": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ŧȧȧƀŀḗḗḓ ȧȧŧ ŧħḗḗ ḿḗḗḗḗŧīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.papersOf": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥȧȧƥḗḗřş ƒǿǿř "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.papersRestricted": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "— ƥȧȧƥḗḗřş řḗḗşŧřīƈŧḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.presenters": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ƥřḗḗşḗḗƞŧḗḗř"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ƥřḗḗşḗḗƞŧḗḗřş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "names"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.print": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥřīƞŧ ŧħḗḗ ȧȧɠḗḗƞḓȧȧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.printed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧɠḗḗƞḓȧȧ, řḗḗṽīşīǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": ", ƥŭŭƀŀīşħḗḗḓ ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.problem.alreadyAsked": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ħȧȧṽḗḗ ȧȧŀřḗḗȧȧḓẏ ȧȧşķḗḗḓ ŧǿǿ ḓīşƈŭŭşş ŧħīş īŧḗḗḿ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.problem.failed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħȧȧŧ ḓīḓ ƞǿǿŧ ẇǿǿřķ. Ŧřẏ ȧȧɠȧȧīƞ īƞ ȧȧ ḿǿǿḿḗḗƞŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.problem.forbidden": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƞŀẏ ŧħḗḗ ḿḗḗḿƀḗḗřş ȧȧƞḓ ɠŭŭḗḗşŧş ǿǿƒ ŧħḗḗ ḿḗḗḗḗŧīƞɠ ƈȧȧƞ ȧȧşķ ƒǿǿř ȧȧƞ īŧḗḗḿ ŧǿǿ ƀḗḗ ḓīşƈŭŭşşḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.problem.noRequest": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ħȧȧṽḗḗ ƞǿǿ řḗḗɋŭŭḗḗşŧ ǿǿƞ ŧħīş īŧḗḗḿ ŧǿǿ ẇīŧħḓřȧȧẇ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.problem.wrongState": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ƈȧȧƞƞǿǿŧ ƀḗḗ ƈħȧȧƞɠḗḗḓ ƞǿǿẇ: ŧħḗḗ ḿḗḗḗḗŧīƞɠ ħȧȧş şŧȧȧřŧḗḗḓ ǿǿř ŧħḗḗ īŧḗḗḿ ħȧȧş ḿǿǿṽḗḗḓ. Ŧħḗḗ ƥȧȧɠḗḗ şħǿǿẇş ŧħḗḗ ŀȧȧŧḗḗşŧ ȧȧɠḗḗƞḓȧȧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.purpose.decision": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒǿǿř ḓḗḗƈīşīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.purpose.discussion": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒǿǿř ḓīşƈŭŭşşīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.purpose.information": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒǿǿř ƞǿǿŧīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.readLatest": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗȧȧḓ ŧħḗḗ ŀȧȧŧḗḗşŧ řḗḗṽīşīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.restrictedItem": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗşŧřīƈŧḗḗḓ īŧḗḗḿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.revision": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗṽīşīǿǿƞ ǿǿƒ ŧħḗḗ ȧȧɠḗḗƞḓȧȧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.revision.changed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ȧȧɠḗḗƞḓȧȧ ƈħȧȧƞɠḗḗḓ ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " (řḗḗṽīşīǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": ")."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.revision.earlier": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ȧȧřḗḗ řḗḗȧȧḓīƞɠ řḗḗṽīşīǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ", ȧȧƞ ḗḗȧȧřŀīḗḗř ṽḗḗřşīǿǿƞ ǿǿƒ ŧħḗḗ ȧȧɠḗḗƞḓȧȧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.revision.latest": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗṽīşīǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " (ŧħḗḗ ŀȧȧŧḗḗşŧ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.revision.note": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "“"
+    },
+    {
+      "type": 1,
+      "value": "note"
+    },
+    {
+      "type": 0,
+      "value": "”"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.revision.option": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗṽīşīǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.revision.published": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ȧȧɠḗḗƞḓȧȧ ẇȧȧş ƥŭŭƀŀīşħḗḗḓ ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " (řḗḗṽīşīǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": ")."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.showChanges": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şħǿǿẇ ƈħȧȧƞɠḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.tabled": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧȧȧƀŀḗḗḓ ȧȧŧ ŧħḗḗ ḿḗḗḗḗŧīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.when.yours": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "("
+    },
+    {
+      "type": 1,
+      "value": "times"
+    },
+    {
+      "type": 0,
+      "value": " ẏǿǿŭŭř ŧīḿḗḗ, "
+    },
+    {
+      "type": 1,
+      "value": "city"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.withdraw": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇīŧħḓřȧȧẇ ḿẏ řḗḗɋŭŭḗḗşŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.withdraw.done": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭř řḗḗɋŭŭḗḗşŧ ħȧȧş ƀḗḗḗḗƞ ẇīŧħḓřȧȧẇƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingPage.withdraw.named": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇīŧħḓřȧȧẇ ḿẏ řḗḗɋŭŭḗḗşŧ: "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "meetings.action.cancel": [
     {
       "type": 0,
@@ -28465,20 +29777,6 @@
       "value": "]"
     }
   ],
-  "meetings.agendaLater": [
-    {
-      "type": 0,
-      "value": "["
-    },
-    {
-      "type": 0,
-      "value": "Ŧħḗḗ ȧȧɠḗḗƞḓȧȧ ȧȧƥƥḗḗȧȧřş ħḗḗřḗḗ ǿǿƞƈḗḗ ŧħḗḗ şḗḗƈřḗḗŧȧȧřẏ ƥŭŭƀŀīşħḗḗş īŧ."
-    },
-    {
-      "type": 0,
-      "value": "]"
-    }
-  ],
   "meetings.backTo": [
     {
       "type": 0,
@@ -28577,6 +29875,64 @@
     {
       "type": 1,
       "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.card.agenda": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧɠḗḗƞḓȧȧ ƥŭŭƀŀīşħḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.card.changes": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƈħȧȧƞɠḗḗ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƈħȧȧƞɠḗḗş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " şīƞƈḗḗ ẏǿǿŭŭ ŀȧȧşŧ ŀǿǿǿǿķḗḗḓ"
     },
     {
       "type": 0,

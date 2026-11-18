@@ -13,6 +13,7 @@ export type CataloguePart =
   | 'forums'
   | 'papers'
   | 'meetings'
+  | 'meetingPage'
   | 'platform'
   | 'patterns'
   | 'search'

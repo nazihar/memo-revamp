@@ -8,12 +8,15 @@ import { fm } from './messages'
 /**
  * A form in a dialog, or in a side sheet on the inline-end side (full screen on a phone): one primary button, Cancel,
  * and a refusal shown in words inside the form (role="alert") rather than in a passing toast, so nobody misses it.
- * [onSubmit] returns a refusal to show, or nothing when it worked.
+ * [onSubmit] returns a refusal to show, or nothing when it worked. A [secondary] action ("Save as draft" beside
+ * "Schedule") submits the same form another way; [cancelLabel] renames Cancel where that word is the action itself.
  */
 export function FormDialog({
   title,
   description,
   submitLabel,
+  cancelLabel,
+  secondary,
   side = false,
   destructive = false,
   onSubmit,
@@ -23,6 +26,8 @@ export function FormDialog({
   title: string
   description?: ReactNode
   submitLabel: string
+  cancelLabel?: string
+  secondary?: { label: string; onSubmit: () => Promise<string | undefined> }
   side?: boolean
   destructive?: boolean
   onSubmit: () => Promise<string | undefined>
@@ -33,16 +38,20 @@ export function FormDialog({
   const [busy, setBusy] = useState(false)
   const [refusal, setRefusal] = useState<string>()
 
-  const submit = async (e: SyntheticEvent) => {
-    e.preventDefault()
+  const run = async (action: () => Promise<string | undefined>) => {
     if (busy) return
     setBusy(true)
     setRefusal(undefined)
     try {
-      setRefusal(await onSubmit())
+      setRefusal(await action())
     } finally {
       setBusy(false)
     }
+  }
+
+  const submit = async (e: SyntheticEvent) => {
+    e.preventDefault()
+    await run(onSubmit)
   }
 
   return (
@@ -70,8 +79,13 @@ export function FormDialog({
         ) : null}
         <div className="flex flex-wrap justify-end gap-2 border-t pt-4">
           <Button type="button" variant="outline" onClick={onClose}>
-            {intl.formatMessage(fm.cancel)}
+            {cancelLabel ?? intl.formatMessage(fm.cancel)}
           </Button>
+          {secondary ? (
+            <Button type="button" variant="outline" disabled={busy} onClick={() => void run(secondary.onSubmit)}>
+              {secondary.label}
+            </Button>
+          ) : null}
           <Button type="submit" variant={destructive ? 'destructive' : 'default'} disabled={busy}>
             {submitLabel}
           </Button>

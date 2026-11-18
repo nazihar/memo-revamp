@@ -3,7 +3,7 @@
 A redesign of the web app's user-facing screens: every non-admin route, desktop and phone side by side, in light and dark. It is a **design**, not code. The app is built from it with shadcn/ui components (see "Building from this design" below).
 
 - Live canvas: a private claude.ai Design artifact, `https://claude.ai/artifact/VRTQYT81opA8eMovd2rDo6`. It needs to be shared before others can open it.
-- Snapshot in this folder: 2026-11-18, canvas version 99.
+- Snapshot in this folder: 2026-11-18, canvas version 100.
 
 ## What is here
 
@@ -18,7 +18,7 @@ IMPROVEMENTS.md      UX improvement backlog: ideas to design and build later, wi
 
 The `.dc.html` files are the source of truth. Each is an HTML template for the Design artifact type: markup with `{{holes}}`, `<sc-for>`/`<sc-if>`, and a `class Component extends DCLogic { renderVals() … }` script that supplies the data and the interactions. The `data-props` attribute declares the tweaks a board offers, for example `theme`, `errors`, `dialog` or `state`. Boards load `./support.js` and render only inside the Design artifact; opened in a browser on their own they show raw template text.
 
-Start with `Rules.dc.html`. It holds the principles, colour tokens, type, spacing, layout and breakpoints, component rules, wording and accessibility rules every board follows. The shadcn/ui component for each pattern is listed in its first section.
+Start with `Rules.dc.html`. It holds the admin and settings patterns (section 9) and the principles, colour tokens, type, spacing, layout and breakpoints, component rules, wording and accessibility rules every board follows. The shadcn/ui component for each pattern is listed in its first section.
 
 ## Boards on the canvas
 
@@ -72,6 +72,8 @@ These can be rerun safely, and reproduce the committed boards exactly:
 | `tools/workflows.py` | `Workflows`, `WorkflowBuilder`, `Doa`, `Queues`, `Substitutions`, `BusinessCalendar` and their phone boards (copy from `features/workflows/*`); also points every sidebar's Workflows link at them. Its pieces are in `tools/wf_parts.py` and `tools/wf_builder.py` | `tools/card_surface.py` |
 | `tools/settings.py` | `OrgSecurity`, `OrgEmail`, `OrgBranding`, `OrgLanguage` and their phone boards (copy from `features/admin/*`, `MailSettingsPage.tsx`; ranges from the backend's `SecurityLimit`; contrast checks from `lib/contrast.ts`); also points every sidebar's Administration › Security link at them | `tools/card_surface.py` |
 | `tools/records.py` | `AdminOverview`, `Audit`, `Imports`, `ImportBatch` and their phone boards (copy from `AdminHomePage`, `AuditPage`, `app/navigation.ts`, `features/imports/*`); also points every sidebar's Administration › Overview link at them | `tools/card_surface.py` |
+| `tools/persona.py` | Who is signed in on the boards: trims the Administration group on user boards to what Farhana Rahman's roles allow (Overview, Audit), puts Arif Rahman in the admin shell's top bar, and sets the Inbox phone titles to 18px. Skips what is already done | — |
+| `tools/rules_admin.py` | Adds section 9 (admin and settings patterns) and four wording rules to `Rules`. Skips it when already there | — |
 | `tools/smoke.py` | Nothing; checks a board | — |
 | `tools/preview.py` | Nothing; renders a board to a PNG outside the canvas, for checking it by eye (`python3 tools/preview.py Users.dc.html out.png '{"props":{"dialog":"invite"}}'`; needs Node and the Playwright Chromium) | — |
 

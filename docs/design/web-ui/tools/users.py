@@ -45,7 +45,7 @@ def list_toolbar(phone):
       <label style="position: relative; display: flex; align-items: center">
         <span style="{SR}">Search by name or email</span>
         {svg(I["search"], 16, ' style="position: absolute; left: 12px; color: var(--muted-fg); pointer-events: none"')}
-        <input type="search" placeholder="Search by name or email" value="{{{{q}}}}" onChange="{{{{onQ}}}}" style="width: 100%; height: 44px; padding: 0 12px 0 36px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 16px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+        <input type="search" placeholder="Search by name or email…" value="{{{{q}}}}" onChange="{{{{onQ}}}}" style="width: 100%; height: 44px; padding: 0 12px 0 36px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 16px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
       </label>
     </div>
     <div class="chips" role="tablist" aria-label="Status" style="flex-shrink: 0; display: flex; gap: 6px; padding: 4px 16px 12px; overflow-x: auto; scrollbar-width: none">
@@ -62,7 +62,7 @@ def list_toolbar(phone):
         <label style="position: relative; display: flex; align-items: center">
           <span style="{SR}">Search by name or email</span>
           {svg(I["search"], 14, ' style="color: var(--muted-fg); position: absolute; left: 10px"')}
-          <input type="search" placeholder="Search by name or email" value="{{{{q}}}}" onChange="{{{{onQ}}}}" style="width: 240px; height: 32px; padding: 0 10px 0 30px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 14px; color: var(--fg); background: var(--bg); box-shadow: 0 1px 2px rgba(0,0,0,0.05); outline: none">
+          <input type="search" placeholder="Search by name or email…" value="{{{{q}}}}" onChange="{{{{onQ}}}}" style="width: 240px; height: 32px; padding: 0 10px 0 30px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 14px; color: var(--fg); background: var(--bg); box-shadow: 0 1px 2px rgba(0,0,0,0.05); outline: none">
         </label>
       </div>'''
 

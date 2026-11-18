@@ -126,3 +126,13 @@ Use shadcn/ui components for everything: Button, Input, InputOTP, Select, Combob
   - Abandon and Close need a reason.
   - Phones say "Use a computer to send a folder."
 - API: nothing new.
+
+## Consistency pass (admin against user pages)
+
+- Who is signed in: user boards are seen by Farhana Rahman (Head of Credit; roles Auditor and Dashboard viewer), so her sidebar and drawer show only Overview and Audit under Administration, as `app/navigation.ts` would. Admin boards are seen by Arif Rahman, organisation administrator (he is "(you)" on Users).
+- Empty states on the admin lists, each saying what to do and offering the action: Queues, Distribution lists, Substitutions, Import, Audit (the `empty` tweak), and "No … matches." with Clear the filter on Memo types and Workflows (the `noMatch` tweak).
+- The numbering register now matches the user boards: credit numbers run to CR/2026/0158 (Limit increase for Rupali Foods), with 0151 Covenant waiver: Padma Textiles. Policy counters are IT and RSK. The Memo type editor's sample numbers continue from 0158.
+- Dialogs are 460 or 560px wide (no 520). Filter placeholders end with "…". Back links say "Back to …". The Workflows phone page has the filter field. Inbox phone titles are 18px.
+- The boards follow the design rules where the app's wording differs: "Show more" on Audit and Import, "Built-in" on Workflows. The app items are in `IMPROVEMENTS.md` (26–30).
+- Workflow diagram steps are buttons (rule: no click handlers on divs).
+- `Rules` gained section 9, Admin and settings patterns, and four wording rules in section 7.

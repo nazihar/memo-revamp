@@ -118,7 +118,7 @@ def audit(phone):
                f'<sc-if value="{{{{r.isOpen}}}}" hint-placeholder-val="{{{{false}}}}">{detail}</sc-if></li></sc-for></ul>')
         btn = f'<button type="button" class="ghost" onClick="{{{{openExport}}}}" style="flex-shrink: 0; {OUTLINE.replace("height: 32px", "height: 40px")}">{svg(I["download"], 14)}Export</button>'
         return wrap_phone(f'    {nav("Audit", True)}\n' + head('Audit', 'Every change, newest first. The record cannot be altered without it showing.', True, btn)
-                          + f'\n    <div style="padding: 0 16px 12px">{filters}</div>\n    {lst}\n    <div style="display: flex; justify-content: center; padding: 16px"><button type="button" class="ghost" style="{obtn(True)}">Load more</button></div>')
+                          + f'\n    <div style="padding: 0 16px 12px">{filters}</div>\n    {lst}\n    <div style="display: flex; justify-content: center; padding: 16px"><button type="button" class="ghost" style="{obtn(True)}">Show more</button></div>')
     th = TH
     table = (f'<div style="{CARD}; overflow-x: auto"><table style="width: 100%; min-width: 980px; border-collapse: collapse; font-size: 14px"><caption style="{SR}">Audit entries, newest first</caption>'
              f'<thead><tr style="border-bottom: 1px solid var(--border)"><th scope="col" style="height: 40px; {th.replace("0 12px", "0 16px", 1)}; width: 140px">Time</th><th scope="col" style="{th}; width: 160px">Who</th><th scope="col" style="{th}; width: 250px">Action</th><th scope="col" style="{th}; width: 210px">Object</th><th scope="col" style="{th}">Change</th><th scope="col" style="width: 90px"><span style="{SR}">Details</span></th></tr></thead>'
@@ -129,7 +129,7 @@ def audit(phone):
              f'<td style="padding: 8px 12px 0 0; vertical-align: top; text-align: right">{tog}</td></tr></sc-for></tbody></table></div>')
     btn = f'<button type="button" class="ghost" onClick="{{{{openExport}}}}" style="{OUTLINE}">{svg(I["download"], 14)}Export</button>'
     return wrap_desk(f'      {nav("Audit", False)}\n' + head('Audit', 'Every change in your organisation, newest first. The record cannot be altered without it showing.', False, btn)
-                     + f'\n      {filters}\n      <div style="display: flex; flex-direction: column; gap: 8px">{table}<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px"><span style="font-size: 13px; color: var(--muted-fg)">Times are in Asia/Dhaka. Older entries load as you ask for them.</span><button type="button" class="ghost" style="{OUTLINE}">Load more</button></div></div>')
+                     + f'\n      {filters}\n      <div style="display: flex; flex-direction: column; gap: 8px">{table}<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px"><span style="font-size: 13px; color: var(--muted-fg)">Times are in Asia/Dhaka. Older entries load as you ask for them.</span><button type="button" class="ghost" style="{OUTLINE}">Show more</button></div></div>')
 def audit_dialogs(phone):
     body = '\n'.join([heading('ex-title', 'Export audit entries', 'A ZIP file with the entries, a manifest and the steps to verify it. Without filters it proves nothing is missing.'),
                       '        <sc-if value="{{hasFilters}}" hint-placeholder-val="{{false}}"><div style="padding: 10px 12px; border: 1px solid var(--warn-border); border-radius: 8px; background: var(--warn-bg); font-size: 13px"><strong style="font-weight: 600">Filtered:</strong> {{filtersText}}. Only the matching entries are exported, so the export cannot prove that nothing is missing.</div></sc-if>',
@@ -171,7 +171,7 @@ def imports(phone):
              '<tbody><sc-for list="{{batches}}" as="r" hint-placeholder-count="5"><tr class="lrow" style="border-bottom: 1px solid var(--hover)"><td style="height: 48px; padding: 0 16px"><a href="ImportBatch.dc.html" style="font-weight: 500; color: var(--fg); text-decoration: none">{{r.name}}</a></td>'
              f'<td style="padding: 0 12px; {MONO}; font-size: 13px; color: var(--text-2)">{{{{r.source}}}}</td><td style="padding: 0 12px"><span style="{{{{r.stateStyle}}}}">{{{{r.state}}}}</span></td><td style="padding: 0 12px; color: var(--muted-fg); white-space: nowrap">{{{{r.updated}}}}</td></tr></sc-for></tbody></table></div>')
     btns = OBTN('Download template', 'template', 'download') + PBTN('New batch', 'openNew')
-    return wrap_desk(f'      {nav("Import", False)}\n' + head('Import legacy memos', IMP_LEAD, False, btns) + f'\n      <div style="display: flex; flex-direction: column; gap: 8px">{table}<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px"><span style="font-size: 13px; color: var(--muted-fg)">Each batch goes through metadata, originals, mappings, a dry run, the import and a report.</span><button type="button" class="ghost" style="{OUTLINE}">Load more</button></div></div>')
+    return wrap_desk(f'      {nav("Import", False)}\n' + head('Import legacy memos', IMP_LEAD, False, btns) + f'\n      <div style="display: flex; flex-direction: column; gap: 8px">{table}<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px"><span style="font-size: 13px; color: var(--muted-fg)">Each batch goes through metadata, originals, mappings, a dry run, the import and a report.</span><button type="button" class="ghost" style="{OUTLINE}">Show more</button></div></div>')
 def imp_dialogs(phone):
     sel = lambda id_, l, opts: (f'<div style="display: flex; flex-direction: column; gap: 6px"><label for="{id_}" style="font-size: 14px; font-weight: 500">{l}</label><span style="position: relative; display: flex; align-items: center"><select id="{id_}" style="width: 100%; height: {H(phone)}; padding: 0 30px 0 10px; box-sizing: border-box; appearance: none; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: {FS(phone)}">'
                                 + ''.join(f'<option{" selected" if i == 0 else ""}>{o}</option>' for i, o in enumerate(opts)) + '</select>' + svg(I['chev'], 14, ' style="position: absolute; right: 10px; color: var(--muted-fg); pointer-events: none"') + '</span></div>')
@@ -319,7 +319,7 @@ def batch(phone):
     title = f'<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px"><h1 style="margin: 0; font-size: {"18px" if phone else "20px"}; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Credit memos 2019–2023</h1><span style="{MONO}; font-size: 12px; color: var(--text-2)">LEGACY-DMS</span><span style="{{{{stateStyle}}}}">{{{{stateLabel}}}}</span></div>'
     if phone:
         return f'  <main class="ed-main" style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; padding: 16px 16px 24px">\n    {title}\n    <div style="display: flex; flex-wrap: wrap; gap: 8px">{actions}</div>\n    {stepper}\n    {panes}\n  </main>\n'
-    return wrap_desk(f'      <a href="Imports.dc.html" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; font-size: 13px; color: var(--muted-fg); text-decoration: none">{svg(I["back"], 14)}All import batches</a>\n'
+    return wrap_desk(f'      <a href="Imports.dc.html" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; font-size: 13px; color: var(--muted-fg); text-decoration: none">{svg(I["back"], 14)}Back to Import</a>\n'
                      f'      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-top: -8px">{title}<div style="display: flex; gap: 8px">{actions}</div></div>\n      {stepper}\n      {panes}')
 def batch_dialogs(phone):
     reason = (f'        <sc-if value="{{{{cf.needsReason}}}}" hint-placeholder-val="{{{{false}}}}"><div style="display: flex; flex-direction: column; gap: 6px"><label for="cf-reason" style="font-size: 14px; font-weight: 500">Reason <span aria-hidden="true" style="color: var(--danger-fg)">*</span></label>'
@@ -332,6 +332,12 @@ def batch_dialogs(phone):
     {frame(body, 'cf-title', 'alertdialog', 'cf.submit', phone)}
   </sc-if>
 ''' + toast(phone)
+
+# ---------------------------------------------------------------- empty states
+_i_empty = lambda ph: empty_state('No import batches yet.', 'Download the template and fill it in from the earlier system. Then start a batch: nothing is imported until you have checked a dry run.', btn_outline('Download template', 'template', ph) + btn_primary('New batch', 'openNew', ph), ph)
+_a_empty = lambda ph: empty_state('Nothing in this period.', 'Try a longer period, or clear the filters.', btn_outline('Clear filters', 'clearFilters', ph), ph)
+IMP_JS += empty_js('batches'); IMP_PROPS = '"empty":{"editor":"boolean","default":false},' + IMP_PROPS
+AUDIT_JS += empty_js('rows') + "    vals.clearFilters = () => this.setState({ toast: 'Filters cleared.' });\n"; AUDIT_PROPS = '"empty":{"editor":"boolean","default":false},' + AUDIT_PROPS
 
 # ================================================================ assemble
 def build(name, title, desk, phone, dialogs, js, props, h, back=None):
@@ -351,8 +357,8 @@ def build(name, title, desk, phone, dialogs, js, props, h, back=None):
         (proj / f'{name}Phone.dc.html').write_text(with_ro(hd) + phone + dialogs(True) + drawer + script(props, 390, 844, PHONE_HEAD_JS + BASE_JS + js + PHONE_SHELL_JS))
 
 build('AdminOverview', 'Administration', ov_badges(overview(False)), ov_badges(overview(True)), toast, OV_JS, OV_PROPS, 1000)
-build('Audit', 'Audit', audit(False), audit(True), audit_dialogs, AUDIT_JS, AUDIT_PROPS, 1000)
-build('Imports', 'Import legacy memos', imports(False), imports(True), imp_dialogs, IMP_JS, IMP_PROPS, 1000)
+build('Audit', 'Audit', with_empty(audit(False), _a_empty(False)), with_empty(audit(True), _a_empty(True), True), audit_dialogs, AUDIT_JS, AUDIT_PROPS, 1000)
+build('Imports', 'Import legacy memos', with_empty(imports(False), _i_empty(False)), with_empty(imports(True), _i_empty(True), True), imp_dialogs, IMP_JS, IMP_PROPS, 1000)
 build('ImportBatch', 'Credit memos 2019–2023 · Import', batch(False), batch(True), batch_dialogs, BATCH_JS, BATCH_PROPS, 1000, ('ImportsPhone.dc.html', 'Import'))
 
 # Every other sidebar's Administration › Overview links here (idempotent)

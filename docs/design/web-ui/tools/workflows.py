@@ -52,7 +52,7 @@ LIST_JS = r"""
     });
 """
 LIST_PROPS = '"dialog":{"editor":"enum","options":["none","new"],"default":"none"},"error":{"editor":"enum","options":["none","required","keyTaken","failed"],"default":"none"},'
-BADGES = '<sc-if value="{{r.builtIn}}" hint-placeholder-val="{{false}}">' + SMALL('Built in') + '</sc-if><sc-if value="{{r.fragment}}" hint-placeholder-val="{{false}}">' + SMALL('Sub-workflow') + '</sc-if>'
+BADGES = '<sc-if value="{{r.builtIn}}" hint-placeholder-val="{{false}}">' + SMALL('Built-in') + '</sc-if><sc-if value="{{r.fragment}}" hint-placeholder-val="{{false}}">' + SMALL('Sub-workflow') + '</sc-if>'
 LIST_CELLS = ('<td style="padding: 10px 16px; vertical-align: middle"><span style="display: flex; flex-direction: column; gap: 2px"><span style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px"><a href="WorkflowBuilder.dc.html" style="font-weight: 500; color: var(--fg); text-decoration: none">{{r.name}}</a>' + BADGES + '</span>'
               '<sc-if value="{{r.hasDesc}}" hint-placeholder-val="{{true}}"><span style="font-size: 12px; line-height: 16px; color: var(--muted-fg)">{{r.desc}}</span></sc-if></span></td>'
               f'<td style="padding: 0 12px; vertical-align: middle; {MONO}; font-size: 13px; color: var(--text-2); white-space: nowrap">{{{{r.key}}}}</td>'
@@ -65,10 +65,12 @@ WF_LEAD = 'How memos move from step to step. A version is written, reviewed by s
 LIST_DESK = page(nav('Workflows', False), page_head('Workflows', WF_LEAD, 'New workflow', 'openNew', False),
                  '      <div style="display: flex; flex-direction: column; gap: 8px">' + list_body(False, 'defs', [('Name', ''), ('Key', '170px'), ('Published', '120px'), ('In progress', '200px'), ('', '44px')], LIST_CELLS, '', 'Workflow definitions of the organisation')
                  + foot(False, f'<button type="button" class="ghost" style="{OUTLINE}">Import a file</button>') + '</div>', False,
-                 f'      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px">{tabs_markup(False)}{SEARCH("Filter by name or key")}</div>\n')
+                 f'      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px">{tabs_markup(False)}{SEARCH("Filter by name or key…")}</div>\n')
+PHONE_SEARCH = (f'    <div style="padding: 0 16px 8px"><label style="position: relative; display: flex; align-items: center"><span style="{SR}">Filter by name or key</span>' + svg(I["search"], 16, ' style="position: absolute; left: 12px; color: var(--muted-fg); pointer-events: none"')
+                + '<input type="search" placeholder="Filter by name or key…" value="{{q}}" onChange="{{onQ}}" style="width: 100%; height: 44px; padding: 0 12px 0 36px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 16px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)"></label></div>\n')
 LIST_PHONE = page(nav('Workflows', True), page_head('Workflows', 'Written, reviewed by someone else, then published.', 'New', 'openNew', True),
                   list_body(True, 'defs', [], '', LIST_PROW, 'Workflow definitions of the organisation') + '\n' + foot(True), True,
-                  f'    <div style="padding: 4px 16px 12px">{tabs_markup(True)}</div>\n') + '\n' + SHEET
+                  PHONE_SEARCH + f'    <div style="padding: 4px 16px 12px">{tabs_markup(True)}</div>\n') + '\n' + SHEET
 
 def list_dialogs(phone):
     key = text_field('nw', 'key', 'Key', 'text', phone).replace('</div>', '  <span style="font-size: 12px; color: var(--muted-fg)">Lower case letters, digits and dashes, starting with a letter. It never changes.</span>\n        </div>', 1).replace('outline: none;', 'outline: none; ' + MONO + ';', 1)
@@ -159,7 +161,7 @@ def queue_dialog(phone):
     body = '\n'.join([text_field('ld', 'name', 'Name', 'text', phone), '        <sc-if value="{{ld.isNew}}" hint-placeholder-val="{{true}}">\n' + key_new + '\n        </sc-if>',
                       f'        <sc-if value="{{{{ld.isEdit}}}}" hint-placeholder-val="{{{{false}}}}">{key_edit}</sc-if>', members, alert('ld')])
     ld = frame_scroll('<div style="display: flex; flex-direction: column; gap: 6px"><h2 id="ld-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">{{ld.title}}</h2><p style="margin: 0; font-size: 14px; color: var(--muted-fg)">Every member gets the task; one claims it.</p></div>',
-                      body, buttons('Save', primary(phone), phone), 'ld-title', 'dialog', 'ld.submit', phone, width=520)
+                      body, buttons('Save', primary(phone), phone), 'ld-title', 'dialog', 'ld.submit', phone, width=560)
     return f'''
   <sc-if value="{{{{isList}}}}" hint-placeholder-val="{{{{false}}}}">
     {ld}
@@ -321,6 +323,18 @@ def cal_dialogs(phone):
     {frame(body, 'cd-title', 'dialog', 'cd.submit', phone)}
   </sc-if>
 ''' + toast(phone)
+
+# ---------------------------------------------------------------- empty states
+LIST_DESK = with_empty(LIST_DESK, empty_state('No workflow matches.', 'Try another name or key, or another tab.', btn_outline('Clear the filter', 'clearFilter', False)))
+LIST_PHONE = with_empty(LIST_PHONE, empty_state('No workflow matches.', 'Try another name or key, or another tab.', btn_outline('Clear the filter', 'clearFilter', True), True), True)
+_q_empty = lambda ph: empty_state('No queues yet.', 'A workflow step can send its task to a queue, where one member claims it. Make one for each team that shares work.', btn_primary('Add queue', 'openNew', ph), ph)
+QUEUES_DESK = with_empty(QUEUES_DESK, _q_empty(False)); QUEUES_PHONE = with_empty(QUEUES_PHONE, _q_empty(True), True)
+_s_empty = lambda ph: empty_state('No substitutions yet.', 'Add one when someone is away, so their new tasks go to a substitute who acts for them.', btn_primary('Add substitution', 'openNew', ph), ph)
+SUBS_DESK = with_empty(SUBS_DESK, _s_empty(False)); SUBS_PHONE = with_empty(SUBS_PHONE, _s_empty(True), True)
+LIST_JS += empty_js('defs', 'noMatch') + "    vals.clearFilter = () => this.setState({ q: '', filter: 'all' });\n"
+LIST_PROPS = '"noMatch":{"editor":"boolean","default":false},' + LIST_PROPS
+QUEUES_JS += empty_js('queues'); QUEUES_PROPS = '"empty":{"editor":"boolean","default":false},' + QUEUES_PROPS
+SUBS_JS += empty_js('subs'); SUBS_PROPS = '"empty":{"editor":"boolean","default":false},' + SUBS_PROPS
 
 # ================================================================ assemble
 BOARDS = [('Workflows', 'Workflows', LIST_DESK, LIST_PHONE, list_dialogs, LIST_JS, LIST_PROPS, 1000, None),

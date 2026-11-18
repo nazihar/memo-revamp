@@ -355,3 +355,25 @@ def toolbar(phone, placeholder):
         <div role="tablist" aria-label="Show" style="display: inline-flex; align-items: center; gap: 2px; height: 36px; padding: 3px; box-sizing: border-box; border-radius: 10px; background: var(--muted)"><sc-for list="{{tabs}}" as="f" hint-placeholder-count="3"><button type="button" role="tab" class="tab" aria-selected="{{f.aria}}" onClick="{{f.pick}}" style="{{f.style}}">{{f.label}}</button></sc-for></div>
         <label style="position: relative; display: flex; align-items: center"><span style="[[sr]]">[[ph]]</span>[[icon]]<input type="search" placeholder="[[ph]]" value="{{q}}" onChange="{{onQ}}" style="width: 240px; height: 32px; padding: 0 10px 0 30px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 14px; color: var(--fg); background: var(--bg); box-shadow: 0 1px 2px rgba(0,0,0,0.05); outline: none"></label>
       </div>''', sr=SR, ph=placeholder, icon=svg(I['search'], 14, ' style="color: var(--muted-fg); position: absolute; left: 10px"'))
+
+# ---------------------------------------------------------------- empty states
+def empty_state(title, hint, actions='', phone=False):
+    """The list empty state: a dashed box with what happened, what to do, and the action that fixes it."""
+    return (f'<div style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: {"40px 16px" if phone else "56px 24px"}; border: 1px dashed var(--border); border-radius: 10px; text-align: center">'
+            f'<span style="font-weight: 500; font-size: 16px">{title}</span><span style="max-width: 520px; font-size: 14px; color: var(--muted-fg)">{hint}</span>'
+            + (f'<span style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 8px">{actions}</span>' if actions else '') + '</div>')
+
+def with_empty(html, empty, phone=False):
+    """Show the list only when it has rows ({{hasRows}}), and [empty] when it has none ({{noRows}})."""
+    if phone:
+        i = html.rindex('<ul aria-label="'); j = html.index('</ul>', i) + 5
+        empty = f'<div style="padding: 4px 16px 0">{empty}</div>'
+    else:
+        e = html.rindex('\n    </main>'); i = html.rindex('<div style="display: flex; flex-direction: column; gap: 8px">', 0, e); j = e
+    return (html[:i] + '<sc-if value="{{hasRows}}" hint-placeholder-val="{{true}}">' + html[i:j] + '</sc-if>'
+            + '<sc-if value="{{noRows}}" hint-placeholder-val="{{false}}">' + empty + '</sc-if>' + html[j:])
+
+def btn_primary(label, click, phone): return f'<button type="button" onClick="{{{{{click}}}}}" style="display: inline-flex; align-items: center; gap: 6px; height: {"40px" if phone else "32px"}; padding: 0 12px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 13px; font-weight: 500; cursor: pointer">{label}</button>'
+def btn_outline(label, click, phone): return f'<button type="button" class="ghost" onClick="{{{{{click}}}}}" style="{OUTLINE.replace("height: 32px", "height: " + ("40px" if phone else "32px"))}">{label}</button>'
+def empty_js(rows_key, prop='empty'):
+    return f"    if (this.props.{prop}) vals.{rows_key} = [];\n    vals.hasRows = vals.{rows_key}.length > 0; vals.noRows = !vals.hasRows;\n"

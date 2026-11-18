@@ -63,6 +63,16 @@ Priority: **High** = do first; **Medium** = worth doing; **Low** = nice to have.
 | 24 | **Remember last choices:** the Inbox tab, sort and filters per person. | Frontend only (browser storage). | Idea |
 | 25 | **Relative dates for recent things** ("2 hours ago"), absolute for older, applied the same way on every screen. | Frontend only. | Idea |
 
+## Admin
+
+| # | Improvement | Why | Needs | Priority | Status |
+|---|---|---|---|---|---|
+| 26 | **Warn about look-alike numbers.** The Numbering tab checks the other series and warns when two can produce numbers that read the same. Example: a Policy series counted per unit, from a unit coded HR, gives HR/2026/0012, like the HR request series. | Two memos can carry the same-looking number, and people quote numbers. | Frontend check over the series list (`GET` numbering series), or a server validation on save. | Medium | Idea |
+| 27 | **One spelling of "Built-in".** Roles say "Built-in", Workflows say "Built in". | The same idea reads the same everywhere. | Frontend messages (`access-messages.ts`, `workflow-messages.ts`). | Low | Idea |
+| 28 | **Show more instead of Load more** on Audit and Import, like every other list. | One word for one action. | Frontend messages (`admin-messages.ts`, `imports/messages.ts`). | Low | Idea |
+| 29 | **One success word per kind of action:** "Saved." after a change is saved, "Done." after an action that is not a save. Today both appear for similar actions (for example "Done." after creating a substitution, "Saved." after editing a queue). | Predictable feedback. | Frontend messages. | Low | Idea |
+| 30 | **Approval confirmation on the Security page:** "Approving memos: a confirmation lasts (minutes)", 5–240. The server has the setting (`security.stepup.approval.minutes`) but no page shows it. | Administrators can tune how often approvers confirm it is them. | Add the field to the security settings API and page. | Low | Idea |
+
 ## Decisions
 
 - **Reading pane (5): a per-person switch, off by default** (2026-11-18). A "Reading pane" switch in the My tasks toolbar, shown only at 1400px and wider, turns it on and is remembered per person. When on, the list and the selected memo sit side by side with the decision bar; "Open the full page" covers the note sheet, attachments, linked memos and history. Links from notifications, search and Home still open the full page.

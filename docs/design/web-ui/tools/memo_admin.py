@@ -102,7 +102,7 @@ TYPES_DESK = T('''    <main style="flex: 1; padding: 20px 24px 32px; display: fl
     </main>
   </div>
 ''', nav=nav('Memo types', False), head=page_head('Memo types', 'What people choose when they write a memo: its form, numbering and approval. Every change is reviewed by a second administrator before it applies.', 'New memo type', 'openNew', False),
-     toolbar=toolbar(False, 'Filter by name or code'), card=CARD, sr=SR, th0=TH.replace('0 12px', '0 16px', 1), th=TH, mono=MONO, menuBtn=MENU_BTN, menu=MENU, foot=FOOT_NOTE)
+     toolbar=toolbar(False, 'Filter by name or code…'), card=CARD, sr=SR, th0=TH.replace('0 12px', '0 16px', 1), th=TH, mono=MONO, menuBtn=MENU_BTN, menu=MENU, foot=FOOT_NOTE)
 
 TYPES_PHONE = T('''  <main style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column">
     [[nav]]
@@ -123,7 +123,7 @@ TYPES_PHONE = T('''  <main style="flex: 1; min-height: 0; overflow-y: auto; disp
   </main>
 
 [[sheet]]''', nav=nav('Memo types', True), head=page_head('Memo types', 'Every change is reviewed by a second administrator before it applies.', 'New', 'openNew', True),
-     toolbar=toolbar(True, 'Filter by name or code'), mono=MONO, dots=DOTS18, sheet=SHEET)
+     toolbar=toolbar(True, 'Filter by name or code…'), mono=MONO, dots=DOTS18, sheet=SHEET)
 
 def types_dialogs(phone):
     code_field = text_field('nt', 'code', 'Code', 'text', phone).replace('</div>', '  <span style="font-size: 12px; color: var(--muted-fg)">Up to 10 capital letters, digits or hyphens; used in memo numbers.</span>\n        </div>', 1)
@@ -250,7 +250,7 @@ def numbering_panel(phone):
                  + radios('Give the number when the memo is', 'nm-moment', ['Submitted', 'Finally approved'], 0))
     sample = f'''<section aria-live="polite" style="border: 1px solid var(--border); border-radius: 10px; background: var(--subtle); padding: 14px 16px; display: flex; flex-direction: column; gap: 8px">
             <h3 style="margin: 0; font-size: 13px; font-weight: 500">Sample</h3>
-            <span style="display: flex; flex-wrap: wrap; gap: 8px">{"".join(f'<span style="display: inline-flex; align-items: center; height: 28px; padding: 0 10px; border-radius: 6px; background: var(--card); border: 1px solid var(--border); {MONO}; font-size: 13px">{x}</span>' for x in ["CR/2026/0144", "CR/2026/0145", "CR/2027/0001"])}</span>
+            <span style="display: flex; flex-wrap: wrap; gap: 8px">{"".join(f'<span style="display: inline-flex; align-items: center; height: 28px; padding: 0 10px; border-radius: 6px; background: var(--card); border: 1px solid var(--border); {MONO}; font-size: 13px">{x}</span>' for x in ["CR/2026/0159", "CR/2026/0160", "CR/2027/0001"])}</span>
             <span style="font-size: 12px; color: var(--muted-fg)">The next numbers, made by the same rules the server uses. The last one shows the yearly restart.</span>
           </section>'''
     cols = 'display: flex; flex-direction: column; gap: 16px' if phone else 'display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 16px; align-items: start'
@@ -313,7 +313,7 @@ def editor_body(phone):
       tabs=tabs, settings=settings_panel(phone), form=form_panel(phone), numbering=numbering_panel(phone), changes=changes_panel(phone))
 
 EDITOR_DESK = T('''    <main style="flex: 1; padding: 20px 24px 24px; display: flex; flex-direction: column; gap: 16px; min-width: 0">
-      <a href="MemoTypes.dc.html" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; font-size: 13px; color: var(--muted-fg); text-decoration: none">[[back]]All memo types</a>
+      <a href="MemoTypes.dc.html" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; font-size: 13px; color: var(--muted-fg); text-decoration: none">[[back]]Back to Memo types</a>
       <div style="display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 12px; margin-top: -8px">
         <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px"><h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Credit proposal</h1><span style="display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; border: 1px solid var(--border); [[mono]]; font-size: 12px; color: var(--text-2)">CR</span><span style="{{activeStyle}}">{{activeLabel}}</span></div>
         <div style="display: flex; flex-wrap: wrap; gap: 8px"><sc-if value="{{canNewDraft}}" hint-placeholder-val="{{false}}"><button type="button" onClick="{{newDraft}}" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 13px; font-weight: 500; cursor: pointer">[[plus]]New draft</button></sc-if><button type="button" class="ghost" style="[[outline]]">Switch off</button></div>
@@ -342,7 +342,7 @@ def editor_dialogs(phone):
         '        ' + field('Currencies', text('BDT, USD', mono=True).replace('disabled="{{ro}}"', ''), 'ISO codes separated by commas; the first is the default.'),
         '        <div style="display: flex; flex-direction: column; gap: 8px">' + check('Required', True).replace('disabled="{{ro}}"', '') + check('Use in workflow rules', True, 'Rules and the delegation of authority can test its value.').replace('disabled="{{ro}}"', '') + check('Show in inbox lists', True).replace('disabled="{{ro}}"', '') + '</div>',
         alert('fd')])
-    fd = frame_scroll(fd_head, body, buttons('Keep field', primary(phone), phone), 'fd-title', 'dialog', 'fd.submit', phone, width=520)
+    fd = frame_scroll(fd_head, body, buttons('Keep field', primary(phone), phone), 'fd-title', 'dialog', 'fd.submit', phone, width=560)
     return f'''
   <sc-if value="{{{{isField}}}}" hint-placeholder-val="{{{{false}}}}">
     {fd}
@@ -421,9 +421,9 @@ EDITOR_PROPS = '"state":{"editor":"enum","options":["review","draft","published"
 # ================================================================ Numbering
 NUM_JS = r"""
     const S = [
-      { id: 'credit', types: 'Credit proposal', perUnit: false, counters: [['2026', '', 'CR/2026/0143', false, 'c26'], ['2025', '', 'CR/2025/0611', false, 'c25']] },
+      { id: 'credit', types: 'Credit proposal', perUnit: false, counters: [['2026', '', 'CR/2026/0158', false, 'c26'], ['2025', '', 'CR/2025/0611', false, 'c25']] },
       { id: 'fin', types: 'Budget request, Capital expenditure', perUnit: false, counters: [['2026', '', 'FIN/2026/0329', false, 'f26'], ['2025', '', 'FIN/2025/1187', false, 'f25']] },
-      { id: 'policy', types: 'Policy', perUnit: true, counters: [['2026', 'IT', 'IT/2026/0054', false, 'pit'], ['2026', 'HR', 'HR/2026/0012', false, 'phr'], ['2026', 'Finance', 'FIN-P/2026/0007', false, 'pfi']] },
+      { id: 'policy', types: 'Policy', perUnit: true, counters: [['2026', 'IT', 'IT/2026/0054', false, 'pit'], ['2026', 'RSK', 'RSK/2026/0044', false, 'prk']] },
       { id: 'hr', types: 'HR request', perUnit: false, counters: [['2026', '', 'HR/2026/0129', true, 'h26']] }
     ];
     const sel = st.counter || 'c26';
@@ -435,11 +435,11 @@ NUM_JS = r"""
         meta: (c[1] ? c[1] + ' · ' : '') + 'last ' + c[2] })) }));
     const cur = (S.map((s) => s.counters.map((c) => ({ s: s, c: c }))).reduce((a, b) => a.concat(b), [])).find((x) => x.c[4] === sel);
     const prefix = cur.c[2].replace(/\d+$/, ''), lastN = parseInt(cur.c[2].match(/\d+$/)[0], 10), width = cur.c[2].match(/\d+$/)[0].length;
-    const SUBJ = ['Credit line renewal for Meghna Agro', 'Working capital for Padma Textiles', 'Term loan, Rupsha Cold Storage', 'Overdraft limit, Karnaphuli Traders', 'LC facility, Surma Tea Estates', 'Restructuring, Jamuna Poultry', 'Lease finance, Teesta Logistics', 'Credit line renewal, Bhairab Steel'];
+    const SUBJ = ['Limit increase for Rupali Foods', 'Working capital for Padma Textiles', 'Term loan, Rupsha Cold Storage', 'Overdraft limit, Karnaphuli Traders', 'LC facility, Surma Tea Estates', 'Restructuring, Jamuna Poultry', 'Lease finance, Teesta Logistics', 'Covenant waiver: Padma Textiles'];
     const register = [0, 1, 2, 3, 4, 5, 6, 7].map((k) => { const n = lastN - k; const num = prefix + String(n).padStart(width, '0');
       const isVoid = k === 3, hidden = k === 5, missing = gaps && k === 6;
       return { number: num, memo: missing ? 'No memo' : (hidden ? 'Not visible to you' : SUBJ[k]), memoStyle: missing ? 'color: var(--danger-fg); font-weight: 500' : (hidden ? 'color: var(--muted-fg); font-style: italic' : 'color: var(--fg)'),
-        link: !missing && !hidden, plain: missing || hidden, status: missing ? '—' : (isVoid ? 'Withdrawn' : (k < 2 ? 'In review' : (k === 4 ? 'Closed' : 'Approved'))), isVoid: isVoid,
+        link: !missing && !hidden, plain: missing || hidden, status: missing ? '—' : (isVoid ? 'Withdrawn' : (k < 2 || k === 7 ? 'In review' : (k === 4 ? 'Closed' : 'Approved'))), isVoid: isVoid,
         rowStyle: 'border-bottom: 1px solid var(--hover)' + (missing ? '; background: var(--danger-bg)' : '') }; });
     const startErrs = { required: true };
     const period = form.period !== undefined ? form.period : (err === 'required' ? '' : '2027'), first = form.first !== undefined ? form.first : (err === 'required' ? '' : '1');
@@ -644,12 +644,24 @@ def lists_dialogs(phone):
              dir='flex-direction: column-reverse' if phone else 'align-items: center', h=h, mr='' if phone else '; margin-right: auto',
              btns=buttons('Save', primary(phone), phone).strip().replace('justify-content: flex-end; ', ''))
     ld = frame_scroll('<div style="display: flex; flex-direction: column; gap: 6px"><h2 id="ld-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">{{ld.title}}</h2><p style="margin: 0; font-size: 14px; color: var(--muted-fg)">People named here get a copy. Positions are expanded when the copy is sent.</p></div>',
-                      '\n'.join([text_field('ld', 'name', 'Name', 'text', phone), members, alert('ld')]), foot, 'ld-title', 'dialog', 'ld.submit', phone, width=520)
+                      '\n'.join([text_field('ld', 'name', 'Name', 'text', phone), members, alert('ld')]), foot, 'ld-title', 'dialog', 'ld.submit', phone, width=560)
     return f'''
   <sc-if value="{{{{isList}}}}" hint-placeholder-val="{{{{false}}}}">
     {ld}
   </sc-if>
 ''' + toast(phone)
+
+# ---------------------------------------------------------------- empty states
+_clear = lambda ph: btn_outline('Clear the filter', 'clearFilter', ph)
+TYPES_DESK = with_empty(TYPES_DESK, empty_state('No memo type matches.', 'Try another name or code, or another tab.', _clear(False)))
+TYPES_PHONE = with_empty(TYPES_PHONE, empty_state('No memo type matches.', 'Try another name or code, or another tab.', _clear(True), True), True)
+_lists_empty = lambda ph: empty_state('No distribution lists yet.', 'Make a list for a group you often copy memos to, such as a committee. Add positions rather than people, and the list stays right when people move.', btn_primary('Add list', 'openNew', ph), ph)
+LISTS_DESK = with_empty(LISTS_DESK, _lists_empty(False))
+LISTS_PHONE = with_empty(LISTS_PHONE, _lists_empty(True), True)
+TYPES_JS += empty_js('types', 'noMatch') + "    vals.clearFilter = () => this.setState({ q: '', filter: 'all' });\n"
+TYPES_PROPS = '"noMatch":{"editor":"boolean","default":false},' + TYPES_PROPS
+LISTS_JS += empty_js('lists')
+LISTS_PROPS = '"empty":{"editor":"boolean","default":false},' + LISTS_PROPS
 
 # ================================================================ assemble
 RO_CSS = '.ed-main>*{flex-shrink:0}\ninput:disabled,select:disabled,textarea:disabled{background:var(--subtle)!important;color:var(--text-2)!important;box-shadow:none!important;cursor:not-allowed}\n'

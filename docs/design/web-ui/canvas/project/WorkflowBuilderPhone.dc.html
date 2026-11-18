@@ -198,7 +198,7 @@ class Component extends DCLogic {
     const nodes = ND.map((n, i) => ({ name: n.name, type: n.type, who: n.who, due: n.due, hasDue: !!n.due, added: !!n.added && !isPub, changed: !!n.changed && !isPub, reached: simOn && reached.indexOf(n.id) >= 0, hasProblem: problem === n.id,
       select: () => this.setState({ sel: n.id, panel: 'step' }),
       aria: 'Step ' + (i + 1) + ' of ' + ND.length + ', ' + n.type + ', ' + n.name + '.',
-      style: 'position: absolute; left: ' + n.x + 'px; top: ' + n.y + 'px; width: 220px; box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; border-radius: 10px; background: var(--card); cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.08); '
+      style: 'position: absolute; left: ' + n.x + 'px; top: ' + n.y + 'px; width: 220px; box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; border-radius: 10px; background: var(--card); cursor: pointer; color: var(--fg); font-family: inherit; text-align: left; box-shadow: 0 1px 3px rgba(0,0,0,0.08); '
         + (problem === n.id ? 'border: 2px solid var(--destructive)' : (sel === n.id && panel === 'step' ? 'border: 2px solid var(--fg)' : (simOn && reached.indexOf(n.id) >= 0 ? 'border: 2px solid var(--info-fg)' : 'border: 1px solid var(--border-strong)'))) }));
     const L = (k, v) => ({ k: k, v: v });
     const stepList = [

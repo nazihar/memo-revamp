@@ -43,8 +43,8 @@ input:disabled,select:disabled,textarea:disabled{background:var(--subtle)!import
       <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg>
       <span aria-hidden="true" style="position: absolute; top: 11px; right: 12px; width: 7px; height: 7px; border-radius: 50%; background: var(--destructive); border: 1.5px solid var(--bg)"></span>
     </a>
-    <button type="button" class="ghost" aria-label="Account menu, Farhana Rahman" aria-haspopup="menu" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: transparent; border-radius: 8px">
-      <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: var(--chip); color: var(--fg); font-weight: 500; font-size: 11px">FR</span>
+    <button type="button" class="ghost" aria-label="Account menu, Arif Rahman" aria-haspopup="menu" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: transparent; border-radius: 8px">
+      <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: var(--chip); color: var(--fg); font-weight: 500; font-size: 11px">AR</span>
     </button>
   </header>
   <main style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column">
@@ -201,9 +201,9 @@ class Component extends DCLogic {
     const TONE = {"ok": "display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid var(--ok-border); background: var(--ok-bg); color: var(--ok-fg)", "warn": "display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg)", "danger": "display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid var(--danger-border); background: var(--danger-bg); color: var(--danger-fg)", "neutral": "display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid var(--border); background: var(--muted); color: var(--text-2)"};
 
     const S = [
-      { id: 'credit', types: 'Credit proposal', perUnit: false, counters: [['2026', '', 'CR/2026/0143', false, 'c26'], ['2025', '', 'CR/2025/0611', false, 'c25']] },
+      { id: 'credit', types: 'Credit proposal', perUnit: false, counters: [['2026', '', 'CR/2026/0158', false, 'c26'], ['2025', '', 'CR/2025/0611', false, 'c25']] },
       { id: 'fin', types: 'Budget request, Capital expenditure', perUnit: false, counters: [['2026', '', 'FIN/2026/0329', false, 'f26'], ['2025', '', 'FIN/2025/1187', false, 'f25']] },
-      { id: 'policy', types: 'Policy', perUnit: true, counters: [['2026', 'IT', 'IT/2026/0054', false, 'pit'], ['2026', 'HR', 'HR/2026/0012', false, 'phr'], ['2026', 'Finance', 'FIN-P/2026/0007', false, 'pfi']] },
+      { id: 'policy', types: 'Policy', perUnit: true, counters: [['2026', 'IT', 'IT/2026/0054', false, 'pit'], ['2026', 'RSK', 'RSK/2026/0044', false, 'prk']] },
       { id: 'hr', types: 'HR request', perUnit: false, counters: [['2026', '', 'HR/2026/0129', true, 'h26']] }
     ];
     const sel = st.counter || 'c26';
@@ -215,11 +215,11 @@ class Component extends DCLogic {
         meta: (c[1] ? c[1] + ' · ' : '') + 'last ' + c[2] })) }));
     const cur = (S.map((s) => s.counters.map((c) => ({ s: s, c: c }))).reduce((a, b) => a.concat(b), [])).find((x) => x.c[4] === sel);
     const prefix = cur.c[2].replace(/\d+$/, ''), lastN = parseInt(cur.c[2].match(/\d+$/)[0], 10), width = cur.c[2].match(/\d+$/)[0].length;
-    const SUBJ = ['Credit line renewal for Meghna Agro', 'Working capital for Padma Textiles', 'Term loan, Rupsha Cold Storage', 'Overdraft limit, Karnaphuli Traders', 'LC facility, Surma Tea Estates', 'Restructuring, Jamuna Poultry', 'Lease finance, Teesta Logistics', 'Credit line renewal, Bhairab Steel'];
+    const SUBJ = ['Limit increase for Rupali Foods', 'Working capital for Padma Textiles', 'Term loan, Rupsha Cold Storage', 'Overdraft limit, Karnaphuli Traders', 'LC facility, Surma Tea Estates', 'Restructuring, Jamuna Poultry', 'Lease finance, Teesta Logistics', 'Covenant waiver: Padma Textiles'];
     const register = [0, 1, 2, 3, 4, 5, 6, 7].map((k) => { const n = lastN - k; const num = prefix + String(n).padStart(width, '0');
       const isVoid = k === 3, hidden = k === 5, missing = gaps && k === 6;
       return { number: num, memo: missing ? 'No memo' : (hidden ? 'Not visible to you' : SUBJ[k]), memoStyle: missing ? 'color: var(--danger-fg); font-weight: 500' : (hidden ? 'color: var(--muted-fg); font-style: italic' : 'color: var(--fg)'),
-        link: !missing && !hidden, plain: missing || hidden, status: missing ? '—' : (isVoid ? 'Withdrawn' : (k < 2 ? 'In review' : (k === 4 ? 'Closed' : 'Approved'))), isVoid: isVoid,
+        link: !missing && !hidden, plain: missing || hidden, status: missing ? '—' : (isVoid ? 'Withdrawn' : (k < 2 || k === 7 ? 'In review' : (k === 4 ? 'Closed' : 'Approved'))), isVoid: isVoid,
         rowStyle: 'border-bottom: 1px solid var(--hover)' + (missing ? '; background: var(--danger-bg)' : '') }; });
     const startErrs = { required: true };
     const period = form.period !== undefined ? form.period : (err === 'required' ? '' : '2027'), first = form.first !== undefined ? form.first : (err === 'required' ? '' : '1');

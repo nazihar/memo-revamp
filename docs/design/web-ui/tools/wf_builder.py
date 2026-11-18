@@ -2,7 +2,7 @@
 from wf_parts import *
 
 # ================================================================ Builder
-NODE = ('''<div role="button" tabIndex="0" aria-label="{{n.aria}}" onClick="{{n.select}}" style="{{n.style}}">
+NODE = ('''<button type="button" aria-label="{{n.aria}}" onClick="{{n.select}}" style="{{n.style}}">
                 <span style="display: flex; align-items: center; justify-content: space-between; gap: 6px"><span style="font-size: 11px; font-weight: 500; color: var(--muted-fg); text-transform: uppercase; letter-spacing: 0.04em">{{n.type}}</span><span style="display: flex; gap: 4px">'''
         + '<sc-if value="{{n.added}}" hint-placeholder-val="{{false}}">' + SMALL('+ Added', 'ok') + '</sc-if>'
         + '<sc-if value="{{n.changed}}" hint-placeholder-val="{{false}}">' + SMALL('~ Changed', 'warn') + '</sc-if>'
@@ -12,7 +12,7 @@ NODE = ('''<div role="button" tabIndex="0" aria-label="{{n.aria}}" onClick="{{n.
                 <span style="font-weight: 600; font-size: 14px; line-height: 18px">{{n.name}}</span>
                 <span style="font-size: 12px; line-height: 16px; color: var(--text-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{n.who}}</span>
                 <sc-if value="{{n.hasDue}}" hint-placeholder-val="{{true}}"><span style="font-size: 11px; line-height: 14px; color: var(--muted-fg)">{{n.due}}</span></sc-if>
-              </div>''')
+              </button>''')
 
 LABEL = 'position: absolute; padding: 0 6px; border-radius: 4px; background: var(--subtle); font-size: 11px; color: var(--text-2)'
 PILL = 'position: absolute; display: inline-flex; align-items: center; justify-content: center; width: 72px; height: 28px; border-radius: 14px; font-size: 12px; font-weight: 600'
@@ -159,7 +159,7 @@ def builder_bar(phone):
     return review_bar(phone, draft, pub)
 
 BUILDER_DESK = f'''    <main style="flex: 1; padding: 20px 24px 24px; display: flex; flex-direction: column; gap: 16px; min-width: 0">
-      <a href="Workflows.dc.html" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; font-size: 13px; color: var(--muted-fg); text-decoration: none">{svg(I["back"], 14)}All workflows</a>
+      <a href="Workflows.dc.html" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; font-size: 13px; color: var(--muted-fg); text-decoration: none">{svg(I["back"], 14)}Back to Workflows</a>
       <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: -8px"><h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Credit approval</h1>{KEYCHIP}</div>
       <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 12px">{version_select(False)}<span style="{{{{stateChip}}}}">{{{{stateLabel}}}}</span><span style="font-size: 13px; color: var(--muted-fg)">{{{{versionNote}}}}</span></div>
       {REMARK_BOX}
@@ -231,7 +231,7 @@ BUILDER_JS = r"""
     const nodes = ND.map((n, i) => ({ name: n.name, type: n.type, who: n.who, due: n.due, hasDue: !!n.due, added: !!n.added && !isPub, changed: !!n.changed && !isPub, reached: simOn && reached.indexOf(n.id) >= 0, hasProblem: problem === n.id,
       select: () => this.setState({ sel: n.id, panel: 'step' }),
       aria: 'Step ' + (i + 1) + ' of ' + ND.length + ', ' + n.type + ', ' + n.name + '.',
-      style: 'position: absolute; left: ' + n.x + 'px; top: ' + n.y + 'px; width: 220px; box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; border-radius: 10px; background: var(--card); cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.08); '
+      style: 'position: absolute; left: ' + n.x + 'px; top: ' + n.y + 'px; width: 220px; box-sizing: border-box; display: flex; flex-direction: column; gap: 2px; padding: 8px 10px; border-radius: 10px; background: var(--card); cursor: pointer; color: var(--fg); font-family: inherit; text-align: left; box-shadow: 0 1px 3px rgba(0,0,0,0.08); '
         + (problem === n.id ? 'border: 2px solid var(--destructive)' : (sel === n.id && panel === 'step' ? 'border: 2px solid var(--fg)' : (simOn && reached.indexOf(n.id) >= 0 ? 'border: 2px solid var(--info-fg)' : 'border: 1px solid var(--border-strong)'))) }));
     const L = (k, v) => ({ k: k, v: v });
     const stepList = [

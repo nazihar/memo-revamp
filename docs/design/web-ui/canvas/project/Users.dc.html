@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Users</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+.th{color-scheme:light;--bg:#ffffff;--card:#ffffff;--fg:#0a0a0a;--subtle:#fafafa;--muted:#f5f5f5;--hover:#f0f0f0;--active:#ebebeb;--chip:#e5e5e5;--border:#e5e5e5;--border-strong:#d4d4d4;--muted-fg:#737373;--text-1:#262626;--text-2:#404040;--text-3:#525252;--primary:#171717;--primary-fg:#fafafa;--primary-hover:#262626;--primary-divider:#404040;--primary-muted:#a3a3a3;--ring:#a3a3a3;--destructive:#dc2626;--destructive-hover:#b91c1c;--on-destructive:#ffffff;--danger-fg:#b91c1c;--danger-bg:#fef2f2;--danger-border:#fecaca;--warn-bg:#fffbeb;--warn-fg:#92400e;--warn-border:#fcd34d;--ok-bg:#f0fdf4;--ok-fg:#166534;--ok-border:#bbf7d0;--info-bg:#eff6ff;--info-fg:#1d4ed8}
+.th.dark{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}
+@media (prefers-color-scheme: dark){.th.system{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}}
+body:has(.th.dark){background:#09090b}
+@media (prefers-color-scheme: dark){body:has(.th.system){background:#09090b}}
+body{margin:0;background:#ffffff}
+a{color:var(--fg)}a:hover{color:var(--text-2)}
+button{font-family:inherit}
+textarea{font-family:inherit}
+.nav-item:hover{background:var(--hover)}
+.ghost:hover{background:var(--muted)}
+.tab:hover{color:var(--fg)}
+.lrow:hover{background:var(--subtle)}
+.primary:hover{background:var(--primary-hover)}
+.danger:hover{background:var(--destructive-hover)}
+.sidebar.collapsed{flex-basis:56px !important}
+.sidebar.collapsed .lbl{display:none !important}
+.sidebar.collapsed .nav-item{justify-content:center !important;padding:0 !important}
+.sidebar.collapsed .org{padding:8px 0 !important;justify-content:center}
+.sidebar.collapsed .grp-label{visibility:hidden;height:12px !important}
+.scrim{display:none !important}
+.drawer-close{display:none !important}
+@media (max-width: 1024px){.acct-name{display:none !important}}
+@media (max-width: 860px){
+.sidebar{display:none !important}
+.sidebar.open{display:flex !important;position:fixed;top:0;bottom:0;left:0;width:280px;z-index:40;box-shadow:0 10px 40px rgba(0,0,0,0.2)}
+.scrim.open{display:block !important}
+.drawer-close{display:inline-flex !important}
+.global-search{width:auto !important;flex:1;min-width:0}
+.kbd{display:none !important}
+}
+</style>
+</helmet>
+<div class="th {{themeClass}}" style="display: flex; flex-wrap: wrap; min-height: 1000px; background: var(--bg); color: var(--fg); font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 20px">
+
+  <button type="button" class="{{scrimClass}}" tabIndex="-1" aria-label="Close navigation" onClick="{{closeNav}}" style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 30; border: 0; padding: 0; background: rgba(0,0,0,0.4); cursor: default"></button>
+
+  <!-- Sidebar (same as Inbox) -->
+  <nav class="{{sidebarClass}}" aria-label="Main navigation" onKeyDown="{{navKey}}" style="flex: 0 0 240px; display: flex; flex-direction: column; background: var(--subtle); border-right: 1px solid var(--border); box-sizing: border-box; padding: 8px; overflow: hidden; position: relative">
+    <button type="button" class="drawer-close ghost" aria-label="Close navigation" onClick="{{closeNav}}" style="position: absolute; top: 14px; right: 12px; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--text-3)">
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+    </button>
+    <div class="org" title="[Organisation name]" style="display: flex; align-items: center; gap: 8px; padding: 8px; color: var(--fg)">
+      <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-weight: 600; font-size: 14px; flex-shrink: 0">N</span>
+      <span class="lbl" style="display: flex; flex-direction: column; min-width: 0; flex: 1">
+        <span style="font-weight: 600; font-size: 14px; line-height: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">[Organisation name]</span>
+        <span style="font-size: 12px; line-height: 16px; color: var(--muted-fg)">Memo &amp; Meetings</span>
+      </span>
+    </div>
+    <div style="display: flex; flex-direction: column; padding: 8px 0 0">
+      <div class="grp-label" style="height: 32px; display: flex; align-items: center; padding: 0 8px; font-size: 12px; font-weight: 500; color: var(--muted-fg); white-space: nowrap">Work</div>
+      <a href="Home.dc.html" class="nav-item" title="Home" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+        <span class="lbl">Home</span>
+      </a>
+      <a href="Main.dc.html" class="nav-item" title="Inbox" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+        <span class="lbl" style="flex: 1">Inbox</span>
+        <span class="lbl" style="font-size: 12px; font-weight: 500; color: var(--text-3); font-variant-numeric: tabular-nums">8</span>
+      </a>
+      <a href="#" class="nav-item" title="Saved searches" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>
+        <span class="lbl">Saved searches</span>
+      </a>
+      <a href="#" class="nav-item" title="Dashboard" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg>
+        <span class="lbl">Dashboard</span>
+      </a>
+      <a href="Status.dc.html" class="nav-item" title="Status" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path></svg>
+        <span class="lbl">Status</span>
+      </a>
+      <a href="Org.dc.html" class="nav-item" title="Organisation" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="16" y="16" width="6" height="6" rx="1"></rect><rect x="2" y="16" width="6" height="6" rx="1"></rect><rect x="9" y="2" width="6" height="6" rx="1"></rect><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"></path><path d="M12 12V8"></path></svg>
+        <span class="lbl">Organisation</span>
+      </a>
+    </div>
+    <div style="display: flex; flex-direction: column; padding: 8px 0 0">
+      <div class="grp-label" style="height: 32px; display: flex; align-items: center; padding: 0 8px; font-size: 12px; font-weight: 500; color: var(--muted-fg); white-space: nowrap">Administration</div>
+      <a href="#" class="nav-item" title="Overview" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
+        <span class="lbl">Overview</span>
+      </a>
+      <a href="Users.dc.html" class="nav-item" title="Users" aria-current="page" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg); background: var(--active); font-weight: 500">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        <span class="lbl">Users</span>
+      </a>
+      <a href="#" class="nav-item" title="Memo types" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+        <span class="lbl">Memo types</span>
+      </a>
+      <a href="#" class="nav-item" title="Workflows" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="8" x="3" y="3" rx="2"></rect><path d="M7 11v4a2 2 0 0 0 2 2h4"></path><rect width="8" height="8" x="13" y="13" rx="2"></rect></svg>
+        <span class="lbl">Workflows</span>
+      </a>
+      <a href="Tasks.dc.html" class="nav-item" title="Open tasks" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 2 2 4-4"></path><path d="m3 7 2 2 4-4"></path><path d="M13 6h8"></path><path d="M13 12h8"></path><path d="M13 18h8"></path></svg>
+        <span class="lbl">Open tasks</span>
+      </a>
+      <a href="#" class="nav-item" title="Security" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>
+        <span class="lbl">Security</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main column -->
+  <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+
+    <!-- Top bar (same as Inbox) -->
+    <header style="position: relative; z-index: 5; height: 48px; display: flex; align-items: center; gap: 8px; padding: 0 16px; border-bottom: 1px solid var(--border); box-sizing: border-box; background: var(--bg)">
+      <button type="button" class="ghost" aria-label="Toggle navigation" aria-expanded="{{navAria}}" onClick="{{toggleNav}}" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; flex-shrink: 0; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M9 3v18"></path></svg>
+      </button>
+      <span aria-hidden="true" style="width: 1px; height: 16px; background: var(--chip); margin: 0 4px; flex-shrink: 0"></span>
+      <button type="button" class="global-search" style="display: flex; align-items: center; gap: 8px; width: 280px; height: 32px; padding: 0 6px 0 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--muted-fg); font-size: 14px; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        <span style="flex: 1; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Search memos…</span>
+        <kbd class="kbd" style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 11px; line-height: 16px; padding: 1px 5px; border: 1px solid var(--border); border-radius: 4px; background: var(--muted); color: var(--text-3)">{{shortcut}}</kbd>
+      </button>
+      <span style="flex: 1"></span>
+      <a href="Notifications.dc.html" class="ghost" aria-label="Notifications, 4 unread" style="position: relative; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; flex-shrink: 0; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg>
+        <span aria-hidden="true" style="position: absolute; top: 6px; right: 7px; width: 7px; height: 7px; border-radius: 50%; background: var(--destructive); border: 1.5px solid var(--bg)"></span>
+      </a>
+      <span aria-hidden="true" style="width: 1px; height: 16px; background: var(--chip); margin: 0 4px; flex-shrink: 0"></span>
+      <button type="button" class="ghost" aria-label="Account menu, Farhana Rahman" aria-haspopup="menu" style="display: inline-flex; align-items: center; gap: 8px; height: 32px; flex-shrink: 0; padding: 0 6px 0 2px; border: 0; background: transparent; border-radius: 8px; cursor: pointer; color: var(--fg)">
+        <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--chip); color: var(--fg); font-weight: 500; font-size: 11px; flex-shrink: 0">FR</span>
+        <span class="acct-name" style="display: flex; flex-direction: column; align-items: flex-start; line-height: 14px">
+          <span style="font-size: 13px; font-weight: 500; line-height: 16px">Farhana Rahman</span>
+          <span style="font-size: 11px; color: var(--muted-fg)">f.rahman@[domain]</span>
+        </span>
+        <svg style="color: var(--muted-fg)" class="acct-name" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+      </button>
+    </header>
+
+    <!-- Content -->
+    <main style="flex: 1; padding: 20px 24px 32px; display: flex; flex-direction: column; gap: 16px; min-width: 0">
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px">
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Users</h1>
+          <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">Everyone who can sign in to your organisation.</p>
+        </div>
+        <button type="button" onClick="{{openInvite}}" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 14px; font-weight: 500; cursor: pointer"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" x2="19" y1="8" y2="14"></line><line x1="22" x2="16" y1="11" y2="11"></line></svg>Invite user</button>
+      </div>
+      <form role="search" novalidate onSubmit="{{noop}}" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
+        <label style="position: relative; display: flex; align-items: center; flex: 1 1 280px; max-width: 360px">
+          <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Search by name or email</span>
+          <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; left: 10px; color: var(--muted-fg)"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+          <input type="search" placeholder="Search by name or email" value="{{q}}" onChange="{{onQ}}" style="width: 100%; height: 32px; padding: 0 10px 0 30px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+        </label>
+        <label style="position: relative; display: flex; align-items: center; ">
+          <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Status</span>
+          <select onChange="{{onStatus}}" style="width: 170px; height: 32px; padding: 0 28px 0 10px; box-sizing: border-box; appearance: none; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 13px; font-weight: 500; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)"><option value="">All statuses</option><option value="ACTIVE">Active</option><option value="INVITED">Invited</option><option value="LOCKED">Locked</option><option value="DEACTIVATED">Deactivated</option></select>
+          <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; right: 8px; color: var(--muted-fg); pointer-events: none"><path d="m6 9 6 6 6-6"></path></svg>
+        </label>
+      </form>
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <div style="border: 1px solid var(--border); border-radius: 10px; overflow-x: auto; background: var(--card)">
+          <table style="width: 100%; min-width: 820px; border-collapse: collapse; font-size: 14px">
+            <caption style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Users of the organisation</caption>
+            <thead>
+              <tr style="border-bottom: 1px solid var(--border); text-align: left; color: var(--muted-fg); font-size: 13px">
+                <th scope="col" style="height: 40px; padding: 0 16px; font-weight: 500">User</th>
+                <th scope="col" style="padding: 0 12px; font-weight: 500; width: 140px">Status</th>
+                <th scope="col" style="padding: 0 12px; font-weight: 500; width: 160px">Two-step sign-in</th>
+                <th scope="col" style="padding: 0 12px; font-weight: 500; width: 170px">Last sign-in</th>
+                <th scope="col" style="width: 52px"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Actions</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <sc-for list="{{users}}" as="u" hint-placeholder-count="10">
+                <tr class="lrow" style="border-top: 1px solid var(--hover)">
+                  <td style="padding: 8px 16px">
+                    <span style="display: flex; align-items: center; gap: 10px"><span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--muted); color: var(--text-2); font-size: 11px; font-weight: 600; flex-shrink: 0">{{u.initials}}</span><span style="display: flex; flex-direction: column; min-width: 0"><span style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px"><a href="#" style="font-weight: 500; color: var(--fg); text-decoration: none">{{u.name}}</a><sc-if value="{{u.admin}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 6px; background: var(--muted); color: var(--fg); font-size: 11px; font-weight: 500">Administrator</span></sc-if></span><span style="font-size: 12px; color: var(--muted-fg)">{{u.email}}</span></span></span>
+                  </td>
+                  <td style="padding: 0 12px"><span style="{{u.chipStyle}}">{{u.statusLabel}}</span></td>
+                  <td style="padding: 0 12px; color: {{u.mfaColor}}">{{u.mfa}}</td>
+                  <td style="padding: 0 12px; color: var(--muted-fg); white-space: nowrap">{{u.last}}</td>
+                  <td style="position: relative; padding: 0 12px 0 0; text-align: right">
+                    <button type="button" class="ghost" aria-label="{{u.menuLabel}}" aria-haspopup="menu" aria-expanded="{{u.menuAria}}" onClick="{{u.toggleMenu}}" style="display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 0; border-radius: 6px; background: transparent; color: var(--text-3); cursor: pointer"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg></button>
+                    <sc-if value="{{u.menuOpen}}" hint-placeholder-val="{{false}}">
+                  <button type="button" tabIndex="-1" aria-label="Close menu" onClick="{{closeMenu}}" style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 6; border: 0; padding: 0; background: transparent; cursor: default"></button>
+                  <div role="menu" aria-label="{{u.menuLabel}}" onKeyDown="{{menuKey}}" style="position: absolute; z-index: 7; top: 34px; right: 0; width: 230px; padding: 4px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 10px; background: var(--card); box-shadow: 0 8px 24px rgba(0,0,0,0.10); text-align: left">
+                    <a href="#" role="menuitem" class="ghost" style="display: flex; align-items: center; height: 32px; padding: 0 8px; border-radius: 6px; color: var(--fg); font-size: 14px; text-decoration: none">Open profile and access</a>
+                    <sc-if value="{{u.hasActions}}" hint-placeholder-val="{{true}}"><div aria-hidden="true" style="height: 1px; margin: 4px -4px; background: var(--border)"></div></sc-if>
+                    <sc-for list="{{u.actions}}" as="a" hint-placeholder-count="3">
+                      <button type="button" role="menuitem" class="ghost" onClick="{{a.pick}}" style="{{a.style}}">{{a.label}}</button>
+                    </sc-for>
+                    <sc-if value="{{u.isSelf}}" hint-placeholder-val="{{false}}"><span style="display: block; padding: 6px 8px; font-size: 12px; color: var(--muted-fg)">You cannot deactivate or sign out your own account here.</span></sc-if>
+                  </div>
+                </sc-if>
+                  </td>
+                </tr>
+              </sc-for>
+            </tbody>
+          </table>
+          <sc-if value="{{noUsers}}" hint-placeholder-val="{{false}}"><p style="margin: 0; padding: 24px 16px; text-align: center; font-size: 14px; color: var(--muted-fg)">No users match.</p></sc-if>
+        </div>
+        <div style="display: flex; justify-content: center">
+          <button type="button" class="ghost" style="height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer">Show more</button>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <sc-if value="{{isInvite}}" hint-placeholder-val="{{false}}">
+    <div style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 16px; box-sizing: border-box">
+      <button type="button" tabIndex="-1" aria-label="Close dialog" onClick="{{closeDlg}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; border: 0; padding: 0; background: rgba(0,0,0,0.5); cursor: default"></button>
+      <form role="dialog" aria-modal="true" aria-labelledby="inv-title" novalidate onSubmit="{{inv.submit}}" onKeyDown="{{dlgKey}}" style="position: relative; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.2)">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h2 id="inv-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Invite a user</h2>
+          <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">They get an email with a link to set their password. The link works for 7 days.</p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="inv-email" style="font-size: 14px; font-weight: 500">Work email <span aria-hidden="true" style="color: var(--danger-fg)">*</span></label>
+          <input id="inv-email" type="email" autocomplete="off" value="{{inv.email}}" onChange="{{inv.on_email}}" aria-invalid="{{inv.emailInvalid}}" aria-describedby="inv-email-msg" style="width: 100%; height: 36px; padding: 0 10px; box-sizing: border-box; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); border: 1px solid {{inv.emailBorder}}">
+          <sc-if value="{{inv.emailHasErr}}" hint-placeholder-val="{{false}}"><span id="inv-email-msg" style="font-size: 12px; color: var(--danger-fg)">{{inv.emailErr}}</span></sc-if>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="inv-name" style="font-size: 14px; font-weight: 500">Full name <span aria-hidden="true" style="color: var(--danger-fg)">*</span></label>
+          <input id="inv-name" type="text" autocomplete="off" value="{{inv.name}}" onChange="{{inv.on_name}}" aria-invalid="{{inv.nameInvalid}}" aria-describedby="inv-name-msg" style="width: 100%; height: 36px; padding: 0 10px; box-sizing: border-box; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); border: 1px solid {{inv.nameBorder}}">
+          <sc-if value="{{inv.nameHasErr}}" hint-placeholder-val="{{false}}"><span id="inv-name-msg" style="font-size: 12px; color: var(--danger-fg)">{{inv.nameErr}}</span></sc-if>
+        </div>
+        <label style="display: flex; align-items: flex-start; gap: 10px;  font-size: 14px; cursor: pointer">
+          <input type="checkbox" checked="{{inv.admin}}" onChange="{{inv.toggleAdmin}}" style="margin: 2px 0 0; width: 16px; height: 16px; accent-color: var(--primary)">
+          <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 500">Administrator of the organisation</span><span style="font-size: 12px; color: var(--muted-fg)">Can manage users, memo types, workflows and settings.</span></span>
+        </label>
+        <div style="display: flex; justify-content: flex-end; gap: 8px"><button type="button" class="ghost" onClick="{{closeDlg}}" style="height: 36px; padding: 0 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 14px; font-weight: 500; cursor: pointer">Cancel</button><button type="submit" style="height: 36px; padding: 0 14px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 14px; font-weight: 500; cursor: pointer">Send invitation</button></div>
+      </form>
+    </div>
+  </sc-if>
+  <sc-if value="{{isConfirm}}" hint-placeholder-val="{{false}}">
+    <div style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 16px; box-sizing: border-box">
+      <button type="button" tabIndex="-1" aria-label="Close dialog" onClick="{{closeDlg}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; border: 0; padding: 0; background: rgba(0,0,0,0.5); cursor: default"></button>
+      <form role="alertdialog" aria-modal="true" aria-labelledby="cf-title" novalidate onSubmit="{{cf.submit}}" onKeyDown="{{dlgKey}}" style="position: relative; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.2)">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h2 id="cf-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">{{cf.title}}</h2>
+          <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">{{cf.explain}}</p>
+        </div>
+        <sc-if value="{{cf.hasAlert}}" hint-placeholder-val="{{false}}">
+          <div role="alert" style="display: flex; gap: 10px; padding: 10px 12px; border: 1px solid var(--danger-border); border-radius: 8px; background: var(--danger-bg); color: var(--danger-fg); font-size: 13px"><span style="flex-shrink: 0; margin-top: 1px"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg></span><span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-weight: 600">Not done</strong><span>{{cf.alert}}</span></span></div>
+        </sc-if>
+        <div style="display: flex; justify-content: flex-end; gap: 8px"><button type="button" class="ghost" onClick="{{closeDlg}}" style="height: 36px; padding: 0 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 14px; font-weight: 500; cursor: pointer">Cancel</button><button type="submit" style="{{cf.btnStyle}}">{{cf.confirm}}</button></div>
+      </form>
+    </div>
+  </sc-if>
+  <sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}">
+    <div role="status" style="position: fixed; right: 24px; bottom: 24px; z-index: 40; display: flex; align-items: center; gap: 10px; padding: 10px 10px 10px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); box-shadow: 0 8px 24px rgba(0,0,0,0.12); font-size: 14px">
+      <span style="flex: 1">{{toast}}</span>
+      <button type="button" class="ghost" aria-label="Dismiss" onClick="{{hideToast}}" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--muted-fg); cursor: pointer"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"dialog":{"editor":"enum","options":["none","invite","deactivate","reactivate","unlock","mfaReset","revokeSessions"],"default":"none"},"error":{"editor":"enum","options":["none","required","taken","lastAdmin","changed","failed"],"default":"none"},"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const navOpen = !!st.navOpen, collapsed = !!st.collapsed;
+    const closeNav = () => this.setState({ navOpen: false });
+    const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent || '');
+
+    const PHONE = /*PHONE*/false;
+    const all = [
+      { id: 'u1', name: 'Arif Rahman', email: 'a.rahman@[domain]', status: 'ACTIVE', admin: true, mfa: true, last: 'Today, 09:02', self: true },
+      { id: 'u2', name: 'Farhana Rahman', email: 'f.rahman@[domain]', status: 'ACTIVE', admin: false, mfa: true, last: 'Today, 08:31' },
+      { id: 'u3', name: 'Imran Hossain', email: 'i.hossain@[domain]', status: 'ACTIVE', admin: false, mfa: true, last: 'Today, 08:12' },
+      { id: 'u4', name: 'Kamal Hasan', email: 'k.hasan@[domain]', status: 'LOCKED', admin: false, mfa: true, last: '15 Nov, 17:48' },
+      { id: 'u5', name: 'Lutfa Begum', email: 'l.begum@[domain]', status: 'INVITED', admin: false, mfa: false, last: '' },
+      { id: 'u6', name: 'Nasir Uddin', email: 'n.uddin@[domain]', status: 'DEACTIVATED', admin: false, mfa: true, last: '2 Nov, 10:05' },
+      { id: 'u7', name: 'Nasrin Akter', email: 'n.akter@[domain]', status: 'ACTIVE', admin: false, mfa: false, last: '16 Nov, 15:20' },
+      { id: 'u8', name: 'Rashed Khan', email: 'r.khan@[domain]', status: 'ACTIVE', admin: false, mfa: true, last: 'Yesterday, 18:02' },
+      { id: 'u9', name: 'Shirin Akter', email: 's.akter@[domain]', status: 'ACTIVE', admin: true, mfa: true, last: 'Yesterday, 11:40' },
+      { id: 'u10', name: 'Tanvir Ahmed', email: 't.ahmed@[domain]', status: 'ACTIVE', admin: false, mfa: true, last: 'Yesterday, 17:40' }
+    ];
+    const LABEL = { ACTIVE: 'Active', INVITED: 'Invited', LOCKED: 'Locked', DEACTIVATED: 'Deactivated' };
+    const chip = 'display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; ';
+    const TONE = { ACTIVE: 'border: 1px solid var(--ok-border); background: var(--ok-bg); color: var(--ok-fg)', INVITED: 'border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg)',
+                   LOCKED: 'border: 1px solid var(--danger-border); background: var(--danger-bg); color: var(--danger-fg)', DEACTIVATED: 'border: 1px solid var(--border); background: var(--muted); color: var(--text-2)' };
+    const ACT = {
+      deactivate: { label: 'Deactivate', title: (n) => 'Deactivate ' + n + '?', explain: 'They are signed out at once and cannot sign in until reactivated. Their work stays.', danger: true },
+      reactivate: { label: 'Reactivate', title: (n) => 'Reactivate ' + n + '?', explain: 'They can sign in again.' },
+      unlock: { label: 'Unlock', title: (n) => 'Unlock ' + n + '?', explain: 'They can try to sign in again right away.' },
+      mfaReset: { label: 'Reset two-step sign-in', title: (n) => 'Reset two-step sign-in for ' + n + '?', explain: 'They are signed out and set up an authenticator app again at the next sign-in. They get an email.' },
+      revokeSessions: { label: 'Sign out everywhere', title: (n) => 'Sign ' + n + ' out everywhere?', explain: 'Every device they use is signed out.' }
+    };
+    // The app's rules: who may get which action.
+    const actionsFor = (u) => [].concat(
+      u.status === 'DEACTIVATED' ? ['reactivate'] : (u.self ? [] : ['deactivate']),
+      u.status === 'LOCKED' ? ['unlock'] : [],
+      u.mfa && !u.self ? ['mfaReset'] : [],
+      u.status !== 'DEACTIVATED' && !u.self ? ['revokeSessions'] : []);
+    const q = (st.q || '').toLowerCase(), status = st.status || '';
+    const shown = all.filter((u) => (!q || (u.name + ' ' + u.email).toLowerCase().indexOf(q) >= 0) && (!status || u.status === status));
+    const dlgProp = this.props.dialog || 'none';
+    const dlg = st.dlg !== undefined ? st.dlg : (dlgProp === 'none' ? '' : dlgProp);
+    const target = all.find((u) => u.id === (st.target || (dlgProp === 'unlock' ? 'u4' : (dlgProp === 'reactivate' ? 'u6' : 'u9')))) || all[1];
+    const err = st.err !== undefined ? st.err : (this.props.error || 'none');
+    const openAct = (u, k) => this.setState({ dlg: k, target: u.id, menu: '', err: 'none' });
+    const itemStyle = 'display: flex; align-items: center; width: 100%; height: 32px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; font-size: 14px; text-align: left; cursor: pointer; ';
+    const sheetBase = 'display: flex; align-items: center; min-height: 52px; padding: 0 4px; border: 0; border-top: 1px solid var(--hover); background: transparent; font-size: 15px; text-align: left; ';
+    const users = shown.map((u, i) => {
+      const acts = actionsFor(u).map((k) => ({ label: ACT[k].label, pick: () => openAct(u, k),
+        style: itemStyle + (ACT[k].danger ? 'color: var(--danger-fg)' : 'color: var(--fg)'), sheetStyle: sheetBase + (ACT[k].danger ? 'color: var(--danger-fg)' : 'color: var(--fg)') }));
+      const open = st.menu === u.id;
+      return {
+        name: u.name + (u.self ? ' (you)' : ''), email: u.email, admin: u.admin, initials: u.name.split(' ').map((p) => p[0]).join(''),
+        statusLabel: LABEL[u.status], chipStyle: chip + TONE[u.status],
+        mfa: u.mfa ? 'On' : 'Off', mfaColor: u.mfa ? 'var(--text-1)' : 'var(--warn-fg)',
+        last: u.last || 'Never',
+        phoneMeta: (u.mfa ? '' : 'Two-step sign-in off · ') + (u.last ? 'Signed in ' + u.last : 'Never signed in'),
+        actions: acts, hasActions: acts.length > 0, isSelf: !!u.self,
+        menuOpen: open && !PHONE, menuAria: open ? 'true' : 'false', menuLabel: 'Actions for ' + u.name,
+        toggleMenu: () => this.setState({ menu: open ? '' : u.id }),
+        rowStyle: 'display: flex; align-items: center; gap: 10px; padding: 10px 4px 10px 12px' + (i > 0 ? '; border-top: 1px solid var(--hover)' : '')
+      };
+    });
+    const sheetUser = PHONE ? all.find((u) => u.id === st.menu) : null;
+    const closeMenu = () => this.setState({ menu: '' });
+    const closeDlg = () => this.setState({ dlg: '', err: 'none' });
+    // Invite: form validation in the app, never the browser.
+    const inv = st.inv || {};
+    const tried = !!inv.tried || err === 'required' || err === 'taken';
+    const email = inv.email !== undefined ? inv.email : (err === 'taken' ? 'f.rahman@[domain]' : ''), name = inv.name !== undefined ? inv.name : (err === 'taken' ? 'Farhana Rahman' : '');
+    const emailErr = tried ? (!email.trim() ? 'Required.' : (err === 'taken' || all.some((u) => u.email === email.trim()) ? 'An account with this email already exists.' : '')) : '';
+    const nameErr = tried && !name.trim() ? 'Required.' : '';
+    const setInv = (k) => (ev) => { const n = Object.assign({}, inv); n[k] = ev && ev.target ? ev.target.value : ''; this.setState({ inv: n, err: 'none' }); };
+    const h = PHONE ? '44px' : '36px', bfs = PHONE ? '15px' : '14px';
+    const ALERTS = { lastAdmin: 'The organisation needs at least one active administrator.', changed: 'Someone changed this account meanwhile. The list was reloaded.', failed: 'That did not work. Try again.', self: 'You cannot do this to your own account.' };
+    const a = ACT[dlg] || ACT.deactivate;
+    const alertText = ALERTS[err] || '';
+    const vals = {
+      users: users, noUsers: users.length === 0,
+      q: st.q || '', onQ: (ev) => this.setState({ q: ev && ev.target ? ev.target.value : '' }),
+      onStatus: (ev) => this.setState({ status: ev && ev.target ? ev.target.value : '' }),
+      noop: (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); },
+      closeMenu: closeMenu, menuKey: (ev) => { if (ev && ev.key === 'Escape') closeMenu(); },
+      sheetOpen: !!sheetUser,
+      sheet: sheetUser ? { name: sheetUser.name + (sheetUser.self ? ' (you)' : ''), isSelf: !!sheetUser.self, actions: actionsFor(sheetUser).map((k) => ({ label: ACT[k].label, pick: () => openAct(sheetUser, k), sheetStyle: sheetBase + (ACT[k].danger ? 'color: var(--danger-fg)' : 'color: var(--fg)') })) } : { name: '', isSelf: false, actions: [] },
+      openInvite: () => this.setState({ dlg: 'invite', inv: {}, err: 'none' }),
+      isInvite: dlg === 'invite', isConfirm: !!dlg && dlg !== 'invite',
+      closeDlg: closeDlg, dlgKey: (ev) => { if (ev && ev.key === 'Escape') closeDlg(); },
+      inv: {
+        email: email, name: name, admin: !!inv.admin,
+        toggleAdmin: () => this.setState({ inv: Object.assign({}, inv, { admin: !inv.admin }) }),
+        on_email: setInv('email'), on_name: setInv('name'),
+        emailHasErr: !!emailErr, emailErr: emailErr, emailInvalid: emailErr ? 'true' : 'false', emailBorder: emailErr ? 'var(--destructive)' : 'var(--border)',
+        nameHasErr: !!nameErr, nameErr: nameErr, nameInvalid: nameErr ? 'true' : 'false', nameBorder: nameErr ? 'var(--destructive)' : 'var(--border)',
+        submit: (ev) => {
+          if (ev && ev.preventDefault) ev.preventDefault();
+          if (!email.trim() || !name.trim() || all.some((u) => u.email === email.trim()) || err === 'taken') { this.setState({ inv: Object.assign({}, inv, { tried: true }) }); return; }
+          this.setState({ dlg: '', toast: 'Invitation sent to ' + email.trim() + '.' });
+        }
+      },
+      cf: {
+        title: a.title(target.name), explain: a.explain, confirm: a.label,
+        btnStyle: 'height: ' + h + '; padding: 0 14px; border: 0; border-radius: 8px; font-size: ' + bfs + '; font-weight: 500; cursor: pointer; ' + (a.danger ? 'background: var(--destructive); color: var(--on-destructive)' : 'background: var(--primary); color: var(--primary-fg)'),
+        hasAlert: !!alertText, alert: alertText,
+        submit: (ev) => {
+          if (ev && ev.preventDefault) ev.preventDefault();
+          if (err !== 'none') { this.setState({ err: err }); return; }
+          this.setState({ dlg: '', toast: 'Done.' });
+        }
+      },
+      hasToast: !!st.toast, toast: st.toast || '', hideToast: () => this.setState({ toast: '' })
+    };
+    return Object.assign(vals, {
+      themeClass: st.theme || this.props.theme || 'system',
+      shortcut: isMac ? '⌘K' : 'Ctrl K',
+      sidebarClass: 'sidebar' + (navOpen ? ' open' : '') + (collapsed && !navOpen ? ' collapsed' : ''),
+      scrimClass: 'scrim' + (navOpen ? ' open' : ''),
+      navAria: (navOpen || !collapsed) ? 'true' : 'false',
+      toggleNav: () => {
+        const narrow = typeof window !== 'undefined' && window.innerWidth <= 860;
+        if (narrow) this.setState({ navOpen: !navOpen });
+        else this.setState({ collapsed: !collapsed });
+      },
+      closeNav: closeNav,
+      navKey: (ev) => { if (ev && ev.key === 'Escape') closeNav(); }
+    });
+  }
+}
+</script>
+</body>
+</html>

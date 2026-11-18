@@ -299,3 +299,59 @@ BASE_JS = r"""
     const base = { closeDlg: closeDlg, dlgKey: (ev) => { if (ev && ev.key === 'Escape') closeDlg(); }, closeMenu: closeMenu, menuKey: (ev) => { if (ev && ev.key === 'Escape') closeMenu(); },
       hasToast: !!st.toast, toast: st.toast || '', hideToast: () => this.setState({ toast: '' }) };
 """
+
+
+# ---------------------------------------------------------------- admin page pieces (from memo_admin.py)
+I.update({'file': '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path>',
+          'user': '<path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle>',
+          'brief': '<path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path><rect width="20" height="14" x="2" y="6" rx="2"></rect>',
+          'trash': '<path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>',
+          'pencil': '<path d="M21.17 6.81a1 1 0 0 0-3.99-3.99L3.84 16.17a2 2 0 0 0-.5.83l-1.32 4.35a.5.5 0 0 0 .62.62l4.35-1.32a2 2 0 0 0 .83-.5z"></path>',
+          'up': '<path d="m18 15-6-6-6 6"></path>', 'down': '<path d="m6 9 6 6 6-6"></path>'})
+
+MONO = "font-family: 'Geist Mono', ui-monospace, monospace"
+CHIP = 'display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; '
+TONES = {'ok': 'border: 1px solid var(--ok-border); background: var(--ok-bg); color: var(--ok-fg)', 'warn': 'border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg)',
+         'danger': 'border: 1px solid var(--danger-border); background: var(--danger-bg); color: var(--danger-fg)', 'neutral': 'border: 1px solid var(--border); background: var(--muted); color: var(--text-2)'}
+def chip(text, tone): return f'<span style="{CHIP}{TONES[tone]}">{text}</span>'
+CARD = 'border: 1px solid var(--border); border-radius: 10px; background: var(--card)'
+TONE_JS = "const TONE = " + json.dumps({k: CHIP + v for k, v in TONES.items()}) + ";\n"
+
+# ---------------------------------------------------------------- form controls (read-only unless a draft)
+def ctl(phone):
+    h = '44px' if phone else '36px'; fs = '16px' if phone else '14px'
+    box = f'height: {h}; padding: 0 10px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: {fs}; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)'
+    def label(text, for_='', req=False):
+        f = f' for="{for_}"' if for_ else ''
+        return f'<label{f} style="font-size: 14px; font-weight: 500">{text}{" <span aria-hidden=\"true\" style=\"color: var(--danger-fg)\">*</span>" if req else ""}</label>'
+    def field(lbl, control, hint='', req=False, id_=''):
+        return (f'<div style="display: flex; flex-direction: column; gap: 6px; min-width: 0">{label(lbl, id_, req)}{control}'
+                + (f'<span style="font-size: 12px; color: var(--muted-fg)">{hint}</span>' if hint else '') + '</div>')
+    def text(value, id_='', mono=False, w='100%', typ='text'):
+        return f'<input{f" id=\"{id_}\"" if id_ else ""} type="{typ}" value="{value}" disabled="{{{{ro}}}}" style="width: {w}; {box}{"; " + MONO if mono else ""}">'
+    def select(options, sel=0, id_='', w='100%'):
+        o = ''.join(f'<option{" selected" if i == sel else ""}>{x}</option>' for i, x in enumerate(options))
+        return (f'<span style="position: relative; display: flex; align-items: center; width: {w}"><select{f" id=\"{id_}\"" if id_ else ""} disabled="{{{{ro}}}}" style="width: 100%; {box}; padding-right: 30px; appearance: none">{o}</select>'
+                + svg(I['chev'], 14, ' style="position: absolute; right: 10px; color: var(--muted-fg); pointer-events: none"') + '</span>')
+    def check(lbl, on, hint=''):
+        s = 18 if phone else 16
+        return (f'<label style="display: flex; align-items: flex-start; gap: 10px; font-size: 14px; {"min-height: 44px; " if phone else ""}cursor: pointer"><input type="checkbox"{" checked" if on else ""} disabled="{{{{ro}}}}" style="margin: 2px 0 0; width: {s}px; height: {s}px; flex-shrink: 0; accent-color: var(--primary)">'
+                f'<span style="display: flex; flex-direction: column; gap: 2px"><span>{lbl}</span>' + (f'<span style="font-size: 12px; color: var(--muted-fg)">{hint}</span>' if hint else '') + '</span></label>')
+    def radios(legend, name, options, sel):
+        s = 18 if phone else 16
+        rows = ''.join(f'<label style="display: flex; align-items: flex-start; gap: 10px; font-size: 14px; {"min-height: 40px; " if phone else ""}cursor: pointer"><input type="radio" name="{name}"{" checked" if i == sel else ""} disabled="{{{{ro}}}}" style="margin: 2px 0 0; width: {s}px; height: {s}px; flex-shrink: 0; accent-color: var(--primary)"><span>{x}</span></label>' for i, x in enumerate(options))
+        return f'<fieldset style="margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 8px"><legend style="margin-bottom: 8px; padding: 0; font-size: 14px; font-weight: 500">{legend}</legend>{rows}</fieldset>'
+    return label, field, text, select, check, radios
+
+def card(title, body, extra=''):
+    return f'''<section style="{CARD}; padding: 16px; display: flex; flex-direction: column; gap: 14px{extra}"><h3 style="margin: 0; font-size: 14px; font-weight: 600">{title}</h3>{body}</section>'''
+
+def toolbar(phone, placeholder):
+    if phone:
+        return T('''    <div style="padding: 0 16px 8px"><label style="position: relative; display: flex; align-items: center"><span style="[[sr]]">[[ph]]</span>[[icon]]<input type="search" placeholder="[[ph]]" value="{{q}}" onChange="{{onQ}}" style="width: 100%; height: 44px; padding: 0 12px 0 36px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 16px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)"></label></div>
+    <div class="chips" role="tablist" aria-label="Show" style="flex-shrink: 0; display: flex; gap: 6px; padding: 4px 16px 12px; overflow-x: auto; scrollbar-width: none"><sc-for list="{{tabs}}" as="f" hint-placeholder-count="3"><button type="button" role="tab" aria-selected="{{f.aria}}" onClick="{{f.pick}}" style="{{f.style}}">{{f.label}}</button></sc-for></div>''',
+                 sr=SR, ph=placeholder, icon=svg(I['search'], 16, ' style="position: absolute; left: 12px; color: var(--muted-fg); pointer-events: none"'))
+    return T('''      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px">
+        <div role="tablist" aria-label="Show" style="display: inline-flex; align-items: center; gap: 2px; height: 36px; padding: 3px; box-sizing: border-box; border-radius: 10px; background: var(--muted)"><sc-for list="{{tabs}}" as="f" hint-placeholder-count="3"><button type="button" role="tab" class="tab" aria-selected="{{f.aria}}" onClick="{{f.pick}}" style="{{f.style}}">{{f.label}}</button></sc-for></div>
+        <label style="position: relative; display: flex; align-items: center"><span style="[[sr]]">[[ph]]</span>[[icon]]<input type="search" placeholder="[[ph]]" value="{{q}}" onChange="{{onQ}}" style="width: 240px; height: 32px; padding: 0 10px 0 30px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 14px; color: var(--fg); background: var(--bg); box-shadow: 0 1px 2px rgba(0,0,0,0.05); outline: none"></label>
+      </div>''', sr=SR, ph=placeholder, icon=svg(I['search'], 14, ' style="color: var(--muted-fg); position: absolute; left: 10px"'))

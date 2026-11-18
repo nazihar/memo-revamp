@@ -78,3 +78,22 @@ Use shadcn/ui components for everything: Button, Input, InputOTP, Select, Combob
 - Distribution lists: members are people or positions, and a position reaches whoever holds it when a copy is sent. The app's single "A name and at least one member are required." becomes two field errors: Name "Required." and "Add at least one member." (new copy). Switch off sits in the edit dialog and the row menu.
 - API: nothing new.
 - New copy: the switch-off confirmation, the "New memo type" lead, "Added in this version", the template tag hint, the sample note, the read-only note for a version in review, the field help text and the list dialog lead.
+
+## Admin · Workflows (definitions, builder, delegation of authority, queues, substitutions, business calendar)
+
+- The five pages share a row of section links. The sidebar's Workflows entry opens the section; Open tasks keeps its own sidebar entry.
+- Workflows list: All / Workflows / Sub-workflows / Changes in progress tabs and a filter by name or key, done in the browser. "Built in" and "Sub-workflow" badges. The New workflow dialog has Name, Key, Description (optional) and "Meant to be used inside other workflows".
+- Builder: a version picker and the draft / in review / published states, as on the memo type editor.
+  - Views: Diagram, Steps (the keyboard and screen-reader path), JSON, and Changes while a version is in review.
+  - The side panel shows the selected step (Goes to, Decided when, What the holder can do with "needs a remark", deadline and escalation, Leads to, Remove) or Simulate.
+  - Steps are marked Added, Changed, Reached or "1 problem" in words as well as colour.
+  - Check runs the validator; Submit is refused with "Fix the problems first." while there are problems.
+  - Approve, Send back and Retire are dialogs with a remark; the remark is required only to send back ("Say what needs to change.").
+  - A published version shows "Memos on older versions", with the ones that can move ticked.
+- Phones: no diagram ("The diagram needs a wider screen."). Steps is the default view; a step and Simulate open as sheets.
+- Delegation of authority: the versions table, then the selected version (Takes effect on, rules with approval groups) beside "Who approves this?". In a draft one rule is open for editing; the others are read-only summaries with Change. "Another version takes effect on that date." shows under the date.
+- Queues: like distribution lists, plus a Key that cannot change once made. Key and Name are each required on their own (the app checks them together).
+- Substitutions: All / In force / Planned / Ended tabs, "Move open tasks" on in-force rows, and End today or Cancel it in the row menu. The Add substitution dialog shows the overlap refusal inside it.
+- Business calendar: weekly hours (Friday and Saturday not worked), the month view of holidays and special hours with a list underneath, and "When is it due?". On phones "Add hours" is a + button.
+- API: nothing new.
+- New copy: the New workflow dialog lead, the send-back lead, the "Cancel it" action for planned substitutions, the substitutions footer, the calendar legend and the due-date example line.

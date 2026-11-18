@@ -393,6 +393,6 @@ canvas_add(boards, notes, done=('Admin overview', 'Audit log', 'Imports', 'Impor
 c = proj / 'canvas.json'; d = json.loads(c.read_text())
 if 'adminTodo' in d['notes'] and 'still to design (0)' in d['notes']['adminTodo']['text']:
     d['notes']['adminTodo']['text'] = ('Admin pages: all designed\n\nEvery admin route of the app has a desktop and a phone board on this page. '
-                                       'The grouped Administration menu is the overview at the top, with a proposal for the sidebar in its note.\n\nStill to design: the operator console (Operator page).')
+                                       'The grouped Administration menu is the overview at the top, with a proposal for the sidebar in its note.\n\nThe operator console is on the Operator page.')
     c.write_text(json.dumps(d, ensure_ascii=False, separators=(',', ':')))
 print('ok')

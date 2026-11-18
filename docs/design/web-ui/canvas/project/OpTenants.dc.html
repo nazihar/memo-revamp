@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Organisations · Platform administration</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+.th{color-scheme:light;--bg:#ffffff;--card:#ffffff;--fg:#0a0a0a;--subtle:#fafafa;--muted:#f5f5f5;--hover:#f0f0f0;--active:#ebebeb;--chip:#e5e5e5;--border:#e5e5e5;--border-strong:#d4d4d4;--muted-fg:#737373;--text-1:#262626;--text-2:#404040;--text-3:#525252;--primary:#171717;--primary-fg:#fafafa;--primary-hover:#262626;--primary-divider:#404040;--primary-muted:#a3a3a3;--ring:#a3a3a3;--destructive:#dc2626;--destructive-hover:#b91c1c;--on-destructive:#ffffff;--danger-fg:#b91c1c;--danger-bg:#fef2f2;--danger-border:#fecaca;--warn-bg:#fffbeb;--warn-fg:#92400e;--warn-border:#fcd34d;--ok-bg:#f0fdf4;--ok-fg:#166534;--ok-border:#bbf7d0;--info-bg:#eff6ff;--info-fg:#1d4ed8}
+.th.dark{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}
+@media (prefers-color-scheme: dark){.th.system{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}}
+body:has(.th.dark){background:#09090b}
+@media (prefers-color-scheme: dark){body:has(.th.system){background:#09090b}}
+body{margin:0;background:#ffffff}
+a{color:var(--fg)}a:hover{color:var(--text-2)}
+button{font-family:inherit}
+textarea{font-family:inherit}
+.nav-item:hover{background:var(--hover)}
+.ghost:hover{background:var(--muted)}
+.tab:hover{color:var(--fg)}
+.lrow:hover{background:var(--subtle)}
+.primary:hover{background:var(--primary-hover)}
+.danger:hover{background:var(--destructive-hover)}
+.sidebar.collapsed{flex-basis:56px !important}
+.sidebar.collapsed .lbl{display:none !important}
+.sidebar.collapsed .nav-item{justify-content:center !important;padding:0 !important}
+.sidebar.collapsed .org{padding:8px 0 !important;justify-content:center}
+.sidebar.collapsed .grp-label{visibility:hidden;height:12px !important}
+.scrim{display:none !important}
+.drawer-close{display:none !important}
+@media (max-width: 1024px){.acct-name{display:none !important}}
+@media (max-width: 860px){
+.sidebar{display:none !important}
+.sidebar.open{display:flex !important;position:fixed;top:0;bottom:0;left:0;width:280px;z-index:40;box-shadow:0 10px 40px rgba(0,0,0,0.2)}
+.scrim.open{display:block !important}
+.drawer-close{display:inline-flex !important}
+.global-search{width:auto !important;flex:1;min-width:0}
+.kbd{display:none !important}
+}
+.ed-main>*{flex-shrink:0}
+</style>
+</helmet>
+<div class="th {{themeClass}}" style="position: relative; min-height: 1000px; display: flex; flex-direction: column; background: var(--bg); color: var(--fg); font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 20px">
+  <header style="flex-shrink: 0; background: var(--primary); color: var(--primary-fg)">
+    <div style="max-width: 1200px; margin: 0 auto; box-sizing: border-box; display: flex; align-items: center; gap: 24px; height: 56px; padding: 0 24px"><span style="display: inline-flex; align-items: center; gap: 10px"><span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 7px; background: var(--primary-fg); color: var(--primary); font-weight: 700; font-size: 14px">m</span><span style="font-weight: 600">Platform administration</span></span><nav aria-label="Platform administration" style="display: flex; gap: 20px; align-self: stretch"><a href="OpTenants.dc.html" aria-current="page" style="display: inline-flex; align-items: center; height: 56px; padding: 0 4px; border-bottom: 2px solid var(--primary-fg); color: var(--primary-fg); opacity: 1; font-size: 14px; font-weight: 500; text-decoration: none; white-space: nowrap">Organisations</a><a href="OpAudit.dc.html" style="display: inline-flex; align-items: center; height: 56px; padding: 0 4px; border-bottom: 2px solid transparent; color: var(--primary-fg); opacity: 0.7; font-size: 14px; font-weight: 500; text-decoration: none; white-space: nowrap">Platform audit</a></nav><span style="margin-left: auto; display: flex; align-items: center; gap: 12px"><span style="display: flex; flex-direction: column; align-items: flex-end"><span style="font-size: 13px; font-weight: 500">Tahmid Chowdhury</span><span style="font-size: 11px; opacity: 0.7">Operator · t.chowdhury@[platform]</span></span><button type="button" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 1px solid var(--primary-divider); border-radius: 8px; background: transparent; color: var(--primary-fg); font-size: 13px; font-weight: 500; cursor: pointer"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" x2="9" y1="12" y2="12"></line></svg>Sign out</button></span></div>
+  </header>
+  <main style="flex: 1; width: 100%; max-width: 1200px; margin: 0 auto; box-sizing: border-box; padding: 24px 24px 40px; display: flex; flex-direction: column; gap: 16px">
+    <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px"><div style="display: flex; flex-direction: column; gap: 2px; max-width: 760px"><div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px"><h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Organisations</h1></div><p style="margin: 0; font-size: 14px; color: var(--muted-fg)">Each organisation has its own address and data. You see its registry entry only.</p></div><div style="display: flex; flex-wrap: wrap; gap: 8px"><a href="OpNewTenant.dc.html" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 13px; font-weight: 500; text-decoration: none"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>New organisation</a></div></div>
+<sc-if value="{{hasAttention}}" hint-placeholder-val="{{true}}"><section aria-labelledby="att" style="border: 1px solid var(--warn-border); border-radius: 10px; background: var(--warn-bg); padding: 12px 16px; display: flex; flex-direction: column; gap: 6px"><h2 id="att" style="margin: 0; font-size: 14px; font-weight: 600; color: var(--warn-fg)">Needs attention</h2><ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px"><sc-for list="{{attention}}" as="a" hint-placeholder-count="2"><li><a href="{{a.href}}" style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--fg); text-decoration: none"><span style="width: 6px; height: 6px; border-radius: 50%; background: var(--warn-fg); flex-shrink: 0"></span><span style="flex: 1">{{a.t}}</span><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--muted-fg)"><path d="m9 18 6-6-6-6"></path></svg></a></li></sc-for></ul></section></sc-if>
+    <div style="display: flex; justify-content: flex-end"><label style="position: relative; display: flex; align-items: center; "><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Search by name or address</span><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; left: 10px; color: var(--muted-fg)"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><input type="search" placeholder="Search by name or address…" value="{{q}}" onChange="{{onQ}}" style="width: 280px; height: 32px; padding: 0 10px 0 30px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)"></label></div>
+    <sc-if value="{{hasRows}}" hint-placeholder-val="{{true}}"><div style="display: flex; flex-direction: column; gap: 8px"><div style="border: 1px solid var(--border); border-radius: 10px; background: var(--card); overflow-x: auto"><table style="width: 100%; min-width: 900px; border-collapse: collapse; font-size: 14px"><caption style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Organisations, by address</caption><thead><tr style="border-bottom: 1px solid var(--border)"><th scope="col" style="height: 40px; padding: 0 16px; text-align: left; font-weight: 500; color: var(--muted-fg); font-size: 13px; white-space: nowrap">Name</th><th scope="col" style="padding: 0 12px; text-align: left; font-weight: 500; color: var(--muted-fg); font-size: 13px; white-space: nowrap; width: 280px">Address</th><th scope="col" style="padding: 0 12px; text-align: left; font-weight: 500; color: var(--muted-fg); font-size: 13px; white-space: nowrap; width: 120px">Status</th><th scope="col" style="padding: 0 12px; text-align: left; font-weight: 500; color: var(--muted-fg); font-size: 13px; white-space: nowrap; width: 230px">Administrator</th><th scope="col" style="padding: 0 12px; text-align: left; font-weight: 500; color: var(--muted-fg); font-size: 13px; white-space: nowrap; width: 120px">Created</th></tr></thead><tbody><sc-for list="{{rows}}" as="r" hint-placeholder-count="7"><tr class="lrow" style="border-bottom: 1px solid var(--hover)"><td style="height: 48px; padding: 0 16px"><a href="OpTenant.dc.html" style="font-weight: 500; color: var(--fg); text-decoration: none">{{r.name}}</a></td><td style="padding: 0 12px; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--text-2)">{{r.host}}</td><td style="padding: 0 12px"><span style="{{r.statusStyle}}">{{r.status}}</span></td><td style="padding: 0 12px; {{r.adminStyle}}">{{r.admin}}</td><td style="padding: 0 12px; color: var(--muted-fg); white-space: nowrap">{{r.created}}</td></tr></sc-for></tbody></table></div><div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px"><span style="font-size: 13px; color: var(--muted-fg)">{{footNote}}</span><button type="button" class="ghost" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">Show more</button></div></div></sc-if><sc-if value="{{noRows}}" hint-placeholder-val="{{false}}"><div style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 56px 24px; border: 1px dashed var(--border); border-radius: 10px; text-align: center"><span style="font-weight: 500; font-size: 16px">No organisations match.</span><span style="max-width: 520px; font-size: 14px; color: var(--muted-fg)">Try another name or address.</span><span style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 8px"><button type="button" class="ghost" onClick="{{clearSearch}}" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">Clear the search</button></span></div></sc-if>
+  </main>
+  <sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}">
+    <div role="status" style="position: fixed; right: 24px; bottom: 24px; z-index: 40; display: flex; align-items: center; gap: 10px; padding: 10px 10px 10px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); box-shadow: 0 8px 24px rgba(0,0,0,0.12); font-size: 14px">
+      <span style="flex: 1">{{toast}}</span>
+      <button type="button" class="ghost" aria-label="Dismiss" onClick="{{hideToast}}" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--muted-fg); cursor: pointer"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"empty":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const PHONE = false;
+
+    const H = PHONE ? '44px' : '36px', BFS = PHONE ? '15px' : '14px';
+    const okStyle = (danger) => 'height: ' + H + '; padding: 0 14px; border: 0; border-radius: 8px; font-size: ' + BFS + '; font-weight: 500; cursor: pointer; ' + (danger ? 'background: var(--destructive); color: var(--on-destructive)' : 'background: var(--primary); color: var(--primary-fg)');
+    const closeDlg = () => this.setState({ dlg: '', err: 'none', form: null });
+    const closeMenu = () => this.setState({ menu: '' });
+    const itemStyle = (danger) => 'display: flex; align-items: center; width: 100%; height: 32px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; font-size: 14px; text-align: left; cursor: pointer; color: ' + (danger ? 'var(--danger-fg)' : 'var(--fg)');
+    const sheetStyle = (danger) => 'display: flex; align-items: center; min-height: 52px; padding: 0 4px; border: 0; border-top: 1px solid var(--hover); background: transparent; font-size: 15px; text-align: left; color: ' + (danger ? 'var(--danger-fg)' : 'var(--fg)');
+    const item = (label, pick, danger) => ({ label: label, pick: pick, style: itemStyle(danger), sheetStyle: sheetStyle(danger) });
+    const dlgProp = this.props.dialog || 'none';
+    const dlg = st.dlg !== undefined ? st.dlg : (dlgProp === 'none' ? '' : dlgProp);
+    const err = st.err !== undefined ? st.err : (this.props.error || 'none');
+    const fieldVals = (pfx, k, val, msg) => { const o = {}; o[k] = val; o[k + 'HasErr'] = !!msg; o[k + 'Err'] = msg; o[k + 'Invalid'] = msg ? 'true' : 'false'; o[k + 'Border'] = msg ? 'var(--destructive)' : 'var(--border)'; return o; };
+    const form = st.form || {};
+    const setForm = (k) => (ev) => { const n = Object.assign({}, form); n[k] = ev && ev.target ? ev.target.value : ''; this.setState({ form: n, err: 'none' }); };
+    const base = { closeDlg: closeDlg, dlgKey: (ev) => { if (ev && ev.key === 'Escape') closeDlg(); }, closeMenu: closeMenu, menuKey: (ev) => { if (ev && ev.key === 'Escape') closeMenu(); },
+      hasToast: !!st.toast, toast: st.toast || '', hideToast: () => this.setState({ toast: '' }) };
+    const TONE = {"ok": "display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid var(--ok-border); background: var(--ok-bg); color: var(--ok-fg)", "warn": "display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg)", "danger": "display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid var(--danger-border); background: var(--danger-bg); color: var(--danger-fg)", "neutral": "display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid var(--border); background: var(--muted); color: var(--text-2)"};
+
+    const O = (id, name, slug, status, admin, created) => ({ id: id, name: name, slug: slug, status: status, admin: admin, created: created });
+    const ALL = [O('t1', '[Organisation name]', 'organisation', 'Active', true, '2 Jan 2026'), O('t2', 'Meghna Leasing', 'meghna-leasing', 'Active', true, '14 Mar 2026'),
+      O('t3', 'Padma Insurance', 'padma-insurance', 'Active', true, '9 Jun 2026'), O('t4', 'Rupsha Cooperative', 'rupsha', 'Active', false, '15 Nov 2026'),
+      O('t5', 'Surma Microfinance', 'surma-mf', 'Suspended', true, '20 Apr 2026'), O('t6', 'Teesta Logistics', 'teesta', 'Active', true, '3 Aug 2026'), O('t7', 'Training', 'training', 'Active', true, '2 Jan 2026')];
+    const q = (st.q || '').toLowerCase();
+    const shown = this.props.empty ? [] : ALL.filter((o) => !q || (o.name + ' ' + o.slug).toLowerCase().indexOf(q) >= 0);
+    const rows = shown.map((o) => ({ name: o.name, slug: o.slug, host: o.slug + '.memo.[domain]', status: o.status, statusStyle: TONE[o.status === 'Active' ? 'ok' : 'neutral'],
+      admin: o.admin ? 'Has an active administrator' : 'No administrator yet', adminStyle: o.admin ? 'color: var(--text-2)' : 'color: var(--warn-fg); font-weight: 500', created: o.created }));
+    const noAdmin = ALL.filter((o) => !o.admin).length, susp = ALL.filter((o) => o.status === 'Suspended').length;
+    const vals = Object.assign(base, {
+      rows: rows, hasRows: rows.length > 0, noRows: rows.length === 0, q: st.q || '', onQ: (ev) => this.setState({ q: ev && ev.target ? ev.target.value : '' }), clearSearch: () => this.setState({ q: '' }),
+      attention: [{ t: 'Rupsha Cooperative has no administrator yet.', href: 'OpTenant' + (PHONE ? 'Phone' : '') + '.dc.html' }, { t: 'Surma Microfinance is suspended, since 12 Nov.', href: 'OpTenant' + (PHONE ? 'Phone' : '') + '.dc.html' }],
+      hasAttention: !this.props.empty, footNote: ALL.length + ' organisations · ' + noAdmin + ' without an administrator · ' + susp + ' suspended'
+    });
+    return Object.assign(vals, { themeClass: st.theme || this.props.theme || 'system' });
+  }
+}
+</script>
+</body>
+</html>

@@ -136,3 +136,14 @@ Use shadcn/ui components for everything: Button, Input, InputOTP, Select, Combob
 - The boards follow the design rules where the app's wording differs: "Show more" on Audit and Import, "Built-in" on Workflows. The app items are in `IMPROVEMENTS.md` (26–30).
 - Workflow diagram steps are buttons (rule: no click handlers on divs).
 - `Rules` gained section 9, Admin and settings patterns, and four wording rules in section 7.
+
+## Operator console
+
+- A separate app for the people who run the platform, at its own address. Its inverted top bar says "Platform administration" on every page, with its two pages (Organisations, Platform audit), the operator's name and Sign out. No organisation sidebar: an operator never works inside an organisation.
+- Sign-in is a password, then always a 6-digit code (six boxes, as in the organisation app), with "Sign in as someone else" to go back. The `step` and `error` tweaks show each message from the app.
+- Two-step setup starts from a one-time link made on the server: choose a password (at least 15 characters, with a repeat field), then scan the QR code or type the key and enter a code. A two-step indicator shows where you are. An expired link says what to do instead of showing an empty form.
+- Organisations is the console's overview: "Needs attention" (no administrator yet, suspended) above a searchable registry table with the full web address, status, administrator and created date. "Show more" pages through it.
+- New organisation is a page (six fields is more than a dialog should hold) with "What happens" beside the form, and the web address shown as it is typed.
+- Organisation detail: Rename (dialog), Suspend (type the address to confirm, new), Resume (confirm), and the first-administrator invitation only while there is none. Create, Suspend, Resume and Send invitation first ask "Confirm it is you" with a code, as the server requires (the `stepUp` dialog tweak).
+- Platform audit: "Action starts with" filter, Time, Actor, Action, Object; sign-in attempts without a signed-in operator show "Not signed in". Action names are the backend's (`tenant.created`, `platform.operator.signed_in`, …).
+- API: the Administrator column and "Needs attention" need `hasAdmin` on each row of the list (today only the single view has it). Everything else exists.

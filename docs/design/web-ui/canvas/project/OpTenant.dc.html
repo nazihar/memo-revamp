@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Organisation · Platform administration</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+.th{color-scheme:light;--bg:#ffffff;--card:#ffffff;--fg:#0a0a0a;--subtle:#fafafa;--muted:#f5f5f5;--hover:#f0f0f0;--active:#ebebeb;--chip:#e5e5e5;--border:#e5e5e5;--border-strong:#d4d4d4;--muted-fg:#737373;--text-1:#262626;--text-2:#404040;--text-3:#525252;--primary:#171717;--primary-fg:#fafafa;--primary-hover:#262626;--primary-divider:#404040;--primary-muted:#a3a3a3;--ring:#a3a3a3;--destructive:#dc2626;--destructive-hover:#b91c1c;--on-destructive:#ffffff;--danger-fg:#b91c1c;--danger-bg:#fef2f2;--danger-border:#fecaca;--warn-bg:#fffbeb;--warn-fg:#92400e;--warn-border:#fcd34d;--ok-bg:#f0fdf4;--ok-fg:#166534;--ok-border:#bbf7d0;--info-bg:#eff6ff;--info-fg:#1d4ed8}
+.th.dark{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}
+@media (prefers-color-scheme: dark){.th.system{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}}
+body:has(.th.dark){background:#09090b}
+@media (prefers-color-scheme: dark){body:has(.th.system){background:#09090b}}
+body{margin:0;background:#ffffff}
+a{color:var(--fg)}a:hover{color:var(--text-2)}
+button{font-family:inherit}
+textarea{font-family:inherit}
+.nav-item:hover{background:var(--hover)}
+.ghost:hover{background:var(--muted)}
+.tab:hover{color:var(--fg)}
+.lrow:hover{background:var(--subtle)}
+.primary:hover{background:var(--primary-hover)}
+.danger:hover{background:var(--destructive-hover)}
+.sidebar.collapsed{flex-basis:56px !important}
+.sidebar.collapsed .lbl{display:none !important}
+.sidebar.collapsed .nav-item{justify-content:center !important;padding:0 !important}
+.sidebar.collapsed .org{padding:8px 0 !important;justify-content:center}
+.sidebar.collapsed .grp-label{visibility:hidden;height:12px !important}
+.scrim{display:none !important}
+.drawer-close{display:none !important}
+@media (max-width: 1024px){.acct-name{display:none !important}}
+@media (max-width: 860px){
+.sidebar{display:none !important}
+.sidebar.open{display:flex !important;position:fixed;top:0;bottom:0;left:0;width:280px;z-index:40;box-shadow:0 10px 40px rgba(0,0,0,0.2)}
+.scrim.open{display:block !important}
+.drawer-close{display:inline-flex !important}
+.global-search{width:auto !important;flex:1;min-width:0}
+.kbd{display:none !important}
+}
+.ed-main>*{flex-shrink:0}
+</style>
+</helmet>
+<div class="th {{themeClass}}" style="position: relative; min-height: 1000px; display: flex; flex-direction: column; background: var(--bg); color: var(--fg); font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 20px">
+  <header style="flex-shrink: 0; background: var(--primary); color: var(--primary-fg)">
+    <div style="max-width: 1200px; margin: 0 auto; box-sizing: border-box; display: flex; align-items: center; gap: 24px; height: 56px; padding: 0 24px"><span style="display: inline-flex; align-items: center; gap: 10px"><span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 7px; background: var(--primary-fg); color: var(--primary); font-weight: 700; font-size: 14px">m</span><span style="font-weight: 600">Platform administration</span></span><nav aria-label="Platform administration" style="display: flex; gap: 20px; align-self: stretch"><a href="OpTenants.dc.html" aria-current="page" style="display: inline-flex; align-items: center; height: 56px; padding: 0 4px; border-bottom: 2px solid var(--primary-fg); color: var(--primary-fg); opacity: 1; font-size: 14px; font-weight: 500; text-decoration: none; white-space: nowrap">Organisations</a><a href="OpAudit.dc.html" style="display: inline-flex; align-items: center; height: 56px; padding: 0 4px; border-bottom: 2px solid transparent; color: var(--primary-fg); opacity: 0.7; font-size: 14px; font-weight: 500; text-decoration: none; white-space: nowrap">Platform audit</a></nav><span style="margin-left: auto; display: flex; align-items: center; gap: 12px"><span style="display: flex; flex-direction: column; align-items: flex-end"><span style="font-size: 13px; font-weight: 500">Tahmid Chowdhury</span><span style="font-size: 11px; opacity: 0.7">Operator · t.chowdhury@[platform]</span></span><button type="button" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 1px solid var(--primary-divider); border-radius: 8px; background: transparent; color: var(--primary-fg); font-size: 13px; font-weight: 500; cursor: pointer"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" x2="9" y1="12" y2="12"></line></svg>Sign out</button></span></div>
+  </header>
+  <main style="flex: 1; width: 100%; max-width: 1200px; margin: 0 auto; box-sizing: border-box; padding: 24px 24px 40px; display: flex; flex-direction: column; gap: 16px">
+    <a href="OpTenants.dc.html" style="align-self: flex-start; display: inline-flex; align-items: center; gap: 4px; font-size: 13px; color: var(--muted-fg); text-decoration: none"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>Back to Organisations</a>
+    <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px"><div style="display: flex; flex-direction: column; gap: 2px; max-width: 760px"><div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px"><h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">{{o.name}}</h1><span style="{{o.statusStyle}}">{{o.status}}</span></div></div><div style="display: flex; flex-wrap: wrap; gap: 8px"><button type="button" class="ghost" onClick="{{openRename}}" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">Rename</button><sc-if value="{{isActive}}" hint-placeholder-val="{{true}}"><button type="button" class="ghost" onClick="{{openSuspend}}" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.05); color: var(--danger-fg)">Suspend</button></sc-if><sc-if value="{{isSusp}}" hint-placeholder-val="{{false}}"><button type="button" onClick="{{openResume}}" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 13px; font-weight: 500; cursor: pointer">Resume</button></sc-if></div></div>
+    <sc-if value="{{isSusp}}" hint-placeholder-val="{{false}}"><div style="padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--muted); font-size: 13px"><strong style="font-weight: 600">Suspended.</strong> {{suspNote}}</div></sc-if>
+    <dl style="margin: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border: 1px solid var(--border); border-radius: 10px; background: var(--card); overflow: hidden"><div style="display: flex; flex-direction: column; gap: 4px; padding: 12px 16px; "><dt style="font-size: 12px; font-weight: 500; color: var(--muted-fg)">Address</dt><dd style="margin: 0"><a href="#" style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 13px; color: var(--fg)">{{o.host}}</a></dd></div><div style="display: flex; flex-direction: column; gap: 4px; padding: 12px 16px; border-left: 1px solid var(--border)"><dt style="font-size: 12px; font-weight: 500; color: var(--muted-fg)">Administrator</dt><dd style="margin: 0"><span style="{{o.adminStyle}}">{{o.admin}}</span></dd></div><div style="display: flex; flex-direction: column; gap: 4px; padding: 12px 16px; border-left: 1px solid var(--border)"><dt style="font-size: 12px; font-weight: 500; color: var(--muted-fg)">Created</dt><dd style="margin: 0">{{o.created}}</dd></div><div style="display: flex; flex-direction: column; gap: 4px; padding: 12px 16px; border-left: 1px solid var(--border)"><dt style="font-size: 12px; font-weight: 500; color: var(--muted-fg)">Status changed</dt><dd style="margin: 0">{{o.changed}}</dd></div></dl>
+    <sc-if value="{{noAdmin}}" hint-placeholder-val="{{true}}"><form novalidate onSubmit="{{iv.submit}}" style="border: 1px solid var(--border); border-radius: 10px; background: var(--card); padding: 20px; display: flex; flex-direction: column; gap: 14px; max-width: 760px"><div style="display: flex; flex-direction: column; gap: 4px"><h2 style="margin: 0; font-size: 15px; font-weight: 600">Invite the first administrator</h2><span style="font-size: 13px; color: var(--muted-fg)">Only possible while the organisation has no active administrator. A new invitation replaces the one sent before.</span></div><div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px">        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="iv-name" style="font-size: 14px; font-weight: 500">Name <span aria-hidden="true" style="color: var(--danger-fg)">*</span></label>
+          <input id="iv-name" type="text" autocomplete="off" value="{{iv.name}}" onChange="{{iv.on_name}}" aria-invalid="{{iv.nameInvalid}}" aria-describedby="iv-name-msg" style="width: 100%; height: 36px; padding: 0 10px; box-sizing: border-box; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); border: 1px solid {{iv.nameBorder}}">
+          <sc-if value="{{iv.nameHasErr}}" hint-placeholder-val="{{false}}"><span id="iv-name-msg" style="font-size: 12px; color: var(--danger-fg)">{{iv.nameErr}}</span></sc-if>
+        </div>        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="iv-email" style="font-size: 14px; font-weight: 500">Email <span aria-hidden="true" style="color: var(--danger-fg)">*</span></label>
+          <input id="iv-email" type="email" autocomplete="off" value="{{iv.email}}" onChange="{{iv.on_email}}" aria-invalid="{{iv.emailInvalid}}" aria-describedby="iv-email-msg" style="width: 100%; height: 36px; padding: 0 10px; box-sizing: border-box; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); border: 1px solid {{iv.emailBorder}}">
+          <sc-if value="{{iv.emailHasErr}}" hint-placeholder-val="{{false}}"><span id="iv-email-msg" style="font-size: 12px; color: var(--danger-fg)">{{iv.emailErr}}</span></sc-if>
+        </div></div>        <sc-if value="{{iv.hasAlert}}" hint-placeholder-val="{{false}}">
+          <div role="alert" style="display: flex; gap: 10px; padding: 10px 12px; border: 1px solid var(--danger-border); border-radius: 8px; background: var(--danger-bg); color: var(--danger-fg); font-size: 13px"><span style="flex-shrink: 0; margin-top: 1px"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg></span><span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-weight: 600">Not done</strong><span>{{iv.alert}}</span></span></div>
+        </sc-if><div style="display: flex; justify-content: flex-end"><button type="submit" style="height: 36px; padding: 0 14px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 14px; font-weight: 500; cursor: pointer">Send invitation</button></div></form></sc-if>
+    <p style="margin: 0; font-size: 13px; color: var(--muted-fg)">You see the registry entry only. What happens inside the organisation is for its own administrators; <a href="OpAudit.dc.html" style="color: var(--fg)">platform actions are in the platform audit</a>.</p>
+  </main>
+
+  <sc-if value="{{isStepUp}}" hint-placeholder-val="{{false}}">
+    <div style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 16px; box-sizing: border-box">
+      <button type="button" tabIndex="-1" aria-label="Close dialog" onClick="{{closeDlg}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; border: 0; padding: 0; background: rgba(0,0,0,0.5); cursor: default"></button>
+      <form role="dialog" aria-modal="true" aria-labelledby="su-title" novalidate onSubmit="{{su.submit}}" onKeyDown="{{dlgKey}}" style="position: relative; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.2)">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h2 id="su-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Confirm it is you</h2>
+          <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">Enter the 6-digit code from your authenticator app to continue.</p>
+        </div>
+      <div style="display: flex; flex-direction: column; gap: 6px; align-items: center; text-align: center"><label for="op-su-code" style="font-size: 14px; font-weight: 500">Code</label><div style="position: relative; align-self: center; display: inline-flex; align-items: center; gap: 8px"><input id="op-su-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" value="{{otp.su_code.value}}" onChange="{{otp.su_code.onInput}}" onFocus="{{otp.su_code.onFocus}}" onBlur="{{otp.su_code.onBlur}}" aria-invalid="{{otp.su_code.invalid}}" aria-describedby="{{otp.su_code.describedBy}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 2; width: 100%; height: 100%; margin: 0; padding: 0; border: 0; opacity: 0; background: transparent; color: transparent; caret-color: transparent; font-size: 16px; cursor: text"><span aria-hidden="true" style="display: flex"><sc-for list="{{otp.su_code.a}}" as="sl" hint-placeholder-count="3"><span style="{{sl.style}}">{{sl.ch}}<sc-if value="{{sl.caret}}" hint-placeholder-val="{{false}}"><span class="otp-caret" style="position: absolute; width: 1px; height: 45%; background: var(--fg)"></span></sc-if></span></sc-for></span><span aria-hidden="true" style="display: flex; color: var(--muted-fg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"></path></svg></span><span aria-hidden="true" style="display: flex"><sc-for list="{{otp.su_code.b}}" as="sl" hint-placeholder-count="3"><span style="{{sl.style}}">{{sl.ch}}<sc-if value="{{sl.caret}}" hint-placeholder-val="{{false}}"><span class="otp-caret" style="position: absolute; width: 1px; height: 45%; background: var(--fg)"></span></sc-if></span></sc-for></span></div><sc-if value="{{codeHasErr}}" hint-placeholder-val="{{false}}"><span id="op-su-code-err" style="font-size: 12px; color: var(--danger-fg)">{{codeErr}}</span></sc-if></div>
+        <sc-if value="{{su.hasAlert}}" hint-placeholder-val="{{false}}">
+          <div role="alert" style="display: flex; gap: 10px; padding: 10px 12px; border: 1px solid var(--danger-border); border-radius: 8px; background: var(--danger-bg); color: var(--danger-fg); font-size: 13px"><span style="flex-shrink: 0; margin-top: 1px"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg></span><span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-weight: 600">Not done</strong><span>{{su.alert}}</span></span></div>
+        </sc-if>
+        <div style="display: flex; justify-content: flex-end; gap: 8px"><button type="button" class="ghost" onClick="{{closeDlg}}" style="height: 36px; padding: 0 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 14px; font-weight: 500; cursor: pointer">Cancel</button><button type="submit" style="height: 36px; padding: 0 14px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 14px; font-weight: 500; cursor: pointer">Confirm</button></div>
+      </form>
+    </div>
+  </sc-if>
+  <sc-if value="{{isSuspend}}" hint-placeholder-val="{{false}}">
+    <div style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 16px; box-sizing: border-box">
+      <button type="button" tabIndex="-1" aria-label="Close dialog" onClick="{{closeDlg}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; border: 0; padding: 0; background: rgba(0,0,0,0.5); cursor: default"></button>
+      <form role="alertdialog" aria-modal="true" aria-labelledby="sd-title" novalidate onSubmit="{{sd.submit}}" onKeyDown="{{dlgKey}}" style="position: relative; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.2)">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h2 id="sd-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Suspend this organisation?</h2>
+          <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">Nobody can sign in, everyone signed in is signed out, and its background work waits until you resume it. Its data stays as it is.</p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="sd-typed" style="font-size: 14px; font-weight: 500">Type its address to confirm <span aria-hidden="true" style="color: var(--danger-fg)">*</span> <span style="font-weight: 400; color: var(--muted-fg)">({{sd.slug}})</span></label>
+          <input id="sd-typed" type="text" autocomplete="off" value="{{sd.typed}}" onChange="{{sd.on_typed}}" aria-invalid="{{sd.typedInvalid}}" aria-describedby="sd-typed-msg" style="width: 100%; height: 36px; padding: 0 10px; box-sizing: border-box; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; font-family: 'Geist Mono', ui-monospace, monospace; box-shadow: 0 1px 2px rgba(0,0,0,0.05); border: 1px solid {{sd.typedBorder}}">
+          <sc-if value="{{sd.typedHasErr}}" hint-placeholder-val="{{false}}"><span id="sd-typed-msg" style="font-size: 12px; color: var(--danger-fg)">{{sd.typedErr}}</span></sc-if>
+        </div>
+        <sc-if value="{{sd.hasAlert}}" hint-placeholder-val="{{false}}">
+          <div role="alert" style="display: flex; gap: 10px; padding: 10px 12px; border: 1px solid var(--danger-border); border-radius: 8px; background: var(--danger-bg); color: var(--danger-fg); font-size: 13px"><span style="flex-shrink: 0; margin-top: 1px"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg></span><span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-weight: 600">Not done</strong><span>{{sd.alert}}</span></span></div>
+        </sc-if>
+        <div style="display: flex; justify-content: flex-end; gap: 8px"><button type="button" class="ghost" onClick="{{closeDlg}}" style="height: 36px; padding: 0 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 14px; font-weight: 500; cursor: pointer">Cancel</button><button type="submit" style="height: 36px; padding: 0 14px; border: 0; border-radius: 8px; background: var(--destructive); color: var(--on-destructive); font-size: 14px; font-weight: 500; cursor: pointer">Suspend</button></div>
+      </form>
+    </div>
+  </sc-if>
+  <sc-if value="{{isResume}}" hint-placeholder-val="{{false}}">
+    <div style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 16px; box-sizing: border-box">
+      <button type="button" tabIndex="-1" aria-label="Close dialog" onClick="{{closeDlg}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; border: 0; padding: 0; background: rgba(0,0,0,0.5); cursor: default"></button>
+      <form role="alertdialog" aria-modal="true" aria-labelledby="cf-title" novalidate onSubmit="{{cf.submit}}" onKeyDown="{{dlgKey}}" style="position: relative; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.2)">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h2 id="cf-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">{{cf.title}}</h2>
+          <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">{{cf.explain}}</p>
+        </div>
+        <sc-if value="{{cf.hasDetail}}" hint-placeholder-val="{{false}}"><div style="display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--subtle); font-size: 14px"><span style="font-weight: 500">{{cf.detail}}</span><span style="font-size: 12px; color: var(--muted-fg)">{{cf.detailSub}}</span></div></sc-if>
+        <sc-if value="{{cf.hasAlert}}" hint-placeholder-val="{{false}}">
+          <div role="alert" style="display: flex; gap: 10px; padding: 10px 12px; border: 1px solid var(--danger-border); border-radius: 8px; background: var(--danger-bg); color: var(--danger-fg); font-size: 13px"><span style="flex-shrink: 0; margin-top: 1px"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg></span><span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-weight: 600">Not done</strong><span>{{cf.alert}}</span></span></div>
+        </sc-if>
+        <div style="display: flex; justify-content: flex-end; gap: 8px"><button type="button" class="ghost" onClick="{{closeDlg}}" style="height: 36px; padding: 0 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 14px; font-weight: 500; cursor: pointer">{{cf.cancel}}</button><button type="submit" style="{{cf.btnStyle}}">{{cf.confirm}}</button></div>
+      </form>
+    </div>
+  </sc-if>
+  <sc-if value="{{isRename}}" hint-placeholder-val="{{false}}">
+    <div style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 16px; box-sizing: border-box">
+      <button type="button" tabIndex="-1" aria-label="Close dialog" onClick="{{closeDlg}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; border: 0; padding: 0; background: rgba(0,0,0,0.5); cursor: default"></button>
+      <form role="dialog" aria-modal="true" aria-labelledby="rn-title" novalidate onSubmit="{{rn.submit}}" onKeyDown="{{dlgKey}}" style="position: relative; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.2)">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h2 id="rn-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Rename</h2>
+          <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">The address stays the same.</p>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="rn-rename" style="font-size: 14px; font-weight: 500">Name <span aria-hidden="true" style="color: var(--danger-fg)">*</span></label>
+          <input id="rn-rename" type="text" autocomplete="off" value="{{rn.rename}}" onChange="{{rn.on_rename}}" aria-invalid="{{rn.renameInvalid}}" aria-describedby="rn-rename-msg" style="width: 100%; height: 36px; padding: 0 10px; box-sizing: border-box; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); border: 1px solid {{rn.renameBorder}}">
+          <sc-if value="{{rn.renameHasErr}}" hint-placeholder-val="{{false}}"><span id="rn-rename-msg" style="font-size: 12px; color: var(--danger-fg)">{{rn.renameErr}}</span></sc-if>
+        </div>
+        <sc-if value="{{rn.hasAlert}}" hint-placeholder-val="{{false}}">
+          <div role="alert" style="display: flex; gap: 10px; padding: 10px 12px; border: 1px solid var(--danger-border); border-radius: 8px; background: var(--danger-bg); color: var(--danger-fg); font-size: 13px"><span style="flex-shrink: 0; margin-top: 1px"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg></span><span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-weight: 600">Not done</strong><span>{{rn.alert}}</span></span></div>
+        </sc-if>
+        <div style="display: flex; justify-content: flex-end; gap: 8px"><button type="button" class="ghost" onClick="{{closeDlg}}" style="height: 36px; padding: 0 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 14px; font-weight: 500; cursor: pointer">Cancel</button><button type="submit" style="height: 36px; padding: 0 14px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 14px; font-weight: 500; cursor: pointer">Save</button></div>
+      </form>
+    </div>
+  </sc-if>
+  <sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}">
+    <div role="status" style="position: fixed; right: 24px; bottom: 24px; z-index: 40; display: flex; align-items: center; gap: 10px; padding: 10px 10px 10px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); box-shadow: 0 8px 24px rgba(0,0,0,0.12); font-size: 14px">
+      <span style="flex: 1">{{toast}}</span>
+      <button type="button" class="ghost" aria-label="Dismiss" onClick="{{hideToast}}" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--muted-fg); cursor: pointer"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"org":{"editor":"enum","options":["noAdmin","active","suspended"],"default":"noAdmin"},"dialog":{"editor":"enum","options":["none","suspend","stepUp","resume","rename"],"default":"none"},"error":{"editor":"enum","options":["none","required","typedWrong","wrong","tooMany","hasAdmin","stale","failed"],"default":"none"},"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const PHONE = false;
+
+    const H = PHONE ? '44px' : '36px', BFS = PHONE ? '15px' : '14px';
+    const okStyle = (danger) => 'height: ' + H + '; padding: 0 14px; border: 0; border-radius: 8px; font-size: ' + BFS + '; font-weight: 500; cursor: pointer; ' + (danger ? 'background: var(--destructive); color: var(--on-destructive)' : 'background: var(--primary); color: var(--primary-fg)');
+    const closeDlg = () => this.setState({ dlg: '', err: 'none', form: null });
+    const closeMenu = () => this.setState({ menu: '' });
+    const itemStyle = (danger) => 'display: flex; align-items: center; width: 100%; height: 32px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; font-size: 14px; text-align: left; cursor: pointer; color: ' + (danger ? 'var(--danger-fg)' : 'var(--fg)');
+    const sheetStyle = (danger) => 'display: flex; align-items: center; min-height: 52px; padding: 0 4px; border: 0; border-top: 1px solid var(--hover); background: transparent; font-size: 15px; text-align: left; color: ' + (danger ? 'var(--danger-fg)' : 'var(--fg)');
+    const item = (label, pick, danger) => ({ label: label, pick: pick, style: itemStyle(danger), sheetStyle: sheetStyle(danger) });
+    const dlgProp = this.props.dialog || 'none';
+    const dlg = st.dlg !== undefined ? st.dlg : (dlgProp === 'none' ? '' : dlgProp);
+    const err = st.err !== undefined ? st.err : (this.props.error || 'none');
+    const fieldVals = (pfx, k, val, msg) => { const o = {}; o[k] = val; o[k + 'HasErr'] = !!msg; o[k + 'Err'] = msg; o[k + 'Invalid'] = msg ? 'true' : 'false'; o[k + 'Border'] = msg ? 'var(--destructive)' : 'var(--border)'; return o; };
+    const form = st.form || {};
+    const setForm = (k) => (ev) => { const n = Object.assign({}, form); n[k] = ev && ev.target ? ev.target.value : ''; this.setState({ form: n, err: 'none' }); };
+    const base = { closeDlg: closeDlg, dlgKey: (ev) => { if (ev && ev.key === 'Escape') closeDlg(); }, closeMenu: closeMenu, menuKey: (ev) => { if (ev && ev.key === 'Escape') closeMenu(); },
+      hasToast: !!st.toast, toast: st.toast || '', hideToast: () => this.setState({ toast: '' }) };
+    const TONE = {"ok": "display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid var(--ok-border); background: var(--ok-bg); color: var(--ok-fg)", "warn": "display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg)", "danger": "display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid var(--danger-border); background: var(--danger-bg); color: var(--danger-fg)", "neutral": "display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid var(--border); background: var(--muted); color: var(--text-2)"};
+    const mkOtp = (k, fid, o) => {
+      const raw = st['otp_' + k] !== undefined ? st['otp_' + k] : (o.init || '');
+      const v = String(raw).replace(/\D/g, '').slice(0, 6);
+      const focused = !!st['otpF_' + k] && !o.disabled;
+      const line = o.error ? 'var(--destructive)' : 'var(--border-strong)';
+      const slot = (i) => {
+        const active = focused && i === Math.min(v.length, 5);
+        const first = i % 3 === 0, last = i % 3 === 2;
+        return {
+          ch: v[i] || '', caret: active && !v[i],
+          style: 'position: relative; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; box-sizing: border-box; '
+            + 'border-top: 1px solid ' + line + '; border-bottom: 1px solid ' + line + '; border-right: 1px solid ' + line + '; '
+            + (first ? 'border-left: 1px solid ' + line + '; border-radius: 8px 0 0 8px; ' : '') + (last ? 'border-radius: 0 8px 8px 0; ' : '')
+            + "font-family: 'Geist Mono', ui-monospace, monospace; font-size: 16px; font-weight: 500; box-shadow: 0 1px 2px rgba(0,0,0,0.05); "
+            + (o.disabled ? 'background: var(--muted); color: var(--muted-fg); ' : 'background: var(--bg); color: var(--fg); ')
+            + (active ? 'z-index: 1; box-shadow: 0 0 0 2px ' + (o.error ? 'var(--destructive)' : 'var(--ring)') + '; ' : '')
+        };
+      };
+      const slots = [0, 1, 2, 3, 4, 5].map(slot);
+      return {
+        a: slots.slice(0, 3), b: slots.slice(3), value: v,
+        disabled: !!o.disabled, invalid: o.error ? 'true' : 'false', describedBy: o.error ? fid + '-err' : '',
+        onInput: (ev) => { const n = {}; n['otp_' + k] = ev && ev.target ? String(ev.target.value).replace(/\D/g, '').slice(0, 6) : ''; this.setState(n); },
+        onFocus: () => { const n = {}; n['otpF_' + k] = true; this.setState(n); },
+        onBlur: () => { const n = {}; n['otpF_' + k] = false; this.setState(n); }
+      };
+    };
+
+    const kind = st.kind || this.props.org || 'noAdmin';
+    const O = { active: { name: 'Meghna Leasing', slug: 'meghna-leasing', status: 'Active', admin: true, created: '14 Mar 2026', changed: '14 Mar 2026' },
+                noAdmin: { name: 'Rupsha Cooperative', slug: 'rupsha', status: 'Active', admin: false, created: '15 Nov 2026', changed: '15 Nov 2026' },
+                suspended: { name: 'Surma Microfinance', slug: 'surma-mf', status: 'Suspended', admin: true, created: '20 Apr 2026', changed: '12 Nov 2026' } }[kind];
+    const isSusp = O.status === 'Suspended';
+    const typed = form.typed !== undefined ? form.typed : (err === 'typedWrong' ? 'rupsa' : '');
+    const typedErr = (form.tried || err === 'typedWrong') && typed.trim() !== O.slug ? 'Type the address exactly: ' + O.slug + '.' : '';
+    const ALERTS = { stale: 'Someone changed this meanwhile. The page shows the current state.', hasAdmin: 'The organisation already has an active administrator.', failed: 'That did not work. Try again.' };
+    const a = ALERTS[err] || '';
+    const ai = f0 => form[f0] !== undefined ? form[f0] : (err === 'required' ? '' : (f0 === 'name' ? 'Rafiqul Islam' : 'r.islam@rupsha.example'));
+    const iname = ai('name'), iemail = ai('email');
+    const itried = !!form.itried || err === 'required';
+    const nm = form.rename !== undefined ? form.rename : O.name;
+    const vals = Object.assign(base, {
+      o: { name: O.name, host: O.slug + '.memo.[domain]', slug: O.slug, status: O.status, statusStyle: TONE[isSusp ? 'neutral' : 'ok'], created: O.created, changed: O.changed,
+           admin: O.admin ? 'Has an active administrator' : 'No administrator yet', adminStyle: O.admin ? 'color: var(--fg)' : 'color: var(--warn-fg); font-weight: 600' },
+      noAdmin: !O.admin, isSusp: isSusp, isActive: !isSusp, suspNote: isSusp ? 'Nobody can sign in. Its background work waits until you resume it. Its data stays as it is.' : '',
+      openSuspend: () => this.setState({ dlg: 'suspend', form: {}, err: 'none' }), openResume: () => this.setState({ dlg: 'resume', err: 'none' }), openRename: () => this.setState({ dlg: 'rename', form: {}, err: 'none' }),
+      isStepUp: dlg === 'stepUp', otp: { su_code: mkOtp('su_code', 'op-su-code', { init: err === 'wrong' ? '551203' : '55', error: err === 'wrong' }) }, codeHasErr: err === 'wrong', codeErr: 'That did not match. Try again.',
+      su: { hasAlert: err === 'tooMany', alert: 'Too many attempts. Wait a minute and try again.', submit: (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); if (err === 'wrong' || err === 'tooMany') { this.setState({ err: err }); return; } this.setState({ dlg: '', kind: 'suspended', toast: 'Organisation suspended.' }); } },
+      isSuspend: dlg === 'suspend', isResume: dlg === 'resume', isRename: dlg === 'rename',
+      sd: Object.assign({ slug: O.slug, on_typed: setForm('typed'), hasAlert: !!a && dlg === 'suspend', alert: a,
+        submit: (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); if (typed.trim() !== O.slug) { this.setState({ form: Object.assign({}, form, { typed: typed, tried: true }) }); return; } if (a) { this.setState({ err: err }); return; } this.setState({ dlg: 'stepUp', err: 'none' }); } },
+        fieldVals('sd', 'typed', typed, typedErr)),
+      cf: { title: 'Resume ' + O.name + '?', explain: 'People can sign in again, and its background work continues.', confirm: 'Resume', cancel: 'Cancel', btnStyle: okStyle(false), hasDetail: false, detail: '', detailSub: '', hasAlert: !!a && dlg === 'resume', alert: a,
+        submit: (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); if (a) { this.setState({ err: err }); return; } this.setState({ dlg: '', kind: 'active', toast: 'Organisation resumed.' }); } },
+      rn: Object.assign({ on_rename: setForm('rename'), hasAlert: !!a && dlg === 'rename', alert: a,
+        submit: (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); if (!nm.trim()) { this.setState({ form: Object.assign({}, form, { rename: nm, tried: true }) }); return; } if (a) { this.setState({ err: err }); return; } this.setState({ dlg: '', toast: 'Name saved.' }); } },
+        fieldVals('rn', 'rename', nm, (form.tried || err === 'required') && !nm.trim() ? 'Required.' : '')),
+      iv: Object.assign({ on_name: setForm('name'), on_email: setForm('email'), hasAlert: !!a && !dlg, alert: a,
+        submit: (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); if (!iname.trim() || !iemail.trim()) { this.setState({ form: Object.assign({}, form, { name: iname, email: iemail, itried: true }) }); return; } if (a) { this.setState({ err: err }); return; } this.setState({ toast: 'Invitation sent.' }); } },
+        fieldVals('iv', 'name', iname, itried && !iname.trim() ? 'Required.' : ''), fieldVals('iv', 'email', iemail, itried && !iemail.trim() ? 'Required.' : ''))
+    });
+    return Object.assign(vals, { themeClass: st.theme || this.props.theme || 'system' });
+  }
+}
+</script>
+</body>
+</html>

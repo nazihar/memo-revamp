@@ -3,7 +3,7 @@
 A redesign of the web app's user-facing screens: every non-admin route, desktop and phone side by side, in light and dark. It is a **design**, not code. The app is built from it with shadcn/ui components (see "Building from this design" below).
 
 - Live canvas: a private claude.ai Design artifact, `https://claude.ai/artifact/VRTQYT81opA8eMovd2rDo6`. It needs to be shared before others can open it.
-- Snapshot in this folder: 2026-11-18, canvas version 100.
+- Snapshot in this folder: 2026-11-18, canvas version 101.
 
 ## What is here
 
@@ -73,6 +73,7 @@ These can be rerun safely, and reproduce the committed boards exactly:
 | `tools/settings.py` | `OrgSecurity`, `OrgEmail`, `OrgBranding`, `OrgLanguage` and their phone boards (copy from `features/admin/*`, `MailSettingsPage.tsx`; ranges from the backend's `SecurityLimit`; contrast checks from `lib/contrast.ts`); also points every sidebar's Administration › Security link at them | `tools/card_surface.py` |
 | `tools/records.py` | `AdminOverview`, `Audit`, `Imports`, `ImportBatch` and their phone boards (copy from `AdminHomePage`, `AuditPage`, `app/navigation.ts`, `features/imports/*`); also points every sidebar's Administration › Overview link at them | `tools/card_surface.py` |
 | `tools/persona.py` | Who is signed in on the boards: trims the Administration group on user boards to what Farhana Rahman's roles allow (Overview, Audit), puts Arif Rahman in the admin shell's top bar, and sets the Inbox phone titles to 18px. Skips what is already done | — |
+| `tools/op_console.py` | `OpSignIn`, `OpEnrol`, `OpTenants`, `OpNewTenant`, `OpTenant`, `OpAudit` and their phone boards, the operator console on the Operator page (copy from `features/platform/*` and `features/auth/StepUpProvider.tsx`; audit actions from the backend). Not named `operator.py`, which would hide Python's own `operator` module | — |
 | `tools/rules_admin.py` | Adds section 9 (admin and settings patterns) and four wording rules to `Rules`. Skips it when already there | — |
 | `tools/smoke.py` | Nothing; checks a board | — |
 | `tools/preview.py` | Nothing; renders a board to a PNG outside the canvas, for checking it by eye (`python3 tools/preview.py Users.dc.html out.png '{"props":{"dialog":"invite"}}'`; needs Node and the Playwright Chromium) | — |

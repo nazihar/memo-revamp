@@ -73,6 +73,34 @@ Priority: **High** = do first; **Medium** = worth doing; **Low** = nice to have.
 | 29 | **One success word per kind of action:** "Saved." after a change is saved, "Done." after an action that is not a save. Today both appear for similar actions (for example "Done." after creating a substitution, "Saved." after editing a queue). | Predictable feedback. | Frontend messages. | Low | Idea |
 | 30 | **Approval confirmation on the Security page:** "Approving memos: a confirmation lasts (minutes)", 5–240. The server has the setting (`security.stepup.approval.minutes`) but no page shows it. | Administrators can tune how often approvers confirm it is them. | Add the field to the security settings API and page. | Low | Idea |
 
+## Administration redesign
+
+Bigger changes to how the admin pages work, proposed after the consistency pass (2026-11-18). Each one changes a pattern rather than polishing it.
+
+| # | Improvement | Why | Needs | Priority | Status |
+|---|---|---|---|---|---|
+| 31 | **Administration as its own area.** Administrators switch into it and get their own grouped sidebar with all 18 admin pages; everyone else's sidebar stays about memos. Replaces the section links and the overview-as-menu. | Admin pages stop crowding the work sidebar, and every admin page is one click away. | Frontend only. | High | Idea |
+| 32 | **Admin work in the Inbox.** Versions to review, tasks waiting for reassignment and locked accounts arrive as tasks in My tasks, instead of a separate "Waiting for you" box. | Administrators already check My tasks; one place for everything that waits for them. | An API that returns these as inbox items, or a combined admin-work endpoint. | High | Idea |
+| 33 | **Show the impact before publishing or saving.** "This delegation of authority would change the approvers of 6 of the last 50 credit proposals." "37 people will have to set up two-step sign-in." "14 running memos stay on version 6." | Today administrators publish without seeing what changes for people. | Simulation and count endpoints; some exist (delegation simulator, memos on older versions). | High | Idea |
+| 34 | **One review screen for everything versioned** (memo types, workflows, delegation of authority). Reviewers comment on a specific change instead of one remark for the whole version, and decide the way approvers decide on a memo. | A consistent, precise review; fewer rounds of "send back". | Comments per change in the API. | Medium | Idea |
+| 35 | **A setup checklist for a new organisation** on the overview: branding, email, invite people, classification, memo types, workflows, delegation of authority, ticked as each is done. | New organisations know what to do next and in which order. | Frontend, from existing reads. | Medium | Idea |
+| 36 | **Users: resend invitation, bulk actions, CSV invite, filter by role.** | Onboarding a department one person at a time is slow; expired invitations cannot be resent today. | Resend and CSV invite need endpoints; bulk actions call the existing ones. | Medium | Idea |
+| 37 | **Audit in plain sentences.** "Arif Rahman gave Farhana Rahman the Dashboard viewer role for Credit Risk", with links to the user and the role; the action code becomes secondary. | Auditors read what happened without decoding action names. | Mostly frontend (a sentence per action); links need object ids, which the entries carry. | Medium | Idea |
+| 38 | **Phone admin as review mode.** On phones: review, approve, unlock and reassign; editing builders and settings stays on desktop, with a short "Open on a computer to change this" note. | Honest about what works on a phone; fewer cramped editors. | Frontend only. | Low | Idea |
+
+## Operator console
+
+Proposed while designing the operator console (2026-11-18).
+
+| # | Improvement | Why | Needs | Priority | Status |
+|---|---|---|---|---|---|
+| 39 | **"Needs attention" on Organisations:** organisations with no administrator yet, and suspended ones, at the top of the list, each a link to the organisation. | The two states an operator has to act on are found without scanning the table. | `hasAdmin` on each row of the list (today only on the single view). | High | Designed |
+| 40 | **Type the address to suspend.** The confirmation asks for the organisation's address, like deleting a repository. | Suspending signs out a whole organisation at once; a click on the wrong row should not do that. | Frontend only. | High | Designed |
+| 41 | **Invitation status for the first administrator:** when it was sent, to whom, whether it expired, and "Send again". | Today the page only says "No administrator yet"; the operator cannot tell a waiting invitation from a lost one. | The invitation's sent time, address and expiry in the tenant view. | Medium | Idea |
+| 42 | **A reason when suspending, shown to the organisation and in the audit.** | Suspensions are rare and serious; the next operator, and the organisation, need to know why. | A reason field on suspend; it goes in the audit entry. | Medium | Idea |
+| 43 | **Platform audit filters and sentences:** filter by organisation, operator and date as well as action prefix; each entry also as a sentence ("Tahmid Chowdhury invited the first administrator of Rupsha Cooperative"). | "Action starts with" needs the operator to know the action codes. | Filter parameters on the platform audit API; the sentence is frontend. | Medium | Idea |
+| 44 | **New organisation checks the address while typing** ("meghna-leasing is taken") instead of after "Create and invite". | The address is the one field that is often taken. | An availability check endpoint. | Low | Idea |
+
 ## Decisions
 
 - **Reading pane (5): a per-person switch, off by default** (2026-11-18). A "Reading pane" switch in the My tasks toolbar, shown only at 1400px and wider, turns it on and is remembered per person. When on, the list and the selected memo sit side by side with the decision bar; "Open the full page" covers the note sheet, attachments, linked memos and history. Links from notifications, search and Home still open the full page.

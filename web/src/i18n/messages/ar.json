@@ -2628,5 +2628,9 @@
   "notifications.kind.forumMembershipChanged": "تغيّرت عضوية {committee}",
   "notifications.kind.forumTermEnding": "تنتهي قريبًا فترة عضوية {member} في {committee}",
   "memo.history.action.forumDecided": "قررت اللجنة",
-  "memo.history.action.forumDeclined": "اعتذرت اللجنة عن النظر"
+  "memo.history.action.forumDeclined": "اعتذرت اللجنة عن النظر",
+  "notifications.kind.forumSubmissionReceived": "ورقة بانتظار {committee}",
+  "notifications.kind.forumSubmissionTriaged": "مستجدات من {committee} على ورقتك",
+  "mail.template.forumSubmissionReceived": "ورقة أُرسلت إلى لجنة",
+  "mail.template.forumSubmissionTriaged": "مستجدات لجنة على ورقة"
 }

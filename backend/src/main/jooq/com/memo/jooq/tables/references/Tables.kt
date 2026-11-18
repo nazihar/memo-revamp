@@ -22,6 +22,7 @@ import com.memo.jooq.tables.FilesTenantKeyset
 import com.memo.jooq.tables.FilesVersion
 import com.memo.jooq.tables.Forum
 import com.memo.jooq.tables.ForumMember
+import com.memo.jooq.tables.ForumSubmission
 import com.memo.jooq.tables.ForumTermReminder
 import com.memo.jooq.tables.ForumType
 import com.memo.jooq.tables.ForumTypeVersion
@@ -204,6 +205,11 @@ val FORUM: Forum = Forum.FORUM
  * The table <code>memo.forum_member</code>.
  */
 val FORUM_MEMBER: ForumMember = ForumMember.FORUM_MEMBER
+
+/**
+ * The table <code>memo.forum_submission</code>.
+ */
+val FORUM_SUBMISSION: ForumSubmission = ForumSubmission.FORUM_SUBMISSION
 
 /**
  * The table <code>memo.forum_term_reminder</code>.

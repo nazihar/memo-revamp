@@ -4,6 +4,10 @@ export type ClientOptions = {
     baseUrl: `${string}://${string}` | (string & {});
 };
 
+export type AcceptRequest = {
+    targetDate?: string | null;
+};
+
 export type ActiveRequest = {
     active: boolean;
 };
@@ -394,6 +398,13 @@ export type CopyView = {
     sendWhen: 'AT_SUBMIT' | 'AFTER_APPROVAL';
     sent: number;
     sentAt?: string | null;
+};
+
+export type CoverSheetRequest = {
+    presenterId?: string | null;
+    purpose?: 'DECISION' | 'DISCUSSION' | 'INFORMATION';
+    resolutionSought?: string | null;
+    targetDate?: string | null;
 };
 
 export type CreateDefinitionRequest = {
@@ -2687,6 +2698,28 @@ export type StepUpRequest = {
     password?: string | null;
 };
 
+export type SubmissionResponse = {
+    decidedAt?: string | null;
+    forumId: string;
+    id: string;
+    outcome?: 'APPROVED' | 'APPROVED_WITH_CONDITIONS' | 'NOTED' | 'REJECTED' | 'RETURNED';
+    presenter?: PersonRef | null;
+    previousId?: string | null;
+    purpose: 'DECISION' | 'DISCUSSION' | 'INFORMATION';
+    reason?: string | null;
+    resolutionSought?: string | null;
+    status: 'QUEUED' | 'ACCEPTED' | 'DEFERRED' | 'DECIDED' | 'RETURNED' | 'DECLINED' | 'WITHDRAWN' | 'REFERRED';
+    subjectId: string;
+    subjectType: string;
+    submittedAt: string;
+    submittedBy: PersonRef;
+    targetDate?: string | null;
+    triagedAt?: string | null;
+    triagedBy?: PersonRef | null;
+    version: number;
+    waits: boolean;
+};
+
 export type SubstitutionRequest = {
     principalId?: string;
     reason?: string | null;
@@ -2835,6 +2868,11 @@ export type Terms = {
 export type TermsUpdate = {
     locale: string;
     terms: Array<Term>;
+};
+
+export type TriageRequest = {
+    reason?: string | null;
+    targetDate?: string | null;
 };
 
 export type UnmetCondition = {
@@ -6318,6 +6356,177 @@ export type WithdrawForumMemberResponses = {
 };
 
 export type WithdrawForumMemberResponse = WithdrawForumMemberResponses[keyof WithdrawForumMemberResponses];
+
+export type ListForumSubmissionsData = {
+    body?: never;
+    path: {
+        forumId: string;
+    };
+    query?: {
+        status?: Array<'QUEUED' | 'ACCEPTED' | 'DEFERRED' | 'DECIDED' | 'RETURNED' | 'DECLINED' | 'WITHDRAWN' | 'REFERRED'>;
+    };
+    url: '/api/v1/forums/{forumId}/submissions';
+};
+
+export type ListForumSubmissionsResponses = {
+    /**
+     * OK
+     */
+    200: Array<SubmissionResponse>;
+};
+
+export type ListForumSubmissionsResponse = ListForumSubmissionsResponses[keyof ListForumSubmissionsResponses];
+
+export type GetForumSubmissionData = {
+    body?: never;
+    path: {
+        forumId: string;
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/forums/{forumId}/submissions/{id}';
+};
+
+export type GetForumSubmissionResponses = {
+    /**
+     * OK
+     */
+    200: SubmissionResponse;
+};
+
+export type GetForumSubmissionResponse = GetForumSubmissionResponses[keyof GetForumSubmissionResponses];
+
+export type EditForumSubmissionData = {
+    body: CoverSheetRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        forumId: string;
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/forums/{forumId}/submissions/{id}';
+};
+
+export type EditForumSubmissionResponses = {
+    /**
+     * OK
+     */
+    200: SubmissionResponse;
+};
+
+export type EditForumSubmissionResponse = EditForumSubmissionResponses[keyof EditForumSubmissionResponses];
+
+export type AcceptForumSubmissionData = {
+    body?: AcceptRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        forumId: string;
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/forums/{forumId}/submissions/{id}/accept';
+};
+
+export type AcceptForumSubmissionResponses = {
+    /**
+     * OK
+     */
+    200: SubmissionResponse;
+};
+
+export type AcceptForumSubmissionResponse = AcceptForumSubmissionResponses[keyof AcceptForumSubmissionResponses];
+
+export type DeclineForumSubmissionData = {
+    body: TriageRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        forumId: string;
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/forums/{forumId}/submissions/{id}/decline';
+};
+
+export type DeclineForumSubmissionResponses = {
+    /**
+     * OK
+     */
+    200: SubmissionResponse;
+};
+
+export type DeclineForumSubmissionResponse = DeclineForumSubmissionResponses[keyof DeclineForumSubmissionResponses];
+
+export type DeferForumSubmissionData = {
+    body: TriageRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        forumId: string;
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/forums/{forumId}/submissions/{id}/defer';
+};
+
+export type DeferForumSubmissionResponses = {
+    /**
+     * OK
+     */
+    200: SubmissionResponse;
+};
+
+export type DeferForumSubmissionResponse = DeferForumSubmissionResponses[keyof DeferForumSubmissionResponses];
+
+export type ReferForumSubmissionData = {
+    body: ReferRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        forumId: string;
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/forums/{forumId}/submissions/{id}/refer';
+};
+
+export type ReferForumSubmissionResponses = {
+    /**
+     * OK
+     */
+    200: SubmissionResponse;
+};
+
+export type ReferForumSubmissionResponse = ReferForumSubmissionResponses[keyof ReferForumSubmissionResponses];
+
+export type ReturnForumSubmissionData = {
+    body: TriageRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        forumId: string;
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/forums/{forumId}/submissions/{id}/return';
+};
+
+export type ReturnForumSubmissionResponses = {
+    /**
+     * OK
+     */
+    200: SubmissionResponse;
+};
+
+export type ReturnForumSubmissionResponse = ReturnForumSubmissionResponses[keyof ReturnForumSubmissionResponses];
 
 export type GetHealthData = {
     body?: never;

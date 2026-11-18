@@ -10,12 +10,14 @@ import com.memo.jooq.indexes.FORUM_STATUS_IDX
 import com.memo.jooq.indexes.FORUM_TYPE_IDX
 import com.memo.jooq.keys.FORUM_MEMBER__FORUM_MEMBER_TENANT_ID_FORUM_ID_FKEY
 import com.memo.jooq.keys.FORUM_PKEY
+import com.memo.jooq.keys.FORUM_SUBMISSION__FORUM_SUBMISSION_TENANT_ID_FORUM_ID_FKEY
 import com.memo.jooq.keys.FORUM_TENANT_ID_CODE_KEY
 import com.memo.jooq.keys.FORUM_TENANT_ID_ID_KEY
 import com.memo.jooq.keys.FORUM_TENANT_ID_KEY_KEY
 import com.memo.jooq.keys.FORUM__FORUM_TENANT_ID_FORUM_TYPE_ID_FKEY
 import com.memo.jooq.keys.FORUM__FORUM_TENANT_ID_PARENT_FORUM_ID_FKEY
 import com.memo.jooq.tables.ForumMember.ForumMemberPath
+import com.memo.jooq.tables.ForumSubmission.ForumSubmissionPath
 import com.memo.jooq.tables.ForumType.ForumTypePath
 import com.memo.jooq.tables.records.ForumRecord
 
@@ -227,6 +229,22 @@ open class Forum(
 
     val forumMember: ForumMemberPath
         get(): ForumMemberPath = forumMember()
+
+    private lateinit var _forumSubmission: ForumSubmissionPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.forum_submission</code> table
+     */
+    fun forumSubmission(): ForumSubmissionPath {
+        if (!this::_forumSubmission.isInitialized)
+            _forumSubmission = ForumSubmissionPath(this, null, FORUM_SUBMISSION__FORUM_SUBMISSION_TENANT_ID_FORUM_ID_FKEY.inverseKey)
+
+        return _forumSubmission;
+    }
+
+    val forumSubmission: ForumSubmissionPath
+        get(): ForumSubmissionPath = forumSubmission()
     override fun getChecks(): List<Check<ForumRecord>> = listOf(
         Internal.createCheck(this, DSL.name("forum_check"), "(((status = 'DISSOLVED'::text) = (dissolved_on IS NOT NULL)))", true),
         Internal.createCheck(this, DSL.name("forum_check1"), "(((parent_forum_id IS NULL) OR (parent_forum_id <> id)))", true),

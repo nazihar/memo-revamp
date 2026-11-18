@@ -21,6 +21,7 @@ import com.memo.jooq.tables.FilesTenantKeyset
 import com.memo.jooq.tables.FilesVersion
 import com.memo.jooq.tables.Forum
 import com.memo.jooq.tables.ForumMember
+import com.memo.jooq.tables.ForumSubmission
 import com.memo.jooq.tables.ForumTermReminder
 import com.memo.jooq.tables.ForumType
 import com.memo.jooq.tables.ForumTypeVersion
@@ -221,6 +222,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      * The table <code>memo.forum_member</code>.
      */
     val FORUM_MEMBER: ForumMember get() = ForumMember.FORUM_MEMBER
+
+    /**
+     * The table <code>memo.forum_submission</code>.
+     */
+    val FORUM_SUBMISSION: ForumSubmission get() = ForumSubmission.FORUM_SUBMISSION
 
     /**
      * The table <code>memo.forum_term_reminder</code>.
@@ -926,6 +932,7 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         FilesVersion.FILES_VERSION,
         Forum.FORUM,
         ForumMember.FORUM_MEMBER,
+        ForumSubmission.FORUM_SUBMISSION,
         ForumTermReminder.FORUM_TERM_REMINDER,
         ForumType.FORUM_TYPE,
         ForumTypeVersion.FORUM_TYPE_VERSION,

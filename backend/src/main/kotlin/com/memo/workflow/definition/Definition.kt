@@ -191,6 +191,8 @@ data class StepDef(
     val message: String? = null,
     val definition: String? = null,
     val forum: String? = null,
+    /** An escalate-to-forum step that waits for the committee's decision (ADR-0058); false: passes through, as before. */
+    val wait: Boolean = false,
     val sla: Sla? = null,
     /** Who gets the step when [assignee] resolves to nobody (design E04 §4.1); without it the step waits for an administrator. */
     val fallback: Assignee? = null,

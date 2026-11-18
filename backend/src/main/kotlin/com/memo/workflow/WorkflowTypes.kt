@@ -53,6 +53,10 @@ enum class ActionKind {
     /** The holder declared an interest and stood aside (SOD-4, design E04 §4.4). */
     RECUSE,
 
+    /** The committee decided on, or declined, an item waiting at a forum step (ADR-0058). */
+    FORUM_DECIDED,
+    FORUM_DECLINED,
+
     /** An overdue task escalated by the workflow (design E05 §4.3). */
     ESCALATE,
 }
@@ -148,3 +152,15 @@ data class DoaShortfall(
     val covered: Int,
     val people: List<UUID>,
 )
+
+/**
+ * What a forum's decision does to an item waiting at its step (ADR-0058): APPROVED, APPROVED_WITH_CONDITIONS and NOTED
+ * continue the route; REJECTED ends it rejected; RETURNED sends it back to its initiator.
+ */
+enum class ForumOutcome {
+    APPROVED,
+    APPROVED_WITH_CONDITIONS,
+    NOTED,
+    REJECTED,
+    RETURNED,
+}

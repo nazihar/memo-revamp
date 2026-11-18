@@ -21499,7 +21499,35 @@
     },
     {
       "type": 0,
-      "value": "Ḗşƈȧȧŀȧȧŧḗḗḓ ŧǿǿ ȧȧ ƒǿǿřŭŭḿ"
+      "value": "Şḗḗƞŧ ŧǿǿ ȧȧ ƈǿǿḿḿīŧŧḗḗḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.history.action.forumDecided": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗƈīḓḗḗḓ ƀẏ ŧħḗḗ ƈǿǿḿḿīŧŧḗḗḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "memo.history.action.forumDeclined": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗƈŀīƞḗḗḓ ƀẏ ŧħḗḗ ƈǿǿḿḿīŧŧḗḗḗḗ"
     },
     {
       "type": 0,

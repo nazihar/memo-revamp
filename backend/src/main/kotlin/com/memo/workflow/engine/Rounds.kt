@@ -221,7 +221,14 @@ internal class Rounds(
             else -> {
                 val forum = checkNotNull(node.forum)
                 val record = automatic(ActionKind.ESCALATE_TO_FORUM, round.number, people.actor, mapOf("step" to node.id, "forum" to forum))
-                enter(round, checkNotNull(node.next), people, effects + Effect.EscalateToForum(node.id, forum), followUps + record)
+                if (node.wait) {
+                    // ADR-0058: the item waits at an active step with no task until the forum decides.
+                    val step = steps.activated(round, node, StepKind.FORUM, null, null).copy(resolution = mapOf("forum" to forum))
+                    val escalated = Effect.EscalateToForum(node.id, forum, step.id)
+                    Walk(round.copy(steps = round.steps + step), effects + escalated, followUps + record, false)
+                } else {
+                    enter(round, checkNotNull(node.next), people, effects + Effect.EscalateToForum(node.id, forum), followUps + record)
+                }
             }
         }
 

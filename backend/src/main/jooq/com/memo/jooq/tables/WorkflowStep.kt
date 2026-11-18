@@ -228,7 +228,7 @@ open class WorkflowStep(
         Internal.createCheck(this, DSL.name("workflow_step_resolution_check"), "((octet_length((resolution)::text) <= 8192))", true),
         Internal.createCheck(this, DSL.name("workflow_step_route_index_check"), "((route_index >= 0))", true),
         Internal.createCheck(this, DSL.name("workflow_step_state_check"), "((state = ANY (ARRAY['PENDING'::text, 'ACTIVE'::text, 'DONE'::text, 'SKIPPED'::text])))", true),
-        Internal.createCheck(this, DSL.name("workflow_step_type_check"), "((type = ANY (ARRAY['APPROVE'::text, 'REVIEW'::text, 'PARALLEL'::text])))", true)
+        Internal.createCheck(this, DSL.name("workflow_step_type_check"), "((type = ANY (ARRAY['APPROVE'::text, 'REVIEW'::text, 'PARALLEL'::text, 'FORUM'::text])))", true)
     )
     override fun `as`(alias: String): WorkflowStep = WorkflowStep(DSL.name(alias), this)
     override fun `as`(alias: Name): WorkflowStep = WorkflowStep(alias, this)

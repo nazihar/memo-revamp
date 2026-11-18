@@ -20,6 +20,7 @@ class Transition(
 ) {
     private val rounds = Rounds(context, definition)
     private val handOns = HandOns(rounds)
+    private val forums = ForumSteps(rounds)
 
     /** Whether the definition takes the initiator's route; without a route step the route must be empty. */
     private val routed = definition.steps.any { it.type == StepType.ROUTE }
@@ -82,6 +83,7 @@ class Transition(
             is Claim, is Release -> Claims.apply(state, command)
             is Block, is Reresolve -> StaffChanges(rounds).apply(state, command)
             is Escalate -> Escalations(context, rounds).apply(state, command)
+            is ForumDecided, is ForumDeclined -> forums.apply(state, command)
         }
 
     /** A delegate's action is recorded as acting for the holder who delegated the task (design E03 §4.4, invariant 17). */

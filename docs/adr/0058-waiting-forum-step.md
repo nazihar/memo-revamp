@@ -30,7 +30,7 @@ Chosen option 1.
 - **Runtime:** entering a waiting step creates a step of the new kind `FORUM`, `ACTIVE`, with no task.
   - Its `resolution` holds `{forum, submissionId}` once the forum module creates the submission.
   - The engine records `ESCALATE_TO_FORUM` and emits `Effect.EscalateToForum(nodeId, forum, stepId, wait = true)`, and the walk stops there.
-  - SLA timers on the step work as on other steps. Escalation notifies, and reassignment does not apply.
+  - The step has no SLA: the schema allows none on `escalate-to-forum`. The forum queue's "waiting too long" reminder (ADR-0059) covers long waits, and reassignment does not apply.
 - **New commands** (system-issued by the forum module, with the forum officer as actor for the record):
   - `ForumDecided(stepId, outcome, remark)`, where `outcome` is APPROVED, APPROVED_WITH_CONDITIONS, NOTED, REJECTED or RETURNED:
     - APPROVED, APPROVED_WITH_CONDITIONS and NOTED: the step is DONE, recorded as `FORUM_DECIDED`, and the walk continues to `next`.

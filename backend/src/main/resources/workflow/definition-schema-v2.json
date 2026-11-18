@@ -145,6 +145,7 @@
         "message": { "type": "string", "pattern": "^[a-z][A-Za-z0-9]{0,59}$" },
         "definition": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,99}$" },
         "forum": { "type": "string", "pattern": "^[a-z][a-z0-9-]{0,99}$" },
+        "wait": { "type": "boolean" },
         "sla": { "$ref": "#/$defs/sla" },
         "fallback": { "$ref": "#/$defs/assignee" }
       },
@@ -185,7 +186,7 @@
         },
         {
           "if": { "properties": { "type": { "const": "escalate-to-forum" } } },
-          "then": { "required": ["forum", "next"], "propertyNames": { "enum": ["id", "type", "name", "next", "forum"] } }
+          "then": { "required": ["forum", "next"], "propertyNames": { "enum": ["id", "type", "name", "next", "forum", "wait"] } }
         }
       ]
     }

@@ -11659,7 +11659,19 @@
   "memo.history.action.escalateToForum": [
     {
       "type": 0,
-      "value": "Escalated to a forumSSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": "Sent to a committeeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.history.action.forumDecided": [
+    {
+      "type": 0,
+      "value": "Decided by the committeeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "memo.history.action.forumDeclined": [
+    {
+      "type": 0,
+      "value": "Declined by the committeeSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "memo.history.action.forward": [

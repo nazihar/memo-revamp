@@ -24,8 +24,14 @@ internal object Migrations {
         val nodes = open.map { target.stepsById[it.nodeId] }
         return when {
             state.status != InstanceStatus.RUNNING && state.status != InstanceStatus.RETURNED -> Refusal.WRONG_STATE
+
             nodes.any { it == null } -> Refusal.STEP_MISSING
+
             open.zip(nodes).any { (step, node) -> node?.type != typeOf(step) } -> Refusal.STEP_CHANGED
+
+            // An item waiting for a forum keeps waiting only where the target still waits (ADR-0058).
+            open.zip(nodes).any { (step, node) -> step.kind == StepKind.FORUM && node?.wait != true } -> Refusal.STEP_CHANGED
+
             else -> null
         }
     }
@@ -55,6 +61,7 @@ internal object Migrations {
             step.doaGroup != null -> StepType.DOA
             step.kind == StepKind.REVIEW -> StepType.REVIEW
             step.kind == StepKind.PARALLEL -> StepType.PARALLEL
+            step.kind == StepKind.FORUM -> StepType.ESCALATE_TO_FORUM
             else -> StepType.APPROVE
         }
 }

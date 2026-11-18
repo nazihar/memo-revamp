@@ -55,6 +55,7 @@ object DefinitionJson {
             message = json.text("message"),
             definition = json.text("definition"),
             forum = json.text("forum"),
+            wait = json["wait"]?.asBoolean() == true,
             sla = json["sla"]?.let { SlaJson.read(it, ::assignee) },
             fallback = json["fallback"]?.let(::assignee),
             forward = json["forward"]?.get("within")?.asString()?.let(ForwardWithin::of),
@@ -103,6 +104,7 @@ object DefinitionJson {
         step.message?.let { out.put("message", it) }
         step.definition?.let { out.put("definition", it) }
         step.forum?.let { out.put("forum", it) }
+        if (step.wait) out.put("wait", true)
         step.sla?.let { SlaJson.write(out.putObject("sla"), it, ::print) }
     }
 

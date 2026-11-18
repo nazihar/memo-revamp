@@ -31,6 +31,11 @@
     "routes": ["/", "/committees", "/me/committees", "/me/meetings", "/meetings"],
     "prefixes": ["meetings"]
   },
+  "agendaBuilder": {
+    "$comment": "The agenda builder (Phase 4 E03 T7): a meeting's agenda page and the committee type's Agenda tab. A route segment written $ matches any one segment.",
+    "routes": ["/meetings/$/agenda", "/admin/committee-types"],
+    "prefixes": ["agendaBuilder"]
+  },
   "meetingPage": {
     "$comment": "The meeting page members read (Phase 4 E03 T8, flow P): the agenda, papers, What changed and consent requests.",
     "routes": ["/meetings"],

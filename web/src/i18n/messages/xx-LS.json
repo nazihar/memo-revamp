@@ -1193,6 +1193,3383 @@
       "value": "Unit (department, branch)SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "agendaBuilder.access.classification": [
+    {
+      "type": 0,
+      "value": "ClassificationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.access.conflictsLater": [
+    {
+      "type": 0,
+      "value": "A member who declares a conflict will not see the papers (from the next release: conflicts of interest).SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.access.everyone": [
+    {
+      "type": 0,
+      "value": "Everyone attending the meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.access.everyoneWhoSeesItem": [
+    {
+      "type": 0,
+      "value": "Everyone who sees the itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.access.field": [
+    {
+      "type": 0,
+      "value": "Who can see thisSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.access.hideTitle": [
+    {
+      "type": 0,
+      "value": "Hide the title from people who cannot see the itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.access.hideTitleHint": [
+    {
+      "type": 0,
+      "value": "They see “Restricted item” instead of the title.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.access.onlyThese": [
+    {
+      "type": 0,
+      "value": "Only these peopleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.access.onlyTheseHint": [
+    {
+      "type": 0,
+      "value": "People attending the meeting. The restriction stays when a paper is replaced.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.add.break": [
+    {
+      "type": 0,
+      "value": "A breakSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.add.breakTitle": [
+    {
+      "type": 0,
+      "value": "BreakSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.add.item": [
+    {
+      "type": 0,
+      "value": "An itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.add.standing": [
+    {
+      "type": 0,
+      "value": "A standing itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.add.standingKind": [
+    {
+      "type": 0,
+      "value": "Standing itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.add.standingTitleHint": [
+    {
+      "type": 0,
+      "value": "Leave it empty to use the standing item’s usual title.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.add.submit": [
+    {
+      "type": 0,
+      "value": "AddSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.add.tabledHint": [
+    {
+      "type": 0,
+      "value": "The meeting is in progress: the item is marked “Tabled at the meeting”.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.add.what": [
+    {
+      "type": 0,
+      "value": "What to addSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.addItem": [
+    {
+      "type": 0,
+      "value": "Add itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.addSection": [
+    {
+      "type": 0,
+      "value": "Add sectionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.backToMeeting": [
+    {
+      "type": 0,
+      "value": "Back to the meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.chair.agree": [
+    {
+      "type": 0,
+      "value": "Agree the agendaSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.chair.agreeText": [
+    {
+      "type": 0,
+      "value": "You agree the agenda as it stands now. The secretary can then publish it to the members.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.chair.agreeTitle": [
+    {
+      "type": 0,
+      "value": "Agree the agenda?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.chair.agreedDone": [
+    {
+      "type": 0,
+      "value": "You agreed the agenda.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.chair.awaiting": [
+    {
+      "type": 0,
+      "value": "Waiting for the chair’s agreementSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.chair.commentField": [
+    {
+      "type": 0,
+      "value": "Comment to the secretarySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.chair.comments": [
+    {
+      "type": 0,
+      "value": "Comments from the chairSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.chair.howGiven": [
+    {
+      "type": 0,
+      "value": "When and how it was givenSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.chair.howGivenHint": [
+    {
+      "type": 0,
+      "value": "For example “By email on 4 Dec”.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.chair.howGivenRequired": [
+    {
+      "type": 0,
+      "value": "Say when and how the chair gave it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.chair.notYet": [
+    {
+      "type": 0,
+      "value": "Not yetSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.chair.record": [
+    {
+      "type": 0,
+      "value": "Record the chair’s agreement…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.chair.recordLead": [
+    {
+      "type": 0,
+      "value": "For an agreement the chair gave by email or in person. It is recorded in your name, for the chair.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.chair.recordSubmit": [
+    {
+      "type": 0,
+      "value": "Record the agreementSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.chair.recordTitle": [
+    {
+      "type": 0,
+      "value": "Record the chair’s agreementSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.chair.recorded": [
+    {
+      "type": 0,
+      "value": "The chair’s agreement is recorded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.chair.send": [
+    {
+      "type": 0,
+      "value": "Send commentsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.chair.sent": [
+    {
+      "type": 0,
+      "value": "Your comment was sent to the secretaries.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.chair.waiting": [
+    {
+      "type": 0,
+      "value": "The draft agenda is waiting for your agreementSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.clean": [
+    {
+      "type": 0,
+      "value": "The members see the agenda as it is here.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.close": [
+    {
+      "type": 0,
+      "value": "CloseSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.deadlinePassed.allow": [
+    {
+      "type": 0,
+      "value": "The deadline has passed: late papers are marked “Late paper”.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.deadlinePassed.block": [
+    {
+      "type": 0,
+      "value": "The deadline has passed: late papers are not accepted.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.deadlinePassed.chair": [
+    {
+      "type": 0,
+      "value": "The deadline has passed: late papers go to the chair first.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.dirty": [
+    {
+      "type": 0,
+      "value": "There are changes the members do not see yet. Publish a revision to show them.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.drag.instructions": [
+    {
+      "type": 0,
+      "value": "To move with the keyboard, press Space, then the arrow keys, then Space to drop or Escape to cancel. Every move is also in the item’s menu.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.emptySection": [
+    {
+      "type": 0,
+      "value": "No items in this section.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.flag.added": [
+    {
+      "type": 0,
+      "value": "AddedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.flag.late": [
+    {
+      "type": 0,
+      "value": "LateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.flag.moved": [
+    {
+      "type": 0,
+      "value": "MovedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.flag.paperAdded": [
+    {
+      "type": 0,
+      "value": "Paper addedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.flag.paperRemoved": [
+    {
+      "type": 0,
+      "value": "Paper removedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.flag.paperReplaced": [
+    {
+      "type": 0,
+      "value": "Paper replacedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.flag.removed": [
+    {
+      "type": 0,
+      "value": "RemovedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.flag.retitled": [
+    {
+      "type": 0,
+      "value": "RetitledSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.flag.tabled": [
+    {
+      "type": 0,
+      "value": "TabledSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.flag.timeChanged": [
+    {
+      "type": 0,
+      "value": "Time changedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.frozen": [
+    {
+      "type": 0,
+      "value": "The meeting has been held or cancelled: the agenda can no longer change.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.item.addAttendee": [
+    {
+      "type": 0,
+      "value": "Add a person in attendanceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.item.addName": [
+    {
+      "type": 0,
+      "value": "Add the nameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.item.attendees": [
+    {
+      "type": 0,
+      "value": "In attendanceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.item.attendeesHint": [
+    {
+      "type": 0,
+      "value": "For this item only; they see this item’s papers. Presenters are in attendance too.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.item.description": [
+    {
+      "type": 0,
+      "value": "Note for the membersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.item.minutes": [
+    {
+      "type": 0,
+      "value": "Time in minutesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.item.nobody": [
+    {
+      "type": 0,
+      "value": "Nobody yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.item.presenterName": [
+    {
+      "type": 0,
+      "value": "Or type a nameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.item.presenterPerson": [
+    {
+      "type": 0,
+      "value": "Add a personSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.item.presenters": [
+    {
+      "type": 0,
+      "value": "PresentersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.item.purpose": [
+    {
+      "type": 0,
+      "value": "PurposeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.item.resolution": [
+    {
+      "type": 0,
+      "value": "Resolution soughtSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.item.subItemNoTime": [
+    {
+      "type": 0,
+      "value": "A sub-item has no time of its own.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.item.title": [
+    {
+      "type": 0,
+      "value": "Title on the agendaSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.keep": [
+    {
+      "type": 0,
+      "value": "Keep itSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.late.agree": [
+    {
+      "type": 0,
+      "value": "Agree to include itSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.late.answer": [
+    {
+      "type": 0,
+      "value": "The chair’s answerSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.late.awaitingChair": [
+    {
+      "type": 0,
+      "value": "Late paper · waiting for the chair (not published or timed until agreed)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.late.chairAgreed": [
+    {
+      "type": 0,
+      "value": "Late paper (chair agreed)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.late.decline": [
+    {
+      "type": 0,
+      "value": "Not this meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.late.declinePaperText": [
+    {
+      "type": 0,
+      "value": "The paper is taken off the item and not published.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.late.declineText": [
+    {
+      "type": 0,
+      "value": "The item is taken off the agenda and its paper goes back to Ready for an agenda.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.late.forYou": [
+    {
+      "type": 0,
+      "value": "Late papers: your agreement is neededSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.late.late": [
+    {
+      "type": 0,
+      "value": "Late paperSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.late.paperAwaitingChair": [
+    {
+      "type": 0,
+      "value": "A late paper is waiting for the chairSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.late.record": [
+    {
+      "type": 0,
+      "value": "Record the chair’s answer…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.late.recordLead": [
+    {
+      "type": 0,
+      "value": "For an answer the chair gave by email or in person. It is recorded in your name, for the chair.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.late.recordSubmit": [
+    {
+      "type": 0,
+      "value": "Record the answerSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.late.tabled": [
+    {
+      "type": 0,
+      "value": "Tabled at the meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.late.waiting": [
+    {
+      "type": 0,
+      "value": "Late papers waiting for the chairSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.loading": [
+    {
+      "type": 0,
+      "value": "Loading…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.menu.addSubItem": [
+    {
+      "type": 0,
+      "value": "Add a sub-item…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.menu.edit": [
+    {
+      "type": 0,
+      "value": "Edit…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.menu.indent": [
+    {
+      "type": 0,
+      "value": "Make a sub-item of the item aboveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.menu.moveDown": [
+    {
+      "type": 0,
+      "value": "Move downSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.menu.moveToPosition": [
+    {
+      "type": 0,
+      "value": "Move to position…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.menu.moveToSection": [
+    {
+      "type": 0,
+      "value": "Move to section…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.menu.moveUp": [
+    {
+      "type": 0,
+      "value": "Move upSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.menu.outdent": [
+    {
+      "type": 0,
+      "value": "Make an item againSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.menu.papers": [
+    {
+      "type": 0,
+      "value": "Papers…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.menu.remove": [
+    {
+      "type": 0,
+      "value": "Remove from agendaSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.menu.whoCanSee": [
+    {
+      "type": 0,
+      "value": "Who can see this…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.move.atEnd": [
+    {
+      "type": 0,
+      "value": "At the endSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.move.atStart": [
+    {
+      "type": 0,
+      "value": "At the startSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.move.position": [
+    {
+      "type": 0,
+      "value": "PositionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.move.section": [
+    {
+      "type": 0,
+      "value": "SectionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.move.submit": [
+    {
+      "type": 0,
+      "value": "MoveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.move.where": [
+    {
+      "type": 0,
+      "value": "Where in the sectionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.noNumber": [
+    {
+      "type": 0,
+      "value": "–SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.noSections": [
+    {
+      "type": 0,
+      "value": "The agenda has no sections yet. Add a section first.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.notOfficer": [
+    {
+      "type": 0,
+      "value": "The draft agenda is for the secretaries and the chair. The meeting page shows the published agenda.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.notPublished": [
+    {
+      "type": 0,
+      "value": "Draft · not published yetSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.notStartedYet": [
+    {
+      "type": 0,
+      "value": "The secretary has not started the agenda yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.optional": [
+    {
+      "type": 0,
+      "value": "(optional)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.papers.accessLead": [
+    {
+      "type": 0,
+      "value": "A restricted paper is not listed at all for the others.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.papers.added": [
+    {
+      "type": 0,
+      "value": "Paper added.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.papers.lead": [
+    {
+      "type": 0,
+      "value": "Papers in the order members see them.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.papers.newVersion": [
+    {
+      "type": 0,
+      "value": "New versionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.papers.none": [
+    {
+      "type": 0,
+      "value": "No papers yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.papers.onlyThese": [
+    {
+      "type": 0,
+      "value": "Only these people…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.papers.outOfPack": [
+    {
+      "type": 0,
+      "value": "Memo files left out of the packSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.papers.outOfPackFile": [
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "source"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.papers.putBack": [
+    {
+      "type": 0,
+      "value": "Put back in the packSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.papers.remove": [
+    {
+      "type": 0,
+      "value": "Remove from the packSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.papers.removeMemoText": [
+    {
+      "type": 0,
+      "value": "The file stays with the memo and can be put back in the pack.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.papers.removeUploadText": [
+    {
+      "type": 0,
+      "value": "The paper is taken off the item. Published revisions keep the version they carried.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.papers.rename": [
+    {
+      "type": 0,
+      "value": "Rename…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.papers.replace": [
+    {
+      "type": 0,
+      "value": "Replace with a new version…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.papers.replaceLead": [
+    {
+      "type": 0,
+      "value": "Members will see “Paper replaced” when you publish. The earlier version stays in the revisions already published.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.papers.replaced": [
+    {
+      "type": 0,
+      "value": "Paper replaced.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.papers.title": [
+    {
+      "type": 0,
+      "value": "Title of the paperSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.papers.upload": [
+    {
+      "type": 0,
+      "value": "Upload a paperSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.papers.uploadHint": [
+    {
+      "type": 0,
+      "value": "PDF, Word, Excel, PowerPoint or an image, up to 50 MB. Members read it as a PDF.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.papers.uploadTabledHint": [
+    {
+      "type": 0,
+      "value": "The meeting is in progress: the paper is marked “Tabled at the meeting”.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.preview.as": [
+    {
+      "type": 0,
+      "value": "Preview asSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.preview.consent": [
+    {
+      "type": 0,
+      "value": "— taken together without discussionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.preview.nothing": [
+    {
+      "type": 0,
+      "value": "This person would see no item.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.preview.open": [
+    {
+      "type": 0,
+      "value": "PreviewSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.preview.restrictedItem": [
+    {
+      "type": 0,
+      "value": "Restricted itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.preview.untitledSection": [
+    {
+      "type": 0,
+      "value": "SectionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.agendaStarted": [
+    {
+      "type": 0,
+      "value": "The agenda was already started. The page shows it now.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.alreadyAgreed": [
+    {
+      "type": 0,
+      "value": "The chair has already agreed the agenda.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.alreadyInPack": [
+    {
+      "type": 0,
+      "value": "This file is already in the pack.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.chairAgreement": [
+    {
+      "type": 0,
+      "value": "The chair agrees the agenda before it is first published. Ask the chair, or record their agreement.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.commentLength": [
+    {
+      "type": 0,
+      "value": "A comment has at most 2,000 characters.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.conflict": [
+    {
+      "type": 0,
+      "value": "Someone changed the agenda after you opened it. The latest agenda is shown now; check it and try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.copyNoAgenda": [
+    {
+      "type": 0,
+      "value": "That meeting has no agenda to copy.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.copySame": [
+    {
+      "type": 0,
+      "value": "Choose another meeting than this one.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.copyUnknown": [
+    {
+      "type": 0,
+      "value": "Choose a meeting from the list.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.fileUnknown": [
+    {
+      "type": 0,
+      "value": "The file was not found.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.forbidden": [
+    {
+      "type": 0,
+      "value": "You cannot change this agenda.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.frozen": [
+    {
+      "type": 0,
+      "value": "The agenda cannot change in this way now. Once the meeting has started only items and papers can be added; once it is held or cancelled nothing changes.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.levelRange": [
+    {
+      "type": 0,
+      "value": "Choose a level no lower than the meeting’s and no higher than your own clearance.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.minutesRange": [
+    {
+      "type": 0,
+      "value": "Give a number of minutes from 0 to 600.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.minutesSubItem": [
+    {
+      "type": 0,
+      "value": "A sub-item has no time of its own.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.noAgenda": [
+    {
+      "type": 0,
+      "value": "The agenda has not been started yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.notCleared": [
+    {
+      "type": 0,
+      "value": "Someone chosen is not cleared for this classification.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.notFound": [
+    {
+      "type": 0,
+      "value": "This is no longer on the agenda. The page shows the latest.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.notScheduled": [
+    {
+      "type": 0,
+      "value": "Schedule the meeting before publishing its agenda: members do not see a draft meeting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.nothingToPublish": [
+    {
+      "type": 0,
+      "value": "Nothing changed since the last revision, so there is nothing to publish.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.oneLevel": [
+    {
+      "type": 0,
+      "value": "Items have one level of sub-items: a sub-item has no sub-items of its own, and a break is never a sub-item.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.onePlacement": [
+    {
+      "type": 0,
+      "value": "This paper is already on the agenda of another meeting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.presenterFormat": [
+    {
+      "type": 0,
+      "value": "Choose a person or type a name for each presenter.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.range": [
+    {
+      "type": 0,
+      "value": "This number is out of range.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.rateLimited": [
+    {
+      "type": 0,
+      "value": "Too many changes in a short time. Wait a moment and try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.required": [
+    {
+      "type": 0,
+      "value": "Fill this in.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.restrictionAudience": [
+    {
+      "type": 0,
+      "value": "Only people attending the meeting can be chosen.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.restrictionEmpty": [
+    {
+      "type": 0,
+      "value": "Choose at least one person, or let everyone see it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.sectionFirst": [
+    {
+      "type": 0,
+      "value": "Add a section first.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.sectionNotEmpty": [
+    {
+      "type": 0,
+      "value": "Only an empty section can be removed. Move or remove its items first.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.standingDuplicate": [
+    {
+      "type": 0,
+      "value": "This standing item is already on the agenda.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.submissionAbove": [
+    {
+      "type": 0,
+      "value": "This paper is classified above your clearance.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.submissionState": [
+    {
+      "type": 0,
+      "value": "This paper is no longer ready for an agenda: it was returned, declined, withdrawn or decided. The list shows the latest.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.tooLong": [
+    {
+      "type": 0,
+      "value": "This is too long.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.tooMany": [
+    {
+      "type": 0,
+      "value": "This is more than an agenda holds.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.tooManyPapers": [
+    {
+      "type": 0,
+      "value": "An item has at most 20 papers.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.unknownPerson": [
+    {
+      "type": 0,
+      "value": "Choose people from the list.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.wrongKind": [
+    {
+      "type": 0,
+      "value": "A break has no papers.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.problem.wrongState": [
+    {
+      "type": 0,
+      "value": "This cannot be done now: the agenda has moved on. The page shows its latest state.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.publish.firstChanges": [
+    {
+      "type": 0,
+      "value": "What will be publishedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.publish.firstLead": [
+    {
+      "type": 0,
+      "value": "The first publication: the meeting takes its number (for example “BRC 3/2026”) and the members can read the agenda.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.publish.lead": [
+    {
+      "type": 0,
+      "value": "Members see only what they are allowed to see. Until then they read the last revision.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.publish.note": [
+    {
+      "type": 0,
+      "value": "Note to membersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.publish.noteHint": [
+    {
+      "type": 0,
+      "value": "One line on what changed, for example “Updated credit paper”.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.publish.noteRequired": [
+    {
+      "type": 0,
+      "value": "Say in a few words what changed; the members read it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.publish.notify": [
+    {
+      "type": 0,
+      "value": "Tell the membersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.publish.notifyHint": [
+    {
+      "type": 0,
+      "value": "Turn it off for a minor correction.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.publish.submit": [
+    {
+      "type": 0,
+      "value": "PublishSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.publishedOnTime": [
+    {
+      "type": 0,
+      "value": "published on timeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.purpose.decision": [
+    {
+      "type": 0,
+      "value": "For decisionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.purpose.discussion": [
+    {
+      "type": 0,
+      "value": "For discussionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.purpose.information": [
+    {
+      "type": 0,
+      "value": "For notingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.readOnly": [
+    {
+      "type": 0,
+      "value": "You read the draft agenda. Only the secretaries change it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.remove.confirm": [
+    {
+      "type": 0,
+      "value": "RemoveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.remove.submission": [
+    {
+      "type": 0,
+      "value": "The item is taken off the draft. Its paper goes back to Ready for an agenda, still accepted.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.remove.text": [
+    {
+      "type": 0,
+      "value": "The item is taken off the draft.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.remove.withSubItems": [
+    {
+      "type": 0,
+      "value": "The item is taken off the draft. Its sub-items stay and take its place.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.save": [
+    {
+      "type": 0,
+      "value": "SaveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.saved": [
+    {
+      "type": 0,
+      "value": "Saved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.section.add": [
+    {
+      "type": 0,
+      "value": "Add sectionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.section.consent": [
+    {
+      "type": 0,
+      "value": "Consent itemsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.section.consentField": [
+    {
+      "type": 0,
+      "value": "Consent sectionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.section.consentHint": [
+    {
+      "type": 0,
+      "value": "Taken together without discussion. Any member can ask for an item to be discussed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.section.consentOff": [
+    {
+      "type": 0,
+      "value": "Make it an ordinary sectionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.section.consentOn": [
+    {
+      "type": 0,
+      "value": "Make it a consent sectionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.section.landsHere": [
+    {
+      "type": 0,
+      "value": "New items land hereSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.section.landsHereAction": [
+    {
+      "type": 0,
+      "value": "New items land hereSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.section.landsHereField": [
+    {
+      "type": 0,
+      "value": "New items land hereSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.section.landsHereHint": [
+    {
+      "type": 0,
+      "value": "Papers added from Ready for an agenda go to the end of this section. One section at most.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.section.membersOnly": [
+    {
+      "type": 0,
+      "value": "Members onlySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.section.membersOnlyField": [
+    {
+      "type": 0,
+      "value": "Members onlySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.section.membersOnlyHint": [
+    {
+      "type": 0,
+      "value": "For the chair, members and secretaries only. Guests do not see it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.section.membersOnlyOff": [
+    {
+      "type": 0,
+      "value": "Members only: offSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.section.membersOnlyOn": [
+    {
+      "type": 0,
+      "value": "Members only: onSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.section.moveDown": [
+    {
+      "type": 0,
+      "value": "Move section downSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.section.moveUp": [
+    {
+      "type": 0,
+      "value": "Move section upSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.section.remove": [
+    {
+      "type": 0,
+      "value": "Remove sectionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.section.removeText": [
+    {
+      "type": 0,
+      "value": "The section is empty. It is taken off the draft.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.section.rename": [
+    {
+      "type": 0,
+      "value": "Rename and settings…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.section.title": [
+    {
+      "type": 0,
+      "value": "Section titleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.sheet.access": [
+    {
+      "type": 0,
+      "value": "Who can see thisSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.sheet.details": [
+    {
+      "type": 0,
+      "value": "DetailsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.sheet.papers": [
+    {
+      "type": 0,
+      "value": "PapersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.sheet.tabs": [
+    {
+      "type": 0,
+      "value": "Parts of the itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.source.memoAttachment": [
+    {
+      "type": 0,
+      "value": "attachmentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.source.memoDocument": [
+    {
+      "type": 0,
+      "value": "memo documentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.source.memoRecord": [
+    {
+      "type": 0,
+      "value": "memo recordSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.source.upload": [
+    {
+      "type": 0,
+      "value": "uploaded by the secretarySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.standing.aob": [
+    {
+      "type": 0,
+      "value": "Any other businessSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.standing.apologies": [
+    {
+      "type": 0,
+      "value": "Welcome and apologiesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.standing.declarations": [
+    {
+      "type": 0,
+      "value": "Declarations of interestSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.standing.mattersArising": [
+    {
+      "type": 0,
+      "value": "Matters arising and actionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.standing.previousMinutes": [
+    {
+      "type": 0,
+      "value": "Minutes of the last meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.start.copyFrom": [
+    {
+      "type": 0,
+      "value": "Meeting to copySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.start.fromMeeting": [
+    {
+      "type": 0,
+      "value": "Copy an earlier meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.start.fromMeetingHint": [
+    {
+      "type": 0,
+      "value": "Copies sections, items, times and presenters. Never papers or queue items.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.start.how": [
+    {
+      "type": 0,
+      "value": "How would you like to start?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.start.noEarlier": [
+    {
+      "type": 0,
+      "value": "There is no earlier meeting to copy.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.start.submit": [
+    {
+      "type": 0,
+      "value": "StartSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.t.deadlinePassed": [
+    {
+      "type": 0,
+      "value": "Late papers are not accepted for this "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": ". Choose a later meeting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.t.fromTemplate": [
+    {
+      "type": 0,
+      "value": "The "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "’s standard agendaSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.t.noChair": [
+    {
+      "type": 0,
+      "value": "The "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " has no chair or vice-chair in office, so there is nobody to agree.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.t.notInAudience": [
+    {
+      "type": 0,
+      "value": "This person is not attending the meeting of this "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.tabledOnly": [
+    {
+      "type": 0,
+      "value": "The meeting is in progress: you can add items and papers, marked “Tabled at the meeting”.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.addItem": [
+    {
+      "type": 0,
+      "value": "Add standing itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.addItemTo": [
+    {
+      "type": 0,
+      "value": "Add standing item to "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.addSection": [
+    {
+      "type": 0,
+      "value": "Add sectionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.chairAgreement": [
+    {
+      "type": 0,
+      "value": "The chair agrees the agenda before it is first publishedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.chairAgreementHint": [
+    {
+      "type": 0,
+      "value": "The secretary can record an agreement the chair gave by email or in person.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.chairAgreesOff": [
+    {
+      "type": 0,
+      "value": "The agenda is published without the chair’s agreement.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.chairAgreesOn": [
+    {
+      "type": 0,
+      "value": "The chair agrees the agenda before it is first published.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.consent": [
+    {
+      "type": 0,
+      "value": "Consent sectionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.itemActions": [
+    {
+      "type": 0,
+      "value": "Actions for "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.itemTitle": [
+    {
+      "type": 0,
+      "value": "Standing itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.itemsOf": [
+    {
+      "type": 0,
+      "value": "Standing items of "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.landsHere": [
+    {
+      "type": 0,
+      "value": "New items land hereSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.membersOnly": [
+    {
+      "type": 0,
+      "value": "Members onlySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.minutes": [
+    {
+      "type": 0,
+      "value": "MinutesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.moveDown": [
+    {
+      "type": 0,
+      "value": "Move downSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.moveSectionDown": [
+    {
+      "type": 0,
+      "value": "Move section downSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.moveSectionUp": [
+    {
+      "type": 0,
+      "value": "Move section upSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.moveUp": [
+    {
+      "type": 0,
+      "value": "Move upSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.newItem": [
+    {
+      "type": 0,
+      "value": "New standing itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.noKind": [
+    {
+      "type": 0,
+      "value": "OtherSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.noSections": [
+    {
+      "type": 0,
+      "value": "The standard agenda has no sections.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.purpose": [
+    {
+      "type": 0,
+      "value": "PurposeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.removeItem": [
+    {
+      "type": 0,
+      "value": "Remove standing itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.removeSection": [
+    {
+      "type": 0,
+      "value": "Remove sectionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.sectionActions": [
+    {
+      "type": 0,
+      "value": "Actions for the section "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.sectionNumber": [
+    {
+      "type": 0,
+      "value": "Section "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.sectionTitle": [
+    {
+      "type": 0,
+      "value": "Section titleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.standard": [
+    {
+      "type": 0,
+      "value": "Standard agendaSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.standardHint": [
+    {
+      "type": 0,
+      "value": "New meetings start from this; meetings already started keep theirs.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.standingKind": [
+    {
+      "type": 0,
+      "value": "KindSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.template.tab": [
+    {
+      "type": 0,
+      "value": "AgendaSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.tray.add": [
+    {
+      "type": 0,
+      "value": "Add to agendaSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.tray.empty": [
+    {
+      "type": 0,
+      "value": "No accepted papers are waiting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.acceptedOn": [
+    {
+      "type": 0,
+      "value": "Accepted "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.addSubItemTitle": [
+    {
+      "type": 0,
+      "value": "Add a sub-item to "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.addToAgendaNamed": [
+    {
+      "type": 0,
+      "value": "Add to agenda: "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.addedTo": [
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " added at position "
+    },
+    {
+      "type": 1,
+      "value": "position"
+    },
+    {
+      "type": 0,
+      "value": " in "
+    },
+    {
+      "type": 1,
+      "value": "section"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.addedUnder": [
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " added as sub-item "
+    },
+    {
+      "type": 1,
+      "value": "position"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "parent"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.agreed": [
+    {
+      "type": 0,
+      "value": "Chair’s agreement: "
+    },
+    {
+      "type": 1,
+      "value": "chair"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "when"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.agreedOnBehalf": [
+    {
+      "type": 0,
+      "value": "Chair’s agreement: "
+    },
+    {
+      "type": 1,
+      "value": "chair"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "when"
+    },
+    {
+      "type": 0,
+      "value": " (recorded by "
+    },
+    {
+      "type": 1,
+      "value": "secretary"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "note"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.awaitingLeftOut": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " item is"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " items are"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " waiting for the chair and will not be published yet: "
+    },
+    {
+      "type": 1,
+      "value": "titles"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.changeItem": [
+    {
+      "type": 0,
+      "value": "Item "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.changeLine": [
+    {
+      "type": 1,
+      "value": "flags"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.changeLineWas": [
+    {
+      "type": 1,
+      "value": "flags"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": " (was "
+    },
+    {
+      "type": 1,
+      "value": "was"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.commentBy": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "when"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.consentOff": [
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " is now an ordinary section.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.consentOn": [
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " is now a consent section.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.copyDropped": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " restriction named someone"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " restrictions named people"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " not on this meeting, now left out: "
+    },
+    {
+      "type": 1,
+      "value": "names"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.copySkipped": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " item was"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " items were"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " not copied, because nobody on this meeting may see "
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "it"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "them"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "titles"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.declineTitle": [
+    {
+      "type": 0,
+      "value": "Not this meeting: "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.dragCancel": [
+    {
+      "type": 0,
+      "value": "Moving "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " was cancelled; nothing changed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.dragEnd": [
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " dropped at position "
+    },
+    {
+      "type": 1,
+      "value": "position"
+    },
+    {
+      "type": 0,
+      "value": " in "
+    },
+    {
+      "type": 1,
+      "value": "section"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.dragHandle": [
+    {
+      "type": 0,
+      "value": "Drag to move: "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.dragOutside": [
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " is not over the agenda.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.dragOver": [
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": ": position "
+    },
+    {
+      "type": 1,
+      "value": "position"
+    },
+    {
+      "type": 0,
+      "value": " in "
+    },
+    {
+      "type": 1,
+      "value": "section"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.dragStart": [
+    {
+      "type": 0,
+      "value": "Picked up "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.dragTray": [
+    {
+      "type": 0,
+      "value": "Drag onto the agenda: "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.dueOn": [
+    {
+      "type": 0,
+      "value": "Papers were due on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.editSectionTitle": [
+    {
+      "type": 0,
+      "value": "Section: "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.fromQueue": [
+    {
+      "type": 0,
+      "value": "From the queue: "
+    },
+    {
+      "type": 1,
+      "value": "reference"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.itemActions": [
+    {
+      "type": 0,
+      "value": "Actions for "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.itemSaved": [
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " saved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.landsHereOn": [
+    {
+      "type": 0,
+      "value": "New items now land in "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.lastPublished": [
+    {
+      "type": 0,
+      "value": "Draft · last published: revision "
+    },
+    {
+      "type": 1,
+      "value": "revision"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.lateAgreed": [
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " is agreed and will be published as a late paper.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.lateDeclined": [
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " is not for this meeting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.meetingOption": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " — "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.membersOnlyOff": [
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " is no longer for members only.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.membersOnlyOn": [
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " is now for members only.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.moveToPositionTitle": [
+    {
+      "type": 0,
+      "value": "Move "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " to a positionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.moveToSectionTitle": [
+    {
+      "type": 0,
+      "value": "Move "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " to another sectionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.moved": [
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " moved to position "
+    },
+    {
+      "type": 1,
+      "value": "position"
+    },
+    {
+      "type": 0,
+      "value": " in "
+    },
+    {
+      "type": 1,
+      "value": "section"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.movedNumbered": [
+    {
+      "type": 0,
+      "value": "Item "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": ", moved to position "
+    },
+    {
+      "type": 1,
+      "value": "position"
+    },
+    {
+      "type": 0,
+      "value": " in "
+    },
+    {
+      "type": 1,
+      "value": "section"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.movedUnder": [
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " is now sub-item "
+    },
+    {
+      "type": 1,
+      "value": "position"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "parent"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.overrun": [
+    {
+      "type": 0,
+      "value": "Total "
+    },
+    {
+      "type": 1,
+      "value": "total"
+    },
+    {
+      "type": 0,
+      "value": ": ends "
+    },
+    {
+      "type": 1,
+      "value": "ends"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 6,
+      "value": "minutes",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " minute"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " minutes"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " after the planned end.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.pageTitle": [
+    {
+      "type": 0,
+      "value": "Agenda: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.pages": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " page"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " pages"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.paperAccessTitle": [
+    {
+      "type": 0,
+      "value": "Who can see "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.paperActions": [
+    {
+      "type": 0,
+      "value": "Actions for the paper "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.paperNotReadable": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Some papers cannot be shown as a PDF. Replace or remove them, then publish."
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "A paper cannot be shown as a PDF: "
+            },
+            {
+              "type": 1,
+              "value": "titles"
+            },
+            {
+              "type": 0,
+              "value": ". Replace or remove it, then publish."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Some papers cannot be shown as a PDF: "
+            },
+            {
+              "type": 1,
+              "value": "titles"
+            },
+            {
+              "type": 0,
+              "value": ". Replace or remove them, then publish."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.paperOfItem": [
+    {
+      "type": 1,
+      "value": "paper"
+    },
+    {
+      "type": 0,
+      "value": " (item: "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.paperRestricted": [
+    {
+      "type": 0,
+      "value": "Only "
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " person"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " people"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.papers": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " paper"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " papers"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 6,
+      "value": "pages",
+      "options": {
+        "=0": {
+          "value": []
+        },
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": " ("
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " page)"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": " ("
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " pages)"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.papersDue": [
+    {
+      "type": 0,
+      "value": "Papers due "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.placeTitle": [
+    {
+      "type": 0,
+      "value": "Add "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " to the agendaSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.positionLead": [
+    {
+      "type": 0,
+      "value": "A position from 1 to "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " in "
+    },
+    {
+      "type": 1,
+      "value": "where"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.positionRange": [
+    {
+      "type": 0,
+      "value": "Give a number from 1 to "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.presenters": [
+    {
+      "type": 0,
+      "value": "Presenter: "
+    },
+    {
+      "type": 1,
+      "value": "names"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.previewBanner": [
+    {
+      "type": 0,
+      "value": "This is what "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " would see if you published now.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.previewTitle": [
+    {
+      "type": 0,
+      "value": "Preview as "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.publishChanges": [
+    {
+      "type": 0,
+      "value": "What changed since revision "
+    },
+    {
+      "type": 1,
+      "value": "revision"
+    },
+    {
+      "type": 0,
+      "value": " (members see only what they are allowed to see)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.publishRevision": [
+    {
+      "type": 0,
+      "value": "Publish revision "
+    },
+    {
+      "type": 1,
+      "value": "revision"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.publishTitle": [
+    {
+      "type": 0,
+      "value": "Publish revision "
+    },
+    {
+      "type": 1,
+      "value": "revision"
+    },
+    {
+      "type": 0,
+      "value": " of the agendaSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.published": [
+    {
+      "type": 0,
+      "value": "Revision "
+    },
+    {
+      "type": 1,
+      "value": "revision"
+    },
+    {
+      "type": 0,
+      "value": " of the agenda is published.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.recordAnswerTitle": [
+    {
+      "type": 0,
+      "value": "The chair’s answer: "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.removePaperTitle": [
+    {
+      "type": 0,
+      "value": "Remove "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " from the pack?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.removePerson": [
+    {
+      "type": 0,
+      "value": "Remove "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.removeSectionTitle": [
+    {
+      "type": 0,
+      "value": "Remove the section "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.removeTitle": [
+    {
+      "type": 0,
+      "value": "Remove "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " from the agenda?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.removed": [
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " removed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.renamePaperTitle": [
+    {
+      "type": 0,
+      "value": "Rename "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.replaceTitle": [
+    {
+      "type": 0,
+      "value": "Replace "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.restricted": [
+    {
+      "type": 0,
+      "value": "Only "
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " person"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " people"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " can see thisSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.restrictedHidden": [
+    {
+      "type": 0,
+      "value": "Only "
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " person"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " people"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " can see this · title hidden from othersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.sectionActions": [
+    {
+      "type": 0,
+      "value": "Actions for the section "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.sectionAdded": [
+    {
+      "type": 0,
+      "value": "Section "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " added.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.sheetTitle": [
+    {
+      "type": 0,
+      "value": "Item "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.subItemsOf": [
+    {
+      "type": 0,
+      "value": "Sub-items of "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.titleRestricted": [
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " — papers restrictedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.total": [
+    {
+      "type": 0,
+      "value": "Total "
+    },
+    {
+      "type": 1,
+      "value": "total"
+    },
+    {
+      "type": 0,
+      "value": " · ends "
+    },
+    {
+      "type": 1,
+      "value": "ends"
+    },
+    {
+      "type": 0,
+      "value": " · planned end "
+    },
+    {
+      "type": 1,
+      "value": "planned"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.trayTitle": [
+    {
+      "type": 0,
+      "value": "Ready for an agenda ("
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "agendaBuilder.v.underItem": [
+    {
+      "type": 0,
+      "value": "the sub-items of "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "app.name": [
     {
       "type": 0,
@@ -16621,6 +19998,18 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "meetings.agendaLink.hint": [
+    {
+      "type": 0,
+      "value": "The draft agenda, the papers ready for it, the chair’s agreement and publishing.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.agendaLink.open": [
+    {
+      "type": 0,
+      "value": "Open the agenda builderSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "meetings.backTo": [
     {
       "type": 0,
@@ -17505,6 +20894,148 @@
     {
       "type": 0,
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.place.checking": [
+    {
+      "type": 0,
+      "value": "Checking the meeting’s agenda…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.place.done": [
+    {
+      "type": 0,
+      "value": "Accepted and placed on the agenda.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.place.elsewhere": [
+    {
+      "type": 0,
+      "value": "This paper is already on the agenda of another meeting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.place.field": [
+    {
+      "type": 0,
+      "value": "Place on the agenda ofSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.place.frozen": [
+    {
+      "type": 0,
+      "value": "The agenda of this meeting can no longer change. Choose another meeting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.place.hint": [
+    {
+      "type": 0,
+      "value": "Optional. The paper is accepted and put at the end of the section where new items land.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.place.lateAllow": [
+    {
+      "type": 0,
+      "value": "Late: papers were due on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ". It will be published marked “Late paper”.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.place.lateBlock": [
+    {
+      "type": 0,
+      "value": "Late papers are not accepted for this "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": ": papers were due on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ". Choose a later meeting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.place.lateChair": [
+    {
+      "type": 0,
+      "value": "Late: papers were due on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ". This goes to the chair for agreement first; it is not published or timed until the chair agrees.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.place.next": [
+    {
+      "type": 0,
+      "value": "Next meeting: "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.place.notNow": [
+    {
+      "type": 0,
+      "value": "Not now: keep it in Ready for an agendaSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.place.notStarted": [
+    {
+      "type": 0,
+      "value": "The agenda of this meeting has not been started yet. The paper is accepted and waits in Ready for an agenda.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.place.other": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.place.submit": [
+    {
+      "type": 0,
+      "value": "Accept and placeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.place.tabled": [
+    {
+      "type": 0,
+      "value": "The meeting is in progress: this is added as “Tabled at the meeting”.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "meetings.placeHidden": [
@@ -23340,6 +26871,12 @@
     {
       "type": 0,
       "value": "OverviewSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.agenda": [
+    {
+      "type": 0,
+      "value": "AgendaSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "nav.audit": [

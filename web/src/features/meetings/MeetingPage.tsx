@@ -8,6 +8,7 @@ import type { MeetingGuestResponse, MeetingResponse } from '@/api/generated/type
 import { PageHeader } from '@/components/page/PageHeader'
 import { ErrorState, LoadingState } from '@/components/page/States'
 import { Button } from '@/components/ui/button'
+import { AgendaLink } from './agenda/AgendaLink'
 import { AddGuestDialog, MeetingMenu, RemoveGuestDialog } from './MeetingDialogs'
 import { mm, mmv } from './messages'
 import { MeetingAgenda } from './page/MeetingAgenda'
@@ -80,6 +81,7 @@ export function MeetingPage({ meetingId }: { meetingId: string }) {
       <MeetingAgenda meetingId={m.id} />
       <Facts meeting={m} />
       {officer || m.canManage ? <Guests meeting={m} /> : null}
+      {officer ? <AgendaLink meetingId={m.id} /> : null}
     </section>
   )
 }

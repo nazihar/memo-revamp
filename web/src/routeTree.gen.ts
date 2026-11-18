@@ -67,6 +67,7 @@ import { Route as ShellSignedInAdminWorkflowSubstitutionsRouteImport } from './r
 import { Route as ShellSignedInAdminWorkflowTasksRouteImport } from './routes/_shell/_signedIn/admin.workflow.tasks'
 import { Route as ShellSignedInAdminWorkflowsIndexRouteImport } from './routes/_shell/_signedIn/admin.workflows.index'
 import { Route as ShellSignedInAdminWorkflowsKeyRouteImport } from './routes/_shell/_signedIn/admin.workflows.$key'
+import { Route as ShellSignedInMeetingsMeetingIdAgendaRouteImport } from './routes/_shell/_signedIn/meetings.$meetingId_.agenda'
 import { Route as ShellSignedInMemosMemoIdDocumentRouteImport } from './routes/_shell/_signedIn/memos.$memoId_.document'
 import { Route as ShellSignedInOrgPositionsPositionIdRouteImport } from './routes/_shell/_signedIn/org_.positions.$positionId'
 import { Route as ShellSignedInCommitteesForumIdSubmissionsSubmissionIdRouteImport } from './routes/_shell/_signedIn/committees.$forumId_.submissions.$submissionId'
@@ -388,6 +389,12 @@ const ShellSignedInAdminWorkflowsKeyRoute =
     path: '/admin/workflows/$key',
     getParentRoute: () => ShellSignedInRoute,
   } as any)
+const ShellSignedInMeetingsMeetingIdAgendaRoute =
+  ShellSignedInMeetingsMeetingIdAgendaRouteImport.update({
+    id: '/meetings/$meetingId_/agenda',
+    path: '/meetings/$meetingId/agenda',
+    getParentRoute: () => ShellSignedInRoute,
+  } as any)
 const ShellSignedInMemosMemoIdDocumentRoute =
   ShellSignedInMemosMemoIdDocumentRouteImport.update({
     id: '/memos/$memoId_/document',
@@ -458,6 +465,7 @@ export interface FileRoutesByFullPath {
   '/admin/workflow/substitutions': typeof ShellSignedInAdminWorkflowSubstitutionsRoute
   '/admin/workflow/tasks': typeof ShellSignedInAdminWorkflowTasksRoute
   '/admin/workflows/$key': typeof ShellSignedInAdminWorkflowsKeyRoute
+  '/meetings/$meetingId/agenda': typeof ShellSignedInMeetingsMeetingIdAgendaRoute
   '/memos/$memoId/document': typeof ShellSignedInMemosMemoIdDocumentRoute
   '/org/positions/$positionId': typeof ShellSignedInOrgPositionsPositionIdRoute
   '/admin/committee-types/': typeof ShellSignedInAdminCommitteeTypesIndexRoute
@@ -516,6 +524,7 @@ export interface FileRoutesByTo {
   '/admin/workflow/substitutions': typeof ShellSignedInAdminWorkflowSubstitutionsRoute
   '/admin/workflow/tasks': typeof ShellSignedInAdminWorkflowTasksRoute
   '/admin/workflows/$key': typeof ShellSignedInAdminWorkflowsKeyRoute
+  '/meetings/$meetingId/agenda': typeof ShellSignedInMeetingsMeetingIdAgendaRoute
   '/memos/$memoId/document': typeof ShellSignedInMemosMemoIdDocumentRoute
   '/org/positions/$positionId': typeof ShellSignedInOrgPositionsPositionIdRoute
   '/admin/committee-types': typeof ShellSignedInAdminCommitteeTypesIndexRoute
@@ -580,6 +589,7 @@ export interface FileRoutesById {
   '/_shell/_signedIn/admin/workflow/substitutions': typeof ShellSignedInAdminWorkflowSubstitutionsRoute
   '/_shell/_signedIn/admin/workflow/tasks': typeof ShellSignedInAdminWorkflowTasksRoute
   '/_shell/_signedIn/admin/workflows/$key': typeof ShellSignedInAdminWorkflowsKeyRoute
+  '/_shell/_signedIn/meetings/$meetingId_/agenda': typeof ShellSignedInMeetingsMeetingIdAgendaRoute
   '/_shell/_signedIn/memos/$memoId_/document': typeof ShellSignedInMemosMemoIdDocumentRoute
   '/_shell/_signedIn/org_/positions/$positionId': typeof ShellSignedInOrgPositionsPositionIdRoute
   '/_shell/_signedIn/admin/committee-types/': typeof ShellSignedInAdminCommitteeTypesIndexRoute
@@ -641,6 +651,7 @@ export interface FileRouteTypes {
     | '/admin/workflow/substitutions'
     | '/admin/workflow/tasks'
     | '/admin/workflows/$key'
+    | '/meetings/$meetingId/agenda'
     | '/memos/$memoId/document'
     | '/org/positions/$positionId'
     | '/admin/committee-types/'
@@ -699,6 +710,7 @@ export interface FileRouteTypes {
     | '/admin/workflow/substitutions'
     | '/admin/workflow/tasks'
     | '/admin/workflows/$key'
+    | '/meetings/$meetingId/agenda'
     | '/memos/$memoId/document'
     | '/org/positions/$positionId'
     | '/admin/committee-types'
@@ -762,6 +774,7 @@ export interface FileRouteTypes {
     | '/_shell/_signedIn/admin/workflow/substitutions'
     | '/_shell/_signedIn/admin/workflow/tasks'
     | '/_shell/_signedIn/admin/workflows/$key'
+    | '/_shell/_signedIn/meetings/$meetingId_/agenda'
     | '/_shell/_signedIn/memos/$memoId_/document'
     | '/_shell/_signedIn/org_/positions/$positionId'
     | '/_shell/_signedIn/admin/committee-types/'
@@ -1185,6 +1198,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShellSignedInAdminWorkflowsKeyRouteImport
       parentRoute: typeof ShellSignedInRoute
     }
+    '/_shell/_signedIn/meetings/$meetingId_/agenda': {
+      id: '/_shell/_signedIn/meetings/$meetingId_/agenda'
+      path: '/meetings/$meetingId/agenda'
+      fullPath: '/meetings/$meetingId/agenda'
+      preLoaderRoute: typeof ShellSignedInMeetingsMeetingIdAgendaRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
     '/_shell/_signedIn/memos/$memoId_/document': {
       id: '/_shell/_signedIn/memos/$memoId_/document'
       path: '/memos/$memoId/document'
@@ -1263,6 +1283,7 @@ interface ShellSignedInRouteChildren {
   ShellSignedInAdminWorkflowSubstitutionsRoute: typeof ShellSignedInAdminWorkflowSubstitutionsRoute
   ShellSignedInAdminWorkflowTasksRoute: typeof ShellSignedInAdminWorkflowTasksRoute
   ShellSignedInAdminWorkflowsKeyRoute: typeof ShellSignedInAdminWorkflowsKeyRoute
+  ShellSignedInMeetingsMeetingIdAgendaRoute: typeof ShellSignedInMeetingsMeetingIdAgendaRoute
   ShellSignedInMemosMemoIdDocumentRoute: typeof ShellSignedInMemosMemoIdDocumentRoute
   ShellSignedInOrgPositionsPositionIdRoute: typeof ShellSignedInOrgPositionsPositionIdRoute
   ShellSignedInAdminCommitteeTypesIndexRoute: typeof ShellSignedInAdminCommitteeTypesIndexRoute
@@ -1316,6 +1337,8 @@ const ShellSignedInRouteChildren: ShellSignedInRouteChildren = {
     ShellSignedInAdminWorkflowSubstitutionsRoute,
   ShellSignedInAdminWorkflowTasksRoute: ShellSignedInAdminWorkflowTasksRoute,
   ShellSignedInAdminWorkflowsKeyRoute: ShellSignedInAdminWorkflowsKeyRoute,
+  ShellSignedInMeetingsMeetingIdAgendaRoute:
+    ShellSignedInMeetingsMeetingIdAgendaRoute,
   ShellSignedInMemosMemoIdDocumentRoute: ShellSignedInMemosMemoIdDocumentRoute,
   ShellSignedInOrgPositionsPositionIdRoute:
     ShellSignedInOrgPositionsPositionIdRoute,

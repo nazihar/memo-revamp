@@ -550,3 +550,4 @@ All of them are written in the business transaction, with before and after where
 - **Q, The chair:** agree the agenda; agree or decline a late paper.
 - **R, The agenda template** on the committee type (an "Agenda" tab on flow J).
 - **Addition to flow M:** Accept gains "and place on the agenda of [meeting ▾]".
+- As built (T7): the builder is `/meetings/$meetingId/agenda` (`web/src/features/meetings/agenda/`), with the Move menu on every row and dnd-kit 6.3.1 / sortable 10.0.0 dragging as an extra (the spike passed under React 19.3 in StrictMode); the chair reads it with the agreement and the late papers; the committee type gains an Agenda tab; the queue's Accept dialog places through `POST …/agenda/items` (`kind: SUBMISSION`), which accepts a queued paper in the same step. No API change; the deviations from flows O, Q, R and M are in `log.md` (T7), among them papers that cannot be reordered (the API has no paper move).

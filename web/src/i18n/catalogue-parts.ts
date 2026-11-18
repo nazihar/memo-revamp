@@ -14,6 +14,7 @@ export type CataloguePart =
   | 'papers'
   | 'meetings'
   | 'agendaBuilder'
+  | 'meetingPage'
   | 'platform'
   | 'patterns'
   | 'search'

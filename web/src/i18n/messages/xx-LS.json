@@ -19090,6 +19090,776 @@
       "value": "User nameSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "meetingPage.agenda": [
+    {
+      "type": 0,
+      "value": "AgendaSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.ask.done": [
+    {
+      "type": 0,
+      "value": "Your request has been sent to the secretary and the chair.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.ask.explain": [
+    {
+      "type": 0,
+      "value": "The secretary and the chair will be told. You can withdraw this until the meeting starts.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.ask.item": [
+    {
+      "type": 0,
+      "value": "Ask to discuss this itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.ask.named": [
+    {
+      "type": 0,
+      "value": "Ask to discuss this item: "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.ask.submit": [
+    {
+      "type": 0,
+      "value": "Ask to discussSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.ask.title": [
+    {
+      "type": 0,
+      "value": "Ask for item "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " to be discussed separately?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.break": [
+    {
+      "type": 0,
+      "value": "BreakSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.changed": [
+    {
+      "type": 0,
+      "value": "Changed: "
+    },
+    {
+      "type": 1,
+      "value": "changes"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.changes.count": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " change"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " changes"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " since you last lookedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.changes.line": [
+    {
+      "type": 1,
+      "value": "line"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "changes"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.changes.of": [
+    {
+      "type": 0,
+      "value": "Revision "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.changes.title": [
+    {
+      "type": 0,
+      "value": "Changes since you last lookedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.close": [
+    {
+      "type": 0,
+      "value": "CloseSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.consentHint": [
+    {
+      "type": 0,
+      "value": "Taken together without discussionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.flag.added": [
+    {
+      "type": 0,
+      "value": "addedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.flag.late": [
+    {
+      "type": 0,
+      "value": "late paperSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.flag.moved": [
+    {
+      "type": 0,
+      "value": "movedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.flag.movedFrom": [
+    {
+      "type": 0,
+      "value": "moved (was item "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.flag.paperAdded": [
+    {
+      "type": 0,
+      "value": "paper addedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.flag.paperRemoved": [
+    {
+      "type": 0,
+      "value": "paper removedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.flag.paperReplaced": [
+    {
+      "type": 0,
+      "value": "paper replacedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.flag.removed": [
+    {
+      "type": 0,
+      "value": "removedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.flag.retitled": [
+    {
+      "type": 0,
+      "value": "renamedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.flag.tabled": [
+    {
+      "type": 0,
+      "value": "tabled at the meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.flag.timeChanged": [
+    {
+      "type": 0,
+      "value": "time changedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.late": [
+    {
+      "type": 0,
+      "value": "Late paperSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.liftedBy": [
+    {
+      "type": 0,
+      "value": "Lifted for discussion at the request of "
+    },
+    {
+      "type": 1,
+      "value": "names"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.membersOnly": [
+    {
+      "type": 0,
+      "value": "Members onlySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.minutes": [
+    {
+      "type": 1,
+      "value": "minutes"
+    },
+    {
+      "type": 0,
+      "value": " minSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.notPublished": [
+    {
+      "type": 0,
+      "value": "The agenda has not been published yet. It appears here when the secretary publishes it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.nothingShown": [
+    {
+      "type": 0,
+      "value": "No item of this agenda is shown to you.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.numbered": [
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.paper": [
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 6,
+      "value": "pages",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " page"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " pages"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.paper.back": [
+    {
+      "type": 0,
+      "value": "Back to the agendaSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.paper.failed": [
+    {
+      "type": 0,
+      "value": "The paper could not be shown. Try again, or ask the secretary.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.paper.loading": [
+    {
+      "type": 0,
+      "value": "Loading the paper…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.paper.missing": [
+    {
+      "type": 0,
+      "value": "That paper is not on this agenda, or it is not shown to you.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.paper.notReady": [
+    {
+      "type": 0,
+      "value": "This paper is still being prepared. Try again in a few minutes.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.paper.notReadyHint": [
+    {
+      "type": 0,
+      "value": "Being prepared: it can be read shortly.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.paper.opened": [
+    {
+      "type": 0,
+      "value": "OpenedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.paperFlag.added": [
+    {
+      "type": 0,
+      "value": "addedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.paperFlag.late": [
+    {
+      "type": 0,
+      "value": "late paperSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.paperFlag.removed": [
+    {
+      "type": 0,
+      "value": "removedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.paperFlag.replaced": [
+    {
+      "type": 0,
+      "value": "replaced with a new versionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.paperFlag.tabled": [
+    {
+      "type": 0,
+      "value": "tabled at the meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.papersOf": [
+    {
+      "type": 0,
+      "value": "Papers for "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.papersRestricted": [
+    {
+      "type": 0,
+      "value": "— papers restrictedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.presenters": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Presenter"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Presenters"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "names"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.print": [
+    {
+      "type": 0,
+      "value": "Print the agendaSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.printed": [
+    {
+      "type": 0,
+      "value": "Agenda, revision "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": ", published on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.problem.alreadyAsked": [
+    {
+      "type": 0,
+      "value": "You have already asked to discuss this item.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.problem.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again in a moment.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.problem.forbidden": [
+    {
+      "type": 0,
+      "value": "Only the members and guests of the meeting can ask for an item to be discussed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.problem.noRequest": [
+    {
+      "type": 0,
+      "value": "You have no request on this item to withdraw.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.problem.wrongState": [
+    {
+      "type": 0,
+      "value": "This cannot be changed now: the meeting has started or the item has moved. The page shows the latest agenda.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.purpose.decision": [
+    {
+      "type": 0,
+      "value": "For decisionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.purpose.discussion": [
+    {
+      "type": 0,
+      "value": "For discussionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.purpose.information": [
+    {
+      "type": 0,
+      "value": "For notingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.readLatest": [
+    {
+      "type": 0,
+      "value": "Read the latest revisionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.restrictedItem": [
+    {
+      "type": 0,
+      "value": "Restricted itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.revision": [
+    {
+      "type": 0,
+      "value": "Revision of the agendaSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.revision.changed": [
+    {
+      "type": 0,
+      "value": "The agenda changed on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " (revision "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": ").SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.revision.earlier": [
+    {
+      "type": 0,
+      "value": "You are reading revision "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ", an earlier version of the agenda.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.revision.latest": [
+    {
+      "type": 0,
+      "value": "Revision "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " (the latest)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.revision.note": [
+    {
+      "type": 0,
+      "value": "“"
+    },
+    {
+      "type": 1,
+      "value": "note"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.revision.option": [
+    {
+      "type": 0,
+      "value": "Revision "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.revision.published": [
+    {
+      "type": 0,
+      "value": "The agenda was published on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " (revision "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": ").SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.showChanges": [
+    {
+      "type": 0,
+      "value": "Show changesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.tabled": [
+    {
+      "type": 0,
+      "value": "Tabled at the meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.when.yours": [
+    {
+      "type": 0,
+      "value": "("
+    },
+    {
+      "type": 1,
+      "value": "times"
+    },
+    {
+      "type": 0,
+      "value": " your time, "
+    },
+    {
+      "type": 1,
+      "value": "city"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.withdraw": [
+    {
+      "type": 0,
+      "value": "Withdraw my requestSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.withdraw.done": [
+    {
+      "type": 0,
+      "value": "Your request has been withdrawn.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.withdraw.named": [
+    {
+      "type": 0,
+      "value": "Withdraw my request: "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "meetings.action.cancel": [
     {
       "type": 0,
@@ -19156,12 +19926,6 @@
     {
       "type": 0,
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
-    }
-  ],
-  "meetings.agendaLater": [
-    {
-      "type": 0,
-      "value": "The agenda appears here once the secretary publishes it.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "meetings.agendaLink.hint": [
@@ -19242,6 +20006,48 @@
     {
       "type": 0,
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.card.agenda": [
+    {
+      "type": 0,
+      "value": "Agenda publishedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.card.changes": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " change"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " changes"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " since you last lookedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "meetings.changeTimes.title": [

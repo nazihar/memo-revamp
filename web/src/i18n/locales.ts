@@ -54,6 +54,7 @@ const loaders: Record<CataloguePart, Record<string, () => Promise<Messages>>> = 
     query: { part: 'agendaBuilder' },
     import: 'default',
   }),
+  meetingPage: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'meetingPage' }, import: 'default' }),
   platform: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'platform' }, import: 'default' }),
   patterns: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'patterns' }, import: 'default' }),
   search: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'search' }, import: 'default' }),

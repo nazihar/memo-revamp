@@ -24,20 +24,43 @@ GlobalWorkerOptions.workerPort ??= new Worker(new URL('pdfjs-dist/build/pdf.work
 
 /**
  * A PDF one page at a time on a canvas (PDF.js, ADR-0045): no scripting, no XFA, no WebAssembly (the CSP has no
- * `wasm-unsafe-eval`). Loaded only when a preview opens. Pages turn with the buttons or the arrow keys.
+ * `wasm-unsafe-eval`). Loaded only when a preview opens. Pages turn with the buttons or the arrow keys. [failedText]
+ * words a failure by its HTTP status (a meeting paper still being prepared answers 409); [onLoaded] runs once the
+ * document has loaded (the meeting page's "Opened" tick).
  */
-export default function PdfViewer({ url, title }: { url: string; title: string }) {
+export default function PdfViewer({
+  url,
+  title,
+  failedText,
+  onLoaded,
+}: {
+  url: string
+  title: string
+  failedText?: (status: number | undefined) => string
+  onLoaded?: () => void
+}) {
   const intl = useIntl()
   const canvas = useRef<HTMLCanvasElement>(null)
+  const loaded = useRef(onLoaded)
+  useEffect(() => {
+    loaded.current = onLoaded
+  })
   const [pdf, setPdf] = useState<PDFDocumentProxy>()
   const [page, setPage] = useState(1)
-  const [failed, setFailed] = useState(false)
+  const [failed, setFailed] = useState<{ status: number | undefined }>()
 
   useEffect(() => {
     const task = getDocument({ url, useWasm: false, enableXfa: false, isOffscreenCanvasSupported: false })
-    task.promise.then(setPdf, () => {
-      setFailed(true)
-    })
+    task.promise.then(
+      (document) => {
+        setPdf(document)
+        loaded.current?.()
+      },
+      (error: unknown) => {
+        const status = (error as { status?: unknown } | null)?.status
+        setFailed({ status: typeof status === 'number' ? status : undefined })
+      },
+    )
     return () => {
       void task.destroy()
     }
@@ -60,7 +83,13 @@ export default function PdfViewer({ url, title }: { url: string; title: string }
     }
   }, [pdf, page])
 
-  if (failed) return <p className="text-sm">{intl.formatMessage(m.failed)}</p>
+  if (failed) {
+    return (
+      <p role="status" className="text-sm">
+        {failedText ? failedText(failed.status) : intl.formatMessage(m.failed)}
+      </p>
+    )
+  }
   const count = pdf?.numPages ?? 0
   return (
     <div

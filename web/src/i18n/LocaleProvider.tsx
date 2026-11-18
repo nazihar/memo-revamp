@@ -31,6 +31,7 @@ const ALL_PARTS: ReadonlySet<CataloguePart> = new Set([
   'papers',
   'meetings',
   'agendaBuilder',
+  'meetingPage',
   'platform',
   'patterns',
   'search',

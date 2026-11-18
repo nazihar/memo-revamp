@@ -26555,6 +26555,2636 @@
       "value": "]"
     }
   ],
+  "meetings.action.cancel": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈȧȧƞƈḗḗŀ ŧħḗḗ ḿḗḗḗḗŧīƞɠ…"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.action.changeTimes": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħȧȧƞɠḗḗ ŧħḗḗ ḓȧȧŧḗḗ ȧȧƞḓ ŧīḿḗḗ…"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.action.discard": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓīşƈȧȧřḓ ŧħḗḗ ḓřȧȧƒŧ…"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.action.edit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗḓīŧ şḗḗŧŧīƞɠş…"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.action.end": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿȧȧřķ ȧȧş ħḗḗŀḓ…"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.action.reschedule": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗşƈħḗḗḓŭŭŀḗḗ…"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.action.schedule": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şƈħḗḗḓŭŭŀḗḗ…"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.action.start": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŧȧȧřŧ ŧħḗḗ ḿḗḗḗḗŧīƞɠ…"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.actions": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḗḗŧīƞɠ ȧȧƈŧīǿǿƞş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.actionsFor": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƈŧīǿǿƞş ƒǿǿř "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.agendaLater": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ȧȧɠḗḗƞḓȧȧ ȧȧƥƥḗḗȧȧřş ħḗḗřḗḗ ǿǿƞƈḗḗ ŧħḗḗ şḗḗƈřḗḗŧȧȧřẏ ƥŭŭƀŀīşħḗḗş īŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.backTo": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɓȧȧƈķ ŧǿǿ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.cancel.explain": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿƀḗḗřş ẇīŀŀ ƀḗḗ ŧǿǿŀḓ. Īŧḗḗḿş ƒřǿǿḿ ŧħḗḗ ɋŭŭḗḗŭŭḗḗ ɠǿǿ ƀȧȧƈķ ŧǿǿ Řḗḗȧȧḓẏ ƒǿǿř ȧȧƞ ȧȧɠḗḗƞḓȧȧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.cancel.submit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈȧȧƞƈḗḗŀ ŧħḗḗ ḿḗḗḗḗŧīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.cancel.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈȧȧƞƈḗḗŀ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.cancelledBecause": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈȧȧƞƈḗḗŀŀḗḗḓ. Řḗḗȧȧşǿǿƞ: "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.caption": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḗḗŧīƞɠş ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.changeTimes.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħȧȧƞɠḗḗ ŧħḗḗ ḓȧȧŧḗḗ ȧȧƞḓ ŧīḿḗḗ ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.classification": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŀȧȧşşīƒīƈȧȧŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.col.actions": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƈŧīǿǿƞş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.col.date": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓȧȧŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.col.meeting": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḗḗŧīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.col.mode": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ħǿǿẇ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.col.status": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŧȧȧŧŭŭş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.discard.explain": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƞŀẏ ŧħḗḗ şḗḗƈřḗḗŧȧȧřīḗḗş ȧȧƞḓ ŧħḗḗ ƈħȧȧīř şȧȧẇ ŧħīş ḓřȧȧƒŧ. Ƞǿǿƀǿǿḓẏ ḗḗŀşḗḗ īş ŧǿǿŀḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.discard.submit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓīşƈȧȧřḓ ŧħḗḗ ḓřȧȧƒŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.discard.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓīşƈȧȧřḓ ŧħḗḗ ḓřȧȧƒŧ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.dismiss": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈȧȧƞƈḗḗŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.done.cancelled": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḗḗŧīƞɠ ƈȧȧƞƈḗḗŀŀḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.done.discarded": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓřȧȧƒŧ ḓīşƈȧȧřḓḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.done.draft": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şȧȧṽḗḗḓ ȧȧş ȧȧ ḓřȧȧƒŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.done.ended": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḗḗŧīƞɠ ḿȧȧřķḗḗḓ ȧȧş ħḗḗŀḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.done.guestAdded": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɠŭŭḗḗşŧ ȧȧḓḓḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.done.guestRemoved": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɠŭŭḗḗşŧ řḗḗḿǿǿṽḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.done.guestsFailed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɠŭŭḗḗşŧ ƈǿǿŭŭŀḓ ƞǿǿŧ ƀḗḗ ȧȧḓḓḗḗḓ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ɠŭŭḗḗşŧş ƈǿǿŭŭŀḓ ƞǿǿŧ ƀḗḗ ȧȧḓḓḗḗḓ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ". Ȧḓḓ ŧħḗḗḿ ǿǿƞ ŧħḗḗ ḿḗḗḗḗŧīƞɠ ƥȧȧɠḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.done.notScheduled": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḿḗḗḗḗŧīƞɠ ẇȧȧş şȧȧṽḗḗḓ ȧȧş ȧȧ ḓřȧȧƒŧ, ƀŭŭŧ īŧ ƈǿǿŭŭŀḓ ƞǿǿŧ ƀḗḗ şƈħḗḗḓŭŭŀḗḗḓ: "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.done.rescheduled": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḗḗŧīƞɠ řḗḗşƈħḗḗḓŭŭŀḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.done.saved": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şȧȧṽḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.done.scheduled": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḗḗŧīƞɠ şƈħḗḗḓŭŭŀḗḗḓ. Ŧħḗḗ ḿḗḗḿƀḗḗřş ƈȧȧƞ şḗḗḗḗ īŧ ƞǿǿẇ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.done.started": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḗḗŧīƞɠ şŧȧȧřŧḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.dot": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "first"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "second"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.draftHint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƞŀẏ ŧħḗḗ şḗḗƈřḗḗŧȧȧřīḗḗş ȧȧƞḓ ŧħḗḗ ƈħȧȧīř şḗḗḗḗ ȧȧ ḓřȧȧƒŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.edit.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḗḗŧŧīƞɠş ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.empty.cancelled": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ḿḗḗḗḗŧīƞɠş ħȧȧṽḗḗ ƀḗḗḗḗƞ ƈȧȧƞƈḗḗŀŀḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.empty.past": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ḿḗḗḗḗŧīƞɠş ẇḗḗřḗḗ ħḗḗŀḓ īƞ ŧħīş ƥḗḗřīǿǿḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.empty.upcoming": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ḿḗḗḗḗŧīƞɠş ȧȧřḗḗ ƥŀȧȧƞƞḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.end.explain": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḿḗḗḗḗŧīƞɠ īş şħǿǿẇƞ ȧȧş ħḗḗŀḓ. Īŧş ḓȧȧŧḗḗ, ƥŀȧȧƈḗḗ ȧȧƞḓ ɠŭŭḗḗşŧş ƈȧȧƞ ƞǿǿ ŀǿǿƞɠḗḗř ƈħȧȧƞɠḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.end.submit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿȧȧřķ ȧȧş ħḗḗŀḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.end.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿȧȧřķ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧş ħḗḗŀḓ?"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.form.cancelReasonHint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒǿǿř ḗḗẋȧȧḿƥŀḗḗ “Ƞǿǿŧ ḗḗƞǿǿŭŭɠħ ƀŭŭşīƞḗḗşş”."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.form.classificationHint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧ ŀǿǿẇḗḗř ŧħȧȧƞ ŧħḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "’ş ŀḗḗṽḗḗŀ, ȧȧƞḓ ƞǿǿŧ ħīɠħḗḗř ŧħȧȧƞ ẏǿǿŭŭř ǿǿẇƞ ƈŀḗḗȧȧřȧȧƞƈḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.form.committeeLevel": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "’ş ŀḗḗṽḗḗŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.form.date": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓȧȧŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.form.endDate": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗƞḓş ǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.form.from": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒřǿǿḿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.form.how": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ħǿǿẇ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.form.joinDetailsHint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒǿǿř ḗḗẋȧȧḿƥŀḗḗ ŧħḗḗ ḿḗḗḗḗŧīƞɠ ĪḒ ȧȧƞḓ ħǿǿẇ ŧǿǿ ɠḗḗŧ ŧħḗḗ ƥȧȧşşƈǿǿḓḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.form.joinUrl": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ĵǿǿīƞ ŀīƞķ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.form.joinUrlHint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŧȧȧřŧş ẇīŧħ ħŧŧƥş://. Ŧħḗḗ ƥḗḗǿǿƥŀḗḗ ȧȧŧŧḗḗƞḓīƞɠ şḗḗḗḗ īŧ ǿǿƞ ŧħḗḗ ḿḗḗḗḗŧīƞɠ ƥȧȧɠḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.form.kind": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ķīƞḓ ǿǿƒ ḿḗḗḗḗŧīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.form.location": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇħḗḗřḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.form.locationHint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒǿǿř ḗḗẋȧȧḿƥŀḗḗ “Ɓǿǿȧȧřḓ Řǿǿǿǿḿ, Ŀḗḗṽḗḗŀ 12, Ħḗḗȧȧḓ Ǿƒƒīƈḗḗ”."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.form.optional": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "(ǿǿƥŧīǿǿƞȧȧŀ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.form.otherDay": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗƞḓş ǿǿƞ ȧȧƞǿǿŧħḗḗř ḓȧȧẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.form.reason": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗȧȧşǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.form.rescheduleReasonHint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒǿǿř ḗḗẋȧȧḿƥŀḗḗ “Ƈħȧȧīř ŭŭƞȧȧṽȧȧīŀȧȧƀŀḗḗ”."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.form.save": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şȧȧṽḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.form.saveDraft": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şȧȧṽḗḗ ȧȧş ḓřȧȧƒŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.form.schedule": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şƈħḗḗḓŭŭŀḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.form.scheduleExplain": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şȧȧṽḗḗ ȧȧş ḓřȧȧƒŧ: ǿǿƞŀẏ ŧħḗḗ şḗḗƈřḗḗŧȧȧřīḗḗş ȧȧƞḓ ŧħḗḗ ƈħȧȧīř şḗḗḗḗ īŧ. Şƈħḗḗḓŭŭŀḗḗ: ŧħḗḗ ḿḗḗḿƀḗḗřş şḗḗḗḗ ŧħḗḗ ḓȧȧŧḗḗ, ŧħḗḗ ƥŀȧȧƈḗḗ ȧȧƞḓ ŧħḗḗ ŀīƞķ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.form.timeZone": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧīḿḗḗ ẑǿǿƞḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.form.timeZoneHint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḗḗȧȧřƈħ ƀẏ ƈīŧẏ. Ẇīŧħǿǿŭŭŧ ȧȧ ƈħǿǿīƈḗḗ, ẏǿǿŭŭř ǿǿřɠȧȧƞīşȧȧŧīǿǿƞ’ş ŧīḿḗḗ ẑǿǿƞḗḗ īş ŭŭşḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.form.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧīŧŀḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.form.titleHint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒǿǿř ḗḗẋȧȧḿƥŀḗḗ “Şŧřȧȧŧḗḗɠẏ ḓȧȧẏ”. Ẇīŧħǿǿŭŭŧ ȧȧ ŧīŧŀḗḗ, ŧħḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "’ş ƞȧȧḿḗḗ īş şħǿǿẇƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.form.to": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧǿǿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.guests": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɠŭŭḗḗşŧş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.guests.add": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧḓḓ ȧȧ ɠŭŭḗḗşŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.guests.addTitle": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧḓḓ ȧȧ ɠŭŭḗḗşŧ ŧǿǿ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.guests.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īƞ ȧȧŧŧḗḗƞḓȧȧƞƈḗḗ ƒǿǿř ŧħḗḗ ẇħǿǿŀḗḗ ḿḗḗḗḗŧīƞɠ, ƒǿǿř ḗḗẋȧȧḿƥŀḗḗ ŧħḗḗ Ƈħīḗḗƒ Ƒīƞȧȧƞƈīȧȧŀ Ǿƒƒīƈḗḗř."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.guests.none": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ɠŭŭḗḗşŧş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.guests.note": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗīř řǿǿŀḗḗ ȧȧŧ ŧħḗḗ ḿḗḗḗḗŧīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.guests.noteHint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒǿǿř ḗḗẋȧȧḿƥŀḗḗ “Ƈħīḗḗƒ Ƒīƞȧȧƞƈīȧȧŀ Ǿƒƒīƈḗḗř”."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.guests.person": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥḗḗřşǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.guests.remove": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗḿǿǿṽḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.guests.removeNamed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗḿǿǿṽḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.guests.removeText": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗẏ ẇīŀŀ ƞǿǿ ŀǿǿƞɠḗḗř şḗḗḗḗ ŧħīş ḿḗḗḗḗŧīƞɠ. Ŧħḗḗ řḗḗƈǿǿřḓ ŧħȧȧŧ ŧħḗḗẏ ẇḗḗřḗḗ īƞṽīŧḗḗḓ īş ķḗḗƥŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.guests.removeTitle": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗḿǿǿṽḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧş ȧȧ ɠŭŭḗḗşŧ?"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.how": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ħǿǿẇ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.join": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ĵǿǿīƞ ŧħḗḗ ḿḗḗḗḗŧīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.join.newTab": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "(ǿǿƥḗḗƞş īƞ ȧȧ ƞḗḗẇ ŧȧȧƀ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.joinDetails": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ĵǿǿīƞīƞɠ īƞşŧřŭŭƈŧīǿǿƞş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.keep": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ķḗḗḗḗƥ ŧħḗḗ ḿḗḗḗḗŧīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.kind": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ķīƞḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.kind.ordinary": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿřḓīƞȧȧřẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.kind.special": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şƥḗḗƈīȧȧŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.kind.specialMeeting": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şƥḗḗƈīȧȧŀ ḿḗḗḗḗŧīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.list.cancelled": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈȧȧƞƈḗḗŀŀḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.list.past": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥȧȧşŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.list.upcoming": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭƥƈǿǿḿīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.lists": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇħīƈħ ḿḗḗḗḗŧīƞɠş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.mine.all": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŀŀ ḿẏ ḿḗḗḗḗŧīƞɠş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.mine.asGuest": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ȧȧŧŧḗḗƞḓ ȧȧş ȧȧ ɠŭŭḗḗşŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.mine.empty": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ḿḗḗḗḗŧīƞɠş ƈǿǿḿīƞɠ ŭŭƥ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.mine.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḿḗḗḗḗŧīƞɠş ẏǿǿŭŭ ȧȧŧŧḗḗƞḓ, ȧȧƞḓ ŧħǿǿşḗḗ ǿǿƒ ŧħḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "forums"
+    },
+    {
+      "type": 0,
+      "value": " ẏǿǿŭŭ řŭŭƞ, ƒřǿǿḿ ŧħḗḗ ŀȧȧşŧ 30 ḓȧȧẏş ǿǿƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.mine.recent": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƈḗḗƞŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.mine.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿẏ ḿḗḗḗḗŧīƞɠş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.mine.upcoming": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿḿīƞɠ ŭŭƥ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.mode.hybrid": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ħẏƀřīḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.mode.hybridChoice": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɓǿǿŧħ (ħẏƀřīḓ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.mode.inPerson": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īƞ ƥḗḗřşǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.mode.online": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƞŀīƞḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.nameWithLabel": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " — "
+    },
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.new.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞḗḗẇ ḿḗḗḗḗŧīƞɠ ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.next": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞḗḗẋŧ ḿḗḗḗḗŧīƞɠ: "
+    },
+    {
+      "type": 1,
+      "value": "when"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.open": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƥḗḗƞ ḿḗḗḗḗŧīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.openNamed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƥḗḗƞ ŧħḗḗ ḿḗḗḗḗŧīƞɠ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.placeHidden": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƥŀȧȧƈḗḗ ȧȧƞḓ ŧħḗḗ ŀīƞķ ȧȧřḗḗ şħǿǿẇƞ ŧǿǿ ŧħḗḗ ƥḗḗǿǿƥŀḗḗ ȧȧŧŧḗḗƞḓīƞɠ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.problem.alreadyGuest": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ƥḗḗřşǿǿƞ īş ȧȧŀřḗḗȧȧḓẏ ȧȧ ɠŭŭḗḗşŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.problem.classification": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħǿǿǿǿşḗḗ ȧȧ ŀḗḗṽḗḗŀ ƞǿǿ ŀǿǿẇḗḗř ŧħȧȧƞ ŧħḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "’ş ȧȧƞḓ ƞǿǿ ħīɠħḗḗř ŧħȧȧƞ ẏǿǿŭŭř ǿǿẇƞ ƈŀḗḗȧȧřȧȧƞƈḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.problem.conflict": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şǿǿḿḗḗǿǿƞḗḗ ƈħȧȧƞɠḗḗḓ ŧħīş ḿḗḗḗḗŧīƞɠ ȧȧƒŧḗḗř ẏǿǿŭŭ ǿǿƥḗḗƞḗḗḓ īŧ. Ŧħḗḗ ŀȧȧŧḗḗşŧ ṽḗḗřşīǿǿƞ īş şħǿǿẇƞ ƞǿǿẇ; ƈħḗḗƈķ īŧ ȧȧƞḓ ŧřẏ ȧȧɠȧȧīƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.problem.endBeforeStart": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḿḗḗḗḗŧīƞɠ ḿŭŭşŧ ḗḗƞḓ ȧȧƒŧḗḗř īŧ şŧȧȧřŧş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.problem.failed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħȧȧŧ ḓīḓ ƞǿǿŧ ẇǿǿřķ. Ŧřẏ ȧȧɠȧȧīƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.problem.forbidden": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ƈȧȧƞƞǿǿŧ ƈħȧȧƞɠḗḗ ŧħīş ḿḗḗḗḗŧīƞɠ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.problem.forumDissolved": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 5,
+      "value": "forumGender",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ŧħīş "
+            },
+            {
+              "type": 1,
+              "value": "forum"
+            },
+            {
+              "type": 0,
+              "value": " īş ḓīşşǿǿŀṽḗḗḓ ȧȧƞḓ ħǿǿŀḓş ƞǿǿ ḿǿǿřḗḗ ḿḗḗḗḗŧīƞɠş."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.problem.guestNotCleared": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ƥḗḗřşǿǿƞ īş ƞǿǿŧ ƈŀḗḗȧȧřḗḗḓ ƒǿǿř ŧħḗḗ ḿḗḗḗḗŧīƞɠ’ş ƈŀȧȧşşīƒīƈȧȧŧīǿǿƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.problem.length": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş īş ŧǿǿǿǿ ŀǿǿƞɠ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.problem.linkCredentials": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀḗḗȧȧṽḗḗ ŧħḗḗ ŭŭşḗḗř ƞȧȧḿḗḗ ȧȧƞḓ ƥȧȧşşẇǿǿřḓ ǿǿŭŭŧ ǿǿƒ ŧħḗḗ ŀīƞķ. Ƥŭŭŧ ħǿǿẇ ŧǿǿ ĵǿǿīƞ īƞ ŧħḗḗ ĵǿǿīƞīƞɠ īƞşŧřŭŭƈŧīǿǿƞş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.problem.linkFormat": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş īş ƞǿǿŧ ȧȧ ẇḗḗƀ ȧȧḓḓřḗḗşş. Ƥȧȧşŧḗḗ ŧħḗḗ ẇħǿǿŀḗḗ ŀīƞķ, şŧȧȧřŧīƞɠ ẇīŧħ ħŧŧƥş://."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.problem.linkNotHttps": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭşḗḗ ȧȧ şḗḗƈŭŭřḗḗ ŀīƞķ ŧħȧȧŧ şŧȧȧřŧş ẇīŧħ ħŧŧƥş://."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.problem.linkRequired": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɠīṽḗḗ ŧħḗḗ ŀīƞķ ŧǿǿ ĵǿǿīƞ ǿǿƞŀīƞḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.problem.locationRequired": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şȧȧẏ ẇħḗḗřḗḗ ŧħḗḗ ḿḗḗḗḗŧīƞɠ īş ħḗḗŀḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.problem.reasonRequired": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɠīṽḗḗ ȧȧ řḗḗȧȧşǿǿƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.problem.required": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒīŀŀ ŧħīş īƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.problem.tooLong": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ḿḗḗḗḗŧīƞɠ ƈȧȧƞ ŀȧȧşŧ ȧȧŧ ḿǿǿşŧ 7 ḓȧȧẏş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.problem.typeNotPublished": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "’ş ŧẏƥḗḗ ħȧȧş ƞǿǿ ƥŭŭƀŀīşħḗḗḓ ṽḗḗřşīǿǿƞ ẏḗḗŧ. Ȧşķ ȧȧƞ ȧȧḓḿīƞīşŧřȧȧŧǿǿř ŧǿǿ ƥŭŭƀŀīşħ īŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.problem.unknownLevel": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħǿǿǿǿşḗḗ ȧȧ ŀḗḗṽḗḗŀ ƒřǿǿḿ ŧħḗḗ ŀīşŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.problem.unknownLocalTime": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ŧīḿḗḗ ḓǿǿḗḗş ƞǿǿŧ ḗḗẋīşŧ ǿǿƞ ŧħȧȧŧ ḓȧȧẏ ƀḗḗƈȧȧŭŭşḗḗ ŧħḗḗ ƈŀǿǿƈķş ƈħȧȧƞɠḗḗ. Ƈħǿǿǿǿşḗḗ ȧȧƞǿǿŧħḗḗř ŧīḿḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.problem.unknownPerson": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħǿǿǿǿşḗḗ ȧȧ ƥḗḗřşǿǿƞ ƒřǿǿḿ ŧħḗḗ ŀīşŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.problem.unknownZone": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħǿǿǿǿşḗḗ ȧȧ ŧīḿḗḗ ẑǿǿƞḗḗ ƒřǿǿḿ ŧħḗḗ ŀīşŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.problem.wrongState": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ƈȧȧƞƞǿǿŧ ƀḗḗ ḓǿǿƞḗḗ ƞǿǿẇ: ŧħḗḗ ḿḗḗḗḗŧīƞɠ ħȧȧş ḿǿǿṽḗḗḓ ǿǿƞ. Ŧħḗḗ ƥȧȧɠḗḗ şħǿǿẇş īŧş ŀȧȧŧḗḗşŧ şŧȧȧŧḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.reschedule.explain": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḿḗḗḿƀḗḗřş şḗḗḗḗ ŧħḗḗ ƞḗḗẇ ḓȧȧŧḗḗ ȧȧƞḓ ŧīḿḗḗ, ȧȧƞḓ ŧħḗḗ řḗḗȧȧşǿǿƞ īş ķḗḗƥŧ īƞ ŧħḗḗ ḿḗḗḗḗŧīƞɠ’ş ħīşŧǿǿřẏ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.reschedule.submit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗşƈħḗḗḓŭŭŀḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.reschedule.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗşƈħḗḗḓŭŭŀḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.schedule": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şƈħḗḗḓŭŭŀḗḗ ȧȧ ḿḗḗḗḗŧīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.schedule.explain": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḿḗḗḿƀḗḗřş ẇīŀŀ şḗḗḗḗ ŧħḗḗ ḓȧȧŧḗḗ, ŧħḗḗ ƥŀȧȧƈḗḗ ȧȧƞḓ ŧħḗḗ ŀīƞķ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.schedule.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şƈħḗḗḓŭŭŀḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.showEarlier": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şħǿǿẇ ḗḗȧȧřŀīḗḗř ḿḗḗḗḗŧīƞɠş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.showMore": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şħǿǿẇ ḿǿǿřḗḗ ḿḗḗḗḗŧīƞɠş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.start.explain": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḿḗḗḗḗŧīƞɠ īş şħǿǿẇƞ ȧȧş īƞ ƥřǿǿɠřḗḗşş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.start.submit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŧȧȧřŧ ŧħḗḗ ḿḗḗḗḗŧīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.start.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŧȧȧřŧ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.status.cancelled": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈȧȧƞƈḗḗŀŀḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.status.closed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŀǿǿşḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.status.draft": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓřȧȧƒŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.status.held": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ħḗḗŀḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.status.inProgress": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īƞ ƥřǿǿɠřḗḗşş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.status.minutesApproved": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿīƞŭŭŧḗḗş ȧȧƥƥřǿǿṽḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.status.notHeld": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧ ḿȧȧřķḗḗḓ ȧȧş ħḗḗŀḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.status.scheduled": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şƈħḗḗḓŭŭŀḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.tab": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḗḗŧīƞɠş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.when.dateAndTimes": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "times"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.when.onYourClock": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƞ ẏǿǿŭŭř ǿǿẇƞ ƈŀǿǿƈķ: "
+    },
+    {
+      "type": 1,
+      "value": "times"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.when.yours": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "("
+    },
+    {
+      "type": 1,
+      "value": "times"
+    },
+    {
+      "type": 0,
+      "value": " ẏǿǿŭŭř ŧīḿḗḗ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.when.zone": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "times"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "city"
+    },
+    {
+      "type": 0,
+      "value": " ŧīḿḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.where": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇħḗḗřḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.withDetail": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "detail"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.zone.none": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ŧīḿḗḗ ẑǿǿƞḗḗ ƒǿǿŭŭƞḓ ƒǿǿř ŧħȧȧŧ ƈīŧẏ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.zone.organisation": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭř ǿǿřɠȧȧƞīşȧȧŧīǿǿƞ’ş ŧīḿḗḗ ẑǿǿƞḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetings.zone.type": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧẏƥḗḗ ȧȧ ƈīŧẏ, ƒǿǿř ḗḗẋȧȧḿƥŀḗḗ Ḓħȧȧķȧȧ ǿǿř Ŀǿǿƞḓǿǿƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "memo.access.approvers": [
     {
       "type": 0,
@@ -37164,6 +39794,20 @@
       "value": "]"
     }
   ],
+  "nav.meeting": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḗḗŧīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "nav.memo": [
     {
       "type": 0,
@@ -37246,6 +39890,20 @@
     {
       "type": 1,
       "value": "forums"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "nav.myMeetings": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿẏ ḿḗḗḗḗŧīƞɠş"
     },
     {
       "type": 0,

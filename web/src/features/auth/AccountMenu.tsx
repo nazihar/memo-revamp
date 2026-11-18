@@ -1,6 +1,6 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate } from '@tanstack/react-router'
-import { BellRing, LogOut, ShieldCheck, UsersRound } from 'lucide-react'
+import { BellRing, CalendarDays, LogOut, ShieldCheck, UsersRound } from 'lucide-react'
 import { defineMessages, useIntl, type NoMessageValues } from 'react-intl'
 import { logout } from '@/api/generated/sdk.gen'
 import { useTerms, type TermValues } from '@/features/terms/terms'
@@ -20,6 +20,7 @@ const messages = defineMessages<{
   security: NoMessageValues
   notifications: NoMessageValues
   forums: TermValues
+  meetings: NoMessageValues
   signOut: NoMessageValues
   signIn: NoMessageValues
 }>({
@@ -27,6 +28,7 @@ const messages = defineMessages<{
   security: { id: 'account.security', defaultMessage: 'My security' },
   notifications: { id: 'account.notifications', defaultMessage: 'Notification settings' },
   forums: { id: 'nav.myForums', defaultMessage: 'My {forums}' },
+  meetings: { id: 'nav.myMeetings', defaultMessage: 'My meetings' },
   signOut: { id: 'account.signOut', defaultMessage: 'Sign out' },
   signIn: { id: 'account.signIn', defaultMessage: 'Sign in' },
 })
@@ -84,6 +86,10 @@ export function AccountMenu() {
         <DropdownMenuItem onSelect={() => void navigate({ to: '/me/committees' })}>
           <UsersRound aria-hidden="true" />
           {intl.formatMessage(messages.forums, terms)}
+        </DropdownMenuItem>
+        <DropdownMenuItem onSelect={() => void navigate({ to: '/me/meetings' })}>
+          <CalendarDays aria-hidden="true" />
+          {intl.formatMessage(messages.meetings)}
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={() => void navigate({ to: '/me/notifications' })}>
           <BellRing aria-hidden="true" />

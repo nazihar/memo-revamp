@@ -1,6 +1,7 @@
 # E03 Meetings and the agenda builder — log
 
 ## 2026-11-18
+
 - **Plan written under the delegated gate** (Phase 4 Q1):
   - research: R1 versions; R2 from the help centres and reviews of eight portals (Convene, iBabs and Boardvantage publish almost nothing), the CGI and Board Intelligence 2026 board-reporting guidance, BoardSource and Board Intelligence on consent agendas, the bank terms of reference of Bank of Cyprus, Emirates NBD and HSBC, Basel 2015 and ORIC on conflicts, and WCAG 2.2 on dragging;
   - ADR-0060 (meetings and the agenda model) and ADR-0061 (meeting papers and the one access rule);
@@ -24,6 +25,7 @@
   - `FilePurpose.mayRead` sees the file, not the version, so pinned paper versions are served through a new `FileServing` entry point behind the meeting rule.
 
 ## 2026-11-18 — T1 meetings (backend)
+
 - **Built:**
   - `forum/V5` (the type version's `agenda` policy column, read from T2; `forum.code_locked_at`; `forum_submission.meeting_id` and `meeting_date` with the tray index) and `meeting/V1` (`meeting`, `meeting_counter`, `meeting_guest`, `meeting_audience`; RLS forced, `tenant_id` first, composite foreign keys, no DELETE for the app role). jOOQ regenerated; module metadata regenerated (meeting now depends on forum).
   - Forum's published API: `ForumChanged`, `ForumTypePublished` and `ForumSubmissionChanged` (now with the status it left) in `com.memo.forum`; `ForumPolicies` moved there with `version` and `published`; `SubmissionPlacements` (`place`, `unplace`, `placed`, audited `forum.submission.placed` and `.unplaced`); `ForumCodes.lock` over `Forums.lockCode` (audited `forum.code_locked`, then `CODE_LOCKED`); `ForumSeat.until`.
@@ -40,6 +42,23 @@
   - `/me/meetings` lists the meetings of forums where the actor is a secretary or the chair, not every meeting for `forums.manage` holders; recent means 30 days back, at most 100.
 - **Left for T2:** the agenda policy on the type version (checks, presets, changes view), placing submissions from the meeting side, the cancellation's effect on agendas and placements, `MeetingChanged`, `meeting.numbered` with the counter.
 
+## 2026-11-18 — T6 meetings (web, flow N)
+
+- **Built** (`web/src/features/meetings/`, no backend change):
+  - The committee page's **Meetings tab** (`/committees/$forumId?tab=meetings`): Upcoming (every meeting not yet held, whatever its date, so one not marked as held stays in view), Past (held meetings, the latest first, a year at a time) and Cancelled. Each row has the date and times in the meeting's zone ("10:00 AM – 1:00 PM Dhaka time"), the viewer's own time when it differs, the number or title, how it is held and its state; officers also see "Not marked as held" a day after the end.
+  - **Schedule a meeting**, a side sheet (full screen on a phone) for secretaries and administrators: kind, title, date and times with "ends on another day", the **time-zone picker by city**, how and where, the join link (a plain `https` field), joining instructions, the classification (the committee's level by default, lower levels not offered) and guests. "Save as draft" creates the draft (`Idempotency-Key`); "Schedule" creates it and schedules it (`If-Match`). Field problems are said in words at their field (`UNKNOWN_LOCAL_TIME` at From or To, link problems at the link).
+  - The meeting's **⋯ menu** on each row and on the meeting's page, by state: edit settings, change the date and time (a draft) or reschedule with a reason, schedule, start, mark as held, cancel with a reason ("Members will be told. Items from the queue go back to Ready for an agenda.") or discard a draft. Every change sends `If-Match`; a refusal (`WRONG_STATE`, 412, `TYPE_NOT_PUBLISHED`, `FORUM_DISSOLVED`, …) is a sentence in the dialog.
+  - `/meetings/$meetingId`, the address notifications open: a summary only (date and times in both zones, the state and the cancellation reason, how and where, a large "Join the meeting" button, joining instructions, kind, classification, guests with add and remove). `forum.read` holders outside the audience are told the place and link are for the people attending. The agenda is T8 (flow P).
+  - **My meetings**: a card on the home page (the next three, absent without any), `/me/meetings` (coming up, then the last 30 days) and "Next meeting: …" on the "My committees" cards; "My meetings" in the account menu.
+  - The time-zone picker is an ARIA 1.2 combobox over the browser's IANA zones, by city, also matching the zone name and its long name in the reader's language ("Bangladesh"); the first key typed over the chosen zone starts a new search.
+  - Catalogue part `meetings` (loaded on `/`, `/committees`, `/me/committees`, `/me/meetings`, `/meetings`); Arabic for every key. `FormDialog` gained a second action ("Save as draft") and a renamed Cancel ("Keep the meeting").
+  - Tests (`meetings.test.tsx`, 13): the tab's lists, queries and states; members see neither scheduling nor the menu; the create body with `Idempotency-Key` then schedule with `If-Match`; a draft with guests and no schedule; `UNKNOWN_LOCAL_TIME` and `LINK_CREDENTIALS` at their fields; reschedule and cancel need a reason and send `If-Match`, with a `WRONG_STATE` refusal in words; guests added with a role and removed; the reader's view without place or link; the home card with "your time" only when the zones differ; `/me/meetings` and the next meeting on "My committees"; the picker by city, long name and keyboard; Arabic right to left with axe on the tab and the sheet.
+- **Deviations from flow N:**
+  - The tab's **Agenda column** and **"Papers due"** (in the tab and the sheet) are left out: T1's API carries neither the agenda's state nor the paper deadline. They come with T2 (deadline) and T7 (agenda); the column shows the meeting's state meanwhile.
+  - N3's **"Agenda published · 2 changes since you last looked"** waits for T8.
+  - The picker's default reads **"Your organisation's time zone"** without naming it: the organisation's zone is readable only by administrators (`/admin/preferences`, the business calendar), and it may be a fixed offset rather than a city. No zone is sent and the server applies it; the saved meeting then shows its zone by city. City names are the IANA ones, so they stay in English in Arabic.
+  - Guests added in the sheet have no role note; the meeting's page adds one.
+  - "My meetings" is in the account menu, not the side menu, so the side menu and its visual baselines are unchanged. The home card shows only when meetings are coming up (none are seeded until T9), so the home baseline is unchanged until then.
 ## 2026-11-18 — T2 the agenda draft (backend)
 - **Built:**
   - `meeting/V2` (`meeting_agenda`, `meeting_section`, `meeting_item`, `meeting_item_attendee`, `meeting_paper`; RLS forced, `tenant_id` first, composite foreign keys, no DELETE or TRUNCATE for the app role; the unique live placement `(tenant_id, submission_id) WHERE removed_at IS NULL`; one receiving section per agenda). jOOQ, the module metadata (meeting now also depends on memo, files and workflow), the contract and the web client regenerated.

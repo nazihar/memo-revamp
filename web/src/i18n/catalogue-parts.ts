@@ -13,6 +13,7 @@ export type CataloguePart =
   | 'forums'
   | 'papers'
   | 'meetings'
+  | 'agendaBuilder'
   | 'platform'
   | 'patterns'
   | 'search'
@@ -25,17 +26,23 @@ const routes = Object.entries(definition)
   .filter(([name]) => !name.startsWith('$'))
   .map(([name, part]) => [name as CataloguePart, (part as { routes: string[] }).routes] as const)
 
+/**
+ * Whether a page at [pathname] is [route] or below it. A route segment written `$` matches any one segment
+ * (`/meetings/$/agenda` is every meeting's agenda page).
+ */
+function under(pathname: string, route: string): boolean {
+  const want = route.split('/')
+  const have = pathname.split('/')
+  return want.length <= have.length && want.every((segment, i) => segment === '$' || segment === have[i])
+}
+
 /** Every part a page at [pathname] needs besides core (the workflow builder's pages need admin and builder). */
 export function partsForPath(pathname: string): CataloguePart[] {
-  return routes
-    .filter(([, prefixes]) => prefixes.some((route) => pathname === route || pathname.startsWith(`${route}/`)))
-    .map(([name]) => name)
+  return routes.filter(([, prefixes]) => prefixes.some((route) => under(pathname, route))).map(([name]) => name)
 }
 
 /** The first part a page at [pathname] needs besides core, if any. */
 export function partForPath(pathname: string): CataloguePart {
-  const found = routes.find(([, prefixes]) =>
-    prefixes.some((route) => pathname === route || pathname.startsWith(`${route}/`)),
-  )
+  const found = routes.find(([, prefixes]) => prefixes.some((route) => under(pathname, route)))
   return found?.[0] ?? 'core'
 }

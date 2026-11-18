@@ -8,6 +8,7 @@ import type { MeetingGuestResponse, MeetingResponse } from '@/api/generated/type
 import { PageHeader } from '@/components/page/PageHeader'
 import { ErrorState, LoadingState } from '@/components/page/States'
 import { Button } from '@/components/ui/button'
+import { AgendaLink } from './agenda/AgendaLink'
 import { AddGuestDialog, MeetingMenu, RemoveGuestDialog } from './MeetingDialogs'
 import { mm, mmv } from './messages'
 import { fullName } from './shared'
@@ -59,6 +60,7 @@ export function MeetingPage({ meetingId }: { meetingId: string }) {
       <Place meeting={m} />
       <Facts meeting={m} />
       <Guests meeting={m} />
+      {officer ? <AgendaLink meetingId={m.id} /> : null}
       {m.status !== 'CANCELLED' ? <p className="text-muted-foreground">{intl.formatMessage(mm.agendaLater)}</p> : null}
     </section>
   )

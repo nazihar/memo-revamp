@@ -60,7 +60,7 @@ export interface TypeSettings {
   reminderDays: (number | null)[]
   /** Papers for meetings (ADR-0059), edited on the Terms tab; empty numbers being typed are null. */
   submissionPolicy: Papers
-  /** The agenda template and the chair's agreement (ADR-0060); kept as loaded until the Agenda tab edits it (E03 T7). */
+  /** The agenda template and the chair's agreement (ADR-0060), edited on the Agenda tab (E03 T7). */
   agenda: AgendaPolicy
 }
 

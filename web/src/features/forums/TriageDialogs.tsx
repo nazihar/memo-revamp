@@ -14,6 +14,7 @@ import type { SubmissionPolicy } from '@/api/generated/types.gen'
 import { Field } from '@/components/ui/field'
 import { Input, Select, Textarea } from '@/components/ui/form-controls'
 import { useToast } from '@/components/ui/toast-context'
+import { usePlaceOnAgenda } from '@/features/meetings/agenda/PlaceOnAgenda'
 import { useTerms } from '@/features/terms/terms'
 import type { Picked } from '@/features/org/PeoplePicker'
 import { FormDialog } from './FormDialog'
@@ -66,6 +67,8 @@ export function TriageDialog({
     submission.presenter ? { id: submission.presenter.id, label: submission.presenter.name } : undefined,
   )
   const [errors, setErrors] = useState<Record<string, string>>({})
+  // Flow O6 (E03 T7): Accept can also place the paper on the agenda of a coming meeting.
+  const onAgenda = usePlaceOnAgenda(submission.forumId, action === 'accept')
 
   const needsReason = action === 'defer' || action === 'return' || action === 'decline' || action === 'refer'
   const path = { forumId: submission.forumId, id: submission.id }
@@ -91,11 +94,21 @@ export function TriageDialog({
     }
   }
 
+  const acceptAndPlace = async (): Promise<string | undefined> => {
+    const refused = await onAgenda.place(submission.id)
+    await refreshPapers(queryClient)
+    if (refused) return refused
+    toast.show(onAgenda.done, 'success')
+    onClose()
+    return undefined
+  }
+
   const text = reason.trim()
   const date = targetDate || null
   const submit = (): Promise<string | undefined> => {
     switch (action) {
       case 'accept':
+        if (onAgenda.chosen) return acceptAndPlace()
         return run(
           () =>
             acceptForumSubmission({
@@ -200,7 +213,7 @@ export function TriageDialog({
           <span>{infoOnly ? intl.formatMessage(sm.infoOnlyLead) : leads[action]}</span>
         </span>
       }
-      submitLabel={submits[action]}
+      submitLabel={action === 'accept' && onAgenda.chosen ? onAgenda.submitLabel : submits[action]}
       destructive={action === 'decline'}
       onSubmit={submit}
       onClose={onClose}
@@ -272,7 +285,8 @@ export function TriageDialog({
           )}
         </Field>
       ) : null}
-      {action === 'accept' || action === 'defer' || action === 'cover' ? (
+      {onAgenda.field}
+      {(action === 'accept' && !onAgenda.chosen) || action === 'defer' || action === 'cover' ? (
         <Field
           label={intl.formatMessage(sm.targetDate)}
           optionalLabel={intl.formatMessage(fm.optional)}

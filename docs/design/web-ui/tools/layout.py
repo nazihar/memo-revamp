@@ -47,7 +47,8 @@ c = proj / 'canvas.json'
 d = json.loads(c.read_text())
 B, N = d['boards'], d['notes']
 listed = {r[0] + '.dc.html' for r in ROWS} | {r[1] + '.dc.html' for r in ROWS if not r[1].startswith('note:')} | {'Rules.dc.html'}
-missing = set(B) - listed
+others = [b for b, v in B.items() if v.get('page', 'screens') != 'screens']  # boards on other canvas pages stay where they are
+missing = set(B) - listed - set(others)
 if missing:
     raise SystemExit(f'Add these boards to ROWS first: {sorted(missing)}')
 y = -1860
@@ -67,6 +68,6 @@ for desk, phone, note, title in ROWS:
         order.append(phone + '.dc.html')
         ph = B[phone + '.dc.html'].get('h', 844)
     y = by + max(B[desk + '.dc.html'].get('h', 900), ph) + 360
-d['order'] = order + ['Rules.dc.html']
+d['order'] = order + [b for b in d['order'] if b in others]
 c.write_text(json.dumps(d, ensure_ascii=False, separators=(',', ':')))
 print(f'{len(ROWS)} rows laid out')

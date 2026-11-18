@@ -79,11 +79,11 @@ class PaperAccessIT : PaperFixture() {
         assertSees(d1, a, full, a.allPapers)
         // d2: not named on the hidden item, nor on the d1 paper.
         assertSees(d2, a, listOf("FULL", "HIDDEN", "FULL", "FULL", "FULL", "FULL"), a.allPapers - a.hiddenPaper - a.d1Paper)
-        // d3: not named, and not cleared for the confidential item, whose title they still see.
+        // d3: not named, and not cleared for the confidential item: its line reads "Restricted item" (no title).
         assertSees(
             d3,
             a,
-            listOf("TITLE", "HIDDEN", "FULL", "FULL", "FULL", "TITLE"),
+            listOf("TITLE", "HIDDEN", "FULL", "FULL", "FULL", "HIDDEN"),
             listOf(a.openPaper, a.cameraPaper, a.attendedPaper),
         )
         // The observer and the guest: nothing of the members-only section, not even its heading.
@@ -94,8 +94,13 @@ class PaperAccessIT : PaperFixture() {
         assertThat(agenda(d3, a.meeting).sectionTitles()).contains("In camera")
         // The presenter: their item in full, the other lines by title.
         assertSees(presenter, a, listOf("TITLE", "HIDDEN", "TITLE", null, "FULL", "TITLE"), listOf(a.attendedPaper))
-        // forum.read: the unrestricted, unhidden titles (members-only and confidential ones too), and no paper.
-        assertSees(auditor, a, listOf(null, null, "TITLE", "TITLE", "TITLE", "TITLE"), emptyList())
+        // forum.read: unrestricted, unhidden lines; titles only outside members-only sections and within their clearance
+        // ("Restricted item" otherwise, under an unnamed section heading); never a paper.
+        assertSees(auditor, a, listOf(null, null, "TITLE", "HIDDEN", "TITLE", "HIDDEN"), emptyList())
+        val ofAuditor = agenda(auditor, a.meeting)
+        assertThat(ofAuditor.sectionTitles()).doesNotContain("In camera")
+        assertThat(ofAuditor.lines().getValue(a.camera).absent("title")).isTrue()
+        assertThat(ofAuditor.lines().getValue(a.confidential).absent("title")).isTrue()
         // Outside the meeting: 404 everywhere.
         assertThat(agendaOf(outsider, a.meeting)).hasStatus(HttpStatus.NOT_FOUND)
         assertThat(read("/api/v1/meetings/${a.meeting.id}/agenda/revisions", outsider.session)).hasStatus(HttpStatus.NOT_FOUND)
@@ -106,12 +111,13 @@ class PaperAccessIT : PaperFixture() {
         assertThat(ofD3.getValue(a.restricted)["title"].asString()).isEqualTo("Credit facility for Acme")
         assertThat(ofD3.getValue(a.hidden).absent("title")).isTrue()
         assertThat(ofD3.getValue(a.hidden)["number"].asString()).isNotBlank()
+        assertThat(ofD3.getValue(a.confidential).absent("title")).isTrue()
 
         // The preview "as a member" runs the same rule on the draft: the secretary sees d3's view; a member may not preview.
         val preview = read("/api/v1/meetings/${a.meeting.id}/agenda/preview?as=${d3.id}", secretary.session)
         assertThat(preview).hasStatusOk()
         assertThat(preview.json()["preview"].asBoolean()).isTrue()
-        assertThat(preview.json().access(*a.items)).containsExactly("TITLE", "HIDDEN", "FULL", "FULL", "FULL", "TITLE")
+        assertThat(preview.json().access(*a.items)).containsExactly("TITLE", "HIDDEN", "FULL", "FULL", "FULL", "HIDDEN")
         assertThat(preview.json().papersOf(a.open)).containsExactly(a.openPaper)
         val asGuest = read("/api/v1/meetings/${a.meeting.id}/agenda/preview?as=${guest.id}", secretary.session).json()
         assertThat(asGuest.sectionTitles()).doesNotContain("In camera")

@@ -1800,7 +1800,7 @@ export type MemberSectionResponse = {
     items: Array<MemberItemResponse>;
     kind: 'STANDARD' | 'CONSENT';
     membersOnly: boolean;
-    title: string;
+    title?: string | null;
 };
 
 export type MemoDetailView = {

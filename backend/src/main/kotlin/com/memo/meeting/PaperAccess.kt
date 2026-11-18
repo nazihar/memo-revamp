@@ -137,7 +137,8 @@ data class PinnedPaper(
  *   audience := member in office (members-only sections for members only) ∨ guest (not members-only) ∨ attendee of it
  *               (guests and attendees until the minutes are approved)
  * seeLine  := seeItem ∨ (in the audience ∧ (not members-only ∨ a member)) ∨ (reader ∧ unhidden ∧ unrestricted)
- * seeTitle := seeItem ∨ (seeLine ∧ unhidden)
+ * seeTitle := seeItem ∨ (seeLine ∧ unhidden ∧ cleared(item) ∧ (not members-only ∨ a member or officer))
+ *             (amended 2026-11-18: otherwise the line reads "Restricted item")
  * seePaper := seeItem ∧ cleared(paper) ∧ ¬excludedFromPapers ∧ (unrestricted ∨ named ∨ officer)
  * ```
  */
@@ -172,7 +173,7 @@ class PaperAccess(
             .and(allowed)
     }
 
-    /** True for an item whose line [viewer] sees: the item itself, or its number and (unless hidden) its title. */
+    /** True for an item whose line [viewer] sees: the item itself, or its number and, by [titleCondition], its title. */
     fun lineCondition(
         viewer: PaperViewer,
         item: ItemColumns,
@@ -186,6 +187,21 @@ class PaperAccess(
             },
             if (viewer.reader) item.titleHidden.isFalse.and(item.restrictedTo.isNull) else DSL.falseCondition(),
         )
+
+    /**
+     * True for an item whose title [viewer] may read on its line (ADR-0061, amended 2026-11-18): not hidden, at a level
+     * their clearance reaches, and outside a members-only section unless they read members-only sections. A line without
+     * it reads "Restricted item". An item seen in full always shows its title.
+     */
+    fun titleCondition(
+        viewer: PaperViewer,
+        item: ItemColumns,
+    ): Condition {
+        val inCamera = viewer.officer || (viewer.member && viewer.membersOnly)
+        return cleared(viewer, item.classification)
+            .and(item.titleHidden.isFalse)
+            .and(if (inCamera) DSL.trueCondition() else item.membersOnly.isFalse)
+    }
 
     /** True for a paper of an item [viewer] may read. */
     fun paperCondition(
@@ -208,8 +224,11 @@ class PaperAccess(
         val p = MEETING_REVISION_PAPER
         val lines =
             dsl
-                .select(i.ITEM_ID, DSL.field(itemCondition(viewer, REVISION_ITEM)), DSL.field(i.TITLE_HIDDEN.isFalse))
-                .from(i)
+                .select(
+                    i.ITEM_ID,
+                    DSL.field(itemCondition(viewer, REVISION_ITEM)),
+                    DSL.field(titleCondition(viewer, REVISION_ITEM)),
+                ).from(i)
                 .where(i.REVISION_ID.eq(revisionId), lineCondition(viewer, REVISION_ITEM))
                 .fetch { checkNotNull(it.value1()) to access(it.value2(), it.value3()) }
                 .toMap()
@@ -237,7 +256,7 @@ class PaperAccess(
         val p = MEETING_PAPER
         val lines =
             dsl
-                .select(i.ID, DSL.field(itemCondition(viewer, DRAFT_ITEM)), DSL.field(i.TITLE_HIDDEN.isFalse))
+                .select(i.ID, DSL.field(itemCondition(viewer, DRAFT_ITEM)), DSL.field(titleCondition(viewer, DRAFT_ITEM)))
                 .from(i)
                 .join(s)
                 .on(s.TENANT_ID.eq(i.TENANT_ID), s.ID.eq(i.SECTION_ID))

@@ -321,7 +321,7 @@ abstract class PaperFixture : MemoIntegrationTest() {
             ?.map { UUID.fromString(it["id"].asString()) }
             .orEmpty()
 
-    fun JsonNode.sectionTitles(): List<String> = get("sections").list().map { it["title"].asString() }
+    fun JsonNode.sectionTitles(): List<String> = get("sections").list().mapNotNull { it["title"]?.takeUnless { t -> t.isNull }?.asString() }
 
     /** The elements of a JSON array. */
     fun JsonNode.list(): List<JsonNode> = (0 until size()).map { get(it) }

@@ -212,6 +212,7 @@ class MemberAgendas(
             requests = open,
             viewerId = viewer.userId,
             mayAsk = mayAsk,
+            inCamera = viewer.officer || (viewer.member && viewer.membersOnly),
         )
     }
 

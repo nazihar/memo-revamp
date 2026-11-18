@@ -5420,10 +5420,10 @@
             "type" : "boolean"
           },
           "title" : {
-            "type" : "string"
+            "type" : [ "string", "null" ]
           }
         },
-        "required" : [ "id", "items", "kind", "membersOnly", "title" ],
+        "required" : [ "id", "items", "kind", "membersOnly" ],
         "type" : "object"
       },
       "MemoDetailView" : {

@@ -71,7 +71,8 @@ data class MemberItemResponse(
 
 data class MemberSectionResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val id: UUID,
-    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val title: String,
+    /** Null for a members-only section shown to someone outside the membership ("Restricted items"). */
+    val title: String?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val kind: AgendaSectionKind,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val membersOnly: Boolean,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val items: List<MemberItemResponse>,
@@ -164,6 +165,8 @@ data class MemberAgendaInput(
     val viewerId: UUID,
     /** The viewer may ask to discuss consent items now (the latest revision, the meeting scheduled, a member or guest). */
     val mayAsk: Boolean,
+    /** The viewer reads members-only sections (an officer, or a member for them): their headings and titles. */
+    val inCamera: Boolean,
 )
 
 /** Builds what a viewer sees of a revision's body (design E03 §1.9): lines by the paper rule, papers it lets them read. */
@@ -198,7 +201,7 @@ object MemberAgendaRender {
             section.takeIf { inSection.isNotEmpty() || reads(it.membersOnly) }?.let {
                 MemberSectionResponse(
                     id = it.sectionId,
-                    title = it.title,
+                    title = if (!it.membersOnly || input.inCamera) it.title else null,
                     kind = it.kind,
                     membersOnly = it.membersOnly,
                     items =

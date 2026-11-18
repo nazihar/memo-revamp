@@ -2,6 +2,7 @@ package com.memo.workflow.internal
 
 import com.memo.common.authz.RoleHolders
 import com.memo.org.OrgDirectory
+import com.memo.workflow.AttributeType
 import com.memo.workflow.EscalationTargets
 import com.memo.workflow.WorkflowSubject
 import com.memo.workflow.definition.Definition
@@ -29,10 +30,19 @@ class DefinitionChecks(
     private val subjects: List<WorkflowSubject>,
     private val forums: List<EscalationTargets>,
 ) {
-    /** The attributes every subject offers now, in this tenant (a memo type's fields among them, ADR-0043). */
-    private fun catalogue() = subjects.flatMap { it.attributes.entries }.associate { it.key to it.value }
+    /**
+     * The attributes every subject offers now, in this tenant (a memo type's fields among them, ADR-0043). When two subject
+     * types offer one name with different types, the type [body] declares counts if any of them offers it.
+     */
+    private fun catalogue(body: JsonNode?): Map<String, AttributeType> {
+        val declared = body?.get("attributes")?.associate { it.path("name").asString() to it.path("type").asString() }.orEmpty()
+        return subjects
+            .flatMap { it.attributes.entries }
+            .groupBy({ it.key }, { it.value })
+            .mapValues { (name, types) -> types.firstOrNull { it.json == declared[name] } ?: types.first() }
+    }
 
-    fun validate(body: JsonNode): Validation = DefinitionValidator(catalogue(), References(), ::fragment).validate(body)
+    fun validate(body: JsonNode): Validation = DefinitionValidator(catalogue(body), References(), ::fragment).validate(body)
 
     /** What the runtime will read once [definition] is published: its fragments inlined, printed as schema-2 JSON. */
     fun compile(definition: Definition): JsonNode = DefinitionJson.print(DefinitionCompiler.inline(definition, ::fragment))

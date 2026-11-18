@@ -42,7 +42,7 @@
 - [ ] E01 web T4–T5 (screens approved); T6 demo committees merged (#157); journeys, runbook, ASVS with the web
 - [x] E02 plan written (2026-11-18): research, ADR-0058 waiting forum step, ADR-0059 submissions and triage, design, threat model, tasks T1–T5, test plan, flow M (`epic-02-submissions/`)
 - [x] E02 T1 waiting forum step (#159), T2 submissions and triage (#160)
-- [ ] E02 T3 readers and the memo side (in review), T5 close; web T4 after the owner's review of flow M with E03
+- [ ] E02 T3 readers and the memo side (#161, in review); T5 close (backend: demo escalation, performance, runbook, ASVS); web T4 with the journey after the owner's review of flow M with E03
 
 ## State (Phase 1b)
 - [x] Overview written (2026-11-17): ten epics (E01 federated sign-in; E02 passkeys and the sign-in policy; E03 mobile token issuer; E04 organisation in full; E05 HR sync; E06 key management; E07 break-glass; E08 export and offboarding; E09 admin console completion; E10 close-out and ASVS L2 of 1a + 1b) (#141)

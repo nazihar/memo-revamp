@@ -90,6 +90,10 @@ class MeetingCrossTenantIT : IntegrationTest() {
 
     @Autowired lateinit var publisher: AgendaPublisher
 
+    @Autowired lateinit var agendas: com.memo.meeting.internal.MemberAgendas
+
+    @Autowired lateinit var consent: com.memo.meeting.internal.ConsentRequests
+
     @Autowired lateinit var declarations: Declarations
 
     @Autowired lateinit var reviews: DeclarationReviews
@@ -305,6 +309,82 @@ class MeetingCrossTenantIT : IntegrationTest() {
         }
 
         assertAppendOnly(a, ofA, revision)
+    }
+
+    @Test
+    fun `another tenant neither sees nor writes reader states, paper opens or consent requests`() {
+        val a = side("readersa")
+        val b = side("readersb")
+        val (ofA, item) = consentAsked(a)
+
+        // Through the services: B's administrator gets 404 for A's agenda, its revisions and the consent request.
+        assertThatThrownBy { asUser(b.tenant, b.admin) { agendas.agenda(ofA, null) } }.isInstanceOf(MeetingNotFoundException::class.java)
+        assertThatThrownBy { asUser(b.tenant, b.admin) { agendas.seen(ofA, 1) } }.isInstanceOf(MeetingNotFoundException::class.java)
+        assertThatThrownBy { asUser(b.tenant, b.member) { consent.ask(ofA, item) } }.isInstanceOf(MeetingNotFoundException::class.java)
+
+        // Through SQL as the app role: none of A's rows is visible to B, none written for A or pointing at A's.
+        val tables = listOf("meeting_reader_state", "meeting_paper_open", "meeting_consent_request")
+        AppRoleJdbc.inTransaction(a.tenant.id) { c ->
+            assertThat(c.long("select count(*) from meeting_reader_state where meeting_id = ?", ofA)).isEqualTo(1)
+            assertThat(c.long("select count(*) from meeting_consent_request where meeting_id = ?", ofA)).isEqualTo(1)
+        }
+        AppRoleJdbc.inTransaction(b.tenant.id) { c ->
+            tables.forEach { table ->
+                assertThat(c.long("select count(*) from $table where tenant_id = ?", a.tenant.id.value)).describedAs(table).isZero()
+            }
+            assertThat(c.update("update meeting_consent_request set withdrawn_at = now() where item_id = ?", item)).isZero()
+            assertThat(c.update("update meeting_reader_state set last_revision = 5 where meeting_id = ?", ofA)).isZero()
+        }
+        val now = OffsetDateTime.now(ZoneOffset.UTC)
+        val writes =
+            listOf(
+                "insert into meeting_reader_state (tenant_id, meeting_id, user_id, last_revision, seen_at) values (?, ?, ?, 1, ?)" to
+                    listOf<Any>(a.tenant.id.value, ofA, b.member.id.value, now),
+                "insert into meeting_reader_state (tenant_id, meeting_id, user_id, last_revision, seen_at) values (?, ?, ?, 1, ?)" to
+                    listOf<Any>(b.tenant.id.value, ofA, b.member.id.value, now),
+                "insert into meeting_consent_request (id, tenant_id, meeting_id, item_id, user_id, revision, requested_at) " +
+                    "values (?, ?, ?, ?, ?, 1, ?)" to listOf<Any>(UUID.randomUUID(), b.tenant.id.value, ofA, item, b.member.id.value, now),
+                "insert into meeting_paper_open (tenant_id, paper_id, user_id, first_opened_at) values (?, ?, ?, ?)" to
+                    listOf<Any>(a.tenant.id.value, UUID.randomUUID(), b.member.id.value, now),
+            )
+        writes.forEach { (sql, params) ->
+            val written = runCatching { AppRoleJdbc.inTransaction(b.tenant.id) { c -> c.update(sql, *params.toTypedArray()) } }
+            assertThat(written.exceptionOrNull()).describedAs(sql).isInstanceOf(SQLException::class.java)
+        }
+
+        // The app role deletes none of them, in its own tenant.
+        tables.forEach { table ->
+            val column = if (table == "meeting_paper_open") "user_id" else "meeting_id"
+            val id = if (table == "meeting_paper_open") a.member.id.value else ofA
+            val deleted =
+                runCatching { AppRoleJdbc.inTransaction(a.tenant.id) { c -> c.update("delete from $table where $column = ?", id) } }
+            assertThat(deleted.exceptionOrNull()).describedAs(table).isInstanceOf(SQLException::class.java)
+        }
+    }
+
+    /** A published meeting of [a] whose member (also a guest) has seen revision 1 and asked to discuss its consent item. */
+    private fun consentAsked(a: Side): Pair<UUID, UUID> {
+        val chair = accounts.anActiveUser(transactions, a.tenant, aPassword())
+        asUser(a.tenant, a.admin) { members.add(a.forum, MemberInput(userId = chair.id.value, role = ForumRole.CHAIR)) }
+        val ofA = meeting(a)
+        val item =
+            asUser(a.tenant, a.admin) {
+                starts.start(ofA, AgendaOrigin.TEMPLATE, null)
+                val consentSection =
+                    views
+                        .draft(ofA)
+                        .sections
+                        .single { it.kind == com.memo.forum.AgendaSectionKind.CONSENT }
+                        .id
+                items.add(ofA, views.draft(ofA).version, ItemInput(ItemKind.ITEM, sectionId = consentSection, title = "Charter renewal"))
+            }
+        asUser(a.tenant, chair) { chairing.agree(ofA, views.draft(ofA).version, false, null) }
+        asUser(a.tenant, a.admin) { publisher.publish(ofA, views.draft(ofA).version, null, false) }
+        asUser(a.tenant, a.member) {
+            agendas.seen(ofA, 1)
+            consent.ask(ofA, item)
+        }
+        return ofA to item
     }
 
     @Test

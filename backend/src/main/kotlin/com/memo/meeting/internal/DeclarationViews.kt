@@ -98,7 +98,7 @@ class DeclarationViews(
             when {
                 item == null -> null
                 scene.officer -> item.title
-                published != null && access.seesTitle(access.viewer(scene.meeting, scene.actor, false), published) -> item.title
+                published != null && item.id in access.titles(scene.agenda, scene.actor) -> item.title
                 else -> null
             }
         return of(row, item?.number, title, names(listOf(row)))
@@ -209,10 +209,10 @@ class DeclarationReviews(
         reviewed: Int?,
     ): List<ReviewItemResponse> {
         val first = revisions.firstPublished(scene.meeting.id)
-        val viewer = access.viewer(scene.meeting, scene.actor, scene.officer)
+        val titles = if (scene.officer) scene.agenda.published.keys else access.titles(scene.agenda, scene.actor)
         return scene.agenda.published.values
             .filter { it.kind == ItemKind.ITEM || it.kind == ItemKind.SUBMISSION }
-            .filter { (first[it.itemId] ?: 0) > (reviewed ?: 0) && access.seesTitle(viewer, it) }
+            .filter { (first[it.itemId] ?: 0) > (reviewed ?: 0) && it.itemId in titles }
             .map { ReviewItemResponse(it.itemId, it.number, it.title) }
     }
 }

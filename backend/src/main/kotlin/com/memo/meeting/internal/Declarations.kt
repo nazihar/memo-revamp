@@ -250,7 +250,7 @@ class Declarations(
             item != null &&
                 (
                     scene.officer ||
-                        item.published?.let { declarations.seesTitle(declarations.viewer(scene.meeting, scene.actor, false), it) } == true
+                        (item.published != null && item.id in declarations.titles(scene.agenda, scene.actor))
                 )
         if (!sees && !(forSomeone && scene.officer)) throw MeetingNotFoundException("item")
         return item ?: throw MeetingNotFoundException("item")

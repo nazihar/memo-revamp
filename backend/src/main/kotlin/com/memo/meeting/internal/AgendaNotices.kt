@@ -9,11 +9,10 @@ import com.memo.common.tenant.TenantContext
 import com.memo.common.tenant.TenantTransactions
 import com.memo.forum.ForumDirectory
 import com.memo.forum.ForumRef
-import com.memo.forum.ForumRole
 import com.memo.meeting.AgendaPublished
 import com.memo.meeting.MeetingStatus
+import com.memo.meeting.PaperAccess
 import com.memo.notification.NotificationKind
-import com.memo.org.OrgDirectory
 import org.springframework.beans.factory.ObjectProvider
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Bean
@@ -22,7 +21,6 @@ import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 import java.time.Clock
-import java.time.LocalDate
 import java.util.UUID
 
 /** Task data of one revision's notifications (ids only, ADR-0018). */
@@ -33,77 +31,10 @@ data class AgendaNoticeTask(
 ) : TenantScopedPayload
 
 /**
- * A person of the audience as a revision's notification judges what they see (design E03 §9): their audience rows, their
- * clearance, and whether they are an officer of the forum. The full rule, with exclusions and every read path, is
- * `PaperAccess` (ADR-0061, T4); this is its notification half.
- */
-data class Viewer(
-    val userId: UUID,
-    val rank: Int,
-    val officer: Boolean,
-    val rows: List<AudienceRow>,
-    val today: LocalDate,
-) {
-    /** A member in office today, for a members-only section when [membersOnly]. */
-    fun member(membersOnly: Boolean): Boolean =
-        rows.any {
-            val until = it.until
-            it.source == AudienceSource.MEMBER && (until == null || !until.isBefore(today)) && (!membersOnly || it.membersOnly)
-        }
-
-    fun guest(): Boolean = rows.any { it.source == AudienceSource.GUEST }
-
-    /** Still in the audience: a guest, an item attendee, or a member in office today. */
-    fun current(): Boolean = officer || guest() || member(false) || rows.any { it.source == AudienceSource.ATTENDEE }
-}
-
-/** Whether a viewer sees an item or paper of a revision, and a change in it (design E03 §1.9, §9). */
-object AgendaVisibility {
-    /** Item flags judged on the item itself; paper flags are judged on each paper the viewer sees. */
-    private val ITEM_CHANGES = ItemFlag.entries.toSet() - setOf(ItemFlag.PAPER_ADDED, ItemFlag.PAPER_REPLACED, ItemFlag.PAPER_REMOVED)
-
-    fun seesItem(
-        viewer: Viewer,
-        item: RevisionItem,
-        rank: (UUID) -> Int,
-    ): Boolean {
-        val restricted = item.restrictedTo
-        val inAudience =
-            viewer.member(item.membersOnly) || (viewer.guest() && !item.membersOnly) || viewer.userId in item.attendees
-        val allowed = viewer.officer || (inAudience && (restricted == null || viewer.userId in restricted))
-        return viewer.rank >= rank(item.classificationId) && allowed
-    }
-
-    fun seesPaper(
-        viewer: Viewer,
-        item: RevisionItem,
-        paper: RevisionPaper,
-        rank: (UUID) -> Int,
-    ): Boolean {
-        val restricted = paper.restrictedTo
-        return seesItem(viewer, item, rank) && viewer.rank >= rank(paper.classificationId) &&
-            (restricted == null || viewer.userId in restricted || viewer.officer)
-    }
-
-    /** Whether [revision] changed something [viewer] sees (a removed row judged as it was published before). */
-    fun changed(
-        viewer: Viewer,
-        revision: Snapshot,
-        rank: (UUID) -> Int,
-    ): Boolean {
-        val items = revision.items.associateBy { it.itemId }
-        return revision.items.any { item -> item.changes.any { it in ITEM_CHANGES } && seesItem(viewer, item, rank) } ||
-            revision.papers.any { paper ->
-                val item = items[paper.itemId]
-                paper.changes.isNotEmpty() && item != null && seesPaper(viewer, item, paper, rank)
-            }
-    }
-}
-
-/**
  * Tells the audience of a published revision (design E03 §9), after the commit, once per person and revision (the notice
  * table is the dedupe key, so a retried job tells nobody twice): revision 1 to everyone still in the audience; a later
- * revision only to those who see something it changed. Never the publisher, never someone not cleared for the meeting.
+ * revision only to those who see something it changed, judged by the paper rule ([PaperAccess], ADR-0061). Never the
+ * publisher, never someone not cleared for the meeting.
  */
 @Service
 class AgendaNotices(
@@ -113,7 +44,8 @@ class AgendaNotices(
     private val directory: ForumDirectory,
     private val clearances: Clearances,
     private val notifier: MeetingNotifier,
-    private val org: OrgDirectory,
+    private val viewers: PaperViewers,
+    private val papers: PaperAccess,
     private val clock: Clock,
 ) {
     /** Sends the notifications of [meetingId]'s revision [revision]; how many people were told. Inside a tenant transaction. */
@@ -123,18 +55,16 @@ class AgendaNotices(
     ): Int {
         val target = target(meetingId, revision) ?: return 0
         val (meeting, head, forum) = target
-        val snapshot = revisions.snapshot(head.id)
         val rows = audience.audience(meeting.id).groupBy { it.userId }
         val users = (rows.keys - setOfNotNull(head.publishedBy)).sorted()
         val ranks = clearances.rankOf(users)
-        val officers = officers(forum.id)
-        val rank = { level: UUID -> clearances.level(level)?.rank ?: Int.MAX_VALUE }
-        val floor = rank(meeting.classificationId)
+        val officers = viewers.officers(forum.id)
+        val floor = clearances.level(meeting.classificationId)?.rank ?: Int.MAX_VALUE
         val kind = if (revision == 1) NotificationKind.MEETING_AGENDA_PUBLISHED else NotificationKind.MEETING_AGENDA_CHANGED
-        val today = org.today()
         return users.count { user ->
-            val viewer = Viewer(user, ranks[user] ?: 0, user in officers, rows.getValue(user), today)
-            val tell = viewer.rank >= floor && viewer.current() && (revision == 1 || AgendaVisibility.changed(viewer, snapshot, rank))
+            val viewer = viewers.of(meeting, user, rows.getValue(user), ranks[user] ?: 0, officers)
+            val current = viewer.officer || viewer.inAudience
+            val tell = (ranks[user] ?: 0) >= floor && current && (revision == 1 || papers.changed(viewer, head.id))
             val claimed = tell && revisions.claim(head.id, user, kind.name, clock.instant())
             if (claimed) notifier.agenda(user, kind, meeting, forum)
             claimed
@@ -151,18 +81,6 @@ class AgendaNotices(
             val forum = directory.forum(meeting.forumId)
             if (head != null && forum != null) Triple(meeting, head, forum) else null
         }
-
-    /** The forum's secretaries and chair in office (the vice-chair when there is no chair): they see every item. */
-    private fun officers(forumId: UUID): Set<UUID> {
-        val seats = directory.membersOn(forumId)
-        val chair = seats.any { it.role == ForumRole.CHAIR }
-        return seats
-            .filter {
-                it.role == ForumRole.SECRETARY || it.role == ForumRole.CHAIR ||
-                    (it.role == ForumRole.VICE_CHAIR && !chair)
-            }.map { it.userId }
-            .toSet()
-    }
 
     private companion object {
         val TOLD = setOf(MeetingStatus.SCHEDULED, MeetingStatus.IN_PROGRESS)

@@ -1,9 +1,9 @@
 package com.memo.meeting.internal
 
-import com.memo.common.authz.Clearances
 import com.memo.forum.ForumDirectory
 import com.memo.forum.ForumRole
-import com.memo.org.OrgDirectory
+import com.memo.meeting.LineAccess
+import com.memo.meeting.PaperAccess
 import org.springframework.stereotype.Component
 import java.util.UUID
 
@@ -31,6 +31,8 @@ data class DeclarationAgenda(
     val meeting: MeetingRow,
     /** The latest published revision; 0 before the first. */
     val latest: Int,
+    /** The latest revision's id; null before the first. */
+    val latestId: UUID?,
     val published: Map<UUID, RevisionItem>,
     val draft: Map<UUID, ItemRow>,
     val draftNumbers: Map<UUID, String>,
@@ -60,7 +62,7 @@ data class DeclarationAgenda(
 
 /**
  * Who may declare on what, and who rules (ADR-0062, design E04 §1.1–§1.3). The item part is the E03 title rule
- * (`seeTitle`, design E03 §1.9) for the audience; T2 folds it into `PaperAccess` with the recusal exclusion.
+ * (`seeTitle`, design E03 §1.9) as `PaperAccess` judges it for someone in the audience.
  */
 @Component
 class DeclarationAccess(
@@ -70,8 +72,8 @@ class DeclarationAccess(
     private val audience: AudienceStore,
     private val store: DeclarationStore,
     private val directory: ForumDirectory,
-    private val clearances: Clearances,
-    private val org: OrgDirectory,
+    private val viewers: PaperViewers,
+    private val paperAccess: PaperAccess,
 ) {
     /** [meeting]'s items: the latest revision's body and the live draft. */
     fun agenda(meeting: MeetingRow): DeclarationAgenda {
@@ -83,36 +85,24 @@ class DeclarationAccess(
                 .associateBy { it.itemId }
         val live = items.live(meeting.id)
         val numbers = AgendaRules.numbers(sections.live(meeting.id), live)
-        return DeclarationAgenda(meeting, head?.number ?: 0, published, live.associateBy { it.id }, numbers)
+        return DeclarationAgenda(meeting, head?.number ?: 0, head?.id, published, live.associateBy { it.id }, numbers)
     }
 
-    /** [userId] as the title rule judges them in [meeting]: their audience rows and clearance. */
-    fun viewer(
-        meeting: MeetingRow,
-        userId: UUID,
-        officer: Boolean,
-    ): Viewer =
-        Viewer(
-            userId = userId,
-            rank = clearances.rankOf(listOf(userId))[userId] ?: 0,
-            officer = officer,
-            rows = audience.rowsOf(meeting.id, userId),
-            today = org.today(),
-        )
-
     /**
-     * Whether [viewer] sees [item]'s title (E03 `seeTitle`): they see the item; or they are in the audience (a member in
-     * office, a guest outside members-only sections, or the item's attendee) and the item does not hide its title.
+     * The items of [agenda]'s latest revision whose title [userId] sees (E03 `seeTitle` through `PaperAccess`: the item
+     * in full, or its line with the title shown), as someone in the audience; `forum.read` alone does not count here.
      */
-    fun seesTitle(
-        viewer: Viewer,
-        item: RevisionItem,
-    ): Boolean {
-        if (viewer.officer) return true
-        val rank = { level: UUID -> clearances.level(level)?.rank ?: Int.MAX_VALUE }
-        val inAudience =
-            viewer.member(item.membersOnly) || (viewer.guest() && !item.membersOnly) || viewer.userId in item.attendees
-        return AgendaVisibility.seesItem(viewer, item, rank) || (inAudience && !item.titleHidden)
+    fun titles(
+        agenda: DeclarationAgenda,
+        userId: UUID,
+    ): Set<UUID> {
+        val revision = agenda.latestId ?: return emptySet()
+        val viewer = viewers.of(agenda.meeting, userId)
+        return paperAccess
+            .revision(viewer, revision)
+            .lines
+            .filterValues { it != LineAccess.HIDDEN }
+            .keys
     }
 
     /** Whether [userId] is recused from [item]: an effective declaration on it or on its parent (design E04 §1.6). */

@@ -9,6 +9,7 @@ import com.memo.jooq.indexes.MEETING_ITEM_MEETING_IDX
 import com.memo.jooq.indexes.MEETING_ITEM_PARENT_IDX
 import com.memo.jooq.indexes.MEETING_ITEM_SECTION_IDX
 import com.memo.jooq.indexes.MEETING_ITEM_SUBMISSION_UK
+import com.memo.jooq.keys.MEETING_CONSENT_REQUEST__MEETING_CONSENT_REQUEST_TENANT_ID_ITEM_ID_FKEY
 import com.memo.jooq.keys.MEETING_DECLARATION__MEETING_DECLARATION_TENANT_ID_MEETING_ID_ITEM_ID_FKEY
 import com.memo.jooq.keys.MEETING_ITEM_ATTENDEE__MEETING_ITEM_ATTENDEE_TENANT_ID_ITEM_ID_FKEY
 import com.memo.jooq.keys.MEETING_ITEM_MEETING_UK
@@ -22,6 +23,7 @@ import com.memo.jooq.keys.MEETING_REVISION_ITEM__MEETING_REVISION_ITEM_TENANT_ID
 import com.memo.jooq.keys.MEETING_REVISION_ITEM__MEETING_REVISION_ITEM_TENANT_ID_PARENT_ITEM_ID_FKEY
 import com.memo.jooq.keys.MEETING_REVISION_PAPER__MEETING_REVISION_PAPER_TENANT_ID_ITEM_ID_FKEY
 import com.memo.jooq.tables.MeetingAgenda.MeetingAgendaPath
+import com.memo.jooq.tables.MeetingConsentRequest.MeetingConsentRequestPath
 import com.memo.jooq.tables.MeetingDeclaration.MeetingDeclarationPath
 import com.memo.jooq.tables.MeetingItemAttendee.MeetingItemAttendeePath
 import com.memo.jooq.tables.MeetingPaper.MeetingPaperPath
@@ -289,6 +291,22 @@ open class MeetingItem(
      */
     fun meetingSection(): MeetingSectionPath = meetingSection
     val meetingSection: MeetingSectionPath by lazy { MeetingSectionPath(this, MEETING_ITEM__MEETING_ITEM_TENANT_ID_SECTION_ID_FKEY, null) }
+
+    private lateinit var _meetingConsentRequest: MeetingConsentRequestPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.meeting_consent_request</code> table
+     */
+    fun meetingConsentRequest(): MeetingConsentRequestPath {
+        if (!this::_meetingConsentRequest.isInitialized)
+            _meetingConsentRequest = MeetingConsentRequestPath(this, null, MEETING_CONSENT_REQUEST__MEETING_CONSENT_REQUEST_TENANT_ID_ITEM_ID_FKEY.inverseKey)
+
+        return _meetingConsentRequest;
+    }
+
+    val meetingConsentRequest: MeetingConsentRequestPath
+        get(): MeetingConsentRequestPath = meetingConsentRequest()
 
     private lateinit var _meetingDeclaration: MeetingDeclarationPath
 

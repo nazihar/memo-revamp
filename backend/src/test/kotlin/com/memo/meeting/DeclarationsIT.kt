@@ -322,6 +322,15 @@ class DeclarationsIT : DeclarationFixture() {
         assertThat(get("$base/declarations/mine", reader)).hasStatus(HttpStatus.FORBIDDEN)
         assertThat(get("$base/declarations/mine", outsider)).hasStatus(HttpStatus.NOT_FOUND)
 
+        // The members' agenda: the director's own declaration on the item; the colleague sees it as a line without the nature.
+        val ownLine = memberItem(get("$base/agenda", director).json(), item)
+        assertThat(ownLine["myDeclaration"]["nature"].asString()).isEqualTo(NATURE)
+        assertThat(ownLine["declarations"].size()).isZero()
+        val colleagueLine = memberItem(get("$base/agenda", colleague).json(), item)
+        assertThat(colleagueLine.absent("myDeclaration")).isTrue()
+        assertThat(colleagueLine["declarations"].toList().map { it["user"]["id"].asString() }).containsExactly(director.id.toString())
+        assertThat(colleagueLine["declarations"][0].has("nature")).isFalse()
+
         // The draft: the secretary's own declaration as theirs, the director's as a line with no nature.
         record(secretary, meeting, hidden, colleague)
         val own = declareOverHttp(meeting, item, secretary, """{"nature":"I hold shares in the borrower"}""")
@@ -338,6 +347,11 @@ class DeclarationsIT : DeclarationFixture() {
         assertThat(blocked).hasStatus(HttpStatus.FORBIDDEN)
         assertThat(blocked.json()["reason"].asString()).isEqualTo("RECUSED")
     }
+
+    private fun memberItem(
+        agenda: tools.jackson.databind.JsonNode,
+        item: UUID,
+    ): tools.jackson.databind.JsonNode = agenda["sections"].flatMap { it["items"] }.single { it["id"].asString() == item.toString() }
 
     /** An item only the colleague may see, with its title hidden. */
     private fun hiddenItem(meeting: MeetingRow): UUID {

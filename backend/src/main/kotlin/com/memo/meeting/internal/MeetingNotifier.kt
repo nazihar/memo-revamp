@@ -53,6 +53,18 @@ class MeetingNotifier(
         secretaries(forum.id).forEach { notify(it, NotificationKind.MEETING_ITEM_WITHDRAWN, meeting, forum) }
     }
 
+    /**
+     * A member asked to discuss a consent item (design E03 §1.5): the secretaries and the chair in office (the vice-chair
+     * when there is none) are told, never the requester. Never the item's title (ADR-0030).
+     */
+    fun discussionRequested(
+        meeting: MeetingRow,
+        forum: ForumRef,
+    ) {
+        val told = secretaries(forum.id) + setOfNotNull(chairOf(forum.id)) - setOfNotNull(actorOrNull())
+        told.forEach { notify(it, NotificationKind.MEETING_DISCUSSION_REQUESTED, meeting, forum) }
+    }
+
     /** The chair commented on the draft: the secretaries are told in the app (the comment is on the meeting). */
     fun chairCommented(
         meeting: MeetingRow,

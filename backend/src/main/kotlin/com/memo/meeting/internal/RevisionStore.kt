@@ -297,19 +297,19 @@ class RevisionStore(
 
     private companion object {
         val PRESENTERS = object : TypeReference<List<Presenter>>() {}
+
+        fun head(
+            r: MeetingRevisionRecord,
+            json: JsonMapper,
+        ) = RevisionHead(
+            id = r.id,
+            meetingId = r.meetingId,
+            number = r.number,
+            publishedAt = r.publishedAt.toInstant(),
+            publishedBy = r.publishedBy,
+            note = r.note,
+            notified = r.notified,
+            chairAgreement = r.chairAgreement?.let { json.readValue(it.data(), ChairAgreement::class.java) },
+        )
     }
 }
-
-private fun head(
-    r: MeetingRevisionRecord,
-    json: JsonMapper,
-) = RevisionHead(
-    id = r.id,
-    meetingId = r.meetingId,
-    number = r.number,
-    publishedAt = r.publishedAt.toInstant(),
-    publishedBy = r.publishedBy,
-    note = r.note,
-    notified = r.notified,
-    chairAgreement = r.chairAgreement?.let { json.readValue(it.data(), ChairAgreement::class.java) },
-)

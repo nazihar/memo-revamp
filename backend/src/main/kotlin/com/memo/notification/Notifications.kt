@@ -93,6 +93,10 @@ enum class NotificationKind(
     // Parameters `committee`, `date`.
     MEETING_CHAIR_COMMENTED(NotificationCategory.WORKFLOW, null),
 
+    // A member asked to lift a consent item for discussion (design E03 §1.5): to the secretaries and the chair. Parameters
+    // `committee`, `date`, `organisation`, `link`; never the item's title (ADR-0030).
+    MEETING_DISCUSSION_REQUESTED(NotificationCategory.WORKFLOW, MailTemplate.MEETING_DISCUSSION_REQUESTED),
+
     // Declarations of interest (Phase 4 E04, ADR-0062, design E04 §2): one recorded or withdrawn for the declarant by
     // someone else (RECORDED); one made or withdrawn, to the officers not recused from the item (MADE); a ruling asked of
     // the chair or vice-chair (RULING_NEEDED); the ruling, to the declarant (RULED); the reminder before the meeting

@@ -9,6 +9,7 @@ import com.memo.jooq.indexes.MEETING_PAPER_FILE_IDX
 import com.memo.jooq.indexes.MEETING_PAPER_FILE_UK
 import com.memo.jooq.indexes.MEETING_PAPER_ITEM_IDX
 import com.memo.jooq.indexes.MEETING_PAPER_MEETING_IDX
+import com.memo.jooq.keys.MEETING_PAPER_OPEN__MEETING_PAPER_OPEN_TENANT_ID_PAPER_ID_FKEY
 import com.memo.jooq.keys.MEETING_PAPER_PKEY
 import com.memo.jooq.keys.MEETING_PAPER_TENANT_ID_ID_KEY
 import com.memo.jooq.keys.MEETING_PAPER__MEETING_PAPER_TENANT_ID_ITEM_ID_FKEY
@@ -16,6 +17,7 @@ import com.memo.jooq.keys.MEETING_PAPER__MEETING_PAPER_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_REVISION_PAPER__MEETING_REVISION_PAPER_TENANT_ID_PAPER_ID_FKEY
 import com.memo.jooq.tables.MeetingAgenda.MeetingAgendaPath
 import com.memo.jooq.tables.MeetingItem.MeetingItemPath
+import com.memo.jooq.tables.MeetingPaperOpen.MeetingPaperOpenPath
 import com.memo.jooq.tables.MeetingRevisionPaper.MeetingRevisionPaperPath
 import com.memo.jooq.tables.records.MeetingPaperRecord
 
@@ -220,6 +222,22 @@ open class MeetingPaper(
      */
     fun meetingAgenda(): MeetingAgendaPath = meetingAgenda
     val meetingAgenda: MeetingAgendaPath by lazy { MeetingAgendaPath(this, MEETING_PAPER__MEETING_PAPER_TENANT_ID_MEETING_ID_FKEY, null) }
+
+    private lateinit var _meetingPaperOpen: MeetingPaperOpenPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.meeting_paper_open</code> table
+     */
+    fun meetingPaperOpen(): MeetingPaperOpenPath {
+        if (!this::_meetingPaperOpen.isInitialized)
+            _meetingPaperOpen = MeetingPaperOpenPath(this, null, MEETING_PAPER_OPEN__MEETING_PAPER_OPEN_TENANT_ID_PAPER_ID_FKEY.inverseKey)
+
+        return _meetingPaperOpen;
+    }
+
+    val meetingPaperOpen: MeetingPaperOpenPath
+        get(): MeetingPaperOpenPath = meetingPaperOpen()
 
     private lateinit var _meetingRevisionPaper: MeetingRevisionPaperPath
 

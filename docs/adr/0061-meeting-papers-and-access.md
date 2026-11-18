@@ -79,6 +79,19 @@ Chosen option 3.
 - A leak-suite skeleton: for each surface, a user outside the rule sees no title (when hidden), paper, count or notification.
 - The matrix `p4-e03-meetings.yaml` and cross-tenant tests.
 
+## Amendment (2026-11-18): titles only within clearance and membership
+Decided by the lead under the delegated gate (Phase 4 Q1), during E03 T4, before any screen showed titles.
+
+- **The rule.** A person sees an item's title on its line only when:
+  - the item does not hide its title;
+  - their clearance reaches the item's classification (an item is never below its meeting's level, so this covers the meeting's level too); and
+  - the item is not in a members-only section, unless they are a member for members-only sections (chair, vice-chair, member, secretary) or an officer of the forum.
+- Otherwise the line, where they see it at all, reads "{n}. Restricted item": number and time only, no title, and no RETITLED flag. This applies to members, guests, presenters, item attendees and `forum.read` holders alike. Officers also see titles only within their own clearance.
+- A members-only section shown to someone outside the membership (a `forum.read` holder) has no heading. Guests and item attendees still see nothing of a members-only section.
+- **E04's recusal** applies on top, through `PaperExclusions`, officers included, unchanged.
+- **Why:** a title can disclose as much as the paper ("Dismissal of the head of treasury", "Acquisition of Beta Bank"). Least privilege applies to titles as it does to papers: whoever may not read the paper because of its level or because it is in camera should not read its subject either. In the E03 research, item-level restriction practice keeps titles visible only to people who share the item's context (Admincontrol shows the title to restricted users of the same meeting; Diligent Community's "hide the title" and members-only sections withhold it). Clearance and in-camera membership are limits of the same kind, so they now withhold the title too.
+- **Changes from the decision above:** "An item that someone in the audience cannot see shows its number and title with 'papers restricted'" now holds only when this amendment lets them read the title. "`forum.read` (oversight) sees unrestricted, unhidden titles" now means titles at a level they are cleared for and outside members-only sections. The rest of the decision stands. `PaperAccess.titleCondition` holds the rule; `PaperLeakIT` probes it with canaries in a confidential and a members-only item title, as an uncleared member, a guest and a `forum.read` holder.
+
 ## Pros and cons of the options
 - **Option 1:** + reuses ADR-0050; − members read the whole memo file, the pack cannot leave annexes out, recusal must enter the memo rule, and access ends when the submission closes.
 - **Option 2:** + clean access by purpose; − double storage, scanning and rendering, slow publication, and copies that can drift.

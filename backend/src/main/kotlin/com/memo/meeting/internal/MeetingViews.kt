@@ -77,6 +77,12 @@ data class MeetingSummaryResponse(
     val label: String?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val status: MeetingStatus,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val relation: MeetingRelation,
+    /** "My meetings" only: the latest published revision of the agenda; null before the first. */
+    val agendaRevision: Int? = null,
+    /** "My meetings" only: the last revision the viewer looked at; null when never. */
+    val lastSeenRevision: Int? = null,
+    /** "My meetings" only: the lines changed since the viewer last looked, as far as they see them; null when not counted. */
+    val changesSinceSeen: Int? = null,
 )
 
 data class MeetingPageResponse(
@@ -98,6 +104,7 @@ class MeetingReads(
     private val directory: ForumDirectory,
     private val users: UserSummaries,
     private val org: OrgDirectory,
+    private val agendas: MemberAgendas,
 ) {
     fun get(id: UUID): MeetingResponse {
         val (meeting, relation) = guard.requireVisible(id)
@@ -179,7 +186,13 @@ class MeetingReads(
         val since = org.startOf(from ?: org.today().minusDays(RECENT_DAYS))
         val officerOf = directory.rolesOf(user).keys.filter { access.officer(it) }
         val rows = (lists.ofAudienceFrom(user, since, MINE) + lists.ofForumsFrom(officerOf, since, MINE)).distinctBy { it.id }
-        return summaries(rows.sortedWith(compareBy({ it.startsAt }, { it.id })).take(MINE))
+        val mine = rows.sortedWith(compareBy({ it.startsAt }, { it.id })).take(MINE)
+        val counts = agendas.counts(mine)
+        return summaries(mine).map { s ->
+            counts[s.id]?.let { (latest, seen, changed) ->
+                s.copy(agendaRevision = latest, lastSeenRevision = seen, changesSinceSeen = changed)
+            } ?: s
+        }
     }
 
     private fun summaries(rows: List<MeetingRow>): List<MeetingSummaryResponse> {

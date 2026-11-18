@@ -2360,7 +2360,7 @@
             "type" : [ "integer", "null" ]
           },
           "kind" : {
-            "enum" : [ "SUBMIT", "APPROVE", "RETURN", "REJECT", "WITHDRAW", "RESUBMIT", "REASSIGN", "RECOMMEND", "ROUTE", "NOTIFY", "ESCALATE_TO_FORUM", "SEND_BACK", "FORWARD", "DELEGATE", "ASK", "ANSWER", "REFER", "OPINION", "RECALL", "CANCEL", "MIGRATE", "CARRY", "CLAIM", "RELEASE", "RECUSE", "ESCALATE" ],
+            "enum" : [ "SUBMIT", "APPROVE", "RETURN", "REJECT", "WITHDRAW", "RESUBMIT", "REASSIGN", "RECOMMEND", "ROUTE", "NOTIFY", "ESCALATE_TO_FORUM", "SEND_BACK", "FORWARD", "DELEGATE", "ASK", "ANSWER", "REFER", "OPINION", "RECALL", "CANCEL", "MIGRATE", "CARRY", "CLAIM", "RELEASE", "RECUSE", "FORUM_DECIDED", "FORUM_DECLINED", "ESCALATE" ],
             "type" : "string"
           },
           "occurredAt" : {

@@ -2626,5 +2626,7 @@
   "mail.template.forumMembershipChanged": "تغيّرت عضوية لجنة",
   "mail.template.forumTermEnding": "انتهاء فترة عضوية",
   "notifications.kind.forumMembershipChanged": "تغيّرت عضوية {committee}",
-  "notifications.kind.forumTermEnding": "تنتهي قريبًا فترة عضوية {member} في {committee}"
+  "notifications.kind.forumTermEnding": "تنتهي قريبًا فترة عضوية {member} في {committee}",
+  "memo.history.action.forumDecided": "قررت اللجنة",
+  "memo.history.action.forumDeclined": "اعتذرت اللجنة عن النظر"
 }

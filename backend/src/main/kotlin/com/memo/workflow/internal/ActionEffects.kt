@@ -204,7 +204,15 @@ class ActionEffects(
             }
             (effect as? Effect.EscalateToForum)?.let {
                 events.publishEvent(
-                    WorkflowEscalatedToForum(tenant, instance.id, instance.subjectType, instance.subjectId, it.nodeId, it.forum),
+                    WorkflowEscalatedToForum(
+                        tenant,
+                        instance.id,
+                        instance.subjectType,
+                        instance.subjectId,
+                        it.nodeId,
+                        it.forum,
+                        it.waitingStepId,
+                    ),
                 )
             }
         }
@@ -238,6 +246,8 @@ class ActionEffects(
                 ActionKind.WITHDRAW to "workflow.instance.withdrawn",
                 ActionKind.RESUBMIT to "workflow.instance.resubmitted",
                 ActionKind.REASSIGN to "workflow.task.reassigned",
+                ActionKind.FORUM_DECIDED to "workflow.forum.decided",
+                ActionKind.FORUM_DECLINED to "workflow.forum.declined",
             )
     }
 }

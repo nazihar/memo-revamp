@@ -100,6 +100,10 @@ internal object Guards {
             is Migrate -> {
                 Migrations.refusal(state, command.target)
             }
+
+            is ForumDecided, is ForumDeclined -> {
+                ForumSteps.refusal(state, command)
+            }
         }
 
     /** Commands on the instance rather than a task: withdraw, resubmit, recall, cancel. */

@@ -156,7 +156,9 @@ class WorkflowInvariantProperties {
                 throw AssertionError("the E01 scripts never generate E03 hand-on commands")
             }
 
-            is Recall, is Cancel, is Migrate, is Claim, is Release, is Block, is Reresolve, is Escalate -> {
+            is Recall, is Cancel, is Migrate, is Claim, is Release, is Block, is Reresolve, is Escalate,
+            is ForumDecided, is ForumDeclined,
+            -> {
                 throw AssertionError("the E01 scripts never generate E03 hand-on commands")
             }
         }

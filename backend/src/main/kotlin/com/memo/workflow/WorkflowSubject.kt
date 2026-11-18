@@ -154,7 +154,11 @@ data class WorkflowNotifyRequested(
     val messageKey: String,
 ) : TenantScopedEvent
 
-/** An escalate-to-forum step was passed; the meetings module (Phase 4) puts the item on the agenda of [forumKey]. */
+/**
+ * An escalate-to-forum step was reached ([stepId] is its definition id); the forum module queues a submission for
+ * [forumKey] in the same transaction (ADR-0059). [waitingStepId] is the step the item now waits at (ADR-0058); null when
+ * the step passes through ("for information").
+ */
 data class WorkflowEscalatedToForum(
     override val tenantId: UUID,
     val instanceId: UUID,
@@ -162,6 +166,7 @@ data class WorkflowEscalatedToForum(
     val subjectId: UUID,
     val stepId: String,
     val forumKey: String,
+    val waitingStepId: UUID? = null,
 ) : TenantScopedEvent
 
 /** A step that holds tasks was completed (design E03 §1): its decision is made and the walk went on. */

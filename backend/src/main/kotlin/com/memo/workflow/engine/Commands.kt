@@ -2,6 +2,7 @@ package com.memo.workflow.engine
 
 import com.memo.workflow.ActionKind
 import com.memo.workflow.BlockedReason
+import com.memo.workflow.ForumOutcome
 import com.memo.workflow.InstanceStatus
 import com.memo.workflow.RouteEntry
 import com.memo.workflow.definition.Definition
@@ -34,6 +35,24 @@ data class Migrate(
     val target: Definition,
     val from: Int,
     val to: Int,
+) : Command
+
+/**
+ * The forum decided on an item waiting at its step [stepId] (ADR-0058): issued by the forum module only, with the forum
+ * officer who recorded it as [actor].
+ */
+data class ForumDecided(
+    override val actor: UUID,
+    val stepId: UUID,
+    val outcome: ForumOutcome,
+    val remark: String? = null,
+) : Command
+
+/** The forum will not consider the item waiting at [stepId]; it goes back to its initiator with [remark] (ADR-0058). */
+data class ForumDeclined(
+    override val actor: UUID,
+    val stepId: UUID,
+    val remark: String,
 ) : Command
 
 /** A command on one task. */
@@ -281,10 +300,11 @@ sealed interface Effect {
         val recipients: List<UUID>,
     ) : Effect
 
-    /** An escalate-to-forum step was passed (Phase 4 acts on it). */
+    /** An escalate-to-forum step was reached; [waitingStepId] is set when the item waits there (ADR-0058). */
     data class EscalateToForum(
         val nodeId: String,
         val forum: String,
+        val waitingStepId: UUID? = null,
     ) : Effect
 }
 

@@ -21,12 +21,16 @@ import { attributeLabels, attributeNames, formatDay, today } from './shared'
 export function MembersTab({
   forum,
   policy,
+  policyPending = false,
   on,
   onDate,
   onAction,
 }: {
   forum: ForumResponse
   policy?: ForumPolicyResponse
+  /** While the policy loads, the table waits: its columns use the policy's attribute labels, and rebuilding the rows
+   * when it arrives would move keyboard focus off a row's menu button. */
+  policyPending?: boolean
   on: string
   onDate: (day: string) => void
   onAction: (action: MemberAction, member: MemberResponse) => void
@@ -118,7 +122,7 @@ export function MembersTab({
         columns={columns}
         rows={members.data ?? []}
         getRowId={(row) => row.id}
-        state={!on ? 'ready' : members.isPending ? 'loading' : members.isError ? 'error' : 'ready'}
+        state={!on ? 'ready' : members.isPending || policyPending ? 'loading' : members.isError ? 'error' : 'ready'}
         error={{ onRetry: () => void members.refetch() }}
         empty={on ? <EmptyState title={intl.formatMessage(fmv.noMembersOn, { date })} /> : null}
       />

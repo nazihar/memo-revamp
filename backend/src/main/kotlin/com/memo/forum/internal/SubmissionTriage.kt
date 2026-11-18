@@ -5,6 +5,8 @@ import com.memo.common.concurrency.ConcurrentModificationException
 import com.memo.common.web.FieldProblem
 import com.memo.common.web.refuseIf
 import com.memo.forum.ForumStatus
+import com.memo.forum.SubmissionPurpose
+import com.memo.forum.SubmissionStatus
 import com.memo.workflow.ForumOutcome
 import com.memo.workflow.WorkflowForums
 import org.springframework.stereotype.Service

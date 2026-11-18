@@ -80,6 +80,10 @@ open class ForumRecord private constructor() : UpdatableRecordImpl<ForumRecord>(
         set(value): Unit = set(14, value)
         get(): Long? = get(14) as Long?
 
+    open var codeLockedAt: OffsetDateTime?
+        set(value): Unit = set(15, value)
+        get(): OffsetDateTime? = get(15) as OffsetDateTime?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -89,7 +93,7 @@ open class ForumRecord private constructor() : UpdatableRecordImpl<ForumRecord>(
     /**
      * Create a detached, initialised ForumRecord
      */
-    constructor(id: UUID, tenantId: UUID, key: String, code: String, name: String, shortName: String, forumTypeId: UUID, parentForumId: UUID? = null, classificationId: UUID? = null, status: String? = null, dissolvedOn: LocalDate? = null, dissolvedReason: String? = null, createdBy: UUID? = null, createdAt: OffsetDateTime, version: Long? = null): this() {
+    constructor(id: UUID, tenantId: UUID, key: String, code: String, name: String, shortName: String, forumTypeId: UUID, parentForumId: UUID? = null, classificationId: UUID? = null, status: String? = null, dissolvedOn: LocalDate? = null, dissolvedReason: String? = null, createdBy: UUID? = null, createdAt: OffsetDateTime, version: Long? = null, codeLockedAt: OffsetDateTime? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.key = key
@@ -105,6 +109,7 @@ open class ForumRecord private constructor() : UpdatableRecordImpl<ForumRecord>(
         this.createdBy = createdBy
         this.createdAt = createdAt
         this.version = version
+        this.codeLockedAt = codeLockedAt
         resetTouchedOnNotNull()
     }
 }

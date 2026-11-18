@@ -5,6 +5,8 @@ import com.memo.common.tenant.TenantContext
 import com.memo.common.tenant.TenantTransactions
 import com.memo.common.web.etagOf
 import com.memo.common.web.ifMatchVersion
+import com.memo.forum.SubmissionPurpose
+import com.memo.forum.SubmissionStatus
 import com.memo.identity.UserSummaries
 import com.memo.memo.MemoReaders
 import com.memo.workflow.ForumOutcome
@@ -51,6 +53,9 @@ data class SubmissionResponse(
     val decidedAt: Instant?,
     /** When the secretaries were reminded that it waited past the type's triage days (once; design E02 §9). */
     val remindedAt: Instant?,
+    /** The meeting whose agenda it is on, and that meeting's date (design E03 §1.8). */
+    val meetingId: UUID?,
+    val meetingDate: LocalDate?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val version: Long,
 )
 
@@ -261,6 +266,8 @@ class SubmissionResponses(
                 outcome = it.outcome,
                 decidedAt = it.decidedAt,
                 remindedAt = it.remindedAt,
+                meetingId = it.meetingId,
+                meetingDate = it.meetingDate,
                 version = it.version,
             )
         }

@@ -2,6 +2,8 @@ package com.memo.forum.internal
 
 import com.memo.common.id.IdGenerator
 import com.memo.common.tenant.TenantDsl
+import com.memo.forum.SubmissionPurpose
+import com.memo.forum.SubmissionStatus
 import com.memo.jooq.tables.records.ForumSubmissionRecord
 import com.memo.jooq.tables.references.FORUM_SUBMISSION
 import com.memo.workflow.ForumOutcome
@@ -13,22 +15,6 @@ import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.util.UUID
-
-enum class SubmissionPurpose { DECISION, DISCUSSION, INFORMATION }
-
-/** Where a submission stands (ADR-0059, design E02 §1). */
-enum class SubmissionStatus(
-    val open: Boolean,
-) {
-    QUEUED(open = true),
-    ACCEPTED(open = true),
-    DEFERRED(open = true),
-    DECIDED(open = false),
-    RETURNED(open = false),
-    DECLINED(open = false),
-    WITHDRAWN(open = false),
-    REFERRED(open = false),
-}
 
 /** One referral of a workflow item to a forum (ADR-0059). */
 data class SubmissionRow(
@@ -54,6 +40,9 @@ data class SubmissionRow(
     val decidedAt: Instant?,
     val remindedAt: Instant?,
     val version: Long,
+    /** The meeting whose agenda it is placed on (design E03 §1.8), and that meeting's date. */
+    val meetingId: UUID? = null,
+    val meetingDate: LocalDate? = null,
 ) {
     val waits: Boolean get() = stepId != null
 }
@@ -225,6 +214,54 @@ class SubmissionStore(
     }
 }
 
+/** Where submissions are placed (design E03 §1.8): one agenda at a time, inside a tenant transaction. */
+@Repository
+class SubmissionPlacementStore(
+    private val tenantDsl: TenantDsl,
+) {
+    /** Places [id] on [meetingId] if it is still ACCEPTED, unplaced and at [version]; false when it was not. */
+    fun place(
+        id: UUID,
+        version: Long,
+        meetingId: UUID,
+        meetingDate: LocalDate,
+    ): Boolean =
+        tenantDsl
+            .current()
+            .update(FORUM_SUBMISSION)
+            .set(FORUM_SUBMISSION.MEETING_ID, meetingId)
+            .set(FORUM_SUBMISSION.MEETING_DATE, meetingDate)
+            .set(FORUM_SUBMISSION.VERSION, FORUM_SUBMISSION.VERSION.plus(1))
+            .where(
+                FORUM_SUBMISSION.ID.eq(id),
+                FORUM_SUBMISSION.VERSION.eq(version),
+                FORUM_SUBMISSION.STATUS.eq(SubmissionStatus.ACCEPTED.name),
+                FORUM_SUBMISSION.MEETING_ID.isNull,
+            ).execute() == 1
+
+    /** Clears [id]'s placement; false when it had none. */
+    fun unplace(id: UUID): Boolean =
+        tenantDsl
+            .current()
+            .update(FORUM_SUBMISSION)
+            .setNull(FORUM_SUBMISSION.MEETING_ID)
+            .setNull(FORUM_SUBMISSION.MEETING_DATE)
+            .set(FORUM_SUBMISSION.VERSION, FORUM_SUBMISSION.VERSION.plus(1))
+            .where(FORUM_SUBMISSION.ID.eq(id), FORUM_SUBMISSION.MEETING_ID.isNotNull)
+            .execute() == 1
+
+    /** The open submissions of [forumId] placed on an agenda. */
+    fun placed(forumId: UUID): List<SubmissionRow> =
+        tenantDsl
+            .current()
+            .selectFrom(FORUM_SUBMISSION)
+            .where(
+                FORUM_SUBMISSION.FORUM_ID.eq(forumId),
+                FORUM_SUBMISSION.STATUS.`in`(SubmissionStatus.entries.filter { it.open }.map { it.name }),
+                FORUM_SUBMISSION.MEETING_ID.isNotNull,
+            ).fetch { it.row() }
+}
+
 private fun ForumSubmissionRecord.row() =
     SubmissionRow(
         id = id,
@@ -248,4 +285,6 @@ private fun ForumSubmissionRecord.row() =
         decidedAt = decidedAt?.toInstant(),
         remindedAt = remindedAt?.toInstant(),
         version = version ?: 0,
+        meetingId = meetingId,
+        meetingDate = meetingDate,
     )

@@ -1,0 +1,179 @@
+package com.memo.meeting
+
+import com.memo.common.context.Actor
+import com.memo.common.context.ActorContext
+import com.memo.common.context.ActorScope
+import com.memo.common.tenant.TenantContext
+import com.memo.common.tenant.TenantTransactions
+import com.memo.forum.ForumRole
+import com.memo.forum.internal.ForumInput
+import com.memo.forum.internal.ForumMembers
+import com.memo.forum.internal.ForumTypePreset
+import com.memo.forum.internal.ForumTypes
+import com.memo.forum.internal.Forums
+import com.memo.forum.internal.MemberInput
+import com.memo.identity.UserAccount
+import com.memo.identity.UserAccounts
+import com.memo.meeting.internal.MeetingGuests
+import com.memo.meeting.internal.MeetingInput
+import com.memo.meeting.internal.MeetingLifecycle
+import com.memo.meeting.internal.MeetingNotFoundException
+import com.memo.meeting.internal.MeetingPlace
+import com.memo.meeting.internal.MeetingReads
+import com.memo.meeting.internal.TimesInput
+import com.memo.tenancy.TenantRegistry
+import com.memo.tenancy.TenantSettings
+import com.memo.testsupport.AppRoleJdbc
+import com.memo.testsupport.AppRoleJdbc.long
+import com.memo.testsupport.AppRoleJdbc.update
+import com.memo.testsupport.IntegrationTest
+import com.memo.testsupport.TestTenant
+import com.memo.testsupport.aPassword
+import com.memo.testsupport.aTestTenant
+import com.memo.testsupport.anActiveUser
+import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
+import org.junit.jupiter.api.Test
+import org.springframework.beans.factory.annotation.Autowired
+import java.sql.SQLException
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
+import java.util.UUID
+
+/**
+ * Tenant isolation of meetings (test plan E03, T1; AGENTS.md §3.2): another tenant neither reads nor writes a tenant's
+ * meetings, counters, guests or audience, not through its services and not through SQL; references between the tables
+ * stay within one tenant (composite foreign keys); and the app role deletes nothing.
+ */
+class MeetingCrossTenantIT : IntegrationTest() {
+    @Autowired lateinit var registry: TenantRegistry
+
+    @Autowired lateinit var settings: TenantSettings
+
+    @Autowired lateinit var transactions: TenantTransactions
+
+    @Autowired lateinit var accounts: UserAccounts
+
+    @Autowired lateinit var types: ForumTypes
+
+    @Autowired lateinit var forums: Forums
+
+    @Autowired lateinit var members: ForumMembers
+
+    @Autowired lateinit var lifecycle: MeetingLifecycle
+
+    @Autowired lateinit var guests: MeetingGuests
+
+    @Autowired lateinit var reads: MeetingReads
+
+    private class Side(
+        val tenant: TestTenant,
+        val admin: UserAccount,
+        val member: UserAccount,
+        val forum: UUID,
+    )
+
+    private fun side(label: String): Side {
+        val tenant = registry.aTestTenant(transactions, settings, label, mfaRequired = false)
+        val admin = accounts.anActiveUser(transactions, tenant, aPassword(), tenantAdmin = true)
+        val member = accounts.anActiveUser(transactions, tenant, aPassword())
+        val forum =
+            asUser(tenant, admin) {
+                val type = types.create("BC", "Board committee", ForumTypePreset.BOARD_COMMITTEE, publish = true).type.id
+                forums.create(ForumInput("board-risk", "BRC", "Board Risk Committee", "Risk", type)).id
+            }
+        asUser(tenant, admin) { members.add(forum, MemberInput(userId = member.id.value, role = ForumRole.MEMBER)) }
+        return Side(tenant, admin, member, forum)
+    }
+
+    private fun meeting(side: Side): UUID {
+        val day = LocalDate.now(ZoneOffset.UTC).plusDays(20).atTime(LocalTime.of(10, 0))
+        return asUser(side.tenant, side.admin) {
+            val created =
+                lifecycle.create(
+                    side.forum,
+                    MeetingInput(MeetingKind.ORDINARY, MeetingPlace(null, MeetingMode.IN_PERSON, "Board room", null, null), null),
+                    TimesInput(day, day.plusHours(2), "Asia/Dhaka"),
+                )
+            lifecycle.schedule(created.id, created.version).id.also { guests.add(it, side.member.id.value, null) }
+        }
+    }
+
+    @Test
+    fun `another tenant neither sees nor writes meetings, guests or audiences`() {
+        val a = side("meetinga")
+        val b = side("meetingb")
+        val ofA = meeting(a)
+        val ofB = meeting(b)
+
+        // Through the services: tenant B's administrator gets 404, and B's member has only B's meeting.
+        assertThatThrownBy { asUser(b.tenant, b.admin) { reads.get(ofA) } }.isInstanceOf(MeetingNotFoundException::class.java)
+        assertThatThrownBy { asUser(b.tenant, b.admin) { lifecycle.start(ofA, 1) } }.isInstanceOf(MeetingNotFoundException::class.java)
+        assertThatThrownBy { asUser(b.tenant, b.admin) { guests.add(ofA, b.member.id.value, null) } }
+            .isInstanceOf(MeetingNotFoundException::class.java)
+        assertThatThrownBy { asUser(b.tenant, b.admin) { reads.ofForum(a.forum, null, null, emptySet(), null) } }
+            .isInstanceOf(MeetingNotFoundException::class.java)
+        assertThat(asUser(b.tenant, b.member) { reads.mine(null) }.map { it.id }).containsExactly(ofB)
+
+        // Through SQL as the app role: no rows of A are visible to B, and none can be written for A.
+        AppRoleJdbc.inTransaction(b.tenant.id) { c ->
+            listOf("meeting", "meeting_counter", "meeting_guest", "meeting_audience").forEach { table ->
+                assertThat(c.long("select count(*) from $table where tenant_id = ?", a.tenant.id.value)).describedAs(table).isZero()
+            }
+        }
+        val now = OffsetDateTime.now(ZoneOffset.UTC)
+        val writes =
+            listOf(
+                "insert into meeting_guest (id, tenant_id, meeting_id, user_id, added_at) values (?, ?, ?, ?, ?)" to
+                    listOf<Any>(UUID.randomUUID(), a.tenant.id.value, ofA, b.member.id.value, now),
+                "insert into meeting_counter (tenant_id, forum_id, year, last) values (?, ?, 2026, 1)" to
+                    listOf<Any>(
+                        a.tenant.id.value,
+                        a.forum,
+                    ),
+            )
+        writes.forEach { (sql, params) ->
+            val written = runCatching { AppRoleJdbc.inTransaction(b.tenant.id) { c -> c.update(sql, *params.toTypedArray()) } }
+            assertThat(written.exceptionOrNull()).describedAs(sql).isInstanceOf(SQLException::class.java)
+        }
+        // Within B, a row cannot point at A's meeting: the composite foreign key needs B's own.
+        val crossed =
+            runCatching {
+                AppRoleJdbc.inTransaction(b.tenant.id) { c ->
+                    c.update(
+                        "insert into meeting_guest (id, tenant_id, meeting_id, user_id, added_at) values (?, ?, ?, ?, ?)",
+                        UUID.randomUUID(),
+                        b.tenant.id.value,
+                        ofA,
+                        b.member.id.value,
+                        now,
+                    )
+                }
+            }
+        assertThat(crossed.exceptionOrNull()).isInstanceOf(SQLException::class.java)
+        assertThat(
+            AppRoleJdbc.inTransaction(b.tenant.id) { c -> c.update("update meeting set title = 'x' where id = ?", ofA) },
+        ).isZero()
+
+        // The app role deletes nothing, even in its own tenant.
+        listOf("meeting" to "id", "meeting_guest" to "meeting_id", "meeting_audience" to "meeting_id", "meeting_counter" to "forum_id")
+            .forEach { (table, column) ->
+                val deleted =
+                    runCatching {
+                        AppRoleJdbc.inTransaction(a.tenant.id) { c -> c.update("delete from $table where $column = ?", ofA) }
+                    }
+                assertThat(deleted.exceptionOrNull()).describedAs(table).isInstanceOf(SQLException::class.java)
+            }
+    }
+
+    private fun <T> asUser(
+        tenant: TestTenant,
+        account: UserAccount,
+        block: () -> T,
+    ): T =
+        ActorContext.call(ActorScope(Actor.User(account.id.value), null)) {
+            TenantContext.call(tenant.id) { transactions.inTenant(tenant.id, block) }
+        }
+}

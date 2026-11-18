@@ -22,3 +22,20 @@
   - The forum events (`ForumChanged`, `ForumTypePublished`, `ForumSubmissionChanged`) are in `forum.internal`, so no other module can listen to them yet. T1 moves them.
   - The web has no dnd-kit yet: the workflow builder uses React Flow.
   - `FilePurpose.mayRead` sees the file, not the version, so pinned paper versions are served through a new `FileServing` entry point behind the meeting rule.
+
+## 2026-11-18 — T1 meetings (backend)
+- **Built:**
+  - `forum/V5` (the type version's `agenda` policy column, read from T2; `forum.code_locked_at`; `forum_submission.meeting_id` and `meeting_date` with the tray index) and `meeting/V1` (`meeting`, `meeting_counter`, `meeting_guest`, `meeting_audience`; RLS forced, `tenant_id` first, composite foreign keys, no DELETE for the app role). jOOQ regenerated; module metadata regenerated (meeting now depends on forum).
+  - Forum's published API: `ForumChanged`, `ForumTypePublished` and `ForumSubmissionChanged` (now with the status it left) in `com.memo.forum`; `ForumPolicies` moved there with `version` and `published`; `SubmissionPlacements` (`place`, `unplace`, `placed`, audited `forum.submission.placed` and `.unplaced`); `ForumCodes.lock` over `Forums.lockCode` (audited `forum.code_locked`, then `CODE_LOCKED`); `ForumSeat.until`.
+  - `WorkingDays.before` on a pure `WorkingDayRules.before`, with property tests.
+  - The meeting module: create, edit, schedule, reschedule, start, end and cancel along the state machine, with IANA zones (gaps refused, overlaps take the earlier offset), https links without credentials, place by mode, the classification floor and guests; the materialised audience recomputed on `ForumChanged`, on guests and on the date; `GET /forums/{fid}/meetings` (cursor), `GET /meetings/{id}`, `GET /me/meetings`; the published `Meetings`; `MEETING_CANCELLED` to the audience when a scheduled meeting is cancelled (English and Arabic).
+  - Tests: `MeetingStateTest`, `MeetingFieldsTest`, `MeetingTimesProperties`, `WorkingDaysBeforeProperties`, `MeetingsIT`, `MeetingCrossTenantIT`, placements in `ForumSubmissionsIT`, the code lock in `ForumsIT`, `WorkingDays.before` with holidays in `BusinessCalendarIT`; matrix `p4-e03-meetings.yaml`.
+- **Deviations from the design** (recorded in `design.md` as "as built"):
+  - `Forums` is internal, so the meeting module locks the code through the published `ForumCodes`.
+  - `SubmissionPlacements.place` also takes the forum id; `SubmissionStatus` and `SubmissionPurpose` became published types so the event can carry the status.
+  - `ForumChanged` was only published for the forum row; it is now also published for every membership change, which the audience needs. A position seat's new holder reaches the audience at the next roster or meeting change (org events do not publish `ForumChanged`); to revisit with E05 if it matters.
+  - A draft is rescheduled like a scheduled meeting (times change only through reschedule), without a reason.
+  - `meeting_audience` marks rows removed (`removed_at`) instead of deleting them, to keep the no-DELETE rule.
+  - `forum.read` holders outside the audience see neither the link nor the location (threat model I5). A classification above the actor's own clearance is refused, and so is a guest not cleared for the meeting.
+  - `/me/meetings` lists the meetings of forums where the actor is a secretary or the chair, not every meeting for `forums.manage` holders; recent means 30 days back, at most 100.
+- **Left for T2:** the agenda policy on the type version (checks, presets, changes view), placing submissions from the meeting side, the cancellation's effect on agendas and placements, `MeetingChanged`, `meeting.numbered` with the counter.

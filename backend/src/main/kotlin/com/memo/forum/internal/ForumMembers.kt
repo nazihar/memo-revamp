@@ -4,8 +4,10 @@ import com.memo.audit.AuditLog
 import com.memo.common.concurrency.ConcurrentModificationException
 import com.memo.common.web.FieldProblem
 import com.memo.common.web.refuseIf
+import com.memo.forum.ForumChanged
 import com.memo.forum.ForumRole
 import com.memo.org.OrgDirectory
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 import java.util.UUID
@@ -56,6 +58,7 @@ class ForumMembers(
     private val notifier: ForumNotifier,
     private val audit: AuditLog,
     private val readers: SubmissionReaders,
+    private val events: ApplicationEventPublisher,
 ) {
     fun add(
         forumId: UUID,
@@ -207,6 +210,7 @@ class ForumMembers(
         val values = source.values().copy(startsOn = from, termEndsOn = usualEnd(target, from), termNumber = 1, previousId = null)
         val row = checkNotNull(store.member(store.insertMember(target.id, values, actorOrNull())))
         audit.record("forum.member.added", OBJECT_TYPE, row.id.toString(), after = audited(row))
+        events.publishEvent(ForumChanged(store.tenant(), target.id))
     }
 
     /** A row the actor may change ([role]: the role it moves to, if any) and that has not ended. */
@@ -242,6 +246,8 @@ class ForumMembers(
         notifier.membershipChanged(forum, row)
         // A chair or secretary joining or leaving changes who reads the memos in the queue (ADR-0059).
         if (listOfNotNull(row.role, before?.role).any { it == ForumRole.CHAIR || it == ForumRole.SECRETARY }) readers.resync(forum.id)
+        // Meetings recompute their audience from the roster (design E03 §1.6).
+        events.publishEvent(ForumChanged(store.tenant(), forum.id))
         return MemberChange(row)
     }
 

@@ -140,6 +140,8 @@ class ForumMemberStore(
         return updated
     }
 
+    fun tenant(): UUID = tenantDsl.tenant().value
+
     private fun changed(forumId: UUID) = invalidation.invalidate(ROSTER_CACHE, tenantDsl.tenant(), forumId.toString())
 
     private fun now(): OffsetDateTime = OffsetDateTime.now(clock).withOffsetSameInstant(ZoneOffset.UTC)

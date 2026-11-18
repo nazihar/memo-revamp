@@ -39,3 +39,8 @@ Committee   [ Management Credit Committee ▾ ]
 [x] Wait for the committee's decision
     Off: the memo is sent for information and its route continues.
 ```
+
+## Owner review
+| Flow | Date | Result |
+|---|---|---|
+| M submissions (with E03's Accept-and-place addition, `epic-03-meetings-agenda/ux-review.md` O6) | 2026-11-18 | Approved as recommended ("do screens as you recommend") |

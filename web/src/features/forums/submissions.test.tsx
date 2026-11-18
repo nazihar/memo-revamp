@@ -19,6 +19,7 @@ const mcc: ForumResponse = {
   id: 'f1',
   key: 'mcc',
   code: 'MCC',
+  codeLocked: false,
   name: 'Management Credit Committee',
   shortName: 'Credit',
   typeId: 't1',

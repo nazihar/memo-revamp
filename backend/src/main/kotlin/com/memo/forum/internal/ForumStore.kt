@@ -37,6 +37,8 @@ data class ForumRow(
     val createdBy: UUID?,
     val createdAt: Instant,
     val version: Long,
+    /** When the code was locked: at the first numbered meeting (design E03 §2); null while it may change. */
+    val codeLockedAt: Instant? = null,
 )
 
 data class ForumMemberRow(
@@ -192,6 +194,15 @@ class ForumStore(
             .where(FORUM.ID.eq(forum.id), FORUM.VERSION.eq(version))
             .execute() == 1
 
+    /** Locks [id]'s code if it is not locked yet; false when it already was (no version change: not an edit). */
+    fun lockCode(id: UUID): Boolean =
+        tenantDsl
+            .current()
+            .update(FORUM)
+            .set(FORUM.CODE_LOCKED_AT, now())
+            .where(FORUM.ID.eq(id), FORUM.CODE_LOCKED_AT.isNull)
+            .execute() == 1
+
     fun now(): OffsetDateTime = OffsetDateTime.now(clock).withOffsetSameInstant(ZoneOffset.UTC)
 
     fun tenant(): UUID = tenantDsl.tenant().value
@@ -213,4 +224,5 @@ private fun ForumRecord.row() =
         createdBy = createdBy,
         createdAt = createdAt.toInstant(),
         version = version ?: 0,
+        codeLockedAt = codeLockedAt?.toInstant(),
     )

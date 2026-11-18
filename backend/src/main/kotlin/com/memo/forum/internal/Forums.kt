@@ -3,10 +3,10 @@ package com.memo.forum.internal
 import com.memo.audit.AuditLog
 import com.memo.common.authz.Clearances
 import com.memo.common.concurrency.ConcurrentModificationException
-import com.memo.common.events.TenantScopedEvent
 import com.memo.common.id.IdGenerator
 import com.memo.common.web.FieldProblem
 import com.memo.common.web.refuseIf
+import com.memo.forum.ForumChanged
 import com.memo.forum.ForumRole
 import com.memo.forum.ForumStatus
 import com.memo.org.OrgDirectory
@@ -14,12 +14,6 @@ import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 import java.util.UUID
-
-/** A forum or its membership changed (ADR-0056); later epics listen. */
-data class ForumChanged(
-    override val tenantId: UUID,
-    val forumId: UUID,
-) : TenantScopedEvent
 
 /** A new committee copied from another: its own key, code and names; the members in office on [startsOn] if asked. */
 data class CloneInput(
@@ -102,6 +96,9 @@ class Forums(
         val before = access.requireVisible(id)
         refuseIf(input.key.trim() != before.key, "KEY_FIXED") { "A committee's workflow key never changes." }
         refuseIf(input.typeId != before.typeId, "TYPE_FIXED") { "A committee's type never changes; clone it into a new type." }
+        refuseIf(before.codeLockedAt != null && input.code.trim() != before.code, "CODE_LOCKED") {
+            "The code is in the numbers of this committee's meetings and no longer changes."
+        }
         requireNoProblems(problems(input, id, existing = before))
         val after =
             before.copy(
@@ -158,6 +155,19 @@ class Forums(
             }
         audit.record("forum.cloned", OBJECT_TYPE, created.id.toString(), after = mapOf("from" to source.id.toString(), "members" to copied))
         return created
+    }
+
+    /**
+     * Locks the committee's code at its first numbered meeting (design E03 §2): from then on the code is part of meeting
+     * and resolution numbers and never changes. Called by the meeting module in the numbering transaction; idempotent.
+     */
+    fun lockCode(id: UUID): ForumRow {
+        val forum = store.find(id) ?: throw ForumNotFoundException()
+        if (store.lockCode(id)) {
+            audit.record("forum.code_locked", OBJECT_TYPE, id.toString(), after = mapOf("code" to forum.code))
+            changed(id)
+        }
+        return checkNotNull(store.find(id))
     }
 
     private fun problems(

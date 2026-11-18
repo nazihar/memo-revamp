@@ -2,19 +2,13 @@ package com.memo.forum.internal
 
 import com.memo.common.authz.ForbiddenException
 import com.memo.common.authz.Permission
-import com.memo.common.events.TenantScopedEvent
 import com.memo.common.web.refuseIf
+import com.memo.forum.SubmissionStatus
 import com.memo.memo.MemoReaders
 import com.memo.workflow.ForumOutcome
 import com.memo.workflow.WorkflowForums
 import org.springframework.stereotype.Service
 import java.util.UUID
-
-/** A submission changed (ADR-0059); E03 listens to place accepted items on agendas. */
-data class ForumSubmissionChanged(
-    override val tenantId: UUID,
-    val submissionId: UUID,
-) : TenantScopedEvent
 
 /**
  * Reading submissions and recording a forum's decision (ADR-0059): the queue for a forum's officers, one submission for

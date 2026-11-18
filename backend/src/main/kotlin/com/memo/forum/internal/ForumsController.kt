@@ -5,6 +5,7 @@ import com.memo.common.tenant.TenantContext
 import com.memo.common.tenant.TenantTransactions
 import com.memo.common.web.etagOf
 import com.memo.common.web.ifMatchVersion
+import com.memo.forum.ForumPolicies
 import com.memo.forum.ForumRole
 import com.memo.forum.ForumStatus
 import com.memo.forum.MemberAttribute
@@ -103,6 +104,8 @@ data class ForumResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val id: UUID,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val key: String,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val code: String,
+    /** Whether the code is locked: it is in a meeting number and no longer changes. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val codeLocked: Boolean,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val name: String,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val shortName: String,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val typeId: UUID,

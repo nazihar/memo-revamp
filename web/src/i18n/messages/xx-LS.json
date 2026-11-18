@@ -15513,6 +15513,12 @@
       "value": "Meeting cancelledSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "mail.template.meetingDiscussionRequested": [
+    {
+      "type": 0,
+      "value": "Consent item to discussSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "mail.template.meetingItemWithdrawn": [
     {
       "type": 0,
@@ -23016,6 +23022,28 @@
     {
       "type": 0,
       "value": "The chair commented on the agenda for "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.meetingDiscussionRequested": [
+    {
+      "type": 0,
+      "value": "A member asked to discuss a consent item of "
     },
     {
       "type": 1,

@@ -141,6 +141,7 @@ stateDiagram-v2
 - An item with an open request shows "Lifted for discussion at {names}'s request" on the published agenda at once, and is taken after the consent section.
 - The secretary may move it in the next revision; the request stays on record for the minutes (E06).
 - Requests are append-only: a withdrawal sets `withdrawnAt` once.
+- As built (T4): the table is `meeting_consent_request` (module prefix), with the meeting and the revision the person read; the open-request index is unique `(tenant_id, item_id, user_id) WHERE withdrawn_at IS NULL`, and a trigger plus a column grant allow only `withdrawn_at` from null to a time. Who may ask: a member in office or a guest who sees the item in full (not a secretary: 403); an item they do not see is 404; outside a consent section, or once the meeting is not SCHEDULED, 409 `WRONG_STATE`; a second open request 409 `ALREADY_ASKED`; a withdrawal without one 409 `NO_REQUEST`. The meeting's row is locked first, so a request cannot land after the meeting has started. `MEETING_DISCUSSION_REQUESTED` goes to the secretaries and the chair (the vice-chair when there is none), never the requester; audited `meeting.discussion.requested` and `.withdrawn`. Every member who sees the item reads who asked (`discussion.requestedBy`), whatever section it is in later.
 
 ### 1.6 The audience (who the meeting is for)
 `meeting_audience(meetingId, userId, source, membersOnly, until)` is materialised, recomputed in the same transaction on every change that affects it:
@@ -227,6 +228,13 @@ seeTitle(u, i in r)      := seeItem(u, i)
 - **Guards:**
   - An architecture test fails if any class other than `PaperAccess` and the revision store selects from the revision tables.
   - A surface registry (`test-plan.md`, "Leak-suite skeleton") lists every read path for E04's leak suite.
+- **As built (T4):**
+  - `PaperAccess` (`com.memo.meeting`) holds the rule as jOOQ conditions over either table shape (`ItemColumns`, `PaperColumns`: the draft's `meeting_item` joined to its section, or `meeting_revision_item`): `itemCondition` (seeItem), `lineCondition` (seeItem or the line) and `paperCondition` (seePaper); seeTitle is seeItem, or the line of an item whose title is not hidden. The person is a `PaperViewer` read once per request (officer, the levels they are cleared for, member in office today and members-only, guest, item attendee, `forum.read` cleared for the meeting, and the meeting's state), so the conditions take constants. It answers what a person sees of a revision or of the draft (`Visibility`: each line's `LineAccess` FULL, TITLE or HIDDEN, and the papers), one pinned paper (`paper`, one indexed query), whether a revision changed something they see (`changed`, for the notifications) and the purpose's `readsFile`. T3's `AgendaVisibility` is gone: the notifications use `PaperAccess.changed`.
+  - **The E04 hook:** `PaperExclusions.excluded(userId, item, parent)` and `excludedFromPapers(userId, item, parent)` take the item's and its parent's id columns and answer a jOOQ `Condition`; `PaperAccess` adds `NOT (…)` to every item and paper condition, officers included, on the draft and the revision tables alike. `NoExclusions` (a `@Component`, both `falseCondition()`) is E03's; E04 T2 drops its `@Component` and registers `DeclarationExclusions` with one `EXISTS` over its declarations each. E04's extra `seeTitle` clause for officers goes into `lineCondition`.
+  - A line seen by title only carries its number, kind, purpose, time and duration, and the line flags (ADDED, REMOVED, MOVED, RETITLED, TIME_CHANGED; no RETITLED for a hidden title); never the description, resolution sought, presenters, papers or consent requests. An item seen in full shows a paper flag only when a paper the person may read carries it, so a restricted paper's replacement is not told. A section is listed when it has a line the person sees, or when it is not members-only (members-only headings only for members, secretaries and officers).
+  - `forum.read` holders see the unrestricted, unhidden titles of every section, members-only ones included, and at every item level, as §1.9 says; never a paper.
+  - A cancelled meeting keeps its lines for the audience (titles), not its items or papers; a former member (out of office today) and, once the minutes are approved, guests and item attendees see no line.
+  - **The `meeting.paper` purpose's `mayRead`** is `PaperAccess.readsFile`: through the generic files endpoints only the forum's officers, and only when every paper carrying the file, in the draft and in every revision, passes the rule for them. Members read the version a revision pinned through `GET /meetings/{id}/papers/{pid}/content` only: the generic endpoints serve any version of a file and cannot tell which one a revision carried.
 
 ### 1.10 ERD
 ```mermaid
@@ -363,7 +371,7 @@ erDiagram
     - `PaperAccess` (the rule, ADR-0061: `itemCondition(user)`, `paperCondition(user)`, `canSeePaper(paperId, revision)`);
     - `PaperExclusions` (the E04 hook, an interface with `NoExclusions` as the E03 implementation);
     - the events `MeetingChanged(tenantId, meetingId, change)` and `AgendaPublished(tenantId, meetingId, revision)`, for E04–E07.
-  - As built (T3): `MeetingChanged(tenantId, meetingId, change)` is published in the changing transaction with `change` one of CREATED, UPDATED, SCHEDULED, RESCHEDULED, STARTED, ENDED, CANCELLED, NUMBERED and GUESTS; `AgendaPublished(tenantId, meetingId, revision)` in the publishing transaction. Both are in `com.memo.meeting` (`MeetingEvents.kt`). `PaperAccess` and `PaperExclusions` come with T4.
+  - As built (T3): `MeetingChanged(tenantId, meetingId, change)` is published in the changing transaction with `change` one of CREATED, UPDATED, SCHEDULED, RESCHEDULED, STARTED, ENDED, CANCELLED, NUMBERED and GUESTS; `AgendaPublished(tenantId, meetingId, revision)` in the publishing transaction. Both are in `com.memo.meeting` (`MeetingEvents.kt`). `PaperAccess`, `PaperExclusions` and `NoExclusions` came with T4 (§1.9 as built).
   - Internals in `com.memo.meeting.internal`.
   - Depends on `forum`, `memo` (`MemoReaders`), `files`, `workflow` (`WorkingDays`), `org`, `notification`, `audit` and `tenancy`, through `common`.
 - **`forum` changes (published, no behaviour change for E02):**
@@ -380,6 +388,7 @@ erDiagram
 - **`files` (published addition):**
   - `FileServing.serve(versionId, kind: ORIGINAL | PDF, range, response, audit: OpenContext)` streams a version or its PDF rendition with the same headers, ranges and `file.opened` audit as the files endpoints. It is for a module that has already decided access, and the open is audited with the caller's context (`meeting`, `paper`, `revision`).
   - The `meeting.paper` purpose (owned by `meeting`) uses the files endpoints like any purpose.
+  - As built (T4): `FileServing.serve(versionId, content: ORIGINAL | PDF, request, response, audit: OpenAudit)` answers `ServeOutcome` (SERVED, NOT_READY for a PDF still being prepared or not possible, MISSING), writing nothing unless SERVED. The PDF is the original when it is a PDF, else the version's done PDF rendition, shown inline; the original keeps its purpose's disposition. The open is audited once per session and version (the files module's open marks, not per range request) with the caller's action and details, plus the file, version, purpose and content: for a paper `meeting.paper.opened` on the meeting with the paper, item and revision. The implementation is `files.internal.PinnedServing`; `PaperAccessArchTest` pins its callers to the meeting module.
 - **`workflow`:** `WorkingDays.before(date, n)`, the date n working days before `date`.
 - **`ApplicationModules.verify()`:** meeting → forum, memo, files, workflow; never the reverse. The precomputed module metadata (#151) is regenerated.
 
@@ -426,6 +435,15 @@ All endpoints follow the conventions:
 - As built (T2): every builder change answers the whole draft (`AgendaDraftResponse`) with the agenda's new version as the ETag; creates (start, section, item, paper) need an `Idempotency-Key`; builder writes are rate-limited per user (`AGENDA_WRITE_PER_USER`). Also 409 `AGENDA_STARTED`, `SECTION_NOT_EMPTY`, `ALREADY_IN_PACK`, `WRONG_KIND` (papers on a break), and 422 `meetingId` `unknown` / `SAME_MEETING` / `NO_AGENDA` for a copy, `standingKind` `duplicate`, `restrictedTo` `REQUIRED` (an empty list). Also 409 `NO_AGENDA` for a builder change before the agenda is started, and 422 `sectionId` `REQUIRED` (no section yet), `minutes` `RANGE` / `ONE_LEVEL` (a sub-item has no time), `submissionId` `REQUIRED` / `CLASSIFICATION` (above the actor's clearance), `presenters` `FORMAT`, `attendees` `unknown` / `CLASSIFICATION`, `fileId` `unknown` / `TOO_MANY`. Raising an item's level raises its papers below it.
 - As built (T3): the chair's agreement and late decisions carry `If-Match` and answer the draft; publishing and chair comments need an `Idempotency-Key` and answer 201 with the draft. The draft gains `state`, `chairAgreement` (`by`, `at`, `onBehalfBy`, `note`), `canAgree` (the viewer is the chair in office, or the vice-chair when there is none), `chairComments` and `revisions` (number, when, by whom, note, notified). New: `POST …/agenda/papers/{pid}/late-decision` (late uploads wait on the paper) and `GET …/agenda/publish-preview` for officers (the next revision's number, whether a note is needed, `meetingNotScheduled`, `chairAgreementMissing`, `nothingToPublish`, `unreadablePapers`, `awaitingChair`, and the change summary with flags and previous numbers, for T7's publish dialog). Also 409 `ALREADY_AGREED`, `NO_CHAIR`, `WRONG_STATE` (an answer on something not waiting, or an agreement after revision 1) and `PAPER_NOT_READABLE` with `paperIds`; 422 `note` `NOTE_REQUIRED` / `LENGTH` and `text` `LENGTH` (a chair comment, 1 to 2,000 characters).
 
+- As built (T4), the audience's endpoints (every one through `PaperAccess`; an invisible meeting, revision, item or paper is 404):
+  - `GET /meetings/{id}/agenda?revision=` answers `MemberAgendaResponse`: the revision shown (null before the first), the latest, its note, the sections and lines as the viewer sees them (`access` FULL, TITLE or HIDDEN; papers with `ready` and `opened`; `discussion` on consent items), `lastSeenRevision`, and on the latest revision `whatChanged` (the revisions after the last one seen, each with its changed lines and papers as far as the viewer sees them, and a `count`). Nothing published: an empty agenda with `revision` null.
+  - `GET /meetings/{id}/agenda/revisions`: numbers, dates and notes; officers also `publishedBy` and `notified`; `forum.read` outside the audience no notes.
+  - `POST /meetings/{id}/seen {revision}` (204): moves the viewer's last revision seen forward only; 422 `revision` `unknown` for a revision not published.
+  - `GET /meetings/{id}/agenda/preview?as={userId}`: for officers (403 otherwise); the person must be in the audience (422 `as` `NOT_IN_AUDIENCE`); a draft meeting is read as if scheduled.
+  - `GET /meetings/{id}/papers/{pid}/content?revision=&kind=PDF|ORIGINAL`: ranges, `If-None-Match`; ORIGINAL for secretaries and `forums.manage` only (403; the chair reads the PDF, design §4); 409 `PAPER_NOT_READY` while the PDF is being prepared. The person's first open is recorded for the "Opened" tick (`meeting_paper_open`).
+  - `POST …/items/{iid}/discussion-requests` (Idempotency-Key, 201) and `POST …/discussion-requests/mine/withdraw` (200) answer the members' agenda.
+  - `GET /me/meetings` rows gain `agendaRevision`, `lastSeenRevision` and `changesSinceSeen` (the lines "What changed" would list, counted only for meetings with a revision newer than the one seen).
+
 ## 4. Authorisation matrix
 Columns:
 - **Sec:** a secretary of F in office.
@@ -462,6 +480,7 @@ All of them are written in the business transaction, with before and after where
 - As built (T2): also `meeting.agenda.section_moved` and `meeting.agenda.released` (a cancelled meeting's submissions back in the tray).
 - **Consent requests:** `meeting.discussion.requested`, `meeting.discussion.withdrawn`.
 - **Reads:** `meeting.paper.opened` (paper, revision, file version, kind), once per open, never per page or range request.
+- As built (T4): `meeting.paper.opened` is written by `FileServing` with the paper, item, revision, file, file version, purpose and content (PDF or ORIGINAL), once per session and version within the files module's 30-minute open window; `meeting.discussion.requested` and `.withdrawn` with the request, item and revision. Marking a revision seen is not audited (a reading position, like marking a notification read).
 - **Forum side:** `forum.submission.placed` and `forum.submission.unplaced`.
 
 `AuditActionCoverageTest` lists them.
@@ -478,6 +497,7 @@ All of them are written in the business transaction, with before and after where
 - References to another module's rows (`forum_id`, `submission_id`, `memo_id`, `file_id`, user ids) carry no foreign key across modules, as elsewhere. They are checked through the published APIs.
 - The async notification listener carries `tenantId` (ADR-0017).
 - `ForumCrossTenantIT` gains a meeting part; `RlsMetaTest` picks up the tables.
+- As built (T4): `meeting_reader_state`, `meeting_paper_open` and `meeting_consent_request` have no DELETE or TRUNCATE for the app role; `meeting_paper_open` no UPDATE; `meeting_consent_request` only `UPDATE (withdrawn_at)` behind its trigger. `MeetingCrossTenantIT` covers them.
 
 ## 7. Migrations
 - **`forum/V5__agenda_policy.sql`** (T1):
@@ -491,6 +511,7 @@ All of them are written in the business transaction, with before and after where
 - **`meeting/V3__revisions.sql`** (T3): the revision tables, `consent_lift_request`, `meeting_reader_state`.
   - Indexes: `(tenant_id, meeting_id, number)`, revision items `(tenant_id, revision_id, position)`, revision papers `(tenant_id, revision_id, item_id)`, and `(tenant_id, paper_id, revision_id)` for paper opens.
   - As built (T3): `meeting_revision`, `meeting_revision_section`, `meeting_revision_item` (with `parent_item_id`), `meeting_revision_paper`, `meeting_revision_notice` (who was told of which revision, the notifications' dedupe key) and `meeting_chair_comment`; no UPDATE, DELETE or TRUNCATE for the app role on any of them. Indexes as above, plus `(tenant_id, item_id)` and `(tenant_id, parent_item_id)` on revision items for E04, and one per foreign key. `consent_lift_request` and `meeting_reader_state` move to T4's migration (whichever of T4 and E04 T1 merges first takes `meeting/V4`, as the E04 plan says), with the code that uses them.
+- **`meeting/V4__members_reads.sql`** (T4): `meeting_reader_state` (the last revision each person saw), `meeting_paper_open` (each person's first open of a paper) and `meeting_consent_request` (with its withdrawal trigger). E04 T1's declarations take the next free number, `meeting/V5` (its plan first named V4).
 - All expand-only. No existing column changes meaning. The demo seed adds rows in T9.
 
 ## 8. Performance budget

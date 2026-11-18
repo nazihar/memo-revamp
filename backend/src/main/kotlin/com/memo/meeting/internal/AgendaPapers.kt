@@ -1,7 +1,5 @@
 package com.memo.meeting.internal
 
-import com.memo.common.authz.Clearances
-import com.memo.common.authz.Policy
 import com.memo.common.id.IdGenerator
 import com.memo.common.web.FieldProblem
 import com.memo.common.web.refuseIf
@@ -13,6 +11,7 @@ import com.memo.files.Files
 import com.memo.files.RenditionKind
 import com.memo.files.StorageClass
 import com.memo.forum.AgendaLimits
+import com.memo.meeting.PaperAccess
 import com.memo.memo.MemoPaperFile
 import com.memo.memo.MemoPapers
 import org.springframework.context.event.EventListener
@@ -181,16 +180,16 @@ class AgendaPapers(
 /**
  * Papers a secretary uploads for a meeting (ADR-0061): the owner is the meeting; record storage; reads audited; a PDF
  * and text built for each version (ADR-0045). Its secretaries (and `forums.manage`) upload until the meeting is held or
- * cancelled. Until the members' paper rule (E03 T4), only the forum's officers cleared for the meeting and for every
- * paper carrying the file read it.
+ * cancelled. Reads follow the paper rule ([PaperAccess.readsFile], ADR-0061): through these generic endpoints only the
+ * forum's officers, when every paper carrying the file passes the rule for them; members read the version a revision
+ * pinned through the meeting's own paper endpoint.
  */
 @Component
 class MeetingPaperPurpose(
     private val meetings: MeetingStore,
     private val access: MeetingAccess,
-    private val papers: PaperStore,
-    private val clearances: Clearances,
-    private val policy: Policy,
+    private val viewers: PaperViewers,
+    private val papers: PaperAccess,
 ) : FilePurpose {
     override val key = KEY
     override val allowedTypes =
@@ -220,10 +219,9 @@ class MeetingPaperPurpose(
     }
 
     override fun mayRead(file: FileInfo): Boolean {
-        val meeting = meetingOf(file.ownerId)
-        val rank = policy.clearanceRank()
-        return meeting != null && access.officer(meeting.forumId) && access.cleared(meeting) &&
-            papers.ofFile(file.id).all { (clearances.level(it.classificationId)?.rank ?: Int.MAX_VALUE) <= rank }
+        val meeting = meetingOf(file.ownerId)?.takeIf { access.relation(it) != null }
+        val viewer = meeting?.let { viewers.actor(it) }
+        return meeting != null && viewer != null && papers.readsFile(viewer, meeting.id, file.id)
     }
 
     private fun meetingOf(ownerId: String?): MeetingRow? =

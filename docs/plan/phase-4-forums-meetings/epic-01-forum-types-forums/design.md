@@ -171,7 +171,8 @@ All endpoints follow these rules:
 | `POST /forums/quorum-preview` | signed in, any of the admin permissions or a secretary | `{rule, attributes, roster? or forumId?, attendance}` → evaluation (no write) |
 | `GET /forums` | signed in | Forums visible to the actor (`ForumVisible`), with the actor's role |
 | `POST /forums` | `forums.manage` | Create |
-| `GET /forums/{id}` | visible | Forum, its type's published policy (read-only), counts |
+| `GET /forums/{id}` | visible | Forum and counts |
+| `GET /forums/{id}/policy?on=` | visible | Its type's published policy (read-only) and the quorum on a date: how many count and how many must attend (added in T5) |
 | `PATCH /forums/{id}` | `forums.manage` | Name, short name, code (until the first meeting), parent, classification |
 | `POST /forums/{id}/dissolve` | `forums.manage` | Date and reason |
 | `POST /forums/{id}/clone` | `forums.manage` | `{key, code, name, withMembers, startsOn}` |

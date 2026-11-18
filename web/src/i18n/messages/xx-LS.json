@@ -2579,13 +2579,87 @@
   "builder.forum": [
     {
       "type": 0,
-      "value": "ForumSSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": "CommitteeSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "builder.forum.field": [
+  "builder.forum.option": [
+    {
+      "type": 1,
+      "value": "name"
+    },
     {
       "type": 0,
-      "value": "Forum keySSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "code"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.forum.pick": [
+    {
+      "type": 1,
+      "value": "Forum"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.forum.pick.hint": [
+    {
+      "type": 0,
+      "value": "The memo waits here for the decision. Only active "
+    },
+    {
+      "type": 1,
+      "value": "forums"
+    },
+    {
+      "type": 0,
+      "value": " are listed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.forum.unknown": [
+    {
+      "type": 5,
+      "value": "forumGender",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "This "
+            },
+            {
+              "type": 1,
+              "value": "forum"
+            },
+            {
+              "type": 0,
+              "value": " does not exist or is dissolved."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "builder.forum.unknownKey": [
+    {
+      "type": 1,
+      "value": "key"
+    },
+    {
+      "type": 0,
+      "value": " (not found)SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "builder.forward": [
@@ -3603,7 +3677,7 @@
   "builder.type.forum": [
     {
       "type": 0,
-      "value": "Escalate to a forumSSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": "Escalate to a committeeSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "builder.type.notify": [
@@ -6709,6 +6783,2232 @@
       "value": "YesSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "forums.action.clone": [
+    {
+      "type": 0,
+      "value": "CloneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.action.dissolve": [
+    {
+      "type": 0,
+      "value": "DissolveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.action.edit": [
+    {
+      "type": 0,
+      "value": "EditSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.add": [
+    {
+      "type": 0,
+      "value": "New "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.addMember": [
+    {
+      "type": 0,
+      "value": "Add memberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.back": [
+    {
+      "type": 0,
+      "value": "All "
+    },
+    {
+      "type": 1,
+      "value": "forums"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.caption": [
+    {
+      "type": 1,
+      "value": "Forums"
+    },
+    {
+      "type": 0,
+      "value": " you may seeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.classification": [
+    {
+      "type": 0,
+      "value": "ClassificationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.classification.default": [
+    {
+      "type": 0,
+      "value": "As the type saysSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.clone.copyFrom": [
+    {
+      "type": 0,
+      "value": "Their membership starts onSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.clone.copyHint": [
+    {
+      "type": 0,
+      "value": "Each starts a first term of the usual length.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.clone.copyMembers": [
+    {
+      "type": 0,
+      "value": "Copy the current membersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.clone.lead": [
+    {
+      "type": 0,
+      "value": "A new "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " with the same type, classification and reporting line.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.clone.submit": [
+    {
+      "type": 0,
+      "value": "CloneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.clone.title": [
+    {
+      "type": 0,
+      "value": "Clone "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.code": [
+    {
+      "type": 0,
+      "value": "CodeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.code.format": [
+    {
+      "type": 0,
+      "value": "Use 1 to 10 capital letters, digits or hyphens.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.code.hint": [
+    {
+      "type": 0,
+      "value": "Up to 10 capital letters, digits or hyphens. Meeting and resolution numbers use it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.code.taken": [
+    {
+      "type": 0,
+      "value": "Another "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " has this code.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.col.actions": [
+    {
+      "type": 0,
+      "value": "ActionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.col.alternate": [
+    {
+      "type": 0,
+      "value": "AlternateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.col.attributes": [
+    {
+      "type": 0,
+      "value": "AttributesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.col.authority": [
+    {
+      "type": 0,
+      "value": "AuthoritySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.col.chair": [
+    {
+      "type": 0,
+      "value": "ChairSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.col.code": [
+    {
+      "type": 0,
+      "value": "CodeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.col.from": [
+    {
+      "type": 0,
+      "value": "FromSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.col.members": [
+    {
+      "type": 0,
+      "value": "MembersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.col.name": [
+    {
+      "type": 0,
+      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.col.role": [
+    {
+      "type": 0,
+      "value": "RoleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.col.state": [
+    {
+      "type": 0,
+      "value": "NowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.col.status": [
+    {
+      "type": 0,
+      "value": "StatusSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.col.term": [
+    {
+      "type": 0,
+      "value": "TermSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.col.to": [
+    {
+      "type": 0,
+      "value": "UntilSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.col.type": [
+    {
+      "type": 0,
+      "value": "TypeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.col.votes": [
+    {
+      "type": 0,
+      "value": "VotesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.conflict": [
+    {
+      "type": 0,
+      "value": "Someone else changed this in the meantime. It has been reloaded; try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.create": [
+    {
+      "type": 0,
+      "value": "CreateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.dissolve.lead": [
+    {
+      "type": 0,
+      "value": "The "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " stops taking members and items. Its members and history stay. There is no way back; clone it to start again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.dissolve.on": [
+    {
+      "type": 0,
+      "value": "Dissolved onSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.dissolve.reason": [
+    {
+      "type": 0,
+      "value": "ReasonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.dissolve.submit": [
+    {
+      "type": 0,
+      "value": "DissolveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.dissolve.title": [
+    {
+      "type": 0,
+      "value": "Dissolve "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.dissolved": [
+    {
+      "type": 0,
+      "value": "Dissolved on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.edit.title": [
+    {
+      "type": 0,
+      "value": "Edit "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.empty": [
+    {
+      "type": 0,
+      "value": "There is nothing to show yet. A "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " appears here when you sit on it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.endedBecause": [
+    {
+      "type": 1,
+      "value": "state"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.exOfficio": [
+    {
+      "type": 0,
+      "value": "Ex officioSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.fixedValues": [
+    {
+      "type": 0,
+      "value": "These never change: workflow key "
+    },
+    {
+      "type": 1,
+      "value": "key"
+    },
+    {
+      "type": 0,
+      "value": ", type "
+    },
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.history.caption": [
+    {
+      "type": 0,
+      "value": "Every term of office of "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.history.lead": [
+    {
+      "type": 0,
+      "value": "Every term of office, newest first. Renewing a term or changing a role adds a row; ending a membership keeps its row. Nothing is deleted.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.key": [
+    {
+      "type": 0,
+      "value": "Workflow keySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.key.format": [
+    {
+      "type": 0,
+      "value": "Start with a small letter; then small letters, digits or hyphens.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.key.hint": [
+    {
+      "type": 0,
+      "value": "Workflow steps name the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " by this key. It is suggested from the name and never changes.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.key.taken": [
+    {
+      "type": 0,
+      "value": "Another "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " has this key.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.lead": [
+    {
+      "type": 0,
+      "value": "Each "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " you may see, with its chair and how many members it has today. Sitting on a "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " is what lets you see it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.actions": [
+    {
+      "type": 0,
+      "value": "Actions for "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.add.title": [
+    {
+      "type": 0,
+      "value": "Add a member to "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.alternate": [
+    {
+      "type": 0,
+      "value": "AlternateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.alternate.hint": [
+    {
+      "type": 0,
+      "value": "Attends and counts when the member sends apologies.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.attributes": [
+    {
+      "type": 0,
+      "value": "AttributesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.attributes.hint": [
+    {
+      "type": 0,
+      "value": "Used in the quorum rule.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.authority": [
+    {
+      "type": 0,
+      "value": "AuthoritySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.authority.hint": [
+    {
+      "type": 0,
+      "value": "The decision that appointed the member, for example a Board resolution of 12 October 2026.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.changeRole": [
+    {
+      "type": 0,
+      "value": "Change roleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.changeRole.lead": [
+    {
+      "type": 0,
+      "value": "The current row ends the day before and a new row starts in the new role. The term continues.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.changeRole.submit": [
+    {
+      "type": 0,
+      "value": "Change roleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.changeRole.title": [
+    {
+      "type": 0,
+      "value": "Change the role of "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.edit": [
+    {
+      "type": 0,
+      "value": "EditSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.edit.title": [
+    {
+      "type": 0,
+      "value": "Edit the membership of "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.end": [
+    {
+      "type": 0,
+      "value": "End membershipSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.end.lead": [
+    {
+      "type": 0,
+      "value": "The membership stays in the history with its dates and reason.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.end.submit": [
+    {
+      "type": 0,
+      "value": "End membershipSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.end.title": [
+    {
+      "type": 0,
+      "value": "End the membership of "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.from": [
+    {
+      "type": 0,
+      "value": "FromSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.lastDay": [
+    {
+      "type": 0,
+      "value": "Last daySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.newRole": [
+    {
+      "type": 0,
+      "value": "New roleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.newRoleFrom": [
+    {
+      "type": 0,
+      "value": "First day in the new roleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.note": [
+    {
+      "type": 0,
+      "value": "DetailsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.note.hint": [
+    {
+      "type": 0,
+      "value": "Required when the reason is Other.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.person": [
+    {
+      "type": 0,
+      "value": "PersonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.pickPerson": [
+    {
+      "type": 0,
+      "value": "Choose a person from the list.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.pickPosition": [
+    {
+      "type": 0,
+      "value": "Choose a position from the list.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.position": [
+    {
+      "type": 0,
+      "value": "PositionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.position.hint": [
+    {
+      "type": 0,
+      "value": "For example, the Chief Risk Officer. The seat passes to whoever holds the position.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.reason": [
+    {
+      "type": 0,
+      "value": "ReasonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.renew": [
+    {
+      "type": 0,
+      "value": "Renew termSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.renew.beyond": [
+    {
+      "type": 0,
+      "value": "This will be term "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ". The type allows at most "
+    },
+    {
+      "type": 1,
+      "value": "max"
+    },
+    {
+      "type": 0,
+      "value": " consecutive terms. You can still renew if the charter allows it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.renew.beyondDone": [
+    {
+      "type": 0,
+      "value": "Renewed beyond the usual limit of "
+    },
+    {
+      "type": 1,
+      "value": "max"
+    },
+    {
+      "type": 0,
+      "value": " consecutive terms.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.renew.ends": [
+    {
+      "type": 0,
+      "value": "New term endsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.renew.lead": [
+    {
+      "type": 0,
+      "value": "Term "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " starts on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.renew.submit": [
+    {
+      "type": 0,
+      "value": "RenewSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.renew.title": [
+    {
+      "type": 0,
+      "value": "Renew the term of "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.role": [
+    {
+      "type": 0,
+      "value": "RoleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.secretaryHint": [
+    {
+      "type": 0,
+      "value": "Only an administrator can appoint a chair or a secretary.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.termEnds": [
+    {
+      "type": 0,
+      "value": "Term endsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.termEnds.open": [
+    {
+      "type": 0,
+      "value": "Leave it empty for no planned end.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.termFromType": [
+    {
+      "type": 6,
+      "value": "months",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " month, as the type says."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " months, as the type says."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.votes": [
+    {
+      "type": 0,
+      "value": "VotesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.votes.hint": [
+    {
+      "type": 0,
+      "value": "Set from the role. Change it if the charter says otherwise.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.who": [
+    {
+      "type": 0,
+      "value": "WhoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.who.person": [
+    {
+      "type": 0,
+      "value": "A personSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.who.position": [
+    {
+      "type": 0,
+      "value": "A position, whoever holds itSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.withdraw": [
+    {
+      "type": 0,
+      "value": "WithdrawSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.withdraw.lead": [
+    {
+      "type": 0,
+      "value": "This membership has not started. It stays in the history, marked as withdrawn.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.member.withdraw.title": [
+    {
+      "type": 0,
+      "value": "Withdraw the membership of "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.members.caption": [
+    {
+      "type": 0,
+      "value": "Members on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.members.none": [
+    {
+      "type": 0,
+      "value": "Nobody is in office on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.membersOn": [
+    {
+      "type": 0,
+      "value": "Members onSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.mine.chair": [
+    {
+      "type": 0,
+      "value": "Chair: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.mine.empty": [
+    {
+      "type": 0,
+      "value": "You do not sit on any "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.mine.ended": [
+    {
+      "type": 0,
+      "value": "Ended on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.mine.former": [
+    {
+      "type": 0,
+      "value": "You no longer sit on it, so only your own membership is shown.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.mine.lead": [
+    {
+      "type": 0,
+      "value": "Each "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " you sit on, will sit on or sat on, with your role and term.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.mine.members": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " member"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " members"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.mine.noVote": [
+    {
+      "type": 0,
+      "value": "does not voteSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.mine.open": [
+    {
+      "type": 0,
+      "value": "OpenSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.mine.openNamed": [
+    {
+      "type": 0,
+      "value": "Open "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.mine.role": [
+    {
+      "type": 1,
+      "value": "role"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "votes"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.mine.starts": [
+    {
+      "type": 0,
+      "value": "Starts on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.mine.termEnds": [
+    {
+      "type": 0,
+      "value": "Term "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " ends on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.mine.title": [
+    {
+      "type": 0,
+      "value": "My "
+    },
+    {
+      "type": 1,
+      "value": "forums"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.mine.votes": [
+    {
+      "type": 0,
+      "value": "votesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.more": [
+    {
+      "type": 0,
+      "value": "More actionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.name": [
+    {
+      "type": 0,
+      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.nameWithCode": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "code"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.no": [
+    {
+      "type": 0,
+      "value": "NoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.noSecretary": [
+    {
+      "type": 0,
+      "value": "Secretary: none yetSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.none": [
+    {
+      "type": 0,
+      "value": "NoneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.openEnded": [
+    {
+      "type": 0,
+      "value": "No end dateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.optional": [
+    {
+      "type": 0,
+      "value": "(optional)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.parent.cycle": [
+    {
+      "type": 5,
+      "value": "forumGender",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "A "
+            },
+            {
+              "type": 1,
+              "value": "forum"
+            },
+            {
+              "type": 0,
+              "value": " cannot report to itself or to one that reports to it."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.policy.link": [
+    {
+      "type": 0,
+      "value": "Open the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " typeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.policy.maxTerms": [
+    {
+      "type": 6,
+      "value": "max",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "At most "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " term in a row; renewing beyond it warns, never blocks."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "At most "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " terms in a row; renewing beyond it warns, never blocks."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.policy.noTermMonths": [
+    {
+      "type": 0,
+      "value": "Terms have no usual length.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.policy.of": [
+    {
+      "type": 0,
+      "value": "The policy of the type “"
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "”, version "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": ". It is shown here to read only.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.policy.outcome": [
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "meaning"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.policy.reminders": [
+    {
+      "type": 0,
+      "value": "The secretary is reminded "
+    },
+    {
+      "type": 1,
+      "value": "days"
+    },
+    {
+      "type": 0,
+      "value": " days before a term ends.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.policy.termMonths": [
+    {
+      "type": 6,
+      "value": "months",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "A term usually lasts "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " month."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "A term usually lasts "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " months."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.problem.alreadyMember": [
+    {
+      "type": 0,
+      "value": "This person or position already sits on the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " for part of that time.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.problem.beforeStart": [
+    {
+      "type": 0,
+      "value": "The end cannot be before the start.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.problem.dissolved": [
+    {
+      "type": 0,
+      "value": "The "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " is dissolved. Members can only be ended.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.problem.keyFixed": [
+    {
+      "type": 0,
+      "value": "The workflow key never changes.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.problem.memberEnded": [
+    {
+      "type": 0,
+      "value": "This membership has ended. Add a new one instead.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.problem.noTerm": [
+    {
+      "type": 0,
+      "value": "This membership has no term end to renew from. Edit it to set one first.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.problem.notUpcoming": [
+    {
+      "type": 0,
+      "value": "Only a membership that has not started can be withdrawn.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.problem.oneChair": [
+    {
+      "type": 0,
+      "value": "The "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " already has a chair for part of that time. End or change the current chair first.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.problem.sameRole": [
+    {
+      "type": 0,
+      "value": "The member already has this role.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.problem.secretaryLimit": [
+    {
+      "type": 0,
+      "value": "Only an administrator can change a chair, a secretary or your own membership.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.problem.self": [
+    {
+      "type": 0,
+      "value": "A member cannot be their own alternate.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.problem.tooEarly": [
+    {
+      "type": 0,
+      "value": "The new role must start after the membership starts. Withdraw it and add it again instead.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.problem.unknownAttribute": [
+    {
+      "type": 0,
+      "value": "Not an attribute of this type.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.problem.unknownPerson": [
+    {
+      "type": 0,
+      "value": "That person or position cannot be added.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.quorum.on": [
+    {
+      "type": 5,
+      "value": "who",
+      "options": {
+        "seats": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Quorum on "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            },
+            {
+              "type": 0,
+              "value": ": "
+            },
+            {
+              "type": 1,
+              "value": "needed"
+            },
+            {
+              "type": 0,
+              "value": " of "
+            },
+            {
+              "type": 1,
+              "value": "basis"
+            },
+            {
+              "type": 0,
+              "value": " seats"
+            }
+          ]
+        },
+        "all": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Quorum on "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            },
+            {
+              "type": 0,
+              "value": ": "
+            },
+            {
+              "type": 1,
+              "value": "needed"
+            },
+            {
+              "type": 0,
+              "value": " of "
+            },
+            {
+              "type": 1,
+              "value": "basis"
+            },
+            {
+              "type": 0,
+              "value": " members"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Quorum on "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            },
+            {
+              "type": 0,
+              "value": ": "
+            },
+            {
+              "type": 1,
+              "value": "needed"
+            },
+            {
+              "type": 0,
+              "value": " of "
+            },
+            {
+              "type": 1,
+              "value": "basis"
+            },
+            {
+              "type": 0,
+              "value": " voting members"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.quorum.today": [
+    {
+      "type": 5,
+      "value": "who",
+      "options": {
+        "seats": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Quorum today: "
+            },
+            {
+              "type": 1,
+              "value": "needed"
+            },
+            {
+              "type": 0,
+              "value": " of "
+            },
+            {
+              "type": 1,
+              "value": "basis"
+            },
+            {
+              "type": 0,
+              "value": " seats"
+            }
+          ]
+        },
+        "all": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Quorum today: "
+            },
+            {
+              "type": 1,
+              "value": "needed"
+            },
+            {
+              "type": 0,
+              "value": " of "
+            },
+            {
+              "type": 1,
+              "value": "basis"
+            },
+            {
+              "type": 0,
+              "value": " members"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Quorum today: "
+            },
+            {
+              "type": 1,
+              "value": "needed"
+            },
+            {
+              "type": 0,
+              "value": " of "
+            },
+            {
+              "type": 1,
+              "value": "basis"
+            },
+            {
+              "type": 0,
+              "value": " voting members"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.reason.other": [
+    {
+      "type": 0,
+      "value": "OtherSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.reason.removed": [
+    {
+      "type": 0,
+      "value": "RemovedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.reason.renewed": [
+    {
+      "type": 0,
+      "value": "RenewedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.reason.resigned": [
+    {
+      "type": 0,
+      "value": "ResignedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.reason.roleChanged": [
+    {
+      "type": 0,
+      "value": "Role changedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.reason.termCompleted": [
+    {
+      "type": 0,
+      "value": "Term completedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.reason.withdrawn": [
+    {
+      "type": 0,
+      "value": "Withdrawn before startingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.reportsTo": [
+    {
+      "type": 0,
+      "value": "Reports toSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.reportsTo.named": [
+    {
+      "type": 0,
+      "value": "Reports to: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.reportsTo.none": [
+    {
+      "type": 0,
+      "value": "No oneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.required": [
+    {
+      "type": 0,
+      "value": "Required.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.role.chair": [
+    {
+      "type": 0,
+      "value": "ChairSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.role.member": [
+    {
+      "type": 0,
+      "value": "MemberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.role.observer": [
+    {
+      "type": 0,
+      "value": "ObserverSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.role.secretary": [
+    {
+      "type": 0,
+      "value": "SecretarySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.role.standingInvitee": [
+    {
+      "type": 0,
+      "value": "Standing inviteeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.role.viceChair": [
+    {
+      "type": 0,
+      "value": "Vice-chairSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.save": [
+    {
+      "type": 0,
+      "value": "SaveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.saved": [
+    {
+      "type": 0,
+      "value": "Saved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.seatHolder": [
+    {
+      "type": 0,
+      "value": "Now: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.secretaries": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Secretary"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Secretaries"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "names"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.shortName": [
+    {
+      "type": 0,
+      "value": "Short nameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.shortName.hint": [
+    {
+      "type": 0,
+      "value": "Used where space is short, such as on a phone.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.state.ended": [
+    {
+      "type": 0,
+      "value": "EndedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.state.inOffice": [
+    {
+      "type": 0,
+      "value": "In officeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.state.termEnded": [
+    {
+      "type": 0,
+      "value": "Term ended, not renewedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.state.upcoming": [
+    {
+      "type": 0,
+      "value": "Starts laterSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.status.active": [
+    {
+      "type": 0,
+      "value": "ActiveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.status.dissolved": [
+    {
+      "type": 0,
+      "value": "DissolvedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.tab.history": [
+    {
+      "type": 0,
+      "value": "HistorySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.tab.members": [
+    {
+      "type": 0,
+      "value": "MembersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.tab.policy": [
+    {
+      "type": 0,
+      "value": "PolicySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.tabs": [
+    {
+      "type": 0,
+      "value": "Parts of the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " pageSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.term": [
+    {
+      "type": 6,
+      "value": "n",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": "st"
+            }
+          ]
+        },
+        "two": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": "nd"
+            }
+          ]
+        },
+        "few": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": "rd"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": "th"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "ordinal"
+    },
+    {
+      "type": 0,
+      "value": " term, to "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.term.endsIn": [
+    {
+      "type": 6,
+      "value": "days",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ends today"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ends in "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " day"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ends in "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " days"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.term.open": [
+    {
+      "type": 6,
+      "value": "n",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": "st"
+            }
+          ]
+        },
+        "two": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": "nd"
+            }
+          ]
+        },
+        "few": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": "rd"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": "th"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "ordinal"
+    },
+    {
+      "type": 0,
+      "value": " termSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.term.planned": [
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " (planned)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.title": [
+    {
+      "type": 1,
+      "value": "Forums"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.type": [
+    {
+      "type": 0,
+      "value": "TypeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.type.choose": [
+    {
+      "type": 0,
+      "value": "Choose a type…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.type.inactive": [
+    {
+      "type": 0,
+      "value": "This type is switched off or not yet published.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.vacant": [
+    {
+      "type": 0,
+      "value": "VacantSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.warnings": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " term ends soon or has ended"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " terms end soon or have ended"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forums.yes": [
+    {
+      "type": 0,
+      "value": "YesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "health.checkedAt": [
     {
       "type": 0,
@@ -6781,6 +9081,20 @@
     {
       "type": 0,
       "value": "The platform could not be reached.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "home.forums": [
+    {
+      "type": 0,
+      "value": "My "
+    },
+    {
+      "type": 1,
+      "value": "forums"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "home.lead": [
@@ -17687,6 +20001,16 @@
       "value": "EmailSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "nav.forum": [
+    {
+      "type": 1,
+      "value": "Forum"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "nav.forumType": [
     {
       "type": 1,
@@ -17705,6 +20029,16 @@
     {
       "type": 0,
       "value": " typesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.forums": [
+    {
+      "type": 1,
+      "value": "Forums"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "nav.group.administration": [
@@ -17783,6 +20117,20 @@
     {
       "type": 0,
       "value": "Memo typesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.myForums": [
+    {
+      "type": 0,
+      "value": "My "
+    },
+    {
+      "type": 1,
+      "value": "forums"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "nav.newMemo": [

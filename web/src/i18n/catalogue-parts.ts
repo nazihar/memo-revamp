@@ -10,6 +10,7 @@ export type CataloguePart =
   | 'builder'
   | 'memoAdmin'
   | 'forumAdmin'
+  | 'forums'
   | 'platform'
   | 'patterns'
   | 'search'

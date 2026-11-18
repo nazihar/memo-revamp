@@ -13,8 +13,13 @@
     "prefixes": ["memoTypes", "memoNumbering"]
   },
   "forumAdmin": {
-    "routes": ["/admin/committee-types"],
+    "$comment": "Also on the committee pages, which read a type's quorum sentence, outcome meanings and term words.",
+    "routes": ["/admin/committee-types", "/committees"],
     "prefixes": ["forumTypes"]
+  },
+  "forums": {
+    "routes": ["/committees", "/me/committees"],
+    "prefixes": ["forums"]
   },
   "platform": {
     "routes": ["/platform"],

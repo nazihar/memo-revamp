@@ -25,7 +25,7 @@ export const bm = defineMessages({
   deadline: { id: 'builder.deadline', defaultMessage: 'Deadline' },
   leadsTo: { id: 'builder.leadsTo', defaultMessage: 'Leads to' },
   runs: { id: 'builder.runs', defaultMessage: 'Runs' },
-  forum: { id: 'builder.forum', defaultMessage: 'Forum' },
+  forum: { id: 'builder.forum', defaultMessage: 'Committee' },
   otherwise: { id: 'builder.otherwise', defaultMessage: 'Otherwise' },
   nowhere: { id: 'builder.nowhere', defaultMessage: 'Nowhere yet' },
   initiator: { id: 'builder.assignee.initiator', defaultMessage: 'The initiator' },
@@ -198,7 +198,7 @@ export const stepTypeLabels = defineMessages<StepType>({
   branch: { id: 'builder.type.branch', defaultMessage: 'Branch' },
   notify: { id: 'builder.type.notify', defaultMessage: 'Notify' },
   subworkflow: { id: 'builder.type.subworkflow', defaultMessage: 'Sub-workflow' },
-  'escalate-to-forum': { id: 'builder.type.forum', defaultMessage: 'Escalate to a forum' },
+  'escalate-to-forum': { id: 'builder.type.forum', defaultMessage: 'Escalate to a committee' },
   sign: { id: 'builder.type.sign', defaultMessage: 'Signature' },
 })
 

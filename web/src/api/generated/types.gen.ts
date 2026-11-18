@@ -720,6 +720,20 @@ export type FixityTotals = {
     verifyProblems: number;
 };
 
+export type ForumPolicyResponse = {
+    defaultClassificationId?: string | null;
+    description?: string | null;
+    memberAttributes: Array<MemberAttribute>;
+    outcomes: Array<Outcome>;
+    quorum: QuorumRule;
+    quorumBasis: number;
+    quorumNeeded: number;
+    termPolicy: TermPolicy;
+    typeId: string;
+    typeName: string;
+    version: number;
+};
+
 export type ForumRequest = {
     classificationId?: string | null;
     code?: string;
@@ -6376,6 +6390,26 @@ export type WithdrawForumMemberResponses = {
 };
 
 export type WithdrawForumMemberResponse = WithdrawForumMemberResponses[keyof WithdrawForumMemberResponses];
+
+export type GetForumPolicyData = {
+    body?: never;
+    path: {
+        forumId: string;
+    };
+    query?: {
+        on?: string;
+    };
+    url: '/api/v1/forums/{forumId}/policy';
+};
+
+export type GetForumPolicyResponses = {
+    /**
+     * OK
+     */
+    200: ForumPolicyResponse;
+};
+
+export type GetForumPolicyResponse = GetForumPolicyResponses[keyof GetForumPolicyResponses];
 
 export type ListForumSubmissionsData = {
     body?: never;

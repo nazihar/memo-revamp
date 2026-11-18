@@ -5139,21 +5139,119 @@
     },
     {
       "type": 0,
-      "value": "Ƒǿǿřŭŭḿ"
+      "value": "Ƈǿǿḿḿīŧŧḗḗḗḗ"
     },
     {
       "type": 0,
       "value": "]"
     }
   ],
-  "builder.forum.field": [
+  "builder.forum.option": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "code"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "builder.forum.pick": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "Forum"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "builder.forum.pick.hint": [
     {
       "type": 0,
       "value": "["
     },
     {
       "type": 0,
-      "value": "Ƒǿǿřŭŭḿ ķḗḗẏ"
+      "value": "Ŧħḗḗ ḿḗḗḿǿǿ ẇȧȧīŧş ħḗḗřḗḗ ƒǿǿř ŧħḗḗ ḓḗḗƈīşīǿǿƞ. Ǿƞŀẏ ȧȧƈŧīṽḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "forums"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧřḗḗ ŀīşŧḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "builder.forum.unknown": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 5,
+      "value": "forumGender",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ŧħīş "
+            },
+            {
+              "type": 1,
+              "value": "forum"
+            },
+            {
+              "type": 0,
+              "value": " ḓǿǿḗḗş ƞǿǿŧ ḗḗẋīşŧ ǿǿř īş ḓīşşǿǿŀṽḗḗḓ."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "builder.forum.unknownKey": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "key"
+    },
+    {
+      "type": 0,
+      "value": " (ƞǿǿŧ ƒǿǿŭŭƞḓ)"
     },
     {
       "type": 0,
@@ -7071,7 +7169,7 @@
     },
     {
       "type": 0,
-      "value": "Ḗşƈȧȧŀȧȧŧḗḗ ŧǿǿ ȧȧ ƒǿǿřŭŭḿ"
+      "value": "Ḗşƈȧȧŀȧȧŧḗḗ ŧǿǿ ȧȧ ƈǿǿḿḿīŧŧḗḗḗḗ"
     },
     {
       "type": 0,
@@ -12605,6 +12703,3692 @@
       "value": "]"
     }
   ],
+  "forums.action.clone": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŀǿǿƞḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.action.dissolve": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓīşşǿǿŀṽḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.action.edit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗḓīŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.add": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞḗḗẇ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.addMember": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧḓḓ ḿḗḗḿƀḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.back": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŀŀ "
+    },
+    {
+      "type": 1,
+      "value": "forums"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.cancel": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈȧȧƞƈḗḗŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.caption": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "Forums"
+    },
+    {
+      "type": 0,
+      "value": " ẏǿǿŭŭ ḿȧȧẏ şḗḗḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.classification": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŀȧȧşşīƒīƈȧȧŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.classification.default": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧş ŧħḗḗ ŧẏƥḗḗ şȧȧẏş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.clone.copyFrom": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗīř ḿḗḗḿƀḗḗřşħīƥ şŧȧȧřŧş ǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.clone.copyHint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗȧȧƈħ şŧȧȧřŧş ȧȧ ƒīřşŧ ŧḗḗřḿ ǿǿƒ ŧħḗḗ ŭŭşŭŭȧȧŀ ŀḗḗƞɠŧħ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.clone.copyMembers": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿƥẏ ŧħḗḗ ƈŭŭřřḗḗƞŧ ḿḗḗḿƀḗḗřş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.clone.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ƞḗḗẇ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " ẇīŧħ ŧħḗḗ şȧȧḿḗḗ ŧẏƥḗḗ, ƈŀȧȧşşīƒīƈȧȧŧīǿǿƞ ȧȧƞḓ řḗḗƥǿǿřŧīƞɠ ŀīƞḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.clone.submit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŀǿǿƞḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.clone.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŀǿǿƞḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.code": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿḓḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.code.format": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭşḗḗ 1 ŧǿǿ 10 ƈȧȧƥīŧȧȧŀ ŀḗḗŧŧḗḗřş, ḓīɠīŧş ǿǿř ħẏƥħḗḗƞş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.code.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭƥ ŧǿǿ 10 ƈȧȧƥīŧȧȧŀ ŀḗḗŧŧḗḗřş, ḓīɠīŧş ǿǿř ħẏƥħḗḗƞş. Ḿḗḗḗḗŧīƞɠ ȧȧƞḓ řḗḗşǿǿŀŭŭŧīǿǿƞ ƞŭŭḿƀḗḗřş ŭŭşḗḗ īŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.code.taken": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƞǿǿŧħḗḗř "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " ħȧȧş ŧħīş ƈǿǿḓḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.col.actions": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƈŧīǿǿƞş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.col.alternate": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŀŧḗḗřƞȧȧŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.col.attributes": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŧŧřīƀŭŭŧḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.col.authority": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŭŭŧħǿǿřīŧẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.col.chair": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħȧȧīř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.col.code": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿḓḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.col.from": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒřǿǿḿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.col.members": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿƀḗḗřş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.col.name": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞȧȧḿḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.col.role": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řǿǿŀḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.col.state": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿẇ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.col.status": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŧȧȧŧŭŭş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.col.term": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧḗḗřḿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.col.to": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭƞŧīŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.col.type": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧẏƥḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.col.votes": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ṽǿǿŧḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.conflict": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şǿǿḿḗḗǿǿƞḗḗ ḗḗŀşḗḗ ƈħȧȧƞɠḗḗḓ ŧħīş īƞ ŧħḗḗ ḿḗḗȧȧƞŧīḿḗḗ. Īŧ ħȧȧş ƀḗḗḗḗƞ řḗḗŀǿǿȧȧḓḗḗḓ; ŧřẏ ȧȧɠȧȧīƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.create": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈřḗḗȧȧŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.dissolve.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " şŧǿǿƥş ŧȧȧķīƞɠ ḿḗḗḿƀḗḗřş ȧȧƞḓ īŧḗḗḿş. Īŧş ḿḗḗḿƀḗḗřş ȧȧƞḓ ħīşŧǿǿřẏ şŧȧȧẏ. Ŧħḗḗřḗḗ īş ƞǿǿ ẇȧȧẏ ƀȧȧƈķ; ƈŀǿǿƞḗḗ īŧ ŧǿǿ şŧȧȧřŧ ȧȧɠȧȧīƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.dissolve.on": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓīşşǿǿŀṽḗḗḓ ǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.dissolve.reason": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗȧȧşǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.dissolve.submit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓīşşǿǿŀṽḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.dissolve.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓīşşǿǿŀṽḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.dissolved": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓīşşǿǿŀṽḗḗḓ ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.edit.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗḓīŧ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.empty": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗřḗḗ īş ƞǿǿŧħīƞɠ ŧǿǿ şħǿǿẇ ẏḗḗŧ. Ȧ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧƥƥḗḗȧȧřş ħḗḗřḗḗ ẇħḗḗƞ ẏǿǿŭŭ şīŧ ǿǿƞ īŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.endedBecause": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "state"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.exOfficio": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗẋ ǿǿƒƒīƈīǿǿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.failed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħȧȧŧ ḓīḓ ƞǿǿŧ ẇǿǿřķ. Ŧřẏ ȧȧɠȧȧīƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.fixedValues": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗşḗḗ ƞḗḗṽḗḗř ƈħȧȧƞɠḗḗ: ẇǿǿřķƒŀǿǿẇ ķḗḗẏ "
+    },
+    {
+      "type": 1,
+      "value": "key"
+    },
+    {
+      "type": 0,
+      "value": ", ŧẏƥḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.history.caption": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗṽḗḗřẏ ŧḗḗřḿ ǿǿƒ ǿǿƒƒīƈḗḗ ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.history.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗṽḗḗřẏ ŧḗḗřḿ ǿǿƒ ǿǿƒƒīƈḗḗ, ƞḗḗẇḗḗşŧ ƒīřşŧ. Řḗḗƞḗḗẇīƞɠ ȧȧ ŧḗḗřḿ ǿǿř ƈħȧȧƞɠīƞɠ ȧȧ řǿǿŀḗḗ ȧȧḓḓş ȧȧ řǿǿẇ; ḗḗƞḓīƞɠ ȧȧ ḿḗḗḿƀḗḗřşħīƥ ķḗḗḗḗƥş īŧş řǿǿẇ. Ƞǿǿŧħīƞɠ īş ḓḗḗŀḗḗŧḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.key": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇǿǿřķƒŀǿǿẇ ķḗḗẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.key.format": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŧȧȧřŧ ẇīŧħ ȧȧ şḿȧȧŀŀ ŀḗḗŧŧḗḗř; ŧħḗḗƞ şḿȧȧŀŀ ŀḗḗŧŧḗḗřş, ḓīɠīŧş ǿǿř ħẏƥħḗḗƞş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.key.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇǿǿřķƒŀǿǿẇ şŧḗḗƥş ƞȧȧḿḗḗ ŧħḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " ƀẏ ŧħīş ķḗḗẏ. Īŧ īş şŭŭɠɠḗḗşŧḗḗḓ ƒřǿǿḿ ŧħḗḗ ƞȧȧḿḗḗ ȧȧƞḓ ƞḗḗṽḗḗř ƈħȧȧƞɠḗḗş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.key.taken": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƞǿǿŧħḗḗř "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " ħȧȧş ŧħīş ķḗḗẏ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗȧȧƈħ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " ẏǿǿŭŭ ḿȧȧẏ şḗḗḗḗ, ẇīŧħ īŧş ƈħȧȧīř ȧȧƞḓ ħǿǿẇ ḿȧȧƞẏ ḿḗḗḿƀḗḗřş īŧ ħȧȧş ŧǿǿḓȧȧẏ. Şīŧŧīƞɠ ǿǿƞ ȧȧ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " īş ẇħȧȧŧ ŀḗḗŧş ẏǿǿŭŭ şḗḗḗḗ īŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.actions": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƈŧīǿǿƞş ƒǿǿř "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.add.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧḓḓ ȧȧ ḿḗḗḿƀḗḗř ŧǿǿ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.alternate": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŀŧḗḗřƞȧȧŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.alternate.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŧŧḗḗƞḓş ȧȧƞḓ ƈǿǿŭŭƞŧş ẇħḗḗƞ ŧħḗḗ ḿḗḗḿƀḗḗř şḗḗƞḓş ȧȧƥǿǿŀǿǿɠīḗḗş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.attributes": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŧŧřīƀŭŭŧḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.attributes.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭşḗḗḓ īƞ ŧħḗḗ ɋŭŭǿǿřŭŭḿ řŭŭŀḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.authority": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŭŭŧħǿǿřīŧẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.authority.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḓḗḗƈīşīǿǿƞ ŧħȧȧŧ ȧȧƥƥǿǿīƞŧḗḗḓ ŧħḗḗ ḿḗḗḿƀḗḗř, ƒǿǿř ḗḗẋȧȧḿƥŀḗḗ ȧȧ Ɓǿǿȧȧřḓ řḗḗşǿǿŀŭŭŧīǿǿƞ ǿǿƒ 12 Ǿƈŧǿǿƀḗḗř 2026."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.changeRole": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħȧȧƞɠḗḗ řǿǿŀḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.changeRole.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƈŭŭřřḗḗƞŧ řǿǿẇ ḗḗƞḓş ŧħḗḗ ḓȧȧẏ ƀḗḗƒǿǿřḗḗ ȧȧƞḓ ȧȧ ƞḗḗẇ řǿǿẇ şŧȧȧřŧş īƞ ŧħḗḗ ƞḗḗẇ řǿǿŀḗḗ. Ŧħḗḗ ŧḗḗřḿ ƈǿǿƞŧīƞŭŭḗḗş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.changeRole.submit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħȧȧƞɠḗḗ řǿǿŀḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.changeRole.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħȧȧƞɠḗḗ ŧħḗḗ řǿǿŀḗḗ ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.edit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗḓīŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.edit.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗḓīŧ ŧħḗḗ ḿḗḗḿƀḗḗřşħīƥ ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.end": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗƞḓ ḿḗḗḿƀḗḗřşħīƥ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.end.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḿḗḗḿƀḗḗřşħīƥ şŧȧȧẏş īƞ ŧħḗḗ ħīşŧǿǿřẏ ẇīŧħ īŧş ḓȧȧŧḗḗş ȧȧƞḓ řḗḗȧȧşǿǿƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.end.submit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗƞḓ ḿḗḗḿƀḗḗřşħīƥ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.end.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗƞḓ ŧħḗḗ ḿḗḗḿƀḗḗřşħīƥ ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.from": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒřǿǿḿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.lastDay": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀȧȧşŧ ḓȧȧẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.newRole": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞḗḗẇ řǿǿŀḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.newRoleFrom": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒīřşŧ ḓȧȧẏ īƞ ŧħḗḗ ƞḗḗẇ řǿǿŀḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.note": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗŧȧȧīŀş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.note.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗɋŭŭīřḗḗḓ ẇħḗḗƞ ŧħḗḗ řḗḗȧȧşǿǿƞ īş Ǿŧħḗḗř."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.person": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥḗḗřşǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.pickPerson": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħǿǿǿǿşḗḗ ȧȧ ƥḗḗřşǿǿƞ ƒřǿǿḿ ŧħḗḗ ŀīşŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.pickPosition": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħǿǿǿǿşḗḗ ȧȧ ƥǿǿşīŧīǿǿƞ ƒřǿǿḿ ŧħḗḗ ŀīşŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.position": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥǿǿşīŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.position.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒǿǿř ḗḗẋȧȧḿƥŀḗḗ, ŧħḗḗ Ƈħīḗḗƒ Řīşķ Ǿƒƒīƈḗḗř. Ŧħḗḗ şḗḗȧȧŧ ƥȧȧşşḗḗş ŧǿǿ ẇħǿǿḗḗṽḗḗř ħǿǿŀḓş ŧħḗḗ ƥǿǿşīŧīǿǿƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.reason": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗȧȧşǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.renew": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƞḗḗẇ ŧḗḗřḿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.renew.beyond": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ẇīŀŀ ƀḗḗ ŧḗḗřḿ "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ". Ŧħḗḗ ŧẏƥḗḗ ȧȧŀŀǿǿẇş ȧȧŧ ḿǿǿşŧ "
+    },
+    {
+      "type": 1,
+      "value": "max"
+    },
+    {
+      "type": 0,
+      "value": " ƈǿǿƞşḗḗƈŭŭŧīṽḗḗ ŧḗḗřḿş. Ẏǿǿŭŭ ƈȧȧƞ şŧīŀŀ řḗḗƞḗḗẇ īƒ ŧħḗḗ ƈħȧȧřŧḗḗř ȧȧŀŀǿǿẇş īŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.renew.beyondDone": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƞḗḗẇḗḗḓ ƀḗḗẏǿǿƞḓ ŧħḗḗ ŭŭşŭŭȧȧŀ ŀīḿīŧ ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "max"
+    },
+    {
+      "type": 0,
+      "value": " ƈǿǿƞşḗḗƈŭŭŧīṽḗḗ ŧḗḗřḿş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.renew.ends": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞḗḗẇ ŧḗḗřḿ ḗḗƞḓş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.renew.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧḗḗřḿ "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " şŧȧȧřŧş ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.renew.submit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƞḗḗẇ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.renew.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƞḗḗẇ ŧħḗḗ ŧḗḗřḿ ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.role": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řǿǿŀḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.secretaryHint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƞŀẏ ȧȧƞ ȧȧḓḿīƞīşŧřȧȧŧǿǿř ƈȧȧƞ ȧȧƥƥǿǿīƞŧ ȧȧ ƈħȧȧīř ǿǿř ȧȧ şḗḗƈřḗḗŧȧȧřẏ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.termEnds": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧḗḗřḿ ḗḗƞḓş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.termEnds.open": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŀḗḗȧȧṽḗḗ īŧ ḗḗḿƥŧẏ ƒǿǿř ƞǿǿ ƥŀȧȧƞƞḗḗḓ ḗḗƞḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.termFromType": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "months",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḿǿǿƞŧħ, ȧȧş ŧħḗḗ ŧẏƥḗḗ şȧȧẏş."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḿǿǿƞŧħş, ȧȧş ŧħḗḗ ŧẏƥḗḗ şȧȧẏş."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.votes": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ṽǿǿŧḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.votes.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḗḗŧ ƒřǿǿḿ ŧħḗḗ řǿǿŀḗḗ. Ƈħȧȧƞɠḗḗ īŧ īƒ ŧħḗḗ ƈħȧȧřŧḗḗř şȧȧẏş ǿǿŧħḗḗřẇīşḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.who": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇħǿǿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.who.person": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ƥḗḗřşǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.who.position": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ƥǿǿşīŧīǿǿƞ, ẇħǿǿḗḗṽḗḗř ħǿǿŀḓş īŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.withdraw": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇīŧħḓřȧȧẇ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.withdraw.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ḿḗḗḿƀḗḗřşħīƥ ħȧȧş ƞǿǿŧ şŧȧȧřŧḗḗḓ. Īŧ şŧȧȧẏş īƞ ŧħḗḗ ħīşŧǿǿřẏ, ḿȧȧřķḗḗḓ ȧȧş ẇīŧħḓřȧȧẇƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.member.withdraw.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇīŧħḓřȧȧẇ ŧħḗḗ ḿḗḗḿƀḗḗřşħīƥ ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.members.caption": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿƀḗḗřş ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.members.none": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿƀǿǿḓẏ īş īƞ ǿǿƒƒīƈḗḗ ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.membersOn": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿƀḗḗřş ǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.mine.chair": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħȧȧīř: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.mine.empty": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ḓǿǿ ƞǿǿŧ şīŧ ǿǿƞ ȧȧƞẏ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.mine.ended": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗƞḓḗḗḓ ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.mine.former": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ƞǿǿ ŀǿǿƞɠḗḗř şīŧ ǿǿƞ īŧ, şǿǿ ǿǿƞŀẏ ẏǿǿŭŭř ǿǿẇƞ ḿḗḗḿƀḗḗřşħīƥ īş şħǿǿẇƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.mine.lead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗȧȧƈħ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " ẏǿǿŭŭ şīŧ ǿǿƞ, ẇīŀŀ şīŧ ǿǿƞ ǿǿř şȧȧŧ ǿǿƞ, ẇīŧħ ẏǿǿŭŭř řǿǿŀḗḗ ȧȧƞḓ ŧḗḗřḿ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.mine.members": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḿḗḗḿƀḗḗř"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḿḗḗḿƀḗḗřş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.mine.noVote": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ḓǿǿḗḗş ƞǿǿŧ ṽǿǿŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.mine.open": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƥḗḗƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.mine.openNamed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƥḗḗƞ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.mine.role": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "role"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "votes"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.mine.starts": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŧȧȧřŧş ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.mine.termEnds": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧḗḗřḿ "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": " ḗḗƞḓş ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.mine.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿẏ "
+    },
+    {
+      "type": 1,
+      "value": "forums"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.mine.votes": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ṽǿǿŧḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.more": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿǿǿřḗḗ ȧȧƈŧīǿǿƞş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.name": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞȧȧḿḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.nameWithCode": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "code"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.no": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.noSecretary": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḗḗƈřḗḗŧȧȧřẏ: ƞǿǿƞḗḗ ẏḗḗŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.none": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿƞḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.openEnded": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ḗḗƞḓ ḓȧȧŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.optional": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "(ǿǿƥŧīǿǿƞȧȧŀ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.parent.cycle": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 5,
+      "value": "forumGender",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ȧ "
+            },
+            {
+              "type": 1,
+              "value": "forum"
+            },
+            {
+              "type": 0,
+              "value": " ƈȧȧƞƞǿǿŧ řḗḗƥǿǿřŧ ŧǿǿ īŧşḗḗŀƒ ǿǿř ŧǿǿ ǿǿƞḗḗ ŧħȧȧŧ řḗḗƥǿǿřŧş ŧǿǿ īŧ."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.policy.link": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƥḗḗƞ ŧħḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " ŧẏƥḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.policy.maxTerms": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "max",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ȧŧ ḿǿǿşŧ "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ŧḗḗřḿ īƞ ȧȧ řǿǿẇ; řḗḗƞḗḗẇīƞɠ ƀḗḗẏǿǿƞḓ īŧ ẇȧȧřƞş, ƞḗḗṽḗḗř ƀŀǿǿƈķş."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ȧŧ ḿǿǿşŧ "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ŧḗḗřḿş īƞ ȧȧ řǿǿẇ; řḗḗƞḗḗẇīƞɠ ƀḗḗẏǿǿƞḓ īŧ ẇȧȧřƞş, ƞḗḗṽḗḗř ƀŀǿǿƈķş."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.policy.noTermMonths": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧḗḗřḿş ħȧȧṽḗḗ ƞǿǿ ŭŭşŭŭȧȧŀ ŀḗḗƞɠŧħ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.policy.of": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƥǿǿŀīƈẏ ǿǿƒ ŧħḗḗ ŧẏƥḗḗ “"
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "”, ṽḗḗřşīǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "version"
+    },
+    {
+      "type": 0,
+      "value": ". Īŧ īş şħǿǿẇƞ ħḗḗřḗḗ ŧǿǿ řḗḗȧȧḓ ǿǿƞŀẏ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.policy.outcome": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "meaning"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.policy.reminders": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ şḗḗƈřḗḗŧȧȧřẏ īş řḗḗḿīƞḓḗḗḓ "
+    },
+    {
+      "type": 1,
+      "value": "days"
+    },
+    {
+      "type": 0,
+      "value": " ḓȧȧẏş ƀḗḗƒǿǿřḗḗ ȧȧ ŧḗḗřḿ ḗḗƞḓş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.policy.termMonths": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "months",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ȧ ŧḗḗřḿ ŭŭşŭŭȧȧŀŀẏ ŀȧȧşŧş "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḿǿǿƞŧħ."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ȧ ŧḗḗřḿ ŭŭşŭŭȧȧŀŀẏ ŀȧȧşŧş "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḿǿǿƞŧħş."
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.problem.alreadyMember": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ƥḗḗřşǿǿƞ ǿǿř ƥǿǿşīŧīǿǿƞ ȧȧŀřḗḗȧȧḓẏ şīŧş ǿǿƞ ŧħḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " ƒǿǿř ƥȧȧřŧ ǿǿƒ ŧħȧȧŧ ŧīḿḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.problem.beforeStart": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḗḗƞḓ ƈȧȧƞƞǿǿŧ ƀḗḗ ƀḗḗƒǿǿřḗḗ ŧħḗḗ şŧȧȧřŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.problem.dissolved": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " īş ḓīşşǿǿŀṽḗḗḓ. Ḿḗḗḿƀḗḗřş ƈȧȧƞ ǿǿƞŀẏ ƀḗḗ ḗḗƞḓḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.problem.keyFixed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ẇǿǿřķƒŀǿǿẇ ķḗḗẏ ƞḗḗṽḗḗř ƈħȧȧƞɠḗḗş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.problem.memberEnded": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ḿḗḗḿƀḗḗřşħīƥ ħȧȧş ḗḗƞḓḗḗḓ. Ȧḓḓ ȧȧ ƞḗḗẇ ǿǿƞḗḗ īƞşŧḗḗȧȧḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.problem.noTerm": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ḿḗḗḿƀḗḗřşħīƥ ħȧȧş ƞǿǿ ŧḗḗřḿ ḗḗƞḓ ŧǿǿ řḗḗƞḗḗẇ ƒřǿǿḿ. Ḗḓīŧ īŧ ŧǿǿ şḗḗŧ ǿǿƞḗḗ ƒīřşŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.problem.notUpcoming": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƞŀẏ ȧȧ ḿḗḗḿƀḗḗřşħīƥ ŧħȧȧŧ ħȧȧş ƞǿǿŧ şŧȧȧřŧḗḗḓ ƈȧȧƞ ƀḗḗ ẇīŧħḓřȧȧẇƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.problem.oneChair": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧŀřḗḗȧȧḓẏ ħȧȧş ȧȧ ƈħȧȧīř ƒǿǿř ƥȧȧřŧ ǿǿƒ ŧħȧȧŧ ŧīḿḗḗ. Ḗƞḓ ǿǿř ƈħȧȧƞɠḗḗ ŧħḗḗ ƈŭŭřřḗḗƞŧ ƈħȧȧīř ƒīřşŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.problem.sameRole": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḿḗḗḿƀḗḗř ȧȧŀřḗḗȧȧḓẏ ħȧȧş ŧħīş řǿǿŀḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.problem.secretaryLimit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƞŀẏ ȧȧƞ ȧȧḓḿīƞīşŧřȧȧŧǿǿř ƈȧȧƞ ƈħȧȧƞɠḗḗ ȧȧ ƈħȧȧīř, ȧȧ şḗḗƈřḗḗŧȧȧřẏ ǿǿř ẏǿǿŭŭř ǿǿẇƞ ḿḗḗḿƀḗḗřşħīƥ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.problem.self": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ḿḗḗḿƀḗḗř ƈȧȧƞƞǿǿŧ ƀḗḗ ŧħḗḗīř ǿǿẇƞ ȧȧŀŧḗḗřƞȧȧŧḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.problem.tooEarly": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƞḗḗẇ řǿǿŀḗḗ ḿŭŭşŧ şŧȧȧřŧ ȧȧƒŧḗḗř ŧħḗḗ ḿḗḗḿƀḗḗřşħīƥ şŧȧȧřŧş. Ẇīŧħḓřȧȧẇ īŧ ȧȧƞḓ ȧȧḓḓ īŧ ȧȧɠȧȧīƞ īƞşŧḗḗȧȧḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.problem.unknownAttribute": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧ ȧȧƞ ȧȧŧŧřīƀŭŭŧḗḗ ǿǿƒ ŧħīş ŧẏƥḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.problem.unknownPerson": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħȧȧŧ ƥḗḗřşǿǿƞ ǿǿř ƥǿǿşīŧīǿǿƞ ƈȧȧƞƞǿǿŧ ƀḗḗ ȧȧḓḓḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.quorum.on": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 5,
+      "value": "who",
+      "options": {
+        "seats": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ɋŭŭǿǿřŭŭḿ ǿǿƞ "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            },
+            {
+              "type": 0,
+              "value": ": "
+            },
+            {
+              "type": 1,
+              "value": "needed"
+            },
+            {
+              "type": 0,
+              "value": " ǿǿƒ "
+            },
+            {
+              "type": 1,
+              "value": "basis"
+            },
+            {
+              "type": 0,
+              "value": " şḗḗȧȧŧş"
+            }
+          ]
+        },
+        "all": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ɋŭŭǿǿřŭŭḿ ǿǿƞ "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            },
+            {
+              "type": 0,
+              "value": ": "
+            },
+            {
+              "type": 1,
+              "value": "needed"
+            },
+            {
+              "type": 0,
+              "value": " ǿǿƒ "
+            },
+            {
+              "type": 1,
+              "value": "basis"
+            },
+            {
+              "type": 0,
+              "value": " ḿḗḗḿƀḗḗřş"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ɋŭŭǿǿřŭŭḿ ǿǿƞ "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            },
+            {
+              "type": 0,
+              "value": ": "
+            },
+            {
+              "type": 1,
+              "value": "needed"
+            },
+            {
+              "type": 0,
+              "value": " ǿǿƒ "
+            },
+            {
+              "type": 1,
+              "value": "basis"
+            },
+            {
+              "type": 0,
+              "value": " ṽǿǿŧīƞɠ ḿḗḗḿƀḗḗřş"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.quorum.today": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 5,
+      "value": "who",
+      "options": {
+        "seats": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ɋŭŭǿǿřŭŭḿ ŧǿǿḓȧȧẏ: "
+            },
+            {
+              "type": 1,
+              "value": "needed"
+            },
+            {
+              "type": 0,
+              "value": " ǿǿƒ "
+            },
+            {
+              "type": 1,
+              "value": "basis"
+            },
+            {
+              "type": 0,
+              "value": " şḗḗȧȧŧş"
+            }
+          ]
+        },
+        "all": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ɋŭŭǿǿřŭŭḿ ŧǿǿḓȧȧẏ: "
+            },
+            {
+              "type": 1,
+              "value": "needed"
+            },
+            {
+              "type": 0,
+              "value": " ǿǿƒ "
+            },
+            {
+              "type": 1,
+              "value": "basis"
+            },
+            {
+              "type": 0,
+              "value": " ḿḗḗḿƀḗḗřş"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ɋŭŭǿǿřŭŭḿ ŧǿǿḓȧȧẏ: "
+            },
+            {
+              "type": 1,
+              "value": "needed"
+            },
+            {
+              "type": 0,
+              "value": " ǿǿƒ "
+            },
+            {
+              "type": 1,
+              "value": "basis"
+            },
+            {
+              "type": 0,
+              "value": " ṽǿǿŧīƞɠ ḿḗḗḿƀḗḗřş"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.reason.other": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿŧħḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.reason.removed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗḿǿǿṽḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.reason.renewed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƞḗḗẇḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.reason.resigned": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗşīɠƞḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.reason.roleChanged": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řǿǿŀḗḗ ƈħȧȧƞɠḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.reason.termCompleted": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧḗḗřḿ ƈǿǿḿƥŀḗḗŧḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.reason.withdrawn": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇīŧħḓřȧȧẇƞ ƀḗḗƒǿǿřḗḗ şŧȧȧřŧīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.reportsTo": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƥǿǿřŧş ŧǿǿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.reportsTo.named": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƥǿǿřŧş ŧǿǿ: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.reportsTo.none": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ǿǿƞḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.required": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗɋŭŭīřḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.role.chair": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħȧȧīř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.role.member": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿƀḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.role.observer": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƀşḗḗřṽḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.role.secretary": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḗḗƈřḗḗŧȧȧřẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.role.standingInvitee": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŧȧȧƞḓīƞɠ īƞṽīŧḗḗḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.role.viceChair": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ṽīƈḗḗ-ƈħȧȧīř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.save": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şȧȧṽḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.saved": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şȧȧṽḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.seatHolder": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿẇ: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.secretaries": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Şḗḗƈřḗḗŧȧȧřẏ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Şḗḗƈřḗḗŧȧȧřīḗḗş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "names"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.shortName": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şħǿǿřŧ ƞȧȧḿḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.shortName.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭşḗḗḓ ẇħḗḗřḗḗ şƥȧȧƈḗḗ īş şħǿǿřŧ, şŭŭƈħ ȧȧş ǿǿƞ ȧȧ ƥħǿǿƞḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.state.ended": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗƞḓḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.state.inOffice": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īƞ ǿǿƒƒīƈḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.state.termEnded": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧḗḗřḿ ḗḗƞḓḗḗḓ, ƞǿǿŧ řḗḗƞḗḗẇḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.state.upcoming": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şŧȧȧřŧş ŀȧȧŧḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.status.active": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƈŧīṽḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.status.dissolved": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓīşşǿǿŀṽḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.tab.history": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ħīşŧǿǿřẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.tab.members": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿƀḗḗřş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.tab.policy": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥǿǿŀīƈẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.tabs": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥȧȧřŧş ǿǿƒ ŧħḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " ƥȧȧɠḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.term": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "n",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": "şŧ"
+            }
+          ]
+        },
+        "two": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": "ƞḓ"
+            }
+          ]
+        },
+        "few": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": "řḓ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": "ŧħ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "ordinal"
+    },
+    {
+      "type": 0,
+      "value": " ŧḗḗřḿ, ŧǿǿ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.term.endsIn": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "days",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ḗƞḓş ŧǿǿḓȧȧẏ"
+            }
+          ]
+        },
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ḗƞḓş īƞ "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḓȧȧẏ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ḗƞḓş īƞ "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ḓȧȧẏş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.term.open": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "n",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": "şŧ"
+            }
+          ]
+        },
+        "two": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": "ƞḓ"
+            }
+          ]
+        },
+        "few": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": "řḓ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": "ŧħ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "ordinal"
+    },
+    {
+      "type": 0,
+      "value": " ŧḗḗřḿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.term.planned": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " (ƥŀȧȧƞƞḗḗḓ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "Forums"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.type": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧẏƥḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.type.choose": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħǿǿǿǿşḗḗ ȧȧ ŧẏƥḗḗ…"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.type.inactive": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ŧẏƥḗḗ īş şẇīŧƈħḗḗḓ ǿǿƒƒ ǿǿř ƞǿǿŧ ẏḗḗŧ ƥŭŭƀŀīşħḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.vacant": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ṽȧȧƈȧȧƞŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.warnings": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ŧḗḗřḿ ḗḗƞḓş şǿǿǿǿƞ ǿǿř ħȧȧş ḗḗƞḓḗḗḓ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ŧḗḗřḿş ḗḗƞḓ şǿǿǿǿƞ ǿǿř ħȧȧṽḗḗ ḗḗƞḓḗḗḓ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "forums.yes": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "health.checkedAt": [
     {
       "type": 0,
@@ -12757,6 +16541,24 @@
     {
       "type": 0,
       "value": "Ŧħḗḗ ƥŀȧȧŧƒǿǿřḿ ƈǿǿŭŭŀḓ ƞǿǿŧ ƀḗḗ řḗḗȧȧƈħḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "home.forums": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿẏ "
+    },
+    {
+      "type": 1,
+      "value": "forums"
     },
     {
       "type": 0,
@@ -32947,6 +36749,20 @@
       "value": "]"
     }
   ],
+  "nav.forum": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "Forum"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "nav.forumType": [
     {
       "type": 0,
@@ -32977,6 +36793,20 @@
     {
       "type": 0,
       "value": " ŧẏƥḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "nav.forums": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "Forums"
     },
     {
       "type": 0,
@@ -33159,6 +36989,24 @@
     {
       "type": 0,
       "value": "Ḿḗḗḿǿǿ ŧẏƥḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "nav.myForums": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿẏ "
+    },
+    {
+      "type": 1,
+      "value": "forums"
     },
     {
       "type": 0,

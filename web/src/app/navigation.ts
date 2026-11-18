@@ -25,6 +25,7 @@ import {
   ShieldCheck,
   Tags,
   Users,
+  UsersRound,
   type LucideIcon,
 } from 'lucide-react'
 import { defineMessages, type MessageDescriptor } from 'react-intl'
@@ -65,6 +66,7 @@ const messages = defineMessages({
   memoNumbering: { id: 'nav.memoNumbering', defaultMessage: 'Memo numbering' },
   // Takes the organisation's terms (ADR-0032): the menu, breadcrumbs and overview pass them to every label.
   forumTypes: { id: 'nav.forumTypes', defaultMessage: '{Forum} types' },
+  forums: { id: 'nav.forums', defaultMessage: '{Forums}' },
   workflows: { id: 'nav.workflows', defaultMessage: 'Workflows' },
   doa: { id: 'nav.doa', defaultMessage: 'Delegation of authority' },
   queues: { id: 'nav.queues', defaultMessage: 'Queues' },
@@ -136,6 +138,15 @@ export const navigation: NavItem[] = [
     icon: Activity,
     group: 'work',
     audience: 'everyone',
+    enabled: true,
+  },
+  {
+    id: 'forums',
+    to: '/committees',
+    label: messages.forums,
+    icon: UsersRound,
+    group: 'work',
+    audience: 'signedIn',
     enabled: true,
   },
   { id: 'org', to: '/org', label: messages.org, icon: Network, group: 'work', audience: 'signedIn', enabled: true },

@@ -1,8 +1,9 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { Link, useNavigate } from '@tanstack/react-router'
-import { BellRing, LogOut, ShieldCheck } from 'lucide-react'
+import { BellRing, LogOut, ShieldCheck, UsersRound } from 'lucide-react'
 import { defineMessages, useIntl, type NoMessageValues } from 'react-intl'
 import { logout } from '@/api/generated/sdk.gen'
+import { useTerms, type TermValues } from '@/features/terms/terms'
 import { useSession } from './session'
 import { Button } from '@/components/ui/button'
 import {
@@ -18,12 +19,14 @@ const messages = defineMessages<{
   trigger: { name: string }
   security: NoMessageValues
   notifications: NoMessageValues
+  forums: TermValues
   signOut: NoMessageValues
   signIn: NoMessageValues
 }>({
   trigger: { id: 'account.trigger', defaultMessage: 'Account: {name}' },
   security: { id: 'account.security', defaultMessage: 'My security' },
   notifications: { id: 'account.notifications', defaultMessage: 'Notification settings' },
+  forums: { id: 'nav.myForums', defaultMessage: 'My {forums}' },
   signOut: { id: 'account.signOut', defaultMessage: 'Sign out' },
   signIn: { id: 'account.signIn', defaultMessage: 'Sign in' },
 })
@@ -31,6 +34,7 @@ const messages = defineMessages<{
 /** The account menu of the top bar (E03 design §11); a sign-in link for anonymous visitors (the status page). */
 export function AccountMenu() {
   const intl = useIntl()
+  const terms = useTerms()
   const session = useSession()
   const navigate = useNavigate()
   const queryClient = useQueryClient()
@@ -76,6 +80,10 @@ export function AccountMenu() {
         <DropdownMenuItem onSelect={() => void navigate({ to: '/me/security' })}>
           <ShieldCheck aria-hidden="true" />
           {intl.formatMessage(messages.security)}
+        </DropdownMenuItem>
+        <DropdownMenuItem onSelect={() => void navigate({ to: '/me/committees' })}>
+          <UsersRound aria-hidden="true" />
+          {intl.formatMessage(messages.forums, terms)}
         </DropdownMenuItem>
         <DropdownMenuItem onSelect={() => void navigate({ to: '/me/notifications' })}>
           <BellRing aria-hidden="true" />

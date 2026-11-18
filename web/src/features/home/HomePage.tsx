@@ -1,8 +1,11 @@
+import { useQuery } from '@tanstack/react-query'
 import { Link } from '@tanstack/react-router'
-import { Activity, ShieldCheck, Users } from 'lucide-react'
+import { Activity, ShieldCheck, Users, UsersRound } from 'lucide-react'
 import type { ReactNode } from 'react'
 import { defineMessages, useIntl, type NoMessageValues } from 'react-intl'
+import { listMyForumsOptions } from '@/api/generated/@tanstack/react-query.gen'
 import { useSession } from '@/features/auth/session'
+import { useTerms, type TermValues } from '@/features/terms/terms'
 import { PageHeader } from '@/components/page/PageHeader'
 
 const messages = defineMessages<{
@@ -14,6 +17,7 @@ const messages = defineMessages<{
   usersText: NoMessageValues
   status: NoMessageValues
   statusText: NoMessageValues
+  forums: TermValues
 }>({
   title: { id: 'home.title', defaultMessage: 'Welcome, {name}' },
   lead: {
@@ -26,6 +30,7 @@ const messages = defineMessages<{
   usersText: { id: 'home.users.text', defaultMessage: 'Invite people and manage their accounts.' },
   status: { id: 'home.status', defaultMessage: 'Platform status' },
   statusText: { id: 'home.status.text', defaultMessage: 'Whether every part of the platform is working.' },
+  forums: { id: 'home.forums', defaultMessage: 'My {forums}' },
 })
 
 /** Landing page after sign-in; the work queues of later phases replace the shortcuts. */
@@ -33,6 +38,10 @@ export function HomePage() {
   const intl = useIntl()
   const session = useSession()
   const user = session.data?.user
+  const terms = useTerms()
+  const mine = useQuery({ ...listMyForumsOptions(), enabled: session.data?.state === 'AUTHENTICATED' })
+  // Flow L1: the card shows while the user sits on a committee, or will.
+  const sitting = (mine.data ?? []).filter((m) => m.state === 'IN_OFFICE' || m.state === 'UPCOMING')
   return (
     <section className="max-w-3xl">
       <PageHeader
@@ -40,6 +49,15 @@ export function HomePage() {
         description={intl.formatMessage(messages.lead)}
       />
       <ul className="grid gap-3 sm:grid-cols-2">
+        {sitting.length ? (
+          <Shortcut
+            to="/me/committees"
+            icon={<UsersRound aria-hidden="true" />}
+            title={intl.formatMessage(messages.forums, terms)}
+          >
+            {intl.formatList(sitting.map((m) => m.name))}
+          </Shortcut>
+        ) : null}
         <Shortcut
           to="/me/security"
           icon={<ShieldCheck aria-hidden="true" />}

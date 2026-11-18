@@ -141,7 +141,7 @@ class ForumTypesController(
     private val transactions: TenantTransactions,
 ) {
     @GetMapping("/api/v1/admin/forum-types")
-    @RequiresPermission(Permission.FORUM_TYPES_MANAGE, orAnyOf = [Permission.FORUM_TYPES_APPROVE])
+    @RequiresPermission(Permission.FORUM_TYPES_MANAGE, orAnyOf = [Permission.FORUM_TYPES_APPROVE, Permission.FORUMS_MANAGE])
     @Operation(operationId = "listForumTypes", summary = "Committee types with their published and open versions")
     fun list(): ResponseEntity<List<ForumTypeResponse>> =
         ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(read { responses.types(types.list()) })

@@ -15,6 +15,7 @@ import com.memo.forum.internal.EndReason
 import com.memo.forum.internal.ForumInput
 import com.memo.forum.internal.ForumMembers
 import com.memo.forum.internal.ForumNotFoundException
+import com.memo.forum.internal.ForumPolicies
 import com.memo.forum.internal.ForumRejectedException
 import com.memo.forum.internal.ForumTypePreset
 import com.memo.forum.internal.ForumTypes
@@ -77,6 +78,8 @@ class ForumsIT : IntegrationTest() {
     @Autowired lateinit var members: ForumMembers
 
     @Autowired lateinit var views: ForumViews
+
+    @Autowired lateinit var policies: ForumPolicies
 
     @Autowired lateinit var directory: ForumDirectory
 
@@ -282,6 +285,13 @@ class ForumsIT : IntegrationTest() {
         assertThat(asUser(member) { forums.visible() }.map { it.id }).containsExactly(forum.id)
         assertThatThrownBy { asUser(outsider) { forums.get(forum.id) } }.isInstanceOf(ForumNotFoundException::class.java)
         assertThat(asUser(outsider) { forums.visible() }).isEmpty()
+
+        // A member reads the type's published policy and the quorum on a date, without the type permissions.
+        val policy = asUser(member) { policies.policy(forums.get(forum.id), null) }
+        assertThat(policy.typeName).isEqualTo("Board committee")
+        assertThat(policy.memberAttributes.map { it.key }).containsExactly("independent", "nonExecutive")
+        assertThat(policy.quorumBasis to policy.quorumNeeded).isEqualTo(1 to 2)
+        assertThat(asUser(member) { policies.policy(forums.get(forum.id), today.minusDays(1)) }.quorumBasis).isZero()
 
         // A former member keeps only their card under "My committees".
         val former = add(forum.id, MemberInput(userId = chair.id.value, startsOn = today.minusDays(7)))

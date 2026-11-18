@@ -32,6 +32,9 @@ import com.memo.jooq.tables.ImportsRow
 import com.memo.jooq.tables.ImportsRowApproval
 import com.memo.jooq.tables.ImportsRowFile
 import com.memo.jooq.tables.ImportsStaged
+import com.memo.jooq.tables.Meeting
+import com.memo.jooq.tables.MeetingAudience
+import com.memo.jooq.tables.MeetingGuest
 import com.memo.jooq.tables.Memo
 import com.memo.jooq.tables.MemoAttachment
 import com.memo.jooq.tables.MemoCopy
@@ -105,10 +108,12 @@ val FORUM_MEMBER_USER_IDX: Index = Internal.createIndex(DSL.name("forum_member_u
 val FORUM_PARENT_IDX: Index = Internal.createIndex(DSL.name("forum_parent_idx"), Forum.FORUM, arrayOf(Forum.FORUM.TENANT_ID, Forum.FORUM.PARENT_FORUM_ID), false)
 val FORUM_STATUS_IDX: Index = Internal.createIndex(DSL.name("forum_status_idx"), Forum.FORUM, arrayOf(Forum.FORUM.TENANT_ID, Forum.FORUM.STATUS), false)
 val FORUM_SUBMISSION_INSTANCE_IDX: Index = Internal.createIndex(DSL.name("forum_submission_instance_idx"), ForumSubmission.FORUM_SUBMISSION, arrayOf(ForumSubmission.FORUM_SUBMISSION.TENANT_ID, ForumSubmission.FORUM_SUBMISSION.INSTANCE_ID), false)
+val FORUM_SUBMISSION_MEETING_IDX: Index = Internal.createIndex(DSL.name("forum_submission_meeting_idx"), ForumSubmission.FORUM_SUBMISSION, arrayOf(ForumSubmission.FORUM_SUBMISSION.TENANT_ID, ForumSubmission.FORUM_SUBMISSION.MEETING_ID), false)
 val FORUM_SUBMISSION_PREVIOUS_IDX: Index = Internal.createIndex(DSL.name("forum_submission_previous_idx"), ForumSubmission.FORUM_SUBMISSION, arrayOf(ForumSubmission.FORUM_SUBMISSION.TENANT_ID, ForumSubmission.FORUM_SUBMISSION.PREVIOUS_ID), false)
 val FORUM_SUBMISSION_QUEUE_IDX: Index = Internal.createIndex(DSL.name("forum_submission_queue_idx"), ForumSubmission.FORUM_SUBMISSION, arrayOf(ForumSubmission.FORUM_SUBMISSION.TENANT_ID, ForumSubmission.FORUM_SUBMISSION.FORUM_ID, ForumSubmission.FORUM_SUBMISSION.STATUS, ForumSubmission.FORUM_SUBMISSION.SUBMITTED_AT), false)
 val FORUM_SUBMISSION_STEP_UK: Index = Internal.createIndex(DSL.name("forum_submission_step_uk"), ForumSubmission.FORUM_SUBMISSION, arrayOf(ForumSubmission.FORUM_SUBMISSION.TENANT_ID, ForumSubmission.FORUM_SUBMISSION.STEP_ID), true)
 val FORUM_SUBMISSION_SUBJECT_IDX: Index = Internal.createIndex(DSL.name("forum_submission_subject_idx"), ForumSubmission.FORUM_SUBMISSION, arrayOf(ForumSubmission.FORUM_SUBMISSION.TENANT_ID, ForumSubmission.FORUM_SUBMISSION.SUBJECT_TYPE, ForumSubmission.FORUM_SUBMISSION.SUBJECT_ID), false)
+val FORUM_SUBMISSION_TRAY_IDX: Index = Internal.createIndex(DSL.name("forum_submission_tray_idx"), ForumSubmission.FORUM_SUBMISSION, arrayOf(ForumSubmission.FORUM_SUBMISSION.TENANT_ID, ForumSubmission.FORUM_SUBMISSION.FORUM_ID, ForumSubmission.FORUM_SUBMISSION.STATUS), false)
 val FORUM_SUBMISSION_WAITING_IDX: Index = Internal.createIndex(DSL.name("forum_submission_waiting_idx"), ForumSubmission.FORUM_SUBMISSION, arrayOf(ForumSubmission.FORUM_SUBMISSION.TENANT_ID, ForumSubmission.FORUM_SUBMISSION.SUBMITTED_AT), false)
 val FORUM_TYPE_IDX: Index = Internal.createIndex(DSL.name("forum_type_idx"), Forum.FORUM, arrayOf(Forum.FORUM.TENANT_ID, Forum.FORUM.FORUM_TYPE_ID), false)
 val FORUM_TYPE_VERSION_ONE_OPEN_IDX: Index = Internal.createIndex(DSL.name("forum_type_version_one_open_idx"), ForumTypeVersion.FORUM_TYPE_VERSION, arrayOf(ForumTypeVersion.FORUM_TYPE_VERSION.TENANT_ID, ForumTypeVersion.FORUM_TYPE_VERSION.FORUM_TYPE_ID), true)
@@ -141,6 +146,11 @@ val IMPORTS_ROW_KEY_IDX: Index = Internal.createIndex(DSL.name("imports_row_key_
 val IMPORTS_ROW_NUMBER_UK: Index = Internal.createIndex(DSL.name("imports_row_number_uk"), ImportsRow.IMPORTS_ROW, arrayOf(ImportsRow.IMPORTS_ROW.TENANT_ID, ImportsRow.IMPORTS_ROW.BATCH_ID, ImportsRow.IMPORTS_ROW.ROW_NUMBER), true)
 val IMPORTS_ROW_RESULT_IDX: Index = Internal.createIndex(DSL.name("imports_row_result_idx"), ImportsRow.IMPORTS_ROW, arrayOf(ImportsRow.IMPORTS_ROW.TENANT_ID, ImportsRow.IMPORTS_ROW.BATCH_ID, ImportsRow.IMPORTS_ROW.RESULT, ImportsRow.IMPORTS_ROW.ROW_NUMBER), false)
 val IMPORTS_STAGED_BATCH_IDX: Index = Internal.createIndex(DSL.name("imports_staged_batch_idx"), ImportsStaged.IMPORTS_STAGED, arrayOf(ImportsStaged.IMPORTS_STAGED.TENANT_ID, ImportsStaged.IMPORTS_STAGED.BATCH_ID, ImportsStaged.IMPORTS_STAGED.PURGED_AT, ImportsStaged.IMPORTS_STAGED.SUPERSEDED_AT), false)
+val MEETING_AUDIENCE_USER_IDX: Index = Internal.createIndex(DSL.name("meeting_audience_user_idx"), MeetingAudience.MEETING_AUDIENCE, arrayOf(MeetingAudience.MEETING_AUDIENCE.TENANT_ID, MeetingAudience.MEETING_AUDIENCE.USER_ID, MeetingAudience.MEETING_AUDIENCE.MEETING_ID), false)
+val MEETING_FORUM_IDX: Index = Internal.createIndex(DSL.name("meeting_forum_idx"), Meeting.MEETING, arrayOf(Meeting.MEETING.TENANT_ID, Meeting.MEETING.FORUM_ID, Meeting.MEETING.STARTS_AT), false)
+val MEETING_GUEST_CURRENT_UK: Index = Internal.createIndex(DSL.name("meeting_guest_current_uk"), MeetingGuest.MEETING_GUEST, arrayOf(MeetingGuest.MEETING_GUEST.TENANT_ID, MeetingGuest.MEETING_GUEST.MEETING_ID, MeetingGuest.MEETING_GUEST.USER_ID), true)
+val MEETING_GUEST_MEETING_IDX: Index = Internal.createIndex(DSL.name("meeting_guest_meeting_idx"), MeetingGuest.MEETING_GUEST, arrayOf(MeetingGuest.MEETING_GUEST.TENANT_ID, MeetingGuest.MEETING_GUEST.MEETING_ID), false)
+val MEETING_STATUS_IDX: Index = Internal.createIndex(DSL.name("meeting_status_idx"), Meeting.MEETING, arrayOf(Meeting.MEETING.TENANT_ID, Meeting.MEETING.STATUS, Meeting.MEETING.ENDS_AT), false)
 val MEMO_ATTACHMENT_PRESENT_IDX: Index = Internal.createIndex(DSL.name("memo_attachment_present_idx"), MemoAttachment.MEMO_ATTACHMENT, arrayOf(MemoAttachment.MEMO_ATTACHMENT.TENANT_ID, MemoAttachment.MEMO_ATTACHMENT.MEMO_ID, MemoAttachment.MEMO_ATTACHMENT.POSITION), false)
 val MEMO_COPY_DELIVERY_TENANT_MEMO_IDX: Index = Internal.createIndex(DSL.name("memo_copy_delivery_tenant_memo_idx"), MemoCopyDelivery.MEMO_COPY_DELIVERY, arrayOf(MemoCopyDelivery.MEMO_COPY_DELIVERY.TENANT_ID, MemoCopyDelivery.MEMO_COPY_DELIVERY.MEMO_ID, MemoCopyDelivery.MEMO_COPY_DELIVERY.USER_ID), false)
 val MEMO_COPY_ONE_STANDING_IDX: Index = Internal.createIndex(DSL.name("memo_copy_one_standing_idx"), MemoCopy.MEMO_COPY, arrayOf(MemoCopy.MEMO_COPY.TENANT_ID, MemoCopy.MEMO_COPY.MEMO_ID, MemoCopy.MEMO_COPY.RECIPIENT_KIND, MemoCopy.MEMO_COPY.RECIPIENT_ID), true)

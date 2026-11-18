@@ -112,6 +112,14 @@ open class ForumSubmissionRecord private constructor() : UpdatableRecordImpl<For
         set(value): Unit = set(22, value)
         get(): Long? = get(22) as Long?
 
+    open var meetingId: UUID?
+        set(value): Unit = set(23, value)
+        get(): UUID? = get(23) as UUID?
+
+    open var meetingDate: LocalDate?
+        set(value): Unit = set(24, value)
+        get(): LocalDate? = get(24) as LocalDate?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -121,7 +129,7 @@ open class ForumSubmissionRecord private constructor() : UpdatableRecordImpl<For
     /**
      * Create a detached, initialised ForumSubmissionRecord
      */
-    constructor(id: UUID, tenantId: UUID, forumId: UUID, subjectType: String, subjectId: UUID, instanceId: UUID, stepId: UUID? = null, previousId: UUID? = null, purpose: String, resolutionSought: String? = null, presenterId: UUID? = null, status: String, targetDate: LocalDate? = null, submittedBy: UUID, submittedAt: OffsetDateTime, triagedBy: UUID? = null, triagedAt: OffsetDateTime? = null, reason: String? = null, outcome: String? = null, decidedBy: UUID? = null, decidedAt: OffsetDateTime? = null, remindedAt: OffsetDateTime? = null, version: Long? = null): this() {
+    constructor(id: UUID, tenantId: UUID, forumId: UUID, subjectType: String, subjectId: UUID, instanceId: UUID, stepId: UUID? = null, previousId: UUID? = null, purpose: String, resolutionSought: String? = null, presenterId: UUID? = null, status: String, targetDate: LocalDate? = null, submittedBy: UUID, submittedAt: OffsetDateTime, triagedBy: UUID? = null, triagedAt: OffsetDateTime? = null, reason: String? = null, outcome: String? = null, decidedBy: UUID? = null, decidedAt: OffsetDateTime? = null, remindedAt: OffsetDateTime? = null, version: Long? = null, meetingId: UUID? = null, meetingDate: LocalDate? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.forumId = forumId
@@ -145,6 +153,8 @@ open class ForumSubmissionRecord private constructor() : UpdatableRecordImpl<For
         this.decidedAt = decidedAt
         this.remindedAt = remindedAt
         this.version = version
+        this.meetingId = meetingId
+        this.meetingDate = meetingDate
         resetTouchedOnNotNull()
     }
 }

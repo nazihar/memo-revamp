@@ -7,6 +7,8 @@ import com.memo.common.concurrency.ConcurrentModificationException
 import com.memo.common.web.FieldProblem
 import com.memo.common.web.refuseIf
 import com.memo.forum.ForumRole
+import com.memo.forum.ForumSubmissionChanged
+import com.memo.forum.SubmissionStatus
 import com.memo.org.OrgDirectory
 import org.jooq.Field
 import org.springframework.context.ApplicationEventPublisher
@@ -76,10 +78,11 @@ class SubmissionSupport(
         return after
     }
 
-    /** Keeps the memo's committee readers in step (ADR-0059) and publishes the change. */
+    /** Keeps the memo's committee readers in step (ADR-0059) and publishes the change with the status it left. */
     fun changed(row: SubmissionRow) {
         readers.sync(row.subjectType, row.subjectId)
-        events.publishEvent(ForumSubmissionChanged(forums.tenant(), row.id))
+        val status = store.find(row.id)?.status ?: row.status
+        events.publishEvent(ForumSubmissionChanged(forums.tenant(), row.id, status))
     }
 
     fun requiredReason(reason: String?): String {

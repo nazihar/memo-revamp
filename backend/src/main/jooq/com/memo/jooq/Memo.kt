@@ -41,6 +41,10 @@ import com.memo.jooq.tables.ImportsRow
 import com.memo.jooq.tables.ImportsRowApproval
 import com.memo.jooq.tables.ImportsRowFile
 import com.memo.jooq.tables.ImportsStaged
+import com.memo.jooq.tables.Meeting
+import com.memo.jooq.tables.MeetingAudience
+import com.memo.jooq.tables.MeetingCounter
+import com.memo.jooq.tables.MeetingGuest
 import com.memo.jooq.tables.MemoApproval
 import com.memo.jooq.tables.MemoAttachment
 import com.memo.jooq.tables.MemoCopy
@@ -322,6 +326,26 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      * The table <code>memo.imports_staged</code>.
      */
     val IMPORTS_STAGED: ImportsStaged get() = ImportsStaged.IMPORTS_STAGED
+
+    /**
+     * The table <code>memo.meeting</code>.
+     */
+    val MEETING: Meeting get() = Meeting.MEETING
+
+    /**
+     * The table <code>memo.meeting_audience</code>.
+     */
+    val MEETING_AUDIENCE: MeetingAudience get() = MeetingAudience.MEETING_AUDIENCE
+
+    /**
+     * The table <code>memo.meeting_counter</code>.
+     */
+    val MEETING_COUNTER: MeetingCounter get() = MeetingCounter.MEETING_COUNTER
+
+    /**
+     * The table <code>memo.meeting_guest</code>.
+     */
+    val MEETING_GUEST: MeetingGuest get() = MeetingGuest.MEETING_GUEST
 
     /**
      * The table <code>memo.memo</code>.
@@ -952,6 +976,10 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         ImportsRowApproval.IMPORTS_ROW_APPROVAL,
         ImportsRowFile.IMPORTS_ROW_FILE,
         ImportsStaged.IMPORTS_STAGED,
+        Meeting.MEETING,
+        MeetingAudience.MEETING_AUDIENCE,
+        MeetingCounter.MEETING_COUNTER,
+        MeetingGuest.MEETING_GUEST,
         com.memo.jooq.tables.Memo.MEMO_,
         MemoApproval.MEMO_APPROVAL,
         MemoAttachment.MEMO_ATTACHMENT,

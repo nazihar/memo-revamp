@@ -29,7 +29,8 @@ stateDiagram-v2
   [*] --> DRAFT: create (officers only see it)
   DRAFT --> SCHEDULED: schedule (audience sees date, place, link)
   DRAFT --> CANCELLED: discard (reason)
-  SCHEDULED --> SCHEDULED: reschedule (time, place, mode; reason; audited)
+  DRAFT --> DRAFT: reschedule (times; no reason needed)
+  SCHEDULED --> SCHEDULED: reschedule (times; reason; audited)
   SCHEDULED --> IN_PROGRESS: start (secretary)
   SCHEDULED --> CANCELLED: cancel (reason)
   IN_PROGRESS --> HELD: end (secretary)
@@ -37,6 +38,7 @@ stateDiagram-v2
   MINUTES_APPROVED --> CLOSED: close (E06/E07)
 ```
 - Forbidden transitions answer 409 `WRONG_STATE`. Examples: start a draft, reschedule a held meeting, cancel an in-progress meeting.
+- As built (T1): times change only through `reschedule`, so a draft is rescheduled too, without a reason; the place, mode and link change through `PATCH` (DRAFT or SCHEDULED). Guests change until the meeting is held.
 - A meeting still SCHEDULED a day after `endsAt` is flagged "Not marked as held" to the secretaries (§9).
 - E03 implements every transition up to HELD and CANCELLED. The CHECK constraint already allows E06's two states.
 - **On cancellation:**
@@ -136,6 +138,7 @@ stateDiagram-v2
 - **GUEST:** each current meeting guest; `membersOnly = false`; access lasts until the meeting is MINUTES_APPROVED (E06).
 - **ATTENDEE:** item attendees, on `agenda_item_attendee` (for that item only).
 - **Recomputed when:** the forum changes (`ForumChanged`, for meetings not HELD, CANCELLED or later), when guests change, and when the meeting's date changes.
+  - As built (T1): `ForumChanged` is now also published for every change to the terms of office (it was only for the forum row). A row that no longer applies gets `removed_at` (the app role deletes nothing). A new holder of a position seat reaches the audience at the next roster or meeting change (org changes do not publish `ForumChanged`).
 - **Alternates standing in** for members who sent apologies are added by E05.
 - **Officers** are not audience rows. They are checked through `ForumDirectory.rolesOf` (secretary or chair in office today) and `forums.manage`.
 
@@ -357,7 +360,8 @@ erDiagram
     - `unplace(sid)`;
     - `placed(forumId)` returns the ids placed and still open.
     - `forum_submission` gains `meeting_id` and `meeting_date`, so the memo's forum panel shows "On the agenda of the meeting on 12 Dec" without knowing meetings.
-  - `Forums.lockCode(forumId)` is called at the first numbered meeting (E01 left the code editable until then).
+  - `Forums.lockCode(forumId)` is called at the first numbered meeting (E01 left the code editable until then). As built (T1): `Forums` is internal, so the meeting module calls the published `ForumCodes.lock(forumId)`; it is audited as `forum.code_locked`, the forum response gains `codeLocked`, and a code change after it answers 409 `CODE_LOCKED`.
+  - As built (T1): `SubmissionStatus` and `SubmissionPurpose` move to `com.memo.forum` with the events; `SubmissionPlacements.place` also takes the forum id (a submission of another forum is 404) and returns a `SubmissionRef`; `ForumPolicies.version` returns a `ForumTypePolicy` whose agenda part comes with T2.
   - The forum-type version gains `agenda` (template and settings) in its checks, presets, changes view and maker-checker.
 - **`files` (published addition):**
   - `FileServing.serve(versionId, kind: ORIGINAL | PDF, range, response, audit: OpenContext)` streams a version or its PDF rendition with the same headers, ranges and `file.opened` audit as the files endpoints. It is for a module that has already decided access, and the open is audited with the caller's context (`meeting`, `paper`, `revision`).
@@ -402,7 +406,8 @@ All endpoints follow the conventions:
 
 **Problems:**
 - 409: `WRONG_STATE`, `FROZEN`, `ONE_LEVEL`, `ONE_PLACEMENT`, `SUBMISSION_STATE`, `PAPER_DEADLINE_PASSED`, `CHAIR_AGREEMENT_REQUIRED`, `PAPER_NOT_READABLE`, `NOTHING_TO_PUBLISH`, `MEETING_NOT_SCHEDULED`, `FORUM_DISSOLVED`;
-- 422 field problems: `RESTRICTION_AUDIENCE`, `CLASSIFICATION`, `UNKNOWN_ZONE`, `UNKNOWN_LOCAL_TIME` (a start in a daylight-saving gap), `LINK_NOT_HTTPS`, `TOO_MANY`, `REASON_REQUIRED`, `NOTE_REQUIRED`;
+- 422 field problems: `RESTRICTION_AUDIENCE`, `CLASSIFICATION`, `UNKNOWN_ZONE`, `UNKNOWN_LOCAL_TIME` (a start in a daylight-saving gap), `LINK_NOT_HTTPS`, `TOO_MANY`, `REASON_REQUIRED`, `NOTE_REQUIRED`; as built (T1) also `REQUIRED` (location or link for the mode), `LINK_CREDENTIALS`, `FORMAT`, `LENGTH`, `END_BEFORE_START`, `TOO_LONG` (over 7 days) and `CLASSIFICATION` for a level above the actor's own clearance or a guest not cleared;
+- 409 as built (T1) also `ALREADY_GUEST`, `CODE_LOCKED` (forum) and `TYPE_NOT_PUBLISHED`;
 - 412 on a stale If-Match.
 
 ## 4. Authorisation matrix

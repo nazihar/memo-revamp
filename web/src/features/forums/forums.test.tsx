@@ -36,6 +36,7 @@ const brc: ForumResponse = {
   id: 'f1',
   key: 'board-risk',
   code: 'BRC',
+  codeLocked: false,
   name: 'Board Risk Committee',
   shortName: 'Risk',
   typeId: 't1',

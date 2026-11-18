@@ -6,10 +6,12 @@ package com.memo.jooq.tables
 
 import com.memo.jooq.Memo
 import com.memo.jooq.indexes.FORUM_SUBMISSION_INSTANCE_IDX
+import com.memo.jooq.indexes.FORUM_SUBMISSION_MEETING_IDX
 import com.memo.jooq.indexes.FORUM_SUBMISSION_PREVIOUS_IDX
 import com.memo.jooq.indexes.FORUM_SUBMISSION_QUEUE_IDX
 import com.memo.jooq.indexes.FORUM_SUBMISSION_STEP_UK
 import com.memo.jooq.indexes.FORUM_SUBMISSION_SUBJECT_IDX
+import com.memo.jooq.indexes.FORUM_SUBMISSION_TRAY_IDX
 import com.memo.jooq.indexes.FORUM_SUBMISSION_WAITING_IDX
 import com.memo.jooq.keys.FORUM_SUBMISSION_PKEY
 import com.memo.jooq.keys.FORUM_SUBMISSION_TENANT_ID_ID_KEY
@@ -202,6 +204,16 @@ open class ForumSubmission(
      */
     val VERSION: TableField<ForumSubmissionRecord, Long?> = createField(DSL.name("version"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BIGINT)), this, "")
 
+    /**
+     * The column <code>memo.forum_submission.meeting_id</code>.
+     */
+    val MEETING_ID: TableField<ForumSubmissionRecord, UUID?> = createField(DSL.name("meeting_id"), SQLDataType.UUID, this, "")
+
+    /**
+     * The column <code>memo.forum_submission.meeting_date</code>.
+     */
+    val MEETING_DATE: TableField<ForumSubmissionRecord, LocalDate?> = createField(DSL.name("meeting_date"), SQLDataType.LOCALDATE, this, "")
+
     private constructor(alias: Name, aliased: Table<ForumSubmissionRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<ForumSubmissionRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<ForumSubmissionRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -234,7 +246,7 @@ open class ForumSubmission(
         override fun `as`(alias: Table<*>): ForumSubmissionPath = ForumSubmissionPath(alias.qualifiedName, this)
     }
     override fun getSchema(): Schema? = if (aliased()) null else Memo.MEMO
-    override fun getIndexes(): List<Index> = listOf(FORUM_SUBMISSION_INSTANCE_IDX, FORUM_SUBMISSION_PREVIOUS_IDX, FORUM_SUBMISSION_QUEUE_IDX, FORUM_SUBMISSION_STEP_UK, FORUM_SUBMISSION_SUBJECT_IDX, FORUM_SUBMISSION_WAITING_IDX)
+    override fun getIndexes(): List<Index> = listOf(FORUM_SUBMISSION_INSTANCE_IDX, FORUM_SUBMISSION_MEETING_IDX, FORUM_SUBMISSION_PREVIOUS_IDX, FORUM_SUBMISSION_QUEUE_IDX, FORUM_SUBMISSION_STEP_UK, FORUM_SUBMISSION_SUBJECT_IDX, FORUM_SUBMISSION_TRAY_IDX, FORUM_SUBMISSION_WAITING_IDX)
     override fun getPrimaryKey(): UniqueKey<ForumSubmissionRecord> = FORUM_SUBMISSION_PKEY
     override fun getUniqueKeys(): List<UniqueKey<ForumSubmissionRecord>> = listOf(FORUM_SUBMISSION_TENANT_ID_ID_KEY)
     override fun getReferences(): List<ForeignKey<ForumSubmissionRecord, *>> = listOf(FORUM_SUBMISSION__FORUM_SUBMISSION_TENANT_ID_FORUM_ID_FKEY, FORUM_SUBMISSION__FORUM_SUBMISSION_TENANT_ID_PREVIOUS_ID_FKEY)
@@ -254,6 +266,7 @@ open class ForumSubmission(
     override fun getChecks(): List<Check<ForumSubmissionRecord>> = listOf(
         Internal.createCheck(this, DSL.name("forum_submission_check"), "(((status = 'DECIDED'::text) = (outcome IS NOT NULL)))", true),
         Internal.createCheck(this, DSL.name("forum_submission_outcome_check"), "((outcome = ANY (ARRAY['APPROVED'::text, 'APPROVED_WITH_CONDITIONS'::text, 'NOTED'::text, 'REJECTED'::text, 'RETURNED'::text])))", true),
+        Internal.createCheck(this, DSL.name("forum_submission_placement_ck"), "(((meeting_id IS NULL) = (meeting_date IS NULL)))", true),
         Internal.createCheck(this, DSL.name("forum_submission_purpose_check"), "((purpose = ANY (ARRAY['DECISION'::text, 'DISCUSSION'::text, 'INFORMATION'::text])))", true),
         Internal.createCheck(this, DSL.name("forum_submission_reason_check"), "(((length(reason) >= 1) AND (length(reason) <= 2000)))", true),
         Internal.createCheck(this, DSL.name("forum_submission_resolution_sought_check"), "(((length(resolution_sought) >= 1) AND (length(resolution_sought) <= 2000)))", true),

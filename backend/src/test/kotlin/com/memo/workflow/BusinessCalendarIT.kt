@@ -58,6 +58,13 @@ class BusinessCalendarIT : MemoIntegrationTest() {
         assertThat(eid.json().size()).isEqualTo(3)
         Audit.assertAudited(tenant.id, "workflow.calendar.day_set", tenant.id.toString())
         assertThat(post("$base/preview", session, preview).json()["due"].asString()).isEqualTo("${sunday.plusDays(3)}T09:00:00Z")
+        // Counting back (a meeting's paper deadline, design E03 §1.4): the holidays and the weekend are skipped.
+        val wednesday = sunday.plusDays(3)
+        transactions.inTenant(tenant.id) {
+            assertThat(workingDays.before(wednesday, 0)).isEqualTo(wednesday)
+            assertThat(workingDays.before(wednesday, 1)).isEqualTo(thursday)
+            assertThat(workingDays.before(wednesday, 2)).isEqualTo(thursday.minusDays(1))
+        }
 
         val listed = read("$base/days?from=${sunday.minusDays(14)}&to=${sunday.plusDays(14)}", session)
         assertThat(listed.json().size()).isEqualTo(3)
@@ -75,6 +82,8 @@ class BusinessCalendarIT : MemoIntegrationTest() {
     @Autowired lateinit var mfaSeeding: MfaSeeding
 
     @Autowired lateinit var clock: Clock
+
+    @Autowired lateinit var workingDays: WorkingDays
 
     /** A tenant administrator past MFA (they hold `workflow.calendar.manage`). */
     private fun adminSession(): Cookie = mvc.adminSession(tenant, accounts, transactions, mfaSeeding)

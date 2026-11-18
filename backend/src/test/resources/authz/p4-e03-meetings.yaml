@@ -1,0 +1,35 @@
+# Phase 4 E03 meetings (design E03 §3, §4; ADR-0060). Forum and meeting ids are random here, so every subject allowed
+# through is answered 404 before the officer check. Who may do what on a real meeting (secretary of the forum and of
+# another, chair, forums.manage, member, former member, guest, forum.read cleared and not cleared, a user without a
+# role) is MeetingsIT; another tenant is MeetingCrossTenantIT.
+epic: P4-E03
+endpoints:
+  - { endpoint: "GET /api/v1/forums/{forumId}/meetings", rule: signedIn }
+  - endpoint: "POST /api/v1/forums/{forumId}/meetings"
+    rule: signedIn
+    body:
+      startsAt: "2026-12-12T10:00:00"
+      endsAt: "2026-12-12T13:00:00"
+      timeZone: "Asia/Dhaka"
+      mode: "ONLINE"
+      joinUrl: "https://meet.example/abc"
+    headers: { Idempotency-Key: "{random}" }
+  - { endpoint: "GET /api/v1/meetings/{meetingId}", rule: signedIn }
+  - endpoint: "PATCH /api/v1/meetings/{meetingId}"
+    rule: signedIn
+    body: { mode: "IN_PERSON", location: "Board room" }
+    headers: { If-Match: "\"0\"" }
+  - { endpoint: "POST /api/v1/meetings/{meetingId}/schedule", rule: signedIn, headers: { If-Match: "\"0\"" } }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/reschedule"
+    rule: signedIn
+    body: { startsAt: "2026-12-13T10:00:00", endsAt: "2026-12-13T13:00:00", reason: "Matrix" }
+    headers: { If-Match: "\"0\"" }
+  - { endpoint: "POST /api/v1/meetings/{meetingId}/start", rule: signedIn, headers: { If-Match: "\"0\"" } }
+  - { endpoint: "POST /api/v1/meetings/{meetingId}/end", rule: signedIn, headers: { If-Match: "\"0\"" } }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/cancel"
+    rule: signedIn
+    body: { reason: "Matrix" }
+    headers: { If-Match: "\"0\"" }
+  - { endpoint: "POST /api/v1/meetings/{meetingId}/guests", rule: signedIn, body: { userId: "{random}" } }
+  - { endpoint: "POST /api/v1/meetings/{meetingId}/guests/{userId}/remove", rule: signedIn }
+  - { endpoint: GET /api/v1/me/meetings, rule: signedIn }

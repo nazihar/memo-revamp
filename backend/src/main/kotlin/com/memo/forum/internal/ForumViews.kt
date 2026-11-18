@@ -44,6 +44,7 @@ class ForumViews(
                 id = forum.id,
                 key = forum.key,
                 code = forum.code,
+                codeLocked = forum.codeLockedAt != null,
                 name = forum.name,
                 shortName = forum.shortName,
                 typeId = forum.typeId,

@@ -270,6 +270,10 @@ export type CalendarWeekRequest = {
     };
 };
 
+export type CancelMeetingRequest = {
+    reason?: string | null;
+};
+
 export type CancelRequest = {
     reason?: string | null;
 };
@@ -750,6 +754,7 @@ export type ForumResponse = {
     chair?: PersonRef | null;
     classificationId?: string | null;
     code: string;
+    codeLocked: boolean;
     dissolvedOn?: string | null;
     dissolvedReason?: string | null;
     id: string;
@@ -848,6 +853,11 @@ export type GrantRequest = {
      * Limit to a unit subtree
      */
     scopeUnitId?: string | null;
+};
+
+export type GuestRequest = {
+    note?: string | null;
+    userId?: string;
 };
 
 export type HandOnRequest = {
@@ -1374,6 +1384,89 @@ export type Me = {
     lastLoginAt?: string | null;
     mfaEnrolled: boolean;
     tenantAdmin: boolean;
+};
+
+export type MeetingEditRequest = {
+    classificationId?: string | null;
+    joinDetails?: string | null;
+    joinUrl?: string | null;
+    kind?: 'ORDINARY' | 'SPECIAL';
+    location?: string | null;
+    mode?: 'IN_PERSON' | 'ONLINE' | 'HYBRID';
+    title?: string | null;
+};
+
+export type MeetingGuestResponse = {
+    addedAt: string;
+    name: string;
+    note?: string | null;
+    userId: string;
+};
+
+export type MeetingPageResponse = {
+    items: Array<MeetingSummaryResponse>;
+    nextCursor?: string | null;
+};
+
+export type MeetingRequest = {
+    classificationId?: string | null;
+    endsAt?: string;
+    joinDetails?: string | null;
+    joinUrl?: string | null;
+    kind?: 'ORDINARY' | 'SPECIAL';
+    location?: string | null;
+    mode?: 'IN_PERSON' | 'ONLINE' | 'HYBRID';
+    startsAt?: string;
+    timeZone?: string | null;
+    title?: string | null;
+};
+
+export type MeetingResponse = {
+    canManage: boolean;
+    classificationId: string;
+    endsAt: string;
+    forumCode: string;
+    forumId: string;
+    forumName: string;
+    guests: Array<MeetingGuestResponse>;
+    id: string;
+    joinDetails?: string | null;
+    joinUrl?: string | null;
+    kind: 'ORDINARY' | 'SPECIAL';
+    label?: string | null;
+    localEndsAt: string;
+    localStartsAt: string;
+    location?: string | null;
+    mode: 'IN_PERSON' | 'ONLINE' | 'HYBRID';
+    number?: number | null;
+    relation: 'OFFICER' | 'MEMBER' | 'GUEST' | 'ATTENDEE' | 'READER';
+    startsAt: string;
+    status: 'DRAFT' | 'SCHEDULED' | 'IN_PROGRESS' | 'HELD' | 'MINUTES_APPROVED' | 'CLOSED' | 'CANCELLED';
+    statusReason?: string | null;
+    timeZone: string;
+    title?: string | null;
+    typeVersion: number;
+    version: number;
+};
+
+export type MeetingSummaryResponse = {
+    endsAt: string;
+    forumCode: string;
+    forumId: string;
+    forumName: string;
+    id: string;
+    joinUrl?: string | null;
+    kind: 'ORDINARY' | 'SPECIAL';
+    label?: string | null;
+    localEndsAt: string;
+    localStartsAt: string;
+    location?: string | null;
+    mode: 'IN_PERSON' | 'ONLINE' | 'HYBRID';
+    relation: 'OFFICER' | 'MEMBER' | 'GUEST' | 'ATTENDEE' | 'READER';
+    startsAt: string;
+    status: 'DRAFT' | 'SCHEDULED' | 'IN_PROGRESS' | 'HELD' | 'MINUTES_APPROVED' | 'CLOSED' | 'CANCELLED';
+    timeZone: string;
+    title?: string | null;
 };
 
 export type MemberAttribute = {
@@ -2380,6 +2473,13 @@ export type ReportingLineRequest = {
     validTo?: string | null;
 };
 
+export type RescheduleRequest = {
+    endsAt?: string;
+    reason?: string | null;
+    startsAt?: string;
+    timeZone?: string | null;
+};
+
 export type Retention = {
     from: 'APPROVAL' | 'CLOSURE';
     years: number;
@@ -2729,6 +2829,8 @@ export type SubmissionResponse = {
     forumId: string;
     forumName: string;
     id: string;
+    meetingDate?: string | null;
+    meetingId?: string | null;
     memo?: SubmittedMemo | null;
     outcome?: 'APPROVED' | 'APPROVED_WITH_CONDITIONS' | 'NOTED' | 'REJECTED' | 'RETURNED';
     presenter?: PersonRef | null;
@@ -6248,6 +6350,50 @@ export type DissolveForumResponses = {
 
 export type DissolveForumResponse = DissolveForumResponses[keyof DissolveForumResponses];
 
+export type ListForumMeetingsData = {
+    body?: never;
+    path: {
+        forumId: string;
+    };
+    query?: {
+        from?: string;
+        to?: string;
+        status?: Array<'DRAFT' | 'SCHEDULED' | 'IN_PROGRESS' | 'HELD' | 'MINUTES_APPROVED' | 'CLOSED' | 'CANCELLED'>;
+        cursor?: string;
+    };
+    url: '/api/v1/forums/{forumId}/meetings';
+};
+
+export type ListForumMeetingsResponses = {
+    /**
+     * OK
+     */
+    200: MeetingPageResponse;
+};
+
+export type ListForumMeetingsResponse = ListForumMeetingsResponses[keyof ListForumMeetingsResponses];
+
+export type CreateMeetingData = {
+    body: MeetingRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        forumId: string;
+    };
+    query?: never;
+    url: '/api/v1/forums/{forumId}/meetings';
+};
+
+export type CreateMeetingResponses = {
+    /**
+     * OK
+     */
+    200: MeetingResponse;
+};
+
+export type CreateMeetingResponse = CreateMeetingResponses[keyof CreateMeetingResponses];
+
 export type ListForumMembersData = {
     body?: never;
     path: {
@@ -6732,6 +6878,24 @@ export type ListMyForumsResponses = {
 
 export type ListMyForumsResponse = ListMyForumsResponses[keyof ListMyForumsResponses];
 
+export type ListMyMeetingsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        from?: string;
+    };
+    url: '/api/v1/me/meetings';
+};
+
+export type ListMyMeetingsResponses = {
+    /**
+     * OK
+     */
+    200: Array<MeetingSummaryResponse>;
+};
+
+export type ListMyMeetingsResponse = ListMyMeetingsResponses[keyof ListMyMeetingsResponses];
+
 export type GetMyNotificationPreferencesData = {
     body?: never;
     path?: never;
@@ -6949,6 +7113,187 @@ export type SaveWatchSettingsResponses = {
 };
 
 export type SaveWatchSettingsResponse = SaveWatchSettingsResponses[keyof SaveWatchSettingsResponses];
+
+export type GetMeetingData = {
+    body?: never;
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}';
+};
+
+export type GetMeetingResponses = {
+    /**
+     * OK
+     */
+    200: MeetingResponse;
+};
+
+export type GetMeetingResponse = GetMeetingResponses[keyof GetMeetingResponses];
+
+export type UpdateMeetingData = {
+    body: MeetingEditRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}';
+};
+
+export type UpdateMeetingResponses = {
+    /**
+     * OK
+     */
+    200: MeetingResponse;
+};
+
+export type UpdateMeetingResponse = UpdateMeetingResponses[keyof UpdateMeetingResponses];
+
+export type CancelMeetingData = {
+    body: CancelMeetingRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/cancel';
+};
+
+export type CancelMeetingResponses = {
+    /**
+     * OK
+     */
+    200: MeetingResponse;
+};
+
+export type CancelMeetingResponse = CancelMeetingResponses[keyof CancelMeetingResponses];
+
+export type EndMeetingData = {
+    body?: never;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/end';
+};
+
+export type EndMeetingResponses = {
+    /**
+     * OK
+     */
+    200: MeetingResponse;
+};
+
+export type EndMeetingResponse = EndMeetingResponses[keyof EndMeetingResponses];
+
+export type AddMeetingGuestData = {
+    body: GuestRequest;
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/guests';
+};
+
+export type AddMeetingGuestResponses = {
+    /**
+     * OK
+     */
+    200: MeetingResponse;
+};
+
+export type AddMeetingGuestResponse = AddMeetingGuestResponses[keyof AddMeetingGuestResponses];
+
+export type RemoveMeetingGuestData = {
+    body?: never;
+    path: {
+        meetingId: string;
+        userId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/guests/{userId}/remove';
+};
+
+export type RemoveMeetingGuestResponses = {
+    /**
+     * OK
+     */
+    200: MeetingResponse;
+};
+
+export type RemoveMeetingGuestResponse = RemoveMeetingGuestResponses[keyof RemoveMeetingGuestResponses];
+
+export type RescheduleMeetingData = {
+    body: RescheduleRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/reschedule';
+};
+
+export type RescheduleMeetingResponses = {
+    /**
+     * OK
+     */
+    200: MeetingResponse;
+};
+
+export type RescheduleMeetingResponse = RescheduleMeetingResponses[keyof RescheduleMeetingResponses];
+
+export type ScheduleMeetingData = {
+    body?: never;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/schedule';
+};
+
+export type ScheduleMeetingResponses = {
+    /**
+     * OK
+     */
+    200: MeetingResponse;
+};
+
+export type ScheduleMeetingResponse = ScheduleMeetingResponses[keyof ScheduleMeetingResponses];
+
+export type StartMeetingData = {
+    body?: never;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/start';
+};
+
+export type StartMeetingResponses = {
+    /**
+     * OK
+     */
+    200: MeetingResponse;
+};
+
+export type StartMeetingResponse = StartMeetingResponses[keyof StartMeetingResponses];
 
 export type ListMemoTypesData = {
     body?: never;

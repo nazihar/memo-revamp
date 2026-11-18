@@ -16,7 +16,6 @@ import com.memo.forum.internal.ForumTypePreset
 import com.memo.forum.internal.ForumTypes
 import com.memo.forum.internal.Forums
 import com.memo.forum.internal.MemberInput
-import com.memo.forum.internal.SubmissionStatus
 import com.memo.forum.internal.SubmissionTriage
 import com.memo.identity.UserAccount
 import com.memo.identity.UserAccounts
@@ -39,6 +38,8 @@ import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import java.time.LocalDate
+import java.time.ZoneOffset
 import java.util.UUID
 
 /**
@@ -63,6 +64,8 @@ class ForumSubmissionsIT : IntegrationTest() {
     @Autowired lateinit var submissions: ForumSubmissions
 
     @Autowired lateinit var triage: SubmissionTriage
+
+    @Autowired lateinit var placements: SubmissionPlacements
 
     @Autowired lateinit var seeding: WorkflowSeeding
 
@@ -202,6 +205,34 @@ class ForumSubmissionsIT : IntegrationTest() {
         asUser(initiator) { workflows.withdraw(view.instanceId, "No longer needed") }
         assertThat(asUser(secretary) { submissions.get(credit, id) }.status).isEqualTo(SubmissionStatus.WITHDRAWN)
         Audit.assertAudited(tenant.id, "forum.submission.withdrawn", id.toString(), null)
+    }
+
+    @Test
+    fun `a submission sits on one agenda at a time, a queued one is accepted first, and unplacing returns it to the tray`() {
+        val (_, id) = escalated()
+        val meeting = UUID.randomUUID()
+        val date = LocalDate.now(ZoneOffset.UTC).plusDays(20)
+        val placed = asUser(secretary) { placements.place(credit, id, meeting, date) }
+        assertThat(placed.status).isEqualTo(SubmissionStatus.ACCEPTED)
+        assertThat(placed.meetingId to placed.meetingDate).isEqualTo(meeting to date)
+        Audit.assertAudited(tenant.id, "forum.submission.accepted", id.toString(), secretary.id.value.toString())
+        Audit.assertAudited(tenant.id, "forum.submission.placed", id.toString(), secretary.id.value.toString())
+        assertThat(asUser(secretary) { placements.placed(credit) }).containsExactly(id)
+        assertThat(asUser(initiator) { submissions.get(credit, id) }.meetingDate).isEqualTo(date)
+        refused("ONE_PLACEMENT") { asUser(secretary) { placements.place(credit, id, UUID.randomUUID(), date) } }
+        assertThatThrownBy { asUser(secretary) { placements.place(board, id, meeting, date) } }
+            .isInstanceOf(ForumNotFoundException::class.java)
+
+        val unplaced = asUser(secretary) { placements.unplace(id) }
+        assertThat(unplaced?.meetingId).isNull()
+        assertThat(unplaced?.status).isEqualTo(SubmissionStatus.ACCEPTED)
+        Audit.assertAudited(tenant.id, "forum.submission.unplaced", id.toString(), secretary.id.value.toString())
+        assertThat(asUser(secretary) { placements.placed(credit) }).isEmpty()
+        assertThat(asUser(secretary) { placements.unplace(id) }?.version).isEqualTo(unplaced?.version)
+
+        val row = asUser(secretary) { submissions.get(credit, id) }
+        asUser(secretary) { triage.decline(credit, id, row.version, "A board matter") }
+        refused("SUBMISSION_STATE") { asUser(secretary) { placements.place(credit, id, meeting, date) } }
     }
 
     @Test

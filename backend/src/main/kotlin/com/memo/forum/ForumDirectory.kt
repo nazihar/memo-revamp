@@ -41,6 +41,8 @@ data class ForumSeat(
     val startsOn: LocalDate,
     val termEndsOn: LocalDate?,
     val termNumber: Int,
+    /** The last day of the seat: the earlier of its end and its planned term end; null when open-ended. */
+    val until: LocalDate?,
 )
 
 /**
@@ -102,6 +104,7 @@ class ForumDirectory(
                     startsOn = row.startsOn,
                     termEndsOn = row.termEndsOn,
                     termNumber = row.termNumber,
+                    until = row.lastDay,
                 )
             }
         }

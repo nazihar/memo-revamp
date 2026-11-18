@@ -5,6 +5,7 @@ import type { ReactNode } from 'react'
 import { defineMessages, useIntl, type NoMessageValues } from 'react-intl'
 import { listMyForumsOptions } from '@/api/generated/@tanstack/react-query.gen'
 import { useSession } from '@/features/auth/session'
+import { MyMeetingsCard } from '@/features/meetings/MyMeetings'
 import { useTerms, type TermValues } from '@/features/terms/terms'
 import { PageHeader } from '@/components/page/PageHeader'
 
@@ -48,6 +49,7 @@ export function HomePage() {
         title={intl.formatMessage(messages.title, { name: user?.displayName ?? '' })}
         description={intl.formatMessage(messages.lead)}
       />
+      <MyMeetingsCard />
       <ul className="grid gap-3 sm:grid-cols-2">
         {sitting.length ? (
           <Shortcut

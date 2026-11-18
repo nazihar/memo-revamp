@@ -15,6 +15,8 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/misc'
+import { MeetingsTab } from '@/features/meetings/MeetingsTab'
+import { mm } from '@/features/meetings/messages'
 import { useTerms } from '@/features/terms/terms'
 import { CloneForumDialog, DissolveForumDialog, EditForumDialog } from './ForumDialogs'
 import { HistoryTab } from './HistoryTab'
@@ -27,15 +29,17 @@ import { formatDay, today } from './shared'
 
 /** What a row menu or the page menu opened. */
 export type MemberAction = 'renew' | 'changeRole' | 'edit' | 'end' | 'withdraw'
+/** The page's tabs; `?tab=meetings` opens the meetings (a meeting's page links back to them). */
+export type ForumTab = 'members' | 'meetings' | 'history' | 'policy'
 type Open =
   { kind: 'add' } | { kind: 'clone' | 'editForum' | 'dissolve' } | { kind: MemberAction; member: MemberResponse }
 
 /**
  * `/committees/$forumId` (flow K2, ADR-0056): the committee's summary, its members on a chosen date with the quorum
- * that day, every term of office in History, and the type's published policy to read. Administrators and the
+ * that day, its meetings (Phase 4 E03, flow N1), every term of office in History, and the type's published policy to read. Administrators and the
  * committee's secretaries add and change members; administrators also clone, edit and dissolve.
  */
-export function ForumPage({ forumId }: { forumId: string }) {
+export function ForumPage({ forumId, tab }: { forumId: string; tab?: ForumTab }) {
   const intl = useIntl()
   const terms = useTerms()
   const forum = useQuery(getForumOptions({ path: { forumId } }))
@@ -115,14 +119,18 @@ export function ForumPage({ forumId }: { forumId: string }) {
       <Link to="/committees" className="w-fit text-sm underline-offset-4 hover:underline">
         {intl.formatMessage(fmt.back, terms)}
       </Link>
-      <Tabs defaultValue="members">
+      <Tabs defaultValue={tab ?? 'members'}>
         <TabsList aria-label={intl.formatMessage(fmt.tabs, terms)}>
           <TabsTrigger value="members">{intl.formatMessage(fm.tabMembers)}</TabsTrigger>
+          <TabsTrigger value="meetings">{intl.formatMessage(mm.tab)}</TabsTrigger>
           <TabsTrigger value="history">{intl.formatMessage(fm.tabHistory)}</TabsTrigger>
           <TabsTrigger value="policy">{intl.formatMessage(fm.tabPolicy)}</TabsTrigger>
         </TabsList>
         <TabsContent value="members" className="pt-4">
           <MembersTab forum={f} policy={policy.data} on={on} onDate={setOn} onAction={act} />
+        </TabsContent>
+        <TabsContent value="meetings" className="pt-4">
+          <MeetingsTab forum={f} policy={policy.data} />
         </TabsContent>
         <TabsContent value="history" className="pt-4">
           <HistoryTab forum={f} onAction={act} />

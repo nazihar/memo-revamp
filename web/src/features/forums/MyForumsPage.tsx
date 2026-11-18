@@ -6,24 +6,27 @@ import {
   listForumsOptions,
   listMyForumsOptions,
 } from '@/api/generated/@tanstack/react-query.gen'
-import type { ForumResponse, MyForumResponse } from '@/api/generated/types.gen'
+import type { ForumResponse, MeetingSummaryResponse, MyForumResponse } from '@/api/generated/types.gen'
 import { PageHeader } from '@/components/page/PageHeader'
 import { EmptyState, ErrorState, LoadingState } from '@/components/page/States'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { useMyMeetings } from '@/features/meetings/mine'
+import { NextMeeting } from '@/features/meetings/MyMeetings'
 import { useTerms } from '@/features/terms/terms'
 import { fm, fmt, fmv } from './messages'
 import { formatDay } from './shared'
 
 /**
  * `/me/committees` (flow L1): one card per committee the user sits on, will sit on or sat on, with their role, vote,
- * attributes and term, and the committee's chair, secretaries and size. Meetings and papers join the cards in E03.
+ * attributes and term, the committee's chair, secretaries and size, and its next meeting (Phase 4 E03, flow N3).
  */
 export function MyForumsPage() {
   const intl = useIntl()
   const terms = useTerms()
   const mine = useQuery(listMyForumsOptions())
   const forums = useQuery(listForumsOptions())
+  const meetings = useMyMeetings()
 
   return (
     <section aria-labelledby="my-forums-title" className="max-w-3xl">
@@ -40,7 +43,12 @@ export function MyForumsPage() {
       ) : (
         <ul className="flex flex-col gap-3">
           {mine.data.map((m) => (
-            <MyForumCard key={m.forumId} membership={m} forum={forums.data?.find((f) => f.id === m.forumId)} />
+            <MyForumCard
+              key={m.forumId}
+              membership={m}
+              forum={forums.data?.find((f) => f.id === m.forumId)}
+              meetings={meetings.data ?? []}
+            />
           ))}
         </ul>
       )}
@@ -48,7 +56,15 @@ export function MyForumsPage() {
   )
 }
 
-function MyForumCard({ membership: m, forum }: { membership: MyForumResponse; forum?: ForumResponse }) {
+function MyForumCard({
+  membership: m,
+  forum,
+  meetings,
+}: {
+  membership: MyForumResponse
+  forum?: ForumResponse
+  meetings: MeetingSummaryResponse[]
+}) {
   const intl = useIntl()
   const policy = useQuery({
     ...getForumPolicyOptions({ path: { forumId: m.forumId } }),
@@ -102,6 +118,7 @@ function MyForumCard({ membership: m, forum }: { membership: MyForumResponse; fo
             <span>{intl.formatMessage(fmv.mineMembers, { count: forum.memberCount })}</span>
           </p>
         ) : null}
+        {m.state !== 'ENDED' ? <NextMeeting forumId={m.forumId} meetings={meetings} /> : null}
         {m.canOpen ? (
           <div>
             <Button asChild variant="outline">

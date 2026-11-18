@@ -6,6 +6,7 @@ import com.memo.common.review.ReviewState
 import com.memo.common.tenant.TenantDsl
 import com.memo.forum.AgendaPolicy
 import com.memo.forum.ForumRetention
+import com.memo.forum.MeetingPolicy
 import com.memo.forum.MemberAttribute
 import com.memo.forum.Outcome
 import com.memo.forum.QuorumRule
@@ -164,6 +165,7 @@ private fun JsonMapper.settingsFields(settings: ForumTypeSettings): Map<Field<*>
         FORUM_TYPE_VERSION.TERM_POLICY to jsonb(settings.termPolicy),
         FORUM_TYPE_VERSION.SUBMISSION_POLICY to jsonb(settings.submissionPolicy),
         FORUM_TYPE_VERSION.AGENDA to jsonb(settings.agenda),
+        FORUM_TYPE_VERSION.MEETINGS to jsonb(settings.meetings),
     )
 
 private val ATTRIBUTES = object : TypeReference<List<MemberAttribute>>() {}
@@ -189,6 +191,7 @@ private fun JsonMapper.row(v: ForumTypeVersionRecord): ForumTypeVersionRow =
                 submissionPolicy =
                     v.submissionPolicy?.let { readValue(it.data(), SubmissionPolicy::class.java) } ?: SubmissionPolicy(),
                 agenda = v.agenda?.let { readValue(it.data(), AgendaPolicy::class.java) } ?: AgendaPolicy(),
+                meetings = v.meetings?.let { readValue(it.data(), MeetingPolicy::class.java) } ?: MeetingPolicy(),
             ),
         createdBy = v.createdBy,
         createdAt = v.createdAt.toInstant(),

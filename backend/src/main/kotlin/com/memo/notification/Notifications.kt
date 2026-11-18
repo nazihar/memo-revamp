@@ -14,6 +14,12 @@ enum class NotificationCategory(
 
     /** Memos the user follows (Phase 3 E05, flow J): what others did; the email is the user's watch setting (digest by default). */
     WATCHING(mandatory = false),
+
+    /**
+     * Meeting invitations, updates and uninvitations with their calendar files (Phase 4 E05, ADR-0063): on by default; a
+     * member may switch the email off and keep the in-app item, and then answers and adds meetings in memo.
+     */
+    CALENDAR(mandatory = false),
 }
 
 /** Where a notification goes. `PUSH` is reserved for the mobile apps (Phase 6a) and not delivered yet. */
@@ -109,7 +115,8 @@ data class Recipient(
 
 /**
  * Notifies one user (ADR-0030): an in-app item and an email, each as the user's preferences allow (mandatory categories
- * always). Call inside the producer's tenant transaction: a rolled-back change notifies nobody.
+ * always). Call inside the producer's tenant transaction: a rolled-back change notifies nobody. A [calendar] part goes
+ * with the email only (a kind with an email template); with the email switched off there is no mail and no part.
  */
 interface Notifications {
     fun notify(
@@ -117,7 +124,8 @@ interface Notifications {
         kind: NotificationKind,
         params: Map<String, String> = emptyMap(),
         link: String? = null,
-    )
+        calendar: CalendarPart? = null,
+    ): NotificationResult
 }
 
 /** Finds a user as a recipient; implemented by `identity`, which depends on this module (no cycle). */

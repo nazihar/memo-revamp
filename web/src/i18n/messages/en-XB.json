@@ -9717,6 +9717,60 @@
       "value": "‬"
     }
   ],
+  "forumTypes.changes.invitationName": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɯǝǝʇıuƃ's ʇıʇʅǝ oɹ ʇɥǝ "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "'s uɐɯǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.changes.invitationNeutral": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ uǝnʇɹɐʅ ʇıʇʅǝ: "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.changes.invitationTitle": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Iuʌıʇɐʇıou ʇıʇʅǝ ıu ɔɐʅǝupɐɹs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "forumTypes.changes.lead": [
     {
       "type": 0,
@@ -9739,6 +9793,20 @@
     {
       "type": 0,
       "value": "Ↄɥɐuƃǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.changes.meetingReminder": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯıupǝɹ ʇɥǝ ʍoɹʞıuƃ pɐʎ qǝɟoɹǝ"
     },
     {
       "type": 0,
@@ -9839,6 +9907,48 @@
       "value": "‬"
     }
   ],
+  "forumTypes.changes.quorumOverride": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɔısıous ʍıʇɥonʇ ɐ bnoɹnɯ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.changes.quorumOverride.never": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Nǝʌǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.changes.quorumOverride.withReason": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mıʇɥ ɐ ɹǝɐsou, ʇo qǝ ɹɐʇıɟıǝp ʅɐʇǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "forumTypes.changes.reminders": [
     {
       "type": 0,
@@ -9861,6 +9971,34 @@
     {
       "type": 0,
       "value": "ᴚǝɯoʌǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.changes.replyDeadline": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝdʅʎ pǝɐpʅıuǝ (ʍoɹʞıuƃ pɐʎs qǝɟoɹǝ ɐ ɯǝǝʇıuƃ)"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.changes.replyReminder": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯıupǝɹ ʇo ɹǝdʅʎ"
     },
     {
       "type": 0,
@@ -43412,6 +43550,20 @@
     {
       "type": 0,
       "value": "∀ɔɔǝss ɐup ɐpɯıuısʇɹɐʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.category.calendar": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝǝʇıuƃ ıuʌıʇɐʇıous"
     },
     {
       "type": 0,

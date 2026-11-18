@@ -2,6 +2,7 @@ import type {
   AgendaPolicy,
   ForumTypeSettingsRequest,
   ForumTypeVersionResponse,
+  MeetingPolicy,
   Outcome,
   QuorumRule,
   QuorumSampleMember,
@@ -62,6 +63,8 @@ export interface TypeSettings {
   submissionPolicy: Papers
   /** The agenda template and the chair's agreement (ADR-0060); kept as loaded until the Agenda tab edits it (E03 T7). */
   agenda: AgendaPolicy
+  /** Invitations, replies and the quorum override (Phase 4 E05); kept as loaded until the Meetings tab edits it (E05 T8). */
+  meetings: MeetingPolicy
 }
 
 /** The submission policy as the editor holds it: every part present, the server's defaults filled in. */
@@ -122,6 +125,7 @@ export function settingsOf(v: ForumTypeVersionResponse): TypeSettings {
     reminderDays: v.termPolicy.reminderDays ?? [],
     submissionPolicy: papersOf(v.submissionPolicy),
     agenda: v.agenda,
+    meetings: v.meetings,
   }
 }
 
@@ -170,6 +174,7 @@ export function settingsRequest(s: TypeSettings): ForumTypeSettingsRequest {
       triageWorkingDays: s.submissionPolicy.triageWorkingDays ?? -1,
     },
     agenda: s.agenda,
+    meetings: s.meetings,
   }
 }
 

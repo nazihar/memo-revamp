@@ -5193,6 +5193,40 @@
       "value": "The first version of this type: everything is new.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "forumTypes.changes.invitationName": [
+    {
+      "type": 0,
+      "value": "The meeting's title or the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "'s nameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.invitationNeutral": [
+    {
+      "type": 0,
+      "value": "A neutral title: "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.invitationTitle": [
+    {
+      "type": 0,
+      "value": "Invitation title in calendarsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "forumTypes.changes.lead": [
     {
       "type": 0,
@@ -5203,6 +5237,12 @@
     {
       "type": 0,
       "value": "ChangesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.meetingReminder": [
+    {
+      "type": 0,
+      "value": "Reminder the working day beforeSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "forumTypes.changes.none": [
@@ -5259,6 +5299,24 @@
       "value": "QuorumSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "forumTypes.changes.quorumOverride": [
+    {
+      "type": 0,
+      "value": "Decisions without a quorumSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.quorumOverride.never": [
+    {
+      "type": 0,
+      "value": "NeverSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.quorumOverride.withReason": [
+    {
+      "type": 0,
+      "value": "With a reason, to be ratified laterSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "forumTypes.changes.reminders": [
     {
       "type": 0,
@@ -5269,6 +5327,18 @@
     {
       "type": 0,
       "value": "RemovedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.replyDeadline": [
+    {
+      "type": 0,
+      "value": "Reply deadline (working days before a meeting)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.replyReminder": [
+    {
+      "type": 0,
+      "value": "Reminder to replySSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "forumTypes.changes.to": [
@@ -23640,6 +23710,12 @@
     {
       "type": 0,
       "value": "Access and administrationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.category.calendar": [
+    {
+      "type": 0,
+      "value": "Meeting invitationsSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "notifications.category.security": [

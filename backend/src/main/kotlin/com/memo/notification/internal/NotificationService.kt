@@ -4,10 +4,12 @@ import com.memo.common.id.IdGenerator
 import com.memo.common.tenant.TenantDsl
 import com.memo.jooq.tables.references.NOTIFICATION_ITEM
 import com.memo.jooq.tables.references.NOTIFICATION_PREFERENCE
+import com.memo.notification.CalendarPart
 import com.memo.notification.Mail
 import com.memo.notification.NotificationCategory
 import com.memo.notification.NotificationChannel
 import com.memo.notification.NotificationKind
+import com.memo.notification.NotificationResult
 import com.memo.notification.Notifications
 import com.memo.notification.Recipient
 import org.flywaydb.core.api.callback.Callback
@@ -97,14 +99,18 @@ internal class NotificationService(
         kind: NotificationKind,
         params: Map<String, String>,
         link: String?,
-    ) {
+        calendar: CalendarPart?,
+    ): NotificationResult {
         require(link == null || LINK.matches(link)) { "notification links are app routes" }
+        val template = kind.email
+        require(calendar == null || template != null) { "a calendar part needs a kind that sends email" }
         val category = kind.category
-        if (preferences.enabled(recipient.userId, category, NotificationChannel.IN_APP)) {
+        val itemId = ids.next().takeIf { preferences.enabled(recipient.userId, category, NotificationChannel.IN_APP) }
+        if (itemId != null) {
             tenantDsl
                 .current()
                 .insertInto(NOTIFICATION_ITEM)
-                .set(NOTIFICATION_ITEM.ID, ids.next())
+                .set(NOTIFICATION_ITEM.ID, itemId)
                 .set(NOTIFICATION_ITEM.TENANT_ID, tenantDsl.tenant().value)
                 .set(NOTIFICATION_ITEM.USER_ID, recipient.userId)
                 .set(NOTIFICATION_ITEM.KIND, kind.name)
@@ -114,10 +120,13 @@ internal class NotificationService(
                 .set(NOTIFICATION_ITEM.CREATED_AT, OffsetDateTime.now(clock).withOffsetSameInstant(ZoneOffset.UTC))
                 .execute()
         }
-        val template = kind.email
-        if (template != null && preferences.enabled(recipient.userId, category, NotificationChannel.EMAIL)) {
-            mail.enqueue(template, recipient.email, params + ("name" to recipient.displayName), recipient.locale)
-        }
+        val outboxId =
+            if (template != null && preferences.enabled(recipient.userId, category, NotificationChannel.EMAIL)) {
+                mail.enqueue(template, recipient.email, params + ("name" to recipient.displayName), recipient.locale, calendar)
+            } else {
+                null
+            }
+        return NotificationResult(itemId, outboxId)
     }
 
     private companion object {

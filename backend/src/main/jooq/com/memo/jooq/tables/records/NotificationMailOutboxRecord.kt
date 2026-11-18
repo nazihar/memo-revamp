@@ -79,6 +79,14 @@ open class NotificationMailOutboxRecord private constructor() : UpdatableRecordI
         set(value): Unit = set(14, value)
         get(): OffsetDateTime? = get(14) as OffsetDateTime?
 
+    open var calendarEnc: ByteArray?
+        set(value): Unit = set(15, value)
+        get(): ByteArray? = get(15) as ByteArray?
+
+    open var calendarMethod: String?
+        set(value): Unit = set(16, value)
+        get(): String? = get(16) as String?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -88,7 +96,7 @@ open class NotificationMailOutboxRecord private constructor() : UpdatableRecordI
     /**
      * Create a detached, initialised NotificationMailOutboxRecord
      */
-    constructor(id: UUID, tenantId: UUID, template: String, toAddress: String, paramsEnc: ByteArray? = null, status: String, attempts: Int? = null, createdAt: OffsetDateTime, sentAt: OffsetDateTime? = null, locale: String? = null, relay: String? = null, smtpCode: Int? = null, errorClass: String? = null, lastAttemptAt: OffsetDateTime? = null, failedAt: OffsetDateTime? = null): this() {
+    constructor(id: UUID, tenantId: UUID, template: String, toAddress: String, paramsEnc: ByteArray? = null, status: String, attempts: Int? = null, createdAt: OffsetDateTime, sentAt: OffsetDateTime? = null, locale: String? = null, relay: String? = null, smtpCode: Int? = null, errorClass: String? = null, lastAttemptAt: OffsetDateTime? = null, failedAt: OffsetDateTime? = null, calendarEnc: ByteArray? = null, calendarMethod: String? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.template = template
@@ -104,6 +112,8 @@ open class NotificationMailOutboxRecord private constructor() : UpdatableRecordI
         this.errorClass = errorClass
         this.lastAttemptAt = lastAttemptAt
         this.failedAt = failedAt
+        this.calendarEnc = calendarEnc
+        this.calendarMethod = calendarMethod
         resetTouchedOnNotNull()
     }
 }

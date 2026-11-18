@@ -269,6 +269,20 @@ export const ft = defineMessages({
     defaultMessage: 'Agenda: the chair agrees it before it is first published',
   },
   whatAgendaOrder: { id: 'forumTypes.changes.agendaOrder', defaultMessage: 'Agenda: order of the sections' },
+  // The meeting policy (Phase 4 E05, design E05 §1.8); its tab comes with E05 T8.
+  whatInvitationTitle: { id: 'forumTypes.changes.invitationTitle', defaultMessage: 'Invitation title in calendars' },
+  whatReplyDeadline: {
+    id: 'forumTypes.changes.replyDeadline',
+    defaultMessage: 'Reply deadline (working days before a meeting)',
+  },
+  whatReplyReminder: { id: 'forumTypes.changes.replyReminder', defaultMessage: 'Reminder to reply' },
+  whatMeetingReminder: { id: 'forumTypes.changes.meetingReminder', defaultMessage: 'Reminder the working day before' },
+  whatQuorumOverride: { id: 'forumTypes.changes.quorumOverride', defaultMessage: 'Decisions without a quorum' },
+  quorumOverrideNever: { id: 'forumTypes.changes.quorumOverride.never', defaultMessage: 'Never' },
+  quorumOverrideWithReason: {
+    id: 'forumTypes.changes.quorumOverride.withReason',
+    defaultMessage: 'With a reason, to be ratified later',
+  },
 })
 
 /** Texts with values besides the terms. */
@@ -325,7 +339,9 @@ export const ftv = defineMessages<{
   amountCount: { count: number; base: string }
   floor: { minimum: number }
   including: { roles: string }
+  invitationNeutral: { title: string }
 }>({
+  invitationNeutral: { id: 'forumTypes.changes.invitationNeutral', defaultMessage: 'A neutral title: {title}' },
   sentence: { id: 'forumTypes.quorum.sentence', defaultMessage: '{amount}{floor}{including}{composition}.' },
   amountMajority: { id: 'forumTypes.quorum.amount.majority', defaultMessage: 'More than half of the {base}' },
   amountCount: { id: 'forumTypes.quorum.amount.count', defaultMessage: 'At least {count} of the {base}' },
@@ -440,9 +456,15 @@ type TermMessage =
   | 'REFERRED_effect'
   | 'NOTED_effect'
   | 'WITHDRAWN_effect'
+  | 'invitationName'
 
 /** Texts that name the committee: they take the organisation's terms (ADR-0032). */
 export const ftt = defineMessages<Record<TermMessage, TermValues>>({
+  // The meeting policy's invitation title in the changes view (Phase 4 E05).
+  invitationName: {
+    id: 'forumTypes.changes.invitationName',
+    defaultMessage: "The meeting's title or the {forum}'s name",
+  },
   title: { id: 'forumTypes.title', defaultMessage: '{Forum} types' },
   lead: {
     id: 'forumTypes.lead',

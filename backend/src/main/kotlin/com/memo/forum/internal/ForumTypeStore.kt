@@ -6,6 +6,7 @@ import com.memo.common.review.ReviewState
 import com.memo.common.tenant.TenantDsl
 import com.memo.forum.AgendaPolicy
 import com.memo.forum.ForumRetention
+import com.memo.forum.MeetingPolicy
 import com.memo.forum.MemberAttribute
 import com.memo.forum.Outcome
 import com.memo.forum.QuorumRule
@@ -36,6 +37,8 @@ data class ForumTypeSettings(
     val submissionPolicy: SubmissionPolicy = SubmissionPolicy(),
     /** The agenda policy (ADR-0060): the chair's agreement and the standard agenda new meetings start from. */
     val agenda: AgendaPolicy = AgendaPolicy(),
+    /** Invitations, replies and quorum override (Phase 4 E05, design E05 §1.8). */
+    val meetings: MeetingPolicy = MeetingPolicy(),
 )
 
 /** A forum type's identity. */

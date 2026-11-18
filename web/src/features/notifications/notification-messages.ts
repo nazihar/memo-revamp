@@ -42,6 +42,7 @@ export const nm = defineMessages({
   categoryADMINISTRATION: { id: 'notifications.category.administration', defaultMessage: 'Access and administration' },
   categoryWORKFLOW: { id: 'notifications.category.workflow', defaultMessage: 'Memo approvals' },
   categoryWATCHING: { id: 'notifications.category.watching', defaultMessage: 'Memos you follow' },
+  categoryCALENDAR: { id: 'notifications.category.calendar', defaultMessage: 'Meeting invitations' },
 
   mailTitle: { id: 'mail.title', defaultMessage: 'Email delivery' },
   mailLead: {
@@ -307,6 +308,7 @@ const categoryMessages: Record<string, MessageDescriptor | undefined> = {
   ADMINISTRATION: nm.categoryADMINISTRATION,
   WORKFLOW: nm.categoryWORKFLOW,
   WATCHING: nm.categoryWATCHING,
+  CALENDAR: nm.categoryCALENDAR,
 }
 
 export function categoryLabel(intl: IntlShape, category: string): string {

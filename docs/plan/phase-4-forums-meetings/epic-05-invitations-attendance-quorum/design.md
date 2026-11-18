@@ -40,7 +40,7 @@ stateDiagram-v2
 ```
 
 ### 1.2 The iCalendar content
-Built by `InviteWriter` (ical4j 4.4.0, `timezone.update.enabled=false`, strict validation on output; ADR-0063). One file per recipient.
+Built by `InviteWriter` (ical4j 4.4.0, `timezone.update.enabled=false`, strict validation on output; ADR-0063). One file per recipient. DTSTART and DTEND are written as `java.time` local times with the TZID parameter, and lines are folded at 75 octets by the writer (T1 spike: ical4j re-expresses a `ZonedDateTime` in its own, possibly stale zone data, and folds by characters).
 
 | Property | REQUEST | CANCEL (meeting) | CANCEL (uninvite) | PUBLISH (download) |
 |---|---|---|---|---|
@@ -50,12 +50,12 @@ Built by `InviteWriter` (ical4j 4.4.0, `timezone.update.enabled=false`, strict v
 | `SEQUENCE` | per §1.3 | per §1.3 | per §1.3 | the meeting's current |
 | `DTSTAMP` | now, UTC | now | now | now |
 | `DTSTART`, `DTEND` | `TZID=<zone>` local times | same (as last sent) | same | same |
-| `VTIMEZONE` | from `ZoneRules`, observances in force from one year before to one year after | same | same | same |
+| `VTIMEZONE` | from `ZoneRules`: one fixed observance, or yearly RRULEs, when that describes the year before to the year after; else only the observance in force at the start (after the standard one when it is daylight saving) and any change during the meeting, so the last observance is the one in force (T1) | same | same | same |
 | `ORGANIZER` | `CN=<committee name>:mailto:<tenant sending address>` | same | same | same |
 | `ATTENDEE` | the recipient only: `CN`, `ROLE` (REQ-PARTICIPANT; OPT-PARTICIPANT for guests), `PARTSTAT=NEEDS-ACTION`, `RSVP=FALSE` | the recipient | the recipient | none (RFC 5546 §3.2.1) |
 | `SUMMARY` | meeting title, else committee name; the type's neutral title when set | same | same | same |
 | `LOCATION` | the place; "Online meeting" for ONLINE | same | same | same |
-| `DESCRIPTION` | §1.2.1 | "This meeting has been cancelled." + reason category only + link | "You are no longer invited to this meeting." + link | as REQUEST without the reply line |
+| `DESCRIPTION` | §1.2.1 | "This meeting has been cancelled." + link (no reason: E03's reason is free text; T1) | "You are no longer invited to this meeting." + link | as REQUEST without the reply line |
 | `URL` | the meeting page | same | same | same |
 | `STATUS` | CONFIRMED | CANCELLED | absent (RFC 5546 §3.2.5) | CONFIRMED |
 | `CLASS` | PRIVATE when the neutral title is used, if the recorded run confirms it (ADR-0063) | same | same | same |
@@ -228,7 +228,7 @@ for each seat s in roster(m.forum, m.date)                       -- ForumDirecto
 | `meetingReminder` | true | one reminder the working day before the meeting |
 | `quorumOverride` | NEVER | NEVER or WITH_REASON (§1.7) |
 
-- Presets (E01): NAME and NEVER for every preset; the board-level credit preset uses NEUTRAL ("Board committee meeting").
+- Presets (E01): NAME and NEVER for every preset (no preset is credit-specific; a type sets NEUTRAL, such as "Board committee meeting", itself; T1).
 - The policy is pinned with the type version on each meeting (ADR-0060), so a later change does not alter a scheduled meeting's rules.
 
 ### 1.9 ERD
@@ -369,6 +369,7 @@ erDiagram
   - `CalendarPart(method: CalendarMethod, ics: ByteArray)` with `CalendarMethod` REQUEST, CANCEL;
   - `Mail.enqueue(…, calendar: CalendarPart? = null)` and `Notifications.notify(…, calendar: CalendarPart? = null): NotificationResult(itemId, outboxId?)`;
   - `MailStatuses.of(outboxIds)` (status, attempts, last SMTP code, sent or failed time) for the invitations panel;
+  - `SendingAddress.address()`: the tenant relay's from address, else the platform's, for ORGANIZER (T1);
   - category `CALENDAR` (not mandatory, on by default) and kinds: `MEETING_INVITATION`, `MEETING_UPDATED`, `MEETING_UNINVITED` (CALENDAR, email with the calendar part); `MEETING_CANCELLED` (existing, now with the CANCEL part for invitees); `MEETING_REPLY_REMINDER`, `MEETING_REMINDER`, `MEETING_RSVP_RECORDED`, `MEETING_ALTERNATE_ASKED`, `MEETING_ALTERNATE_RELEASED`, `MEETING_QUORUM_AT_RISK` (WORKFLOW, email); `MEETING_RSVP_CHANGED`, `MEETING_QUORUM_LOST`, `MEETING_QUORUM_RESTORED`, `MEETING_QUORUM_OVERRIDDEN` (WORKFLOW, in-app only). Subjects take no parameters; bodies name the committee (or the neutral title), the date and a link.
   - `MailDelivery` builds the iMIP layout when the outbox row has a calendar part (ADR-0063).
 - **`ApplicationModules.verify()`:** meeting → forum, notification (both exist); nothing new depends on meeting except E06+.

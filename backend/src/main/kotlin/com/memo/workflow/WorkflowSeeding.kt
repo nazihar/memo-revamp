@@ -67,9 +67,10 @@ class WorkflowSeeding(
     }
 
     /**
-     * [body] as version 2 of [key], submitted for review by the current user, when the only version is the published
-     * version 1 and [stale] says its body needs it (a seeder's upgrade, E05 T8). Returns the new version's number, or
-     * null when nothing was submitted: a person has changed the definition since, or it is up to date.
+     * [body] as the next version of [key], submitted for review by the current user, when its latest version is
+     * published (nobody is writing or reviewing one) and [stale] says that version's body needs it: a seeder's upgrade
+     * (E05 T8 deadlines, Phase 4 E02 T5 committee). Returns the new version's number, or null when nothing was submitted:
+     * a person is changing the definition, or it is up to date.
      */
     fun revise(
         key: String,
@@ -78,9 +79,8 @@ class WorkflowSeeding(
     ): Int? =
         tx {
             val definition = versions.definition(key)
-            val only = definition?.let { versions.versions(listOf(it.id)).singleOrNull() }
-            val seeded = only?.takeIf { it.number == 1 && it.state == VersionState.PUBLISHED }
-            if (seeded != null && stale(seeded.body)) {
+            val latest = definition?.let { versions.versions(listOf(it.id)).maxByOrNull { v -> v.number } }
+            if (latest != null && latest.state == VersionState.PUBLISHED && stale(latest.body)) {
                 val draft = lifecycle.newDraft(key, json.readTree(body))
                 lifecycle.submit(key, draft.version.number, draft.version.revision).version.number
             } else {

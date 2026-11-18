@@ -6,6 +6,7 @@ import com.memo.common.context.ActorContext
 import com.memo.common.context.ActorScope
 import com.memo.common.tenant.TenantContext
 import com.memo.common.tenant.TenantTransactions
+import com.memo.forum.ForumDirectory
 import com.memo.identity.MfaSeeding
 import com.memo.identity.UserAccounts
 import com.memo.identity.operator.OperatorMfa
@@ -18,6 +19,10 @@ import com.memo.testsupport.IntegrationTest
 import com.memo.testsupport.aPassword
 import com.memo.workflow.WorkflowDefinitions
 import com.memo.workflow.WorkflowSeeding
+import com.memo.workflow.definition.Definition
+import com.memo.workflow.internal.CompiledDefinitions
+import com.memo.workflow.internal.DefinitionSimulator
+import com.memo.workflow.internal.DefinitionStore
 import com.memo.workflow.internal.DefinitionVersions
 import com.memo.workflow.internal.DoaLifecycle
 import com.memo.workflow.internal.Queues
@@ -64,6 +69,16 @@ class DemoWorkflowsIT : IntegrationTest() {
 
     @Autowired lateinit var versions: DefinitionVersions
 
+    @Autowired lateinit var committees: DemoForumSeeder
+
+    @Autowired lateinit var forumDirectory: ForumDirectory
+
+    @Autowired lateinit var store: DefinitionStore
+
+    @Autowired lateinit var compiled: CompiledDefinitions
+
+    @Autowired lateinit var simulator: DefinitionSimulator
+
     @Test
     fun `the credit facility workflow is published and chosen by its memo type, once`() {
         DemoTenantSeeder(
@@ -81,7 +96,7 @@ class DemoWorkflowsIT : IntegrationTest() {
         ).seed()
         val admin = transactions.inTenant(DemoTenant.ID) { accounts.findByEmail(DemoWorkflowSeeder.ADMIN)!!.id.value }
         val upgraded = seededBeforeSlas(admin)
-        val seeder = DemoWorkflowSeeder(accounts, workflowSeeding, memoSeeding, transactions)
+        val seeder = DemoWorkflowSeeder(accounts, workflowSeeding, memoSeeding, transactions, committees, forumDirectory)
         seeder.seed()
         seeder.seed()
 
@@ -118,6 +133,11 @@ class DemoWorkflowsIT : IntegrationTest() {
                     assertThat(checkNotNull(types.published(credit.id)).settings.definitionKey).isEqualTo(DemoWorkflowSeeder.AUTHORITY_KEY)
                     assertThat(workflowSeeding.doaRulesInForce())
                         .containsExactly(DemoWorkflowSeeder.LARGE_CREDIT, DemoWorkflowSeeder.SMALL_CREDIT, DemoWorkflowSeeder.EVERY_MEMO)
+                    // Phase 4 E02 T5: after the desk, credit of BDT 10 million or more waits for the Management Credit Committee;
+                    // less goes to the authority.
+                    val authority = compiled.get(store.publishedVersion(DemoWorkflowSeeder.AUTHORITY_KEY))
+                    assertThat(sizeLeadsTo(authority, admin, LARGE)).isEqualTo("committee")
+                    assertThat(sizeLeadsTo(authority, admin, SMALL)).isEqualTo("authority")
                 }
             }
         }
@@ -147,7 +167,22 @@ class DemoWorkflowsIT : IntegrationTest() {
         return true
     }
 
+    /** Where the authority's "By amount" branch leads for a credit proposal of [amount], as the simulator walks it. */
+    private fun sizeLeadsTo(
+        authority: Definition,
+        initiator: UUID,
+        amount: Double,
+    ): String? =
+        simulator
+            .simulate(authority, "memo", initiator, mapOf("amount" to amount), emptyList())
+            .steps
+            .single {
+                it.nodeId == "size"
+            }.next
+
     private companion object {
+        const val LARGE = 12_000_000.0
+        const val SMALL = 6_000_000.0
         val REPRESENTATIVE =
             listOf(
                 "Credit proposal" to "credit",

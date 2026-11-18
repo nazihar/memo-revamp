@@ -55,6 +55,10 @@ import java.util.UUID
  * and the synthetic legacy sample is imported once as a completed batch with a balanced report.
  */
 class DemoAccessIT : FilesIntegrationTest() {
+    @Autowired lateinit var committees: DemoForumSeeder
+
+    @Autowired lateinit var forumDirectory: com.memo.forum.ForumDirectory
+
     @Autowired lateinit var registry: TenantRegistry
 
     @Autowired lateinit var settings: TenantSettings
@@ -241,7 +245,7 @@ class DemoAccessIT : FilesIntegrationTest() {
         val password = aPassword()
         DemoTenantSeeder(registry, settings, transactions, environment, accounts, password, mfaSeeding, "", grants, orgSeeding, operators)
             .seed()
-        DemoWorkflowSeeder(accounts, workflowSeeding, memoSeeding, transactions).seed()
+        DemoWorkflowSeeder(accounts, workflowSeeding, memoSeeding, transactions, committees, forumDirectory).seed()
         // As at start-up: the demo memos first (DemoMemosIT expects them, whichever test runs first).
         DemoMemoSeeder(accounts, lifecycle, memoSeeding, transactions, uploads, password).seed()
         val seeder = DemoAccessSeeder(accounts, clock, transactions, grants, memoSeeding, accessSeeding, templateSeeding, password)

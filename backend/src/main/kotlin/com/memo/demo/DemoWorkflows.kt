@@ -5,6 +5,8 @@ import com.memo.common.context.ActorContext
 import com.memo.common.context.ActorScope
 import com.memo.common.tenant.TenantContext
 import com.memo.common.tenant.TenantTransactions
+import com.memo.forum.ForumDirectory
+import com.memo.forum.ForumStatus
 import com.memo.identity.UserAccounts
 import com.memo.memo.MemoSeeding
 import com.memo.workflow.DoaSeedGroup
@@ -33,6 +35,8 @@ class DemoWorkflowSeeder(
     private val workflows: WorkflowSeeding,
     private val memos: MemoSeeding,
     private val transactions: TenantTransactions,
+    private val committees: DemoForumSeeder,
+    private val forumDirectory: ForumDirectory,
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
 
@@ -49,6 +53,8 @@ class DemoWorkflowSeeder(
             }
         if (types.published > 0) log.info("Demo memo types seeded: {}", types.published)
         seedDoa(ids, types.ids[CREDIT_PROPOSAL_CODE])
+        // Last: the branch reads the credit proposal's amount, which exists once its type is published.
+        seedCommittee(ids)
     }
 
     /** [body] as [key], written by the demo admin and approved by the org admin; or as version 2 if version 1 lacks SLAs. */
@@ -83,6 +89,22 @@ class DemoWorkflowSeeder(
         asUser(author) { workflows.queue(DESK, "Credit desk", listOf(ids.getValue(HEAD_CREDIT), ids.getValue(DIRECTOR))) }
         publish(ids, AUTHORITY_KEY, AUTHORITY_NAME, authority())
         asUser(author) { memos.fixedType(AUTHORITY_NAME, AUTHORITY_KEY) }
+    }
+
+    /**
+     * Phase 4 E02 T5: credit of BDT 10 million or more goes to the Management Credit Committee after the desk, and waits for
+     * its decision before the delegation of authority. A new version, maker-checked, once the committee exists; the
+     * committees are seeded first (idempotent), since the start-up seeders run in no fixed order.
+     */
+    private fun seedCommittee(ids: Map<String, UUID>) {
+        val author = ids.getValue(ADMIN)
+        committees.seed()
+        val committee = asUser(author) { transactions.inTenant(DemoTenant.ID) { forumDirectory.forumByKey(DemoForumSeeder.CREDIT) } }
+        if (committee?.status != ForumStatus.ACTIVE) return
+        val number =
+            asUser(author) { workflows.revise(AUTHORITY_KEY, authority(committee = true)) { COMMITTEE_STEP !in it } } ?: return
+        asUser(ids.getValue(REVIEWER)) { workflows.approve(AUTHORITY_KEY, number) }
+        log.info("Demo workflow {} sends large credit to the committee: version {}", AUTHORITY_KEY, number)
     }
 
     /**
@@ -131,17 +153,33 @@ class DemoWorkflowSeeder(
         log.info("Demo delegation of authority seeded: version {}", number)
     }
 
-    private fun authority(): String =
-        """
-        {"schemaVersion":2,"start":"desk","steps":[
-          {"id":"desk","type":"review","name":"Credit desk","assignee":{"kind":"queue","queue":"$DESK"},
-           "actions":["RECOMMEND","RETURN"],"sla":{"due":"PT4H","remind":{"before":"PT1H"}},"next":"authority"},
-          {"id":"authority","type":"doa","name":"Delegation of authority",
-           "sla":{"due":"P2D","remind":{"after":["P1D"]}},"next":"tell"},
-          {"id":"tell","type":"notify","name":"Tell the author","recipients":[{"kind":"initiator"}],
-           "message":"creditDecided","next":"end"}
-        ]}
-        """.trimIndent()
+    /** The authority route; with [committee], large credit waits for the Management Credit Committee after the desk. */
+    private fun authority(committee: Boolean = false): String {
+        val afterDesk = if (committee) "size" else "authority"
+        val attributes = if (committee) """"attributes":[{"name":"amount","type":"double"}],""" else ""
+        val committeeSteps =
+            if (committee) {
+                """
+                {"id":"size","type":"branch","name":"By amount",
+                 "branches":[{"when":"item.amount >= $COMMITTEE_BAND","next":"committee"}],"otherwise":"authority"},
+                {"id":"committee","type":"$COMMITTEE_STEP","name":"Management Credit Committee",
+                 "forum":"${DemoForumSeeder.CREDIT}","wait":true,"next":"authority"},
+                """.trimIndent()
+            } else {
+                ""
+            }
+        return """
+            {"schemaVersion":2,$attributes"start":"desk","steps":[
+              {"id":"desk","type":"review","name":"Credit desk","assignee":{"kind":"queue","queue":"$DESK"},
+               "actions":["RECOMMEND","RETURN"],"sla":{"due":"PT4H","remind":{"before":"PT1H"}},"next":"$afterDesk"},
+              $committeeSteps
+              {"id":"authority","type":"doa","name":"Delegation of authority",
+               "sla":{"due":"P2D","remind":{"after":["P1D"]}},"next":"tell"},
+              {"id":"tell","type":"notify","name":"Tell the author","recipients":[{"kind":"initiator"}],
+               "message":"creditDecided","next":"end"}
+            ]}
+            """.trimIndent()
+    }
 
     private fun definition(ids: Map<String, UUID>): String {
         fun person(email: String) = """{"kind":"person","userId":"${ids.getValue(email)}"}"""
@@ -178,11 +216,15 @@ class DemoWorkflowSeeder(
         const val KEY = "credit-facility"
         const val AUTHORITY_KEY = "credit-authority"
         const val AUTHORITY_NAME = "Credit under authority"
+        const val COMMITTEE_STEP = "escalate-to-forum"
         const val CREDIT_PROPOSAL = "Credit proposal"
         const val CREDIT_PROPOSAL_CODE = "CP"
         const val LARGE_CREDIT = "Credit proposals of BDT 5 million or more"
         const val SMALL_CREDIT = "Credit proposals under BDT 5 million"
         const val CREDIT_BAND = "5000000.0"
+
+        /** Credit at or above this goes to the Management Credit Committee before the authority (Phase 4 E02 T5). */
+        const val COMMITTEE_BAND = "10000000.0"
         const val EVERY_MEMO = "Credit memos"
         const val DESK = "credit-desk"
         const val NAME = "Credit facility"

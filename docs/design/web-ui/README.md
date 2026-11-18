@@ -22,7 +22,7 @@ Start with `Rules.dc.html`. It holds the principles, colour tokens, type, spacin
 
 ## Boards on the canvas
 
-In canvas order (`tools/layout.py`):
+On the **Screens** page, in canvas order (`tools/layout.py`):
 
 | Group | Boards |
 |---|---|
@@ -33,7 +33,8 @@ In canvas order (`tools/layout.py`):
 | Organisation | Organisation (`Org`), Position |
 | Account | My security (`Security`), Notification settings (`Prefs`), Sign in (`SignIn`) |
 | Platform | Platform status (`Status`), Page states (`States`) |
-| Administration | Open tasks (`Tasks`); the remaining admin pages are not designed yet |
+
+The **Admin** canvas page holds the administration screens: so far Open tasks (`Tasks`), with a note listing the 22 admin pages still to design. The **Operator** canvas page is for the operator console (6 pages, none designed yet). The **Design rules** page holds `Rules`.
 
 Each desktop board `X.dc.html` has a phone board `XPhone.dc.html`, except `Main` (its phone board is `Phone`) and `InboxReading` (wide screens only; a note stands in its phone column).
 

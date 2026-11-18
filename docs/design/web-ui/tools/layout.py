@@ -40,7 +40,6 @@ ROWS = [  # (desktop board, phone board or 'note:<key>' when there is none, titl
     ('SignIn', 'SignInPhone', 'signinTitle', None),
     ('Status', 'StatusPhone', 'statusTitle', None),
     ('States', 'StatesPhone', 'StatesTitle', None),
-    ('Tasks', 'TasksPhone', 'tasksTitle', None),
 ]
 
 c = proj / 'canvas.json'
@@ -57,6 +56,7 @@ for desk, phone, note, title in ROWS:
     N[note]['y'], N[note]['x'] = y, 0
     if title:
         N[note]['text'] = title
+    N[note].pop('page', None)
     by = y + 260
     B[desk + '.dc.html']['y'] = by
     order.append(desk + '.dc.html')

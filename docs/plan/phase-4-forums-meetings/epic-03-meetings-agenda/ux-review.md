@@ -79,7 +79,7 @@ BRC — Thu 12 Dec 2026, 10:00–13:00 Dhaka time            Draft · last publi
 Papers due 5 Dec ✓ published on time    Chair's agreement ✓ (by email, 4 Dec)
 [ Preview as… ▾ ]                             3 unpublished changes   [ Publish revision 2 ]
 ──────────────────────────────────────────────────────────────┬────────────────────────────
-                                                    Time      │ Ready for an agenda (2)
+                                                    Time      │ Ready for an agenda (1)
 Opening                                             10:00     │ ┌──────────────────────────┐
  ⠿ 1  Welcome and apologies            For noting   5 min  ⋯  │ │ CR/HO-CR/2026-27/0051    │
  ⠿ 2  Declarations of interest         For noting   5 min  ⋯  │ │ Working capital, Orion   │
@@ -87,18 +87,20 @@ Opening                                             10:00     │ ┌───�
  ⠿ 4  Matters arising and actions      For noting  10 min  ⋯  │ │ Accepted 18 Nov          │
 For decision                     ⓘ new items land here 10:25  │ │ [ Add to agenda ]        │
  ⠿ 5  Term loan, Delta Textiles        For decision 30 min ⋯  │ └──────────────────────────┘
-      Presenter: Head of Credit · 2 papers (14 pages) · Late paper (chair agreed)       │
- ⠿ 6  Market risk limits               For decision 20 min ⋯  │ ┌──────────────────────────┐
-      🔒 Only 4 people can see this · title hidden from others                          │
-    ⠿ 6.1  VaR back-testing            For noting              ⋯  │ RSK/2026/0009             │
- ⠿ ☕  Break                                          10 min ⋯  │ Waiting for the chair    │
-Consent items                                       11:25     │ └──────────────────────────┘
- ⠿ 7  Quarterly compliance report      For noting          ⋯  │
- ⠿ 8  Committee terms of reference     For decision        ⋯  │
-For noting · Any other business                     11:25     │
- ⠿ 9  Any other business (notified in advance)        5 min ⋯ │
-[ + Add item ] [ + Add section ]                              │
-Total 1 h 40 min · ends 11:40 · planned end 13:00 ✓           │
+      Presenter: Head of Credit · 2 papers (14 pages) · Late paper (chair agreed)
+ ⠿ 6  Market risk limits               For decision 20 min ⋯
+      🔒 Only 4 people can see this · title hidden from others
+    ⠿ 6.1  VaR back-testing            For noting              ⋯
+ ⠿ –  Liquidity stress results         For decision 15 min ⋯
+      RSK/2026/0009 · Late paper · waiting for the chair (not published or timed until agreed)
+ ⠿ ☕  Break                                          10 min ⋯
+Consent items                                       11:25
+ ⠿ 7  Quarterly compliance report      For noting          ⋯
+ ⠿ 8  Committee terms of reference     For decision        ⋯
+For noting · Any other business                     11:25
+ ⠿ 9  Any other business (notified in advance)        5 min ⋯
+[ + Add item ] [ + Add section ]
+Total 1 h 30 min · ends 11:30 · planned end 13:00 ✓
 ```
 - **Row menu ⋯:**
   - Edit… · Papers… · Who can see this…
@@ -149,7 +151,7 @@ What changed since revision 1 (members see only what they are allowed to see):
   • Late       Item 5 (chair agreed 6 Dec)
 Note to members (required)  [ Updated credit paper after the valuation   ]
 [x] Tell the members (turn off for a minor correction)
-1 item is waiting for the chair and will not be published yet: RSK/2026/0009.
+1 item is waiting for the chair and will not be published yet: Liquidity stress results (RSK/2026/0009).
                                                      [ Cancel ]  [ Publish ]
 ```
 - **Revision 1:** the dialog shows the meeting number it will take ("This meeting becomes BRC 3/2026") and needs the chair's agreement when the committee type asks for it.
@@ -189,7 +191,7 @@ Consent items — taken together without discussion
      Lifted for discussion at S. Ali's request — taken after the consent items
      [ 📄 Terms of reference (marked up) · 8 pages ]     [ Withdraw my request ]  (S. Ali only)
 Any other business
- 9  Any other business (notified in advance)              11:35
+ 9  Any other business (notified in advance)              11:25
 ```
 - **Papers** open in the PDF viewer inside the app, with "Back to the agenda" always visible. There is no download button for members; the PDF can be printed from the viewer.
 - **"Ask to discuss this item"** asks once: "Ask for item 7 to be discussed separately? The secretary and the chair will be told. You can withdraw this until the meeting starts." [Cancel] [Ask to discuss]
@@ -226,7 +228,7 @@ Comment to the secretary (optional) [                                  ]
 **Q2. A late paper**
 ```
 A late paper for 12 Dec 2026 — your agreement is needed
-Item: Market risk limits (RSK/2026/0009) · For decision · 6 pages
+Item: Liquidity stress results (RSK/2026/0009) · For decision · 6 pages
 Placed by Company Secretary on 9 Dec; papers were due on 5 Dec.
                                [ Not this meeting ]  [ Agree to include it ]
 ```

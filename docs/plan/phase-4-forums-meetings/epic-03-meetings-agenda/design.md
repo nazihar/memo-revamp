@@ -99,7 +99,7 @@ stateDiagram-v2
   - a paper's PDF rendition is FAILED or NOT_POSSIBLE (`PAPER_NOT_READABLE`, with the paper ids);
   - nothing changed since the last revision (`NOTHING_TO_PUBLISH`).
 - A pending rendition does not block publication. The paper shows "Being prepared" until it is done.
-- Items AWAITING_CHAIR are left out of the revision. The publish dialog lists them.
+- Items AWAITING_CHAIR are left out of the revision. The publish dialog lists them. In the draft they have no number and do not count in the times.
 - **A revision** (`agenda_revision`) records:
   - its number, when, by whom, the note (required from revision 2, 1–500 characters), and whether the audience was notified;
   - an immutable copy of every section, item (`agenda_revision_item`) and paper (`agenda_revision_paper`), with:

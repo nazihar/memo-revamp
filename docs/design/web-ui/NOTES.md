@@ -44,3 +44,13 @@ Next task and the reading pane need nothing new: they follow the inbox order the
 ## Build note
 
 Use shadcn/ui components for everything: Button, Input, InputOTP, Select, Combobox, Tabs, Table, Dialog, Drawer, AlertDialog, DropdownMenu, Popover, Badge, Skeleton, Alert, Sonner, Sidebar. These boards are hand-written HTML only because the canvas cannot run React; do not copy their inline styles. The component for each pattern is listed on the Design rules page, section 1.
+
+## Admin · User detail
+
+- One page for a person: account status and the account actions from the Users list, then positions, roles and clearance (today the app shows only the last three).
+- Account actions sit in the header and follow the same rules as the list menu; on phones they are in the ⋯ sheet.
+- Clearance opens a dialog with the levels from least to most sensitive, instead of a select on the page.
+- Give a role: “Where” is offered only for roles that can be limited to a unit; otherwise it says the role applies to the whole organisation (new copy).
+- Every change asks for step-up (Confirm it is you) first, as the app does. Refusals (already holds it, last administrator, changed meanwhile) show inside the dialog.
+- Needs nothing new from the API: `GET /admin/users/{id}`, its assignments and access, plus the existing lifecycle endpoints.
+- New copy on the Users boards: “Can manage users, memo types, workflows and settings.” (invite checkbox hint), “Open profile and access”, “You cannot deactivate or sign out your own account here.”, “Try another name, email or status.”, “{n} shown”.

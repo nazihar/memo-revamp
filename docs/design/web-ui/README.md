@@ -3,7 +3,7 @@
 A redesign of the web app's user-facing screens: every non-admin route, desktop and phone side by side, in light and dark. It is a **design**, not code. The app is built from it with shadcn/ui components (see "Building from this design" below).
 
 - Live canvas: a private claude.ai Design artifact, `https://claude.ai/artifact/VRTQYT81opA8eMovd2rDo6`. It needs to be shared before others can open it.
-- Snapshot in this folder: 2026-11-18, canvas version 91.
+- Snapshot in this folder: 2026-11-18, canvas version 92.
 
 ## What is here
 
@@ -34,7 +34,7 @@ On the **Screens** page, in canvas order (`tools/layout.py`):
 | Account | My security (`Security`), Notification settings (`Prefs`), Sign in (`SignIn`) |
 | Platform | Platform status (`Status`), Page states (`States`) |
 
-The **Admin** canvas page holds the administration screens: so far Open tasks (`Tasks`) and Users (`Users`, built by `tools/users.py`), with a note listing the 21 admin pages still to design. The **Operator** canvas page is for the operator console (6 pages, none designed yet). The **Design rules** page holds `Rules`.
+The **Admin** canvas page holds the administration screens: so far Open tasks (`Tasks`), Users (`Users`) and User detail (`UserDetail`), with a note listing the 20 admin pages still to design. The **Operator** canvas page is for the operator console (6 pages, none designed yet). The **Design rules** page holds `Rules`.
 
 Each desktop board `X.dc.html` has a phone board `XPhone.dc.html`, except `Main` (its phone board is `Phone`) and `InboxReading` (wide screens only; a note stands in its phone column).
 
@@ -65,7 +65,9 @@ These can be rerun safely, and reproduce the committed boards exactly:
 | `tools/otp.py` | Turns the code fields in the step-up, memo dialog and sign-in boards into six boxes (shadcn InputOTP); skips boards already done | — |
 | `tools/card_surface.py` | Adds the `--card` colour and puts cards, tables, dialogs, menus, sheets and toasts on it; skips what is already done | — |
 | `tools/layout.py` | Canvas order and spacing in `canvas.json` | — |
+| `tools/users.py` | `Users`, `UsersPhone`, `UserDetail`, `UserDetailPhone` (from the Open tasks and Position shells; copy from `UsersPage.tsx` and `UserDetailPage.tsx`); also points every sidebar's Users link at them | `tools/card_surface.py` |
 | `tools/smoke.py` | Nothing; checks a board | — |
+| `tools/preview.py` | Nothing; renders a board to a PNG outside the canvas, for checking it by eye (`python3 tools/preview.py Users.dc.html out.png '{"props":{"dialog":"invite"}}'`; needs Node and the Playwright Chromium) | — |
 
 Run them from this folder, for example:
 
@@ -74,7 +76,7 @@ cd docs/design/web-ui
 python3 tools/dialogs_gallery.py && python3 tools/otp.py && python3 tools/card_surface.py && python3 tools/layout.py
 ```
 
-The one-time scripts, roughly in the order they ran: `theme.py` (tokens and dark mode), `tabs.py`, `bell.py`, `phoneshell.py`, `tasks.py`, `dialogs.py`, `savedialog.py`, `auth.py`, `orgnav.py`, `orgfix.py`, `orgphone.py`, `position.py`, `ended.py`, `sent.py`, `closed.py`, `inbox_tabs.py`, `states.py`, `access_swap.py`, `review_fix.py`, `ux_next_unread.py` (next task, “Since you last looked”, unread markers), `reading_pane.py` (builds `InboxReading` from the Inbox board), `pane_toggle.py` (the reading-pane switch), `dark_options.py` and `dark_preview.py` (the temporary dark-palette comparison, since removed), `apply_dark.py` (made palette A, Crisp neutral, the dark theme everywhere), `users.py` (the admin Users boards, from the Open tasks shell; also points every sidebar's Users link at them). The `*-body.html`, `*-fields.html` and `*-logic.js` files are fragments they assembled.
+The one-time scripts, roughly in the order they ran: `theme.py` (tokens and dark mode), `tabs.py`, `bell.py`, `phoneshell.py`, `tasks.py`, `dialogs.py`, `savedialog.py`, `auth.py`, `orgnav.py`, `orgfix.py`, `orgphone.py`, `position.py`, `ended.py`, `sent.py`, `closed.py`, `inbox_tabs.py`, `states.py`, `access_swap.py`, `review_fix.py`, `ux_next_unread.py` (next task, “Since you last looked”, unread markers), `reading_pane.py` (builds `InboxReading` from the Inbox board), `pane_toggle.py` (the reading-pane switch), `dark_options.py` and `dark_preview.py` (the temporary dark-palette comparison, since removed), `apply_dark.py` (made palette A, Crisp neutral, the dark theme everywhere), and a one-time no-wrap fix to the Open tasks table headers and Approver column (done inline, not kept as a script). The `*-body.html`, `*-fields.html` and `*-logic.js` files are fragments they assembled.
 
 ## Publishing to the canvas
 

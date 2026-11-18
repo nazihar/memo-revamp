@@ -182,12 +182,12 @@ textarea{font-family:inherit}
               <caption style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Open workflow tasks</caption>
               <thead>
                 <tr style="border-bottom: 1px solid var(--border); text-align: left">
-                  <th scope="col" style="height: 40px; padding: 0 16px; font-weight: 500; font-size: 13px; color: var(--muted-fg)">Memo</th>
-                  <th scope="col" style="padding: 0 12px; font-weight: 500; font-size: 13px; color: var(--muted-fg); width: 150px">Type</th>
-                  <th scope="col" style="padding: 0 12px; font-weight: 500; font-size: 13px; color: var(--muted-fg); width: 240px">Approver</th>
-                  <th scope="col" style="padding: 0 12px; font-weight: 500; font-size: 13px; color: var(--muted-fg); width: 120px">Waiting since</th>
-                  <th scope="col" style="padding: 0 12px; font-weight: 500; font-size: 13px; color: var(--muted-fg); width: 130px">Due</th>
-                  <th scope="col" style="padding: 0 16px 0 12px; font-weight: 500; font-size: 13px; color: var(--muted-fg); width: 100px; text-align: right">Actions</th>
+                  <th scope="col" style="height: 40px; padding: 0 16px; font-weight: 500; font-size: 13px; color: var(--muted-fg); white-space: nowrap">Memo</th>
+                  <th scope="col" style="padding: 0 12px; font-weight: 500; font-size: 13px; color: var(--muted-fg); white-space: nowrap; width: 150px">Type</th>
+                  <th scope="col" style="padding: 0 12px; font-weight: 500; font-size: 13px; color: var(--muted-fg); white-space: nowrap; width: 240px">Approver</th>
+                  <th scope="col" style="padding: 0 12px; font-weight: 500; font-size: 13px; color: var(--muted-fg); white-space: nowrap; width: 120px">Waiting since</th>
+                  <th scope="col" style="padding: 0 12px; font-weight: 500; font-size: 13px; color: var(--muted-fg); white-space: nowrap; width: 130px">Due</th>
+                  <th scope="col" style="padding: 0 16px 0 12px; font-weight: 500; font-size: 13px; color: var(--muted-fg); white-space: nowrap; width: 100px; text-align: right">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -207,7 +207,7 @@ textarea{font-family:inherit}
                       </sc-if>
                     </td>
                     <td style="padding: 0 12px; color: var(--text-2); white-space: nowrap">{{r.type}}</td>
-                    <td style="padding: 8px 12px">
+                    <td style="padding: 8px 12px; white-space: nowrap">
                       <span style="display: flex; flex-direction: column; gap: 3px; align-items: flex-start">
                         <span style="display: flex; align-items: center; gap: 8px">
                           <span aria-hidden="true" style="{{r.avatarStyle}}">{{r.initials}}</span>

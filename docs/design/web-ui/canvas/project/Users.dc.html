@@ -154,66 +154,76 @@ textarea{font-family:inherit}
           <h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Users</h1>
           <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">Everyone who can sign in to your organisation.</p>
         </div>
-        <button type="button" onClick="{{openInvite}}" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 14px; font-weight: 500; cursor: pointer"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" x2="19" y1="8" y2="14"></line><line x1="22" x2="16" y1="11" y2="11"></line></svg>Invite user</button>
+        <button type="button" onClick="{{openInvite}}" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 13px; font-weight: 500; cursor: pointer"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" x2="19" y1="8" y2="14"></line><line x1="22" x2="16" y1="11" y2="11"></line></svg>Invite user</button>
       </div>
-      <form role="search" novalidate onSubmit="{{noop}}" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
-        <label style="position: relative; display: flex; align-items: center; flex: 1 1 280px; max-width: 360px">
+
+      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px">
+        <div role="tablist" aria-label="Status" style="display: inline-flex; align-items: center; gap: 2px; height: 36px; padding: 3px; box-sizing: border-box; border-radius: 10px; background: var(--muted); max-width: 100%; overflow-x: auto">
+          <sc-for list="{{tabs}}" as="f" hint-placeholder-count="5">
+            <button type="button" role="tab" class="tab" aria-selected="{{f.aria}}" onClick="{{f.pick}}" style="{{f.style}}">{{f.label}}</button>
+          </sc-for>
+        </div>
+        <label style="position: relative; display: flex; align-items: center">
           <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Search by name or email</span>
-          <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; left: 10px; color: var(--muted-fg)"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
-          <input type="search" placeholder="Search by name or email" value="{{q}}" onChange="{{onQ}}" style="width: 100%; height: 32px; padding: 0 10px 0 30px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+          <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--muted-fg); position: absolute; left: 10px"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+          <input type="search" placeholder="Search by name or email" value="{{q}}" onChange="{{onQ}}" style="width: 240px; height: 32px; padding: 0 10px 0 30px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 14px; color: var(--fg); background: var(--bg); box-shadow: 0 1px 2px rgba(0,0,0,0.05); outline: none">
         </label>
-        <label style="position: relative; display: flex; align-items: center; ">
-          <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Status</span>
-          <select onChange="{{onStatus}}" style="width: 170px; height: 32px; padding: 0 28px 0 10px; box-sizing: border-box; appearance: none; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 13px; font-weight: 500; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)"><option value="">All statuses</option><option value="ACTIVE">Active</option><option value="INVITED">Invited</option><option value="LOCKED">Locked</option><option value="DEACTIVATED">Deactivated</option></select>
-          <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; right: 8px; color: var(--muted-fg); pointer-events: none"><path d="m6 9 6 6 6-6"></path></svg>
-        </label>
-      </form>
-      <div style="display: flex; flex-direction: column; gap: 8px">
-        <div style="border: 1px solid var(--border); border-radius: 10px; overflow-x: auto; background: var(--card)">
-          <table style="width: 100%; min-width: 820px; border-collapse: collapse; font-size: 14px">
-            <caption style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Users of the organisation</caption>
-            <thead>
-              <tr style="border-bottom: 1px solid var(--border); text-align: left; color: var(--muted-fg); font-size: 13px">
-                <th scope="col" style="height: 40px; padding: 0 16px; font-weight: 500">User</th>
-                <th scope="col" style="padding: 0 12px; font-weight: 500; width: 140px">Status</th>
-                <th scope="col" style="padding: 0 12px; font-weight: 500; width: 160px">Two-step sign-in</th>
-                <th scope="col" style="padding: 0 12px; font-weight: 500; width: 170px">Last sign-in</th>
-                <th scope="col" style="width: 52px"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Actions</span></th>
-              </tr>
-            </thead>
-            <tbody>
-              <sc-for list="{{users}}" as="u" hint-placeholder-count="10">
-                <tr class="lrow" style="border-top: 1px solid var(--hover)">
-                  <td style="padding: 8px 16px">
-                    <span style="display: flex; align-items: center; gap: 10px"><span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--muted); color: var(--text-2); font-size: 11px; font-weight: 600; flex-shrink: 0">{{u.initials}}</span><span style="display: flex; flex-direction: column; min-width: 0"><span style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px"><a href="#" style="font-weight: 500; color: var(--fg); text-decoration: none">{{u.name}}</a><sc-if value="{{u.admin}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 6px; background: var(--muted); color: var(--fg); font-size: 11px; font-weight: 500">Administrator</span></sc-if></span><span style="font-size: 12px; color: var(--muted-fg)">{{u.email}}</span></span></span>
-                  </td>
-                  <td style="padding: 0 12px"><span style="{{u.chipStyle}}">{{u.statusLabel}}</span></td>
-                  <td style="padding: 0 12px; color: {{u.mfaColor}}">{{u.mfa}}</td>
-                  <td style="padding: 0 12px; color: var(--muted-fg); white-space: nowrap">{{u.last}}</td>
-                  <td style="position: relative; padding: 0 12px 0 0; text-align: right">
-                    <button type="button" class="ghost" aria-label="{{u.menuLabel}}" aria-haspopup="menu" aria-expanded="{{u.menuAria}}" onClick="{{u.toggleMenu}}" style="display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border: 0; border-radius: 6px; background: transparent; color: var(--text-3); cursor: pointer"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg></button>
-                    <sc-if value="{{u.menuOpen}}" hint-placeholder-val="{{false}}">
-                  <button type="button" tabIndex="-1" aria-label="Close menu" onClick="{{closeMenu}}" style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 6; border: 0; padding: 0; background: transparent; cursor: default"></button>
-                  <div role="menu" aria-label="{{u.menuLabel}}" onKeyDown="{{menuKey}}" style="position: absolute; z-index: 7; top: 34px; right: 0; width: 230px; padding: 4px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 10px; background: var(--card); box-shadow: 0 8px 24px rgba(0,0,0,0.10); text-align: left">
-                    <a href="#" role="menuitem" class="ghost" style="display: flex; align-items: center; height: 32px; padding: 0 8px; border-radius: 6px; color: var(--fg); font-size: 14px; text-decoration: none">Open profile and access</a>
-                    <sc-if value="{{u.hasActions}}" hint-placeholder-val="{{true}}"><div aria-hidden="true" style="height: 1px; margin: 4px -4px; background: var(--border)"></div></sc-if>
-                    <sc-for list="{{u.actions}}" as="a" hint-placeholder-count="3">
-                      <button type="button" role="menuitem" class="ghost" onClick="{{a.pick}}" style="{{a.style}}">{{a.label}}</button>
-                    </sc-for>
-                    <sc-if value="{{u.isSelf}}" hint-placeholder-val="{{false}}"><span style="display: block; padding: 6px 8px; font-size: 12px; color: var(--muted-fg)">You cannot deactivate or sign out your own account here.</span></sc-if>
-                  </div>
-                </sc-if>
-                  </td>
-                </tr>
-              </sc-for>
-            </tbody>
-          </table>
-          <sc-if value="{{noUsers}}" hint-placeholder-val="{{false}}"><p style="margin: 0; padding: 24px 16px; text-align: center; font-size: 14px; color: var(--muted-fg)">No users match.</p></sc-if>
-        </div>
-        <div style="display: flex; justify-content: center">
-          <button type="button" class="ghost" style="height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer">Show more</button>
-        </div>
       </div>
+
+      <sc-if value="{{hasUsers}}" hint-placeholder-val="{{true}}">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <div style="border: 1px solid var(--border); border-radius: 10px; overflow-x: auto; background: var(--card)">
+            <table style="width: 100%; min-width: 820px; border-collapse: collapse; font-size: 14px">
+              <caption style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Users of the organisation</caption>
+              <thead>
+                <tr style="border-bottom: 1px solid var(--border)">
+                  <th scope="col" style="height: 40px; padding: 0 16px; text-align: left; font-weight: 500; color: var(--muted-fg); font-size: 13px; white-space: nowrap">User</th>
+                  <th scope="col" style="padding: 0 12px; text-align: left; font-weight: 500; color: var(--muted-fg); font-size: 13px; white-space: nowrap; width: 140px">Status</th>
+                  <th scope="col" style="padding: 0 12px; text-align: left; font-weight: 500; color: var(--muted-fg); font-size: 13px; white-space: nowrap; width: 160px">Two-step sign-in</th>
+                  <th scope="col" style="padding: 0 12px; text-align: left; font-weight: 500; color: var(--muted-fg); font-size: 13px; white-space: nowrap; width: 170px">Last sign-in</th>
+                  <th scope="col" style="width: 44px"><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Actions</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{users}}" as="u" hint-placeholder-count="10">
+                  <tr class="lrow" style="border-bottom: 1px solid var(--hover)">
+                    <td style="padding: 8px 16px; vertical-align: middle; max-width: 0; width: 100%">
+                      <span style="display: flex; align-items: center; gap: 10px; min-width: 0"><span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--muted); color: var(--text-2); font-size: 11px; font-weight: 600; flex-shrink: 0">{{u.initials}}</span><span style="display: flex; flex-direction: column; gap: 2px; min-width: 0"><span style="display: flex; align-items: center; gap: 6px; min-width: 0"><a href="UserDetail.dc.html" style="font-weight: 500; color: var(--fg); text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{u.name}}</a><sc-if value="{{u.admin}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 6px; background: var(--muted); color: var(--fg); font-size: 11px; font-weight: 500">Administrator</span></sc-if></span><span style="font-size: 12px; line-height: 16px; color: var(--muted-fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{u.email}}</span></span></span>
+                    </td>
+                    <td style="padding: 0 12px; vertical-align: middle"><span style="{{u.chipStyle}}">{{u.statusLabel}}</span></td>
+                    <td style="padding: 0 12px; vertical-align: middle; white-space: nowrap; color: {{u.mfaColor}}">{{u.mfa}}</td>
+                    <td style="padding: 0 12px; vertical-align: middle; color: var(--muted-fg); white-space: nowrap; font-variant-numeric: tabular-nums">{{u.last}}</td>
+                    <td style="position: relative; padding: 0 8px 0 0; vertical-align: middle; text-align: right">
+                      <button type="button" class="ghost" aria-label="{{u.menuLabel}}" aria-haspopup="menu" aria-expanded="{{u.menuAria}}" onClick="{{u.toggleMenu}}" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--text-3)"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg></button>
+                    <sc-if value="{{u.menuOpen}}" hint-placeholder-val="{{false}}">
+                      <button type="button" tabIndex="-1" aria-label="Close menu" onClick="{{closeMenu}}" style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 6; border: 0; padding: 0; background: transparent; cursor: default"></button>
+                      <div role="menu" aria-label="{{u.menuLabel}}" onKeyDown="{{menuKey}}" style="position: absolute; z-index: 7; top: 34px; right: 8px; width: 230px; padding: 4px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 10px; background: var(--card); box-shadow: 0 8px 24px rgba(0,0,0,0.10); text-align: left">
+                        <a href="UserDetail.dc.html" role="menuitem" class="ghost" style="display: flex; align-items: center; height: 32px; padding: 0 8px; border-radius: 6px; color: var(--fg); font-size: 14px; text-decoration: none">Open profile and access</a>
+                        <sc-if value="{{u.hasActions}}" hint-placeholder-val="{{true}}"><div aria-hidden="true" style="height: 1px; margin: 4px -4px; background: var(--border)"></div></sc-if>
+                        <sc-for list="{{u.actions}}" as="a" hint-placeholder-count="3">
+                          <button type="button" role="menuitem" class="ghost" onClick="{{a.pick}}" style="{{a.style}}">{{a.label}}</button>
+                        </sc-for>
+                        <sc-if value="{{u.isSelf}}" hint-placeholder-val="{{false}}"><span style="display: block; padding: 6px 8px; font-size: 12px; color: var(--muted-fg)">You cannot deactivate or sign out your own account here.</span></sc-if>
+                      </div>
+                    </sc-if>
+                    </td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px">
+            <span style="font-size: 13px; color: var(--muted-fg)">{{shownText}}</span>
+            <button type="button" class="ghost" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">Show more</button>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{noUsers}}" hint-placeholder-val="{{false}}">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 56px 24px; border: 1px dashed var(--border); border-radius: 10px; text-align: center">
+          <span style="font-weight: 500; font-size: 16px">No users match.</span>
+          <span style="font-size: 14px; color: var(--muted-fg)">Try another name, email or status.</span>
+        </div>
+      </sc-if>
     </main>
   </div>
 
@@ -235,7 +245,7 @@ textarea{font-family:inherit}
           <input id="inv-name" type="text" autocomplete="off" value="{{inv.name}}" onChange="{{inv.on_name}}" aria-invalid="{{inv.nameInvalid}}" aria-describedby="inv-name-msg" style="width: 100%; height: 36px; padding: 0 10px; box-sizing: border-box; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); border: 1px solid {{inv.nameBorder}}">
           <sc-if value="{{inv.nameHasErr}}" hint-placeholder-val="{{false}}"><span id="inv-name-msg" style="font-size: 12px; color: var(--danger-fg)">{{inv.nameErr}}</span></sc-if>
         </div>
-        <label style="display: flex; align-items: flex-start; gap: 10px;  font-size: 14px; cursor: pointer">
+        <label style="display: flex; align-items: flex-start; gap: 10px; font-size: 14px; cursor: pointer">
           <input type="checkbox" checked="{{inv.admin}}" onChange="{{inv.toggleAdmin}}" style="margin: 2px 0 0; width: 16px; height: 16px; accent-color: var(--primary)">
           <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 500">Administrator of the organisation</span><span style="font-size: 12px; color: var(--muted-fg)">Can manage users, memo types, workflows and settings.</span></span>
         </label>
@@ -251,10 +261,11 @@ textarea{font-family:inherit}
           <h2 id="cf-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">{{cf.title}}</h2>
           <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">{{cf.explain}}</p>
         </div>
+        <sc-if value="{{cf.hasDetail}}" hint-placeholder-val="{{false}}"><div style="display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--subtle); font-size: 14px"><span style="font-weight: 500">{{cf.detail}}</span><span style="font-size: 12px; color: var(--muted-fg)">{{cf.detailSub}}</span></div></sc-if>
         <sc-if value="{{cf.hasAlert}}" hint-placeholder-val="{{false}}">
           <div role="alert" style="display: flex; gap: 10px; padding: 10px 12px; border: 1px solid var(--danger-border); border-radius: 8px; background: var(--danger-bg); color: var(--danger-fg); font-size: 13px"><span style="flex-shrink: 0; margin-top: 1px"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg></span><span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-weight: 600">Not done</strong><span>{{cf.alert}}</span></span></div>
         </sc-if>
-        <div style="display: flex; justify-content: flex-end; gap: 8px"><button type="button" class="ghost" onClick="{{closeDlg}}" style="height: 36px; padding: 0 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 14px; font-weight: 500; cursor: pointer">Cancel</button><button type="submit" style="{{cf.btnStyle}}">{{cf.confirm}}</button></div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px"><button type="button" class="ghost" onClick="{{closeDlg}}" style="height: 36px; padding: 0 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 14px; font-weight: 500; cursor: pointer">{{cf.cancel}}</button><button type="submit" style="{{cf.btnStyle}}">{{cf.confirm}}</button></div>
       </form>
     </div>
   </sc-if>
@@ -266,27 +277,15 @@ textarea{font-family:inherit}
   </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"dialog":{"editor":"enum","options":["none","invite","deactivate","reactivate","unlock","mfaReset","revokeSessions"],"default":"none"},"error":{"editor":"enum","options":["none","required","taken","lastAdmin","changed","failed"],"default":"none"},"$preview":{"width":1440,"height":1000}}'>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"dialog":{"editor":"enum","options":["none","invite","deactivate","reactivate","unlock","mfaReset","revokeSessions"],"default":"none"},"error":{"editor":"enum","options":["none","required","taken","lastAdmin","wrongState","changed","failed"],"default":"none"},"$preview":{"width":1440,"height":1000}}'>
 class Component extends DCLogic {
   renderVals() {
     const st = this.state || {};
+    const PHONE = false;
     const navOpen = !!st.navOpen, collapsed = !!st.collapsed;
     const closeNav = () => this.setState({ navOpen: false });
     const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent || '');
 
-    const PHONE = /*PHONE*/false;
-    const all = [
-      { id: 'u1', name: 'Arif Rahman', email: 'a.rahman@[domain]', status: 'ACTIVE', admin: true, mfa: true, last: 'Today, 09:02', self: true },
-      { id: 'u2', name: 'Farhana Rahman', email: 'f.rahman@[domain]', status: 'ACTIVE', admin: false, mfa: true, last: 'Today, 08:31' },
-      { id: 'u3', name: 'Imran Hossain', email: 'i.hossain@[domain]', status: 'ACTIVE', admin: false, mfa: true, last: 'Today, 08:12' },
-      { id: 'u4', name: 'Kamal Hasan', email: 'k.hasan@[domain]', status: 'LOCKED', admin: false, mfa: true, last: '15 Nov, 17:48' },
-      { id: 'u5', name: 'Lutfa Begum', email: 'l.begum@[domain]', status: 'INVITED', admin: false, mfa: false, last: '' },
-      { id: 'u6', name: 'Nasir Uddin', email: 'n.uddin@[domain]', status: 'DEACTIVATED', admin: false, mfa: true, last: '2 Nov, 10:05' },
-      { id: 'u7', name: 'Nasrin Akter', email: 'n.akter@[domain]', status: 'ACTIVE', admin: false, mfa: false, last: '16 Nov, 15:20' },
-      { id: 'u8', name: 'Rashed Khan', email: 'r.khan@[domain]', status: 'ACTIVE', admin: false, mfa: true, last: 'Yesterday, 18:02' },
-      { id: 'u9', name: 'Shirin Akter', email: 's.akter@[domain]', status: 'ACTIVE', admin: true, mfa: true, last: 'Yesterday, 11:40' },
-      { id: 'u10', name: 'Tanvir Ahmed', email: 't.ahmed@[domain]', status: 'ACTIVE', admin: false, mfa: true, last: 'Yesterday, 17:40' }
-    ];
     const LABEL = { ACTIVE: 'Active', INVITED: 'Invited', LOCKED: 'Locked', DEACTIVATED: 'Deactivated' };
     const chip = 'display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; ';
     const TONE = { ACTIVE: 'border: 1px solid var(--ok-border); background: var(--ok-bg); color: var(--ok-fg)', INVITED: 'border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg)',
@@ -300,10 +299,29 @@ class Component extends DCLogic {
     };
     // The app's rules: who may get which action.
     const actionsFor = (u) => [].concat(
-      u.status === 'DEACTIVATED' ? ['reactivate'] : (u.self ? [] : ['deactivate']),
       u.status === 'LOCKED' ? ['unlock'] : [],
+      u.status === 'DEACTIVATED' ? ['reactivate'] : [],
       u.mfa && !u.self ? ['mfaReset'] : [],
-      u.status !== 'DEACTIVATED' && !u.self ? ['revokeSessions'] : []);
+      u.status !== 'DEACTIVATED' && !u.self ? ['revokeSessions'] : [],
+      u.status !== 'DEACTIVATED' && !u.self ? ['deactivate'] : []);
+    const initials = (n) => n.split(' ').map((p) => p[0]).join('');
+    const H = PHONE ? '44px' : '36px', BFS = PHONE ? '15px' : '14px';
+    const okStyle = (danger) => 'height: ' + H + '; padding: 0 14px; border: 0; border-radius: 8px; font-size: ' + BFS + '; font-weight: 500; cursor: pointer; ' + (danger ? 'background: var(--destructive); color: var(--on-destructive)' : 'background: var(--primary); color: var(--primary-fg)');
+    const closeDlg = () => this.setState({ dlg: '', err: 'none' });
+    const toastVals = { hasToast: !!st.toast, toast: st.toast || '', hideToast: () => this.setState({ toast: '' }), closeDlg: closeDlg, dlgKey: (ev) => { if (ev && ev.key === 'Escape') closeDlg(); } };
+
+    const all = [
+      { id: 'u1', name: 'Arif Rahman', email: 'a.rahman@[domain]', status: 'ACTIVE', admin: true, mfa: true, last: 'Today, 09:02', self: true },
+      { id: 'u2', name: 'Farhana Rahman', email: 'f.rahman@[domain]', status: 'ACTIVE', admin: false, mfa: true, last: 'Today, 08:31' },
+      { id: 'u3', name: 'Imran Hossain', email: 'i.hossain@[domain]', status: 'ACTIVE', admin: false, mfa: true, last: 'Today, 08:12' },
+      { id: 'u4', name: 'Kamal Hasan', email: 'k.hasan@[domain]', status: 'LOCKED', admin: false, mfa: true, last: '15 Nov, 17:48' },
+      { id: 'u5', name: 'Lutfa Begum', email: 'l.begum@[domain]', status: 'INVITED', admin: false, mfa: false, last: '' },
+      { id: 'u6', name: 'Nasir Uddin', email: 'n.uddin@[domain]', status: 'DEACTIVATED', admin: false, mfa: true, last: '2 Nov, 10:05' },
+      { id: 'u7', name: 'Nasrin Akter', email: 'n.akter@[domain]', status: 'ACTIVE', admin: false, mfa: false, last: '16 Nov, 15:20' },
+      { id: 'u8', name: 'Rashed Khan', email: 'r.khan@[domain]', status: 'ACTIVE', admin: false, mfa: true, last: 'Yesterday, 18:02' },
+      { id: 'u9', name: 'Shirin Akter', email: 's.akter@[domain]', status: 'ACTIVE', admin: true, mfa: true, last: 'Yesterday, 11:40' },
+      { id: 'u10', name: 'Tanvir Ahmed', email: 't.ahmed@[domain]', status: 'ACTIVE', admin: false, mfa: true, last: 'Yesterday, 17:40' }
+    ];
     const q = (st.q || '').toLowerCase(), status = st.status || '';
     const shown = all.filter((u) => (!q || (u.name + ' ' + u.email).toLowerCase().indexOf(q) >= 0) && (!status || u.status === status));
     const dlgProp = this.props.dialog || 'none';
@@ -313,47 +331,48 @@ class Component extends DCLogic {
     const openAct = (u, k) => this.setState({ dlg: k, target: u.id, menu: '', err: 'none' });
     const itemStyle = 'display: flex; align-items: center; width: 100%; height: 32px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; font-size: 14px; text-align: left; cursor: pointer; ';
     const sheetBase = 'display: flex; align-items: center; min-height: 52px; padding: 0 4px; border: 0; border-top: 1px solid var(--hover); background: transparent; font-size: 15px; text-align: left; ';
-    const users = shown.map((u, i) => {
-      const acts = actionsFor(u).map((k) => ({ label: ACT[k].label, pick: () => openAct(u, k),
-        style: itemStyle + (ACT[k].danger ? 'color: var(--danger-fg)' : 'color: var(--fg)'), sheetStyle: sheetBase + (ACT[k].danger ? 'color: var(--danger-fg)' : 'color: var(--fg)') }));
-      const open = st.menu === u.id;
+    const actItems = (u) => actionsFor(u).map((k) => ({ label: ACT[k].label, pick: () => openAct(u, k),
+      style: itemStyle + (ACT[k].danger ? 'color: var(--danger-fg)' : 'color: var(--fg)'), sheetStyle: sheetBase + (ACT[k].danger ? 'color: var(--danger-fg)' : 'color: var(--fg)') }));
+    const users = shown.map((u) => {
+      const acts = actItems(u), open = st.menu === u.id;
       return {
-        name: u.name + (u.self ? ' (you)' : ''), email: u.email, admin: u.admin, initials: u.name.split(' ').map((p) => p[0]).join(''),
+        name: u.name + (u.self ? ' (you)' : ''), email: u.email, admin: u.admin, initials: initials(u.name),
         statusLabel: LABEL[u.status], chipStyle: chip + TONE[u.status],
         mfa: u.mfa ? 'On' : 'Off', mfaColor: u.mfa ? 'var(--text-1)' : 'var(--warn-fg)',
         last: u.last || 'Never',
-        phoneMeta: (u.mfa ? '' : 'Two-step sign-in off · ') + (u.last ? 'Signed in ' + u.last : 'Never signed in'),
+        phoneMeta: (u.mfa ? '' : 'Two-step sign-in off · ') + (u.last ? 'Signed in ' + u.last.replace(/^(Today|Yesterday)/, (w) => w.toLowerCase()) : 'Never signed in'),
         actions: acts, hasActions: acts.length > 0, isSelf: !!u.self,
         menuOpen: open && !PHONE, menuAria: open ? 'true' : 'false', menuLabel: 'Actions for ' + u.name,
-        toggleMenu: () => this.setState({ menu: open ? '' : u.id }),
-        rowStyle: 'display: flex; align-items: center; gap: 10px; padding: 10px 4px 10px 12px' + (i > 0 ? '; border-top: 1px solid var(--hover)' : '')
+        toggleMenu: () => this.setState({ menu: open ? '' : u.id })
       };
     });
+    const TABS = [['', 'All'], ['ACTIVE', 'Active'], ['INVITED', 'Invited'], ['LOCKED', 'Locked'], ['DEACTIVATED', 'Deactivated']];
+    const tabBase = 'display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 10px; border-radius: 7px; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; ';
+    const pill = 'flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px; border-radius: 18px; font-size: 13px; font-weight: 500; white-space: nowrap; ';
+    const tabs = TABS.map(([id, label]) => { const on = id === status; return { label: label, aria: on ? 'true' : 'false', pick: () => this.setState({ status: id }),
+      style: PHONE ? pill + (on ? 'border: 1px solid var(--primary); background: var(--primary); color: var(--primary-fg)' : 'border: 1px solid var(--border); background: var(--bg); color: var(--text-2)')
+                   : tabBase + (on ? 'border: 1px solid var(--border); background: var(--bg); color: var(--fg); box-shadow: 0 1px 2px rgba(0,0,0,0.06)' : 'border: 1px solid transparent; background: transparent; color: var(--muted-fg)') }; });
     const sheetUser = PHONE ? all.find((u) => u.id === st.menu) : null;
     const closeMenu = () => this.setState({ menu: '' });
-    const closeDlg = () => this.setState({ dlg: '', err: 'none' });
     // Invite: form validation in the app, never the browser.
     const inv = st.inv || {};
     const tried = !!inv.tried || err === 'required' || err === 'taken';
     const email = inv.email !== undefined ? inv.email : (err === 'taken' ? 'f.rahman@[domain]' : ''), name = inv.name !== undefined ? inv.name : (err === 'taken' ? 'Farhana Rahman' : '');
-    const emailErr = tried ? (!email.trim() ? 'Required.' : (err === 'taken' || all.some((u) => u.email === email.trim()) ? 'An account with this email already exists.' : '')) : '';
+    const taken = err === 'taken' || all.some((u) => u.email === email.trim());
+    const emailErr = tried ? (!email.trim() ? 'Required.' : (taken ? 'An account with this email already exists.' : '')) : '';
     const nameErr = tried && !name.trim() ? 'Required.' : '';
     const setInv = (k) => (ev) => { const n = Object.assign({}, inv); n[k] = ev && ev.target ? ev.target.value : ''; this.setState({ inv: n, err: 'none' }); };
-    const h = PHONE ? '44px' : '36px', bfs = PHONE ? '15px' : '14px';
-    const ALERTS = { lastAdmin: 'The organisation needs at least one active administrator.', changed: 'Someone changed this account meanwhile. The list was reloaded.', failed: 'That did not work. Try again.', self: 'You cannot do this to your own account.' };
-    const a = ACT[dlg] || ACT.deactivate;
-    const alertText = ALERTS[err] || '';
-    const vals = {
-      users: users, noUsers: users.length === 0,
+    const ALERTS = { lastAdmin: 'The organisation needs at least one active administrator.', wrongState: 'Not possible in the account’s current status.', changed: 'Someone changed this account meanwhile. The list was reloaded.', failed: 'That did not work. Try again.', self: 'You cannot do this to your own account.' };
+    const a = ACT[dlg] || ACT.deactivate, alertText = ALERTS[err] || '';
+    const vals = Object.assign(toastVals, {
+      users: users, hasUsers: users.length > 0, noUsers: users.length === 0, tabs: tabs,
+      shownText: users.length + ' shown',
       q: st.q || '', onQ: (ev) => this.setState({ q: ev && ev.target ? ev.target.value : '' }),
-      onStatus: (ev) => this.setState({ status: ev && ev.target ? ev.target.value : '' }),
-      noop: (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); },
       closeMenu: closeMenu, menuKey: (ev) => { if (ev && ev.key === 'Escape') closeMenu(); },
       sheetOpen: !!sheetUser,
-      sheet: sheetUser ? { name: sheetUser.name + (sheetUser.self ? ' (you)' : ''), isSelf: !!sheetUser.self, actions: actionsFor(sheetUser).map((k) => ({ label: ACT[k].label, pick: () => openAct(sheetUser, k), sheetStyle: sheetBase + (ACT[k].danger ? 'color: var(--danger-fg)' : 'color: var(--fg)') })) } : { name: '', isSelf: false, actions: [] },
+      sheet: sheetUser ? { name: sheetUser.name + (sheetUser.self ? ' (you)' : ''), isSelf: !!sheetUser.self, actions: actItems(sheetUser) } : { name: '', isSelf: false, actions: [] },
       openInvite: () => this.setState({ dlg: 'invite', inv: {}, err: 'none' }),
       isInvite: dlg === 'invite', isConfirm: !!dlg && dlg !== 'invite',
-      closeDlg: closeDlg, dlgKey: (ev) => { if (ev && ev.key === 'Escape') closeDlg(); },
       inv: {
         email: email, name: name, admin: !!inv.admin,
         toggleAdmin: () => this.setState({ inv: Object.assign({}, inv, { admin: !inv.admin }) }),
@@ -362,22 +381,16 @@ class Component extends DCLogic {
         nameHasErr: !!nameErr, nameErr: nameErr, nameInvalid: nameErr ? 'true' : 'false', nameBorder: nameErr ? 'var(--destructive)' : 'var(--border)',
         submit: (ev) => {
           if (ev && ev.preventDefault) ev.preventDefault();
-          if (!email.trim() || !name.trim() || all.some((u) => u.email === email.trim()) || err === 'taken') { this.setState({ inv: Object.assign({}, inv, { tried: true }) }); return; }
+          if (!email.trim() || !name.trim() || taken) { this.setState({ inv: Object.assign({}, inv, { tried: true }) }); return; }
           this.setState({ dlg: '', toast: 'Invitation sent to ' + email.trim() + '.' });
         }
       },
       cf: {
-        title: a.title(target.name), explain: a.explain, confirm: a.label,
-        btnStyle: 'height: ' + h + '; padding: 0 14px; border: 0; border-radius: 8px; font-size: ' + bfs + '; font-weight: 500; cursor: pointer; ' + (a.danger ? 'background: var(--destructive); color: var(--on-destructive)' : 'background: var(--primary); color: var(--primary-fg)'),
-        hasAlert: !!alertText, alert: alertText,
-        submit: (ev) => {
-          if (ev && ev.preventDefault) ev.preventDefault();
-          if (err !== 'none') { this.setState({ err: err }); return; }
-          this.setState({ dlg: '', toast: 'Done.' });
-        }
-      },
-      hasToast: !!st.toast, toast: st.toast || '', hideToast: () => this.setState({ toast: '' })
-    };
+        title: a.title(target.name), explain: a.explain, confirm: a.label, cancel: 'Cancel', btnStyle: okStyle(a.danger),
+        hasDetail: false, detail: '', detailSub: '', hasAlert: !!alertText, alert: alertText,
+        submit: (ev) => { if (ev && ev.preventDefault) ev.preventDefault(); if (err !== 'none') { this.setState({ err: err }); return; } this.setState({ dlg: '', toast: 'Done.' }); }
+      }
+    });
     return Object.assign(vals, {
       themeClass: st.theme || this.props.theme || 'system',
       shortcut: isMac ? '⌘K' : 'Ctrl K',

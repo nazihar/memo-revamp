@@ -3,7 +3,7 @@
 A redesign of the web app's user-facing screens: every non-admin route, desktop and phone side by side, in light and dark. It is a **design**, not code. The app is built from it with shadcn/ui components (see "Building from this design" below).
 
 - Live canvas: a private claude.ai Design artifact, `https://claude.ai/artifact/VRTQYT81opA8eMovd2rDo6`. It needs to be shared before others can open it.
-- Snapshot in this folder: 2026-11-18, canvas version 95.
+- Snapshot in this folder: 2026-11-18, canvas version 96.
 
 ## What is here
 
@@ -34,7 +34,7 @@ On the **Screens** page, in canvas order (`tools/layout.py`):
 | Account | My security (`Security`), Notification settings (`Prefs`), Sign in (`SignIn`) |
 | Platform | Platform status (`Status`), Page states (`States`) |
 
-The **Admin** canvas page holds the administration screens: so far Open tasks (`Tasks`), Users (`Users`), User detail (`UserDetail`), Roles (`Roles`) and Classification (`Classifications`), with a note listing the 18 admin pages still to design. Users, Roles and Classification share a row of section links ("People and access"). The **Operator** canvas page is for the operator console (6 pages, none designed yet). The **Design rules** page holds `Rules`.
+The **Admin** canvas page holds the administration screens: so far Open tasks (`Tasks`), Users (`Users`), User detail (`UserDetail`), Roles (`Roles`), Classification (`Classifications`), Memo types (`MemoTypes`), the memo type editor (`MemoTypeEditor`), Memo numbering (`MemoNumbering`) and Distribution lists (`DistributionLists`), with a note listing the 14 admin pages still to design. Users, Roles and Classification share a row of section links ("People and access"); so do Memo types, Numbering and Distribution lists ("Memos"). The **Operator** canvas page is for the operator console (6 pages, none designed yet). The **Design rules** page holds `Rules`.
 
 Each desktop board `X.dc.html` has a phone board `XPhone.dc.html`, except `Main` (its phone board is `Phone`) and `InboxReading` (wide screens only; a note stands in its phone column).
 
@@ -66,8 +66,9 @@ These can be rerun safely, and reproduce the committed boards exactly:
 | `tools/card_surface.py` | Adds the `--card` colour and puts cards, tables, dialogs, menus, sheets and toasts on it; skips what is already done | — |
 | `tools/layout.py` | Canvas order and spacing in `canvas.json` | — |
 | `tools/users.py` | `Users`, `UsersPhone`, `UserDetail`, `UserDetailPhone` (from the Open tasks and Position shells; copy from `UsersPage.tsx` and `UserDetailPage.tsx`); also points every sidebar's Users link at them | `tools/card_surface.py` |
-| `tools/kit.py` | Nothing on its own; the shared pieces `users.py` and `access.py` import (icons, dialogs, fields, shells, section links, adding boards to `canvas.json`) | — |
+| `tools/kit.py` | Nothing on its own; the shared pieces `users.py`, `access.py` and `memo_admin.py` import (icons, dialogs, fields, shells, section links, adding boards to `canvas.json`) | — |
 | `tools/access.py` | `Roles`, `RolesPhone`, `Classifications`, `ClassificationsPhone` (copy from `RolesPage.tsx`, `ClassificationsPage.tsx`; permission flags from the backend's `Permissions.kt`) | `tools/card_surface.py` |
+| `tools/memo_admin.py` | `MemoTypes`, `MemoTypeEditor`, `MemoNumbering`, `DistributionLists` and their phone boards (copy from `features/memo-types/*` and `DistributionListsPage.tsx`); also points every sidebar's Memo types link at them | `tools/card_surface.py` |
 | `tools/smoke.py` | Nothing; checks a board | — |
 | `tools/preview.py` | Nothing; renders a board to a PNG outside the canvas, for checking it by eye (`python3 tools/preview.py Users.dc.html out.png '{"props":{"dialog":"invite"}}'`; needs Node and the Playwright Chromium) | — |
 

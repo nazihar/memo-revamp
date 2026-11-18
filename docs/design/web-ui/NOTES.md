@@ -65,3 +65,16 @@ Use shadcn/ui components for everything: Button, Input, InputOTP, Select, Combob
 - Refusals show inside the dialog: name taken, still in use (with what to do first, new copy), last level, at most 20 levels, changed meanwhile.
 - Web catalogue gap: `tenant.settings.manage` has no label in `access-messages.ts`; the boards call it "Manage organisation settings".
 - New copy: "Choose at least one permission." (the app greys out Save instead), the permission group names, the custom role descriptions, "Least sensitive" / "Most sensitive" tags, the level descriptions, and the footer notes.
+
+## Admin · Memos (Memo types, editor, Numbering, Distribution lists)
+
+- Memo types, Numbering and Distribution lists share a row of section links. The sidebar's Memo types entry opens the section.
+- Memo types list: "In use / Switched off" tabs and a filter by name or code, both done in the browser (the list is small). "Switch off" asks first and says that memos already written keep the type (new copy). The app switches a type off without asking.
+- Editor: one page per type, with a version picker and the four tabs from the app (Settings, Form, Numbering, Changes). The `state` tweak shows a draft that was sent back (Save, Submit for review), a version in review (opens on Changes; remark, Send back, Approve and publish) and a published version (read-only, New draft). The actions sit in a bar that stays at the bottom. Only a draft can change; publishing needs a second administrator and step-up.
+- Settings are grouped in four cards: Basics, Approval, Who may raise it, Records. In read-only states the controls are greyed, and the unit Remove and "Add a unit" buttons are hidden.
+- Form tab: fields in order (move, edit, remove; on phones one ⋯ menu per field), fields added in this version are marked, the template with its tags, and a preview of the form as the author sees it. Edit field is a dialog.
+- Numbering tab: number parts, series, restart, count, when the number is given, and a sample of the next numbers.
+- Numbering page: series on the left; the chosen counter's register on the right, with the completeness check, void numbers and "Not visible to you". "Set a starting number" asks for a Unit only for a series counted per unit, with a unit picker instead of the app's "Unit id" text field.
+- Distribution lists: members are people or positions, and a position reaches whoever holds it when a copy is sent. The app's single "A name and at least one member are required." becomes two field errors: Name "Required." and "Add at least one member." (new copy). Switch off sits in the edit dialog and the row menu.
+- API: nothing new.
+- New copy: the switch-off confirmation, the "New memo type" lead, "Added in this version", the template tag hint, the sample note, the read-only note for a version in review, the field help text and the list dialog lead.

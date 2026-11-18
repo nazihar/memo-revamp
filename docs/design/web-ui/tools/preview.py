@@ -47,10 +47,12 @@ def expand(t, scope):
     def attr(m):
         v = get(m.group(2), scope)
         if m.group(1) in ('checked', 'disabled', 'selected'): return f' {m.group(1)}' if v is True or v == 'true' else ''
-        return f' {m.group(1)}="{"" if v is None else v}"'
+        return f' {m.group(1)}="{"" if v is None else str(v).replace("{", chr(1)).replace("}", chr(2))}"'
     t = re.sub(r' ([\w-]+)="\{\{([\w.]+)\}\}"', attr, t)
-    return re.sub(r'\{\{([\w.]+)\}\}', lambda m: '' if get(m.group(1), scope) is None else str(get(m.group(1), scope)), t)
+    esc = lambda v: str(v).replace('{', '\x01').replace('}', '\x02')  # values are text, never templates
+    return re.sub(r'\{\{([\w.]+)\}\}', lambda m: '' if get(m.group(1), scope) is None else esc(get(m.group(1), scope)), t)
 html = f'<!doctype html><html><head><meta charset="utf-8">{helmet}</head><body>{expand(tpl, {})}</body></html>'
+html = html.replace('\x01', '{').replace('\x02', '}')
 tmp = Path(out).with_suffix('.html'); tmp.write_text(html)
 shot = f"""const {{chromium}} = require('playwright'); (async () => {{ const b = await chromium.launch(); const p = await b.newPage({{viewport: {{width: {W}, height: {H}}}}});
 await p.goto('file://{tmp.resolve()}'); await p.waitForTimeout(400); await p.screenshot({{path: '{out}', fullPage: true}}); await b.close(); }})();"""

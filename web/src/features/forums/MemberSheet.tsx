@@ -27,7 +27,7 @@ import {
 } from './shared'
 
 /** A labelled people or position picker: the picker is a combobox, so it gets its label through `id`. */
-function PickerField({
+export function PickerField({
   label,
   hint,
   error,

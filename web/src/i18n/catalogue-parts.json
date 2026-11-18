@@ -21,6 +21,11 @@
     "routes": ["/committees", "/me/committees"],
     "prefixes": ["forums"]
   },
+  "papers": {
+    "$comment": "A paper sent to a committee (Phase 4 E02 T4): its status and timeline, on the committee pages and on the memo page.",
+    "routes": ["/committees", "/memos"],
+    "prefixes": ["papers"]
+  },
   "meetings": {
     "$comment": "Meetings (Phase 4 E03 T6): the committee page's Meetings tab, a meeting's page, My meetings, and the My meetings card on the home page and the next meeting on the My committees cards.",
     "routes": ["/", "/committees", "/me/committees", "/me/meetings", "/meetings"],

@@ -69,6 +69,7 @@ import { Route as ShellSignedInAdminWorkflowsIndexRouteImport } from './routes/_
 import { Route as ShellSignedInAdminWorkflowsKeyRouteImport } from './routes/_shell/_signedIn/admin.workflows.$key'
 import { Route as ShellSignedInMemosMemoIdDocumentRouteImport } from './routes/_shell/_signedIn/memos.$memoId_.document'
 import { Route as ShellSignedInOrgPositionsPositionIdRouteImport } from './routes/_shell/_signedIn/org_.positions.$positionId'
+import { Route as ShellSignedInCommitteesForumIdSubmissionsSubmissionIdRouteImport } from './routes/_shell/_signedIn/committees.$forumId_.submissions.$submissionId'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/_auth',
@@ -399,6 +400,12 @@ const ShellSignedInOrgPositionsPositionIdRoute =
     path: '/org/positions/$positionId',
     getParentRoute: () => ShellSignedInRoute,
   } as any)
+const ShellSignedInCommitteesForumIdSubmissionsSubmissionIdRoute =
+  ShellSignedInCommitteesForumIdSubmissionsSubmissionIdRouteImport.update({
+    id: '/committees/$forumId_/submissions/$submissionId',
+    path: '/committees/$forumId/submissions/$submissionId',
+    getParentRoute: () => ShellSignedInRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof ShellSignedInIndexRoute
@@ -457,6 +464,7 @@ export interface FileRoutesByFullPath {
   '/admin/imports/': typeof ShellSignedInAdminImportsIndexRoute
   '/admin/memo-types/': typeof ShellSignedInAdminMemoTypesIndexRoute
   '/admin/workflows/': typeof ShellSignedInAdminWorkflowsIndexRoute
+  '/committees/$forumId/submissions/$submissionId': typeof ShellSignedInCommitteesForumIdSubmissionsSubmissionIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof ShellSignedInIndexRoute
@@ -514,6 +522,7 @@ export interface FileRoutesByTo {
   '/admin/imports': typeof ShellSignedInAdminImportsIndexRoute
   '/admin/memo-types': typeof ShellSignedInAdminMemoTypesIndexRoute
   '/admin/workflows': typeof ShellSignedInAdminWorkflowsIndexRoute
+  '/committees/$forumId/submissions/$submissionId': typeof ShellSignedInCommitteesForumIdSubmissionsSubmissionIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -577,6 +586,7 @@ export interface FileRoutesById {
   '/_shell/_signedIn/admin/imports/': typeof ShellSignedInAdminImportsIndexRoute
   '/_shell/_signedIn/admin/memo-types/': typeof ShellSignedInAdminMemoTypesIndexRoute
   '/_shell/_signedIn/admin/workflows/': typeof ShellSignedInAdminWorkflowsIndexRoute
+  '/_shell/_signedIn/committees/$forumId_/submissions/$submissionId': typeof ShellSignedInCommitteesForumIdSubmissionsSubmissionIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -637,6 +647,7 @@ export interface FileRouteTypes {
     | '/admin/imports/'
     | '/admin/memo-types/'
     | '/admin/workflows/'
+    | '/committees/$forumId/submissions/$submissionId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -694,6 +705,7 @@ export interface FileRouteTypes {
     | '/admin/imports'
     | '/admin/memo-types'
     | '/admin/workflows'
+    | '/committees/$forumId/submissions/$submissionId'
   id:
     | '__root__'
     | '/_auth'
@@ -756,6 +768,7 @@ export interface FileRouteTypes {
     | '/_shell/_signedIn/admin/imports/'
     | '/_shell/_signedIn/admin/memo-types/'
     | '/_shell/_signedIn/admin/workflows/'
+    | '/_shell/_signedIn/committees/$forumId_/submissions/$submissionId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -1186,6 +1199,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShellSignedInOrgPositionsPositionIdRouteImport
       parentRoute: typeof ShellSignedInRoute
     }
+    '/_shell/_signedIn/committees/$forumId_/submissions/$submissionId': {
+      id: '/_shell/_signedIn/committees/$forumId_/submissions/$submissionId'
+      path: '/committees/$forumId/submissions/$submissionId'
+      fullPath: '/committees/$forumId/submissions/$submissionId'
+      preLoaderRoute: typeof ShellSignedInCommitteesForumIdSubmissionsSubmissionIdRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
   }
 }
 
@@ -1249,6 +1269,7 @@ interface ShellSignedInRouteChildren {
   ShellSignedInAdminImportsIndexRoute: typeof ShellSignedInAdminImportsIndexRoute
   ShellSignedInAdminMemoTypesIndexRoute: typeof ShellSignedInAdminMemoTypesIndexRoute
   ShellSignedInAdminWorkflowsIndexRoute: typeof ShellSignedInAdminWorkflowsIndexRoute
+  ShellSignedInCommitteesForumIdSubmissionsSubmissionIdRoute: typeof ShellSignedInCommitteesForumIdSubmissionsSubmissionIdRoute
 }
 
 const ShellSignedInRouteChildren: ShellSignedInRouteChildren = {
@@ -1303,6 +1324,8 @@ const ShellSignedInRouteChildren: ShellSignedInRouteChildren = {
   ShellSignedInAdminImportsIndexRoute: ShellSignedInAdminImportsIndexRoute,
   ShellSignedInAdminMemoTypesIndexRoute: ShellSignedInAdminMemoTypesIndexRoute,
   ShellSignedInAdminWorkflowsIndexRoute: ShellSignedInAdminWorkflowsIndexRoute,
+  ShellSignedInCommitteesForumIdSubmissionsSubmissionIdRoute:
+    ShellSignedInCommitteesForumIdSubmissionsSubmissionIdRoute,
 }
 
 const ShellSignedInRouteWithChildren = ShellSignedInRoute._addFileChildren(

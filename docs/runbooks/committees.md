@@ -48,6 +48,7 @@ The demo's "Credit under authority" workflow sends credit proposals of BDT 10 mi
 
 ## "Where is my paper?"
 - The memo's committee panel (`GET /api/v1/memos/{id}/forum-submissions`) lists every submission, newest first, with its status, reason and target date. It shows only committees within the reader's clearance.
+- The secretaries triage on the committee page, tab **Submissions** (`/committees/{id}?tab=submissions`); a paper's own page is `/committees/{id}/submissions/{submissionId}`, where the notifications lead.
 - A paper still queued after the type's triage days sends **one** reminder to the secretaries (`FORUM_SUBMISSION_WAITING`, audit `forum.submission.reminded`). If a committee has no secretary, holders of `forums.manage` get it instead.
 
 ## "Why can't I see this memo?"

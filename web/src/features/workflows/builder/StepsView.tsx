@@ -144,6 +144,8 @@ function StepItem({
           <>
             <dt className="font-medium">{intl.formatMessage(bm.forum)}</dt>
             <dd dir="ltr">{step.forum ?? ''}</dd>
+            <dt className="font-medium">{intl.formatMessage(bm.waits)}</dt>
+            <dd>{intl.formatMessage(step.wait === true ? bm.waitsYes : bm.waitsNo)}</dd>
           </>
         ) : null}
         {step.type === 'branch' ? (

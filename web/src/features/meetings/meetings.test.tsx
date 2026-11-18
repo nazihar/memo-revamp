@@ -55,6 +55,7 @@ const policy: ForumPolicyResponse = {
   typeName: 'Board committee',
   version: 2,
   memberAttributes: [],
+  submissionPolicy: { deadlineWorkingDays: 5, lateMode: 'CHAIR_APPROVAL', triageWorkingDays: 5 },
   quorum: {
     counts: 'VOTING',
     basis: 'IN_OFFICE',

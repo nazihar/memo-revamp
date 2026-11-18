@@ -25,6 +25,7 @@ export const cdm = defineMessages({
   remindAfter: { id: 'builder.change.field.remindAfter', defaultMessage: 'Reminders after' },
   escalate: { id: 'builder.change.field.escalate', defaultMessage: 'When it is late' },
   fallback: { id: 'builder.change.field.fallback', defaultMessage: 'If nobody is found' },
+  wait: { id: 'builder.change.field.wait', defaultMessage: 'Waits for the decision' },
 })
 
 const cdv = defineMessages<{ branchLine: { condition: string; to: string } }>({
@@ -66,6 +67,7 @@ function fieldName(intl: IntlShape, path: string): string {
     message: intl.formatMessage(cdm.message),
     definition: intl.formatMessage(bm.runs),
     forum: intl.formatMessage(bm.forum),
+    wait: intl.formatMessage(cdm.wait),
     sla: intl.formatMessage(bm.deadline),
     'sla.due': intl.formatMessage(cdm.due),
     'sla.workingTime': intl.formatMessage(cdm.workingTime),

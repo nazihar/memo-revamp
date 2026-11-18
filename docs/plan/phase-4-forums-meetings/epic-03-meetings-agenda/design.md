@@ -46,6 +46,7 @@ stateDiagram-v2
   - submission items go back to the tray (their submissions stay ACCEPTED and the forum's placement is cleared);
   - members lose access to its papers (officers keep it);
   - the audience is told (E05 adds the iCalendar cancellation).
+  - As built (T2): "go back to the tray" means each SUBMISSION item is removed with the reason `MEETING_CANCELLED` and its placement cleared (audited `meeting.agenda.item_removed`, `forum.submission.unplaced`, then `meeting.agenda.released`); the other items stay frozen. A rescheduled meeting's placements follow its new date.
 
 ### 1.2 Agenda: the working draft (ADR-0060)
 One agenda per meeting, created on first opening the builder. It starts from the pinned type version's template or from an earlier meeting (§1.7).
@@ -72,6 +73,7 @@ One agenda per meeting, created on first opening the builder. It starts from the
   - 20 papers per item;
   - 5 presenters and 30 attendees per item;
   - 100 names in a restriction.
+- As built (T2): the tables are `meeting_agenda`, `meeting_section`, `meeting_item`, `meeting_item_attendee` and `meeting_paper` (module prefix, ADR-0006). FROZEN is not stored: the draft's `changes` (ANY, TABLED_ONLY, NONE) follows the meeting's status. Removing an item never removes its sub-items (they take its place); a section is removed only when empty (`SECTION_NOT_EMPTY`). Item attendees include the user presenters; a standing kind is on an agenda at most once. Uploads placed late under CHAIR_APPROVAL wait on the paper (AWAITING_CHAIR); memo papers ride with their item.
 
 **Item numbers** are not stored on the draft. They are computed at publication:
 - items count 1, 2, 3 … through the whole agenda, skipping breaks;
@@ -148,6 +150,7 @@ stateDiagram-v2
   - Restrictions are kept only for people in the new meeting's audience. The others are dropped and the builder lists them ("2 restrictions referred to people who are not on this meeting").
   - Never copied: SUBMISSION items, papers, lateness, chair agreement and consent requests.
 - **Then the tray:** submissions accepted for this forum and not placed, ordered by target date (on or before this meeting first), then by age.
+- As built (T2): a copy leaves out an item whose restriction would name nobody on the new meeting (listed as `skipped`), so a restriction only ever narrows; restrictions and attendees also drop people no longer cleared for the item. The tray is served by the forum module (`GET /forums/{fid}/submissions/ready?on=`).
 
 ### 1.8 From submissions to agenda items
 ```mermaid
@@ -409,6 +412,7 @@ All endpoints follow the conventions:
 - 422 field problems: `RESTRICTION_AUDIENCE`, `CLASSIFICATION`, `UNKNOWN_ZONE`, `UNKNOWN_LOCAL_TIME` (a start in a daylight-saving gap), `LINK_NOT_HTTPS`, `TOO_MANY`, `REASON_REQUIRED`, `NOTE_REQUIRED`; as built (T1) also `REQUIRED` (location or link for the mode), `LINK_CREDENTIALS`, `FORMAT`, `LENGTH`, `END_BEFORE_START`, `TOO_LONG` (over 7 days) and `CLASSIFICATION` for a level above the actor's own clearance or a guest not cleared;
 - 409 as built (T1) also `ALREADY_GUEST`, `CODE_LOCKED` (forum) and `TYPE_NOT_PUBLISHED`;
 - 412 on a stale If-Match.
+- As built (T2): every builder change answers the whole draft (`AgendaDraftResponse`) with the agenda's new version as the ETag; creates (start, section, item, paper) need an `Idempotency-Key`; builder writes are rate-limited per user (`AGENDA_WRITE_PER_USER`). Also 409 `AGENDA_STARTED`, `SECTION_NOT_EMPTY`, `ALREADY_IN_PACK`, `WRONG_KIND` (papers on a break), and 422 `meetingId` `unknown` / `SAME_MEETING` / `NO_AGENDA` for a copy, `standingKind` `duplicate`, `restrictedTo` `REQUIRED` (an empty list). Also 409 `NO_AGENDA` for a builder change before the agenda is started, and 422 `sectionId` `REQUIRED` (no section yet), `minutes` `RANGE` / `ONE_LEVEL` (a sub-item has no time), `submissionId` `REQUIRED` / `CLASSIFICATION` (above the actor's clearance), `presenters` `FORMAT`, `attendees` `unknown` / `CLASSIFICATION`, `fileId` `unknown` / `TOO_MANY`. Raising an item's level raises its papers below it.
 
 ## 4. Authorisation matrix
 Columns:
@@ -443,6 +447,7 @@ All of them are written in the business transaction, with before and after where
 - **Meeting:** `meeting.created`, `.updated`, `.scheduled`, `.rescheduled`, `.started`, `.ended`, `.cancelled`, `.numbered`, `.guest_added`, `.guest_removed`.
 - **Agenda:** `meeting.agenda.started` (template or source meeting), `.section_added`, `.section_updated`, `.section_removed`, `.item_added`, `.item_updated`, `.item_moved`, `.item_removed`, `.paper_added`, `.paper_updated`, `.paper_replaced`, `.paper_removed`, `.chair_agreed` (with `onBehalfBy`), `.chair_commented`, `.published` (revision, note, notified, counts).
 - **Late papers:** `meeting.late.requested`, `.agreed`, `.declined`.
+- As built (T2): also `meeting.agenda.section_moved` and `meeting.agenda.released` (a cancelled meeting's submissions back in the tray).
 - **Consent requests:** `meeting.discussion.requested`, `meeting.discussion.withdrawn`.
 - **Reads:** `meeting.paper.opened` (paper, revision, file version, kind), once per open, never per page or range request.
 - **Forum side:** `forum.submission.placed` and `forum.submission.unplaced`.
@@ -469,7 +474,7 @@ All of them are written in the business transaction, with before and after where
   - `forum_submission.meeting_id uuid` and `meeting_date date`, with index `(tenant_id, forum_id, status) WHERE meeting_id IS NULL` for the tray.
 - **`meeting/V1__meetings.sql`** (T1): `meeting`, `meeting_counter`, `meeting_guest`, `meeting_audience`.
   - Indexes: `(tenant_id, forum_id, starts_at)`, `(tenant_id, status, ends_at)`; audience `(tenant_id, user_id, meeting_id)` and `(tenant_id, meeting_id)`.
-- **`meeting/V2__agenda.sql`** (T2): `agenda`, `agenda_section`, `agenda_item`, `agenda_item_attendee`, `agenda_paper`.
+- **`meeting/V2__agenda.sql`** (T2): `agenda`, `agenda_section`, `agenda_item`, `agenda_item_attendee`, `agenda_paper` (as built: `meeting_agenda`, `meeting_section`, `meeting_item`, `meeting_item_attendee`, `meeting_paper`).
   - Unique `(tenant_id, submission_id) WHERE removed_at IS NULL`.
 - **`meeting/V3__revisions.sql`** (T3): the revision tables, `consent_lift_request`, `meeting_reader_state`.
   - Indexes: `(tenant_id, meeting_id, number)`, revision items `(tenant_id, revision_id, position)`, revision papers `(tenant_id, revision_id, item_id)`, and `(tenant_id, paper_id, revision_id)` for paper opens.

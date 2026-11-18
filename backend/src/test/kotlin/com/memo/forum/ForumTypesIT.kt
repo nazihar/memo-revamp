@@ -149,6 +149,70 @@ class ForumTypesIT : IntegrationTest() {
     }
 
     @Test
+    fun `presets bring a standard agenda, checked with the rest of the type and copied into each new version`() {
+        // Boards and board committees take the full standard agenda; a management committee has no consent section.
+        val board = asUser(maker) { types.create("BC", "Board committee", ForumTypePreset.BOARD_COMMITTEE) }.type
+        val agenda = asUser(maker) { lifecycle.get(board.id, 1) }.settings.agenda
+        assertThat(agenda.chairAgreement).isTrue()
+        assertThat(
+            agenda.sections.map { it.title },
+        ).containsExactly("Opening", "For decision", "Consent items", "For noting", "Any other business")
+        assertThat(agenda.sections.single { it.receivesSubmissions }.title).isEqualTo("For decision")
+        assertThat(agenda.sections.flatMap { s -> s.items.mapNotNull { it.standingKind } })
+            .containsExactly(
+                StandingKind.APOLOGIES,
+                StandingKind.DECLARATIONS,
+                StandingKind.PREVIOUS_MINUTES,
+                StandingKind.MATTERS_ARISING,
+                StandingKind.AOB,
+            )
+        val management = asUser(maker) { types.create("MC", "Management committee", ForumTypePreset.MANAGEMENT_COMMITTEE) }.type
+        val draft = asUser(maker) { lifecycle.get(management.id, 1) }
+        assertThat(
+            draft.settings.agenda.sections
+                .map { it.kind },
+        ).doesNotContain(AgendaSectionKind.CONSENT)
+
+        // The template's own checks, under agenda.*.
+        val s = draft.settings
+        val sections = s.agenda.sections
+
+        fun save(policy: AgendaPolicy) = problem { lifecycle.replace(management.id, 1, draft.revision, s.copy(agenda = policy)) }
+
+        assertThat(
+            save(AgendaPolicy(sections = sections.map { it.copy(receivesSubmissions = true) })),
+        ).isEqualTo("agenda.sections:RECEIVES_ONE")
+        assertThat(
+            save(AgendaPolicy(sections = (1..31).map { AgendaTemplateSection("Section $it") })),
+        ).isEqualTo("agenda.sections:TOO_MANY")
+        assertThat(save(AgendaPolicy(sections = listOf(AgendaTemplateSection(" "))))).isEqualTo("agenda.sections[0].title:LENGTH")
+        val aob = AgendaTemplateItem("Any other business", StandingKind.AOB)
+        assertThat(save(AgendaPolicy(sections = listOf(AgendaTemplateSection("Close", items = listOf(aob, aob))))))
+            .isEqualTo("agenda.sections[0].items[0].standingKind:duplicate, agenda.sections[0].items[1].standingKind:duplicate")
+        assertThat(save(AgendaPolicy(sections = listOf(AgendaTemplateSection("Close", items = listOf(aob.copy(minutes = 601)))))))
+            .isEqualTo("agenda.sections[0].items[0].minutes:RANGE")
+        // Two bytes a character (é): 150 titles of 300 characters pass their own check but not the column's size.
+        val long = "é".repeat(299)
+        val huge =
+            AgendaPolicy(
+                sections =
+                    (1..30).map { i ->
+                        AgendaTemplateSection("S$i", items = (1..5).map { AgendaTemplateItem("$long$it") })
+                    },
+            )
+        assertThat(save(huge)).isEqualTo("agenda:TOO_LARGE")
+
+        // A valid template is saved, published with the version and copied into the next draft; the audit records it.
+        val mine = AgendaPolicy(chairAgreement = false, sections = listOf(AgendaTemplateSection("Business", receivesSubmissions = true)))
+        val saved = asUser(maker) { lifecycle.replace(management.id, 1, draft.revision, s.copy(agenda = mine)) }
+        val submitted = asUser(maker) { lifecycle.submit(management.id, 1, saved.revision) }
+        asUser(checker) { lifecycle.approve(management.id, 1, null) }
+        assertThat(submitted.settings.agenda).isEqualTo(mine)
+        assertThat(asUser(maker) { lifecycle.newDraft(management.id) }.settings.agenda).isEqualTo(mine)
+        assertThat(Audit.entries(tenant.id).last { it.action == "forum.type.version.saved" }.canonical).contains("chairAgreement=false")
+    }
+
+    @Test
     fun `a type is switched off and on, audited, never deleted`() {
         val type = asUser(maker) { types.create("BOARD", "Board", ForumTypePreset.BOARD) }.type
         assertThat(asUser(maker) { types.setActive(type.id, false) }.type.active).isFalse()

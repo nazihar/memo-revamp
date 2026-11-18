@@ -1,4 +1,5 @@
 import type {
+  AgendaPolicy,
   ForumTypeSettingsRequest,
   ForumTypeVersionResponse,
   Outcome,
@@ -59,6 +60,8 @@ export interface TypeSettings {
   reminderDays: (number | null)[]
   /** Papers for meetings (ADR-0059); kept as loaded until the Terms tab edits it (E02 T4). */
   submissionPolicy: SubmissionPolicy
+  /** The agenda template and the chair's agreement (ADR-0060); kept as loaded until the Agenda tab edits it (E03 T7). */
+  agenda: AgendaPolicy
 }
 
 /** The rule with the server's defaults (ADR-0057) filled in. */
@@ -101,6 +104,7 @@ export function settingsOf(v: ForumTypeVersionResponse): TypeSettings {
     maxTerms: v.termPolicy.maxTerms ?? null,
     reminderDays: v.termPolicy.reminderDays ?? [],
     submissionPolicy: v.submissionPolicy,
+    agenda: v.agenda,
   }
 }
 
@@ -143,6 +147,7 @@ export function settingsRequest(s: TypeSettings): ForumTypeSettingsRequest {
       reminderDays: s.reminderDays.filter((d): d is number => d != null),
     },
     submissionPolicy: s.submissionPolicy,
+    agenda: s.agenda,
   }
 }
 

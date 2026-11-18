@@ -75,6 +75,10 @@ enum class NotificationKind(
     // Meetings (Phase 4 E03, design E03 §1.1): a scheduled meeting was cancelled (its audience). Parameters `committee`,
     // `date` (the meeting's date, ISO), `organisation`, `link`.
     MEETING_CANCELLED(NotificationCategory.WORKFLOW, MailTemplate.MEETING_CANCELLED),
+
+    // A late paper waits for the chair's agreement (design E03 §1.4): to the chair (the vice-chair when there is none).
+    // Parameters `committee`, `date`, `organisation`, `link`; never the item's title (ADR-0030).
+    MEETING_LATE_PAPER(NotificationCategory.WORKFLOW, MailTemplate.MEETING_LATE_PAPER),
 }
 
 /** Who receives a notification; the producer already holds the user, so `notification` never looks people up. */

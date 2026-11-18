@@ -62,6 +62,148 @@ export type AgeBucket = {
     count: number;
 };
 
+export type AgendaDraftResponse = {
+    canEdit: boolean;
+    chairAgreementRequired: boolean;
+    changes: 'ANY' | 'TABLED_ONLY' | 'NONE';
+    copied?: CopyReportResponse | null;
+    currentRevision: number;
+    deadlinePassed: boolean;
+    dirty: boolean;
+    endsAt: string;
+    lateMode: 'ALLOW' | 'BLOCK' | 'CHAIR_APPROVAL';
+    meetingId: string;
+    origin?: 'TEMPLATE' | 'MEETING';
+    overrun: boolean;
+    paperDeadline?: string | null;
+    plannedEndsAt: string;
+    sections: Array<AgendaSectionResponse>;
+    sourceMeetingId?: string | null;
+    started: boolean;
+    startsAt: string;
+    template?: AgendaPolicy | null;
+    timeZone: string;
+    totalMinutes: number;
+    traySize: number;
+    version: number;
+};
+
+export type AgendaItemChangeRequest = {
+    attendees?: Array<string>;
+    classificationId?: string | null;
+    description?: string | null;
+    minutes?: number | null;
+    presenters?: Array<Presenter>;
+    purpose?: 'DECISION' | 'DISCUSSION' | 'INFORMATION';
+    resolutionSought?: string | null;
+    restrictedTo?: Array<string> | null;
+    title?: string | null;
+    titleHidden?: boolean;
+};
+
+export type AgendaItemRequest = {
+    kind?: 'SUBMISSION' | 'STANDING' | 'ITEM' | 'BREAK';
+    minutes?: number | null;
+    parentId?: string | null;
+    position?: number | null;
+    purpose?: 'DECISION' | 'DISCUSSION' | 'INFORMATION';
+    sectionId?: string | null;
+    standingKind?: 'APOLOGIES' | 'DECLARATIONS' | 'PREVIOUS_MINUTES' | 'MATTERS_ARISING' | 'AOB';
+    submissionId?: string | null;
+    title?: string | null;
+};
+
+export type AgendaItemResponse = {
+    attendees: Array<PersonResponse>;
+    classificationId: string;
+    description?: string | null;
+    id: string;
+    kind: 'SUBMISSION' | 'STANDING' | 'ITEM' | 'BREAK';
+    late: 'NONE' | 'LATE' | 'AWAITING_CHAIR' | 'CHAIR_AGREED' | 'TABLED';
+    localStartsAt?: string | null;
+    memoId?: string | null;
+    memoReference?: string | null;
+    minutes?: number | null;
+    number?: string | null;
+    outOfPack: Array<PackFileResponse>;
+    papers: Array<AgendaPaperResponse>;
+    presenters: Array<PresenterResponse>;
+    purpose?: 'DECISION' | 'DISCUSSION' | 'INFORMATION';
+    resolutionSought?: string | null;
+    restrictedTo?: Array<PersonResponse> | null;
+    standingKind?: 'APOLOGIES' | 'DECLARATIONS' | 'PREVIOUS_MINUTES' | 'MATTERS_ARISING' | 'AOB';
+    startsAt?: string | null;
+    subItems: Array<AgendaItemResponse>;
+    submissionId?: string | null;
+    title: string;
+    titleHidden: boolean;
+};
+
+export type AgendaMoveRequest = {
+    itemId?: string | null;
+    sectionId?: string | null;
+    toParentId?: string | null;
+    toPosition?: number;
+    toSectionId?: string | null;
+};
+
+export type AgendaPaperChangeRequest = {
+    classificationId?: string | null;
+    restrictedTo?: Array<string> | null;
+    title?: string | null;
+};
+
+export type AgendaPaperRequest = {
+    classificationId?: string | null;
+    fileId?: string;
+    restrictedTo?: Array<string> | null;
+    title?: string | null;
+};
+
+export type AgendaPaperResponse = {
+    classificationId: string;
+    fileId: string;
+    fileName?: string | null;
+    id: string;
+    late: 'NONE' | 'LATE' | 'AWAITING_CHAIR' | 'CHAIR_AGREED' | 'TABLED';
+    mediaType?: string | null;
+    pages?: number | null;
+    restrictedTo?: Array<PersonResponse> | null;
+    sizeBytes?: number | null;
+    source: 'MEMO_DOCUMENT' | 'MEMO_ATTACHMENT' | 'MEMO_RECORD' | 'UPLOAD';
+    title: string;
+};
+
+export type AgendaPolicy = {
+    chairAgreement?: boolean;
+    sections?: Array<AgendaTemplateSection>;
+};
+
+export type AgendaSectionResponse = {
+    id: string;
+    items: Array<AgendaItemResponse>;
+    kind: 'STANDARD' | 'CONSENT';
+    membersOnly: boolean;
+    minutes: number;
+    receivesSubmissions: boolean;
+    title: string;
+};
+
+export type AgendaTemplateItem = {
+    minutes?: number | null;
+    purpose?: 'DECISION' | 'DISCUSSION' | 'INFORMATION';
+    standingKind?: 'APOLOGIES' | 'DECLARATIONS' | 'PREVIOUS_MINUTES' | 'MATTERS_ARISING' | 'AOB';
+    title: string;
+};
+
+export type AgendaTemplateSection = {
+    items?: Array<AgendaTemplateItem>;
+    kind?: 'STANDARD' | 'CONSENT';
+    membersOnly?: boolean;
+    receivesSubmissions?: boolean;
+    title: string;
+};
+
 export type AllowedApprovers = {
     people?: Array<string>;
     positions?: Array<string>;
@@ -392,6 +534,11 @@ export type CopyRecipient = {
     id?: string;
     kind?: 'USER' | 'POSITION' | 'LIST';
     sendWhen?: 'AT_SUBMIT' | 'AFTER_APPROVAL';
+};
+
+export type CopyReportResponse = {
+    dropped: Array<PersonResponse>;
+    skipped: Array<string>;
 };
 
 export type CopyView = {
@@ -796,6 +943,7 @@ export type ForumTypeResponse = {
 };
 
 export type ForumTypeSettingsRequest = {
+    agenda?: AgendaPolicy;
     defaultClassificationId?: string | null;
     description?: string | null;
     memberAttributes?: Array<MemberAttribute>;
@@ -808,6 +956,7 @@ export type ForumTypeSettingsRequest = {
 };
 
 export type ForumTypeVersionResponse = {
+    agenda: AgendaPolicy;
     createdAt: string;
     createdBy?: PersonRef | null;
     defaultClassificationId?: string | null;
@@ -2076,6 +2225,13 @@ export type Outcome = {
     resolution?: boolean;
 };
 
+export type PackFileResponse = {
+    classificationId: string;
+    fileId: string;
+    source: 'MEMO_DOCUMENT' | 'MEMO_ATTACHMENT' | 'MEMO_RECORD' | 'UPLOAD';
+    title: string;
+};
+
 export type PasswordResetCompletion = {
     newPassword: string;
     /**
@@ -2126,6 +2282,11 @@ export type PersonPending = {
 };
 
 export type PersonRef = {
+    id: string;
+    name: string;
+};
+
+export type PersonResponse = {
     id: string;
     name: string;
 };
@@ -2253,6 +2414,16 @@ export type PreferenceView = {
     channel: string;
     enabled: boolean;
     mandatory: boolean;
+};
+
+export type Presenter = {
+    name?: string | null;
+    userId?: string | null;
+};
+
+export type PresenterResponse = {
+    name: string;
+    userId?: string | null;
 };
 
 export type ProblemDetail = {
@@ -2645,6 +2816,14 @@ export type SearchResultView = {
     updatedAt: string;
 };
 
+export type SectionRequest = {
+    kind?: 'STANDARD' | 'CONSENT';
+    membersOnly?: boolean;
+    position?: number | null;
+    receivesSubmissions?: boolean;
+    title?: string | null;
+};
+
 export type SecuritySettingLimit = {
     default: number;
     field: string;
@@ -2808,6 +2987,11 @@ export type StampView = {
     round: number;
     secondFactorAgeSeconds?: number | null;
     stepUpRequired: boolean;
+};
+
+export type StartAgendaRequest = {
+    from?: 'TEMPLATE' | 'MEETING';
+    meetingId?: string | null;
 };
 
 /**
@@ -6577,6 +6761,26 @@ export type ListForumSubmissionsResponses = {
 
 export type ListForumSubmissionsResponse = ListForumSubmissionsResponses[keyof ListForumSubmissionsResponses];
 
+export type ListReadySubmissionsData = {
+    body?: never;
+    path: {
+        forumId: string;
+    };
+    query?: {
+        on?: string;
+    };
+    url: '/api/v1/forums/{forumId}/submissions/ready';
+};
+
+export type ListReadySubmissionsResponses = {
+    /**
+     * OK
+     */
+    200: Array<SubmissionResponse>;
+};
+
+export type ListReadySubmissionsResponse = ListReadySubmissionsResponses[keyof ListReadySubmissionsResponses];
+
 export type GetForumSubmissionData = {
     body?: never;
     path: {
@@ -7152,6 +7356,265 @@ export type UpdateMeetingResponses = {
 };
 
 export type UpdateMeetingResponse = UpdateMeetingResponses[keyof UpdateMeetingResponses];
+
+export type StartAgendaData = {
+    body: StartAgendaRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/agenda';
+};
+
+export type StartAgendaResponses = {
+    /**
+     * OK
+     */
+    200: AgendaDraftResponse;
+};
+
+export type StartAgendaResponse = StartAgendaResponses[keyof StartAgendaResponses];
+
+export type GetAgendaDraftData = {
+    body?: never;
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/agenda/draft';
+};
+
+export type GetAgendaDraftResponses = {
+    /**
+     * OK
+     */
+    200: AgendaDraftResponse;
+};
+
+export type GetAgendaDraftResponse = GetAgendaDraftResponses[keyof GetAgendaDraftResponses];
+
+export type AddAgendaItemData = {
+    body: AgendaItemRequest;
+    headers: {
+        'If-Match'?: string;
+        'Idempotency-Key': string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/agenda/items';
+};
+
+export type AddAgendaItemResponses = {
+    /**
+     * OK
+     */
+    200: AgendaDraftResponse;
+};
+
+export type AddAgendaItemResponse = AddAgendaItemResponses[keyof AddAgendaItemResponses];
+
+export type UpdateAgendaItemData = {
+    body: AgendaItemChangeRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+        itemId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/agenda/items/{itemId}';
+};
+
+export type UpdateAgendaItemResponses = {
+    /**
+     * OK
+     */
+    200: AgendaDraftResponse;
+};
+
+export type UpdateAgendaItemResponse = UpdateAgendaItemResponses[keyof UpdateAgendaItemResponses];
+
+export type AddAgendaPaperData = {
+    body: AgendaPaperRequest;
+    headers: {
+        'If-Match'?: string;
+        'Idempotency-Key': string;
+    };
+    path: {
+        meetingId: string;
+        itemId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/agenda/items/{itemId}/papers';
+};
+
+export type AddAgendaPaperResponses = {
+    /**
+     * OK
+     */
+    200: AgendaDraftResponse;
+};
+
+export type AddAgendaPaperResponse = AddAgendaPaperResponses[keyof AddAgendaPaperResponses];
+
+export type RemoveAgendaItemData = {
+    body?: never;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+        itemId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/agenda/items/{itemId}/remove';
+};
+
+export type RemoveAgendaItemResponses = {
+    /**
+     * OK
+     */
+    200: AgendaDraftResponse;
+};
+
+export type RemoveAgendaItemResponse = RemoveAgendaItemResponses[keyof RemoveAgendaItemResponses];
+
+export type MoveAgendaRowData = {
+    body: AgendaMoveRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/agenda/moves';
+};
+
+export type MoveAgendaRowResponses = {
+    /**
+     * OK
+     */
+    200: AgendaDraftResponse;
+};
+
+export type MoveAgendaRowResponse = MoveAgendaRowResponses[keyof MoveAgendaRowResponses];
+
+export type UpdateAgendaPaperData = {
+    body: AgendaPaperChangeRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+        paperId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/agenda/papers/{paperId}';
+};
+
+export type UpdateAgendaPaperResponses = {
+    /**
+     * OK
+     */
+    200: AgendaDraftResponse;
+};
+
+export type UpdateAgendaPaperResponse = UpdateAgendaPaperResponses[keyof UpdateAgendaPaperResponses];
+
+export type RemoveAgendaPaperData = {
+    body?: never;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+        paperId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/agenda/papers/{paperId}/remove';
+};
+
+export type RemoveAgendaPaperResponses = {
+    /**
+     * OK
+     */
+    200: AgendaDraftResponse;
+};
+
+export type RemoveAgendaPaperResponse = RemoveAgendaPaperResponses[keyof RemoveAgendaPaperResponses];
+
+export type AddAgendaSectionData = {
+    body: SectionRequest;
+    headers: {
+        'If-Match'?: string;
+        'Idempotency-Key': string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/agenda/sections';
+};
+
+export type AddAgendaSectionResponses = {
+    /**
+     * OK
+     */
+    200: AgendaDraftResponse;
+};
+
+export type AddAgendaSectionResponse = AddAgendaSectionResponses[keyof AddAgendaSectionResponses];
+
+export type UpdateAgendaSectionData = {
+    body: SectionRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+        sectionId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/agenda/sections/{sectionId}';
+};
+
+export type UpdateAgendaSectionResponses = {
+    /**
+     * OK
+     */
+    200: AgendaDraftResponse;
+};
+
+export type UpdateAgendaSectionResponse = UpdateAgendaSectionResponses[keyof UpdateAgendaSectionResponses];
+
+export type RemoveAgendaSectionData = {
+    body?: never;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+        sectionId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/agenda/sections/{sectionId}/remove';
+};
+
+export type RemoveAgendaSectionResponses = {
+    /**
+     * OK
+     */
+    200: AgendaDraftResponse;
+};
+
+export type RemoveAgendaSectionResponse = RemoveAgendaSectionResponses[keyof RemoveAgendaSectionResponses];
 
 export type CancelMeetingData = {
     body: CancelMeetingRequest;

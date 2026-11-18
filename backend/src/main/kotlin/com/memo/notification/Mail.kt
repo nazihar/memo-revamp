@@ -33,6 +33,7 @@ import java.time.ZoneOffset
  * - FORUM_TERM_ENDING: name, organisation, committee, member, link
  * - FORUM_SUBMISSION_RECEIVED, FORUM_SUBMISSION_TRIAGED, FORUM_SUBMISSION_WAITING: name, organisation, committee, status, link
  * - MEETING_CANCELLED: name, organisation, committee, date, link
+ * - MEETING_LATE_PAPER: name, organisation, committee, date, link
  */
 enum class MailTemplate {
     INVITATION,
@@ -62,6 +63,7 @@ enum class MailTemplate {
     FORUM_SUBMISSION_TRIAGED,
     FORUM_SUBMISSION_WAITING,
     MEETING_CANCELLED,
+    MEETING_LATE_PAPER,
 }
 
 /**

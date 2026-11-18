@@ -41,6 +41,7 @@ class MeetingLifecycle(
     private val guard: MeetingGuard,
     private val audience: MeetingAudience,
     private val notifier: MeetingNotifier,
+    private val placing: AgendaPlacing,
     private val directory: ForumDirectory,
     private val policies: ForumPolicies,
     private val org: OrgDirectory,
@@ -144,6 +145,7 @@ class MeetingLifecycle(
         val after = before.copy(startsAt = at.startsAt, endsAt = at.endsAt, zone = at.zone)
         val saved = save("meeting.rescheduled", before, after, version, mapOf("reason" to text))
         audience.recompute(saved)
+        placing.redate(saved)
         return saved
     }
 
@@ -163,7 +165,10 @@ class MeetingLifecycle(
         return save("meeting.ended", before, before.copy(status = MeetingAction.END.next(before.status)), version)
     }
 
-    /** Discards a draft or calls off a scheduled meeting, with a reason; a scheduled meeting's audience is told. */
+    /**
+     * Discards a draft or calls off a scheduled meeting, with a reason: its agenda freezes and its submissions go back to the
+     * tray (design E03 §1.1); a scheduled meeting's audience is told.
+     */
     fun cancel(
         id: UUID,
         version: Long,
@@ -174,6 +179,7 @@ class MeetingLifecycle(
         val (text, problem) = MeetingFields.reason(reason)
         requireNoProblems(listOfNotNull(problem))
         val saved = save("meeting.cancelled", before, before.copy(status = status, statusReason = text), version)
+        placing.released(saved)
         if (before.status == MeetingStatus.SCHEDULED) notifier.cancelled(saved, forum(saved))
         return saved
     }

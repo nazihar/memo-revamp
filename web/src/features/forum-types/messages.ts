@@ -240,6 +240,11 @@ export const ft = defineMessages({
   no: { id: 'forumTypes.no', defaultMessage: 'No' },
   whatQuorum: { id: 'forumTypes.changes.quorum', defaultMessage: 'Quorum' },
   whatReminders: { id: 'forumTypes.changes.reminders', defaultMessage: 'Reminders (days before a term ends)' },
+  whatChairAgreement: {
+    id: 'forumTypes.changes.chairAgreement',
+    defaultMessage: 'Agenda: the chair agrees it before it is first published',
+  },
+  whatAgendaOrder: { id: 'forumTypes.changes.agendaOrder', defaultMessage: 'Agenda: order of the sections' },
 })
 
 /** Texts with values besides the terms. */
@@ -287,6 +292,10 @@ export const ftv = defineMessages<{
   whatOutcome: { meaning: string }
   whatOutcomeLabel: { meaning: string }
   whatOutcomeResolution: { meaning: string }
+  whatAgendaSection: { title: string }
+  whatAgendaItem: { section: string; title: string }
+  agendaSectionValue: { kind: string; membersOnly: string; receives: string }
+  agendaItemValue: { purpose: string; minutes: string }
   sentence: { amount: string; floor: string; including: string; composition: string }
   amountMajority: { base: string }
   amountCount: { count: number; base: string }
@@ -365,6 +374,18 @@ export const ftv = defineMessages<{
   whatOutcomeResolution: {
     id: 'forumTypes.changes.outcomeResolution',
     defaultMessage: 'Outcome “{meaning}” numbered as a resolution',
+  },
+  whatAgendaSection: { id: 'forumTypes.changes.agendaSection', defaultMessage: 'Agenda section “{title}”' },
+  whatAgendaItem: { id: 'forumTypes.changes.agendaItem', defaultMessage: 'Agenda item “{title}” ({section})' },
+  agendaSectionValue: {
+    id: 'forumTypes.changes.agendaSectionValue',
+    defaultMessage:
+      '{kind, select, CONSENT {Consent section} other {Section}}{membersOnly, select, true {, members only} other {}}{receives, select, true {, new items land here} other {}}',
+  },
+  agendaItemValue: {
+    id: 'forumTypes.changes.agendaItemValue',
+    defaultMessage:
+      '{purpose, select, DECISION {For decision} DISCUSSION {For discussion} other {For noting}}{minutes, select, none {} other {, {minutes} min}}',
   },
 })
 

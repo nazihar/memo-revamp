@@ -12,7 +12,7 @@ import java.util.UUID
 
 /**
  * A forum type version's policies as other modules apply them (design E03 §2): a meeting pins the version published
- * when it was created, and its submission, quorum and (from T2) agenda policy apply to it whatever is published later.
+ * when it was created, and its submission, quorum and agenda policy apply to it whatever is published later.
  */
 data class ForumTypePolicy(
     val typeId: UUID,
@@ -23,6 +23,8 @@ data class ForumTypePolicy(
     val quorum: QuorumRule,
     val submission: SubmissionPolicy,
     val outcomes: List<Outcome>,
+    /** The agenda template and the chair's agreement (ADR-0060). */
+    val agenda: AgendaPolicy,
 )
 
 /**
@@ -78,5 +80,6 @@ class ForumPolicies(
             quorum = settings.quorum,
             submission = settings.submissionPolicy,
             outcomes = settings.outcomes,
+            agenda = settings.agenda,
         )
 }

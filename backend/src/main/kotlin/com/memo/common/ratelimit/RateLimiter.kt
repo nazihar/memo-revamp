@@ -43,6 +43,10 @@ enum class RateLimit(
 
     // Searches of one person (design E05 §3): the 31st in a minute is refused.
     SEARCH_PER_USER(30, Duration.ofMinutes(1)),
+
+    // Changes to a meeting's draft agenda by one person (design E03, threat model D1): a flood of moves cannot slow the
+    // builder for others; a secretary dragging items around stays far below it.
+    AGENDA_WRITE_PER_USER(120, Duration.ofMinutes(1)),
     ;
 
     internal val configuration: BucketConfiguration by lazy {

@@ -59,6 +59,20 @@ class MemoRenditionQueries(
             .where(MEMO_RENDITION.FILE_ID.eq(fileId))
             .fetchOne(0, Int::class.java)
 
+    /** The file and level of [memoId]'s latest made record; null when it has none. */
+    fun latestReady(memoId: UUID): Pair<UUID, UUID?>? =
+        tenantDsl
+            .current()
+            .select(MEMO_RENDITION.FILE_ID, MEMO_RENDITION.CLASSIFICATION_ID)
+            .from(MEMO_RENDITION)
+            .where(
+                MEMO_RENDITION.MEMO_ID.eq(memoId),
+                MEMO_RENDITION.STATE.eq(RenditionState.READY.name),
+                MEMO_RENDITION.FILE_ID.isNotNull,
+            ).orderBy(MEMO_RENDITION.VERSION.desc())
+            .limit(1)
+            .fetchOne { r -> r.value1()!! to r.value2() }
+
     /** Approved or closed memos with no record at all (approved before E04), oldest first. */
     fun missing(limit: Int): List<UUID> =
         tenantDsl

@@ -2,17 +2,23 @@ package com.memo.forum.internal
 
 import com.memo.common.authz.Clearances
 import com.memo.common.web.FieldProblem
+import com.memo.forum.AgendaLimits
+import com.memo.forum.AgendaPolicy
+import com.memo.forum.AgendaTemplateItem
 import com.memo.forum.OutcomeKind
 import com.memo.forum.QuorumBasis
 import com.memo.forum.QuorumRule
 import com.memo.forum.QuorumThreshold
+import com.memo.forum.StandingKind
 import com.memo.forum.ThresholdKind
 import org.springframework.stereotype.Component
+import tools.jackson.databind.json.JsonMapper
 
 /** What a forum-type version may say (ADR-0056, ADR-0057, design E01 §1); each problem names its field. */
 @Component
 class ForumTypeChecks(
     private val clearances: Clearances,
+    private val json: JsonMapper,
 ) {
     fun require(settings: ForumTypeSettings) = requireNoProblems(problems(settings))
 
@@ -33,7 +39,8 @@ class ForumTypeChecks(
             },
             FieldProblem("retention.from", "unknown", "MEETING.").takeIf { settings.retention?.let { it.from != "MEETING" } == true },
         ) + attributeProblems(settings) + QuorumChecks.problems(settings.quorum, settings.memberAttributes.map { it.key }.toSet()) +
-            outcomeProblems(settings) + termProblems(settings) + submissionProblems(settings)
+            outcomeProblems(settings) + termProblems(settings) + submissionProblems(settings) +
+            AgendaChecks.problems(settings.agenda) + agendaSize(settings)
     }
 
     private fun attributeProblems(settings: ForumTypeSettings): List<FieldProblem> {
@@ -107,6 +114,14 @@ class ForumTypeChecks(
         )
     }
 
+    // The column holds at most 64 KiB (forum/V5): a template that would not fit is refused here, not by the database.
+    private fun agendaSize(settings: ForumTypeSettings): List<FieldProblem> =
+        listOfNotNull(
+            FieldProblem("agenda", "TOO_LARGE", "The standard agenda is too long; shorten its titles.").takeIf {
+                json.writeValueAsBytes(settings.agenda).size > MAX_AGENDA_BYTES
+            },
+        )
+
     companion object {
         const val MAX_NAME = 200
         const val MAX_DESCRIPTION = 2000
@@ -118,6 +133,7 @@ class ForumTypeChecks(
         const val MAX_REMINDERS = 3
         const val MAX_REMINDER_DAYS = 365
         const val MAX_SUBMISSION_DAYS = 30
+        const val MAX_AGENDA_BYTES = 60_000
         val ATTRIBUTE_KEY = Regex("^[a-z][a-zA-Z0-9]{0,29}$")
         val CODE = Regex("^[A-Z0-9][A-Z0-9-]{0,9}$")
     }
@@ -206,4 +222,43 @@ object QuorumChecks {
     }
 
     private fun inRange(value: Int?): Boolean = value != null && value in 1..MAX_NUMBER
+}
+
+/** The agenda policy's own checks (ADR-0060, flow R), under `agenda.*`: the caps of an agenda, titles, minutes. */
+object AgendaChecks {
+    fun problems(policy: AgendaPolicy): List<FieldProblem> {
+        val sections = policy.sections
+        val items = sections.flatMap { it.items }
+        val standing = items.mapNotNull { it.standingKind }
+        return listOfNotNull(
+            FieldProblem("agenda.sections", "TOO_MANY", "At most ${AgendaLimits.MAX_SECTIONS} sections.")
+                .takeIf { sections.size > AgendaLimits.MAX_SECTIONS },
+            FieldProblem("agenda.sections", "TOO_MANY", "At most ${AgendaLimits.MAX_ITEMS} items.")
+                .takeIf { items.size > AgendaLimits.MAX_ITEMS },
+            FieldProblem("agenda.sections", "RECEIVES_ONE", "New items land in one section at most.")
+                .takeIf { sections.count { it.receivesSubmissions } > 1 },
+        ) +
+            sections.flatMapIndexed { i, section ->
+                listOfNotNull(
+                    FieldProblem("agenda.sections[$i].title", "LENGTH", "A title of 1 to ${AgendaLimits.MAX_SECTION_TITLE} characters.")
+                        .takeIf { section.title.isBlank() || section.title.length > AgendaLimits.MAX_SECTION_TITLE },
+                ) + section.items.flatMapIndexed { j, item -> itemProblems("agenda.sections[$i].items[$j]", item, standing) }
+            }
+    }
+
+    private fun itemProblems(
+        field: String,
+        item: AgendaTemplateItem,
+        standing: List<StandingKind>,
+    ): List<FieldProblem> {
+        val minutes = item.minutes
+        return listOfNotNull(
+            FieldProblem("$field.title", "LENGTH", "A title of 1 to ${AgendaLimits.MAX_ITEM_TITLE} characters.")
+                .takeIf { item.title.isBlank() || item.title.length > AgendaLimits.MAX_ITEM_TITLE },
+            FieldProblem("$field.minutes", "RANGE", "0 to ${AgendaLimits.MAX_MINUTES} minutes.")
+                .takeIf { minutes != null && minutes !in 0..AgendaLimits.MAX_MINUTES },
+            FieldProblem("$field.standingKind", "duplicate", "This standing item is already on the agenda.")
+                .takeIf { item.standingKind != null && standing.count { it == item.standingKind } > 1 },
+        )
+    }
 }

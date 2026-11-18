@@ -467,10 +467,16 @@
       "target" : "common",
       "types" : [ "USES_COMPONENT" ]
     }, {
+      "target" : "files",
+      "types" : [ "EVENT_LISTENER", "USES_COMPONENT" ]
+    }, {
       "target" : "forum",
       "types" : [ "EVENT_LISTENER", "USES_COMPONENT" ]
     }, {
       "target" : "identity",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "memo",
       "types" : [ "USES_COMPONENT" ]
     }, {
       "target" : "notification",
@@ -483,6 +489,9 @@
       "types" : [ "USES_COMPONENT" ]
     }, {
       "target" : "tenancy",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "workflow",
       "types" : [ "USES_COMPONENT" ]
     } ],
     "displayName" : "Meeting",

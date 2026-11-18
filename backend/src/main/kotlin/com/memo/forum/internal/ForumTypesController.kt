@@ -9,6 +9,7 @@ import com.memo.common.tenant.TenantTransactions
 import com.memo.common.web.FieldProblem
 import com.memo.common.web.etagOf
 import com.memo.common.web.ifMatchVersion
+import com.memo.forum.AgendaPolicy
 import com.memo.forum.ForumRetention
 import com.memo.forum.ForumRole
 import com.memo.forum.MemberAttribute
@@ -55,6 +56,7 @@ data class ForumTypeSettingsRequest(
     val outcomes: List<Outcome> = emptyList(),
     val termPolicy: TermPolicy = TermPolicy(),
     val submissionPolicy: SubmissionPolicy = SubmissionPolicy(),
+    val agenda: AgendaPolicy = AgendaPolicy(),
 )
 
 data class CreateForumTypeRequest(
@@ -78,6 +80,7 @@ data class ForumTypeVersionResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val outcomes: List<Outcome>,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val termPolicy: TermPolicy,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val submissionPolicy: SubmissionPolicy,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val agenda: AgendaPolicy,
     val createdBy: PersonRef?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val createdAt: Instant,
     val submittedBy: PersonRef?,
@@ -355,6 +358,7 @@ class ForumTypeResponses(
                 outcomes = s.outcomes,
                 termPolicy = s.termPolicy,
                 submissionPolicy = s.submissionPolicy,
+                agenda = s.agenda,
                 createdBy = named(v.createdBy),
                 createdAt = v.createdAt,
                 submittedBy = named(v.submittedBy),
@@ -382,6 +386,7 @@ internal fun ForumTypeSettingsRequest.settings() =
         outcomes = outcomes.map { it.copy(label = it.label.trim()) },
         termPolicy = termPolicy,
         submissionPolicy = submissionPolicy,
+        agenda = agenda.trimmed(),
     )
 
 internal fun ForumTypeSettings.request() =
@@ -395,6 +400,11 @@ internal fun ForumTypeSettings.request() =
         outcomes,
         termPolicy,
         submissionPolicy,
+        agenda,
     )
 
 private fun number(path: String): Int = path.toIntOrNull() ?: throw ForumNotFoundException("forum type version")
+
+/** The agenda policy as sent, with its titles trimmed. */
+private fun AgendaPolicy.trimmed() =
+    copy(sections = sections.map { s -> s.copy(title = s.title.trim(), items = s.items.map { it.copy(title = it.title.trim()) }) })

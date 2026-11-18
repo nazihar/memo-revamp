@@ -7,11 +7,14 @@ package com.memo.jooq.tables
 import com.memo.jooq.Memo
 import com.memo.jooq.indexes.MEETING_FORUM_IDX
 import com.memo.jooq.indexes.MEETING_STATUS_IDX
+import com.memo.jooq.keys.MEETING_AGENDA__MEETING_AGENDA_TENANT_ID_MEETING_ID_FKEY
+import com.memo.jooq.keys.MEETING_AGENDA__MEETING_AGENDA_TENANT_ID_SOURCE_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_AUDIENCE__MEETING_AUDIENCE_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_GUEST__MEETING_GUEST_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_PKEY
 import com.memo.jooq.keys.MEETING_TENANT_ID_FORUM_ID_NUMBER_YEAR_NUMBER_KEY
 import com.memo.jooq.keys.MEETING_TENANT_ID_ID_KEY
+import com.memo.jooq.tables.MeetingAgenda.MeetingAgendaPath
 import com.memo.jooq.tables.MeetingAudience.MeetingAudiencePath
 import com.memo.jooq.tables.MeetingGuest.MeetingGuestPath
 import com.memo.jooq.tables.records.MeetingRecord
@@ -234,6 +237,40 @@ open class Meeting(
     override fun getIndexes(): List<Index> = listOf(MEETING_FORUM_IDX, MEETING_STATUS_IDX)
     override fun getPrimaryKey(): UniqueKey<MeetingRecord> = MEETING_PKEY
     override fun getUniqueKeys(): List<UniqueKey<MeetingRecord>> = listOf(MEETING_TENANT_ID_FORUM_ID_NUMBER_YEAR_NUMBER_KEY, MEETING_TENANT_ID_ID_KEY)
+
+    private lateinit var _meetingAgendaTenantIdMeetingIdFkey: MeetingAgendaPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.meeting_agenda</code> table, via the
+     * <code>meeting_agenda_tenant_id_meeting_id_fkey</code> key
+     */
+    fun meetingAgendaTenantIdMeetingIdFkey(): MeetingAgendaPath {
+        if (!this::_meetingAgendaTenantIdMeetingIdFkey.isInitialized)
+            _meetingAgendaTenantIdMeetingIdFkey = MeetingAgendaPath(this, null, MEETING_AGENDA__MEETING_AGENDA_TENANT_ID_MEETING_ID_FKEY.inverseKey)
+
+        return _meetingAgendaTenantIdMeetingIdFkey;
+    }
+
+    val meetingAgendaTenantIdMeetingIdFkey: MeetingAgendaPath
+        get(): MeetingAgendaPath = meetingAgendaTenantIdMeetingIdFkey()
+
+    private lateinit var _meetingAgendaTenantIdSourceMeetingIdFkey: MeetingAgendaPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.meeting_agenda</code> table, via the
+     * <code>meeting_agenda_tenant_id_source_meeting_id_fkey</code> key
+     */
+    fun meetingAgendaTenantIdSourceMeetingIdFkey(): MeetingAgendaPath {
+        if (!this::_meetingAgendaTenantIdSourceMeetingIdFkey.isInitialized)
+            _meetingAgendaTenantIdSourceMeetingIdFkey = MeetingAgendaPath(this, null, MEETING_AGENDA__MEETING_AGENDA_TENANT_ID_SOURCE_MEETING_ID_FKEY.inverseKey)
+
+        return _meetingAgendaTenantIdSourceMeetingIdFkey;
+    }
+
+    val meetingAgendaTenantIdSourceMeetingIdFkey: MeetingAgendaPath
+        get(): MeetingAgendaPath = meetingAgendaTenantIdSourceMeetingIdFkey()
 
     private lateinit var _meetingAudience: MeetingAudiencePath
 

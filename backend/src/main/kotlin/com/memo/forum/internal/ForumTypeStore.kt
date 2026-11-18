@@ -4,6 +4,7 @@ import com.memo.common.concurrency.ConcurrentModificationException
 import com.memo.common.id.IdGenerator
 import com.memo.common.review.ReviewState
 import com.memo.common.tenant.TenantDsl
+import com.memo.forum.AgendaPolicy
 import com.memo.forum.ForumRetention
 import com.memo.forum.MemberAttribute
 import com.memo.forum.Outcome
@@ -33,6 +34,8 @@ data class ForumTypeSettings(
     val outcomes: List<Outcome> = emptyList(),
     val termPolicy: TermPolicy = TermPolicy(),
     val submissionPolicy: SubmissionPolicy = SubmissionPolicy(),
+    /** The agenda policy (ADR-0060): the chair's agreement and the standard agenda new meetings start from. */
+    val agenda: AgendaPolicy = AgendaPolicy(),
 )
 
 /** A forum type's identity. */

@@ -33,8 +33,13 @@ import com.memo.jooq.tables.ImportsRowApproval
 import com.memo.jooq.tables.ImportsRowFile
 import com.memo.jooq.tables.ImportsStaged
 import com.memo.jooq.tables.Meeting
+import com.memo.jooq.tables.MeetingAgenda
 import com.memo.jooq.tables.MeetingAudience
 import com.memo.jooq.tables.MeetingGuest
+import com.memo.jooq.tables.MeetingItem
+import com.memo.jooq.tables.MeetingItemAttendee
+import com.memo.jooq.tables.MeetingPaper
+import com.memo.jooq.tables.MeetingSection
 import com.memo.jooq.tables.Memo
 import com.memo.jooq.tables.MemoAttachment
 import com.memo.jooq.tables.MemoCopy
@@ -146,10 +151,22 @@ val IMPORTS_ROW_KEY_IDX: Index = Internal.createIndex(DSL.name("imports_row_key_
 val IMPORTS_ROW_NUMBER_UK: Index = Internal.createIndex(DSL.name("imports_row_number_uk"), ImportsRow.IMPORTS_ROW, arrayOf(ImportsRow.IMPORTS_ROW.TENANT_ID, ImportsRow.IMPORTS_ROW.BATCH_ID, ImportsRow.IMPORTS_ROW.ROW_NUMBER), true)
 val IMPORTS_ROW_RESULT_IDX: Index = Internal.createIndex(DSL.name("imports_row_result_idx"), ImportsRow.IMPORTS_ROW, arrayOf(ImportsRow.IMPORTS_ROW.TENANT_ID, ImportsRow.IMPORTS_ROW.BATCH_ID, ImportsRow.IMPORTS_ROW.RESULT, ImportsRow.IMPORTS_ROW.ROW_NUMBER), false)
 val IMPORTS_STAGED_BATCH_IDX: Index = Internal.createIndex(DSL.name("imports_staged_batch_idx"), ImportsStaged.IMPORTS_STAGED, arrayOf(ImportsStaged.IMPORTS_STAGED.TENANT_ID, ImportsStaged.IMPORTS_STAGED.BATCH_ID, ImportsStaged.IMPORTS_STAGED.PURGED_AT, ImportsStaged.IMPORTS_STAGED.SUPERSEDED_AT), false)
+val MEETING_AGENDA_SOURCE_IDX: Index = Internal.createIndex(DSL.name("meeting_agenda_source_idx"), MeetingAgenda.MEETING_AGENDA, arrayOf(MeetingAgenda.MEETING_AGENDA.TENANT_ID, MeetingAgenda.MEETING_AGENDA.SOURCE_MEETING_ID), false)
 val MEETING_AUDIENCE_USER_IDX: Index = Internal.createIndex(DSL.name("meeting_audience_user_idx"), MeetingAudience.MEETING_AUDIENCE, arrayOf(MeetingAudience.MEETING_AUDIENCE.TENANT_ID, MeetingAudience.MEETING_AUDIENCE.USER_ID, MeetingAudience.MEETING_AUDIENCE.MEETING_ID), false)
 val MEETING_FORUM_IDX: Index = Internal.createIndex(DSL.name("meeting_forum_idx"), Meeting.MEETING, arrayOf(Meeting.MEETING.TENANT_ID, Meeting.MEETING.FORUM_ID, Meeting.MEETING.STARTS_AT), false)
 val MEETING_GUEST_CURRENT_UK: Index = Internal.createIndex(DSL.name("meeting_guest_current_uk"), MeetingGuest.MEETING_GUEST, arrayOf(MeetingGuest.MEETING_GUEST.TENANT_ID, MeetingGuest.MEETING_GUEST.MEETING_ID, MeetingGuest.MEETING_GUEST.USER_ID), true)
 val MEETING_GUEST_MEETING_IDX: Index = Internal.createIndex(DSL.name("meeting_guest_meeting_idx"), MeetingGuest.MEETING_GUEST, arrayOf(MeetingGuest.MEETING_GUEST.TENANT_ID, MeetingGuest.MEETING_GUEST.MEETING_ID), false)
+val MEETING_ITEM_ATTENDEE_USER_IDX: Index = Internal.createIndex(DSL.name("meeting_item_attendee_user_idx"), MeetingItemAttendee.MEETING_ITEM_ATTENDEE, arrayOf(MeetingItemAttendee.MEETING_ITEM_ATTENDEE.TENANT_ID, MeetingItemAttendee.MEETING_ITEM_ATTENDEE.USER_ID), false)
+val MEETING_ITEM_MEETING_IDX: Index = Internal.createIndex(DSL.name("meeting_item_meeting_idx"), MeetingItem.MEETING_ITEM, arrayOf(MeetingItem.MEETING_ITEM.TENANT_ID, MeetingItem.MEETING_ITEM.MEETING_ID), false)
+val MEETING_ITEM_PARENT_IDX: Index = Internal.createIndex(DSL.name("meeting_item_parent_idx"), MeetingItem.MEETING_ITEM, arrayOf(MeetingItem.MEETING_ITEM.TENANT_ID, MeetingItem.MEETING_ITEM.PARENT_ID), false)
+val MEETING_ITEM_SECTION_IDX: Index = Internal.createIndex(DSL.name("meeting_item_section_idx"), MeetingItem.MEETING_ITEM, arrayOf(MeetingItem.MEETING_ITEM.TENANT_ID, MeetingItem.MEETING_ITEM.SECTION_ID), false)
+val MEETING_ITEM_SUBMISSION_UK: Index = Internal.createIndex(DSL.name("meeting_item_submission_uk"), MeetingItem.MEETING_ITEM, arrayOf(MeetingItem.MEETING_ITEM.TENANT_ID, MeetingItem.MEETING_ITEM.SUBMISSION_ID), true)
+val MEETING_PAPER_FILE_IDX: Index = Internal.createIndex(DSL.name("meeting_paper_file_idx"), MeetingPaper.MEETING_PAPER, arrayOf(MeetingPaper.MEETING_PAPER.TENANT_ID, MeetingPaper.MEETING_PAPER.FILE_ID), false)
+val MEETING_PAPER_FILE_UK: Index = Internal.createIndex(DSL.name("meeting_paper_file_uk"), MeetingPaper.MEETING_PAPER, arrayOf(MeetingPaper.MEETING_PAPER.TENANT_ID, MeetingPaper.MEETING_PAPER.ITEM_ID, MeetingPaper.MEETING_PAPER.FILE_ID), true)
+val MEETING_PAPER_ITEM_IDX: Index = Internal.createIndex(DSL.name("meeting_paper_item_idx"), MeetingPaper.MEETING_PAPER, arrayOf(MeetingPaper.MEETING_PAPER.TENANT_ID, MeetingPaper.MEETING_PAPER.ITEM_ID, MeetingPaper.MEETING_PAPER.POSITION), false)
+val MEETING_PAPER_MEETING_IDX: Index = Internal.createIndex(DSL.name("meeting_paper_meeting_idx"), MeetingPaper.MEETING_PAPER, arrayOf(MeetingPaper.MEETING_PAPER.TENANT_ID, MeetingPaper.MEETING_PAPER.MEETING_ID), false)
+val MEETING_SECTION_MEETING_IDX: Index = Internal.createIndex(DSL.name("meeting_section_meeting_idx"), MeetingSection.MEETING_SECTION, arrayOf(MeetingSection.MEETING_SECTION.TENANT_ID, MeetingSection.MEETING_SECTION.MEETING_ID, MeetingSection.MEETING_SECTION.POSITION), false)
+val MEETING_SECTION_RECEIVES_UK: Index = Internal.createIndex(DSL.name("meeting_section_receives_uk"), MeetingSection.MEETING_SECTION, arrayOf(MeetingSection.MEETING_SECTION.TENANT_ID, MeetingSection.MEETING_SECTION.MEETING_ID), true)
 val MEETING_STATUS_IDX: Index = Internal.createIndex(DSL.name("meeting_status_idx"), Meeting.MEETING, arrayOf(Meeting.MEETING.TENANT_ID, Meeting.MEETING.STATUS, Meeting.MEETING.ENDS_AT), false)
 val MEMO_ATTACHMENT_PRESENT_IDX: Index = Internal.createIndex(DSL.name("memo_attachment_present_idx"), MemoAttachment.MEMO_ATTACHMENT, arrayOf(MemoAttachment.MEMO_ATTACHMENT.TENANT_ID, MemoAttachment.MEMO_ATTACHMENT.MEMO_ID, MemoAttachment.MEMO_ATTACHMENT.POSITION), false)
 val MEMO_COPY_DELIVERY_TENANT_MEMO_IDX: Index = Internal.createIndex(DSL.name("memo_copy_delivery_tenant_memo_idx"), MemoCopyDelivery.MEMO_COPY_DELIVERY, arrayOf(MemoCopyDelivery.MEMO_COPY_DELIVERY.TENANT_ID, MemoCopyDelivery.MEMO_COPY_DELIVERY.MEMO_ID, MemoCopyDelivery.MEMO_COPY_DELIVERY.USER_ID), false)

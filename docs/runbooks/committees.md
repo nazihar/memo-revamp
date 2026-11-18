@@ -44,7 +44,7 @@
    Until minutes arrive (E06), decisions are recorded by the service the tests and the demo use.
 5. When the paper leaves the queue, the officers' access to the memo is retired, unless they read it another way (approver, copy, share).
 
-The demo's "Credit under authority" workflow sends credit proposals of BDT 5 million or more to the Management Credit Committee after the credit desk.
+The demo's "Credit under authority" workflow sends credit proposals of BDT 10 million or more to the Management Credit Committee after the credit desk.
 
 ## "Where is my paper?"
 - The memo's committee panel (`GET /api/v1/memos/{id}/forum-submissions`) lists every submission, newest first, with its status, reason and target date. It shows only committees within the reader's clearance.

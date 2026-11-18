@@ -92,7 +92,7 @@ class DemoWorkflowSeeder(
     }
 
     /**
-     * Phase 4 E02 T5: credit of BDT 5 million or more goes to the Management Credit Committee after the desk, and waits for
+     * Phase 4 E02 T5: credit of BDT 10 million or more goes to the Management Credit Committee after the desk, and waits for
      * its decision before the delegation of authority. A new version, maker-checked, once the committee exists; the
      * committees are seeded first (idempotent), since the start-up seeders run in no fixed order.
      */
@@ -161,7 +161,7 @@ class DemoWorkflowSeeder(
             if (committee) {
                 """
                 {"id":"size","type":"branch","name":"By amount",
-                 "branches":[{"when":"item.amount >= $CREDIT_BAND","next":"committee"}],"otherwise":"authority"},
+                 "branches":[{"when":"item.amount >= $COMMITTEE_BAND","next":"committee"}],"otherwise":"authority"},
                 {"id":"committee","type":"$COMMITTEE_STEP","name":"Management Credit Committee",
                  "forum":"${DemoForumSeeder.CREDIT}","wait":true,"next":"authority"},
                 """.trimIndent()
@@ -222,6 +222,9 @@ class DemoWorkflowSeeder(
         const val LARGE_CREDIT = "Credit proposals of BDT 5 million or more"
         const val SMALL_CREDIT = "Credit proposals under BDT 5 million"
         const val CREDIT_BAND = "5000000.0"
+
+        /** Credit at or above this goes to the Management Credit Committee before the authority (Phase 4 E02 T5). */
+        const val COMMITTEE_BAND = "10000000.0"
         const val EVERY_MEMO = "Credit memos"
         const val DESK = "credit-desk"
         const val NAME = "Credit facility"

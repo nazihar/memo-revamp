@@ -133,7 +133,7 @@ class DemoWorkflowsIT : IntegrationTest() {
                     assertThat(checkNotNull(types.published(credit.id)).settings.definitionKey).isEqualTo(DemoWorkflowSeeder.AUTHORITY_KEY)
                     assertThat(workflowSeeding.doaRulesInForce())
                         .containsExactly(DemoWorkflowSeeder.LARGE_CREDIT, DemoWorkflowSeeder.SMALL_CREDIT, DemoWorkflowSeeder.EVERY_MEMO)
-                    // Phase 4 E02 T5: after the desk, credit of BDT 5 million or more waits for the Management Credit Committee.
+                    // Phase 4 E02 T5: after the desk, credit of BDT 10 million or more waits for the Management Credit Committee; less goes to the authority.
                     val authority = compiled.get(store.publishedVersion(DemoWorkflowSeeder.AUTHORITY_KEY))
                     assertThat(sizeLeadsTo(authority, admin, LARGE)).isEqualTo("committee")
                     assertThat(sizeLeadsTo(authority, admin, SMALL)).isEqualTo("authority")
@@ -180,8 +180,8 @@ class DemoWorkflowsIT : IntegrationTest() {
             }.next
 
     private companion object {
-        const val LARGE = 6_000_000.0
-        const val SMALL = 1_000_000.0
+        const val LARGE = 12_000_000.0
+        const val SMALL = 6_000_000.0
         val REPRESENTATIVE =
             listOf(
                 "Credit proposal" to "credit",

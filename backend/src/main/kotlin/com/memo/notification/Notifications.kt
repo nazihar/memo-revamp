@@ -92,6 +92,10 @@ enum class NotificationKind(
     // The chair commented on the draft agenda: to the secretaries, in the app only (the comment is on the meeting).
     // Parameters `committee`, `date`.
     MEETING_CHAIR_COMMENTED(NotificationCategory.WORKFLOW, null),
+
+    // A member asked to lift a consent item for discussion (design E03 §1.5): to the secretaries and the chair. Parameters
+    // `committee`, `date`, `organisation`, `link`; never the item's title (ADR-0030).
+    MEETING_DISCUSSION_REQUESTED(NotificationCategory.WORKFLOW, MailTemplate.MEETING_DISCUSSION_REQUESTED),
 }
 
 /** Who receives a notification; the producer already holds the user, so `notification` never looks people up. */

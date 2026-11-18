@@ -122,6 +122,7 @@ const kindsWithValues = defineMessages<{
   meetingAgendaChanged: { committee: string; date: string }
   meetingItemWithdrawn: { committee: string; date: string }
   meetingChairCommented: { committee: string; date: string }
+  meetingDiscussionRequested: { committee: string; date: string }
 }>({
   signInAlert: { id: 'notifications.kind.signInAlert', defaultMessage: 'New sign-in to your account from {device}' },
   roleGranted: { id: 'notifications.kind.roleGranted', defaultMessage: 'You were given the role {role}' },
@@ -205,6 +206,10 @@ const kindsWithValues = defineMessages<{
     id: 'notifications.kind.meetingChairCommented',
     defaultMessage: 'The chair commented on the agenda for {committee} on {date}',
   },
+  meetingDiscussionRequested: {
+    id: 'notifications.kind.meetingDiscussionRequested',
+    defaultMessage: 'A member asked to discuss a consent item of {committee} on {date}',
+  },
 })
 
 const kinds = defineMessages({
@@ -286,6 +291,8 @@ export function notificationText(intl: IntlShape, kind: string, params: Record<s
       return intl.formatMessage(kindsWithValues.meetingItemWithdrawn, meetingValues(params))
     case 'MEETING_CHAIR_COMMENTED':
       return intl.formatMessage(kindsWithValues.meetingChairCommented, meetingValues(params))
+    case 'MEETING_DISCUSSION_REQUESTED':
+      return intl.formatMessage(kindsWithValues.meetingDiscussionRequested, meetingValues(params))
     case 'PASSWORD_CHANGED':
       return intl.formatMessage(kinds.passwordChanged)
     case 'MFA_RESET':
@@ -345,6 +352,10 @@ const mailTemplates = defineMessages({
   MEETING_AGENDA_PUBLISHED: { id: 'mail.template.meetingAgendaPublished', defaultMessage: 'Meeting agenda published' },
   MEETING_AGENDA_CHANGED: { id: 'mail.template.meetingAgendaChanged', defaultMessage: 'Meeting agenda changed' },
   MEETING_ITEM_WITHDRAWN: { id: 'mail.template.meetingItemWithdrawn', defaultMessage: 'Item left a published agenda' },
+  MEETING_DISCUSSION_REQUESTED: {
+    id: 'mail.template.meetingDiscussionRequested',
+    defaultMessage: 'Consent item to discuss',
+  },
 })
 
 const templateMessages: Record<string, MessageDescriptor | undefined> = mailTemplates

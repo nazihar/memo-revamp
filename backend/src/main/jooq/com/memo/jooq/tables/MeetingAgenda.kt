@@ -11,14 +11,18 @@ import com.memo.jooq.keys.MEETING_AGENDA_TENANT_ID_MEETING_ID_KEY
 import com.memo.jooq.keys.MEETING_AGENDA__MEETING_AGENDA_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_AGENDA__MEETING_AGENDA_TENANT_ID_SOURCE_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_CHAIR_COMMENT__MEETING_CHAIR_COMMENT_TENANT_ID_MEETING_ID_FKEY
+import com.memo.jooq.keys.MEETING_CONSENT_REQUEST__MEETING_CONSENT_REQUEST_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_ITEM__MEETING_ITEM_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_PAPER__MEETING_PAPER_TENANT_ID_MEETING_ID_FKEY
+import com.memo.jooq.keys.MEETING_READER_STATE__MEETING_READER_STATE_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_REVISION__MEETING_REVISION_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_SECTION__MEETING_SECTION_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.tables.Meeting.MeetingPath
 import com.memo.jooq.tables.MeetingChairComment.MeetingChairCommentPath
+import com.memo.jooq.tables.MeetingConsentRequest.MeetingConsentRequestPath
 import com.memo.jooq.tables.MeetingItem.MeetingItemPath
 import com.memo.jooq.tables.MeetingPaper.MeetingPaperPath
+import com.memo.jooq.tables.MeetingReaderState.MeetingReaderStatePath
 import com.memo.jooq.tables.MeetingRevision.MeetingRevisionPath
 import com.memo.jooq.tables.MeetingSection.MeetingSectionPath
 import com.memo.jooq.tables.records.MeetingAgendaRecord
@@ -219,6 +223,22 @@ open class MeetingAgenda(
     val meetingChairComment: MeetingChairCommentPath
         get(): MeetingChairCommentPath = meetingChairComment()
 
+    private lateinit var _meetingConsentRequest: MeetingConsentRequestPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.meeting_consent_request</code> table
+     */
+    fun meetingConsentRequest(): MeetingConsentRequestPath {
+        if (!this::_meetingConsentRequest.isInitialized)
+            _meetingConsentRequest = MeetingConsentRequestPath(this, null, MEETING_CONSENT_REQUEST__MEETING_CONSENT_REQUEST_TENANT_ID_MEETING_ID_FKEY.inverseKey)
+
+        return _meetingConsentRequest;
+    }
+
+    val meetingConsentRequest: MeetingConsentRequestPath
+        get(): MeetingConsentRequestPath = meetingConsentRequest()
+
     private lateinit var _meetingItem: MeetingItemPath
 
     /**
@@ -250,6 +270,22 @@ open class MeetingAgenda(
 
     val meetingPaper: MeetingPaperPath
         get(): MeetingPaperPath = meetingPaper()
+
+    private lateinit var _meetingReaderState: MeetingReaderStatePath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.meeting_reader_state</code> table
+     */
+    fun meetingReaderState(): MeetingReaderStatePath {
+        if (!this::_meetingReaderState.isInitialized)
+            _meetingReaderState = MeetingReaderStatePath(this, null, MEETING_READER_STATE__MEETING_READER_STATE_TENANT_ID_MEETING_ID_FKEY.inverseKey)
+
+        return _meetingReaderState;
+    }
+
+    val meetingReaderState: MeetingReaderStatePath
+        get(): MeetingReaderStatePath = meetingReaderState()
 
     private lateinit var _meetingRevision: MeetingRevisionPath
 

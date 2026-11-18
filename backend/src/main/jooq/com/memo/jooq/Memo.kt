@@ -45,11 +45,14 @@ import com.memo.jooq.tables.Meeting
 import com.memo.jooq.tables.MeetingAgenda
 import com.memo.jooq.tables.MeetingAudience
 import com.memo.jooq.tables.MeetingChairComment
+import com.memo.jooq.tables.MeetingConsentRequest
 import com.memo.jooq.tables.MeetingCounter
 import com.memo.jooq.tables.MeetingGuest
 import com.memo.jooq.tables.MeetingItem
 import com.memo.jooq.tables.MeetingItemAttendee
 import com.memo.jooq.tables.MeetingPaper
+import com.memo.jooq.tables.MeetingPaperOpen
+import com.memo.jooq.tables.MeetingReaderState
 import com.memo.jooq.tables.MeetingRevision
 import com.memo.jooq.tables.MeetingRevisionItem
 import com.memo.jooq.tables.MeetingRevisionNotice
@@ -359,6 +362,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val MEETING_CHAIR_COMMENT: MeetingChairComment get() = MeetingChairComment.MEETING_CHAIR_COMMENT
 
     /**
+     * The table <code>memo.meeting_consent_request</code>.
+     */
+    val MEETING_CONSENT_REQUEST: MeetingConsentRequest get() = MeetingConsentRequest.MEETING_CONSENT_REQUEST
+
+    /**
      * The table <code>memo.meeting_counter</code>.
      */
     val MEETING_COUNTER: MeetingCounter get() = MeetingCounter.MEETING_COUNTER
@@ -382,6 +390,16 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      * The table <code>memo.meeting_paper</code>.
      */
     val MEETING_PAPER: MeetingPaper get() = MeetingPaper.MEETING_PAPER
+
+    /**
+     * The table <code>memo.meeting_paper_open</code>.
+     */
+    val MEETING_PAPER_OPEN: MeetingPaperOpen get() = MeetingPaperOpen.MEETING_PAPER_OPEN
+
+    /**
+     * The table <code>memo.meeting_reader_state</code>.
+     */
+    val MEETING_READER_STATE: MeetingReaderState get() = MeetingReaderState.MEETING_READER_STATE
 
     /**
      * The table <code>memo.meeting_revision</code>.
@@ -1046,11 +1064,14 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         MeetingAgenda.MEETING_AGENDA,
         MeetingAudience.MEETING_AUDIENCE,
         MeetingChairComment.MEETING_CHAIR_COMMENT,
+        MeetingConsentRequest.MEETING_CONSENT_REQUEST,
         MeetingCounter.MEETING_COUNTER,
         MeetingGuest.MEETING_GUEST,
         MeetingItem.MEETING_ITEM,
         MeetingItemAttendee.MEETING_ITEM_ATTENDEE,
         MeetingPaper.MEETING_PAPER,
+        MeetingPaperOpen.MEETING_PAPER_OPEN,
+        MeetingReaderState.MEETING_READER_STATE,
         MeetingRevision.MEETING_REVISION,
         MeetingRevisionItem.MEETING_REVISION_ITEM,
         MeetingRevisionNotice.MEETING_REVISION_NOTICE,

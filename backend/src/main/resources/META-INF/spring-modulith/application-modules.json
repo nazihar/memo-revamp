@@ -325,7 +325,7 @@
       "types" : [ "USES_COMPONENT" ]
     }, {
       "target" : "workflow",
-      "types" : [ "DEFAULT" ]
+      "types" : [ "EVENT_LISTENER", "USES_COMPONENT" ]
     } ],
     "displayName" : "Forum",
     "nested" : [ ],

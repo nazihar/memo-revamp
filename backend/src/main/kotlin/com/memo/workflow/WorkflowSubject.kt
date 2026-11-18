@@ -167,6 +167,8 @@ data class WorkflowEscalatedToForum(
     val stepId: String,
     val forumKey: String,
     val waitingStepId: UUID? = null,
+    /** Who raised the item: the submission's author (ADR-0059). */
+    val initiatorId: UUID? = null,
 ) : TenantScopedEvent
 
 /** A step that holds tasks was completed (design E03 §1): its decision is made and the walk went on. */

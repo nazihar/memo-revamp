@@ -7,6 +7,9 @@ import com.memo.common.tenant.TenantDsl
 import com.memo.common.tenant.TenantId
 import com.memo.common.tenant.TenantTransactions
 import com.memo.common.web.RefusedException
+import com.memo.forum.ForumSeeding
+import com.memo.forum.SeedPreset
+import com.memo.identity.UserAccounts
 import com.memo.jooq.tables.references.WORKFLOW_ACTION
 import com.memo.jooq.tables.references.WORKFLOW_DEFINITION
 import com.memo.jooq.tables.references.WORKFLOW_DEFINITION_VERSION
@@ -54,6 +57,10 @@ class DefinitionRuntimeIT : IntegrationTest() {
 
     @Autowired lateinit var json: JsonMapper
 
+    @Autowired lateinit var accounts: UserAccounts
+
+    @Autowired lateinit var forums: ForumSeeding
+
     private var tenant = TenantId(UUID(0, 0))
     private val initiator = UUID.randomUUID()
     private val reviewer = UUID.randomUUID()
@@ -86,6 +93,7 @@ class DefinitionRuntimeIT : IntegrationTest() {
 
     @Test
     fun `a review, a branch on the item's amount and an approval, then a notification and an escalation`() {
+        aBoard()
         publish("capex", branching())
         val item = UUID.randomUUID()
         subject.values[item] = mapOf("amount" to 5000)
@@ -322,6 +330,15 @@ class DefinitionRuntimeIT : IntegrationTest() {
                 .where(WORKFLOW_INSTANCE.ID.eq(instanceId))
                 .fetchOne(WORKFLOW_INSTANCE.CURRENT_STEP_NAME)
         }
+
+    /** The escalation's committee: an item cannot be sent to a committee that does not exist (ADR-0059). */
+    private fun aBoard() {
+        val email = "admin-${UUID.randomUUID().toString().take(8)}@bank.example"
+        val admin = transactions.inTenant(tenant) { accounts.create(email, "Admin", true) }
+        act(admin.id.value) {
+            forums.ensureForum("board", "BOD", "Board", "Board", forums.ensureType("BOARD", "Board", SeedPreset.BOARD))
+        }
+    }
 
     private fun <T> act(
         user: UUID,

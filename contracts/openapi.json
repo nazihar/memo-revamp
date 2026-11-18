@@ -1,6 +1,15 @@
 {
   "components" : {
     "schemas" : {
+      "AcceptRequest" : {
+        "properties" : {
+          "targetDate" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
       "ActiveRequest" : {
         "properties" : {
           "active" : {
@@ -1038,6 +1047,26 @@
           }
         },
         "required" : [ "addedAt", "addedBy", "id", "read", "recipient", "sendWhen", "sent" ],
+        "type" : "object"
+      },
+      "CoverSheetRequest" : {
+        "properties" : {
+          "presenterId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "purpose" : {
+            "enum" : [ "DECISION", "DISCUSSION", "INFORMATION" ],
+            "type" : "string"
+          },
+          "resolutionSought" : {
+            "type" : [ "string", "null" ]
+          },
+          "targetDate" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          }
+        },
         "type" : "object"
       },
       "CreateDefinitionRequest" : {
@@ -7649,6 +7678,89 @@
         },
         "type" : "object"
       },
+      "SubmissionResponse" : {
+        "properties" : {
+          "decidedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "forumId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "outcome" : {
+            "enum" : [ "APPROVED", "APPROVED_WITH_CONDITIONS", "NOTED", "REJECTED", "RETURNED" ],
+            "type" : [ "string", "null" ]
+          },
+          "presenter" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/PersonRef"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "previousId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "purpose" : {
+            "enum" : [ "DECISION", "DISCUSSION", "INFORMATION" ],
+            "type" : "string"
+          },
+          "reason" : {
+            "type" : [ "string", "null" ]
+          },
+          "resolutionSought" : {
+            "type" : [ "string", "null" ]
+          },
+          "status" : {
+            "enum" : [ "QUEUED", "ACCEPTED", "DEFERRED", "DECIDED", "RETURNED", "DECLINED", "WITHDRAWN", "REFERRED" ],
+            "type" : "string"
+          },
+          "subjectId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "subjectType" : {
+            "type" : "string"
+          },
+          "submittedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "submittedBy" : {
+            "$ref" : "#/components/schemas/PersonRef"
+          },
+          "targetDate" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "triagedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "triagedBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/PersonRef"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "version" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "waits" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "forumId", "id", "purpose", "status", "subjectId", "subjectType", "submittedAt", "submittedBy", "version", "waits" ],
+        "type" : "object"
+      },
       "SubstitutionRequest" : {
         "properties" : {
           "principalId" : {
@@ -8023,6 +8135,18 @@
           }
         },
         "required" : [ "locale", "terms" ],
+        "type" : "object"
+      },
+      "TriageRequest" : {
+        "properties" : {
+          "reason" : {
+            "type" : [ "string", "null" ]
+          },
+          "targetDate" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          }
+        },
         "type" : "object"
       },
       "UnmetCondition" : {
@@ -14440,6 +14564,400 @@
           }
         },
         "summary" : "Withdraw a membership that has not started",
+        "tags" : [ "forum" ]
+      }
+    },
+    "/api/v1/forums/{forumId}/submissions" : {
+      "get" : {
+        "operationId" : "listForumSubmissions",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "status",
+          "required" : false,
+          "schema" : {
+            "items" : {
+              "enum" : [ "QUEUED", "ACCEPTED", "DEFERRED", "DECIDED", "RETURNED", "DECLINED", "WITHDRAWN", "REFERRED" ],
+              "type" : "string"
+            },
+            "type" : "array",
+            "uniqueItems" : true
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/SubmissionResponse"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A committee's submissions, oldest first (open ones by default)",
+        "tags" : [ "forum" ]
+      }
+    },
+    "/api/v1/forums/{forumId}/submissions/{id}" : {
+      "get" : {
+        "operationId" : "getForumSubmission",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SubmissionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "One submission",
+        "tags" : [ "forum" ]
+      },
+      "patch" : {
+        "operationId" : "editForumSubmission",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CoverSheetRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SubmissionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Change a submission's cover sheet",
+        "tags" : [ "forum" ]
+      }
+    },
+    "/api/v1/forums/{forumId}/submissions/{id}/accept" : {
+      "post" : {
+        "operationId" : "acceptForumSubmission",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/AcceptRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SubmissionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Accept a submission for a meeting",
+        "tags" : [ "forum" ]
+      }
+    },
+    "/api/v1/forums/{forumId}/submissions/{id}/decline" : {
+      "post" : {
+        "operationId" : "declineForumSubmission",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TriageRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SubmissionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Decline a submission, saying why; the item goes back to its author",
+        "tags" : [ "forum" ]
+      }
+    },
+    "/api/v1/forums/{forumId}/submissions/{id}/defer" : {
+      "post" : {
+        "operationId" : "deferForumSubmission",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TriageRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SubmissionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Defer a submission, saying why",
+        "tags" : [ "forum" ]
+      }
+    },
+    "/api/v1/forums/{forumId}/submissions/{id}/refer" : {
+      "post" : {
+        "operationId" : "referForumSubmission",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ReferRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SubmissionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Refer a submission to another committee",
+        "tags" : [ "forum" ]
+      }
+    },
+    "/api/v1/forums/{forumId}/submissions/{id}/return" : {
+      "post" : {
+        "operationId" : "returnForumSubmission",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "id",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/TriageRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/SubmissionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Return a submission to its author for more information",
         "tags" : [ "forum" ]
       }
     },

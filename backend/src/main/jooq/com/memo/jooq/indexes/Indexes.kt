@@ -16,6 +16,7 @@ import com.memo.jooq.tables.FilesRendition
 import com.memo.jooq.tables.FilesVersion
 import com.memo.jooq.tables.Forum
 import com.memo.jooq.tables.ForumMember
+import com.memo.jooq.tables.ForumSubmission
 import com.memo.jooq.tables.ForumTypeVersion
 import com.memo.jooq.tables.IdentityActionToken
 import com.memo.jooq.tables.IdentityHttpSession
@@ -103,6 +104,11 @@ val FORUM_MEMBER_TERM_IDX: Index = Internal.createIndex(DSL.name("forum_member_t
 val FORUM_MEMBER_USER_IDX: Index = Internal.createIndex(DSL.name("forum_member_user_idx"), ForumMember.FORUM_MEMBER, arrayOf(ForumMember.FORUM_MEMBER.TENANT_ID, ForumMember.FORUM_MEMBER.USER_ID), false)
 val FORUM_PARENT_IDX: Index = Internal.createIndex(DSL.name("forum_parent_idx"), Forum.FORUM, arrayOf(Forum.FORUM.TENANT_ID, Forum.FORUM.PARENT_FORUM_ID), false)
 val FORUM_STATUS_IDX: Index = Internal.createIndex(DSL.name("forum_status_idx"), Forum.FORUM, arrayOf(Forum.FORUM.TENANT_ID, Forum.FORUM.STATUS), false)
+val FORUM_SUBMISSION_INSTANCE_IDX: Index = Internal.createIndex(DSL.name("forum_submission_instance_idx"), ForumSubmission.FORUM_SUBMISSION, arrayOf(ForumSubmission.FORUM_SUBMISSION.TENANT_ID, ForumSubmission.FORUM_SUBMISSION.INSTANCE_ID), false)
+val FORUM_SUBMISSION_PREVIOUS_IDX: Index = Internal.createIndex(DSL.name("forum_submission_previous_idx"), ForumSubmission.FORUM_SUBMISSION, arrayOf(ForumSubmission.FORUM_SUBMISSION.TENANT_ID, ForumSubmission.FORUM_SUBMISSION.PREVIOUS_ID), false)
+val FORUM_SUBMISSION_QUEUE_IDX: Index = Internal.createIndex(DSL.name("forum_submission_queue_idx"), ForumSubmission.FORUM_SUBMISSION, arrayOf(ForumSubmission.FORUM_SUBMISSION.TENANT_ID, ForumSubmission.FORUM_SUBMISSION.FORUM_ID, ForumSubmission.FORUM_SUBMISSION.STATUS, ForumSubmission.FORUM_SUBMISSION.SUBMITTED_AT), false)
+val FORUM_SUBMISSION_STEP_UK: Index = Internal.createIndex(DSL.name("forum_submission_step_uk"), ForumSubmission.FORUM_SUBMISSION, arrayOf(ForumSubmission.FORUM_SUBMISSION.TENANT_ID, ForumSubmission.FORUM_SUBMISSION.STEP_ID), true)
+val FORUM_SUBMISSION_SUBJECT_IDX: Index = Internal.createIndex(DSL.name("forum_submission_subject_idx"), ForumSubmission.FORUM_SUBMISSION, arrayOf(ForumSubmission.FORUM_SUBMISSION.TENANT_ID, ForumSubmission.FORUM_SUBMISSION.SUBJECT_TYPE, ForumSubmission.FORUM_SUBMISSION.SUBJECT_ID), false)
 val FORUM_TYPE_IDX: Index = Internal.createIndex(DSL.name("forum_type_idx"), Forum.FORUM, arrayOf(Forum.FORUM.TENANT_ID, Forum.FORUM.FORUM_TYPE_ID), false)
 val FORUM_TYPE_VERSION_ONE_OPEN_IDX: Index = Internal.createIndex(DSL.name("forum_type_version_one_open_idx"), ForumTypeVersion.FORUM_TYPE_VERSION, arrayOf(ForumTypeVersion.FORUM_TYPE_VERSION.TENANT_ID, ForumTypeVersion.FORUM_TYPE_VERSION.FORUM_TYPE_ID), true)
 val FORUM_TYPE_VERSION_ONE_PUBLISHED_IDX: Index = Internal.createIndex(DSL.name("forum_type_version_one_published_idx"), ForumTypeVersion.FORUM_TYPE_VERSION, arrayOf(ForumTypeVersion.FORUM_TYPE_VERSION.TENANT_ID, ForumTypeVersion.FORUM_TYPE_VERSION.FORUM_TYPE_ID), true)

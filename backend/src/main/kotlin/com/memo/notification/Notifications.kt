@@ -65,6 +65,11 @@ enum class NotificationKind(
     // office ends soon (the secretaries). Parameters `committee`, `organisation`, `link`; `member` for the term reminder.
     FORUM_MEMBERSHIP_CHANGED(NotificationCategory.ADMINISTRATION, MailTemplate.FORUM_MEMBERSHIP_CHANGED),
     FORUM_TERM_ENDING(NotificationCategory.ADMINISTRATION, MailTemplate.FORUM_TERM_ENDING),
+
+    // Submissions (Phase 4 E02, ADR-0059): a paper reached the committee (its secretaries), and it was triaged or decided
+    // (its author and presenter). Parameters `committee`, `status`, `organisation`, `link`.
+    FORUM_SUBMISSION_RECEIVED(NotificationCategory.WORKFLOW, MailTemplate.FORUM_SUBMISSION_RECEIVED),
+    FORUM_SUBMISSION_TRIAGED(NotificationCategory.WORKFLOW, MailTemplate.FORUM_SUBMISSION_TRIAGED),
 }
 
 /** Who receives a notification; the producer already holds the user, so `notification` never looks people up. */

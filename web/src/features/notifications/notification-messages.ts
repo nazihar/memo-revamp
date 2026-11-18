@@ -113,6 +113,8 @@ const kindsWithValues = defineMessages<{
   memoWatched: { reference: string; count: number; reason: string }
   forumMembershipChanged: { committee: string }
   forumTermEnding: { committee: string; member: string }
+  forumSubmissionReceived: { committee: string }
+  forumSubmissionTriaged: { committee: string }
 }>({
   signInAlert: { id: 'notifications.kind.signInAlert', defaultMessage: 'New sign-in to your account from {device}' },
   roleGranted: { id: 'notifications.kind.roleGranted', defaultMessage: 'You were given the role {role}' },
@@ -159,6 +161,14 @@ const kindsWithValues = defineMessages<{
   forumTermEnding: {
     id: 'notifications.kind.forumTermEnding',
     defaultMessage: 'The term of {member} on {committee} ends soon',
+  },
+  forumSubmissionReceived: {
+    id: 'notifications.kind.forumSubmissionReceived',
+    defaultMessage: 'A paper is waiting for {committee}',
+  },
+  forumSubmissionTriaged: {
+    id: 'notifications.kind.forumSubmissionTriaged',
+    defaultMessage: 'News from {committee} on your paper',
   },
 })
 
@@ -215,6 +225,10 @@ export function notificationText(intl: IntlShape, kind: string, params: Record<s
         committee: params.committee ?? '',
         member: params.member ?? '',
       })
+    case 'FORUM_SUBMISSION_RECEIVED':
+      return intl.formatMessage(kindsWithValues.forumSubmissionReceived, { committee: params.committee ?? '' })
+    case 'FORUM_SUBMISSION_TRIAGED':
+      return intl.formatMessage(kindsWithValues.forumSubmissionTriaged, { committee: params.committee ?? '' })
     case 'PASSWORD_CHANGED':
       return intl.formatMessage(kinds.passwordChanged)
     case 'MFA_RESET':
@@ -263,6 +277,11 @@ const mailTemplates = defineMessages({
     defaultMessage: 'Committee membership changed',
   },
   FORUM_TERM_ENDING: { id: 'mail.template.forumTermEnding', defaultMessage: 'Term of office ending' },
+  FORUM_SUBMISSION_RECEIVED: {
+    id: 'mail.template.forumSubmissionReceived',
+    defaultMessage: 'Paper sent to a committee',
+  },
+  FORUM_SUBMISSION_TRIAGED: { id: 'mail.template.forumSubmissionTriaged', defaultMessage: 'Committee news on a paper' },
 })
 
 const templateMessages: Record<string, MessageDescriptor | undefined> = mailTemplates

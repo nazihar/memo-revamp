@@ -212,6 +212,7 @@ class ActionEffects(
                         it.nodeId,
                         it.forum,
                         it.waitingStepId,
+                        outcome.state.initiator,
                     ),
                 )
             }

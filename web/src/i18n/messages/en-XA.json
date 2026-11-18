@@ -18271,6 +18271,34 @@
       "value": "]"
     }
   ],
+  "mail.template.forumSubmissionReceived": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥȧȧƥḗḗř şḗḗƞŧ ŧǿǿ ȧȧ ƈǿǿḿḿīŧŧḗḗḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.template.forumSubmissionTriaged": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿḿḿīŧŧḗḗḗḗ ƞḗḗẇş ǿǿƞ ȧȧ ƥȧȧƥḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "mail.template.forumTermEnding": [
     {
       "type": 0,
@@ -29758,6 +29786,46 @@
     {
       "type": 0,
       "value": " ƈħȧȧƞɠḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.kind.forumSubmissionReceived": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ƥȧȧƥḗḗř īş ẇȧȧīŧīƞɠ ƒǿǿř "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.kind.forumSubmissionTriaged": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞḗḗẇş ƒřǿǿḿ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƞ ẏǿǿŭŭř ƥȧȧƥḗḗř"
     },
     {
       "type": 0,

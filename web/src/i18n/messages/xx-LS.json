@@ -9987,6 +9987,18 @@
       "value": "Committee membership changedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "mail.template.forumSubmissionReceived": [
+    {
+      "type": 0,
+      "value": "Paper sent to a committeeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.forumSubmissionTriaged": [
+    {
+      "type": 0,
+      "value": "Committee news on a paperSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "mail.template.forumTermEnding": [
     {
       "type": 0,
@@ -15914,6 +15926,34 @@
     {
       "type": 0,
       "value": " changedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.forumSubmissionReceived": [
+    {
+      "type": 0,
+      "value": "A paper is waiting for "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.forumSubmissionTriaged": [
+    {
+      "type": 0,
+      "value": "News from "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on your paperSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "notifications.kind.forumTermEnding": [

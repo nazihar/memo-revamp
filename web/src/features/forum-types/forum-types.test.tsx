@@ -65,6 +65,7 @@ const published: ForumTypeVersionResponse = {
     { kind: 'NOTED', label: 'Noted', resolution: false },
   ],
   termPolicy: { termMonths: 36, maxTerms: 3, reminderDays: [42, 1] },
+  submissionPolicy: { deadlineWorkingDays: 5, lateMode: 'CHAIR_APPROVAL', triageWorkingDays: 5 },
   retention: { years: 10, from: 'MEETING' },
   createdAt: '2026-11-18T08:00:00Z',
 }
@@ -194,7 +195,12 @@ describe('committee types (Phase 4 E01 T4, flow J)', () => {
   it('a draft is edited on its tabs and saved behind its revision', async () => {
     const user = userEvent.setup()
     const matches: (string | null)[] = []
-    const bodies: { name: string; quorum: { threshold: unknown }; outcomes: { kind: string }[] }[] = []
+    const bodies: {
+      name: string
+      quorum: { threshold: unknown }
+      outcomes: { kind: string }[]
+      submissionPolicy: unknown
+    }[] = []
     server.use(
       ...handlers([draft, published]),
       http.put(`${BASE}/t1/versions/3`, async ({ request }) => {
@@ -222,6 +228,8 @@ describe('committee types (Phase 4 E01 T4, flow J)', () => {
     expect(bodies[0]?.name).toBe('Board committees')
     expect(bodies[0]?.quorum.threshold).toEqual({ kind: 'FRACTION', numerator: 2, denominator: 3 })
     expect(bodies[0]?.outcomes.map((o) => o.kind)).toEqual(['APPROVED', 'DEFERRED', 'NOTED'])
+    // The submission policy (ADR-0059) has no fields yet; a save keeps it as loaded rather than resetting it.
+    expect(bodies[0]?.submissionPolicy).toEqual(draft.submissionPolicy)
     await expectNoA11yViolations(container)
   }, 20_000)
 

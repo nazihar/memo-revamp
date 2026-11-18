@@ -133,7 +133,8 @@ class DemoWorkflowsIT : IntegrationTest() {
                     assertThat(checkNotNull(types.published(credit.id)).settings.definitionKey).isEqualTo(DemoWorkflowSeeder.AUTHORITY_KEY)
                     assertThat(workflowSeeding.doaRulesInForce())
                         .containsExactly(DemoWorkflowSeeder.LARGE_CREDIT, DemoWorkflowSeeder.SMALL_CREDIT, DemoWorkflowSeeder.EVERY_MEMO)
-                    // Phase 4 E02 T5: after the desk, credit of BDT 10 million or more waits for the Management Credit Committee; less goes to the authority.
+                    // Phase 4 E02 T5: after the desk, credit of BDT 10 million or more waits for the Management Credit Committee;
+                    // less goes to the authority.
                     val authority = compiled.get(store.publishedVersion(DemoWorkflowSeeder.AUTHORITY_KEY))
                     assertThat(sizeLeadsTo(authority, admin, LARGE)).isEqualTo("committee")
                     assertThat(sizeLeadsTo(authority, admin, SMALL)).isEqualTo("authority")

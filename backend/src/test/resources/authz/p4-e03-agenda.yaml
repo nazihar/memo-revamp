@@ -64,3 +64,15 @@ endpoints:
     rule: signedIn
     body: { notify: true }
     headers: { If-Match: "\"0\"", Idempotency-Key: "{random}" }
+  # T4: the agenda as its audience reads it, paper opens, the preview and consent requests (ADR-0061, design E03 §1.5,
+  # §1.9). Who sees which line and paper on a real agenda is PaperAccessIT (with every surface of PaperSurfaceRegistry),
+  # paper content PaperServingIT, "What changed" WhatChangedIT and the requests ConsentRequestIT.
+  - { endpoint: "GET /api/v1/meetings/{meetingId}/agenda", rule: signedIn }
+  - { endpoint: "GET /api/v1/meetings/{meetingId}/agenda/revisions", rule: signedIn }
+  - { endpoint: "POST /api/v1/meetings/{meetingId}/seen", rule: signedIn, body: { revision: 1 } }
+  - { endpoint: "GET /api/v1/meetings/{meetingId}/agenda/preview", rule: signedIn }
+  - { endpoint: "GET /api/v1/meetings/{meetingId}/papers/{paperId}/content", rule: signedIn }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/agenda/items/{itemId}/discussion-requests"
+    rule: signedIn
+    headers: { Idempotency-Key: "{random}" }
+  - { endpoint: "POST /api/v1/meetings/{meetingId}/agenda/items/{itemId}/discussion-requests/mine/withdraw", rule: signedIn }

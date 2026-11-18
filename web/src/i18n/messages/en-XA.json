@@ -28003,6 +28003,20 @@
       "value": "]"
     }
   ],
+  "mail.template.meetingDiscussionRequested": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈǿǿƞşḗḗƞŧ īŧḗḗḿ ŧǿǿ ḓīşƈŭŭşş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "mail.template.meetingItemWithdrawn": [
     {
       "type": 0,
@@ -42476,6 +42490,32 @@
     {
       "type": 0,
       "value": "Ŧħḗḗ ƈħȧȧīř ƈǿǿḿḿḗḗƞŧḗḗḓ ǿǿƞ ŧħḗḗ ȧȧɠḗḗƞḓȧȧ ƒǿǿř "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.kind.meetingDiscussionRequested": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ḿḗḗḿƀḗḗř ȧȧşķḗḗḓ ŧǿǿ ḓīşƈŭŭşş ȧȧ ƈǿǿƞşḗḗƞŧ īŧḗḗḿ ǿǿƒ "
     },
     {
       "type": 1,

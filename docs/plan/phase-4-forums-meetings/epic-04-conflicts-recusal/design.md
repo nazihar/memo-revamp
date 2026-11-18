@@ -101,6 +101,7 @@ seeTitle(u, i in r) := seeItem(u, i)
                        ∨ (forumRead(u) ∧ cleared(u, m.classification) ∧ ¬i.titleHidden ∧ i.restrictedTo is null)
 ```
 - Written once as a jOOQ `NOT EXISTS` condition inside `PaperAccess.itemCondition` and `paperCondition`, on the draft tables and the revision tables (both carry the item id and its parent's; E03 T3 keeps `parent_item_id` on `agenda_revision_item`).
+  - The hook as E03 T4 built it: `PaperExclusions.excluded(userId, item, parent)` and `excludedFromPapers(userId, item, parent)` take the item's and its parent's id columns (`Field<UUID?>`, of `meeting_item` or `meeting_revision_item`) and answer a jOOQ `Condition`; `PaperAccess` negates it in every item and paper condition, officers included. `DeclarationExclusions` answers `EXISTS (select 1 from meeting_declaration d where d.user_id = :u and d.item_id in (item, parent) and d.state in ('RECUSED', 'AWAITING_RULING'))` for both, and `NoExclusions` loses its `@Component`. The officer clause of `seeTitle` above goes into `PaperAccess.lineCondition` (E03 design §1.9 as built); the line's title then still follows `PaperAccess.titleCondition` (ADR-0061 amendment, 2026-11-18: titles only within clearance and, for members-only sections, membership).
 - It applies to everyone, officers and `forums.manage` included (E03 threat E2). A conflicted chair is not exempt.
 - It is evaluated now, not at publication: a declaration made at 09:59 hides the papers at 10:00 in every revision, old ones included.
 - **What the recused person sees of the item:**
@@ -275,7 +276,7 @@ The nature and reasons are business content: they stay in the module's tables, w
 - `MeetingCrossTenantIT` gains declarations; `RlsMetaTest` picks up the tables.
 
 ## 7. Migrations
-- **`meeting/V4__declarations.sql`** (T1), numbered after E03 T2's `meeting/V2__agenda.sql` and T3's `meeting/V3__revisions.sql`, which are in progress. If E03 adds another meeting migration before E04 T1 merges, E04 takes the next number then.
+- **`meeting/V5__declarations.sql`** (T1), numbered after E03's `meeting/V2__agenda.sql`, `V3__revisions.sql` and `V4__members_reads.sql`. (The plan first said V4; E03 T4 took V4 for the reader states, paper opens and consent requests, 2026-11-18. If E03 adds another meeting migration before E04 T1 merges, E04 takes the next free number then.)
   - The four tables of §1.9, with CHECK constraints on `intent`, `source`, `how`, `state` and the lengths.
   - Unique `(tenant_id, item_id, user_id) WHERE state <> 'WITHDRAWN'` (`ONE_OPEN`).
   - Index `(tenant_id, user_id, item_id) WHERE state IN ('RECUSED', 'AWAITING_RULING')` for the rule's anti-join.

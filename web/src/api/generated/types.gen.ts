@@ -485,6 +485,24 @@ export type ChangeRoleRequest = {
     voting?: boolean | null;
 };
 
+export type ChangedItemResponse = {
+    access: 'FULL' | 'TITLE' | 'HIDDEN';
+    flags: Array<'ADDED' | 'REMOVED' | 'MOVED' | 'RETITLED' | 'TIME_CHANGED' | 'PAPER_ADDED' | 'PAPER_REPLACED' | 'PAPER_REMOVED' | 'LATE' | 'TABLED'>;
+    id: string;
+    number?: string | null;
+    papers: Array<ChangedPaperResponse>;
+    previousNumber?: string | null;
+    removed: boolean;
+    title?: string | null;
+};
+
+export type ChangedPaperResponse = {
+    flags: Array<'ADDED' | 'REPLACED' | 'REMOVED' | 'LATE' | 'TABLED'>;
+    id: string;
+    removed: boolean;
+    title: string;
+};
+
 export type ClassificationLevel = {
     description?: string | null;
     id: string;
@@ -686,6 +704,12 @@ export type DirectoryUser = {
      * Primary position today
      */
     position?: DirectoryPositionSummary | null;
+};
+
+export type DiscussionResponse = {
+    canAsk: boolean;
+    mine: boolean;
+    requestedBy: Array<PersonResponse>;
 };
 
 export type DissolveRequest = {
@@ -1660,6 +1684,8 @@ export type MeetingResponse = {
 };
 
 export type MeetingSummaryResponse = {
+    agendaRevision?: number | null;
+    changesSinceSeen?: number | null;
     endsAt: string;
     forumCode: string;
     forumId: string;
@@ -1668,6 +1694,7 @@ export type MeetingSummaryResponse = {
     joinUrl?: string | null;
     kind: 'ORDINARY' | 'SPECIAL';
     label?: string | null;
+    lastSeenRevision?: number | null;
     localEndsAt: string;
     localStartsAt: string;
     location?: string | null;
@@ -1677,6 +1704,22 @@ export type MeetingSummaryResponse = {
     status: 'DRAFT' | 'SCHEDULED' | 'IN_PROGRESS' | 'HELD' | 'MINUTES_APPROVED' | 'CLOSED' | 'CANCELLED';
     timeZone: string;
     title?: string | null;
+};
+
+export type MemberAgendaResponse = {
+    endsAt: string;
+    lastSeenRevision?: number | null;
+    latestRevision: number;
+    meetingId: string;
+    note?: string | null;
+    preview: boolean;
+    publishedAt?: string | null;
+    revision?: number | null;
+    sections: Array<MemberSectionResponse>;
+    startsAt: string;
+    status: 'DRAFT' | 'SCHEDULED' | 'IN_PROGRESS' | 'HELD' | 'MINUTES_APPROVED' | 'CLOSED' | 'CANCELLED';
+    timeZone: string;
+    whatChanged?: WhatChangedResponse | null;
 };
 
 export type MemberAttribute = {
@@ -1695,6 +1738,38 @@ export type MemberEditRequest = {
     authority?: string | null;
     termEndsOn?: string | null;
     voting?: boolean;
+};
+
+export type MemberItemResponse = {
+    access: 'FULL' | 'TITLE' | 'HIDDEN';
+    changes: Array<'ADDED' | 'REMOVED' | 'MOVED' | 'RETITLED' | 'TIME_CHANGED' | 'PAPER_ADDED' | 'PAPER_REPLACED' | 'PAPER_REMOVED' | 'LATE' | 'TABLED'>;
+    description?: string | null;
+    discussion?: DiscussionResponse | null;
+    id: string;
+    kind: 'SUBMISSION' | 'STANDING' | 'ITEM' | 'BREAK';
+    late: 'NONE' | 'LATE' | 'TABLED';
+    localStartsAt?: string | null;
+    minutes?: number | null;
+    number?: string | null;
+    papers: Array<MemberPaperResponse>;
+    presenters: Array<PresenterResponse>;
+    previousNumber?: string | null;
+    purpose?: 'DECISION' | 'DISCUSSION' | 'INFORMATION';
+    resolutionSought?: string | null;
+    standingKind?: 'APOLOGIES' | 'DECLARATIONS' | 'PREVIOUS_MINUTES' | 'MATTERS_ARISING' | 'AOB';
+    startsAt?: string | null;
+    subItems: Array<MemberItemResponse>;
+    title?: string | null;
+};
+
+export type MemberPaperResponse = {
+    changes: Array<'ADDED' | 'REPLACED' | 'REMOVED' | 'LATE' | 'TABLED'>;
+    id: string;
+    late: 'NONE' | 'LATE' | 'TABLED';
+    opened: boolean;
+    pages?: number | null;
+    ready: boolean;
+    title: string;
 };
 
 export type MemberRequest = {
@@ -1729,6 +1804,14 @@ export type MemberResponse = {
     termNumber: number;
     version: number;
     voting: boolean;
+};
+
+export type MemberSectionResponse = {
+    id: string;
+    items: Array<MemberItemResponse>;
+    kind: 'STANDARD' | 'CONSENT';
+    membersOnly: boolean;
+    title?: string | null;
 };
 
 export type MemoDetailView = {
@@ -2517,6 +2600,14 @@ export type PublishPreviewResponse = {
     version: number;
 };
 
+export type PublishedRevisionResponse = {
+    note?: string | null;
+    notified?: boolean | null;
+    number: number;
+    publishedAt: string;
+    publishedBy?: PersonResponse | null;
+};
+
 export type QueueMemberRequest = {
     positionId?: string | null;
     userId?: string | null;
@@ -2749,6 +2840,13 @@ export type ReviewRequest = {
     remark?: string | null;
 };
 
+export type RevisionChangesResponse = {
+    items: Array<ChangedItemResponse>;
+    note?: string | null;
+    number: number;
+    publishedAt: string;
+};
+
 export type RevisionResponse = {
     note?: string | null;
     notified: boolean;
@@ -2954,6 +3052,10 @@ export type SecuritySettingsView = {
      * Send back as If-Match
      */
     version: number;
+};
+
+export type SeenRequest = {
+    revision?: number;
 };
 
 export type SendBackRequest = {
@@ -3400,6 +3502,12 @@ export type WeekThroughput = {
     completed: number;
     created: number;
     week: string;
+};
+
+export type WhatChangedResponse = {
+    count: number;
+    revisions: Array<RevisionChangesResponse>;
+    since: number;
 };
 
 export type WorkflowView = {
@@ -7451,6 +7559,26 @@ export type UpdateMeetingResponses = {
 
 export type UpdateMeetingResponse = UpdateMeetingResponses[keyof UpdateMeetingResponses];
 
+export type GetMeetingAgendaData = {
+    body?: never;
+    path: {
+        meetingId: string;
+    };
+    query?: {
+        revision?: number;
+    };
+    url: '/api/v1/meetings/{meetingId}/agenda';
+};
+
+export type GetMeetingAgendaResponses = {
+    /**
+     * OK
+     */
+    200: MemberAgendaResponse;
+};
+
+export type GetMeetingAgendaResponse = GetMeetingAgendaResponses[keyof GetMeetingAgendaResponses];
+
 export type StartAgendaData = {
     body: StartAgendaRequest;
     headers: {
@@ -7575,6 +7703,47 @@ export type UpdateAgendaItemResponses = {
 };
 
 export type UpdateAgendaItemResponse = UpdateAgendaItemResponses[keyof UpdateAgendaItemResponses];
+
+export type AskToDiscussData = {
+    body?: never;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        meetingId: string;
+        itemId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/agenda/items/{itemId}/discussion-requests';
+};
+
+export type AskToDiscussResponses = {
+    /**
+     * OK
+     */
+    200: MemberAgendaResponse;
+};
+
+export type AskToDiscussResponse = AskToDiscussResponses[keyof AskToDiscussResponses];
+
+export type WithdrawDiscussionRequestData = {
+    body?: never;
+    path: {
+        meetingId: string;
+        itemId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/agenda/items/{itemId}/discussion-requests/mine/withdraw';
+};
+
+export type WithdrawDiscussionRequestResponses = {
+    /**
+     * OK
+     */
+    200: MemberAgendaResponse;
+};
+
+export type WithdrawDiscussionRequestResponse = WithdrawDiscussionRequestResponses[keyof WithdrawDiscussionRequestResponses];
 
 export type DecideLateItemData = {
     body: LateDecisionRequest;
@@ -7730,6 +7899,26 @@ export type RemoveAgendaPaperResponses = {
 
 export type RemoveAgendaPaperResponse = RemoveAgendaPaperResponses[keyof RemoveAgendaPaperResponses];
 
+export type PreviewAgendaAsData = {
+    body?: never;
+    path: {
+        meetingId: string;
+    };
+    query: {
+        as: string;
+    };
+    url: '/api/v1/meetings/{meetingId}/agenda/preview';
+};
+
+export type PreviewAgendaAsResponses = {
+    /**
+     * OK
+     */
+    200: MemberAgendaResponse;
+};
+
+export type PreviewAgendaAsResponse = PreviewAgendaAsResponses[keyof PreviewAgendaAsResponses];
+
 export type PublishAgendaData = {
     body: PublishAgendaRequest;
     headers: {
@@ -7769,6 +7958,24 @@ export type PreviewAgendaPublicationResponses = {
 };
 
 export type PreviewAgendaPublicationResponse = PreviewAgendaPublicationResponses[keyof PreviewAgendaPublicationResponses];
+
+export type ListAgendaRevisionsData = {
+    body?: never;
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/agenda/revisions';
+};
+
+export type ListAgendaRevisionsResponses = {
+    /**
+     * OK
+     */
+    200: Array<PublishedRevisionResponse>;
+};
+
+export type ListAgendaRevisionsResponse = ListAgendaRevisionsResponses[keyof ListAgendaRevisionsResponses];
 
 export type AddAgendaSectionData = {
     body: SectionRequest;
@@ -7915,6 +8122,26 @@ export type RemoveMeetingGuestResponses = {
 
 export type RemoveMeetingGuestResponse = RemoveMeetingGuestResponses[keyof RemoveMeetingGuestResponses];
 
+export type GetMeetingPaperContentData = {
+    body?: never;
+    path: {
+        meetingId: string;
+        paperId: string;
+    };
+    query?: {
+        revision?: number;
+        kind?: 'ORIGINAL' | 'PDF';
+    };
+    url: '/api/v1/meetings/{meetingId}/papers/{paperId}/content';
+};
+
+export type GetMeetingPaperContentResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
 export type RescheduleMeetingData = {
     body: RescheduleRequest;
     headers?: {
@@ -7956,6 +8183,22 @@ export type ScheduleMeetingResponses = {
 };
 
 export type ScheduleMeetingResponse = ScheduleMeetingResponses[keyof ScheduleMeetingResponses];
+
+export type MarkAgendaSeenData = {
+    body: SeenRequest;
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/seen';
+};
+
+export type MarkAgendaSeenResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
 
 export type StartMeetingData = {
     body?: never;

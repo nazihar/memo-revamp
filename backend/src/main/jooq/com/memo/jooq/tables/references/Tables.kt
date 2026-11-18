@@ -46,11 +46,14 @@ import com.memo.jooq.tables.Meeting
 import com.memo.jooq.tables.MeetingAgenda
 import com.memo.jooq.tables.MeetingAudience
 import com.memo.jooq.tables.MeetingChairComment
+import com.memo.jooq.tables.MeetingConsentRequest
 import com.memo.jooq.tables.MeetingCounter
 import com.memo.jooq.tables.MeetingGuest
 import com.memo.jooq.tables.MeetingItem
 import com.memo.jooq.tables.MeetingItemAttendee
 import com.memo.jooq.tables.MeetingPaper
+import com.memo.jooq.tables.MeetingPaperOpen
+import com.memo.jooq.tables.MeetingReaderState
 import com.memo.jooq.tables.MeetingRevision
 import com.memo.jooq.tables.MeetingRevisionItem
 import com.memo.jooq.tables.MeetingRevisionNotice
@@ -342,6 +345,11 @@ val MEETING_AUDIENCE: MeetingAudience = MeetingAudience.MEETING_AUDIENCE
 val MEETING_CHAIR_COMMENT: MeetingChairComment = MeetingChairComment.MEETING_CHAIR_COMMENT
 
 /**
+ * The table <code>memo.meeting_consent_request</code>.
+ */
+val MEETING_CONSENT_REQUEST: MeetingConsentRequest = MeetingConsentRequest.MEETING_CONSENT_REQUEST
+
+/**
  * The table <code>memo.meeting_counter</code>.
  */
 val MEETING_COUNTER: MeetingCounter = MeetingCounter.MEETING_COUNTER
@@ -365,6 +373,16 @@ val MEETING_ITEM_ATTENDEE: MeetingItemAttendee = MeetingItemAttendee.MEETING_ITE
  * The table <code>memo.meeting_paper</code>.
  */
 val MEETING_PAPER: MeetingPaper = MeetingPaper.MEETING_PAPER
+
+/**
+ * The table <code>memo.meeting_paper_open</code>.
+ */
+val MEETING_PAPER_OPEN: MeetingPaperOpen = MeetingPaperOpen.MEETING_PAPER_OPEN
+
+/**
+ * The table <code>memo.meeting_reader_state</code>.
+ */
+val MEETING_READER_STATE: MeetingReaderState = MeetingReaderState.MEETING_READER_STATE
 
 /**
  * The table <code>memo.meeting_revision</code>.

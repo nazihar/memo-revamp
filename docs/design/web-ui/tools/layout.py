@@ -7,9 +7,10 @@ import json
 from pathlib import Path
 
 proj = Path('canvas/project')
-ROWS = [  # (desktop board, phone board, title note key, title text or None to keep)
+ROWS = [  # (desktop board, phone board or 'note:<key>' when there is none, title note key, title text or None to keep)
     ('Home', 'HomePhone', 'homeTitle', 'Home'),
     ('Main', 'Phone', 'inboxTitle', 'Inbox · My tasks'),
+    ('InboxReading', 'note:InboxReadingPhone', 'InboxReadingTitle', None),
     ('InboxWatching', 'InboxWatchingPhone', 'InboxWatchingTitle', None),
     ('InboxTeam', 'InboxTeamPhone', 'InboxTeamTitle', None),
     ('NewMemo', 'NewMemoPhone', 'newMemoTitle', None),
@@ -45,7 +46,7 @@ ROWS = [  # (desktop board, phone board, title note key, title text or None to k
 c = proj / 'canvas.json'
 d = json.loads(c.read_text())
 B, N = d['boards'], d['notes']
-listed = {r[0] + '.dc.html' for r in ROWS} | {r[1] + '.dc.html' for r in ROWS} | {'Rules.dc.html'}
+listed = {r[0] + '.dc.html' for r in ROWS} | {r[1] + '.dc.html' for r in ROWS if not r[1].startswith('note:')} | {'Rules.dc.html'}
 missing = set(B) - listed
 if missing:
     raise SystemExit(f'Add these boards to ROWS first: {sorted(missing)}')
@@ -56,10 +57,16 @@ for desk, phone, note, title in ROWS:
     if title:
         N[note]['text'] = title
     by = y + 260
-    for b in (desk, phone):
-        B[b + '.dc.html']['y'] = by
-    order += [desk + '.dc.html', phone + '.dc.html']
-    y = by + max(B[desk + '.dc.html'].get('h', 900), B[phone + '.dc.html'].get('h', 844)) + 360
+    B[desk + '.dc.html']['y'] = by
+    order.append(desk + '.dc.html')
+    if phone.startswith('note:'):  # no phone board: a note sits in its place
+        N[phone[5:]]['y'], N[phone[5:]]['x'] = by, 1520
+        ph = 0
+    else:
+        B[phone + '.dc.html']['y'] = by
+        order.append(phone + '.dc.html')
+        ph = B[phone + '.dc.html'].get('h', 844)
+    y = by + max(B[desk + '.dc.html'].get('h', 900), ph) + 360
 d['order'] = order + ['Rules.dc.html']
 c.write_text(json.dumps(d, ensure_ascii=False, separators=(',', ':')))
 print(f'{len(ROWS)} rows laid out')

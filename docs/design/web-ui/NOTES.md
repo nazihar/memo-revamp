@@ -21,6 +21,11 @@ Watching (GET /api/v1/inbox/watching)
 Any request (all of /api/v1)
 9. Session ended — when a session has ended (timed out, signed out elsewhere, or ended from My security), answer 401 with a problem reason that says so, e.g. SESSION_ENDED, so the app shows “You were signed out” instead of “Something went wrong”.
 
+Last seen (memo view, inbox, watching)
+10. Last seen — record when a person opens a memo (per person, per memo). The memo view returns lastSeenAt and what changed since: resubmission and its remark, document versions, attachments added, notes added, and the person's own last action (e.g. their return remark).
+11. Unread — inbox task and watching items carry unread: true when the memo has news since the person last opened it. Opening the memo clears it.
+Next task and the reading pane need nothing new: they follow the inbox order the client already has, fetching the next page by cursor when needed.
+
 ## Behaviour notes
 
 • Team tab appears only for people who oversee a unit (as today); everyone else sees five tabs.
@@ -30,6 +35,11 @@ Any request (all of /api/v1)
 • Show more loads the next batch by cursor; 50 per batch on desktop, 25 on phones.
 • Forms validate in the app (TanStack Form), never with browser HTML validation: noValidate on every form, our own messages under the field, focus to the first error, submit stays enabled.
 • New states the app does not handle yet: Page not found (unknown address), Connection lost (offline bar) and Signed out (session ended mid-task). See the Page states row.
+• Next task: “Open my next task after this” sits in every decision dialog, on by default and remembered per person. It follows My tasks in its current sort and filters, and skips restricted and blocked tasks. After the last one: “That was your last task: My tasks is clear.” and back to Inbox.
+• Opened from My tasks, the memo header shows “1 of 7 in My tasks” with previous and next (J and K).
+• Since you last looked: shown on a memo you have opened before when something changed. It starts with what you asked for last time, then resubmission, document versions (with Compare), attachments and new notes. Notes added since your last visit carry a “New” tag on the note sheet.
+• Unread: a blue dot and a heavier subject on My tasks and Watching rows; screen readers hear “Unread”. Opening the memo clears it.
+• Reading pane: at 1400px and wider, the Inbox shows the list and the selected memo side by side, with the same decision buttons. Narrower screens and phones keep list → page.
 
 ## Build note
 

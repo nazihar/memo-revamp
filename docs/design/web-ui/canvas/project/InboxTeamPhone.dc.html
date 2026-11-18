@@ -124,7 +124,7 @@ button{font-family:inherit}
               <sc-if value="{{r.open}}" hint-placeholder-val="{{true}}">
                 <a href="#" style="display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; text-decoration: none; color: var(--fg)">
                   <span style="display: flex; align-items: flex-start; gap: 8px">
-                    <span style="flex: 1; min-width: 0; font-weight: 500; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden">{{r.subject}}</span>
+                    <sc-if value="{{r.unread}}" hint-placeholder-val="{{false}}"><span style="display: flex; align-items: center; height: 20px"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: var(--info-fg); flex-shrink: 0"></span><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Unread: </span></span></sc-if><span style="flex: 1; min-width: 0; font-weight: {{r.subjectWeight}}; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden">{{r.subject}}</span>
                     <sc-if value="{{r.overdue}}" hint-placeholder-val="{{false}}">
                       <span style="flex-shrink: 0; display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; background: var(--destructive); color: var(--on-destructive); font-size: 12px; font-weight: 500">{{r.dueShort}}</span>
                     </sc-if>
@@ -189,7 +189,7 @@ button{font-family:inherit}
               </sc-if>
               <a href="{{r.href}}" style="display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; text-decoration: none; color: var(--fg)">
                 <span style="display: flex; align-items: flex-start; gap: 8px">
-                  <span style="flex: 1; min-width: 0; font-weight: 500; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden">{{r.subject}}</span>
+                  <sc-if value="{{r.unread}}" hint-placeholder-val="{{false}}"><span style="display: flex; align-items: center; height: 20px"><span aria-hidden="true" style="width: 8px; height: 8px; border-radius: 50%; background: var(--info-fg); flex-shrink: 0"></span><span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Unread: </span></span></sc-if><span style="flex: 1; min-width: 0; font-weight: {{r.subjectWeight}}; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden">{{r.subject}}</span>
                   <span style="flex-shrink: 0; {{r.chipStyle}}">{{r.status}}</span>
                 </span>
                 <span style="font-size: 12px; line-height: 16px; color: var(--muted-fg); font-family: 'Geist Mono', ui-monospace, monospace">{{r.ref}}</span>
@@ -388,10 +388,10 @@ class Component extends DCLogic {
   data() {
     return [
       { id: 't1', subject: 'Credit line renewal for Meghna Agro', ref: 'CR/2026/0142', action: 'Approve', type: 'Credit proposal', from: 'Tanvir Ahmed', received: '16 Nov, 14:20', receivedShort: 'Yesterday', dueShort: 'Overdue 1d', dueKind: 'overdue' },
-      { id: 't2', subject: 'Credit Risk unit budget, FY2027', ref: 'FIN/2026/0326', action: 'Approve', type: 'Budget request', from: 'Nasrin Akter', received: '16 Nov, 10:05', receivedShort: 'Yesterday', dueShort: 'Tomorrow', dueKind: 'soon', note: 'Acting for N. Jahan' },
-      { id: 't3', subject: 'Vendor onboarding: core banking support services', ref: 'PRC/2026/0087', action: 'Give opinion', type: 'Procurement', from: 'Rafiq Chowdhury', received: '15 Nov, 16:42', receivedShort: '2 days ago', dueShort: 'In 3 days', dueKind: 'later' },
+      { unread: true, id: 't2', subject: 'Credit Risk unit budget, FY2027', ref: 'FIN/2026/0326', action: 'Approve', type: 'Budget request', from: 'Nasrin Akter', received: '16 Nov, 10:05', receivedShort: 'Yesterday', dueShort: 'Tomorrow', dueKind: 'soon', note: 'Acting for N. Jahan' },
+      { unread: true, id: 't3', subject: 'Vendor onboarding: core banking support services', ref: 'PRC/2026/0087', action: 'Give opinion', type: 'Procurement', from: 'Rafiq Chowdhury', received: '15 Nov, 16:42', receivedShort: '2 days ago', dueShort: 'In 3 days', dueKind: 'later' },
       { id: 't6', subject: 'Staff loan exception — branch operations', ref: 'HR/2026/0129', action: 'Approve', type: 'HR request', from: 'Imran Hossain', received: '14 Nov, 11:02', receivedShort: '3 days ago', dueShort: 'In 4 days', dueKind: 'later', note: 'Shared' },
-      { id: 't7', subject: 'ATM fleet replacement, phase 2', ref: 'FIN/2026/0298', action: 'Recommend', type: 'Capital expenditure', from: 'Mahmud Karim', received: '13 Nov, 15:47', receivedShort: '4 days ago', dueShort: '28 Nov', dueKind: 'later', note: 'Claimed by you' },
+      { unread: true, id: 't7', subject: 'ATM fleet replacement, phase 2', ref: 'FIN/2026/0298', action: 'Recommend', type: 'Capital expenditure', from: 'Mahmud Karim', received: '13 Nov, 15:47', receivedShort: '4 days ago', dueShort: '28 Nov', dueKind: 'later', note: 'Claimed by you' },
       { id: 't8', subject: 'Internal audit plan 2027', ref: 'AUD/2026/0021', action: 'Approve', type: 'Audit', from: 'Shirin Akter', received: '12 Nov, 13:10', receivedShort: '5 days ago', dueShort: '2 Dec', dueKind: 'later' },
       { id: 't4', subject: 'Remote access standard, revision 4', ref: 'IT/2026/0054', action: 'Answer', type: 'Policy', from: 'Nusrat Jahan', received: '15 Nov, 09:18', receivedShort: '2 days ago', dueShort: '', dueKind: 'none' },
       { id: 't5', restricted: true, received: '14 Nov, 17:30', dueKind: 'none' }
@@ -415,6 +415,7 @@ class Component extends DCLogic {
         open: !d.restricted,
         restricted: !!d.restricted,
         hasNote: !!d.note,
+        unread: !!d.unread, subjectWeight: d.unread ? '600' : '500',
         isApprove: d.action === 'Approve',
         isRecommend: d.action === 'Recommend',
         isOpinion: d.action === 'Give opinion',
@@ -470,9 +471,9 @@ class Component extends DCLogic {
     };
     const reasons = { MANUAL: 'You watch it', INITIATED: 'You started it', ACTED: 'You acted on it', MENTIONED: 'You were mentioned' };
     const watching = [
-      { id: 'w1', subject: 'Agro sector exposure limits', ref: 'RSK/2026/0012', status: 'In review', reason: 'MANUAL', since: '17 Nov, 16:20', sinceShort: '17 Nov', href: '#' },
+      { unread: true, id: 'w1', subject: 'Agro sector exposure limits', ref: 'RSK/2026/0012', status: 'In review', reason: 'MANUAL', since: '17 Nov, 16:20', sinceShort: '17 Nov', href: '#' },
       { id: 'w2', subject: 'Credit line renewal for Meghna Agro', ref: 'CR/2026/0142', status: 'In review', reason: 'ACTED', since: '14 Nov, 10:02', sinceShort: '14 Nov', href: 'Memo.dc.html' },
-      { id: 'w3', subject: 'Vendor onboarding: core banking support services', ref: 'PRC/2026/0087', status: 'In review', reason: 'MENTIONED', since: '13 Nov, 08:42', sinceShort: '13 Nov', href: '#' },
+      { unread: true, id: 'w3', subject: 'Vendor onboarding: core banking support services', ref: 'PRC/2026/0087', status: 'In review', reason: 'MENTIONED', since: '13 Nov, 08:42', sinceShort: '13 Nov', href: '#' },
       { id: 'w4', subject: 'Branch network review, Sylhet region', ref: 'RB/2026/0061', status: 'Returned', reason: 'INITIATED', since: '10 Nov, 15:30', sinceShort: '10 Nov', href: 'Returned.dc.html' },
       { id: 'w5', subject: 'Treasury limits for FY2027', ref: 'TRY/2026/0019', status: 'Approved', reason: 'ACTED', since: '6 Nov, 11:15', sinceShort: '6 Nov', href: 'Approved.dc.html' },
       { id: 'w6', subject: 'Q4 branch expansion budget', ref: 'FIN/2026/0311', status: 'Rejected', reason: 'MANUAL', since: '11 Nov, 09:40', sinceShort: '11 Nov', href: 'Rejected.dc.html' },
@@ -512,7 +513,7 @@ class Component extends DCLogic {
         toggleAll: () => { const nx = Object.assign({}, tsel); ids.forEach((id) => { nx[id] = !all; }); this.setState({ sel: nx }); }
       };
     };
-    const w = listOf(watching, (d) => ({ chipStyle: chipBase + tones[d.status], reason: reasons[d.reason] }), 'watched memos');
+    const w = listOf(watching, (d) => ({ chipStyle: chipBase + tones[d.status], reason: reasons[d.reason], unread: !!d.unread, subjectWeight: d.unread ? '600' : '500' }), 'watched memos');
     const t = listOf(team, (d) => ({
       open: !d.restricted, restricted: !!d.restricted,
       initials: d.holder.split(' ').map((p) => p[0]).join(''),

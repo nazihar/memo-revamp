@@ -246,6 +246,7 @@ button{font-family:inherit}
           <li>Top bar 48px: navigation toggle, search, then bell and account at the right.</li>
           <li>Bell: a dot while anything is unread. On desktop it opens a dropdown of the five latest notifications with Mark all as read, See all and settings; on phones it opens the Notifications page.</li>
           <li>No breadcrumbs on top-level pages. Deeper pages show a "‹ Back" link above the title.</li>
+          <li>At 1400px and wider the Inbox gets a reading pane: list on the left (380px), the selected memo on the right with its decision bar. Below that, and on phones, a memo opens as its own page.</li>
           <li>Phones: every top-level page (Home, Inbox, Search, Notifications, Saved searches, Dashboard, Status, Organisation) has the same top bar with the menu button. Only pages opened from a list (a memo, a new memo, a draft) show a back button, and it returns to that list.</li>
           <li>Account menu holds My security, Notification settings, Language, Theme and Sign out.</li>
         </ul>
@@ -268,6 +269,7 @@ button{font-family:inherit}
         <li>Tabs, always these and always in this order: <strong>Overview, Note sheet, Attachments, Linked memos, History</strong>. Counts only on tabs that have items; an empty tab says what will appear there.</li>
         <li>Overview starts with what the reader came for: the decision to make, the final record, or the reason it was rejected. Then the document and the details.</li>
         <li>The right column holds the task or the approvals, then people and access. Nothing else. For the initiator of a memo in review, the task card becomes “Waiting for approval”: who has it now, Recall while nobody has acted in the round, and Withdraw.</li>
+        <li>A memo you have opened before starts its overview with “Since you last looked” when anything changed. Opened from My tasks, its header shows the position (“1 of 7”) with previous and next, and every decision dialog offers “Open my next task after this”.</li>
         <li>Only the draft uses stacked sections instead of tabs, because the document, approvers and details must be visible together while preparing it.</li>
         <li>Imported memos follow the same layout with what they have: tabs Overview, Original documents, Linked memos, History; a neutral “not verified by this system” bar; legacy approvals in the right column. No note sheet, decisions or final record.</li>
         <li>On phones every memo page is one column: header, the main card, then rows that open the note sheet, attachments, linked memos and history.</li>
@@ -331,6 +333,7 @@ button{font-family:inherit}
           <li>Desktop: a table in a bordered box; 40px header in muted text; rows two lines at most (title, then reference · round in 12px).</li>
           <li>The whole row opens the item; checkboxes and "⋯" do not.</li>
           <li>Load more with <strong>Show more</strong> (cursor). Never page numbers or rows-per-page.</li>
+          <li>Unread rows: a blue dot before the subject and a semibold subject, with “Unread” for screen readers. Never colour alone.</li>
           <li>Codes (sign-in, step-up, setting up the authenticator) are six boxes in two groups of three (InputOTP). One real input underneath takes typing, paste and the phone’s one-time-code autofill; the boxes only show it.</li>
           <li>States: skeletons, not spinners, in the shape of what is loading. Empty says what will appear and offers the one action that fills it; with filters on, offer Clear filters. Errors give a plain title, the reference for support and Try again; if only one section fails, only that section shows it. A missing memo and one you may not see read the same: “This memo does not exist, or you cannot see it.” See the Page states row.</li>
           <li>Every page uses the full content width: lists, settings (My security, Notification settings), dashboards. The one exception is a page that is a single form from top to bottom (New memo), capped at 760px. Inside full-width pages, single fields keep their own sensible width (about 360px) instead of stretching.</li>

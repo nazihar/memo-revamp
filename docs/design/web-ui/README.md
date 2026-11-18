@@ -10,7 +10,7 @@ A redesign of the web app's user-facing screens: every non-admin route, desktop 
 ```
 canvas/project/      The design itself: what the live canvas holds
   canvas.json        Board positions, sizes, titles, the side notes and the canvas pages
-  *.dc.html          One board each: 32 screens × desktop and phone, plus Rules.dc.html (the design rules page)
+  *.dc.html          One board each: 33 screens, desktop and phone, plus Rules.dc.html (the design rules page)
 tools/               Python scripts and HTML fragments that produced or changed the boards
 NOTES.md             The canvas side notes as text: API changes the design needs, behaviour notes, build note
 ```
@@ -25,7 +25,7 @@ In canvas order (`tools/layout.py`):
 
 | Group | Boards |
 |---|---|
-| Start | Home, Inbox · My tasks (`Main`, `Phone`), Inbox · Watching, Inbox · Team |
+| Start | Home, Inbox · My tasks (`Main`, `Phone`), Inbox with reading pane (`InboxReading`, desktop only), Inbox · Watching, Inbox · Team |
 | A memo's life | New memo, Draft, Your memo in review (`Sent`), Memo in review for an approver (`Memo`), Returned, Approved, Closed, Rejected, Withdrawn, Cancelled, Discarded, Imported, Document |
 | Memo pieces | Memo page parts (`MemoParts`), Memo dialogs (`MemoDialogs`), Confirm it is you (`StepUp`) |
 | Finding things | Search, Saved searches (`Saved`), Notifications, Approvals dashboard (`Dashboard`) |
@@ -34,7 +34,7 @@ In canvas order (`tools/layout.py`):
 | Platform | Platform status (`Status`), Page states (`States`) |
 | Administration | Open tasks (`Tasks`); the remaining admin pages are not designed yet |
 
-Each desktop board `X.dc.html` has a phone board `XPhone.dc.html`, except `Main`/`Phone`.
+Each desktop board `X.dc.html` has a phone board `XPhone.dc.html`, except `Main` (its phone board is `Phone`) and `InboxReading` (wide screens only; a note stands in its phone column).
 
 ## Changing the design
 
@@ -48,7 +48,7 @@ python3 tools/smoke.py Memo.dc.html '{}' '{"props":{"errors":true}}'
 
 Each extra argument is a JSON object `{"props": {...}, "state": {...}}` to render with. Reports of `false,true` are the template's own placeholder hints; other names listed as missing are worth a look. A hole inside a closed `<sc-if>` can show as missing harmlessly.
 
-**Add a board:** add its entry to `canvas/project/canvas.json` (`boards`, a title note in `notes`, and `order`), add its row to `ROWS` in `tools/layout.py`, then run `python3 tools/layout.py`.
+**Add a board:** add its entry to `canvas/project/canvas.json` (`boards`, a title note in `notes`, and `order`), add its row to `ROWS` in `tools/layout.py` (use `'note:<key>'` in the phone slot for a desktop-only board), then run `python3 tools/layout.py`.
 
 ## Regenerating
 
@@ -71,7 +71,7 @@ cd docs/design/web-ui
 python3 tools/dialogs_gallery.py && python3 tools/otp.py && python3 tools/layout.py
 ```
 
-The one-time scripts, roughly in the order they ran: `theme.py` (tokens and dark mode), `tabs.py`, `bell.py`, `phoneshell.py`, `tasks.py`, `dialogs.py`, `savedialog.py`, `auth.py`, `orgnav.py`, `orgfix.py`, `orgphone.py`, `position.py`, `ended.py`, `sent.py`, `closed.py`, `inbox_tabs.py`, `states.py`, `access_swap.py`, `review_fix.py`. The `*-body.html`, `*-fields.html` and `*-logic.js` files are fragments they assembled.
+The one-time scripts, roughly in the order they ran: `theme.py` (tokens and dark mode), `tabs.py`, `bell.py`, `phoneshell.py`, `tasks.py`, `dialogs.py`, `savedialog.py`, `auth.py`, `orgnav.py`, `orgfix.py`, `orgphone.py`, `position.py`, `ended.py`, `sent.py`, `closed.py`, `inbox_tabs.py`, `states.py`, `access_swap.py`, `review_fix.py`, `ux_next_unread.py` (next task, “Since you last looked”, unread markers), `reading_pane.py` (builds `InboxReading` from the Inbox board). The `*-body.html`, `*-fields.html` and `*-logic.js` files are fragments they assembled.
 
 ## Publishing to the canvas
 
@@ -88,4 +88,4 @@ If someone changed a board on the canvas since this snapshot, read it from the c
 - Use shadcn/ui components in `web/src/components/ui` for every control. Add missing ones with `npx shadcn@latest add <name>`. The boards are hand-written HTML only because the canvas cannot run React; do not copy their inline styles.
 - Validation is done by the form (TanStack Form), never by the browser: `noValidate` on forms, our own messages under the field, focus moves to the first error, and the submit button stays enabled.
 - Wording on the boards comes from the app's message catalogues where they exist. Copy the boards introduced is marked on the boards themselves (for example "New, not in the app yet" on Page states) and in `NOTES.md`.
-- `NOTES.md` lists the API changes the design needs (items 1–9) and the behaviour the boards assume.
+- `NOTES.md` lists the API changes the design needs (items 1–11) and the behaviour the boards assume.

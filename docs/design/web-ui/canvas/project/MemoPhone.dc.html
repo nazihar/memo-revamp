@@ -77,6 +77,35 @@ textarea{font-family:inherit}
       <!-- Overview -->
       <sc-if value="{{isOverview}}" hint-placeholder-val="{{true}}">
         <div style="display: flex; flex-direction: column; gap: 12px">
+          <section aria-labelledby="since-h" style="border: 1px solid var(--border-strong); border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+                <div style="display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 4px 8px">
+                  <h2 id="since-h" style="margin: 0; font-size: 14px; font-weight: 600">Since you last looked</h2>
+                  <span style="font-size: 12px; color: var(--muted-fg)">10 Nov, when you returned it</span>
+                </div>
+                <div style="padding: 8px 10px; border-radius: 8px; background: var(--subtle); font-size: 13px; color: var(--text-1)"><span style="color: var(--muted-fg)">You asked:</span> “Please attach a collateral valuation not older than six months.”</div>
+                <div style="display: flex; flex-direction: column">
+                <div style="display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-top: 1px solid var(--hover)">
+                  <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 6px; background: var(--info-bg); color: var(--info-fg); flex-shrink: 0"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m17 2 4 4-4 4"></path><path d="M3 11v-1a4 4 0 0 1 4-4h14"></path><path d="m7 22-4-4 4-4"></path><path d="M21 13v1a4 4 0 0 1-4 4H3"></path></svg></span>
+                  <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px"><span style="font-size: 13px; font-weight: 500">Resubmitted by Tanvir Ahmed · 14 Nov, 16:05</span><span style="font-size: 12px; color: var(--muted-fg)">“Added the revised collateral valuation as requested.”</span></span>
+                  
+                </div>
+                <div style="display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-top: 1px solid var(--hover)">
+                  <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 6px; background: var(--info-bg); color: var(--info-fg); flex-shrink: 0"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path></svg></span>
+                  <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px"><span style="font-size: 13px; font-weight: 500">Document: version 2 → version 3</span><span style="font-size: 12px; color: var(--muted-fg)">2 changes</span></span>
+                  <button type="button" class="ghost" style="flex-shrink: 0; height: 40px; padding: 0 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer">Compare</button>
+                </div>
+                <div style="display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-top: 1px solid var(--hover)">
+                  <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 6px; background: var(--info-bg); color: var(--info-fg); flex-shrink: 0"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"></path></svg></span>
+                  <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px"><span style="font-size: 13px; font-weight: 500">Attachment added</span><span style="font-size: 12px; color: var(--muted-fg)">Panel valuation report, October 2026.pdf</span></span>
+                  <button type="button" class="ghost" style="flex-shrink: 0; height: 40px; padding: 0 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer">Preview</button>
+                </div>
+                <div style="display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-top: 1px solid var(--hover)">
+                  <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 6px; background: var(--info-bg); color: var(--info-fg); flex-shrink: 0"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></span>
+                  <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 1px"><span style="font-size: 13px; font-weight: 500">3 new notes</span><span style="font-size: 12px; color: var(--muted-fg)">Mahmud Karim and Sadia Islam recommended it</span></span>
+                  <button type="button" class="ghost" onClick="{{goNotes}}" style="flex-shrink: 0; height: 40px; padding: 0 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer">Read</button>
+                </div>
+                </div>
+              </section>
           <section aria-labelledby="pdoc-h" style="display: flex; flex-direction: column; gap: 10px; padding: 12px; border: 1px solid var(--border); border-radius: 10px">
             <div style="display: flex; align-items: center; gap: 10px">
               <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; background: var(--info-bg); color: var(--info-fg); flex-shrink: 0">
@@ -151,6 +180,7 @@ textarea{font-family:inherit}
                   <span style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 13px">
                     <span style="font-weight: 500">{{n.author}}</span>
                     <span style="display: inline-flex; align-items: center; height: 18px; padding: 0 6px; border-radius: 6px; background: var(--muted); font-size: 11px; font-weight: 500">{{n.action}}</span>
+                    <sc-if value="{{n.isNew}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; height: 18px; padding: 0 6px; border-radius: 6px; background: var(--info-bg); color: var(--info-fg); font-size: 11px; font-weight: 600">New</span></sc-if>
                     <span style="color: var(--muted-fg)">{{n.time}}</span>
                   </span>
                   <span style="font-size: 12px; color: var(--muted-fg)">{{n.position}}</span>
@@ -299,15 +329,28 @@ textarea{font-family:inherit}
         <label for="pdlg-remark" style="font-size: 14px; font-weight: 500">{{dlg.label}}</label>
         <textarea id="pdlg-remark" rows="4" placeholder="{{dlg.placeholder}}" style="width: 100%; box-sizing: border-box; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-size: 16px; line-height: 22px; color: var(--fg); resize: none; outline: none"></textarea>
       </div>
+      <label style="display: flex; align-items: flex-start; gap: 10px; min-height: 44px; font-size: 14px; cursor: pointer">
+          <input type="checkbox" checked="{{nextOn}}" onChange="{{toggleNext}}" style="margin: 2px 0 0; width: 18px; height: 18px; accent-color: var(--primary); flex-shrink: 0">
+          <span style="display: flex; flex-direction: column; gap: 2px"><span style="font-weight: 500">Open my next task after this</span><span style="font-size: 12px; color: var(--muted-fg)">{{nextHint}}</span></span>
+        </label>
       <div style="display: flex; flex-direction: column; gap: 8px">
-        <button type="button" onClick="{{closeDialog}}" style="{{dlg.btnStyle}}">{{dlg.confirm}}</button>
+        <button type="button" onClick="{{confirmDecision}}" style="{{dlg.btnStyle}}">{{dlg.confirm}}</button>
         <button type="button" class="ghost" onClick="{{closeDialog}}" style="height: 44px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); font-size: 15px; font-weight: 500; color: var(--fg)">Cancel</button>
       </div>
     </div>
   </sc-if>
+  <sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}">
+    <div role="status" style="position: absolute; left: 12px; right: 12px; bottom: 76px; z-index: 40; display: flex; flex-direction: column; align-items: stretch; gap: 8px 14px; padding: 10px 12px 10px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--bg); box-shadow: 0 10px 30px rgba(0,0,0,0.15); font-size: 14px">
+      <span style="flex: 1">{{toast}}</span>
+      <span style="display: flex; gap: 8px">
+        <sc-if value="{{toastNext}}" hint-placeholder-val="{{false}}"><button type="button" class="ghost" onClick="{{dismissToast}}" style="height: 40px; padding: 0 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer">Open next task</button></sc-if>
+        <a href="Phone.dc.html" style="display: inline-flex; align-items: center; height: 40px; padding: 0 10px; border-radius: 6px; color: var(--fg); font-size: 13px; font-weight: 500">Back to Inbox</a>
+      </span>
+    </div>
+  </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"$preview":{"width":390,"height":844}}'>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"queue":{"editor":"enum","options":["more","last"],"default":"more"},"$preview":{"width":390,"height":844}}'>
 class Component extends DCLogic {
   renderVals() {
     const st = this.state || {};
@@ -366,6 +409,8 @@ class Component extends DCLogic {
       statusStyle: 'font-size: 12px; line-height: 16px; margin-top: 2px; ' + (s.state === 'current' ? 'color: var(--danger-fg); font-weight: 500' : 'color: var(--muted-fg)')
     }));
 
+    rounds[0].notes = rounds[0].notes.map((x) => Object.assign({}, x, { isNew: true }));
+    rounds.slice(1).forEach((r) => { r.notes = r.notes.map((x) => Object.assign({}, x, { isNew: false })); });
     const attachments = [
       { title: 'Panel valuation report, October 2026.pdf', meta: 'PDF · 1.8 MB', restricted: false },
       { title: 'Audited financial statements FY2025.pdf', meta: 'PDF · 4.2 MB', restricted: false },
@@ -399,9 +444,28 @@ class Component extends DCLogic {
       reject: { title: 'Reject CR/2026/0142?', desc: 'The memo ends here. Say why.', label: 'Remark *', placeholder: 'Why it is rejected…', confirm: 'Reject', btnStyle: dangerBtn, btnClass: 'danger' }
     };
     const closeDialog = () => this.setState({ dialog: '' });
+
+    // Next task and 'since you last looked' (UX additions).
+    const queueLast = this.props.queue === 'last';
+    const nextOn = st.nextOn !== undefined ? st.nextOn : true;
+    const pastTense = { approve: 'Approved', ret: 'Returned', reject: 'Rejected' };
+    const ux = {
+      nextOn: nextOn,
+      toggleNext: () => this.setState({ nextOn: !nextOn }),
+      nextHint: queueLast ? 'This is your last task in My tasks.' : 'Next: Credit Risk unit budget, FY2027 (2 of 7 in My tasks)',
+      confirmDecision: () => {
+        const verb = pastTense[dialog] || 'Done';
+        const msg = verb + ' CR/2026/0142. ' + (queueLast ? 'That was your last task: My tasks is clear.' : (nextOn ? 'Opening your next task: Credit Risk unit budget, FY2027.' : ''));
+        this.setState({ dialog: '', toast: msg.trim(), toastNext: !nextOn && !queueLast });
+      },
+      hasToast: !!st.toast, toast: st.toast || '', toastNext: !!st.toastNext,
+      dismissToast: () => this.setState({ toast: '' }),
+      prevLabel: 'No previous task: this is the first',
+      nextLabel: 'Next task: Credit Risk unit budget, FY2027'
+    };
     const closeMore = () => this.setState({ moreOpen: false });
 
-    return {
+    return Object.assign(ux, {
       themeClass: (this.state && this.state.theme) || this.props.theme || 'system',
       tabs: tabs,
       isOverview: tab === 'overview',
@@ -433,7 +497,7 @@ class Component extends DCLogic {
       openMore: () => this.setState({ moreOpen: true }),
       closeMore: closeMore,
       moreKey: (ev) => { if (ev && ev.key === 'Escape') closeMore(); }
-    };
+    });
   }
 }
 </script>

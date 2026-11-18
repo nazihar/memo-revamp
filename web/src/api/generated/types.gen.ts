@@ -121,6 +121,7 @@ export type AgendaItemRequest = {
 export type AgendaItemResponse = {
     attendees: Array<PersonResponse>;
     classificationId: string;
+    declarations: Array<DeclarationLineResponse>;
     description?: string | null;
     id: string;
     kind: 'SUBMISSION' | 'STANDING' | 'ITEM' | 'BREAK';
@@ -129,6 +130,7 @@ export type AgendaItemResponse = {
     memoId?: string | null;
     memoReference?: string | null;
     minutes?: number | null;
+    myDeclaration?: DeclarationResponse | null;
     number?: string | null;
     outOfPack: Array<PackFileResponse>;
     papers: Array<AgendaPaperResponse>;
@@ -628,6 +630,48 @@ export type CycleTime = {
     medianDays: number;
     p90Days: number;
     type: Named;
+};
+
+export type DeclarationLineResponse = {
+    id: string;
+    intent: 'LEAVE' | 'ASK_CHAIR';
+    state: 'RECUSED' | 'AWAITING_RULING' | 'TAKING_PART' | 'WITHDRAWN';
+    user: PersonResponse;
+};
+
+export type DeclarationRequest = {
+    how?: 'IN_APP' | 'SYSTEM' | 'AT_MEETING' | 'IN_PERSON' | 'EMAIL' | 'PHONE';
+    howNote?: string | null;
+    intent?: 'LEAVE' | 'ASK_CHAIR';
+    nature?: string | null;
+    onBehalfOf?: string | null;
+    reason?: string | null;
+};
+
+export type DeclarationResponse = {
+    atMeeting: boolean;
+    correction: boolean;
+    declaredAt: string;
+    how: 'IN_APP' | 'SYSTEM' | 'AT_MEETING' | 'IN_PERSON' | 'EMAIL' | 'PHONE';
+    howNote?: string | null;
+    id: string;
+    intent: 'LEAVE' | 'ASK_CHAIR';
+    itemId: string;
+    itemNumber?: string | null;
+    itemTitle?: string | null;
+    meetingId: string;
+    nature: string;
+    recordedBy?: PersonResponse | null;
+    revision?: number | null;
+    ruling?: RulingResponse | null;
+    source: 'SELF' | 'ON_BEHALF' | 'MEMO' | 'EARLIER_MEETING' | 'REGISTER';
+    state: 'RECUSED' | 'AWAITING_RULING' | 'TAKING_PART' | 'WITHDRAWN';
+    user: PersonResponse;
+    version: number;
+};
+
+export type DeclarationReviewRequest = {
+    revision?: number;
 };
 
 export type DefinitionChoice = {
@@ -1339,6 +1383,10 @@ export type IntakeRegistrationRequest = {
     files: Array<IntakePathRequest>;
 };
 
+export type IntentRequest = {
+    intent?: 'LEAVE' | 'ASK_CHAIR';
+};
+
 export type InterestRequest = {
     reason?: string | null;
     userId?: string;
@@ -1945,6 +1993,14 @@ export type MyAccess = {
 export type MyClearance = {
     name: string;
     rank: number;
+};
+
+export type MyDeclarationsResponse = {
+    declarations: Array<DeclarationResponse>;
+    latestRevision: number;
+    meetingId: string;
+    reviewedRevision?: number | null;
+    toReview: Array<ReviewItemResponse>;
 };
 
 export type MyForumResponse = {
@@ -2730,6 +2786,12 @@ export type Retention = {
     years: number;
 };
 
+export type ReviewItemResponse = {
+    itemId: string;
+    number?: string | null;
+    title: string;
+};
+
 export type ReviewRemarkRequest = {
     remark?: string | null;
 };
@@ -2818,6 +2880,22 @@ export type RowTotals = {
         [key: string]: number;
     };
     skipped: number;
+};
+
+export type RulingRequest = {
+    how?: 'IN_APP' | 'SYSTEM' | 'AT_MEETING' | 'IN_PERSON' | 'EMAIL' | 'PHONE';
+    note?: string | null;
+    onBehalf?: boolean;
+    outcome?: 'LEAVE' | 'TAKE_PART';
+};
+
+export type RulingResponse = {
+    at: string;
+    by?: PersonResponse | null;
+    how: 'IN_APP' | 'SYSTEM' | 'AT_MEETING' | 'IN_PERSON' | 'EMAIL' | 'PHONE';
+    note?: string | null;
+    onBehalfBy?: PersonResponse | null;
+    outcome: 'LEAVE' | 'TAKE_PART';
 };
 
 export type SavedSearchRequest = {
@@ -3389,6 +3467,10 @@ export type WeekThroughput = {
     completed: number;
     created: number;
     week: string;
+};
+
+export type WithdrawDeclarationRequest = {
+    reason?: string | null;
 };
 
 export type WorkflowView = {
@@ -7846,6 +7928,108 @@ export type CancelMeetingResponses = {
 
 export type CancelMeetingResponse = CancelMeetingResponses[keyof CancelMeetingResponses];
 
+export type GetMyDeclarationsData = {
+    body?: never;
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/declarations/mine';
+};
+
+export type GetMyDeclarationsResponses = {
+    /**
+     * OK
+     */
+    200: MyDeclarationsResponse;
+};
+
+export type GetMyDeclarationsResponse = GetMyDeclarationsResponses[keyof GetMyDeclarationsResponses];
+
+export type ConfirmDeclarationReviewData = {
+    body: DeclarationReviewRequest;
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/declarations/review';
+};
+
+export type ConfirmDeclarationReviewResponses = {
+    /**
+     * OK
+     */
+    200: MyDeclarationsResponse;
+};
+
+export type ConfirmDeclarationReviewResponse = ConfirmDeclarationReviewResponses[keyof ConfirmDeclarationReviewResponses];
+
+export type ChangeDeclarationIntentData = {
+    body: IntentRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+        declarationId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/declarations/{declarationId}/intent';
+};
+
+export type ChangeDeclarationIntentResponses = {
+    /**
+     * OK
+     */
+    200: DeclarationResponse;
+};
+
+export type ChangeDeclarationIntentResponse = ChangeDeclarationIntentResponses[keyof ChangeDeclarationIntentResponses];
+
+export type RuleOnDeclarationData = {
+    body: RulingRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+        declarationId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/declarations/{declarationId}/ruling';
+};
+
+export type RuleOnDeclarationResponses = {
+    /**
+     * OK
+     */
+    200: DeclarationResponse;
+};
+
+export type RuleOnDeclarationResponse = RuleOnDeclarationResponses[keyof RuleOnDeclarationResponses];
+
+export type WithdrawDeclarationData = {
+    body: WithdrawDeclarationRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+        declarationId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/declarations/{declarationId}/withdraw';
+};
+
+export type WithdrawDeclarationResponses = {
+    /**
+     * OK
+     */
+    200: DeclarationResponse;
+};
+
+export type WithdrawDeclarationResponse = WithdrawDeclarationResponses[keyof WithdrawDeclarationResponses];
+
 export type EndMeetingData = {
     body?: never;
     headers?: {
@@ -7903,6 +8087,28 @@ export type RemoveMeetingGuestResponses = {
 };
 
 export type RemoveMeetingGuestResponse = RemoveMeetingGuestResponses[keyof RemoveMeetingGuestResponses];
+
+export type DeclareInterestData = {
+    body: DeclarationRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        meetingId: string;
+        itemId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/items/{itemId}/declarations';
+};
+
+export type DeclareInterestResponses = {
+    /**
+     * OK
+     */
+    200: DeclarationResponse;
+};
+
+export type DeclareInterestResponse = DeclareInterestResponses[keyof DeclareInterestResponses];
 
 export type RescheduleMeetingData = {
     body: RescheduleRequest;

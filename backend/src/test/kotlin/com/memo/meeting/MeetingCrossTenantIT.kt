@@ -20,6 +20,9 @@ import com.memo.meeting.internal.AgendaItems
 import com.memo.meeting.internal.AgendaOrigin
 import com.memo.meeting.internal.AgendaPublisher
 import com.memo.meeting.internal.AgendaStart
+import com.memo.meeting.internal.DeclarationReviews
+import com.memo.meeting.internal.Declarations
+import com.memo.meeting.internal.DeclareInput
 import com.memo.meeting.internal.ItemInput
 import com.memo.meeting.internal.ItemKind
 import com.memo.meeting.internal.MeetingGuests
@@ -86,6 +89,10 @@ class MeetingCrossTenantIT : IntegrationTest() {
     @Autowired lateinit var chairing: AgendaChair
 
     @Autowired lateinit var publisher: AgendaPublisher
+
+    @Autowired lateinit var declarations: Declarations
+
+    @Autowired lateinit var reviews: DeclarationReviews
 
     private class Side(
         val tenant: TestTenant,
@@ -299,6 +306,137 @@ class MeetingCrossTenantIT : IntegrationTest() {
 
         assertAppendOnly(a, ofA, revision)
     }
+
+    @Test
+    fun `another tenant neither sees nor writes declarations, and declarations change only along their transitions`() {
+        val a = side("declarea")
+        val b = side("declareb")
+        val (ofA, revision) = published(a)
+        val itemA = query(a, "select item_id from meeting_revision_item where revision_id = ? and title = 'Capital plan'", revision)
+        val declared = asUser(a.tenant, a.member) { declarations.declare(ofA, itemA, DeclareInput("Shares in the borrower")) }
+        asUser(a.tenant, a.member) { reviews.review(ofA, 1) }
+
+        // Through the services: B's administrator gets 404 for A's meeting, its items and its declarations.
+        assertThatThrownBy { asUser(b.tenant, b.admin) { declarations.declare(ofA, itemA, DeclareInput("x")) } }
+            .isInstanceOf(MeetingNotFoundException::class.java)
+        assertThatThrownBy { asUser(b.tenant, b.admin) { declarations.withdraw(ofA, declared.id, 0, "x") } }
+            .isInstanceOf(MeetingNotFoundException::class.java)
+        assertThatThrownBy { asUser(b.tenant, b.admin) { reviews.mine(ofA) } }.isInstanceOf(MeetingNotFoundException::class.java)
+
+        // Through SQL as the app role: none of A's rows is visible to B, none written for A or pointing at A's.
+        val tables =
+            listOf("meeting_declaration", "meeting_declaration_event", "meeting_declaration_review", "meeting_declaration_reminder")
+        AppRoleJdbc.inTransaction(a.tenant.id) { c ->
+            assertThat(c.long("select count(*) from meeting_declaration_review where meeting_id = ?", ofA)).isEqualTo(1)
+        }
+        AppRoleJdbc.inTransaction(b.tenant.id) { c ->
+            tables.forEach { table ->
+                assertThat(c.long("select count(*) from $table where tenant_id = ?", a.tenant.id.value)).describedAs(table).isZero()
+            }
+            assertThat(
+                c.update("update meeting_declaration set state = 'WITHDRAWN', version = version + 1 where id = ?", declared.id),
+            ).isZero()
+        }
+        val now = OffsetDateTime.now(ZoneOffset.UTC)
+        val member = b.member.id.value
+        val writes =
+            listOf(
+                "insert into meeting_declaration_reminder (tenant_id, meeting_id, user_id, revision, sent_at) values (?, ?, ?, 1, ?)" to
+                    listOf<Any>(a.tenant.id.value, ofA, member, now),
+                "insert into meeting_declaration_reminder (tenant_id, meeting_id, user_id, revision, sent_at) values (?, ?, ?, 1, ?)" to
+                    listOf<Any>(b.tenant.id.value, ofA, member, now),
+                "insert into meeting_declaration (id, tenant_id, meeting_id, item_id, forum_id, user_id, nature, intent, source, how, " +
+                    "declared_at, at_meeting, state) values (?, ?, ?, ?, ?, ?, 'x', 'LEAVE', 'SELF', 'IN_APP', ?, false, 'RECUSED')" to
+                    listOf<Any>(UUID.randomUUID(), b.tenant.id.value, ofA, itemA, b.forum, member, now),
+            )
+        writes.forEach { (sql, params) ->
+            val written = runCatching { AppRoleJdbc.inTransaction(b.tenant.id) { c -> c.update(sql, *params.toTypedArray()) } }
+            assertThat(written.exceptionOrNull()).describedAs(sql).isInstanceOf(SQLException::class.java)
+        }
+
+        assertDeclarationGuarded(a, ofA, itemA, declared.id)
+    }
+
+    /**
+     * Within its own tenant the app role changes a declaration only along design E04 §1.2, with the version moving by one;
+     * never its nature, declarant or item; and it neither changes nor deletes the history and the reviews. An item of
+     * another meeting cannot take a declaration of this one.
+     */
+    private fun assertDeclarationGuarded(
+        a: Side,
+        ofA: UUID,
+        itemA: UUID,
+        declaration: UUID,
+    ) {
+        AppRoleJdbc.inTransaction(a.tenant.id) { c ->
+            assertThat(c.update("update meeting_declaration set state = 'TAKING_PART', version = version + 1 where id = ?", declaration))
+                .isEqualTo(1)
+        }
+        val refused =
+            listOf(
+                "update meeting_declaration set nature = 'x' where id = ?",
+                "update meeting_declaration set user_id = gen_random_uuid() where id = ?",
+                "update meeting_declaration set state = 'RECUSED', version = version + 1 where id = ?",
+                "update meeting_declaration set state = 'TAKING_PART' where id = ?",
+                "delete from meeting_declaration where id = ?",
+                "update meeting_declaration_event set note = 'x' where declaration_id = ?",
+                "delete from meeting_declaration_event where declaration_id = ?",
+            )
+        refused.forEach { sql ->
+            val changed = runCatching { AppRoleJdbc.inTransaction(a.tenant.id) { c -> c.update(sql, declaration) } }
+            assertThat(changed.exceptionOrNull()).describedAs(sql).isInstanceOf(SQLException::class.java)
+        }
+        listOf(
+            "update meeting_declaration_review set revision = 1 where meeting_id = ?",
+            "delete from meeting_declaration_review where meeting_id = ?",
+        ).forEach { sql ->
+            val changed = runCatching { AppRoleJdbc.inTransaction(a.tenant.id) { c -> c.update(sql, ofA) } }
+            assertThat(changed.exceptionOrNull()).describedAs(sql).isInstanceOf(SQLException::class.java)
+        }
+        // From WITHDRAWN nothing moves.
+        val fromWithdrawn =
+            runCatching {
+                AppRoleJdbc.inTransaction(a.tenant.id) { c ->
+                    c.update("update meeting_declaration set state = 'WITHDRAWN', version = version + 1 where id = ?", declaration)
+                    c.update("update meeting_declaration set state = 'RECUSED', version = version + 1 where id = ?", declaration)
+                }
+            }
+        assertThat(fromWithdrawn.exceptionOrNull()).isInstanceOf(SQLException::class.java)
+        // The item must be of the declaration's meeting (the composite foreign key).
+        val another = meeting(a)
+        val crossed =
+            runCatching {
+                AppRoleJdbc.inTransaction(a.tenant.id) { c ->
+                    c.update(
+                        "insert into meeting_declaration (id, tenant_id, meeting_id, item_id, forum_id, user_id, nature, intent, source, " +
+                            "how, declared_at, at_meeting, state) " +
+                            "values (?, ?, ?, ?, ?, ?, 'x', 'LEAVE', 'SELF', 'IN_APP', now(), false, 'RECUSED')",
+                        UUID.randomUUID(),
+                        a.tenant.id.value,
+                        another,
+                        itemA,
+                        a.forum,
+                        a.member.id.value,
+                    )
+                }
+            }
+        assertThat(crossed.exceptionOrNull()).isInstanceOf(SQLException::class.java)
+    }
+
+    private fun query(
+        a: Side,
+        sql: String,
+        param: UUID,
+    ): UUID =
+        AppRoleJdbc.inTransaction(a.tenant.id) { c ->
+            c.prepareStatement(sql).use { st ->
+                st.setObject(1, param)
+                st.executeQuery().use { rs ->
+                    rs.next()
+                    rs.getObject(1, UUID::class.java)
+                }
+            }
+        }
 
     /** A published revision of a meeting of [a], with a chair comment: the meeting and the revision. */
     private fun published(a: Side): Pair<UUID, UUID> {

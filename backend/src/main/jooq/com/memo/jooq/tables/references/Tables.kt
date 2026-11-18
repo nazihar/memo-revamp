@@ -47,6 +47,10 @@ import com.memo.jooq.tables.MeetingAgenda
 import com.memo.jooq.tables.MeetingAudience
 import com.memo.jooq.tables.MeetingChairComment
 import com.memo.jooq.tables.MeetingCounter
+import com.memo.jooq.tables.MeetingDeclaration
+import com.memo.jooq.tables.MeetingDeclarationEvent
+import com.memo.jooq.tables.MeetingDeclarationReminder
+import com.memo.jooq.tables.MeetingDeclarationReview
 import com.memo.jooq.tables.MeetingGuest
 import com.memo.jooq.tables.MeetingItem
 import com.memo.jooq.tables.MeetingItemAttendee
@@ -345,6 +349,26 @@ val MEETING_CHAIR_COMMENT: MeetingChairComment = MeetingChairComment.MEETING_CHA
  * The table <code>memo.meeting_counter</code>.
  */
 val MEETING_COUNTER: MeetingCounter = MeetingCounter.MEETING_COUNTER
+
+/**
+ * The table <code>memo.meeting_declaration</code>.
+ */
+val MEETING_DECLARATION: MeetingDeclaration = MeetingDeclaration.MEETING_DECLARATION
+
+/**
+ * The table <code>memo.meeting_declaration_event</code>.
+ */
+val MEETING_DECLARATION_EVENT: MeetingDeclarationEvent = MeetingDeclarationEvent.MEETING_DECLARATION_EVENT
+
+/**
+ * The table <code>memo.meeting_declaration_reminder</code>.
+ */
+val MEETING_DECLARATION_REMINDER: MeetingDeclarationReminder = MeetingDeclarationReminder.MEETING_DECLARATION_REMINDER
+
+/**
+ * The table <code>memo.meeting_declaration_review</code>.
+ */
+val MEETING_DECLARATION_REVIEW: MeetingDeclarationReview = MeetingDeclarationReview.MEETING_DECLARATION_REVIEW
 
 /**
  * The table <code>memo.meeting_guest</code>.

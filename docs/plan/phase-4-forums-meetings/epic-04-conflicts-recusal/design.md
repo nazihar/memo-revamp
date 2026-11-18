@@ -64,6 +64,13 @@ stateDiagram-v2
 | Withdraw | The declarant, or an officer not recused from the item, with a reason |
 | Confirm the review (§1.5) | Anyone in the audience; officers. Only MEMBER-source audience and officers are reminded |
 
+- As built (T1):
+  - **Seeing the item** (`SEES_ITEM`) is E03's `seeTitle` on the latest revision, written in `DeclarationAccess.seesTitle` until T2 folds it into `PaperAccess`: the person sees the item, or is in the audience (a member in office, a guest outside members-only sections, or that item's attendee) and the item does not hide its title. Officers declare and record on any live draft item too. A break takes no declaration (404); the review does not ask about standing items or breaks.
+  - **The ruler** is the first of the chair and the vice-chair in office who is not the declarant and not recused from the item (or its parent). In the app, only that person rules (another officer is 403); a secretary or `forums.manage` records the ruling on their behalf (409 `NO_CHAIR` when there is nobody). The chair and the vice-chair see the meeting's declarations through the declaration endpoints so that they can rule. The ruling's checks run in this order: `SELF_RULING`, the window, the actor's role (403), the actor's own recusal (403 `RECUSED`), then the ruler.
+  - A ruling that would not change the state (LEAVE on a RECUSED declaration, TAKE_PART on TAKING_PART) is 409 `WRONG_STATE`, as the diagram has no such loops.
+  - **Windows:** once the meeting is HELD, only a secretary (or `forums.manage`) records a declaration made in the room (with `reason`, 422 `REASON_REQUIRED`) or withdraws one; both are corrections (`correction: true`, `atMeeting: true` for a recorded one). Intent changes, rulings, the review and everything else are 409 `FROZEN` from HELD, and everything from MINUTES_APPROVED, CLOSED and CANCELLED.
+  - A recused officer may still withdraw their own declaration, but not someone else's, and records none for others on that item (403 `RECUSED`).
+
 ### 1.4 Carry-over and the memo
 - **In from the memo:** when a SUBMISSION item is placed (E03 T2), and again when each revision is published, every person with a `memo_interest` on the item's memo who is in the audience or an officer gets a declaration on the item if they have none open:
   - `source` MEMO, `intent` LEAVE, state RECUSED, `recordedBy` the actor of the placement or publication, `how` SYSTEM;
@@ -204,6 +211,13 @@ erDiagram
 - **`forum`:** unchanged. `Quorum.evaluate` and `ForumDirectory.membersOn` are read.
 - **`notification`:** kinds `MEETING_DECLARATION_RECORDED` (to the declarant, when recorded on their behalf or carried), `MEETING_DECLARATION_MADE` (to the officers not recused from the item), `MEETING_RULING_NEEDED` (to the chair or vice-chair), `MEETING_DECLARATION_RULED` (to the declarant), `MEETING_DECLARATIONS_DUE` (the reminder). Subjects take no parameters (ADR-0030). Email bodies hold the committee, the meeting date and a link; never the item title or the nature. In-app texts name the meeting and the item number.
 - **`ApplicationModules.verify()`:** meeting → memo already exists; no new direction.
+- As built (T1):
+  - The officers told (`MEETING_DECLARATION_MADE`) are the forum's secretaries and its chair (the vice-chair when there is no chair) in office, less those recused from the item, the declarant and the actor. When the new declaration waits for a ruling, the ruler is asked (`MEETING_RULING_NEEDED`) instead of being told; an intent change to ASK_CHAIR asks them too.
+  - A withdrawal is told with the same kinds and `change: WITHDRAWN`: to the officers (`MEETING_DECLARATION_MADE`) and, when someone else withdrew it, to the declarant (`MEETING_DECLARATION_RECORDED`). The email bodies are written for both ("was made or withdrawn").
+  - In-app parameters: `item` (the item's number as published, else as it would be published) and `change` (DECLARED, RECORDED, WITHDRAWN) or `outcome` (LEAVE, TAKE_PART). Email bodies use only `committee`, `date`, `organisation` and `link`.
+  - `MEETING_DECLARATIONS_DUE` (kind, English and Arabic templates, web label) is in place; the sweep and "Remind them now" that send it are T4.
+  - E03's `MEETING_AGENDA_PUBLISHED` and `MEETING_AGENDA_CHANGED` mail bodies gained the prompt to declare interests (§1.5).
+  - `Recusals`, `DeclarationChanged` and `DeclarationExclusions` are T2's.
 
 ## 3. API
 Conventions as E03: `/api/v1`, RFC 9457 errors, If-Match on the declaration's `version` for changes, `Idempotency-Key` on creates.
@@ -228,6 +242,12 @@ Conventions as E03: `/api/v1`, RFC 9457 errors, If-Match on the declaration's `v
 - 403 `RECUSED`: an officer acting on an item they are recused from (builder changes, rulings, recording for others on it);
 - 422: `NATURE_REQUIRED`, `LENGTH`, `REASON_REQUIRED`, `HOW_REQUIRED` (on behalf), `NOT_IN_AUDIENCE` (on behalf of someone outside the audience);
 - 404 for an item or meeting the actor cannot see; 412 on a stale If-Match.
+- As built (T1):
+  - Built: `GET …/declarations/mine` (with `latestRevision`, `reviewedRevision` and `toReview`), `POST …/items/{iid}/declarations`, `…/declarations/{did}/intent`, `/ruling`, `/withdraw` and `…/declarations/review`. The meeting register, `remind`, the cross-forum register and its export are T4's.
+  - The create answers 201 with the declaration and its version as the ETag; a replay of the `Idempotency-Key` answers the same declaration. Changes answer 200 with the declaration and its new ETag. 409 `ONE_OPEN` carries `declarationId`. 403 `RECUSED` is a problem with `reason: RECUSED`. A secretary's correction while HELD takes `reason` in the create body. The ruling's `how` is required on the chair's behalf (422 `how` `HOW_REQUIRED`); its note is 0–500 (`LENGTH`).
+  - Writes share the agenda builder's per-person rate limit (`AGENDA_WRITE_PER_USER`).
+  - `forum.read` holders outside the audience get 403 from `/declarations/mine` and the review; they cannot declare (the item is 404 to them).
+  - **The agenda's fields:** the members' agenda (`GET …/agenda`) is E03 T4's and was not on master when T1 was built, so T1 adds `myDeclaration` (the viewer's own open declaration, with the nature) and `declarations` (the others' open ones: id, person, state and intent, never the nature) to each item of the officers' draft (`GET …/agenda/draft`). The members' agenda gains the same fields when T4 and T2 meet; `recused` is T2's.
 
 ## 4. Authorisation matrix
 Columns as E03, plus **Recused**: a person with an effective declaration (RECUSED or AWAITING_RULING) on the item, whatever their role. For a recused officer the Recused column wins for that item.
@@ -273,9 +293,14 @@ The nature and reasons are business content: they stay in the module's tables, w
 - `meeting_declaration_reminder`: insert with `ON CONFLICT DO NOTHING`, no UPDATE.
 - The sweep and `DeclarationChanged` listeners carry `tenantId` (ADR-0017).
 - `MeetingCrossTenantIT` gains declarations; `RlsMetaTest` picks up the tables.
+- As built (T1):
+  - The declarant's `intent` changes with the state, so the app role may update `state`, `intent`, `ruling` and `version` (column grants); the trigger refuses any other column, a version that does not move by one, and any pair of states not in §1.2.
+  - `meeting_item` gains the unique `(tenant_id, meeting_id, id)`, so the declaration's foreign key `(tenant_id, meeting_id, item_id)` keeps the item in the declaration's meeting (threat E3) in the database, not only in the service.
+  - The declaration and its events carry `correction` (recorded or withdrawn by a secretary after the meeting was held).
+  - A review is one row per person and revision (primary key): confirming the same revision again is quiet (no second row, no second audit entry). The reminder table is created for T4 and not yet written.
 
 ## 7. Migrations
-- **`meeting/V4__declarations.sql`** (T1), numbered after E03 T2's `meeting/V2__agenda.sql` and T3's `meeting/V3__revisions.sql`, which are in progress. If E03 adds another meeting migration before E04 T1 merges, E04 takes the next number then.
+- **`meeting/V5__declarations.sql`** (T1), numbered after E03 T2's `meeting/V2__agenda.sql` and T3's `meeting/V3__revisions.sql`. As built: V5, not V4, because E03 T4 (members' reads and consent requests), built at the same time, takes `meeting/V4`. E03 T4 should merge first, so that no database applies V5 before V4 (Flyway would refuse the gap closing later).
   - The four tables of §1.9, with CHECK constraints on `intent`, `source`, `how`, `state` and the lengths.
   - Unique `(tenant_id, item_id, user_id) WHERE state <> 'WITHDRAWN'` (`ONE_OPEN`).
   - Index `(tenant_id, user_id, item_id) WHERE state IN ('RECUSED', 'AWAITING_RULING')` for the rule's anti-join.

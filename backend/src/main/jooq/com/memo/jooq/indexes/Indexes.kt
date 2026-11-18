@@ -36,6 +36,10 @@ import com.memo.jooq.tables.Meeting
 import com.memo.jooq.tables.MeetingAgenda
 import com.memo.jooq.tables.MeetingAudience
 import com.memo.jooq.tables.MeetingChairComment
+import com.memo.jooq.tables.MeetingDeclaration
+import com.memo.jooq.tables.MeetingDeclarationEvent
+import com.memo.jooq.tables.MeetingDeclarationReminder
+import com.memo.jooq.tables.MeetingDeclarationReview
 import com.memo.jooq.tables.MeetingGuest
 import com.memo.jooq.tables.MeetingItem
 import com.memo.jooq.tables.MeetingItemAttendee
@@ -158,6 +162,15 @@ val IMPORTS_STAGED_BATCH_IDX: Index = Internal.createIndex(DSL.name("imports_sta
 val MEETING_AGENDA_SOURCE_IDX: Index = Internal.createIndex(DSL.name("meeting_agenda_source_idx"), MeetingAgenda.MEETING_AGENDA, arrayOf(MeetingAgenda.MEETING_AGENDA.TENANT_ID, MeetingAgenda.MEETING_AGENDA.SOURCE_MEETING_ID), false)
 val MEETING_AUDIENCE_USER_IDX: Index = Internal.createIndex(DSL.name("meeting_audience_user_idx"), MeetingAudience.MEETING_AUDIENCE, arrayOf(MeetingAudience.MEETING_AUDIENCE.TENANT_ID, MeetingAudience.MEETING_AUDIENCE.USER_ID, MeetingAudience.MEETING_AUDIENCE.MEETING_ID), false)
 val MEETING_CHAIR_COMMENT_MEETING_IDX: Index = Internal.createIndex(DSL.name("meeting_chair_comment_meeting_idx"), MeetingChairComment.MEETING_CHAIR_COMMENT, arrayOf(MeetingChairComment.MEETING_CHAIR_COMMENT.TENANT_ID, MeetingChairComment.MEETING_CHAIR_COMMENT.MEETING_ID, MeetingChairComment.MEETING_CHAIR_COMMENT.CREATED_AT), false)
+val MEETING_DECLARATION_DECLARED_IDX: Index = Internal.createIndex(DSL.name("meeting_declaration_declared_idx"), MeetingDeclaration.MEETING_DECLARATION, arrayOf(MeetingDeclaration.MEETING_DECLARATION.TENANT_ID, MeetingDeclaration.MEETING_DECLARATION.DECLARED_AT.desc(), MeetingDeclaration.MEETING_DECLARATION.ID), false)
+val MEETING_DECLARATION_EFFECTIVE_IDX: Index = Internal.createIndex(DSL.name("meeting_declaration_effective_idx"), MeetingDeclaration.MEETING_DECLARATION, arrayOf(MeetingDeclaration.MEETING_DECLARATION.TENANT_ID, MeetingDeclaration.MEETING_DECLARATION.USER_ID, MeetingDeclaration.MEETING_DECLARATION.ITEM_ID), false)
+val MEETING_DECLARATION_EVENT_DECLARATION_IDX: Index = Internal.createIndex(DSL.name("meeting_declaration_event_declaration_idx"), MeetingDeclarationEvent.MEETING_DECLARATION_EVENT, arrayOf(MeetingDeclarationEvent.MEETING_DECLARATION_EVENT.TENANT_ID, MeetingDeclarationEvent.MEETING_DECLARATION_EVENT.DECLARATION_ID, MeetingDeclarationEvent.MEETING_DECLARATION_EVENT.AT), false)
+val MEETING_DECLARATION_FORUM_IDX: Index = Internal.createIndex(DSL.name("meeting_declaration_forum_idx"), MeetingDeclaration.MEETING_DECLARATION, arrayOf(MeetingDeclaration.MEETING_DECLARATION.TENANT_ID, MeetingDeclaration.MEETING_DECLARATION.FORUM_ID, MeetingDeclaration.MEETING_DECLARATION.DECLARED_AT.desc(), MeetingDeclaration.MEETING_DECLARATION.ID), false)
+val MEETING_DECLARATION_MEETING_IDX: Index = Internal.createIndex(DSL.name("meeting_declaration_meeting_idx"), MeetingDeclaration.MEETING_DECLARATION, arrayOf(MeetingDeclaration.MEETING_DECLARATION.TENANT_ID, MeetingDeclaration.MEETING_DECLARATION.MEETING_ID, MeetingDeclaration.MEETING_DECLARATION.ITEM_ID), false)
+val MEETING_DECLARATION_OPEN_UK: Index = Internal.createIndex(DSL.name("meeting_declaration_open_uk"), MeetingDeclaration.MEETING_DECLARATION, arrayOf(MeetingDeclaration.MEETING_DECLARATION.TENANT_ID, MeetingDeclaration.MEETING_DECLARATION.ITEM_ID, MeetingDeclaration.MEETING_DECLARATION.USER_ID), true)
+val MEETING_DECLARATION_REMINDER_REVISION_IDX: Index = Internal.createIndex(DSL.name("meeting_declaration_reminder_revision_idx"), MeetingDeclarationReminder.MEETING_DECLARATION_REMINDER, arrayOf(MeetingDeclarationReminder.MEETING_DECLARATION_REMINDER.TENANT_ID, MeetingDeclarationReminder.MEETING_DECLARATION_REMINDER.MEETING_ID, MeetingDeclarationReminder.MEETING_DECLARATION_REMINDER.REVISION), false)
+val MEETING_DECLARATION_REVIEW_REVISION_IDX: Index = Internal.createIndex(DSL.name("meeting_declaration_review_revision_idx"), MeetingDeclarationReview.MEETING_DECLARATION_REVIEW, arrayOf(MeetingDeclarationReview.MEETING_DECLARATION_REVIEW.TENANT_ID, MeetingDeclarationReview.MEETING_DECLARATION_REVIEW.MEETING_ID, MeetingDeclarationReview.MEETING_DECLARATION_REVIEW.REVISION), false)
+val MEETING_DECLARATION_USER_IDX: Index = Internal.createIndex(DSL.name("meeting_declaration_user_idx"), MeetingDeclaration.MEETING_DECLARATION, arrayOf(MeetingDeclaration.MEETING_DECLARATION.TENANT_ID, MeetingDeclaration.MEETING_DECLARATION.USER_ID, MeetingDeclaration.MEETING_DECLARATION.DECLARED_AT.desc(), MeetingDeclaration.MEETING_DECLARATION.ID), false)
 val MEETING_FORUM_IDX: Index = Internal.createIndex(DSL.name("meeting_forum_idx"), Meeting.MEETING, arrayOf(Meeting.MEETING.TENANT_ID, Meeting.MEETING.FORUM_ID, Meeting.MEETING.STARTS_AT), false)
 val MEETING_GUEST_CURRENT_UK: Index = Internal.createIndex(DSL.name("meeting_guest_current_uk"), MeetingGuest.MEETING_GUEST, arrayOf(MeetingGuest.MEETING_GUEST.TENANT_ID, MeetingGuest.MEETING_GUEST.MEETING_ID, MeetingGuest.MEETING_GUEST.USER_ID), true)
 val MEETING_GUEST_MEETING_IDX: Index = Internal.createIndex(DSL.name("meeting_guest_meeting_idx"), MeetingGuest.MEETING_GUEST, arrayOf(MeetingGuest.MEETING_GUEST.TENANT_ID, MeetingGuest.MEETING_GUEST.MEETING_ID), false)

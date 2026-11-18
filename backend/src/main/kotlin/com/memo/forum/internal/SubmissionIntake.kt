@@ -3,6 +3,8 @@ package com.memo.forum.internal
 import com.memo.audit.AuditLog
 import com.memo.common.web.refuseIf
 import com.memo.forum.ForumStatus
+import com.memo.forum.SubmissionPurpose
+import com.memo.forum.SubmissionStatus
 import com.memo.workflow.WorkflowEscalatedToForum
 import com.memo.workflow.WorkflowInstanceEnded
 import org.springframework.context.event.EventListener

@@ -179,7 +179,7 @@ class Calendars(
             .count { day -> exceptions[day] ?: week[day.dayOfWeek].orEmpty().isNotEmpty() }
     }
 
-    /** The calendar for due times from today on: the weekly hours, the exceptions ahead and the tenant's zone. */
+    /** The calendar for due times from today on:the weekly hours, the exceptions ahead and the tenant's zone. */
     fun calendar(): BusinessCalendar {
         val today = directory.today()
         val ahead = days(today.minusDays(1), today.plusDays(BusinessCalendar.MAX_DAYS.toLong()))

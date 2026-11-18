@@ -23,14 +23,6 @@
     "shared" : false,
     "type" : "open"
   },
-  "meeting" : {
-    "basePackage" : "com.memo.meeting",
-    "dependencies" : [ ],
-    "displayName" : "Meeting",
-    "nested" : [ ],
-    "shared" : false,
-    "type" : "closed"
-  },
   "minutes" : {
     "basePackage" : "com.memo.minutes",
     "dependencies" : [ ],
@@ -462,6 +454,38 @@
       "types" : [ "USES_COMPONENT" ]
     } ],
     "displayName" : "Demo data",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  },
+  "meeting" : {
+    "basePackage" : "com.memo.meeting",
+    "dependencies" : [ {
+      "target" : "audit",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "common",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "forum",
+      "types" : [ "EVENT_LISTENER", "USES_COMPONENT" ]
+    }, {
+      "target" : "identity",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "notification",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "org",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "system",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "tenancy",
+      "types" : [ "USES_COMPONENT" ]
+    } ],
+    "displayName" : "Meeting",
     "nested" : [ ],
     "shared" : false,
     "type" : "closed"

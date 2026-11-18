@@ -71,6 +71,10 @@ enum class NotificationKind(
     FORUM_SUBMISSION_RECEIVED(NotificationCategory.WORKFLOW, MailTemplate.FORUM_SUBMISSION_RECEIVED),
     FORUM_SUBMISSION_TRIAGED(NotificationCategory.WORKFLOW, MailTemplate.FORUM_SUBMISSION_TRIAGED),
     FORUM_SUBMISSION_WAITING(NotificationCategory.WORKFLOW, MailTemplate.FORUM_SUBMISSION_WAITING),
+
+    // Meetings (Phase 4 E03, design E03 §1.1): a scheduled meeting was cancelled (its audience). Parameters `committee`,
+    // `date` (the meeting's date, ISO), `organisation`, `link`.
+    MEETING_CANCELLED(NotificationCategory.WORKFLOW, MailTemplate.MEETING_CANCELLED),
 }
 
 /** Who receives a notification; the producer already holds the user, so `notification` never looks people up. */

@@ -2,21 +2,14 @@ package com.memo.forum.internal
 
 import com.memo.audit.AuditLog
 import com.memo.common.concurrency.ConcurrentModificationException
-import com.memo.common.events.TenantScopedEvent
 import com.memo.common.review.ReviewRules
 import com.memo.common.review.ReviewState
 import com.memo.common.web.refuseIf
+import com.memo.forum.ForumTypePublished
 import com.memo.jooq.tables.references.FORUM_TYPE_VERSION
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Component
 import java.util.UUID
-
-/** A forum-type version was published (ADR-0056): forums of the type follow it from their next meeting. */
-data class ForumTypePublished(
-    override val tenantId: UUID,
-    val typeId: UUID,
-    val version: Int,
-) : TenantScopedEvent
 
 /**
  * The reviewed lifecycle of forum types (ADR-0056, design E01 §1), on the shared `common.review` rules: holders of

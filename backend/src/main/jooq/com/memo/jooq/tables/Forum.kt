@@ -165,6 +165,11 @@ open class Forum(
      */
     val VERSION: TableField<ForumRecord, Long?> = createField(DSL.name("version"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BIGINT)), this, "")
 
+    /**
+     * The column <code>memo.forum.code_locked_at</code>.
+     */
+    val CODE_LOCKED_AT: TableField<ForumRecord, OffsetDateTime?> = createField(DSL.name("code_locked_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
+
     private constructor(alias: Name, aliased: Table<ForumRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<ForumRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<ForumRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)

@@ -14386,6 +14386,12 @@
       "value": "InvitationSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "mail.template.meetingCancelled": [
+    {
+      "type": 0,
+      "value": "Meeting cancelledSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "mail.template.memoApproved": [
     {
       "type": 0,
@@ -20419,6 +20425,28 @@
     {
       "type": 0,
       "value": " ends soonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.meetingCancelled": [
+    {
+      "type": 0,
+      "value": "The meeting of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " was cancelledSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "notifications.kind.memoApproved": [

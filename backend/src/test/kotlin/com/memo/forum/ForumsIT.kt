@@ -15,7 +15,6 @@ import com.memo.forum.internal.EndReason
 import com.memo.forum.internal.ForumInput
 import com.memo.forum.internal.ForumMembers
 import com.memo.forum.internal.ForumNotFoundException
-import com.memo.forum.internal.ForumPolicies
 import com.memo.forum.internal.ForumRejectedException
 import com.memo.forum.internal.ForumTypePreset
 import com.memo.forum.internal.ForumTypes
@@ -80,6 +79,8 @@ class ForumsIT : IntegrationTest() {
     @Autowired lateinit var views: ForumViews
 
     @Autowired lateinit var policies: ForumPolicies
+
+    @Autowired lateinit var codes: ForumCodes
 
     @Autowired lateinit var directory: ForumDirectory
 
@@ -338,6 +339,22 @@ class ForumsIT : IntegrationTest() {
         assertThat(asUser(admin) { directory.membersOn(forum.id) }.single().userId).isEqualTo(chair.id.value)
         assertThat(asUser(chair) { directory.rolesOf(chair.id.value) }).containsEntry(forum.id, ForumRole.MEMBER)
         refused("ALREADY_MEMBER") { add(forum.id, MemberInput(positionId = position.id)) }
+    }
+
+    @Test
+    fun `the code locks at the first numbered meeting, and the rest stays editable`() {
+        val forum = brc()
+        assertThat(asUser(admin) { views.forum(forums.get(forum.id)) }.codeLocked).isFalse()
+        assertThat(asUser(admin) { codes.lock(forum.id) }).isEqualTo(forum.code)
+        Audit.assertAudited(tenant.id, "forum.code_locked", forum.id.toString(), admin.id.value.toString())
+        assertThat(asUser(admin) { codes.lock(forum.id) }).isEqualTo(forum.code)
+        assertThat(asUser(admin) { views.forum(forums.get(forum.id)) }.codeLocked).isTrue()
+        refused("CODE_LOCKED") {
+            asUser(admin) { forums.update(forum.id, forum.version, ForumInput(forum.key, "NEW", forum.name, forum.shortName, typeId)) }
+        }
+        val renamed =
+            asUser(admin) { forums.update(forum.id, forum.version, ForumInput(forum.key, forum.code, "Risk Committee", "Risk", typeId)) }
+        assertThat(renamed.name).isEqualTo("Risk Committee")
     }
 
     @Test

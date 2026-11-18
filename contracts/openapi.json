@@ -720,6 +720,14 @@
         },
         "type" : "object"
       },
+      "CancelMeetingRequest" : {
+        "properties" : {
+          "reason" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
       "CancelRequest" : {
         "properties" : {
           "reason" : {
@@ -2067,6 +2075,9 @@
           "code" : {
             "type" : "string"
           },
+          "codeLocked" : {
+            "type" : "boolean"
+          },
           "dissolvedOn" : {
             "format" : "date",
             "type" : [ "string", "null" ]
@@ -2128,7 +2139,7 @@
             "type" : "integer"
           }
         },
-        "required" : [ "canManage", "canManageMembers", "code", "id", "key", "memberCount", "name", "secretaries", "shortName", "status", "termWarnings", "typeId", "typeName", "version" ],
+        "required" : [ "canManage", "canManageMembers", "code", "codeLocked", "id", "key", "memberCount", "name", "secretaries", "shortName", "status", "termWarnings", "typeId", "typeName", "version" ],
         "type" : "object"
       },
       "ForumRetention" : {
@@ -2391,6 +2402,18 @@
           }
         },
         "required" : [ "roleId" ],
+        "type" : "object"
+      },
+      "GuestRequest" : {
+        "properties" : {
+          "note" : {
+            "type" : [ "string", "null" ]
+          },
+          "userId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
         "type" : "object"
       },
       "HandOnRequest" : {
@@ -3970,6 +3993,275 @@
           }
         },
         "required" : [ "displayName", "email", "id", "mfaEnrolled", "tenantAdmin" ],
+        "type" : "object"
+      },
+      "MeetingEditRequest" : {
+        "properties" : {
+          "classificationId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "joinDetails" : {
+            "type" : [ "string", "null" ]
+          },
+          "joinUrl" : {
+            "type" : [ "string", "null" ]
+          },
+          "kind" : {
+            "enum" : [ "ORDINARY", "SPECIAL" ],
+            "type" : "string"
+          },
+          "location" : {
+            "type" : [ "string", "null" ]
+          },
+          "mode" : {
+            "enum" : [ "IN_PERSON", "ONLINE", "HYBRID" ],
+            "type" : "string"
+          },
+          "title" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "MeetingGuestResponse" : {
+        "properties" : {
+          "addedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "note" : {
+            "type" : [ "string", "null" ]
+          },
+          "userId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "addedAt", "name", "userId" ],
+        "type" : "object"
+      },
+      "MeetingPageResponse" : {
+        "properties" : {
+          "items" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MeetingSummaryResponse"
+            },
+            "type" : "array"
+          },
+          "nextCursor" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "items" ],
+        "type" : "object"
+      },
+      "MeetingRequest" : {
+        "properties" : {
+          "classificationId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "endsAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "joinDetails" : {
+            "type" : [ "string", "null" ]
+          },
+          "joinUrl" : {
+            "type" : [ "string", "null" ]
+          },
+          "kind" : {
+            "enum" : [ "ORDINARY", "SPECIAL" ],
+            "type" : "string"
+          },
+          "location" : {
+            "type" : [ "string", "null" ]
+          },
+          "mode" : {
+            "enum" : [ "IN_PERSON", "ONLINE", "HYBRID" ],
+            "type" : "string"
+          },
+          "startsAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "timeZone" : {
+            "type" : [ "string", "null" ]
+          },
+          "title" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "MeetingResponse" : {
+        "properties" : {
+          "canManage" : {
+            "type" : "boolean"
+          },
+          "classificationId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "endsAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "forumCode" : {
+            "type" : "string"
+          },
+          "forumId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "forumName" : {
+            "type" : "string"
+          },
+          "guests" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MeetingGuestResponse"
+            },
+            "type" : "array"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "joinDetails" : {
+            "type" : [ "string", "null" ]
+          },
+          "joinUrl" : {
+            "type" : [ "string", "null" ]
+          },
+          "kind" : {
+            "enum" : [ "ORDINARY", "SPECIAL" ],
+            "type" : "string"
+          },
+          "label" : {
+            "type" : [ "string", "null" ]
+          },
+          "localEndsAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "localStartsAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "location" : {
+            "type" : [ "string", "null" ]
+          },
+          "mode" : {
+            "enum" : [ "IN_PERSON", "ONLINE", "HYBRID" ],
+            "type" : "string"
+          },
+          "number" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "relation" : {
+            "enum" : [ "OFFICER", "MEMBER", "GUEST", "ATTENDEE", "READER" ],
+            "type" : "string"
+          },
+          "startsAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "status" : {
+            "enum" : [ "DRAFT", "SCHEDULED", "IN_PROGRESS", "HELD", "MINUTES_APPROVED", "CLOSED", "CANCELLED" ],
+            "type" : "string"
+          },
+          "statusReason" : {
+            "type" : [ "string", "null" ]
+          },
+          "timeZone" : {
+            "type" : "string"
+          },
+          "title" : {
+            "type" : [ "string", "null" ]
+          },
+          "typeVersion" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "version" : {
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "canManage", "classificationId", "endsAt", "forumCode", "forumId", "forumName", "guests", "id", "kind", "localEndsAt", "localStartsAt", "mode", "relation", "startsAt", "status", "timeZone", "typeVersion", "version" ],
+        "type" : "object"
+      },
+      "MeetingSummaryResponse" : {
+        "properties" : {
+          "endsAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "forumCode" : {
+            "type" : "string"
+          },
+          "forumId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "forumName" : {
+            "type" : "string"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "joinUrl" : {
+            "type" : [ "string", "null" ]
+          },
+          "kind" : {
+            "enum" : [ "ORDINARY", "SPECIAL" ],
+            "type" : "string"
+          },
+          "label" : {
+            "type" : [ "string", "null" ]
+          },
+          "localEndsAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "localStartsAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "location" : {
+            "type" : [ "string", "null" ]
+          },
+          "mode" : {
+            "enum" : [ "IN_PERSON", "ONLINE", "HYBRID" ],
+            "type" : "string"
+          },
+          "relation" : {
+            "enum" : [ "OFFICER", "MEMBER", "GUEST", "ATTENDEE", "READER" ],
+            "type" : "string"
+          },
+          "startsAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "status" : {
+            "enum" : [ "DRAFT", "SCHEDULED", "IN_PROGRESS", "HELD", "MINUTES_APPROVED", "CLOSED", "CANCELLED" ],
+            "type" : "string"
+          },
+          "timeZone" : {
+            "type" : "string"
+          },
+          "title" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "endsAt", "forumCode", "forumId", "forumName", "id", "kind", "localEndsAt", "localStartsAt", "mode", "relation", "startsAt", "status", "timeZone" ],
         "type" : "object"
       },
       "MemberAttribute" : {
@@ -6782,6 +7074,25 @@
         "required" : [ "reportsToPositionId", "validFrom" ],
         "type" : "object"
       },
+      "RescheduleRequest" : {
+        "properties" : {
+          "endsAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "reason" : {
+            "type" : [ "string", "null" ]
+          },
+          "startsAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "timeZone" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
       "Retention" : {
         "properties" : {
           "from" : {
@@ -7779,6 +8090,14 @@
           "id" : {
             "format" : "uuid",
             "type" : "string"
+          },
+          "meetingDate" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "meetingId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
           },
           "memo" : {
             "oneOf" : [ {
@@ -14355,6 +14674,112 @@
         "tags" : [ "forum" ]
       }
     },
+    "/api/v1/forums/{forumId}/meetings" : {
+      "get" : {
+        "operationId" : "listForumMeetings",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "from",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "to",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "status",
+          "required" : false,
+          "schema" : {
+            "items" : {
+              "enum" : [ "DRAFT", "SCHEDULED", "IN_PROGRESS", "HELD", "MINUTES_APPROVED", "CLOSED", "CANCELLED" ],
+              "type" : "string"
+            },
+            "type" : "array",
+            "uniqueItems" : true
+          }
+        }, {
+          "in" : "query",
+          "name" : "cursor",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MeetingPageResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A committee's meetings by start time, with a cursor",
+        "tags" : [ "meeting" ]
+      },
+      "post" : {
+        "operationId" : "createMeeting",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MeetingRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MeetingResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Create a draft meeting of a committee (its secretary or forums.manage)",
+        "tags" : [ "meeting" ]
+      }
+    },
     "/api/v1/forums/{forumId}/members" : {
       "get" : {
         "operationId" : "listForumMembers",
@@ -15367,6 +15792,37 @@
         "tags" : [ "forum" ]
       }
     },
+    "/api/v1/me/meetings" : {
+      "get" : {
+        "operationId" : "listMyMeetings",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "from",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/MeetingSummaryResponse"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Upcoming and recent meetings the user attends or runs",
+        "tags" : [ "meeting" ]
+      }
+    },
     "/api/v1/me/notification-preferences" : {
       "get" : {
         "operationId" : "getMyNotificationPreferences",
@@ -15658,6 +16114,346 @@
         },
         "summary" : "Change how I follow memos",
         "tags" : [ "memo" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}" : {
+      "get" : {
+        "operationId" : "getMeeting",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MeetingResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "One meeting, as the viewer may see it",
+        "tags" : [ "meeting" ]
+      },
+      "patch" : {
+        "operationId" : "updateMeeting",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MeetingEditRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MeetingResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Change a meeting's title, kind, place, link or classification",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/cancel" : {
+      "post" : {
+        "operationId" : "cancelMeeting",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CancelMeetingRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MeetingResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Discard a draft or cancel a scheduled meeting, with a reason",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/end" : {
+      "post" : {
+        "operationId" : "endMeeting",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MeetingResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Mark a meeting in progress as held",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/guests" : {
+      "post" : {
+        "operationId" : "addMeetingGuest",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/GuestRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MeetingResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Add a guest who attends the whole meeting",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/guests/{userId}/remove" : {
+      "post" : {
+        "operationId" : "removeMeetingGuest",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "userId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MeetingResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Remove a guest from a meeting",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/reschedule" : {
+      "post" : {
+        "operationId" : "rescheduleMeeting",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RescheduleRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MeetingResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Move a meeting to other times (a reason once scheduled)",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/schedule" : {
+      "post" : {
+        "operationId" : "scheduleMeeting",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MeetingResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Schedule a draft meeting: its audience sees it",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/start" : {
+      "post" : {
+        "operationId" : "startMeeting",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MeetingResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Mark a scheduled meeting as in progress",
+        "tags" : [ "meeting" ]
       }
     },
     "/api/v1/memo-types" : {

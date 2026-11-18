@@ -12,10 +12,10 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
 <style>
 .th{color-scheme:light;--bg:#ffffff;--fg:#0a0a0a;--subtle:#fafafa;--muted:#f5f5f5;--hover:#f0f0f0;--active:#ebebeb;--chip:#e5e5e5;--border:#e5e5e5;--border-strong:#d4d4d4;--muted-fg:#737373;--text-1:#262626;--text-2:#404040;--text-3:#525252;--primary:#171717;--primary-fg:#fafafa;--primary-hover:#262626;--primary-divider:#404040;--primary-muted:#a3a3a3;--ring:#a3a3a3;--destructive:#dc2626;--destructive-hover:#b91c1c;--on-destructive:#ffffff;--danger-fg:#b91c1c;--danger-bg:#fef2f2;--danger-border:#fecaca;--warn-bg:#fffbeb;--warn-fg:#92400e;--warn-border:#fcd34d;--ok-bg:#f0fdf4;--ok-fg:#166534;--ok-border:#bbf7d0;--info-bg:#eff6ff;--info-fg:#1d4ed8}
-.th.dark{color-scheme:dark;--bg:#0a0a0a;--fg:#fafafa;--subtle:#141414;--muted:#262626;--hover:#1f1f1f;--active:#262626;--chip:#333333;--border:#2e2e2e;--border-strong:#525252;--muted-fg:#a3a3a3;--text-1:#e5e5e5;--text-2:#d4d4d4;--text-3:#a3a3a3;--primary:#e5e5e5;--primary-fg:#171717;--primary-hover:#d4d4d4;--primary-divider:#a3a3a3;--primary-muted:#525252;--ring:#737373;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#450a0a;--danger-border:#7f1d1d;--warn-bg:#422006;--warn-fg:#fcd34d;--warn-border:#78350f;--ok-bg:#052e16;--ok-fg:#86efac;--ok-border:#14532d;--info-bg:#172554;--info-fg:#93c5fd}
-@media (prefers-color-scheme: dark){.th.system{color-scheme:dark;--bg:#0a0a0a;--fg:#fafafa;--subtle:#141414;--muted:#262626;--hover:#1f1f1f;--active:#262626;--chip:#333333;--border:#2e2e2e;--border-strong:#525252;--muted-fg:#a3a3a3;--text-1:#e5e5e5;--text-2:#d4d4d4;--text-3:#a3a3a3;--primary:#e5e5e5;--primary-fg:#171717;--primary-hover:#d4d4d4;--primary-divider:#a3a3a3;--primary-muted:#525252;--ring:#737373;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#450a0a;--danger-border:#7f1d1d;--warn-bg:#422006;--warn-fg:#fcd34d;--warn-border:#78350f;--ok-bg:#052e16;--ok-fg:#86efac;--ok-border:#14532d;--info-bg:#172554;--info-fg:#93c5fd}}
-body:has(.th.dark){background:#0a0a0a}
-@media (prefers-color-scheme: dark){body:has(.th.system){background:#0a0a0a}}
+.th.dark{color-scheme:dark;--bg:#09090b;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}
+@media (prefers-color-scheme: dark){.th.system{color-scheme:dark;--bg:#09090b;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}}
+body:has(.th.dark){background:#09090b}
+@media (prefers-color-scheme: dark){body:has(.th.system){background:#09090b}}
 body{margin:0;background:#ffffff}
 a{color:var(--fg)}a:hover{color:var(--text-2)}
 button{font-family:inherit}
@@ -412,22 +412,22 @@ class Component extends DCLogic {
   renderVals() {
     const chip = (hex) => 'display: inline-block; width: 20px; height: 20px; border-radius: 5px; border: 1px solid rgba(0,0,0,0.12); background: ' + hex;
     const colours = [
-      ['--background', '#ffffff', '#0a0a0a', 'Page background'],
+      ['--background', '#ffffff', '#09090b', 'Page background'],
       ['--foreground', '#0a0a0a', '#fafafa', 'Body text, headings'],
-      ['--card', '#ffffff', '#0a0a0a', 'Cards, tables, menus, dialogs (set apart by borders)'],
-      ['--muted', '#f5f5f5', '#262626', 'Tabs track, muted badges, hover, selected rows'],
-      ['--muted-foreground', '#737373', '#a3a3a3', 'Meta text, labels, placeholders'],
-      ['--border', '#e5e5e5', '#2e2e2e', 'Card and table borders'],
-      ['--input', '#e5e5e5', '#2e2e2e', 'Input and outline button borders'],
-      ['--primary', '#171717', '#e5e5e5', 'Primary button, checked checkbox, done step'],
-      ['--primary-foreground', '#fafafa', '#171717', 'Text on primary'],
-      ['--sidebar', '#fafafa', '#141414', 'Sidebar, round headers, row hover'],
-      ['--ring', '#a3a3a3', '#737373', 'Focus ring'],
+      ['--card', '#ffffff', '#09090b', 'Cards, tables, menus, dialogs (set apart by borders)'],
+      ['--muted', '#f5f5f5', '#232327', 'Tabs track, muted badges, hover, selected rows'],
+      ['--muted-foreground', '#737373', '#a1a1aa', 'Meta text, labels, placeholders'],
+      ['--border', '#e5e5e5', '#27272a', 'Card and table borders'],
+      ['--input', '#e5e5e5', '#27272a', 'Input and outline button borders'],
+      ['--primary', '#171717', '#fafafa', 'Primary button, checked checkbox, done step'],
+      ['--primary-foreground', '#fafafa', '#09090b', 'Text on primary'],
+      ['--sidebar', '#fafafa', '#121214', 'Sidebar, round headers, row hover'],
+      ['--ring', '#a3a3a3', '#a1a1aa', 'Focus ring'],
       ['--destructive', '#dc2626', '#dc2626', 'Reject button, overdue badge, unread dot (white text in both themes)'],
-      ['--status-ok-bg / fg', '#f0fdf4', '#052e16', 'Approved, Closed (text #166534 / #86efac)'],
-      ['--status-warn-bg / fg', '#fffbeb', '#422006', 'In review, Returned, due soon (text #92400e / #fcd34d)'],
-      ['--status-danger-bg / fg', '#fef2f2', '#450a0a', 'Rejected (text #b91c1c / #f87171)'],
-      ['--status-neutral-bg / fg', '#f5f5f5', '#262626', 'Draft, Withdrawn, notes (text #171717 / #e5e5e5)']
+      ['--status-ok-bg / fg', '#f0fdf4', '#112319', 'Approved, Closed (text #166534 / #4ade80)'],
+      ['--status-warn-bg / fg', '#fffbeb', '#261f0e', 'In review, Returned, due soon (text #92400e / #fbbf24)'],
+      ['--status-danger-bg / fg', '#fef2f2', '#261517', 'Rejected (text #b91c1c / #f87171)'],
+      ['--status-neutral-bg / fg', '#f5f5f5', '#232327', 'Draft, Withdrawn, notes (text #171717 / #f4f4f5)']
     ].map((c) => ({ token: c[0], light: c[1], dark: c[2], use: c[3], lightChip: chip(c[1]), darkChip: chip(c[2]) }));
 
     const typeScale = [

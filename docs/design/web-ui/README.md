@@ -72,7 +72,7 @@ cd docs/design/web-ui
 python3 tools/dialogs_gallery.py && python3 tools/otp.py && python3 tools/layout.py
 ```
 
-The one-time scripts, roughly in the order they ran: `theme.py` (tokens and dark mode), `tabs.py`, `bell.py`, `phoneshell.py`, `tasks.py`, `dialogs.py`, `savedialog.py`, `auth.py`, `orgnav.py`, `orgfix.py`, `orgphone.py`, `position.py`, `ended.py`, `sent.py`, `closed.py`, `inbox_tabs.py`, `states.py`, `access_swap.py`, `review_fix.py`, `ux_next_unread.py` (next task, “Since you last looked”, unread markers), `reading_pane.py` (builds `InboxReading` from the Inbox board). The `*-body.html`, `*-fields.html` and `*-logic.js` files are fragments they assembled.
+The one-time scripts, roughly in the order they ran: `theme.py` (tokens and dark mode), `tabs.py`, `bell.py`, `phoneshell.py`, `tasks.py`, `dialogs.py`, `savedialog.py`, `auth.py`, `orgnav.py`, `orgfix.py`, `orgphone.py`, `position.py`, `ended.py`, `sent.py`, `closed.py`, `inbox_tabs.py`, `states.py`, `access_swap.py`, `review_fix.py`, `ux_next_unread.py` (next task, “Since you last looked”, unread markers), `reading_pane.py` (builds `InboxReading` from the Inbox board), `pane_toggle.py` (the reading-pane switch), `dark_options.py` and `dark_preview.py` (the temporary dark-palette comparison, since removed), `apply_dark.py` (made palette A, Crisp neutral, the dark theme everywhere). The `*-body.html`, `*-fields.html` and `*-logic.js` files are fragments they assembled.
 
 ## Publishing to the canvas
 

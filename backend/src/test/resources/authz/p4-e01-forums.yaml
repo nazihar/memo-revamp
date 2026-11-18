@@ -43,6 +43,7 @@ endpoints:
     rule: tenantAdmin
     body: { key: "matrix-clone", code: "MXK", name: "Matrix clone", shortName: "Clone" }
     headers: { Idempotency-Key: "{random}" }
+  - { endpoint: "GET /api/v1/forums/{forumId}/policy", rule: signedIn }
   - { endpoint: "GET /api/v1/forums/{forumId}/members", rule: signedIn }
   - endpoint: "POST /api/v1/forums/{forumId}/members"
     rule: signedIn

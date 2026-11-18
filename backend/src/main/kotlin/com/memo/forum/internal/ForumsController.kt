@@ -7,6 +7,10 @@ import com.memo.common.web.etagOf
 import com.memo.common.web.ifMatchVersion
 import com.memo.forum.ForumRole
 import com.memo.forum.ForumStatus
+import com.memo.forum.MemberAttribute
+import com.memo.forum.Outcome
+import com.memo.forum.QuorumRule
+import com.memo.forum.TermPolicy
 import com.memo.system.Idempotency
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Schema
@@ -153,6 +157,25 @@ data class MemberChangeResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val beyondMaxTerms: Boolean,
 )
 
+/** The committee type's published policy as the committee's members read it (flow K2), with the quorum on a date. */
+data class ForumPolicyResponse(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val typeId: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val typeName: String,
+    /** The type's published version. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val version: Int,
+    val description: String?,
+    /** The classification a committee of this type has unless it sets its own. */
+    val defaultClassificationId: UUID?,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val memberAttributes: List<MemberAttribute>,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val quorum: QuorumRule,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val outcomes: List<Outcome>,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val termPolicy: TermPolicy,
+    /** On the date asked: the members who count towards quorum, or the fixed seats. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val quorumBasis: Int,
+    /** On the date asked: how many of them must attend. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val quorumNeeded: Int,
+)
+
 data class MyForumResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val forumId: UUID,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val name: String,
@@ -179,6 +202,7 @@ data class MyForumResponse(
 class ForumsController(
     private val forums: Forums,
     private val views: ForumViews,
+    private val policies: ForumPolicies,
     private val transactions: TenantTransactions,
     private val idempotency: Idempotency,
     private val json: JsonMapper,
@@ -261,6 +285,15 @@ class ForumsController(
             }
         return ResponseEntity.status(HttpStatus.CREATED).body(created)
     }
+
+    @GetMapping("/api/v1/forums/{forumId}/policy")
+    @SignedIn
+    @Operation(operationId = "getForumPolicy", summary = "The committee type's published policy, with the quorum on a date (default today)")
+    fun policy(
+        @PathVariable forumId: UUID,
+        @RequestParam(required = false) on: LocalDate?,
+    ): ResponseEntity<ForumPolicyResponse> =
+        ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(read { policies.policy(forums.get(forumId), on) })
 
     @GetMapping("/api/v1/me/forums")
     @SignedIn

@@ -15,3 +15,8 @@ export function problemsByStep(problems: FieldProblem[]): Map<number, FieldProbl
   }
   return grouped
 }
+
+/** Whether a problem is the server's "no such active committee" (`UNKNOWN_FORUM` at `/steps/N/forum`, flow L2). */
+export function isUnknownForum(problem: FieldProblem): boolean {
+  return problem.code === 'UNKNOWN_FORUM'
+}

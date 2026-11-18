@@ -1963,6 +1963,56 @@
         "required" : [ "importedOriginals", "mismatches", "promotionMismatches", "verified", "verifyProblems" ],
         "type" : "object"
       },
+      "ForumPolicyResponse" : {
+        "properties" : {
+          "defaultClassificationId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "description" : {
+            "type" : [ "string", "null" ]
+          },
+          "memberAttributes" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MemberAttribute"
+            },
+            "type" : "array"
+          },
+          "outcomes" : {
+            "items" : {
+              "$ref" : "#/components/schemas/Outcome"
+            },
+            "type" : "array"
+          },
+          "quorum" : {
+            "$ref" : "#/components/schemas/QuorumRule"
+          },
+          "quorumBasis" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "quorumNeeded" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "termPolicy" : {
+            "$ref" : "#/components/schemas/TermPolicy"
+          },
+          "typeId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "typeName" : {
+            "type" : "string"
+          },
+          "version" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "memberAttributes", "outcomes", "quorum", "quorumBasis", "quorumNeeded", "termPolicy", "typeId", "typeName", "version" ],
+        "type" : "object"
+      },
       "ForumRequest" : {
         "properties" : {
           "classificationId" : {
@@ -14564,6 +14614,42 @@
           }
         },
         "summary" : "Withdraw a membership that has not started",
+        "tags" : [ "forum" ]
+      }
+    },
+    "/api/v1/forums/{forumId}/policy" : {
+      "get" : {
+        "operationId" : "getForumPolicy",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "on",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ForumPolicyResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The committee type's published policy, with the quorum on a date (default today)",
         "tags" : [ "forum" ]
       }
     },

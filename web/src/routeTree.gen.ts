@@ -40,7 +40,10 @@ import { Route as ShellSignedInAdminMemoNumberingRouteImport } from './routes/_s
 import { Route as ShellSignedInAdminRolesRouteImport } from './routes/_shell/_signedIn/admin.roles'
 import { Route as ShellSignedInAdminSecurityRouteImport } from './routes/_shell/_signedIn/admin.security'
 import { Route as ShellSignedInAdminUsersRouteImport } from './routes/_shell/_signedIn/admin.users'
+import { Route as ShellSignedInCommitteesIndexRouteImport } from './routes/_shell/_signedIn/committees.index'
+import { Route as ShellSignedInCommitteesForumIdRouteImport } from './routes/_shell/_signedIn/committees.$forumId'
 import { Route as ShellSignedInDashboardsApprovalsRouteImport } from './routes/_shell/_signedIn/dashboards.approvals'
+import { Route as ShellSignedInMeCommitteesRouteImport } from './routes/_shell/_signedIn/me.committees'
 import { Route as ShellSignedInMeNotificationsRouteImport } from './routes/_shell/_signedIn/me.notifications'
 import { Route as ShellSignedInMeSecurityRouteImport } from './routes/_shell/_signedIn/me.security'
 import { Route as ShellSignedInMemosMemoIdRouteImport } from './routes/_shell/_signedIn/memos.$memoId'
@@ -223,10 +226,28 @@ const ShellSignedInAdminUsersRoute = ShellSignedInAdminUsersRouteImport.update({
   path: '/admin/users',
   getParentRoute: () => ShellSignedInRoute,
 } as any)
+const ShellSignedInCommitteesIndexRoute =
+  ShellSignedInCommitteesIndexRouteImport.update({
+    id: '/committees/',
+    path: '/committees/',
+    getParentRoute: () => ShellSignedInRoute,
+  } as any)
+const ShellSignedInCommitteesForumIdRoute =
+  ShellSignedInCommitteesForumIdRouteImport.update({
+    id: '/committees/$forumId',
+    path: '/committees/$forumId',
+    getParentRoute: () => ShellSignedInRoute,
+  } as any)
 const ShellSignedInDashboardsApprovalsRoute =
   ShellSignedInDashboardsApprovalsRouteImport.update({
     id: '/dashboards/approvals',
     path: '/dashboards/approvals',
+    getParentRoute: () => ShellSignedInRoute,
+  } as any)
+const ShellSignedInMeCommitteesRoute =
+  ShellSignedInMeCommitteesRouteImport.update({
+    id: '/me/committees',
+    path: '/me/committees',
     getParentRoute: () => ShellSignedInRoute,
   } as any)
 const ShellSignedInMeNotificationsRoute =
@@ -393,7 +414,9 @@ export interface FileRoutesByFullPath {
   '/admin/roles': typeof ShellSignedInAdminRolesRoute
   '/admin/security': typeof ShellSignedInAdminSecurityRoute
   '/admin/users': typeof ShellSignedInAdminUsersRoute
+  '/committees/$forumId': typeof ShellSignedInCommitteesForumIdRoute
   '/dashboards/approvals': typeof ShellSignedInDashboardsApprovalsRoute
+  '/me/committees': typeof ShellSignedInMeCommitteesRoute
   '/me/notifications': typeof ShellSignedInMeNotificationsRoute
   '/me/security': typeof ShellSignedInMeSecurityRoute
   '/memos/$memoId': typeof ShellSignedInMemosMemoIdRoute
@@ -402,6 +425,7 @@ export interface FileRoutesByFullPath {
   '/platform/tenants/$tenantId': typeof PlatformOperatorTenantsTenantIdRoute
   '/platform/tenants/new': typeof PlatformOperatorTenantsNewRoute
   '/admin/': typeof ShellSignedInAdminIndexRoute
+  '/committees/': typeof ShellSignedInCommitteesIndexRoute
   '/admin/committee-types/$typeId': typeof ShellSignedInAdminCommitteeTypesTypeIdRoute
   '/admin/imports/$batchId': typeof ShellSignedInAdminImportsBatchIdRoute
   '/admin/memo-types/$typeId': typeof ShellSignedInAdminMemoTypesTypeIdRoute
@@ -445,7 +469,9 @@ export interface FileRoutesByTo {
   '/admin/roles': typeof ShellSignedInAdminRolesRoute
   '/admin/security': typeof ShellSignedInAdminSecurityRoute
   '/admin/users': typeof ShellSignedInAdminUsersRoute
+  '/committees/$forumId': typeof ShellSignedInCommitteesForumIdRoute
   '/dashboards/approvals': typeof ShellSignedInDashboardsApprovalsRoute
+  '/me/committees': typeof ShellSignedInMeCommitteesRoute
   '/me/notifications': typeof ShellSignedInMeNotificationsRoute
   '/me/security': typeof ShellSignedInMeSecurityRoute
   '/memos/$memoId': typeof ShellSignedInMemosMemoIdRoute
@@ -454,6 +480,7 @@ export interface FileRoutesByTo {
   '/platform/tenants/$tenantId': typeof PlatformOperatorTenantsTenantIdRoute
   '/platform/tenants/new': typeof PlatformOperatorTenantsNewRoute
   '/admin': typeof ShellSignedInAdminIndexRoute
+  '/committees': typeof ShellSignedInCommitteesIndexRoute
   '/admin/committee-types/$typeId': typeof ShellSignedInAdminCommitteeTypesTypeIdRoute
   '/admin/imports/$batchId': typeof ShellSignedInAdminImportsBatchIdRoute
   '/admin/memo-types/$typeId': typeof ShellSignedInAdminMemoTypesTypeIdRoute
@@ -503,7 +530,9 @@ export interface FileRoutesById {
   '/_shell/_signedIn/admin/roles': typeof ShellSignedInAdminRolesRoute
   '/_shell/_signedIn/admin/security': typeof ShellSignedInAdminSecurityRoute
   '/_shell/_signedIn/admin/users': typeof ShellSignedInAdminUsersRoute
+  '/_shell/_signedIn/committees/$forumId': typeof ShellSignedInCommitteesForumIdRoute
   '/_shell/_signedIn/dashboards/approvals': typeof ShellSignedInDashboardsApprovalsRoute
+  '/_shell/_signedIn/me/committees': typeof ShellSignedInMeCommitteesRoute
   '/_shell/_signedIn/me/notifications': typeof ShellSignedInMeNotificationsRoute
   '/_shell/_signedIn/me/security': typeof ShellSignedInMeSecurityRoute
   '/_shell/_signedIn/memos/$memoId': typeof ShellSignedInMemosMemoIdRoute
@@ -512,6 +541,7 @@ export interface FileRoutesById {
   '/platform/_operator/tenants/$tenantId': typeof PlatformOperatorTenantsTenantIdRoute
   '/platform/_operator/tenants/new': typeof PlatformOperatorTenantsNewRoute
   '/_shell/_signedIn/admin/': typeof ShellSignedInAdminIndexRoute
+  '/_shell/_signedIn/committees/': typeof ShellSignedInCommitteesIndexRoute
   '/_shell/_signedIn/admin/committee-types/$typeId': typeof ShellSignedInAdminCommitteeTypesTypeIdRoute
   '/_shell/_signedIn/admin/imports/$batchId': typeof ShellSignedInAdminImportsBatchIdRoute
   '/_shell/_signedIn/admin/memo-types/$typeId': typeof ShellSignedInAdminMemoTypesTypeIdRoute
@@ -558,7 +588,9 @@ export interface FileRouteTypes {
     | '/admin/roles'
     | '/admin/security'
     | '/admin/users'
+    | '/committees/$forumId'
     | '/dashboards/approvals'
+    | '/me/committees'
     | '/me/notifications'
     | '/me/security'
     | '/memos/$memoId'
@@ -567,6 +599,7 @@ export interface FileRouteTypes {
     | '/platform/tenants/$tenantId'
     | '/platform/tenants/new'
     | '/admin/'
+    | '/committees/'
     | '/admin/committee-types/$typeId'
     | '/admin/imports/$batchId'
     | '/admin/memo-types/$typeId'
@@ -610,7 +643,9 @@ export interface FileRouteTypes {
     | '/admin/roles'
     | '/admin/security'
     | '/admin/users'
+    | '/committees/$forumId'
     | '/dashboards/approvals'
+    | '/me/committees'
     | '/me/notifications'
     | '/me/security'
     | '/memos/$memoId'
@@ -619,6 +654,7 @@ export interface FileRouteTypes {
     | '/platform/tenants/$tenantId'
     | '/platform/tenants/new'
     | '/admin'
+    | '/committees'
     | '/admin/committee-types/$typeId'
     | '/admin/imports/$batchId'
     | '/admin/memo-types/$typeId'
@@ -667,7 +703,9 @@ export interface FileRouteTypes {
     | '/_shell/_signedIn/admin/roles'
     | '/_shell/_signedIn/admin/security'
     | '/_shell/_signedIn/admin/users'
+    | '/_shell/_signedIn/committees/$forumId'
     | '/_shell/_signedIn/dashboards/approvals'
+    | '/_shell/_signedIn/me/committees'
     | '/_shell/_signedIn/me/notifications'
     | '/_shell/_signedIn/me/security'
     | '/_shell/_signedIn/memos/$memoId'
@@ -676,6 +714,7 @@ export interface FileRouteTypes {
     | '/platform/_operator/tenants/$tenantId'
     | '/platform/_operator/tenants/new'
     | '/_shell/_signedIn/admin/'
+    | '/_shell/_signedIn/committees/'
     | '/_shell/_signedIn/admin/committee-types/$typeId'
     | '/_shell/_signedIn/admin/imports/$batchId'
     | '/_shell/_signedIn/admin/memo-types/$typeId'
@@ -919,11 +958,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShellSignedInAdminUsersRouteImport
       parentRoute: typeof ShellSignedInRoute
     }
+    '/_shell/_signedIn/committees/': {
+      id: '/_shell/_signedIn/committees/'
+      path: '/committees'
+      fullPath: '/committees/'
+      preLoaderRoute: typeof ShellSignedInCommitteesIndexRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
+    '/_shell/_signedIn/committees/$forumId': {
+      id: '/_shell/_signedIn/committees/$forumId'
+      path: '/committees/$forumId'
+      fullPath: '/committees/$forumId'
+      preLoaderRoute: typeof ShellSignedInCommitteesForumIdRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
     '/_shell/_signedIn/dashboards/approvals': {
       id: '/_shell/_signedIn/dashboards/approvals'
       path: '/dashboards/approvals'
       fullPath: '/dashboards/approvals'
       preLoaderRoute: typeof ShellSignedInDashboardsApprovalsRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
+    '/_shell/_signedIn/me/committees': {
+      id: '/_shell/_signedIn/me/committees'
+      path: '/me/committees'
+      fullPath: '/me/committees'
+      preLoaderRoute: typeof ShellSignedInMeCommitteesRouteImport
       parentRoute: typeof ShellSignedInRoute
     }
     '/_shell/_signedIn/me/notifications': {
@@ -1122,13 +1182,16 @@ interface ShellSignedInRouteChildren {
   ShellSignedInAdminRolesRoute: typeof ShellSignedInAdminRolesRoute
   ShellSignedInAdminSecurityRoute: typeof ShellSignedInAdminSecurityRoute
   ShellSignedInAdminUsersRoute: typeof ShellSignedInAdminUsersRoute
+  ShellSignedInCommitteesForumIdRoute: typeof ShellSignedInCommitteesForumIdRoute
   ShellSignedInDashboardsApprovalsRoute: typeof ShellSignedInDashboardsApprovalsRoute
+  ShellSignedInMeCommitteesRoute: typeof ShellSignedInMeCommitteesRoute
   ShellSignedInMeNotificationsRoute: typeof ShellSignedInMeNotificationsRoute
   ShellSignedInMeSecurityRoute: typeof ShellSignedInMeSecurityRoute
   ShellSignedInMemosMemoIdRoute: typeof ShellSignedInMemosMemoIdRoute
   ShellSignedInMemosNewRoute: typeof ShellSignedInMemosNewRoute
   ShellSignedInSearchSavedRoute: typeof ShellSignedInSearchSavedRoute
   ShellSignedInAdminIndexRoute: typeof ShellSignedInAdminIndexRoute
+  ShellSignedInCommitteesIndexRoute: typeof ShellSignedInCommitteesIndexRoute
   ShellSignedInAdminCommitteeTypesTypeIdRoute: typeof ShellSignedInAdminCommitteeTypesTypeIdRoute
   ShellSignedInAdminImportsBatchIdRoute: typeof ShellSignedInAdminImportsBatchIdRoute
   ShellSignedInAdminMemoTypesTypeIdRoute: typeof ShellSignedInAdminMemoTypesTypeIdRoute
@@ -1165,13 +1228,16 @@ const ShellSignedInRouteChildren: ShellSignedInRouteChildren = {
   ShellSignedInAdminRolesRoute: ShellSignedInAdminRolesRoute,
   ShellSignedInAdminSecurityRoute: ShellSignedInAdminSecurityRoute,
   ShellSignedInAdminUsersRoute: ShellSignedInAdminUsersRoute,
+  ShellSignedInCommitteesForumIdRoute: ShellSignedInCommitteesForumIdRoute,
   ShellSignedInDashboardsApprovalsRoute: ShellSignedInDashboardsApprovalsRoute,
+  ShellSignedInMeCommitteesRoute: ShellSignedInMeCommitteesRoute,
   ShellSignedInMeNotificationsRoute: ShellSignedInMeNotificationsRoute,
   ShellSignedInMeSecurityRoute: ShellSignedInMeSecurityRoute,
   ShellSignedInMemosMemoIdRoute: ShellSignedInMemosMemoIdRoute,
   ShellSignedInMemosNewRoute: ShellSignedInMemosNewRoute,
   ShellSignedInSearchSavedRoute: ShellSignedInSearchSavedRoute,
   ShellSignedInAdminIndexRoute: ShellSignedInAdminIndexRoute,
+  ShellSignedInCommitteesIndexRoute: ShellSignedInCommitteesIndexRoute,
   ShellSignedInAdminCommitteeTypesTypeIdRoute:
     ShellSignedInAdminCommitteeTypesTypeIdRoute,
   ShellSignedInAdminImportsBatchIdRoute: ShellSignedInAdminImportsBatchIdRoute,

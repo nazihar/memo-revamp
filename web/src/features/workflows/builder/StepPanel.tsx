@@ -11,7 +11,7 @@ import { ConditionEditor } from './ConditionEditor'
 import { END, type DefinitionBody, type StepJson, type StepType } from './definition'
 import { stepName, type Labels } from './describe'
 import { newStep, PALETTE, type Command, type Slot } from './edit'
-import { problemsByStep } from './problems'
+import { isUnknownForum, problemsByStep } from './problems'
 import { StepDetails } from './StepDetails'
 
 const pm = defineMessages({
@@ -137,6 +137,8 @@ export function StepPanel({
   const [confirming, setConfirming] = useState(askRemove)
   const index = body.steps.findIndex((s) => s.id === step.id)
   const own = problemsByStep(problems).get(index) ?? []
+  // The committee picker shows its own problem in place (flow L2).
+  const listed = own.filter((problem) => !isUnknownForum(problem))
   const connect = (from: Slot) => (to: string) => {
     onCommand({ kind: 'connect', from, to })
   }
@@ -155,7 +157,7 @@ export function StepPanel({
           />
         )}
       </Field>
-      <StepDetails step={step} labels={labels} onLabel={onLabel} onCommand={onCommand} />
+      <StepDetails step={step} labels={labels} problems={own} onLabel={onLabel} onCommand={onCommand} />
       {step.type === 'branch' ? (
         <BranchEditor body={body} step={step} onCommand={onCommand} />
       ) : (
@@ -167,10 +169,10 @@ export function StepPanel({
           onChange={connect({ kind: 'next', step: step.id })}
         />
       )}
-      {own.length > 0 ? (
+      {listed.length > 0 ? (
         <section aria-label={intl.formatMessage(bmv.stepProblems, { name: stepName(step) })}>
           <ul className="flex flex-col gap-1 text-sm text-destructive">
-            {own.map((problem) => (
+            {listed.map((problem) => (
               <li key={`${problem.field}:${problem.code}`}>{problem.message}</li>
             ))}
           </ul>

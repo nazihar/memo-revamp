@@ -1,12 +1,15 @@
 import { useQuery } from '@tanstack/react-query'
 import { Plus, Trash2 } from 'lucide-react'
 import { defineMessages, useIntl, type MessageDescriptor } from 'react-intl'
-import { getBuilderCatalogueOptions } from '@/api/generated/@tanstack/react-query.gen'
+import { getBuilderCatalogueOptions, listEscalationTargetsOptions } from '@/api/generated/@tanstack/react-query.gen'
+import type { FieldProblem } from '@/api/generated/types.gen'
 import { Button } from '@/components/ui/button'
 import { Field } from '@/components/ui/field'
 import { Checkbox, Input, Select } from '@/components/ui/form-controls'
+import { useTerms, type TermValues } from '@/features/terms/terms'
 import { AssigneeEditor } from './AssigneeEditor'
 import { HUMAN_STEPS, type AssigneeJson, type StepJson } from './definition'
+import { isUnknownForum } from './problems'
 import { actionLabels } from './builder-messages'
 import type { Labels } from './describe'
 import type { Command } from './edit'
@@ -31,7 +34,6 @@ const dm = defineMessages({
   n: { id: 'builder.parallel.field.n', defaultMessage: 'How many' },
   addAssignee: { id: 'builder.parallel.add', defaultMessage: 'Add someone' },
   fragment: { id: 'builder.subworkflow.field', defaultMessage: 'Sub-workflow to run' },
-  forum: { id: 'builder.forum.field', defaultMessage: 'Forum key' },
   doaHint: {
     id: 'builder.doa.hint',
     defaultMessage: 'Goes to the approval groups of the delegation of authority in force when the memo starts.',
@@ -49,14 +51,31 @@ const dm = defineMessages({
   },
 })
 
+/** The committee picker (flow L2) names the committee in the organisation's words (ADR-0032). */
+const dmt = defineMessages<{ forum: TermValues; forumHint: TermValues; unknownForum: TermValues }>({
+  forum: { id: 'builder.forum.pick', defaultMessage: '{Forum}' },
+  forumHint: {
+    id: 'builder.forum.pick.hint',
+    defaultMessage: 'The memo waits here for the decision. Only active {forums} are listed.',
+  },
+  unknownForum: {
+    id: 'builder.forum.unknown',
+    defaultMessage: '{forumGender, select, other {This {forum} does not exist or is dissolved.}}',
+  },
+})
+
 const dmv = defineMessages<{
   assigneeN: { n: number }
   removeAssignee: { n: number }
   remarkFor: { action: string }
   recipientN: { n: number }
+  forumOption: { name: string; code: string }
+  forumUnknownKey: { key: string }
   removeRecipient: { n: number }
 }>({
   recipientN: { id: 'builder.notify.recipientN', defaultMessage: 'Tell {n}' },
+  forumOption: { id: 'builder.forum.option', defaultMessage: '{name} ({code})' },
+  forumUnknownKey: { id: 'builder.forum.unknownKey', defaultMessage: '{key} (not found)' },
   removeRecipient: { id: 'builder.notify.remove', defaultMessage: 'Remove person or group {n} to tell' },
   assigneeN: { id: 'builder.parallel.assigneeN', defaultMessage: 'Person or group {n}' },
   removeAssignee: { id: 'builder.parallel.remove', defaultMessage: 'Remove person or group {n}' },
@@ -342,11 +361,14 @@ function NotifyEditor({
 export function StepDetails({
   step,
   labels,
+  problems = [],
   onLabel,
   onCommand,
 }: {
   step: StepJson
   labels: Labels
+  /** The step's own problems, for the fields that show them in place. */
+  problems?: FieldProblem[]
   onLabel: (id: string, label: string) => void
   onCommand: (command: Command) => void
 }) {
@@ -398,20 +420,57 @@ export function StepDetails({
           )}
         </Field>
       ) : null}
-      {step.type === 'escalate-to-forum' ? (
-        <Field label={intl.formatMessage(dm.forum)}>
-          {(p) => (
-            <Input
-              {...p}
-              dir="ltr"
-              value={step.forum ?? ''}
-              onChange={(e) => {
-                onCommand({ kind: 'set', id: step.id, patch: { forum: e.target.value } })
-              }}
-            />
-          )}
-        </Field>
-      ) : null}
+      {step.type === 'escalate-to-forum' ? <ForumPicker step={step} problems={problems} onCommand={onCommand} /> : null}
     </div>
+  )
+}
+
+/**
+ * The committee an "Escalate to committee" step waits for (flow L2): a list of the active committees (name and code)
+ * from `GET /admin/workflow/escalation-targets`. A key that names no active committee, as an imported definition may,
+ * stays selected and is flagged "This committee does not exist or is dissolved".
+ */
+function ForumPicker({
+  step,
+  problems,
+  onCommand,
+}: {
+  step: StepJson
+  problems: FieldProblem[]
+  onCommand: (command: Command) => void
+}) {
+  const intl = useIntl()
+  const terms = useTerms()
+  const targets = useQuery(listEscalationTargetsOptions())
+  const list = (targets.data ?? []).flatMap((t) =>
+    t.key ? [{ key: t.key, name: t.name ?? t.key, code: t.code ?? '' }] : [],
+  )
+  const value = step.forum ?? ''
+  const listed = value === '' || list.some((t) => t.key === value)
+  const unknown = problems.some(isUnknownForum) || (targets.isSuccess && !listed)
+  return (
+    <Field
+      label={intl.formatMessage(dmt.forum, terms)}
+      hint={intl.formatMessage(dmt.forumHint, terms)}
+      error={unknown ? intl.formatMessage(dmt.unknownForum, terms) : undefined}
+    >
+      {(p) => (
+        <Select
+          {...p}
+          value={value}
+          onChange={(e) => {
+            onCommand({ kind: 'set', id: step.id, patch: { forum: e.target.value } })
+          }}
+        >
+          <option value="">{intl.formatMessage(dm.choose)}</option>
+          {listed ? null : <option value={value}>{intl.formatMessage(dmv.forumUnknownKey, { key: value })}</option>}
+          {list.map((t) => (
+            <option key={t.key} value={t.key}>
+              {intl.formatMessage(dmv.forumOption, { name: t.name, code: t.code })}
+            </option>
+          ))}
+        </Select>
+      )}
+    </Field>
   )
 }

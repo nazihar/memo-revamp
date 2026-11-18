@@ -3,6 +3,7 @@ import { setupServer } from 'msw/node'
 import type {
   Health,
   MyAccess,
+  MyForumResponse,
   Session,
   Branding,
   PlatformSession,
@@ -98,6 +99,10 @@ export const watchStatusHandler = (body: WatchStatus = { watching: false }) =>
 export const watchSettingsHandler = (body: WatchSettings = { autoWatch: true, email: 'DIGEST' }) =>
   http.get(`${API_ORIGIN}/api/v1/me/watch-settings`, () => HttpResponse.json<WatchSettings>(body))
 
+/** The committees the user sits on (Phase 4 E01): none, unless a test says so; the home page asks for them. */
+export const myForumsHandler = (body: MyForumResponse[] = []) =>
+  http.get(`${API_ORIGIN}/api/v1/me/forums`, () => HttpResponse.json<MyForumResponse[]>(body))
+
 export const server = setupServer(
   healthHandler(),
   sessionHandler(),
@@ -110,4 +115,5 @@ export const server = setupServer(
   noTeamHandler(),
   watchStatusHandler(),
   watchSettingsHandler(),
+  myForumsHandler(),
 )

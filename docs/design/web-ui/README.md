@@ -13,6 +13,7 @@ canvas/project/      The design itself: what the live canvas holds
   *.dc.html          One board each: 33 screens, desktop and phone, plus Rules.dc.html (the design rules page)
 tools/               Python scripts and HTML fragments that produced or changed the boards
 NOTES.md             The canvas side notes as text: API changes the design needs, behaviour notes, build note
+IMPROVEMENTS.md      UX improvement backlog: ideas to design and build later, with what each needs from the API
 ```
 
 The `.dc.html` files are the source of truth. Each is an HTML template for the Design artifact type: markup with `{{holes}}`, `<sc-for>`/`<sc-if>`, and a `class Component extends DCLogic { renderVals() … }` script that supplies the data and the interactions. The `data-props` attribute declares the tweaks a board offers, for example `theme`, `errors`, `dialog` or `state`. Boards load `./support.js` and render only inside the Design artifact; opened in a browser on their own they show raw template text.

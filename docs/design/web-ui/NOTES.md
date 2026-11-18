@@ -54,3 +54,14 @@ Use shadcn/ui components for everything: Button, Input, InputOTP, Select, Combob
 - Every change asks for step-up (Confirm it is you) first, as the app does. Refusals (already holds it, last administrator, changed meanwhile) show inside the dialog.
 - Needs nothing new from the API: `GET /admin/users/{id}`, its assignments and access, plus the existing lifecycle endpoints.
 - New copy on the Users boards: “Can manage users, memo types, workflows and settings.” (invite checkbox hint), “Open profile and access”, “You cannot deactivate or sign out your own account here.”, “Try another name, email or status.”, “{n} shown”.
+
+## Admin · Roles and Classification
+
+- Users, Roles and Classification share a row of section links under the top bar. The sidebar's Users entry opens the section until the full, grouped Administration menu exists.
+- Roles: open a role to see its permissions; built-in roles are read-only. New and Edit list every permission in five groups (Organisation, People and access, Memos, Workflows, Records and settings) with an "Admin" tag (administrator permission: always needs two-step sign-in) and a "Per unit" tag (can be limited to a unit). Remove only works for roles nobody holds.
+- Editing a role that people hold says that changes apply to them at once (new copy).
+- Classification: the up and down buttons move a level one place, and the arrows point where the row goes. In the app today the arrow icons point the other way: ArrowUp makes a level more sensitive, which moves it down the list.
+- A new level goes in as the most sensitive, as the API does, and the Add level dialog says so (new copy).
+- Refusals show inside the dialog: name taken, still in use (with what to do first, new copy), last level, at most 20 levels, changed meanwhile.
+- Web catalogue gap: `tenant.settings.manage` has no label in `access-messages.ts`; the boards call it "Manage organisation settings".
+- New copy: "Choose at least one permission." (the app greys out Save instead), the permission group names, the custom role descriptions, "Least sensitive" / "Most sensitive" tags, the level descriptions, and the footer notes.

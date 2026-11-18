@@ -3,7 +3,7 @@
 A redesign of the web app's user-facing screens: every non-admin route, desktop and phone side by side, in light and dark. It is a **design**, not code. The app is built from it with shadcn/ui components (see "Building from this design" below).
 
 - Live canvas: a private claude.ai Design artifact, `https://claude.ai/artifact/VRTQYT81opA8eMovd2rDo6`. It needs to be shared before others can open it.
-- Snapshot in this folder: 2026-11-18, canvas version 92.
+- Snapshot in this folder: 2026-11-18, canvas version 95.
 
 ## What is here
 
@@ -34,7 +34,7 @@ On the **Screens** page, in canvas order (`tools/layout.py`):
 | Account | My security (`Security`), Notification settings (`Prefs`), Sign in (`SignIn`) |
 | Platform | Platform status (`Status`), Page states (`States`) |
 
-The **Admin** canvas page holds the administration screens: so far Open tasks (`Tasks`), Users (`Users`) and User detail (`UserDetail`), with a note listing the 20 admin pages still to design. The **Operator** canvas page is for the operator console (6 pages, none designed yet). The **Design rules** page holds `Rules`.
+The **Admin** canvas page holds the administration screens: so far Open tasks (`Tasks`), Users (`Users`), User detail (`UserDetail`), Roles (`Roles`) and Classification (`Classifications`), with a note listing the 18 admin pages still to design. Users, Roles and Classification share a row of section links ("People and access"). The **Operator** canvas page is for the operator console (6 pages, none designed yet). The **Design rules** page holds `Rules`.
 
 Each desktop board `X.dc.html` has a phone board `XPhone.dc.html`, except `Main` (its phone board is `Phone`) and `InboxReading` (wide screens only; a note stands in its phone column).
 
@@ -50,7 +50,7 @@ python3 tools/smoke.py Memo.dc.html '{}' '{"props":{"errors":true}}'
 
 Each extra argument is a JSON object `{"props": {...}, "state": {...}}` to render with. Reports of `false,true` are the template's own placeholder hints; other names listed as missing are worth a look. A hole inside a closed `<sc-if>` can show as missing harmlessly.
 
-**Add a board:** add its entry to `canvas/project/canvas.json` (`boards`, a title note in `notes`, and `order`), add its row to `ROWS` in `tools/layout.py` (use `'note:<key>'` in the phone slot for a desktop-only board), then run `python3 tools/layout.py`.
+**Add a board:** for admin pages, write a script like `tools/access.py` on top of `tools/kit.py` (its `canvas_add` adds the boards and title notes, and takes the page off the Admin to-do note). Otherwise add its entry to `canvas/project/canvas.json` (`boards`, a title note in `notes`, and `order`), add its row to `ROWS` in `tools/layout.py` (use `'note:<key>'` in the phone slot for a desktop-only board), then run `python3 tools/layout.py`.
 
 ## Regenerating
 
@@ -66,6 +66,8 @@ These can be rerun safely, and reproduce the committed boards exactly:
 | `tools/card_surface.py` | Adds the `--card` colour and puts cards, tables, dialogs, menus, sheets and toasts on it; skips what is already done | — |
 | `tools/layout.py` | Canvas order and spacing in `canvas.json` | — |
 | `tools/users.py` | `Users`, `UsersPhone`, `UserDetail`, `UserDetailPhone` (from the Open tasks and Position shells; copy from `UsersPage.tsx` and `UserDetailPage.tsx`); also points every sidebar's Users link at them | `tools/card_surface.py` |
+| `tools/kit.py` | Nothing on its own; the shared pieces `users.py` and `access.py` import (icons, dialogs, fields, shells, section links, adding boards to `canvas.json`) | — |
+| `tools/access.py` | `Roles`, `RolesPhone`, `Classifications`, `ClassificationsPhone` (copy from `RolesPage.tsx`, `ClassificationsPage.tsx`; permission flags from the backend's `Permissions.kt`) | `tools/card_surface.py` |
 | `tools/smoke.py` | Nothing; checks a board | — |
 | `tools/preview.py` | Nothing; renders a board to a PNG outside the canvas, for checking it by eye (`python3 tools/preview.py Users.dc.html out.png '{"props":{"dialog":"invite"}}'`; needs Node and the Playwright Chromium) | — |
 

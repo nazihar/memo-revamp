@@ -31,6 +31,11 @@
     "routes": ["/", "/committees", "/me/committees", "/me/meetings", "/meetings"],
     "prefixes": ["meetings"]
   },
+  "meetingPage": {
+    "$comment": "The meeting page members read (Phase 4 E03 T8, flow P): the agenda, papers, What changed and consent requests.",
+    "routes": ["/meetings"],
+    "prefixes": ["meetingPage"]
+  },
   "platform": {
     "routes": ["/platform"],
     "prefixes": ["platform"]

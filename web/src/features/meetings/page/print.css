@@ -1,0 +1,31 @@
+/*
+ * The meeting page in print (Phase 4 E03 T8, flow P1): a plain agenda with numbers, times and purposes, without the
+ * application's frame, papers or buttons. The page marks its root with .meeting-print; the shell's navigation, top bar
+ * and skip link are left out only while such a page is shown. Inside the page, Tailwind's print: variant hides the rest.
+ */
+@media print {
+  body:has(.meeting-print) nav,
+  body:has(.meeting-print) header,
+  body:has(.meeting-print) a[href='#main'],
+  body:has(.meeting-print) .fixed[aria-live] {
+    display: none !important;
+  }
+
+  body:has(.meeting-print),
+  body:has(.meeting-print) #main {
+    background: #fff !important;
+    color: #000 !important;
+    padding: 0 !important;
+  }
+
+  .meeting-print {
+    max-width: none !important;
+    font-size: 11pt;
+  }
+
+  .meeting-print * {
+    color: #000 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+}

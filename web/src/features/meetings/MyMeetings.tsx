@@ -14,7 +14,8 @@ import { notEnded, yourTimes } from './time'
 
 /**
  * One meeting as a card (flow N3): the date and times in the meeting's zone and the viewer's own when it differs, the
- * committee and the meeting's number, how it is held, and "Open meeting".
+ * committee and the meeting's number, how it is held, "Agenda published · 2 changes since you last looked", and
+ * "Open meeting".
  */
 export function MeetingCard({ meeting: m }: { meeting: MeetingSummaryResponse }) {
   const intl = useIntl()
@@ -38,6 +39,16 @@ export function MeetingCard({ meeting: m }: { meeting: MeetingSummaryResponse })
           </h3>
           {m.status !== 'SCHEDULED' ? <StatusBadge meeting={m} officer={m.relation === 'OFFICER'} /> : null}
         </div>
+        {m.agendaRevision ? (
+          <p className="text-sm">
+            {m.changesSinceSeen
+              ? intl.formatMessage(mmv.dot, {
+                  first: intl.formatMessage(mm.cardAgenda),
+                  second: intl.formatMessage(mmv.cardChanges, { count: m.changesSinceSeen }),
+                })
+              : intl.formatMessage(mm.cardAgenda)}
+          </p>
+        ) : null}
         {m.relation === 'GUEST' ? (
           <p className="text-sm text-muted-foreground">{intl.formatMessage(mm.asGuest)}</p>
         ) : null}

@@ -168,8 +168,9 @@ object MeetingTimes {
         times: LocalTimes,
         fallback: ZoneId = ZoneOffset.UTC,
     ): Pair<ResolvedTimes?, List<FieldProblem>> {
+        val named = times.zone
         val zone =
-            (if (times.zone == null) fallback else zone(times.zone))
+            (if (named == null) fallback else zone(named))
                 ?: return null to listOf(FieldProblem("timeZone", "UNKNOWN_ZONE", "Not a known time zone."))
         val start = instant(times.startsAt, zone)
         val end = instant(times.endsAt, zone)

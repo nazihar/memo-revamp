@@ -92,4 +92,30 @@ class TerminologyIT : IntegrationTest() {
 
         assertThat(Audit.entries(tenant.id).map { it.action to it.objectId }).contains("tenant.term.changed" to "unit.en")
     }
+
+    @Test
+    fun `the committee term can be renamed like the others, and an unknown term is refused`() {
+        val tenant = registry.aTestTenant(transactions, settings, "terms-forum")
+        val session = mvc.adminSession(tenant, accounts, transactions, mfaSeeding)
+
+        val saved =
+            put(
+                tenant,
+                session,
+                """{"locale":"en","terms":[{"term":"forum","one":"board","other":"boards"}]}""",
+                terms(tenant, session, "en")["version"].asLong(),
+            )
+        assertThat(saved).hasStatus(HttpStatus.OK)
+        assertThat(terms(tenant, session, "en")["terms"].toString()).contains("\"forum\"", "boards")
+
+        val unknown =
+            put(
+                tenant,
+                session,
+                """{"locale":"en","terms":[{"term":"meeting","one":"session","other":"sessions"}]}""",
+                terms(tenant, session, "en")["version"].asLong(),
+            )
+        assertThat(unknown).hasStatus(HttpStatus.BAD_REQUEST)
+        assertThat(unknown.response.contentAsString).contains("terms[0].term")
+    }
 }

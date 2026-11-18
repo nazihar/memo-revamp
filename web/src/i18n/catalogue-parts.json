@@ -12,6 +12,10 @@
     "routes": ["/admin/memo-types", "/admin/memo-numbering"],
     "prefixes": ["memoTypes", "memoNumbering"]
   },
+  "forumAdmin": {
+    "routes": ["/admin/committee-types"],
+    "prefixes": ["forumTypes"]
+  },
   "platform": {
     "routes": ["/platform"],
     "prefixes": ["platform"]

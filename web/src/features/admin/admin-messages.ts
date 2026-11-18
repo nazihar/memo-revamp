@@ -86,6 +86,7 @@ export const am = defineMessages({
   termUnit: { id: 'admin.terms.unit', defaultMessage: 'Unit (department, branch)' },
   termPosition: { id: 'admin.terms.position', defaultMessage: 'Position' },
   termMemo: { id: 'admin.terms.memo', defaultMessage: 'Memo' },
+  termForum: { id: 'admin.terms.forum', defaultMessage: 'Committee (board, forum)' },
   saveTerms: { id: 'admin.terms.save', defaultMessage: 'Save terms' },
 
   auditTitle: { id: 'admin.audit.title', defaultMessage: 'Audit' },

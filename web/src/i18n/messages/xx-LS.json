@@ -1139,6 +1139,12 @@
       "value": "FeminineSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "admin.terms.forum": [
+    {
+      "type": 0,
+      "value": "Committee (board, forum)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "admin.terms.language": [
     {
       "type": 0,
@@ -4652,6 +4658,2047 @@
     {
       "type": 0,
       "value": "You have unsaved changes.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.active": [
+    {
+      "type": 0,
+      "value": "ActiveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.add": [
+    {
+      "type": 0,
+      "value": "New "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " typeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.appliesTo": [
+    {
+      "type": 0,
+      "value": "Changes apply to every "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " of this type from its next meeting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.approve": [
+    {
+      "type": 0,
+      "value": "Approve and publishSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.attribute.add": [
+    {
+      "type": 0,
+      "value": "Add attributeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.attribute.independent": [
+    {
+      "type": 0,
+      "value": "IndependentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.attribute.keep": [
+    {
+      "type": 0,
+      "value": "AddSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.attribute.key": [
+    {
+      "type": 0,
+      "value": "KeySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.attribute.key.format": [
+    {
+      "type": 0,
+      "value": "Start with a small letter; then letters or digits, 30 at most.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.attribute.key.hint": [
+    {
+      "type": 0,
+      "value": "A small letter, then letters or digits (for example nonExecutive). Quorum rules use it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.attribute.key.taken": [
+    {
+      "type": 0,
+      "value": "Another attribute has this key.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.attribute.keyShown": [
+    {
+      "type": 0,
+      "value": "key: "
+    },
+    {
+      "type": 1,
+      "value": "key"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.attribute.label": [
+    {
+      "type": 0,
+      "value": "LabelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.attribute.labelOf": [
+    {
+      "type": 0,
+      "value": "Label of the attribute "
+    },
+    {
+      "type": 1,
+      "value": "key"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.attribute.management": [
+    {
+      "type": 0,
+      "value": "ManagementSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.attribute.nonExecutive": [
+    {
+      "type": 0,
+      "value": "Non-executiveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.attribute.use": [
+    {
+      "type": 0,
+      "value": "Use "
+    },
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.attributes": [
+    {
+      "type": 0,
+      "value": "Member attributesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.attributes.full": [
+    {
+      "type": 0,
+      "value": "A type has at most 8 attributes.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.attributes.hint": [
+    {
+      "type": 0,
+      "value": "Used in quorum rules and shown on the roster.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.back": [
+    {
+      "type": 0,
+      "value": "All "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " typesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.caption": [
+    {
+      "type": 1,
+      "value": "Forum"
+    },
+    {
+      "type": 0,
+      "value": " types of the organisationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.added": [
+    {
+      "type": 0,
+      "value": "AddedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.attribute": [
+    {
+      "type": 0,
+      "value": "Member attribute “"
+    },
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.empty": [
+    {
+      "type": 0,
+      "value": "noneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.first": [
+    {
+      "type": 0,
+      "value": "The first version of this type: everything is new.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.lead": [
+    {
+      "type": 0,
+      "value": "What this version changes compared with the published one.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.list": [
+    {
+      "type": 0,
+      "value": "ChangesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.none": [
+    {
+      "type": 0,
+      "value": "No changes.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.outcome": [
+    {
+      "type": 0,
+      "value": "Outcome “"
+    },
+    {
+      "type": 1,
+      "value": "meaning"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.outcomeLabel": [
+    {
+      "type": 0,
+      "value": "Outcome “"
+    },
+    {
+      "type": 1,
+      "value": "meaning"
+    },
+    {
+      "type": 0,
+      "value": "” labelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.outcomeResolution": [
+    {
+      "type": 0,
+      "value": "Outcome “"
+    },
+    {
+      "type": 1,
+      "value": "meaning"
+    },
+    {
+      "type": 0,
+      "value": "” numbered as a resolutionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.quorum": [
+    {
+      "type": 0,
+      "value": "QuorumSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.reminders": [
+    {
+      "type": 0,
+      "value": "Reminders (days before a term ends)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.removed": [
+    {
+      "type": 0,
+      "value": "RemovedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.to": [
+    {
+      "type": 0,
+      "value": "changes toSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.changes.what": [
+    {
+      "type": 1,
+      "value": "what"
+    },
+    {
+      "type": 0,
+      "value": ":SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.classification": [
+    {
+      "type": 0,
+      "value": "Default classificationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.code": [
+    {
+      "type": 0,
+      "value": "CodeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.code.format": [
+    {
+      "type": 0,
+      "value": "Use 1 to 10 capital letters, digits or hyphens.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.code.hint": [
+    {
+      "type": 0,
+      "value": "Up to 10 capital letters, digits or hyphens. It cannot be changed later.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.code.taken": [
+    {
+      "type": 0,
+      "value": "Another "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " type has this code.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.col.changes": [
+    {
+      "type": 0,
+      "value": "ChangesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.col.code": [
+    {
+      "type": 0,
+      "value": "CodeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.col.name": [
+    {
+      "type": 0,
+      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.col.published": [
+    {
+      "type": 0,
+      "value": "PublishedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.col.status": [
+    {
+      "type": 0,
+      "value": "StatusSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.conflict": [
+    {
+      "type": 0,
+      "value": "Someone else changed this version. It has been reloaded with their changes.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.create": [
+    {
+      "type": 0,
+      "value": "Create draftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.description": [
+    {
+      "type": 0,
+      "value": "DescriptionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.done": [
+    {
+      "type": 0,
+      "value": "Saved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.effect.approved": [
+    {
+      "type": 0,
+      "value": "The memo continues on its route.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.effect.approvedWithConditions": [
+    {
+      "type": 0,
+      "value": "The memo continues on its route; the conditions are recorded with the decision.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.effect.deferred": [
+    {
+      "type": 0,
+      "value": "The memo keeps waiting for a later meeting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.effect.noted": [
+    {
+      "type": 0,
+      "value": "The memo continues on its route.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.effect.referred": [
+    {
+      "type": 0,
+      "value": "The memo keeps waiting while the other "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " considers it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.effect.rejected": [
+    {
+      "type": 0,
+      "value": "The memo is rejected and its route ends.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.effect.returned": [
+    {
+      "type": 0,
+      "value": "The memo goes back to the person who raised it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.effect.withdrawn": [
+    {
+      "type": 0,
+      "value": "The item is taken off; the memo keeps waiting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.inactive": [
+    {
+      "type": 0,
+      "value": "Switched offSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.invalid": [
+    {
+      "type": 0,
+      "value": "Fix these before saving:SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.lead": [
+    {
+      "type": 0,
+      "value": "The policy of each kind of "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": ": who makes a quorum, the decisions it records and how long members serve. Every change is reviewed by a second administrator before it applies.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.lowest": [
+    {
+      "type": 0,
+      "value": "Lowest levelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.name": [
+    {
+      "type": 0,
+      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.nameWithCode": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "code"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.newDraft": [
+    {
+      "type": 0,
+      "value": "New draftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.no": [
+    {
+      "type": 0,
+      "value": "NoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.noChanges": [
+    {
+      "type": 0,
+      "value": "NoneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.notPublished": [
+    {
+      "type": 0,
+      "value": "Not yetSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.outcome.approved": [
+    {
+      "type": 0,
+      "value": "ApprovedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.outcome.approvedWithConditions": [
+    {
+      "type": 0,
+      "value": "Approved with conditionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.outcome.deferred": [
+    {
+      "type": 0,
+      "value": "DeferredSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.outcome.noted": [
+    {
+      "type": 0,
+      "value": "NotedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.outcome.referred": [
+    {
+      "type": 5,
+      "value": "forumGender",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Referred to another "
+            },
+            {
+              "type": 1,
+              "value": "forum"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.outcome.rejected": [
+    {
+      "type": 0,
+      "value": "RejectedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.outcome.returned": [
+    {
+      "type": 0,
+      "value": "Returned for more informationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.outcome.withdrawn": [
+    {
+      "type": 0,
+      "value": "WithdrawnSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.outcomes.caption": [
+    {
+      "type": 0,
+      "value": "Outcomes and their labelsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.outcomes.col.label": [
+    {
+      "type": 0,
+      "value": "LabelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.outcomes.col.meaning": [
+    {
+      "type": 0,
+      "value": "Meaning (fixed)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.outcomes.col.on": [
+    {
+      "type": 0,
+      "value": "OnSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.outcomes.col.resolution": [
+    {
+      "type": 0,
+      "value": "Numbered as a resolutionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.outcomes.help": [
+    {
+      "type": 0,
+      "value": "What each meaning does to a memo waiting for the decisionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.outcomes.label": [
+    {
+      "type": 0,
+      "value": "Label for "
+    },
+    {
+      "type": 1,
+      "value": "meaning"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.outcomes.lead": [
+    {
+      "type": 0,
+      "value": "The decisions this "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " records. The labels are yours; the meanings are fixed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.outcomes.resolution": [
+    {
+      "type": 0,
+      "value": "Number "
+    },
+    {
+      "type": 1,
+      "value": "meaning"
+    },
+    {
+      "type": 0,
+      "value": " decisions as resolutionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.outcomes.use": [
+    {
+      "type": 0,
+      "value": "Use "
+    },
+    {
+      "type": 1,
+      "value": "meaning"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.pending.draft": [
+    {
+      "type": 0,
+      "value": "Draft v"
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.pending.inReview": [
+    {
+      "type": 0,
+      "value": "In review v"
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.pending.inReviewBy": [
+    {
+      "type": 0,
+      "value": "In review v"
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.preset.blank": [
+    {
+      "type": 0,
+      "value": "BlankSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.preset.board": [
+    {
+      "type": 0,
+      "value": "BoardSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.preset.boardCommittee": [
+    {
+      "type": 0,
+      "value": "Board committeeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.preset.managementCommittee": [
+    {
+      "type": 0,
+      "value": "Management committeeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.published": [
+    {
+      "type": 0,
+      "value": "Published: v"
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.alternates.no": [
+    {
+      "type": 0,
+      "value": "Alternates do not count.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.alternates.yes": [
+    {
+      "type": 0,
+      "value": "An alternate counts for the member they replace.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.alternatesCount": [
+    {
+      "type": 0,
+      "value": "Alternates count for the member they replaceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.amount.count": [
+    {
+      "type": 0,
+      "value": "At least "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " of the "
+    },
+    {
+      "type": 1,
+      "value": "base"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.amount.fraction": [
+    {
+      "type": 5,
+      "value": "key",
+      "options": {
+        "1_2": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Half"
+            }
+          ]
+        },
+        "1_3": {
+          "value": [
+            {
+              "type": 0,
+              "value": "A third"
+            }
+          ]
+        },
+        "2_3": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Two-thirds"
+            }
+          ]
+        },
+        "1_4": {
+          "value": [
+            {
+              "type": 0,
+              "value": "A quarter"
+            }
+          ]
+        },
+        "3_4": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Three-quarters"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "numerator"
+            },
+            {
+              "type": 0,
+              "value": "/"
+            },
+            {
+              "type": 1,
+              "value": "denominator"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": " of the "
+    },
+    {
+      "type": 1,
+      "value": "base"
+    },
+    {
+      "type": 0,
+      "value": ", rounded upSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.amount.majority": [
+    {
+      "type": 0,
+      "value": "More than half of the "
+    },
+    {
+      "type": 1,
+      "value": "base"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.basis.inOffice": [
+    {
+      "type": 0,
+      "value": "Members in office on the daySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.basis.seats": [
+    {
+      "type": 0,
+      "value": "A fixed number of seatsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.builder": [
+    {
+      "type": 0,
+      "value": "Quorum ruleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.composition": [
+    {
+      "type": 0,
+      "value": "Of those presentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.composition.add": [
+    {
+      "type": 0,
+      "value": "Add conditionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.composition.atLeast": [
+    {
+      "type": 0,
+      "value": "at leastSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.composition.majority": [
+    {
+      "type": 0,
+      "value": "a majoritySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.composition.mustBe": [
+    {
+      "type": 0,
+      "value": "must beSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.composition.needAttributes": [
+    {
+      "type": 0,
+      "value": "Add member attributes on the Policy tab first.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.composition.none": [
+    {
+      "type": 0,
+      "value": "No condition on who they are.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.compositionMajorityPart": [
+    {
+      "type": 0,
+      "value": ", with a majority of them "
+    },
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.compositionPart": [
+    {
+      "type": 0,
+      "value": ", with at least "
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " of them "
+    },
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.condition.attribute": [
+    {
+      "type": 0,
+      "value": "Condition "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ": attributeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.condition.howMany": [
+    {
+      "type": 0,
+      "value": "Condition "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ": how manySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.condition.number": [
+    {
+      "type": 0,
+      "value": "Condition "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ": numberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.condition.remove": [
+    {
+      "type": 0,
+      "value": "Remove condition "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.counts.all": [
+    {
+      "type": 0,
+      "value": "All membersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.counts.hint": [
+    {
+      "type": 0,
+      "value": "Observers and standing invitees never count.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.counts.voting": [
+    {
+      "type": 0,
+      "value": "Voting membersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.denominator": [
+    {
+      "type": 0,
+      "value": "Fraction, bottom numberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.example": [
+    {
+      "type": 0,
+      "value": "ExampleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.example.inOffice": [
+    {
+      "type": 0,
+      "value": "With "
+    },
+    {
+      "type": 1,
+      "value": "basis"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "who"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " must attend.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.example.seats": [
+    {
+      "type": 0,
+      "value": "With "
+    },
+    {
+      "type": 1,
+      "value": "basis"
+    },
+    {
+      "type": 0,
+      "value": " seats, "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " must attend.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.fixedNumber": [
+    {
+      "type": 0,
+      "value": "Fixed number of membersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.floor": [
+    {
+      "type": 0,
+      "value": ", and never fewer than "
+    },
+    {
+      "type": 1,
+      "value": "minimum"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.fractionBar": [
+    {
+      "type": 0,
+      "value": "/SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.howMany": [
+    {
+      "type": 0,
+      "value": "How manySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.inWords": [
+    {
+      "type": 0,
+      "value": "In wordsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.including": [
+    {
+      "type": 0,
+      "value": ", including "
+    },
+    {
+      "type": 1,
+      "value": "roles"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.minimum": [
+    {
+      "type": 0,
+      "value": "Never fewer thanSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.mustInclude": [
+    {
+      "type": 0,
+      "value": "Must includeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.numerator": [
+    {
+      "type": 0,
+      "value": "Fraction, top numberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.outOf": [
+    {
+      "type": 0,
+      "value": "Out ofSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.previewUnavailable": [
+    {
+      "type": 0,
+      "value": "Fix the rule to see the example and try it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.recused.no": [
+    {
+      "type": 0,
+      "value": "Members with a conflict on an item do not count for that item.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.recused.yes": [
+    {
+      "type": 0,
+      "value": "Members with a conflict on an item still count for that item.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.recusedCount": [
+    {
+      "type": 0,
+      "value": "Members who declared a conflict on an item count for that itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.remote.no": [
+    {
+      "type": 0,
+      "value": "Only members in the room count.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.remote.yes": [
+    {
+      "type": 0,
+      "value": "Members attending remotely count.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.remoteCounts": [
+    {
+      "type": 0,
+      "value": "Members attending remotely countSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.required.add": [
+    {
+      "type": 0,
+      "value": "Add a requirementSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.required.addAnother": [
+    {
+      "type": 0,
+      "value": "Add another requirementSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.required.addRole": [
+    {
+      "type": 0,
+      "value": "Add a role…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.required.anyOne": [
+    {
+      "type": 0,
+      "value": "(any one of them)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.required.none": [
+    {
+      "type": 0,
+      "value": "No particular role has to be there.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.requirement": [
+    {
+      "type": 0,
+      "value": "Requirement "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.requirement.addRole": [
+    {
+      "type": 0,
+      "value": "Add a role to requirement "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.requirement.remove": [
+    {
+      "type": 0,
+      "value": "Remove requirement "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.role.chair": [
+    {
+      "type": 0,
+      "value": "the chairSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.role.member": [
+    {
+      "type": 0,
+      "value": "a memberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.role.observer": [
+    {
+      "type": 0,
+      "value": "an observerSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.role.secretary": [
+    {
+      "type": 0,
+      "value": "a secretarySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.role.standingInvitee": [
+    {
+      "type": 0,
+      "value": "a standing inviteeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.role.viceChair": [
+    {
+      "type": 0,
+      "value": "a vice-chairSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.roundedUp": [
+    {
+      "type": 0,
+      "value": "rounded upSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.seats": [
+    {
+      "type": 0,
+      "value": "Number of seatsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.seatsBase": [
+    {
+      "type": 6,
+      "value": "seats",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " seat"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " seats"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.sentence": [
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 1,
+      "value": "floor"
+    },
+    {
+      "type": 1,
+      "value": "including"
+    },
+    {
+      "type": 1,
+      "value": "composition"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.threshold.count": [
+    {
+      "type": 0,
+      "value": "A fixed numberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.threshold.fraction": [
+    {
+      "type": 0,
+      "value": "A fractionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.threshold.majority": [
+    {
+      "type": 0,
+      "value": "More than halfSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.tryIt": [
+    {
+      "type": 0,
+      "value": "Try itSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.tryIt.lead": [
+    {
+      "type": 0,
+      "value": "Sample numbers only; nothing is saved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.who.allInOffice": [
+    {
+      "type": 0,
+      "value": "members in officeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.who.votingInOffice": [
+    {
+      "type": 0,
+      "value": "voting members in officeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.quorum.whoCounts": [
+    {
+      "type": 0,
+      "value": "Who countsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.readOnly": [
+    {
+      "type": 0,
+      "value": "Only a draft can be changed. Start a new draft to change this type.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.reason.draftExists": [
+    {
+      "type": 0,
+      "value": "This type already has a draft or a version in review.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.reason.samePerson": [
+    {
+      "type": 0,
+      "value": "Someone other than the submitter has to review it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.reason.wrongState": [
+    {
+      "type": 0,
+      "value": "This version has moved on. Reload and try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.remark": [
+    {
+      "type": 0,
+      "value": "RemarkSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.remark.hint": [
+    {
+      "type": 0,
+      "value": "Required to send it back; optional when approving.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.removeNamed": [
+    {
+      "type": 0,
+      "value": "Remove "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.required": [
+    {
+      "type": 0,
+      "value": "Required.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.retention": [
+    {
+      "type": 0,
+      "value": "Keep records for (years after the meeting)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.retention.hint": [
+    {
+      "type": 0,
+      "value": "Kept now, acted on later by records management. Leave it empty for no policy yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.reviewRemark": [
+    {
+      "type": 0,
+      "value": "Reviewer’s remark: "
+    },
+    {
+      "type": 1,
+      "value": "remark"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.role.chair": [
+    {
+      "type": 0,
+      "value": "ChairSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.role.member": [
+    {
+      "type": 0,
+      "value": "MemberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.role.secretary": [
+    {
+      "type": 0,
+      "value": "SecretarySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.role.viceChair": [
+    {
+      "type": 0,
+      "value": "Vice-chairSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.save": [
+    {
+      "type": 0,
+      "value": "SaveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.sendBack": [
+    {
+      "type": 0,
+      "value": "Send backSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.startFrom": [
+    {
+      "type": 0,
+      "value": "Start fromSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.startFrom.hint": [
+    {
+      "type": 0,
+      "value": "An example to edit, taken from published charters. Nothing applies until it is reviewed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.submit": [
+    {
+      "type": 0,
+      "value": "Submit for reviewSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.submittedBy": [
+    {
+      "type": 0,
+      "value": "Submitted by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "when"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.switchOff": [
+    {
+      "type": 0,
+      "value": "Switch offSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.switchOn": [
+    {
+      "type": 0,
+      "value": "Switch onSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.switchedOff.hint": [
+    {
+      "type": 0,
+      "value": "Switched off: new "
+    },
+    {
+      "type": 1,
+      "value": "forums"
+    },
+    {
+      "type": 0,
+      "value": " cannot use this type. Those that do keep working.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.tab.changes": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Changes"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Changes ("
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": ")"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.tab.outcomes": [
+    {
+      "type": 0,
+      "value": "OutcomesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.tab.policy": [
+    {
+      "type": 0,
+      "value": "PolicySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.tab.quorum": [
+    {
+      "type": 0,
+      "value": "QuorumSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.tab.terms": [
+    {
+      "type": 0,
+      "value": "TermsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.tabs": [
+    {
+      "type": 0,
+      "value": "Parts of the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " typeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.terms.daysBefore": [
+    {
+      "type": 0,
+      "value": "days before a term endsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.terms.maxTerms": [
+    {
+      "type": 0,
+      "value": "Most consecutive termsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.terms.maxTerms.hint": [
+    {
+      "type": 0,
+      "value": "A warning on renewal, never a block.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.terms.months": [
+    {
+      "type": 0,
+      "value": "Usual term of office (months)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.terms.months.hint": [
+    {
+      "type": 0,
+      "value": "Filled in when a member is added; it can be changed for each member.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.terms.reminder": [
+    {
+      "type": 0,
+      "value": "Reminder "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": ", days before a term endsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.terms.reminder.remove": [
+    {
+      "type": 0,
+      "value": "Remove reminder "
+    },
+    {
+      "type": 1,
+      "value": "n"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.terms.reminders": [
+    {
+      "type": 0,
+      "value": "Remind the secretarySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.terms.reminders.add": [
+    {
+      "type": 0,
+      "value": "Add a reminderSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.terms.reminders.hint": [
+    {
+      "type": 0,
+      "value": "Days before a term ends; up to three reminders.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.terms.reminders.none": [
+    {
+      "type": 0,
+      "value": "No reminders.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.tester.attributePresent": [
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": " among those presentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.tester.inOffice.all": [
+    {
+      "type": 0,
+      "value": "Members in officeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.tester.inOffice.voting": [
+    {
+      "type": 0,
+      "value": "Voting members in officeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.tester.notQuorate": [
+    {
+      "type": 0,
+      "value": "Not quorateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.tester.present": [
+    {
+      "type": 0,
+      "value": "PresentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.tester.quorateDetail": [
+    {
+      "type": 0,
+      "value": "Quorate: "
+    },
+    {
+      "type": 1,
+      "value": "present"
+    },
+    {
+      "type": 0,
+      "value": " present; "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " needed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.tester.rolePresent": [
+    {
+      "type": 1,
+      "value": "roles"
+    },
+    {
+      "type": 0,
+      "value": " presentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.tester.unmet.composition": [
+    {
+      "type": 0,
+      "value": "Needs "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": " members, has "
+    },
+    {
+      "type": 1,
+      "value": "actual"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.tester.unmet.count": [
+    {
+      "type": 0,
+      "value": "Needs "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " present, has "
+    },
+    {
+      "type": 1,
+      "value": "actual"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.tester.unmet.role": [
+    {
+      "type": 0,
+      "value": "Needs "
+    },
+    {
+      "type": 1,
+      "value": "roles"
+    },
+    {
+      "type": 0,
+      "value": " present.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.title": [
+    {
+      "type": 1,
+      "value": "Forum"
+    },
+    {
+      "type": 0,
+      "value": " typesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.unsaved": [
+    {
+      "type": 0,
+      "value": "Unsaved changes. Save before submitting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.version": [
+    {
+      "type": 0,
+      "value": "v"
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "state"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.version.label": [
+    {
+      "type": 0,
+      "value": "VersionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.version.short": [
+    {
+      "type": 0,
+      "value": "v"
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.yes": [
+    {
+      "type": 0,
+      "value": "YesSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "health.checkedAt": [
@@ -15626,6 +17673,26 @@
       "value": "EmailSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "nav.forumType": [
+    {
+      "type": 1,
+      "value": "Forum"
+    },
+    {
+      "type": 0,
+      "value": " typeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.forumTypes": [
+    {
+      "type": 1,
+      "value": "Forum"
+    },
+    {
+      "type": 0,
+      "value": " typesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "nav.group.administration": [
     {
       "type": 0,
@@ -19498,6 +21565,24 @@
     {
       "type": 0,
       "value": "This organisation is suspendedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "term.forum.gender": [
+    {
+      "type": 0,
+      "value": "otherSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "term.forum.one": [
+    {
+      "type": 0,
+      "value": "committeeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "term.forum.other": [
+    {
+      "type": 0,
+      "value": "committeesSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "term.memo.gender": [

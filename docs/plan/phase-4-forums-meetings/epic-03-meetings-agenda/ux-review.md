@@ -278,9 +278,11 @@ None needs a real-world input. The flows above carry the recommendations; say if
 ## Owner review
 | Flow | Date | Result |
 |---|---|---|
-| M the secretary's queue (E02) | | |
-| N meetings | | |
-| O the agenda builder | | |
-| P the meeting page | | |
-| Q the chair | | |
-| R the agenda template | | |
+| M the secretary's queue (E02), with the Accept-and-place addition | 2026-11-18 | Approved as recommended ("do screens as you recommend") |
+| N meetings | 2026-11-18 | Approved as recommended |
+| O the agenda builder | 2026-11-18 | Approved as recommended |
+| P the meeting page | 2026-11-18 | Approved as recommended |
+| Q the chair | 2026-11-18 | Approved as recommended |
+| R the agenda template | 2026-11-18 | Approved as recommended |
+
+Questions 1 and 2 answered as recommended on 2026-11-18: meeting numbers follow the calendar year; members read papers in the app without downloading until Phase 5.

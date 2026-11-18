@@ -606,7 +606,7 @@
   "forumTypes.effect.referred": "The memo keeps waiting while the other {forum} considers it.",
   "forumTypes.effect.rejected": "The memo is rejected and its route ends.",
   "forumTypes.effect.returned": "The memo goes back to the person who raised it.",
-  "forumTypes.effect.withdrawn": "The item is taken off; the memo keeps waiting.",
+  "forumTypes.effect.withdrawn": "The item is taken off the agenda; the memo stays with the {forum} until the secretary returns it or places it again.",
   "forumTypes.failed": "That did not work. Try again.",
   "forumTypes.inactive": "Switched off",
   "forumTypes.invalid": "Fix these before saving:",

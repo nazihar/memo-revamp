@@ -5121,7 +5121,15 @@
   "forumTypes.effect.withdrawn": [
     {
       "type": 0,
-      "value": "The item is taken off; the memo keeps waiting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": "The item is taken off the agenda; the memo stays with the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " until the secretary returns it or places it again.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "forumTypes.failed": [

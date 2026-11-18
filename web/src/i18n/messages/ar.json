@@ -606,7 +606,7 @@
   "forumTypes.effect.referred": "تبقى المذكرة في الانتظار إلى أن تبتّ فيها جهة الإحالة ({forum}).",
   "forumTypes.effect.rejected": "تُرفض المذكرة وينتهي مسارها.",
   "forumTypes.effect.returned": "تعود المذكرة إلى من رفعها.",
-  "forumTypes.effect.withdrawn": "يُسحب البند، وتبقى المذكرة في الانتظار.",
+  "forumTypes.effect.withdrawn": "يُرفع البند من جدول الأعمال، وتبقى المذكرة لدى {forum} إلى أن يعيدها الأمين أو يدرجها من جديد.",
   "forumTypes.failed": "لم ينجح ذلك. حاول مرة أخرى.",
   "forumTypes.inactive": "موقوف",
   "forumTypes.invalid": "صحّح ما يلي قبل الحفظ:",

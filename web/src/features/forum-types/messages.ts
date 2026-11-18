@@ -453,6 +453,7 @@ export const ftt = defineMessages<Record<TermMessage, TermValues>>({
   NOTED_effect: { id: 'forumTypes.effect.noted', defaultMessage: 'The memo continues on its route.' },
   WITHDRAWN_effect: {
     id: 'forumTypes.effect.withdrawn',
-    defaultMessage: 'The item is taken off; the memo keeps waiting.',
+    defaultMessage:
+      'The item is taken off the agenda; the memo stays with the {forum} until the secretary returns it or places it again.',
   },
 })

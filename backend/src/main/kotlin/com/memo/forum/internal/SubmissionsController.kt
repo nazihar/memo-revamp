@@ -6,6 +6,7 @@ import com.memo.common.tenant.TenantTransactions
 import com.memo.common.web.etagOf
 import com.memo.common.web.ifMatchVersion
 import com.memo.identity.UserSummaries
+import com.memo.memo.MemoReaders
 import com.memo.workflow.ForumOutcome
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.media.Schema
@@ -28,8 +29,11 @@ import java.util.UUID
 data class SubmissionResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val id: UUID,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val forumId: UUID,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val forumName: String,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val subjectType: String,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val subjectId: UUID,
+    /** The memo's number and subject, when the subject is a memo the reader may read; otherwise null ("restricted"). */
+    val memo: SubmittedMemo?,
     /** Whether the item waits for the committee's decision (ADR-0058). */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val waits: Boolean,
     val previousId: UUID?,
@@ -46,6 +50,13 @@ data class SubmissionResponse(
     val outcome: ForumOutcome?,
     val decidedAt: Instant?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val version: Long,
+)
+
+/** A submitted memo as its reader sees it. */
+data class SubmittedMemo(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val id: UUID,
+    val reference: String?,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val subject: String,
 )
 
 data class CoverSheetRequest(
@@ -186,6 +197,14 @@ class SubmissionsController(
         return write { triage.refer(forumId, id, version, body.forumId, body.reason) }
     }
 
+    @GetMapping("/api/v1/memos/{memoId}/forum-submissions")
+    @SignedIn
+    @Operation(operationId = "listMemoForumSubmissions", summary = "Where a memo stands with committees, newest first")
+    fun ofMemo(
+        @PathVariable memoId: UUID,
+    ): ResponseEntity<List<SubmissionResponse>> =
+        ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(read { responses.of(submissions.ofMemo(memoId)) })
+
     private fun <T> read(block: () -> T): T = transactions.readInTenant(TenantContext.current(), block)
 
     private fun write(block: () -> SubmissionRow): SubmissionResponse =
@@ -196,8 +215,12 @@ class SubmissionsController(
 @Component
 class SubmissionResponses(
     private val users: UserSummaries,
+    private val forums: ForumStore,
+    private val memos: MemoReaders,
 ) {
     fun of(rows: List<SubmissionRow>): List<SubmissionResponse> {
+        val forumNames = forums.all().associate { it.id to it.name }
+        val readable = memos.readable(rows.filter { it.subjectType == MemoReaders.SUBJECT_TYPE }.map { it.subjectId }.toSet())
         val names =
             users
                 .of(
@@ -212,8 +235,10 @@ class SubmissionResponses(
             SubmissionResponse(
                 id = it.id,
                 forumId = it.forumId,
+                forumName = forumNames[it.forumId].orEmpty(),
                 subjectType = it.subjectType,
                 subjectId = it.subjectId,
+                memo = readable[it.subjectId]?.let { m -> SubmittedMemo(m.id, m.reference, m.subject) },
                 waits = it.waits,
                 previousId = it.previousId,
                 purpose = it.purpose,

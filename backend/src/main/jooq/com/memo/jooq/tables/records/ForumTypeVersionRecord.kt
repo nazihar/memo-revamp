@@ -108,6 +108,10 @@ open class ForumTypeVersionRecord private constructor() : UpdatableRecordImpl<Fo
         set(value): Unit = set(21, value)
         get(): OffsetDateTime? = get(21) as OffsetDateTime?
 
+    open var submissionPolicy: JSONB?
+        set(value): Unit = set(22, value)
+        get(): JSONB? = get(22) as JSONB?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -117,7 +121,7 @@ open class ForumTypeVersionRecord private constructor() : UpdatableRecordImpl<Fo
     /**
      * Create a detached, initialised ForumTypeVersionRecord
      */
-    constructor(id: UUID, tenantId: UUID, forumTypeId: UUID, number: Int, state: String, revision: Long? = null, name: String, description: String? = null, defaultClassificationId: UUID? = null, retention: JSONB? = null, memberAttributes: JSONB? = null, quorum: JSONB, outcomes: JSONB, termPolicy: JSONB? = null, createdBy: UUID? = null, createdAt: OffsetDateTime, submittedBy: UUID? = null, submittedAt: OffsetDateTime? = null, reviewedBy: UUID? = null, reviewedAt: OffsetDateTime? = null, reviewRemark: String? = null, publishedAt: OffsetDateTime? = null): this() {
+    constructor(id: UUID, tenantId: UUID, forumTypeId: UUID, number: Int, state: String, revision: Long? = null, name: String, description: String? = null, defaultClassificationId: UUID? = null, retention: JSONB? = null, memberAttributes: JSONB? = null, quorum: JSONB, outcomes: JSONB, termPolicy: JSONB? = null, createdBy: UUID? = null, createdAt: OffsetDateTime, submittedBy: UUID? = null, submittedAt: OffsetDateTime? = null, reviewedBy: UUID? = null, reviewedAt: OffsetDateTime? = null, reviewRemark: String? = null, publishedAt: OffsetDateTime? = null, submissionPolicy: JSONB? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.forumTypeId = forumTypeId
@@ -140,6 +144,7 @@ open class ForumTypeVersionRecord private constructor() : UpdatableRecordImpl<Fo
         this.reviewedAt = reviewedAt
         this.reviewRemark = reviewRemark
         this.publishedAt = publishedAt
+        this.submissionPolicy = submissionPolicy
         resetTouchedOnNotNull()
     }
 }

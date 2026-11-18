@@ -9,6 +9,7 @@ import com.memo.workflow.ActionEntry
 import com.memo.workflow.ActionKind
 import com.memo.workflow.BlockedReason
 import com.memo.workflow.TaskRole
+import com.memo.workflow.WorkflowForums
 import com.memo.workflow.WorkflowQueries
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.stereotype.Service
@@ -57,6 +58,8 @@ data class BoxItem(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val round: Int,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val holders: List<Named>,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val updatedAt: Instant,
+    /** The committee the memo waits on (ADR-0058), by name: "With the Credit Committee". */
+    val withForum: String? = null,
 )
 
 data class BoxPage(
@@ -118,6 +121,7 @@ class MemoInbox(
     private val memos: Memos,
     private val lists: MemoListStore,
     private val queries: WorkflowQueries,
+    private val forumWaits: WorkflowForums,
     private val users: UserSummaries,
     private val policy: Policy,
 ) {
@@ -167,10 +171,11 @@ class MemoInbox(
         val items = rows.take(size)
         val holders = queries.holders(MemoWorkflowSubject.TYPE, items.filter { it.status == MemoStatus.IN_REVIEW }.map { it.id })
         val names = users.of(holders.values.flatten().toSet())
+        val waiting = forumWaits.waitingOn(MemoWorkflowSubject.TYPE, items.filter { it.status == MemoStatus.IN_REVIEW }.map { it.id })
         return BoxPage(
             items.map { memo ->
                 val held = holders[memo.id].orEmpty().map { Named(it, names[it]?.displayName.orEmpty()) }
-                BoxItem(memo.id, memo.reference, memo.subject, memo.status, memo.round, held, memo.updatedAt)
+                BoxItem(memo.id, memo.reference, memo.subject, memo.status, memo.round, held, memo.updatedAt, waiting[memo.id]?.name)
             },
             if (rows.size > size) items.last().let { Cursors.encode(it.updatedAt, it.id) } else null,
         )

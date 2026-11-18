@@ -106,6 +106,7 @@ class ForumTypes(
                 "quorum" to settings.quorum.toString(),
                 "outcomes" to settings.outcomes.map { "${it.kind}:${it.label}${if (it.resolution) "#" else ""}" },
                 "termPolicy" to settings.termPolicy.toString(),
+                "submissionPolicy" to settings.submissionPolicy.toString(),
             )
     }
 }

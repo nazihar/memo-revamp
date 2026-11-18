@@ -174,6 +174,7 @@ export type BoxItem = {
     status: 'DRAFT' | 'IN_REVIEW' | 'RETURNED' | 'APPROVED' | 'REJECTED' | 'WITHDRAWN' | 'DISCARDED' | 'CANCELLED' | 'CLOSED';
     subject: string;
     updatedAt: string;
+    withForum?: string | null;
 };
 
 export type BoxPage = {
@@ -783,6 +784,7 @@ export type ForumTypeSettingsRequest = {
     outcomes?: Array<Outcome>;
     quorum?: QuorumRule;
     retention?: ForumRetention | null;
+    submissionPolicy?: SubmissionPolicy;
     termPolicy?: TermPolicy;
 };
 
@@ -803,6 +805,7 @@ export type ForumTypeVersionResponse = {
     reviewedBy?: PersonRef | null;
     revision: number;
     state: 'DRAFT' | 'IN_REVIEW' | 'PUBLISHED' | 'RETIRED';
+    submissionPolicy: SubmissionPolicy;
     submittedAt?: string | null;
     submittedBy?: PersonRef | null;
     termPolicy: TermPolicy;
@@ -1562,7 +1565,7 @@ export type MemoView = {
     numberedWhen?: 'ON_SUBMIT' | 'ON_APPROVAL';
     origin: 'NATIVE' | 'IMPORTED';
     originUnit?: Named | null;
-    readingAs?: 'INITIATOR' | 'COAUTHOR' | 'APPROVER' | 'NOTIFIED' | 'COPY' | 'SHARED';
+    readingAs?: 'INITIATOR' | 'COAUTHOR' | 'APPROVER' | 'NOTIFIED' | 'COPY' | 'SHARED' | 'FORUM';
     reference?: string | null;
     rendition: 'NONE' | 'PENDING' | 'READY' | 'FAILED';
     round: number;
@@ -1575,6 +1578,7 @@ export type MemoView = {
     typeVersion?: number | null;
     updatedAt: string;
     version: number;
+    withForum?: string | null;
 };
 
 /**
@@ -1704,6 +1708,8 @@ export type NoteEntryView = {
     author: Named;
     body: JsonNode;
     canCorrect: boolean;
+    committee?: string | null;
+    committeeOutcome?: string | null;
     correctedBy: Array<string>;
     correctsId?: string | null;
     createdAt: string;
@@ -2698,10 +2704,18 @@ export type StepUpRequest = {
     password?: string | null;
 };
 
+export type SubmissionPolicy = {
+    deadlineWorkingDays?: number;
+    lateMode?: 'ALLOW' | 'BLOCK' | 'CHAIR_APPROVAL';
+    triageWorkingDays?: number;
+};
+
 export type SubmissionResponse = {
     decidedAt?: string | null;
     forumId: string;
+    forumName: string;
     id: string;
+    memo?: SubmittedMemo | null;
     outcome?: 'APPROVED' | 'APPROVED_WITH_CONDITIONS' | 'NOTED' | 'REJECTED' | 'RETURNED';
     presenter?: PersonRef | null;
     previousId?: string | null;
@@ -2718,6 +2732,12 @@ export type SubmissionResponse = {
     triagedBy?: PersonRef | null;
     version: number;
     waits: boolean;
+};
+
+export type SubmittedMemo = {
+    id: string;
+    reference?: string | null;
+    subject: string;
 };
 
 export type SubstitutionRequest = {
@@ -7798,6 +7818,24 @@ export type WithdrawMemoResponses = {
 };
 
 export type WithdrawMemoResponse = WithdrawMemoResponses[keyof WithdrawMemoResponses];
+
+export type ListMemoForumSubmissionsData = {
+    body?: never;
+    path: {
+        memoId: string;
+    };
+    query?: never;
+    url: '/api/v1/memos/{memoId}/forum-submissions';
+};
+
+export type ListMemoForumSubmissionsResponses = {
+    /**
+     * OK
+     */
+    200: Array<SubmissionResponse>;
+};
+
+export type ListMemoForumSubmissionsResponse = ListMemoForumSubmissionsResponses[keyof ListMemoForumSubmissionsResponses];
 
 export type UpdateAssignmentData = {
     body: PeriodRequest;

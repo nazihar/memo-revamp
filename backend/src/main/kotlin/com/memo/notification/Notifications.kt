@@ -70,6 +70,7 @@ enum class NotificationKind(
     // (its author and presenter). Parameters `committee`, `status`, `organisation`, `link`.
     FORUM_SUBMISSION_RECEIVED(NotificationCategory.WORKFLOW, MailTemplate.FORUM_SUBMISSION_RECEIVED),
     FORUM_SUBMISSION_TRIAGED(NotificationCategory.WORKFLOW, MailTemplate.FORUM_SUBMISSION_TRIAGED),
+    FORUM_SUBMISSION_WAITING(NotificationCategory.WORKFLOW, MailTemplate.FORUM_SUBMISSION_WAITING),
 }
 
 /** Who receives a notification; the producer already holds the user, so `notification` never looks people up. */

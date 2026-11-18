@@ -158,7 +158,7 @@ class InstanceStore(
                 .fetch()
                 .groupBy { it.stepId }
         val definition = definitions.get(instance.definitionVersionId)
-        val engineSteps = steps.map { step(it, tasks[it.id].orEmpty(), definition) }
+        val engineSteps = steps.map { step(it, tasks[it.id].orEmpty(), definition, json) }
         val state =
             InstanceState(
                 initiator = instance.initiatorId,
@@ -298,11 +298,13 @@ data class Approval(
 )
 
 private val ROUTE = object : TypeReference<List<RouteEntry>>() {}
+private val RESOLUTION = object : TypeReference<Map<String, Any?>>() {}
 
 private fun step(
     step: WorkflowStepRecord,
     tasks: List<WorkflowTaskRecord>,
     definition: Definition,
+    json: JsonMapper,
 ): Step =
     Step(
         id = step.id,
@@ -316,6 +318,8 @@ private fun step(
         needed = step.needed,
         claimedBy = step.claimedBy,
         doaGroup = step.doaGroup,
+        // Read back as written: a waiting FORUM step keeps the forum it waits for (ADR-0058).
+        resolution = step.resolution?.let { json.readValue(it.data(), RESOLUTION) },
         tasks = tasks.map(::task),
     )
 

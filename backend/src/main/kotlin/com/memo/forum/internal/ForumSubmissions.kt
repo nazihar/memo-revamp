@@ -4,6 +4,7 @@ import com.memo.common.authz.ForbiddenException
 import com.memo.common.authz.Permission
 import com.memo.common.events.TenantScopedEvent
 import com.memo.common.web.refuseIf
+import com.memo.memo.MemoReaders
 import com.memo.workflow.ForumOutcome
 import com.memo.workflow.WorkflowForums
 import org.springframework.stereotype.Service
@@ -26,6 +27,8 @@ class ForumSubmissions(
     private val access: ForumAccess,
     private val support: SubmissionSupport,
     private val workflow: WorkflowForums,
+    private val forums: ForumStore,
+    private val memoReaders: MemoReaders,
 ) {
     /** The forum's queue in [statuses] (none: the open ones), for its officers. */
     fun queue(
@@ -37,18 +40,39 @@ class ForumSubmissions(
         return store.queue(forum.id, statuses.ifEmpty { OPEN }, MAX_QUEUE)
     }
 
-    /** One submission, for its author and presenter, and for the forum's officers. */
+    /** One submission: for its author and presenter, for readers of its memo cleared for the forum, and for the forum's officers. */
     fun get(
         forumId: UUID,
         id: UUID,
     ): SubmissionRow {
         val row = store.find(id)?.takeIf { it.forumId == forumId } ?: throw ForumNotFoundException("submission")
         val me = actorOrNull()
-        if (me != null && (me == row.submittedBy || me == row.presenterId)) return row
+        val own = me != null && (me == row.submittedBy || me == row.presenterId)
+        if (own || memoReader(row)) return row
         val forum = access.requireVisible(forumId)
         if (!support.officer(forum)) throw ForumNotFoundException("submission")
         return row
     }
+
+    /**
+     * The memo's submissions, newest first, for whoever reads the memo (design E02 §3): the forum panel of the memo page.
+     * Submissions to a forum above the reader's clearance are left out; an unreadable memo answers 404.
+     */
+    fun ofMemo(memoId: UUID): List<SubmissionRow> {
+        if (!memoReaders.canRead(memoId)) throw ForumNotFoundException("memo")
+        val cleared =
+            forums
+                .all()
+                .filter(access::cleared)
+                .map { it.id }
+                .toSet()
+        return store.ofSubject(MemoReaders.SUBJECT_TYPE, memoId).filter { it.forumId in cleared }
+    }
+
+    private fun memoReader(row: SubmissionRow): Boolean =
+        row.subjectType == MemoReaders.SUBJECT_TYPE &&
+            forums.find(row.forumId)?.let(access::cleared) == true &&
+            memoReaders.canRead(row.subjectId)
 
     /**
      * The forum's decision (ADR-0058, ADR-0059): resumes the waiting item and closes the submission as DECIDED. E06 calls

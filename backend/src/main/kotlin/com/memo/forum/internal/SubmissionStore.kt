@@ -176,6 +176,25 @@ class SubmissionStore(
             .where(FORUM_SUBMISSION.ID.eq(row.id), FORUM_SUBMISSION.VERSION.eq(version))
             .execute() == 1
 
+    /** Queued submissions not yet chased, oldest first (the waiting reminder, design E02 §9). */
+    fun unreminded(limit: Int): List<SubmissionRow> =
+        tenantDsl
+            .current()
+            .selectFrom(FORUM_SUBMISSION)
+            .where(FORUM_SUBMISSION.STATUS.eq(SubmissionStatus.QUEUED.name), FORUM_SUBMISSION.REMINDED_AT.isNull)
+            .orderBy(FORUM_SUBMISSION.SUBMITTED_AT, FORUM_SUBMISSION.ID)
+            .limit(limit)
+            .fetch { it.row() }
+
+    /** Records that the waiting reminder for [id] went out; false when it already had (no version change: not an edit). */
+    fun reminded(id: UUID): Boolean =
+        tenantDsl
+            .current()
+            .update(FORUM_SUBMISSION)
+            .set(FORUM_SUBMISSION.REMINDED_AT, now())
+            .where(FORUM_SUBMISSION.ID.eq(id), FORUM_SUBMISSION.REMINDED_AT.isNull)
+            .execute() == 1
+
     fun now(): OffsetDateTime = OffsetDateTime.now(clock).withOffsetSameInstant(ZoneOffset.UTC)
 
     companion object {

@@ -139,6 +139,10 @@ class ForumTypesIT : IntegrationTest() {
         assertThat(save(s.copy(memberAttributes = s.memberAttributes + MemberAttribute("Bad Key", "x"))))
             .isEqualTo("memberAttributes[1].key:FORMAT")
         assertThat(save(s.copy(termPolicy = TermPolicy(reminderDays = listOf(42, 42))))).isEqualTo("termPolicy.reminderDays:RANGE")
+        assertThat(save(s.copy(submissionPolicy = SubmissionPolicy(triageWorkingDays = 0))))
+            .isEqualTo("submissionPolicy.triageWorkingDays:RANGE")
+        assertThat(save(s.copy(submissionPolicy = SubmissionPolicy(deadlineWorkingDays = 31))))
+            .isEqualTo("submissionPolicy.deadlineWorkingDays:RANGE")
         assertThat(save(s.copy(name = " "))).isEqualTo("name:LENGTH")
         // Nothing was saved by any of them.
         assertThat(asUser(maker) { lifecycle.get(type.id, 1) }.revision).isEqualTo(draft.revision)

@@ -18,6 +18,7 @@ import com.memo.forum.QuorumPresence
 import com.memo.forum.QuorumResult
 import com.memo.forum.QuorumRule
 import com.memo.forum.QuorumSeat
+import com.memo.forum.SubmissionPolicy
 import com.memo.forum.TermPolicy
 import com.memo.identity.UserSummaries
 import io.swagger.v3.oas.annotations.Operation
@@ -53,6 +54,7 @@ data class ForumTypeSettingsRequest(
     val quorum: QuorumRule = QuorumRule(),
     val outcomes: List<Outcome> = emptyList(),
     val termPolicy: TermPolicy = TermPolicy(),
+    val submissionPolicy: SubmissionPolicy = SubmissionPolicy(),
 )
 
 data class CreateForumTypeRequest(
@@ -75,6 +77,7 @@ data class ForumTypeVersionResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val quorum: QuorumRule,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val outcomes: List<Outcome>,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val termPolicy: TermPolicy,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val submissionPolicy: SubmissionPolicy,
     val createdBy: PersonRef?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val createdAt: Instant,
     val submittedBy: PersonRef?,
@@ -351,6 +354,7 @@ class ForumTypeResponses(
                 quorum = s.quorum,
                 outcomes = s.outcomes,
                 termPolicy = s.termPolicy,
+                submissionPolicy = s.submissionPolicy,
                 createdBy = named(v.createdBy),
                 createdAt = v.createdAt,
                 submittedBy = named(v.submittedBy),
@@ -377,9 +381,20 @@ internal fun ForumTypeSettingsRequest.settings() =
         quorum = quorum,
         outcomes = outcomes.map { it.copy(label = it.label.trim()) },
         termPolicy = termPolicy,
+        submissionPolicy = submissionPolicy,
     )
 
 internal fun ForumTypeSettings.request() =
-    ForumTypeSettingsRequest(name, description, defaultClassificationId, retention, memberAttributes, quorum, outcomes, termPolicy)
+    ForumTypeSettingsRequest(
+        name,
+        description,
+        defaultClassificationId,
+        retention,
+        memberAttributes,
+        quorum,
+        outcomes,
+        termPolicy,
+        submissionPolicy,
+    )
 
 private fun number(path: String): Int = path.toIntOrNull() ?: throw ForumNotFoundException("forum type version")

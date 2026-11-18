@@ -194,6 +194,11 @@ open class ForumTypeVersion(
      */
     val PUBLISHED_AT: TableField<ForumTypeVersionRecord, OffsetDateTime?> = createField(DSL.name("published_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
 
+    /**
+     * The column <code>memo.forum_type_version.submission_policy</code>.
+     */
+    val SUBMISSION_POLICY: TableField<ForumTypeVersionRecord, JSONB?> = createField(DSL.name("submission_policy"), SQLDataType.JSONB, this, "")
+
     private constructor(alias: Name, aliased: Table<ForumTypeVersionRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<ForumTypeVersionRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<ForumTypeVersionRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -248,6 +253,7 @@ open class ForumTypeVersion(
         Internal.createCheck(this, DSL.name("forum_type_version_retention_check"), "(((retention IS NULL) OR (jsonb_typeof(retention) = 'object'::text)))", true),
         Internal.createCheck(this, DSL.name("forum_type_version_review_remark_check"), "(((length(review_remark) >= 1) AND (length(review_remark) <= 4000)))", true),
         Internal.createCheck(this, DSL.name("forum_type_version_state_check"), "((state = ANY (ARRAY['DRAFT'::text, 'IN_REVIEW'::text, 'PUBLISHED'::text, 'RETIRED'::text])))", true),
+        Internal.createCheck(this, DSL.name("forum_type_version_submission_policy_check"), "(((submission_policy IS NULL) OR (jsonb_typeof(submission_policy) = 'object'::text)))", true),
         Internal.createCheck(this, DSL.name("forum_type_version_term_policy_check"), "((jsonb_typeof(term_policy) = 'object'::text))", true)
     )
     override fun `as`(alias: String): ForumTypeVersion = ForumTypeVersion(DSL.name(alias), this)

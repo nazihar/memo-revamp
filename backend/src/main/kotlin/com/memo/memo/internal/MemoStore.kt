@@ -46,6 +46,9 @@ enum class ParticipantKind {
     NOTIFIED,
     COPY,
     SHARED,
+
+    /** A committee officer while the memo waits in the committee's queue (ADR-0059); the weakest kind. */
+    FORUM,
     ;
 
     /** Lower is stronger. */

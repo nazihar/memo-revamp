@@ -52,6 +52,31 @@ data class TermPolicy(
     val reminderDays: List<Int> = DEFAULT_REMINDER_DAYS,
 )
 
+/** What a committee does with late papers (design E02 §1); acted on when agendas are built (E03). */
+enum class LateMode {
+    /** Late papers go on the agenda like any other. */
+    ALLOW,
+
+    /** Late papers wait for the next meeting. */
+    BLOCK,
+
+    /** Late papers go on the agenda only if the chair agrees. */
+    CHAIR_APPROVAL,
+}
+
+/**
+ * Papers for a committee (ADR-0059, design E02 §1): due [deadlineWorkingDays] before a meeting, late ones handled by
+ * [lateMode], and the secretaries reminded of a paper left untriaged for [triageWorkingDays], all in working days.
+ */
+data class SubmissionPolicy(
+    val deadlineWorkingDays: Int = DEFAULT_SUBMISSION_DAYS,
+    val lateMode: LateMode = LateMode.CHAIR_APPROVAL,
+    val triageWorkingDays: Int = DEFAULT_SUBMISSION_DAYS,
+)
+
+/** A working week, the usual board-pack lead time (research E02 §2). */
+private const val DEFAULT_SUBMISSION_DAYS = 5
+
 /** How long meeting records of the forum are kept; stored only, acted on in Phase 7. */
 data class ForumRetention(
     val years: Int,

@@ -10,6 +10,7 @@ import com.memo.jooq.indexes.FORUM_SUBMISSION_PREVIOUS_IDX
 import com.memo.jooq.indexes.FORUM_SUBMISSION_QUEUE_IDX
 import com.memo.jooq.indexes.FORUM_SUBMISSION_STEP_UK
 import com.memo.jooq.indexes.FORUM_SUBMISSION_SUBJECT_IDX
+import com.memo.jooq.indexes.FORUM_SUBMISSION_WAITING_IDX
 import com.memo.jooq.keys.FORUM_SUBMISSION_PKEY
 import com.memo.jooq.keys.FORUM_SUBMISSION_TENANT_ID_ID_KEY
 import com.memo.jooq.keys.FORUM_SUBMISSION__FORUM_SUBMISSION_TENANT_ID_FORUM_ID_FKEY
@@ -233,7 +234,7 @@ open class ForumSubmission(
         override fun `as`(alias: Table<*>): ForumSubmissionPath = ForumSubmissionPath(alias.qualifiedName, this)
     }
     override fun getSchema(): Schema? = if (aliased()) null else Memo.MEMO
-    override fun getIndexes(): List<Index> = listOf(FORUM_SUBMISSION_INSTANCE_IDX, FORUM_SUBMISSION_PREVIOUS_IDX, FORUM_SUBMISSION_QUEUE_IDX, FORUM_SUBMISSION_STEP_UK, FORUM_SUBMISSION_SUBJECT_IDX)
+    override fun getIndexes(): List<Index> = listOf(FORUM_SUBMISSION_INSTANCE_IDX, FORUM_SUBMISSION_PREVIOUS_IDX, FORUM_SUBMISSION_QUEUE_IDX, FORUM_SUBMISSION_STEP_UK, FORUM_SUBMISSION_SUBJECT_IDX, FORUM_SUBMISSION_WAITING_IDX)
     override fun getPrimaryKey(): UniqueKey<ForumSubmissionRecord> = FORUM_SUBMISSION_PKEY
     override fun getUniqueKeys(): List<UniqueKey<ForumSubmissionRecord>> = listOf(FORUM_SUBMISSION_TENANT_ID_ID_KEY)
     override fun getReferences(): List<ForeignKey<ForumSubmissionRecord, *>> = listOf(FORUM_SUBMISSION__FORUM_SUBMISSION_TENANT_ID_FORUM_ID_FKEY, FORUM_SUBMISSION__FORUM_SUBMISSION_TENANT_ID_PREVIOUS_ID_FKEY)

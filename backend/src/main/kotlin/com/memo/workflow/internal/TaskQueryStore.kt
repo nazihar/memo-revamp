@@ -121,6 +121,29 @@ class TaskQueryStore(
             .associate { it.value1()!! to it.value2().orEmpty().filterNotNull() }
     }
 
+    /** The forum key each of [subjectIds] waits on (ADR-0058): its instance's active step is a waiting FORUM step. */
+    fun waitingForums(
+        subjectType: String,
+        subjectIds: Collection<UUID>,
+    ): Map<UUID, String> {
+        if (subjectIds.isEmpty()) return emptyMap()
+        val forum = DSL.field("{0} ->> {1}", String::class.java, WORKFLOW_STEP.RESOLUTION, DSL.inline("forum"))
+        return tenantDsl
+            .current()
+            .select(WORKFLOW_INSTANCE.SUBJECT_ID, forum)
+            .from(WORKFLOW_INSTANCE)
+            .join(WORKFLOW_STEP)
+            .on(WORKFLOW_STEP.ID.eq(WORKFLOW_INSTANCE.CURRENT_STEP_ID))
+            .where(
+                WORKFLOW_INSTANCE.SUBJECT_TYPE.eq(subjectType),
+                WORKFLOW_INSTANCE.SUBJECT_ID.`in`(subjectIds),
+                WORKFLOW_STEP.TYPE.eq(StepKind.FORUM.name),
+                WORKFLOW_STEP.STATE.eq("ACTIVE"),
+            ).fetch()
+            .mapNotNull { r -> r.value2()?.let { r.value1()!! to it } }
+            .toMap()
+    }
+
     /**
      * Every action of the instance in order, with its details and the name of the step it concerns: its task's step, or
      * the step its details name (a branch, a notification, a send-back target), named as the pinned version names it.

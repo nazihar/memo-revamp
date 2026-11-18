@@ -6,11 +6,11 @@ const crumbs = defineMessages({
   page: { id: 'nav.forum', defaultMessage: '{Forum}' },
 })
 
-const TABS: ForumTab[] = ['members', 'submissions', 'history', 'policy']
+const TABS: ForumTab[] = ['members', 'meetings', 'submissions', 'history', 'policy']
 
 /**
- * One committee: its members on a date, its papers (officers), its history and its policy; a committee the user may
- * not see is not found. `?tab=submissions` opens the papers.
+ * One committee: its members on a date, its meetings, its papers (officers), its history and its policy; a committee
+ * the user may not see is not found. `?tab=meetings` opens the meetings, `?tab=submissions` the papers.
  */
 export const Route = createFileRoute('/_shell/_signedIn/committees/$forumId')({
   validateSearch: (search: Record<string, unknown>): { tab?: ForumTab } => {

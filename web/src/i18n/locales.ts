@@ -49,6 +49,7 @@ const loaders: Record<CataloguePart, Record<string, () => Promise<Messages>>> = 
   forumAdmin: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'forumAdmin' }, import: 'default' }),
   forums: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'forums' }, import: 'default' }),
   papers: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'papers' }, import: 'default' }),
+  meetings: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'meetings' }, import: 'default' }),
   platform: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'platform' }, import: 'default' }),
   patterns: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'patterns' }, import: 'default' }),
   search: import.meta.glob<Messages>('./messages/*.json', { query: { part: 'search' }, import: 'default' }),

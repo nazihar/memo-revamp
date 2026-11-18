@@ -15512,6 +15512,1356 @@
       "value": "User nameSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "meetings.action.cancel": [
+    {
+      "type": 0,
+      "value": "Cancel the meeting…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.action.changeTimes": [
+    {
+      "type": 0,
+      "value": "Change the date and time…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.action.discard": [
+    {
+      "type": 0,
+      "value": "Discard the draft…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.action.edit": [
+    {
+      "type": 0,
+      "value": "Edit settings…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.action.end": [
+    {
+      "type": 0,
+      "value": "Mark as held…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.action.reschedule": [
+    {
+      "type": 0,
+      "value": "Reschedule…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.action.schedule": [
+    {
+      "type": 0,
+      "value": "Schedule…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.action.start": [
+    {
+      "type": 0,
+      "value": "Start the meeting…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.actions": [
+    {
+      "type": 0,
+      "value": "Meeting actionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.actionsFor": [
+    {
+      "type": 0,
+      "value": "Actions for "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.agendaLater": [
+    {
+      "type": 0,
+      "value": "The agenda appears here once the secretary publishes it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.backTo": [
+    {
+      "type": 0,
+      "value": "Back to "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.cancel.explain": [
+    {
+      "type": 0,
+      "value": "Members will be told. Items from the queue go back to Ready for an agenda.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.cancel.submit": [
+    {
+      "type": 0,
+      "value": "Cancel the meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.cancel.title": [
+    {
+      "type": 0,
+      "value": "Cancel "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.cancelledBecause": [
+    {
+      "type": 0,
+      "value": "Cancelled. Reason: "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.caption": [
+    {
+      "type": 0,
+      "value": "Meetings of "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.changeTimes.title": [
+    {
+      "type": 0,
+      "value": "Change the date and time of "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.classification": [
+    {
+      "type": 0,
+      "value": "ClassificationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.col.actions": [
+    {
+      "type": 0,
+      "value": "ActionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.col.date": [
+    {
+      "type": 0,
+      "value": "DateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.col.meeting": [
+    {
+      "type": 0,
+      "value": "MeetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.col.mode": [
+    {
+      "type": 0,
+      "value": "HowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.col.status": [
+    {
+      "type": 0,
+      "value": "StatusSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.discard.explain": [
+    {
+      "type": 0,
+      "value": "Only the secretaries and the chair saw this draft. Nobody else is told.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.discard.submit": [
+    {
+      "type": 0,
+      "value": "Discard the draftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.discard.title": [
+    {
+      "type": 0,
+      "value": "Discard the draft "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.dismiss": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.done.cancelled": [
+    {
+      "type": 0,
+      "value": "Meeting cancelled.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.done.discarded": [
+    {
+      "type": 0,
+      "value": "Draft discarded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.done.draft": [
+    {
+      "type": 0,
+      "value": "Saved as a draft.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.done.ended": [
+    {
+      "type": 0,
+      "value": "Meeting marked as held.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.done.guestAdded": [
+    {
+      "type": 0,
+      "value": "Guest added.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.done.guestRemoved": [
+    {
+      "type": 0,
+      "value": "Guest removed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.done.guestsFailed": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " guest could not be added"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " guests could not be added"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ". Add them on the meeting page.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.done.notScheduled": [
+    {
+      "type": 0,
+      "value": "The meeting was saved as a draft, but it could not be scheduled: "
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.done.rescheduled": [
+    {
+      "type": 0,
+      "value": "Meeting rescheduled.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.done.saved": [
+    {
+      "type": 0,
+      "value": "Saved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.done.scheduled": [
+    {
+      "type": 0,
+      "value": "Meeting scheduled. The members can see it now.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.done.started": [
+    {
+      "type": 0,
+      "value": "Meeting started.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.dot": [
+    {
+      "type": 1,
+      "value": "first"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "second"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.draftHint": [
+    {
+      "type": 0,
+      "value": "Only the secretaries and the chair see a draft.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.edit.title": [
+    {
+      "type": 0,
+      "value": "Settings of "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.empty.cancelled": [
+    {
+      "type": 0,
+      "value": "No meetings have been cancelled.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.empty.past": [
+    {
+      "type": 0,
+      "value": "No meetings were held in this period.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.empty.upcoming": [
+    {
+      "type": 0,
+      "value": "No meetings are planned.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.end.explain": [
+    {
+      "type": 0,
+      "value": "The meeting is shown as held. Its date, place and guests can no longer change.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.end.submit": [
+    {
+      "type": 0,
+      "value": "Mark as heldSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.end.title": [
+    {
+      "type": 0,
+      "value": "Mark "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " as held?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.form.cancelReasonHint": [
+    {
+      "type": 0,
+      "value": "For example “Not enough business”.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.form.classificationHint": [
+    {
+      "type": 0,
+      "value": "Not lower than the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "’s level, and not higher than your own clearance.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.form.committeeLevel": [
+    {
+      "type": 0,
+      "value": "The "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "’s levelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.form.date": [
+    {
+      "type": 0,
+      "value": "DateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.form.endDate": [
+    {
+      "type": 0,
+      "value": "Ends onSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.form.from": [
+    {
+      "type": 0,
+      "value": "FromSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.form.how": [
+    {
+      "type": 0,
+      "value": "HowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.form.joinDetailsHint": [
+    {
+      "type": 0,
+      "value": "For example the meeting ID and how to get the passcode.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.form.joinUrl": [
+    {
+      "type": 0,
+      "value": "Join linkSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.form.joinUrlHint": [
+    {
+      "type": 0,
+      "value": "Starts with https://. The people attending see it on the meeting page.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.form.kind": [
+    {
+      "type": 0,
+      "value": "Kind of meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.form.location": [
+    {
+      "type": 0,
+      "value": "WhereSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.form.locationHint": [
+    {
+      "type": 0,
+      "value": "For example “Board Room, Level 12, Head Office”.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.form.optional": [
+    {
+      "type": 0,
+      "value": "(optional)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.form.otherDay": [
+    {
+      "type": 0,
+      "value": "Ends on another daySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.form.reason": [
+    {
+      "type": 0,
+      "value": "ReasonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.form.rescheduleReasonHint": [
+    {
+      "type": 0,
+      "value": "For example “Chair unavailable”.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.form.save": [
+    {
+      "type": 0,
+      "value": "SaveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.form.saveDraft": [
+    {
+      "type": 0,
+      "value": "Save as draftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.form.schedule": [
+    {
+      "type": 0,
+      "value": "ScheduleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.form.scheduleExplain": [
+    {
+      "type": 0,
+      "value": "Save as draft: only the secretaries and the chair see it. Schedule: the members see the date, the place and the link.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.form.timeZone": [
+    {
+      "type": 0,
+      "value": "Time zoneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.form.timeZoneHint": [
+    {
+      "type": 0,
+      "value": "Search by city. Without a choice, your organisation’s time zone is used.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.form.title": [
+    {
+      "type": 0,
+      "value": "TitleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.form.titleHint": [
+    {
+      "type": 0,
+      "value": "For example “Strategy day”. Without a title, the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "’s name is shown.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.form.to": [
+    {
+      "type": 0,
+      "value": "ToSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.guests": [
+    {
+      "type": 0,
+      "value": "GuestsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.guests.add": [
+    {
+      "type": 0,
+      "value": "Add a guestSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.guests.addTitle": [
+    {
+      "type": 0,
+      "value": "Add a guest to "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.guests.hint": [
+    {
+      "type": 0,
+      "value": "In attendance for the whole meeting, for example the Chief Financial Officer.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.guests.none": [
+    {
+      "type": 0,
+      "value": "No guests.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.guests.note": [
+    {
+      "type": 0,
+      "value": "Their role at the meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.guests.noteHint": [
+    {
+      "type": 0,
+      "value": "For example “Chief Financial Officer”.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.guests.person": [
+    {
+      "type": 0,
+      "value": "PersonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.guests.remove": [
+    {
+      "type": 0,
+      "value": "RemoveSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.guests.removeNamed": [
+    {
+      "type": 0,
+      "value": "Remove "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.guests.removeText": [
+    {
+      "type": 0,
+      "value": "They will no longer see this meeting. The record that they were invited is kept.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.guests.removeTitle": [
+    {
+      "type": 0,
+      "value": "Remove "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " as a guest?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.how": [
+    {
+      "type": 0,
+      "value": "HowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.join": [
+    {
+      "type": 0,
+      "value": "Join the meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.join.newTab": [
+    {
+      "type": 0,
+      "value": "(opens in a new tab)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.joinDetails": [
+    {
+      "type": 0,
+      "value": "Joining instructionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.keep": [
+    {
+      "type": 0,
+      "value": "Keep the meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.kind": [
+    {
+      "type": 0,
+      "value": "KindSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.kind.ordinary": [
+    {
+      "type": 0,
+      "value": "OrdinarySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.kind.special": [
+    {
+      "type": 0,
+      "value": "SpecialSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.kind.specialMeeting": [
+    {
+      "type": 0,
+      "value": "Special meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.list.cancelled": [
+    {
+      "type": 0,
+      "value": "CancelledSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.list.past": [
+    {
+      "type": 0,
+      "value": "PastSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.list.upcoming": [
+    {
+      "type": 0,
+      "value": "UpcomingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.lists": [
+    {
+      "type": 0,
+      "value": "Which meetingsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.mine.all": [
+    {
+      "type": 0,
+      "value": "All my meetingsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.mine.asGuest": [
+    {
+      "type": 0,
+      "value": "You attend as a guest.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.mine.empty": [
+    {
+      "type": 0,
+      "value": "No meetings coming up.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.mine.lead": [
+    {
+      "type": 0,
+      "value": "The meetings you attend, and those of the "
+    },
+    {
+      "type": 1,
+      "value": "forums"
+    },
+    {
+      "type": 0,
+      "value": " you run, from the last 30 days on.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.mine.recent": [
+    {
+      "type": 0,
+      "value": "RecentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.mine.title": [
+    {
+      "type": 0,
+      "value": "My meetingsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.mine.upcoming": [
+    {
+      "type": 0,
+      "value": "Coming upSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.mode.hybrid": [
+    {
+      "type": 0,
+      "value": "HybridSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.mode.hybridChoice": [
+    {
+      "type": 0,
+      "value": "Both (hybrid)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.mode.inPerson": [
+    {
+      "type": 0,
+      "value": "In personSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.mode.online": [
+    {
+      "type": 0,
+      "value": "OnlineSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.nameWithLabel": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " — "
+    },
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.new.title": [
+    {
+      "type": 0,
+      "value": "New meeting of "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.next": [
+    {
+      "type": 0,
+      "value": "Next meeting: "
+    },
+    {
+      "type": 1,
+      "value": "when"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.open": [
+    {
+      "type": 0,
+      "value": "Open meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.openNamed": [
+    {
+      "type": 0,
+      "value": "Open the meeting "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.placeHidden": [
+    {
+      "type": 0,
+      "value": "The place and the link are shown to the people attending.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.problem.alreadyGuest": [
+    {
+      "type": 0,
+      "value": "This person is already a guest.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.problem.classification": [
+    {
+      "type": 0,
+      "value": "Choose a level no lower than the "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "’s and no higher than your own clearance.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.problem.conflict": [
+    {
+      "type": 0,
+      "value": "Someone changed this meeting after you opened it. The latest version is shown now; check it and try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.problem.endBeforeStart": [
+    {
+      "type": 0,
+      "value": "The meeting must end after it starts.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.problem.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.problem.forbidden": [
+    {
+      "type": 0,
+      "value": "You cannot change this meeting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.problem.forumDissolved": [
+    {
+      "type": 5,
+      "value": "forumGender",
+      "options": {
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "This "
+            },
+            {
+              "type": 1,
+              "value": "forum"
+            },
+            {
+              "type": 0,
+              "value": " is dissolved and holds no more meetings."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.problem.guestNotCleared": [
+    {
+      "type": 0,
+      "value": "This person is not cleared for the meeting’s classification.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.problem.length": [
+    {
+      "type": 0,
+      "value": "This is too long.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.problem.linkCredentials": [
+    {
+      "type": 0,
+      "value": "Leave the user name and password out of the link. Put how to join in the joining instructions.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.problem.linkFormat": [
+    {
+      "type": 0,
+      "value": "This is not a web address. Paste the whole link, starting with https://.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.problem.linkNotHttps": [
+    {
+      "type": 0,
+      "value": "Use a secure link that starts with https://.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.problem.linkRequired": [
+    {
+      "type": 0,
+      "value": "Give the link to join online.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.problem.locationRequired": [
+    {
+      "type": 0,
+      "value": "Say where the meeting is held.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.problem.reasonRequired": [
+    {
+      "type": 0,
+      "value": "Give a reason.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.problem.required": [
+    {
+      "type": 0,
+      "value": "Fill this in.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.problem.tooLong": [
+    {
+      "type": 0,
+      "value": "A meeting can last at most 7 days.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.problem.typeNotPublished": [
+    {
+      "type": 0,
+      "value": "The "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "’s type has no published version yet. Ask an administrator to publish it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.problem.unknownLevel": [
+    {
+      "type": 0,
+      "value": "Choose a level from the list.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.problem.unknownLocalTime": [
+    {
+      "type": 0,
+      "value": "This time does not exist on that day because the clocks change. Choose another time.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.problem.unknownPerson": [
+    {
+      "type": 0,
+      "value": "Choose a person from the list.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.problem.unknownZone": [
+    {
+      "type": 0,
+      "value": "Choose a time zone from the list.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.problem.wrongState": [
+    {
+      "type": 0,
+      "value": "This cannot be done now: the meeting has moved on. The page shows its latest state.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.reschedule.explain": [
+    {
+      "type": 0,
+      "value": "The members see the new date and time, and the reason is kept in the meeting’s history.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.reschedule.submit": [
+    {
+      "type": 0,
+      "value": "RescheduleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.reschedule.title": [
+    {
+      "type": 0,
+      "value": "Reschedule "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.schedule": [
+    {
+      "type": 0,
+      "value": "Schedule a meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.schedule.explain": [
+    {
+      "type": 0,
+      "value": "The members will see the date, the place and the link.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.schedule.title": [
+    {
+      "type": 0,
+      "value": "Schedule "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.showEarlier": [
+    {
+      "type": 0,
+      "value": "Show earlier meetingsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.showMore": [
+    {
+      "type": 0,
+      "value": "Show more meetingsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.start.explain": [
+    {
+      "type": 0,
+      "value": "The meeting is shown as in progress.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.start.submit": [
+    {
+      "type": 0,
+      "value": "Start the meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.start.title": [
+    {
+      "type": 0,
+      "value": "Start "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.status.cancelled": [
+    {
+      "type": 0,
+      "value": "CancelledSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.status.closed": [
+    {
+      "type": 0,
+      "value": "ClosedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.status.draft": [
+    {
+      "type": 0,
+      "value": "DraftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.status.held": [
+    {
+      "type": 0,
+      "value": "HeldSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.status.inProgress": [
+    {
+      "type": 0,
+      "value": "In progressSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.status.minutesApproved": [
+    {
+      "type": 0,
+      "value": "Minutes approvedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.status.notHeld": [
+    {
+      "type": 0,
+      "value": "Not marked as heldSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.status.scheduled": [
+    {
+      "type": 0,
+      "value": "ScheduledSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.tab": [
+    {
+      "type": 0,
+      "value": "MeetingsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.when.dateAndTimes": [
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "times"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.when.onYourClock": [
+    {
+      "type": 0,
+      "value": "On your own clock: "
+    },
+    {
+      "type": 1,
+      "value": "times"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.when.yours": [
+    {
+      "type": 0,
+      "value": "("
+    },
+    {
+      "type": 1,
+      "value": "times"
+    },
+    {
+      "type": 0,
+      "value": " your time)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.when.zone": [
+    {
+      "type": 1,
+      "value": "times"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "city"
+    },
+    {
+      "type": 0,
+      "value": " timeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.where": [
+    {
+      "type": 0,
+      "value": "WhereSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.withDetail": [
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "detail"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.zone.none": [
+    {
+      "type": 0,
+      "value": "No time zone found for that city.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.zone.organisation": [
+    {
+      "type": 0,
+      "value": "Your organisation’s time zoneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetings.zone.type": [
+    {
+      "type": 0,
+      "value": "Type a city, for example Dhaka or London.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "memo.access.approvers": [
     {
       "type": 0,
@@ -21057,6 +22407,12 @@
       "value": "Language and termsSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "nav.meeting": [
+    {
+      "type": 0,
+      "value": "MeetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "nav.memo": [
     {
       "type": 0,
@@ -21099,6 +22455,12 @@
     {
       "type": 0,
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.myMeetings": [
+    {
+      "type": 0,
+      "value": "My meetingsSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "nav.newMemo": [

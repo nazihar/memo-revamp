@@ -12,6 +12,7 @@ export type CataloguePart =
   | 'forumAdmin'
   | 'forums'
   | 'papers'
+  | 'meetings'
   | 'platform'
   | 'patterns'
   | 'search'

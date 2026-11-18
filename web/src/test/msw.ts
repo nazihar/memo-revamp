@@ -3,6 +3,7 @@ import { setupServer } from 'msw/node'
 import type {
   Health,
   MyAccess,
+  MeetingSummaryResponse,
   MyForumResponse,
   Session,
   SubmissionResponse,
@@ -107,6 +108,9 @@ export const myForumsHandler = (body: MyForumResponse[] = []) =>
 /** A memo's committee papers (Phase 4 E02): none, unless a test says so; the memo page asks for them. */
 export const memoPapersHandler = (body: SubmissionResponse[] = []) =>
   http.get(`${API_ORIGIN}/api/v1/memos/:memoId/forum-submissions`, () => HttpResponse.json<SubmissionResponse[]>(body))
+/** The user's meetings (Phase 4 E03): none, unless a test says so; the home page and My committees ask for them. */
+export const myMeetingsHandler = (body: MeetingSummaryResponse[] = []) =>
+  http.get(`${API_ORIGIN}/api/v1/me/meetings`, () => HttpResponse.json<MeetingSummaryResponse[]>(body))
 
 export const server = setupServer(
   healthHandler(),
@@ -122,4 +126,5 @@ export const server = setupServer(
   watchSettingsHandler(),
   myForumsHandler(),
   memoPapersHandler(),
+  myMeetingsHandler(),
 )

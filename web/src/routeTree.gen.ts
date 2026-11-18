@@ -44,8 +44,10 @@ import { Route as ShellSignedInCommitteesIndexRouteImport } from './routes/_shel
 import { Route as ShellSignedInCommitteesForumIdRouteImport } from './routes/_shell/_signedIn/committees.$forumId'
 import { Route as ShellSignedInDashboardsApprovalsRouteImport } from './routes/_shell/_signedIn/dashboards.approvals'
 import { Route as ShellSignedInMeCommitteesRouteImport } from './routes/_shell/_signedIn/me.committees'
+import { Route as ShellSignedInMeMeetingsRouteImport } from './routes/_shell/_signedIn/me.meetings'
 import { Route as ShellSignedInMeNotificationsRouteImport } from './routes/_shell/_signedIn/me.notifications'
 import { Route as ShellSignedInMeSecurityRouteImport } from './routes/_shell/_signedIn/me.security'
+import { Route as ShellSignedInMeetingsMeetingIdRouteImport } from './routes/_shell/_signedIn/meetings.$meetingId'
 import { Route as ShellSignedInMemosMemoIdRouteImport } from './routes/_shell/_signedIn/memos.$memoId'
 import { Route as ShellSignedInMemosNewRouteImport } from './routes/_shell/_signedIn/memos.new'
 import { Route as ShellSignedInSearchSavedRouteImport } from './routes/_shell/_signedIn/search_.saved'
@@ -251,6 +253,11 @@ const ShellSignedInMeCommitteesRoute =
     path: '/me/committees',
     getParentRoute: () => ShellSignedInRoute,
   } as any)
+const ShellSignedInMeMeetingsRoute = ShellSignedInMeMeetingsRouteImport.update({
+  id: '/me/meetings',
+  path: '/me/meetings',
+  getParentRoute: () => ShellSignedInRoute,
+} as any)
 const ShellSignedInMeNotificationsRoute =
   ShellSignedInMeNotificationsRouteImport.update({
     id: '/me/notifications',
@@ -262,6 +269,12 @@ const ShellSignedInMeSecurityRoute = ShellSignedInMeSecurityRouteImport.update({
   path: '/me/security',
   getParentRoute: () => ShellSignedInRoute,
 } as any)
+const ShellSignedInMeetingsMeetingIdRoute =
+  ShellSignedInMeetingsMeetingIdRouteImport.update({
+    id: '/meetings/$meetingId',
+    path: '/meetings/$meetingId',
+    getParentRoute: () => ShellSignedInRoute,
+  } as any)
 const ShellSignedInMemosMemoIdRoute =
   ShellSignedInMemosMemoIdRouteImport.update({
     id: '/memos/$memoId',
@@ -424,8 +437,10 @@ export interface FileRoutesByFullPath {
   '/committees/$forumId': typeof ShellSignedInCommitteesForumIdRoute
   '/dashboards/approvals': typeof ShellSignedInDashboardsApprovalsRoute
   '/me/committees': typeof ShellSignedInMeCommitteesRoute
+  '/me/meetings': typeof ShellSignedInMeMeetingsRoute
   '/me/notifications': typeof ShellSignedInMeNotificationsRoute
   '/me/security': typeof ShellSignedInMeSecurityRoute
+  '/meetings/$meetingId': typeof ShellSignedInMeetingsMeetingIdRoute
   '/memos/$memoId': typeof ShellSignedInMemosMemoIdRoute
   '/memos/new': typeof ShellSignedInMemosNewRoute
   '/search/saved': typeof ShellSignedInSearchSavedRoute
@@ -480,8 +495,10 @@ export interface FileRoutesByTo {
   '/committees/$forumId': typeof ShellSignedInCommitteesForumIdRoute
   '/dashboards/approvals': typeof ShellSignedInDashboardsApprovalsRoute
   '/me/committees': typeof ShellSignedInMeCommitteesRoute
+  '/me/meetings': typeof ShellSignedInMeMeetingsRoute
   '/me/notifications': typeof ShellSignedInMeNotificationsRoute
   '/me/security': typeof ShellSignedInMeSecurityRoute
+  '/meetings/$meetingId': typeof ShellSignedInMeetingsMeetingIdRoute
   '/memos/$memoId': typeof ShellSignedInMemosMemoIdRoute
   '/memos/new': typeof ShellSignedInMemosNewRoute
   '/search/saved': typeof ShellSignedInSearchSavedRoute
@@ -542,8 +559,10 @@ export interface FileRoutesById {
   '/_shell/_signedIn/committees/$forumId': typeof ShellSignedInCommitteesForumIdRoute
   '/_shell/_signedIn/dashboards/approvals': typeof ShellSignedInDashboardsApprovalsRoute
   '/_shell/_signedIn/me/committees': typeof ShellSignedInMeCommitteesRoute
+  '/_shell/_signedIn/me/meetings': typeof ShellSignedInMeMeetingsRoute
   '/_shell/_signedIn/me/notifications': typeof ShellSignedInMeNotificationsRoute
   '/_shell/_signedIn/me/security': typeof ShellSignedInMeSecurityRoute
+  '/_shell/_signedIn/meetings/$meetingId': typeof ShellSignedInMeetingsMeetingIdRoute
   '/_shell/_signedIn/memos/$memoId': typeof ShellSignedInMemosMemoIdRoute
   '/_shell/_signedIn/memos/new': typeof ShellSignedInMemosNewRoute
   '/_shell/_signedIn/search_/saved': typeof ShellSignedInSearchSavedRoute
@@ -601,8 +620,10 @@ export interface FileRouteTypes {
     | '/committees/$forumId'
     | '/dashboards/approvals'
     | '/me/committees'
+    | '/me/meetings'
     | '/me/notifications'
     | '/me/security'
+    | '/meetings/$meetingId'
     | '/memos/$memoId'
     | '/memos/new'
     | '/search/saved'
@@ -657,8 +678,10 @@ export interface FileRouteTypes {
     | '/committees/$forumId'
     | '/dashboards/approvals'
     | '/me/committees'
+    | '/me/meetings'
     | '/me/notifications'
     | '/me/security'
+    | '/meetings/$meetingId'
     | '/memos/$memoId'
     | '/memos/new'
     | '/search/saved'
@@ -718,8 +741,10 @@ export interface FileRouteTypes {
     | '/_shell/_signedIn/committees/$forumId'
     | '/_shell/_signedIn/dashboards/approvals'
     | '/_shell/_signedIn/me/committees'
+    | '/_shell/_signedIn/me/meetings'
     | '/_shell/_signedIn/me/notifications'
     | '/_shell/_signedIn/me/security'
+    | '/_shell/_signedIn/meetings/$meetingId'
     | '/_shell/_signedIn/memos/$memoId'
     | '/_shell/_signedIn/memos/new'
     | '/_shell/_signedIn/search_/saved'
@@ -999,6 +1024,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShellSignedInMeCommitteesRouteImport
       parentRoute: typeof ShellSignedInRoute
     }
+    '/_shell/_signedIn/me/meetings': {
+      id: '/_shell/_signedIn/me/meetings'
+      path: '/me/meetings'
+      fullPath: '/me/meetings'
+      preLoaderRoute: typeof ShellSignedInMeMeetingsRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
     '/_shell/_signedIn/me/notifications': {
       id: '/_shell/_signedIn/me/notifications'
       path: '/me/notifications'
@@ -1011,6 +1043,13 @@ declare module '@tanstack/react-router' {
       path: '/me/security'
       fullPath: '/me/security'
       preLoaderRoute: typeof ShellSignedInMeSecurityRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
+    '/_shell/_signedIn/meetings/$meetingId': {
+      id: '/_shell/_signedIn/meetings/$meetingId'
+      path: '/meetings/$meetingId'
+      fullPath: '/meetings/$meetingId'
+      preLoaderRoute: typeof ShellSignedInMeetingsMeetingIdRouteImport
       parentRoute: typeof ShellSignedInRoute
     }
     '/_shell/_signedIn/memos/$memoId': {
@@ -1205,8 +1244,10 @@ interface ShellSignedInRouteChildren {
   ShellSignedInCommitteesForumIdRoute: typeof ShellSignedInCommitteesForumIdRoute
   ShellSignedInDashboardsApprovalsRoute: typeof ShellSignedInDashboardsApprovalsRoute
   ShellSignedInMeCommitteesRoute: typeof ShellSignedInMeCommitteesRoute
+  ShellSignedInMeMeetingsRoute: typeof ShellSignedInMeMeetingsRoute
   ShellSignedInMeNotificationsRoute: typeof ShellSignedInMeNotificationsRoute
   ShellSignedInMeSecurityRoute: typeof ShellSignedInMeSecurityRoute
+  ShellSignedInMeetingsMeetingIdRoute: typeof ShellSignedInMeetingsMeetingIdRoute
   ShellSignedInMemosMemoIdRoute: typeof ShellSignedInMemosMemoIdRoute
   ShellSignedInMemosNewRoute: typeof ShellSignedInMemosNewRoute
   ShellSignedInSearchSavedRoute: typeof ShellSignedInSearchSavedRoute
@@ -1252,8 +1293,10 @@ const ShellSignedInRouteChildren: ShellSignedInRouteChildren = {
   ShellSignedInCommitteesForumIdRoute: ShellSignedInCommitteesForumIdRoute,
   ShellSignedInDashboardsApprovalsRoute: ShellSignedInDashboardsApprovalsRoute,
   ShellSignedInMeCommitteesRoute: ShellSignedInMeCommitteesRoute,
+  ShellSignedInMeMeetingsRoute: ShellSignedInMeMeetingsRoute,
   ShellSignedInMeNotificationsRoute: ShellSignedInMeNotificationsRoute,
   ShellSignedInMeSecurityRoute: ShellSignedInMeSecurityRoute,
+  ShellSignedInMeetingsMeetingIdRoute: ShellSignedInMeetingsMeetingIdRoute,
   ShellSignedInMemosMemoIdRoute: ShellSignedInMemosMemoIdRoute,
   ShellSignedInMemosNewRoute: ShellSignedInMemosNewRoute,
   ShellSignedInSearchSavedRoute: ShellSignedInSearchSavedRoute,

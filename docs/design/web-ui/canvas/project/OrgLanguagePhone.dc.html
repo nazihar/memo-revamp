@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Language and terms on a phone</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+.th{color-scheme:light;--bg:#ffffff;--card:#ffffff;--fg:#0a0a0a;--subtle:#fafafa;--muted:#f5f5f5;--hover:#f0f0f0;--active:#ebebeb;--chip:#e5e5e5;--border:#e5e5e5;--border-strong:#d4d4d4;--muted-fg:#737373;--text-1:#262626;--text-2:#404040;--text-3:#525252;--primary:#171717;--primary-fg:#fafafa;--primary-hover:#262626;--primary-divider:#404040;--primary-muted:#a3a3a3;--ring:#a3a3a3;--destructive:#dc2626;--destructive-hover:#b91c1c;--on-destructive:#ffffff;--danger-fg:#b91c1c;--danger-bg:#fef2f2;--danger-border:#fecaca;--warn-bg:#fffbeb;--warn-fg:#92400e;--warn-border:#fcd34d;--ok-bg:#f0fdf4;--ok-fg:#166534;--ok-border:#bbf7d0;--info-bg:#eff6ff;--info-fg:#1d4ed8}
+.th.dark{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}
+@media (prefers-color-scheme: dark){.th.system{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}}
+body:has(.th.dark){background:#09090b}
+@media (prefers-color-scheme: dark){body:has(.th.system){background:#09090b}}
+body{margin:0;background:#ffffff}
+a{color:var(--fg)}
+button,input{font-family:inherit}
+.ghost:active{background:var(--muted)}
+.chips::-webkit-scrollbar{display:none}
+.ed-main>*{flex-shrink:0}
+input:disabled,select:disabled,textarea:disabled{background:var(--subtle)!important;color:var(--text-2)!important;box-shadow:none!important;cursor:not-allowed}
+</style>
+</helmet>
+<div class="th {{themeClass}}" style="position: relative; width: 390px; height: 844px; overflow: hidden; display: flex; flex-direction: column; background: var(--bg); color: var(--fg); font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 20px">
+
+  <!-- Top bar -->
+  <header style="flex-shrink: 0; height: 56px; display: flex; align-items: center; gap: 4px; padding: 0 8px; border-bottom: 1px solid var(--border); box-sizing: border-box">
+    <button type="button" class="ghost" aria-label="Open navigation" aria-expanded="{{navAria}}" onClick="{{openNav}}" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: transparent; border-radius: 8px; color: var(--fg)">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h16"></path></svg>
+    </button>
+    <span style="display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0">
+      <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 7px; background: var(--primary); color: var(--primary-fg); font-weight: 600; font-size: 13px; flex-shrink: 0">N</span>
+      <span style="font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">[Organisation name]</span>
+    </span>
+    <a href="SearchPhone.dc.html" class="ghost" aria-label="Search memos" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: transparent; border-radius: 8px; color: var(--fg)">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+    </a>
+    <a href="NotificationsPhone.dc.html" class="ghost" aria-label="Notifications, 4 unread" style="position: relative; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: transparent; border-radius: 8px; color: var(--fg)">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg>
+      <span aria-hidden="true" style="position: absolute; top: 11px; right: 12px; width: 7px; height: 7px; border-radius: 50%; background: var(--destructive); border: 1.5px solid var(--bg)"></span>
+    </a>
+    <button type="button" class="ghost" aria-label="Account menu, Farhana Rahman" aria-haspopup="menu" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: transparent; border-radius: 8px">
+      <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: var(--chip); color: var(--fg); font-weight: 500; font-size: 11px">FR</span>
+    </button>
+  </header>
+  <main class="ed-main" style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column">
+    <nav aria-label="Organisation-wide settings" style="flex-shrink: 0; display: flex; gap: 0; padding: 0 4px; border-bottom: 1px solid var(--border); overflow-x: auto"><a href="OrgSecurityPhone.dc.html" class="ghost" style="display: inline-flex; align-items: center; height: 44px; padding: 0 12px; margin-bottom: -1px; border-bottom: 2px solid transparent; color: var(--muted-fg); font-size: 14px; font-weight: 500; text-decoration: none; white-space: nowrap">Security</a><a href="OrgEmailPhone.dc.html" class="ghost" style="display: inline-flex; align-items: center; height: 44px; padding: 0 12px; margin-bottom: -1px; border-bottom: 2px solid transparent; color: var(--muted-fg); font-size: 14px; font-weight: 500; text-decoration: none; white-space: nowrap">Email</a><a href="OrgBrandingPhone.dc.html" class="ghost" style="display: inline-flex; align-items: center; height: 44px; padding: 0 12px; margin-bottom: -1px; border-bottom: 2px solid transparent; color: var(--muted-fg); font-size: 14px; font-weight: 500; text-decoration: none; white-space: nowrap">Branding</a><a href="OrgLanguagePhone.dc.html" aria-current="page" class="ghost" style="display: inline-flex; align-items: center; height: 44px; padding: 0 12px; margin-bottom: -1px; border-bottom: 2px solid var(--fg); color: var(--fg); font-size: 14px; font-weight: 500; text-decoration: none; white-space: nowrap">Language and terms</a></nav>
+    <div style="display: flex; flex-direction: column; gap: 2px; padding: 12px 16px 8px"><h1 style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Language and terms</h1><span style="font-size: 13px; color: var(--muted-fg)">Defaults and your own words.</span></div>
+    <div style="display: flex; flex-direction: column; gap: 14px; padding: 4px 16px 24px"><section style="border: 1px solid var(--border); border-radius: 10px; background: var(--card); padding: 16px; display: flex; flex-direction: column; gap: 16px"><div style="display: flex; flex-direction: column; gap: 4px"><h2 style="margin: 0; font-size: 15px; font-weight: 600">Defaults</h2><span style="font-size: 13px; color: var(--muted-fg)">For people who join from now on. Everyone can change their own language and time zone.</span></div><div style="display: grid; grid-template-columns: 1fr; gap: 16px"><div style="display: flex; flex-direction: column; gap: 6px"><label for="lg-lang" style="font-size: 14px; font-weight: 500">Default language</label><span style="position: relative; display: flex; align-items: center"><select id="lg-lang" style="width: 100%; height: 44px; padding: 0 30px 0 10px; box-sizing: border-box; appearance: none; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 16px"><option selected>English</option><option>العربية (Arabic)</option></select><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; right: 10px; color: var(--muted-fg); pointer-events: none"><path d="m6 9 6 6 6-6"></path></svg></span></div><div style="display: flex; flex-direction: column; gap: 6px"><label for="lg-tz" style="font-size: 14px; font-weight: 500">Time zone</label><span style="position: relative; display: flex; align-items: center"><select id="lg-tz" style="width: 100%; height: 44px; padding: 0 30px 0 10px; box-sizing: border-box; appearance: none; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 16px"><option selected>Asia/Dhaka (GMT+6)</option><option>Asia/Kolkata (GMT+5:30)</option><option>Asia/Dubai (GMT+4)</option><option>Europe/London (GMT)</option></select><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; right: 10px; color: var(--muted-fg); pointer-events: none"><path d="m6 9 6 6 6-6"></path></svg></span></div></div><div style="display: flex; justify-content: flex-end"><button type="button" onClick="{{save}}" style="height: 44px; padding: 0 14px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 15px; font-weight: 500; cursor: pointer; flex: 1">Save</button></div></section><section style="border: 1px solid var(--border); border-radius: 10px; background: var(--card); padding: 16px; display: flex; flex-direction: column; gap: 16px"><div style="display: flex; flex-direction: column; gap: 4px"><h2 style="margin: 0; font-size: 15px; font-weight: 600">Your terms</h2><span style="font-size: 13px; color: var(--muted-fg)">Write the words as they appear in a sentence. Empty rows use the standard words.</span></div><div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px"><span style="font-size: 14px; font-weight: 500">Language</span><div class="chips" role="tablist" aria-label="Language" style="flex-shrink: 0; display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none"><sc-for list="{{tabs}}" as="t" hint-placeholder-count="4"><button type="button" role="tab" aria-selected="{{t.aria}}" onClick="{{t.pick}}" style="{{t.style}}">{{t.label}}<sc-if value="{{t.hasCount}}" hint-placeholder-val="{{false}}"><span style="{{t.countStyle}}">{{t.count}}</span></sc-if></button></sc-for></div></div><ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px"><sc-for list="{{terms}}" as="tm" hint-placeholder-count="3"><li style="display: flex; flex-direction: column; gap: 8px; padding: 12px; border: 1px solid var(--border); border-radius: 8px"><span style="font-weight: 500">{{tm.term}}</span><span style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px"><input type="text" dir="{{dir}}" aria-label="{{tm.oneLabel}}" value="{{tm.one}}" placeholder="{{tm.phOne}}" style="width: 100%; height: 44px; padding: 0 10px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 16px; outline: none"><input type="text" dir="{{dir}}" aria-label="{{tm.otherLabel}}" value="{{tm.other}}" placeholder="{{tm.phOther}}" style="width: 100%; height: 44px; padding: 0 10px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 16px; outline: none"></span><sc-if value="{{isAr}}" hint-placeholder-val="{{false}}"><span style="position: relative; display: flex; align-items: center"><select aria-label="{{tm.genderLabel}}" style="width: 100%; height: 44px; padding: 0 30px 0 10px; box-sizing: border-box; appearance: none; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 16px"><option selected="{{tm.masc}}">Masculine</option><option selected="{{tm.fem}}">Feminine</option></select><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; right: 10px; color: var(--muted-fg); pointer-events: none"><path d="m6 9 6 6 6-6"></path></svg></span></sc-if></li></sc-for></ul><sc-if value="{{hasExample}}" hint-placeholder-val="{{true}}"><div style="padding: 10px 12px; border-radius: 8px; background: var(--subtle); font-size: 13px; color: var(--text-2)">For example: “{{example}}”</div></sc-if><div style="display: flex; justify-content: flex-end"><button type="button" onClick="{{saveTerms}}" style="height: 44px; padding: 0 14px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 15px; font-weight: 500; cursor: pointer; flex: 1">Save terms</button></div></section></div>
+  </main>
+  
+  <sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}">
+    <div role="status" style="position: absolute; left: 16px; right: 16px; bottom: 16px; z-index: 40; display: flex; align-items: center; gap: 10px; padding: 10px 10px 10px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); box-shadow: 0 8px 24px rgba(0,0,0,0.12); font-size: 14px">
+      <span style="flex: 1">{{toast}}</span>
+      <button type="button" class="ghost" aria-label="Dismiss" onClick="{{hideToast}}" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--muted-fg); cursor: pointer"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+    </div>
+  </sc-if>
+  <!-- Navigation drawer -->
+  <sc-if value="{{navOpen}}" hint-placeholder-val="{{false}}">
+    <button type="button" tabIndex="-1" aria-label="Close navigation" onClick="{{closeNav}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 10; border: 0; padding: 0; background: rgba(0,0,0,0.4)"></button>
+    <nav aria-label="Main navigation" onKeyDown="{{navKey}}" style="position: absolute; top: 0; bottom: 0; left: 0; z-index: 11; width: 300px; display: flex; flex-direction: column; padding: 8px; box-sizing: border-box; background: var(--subtle); border-right: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.2); overflow-y: auto">
+      <div style="display: flex; align-items: center; gap: 8px; padding: 6px 4px 6px 8px">
+        <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-weight: 600; font-size: 14px; flex-shrink: 0">N</span>
+        <span style="display: flex; flex-direction: column; min-width: 0; flex: 1">
+          <span style="font-weight: 600; line-height: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">[Organisation name]</span>
+          <span style="font-size: 12px; line-height: 16px; color: var(--muted-fg)">Memo &amp; Meetings</span>
+        </span>
+        <button type="button" class="ghost" aria-label="Close navigation" onClick="{{closeNav}}" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: transparent; border-radius: 8px; color: var(--text-3)">
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+        </button>
+      </div>
+      <div style="height: 32px; display: flex; align-items: center; padding: 8px 8px 0; font-size: 12px; font-weight: 500; color: var(--muted-fg)">Work</div>
+      <a href="HomePhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+        Home
+      </a>
+      <a href="Phone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+        <span style="flex: 1">Inbox</span>
+        <span style="font-size: 12px; color: var(--text-3)">8</span>
+      </a>
+      <a href="SavedPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>
+        Saved searches
+      </a>
+      <a href="#" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg>
+        Dashboard
+      </a>
+      <a href="StatusPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path></svg>
+        Status
+      </a>
+      <a href="OrgPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="16" y="16" width="6" height="6" rx="1"></rect><rect x="2" y="16" width="6" height="6" rx="1"></rect><rect x="9" y="2" width="6" height="6" rx="1"></rect><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"></path><path d="M12 12V8"></path></svg>
+        Organisation
+      </a>
+      <div style="height: 32px; display: flex; align-items: center; padding: 8px 8px 0; font-size: 12px; font-weight: 500; color: var(--muted-fg)">Administration</div>
+      <a href="#" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
+        Overview
+      </a>
+      <a href="UsersPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        Users
+      </a>
+      <a href="MemoTypesPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+        Memo types
+      </a>
+      <a href="WorkflowsPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="8" x="3" y="3" rx="2"></rect><path d="M7 11v4a2 2 0 0 0 2 2h4"></path><rect width="8" height="8" x="13" y="13" rx="2"></rect></svg>
+        Workflows
+      </a>
+      <a href="TasksPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 2 2 4-4"></path><path d="m3 7 2 2 4-4"></path><path d="M13 6h8"></path><path d="M13 12h8"></path><path d="M13 18h8"></path></svg>
+        Open tasks
+      </a>
+      <a href="OrgSecurityPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg); background: var(--active); font-weight: 500" aria-current="page">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>
+        Security
+      </a>
+    </nav>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"terms":{"editor":"enum","options":["en","ar"],"default":"en"},"unsaved":{"editor":"boolean","default":false},"error":{"editor":"enum","options":["none","stale","failed"],"default":"none"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const PHONE = true;
+    const navOpen = !!st.navOpen;
+    const closeNav = () => this.setState({ navOpen: false });
+
+    const H = PHONE ? '44px' : '36px', BFS = PHONE ? '15px' : '14px';
+    const okStyle = (danger) => 'height: ' + H + '; padding: 0 14px; border: 0; border-radius: 8px; font-size: ' + BFS + '; font-weight: 500; cursor: pointer; ' + (danger ? 'background: var(--destructive); color: var(--on-destructive)' : 'background: var(--primary); color: var(--primary-fg)');
+    const closeDlg = () => this.setState({ dlg: '', err: 'none', form: null });
+    const closeMenu = () => this.setState({ menu: '' });
+    const itemStyle = (danger) => 'display: flex; align-items: center; width: 100%; height: 32px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; font-size: 14px; text-align: left; cursor: pointer; color: ' + (danger ? 'var(--danger-fg)' : 'var(--fg)');
+    const sheetStyle = (danger) => 'display: flex; align-items: center; min-height: 52px; padding: 0 4px; border: 0; border-top: 1px solid var(--hover); background: transparent; font-size: 15px; text-align: left; color: ' + (danger ? 'var(--danger-fg)' : 'var(--fg)');
+    const item = (label, pick, danger) => ({ label: label, pick: pick, style: itemStyle(danger), sheetStyle: sheetStyle(danger) });
+    const dlgProp = this.props.dialog || 'none';
+    const dlg = st.dlg !== undefined ? st.dlg : (dlgProp === 'none' ? '' : dlgProp);
+    const err = st.err !== undefined ? st.err : (this.props.error || 'none');
+    const fieldVals = (pfx, k, val, msg) => { const o = {}; o[k] = val; o[k + 'HasErr'] = !!msg; o[k + 'Err'] = msg; o[k + 'Invalid'] = msg ? 'true' : 'false'; o[k + 'Border'] = msg ? 'var(--destructive)' : 'var(--border)'; return o; };
+    const form = st.form || {};
+    const setForm = (k) => (ev) => { const n = Object.assign({}, form); n[k] = ev && ev.target ? ev.target.value : ''; this.setState({ form: n, err: 'none' }); };
+    const base = { closeDlg: closeDlg, dlgKey: (ev) => { if (ev && ev.key === 'Escape') closeDlg(); }, closeMenu: closeMenu, menuKey: (ev) => { if (ev && ev.key === 'Escape') closeMenu(); },
+      hasToast: !!st.toast, toast: st.toast || '', hideToast: () => this.setState({ toast: '' }) };
+    const TONE = {"ok": "display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid var(--ok-border); background: var(--ok-bg); color: var(--ok-fg)", "warn": "display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg)", "danger": "display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid var(--danger-border); background: var(--danger-bg); color: var(--danger-fg)", "neutral": "display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; border: 1px solid var(--border); background: var(--muted); color: var(--text-2)"};
+
+    const tabBase = 'display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 10px; border-radius: 7px; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; ';
+    const pill = 'flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 14px; border-radius: 18px; font-size: 13px; font-weight: 500; white-space: nowrap; ';
+    const mkTabs = (list, cur, key) => list.map(([id, l, count]) => { const on = id === cur; const o = {}; o[key] = id; return { label: l, aria: on ? 'true' : 'false', pick: () => this.setState(o), hasCount: !!count, count: String(count || ''),
+      countStyle: 'display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 9px; font-size: 11px; ' + (on && PHONE ? 'background: var(--primary-divider); color: var(--primary-fg)' : 'background: var(--chip); color: var(--text-2)'),
+      style: PHONE ? pill + (on ? 'border: 1px solid var(--primary); background: var(--primary); color: var(--primary-fg)' : 'border: 1px solid var(--border); background: var(--bg); color: var(--text-2)')
+                   : tabBase + (on ? 'border: 1px solid var(--border); background: var(--bg); color: var(--fg); box-shadow: 0 1px 2px rgba(0,0,0,0.06)' : 'border: 1px solid transparent; background: transparent; color: var(--muted-fg)') }; });
+
+    const SAVE_NOTE = 'New people get these defaults; everyone can change their own language.';
+
+    const dirty = !!st.dirty || this.props.unsaved === true || err !== 'none';
+    const BAR = { stale: 'Someone changed these settings meanwhile. The page now shows their version.', failed: 'That did not work. Try again.', invalid: 'Check the highlighted fields.' };
+    const barAlert = BAR[err] || '';
+    const barVals = { bar: { hasAlert: !!barAlert, alert: barAlert }, barNote: dirty ? 'Unsaved changes. ' + SAVE_NOTE : SAVE_NOTE, barNoteColor: dirty ? 'var(--warn-fg)' : 'var(--muted-fg)',
+      save: () => { if (barAlert && err !== 'stale') { this.setState({ err: err }); return; } this.setState({ dirty: false, err: 'none', toast: 'Saved.' }); } };
+
+    const lang = st.lang || this.props.terms || 'en';
+    const tabs = mkTabs([['en', 'English'], ['ar', 'العربية (Arabic)']], lang, 'lang');
+    const TERMS = { en: [['Unit (department, branch)', 'department', 'departments', ''], ['Position', 'designation', 'designations', ''], ['Memo', '', '', '']],
+                    ar: [['Unit (department, branch)', 'إدارة', 'إدارات', 'Feminine'], ['Position', 'وظيفة', 'وظائف', 'Feminine'], ['Memo', 'مذكرة', 'مذكرات', 'Feminine']] };
+    const isAr = lang === 'ar';
+    const STD = { en: [['unit', 'units'], ['position', 'positions'], ['memo', 'memos']], ar: [['وحدة', 'وحدات'], ['منصب', 'مناصب'], ['مذكرة', 'مذكرات']] };
+    const terms = TERMS[lang].map((t, i) => ({ term: t[0], one: t[1], other: t[2], phOne: STD[lang][i][0], phOther: STD[lang][i][1], masc: t[3] === 'Masculine', fem: t[3] === 'Feminine',
+      oneLabel: t[0] + ': One', otherLabel: t[0] + ': Several', genderLabel: t[0] + ': Grammatical gender' }));
+    const vals = Object.assign(base, barVals, {
+      tabs: tabs, terms: terms, isAr: isAr, dir: isAr ? 'rtl' : 'ltr', example: isAr ? '' : 'Nusrat Jahan moved to the Credit Risk department.', hasExample: !isAr,
+      saveTerms: () => this.setState({ toast: 'Saved.' }), save: () => this.setState({ toast: 'Saved.' })
+    });
+    return Object.assign(vals, {
+      themeClass: st.theme || this.props.theme || 'system',
+      navOpen: navOpen, navAria: navOpen ? 'true' : 'false',
+      openNav: () => this.setState({ navOpen: true }), closeNav: closeNav,
+      navKey: (ev) => { if (ev && ev.key === 'Escape') closeNav(); }
+    });
+  }
+}
+</script>
+</body>
+</html>

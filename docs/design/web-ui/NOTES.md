@@ -97,3 +97,18 @@ Use shadcn/ui components for everything: Button, Input, InputOTP, Select, Combob
 - Business calendar: weekly hours (Friday and Saturday not worked), the month view of holidays and special hours with a list underneath, and "When is it due?". On phones "Add hours" is a + button.
 - API: nothing new.
 - New copy: the New workflow dialog lead, the send-back lead, the "Cancel it" action for planned substitutions, the substitutions footer, the calendar legend and the due-date example line.
+
+## Admin · Organisation-wide settings (Security, Email, Branding, Language and terms)
+
+- The four pages share a row of section links. The sidebar's Administration › Security entry opens them.
+- Security, Branding: forms on the page with a Save bar that stays at the bottom and says when there are unsaved changes. Saving asks for step-up, as the app does. "Someone changed these settings meanwhile…" shows in the bar.
+- Security: each number shows the range the server allows (`SecurityLimit`: idle 5–480 minutes, longest session 1–24 hours, confirmation 1–30 minutes, password 12–128, waiting after 3–10, lock after 5–50, lock 5–1440 minutes).
+  - Errors sit under the field: "Between 5 and 480." (new copy) and the server's "Lock after more failures than the waiting starts."
+  - "What people will notice" sums the settings up in plain words (new copy).
+  - The longer confirmation for approving memos (`security.stepup.approval.minutes`, 5–240) is not on the app's page, and not on this board either. Add it to the page if administrators should be able to change it.
+- Email: the mail server is a summary card. Change opens a dialog with the server, port, encryption, sender, user name and password, where an empty password keeps the stored one.
+  - "Send a test email to me" shows a failure on the card. "Use the platform's server" asks first (new copy).
+  - The delivery log has All / Failed tabs (new; client-side over the page of entries) and "Failed emails are tried again up to five times." (new copy; check it against the retry policy).
+- Branding: the logo on light and dark, and both colours with the contrast checks from `lib/contrast.ts` (4.5:1 on the page, 3:1 on panels) shown as "Readable" or "Too little contrast" with the ratio. A preview of the top bar and sign-in in both themes. The error example uses #5b9bd5, which fails (2.96:1).
+- Language and terms: Defaults (language, time zone) and Your terms each save on their own, as in the app. Terms per language; Arabic adds grammatical gender and right-to-left fields. An example sentence shows the English terms in use (new copy).
+- API: nothing new.

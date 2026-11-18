@@ -21,19 +21,19 @@ P = {
            border='#1e293b', **{'border-strong': '#334155', 'muted-fg': '#94a3b8', 'text-1': '#e2e8f0', 'text-2': '#cbd5e1', 'text-3': '#94a3b8',
            'primary': '#2563eb', 'primary-fg': '#ffffff', 'primary-hover': '#1d4ed8', 'primary-divider': '#93c5fd', 'primary-muted': '#dbeafe', 'ring': '#60a5fa'},
            **status('#0b1120', '#4ade80', '#fbbf24', '#f87171', '#60a5fa', '#dc2626', '#ef4444', 0.12, 0.32)),
+ 'B2': dict(name='B2 · Midnight, no accent', bg='#0b1120', fg='#f8fafc', subtle='#0f172a', muted='#1e293b', hover='#162033', active='#1e293b', chip='#273449',
+           border='#1e293b', **{'border-strong': '#334155', 'muted-fg': '#94a3b8', 'text-1': '#e2e8f0', 'text-2': '#cbd5e1', 'text-3': '#94a3b8',
+           'primary': '#f1f5f9', 'primary-fg': '#0b1120', 'primary-hover': '#e2e8f0', 'primary-divider': '#94a3b8', 'primary-muted': '#475569', 'ring': '#94a3b8'},
+           **status('#0b1120', '#4ade80', '#fbbf24', '#f87171', '#60a5fa', '#dc2626', '#ef4444', 0.12, 0.32)),
  'C': dict(name='C · Neutral with an accent', bg='#0c0c0f', fg='#fafafa', subtle='#141418', muted='#232329', hover='#1c1c21', active='#1e1b4b', chip='#2e2e35',
            border='#26262c', **{'border-strong': '#3f3f46', 'muted-fg': '#a1a1aa', 'text-1': '#f4f4f5', 'text-2': '#e4e4e7', 'text-3': '#a1a1aa',
            'primary': '#4f46e5', 'primary-fg': '#ffffff', 'primary-hover': '#4338ca', 'primary-divider': '#a5b4fc', 'primary-muted': '#e0e7ff', 'ring': '#818cf8'},
            **status('#0c0c0f', '#4ade80', '#fbbf24', '#f87171', '#818cf8', '#dc2626', '#ef4444')),
- 'D': dict(name='D · Deep green', bg='#07110f', fg='#f0fdf9', subtle='#0c1a17', muted='#16302a', hover='#10241f', active='#16302a', chip='#1d3a33',
-           border='#1a2f2a', **{'border-strong': '#2e4b44', 'muted-fg': '#94b8ad', 'text-1': '#d1fae5', 'text-2': '#c3e8da', 'text-3': '#94b8ad',
-           'primary': '#34d399', 'primary-fg': '#052e22', 'primary-hover': '#6ee7b7', 'primary-divider': '#065f46', 'primary-muted': '#065f46', 'ring': '#34d399'},
-           **status('#07110f', '#6ee7b7', '#fbbf24', '#fb7185', '#7dd3fc', '#e11d48', '#f43f5e', 0.12, 0.32)),
 }
 ORDER = ['bg', 'fg', 'subtle', 'muted', 'hover', 'active', 'chip', 'border', 'border-strong', 'muted-fg', 'text-1', 'text-2', 'text-3', 'primary', 'primary-fg',
          'primary-hover', 'primary-divider', 'primary-muted', 'ring', 'destructive', 'destructive-hover', 'on-destructive', 'danger-fg', 'danger-bg', 'danger-border',
          'warn-bg', 'warn-fg', 'warn-border', 'ok-bg', 'ok-fg', 'ok-border', 'info-bg', 'info-fg']
-FILES = ['DarkHomeCurrent.dc.html'] + [f'DarkHome{k}.dc.html' for k in P]
+FILES = ['DarkHomeCurrent.dc.html'] + [f'DarkHome{k}.dc.html' for k in P] + ['DarkHomeD.dc.html']  # D was dropped; listed so --remove also clears it
 c = proj / 'canvas.json'; d = json.loads(c.read_text())
 
 if '--remove' in sys.argv:

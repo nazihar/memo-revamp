@@ -29,16 +29,16 @@ OPTIONS = [
          bg='#0b1120', card='#111a2e', subtle='#0f172a', muted='#1e293b', active='#1e293b', border='#1e293b', strong='#334155',
          fg='#f8fafc', text1='#e2e8f0', mfg='#94a3b8', primary='#2563eb', pfg='#ffffff', ring='#60a5fa',
          ok=('#4ade80', 0.12, 0.30), warn=('#fbbf24', 0.12, 0.30), danger=('#f87171', 0.14, 0.32), info=('#60a5fa', 0.16), dest='#dc2626'),
+    dict(key='midnight-neutral', name='B2 · Midnight, no accent', tag='Calmer',
+         why='The same blue-black page and slate surfaces as B, but the primary button stays neutral: near-white with dark text, like today. You keep the depth of the blue tint without adding a brand colour; blue appears only where it carries meaning (unread dots, information).',
+         bg='#0b1120', card='#111a2e', subtle='#0f172a', muted='#1e293b', active='#1e293b', border='#1e293b', strong='#334155',
+         fg='#f8fafc', text1='#e2e8f0', mfg='#94a3b8', primary='#f1f5f9', pfg='#0b1120', ring='#94a3b8',
+         ok=('#4ade80', 0.12, 0.30), warn=('#fbbf24', 0.12, 0.30), danger=('#f87171', 0.14, 0.32), info=('#60a5fa', 0.16), dest='#dc2626'),
     dict(key='indigo', name='C · Neutral with an accent', tag='Brand colour',
          why='Neutral greys like A, with one accent colour (indigo here; any brand colour works) on the primary button, the active sidebar item, focus rings and links. Colour appears only where it means "this is the action".',
          bg='#0c0c0f', card='#141418', subtle='#18181c', muted='#232329', active='#1e1b4b', border='#26262c', strong='#3f3f46',
          fg='#fafafa', text1='#f4f4f5', mfg='#a1a1aa', primary='#4f46e5', pfg='#ffffff', ring='#818cf8',
          ok=('#4ade80', 0.12, 0.30), warn=('#fbbf24', 0.12, 0.30), danger=('#f87171', 0.12, 0.30), info=('#818cf8', 0.16), dest='#dc2626', activeFg='#c7d2fe'),
-    dict(key='emerald', name='D · Deep green', tag='Warmer, distinctive',
-         why='A green-black page with a bright mint primary and dark text on it. It feels distinctive and calm, and fits a bank. The bright primary is very visible; status green has to be told apart from the brand green, so Approved uses a check icon as well as colour.',
-         bg='#07110f', card='#0c1a17', subtle='#0f1f1b', muted='#16302a', active='#16302a', border='#1a2f2a', strong='#2e4b44',
-         fg='#f0fdf9', text1='#d1fae5', mfg='#94b8ad', primary='#34d399', pfg='#052e22', ring='#34d399',
-         ok=('#6ee7b7', 0.12, 0.30), warn=('#fbbf24', 0.12, 0.30), danger=('#fb7185', 0.14, 0.32), info=('#7dd3fc', 0.14), dest='#e11d48'),
 ]
 
 def resolve(o):

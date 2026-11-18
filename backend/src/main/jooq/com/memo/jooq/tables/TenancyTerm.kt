@@ -176,7 +176,7 @@ open class TenancyTerm(
         Internal.createCheck(this, DSL.name("tenancy_term_locale_check"), "((locale = ANY (ARRAY['en'::text, 'ar'::text])))", true),
         Internal.createCheck(this, DSL.name("tenancy_term_one_check"), "(((length(one) >= 1) AND (length(one) <= 40)))", true),
         Internal.createCheck(this, DSL.name("tenancy_term_other_check"), "(((length(other) >= 1) AND (length(other) <= 40)))", true),
-        Internal.createCheck(this, DSL.name("tenancy_term_term_check"), "((term = ANY (ARRAY['unit'::text, 'position'::text, 'memo'::text])))", true)
+        Internal.createCheck(this, DSL.name("tenancy_term_term_check"), "((term = ANY (ARRAY['unit'::text, 'position'::text, 'memo'::text, 'forum'::text])))", true)
     )
     override fun `as`(alias: String): TenancyTerm = TenancyTerm(DSL.name(alias), this)
     override fun `as`(alias: Name): TenancyTerm = TenancyTerm(alias, this)

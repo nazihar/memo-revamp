@@ -5,7 +5,7 @@ import type { Term } from '@/api/generated/types.gen'
 import { useSession } from '@/features/auth/session'
 import { useLocale } from '@/i18n/LocaleProvider'
 
-export const TERMS = ['unit', 'position', 'memo'] as const
+export const TERMS = ['unit', 'position', 'memo', 'forum'] as const
 export type TermKey = (typeof TERMS)[number]
 
 /**
@@ -30,6 +30,11 @@ export const termDefaults: Record<
     one: { id: 'term.memo.one', defaultMessage: 'memo' },
     other: { id: 'term.memo.other', defaultMessage: 'memos' },
     gender: { id: 'term.memo.gender', defaultMessage: 'other' },
+  }),
+  forum: defineMessages({
+    one: { id: 'term.forum.one', defaultMessage: 'committee' },
+    other: { id: 'term.forum.other', defaultMessage: 'committees' },
+    gender: { id: 'term.forum.gender', defaultMessage: 'other' },
   }),
 }
 

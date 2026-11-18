@@ -2862,7 +2862,7 @@ export type Term = {
      */
     other: string;
     /**
-     * unit, position or memo
+     * unit, position, memo or forum
      */
     term: string;
 };

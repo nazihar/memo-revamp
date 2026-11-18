@@ -16,6 +16,8 @@ export const PERMISSION = {
   memoTypesManage: 'memo.types.manage',
   memoTypesApprove: 'memo.types.approve',
   memoImport: 'memo.import',
+  forumTypesManage: 'forum.types.manage',
+  forumTypesApprove: 'forum.types.approve',
   workflowTasksReassign: 'workflow.tasks.reassign',
   workflowDefinitionsManage: 'workflow.definitions.manage',
   workflowDefinitionsApprove: 'workflow.definitions.approve',

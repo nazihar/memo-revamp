@@ -20,3 +20,14 @@
   - The two seat problems (missing with fixed seats, present without) share the code `RANGE`.
   - Membership and term emails say "committee" in plain English until T4 adds the renameable `forum` term.
   - The demo credit workflow's escalation to the Management Credit Committee moves to E02, where the step starts to wait. As a pass-through step in E01 it would show nothing and would change a published definition on dev twice.
+- **T4 built (web, committee types, flow J):** `/admin/committee-types` (list, "New committee type" from Blank or a preset) and `/admin/committee-types/$typeId` (version selector, Published line, the review toolbar with step-up on approve and the `SAME_PERSON` message, tabs Policy, Quorum, Outcomes, Terms and Changes). Code in `web/src/features/forum-types/`; texts under the new catalogue part `forumAdmin` (`forumTypes.*`), with Arabic.
+  - The Quorum tab writes the rule back as one sentence beside the builder, built from ICU messages in the browser. The worked example and the "Try it" tester come from `POST /forums/quorum-preview` on a sample roster built from the tester's numbers, so no quorum arithmetic runs in the browser. The preview's field problems also mark the builder's controls.
+  - The Changes tab lists "before → after" lines against the published version; a quorum change shows the old and new sentences.
+  - The terminology term `forum` ("committee", Arabic "لجنة", feminine) is renameable on the Language and terms page. The menu, breadcrumbs and administration overview now pass the organisation's terms to their labels.
+- **Deviations in T4:**
+  - Small backend change: renaming the term needed the server to accept it. `TermKey.FORUM`, migration `tenancy/V5__forum_term.sql` (the check on `tenancy_term.term` widens; expand only), the mail bundle's default `term.forum.*`, the regenerated jOOQ table and contract, and a `TerminologyIT` case. Mail templates still name the committee by its name; none uses `{forum}` yet.
+  - Member attributes (J3) are a list: each row has a tick, an editable label and its key, and the three common attributes (Independent, Non-executive, Management) are offered as unticked rows until used. "Add attribute" asks for a label and a key, suggested from the label.
+  - Required roles (J4) are chips with a remove button and an "Add a role" list per requirement. A new requirement starts with the first role not yet used.
+  - Reminders (J6) are up to three day fields with "Add a reminder", not a fixed two.
+  - Outcome effects (J5's help text) are a disclosure under the table, following E02's mapping: Approved, Approved with conditions and Noted continue the route, Rejected ends it, Returned goes back to the initiator, and the others keep the memo waiting.
+  - Arabic needs the same message arguments as English, so a few Arabic headings use the singular term ("أنواع {Forum}").

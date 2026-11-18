@@ -20,6 +20,9 @@ enum class TermKey(
     UNIT("unit"),
     POSITION("position"),
     MEMO("memo"),
+
+    /** "Committee" (ADR-0056): a forum, as the screens and messages of Phase 4 call it. */
+    FORUM("forum"),
     ;
 
     companion object {

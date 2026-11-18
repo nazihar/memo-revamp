@@ -26,6 +26,7 @@ const ALL_PARTS: ReadonlySet<CataloguePart> = new Set([
   'admin',
   'builder',
   'memoAdmin',
+  'forumAdmin',
   'platform',
   'patterns',
   'search',

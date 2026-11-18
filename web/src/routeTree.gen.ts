@@ -48,6 +48,8 @@ import { Route as ShellSignedInMemosNewRouteImport } from './routes/_shell/_sign
 import { Route as ShellSignedInSearchSavedRouteImport } from './routes/_shell/_signedIn/search_.saved'
 import { Route as PlatformOperatorTenantsTenantIdRouteImport } from './routes/platform/_operator/tenants.$tenantId'
 import { Route as PlatformOperatorTenantsNewRouteImport } from './routes/platform/_operator/tenants.new'
+import { Route as ShellSignedInAdminCommitteeTypesIndexRouteImport } from './routes/_shell/_signedIn/admin.committee-types.index'
+import { Route as ShellSignedInAdminCommitteeTypesTypeIdRouteImport } from './routes/_shell/_signedIn/admin.committee-types.$typeId'
 import { Route as ShellSignedInAdminImportsIndexRouteImport } from './routes/_shell/_signedIn/admin.imports.index'
 import { Route as ShellSignedInAdminImportsBatchIdRouteImport } from './routes/_shell/_signedIn/admin.imports.$batchId'
 import { Route as ShellSignedInAdminMemoTypesIndexRouteImport } from './routes/_shell/_signedIn/admin.memo-types.index'
@@ -267,6 +269,18 @@ const PlatformOperatorTenantsNewRoute =
     path: '/tenants/new',
     getParentRoute: () => PlatformOperatorRoute,
   } as any)
+const ShellSignedInAdminCommitteeTypesIndexRoute =
+  ShellSignedInAdminCommitteeTypesIndexRouteImport.update({
+    id: '/admin/committee-types/',
+    path: '/admin/committee-types/',
+    getParentRoute: () => ShellSignedInRoute,
+  } as any)
+const ShellSignedInAdminCommitteeTypesTypeIdRoute =
+  ShellSignedInAdminCommitteeTypesTypeIdRouteImport.update({
+    id: '/admin/committee-types/$typeId',
+    path: '/admin/committee-types/$typeId',
+    getParentRoute: () => ShellSignedInRoute,
+  } as any)
 const ShellSignedInAdminImportsIndexRoute =
   ShellSignedInAdminImportsIndexRouteImport.update({
     id: '/admin/imports/',
@@ -388,6 +402,7 @@ export interface FileRoutesByFullPath {
   '/platform/tenants/$tenantId': typeof PlatformOperatorTenantsTenantIdRoute
   '/platform/tenants/new': typeof PlatformOperatorTenantsNewRoute
   '/admin/': typeof ShellSignedInAdminIndexRoute
+  '/admin/committee-types/$typeId': typeof ShellSignedInAdminCommitteeTypesTypeIdRoute
   '/admin/imports/$batchId': typeof ShellSignedInAdminImportsBatchIdRoute
   '/admin/memo-types/$typeId': typeof ShellSignedInAdminMemoTypesTypeIdRoute
   '/admin/users/$userId': typeof ShellSignedInAdminUsersUserIdRoute
@@ -399,6 +414,7 @@ export interface FileRoutesByFullPath {
   '/admin/workflows/$key': typeof ShellSignedInAdminWorkflowsKeyRoute
   '/memos/$memoId/document': typeof ShellSignedInMemosMemoIdDocumentRoute
   '/org/positions/$positionId': typeof ShellSignedInOrgPositionsPositionIdRoute
+  '/admin/committee-types/': typeof ShellSignedInAdminCommitteeTypesIndexRoute
   '/admin/imports/': typeof ShellSignedInAdminImportsIndexRoute
   '/admin/memo-types/': typeof ShellSignedInAdminMemoTypesIndexRoute
   '/admin/workflows/': typeof ShellSignedInAdminWorkflowsIndexRoute
@@ -438,6 +454,7 @@ export interface FileRoutesByTo {
   '/platform/tenants/$tenantId': typeof PlatformOperatorTenantsTenantIdRoute
   '/platform/tenants/new': typeof PlatformOperatorTenantsNewRoute
   '/admin': typeof ShellSignedInAdminIndexRoute
+  '/admin/committee-types/$typeId': typeof ShellSignedInAdminCommitteeTypesTypeIdRoute
   '/admin/imports/$batchId': typeof ShellSignedInAdminImportsBatchIdRoute
   '/admin/memo-types/$typeId': typeof ShellSignedInAdminMemoTypesTypeIdRoute
   '/admin/users/$userId': typeof ShellSignedInAdminUsersUserIdRoute
@@ -449,6 +466,7 @@ export interface FileRoutesByTo {
   '/admin/workflows/$key': typeof ShellSignedInAdminWorkflowsKeyRoute
   '/memos/$memoId/document': typeof ShellSignedInMemosMemoIdDocumentRoute
   '/org/positions/$positionId': typeof ShellSignedInOrgPositionsPositionIdRoute
+  '/admin/committee-types': typeof ShellSignedInAdminCommitteeTypesIndexRoute
   '/admin/imports': typeof ShellSignedInAdminImportsIndexRoute
   '/admin/memo-types': typeof ShellSignedInAdminMemoTypesIndexRoute
   '/admin/workflows': typeof ShellSignedInAdminWorkflowsIndexRoute
@@ -494,6 +512,7 @@ export interface FileRoutesById {
   '/platform/_operator/tenants/$tenantId': typeof PlatformOperatorTenantsTenantIdRoute
   '/platform/_operator/tenants/new': typeof PlatformOperatorTenantsNewRoute
   '/_shell/_signedIn/admin/': typeof ShellSignedInAdminIndexRoute
+  '/_shell/_signedIn/admin/committee-types/$typeId': typeof ShellSignedInAdminCommitteeTypesTypeIdRoute
   '/_shell/_signedIn/admin/imports/$batchId': typeof ShellSignedInAdminImportsBatchIdRoute
   '/_shell/_signedIn/admin/memo-types/$typeId': typeof ShellSignedInAdminMemoTypesTypeIdRoute
   '/_shell/_signedIn/admin/users_/$userId': typeof ShellSignedInAdminUsersUserIdRoute
@@ -505,6 +524,7 @@ export interface FileRoutesById {
   '/_shell/_signedIn/admin/workflows/$key': typeof ShellSignedInAdminWorkflowsKeyRoute
   '/_shell/_signedIn/memos/$memoId_/document': typeof ShellSignedInMemosMemoIdDocumentRoute
   '/_shell/_signedIn/org_/positions/$positionId': typeof ShellSignedInOrgPositionsPositionIdRoute
+  '/_shell/_signedIn/admin/committee-types/': typeof ShellSignedInAdminCommitteeTypesIndexRoute
   '/_shell/_signedIn/admin/imports/': typeof ShellSignedInAdminImportsIndexRoute
   '/_shell/_signedIn/admin/memo-types/': typeof ShellSignedInAdminMemoTypesIndexRoute
   '/_shell/_signedIn/admin/workflows/': typeof ShellSignedInAdminWorkflowsIndexRoute
@@ -547,6 +567,7 @@ export interface FileRouteTypes {
     | '/platform/tenants/$tenantId'
     | '/platform/tenants/new'
     | '/admin/'
+    | '/admin/committee-types/$typeId'
     | '/admin/imports/$batchId'
     | '/admin/memo-types/$typeId'
     | '/admin/users/$userId'
@@ -558,6 +579,7 @@ export interface FileRouteTypes {
     | '/admin/workflows/$key'
     | '/memos/$memoId/document'
     | '/org/positions/$positionId'
+    | '/admin/committee-types/'
     | '/admin/imports/'
     | '/admin/memo-types/'
     | '/admin/workflows/'
@@ -597,6 +619,7 @@ export interface FileRouteTypes {
     | '/platform/tenants/$tenantId'
     | '/platform/tenants/new'
     | '/admin'
+    | '/admin/committee-types/$typeId'
     | '/admin/imports/$batchId'
     | '/admin/memo-types/$typeId'
     | '/admin/users/$userId'
@@ -608,6 +631,7 @@ export interface FileRouteTypes {
     | '/admin/workflows/$key'
     | '/memos/$memoId/document'
     | '/org/positions/$positionId'
+    | '/admin/committee-types'
     | '/admin/imports'
     | '/admin/memo-types'
     | '/admin/workflows'
@@ -652,6 +676,7 @@ export interface FileRouteTypes {
     | '/platform/_operator/tenants/$tenantId'
     | '/platform/_operator/tenants/new'
     | '/_shell/_signedIn/admin/'
+    | '/_shell/_signedIn/admin/committee-types/$typeId'
     | '/_shell/_signedIn/admin/imports/$batchId'
     | '/_shell/_signedIn/admin/memo-types/$typeId'
     | '/_shell/_signedIn/admin/users_/$userId'
@@ -663,6 +688,7 @@ export interface FileRouteTypes {
     | '/_shell/_signedIn/admin/workflows/$key'
     | '/_shell/_signedIn/memos/$memoId_/document'
     | '/_shell/_signedIn/org_/positions/$positionId'
+    | '/_shell/_signedIn/admin/committee-types/'
     | '/_shell/_signedIn/admin/imports/'
     | '/_shell/_signedIn/admin/memo-types/'
     | '/_shell/_signedIn/admin/workflows/'
@@ -949,6 +975,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlatformOperatorTenantsNewRouteImport
       parentRoute: typeof PlatformOperatorRoute
     }
+    '/_shell/_signedIn/admin/committee-types/': {
+      id: '/_shell/_signedIn/admin/committee-types/'
+      path: '/admin/committee-types'
+      fullPath: '/admin/committee-types/'
+      preLoaderRoute: typeof ShellSignedInAdminCommitteeTypesIndexRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
+    '/_shell/_signedIn/admin/committee-types/$typeId': {
+      id: '/_shell/_signedIn/admin/committee-types/$typeId'
+      path: '/admin/committee-types/$typeId'
+      fullPath: '/admin/committee-types/$typeId'
+      preLoaderRoute: typeof ShellSignedInAdminCommitteeTypesTypeIdRouteImport
+      parentRoute: typeof ShellSignedInRoute
+    }
     '/_shell/_signedIn/admin/imports/': {
       id: '/_shell/_signedIn/admin/imports/'
       path: '/admin/imports'
@@ -1089,6 +1129,7 @@ interface ShellSignedInRouteChildren {
   ShellSignedInMemosNewRoute: typeof ShellSignedInMemosNewRoute
   ShellSignedInSearchSavedRoute: typeof ShellSignedInSearchSavedRoute
   ShellSignedInAdminIndexRoute: typeof ShellSignedInAdminIndexRoute
+  ShellSignedInAdminCommitteeTypesTypeIdRoute: typeof ShellSignedInAdminCommitteeTypesTypeIdRoute
   ShellSignedInAdminImportsBatchIdRoute: typeof ShellSignedInAdminImportsBatchIdRoute
   ShellSignedInAdminMemoTypesTypeIdRoute: typeof ShellSignedInAdminMemoTypesTypeIdRoute
   ShellSignedInAdminUsersUserIdRoute: typeof ShellSignedInAdminUsersUserIdRoute
@@ -1100,6 +1141,7 @@ interface ShellSignedInRouteChildren {
   ShellSignedInAdminWorkflowsKeyRoute: typeof ShellSignedInAdminWorkflowsKeyRoute
   ShellSignedInMemosMemoIdDocumentRoute: typeof ShellSignedInMemosMemoIdDocumentRoute
   ShellSignedInOrgPositionsPositionIdRoute: typeof ShellSignedInOrgPositionsPositionIdRoute
+  ShellSignedInAdminCommitteeTypesIndexRoute: typeof ShellSignedInAdminCommitteeTypesIndexRoute
   ShellSignedInAdminImportsIndexRoute: typeof ShellSignedInAdminImportsIndexRoute
   ShellSignedInAdminMemoTypesIndexRoute: typeof ShellSignedInAdminMemoTypesIndexRoute
   ShellSignedInAdminWorkflowsIndexRoute: typeof ShellSignedInAdminWorkflowsIndexRoute
@@ -1130,6 +1172,8 @@ const ShellSignedInRouteChildren: ShellSignedInRouteChildren = {
   ShellSignedInMemosNewRoute: ShellSignedInMemosNewRoute,
   ShellSignedInSearchSavedRoute: ShellSignedInSearchSavedRoute,
   ShellSignedInAdminIndexRoute: ShellSignedInAdminIndexRoute,
+  ShellSignedInAdminCommitteeTypesTypeIdRoute:
+    ShellSignedInAdminCommitteeTypesTypeIdRoute,
   ShellSignedInAdminImportsBatchIdRoute: ShellSignedInAdminImportsBatchIdRoute,
   ShellSignedInAdminMemoTypesTypeIdRoute:
     ShellSignedInAdminMemoTypesTypeIdRoute,
@@ -1145,6 +1189,8 @@ const ShellSignedInRouteChildren: ShellSignedInRouteChildren = {
   ShellSignedInMemosMemoIdDocumentRoute: ShellSignedInMemosMemoIdDocumentRoute,
   ShellSignedInOrgPositionsPositionIdRoute:
     ShellSignedInOrgPositionsPositionIdRoute,
+  ShellSignedInAdminCommitteeTypesIndexRoute:
+    ShellSignedInAdminCommitteeTypesIndexRoute,
   ShellSignedInAdminImportsIndexRoute: ShellSignedInAdminImportsIndexRoute,
   ShellSignedInAdminMemoTypesIndexRoute: ShellSignedInAdminMemoTypesIndexRoute,
   ShellSignedInAdminWorkflowsIndexRoute: ShellSignedInAdminWorkflowsIndexRoute,

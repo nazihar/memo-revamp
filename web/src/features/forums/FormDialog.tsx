@@ -5,11 +5,15 @@ import { Dialog } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
 import { fm } from './messages'
 
+/** 44 px targets and larger text, for screens directors use (E03 principle 5). */
+const buttonLarge = 'h-auto min-h-11 whitespace-normal text-base'
+
 /**
  * A form in a dialog, or in a side sheet on the inline-end side (full screen on a phone): one primary button, Cancel,
  * and a refusal shown in words inside the form (role="alert") rather than in a passing toast, so nobody misses it.
  * [onSubmit] returns a refusal to show, or nothing when it worked. A [secondary] action ("Save as draft" beside
  * "Schedule") submits the same form another way; [cancelLabel] renames Cancel where that word is the action itself.
+ * [large] gives the buttons 44 px targets and larger text.
  */
 export function FormDialog({
   title,
@@ -19,6 +23,7 @@ export function FormDialog({
   secondary,
   side = false,
   destructive = false,
+  large = false,
   onSubmit,
   onClose,
   children,
@@ -30,6 +35,7 @@ export function FormDialog({
   secondary?: { label: string; onSubmit: () => Promise<string | undefined> }
   side?: boolean
   destructive?: boolean
+  large?: boolean
   onSubmit: () => Promise<string | undefined>
   onClose: () => void
   children?: ReactNode
@@ -72,21 +78,35 @@ export function FormDialog({
         {refusal ? (
           <p
             role="alert"
-            className="rounded-md border border-destructive/40 bg-destructive/5 p-3 text-sm text-destructive"
+            className={cn(
+              'rounded-md border border-destructive/40 bg-destructive/5 p-3 text-sm text-destructive',
+              large && 'text-base',
+            )}
           >
             {refusal}
           </p>
         ) : null}
         <div className="flex flex-wrap justify-end gap-2 border-t pt-4">
-          <Button type="button" variant="outline" onClick={onClose}>
+          <Button type="button" variant="outline" className={cn(large && buttonLarge)} onClick={onClose}>
             {cancelLabel ?? intl.formatMessage(fm.cancel)}
           </Button>
           {secondary ? (
-            <Button type="button" variant="outline" disabled={busy} onClick={() => void run(secondary.onSubmit)}>
+            <Button
+              type="button"
+              variant="outline"
+              className={cn(large && buttonLarge)}
+              disabled={busy}
+              onClick={() => void run(secondary.onSubmit)}
+            >
               {secondary.label}
             </Button>
           ) : null}
-          <Button type="submit" variant={destructive ? 'destructive' : 'default'} disabled={busy}>
+          <Button
+            type="submit"
+            variant={destructive ? 'destructive' : 'default'}
+            className={cn(large && buttonLarge)}
+            disabled={busy}
+          >
             {submitLabel}
           </Button>
         </div>

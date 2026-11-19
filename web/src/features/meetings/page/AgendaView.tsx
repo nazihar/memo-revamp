@@ -9,6 +9,7 @@ import type {
 } from '@/api/generated/types.gen'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
+import { ItemDeclaration, StandingDeclarations } from '@/features/meetings/declarations/ItemDeclaration'
 import { cn } from '@/lib/utils'
 import { pm, pmv } from './messages'
 import { itemChanges, lineName, paperChanges, paperLabel } from './words'
@@ -26,7 +27,9 @@ export interface AgendaActions {
  * The agenda as one reader may see it (flow P1, design §1.9): sections with their items, each line in full, by title
  * only ("— papers restricted") or as "Restricted item", and an item the reader is recused from as its line with "— You
  * declared an interest" (E04); times on the meeting's clock, purposes in words, papers as large buttons with "Opened"
- * ticks, and "Ask to discuss" on consent items. Print shows numbers, times and purposes.
+ * ticks, and "Ask to discuss" on consent items. On the meeting page (inside `DeclarationsProvider`) each item the
+ * reader may declare on has "Declare an interest", a recused line says why with "My declaration", and the Declarations
+ * standing item lists who declared (E04 T6, flow S1). Print shows numbers, times and purposes.
  */
 export function AgendaView({
   agenda,
@@ -135,6 +138,8 @@ function Item({
         {facts.length ? <p className="text-lg tabular-nums text-muted-foreground">{facts.join(' · ')}</p> : null}
       </div>
       {full ? <Details item={item} name={name} latest={latest} agenda={agenda} actions={actions} /> : null}
+      {full && item.standingKind === 'DECLARATIONS' ? <StandingDeclarations agenda={agenda} /> : null}
+      <ItemDeclaration item={item} name={name} latest={latest} />
       {changes ? (
         <p className="w-fit rounded-md bg-status-warn-bg px-2 py-0.5 text-status-warn-fg print:hidden">
           {intl.formatMessage(pmv.changed, { changes })}

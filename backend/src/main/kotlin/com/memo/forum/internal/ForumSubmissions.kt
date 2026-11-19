@@ -83,19 +83,21 @@ class ForumSubmissions(
 
     /**
      * The forum's decision (ADR-0058, ADR-0059): resumes the waiting item and closes the submission as DECIDED. E06 calls
-     * it from recorded decisions; in E02 it serves tests and the demo. The caller has checked who may decide.
+     * it from recorded decisions; in E02 it serves tests and the demo. The caller has checked who may decide. [details] go on
+     * the workflow's FORUM_DECIDED action (a resolution number; ADR-0065).
      */
     fun decide(
         id: UUID,
         outcome: ForumOutcome,
         remark: String?,
+        details: Map<String, Any?> = emptyMap(),
     ): SubmissionRow {
         val row = store.find(id) ?: throw ForumNotFoundException("submission")
         refuseIf(row.status != SubmissionStatus.ACCEPTED && row.status != SubmissionStatus.QUEUED, "WRONG_STATE") {
             "Only a queued or accepted submission can be decided."
         }
         support.move(row, SubmissionStatus.DECIDED, row.version, SubmissionStore.decided(outcome, actor(), store.now()))
-        row.stepId?.let { workflow.decided(row.instanceId, it, outcome, remark) }
+        row.stepId?.let { workflow.decided(row.instanceId, it, outcome, remark, details) }
         return support.done("forum.submission.decided", row)
     }
 

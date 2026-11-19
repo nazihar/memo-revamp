@@ -5,6 +5,8 @@ import com.memo.common.concurrency.ConcurrentModificationException
 import com.memo.common.review.ReviewState
 import com.memo.common.web.FieldProblem
 import com.memo.forum.AgendaPolicy
+import com.memo.forum.MinutesPolicy
+import com.memo.forum.ResolutionPartKind
 import org.springframework.stereotype.Service
 import java.util.UUID
 
@@ -107,6 +109,23 @@ class ForumTypes(
                         s.items.joinToString("; ") { "${it.title} (${it.standingKind ?: "ITEM"}, ${it.purpose}, ${it.minutes ?: "-"})" }
                 }
 
+        /** The minutes policy in one line: approval and its days, when memos move on, the numbering, the template. */
+        fun minutesSummary(policy: MinutesPolicy): String {
+            val numbering = policy.resolutionNumbering
+            val parts =
+                numbering.parts.joinToString("") { part ->
+                    if (part.kind == ResolutionPartKind.TEXT) {
+                        part.text.orEmpty()
+                    } else {
+                        "{${part.kind}${(part.digits ?: part.style)?.let { ":$it" }.orEmpty()}}"
+                    }
+                }
+            return "approval=${policy.approval}; circulationWorkingDays=${policy.circulationWorkingDays}; " +
+                "draftWorkingDays=${policy.draftWorkingDays}; memoResumes=${policy.memoResumes}; " +
+                "resolutionNumbering=$parts ${numbering.reset} fy${numbering.fyStartMonth}; " +
+                "template=${policy.templateFileId ?: "built-in"}"
+        }
+
         /** What the audit log records of a version: every policy setting, compactly. */
         fun audited(settings: ForumTypeSettings): Map<String, Any?> =
             mapOf(
@@ -120,6 +139,7 @@ class ForumTypes(
                 "submissionPolicy" to settings.submissionPolicy.toString(),
                 "agenda" to agendaSummary(settings.agenda),
                 "meetings" to settings.meetings.toString(),
+                "minutes" to minutesSummary(settings.minutes),
             )
     }
 }

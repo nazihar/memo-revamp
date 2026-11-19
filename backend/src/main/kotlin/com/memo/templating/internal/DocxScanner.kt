@@ -401,6 +401,8 @@ internal class PartWalk(
     private class Paragraph(
         val number: Int,
         val row: TableRow?,
+        /** Directly in the body: not in a table, a text box (another paragraph) or a content control. */
+        val bodyLevel: Boolean,
         val text: StringBuilder = StringBuilder(),
     )
 
@@ -423,6 +425,7 @@ internal class PartWalk(
     private var textDepth = 0
     private var instrDepth = 0
     private var fallbackDepth = 0
+    private var controlDepth = 0
     private val collect = WordParts.hasTags(part.role)
 
     fun on(
@@ -451,15 +454,41 @@ internal class PartWalk(
 
     private fun start(r: XMLStreamReader) {
         when (r.localName) {
-            "p" -> paragraphs.addLast(Paragraph(++paragraphCount, currentRow()))
-            "tbl" -> tables.addLast(Table(++tableCount))
-            "tr" -> tables.lastOrNull()?.let { it.row++ }
-            "t" -> textDepth++
-            "instrText" -> instrDepth++
-            "fldChar" -> fieldChar(r.getAttributeValue(r.namespaceURI, "fldCharType"))
-            "fldSimple" -> judge(r.getAttributeValue(r.namespaceURI, "instr").orEmpty())
-            "mailMerge" -> if (part.role == WordParts.Role.SETTINGS) out.refuse(RefusalRule.MAIL_MERGE, part.name)
-            "attachedTemplate" -> if (part.role == WordParts.Role.SETTINGS) out.refuse(RefusalRule.ATTACHED_TEMPLATE, part.name)
+            "p", "sdtContent" -> {
+                open(r.localName)
+            }
+
+            "tbl" -> {
+                tables.addLast(Table(++tableCount))
+            }
+
+            "tr" -> {
+                tables.lastOrNull()?.let { it.row++ }
+            }
+
+            "t" -> {
+                textDepth++
+            }
+
+            "instrText" -> {
+                instrDepth++
+            }
+
+            "fldChar" -> {
+                fieldChar(r.getAttributeValue(r.namespaceURI, "fldCharType"))
+            }
+
+            "fldSimple" -> {
+                judge(r.getAttributeValue(r.namespaceURI, "instr").orEmpty())
+            }
+
+            "mailMerge" -> {
+                if (part.role == WordParts.Role.SETTINGS) out.refuse(RefusalRule.MAIL_MERGE, part.name)
+            }
+
+            "attachedTemplate" -> {
+                if (part.role == WordParts.Role.SETTINGS) out.refuse(RefusalRule.ATTACHED_TEMPLATE, part.name)
+            }
         }
     }
 
@@ -468,6 +497,7 @@ internal class PartWalk(
             "p" -> paragraphs.removeLastOrNull()?.let { if (collect) tagsOf(it) }
             "tbl" -> tables.removeLastOrNull()
             "t" -> textDepth--
+            "sdtContent" -> controlDepth--
             "instrText" -> instrDepth--
         }
     }
@@ -483,7 +513,16 @@ internal class PartWalk(
         }
     }
 
-    private fun currentRow(): TableRow? = tables.lastOrNull()?.let { TableRow(part.label, it.number, it.row) }
+    private val currentRow: TableRow? get() = tables.lastOrNull()?.let { TableRow(part.label, it.number, it.row) }
+
+    /** A paragraph (directly in the body when nothing encloses it) or a content control's content opens. */
+    private fun open(name: String) {
+        if (name == "sdtContent") {
+            controlDepth++
+        } else {
+            paragraphs.addLast(Paragraph(++paragraphCount, currentRow, paragraphs.isEmpty() && tables.isEmpty() && controlDepth == 0))
+        }
+    }
 
     /** `begin` opens a field; its instruction is complete at `separate`, or at `end` when there is no result. */
     private fun fieldChar(type: String?) {
@@ -522,7 +561,7 @@ internal class PartWalk(
         val rest = StringBuilder(text)
         TAG.findAll(text).forEach { match ->
             for (i in match.range) rest.setCharAt(i, ' ')
-            tag(location, paragraph.row, text, match)
+            tag(location, paragraph, text, match)
         }
         if ("{{" in rest || "}}" in rest) {
             val at = maxOf(rest.indexOf("{{"), rest.indexOf("}}"))
@@ -537,7 +576,7 @@ internal class PartWalk(
 
     private fun tag(
         location: TemplateLocation,
-        row: TableRow?,
+        paragraph: Paragraph,
         text: String,
         match: MatchResult,
     ) {
@@ -564,7 +603,8 @@ internal class PartWalk(
             }
 
             else -> {
-                out.add(TemplateTag(kind, name, location, row, excerpt))
+                val standalone = paragraph.bodyLevel && part.role == WordParts.Role.BODY && text.trim() == match.value
+                out.add(TemplateTag(kind, name, location, paragraph.row, excerpt, standalone))
             }
         }
     }

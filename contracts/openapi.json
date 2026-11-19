@@ -3097,6 +3097,9 @@
             },
             "type" : "array"
           },
+          "minutes" : {
+            "$ref" : "#/components/schemas/MinutesPolicy"
+          },
           "name" : {
             "type" : "string"
           },
@@ -3156,6 +3159,9 @@
               "$ref" : "#/components/schemas/MemberAttribute"
             },
             "type" : "array"
+          },
+          "minutes" : {
+            "$ref" : "#/components/schemas/MinutesPolicy"
           },
           "name" : {
             "type" : "string"
@@ -3224,7 +3230,7 @@
             "$ref" : "#/components/schemas/TermPolicy"
           }
         },
-        "required" : [ "agenda", "createdAt", "meetings", "memberAttributes", "name", "number", "outcomes", "quorum", "revision", "state", "submissionPolicy", "termPolicy" ],
+        "required" : [ "agenda", "createdAt", "meetings", "memberAttributes", "minutes", "name", "number", "outcomes", "quorum", "revision", "state", "submissionPolicy", "termPolicy" ],
         "type" : "object"
       },
       "FoundInView" : {
@@ -6455,6 +6461,168 @@
         "required" : [ "items", "toVersion" ],
         "type" : "object"
       },
+      "MinutesPolicy" : {
+        "properties" : {
+          "approval" : {
+            "enum" : [ "AT_NEXT_MEETING", "BY_CIRCULATION" ],
+            "type" : "string"
+          },
+          "circulationWorkingDays" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "draftWorkingDays" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "memoResumes" : {
+            "enum" : [ "AT_MEETING_END", "ON_MINUTES_APPROVAL" ],
+            "type" : "string"
+          },
+          "resolutionNumbering" : {
+            "$ref" : "#/components/schemas/ResolutionNumbering"
+          },
+          "templateFileId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "approval", "circulationWorkingDays", "draftWorkingDays", "memoResumes", "resolutionNumbering" ],
+        "type" : "object"
+      },
+      "MinutesTemplateFileView" : {
+        "properties" : {
+          "fileId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "sizeBytes" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "uploadedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "versionId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "fileId", "name", "sizeBytes", "uploadedAt", "versionId" ],
+        "type" : "object"
+      },
+      "MinutesTemplatePreviewView" : {
+        "properties" : {
+          "fileId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "versionId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "fileId", "versionId" ],
+        "type" : "object"
+      },
+      "MinutesTemplateProblemView" : {
+        "properties" : {
+          "code" : {
+            "enum" : [ "MALFORMED_TAG", "UNSUPPORTED_TAG", "UNKNOWN_TAG", "UNBALANCED_SECTION", "LOOP_WITHOUT_ROW", "UNKNOWN_ROW_FIELD", "TAG_IN_LOOP_ROW", "TOO_MANY_TAGS", "BLOCK_PLACEMENT" ],
+            "type" : "string"
+          },
+          "excerpt" : {
+            "type" : "string"
+          },
+          "paragraph" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "part" : {
+            "type" : "string"
+          },
+          "suggestion" : {
+            "type" : [ "string", "null" ]
+          },
+          "tag" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "code", "excerpt", "paragraph", "part" ],
+        "type" : "object"
+      },
+      "MinutesTemplateRefusalView" : {
+        "properties" : {
+          "rule" : {
+            "type" : "string"
+          },
+          "where" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "rule", "where" ],
+        "type" : "object"
+      },
+      "MinutesTemplateTagHelp" : {
+        "properties" : {
+          "kind" : {
+            "type" : "string"
+          },
+          "label" : {
+            "type" : "string"
+          },
+          "tag" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "kind", "label", "tag" ],
+        "type" : "object"
+      },
+      "MinutesTemplateView" : {
+        "properties" : {
+          "available" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MinutesTemplateTagHelp"
+            },
+            "type" : "array"
+          },
+          "owner" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "problems" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MinutesTemplateProblemView"
+            },
+            "type" : "array"
+          },
+          "refusals" : {
+            "items" : {
+              "$ref" : "#/components/schemas/MinutesTemplateRefusalView"
+            },
+            "type" : "array"
+          },
+          "tags" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "template" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/MinutesTemplateFileView"
+            }, {
+              "type" : "null"
+            } ]
+          }
+        },
+        "required" : [ "available", "owner", "problems", "refusals", "tags" ],
+        "type" : "object"
+      },
       "MoveOrgUnitRequest" : {
         "properties" : {
           "parentId" : {
@@ -8615,6 +8783,81 @@
         },
         "type" : "object"
       },
+      "ResolutionNumberPart" : {
+        "properties" : {
+          "digits" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "kind" : {
+            "enum" : [ "TEXT", "COMMITTEE_CODE", "YEAR", "FINANCIAL_YEAR", "MEETING_NUMBER", "SEQUENCE" ],
+            "type" : "string"
+          },
+          "style" : {
+            "enum" : [ "LONG", "SHORT" ],
+            "type" : [ "string", "null" ]
+          },
+          "text" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "kind" ],
+        "type" : "object"
+      },
+      "ResolutionNumbering" : {
+        "properties" : {
+          "fyStartMonth" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "parts" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ResolutionNumberPart"
+            },
+            "type" : "array"
+          },
+          "reset" : {
+            "enum" : [ "NEVER", "YEARLY", "FINANCIAL_YEAR" ],
+            "type" : "string"
+          }
+        },
+        "required" : [ "fyStartMonth", "parts", "reset" ],
+        "type" : "object"
+      },
+      "ResolutionNumberingPreview" : {
+        "properties" : {
+          "problems" : {
+            "items" : {
+              "$ref" : "#/components/schemas/FieldProblem"
+            },
+            "type" : "array"
+          },
+          "samples" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "problems", "samples" ],
+        "type" : "object"
+      },
+      "ResolutionNumberingPreviewRequest" : {
+        "properties" : {
+          "committeeCode" : {
+            "type" : [ "string", "null" ]
+          },
+          "meetingNumber" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "numbering" : {
+            "$ref" : "#/components/schemas/ResolutionNumbering"
+          }
+        },
+        "required" : [ "numbering" ],
+        "type" : "object"
+      },
       "Retention" : {
         "properties" : {
           "from" : {
@@ -10110,7 +10353,7 @@
       "TemplateProblemView" : {
         "properties" : {
           "code" : {
-            "enum" : [ "MALFORMED_TAG", "UNSUPPORTED_TAG", "UNKNOWN_TAG", "UNBALANCED_SECTION", "LOOP_WITHOUT_ROW", "UNKNOWN_ROW_FIELD", "TAG_IN_LOOP_ROW", "TOO_MANY_TAGS" ],
+            "enum" : [ "MALFORMED_TAG", "UNSUPPORTED_TAG", "UNKNOWN_TAG", "UNBALANCED_SECTION", "LOOP_WITHOUT_ROW", "UNKNOWN_ROW_FIELD", "TAG_IN_LOOP_ROW", "TOO_MANY_TAGS", "BLOCK_PLACEMENT" ],
             "type" : "string"
           },
           "excerpt" : {
@@ -10939,6 +11182,35 @@
         "tags" : [ "forum" ]
       }
     },
+    "/api/v1/admin/forum-types/resolution-numbering/preview" : {
+      "post" : {
+        "operationId" : "previewResolutionNumbering",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ResolutionNumberingPreviewRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ResolutionNumberingPreview"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A resolution number's live example, or what is wrong with it",
+        "tags" : [ "forum" ]
+      }
+    },
     "/api/v1/admin/forum-types/{typeId}" : {
       "get" : {
         "operationId" : "getForumType",
@@ -11206,6 +11478,76 @@
           }
         },
         "summary" : "Publish a version in review (not your own submission)",
+        "tags" : [ "forum" ]
+      }
+    },
+    "/api/v1/admin/forum-types/{typeId}/versions/{number}/minutes-template" : {
+      "get" : {
+        "operationId" : "getForumTypeMinutesTemplate",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "typeId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "number",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MinutesTemplateView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A version's minutes template, checked, and the tags it may use",
+        "tags" : [ "forum" ]
+      }
+    },
+    "/api/v1/admin/forum-types/{typeId}/versions/{number}/minutes-template/preview" : {
+      "post" : {
+        "operationId" : "previewForumTypeMinutesTemplate",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "typeId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "number",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MinutesTemplatePreviewView"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Fill a draft's minutes template with a sample meeting",
         "tags" : [ "forum" ]
       }
     },

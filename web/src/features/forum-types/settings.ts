@@ -3,6 +3,7 @@ import type {
   ForumTypeSettingsRequest,
   ForumTypeVersionResponse,
   MeetingPolicy,
+  MinutesPolicy,
   Outcome,
   QuorumRule,
   QuorumSampleMember,
@@ -65,6 +66,8 @@ export interface TypeSettings {
   agenda: AgendaPolicy
   /** Invitations, replies and the quorum override (Phase 4 E05); kept as loaded until the Meetings tab edits it (E05 T8). */
   meetings: MeetingPolicy
+  /** Minutes approval, memos moving on, resolution numbers, the template (Phase 4 E06); as loaded until E06 T10. */
+  minutes: MinutesPolicy
 }
 
 /** The submission policy as the editor holds it: every part present, the server's defaults filled in. */
@@ -126,6 +129,7 @@ export function settingsOf(v: ForumTypeVersionResponse): TypeSettings {
     submissionPolicy: papersOf(v.submissionPolicy),
     agenda: v.agenda,
     meetings: v.meetings,
+    minutes: v.minutes,
   }
 }
 
@@ -175,6 +179,7 @@ export function settingsRequest(s: TypeSettings): ForumTypeSettingsRequest {
     },
     agenda: s.agenda,
     meetings: s.meetings,
+    minutes: s.minutes,
   }
 }
 

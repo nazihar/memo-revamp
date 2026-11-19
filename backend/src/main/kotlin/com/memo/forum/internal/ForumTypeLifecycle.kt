@@ -4,7 +4,9 @@ import com.memo.audit.AuditLog
 import com.memo.common.concurrency.ConcurrentModificationException
 import com.memo.common.review.ReviewRules
 import com.memo.common.review.ReviewState
+import com.memo.common.web.FieldProblem
 import com.memo.common.web.refuseIf
+import com.memo.files.Files
 import com.memo.forum.ForumTypePublished
 import com.memo.jooq.tables.references.FORUM_TYPE_VERSION
 import org.springframework.context.ApplicationEventPublisher
@@ -23,6 +25,7 @@ class ForumTypeLifecycle(
     private val checks: ForumTypeChecks,
     private val audit: AuditLog,
     private val events: ApplicationEventPublisher,
+    private val files: Files,
 ) {
     fun list(typeId: UUID): List<ForumTypeVersionRow> {
         type(typeId)
@@ -53,7 +56,7 @@ class ForumTypeLifecycle(
     ): ForumTypeVersionRow {
         val version = get(typeId, number)
         ReviewRules.requireState(version.state, ReviewState.DRAFT, "changed")
-        checks.require(settings)
+        requireNoProblems(checks.problems(settings) + templateProblems(version, settings))
         if (!versions.replace(
                 version.id,
                 revision,
@@ -142,6 +145,27 @@ class ForumTypeLifecycle(
         ReviewRules.requireOtherReviewer(version.submittedBy, actor())
         ReviewRules.remarkProblem(remark, required)?.let { throw ForumRejectedException(listOf(it)) }
         return version
+    }
+
+    /**
+     * A minutes template other than the draft's own must be one uploaded for a version of the same type (design E06 §1.8):
+     * a draft copied from the published version keeps its template; another type's file, or any other file, is refused.
+     */
+    private fun templateProblems(
+        draft: ForumTypeVersionRow,
+        settings: ForumTypeSettings,
+    ): List<FieldProblem> {
+        val id = settings.minutes.templateFileId?.takeIf { it != draft.settings.minutes.templateFileId } ?: return emptyList()
+        val owner =
+            files
+                .info(id)
+                ?.takeIf { it.purpose == MinutesTemplatePurpose.KEY }
+                ?.ownerId
+                ?.let { runCatching { UUID.fromString(it) }.getOrNull() }
+                ?.let(versions::byId)
+        return listOfNotNull(
+            FieldProblem("minutes/templateFileId", "unknown", "No such minutes template.").takeIf { owner?.typeId != draft.typeId },
+        )
     }
 
     private fun type(typeId: UUID): ForumType = store.find(typeId) ?: throw ForumNotFoundException("forum type")

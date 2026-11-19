@@ -136,6 +136,12 @@ registerUpdateTask(
 )
 registerUpdateTask("updateJooq", "*JooqCodegenTest", "jooq.update", "backend/src/main/jooq from the migrated schema")
 registerUpdateTask(
+    "updateMinutesTemplates",
+    "*MinutesDefaultTemplateTest",
+    "minutes.templates.update",
+    "the built-in minutes templates (backend/src/main/resources/forum)",
+)
+registerUpdateTask(
     "updateBreachedPasswords",
     "*BreachedPasswordFilterTest",
     "breached.update",

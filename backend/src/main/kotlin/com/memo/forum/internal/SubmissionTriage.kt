@@ -119,10 +119,23 @@ class SubmissionTriage(
         reason: String?,
     ): SubmissionRow {
         val row = support.triageable(forumId, id, emptySet())
-        val text = support.requiredReason(reason)
+        return referred(row, version, toForumId, support.requiredReason(reason))
+    }
+
+    /**
+     * Closes [row] as REFERRED with [text] and opens a submission with the same waiting step at [toForumId], QUEUED, not on
+     * any agenda. The caller has checked who may refer: a triage, or a meeting's decision
+     * through [com.memo.forum.ForumDecisions].
+     */
+    fun referred(
+        row: SubmissionRow,
+        version: Long,
+        toForumId: UUID,
+        text: String,
+    ): SubmissionRow {
         val target = forums.find(toForumId)?.takeIf { it.status == ForumStatus.ACTIVE }
         requireNoProblems(listOfNotNull(FieldProblem("forumId", "unknown", "No such active committee.").takeIf { target == null }))
-        refuseIf(toForumId == forumId, "SAME_FORUM") { "Choose another committee." }
+        refuseIf(toForumId == row.forumId, "SAME_FORUM") { "Choose another committee." }
         support.move(row, SubmissionStatus.REFERRED, version, SubmissionStore.triaged(actor(), store.now(), text))
         val referred =
             checkNotNull(store.find(store.insert(row.copy(forumId = toForumId, previousId = row.id, status = SubmissionStatus.QUEUED))))

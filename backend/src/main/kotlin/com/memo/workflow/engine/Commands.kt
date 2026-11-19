@@ -39,13 +39,15 @@ data class Migrate(
 
 /**
  * The forum decided on an item waiting at its step [stepId] (ADR-0058): issued by the forum module only, with the forum
- * officer who recorded it as [actor].
+ * officer who recorded it as [actor]. Its [details] never replace the action's own `step`, `forum` and `outcome`.
  */
 data class ForumDecided(
     override val actor: UUID,
     val stepId: UUID,
     val outcome: ForumOutcome,
     val remark: String? = null,
+    /** Added to the FORUM_DECIDED action's details beside its own keys (a resolution number, the decision; ADR-0065). */
+    val details: Map<String, Any?> = emptyMap(),
 ) : Command
 
 /** The forum will not consider the item waiting at [stepId]; it goes back to its initiator with [remark] (ADR-0058). */

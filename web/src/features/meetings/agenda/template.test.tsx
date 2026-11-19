@@ -111,6 +111,17 @@ describe('the committee type’s Agenda tab (Phase 4 E03 T7, flow R)', () => {
       submissionPolicy: { deadlineWorkingDays: 5, lateMode: 'CHAIR_APPROVAL', triageWorkingDays: 5 },
       agenda: template,
       meetings: { invitationTitle: 'NAME', replyDeadlineWorkingDays: 2, replyReminder: true, meetingReminder: true },
+      minutes: {
+        approval: 'AT_NEXT_MEETING',
+        circulationWorkingDays: 5,
+        draftWorkingDays: 10,
+        memoResumes: 'AT_MEETING_END',
+        resolutionNumbering: {
+          parts: [{ kind: 'COMMITTEE_CODE' }, { kind: 'SEQUENCE', digits: 3 }],
+          reset: 'NEVER',
+          fyStartMonth: 7,
+        },
+      },
       createdAt: '2026-11-18T08:00:00Z',
     }
     const bodies: { agenda?: AgendaPolicy }[] = []

@@ -1,0 +1,11 @@
+# Phase 4 E06 T2: the committee type's minutes policy (design E06 §1.8, §3; flow AI). Rules: rules.yaml. The policy itself
+# travels with the type version (p4-e01-forums.yaml); these are the Minutes tab's own endpoints: the template's check and
+# preview (forum.types.manage, with forum.types.approve for the check) and the resolution number's live example. Random
+# type ids are 404 for everyone allowed through; template uploads use the files endpoints (e05-files.yaml).
+epic: P4-E06
+endpoints:
+  - { endpoint: "GET /api/v1/admin/forum-types/{typeId}/versions/{number}/minutes-template", rule: tenantAdmin }
+  - { endpoint: "POST /api/v1/admin/forum-types/{typeId}/versions/{number}/minutes-template/preview", rule: tenantAdmin }
+  - endpoint: POST /api/v1/admin/forum-types/resolution-numbering/preview
+    rule: tenantAdmin
+    body: { numbering: {}, committeeCode: "BRC", meetingNumber: 3 }

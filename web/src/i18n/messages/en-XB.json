@@ -17231,6 +17231,34 @@
       "value": "‬"
     }
   ],
+  "forumTypes.changes.circulationDays": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Moɹʞıuƃ pɐʎs ʇo ɔoɯɯǝuʇ ou ɔıɹɔnʅɐʇǝp ɯıunʇǝs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.changes.draftDays": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝɯıupǝɹ ʍɥǝu ʇɥǝ ɯıunʇǝs ɐɹǝ uoʇ ɔıɹɔnʅɐʇǝp (ʍoɹʞıuƃ pɐʎs ɐɟʇǝɹ ɐ ɯǝǝʇıuƃ)"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "forumTypes.changes.empty": [
     {
       "type": 0,
@@ -17349,6 +17377,146 @@
     {
       "type": 0,
       "value": "ᴚǝɯıupǝɹ ʇɥǝ ʍoɹʞıuƃ pɐʎ qǝɟoɹǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.changes.memoResumes": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɥǝu ɐ ɯǝɯo ɯoʌǝs ou ɐɟʇǝɹ ʇɥǝ pǝɔısıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.changes.memoResumes.atEnd": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɥǝu ʇɥǝ ɯǝǝʇıuƃ ıs ɯɐɹʞǝp ɐs ɥǝʅp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.changes.memoResumes.onApproval": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Mɥǝu ʇɥǝ ɯıunʇǝs ɐɹǝ ɐddɹoʌǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.changes.minutesApproval": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Hoʍ ɯıunʇǝs ɐɹǝ ɐddɹoʌǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.changes.minutesApproval.atNextMeeting": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ʇ ʇɥǝ uǝxʇ ɯǝǝʇıuƃ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.changes.minutesApproval.byCirculation": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԑʎ ɔıɹɔnʅɐʇıou, ʇɥǝu uoʇǝp ɐʇ ʇɥǝ uǝxʇ ɯǝǝʇıuƃ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.changes.minutesTemplate": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wıunʇǝs ʇǝɯdʅɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.changes.minutesTemplate.builtIn": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ qnıʅʇ-ıu ʇǝɯdʅɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.changes.minutesTemplate.new": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ uǝʍʅʎ ndʅoɐpǝp ʇǝɯdʅɐʇǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.changes.minutesTemplate.uploaded": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀u ndʅoɐpǝp ʇǝɯdʅɐʇǝ"
     },
     {
       "type": 0,
@@ -17541,6 +17709,88 @@
     {
       "type": 0,
       "value": "ᴚǝɯıupǝɹ ʇo ɹǝdʅʎ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.changes.resolutionNumbering": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚǝsoʅnʇıou unɯqǝɹs"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.changes.resolutionNumbering.financialYear": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "sʇɐɹʇıuƃ ɐƃɐıu ǝʌǝɹʎ ɟıuɐuɔıɐʅ ʎǝɐɹ ɟɹoɯ "
+    },
+    {
+      "type": 1,
+      "value": "month"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.changes.resolutionNumbering.never": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "uǝʌǝɹ sʇɐɹʇıuƃ ɐƃɐıu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.changes.resolutionNumbering.value": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "example"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "reset"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "forumTypes.changes.resolutionNumbering.yearly": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "sʇɐɹʇıuƃ ɐƃɐıu ǝʌǝɹʎ ɔɐʅǝupɐɹ ʎǝɐɹ"
     },
     {
       "type": 0,

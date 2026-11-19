@@ -8,6 +8,7 @@ import com.memo.forum.AgendaPolicy
 import com.memo.forum.ForumRetention
 import com.memo.forum.MeetingPolicy
 import com.memo.forum.MemberAttribute
+import com.memo.forum.MinutesPolicy
 import com.memo.forum.Outcome
 import com.memo.forum.QuorumRule
 import com.memo.forum.SubmissionPolicy
@@ -39,6 +40,8 @@ data class ForumTypeSettings(
     val agenda: AgendaPolicy = AgendaPolicy(),
     /** Invitations, replies and quorum override (Phase 4 E05, design E05 §1.8). */
     val meetings: MeetingPolicy = MeetingPolicy(),
+    /** Minutes approval, when memos move on, resolution numbers and the minutes template (Phase 4 E06, design E06 §1.8). */
+    val minutes: MinutesPolicy = MinutesPolicy(),
 )
 
 /** A forum type's identity. */

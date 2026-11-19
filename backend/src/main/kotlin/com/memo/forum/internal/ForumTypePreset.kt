@@ -5,6 +5,8 @@ import com.memo.forum.ForumRetention
 import com.memo.forum.ForumRole
 import com.memo.forum.MANAGEMENT_AGENDA
 import com.memo.forum.MemberAttribute
+import com.memo.forum.MinutesApproval
+import com.memo.forum.MinutesPolicy
 import com.memo.forum.Outcome
 import com.memo.forum.OutcomeKind
 import com.memo.forum.QuorumComposition
@@ -16,7 +18,9 @@ import com.memo.forum.ThresholdKind
 
 /**
  * Starting points offered when a forum type is created (ADR-0056, research §3.3): editable examples drawn from published
- * bank charters, never applied silently. Labels are English, like tenant content (Phase 3 Q3).
+ * bank charters, never applied silently. Labels are English, like tenant content (Phase 3 Q3). Boards and board committees
+ * approve their minutes at the next meeting, management committees by circulation (ADR-0066, recommendation 2 of
+ * E06's UX review); memos move on when the meeting is held, and resolutions are numbered `BRC/2026/014` (ADR-0065).
  */
 enum class ForumTypePreset(
     val displayName: String,
@@ -94,6 +98,8 @@ enum class ForumTypePreset(
                 ),
             termPolicy = TermPolicy(),
             agenda = AgendaPolicy(sections = MANAGEMENT_AGENDA),
+            // Management committees meet often and need their minutes quickly: by circulation (owner, 2026-11-19).
+            minutes = MinutesPolicy(approval = MinutesApproval.BY_CIRCULATION),
         ),
     ),
 }

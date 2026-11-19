@@ -14,6 +14,7 @@ import com.memo.forum.ForumRetention
 import com.memo.forum.ForumRole
 import com.memo.forum.MeetingPolicy
 import com.memo.forum.MemberAttribute
+import com.memo.forum.MinutesPolicy
 import com.memo.forum.Outcome
 import com.memo.forum.Quorum
 import com.memo.forum.QuorumPresence
@@ -60,6 +61,8 @@ data class ForumTypeSettingsRequest(
     val agenda: AgendaPolicy = AgendaPolicy(),
     /** Invitations, replies and the quorum override (Phase 4 E05); left out: the defaults. */
     val meetings: MeetingPolicy = MeetingPolicy(),
+    /** Minutes approval, when memos move on, resolution numbers and the template (Phase 4 E06); left out: the defaults. */
+    val minutes: MinutesPolicy = MinutesPolicy(),
 )
 
 data class CreateForumTypeRequest(
@@ -85,6 +88,7 @@ data class ForumTypeVersionResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val submissionPolicy: SubmissionPolicy,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val agenda: AgendaPolicy,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val meetings: MeetingPolicy,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val minutes: MinutesPolicy,
     val createdBy: PersonRef?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val createdAt: Instant,
     val submittedBy: PersonRef?,
@@ -207,6 +211,7 @@ class ForumTypesController(
 @Tag(name = "forum")
 class ForumTypeVersionsController(
     private val lifecycle: ForumTypeLifecycle,
+    private val minutesTemplates: MinutesTemplateService,
     private val responses: ForumTypeResponses,
     private val stepUp: StepUpCheck,
     private val transactions: TenantTransactions,
@@ -267,6 +272,8 @@ class ForumTypeVersionsController(
         @RequestHeader("If-Match", required = false) ifMatch: String?,
     ): ResponseEntity<ForumTypeVersionResponse> {
         val revision = ifMatchVersion(ifMatch)
+        // The minutes template is read and checked outside the transaction (design E06 §1.8); the If-Match keeps it current.
+        minutesTemplates.requireUsable(typeId, number(number), revision)
         val submitted = write { responses.version(lifecycle.submit(typeId, number(number), revision)) }
         return ResponseEntity.ok().eTag(etagOf(submitted.revision)).body(submitted)
     }
@@ -364,6 +371,7 @@ class ForumTypeResponses(
                 submissionPolicy = s.submissionPolicy,
                 agenda = s.agenda,
                 meetings = s.meetings,
+                minutes = s.minutes,
                 createdBy = named(v.createdBy),
                 createdAt = v.createdAt,
                 submittedBy = named(v.submittedBy),
@@ -393,6 +401,7 @@ internal fun ForumTypeSettingsRequest.settings() =
         submissionPolicy = submissionPolicy,
         agenda = agenda.trimmed(),
         meetings = meetings.copy(neutralTitle = meetings.neutralTitle.trim()),
+        minutes = minutes,
     )
 
 internal fun ForumTypeSettings.request() =
@@ -408,6 +417,7 @@ internal fun ForumTypeSettings.request() =
         submissionPolicy,
         agenda,
         meetings,
+        minutes,
     )
 
 private fun number(path: String): Int = path.toIntOrNull() ?: throw ForumNotFoundException("forum type version")

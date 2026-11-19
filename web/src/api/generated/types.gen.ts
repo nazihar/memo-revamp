@@ -121,7 +121,7 @@ export type AgendaItemRequest = {
 export type AgendaItemResponse = {
     attendees: Array<PersonResponse>;
     classificationId: string;
-    declarations: Array<DeclarationLineResponse>;
+    declarations?: Array<DeclarationLineResponse>;
     description?: string | null;
     id: string;
     kind: 'SUBMISSION' | 'STANDING' | 'ITEM' | 'BREAK';
@@ -1049,6 +1049,7 @@ export type ForumTypeSettingsRequest = {
     agenda?: AgendaPolicy;
     defaultClassificationId?: string | null;
     description?: string | null;
+    meetings?: MeetingPolicy;
     memberAttributes?: Array<MemberAttribute>;
     name?: string;
     outcomes?: Array<Outcome>;
@@ -1064,6 +1065,7 @@ export type ForumTypeVersionResponse = {
     createdBy?: PersonRef | null;
     defaultClassificationId?: string | null;
     description?: string | null;
+    meetings: MeetingPolicy;
     memberAttributes: Array<MemberAttribute>;
     name: string;
     number: number;
@@ -1679,6 +1681,15 @@ export type MeetingPageResponse = {
     nextCursor?: string | null;
 };
 
+export type MeetingPolicy = {
+    invitationTitle?: 'NAME' | 'NEUTRAL';
+    meetingReminder?: boolean;
+    neutralTitle?: string;
+    quorumOverride?: 'NEVER' | 'WITH_REASON';
+    replyDeadlineWorkingDays?: number;
+    replyReminder?: boolean;
+};
+
 export type MeetingRequest = {
     classificationId?: string | null;
     endsAt?: string;
@@ -1780,7 +1791,7 @@ export type MemberEditRequest = {
 export type MemberItemResponse = {
     access: 'FULL' | 'TITLE' | 'HIDDEN';
     changes: Array<'ADDED' | 'REMOVED' | 'MOVED' | 'RETITLED' | 'TIME_CHANGED' | 'PAPER_ADDED' | 'PAPER_REPLACED' | 'PAPER_REMOVED' | 'LATE' | 'TABLED'>;
-    declarations: Array<DeclarationLineResponse>;
+    declarations?: Array<DeclarationLineResponse>;
     description?: string | null;
     discussion?: DiscussionResponse | null;
     id: string;

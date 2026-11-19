@@ -119,6 +119,7 @@ class ForumTypes(
                 "termPolicy" to settings.termPolicy.toString(),
                 "submissionPolicy" to settings.submissionPolicy.toString(),
                 "agenda" to agendaSummary(settings.agenda),
+                "meetings" to settings.meetings.toString(),
             )
     }
 }

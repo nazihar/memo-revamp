@@ -83,7 +83,7 @@ data class AgendaItemResponse(
     /** The viewer's own open declaration of interest on the item (design E04 §3). */
     val myDeclaration: DeclarationResponse? = null,
     /** The others' open declarations on the item: names and states, never the nature. */
-    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val declarations: List<DeclarationLineResponse> = emptyList(),
+    val declarations: List<DeclarationLineResponse> = emptyList(),
 )
 
 data class AgendaSectionResponse(

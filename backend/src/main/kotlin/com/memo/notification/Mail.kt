@@ -14,6 +14,7 @@ import tools.jackson.databind.json.JsonMapper
 import java.time.Clock
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
+import java.util.UUID
 
 /**
  * Transactional email templates (ADR-0030). Subject and body per language live in `notification/messages*.properties`;
@@ -93,15 +94,20 @@ class Mail(
     @param:Qualifier("mailSendTask") private val sendTask: OneTimeTask<MailSend>,
     private val scheduler: ObjectProvider<SchedulerClient>,
 ) {
-    /** [locale] is the recipient's BCP 47 tag; null uses the tenant's default language. */
+    /**
+     * [locale] is the recipient's BCP 47 tag; null uses the tenant's default language. A [calendar] part is sent as iMIP
+     * (ADR-0063), encrypted at rest like the parameters. Returns the outbox id, by which [MailStatuses] reports delivery.
+     */
     fun enqueue(
         template: MailTemplate,
         to: String,
         params: Map<String, String>,
         locale: String? = null,
-    ) {
+        calendar: CalendarPart? = null,
+    ): UUID {
         val id = ids.next()
         val tenant = tenantDsl.tenant()
+        val calendarEnc = calendar?.let { keys.encrypt(it.ics, calendarAad(tenant.toString(), id.toString())) }
         tenantDsl
             .current()
             .insertInto(NOTIFICATION_MAIL_OUTBOX)
@@ -111,10 +117,13 @@ class Mail(
             .set(NOTIFICATION_MAIL_OUTBOX.TO_ADDRESS, to)
             .set(NOTIFICATION_MAIL_OUTBOX.LOCALE, locale)
             .set(NOTIFICATION_MAIL_OUTBOX.PARAMS_ENC, keys.encrypt(json.writeValueAsBytes(params), aad(tenant.toString(), id.toString())))
+            .set(NOTIFICATION_MAIL_OUTBOX.CALENDAR_ENC, calendarEnc)
+            .set(NOTIFICATION_MAIL_OUTBOX.CALENDAR_METHOD, calendar?.method?.name)
             .set(NOTIFICATION_MAIL_OUTBOX.STATUS, "PENDING")
             .set(NOTIFICATION_MAIL_OUTBOX.CREATED_AT, OffsetDateTime.now(clock).withOffsetSameInstant(ZoneOffset.UTC))
             .execute()
         scheduler.ifAvailable?.scheduleIfNotExists(sendTask.schedulableInstance(id.toString(), MailSend(tenant.value, id)))
+        return id
     }
 
     companion object {
@@ -122,5 +131,11 @@ class Mail(
             tenant: String,
             id: String,
         ) = "notification.mail:$tenant:$id"
+
+        /** The calendar part's own binding, so it can never be swapped with the row's parameters. */
+        internal fun calendarAad(
+            tenant: String,
+            id: String,
+        ) = "notification.mail.calendar:$tenant:$id"
     }
 }

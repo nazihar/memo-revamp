@@ -247,6 +247,19 @@ class ArchitectureRulesTest {
     }
 
     @Test
+    fun `iCalendar files are written behind the invitation writer only`() {
+        // ADR-0063: one place builds invitation files, with its input hygiene, its own VTIMEZONE and its validation.
+        noClasses()
+            .that()
+            .resideOutsideOfPackage("com.memo.meeting.internal.ical..")
+            .should()
+            .dependOnClassesThat()
+            .resideInAPackage("net.fortuna.ical4j..")
+            .because("ical4j is used only behind InviteWriter (ADR-0063)")
+            .check(classes)
+    }
+
+    @Test
     fun `who reads a memo is decided by MemoReadable, and participant rows are written by their stores only`() {
         // ADR-0050: one read rule for every get, list and search; a query of its own would miss shares, expiry or units.
         // ADR-0059 adds the committee readers' store.

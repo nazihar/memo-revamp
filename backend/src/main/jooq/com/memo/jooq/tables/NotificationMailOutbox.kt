@@ -153,6 +153,16 @@ open class NotificationMailOutbox(
      */
     val FAILED_AT: TableField<NotificationMailOutboxRecord, OffsetDateTime?> = createField(DSL.name("failed_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
 
+    /**
+     * The column <code>memo.notification_mail_outbox.calendar_enc</code>.
+     */
+    val CALENDAR_ENC: TableField<NotificationMailOutboxRecord, ByteArray?> = createField(DSL.name("calendar_enc"), SQLDataType.BLOB, this, "")
+
+    /**
+     * The column <code>memo.notification_mail_outbox.calendar_method</code>.
+     */
+    val CALENDAR_METHOD: TableField<NotificationMailOutboxRecord, String?> = createField(DSL.name("calendar_method"), SQLDataType.CLOB, this, "")
+
     private constructor(alias: Name, aliased: Table<NotificationMailOutboxRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<NotificationMailOutboxRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<NotificationMailOutboxRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -179,6 +189,9 @@ open class NotificationMailOutbox(
     override fun getUniqueKeys(): List<UniqueKey<NotificationMailOutboxRecord>> = listOf(NOTIFICATION_MAIL_OUTBOX_TENANT_ID_ID_KEY)
     override fun getChecks(): List<Check<NotificationMailOutboxRecord>> = listOf(
         Internal.createCheck(this, DSL.name("notification_mail_outbox_attempts_check"), "((attempts >= 0))", true),
+        Internal.createCheck(this, DSL.name("notification_mail_outbox_calendar_ck"), "(((calendar_enc IS NULL) OR (calendar_method IS NOT NULL)))", true),
+        Internal.createCheck(this, DSL.name("notification_mail_outbox_calendar_enc_check"), "((octet_length(calendar_enc) <= 262144))", true),
+        Internal.createCheck(this, DSL.name("notification_mail_outbox_calendar_method_check"), "((calendar_method = ANY (ARRAY['REQUEST'::text, 'CANCEL'::text])))", true),
         Internal.createCheck(this, DSL.name("notification_mail_outbox_error_class_check"), "((length(error_class) <= 100))", true),
         Internal.createCheck(this, DSL.name("notification_mail_outbox_locale_check"), "((length(locale) <= 35))", true),
         Internal.createCheck(this, DSL.name("notification_mail_outbox_relay_check"), "((relay = ANY (ARRAY['TENANT'::text, 'PLATFORM'::text])))", true),

@@ -202,9 +202,9 @@ jobs:
         run: ci/onprem-stack.sh down
 
   fuzz:
-    name: Jazzer fuzzing (upload path, workflow definitions, import sheets, time-boxed)
+    name: Jazzer fuzzing (upload path, workflow definitions, import sheets, meeting invitations, time-boxed)
     runs-on: ubuntu-24.04
-    timeout-minutes: 75
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
@@ -230,6 +230,8 @@ jobs:
           for target in xlsx csv paths; do
             ./gradlew :backend:test --tests "com.memo.imports.internal.sheet.ImportSheetFuzzTest.${target}" --console=plain
           done
+          # Meeting invitation files: titles, places, joining details and names (ADR-0063, test plan E05, threat T3).
+          ./gradlew :backend:test --tests "com.memo.meeting.internal.ical.InviteWriterFuzz.write" --console=plain
       - if: failure()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
@@ -238,6 +240,7 @@ jobs:
             backend/src/test/resources/com/memo/files/internal/UploadPathFuzzTestInputs/**
             backend/src/test/resources/com/memo/workflow/definition/DefinitionFuzzTestInputs/**
             backend/src/test/resources/com/memo/imports/internal/sheet/ImportSheetFuzzTestInputs/**
+            backend/src/test/resources/com/memo/meeting/internal/ical/InviteWriterFuzzInputs/**
             backend/.cifuzz-corpus/**
           retention-days: 14
 

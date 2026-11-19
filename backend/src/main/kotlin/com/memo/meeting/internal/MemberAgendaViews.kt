@@ -70,7 +70,7 @@ data class MemberItemResponse(
     /** The viewer's own open declaration of interest on the item, with its nature (design E04 §3). */
     val myDeclaration: DeclarationResponse? = null,
     /** The others' open declarations on an item the viewer sees in full: names and states, never the nature. */
-    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val declarations: List<DeclarationLineResponse> = emptyList(),
+    val declarations: List<DeclarationLineResponse> = emptyList(),
 )
 
 data class MemberSectionResponse(

@@ -1,0 +1,38 @@
+BEGIN:VCALENDAR
+PRODID:-//memo//meetings//EN
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:REQUEST
+BEGIN:VTIMEZONE
+TZID:Asia/Dhaka
+BEGIN:STANDARD
+DTSTART:19700101T000000
+TZOFFSETFROM:+0600
+TZOFFSETTO:+0600
+TZNAME:+06
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:6f1d2c4e-8a3b-4c7d-9e1f-2a3b4c5d6e7f
+SEQUENCE:0
+DTSTAMP:20261118T040000Z
+DTSTART;TZID=Asia/Dhaka:20261212T100000
+DTEND;TZID=Asia/Dhaka:20261212T130000
+SUMMARY:لجنة المخاطر المنبثقة عن مجلس الإدار
+ ة — الاجتماع الدوري الرابع
+LOCATION:قاعة مجلس الإدارة، الطابق الثاني عش
+ ر، المكتب الرئيسي
+ORGANIZER;CN=Board Risk Committee:mailto:meetings@bank.example
+ATTENDEE;CN="مدير تجريبي";ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACT
+ ION;RSVP=FALSE:mailto:director@demo.example
+DESCRIPTION:يُرجى إبلاغنا بما إذا كنت ستحضر: اف
+ تح الاجتماع في memo واختر "نعم، حضورياً" أو 
+ "نعم، عبر الإنترنت" أو "لا، أعتذر عن الحضو
+ ر".\nلا تصل أزرار القبول والرفض في التقويم
+  إلى أمين سر اللجنة.\n\nالاجتماع: https://dev.memo.
+ example/meetings/01936b2e-4c1a-7d3e-9f20-6a1b2c3d4e5f\nالانضمام ع
+ بر الإنترنت: https://meet.example/j/777
+URL:https://dev.memo.example/meetings/01936b2e-4c1a-7d3e-9f20-6a1b2c3d4e5f
+STATUS:CONFIRMED
+END:VEVENT
+END:VCALENDAR

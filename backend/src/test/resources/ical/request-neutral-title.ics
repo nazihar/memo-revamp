@@ -1,0 +1,35 @@
+BEGIN:VCALENDAR
+PRODID:-//memo//meetings//EN
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:REQUEST
+BEGIN:VTIMEZONE
+TZID:Asia/Dhaka
+BEGIN:STANDARD
+DTSTART:19700101T000000
+TZOFFSETFROM:+0600
+TZOFFSETTO:+0600
+TZNAME:+06
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:6f1d2c4e-8a3b-4c7d-9e1f-2a3b4c5d6e7f
+SEQUENCE:0
+DTSTAMP:20261118T040000Z
+DTSTART;TZID=Asia/Dhaka:20261212T100000
+DTEND;TZID=Asia/Dhaka:20261212T130000
+SUMMARY:Committee meeting
+LOCATION:Board Room\, Level 12\, Head Office
+ORGANIZER;CN=Board Risk Committee:mailto:meetings@bank.example
+ATTENDEE;CN=Demo Director;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=F
+ ALSE:mailto:director@demo.example
+DESCRIPTION:Please tell us whether you will attend: open the meeting in mem
+ o and choose "Yes\, in person" or "No\, I send my apologies".\nYour calend
+ ar's Accept and Decline buttons do not reach the committee secretary.\n\nM
+ eeting: https://dev.memo.example/meetings/01936b2e-4c1a-7d3e-9f20-6a1b2c3d
+ 4e5f
+URL:https://dev.memo.example/meetings/01936b2e-4c1a-7d3e-9f20-6a1b2c3d4e5f
+STATUS:CONFIRMED
+CLASS:PRIVATE
+END:VEVENT
+END:VCALENDAR

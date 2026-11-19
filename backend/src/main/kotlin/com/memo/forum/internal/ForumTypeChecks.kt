@@ -5,6 +5,7 @@ import com.memo.common.web.FieldProblem
 import com.memo.forum.AgendaLimits
 import com.memo.forum.AgendaPolicy
 import com.memo.forum.AgendaTemplateItem
+import com.memo.forum.InvitationTitle
 import com.memo.forum.OutcomeKind
 import com.memo.forum.QuorumBasis
 import com.memo.forum.QuorumRule
@@ -40,7 +41,24 @@ class ForumTypeChecks(
             FieldProblem("retention.from", "unknown", "MEETING.").takeIf { settings.retention?.let { it.from != "MEETING" } == true },
         ) + attributeProblems(settings) + QuorumChecks.problems(settings.quorum, settings.memberAttributes.map { it.key }.toSet()) +
             outcomeProblems(settings) + termProblems(settings) + submissionProblems(settings) +
-            AgendaChecks.problems(settings.agenda) + agendaSize(settings)
+            AgendaChecks.problems(settings.agenda) + agendaSize(settings) + meetingProblems(settings)
+    }
+
+    /** The meeting policy (design E05 §1.8): a neutral title when invitations use one, and the reply deadline's range. */
+    private fun meetingProblems(settings: ForumTypeSettings): List<FieldProblem> {
+        val policy = settings.meetings
+        val title = policy.neutralTitle
+        return listOfNotNull(
+            FieldProblem("meetings.neutralTitle", "NEUTRAL_TITLE_REQUIRED", "Give the neutral title invitations use.").takeIf {
+                policy.invitationTitle == InvitationTitle.NEUTRAL && title.isBlank()
+            },
+            FieldProblem("meetings.neutralTitle", "LENGTH", "At most $MAX_NEUTRAL_TITLE characters.").takeIf {
+                title.length > MAX_NEUTRAL_TITLE
+            },
+            FieldProblem("meetings.replyDeadlineWorkingDays", "RANGE", "0 to $MAX_REPLY_DAYS working days.").takeIf {
+                policy.replyDeadlineWorkingDays !in 0..MAX_REPLY_DAYS
+            },
+        )
     }
 
     private fun attributeProblems(settings: ForumTypeSettings): List<FieldProblem> {
@@ -134,6 +152,8 @@ class ForumTypeChecks(
         const val MAX_REMINDER_DAYS = 365
         const val MAX_SUBMISSION_DAYS = 30
         const val MAX_AGENDA_BYTES = 60_000
+        const val MAX_NEUTRAL_TITLE = 100
+        const val MAX_REPLY_DAYS = 10
         val ATTRIBUTE_KEY = Regex("^[a-z][a-zA-Z0-9]{0,29}$")
         val CODE = Regex("^[A-Z0-9][A-Z0-9-]{0,9}$")
     }

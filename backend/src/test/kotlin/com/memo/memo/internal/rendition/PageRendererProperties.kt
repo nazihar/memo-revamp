@@ -27,6 +27,13 @@ class PageRendererProperties {
         rendersAndComesBack("0ﬂD")
     }
 
+    /** A line break in the header (a memo subject) is drawn as a space; the font has no glyph for U+000A (CI, 2026-11-18). */
+    @Suppress("ktlint:standard:function-naming")
+    @Example
+    fun `a line break in the header renders`() {
+        rendersAndComesBack("Annual\nbudget review")
+    }
+
     private fun rendersAndComesBack(text: String) {
         val out = ByteArrayOutputStream()
         val result = renderer.render(PageDocument(text.take(80), "Final record v1", listOf(Block.Paragraph(text))), out)

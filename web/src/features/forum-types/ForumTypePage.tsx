@@ -34,6 +34,8 @@ import { useToast } from '@/components/ui/toast-context'
 import { PERMISSION, holds, useMyAccess } from '@/features/access/access'
 import { useWithStepUp } from '@/features/auth/step-up-context'
 import { useTerms } from '@/features/terms/terms'
+import { TemplateTab } from '@/features/meetings/agenda/TemplateTab'
+import { tm } from '@/features/meetings/agenda/template-messages'
 import { stateLabels } from '@/features/workflows/workflow-messages'
 import { changesBetween } from './changes'
 import { ChangesTab } from './ChangesTab'
@@ -365,6 +367,7 @@ function VersionEditor({
           <TabsTrigger value="quorum">{intl.formatMessage(ft.tabQuorum)}</TabsTrigger>
           <TabsTrigger value="outcomes">{intl.formatMessage(ft.tabOutcomes)}</TabsTrigger>
           <TabsTrigger value="terms">{intl.formatMessage(ft.tabTerms)}</TabsTrigger>
+          <TabsTrigger value="agenda">{intl.formatMessage(tm.tab)}</TabsTrigger>
           <TabsTrigger value="changes">{intl.formatMessage(ftv.tabChanges, { count: changes.length })}</TabsTrigger>
         </TabsList>
         <TabsContent value="policy" className="pt-4">
@@ -400,6 +403,18 @@ function VersionEditor({
         </TabsContent>
         <TabsContent value="terms" className="pt-4">
           <TermsTab settings={settings} onChange={change} errors={problems} />
+        </TabsContent>
+        <TabsContent value="agenda" className="pt-4">
+          <TemplateTab
+            agenda={settings.agenda}
+            onChange={
+              change
+                ? (agenda) => {
+                    change({ agenda })
+                  }
+                : undefined
+            }
+          />
         </TabsContent>
         <TabsContent value="changes" className="pt-4">
           <ChangesTab changes={changes} first={!published} />

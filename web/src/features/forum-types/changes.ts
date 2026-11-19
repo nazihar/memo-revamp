@@ -1,7 +1,7 @@
 import type { IntlShape } from 'react-intl'
 import type { TermValues } from '@/features/terms/terms'
 import { meaningLabels } from './labels'
-import { ft, ftv } from './messages'
+import { ft, ftt, ftv } from './messages'
 import { quorumSentence } from './quorum-words'
 import { OUTCOME_KINDS, same, type TypeSettings } from './settings'
 
@@ -112,6 +112,37 @@ export function changesBetween(
     text(papers(after).triageWorkingDays),
   )
   agendaChanges(intl, before, after, yesNo, changes)
+
+  // The meeting policy (Phase 4 E05, design E05 §1.8).
+  const title = (s: TypeSettings) =>
+    s.meetings.invitationTitle === 'NEUTRAL'
+      ? intl.formatMessage(ftv.invitationNeutral, { title: s.meetings.neutralTitle ?? '' })
+      : intl.formatMessage(ftt.invitationName, terms)
+  scalar('invitationTitle', intl.formatMessage(ft.whatInvitationTitle), title(before), title(after))
+  scalar(
+    'replyDeadline',
+    intl.formatMessage(ft.whatReplyDeadline),
+    text(before.meetings.replyDeadlineWorkingDays),
+    text(after.meetings.replyDeadlineWorkingDays),
+  )
+  const flag = (value: boolean | undefined) => yesNo(value ?? true)
+  scalar(
+    'replyReminder',
+    intl.formatMessage(ft.whatReplyReminder),
+    flag(before.meetings.replyReminder),
+    flag(after.meetings.replyReminder),
+  )
+  scalar(
+    'meetingReminder',
+    intl.formatMessage(ft.whatMeetingReminder),
+    flag(before.meetings.meetingReminder),
+    flag(after.meetings.meetingReminder),
+  )
+  const override = (s: TypeSettings) =>
+    intl.formatMessage(
+      s.meetings.quorumOverride === 'WITH_REASON' ? ft.quorumOverrideWithReason : ft.quorumOverrideNever,
+    )
+  scalar('quorumOverride', intl.formatMessage(ft.whatQuorumOverride), override(before), override(after))
   return changes
 }
 

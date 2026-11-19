@@ -87,8 +87,9 @@ class PdfBoxPageRenderer : PageRenderer {
             val layout = PageLayout(fonts, CONTENT_WIDTH, CONTENT_TOP, CONTENT_BOTTOM)
             document.blocks.forEach(layout::place)
             val pages = layout.pages()
-            val header = fonts.clean(document.header)
-            val footer = fonts.clean(document.footer)
+            // The header and footer are one line each: a line break in a memo's subject would reach the font as U+000A.
+            val header = fonts.clean(document.header).replace('\n', ' ')
+            val footer = fonts.clean(document.footer).replace('\n', ' ')
             pages.forEachIndexed { index, draws ->
                 val page = PDPage(PDRectangle.A4)
                 pdf.addPage(page)

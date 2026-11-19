@@ -73,11 +73,16 @@ CHAIR_REVIEW → DRAFT (returned with comments); CIRCULATED → DRAFT (a decisio
 - Good: the recused copy is made by rule from the same document; the leak suite covers every copy; the record is validated and locked.
 - Good: no engine change; the path is the practice CGI and SS-1 describe.
 - Bad: a tenant cannot add review steps to the approval path; named people can be asked for comments instead. If a customer needs a configurable chain, the engine can be added in front of chair review later.
-- Bad: the content control is a dependency on ONLYOFFICE keeping tags; the structure check and "Restore item n" contain it, and option B2 is the fallback.
+- Bad: the content control is a dependency on ONLYOFFICE keeping tags (it does in 10.0.0.1, T1); a later ONLYOFFICE version is re-checked with the round trip before it is taken; the structure check and "Restore item n" contain a loss, and option B2 is the fallback.
 - Bad: one rendering per distinct redaction set: a meeting with many conflicts makes several PDFs (capped at 50).
 
 ### Confirmation
-- T1 spike results recorded here (ONLYOFFICE 10.0.0.1 round-trip of locked tagged controls; Word round-trip; undo removing a control caught; poi-tl block loops; review mode).
+- **T1 spike (2026-11-19): option B1 holds; the fallback B2 is not needed.** Details in the E06 log.
+  - ONLYOFFICE 10.0.0.1, driven in the browser (`web/e2e/spike/minutes-controls.spec.ts`): nine block-level controls (`w:tag memo-item:<id>`, `w:alias`, `w:id`, `w:lock sdtLocked`) come back from the force save, the closing save and a save after reopening with every tag, title, id and lock. Typing inside a control and outside all controls works. Deleting a selection that spans a locked control, and select-all with Delete, delete nothing, in edit and in review mode. Backspace at a control's start edits the previous control's text but neither merges nor removes a control. Undo never removed a control (the controls are in the file when it opens; the forum report concerns controls a plugin adds in the session). The structure check and "Restore item n" stay as the safety net.
+  - Review mode (`permissions.edit = false`, `review = true`) saves the chair's typing as `w:ins` and deletions as `w:del`, with the author's name and an extra `oouserid` attribute; the controls are kept.
+  - Microsoft Word (golden file `templating/minutes-saved-by-word.docx`): it shows the nine controls as locked rich-text controls, refuses `ContentControl.Delete` ("This content control is locked and cannot be deleted") and a range delete around one, and keeps tags and locks through save and reopen.
+  - Replacing item 5's control and converting with ONLYOFFICE to PDF and to PDF/A leaves no word of item 5's discussion in either text layer (`MinutesControlsRoundTripIT`).
+  - poi-tl 1.12.2 repeats a block per element with nested sections and table-row loops; the controls are written by a streaming pass (XMLBeans moves were quadratic). A block with controls needs its start and end tags each in a body paragraph; T2's scanner reports it.
 - `MinutesRedactionIT` and the recusal leak suite: canary strings in a recused item's notes, discussion and papers never appear in any copy, PDF text layer, notification or export for a recused reader; the full record contains them.
 - State-machine tests for every allowed and forbidden minutes transition; matrix `p4-e06-minutes.yaml`; veraPDF validation of every generated record in CI; fixity job covers `minutes.record`.
 

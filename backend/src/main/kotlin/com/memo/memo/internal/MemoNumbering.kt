@@ -1,9 +1,12 @@
 package com.memo.memo.internal
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.memo.common.numbering.FormatPart
+import com.memo.common.numbering.NumberFormat
 import com.memo.common.web.FieldProblem
 import io.swagger.v3.oas.annotations.media.Schema
 import java.time.LocalDate
+import com.memo.common.numbering.NumberFormats as SharedFormats
 
 /** The parts a memo number is made of (ADR-0044). */
 enum class NumberPartKind {
@@ -26,11 +29,11 @@ enum class NumberPartKind {
     SEQUENCE,
 }
 
-/** How a financial year is written: `2026-27` (LONG) or `FY27` (SHORT). */
-enum class FinancialYearStyle { LONG, SHORT }
+/** How a financial year is written: `2026-27` (LONG) or `FY27` (SHORT). Shared with resolution numbers (E06). */
+typealias FinancialYearStyle = com.memo.common.numbering.FinancialYearStyle
 
-/** When the sequence starts again at 1 (ADR-0044). */
-enum class NumberReset { NEVER, YEARLY, FINANCIAL_YEAR }
+/** When the sequence starts again at 1 (ADR-0044). Shared with resolution numbers (E06). */
+typealias NumberReset = com.memo.common.numbering.NumberReset
 
 /** One sequence for the whole series, or one per origin unit. */
 enum class NumberCountPer { SERIES, UNIT }
@@ -80,51 +83,48 @@ data class Numbering(
     }
 }
 
-/** Periods, rendering and the checks of a [Numbering] (ADR-0044). Pure. */
+/**
+ * Periods, rendering and the checks of a [Numbering] (ADR-0044). Pure. The format code is shared
+ * ([com.memo.common.numbering.NumberFormats], E06 T1); this object keeps memo's types and names and only maps them.
+ */
 object NumberFormats {
-    const val MAX_LENGTH = 100
-    const val MAX_PARTS = 12
-    const val MAX_TEXT = 20
+    const val MAX_LENGTH = SharedFormats.MAX_LENGTH
+    const val MAX_PARTS = SharedFormats.MAX_PARTS
+    const val MAX_TEXT = SharedFormats.MAX_TEXT
     private const val TYPE_CODE_MAX = 10
     private const val UNIT_CODE_MAX = 30
-    private const val LONG_FY = 7
-    private const val SHORT_FY = 4
-    private const val CENTURY = 100
-    private const val MAX_SEQUENCE_DIGITS = 9
-    private const val MONTHS = 12
-    private const val LONG_YEAR = 4
-    private val YEAR_DIGITS = setOf(2, LONG_YEAR)
+    private const val TYPE = "type"
+    private const val UNIT = "unit"
     val SERIES = Regex("^[a-z][a-z0-9-]{0,49}$")
-    private val TEXT = Regex("^[A-Za-z0-9 /._()-]{1,20}$")
+
+    /** The shared format of [numbering]: the type's code is written out, the unit's code varies. */
+    fun format(numbering: Numbering): NumberFormat =
+        NumberFormat(
+            numbering.parts.map { part ->
+                when (part.kind) {
+                    NumberPartKind.TEXT -> FormatPart.Text(part.text)
+                    NumberPartKind.TYPE_CODE -> FormatPart.Code(TYPE, varies = false, maxLength = TYPE_CODE_MAX)
+                    NumberPartKind.UNIT_CODE -> FormatPart.Code(UNIT, varies = true, maxLength = UNIT_CODE_MAX)
+                    NumberPartKind.YEAR -> FormatPart.Year(part.digits)
+                    NumberPartKind.FINANCIAL_YEAR -> FormatPart.FinancialYear(part.style)
+                    NumberPartKind.SEQUENCE -> FormatPart.Sequence(part.digits)
+                }
+            },
+            numbering.reset,
+            numbering.fyStartMonth,
+        )
 
     /** The financial year [date] falls in, by its start and end calendar years (equal when it starts in January). */
     fun financialYear(
         numbering: Numbering,
         date: LocalDate,
-    ): Pair<Int, Int> {
-        val start = if (date.monthValue >= numbering.fyStartMonth) date.year else date.year - 1
-        return start to if (numbering.fyStartMonth == 1) start else start + 1
-    }
+    ): Pair<Int, Int> = SharedFormats.financialYear(numbering.fyStartMonth, date)
 
     /** The counter period of [date]: `ALL`, the year (`2026`) or the financial year (`FY2026-27`). */
     fun period(
         numbering: Numbering,
         date: LocalDate,
-    ): String =
-        when (numbering.reset) {
-            NumberReset.NEVER -> {
-                "ALL"
-            }
-
-            NumberReset.YEARLY -> {
-                date.year.toString()
-            }
-
-            NumberReset.FINANCIAL_YEAR -> {
-                val (start, end) = financialYear(numbering, date)
-                "FY$start-${two(end)}"
-            }
-        }
+    ): String = SharedFormats.period(format(numbering), date)
 
     /** The number of [sequence] for a memo of type [typeCode] from unit [unitCode] numbered on [date]. */
     fun render(
@@ -134,37 +134,8 @@ object NumberFormats {
         date: LocalDate,
         sequence: Long,
     ): String =
-        numbering.parts.joinToString("") { part ->
-            when (part.kind) {
-                NumberPartKind.TEXT -> {
-                    part.text.orEmpty()
-                }
-
-                NumberPartKind.TYPE_CODE -> {
-                    typeCode
-                }
-
-                NumberPartKind.UNIT_CODE -> {
-                    checkNotNull(unitCode) { "the number needs the memo's unit" }
-                }
-
-                NumberPartKind.YEAR -> {
-                    if (part.digits == 2) two(date.year) else date.year.toString()
-                }
-
-                NumberPartKind.FINANCIAL_YEAR -> {
-                    val (start, end) = financialYear(numbering, date)
-                    when {
-                        part.style == FinancialYearStyle.SHORT -> "FY${two(end)}"
-                        start == end -> start.toString()
-                        else -> "$start-${two(end)}"
-                    }
-                }
-
-                NumberPartKind.SEQUENCE -> {
-                    sequence.toString().padStart(part.digits ?: 1, '0')
-                }
-            }
+        SharedFormats.render(format(numbering), date, sequence) { code ->
+            if (code == TYPE) typeCode else checkNotNull(unitCode) { "the number needs the memo's unit" }
         }
 
     /**
@@ -174,83 +145,18 @@ object NumberFormats {
     fun skeleton(
         numbering: Numbering,
         typeCode: String,
-    ): String =
-        numbering.parts.joinToString("") { part ->
-            when (part.kind) {
-                NumberPartKind.TEXT -> part.text.orEmpty()
-                NumberPartKind.TYPE_CODE -> typeCode
-                NumberPartKind.UNIT_CODE -> "{unit}"
-                NumberPartKind.YEAR -> "{year${part.digits}}"
-                NumberPartKind.FINANCIAL_YEAR -> "{fy-${part.style}}"
-                NumberPartKind.SEQUENCE -> "{sequence}"
-            }
-        }
+    ): String = SharedFormats.skeleton(format(numbering)) { typeCode }
 
     /** What is wrong with [numbering], each problem at `numbering/...`. */
     fun problems(numbering: Numbering): List<FieldProblem> {
-        val kinds = numbering.parts.map { it.kind }
-        return listOfNotNull(
+        val series =
             FieldProblem("numbering/series", "FORMAT", "Lower-case letters, digits and hyphens, starting with a letter.").takeUnless {
                 SERIES.matches(numbering.series)
-            },
-            FieldProblem("numbering/parts", "COUNT", "1 to $MAX_PARTS parts.").takeIf { numbering.parts.size !in 1..MAX_PARTS },
-            FieldProblem("numbering/parts", "SEQUENCE", "Exactly one sequence part.").takeIf {
-                kinds.count { it == NumberPartKind.SEQUENCE } !=
-                    1
-            },
-            FieldProblem("numbering/reset", "YEAR_MISSING", "A number that restarts every year needs the year in it.").takeIf {
-                numbering.reset == NumberReset.YEARLY && NumberPartKind.YEAR !in kinds
-            },
-            FieldProblem(
-                "numbering/reset",
-                "FINANCIAL_YEAR_MISSING",
-                "A number that restarts every financial year needs it in it.",
-            ).takeIf {
-                numbering.reset == NumberReset.FINANCIAL_YEAR && NumberPartKind.FINANCIAL_YEAR !in kinds
-            },
-            FieldProblem("numbering/countPer", "UNIT_MISSING", "Counting per unit needs the unit code in the number.").takeIf {
-                numbering.countPer == NumberCountPer.UNIT && NumberPartKind.UNIT_CODE !in kinds
-            },
-            FieldProblem("numbering/fyStartMonth", "RANGE", "A month from 1 to 12.").takeIf { numbering.fyStartMonth !in 1..MONTHS },
-            FieldProblem("numbering/parts", "TOO_LONG", "A number can be at most $MAX_LENGTH characters.").takeIf {
-                longest(numbering) > MAX_LENGTH
-            },
-        ) + numbering.parts.flatMapIndexed { i, part -> part("numbering/parts/$i", part) }
-    }
-
-    private fun part(
-        at: String,
-        part: NumberPart,
-    ): List<FieldProblem> =
-        listOfNotNull(
-            FieldProblem("$at/text", "FORMAT", "1 to $MAX_TEXT letters, digits, spaces or / . _ ( ) -").takeIf {
-                part.kind == NumberPartKind.TEXT && !TEXT.matches(part.text.orEmpty())
-            },
-            FieldProblem(
-                "$at/digits",
-                "RANGE",
-                "2 or 4 digits.",
-            ).takeIf { part.kind == NumberPartKind.YEAR && part.digits !in YEAR_DIGITS },
-            FieldProblem("$at/digits", "RANGE", "1 to $MAX_SEQUENCE_DIGITS digits.").takeIf {
-                part.kind == NumberPartKind.SEQUENCE && (part.digits ?: 0) !in 1..MAX_SEQUENCE_DIGITS
-            },
-            FieldProblem("$at/style", "REQUIRED", "Choose how the financial year is written.").takeIf {
-                part.kind == NumberPartKind.FINANCIAL_YEAR && part.style == null
-            },
-        )
-
-    /** The longest number [numbering] can make with the longest codes and a sequence at its padding. */
-    private fun longest(numbering: Numbering): Int =
-        numbering.parts.sumOf { part ->
-            when (part.kind) {
-                NumberPartKind.TEXT -> part.text.orEmpty().length
-                NumberPartKind.TYPE_CODE -> TYPE_CODE_MAX
-                NumberPartKind.UNIT_CODE -> UNIT_CODE_MAX
-                NumberPartKind.YEAR -> part.digits ?: LONG_YEAR
-                NumberPartKind.FINANCIAL_YEAR -> if (part.style == FinancialYearStyle.SHORT) SHORT_FY else LONG_FY
-                NumberPartKind.SEQUENCE -> part.digits ?: 1
             }
-        }
-
-    private fun two(year: Int) = (year % CENTURY).toString().padStart(2, '0')
+        val unit =
+            FieldProblem("numbering/countPer", "UNIT_MISSING", "Counting per unit needs the unit code in the number.").takeIf {
+                numbering.countPer == NumberCountPer.UNIT && numbering.parts.none { it.kind == NumberPartKind.UNIT_CODE }
+            }
+        return listOfNotNull(series) + SharedFormats.problems(format(numbering), "numbering", listOfNotNull(unit))
+    }
 }

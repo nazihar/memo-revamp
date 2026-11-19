@@ -58,6 +58,10 @@ class ForumDirectory(
 ) {
     fun forum(id: UUID): ForumRef? = store.find(id)?.ref()
 
+    /** The forums of [ids] that exist, in one query (a list of meetings across committees; a tenant has tens of forums). */
+    fun forums(ids: Collection<UUID>): Map<UUID, ForumRef> =
+        if (ids.isEmpty()) emptyMap() else store.all().filter { it.id in ids }.associate { it.id to it.ref() }
+
     fun forumByKey(key: String): ForumRef? = store.findByKey(key)?.ref()
 
     /** The members in office on [date] (today in the tenant's zone by default). */

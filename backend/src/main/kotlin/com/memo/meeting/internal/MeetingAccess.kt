@@ -1,5 +1,6 @@
 package com.memo.meeting.internal
 
+import com.memo.common.authz.ClassificationLevelRef
 import com.memo.common.authz.Clearances
 import com.memo.common.authz.ForbiddenException
 import com.memo.common.authz.Permission
@@ -11,6 +12,8 @@ import com.memo.forum.ForumRef
 import com.memo.forum.ForumRole
 import com.memo.meeting.MeetingStatus
 import org.springframework.stereotype.Component
+import org.springframework.transaction.support.TransactionSynchronization
+import org.springframework.transaction.support.TransactionSynchronizationManager
 import java.util.UUID
 
 /** How the actor relates to a meeting (design E03 §4); null: the meeting is invisible to them (404). */
@@ -43,8 +46,12 @@ class MeetingAccess(
 
     fun readsAll(): Boolean = managesAll() || policy.allows(Permission.FORUM_READ)
 
-    /** The actor's role in [forumId] today. */
-    fun role(forumId: UUID): ForumRole? = actorOrNull()?.let { directory.rolesOf(it)[forumId] }
+    /**
+     * The actor's role in [forumId] today. Their roles are read once per transaction (design E03 §8): a list asks for
+     * every row's forum.
+     */
+    fun role(forumId: UUID): ForumRole? =
+        actorOrNull()?.let { user -> TransactionMemo.get("roles" to user) { directory.rolesOf(user) }[forumId] }
 
     /** A secretary of the forum in office, or `forums.manage`: may create and run its meetings. */
     fun manages(forumId: UUID): Boolean = managesAll() || role(forumId) == ForumRole.SECRETARY
@@ -54,22 +61,35 @@ class MeetingAccess(
 
     /** Whether the actor's clearance reaches [meeting]'s classification. */
     fun cleared(meeting: MeetingRow): Boolean =
-        policy.clearanceRank() >= (clearances.level(meeting.classificationId)?.rank ?: Int.MAX_VALUE)
+        policy.clearanceRank() >= (levels().firstOrNull { it.id == meeting.classificationId }?.rank ?: Int.MAX_VALUE)
+
+    /** The tenant's classification levels, read once per transaction (every row of a list asks). */
+    fun levels(): List<ClassificationLevelRef> = TransactionMemo.get("levels") { clearances.levels() }
 
     /** How the actor relates to [meeting]; null when they may not see it. */
-    fun relation(meeting: MeetingRow): MeetingRelation? {
-        val user = actorOrNull()
-        if (user == null || !cleared(meeting)) return null
-        val sources = audience.rowsOf(meeting.id, user).map { it.source }.toSet()
-        return when {
-            officer(meeting.forumId) -> MeetingRelation.OFFICER
-            meeting.status == MeetingStatus.DRAFT -> null
-            AudienceSource.MEMBER in sources -> MeetingRelation.MEMBER
-            AudienceSource.GUEST in sources -> MeetingRelation.GUEST
-            AudienceSource.ATTENDEE in sources -> MeetingRelation.ATTENDEE
-            readsAll() -> MeetingRelation.READER
-            else -> null
-        }
+    fun relation(meeting: MeetingRow): MeetingRelation? = relations(listOf(meeting))[meeting.id]
+
+    /**
+     * How the actor relates to each of [meetings] (absent: they may not see it), with their audience rows read in one
+     * query (design E03 §8: the lists).
+     */
+    fun relations(meetings: Collection<MeetingRow>): Map<UUID, MeetingRelation> {
+        val user = actorOrNull() ?: return emptyMap()
+        val visible = meetings.filter { cleared(it) }
+        val rows = audience.rowsOf(visible.map { it.id }, user)
+        return visible
+            .mapNotNull { meeting ->
+                val sources = rows[meeting.id].orEmpty().map { it.source }.toSet()
+                when {
+                    officer(meeting.forumId) -> MeetingRelation.OFFICER
+                    meeting.status == MeetingStatus.DRAFT -> null
+                    AudienceSource.MEMBER in sources -> MeetingRelation.MEMBER
+                    AudienceSource.GUEST in sources -> MeetingRelation.GUEST
+                    AudienceSource.ATTENDEE in sources -> MeetingRelation.ATTENDEE
+                    readsAll() -> MeetingRelation.READER
+                    else -> null
+                }?.let { meeting.id to it }
+            }.toMap()
     }
 
     /** The chair of the forum in office today, or the vice-chair when there is no chair (design E03 §4). */
@@ -140,4 +160,34 @@ class MeetingGuard(
         forum: ForumRef,
         typeVersion: Int,
     ): UUID = forum.classificationId ?: policies.version(forum.typeId, typeVersion)?.defaultClassificationId ?: clearances.lowest().id
+}
+
+/**
+ * Values computed once per transaction and forgotten when it completes (outside a transaction, computed every time): the
+ * facts about the actor that every row of a list asks for again (design E03 §8).
+ */
+internal object TransactionMemo {
+    private val key = Any()
+
+    fun <T : Any> get(
+        name: Any,
+        compute: () -> T,
+    ): T {
+        if (!TransactionSynchronizationManager.isSynchronizationActive()) return compute()
+        @Suppress("UNCHECKED_CAST")
+        val values =
+            TransactionSynchronizationManager.getResource(key) as? MutableMap<Any, Any>
+                ?: mutableMapOf<Any, Any>().also { values ->
+                    TransactionSynchronizationManager.bindResource(key, values)
+                    TransactionSynchronizationManager.registerSynchronization(
+                        object : TransactionSynchronization {
+                            override fun afterCompletion(status: Int) {
+                                TransactionSynchronizationManager.unbindResourceIfPossible(key)
+                            }
+                        },
+                    )
+                }
+        @Suppress("UNCHECKED_CAST")
+        return values.getOrPut(name, compute) as T
+    }
 }

@@ -103,6 +103,12 @@ enum class NotificationKind(
     // `committee`, `date`, `organisation`, `link`; never the item's title (ADR-0030).
     MEETING_DISCUSSION_REQUESTED(NotificationCategory.WORKFLOW, MailTemplate.MEETING_DISCUSSION_REQUESTED),
 
+    // The hourly meeting sweep (design E03 §9), to the secretaries (the holders of `forums.manage` when there are none),
+    // once per meeting date: the papers were due and the agenda is not published; the meeting ended a day ago and is not
+    // marked as held. Parameters `committee`, `date`, `organisation`, `link`.
+    MEETING_AGENDA_DUE(NotificationCategory.WORKFLOW, MailTemplate.MEETING_AGENDA_DUE),
+    MEETING_NOT_HELD(NotificationCategory.WORKFLOW, MailTemplate.MEETING_NOT_HELD),
+
     // Declarations of interest (Phase 4 E04, ADR-0062, design E04 §2): one recorded or withdrawn for the declarant by
     // someone else (RECORDED); one made or withdrawn, to the officers not recused from the item (MADE); a ruling asked of
     // the chair or vice-chair (RULING_NEEDED); the ruling, to the declarant (RULED); the reminder before the meeting

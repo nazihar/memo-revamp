@@ -82,6 +82,19 @@ class MeetingNotifier(
     ) = notify(user, kind, meeting, forum)
 
     /**
+     * A reminder of the hourly sweep (design E03 §9: the agenda is due, or the meeting is not marked as held), to the
+     * forum's secretaries in office, or to [fallback] (the holders of `forums.manage`) when it has none.
+     */
+    fun reminder(
+        kind: NotificationKind,
+        meeting: MeetingRow,
+        forum: ForumRef,
+        fallback: () -> Set<UUID>,
+    ) {
+        secretaries(forum.id).ifEmpty(fallback).forEach { notify(it, kind, meeting, forum) }
+    }
+
+    /**
      * A declaration of interest, to one person (design E04 §2): the in-app text names the item's [number] and the [change];
      * the email names neither (its template uses the committee, the date and the link only). Never the nature.
      */

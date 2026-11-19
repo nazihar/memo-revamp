@@ -14,6 +14,7 @@ import com.memo.meeting.MeetingChange
 import com.memo.meeting.MeetingChanged
 import com.memo.meeting.MeetingKind
 import com.memo.meeting.MeetingStatus
+import com.memo.meeting.internal.invite.MeetingInvitations
 import com.memo.org.OrgDirectory
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Service
@@ -54,6 +55,7 @@ class MeetingLifecycle(
     private val audit: AuditLog,
     private val placements: SubmissionPlacements,
     private val events: ApplicationEventPublisher,
+    private val invitations: MeetingInvitations,
 ) {
     fun create(
         forumId: UUID,
@@ -123,7 +125,7 @@ class MeetingLifecycle(
                 joinDetails = place.joinDetails,
                 classificationId = level,
             )
-        return save("meeting.updated", before, after, version)
+        return save("meeting.updated", before, after, version).also { invitations.changed(before, it) }
     }
 
     fun schedule(
@@ -133,7 +135,7 @@ class MeetingLifecycle(
         val before = guard.requireManaged(id)
         val status = MeetingAction.SCHEDULE.next(before.status)
         refuseIf(forum(before).status == ForumStatus.DISSOLVED, "FORUM_DISSOLVED") { "This committee is dissolved." }
-        return save("meeting.scheduled", before, before.copy(status = status), version)
+        return save("meeting.scheduled", before, before.copy(status = status), version).also(invitations::scheduled)
     }
 
     /** New times (and zone); a scheduled meeting needs a reason, its audience follows the new date. */
@@ -156,6 +158,7 @@ class MeetingLifecycle(
         val saved = save("meeting.rescheduled", before, after, version, mapOf("reason" to text))
         audience.recompute(saved)
         placing.redate(saved)
+        invitations.changed(before, saved)
         return saved
     }
 
@@ -192,7 +195,11 @@ class MeetingLifecycle(
         placements.lockOn(before.id)
         val saved = save("meeting.cancelled", before, before.copy(status = status, statusReason = text), version)
         placing.released(saved)
-        if (before.status == MeetingStatus.SCHEDULED) notifier.cancelled(saved, forum(saved))
+        if (before.status == MeetingStatus.SCHEDULED) {
+            // Those who hold the event are told by the reconciler, with the CANCEL file (design E05 §1.1).
+            val invited = invitations.cancelled(saved)
+            notifier.cancelled(saved, forum(saved), invited)
+        }
         return saved
     }
 

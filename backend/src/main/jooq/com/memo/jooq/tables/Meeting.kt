@@ -7,16 +7,19 @@ package com.memo.jooq.tables
 import com.memo.jooq.Memo
 import com.memo.jooq.indexes.MEETING_FORUM_IDX
 import com.memo.jooq.indexes.MEETING_STATUS_IDX
+import com.memo.jooq.indexes.MEETING_STATUS_START_IDX
 import com.memo.jooq.keys.MEETING_AGENDA__MEETING_AGENDA_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_AGENDA__MEETING_AGENDA_TENANT_ID_SOURCE_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_AUDIENCE__MEETING_AUDIENCE_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_GUEST__MEETING_GUEST_TENANT_ID_MEETING_ID_FKEY
+import com.memo.jooq.keys.MEETING_INVITATION__MEETING_INVITATION_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_PKEY
 import com.memo.jooq.keys.MEETING_TENANT_ID_FORUM_ID_NUMBER_YEAR_NUMBER_KEY
 import com.memo.jooq.keys.MEETING_TENANT_ID_ID_KEY
 import com.memo.jooq.tables.MeetingAgenda.MeetingAgendaPath
 import com.memo.jooq.tables.MeetingAudience.MeetingAudiencePath
 import com.memo.jooq.tables.MeetingGuest.MeetingGuestPath
+import com.memo.jooq.tables.MeetingInvitation.MeetingInvitationPath
 import com.memo.jooq.tables.records.MeetingRecord
 
 import java.time.OffsetDateTime
@@ -234,7 +237,7 @@ open class Meeting(
         override fun `as`(alias: Table<*>): MeetingPath = MeetingPath(alias.qualifiedName, this)
     }
     override fun getSchema(): Schema? = if (aliased()) null else Memo.MEMO
-    override fun getIndexes(): List<Index> = listOf(MEETING_FORUM_IDX, MEETING_STATUS_IDX)
+    override fun getIndexes(): List<Index> = listOf(MEETING_FORUM_IDX, MEETING_STATUS_IDX, MEETING_STATUS_START_IDX)
     override fun getPrimaryKey(): UniqueKey<MeetingRecord> = MEETING_PKEY
     override fun getUniqueKeys(): List<UniqueKey<MeetingRecord>> = listOf(MEETING_TENANT_ID_FORUM_ID_NUMBER_YEAR_NUMBER_KEY, MEETING_TENANT_ID_ID_KEY)
 
@@ -303,6 +306,22 @@ open class Meeting(
 
     val meetingGuest: MeetingGuestPath
         get(): MeetingGuestPath = meetingGuest()
+
+    private lateinit var _meetingInvitation: MeetingInvitationPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.meeting_invitation</code> table
+     */
+    fun meetingInvitation(): MeetingInvitationPath {
+        if (!this::_meetingInvitation.isInitialized)
+            _meetingInvitation = MeetingInvitationPath(this, null, MEETING_INVITATION__MEETING_INVITATION_TENANT_ID_MEETING_ID_FKEY.inverseKey)
+
+        return _meetingInvitation;
+    }
+
+    val meetingInvitation: MeetingInvitationPath
+        get(): MeetingInvitationPath = meetingInvitation()
     override fun getChecks(): List<Check<MeetingRecord>> = listOf(
         Internal.createCheck(this, DSL.name("meeting_check"), "((ends_at > starts_at))", true),
         Internal.createCheck(this, DSL.name("meeting_check1"), "((ends_at <= (starts_at + '7 days'::interval)))", true),

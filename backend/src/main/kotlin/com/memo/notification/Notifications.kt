@@ -102,6 +102,14 @@ enum class NotificationKind(
     // A member asked to lift a consent item for discussion (design E03 §1.5): to the secretaries and the chair. Parameters
     // `committee`, `date`, `organisation`, `link`; never the item's title (ADR-0030).
     MEETING_DISCUSSION_REQUESTED(NotificationCategory.WORKFLOW, MailTemplate.MEETING_DISCUSSION_REQUESTED),
+
+    // Meeting invitations (Phase 4 E05, ADR-0063): the invitation, an update (`changes`: what changed, in the recipient's
+    // words) and an uninvitation, each email with its iCalendar file; MEETING_CANCELLED carries the CANCEL file for those
+    // who were invited. Parameters `committee` (the committee's name, or the type's neutral title), `date`,
+    // `organisation`, `link`; never the agenda, an item, a paper or a reason (design E05 §1.2.1).
+    MEETING_INVITATION(NotificationCategory.CALENDAR, MailTemplate.MEETING_INVITATION),
+    MEETING_UPDATED(NotificationCategory.CALENDAR, MailTemplate.MEETING_UPDATED),
+    MEETING_UNINVITED(NotificationCategory.CALENDAR, MailTemplate.MEETING_UNINVITED),
 }
 
 /** Who receives a notification; the producer already holds the user, so `notification` never looks people up. */

@@ -18966,6 +18966,12 @@
       "value": "Consent item to discussSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "mail.template.meetingInvitation": [
+    {
+      "type": 0,
+      "value": "Meeting invitationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "mail.template.meetingItemWithdrawn": [
     {
       "type": 0,
@@ -18976,6 +18982,18 @@
     {
       "type": 0,
       "value": "Late paper for the chairSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.meetingUninvited": [
+    {
+      "type": 0,
+      "value": "Meeting invitation withdrawnSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.meetingUpdated": [
+    {
+      "type": 0,
+      "value": "Meeting updateSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "mail.template.memoApproved": [
@@ -27481,6 +27499,28 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "notifications.kind.meetingInvitation": [
+    {
+      "type": 0,
+      "value": "You are invited to the meeting of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ": tell us whether you will attendSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "notifications.kind.meetingItemWithdrawn": [
     {
       "type": 0,
@@ -27523,6 +27563,50 @@
     {
       "type": 0,
       "value": " needs your agreementSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.meetingUninvited": [
+    {
+      "type": 0,
+      "value": "You are no longer invited to the meeting of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.meetingUpdated": [
+    {
+      "type": 0,
+      "value": "The meeting of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " has changedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "notifications.kind.memoApproved": [

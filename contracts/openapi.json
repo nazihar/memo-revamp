@@ -4115,6 +4115,36 @@
         "required" : [ "password", "token" ],
         "type" : "object"
       },
+      "InvitationDeliveryResponse" : {
+        "properties" : {
+          "attempts" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "failedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "lastAttemptAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "sentAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "smtpCode" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "state" : {
+            "enum" : [ "PENDING", "SENT", "FAILED" ],
+            "type" : "string"
+          }
+        },
+        "required" : [ "attempts", "state" ],
+        "type" : "object"
+      },
       "InvitationLookup" : {
         "properties" : {
           "token" : {
@@ -4124,6 +4154,46 @@
           }
         },
         "required" : [ "token" ],
+        "type" : "object"
+      },
+      "InvitationsResponse" : {
+        "properties" : {
+          "canResend" : {
+            "type" : "boolean"
+          },
+          "cancelled" : {
+            "type" : "boolean"
+          },
+          "created" : {
+            "type" : "boolean"
+          },
+          "dueAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "meetingId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "pending" : {
+            "type" : "boolean"
+          },
+          "people" : {
+            "items" : {
+              "$ref" : "#/components/schemas/InviteeResponse"
+            },
+            "type" : "array"
+          },
+          "reconciledAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "sequence" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          }
+        },
+        "required" : [ "canResend", "cancelled", "created", "meetingId", "pending", "people" ],
         "type" : "object"
       },
       "InviteUserRequest" : {
@@ -4141,6 +4211,59 @@
           }
         },
         "required" : [ "displayName", "email", "tenantAdmin" ],
+        "type" : "object"
+      },
+      "InviteeResponse" : {
+        "properties" : {
+          "delivery" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/InvitationDeliveryResponse"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "emailOff" : {
+            "type" : "boolean"
+          },
+          "firstSentAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "guest" : {
+            "type" : "boolean"
+          },
+          "invitable" : {
+            "type" : "boolean"
+          },
+          "lastKind" : {
+            "enum" : [ "INVITATION", "UPDATE", "RESEND", "UNINVITE", "CANCEL" ],
+            "type" : [ "string", "null" ]
+          },
+          "lastSentAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "lastSequence" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "resendFrom" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "state" : {
+            "enum" : [ "NOT_INVITED", "INVITED", "UNINVITED", "CANCELLED" ],
+            "type" : "string"
+          },
+          "userId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "emailOff", "guest", "invitable", "name", "state", "userId" ],
         "type" : "object"
       },
       "ItemChangeResponse" : {
@@ -8268,6 +8391,18 @@
           },
           "timeZone" : {
             "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "ResendInvitationsRequest" : {
+        "properties" : {
+          "userIds" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : [ "array", "null" ]
           }
         },
         "type" : "object"
@@ -18549,6 +18684,35 @@
         "tags" : [ "meeting" ]
       }
     },
+    "/api/v1/meetings/{meetingId}/calendar.ics" : {
+      "get" : {
+        "operationId" : "getMeetingCalendarFile",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "text/calendar" : {
+                "schema" : {
+                  "format" : "byte",
+                  "type" : "string"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The meeting as a calendar file, for \"Add to my calendar\"",
+        "tags" : [ "meeting" ]
+      }
+    },
     "/api/v1/meetings/{meetingId}/cancel" : {
       "post" : {
         "operationId" : "cancelMeeting",
@@ -18700,6 +18864,78 @@
           }
         },
         "summary" : "Remove a guest from a meeting",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/invitations" : {
+      "get" : {
+        "operationId" : "getMeetingInvitations",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/InvitationsResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Who was invited to a meeting, with what and when (officers)",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/invitations/resend" : {
+      "post" : {
+        "operationId" : "resendMeetingInvitations",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ResendInvitationsRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/InvitationsResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Send the current invitation again (secretaries)",
         "tags" : [ "meeting" ]
       }
     },

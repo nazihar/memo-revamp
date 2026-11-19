@@ -1,0 +1,11 @@
+# Phase 4 E05 invitations (design E05 §3, §4; ADR-0063). Meeting ids are random here, so every subject allowed through is
+# answered 404 before the officer check. Who may do what on a real meeting (secretary, chair, forums.manage, member,
+# guest, forum.read, a user without a role) is InvitationsIT; another tenant is MeetingCrossTenantIT.
+epic: P4-E05
+endpoints:
+  - { endpoint: "GET /api/v1/meetings/{meetingId}/invitations", rule: signedIn }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/invitations/resend"
+    rule: signedIn
+    body: { userIds: [] }
+    headers: { Idempotency-Key: "{random}" }
+  - { endpoint: "GET /api/v1/meetings/{meetingId}/calendar.ics", rule: signedIn }

@@ -8,6 +8,7 @@ import type {
   MemberAgendaResponse,
   MemberItemResponse,
   MemberSectionResponse,
+  MyDeclarationsResponse,
   PublishedRevisionResponse,
 } from '@/api/generated/types.gen'
 import { partsForPath } from '@/i18n/catalogue-parts'
@@ -279,6 +280,16 @@ function handlers(
       calls.seen.push(await request.json())
       return new HttpResponse(null, { status: 204 })
     }),
+    // Declarations (E04 T6) are tested in declarations.test.tsx: here, nothing to review.
+    http.get(`${API}/meetings/m1/declarations/mine`, () =>
+      HttpResponse.json<MyDeclarationsResponse>({
+        meetingId: 'm1',
+        latestRevision: 2,
+        reviewedRevision: 2,
+        declarations: [],
+        toReview: [],
+      }),
+    ),
   ]
 }
 
@@ -300,7 +311,7 @@ describe('the meeting page (Phase 4 E03 T8, flow P)', () => {
     const { container } = renderRoute('/meetings/m1')
 
     const agendaRegion = await screen.findByRole('region', { name: 'Agenda' })
-    expect(partsForPath('/meetings/m1')).toEqual(['meetings', 'meetingPage'])
+    expect(partsForPath('/meetings/m1')).toEqual(['meetings', 'meetingPage', 'declarations'])
     // Times: the meeting's clock and the reader's own, with the city.
     expect(screen.getByText('Saturday, December 12, 2026')).toBeInTheDocument()
     expect(plain(screen.getByText(/Dhaka time/))).toBe('10:00 AM – 1:00 PM Dhaka time')
@@ -325,7 +336,12 @@ describe('the meeting page (Phase 4 E03 T8, flow P)', () => {
     expect(papers).toHaveTextContent('Being prepared: it can be read shortly.')
     // FULL, TITLE and HIDDEN lines (design §1.9).
     expect(itemNamed('6 Market risk limits — papers restricted')).not.toHaveTextContent('For decision ·')
-    expect(within(itemNamed('6 Market risk limits — papers restricted')).queryByRole('button')).toBeNull()
+    // A title-only line has no papers; the reader sees its title, so may declare an interest (E04 T6).
+    expect(
+      within(itemNamed('6 Market risk limits — papers restricted'))
+        .getAllByRole('button')
+        .map((b) => b.textContent),
+    ).toEqual(['Declare an interest'])
     expect(itemNamed('7 Restricted item')).toBeInTheDocument()
     expect(plain(itemNamed('Break'))).toContain('11:25 AM · 10 min')
     // "Opened" ticks.
@@ -737,7 +753,16 @@ describe('the meeting page (Phase 4 E03 T8, flow P)', () => {
     expect(
       itemNamed('6 Restricted item — Waiting for the chair’s decision, papers withheld until then'),
     ).toBeInTheDocument()
-    expect(within(itemNamed(/^5 /)).queryByRole('button')).toBeNull()
+    // Nothing of the item but its line, why, and "My declaration" (E04 T6).
+    expect(
+      within(itemNamed(/^5 /))
+        .getAllByRole('button')
+        .map((b) => b.textContent),
+    ).toEqual(['My declaration'])
+    expect(itemNamed(/^5 /)).toHaveTextContent(
+      'You will be asked to leave the room for this item. Its papers are not shown to you.',
+    )
+    expect(itemNamed(/^6 /)).toHaveTextContent('You asked the chair to decide whether you may take part.')
     await waitFor(() => {
       expect(calls.seen).toEqual([{ revision: 2 }])
     })

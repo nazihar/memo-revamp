@@ -14651,6 +14651,1471 @@
       "value": "]"
     }
   ],
+  "declarations.cancel": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈȧȧƞƈḗḗŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.close": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈŀǿǿşḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.declare.askChair": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ī ȧȧşķ ŧħḗḗ ƈħȧȧīř ŧǿǿ ḓḗḗƈīḓḗḗ ẇħḗḗŧħḗḗř Ī ḿȧȧẏ ŧȧȧķḗḗ ƥȧȧřŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.declare.askChairHint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŭƞŧīŀ ŧħḗḗ ƈħȧȧīř ḓḗḗƈīḓḗḗş, ŧħḗḗ ƥȧȧƥḗḗřş ȧȧřḗḗ ẇīŧħħḗḗŀḓ ƒřǿǿḿ ẏǿǿŭŭ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.declare.doneAsk": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħȧȧƞķ ẏǿǿŭŭ. Ŧħḗḗ ƈħȧȧīř ħȧȧş ƀḗḗḗḗƞ ȧȧşķḗḗḓ ŧǿǿ ḓḗḗƈīḓḗḗ. Ŭƞŧīŀ ŧħḗḗƞ, ẏǿǿŭŭ ẇīŀŀ ƞǿǿŧ şḗḗḗḗ ŧħīş īŧḗḗḿ’ş ƥȧȧƥḗḗřş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.declare.doneLeave": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħȧȧƞķ ẏǿǿŭŭ. Ŧħḗḗ şḗḗƈřḗḗŧȧȧřẏ ȧȧƞḓ ŧħḗḗ ƈħȧȧīř ħȧȧṽḗḗ ƀḗḗḗḗƞ ŧǿǿŀḓ. Ẏǿǿŭŭ ẇīŀŀ ƞǿǿŧ şḗḗḗḗ ŧħīş īŧḗḗḿ’ş ƥȧȧƥḗḗřş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.declare.explain": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧḗḗŀŀ ŧħḗḗ ƈǿǿḿḿīŧŧḗḗḗḗ ȧȧƀǿǿŭŭŧ ȧȧƞẏ īƞŧḗḗřḗḗşŧ ŧħȧȧŧ ƈǿǿŭŭŀḓ ȧȧƒƒḗḗƈŧ, ǿǿř şḗḗḗḗḿ ŧǿǿ ȧȧƒƒḗḗƈŧ, ẏǿǿŭŭř ĵŭŭḓɠḗḗḿḗḗƞŧ ǿǿƞ ŧħīş īŧḗḗḿ. Ƒǿǿř ḗḗẋȧȧḿƥŀḗḗ: ẏǿǿŭŭ, ȧȧ ƒȧȧḿīŀẏ ḿḗḗḿƀḗḗř ǿǿř ȧȧ ƈŀǿǿşḗḗ ȧȧşşǿǿƈīȧȧŧḗḗ ẇǿǿřķş ƒǿǿř, ǿǿẇƞş ƥȧȧřŧ ǿǿƒ, ǿǿř ŀḗḗƞḓş ŧǿǿ ȧȧ ƈǿǿḿƥȧȧƞẏ īƞ ŧħīş īŧḗḗḿ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.declare.intent": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇħȧȧŧ ẇǿǿŭŭŀḓ ẏǿǿŭŭ ŀīķḗḗ ŧǿǿ ḓǿǿ?"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.declare.leave": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ī ẇīŀŀ ŀḗḗȧȧṽḗḗ ŧħḗḗ řǿǿǿǿḿ ƒǿǿř ŧħīş īŧḗḗḿ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.declare.leaveHint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ẇīŀŀ ƞǿǿŧ řḗḗƈḗḗīṽḗḗ īŧş ƥȧȧƥḗḗřş ǿǿř ŧȧȧķḗḗ ƥȧȧřŧ īƞ īŧş ḓḗḗƈīşīǿǿƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.declare.nature": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇħȧȧŧ īş ẏǿǿŭŭř īƞŧḗḗřḗḗşŧ?"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.declare.natureHint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƞŀẏ ŧħḗḗ şḗḗƈřḗḗŧȧȧřīḗḗş, ŧħḗḗ ƈħȧȧīř ȧȧƞḓ ȧȧŭŭḓīŧǿǿřş şḗḗḗḗ ŧħīş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.declare.natureLength": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥŀḗḗȧȧşḗḗ şħǿǿřŧḗḗƞ ŧħīş ŧǿǿ 1,000 ƈħȧȧřȧȧƈŧḗḗřş ǿǿř ƒḗḗẇḗḗř."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.declare.natureRequired": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥŀḗḗȧȧşḗḗ şȧȧẏ ẇħȧȧŧ ẏǿǿŭŭř īƞŧḗḗřḗḗşŧ īş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.declare.recommended": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "(řḗḗƈǿǿḿḿḗḗƞḓḗḗḓ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.declare.submit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗƈŀȧȧřḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.declare.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗƈŀȧȧřḗḗ ȧȧƞ īƞŧḗḗřḗḗşŧ — "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.item.awaiting": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ȧȧşķḗḗḓ ŧħḗḗ ƈħȧȧīř ŧǿǿ ḓḗḗƈīḓḗḗ ẇħḗḗŧħḗḗř ẏǿǿŭŭ ḿȧȧẏ ŧȧȧķḗḗ ƥȧȧřŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.item.declare": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗƈŀȧȧřḗḗ ȧȧƞ īƞŧḗḗřḗḗşŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.item.declareNamed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗƈŀȧȧřḗḗ ȧȧƞ īƞŧḗḗřḗḗşŧ: "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.item.mine": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿẏ ḓḗḗƈŀȧȧřȧȧŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.item.mineNamed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿẏ ḓḗḗƈŀȧȧřȧȧŧīǿǿƞ: "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.item.recused": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ẇīŀŀ ƀḗḗ ȧȧşķḗḗḓ ŧǿǿ ŀḗḗȧȧṽḗḗ ŧħḗḗ řǿǿǿǿḿ ƒǿǿř ŧħīş īŧḗḗḿ. Īŧş ƥȧȧƥḗḗřş ȧȧřḗḗ ƞǿǿŧ şħǿǿẇƞ ŧǿǿ ẏǿǿŭŭ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.item.takingPart": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ḓḗḗƈŀȧȧřḗḗḓ ȧȧƞ īƞŧḗḗřḗḗşŧ. Ŧħḗḗ ƈħȧȧīř ḓḗḗƈīḓḗḗḓ ẏǿǿŭŭ ḿȧȧẏ ŧȧȧķḗḗ ƥȧȧřŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.mine.askInstead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧşķ ŧħḗḗ ƈħȧȧīř ŧǿǿ ḓḗḗƈīḓḗḗ īƞşŧḗḗȧȧḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.mine.askedChair": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƈħȧȧīř ħȧȧş ƀḗḗḗḗƞ ȧȧşķḗḗḓ ŧǿǿ ḓḗḗƈīḓḗḗ. Ŭƞŧīŀ ŧħḗḗƞ, ŧħḗḗ ƥȧȧƥḗḗřş şŧȧȧẏ ẇīŧħħḗḗŀḓ ƒřǿǿḿ ẏǿǿŭŭ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.mine.awaiting": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇȧȧīŧīƞɠ ƒǿǿř ŧħḗḗ ƈħȧȧīř’ş ḓḗḗƈīşīǿǿƞ. Ŧħḗḗ ƥȧȧƥḗḗřş ȧȧřḗḗ ẇīŧħħḗḗŀḓ ŭŭƞŧīŀ ŧħḗḗƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.mine.carriedMeeting": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈȧȧřřīḗḗḓ ǿǿṽḗḗř ƒřǿǿḿ ȧȧƞ ḗḗȧȧřŀīḗḗř ḿḗḗḗḗŧīƞɠ, ẇħḗḗřḗḗ ŧħīş ƥȧȧƥḗḗř ẇȧȧş ḓḗḗƒḗḗřřḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.mine.carriedMemo": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈȧȧřřīḗḗḓ ǿǿṽḗḗř ƒřǿǿḿ ŧħḗḗ ḿḗḗḿǿǿ, ẇħḗḗřḗḗ ȧȧƞ īƞŧḗḗřḗḗşŧ ẇȧȧş řḗḗƈǿǿřḓḗḗḓ ƒǿǿř ẏǿǿŭŭ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.mine.choseAsk": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ƈħǿǿşḗḗ: Ī ȧȧşķ ŧħḗḗ ƈħȧȧīř ŧǿǿ ḓḗḗƈīḓḗḗ ẇħḗḗŧħḗḗř Ī ḿȧȧẏ ŧȧȧķḗḗ ƥȧȧřŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.mine.choseLeave": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ƈħǿǿşḗḗ: Ī ẇīŀŀ ŀḗḗȧȧṽḗḗ ŧħḗḗ řǿǿǿǿḿ ƒǿǿř ŧħīş īŧḗḗḿ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.mine.closed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ḓḗḗƈŀȧȧřȧȧŧīǿǿƞ ƈȧȧƞ ƞǿǿ ŀǿǿƞɠḗḗř ƀḗḗ ƈħȧȧƞɠḗḗḓ ħḗḗřḗḗ. Ȧşķ ŧħḗḗ şḗḗƈřḗḗŧȧȧřẏ īƒ şǿǿḿḗḗŧħīƞɠ īş ẇřǿǿƞɠ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.mine.howNote": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗīř ƞǿǿŧḗḗ: "
+    },
+    {
+      "type": 1,
+      "value": "note"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.mine.leaveInstead": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ī ẇīŀŀ ŀḗḗȧȧṽḗḗ ŧħḗḗ řǿǿǿǿḿ īƞşŧḗḗȧȧḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.mine.leaving": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ẇīŀŀ ŀḗḗȧȧṽḗḗ ŧħḗḗ řǿǿǿǿḿ ƒǿǿř ŧħīş īŧḗḗḿ. Īŧş ƥȧȧƥḗḗřş ȧȧřḗḗ ƞǿǿŧ şħǿǿẇƞ ŧǿǿ ẏǿǿŭŭ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.mine.nature": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "“"
+    },
+    {
+      "type": 1,
+      "value": "nature"
+    },
+    {
+      "type": 0,
+      "value": "”"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.mine.recorded": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƈǿǿřḓḗḗḓ ƒǿǿř ẏǿǿŭŭ ƀẏ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 5,
+      "value": "how",
+      "options": {
+        "AT_MEETING": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ȧȧş ḓḗḗƈŀȧȧřḗḗḓ ȧȧŧ ŧħḗḗ ḿḗḗḗḗŧīƞɠ"
+            }
+          ]
+        },
+        "IN_PERSON": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ȧȧş ẏǿǿŭŭ ŧǿǿŀḓ ŧħḗḗḿ īƞ ƥḗḗřşǿǿƞ"
+            }
+          ]
+        },
+        "EMAIL": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ƒřǿǿḿ ẏǿǿŭŭř ḗḗḿȧȧīŀ"
+            }
+          ]
+        },
+        "PHONE": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ƒřǿǿḿ ẏǿǿŭŭř ƥħǿǿƞḗḗ ƈȧȧŀŀ"
+            }
+          ]
+        },
+        "other": {
+          "value": []
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.mine.ruledLeave": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ŧħḗḗ ƈħȧȧīř ḓḗḗƈīḓḗḗḓ ŧħȧȧŧ ẏǿǿŭŭ şħǿǿŭŭŀḓ ŀḗḗȧȧṽḗḗ ŧħḗḗ řǿǿǿǿḿ ƒǿǿř ŧħīş īŧḗḗḿ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.mine.ruledTakePart": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ŧħḗḗ ƈħȧȧīř ḓḗḗƈīḓḗḗḓ ŧħȧȧŧ ẏǿǿŭŭ ḿȧȧẏ ŧȧȧķḗḗ ƥȧȧřŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.mine.rulingNote": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ƈħȧȧīř’ş ƞǿǿŧḗḗ: “"
+    },
+    {
+      "type": 1,
+      "value": "note"
+    },
+    {
+      "type": 0,
+      "value": "”"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.mine.self": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗƈŀȧȧřḗḗḓ ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ", ƀẏ ẏǿǿŭŭ īƞ ŧħḗḗ ȧȧƥƥ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.mine.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭř ḓḗḗƈŀȧȧřȧȧŧīǿǿƞ — "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.mine.withdraw": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇīŧħḓřȧȧẇ ŧħīş ḓḗḗƈŀȧȧřȧȧŧīǿǿƞ…"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.panel.newToReview": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƞḗḗẇ īŧḗḗḿ ŧǿǿ řḗḗṽīḗḗẇ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƞḗḗẇ īŧḗḗḿş ŧǿǿ řḗḗṽīḗḗẇ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.panel.prompt": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥŀḗḗȧȧşḗḗ řḗḗȧȧḓ ŧħḗḗ ȧȧɠḗḗƞḓȧȧ ȧȧƞḓ ŧḗḗŀŀ ŭŭş ȧȧƀǿǿŭŭŧ ȧȧƞẏ īƞŧḗḗřḗḗşŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.panel.review": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗṽīḗḗẇ ȧȧƞḓ ḓḗḗƈŀȧȧřḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.panel.reviewed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ƈǿǿƞƒīřḿḗḗḓ ẏǿǿŭŭř ḓḗḗƈŀȧȧřȧȧŧīǿǿƞş ƒǿǿř řḗḗṽīşīǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "revision"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƒ ŧħḗḗ ȧȧɠḗḗƞḓȧȧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.panel.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗƈŀȧȧřȧȧŧīǿǿƞş ǿǿƒ īƞŧḗḗřḗḗşŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.panel.toReview": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " īŧḗḗḿ ŧǿǿ řḗḗṽīḗḗẇ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " īŧḗḗḿş ŧǿǿ řḗḗṽīḗḗẇ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.panel.yours": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭř ḓḗḗƈŀȧȧřȧȧŧīǿǿƞş īƞ ŧħīş ḿḗḗḗḗŧīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.problem.failed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħȧȧŧ ḓīḓ ƞǿǿŧ ẇǿǿřķ. Ŧřẏ ȧȧɠȧȧīƞ īƞ ȧȧ ḿǿǿḿḗḗƞŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.problem.forbidden": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƞŀẏ ŧħḗḗ ḿḗḗḿƀḗḗřş, ɠŭŭḗḗşŧş ȧȧƞḓ ǿǿƒƒīƈḗḗřş ǿǿƒ ŧħīş ḿḗḗḗḗŧīƞɠ ƈȧȧƞ ḓḗḗƈŀȧȧřḗḗ īƞŧḗḗřḗḗşŧş ħḗḗřḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.problem.frozen": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗƈŀȧȧřȧȧŧīǿǿƞş ƒǿǿř ŧħīş ḿḗḗḗḗŧīƞɠ ƈȧȧƞ ƞǿǿ ŀǿǿƞɠḗḗř ƀḗḗ ƈħȧȧƞɠḗḗḓ ħḗḗřḗḗ. Ȧşķ ŧħḗḗ şḗḗƈřḗḗŧȧȧřẏ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.problem.notFound": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş īŧḗḗḿ īş ƞǿǿ ŀǿǿƞɠḗḗř ǿǿƞ ŧħḗḗ ȧȧɠḗḗƞḓȧȧ, ǿǿř īŧ īş ƞǿǿŧ şħǿǿẇƞ ŧǿǿ ẏǿǿŭŭ. Ŧħḗḗ ƥȧȧɠḗḗ şħǿǿẇş ŧħḗḗ ŀȧȧŧḗḗşŧ ȧȧɠḗḗƞḓȧȧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.problem.oneOpen": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ħȧȧṽḗḗ ȧȧŀřḗḗȧȧḓẏ ḓḗḗƈŀȧȧřḗḗḓ ȧȧƞ īƞŧḗḗřḗḗşŧ īƞ ŧħīş īŧḗḗḿ. Ŭşḗḗ “Ḿẏ ḓḗḗƈŀȧȧřȧȧŧīǿǿƞ” ǿǿƞ ŧħḗḗ īŧḗḗḿ ŧǿǿ ƈħȧȧƞɠḗḗ ǿǿř ẇīŧħḓřȧȧẇ īŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.problem.recused": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ħȧȧṽḗḗ ḓḗḗƈŀȧȧřḗḗḓ ȧȧƞ īƞŧḗḗřḗḗşŧ īƞ ŧħīş īŧḗḗḿ, şǿǿ ẏǿǿŭŭ ƈȧȧƞƞǿǿŧ ḓǿǿ ŧħīş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.problem.stale": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭř ḓḗḗƈŀȧȧřȧȧŧīǿǿƞ ƈħȧȧƞɠḗḗḓ īƞ ŧħḗḗ ḿḗḗȧȧƞŧīḿḗḗ. Ŧħḗḗ ŀȧȧŧḗḗşŧ īş şħǿǿẇƞ: ƥŀḗḗȧȧşḗḗ ŧřẏ ȧȧɠȧȧīƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.problem.staleRevision": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ȧȧɠḗḗƞḓȧȧ ƈħȧȧƞɠḗḗḓ ẇħīŀḗḗ ẏǿǿŭŭ ẇḗḗřḗḗ řḗḗṽīḗḗẇīƞɠ īŧ. Ŧħḗḗ ƞḗḗẇ īŧḗḗḿş ȧȧřḗḗ ƞǿǿẇ ŀīşŧḗḗḓ: ŀǿǿǿǿķ ȧȧŧ ŧħḗḗḿ, ŧħḗḗƞ ƈǿǿƞƒīřḿ ȧȧɠȧȧīƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.problem.wrongState": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ƈȧȧƞƞǿǿŧ ƀḗḗ ḓǿǿƞḗḗ ƞǿǿẇ: ŧħḗḗ ḿḗḗḗḗŧīƞɠ ǿǿř ẏǿǿŭŭř ḓḗḗƈŀȧȧřȧȧŧīǿǿƞ ħȧȧş ƈħȧȧƞɠḗḗḓ. Ŧħḗḗ ƥȧȧɠḗḗ şħǿǿẇş ŧħḗḗ ŀȧȧŧḗḗşŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.review.asking": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗƈŀȧȧřḗḗḓ — ȧȧşķḗḗḓ ŧħḗḗ ƈħȧȧīř ŧǿǿ ḓḗḗƈīḓḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.review.confirm": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ī ħȧȧṽḗḗ ḓḗḗƈŀȧȧřḗḗḓ ḿẏ īƞŧḗḗřḗḗşŧş īƞ ŧħīş ȧȧɠḗḗƞḓȧȧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.review.confirmHint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ẇīŀŀ ƀḗḗ ȧȧşķḗḗḓ ȧȧɠȧȧīƞ ǿǿƞŀẏ īƒ ƞḗḗẇ īŧḗḗḿş ȧȧřḗḗ ȧȧḓḓḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.review.declaredNamed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "what"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.review.done": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħȧȧƞķ ẏǿǿŭŭ. Ẏǿǿŭŭř řḗḗṽīḗḗẇ ǿǿƒ ŧħḗḗ ȧȧɠḗḗƞḓȧȧ īş řḗḗƈǿǿřḓḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.review.explain": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒǿǿř ḗḗȧȧƈħ īŧḗḗḿ, ƈħǿǿǿǿşḗḗ ǿǿƞŀẏ īƒ ẏǿǿŭŭ ħȧȧṽḗḗ ȧȧƞ īƞŧḗḗřḗḗşŧ. Īŧḗḗḿş ẏǿǿŭŭ ḓǿǿ ƞǿǿŧ ḿȧȧřķ ƞḗḗḗḗḓ ƞǿǿŧħīƞɠ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.review.haveInterest": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ī ħȧȧṽḗḗ ȧȧƞ īƞŧḗḗřḗḗşŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.review.haveInterestNamed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ī ħȧȧṽḗḗ ȧȧƞ īƞŧḗḗřḗḗşŧ: "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.review.leaving": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗƈŀȧȧřḗḗḓ — ŀḗḗȧȧṽīƞɠ ŧħḗḗ řǿǿǿǿḿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.review.list": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īŧḗḗḿş ŧǿǿ řḗḗṽīḗḗẇ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.review.since": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿƞŀẏ ŧħḗḗ īŧḗḗḿş ȧȧḓḓḗḗḓ şīƞƈḗḗ ẏǿǿŭŭ ƈǿǿƞƒīřḿḗḗḓ řḗḗṽīşīǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "revision"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧřḗḗ ŀīşŧḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.review.takingPart": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗƈŀȧȧřḗḗḓ — ŧȧȧķīƞɠ ƥȧȧřŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.review.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗṽīḗḗẇ ŧħḗḗ ȧȧɠḗḗƞḓȧȧ ƒǿǿř "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " — ḓḗḗƈŀȧȧřȧȧŧīǿǿƞş ǿǿƒ īƞŧḗḗřḗḗşŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.standing.label": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḓḗḗƈŀȧȧřȧȧŧīǿǿƞş ḿȧȧḓḗḗ şǿǿ ƒȧȧř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.standing.otherAwaiting": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " — ħȧȧş ȧȧşķḗḗḓ ŧħḗḗ ƈħȧȧīř ŧǿǿ ḓḗḗƈīḓḗḗ ǿǿƞ īŧḗḗḿ "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.standing.otherRecused": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " — ẇīŀŀ ŀḗḗȧȧṽḗḗ ŧħḗḗ řǿǿǿǿḿ ƒǿǿř īŧḗḗḿ "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.standing.otherTakingPart": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " — ḓḗḗƈŀȧȧřḗḗḓ ȧȧƞ īƞŧḗḗřḗḗşŧ īƞ īŧḗḗḿ "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧƞḓ ḿȧȧẏ ŧȧȧķḗḗ ƥȧȧřŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.standing.selfAwaiting": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ — ħȧȧṽḗḗ ȧȧşķḗḗḓ ŧħḗḗ ƈħȧȧīř ŧǿǿ ḓḗḗƈīḓḗḗ ǿǿƞ īŧḗḗḿ "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.standing.selfRecused": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ — ẇīŀŀ ŀḗḗȧȧṽḗḗ ŧħḗḗ řǿǿǿǿḿ ƒǿǿř īŧḗḗḿ "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.standing.selfTakingPart": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ — ḓḗḗƈŀȧȧřḗḗḓ ȧȧƞ īƞŧḗḗřḗḗşŧ īƞ īŧḗḗḿ "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧƞḓ ḿȧȧẏ ŧȧȧķḗḗ ƥȧȧřŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.withdraw.done": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭř ḓḗḗƈŀȧȧřȧȧŧīǿǿƞ ħȧȧş ƀḗḗḗḗƞ ẇīŧħḓřȧȧẇƞ. Ŧħḗḗ şḗḗƈřḗḗŧȧȧřẏ ȧȧƞḓ ŧħḗḗ ƈħȧȧīř ħȧȧṽḗḗ ƀḗḗḗḗƞ ŧǿǿŀḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.withdraw.explain": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ şḗḗƈřḗḗŧȧȧřẏ ȧȧƞḓ ŧħḗḗ ƈħȧȧīř ẇīŀŀ ƀḗḗ ŧǿǿŀḓ, ȧȧƞḓ ŧħḗḗ ẇīŧħḓřȧȧẇȧȧŀ ẇīŀŀ ƀḗḗ īƞ ŧħḗḗ ḿīƞŭŭŧḗḗş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.withdraw.reason": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇħẏ ȧȧřḗḗ ẏǿǿŭŭ ẇīŧħḓřȧȧẇīƞɠ īŧ?"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.withdraw.reasonLength": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥŀḗḗȧȧşḗḗ şħǿǿřŧḗḗƞ ŧħīş ŧǿǿ 500 ƈħȧȧřȧȧƈŧḗḗřş ǿǿř ƒḗḗẇḗḗř."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.withdraw.reasonRequired": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥŀḗḗȧȧşḗḗ şȧȧẏ ẇħẏ ẏǿǿŭŭ ȧȧřḗḗ ẇīŧħḓřȧȧẇīƞɠ īŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.withdraw.submit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇīŧħḓřȧȧẇ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "declarations.withdraw.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇīŧħḓřȧȧẇ ẏǿǿŭŭř ḓḗḗƈŀȧȧřȧȧŧīǿǿƞ — "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "dialog.close": [
     {
       "type": 0,

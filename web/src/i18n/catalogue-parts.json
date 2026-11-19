@@ -41,6 +41,11 @@
     "routes": ["/meetings"],
     "prefixes": ["meetingPage"]
   },
+  "declarations": {
+    "$comment": "Declaring an interest on the meeting page (Phase 4 E04 T6, flow S): the declaration sheet, the review checklist, My declaration and the Declarations standing item.",
+    "routes": ["/meetings"],
+    "prefixes": ["declarations"]
+  },
   "mySecurity": {
     "$comment": "The user's own security page (sign-in methods, sessions), and only there: split from core when the meeting invitation texts (Phase 4 E05 T2) took the Arabic core past its limit.",
     "routes": ["/me/security"],

@@ -7943,6 +7943,835 @@
       "value": "Approvals dashboardSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "declarations.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.close": [
+    {
+      "type": 0,
+      "value": "CloseSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.declare.askChair": [
+    {
+      "type": 0,
+      "value": "I ask the chair to decide whether I may take part.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.declare.askChairHint": [
+    {
+      "type": 0,
+      "value": "Until the chair decides, the papers are withheld from you.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.declare.doneAsk": [
+    {
+      "type": 0,
+      "value": "Thank you. The chair has been asked to decide. Until then, you will not see this item’s papers.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.declare.doneLeave": [
+    {
+      "type": 0,
+      "value": "Thank you. The secretary and the chair have been told. You will not see this item’s papers.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.declare.explain": [
+    {
+      "type": 0,
+      "value": "Tell the committee about any interest that could affect, or seem to affect, your judgement on this item. For example: you, a family member or a close associate works for, owns part of, or lends to a company in this item.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.declare.intent": [
+    {
+      "type": 0,
+      "value": "What would you like to do?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.declare.leave": [
+    {
+      "type": 0,
+      "value": "I will leave the room for this item.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.declare.leaveHint": [
+    {
+      "type": 0,
+      "value": "You will not receive its papers or take part in its decision.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.declare.nature": [
+    {
+      "type": 0,
+      "value": "What is your interest?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.declare.natureHint": [
+    {
+      "type": 0,
+      "value": "Only the secretaries, the chair and auditors see this.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.declare.natureLength": [
+    {
+      "type": 0,
+      "value": "Please shorten this to 1,000 characters or fewer.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.declare.natureRequired": [
+    {
+      "type": 0,
+      "value": "Please say what your interest is.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.declare.recommended": [
+    {
+      "type": 0,
+      "value": "(recommended)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.declare.submit": [
+    {
+      "type": 0,
+      "value": "DeclareSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.declare.title": [
+    {
+      "type": 0,
+      "value": "Declare an interest — "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.item.awaiting": [
+    {
+      "type": 0,
+      "value": "You asked the chair to decide whether you may take part.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.item.declare": [
+    {
+      "type": 0,
+      "value": "Declare an interestSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.item.declareNamed": [
+    {
+      "type": 0,
+      "value": "Declare an interest: "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.item.mine": [
+    {
+      "type": 0,
+      "value": "My declarationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.item.mineNamed": [
+    {
+      "type": 0,
+      "value": "My declaration: "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.item.recused": [
+    {
+      "type": 0,
+      "value": "You will be asked to leave the room for this item. Its papers are not shown to you.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.item.takingPart": [
+    {
+      "type": 0,
+      "value": "You declared an interest. The chair decided you may take part.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.mine.askInstead": [
+    {
+      "type": 0,
+      "value": "Ask the chair to decide insteadSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.mine.askedChair": [
+    {
+      "type": 0,
+      "value": "The chair has been asked to decide. Until then, the papers stay withheld from you.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.mine.awaiting": [
+    {
+      "type": 0,
+      "value": "Waiting for the chair’s decision. The papers are withheld until then.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.mine.carriedMeeting": [
+    {
+      "type": 0,
+      "value": "Carried over from an earlier meeting, where this paper was deferred.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.mine.carriedMemo": [
+    {
+      "type": 0,
+      "value": "Carried over from the memo, where an interest was recorded for you.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.mine.choseAsk": [
+    {
+      "type": 0,
+      "value": "You chose: I ask the chair to decide whether I may take part.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.mine.choseLeave": [
+    {
+      "type": 0,
+      "value": "You chose: I will leave the room for this item.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.mine.closed": [
+    {
+      "type": 0,
+      "value": "This declaration can no longer be changed here. Ask the secretary if something is wrong.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.mine.howNote": [
+    {
+      "type": 0,
+      "value": "Their note: "
+    },
+    {
+      "type": 1,
+      "value": "note"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.mine.leaveInstead": [
+    {
+      "type": 0,
+      "value": "I will leave the room insteadSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.mine.leaving": [
+    {
+      "type": 0,
+      "value": "You will leave the room for this item. Its papers are not shown to you.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.mine.nature": [
+    {
+      "type": 0,
+      "value": "“"
+    },
+    {
+      "type": 1,
+      "value": "nature"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.mine.recorded": [
+    {
+      "type": 0,
+      "value": "Recorded for you by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 5,
+      "value": "how",
+      "options": {
+        "AT_MEETING": {
+          "value": [
+            {
+              "type": 0,
+              "value": "as declared at the meeting"
+            }
+          ]
+        },
+        "IN_PERSON": {
+          "value": [
+            {
+              "type": 0,
+              "value": "as you told them in person"
+            }
+          ]
+        },
+        "EMAIL": {
+          "value": [
+            {
+              "type": 0,
+              "value": "from your email"
+            }
+          ]
+        },
+        "PHONE": {
+          "value": [
+            {
+              "type": 0,
+              "value": "from your phone call"
+            }
+          ]
+        },
+        "other": {
+          "value": []
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.mine.ruledLeave": [
+    {
+      "type": 0,
+      "value": "On "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " the chair decided that you should leave the room for this item.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.mine.ruledTakePart": [
+    {
+      "type": 0,
+      "value": "On "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " the chair decided that you may take part.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.mine.rulingNote": [
+    {
+      "type": 0,
+      "value": "The chair’s note: “"
+    },
+    {
+      "type": 1,
+      "value": "note"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.mine.self": [
+    {
+      "type": 0,
+      "value": "Declared on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ", by you in the app.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.mine.title": [
+    {
+      "type": 0,
+      "value": "Your declaration — "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.mine.withdraw": [
+    {
+      "type": 0,
+      "value": "Withdraw this declaration…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.panel.newToReview": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " new item to review"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " new items to review"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.panel.prompt": [
+    {
+      "type": 0,
+      "value": "Please read the agenda and tell us about any interest.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.panel.review": [
+    {
+      "type": 0,
+      "value": "Review and declareSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.panel.reviewed": [
+    {
+      "type": 0,
+      "value": "You confirmed your declarations for revision "
+    },
+    {
+      "type": 1,
+      "value": "revision"
+    },
+    {
+      "type": 0,
+      "value": " of the agenda.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.panel.title": [
+    {
+      "type": 0,
+      "value": "Declarations of interestSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.panel.toReview": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " item to review"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " items to review"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.panel.yours": [
+    {
+      "type": 0,
+      "value": "Your declarations in this meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.problem.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Try again in a moment.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.problem.forbidden": [
+    {
+      "type": 0,
+      "value": "Only the members, guests and officers of this meeting can declare interests here.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.problem.frozen": [
+    {
+      "type": 0,
+      "value": "Declarations for this meeting can no longer be changed here. Ask the secretary.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.problem.notFound": [
+    {
+      "type": 0,
+      "value": "This item is no longer on the agenda, or it is not shown to you. The page shows the latest agenda.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.problem.oneOpen": [
+    {
+      "type": 0,
+      "value": "You have already declared an interest in this item. Use “My declaration” on the item to change or withdraw it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.problem.recused": [
+    {
+      "type": 0,
+      "value": "You have declared an interest in this item, so you cannot do this.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.problem.stale": [
+    {
+      "type": 0,
+      "value": "Your declaration changed in the meantime. The latest is shown: please try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.problem.staleRevision": [
+    {
+      "type": 0,
+      "value": "The agenda changed while you were reviewing it. The new items are now listed: look at them, then confirm again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.problem.wrongState": [
+    {
+      "type": 0,
+      "value": "This cannot be done now: the meeting or your declaration has changed. The page shows the latest.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.review.asking": [
+    {
+      "type": 0,
+      "value": "Declared — asked the chair to decideSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.review.confirm": [
+    {
+      "type": 0,
+      "value": "I have declared my interests in this agendaSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.review.confirmHint": [
+    {
+      "type": 0,
+      "value": "You will be asked again only if new items are added.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.review.declaredNamed": [
+    {
+      "type": 1,
+      "value": "what"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.review.done": [
+    {
+      "type": 0,
+      "value": "Thank you. Your review of the agenda is recorded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.review.explain": [
+    {
+      "type": 0,
+      "value": "For each item, choose only if you have an interest. Items you do not mark need nothing.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.review.haveInterest": [
+    {
+      "type": 0,
+      "value": "I have an interestSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.review.haveInterestNamed": [
+    {
+      "type": 0,
+      "value": "I have an interest: "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.review.leaving": [
+    {
+      "type": 0,
+      "value": "Declared — leaving the roomSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.review.list": [
+    {
+      "type": 0,
+      "value": "Items to reviewSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.review.since": [
+    {
+      "type": 0,
+      "value": "Only the items added since you confirmed revision "
+    },
+    {
+      "type": 1,
+      "value": "revision"
+    },
+    {
+      "type": 0,
+      "value": " are listed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.review.takingPart": [
+    {
+      "type": 0,
+      "value": "Declared — taking partSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.review.title": [
+    {
+      "type": 0,
+      "value": "Review the agenda for "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " — declarations of interestSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.standing.label": [
+    {
+      "type": 0,
+      "value": "Declarations made so farSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.standing.otherAwaiting": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " — has asked the chair to decide on item "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.standing.otherRecused": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " — will leave the room for item "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.standing.otherTakingPart": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " — declared an interest in item "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": " and may take partSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.standing.selfAwaiting": [
+    {
+      "type": 0,
+      "value": "You — have asked the chair to decide on item "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.standing.selfRecused": [
+    {
+      "type": 0,
+      "value": "You — will leave the room for item "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.standing.selfTakingPart": [
+    {
+      "type": 0,
+      "value": "You — declared an interest in item "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": " and may take partSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.withdraw.done": [
+    {
+      "type": 0,
+      "value": "Your declaration has been withdrawn. The secretary and the chair have been told.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.withdraw.explain": [
+    {
+      "type": 0,
+      "value": "The secretary and the chair will be told, and the withdrawal will be in the minutes.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.withdraw.reason": [
+    {
+      "type": 0,
+      "value": "Why are you withdrawing it?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.withdraw.reasonLength": [
+    {
+      "type": 0,
+      "value": "Please shorten this to 500 characters or fewer.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.withdraw.reasonRequired": [
+    {
+      "type": 0,
+      "value": "Please say why you are withdrawing it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.withdraw.submit": [
+    {
+      "type": 0,
+      "value": "WithdrawSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.withdraw.title": [
+    {
+      "type": 0,
+      "value": "Withdraw your declaration — "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "dialog.close": [
     {
       "type": 0,

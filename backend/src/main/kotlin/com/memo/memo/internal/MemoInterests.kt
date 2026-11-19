@@ -31,6 +31,17 @@ class MemoInterestStore(
             .filterNotNull()
             .toSet()
 
+    /** The people with an interest in each of [memos] that has any. */
+    fun ofMemos(memos: Collection<UUID>): Map<UUID, Set<UUID>> =
+        tenantDsl
+            .current()
+            .select(MEMO_INTEREST.MEMO_ID, MEMO_INTEREST.USER_ID)
+            .from(MEMO_INTEREST)
+            .where(MEMO_INTEREST.MEMO_ID.`in`(memos.toSet()))
+            .fetch()
+            .groupBy({ it.value1()!! }, { it.value2()!! })
+            .mapValues { it.value.toSet() }
+
     /** False when [user] had already declared an interest. */
     fun add(
         memo: UUID,

@@ -132,6 +132,7 @@ class AgendaPublisher(
     private val writes: AgendaWrites,
     private val ids: IdGenerator,
     private val events: ApplicationEventPublisher,
+    private val carryOver: DeclarationCarryOver,
 ) {
     /** Publishes the next revision of [meetingId]'s agenda at [version]; its number. */
     fun publish(
@@ -173,6 +174,7 @@ class AgendaPublisher(
             )
         revisions.insert(head, publication.snapshot)
         agendas.published(meeting.id, n)
+        carryOver.published(numbered, edit.rows.items)
         val body = publication.snapshot.body()
         writes.record(
             "meeting.agenda.published",

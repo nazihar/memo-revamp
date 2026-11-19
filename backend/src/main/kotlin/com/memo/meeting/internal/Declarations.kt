@@ -16,6 +16,7 @@ import com.memo.meeting.DeclarationSource
 import com.memo.meeting.DeclarationState
 import com.memo.meeting.MeetingStatus
 import com.memo.meeting.RulingOutcome
+import com.memo.memo.MemoInterestLinks
 import com.memo.notification.NotificationKind
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Component
@@ -343,21 +344,37 @@ class DeclarationEffects(
     private val declarations: DeclarationAccess,
     private val directory: ForumDirectory,
     private val events: ApplicationEventPublisher,
+    private val memoInterests: MemoInterestLinks,
 ) {
     fun declared(
         scene: DeclarationScene,
         item: DeclarableItem,
         row: DeclarationRow,
         reason: String?,
+    ) = made(scene.meeting, scene.actor, item, row, reason)
+
+    /**
+     * A new declaration of [row] on [item], made or recorded by [actor] (null for the system): audited; the declarant told
+     * when someone else recorded it or it was carried over; the officers told of one made in the app or recorded; the ruler
+     * asked when it waits for a ruling. One on a submission item, unless carried from the memo, also records an interest on
+     * the memo with a fixed reason, never the nature (design E04 §1.4).
+     */
+    fun made(
+        meeting: MeetingRow,
+        actor: UUID?,
+        item: DeclarableItem,
+        row: DeclarationRow,
+        reason: String?,
     ) {
         record(
             "meeting.declaration.made",
-            scene,
+            meeting,
             row,
             null,
             mapOf(
                 "intent" to row.intent.name,
                 "source" to row.source.name,
+                "sourceRef" to row.sourceRef?.toString(),
                 "how" to row.how.name,
                 "onBehalfOf" to row.userId.toString().takeIf { row.source == DeclarationSource.ON_BEHALF },
                 "recordedBy" to row.recordedBy?.toString(),
@@ -368,14 +385,29 @@ class DeclarationEffects(
                 "reasonSha256" to reason?.let { DeclarationRules.sha256(it) },
             ),
         )
-        val ruler = if (row.state == DeclarationState.AWAITING_RULING) declarations.ruler(scene.meeting.forumId, item, row.userId) else null
-        if (row.source ==
-            DeclarationSource.ON_BEHALF
-        ) {
-            tell(scene, item, NotificationKind.MEETING_DECLARATION_RECORDED, setOf(row.userId), "RECORDED")
+        val carried = row.source == DeclarationSource.MEMO || row.source == DeclarationSource.EARLIER_MEETING
+        val ruler = if (row.state == DeclarationState.AWAITING_RULING) declarations.ruler(meeting.forumId, item, row.userId) else null
+        if (row.source == DeclarationSource.ON_BEHALF || carried) {
+            tell(meeting, actor, item, NotificationKind.MEETING_DECLARATION_RECORDED, setOf(row.userId), "RECORDED")
         }
-        tell(scene, item, NotificationKind.MEETING_DECLARATION_MADE, officers(scene, item) - row.userId - setOfNotNull(ruler), "DECLARED")
-        ruler?.let { tell(scene, item, NotificationKind.MEETING_RULING_NEEDED, setOf(it), null) }
+        if (!carried) {
+            val told = officers(meeting, item) - row.userId - setOfNotNull(ruler)
+            tell(meeting, actor, item, NotificationKind.MEETING_DECLARATION_MADE, told, "DECLARED")
+        }
+        ruler?.let { tell(meeting, actor, item, NotificationKind.MEETING_RULING_NEEDED, setOf(it), null) }
+        val memoId = item.memoId
+        if (memoId != null && row.source != DeclarationSource.MEMO) {
+            memoInterests.recordFromMeeting(memoId, row.userId, row.recordedBy ?: row.userId, memoReason(meeting, item), row.id)
+        }
+    }
+
+    /** The memo interest's fixed reason: the meeting and the item's number, never what the declarant wrote. */
+    private fun memoReason(
+        meeting: MeetingRow,
+        item: DeclarableItem,
+    ): String {
+        val at = meeting.label ?: "the ${directory.forum(meeting.forumId)?.shortName ?: "committee"} meeting of ${meeting.date}"
+        return "Declared an interest at $at" + item.number?.let { ", item $it" }.orEmpty()
     }
 
     fun intentChanged(
@@ -386,14 +418,14 @@ class DeclarationEffects(
     ) {
         record(
             "meeting.declaration.intent_changed",
-            scene,
+            scene.meeting,
             after,
             mapOf("intent" to before.intent.name, "state" to before.state.name),
             mapOf("intent" to after.intent.name, "state" to after.state.name),
         )
         if (after.state == DeclarationState.AWAITING_RULING) {
             declarations.ruler(scene.meeting.forumId, item, after.userId)?.let {
-                tell(scene, item, NotificationKind.MEETING_RULING_NEEDED, setOf(it), null)
+                tell(scene.meeting, scene.actor, item, NotificationKind.MEETING_RULING_NEEDED, setOf(it), null)
             }
         }
     }
@@ -407,7 +439,7 @@ class DeclarationEffects(
         val ruling = checkNotNull(after.ruling)
         record(
             "meeting.declaration.ruled",
-            scene,
+            scene.meeting,
             after,
             mapOf("state" to before.state.name),
             mapOf(
@@ -419,7 +451,8 @@ class DeclarationEffects(
                 "noteSha256" to ruling.note?.let { DeclarationRules.sha256(it) },
             ),
         )
-        tell(scene, item, NotificationKind.MEETING_DECLARATION_RULED, setOf(after.userId), null, mapOf("outcome" to ruling.outcome.name))
+        val outcome = mapOf("outcome" to ruling.outcome.name)
+        tell(scene.meeting, scene.actor, item, NotificationKind.MEETING_DECLARATION_RULED, setOf(after.userId), null, outcome)
     }
 
     fun withdrawn(
@@ -432,21 +465,22 @@ class DeclarationEffects(
     ) {
         record(
             "meeting.declaration.withdrawn",
-            scene,
+            scene.meeting,
             after,
             mapOf("state" to before.state.name),
             mapOf("state" to after.state.name, "reasonSha256" to DeclarationRules.sha256(reason), "correction" to correction),
         )
-        tell(scene, item, NotificationKind.MEETING_DECLARATION_RECORDED, setOf(after.userId), "WITHDRAWN")
-        tell(scene, item, NotificationKind.MEETING_DECLARATION_MADE, officers(scene, item) - after.userId, "WITHDRAWN")
+        tell(scene.meeting, scene.actor, item, NotificationKind.MEETING_DECLARATION_RECORDED, setOf(after.userId), "WITHDRAWN")
+        val told = officers(scene.meeting, item) - after.userId
+        tell(scene.meeting, scene.actor, item, NotificationKind.MEETING_DECLARATION_MADE, told, "WITHDRAWN")
     }
 
     /** The officers told of declarations on [item]: those in office and not recused from it. */
     private fun officers(
-        scene: DeclarationScene,
+        meeting: MeetingRow,
         item: DeclarableItem,
     ): Set<UUID> {
-        val officers = declarations.officers(scene.meeting.forumId)
+        val officers = declarations.officers(meeting.forumId)
         return officers - declarations.recusedAmong(officers, item)
     }
 
@@ -456,7 +490,7 @@ class DeclarationEffects(
      */
     private fun record(
         action: String,
-        scene: DeclarationScene,
+        meeting: MeetingRow,
         row: DeclarationRow,
         before: Map<String, Any?>?,
         after: Map<String, Any?>,
@@ -465,25 +499,26 @@ class DeclarationEffects(
         audit.record(
             action,
             MeetingLifecycle.OBJECT_TYPE,
-            scene.meeting.id.toString(),
+            meeting.id.toString(),
             before = before?.let { ids + it },
             after =
                 ids + after,
         )
         val tenant = TenantContext.current().value
-        events.publishEvent(DeclarationChanged(tenant, scene.meeting.id, row.itemId, row.userId, row.state.effective))
+        events.publishEvent(DeclarationChanged(tenant, meeting.id, row.itemId, row.userId, row.state.effective))
     }
 
     private fun tell(
-        scene: DeclarationScene,
+        meeting: MeetingRow,
+        actor: UUID?,
         item: DeclarableItem,
         kind: NotificationKind,
         users: Set<UUID>,
         change: String?,
         extra: Map<String, String> = emptyMap(),
     ) {
-        val forum = directory.forum(scene.meeting.forumId) ?: return
+        val forum = directory.forum(meeting.forumId) ?: return
         val details = mapOf("item" to item.number.orEmpty()) + listOfNotNull(change?.let { "change" to it }).toMap() + extra
-        (users - scene.actor).sorted().forEach { notifier.declaration(it, kind, scene.meeting, forum, details) }
+        (users - setOfNotNull(actor)).sorted().forEach { notifier.declaration(it, kind, meeting, forum, details) }
     }
 }

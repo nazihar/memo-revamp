@@ -286,4 +286,4 @@ Each item has a recommended answer; "as recommended" accepts all of them.
 ## Owner review
 | Flow | Date | Result |
 |---|---|---|
-| | | |
+| AA–AI (decisions, members' view, resolutions and extracts, drafting, chair review, circulation, approval, the memo side, the type's Minutes tab) | 2026-11-19 | Approved as drawn, with all nine recommendations as written ("ok") |

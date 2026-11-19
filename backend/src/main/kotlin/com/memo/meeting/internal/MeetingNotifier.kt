@@ -81,6 +81,19 @@ class MeetingNotifier(
         forum: ForumRef,
     ) = notify(user, kind, meeting, forum)
 
+    /**
+     * A reminder of the hourly sweep (design E03 §9: the agenda is due, or the meeting is not marked as held), to the
+     * forum's secretaries in office, or to [fallback] (the holders of `forums.manage`) when it has none.
+     */
+    fun reminder(
+        kind: NotificationKind,
+        meeting: MeetingRow,
+        forum: ForumRef,
+        fallback: () -> Set<UUID>,
+    ) {
+        secretaries(forum.id).ifEmpty(fallback).forEach { notify(it, kind, meeting, forum) }
+    }
+
     /** The chair in office, else the vice-chair. */
     fun chairOf(forumId: UUID): UUID? {
         val seats = directory.membersOn(forumId)

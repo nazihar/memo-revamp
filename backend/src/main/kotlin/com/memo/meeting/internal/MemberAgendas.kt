@@ -145,21 +145,26 @@ class MemberAgendas(
     fun counts(meetings: List<MeetingRow>): Map<UUID, Triple<Int, Int?, Int?>> {
         val user = actorOrNull() ?: return emptyMap()
         val read = states.states(user, meetings.map { it.id })
+        // The meetings with a revision newer than the one last seen: counted in a few queries for them all (design E03 §8).
+        val behind = meetings.filter { m -> read[m.id]?.let { s -> s.lastSeen?.let { seen -> seen < s.currentRevision } } == true }
+        val people = viewers.actors(behind)
+        val heads = revisions.heads(behind.map { it.id })
+        val newer = behind.associate { m -> m.id to heads[m.id].orEmpty().filter { it.number > (read.getValue(m.id).lastSeen ?: 0) } }
+        // The rule takes the viewer as constants: one pair of queries per kind of viewer, not per meeting.
+        val visible =
+            behind
+                .groupBy { people.getValue(it.id) }
+                .flatMap { (viewer, group) ->
+                    papers.revisions(viewer, group.flatMap { newer.getValue(it.id) }.map { it.id }, changedOnly = true).toList()
+                }.toMap()
+        val snapshots = revisions.snapshots(visible.keys, changedOnly = true)
+        val counted =
+            newer.mapValues { (_, revised) ->
+                revised.sumOf { MemberAgendaRender.changes(snapshots.getValue(it.id), visible.getValue(it.id)).size }
+            }
         return meetings
-            .mapNotNull { meeting ->
-                read[meeting.id]?.let { state ->
-                    val seen = state.lastSeen
-                    val count =
-                        if (seen != null && seen < state.currentRevision) {
-                            viewers.actor(meeting)?.let { viewer ->
-                                changes(viewer, revisions.heads(meeting.id).filter { it.number > seen }, seen).count
-                            }
-                        } else {
-                            null
-                        }
-                    meeting.id to Triple(state.currentRevision, seen, count)
-                }
-            }.toMap()
+            .mapNotNull { m -> read[m.id]?.let { s -> m.id to Triple(s.currentRevision, s.lastSeen, counted[m.id]) } }
+            .toMap()
     }
 
     /** "What changed" across [heads] (the revisions after [since]), limited to what [viewer] sees in each. */
@@ -168,13 +173,17 @@ class MemberAgendas(
         heads: List<RevisionHead>,
         since: Int,
     ): WhatChangedResponse {
+        // Only the flagged rows, what the list shows, for every revision at once (design E03 §8).
+        val ids = heads.map { it.id }
+        val snapshots = revisions.snapshots(ids, changedOnly = true)
+        val visible = papers.revisions(viewer, ids, changedOnly = true)
         val revisions =
             heads.map { head ->
                 RevisionChangesResponse(
                     number = head.number,
                     publishedAt = head.publishedAt,
                     note = head.note,
-                    items = MemberAgendaRender.changes(revisions.snapshot(head.id), papers.revision(viewer, head.id)),
+                    items = MemberAgendaRender.changes(snapshots.getValue(head.id), visible.getValue(head.id)),
                 )
             }
         return WhatChangedResponse(since, revisions, revisions.sumOf { it.items.size })

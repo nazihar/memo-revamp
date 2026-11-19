@@ -13,6 +13,7 @@ import com.memo.jooq.tables.references.MEETING_REVISION_NOTICE
 import com.memo.jooq.tables.references.MEETING_REVISION_PAPER
 import com.memo.jooq.tables.references.MEETING_REVISION_SECTION
 import org.jooq.JSONB
+import org.jooq.impl.DSL
 import org.springframework.stereotype.Repository
 import tools.jackson.core.type.TypeReference
 import tools.jackson.databind.json.JsonMapper
@@ -79,38 +80,78 @@ class RevisionStore(
     }
 
     /** The revisions of [meetingId], the first first. */
-    fun heads(meetingId: UUID): List<RevisionHead> =
-        tenantDsl
-            .current()
-            .selectFrom(MEETING_REVISION)
-            .where(MEETING_REVISION.MEETING_ID.eq(meetingId))
-            .orderBy(MEETING_REVISION.NUMBER)
-            .fetch { head(it) }
+    fun heads(meetingId: UUID): List<RevisionHead> = heads(listOf(meetingId))[meetingId].orEmpty()
 
-    /** Everything revision [revisionId] carries, in agenda order: the body and the removed rows. */
-    fun snapshot(revisionId: UUID): Snapshot {
+    /** The revisions of each of [meetingIds], the first first, in one query ("My meetings", design E03 §8). */
+    fun heads(meetingIds: Collection<UUID>): Map<UUID, List<RevisionHead>> =
+        if (meetingIds.isEmpty()) {
+            emptyMap()
+        } else {
+            tenantDsl
+                .current()
+                .selectFrom(MEETING_REVISION)
+                .where(MEETING_REVISION.MEETING_ID.`in`(meetingIds))
+                .orderBy(MEETING_REVISION.MEETING_ID, MEETING_REVISION.NUMBER)
+                .fetch { head(it, json) }
+                .groupBy { it.meetingId }
+        }
+
+    /**
+     * Everything revision [revisionId] carries, in agenda order: the body and the removed rows. With [changedOnly], only
+     * the items and papers that carry a change flag, and no sections: what "What changed" lists (design E03 §8).
+     */
+    fun snapshot(
+        revisionId: UUID,
+        changedOnly: Boolean = false,
+    ): Snapshot = snapshots(listOf(revisionId), changedOnly).getValue(revisionId)
+
+    /** [snapshot] of each of [revisionIds], three queries for them all (two with [changedOnly]). */
+    fun snapshots(
+        revisionIds: Collection<UUID>,
+        changedOnly: Boolean = false,
+    ): Map<UUID, Snapshot> {
+        if (revisionIds.isEmpty()) return emptyMap()
         val dsl = tenantDsl.current()
+        val s = MEETING_REVISION_SECTION
+        val i = MEETING_REVISION_ITEM
+        val p = MEETING_REVISION_PAPER
         val sections =
+            if (changedOnly) {
+                emptyMap()
+            } else {
+                dsl
+                    .selectFrom(s)
+                    .where(s.REVISION_ID.`in`(revisionIds))
+                    .orderBy(s.REVISION_ID, s.POSITION)
+                    .fetchGroups(s.REVISION_ID) {
+                        RevisionSection(it.sectionId, it.position, it.title, AgendaSectionKind.valueOf(it.kind), it.membersOnly)
+                    }
+            }
+        val paperRows =
             dsl
-                .selectFrom(MEETING_REVISION_SECTION)
-                .where(MEETING_REVISION_SECTION.REVISION_ID.eq(revisionId))
-                .orderBy(MEETING_REVISION_SECTION.POSITION)
-                .fetch {
-                    RevisionSection(it.sectionId, it.position, it.title, AgendaSectionKind.valueOf(it.kind), it.membersOnly)
-                }
+                .selectFrom(p)
+                .where(p.REVISION_ID.`in`(revisionIds), if (changedOnly) DSL.cardinality(p.CHANGES).gt(0) else DSL.noCondition())
+                .orderBy(p.REVISION_ID, p.REMOVED, p.ITEM_ID, p.POSITION)
+                .fetch()
+        // Changed only: an item that is flagged or carries a flagged paper.
+        val changed =
+            if (changedOnly) {
+                DSL.cardinality(i.CHANGES).gt(0).or(
+                    DSL.row(i.REVISION_ID, i.ITEM_ID).`in`(paperRows.map { DSL.row(it.revisionId, it.itemId) }.distinct()),
+                )
+            } else {
+                DSL.noCondition()
+            }
         val items =
             dsl
-                .selectFrom(MEETING_REVISION_ITEM)
-                .where(MEETING_REVISION_ITEM.REVISION_ID.eq(revisionId))
-                .orderBy(MEETING_REVISION_ITEM.REMOVED, MEETING_REVISION_ITEM.POSITION, MEETING_REVISION_ITEM.ITEM_ID)
-                .fetch { item(it) }
-        val papers =
-            dsl
-                .selectFrom(MEETING_REVISION_PAPER)
-                .where(MEETING_REVISION_PAPER.REVISION_ID.eq(revisionId))
-                .orderBy(MEETING_REVISION_PAPER.REMOVED, MEETING_REVISION_PAPER.ITEM_ID, MEETING_REVISION_PAPER.POSITION)
-                .fetch { paper(it) }
-        return Snapshot(sections, items, papers)
+                .selectFrom(i)
+                .where(i.REVISION_ID.`in`(revisionIds), changed)
+                .orderBy(i.REVISION_ID, i.REMOVED, i.POSITION, i.ITEM_ID)
+                .fetchGroups(i.REVISION_ID) { item(it, json) }
+        val papers = paperRows.groupBy({ it.revisionId }, { paper(it) })
+        return revisionIds.associateWith { id ->
+            Snapshot(sections[id].orEmpty(), items[id].orEmpty(), papers[id].orEmpty())
+        }
     }
 
     /** Whether [itemId] is in the body of [meetingId]'s latest revision. */
@@ -158,18 +199,6 @@ class RevisionStore(
             .set(MEETING_REVISION_NOTICE.NOTIFIED_AT, at.atOffset(ZoneOffset.UTC))
             .onConflictDoNothing()
             .execute() == 1
-
-    private fun head(r: MeetingRevisionRecord) =
-        RevisionHead(
-            id = r.id,
-            meetingId = r.meetingId,
-            number = r.number,
-            publishedAt = r.publishedAt.toInstant(),
-            publishedBy = r.publishedBy,
-            note = r.note,
-            notified = r.notified,
-            chairAgreement = r.chairAgreement?.let { json.readValue(it.data(), ChairAgreement::class.java) },
-        )
 
     private fun record(
         item: RevisionItem,
@@ -235,8 +264,27 @@ class RevisionStore(
                 .toTypedArray<String?>()
     }
 
-    private fun item(r: MeetingRevisionItemRecord) =
-        RevisionItem(
+    private companion object {
+        val PRESENTERS = object : TypeReference<List<Presenter>>() {}
+
+        fun head(
+            r: MeetingRevisionRecord,
+            json: JsonMapper,
+        ) = RevisionHead(
+            id = r.id,
+            meetingId = r.meetingId,
+            number = r.number,
+            publishedAt = r.publishedAt.toInstant(),
+            publishedBy = r.publishedBy,
+            note = r.note,
+            notified = r.notified,
+            chairAgreement = r.chairAgreement?.let { json.readValue(it.data(), ChairAgreement::class.java) },
+        )
+
+        fun item(
+            r: MeetingRevisionItemRecord,
+            json: JsonMapper,
+        ) = RevisionItem(
             itemId = r.itemId,
             sectionId = r.sectionId,
             parentId = r.parentItemId,
@@ -269,29 +317,26 @@ class RevisionStore(
                     .toSet(),
         )
 
-    private fun paper(r: MeetingRevisionPaperRecord) =
-        RevisionPaper(
-            paperId = r.paperId,
-            itemId = r.itemId,
-            position = r.position,
-            source = PaperSource.valueOf(r.source),
-            fileId = r.fileId,
-            fileVersionId = r.fileVersionId,
-            title = r.title,
-            restrictedTo = r.restrictedTo?.filterNotNull(),
-            classificationId = r.classificationId,
-            late = PublishedLate.valueOf(r.late),
-            pages = r.pages,
-            removed = r.removed == true,
-            changes =
-                r.changes
-                    .orEmpty()
-                    .filterNotNull()
-                    .map { PaperFlag.valueOf(it) }
-                    .toSet(),
-        )
-
-    private companion object {
-        val PRESENTERS = object : TypeReference<List<Presenter>>() {}
+        fun paper(r: MeetingRevisionPaperRecord) =
+            RevisionPaper(
+                paperId = r.paperId,
+                itemId = r.itemId,
+                position = r.position,
+                source = PaperSource.valueOf(r.source),
+                fileId = r.fileId,
+                fileVersionId = r.fileVersionId,
+                title = r.title,
+                restrictedTo = r.restrictedTo?.filterNotNull(),
+                classificationId = r.classificationId,
+                late = PublishedLate.valueOf(r.late),
+                pages = r.pages,
+                removed = r.removed == true,
+                changes =
+                    r.changes
+                        .orEmpty()
+                        .filterNotNull()
+                        .map { PaperFlag.valueOf(it) }
+                        .toSet(),
+            )
     }
 }

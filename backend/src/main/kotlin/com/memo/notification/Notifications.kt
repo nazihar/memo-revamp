@@ -102,6 +102,12 @@ enum class NotificationKind(
     // A member asked to lift a consent item for discussion (design E03 §1.5): to the secretaries and the chair. Parameters
     // `committee`, `date`, `organisation`, `link`; never the item's title (ADR-0030).
     MEETING_DISCUSSION_REQUESTED(NotificationCategory.WORKFLOW, MailTemplate.MEETING_DISCUSSION_REQUESTED),
+
+    // The hourly meeting sweep (design E03 §9), to the secretaries (the holders of `forums.manage` when there are none),
+    // once per meeting date: the papers were due and the agenda is not published; the meeting ended a day ago and is not
+    // marked as held. Parameters `committee`, `date`, `organisation`, `link`.
+    MEETING_AGENDA_DUE(NotificationCategory.WORKFLOW, MailTemplate.MEETING_AGENDA_DUE),
+    MEETING_NOT_HELD(NotificationCategory.WORKFLOW, MailTemplate.MEETING_NOT_HELD),
 }
 
 /** Who receives a notification; the producer already holds the user, so `notification` never looks people up. */

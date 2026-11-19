@@ -124,6 +124,8 @@ const kindsWithValues = defineMessages<{
   meetingItemWithdrawn: { committee: string; date: string }
   meetingChairCommented: { committee: string; date: string }
   meetingDiscussionRequested: { committee: string; date: string }
+  meetingAgendaDue: { committee: string; date: string }
+  meetingNotHeld: { committee: string; date: string }
 }>({
   signInAlert: { id: 'notifications.kind.signInAlert', defaultMessage: 'New sign-in to your account from {device}' },
   roleGranted: { id: 'notifications.kind.roleGranted', defaultMessage: 'You were given the role {role}' },
@@ -211,6 +213,14 @@ const kindsWithValues = defineMessages<{
     id: 'notifications.kind.meetingDiscussionRequested',
     defaultMessage: 'A member asked to discuss a consent item of {committee} on {date}',
   },
+  meetingAgendaDue: {
+    id: 'notifications.kind.meetingAgendaDue',
+    defaultMessage: 'Papers for {committee} on {date} were due and the agenda is not published',
+  },
+  meetingNotHeld: {
+    id: 'notifications.kind.meetingNotHeld',
+    defaultMessage: 'The meeting of {committee} on {date} is not marked as held',
+  },
 })
 
 const kinds = defineMessages({
@@ -294,6 +304,10 @@ export function notificationText(intl: IntlShape, kind: string, params: Record<s
       return intl.formatMessage(kindsWithValues.meetingChairCommented, meetingValues(params))
     case 'MEETING_DISCUSSION_REQUESTED':
       return intl.formatMessage(kindsWithValues.meetingDiscussionRequested, meetingValues(params))
+    case 'MEETING_AGENDA_DUE':
+      return intl.formatMessage(kindsWithValues.meetingAgendaDue, meetingValues(params))
+    case 'MEETING_NOT_HELD':
+      return intl.formatMessage(kindsWithValues.meetingNotHeld, meetingValues(params))
     case 'PASSWORD_CHANGED':
       return intl.formatMessage(kinds.passwordChanged)
     case 'MFA_RESET':
@@ -358,6 +372,8 @@ const mailTemplates = defineMessages({
     id: 'mail.template.meetingDiscussionRequested',
     defaultMessage: 'Consent item to discuss',
   },
+  MEETING_AGENDA_DUE: { id: 'mail.template.meetingAgendaDue', defaultMessage: 'Agenda not published by the deadline' },
+  MEETING_NOT_HELD: { id: 'mail.template.meetingNotHeld', defaultMessage: 'Meeting not marked as held' },
 })
 
 const templateMessages: Record<string, MessageDescriptor | undefined> = mailTemplates

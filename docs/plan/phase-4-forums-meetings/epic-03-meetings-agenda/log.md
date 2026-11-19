@@ -177,3 +177,54 @@
   - "Late paper (chair agreed)" reads "Late paper": the members' agenda carries `late` without the chair's decision.
   - P2's "by Company Secretary" is left out: `publishedBy` is in the revision list for officers only.
   - The officer's link from the meeting page to the agenda builder comes with T7, which adds the builder's route.
+
+## 2026-11-19 — T5 sweeps and volumes (backend)
+- **Built:**
+  - `meeting/V6__sweep.sql` (E04 T1 holds V5): `meeting.agenda_due_reminded_at` and `meeting.not_held_reminded_at`, the sweep's marks. jOOQ regenerated.
+  - **The meeting sweep** (`MeetingSweep`, design §9 as built): an hourly platform task (`meeting-sweep-tenants`) schedules one `meeting-sweep` per active tenant, run as the system in a tenant transaction (E01's term-reminder pattern).
+    - Agenda due: a DRAFT or SCHEDULED meeting the day after its paper deadline (`AgendaLateness.deadline`, in the meeting's zone) with no published revision → `MEETING_AGENDA_DUE`.
+    - Not marked as held: still SCHEDULED a day after its end → `MEETING_NOT_HELD`.
+    - Both go to the secretaries in office, or to the holders of `forums.manage` when there are none. Each is sent once per date: a guarded update marks the meeting first, and a reschedule clears the mark.
+    - Audited `meeting.reminded.agenda_due` and `meeting.reminded.not_held`. English and Arabic mail templates (subjects without parameters), web labels and `pnpm i18n`.
+  - **The volume** (`MeetingVolume`, test-side SQL like `SearchVolume`), written in about 95 s:
+    - 30 committees × 120 meetings: 3,600 meetings, 180,010 items, 597,630 papers;
+    - 237,200 revision items, 787,488 revision papers and 43,706 audience rows;
+    - reader states, first opens, a placed submission per submission item and a tray of 50;
+    - restrictions, hidden titles and a level above the director's clearance;
+    - the focal meeting: 60 items, 196 papers, five revisions and 40 people, with file rows so it can be published again.
+  - **`MeetingVolumeIT`** (gated on `MEETING_VOLUME` like `ImportVolumeIT`; weekly in `load`, job `meeting-volume`): every read path through its service, a builder change and a publication, against §8 with 2x headroom. **`SqlRecorder`** (test-side jOOQ `ExecuteListenerProvider`) records every statement a path runs, with values inlined. Each statement is `EXPLAIN ANALYZE`d, and a sequential scan of a large meeting or submission table fails the test.
+- **Budgets missed on the first run, fixed without an index:** a committee's meetings 637 ms, "My meetings" 789 ms, the members' agenda with "What changed" 308 ms. Every plan already used its index; the time was per-row reads:
+  - `MeetingAccess.cleared` read the classification levels (a query) for every row, and `role()` read the actor's forum roles (three queries) two or three times per row. Both are now read once per transaction (`TransactionMemo`).
+  - The relation and the paper viewer read the audience one query per meeting; now `MeetingAccess.relations`, `PaperViewers.actors` and `AudienceStore.rowsOf(ids)` read them at once.
+  - The committees of a list were read one by one; now `ForumDirectory.forums(ids)` reads them together.
+  - "What changed" and the counts loaded whole revisions to list the flagged lines. `RevisionStore.snapshots`/`heads(ids)` and `PaperAccess.revisions` now read only the flagged rows of every revision at once (`changedOnly`), with one pair of queries per kind of viewer.
+- **Measured** (local Docker PostgreSQL 18, 3,600 meetings; budget / CI limit):
+
+  | Path | p95 | Budget | Statements |
+  |---|---|---|---|
+  | A committee's meetings (secretary / member) | 24 / 22 ms | 100 | 7 |
+  | "My meetings" (director, 13 meetings with unseen revisions / secretary of 30, 100 rows) | 54 / 36 ms | 100 | 15 / 10 |
+  | Agenda draft (60 items, 196 papers, tray of 50) | 112 ms | 200 | 33 |
+  | Tray | 17 ms | 150 (E02's queue) | 8 |
+  | Members' agenda with "What changed" over 4 revisions (director) / chair | 124 / 48 ms | 200 | 20 / 16 |
+  | Revision list | 32 ms | 100 | 6 |
+  | Paper open (the rule's query, before streaming) | 31 ms | 300 | 7 |
+  | Builder change (edit an item) | 74 ms | 150 | — |
+  | Publish (60 items, 196 papers) | 155 ms | 500 | — |
+- **Plans:** no sequential scan of a meeting or submission table on any path. Each read path uses these indexes:
+  - `meeting_forum_idx` for a committee's meetings;
+  - `meeting_audience_user_idx` / `meeting_audience_pkey` with `meeting_tenant_id_id_key` for "My meetings" (and `meeting_forum_idx` or `meeting_status_idx` for the meetings of the committees a person runs);
+  - `meeting_reader_state_user_idx` and `meeting_revision_tenant_id_meeting_id_number_key` for the counts;
+  - `meeting_item_meeting_idx`, `meeting_paper_meeting_idx`, `meeting_section_meeting_idx` and `meeting_item_attendee_pkey` for the draft;
+  - `forum_submission_tray_idx` for the tray;
+  - `meeting_revision_item_order_idx`, `meeting_revision_paper_item_idx` and `meeting_revision_section_pkey` for the members' agenda and "What changed";
+  - `meeting_revision_paper_paper_idx` for a paper open.
+
+  `files_file` and `files_version` (200 rows in the test tenant) were scanned for the draft's current versions; at production size they take their primary keys.
+- **Deviations:**
+  - The volume is test-side SQL, not a `demo` generator: only the IT uses it.
+  - `MeetingVolumeIT` runs weekly, not in the PR stage, as the test plan says.
+  - The agenda reminder also covers DRAFT meetings.
+  - A paper open is measured up to the pinned paper the rule answers; the streaming is the files module's.
+  - Master's web typecheck broke when E05 T1 (`meetings` on the type version) met T7's template test; its fixture is fixed here.
+- **Verified:** `MeetingSweepIT`, `MeetingVolumeIT` at 3,600, the whole `com.memo.meeting` and `com.memo.forum` packages, `ArchitectureRulesTest`, `ModularityTest`, `ModuleMetadataIT`, `AuditActionCoverageTest`, `AuthorizationMatrixTest`, `EndpointCoverageTest`, `OpenApiContractTest`, `RlsMetaTest`, `JooqCodegenTest`, `MailTemplatesTest` and `EventPayloadRulesTest`. Also ktlint, detekt and SpotBugs; `pnpm typecheck`, `pnpm i18n`, and the notification and agenda-template web tests.

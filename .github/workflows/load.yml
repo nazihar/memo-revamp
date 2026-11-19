@@ -3,7 +3,8 @@ name: load
 # Weekly load stage (TESTING_STRATEGY §7, phase 2 overview E05): synthetic volume V2 (10,000 memos in review with
 # their SLA timers, everyone seated in one division under a head) on the on-prem stack, then the Gatling simulations
 # against it: the inbox (NFR P1: p95 < 300 ms), and search, the inbox by due time, the team view and the dashboards
-# (Phase 3 E05 T8); search at volume V1 (E05 T8) and the legacy import at 10,000 memos (Phase 3 E06 T10).
+# (Phase 3 E05 T8); search at volume V1 (E05 T8), the legacy import at 10,000 memos (Phase 3 E06 T10) and meetings at
+# 3,600 meetings, 180,000 items and 600,000 papers (Phase 4 E03 T5).
 on:
   schedule:
     - cron: '0 3 * * 0'
@@ -153,4 +154,34 @@ jobs:
         with:
           name: import-volume-report
           path: backend/build/test-results/test/TEST-com.memo.imports.ImportVolumeIT.xml
+          retention-days: 30
+
+  meeting-volume:
+    # Meetings at the design's volume (Phase 4 E03 T5, design E03 §8): 3,600 meetings with 180,000 items and 600,000
+    # papers in one tenant, their revisions, audiences and reads. The p95 of each read path (a committee's meetings, "My
+    # meetings" with its counts, the draft, the tray, the members' agenda with "What changed", the revision list, a paper
+    # open), of a builder change and of a publication, against the budgets with 2x headroom for shared runners; and the
+    # plan of every statement those paths run, which may not scan a large table sequentially. The values and the plans are
+    # in the uploaded test report.
+    name: Meetings at volume (MeetingVolumeIT)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: 25
+      - uses: gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6 # v6.4.0
+        with:
+          cache-read-only: true
+      - name: MeetingVolumeIT at 3,600 meetings
+        env:
+          MEETING_VOLUME: '3600'
+        run: ./gradlew :backend:test --tests com.memo.meeting.MeetingVolumeIT --rerun --console=plain
+      - if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: meeting-volume-report
+          path: backend/build/test-results/test/TEST-com.memo.meeting.MeetingVolumeIT.xml
           retention-days: 30

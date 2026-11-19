@@ -18948,6 +18948,12 @@
       "value": "Meeting agenda changedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "mail.template.meetingAgendaDue": [
+    {
+      "type": 0,
+      "value": "Agenda not published by the deadlineSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "mail.template.meetingAgendaPublished": [
     {
       "type": 0,
@@ -18976,6 +18982,12 @@
     {
       "type": 0,
       "value": "Late paper for the chairSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.meetingNotHeld": [
+    {
+      "type": 0,
+      "value": "Meeting not marked as heldSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "mail.template.memoApproved": [
@@ -27393,6 +27405,28 @@
       "value": " has changedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "notifications.kind.meetingAgendaDue": [
+    {
+      "type": 0,
+      "value": "Papers for "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " were due and the agenda is not publishedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "notifications.kind.meetingAgendaPublished": [
     {
       "type": 0,
@@ -27523,6 +27557,28 @@
     {
       "type": 0,
       "value": " needs your agreementSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.meetingNotHeld": [
+    {
+      "type": 0,
+      "value": "The meeting of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " is not marked as heldSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "notifications.kind.memoApproved": [

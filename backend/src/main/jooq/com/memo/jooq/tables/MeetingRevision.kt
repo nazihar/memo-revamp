@@ -5,6 +5,8 @@ package com.memo.jooq.tables
 
 
 import com.memo.jooq.Memo
+import com.memo.jooq.keys.MEETING_DECLARATION_REMINDER__MEETING_DECLARATION_REMINDER_TENANT_ID_MEETING_ID_REVISION_FKEY
+import com.memo.jooq.keys.MEETING_DECLARATION_REVIEW__MEETING_DECLARATION_REVIEW_TENANT_ID_MEETING_ID_REVISION_FKEY
 import com.memo.jooq.keys.MEETING_REVISION_ITEM__MEETING_REVISION_ITEM_TENANT_ID_REVISION_ID_FKEY
 import com.memo.jooq.keys.MEETING_REVISION_NOTICE__MEETING_REVISION_NOTICE_TENANT_ID_REVISION_ID_FKEY
 import com.memo.jooq.keys.MEETING_REVISION_PAPER__MEETING_REVISION_PAPER_TENANT_ID_REVISION_ID_FKEY
@@ -14,6 +16,8 @@ import com.memo.jooq.keys.MEETING_REVISION_TENANT_ID_ID_KEY
 import com.memo.jooq.keys.MEETING_REVISION_TENANT_ID_MEETING_ID_NUMBER_KEY
 import com.memo.jooq.keys.MEETING_REVISION__MEETING_REVISION_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.tables.MeetingAgenda.MeetingAgendaPath
+import com.memo.jooq.tables.MeetingDeclarationReminder.MeetingDeclarationReminderPath
+import com.memo.jooq.tables.MeetingDeclarationReview.MeetingDeclarationReviewPath
 import com.memo.jooq.tables.MeetingRevisionItem.MeetingRevisionItemPath
 import com.memo.jooq.tables.MeetingRevisionNotice.MeetingRevisionNoticePath
 import com.memo.jooq.tables.MeetingRevisionPaper.MeetingRevisionPaperPath
@@ -174,6 +178,38 @@ open class MeetingRevision(
      */
     fun meetingAgenda(): MeetingAgendaPath = meetingAgenda
     val meetingAgenda: MeetingAgendaPath by lazy { MeetingAgendaPath(this, MEETING_REVISION__MEETING_REVISION_TENANT_ID_MEETING_ID_FKEY, null) }
+
+    private lateinit var _meetingDeclarationReminder: MeetingDeclarationReminderPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.meeting_declaration_reminder</code> table
+     */
+    fun meetingDeclarationReminder(): MeetingDeclarationReminderPath {
+        if (!this::_meetingDeclarationReminder.isInitialized)
+            _meetingDeclarationReminder = MeetingDeclarationReminderPath(this, null, MEETING_DECLARATION_REMINDER__MEETING_DECLARATION_REMINDER_TENANT_ID_MEETING_ID_REVISION_FKEY.inverseKey)
+
+        return _meetingDeclarationReminder;
+    }
+
+    val meetingDeclarationReminder: MeetingDeclarationReminderPath
+        get(): MeetingDeclarationReminderPath = meetingDeclarationReminder()
+
+    private lateinit var _meetingDeclarationReview: MeetingDeclarationReviewPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.meeting_declaration_review</code> table
+     */
+    fun meetingDeclarationReview(): MeetingDeclarationReviewPath {
+        if (!this::_meetingDeclarationReview.isInitialized)
+            _meetingDeclarationReview = MeetingDeclarationReviewPath(this, null, MEETING_DECLARATION_REVIEW__MEETING_DECLARATION_REVIEW_TENANT_ID_MEETING_ID_REVISION_FKEY.inverseKey)
+
+        return _meetingDeclarationReview;
+    }
+
+    val meetingDeclarationReview: MeetingDeclarationReviewPath
+        get(): MeetingDeclarationReviewPath = meetingDeclarationReview()
 
     private lateinit var _meetingRevisionItem: MeetingRevisionItemPath
 

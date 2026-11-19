@@ -382,6 +382,12 @@
             "format" : "uuid",
             "type" : "string"
           },
+          "declarations" : {
+            "items" : {
+              "$ref" : "#/components/schemas/DeclarationLineResponse"
+            },
+            "type" : "array"
+          },
           "description" : {
             "type" : [ "string", "null" ]
           },
@@ -411,6 +417,13 @@
           "minutes" : {
             "format" : "int32",
             "type" : [ "integer", "null" ]
+          },
+          "myDeclaration" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/DeclarationResponse"
+            }, {
+              "type" : "null"
+            } ]
           },
           "number" : {
             "type" : [ "string", "null" ]
@@ -1857,6 +1870,143 @@
           }
         },
         "required" : [ "decided", "medianDays", "p90Days", "type" ],
+        "type" : "object"
+      },
+      "DeclarationLineResponse" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "intent" : {
+            "enum" : [ "LEAVE", "ASK_CHAIR" ],
+            "type" : "string"
+          },
+          "state" : {
+            "enum" : [ "RECUSED", "AWAITING_RULING", "TAKING_PART", "WITHDRAWN" ],
+            "type" : "string"
+          },
+          "user" : {
+            "$ref" : "#/components/schemas/PersonResponse"
+          }
+        },
+        "required" : [ "id", "intent", "state", "user" ],
+        "type" : "object"
+      },
+      "DeclarationRequest" : {
+        "properties" : {
+          "how" : {
+            "enum" : [ "IN_APP", "SYSTEM", "AT_MEETING", "IN_PERSON", "EMAIL", "PHONE" ],
+            "type" : [ "string", "null" ]
+          },
+          "howNote" : {
+            "type" : [ "string", "null" ]
+          },
+          "intent" : {
+            "enum" : [ "LEAVE", "ASK_CHAIR" ],
+            "type" : "string"
+          },
+          "nature" : {
+            "type" : [ "string", "null" ]
+          },
+          "onBehalfOf" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "reason" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "DeclarationResponse" : {
+        "properties" : {
+          "atMeeting" : {
+            "type" : "boolean"
+          },
+          "correction" : {
+            "type" : "boolean"
+          },
+          "declaredAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "how" : {
+            "enum" : [ "IN_APP", "SYSTEM", "AT_MEETING", "IN_PERSON", "EMAIL", "PHONE" ],
+            "type" : "string"
+          },
+          "howNote" : {
+            "type" : [ "string", "null" ]
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "intent" : {
+            "enum" : [ "LEAVE", "ASK_CHAIR" ],
+            "type" : "string"
+          },
+          "itemId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "itemNumber" : {
+            "type" : [ "string", "null" ]
+          },
+          "itemTitle" : {
+            "type" : [ "string", "null" ]
+          },
+          "meetingId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "nature" : {
+            "type" : "string"
+          },
+          "recordedBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/PersonResponse"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "revision" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "ruling" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/RulingResponse"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "source" : {
+            "enum" : [ "SELF", "ON_BEHALF", "MEMO", "EARLIER_MEETING", "REGISTER" ],
+            "type" : "string"
+          },
+          "state" : {
+            "enum" : [ "RECUSED", "AWAITING_RULING", "TAKING_PART", "WITHDRAWN" ],
+            "type" : "string"
+          },
+          "user" : {
+            "$ref" : "#/components/schemas/PersonResponse"
+          },
+          "version" : {
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "atMeeting", "correction", "declaredAt", "how", "id", "intent", "itemId", "meetingId", "nature", "source", "state", "user", "version" ],
+        "type" : "object"
+      },
+      "DeclarationReviewRequest" : {
+        "properties" : {
+          "revision" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
         "type" : "object"
       },
       "DefinitionChoice" : {
@@ -4072,6 +4222,15 @@
         "required" : [ "files" ],
         "type" : "object"
       },
+      "IntentRequest" : {
+        "properties" : {
+          "intent" : {
+            "enum" : [ "LEAVE", "ASK_CHAIR" ],
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
       "InterestRequest" : {
         "properties" : {
           "reason" : {
@@ -5194,6 +5353,12 @@
             },
             "type" : "array"
           },
+          "declarations" : {
+            "items" : {
+              "$ref" : "#/components/schemas/DeclarationLineResponse"
+            },
+            "type" : "array"
+          },
           "description" : {
             "type" : [ "string", "null" ]
           },
@@ -5223,6 +5388,13 @@
           "minutes" : {
             "format" : "int32",
             "type" : [ "integer", "null" ]
+          },
+          "myDeclaration" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/DeclarationResponse"
+            }, {
+              "type" : "null"
+            } ]
           },
           "number" : {
             "type" : [ "string", "null" ]
@@ -6190,6 +6362,36 @@
           }
         },
         "required" : [ "name", "rank" ],
+        "type" : "object"
+      },
+      "MyDeclarationsResponse" : {
+        "properties" : {
+          "declarations" : {
+            "items" : {
+              "$ref" : "#/components/schemas/DeclarationResponse"
+            },
+            "type" : "array"
+          },
+          "latestRevision" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "meetingId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "reviewedRevision" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "toReview" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ReviewItemResponse"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "declarations", "latestRevision", "meetingId", "toReview" ],
         "type" : "object"
       },
       "MyForumResponse" : {
@@ -8286,6 +8488,22 @@
         "required" : [ "from", "years" ],
         "type" : "object"
       },
+      "ReviewItemResponse" : {
+        "properties" : {
+          "itemId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "number" : {
+            "type" : [ "string", "null" ]
+          },
+          "title" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "itemId", "title" ],
+        "type" : "object"
+      },
       "ReviewRemarkRequest" : {
         "properties" : {
           "remark" : {
@@ -8564,6 +8782,60 @@
           }
         },
         "required" : [ "failed", "imported", "notStarted", "read", "rejected", "rejectedByCode", "skipped" ],
+        "type" : "object"
+      },
+      "RulingRequest" : {
+        "properties" : {
+          "how" : {
+            "enum" : [ "IN_APP", "SYSTEM", "AT_MEETING", "IN_PERSON", "EMAIL", "PHONE" ],
+            "type" : [ "string", "null" ]
+          },
+          "note" : {
+            "type" : [ "string", "null" ]
+          },
+          "onBehalf" : {
+            "type" : "boolean"
+          },
+          "outcome" : {
+            "enum" : [ "LEAVE", "TAKE_PART" ],
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "RulingResponse" : {
+        "properties" : {
+          "at" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "by" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/PersonResponse"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "how" : {
+            "enum" : [ "IN_APP", "SYSTEM", "AT_MEETING", "IN_PERSON", "EMAIL", "PHONE" ],
+            "type" : "string"
+          },
+          "note" : {
+            "type" : [ "string", "null" ]
+          },
+          "onBehalfBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/PersonResponse"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "outcome" : {
+            "enum" : [ "LEAVE", "TAKE_PART" ],
+            "type" : "string"
+          }
+        },
+        "required" : [ "at", "how", "outcome" ],
         "type" : "object"
       },
       "SavedSearchRequest" : {
@@ -10198,6 +10470,14 @@
           }
         },
         "required" : [ "count", "revisions", "since" ],
+        "type" : "object"
+      },
+      "WithdrawDeclarationRequest" : {
+        "properties" : {
+          "reason" : {
+            "type" : [ "string", "null" ]
+          }
+        },
         "type" : "object"
       },
       "WorkflowView" : {
@@ -18594,6 +18874,231 @@
         "tags" : [ "meeting" ]
       }
     },
+    "/api/v1/meetings/{meetingId}/declarations/mine" : {
+      "get" : {
+        "operationId" : "getMyDeclarations",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MyDeclarationsResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The actor's declarations of interest in a meeting, and the items to review",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/declarations/review" : {
+      "post" : {
+        "operationId" : "confirmDeclarationReview",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/DeclarationReviewRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MyDeclarationsResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Confirm \"I have declared my interests\" for the latest revision",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/declarations/{declarationId}/intent" : {
+      "post" : {
+        "operationId" : "changeDeclarationIntent",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "declarationId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/IntentRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DeclarationResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The declarant chooses to leave the room, or asks the chair to decide",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/declarations/{declarationId}/ruling" : {
+      "post" : {
+        "operationId" : "ruleOnDeclaration",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "declarationId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RulingRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DeclarationResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The chair rules on a declaration, or a secretary records the chair's ruling",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/declarations/{declarationId}/withdraw" : {
+      "post" : {
+        "operationId" : "withdrawDeclaration",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "declarationId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/WithdrawDeclarationRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DeclarationResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Withdraw a declaration of interest, with a reason",
+        "tags" : [ "meeting" ]
+      }
+    },
     "/api/v1/meetings/{meetingId}/end" : {
       "post" : {
         "operationId" : "endMeeting",
@@ -18700,6 +19205,59 @@
           }
         },
         "summary" : "Remove a guest from a meeting",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/items/{itemId}/declarations" : {
+      "post" : {
+        "operationId" : "declareInterest",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "itemId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/DeclarationRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DeclarationResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Declare an interest in an agenda item, or record one for someone",
         "tags" : [ "meeting" ]
       }
     },

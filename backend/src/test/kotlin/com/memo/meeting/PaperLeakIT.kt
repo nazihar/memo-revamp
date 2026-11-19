@@ -75,6 +75,11 @@ class PaperLeakIT : PaperFixture() {
                 (if (person != d3) listOf(CANARY_CAMERA) else emptyList()) +
                 (if (person != guest) listOf(CANARY_CONFIDENTIAL) else emptyList())
 
+        /** The items whose title [person] may not read: d3 reads the members-only one, the guest the confidential one. */
+        fun untitled(person: Person): List<UUID> =
+            listOf(hidden) + (if (person != d3) listOf(camera) else emptyList()) +
+                (if (person != guest) listOf(confidential) else emptyList())
+
         /** The papers [person] may not open. */
         fun closed(person: Person): List<UUID> =
             when (person) {
@@ -153,6 +158,32 @@ class PaperLeakIT : PaperFixture() {
                 // A guest has no role in the committee: its list is 404 to them.
                 val list = read("/api/v1/forums/$brc/meetings", person.session)
                 if (person == guest) assertThat(list).hasStatus(HttpStatus.NOT_FOUND) else clean(p, person, list)
+            },
+            Surface.DECLARATIONS to { p, person ->
+                val base = "/api/v1/meetings/${p.meeting.id}"
+                // No declaration on an item whose title the person may not read: 404, naming nothing.
+                p.untitled(person).forEach { item ->
+                    val declared = send(HttpMethod.POST, "$base/items/$item/declarations", person, """{"nature":"An interest"}""")
+                    assertThat(declared).hasStatus(HttpStatus.NOT_FOUND)
+                    p.canaries(person).forEach { assertThat(declared.response.contentAsString).doesNotContain(it) }
+                }
+                val stranger = UUID.randomUUID()
+                listOf("intent" to """{"intent":"LEAVE"}""", "ruling" to """{"outcome":"LEAVE"}""", "withdraw" to """{"reason":"x"}""")
+                    .forEach { (verb, body) ->
+                        val changed =
+                            send(HttpMethod.POST, "$base/declarations/$stranger/$verb", person, body, mapOf("If-Match" to "\"0\""))
+                        assertThat(changed).hasStatus(HttpStatus.NOT_FOUND)
+                    }
+                // The declarant's own view and the review: the items to review name no title the person may not read.
+                val mine = read("$base/declarations/mine", person.session)
+                val review = send(HttpMethod.POST, "$base/declarations/review", person, """{"revision":2}""", emptyMap())
+                if (person == auditor) {
+                    assertThat(mine).hasStatus(HttpStatus.FORBIDDEN)
+                    assertThat(review).hasStatus(HttpStatus.FORBIDDEN)
+                } else {
+                    clean(p, person, mine)
+                    clean(p, person, review)
+                }
             },
         )
 

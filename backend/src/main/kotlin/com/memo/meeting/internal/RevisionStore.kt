@@ -13,6 +13,7 @@ import com.memo.jooq.tables.references.MEETING_REVISION_NOTICE
 import com.memo.jooq.tables.references.MEETING_REVISION_PAPER
 import com.memo.jooq.tables.references.MEETING_REVISION_SECTION
 import org.jooq.JSONB
+import org.jooq.impl.DSL
 import org.springframework.stereotype.Repository
 import tools.jackson.core.type.TypeReference
 import tools.jackson.databind.json.JsonMapper
@@ -85,7 +86,7 @@ class RevisionStore(
             .selectFrom(MEETING_REVISION)
             .where(MEETING_REVISION.MEETING_ID.eq(meetingId))
             .orderBy(MEETING_REVISION.NUMBER)
-            .fetch { head(it) }
+            .fetch { head(it, json) }
 
     /** Everything revision [revisionId] carries, in agenda order: the body and the removed rows. */
     fun snapshot(revisionId: UUID): Snapshot {
@@ -138,6 +139,21 @@ class RevisionStore(
         )
     }
 
+    /** For each item ever in the body of a revision of [meetingId], the first revision that carried it (E04's review). */
+    fun firstPublished(meetingId: UUID): Map<UUID, Int> {
+        val first = DSL.min(MEETING_REVISION.NUMBER)
+        return tenantDsl
+            .current()
+            .select(MEETING_REVISION_ITEM.ITEM_ID, first)
+            .from(MEETING_REVISION_ITEM)
+            .join(MEETING_REVISION)
+            .on(MEETING_REVISION.TENANT_ID.eq(MEETING_REVISION_ITEM.TENANT_ID), MEETING_REVISION.ID.eq(MEETING_REVISION_ITEM.REVISION_ID))
+            .where(MEETING_REVISION.MEETING_ID.eq(meetingId), MEETING_REVISION_ITEM.REMOVED.isFalse)
+            .groupBy(MEETING_REVISION_ITEM.ITEM_ID)
+            .fetch()
+            .associate { checkNotNull(it.value1()) to checkNotNull(it.value2()) }
+    }
+
     /**
      * Records that [userId] is told of [revisionId] as [kind]: the dedupe key of the per-recipient notifications (design E03
      * §9). False when they already were.
@@ -158,18 +174,6 @@ class RevisionStore(
             .set(MEETING_REVISION_NOTICE.NOTIFIED_AT, at.atOffset(ZoneOffset.UTC))
             .onConflictDoNothing()
             .execute() == 1
-
-    private fun head(r: MeetingRevisionRecord) =
-        RevisionHead(
-            id = r.id,
-            meetingId = r.meetingId,
-            number = r.number,
-            publishedAt = r.publishedAt.toInstant(),
-            publishedBy = r.publishedBy,
-            note = r.note,
-            notified = r.notified,
-            chairAgreement = r.chairAgreement?.let { json.readValue(it.data(), ChairAgreement::class.java) },
-        )
 
     private fun record(
         item: RevisionItem,
@@ -293,5 +297,19 @@ class RevisionStore(
 
     private companion object {
         val PRESENTERS = object : TypeReference<List<Presenter>>() {}
+
+        fun head(
+            r: MeetingRevisionRecord,
+            json: JsonMapper,
+        ) = RevisionHead(
+            id = r.id,
+            meetingId = r.meetingId,
+            number = r.number,
+            publishedAt = r.publishedAt.toInstant(),
+            publishedBy = r.publishedBy,
+            note = r.note,
+            notified = r.notified,
+            chairAgreement = r.chairAgreement?.let { json.readValue(it.data(), ChairAgreement::class.java) },
+        )
     }
 }

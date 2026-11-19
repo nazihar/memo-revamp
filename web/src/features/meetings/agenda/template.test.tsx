@@ -110,6 +110,7 @@ describe('the committee type’s Agenda tab (Phase 4 E03 T7, flow R)', () => {
       termPolicy: { reminderDays: [] },
       submissionPolicy: { deadlineWorkingDays: 5, lateMode: 'CHAIR_APPROVAL', triageWorkingDays: 5 },
       agenda: template,
+      meetings: { invitationTitle: 'NAME', replyDeadlineWorkingDays: 2, replyReminder: true, meetingReminder: true },
       createdAt: '2026-11-18T08:00:00Z',
     }
     const bodies: { agenda?: AgendaPolicy }[] = []

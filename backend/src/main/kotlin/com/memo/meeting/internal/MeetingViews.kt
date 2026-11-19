@@ -197,8 +197,9 @@ class MeetingReads(
 
     private fun summaries(rows: List<MeetingRow>): List<MeetingSummaryResponse> {
         val forums = forums(rows)
+        val relations = access.relations(rows)
         return rows.mapNotNull { meeting ->
-            access.relation(meeting)?.let { relation ->
+            relations[meeting.id]?.let { relation ->
                 val forum = forums.getValue(meeting.forumId)
                 val place = relation != MeetingRelation.READER
                 MeetingSummaryResponse(
@@ -224,11 +225,11 @@ class MeetingReads(
         }
     }
 
-    private fun forums(rows: List<MeetingRow>): Map<UUID, ForumRef> =
-        rows
-            .map { it.forumId }
-            .distinct()
-            .associateWith { checkNotNull(directory.forum(it)) { "forum $it" } }
+    private fun forums(rows: List<MeetingRow>): Map<UUID, ForumRef> {
+        val ids = rows.map { it.forumId }.toSet()
+        val found = directory.forums(ids)
+        return ids.associateWith { checkNotNull(found[it]) { "forum $it" } }
+    }
 
     private fun OrgDirectory.startOf(day: LocalDate): Instant = day.atStartOfDay(zone()).toInstant()
 

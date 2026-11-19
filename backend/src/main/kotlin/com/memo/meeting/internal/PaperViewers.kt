@@ -26,17 +26,24 @@ class PaperViewers(
     private val org: OrgDirectory,
 ) {
     /** The actor on [meeting]; null when nobody is signed in. */
-    fun actor(meeting: MeetingRow): PaperViewer? =
-        actorOrNull()?.let { user ->
-            viewer(
-                meeting = meeting,
-                userId = user,
-                officer = access.officer(meeting.forumId),
-                rank = policy.clearanceRank(),
-                reader = access.readsAll() && access.cleared(meeting),
-                rows = audience.rowsOf(meeting.id, user),
-            )
+    fun actor(meeting: MeetingRow): PaperViewer? = actors(listOf(meeting))[meeting.id]
+
+    /** The actor on each of [meetings], their audience rows read in one query ("My meetings", design E03 §8). */
+    fun actors(meetings: Collection<MeetingRow>): Map<UUID, PaperViewer> {
+        val user = actorOrNull() ?: return emptyMap()
+        val rows = audience.rowsOf(meetings.map { it.id }, user)
+        return meetings.associate { meeting ->
+            meeting.id to
+                viewer(
+                    meeting = meeting,
+                    userId = user,
+                    officer = access.officer(meeting.forumId),
+                    rank = policy.clearanceRank(),
+                    reader = access.readsAll() && access.cleared(meeting),
+                    rows = rows[meeting.id].orEmpty(),
+                )
         }
+    }
 
     /** [userId] on [meeting], with their audience [rows] (all of the meeting's when not given) and clearance [rank]. */
     fun of(
@@ -71,7 +78,7 @@ class PaperViewers(
             userId = userId,
             officer = officer,
             cleared =
-                clearances
+                access
                     .levels()
                     .filter { it.rank <= rank }
                     .map { it.id }

@@ -111,6 +111,14 @@ open class MeetingRecord private constructor() : UpdatableRecordImpl<MeetingReco
         set(value): Unit = set(22, value)
         get(): Long? = get(22) as Long?
 
+    open var agendaDueRemindedAt: OffsetDateTime?
+        set(value): Unit = set(23, value)
+        get(): OffsetDateTime? = get(23) as OffsetDateTime?
+
+    open var notHeldRemindedAt: OffsetDateTime?
+        set(value): Unit = set(24, value)
+        get(): OffsetDateTime? = get(24) as OffsetDateTime?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -120,7 +128,7 @@ open class MeetingRecord private constructor() : UpdatableRecordImpl<MeetingReco
     /**
      * Create a detached, initialised MeetingRecord
      */
-    constructor(id: UUID, tenantId: UUID, forumId: UUID, forumTypeVersion: Int, kind: String, title: String? = null, startsAt: OffsetDateTime, endsAt: OffsetDateTime, timeZone: String, mode: String, location: String? = null, joinUrl: String? = null, joinDetails: String? = null, classificationId: UUID, number: Int? = null, numberYear: Int? = null, label: String? = null, status: String? = null, statusReason: String? = null, createdBy: UUID? = null, createdAt: OffsetDateTime, updatedAt: OffsetDateTime, version: Long? = null): this() {
+    constructor(id: UUID, tenantId: UUID, forumId: UUID, forumTypeVersion: Int, kind: String, title: String? = null, startsAt: OffsetDateTime, endsAt: OffsetDateTime, timeZone: String, mode: String, location: String? = null, joinUrl: String? = null, joinDetails: String? = null, classificationId: UUID, number: Int? = null, numberYear: Int? = null, label: String? = null, status: String? = null, statusReason: String? = null, createdBy: UUID? = null, createdAt: OffsetDateTime, updatedAt: OffsetDateTime, version: Long? = null, agendaDueRemindedAt: OffsetDateTime? = null, notHeldRemindedAt: OffsetDateTime? = null): this() {
         this.id = id
         this.tenantId = tenantId
         this.forumId = forumId
@@ -144,6 +152,8 @@ open class MeetingRecord private constructor() : UpdatableRecordImpl<MeetingReco
         this.createdAt = createdAt
         this.updatedAt = updatedAt
         this.version = version
+        this.agendaDueRemindedAt = agendaDueRemindedAt
+        this.notHeldRemindedAt = notHeldRemindedAt
         resetTouchedOnNotNull()
     }
 }

@@ -56,7 +56,27 @@ class AudienceStore(
     fun rowsOf(
         meetingId: UUID,
         userId: UUID,
-    ): List<AudienceRow> = audience(meetingId).filter { it.userId == userId }
+    ): List<AudienceRow> = rowsOf(listOf(meetingId), userId)[meetingId].orEmpty()
+
+    /** [userId]'s current audience rows in each of [meetingIds], in one query (the lists, design E03 §8). */
+    fun rowsOf(
+        meetingIds: Collection<UUID>,
+        userId: UUID,
+    ): Map<UUID, List<AudienceRow>> =
+        if (meetingIds.isEmpty()) {
+            emptyMap()
+        } else {
+            tenantDsl
+                .current()
+                .selectFrom(MEETING_AUDIENCE)
+                .where(
+                    MEETING_AUDIENCE.USER_ID.eq(userId),
+                    MEETING_AUDIENCE.MEETING_ID.`in`(meetingIds),
+                    MEETING_AUDIENCE.REMOVED_AT.isNull,
+                ).orderBy(MEETING_AUDIENCE.MEETING_ID, MEETING_AUDIENCE.SOURCE)
+                .fetch { AudienceRow(it.meetingId, it.userId, AudienceSource.valueOf(it.source), it.membersOnly, it.until) }
+                .groupBy { it.meetingId }
+        }
 
     /** The meetings [userId] has a current audience row in. */
     fun meetingsOf(userId: UUID): Set<UUID> =

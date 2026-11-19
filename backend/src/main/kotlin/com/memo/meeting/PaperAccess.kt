@@ -214,35 +214,59 @@ class PaperAccess(
             .and(exclusions.excludedFromPapers(viewer.userId, item.item, item.parent).not())
             .and(if (viewer.officer) DSL.trueCondition() else named(viewer.userId, paper.restrictedTo))
 
-    /** What [viewer] sees of revision [revisionId]: its removed rows ("What changed") are judged as they were published. */
+    /**
+     * What [viewer] sees of revision [revisionId]: its removed rows ("What changed") are judged as they were published.
+     * With [changedOnly], only the flagged papers and the items that are flagged or carry one they may read: what "What
+     * changed" lists (design E03 §8).
+     */
     fun revision(
         viewer: PaperViewer,
         revisionId: UUID,
-    ): Visibility {
+        changedOnly: Boolean = false,
+    ): Visibility = revisions(viewer, listOf(revisionId), changedOnly).getValue(revisionId)
+
+    /** [revision] for each of [revisionIds] (of one meeting or several, as [viewer] sees each), in two queries. */
+    fun revisions(
+        viewer: PaperViewer,
+        revisionIds: Collection<UUID>,
+        changedOnly: Boolean = false,
+    ): Map<UUID, Visibility> {
+        if (revisionIds.isEmpty()) return emptyMap()
         val dsl = tenantDsl.current()
         val i = MEETING_REVISION_ITEM
         val p = MEETING_REVISION_PAPER
+        val papers =
+            dsl
+                .select(p.REVISION_ID, p.PAPER_ID, p.ITEM_ID)
+                .from(p)
+                .join(i)
+                .on(i.TENANT_ID.eq(p.TENANT_ID), i.REVISION_ID.eq(p.REVISION_ID), i.ITEM_ID.eq(p.ITEM_ID))
+                .where(
+                    p.REVISION_ID.`in`(revisionIds),
+                    if (changedOnly) DSL.cardinality(p.CHANGES).gt(0) else DSL.noCondition(),
+                    paperCondition(viewer, REVISION_ITEM, REVISION_PAPER),
+                ).fetch()
+        val changed =
+            if (changedOnly) {
+                DSL.cardinality(i.CHANGES).gt(0).or(
+                    DSL.row(i.REVISION_ID, i.ITEM_ID).`in`(papers.map { DSL.row(it.value1(), it.value3()) }.distinct()),
+                )
+            } else {
+                DSL.noCondition()
+            }
         val lines =
             dsl
                 .select(
+                    i.REVISION_ID,
                     i.ITEM_ID,
                     DSL.field(itemCondition(viewer, REVISION_ITEM)),
                     DSL.field(titleCondition(viewer, REVISION_ITEM)),
                 ).from(i)
-                .where(i.REVISION_ID.eq(revisionId), lineCondition(viewer, REVISION_ITEM))
-                .fetch { checkNotNull(it.value1()) to access(it.value2(), it.value3()) }
-                .toMap()
-        val papers =
-            dsl
-                .select(p.PAPER_ID)
-                .from(p)
-                .join(i)
-                .on(i.TENANT_ID.eq(p.TENANT_ID), i.REVISION_ID.eq(p.REVISION_ID), i.ITEM_ID.eq(p.ITEM_ID))
-                .where(p.REVISION_ID.eq(revisionId), paperCondition(viewer, REVISION_ITEM, REVISION_PAPER))
-                .fetchSet(p.PAPER_ID)
-                .filterNotNull()
-                .toSet()
-        return Visibility(lines, papers)
+                .where(i.REVISION_ID.`in`(revisionIds), changed, lineCondition(viewer, REVISION_ITEM))
+                .fetch()
+                .groupBy({ it.value1() }, { checkNotNull(it.value2()) to access(it.value3(), it.value4()) })
+        val readable = papers.groupBy({ it.value1() }, { checkNotNull(it.value2()) })
+        return revisionIds.associateWith { id -> Visibility(lines[id].orEmpty().toMap(), readable[id].orEmpty().toSet()) }
     }
 
     /** What [viewer] would see of [meetingId]'s draft if it were published now (the preview "as a member"). */
@@ -381,12 +405,12 @@ class PaperAccess(
         return !dsl.fetchExists(draft) && !dsl.fetchExists(published)
     }
 
-    private fun cleared(
-        viewer: PaperViewer,
-        level: Field<UUID?>,
-    ): Condition = if (viewer.cleared.isEmpty()) DSL.falseCondition() else level.`in`(viewer.cleared)
-
     private companion object {
+        fun cleared(
+            viewer: PaperViewer,
+            level: Field<UUID?>,
+        ): Condition = if (viewer.cleared.isEmpty()) DSL.falseCondition() else level.`in`(viewer.cleared)
+
         /** Item flags judged on the item itself; paper flags are judged on each paper the person may read. */
         val ITEM_CHANGES = listOf("ADDED", "REMOVED", "MOVED", "RETITLED", "TIME_CHANGED", "LATE", "TABLED")
 

@@ -204,6 +204,16 @@ open class Meeting(
      */
     val VERSION: TableField<MeetingRecord, Long?> = createField(DSL.name("version"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BIGINT)), this, "")
 
+    /**
+     * The column <code>memo.meeting.agenda_due_reminded_at</code>.
+     */
+    val AGENDA_DUE_REMINDED_AT: TableField<MeetingRecord, OffsetDateTime?> = createField(DSL.name("agenda_due_reminded_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
+
+    /**
+     * The column <code>memo.meeting.not_held_reminded_at</code>.
+     */
+    val NOT_HELD_REMINDED_AT: TableField<MeetingRecord, OffsetDateTime?> = createField(DSL.name("not_held_reminded_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
+
     private constructor(alias: Name, aliased: Table<MeetingRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<MeetingRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<MeetingRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)

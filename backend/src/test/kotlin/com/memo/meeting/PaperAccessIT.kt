@@ -174,8 +174,9 @@ class PaperAccessIT : PaperFixture() {
         publish(meeting)
         assertThat(open(d2, meeting, paper)).hasStatusOk()
 
-        // d2's term ended yesterday: still on the meeting's audience (it is their history), out of office today.
-        commit("update meeting_audience set until = current_date - 1 where meeting_id = ? and user_id = ?", meeting.id, d2.id)
+        // d2's term has ended: still on the meeting's audience (it is their history), out of office today. Two days back, not
+        // one: the database's date and the tenant's today differ by a day for six hours each night (CI, 2026-11-20).
+        commit("update meeting_audience set until = current_date - 2 where meeting_id = ? and user_id = ?", meeting.id, d2.id)
         assertThat(read("/api/v1/meetings/${meeting.id}", d2.session)).hasStatusOk()
         assertThat(agenda(d2, meeting).lines()).isEmpty()
         assertThat(open(d2, meeting, paper)).hasStatus(HttpStatus.NOT_FOUND)

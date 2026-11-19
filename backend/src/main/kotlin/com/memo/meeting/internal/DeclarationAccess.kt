@@ -21,6 +21,8 @@ data class DeclarableItem(
     val number: String?,
     /** Its row in the latest revision; null when it is not published (yet, or any more). */
     val published: RevisionItem?,
+    /** The memo a submission item was made from (design E04 §1.4); null otherwise. */
+    val memoId: UUID? = null,
 ) {
     /** The item and, for a sub-item, its parent: a declaration on either recuses (design E04 §1.6). */
     val scope: List<UUID> get() = listOfNotNull(id, parentId)
@@ -46,11 +48,11 @@ data class DeclarationAgenda(
         val live = draft[id]
         return when {
             row != null && row.kind != ItemKind.BREAK -> {
-                DeclarableItem(row.itemId, row.parentId, row.kind, row.title, row.titleHidden, row.number, row)
+                DeclarableItem(row.itemId, row.parentId, row.kind, row.title, row.titleHidden, row.number, row, row.memoId)
             }
 
             officer && live != null && live.kind != ItemKind.BREAK -> {
-                DeclarableItem(live.id, live.parentId, live.kind, live.title, live.titleHidden, draftNumbers[live.id], null)
+                DeclarableItem(live.id, live.parentId, live.kind, live.title, live.titleHidden, draftNumbers[live.id], null, live.memoId)
             }
 
             else -> {
@@ -137,6 +139,11 @@ class DeclarationAccess(
     ): Boolean =
         audience.rowsOf(meeting.id, userId).isNotEmpty() ||
             directory.membersOn(meeting.forumId).any { it.userId == userId && it.role in OFFICER_SEATS }
+
+    /** The people a carried declaration may go to (design E04 §1.4): [meeting]'s audience and its forum's officers. */
+    fun audienceAndOfficers(meeting: MeetingRow): Set<UUID> =
+        audience.audience(meeting.id).map { it.userId }.toSet() +
+            directory.membersOn(meeting.forumId).filter { it.role in OFFICER_SEATS }.map { it.userId }
 
     /**
      * Who rules on [declarant]'s declaration on [item] (design E04 §1.2): the chair in office, or the vice-chair when the

@@ -58,6 +58,20 @@ class MemoReadable(
             .fetchOne(MEMO_PARTICIPANT.KIND)
             ?.let(ParticipantKind::valueOf)
 
+    /** The people among [users] with an active participant row of [memoId], of any kind (not the unit grants). */
+    fun participantsAmong(
+        memoId: UUID,
+        users: Collection<UUID>,
+    ): Set<UUID> =
+        tenantDsl
+            .current()
+            .selectDistinct(MEMO_PARTICIPANT.USER_ID)
+            .from(MEMO_PARTICIPANT)
+            .where(MEMO_PARTICIPANT.MEMO_ID.eq(memoId), MEMO_PARTICIPANT.USER_ID.`in`(users.toSet()), active())
+            .fetchSet(MEMO_PARTICIPANT.USER_ID)
+            .filterNotNull()
+            .toSet()
+
     /** Memos whose origin unit is in one of the actor's `memo.read.unit` scopes (none for most people). */
     private fun units(): Condition =
         if (policy.holdsAnywhere(Permission.MEMO_READ_UNIT)) {

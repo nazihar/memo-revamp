@@ -99,6 +99,7 @@ class AgendaPlacing(
     private val meetings: MeetingStore,
     private val revisions: RevisionStore,
     private val ids: IdGenerator,
+    private val carryOver: DeclarationCarryOver,
 ) {
     /** Places the submission of [input] on the draft open in [edit]: accepted first when queued (design E03 §1.8). */
     fun place(
@@ -149,6 +150,7 @@ class AgendaPlacing(
         presenter?.let { items.setAttendees(row.id, setOf(it)) }
         pack?.let { addPack(row, it) }
         writes.record("meeting.agenda.item_added", meeting.id, after = AgendaWrites.audited(row) + ("papers" to pack?.files?.size))
+        carryOver.placed(meeting, row)
         if (late == Lateness.AWAITING_CHAIR) requested(meeting, mapOf("itemId" to row.id.toString()), row.scope)
         return row.id
     }

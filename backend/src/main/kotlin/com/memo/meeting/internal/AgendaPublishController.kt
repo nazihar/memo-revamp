@@ -170,10 +170,16 @@ class AgendaPublishController(
         }
     }
 
+    /**
+     * What publishing now would do, as the actor may read it: items they are recused from (design E04 §1.7) show only what
+     * their line shows (the title unless hidden, and the line's flags), and their papers and lateness are left out.
+     */
     private fun previewOf(meetingId: UUID): PublishPreviewResponse {
         val (meeting, publication) = publisher.preview(meetingId)
         val version = publication?.version ?: 0
         val snapshot = publication?.snapshot
+        val withheld = publication?.recused.orEmpty()
+        val paperItems = snapshot?.papers.orEmpty().associate { it.paperId to it.itemId }
         return PublishPreviewResponse(
             meetingId = meeting.id,
             started = publication != null,
@@ -182,15 +188,18 @@ class AgendaPublishController(
             meetingNotScheduled = meeting.status == MeetingStatus.DRAFT,
             chairAgreementMissing = publication?.chairAgreementMissing ?: false,
             nothingToPublish = publication?.nothingNew ?: true,
-            unreadablePapers = publication?.unreadable.orEmpty(),
+            unreadablePapers = publication?.unreadable.orEmpty().filter { paperItems[it] !in withheld },
             awaitingChair =
-                publication?.awaiting.orEmpty().map { (item, paper) ->
-                    AwaitingChairResponse(item.id, paper?.id, paper?.title ?: item.title)
-                },
+                publication
+                    ?.awaiting
+                    .orEmpty()
+                    .filter { (item, _) -> item.id !in withheld }
+                    .map { (item, paper) -> AwaitingChairResponse(item.id, paper?.id, paper?.title ?: item.title) },
             changes =
                 snapshot
                     ?.items
                     .orEmpty()
+                    .map { if (it.itemId in withheld) MemberAgendaRender.line(it) else it }
                     .filter { it.changes.isNotEmpty() }
                     .map { ItemChangeResponse(it.itemId, it.number, it.previousNumber, it.title, it.removed, it.changes.sorted()) },
             version = version,

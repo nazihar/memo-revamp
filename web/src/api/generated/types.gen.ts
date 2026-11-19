@@ -136,6 +136,7 @@ export type AgendaItemResponse = {
     papers: Array<AgendaPaperResponse>;
     presenters: Array<PresenterResponse>;
     purpose?: 'DECISION' | 'DISCUSSION' | 'INFORMATION';
+    recused?: boolean;
     resolutionSought?: string | null;
     restrictedTo?: Array<PersonResponse> | null;
     standingKind?: 'APOLOGIES' | 'DECLARATIONS' | 'PREVIOUS_MINUTES' | 'MATTERS_ARISING' | 'AOB';
@@ -1841,6 +1842,7 @@ export type MemberItemResponse = {
     presenters: Array<PresenterResponse>;
     previousNumber?: string | null;
     purpose?: 'DECISION' | 'DISCUSSION' | 'INFORMATION';
+    recused?: boolean;
     resolutionSought?: string | null;
     standingKind?: 'APOLOGIES' | 'DECLARATIONS' | 'PREVIOUS_MINUTES' | 'MATTERS_ARISING' | 'AOB';
     startsAt?: string | null;

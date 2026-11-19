@@ -24,16 +24,21 @@ import java.util.UUID
  * cleared for a confidential one, a guest outside a members-only section, and a `forum.read` holder (who reads neither
  * members-only nor confidential titles). Canary strings are planted in what they must not see (hidden, members-only and
  * confidential titles, descriptions, paper titles); no surface answers them, opens such a paper, counts its changes or
- * notifies them of it. E04 adds the recused member to each probe.
+ * notifies them of it. E04 T2 adds a recused member (d1, recused from one item with its title shown and one with it
+ * hidden, one of them waiting for the chair's ruling) to every probe: they see those items' lines and nothing else of them.
  */
-class PaperLeakIT : PaperFixture() {
+class PaperLeakIT : RecusalFixture() {
     @Autowired
     @Qualifier("requestMappingHandlerMapping")
     lateinit var mapping: RequestMappingHandlerMapping
 
     @Autowired lateinit var keys: DataKeys
 
-    /** A published agenda (revision 2 changing only what the probed people must not see), and who must not see what. */
+    /**
+     * A published agenda (revision 2 changing only what the probed people must not see), and who must not see what. d1,
+     * named on the restricted items, is recused (E04 T2) from two items only they are named on: one with its title shown,
+     * in the consent section, and one with its title hidden.
+     */
     private inner class Planted {
         val meeting: MeetingRow = meeting()
         val restricted = addItem(meeting, "Credit facility for Acme")
@@ -41,59 +46,102 @@ class PaperLeakIT : PaperFixture() {
         val camera = addItem(meeting, CANARY_CAMERA, sectionId = inCamera(meeting))
         val confidential = addItem(meeting, CANARY_CONFIDENTIAL)
         val consent = addItem(meeting, "Settlement with a counterparty", section = "Consent items")
+        val recused = addItem(meeting, RECUSED_TITLE, section = "Consent items")
+        val recusedHidden = addItem(meeting, CANARY_RECUSED_HIDDEN)
         val restrictedFile = upload(meeting, "acme.pdf")
         val cameraFile = upload(meeting, "succession.pdf")
+        val recusedFile = upload(meeting, "delta.pdf")
         val restrictedPaper: UUID
         val hiddenPaper: UUID
         val cameraPaper: UUID
         val confidentialPaper: UUID
+        val recusedPaper: UUID
+        val recusedHiddenPaper: UUID
 
         init {
             change(meeting, restricted, ItemChange("Credit facility for Acme", CANARY_DESCRIPTION, restrictedTo = listOf(d1.id)))
             change(meeting, hidden, ItemChange(CANARY_HIDDEN, restrictedTo = listOf(d1.id), titleHidden = true))
             change(meeting, confidential, ItemChange(CANARY_CONFIDENTIAL, classificationId = levels()[1].id))
             change(meeting, consent, ItemChange("Settlement with a counterparty", restrictedTo = listOf(d1.id)))
+            change(meeting, recused, ItemChange(RECUSED_TITLE, CANARY_RECUSED_DESCRIPTION, restrictedTo = listOf(d1.id)))
+            change(meeting, recusedHidden, ItemChange(CANARY_RECUSED_HIDDEN, restrictedTo = listOf(d1.id), titleHidden = true))
             restrictedPaper = paper(meeting, restricted, restrictedFile, title = CANARY_PAPER)
             hiddenPaper = paper(meeting, hidden, upload(meeting, "dismissal.pdf"), title = CANARY_PAPER)
             cameraPaper = paper(meeting, camera, cameraFile, title = CANARY_CAMERA)
             confidentialPaper = paper(meeting, confidential, upload(meeting, "stress.pdf"), title = CANARY_CONFIDENTIAL)
+            recusedPaper = paper(meeting, recused, recusedFile, title = CANARY_RECUSED_PAPER)
+            recusedHiddenPaper = paper(meeting, recusedHidden, upload(meeting, "mill.pdf"), title = CANARY_RECUSED_PAPER)
             publish(meeting)
             probed().forEach { person ->
                 assertThat(send(HttpMethod.POST, "/api/v1/meetings/${meeting.id}/seen", person, """{"revision":1}""", emptyMap()))
                     .hasStatus(HttpStatus.NO_CONTENT)
             }
-            // Revision 2: the restricted paper replaced, the hidden item and the confidential item retitled.
+            // d1 declares on both (after reading revision 1): from now on, every revision withholds them.
+            declare(d1, meeting, recused)
+            declare(d1, meeting, recusedHidden, DeclarationIntent.ASK_CHAIR)
+            // Revision 2: the restricted and the recused papers replaced, the hidden, confidential and recused hidden items
+            // retitled.
             replace(restrictedFile)
+            replace(recusedFile)
             change(meeting, hidden, ItemChange("$CANARY_HIDDEN, revised", restrictedTo = listOf(d1.id), titleHidden = true))
             change(meeting, confidential, ItemChange("$CANARY_CONFIDENTIAL, revised", classificationId = levels()[1].id))
+            change(
+                meeting,
+                recusedHidden,
+                ItemChange("$CANARY_RECUSED_HIDDEN, revised", restrictedTo = listOf(d1.id), titleHidden = true),
+            )
             publish(meeting, "Revision two")
         }
 
-        /** What [person] must never be answered: d3 is a member (members-only), the guest is cleared (confidential). */
+        /**
+         * What [person] must never be answered: d3 is a member (members-only), the guest is cleared (confidential); d1 reads
+         * all but the items they are recused from (of which the shown title is not a canary).
+         */
         fun canaries(person: Person): List<String> =
-            listOf(CANARY_HIDDEN, CANARY_DESCRIPTION, CANARY_PAPER) +
-                (if (person != d3) listOf(CANARY_CAMERA) else emptyList()) +
-                (if (person != guest) listOf(CANARY_CONFIDENTIAL) else emptyList())
+            if (person == d1) {
+                RECUSED_CANARIES
+            } else {
+                listOf(CANARY_HIDDEN, CANARY_DESCRIPTION, CANARY_PAPER) + RECUSED_CANARIES +
+                    (if (person != d3) listOf(CANARY_CAMERA) else emptyList()) +
+                    (if (person != guest) listOf(CANARY_CONFIDENTIAL) else emptyList())
+            }
 
         /** The items whose title [person] may not read: d3 reads the members-only one, the guest the confidential one. */
         fun untitled(person: Person): List<UUID> =
-            listOf(hidden) + (if (person != d3) listOf(camera) else emptyList()) +
-                (if (person != guest) listOf(confidential) else emptyList())
+            if (person == d1) {
+                listOf(recusedHidden)
+            } else {
+                listOf(hidden, recusedHidden) + (if (person != d3) listOf(camera) else emptyList()) +
+                    (if (person != guest) listOf(confidential) else emptyList())
+            }
 
         /** The papers [person] may not open. */
         fun closed(person: Person): List<UUID> =
-            when (person) {
-                d3 -> listOf(restrictedPaper, hiddenPaper, confidentialPaper)
-                guest -> listOf(restrictedPaper, hiddenPaper, cameraPaper)
-                else -> listOf(restrictedPaper, hiddenPaper, cameraPaper, confidentialPaper)
-            }
+            listOf(recusedPaper, recusedHiddenPaper) +
+                when (person) {
+                    d1 -> emptyList()
+                    d3 -> listOf(restrictedPaper, hiddenPaper, confidentialPaper)
+                    guest -> listOf(restrictedPaper, hiddenPaper, cameraPaper)
+                    else -> listOf(restrictedPaper, hiddenPaper, cameraPaper, confidentialPaper)
+                }
 
-        /** How many lines revision 2 changed for [person]: only the guest is cleared for the retitled confidential item. */
-        fun changes(person: Person): Int = if (person == guest) 1 else 0
+        /** The consent items [person] may not ask to discuss: d1 is named on both, and recused from one. */
+        fun undiscussable(person: Person): List<UUID> = if (person == d1) listOf(recused) else listOf(consent, recused)
+
+        /**
+         * How many lines revision 2 changed for [person]: only the guest is cleared for the retitled confidential item; d1
+         * sees three changes, none on the items they are recused from.
+         */
+        fun changes(person: Person): Int =
+            when (person) {
+                guest -> 1
+                d1 -> 3
+                else -> 0
+            }
     }
 
-    /** The people probed: a member not named or cleared, a guest, and a `forum.read` holder. */
-    private fun probed() = listOf(d3, guest, auditor)
+    /** The people probed: a member not named or cleared, a guest, a `forum.read` holder, and a recused member (E04 T2). */
+    private fun probed() = listOf(d3, guest, auditor, d1)
 
     /** One probe per surface, for a person outside the rule. */
     private val probes: Map<Surface, (Planted, Person) -> Unit> =
@@ -121,15 +169,15 @@ class PaperLeakIT : PaperFixture() {
                 }
             },
             Surface.FILES_ENDPOINT to { p, person ->
-                listOf(p.restrictedFile, p.cameraFile).forEach { file ->
+                listOf(p.restrictedFile, p.cameraFile, p.recusedFile).forEach { file ->
                     assertThat(read("/api/v1/files/$file/content", person.session)).hasStatus(HttpStatus.FORBIDDEN)
                     assertThat(read("/api/v1/files/$file", person.session).response.status).isIn(403, 404)
                 }
             },
             Surface.NOTIFICATIONS to { p, person ->
                 send(p.meeting, 2)
-                // Only someone who sees a changed item in full is told: never of a title they may not read.
-                if (person != guest) assertThat(notified(person, "MEETING_AGENDA_CHANGED")).isZero()
+                // Only someone who sees a changed item in full is told (d1, of other items): never of a title they may not read.
+                assertThat(notified(person, "MEETING_AGENDA_CHANGED")).isEqualTo(if (p.changes(person) > 0) 1L else 0L)
                 val params =
                     AppRoleJdbc.inTransaction(tenant.id) { c ->
                         c.query("select params::text from notification_item where user_id = ?", person.id) { it.getString(1) }
@@ -149,9 +197,11 @@ class PaperLeakIT : PaperFixture() {
                 }
             },
             Surface.CONSENT_REQUESTS to { p, person ->
-                val uri = "/api/v1/meetings/${p.meeting.id}/agenda/items/${p.consent}/discussion-requests"
-                assertThat(send(HttpMethod.POST, uri, person)).hasStatus(HttpStatus.NOT_FOUND)
-                assertThat(send(HttpMethod.POST, "$uri/mine/withdraw", person, headers = emptyMap())).hasStatus(HttpStatus.NOT_FOUND)
+                p.undiscussable(person).forEach { item ->
+                    val uri = "/api/v1/meetings/${p.meeting.id}/agenda/items/$item/discussion-requests"
+                    assertThat(send(HttpMethod.POST, uri, person)).hasStatus(HttpStatus.NOT_FOUND)
+                    assertThat(send(HttpMethod.POST, "$uri/mine/withdraw", person, headers = emptyMap())).hasStatus(HttpStatus.NOT_FOUND)
+                }
             },
             Surface.MEETING to { p, person ->
                 clean(p, person, read("/api/v1/meetings/${p.meeting.id}", person.session))
@@ -196,6 +246,10 @@ class PaperLeakIT : PaperFixture() {
         // Their lines are there as "Restricted item": d3's confidential one, and both for the forum.read holder.
         assertThat(agenda(d3, planted.meeting).access(planted.confidential)).containsExactly("HIDDEN")
         assertThat(agenda(auditor, planted.meeting).access(planted.camera, planted.confidential)).containsExactly("HIDDEN", "HIDDEN")
+        // The recused member's canaries are there for an officer who is not recused; d1 has the recused lines only.
+        val ofSecretary = agendaOf(secretary2, planted.meeting).response.contentAsString
+        assertThat(ofSecretary).contains(CANARY_RECUSED_DESCRIPTION, CANARY_RECUSED_PAPER, CANARY_RECUSED_HIDDEN)
+        assertThat(agenda(d1, planted.meeting).access(planted.recused, planted.recusedHidden)).containsExactly("TITLE", "HIDDEN")
         for (person in probed()) {
             for ((surface, probe) in probes) {
                 runCatching { probe(planted, person) }.onFailure { throw AssertionError("surface $surface leaks to ${person.id}", it) }
@@ -237,5 +291,10 @@ class PaperLeakIT : PaperFixture() {
         const val CANARY_PAPER = "CANARY paper title"
         const val CANARY_CAMERA = "CANARY in camera"
         const val CANARY_CONFIDENTIAL = "CANARY confidential title"
+        const val RECUSED_TITLE = "Term loan, Delta Textiles"
+        const val CANARY_RECUSED_DESCRIPTION = "CANARY recused description"
+        const val CANARY_RECUSED_PAPER = "CANARY recused paper title"
+        const val CANARY_RECUSED_HIDDEN = "CANARY recused hidden title"
+        val RECUSED_CANARIES = listOf(CANARY_RECUSED_DESCRIPTION, CANARY_RECUSED_PAPER, CANARY_RECUSED_HIDDEN)
     }
 }

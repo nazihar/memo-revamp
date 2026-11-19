@@ -3,7 +3,7 @@ package com.memo.meeting
 /**
  * Every read path that can reveal an agenda item or a paper (test plan E03, "Leak-suite skeleton"; ADR-0061, ADR-0062),
  * for the leak suite: [PaperLeakIT] runs one probe per [Surface] for a person outside the rule, and its meta-test fails
- * when an endpoint of the meeting module is in neither [endpoints] nor [officersOnly]. E04 adds the recused-member probe
+ * when an endpoint of the meeting module is in neither [endpoints] nor [officersOnly]. E04 T2 added the recused-member probe
  * to every surface, and its own surfaces (declarations); E05–E08 add theirs (invitations, minutes, actions, search).
  */
 object PaperSurfaceRegistry {

@@ -3,6 +3,11 @@ package com.memo.meeting.internal
 import com.memo.audit.AuditLog
 import com.memo.common.web.refuseIf
 import com.memo.identity.UserSummaries
+import com.memo.meeting.DeclarationHow
+import com.memo.meeting.DeclarationIntent
+import com.memo.meeting.DeclarationSource
+import com.memo.meeting.DeclarationState
+import com.memo.meeting.RulingOutcome
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service

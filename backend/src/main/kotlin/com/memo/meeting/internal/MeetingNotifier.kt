@@ -24,6 +24,8 @@ class MeetingNotifier(
     private val registry: TenantRegistry,
     private val tenancy: TenancyProperties,
     private val directory: ForumDirectory,
+    private val declarations: DeclarationAccess,
+    private val recusals: RecusalStore,
 ) {
     /**
      * A scheduled meeting was called off: its audience is told, but for the people who hold its invitation ([invited]):
@@ -39,33 +41,46 @@ class MeetingNotifier(
     }
 
     /**
-     * A late item or paper waits for the chair's agreement (design E03 §1.4): the chair in office is told, or the
-     * vice-chair when there is no chair. Never the item's title (ADR-0030).
+     * A late item or paper waits for the chair's agreement (design E03 §1.4, E04 §1.7): who decides for the item whose
+     * [scope] (the item and its parent) is given is told: the chair in office, or the vice-chair when the chair is recused
+     * from it or there is none. When neither can, the secretaries not recused from it are told, to record the committee's
+     * agreement. Never the item's title (ADR-0030).
      */
     fun latePaper(
         meeting: MeetingRow,
         forum: ForumRef,
+        scope: Collection<UUID>,
     ) {
-        chairOf(forum.id)?.let { notify(it, NotificationKind.MEETING_LATE_PAPER, meeting, forum) }
+        val decider = declarations.decider(forum.id, scope)
+        val told = if (decider != null) setOf(decider) else secretaries(forum.id).let { it - recusals.recusedAmong(scope, it) }
+        told.forEach { notify(it, NotificationKind.MEETING_LATE_PAPER, meeting, forum) }
     }
 
-    /** An item of the published agenda left it (its submission was withdrawn or returned): the secretaries publish again. */
+    /**
+     * An item of the published agenda left it (its submission was withdrawn or returned): the secretaries publish again.
+     * Not those recused from the item whose [scope] is given (design E04 §1.7).
+     */
     fun itemWithdrawn(
         meeting: MeetingRow,
         forum: ForumRef,
+        scope: Collection<UUID>,
     ) {
-        secretaries(forum.id).forEach { notify(it, NotificationKind.MEETING_ITEM_WITHDRAWN, meeting, forum) }
+        val told = secretaries(forum.id).let { it - recusals.recusedAmong(scope, it) }
+        told.forEach { notify(it, NotificationKind.MEETING_ITEM_WITHDRAWN, meeting, forum) }
     }
 
     /**
      * A member asked to discuss a consent item (design E03 §1.5): the secretaries and the chair in office (the vice-chair
-     * when there is none) are told, never the requester. Never the item's title (ADR-0030).
+     * when there is none) are told, never the requester, and not those recused from the item whose [scope] is given
+     * (design E04 §1.7). Never the item's title (ADR-0030).
      */
     fun discussionRequested(
         meeting: MeetingRow,
         forum: ForumRef,
+        scope: Collection<UUID>,
     ) {
-        val told = secretaries(forum.id) + setOfNotNull(chairOf(forum.id)) - setOfNotNull(actorOrNull())
+        val officers = secretaries(forum.id) + setOfNotNull(chairOf(forum.id)) - setOfNotNull(actorOrNull())
+        val told = officers - recusals.recusedAmong(scope, officers)
         told.forEach { notify(it, NotificationKind.MEETING_DISCUSSION_REQUESTED, meeting, forum) }
     }
 

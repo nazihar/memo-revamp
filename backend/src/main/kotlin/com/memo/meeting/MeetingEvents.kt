@@ -39,3 +39,17 @@ data class AgendaPublished(
     val meetingId: UUID,
     val revision: Int,
 ) : TenantScopedEvent
+
+/**
+ * A declaration of interest changed (ADR-0062, design E04 §2): made, its intent changed, ruled on or withdrawn, published
+ * in the changing transaction once per change. [recused] is whether [userId] is now recused from [itemId] by it (an
+ * effective declaration: RECUSED or AWAITING_RULING). E05 refreshes live quorum, E06 its decision screen, E08 its search
+ * rows; they read the rest through [Recusals]. Ids only (ADR-0017).
+ */
+data class DeclarationChanged(
+    override val tenantId: UUID,
+    val meetingId: UUID,
+    val itemId: UUID,
+    val userId: UUID,
+    val recused: Boolean,
+) : TenantScopedEvent

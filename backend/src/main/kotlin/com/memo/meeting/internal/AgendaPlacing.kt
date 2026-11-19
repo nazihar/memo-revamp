@@ -149,7 +149,7 @@ class AgendaPlacing(
         presenter?.let { items.setAttendees(row.id, setOf(it)) }
         pack?.let { addPack(row, it) }
         writes.record("meeting.agenda.item_added", meeting.id, after = AgendaWrites.audited(row) + ("papers" to pack?.files?.size))
-        if (late == Lateness.AWAITING_CHAIR) requested(meeting, mapOf("itemId" to row.id.toString()))
+        if (late == Lateness.AWAITING_CHAIR) requested(meeting, mapOf("itemId" to row.id.toString()), row.scope)
         return row.id
     }
 
@@ -180,13 +180,17 @@ class AgendaPlacing(
         return title
     }
 
-    /** A late item or paper waits for the chair: audited, and the chair (the vice-chair when there is none) is told. */
+    /**
+     * A late item or paper waits for the chair: audited, and who decides for the item whose [scope] is given is told (the
+     * chair, the vice-chair when the chair is recused from it or there is none; design E04 §1.7).
+     */
     fun requested(
         meeting: MeetingRow,
         what: Map<String, Any?>,
+        scope: Collection<UUID>,
     ) {
         writes.record("meeting.late.requested", meeting.id, after = what)
-        notifier.latePaper(meeting, lateness.forum(meeting))
+        notifier.latePaper(meeting, lateness.forum(meeting), scope)
     }
 
     /**
@@ -208,7 +212,9 @@ class AgendaPlacing(
         if (edit != null && live != null) {
             writes.removeItem(edit, live, RemovalReason.SUBMISSION_CHANGED)
             // Members still read it in the published revision: the secretaries publish a new one.
-            if (revisions.inLatest(edit.meeting.id, live.id)) notifier.itemWithdrawn(edit.meeting, lateness.forum(edit.meeting))
+            if (revisions.inLatest(edit.meeting.id, live.id)) {
+                notifier.itemWithdrawn(edit.meeting, lateness.forum(edit.meeting), live.scope)
+            }
             guard.done(edit.meeting.id)
         }
     }

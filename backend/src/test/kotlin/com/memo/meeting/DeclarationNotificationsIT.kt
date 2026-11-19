@@ -2,9 +2,6 @@ package com.memo.meeting
 
 import com.memo.common.crypto.DataKeys
 import com.memo.forum.ForumRole
-import com.memo.meeting.internal.DeclarationHow
-import com.memo.meeting.internal.DeclarationIntent
-import com.memo.meeting.internal.RulingOutcome
 import com.memo.testsupport.AppRoleJdbc
 import com.memo.testsupport.AppRoleJdbc.long
 import com.memo.testsupport.MailOutbox

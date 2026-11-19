@@ -2,12 +2,8 @@ package com.memo.meeting
 
 import com.memo.common.authz.ForbiddenException
 import com.memo.common.concurrency.ConcurrentModificationException
-import com.memo.meeting.internal.DeclarationHow
-import com.memo.meeting.internal.DeclarationIntent
 import com.memo.meeting.internal.DeclarationRow
 import com.memo.meeting.internal.DeclarationRules
-import com.memo.meeting.internal.DeclarationSource
-import com.memo.meeting.internal.DeclarationState
 import com.memo.meeting.internal.DeclareInput
 import com.memo.meeting.internal.ItemChange
 import com.memo.meeting.internal.ItemInput
@@ -17,7 +13,6 @@ import com.memo.meeting.internal.MeetingRow
 import com.memo.meeting.internal.OneOpenException
 import com.memo.meeting.internal.RecusedException
 import com.memo.meeting.internal.RulingInput
-import com.memo.meeting.internal.RulingOutcome
 import com.memo.testsupport.AppRoleJdbc
 import com.memo.testsupport.AppRoleJdbc.long
 import com.memo.testsupport.Audit
@@ -338,9 +333,14 @@ class DeclarationsIT : DeclarationFixture() {
         val draft = get("$base/agenda/draft", secretary).json()
         val row = draft["sections"].flatMap { it["items"] }.single { it["id"].asString() == item.toString() }
         assertThat(row["myDeclaration"]["nature"].asString()).isEqualTo("I hold shares in the borrower")
-        val lines = row["declarations"].toList().map { it["user"]["id"].asString() to it["state"].asString() }
-        assertThat(lines).containsExactly(director.id.toString() to "RECUSED")
-        assertThat(row["declarations"][0].has("nature")).isFalse()
+        // Recused now (T2), the secretary sees the item's line and their own declaration only; the chair sees both lines.
+        assertThat(row["recused"].asBoolean()).isTrue()
+        assertThat(row["declarations"].size()).isZero()
+        val chairDraft = get("$base/agenda/draft", chair).json()
+        val chairRow = chairDraft["sections"].flatMap { it["items"] }.single { it["id"].asString() == item.toString() }
+        val lines = chairRow["declarations"].toList().map { it["user"]["id"].asString() to it["state"].asString() }
+        assertThat(lines).containsExactly(director.id.toString() to "RECUSED", secretary.id.toString() to "RECUSED")
+        assertThat(chairRow["declarations"][0].has("nature")).isFalse()
 
         // Recused from the item, the secretary records nobody else's declaration on it: 403 RECUSED.
         val blocked = declareOverHttp(meeting, item, secretary, """{"nature":"x","onBehalfOf":"${guest.id}","how":"EMAIL"}""")

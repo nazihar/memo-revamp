@@ -19278,6 +19278,12 @@
       "value": " to be discussed separately?SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "meetingPage.awaitingRuling": [
+    {
+      "type": 0,
+      "value": "— Waiting for the chair’s decision, papers withheld until thenSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "meetingPage.break": [
     {
       "type": 0,
@@ -19792,6 +19798,12 @@
     {
       "type": 0,
       "value": "Read the latest revisionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingPage.recused": [
+    {
+      "type": 0,
+      "value": "— You declared an interestSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "meetingPage.restrictedItem": [

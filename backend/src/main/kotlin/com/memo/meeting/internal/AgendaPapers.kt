@@ -1,5 +1,7 @@
 package com.memo.meeting.internal
 
+import com.memo.common.authz.ForbiddenException
+import com.memo.common.authz.Permission
 import com.memo.common.id.IdGenerator
 import com.memo.common.web.FieldProblem
 import com.memo.common.web.refuseIf
@@ -102,7 +104,7 @@ class AgendaPapers(
             )
         papers.insert(row, edit.agenda.currentRevision, actorOrNull())
         writes.record("meeting.agenda.paper_added", meetingId, after = audited(row))
-        if (late == Lateness.AWAITING_CHAIR) placing.requested(edit.meeting, mapOf("paperId" to row.id.toString()))
+        if (late == Lateness.AWAITING_CHAIR) placing.requested(edit.meeting, mapOf("paperId" to row.id.toString()), item.scope)
         guard.done(meetingId)
         return row.id
     }
@@ -236,7 +238,7 @@ class MeetingPaperPurpose(
 /**
  * A new version of an uploaded paper (design E03 §1.8), in the upload's transaction: the papers carrying the file take
  * it (published revisions pin versions, T3), audited `meeting.agenda.paper_replaced`; refused once the meeting is held or
- * cancelled, which rolls the upload back.
+ * cancelled, or for an officer recused from an item carrying it (403), which rolls the upload back.
  */
 @Component
 class MeetingPaperListener(
@@ -252,7 +254,10 @@ class MeetingPaperListener(
         val meeting = carried.firstOrNull()?.let { meetings.find(it.meetingId) }
         if (meeting != null) {
             AgendaRules.requireChange(meeting.status, tabled = true)
-            checkNotNull(guard.system(meeting))
+            val edit = checkNotNull(guard.system(meeting))
+            // A recused officer replaces no paper of an item they are recused from (design E04 §1.7).
+            val recused = guard.recused(edit.rows)
+            if (carried.any { it.itemId in recused }) throw ForbiddenException(Permission.FORUMS_MANAGE)
             writes.record(
                 "meeting.agenda.paper_replaced",
                 meeting.id,

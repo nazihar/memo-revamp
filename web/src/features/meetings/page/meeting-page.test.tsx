@@ -680,6 +680,69 @@ describe('the meeting page (Phase 4 E03 T8, flow P)', () => {
     })
   }, 20_000)
 
+  it('shows a recused member the lines of the items they declared an interest in, and why (E04)', async () => {
+    const calls: Calls = { seen: [], agendaQueries: [] }
+    const declaration = (state: 'RECUSED' | 'AWAITING_RULING') => ({
+      id: `d-${state}`,
+      meetingId: 'm1',
+      itemId: 'i5',
+      itemNumber: '5',
+      itemTitle: null,
+      user: { id: 'u1', name: 'S. Ali' },
+      nature: 'My brother-in-law is a director of Delta Textiles',
+      intent: state === 'RECUSED' ? ('LEAVE' as const) : ('ASK_CHAIR' as const),
+      source: 'SELF' as const,
+      how: 'IN_APP' as const,
+      declaredAt: '2026-12-01T09:00:00Z',
+      atMeeting: false,
+      correction: false,
+      state,
+      version: 0,
+    })
+    const recused: MemberAgendaResponse = {
+      ...agenda,
+      lastSeenRevision: null,
+      whatChanged: null,
+      sections: [
+        {
+          id: 's2',
+          title: 'For decision',
+          kind: 'STANDARD',
+          membersOnly: false,
+          items: [
+            item('i5', {
+              number: '5',
+              access: 'TITLE',
+              title: 'Term loan, Delta Textiles',
+              recused: true,
+              myDeclaration: declaration('RECUSED'),
+            }),
+            item('i6', {
+              number: '6',
+              access: 'HIDDEN',
+              title: null,
+              recused: true,
+              myDeclaration: declaration('AWAITING_RULING'),
+            }),
+          ],
+        },
+      ],
+    }
+    server.use(...handlers(calls, { agenda: recused }))
+    renderRoute('/meetings/m1')
+
+    expect(
+      await screen.findByRole('heading', { level: 4, name: '5 Term loan, Delta Textiles — You declared an interest' }),
+    ).toBeInTheDocument()
+    expect(
+      itemNamed('6 Restricted item — Waiting for the chair’s decision, papers withheld until then'),
+    ).toBeInTheDocument()
+    expect(within(itemNamed(/^5 /)).queryByRole('button')).toBeNull()
+    await waitFor(() => {
+      expect(calls.seen).toEqual([{ revision: 2 }])
+    })
+  }, 20_000)
+
   it('says the agenda is not published yet, shows officers the guests, and marks nothing seen', async () => {
     const calls: Calls = { seen: [], agendaQueries: [] }
     server.use(

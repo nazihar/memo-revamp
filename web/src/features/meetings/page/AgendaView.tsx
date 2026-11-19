@@ -24,8 +24,9 @@ export interface AgendaActions {
 
 /**
  * The agenda as one reader may see it (flow P1, design §1.9): sections with their items, each line in full, by title
- * only ("— papers restricted") or as "Restricted item"; times on the meeting's clock, purposes in words, papers as
- * large buttons with "Opened" ticks, and "Ask to discuss" on consent items. Print shows numbers, times and purposes.
+ * only ("— papers restricted") or as "Restricted item", and an item the reader is recused from as its line with "— You
+ * declared an interest" (E04); times on the meeting's clock, purposes in words, papers as large buttons with "Opened"
+ * ticks, and "Ask to discuss" on consent items. Print shows numbers, times and purposes.
  */
 export function AgendaView({
   agenda,
@@ -106,6 +107,14 @@ function Item({
     ? intl.formatTime(item.startsAt, { hour: 'numeric', minute: '2-digit', timeZone: agenda.timeZone })
     : undefined
   const changes = itemChanges(intl, item.changes, item.previousNumber)
+  // A recused reader sees the item's line and why (Phase 4 E04, design §1.6): their declaration, or the ruling awaited.
+  const lineNote = item.recused
+    ? item.myDeclaration?.state === 'AWAITING_RULING'
+      ? pm.awaitingRuling
+      : pm.recused
+    : item.access === 'TITLE'
+      ? pm.papersRestricted
+      : undefined
   const facts = [
     time,
     item.kind === 'BREAK' && item.minutes ? intl.formatMessage(pmv.minutes, { minutes: item.minutes }) : undefined,
@@ -116,10 +125,10 @@ function Item({
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
         <h4 className={cn('font-semibold', sub ? 'text-lg' : 'text-xl')}>
           {name}
-          {item.access === 'TITLE' ? (
+          {lineNote ? (
             <>
               {' '}
-              <span className="font-normal text-muted-foreground">{intl.formatMessage(pm.papersRestricted)}</span>
+              <span className="font-normal text-muted-foreground">{intl.formatMessage(lineNote)}</span>
             </>
           ) : null}
         </h4>

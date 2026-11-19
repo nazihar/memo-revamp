@@ -95,7 +95,10 @@ data class ItemRow(
     val classificationId: UUID,
     val late: Lateness,
     val addedAfterRevision: Int,
-)
+) {
+    /** The item and, for a sub-item, its parent: a declaration on either recuses from it (design E04 §1.6). */
+    val scope: List<UUID> get() = listOfNotNull(id, parentId)
+}
 
 /** A paper of an item: a memo's file or an upload, by reference (ADR-0061). */
 data class PaperRow(

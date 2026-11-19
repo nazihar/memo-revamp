@@ -1,5 +1,6 @@
 package com.memo.meeting.internal
 
+import com.memo.meeting.DeclarationHow
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 

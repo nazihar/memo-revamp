@@ -8,6 +8,7 @@ import com.memo.forum.StandingKind
 import com.memo.forum.SubmissionPlacements
 import com.memo.forum.SubmissionPurpose
 import com.memo.identity.UserSummaries
+import com.memo.meeting.DeclarationState
 import com.memo.memo.MemoPack
 import com.memo.memo.MemoPapers
 import io.swagger.v3.oas.annotations.media.Schema
@@ -80,6 +81,11 @@ data class AgendaItemResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val papers: List<AgendaPaperResponse>,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val outOfPack: List<PackFileResponse>,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val subItems: List<AgendaItemResponse>,
+    /**
+     * The viewer is recused from the item (design E04 §1.7): its line only (number, time, purpose, the title unless hidden,
+     * "" then), with their own declaration; changing it or its papers is 403 `RECUSED`.
+     */
+    val recused: Boolean = false,
     /** The viewer's own open declaration of interest on the item (design E04 §3). */
     val myDeclaration: DeclarationResponse? = null,
     /** The others' open declarations on the item: names and states, never the nature. */
@@ -261,7 +267,7 @@ class AgendaDraftViews(
         val versions = files.currentVersions(rows.papers.map { it.fileId }.toSet())
         val open = declarations.ofMeeting(rows.agenda.meetingId).filter { it.state != DeclarationState.WITHDRAWN }
         val declared = DraftDeclarations(actorOrNull(), open.groupBy { it.itemId }, numbers, declarationViews.names(open))
-        val view = ItemView(rows, numbers, times, zone, packs, names, versions, declared)
+        val view = ItemView(rows, numbers, times, zone, packs, names, versions, declared, guard.recused(rows))
         val ordered = AgendaRules.ordered(rows.sections, rows.items)
         return rows.sections.sortedBy { it.position }.map { s ->
             AgendaSectionResponse(
@@ -311,8 +317,8 @@ class AgendaDraftViews(
 
 /**
  * The open declarations on the draft's items (design E04 §3): the viewer's own on each item, and the names and states of
- * the others' (the nature only in the viewer's own; the meeting register is T4's). T2 turns the items the viewer is
- * recused from into lines.
+ * the others' (the nature only in the viewer's own; the meeting register is T4's). On an item the viewer is recused from,
+ * only their own.
  */
 private class DraftDeclarations(
     private val actor: UUID?,
@@ -320,14 +326,23 @@ private class DraftDeclarations(
     private val numbers: Map<UUID, String>,
     private val names: Map<UUID, String>,
 ) {
-    fun mine(item: ItemRow): DeclarationResponse? =
-        byItem[item.id]?.firstOrNull { it.userId == actor }?.let { DeclarationViews.of(it, numbers[item.id], item.title, names) }
+    fun mine(
+        item: ItemRow,
+        title: String,
+    ): DeclarationResponse? =
+        byItem[item.id]
+            ?.firstOrNull {
+                it.userId == actor
+            }?.let { DeclarationViews.of(it, numbers[item.id], title, names) }
 
     fun others(item: ItemRow): List<DeclarationLineResponse> =
         byItem[item.id].orEmpty().filter { it.userId != actor }.map { DeclarationViews.line(it, names) }
 }
 
-/** One item of the draft as officers see it. */
+/**
+ * One item of the draft as officers see it; an item the viewer is recused from ([recused], design E04 §1.7) as its line
+ * only: number, time, purpose and the title unless hidden ("" then), with their own declaration.
+ */
 private class ItemView(
     private val rows: AgendaRows,
     private val numbers: Map<UUID, String>,
@@ -337,11 +352,13 @@ private class ItemView(
     private val names: Map<UUID, String>,
     private val versions: Map<UUID, com.memo.files.FileVersionInfo>,
     private val declared: DraftDeclarations,
+    private val recused: Set<UUID>,
 ) {
     fun item(
         item: ItemRow,
         subItems: List<AgendaItemResponse>,
     ): AgendaItemResponse {
+        if (item.id in recused) return line(item, subItems)
         val papers = rows.papers.filter { it.itemId == item.id }.sortedBy { it.position }
         val pack = item.memoId?.let { packs[it] }
         val startsAt = times.starts[item.id]
@@ -378,8 +395,44 @@ private class ItemView(
                     .filter { f -> papers.none { it.fileId == f.fileId } }
                     .map { PackFileResponse(it.fileId, it.source.paper(), it.title, it.classificationId) },
             subItems = subItems,
-            myDeclaration = declared.mine(item),
+            myDeclaration = declared.mine(item, item.title),
             declarations = declared.others(item),
+        )
+    }
+
+    /** The recused line: no description, people, papers, pack, memo or lateness, and nobody else's declarations. */
+    private fun line(
+        item: ItemRow,
+        subItems: List<AgendaItemResponse>,
+    ): AgendaItemResponse {
+        val title = if (item.titleHidden) "" else item.title
+        val startsAt = times.starts[item.id]
+        return AgendaItemResponse(
+            id = item.id,
+            number = numbers[item.id],
+            kind = item.kind,
+            standingKind = item.standingKind,
+            submissionId = null,
+            memoId = null,
+            memoReference = null,
+            title = title,
+            description = null,
+            purpose = item.purpose,
+            resolutionSought = null,
+            minutes = item.minutes,
+            startsAt = startsAt,
+            localStartsAt = startsAt?.let { LocalDateTime.ofInstant(it, zone) },
+            presenters = emptyList(),
+            attendees = emptyList(),
+            restrictedTo = null,
+            titleHidden = item.titleHidden,
+            classificationId = item.classificationId,
+            late = Lateness.NONE,
+            papers = emptyList(),
+            outOfPack = emptyList(),
+            subItems = subItems,
+            recused = true,
+            myDeclaration = declared.mine(item, title),
         )
     }
 

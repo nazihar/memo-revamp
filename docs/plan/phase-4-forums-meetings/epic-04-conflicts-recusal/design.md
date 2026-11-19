@@ -348,5 +348,6 @@ The nature and reasons are business content: they stay in the module's tables, w
 
 ## 10. UX flows (`ux-review.md`)
 - **S, Declaring (members):** "Declare an interest" on each item of the meeting page; the declaration sheet; the review checklist and "I have declared my interests"; the recused line on the agenda; my declarations for the meeting.
+  - As built (T6): a "Declarations of interest" panel above the agenda carries the prompt, the count to review, the confirmed revision and the member's own declarations. "Declare an interest" is on items and submissions whose title the member sees, not on standing items or breaks (as the review). The recused line keeps T2's suffix and gains S1's second line and "My declaration". The strings are in their own catalogue part, `declarations` (log, 2026-11-19).
 - **T, Managing declarations (secretary and chair):** the Declarations panel on the meeting (who has reviewed, declarations per item, quorum warnings, "also reads the memo"); record a declaration on someone's behalf; the chair's ruling; the recused officer's row in the builder.
 - **U, The register of declarations (oversight):** across forums, with filters and the XLSX export.

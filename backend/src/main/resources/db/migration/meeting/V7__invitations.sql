@@ -119,15 +119,6 @@ REVOKE EXECUTE ON FUNCTION meeting_invitee_guard() FROM PUBLIC, memo_app;
 CREATE TRIGGER meeting_invitee_keep BEFORE UPDATE ON meeting_invitee
     FOR EACH ROW EXECUTE FUNCTION meeting_invitee_guard();
 
--- Meetings scheduled before this release get their invitation (for "Add to my calendar"), with nothing due: they are
--- sent at their next change, so a deployment mails nobody. The owner role needs FORCE lifted to see every tenant's rows.
-ALTER TABLE meeting NO FORCE ROW LEVEL SECURITY;
-INSERT INTO meeting_invitation (tenant_id, meeting_id, ical_uid, sequence, created_at)
-SELECT tenant_id, id, gen_random_uuid(), 0, now()
-FROM meeting
-WHERE status IN ('SCHEDULED', 'IN_PROGRESS', 'HELD', 'MINUTES_APPROVED', 'CLOSED');
-ALTER TABLE meeting FORCE ROW LEVEL SECURITY;
-
 ALTER TABLE meeting_invitation ENABLE ROW LEVEL SECURITY;
 ALTER TABLE meeting_invitation FORCE ROW LEVEL SECURITY;
 CREATE POLICY tenant_isolation ON meeting_invitation FOR ALL
@@ -150,3 +141,15 @@ CREATE POLICY tenant_isolation ON meeting_invitation_message FOR ALL
 REVOKE DELETE, TRUNCATE ON meeting_invitation FROM memo_app;
 REVOKE DELETE, TRUNCATE ON meeting_invitee FROM memo_app;
 REVOKE UPDATE, DELETE, TRUNCATE ON meeting_invitation_message FROM memo_app;
+
+-- Meetings scheduled before this release get their invitation (for "Add to my calendar"), with nothing due: they are
+-- sent at their next change, so a deployment mails nobody. A migration sets no tenant, so FORCE is lifted on both tables
+-- for the backfill (the owner role then sees and writes every tenant's rows) and put back before the transaction commits.
+ALTER TABLE meeting NO FORCE ROW LEVEL SECURITY;
+ALTER TABLE meeting_invitation NO FORCE ROW LEVEL SECURITY;
+INSERT INTO meeting_invitation (tenant_id, meeting_id, ical_uid, sequence, created_at)
+SELECT tenant_id, id, gen_random_uuid(), 0, now()
+FROM meeting
+WHERE status IN ('SCHEDULED', 'IN_PROGRESS', 'HELD', 'MINUTES_APPROVED', 'CLOSED');
+ALTER TABLE meeting_invitation FORCE ROW LEVEL SECURITY;
+ALTER TABLE meeting FORCE ROW LEVEL SECURITY;

@@ -47,6 +47,10 @@ import com.memo.jooq.tables.MeetingAudience
 import com.memo.jooq.tables.MeetingChairComment
 import com.memo.jooq.tables.MeetingConsentRequest
 import com.memo.jooq.tables.MeetingCounter
+import com.memo.jooq.tables.MeetingDeclaration
+import com.memo.jooq.tables.MeetingDeclarationEvent
+import com.memo.jooq.tables.MeetingDeclarationReminder
+import com.memo.jooq.tables.MeetingDeclarationReview
 import com.memo.jooq.tables.MeetingGuest
 import com.memo.jooq.tables.MeetingInvitation
 import com.memo.jooq.tables.MeetingInvitationMessage
@@ -373,6 +377,26 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      * The table <code>memo.meeting_counter</code>.
      */
     val MEETING_COUNTER: MeetingCounter get() = MeetingCounter.MEETING_COUNTER
+
+    /**
+     * The table <code>memo.meeting_declaration</code>.
+     */
+    val MEETING_DECLARATION: MeetingDeclaration get() = MeetingDeclaration.MEETING_DECLARATION
+
+    /**
+     * The table <code>memo.meeting_declaration_event</code>.
+     */
+    val MEETING_DECLARATION_EVENT: MeetingDeclarationEvent get() = MeetingDeclarationEvent.MEETING_DECLARATION_EVENT
+
+    /**
+     * The table <code>memo.meeting_declaration_reminder</code>.
+     */
+    val MEETING_DECLARATION_REMINDER: MeetingDeclarationReminder get() = MeetingDeclarationReminder.MEETING_DECLARATION_REMINDER
+
+    /**
+     * The table <code>memo.meeting_declaration_review</code>.
+     */
+    val MEETING_DECLARATION_REVIEW: MeetingDeclarationReview get() = MeetingDeclarationReview.MEETING_DECLARATION_REVIEW
 
     /**
      * The table <code>memo.meeting_guest</code>.
@@ -1084,6 +1108,10 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         MeetingChairComment.MEETING_CHAIR_COMMENT,
         MeetingConsentRequest.MEETING_CONSENT_REQUEST,
         MeetingCounter.MEETING_COUNTER,
+        MeetingDeclaration.MEETING_DECLARATION,
+        MeetingDeclarationEvent.MEETING_DECLARATION_EVENT,
+        MeetingDeclarationReminder.MEETING_DECLARATION_REMINDER,
+        MeetingDeclarationReview.MEETING_DECLARATION_REVIEW,
         MeetingGuest.MEETING_GUEST,
         MeetingInvitation.MEETING_INVITATION,
         MeetingInvitationMessage.MEETING_INVITATION_MESSAGE,

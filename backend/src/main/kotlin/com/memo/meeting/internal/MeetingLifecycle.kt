@@ -54,6 +54,7 @@ class MeetingLifecycle(
     private val ids: IdGenerator,
     private val audit: AuditLog,
     private val placements: SubmissionPlacements,
+    private val sweeps: MeetingSweepStore,
     private val events: ApplicationEventPublisher,
     private val invitations: MeetingInvitations,
 ) {
@@ -159,6 +160,8 @@ class MeetingLifecycle(
         audience.recompute(saved)
         placing.redate(saved)
         invitations.changed(before, saved)
+        // The sweep's reminders were for the old date: the new one reminds again (design E03 §9).
+        sweeps.clear(saved.id)
         return saved
     }
 

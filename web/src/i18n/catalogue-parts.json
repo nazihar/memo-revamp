@@ -41,6 +41,11 @@
     "routes": ["/meetings"],
     "prefixes": ["meetingPage"]
   },
+  "mySecurity": {
+    "$comment": "The user's own security page (sign-in methods, sessions), and only there: split from core when the meeting invitation texts (Phase 4 E05 T2) took the Arabic core past its limit.",
+    "routes": ["/me/security"],
+    "prefixes": ["security"]
+  },
   "platform": {
     "routes": ["/platform"],
     "prefixes": ["platform"]

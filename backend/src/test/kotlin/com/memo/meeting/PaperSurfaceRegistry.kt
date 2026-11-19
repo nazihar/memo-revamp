@@ -20,6 +20,7 @@ object PaperSurfaceRegistry {
         MY_MEETINGS("\"My meetings\": the agenda's revision and the changes since the viewer last looked"),
         CONSENT_REQUESTS("Asking to discuss a consent item, and withdrawing (answered with the members' agenda)"),
         MEETING("A meeting's details and a committee's meetings: no item content at all"),
+        DECLARATIONS("Declaring an interest in an item, the declarant's own declarations and the review (E04 T1)"),
     }
 
     /** The meeting module's endpoints that any person of the audience may call, and the surface each one is. */
@@ -34,6 +35,12 @@ object PaperSurfaceRegistry {
             "GET /api/v1/me/meetings" to Surface.MY_MEETINGS,
             "GET /api/v1/meetings/{meetingId}" to Surface.MEETING,
             "GET /api/v1/forums/{forumId}/meetings" to Surface.MEETING,
+            "GET /api/v1/meetings/{meetingId}/declarations/mine" to Surface.DECLARATIONS,
+            "POST /api/v1/meetings/{meetingId}/items/{itemId}/declarations" to Surface.DECLARATIONS,
+            "POST /api/v1/meetings/{meetingId}/declarations/{declarationId}/intent" to Surface.DECLARATIONS,
+            "POST /api/v1/meetings/{meetingId}/declarations/{declarationId}/ruling" to Surface.DECLARATIONS,
+            "POST /api/v1/meetings/{meetingId}/declarations/{declarationId}/withdraw" to Surface.DECLARATIONS,
+            "POST /api/v1/meetings/{meetingId}/declarations/review" to Surface.DECLARATIONS,
             // "Add to my calendar" (E05 T2): the meeting's time, place and link only, never an item (InvitationContentIT).
             "GET /api/v1/meetings/{meetingId}/calendar.ics" to Surface.MEETING,
         )

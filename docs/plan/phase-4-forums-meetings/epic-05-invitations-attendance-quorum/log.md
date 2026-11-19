@@ -92,6 +92,10 @@
   - the invitation's sequence rises once per batch of changes, as the acceptance criterion needs (three reschedules, one update at sequence 1);
   - invitable people must also be cleared for the meeting's classification;
   - the secretary who cancels gets the CANCEL file too when they hold a seat;
-  - the safety net is a callable (`InvitationSafetyNet.rescheduleOverdue`); the sweep that calls it hourly is E03 T5's and is wired in T6.
+  - the safety net (`InvitationSafetyNet.rescheduleOverdue`) is wired into E03 T5's hourly `meeting-sweep` now (the plan had it in T6).
 - **Also fixed:** the web's `template.test.tsx` fixture (from E03 T7) lacked the type version's `meetings`, which broke `tsc` on `master`.
-- **Left for T3:** RSVP, alternates (an ALTERNATE audience row will join the invitable sources in `InvitableAudience`), the panel's answers; T6 wires the safety net and the reminders into the sweep.
+- **Left for T3:** RSVP, alternates (an ALTERNATE audience row will join the invitable sources in `InvitableAudience`), the panel's answers; T6 adds the reminders to the sweep.
+- **After the first CI run (2026-11-19):**
+  - `MigrationDmlRlsTest` caught the backfill writing `meeting_invitation` while it was forced: V7 now enables RLS first and lifts FORCE on both `meeting` and `meeting_invitation` around the backfill, restoring it before the transaction commits.
+  - Merged `master` (E04 T1 `meeting/V5`, E03 T5 `meeting/V6` and the sweep, the CI fixes); V7 keeps its number.
+  - The Arabic core catalogue passed its 15 KiB limit with the new notification texts beside E04's: the `security.*` messages (only on "My security") are now their own part, `mySecurity`.

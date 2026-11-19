@@ -1,5 +1,7 @@
 package com.memo.meeting.internal
 
+import com.memo.common.authz.ForbiddenException
+import com.memo.common.authz.Permission
 import com.memo.common.context.Actor
 import com.memo.common.context.ActorContext
 import com.memo.common.web.FieldProblem
@@ -28,6 +30,14 @@ class PaperNotReadableException(
     val paperIds: List<UUID>,
 ) : RuntimeException("papers not readable: $paperIds")
 
+/** The actor is recused from the item they act on (ADR-0062, design E04 §3): 403 `RECUSED`. */
+class RecusedException : RuntimeException("recused from the item")
+
+/** The person already holds an open declaration on the item (design E04 §1.1): 409 `ONE_OPEN`, naming it. */
+class OneOpenException(
+    val declarationId: UUID?,
+) : RuntimeException("an open declaration exists")
+
 /** Problems of the meeting endpoints. */
 @RestControllerAdvice(basePackageClasses = [MeetingProblems::class])
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -52,6 +62,30 @@ class MeetingProblems {
                     setProperty("paperIds", ex.paperIds.map { it.toString() })
                 },
         )
+
+    @ExceptionHandler(RecusedException::class)
+    fun recused(): ResponseEntity<ProblemDetail> =
+        ResponseEntity.status(HttpStatus.FORBIDDEN).body(
+            ProblemTypes
+                .of(HttpStatus.FORBIDDEN, ProblemTypes.FORBIDDEN, "You declared an interest in this item: another officer handles it.")
+                .apply { setProperty("reason", "RECUSED") },
+        )
+
+    @ExceptionHandler(OneOpenException::class)
+    fun oneOpen(ex: OneOpenException): ResponseEntity<ProblemDetail> =
+        ResponseEntity.status(HttpStatus.CONFLICT).body(
+            ProblemTypes
+                .of(HttpStatus.CONFLICT, ProblemTypes.CONFLICT, "There is already an open declaration for this person on this item.")
+                .apply {
+                    setProperty("reason", "ONE_OPEN")
+                    ex.declarationId?.let { setProperty("declarationId", it.toString()) }
+                },
+        )
+}
+
+/** Throws the deny-by-default 403 when [condition] holds. */
+internal fun forbidIf(condition: Boolean) {
+    if (condition) throw ForbiddenException(Permission.FORUMS_MANAGE)
 }
 
 /** The signed-in user acting, or null for the system (listeners, seeding). */

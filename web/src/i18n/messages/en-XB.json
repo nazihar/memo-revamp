@@ -34052,6 +34052,20 @@
       "value": "‬"
     }
   ],
+  "mail.template.meetingAgendaDue": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ƃǝupɐ uoʇ dnqʅısɥǝp qʎ ʇɥǝ pǝɐpʅıuǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "mail.template.meetingAgendaPublished": [
     {
       "type": 0,
@@ -34074,6 +34088,62 @@
     {
       "type": 0,
       "value": "Wǝǝʇıuƃ ɔɐuɔǝʅʅǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "mail.template.meetingDeclarationMade": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɔʅɐɹɐʇıou oɟ ıuʇǝɹǝsʇ ɯɐpǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "mail.template.meetingDeclarationRecorded": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɔʅɐɹɐʇıou oɟ ıuʇǝɹǝsʇ ɹǝɔoɹpǝp ɟoɹ ʎon"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "mail.template.meetingDeclarationRuled": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚnʅıuƃ ou ʎonɹ pǝɔʅɐɹɐʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "mail.template.meetingDeclarationsDue": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᗡǝɔʅɐɹɐʇıous oɟ ıuʇǝɹǝsʇ pnǝ"
     },
     {
       "type": 0,
@@ -34130,6 +34200,34 @@
     {
       "type": 0,
       "value": "⅂ɐʇǝ dɐdǝɹ ɟoɹ ʇɥǝ ɔɥɐıɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "mail.template.meetingNotHeld": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝǝʇıuƃ uoʇ ɯɐɹʞǝp ɐs ɥǝʅp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "mail.template.meetingRulingNeeded": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "ᴚnʅıuƃ ou ɐ pǝɔʅɐɹɐʇıou uǝǝpǝp"
     },
     {
       "type": 0,
@@ -50207,6 +50305,36 @@
       "value": "‬"
     }
   ],
+  "notifications.kind.meetingAgendaDue": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɐdǝɹs ɟoɹ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ʍǝɹǝ pnǝ ɐup ʇɥǝ ɐƃǝupɐ ıs uoʇ dnqʅısɥǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "notifications.kind.meetingAgendaPublished": [
     {
       "type": 0,
@@ -50275,6 +50403,260 @@
     {
       "type": 0,
       "value": "⊥ɥǝ ɔɥɐıɹ ɔoɯɯǝuʇǝp ou ʇɥǝ ɐƃǝupɐ ɟoɹ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.kind.meetingDeclarationMade": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 5,
+      "value": "change",
+      "options": {
+        "WITHDRAWN": {
+          "value": [
+            {
+              "type": 0,
+              "value": "∀ pǝɔʅɐɹɐʇıou oɟ ıuʇǝɹǝsʇ ıu ıʇǝɯ "
+            },
+            {
+              "type": 1,
+              "value": "item"
+            },
+            {
+              "type": 0,
+              "value": " oɟ "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": " ou "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            },
+            {
+              "type": 0,
+              "value": " ʍɐs ʍıʇɥpɹɐʍu"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "∀u ıuʇǝɹǝsʇ ʍɐs pǝɔʅɐɹǝp ıu ıʇǝɯ "
+            },
+            {
+              "type": 1,
+              "value": "item"
+            },
+            {
+              "type": 0,
+              "value": " oɟ "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": " ou "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.kind.meetingDeclarationRecorded": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 5,
+      "value": "change",
+      "options": {
+        "WITHDRAWN": {
+          "value": [
+            {
+              "type": 0,
+              "value": "⅄onɹ pǝɔʅɐɹɐʇıou oɟ ıuʇǝɹǝsʇ ıu ıʇǝɯ "
+            },
+            {
+              "type": 1,
+              "value": "item"
+            },
+            {
+              "type": 0,
+              "value": " oɟ "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": " ou "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            },
+            {
+              "type": 0,
+              "value": " ʍɐs ʍıʇɥpɹɐʍu"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "∀ pǝɔʅɐɹɐʇıou oɟ ıuʇǝɹǝsʇ ıu ıʇǝɯ "
+            },
+            {
+              "type": 1,
+              "value": "item"
+            },
+            {
+              "type": 0,
+              "value": " oɟ "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": " ou "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            },
+            {
+              "type": 0,
+              "value": " ʍɐs ɹǝɔoɹpǝp ɟoɹ ʎon"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.kind.meetingDeclarationRuled": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 5,
+      "value": "outcome",
+      "options": {
+        "TAKE_PART": {
+          "value": [
+            {
+              "type": 0,
+              "value": "⊥ɥǝ ɔɥɐıɹ ɹnʅǝp ʇɥɐʇ ʎon ɯɐʎ ʇɐʞǝ dɐɹʇ ıu ıʇǝɯ "
+            },
+            {
+              "type": 1,
+              "value": "item"
+            },
+            {
+              "type": 0,
+              "value": " oɟ "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": " ou "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "⊥ɥǝ ɔɥɐıɹ ɹnʅǝp ʇɥɐʇ ʎon ʅǝɐʌǝ ʇɥǝ ɹooɯ ɟoɹ ıʇǝɯ "
+            },
+            {
+              "type": 1,
+              "value": "item"
+            },
+            {
+              "type": 0,
+              "value": " oɟ "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": " ou "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.kind.meetingDeclarationsDue": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁʅǝɐsǝ pǝɔʅɐɹǝ ɐuʎ ıuʇǝɹǝsʇs ıu ʇɥǝ ɐƃǝupɐ ɟoɹ "
     },
     {
       "type": 1,
@@ -50403,6 +50785,74 @@
     {
       "type": 0,
       "value": " uǝǝps ʎonɹ ɐƃɹǝǝɯǝuʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.kind.meetingNotHeld": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɯǝǝʇıuƃ oɟ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ıs uoʇ ɯɐɹʞǝp ɐs ɥǝʅp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.kind.meetingRulingNeeded": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ pǝɔʅɐɹɐʇıou oɟ ıuʇǝɹǝsʇ ıu ıʇǝɯ "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": " oɟ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " uǝǝps ʎonɹ ɹnʅıuƃ"
     },
     {
       "type": 0,

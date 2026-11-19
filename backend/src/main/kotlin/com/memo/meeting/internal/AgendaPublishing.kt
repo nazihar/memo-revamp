@@ -106,6 +106,8 @@ data class Publication(
     val awaiting: List<Pair<ItemRow, PaperRow?>>,
     /** The agenda's version it was computed at. */
     val version: Long,
+    /** In a preview, the items the officer previewing is recused from (design E04 §1.7): withheld from what they read. */
+    val recused: Set<UUID> = emptySet(),
 )
 
 /**
@@ -195,7 +197,7 @@ class AgendaPublisher(
     fun preview(meetingId: UUID): Pair<MeetingRow, Publication?> {
         val meeting = guard.requireReader(meetingId)
         val rows = guard.rows(meeting.id) ?: return meeting to null
-        return meeting to prepare(meeting, rows)
+        return meeting to prepare(meeting, rows).copy(recused = guard.recused(rows))
     }
 
     private fun prepare(

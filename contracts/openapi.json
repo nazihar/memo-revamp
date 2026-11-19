@@ -450,6 +450,9 @@
             "enum" : [ "DECISION", "DISCUSSION", "INFORMATION" ],
             "type" : [ "string", "null" ]
           },
+          "recused" : {
+            "type" : "boolean"
+          },
           "resolutionSought" : {
             "type" : [ "string", "null" ]
           },
@@ -5540,6 +5543,9 @@
           "purpose" : {
             "enum" : [ "DECISION", "DISCUSSION", "INFORMATION" ],
             "type" : [ "string", "null" ]
+          },
+          "recused" : {
+            "type" : "boolean"
           },
           "resolutionSought" : {
             "type" : [ "string", "null" ]

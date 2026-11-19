@@ -70,7 +70,7 @@ class DeclarationAccess(
     private val sections: SectionStore,
     private val revisions: RevisionStore,
     private val audience: AudienceStore,
-    private val store: DeclarationStore,
+    private val recusals: RecusalStore,
     private val directory: ForumDirectory,
     private val viewers: PaperViewers,
     private val paperAccess: PaperAccess,
@@ -109,13 +109,13 @@ class DeclarationAccess(
     fun recused(
         userId: UUID,
         item: DeclarableItem,
-    ): Boolean = store.recusedAmong(item.scope, listOf(userId)).isNotEmpty()
+    ): Boolean = recusals.recusedAmong(item.scope, listOf(userId)).isNotEmpty()
 
     /** The people among [userIds] recused from [item]. */
     fun recusedAmong(
         userIds: Collection<UUID>,
         item: DeclarableItem,
-    ): Set<UUID> = store.recusedAmong(item.scope, userIds)
+    ): Set<UUID> = recusals.recusedAmong(item.scope, userIds)
 
     /**
      * The forum's officers in office who are told of declarations: its secretaries and its chair, or the vice-chair when
@@ -146,14 +146,25 @@ class DeclarationAccess(
         forumId: UUID,
         item: DeclarableItem,
         declarant: UUID,
+    ): UUID? = decider(forumId, item.scope, declarant)
+
+    /**
+     * Who decides for the item whose [scope] (the item and its parent) is given, a late item or paper on it, or a ruling
+     * (design E04 §1.2, §1.7): the chair in office, or the vice-chair when the chair is [except] (the declarant), is
+     * recused from the item, or there is none. Null when nobody can.
+     */
+    fun decider(
+        forumId: UUID,
+        scope: Collection<UUID>,
+        except: UUID? = null,
     ): UUID? {
         val seats = directory.membersOn(forumId)
         val candidates =
             listOfNotNull(
                 seats.firstOrNull { it.role == ForumRole.CHAIR }?.userId,
                 seats.firstOrNull { it.role == ForumRole.VICE_CHAIR }?.userId,
-            ).filter { it != declarant }
-        val recused = recusedAmong(candidates, item)
+            ).filter { it != except }
+        val recused = recusals.recusedAmong(scope, candidates)
         return candidates.firstOrNull { it !in recused }
     }
 

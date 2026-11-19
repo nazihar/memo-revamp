@@ -76,6 +76,7 @@ class AgendaChair(
     private val notifier: MeetingNotifier,
     private val directory: ForumDirectory,
     private val ids: IdGenerator,
+    private val declarations: DeclarationAccess,
 ) {
     /** The chair agrees the agenda's first publication, or a secretary records that they did ([onBehalf]). */
     fun agree(
@@ -140,8 +141,9 @@ class AgendaChair(
         decision: LateDecision,
     ) {
         val submission = items.find(itemId)?.submissionId
-        val edit = guard.answer(meetingId, version, decision.onBehalf, listOfNotNull(submission))
+        val edit = guard.answer(meetingId, version, decision.onBehalf, listOfNotNull(submission), forItem = true)
         val item = edit.item(itemId)
+        requireDecider(edit, item, decision)
         refuseIf(item.late != Lateness.AWAITING_CHAIR, "WRONG_STATE") { "This item is not waiting for the chair." }
         val audited = decided(decision, mapOf("itemId" to item.id.toString(), "submissionId" to item.submissionId?.toString()))
         if (decision.agree) {
@@ -161,8 +163,9 @@ class AgendaChair(
         version: Long,
         decision: LateDecision,
     ) {
-        val edit = guard.answer(meetingId, version, decision.onBehalf)
+        val edit = guard.answer(meetingId, version, decision.onBehalf, forItem = true)
         val paper = edit.paper(paperId)
+        requireDecider(edit, edit.item(paper.itemId), decision)
         refuseIf(paper.late != Lateness.AWAITING_CHAIR, "WRONG_STATE") { "This paper is not waiting for the chair." }
         val audited = decided(decision, mapOf("paperId" to paper.id.toString(), "itemId" to paper.itemId.toString()))
         if (decision.agree) {
@@ -173,6 +176,21 @@ class AgendaChair(
             writes.record("meeting.late.declined", edit.meeting.id, after = audited)
         }
         guard.done(edit.meeting.id)
+    }
+
+    /**
+     * The chair answering in the app on [item] is the one who decides for it: the chair, or the vice-chair when the chair
+     * is recused from it (design E04 §1.7); 403 otherwise. A secretary recording the answer on their behalf is not checked
+     * here: when nobody can decide, the secretaries record the committee's agreement.
+     */
+    private fun requireDecider(
+        edit: AgendaEdit,
+        item: ItemRow,
+        decision: LateDecision,
+    ) {
+        if (decision.onBehalf) return
+        val decider = declarations.decider(edit.meeting.forumId, listOfNotNull(item.id, item.parentId))
+        if (decider != actorOrNull()) throw ForbiddenException(Permission.FORUMS_MANAGE)
     }
 
     private fun decided(

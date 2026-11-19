@@ -39,7 +39,7 @@ class ConsentRequests(
         meetingId: UUID,
         itemId: UUID,
     ) {
-        val (meeting, revision) = open(meetingId, itemId, asking = true)
+        val (meeting, revision, scope) = open(meetingId, itemId, asking = true)
         val user = checkNotNull(actorOrNull())
         val id = ids.next()
         val asked = requests.insert(ConsentRequestRow(id, meeting.id, itemId, user, revision, requests.now()))
@@ -50,7 +50,7 @@ class ConsentRequests(
             meeting.id.toString(),
             after = mapOf("requestId" to id.toString(), "itemId" to itemId.toString(), "revision" to revision),
         )
-        directory.forum(meeting.forumId)?.let { notifier.discussionRequested(meeting, it) }
+        directory.forum(meeting.forumId)?.let { notifier.discussionRequested(meeting, it, scope) }
     }
 
     /** The actor withdraws their request to discuss [itemId] of [meetingId]. */
@@ -70,15 +70,16 @@ class ConsentRequests(
     }
 
     /**
-     * The meeting, locked, and its latest revision's number, if the actor may ask about [itemId] now: 404 when they do not
-     * see the meeting or the item in full; 403 when they see it but are not a member or guest (a secretary moves the item
-     * themselves); 409 `WRONG_STATE` unless the meeting is scheduled and, [asking], the item sits in a consent section.
+     * The meeting, locked, its latest revision's number and the item with its parent, if the actor may ask about [itemId]
+     * now: 404 when they do not see the meeting or the item in full (a recused person does not); 403 when they see it but
+     * are not a member or guest (a secretary moves the item themselves); 409 `WRONG_STATE` unless the meeting is scheduled
+     * and, [asking], the item sits in a consent section.
      */
     private fun open(
         meetingId: UUID,
         itemId: UUID,
         asking: Boolean,
-    ): Pair<MeetingRow, Int> {
+    ): Triple<MeetingRow, Int, List<UUID>> {
         guard.requireVisible(meetingId)
         val meeting = checkNotNull(meetings.lock(meetingId))
         val head = revisions.heads(meeting.id).lastOrNull()
@@ -94,7 +95,7 @@ class ConsentRequests(
         val consent = body.sections.any { it.sectionId == found.sectionId && it.kind == AgendaSectionKind.CONSENT }
         refuseIf(meeting.status != MeetingStatus.SCHEDULED, "WRONG_STATE") { "Requests close when the meeting starts." }
         refuseIf(asking && !consent, "WRONG_STATE") { "Only consent items are lifted for discussion." }
-        return meeting to head.number
+        return Triple(meeting, head.number, listOfNotNull(found.itemId, found.parentId))
     }
 }
 

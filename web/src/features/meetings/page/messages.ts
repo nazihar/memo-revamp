@@ -26,6 +26,11 @@ export const pm = defineMessages({
   INFORMATION: { id: 'meetingPage.purpose.information', defaultMessage: 'For noting' },
   break: { id: 'meetingPage.break', defaultMessage: 'Break' },
   papersRestricted: { id: 'meetingPage.papersRestricted', defaultMessage: '— papers restricted' },
+  recused: { id: 'meetingPage.recused', defaultMessage: '— You declared an interest' },
+  awaitingRuling: {
+    id: 'meetingPage.awaitingRuling',
+    defaultMessage: '— Waiting for the chair’s decision, papers withheld until then',
+  },
   LATE: { id: 'meetingPage.late', defaultMessage: 'Late paper' },
   TABLED: { id: 'meetingPage.tabled', defaultMessage: 'Tabled at the meeting' },
   membersOnly: { id: 'meetingPage.membersOnly', defaultMessage: 'Members only' },

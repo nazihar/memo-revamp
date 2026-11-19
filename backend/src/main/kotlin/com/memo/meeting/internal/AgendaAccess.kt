@@ -7,24 +7,38 @@ import com.memo.common.authz.Policy
 import com.memo.common.concurrency.ConcurrentModificationException
 import com.memo.common.web.FieldProblem
 import com.memo.common.web.refuseIf
+import com.memo.forum.ForumRole
 import com.memo.forum.SubmissionPlacements
 import com.memo.identity.UserStatus
 import com.memo.identity.UserSummaries
 import org.springframework.stereotype.Component
 import java.util.UUID
 
-/** A builder change in progress: the meeting, and its agenda's live rows read under the agenda's row lock. */
+/**
+ * A builder change in progress: the meeting, and its agenda's live rows read under the agenda's row lock. [recused] are
+ * the items the actor is recused from (design E04 §1.7): asking for one of them, or for a paper of one, is 403 `RECUSED`,
+ * so a recused officer changes nothing of the item, its papers, restriction, place or presence on the agenda.
+ */
 data class AgendaEdit(
     val meeting: MeetingRow,
     val rows: AgendaRows,
+    val recused: Set<UUID> = emptySet(),
 ) {
     val agenda: AgendaRow get() = rows.agenda
 
     fun section(id: UUID): SectionRow = rows.sections.firstOrNull { it.id == id } ?: throw MeetingNotFoundException("section")
 
-    fun item(id: UUID): ItemRow = rows.items.firstOrNull { it.id == id } ?: throw MeetingNotFoundException("item")
+    fun item(id: UUID): ItemRow {
+        val item = rows.items.firstOrNull { it.id == id } ?: throw MeetingNotFoundException("item")
+        if (item.id in recused) throw RecusedException()
+        return item
+    }
 
-    fun paper(id: UUID): PaperRow = rows.papers.firstOrNull { it.id == id } ?: throw MeetingNotFoundException("paper")
+    fun paper(id: UUID): PaperRow {
+        val paper = rows.papers.firstOrNull { it.id == id } ?: throw MeetingNotFoundException("paper")
+        if (paper.itemId in recused) throw RecusedException()
+        return paper
+    }
 
     /** The top-level items of [sectionId], in order. */
     fun topLevel(sectionId: UUID): List<ItemRow> =
@@ -49,6 +63,7 @@ class AgendaGuard(
     private val audience: AudienceStore,
     private val meetings: MeetingStore,
     private val placements: SubmissionPlacements,
+    private val recusals: RecusalStore,
 ) {
     /** The meeting, if the actor may read its draft (an officer); 404 when they do not see it, 403 when they only see it. */
     fun requireReader(meetingId: UUID): MeetingRow {
@@ -82,16 +97,24 @@ class AgendaGuard(
     /**
      * Opens the chair's answer on [meetingId]'s agenda (agreement, a late paper): by the chair in office (the vice-chair
      * when there is none), or [onBehalf] by its secretary or `forums.manage`; 404 when the meeting is invisible, 403 when
-     * the actor is neither. Locked and at [version], with [submissions] locked first as for [edit].
+     * the actor is neither. Locked and at [version], with [submissions] locked first as for [edit]. An answer on one late
+     * item or paper ([forItem]) is open to the chair and the vice-chair here: the caller checks which of them decides for
+     * that item (the vice-chair when the chair is recused from it, design E04 §1.7).
      */
     fun answer(
         meetingId: UUID,
         version: Long,
         onBehalf: Boolean,
         submissions: Collection<UUID> = emptyList(),
+        forItem: Boolean = false,
     ): AgendaEdit {
         val (meeting, _) = guard.requireVisible(meetingId)
-        val allowed = if (onBehalf) access.manages(meeting.forumId) else access.chairs(meeting.forumId)
+        val allowed =
+            when {
+                onBehalf -> access.manages(meeting.forumId)
+                forItem -> access.role(meeting.forumId).let { it == ForumRole.CHAIR || it == ForumRole.VICE_CHAIR }
+                else -> access.chairs(meeting.forumId)
+            }
         if (!allowed) throw ForbiddenException(Permission.FORUMS_MANAGE)
         placements.lock(submissions)
         return locked(meeting, version, tabled = true)
@@ -108,8 +131,12 @@ class AgendaGuard(
         if (locked.version != version) throw ConcurrentModificationException("agenda ${meeting.id}", version)
         val current = meetings.find(meeting.id) ?: throw MeetingNotFoundException()
         AgendaRules.requireChange(current.status, tabled)
-        return AgendaEdit(current, rowsOf(locked))
+        val rows = rowsOf(locked)
+        return AgendaEdit(current, rows, recused(rows))
     }
+
+    /** The items of [rows] the actor is recused from, sub-items of such items included (design E04 §1.6). */
+    fun recused(rows: AgendaRows): Set<UUID> = actorOrNull()?.let { recusals.recusedItems(rows.agenda.meetingId, it, rows.items) }.orEmpty()
 
     /** Opens a change made by the system (a submission left, the meeting was cancelled): locked, no version, no officer. */
     fun system(meeting: MeetingRow): AgendaEdit? = agendas.lock(meeting.id)?.let { AgendaEdit(meeting, rowsOf(it)) }

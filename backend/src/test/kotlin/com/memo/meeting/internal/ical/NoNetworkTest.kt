@@ -31,9 +31,13 @@ class NoNetworkTest {
     fun `writing, validating and parsing invitations opens no connection`() {
         val asked = Collections.synchronizedList(mutableListOf<URI>())
         val previous = ProxySelector.getDefault()
+        // Only this thread's connections are recorded and refused: the selector is JVM-wide, and other tests running at the
+        // same time (a background PDF job reaching object storage) keep the selector they had.
+        val mine = Thread.currentThread()
         ProxySelector.setDefault(
             object : ProxySelector() {
                 override fun select(uri: URI): List<Proxy> {
+                    if (Thread.currentThread() !== mine) return previous.select(uri)
                     asked += uri
                     throw IllegalStateException("no network in this test: $uri")
                 }
@@ -42,7 +46,9 @@ class NoNetworkTest {
                     uri: URI?,
                     sa: SocketAddress?,
                     ioe: IOException?,
-                ) = Unit
+                ) {
+                    if (Thread.currentThread() !== mine) previous.connectFailed(uri, sa, ioe)
+                }
             },
         )
         try {

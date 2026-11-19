@@ -35795,6 +35795,34 @@
       "value": "]"
     }
   ],
+  "mail.template.meetingAlternateAsked": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧşķḗḗḓ ŧǿǿ ȧȧŧŧḗḗƞḓ īƞ ȧȧ ḿḗḗḿƀḗḗř'ş ƥŀȧȧƈḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.template.meetingAlternateReleased": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ ŀǿǿƞɠḗḗř ƞḗḗḗḗḓḗḗḓ īƞ ȧȧ ḿḗḗḿƀḗḗř'ş ƥŀȧȧƈḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "mail.template.meetingCancelled": [
     {
       "type": 0,
@@ -35929,6 +35957,20 @@
     {
       "type": 0,
       "value": "Ḿḗḗḗḗŧīƞɠ ƞǿǿŧ ḿȧȧřķḗḗḓ ȧȧş ħḗḗŀḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "mail.template.meetingRsvpRecorded": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƞşẇḗḗř řḗḗƈǿǿřḓḗḗḓ ƒǿǿř ẏǿǿŭŭ"
     },
     {
       "type": 0,
@@ -52108,6 +52150,74 @@
       "value": "]"
     }
   ],
+  "notifications.kind.meetingAlternateAsked": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "member"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧşķḗḗḓ ẏǿǿŭŭ ŧǿǿ ȧȧŧŧḗḗƞḓ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " īƞ ŧħḗḗīř ƥŀȧȧƈḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.kind.meetingAlternateReleased": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "member"
+    },
+    {
+      "type": 0,
+      "value": " ƞǿǿ ŀǿǿƞɠḗḗř ƞḗḗḗḗḓş ẏǿǿŭŭ ŧǿǿ ȧȧŧŧḗḗƞḓ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " īƞ ŧħḗḗīř ƥŀȧȧƈḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "notifications.kind.meetingCancelled": [
     {
       "type": 0,
@@ -52558,6 +52668,176 @@
     {
       "type": 0,
       "value": " īş ƞǿǿŧ ḿȧȧřķḗḗḓ ȧȧş ħḗḗŀḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.kind.meetingRsvpChanged": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "member"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧƞşẇḗḗřḗḗḓ ƒǿǿř "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 5,
+      "value": "answer",
+      "options": {
+        "IN_PERSON": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ẏḗḗş, īƞ ƥḗḗřşǿǿƞ"
+            }
+          ]
+        },
+        "REMOTE": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ẏḗḗş, ǿǿƞŀīƞḗḗ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ƞǿǿ, ȧȧƥǿǿŀǿǿɠīḗḗş"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "notifications.kind.meetingRsvpRecorded": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ şḗḗƈřḗḗŧȧȧřẏ řḗḗƈǿǿřḓḗḗḓ ẏǿǿŭŭř ȧȧƞşẇḗḗř ƒǿǿř "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 5,
+      "value": "answer",
+      "options": {
+        "IN_PERSON": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ẏḗḗş, īƞ ƥḗḗřşǿǿƞ"
+            }
+          ]
+        },
+        "REMOTE": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ẏḗḗş, ǿǿƞŀīƞḗḗ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Ƞǿǿ, ȧȧƥǿǿŀǿǿɠīḗḗş"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 5,
+      "value": "how",
+      "options": {
+        "EMAIL": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ƀẏ ḗḗḿȧȧīŀ"
+            }
+          ]
+        },
+        "PHONE": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ƀẏ ƥħǿǿƞḗḗ"
+            }
+          ]
+        },
+        "IN_PERSON": {
+          "value": [
+            {
+              "type": 0,
+              "value": "īƞ ƥḗḗřşǿǿƞ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ǿǿŧħḗḗřẇīşḗḗ"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": ")"
     },
     {
       "type": 0,

@@ -1479,6 +1479,7 @@ export type InviteeResponse = {
     lastSentAt?: string | null;
     lastSequence?: number | null;
     name: string;
+    reply?: ReplyResponse | null;
     resendFrom?: string | null;
     state: 'NOT_INVITED' | 'INVITED' | 'UNINVITED' | 'CANCELLED';
     userId: string;
@@ -1715,6 +1716,13 @@ export type MeetingGuestResponse = {
     userId: string;
 };
 
+export type MeetingInvitationSummaryResponse = {
+    lastSentAt?: string | null;
+    pending: boolean;
+    sentAt?: string | null;
+    sequence: number;
+};
+
 export type MeetingPageResponse = {
     items: Array<MeetingSummaryResponse>;
     nextCursor?: string | null;
@@ -1751,6 +1759,7 @@ export type MeetingResponse = {
     forumName: string;
     guests: Array<MeetingGuestResponse>;
     id: string;
+    invitation?: MeetingInvitationSummaryResponse | null;
     joinDetails?: string | null;
     joinUrl?: string | null;
     kind: 'ORDINARY' | 'SPECIAL';
@@ -1760,7 +1769,8 @@ export type MeetingResponse = {
     location?: string | null;
     mode: 'IN_PERSON' | 'ONLINE' | 'HYBRID';
     number?: number | null;
-    relation: 'OFFICER' | 'MEMBER' | 'GUEST' | 'ATTENDEE' | 'READER';
+    relation: 'OFFICER' | 'MEMBER' | 'ALTERNATE' | 'GUEST' | 'ATTENDEE' | 'READER';
+    rsvp?: MeetingRsvpResponse | null;
     startsAt: string;
     status: 'DRAFT' | 'SCHEDULED' | 'IN_PROGRESS' | 'HELD' | 'MINUTES_APPROVED' | 'CLOSED' | 'CANCELLED';
     statusReason?: string | null;
@@ -1768,6 +1778,14 @@ export type MeetingResponse = {
     title?: string | null;
     typeVersion: number;
     version: number;
+};
+
+export type MeetingRsvpResponse = {
+    alternateAttends: boolean;
+    answer?: 'IN_PERSON' | 'REMOTE' | 'APOLOGIES';
+    canAnswer: boolean;
+    capacity: 'MEMBER' | 'ALTERNATE' | 'GUEST';
+    stale: boolean;
 };
 
 export type MeetingSummaryResponse = {
@@ -1786,7 +1804,8 @@ export type MeetingSummaryResponse = {
     localStartsAt: string;
     location?: string | null;
     mode: 'IN_PERSON' | 'ONLINE' | 'HYBRID';
-    relation: 'OFFICER' | 'MEMBER' | 'GUEST' | 'ATTENDEE' | 'READER';
+    relation: 'OFFICER' | 'MEMBER' | 'ALTERNATE' | 'GUEST' | 'ATTENDEE' | 'READER';
+    rsvp?: MeetingRsvpResponse | null;
     startsAt: string;
     status: 'DRAFT' | 'SCHEDULED' | 'IN_PROGRESS' | 'HELD' | 'MINUTES_APPROVED' | 'CLOSED' | 'CANCELLED';
     timeZone: string;
@@ -2216,6 +2235,33 @@ export type MyPermission = {
      * Held for the whole organisation
      */
     tenantWide: boolean;
+};
+
+export type MyRsvpRequest = {
+    alternateAttends?: boolean;
+    answer?: 'IN_PERSON' | 'REMOTE' | 'APOLOGIES';
+    note?: string | null;
+};
+
+export type MyRsvpResponse = {
+    alternate?: ReplyPersonResponse | null;
+    alternateAttends: boolean;
+    alternateStandingIn: boolean;
+    answer?: 'IN_PERSON' | 'REMOTE' | 'APOLOGIES';
+    answeredAt?: string | null;
+    canAnswer: boolean;
+    capacity: 'MEMBER' | 'ALTERNATE' | 'GUEST';
+    forEndsAt?: string | null;
+    forStartsAt?: string | null;
+    how?: 'IN_APP' | 'EMAIL' | 'PHONE' | 'IN_PERSON' | 'OTHER';
+    meetingId: string;
+    note?: string | null;
+    offered: Array<'IN_PERSON' | 'REMOTE' | 'APOLOGIES'>;
+    recordedBy?: ReplyPersonResponse | null;
+    replyBy?: string | null;
+    stale: boolean;
+    standingInFor?: ReplyPersonResponse | null;
+    version?: number | null;
 };
 
 export type MySession = {
@@ -2876,6 +2922,14 @@ export type RecordAuditView = {
     validator: string;
 };
 
+export type RecordRsvpRequest = {
+    alternateAttends?: boolean;
+    answer?: 'IN_PERSON' | 'REMOTE' | 'APOLOGIES';
+    how?: 'IN_APP' | 'EMAIL' | 'PHONE' | 'IN_PERSON' | 'OTHER';
+    howNote?: string | null;
+    note?: string | null;
+};
+
 export type RecordVersionView = {
     audit?: RecordAuditView | null;
     classification?: string | null;
@@ -2945,6 +2999,45 @@ export type RenditionView = {
 export type RenewRequest = {
     authority?: string | null;
     termEndsOn?: string | null;
+};
+
+export type RepliesResponse = {
+    canRecord: boolean;
+    counts: ReplyCountsResponse;
+    meetingId: string;
+    members: ReplyCountsResponse;
+    people?: Array<ReplyResponse> | null;
+};
+
+export type ReplyCountsResponse = {
+    apologies: number;
+    inPerson: number;
+    noAnswer: number;
+    remote: number;
+    stale: number;
+    total: number;
+};
+
+export type ReplyPersonResponse = {
+    name: string;
+    userId: string;
+};
+
+export type ReplyResponse = {
+    alternate?: ReplyPersonResponse | null;
+    alternateAttends: boolean;
+    answer?: 'IN_PERSON' | 'REMOTE' | 'APOLOGIES';
+    answeredAt?: string | null;
+    capacity: 'MEMBER' | 'ALTERNATE' | 'GUEST';
+    how?: 'IN_APP' | 'EMAIL' | 'PHONE' | 'IN_PERSON' | 'OTHER';
+    howNote?: string | null;
+    name: string;
+    note?: string | null;
+    recordedBy?: ReplyPersonResponse | null;
+    stale: boolean;
+    standingInFor?: ReplyPersonResponse | null;
+    userId: string;
+    version?: number | null;
 };
 
 export type ReportTotals = {
@@ -8600,6 +8693,87 @@ export type RescheduleMeetingResponses = {
 };
 
 export type RescheduleMeetingResponse = RescheduleMeetingResponses[keyof RescheduleMeetingResponses];
+
+export type GetMyMeetingRsvpData = {
+    body?: never;
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/rsvp/mine';
+};
+
+export type GetMyMeetingRsvpResponses = {
+    /**
+     * OK
+     */
+    200: MyRsvpResponse;
+};
+
+export type GetMyMeetingRsvpResponse = GetMyMeetingRsvpResponses[keyof GetMyMeetingRsvpResponses];
+
+export type AnswerMeetingRsvpData = {
+    body: MyRsvpRequest;
+    headers: {
+        'Idempotency-Key': string;
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/rsvp/mine';
+};
+
+export type AnswerMeetingRsvpResponses = {
+    /**
+     * OK
+     */
+    200: MyRsvpResponse;
+};
+
+export type AnswerMeetingRsvpResponse = AnswerMeetingRsvpResponses[keyof AnswerMeetingRsvpResponses];
+
+export type GetMeetingRsvpsData = {
+    body?: never;
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/rsvps';
+};
+
+export type GetMeetingRsvpsResponses = {
+    /**
+     * OK
+     */
+    200: RepliesResponse;
+};
+
+export type GetMeetingRsvpsResponse = GetMeetingRsvpsResponses[keyof GetMeetingRsvpsResponses];
+
+export type RecordMeetingRsvpData = {
+    body: RecordRsvpRequest;
+    headers: {
+        'Idempotency-Key': string;
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+        userId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/rsvps/{userId}';
+};
+
+export type RecordMeetingRsvpResponses = {
+    /**
+     * OK
+     */
+    200: ReplyResponse;
+};
+
+export type RecordMeetingRsvpResponse = RecordMeetingRsvpResponses[keyof RecordMeetingRsvpResponses];
 
 export type ScheduleMeetingData = {
     body?: never;

@@ -60,11 +60,14 @@ import com.memo.jooq.tables.MeetingItemAttendee
 import com.memo.jooq.tables.MeetingPaper
 import com.memo.jooq.tables.MeetingPaperOpen
 import com.memo.jooq.tables.MeetingReaderState
+import com.memo.jooq.tables.MeetingReminder
 import com.memo.jooq.tables.MeetingRevision
 import com.memo.jooq.tables.MeetingRevisionItem
 import com.memo.jooq.tables.MeetingRevisionNotice
 import com.memo.jooq.tables.MeetingRevisionPaper
 import com.memo.jooq.tables.MeetingRevisionSection
+import com.memo.jooq.tables.MeetingRsvp
+import com.memo.jooq.tables.MeetingRsvpEvent
 import com.memo.jooq.tables.MeetingSection
 import com.memo.jooq.tables.MemoApproval
 import com.memo.jooq.tables.MemoAttachment
@@ -444,6 +447,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val MEETING_READER_STATE: MeetingReaderState get() = MeetingReaderState.MEETING_READER_STATE
 
     /**
+     * The table <code>memo.meeting_reminder</code>.
+     */
+    val MEETING_REMINDER: MeetingReminder get() = MeetingReminder.MEETING_REMINDER
+
+    /**
      * The table <code>memo.meeting_revision</code>.
      */
     val MEETING_REVISION: MeetingRevision get() = MeetingRevision.MEETING_REVISION
@@ -467,6 +475,16 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      * The table <code>memo.meeting_revision_section</code>.
      */
     val MEETING_REVISION_SECTION: MeetingRevisionSection get() = MeetingRevisionSection.MEETING_REVISION_SECTION
+
+    /**
+     * The table <code>memo.meeting_rsvp</code>.
+     */
+    val MEETING_RSVP: MeetingRsvp get() = MeetingRsvp.MEETING_RSVP
+
+    /**
+     * The table <code>memo.meeting_rsvp_event</code>.
+     */
+    val MEETING_RSVP_EVENT: MeetingRsvpEvent get() = MeetingRsvpEvent.MEETING_RSVP_EVENT
 
     /**
      * The table <code>memo.meeting_section</code>.
@@ -1121,11 +1139,14 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         MeetingPaper.MEETING_PAPER,
         MeetingPaperOpen.MEETING_PAPER_OPEN,
         MeetingReaderState.MEETING_READER_STATE,
+        MeetingReminder.MEETING_REMINDER,
         MeetingRevision.MEETING_REVISION,
         MeetingRevisionItem.MEETING_REVISION_ITEM,
         MeetingRevisionNotice.MEETING_REVISION_NOTICE,
         MeetingRevisionPaper.MEETING_REVISION_PAPER,
         MeetingRevisionSection.MEETING_REVISION_SECTION,
+        MeetingRsvp.MEETING_RSVP,
+        MeetingRsvpEvent.MEETING_RSVP_EVENT,
         MeetingSection.MEETING_SECTION,
         com.memo.jooq.tables.Memo.MEMO_,
         MemoApproval.MEMO_APPROVAL,

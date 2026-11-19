@@ -21,6 +21,9 @@ enum class MeetingRelation {
     /** A secretary or the chair of the forum in office today, or a holder of `forums.manage`. */
     OFFICER,
     MEMBER,
+
+    /** A seat's alternate standing in for a member who sent apologies (design E05 §1.5): reads what the member reads. */
+    ALTERNATE,
     GUEST,
     ATTENDEE,
 
@@ -84,6 +87,7 @@ class MeetingAccess(
                     officer(meeting.forumId) -> MeetingRelation.OFFICER
                     meeting.status == MeetingStatus.DRAFT -> null
                     AudienceSource.MEMBER in sources -> MeetingRelation.MEMBER
+                    AudienceSource.ALTERNATE in sources -> MeetingRelation.ALTERNATE
                     AudienceSource.GUEST in sources -> MeetingRelation.GUEST
                     AudienceSource.ATTENDEE in sources -> MeetingRelation.ATTENDEE
                     readsAll() -> MeetingRelation.READER

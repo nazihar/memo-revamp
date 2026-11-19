@@ -15,6 +15,8 @@ import com.memo.jooq.keys.MEETING_DECLARATION__MEETING_DECLARATION_TENANT_ID_MEE
 import com.memo.jooq.keys.MEETING_GUEST__MEETING_GUEST_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_INVITATION__MEETING_INVITATION_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_PKEY
+import com.memo.jooq.keys.MEETING_REMINDER__MEETING_REMINDER_TENANT_ID_MEETING_ID_FKEY
+import com.memo.jooq.keys.MEETING_RSVP__MEETING_RSVP_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_TENANT_ID_FORUM_ID_NUMBER_YEAR_NUMBER_KEY
 import com.memo.jooq.keys.MEETING_TENANT_ID_ID_KEY
 import com.memo.jooq.tables.MeetingAgenda.MeetingAgendaPath
@@ -22,6 +24,8 @@ import com.memo.jooq.tables.MeetingAudience.MeetingAudiencePath
 import com.memo.jooq.tables.MeetingDeclaration.MeetingDeclarationPath
 import com.memo.jooq.tables.MeetingGuest.MeetingGuestPath
 import com.memo.jooq.tables.MeetingInvitation.MeetingInvitationPath
+import com.memo.jooq.tables.MeetingReminder.MeetingReminderPath
+import com.memo.jooq.tables.MeetingRsvp.MeetingRsvpPath
 import com.memo.jooq.tables.records.MeetingRecord
 
 import java.time.OffsetDateTime
@@ -350,6 +354,38 @@ open class Meeting(
 
     val meetingInvitation: MeetingInvitationPath
         get(): MeetingInvitationPath = meetingInvitation()
+
+    private lateinit var _meetingReminder: MeetingReminderPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.meeting_reminder</code> table
+     */
+    fun meetingReminder(): MeetingReminderPath {
+        if (!this::_meetingReminder.isInitialized)
+            _meetingReminder = MeetingReminderPath(this, null, MEETING_REMINDER__MEETING_REMINDER_TENANT_ID_MEETING_ID_FKEY.inverseKey)
+
+        return _meetingReminder;
+    }
+
+    val meetingReminder: MeetingReminderPath
+        get(): MeetingReminderPath = meetingReminder()
+
+    private lateinit var _meetingRsvp: MeetingRsvpPath
+
+    /**
+     * Get the implicit to-many join path to the <code>memo.meeting_rsvp</code>
+     * table
+     */
+    fun meetingRsvp(): MeetingRsvpPath {
+        if (!this::_meetingRsvp.isInitialized)
+            _meetingRsvp = MeetingRsvpPath(this, null, MEETING_RSVP__MEETING_RSVP_TENANT_ID_MEETING_ID_FKEY.inverseKey)
+
+        return _meetingRsvp;
+    }
+
+    val meetingRsvp: MeetingRsvpPath
+        get(): MeetingRsvpPath = meetingRsvp()
     override fun getChecks(): List<Check<MeetingRecord>> = listOf(
         Internal.createCheck(this, DSL.name("meeting_check"), "((ends_at > starts_at))", true),
         Internal.createCheck(this, DSL.name("meeting_check1"), "((ends_at <= (starts_at + '7 days'::interval)))", true),

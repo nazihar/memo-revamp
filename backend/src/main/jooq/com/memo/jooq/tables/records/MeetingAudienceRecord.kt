@@ -48,6 +48,14 @@ open class MeetingAudienceRecord private constructor() : UpdatableRecordImpl<Mee
         set(value): Unit = set(6, value)
         get(): OffsetDateTime? = get(6) as OffsetDateTime?
 
+    open var forMemberId: UUID?
+        set(value): Unit = set(7, value)
+        get(): UUID? = get(7) as UUID?
+
+    open var forUserId: UUID?
+        set(value): Unit = set(8, value)
+        get(): UUID? = get(8) as UUID?
+
     // -------------------------------------------------------------------------
     // Primary key information
     // -------------------------------------------------------------------------
@@ -57,7 +65,7 @@ open class MeetingAudienceRecord private constructor() : UpdatableRecordImpl<Mee
     /**
      * Create a detached, initialised MeetingAudienceRecord
      */
-    constructor(tenantId: UUID, meetingId: UUID, userId: UUID, source: String, membersOnly: Boolean, until: LocalDate? = null, removedAt: OffsetDateTime? = null): this() {
+    constructor(tenantId: UUID, meetingId: UUID, userId: UUID, source: String, membersOnly: Boolean, until: LocalDate? = null, removedAt: OffsetDateTime? = null, forMemberId: UUID? = null, forUserId: UUID? = null): this() {
         this.tenantId = tenantId
         this.meetingId = meetingId
         this.userId = userId
@@ -65,6 +73,8 @@ open class MeetingAudienceRecord private constructor() : UpdatableRecordImpl<Mee
         this.membersOnly = membersOnly
         this.until = until
         this.removedAt = removedAt
+        this.forMemberId = forMemberId
+        this.forUserId = forUserId
         resetTouchedOnNotNull()
     }
 }

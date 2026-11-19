@@ -19911,6 +19911,18 @@
       "value": "Meeting agenda publishedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "mail.template.meetingAlternateAsked": [
+    {
+      "type": 0,
+      "value": "Asked to attend in a member's placeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.meetingAlternateReleased": [
+    {
+      "type": 0,
+      "value": "No longer needed in a member's placeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "mail.template.meetingCancelled": [
     {
       "type": 0,
@@ -19969,6 +19981,12 @@
     {
       "type": 0,
       "value": "Meeting not marked as heldSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.meetingRsvpRecorded": [
+    {
+      "type": 0,
+      "value": "Answer recorded for youSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "mail.template.meetingRulingNeeded": [
@@ -28460,6 +28478,58 @@
       "value": " was publishedSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "notifications.kind.meetingAlternateAsked": [
+    {
+      "type": 1,
+      "value": "member"
+    },
+    {
+      "type": 0,
+      "value": " asked you to attend "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " in their placeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.meetingAlternateReleased": [
+    {
+      "type": 1,
+      "value": "member"
+    },
+    {
+      "type": 0,
+      "value": " no longer needs you to attend "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " in their placeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "notifications.kind.meetingCancelled": [
     {
       "type": 0,
@@ -28850,6 +28920,164 @@
     {
       "type": 0,
       "value": " is not marked as heldSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.meetingRsvpChanged": [
+    {
+      "type": 1,
+      "value": "member"
+    },
+    {
+      "type": 0,
+      "value": " answered for "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 5,
+      "value": "answer",
+      "options": {
+        "IN_PERSON": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Yes, in person"
+            }
+          ]
+        },
+        "REMOTE": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Yes, online"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "No, apologies"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.meetingRsvpRecorded": [
+    {
+      "type": 0,
+      "value": "The secretary recorded your answer for "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 5,
+      "value": "answer",
+      "options": {
+        "IN_PERSON": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Yes, in person"
+            }
+          ]
+        },
+        "REMOTE": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Yes, online"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "No, apologies"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 5,
+      "value": "how",
+      "options": {
+        "EMAIL": {
+          "value": [
+            {
+              "type": 0,
+              "value": "by email"
+            }
+          ]
+        },
+        "PHONE": {
+          "value": [
+            {
+              "type": 0,
+              "value": "by phone"
+            }
+          ]
+        },
+        "IN_PERSON": {
+          "value": [
+            {
+              "type": 0,
+              "value": "in person"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "otherwise"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "notifications.kind.meetingRulingNeeded": [

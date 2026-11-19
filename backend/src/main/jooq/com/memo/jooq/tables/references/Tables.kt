@@ -61,11 +61,14 @@ import com.memo.jooq.tables.MeetingItemAttendee
 import com.memo.jooq.tables.MeetingPaper
 import com.memo.jooq.tables.MeetingPaperOpen
 import com.memo.jooq.tables.MeetingReaderState
+import com.memo.jooq.tables.MeetingReminder
 import com.memo.jooq.tables.MeetingRevision
 import com.memo.jooq.tables.MeetingRevisionItem
 import com.memo.jooq.tables.MeetingRevisionNotice
 import com.memo.jooq.tables.MeetingRevisionPaper
 import com.memo.jooq.tables.MeetingRevisionSection
+import com.memo.jooq.tables.MeetingRsvp
+import com.memo.jooq.tables.MeetingRsvpEvent
 import com.memo.jooq.tables.MeetingSection
 import com.memo.jooq.tables.Memo
 import com.memo.jooq.tables.MemoApproval
@@ -427,6 +430,11 @@ val MEETING_PAPER_OPEN: MeetingPaperOpen = MeetingPaperOpen.MEETING_PAPER_OPEN
 val MEETING_READER_STATE: MeetingReaderState = MeetingReaderState.MEETING_READER_STATE
 
 /**
+ * The table <code>memo.meeting_reminder</code>.
+ */
+val MEETING_REMINDER: MeetingReminder = MeetingReminder.MEETING_REMINDER
+
+/**
  * The table <code>memo.meeting_revision</code>.
  */
 val MEETING_REVISION: MeetingRevision = MeetingRevision.MEETING_REVISION
@@ -450,6 +458,16 @@ val MEETING_REVISION_PAPER: MeetingRevisionPaper = MeetingRevisionPaper.MEETING_
  * The table <code>memo.meeting_revision_section</code>.
  */
 val MEETING_REVISION_SECTION: MeetingRevisionSection = MeetingRevisionSection.MEETING_REVISION_SECTION
+
+/**
+ * The table <code>memo.meeting_rsvp</code>.
+ */
+val MEETING_RSVP: MeetingRsvp = MeetingRsvp.MEETING_RSVP
+
+/**
+ * The table <code>memo.meeting_rsvp_event</code>.
+ */
+val MEETING_RSVP_EVENT: MeetingRsvpEvent = MeetingRsvpEvent.MEETING_RSVP_EVENT
 
 /**
  * The table <code>memo.meeting_section</code>.

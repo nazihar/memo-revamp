@@ -4,6 +4,7 @@ import com.memo.forum.ForumChanged
 import com.memo.forum.ForumDirectory
 import com.memo.forum.ForumRole
 import com.memo.meeting.internal.invite.MeetingInvitations
+import com.memo.meeting.internal.rsvp.Alternates
 import org.springframework.context.event.EventListener
 import org.springframework.stereotype.Component
 import java.util.UUID
@@ -12,7 +13,9 @@ import java.util.UUID
  * Who a meeting is for (design E03 §1.6), materialised and recomputed in the transaction of every change that affects it:
  *  - MEMBER: every roster seat in office on the meeting's date, position seats resolved to their holders; members-only
  *    sections are for the chair, vice-chair, members and secretaries; [AudienceRow.until] is the seat's last day;
- *  - GUEST: each current guest.
+ *  - GUEST: each current guest;
+ *  - ALTERNATE: a seat's alternate standing in for a member who sent apologies (design E05 §1.5), written by the reply
+ *    and released here when the roster no longer allows it.
  * Item attendees (ATTENDEE) are the agenda's (T2). Officers are not audience rows: [MeetingAccess] checks them.
  */
 @Component
@@ -21,11 +24,12 @@ class MeetingAudience(
     private val meetings: MeetingStore,
     private val directory: ForumDirectory,
     private val invitations: MeetingInvitations,
+    private val alternates: Alternates,
 ) {
     fun recompute(meeting: MeetingRow) {
+        val roster = directory.membersOn(meeting.forumId, meeting.date)
         val members =
-            directory
-                .membersOn(meeting.forumId, meeting.date)
+            roster
                 .groupBy { it.userId }
                 .map { (user, seats) ->
                     AudienceRow(
@@ -45,6 +49,8 @@ class MeetingAudience(
         store.replace(meeting.id, AudienceSource.GUEST, guests)
         // Newcomers are invited and leavers uninvited (design E05 §1.1), at the same sequence.
         if (invited(members + guests) != before) invitations.audienceChanged(meeting)
+        // An alternate stands in only while their member holds the seat and they hold none (design E05 §1.5).
+        alternates.reconcile(meeting, roster)
     }
 
     /** The people an invitation goes to, by source (design E05 §1.1): members and guests. */

@@ -519,6 +519,6 @@ class DeclarationEffects(
     ) {
         val forum = directory.forum(meeting.forumId) ?: return
         val details = mapOf("item" to item.number.orEmpty()) + listOfNotNull(change?.let { "change" to it }).toMap() + extra
-        (users - setOfNotNull(actor)).sorted().forEach { notifier.declaration(it, kind, meeting, forum, details) }
+        (users - setOfNotNull(actor)).sorted().forEach { notifier.person(it, kind, meeting, forum, details) }
     }
 }

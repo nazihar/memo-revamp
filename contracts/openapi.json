@@ -4418,6 +4418,13 @@
           "name" : {
             "type" : "string"
           },
+          "reply" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/ReplyResponse"
+            }, {
+              "type" : "null"
+            } ]
+          },
           "resendFrom" : {
             "format" : "date-time",
             "type" : [ "string", "null" ]
@@ -5105,6 +5112,27 @@
         "required" : [ "addedAt", "name", "userId" ],
         "type" : "object"
       },
+      "MeetingInvitationSummaryResponse" : {
+        "properties" : {
+          "lastSentAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "pending" : {
+            "type" : "boolean"
+          },
+          "sentAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "sequence" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "pending", "sequence" ],
+        "type" : "object"
+      },
       "MeetingPageResponse" : {
         "properties" : {
           "items" : {
@@ -5219,6 +5247,13 @@
             "format" : "uuid",
             "type" : "string"
           },
+          "invitation" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/MeetingInvitationSummaryResponse"
+            }, {
+              "type" : "null"
+            } ]
+          },
           "joinDetails" : {
             "type" : [ "string", "null" ]
           },
@@ -5252,8 +5287,15 @@
             "type" : [ "integer", "null" ]
           },
           "relation" : {
-            "enum" : [ "OFFICER", "MEMBER", "GUEST", "ATTENDEE", "READER" ],
+            "enum" : [ "OFFICER", "MEMBER", "ALTERNATE", "GUEST", "ATTENDEE", "READER" ],
             "type" : "string"
+          },
+          "rsvp" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/MeetingRsvpResponse"
+            }, {
+              "type" : "null"
+            } ]
           },
           "startsAt" : {
             "format" : "date-time",
@@ -5282,6 +5324,29 @@
           }
         },
         "required" : [ "canManage", "classificationId", "endsAt", "forumCode", "forumId", "forumName", "guests", "id", "kind", "localEndsAt", "localStartsAt", "mode", "relation", "startsAt", "status", "timeZone", "typeVersion", "version" ],
+        "type" : "object"
+      },
+      "MeetingRsvpResponse" : {
+        "properties" : {
+          "alternateAttends" : {
+            "type" : "boolean"
+          },
+          "answer" : {
+            "enum" : [ "IN_PERSON", "REMOTE", "APOLOGIES" ],
+            "type" : [ "string", "null" ]
+          },
+          "canAnswer" : {
+            "type" : "boolean"
+          },
+          "capacity" : {
+            "enum" : [ "MEMBER", "ALTERNATE", "GUEST" ],
+            "type" : "string"
+          },
+          "stale" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "alternateAttends", "canAnswer", "capacity", "stale" ],
         "type" : "object"
       },
       "MeetingSummaryResponse" : {
@@ -5342,8 +5407,15 @@
             "type" : "string"
           },
           "relation" : {
-            "enum" : [ "OFFICER", "MEMBER", "GUEST", "ATTENDEE", "READER" ],
+            "enum" : [ "OFFICER", "MEMBER", "ALTERNATE", "GUEST", "ATTENDEE", "READER" ],
             "type" : "string"
+          },
+          "rsvp" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/MeetingRsvpResponse"
+            }, {
+              "type" : "null"
+            } ]
           },
           "startsAt" : {
             "format" : "date-time",
@@ -6767,6 +6839,106 @@
           }
         },
         "required" : [ "key", "scopeUnitIds", "tenantWide" ],
+        "type" : "object"
+      },
+      "MyRsvpRequest" : {
+        "properties" : {
+          "alternateAttends" : {
+            "type" : "boolean"
+          },
+          "answer" : {
+            "enum" : [ "IN_PERSON", "REMOTE", "APOLOGIES" ],
+            "type" : "string"
+          },
+          "note" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "MyRsvpResponse" : {
+        "properties" : {
+          "alternate" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/ReplyPersonResponse"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "alternateAttends" : {
+            "type" : "boolean"
+          },
+          "alternateStandingIn" : {
+            "type" : "boolean"
+          },
+          "answer" : {
+            "enum" : [ "IN_PERSON", "REMOTE", "APOLOGIES" ],
+            "type" : [ "string", "null" ]
+          },
+          "answeredAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "canAnswer" : {
+            "type" : "boolean"
+          },
+          "capacity" : {
+            "enum" : [ "MEMBER", "ALTERNATE", "GUEST" ],
+            "type" : "string"
+          },
+          "forEndsAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "forStartsAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "how" : {
+            "enum" : [ "IN_APP", "EMAIL", "PHONE", "IN_PERSON", "OTHER" ],
+            "type" : [ "string", "null" ]
+          },
+          "meetingId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "note" : {
+            "type" : [ "string", "null" ]
+          },
+          "offered" : {
+            "items" : {
+              "enum" : [ "IN_PERSON", "REMOTE", "APOLOGIES" ],
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "recordedBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/ReplyPersonResponse"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "replyBy" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "stale" : {
+            "type" : "boolean"
+          },
+          "standingInFor" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/ReplyPersonResponse"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "version" : {
+            "format" : "int64",
+            "type" : [ "integer", "null" ]
+          }
+        },
+        "required" : [ "alternateAttends", "alternateStandingIn", "canAnswer", "capacity", "meetingId", "offered", "stale" ],
         "type" : "object"
       },
       "MySession" : {
@@ -8480,6 +8652,28 @@
         "required" : [ "compliant", "failedRules", "placeholders", "profile", "rasterisedPages", "renderer", "sha256", "validator" ],
         "type" : "object"
       },
+      "RecordRsvpRequest" : {
+        "properties" : {
+          "alternateAttends" : {
+            "type" : "boolean"
+          },
+          "answer" : {
+            "enum" : [ "IN_PERSON", "REMOTE", "APOLOGIES" ],
+            "type" : "string"
+          },
+          "how" : {
+            "enum" : [ "IN_APP", "EMAIL", "PHONE", "IN_PERSON", "OTHER" ],
+            "type" : [ "string", "null" ]
+          },
+          "howNote" : {
+            "type" : [ "string", "null" ]
+          },
+          "note" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
       "RecordVersionView" : {
         "properties" : {
           "audit" : {
@@ -8694,6 +8888,140 @@
             "type" : [ "string", "null" ]
           }
         },
+        "type" : "object"
+      },
+      "RepliesResponse" : {
+        "properties" : {
+          "canRecord" : {
+            "type" : "boolean"
+          },
+          "counts" : {
+            "$ref" : "#/components/schemas/ReplyCountsResponse"
+          },
+          "meetingId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "members" : {
+            "$ref" : "#/components/schemas/ReplyCountsResponse"
+          },
+          "people" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ReplyResponse"
+            },
+            "type" : [ "array", "null" ]
+          }
+        },
+        "required" : [ "canRecord", "counts", "meetingId", "members" ],
+        "type" : "object"
+      },
+      "ReplyCountsResponse" : {
+        "properties" : {
+          "apologies" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "inPerson" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "noAnswer" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "remote" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "stale" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "total" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "apologies", "inPerson", "noAnswer", "remote", "stale", "total" ],
+        "type" : "object"
+      },
+      "ReplyPersonResponse" : {
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "userId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "name", "userId" ],
+        "type" : "object"
+      },
+      "ReplyResponse" : {
+        "properties" : {
+          "alternate" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/ReplyPersonResponse"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "alternateAttends" : {
+            "type" : "boolean"
+          },
+          "answer" : {
+            "enum" : [ "IN_PERSON", "REMOTE", "APOLOGIES" ],
+            "type" : [ "string", "null" ]
+          },
+          "answeredAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "capacity" : {
+            "enum" : [ "MEMBER", "ALTERNATE", "GUEST" ],
+            "type" : "string"
+          },
+          "how" : {
+            "enum" : [ "IN_APP", "EMAIL", "PHONE", "IN_PERSON", "OTHER" ],
+            "type" : [ "string", "null" ]
+          },
+          "howNote" : {
+            "type" : [ "string", "null" ]
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "note" : {
+            "type" : [ "string", "null" ]
+          },
+          "recordedBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/ReplyPersonResponse"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "stale" : {
+            "type" : "boolean"
+          },
+          "standingInFor" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/ReplyPersonResponse"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "userId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "version" : {
+            "format" : "int64",
+            "type" : [ "integer", "null" ]
+          }
+        },
+        "required" : [ "alternateAttends", "capacity", "name", "stale", "userId" ],
         "type" : "object"
       },
       "ReportTotals" : {
@@ -19933,6 +20261,172 @@
           }
         },
         "summary" : "Move a meeting to other times (a reason once scheduled)",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/rsvp/mine" : {
+      "get" : {
+        "operationId" : "getMyMeetingRsvp",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MyRsvpResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The actor's answer to \"Will you attend?\" and what they may answer",
+        "tags" : [ "meeting" ]
+      },
+      "put" : {
+        "operationId" : "answerMeetingRsvp",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/MyRsvpRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MyRsvpResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Answer \"Will you attend?\" for oneself (If-Match once answered)",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/rsvps" : {
+      "get" : {
+        "operationId" : "getMeetingRsvps",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RepliesResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A meeting's replies: every answer for officers, the counts for the audience",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/rsvps/{userId}" : {
+      "put" : {
+        "operationId" : "recordMeetingRsvp",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "userId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/RecordRsvpRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ReplyResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Record an answer someone gave by email, phone or in person (secretaries)",
         "tags" : [ "meeting" ]
       }
     },

@@ -1,0 +1,16 @@
+# Phase 4 E05 replies (design E05 §3, §4; ADR-0063, ADR-0064). Meeting ids are random here, so every subject allowed
+# through is answered 404 before the audience or officer check. Who may do what on a real meeting (a member, an
+# alternate standing in, a guest, the secretary, the chair, forum.read, a user outside) is RepliesIT and
+# AlternateRecusalIT; another tenant is MeetingCrossTenantIT.
+epic: P4-E05
+endpoints:
+  - { endpoint: "GET /api/v1/meetings/{meetingId}/rsvp/mine", rule: signedIn }
+  - endpoint: "PUT /api/v1/meetings/{meetingId}/rsvp/mine"
+    rule: signedIn
+    body: { answer: "IN_PERSON" }
+    headers: { Idempotency-Key: "{random}" }
+  - endpoint: "PUT /api/v1/meetings/{meetingId}/rsvps/{userId}"
+    rule: signedIn
+    body: { answer: "APOLOGIES", how: "PHONE" }
+    headers: { Idempotency-Key: "{random}" }
+  - { endpoint: "GET /api/v1/meetings/{meetingId}/rsvps", rule: signedIn }

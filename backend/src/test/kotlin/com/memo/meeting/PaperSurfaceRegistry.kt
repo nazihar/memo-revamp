@@ -43,6 +43,10 @@ object PaperSurfaceRegistry {
             "POST /api/v1/meetings/{meetingId}/declarations/review" to Surface.DECLARATIONS,
             // "Add to my calendar" (E05 T2): the meeting's time, place and link only, never an item (InvitationContentIT).
             "GET /api/v1/meetings/{meetingId}/calendar.ics" to Surface.MEETING,
+            // Replies (E05 T3): answers, notes and counts; never an item (an alternate's recusals are AlternateRecusalIT).
+            "GET /api/v1/meetings/{meetingId}/rsvp/mine" to Surface.MEETING,
+            "PUT /api/v1/meetings/{meetingId}/rsvp/mine" to Surface.MEETING,
+            "GET /api/v1/meetings/{meetingId}/rsvps" to Surface.MEETING,
         )
 
     /**
@@ -89,5 +93,6 @@ object PaperSurfaceRegistry {
             mapOf(
                 "GET /api/v1/meetings/{meetingId}/invitations" to "the invitations panel (E05 T2): officers, people and delivery only",
                 "POST /api/v1/meetings/{meetingId}/invitations/resend" to "resending invitations (E05 T2): secretaries and forums.manage",
+                "PUT /api/v1/meetings/{meetingId}/rsvps/{userId}" to "recording an answer on someone's behalf (E05 T3): secretaries",
             )
 }

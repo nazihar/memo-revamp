@@ -5,6 +5,8 @@ package com.memo.jooq.tables
 
 
 import com.memo.jooq.Memo
+import com.memo.jooq.indexes.MEETING_AUDIENCE_FOR_USER_IDX
+import com.memo.jooq.indexes.MEETING_AUDIENCE_SEAT_IDX
 import com.memo.jooq.indexes.MEETING_AUDIENCE_USER_IDX
 import com.memo.jooq.keys.MEETING_AUDIENCE_PKEY
 import com.memo.jooq.keys.MEETING_AUDIENCE__MEETING_AUDIENCE_TENANT_ID_MEETING_ID_FKEY
@@ -115,6 +117,16 @@ open class MeetingAudience(
      */
     val REMOVED_AT: TableField<MeetingAudienceRecord, OffsetDateTime?> = createField(DSL.name("removed_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
 
+    /**
+     * The column <code>memo.meeting_audience.for_member_id</code>.
+     */
+    val FOR_MEMBER_ID: TableField<MeetingAudienceRecord, UUID?> = createField(DSL.name("for_member_id"), SQLDataType.UUID, this, "")
+
+    /**
+     * The column <code>memo.meeting_audience.for_user_id</code>.
+     */
+    val FOR_USER_ID: TableField<MeetingAudienceRecord, UUID?> = createField(DSL.name("for_user_id"), SQLDataType.UUID, this, "")
+
     private constructor(alias: Name, aliased: Table<MeetingAudienceRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<MeetingAudienceRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<MeetingAudienceRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -147,7 +159,7 @@ open class MeetingAudience(
         override fun `as`(alias: Table<*>): MeetingAudiencePath = MeetingAudiencePath(alias.qualifiedName, this)
     }
     override fun getSchema(): Schema? = if (aliased()) null else Memo.MEMO
-    override fun getIndexes(): List<Index> = listOf(MEETING_AUDIENCE_USER_IDX)
+    override fun getIndexes(): List<Index> = listOf(MEETING_AUDIENCE_FOR_USER_IDX, MEETING_AUDIENCE_SEAT_IDX, MEETING_AUDIENCE_USER_IDX)
     override fun getPrimaryKey(): UniqueKey<MeetingAudienceRecord> = MEETING_AUDIENCE_PKEY
     override fun getReferences(): List<ForeignKey<MeetingAudienceRecord, *>> = listOf(MEETING_AUDIENCE__MEETING_AUDIENCE_TENANT_ID_MEETING_ID_FKEY)
 
@@ -157,7 +169,8 @@ open class MeetingAudience(
     fun meeting(): MeetingPath = meeting
     val meeting: MeetingPath by lazy { MeetingPath(this, MEETING_AUDIENCE__MEETING_AUDIENCE_TENANT_ID_MEETING_ID_FKEY, null) }
     override fun getChecks(): List<Check<MeetingAudienceRecord>> = listOf(
-        Internal.createCheck(this, DSL.name("meeting_audience_source_check"), "((source = ANY (ARRAY['MEMBER'::text, 'GUEST'::text, 'ATTENDEE'::text])))", true)
+        Internal.createCheck(this, DSL.name("meeting_audience_alternate_check"), "((((source = 'ALTERNATE'::text) = (for_member_id IS NOT NULL)) AND ((source = 'ALTERNATE'::text) = (for_user_id IS NOT NULL))))", true),
+        Internal.createCheck(this, DSL.name("meeting_audience_source_check"), "((source = ANY (ARRAY['MEMBER'::text, 'GUEST'::text, 'ATTENDEE'::text, 'ALTERNATE'::text])))", true)
     )
     override fun `as`(alias: String): MeetingAudience = MeetingAudience(DSL.name(alias), this)
     override fun `as`(alias: Name): MeetingAudience = MeetingAudience(alias, this)

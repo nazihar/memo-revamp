@@ -37,13 +37,17 @@ class WorkflowForums(
     /** The names of the forums escalation steps may name, by key (ADR-0056); empty without the forum module. */
     fun forumNames(): Map<String, String> = targets.flatMap { it.list() }.associate { it.key to it.name }
 
-    /** The forum decided on the item waiting at its step [stepId]. */
+    /**
+     * The forum decided on the item waiting at its step [stepId]. [details] go on the FORUM_DECIDED action beside its own
+     * keys, for example the resolution number and the decision that the note sheet links (ADR-0065).
+     */
     fun decided(
         instanceId: UUID,
         stepId: UUID,
         outcome: ForumOutcome,
         remark: String?,
-    ): WorkflowView = runner.onInstance(instanceId, officer()) { actor -> ForumDecided(actor, stepId, outcome, remark) }
+        details: Map<String, Any?> = emptyMap(),
+    ): WorkflowView = runner.onInstance(instanceId, officer()) { actor -> ForumDecided(actor, stepId, outcome, remark, details) }
 
     /** The forum will not consider the item waiting at [stepId]: back to its initiator with [reason]. */
     fun declined(

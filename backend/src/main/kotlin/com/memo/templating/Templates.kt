@@ -75,6 +75,11 @@ data class TemplateTag(
     val location: TemplateLocation,
     val row: TableRow?,
     val excerpt: String,
+    /**
+     * Whether the tag is the whole text of its paragraph and that paragraph is directly in the document's body: not in a
+     * table, a text box, a content control, a header, a footer or a note. A block's start and end must be (ADR-0066).
+     */
+    val standalone: Boolean = false,
 )
 
 enum class TemplateProblemCode {
@@ -99,6 +104,13 @@ enum class TemplateProblemCode {
     /** A `{{tag}}` inside a repeated row: only `[fields]` may be there. */
     TAG_IN_LOOP_ROW,
     TOO_MANY_TAGS,
+
+    /**
+     * A repeated block (ADR-0066) placed where it cannot repeat: its `{{?name}}` or `{{/name}}` is not alone in a paragraph
+     * of the body (it is in a table, a text box, a content control, a header or footer, or shares its paragraph), the
+     * block is used twice, or it is inside another block.
+     */
+    BLOCK_PLACEMENT,
 }
 
 /** Something to fix before a template can be used, with where it is and the text around it. */
@@ -126,11 +138,18 @@ data class TemplateScan(
 /**
  * The tags a kind of document offers: value tags, the subset that may open a block, and loops with their row fields.
  * Names are ASCII, dotted (`memo.number`, `meta.amount`).
+ *
+ * [blocks] are repeated blocks (ADR-0066): `{{?items}}…{{/items}}` repeats once per element; inside it the block's own
+ * vocabulary applies (its values and the document's [values], its own sections and loops), one level deep, and its tags
+ * are unknown outside it. [aliases] are names admins commonly type for a tag (`item.discussion` for `item.notes`): never
+ * tags themselves, they only lead an unknown tag's suggestion to the real one.
  */
 data class TagVocabulary(
     val values: Set<String>,
     val sections: Set<String>,
     val loops: Map<String, Set<String>>,
+    val blocks: Map<String, TagVocabulary> = emptyMap(),
+    val aliases: Map<String, String> = emptyMap(),
 )
 
 /**

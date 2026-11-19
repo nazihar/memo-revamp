@@ -209,6 +209,11 @@ open class ForumTypeVersion(
      */
     val MEETINGS: TableField<ForumTypeVersionRecord, JSONB?> = createField(DSL.name("meetings"), SQLDataType.JSONB, this, "")
 
+    /**
+     * The column <code>memo.forum_type_version.minutes</code>.
+     */
+    val MINUTES: TableField<ForumTypeVersionRecord, JSONB?> = createField(DSL.name("minutes"), SQLDataType.JSONB, this, "")
+
     private constructor(alias: Name, aliased: Table<ForumTypeVersionRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<ForumTypeVersionRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<ForumTypeVersionRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -258,6 +263,7 @@ open class ForumTypeVersion(
         Internal.createCheck(this, DSL.name("forum_type_version_description_check"), "(((length(description) >= 1) AND (length(description) <= 2000)))", true),
         Internal.createCheck(this, DSL.name("forum_type_version_meetings_check"), "(((meetings IS NULL) OR ((jsonb_typeof(meetings) = 'object'::text) AND (octet_length((meetings)::text) <= 4096))))", true),
         Internal.createCheck(this, DSL.name("forum_type_version_member_attributes_check"), "(((jsonb_typeof(member_attributes) = 'array'::text) AND (octet_length((member_attributes)::text) <= 4096)))", true),
+        Internal.createCheck(this, DSL.name("forum_type_version_minutes_check"), "(((minutes IS NULL) OR ((jsonb_typeof(minutes) = 'object'::text) AND (octet_length((minutes)::text) <= 8192))))", true),
         Internal.createCheck(this, DSL.name("forum_type_version_name_check"), "(((length(name) >= 1) AND (length(name) <= 200)))", true),
         Internal.createCheck(this, DSL.name("forum_type_version_number_check"), "((number >= 1))", true),
         Internal.createCheck(this, DSL.name("forum_type_version_outcomes_check"), "(((jsonb_typeof(outcomes) = 'array'::text) AND (octet_length((outcomes)::text) <= 8192)))", true),

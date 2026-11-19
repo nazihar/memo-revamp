@@ -24,7 +24,11 @@ internal class DocxTemplatesImpl : DocxTemplates {
 /**
  * Checks tags against a [TagVocabulary] (ADR-0048): every value tag known, blocks balanced within one part and one
  * table row, loops in a table with their `[fields]` in the next row and nothing else there. Unknown names get the
- * closest known name as a suggestion.
+ * closest known name (or the tag an alias stands for) as a suggestion.
+ *
+ * Repeated blocks (ADR-0066): between a block's `{{?name}}` and `{{/name}}` the block's vocabulary applies; each end must
+ * be alone in a paragraph of the body, the block used once and never inside another ([TemplateProblemCode.BLOCK_PLACEMENT]),
+ * which is what the filler needs to repeat it and wrap each element in its content control.
  */
 internal class TagChecks(
     private val vocabulary: TagVocabulary,
@@ -35,12 +39,14 @@ internal class TagChecks(
 
     fun check(scan: TemplateScan): List<TemplateProblem> {
         val found = mutableListOf<TemplateProblem>()
-        val loopRows = loopRows(scan.tags)
+        val scopes = scopes(scan.tags, found)
+        val loopRows = loopRows(scan.tags, scopes)
         val open = ArrayDeque<Open>()
-        scan.tags.forEach { tag ->
+        scan.tags.forEachIndexed { i, tag ->
+            val scope = scopes[i]
             when (tag.kind) {
-                TagKind.VALUE -> found += value(tag, loopRows, scan.tags)
-                TagKind.SECTION_START -> found += sectionStart(tag, open)
+                TagKind.VALUE -> found += value(tag, scope, loopRows, scan.tags)
+                TagKind.SECTION_START -> found += sectionStart(tag, scope, open)
                 TagKind.SECTION_END -> found += sectionEnd(tag, open)
                 TagKind.ROW_FIELD -> Unit
             }
@@ -51,19 +57,59 @@ internal class TagChecks(
         )
     }
 
+    /**
+     * The vocabulary each tag is checked against: the document's, or inside a block its own (with the document's values),
+     * one level deep. A block's ends themselves belong to the document. Placement problems of blocks go to [found].
+     */
+    private fun scopes(
+        tags: List<TemplateTag>,
+        found: MutableList<TemplateProblem>,
+    ): List<TagVocabulary> {
+        val used = mutableSetOf<String>()
+        var inside: String? = null
+        return tags.map { tag ->
+            val block = vocabulary.blocks[tag.name]
+            when {
+                block != null && tag.kind == TagKind.SECTION_START -> {
+                    val misplaced = !tag.standalone || inside != null || tag.name in used
+                    if (misplaced) found += problem(TemplateProblemCode.BLOCK_PLACEMENT, tag)
+                    if (inside == null) {
+                        inside = tag.name
+                        used += tag.name
+                    }
+                    vocabulary
+                }
+
+                block != null && tag.kind == TagKind.SECTION_END && tag.name == inside -> {
+                    if (!tag.standalone) found += problem(TemplateProblemCode.BLOCK_PLACEMENT, tag)
+                    inside = null
+                    vocabulary
+                }
+
+                else -> {
+                    inside?.let { name -> vocabulary.within(checkNotNull(vocabulary.blocks[name])) } ?: vocabulary
+                }
+            }
+        }
+    }
+
     /** The template row below each loop tag that sits in a table. */
-    private fun loopRows(tags: List<TemplateTag>): Map<TableRow, String> =
+    private fun loopRows(
+        tags: List<TemplateTag>,
+        scopes: List<TagVocabulary>,
+    ): Map<TableRow, String> =
         tags
-            .filter { it.kind == TagKind.VALUE && it.name in vocabulary.loops }
+            .filterIndexed { i, tag -> tag.kind == TagKind.VALUE && tag.name in scopes[i].loops }
             .mapNotNull { tag -> tag.row?.let { row -> row.copy(row = row.row + 1) to tag.name } }
             .toMap()
 
     private fun value(
         tag: TemplateTag,
+        scope: TagVocabulary,
         loopRows: Map<TableRow, String>,
         all: List<TemplateTag>,
     ): List<TemplateProblem> {
-        val loop = vocabulary.loops[tag.name]
+        val loop = scope.loops[tag.name]
         return when {
             tag.row != null && tag.row in loopRows -> {
                 listOf(problem(TemplateProblemCode.TAG_IN_LOOP_ROW, tag))
@@ -73,14 +119,9 @@ internal class TagChecks(
                 loopProblems(tag, loop, all)
             }
 
-            tag.name !in vocabulary.values -> {
-                listOf(
-                    problem(
-                        TemplateProblemCode.UNKNOWN_TAG,
-                        tag,
-                        closest(tag.name, vocabulary.values + vocabulary.loops.keys)?.let { "{{$it}}" },
-                    ),
-                )
+            tag.name !in scope.values -> {
+                val suggestion = closest(tag.name, scope.values + scope.loops.keys, scope.aliases)
+                listOf(problem(TemplateProblemCode.UNKNOWN_TAG, tag, suggestion?.let { "{{$it}}" }))
             }
 
             else -> {
@@ -104,13 +145,17 @@ internal class TagChecks(
 
     private fun sectionStart(
         tag: TemplateTag,
+        scope: TagVocabulary,
         open: ArrayDeque<Open>,
     ): List<TemplateProblem> {
         open.addLast(Open(tag))
-        return if (tag.name in vocabulary.sections) {
+        val block = scope === vocabulary && tag.name in vocabulary.blocks
+        return if (tag.name in scope.sections || block) {
             emptyList()
         } else {
-            listOf(problem(TemplateProblemCode.UNKNOWN_TAG, tag, closest(tag.name, vocabulary.sections)?.let { "{{?$it}}" }))
+            val known = scope.sections + if (scope === vocabulary) vocabulary.blocks.keys else emptySet()
+            val aliases = scope.aliases.filterValues { it in known }
+            listOf(problem(TemplateProblemCode.UNKNOWN_TAG, tag, closest(tag.name, known, aliases)?.let { "{{?$it}}" }))
         }
     }
 
@@ -139,10 +184,15 @@ internal class TagChecks(
             TagKind.ROW_FIELD -> "[$name]"
         }
 
+    /** The closest of [known], or the tag of the closest of [aliases] whose tag is known. */
     private fun closest(
         name: String,
         known: Set<String>,
-    ): String? = Suggestions.closest(name, known)
+        aliases: Map<String, String> = emptyMap(),
+    ): String? {
+        val usable = aliases.filterValues { it in known }
+        return Suggestions.closest(name, known + usable.keys)?.let { usable[it] ?: it }
+    }
 
     /** Body first, then headers, footers and notes, as an admin reads them. */
     private fun partOrder(part: String): Int = PART_ORDER.indexOfFirst { part.startsWith(it) }.let { if (it < 0) PART_ORDER.size else it }
@@ -151,6 +201,15 @@ internal class TagChecks(
         val PART_ORDER = listOf("Body", "Header", "Footer")
     }
 }
+
+/** A block's vocabulary as its tags see it: its own values and the document's, its own sections and loops. */
+private fun TagVocabulary.within(block: TagVocabulary): TagVocabulary =
+    TagVocabulary(
+        values = block.values + values,
+        sections = block.sections,
+        loops = block.loops,
+        aliases = aliases + block.aliases,
+    )
 
 /** The closest name by edit distance, when it is close enough to be what was meant. */
 internal object Suggestions {

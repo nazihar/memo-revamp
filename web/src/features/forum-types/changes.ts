@@ -143,7 +143,100 @@ export function changesBetween(
       s.meetings.quorumOverride === 'WITH_REASON' ? ft.quorumOverrideWithReason : ft.quorumOverrideNever,
     )
   scalar('quorumOverride', intl.formatMessage(ft.whatQuorumOverride), override(before), override(after))
+  minutesChanges(intl, before, after, text, changes)
   return changes
+}
+
+/** The minutes policy's lines (Phase 4 E06, design E06 §1.8): approval, its days, memos moving on, numbers, template. */
+function minutesChanges(
+  intl: IntlShape,
+  before: TypeSettings,
+  after: TypeSettings,
+  text: (value: string | number | null | undefined) => string,
+  changes: Change[],
+) {
+  const a = before.minutes
+  const b = after.minutes
+  const scalar = (id: string, what: string, x: string, y: string) => {
+    if (x !== y) changes.push({ id, what, before: x, after: y })
+  }
+  const approval = (m: TypeSettings['minutes']) =>
+    intl.formatMessage(m.approval === 'BY_CIRCULATION' ? ft.minutesByCirculation : ft.minutesAtNextMeeting)
+  scalar('minutesApproval', intl.formatMessage(ft.whatMinutesApproval), approval(a), approval(b))
+  scalar(
+    'circulationDays',
+    intl.formatMessage(ft.whatCirculationDays),
+    text(a.circulationWorkingDays),
+    text(b.circulationWorkingDays),
+  )
+  scalar('draftDays', intl.formatMessage(ft.whatDraftDays), text(a.draftWorkingDays), text(b.draftWorkingDays))
+  const resumes = (m: TypeSettings['minutes']) =>
+    intl.formatMessage(m.memoResumes === 'ON_MINUTES_APPROVAL' ? ft.memoResumesOnApproval : ft.memoResumesAtEnd)
+  scalar('memoResumes', intl.formatMessage(ft.whatMemoResumes), resumes(a), resumes(b))
+  scalar(
+    'resolutionNumbering',
+    intl.formatMessage(ft.whatResolutionNumbering),
+    resolutionWords(intl, a.resolutionNumbering),
+    resolutionWords(intl, b.resolutionNumbering),
+  )
+  if ((a.templateFileId ?? null) !== (b.templateFileId ?? null)) {
+    const template = (id: string | null | undefined, other: boolean) =>
+      intl.formatMessage(
+        id == null ? ft.minutesTemplateBuiltIn : other ? ft.minutesTemplateNew : ft.minutesTemplateUploaded,
+      )
+    changes.push({
+      id: 'minutesTemplate',
+      what: intl.formatMessage(ft.whatMinutesTemplate),
+      before: template(a.templateFileId, false),
+      after: template(b.templateFileId, a.templateFileId != null),
+    })
+  }
+}
+
+/** A resolution numbering in words: its example ("BRC/2026/014") and when it starts again. */
+function resolutionWords(intl: IntlShape, numbering: TypeSettings['minutes']['resolutionNumbering']): string {
+  const month = intl.formatDate(new Date(Date.UTC(2026, numbering.fyStartMonth - 1, 1)), {
+    month: 'long',
+    timeZone: 'UTC',
+  })
+  const reset =
+    numbering.reset === 'NEVER'
+      ? intl.formatMessage(ft.resolutionResetNever)
+      : numbering.reset === 'FINANCIAL_YEAR'
+        ? intl.formatMessage(ftv.resolutionResetFinancialYear, { month })
+        : intl.formatMessage(ft.resolutionResetYearly)
+  return intl.formatMessage(ftv.resolutionNumbering, { example: resolutionExample(numbering), reset })
+}
+
+/**
+ * The example a resolution numbering gives (flow AI): committee BRC, meeting 3, number 14, on 19 November 2026. The
+ * server renders the live example on the Minutes tab; this one only tells two versions apart in the changes view.
+ */
+export function resolutionExample(numbering: TypeSettings['minutes']['resolutionNumbering']): string {
+  const year = 2026
+  const month = 11
+  const fyStart = month >= numbering.fyStartMonth ? year : year - 1
+  const fyEnd = numbering.fyStartMonth === 1 ? fyStart : fyStart + 1
+  const two = (n: number) => String(n % 100).padStart(2, '0')
+  return numbering.parts
+    .map((part) => {
+      switch (part.kind) {
+        case 'TEXT':
+          return part.text ?? ''
+        case 'COMMITTEE_CODE':
+          return 'BRC'
+        case 'MEETING_NUMBER':
+          return '3'
+        case 'YEAR':
+          return part.digits === 2 ? two(year) : String(year)
+        case 'FINANCIAL_YEAR':
+          if (part.style === 'SHORT') return `FY${two(fyEnd)}`
+          return fyStart === fyEnd ? String(fyStart) : `${fyStart}-${two(fyEnd)}`
+        case 'SEQUENCE':
+          return '14'.padStart(part.digits ?? 1, '0')
+      }
+    })
+    .join('')
 }
 
 /** The agenda policy's lines (flow R): the chair's agreement, sections and items by title, and the order of the sections. */

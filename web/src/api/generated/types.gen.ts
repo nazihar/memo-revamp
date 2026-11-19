@@ -1052,6 +1052,7 @@ export type ForumTypeSettingsRequest = {
     description?: string | null;
     meetings?: MeetingPolicy;
     memberAttributes?: Array<MemberAttribute>;
+    minutes?: MinutesPolicy;
     name?: string;
     outcomes?: Array<Outcome>;
     quorum?: QuorumRule;
@@ -1068,6 +1069,7 @@ export type ForumTypeVersionResponse = {
     description?: string | null;
     meetings: MeetingPolicy;
     memberAttributes: Array<MemberAttribute>;
+    minutes: MinutesPolicy;
     name: string;
     number: number;
     outcomes: Array<Outcome>;
@@ -2115,6 +2117,57 @@ export type MigrationResponse = {
     toVersion: number;
 };
 
+export type MinutesPolicy = {
+    approval: 'AT_NEXT_MEETING' | 'BY_CIRCULATION';
+    circulationWorkingDays: number;
+    draftWorkingDays: number;
+    memoResumes: 'AT_MEETING_END' | 'ON_MINUTES_APPROVAL';
+    resolutionNumbering: ResolutionNumbering;
+    templateFileId?: string | null;
+};
+
+export type MinutesTemplateFileView = {
+    fileId: string;
+    name: string;
+    sizeBytes: number;
+    uploadedAt: string;
+    versionId: string;
+};
+
+export type MinutesTemplatePreviewView = {
+    fileId: string;
+    versionId: string;
+};
+
+export type MinutesTemplateProblemView = {
+    code: 'MALFORMED_TAG' | 'UNSUPPORTED_TAG' | 'UNKNOWN_TAG' | 'UNBALANCED_SECTION' | 'LOOP_WITHOUT_ROW' | 'UNKNOWN_ROW_FIELD' | 'TAG_IN_LOOP_ROW' | 'TOO_MANY_TAGS' | 'BLOCK_PLACEMENT';
+    excerpt: string;
+    paragraph: number;
+    part: string;
+    suggestion?: string | null;
+    tag?: string | null;
+};
+
+export type MinutesTemplateRefusalView = {
+    rule: string;
+    where: string;
+};
+
+export type MinutesTemplateTagHelp = {
+    kind: string;
+    label: string;
+    tag: string;
+};
+
+export type MinutesTemplateView = {
+    available: Array<MinutesTemplateTagHelp>;
+    owner: string;
+    problems: Array<MinutesTemplateProblemView>;
+    refusals: Array<MinutesTemplateRefusalView>;
+    tags: Array<string>;
+    template?: MinutesTemplateFileView | null;
+};
+
 export type MoveOrgUnitRequest = {
     parentId: string;
 };
@@ -2927,6 +2980,30 @@ export type ResendInvitationsRequest = {
     userIds?: Array<string> | null;
 };
 
+export type ResolutionNumberPart = {
+    digits?: number | null;
+    kind: 'TEXT' | 'COMMITTEE_CODE' | 'YEAR' | 'FINANCIAL_YEAR' | 'MEETING_NUMBER' | 'SEQUENCE';
+    style?: 'LONG' | 'SHORT';
+    text?: string | null;
+};
+
+export type ResolutionNumbering = {
+    fyStartMonth: number;
+    parts: Array<ResolutionNumberPart>;
+    reset: 'NEVER' | 'YEARLY' | 'FINANCIAL_YEAR';
+};
+
+export type ResolutionNumberingPreview = {
+    problems: Array<FieldProblem>;
+    samples: Array<string>;
+};
+
+export type ResolutionNumberingPreviewRequest = {
+    committeeCode?: string | null;
+    meetingNumber?: number | null;
+    numbering: ResolutionNumbering;
+};
+
 export type Retention = {
     from: 'APPROVAL' | 'CLOSURE';
     years: number;
@@ -3430,7 +3507,7 @@ export type TemplatePreviewView = {
 };
 
 export type TemplateProblemView = {
-    code: 'MALFORMED_TAG' | 'UNSUPPORTED_TAG' | 'UNKNOWN_TAG' | 'UNBALANCED_SECTION' | 'LOOP_WITHOUT_ROW' | 'UNKNOWN_ROW_FIELD' | 'TAG_IN_LOOP_ROW' | 'TOO_MANY_TAGS';
+    code: 'MALFORMED_TAG' | 'UNSUPPORTED_TAG' | 'UNKNOWN_TAG' | 'UNBALANCED_SECTION' | 'LOOP_WITHOUT_ROW' | 'UNKNOWN_ROW_FIELD' | 'TAG_IN_LOOP_ROW' | 'TOO_MANY_TAGS' | 'BLOCK_PLACEMENT';
     excerpt: string;
     paragraph: number;
     part: string;
@@ -3796,6 +3873,22 @@ export type ListForumTypePresetsResponses = {
 
 export type ListForumTypePresetsResponse = ListForumTypePresetsResponses[keyof ListForumTypePresetsResponses];
 
+export type PreviewResolutionNumberingData = {
+    body: ResolutionNumberingPreviewRequest;
+    path?: never;
+    query?: never;
+    url: '/api/v1/admin/forum-types/resolution-numbering/preview';
+};
+
+export type PreviewResolutionNumberingResponses = {
+    /**
+     * OK
+     */
+    200: ResolutionNumberingPreview;
+};
+
+export type PreviewResolutionNumberingResponse = PreviewResolutionNumberingResponses[keyof PreviewResolutionNumberingResponses];
+
 export type GetForumTypeData = {
     body?: never;
     path: {
@@ -3945,6 +4038,44 @@ export type ApproveForumTypeVersionResponses = {
 };
 
 export type ApproveForumTypeVersionResponse = ApproveForumTypeVersionResponses[keyof ApproveForumTypeVersionResponses];
+
+export type GetForumTypeMinutesTemplateData = {
+    body?: never;
+    path: {
+        typeId: string;
+        number: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/forum-types/{typeId}/versions/{number}/minutes-template';
+};
+
+export type GetForumTypeMinutesTemplateResponses = {
+    /**
+     * OK
+     */
+    200: MinutesTemplateView;
+};
+
+export type GetForumTypeMinutesTemplateResponse = GetForumTypeMinutesTemplateResponses[keyof GetForumTypeMinutesTemplateResponses];
+
+export type PreviewForumTypeMinutesTemplateData = {
+    body?: never;
+    path: {
+        typeId: string;
+        number: string;
+    };
+    query?: never;
+    url: '/api/v1/admin/forum-types/{typeId}/versions/{number}/minutes-template/preview';
+};
+
+export type PreviewForumTypeMinutesTemplateResponses = {
+    /**
+     * OK
+     */
+    200: MinutesTemplatePreviewView;
+};
+
+export type PreviewForumTypeMinutesTemplateResponse = PreviewForumTypeMinutesTemplateResponses[keyof PreviewForumTypeMinutesTemplateResponses];
 
 export type SendBackForumTypeVersionData = {
     body: ReviewRemarkRequest;

@@ -157,7 +157,8 @@ internal fun trayOrder(
     )
 }
 
-private fun SubmissionRow.ref() =
+/** The submission as other modules see it. */
+internal fun SubmissionRow.ref() =
     SubmissionRef(
         id = id,
         forumId = forumId,

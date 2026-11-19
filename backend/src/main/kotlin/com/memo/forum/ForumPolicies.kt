@@ -24,6 +24,8 @@ data class ForumTypePolicy(
     val submission: SubmissionPolicy,
     /** Invitations, replies and the quorum override (design E05 §1.8). */
     val meetings: MeetingPolicy,
+    /** Minutes approval, when memos move on, resolution numbers and the template (design E06 §1.8). */
+    val minutes: MinutesPolicy,
     val outcomes: List<Outcome>,
     /** The agenda template and the chair's agreement (ADR-0060). */
     val agenda: AgendaPolicy,
@@ -83,6 +85,7 @@ class ForumPolicies(
             quorum = settings.quorum,
             submission = settings.submissionPolicy,
             meetings = settings.meetings,
+            minutes = settings.minutes,
             outcomes = settings.outcomes,
             agenda = settings.agenda,
         )

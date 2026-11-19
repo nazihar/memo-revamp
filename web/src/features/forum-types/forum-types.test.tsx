@@ -87,6 +87,23 @@ const published: ForumTypeVersionResponse = {
     meetingReminder: true,
     quorumOverride: 'NEVER',
   },
+  minutes: {
+    approval: 'AT_NEXT_MEETING',
+    circulationWorkingDays: 5,
+    draftWorkingDays: 10,
+    memoResumes: 'AT_MEETING_END',
+    resolutionNumbering: {
+      parts: [
+        { kind: 'COMMITTEE_CODE' },
+        { kind: 'TEXT', text: '/' },
+        { kind: 'YEAR', digits: 4 },
+        { kind: 'TEXT', text: '/' },
+        { kind: 'SEQUENCE', digits: 3 },
+      ],
+      reset: 'YEARLY',
+      fyStartMonth: 7,
+    },
+  },
   retention: { years: 10, from: 'MEETING' },
   createdAt: '2026-11-18T08:00:00Z',
 }
@@ -101,6 +118,11 @@ const inReview: ForumTypeVersionResponse = {
     { kind: 'NOTED', label: 'Noted', resolution: false },
   ],
   meetings: { ...published.meetings, invitationTitle: 'NEUTRAL', neutralTitle: 'Board committee meeting' },
+  minutes: {
+    ...published.minutes,
+    approval: 'BY_CIRCULATION',
+    resolutionNumbering: { ...published.minutes.resolutionNumbering, reset: 'FINANCIAL_YEAR' },
+  },
   submittedBy: { id: 'u2', name: 'Admin Two' },
   submittedAt: '2026-11-18T10:20:00Z',
 }
@@ -246,6 +268,7 @@ describe('committee types (Phase 4 E01 T4, flow J)', () => {
       submissionPolicy: unknown
       agenda: unknown
       meetings: unknown
+      minutes: unknown
     }[] = []
     server.use(
       ...handlers([draft, published]),
@@ -280,6 +303,8 @@ describe('committee types (Phase 4 E01 T4, flow J)', () => {
     expect(bodies[0]?.agenda).toEqual(draft.agenda)
     // Likewise the meeting policy (Phase 4 E05) until its tab comes (E05 T8).
     expect(bodies[0]?.meetings).toEqual(draft.meetings)
+    // And the minutes policy (Phase 4 E06) until its tab comes (E06 T10).
+    expect(bodies[0]?.minutes).toEqual(draft.minutes)
     await expectNoA11yViolations(container)
   }, 20_000)
 
@@ -377,9 +402,14 @@ describe('committee types (Phase 4 E01 T4, flow J)', () => {
 
     expect(await screen.findByText(/^Submitted by Admin Two/, {}, { timeout: 5000 })).toBeInTheDocument()
     expect(screen.getByText('Changes apply to every committee of this type from its next meeting.')).toBeInTheDocument()
-    expect(screen.getByRole('tab', { name: 'Changes (3)' })).toHaveAttribute('aria-selected', 'true')
+    expect(screen.getByRole('tab', { name: 'Changes (5)' })).toHaveAttribute('aria-selected', 'true')
     expect(screen.getByText('Invitation title in calendars:')).toBeInTheDocument()
     expect(screen.getByText('A neutral title: Board committee meeting')).toBeInTheDocument()
+    expect(screen.getByText('How minutes are approved:')).toBeInTheDocument()
+    expect(screen.getByText('By circulation, then noted at the next meeting')).toBeInTheDocument()
+    expect(screen.getByText('Resolution numbers:')).toBeInTheDocument()
+    expect(screen.getByText('BRC/2026/014, starting again every calendar year')).toBeInTheDocument()
+    expect(screen.getByText('BRC/2026/014, starting again every financial year from July')).toBeInTheDocument()
     expect(screen.getByText('Outcome “Approved” label:')).toBeInTheDocument()
     expect(screen.getByText('Sanctioned')).toBeInTheDocument()
     expect(screen.getByText(/^Two-thirds of the voting members in office, rounded up/)).toBeInTheDocument()

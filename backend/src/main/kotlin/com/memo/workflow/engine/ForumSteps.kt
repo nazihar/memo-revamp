@@ -28,7 +28,7 @@ internal class ForumSteps(
     ): Outcome =
         when (command.outcome) {
             ForumOutcome.REJECTED, ForumOutcome.RETURNED -> {
-                ended(state, command.stepId, command.actor, command.remark, ActionKind.FORUM_DECIDED, command.outcome)
+                ended(state, command.stepId, command.actor, command.remark, ActionKind.FORUM_DECIDED, command.outcome, command.details)
             }
 
             else -> {
@@ -42,7 +42,7 @@ internal class ForumSteps(
         command: ForumDecided,
     ): Outcome {
         val step = state.round.step(command.stepId)
-        val action = forumRecord(state, ActionKind.FORUM_DECIDED, command.actor, command.remark, step, command.outcome)
+        val action = forumRecord(state, ActionKind.FORUM_DECIDED, command.actor, command.remark, step, command.outcome, command.details)
         val closed = state.round.replaceStep(step.id) { it.copy(state = StepState.DONE) }
         val walk = rounds.advance(closed, step, People(state.initiator, command.actor))
         return if (walk.finished) {
@@ -62,9 +62,10 @@ internal class ForumSteps(
         remark: String?,
         kind: ActionKind,
         outcome: ForumOutcome?,
+        details: Map<String, Any?> = emptyMap(),
     ): Outcome {
         val step = state.round.step(stepId)
-        val action = forumRecord(state, kind, actor, remark, step, outcome)
+        val action = forumRecord(state, kind, actor, remark, step, outcome, details)
         val rejected = outcome == ForumOutcome.REJECTED
         val roundOutcome = if (rejected) RoundOutcome.REJECTED else RoundOutcome.RETURNED
         val status = if (rejected) InstanceStatus.REJECTED else InstanceStatus.RETURNED
@@ -88,9 +89,12 @@ internal class ForumSteps(
         remark: String?,
         step: Step,
         outcome: ForumOutcome?,
+        extra: Map<String, Any?> = emptyMap(),
     ): ActionRecord =
         record(kind, state, null, actor, remark).copy(
-            details = mapOfNotNull("step" to step.nodeId, "forum" to step.resolution?.get("forum"), "outcome" to outcome?.name),
+            details =
+                extra.filterValues { it != null } +
+                    mapOfNotNull("step" to step.nodeId, "forum" to step.resolution?.get("forum"), "outcome" to outcome?.name),
         )
 
     companion object {

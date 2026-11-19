@@ -8,6 +8,7 @@ import com.memo.forum.AgendaPolicy
 import com.memo.forum.ForumRetention
 import com.memo.forum.MeetingPolicy
 import com.memo.forum.MemberAttribute
+import com.memo.forum.MinutesPolicy
 import com.memo.forum.Outcome
 import com.memo.forum.QuorumRule
 import com.memo.forum.SubmissionPolicy
@@ -55,6 +56,22 @@ class ForumTypeVersionStore(
             .current()
             .selectFrom(FORUM_TYPE_VERSION)
             .where(FORUM_TYPE_VERSION.FORUM_TYPE_ID.eq(typeId), FORUM_TYPE_VERSION.NUMBER.eq(number))
+            .fetchOne { json.row(it) }
+
+    fun byId(id: UUID): ForumTypeVersionRow? =
+        tenantDsl
+            .current()
+            .selectFrom(FORUM_TYPE_VERSION)
+            .where(FORUM_TYPE_VERSION.ID.eq(id))
+            .fetchOne { json.row(it) }
+
+    /** [id] locked for the transaction (`SELECT … FOR UPDATE`), or null when there is no such version. */
+    fun lock(id: UUID): ForumTypeVersionRow? =
+        tenantDsl
+            .current()
+            .selectFrom(FORUM_TYPE_VERSION)
+            .where(FORUM_TYPE_VERSION.ID.eq(id))
+            .forUpdate()
             .fetchOne { json.row(it) }
 
     fun published(typeId: UUID): ForumTypeVersionRow? =
@@ -166,6 +183,7 @@ private fun JsonMapper.settingsFields(settings: ForumTypeSettings): Map<Field<*>
         FORUM_TYPE_VERSION.SUBMISSION_POLICY to jsonb(settings.submissionPolicy),
         FORUM_TYPE_VERSION.AGENDA to jsonb(settings.agenda),
         FORUM_TYPE_VERSION.MEETINGS to jsonb(settings.meetings),
+        FORUM_TYPE_VERSION.MINUTES to jsonb(settings.minutes),
     )
 
 private val ATTRIBUTES = object : TypeReference<List<MemberAttribute>>() {}
@@ -192,6 +210,7 @@ private fun JsonMapper.row(v: ForumTypeVersionRecord): ForumTypeVersionRow =
                     v.submissionPolicy?.let { readValue(it.data(), SubmissionPolicy::class.java) } ?: SubmissionPolicy(),
                 agenda = v.agenda?.let { readValue(it.data(), AgendaPolicy::class.java) } ?: AgendaPolicy(),
                 meetings = v.meetings?.let { readValue(it.data(), MeetingPolicy::class.java) } ?: MeetingPolicy(),
+                minutes = v.minutes?.let { readValue(it.data(), MinutesPolicy::class.java) } ?: MinutesPolicy(),
             ),
         createdBy = v.createdBy,
         createdAt = v.createdAt.toInstant(),

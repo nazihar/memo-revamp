@@ -201,6 +201,9 @@ class SubmissionStore(
 
         fun target(date: LocalDate?): Map<Field<*>, Any?> = mapOf(FORUM_SUBMISSION.TARGET_DATE to date)
 
+        /** Off the agenda it was placed on (a deferral at the meeting, design E06 §1.4). */
+        fun unplaced(): Map<Field<*>, Any?> = mapOf(FORUM_SUBMISSION.MEETING_ID to null, FORUM_SUBMISSION.MEETING_DATE to null)
+
         fun decided(
             outcome: ForumOutcome,
             actor: UUID,

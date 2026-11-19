@@ -342,6 +342,9 @@
       "target" : "common",
       "types" : [ "USES_COMPONENT" ]
     }, {
+      "target" : "files",
+      "types" : [ "EVENT_LISTENER", "USES_COMPONENT" ]
+    }, {
       "target" : "identity",
       "types" : [ "USES_COMPONENT" ]
     }, {
@@ -355,6 +358,9 @@
       "types" : [ "USES_COMPONENT" ]
     }, {
       "target" : "system",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "templating",
       "types" : [ "USES_COMPONENT" ]
     }, {
       "target" : "tenancy",

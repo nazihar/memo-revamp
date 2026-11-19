@@ -283,6 +283,46 @@ export const ft = defineMessages({
     id: 'forumTypes.changes.quorumOverride.withReason',
     defaultMessage: 'With a reason, to be ratified later',
   },
+  // The minutes policy (Phase 4 E06, design E06 §1.8); its tab comes with E06 T10.
+  whatMinutesApproval: { id: 'forumTypes.changes.minutesApproval', defaultMessage: 'How minutes are approved' },
+  minutesAtNextMeeting: {
+    id: 'forumTypes.changes.minutesApproval.atNextMeeting',
+    defaultMessage: 'At the next meeting',
+  },
+  minutesByCirculation: {
+    id: 'forumTypes.changes.minutesApproval.byCirculation',
+    defaultMessage: 'By circulation, then noted at the next meeting',
+  },
+  whatCirculationDays: {
+    id: 'forumTypes.changes.circulationDays',
+    defaultMessage: 'Working days to comment on circulated minutes',
+  },
+  whatDraftDays: {
+    id: 'forumTypes.changes.draftDays',
+    defaultMessage: 'Reminder when the minutes are not circulated (working days after a meeting)',
+  },
+  whatMemoResumes: { id: 'forumTypes.changes.memoResumes', defaultMessage: 'When a memo moves on after the decision' },
+  memoResumesAtEnd: {
+    id: 'forumTypes.changes.memoResumes.atEnd',
+    defaultMessage: 'When the meeting is marked as held',
+  },
+  memoResumesOnApproval: {
+    id: 'forumTypes.changes.memoResumes.onApproval',
+    defaultMessage: 'When the minutes are approved',
+  },
+  whatResolutionNumbering: { id: 'forumTypes.changes.resolutionNumbering', defaultMessage: 'Resolution numbers' },
+  resolutionResetYearly: {
+    id: 'forumTypes.changes.resolutionNumbering.yearly',
+    defaultMessage: 'starting again every calendar year',
+  },
+  resolutionResetNever: { id: 'forumTypes.changes.resolutionNumbering.never', defaultMessage: 'never starting again' },
+  whatMinutesTemplate: { id: 'forumTypes.changes.minutesTemplate', defaultMessage: 'Minutes template' },
+  minutesTemplateBuiltIn: { id: 'forumTypes.changes.minutesTemplate.builtIn', defaultMessage: 'The built-in template' },
+  minutesTemplateUploaded: {
+    id: 'forumTypes.changes.minutesTemplate.uploaded',
+    defaultMessage: 'An uploaded template',
+  },
+  minutesTemplateNew: { id: 'forumTypes.changes.minutesTemplate.new', defaultMessage: 'A newly uploaded template' },
 })
 
 /** Texts with values besides the terms. */
@@ -340,7 +380,14 @@ export const ftv = defineMessages<{
   floor: { minimum: number }
   including: { roles: string }
   invitationNeutral: { title: string }
+  resolutionNumbering: { example: string; reset: string }
+  resolutionResetFinancialYear: { month: string }
 }>({
+  resolutionNumbering: { id: 'forumTypes.changes.resolutionNumbering.value', defaultMessage: '{example}, {reset}' },
+  resolutionResetFinancialYear: {
+    id: 'forumTypes.changes.resolutionNumbering.financialYear',
+    defaultMessage: 'starting again every financial year from {month}',
+  },
   invitationNeutral: { id: 'forumTypes.changes.invitationNeutral', defaultMessage: 'A neutral title: {title}' },
   sentence: { id: 'forumTypes.quorum.sentence', defaultMessage: '{amount}{floor}{including}{composition}.' },
   amountMajority: { id: 'forumTypes.quorum.amount.majority', defaultMessage: 'More than half of the {base}' },

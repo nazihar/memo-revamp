@@ -6,10 +6,12 @@ import com.memo.forum.AgendaLimits
 import com.memo.forum.AgendaPolicy
 import com.memo.forum.AgendaTemplateItem
 import com.memo.forum.InvitationTitle
+import com.memo.forum.MinutesPolicy
 import com.memo.forum.OutcomeKind
 import com.memo.forum.QuorumBasis
 import com.memo.forum.QuorumRule
 import com.memo.forum.QuorumThreshold
+import com.memo.forum.ResolutionFormats
 import com.memo.forum.StandingKind
 import com.memo.forum.ThresholdKind
 import org.springframework.stereotype.Component
@@ -41,7 +43,8 @@ class ForumTypeChecks(
             FieldProblem("retention.from", "unknown", "MEETING.").takeIf { settings.retention?.let { it.from != "MEETING" } == true },
         ) + attributeProblems(settings) + QuorumChecks.problems(settings.quorum, settings.memberAttributes.map { it.key }.toSet()) +
             outcomeProblems(settings) + termProblems(settings) + submissionProblems(settings) +
-            AgendaChecks.problems(settings.agenda) + agendaSize(settings) + meetingProblems(settings)
+            AgendaChecks.problems(settings.agenda) + agendaSize(settings) + meetingProblems(settings) +
+            MinutesChecks.problems(settings.minutes, json)
     }
 
     /** The meeting policy (design E05 §1.8): a neutral title when invitations use one, and the reply deadline's range. */
@@ -281,4 +284,32 @@ object AgendaChecks {
                 .takeIf { item.standingKind != null && standing.count { it == item.standingKind } > 1 },
         )
     }
+}
+
+/**
+ * The minutes policy's own checks (design E06 §1.8), under `minutes/…`: the comment window, the draft reminder, the
+ * resolution numbering on the shared format checks, and the size the column holds. The template's own check needs its
+ * file and runs when the version is submitted ([MinutesTemplateService]).
+ */
+object MinutesChecks {
+    const val AT = "minutes"
+
+    /** The column holds at most 8 KiB (forum/V7) as PostgreSQL writes it, with spaces: compact JSON gets a margin. */
+    const val MAX_BYTES = 6_000
+
+    fun problems(
+        policy: MinutesPolicy,
+        json: JsonMapper,
+    ): List<FieldProblem> =
+        listOfNotNull(
+            FieldProblem("$AT/circulationWorkingDays", "RANGE", "1 to ${MinutesPolicy.MAX_CIRCULATION_DAYS} working days.").takeIf {
+                policy.circulationWorkingDays !in 1..MinutesPolicy.MAX_CIRCULATION_DAYS
+            },
+            FieldProblem("$AT/draftWorkingDays", "RANGE", "1 to ${MinutesPolicy.MAX_DRAFT_DAYS} working days.").takeIf {
+                policy.draftWorkingDays !in 1..MinutesPolicy.MAX_DRAFT_DAYS
+            },
+            FieldProblem(AT, "TOO_LARGE", "The minutes policy is too long; shorten the number's text.").takeIf {
+                json.writeValueAsBytes(policy).size > MAX_BYTES
+            },
+        ) + ResolutionFormats.problems(policy.resolutionNumbering, "$AT/resolutionNumbering")
 }

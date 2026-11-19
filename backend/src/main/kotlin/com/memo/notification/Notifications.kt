@@ -127,6 +127,16 @@ enum class NotificationKind(
     MEETING_INVITATION(NotificationCategory.CALENDAR, MailTemplate.MEETING_INVITATION),
     MEETING_UPDATED(NotificationCategory.CALENDAR, MailTemplate.MEETING_UPDATED),
     MEETING_UNINVITED(NotificationCategory.CALENDAR, MailTemplate.MEETING_UNINVITED),
+
+    // Replies (Phase 4 E05 T3, design E05 §1.4, §1.5): an answer recorded on the person's behalf by a secretary (to them);
+    // an answer of apologies, or one changed within two working days of the meeting (to the secretaries, in the app only);
+    // an alternate asked to attend in a member's place, and released (to the alternate). Parameters `committee`, `date`,
+    // `organisation`, `link`; `member` (the member's name) for the alternate and the secretaries; in the app also `answer`
+    // (IN_PERSON, REMOTE or APOLOGIES) and `how` (EMAIL, PHONE, IN_PERSON or OTHER). Never a note.
+    MEETING_RSVP_RECORDED(NotificationCategory.WORKFLOW, MailTemplate.MEETING_RSVP_RECORDED),
+    MEETING_RSVP_CHANGED(NotificationCategory.WORKFLOW, null),
+    MEETING_ALTERNATE_ASKED(NotificationCategory.WORKFLOW, MailTemplate.MEETING_ALTERNATE_ASKED),
+    MEETING_ALTERNATE_RELEASED(NotificationCategory.WORKFLOW, MailTemplate.MEETING_ALTERNATE_RELEASED),
 }
 
 /** Who receives a notification; the producer already holds the user, so `notification` never looks people up. */

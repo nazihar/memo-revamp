@@ -114,10 +114,11 @@ class MeetingNotifier(
     }
 
     /**
-     * A declaration of interest, to one person (design E04 §2): the in-app text names the item's [number] and the [change];
-     * the email names neither (its template uses the committee, the date and the link only). Never the nature.
+     * A notice to one person whose in-app text names [details]: a declaration of interest (design E04 §2: the item's number
+     * and the change), a reply or an alternate (design E05 §1.4, §1.5: the answer, how it was given, the member's name). The
+     * email names the committee, the date, the member and the link only. Never a nature or a note.
      */
-    fun declaration(
+    fun person(
         user: UUID,
         kind: NotificationKind,
         meeting: MeetingRow,
@@ -131,7 +132,8 @@ class MeetingNotifier(
         return (seats.firstOrNull { it.role == ForumRole.CHAIR } ?: seats.firstOrNull { it.role == ForumRole.VICE_CHAIR })?.userId
     }
 
-    private fun secretaries(forumId: UUID): Set<UUID> =
+    /** The forum's secretaries in office, but the actor. */
+    fun secretaries(forumId: UUID): Set<UUID> =
         directory
             .membersOn(forumId)
             .filter { it.role == ForumRole.SECRETARY }

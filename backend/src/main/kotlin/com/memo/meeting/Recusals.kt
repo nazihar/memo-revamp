@@ -80,8 +80,9 @@ data class DeclarationRef(
 /**
  * Who is recused from what (ADR-0062, design E04 §1.6, §2), for E05's quorum, E06's decisions and minutes and E07's
  * actions: a person is recused from an item when they hold an effective declaration (RECUSED or AWAITING_RULING) on it or
- * on its parent. Read now, not at publication. Inside a tenant transaction; no access decision is made here. Changes are
- * told by [DeclarationChanged].
+ * on its parent, or stands in as the alternate of someone who does (ADR-0064, design E05 §1.5: the alternate is recused
+ * wherever the member is). Read now, not at publication. Inside a tenant transaction; no access decision is made here.
+ * Changes are told by [DeclarationChanged]; an alternate asked or released changes the answers too.
  */
 @Component
 class Recusals(

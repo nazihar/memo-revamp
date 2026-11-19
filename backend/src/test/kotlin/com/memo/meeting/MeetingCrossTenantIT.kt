@@ -102,6 +102,8 @@ class MeetingCrossTenantIT : IntegrationTest() {
 
     @Autowired lateinit var invitationPanel: com.memo.meeting.internal.invite.InvitationPanel
 
+    @Autowired lateinit var replies: com.memo.meeting.internal.rsvp.Replies
+
     private class Side(
         val tenant: TestTenant,
         val admin: UserAccount,
@@ -447,6 +449,68 @@ class MeetingCrossTenantIT : IntegrationTest() {
                         c.update(sql, ofA)
                     }
                 }
+            assertThat(changed.exceptionOrNull()).describedAs(sql).isInstanceOf(SQLException::class.java)
+        }
+    }
+
+    @Test
+    fun `another tenant neither sees nor writes replies, their history or reminders, and the history never changes`() {
+        val a = side("rsvpa")
+        val b = side("rsvpb")
+        val ofA = meeting(a)
+        val answer =
+            com.memo.meeting.internal.rsvp
+                .RsvpInput(com.memo.meeting.internal.rsvp.RsvpAnswer.IN_PERSON, note = "On time")
+        asUser(a.tenant, a.member) { replies.answer(ofA, null, answer) }
+
+        // Through the services: B's administrator gets 404 for A's replies, own answer and a recorded one.
+        assertThatThrownBy { asUser(b.tenant, b.admin) { replies.list(ofA) } }.isInstanceOf(MeetingNotFoundException::class.java)
+        assertThatThrownBy { asUser(b.tenant, b.member) { replies.answer(ofA, null, answer) } }
+            .isInstanceOf(MeetingNotFoundException::class.java)
+        assertThatThrownBy {
+            asUser(b.tenant, b.admin) {
+                replies.record(ofA, a.member.id.value, 0, answer.copy(how = com.memo.meeting.internal.rsvp.RsvpHow.PHONE))
+            }
+        }.isInstanceOf(MeetingNotFoundException::class.java)
+
+        // Through SQL as the app role: none of A's rows is visible to B, none written for A or pointing at A's meeting.
+        val tables = listOf("meeting_rsvp", "meeting_rsvp_event")
+        AppRoleJdbc.inTransaction(a.tenant.id) { c ->
+            tables.forEach { assertThat(c.long("select count(*) from $it where meeting_id = ?", ofA)).describedAs(it).isEqualTo(1) }
+        }
+        AppRoleJdbc.inTransaction(b.tenant.id) { c ->
+            (tables + "meeting_reminder").forEach { table ->
+                assertThat(c.long("select count(*) from $table where tenant_id = ?", a.tenant.id.value)).describedAs(table).isZero()
+            }
+            assertThat(c.update("update meeting_rsvp set answer = 'APOLOGIES', version = version + 1 where meeting_id = ?", ofA)).isZero()
+        }
+        val now = OffsetDateTime.now(ZoneOffset.UTC)
+        val writes =
+            listOf(
+                "insert into meeting_rsvp (tenant_id, meeting_id, user_id, answer, for_starts_at, for_ends_at, recorded_by, how, " +
+                    "answered_at) values (?, ?, ?, 'IN_PERSON', ?, ?, ?, 'IN_APP', ?)" to
+                    listOf<Any>(a.tenant.id.value, ofA, b.member.id.value, now, now, b.member.id.value, now),
+                "insert into meeting_rsvp (tenant_id, meeting_id, user_id, answer, for_starts_at, for_ends_at, recorded_by, how, " +
+                    "answered_at) values (?, ?, ?, 'IN_PERSON', ?, ?, ?, 'IN_APP', ?)" to
+                    listOf<Any>(b.tenant.id.value, ofA, b.member.id.value, now, now, b.member.id.value, now),
+                "insert into meeting_reminder (tenant_id, meeting_id, user_id, kind, key, sent_at) values (?, ?, ?, 'REPLY', 'k', ?)" to
+                    listOf<Any>(b.tenant.id.value, ofA, b.member.id.value, now),
+            )
+        writes.forEach { (sql, params) ->
+            val written = runCatching { AppRoleJdbc.inTransaction(b.tenant.id) { c -> c.update(sql, *params.toTypedArray()) } }
+            assertThat(written.exceptionOrNull()).describedAs(sql).isInstanceOf(SQLException::class.java)
+        }
+
+        // In A itself: the history and reminders never change, nothing is deleted, and an answer's keys stay.
+        listOf(
+            "update meeting_rsvp_event set answer = 'APOLOGIES' where meeting_id = ?",
+            "delete from meeting_rsvp_event where meeting_id = ?",
+            "delete from meeting_rsvp where meeting_id = ?",
+            "update meeting_rsvp set user_id = gen_random_uuid(), version = version + 1 where meeting_id = ?",
+            "update meeting_rsvp set answer = 'APOLOGIES' where meeting_id = ?",
+            "delete from meeting_reminder where meeting_id = ?",
+        ).forEach { sql ->
+            val changed = runCatching { AppRoleJdbc.inTransaction(a.tenant.id) { c -> c.update(sql, ofA) } }
             assertThat(changed.exceptionOrNull()).describedAs(sql).isInstanceOf(SQLException::class.java)
         }
     }

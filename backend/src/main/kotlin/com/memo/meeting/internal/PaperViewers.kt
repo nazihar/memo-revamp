@@ -73,7 +73,8 @@ class PaperViewers(
         rows: List<AudienceRow>,
     ): PaperViewer {
         val today = org.today()
-        val members = rows.filter { it.source == AudienceSource.MEMBER && inOffice(it.until, today) }
+        // An alternate standing in reads what the member reads (design E05 §1.5): their row carries the member's seat.
+        val members = rows.filter { it.source in SEATED && inOffice(it.until, today) }
         return PaperViewer(
             userId = userId,
             officer = officer,
@@ -99,6 +100,9 @@ class PaperViewers(
     ): Boolean = until == null || !until.isBefore(today)
 
     private companion object {
+        /** The rows that read as a member: a seat in office, or an alternate standing in for one. */
+        val SEATED = setOf(AudienceSource.MEMBER, AudienceSource.ALTERNATE)
+
         /** Past DRAFT and not cancelled: the audience reads the published revisions (design E03 §1.9). */
         val OPEN =
             setOf(

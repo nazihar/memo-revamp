@@ -30,9 +30,10 @@ data class InvitablePerson(
 )
 
 /**
- * Who is invitable (ADR-0063, design E05 §1.1): an audience row as MEMBER (a roster seat in office on the meeting's date)
- * or GUEST, not removed, whose user is active, has an email and is cleared for the meeting's classification (they could
- * not open it otherwise). Item attendees, presenters and officers without a seat are not invited.
+ * Who is invitable (ADR-0063, design E05 §1.1): an audience row as MEMBER (a roster seat in office on the meeting's date),
+ * GUEST or ALTERNATE (standing in for a member, §1.5), not removed, whose user is active, has an email and is cleared for
+ * the meeting's classification (they could not open it otherwise). Item attendees, presenters and officers without a seat
+ * are not invited.
  */
 @Component
 class InvitableAudience(
@@ -49,11 +50,14 @@ class InvitableAudience(
             .filter { (user, _) ->
                 val summary = summaries[user]
                 summary != null && summary.status == UserStatus.ACTIVE && summary.email.isNotBlank() && (ranks[user] ?: 0) >= floor
-            }.mapValues { (user, sources) -> InvitablePerson(user, sources.none { it.source == AudienceSource.MEMBER }) }
+            }.mapValues { (user, sources) -> InvitablePerson(user, sources.none { it.source in PARTICIPANTS }) }
     }
 
     private companion object {
-        val INVITED_SOURCES = setOf(AudienceSource.MEMBER, AudienceSource.GUEST)
+        val INVITED_SOURCES = setOf(AudienceSource.MEMBER, AudienceSource.GUEST, AudienceSource.ALTERNATE)
+
+        /** Required participants in the file; a guest is optional. */
+        val PARTICIPANTS = setOf(AudienceSource.MEMBER, AudienceSource.ALTERNATE)
     }
 }
 

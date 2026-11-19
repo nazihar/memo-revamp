@@ -7,6 +7,9 @@ import com.memo.identity.UserSummaries
 import com.memo.meeting.MeetingKind
 import com.memo.meeting.MeetingMode
 import com.memo.meeting.MeetingStatus
+import com.memo.meeting.internal.invite.InvitationPanel
+import com.memo.meeting.internal.rsvp.MeetingRsvpResponse
+import com.memo.meeting.internal.rsvp.ReplyReads
 import com.memo.org.OrgDirectory
 import io.swagger.v3.oas.annotations.media.Schema
 import org.springframework.stereotype.Component
@@ -56,6 +59,22 @@ data class MeetingResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val canManage: Boolean,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val guests: List<MeetingGuestResponse>,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val version: Long,
+    /** The viewer's own answer to "Will you attend?" (design E05 §3); null when they do not answer this meeting. */
+    val rsvp: MeetingRsvpResponse? = null,
+    /** The invitation's state, for the officers only (design E05 §3); null for others and before scheduling. */
+    val invitation: MeetingInvitationSummaryResponse? = null,
+)
+
+/** When a meeting's invitations went out, for its officers (flow W1: "Invitations sent 12 Nov · last update 3 Dec"). */
+data class MeetingInvitationSummaryResponse(
+    /** The version of the meeting the invitations describe. */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val sequence: Int,
+    /** The first invitation sent; null before the first send. */
+    val sentAt: Instant?,
+    /** The latest message sent to anyone. */
+    val lastSentAt: Instant?,
+    /** A send is waiting (debounced after a change). */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val pending: Boolean,
 )
 
 /** A meeting in a list ("My meetings", a committee's Meetings tab). */
@@ -83,6 +102,8 @@ data class MeetingSummaryResponse(
     val lastSeenRevision: Int? = null,
     /** "My meetings" only: the lines changed since the viewer last looked, as far as they see them; null when not counted. */
     val changesSinceSeen: Int? = null,
+    /** The viewer's own answer to "Will you attend?" (design E05 §3); null when they do not answer this meeting. */
+    val rsvp: MeetingRsvpResponse? = null,
 )
 
 data class MeetingPageResponse(
@@ -105,6 +126,8 @@ class MeetingReads(
     private val users: UserSummaries,
     private val org: OrgDirectory,
     private val agendas: MemberAgendas,
+    private val replies: ReplyReads,
+    private val invitations: InvitationPanel,
 ) {
     fun get(id: UUID): MeetingResponse {
         val (meeting, relation) = guard.requireVisible(id)
@@ -145,6 +168,8 @@ class MeetingReads(
             canManage = access.manages(meeting.forumId),
             guests = guests.map { MeetingGuestResponse(it.userId, names[it.userId].orEmpty(), it.note, it.addedAt) },
             version = meeting.version,
+            rsvp = replies.summaries(listOf(meeting))[meeting.id],
+            invitation = if (relation == MeetingRelation.OFFICER) invitations.summary(meeting.id) else null,
         )
     }
 
@@ -198,6 +223,7 @@ class MeetingReads(
     private fun summaries(rows: List<MeetingRow>): List<MeetingSummaryResponse> {
         val forums = forums(rows)
         val relations = access.relations(rows)
+        val rsvps = replies.summaries(rows)
         return rows.mapNotNull { meeting ->
             relations[meeting.id]?.let { relation ->
                 val forum = forums.getValue(meeting.forumId)
@@ -220,6 +246,7 @@ class MeetingReads(
                     label = meeting.label,
                     status = meeting.status,
                     relation = relation,
+                    rsvp = rsvps[meeting.id],
                 )
             }
         }

@@ -9,11 +9,14 @@ import com.memo.identity.UserSummaries
 import com.memo.meeting.MeetingStatus
 import com.memo.meeting.internal.MeetingAccess
 import com.memo.meeting.internal.MeetingGuard
+import com.memo.meeting.internal.MeetingInvitationSummaryResponse
 import com.memo.meeting.internal.MeetingLifecycle
 import com.memo.meeting.internal.MeetingNotFoundException
 import com.memo.meeting.internal.MeetingRelation
 import com.memo.meeting.internal.actorOrNull
 import com.memo.meeting.internal.requireNoProblems
+import com.memo.meeting.internal.rsvp.ReplyReads
+import com.memo.meeting.internal.rsvp.ReplyResponse
 import com.memo.notification.MailState
 import com.memo.notification.MailStatus
 import com.memo.notification.MailStatuses
@@ -43,7 +46,7 @@ data class InvitationDeliveryResponse(
 data class InviteeResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val userId: UUID,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val name: String,
-    /** Whether they should hold the event now (in the audience as a member or guest, active, cleared). */
+    /** Whether they should hold the event now (in the audience as a member, alternate or guest, active, cleared). */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val invitable: Boolean,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val guest: Boolean,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val state: InvitationState,
@@ -57,6 +60,8 @@ data class InviteeResponse(
     val delivery: InvitationDeliveryResponse?,
     /** From when a resend is allowed (10 minutes after their last message); null when it is now. */
     val resendFrom: Instant?,
+    /** Their reply to "Will you attend?" (design E05 §3, flow W1); null when they do not answer the meeting. */
+    val reply: ReplyResponse? = null,
 )
 
 /** A meeting's invitations as its officers see them (design E05 §3, flow W). */
@@ -93,6 +98,7 @@ class InvitationPanel(
     private val recipients: RecipientLookup,
     private val statuses: MailStatuses,
     private val users: UserSummaries,
+    private val replies: ReplyReads,
     private val audit: AuditLog,
     private val clock: Clock,
 ) {
@@ -107,6 +113,7 @@ class InvitationPanel(
         val mail = statuses.of(rows.values.mapNotNull { it.lastOutboxId })
         val now = clock.instant()
         val manages = access.manages(meeting.forumId)
+        val answers = replies.ofOfficers(meeting)
         return InvitationsResponse(
             meetingId = meeting.id,
             created = invitation != null,
@@ -118,7 +125,7 @@ class InvitationPanel(
             canResend = manages && meeting.status == MeetingStatus.SCHEDULED,
             people =
                 ids
-                    .map { id -> person(id, names[id].orEmpty(), people[id], rows[id], mail, now) }
+                    .map { id -> person(id, names[id].orEmpty(), people[id], rows[id], mail, now).copy(reply = answers[id]) }
                     .sortedWith(compareBy({ it.name.lowercase() }, { it.userId })),
         )
     }
@@ -178,6 +185,18 @@ class InvitationPanel(
             after = mapOf("recipients" to sent.size, "userIds" to sent.map { it.userId.toString() }, "sequence" to invitation.sequence),
         )
         return panel(meeting.id)
+    }
+
+    /** When [meetingId]'s invitations went out (the meeting's header for officers); null before it is scheduled. */
+    fun summary(meetingId: UUID): MeetingInvitationSummaryResponse? {
+        val invitation = invitations.find(meetingId) ?: return null
+        val sent = invitees.invitees(meetingId)
+        return MeetingInvitationSummaryResponse(
+            sequence = invitation.sequence,
+            sentAt = sent.minOfOrNull { it.firstSentAt },
+            lastSentAt = sent.maxOfOrNull { it.lastSentAt },
+            pending = invitation.dueAt != null,
+        )
     }
 
     /**

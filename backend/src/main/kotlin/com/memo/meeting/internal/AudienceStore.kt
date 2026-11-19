@@ -1,6 +1,7 @@
 package com.memo.meeting.internal
 
 import com.memo.common.tenant.TenantDsl
+import com.memo.jooq.tables.records.MeetingAudienceRecord
 import com.memo.jooq.tables.references.MEETING_AUDIENCE
 import com.memo.jooq.tables.references.MEETING_GUEST
 import org.jooq.impl.DSL
@@ -12,16 +13,24 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import java.util.UUID
 
-/** Why someone is in a meeting's audience (design E03 §1.6). */
-enum class AudienceSource { MEMBER, GUEST, ATTENDEE }
+/**
+ * Why someone is in a meeting's audience (design E03 §1.6): ALTERNATE is a seat's alternate standing in for a member who
+ * sent apologies (design E05 §1.5).
+ */
+enum class AudienceSource { MEMBER, GUEST, ATTENDEE, ALTERNATE }
 
-/** One person in a meeting's audience; [until] is a member's last day in office (null: open). */
+/**
+ * One person in a meeting's audience; [until] is a member's last day in office (null: open). An ALTERNATE row names the
+ * seat ([forMemberId], the forum membership) and the member ([forUserId]) the person stands in for.
+ */
 data class AudienceRow(
     val meetingId: UUID,
     val userId: UUID,
     val source: AudienceSource,
     val membersOnly: Boolean,
     val until: LocalDate?,
+    val forMemberId: UUID? = null,
+    val forUserId: UUID? = null,
 )
 
 /** A person attending the whole meeting who is not on the roster; removal records its time. */
@@ -50,7 +59,7 @@ class AudienceStore(
             .selectFrom(MEETING_AUDIENCE)
             .where(MEETING_AUDIENCE.MEETING_ID.eq(meetingId), MEETING_AUDIENCE.REMOVED_AT.isNull)
             .orderBy(MEETING_AUDIENCE.USER_ID, MEETING_AUDIENCE.SOURCE)
-            .fetch { AudienceRow(it.meetingId, it.userId, AudienceSource.valueOf(it.source), it.membersOnly, it.until) }
+            .fetch { it.row() }
 
     /** [userId]'s current audience rows in [meetingId]. */
     fun rowsOf(
@@ -74,7 +83,7 @@ class AudienceStore(
                     MEETING_AUDIENCE.MEETING_ID.`in`(meetingIds),
                     MEETING_AUDIENCE.REMOVED_AT.isNull,
                 ).orderBy(MEETING_AUDIENCE.MEETING_ID, MEETING_AUDIENCE.SOURCE)
-                .fetch { AudienceRow(it.meetingId, it.userId, AudienceSource.valueOf(it.source), it.membersOnly, it.until) }
+                .fetch { it.row() }
                 .groupBy { it.meetingId }
         }
 
@@ -169,4 +178,7 @@ class AudienceStore(
             .execute() == 1
 
     private fun now(): OffsetDateTime = OffsetDateTime.now(clock).withOffsetSameInstant(ZoneOffset.UTC)
+
+    private fun MeetingAudienceRecord.row() =
+        AudienceRow(meetingId, userId, AudienceSource.valueOf(source), membersOnly, until, forMemberId, forUserId)
 }

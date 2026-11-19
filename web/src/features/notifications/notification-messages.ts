@@ -134,6 +134,10 @@ const kindsWithValues = defineMessages<{
   meetingInvitation: { committee: string; date: string }
   meetingUpdated: { committee: string; date: string }
   meetingUninvited: { committee: string; date: string }
+  meetingRsvpRecorded: { committee: string; date: string; answer: string; how: string }
+  meetingRsvpChanged: { committee: string; date: string; member: string; answer: string }
+  meetingAlternateAsked: { committee: string; date: string; member: string }
+  meetingAlternateReleased: { committee: string; date: string; member: string }
 }>({
   signInAlert: { id: 'notifications.kind.signInAlert', defaultMessage: 'New sign-in to your account from {device}' },
   roleGranted: { id: 'notifications.kind.roleGranted', defaultMessage: 'You were given the role {role}' },
@@ -264,6 +268,24 @@ const kindsWithValues = defineMessages<{
     id: 'notifications.kind.meetingUninvited',
     defaultMessage: 'You are no longer invited to the meeting of {committee} on {date}',
   },
+  meetingRsvpRecorded: {
+    id: 'notifications.kind.meetingRsvpRecorded',
+    defaultMessage:
+      'The secretary recorded your answer for {committee} on {date}: {answer, select, IN_PERSON {Yes, in person} REMOTE {Yes, online} other {No, apologies}} ({how, select, EMAIL {by email} PHONE {by phone} IN_PERSON {in person} other {otherwise}})',
+  },
+  meetingRsvpChanged: {
+    id: 'notifications.kind.meetingRsvpChanged',
+    defaultMessage:
+      '{member} answered for {committee} on {date}: {answer, select, IN_PERSON {Yes, in person} REMOTE {Yes, online} other {No, apologies}}',
+  },
+  meetingAlternateAsked: {
+    id: 'notifications.kind.meetingAlternateAsked',
+    defaultMessage: '{member} asked you to attend {committee} on {date} in their place',
+  },
+  meetingAlternateReleased: {
+    id: 'notifications.kind.meetingAlternateReleased',
+    defaultMessage: '{member} no longer needs you to attend {committee} on {date} in their place',
+  },
 })
 
 const kinds = defineMessages({
@@ -383,6 +405,28 @@ export function notificationText(intl: IntlShape, kind: string, params: Record<s
       return intl.formatMessage(kindsWithValues.meetingUpdated, meetingValues(params))
     case 'MEETING_UNINVITED':
       return intl.formatMessage(kindsWithValues.meetingUninvited, meetingValues(params))
+    case 'MEETING_RSVP_RECORDED':
+      return intl.formatMessage(kindsWithValues.meetingRsvpRecorded, {
+        ...meetingValues(params),
+        answer: params.answer ?? '',
+        how: params.how ?? '',
+      })
+    case 'MEETING_RSVP_CHANGED':
+      return intl.formatMessage(kindsWithValues.meetingRsvpChanged, {
+        ...meetingValues(params),
+        member: params.member ?? '',
+        answer: params.answer ?? '',
+      })
+    case 'MEETING_ALTERNATE_ASKED':
+      return intl.formatMessage(kindsWithValues.meetingAlternateAsked, {
+        ...meetingValues(params),
+        member: params.member ?? '',
+      })
+    case 'MEETING_ALTERNATE_RELEASED':
+      return intl.formatMessage(kindsWithValues.meetingAlternateReleased, {
+        ...meetingValues(params),
+        member: params.member ?? '',
+      })
     case 'PASSWORD_CHANGED':
       return intl.formatMessage(kinds.passwordChanged)
     case 'MFA_RESET':
@@ -469,6 +513,15 @@ const mailTemplates = defineMessages({
   MEETING_INVITATION: { id: 'mail.template.meetingInvitation', defaultMessage: 'Meeting invitation' },
   MEETING_UPDATED: { id: 'mail.template.meetingUpdated', defaultMessage: 'Meeting update' },
   MEETING_UNINVITED: { id: 'mail.template.meetingUninvited', defaultMessage: 'Meeting invitation withdrawn' },
+  MEETING_RSVP_RECORDED: { id: 'mail.template.meetingRsvpRecorded', defaultMessage: 'Answer recorded for you' },
+  MEETING_ALTERNATE_ASKED: {
+    id: 'mail.template.meetingAlternateAsked',
+    defaultMessage: "Asked to attend in a member's place",
+  },
+  MEETING_ALTERNATE_RELEASED: {
+    id: 'mail.template.meetingAlternateReleased',
+    defaultMessage: "No longer needed in a member's place",
+  },
 })
 
 const templateMessages: Record<string, MessageDescriptor | undefined> = mailTemplates

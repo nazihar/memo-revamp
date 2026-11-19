@@ -67,6 +67,11 @@ data class MemberItemResponse(
     /** For an item the viewer sees in full that is (or was) in a consent section. */
     val discussion: DiscussionResponse?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val subItems: List<MemberItemResponse>,
+    /**
+     * The viewer is recused from the item (ADR-0062: an effective declaration on it or its parent): its line only, with
+     * their own declaration in [myDeclaration]. In a preview, also an item the previewing officer is recused from.
+     */
+    val recused: Boolean = false,
     /** The viewer's own open declaration of interest on the item, with its nature (design E04 §3). */
     val myDeclaration: DeclarationResponse? = null,
     /** The others' open declarations on an item the viewer sees in full: names and states, never the nature. */
@@ -219,6 +224,55 @@ object MemberAgendaRender {
         }
     }
 
+    /**
+     * [visibility] with the items in [withheld] (an officer's own recusals, design E04 §1.7) cut down to their recused line:
+     * no more than the title when it is not hidden, no papers. For the preview: the officer previews someone else's view,
+     * never past their own recusal.
+     */
+    fun withheld(
+        visibility: Visibility,
+        snapshot: Snapshot,
+        withheld: Set<UUID>,
+    ): Visibility {
+        if (withheld.isEmpty()) return visibility
+        val hidden =
+            snapshot.items
+                .filter { it.titleHidden }
+                .map { it.itemId }
+                .toSet()
+        val lines =
+            visibility.lines.mapValues { (item, access) ->
+                when {
+                    item !in withheld || access == LineAccess.HIDDEN -> access
+                    item in hidden -> LineAccess.HIDDEN
+                    else -> LineAccess.TITLE
+                }
+            }
+        val papers =
+            snapshot.papers
+                .filter { it.itemId in withheld }
+                .map { it.paperId }
+                .toSet()
+        return Visibility(lines, visibility.papers - papers, visibility.recused + (withheld intersect lines.keys))
+    }
+
+    /**
+     * [item] as its line shows it to someone recused from it who reads its title unless hidden (an officer, design E04
+     * §1.7): the title ("" when hidden) and the line's flags, nothing else.
+     */
+    fun line(item: RevisionItem): RevisionItem {
+        val access = if (item.titleHidden) LineAccess.HIDDEN else LineAccess.TITLE
+        return item.copy(
+            title = if (item.titleHidden) "" else item.title,
+            description = null,
+            resolutionSought = null,
+            presenters = emptyList(),
+            attendees = emptySet(),
+            restrictedTo = null,
+            changes = flags(item.changes, access, emptySet()).toSet(),
+        )
+    }
+
     /** The changed lines of one revision the viewer sees (removed rows judged as they were published). */
     fun changes(
         snapshot: Snapshot,
@@ -290,6 +344,7 @@ object MemberAgendaRender {
             papers = if (full) papers(input, item) else emptyList(),
             discussion = discussion,
             subItems = subs.map { item(input, it, inConsent, emptyList()) },
+            recused = item.itemId in input.visibility.recused,
             myDeclaration = mine(input, item, title),
             declarations = if (full) others(input, item) else emptyList(),
         )

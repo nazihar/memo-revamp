@@ -36,8 +36,10 @@ interface PaperExclusions {
     ): Condition
 }
 
-/** E03: nobody is excluded. E04 replaces it with the declarations' rule and keeps it for tests. */
-@Component
+/**
+ * Nobody is excluded: E03's rule before E04. Not a bean (E04's declarations are); kept for the property test, which
+ * compares the rule with and without recusals.
+ */
 class NoExclusions : PaperExclusions {
     override fun excluded(
         userId: UUID,
@@ -111,10 +113,14 @@ enum class LineAccess {
     HIDDEN,
 }
 
-/** What a person sees of one revision (or of the draft): each line they see, and the papers they may read. */
+/**
+ * What a person sees of one revision (or of the draft): each line they see, the papers they may read, and the lines they
+ * see only as their recused line (ADR-0062: an effective declaration on the item or its parent).
+ */
 data class Visibility(
     val lines: Map<UUID, LineAccess>,
     val papers: Set<UUID>,
+    val recused: Set<UUID> = emptySet(),
 )
 
 /** A paper of a revision that a person may read, pinned to the file version the revision carried. */
@@ -137,6 +143,8 @@ data class PinnedPaper(
  *   audience := member in office (members-only sections for members only) ∨ guest (not members-only) ∨ attendee of it
  *               (guests and attendees until the minutes are approved)
  * seeLine  := seeItem ∨ (in the audience ∧ (not members-only ∨ a member)) ∨ (reader ∧ unhidden ∧ unrestricted)
+ *             ∨ (officer ∧ cleared(item))   (E04: a recused officer keeps the item's line)
+ * excluded := an effective declaration of the person on the item or its parent (E04, ADR-0062, [PaperExclusions])
  * seeTitle := seeItem ∨ (seeLine ∧ unhidden ∧ cleared(item) ∧ (not members-only ∨ a member or officer))
  *             (amended 2026-11-18: otherwise the line reads "Restricted item")
  * seePaper := seeItem ∧ cleared(paper) ∧ ¬excludedFromPapers ∧ (unrestricted ∨ named ∨ officer)
@@ -173,7 +181,11 @@ class PaperAccess(
             .and(allowed)
     }
 
-    /** True for an item whose line [viewer] sees: the item itself, or its number and, by [titleCondition], its title. */
+    /**
+     * True for an item whose line [viewer] sees: the item itself, or its number and, by [titleCondition], its title. An
+     * officer keeps the line of every item at a level they are cleared for, so one recused from it still sees its line
+     * (design E04 §1.6).
+     */
     fun lineCondition(
         viewer: PaperViewer,
         item: ItemColumns,
@@ -186,6 +198,7 @@ class PaperAccess(
                 else -> item.membersOnly.isFalse
             },
             if (viewer.reader) item.titleHidden.isFalse.and(item.restrictedTo.isNull) else DSL.falseCondition(),
+            if (viewer.officer) cleared(viewer, item.classification) else DSL.falseCondition(),
         )
 
     /**
@@ -261,12 +274,13 @@ class PaperAccess(
                     i.ITEM_ID,
                     DSL.field(itemCondition(viewer, REVISION_ITEM)),
                     DSL.field(titleCondition(viewer, REVISION_ITEM)),
+                    DSL.field(exclusions.excluded(viewer.userId, i.ITEM_ID, i.PARENT_ITEM_ID)),
                 ).from(i)
                 .where(i.REVISION_ID.`in`(revisionIds), changed, lineCondition(viewer, REVISION_ITEM))
                 .fetch()
-                .groupBy({ it.value1() }, { checkNotNull(it.value2()) to access(it.value3(), it.value4()) })
+                .groupBy({ it.value1() }, { Line(checkNotNull(it.value2()), access(it.value3(), it.value4()), it.value5() == true) })
         val readable = papers.groupBy({ it.value1() }, { checkNotNull(it.value2()) })
-        return revisionIds.associateWith { id -> Visibility(lines[id].orEmpty().toMap(), readable[id].orEmpty().toSet()) }
+        return revisionIds.associateWith { id -> visibility(lines[id].orEmpty(), readable[id].orEmpty().toSet()) }
     }
 
     /** What [viewer] would see of [meetingId]'s draft if it were published now (the preview "as a member"). */
@@ -278,15 +292,18 @@ class PaperAccess(
         val i = MEETING_ITEM
         val s = MEETING_SECTION
         val p = MEETING_PAPER
-        val lines =
+        val rows =
             dsl
-                .select(i.ID, DSL.field(itemCondition(viewer, DRAFT_ITEM)), DSL.field(titleCondition(viewer, DRAFT_ITEM)))
-                .from(i)
+                .select(
+                    i.ID,
+                    DSL.field(itemCondition(viewer, DRAFT_ITEM)),
+                    DSL.field(titleCondition(viewer, DRAFT_ITEM)),
+                    DSL.field(exclusions.excluded(viewer.userId, i.ID, i.PARENT_ID)),
+                ).from(i)
                 .join(s)
                 .on(s.TENANT_ID.eq(i.TENANT_ID), s.ID.eq(i.SECTION_ID))
                 .where(i.MEETING_ID.eq(meetingId), i.REMOVED_AT.isNull, lineCondition(viewer, DRAFT_ITEM))
-                .fetch { checkNotNull(it.value1()) to access(it.value2(), it.value3()) }
-                .toMap()
+                .fetch { Line(checkNotNull(it.value1()), access(it.value2(), it.value3()), it.value4() == true) }
         val papers =
             dsl
                 .select(p.ID)
@@ -299,7 +316,7 @@ class PaperAccess(
                 .fetchSet(p.ID)
                 .filterNotNull()
                 .toSet()
-        return Visibility(lines, papers)
+        return visibility(rows, papers)
     }
 
     /**
@@ -405,6 +422,13 @@ class PaperAccess(
         return !dsl.fetchExists(draft) && !dsl.fetchExists(published)
     }
 
+    /** One line as read: the item, how much of it, and whether the viewer is recused from it. */
+    private class Line(
+        val item: UUID,
+        val access: LineAccess,
+        val recused: Boolean,
+    )
+
     private companion object {
         fun cleared(
             viewer: PaperViewer,
@@ -467,5 +491,10 @@ class PaperAccess(
                 titled == true -> LineAccess.TITLE
                 else -> LineAccess.HIDDEN
             }
+
+        fun visibility(
+            lines: List<Line>,
+            papers: Set<UUID>,
+        ) = Visibility(lines.associate { it.item to it.access }, papers, lines.filter { it.recused }.map { it.item }.toSet())
     }
 }

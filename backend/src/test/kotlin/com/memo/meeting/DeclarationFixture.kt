@@ -19,8 +19,6 @@ import com.memo.meeting.internal.AgendaNoticeScheduler
 import com.memo.meeting.internal.AgendaOrigin
 import com.memo.meeting.internal.AgendaPublisher
 import com.memo.meeting.internal.AgendaStart
-import com.memo.meeting.internal.DeclarationHow
-import com.memo.meeting.internal.DeclarationIntent
 import com.memo.meeting.internal.DeclarationReviews
 import com.memo.meeting.internal.DeclarationRow
 import com.memo.meeting.internal.DeclarationRulings
@@ -37,7 +35,6 @@ import com.memo.meeting.internal.MeetingReads
 import com.memo.meeting.internal.MeetingRejectedException
 import com.memo.meeting.internal.MeetingRow
 import com.memo.meeting.internal.RulingInput
-import com.memo.meeting.internal.RulingOutcome
 import com.memo.meeting.internal.TimesInput
 import com.memo.testsupport.AppRoleJdbc
 import com.memo.testsupport.AppRoleJdbc.long

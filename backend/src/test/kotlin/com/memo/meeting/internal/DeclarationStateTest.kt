@@ -1,7 +1,10 @@
 package com.memo.meeting.internal
 
 import com.memo.common.web.RefusedException
+import com.memo.meeting.DeclarationIntent
+import com.memo.meeting.DeclarationState
 import com.memo.meeting.MeetingStatus
+import com.memo.meeting.RulingOutcome
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Test

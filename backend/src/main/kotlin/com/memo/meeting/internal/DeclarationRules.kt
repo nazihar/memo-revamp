@@ -2,46 +2,12 @@ package com.memo.meeting.internal
 
 import com.memo.common.web.FieldProblem
 import com.memo.common.web.refuseIf
+import com.memo.meeting.DeclarationHow
+import com.memo.meeting.DeclarationIntent
+import com.memo.meeting.DeclarationState
 import com.memo.meeting.MeetingStatus
+import com.memo.meeting.RulingOutcome
 import java.security.MessageDigest
-
-/** What the declarant intends (design E04 §1.1): leave the room for the item (the default), or ask the chair. */
-enum class DeclarationIntent { LEAVE, ASK_CHAIR }
-
-/** Where a declaration came from (design E04 §1.1). REGISTER is reserved for a standing register (Phase 4 Q6). */
-enum class DeclarationSource { SELF, ON_BEHALF, MEMO, EARLIER_MEETING, REGISTER }
-
-/**
- * How a declaration or a ruling reached the app: IN_APP by the person themselves, SYSTEM when carried over (T3), and for
- * one recorded by someone else how it was given.
- */
-enum class DeclarationHow {
-    IN_APP,
-    SYSTEM,
-    AT_MEETING,
-    IN_PERSON,
-    EMAIL,
-    PHONE,
-    ;
-
-    /** Whether a secretary may say it was given this way when recording it for someone. */
-    val recorded: Boolean get() = this != IN_APP && this != SYSTEM
-}
-
-/** Where a declaration stands (design E04 §1.2). RECUSED and AWAITING_RULING are effective: the person is recused. */
-enum class DeclarationState {
-    RECUSED,
-    AWAITING_RULING,
-    TAKING_PART,
-    WITHDRAWN,
-    ;
-
-    /** Recused for the rule (ADR-0062): a pending ruling withholds the papers too (fail-closed). */
-    val effective: Boolean get() = this == RECUSED || this == AWAITING_RULING
-}
-
-/** The chair's ruling: the declarant must leave the room for the item, or may take part. */
-enum class RulingOutcome { LEAVE, TAKE_PART }
 
 enum class DeclarationEventKind { DECLARED, INTENT_CHANGED, RULED, WITHDRAWN }
 

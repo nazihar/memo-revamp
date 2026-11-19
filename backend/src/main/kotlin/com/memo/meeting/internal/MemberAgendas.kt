@@ -6,6 +6,7 @@ import com.memo.files.RenditionKind
 import com.memo.files.RenditionState
 import com.memo.forum.ForumRole
 import com.memo.identity.UserSummaries
+import com.memo.meeting.DeclarationState
 import com.memo.meeting.MeetingStatus
 import com.memo.meeting.PaperAccess
 import com.memo.meeting.PaperViewer
@@ -91,7 +92,9 @@ class MemberAgendas(
         val viewer = inAudience.copy(open = inAudience.open || draft, guestsRead = inAudience.guestsRead || draft)
         val publication = publisher.preview(meeting.id).second
         val snapshot = publication?.snapshot ?: Snapshot(emptyList(), emptyList(), emptyList())
-        val visibility = papers.draft(viewer, meeting.id)
+        // The officer's own recusals hold in the preview too: those items stay their own recused line (design E04 §1.7).
+        val own = publication?.recused.orEmpty()
+        val visibility = MemberAgendaRender.withheld(papers.draft(viewer, meeting.id), snapshot, own)
         return MemberAgendaResponse(
             meetingId = meeting.id,
             status = meeting.status,
@@ -104,7 +107,7 @@ class MemberAgendas(
             note = null,
             preview = true,
             lastSeenRevision = null,
-            sections = MemberAgendaRender.sections(input(meeting, snapshot, visibility, viewer, false)) { reads(viewer, it) },
+            sections = MemberAgendaRender.sections(input(meeting, snapshot, visibility, viewer, false, own)) { reads(viewer, it) },
             whatChanged = null,
         )
     }
@@ -202,11 +205,13 @@ class MemberAgendas(
         visibility: Visibility,
         viewer: PaperViewer,
         mayAsk: Boolean,
+        withheld: Set<UUID> = emptySet(),
     ): MemberAgendaInput {
         val shown = snapshot.body().papers.filter { it.paperId in visibility.papers }
         val pdf = renditions.states(shown.map { it.fileVersionId })
         val open = requests.open(meeting.id).groupBy { it.itemId }
-        val declared = declarations.ofMeeting(meeting.id).filter { it.state != DeclarationState.WITHDRAWN }
+        // Nobody's declarations on an item withheld from the officer previewing it (their own recusals).
+        val declared = declarations.ofMeeting(meeting.id).filter { it.state != DeclarationState.WITHDRAWN && it.itemId !in withheld }
         val people =
             snapshot.items.flatMap { item -> item.presenters.mapNotNull { it.userId } } + open.values.flatten().map { it.userId } +
                 declared.flatMap { listOfNotNull(it.userId, it.recordedBy, it.ruling?.by, it.ruling?.onBehalfBy) }

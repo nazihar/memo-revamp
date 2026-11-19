@@ -4,12 +4,20 @@ import com.memo.audit.AuditLog
 import com.memo.common.authz.ForbiddenException
 import com.memo.common.concurrency.ConcurrentModificationException
 import com.memo.common.id.IdGenerator
+import com.memo.common.tenant.TenantContext
 import com.memo.common.web.FieldProblem
 import com.memo.common.web.refuseIf
 import com.memo.forum.ForumDirectory
 import com.memo.forum.ForumRole
+import com.memo.meeting.DeclarationChanged
+import com.memo.meeting.DeclarationHow
+import com.memo.meeting.DeclarationIntent
+import com.memo.meeting.DeclarationSource
+import com.memo.meeting.DeclarationState
 import com.memo.meeting.MeetingStatus
+import com.memo.meeting.RulingOutcome
 import com.memo.notification.NotificationKind
+import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 import java.time.Clock
@@ -334,6 +342,7 @@ class DeclarationEffects(
     private val notifier: MeetingNotifier,
     private val declarations: DeclarationAccess,
     private val directory: ForumDirectory,
+    private val events: ApplicationEventPublisher,
 ) {
     fun declared(
         scene: DeclarationScene,
@@ -441,6 +450,10 @@ class DeclarationEffects(
         return officers - declarations.recusedAmong(officers, item)
     }
 
+    /**
+     * Audits a change of [row] (now as it is after the change) and publishes [DeclarationChanged] for E05–E08: once per
+     * change, in the changing transaction, through the event publication registry.
+     */
     private fun record(
         action: String,
         scene: DeclarationScene,
@@ -457,6 +470,8 @@ class DeclarationEffects(
             after =
                 ids + after,
         )
+        val tenant = TenantContext.current().value
+        events.publishEvent(DeclarationChanged(tenant, scene.meeting.id, row.itemId, row.userId, row.state.effective))
     }
 
     private fun tell(

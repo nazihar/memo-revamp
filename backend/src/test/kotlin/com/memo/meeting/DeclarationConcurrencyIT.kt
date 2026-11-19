@@ -5,11 +5,9 @@ import com.memo.common.context.Actor
 import com.memo.common.context.ActorContext
 import com.memo.common.context.ActorScope
 import com.memo.common.tenant.TenantContext
-import com.memo.meeting.internal.DeclarationIntent
 import com.memo.meeting.internal.DeclareInput
 import com.memo.meeting.internal.OneOpenException
 import com.memo.meeting.internal.RulingInput
-import com.memo.meeting.internal.RulingOutcome
 import com.memo.testsupport.AppRoleJdbc
 import com.memo.testsupport.AppRoleJdbc.long
 import com.memo.testsupport.Person

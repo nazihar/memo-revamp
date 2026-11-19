@@ -5,6 +5,11 @@ import com.memo.jooq.tables.records.MeetingDeclarationRecord
 import com.memo.jooq.tables.references.MEETING_DECLARATION
 import com.memo.jooq.tables.references.MEETING_DECLARATION_EVENT
 import com.memo.jooq.tables.references.MEETING_DECLARATION_REVIEW
+import com.memo.meeting.DeclarationHow
+import com.memo.meeting.DeclarationIntent
+import com.memo.meeting.DeclarationSource
+import com.memo.meeting.DeclarationState
+import com.memo.meeting.RulingOutcome
 import org.jooq.JSONB
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Repository
@@ -139,25 +144,6 @@ class DeclarationStore(
             .orderBy(MEETING_DECLARATION.DECLARED_AT, MEETING_DECLARATION.ID)
             .fetch { row(it) }
 
-    /** The people among [userIds] with an effective declaration (RECUSED or AWAITING_RULING) on any of [itemIds]. */
-    fun recusedAmong(
-        itemIds: Collection<UUID>,
-        userIds: Collection<UUID>,
-    ): Set<UUID> {
-        if (itemIds.isEmpty() || userIds.isEmpty()) return emptySet()
-        return tenantDsl
-            .current()
-            .selectDistinct(MEETING_DECLARATION.USER_ID)
-            .from(MEETING_DECLARATION)
-            .where(
-                MEETING_DECLARATION.USER_ID.`in`(userIds),
-                MEETING_DECLARATION.ITEM_ID.`in`(itemIds),
-                MEETING_DECLARATION.STATE.`in`(EFFECTIVE),
-            ).fetchSet(MEETING_DECLARATION.USER_ID)
-            .filterNotNull()
-            .toSet()
-    }
-
     /**
      * Moves [row] to [state] (with [intent] and [ruling]) and writes [event]: a guarded update on the state and version
      * the caller read. False when someone else changed it in the meantime.
@@ -279,8 +265,4 @@ class DeclarationStore(
             ruling = r.ruling?.let { json.readValue(it.data(), Ruling::class.java) },
             version = r.version ?: 0,
         )
-
-    private companion object {
-        val EFFECTIVE = listOf(DeclarationState.RECUSED.name, DeclarationState.AWAITING_RULING.name)
-    }
 }

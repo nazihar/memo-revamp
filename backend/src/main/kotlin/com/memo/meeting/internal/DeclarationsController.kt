@@ -6,6 +6,9 @@ import com.memo.common.ratelimit.RateLimiter
 import com.memo.common.tenant.TenantContext
 import com.memo.common.web.etagOf
 import com.memo.common.web.ifMatchVersion
+import com.memo.meeting.DeclarationHow
+import com.memo.meeting.DeclarationIntent
+import com.memo.meeting.RulingOutcome
 import com.memo.system.Idempotency
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag

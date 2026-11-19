@@ -102,6 +102,23 @@ enum class NotificationKind(
     // A member asked to lift a consent item for discussion (design E03 §1.5): to the secretaries and the chair. Parameters
     // `committee`, `date`, `organisation`, `link`; never the item's title (ADR-0030).
     MEETING_DISCUSSION_REQUESTED(NotificationCategory.WORKFLOW, MailTemplate.MEETING_DISCUSSION_REQUESTED),
+
+    // The hourly meeting sweep (design E03 §9), to the secretaries (the holders of `forums.manage` when there are none),
+    // once per meeting date: the papers were due and the agenda is not published; the meeting ended a day ago and is not
+    // marked as held. Parameters `committee`, `date`, `organisation`, `link`.
+    MEETING_AGENDA_DUE(NotificationCategory.WORKFLOW, MailTemplate.MEETING_AGENDA_DUE),
+    MEETING_NOT_HELD(NotificationCategory.WORKFLOW, MailTemplate.MEETING_NOT_HELD),
+
+    // Declarations of interest (Phase 4 E04, ADR-0062, design E04 §2): one recorded or withdrawn for the declarant by
+    // someone else (RECORDED); one made or withdrawn, to the officers not recused from the item (MADE); a ruling asked of
+    // the chair or vice-chair (RULING_NEEDED); the ruling, to the declarant (RULED); the reminder before the meeting
+    // (DUE). Parameters `committee`, `date`, `organisation`, `link`; in the app also `item` (its number) and `change`
+    // (DECLARED, RECORDED or WITHDRAWN) or `outcome` (LEAVE or TAKE_PART). Never an item's title or the nature.
+    MEETING_DECLARATION_RECORDED(NotificationCategory.WORKFLOW, MailTemplate.MEETING_DECLARATION_RECORDED),
+    MEETING_DECLARATION_MADE(NotificationCategory.WORKFLOW, MailTemplate.MEETING_DECLARATION_MADE),
+    MEETING_RULING_NEEDED(NotificationCategory.WORKFLOW, MailTemplate.MEETING_RULING_NEEDED),
+    MEETING_DECLARATION_RULED(NotificationCategory.WORKFLOW, MailTemplate.MEETING_DECLARATION_RULED),
+    MEETING_DECLARATIONS_DUE(NotificationCategory.WORKFLOW, MailTemplate.MEETING_DECLARATIONS_DUE),
 }
 
 /** Who receives a notification; the producer already holds the user, so `notification` never looks people up. */

@@ -10,12 +10,14 @@ import com.memo.jooq.indexes.MEETING_STATUS_IDX
 import com.memo.jooq.keys.MEETING_AGENDA__MEETING_AGENDA_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_AGENDA__MEETING_AGENDA_TENANT_ID_SOURCE_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_AUDIENCE__MEETING_AUDIENCE_TENANT_ID_MEETING_ID_FKEY
+import com.memo.jooq.keys.MEETING_DECLARATION__MEETING_DECLARATION_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_GUEST__MEETING_GUEST_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_PKEY
 import com.memo.jooq.keys.MEETING_TENANT_ID_FORUM_ID_NUMBER_YEAR_NUMBER_KEY
 import com.memo.jooq.keys.MEETING_TENANT_ID_ID_KEY
 import com.memo.jooq.tables.MeetingAgenda.MeetingAgendaPath
 import com.memo.jooq.tables.MeetingAudience.MeetingAudiencePath
+import com.memo.jooq.tables.MeetingDeclaration.MeetingDeclarationPath
 import com.memo.jooq.tables.MeetingGuest.MeetingGuestPath
 import com.memo.jooq.tables.records.MeetingRecord
 
@@ -202,6 +204,16 @@ open class Meeting(
      */
     val VERSION: TableField<MeetingRecord, Long?> = createField(DSL.name("version"), SQLDataType.BIGINT.nullable(false).defaultValue(DSL.field(DSL.raw("0"), SQLDataType.BIGINT)), this, "")
 
+    /**
+     * The column <code>memo.meeting.agenda_due_reminded_at</code>.
+     */
+    val AGENDA_DUE_REMINDED_AT: TableField<MeetingRecord, OffsetDateTime?> = createField(DSL.name("agenda_due_reminded_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
+
+    /**
+     * The column <code>memo.meeting.not_held_reminded_at</code>.
+     */
+    val NOT_HELD_REMINDED_AT: TableField<MeetingRecord, OffsetDateTime?> = createField(DSL.name("not_held_reminded_at"), SQLDataType.TIMESTAMPWITHTIMEZONE(6), this, "")
+
     private constructor(alias: Name, aliased: Table<MeetingRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<MeetingRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<MeetingRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -287,6 +299,22 @@ open class Meeting(
 
     val meetingAudience: MeetingAudiencePath
         get(): MeetingAudiencePath = meetingAudience()
+
+    private lateinit var _meetingDeclaration: MeetingDeclarationPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.meeting_declaration</code> table
+     */
+    fun meetingDeclaration(): MeetingDeclarationPath {
+        if (!this::_meetingDeclaration.isInitialized)
+            _meetingDeclaration = MeetingDeclarationPath(this, null, MEETING_DECLARATION__MEETING_DECLARATION_TENANT_ID_MEETING_ID_FKEY.inverseKey)
+
+        return _meetingDeclaration;
+    }
+
+    val meetingDeclaration: MeetingDeclarationPath
+        get(): MeetingDeclarationPath = meetingDeclaration()
 
     private lateinit var _meetingGuest: MeetingGuestPath
 

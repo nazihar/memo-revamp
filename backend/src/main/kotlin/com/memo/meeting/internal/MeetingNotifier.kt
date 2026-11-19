@@ -81,6 +81,31 @@ class MeetingNotifier(
         forum: ForumRef,
     ) = notify(user, kind, meeting, forum)
 
+    /**
+     * A reminder of the hourly sweep (design E03 §9: the agenda is due, or the meeting is not marked as held), to the
+     * forum's secretaries in office, or to [fallback] (the holders of `forums.manage`) when it has none.
+     */
+    fun reminder(
+        kind: NotificationKind,
+        meeting: MeetingRow,
+        forum: ForumRef,
+        fallback: () -> Set<UUID>,
+    ) {
+        secretaries(forum.id).ifEmpty(fallback).forEach { notify(it, kind, meeting, forum) }
+    }
+
+    /**
+     * A declaration of interest, to one person (design E04 §2): the in-app text names the item's [number] and the [change];
+     * the email names neither (its template uses the committee, the date and the link only). Never the nature.
+     */
+    fun declaration(
+        user: UUID,
+        kind: NotificationKind,
+        meeting: MeetingRow,
+        forum: ForumRef,
+        details: Map<String, String>,
+    ) = notify(user, kind, meeting, forum, details)
+
     /** The chair in office, else the vice-chair. */
     fun chairOf(forumId: UUID): UUID? {
         val seats = directory.membersOn(forumId)
@@ -99,6 +124,7 @@ class MeetingNotifier(
         kind: NotificationKind,
         meeting: MeetingRow,
         forum: ForumRef,
+        details: Map<String, String> = emptyMap(),
     ) {
         val recipient = recipients.recipient(user) ?: return
         val tenant = registry.current()
@@ -106,12 +132,13 @@ class MeetingNotifier(
         notifications.notify(
             recipient,
             kind,
-            mapOf(
-                "committee" to forum.name,
-                "date" to meeting.date.toString(),
-                "organisation" to tenant?.name.orEmpty(),
-                "link" to (tenant?.let { tenancy.publicUrl(it.slug) }.orEmpty() + link),
-            ),
+            details +
+                mapOf(
+                    "committee" to forum.name,
+                    "date" to meeting.date.toString(),
+                    "organisation" to tenant?.name.orEmpty(),
+                    "link" to (tenant?.let { tenancy.publicUrl(it.slug) }.orEmpty() + link),
+                ),
             link,
         )
     }

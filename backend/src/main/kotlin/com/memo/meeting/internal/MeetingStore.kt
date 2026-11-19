@@ -269,7 +269,7 @@ class MeetingListStore(
 
 private fun utc(at: Instant): OffsetDateTime = MeetingStore.utc(at)
 
-private fun MeetingRecord.row() =
+internal fun MeetingRecord.row() =
     MeetingRow(
         id = id,
         forumId = forumId,

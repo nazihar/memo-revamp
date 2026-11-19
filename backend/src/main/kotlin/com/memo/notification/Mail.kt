@@ -36,6 +36,9 @@ import java.util.UUID
  * - MEETING_CANCELLED: name, organisation, committee, date, link
  * - MEETING_LATE_PAPER, MEETING_AGENDA_PUBLISHED, MEETING_AGENDA_CHANGED, MEETING_ITEM_WITHDRAWN,
  *   MEETING_DISCUSSION_REQUESTED: name, organisation, committee, date, link (never an item's title)
+ * - MEETING_AGENDA_DUE, MEETING_NOT_HELD: name, organisation, committee, date, link
+ * - MEETING_DECLARATION_RECORDED, MEETING_DECLARATION_MADE, MEETING_RULING_NEEDED, MEETING_DECLARATION_RULED,
+ *   MEETING_DECLARATIONS_DUE: name, organisation, committee, date, link (never an item's title or a declaration's nature)
  */
 enum class MailTemplate {
     INVITATION,
@@ -70,6 +73,13 @@ enum class MailTemplate {
     MEETING_AGENDA_CHANGED,
     MEETING_ITEM_WITHDRAWN,
     MEETING_DISCUSSION_REQUESTED,
+    MEETING_AGENDA_DUE,
+    MEETING_NOT_HELD,
+    MEETING_DECLARATION_RECORDED,
+    MEETING_DECLARATION_MADE,
+    MEETING_RULING_NEEDED,
+    MEETING_DECLARATION_RULED,
+    MEETING_DECLARATIONS_DUE,
 }
 
 /**

@@ -119,6 +119,14 @@ enum class NotificationKind(
     MEETING_RULING_NEEDED(NotificationCategory.WORKFLOW, MailTemplate.MEETING_RULING_NEEDED),
     MEETING_DECLARATION_RULED(NotificationCategory.WORKFLOW, MailTemplate.MEETING_DECLARATION_RULED),
     MEETING_DECLARATIONS_DUE(NotificationCategory.WORKFLOW, MailTemplate.MEETING_DECLARATIONS_DUE),
+
+    // Meeting invitations (Phase 4 E05, ADR-0063): the invitation, an update (`changes`: what changed, in the recipient's
+    // words) and an uninvitation, each email with its iCalendar file; MEETING_CANCELLED carries the CANCEL file for those
+    // who were invited. Parameters `committee` (the committee's name, or the type's neutral title), `date`,
+    // `organisation`, `link`; never the agenda, an item, a paper or a reason (design E05 §1.2.1).
+    MEETING_INVITATION(NotificationCategory.CALENDAR, MailTemplate.MEETING_INVITATION),
+    MEETING_UPDATED(NotificationCategory.CALENDAR, MailTemplate.MEETING_UPDATED),
+    MEETING_UNINVITED(NotificationCategory.CALENDAR, MailTemplate.MEETING_UNINVITED),
 }
 
 /** Who receives a notification; the producer already holds the user, so `notification` never looks people up. */

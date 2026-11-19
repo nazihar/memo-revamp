@@ -77,3 +77,25 @@
   - a one-off sweep (not committed) of every JVM zone at quarterly dates from 2016 to 2027 through both parsers: 28,986 cases, no failure;
   - the property tests six more times with fresh seeds, all green;
   - the golden files are unchanged.
+
+## 2026-11-19 (T2)
+- **T2 built (backend, with the web's notification texts):** meeting invitations by email with calendar updates.
+  - **Migration `meeting/V7__invitations.sql`**, not V5: E04 T1 holds `meeting/V5` and E03 T5 `meeting/V6`. T3 and T4 move to V8 and V9 (`tasks.md`, `design.md` §7). Flyway runs without out-of-order migrations, so V5 and V6 must reach dev before V7.
+  - Tables `meeting_invitation` (UID, sequence, sent sequence, pending changes, due time), `meeting_invitee` and `meeting_invitation_message`, with RLS, composite foreign keys, no DELETE, no UPDATE on the log, and triggers that keep the UID and never let a sequence go down; meetings already scheduled get an invitation with nothing due.
+  - The hooks: `schedule` creates the invitation; `reschedule` and `PATCH` of the title, mode, place, link or details raise the sequence (once per batch) and name the change; a change of classification or an audience change (roster, guests, the date) makes a send due at the same sequence; `cancel` sends at once.
+  - The `meeting-invitations` reconciler (a step task that waits for the debounce), `InvitationPlan` for the per-person sequences, `InvitationSafetyNet` for T6's sweep.
+  - Kinds `MEETING_INVITATION`, `MEETING_UPDATED`, `MEETING_UNINVITED` (CALENDAR) with English and Arabic emails (subjects without parameters) and in-app texts; `MEETING_CANCELLED` carries the CANCEL file for those who hold the event.
+  - Endpoints `GET /meetings/{id}/invitations` (officers), `POST /meetings/{id}/invitations/resend` (secretaries and `forums.manage`; `Idempotency-Key`; 409 `RESEND_TOO_SOON` within 10 minutes per person; `MEETING_RESEND_PER_MEETING` 6 an hour) and `GET /meetings/{id}/calendar.ics` (audience and officers; 404 for drafts and cancelled meetings; 403 for `forum.read` alone). Audit `meeting.invitations.sent`, `.resent`, `meeting.invitation.validation_failed`. Matrix `p4-e05-invitations.yaml`.
+- **Tests:** `InvitationSequenceProperties`, `InvitationsIT`, `InvitationContentIT` (canaries, one address per file), `InvitationFailureIT`, `InvitationMailIT` (Mailpit, raw iMIP), and `MeetingCrossTenantIT`'s invitation tables.
+- **Deviations from the plan, recorded in `design.md` §1.3 (as built):**
+  - a person's state keeps `held_sequence` beside `last_sequence`: the plan's "`lastSequence` < `sequence`" would miss every update after an uninvitation and re-invitation (the property test's case);
+  - the invitation's sequence rises once per batch of changes, as the acceptance criterion needs (three reschedules, one update at sequence 1);
+  - invitable people must also be cleared for the meeting's classification;
+  - the secretary who cancels gets the CANCEL file too when they hold a seat;
+  - the safety net (`InvitationSafetyNet.rescheduleOverdue`) is wired into E03 T5's hourly `meeting-sweep` now (the plan had it in T6).
+- **Also fixed:** the web's `template.test.tsx` fixture (from E03 T7) lacked the type version's `meetings`, which broke `tsc` on `master`.
+- **Left for T3:** RSVP, alternates (an ALTERNATE audience row will join the invitable sources in `InvitableAudience`), the panel's answers; T6 adds the reminders to the sweep.
+- **After the first CI run (2026-11-19):**
+  - `MigrationDmlRlsTest` caught the backfill writing `meeting_invitation` while it was forced: V7 now enables RLS first and lifts FORCE on both `meeting` and `meeting_invitation` around the backfill, restoring it before the transaction commits.
+  - Merged `master` (E04 T1 `meeting/V5`, E03 T5 `meeting/V6` and the sweep, the CI fixes); V7 keeps its number.
+  - The Arabic core catalogue passed its 15 KiB limit with the new notification texts beside E04's: the `security.*` messages (only on "My security") are now their own part, `mySecurity`.

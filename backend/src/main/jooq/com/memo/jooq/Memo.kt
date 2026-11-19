@@ -52,6 +52,9 @@ import com.memo.jooq.tables.MeetingDeclarationEvent
 import com.memo.jooq.tables.MeetingDeclarationReminder
 import com.memo.jooq.tables.MeetingDeclarationReview
 import com.memo.jooq.tables.MeetingGuest
+import com.memo.jooq.tables.MeetingInvitation
+import com.memo.jooq.tables.MeetingInvitationMessage
+import com.memo.jooq.tables.MeetingInvitee
 import com.memo.jooq.tables.MeetingItem
 import com.memo.jooq.tables.MeetingItemAttendee
 import com.memo.jooq.tables.MeetingPaper
@@ -399,6 +402,21 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      * The table <code>memo.meeting_guest</code>.
      */
     val MEETING_GUEST: MeetingGuest get() = MeetingGuest.MEETING_GUEST
+
+    /**
+     * The table <code>memo.meeting_invitation</code>.
+     */
+    val MEETING_INVITATION: MeetingInvitation get() = MeetingInvitation.MEETING_INVITATION
+
+    /**
+     * The table <code>memo.meeting_invitation_message</code>.
+     */
+    val MEETING_INVITATION_MESSAGE: MeetingInvitationMessage get() = MeetingInvitationMessage.MEETING_INVITATION_MESSAGE
+
+    /**
+     * The table <code>memo.meeting_invitee</code>.
+     */
+    val MEETING_INVITEE: MeetingInvitee get() = MeetingInvitee.MEETING_INVITEE
 
     /**
      * The table <code>memo.meeting_item</code>.
@@ -1095,6 +1113,9 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         MeetingDeclarationReminder.MEETING_DECLARATION_REMINDER,
         MeetingDeclarationReview.MEETING_DECLARATION_REVIEW,
         MeetingGuest.MEETING_GUEST,
+        MeetingInvitation.MEETING_INVITATION,
+        MeetingInvitationMessage.MEETING_INVITATION_MESSAGE,
+        MeetingInvitee.MEETING_INVITEE,
         MeetingItem.MEETING_ITEM,
         MeetingItemAttendee.MEETING_ITEM_ATTENDEE,
         MeetingPaper.MEETING_PAPER,

@@ -39,6 +39,8 @@ import java.util.UUID
  * - MEETING_AGENDA_DUE, MEETING_NOT_HELD: name, organisation, committee, date, link
  * - MEETING_DECLARATION_RECORDED, MEETING_DECLARATION_MADE, MEETING_RULING_NEEDED, MEETING_DECLARATION_RULED,
  *   MEETING_DECLARATIONS_DUE: name, organisation, committee, date, link (never an item's title or a declaration's nature)
+ * - MEETING_INVITATION, MEETING_UNINVITED: name, organisation, committee, date, link (with the iCalendar file)
+ * - MEETING_UPDATED: name, organisation, committee, date, changes (what changed, in words), link (with the file)
  */
 enum class MailTemplate {
     INVITATION,
@@ -80,6 +82,9 @@ enum class MailTemplate {
     MEETING_RULING_NEEDED,
     MEETING_DECLARATION_RULED,
     MEETING_DECLARATIONS_DUE,
+    MEETING_INVITATION,
+    MEETING_UPDATED,
+    MEETING_UNINVITED,
 }
 
 /**

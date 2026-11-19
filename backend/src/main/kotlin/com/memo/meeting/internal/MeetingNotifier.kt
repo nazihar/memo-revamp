@@ -25,12 +25,16 @@ class MeetingNotifier(
     private val tenancy: TenancyProperties,
     private val directory: ForumDirectory,
 ) {
-    /** A scheduled meeting was called off: its audience is told. */
+    /**
+     * A scheduled meeting was called off: its audience is told, but for the people who hold its invitation ([invited]):
+     * the invitation reconciler tells them with the CANCEL file for their calendar (design E05 §1.1).
+     */
     fun cancelled(
         meeting: MeetingRow,
         forum: ForumRef,
+        invited: Set<UUID> = emptySet(),
     ) {
-        val told = audience.audience(meeting.id).map { it.userId }.toSet() - setOfNotNull(actorOrNull())
+        val told = audience.audience(meeting.id).map { it.userId }.toSet() - setOfNotNull(actorOrNull()) - invited
         told.forEach { notify(it, NotificationKind.MEETING_CANCELLED, meeting, forum) }
     }
 

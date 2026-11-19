@@ -82,12 +82,14 @@ class MeetingSweepIT : MemoIntegrationTest() {
 
     @Autowired lateinit var auditLog: AuditLog
 
+    @Autowired lateinit var safetyNet: com.memo.meeting.internal.invite.InvitationSafetyNet
+
     @Autowired lateinit var scheduler: SchedulerClient
 
     @Autowired lateinit var sweepTask: OneTimeTask<MeetingSweepTenantTask>
 
     private val clock = MutableClock()
-    private val sweep by lazy { MeetingSweep(sweepStore, lateness, notifier, administration, auditLog, clock) }
+    private val sweep by lazy { MeetingSweep(sweepStore, lateness, notifier, administration, safetyNet, auditLog, clock) }
     private lateinit var secretary: Person
     private lateinit var chair: Person
     private lateinit var member: Person

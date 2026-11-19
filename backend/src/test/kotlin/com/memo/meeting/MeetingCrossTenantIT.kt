@@ -98,6 +98,10 @@ class MeetingCrossTenantIT : IntegrationTest() {
 
     @Autowired lateinit var reviews: DeclarationReviews
 
+    @Autowired lateinit var reconciler: com.memo.meeting.internal.invite.InvitationReconciler
+
+    @Autowired lateinit var invitationPanel: com.memo.meeting.internal.invite.InvitationPanel
+
     private class Side(
         val tenant: TestTenant,
         val admin: UserAccount,
@@ -359,6 +363,91 @@ class MeetingCrossTenantIT : IntegrationTest() {
             val deleted =
                 runCatching { AppRoleJdbc.inTransaction(a.tenant.id) { c -> c.update("delete from $table where $column = ?", id) } }
             assertThat(deleted.exceptionOrNull()).describedAs(table).isInstanceOf(SQLException::class.java)
+        }
+    }
+
+    @Test
+    fun `another tenant neither sees nor writes invitations, invitees or messages, and they only move forward`() {
+        val a = side("invitea")
+        val b = side("inviteb")
+        val ofA = meeting(a)
+        val at =
+            java.time.Instant
+                .now()
+                .plus(java.time.Duration.ofMinutes(3))
+        ActorContext.asSystem("meeting-invitations") { TenantContext.call(a.tenant.id) { reconciler.run(ofA, at) } }
+
+        // Through the services: B's administrator gets 404 for A's panel, resend and calendar file.
+        assertThatThrownBy { asUser(b.tenant, b.admin) { invitationPanel.panel(ofA) } }.isInstanceOf(MeetingNotFoundException::class.java)
+        assertThatThrownBy { asUser(b.tenant, b.admin) { invitationPanel.resend(ofA, null) } }
+            .isInstanceOf(MeetingNotFoundException::class.java)
+        assertThatThrownBy { asUser(b.tenant, b.admin) { invitationPanel.calendar(ofA) } }
+            .isInstanceOf(MeetingNotFoundException::class.java)
+
+        // Through SQL as the app role: none of A's rows is visible to B, none written for A or pointing at A's.
+        val tables = listOf("meeting_invitation", "meeting_invitee", "meeting_invitation_message")
+        AppRoleJdbc.inTransaction(a.tenant.id) { c ->
+            tables.forEach { assertThat(c.long("select count(*) from $it where meeting_id = ?", ofA)).describedAs(it).isGreaterThan(0) }
+        }
+        AppRoleJdbc.inTransaction(b.tenant.id) { c ->
+            tables.forEach { table ->
+                assertThat(c.long("select count(*) from $table where tenant_id = ?", a.tenant.id.value)).describedAs(table).isZero()
+            }
+            assertThat(c.update("update meeting_invitation set due_at = now() where meeting_id = ?", ofA)).isZero()
+            assertThat(c.update("update meeting_invitee set state = 'UNINVITED' where meeting_id = ?", ofA)).isZero()
+        }
+        val now = OffsetDateTime.now(ZoneOffset.UTC)
+        val writes =
+            listOf(
+                "insert into meeting_invitation (tenant_id, meeting_id, ical_uid, created_at) values (?, ?, ?, ?)" to
+                    listOf<Any>(a.tenant.id.value, ofA, UUID.randomUUID(), now),
+                "insert into meeting_invitation (tenant_id, meeting_id, ical_uid, created_at) values (?, ?, ?, ?)" to
+                    listOf<Any>(b.tenant.id.value, ofA, UUID.randomUUID(), now),
+                "insert into meeting_invitee (tenant_id, meeting_id, user_id, state, last_sequence, held_sequence, last_method, " +
+                    "last_kind, first_sent_at, last_sent_at) values (?, ?, ?, 'INVITED', 0, 0, 'REQUEST', 'INVITATION', ?, ?)" to
+                    listOf<Any>(b.tenant.id.value, ofA, b.member.id.value, now, now),
+                "insert into meeting_invitation_message (id, tenant_id, meeting_id, user_id, sequence, method, kind, queued_at) " +
+                    "values (?, ?, ?, ?, 0, 'REQUEST', 'INVITATION', ?)" to
+                    listOf<Any>(UUID.randomUUID(), b.tenant.id.value, ofA, b.member.id.value, now),
+            )
+        writes.forEach { (sql, params) ->
+            val written = runCatching { AppRoleJdbc.inTransaction(b.tenant.id) { c -> c.update(sql, *params.toTypedArray()) } }
+            assertThat(written.exceptionOrNull()).describedAs(sql).isInstanceOf(SQLException::class.java)
+        }
+        assertInvitationsMoveForward(a, ofA)
+    }
+
+    /**
+     * In [a] itself: the UID never changes, sequences never go down, a cancellation is final, messages never change, and
+     * nothing is deleted. Each case first moves the row forward where needed, in the same (rolled back) transaction.
+     */
+    private fun assertInvitationsMoveForward(
+        a: Side,
+        ofA: UUID,
+    ) {
+        val forbidden =
+            listOf(
+                null to "update meeting_invitation set ical_uid = gen_random_uuid() where meeting_id = ?",
+                "update meeting_invitation set sequence = 3 where meeting_id = ?" to
+                    "update meeting_invitation set sequence = 2 where meeting_id = ?",
+                "update meeting_invitee set last_sequence = 3, held_sequence = 3 where meeting_id = ?" to
+                    "update meeting_invitee set last_sequence = 2 where meeting_id = ?",
+                "update meeting_invitee set state = 'CANCELLED', last_method = 'CANCEL', last_kind = 'CANCEL' where meeting_id = ?" to
+                    "update meeting_invitee set state = 'INVITED', last_method = 'REQUEST', last_kind = 'RESEND' where meeting_id = ?",
+                null to "update meeting_invitation_message set sequence = 9 where meeting_id = ?",
+                null to "delete from meeting_invitation_message where meeting_id = ?",
+                null to "delete from meeting_invitee where meeting_id = ?",
+                null to "delete from meeting_invitation where meeting_id = ?",
+            )
+        forbidden.forEach { (first, sql) ->
+            val changed =
+                runCatching {
+                    AppRoleJdbc.inTransaction(a.tenant.id) { c ->
+                        first?.let { assertThat(c.update(it, ofA)).describedAs(it).isPositive() }
+                        c.update(sql, ofA)
+                    }
+                }
+            assertThat(changed.exceptionOrNull()).describedAs(sql).isInstanceOf(SQLException::class.java)
         }
     }
 

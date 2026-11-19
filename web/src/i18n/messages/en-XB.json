@@ -34164,6 +34164,20 @@
       "value": "‬"
     }
   ],
+  "mail.template.meetingInvitation": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝǝʇıuƃ ıuʌıʇɐʇıou"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "mail.template.meetingItemWithdrawn": [
     {
       "type": 0,
@@ -34214,6 +34228,34 @@
     {
       "type": 0,
       "value": "ᴚnʅıuƃ ou ɐ pǝɔʅɐɹɐʇıou uǝǝpǝp"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "mail.template.meetingUninvited": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝǝʇıuƃ ıuʌıʇɐʇıou ʍıʇɥpɹɐʍu"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "mail.template.meetingUpdated": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Wǝǝʇıuƃ ndpɐʇǝ"
     },
     {
       "type": 0,
@@ -50659,6 +50701,36 @@
       "value": "‬"
     }
   ],
+  "notifications.kind.meetingInvitation": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄on ɐɹǝ ıuʌıʇǝp ʇo ʇɥǝ ɯǝǝʇıuƃ oɟ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ": ʇǝʅʅ ns ʍɥǝʇɥǝɹ ʎon ʍıʅʅ ɐʇʇǝup"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "notifications.kind.meetingItemWithdrawn": [
     {
       "type": 0,
@@ -50781,6 +50853,62 @@
     {
       "type": 0,
       "value": " uǝǝps ʎonɹ ɹnʅıuƃ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.kind.meetingUninvited": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄on ɐɹǝ uo ʅouƃǝɹ ıuʌıʇǝp ʇo ʇɥǝ ɯǝǝʇıuƃ oɟ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "notifications.kind.meetingUpdated": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɯǝǝʇıuƃ oɟ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ɥɐs ɔɥɐuƃǝp"
     },
     {
       "type": 0,

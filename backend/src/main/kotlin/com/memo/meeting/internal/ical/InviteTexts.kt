@@ -36,6 +36,12 @@ internal class InviteTexts {
         return paragraphs.joinToString("\n\n")
     }
 
+    /** What changed, for the update email: one sentence per change ("The place changed."), in [codes]' order. */
+    fun changes(
+        codes: Collection<String>,
+        locale: Locale,
+    ): String = codes.joinToString(" ") { text("invite.change.$it", locale) }
+
     /** LOCATION: the place, or "Online meeting" for an online meeting without one. */
     fun location(
         event: InviteEvent,

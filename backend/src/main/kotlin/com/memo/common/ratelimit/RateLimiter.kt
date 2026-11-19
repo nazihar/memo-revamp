@@ -47,6 +47,10 @@ enum class RateLimit(
     // Changes to a meeting's draft agenda by one person (design E03, threat model D1): a flood of moves cannot slow the
     // builder for others; a secretary dragging items around stays far below it.
     AGENDA_WRITE_PER_USER(120, Duration.ofMinutes(1)),
+
+    // Resending a meeting's invitations (design E05 §1.3, threat model D1): besides once per person per 10 minutes, a
+    // meeting's invitations are resent at most 6 times an hour, by all its secretaries together.
+    MEETING_RESEND_PER_MEETING(6, Duration.ofHours(1)),
     ;
 
     internal val configuration: BucketConfiguration by lazy {

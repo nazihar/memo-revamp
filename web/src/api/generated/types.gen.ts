@@ -1432,6 +1432,15 @@ export type InvitationAcceptance = {
     token: string;
 };
 
+export type InvitationDeliveryResponse = {
+    attempts: number;
+    failedAt?: string | null;
+    lastAttemptAt?: string | null;
+    sentAt?: string | null;
+    smtpCode?: number | null;
+    state: 'PENDING' | 'SENT' | 'FAILED';
+};
+
 export type InvitationLookup = {
     /**
      * From the emailed link (its fragment)
@@ -1439,10 +1448,37 @@ export type InvitationLookup = {
     token: string;
 };
 
+export type InvitationsResponse = {
+    canResend: boolean;
+    cancelled: boolean;
+    created: boolean;
+    dueAt?: string | null;
+    meetingId: string;
+    pending: boolean;
+    people: Array<InviteeResponse>;
+    reconciledAt?: string | null;
+    sequence?: number | null;
+};
+
 export type InviteUserRequest = {
     displayName: string;
     email: string;
     tenantAdmin: boolean;
+};
+
+export type InviteeResponse = {
+    delivery?: InvitationDeliveryResponse | null;
+    emailOff: boolean;
+    firstSentAt?: string | null;
+    guest: boolean;
+    invitable: boolean;
+    lastKind?: 'INVITATION' | 'UPDATE' | 'RESEND' | 'UNINVITE' | 'CANCEL';
+    lastSentAt?: string | null;
+    lastSequence?: number | null;
+    name: string;
+    resendFrom?: string | null;
+    state: 'NOT_INVITED' | 'INVITED' | 'UNINVITED' | 'CANCELLED';
+    userId: string;
 };
 
 export type ItemChangeResponse = {
@@ -2883,6 +2919,10 @@ export type RescheduleRequest = {
     reason?: string | null;
     startsAt?: string;
     timeZone?: string | null;
+};
+
+export type ResendInvitationsRequest = {
+    userIds?: Array<string> | null;
 };
 
 export type Retention = {
@@ -8127,6 +8167,24 @@ export type RemoveAgendaSectionResponses = {
 
 export type RemoveAgendaSectionResponse = RemoveAgendaSectionResponses[keyof RemoveAgendaSectionResponses];
 
+export type GetMeetingCalendarFileData = {
+    body?: never;
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/calendar.ics';
+};
+
+export type GetMeetingCalendarFileResponses = {
+    /**
+     * OK
+     */
+    200: string;
+};
+
+export type GetMeetingCalendarFileResponse = GetMeetingCalendarFileResponses[keyof GetMeetingCalendarFileResponses];
+
 export type CancelMeetingData = {
     body: CancelMeetingRequest;
     headers?: {
@@ -8307,6 +8365,45 @@ export type RemoveMeetingGuestResponses = {
 };
 
 export type RemoveMeetingGuestResponse = RemoveMeetingGuestResponses[keyof RemoveMeetingGuestResponses];
+
+export type GetMeetingInvitationsData = {
+    body?: never;
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/invitations';
+};
+
+export type GetMeetingInvitationsResponses = {
+    /**
+     * OK
+     */
+    200: InvitationsResponse;
+};
+
+export type GetMeetingInvitationsResponse = GetMeetingInvitationsResponses[keyof GetMeetingInvitationsResponses];
+
+export type ResendMeetingInvitationsData = {
+    body?: ResendInvitationsRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/invitations/resend';
+};
+
+export type ResendMeetingInvitationsResponses = {
+    /**
+     * OK
+     */
+    200: InvitationsResponse;
+};
+
+export type ResendMeetingInvitationsResponse = ResendMeetingInvitationsResponses[keyof ResendMeetingInvitationsResponses];
 
 export type DeclareInterestData = {
     body: DeclarationRequest;

@@ -16,6 +16,7 @@ import com.memo.common.tenant.TenantTransactions
 import com.memo.jooq.tables.references.MEETING
 import com.memo.jooq.tables.references.MEETING_AGENDA
 import com.memo.meeting.MeetingStatus
+import com.memo.meeting.internal.invite.InvitationSafetyNet
 import com.memo.notification.NotificationKind
 import org.jooq.Condition
 import org.jooq.impl.DSL
@@ -138,11 +139,18 @@ class MeetingSweep(
     private val lateness: AgendaLateness,
     private val notifier: MeetingNotifier,
     private val access: AccessAdministration,
+    private val invitations: InvitationSafetyNet,
     private val audit: AuditLog,
     private val clock: Clock,
 ) {
-    /** Sends what is due in the current tenant; how many reminders went out. */
-    fun sweep(): Int = agendaDue() + notHeld()
+    /**
+     * Sends what is due in the current tenant; how many reminders went out. Also schedules again any meeting invitation
+     * whose send is overdue by 15 minutes (design E05 §9 (h)).
+     */
+    fun sweep(): Int {
+        invitations.rescheduleOverdue()
+        return agendaDue() + notHeld()
+    }
 
     private fun agendaDue(): Int {
         val now = clock.instant()

@@ -53,6 +53,9 @@ import com.memo.jooq.tables.MeetingDeclarationEvent
 import com.memo.jooq.tables.MeetingDeclarationReminder
 import com.memo.jooq.tables.MeetingDeclarationReview
 import com.memo.jooq.tables.MeetingGuest
+import com.memo.jooq.tables.MeetingInvitation
+import com.memo.jooq.tables.MeetingInvitationMessage
+import com.memo.jooq.tables.MeetingInvitee
 import com.memo.jooq.tables.MeetingItem
 import com.memo.jooq.tables.MeetingItemAttendee
 import com.memo.jooq.tables.MeetingPaper
@@ -382,6 +385,21 @@ val MEETING_DECLARATION_REVIEW: MeetingDeclarationReview = MeetingDeclarationRev
  * The table <code>memo.meeting_guest</code>.
  */
 val MEETING_GUEST: MeetingGuest = MeetingGuest.MEETING_GUEST
+
+/**
+ * The table <code>memo.meeting_invitation</code>.
+ */
+val MEETING_INVITATION: MeetingInvitation = MeetingInvitation.MEETING_INVITATION
+
+/**
+ * The table <code>memo.meeting_invitation_message</code>.
+ */
+val MEETING_INVITATION_MESSAGE: MeetingInvitationMessage = MeetingInvitationMessage.MEETING_INVITATION_MESSAGE
+
+/**
+ * The table <code>memo.meeting_invitee</code>.
+ */
+val MEETING_INVITEE: MeetingInvitee = MeetingInvitee.MEETING_INVITEE
 
 /**
  * The table <code>memo.meeting_item</code>.

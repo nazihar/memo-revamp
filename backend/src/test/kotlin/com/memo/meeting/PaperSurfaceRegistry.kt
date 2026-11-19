@@ -41,6 +41,8 @@ object PaperSurfaceRegistry {
             "POST /api/v1/meetings/{meetingId}/declarations/{declarationId}/ruling" to Surface.DECLARATIONS,
             "POST /api/v1/meetings/{meetingId}/declarations/{declarationId}/withdraw" to Surface.DECLARATIONS,
             "POST /api/v1/meetings/{meetingId}/declarations/review" to Surface.DECLARATIONS,
+            // "Add to my calendar" (E05 T2): the meeting's time, place and link only, never an item (InvitationContentIT).
+            "GET /api/v1/meetings/{meetingId}/calendar.ics" to Surface.MEETING,
         )
 
     /**
@@ -83,5 +85,9 @@ object PaperSurfaceRegistry {
                 "POST /api/v1/meetings/{meetingId}/cancel",
                 "POST /api/v1/meetings/{meetingId}/guests",
                 "POST /api/v1/meetings/{meetingId}/guests/{userId}/remove",
-            ).associateWith { "running the meeting: secretaries and forums.manage, answered with the meeting (no item content)" }
+            ).associateWith { "running the meeting: secretaries and forums.manage, answered with the meeting (no item content)" } +
+            mapOf(
+                "GET /api/v1/meetings/{meetingId}/invitations" to "the invitations panel (E05 T2): officers, people and delivery only",
+                "POST /api/v1/meetings/{meetingId}/invitations/resend" to "resending invitations (E05 T2): secretaries and forums.manage",
+            )
 }

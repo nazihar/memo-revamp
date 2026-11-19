@@ -131,6 +131,9 @@ const kindsWithValues = defineMessages<{
   meetingRulingNeeded: { committee: string; date: string; item: string }
   meetingDeclarationRuled: { committee: string; date: string; item: string; outcome: string }
   meetingDeclarationsDue: { committee: string; date: string }
+  meetingInvitation: { committee: string; date: string }
+  meetingUpdated: { committee: string; date: string }
+  meetingUninvited: { committee: string; date: string }
 }>({
   signInAlert: { id: 'notifications.kind.signInAlert', defaultMessage: 'New sign-in to your account from {device}' },
   roleGranted: { id: 'notifications.kind.roleGranted', defaultMessage: 'You were given the role {role}' },
@@ -249,6 +252,18 @@ const kindsWithValues = defineMessages<{
     id: 'notifications.kind.meetingDeclarationsDue',
     defaultMessage: 'Please declare any interests in the agenda for {committee} on {date}',
   },
+  meetingInvitation: {
+    id: 'notifications.kind.meetingInvitation',
+    defaultMessage: 'You are invited to the meeting of {committee} on {date}: tell us whether you will attend',
+  },
+  meetingUpdated: {
+    id: 'notifications.kind.meetingUpdated',
+    defaultMessage: 'The meeting of {committee} on {date} has changed',
+  },
+  meetingUninvited: {
+    id: 'notifications.kind.meetingUninvited',
+    defaultMessage: 'You are no longer invited to the meeting of {committee} on {date}',
+  },
 })
 
 const kinds = defineMessages({
@@ -362,6 +377,12 @@ export function notificationText(intl: IntlShape, kind: string, params: Record<s
       return intl.formatMessage(kindsWithValues.meetingDeclarationRuled, declarationValues(params))
     case 'MEETING_DECLARATIONS_DUE':
       return intl.formatMessage(kindsWithValues.meetingDeclarationsDue, meetingValues(params))
+    case 'MEETING_INVITATION':
+      return intl.formatMessage(kindsWithValues.meetingInvitation, meetingValues(params))
+    case 'MEETING_UPDATED':
+      return intl.formatMessage(kindsWithValues.meetingUpdated, meetingValues(params))
+    case 'MEETING_UNINVITED':
+      return intl.formatMessage(kindsWithValues.meetingUninvited, meetingValues(params))
     case 'PASSWORD_CHANGED':
       return intl.formatMessage(kinds.passwordChanged)
     case 'MFA_RESET':
@@ -445,6 +466,9 @@ const mailTemplates = defineMessages({
     id: 'mail.template.meetingDeclarationsDue',
     defaultMessage: 'Declarations of interest due',
   },
+  MEETING_INVITATION: { id: 'mail.template.meetingInvitation', defaultMessage: 'Meeting invitation' },
+  MEETING_UPDATED: { id: 'mail.template.meetingUpdated', defaultMessage: 'Meeting update' },
+  MEETING_UNINVITED: { id: 'mail.template.meetingUninvited', defaultMessage: 'Meeting invitation withdrawn' },
 })
 
 const templateMessages: Record<string, MessageDescriptor | undefined> = mailTemplates

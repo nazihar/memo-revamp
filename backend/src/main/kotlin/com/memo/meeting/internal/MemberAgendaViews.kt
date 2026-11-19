@@ -67,6 +67,10 @@ data class MemberItemResponse(
     /** For an item the viewer sees in full that is (or was) in a consent section. */
     val discussion: DiscussionResponse?,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val subItems: List<MemberItemResponse>,
+    /** The viewer's own open declaration of interest on the item, with its nature (design E04 §3). */
+    val myDeclaration: DeclarationResponse? = null,
+    /** The others' open declarations on an item the viewer sees in full: names and states, never the nature. */
+    val declarations: List<DeclarationLineResponse> = emptyList(),
 )
 
 data class MemberSectionResponse(
@@ -163,6 +167,8 @@ data class MemberAgendaInput(
     /** Open consent requests by item. */
     val requests: Map<UUID, List<ConsentRequestRow>>,
     val viewerId: UUID,
+    /** Open (not withdrawn) declarations of interest by item (design E04 §3). */
+    val declarations: Map<UUID, List<DeclarationRow>> = emptyMap(),
     /** The viewer may ask to discuss consent items now (the latest revision, the meeting scheduled, a member or guest). */
     val mayAsk: Boolean,
     /** The viewer reads members-only sections (an officer, or a member for them): their headings and titles. */
@@ -247,6 +253,7 @@ object MemberAgendaRender {
         val full = access == LineAccess.FULL
         val zone: ZoneId = input.meeting.zone
         val requests = input.requests[item.itemId].orEmpty()
+        val title = item.title.takeIf { access != LineAccess.HIDDEN }
         val discussion =
             if (full && (inConsent || requests.isNotEmpty())) {
                 val mine = requests.any { it.userId == input.viewerId }
@@ -264,7 +271,7 @@ object MemberAgendaRender {
             access = access,
             kind = item.kind,
             standingKind = item.standingKind,
-            title = item.title.takeIf { access != LineAccess.HIDDEN },
+            title = title,
             purpose = item.purpose,
             minutes = item.minutes,
             startsAt = item.startsAt,
@@ -283,8 +290,30 @@ object MemberAgendaRender {
             papers = if (full) papers(input, item) else emptyList(),
             discussion = discussion,
             subItems = subs.map { item(input, it, inConsent, emptyList()) },
+            myDeclaration = mine(input, item, title),
+            declarations = if (full) others(input, item) else emptyList(),
         )
     }
+
+    /** The viewer's own open declaration on [item], with its nature. */
+    private fun mine(
+        input: MemberAgendaInput,
+        item: RevisionItem,
+        title: String?,
+    ): DeclarationResponse? =
+        input.declarations[item.itemId]
+            ?.firstOrNull { it.userId == input.viewerId }
+            ?.let { DeclarationViews.of(it, item.number, title, input.names) }
+
+    /** The others' open declarations on [item]: names and states. */
+    private fun others(
+        input: MemberAgendaInput,
+        item: RevisionItem,
+    ): List<DeclarationLineResponse> =
+        input.declarations[item.itemId]
+            .orEmpty()
+            .filter { it.userId != input.viewerId }
+            .map { DeclarationViews.line(it, input.names) }
 
     private fun papers(
         input: MemberAgendaInput,

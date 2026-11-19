@@ -133,11 +133,40 @@ data class TagVocabulary(
     val loops: Map<String, Set<String>>,
 )
 
-/** Pre-formatted text for every value tag, and the rows of each loop (field name to text). */
+/**
+ * Pre-formatted text for every value tag, the rows of each loop (field name to text), and the elements of each block
+ * (ADR-0066): a `{{?name}}…{{/name}}` section whose name is a block repeats once per element, with the value tags,
+ * sections and table-row loops inside it resolved against the element. Blocks are one level deep: an element's own
+ * [blocks] are not used.
+ */
 data class TemplateData(
     val values: Map<String, String>,
     val rows: Map<String, List<Map<String, String>>> = emptyMap(),
+    val blocks: Map<String, List<TemplateData>> = emptyMap(),
+    /** On a block element: wrap the element's rendered block in this content control. Ignored elsewhere. */
+    val control: ControlMark? = null,
 )
+
+/**
+ * A block-level rich-text content control (`w:sdt`) around one block element (ADR-0066): its [tag] (`memo-item:<id>`),
+ * its [title] as Word and ONLYOFFICE show it, and the lock `sdtLocked` (the control cannot be deleted; its content can
+ * be edited). Tags are 1 to [MAX_TAG] letters, digits and `:._-`.
+ */
+data class ControlMark(
+    val tag: String,
+    val title: String,
+) {
+    init {
+        require(TAG.matches(tag)) { "a control tag is 1 to $MAX_TAG letters, digits and :._-" }
+        require(title.length <= MAX_TITLE) { "a control title is at most $MAX_TITLE characters" }
+    }
+
+    companion object {
+        const val MAX_TAG = 64
+        const val MAX_TITLE = 64
+        private val TAG = Regex("^[A-Za-z0-9:._-]{1,$MAX_TAG}$")
+    }
+}
 
 /** Reads templates: what they contain and whether they fit a [TagVocabulary]. No Spring or database needed. */
 interface DocxTemplates {
@@ -178,7 +207,9 @@ class TemplateFillException(
 
 /**
  * Fills a checked template (ADR-0048) with pre-formatted text: values go in as text runs, never as markup or tags.
- * Bounded per node, with a time limit; throws [TemplateFillException].
+ * Block elements with a [ControlMark] come out wrapped in their locked content control (ADR-0066); such a block's
+ * `{{?name}}` and `{{/name}}` must each be in a paragraph of the body, not in a table. Bounded per node, with a time
+ * limit; throws [TemplateFillException].
  */
 interface TemplateFiller {
     fun fill(

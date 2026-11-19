@@ -235,6 +235,9 @@ class SearchPerformanceIT : IntegrationTest() {
             c.autoCommit = false
             // A lock wait fails the test (with this statement) instead of stalling the whole suite.
             c.createStatement().use { it.execute("set local lock_timeout = '30s'") }
+            // The bulk load is far larger than any request: the statement timeout meant for requests cancelled it on a
+            // busy runner (CI, 2026-11-18 and 2026-11-19).
+            c.createStatement().use { it.execute("set local statement_timeout = '10min'") }
             c.prepareStatement("select set_config('app.tenant_id', ?, true)").use {
                 it.setString(1, tenant.id.value.toString())
                 it.execute()

@@ -80,6 +80,10 @@ data class AgendaItemResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val papers: List<AgendaPaperResponse>,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val outOfPack: List<PackFileResponse>,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val subItems: List<AgendaItemResponse>,
+    /** The viewer's own open declaration of interest on the item (design E04 §3). */
+    val myDeclaration: DeclarationResponse? = null,
+    /** The others' open declarations on the item: names and states, never the nature. */
+    val declarations: List<DeclarationLineResponse> = emptyList(),
 )
 
 data class AgendaSectionResponse(
@@ -190,6 +194,8 @@ class AgendaDraftViews(
     private val access: MeetingAccess,
     private val comments: ChairCommentStore,
     private val revisions: RevisionStore,
+    private val declarations: DeclarationStore,
+    private val declarationViews: DeclarationViews,
 ) {
     fun draft(
         meetingId: UUID,
@@ -253,7 +259,9 @@ class AgendaDraftViews(
                 ).toSet(),
             )
         val versions = files.currentVersions(rows.papers.map { it.fileId }.toSet())
-        val view = ItemView(rows, numbers, times, zone, packs, names, versions)
+        val open = declarations.ofMeeting(rows.agenda.meetingId).filter { it.state != DeclarationState.WITHDRAWN }
+        val declared = DraftDeclarations(actorOrNull(), open.groupBy { it.itemId }, numbers, declarationViews.names(open))
+        val view = ItemView(rows, numbers, times, zone, packs, names, versions, declared)
         val ordered = AgendaRules.ordered(rows.sections, rows.items)
         return rows.sections.sortedBy { it.position }.map { s ->
             AgendaSectionResponse(
@@ -301,6 +309,24 @@ class AgendaDraftViews(
     }
 }
 
+/**
+ * The open declarations on the draft's items (design E04 §3): the viewer's own on each item, and the names and states of
+ * the others' (the nature only in the viewer's own; the meeting register is T4's). T2 turns the items the viewer is
+ * recused from into lines.
+ */
+private class DraftDeclarations(
+    private val actor: UUID?,
+    private val byItem: Map<UUID, List<DeclarationRow>>,
+    private val numbers: Map<UUID, String>,
+    private val names: Map<UUID, String>,
+) {
+    fun mine(item: ItemRow): DeclarationResponse? =
+        byItem[item.id]?.firstOrNull { it.userId == actor }?.let { DeclarationViews.of(it, numbers[item.id], item.title, names) }
+
+    fun others(item: ItemRow): List<DeclarationLineResponse> =
+        byItem[item.id].orEmpty().filter { it.userId != actor }.map { DeclarationViews.line(it, names) }
+}
+
 /** One item of the draft as officers see it. */
 private class ItemView(
     private val rows: AgendaRows,
@@ -310,6 +336,7 @@ private class ItemView(
     private val packs: Map<UUID, MemoPack>,
     private val names: Map<UUID, String>,
     private val versions: Map<UUID, com.memo.files.FileVersionInfo>,
+    private val declared: DraftDeclarations,
 ) {
     fun item(
         item: ItemRow,
@@ -351,6 +378,8 @@ private class ItemView(
                     .filter { f -> papers.none { it.fileId == f.fileId } }
                     .map { PackFileResponse(it.fileId, it.source.paper(), it.title, it.classificationId) },
             subItems = subItems,
+            myDeclaration = declared.mine(item),
+            declarations = declared.others(item),
         )
     }
 

@@ -1,0 +1,27 @@
+# Phase 4 E04 T1 declarations of interest (design E04 §3, §4; ADR-0062). Meeting, item and declaration ids are random
+# here, so every subject allowed through is answered 404 before any role check. Who may do what on a real meeting (the
+# secretary, the chair, the vice-chair when the chair declared or is recused, forums.manage through the secretary's path,
+# a member seeing the item or not, a member recused or awaiting a ruling, a guest, forum.read, someone outside) is
+# DeclarationsIT and DeclarationReviewIT; two at once DeclarationConcurrencyIT; another tenant MeetingCrossTenantIT.
+epic: P4-E04
+endpoints:
+  - { endpoint: "GET /api/v1/meetings/{meetingId}/declarations/mine", rule: signedIn }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/items/{itemId}/declarations"
+    rule: signedIn
+    body: { nature: "My brother-in-law is a director of the borrower", intent: "LEAVE" }
+    headers: { Idempotency-Key: "{random}" }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/declarations/{declarationId}/intent"
+    rule: signedIn
+    body: { intent: "ASK_CHAIR" }
+    headers: { If-Match: "\"0\"" }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/declarations/{declarationId}/ruling"
+    rule: signedIn
+    body: { outcome: "TAKE_PART" }
+    headers: { If-Match: "\"0\"" }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/declarations/{declarationId}/withdraw"
+    rule: signedIn
+    body: { reason: "Entered in error" }
+    headers: { If-Match: "\"0\"" }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/declarations/review"
+    rule: signedIn
+    body: { revision: 1 }

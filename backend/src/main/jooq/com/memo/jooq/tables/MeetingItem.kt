@@ -10,7 +10,9 @@ import com.memo.jooq.indexes.MEETING_ITEM_PARENT_IDX
 import com.memo.jooq.indexes.MEETING_ITEM_SECTION_IDX
 import com.memo.jooq.indexes.MEETING_ITEM_SUBMISSION_UK
 import com.memo.jooq.keys.MEETING_CONSENT_REQUEST__MEETING_CONSENT_REQUEST_TENANT_ID_ITEM_ID_FKEY
+import com.memo.jooq.keys.MEETING_DECLARATION__MEETING_DECLARATION_TENANT_ID_MEETING_ID_ITEM_ID_FKEY
 import com.memo.jooq.keys.MEETING_ITEM_ATTENDEE__MEETING_ITEM_ATTENDEE_TENANT_ID_ITEM_ID_FKEY
+import com.memo.jooq.keys.MEETING_ITEM_MEETING_UK
 import com.memo.jooq.keys.MEETING_ITEM_PKEY
 import com.memo.jooq.keys.MEETING_ITEM_TENANT_ID_ID_KEY
 import com.memo.jooq.keys.MEETING_ITEM__MEETING_ITEM_TENANT_ID_MEETING_ID_FKEY
@@ -22,6 +24,7 @@ import com.memo.jooq.keys.MEETING_REVISION_ITEM__MEETING_REVISION_ITEM_TENANT_ID
 import com.memo.jooq.keys.MEETING_REVISION_PAPER__MEETING_REVISION_PAPER_TENANT_ID_ITEM_ID_FKEY
 import com.memo.jooq.tables.MeetingAgenda.MeetingAgendaPath
 import com.memo.jooq.tables.MeetingConsentRequest.MeetingConsentRequestPath
+import com.memo.jooq.tables.MeetingDeclaration.MeetingDeclarationPath
 import com.memo.jooq.tables.MeetingItemAttendee.MeetingItemAttendeePath
 import com.memo.jooq.tables.MeetingPaper.MeetingPaperPath
 import com.memo.jooq.tables.MeetingRevisionItem.MeetingRevisionItemPath
@@ -267,7 +270,7 @@ open class MeetingItem(
     override fun getSchema(): Schema? = if (aliased()) null else Memo.MEMO
     override fun getIndexes(): List<Index> = listOf(MEETING_ITEM_MEETING_IDX, MEETING_ITEM_PARENT_IDX, MEETING_ITEM_SECTION_IDX, MEETING_ITEM_SUBMISSION_UK)
     override fun getPrimaryKey(): UniqueKey<MeetingItemRecord> = MEETING_ITEM_PKEY
-    override fun getUniqueKeys(): List<UniqueKey<MeetingItemRecord>> = listOf(MEETING_ITEM_TENANT_ID_ID_KEY)
+    override fun getUniqueKeys(): List<UniqueKey<MeetingItemRecord>> = listOf(MEETING_ITEM_MEETING_UK, MEETING_ITEM_TENANT_ID_ID_KEY)
     override fun getReferences(): List<ForeignKey<MeetingItemRecord, *>> = listOf(MEETING_ITEM__MEETING_ITEM_TENANT_ID_MEETING_ID_FKEY, MEETING_ITEM__MEETING_ITEM_TENANT_ID_PARENT_ID_FKEY, MEETING_ITEM__MEETING_ITEM_TENANT_ID_SECTION_ID_FKEY)
 
     /**
@@ -304,6 +307,22 @@ open class MeetingItem(
 
     val meetingConsentRequest: MeetingConsentRequestPath
         get(): MeetingConsentRequestPath = meetingConsentRequest()
+
+    private lateinit var _meetingDeclaration: MeetingDeclarationPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.meeting_declaration</code> table
+     */
+    fun meetingDeclaration(): MeetingDeclarationPath {
+        if (!this::_meetingDeclaration.isInitialized)
+            _meetingDeclaration = MeetingDeclarationPath(this, null, MEETING_DECLARATION__MEETING_DECLARATION_TENANT_ID_MEETING_ID_ITEM_ID_FKEY.inverseKey)
+
+        return _meetingDeclaration;
+    }
+
+    val meetingDeclaration: MeetingDeclarationPath
+        get(): MeetingDeclarationPath = meetingDeclaration()
 
     private lateinit var _meetingItemAttendee: MeetingItemAttendeePath
 

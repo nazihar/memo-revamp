@@ -10,12 +10,14 @@ import com.memo.jooq.indexes.MEETING_STATUS_IDX
 import com.memo.jooq.keys.MEETING_AGENDA__MEETING_AGENDA_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_AGENDA__MEETING_AGENDA_TENANT_ID_SOURCE_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_AUDIENCE__MEETING_AUDIENCE_TENANT_ID_MEETING_ID_FKEY
+import com.memo.jooq.keys.MEETING_DECLARATION__MEETING_DECLARATION_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_GUEST__MEETING_GUEST_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_PKEY
 import com.memo.jooq.keys.MEETING_TENANT_ID_FORUM_ID_NUMBER_YEAR_NUMBER_KEY
 import com.memo.jooq.keys.MEETING_TENANT_ID_ID_KEY
 import com.memo.jooq.tables.MeetingAgenda.MeetingAgendaPath
 import com.memo.jooq.tables.MeetingAudience.MeetingAudiencePath
+import com.memo.jooq.tables.MeetingDeclaration.MeetingDeclarationPath
 import com.memo.jooq.tables.MeetingGuest.MeetingGuestPath
 import com.memo.jooq.tables.records.MeetingRecord
 
@@ -297,6 +299,22 @@ open class Meeting(
 
     val meetingAudience: MeetingAudiencePath
         get(): MeetingAudiencePath = meetingAudience()
+
+    private lateinit var _meetingDeclaration: MeetingDeclarationPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.meeting_declaration</code> table
+     */
+    fun meetingDeclaration(): MeetingDeclarationPath {
+        if (!this::_meetingDeclaration.isInitialized)
+            _meetingDeclaration = MeetingDeclarationPath(this, null, MEETING_DECLARATION__MEETING_DECLARATION_TENANT_ID_MEETING_ID_FKEY.inverseKey)
+
+        return _meetingDeclaration;
+    }
+
+    val meetingDeclaration: MeetingDeclarationPath
+        get(): MeetingDeclarationPath = meetingDeclaration()
 
     private lateinit var _meetingGuest: MeetingGuestPath
 

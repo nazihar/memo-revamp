@@ -18966,6 +18966,30 @@
       "value": "Meeting cancelledSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "mail.template.meetingDeclarationMade": [
+    {
+      "type": 0,
+      "value": "Declaration of interest madeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.meetingDeclarationRecorded": [
+    {
+      "type": 0,
+      "value": "Declaration of interest recorded for youSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.meetingDeclarationRuled": [
+    {
+      "type": 0,
+      "value": "Ruling on your declarationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.meetingDeclarationsDue": [
+    {
+      "type": 0,
+      "value": "Declarations of interest dueSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "mail.template.meetingDiscussionRequested": [
     {
       "type": 0,
@@ -18988,6 +19012,12 @@
     {
       "type": 0,
       "value": "Meeting not marked as heldSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "mail.template.meetingRulingNeeded": [
+    {
+      "type": 0,
+      "value": "Ruling on a declaration neededSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "mail.template.memoApproved": [
@@ -27493,6 +27523,244 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "notifications.kind.meetingDeclarationMade": [
+    {
+      "type": 5,
+      "value": "change",
+      "options": {
+        "WITHDRAWN": {
+          "value": [
+            {
+              "type": 0,
+              "value": "A declaration of interest in item "
+            },
+            {
+              "type": 1,
+              "value": "item"
+            },
+            {
+              "type": 0,
+              "value": " of "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": " on "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            },
+            {
+              "type": 0,
+              "value": " was withdrawn"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "An interest was declared in item "
+            },
+            {
+              "type": 1,
+              "value": "item"
+            },
+            {
+              "type": 0,
+              "value": " of "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": " on "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.meetingDeclarationRecorded": [
+    {
+      "type": 5,
+      "value": "change",
+      "options": {
+        "WITHDRAWN": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Your declaration of interest in item "
+            },
+            {
+              "type": 1,
+              "value": "item"
+            },
+            {
+              "type": 0,
+              "value": " of "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": " on "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            },
+            {
+              "type": 0,
+              "value": " was withdrawn"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "A declaration of interest in item "
+            },
+            {
+              "type": 1,
+              "value": "item"
+            },
+            {
+              "type": 0,
+              "value": " of "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": " on "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            },
+            {
+              "type": 0,
+              "value": " was recorded for you"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.meetingDeclarationRuled": [
+    {
+      "type": 5,
+      "value": "outcome",
+      "options": {
+        "TAKE_PART": {
+          "value": [
+            {
+              "type": 0,
+              "value": "The chair ruled that you may take part in item "
+            },
+            {
+              "type": 1,
+              "value": "item"
+            },
+            {
+              "type": 0,
+              "value": " of "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": " on "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "The chair ruled that you leave the room for item "
+            },
+            {
+              "type": 1,
+              "value": "item"
+            },
+            {
+              "type": 0,
+              "value": " of "
+            },
+            {
+              "type": 1,
+              "value": "committee"
+            },
+            {
+              "type": 0,
+              "value": " on "
+            },
+            {
+              "type": 1,
+              "value": "date"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.meetingDeclarationsDue": [
+    {
+      "type": 0,
+      "value": "Please declare any interests in the agenda for "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "notifications.kind.meetingDiscussionRequested": [
     {
       "type": 0,
@@ -27579,6 +27847,36 @@
     {
       "type": 0,
       "value": " is not marked as heldSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "notifications.kind.meetingRulingNeeded": [
+    {
+      "type": 0,
+      "value": "A declaration of interest in item "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " needs your rulingSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "notifications.kind.memoApproved": [

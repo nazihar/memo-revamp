@@ -31,6 +31,7 @@ class MemberAgendas(
     private val publisher: AgendaPublisher,
     private val renditions: FileRenditions,
     private val users: UserSummaries,
+    private val declarations: DeclarationStore,
 ) {
     /** Revision [number] of [meetingId]'s agenda (the latest when null) as the actor sees it; 404 when invisible. */
     fun agenda(
@@ -205,13 +206,16 @@ class MemberAgendas(
         val shown = snapshot.body().papers.filter { it.paperId in visibility.papers }
         val pdf = renditions.states(shown.map { it.fileVersionId })
         val open = requests.open(meeting.id).groupBy { it.itemId }
+        val declared = declarations.ofMeeting(meeting.id).filter { it.state != DeclarationState.WITHDRAWN }
         val people =
-            snapshot.items.flatMap { item -> item.presenters.mapNotNull { it.userId } } + open.values.flatten().map { it.userId }
+            snapshot.items.flatMap { item -> item.presenters.mapNotNull { it.userId } } + open.values.flatten().map { it.userId } +
+                declared.flatMap { listOfNotNull(it.userId, it.recordedBy, it.ruling?.by, it.ruling?.onBehalfBy) }
         return MemberAgendaInput(
             meeting = meeting,
             snapshot = snapshot,
             visibility = visibility,
             names = users.names(people.toSet()),
+            declarations = declared.groupBy { it.itemId },
             ready =
                 shown
                     .filter { it.pages != null || pdf[it.fileVersionId]?.get(RenditionKind.PDF) == RenditionState.DONE }

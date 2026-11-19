@@ -126,6 +126,11 @@ const kindsWithValues = defineMessages<{
   meetingDiscussionRequested: { committee: string; date: string }
   meetingAgendaDue: { committee: string; date: string }
   meetingNotHeld: { committee: string; date: string }
+  meetingDeclarationRecorded: { committee: string; date: string; item: string; change: string }
+  meetingDeclarationMade: { committee: string; date: string; item: string; change: string }
+  meetingRulingNeeded: { committee: string; date: string; item: string }
+  meetingDeclarationRuled: { committee: string; date: string; item: string; outcome: string }
+  meetingDeclarationsDue: { committee: string; date: string }
 }>({
   signInAlert: { id: 'notifications.kind.signInAlert', defaultMessage: 'New sign-in to your account from {device}' },
   roleGranted: { id: 'notifications.kind.roleGranted', defaultMessage: 'You were given the role {role}' },
@@ -221,6 +226,29 @@ const kindsWithValues = defineMessages<{
     id: 'notifications.kind.meetingNotHeld',
     defaultMessage: 'The meeting of {committee} on {date} is not marked as held',
   },
+  meetingDeclarationRecorded: {
+    id: 'notifications.kind.meetingDeclarationRecorded',
+    defaultMessage:
+      '{change, select, WITHDRAWN {Your declaration of interest in item {item} of {committee} on {date} was withdrawn} other {A declaration of interest in item {item} of {committee} on {date} was recorded for you}}',
+  },
+  meetingDeclarationMade: {
+    id: 'notifications.kind.meetingDeclarationMade',
+    defaultMessage:
+      '{change, select, WITHDRAWN {A declaration of interest in item {item} of {committee} on {date} was withdrawn} other {An interest was declared in item {item} of {committee} on {date}}}',
+  },
+  meetingRulingNeeded: {
+    id: 'notifications.kind.meetingRulingNeeded',
+    defaultMessage: 'A declaration of interest in item {item} of {committee} on {date} needs your ruling',
+  },
+  meetingDeclarationRuled: {
+    id: 'notifications.kind.meetingDeclarationRuled',
+    defaultMessage:
+      '{outcome, select, TAKE_PART {The chair ruled that you may take part in item {item} of {committee} on {date}} other {The chair ruled that you leave the room for item {item} of {committee} on {date}}}',
+  },
+  meetingDeclarationsDue: {
+    id: 'notifications.kind.meetingDeclarationsDue',
+    defaultMessage: 'Please declare any interests in the agenda for {committee} on {date}',
+  },
 })
 
 const kinds = defineMessages({
@@ -232,6 +260,22 @@ const kinds = defineMessages({
 /** The values of the meeting kinds: the committee and the meeting's date (never an item's title, ADR-0030). */
 function meetingValues(params: Record<string, string>): { committee: string; date: string } {
   return { committee: params.committee ?? '', date: params.date ?? '' }
+}
+
+/** The values of the declaration kinds: the meeting and the item's number (never its title or the nature, ADR-0062). */
+function declarationValues(params: Record<string, string>): {
+  committee: string
+  date: string
+  item: string
+  change: string
+  outcome: string
+} {
+  return {
+    ...meetingValues(params),
+    item: params.item ?? '',
+    change: params.change ?? '',
+    outcome: params.outcome ?? '',
+  }
 }
 
 /** The text of a notification of [kind] (ADR-0030); unknown kinds (a newer server) fall back to a generic text. */
@@ -308,6 +352,16 @@ export function notificationText(intl: IntlShape, kind: string, params: Record<s
       return intl.formatMessage(kindsWithValues.meetingAgendaDue, meetingValues(params))
     case 'MEETING_NOT_HELD':
       return intl.formatMessage(kindsWithValues.meetingNotHeld, meetingValues(params))
+    case 'MEETING_DECLARATION_RECORDED':
+      return intl.formatMessage(kindsWithValues.meetingDeclarationRecorded, declarationValues(params))
+    case 'MEETING_DECLARATION_MADE':
+      return intl.formatMessage(kindsWithValues.meetingDeclarationMade, declarationValues(params))
+    case 'MEETING_RULING_NEEDED':
+      return intl.formatMessage(kindsWithValues.meetingRulingNeeded, declarationValues(params))
+    case 'MEETING_DECLARATION_RULED':
+      return intl.formatMessage(kindsWithValues.meetingDeclarationRuled, declarationValues(params))
+    case 'MEETING_DECLARATIONS_DUE':
+      return intl.formatMessage(kindsWithValues.meetingDeclarationsDue, meetingValues(params))
     case 'PASSWORD_CHANGED':
       return intl.formatMessage(kinds.passwordChanged)
     case 'MFA_RESET':
@@ -374,6 +428,23 @@ const mailTemplates = defineMessages({
   },
   MEETING_AGENDA_DUE: { id: 'mail.template.meetingAgendaDue', defaultMessage: 'Agenda not published by the deadline' },
   MEETING_NOT_HELD: { id: 'mail.template.meetingNotHeld', defaultMessage: 'Meeting not marked as held' },
+  MEETING_DECLARATION_RECORDED: {
+    id: 'mail.template.meetingDeclarationRecorded',
+    defaultMessage: 'Declaration of interest recorded for you',
+  },
+  MEETING_DECLARATION_MADE: {
+    id: 'mail.template.meetingDeclarationMade',
+    defaultMessage: 'Declaration of interest made',
+  },
+  MEETING_RULING_NEEDED: { id: 'mail.template.meetingRulingNeeded', defaultMessage: 'Ruling on a declaration needed' },
+  MEETING_DECLARATION_RULED: {
+    id: 'mail.template.meetingDeclarationRuled',
+    defaultMessage: 'Ruling on your declaration',
+  },
+  MEETING_DECLARATIONS_DUE: {
+    id: 'mail.template.meetingDeclarationsDue',
+    defaultMessage: 'Declarations of interest due',
+  },
 })
 
 const templateMessages: Record<string, MessageDescriptor | undefined> = mailTemplates

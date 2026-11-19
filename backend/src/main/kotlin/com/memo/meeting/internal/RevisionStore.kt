@@ -179,6 +179,21 @@ class RevisionStore(
         )
     }
 
+    /** For each item ever in the body of a revision of [meetingId], the first revision that carried it (E04's review). */
+    fun firstPublished(meetingId: UUID): Map<UUID, Int> {
+        val first = DSL.min(MEETING_REVISION.NUMBER)
+        return tenantDsl
+            .current()
+            .select(MEETING_REVISION_ITEM.ITEM_ID, first)
+            .from(MEETING_REVISION_ITEM)
+            .join(MEETING_REVISION)
+            .on(MEETING_REVISION.TENANT_ID.eq(MEETING_REVISION_ITEM.TENANT_ID), MEETING_REVISION.ID.eq(MEETING_REVISION_ITEM.REVISION_ID))
+            .where(MEETING_REVISION.MEETING_ID.eq(meetingId), MEETING_REVISION_ITEM.REMOVED.isFalse)
+            .groupBy(MEETING_REVISION_ITEM.ITEM_ID)
+            .fetch()
+            .associate { checkNotNull(it.value1()) to checkNotNull(it.value2()) }
+    }
+
     /**
      * Records that [userId] is told of [revisionId] as [kind]: the dedupe key of the per-recipient notifications (design E03
      * §9). False when they already were.

@@ -78,7 +78,7 @@ export function MeetingPage({ meetingId }: { meetingId: string }) {
       ) : null}
       {m.status === 'DRAFT' ? <p className="text-muted-foreground">{intl.formatMessage(mm.draftHint)}</p> : null}
       <Place meeting={m} />
-      <MeetingAgenda meetingId={m.id} />
+      <MeetingAgenda meetingId={m.id} relation={m.relation} />
       <Facts meeting={m} />
       {officer || m.canManage ? <Guests meeting={m} /> : null}
       {officer ? <AgendaLink meetingId={m.id} /> : null}

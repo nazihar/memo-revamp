@@ -45,3 +45,46 @@
   - Tests: `RecusalRuleIT`, `RecusedOfficerIT` (builder, preview, publish preview, late-paper routing, discussion and withdrawn notices), `RecusalsApiIT`, `RecusalNarrowsProperties` (40 seeded runs over an agenda with every shape the rule distinguishes, for officers, members, guest, attendee and `forum.read`, revision and draft; declarations rolled back), the recused member (one title line, one hidden, one awaiting a ruling) on every `PaperSurfaceRegistry` surface in `PaperLeakIT`; `DeclarationsIT` follows the recused draft row; web `meeting-page.test.tsx`.
 - **Deviations:** the property test is a seeded JUnit integration test, not jqwik (the rule is SQL; jqwik does not run in the Spring test context). The declaration enums moved to the published package for `Recusals`. A recused officer's draft row carries `""` as the title when it is hidden (the field stays required, so the web builder types do not change). The decision on a late paper in the app moved from "the chair in office" to "who decides for the item".
 - **Left:** the recused and awaiting-ruling columns in `p4-e03-meetings.yaml` and the canary/differential leak suite (T5); the builder's and the preview's recused rows on the web (T7: today the builder shows the row's title and no papers; a hidden title shows empty); the vice-chair's "decide" button when the chair is recused (T7, `canAgree` is still the chair in office).
+
+## 2026-11-19 — T6 declaring an interest (web, flow S)
+- **No backend change.** The screens use T1's endpoints and T2's `recused` and `myDeclaration` as they are.
+- **Built** (`web/src/features/meetings/declarations/`, wired into E03's meeting page):
+  - **The Declarations panel** above the agenda (S1's banner): "Please read the agenda and tell us about any interest", "9 items to review" ("2 new items to review" after a confirmation) and "Review and declare"; once confirmed, "You confirmed your declarations for revision 2 of the agenda"; and the member's own open declarations, each with "My declaration". Nothing is shown when there is nothing to say.
+  - **On each item** whose title the member sees (in full or title only), an item or a submission: "Declare an interest". Not on "Restricted item", breaks or standing items. Shown only on the latest revision while the meeting is SCHEDULED or IN_PROGRESS, and not to a `forum.read` holder outside the audience (the page does not read `/declarations/mine` for them).
+  - **The declaration sheet** (S2): a side sheet with the interest (grows with the text; "Please say what your interest is"), leave the room (default, "(recommended)") or ask the chair, each with its consequence. It has one Idempotency-Key per request; a changed request gets a new key. Success tells the member who was told.
+  - **The recused line:** T2's heading suffix stays, and S1's second line is added below it. RECUSED: "You will be asked to leave the room for this item. Its papers are not shown to you." AWAITING_RULING: "You asked the chair to decide whether you may take part." TAKING_PART shows the item in full with "You declared an interest. The chair decided you may take part." Each line has "My declaration".
+  - **My declaration** (S4):
+    - when and how the declaration was made: by the member in the app, recorded by someone (by email, by phone, in person or at the meeting, with their note), or carried over from the memo or an earlier meeting;
+    - the interest in quotes, what the member chose, and the chair's decision with its note;
+    - "Ask the chair to decide instead" or "I will leave the room instead", sent with If-Match;
+    - "Withdraw this declaration…", which needs a reason and says that the secretary and the chair will be told and that it will be in the minutes;
+    - once the meeting is held, it can only be read.
+  - **The review** (S3): a side sheet listing `toReview` (every item before a first confirmation, then only those added since, with "Only the items added since you confirmed revision 1 are listed"). Each row has "I have an interest", which opens the declaration sheet over the list, or what was declared (it opens My declaration). The sheet ends with "I have declared my interests in this agenda" against the latest revision. On `STALE_REVISION` it says so, reads the new list and asks again.
+  - **The Declarations standing item** lists the open declarations on the items the reader sees, theirs and others' ("S. Ali — will leave the room for item 5"), never the nature.
+  - **Refusals in words, where they happen:**
+    - in the sheet: `ONE_OPEN`, `FROZEN`, `WRONG_STATE`, `STALE_REVISION`, 403 `RECUSED`, 403, 404 and 412; after a 404, 409 or 412 the agenda and declarations are read again;
+    - at the field: 422 `NATURE_REQUIRED`, `REASON_REQUIRED` and `LENGTH`.
+  - **Focus:**
+    - an item's declaration button keeps its place, so "Declare an interest" becomes "My declaration" (and back after a withdrawal) without losing focus;
+    - a review row's button keeps its place in the same way;
+    - when the opener is gone (the review button after confirming), focus goes to the panel's heading.
+  - **Targets:** 44 px for all controls; `FormDialog` gained `large` for that.
+  - **Strings:** en and ar in a new catalogue part `declarations` (`/meetings` routes; 2.0 KiB en, 2.5 KiB ar gzip).
+  - **Tests:** `declarations.test.tsx` (8):
+    - declare with leave the room: Idempotency-Key kept on retry, the body, the empty-field message, 44 px, axe;
+    - ask the chair, and the awaiting line;
+    - a 422 `LENGTH` at the field, then `ONE_OPEN` in words, with a new key for the changed request;
+    - change intent and withdraw with If-Match and a reason, `FROZEN` in words, focus kept;
+    - the review asking only about new items, declaring from the list, `STALE_REVISION`, confirming;
+    - the standing item and where Declare is offered or not ("Restricted item", break, standing item);
+    - nothing for a `forum.read` reader or once HELD;
+    - Arabic RTL with axe.
+    `meeting-page.test.tsx` and `agenda.test.tsx` were updated for the new part, and the title-only and recused lines now carry their button.
+- **Deviations from flow S:**
+  - "Declare an interest" is on items and submissions only, not on standing items. This matches T1's review, which does not ask about standing items or breaks; S1 drew none on items 1–2.
+  - The banner is a "Declarations of interest" panel. The confirmation line gives the revision but not the date: `MyDeclarationsResponse` has no confirmation time.
+  - The carried-over line does not name the memo or its date. The nature T1 stores ("Interest declared on memo {number}") is quoted just below, and the response carries no memo-interest date.
+  - S4 also offers "I will leave the room instead" while waiting for a ruling or after a ruling to take part, as the lifecycle allows.
+  - A declared row in the review opens My declaration instead of being plain text, so focus stays on it.
+  - Dates in My declaration are on the meeting's clock, like the rest of the page.
+- **Left:** officers' screens (T7); the register (T8); the journey `declarations.spec` and the manual keyboard and screen-reader pass (T9).

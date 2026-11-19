@@ -439,8 +439,8 @@ describe('the agenda builder (Phase 4 E03 T7, flow O)', () => {
     })
     expect(last(calls)?.key).toMatch(UUID)
     expect(await screen.findByRole('heading', { name: 'For decision' })).toBeInTheDocument()
-    expect(partsForPath('/meetings/m1/agenda')).toEqual(['meetings', 'agendaBuilder', 'meetingPage'])
-    expect(partsForPath('/meetings/m1')).toEqual(['meetings', 'meetingPage'])
+    expect(partsForPath('/meetings/m1/agenda')).toEqual(['meetings', 'agendaBuilder', 'meetingPage', 'declarations'])
+    expect(partsForPath('/meetings/m1')).toEqual(['meetings', 'meetingPage', 'declarations'])
     expect(partsForPath('/admin/committee-types/t1')).toContain('agendaBuilder')
   })
 

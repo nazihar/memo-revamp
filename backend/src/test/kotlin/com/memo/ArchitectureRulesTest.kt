@@ -300,4 +300,25 @@ class ArchitectureRulesTest {
                 .map { (owner, method) -> "${owner.name}.$method" }
         assertThat(offenders).describedAs("purpose declarations outside the import's modules").isEmpty()
     }
+
+    @Test
+    fun `business numbers are written by the shared format code, and memo numbering delegates to it`() {
+        // E06 T1 (ADR-0065): memo and resolution numbers share com.memo.common.numbering; memo keeps its types and JSON.
+        classes()
+            .that()
+            .haveFullyQualifiedName("com.memo.memo.internal.NumberFormats")
+            .should()
+            .dependOnClassesThat()
+            .haveFullyQualifiedName("com.memo.common.numbering.NumberFormats")
+            .because("memo numbering delegates to the shared format code (E06 T1)")
+            .check(classes)
+        noClasses()
+            .that()
+            .resideInAPackage("com.memo.common.numbering..")
+            .should()
+            .dependOnClassesThat()
+            .resideOutsideOfPackages("com.memo.common..", "java..", "kotlin..", "org.jetbrains.annotations..")
+            .because("the shared format code is pure (ADR-0044)")
+            .check(classes)
+    }
 }

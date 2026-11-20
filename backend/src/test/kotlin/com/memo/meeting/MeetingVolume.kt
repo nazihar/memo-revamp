@@ -86,8 +86,19 @@ class MeetingVolume(
     }
 
     private fun statements(): List<String> =
-        listOf(forumsAndMeetings(), agendas(), sections(), items(), papers(), revisions(), audience(), reads(), submissions(), files())
-            .flatten()
+        listOf(
+            forumsAndMeetings(),
+            agendas(),
+            sections(),
+            items(),
+            papers(),
+            revisions(),
+            audience(),
+            reads(),
+            submissions(),
+            files(),
+            declarations(),
+        ).flatten()
 
     private fun forumsAndMeetings(): List<String> {
         val forumRows =
@@ -345,6 +356,60 @@ class MeetingVolume(
         )
     }
 
+    /**
+     * Declarations of interest (design E04 §8, test plan T4): on 5 % of the items (one in 20; two declarants on every other
+     * one), mostly recused, some taking part after a ruling, waiting for one or withdrawn; on the focal meeting 36, the
+     * director's among them, so the members' agenda has recusals to apply. Their history (declared, ruled, withdrawn) and
+     * the members' reviews of the first and second revisions.
+     */
+    private fun declarations(): List<String> {
+        val focal = "it.f = 1 and it.k = $focalK"
+        return listOf(
+            """
+            create temp table mv_declaration on commit drop as
+            select it.meeting_id, m.forum_id, it.item_id, it.revisions, d, md5('mvd' || it.item_id || '-' || d)::uuid as id,
+                   case when $focal and d = 0 and it.n % 12 = 0 then '${people.director}'::uuid
+                        else md5('mvu' || it.f || '-' || (1 + (it.n + d) % $MEMBERS))::uuid end as user_id,
+                   case when (it.n + d) % 10 = 3 then 'TAKING_PART' when (it.n + d) % 10 = 7 then 'WITHDRAWN'
+                        when (it.n + d) % 10 = 9 then 'AWAITING_RULING' else 'RECUSED' end as state,
+                   it.starts_at - interval '10 days' + it.n * interval '1 minute' + d * interval '1 hour' as declared_at
+            from mv_item it
+            join mv_meeting m on m.id = it.meeting_id,
+                 generate_series(0, case when it.n % 40 = 5 or $focal then 1 else 0 end) d
+            where not it.brk and (it.n % 20 = 5 or ($focal and it.n % 4 = 0))
+            """,
+            """
+            insert into meeting_declaration (id, tenant_id, meeting_id, item_id, forum_id, user_id, nature, intent, source, recorded_by,
+                                             how, declared_at, at_meeting, revision, state)
+            select id, '$tenant'::uuid, meeting_id, item_id, forum_id, user_id, 'Interest in the counterparty ' || d,
+                   case when state = 'AWAITING_RULING' then 'ASK_CHAIR' else 'LEAVE' end, 'SELF', user_id, 'IN_APP',
+                   declared_at, false, case when revisions > 0 then 1 end, state
+            from mv_declaration
+            """,
+            """
+            insert into meeting_declaration_event (id, tenant_id, declaration_id, kind, state_after, actor_id, how, note, at)
+            select md5('mvde' || id)::uuid, '$tenant'::uuid, id, 'DECLARED',
+                   case when state = 'AWAITING_RULING' then 'AWAITING_RULING' else 'RECUSED' end, user_id, 'IN_APP', null,
+                   declared_at
+            from mv_declaration
+            union all
+            select md5('mvdr' || id)::uuid, '$tenant'::uuid, id, 'RULED', 'TAKING_PART', '${people.chair}'::uuid, 'IN_APP', null,
+                   declared_at + interval '1 day'
+            from mv_declaration where state = 'TAKING_PART'
+            union all
+            select md5('mvdw' || id)::uuid, '$tenant'::uuid, id, 'WITHDRAWN', 'WITHDRAWN', user_id, 'IN_APP',
+                   'Entered in error', declared_at + interval '1 day'
+            from mv_declaration where state = 'WITHDRAWN'
+            """,
+            """
+            insert into meeting_declaration_review (tenant_id, meeting_id, user_id, revision, reviewed_at)
+            select '$tenant'::uuid, m.id, md5('mvu' || m.f || '-' || u)::uuid, r, m.starts_at - interval '12 days' + r * interval '1 hour'
+            from mv_meeting m, generate_series(1, $MEMBERS) u, generate_series(1, 2) r
+            where m.revisions >= r and (r = 1 and u % 4 <> 0 or r = 2 and u % 2 = 0)
+            """,
+        )
+    }
+
     /** Every 25th item is for the chair only (the director sees its line), every 25th + 12 for the director and the chair. */
     private fun restriction() =
         "case when n % 25 = 0 then array['${people.chair}'::uuid] " +
@@ -385,6 +450,9 @@ class MeetingVolume(
                 "forum_submission",
                 "files_file",
                 "files_version",
+                "meeting_declaration",
+                "meeting_declaration_event",
+                "meeting_declaration_review",
             )
     }
 }

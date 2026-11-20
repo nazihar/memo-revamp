@@ -1896,6 +1896,128 @@
         "required" : [ "id", "intent", "state", "user" ],
         "type" : "object"
       },
+      "DeclarationRegisterResponse" : {
+        "properties" : {
+          "items" : {
+            "items" : {
+              "$ref" : "#/components/schemas/DeclarationRegisterRowResponse"
+            },
+            "type" : "array"
+          },
+          "nextCursor" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "items" ],
+        "type" : "object"
+      },
+      "DeclarationRegisterRowResponse" : {
+        "properties" : {
+          "atMeeting" : {
+            "type" : "boolean"
+          },
+          "committee" : {
+            "type" : "string"
+          },
+          "correction" : {
+            "type" : "boolean"
+          },
+          "declaredAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "forumId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "how" : {
+            "enum" : [ "IN_APP", "SYSTEM", "AT_MEETING", "IN_PERSON", "EMAIL", "PHONE" ],
+            "type" : "string"
+          },
+          "howNote" : {
+            "type" : [ "string", "null" ]
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "intent" : {
+            "enum" : [ "LEAVE", "ASK_CHAIR" ],
+            "type" : "string"
+          },
+          "itemId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "itemNumber" : {
+            "type" : [ "string", "null" ]
+          },
+          "itemTitle" : {
+            "type" : [ "string", "null" ]
+          },
+          "meetingDate" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "meetingId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "meetingLabel" : {
+            "type" : [ "string", "null" ]
+          },
+          "meetingStatus" : {
+            "enum" : [ "DRAFT", "SCHEDULED", "IN_PROGRESS", "HELD", "MINUTES_APPROVED", "CLOSED", "CANCELLED" ],
+            "type" : "string"
+          },
+          "nature" : {
+            "type" : [ "string", "null" ]
+          },
+          "recordedBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/PersonResponse"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "ruling" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/RulingResponse"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "source" : {
+            "enum" : [ "SELF", "ON_BEHALF", "MEMO", "EARLIER_MEETING", "REGISTER" ],
+            "type" : "string"
+          },
+          "state" : {
+            "enum" : [ "RECUSED", "AWAITING_RULING", "TAKING_PART", "WITHDRAWN" ],
+            "type" : "string"
+          },
+          "user" : {
+            "$ref" : "#/components/schemas/PersonResponse"
+          }
+        },
+        "required" : [ "atMeeting", "committee", "correction", "declaredAt", "forumId", "how", "id", "intent", "itemId", "meetingDate", "meetingId", "meetingStatus", "source", "state", "user" ],
+        "type" : "object"
+      },
+      "DeclarationReminderResponse" : {
+        "properties" : {
+          "reminded" : {
+            "items" : {
+              "$ref" : "#/components/schemas/PersonResponse"
+            },
+            "type" : "array"
+          },
+          "revision" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "reminded", "revision" ],
+        "type" : "object"
+      },
       "DeclarationRequest" : {
         "properties" : {
           "how" : {
@@ -5061,6 +5183,35 @@
           }
         },
         "required" : [ "displayName", "email", "id", "mfaEnrolled", "tenantAdmin" ],
+        "type" : "object"
+      },
+      "MeetingDeclarationRegisterResponse" : {
+        "properties" : {
+          "canRemind" : {
+            "type" : "boolean"
+          },
+          "items" : {
+            "items" : {
+              "$ref" : "#/components/schemas/RegisterItemResponse"
+            },
+            "type" : "array"
+          },
+          "latestRevision" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "meetingId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "reviews" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ReviewStatusResponse"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "canRemind", "items", "latestRevision", "meetingId", "reviews" ],
         "type" : "object"
       },
       "MeetingEditRequest" : {
@@ -8527,6 +8678,37 @@
         },
         "type" : "object"
       },
+      "QuorumWarningResponse" : {
+        "properties" : {
+          "available" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "basis" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "declared" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "needed" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "recusedCount" : {
+            "type" : "boolean"
+          },
+          "unmet" : {
+            "items" : {
+              "$ref" : "#/components/schemas/UnmetCondition"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "available", "basis", "declared", "needed", "recusedCount", "unmet" ],
+        "type" : "object"
+      },
       "RaiseScope" : {
         "properties" : {
           "roles" : {
@@ -8808,6 +8990,44 @@
           }
         },
         "required" : [ "memoId", "number", "sequence", "status", "void" ],
+        "type" : "object"
+      },
+      "RegisterItemResponse" : {
+        "properties" : {
+          "alsoReadsMemo" : {
+            "items" : {
+              "$ref" : "#/components/schemas/PersonResponse"
+            },
+            "type" : "array"
+          },
+          "declarations" : {
+            "items" : {
+              "$ref" : "#/components/schemas/DeclarationResponse"
+            },
+            "type" : "array"
+          },
+          "itemId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "number" : {
+            "type" : [ "string", "null" ]
+          },
+          "quorumWarning" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/QuorumWarningResponse"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "recused" : {
+            "type" : "boolean"
+          },
+          "title" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "alsoReadsMemo", "declarations", "itemId", "recused" ],
         "type" : "object"
       },
       "RemarkRequest" : {
@@ -9230,6 +9450,30 @@
             "type" : [ "string", "null" ]
           }
         },
+        "type" : "object"
+      },
+      "ReviewStatusResponse" : {
+        "properties" : {
+          "officer" : {
+            "type" : "boolean"
+          },
+          "remindedRevision" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "reviewedRevision" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "toReview" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "user" : {
+            "$ref" : "#/components/schemas/PersonResponse"
+          }
+        },
+        "required" : [ "officer", "toReview", "user" ],
         "type" : "object"
       },
       "RevisionChangesResponse" : {
@@ -16251,6 +16495,137 @@
         "tags" : [ "memo" ]
       }
     },
+    "/api/v1/declarations" : {
+      "get" : {
+        "operationId" : "listDeclarations",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "forumId",
+          "required" : false,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "from",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "to",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "userId",
+          "required" : false,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "state",
+          "required" : false,
+          "schema" : {
+            "enum" : [ "RECUSED", "AWAITING_RULING", "TAKING_PART", "WITHDRAWN" ],
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "cursor",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DeclarationRegisterResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The register of declarations across committees, newest first, 50 a page (forum.read, forums.manage, officers)",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/declarations/export" : {
+      "get" : {
+        "operationId" : "exportDeclarations",
+        "parameters" : [ {
+          "in" : "query",
+          "name" : "forumId",
+          "required" : false,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "from",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "to",
+          "required" : false,
+          "schema" : {
+            "format" : "date",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "userId",
+          "required" : false,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "state",
+          "required" : false,
+          "schema" : {
+            "enum" : [ "RECUSED", "AWAITING_RULING", "TAKING_PART", "WITHDRAWN" ],
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" : {
+                "schema" : {
+                  "format" : "binary",
+                  "type" : "string"
+                }
+              }
+            },
+            "description" : "The workbook"
+          },
+          "429" : {
+            "description" : "Too many exports"
+          }
+        },
+        "summary" : "The register of declarations under the filters as an Excel workbook, at most 20,000 rows (audited; 5 an hour)",
+        "tags" : [ "meeting" ]
+      }
+    },
     "/api/v1/directory/search" : {
       "get" : {
         "operationId" : "searchDirectory",
@@ -19714,6 +20089,34 @@
         "tags" : [ "meeting" ]
       }
     },
+    "/api/v1/meetings/{meetingId}/declarations" : {
+      "get" : {
+        "operationId" : "getMeetingDeclarationRegister",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MeetingDeclarationRegisterResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The meeting's declarations by item, the review of the agenda and quorum warnings (its officers)",
+        "tags" : [ "meeting" ]
+      }
+    },
     "/api/v1/meetings/{meetingId}/declarations/mine" : {
       "get" : {
         "operationId" : "getMyDeclarations",
@@ -19739,6 +20142,34 @@
           }
         },
         "summary" : "The actor's declarations of interest in a meeting, and the items to review",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/declarations/remind" : {
+      "post" : {
+        "operationId" : "remindDeclarations",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DeclarationReminderResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Remind the members with items to review to declare their interests now, once per person and revision",
         "tags" : [ "meeting" ]
       }
     },

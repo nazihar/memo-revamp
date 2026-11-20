@@ -21,6 +21,7 @@ object PaperSurfaceRegistry {
         CONSENT_REQUESTS("Asking to discuss a consent item, and withdrawing (answered with the members' agenda)"),
         MEETING("A meeting's details and a committee's meetings: no item content at all"),
         DECLARATIONS("Declaring an interest in an item, the declarant's own declarations and the review (E04 T1)"),
+        REGISTERS("The meeting register, \"Remind them now\", the register across committees and its export (E04 T4)"),
     }
 
     /** The meeting module's endpoints that any person of the audience may call, and the surface each one is. */
@@ -41,6 +42,9 @@ object PaperSurfaceRegistry {
             "POST /api/v1/meetings/{meetingId}/declarations/{declarationId}/ruling" to Surface.DECLARATIONS,
             "POST /api/v1/meetings/{meetingId}/declarations/{declarationId}/withdraw" to Surface.DECLARATIONS,
             "POST /api/v1/meetings/{meetingId}/declarations/review" to Surface.DECLARATIONS,
+            // The register across committees (E04 T4): forum.read, forums.manage and the committees' officers; 403 to others.
+            "GET /api/v1/declarations" to Surface.REGISTERS,
+            "GET /api/v1/declarations/export" to Surface.REGISTERS,
             // "Add to my calendar" (E05 T2): the meeting's time, place and link only, never an item (InvitationContentIT).
             "GET /api/v1/meetings/{meetingId}/calendar.ics" to Surface.MEETING,
             // Replies (E05 T3): answers, notes and counts; never an item (an alternate's recusals are AlternateRecusalIT).
@@ -94,5 +98,9 @@ object PaperSurfaceRegistry {
                 "GET /api/v1/meetings/{meetingId}/invitations" to "the invitations panel (E05 T2): officers, people and delivery only",
                 "POST /api/v1/meetings/{meetingId}/invitations/resend" to "resending invitations (E05 T2): secretaries and forums.manage",
                 "PUT /api/v1/meetings/{meetingId}/rsvps/{userId}" to "recording an answer on someone's behalf (E05 T3): secretaries",
+                "GET /api/v1/meetings/{meetingId}/declarations" to
+                    "the meeting register (E04 T4): officers, the chair and vice-chair; a recused officer's own row only (REGISTERS probe)",
+                "POST /api/v1/meetings/{meetingId}/declarations/remind" to
+                    "the declarations reminder (E04 T4): secretaries and forums.manage, names no item (REGISTERS probe)",
             )
 }

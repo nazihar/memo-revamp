@@ -8,6 +8,7 @@ import com.memo.testsupport.AppRoleJdbc
 import com.memo.testsupport.MailOutbox
 import com.memo.testsupport.Person
 import com.memo.testsupport.query
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,6 +17,7 @@ import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.test.web.servlet.assertj.MvcTestResult
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
+import java.io.ByteArrayInputStream
 import java.util.UUID
 
 /**
@@ -235,6 +237,27 @@ class PaperLeakIT : RecusalFixture() {
                     clean(p, person, review)
                 }
             },
+            Surface.REGISTERS to { p, person ->
+                // The meeting register and the reminder are the officers': 403 to the audience and to forum.read.
+                val base = "/api/v1/meetings/${p.meeting.id}/declarations"
+                assertThat(read(base, person.session)).hasStatus(HttpStatus.FORBIDDEN)
+                assertThat(send(HttpMethod.POST, "$base/remind", person, "{}", emptyMap())).hasStatus(HttpStatus.FORBIDDEN)
+                // The register across committees and its export: forum.read reads titles and natures by the title rule only.
+                val register = read("/api/v1/declarations", person.session)
+                val export = read("/api/v1/declarations/export?forumId=$brc", person.session)
+                if (person == auditor) {
+                    clean(p, person, register)
+                    assertThat(export).hasStatusOk()
+                    val cells = workbookText(export)
+                    // d1's declarations are listed, their items restricted or hidden: no title, no nature.
+                    assertThat(cells).contains("Restricted item", "(restricted item)")
+                    (p.canaries(person) + NATURE).forEach { assertThat(cells).doesNotContain(it) }
+                    assertThat(register.response.contentAsString).doesNotContain(NATURE)
+                } else {
+                    assertThat(register).hasStatus(HttpStatus.FORBIDDEN)
+                    assertThat(export).hasStatus(HttpStatus.FORBIDDEN)
+                }
+            },
         )
 
     @Test
@@ -272,6 +295,15 @@ class PaperLeakIT : RecusalFixture() {
         assertThat(registered - endpoints).describedAs("registry entries without an endpoint").isEmpty()
         assertThat(probes.keys).describedAs("surfaces without a probe").containsExactlyInAnyOrder(*Surface.entries.toTypedArray())
     }
+
+    /** Every cell of an exported workbook, as one text. */
+    private fun workbookText(result: MvcTestResult): String =
+        XSSFWorkbook(ByteArrayInputStream(result.response.contentAsByteArray)).use { workbook ->
+            workbook
+                .getSheetAt(0)
+                .flatMap { row -> row.map { it.stringCellValue } }
+                .joinToString(" | ")
+        }
 
     private fun clean(
         planted: Planted,

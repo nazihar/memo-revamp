@@ -25,3 +25,14 @@ endpoints:
   - endpoint: "POST /api/v1/meetings/{meetingId}/declarations/review"
     rule: signedIn
     body: { revision: 1 }
+  # T4: the meeting register and "Remind them now" (the meeting's officers; random meeting ids answer 404), and the
+  # register across committees with its export (forum.read, forums.manage and the committees' officers: a user without
+  # either is 403). Who reads what on real meetings is DeclarationRegisterIT; the recused member PaperLeakIT (REGISTERS).
+  - { endpoint: "GET /api/v1/meetings/{meetingId}/declarations", rule: signedIn }
+  - { endpoint: "POST /api/v1/meetings/{meetingId}/declarations/remind", rule: signedIn }
+  - endpoint: "GET /api/v1/declarations"
+    rule: signedIn
+    expect: { user: 403 }
+  - endpoint: "GET /api/v1/declarations/export"
+    rule: signedIn
+    expect: { user: 403 }

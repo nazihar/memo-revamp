@@ -658,6 +658,41 @@ export type DeclarationLineResponse = {
     user: PersonResponse;
 };
 
+export type DeclarationRegisterResponse = {
+    items: Array<DeclarationRegisterRowResponse>;
+    nextCursor?: string | null;
+};
+
+export type DeclarationRegisterRowResponse = {
+    atMeeting: boolean;
+    committee: string;
+    correction: boolean;
+    declaredAt: string;
+    forumId: string;
+    how: 'IN_APP' | 'SYSTEM' | 'AT_MEETING' | 'IN_PERSON' | 'EMAIL' | 'PHONE';
+    howNote?: string | null;
+    id: string;
+    intent: 'LEAVE' | 'ASK_CHAIR';
+    itemId: string;
+    itemNumber?: string | null;
+    itemTitle?: string | null;
+    meetingDate: string;
+    meetingId: string;
+    meetingLabel?: string | null;
+    meetingStatus: 'DRAFT' | 'SCHEDULED' | 'IN_PROGRESS' | 'HELD' | 'MINUTES_APPROVED' | 'CLOSED' | 'CANCELLED';
+    nature?: string | null;
+    recordedBy?: PersonResponse | null;
+    ruling?: RulingResponse | null;
+    source: 'SELF' | 'ON_BEHALF' | 'MEMO' | 'EARLIER_MEETING' | 'REGISTER';
+    state: 'RECUSED' | 'AWAITING_RULING' | 'TAKING_PART' | 'WITHDRAWN';
+    user: PersonResponse;
+};
+
+export type DeclarationReminderResponse = {
+    reminded: Array<PersonResponse>;
+    revision: number;
+};
+
 export type DeclarationRequest = {
     how?: 'IN_APP' | 'SYSTEM' | 'AT_MEETING' | 'IN_PERSON' | 'EMAIL' | 'PHONE';
     howNote?: string | null;
@@ -1697,6 +1732,14 @@ export type Me = {
     lastLoginAt?: string | null;
     mfaEnrolled: boolean;
     tenantAdmin: boolean;
+};
+
+export type MeetingDeclarationRegisterResponse = {
+    canRemind: boolean;
+    items: Array<RegisterItemResponse>;
+    latestRevision: number;
+    meetingId: string;
+    reviews: Array<ReviewStatusResponse>;
 };
 
 export type MeetingEditRequest = {
@@ -2880,6 +2923,15 @@ export type QuorumThreshold = {
     numerator?: number | null;
 };
 
+export type QuorumWarningResponse = {
+    available: number;
+    basis: number;
+    declared: number;
+    needed: number;
+    recusedCount: boolean;
+    unmet: Array<UnmetCondition>;
+};
+
 export type RaiseScope = {
     roles?: Array<string>;
     units?: Array<ScopeUnit>;
@@ -2974,6 +3026,16 @@ export type RegisterEntry = {
     status: 'DRAFT' | 'IN_REVIEW' | 'RETURNED' | 'APPROVED' | 'REJECTED' | 'WITHDRAWN' | 'DISCARDED' | 'CANCELLED' | 'CLOSED';
     subject?: string | null;
     void: boolean;
+};
+
+export type RegisterItemResponse = {
+    alsoReadsMemo: Array<PersonResponse>;
+    declarations: Array<DeclarationResponse>;
+    itemId: string;
+    number?: string | null;
+    quorumWarning?: QuorumWarningResponse | null;
+    recused: boolean;
+    title?: string | null;
 };
 
 export type RemarkRequest = {
@@ -3114,6 +3176,14 @@ export type ReviewRemarkRequest = {
 
 export type ReviewRequest = {
     remark?: string | null;
+};
+
+export type ReviewStatusResponse = {
+    officer: boolean;
+    remindedRevision?: number | null;
+    reviewedRevision?: number | null;
+    toReview: number;
+    user: PersonResponse;
 };
 
 export type RevisionChangesResponse = {
@@ -6647,6 +6717,58 @@ export type ApprovalsDashboardResponses = {
 
 export type ApprovalsDashboardResponse = ApprovalsDashboardResponses[keyof ApprovalsDashboardResponses];
 
+export type ListDeclarationsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        forumId?: string;
+        from?: string;
+        to?: string;
+        userId?: string;
+        state?: 'RECUSED' | 'AWAITING_RULING' | 'TAKING_PART' | 'WITHDRAWN';
+        cursor?: string;
+    };
+    url: '/api/v1/declarations';
+};
+
+export type ListDeclarationsResponses = {
+    /**
+     * OK
+     */
+    200: DeclarationRegisterResponse;
+};
+
+export type ListDeclarationsResponse = ListDeclarationsResponses[keyof ListDeclarationsResponses];
+
+export type ExportDeclarationsData = {
+    body?: never;
+    path?: never;
+    query?: {
+        forumId?: string;
+        from?: string;
+        to?: string;
+        userId?: string;
+        state?: 'RECUSED' | 'AWAITING_RULING' | 'TAKING_PART' | 'WITHDRAWN';
+    };
+    url: '/api/v1/declarations/export';
+};
+
+export type ExportDeclarationsErrors = {
+    /**
+     * Too many exports
+     */
+    429: unknown;
+};
+
+export type ExportDeclarationsResponses = {
+    /**
+     * The workbook
+     */
+    200: Blob | File;
+};
+
+export type ExportDeclarationsResponse = ExportDeclarationsResponses[keyof ExportDeclarationsResponses];
+
 export type SearchDirectoryData = {
     body?: never;
     path?: never;
@@ -8432,6 +8554,24 @@ export type CancelMeetingResponses = {
 
 export type CancelMeetingResponse = CancelMeetingResponses[keyof CancelMeetingResponses];
 
+export type GetMeetingDeclarationRegisterData = {
+    body?: never;
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/declarations';
+};
+
+export type GetMeetingDeclarationRegisterResponses = {
+    /**
+     * OK
+     */
+    200: MeetingDeclarationRegisterResponse;
+};
+
+export type GetMeetingDeclarationRegisterResponse = GetMeetingDeclarationRegisterResponses[keyof GetMeetingDeclarationRegisterResponses];
+
 export type GetMyDeclarationsData = {
     body?: never;
     path: {
@@ -8449,6 +8589,24 @@ export type GetMyDeclarationsResponses = {
 };
 
 export type GetMyDeclarationsResponse = GetMyDeclarationsResponses[keyof GetMyDeclarationsResponses];
+
+export type RemindDeclarationsData = {
+    body?: never;
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/declarations/remind';
+};
+
+export type RemindDeclarationsResponses = {
+    /**
+     * OK
+     */
+    200: DeclarationReminderResponse;
+};
+
+export type RemindDeclarationsResponse = RemindDeclarationsResponses[keyof RemindDeclarationsResponses];
 
 export type ConfirmDeclarationReviewData = {
     body: DeclarationReviewRequest;

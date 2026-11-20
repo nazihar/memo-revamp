@@ -243,7 +243,8 @@ class DeclarationStore(
             .execute()
     }
 
-    private fun row(r: MeetingDeclarationRecord) =
+    /** A declaration as read (the registers read rows with their meeting, [DeclarationRegisterStore]). */
+    fun row(r: MeetingDeclarationRecord) =
         DeclarationRow(
             id = r.id,
             meetingId = r.meetingId,

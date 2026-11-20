@@ -73,6 +73,27 @@ class MeetingSweepStore(
             .limit(limit)
             .fetch { it.row() }
 
+    /**
+     * Scheduled meetings with a published agenda starting after [now] and before [horizon]: those the declarations-due
+     * reminder may be for (design E04 §9), through `meeting_status_start_idx` (tenant, status, start).
+     */
+    fun declarationsDue(
+        now: Instant,
+        horizon: Instant,
+        limit: Int,
+    ): List<MeetingRow> =
+        tenantDsl
+            .current()
+            .selectFrom(MEETING)
+            .where(
+                MEETING.STATUS.eq(MeetingStatus.SCHEDULED.name),
+                MEETING.STARTS_AT.gt(MeetingStore.utc(now)),
+                MEETING.STARTS_AT.lt(MeetingStore.utc(horizon)),
+                unpublished().not(),
+            ).orderBy(MEETING.STARTS_AT, MEETING.ID)
+            .limit(limit)
+            .fetch { it.row() }
+
     /** Marks [id]'s agenda reminder sent at [at]; false when it already was, or the meeting moved on meanwhile. */
     fun markAgendaDue(
         id: UUID,
@@ -131,7 +152,10 @@ class MeetingSweepStore(
  * passed (the end of the deadline's working day, in the meeting's zone) with its agenda not published tells the forum's
  * secretaries (`MEETING_AGENDA_DUE`); (b) a meeting still SCHEDULED a day after it ended tells them it is not marked as
  * held (`MEETING_NOT_HELD`). Without secretaries in office, the holders of `forums.manage` are told. Each reminder goes
- * once per meeting date (the mark on the meeting row; a reschedule clears it) and is audited.
+ * once per meeting date (the mark on the meeting row; a reschedule clears it) and is audited. (d, design E04 §9) From
+ * 09:00 on the working day before a scheduled meeting with a published agenda, its members and officers with items to
+ * review are reminded to declare their interests (`MEETING_DECLARATIONS_DUE`, [DeclarationReminders]), once per person
+ * and revision.
  */
 @Component
 class MeetingSweep(
@@ -140,6 +164,7 @@ class MeetingSweep(
     private val notifier: MeetingNotifier,
     private val access: AccessAdministration,
     private val invitations: InvitationSafetyNet,
+    private val reminders: DeclarationReminders,
     private val audit: AuditLog,
     private val clock: Clock,
 ) {
@@ -149,7 +174,7 @@ class MeetingSweep(
      */
     fun sweep(): Int {
         invitations.rescheduleOverdue()
-        return agendaDue() + notHeld()
+        return agendaDue() + notHeld() + reminders.due(clock.instant())
     }
 
     private fun agendaDue(): Int {

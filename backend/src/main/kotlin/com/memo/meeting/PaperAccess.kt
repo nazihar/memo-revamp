@@ -10,6 +10,8 @@ import com.memo.jooq.tables.references.MEETING_REVISION_PAPER
 import com.memo.jooq.tables.references.MEETING_SECTION
 import org.jooq.Condition
 import org.jooq.Field
+import org.jooq.Record2
+import org.jooq.Select
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Component
 import java.util.UUID
@@ -281,6 +283,36 @@ class PaperAccess(
                 .groupBy({ it.value1() }, { Line(checkNotNull(it.value2()), access(it.value3(), it.value4()), it.value5() == true) })
         val readable = papers.groupBy({ it.value1() }, { checkNotNull(it.value2()) })
         return revisionIds.associateWith { id -> visibility(lines[id].orEmpty(), readable[id].orEmpty().toSet()) }
+    }
+
+    /**
+     * For each of [viewers] (people of one meeting), the items of revision [revisionId] whose line they see with its title
+     * (FULL or TITLE in [revision]): one statement for all of them, a `UNION ALL` of each one's conditions (E04's review of
+     * the agenda for every member at once, design E04 §1.5).
+     */
+    fun titled(
+        viewers: Collection<PaperViewer>,
+        revisionId: UUID,
+    ): Map<UUID, Set<UUID>> {
+        if (viewers.isEmpty()) return emptyMap()
+        val i = MEETING_REVISION_ITEM
+        val query =
+            viewers
+                .map<PaperViewer, Select<Record2<UUID, UUID?>>> { v ->
+                    DSL
+                        .select(DSL.inline(v.userId).`as`("viewer"), i.ITEM_ID)
+                        .from(i)
+                        .where(
+                            i.REVISION_ID.eq(revisionId),
+                            lineCondition(v, REVISION_ITEM),
+                            itemCondition(v, REVISION_ITEM).or(titleCondition(v, REVISION_ITEM)),
+                        )
+                }.reduce { all, next -> all.unionAll(next) }
+        return tenantDsl
+            .current()
+            .fetch(query)
+            .groupBy({ checkNotNull(it.value1()) }, { checkNotNull(it.value2()) })
+            .mapValues { it.value.toSet() }
     }
 
     /** What [viewer] would see of [meetingId]'s draft if it were published now (the preview "as a member"). */

@@ -69,6 +69,15 @@ class MeetingAccess(
     /** The tenant's classification levels, read once per transaction (every row of a list asks). */
     fun levels(): List<ClassificationLevelRef> = TransactionMemo.get("levels") { clearances.levels() }
 
+    /** The classification levels the actor's clearance reaches. */
+    fun clearedLevels(): Set<UUID> =
+        policy.clearanceRank().let { rank ->
+            levels()
+                .filter { it.rank <= rank }
+                .map { it.id }
+                .toSet()
+        }
+
     /** How the actor relates to [meeting]; null when they may not see it. */
     fun relation(meeting: MeetingRow): MeetingRelation? = relations(listOf(meeting))[meeting.id]
 

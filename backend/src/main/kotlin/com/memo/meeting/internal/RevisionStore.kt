@@ -12,6 +12,8 @@ import com.memo.jooq.tables.references.MEETING_REVISION_ITEM
 import com.memo.jooq.tables.references.MEETING_REVISION_NOTICE
 import com.memo.jooq.tables.references.MEETING_REVISION_PAPER
 import com.memo.jooq.tables.references.MEETING_REVISION_SECTION
+import org.jooq.Condition
+import org.jooq.Field
 import org.jooq.JSONB
 import org.jooq.impl.DSL
 import org.springframework.stereotype.Repository
@@ -177,6 +179,75 @@ class RevisionStore(
                     MEETING_REVISION_ITEM.REMOVED.isFalse,
                 ),
         )
+    }
+
+    /**
+     * Each of [itemIds] as the latest revision carrying it (not removed there) published it, for the register of
+     * declarations (E04 T4); the caller applies the title rule to it. Items never published are absent.
+     */
+    fun latestPublished(itemIds: Collection<UUID>): Map<UUID, RegisterItem> {
+        val ri = MEETING_REVISION_ITEM
+        val rows =
+            if (itemIds.isEmpty()) {
+                emptyList()
+            } else {
+                tenantDsl
+                    .current()
+                    .select(
+                        ri.ITEM_ID,
+                        ri.REVISION_ID,
+                        ri.NUMBER,
+                        ri.TITLE,
+                        ri.TITLE_HIDDEN,
+                        ri.CLASSIFICATION_ID,
+                        ri.RESTRICTED_TO,
+                        ri.MEMBERS_ONLY,
+                    ).from(ri)
+                    .where(ri.ITEM_ID.`in`(itemIds), ri.REMOVED.isFalse)
+                    .fetch()
+            }
+        // The revisions' numbers by primary key: a join would hash the whole revision table (design E04 §8).
+        val numbers =
+            tenantDsl
+                .current()
+                .select(MEETING_REVISION.ID, MEETING_REVISION.NUMBER)
+                .from(MEETING_REVISION)
+                .where(MEETING_REVISION.ID.`in`(rows.mapNotNull { it.value2() }.toSet()))
+                .fetch()
+                .associate { checkNotNull(it.value1()) to checkNotNull(it.value2()) }
+        return rows
+            .groupBy { checkNotNull(it.value1()) }
+            .mapValues { (_, carried) ->
+                val latest = carried.maxBy { numbers[it.value2()] ?: 0 }
+                RegisterItem(
+                    number = latest.value3(),
+                    title = checkNotNull(latest.value4()),
+                    titleHidden = latest.value5() == true,
+                    classificationId = checkNotNull(latest.value6()),
+                    restricted = latest.value7() != null,
+                    membersOnly = latest.value8() == true,
+                    published = true,
+                )
+            }
+    }
+
+    /** Conditions on the revision tables for other queries' `WHERE` clauses (the paper rule's architecture test allows them here). */
+    object Conditions {
+        /** True for an item (the [item] column, in the row's [tenant]) that some revision published and did not remove. */
+        fun everPublished(
+            tenant: Field<UUID?>,
+            item: Field<UUID?>,
+        ): Condition =
+            DSL.exists(
+                DSL
+                    .selectOne()
+                    .from(MEETING_REVISION_ITEM)
+                    .where(
+                        MEETING_REVISION_ITEM.TENANT_ID.eq(tenant),
+                        MEETING_REVISION_ITEM.ITEM_ID.eq(item),
+                        MEETING_REVISION_ITEM.REMOVED.isFalse,
+                    ),
+            )
     }
 
     /** For each item ever in the body of a revision of [meetingId], the first revision that carried it (E04's review). */

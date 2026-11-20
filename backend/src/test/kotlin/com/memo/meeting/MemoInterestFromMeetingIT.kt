@@ -1,6 +1,7 @@
 package com.memo.meeting
 
 import com.memo.forum.ForumRole
+import com.memo.meeting.internal.DeclarationRegister
 import com.memo.meeting.internal.RecusedMemoReaders
 import com.memo.memo.MemoInterestLinks
 import com.memo.testsupport.Audit
@@ -19,6 +20,8 @@ class MemoInterestFromMeetingIT : CarryOverFixture() {
     @Autowired lateinit var links: MemoInterestLinks
 
     @Autowired lateinit var memoReaders: RecusedMemoReaders
+
+    @Autowired lateinit var register: DeclarationRegister
 
     @Test
     fun `a declaration on a submission item records a memo interest, and the workflow passes the declarant by`() {
@@ -71,6 +74,10 @@ class MemoInterestFromMeetingIT : CarryOverFixture() {
         assertThat(asUser(admin) { links.readersAmong(memo, setOf(reviewer.id, colleague.id, outsider.id)) })
             .containsExactly(reviewer.id)
         assertThat(asUser(admin) { memoReaders.of(meeting.id) }).isEqualTo(mapOf(item to setOf(reviewer.id)))
+        // The meeting register flags the reviewer on the item, and not the colleague (design E04 §1.4, flow T1).
+        val flagged = asUser(secretary.account) { register.meeting(meeting.id) }.items.single { it.itemId == item }
+        assertThat(flagged.alsoReadsMemo.map { it.id }).containsExactly(reviewer.id)
+        assertThat(flagged.declarations.map { it.user.id }).containsExactlyInAnyOrder(reviewer.id, colleague.id)
 
         // Once the reviewer's declaration is withdrawn, they are no longer recused, so no longer flagged.
         val own = declarationsOn(meeting, item).single { it.userId == reviewer.id }

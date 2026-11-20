@@ -219,7 +219,7 @@ describe('the Meetings tab (Phase 4 E03 T6, flow N1)', () => {
     expect(seen.listQueries[0]?.getAll('status')).toEqual(['DRAFT', 'SCHEDULED', 'IN_PROGRESS'])
     expect(screen.getByRole('button', { name: 'Schedule a meeting' })).toBeInTheDocument()
     expect(partsForPath('/committees/f1')).toContain('meetings')
-    expect(partsForPath('/')).toEqual(['meetings'])
+    expect(partsForPath('/')).toEqual(['meetings', 'meetingReplies'])
     await expectNoA11yViolations(container)
 
     await user.click(screen.getByRole('tab', { name: 'Cancelled' }))

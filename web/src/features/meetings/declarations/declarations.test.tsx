@@ -244,7 +244,7 @@ describe('declaring an interest on the meeting page (Phase 4 E04 T6, flow S)', (
     )
     const { container } = renderRoute('/meetings/m1')
 
-    expect(partsForPath('/meetings/m1')).toEqual(['meetings', 'meetingPage', 'declarations'])
+    expect(partsForPath('/meetings/m1')).toEqual(['meetings', 'meetingPage', 'meetingReplies', 'declarations'])
     const declare = await screen.findByRole('button', { name: 'Declare an interest: 5 Term loan, Delta Textiles' })
     await user.click(declare)
     const sheet = await screen.findByRole('dialog', { name: 'Declare an interest — 5 Term loan, Delta Textiles' })

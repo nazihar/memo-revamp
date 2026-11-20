@@ -311,7 +311,7 @@ describe('the meeting page (Phase 4 E03 T8, flow P)', () => {
     const { container } = renderRoute('/meetings/m1')
 
     const agendaRegion = await screen.findByRole('region', { name: 'Agenda' })
-    expect(partsForPath('/meetings/m1')).toEqual(['meetings', 'meetingPage', 'declarations'])
+    expect(partsForPath('/meetings/m1')).toEqual(['meetings', 'meetingPage', 'meetingReplies', 'declarations'])
     // Times: the meeting's clock and the reader's own, with the city.
     expect(screen.getByText('Saturday, December 12, 2026')).toBeInTheDocument()
     expect(plain(screen.getByText(/Dhaka time/))).toBe('10:00 AM – 1:00 PM Dhaka time')

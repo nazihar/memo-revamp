@@ -51,6 +51,9 @@ enum class RateLimit(
     // Resending a meeting's invitations (design E05 §1.3, threat model D1): besides once per person per 10 minutes, a
     // meeting's invitations are resent at most 6 times an hour, by all its secretaries together.
     MEETING_RESEND_PER_MEETING(6, Duration.ofHours(1)),
+
+    // Exports of the register of declarations by one person (design E04 §3, threat model): each holds up to 20,000 rows.
+    DECLARATION_EXPORT_PER_USER(5, Duration.ofHours(1)),
     ;
 
     internal val configuration: BucketConfiguration by lazy {

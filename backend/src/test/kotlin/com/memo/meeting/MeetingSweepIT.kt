@@ -15,10 +15,15 @@ import com.memo.forum.internal.Forums
 import com.memo.forum.internal.MemberInput
 import com.memo.meeting.internal.AgendaChair
 import com.memo.meeting.internal.AgendaDraftViews
+import com.memo.meeting.internal.AgendaItems
 import com.memo.meeting.internal.AgendaLateness
 import com.memo.meeting.internal.AgendaOrigin
 import com.memo.meeting.internal.AgendaPublisher
 import com.memo.meeting.internal.AgendaStart
+import com.memo.meeting.internal.DeclarationReminders
+import com.memo.meeting.internal.DeclarationReviews
+import com.memo.meeting.internal.ItemInput
+import com.memo.meeting.internal.ItemKind
 import com.memo.meeting.internal.MeetingInput
 import com.memo.meeting.internal.MeetingLifecycle
 import com.memo.meeting.internal.MeetingNotifier
@@ -36,6 +41,8 @@ import com.memo.testsupport.MemoIntegrationTest
 import com.memo.testsupport.MutableClock
 import com.memo.testsupport.Person
 import com.memo.testsupport.aTestTenant
+import com.memo.workflow.WorkingDays
+import com.memo.workflow.internal.Calendars
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -84,12 +91,22 @@ class MeetingSweepIT : MemoIntegrationTest() {
 
     @Autowired lateinit var safetyNet: com.memo.meeting.internal.invite.InvitationSafetyNet
 
+    @Autowired lateinit var reminders: DeclarationReminders
+
+    @Autowired lateinit var items: AgendaItems
+
+    @Autowired lateinit var reviews: DeclarationReviews
+
+    @Autowired lateinit var calendars: Calendars
+
+    @Autowired lateinit var workingDays: WorkingDays
+
     @Autowired lateinit var scheduler: SchedulerClient
 
     @Autowired lateinit var sweepTask: OneTimeTask<MeetingSweepTenantTask>
 
     private val clock = MutableClock()
-    private val sweep by lazy { MeetingSweep(sweepStore, lateness, notifier, administration, safetyNet, auditLog, clock) }
+    private val sweep by lazy { MeetingSweep(sweepStore, lateness, notifier, administration, safetyNet, reminders, auditLog, clock) }
     private lateinit var secretary: Person
     private lateinit var chair: Person
     private lateinit var member: Person
@@ -183,8 +200,10 @@ class MeetingSweepIT : MemoIntegrationTest() {
                 .atTime(MORNING)
                 .atZone(DHAKA)
                 .toInstant()
-        // Only the draft meeting of a committee without a secretary is due, and the administrators are told.
-        assertThat(swept()).isEqualTo(1)
+        // Only the draft meeting of a committee without a secretary is due, and the administrators are told. (When the day
+        // before is the published meeting's working day before, its members are also reminded to declare: counted apart.)
+        val sent = swept()
+        assertThat(sent - (if (told(member, DECLARATIONS_DUE) > 0) 1 else 0)).isEqualTo(1)
         assertThat(told(secretary, AGENDA_DUE)).isZero()
         assertThat(told(admin.id.value, AGENDA_DUE)).isEqualTo(1)
         Audit.assertAudited(tenant.id, "meeting.reminded.agenda_due", orphan.id.toString(), null)
@@ -194,6 +213,48 @@ class MeetingSweepIT : MemoIntegrationTest() {
         assertThat(swept()).isEqualTo(1)
         Audit.assertAudited(tenant.id, "meeting.reminded.not_held", published.id.toString(), null)
         assertThat(told(secretary, NOT_HELD)).isEqualTo(1)
+    }
+
+    @Test
+    fun `members and officers with items to review are reminded once per revision from nine on the working day before`() {
+        val reviewer = person()
+        asUser(admin) { members.add(brc, MemberInput(userId = reviewer.id)) }
+        val day = LocalDate.now(DHAKA).plusDays(DAYS_AHEAD)
+        val meeting = meeting(brc, day, scheduled = true)
+        asUser(secretary.account) { starts.start(meeting.id, AgendaOrigin.TEMPLATE, null) }
+        addItem(meeting, "Term loan, Delta Textiles")
+        publishAgenda(meeting)
+        // The working day before is a holiday: the reminder moves to the working day before that.
+        val holiday = checkNotNull(asUser(admin) { workingDays.before(day, 1) })
+        asUser(admin) { calendars.setDays(holiday, null, emptyList(), "Holiday") }
+        val reminderDay = checkNotNull(asUser(admin) { workingDays.before(day, 1) })
+        assertThat(reminderDay).isBefore(holiday)
+        asUser(reviewer.account) { reviews.review(meeting.id, 1) }
+
+        clock.now = reminderDay.atTime(LocalTime.of(8, 59)).atZone(DHAKA).toInstant()
+        assertThat(swept()).isZero()
+        clock.now = reminderDay.atTime(MORNING).atZone(DHAKA).toInstant()
+        assertThat(swept()).isEqualTo(1)
+        // The member and the officers who have not confirmed; not the reviewer, who confirmed revision 1.
+        listOf(member, chair, secretary).forEach { assertThat(told(it, DECLARATIONS_DUE)).isEqualTo(1) }
+        assertThat(told(reviewer, DECLARATIONS_DUE)).isZero()
+        val audited = Audit.assertAudited(tenant.id, "meeting.reminded.declarations_due", meeting.id.toString(), null)
+        assertThat(audited.canonical).contains("\"manual\":false").contains("\"revision\":1")
+        clock.advance(Duration.ofHours(1))
+        assertThat(swept()).isZero()
+
+        // Revision 2 adds an item: whoever has not confirmed it is reminded once more, the reviewer included.
+        addItem(meeting, "Liquidity stress results")
+        publishAgenda(meeting, "A new item")
+        clock.advance(Duration.ofHours(1))
+        assertThat(swept()).isEqualTo(1)
+        assertThat(told(member, DECLARATIONS_DUE) to told(reviewer, DECLARATIONS_DUE)).isEqualTo(2L to 1L)
+        assertThat(swept()).isZero()
+        // Once the meeting has started, nothing more is sent for it.
+        addItem(meeting, "Any other business")
+        publishAgenda(meeting, "Another item")
+        clock.now = meeting.startsAt.plusSeconds(1)
+        assertThat(swept()).isZero()
     }
 
     @Test
@@ -242,6 +303,24 @@ class MeetingSweepIT : MemoIntegrationTest() {
         }
     }
 
+    private fun addItem(
+        meeting: MeetingRow,
+        title: String,
+    ) {
+        asUser(secretary.account) { items.add(meeting.id, version(meeting), ItemInput(ItemKind.ITEM, title = title, minutes = 20)) }
+    }
+
+    /** Publishes the next revision quietly (the chair agrees the first). */
+    private fun publishAgenda(
+        meeting: MeetingRow,
+        note: String? = null,
+    ) {
+        if (asUser(secretary.account) { views.draft(meeting.id) }.currentRevision == 0) {
+            asUser(chair.account) { chairing.agree(meeting.id, version(meeting), false, null) }
+        }
+        asUser(secretary.account) { publisher.publish(meeting.id, version(meeting), note, false) }
+    }
+
     private fun times(day: LocalDate) = TimesInput(LocalDateTime.of(day, START), LocalDateTime.of(day, END), DHAKA.id)
 
     private fun current(meeting: MeetingRow): MeetingRow = asUser(admin) { checkNotNull(meetingStore.find(meeting.id)) }
@@ -271,6 +350,7 @@ class MeetingSweepIT : MemoIntegrationTest() {
         const val HOURS_AFTER_END = 20L
         const val AGENDA_DUE = "MEETING_AGENDA_DUE"
         const val NOT_HELD = "MEETING_NOT_HELD"
+        const val DECLARATIONS_DUE = "MEETING_DECLARATIONS_DUE"
         const val WAIT_MILLIS = 30_000L
         const val POLL_MILLIS = 200L
     }

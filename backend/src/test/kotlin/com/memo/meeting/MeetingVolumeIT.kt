@@ -21,10 +21,15 @@ import com.memo.identity.UserAccounts
 import com.memo.meeting.internal.AgendaDraftViews
 import com.memo.meeting.internal.AgendaItems
 import com.memo.meeting.internal.AgendaPublisher
+import com.memo.meeting.internal.DeclarationRegister
+import com.memo.meeting.internal.DeclarationRegisters
+import com.memo.meeting.internal.DeclarationReviews
+import com.memo.meeting.internal.DeclarationWorkbook
 import com.memo.meeting.internal.ItemChange
 import com.memo.meeting.internal.MeetingReads
 import com.memo.meeting.internal.MemberAgendas
 import com.memo.meeting.internal.PaperOpens
+import com.memo.meeting.internal.RegisterFilter
 import com.memo.tenancy.TenantRegistry
 import com.memo.tenancy.TenantSettings
 import com.memo.testsupport.IntegrationTest
@@ -42,6 +47,7 @@ import org.junit.jupiter.api.TestInstance
 import org.junit.jupiter.api.TestMethodOrder
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable
 import org.springframework.beans.factory.annotation.Autowired
+import java.io.OutputStream
 import java.time.LocalDate
 import java.util.UUID
 
@@ -95,6 +101,14 @@ class MeetingVolumeIT : IntegrationTest() {
 
     @Autowired lateinit var recorder: SqlRecorder
 
+    @Autowired lateinit var meetingRegister: DeclarationRegister
+
+    @Autowired lateinit var registers: DeclarationRegisters
+
+    @Autowired lateinit var declarationReviews: DeclarationReviews
+
+    @Autowired lateinit var workbook: DeclarationWorkbook
+
     private val meetings = System.getenv("MEETING_VOLUME")?.toIntOrNull() ?: DESIGN_MEETINGS
     private lateinit var tenant: TestTenant
     private lateinit var people: VolumePeople
@@ -133,8 +147,17 @@ class MeetingVolumeIT : IntegrationTest() {
         println("MeetingVolumeIT generated $meetings meetings in ${(System.nanoTime() - started) / NANOS_PER_MILLI} ms")
         transactions.readInTenant(tenant.id) {
             val counts =
-                listOf("meeting", "meeting_item", "meeting_paper", "meeting_revision_item", "meeting_revision_paper", "meeting_audience")
-                    .associateWith { tenantDsl.current().fetchValue("select count(*) from $it") }
+                (
+                    listOf(
+                        "meeting",
+                        "meeting_item",
+                        "meeting_paper",
+                        "meeting_revision_item",
+                        "meeting_revision_paper",
+                        "meeting_audience",
+                    ) +
+                        listOf("meeting_declaration", "meeting_declaration_event", "meeting_declaration_review")
+                ).associateWith { tenantDsl.current().fetchValue("select count(*) from $it") }
             println("MeetingVolumeIT rows: $counts")
         }
     }
@@ -187,6 +210,31 @@ class MeetingVolumeIT : IntegrationTest() {
 
     @Test
     @Order(5)
+    fun `the meeting register, my declarations, the register across committees and its export answer within budget`() {
+        val register = asUser(people.secretary) { meetingRegister.meeting(volume.focal) }
+        assertThat(register.items.sumOf { it.declarations.size }).isPositive()
+        assertThat(register.reviews).isNotEmpty
+        measure("meeting register (secretary)", AGENDA_BUDGET_MS, people.secretary) { meetingRegister.meeting(volume.focal) }
+        assertThat(asUser(people.director) { declarationReviews.mine(volume.focal) }.declarations).isNotEmpty
+        measure("my declarations (director)", LIST_BUDGET_MS, people.director) { declarationReviews.mine(volume.focal) }
+        assertThat(asUser(people.admin) { registers.page(RegisterFilter(), null) }.items).hasSize(DeclarationRegisters.PAGE)
+        measure("register across committees (forums.manage)", AGENDA_BUDGET_MS, people.admin) { registers.page(RegisterFilter(), null) }
+        val ofFocal = RegisterFilter(forumId = focalForum)
+        assertThat(asUser(people.secretary) { registers.page(ofFocal, null) }.items).hasSize(DeclarationRegisters.PAGE)
+        measure("register of one committee (its secretary)", AGENDA_BUDGET_MS, people.secretary) { registers.page(ofFocal, null) }
+        val exports =
+            (1..EXPORT_RUNS).map {
+                timed {
+                    val rows = asUser(people.admin, write = true) { registers.export(RegisterFilter()) }
+                    assertThat(rows.size).isGreaterThan(DeclarationRegisters.PAGE)
+                    workbook.write(rows, OutputStream.nullOutputStream())
+                }
+            }
+        report("export of the register (forums.manage)", exports, EXPORT_BUDGET_MS)
+    }
+
+    @Test
+    @Order(6)
     fun `a builder change and a publication answer within budget`() {
         val item = asUser(people.secretary) { drafts.draft(volume.focal) }.sections[1].items.first()
         val changes = mutableListOf<Long>()
@@ -289,6 +337,11 @@ class MeetingVolumeIT : IntegrationTest() {
         const val OPEN_BUDGET_MS = 300L
         const val CHANGE_BUDGET_MS = 150L
         const val PUBLISH_BUDGET_MS = 500L
+
+        // Design E04 §8: the meeting register and a page of the register at 200 ms, my declarations at 100 ms, an export of
+        // up to 20,000 rows within 5 s (measured three times: each run is audited).
+        const val EXPORT_BUDGET_MS = 5_000L
+        const val EXPORT_RUNS = 3
 
         val SELECT = Regex("^\\s*(select|with)\\b", RegexOption.IGNORE_CASE)
 

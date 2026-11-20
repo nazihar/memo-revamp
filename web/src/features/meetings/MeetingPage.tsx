@@ -8,11 +8,15 @@ import type { MeetingGuestResponse, MeetingResponse } from '@/api/generated/type
 import { PageHeader } from '@/components/page/PageHeader'
 import { ErrorState, LoadingState } from '@/components/page/States'
 import { Button } from '@/components/ui/button'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/misc'
 import { AgendaLink } from './agenda/AgendaLink'
 import { AddGuestDialog, MeetingMenu, RemoveGuestDialog } from './MeetingDialogs'
 import { mm, mmv } from './messages'
 import { MeetingAgenda } from './page/MeetingAgenda'
 import { pmv } from './page/messages'
+import { InvitationsPanel } from './replies/InvitationsPanel'
+import { rm } from './replies/messages'
+import { CalendarLink, WillYouAttend } from './replies/WillYouAttend'
 import { fullName } from './shared'
 import { StatusBadge } from './StatusBadge'
 import { cityOf, viewerZone, whenIn, yourTimes } from './time'
@@ -21,7 +25,9 @@ import { cityOf, viewerZone, whenIn, yourTimes } from './time'
  * `/meetings/$meetingId` (flow P, Phase 4 E03 T8): the meeting page for everyone who may see it (the link notifications
  * open). One column in large type: the date and times in the meeting's zone and the reader's own when it differs, how
  * and where with a large "Join the meeting", then the agenda as the reader may see it; its secretaries' ⋯ menu and
- * the guests for officers. Printing gives a plain agenda without the application's frame.
+ * the guests for officers. Printing gives a plain agenda without the application's frame. Under the place, "Will you
+ * attend?" with "Add to my calendar" for whoever answers the meeting (E05 T7, flow V), and for the officers of a meeting
+ * that is scheduled or later, the agenda and "Invitations and replies" (flow W) as two tabs.
  */
 export function MeetingPage({ meetingId }: { meetingId: string }) {
   const intl = useIntl()
@@ -78,7 +84,27 @@ export function MeetingPage({ meetingId }: { meetingId: string }) {
       ) : null}
       {m.status === 'DRAFT' ? <p className="text-muted-foreground">{intl.formatMessage(mm.draftHint)}</p> : null}
       <Place meeting={m} />
-      <MeetingAgenda meetingId={m.id} relation={m.relation} />
+      {m.rsvp ? <WillYouAttend meeting={m} /> : <CalendarLink meeting={m} />}
+      {officer && m.status !== 'DRAFT' ? (
+        <Tabs defaultValue="agenda" className="print:contents">
+          <TabsList aria-label={intl.formatMessage(rm.tabs)} className="print:hidden">
+            <TabsTrigger value="agenda" className="min-h-11">
+              {intl.formatMessage(rm.tabAgenda)}
+            </TabsTrigger>
+            <TabsTrigger value="replies" className="min-h-11">
+              {intl.formatMessage(rm.tabReplies)}
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="agenda" className="pt-4">
+            <MeetingAgenda meetingId={m.id} relation={m.relation} />
+          </TabsContent>
+          <TabsContent value="replies" className="pt-4 print:hidden">
+            <InvitationsPanel meeting={m} />
+          </TabsContent>
+        </Tabs>
+      ) : (
+        <MeetingAgenda meetingId={m.id} relation={m.relation} />
+      )}
       <Facts meeting={m} />
       {officer || m.canManage ? <Guests meeting={m} /> : null}
       {officer ? <AgendaLink meetingId={m.id} /> : null}

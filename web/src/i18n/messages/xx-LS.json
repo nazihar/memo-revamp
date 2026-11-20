@@ -20971,6 +20971,1322 @@
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "meetingReplies.actionsFor": [
+    {
+      "type": 0,
+      "value": "Actions for "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.alternate.asked": [
+    {
+      "type": 0,
+      "value": "Your apologies are recorded. "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " has been asked to attend in your place and will receive the invitation.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.alternate.attends": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " will attend in your place.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.alternate.choice": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " will attend in my placeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.alternate.notStanding": [
+    {
+      "type": 0,
+      "value": "You asked your alternate to attend, but nobody stands in for you now. Please tell the secretary.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.alternate.yours": [
+    {
+      "type": 0,
+      "value": "Your alternate is "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.answer.apologies": [
+    {
+      "type": 0,
+      "value": "No, I send my apologiesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.answer.inPerson": [
+    {
+      "type": 0,
+      "value": "Yes, in personSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.answer.remote": [
+    {
+      "type": 0,
+      "value": "Yes, onlineSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.apologies.nobody": [
+    {
+      "type": 0,
+      "value": "Nobody will attend in my placeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.apologies.send": [
+    {
+      "type": 0,
+      "value": "Send my apologiesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.apologiesAt": [
+    {
+      "type": 0,
+      "value": "You sent your apologies ("
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.apologiesSaved": [
+    {
+      "type": 0,
+      "value": "Your apologies are recorded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.calendar": [
+    {
+      "type": 0,
+      "value": "Add to my calendarSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.calendar.hint": [
+    {
+      "type": 0,
+      "value": "Your calendar’s Accept and Decline buttons do not reach the secretary: answer here.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.change": [
+    {
+      "type": 0,
+      "value": "Change my answerSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.closed": [
+    {
+      "type": 0,
+      "value": "Answers close when the meeting starts. From then the secretary records who attends.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.col.actions": [
+    {
+      "type": 0,
+      "value": "ActionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.col.how": [
+    {
+      "type": 0,
+      "value": "HowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.col.invitation": [
+    {
+      "type": 0,
+      "value": "InvitationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.col.name": [
+    {
+      "type": 0,
+      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.col.reply": [
+    {
+      "type": 0,
+      "value": "ReplySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.col.role": [
+    {
+      "type": 0,
+      "value": "RoleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.how.email": [
+    {
+      "type": 0,
+      "value": "by emailSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.how.inApp": [
+    {
+      "type": 0,
+      "value": "in memoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.how.inPerson": [
+    {
+      "type": 0,
+      "value": "in personSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.how.other": [
+    {
+      "type": 0,
+      "value": "otherwiseSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.how.phone": [
+    {
+      "type": 0,
+      "value": "by phoneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.invite.appOnly": [
+    {
+      "type": 0,
+      "value": "In memo only (invitation emails switched off)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.invite.cancelSentOn": [
+    {
+      "type": 0,
+      "value": "Cancellation sent "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.invite.failedOn": [
+    {
+      "type": 0,
+      "value": "Not delivered: the "
+    },
+    {
+      "type": 1,
+      "value": "kind"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": " failedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.invite.notSent": [
+    {
+      "type": 0,
+      "value": "Not sent yetSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.invite.retrying": [
+    {
+      "type": 0,
+      "value": "Not sent yet: "
+    },
+    {
+      "type": 6,
+      "value": "attempts",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " attempt"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " attempts"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ", trying againSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.invite.sentOn": [
+    {
+      "type": 0,
+      "value": "Sent "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "kind"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.invite.waiting": [
+    {
+      "type": 0,
+      "value": "Waiting to be sentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.invite.withdrawnOn": [
+    {
+      "type": 0,
+      "value": "Invitation withdrawn "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.keep": [
+    {
+      "type": 0,
+      "value": "Keep my answerSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.kind.cancel": [
+    {
+      "type": 0,
+      "value": "cancellationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.kind.invitation": [
+    {
+      "type": 0,
+      "value": "invitationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.kind.resend": [
+    {
+      "type": 0,
+      "value": "sent againSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.kind.uninvite": [
+    {
+      "type": 0,
+      "value": "invitation withdrawnSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.kind.update": [
+    {
+      "type": 0,
+      "value": "updateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.noReply": [
+    {
+      "type": 0,
+      "value": "You did not reply.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.none": [
+    {
+      "type": 0,
+      "value": "—SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.note.hint": [
+    {
+      "type": 0,
+      "value": "For example “I will join after 11:00”. At most 300 characters.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.note.label": [
+    {
+      "type": 0,
+      "value": "A note for the secretarySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.note.save": [
+    {
+      "type": 0,
+      "value": "Save the noteSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.note.saved": [
+    {
+      "type": 0,
+      "value": "Your note is saved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.optional": [
+    {
+      "type": 0,
+      "value": "(optional)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.panel.cancelled": [
+    {
+      "type": 0,
+      "value": "The meeting is cancelled: everyone invited was sent the cancellation.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.panel.members": [
+    {
+      "type": 0,
+      "value": "Members: "
+    },
+    {
+      "type": 1,
+      "value": "attending"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "total"
+    },
+    {
+      "type": 0,
+      "value": " said they will attend.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.panel.nobody": [
+    {
+      "type": 0,
+      "value": "Nobody is invited to this meeting yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.panel.notCreated": [
+    {
+      "type": 0,
+      "value": "Invitations are sent when the meeting is scheduled.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.panel.pending": [
+    {
+      "type": 0,
+      "value": "A change is waiting to be sent: it goes out within a few minutes.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.panel.replies": [
+    {
+      "type": 0,
+      "value": "Replies: "
+    },
+    {
+      "type": 1,
+      "value": "yes"
+    },
+    {
+      "type": 0,
+      "value": " yes ("
+    },
+    {
+      "type": 1,
+      "value": "inPerson"
+    },
+    {
+      "type": 0,
+      "value": " in person, "
+    },
+    {
+      "type": 1,
+      "value": "remote"
+    },
+    {
+      "type": 0,
+      "value": " online) · "
+    },
+    {
+      "type": 1,
+      "value": "apologies"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 6,
+      "value": "apologies",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "apology"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "apologies"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "noAnswer"
+    },
+    {
+      "type": 0,
+      "value": " not yet · "
+    },
+    {
+      "type": 1,
+      "value": "stale"
+    },
+    {
+      "type": 0,
+      "value": " for the old timeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.panel.sent": [
+    {
+      "type": 0,
+      "value": "Invitations sent "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.panel.sentWithLast": [
+    {
+      "type": 0,
+      "value": "Invitations sent "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": " · last message "
+    },
+    {
+      "type": 1,
+      "value": "last"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.pleaseReply": [
+    {
+      "type": 0,
+      "value": "Please replySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.problem.alternateBusy": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " is already attending in place of another member.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.problem.alternateBusyTheirs": [
+    {
+      "type": 0,
+      "value": "Their alternate is already attending in place of another member.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.problem.alternateIsMember": [
+    {
+      "type": 0,
+      "value": "Your alternate is also a member of this "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " and cannot attend in your place.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.problem.alternateIsMemberFor": [
+    {
+      "type": 0,
+      "value": "Their alternate is also a member of this "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " and cannot attend in their place.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.problem.alternateNone": [
+    {
+      "type": 0,
+      "value": "Your seat has no alternate who can attend this meeting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.problem.alternateNoneFor": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "’s seat has no alternate who can attend this meeting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.problem.alternateWithApologies": [
+    {
+      "type": 0,
+      "value": "An alternate attends only in place of a member who sends apologies.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.problem.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Please try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.problem.forbidden": [
+    {
+      "type": 0,
+      "value": "You cannot do this for this meeting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.problem.howRequired": [
+    {
+      "type": 0,
+      "value": "Say how they told you: by email, by phone, in person or otherwise.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.problem.length": [
+    {
+      "type": 0,
+      "value": "Please make this shorter.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.problem.modeNotOffered": [
+    {
+      "type": 0,
+      "value": "The meeting is no longer held that way. Choose one of the answers shown.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.problem.notInvitable": [
+    {
+      "type": 0,
+      "value": "This person does not answer this meeting. Your own answer is given on the meeting page.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.problem.rateLimited": [
+    {
+      "type": 0,
+      "value": "Invitations for this meeting were resent many times this hour. Please try again later.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.problem.resendTooSoon": [
+    {
+      "type": 0,
+      "value": "An invitation can be resent to a person once every 10 minutes.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.problem.resendWrongState": [
+    {
+      "type": 0,
+      "value": "Invitations are resent only while the meeting is scheduled and after they were first sent.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.problem.stale": [
+    {
+      "type": 0,
+      "value": "This answer was changed meanwhile, perhaps by the secretary. It is shown as it is now: try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.problem.tooSoonMany": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " person"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " people"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " got the invitation less than 10 minutes ago. You can resend to them after "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.problem.tooSoonOne": [
+    {
+      "type": 0,
+      "value": "The invitation was sent to "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " less than 10 minutes ago. You can resend it after "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.problem.wrongState": [
+    {
+      "type": 0,
+      "value": "Answers are closed: the meeting has started or is no longer scheduled.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.record.action": [
+    {
+      "type": 0,
+      "value": "Record an answer…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.record.alternate": [
+    {
+      "type": 0,
+      "value": "Their alternate will attendSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.record.answer": [
+    {
+      "type": 0,
+      "value": "AnswerSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.record.answerRequired": [
+    {
+      "type": 0,
+      "value": "Choose the answer.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.record.done": [
+    {
+      "type": 0,
+      "value": "The answer is recorded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.record.email": [
+    {
+      "type": 0,
+      "value": "EmailSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.record.how": [
+    {
+      "type": 0,
+      "value": "How did they tell you?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.record.inPerson": [
+    {
+      "type": 0,
+      "value": "In personSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.record.note": [
+    {
+      "type": 0,
+      "value": "NoteSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.record.noteHint": [
+    {
+      "type": 0,
+      "value": "For example “called on 9 December”.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.record.other": [
+    {
+      "type": 0,
+      "value": "OtherSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.record.phone": [
+    {
+      "type": 0,
+      "value": "PhoneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.record.submit": [
+    {
+      "type": 0,
+      "value": "Record the answerSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.record.title": [
+    {
+      "type": 0,
+      "value": "Record an answer for "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.record.told": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " will be told that you recorded this answer.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.recordedBy": [
+    {
+      "type": 0,
+      "value": "Recorded by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ": you told them "
+    },
+    {
+      "type": 1,
+      "value": "how"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.reply.apologies": [
+    {
+      "type": 0,
+      "value": "ApologiesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.reply.apologiesAlternate": [
+    {
+      "type": 0,
+      "value": "Apologies — alternate attendsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.reply.inPerson": [
+    {
+      "type": 0,
+      "value": "Yes, in personSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.reply.none": [
+    {
+      "type": 0,
+      "value": "Not yetSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.reply.note": [
+    {
+      "type": 0,
+      "value": "Note: “"
+    },
+    {
+      "type": 1,
+      "value": "note"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.reply.recordedNote": [
+    {
+      "type": 0,
+      "value": "Recorded by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": ": “"
+    },
+    {
+      "type": 1,
+      "value": "note"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.reply.recordedOn": [
+    {
+      "type": 0,
+      "value": "Recorded by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.reply.remote": [
+    {
+      "type": 0,
+      "value": "Yes, onlineSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.reply.stale": [
+    {
+      "type": 1,
+      "value": "answer"
+    },
+    {
+      "type": 0,
+      "value": " (for the old time)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.replyAgain": [
+    {
+      "type": 0,
+      "value": "Reply again: the time changedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.replyBy": [
+    {
+      "type": 0,
+      "value": "Please reply by "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.resend.action": [
+    {
+      "type": 0,
+      "value": "Resend…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.resend.done": [
+    {
+      "type": 0,
+      "value": "The invitation was sent again to "
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " person"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " people"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.resend.everyone": [
+    {
+      "type": 0,
+      "value": "Everyone ("
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.resend.nobody": [
+    {
+      "type": 0,
+      "value": "Nobody holds the invitation yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.resend.notReplied": [
+    {
+      "type": 0,
+      "value": "Everyone who has not replied ("
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.resend.only": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " onlySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.resend.person": [
+    {
+      "type": 0,
+      "value": "Resend the invitationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.resend.submit": [
+    {
+      "type": 0,
+      "value": "Resend the invitationSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.resend.title": [
+    {
+      "type": 0,
+      "value": "Resend the invitation to "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.resend.who": [
+    {
+      "type": 0,
+      "value": "Resend the current invitation toSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.role.alternate": [
+    {
+      "type": 0,
+      "value": "AlternateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.role.alternateFor": [
+    {
+      "type": 0,
+      "value": "Alternate for "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.role.guest": [
+    {
+      "type": 0,
+      "value": "GuestSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.role.member": [
+    {
+      "type": 0,
+      "value": "MemberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.saved": [
+    {
+      "type": 0,
+      "value": "Your answer is saved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.sentApologies": [
+    {
+      "type": 0,
+      "value": "You sent your apologiesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.stale.now": [
+    {
+      "type": 0,
+      "value": "The meeting is now on "
+    },
+    {
+      "type": 1,
+      "value": "when"
+    },
+    {
+      "type": 0,
+      "value": ". Will you attend?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.stale.was": [
+    {
+      "type": 0,
+      "value": "You replied “"
+    },
+    {
+      "type": 1,
+      "value": "answer"
+    },
+    {
+      "type": 0,
+      "value": "” for the old time ("
+    },
+    {
+      "type": 1,
+      "value": "when"
+    },
+    {
+      "type": 0,
+      "value": ").SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.standingInFor": [
+    {
+      "type": 0,
+      "value": "You are attending in place of "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.tab.agenda": [
+    {
+      "type": 0,
+      "value": "AgendaSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.tab.replies": [
+    {
+      "type": 0,
+      "value": "Invitations and repliesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.tabs": [
+    {
+      "type": 0,
+      "value": "Parts of the meeting pageSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.title": [
+    {
+      "type": 0,
+      "value": "Will you attend?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.youSaid": [
+    {
+      "type": 0,
+      "value": "You said: "
+    },
+    {
+      "type": 1,
+      "value": "answer"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingReplies.youSaidAt": [
+    {
+      "type": 0,
+      "value": "You said: "
+    },
+    {
+      "type": 1,
+      "value": "answer"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "meetings.action.cancel": [
     {
       "type": 0,

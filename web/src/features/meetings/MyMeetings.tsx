@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { useTerms } from '@/features/terms/terms'
 import { mm, mmt, mmv } from './messages'
 import { upcoming, useMyMeetings } from './mine'
+import { CardReply } from './replies/CardReply'
 import { fullName, whenLine } from './shared'
 import { StatusBadge } from './StatusBadge'
 import { notEnded, yourTimes } from './time'
@@ -15,7 +16,8 @@ import { notEnded, yourTimes } from './time'
 /**
  * One meeting as a card (flow N3): the date and times in the meeting's zone and the viewer's own when it differs, the
  * committee and the meeting's number, how it is held, "Agenda published · 2 changes since you last looked", and
- * "Open meeting".
+ * "Open meeting". Above the button, the viewer's answer to "Will you attend?" and, while one is wanted, the answers
+ * themselves (Phase 4 E05 T7, flow V6).
  */
 export function MeetingCard({ meeting: m }: { meeting: MeetingSummaryResponse }) {
   const intl = useIntl()
@@ -52,6 +54,7 @@ export function MeetingCard({ meeting: m }: { meeting: MeetingSummaryResponse })
         {m.relation === 'GUEST' ? (
           <p className="text-sm text-muted-foreground">{intl.formatMessage(mm.asGuest)}</p>
         ) : null}
+        <CardReply meeting={m} titleId={titleId} />
         <div>
           <Button asChild variant="outline" className="min-h-11">
             <Link

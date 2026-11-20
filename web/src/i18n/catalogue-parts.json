@@ -41,6 +41,11 @@
     "routes": ["/meetings"],
     "prefixes": ["meetingPage"]
   },
+  "meetingReplies": {
+    "$comment": "Invitations and replies (Phase 4 E05 T7, flows V and W): Will you attend? on the meeting page and the My meetings cards (also on the home page), Add to my calendar, and the officers' Invitations and replies tab.",
+    "routes": ["/", "/me/meetings", "/meetings"],
+    "prefixes": ["meetingReplies"]
+  },
   "declarations": {
     "$comment": "Declaring an interest on the meeting page (Phase 4 E04 T6, flow S): the declaration sheet, the review checklist, My declaration and the Declarations standing item.",
     "routes": ["/meetings"],

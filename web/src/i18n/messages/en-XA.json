@@ -37787,6 +37787,2326 @@
       "value": "]"
     }
   ],
+  "meetingReplies.actionsFor": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƈŧīǿǿƞş ƒǿǿř "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.alternate.asked": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭř ȧȧƥǿǿŀǿǿɠīḗḗş ȧȧřḗḗ řḗḗƈǿǿřḓḗḗḓ. "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ħȧȧş ƀḗḗḗḗƞ ȧȧşķḗḗḓ ŧǿǿ ȧȧŧŧḗḗƞḓ īƞ ẏǿǿŭŭř ƥŀȧȧƈḗḗ ȧȧƞḓ ẇīŀŀ řḗḗƈḗḗīṽḗḗ ŧħḗḗ īƞṽīŧȧȧŧīǿǿƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.alternate.attends": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ẇīŀŀ ȧȧŧŧḗḗƞḓ īƞ ẏǿǿŭŭř ƥŀȧȧƈḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.alternate.choice": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ẇīŀŀ ȧȧŧŧḗḗƞḓ īƞ ḿẏ ƥŀȧȧƈḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.alternate.notStanding": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ȧȧşķḗḗḓ ẏǿǿŭŭř ȧȧŀŧḗḗřƞȧȧŧḗḗ ŧǿǿ ȧȧŧŧḗḗƞḓ, ƀŭŭŧ ƞǿǿƀǿǿḓẏ şŧȧȧƞḓş īƞ ƒǿǿř ẏǿǿŭŭ ƞǿǿẇ. Ƥŀḗḗȧȧşḗḗ ŧḗḗŀŀ ŧħḗḗ şḗḗƈřḗḗŧȧȧřẏ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.alternate.yours": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭř ȧȧŀŧḗḗřƞȧȧŧḗḗ īş "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.answer.apologies": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿ, Ī şḗḗƞḓ ḿẏ ȧȧƥǿǿŀǿǿɠīḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.answer.inPerson": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏḗḗş, īƞ ƥḗḗřşǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.answer.remote": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏḗḗş, ǿǿƞŀīƞḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.apologies.nobody": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿƀǿǿḓẏ ẇīŀŀ ȧȧŧŧḗḗƞḓ īƞ ḿẏ ƥŀȧȧƈḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.apologies.send": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḗḗƞḓ ḿẏ ȧȧƥǿǿŀǿǿɠīḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.apologiesAt": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ şḗḗƞŧ ẏǿǿŭŭř ȧȧƥǿǿŀǿǿɠīḗḗş ("
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.apologiesSaved": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭř ȧȧƥǿǿŀǿǿɠīḗḗş ȧȧřḗḗ řḗḗƈǿǿřḓḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.calendar": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧḓḓ ŧǿǿ ḿẏ ƈȧȧŀḗḗƞḓȧȧř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.calendar.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭř ƈȧȧŀḗḗƞḓȧȧř’ş Ȧƈƈḗḗƥŧ ȧȧƞḓ Ḓḗḗƈŀīƞḗḗ ƀŭŭŧŧǿǿƞş ḓǿǿ ƞǿǿŧ řḗḗȧȧƈħ ŧħḗḗ şḗḗƈřḗḗŧȧȧřẏ: ȧȧƞşẇḗḗř ħḗḗřḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.cancel": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈȧȧƞƈḗḗŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.change": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħȧȧƞɠḗḗ ḿẏ ȧȧƞşẇḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.closed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƞşẇḗḗřş ƈŀǿǿşḗḗ ẇħḗḗƞ ŧħḗḗ ḿḗḗḗḗŧīƞɠ şŧȧȧřŧş. Ƒřǿǿḿ ŧħḗḗƞ ŧħḗḗ şḗḗƈřḗḗŧȧȧřẏ řḗḗƈǿǿřḓş ẇħǿǿ ȧȧŧŧḗḗƞḓş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.col.actions": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƈŧīǿǿƞş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.col.how": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ħǿǿẇ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.col.invitation": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īƞṽīŧȧȧŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.col.name": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞȧȧḿḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.col.reply": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƥŀẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.col.role": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řǿǿŀḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.how.email": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ƀẏ ḗḗḿȧȧīŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.how.inApp": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "īƞ ḿḗḗḿǿǿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.how.inPerson": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "īƞ ƥḗḗřşǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.how.other": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ǿǿŧħḗḗřẇīşḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.how.phone": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ƀẏ ƥħǿǿƞḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.invite.appOnly": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īƞ ḿḗḗḿǿǿ ǿǿƞŀẏ (īƞṽīŧȧȧŧīǿǿƞ ḗḗḿȧȧīŀş şẇīŧƈħḗḗḓ ǿǿƒƒ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.invite.cancelSentOn": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈȧȧƞƈḗḗŀŀȧȧŧīǿǿƞ şḗḗƞŧ "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.invite.failedOn": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧ ḓḗḗŀīṽḗḗřḗḗḓ: ŧħḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "kind"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": " ƒȧȧīŀḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.invite.notSent": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧ şḗḗƞŧ ẏḗḗŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.invite.retrying": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧ şḗḗƞŧ ẏḗḗŧ: "
+    },
+    {
+      "type": 6,
+      "value": "attempts",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ȧȧŧŧḗḗḿƥŧ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ȧȧŧŧḗḗḿƥŧş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ", ŧřẏīƞɠ ȧȧɠȧȧīƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.invite.sentOn": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şḗḗƞŧ "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "kind"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.invite.waiting": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇȧȧīŧīƞɠ ŧǿǿ ƀḗḗ şḗḗƞŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.invite.withdrawnOn": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īƞṽīŧȧȧŧīǿǿƞ ẇīŧħḓřȧȧẇƞ "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.keep": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ķḗḗḗḗƥ ḿẏ ȧȧƞşẇḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.kind.cancel": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ƈȧȧƞƈḗḗŀŀȧȧŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.kind.invitation": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "īƞṽīŧȧȧŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.kind.resend": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "şḗḗƞŧ ȧȧɠȧȧīƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.kind.uninvite": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "īƞṽīŧȧȧŧīǿǿƞ ẇīŧħḓřȧȧẇƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.kind.update": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "ŭŭƥḓȧȧŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.noReply": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ḓīḓ ƞǿǿŧ řḗḗƥŀẏ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.none": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "—"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.note.hint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒǿǿř ḗḗẋȧȧḿƥŀḗḗ “Ī ẇīŀŀ ĵǿǿīƞ ȧȧƒŧḗḗř 11:00”. Ȧŧ ḿǿǿşŧ 300 ƈħȧȧřȧȧƈŧḗḗřş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.note.label": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ƞǿǿŧḗḗ ƒǿǿř ŧħḗḗ şḗḗƈřḗḗŧȧȧřẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.note.save": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şȧȧṽḗḗ ŧħḗḗ ƞǿǿŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.note.saved": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭř ƞǿǿŧḗḗ īş şȧȧṽḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.optional": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "(ǿǿƥŧīǿǿƞȧȧŀ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.panel.cancelled": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḿḗḗḗḗŧīƞɠ īş ƈȧȧƞƈḗḗŀŀḗḗḓ: ḗḗṽḗḗřẏǿǿƞḗḗ īƞṽīŧḗḗḓ ẇȧȧş şḗḗƞŧ ŧħḗḗ ƈȧȧƞƈḗḗŀŀȧȧŧīǿǿƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.panel.members": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿƀḗḗřş: "
+    },
+    {
+      "type": 1,
+      "value": "attending"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "total"
+    },
+    {
+      "type": 0,
+      "value": " şȧȧīḓ ŧħḗḗẏ ẇīŀŀ ȧȧŧŧḗḗƞḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.panel.nobody": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿƀǿǿḓẏ īş īƞṽīŧḗḗḓ ŧǿǿ ŧħīş ḿḗḗḗḗŧīƞɠ ẏḗḗŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.panel.notCreated": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īƞṽīŧȧȧŧīǿǿƞş ȧȧřḗḗ şḗḗƞŧ ẇħḗḗƞ ŧħḗḗ ḿḗḗḗḗŧīƞɠ īş şƈħḗḗḓŭŭŀḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.panel.pending": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ƈħȧȧƞɠḗḗ īş ẇȧȧīŧīƞɠ ŧǿǿ ƀḗḗ şḗḗƞŧ: īŧ ɠǿǿḗḗş ǿǿŭŭŧ ẇīŧħīƞ ȧȧ ƒḗḗẇ ḿīƞŭŭŧḗḗş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.panel.replies": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƥŀīḗḗş: "
+    },
+    {
+      "type": 1,
+      "value": "yes"
+    },
+    {
+      "type": 0,
+      "value": " ẏḗḗş ("
+    },
+    {
+      "type": 1,
+      "value": "inPerson"
+    },
+    {
+      "type": 0,
+      "value": " īƞ ƥḗḗřşǿǿƞ, "
+    },
+    {
+      "type": 1,
+      "value": "remote"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƞŀīƞḗḗ) · "
+    },
+    {
+      "type": 1,
+      "value": "apologies"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 6,
+      "value": "apologies",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ȧȧƥǿǿŀǿǿɠẏ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "ȧȧƥǿǿŀǿǿɠīḗḗş"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "noAnswer"
+    },
+    {
+      "type": 0,
+      "value": " ƞǿǿŧ ẏḗḗŧ · "
+    },
+    {
+      "type": 1,
+      "value": "stale"
+    },
+    {
+      "type": 0,
+      "value": " ƒǿǿř ŧħḗḗ ǿǿŀḓ ŧīḿḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.panel.sent": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īƞṽīŧȧȧŧīǿǿƞş şḗḗƞŧ "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.panel.sentWithLast": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īƞṽīŧȧȧŧīǿǿƞş şḗḗƞŧ "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": " · ŀȧȧşŧ ḿḗḗşşȧȧɠḗḗ "
+    },
+    {
+      "type": 1,
+      "value": "last"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.pleaseReply": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥŀḗḗȧȧşḗḗ řḗḗƥŀẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.problem.alternateBusy": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " īş ȧȧŀřḗḗȧȧḓẏ ȧȧŧŧḗḗƞḓīƞɠ īƞ ƥŀȧȧƈḗḗ ǿǿƒ ȧȧƞǿǿŧħḗḗř ḿḗḗḿƀḗḗř."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.problem.alternateBusyTheirs": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗīř ȧȧŀŧḗḗřƞȧȧŧḗḗ īş ȧȧŀřḗḗȧȧḓẏ ȧȧŧŧḗḗƞḓīƞɠ īƞ ƥŀȧȧƈḗḗ ǿǿƒ ȧȧƞǿǿŧħḗḗř ḿḗḗḿƀḗḗř."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.problem.alternateIsMember": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭř ȧȧŀŧḗḗřƞȧȧŧḗḗ īş ȧȧŀşǿǿ ȧȧ ḿḗḗḿƀḗḗř ǿǿƒ ŧħīş "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧƞḓ ƈȧȧƞƞǿǿŧ ȧȧŧŧḗḗƞḓ īƞ ẏǿǿŭŭř ƥŀȧȧƈḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.problem.alternateIsMemberFor": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗīř ȧȧŀŧḗḗřƞȧȧŧḗḗ īş ȧȧŀşǿǿ ȧȧ ḿḗḗḿƀḗḗř ǿǿƒ ŧħīş "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": " ȧȧƞḓ ƈȧȧƞƞǿǿŧ ȧȧŧŧḗḗƞḓ īƞ ŧħḗḗīř ƥŀȧȧƈḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.problem.alternateNone": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭř şḗḗȧȧŧ ħȧȧş ƞǿǿ ȧȧŀŧḗḗřƞȧȧŧḗḗ ẇħǿǿ ƈȧȧƞ ȧȧŧŧḗḗƞḓ ŧħīş ḿḗḗḗḗŧīƞɠ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.problem.alternateNoneFor": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "’ş şḗḗȧȧŧ ħȧȧş ƞǿǿ ȧȧŀŧḗḗřƞȧȧŧḗḗ ẇħǿǿ ƈȧȧƞ ȧȧŧŧḗḗƞḓ ŧħīş ḿḗḗḗḗŧīƞɠ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.problem.alternateWithApologies": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƞ ȧȧŀŧḗḗřƞȧȧŧḗḗ ȧȧŧŧḗḗƞḓş ǿǿƞŀẏ īƞ ƥŀȧȧƈḗḗ ǿǿƒ ȧȧ ḿḗḗḿƀḗḗř ẇħǿǿ şḗḗƞḓş ȧȧƥǿǿŀǿǿɠīḗḗş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.problem.failed": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħȧȧŧ ḓīḓ ƞǿǿŧ ẇǿǿřķ. Ƥŀḗḗȧȧşḗḗ ŧřẏ ȧȧɠȧȧīƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.problem.forbidden": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ƈȧȧƞƞǿǿŧ ḓǿǿ ŧħīş ƒǿǿř ŧħīş ḿḗḗḗḗŧīƞɠ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.problem.howRequired": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Şȧȧẏ ħǿǿẇ ŧħḗḗẏ ŧǿǿŀḓ ẏǿǿŭŭ: ƀẏ ḗḗḿȧȧīŀ, ƀẏ ƥħǿǿƞḗḗ, īƞ ƥḗḗřşǿǿƞ ǿǿř ǿǿŧħḗḗřẇīşḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.problem.length": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥŀḗḗȧȧşḗḗ ḿȧȧķḗḗ ŧħīş şħǿǿřŧḗḗř."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.problem.modeNotOffered": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḿḗḗḗḗŧīƞɠ īş ƞǿǿ ŀǿǿƞɠḗḗř ħḗḗŀḓ ŧħȧȧŧ ẇȧȧẏ. Ƈħǿǿǿǿşḗḗ ǿǿƞḗḗ ǿǿƒ ŧħḗḗ ȧȧƞşẇḗḗřş şħǿǿẇƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.problem.notInvitable": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ƥḗḗřşǿǿƞ ḓǿǿḗḗş ƞǿǿŧ ȧȧƞşẇḗḗř ŧħīş ḿḗḗḗḗŧīƞɠ. Ẏǿǿŭŭř ǿǿẇƞ ȧȧƞşẇḗḗř īş ɠīṽḗḗƞ ǿǿƞ ŧħḗḗ ḿḗḗḗḗŧīƞɠ ƥȧȧɠḗḗ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.problem.rateLimited": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īƞṽīŧȧȧŧīǿǿƞş ƒǿǿř ŧħīş ḿḗḗḗḗŧīƞɠ ẇḗḗřḗḗ řḗḗşḗḗƞŧ ḿȧȧƞẏ ŧīḿḗḗş ŧħīş ħǿǿŭŭř. Ƥŀḗḗȧȧşḗḗ ŧřẏ ȧȧɠȧȧīƞ ŀȧȧŧḗḗř."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.problem.resendTooSoon": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƞ īƞṽīŧȧȧŧīǿǿƞ ƈȧȧƞ ƀḗḗ řḗḗşḗḗƞŧ ŧǿǿ ȧȧ ƥḗḗřşǿǿƞ ǿǿƞƈḗḗ ḗḗṽḗḗřẏ 10 ḿīƞŭŭŧḗḗş."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.problem.resendWrongState": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īƞṽīŧȧȧŧīǿǿƞş ȧȧřḗḗ řḗḗşḗḗƞŧ ǿǿƞŀẏ ẇħīŀḗḗ ŧħḗḗ ḿḗḗḗḗŧīƞɠ īş şƈħḗḗḓŭŭŀḗḗḓ ȧȧƞḓ ȧȧƒŧḗḗř ŧħḗḗẏ ẇḗḗřḗḗ ƒīřşŧ şḗḗƞŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.problem.stale": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħīş ȧȧƞşẇḗḗř ẇȧȧş ƈħȧȧƞɠḗḗḓ ḿḗḗȧȧƞẇħīŀḗḗ, ƥḗḗřħȧȧƥş ƀẏ ŧħḗḗ şḗḗƈřḗḗŧȧȧřẏ. Īŧ īş şħǿǿẇƞ ȧȧş īŧ īş ƞǿǿẇ: ŧřẏ ȧȧɠȧȧīƞ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.problem.tooSoonMany": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƥḗḗřşǿǿƞ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƥḗḗǿǿƥŀḗḗ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " ɠǿǿŧ ŧħḗḗ īƞṽīŧȧȧŧīǿǿƞ ŀḗḗşş ŧħȧȧƞ 10 ḿīƞŭŭŧḗḗş ȧȧɠǿǿ. Ẏǿǿŭŭ ƈȧȧƞ řḗḗşḗḗƞḓ ŧǿǿ ŧħḗḗḿ ȧȧƒŧḗḗř "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.problem.tooSoonOne": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ īƞṽīŧȧȧŧīǿǿƞ ẇȧȧş şḗḗƞŧ ŧǿǿ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ŀḗḗşş ŧħȧȧƞ 10 ḿīƞŭŭŧḗḗş ȧȧɠǿǿ. Ẏǿǿŭŭ ƈȧȧƞ řḗḗşḗḗƞḓ īŧ ȧȧƒŧḗḗř "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.problem.wrongState": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƞşẇḗḗřş ȧȧřḗḗ ƈŀǿǿşḗḗḓ: ŧħḗḗ ḿḗḗḗḗŧīƞɠ ħȧȧş şŧȧȧřŧḗḗḓ ǿǿř īş ƞǿǿ ŀǿǿƞɠḗḗř şƈħḗḗḓŭŭŀḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.record.action": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƈǿǿřḓ ȧȧƞ ȧȧƞşẇḗḗř…"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.record.alternate": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗīř ȧȧŀŧḗḗřƞȧȧŧḗḗ ẇīŀŀ ȧȧŧŧḗḗƞḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.record.answer": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƞşẇḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.record.answerRequired": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƈħǿǿǿǿşḗḗ ŧħḗḗ ȧȧƞşẇḗḗř."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.record.done": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ȧȧƞşẇḗḗř īş řḗḗƈǿǿřḓḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.record.email": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗḿȧȧīŀ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.record.how": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ħǿǿẇ ḓīḓ ŧħḗḗẏ ŧḗḗŀŀ ẏǿǿŭŭ?"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.record.inPerson": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īƞ ƥḗḗřşǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.record.note": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.record.noteHint": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƒǿǿř ḗḗẋȧȧḿƥŀḗḗ “ƈȧȧŀŀḗḗḓ ǿǿƞ 9 Ḓḗḗƈḗḗḿƀḗḗř”."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.record.other": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ǿŧħḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.record.phone": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥħǿǿƞḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.record.submit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƈǿǿřḓ ŧħḗḗ ȧȧƞşẇḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.record.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƈǿǿřḓ ȧȧƞ ȧȧƞşẇḗḗř ƒǿǿř "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.record.told": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ẇīŀŀ ƀḗḗ ŧǿǿŀḓ ŧħȧȧŧ ẏǿǿŭŭ řḗḗƈǿǿřḓḗḗḓ ŧħīş ȧȧƞşẇḗḗř."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.recordedBy": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƈǿǿřḓḗḗḓ ƀẏ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ": ẏǿǿŭŭ ŧǿǿŀḓ ŧħḗḗḿ "
+    },
+    {
+      "type": 1,
+      "value": "how"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.reply.apologies": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƥǿǿŀǿǿɠīḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.reply.apologiesAlternate": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧƥǿǿŀǿǿɠīḗḗş — ȧȧŀŧḗḗřƞȧȧŧḗḗ ȧȧŧŧḗḗƞḓş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.reply.inPerson": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏḗḗş, īƞ ƥḗḗřşǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.reply.none": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧ ẏḗḗŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.reply.note": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿŧḗḗ: “"
+    },
+    {
+      "type": 1,
+      "value": "note"
+    },
+    {
+      "type": 0,
+      "value": "”"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.reply.recordedNote": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƈǿǿřḓḗḗḓ ƀẏ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": ": “"
+    },
+    {
+      "type": 1,
+      "value": "note"
+    },
+    {
+      "type": 0,
+      "value": "”"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.reply.recordedOn": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƈǿǿřḓḗḗḓ ƀẏ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.reply.remote": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏḗḗş, ǿǿƞŀīƞḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.reply.stale": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "answer"
+    },
+    {
+      "type": 0,
+      "value": " (ƒǿǿř ŧħḗḗ ǿǿŀḓ ŧīḿḗḗ)"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.replyAgain": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗƥŀẏ ȧȧɠȧȧīƞ: ŧħḗḗ ŧīḿḗḗ ƈħȧȧƞɠḗḗḓ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.replyBy": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥŀḗḗȧȧşḗḗ řḗḗƥŀẏ ƀẏ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.resend.action": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗşḗḗƞḓ…"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.resend.done": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ īƞṽīŧȧȧŧīǿǿƞ ẇȧȧş şḗḗƞŧ ȧȧɠȧȧīƞ ŧǿǿ "
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƥḗḗřşǿǿƞ"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " ƥḗḗǿǿƥŀḗḗ"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.resend.everyone": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗṽḗḗřẏǿǿƞḗḗ ("
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.resend.nobody": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƞǿǿƀǿǿḓẏ ħǿǿŀḓş ŧħḗḗ īƞṽīŧȧȧŧīǿǿƞ ẏḗḗŧ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.resend.notReplied": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḗṽḗḗřẏǿǿƞḗḗ ẇħǿǿ ħȧȧş ƞǿǿŧ řḗḗƥŀīḗḗḓ ("
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.resend.only": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƞŀẏ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.resend.person": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗşḗḗƞḓ ŧħḗḗ īƞṽīŧȧȧŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.resend.submit": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗşḗḗƞḓ ŧħḗḗ īƞṽīŧȧȧŧīǿǿƞ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.resend.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗşḗḗƞḓ ŧħḗḗ īƞṽīŧȧȧŧīǿǿƞ ŧǿǿ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.resend.who": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Řḗḗşḗḗƞḓ ŧħḗḗ ƈŭŭřřḗḗƞŧ īƞṽīŧȧȧŧīǿǿƞ ŧǿǿ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.role.alternate": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŀŧḗḗřƞȧȧŧḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.role.alternateFor": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧŀŧḗḗřƞȧȧŧḗḗ ƒǿǿř "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.role.guest": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ɠŭŭḗḗşŧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.role.member": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ḿḗḗḿƀḗḗř"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.saved": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭř ȧȧƞşẇḗḗř īş şȧȧṽḗḗḓ."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.sentApologies": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ şḗḗƞŧ ẏǿǿŭŭř ȧȧƥǿǿŀǿǿɠīḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.stale.now": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ŧħḗḗ ḿḗḗḗḗŧīƞɠ īş ƞǿǿẇ ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "when"
+    },
+    {
+      "type": 0,
+      "value": ". Ẇīŀŀ ẏǿǿŭŭ ȧȧŧŧḗḗƞḓ?"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.stale.was": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ řḗḗƥŀīḗḗḓ “"
+    },
+    {
+      "type": 1,
+      "value": "answer"
+    },
+    {
+      "type": 0,
+      "value": "” ƒǿǿř ŧħḗḗ ǿǿŀḓ ŧīḿḗḗ ("
+    },
+    {
+      "type": 1,
+      "value": "when"
+    },
+    {
+      "type": 0,
+      "value": ")."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.standingInFor": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ ȧȧřḗḗ ȧȧŧŧḗḗƞḓīƞɠ īƞ ƥŀȧȧƈḗḗ ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.tab.agenda": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧɠḗḗƞḓȧȧ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.tab.replies": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Īƞṽīŧȧȧŧīǿǿƞş ȧȧƞḓ řḗḗƥŀīḗḗş"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.tabs": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ƥȧȧřŧş ǿǿƒ ŧħḗḗ ḿḗḗḗḗŧīƞɠ ƥȧȧɠḗḗ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.title": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẇīŀŀ ẏǿǿŭŭ ȧȧŧŧḗḗƞḓ?"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.youSaid": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ şȧȧīḓ: "
+    },
+    {
+      "type": 1,
+      "value": "answer"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
+  "meetingReplies.youSaidAt": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ẏǿǿŭŭ şȧȧīḓ: "
+    },
+    {
+      "type": 1,
+      "value": "answer"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "meetings.action.cancel": [
     {
       "type": 0,

@@ -53,3 +53,13 @@ data class DeclarationChanged(
     val userId: UUID,
     val recused: Boolean,
 ) : TenantScopedEvent
+
+/**
+ * A meeting's attendance changed (ADR-0064, design E05 §2): an event was recorded or voided on its register, published
+ * in the changing transaction. E06 refreshes its decision screen and reads the register through [MeetingAttendance].
+ * Ids only (ADR-0017).
+ */
+data class AttendanceChanged(
+    override val tenantId: UUID,
+    val meetingId: UUID,
+) : TenantScopedEvent

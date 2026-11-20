@@ -52,7 +52,7 @@ data class QuorumSeat(
 /** How a member is at the meeting; absent members are simply left out of the attendance. */
 data class QuorumPresence(
     val remote: Boolean = false,
-    /** Their alternate attends in their place. */
+    /** Their alternate attends in their place: for the number only, never for a role or an attribute (ADR-0064). */
     val byAlternate: Boolean = false,
     /** Recused from the item being decided (E04). */
     val recused: Boolean = false,
@@ -85,6 +85,9 @@ data class QuorumResult(
 /**
  * Quorum evaluation (ADR-0057): pure and deterministic, the same for the rule preview (E01), the live view and the
  * record of each decision (E05). [roster] is the members in office that day; [attendance] says who attends and how.
+ * Amended by ADR-0064: a seat present by its alternate ([QuorumPresence.byAlternate]) counts towards the number when
+ * [QuorumRule.alternatesCount] is set, and in the denominator of a composition majority, but never meets a required role
+ * set or a composition attribute. Callers pass at most one seat per person (the meeting module's presence builder).
  */
 object Quorum {
     fun evaluate(
@@ -97,14 +100,18 @@ object Quorum {
         val needed = maxOf(rule.minimum, threshold(rule.threshold, basis))
         val attending = roster.filter { seat -> attendance[seat.memberId]?.let { eligible(rule, it) } == true }
         val present = attending.filter { counts(rule, it) }
+
+        // ADR-0064: a seat filled by its alternate counts for the number only; the roles and attributes are the holder's.
+        fun byHolder(seat: QuorumSeat) = attendance[seat.memberId]?.byAlternate != true
         val unmet = mutableListOf<UnmetCondition>()
         if (present.size < needed) unmet += UnmetCondition(UnmetKind.COUNT, needed, present.size)
         rule.required.forEach { roles ->
-            val here = attending.count { it.role in roles }
+            val here = attending.count { it.role in roles && byHolder(it) }
             if (here == 0) unmet += UnmetCondition(UnmetKind.ROLE, 1, 0, roles = roles)
         }
         rule.composition.forEach { condition ->
-            val with = present.count { condition.attribute in it.attributes }
+            // Those counted present, alternates included, are a majority's denominator; only holders carry the attribute.
+            val with = present.count { condition.attribute in it.attributes && byHolder(it) }
             val wanted = if (condition.majority) present.size / 2 + 1 else condition.atLeast ?: 0
             if (with < wanted) {
                 unmet += UnmetCondition(UnmetKind.COMPOSITION, wanted, with, attribute = condition.attribute, majority = condition.majority)

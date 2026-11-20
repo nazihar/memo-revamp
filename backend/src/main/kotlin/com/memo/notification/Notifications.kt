@@ -137,6 +137,12 @@ enum class NotificationKind(
     MEETING_RSVP_CHANGED(NotificationCategory.WORKFLOW, null),
     MEETING_ALTERNATE_ASKED(NotificationCategory.WORKFLOW, MailTemplate.MEETING_ALTERNATE_ASKED),
     MEETING_ALTERNATE_RELEASED(NotificationCategory.WORKFLOW, MailTemplate.MEETING_ALTERNATE_RELEASED),
+
+    // Live quorum (Phase 4 E05 T4, design E05 §1.7): the meeting in progress lost its quorum, or has it again, to the chair
+    // and the secretaries, in the app only (they are in the room). Parameters `committee`, `date`, `organisation`, `link`,
+    // `present` and `needed` (numbers). Never an item.
+    MEETING_QUORUM_LOST(NotificationCategory.WORKFLOW, null),
+    MEETING_QUORUM_RESTORED(NotificationCategory.WORKFLOW, null),
 }
 
 /** Who receives a notification; the producer already holds the user, so `notification` never looks people up. */

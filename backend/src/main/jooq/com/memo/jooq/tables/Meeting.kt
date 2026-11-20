@@ -10,20 +10,26 @@ import com.memo.jooq.indexes.MEETING_STATUS_IDX
 import com.memo.jooq.indexes.MEETING_STATUS_START_IDX
 import com.memo.jooq.keys.MEETING_AGENDA__MEETING_AGENDA_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_AGENDA__MEETING_AGENDA_TENANT_ID_SOURCE_MEETING_ID_FKEY
+import com.memo.jooq.keys.MEETING_ATTENDANCE__MEETING_ATTENDANCE_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_AUDIENCE__MEETING_AUDIENCE_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_DECLARATION__MEETING_DECLARATION_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_GUEST__MEETING_GUEST_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_INVITATION__MEETING_INVITATION_TENANT_ID_MEETING_ID_FKEY
+import com.memo.jooq.keys.MEETING_ITEM_PROGRESS__MEETING_ITEM_PROGRESS_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_PKEY
+import com.memo.jooq.keys.MEETING_QUORUM_CHANGE__MEETING_QUORUM_CHANGE_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_REMINDER__MEETING_REMINDER_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_RSVP__MEETING_RSVP_TENANT_ID_MEETING_ID_FKEY
 import com.memo.jooq.keys.MEETING_TENANT_ID_FORUM_ID_NUMBER_YEAR_NUMBER_KEY
 import com.memo.jooq.keys.MEETING_TENANT_ID_ID_KEY
 import com.memo.jooq.tables.MeetingAgenda.MeetingAgendaPath
+import com.memo.jooq.tables.MeetingAttendance.MeetingAttendancePath
 import com.memo.jooq.tables.MeetingAudience.MeetingAudiencePath
 import com.memo.jooq.tables.MeetingDeclaration.MeetingDeclarationPath
 import com.memo.jooq.tables.MeetingGuest.MeetingGuestPath
 import com.memo.jooq.tables.MeetingInvitation.MeetingInvitationPath
+import com.memo.jooq.tables.MeetingItemProgress.MeetingItemProgressPath
+import com.memo.jooq.tables.MeetingQuorumChange.MeetingQuorumChangePath
 import com.memo.jooq.tables.MeetingReminder.MeetingReminderPath
 import com.memo.jooq.tables.MeetingRsvp.MeetingRsvpPath
 import com.memo.jooq.tables.records.MeetingRecord
@@ -291,6 +297,22 @@ open class Meeting(
     val meetingAgendaTenantIdSourceMeetingIdFkey: MeetingAgendaPath
         get(): MeetingAgendaPath = meetingAgendaTenantIdSourceMeetingIdFkey()
 
+    private lateinit var _meetingAttendance: MeetingAttendancePath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.meeting_attendance</code> table
+     */
+    fun meetingAttendance(): MeetingAttendancePath {
+        if (!this::_meetingAttendance.isInitialized)
+            _meetingAttendance = MeetingAttendancePath(this, null, MEETING_ATTENDANCE__MEETING_ATTENDANCE_TENANT_ID_MEETING_ID_FKEY.inverseKey)
+
+        return _meetingAttendance;
+    }
+
+    val meetingAttendance: MeetingAttendancePath
+        get(): MeetingAttendancePath = meetingAttendance()
+
     private lateinit var _meetingAudience: MeetingAudiencePath
 
     /**
@@ -354,6 +376,38 @@ open class Meeting(
 
     val meetingInvitation: MeetingInvitationPath
         get(): MeetingInvitationPath = meetingInvitation()
+
+    private lateinit var _meetingItemProgress: MeetingItemProgressPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.meeting_item_progress</code> table
+     */
+    fun meetingItemProgress(): MeetingItemProgressPath {
+        if (!this::_meetingItemProgress.isInitialized)
+            _meetingItemProgress = MeetingItemProgressPath(this, null, MEETING_ITEM_PROGRESS__MEETING_ITEM_PROGRESS_TENANT_ID_MEETING_ID_FKEY.inverseKey)
+
+        return _meetingItemProgress;
+    }
+
+    val meetingItemProgress: MeetingItemProgressPath
+        get(): MeetingItemProgressPath = meetingItemProgress()
+
+    private lateinit var _meetingQuorumChange: MeetingQuorumChangePath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.meeting_quorum_change</code> table
+     */
+    fun meetingQuorumChange(): MeetingQuorumChangePath {
+        if (!this::_meetingQuorumChange.isInitialized)
+            _meetingQuorumChange = MeetingQuorumChangePath(this, null, MEETING_QUORUM_CHANGE__MEETING_QUORUM_CHANGE_TENANT_ID_MEETING_ID_FKEY.inverseKey)
+
+        return _meetingQuorumChange;
+    }
+
+    val meetingQuorumChange: MeetingQuorumChangePath
+        get(): MeetingQuorumChangePath = meetingQuorumChange()
 
     private lateinit var _meetingReminder: MeetingReminderPath
 

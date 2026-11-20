@@ -44,6 +44,8 @@ import com.memo.jooq.tables.ImportsRowFile
 import com.memo.jooq.tables.ImportsStaged
 import com.memo.jooq.tables.Meeting
 import com.memo.jooq.tables.MeetingAgenda
+import com.memo.jooq.tables.MeetingAttendance
+import com.memo.jooq.tables.MeetingAttendanceEvent
 import com.memo.jooq.tables.MeetingAudience
 import com.memo.jooq.tables.MeetingChairComment
 import com.memo.jooq.tables.MeetingConsentRequest
@@ -58,8 +60,10 @@ import com.memo.jooq.tables.MeetingInvitationMessage
 import com.memo.jooq.tables.MeetingInvitee
 import com.memo.jooq.tables.MeetingItem
 import com.memo.jooq.tables.MeetingItemAttendee
+import com.memo.jooq.tables.MeetingItemProgress
 import com.memo.jooq.tables.MeetingPaper
 import com.memo.jooq.tables.MeetingPaperOpen
+import com.memo.jooq.tables.MeetingQuorumChange
 import com.memo.jooq.tables.MeetingReaderState
 import com.memo.jooq.tables.MeetingReminder
 import com.memo.jooq.tables.MeetingRevision
@@ -345,6 +349,16 @@ val MEETING: Meeting = Meeting.MEETING
 val MEETING_AGENDA: MeetingAgenda = MeetingAgenda.MEETING_AGENDA
 
 /**
+ * The table <code>memo.meeting_attendance</code>.
+ */
+val MEETING_ATTENDANCE: MeetingAttendance = MeetingAttendance.MEETING_ATTENDANCE
+
+/**
+ * The table <code>memo.meeting_attendance_event</code>.
+ */
+val MEETING_ATTENDANCE_EVENT: MeetingAttendanceEvent = MeetingAttendanceEvent.MEETING_ATTENDANCE_EVENT
+
+/**
  * The table <code>memo.meeting_audience</code>.
  */
 val MEETING_AUDIENCE: MeetingAudience = MeetingAudience.MEETING_AUDIENCE
@@ -415,6 +429,11 @@ val MEETING_ITEM: MeetingItem = MeetingItem.MEETING_ITEM
 val MEETING_ITEM_ATTENDEE: MeetingItemAttendee = MeetingItemAttendee.MEETING_ITEM_ATTENDEE
 
 /**
+ * The table <code>memo.meeting_item_progress</code>.
+ */
+val MEETING_ITEM_PROGRESS: MeetingItemProgress = MeetingItemProgress.MEETING_ITEM_PROGRESS
+
+/**
  * The table <code>memo.meeting_paper</code>.
  */
 val MEETING_PAPER: MeetingPaper = MeetingPaper.MEETING_PAPER
@@ -423,6 +442,11 @@ val MEETING_PAPER: MeetingPaper = MeetingPaper.MEETING_PAPER
  * The table <code>memo.meeting_paper_open</code>.
  */
 val MEETING_PAPER_OPEN: MeetingPaperOpen = MeetingPaperOpen.MEETING_PAPER_OPEN
+
+/**
+ * The table <code>memo.meeting_quorum_change</code>.
+ */
+val MEETING_QUORUM_CHANGE: MeetingQuorumChange = MeetingQuorumChange.MEETING_QUORUM_CHANGE
 
 /**
  * The table <code>memo.meeting_reader_state</code>.

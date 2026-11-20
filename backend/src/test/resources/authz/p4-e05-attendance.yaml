@@ -1,0 +1,25 @@
+# Phase 4 E05 attendance and live quorum (design E05 §3, §4; ADR-0064). Meeting ids are random here, so every subject
+# allowed through is answered 404 before the officer or audience check. Who may do what on a real meeting (the secretary,
+# the chair, a member, an alternate standing in, a guest, forum.read, a user outside) is AttendanceIT and LiveQuorumIT;
+# another tenant is MeetingCrossTenantIT.
+epic: P4-E05
+endpoints:
+  - { endpoint: "GET /api/v1/meetings/{meetingId}/attendance", rule: signedIn }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/attendance/events"
+    rule: signedIn
+    body: { userId: "00000000-0000-0000-0000-000000000001", kind: "APOLOGIES" }
+    headers: { Idempotency-Key: "{random}" }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/attendance/arrivals"
+    rule: signedIn
+    body: { userIds: ["00000000-0000-0000-0000-000000000001"], mode: "IN_PERSON" }
+    headers: { Idempotency-Key: "{random}" }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/attendance/events/{eventId}/void"
+    rule: signedIn
+    body: { reason: "Wrong person" }
+    headers: { Idempotency-Key: "{random}" }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/progress"
+    rule: signedIn
+    body: { itemId: "00000000-0000-0000-0000-000000000001" }
+    headers: { Idempotency-Key: "{random}" }
+  - { endpoint: "GET /api/v1/meetings/{meetingId}/quorum", rule: signedIn }
+  - { endpoint: "GET /api/v1/meetings/{meetingId}/quorum/changes", rule: signedIn }

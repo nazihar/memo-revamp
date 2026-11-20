@@ -14,6 +14,7 @@ import com.memo.meeting.MeetingChange
 import com.memo.meeting.MeetingChanged
 import com.memo.meeting.MeetingKind
 import com.memo.meeting.MeetingStatus
+import com.memo.meeting.internal.attendance.Attendance
 import com.memo.meeting.internal.invite.MeetingInvitations
 import com.memo.org.OrgDirectory
 import org.springframework.context.ApplicationEventPublisher
@@ -57,6 +58,7 @@ class MeetingLifecycle(
     private val sweeps: MeetingSweepStore,
     private val events: ApplicationEventPublisher,
     private val invitations: MeetingInvitations,
+    private val attendance: Attendance,
 ) {
     fun create(
         forumId: UUID,
@@ -170,7 +172,10 @@ class MeetingLifecycle(
         version: Long,
     ): MeetingRow {
         val before = guard.requireManaged(id)
-        return save("meeting.started", before, before.copy(status = MeetingAction.START.next(before.status)), version)
+        val saved = save("meeting.started", before, before.copy(status = MeetingAction.START.next(before.status)), version)
+        // The register opens with the replies' apologies (design E05 §9).
+        attendance.open(saved)
+        return saved
     }
 
     fun end(

@@ -9,7 +9,8 @@ import { Button } from '@/components/ui/button'
 import { Dialog } from '@/components/ui/dialog'
 import { Select } from '@/components/ui/form-controls'
 import { useTerms } from '@/features/terms/terms'
-import { localTime } from './draft'
+import { om, omv } from '@/features/meetings/declarations/officer-messages'
+import { allItems, localTime } from './draft'
 import { ap, apv, purposeLabels } from './messages'
 import { agendaRefusal } from './problems'
 import { useAgenda, type Person } from './useAgenda'
@@ -67,7 +68,9 @@ export function PreviewAs() {
 function PreviewDialog({ person, onClose }: { person: Person; onClose: () => void }) {
   const intl = useIntl()
   const terms = useTerms()
-  const { meeting } = useAgenda()
+  const { meeting, draft } = useAgenda()
+  // Items the previewing officer declared an interest in show as their own line only (E04 §1.7, flow T4).
+  const ownRecusals = allItems(draft).some((i) => i.recused)
   const preview = useQuery(previewAgendaAsOptions({ path: { meetingId: meeting.id }, query: { as: person.id } }))
   return (
     <Dialog
@@ -83,6 +86,7 @@ function PreviewDialog({ person, onClose }: { person: Person; onClose: () => voi
         className="mb-4 rounded-md border border-status-warn-fg/40 bg-status-warn-bg p-3 text-sm text-status-warn-fg"
       >
         {intl.formatMessage(apv.previewBanner, { name: person.name })}
+        {ownRecusals ? <> {intl.formatMessage(om.previewHidden)}</> : null}
       </p>
       {preview.isPending ? <LoadingState rows={4} /> : null}
       {preview.isError ? (
@@ -124,8 +128,10 @@ function PreviewDialog({ person, onClose }: { person: Person; onClose: () => voi
 function PreviewLine({ item }: { item: MemberItemResponse }) {
   const intl = useIntl()
   const number = item.number ? `${item.number} ` : ''
-  const title =
-    item.access === 'FULL'
+  const line = item.access !== 'HIDDEN' && item.title ? item.title : intl.formatMessage(ap.restrictedItem)
+  const title = item.recused
+    ? intl.formatMessage(omv.previewRecused, { title: line })
+    : item.access === 'FULL'
       ? (item.title ?? '')
       : item.access === 'TITLE' && item.title
         ? intl.formatMessage(apv.titleRestricted, { title: item.title })

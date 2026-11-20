@@ -47,8 +47,8 @@
     "prefixes": ["meetingReplies"]
   },
   "declarations": {
-    "$comment": "Declaring an interest on the meeting page (Phase 4 E04 T6, flow S): the declaration sheet, the review checklist, My declaration and the Declarations standing item.",
-    "routes": ["/meetings"],
+    "$comment": "Declarations of interest (Phase 4 E04): declaring on the meeting page (T6, flow S); the officers' Declarations tab, the chair's decision and the builder's recused rows (T7, flow T); the register across committees at /declarations (T8, flow U).",
+    "routes": ["/meetings", "/declarations"],
     "prefixes": ["declarations"]
   },
   "mySecurity": {

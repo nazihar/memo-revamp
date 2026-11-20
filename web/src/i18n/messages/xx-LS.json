@@ -2201,6 +2201,12 @@
       "value": "Too many changes in a short time. Wait a moment and try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "agendaBuilder.problem.recused": [
+    {
+      "type": 0,
+      "value": "You declared an interest in this item, so another secretary or an administrator handles it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "agendaBuilder.problem.required": [
     {
       "type": 0,
@@ -7943,6 +7949,28 @@
       "value": "Approvals dashboardSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "declarations.builder.previewHidden": [
+    {
+      "type": 0,
+      "value": "Items you declared an interest in are hidden in this preview.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.builder.previewRecused": [
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": " — an interest is declared, papers withheldSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.builder.recused": [
+    {
+      "type": 0,
+      "value": "You declared an interest. Another secretary or an administrator handles this item.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "declarations.cancel": [
     {
       "type": 0,
@@ -8342,6 +8370,775 @@
       "value": "Withdraw this declaration…SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "declarations.officer.alsoReads": [
+    {
+      "type": 1,
+      "value": "names"
+    },
+    {
+      "type": 0,
+      "value": " also "
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "reads"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "read"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " the memo through the memo’s own access. A declaration withholds the committee’s papers, not the memo: change its access on the memo.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.changeDecision": [
+    {
+      "type": 0,
+      "value": "Change the decision…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.changeNamed": [
+    {
+      "type": 0,
+      "value": "Change the decision on "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "’s declaration, item "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.correction": [
+    {
+      "type": 0,
+      "value": "Entered after the meeting, as a correction of the record.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.decide": [
+    {
+      "type": 0,
+      "value": "Decide…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.decideNamed": [
+    {
+      "type": 0,
+      "value": "Decide on "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "’s declaration, item "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.everyoneReviewed": [
+    {
+      "type": 0,
+      "value": "Everyone has reviewed the latest agenda.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.forbidden": [
+    {
+      "type": 0,
+      "value": "Only the committee’s secretaries, its chair and its vice-chair can do this.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.howNote": [
+    {
+      "type": 0,
+      "value": "("
+    },
+    {
+      "type": 1,
+      "value": "note"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.item": [
+    {
+      "type": 0,
+      "value": "Item "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.loadFailed": [
+    {
+      "type": 0,
+      "value": "The declarations could not be read. Try again in a moment.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.noRuler": [
+    {
+      "type": 0,
+      "value": "Nobody can decide: the committee has no chair or vice-chair in office who is free to.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.none": [
+    {
+      "type": 0,
+      "value": "No declarations of interest yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.notPublished": [
+    {
+      "type": 0,
+      "value": "The agenda is not published yet. Members review it for interests once it is.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.notPublishedProblem": [
+    {
+      "type": 0,
+      "value": "Publish the agenda first: members review a published agenda.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.notYet": [
+    {
+      "type": 0,
+      "value": "Not yet: "
+    },
+    {
+      "type": 1,
+      "value": "names"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.numbered": [
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.originMeeting": [
+    {
+      "type": 0,
+      "value": "Carried over from an earlier meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.originMemo": [
+    {
+      "type": 0,
+      "value": "Carried over from the memoSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.originRecorded": [
+    {
+      "type": 5,
+      "value": "how",
+      "options": {
+        "AT_MEETING": {
+          "value": [
+            {
+              "type": 0,
+              "value": "At the meeting"
+            }
+          ]
+        },
+        "IN_PERSON": {
+          "value": [
+            {
+              "type": 0,
+              "value": "In person"
+            }
+          ]
+        },
+        "EMAIL": {
+          "value": [
+            {
+              "type": 0,
+              "value": "By email"
+            }
+          ]
+        },
+        "PHONE": {
+          "value": [
+            {
+              "type": 0,
+              "value": "By phone"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Recorded"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": ", recorded by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.originSelf": [
+    {
+      "type": 0,
+      "value": "In the app, "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.quorumCount": [
+    {
+      "type": 0,
+      "value": "Even if every member attends, item "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": " cannot be decided: "
+    },
+    {
+      "type": 1,
+      "value": "declared"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "basis"
+    },
+    {
+      "type": 0,
+      "value": " members have declared an interest and the committee needs "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " (members with an interest do not count).SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.quorumRule": [
+    {
+      "type": 0,
+      "value": "Even if every member attends, item "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": " cannot be decided: with "
+    },
+    {
+      "type": 1,
+      "value": "declared"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "basis"
+    },
+    {
+      "type": 0,
+      "value": " members declaring an interest, the committee’s quorum rule cannot be met.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.quorumTip": [
+    {
+      "type": 0,
+      "value": "Consider inviting alternates, or referring the item to the board.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.rateLimited": [
+    {
+      "type": 0,
+      "value": "Too many changes in a short time. Wait a minute, then try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.record": [
+    {
+      "type": 0,
+      "value": "Record a declaration…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.recordRuling": [
+    {
+      "type": 0,
+      "value": "Record the chair’s decision…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.recordRulingNamed": [
+    {
+      "type": 0,
+      "value": "Record the chair’s decision on "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "’s declaration, item "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.registerLink": [
+    {
+      "type": 0,
+      "value": "Register of declarations for this committeeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.remind": [
+    {
+      "type": 0,
+      "value": "Remind them nowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.reminded": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " person was reminded"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " people were reminded"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "names"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.remindedName": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " (reminded)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.remindedNone": [
+    {
+      "type": 0,
+      "value": "Nobody was reminded: everyone has reviewed the agenda or was already reminded of this revision.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.restrictedItem": [
+    {
+      "type": 0,
+      "value": "Restricted itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.reviewed": [
+    {
+      "type": 0,
+      "value": "Reviewed: "
+    },
+    {
+      "type": 1,
+      "value": "reviewed"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "total"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.revision": [
+    {
+      "type": 0,
+      "value": "Revision "
+    },
+    {
+      "type": 1,
+      "value": "revision"
+    },
+    {
+      "type": 0,
+      "value": " publishedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.ruled": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " decided: "
+    },
+    {
+      "type": 5,
+      "value": "outcome",
+      "options": {
+        "TAKE_PART": {
+          "value": [
+            {
+              "type": 0,
+              "value": "may take part"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "should leave the room"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.ruledOnBehalf": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " decided: "
+    },
+    {
+      "type": 5,
+      "value": "outcome",
+      "options": {
+        "TAKE_PART": {
+          "value": [
+            {
+              "type": 0,
+              "value": "may take part"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "should leave the room"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": ", "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "; recorded by "
+    },
+    {
+      "type": 1,
+      "value": "secretary"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 5,
+      "value": "how",
+      "options": {
+        "AT_MEETING": {
+          "value": [
+            {
+              "type": 0,
+              "value": "at the meeting"
+            }
+          ]
+        },
+        "IN_PERSON": {
+          "value": [
+            {
+              "type": 0,
+              "value": "given in person"
+            }
+          ]
+        },
+        "EMAIL": {
+          "value": [
+            {
+              "type": 0,
+              "value": "by email"
+            }
+          ]
+        },
+        "PHONE": {
+          "value": [
+            {
+              "type": 0,
+              "value": "by phone"
+            }
+          ]
+        },
+        "other": {
+          "value": []
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": ").SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.rulingNote": [
+    {
+      "type": 0,
+      "value": "Note: “"
+    },
+    {
+      "type": 1,
+      "value": "note"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.stale": [
+    {
+      "type": 0,
+      "value": "This declaration changed in the meantime. The latest is shown: please try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.state.awaiting": [
+    {
+      "type": 0,
+      "value": "Waiting for a decisionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.state.recused": [
+    {
+      "type": 0,
+      "value": "Leaving the roomSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.state.takingPart": [
+    {
+      "type": 0,
+      "value": "Taking partSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.state.withdrawn": [
+    {
+      "type": 0,
+      "value": "WithdrawnSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.tab": [
+    {
+      "type": 0,
+      "value": "DeclarationsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.waitingFor": [
+    {
+      "type": 0,
+      "value": "Waiting for "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " to decide.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.waitingYou": [
+    {
+      "type": 0,
+      "value": "Waiting for your decision.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.withdraw": [
+    {
+      "type": 0,
+      "value": "Withdraw…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.withdrawNamed": [
+    {
+      "type": 0,
+      "value": "Withdraw "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "’s declaration, item "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.officer.youRecused": [
+    {
+      "type": 0,
+      "value": "You declared an interest in this item, so only your own declaration is shown.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "declarations.panel.newToReview": [
     {
       "type": 6,
@@ -8506,6 +9303,424 @@
       "value": "This cannot be done now: the meeting or your declaration has changed. The page shows the latest.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "declarations.record.ask": [
+    {
+      "type": 0,
+      "value": "Ask the chair to decideSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.chooseItem": [
+    {
+      "type": 0,
+      "value": "Choose the itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.chooseMember": [
+    {
+      "type": 0,
+      "value": "Choose who made itSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.correctionExplain": [
+    {
+      "type": 0,
+      "value": "The meeting has been held. Record a declaration made in the room that was not entered, and say why.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.correctionTitle": [
+    {
+      "type": 0,
+      "value": "Correcting the record of a held meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.done": [
+    {
+      "type": 0,
+      "value": "Recorded. "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " has been told.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.explain": [
+    {
+      "type": 0,
+      "value": "For a declaration someone made to you: at the meeting, in person, by email or by phone. They will be told that it was recorded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.how": [
+    {
+      "type": 0,
+      "value": "How it was madeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.how.atMeeting": [
+    {
+      "type": 0,
+      "value": "At the meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.how.email": [
+    {
+      "type": 0,
+      "value": "By emailSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.how.inPerson": [
+    {
+      "type": 0,
+      "value": "In personSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.how.phone": [
+    {
+      "type": 0,
+      "value": "By phoneSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.howRequired": [
+    {
+      "type": 0,
+      "value": "Please say how it was made.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.intent": [
+    {
+      "type": 0,
+      "value": "What they will doSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.item": [
+    {
+      "type": 0,
+      "value": "ItemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.itemRequired": [
+    {
+      "type": 0,
+      "value": "Please choose the item.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.leave": [
+    {
+      "type": 0,
+      "value": "Leave the room for this itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.member": [
+    {
+      "type": 0,
+      "value": "MemberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.memberRequired": [
+    {
+      "type": 0,
+      "value": "Please choose who made the declaration.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.nature": [
+    {
+      "type": 0,
+      "value": "Their interestSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.natureRequired": [
+    {
+      "type": 0,
+      "value": "Please say what their interest is.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.notInAudience": [
+    {
+      "type": 0,
+      "value": "A declaration can be recorded only for someone this meeting is for, or an officer of the committee.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.note": [
+    {
+      "type": 0,
+      "value": "NoteSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.noteHint": [
+    {
+      "type": 0,
+      "value": "For example: email of 8 December.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.noteLength": [
+    {
+      "type": 0,
+      "value": "Please shorten the note to 200 characters or fewer.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.oneOpen": [
+    {
+      "type": 0,
+      "value": "This person already has a declaration on this item. Find it in the list to change or withdraw it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.optional": [
+    {
+      "type": 0,
+      "value": "(optional)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.reason": [
+    {
+      "type": 0,
+      "value": "Why the record is being correctedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.reasonRequired": [
+    {
+      "type": 0,
+      "value": "Please say why the record is being corrected.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.submit": [
+    {
+      "type": 0,
+      "value": "RecordSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.record.title": [
+    {
+      "type": 0,
+      "value": "Record a declaration of interestSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.allCommittees": [
+    {
+      "type": 0,
+      "value": "AllSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.anyMember": [
+    {
+      "type": 0,
+      "value": "AnySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.anyState": [
+    {
+      "type": 0,
+      "value": "AnySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.atMeeting": [
+    {
+      "type": 0,
+      "value": "Declared during the meeting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.caption": [
+    {
+      "type": 0,
+      "value": "Declarations of interest, newest firstSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.col.decision": [
+    {
+      "type": 0,
+      "value": "DecisionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.col.interest": [
+    {
+      "type": 0,
+      "value": "InterestSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.col.item": [
+    {
+      "type": 0,
+      "value": "ItemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.col.meeting": [
+    {
+      "type": 0,
+      "value": "MeetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.col.member": [
+    {
+      "type": 0,
+      "value": "MemberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.col.what": [
+    {
+      "type": 0,
+      "value": "WhatSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.committee": [
+    {
+      "type": 0,
+      "value": "CommitteeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.details": [
+    {
+      "type": 0,
+      "value": "DetailsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.detailsNamed": [
+    {
+      "type": 0,
+      "value": "Details: "
+    },
+    {
+      "type": 1,
+      "value": "member"
+    },
+    {
+      "type": 0,
+      "value": ", item "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.empty": [
+    {
+      "type": 0,
+      "value": "No declarations match these filters.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.export": [
+    {
+      "type": 0,
+      "value": "Export to ExcelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.exportFailed": [
+    {
+      "type": 0,
+      "value": "The export did not work. Try again in a moment.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.exportHint": [
+    {
+      "type": 0,
+      "value": "The export holds the rows under these filters, at most 20,000. It is recorded in the audit log.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.exported": [
+    {
+      "type": 0,
+      "value": "The workbook has been downloaded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.filters": [
+    {
+      "type": 0,
+      "value": "FiltersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.forbidden": [
+    {
+      "type": 0,
+      "value": "This register is for auditors and administrators, and for the secretaries and chairs of each committee.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.from": [
+    {
+      "type": 0,
+      "value": "FromSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.lead": [
+    {
+      "type": 0,
+      "value": "Declarations of interest in the committees you oversee, newest first. A row’s details say how it was made and decided.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.loadMore": [
+    {
+      "type": 0,
+      "value": "Load moreSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.meetingOf": [
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.member": [
+    {
+      "type": 0,
+      "value": "MemberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.memberHint": [
+    {
+      "type": 0,
+      "value": "Choose a committee to pick one of its members.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.noDecision": [
+    {
+      "type": 0,
+      "value": "—SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.notFound": [
+    {
+      "type": 0,
+      "value": "You cannot read the declarations of that committee. Choose another one.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.restrictedInterest": [
+    {
+      "type": 0,
+      "value": "(restricted item)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.state": [
+    {
+      "type": 0,
+      "value": "StateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.title": [
+    {
+      "type": 0,
+      "value": "Register of declarations of interestSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.to": [
+    {
+      "type": 0,
+      "value": "ToSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.register.tooMany": [
+    {
+      "type": 0,
+      "value": "You have exported this register several times in the last hour. Try again later.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "declarations.review.asking": [
     {
       "type": 0,
@@ -8618,6 +9833,206 @@
     {
       "type": 0,
       "value": " — declarations of interestSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.ruling.asks": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " asks whether they may take part. Until you decide, the papers are withheld from them.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.ruling.chairDeclared": [
+    {
+      "type": 0,
+      "value": "The chair declared this interest, so the vice-chair decides.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.ruling.decision": [
+    {
+      "type": 0,
+      "value": "The decisionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.ruling.decisionRequired": [
+    {
+      "type": 0,
+      "value": "Please choose the decision.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.ruling.declaredOn": [
+    {
+      "type": 0,
+      "value": "Declared on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.ruling.done": [
+    {
+      "type": 5,
+      "value": "outcome",
+      "options": {
+        "TAKE_PART": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " may take part."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 1,
+              "value": "name"
+            },
+            {
+              "type": 0,
+              "value": " will leave the room for this item."
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": 0,
+      "value": " They have been told.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.ruling.how": [
+    {
+      "type": 0,
+      "value": "How it was givenSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.ruling.howRequired": [
+    {
+      "type": 0,
+      "value": "Please say how it was given.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.ruling.leave": [
+    {
+      "type": 0,
+      "value": "They should leave the roomSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.ruling.noChair": [
+    {
+      "type": 0,
+      "value": "There is no chair or vice-chair in office who is free to decide on this declaration.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.ruling.note": [
+    {
+      "type": 0,
+      "value": "NoteSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.ruling.noteLength": [
+    {
+      "type": 0,
+      "value": "Please shorten the note to 500 characters or fewer.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.ruling.recordExplain": [
+    {
+      "type": 0,
+      "value": "For a decision the chair gave by email, by phone or in person. It is recorded as theirs, with your name as the one who entered it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.ruling.recordTitle": [
+    {
+      "type": 0,
+      "value": "Record the chair’s decision — "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ", item "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.ruling.rulerIs": [
+    {
+      "type": 0,
+      "value": "The decision is "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "’s.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.ruling.selfRuling": [
+    {
+      "type": 0,
+      "value": "Nobody decides on their own declaration. When the chair declared, the vice-chair decides.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.ruling.takePart": [
+    {
+      "type": 0,
+      "value": "They may take partSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.ruling.title": [
+    {
+      "type": 0,
+      "value": "A declaration for "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " — your decision is neededSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.ruling.who": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ", item "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "declarations.standing.label": [
@@ -8762,6 +10177,54 @@
     {
       "type": 0,
       "value": "Withdraw your declaration — "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.withdrawFor.done": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "’s declaration has been withdrawn. They have been told.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.withdrawFor.explain": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ", the secretaries and the chair will be told, and the withdrawal will be in the minutes.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.withdrawFor.reason": [
+    {
+      "type": 0,
+      "value": "Why is it being withdrawn?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.withdrawFor.title": [
+    {
+      "type": 0,
+      "value": "Withdraw "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "’s declaration — item "
     },
     {
       "type": 1,
@@ -29264,6 +30727,12 @@
     {
       "type": 0,
       "value": "DashboardSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "nav.declarations": [
+    {
+      "type": 0,
+      "value": "Declarations of interestSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "nav.distributionLists": [

@@ -399,6 +399,10 @@ export const ap = defineMessages({
     defaultMessage: 'This cannot be done now: the agenda has moved on. The page shows its latest state.',
   },
   forbidden: { id: 'agendaBuilder.problem.forbidden', defaultMessage: 'You cannot change this agenda.' },
+  RECUSED: {
+    id: 'agendaBuilder.problem.recused',
+    defaultMessage: 'You declared an interest in this item, so another secretary or an administrator handles it.',
+  },
   notFound: {
     id: 'agendaBuilder.problem.notFound',
     defaultMessage: 'This is no longer on the agenda. The page shows the latest.',

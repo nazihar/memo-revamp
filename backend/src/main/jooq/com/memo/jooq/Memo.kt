@@ -43,6 +43,8 @@ import com.memo.jooq.tables.ImportsRowFile
 import com.memo.jooq.tables.ImportsStaged
 import com.memo.jooq.tables.Meeting
 import com.memo.jooq.tables.MeetingAgenda
+import com.memo.jooq.tables.MeetingAttendance
+import com.memo.jooq.tables.MeetingAttendanceEvent
 import com.memo.jooq.tables.MeetingAudience
 import com.memo.jooq.tables.MeetingChairComment
 import com.memo.jooq.tables.MeetingConsentRequest
@@ -57,8 +59,10 @@ import com.memo.jooq.tables.MeetingInvitationMessage
 import com.memo.jooq.tables.MeetingInvitee
 import com.memo.jooq.tables.MeetingItem
 import com.memo.jooq.tables.MeetingItemAttendee
+import com.memo.jooq.tables.MeetingItemProgress
 import com.memo.jooq.tables.MeetingPaper
 import com.memo.jooq.tables.MeetingPaperOpen
+import com.memo.jooq.tables.MeetingQuorumChange
 import com.memo.jooq.tables.MeetingReaderState
 import com.memo.jooq.tables.MeetingReminder
 import com.memo.jooq.tables.MeetingRevision
@@ -362,6 +366,16 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val MEETING_AGENDA: MeetingAgenda get() = MeetingAgenda.MEETING_AGENDA
 
     /**
+     * The table <code>memo.meeting_attendance</code>.
+     */
+    val MEETING_ATTENDANCE: MeetingAttendance get() = MeetingAttendance.MEETING_ATTENDANCE
+
+    /**
+     * The table <code>memo.meeting_attendance_event</code>.
+     */
+    val MEETING_ATTENDANCE_EVENT: MeetingAttendanceEvent get() = MeetingAttendanceEvent.MEETING_ATTENDANCE_EVENT
+
+    /**
      * The table <code>memo.meeting_audience</code>.
      */
     val MEETING_AUDIENCE: MeetingAudience get() = MeetingAudience.MEETING_AUDIENCE
@@ -432,6 +446,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val MEETING_ITEM_ATTENDEE: MeetingItemAttendee get() = MeetingItemAttendee.MEETING_ITEM_ATTENDEE
 
     /**
+     * The table <code>memo.meeting_item_progress</code>.
+     */
+    val MEETING_ITEM_PROGRESS: MeetingItemProgress get() = MeetingItemProgress.MEETING_ITEM_PROGRESS
+
+    /**
      * The table <code>memo.meeting_paper</code>.
      */
     val MEETING_PAPER: MeetingPaper get() = MeetingPaper.MEETING_PAPER
@@ -440,6 +459,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      * The table <code>memo.meeting_paper_open</code>.
      */
     val MEETING_PAPER_OPEN: MeetingPaperOpen get() = MeetingPaperOpen.MEETING_PAPER_OPEN
+
+    /**
+     * The table <code>memo.meeting_quorum_change</code>.
+     */
+    val MEETING_QUORUM_CHANGE: MeetingQuorumChange get() = MeetingQuorumChange.MEETING_QUORUM_CHANGE
 
     /**
      * The table <code>memo.meeting_reader_state</code>.
@@ -1122,6 +1146,8 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         ImportsStaged.IMPORTS_STAGED,
         Meeting.MEETING,
         MeetingAgenda.MEETING_AGENDA,
+        MeetingAttendance.MEETING_ATTENDANCE,
+        MeetingAttendanceEvent.MEETING_ATTENDANCE_EVENT,
         MeetingAudience.MEETING_AUDIENCE,
         MeetingChairComment.MEETING_CHAIR_COMMENT,
         MeetingConsentRequest.MEETING_CONSENT_REQUEST,
@@ -1136,8 +1162,10 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         MeetingInvitee.MEETING_INVITEE,
         MeetingItem.MEETING_ITEM,
         MeetingItemAttendee.MEETING_ITEM_ATTENDEE,
+        MeetingItemProgress.MEETING_ITEM_PROGRESS,
         MeetingPaper.MEETING_PAPER,
         MeetingPaperOpen.MEETING_PAPER_OPEN,
+        MeetingQuorumChange.MEETING_QUORUM_CHANGE,
         MeetingReaderState.MEETING_READER_STATE,
         MeetingReminder.MEETING_REMINDER,
         MeetingRevision.MEETING_REVISION,

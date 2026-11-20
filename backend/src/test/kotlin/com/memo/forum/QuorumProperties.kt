@@ -78,10 +78,77 @@ class QuorumProperties {
         assertThat(result.needed).isGreaterThanOrEqualTo(rule.minimum)
     }
 
+    // ADR-0064 (Phase 4 E05 T4): alternates, departures and recusals.
+
+    @Property
+    fun alternatesNeverMeetARequiredRoleOrAnAttribute(
+        @ForAll("rules") rule: QuorumRule,
+        @ForAll("meetings") meeting: Meeting,
+    ) {
+        val withAlternates = Quorum.evaluate(rule, meeting.roster, meeting.attendance)
+        val holdersOnly = Quorum.evaluate(rule, meeting.roster, meeting.attendance.filterValues { !it.byAlternate })
+        // The roles and the attributes met are those of the holders present; the alternates only add to the number.
+        assertThat(withAlternates.unmet.filter { it.kind == UnmetKind.ROLE })
+            .isEqualTo(holdersOnly.unmet.filter { it.kind == UnmetKind.ROLE })
+        assertThat(withAlternates.unmet.filter { it.kind == UnmetKind.COMPOSITION }.map { it.attribute to it.actual })
+            .isEqualTo(holdersOnly.unmet.filter { it.kind == UnmetKind.COMPOSITION }.map { it.attribute to it.actual })
+        val alternates = meeting.attendance.count { (member, presence) -> presence.byAlternate && meeting.counts(rule, member, presence) }
+        assertThat(withAlternates.present).isEqualTo(holdersOnly.present + if (rule.alternatesCount) alternates else 0)
+    }
+
+    @Property
+    fun aDepartureNeverMakesAMeetingQuorate(
+        @ForAll("rules") rule: QuorumRule,
+        @ForAll("meetings") meeting: Meeting,
+    ) {
+        val before = Quorum.evaluate(rule, meeting.roster, meeting.attendance)
+        val leaving = meeting.attendance.keys.firstOrNull() ?: return
+        val after = Quorum.evaluate(rule, meeting.roster, meeting.attendance - leaving)
+        if (!before.quorate) assertThat(after.quorate).isFalse()
+        assertThat(after.present).isLessThanOrEqualTo(before.present)
+    }
+
+    @Property
+    fun aRecusalNeverMakesAnItemQuorate(
+        @ForAll("rules") rule: QuorumRule,
+        @ForAll("meetings") meeting: Meeting,
+    ) {
+        val before = Quorum.evaluate(rule, meeting.roster, meeting.attendance)
+        val (member, presence) = meeting.attendance.entries.firstOrNull { !it.value.recused } ?: return
+        val after = Quorum.evaluate(rule, meeting.roster, meeting.attendance + (member to presence.copy(recused = true)))
+        if (!before.quorate) assertThat(after.quorate).isFalse()
+    }
+
+    @Property
+    fun remoteAttendanceCountsOnlyWhenTheRuleSaysSo(
+        @ForAll("rules") rule: QuorumRule,
+        @ForAll("meetings") meeting: Meeting,
+    ) {
+        val inRoom = meeting.attendance.mapValues { it.value.copy(remote = false) }
+        val remote = meeting.attendance.mapValues { it.value.copy(remote = true) }
+        val all = Quorum.evaluate(rule.copy(remoteCounts = false), meeting.roster, remote)
+        assertThat(all.present).isZero()
+        assertThat(Quorum.evaluate(rule.copy(remoteCounts = true), meeting.roster, remote).present)
+            .isEqualTo(Quorum.evaluate(rule, meeting.roster, inRoom).present)
+    }
+
     data class Meeting(
         val roster: List<QuorumSeat>,
         val attendance: Map<UUID, QuorumPresence>,
-    )
+    ) {
+        /** Whether [member] present as [presence] counts towards the number under [rule] (alternates aside). */
+        fun counts(
+            rule: QuorumRule,
+            member: UUID,
+            presence: QuorumPresence,
+        ): Boolean {
+            val seat = roster.single { it.memberId == member }
+            return seat.role.countable &&
+                (rule.counts == QuorumCounts.ALL || seat.voting) &&
+                (rule.remoteCounts || !presence.remote) &&
+                (rule.recusedCount || !presence.recused)
+        }
+    }
 
     @Provide
     fun thresholds(): Arbitrary<QuorumThreshold> =

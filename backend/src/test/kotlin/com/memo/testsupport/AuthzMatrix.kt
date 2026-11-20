@@ -98,6 +98,47 @@ object AuthzMatrix {
 
     /** Every endpoint listed in some epic file. */
     val endpoints: Set<String> by lazy { cells.map { it.endpoint }.toSet() }
+
+    /**
+     * The recusal columns (design E04 §4, test plan E04 "Authorisation matrix tests"): entries with a `recusal` map give the
+     * exact status for each viewer recused from the item that the path or body names. They need a real meeting, so the
+     * recusal leak suite (`com.memo.meeting.RecusalLeakIT`) runs them, not [cells].
+     */
+    @Suppress("UNCHECKED_CAST")
+    val recusal: List<RecusalRow> by lazy {
+        resources.filter { it.filename != "rules.yaml" }.flatMap { resource ->
+            (read(resource)["endpoints"] as List<Map<String, Any?>>).mapNotNull { entry ->
+                val columns = entry["recusal"] as Map<String, Any?>? ?: return@mapNotNull null
+                require(columns.keys == RecusalRow.COLUMNS) { "${entry["endpoint"]}: recusal columns must be ${RecusalRow.COLUMNS}" }
+                RecusalRow(
+                    entry["endpoint"] as String,
+                    columns.mapValues { it.value.toString().toInt() },
+                    (entry["recusalBody"] ?: entry["body"]) as Map<String, Any?>?,
+                    entry["recusalQuery"] as String?,
+                )
+            }
+        }
+    }
+}
+
+/**
+ * One endpoint's recusal columns: the status each recused viewer gets ([COLUMNS]). Path variables and the `{item}`,
+ * `{file}` and `{control}` placeholders of [body] and [query] stand for the planted meeting's recused item, a fresh upload
+ * and a member who declared nothing.
+ */
+data class RecusalRow(
+    val endpoint: String,
+    val expected: Map<String, Int>,
+    val body: Map<String, Any?>?,
+    val query: String?,
+) {
+    val method: String get() = endpoint.substringBefore(' ')
+    val path: String get() = endpoint.substringAfter(' ')
+
+    companion object {
+        /** A member recused (leaving the room), one awaiting the chair's ruling, a recused secretary and a recused chair. */
+        val COLUMNS = setOf("recused", "awaiting", "recusedSecretary", "recusedChair")
+    }
 }
 
 /**

@@ -102,7 +102,7 @@ class DeclarationViews(
         val title =
             when {
                 item == null -> null
-                scene.officer -> item.title
+                scene.officer -> item.title.takeIf { access.officerReadsTitle(scene.actor, item) }
                 published != null && item.id in access.titles(scene.agenda, scene.actor) -> item.title
                 else -> null
             }
@@ -207,17 +207,31 @@ class DeclarationReviews(
 
     /**
      * The items of the latest revision whose title the actor sees, first published after [reviewed] (all of them before a
-     * first confirmation): standing items and breaks are not asked about.
+     * first confirmation): standing items and breaks are not asked about. An officer reads every title but the hidden ones
+     * of items they are recused from.
      */
     private fun toReview(
         scene: DeclarationScene,
         reviewed: Int?,
     ): List<ReviewItemResponse> {
         val first = revisions.firstPublished(scene.meeting.id)
-        val titles = if (scene.officer) scene.agenda.published.keys else access.titles(scene.agenda, scene.actor)
-        return scene.agenda.published.values
-            .filter { it.kind == ItemKind.ITEM || it.kind == ItemKind.SUBMISSION }
-            .filter { (first[it.itemId] ?: 0) > (reviewed ?: 0) && it.itemId in titles }
+        val asked =
+            scene.agenda.published.values
+                .filter { it.kind == ItemKind.ITEM || it.kind == ItemKind.SUBMISSION }
+                .filter { (first[it.itemId] ?: 0) > (reviewed ?: 0) }
+        val titles =
+            if (scene.officer) {
+                asked
+                    .filter { row ->
+                        scene.agenda.item(row.itemId, officer = true)?.let { access.officerReadsTitle(scene.actor, it) } ==
+                            true
+                    }.map { it.itemId }
+                    .toSet()
+            } else {
+                access.titles(scene.agenda, scene.actor)
+            }
+        return asked
+            .filter { it.itemId in titles }
             .map { ReviewItemResponse(it.itemId, it.number, it.title) }
     }
 }

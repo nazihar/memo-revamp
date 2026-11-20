@@ -2,9 +2,11 @@ package com.memo.meeting
 
 /**
  * Every read path that can reveal an agenda item or a paper (test plan E03, "Leak-suite skeleton"; ADR-0061, ADR-0062),
- * for the leak suite: [PaperLeakIT] runs one probe per [Surface] for a person outside the rule, and its meta-test fails
+ * for the leak suites: [PaperLeakIT] runs one probe per [Surface] for a person outside the rule, and its meta-test fails
  * when an endpoint of the meeting module is in neither [endpoints] nor [officersOnly]. E04 T2 added the recused-member probe
- * to every surface, and its own surfaces (declarations); E05–E08 add theirs (invitations, minutes, actions, search).
+ * to every surface, and its own surfaces (declarations, registers). E04 T5 made it the recusal registry as well
+ * ([RecusalLeakIT]): the channels beyond the meeting's endpoints ([Channel]), the forum module's endpoints ([forum]), and the
+ * surfaces of later epics still to come ([pending]); its meta-test fails when a controller of [modules] is not registered.
  */
 object PaperSurfaceRegistry {
     enum class Surface(
@@ -112,4 +114,125 @@ object PaperSurfaceRegistry {
                 "POST /api/v1/meetings/{meetingId}/progress" to "the item in progress (E05 T4): secretaries and forums.manage",
                 "GET /api/v1/meetings/{meetingId}/quorum/changes" to "the quorum lost and restored (E05 T4): officers",
             )
+
+    /** The modules whose controllers must all be registered here (test plan E04, "Meta-test"); later epics add theirs. */
+    val modules: List<String> =
+        listOf("com.memo.meeting", "com.memo.forum", "com.memo.minutes", "com.memo.actions", "com.memo.decision")
+
+    /**
+     * What reaches a person about an item beyond the meeting module's endpoints (test plan E04, "Surfaces"): each has a
+     * recusal probe in [RecusalLeakIT].
+     */
+    enum class Channel(
+        val what: String,
+    ) {
+        IN_APP("In-app notifications (`/me/notifications`): publication, changes, declarations, requests"),
+        MAIL("Every email of the scenario (agenda, declarations, late papers, invitations and their calendar files), from Mailpit"),
+        EXPORTS("The register's XLSX export and the meeting's calendar file"),
+        SEARCH("Memo search: meeting papers and their extracted text are never indexed (design E04 §1.7, ADR-0054)"),
+        AUDIT("The audit viewer and the verifiable export: declarations carry hashes of the nature, never the text"),
+        FORUM_QUEUE("The committee's submissions: officers by role, everyone else by the memo's own rule (design E04 §1.4)"),
+    }
+
+    /**
+     * The forum module's endpoints and why none of them is an item surface: committee set-up carries no meeting at all;
+     * submissions are the memo's cover sheet, which the committee's officers read by role and everyone else by the memo's own
+     * rule. A recusal does not change memo access (design E04 §1.4); the meeting register flags a recused officer who still
+     * reads the memo (`alsoReadsMemo`), and the [Channel.FORUM_QUEUE] probe checks that a recused member reads no queue.
+     */
+    val forum: Map<String, String> =
+        listOf(
+            "GET /api/v1/forums",
+            "POST /api/v1/forums",
+            "GET /api/v1/forums/{forumId}",
+            "PATCH /api/v1/forums/{forumId}",
+            "POST /api/v1/forums/{forumId}/dissolve",
+            "POST /api/v1/forums/{forumId}/clone",
+            "GET /api/v1/forums/{forumId}/policy",
+            "GET /api/v1/me/forums",
+            "GET /api/v1/forums/{forumId}/members",
+            "POST /api/v1/forums/{forumId}/members",
+            "PATCH /api/v1/forums/{forumId}/members/{memberId}",
+            "POST /api/v1/forums/{forumId}/members/{memberId}/end",
+            "POST /api/v1/forums/{forumId}/members/{memberId}/renew",
+            "POST /api/v1/forums/{forumId}/members/{memberId}/change-role",
+            "POST /api/v1/forums/{forumId}/members/{memberId}/withdraw",
+            "POST /api/v1/forums/quorum-preview",
+        ).associateWith { "committees and their members: no meeting or item content" } +
+            listOf(
+                "GET /api/v1/admin/forum-types",
+                "GET /api/v1/admin/forum-types/presets",
+                "POST /api/v1/admin/forum-types",
+                "GET /api/v1/admin/forum-types/{typeId}",
+                "POST /api/v1/admin/forum-types/{typeId}/activate",
+                "POST /api/v1/admin/forum-types/{typeId}/deactivate",
+                "GET /api/v1/admin/forum-types/{typeId}/versions",
+                "GET /api/v1/admin/forum-types/{typeId}/versions/{number}",
+                "POST /api/v1/admin/forum-types/{typeId}/versions",
+                "PUT /api/v1/admin/forum-types/{typeId}/versions/{number}",
+                "POST /api/v1/admin/forum-types/{typeId}/versions/{number}/submit",
+                "POST /api/v1/admin/forum-types/{typeId}/versions/{number}/approve",
+                "POST /api/v1/admin/forum-types/{typeId}/versions/{number}/send-back",
+                "GET /api/v1/admin/forum-types/{typeId}/versions/{number}/minutes-template",
+                "POST /api/v1/admin/forum-types/{typeId}/versions/{number}/minutes-template/preview",
+                "POST /api/v1/admin/forum-types/resolution-numbering/preview",
+            ).associateWith { "committee types (tenant administration): no meeting or item content" } +
+            listOf(
+                "GET /api/v1/forums/{forumId}/submissions",
+                "GET /api/v1/forums/{forumId}/submissions/{id}",
+                "PATCH /api/v1/forums/{forumId}/submissions/{id}",
+                "POST /api/v1/forums/{forumId}/submissions/{id}/accept",
+                "POST /api/v1/forums/{forumId}/submissions/{id}/defer",
+                "POST /api/v1/forums/{forumId}/submissions/{id}/return",
+                "POST /api/v1/forums/{forumId}/submissions/{id}/decline",
+                "POST /api/v1/forums/{forumId}/submissions/{id}/refer",
+                "GET /api/v1/memos/{memoId}/forum-submissions",
+                "GET /api/v1/forums/{forumId}/submissions/ready",
+            ).associateWith { "submissions: the memo's cover sheet, by the memo's rule and the officers' role (FORUM_QUEUE probe)" }
+
+    /**
+     * A surface of a later epic that reads meeting data and must get its recusal probe when it is built (test plan E04,
+     * "Placeholders for later epics"; design E04 §1.7). The meta-test fails while an endpoint under one of [paths] exists
+     * and the placeholder is still here: the epic replaces the placeholder with its probe in [RecusalLeakIT] and its
+     * endpoints in [endpoints] or [officersOnly].
+     */
+    data class Pending(
+        val epic: String,
+        val what: String,
+        val paths: List<String>,
+    )
+
+    /**
+     * E05's attendance and live quorum (E05 T4) were built while T5 was written: their reads are probed in the MEETING
+     * surface and their changes as officer probes in [RecusalLeakIT]; who counts for an item a holder is recused from is
+     * E05's `PresenceBuilderProperties` and `LiveQuorumIT`.
+     */
+    val pending: List<Pending> =
+        listOf(
+            Pending(
+                "E06",
+                "The item's decision, vote counts and named dissent: a recused member is neither counted nor named (\"took no part\")",
+                listOf("/api/v1/meetings/{meetingId}/decisions", "/api/v1/meetings/{meetingId}/items/{itemId}/decision"),
+            ),
+            Pending(
+                "E06",
+                "Draft and approved minutes: the recused version (heading, own declaration and decision; no discussion; ADR-0062)",
+                listOf("/api/v1/meetings/{meetingId}/minutes", "/api/v1/minutes"),
+            ),
+            Pending(
+                "E06",
+                "Resolutions of the item and their numbers",
+                listOf("/api/v1/resolutions", "/api/v1/meetings/{meetingId}/resolutions"),
+            ),
+            Pending(
+                "E07",
+                "Actions from the item: not shown to a recused person unless they own the action",
+                listOf("/api/v1/actions", "/api/v1/me/actions", "/api/v1/meetings/{meetingId}/actions"),
+            ),
+            Pending(
+                "E08",
+                "The decision register, `search_decision` and analytics, with their exports: rows carry the item's recused ids",
+                listOf("/api/v1/decisions", "/api/v1/decision-register", "/api/v1/analytics"),
+            ),
+        )
 }

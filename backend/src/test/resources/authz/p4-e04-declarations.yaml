@@ -3,33 +3,50 @@
 # secretary, the chair, the vice-chair when the chair declared or is recused, forums.manage through the secretary's path,
 # a member seeing the item or not, a member recused or awaiting a ruling, a guest, forum.read, someone outside) is
 # DeclarationsIT and DeclarationReviewIT; two at once DeclarationConcurrencyIT; another tenant MeetingCrossTenantIT.
+#
+# Recusal columns (E04 T5): the status on a real published meeting for a member recused from the item, one awaiting the
+# chair's ruling on it, a recused secretary and a recused chair, each already holding a declaration on the item;
+# `{declarationId}` is another member's declaration on the same item. RecusalLeakIT runs them and checks each answer for
+# canaries (another person's nature among them).
 epic: P4-E04
 endpoints:
-  - { endpoint: "GET /api/v1/meetings/{meetingId}/declarations/mine", rule: signedIn }
+  - endpoint: "GET /api/v1/meetings/{meetingId}/declarations/mine"
+    rule: signedIn
+    recusal: { recused: 200, awaiting: 200, recusedSecretary: 200, recusedChair: 200 }
   - endpoint: "POST /api/v1/meetings/{meetingId}/items/{itemId}/declarations"
     rule: signedIn
     body: { nature: "My brother-in-law is a director of the borrower", intent: "LEAVE" }
     headers: { Idempotency-Key: "{random}" }
+    recusal: { recused: 409, awaiting: 409, recusedSecretary: 409, recusedChair: 409 }
   - endpoint: "POST /api/v1/meetings/{meetingId}/declarations/{declarationId}/intent"
     rule: signedIn
     body: { intent: "ASK_CHAIR" }
     headers: { If-Match: "\"0\"" }
+    recusal: { recused: 404, awaiting: 404, recusedSecretary: 403, recusedChair: 403 }
   - endpoint: "POST /api/v1/meetings/{meetingId}/declarations/{declarationId}/ruling"
     rule: signedIn
     body: { outcome: "TAKE_PART" }
     headers: { If-Match: "\"0\"" }
+    recusal: { recused: 404, awaiting: 404, recusedSecretary: 403, recusedChair: 403 }
   - endpoint: "POST /api/v1/meetings/{meetingId}/declarations/{declarationId}/withdraw"
     rule: signedIn
     body: { reason: "Entered in error" }
     headers: { If-Match: "\"0\"" }
+    recusal: { recused: 404, awaiting: 404, recusedSecretary: 403, recusedChair: 403 }
   - endpoint: "POST /api/v1/meetings/{meetingId}/declarations/review"
     rule: signedIn
     body: { revision: 1 }
+    recusalBody: { revision: 2 }
+    recusal: { recused: 200, awaiting: 200, recusedSecretary: 200, recusedChair: 200 }
   # T4: the meeting register and "Remind them now" (the meeting's officers; random meeting ids answer 404), and the
   # register across committees with its export (forum.read, forums.manage and the committees' officers: a user without
   # either is 403). Who reads what on real meetings is DeclarationRegisterIT; the recused member PaperLeakIT (REGISTERS).
-  - { endpoint: "GET /api/v1/meetings/{meetingId}/declarations", rule: signedIn }
-  - { endpoint: "POST /api/v1/meetings/{meetingId}/declarations/remind", rule: signedIn }
+  - endpoint: "GET /api/v1/meetings/{meetingId}/declarations"
+    rule: signedIn
+    recusal: { recused: 403, awaiting: 403, recusedSecretary: 200, recusedChair: 200 }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/declarations/remind"
+    rule: signedIn
+    recusal: { recused: 403, awaiting: 403, recusedSecretary: 200, recusedChair: 403 }
   - endpoint: "GET /api/v1/declarations"
     rule: signedIn
     expect: { user: 403 }

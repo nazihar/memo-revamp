@@ -113,6 +113,15 @@ class DeclarationAccess(
         item: DeclarableItem,
     ): Boolean = recusals.recusedAmong(item.scope, listOf(userId)).isNotEmpty()
 
+    /**
+     * Whether [userId], an officer, reads [item]'s title: always, unless the item hides its title and they are recused from
+     * it, when their line is "Restricted item" like everyone else's (design E04 §1.6; found by the leak suite, E04 T5).
+     */
+    fun officerReadsTitle(
+        userId: UUID,
+        item: DeclarableItem,
+    ): Boolean = !item.titleHidden || !recused(userId, item)
+
     /** The people among [userIds] recused from [item]. */
     fun recusedAmong(
         userIds: Collection<UUID>,

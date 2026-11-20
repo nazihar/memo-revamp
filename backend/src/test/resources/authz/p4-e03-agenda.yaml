@@ -2,10 +2,18 @@
 # random here, so every subject allowed through is answered 404 before the officer check. Who may do what on a real
 # agenda (the committee's secretary, the chair reading only, forums.manage, a member, a user without a role) is
 # AgendaBuilderIT and AgendaPlacementIT; two secretaries at once AgendaConcurrencyIT; another tenant MeetingCrossTenantIT.
+#
+# Recusal columns (E04 T5; design E04 §4, ADR-0062): `recusal` gives the exact status on a real published meeting for a
+# member recused from the item the path or body names (`recused`), a member awaiting the chair's ruling on it (`awaiting`),
+# a recused secretary and a recused chair. RecusalLeakIT runs them, with each answer checked for canaries; `recusalBody`
+# and `recusalQuery` replace the sample where the item ({item}), a fresh upload ({file}) or a member who declared nothing
+# ({control}) must be named.
 epic: P4-E03
 endpoints:
   - { endpoint: "GET /api/v1/forums/{forumId}/submissions/ready", rule: signedIn }
-  - { endpoint: "GET /api/v1/meetings/{meetingId}/agenda/draft", rule: signedIn }
+  - endpoint: "GET /api/v1/meetings/{meetingId}/agenda/draft"
+    rule: signedIn
+    recusal: { recused: 403, awaiting: 403, recusedSecretary: 200, recusedChair: 200 }
   - endpoint: "POST /api/v1/meetings/{meetingId}/agenda"
     rule: signedIn
     body: { from: "TEMPLATE" }
@@ -23,24 +31,39 @@ endpoints:
     rule: signedIn
     body: { itemId: "{random}", toPosition: 0 }
     headers: { If-Match: "\"0\"" }
+    recusalBody: { itemId: "{item}", toPosition: 0 }
+    recusal: { recused: 403, awaiting: 403, recusedSecretary: 403, recusedChair: 403 }
   - endpoint: "POST /api/v1/meetings/{meetingId}/agenda/items"
     rule: signedIn
     body: { kind: "ITEM", title: "Strategy update" }
     headers: { If-Match: "\"0\"", Idempotency-Key: "{random}" }
+    recusalBody: { kind: "ITEM", parentId: "{item}", title: "Sub-item" }
+    recusal: { recused: 403, awaiting: 403, recusedSecretary: 403, recusedChair: 403 }
   - endpoint: "PATCH /api/v1/meetings/{meetingId}/agenda/items/{itemId}"
     rule: signedIn
     body: { title: "Strategy update" }
     headers: { If-Match: "\"0\"" }
-  - { endpoint: "POST /api/v1/meetings/{meetingId}/agenda/items/{itemId}/remove", rule: signedIn, headers: { If-Match: "\"0\"" } }
+    recusal: { recused: 403, awaiting: 403, recusedSecretary: 403, recusedChair: 403 }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/agenda/items/{itemId}/remove"
+    rule: signedIn
+    headers: { If-Match: "\"0\"" }
+    recusal: { recused: 403, awaiting: 403, recusedSecretary: 403, recusedChair: 403 }
   - endpoint: "POST /api/v1/meetings/{meetingId}/agenda/items/{itemId}/papers"
     rule: signedIn
     body: { fileId: "{random}" }
     headers: { If-Match: "\"0\"", Idempotency-Key: "{random}" }
+    recusalBody: { fileId: "{file}" }
+    recusal: { recused: 403, awaiting: 403, recusedSecretary: 403, recusedChair: 403 }
   - endpoint: "PATCH /api/v1/meetings/{meetingId}/agenda/papers/{paperId}"
     rule: signedIn
     body: { title: "Valuation", classificationId: "{random}" }
     headers: { If-Match: "\"0\"" }
-  - { endpoint: "POST /api/v1/meetings/{meetingId}/agenda/papers/{paperId}/remove", rule: signedIn, headers: { If-Match: "\"0\"" } }
+    recusalBody: { title: "Valuation" }
+    recusal: { recused: 403, awaiting: 403, recusedSecretary: 403, recusedChair: 403 }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/agenda/papers/{paperId}/remove"
+    rule: signedIn
+    headers: { If-Match: "\"0\"" }
+    recusal: { recused: 403, awaiting: 403, recusedSecretary: 403, recusedChair: 403 }
   # T3: the chair's part and publishing (design E03 §1.3, §1.4). Who may agree, decide and publish on a real agenda is
   # AgendaPublishIT; the notifications AgendaNotificationsIT; numbers MeetingNumberConcurrencyIT.
   - endpoint: "POST /api/v1/meetings/{meetingId}/agenda/chair-agreement"
@@ -55,11 +78,15 @@ endpoints:
     rule: signedIn
     body: { agree: true }
     headers: { If-Match: "\"0\"" }
+    recusal: { recused: 403, awaiting: 403, recusedSecretary: 403, recusedChair: 403 }
   - endpoint: "POST /api/v1/meetings/{meetingId}/agenda/papers/{paperId}/late-decision"
     rule: signedIn
     body: { agree: true }
     headers: { If-Match: "\"0\"" }
-  - { endpoint: "GET /api/v1/meetings/{meetingId}/agenda/publish-preview", rule: signedIn }
+    recusal: { recused: 403, awaiting: 403, recusedSecretary: 403, recusedChair: 403 }
+  - endpoint: "GET /api/v1/meetings/{meetingId}/agenda/publish-preview"
+    rule: signedIn
+    recusal: { recused: 403, awaiting: 403, recusedSecretary: 200, recusedChair: 200 }
   - endpoint: "POST /api/v1/meetings/{meetingId}/agenda/publish"
     rule: signedIn
     body: { notify: true }
@@ -67,12 +94,24 @@ endpoints:
   # T4: the agenda as its audience reads it, paper opens, the preview and consent requests (ADR-0061, design E03 §1.5,
   # §1.9). Who sees which line and paper on a real agenda is PaperAccessIT (with every surface of PaperSurfaceRegistry),
   # paper content PaperServingIT, "What changed" WhatChangedIT and the requests ConsentRequestIT.
-  - { endpoint: "GET /api/v1/meetings/{meetingId}/agenda", rule: signedIn }
-  - { endpoint: "GET /api/v1/meetings/{meetingId}/agenda/revisions", rule: signedIn }
+  - endpoint: "GET /api/v1/meetings/{meetingId}/agenda"
+    rule: signedIn
+    recusal: { recused: 200, awaiting: 200, recusedSecretary: 200, recusedChair: 200 }
+  - endpoint: "GET /api/v1/meetings/{meetingId}/agenda/revisions"
+    rule: signedIn
+    recusal: { recused: 200, awaiting: 200, recusedSecretary: 200, recusedChair: 200 }
   - { endpoint: "POST /api/v1/meetings/{meetingId}/seen", rule: signedIn, body: { revision: 1 } }
-  - { endpoint: "GET /api/v1/meetings/{meetingId}/agenda/preview", rule: signedIn }
-  - { endpoint: "GET /api/v1/meetings/{meetingId}/papers/{paperId}/content", rule: signedIn }
+  - endpoint: "GET /api/v1/meetings/{meetingId}/agenda/preview"
+    rule: signedIn
+    recusalQuery: "as={control}"
+    recusal: { recused: 403, awaiting: 403, recusedSecretary: 200, recusedChair: 200 }
+  - endpoint: "GET /api/v1/meetings/{meetingId}/papers/{paperId}/content"
+    rule: signedIn
+    recusal: { recused: 404, awaiting: 404, recusedSecretary: 404, recusedChair: 404 }
   - endpoint: "POST /api/v1/meetings/{meetingId}/agenda/items/{itemId}/discussion-requests"
     rule: signedIn
     headers: { Idempotency-Key: "{random}" }
-  - { endpoint: "POST /api/v1/meetings/{meetingId}/agenda/items/{itemId}/discussion-requests/mine/withdraw", rule: signedIn }
+    recusal: { recused: 404, awaiting: 404, recusedSecretary: 404, recusedChair: 404 }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/agenda/items/{itemId}/discussion-requests/mine/withdraw"
+    rule: signedIn
+    recusal: { recused: 404, awaiting: 404, recusedSecretary: 404, recusedChair: 404 }

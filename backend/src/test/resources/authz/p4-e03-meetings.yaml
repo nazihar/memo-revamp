@@ -2,9 +2,16 @@
 # through is answered 404 before the officer check. Who may do what on a real meeting (secretary of the forum and of
 # another, chair, forums.manage, member, former member, guest, forum.read cleared and not cleared, a user without a
 # role) is MeetingsIT; another tenant is MeetingCrossTenantIT.
+#
+# Recusal columns (E04 T5; design E04 §4, ADR-0062): on the reads of a real meeting, the status for a member recused from
+# one of its items, one awaiting the chair's ruling, a recused secretary and a recused chair; RecusalLeakIT runs them and
+# checks each answer for canaries (a meeting carries no item content). The item and paper endpoints have theirs in
+# p4-e03-agenda.yaml, the declarations in p4-e04-declarations.yaml.
 epic: P4-E03
 endpoints:
-  - { endpoint: "GET /api/v1/forums/{forumId}/meetings", rule: signedIn }
+  - endpoint: "GET /api/v1/forums/{forumId}/meetings"
+    rule: signedIn
+    recusal: { recused: 200, awaiting: 200, recusedSecretary: 200, recusedChair: 200 }
   - endpoint: "POST /api/v1/forums/{forumId}/meetings"
     rule: signedIn
     body:
@@ -14,7 +21,9 @@ endpoints:
       mode: "ONLINE"
       joinUrl: "https://meet.example/abc"
     headers: { Idempotency-Key: "{random}" }
-  - { endpoint: "GET /api/v1/meetings/{meetingId}", rule: signedIn }
+  - endpoint: "GET /api/v1/meetings/{meetingId}"
+    rule: signedIn
+    recusal: { recused: 200, awaiting: 200, recusedSecretary: 200, recusedChair: 200 }
   - endpoint: "PATCH /api/v1/meetings/{meetingId}"
     rule: signedIn
     body: { mode: "IN_PERSON", location: "Board room" }
@@ -32,4 +41,6 @@ endpoints:
     headers: { If-Match: "\"0\"" }
   - { endpoint: "POST /api/v1/meetings/{meetingId}/guests", rule: signedIn, body: { userId: "{random}" } }
   - { endpoint: "POST /api/v1/meetings/{meetingId}/guests/{userId}/remove", rule: signedIn }
-  - { endpoint: GET /api/v1/me/meetings, rule: signedIn }
+  - endpoint: GET /api/v1/me/meetings
+    rule: signedIn
+    recusal: { recused: 200, awaiting: 200, recusedSecretary: 200, recusedChair: 200 }

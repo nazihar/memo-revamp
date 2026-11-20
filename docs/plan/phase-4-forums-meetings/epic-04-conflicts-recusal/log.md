@@ -121,6 +121,77 @@
   - The volume budgets run in `MeetingVolumeIT`, not a separate `DeclarationVolumeIT`, so the volume is written once.
 - **Left:** the web panels (T7 managing declarations, with the quorum warning and the memo flag in the builder; T8 the register and its export button); the canary/differential leak suite over these surfaces (T5).
 
+## 2026-11-20 — T7 managing declarations (web, flow T)
+- **No backend change.** The screens use T1's and T4's endpoints as they are. Who rules, and whether the viewer holds the chair's or vice-chair's seat, are worked out on the web (below), because the API has no flag for either.
+- **Built** (`web/src/features/meetings/declarations/`, wired into the meeting page and the builder):
+  - **The Declarations tab** (T1, `OfficerDeclarations`). It sits beside Agenda and "Invitations and replies" for the officers, and beside Agenda alone for a chair or vice-chair who is only a member of the meeting (the seat is read from `/me/forums`). It shows on DRAFT meetings too, because officers record on draft items. It reads `GET …/declarations`:
+    - "Revision 2 published", "Reviewed: 5 of 7", "Not yet: N. Rahman (reminded), K. Hossain" and "Remind them now" when `canRemind`. The answer is said in a status line ("2 people were reminded: …", or that nobody was).
+    - Per item: "Item 5 Term loan, Delta Textiles" ("Restricted item" when the title is null). Each declaration shows the person, the state as a badge, how it was made ("By email, recorded by Company Secretary, 9 Dec (email of 8 Dec)", "Carried over from the memo", "In the app"), the correction flag, the interest in quotes, and the decision with who recorded it and how.
+    - For a declaration waiting for a ruling: "Waiting for S. Ali to decide.", "Waiting for your decision." or, with nobody able, that nobody can decide.
+    - "also reads the memo" in words, and the quorum warning in words, with the tip.
+    - On an item the officer is recused from: "only your own declaration is shown".
+  - **Actions on a row** (buttons, 44 px, each named with the person and the item):
+    - "Decide…" for the person who rules ("Change the decision…" after a ruling);
+    - "Record the chair's decision…" for secretaries and `forums.manage`;
+    - "Withdraw…" for officers not recused from the item, and on one's own declaration;
+    - once the meeting is HELD, only the secretary's withdrawal remains, as a correction.
+  - **Who rules** (`rulerOf`) mirrors `DeclarationAccess.ruler`: the first of the chair and the vice-chair in office (from the committee's members) who is not the declarant and not recused from the item or its parent. The recusals come from the register's effective declarations, and the parents from the draft (officers) or the members' agenda. The server still decides; a mismatch comes back as 403 and is said in words.
+  - **Record a declaration** (T2, `RecordSheet`, a side sheet). It has:
+    - the member (the committee in office, the guests and item attendees);
+    - the item (the draft's items and submissions the officer is not recused from; no breaks);
+    - their interest; how it was made (At the meeting, In person, By email, By phone); the optional note; leave the room (default) or ask the chair.
+    - During the meeting "At the meeting" is chosen already. Once HELD (secretaries) it says "Correcting the record of a held meeting" and asks why.
+    - Field problems are shown at the field, 422 included (`onBehalfOf NOT_IN_AUDIENCE`, `how`, `howNote`, `nature`, `reason`). `ONE_OPEN` and the other refusals are said in words.
+    - One Idempotency-Key per request; a changed request gets a new one. Focus goes back to the button that opened it.
+  - **The chair's decision** (T3, `RulingDialog`):
+    - The ruler's dialog reads "A declaration for 12 December 2026 — your decision is needed". It shows the person and the item, the interest, when it was declared, "… asks whether they may take part. Until you decide, the papers are withheld from them." and, for the vice-chair, "The chair declared this interest, so the vice-chair decides." It has an optional note and "They should leave the room" / "They may take part". Only the decisions that change the state are offered.
+    - The secretary's version records the decision on the chair's behalf: the decision, how it was given (required), the note, and "The decision is S. Ali's.".
+    - Both send If-Match. `SELF_RULING`, `NO_CHAIR`, `WRONG_STATE`, `FROZEN`, `RECUSED`, 412 and 429 are said in words.
+  - **Withdraw for someone** (`WithdrawForDialog`): a reason is required, sent with If-Match. The dialog says who will be told and that the withdrawal will be in the minutes.
+  - **The builder** (T7, flow T4):
+    - **Gap 1 fixed.** A row the officer is recused from reads its number, time and title, or "Restricted item" when T2 sends `""` for a hidden title, with "You declared an interest. Another secretary or an administrator handles this item." It has no ⋯ menu and no drag handle (its place is kept so the numbers stay in line).
+    - A row that cannot be quorate shows the quorum warning, read from the meeting register.
+    - "Preview as…" adds "Items you declared an interest in are hidden in this preview." when the officer is recused from any item, and shows a recused line as "6 Restricted item — an interest is declared, papers withheld".
+    - A 403 `RECUSED` from any builder change is said in words.
+  - **Strings:** en and ar in the `declarations` part (now 4.4 KiB en and 5.2 KiB ar gzip); `agendaBuilder.problem.recused` in its part.
+  - **Tests:**
+    - `officers.test.tsx` (10): the secretary's tab (review, natures, memo flag, quorum warning, ruler line, register link, 44 px, axe, "Remind them now"); recording "by email" from the keyboard (field errors and focus, items offered, 422 at the field, `ONE_OPEN` in words, the same Idempotency-Key on retry, the body, focus back); "At the meeting" during the meeting; the correction once held; recording the chair's decision on their behalf (how required, `NO_CHAIR`, body and If-Match); withdrawing with a reason (412 in words); the chair deciding (not on their own declaration; "Change the decision…"); the vice-chair as a member deciding on the chair's own declaration; no tab for a plain member; Arabic RTL with axe.
+    - `agenda/recused.test.tsx` (3): the recused row with a hidden title and no menu or handle, the quorum warning on a row, axe; the preview banner and line; `RECUSED` in words.
+- **Gap 2 not fixable on the web; the backend is unchanged.** The vice-chair cannot get a "decide" button in the builder. With a chair in office, a vice-chair's relation to the meeting is MEMBER, and `GET …/agenda/draft` answers them 403 (`AgendaGuard.requireReader`), so they cannot open the builder at all. `AgendaDraftResponse` also has no per-item flag for who decides (`canAgree` is still "the chair in office"). T2 routes a late request on an item the chair is recused from to the vice-chair, but today a secretary must record the answer on their behalf (`onBehalf` skips the decider check). It needs a backend choice: a per-item `decides` flag plus draft read access for the decider, or the late requests listed for the decider on a surface they can read (the Declarations tab is one). The chair's own buttons are right: an item the chair is recused from comes as a line without lateness, so no button is offered there.
+- **Deviations from flow T:**
+  - Row actions are buttons, not a ⋯ menu.
+  - There is no "History": the API returns a declaration and its latest ruling, not its events, so the row shows how it was made, the correction flag and the latest decision with who recorded it.
+  - The secretary's "Record the chair's decision…" has no date field; the server stamps the time and the note carries "email of 8 Dec".
+  - The quorum tip leaves out "(from the next release)".
+  - Who rules is worked out on the web, as above.
+- **Left:** the vice-chair's late-paper decision (gap 2, needs a backend decision); the manual keyboard and screen-reader pass and the journey `declarations.spec` (T9).
+
+## 2026-11-20 — T8 the register of declarations (web, flow U)
+- **No backend change.**
+- **Built:**
+  - **The page** `/declarations` (`RegisterPage`, route `_shell/_signedIn/declarations.tsx`, `?forumId=` opens it on one committee).
+  - **Filters:**
+    - Committee: every committee for `forum.read` and `forums.manage`, otherwise those where the reader is secretary, chair or vice-chair.
+    - From and To (days).
+    - Member: the chosen committee's members, past ones included. It is disabled under "All" and says why.
+    - State, in words.
+    - Each change reads the first page again.
+  - **The table** (`DataTable`) has the columns Meeting (label and day), Item ("Restricted item" when the title is null), Member (with how it was made), What (the state in words), Interest ("(restricted item)" when the nature is null) and Decision (with who recorded it).
+    - Each row has "Details" (44 px), which shows how it was made, at the meeting, correction, state and the ruling's note.
+    - "Load more" reads the next page by `nextCursor` (keyset).
+  - **"Export to Excel"** downloads the rows under the filters through `exportDeclarations` as a blob. Rate limits (429) are said in words.
+  - **Who sees it:** a 403 reads "This register is for auditors and administrators, and for the secretaries and chairs of each committee." and the export is disabled. A committee out of scope (404) says so.
+  - **The menu** has "Declarations of interest" for `forum.read` and `forums.manage` (the label is in core; the Arabic core is still 14.8 KiB). Secretaries and chairs reach the page from the meeting's Declarations tab ("Register of declarations for this committee").
+  - **Strings:** `declarations.register.*` in the `declarations` part, which now also loads on `/declarations` (`catalogue-parts.json`). No new part was needed, so nothing changes in the list of parts (#198).
+  - **Tests:** `register.test.tsx` (4):
+    - the rows, the restricted row, the details, keyset "Load more", the menu entry, axe;
+    - the filters in the request, the export with the same filters, the 429 in words, the member filter cleared and disabled under "All";
+    - 403 for others, with the export disabled and no menu entry;
+    - Arabic RTL with axe.
+- **Deviations from flow U:**
+  - The dates start empty (everything) rather than the calendar year.
+  - The member is picked from the chosen committee rather than from anyone.
+  - The interest is clamped to three lines in the table; the export has it in full.
 ## 2026-11-20 — T5 the recusal leak suite (backend)
 - **No migration.** Tests, the matrix's recusal columns and one fix in the declarations' views.
 - **Built:**

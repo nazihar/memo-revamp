@@ -10,6 +10,9 @@ import { ErrorState, LoadingState } from '@/components/page/States'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/misc'
 import { AgendaLink } from './agenda/AgendaLink'
+import { om } from './declarations/officer-messages'
+import { useChairSeat } from './declarations/chair-seat'
+import { OfficerDeclarations } from './declarations/OfficerDeclarations'
 import { AddGuestDialog, MeetingMenu, RemoveGuestDialog } from './MeetingDialogs'
 import { mm, mmv } from './messages'
 import { MeetingAgenda } from './page/MeetingAgenda'
@@ -27,11 +30,13 @@ import { cityOf, viewerZone, whenIn, yourTimes } from './time'
  * and where with a large "Join the meeting", then the agenda as the reader may see it; its secretaries' ⋯ menu and
  * the guests for officers. Printing gives a plain agenda without the application's frame. Under the place, "Will you
  * attend?" with "Add to my calendar" for whoever answers the meeting (E05 T7, flow V), and for the officers of a meeting
- * that is scheduled or later, the agenda and "Invitations and replies" (flow W) as two tabs.
+ * that is scheduled or later, the agenda and "Invitations and replies" (flow W) as two tabs; and for the officers and the
+ * committee's chair or vice-chair, "Declarations" (E04 T7, flow T).
  */
 export function MeetingPage({ meetingId }: { meetingId: string }) {
   const intl = useIntl()
   const meeting = useQuery(getMeetingOptions({ path: { meetingId } }))
+  const chairSeat = useChairSeat(meeting.data)
   if (meeting.isPending) return <LoadingState />
   if (meeting.isError) return <ErrorState onRetry={() => void meeting.refetch()} />
   const m = meeting.data
@@ -46,6 +51,10 @@ export function MeetingPage({ meetingId }: { meetingId: string }) {
   const zone = viewerZone()
   const mine = yourTimes(intl, m, zone)
   const officer = m.relation === 'OFFICER'
+  // The tabs (E05 T7, E04 T7): Invitations and replies for the officers once the meeting is scheduled; Declarations
+  // for the officers and the committee's chair or vice-chair, who rules on declarations even as a member.
+  const replies = officer && m.status !== 'DRAFT'
+  const declarations = (officer || chairSeat) && m.status !== 'CANCELLED'
   return (
     <section aria-labelledby="meeting-title" className="meeting-print flex max-w-3xl flex-col gap-5">
       <PageHeader
@@ -85,22 +94,36 @@ export function MeetingPage({ meetingId }: { meetingId: string }) {
       {m.status === 'DRAFT' ? <p className="text-muted-foreground">{intl.formatMessage(mm.draftHint)}</p> : null}
       <Place meeting={m} />
       {m.rsvp ? <WillYouAttend meeting={m} /> : <CalendarLink meeting={m} />}
-      {officer && m.status !== 'DRAFT' ? (
+      {replies || declarations ? (
         <Tabs defaultValue="agenda" className="print:contents">
           <TabsList aria-label={intl.formatMessage(rm.tabs)} className="print:hidden">
             <TabsTrigger value="agenda" className="min-h-11">
               {intl.formatMessage(rm.tabAgenda)}
             </TabsTrigger>
-            <TabsTrigger value="replies" className="min-h-11">
-              {intl.formatMessage(rm.tabReplies)}
-            </TabsTrigger>
+            {replies ? (
+              <TabsTrigger value="replies" className="min-h-11">
+                {intl.formatMessage(rm.tabReplies)}
+              </TabsTrigger>
+            ) : null}
+            {declarations ? (
+              <TabsTrigger value="declarations" className="min-h-11">
+                {intl.formatMessage(om.tab)}
+              </TabsTrigger>
+            ) : null}
           </TabsList>
           <TabsContent value="agenda" className="pt-4">
             <MeetingAgenda meetingId={m.id} relation={m.relation} />
           </TabsContent>
-          <TabsContent value="replies" className="pt-4 print:hidden">
-            <InvitationsPanel meeting={m} />
-          </TabsContent>
+          {replies ? (
+            <TabsContent value="replies" className="pt-4 print:hidden">
+              <InvitationsPanel meeting={m} />
+            </TabsContent>
+          ) : null}
+          {declarations ? (
+            <TabsContent value="declarations" className="pt-4 print:hidden">
+              <OfficerDeclarations meeting={m} />
+            </TabsContent>
+          ) : null}
         </Tabs>
       ) : (
         <MeetingAgenda meetingId={m.id} relation={m.relation} />

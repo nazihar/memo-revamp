@@ -38,6 +38,7 @@ export function agendaRefusal(intl: IntlShape, terms: TermValues, problem: unkno
       : []
     return intl.formatMessage(apv.PAPER_NOT_READABLE, { titles: intl.formatList(titles), count: titles.length })
   }
+  if (reason === 'RECUSED') return intl.formatMessage(ap.RECUSED)
   const known = REASONS.find((r) => r === reason)
   if (known) return intl.formatMessage(ap[known])
   if (problem.status === 412) return intl.formatMessage(ap.conflict)

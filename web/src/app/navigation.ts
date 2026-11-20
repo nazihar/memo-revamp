@@ -9,6 +9,7 @@ import {
   ListChecks,
   ListTodo,
   Scale,
+  ScrollText,
   UserRoundCog,
   Workflow,
   FileStack,
@@ -67,6 +68,7 @@ const messages = defineMessages({
   // Takes the organisation's terms (ADR-0032): the menu, breadcrumbs and overview pass them to every label.
   forumTypes: { id: 'nav.forumTypes', defaultMessage: '{Forum} types' },
   forums: { id: 'nav.forums', defaultMessage: '{Forums}' },
+  declarations: { id: 'nav.declarations', defaultMessage: 'Declarations of interest' },
   workflows: { id: 'nav.workflows', defaultMessage: 'Workflows' },
   doa: { id: 'nav.doa', defaultMessage: 'Delegation of authority' },
   queues: { id: 'nav.queues', defaultMessage: 'Queues' },
@@ -147,6 +149,16 @@ export const navigation: NavItem[] = [
     icon: UsersRound,
     group: 'work',
     audience: 'signedIn',
+    enabled: true,
+  },
+  {
+    // The register across committees (Phase 4 E04 T8): oversight access; secretaries and chairs reach it from a meeting.
+    id: 'declarations',
+    to: '/declarations',
+    label: messages.declarations,
+    icon: ScrollText,
+    group: 'work',
+    audience: { anyOf: ['forum.read', 'forums.manage'] },
     enabled: true,
   },
   { id: 'org', to: '/org', label: messages.org, icon: Network, group: 'work', audience: 'signedIn', enabled: true },

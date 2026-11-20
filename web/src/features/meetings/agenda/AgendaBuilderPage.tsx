@@ -6,6 +6,7 @@ import { useIntl } from 'react-intl'
 import {
   getAgendaDraftOptions,
   getAgendaDraftQueryKey,
+  getMeetingDeclarationRegisterOptions,
   getMeetingOptions,
   listClassificationLevelsOptions,
   listForumMeetingsOptions,
@@ -65,6 +66,11 @@ export function AgendaBuilderPage({ meetingId }: { meetingId: string }) {
 function Builder({ meeting, draft }: { meeting: MeetingResponse; draft: Draft }) {
   const levels = useQuery(listClassificationLevelsOptions())
   const members = useQuery(listForumMembersOptions({ path: { forumId: meeting.forumId } }))
+  // The meeting's declarations, for the quorum warnings on the rows (E04 §1.8, T7).
+  const register = useQuery({
+    ...getMeetingDeclarationRegisterOptions({ path: { meetingId: meeting.id } }),
+    enabled: draft.started,
+  })
   const { change } = useAgendaChange(meeting.id)
   const [announcement, setAnnouncement] = useState('')
   const [sheet, setSheet] = useState<{ itemId: string; tab: SheetTab }>()
@@ -104,6 +110,7 @@ function Builder({ meeting, draft }: { meeting: MeetingResponse; draft: Draft })
     change,
     announce,
     openSheet,
+    register: register.data,
   }
 
   return (

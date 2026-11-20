@@ -2,7 +2,11 @@ import { useQueryClient } from '@tanstack/react-query'
 import { createContext, useContext } from 'react'
 import { useIntl } from 'react-intl'
 import { getAgendaDraftQueryKey } from '@/api/generated/@tanstack/react-query.gen'
-import type { ClassificationLevel, MeetingResponse } from '@/api/generated/types.gen'
+import type {
+  ClassificationLevel,
+  MeetingDeclarationRegisterResponse,
+  MeetingResponse,
+} from '@/api/generated/types.gen'
 import { isProblem } from '@/api/http'
 import { useTerms } from '@/features/terms/terms'
 import { draftIfMatch, type Draft } from './draft'
@@ -81,6 +85,8 @@ export interface AgendaContextValue {
   announce: (text: string) => void
   /** Opens the item's side sheet on a tab. */
   openSheet: (itemId: string, tab?: SheetTab) => void
+  /** The meeting's declarations (E04 T7), for the quorum warnings on the rows; absent until read. */
+  register?: MeetingDeclarationRegisterResponse | undefined
 }
 
 export type SheetTab = 'details' | 'papers' | 'access'

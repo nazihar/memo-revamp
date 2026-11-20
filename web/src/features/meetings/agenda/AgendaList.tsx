@@ -1,6 +1,6 @@
-import { Coffee, EllipsisVertical, Lock, Plus } from 'lucide-react'
+import { Coffee, EllipsisVertical, Lock, Plus, TriangleAlert } from 'lucide-react'
 import { useState } from 'react'
-import { useIntl } from 'react-intl'
+import { useIntl, type IntlShape } from 'react-intl'
 import {
   addAgendaItem,
   addAgendaSection,
@@ -21,6 +21,8 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Field } from '@/components/ui/field'
 import { Input, Select } from '@/components/ui/form-controls'
+import { om } from '@/features/meetings/declarations/officer-messages'
+import { quorumWords } from '@/features/meetings/declarations/officers'
 import { CheckField } from './CheckField'
 import { FormDialog } from '@/features/forums/FormDialog'
 import { newIdempotencyKey } from '@/lib/idempotency'
@@ -177,19 +179,24 @@ function ItemRow({
   onAddSubItem: (parentId: string) => void
 }) {
   const intl = useIntl()
-  const { editable } = useAgenda()
+  const { editable, register } = useAgenda()
   const isBreak = item.kind === 'BREAK'
+  // A row the officer is recused from (E04 T7, flow T4): its line only, no menu and no drag handle.
+  const recused = item.recused === true
+  const title = recusedTitle(intl, item)
+  const warning = register?.items.find((r) => r.itemId === item.id)?.quorumWarning
   return (
     <DragRow
       id={item.id}
-      title={item.title}
-      enabled={editable}
+      title={title}
+      enabled={editable && !recused}
       className={cn('flex flex-col rounded-md', parent && 'ps-8')}
     >
       {(handle) => (
         <>
           <div className="flex min-h-11 items-start gap-2 py-1">
-            {handle}
+            {/* A recused row has no handle; its place is kept so the numbers stay in line. */}
+            {handle ?? (editable ? <span aria-hidden="true" className="size-11 shrink-0" /> : null)}
             <span className="mt-2.5 w-10 shrink-0 font-medium tabular-nums">
               {isBreak ? (
                 <Coffee aria-hidden="true" className="size-4" />
@@ -200,7 +207,7 @@ function ItemRow({
             <div className="mt-2 flex min-w-0 flex-1 flex-col gap-0.5">
               <p className="flex flex-wrap items-baseline gap-x-3">
                 <span dir="auto" className="font-medium">
-                  {item.title}
+                  {title}
                 </span>
                 {item.purpose && !isBreak ? (
                   <span className="text-sm text-muted-foreground">
@@ -208,17 +215,23 @@ function ItemRow({
                   </span>
                 ) : null}
               </p>
-              <ItemFacts item={item} />
+              {recused ? <p className="text-sm">{intl.formatMessage(om.builderRecused)}</p> : <ItemFacts item={item} />}
+              {warning && !recused ? (
+                <p className="flex items-start gap-1.5 text-sm text-status-warn-fg">
+                  <TriangleAlert aria-hidden="true" className="mt-0.5 size-4 shrink-0" />
+                  {quorumWords(intl, item.number ?? title, warning)}
+                </p>
+              ) : null}
             </div>
             <span className="mt-2.5 flex shrink-0 gap-3 text-sm tabular-nums text-muted-foreground">
               {item.localStartsAt ? <span>{localTime(intl.locale, item.localStartsAt)}</span> : null}
               {item.minutes ? <span>{duration(intl.locale, item.minutes)}</span> : null}
             </span>
-            <ItemMenu item={item} parent={parent} onMove={onMove} onAddSubItem={onAddSubItem} />
+            {recused ? null : <ItemMenu item={item} parent={parent} onMove={onMove} onAddSubItem={onAddSubItem} />}
           </div>
           {item.subItems.length ? (
             <SortableList ids={item.subItems.map((s) => s.id)}>
-              <ol aria-label={intl.formatMessage(apv.subItemsOf, { title: item.title })} className="flex flex-col">
+              <ol aria-label={intl.formatMessage(apv.subItemsOf, { title })} className="flex flex-col">
                 {item.subItems.map((sub) => (
                   <ItemRow key={sub.id} item={sub} parent={item} onMove={onMove} onAddSubItem={onAddSubItem} />
                 ))}
@@ -229,6 +242,14 @@ function ItemRow({
       )}
     </DragRow>
   )
+}
+
+/**
+ * A row's title: a recused officer's row whose title the item hides comes with an empty title (E04 T2 as built), so it
+ * reads "Restricted item".
+ */
+function recusedTitle(intl: IntlShape, item: Item): string {
+  return item.recused && !item.title ? intl.formatMessage(om.restrictedItem) : item.title
 }
 
 /** The second line of a row: presenters, papers, the memo's number, lateness and who can see it, in words. */

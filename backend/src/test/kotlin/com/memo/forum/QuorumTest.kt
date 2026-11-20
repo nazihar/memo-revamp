@@ -154,4 +154,32 @@ class QuorumTest {
         val result = Quorum.evaluate(rule, roster, present(independents[0], others[0], others[1]))
         assertThat(result.unmet.single()).isEqualTo(UnmetCondition(UnmetKind.COMPOSITION, 2, 1, attribute = "independent", majority = true))
     }
+
+    @Test
+    fun `ADR-0064 - an alternate counts for the number only, never for a required role or an attribute`() {
+        val chair = seat(1, ForumRole.CHAIR, true, "independent")
+        val vice = seat(2, ForumRole.VICE_CHAIR)
+        val members = (3..7).map { seat(it, ForumRole.MEMBER, true, "independent") }
+        val roster = listOf(chair, vice) + members
+        val rule =
+            QuorumRule(
+                required = listOf(listOf(ForumRole.CHAIR, ForumRole.VICE_CHAIR)),
+                composition = listOf(QuorumComposition("independent", atLeast = 2)),
+            )
+        // The chair absent, their alternate present; three members and nobody else: 4 of 7 needed.
+        val byAlternate = mapOf(chair.memberId to QuorumPresence(byAlternate = true)) + present(members[0], members[1], members[2])
+        val result = Quorum.evaluate(rule, roster, byAlternate)
+        assertThat(result.present).describedAs("the alternate counts once towards the number").isEqualTo(4)
+        assertThat(result.unmet.map { it.kind }).containsExactly(UnmetKind.ROLE)
+        // Two members by alternate meet neither "at least 2 independent" nor the role.
+        val two = present(chair) + members.take(2).associate { it.memberId to QuorumPresence(byAlternate = true) } + present(vice)
+        val composition = Quorum.evaluate(rule, roster, two)
+        assertThat(composition.present).isEqualTo(4)
+        assertThat(composition.unmet.single()).isEqualTo(UnmetCondition(UnmetKind.COMPOSITION, 2, 1, attribute = "independent"))
+        // In a majority, the alternate is in the denominator but carries no attribute.
+        val majority = QuorumRule(composition = listOf(QuorumComposition("independent", majority = true)))
+        val half = present(members[0], vice) + (members[1].memberId to QuorumPresence(byAlternate = true)) + present(members[2])
+        assertThat(Quorum.evaluate(majority, roster, half).unmet.single())
+            .isEqualTo(UnmetCondition(UnmetKind.COMPOSITION, 3, 2, attribute = "independent", majority = true))
+    }
 }

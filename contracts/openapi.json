@@ -787,6 +787,26 @@
         "required" : [ "cycleTimes", "from", "overdue", "pendingByAge", "pendingByPerson", "scope", "throughput", "to" ],
         "type" : "object"
       },
+      "ArrivalsRequest" : {
+        "properties" : {
+          "at" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "mode" : {
+            "enum" : [ "IN_PERSON", "REMOTE" ],
+            "type" : [ "string", "null" ]
+          },
+          "userIds" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        },
+        "type" : "object"
+      },
       "AssignRequest" : {
         "properties" : {
           "userId" : {
@@ -888,6 +908,270 @@
           }
         },
         "required" : [ "id", "position", "restricted" ],
+        "type" : "object"
+      },
+      "AttendanceCountsResponse" : {
+        "properties" : {
+          "absent" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "apologies" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "expected" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "inPerson" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "left" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "remote" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "total" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "absent", "apologies", "expected", "inPerson", "left", "remote", "total" ],
+        "type" : "object"
+      },
+      "AttendanceEventRequest" : {
+        "properties" : {
+          "at" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "itemId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "kind" : {
+            "enum" : [ "APOLOGIES", "ABSENT", "ARRIVED", "MODE_CHANGED", "LEFT", "STEPPED_OUT", "STEPPED_BACK", "VOIDED" ],
+            "type" : "string"
+          },
+          "mode" : {
+            "enum" : [ "IN_PERSON", "REMOTE" ],
+            "type" : [ "string", "null" ]
+          },
+          "note" : {
+            "type" : [ "string", "null" ]
+          },
+          "reason" : {
+            "type" : [ "string", "null" ]
+          },
+          "userId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "AttendanceEventResponse" : {
+        "properties" : {
+          "at" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "correction" : {
+            "type" : "boolean"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "itemId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "kind" : {
+            "enum" : [ "APOLOGIES", "ABSENT", "ARRIVED", "MODE_CHANGED", "LEFT", "STEPPED_OUT", "STEPPED_BACK", "VOIDED" ],
+            "type" : "string"
+          },
+          "mode" : {
+            "enum" : [ "IN_PERSON", "REMOTE" ],
+            "type" : [ "string", "null" ]
+          },
+          "note" : {
+            "type" : [ "string", "null" ]
+          },
+          "reason" : {
+            "type" : [ "string", "null" ]
+          },
+          "recordedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "recordedBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/AttendancePersonRef"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "source" : {
+            "enum" : [ "RECORDED", "RSVP" ],
+            "type" : "string"
+          },
+          "userId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "voided" : {
+            "type" : "boolean"
+          },
+          "voidsEventId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "at", "correction", "id", "kind", "recordedAt", "source", "userId", "voided" ],
+        "type" : "object"
+      },
+      "AttendancePersonRef" : {
+        "properties" : {
+          "name" : {
+            "type" : "string"
+          },
+          "userId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "name", "userId" ],
+        "type" : "object"
+      },
+      "AttendancePersonResponse" : {
+        "properties" : {
+          "arrivedDuringItem" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "capacity" : {
+            "enum" : [ "MEMBER", "ALTERNATE", "GUEST", "ATTENDEE" ],
+            "type" : "string"
+          },
+          "counted" : {
+            "type" : "boolean"
+          },
+          "firstArrivedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "joinedLate" : {
+            "type" : "boolean"
+          },
+          "lastLeftAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "leftDuringItem" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "leftEarly" : {
+            "type" : "boolean"
+          },
+          "mode" : {
+            "enum" : [ "IN_PERSON", "REMOTE" ],
+            "type" : [ "string", "null" ]
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "role" : {
+            "enum" : [ "CHAIR", "VICE_CHAIR", "SECRETARY", "MEMBER", "STANDING_INVITEE", "OBSERVER" ],
+            "type" : [ "string", "null" ]
+          },
+          "standingInFor" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/AttendancePersonRef"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "state" : {
+            "enum" : [ "EXPECTED", "PRESENT", "LEFT", "APOLOGIES", "ABSENT" ],
+            "type" : "string"
+          },
+          "steppedOutOf" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "userId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "version" : {
+            "format" : "int64",
+            "type" : [ "integer", "null" ]
+          }
+        },
+        "required" : [ "capacity", "counted", "joinedLate", "leftEarly", "name", "state", "userId" ],
+        "type" : "object"
+      },
+      "AttendanceResponse" : {
+        "properties" : {
+          "canRecord" : {
+            "type" : "boolean"
+          },
+          "correcting" : {
+            "type" : "boolean"
+          },
+          "counts" : {
+            "$ref" : "#/components/schemas/AttendanceCountsResponse"
+          },
+          "events" : {
+            "items" : {
+              "$ref" : "#/components/schemas/AttendanceEventResponse"
+            },
+            "type" : [ "array", "null" ]
+          },
+          "itemInProgress" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/ItemProgressResponse"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "meetingId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "mine" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/AttendancePersonResponse"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "people" : {
+            "items" : {
+              "$ref" : "#/components/schemas/AttendancePersonResponse"
+            },
+            "type" : [ "array", "null" ]
+          },
+          "quorum" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/LiveQuorumResponse"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "status" : {
+            "enum" : [ "DRAFT", "SCHEDULED", "IN_PROGRESS", "HELD", "MINUTES_APPROVED", "CLOSED", "CANCELLED" ],
+            "type" : "string"
+          }
+        },
+        "required" : [ "canRecord", "correcting", "counts", "meetingId", "status" ],
         "type" : "object"
       },
       "AuditEvent" : {
@@ -4592,6 +4876,29 @@
         "required" : [ "flags", "itemId", "removed", "title" ],
         "type" : "object"
       },
+      "ItemProgressRequest" : {
+        "properties" : {
+          "itemId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "type" : "object"
+      },
+      "ItemProgressResponse" : {
+        "properties" : {
+          "itemId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "startedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          }
+        },
+        "required" : [ "itemId", "startedAt" ],
+        "type" : "object"
+      },
       "JsonNode" : {
         "properties" : {
           "array" : {
@@ -5003,6 +5310,43 @@
           }
         },
         "required" : [ "id", "kind", "name" ],
+        "type" : "object"
+      },
+      "LiveQuorumResponse" : {
+        "properties" : {
+          "at" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "basis" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "needed" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "present" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "quorate" : {
+            "type" : "boolean"
+          },
+          "seats" : {
+            "items" : {
+              "$ref" : "#/components/schemas/QuorumSeatResponse"
+            },
+            "type" : [ "array", "null" ]
+          },
+          "unmet" : {
+            "items" : {
+              "$ref" : "#/components/schemas/UnmetCondition"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "basis", "needed", "present", "quorate", "unmet" ],
         "type" : "object"
       },
       "LoginRequest" : {
@@ -8515,6 +8859,46 @@
         "required" : [ "key", "members", "name", "version" ],
         "type" : "object"
       },
+      "QuorumChangeResponse" : {
+        "properties" : {
+          "at" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "causeEventId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "itemId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "kind" : {
+            "enum" : [ "REACHED", "LOST", "RESTORED" ],
+            "type" : "string"
+          },
+          "needed" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "present" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "unmet" : {
+            "items" : {
+              "$ref" : "#/components/schemas/UnmetCondition"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "at", "id", "kind", "needed", "present", "unmet" ],
+        "type" : "object"
+      },
       "QuorumComposition" : {
         "properties" : {
           "atLeast" : {
@@ -8655,6 +9039,39 @@
             "type" : [ "boolean", "null" ]
           }
         },
+        "type" : "object"
+      },
+      "QuorumSeatResponse" : {
+        "properties" : {
+          "byAlternate" : {
+            "type" : "boolean"
+          },
+          "filledBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/AttendancePersonRef"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "holder" : {
+            "$ref" : "#/components/schemas/AttendancePersonRef"
+          },
+          "memberId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "remote" : {
+            "type" : "boolean"
+          },
+          "role" : {
+            "enum" : [ "CHAIR", "VICE_CHAIR", "SECRETARY", "MEMBER", "STANDING_INVITEE", "OBSERVER" ],
+            "type" : "string"
+          },
+          "voting" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "byAlternate", "holder", "memberId", "remote", "role", "voting" ],
         "type" : "object"
       },
       "QuorumThreshold" : {
@@ -8912,6 +9329,21 @@
           }
         },
         "required" : [ "createdAt", "readable", "state", "trigger", "version" ],
+        "type" : "object"
+      },
+      "RecordedAttendanceResponse" : {
+        "properties" : {
+          "event" : {
+            "$ref" : "#/components/schemas/AttendanceEventResponse"
+          },
+          "person" : {
+            "$ref" : "#/components/schemas/AttendancePersonResponse"
+          },
+          "quorum" : {
+            "$ref" : "#/components/schemas/LiveQuorumResponse"
+          }
+        },
+        "required" : [ "event", "person", "quorum" ],
         "type" : "object"
       },
       "RecoveryCodes" : {
@@ -11324,6 +11756,14 @@
           }
         },
         "required" : [ "name", "number", "sha256", "state", "truncated", "uploadedAt", "versionId" ],
+        "type" : "object"
+      },
+      "VoidAttendanceRequest" : {
+        "properties" : {
+          "reason" : {
+            "type" : [ "string", "null" ]
+          }
+        },
         "type" : "object"
       },
       "WatchSettings" : {
@@ -20015,6 +20455,191 @@
         "tags" : [ "meeting" ]
       }
     },
+    "/api/v1/meetings/{meetingId}/attendance" : {
+      "get" : {
+        "operationId" : "getMeetingAttendance",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AttendanceResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The register: everyone for officers, the viewer's own row and counts",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/attendance/arrivals" : {
+      "post" : {
+        "operationId" : "recordMeetingArrivals",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ArrivalsRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/AttendanceResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Mark everyone who said yes as arrived, in one action (secretaries)",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/attendance/events" : {
+      "post" : {
+        "operationId" : "recordMeetingAttendance",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/AttendanceEventRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RecordedAttendanceResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Record an arrival, a departure, apologies... (secretaries)",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/attendance/events/{eventId}/void" : {
+      "post" : {
+        "operationId" : "voidMeetingAttendance",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "eventId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/VoidAttendanceRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/RecordedAttendanceResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Void a wrong event of the register, with a reason (secretaries)",
+        "tags" : [ "meeting" ]
+      }
+    },
     "/api/v1/meetings/{meetingId}/calendar.ics" : {
       "get" : {
         "operationId" : "getMeetingCalendarFile",
@@ -20647,6 +21272,118 @@
           }
         },
         "summary" : "A paper as its revision carried it: the PDF to read (supports Range), or the original for secretaries",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/progress" : {
+      "post" : {
+        "operationId" : "setMeetingItemInProgress",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ItemProgressRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ItemProgressResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "\"Now: item n\": the item in progress (secretaries)",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/quorum" : {
+      "get" : {
+        "operationId" : "getMeetingQuorum",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "at",
+          "required" : false,
+          "schema" : {
+            "format" : "date-time",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/LiveQuorumResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The meeting's quorum now or at an instant: seats for officers, numbers for members",
+        "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/quorum/changes" : {
+      "get" : {
+        "operationId" : "getMeetingQuorumChanges",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/QuorumChangeResponse"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The meeting's quorum reached, lost and restored (officers)",
         "tags" : [ "meeting" ]
       }
     },

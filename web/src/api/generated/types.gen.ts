@@ -234,6 +234,12 @@ export type ApprovalsDashboard = {
     unit?: Named | null;
 };
 
+export type ArrivalsRequest = {
+    at?: string | null;
+    mode?: 'IN_PERSON' | 'REMOTE';
+    userIds?: Array<string>;
+};
+
 export type AssignRequest = {
     userId: string;
     validFrom: string;
@@ -265,6 +271,80 @@ export type AttachmentView = {
     version?: number | null;
     versionId?: string | null;
     versionNumber?: number | null;
+};
+
+export type AttendanceCountsResponse = {
+    absent: number;
+    apologies: number;
+    expected: number;
+    inPerson: number;
+    left: number;
+    remote: number;
+    total: number;
+};
+
+export type AttendanceEventRequest = {
+    at?: string | null;
+    itemId?: string | null;
+    kind?: 'APOLOGIES' | 'ABSENT' | 'ARRIVED' | 'MODE_CHANGED' | 'LEFT' | 'STEPPED_OUT' | 'STEPPED_BACK' | 'VOIDED';
+    mode?: 'IN_PERSON' | 'REMOTE';
+    note?: string | null;
+    reason?: string | null;
+    userId?: string;
+};
+
+export type AttendanceEventResponse = {
+    at: string;
+    correction: boolean;
+    id: string;
+    itemId?: string | null;
+    kind: 'APOLOGIES' | 'ABSENT' | 'ARRIVED' | 'MODE_CHANGED' | 'LEFT' | 'STEPPED_OUT' | 'STEPPED_BACK' | 'VOIDED';
+    mode?: 'IN_PERSON' | 'REMOTE';
+    note?: string | null;
+    reason?: string | null;
+    recordedAt: string;
+    recordedBy?: AttendancePersonRef | null;
+    source: 'RECORDED' | 'RSVP';
+    userId: string;
+    voided: boolean;
+    voidsEventId?: string | null;
+};
+
+export type AttendancePersonRef = {
+    name: string;
+    userId: string;
+};
+
+export type AttendancePersonResponse = {
+    arrivedDuringItem?: string | null;
+    capacity: 'MEMBER' | 'ALTERNATE' | 'GUEST' | 'ATTENDEE';
+    counted: boolean;
+    firstArrivedAt?: string | null;
+    joinedLate: boolean;
+    lastLeftAt?: string | null;
+    leftDuringItem?: string | null;
+    leftEarly: boolean;
+    mode?: 'IN_PERSON' | 'REMOTE';
+    name: string;
+    role?: 'CHAIR' | 'VICE_CHAIR' | 'SECRETARY' | 'MEMBER' | 'STANDING_INVITEE' | 'OBSERVER';
+    standingInFor?: AttendancePersonRef | null;
+    state: 'EXPECTED' | 'PRESENT' | 'LEFT' | 'APOLOGIES' | 'ABSENT';
+    steppedOutOf?: string | null;
+    userId: string;
+    version?: number | null;
+};
+
+export type AttendanceResponse = {
+    canRecord: boolean;
+    correcting: boolean;
+    counts: AttendanceCountsResponse;
+    events?: Array<AttendanceEventResponse> | null;
+    itemInProgress?: ItemProgressResponse | null;
+    meetingId: string;
+    mine?: AttendancePersonResponse | null;
+    people?: Array<AttendancePersonResponse> | null;
+    quorum?: LiveQuorumResponse | null;
+    status: 'DRAFT' | 'SCHEDULED' | 'IN_PROGRESS' | 'HELD' | 'MINUTES_APPROVED' | 'CLOSED' | 'CANCELLED';
 };
 
 /**
@@ -1529,6 +1609,15 @@ export type ItemChangeResponse = {
     title: string;
 };
 
+export type ItemProgressRequest = {
+    itemId?: string;
+};
+
+export type ItemProgressResponse = {
+    itemId: string;
+    startedAt: string;
+};
+
 export type JsonNode = {
     array?: boolean;
     bigDecimal?: boolean;
@@ -1671,6 +1760,16 @@ export type ListMemberView = {
     id: string;
     kind: 'USER' | 'POSITION';
     name: string;
+};
+
+export type LiveQuorumResponse = {
+    at?: string | null;
+    basis: number;
+    needed: number;
+    present: number;
+    quorate: boolean;
+    seats?: Array<QuorumSeatResponse> | null;
+    unmet: Array<UnmetCondition>;
 };
 
 export type LoginRequest = {
@@ -2873,6 +2972,17 @@ export type QueueResponse = {
     version: number;
 };
 
+export type QuorumChangeResponse = {
+    at: string;
+    causeEventId?: string | null;
+    id: string;
+    itemId?: string | null;
+    kind: 'REACHED' | 'LOST' | 'RESTORED';
+    needed: number;
+    present: number;
+    unmet: Array<UnmetCondition>;
+};
+
 export type QuorumComposition = {
     atLeast?: number | null;
     attribute?: string;
@@ -2914,6 +3024,16 @@ export type QuorumSampleMember = {
     remote?: boolean;
     role?: 'CHAIR' | 'VICE_CHAIR' | 'SECRETARY' | 'MEMBER' | 'STANDING_INVITEE' | 'OBSERVER';
     voting?: boolean | null;
+};
+
+export type QuorumSeatResponse = {
+    byAlternate: boolean;
+    filledBy?: AttendancePersonRef | null;
+    holder: AttendancePersonRef;
+    memberId: string;
+    remote: boolean;
+    role: 'CHAIR' | 'VICE_CHAIR' | 'SECRETARY' | 'MEMBER' | 'STANDING_INVITEE' | 'OBSERVER';
+    voting: boolean;
 };
 
 export type QuorumThreshold = {
@@ -2996,6 +3116,12 @@ export type RecordVersionView = {
     trigger: 'APPROVED' | 'BACKFILL' | 'REGENERATE' | 'RETRY';
     version: number;
     versionId?: string | null;
+};
+
+export type RecordedAttendanceResponse = {
+    event: AttendanceEventResponse;
+    person: AttendancePersonResponse;
+    quorum: LiveQuorumResponse;
 };
 
 export type RecoveryCodes = {
@@ -3835,6 +3961,10 @@ export type VersionText = {
     uploadedAt: string;
     uploadedBy?: Named | null;
     versionId: string;
+};
+
+export type VoidAttendanceRequest = {
+    reason?: string | null;
 };
 
 export type WatchSettings = {
@@ -8515,6 +8645,90 @@ export type RemoveAgendaSectionResponses = {
 
 export type RemoveAgendaSectionResponse = RemoveAgendaSectionResponses[keyof RemoveAgendaSectionResponses];
 
+export type GetMeetingAttendanceData = {
+    body?: never;
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/attendance';
+};
+
+export type GetMeetingAttendanceResponses = {
+    /**
+     * OK
+     */
+    200: AttendanceResponse;
+};
+
+export type GetMeetingAttendanceResponse = GetMeetingAttendanceResponses[keyof GetMeetingAttendanceResponses];
+
+export type RecordMeetingArrivalsData = {
+    body: ArrivalsRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/attendance/arrivals';
+};
+
+export type RecordMeetingArrivalsResponses = {
+    /**
+     * OK
+     */
+    200: AttendanceResponse;
+};
+
+export type RecordMeetingArrivalsResponse = RecordMeetingArrivalsResponses[keyof RecordMeetingArrivalsResponses];
+
+export type RecordMeetingAttendanceData = {
+    body: AttendanceEventRequest;
+    headers: {
+        'Idempotency-Key': string;
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/attendance/events';
+};
+
+export type RecordMeetingAttendanceResponses = {
+    /**
+     * OK
+     */
+    200: RecordedAttendanceResponse;
+};
+
+export type RecordMeetingAttendanceResponse = RecordMeetingAttendanceResponses[keyof RecordMeetingAttendanceResponses];
+
+export type VoidMeetingAttendanceData = {
+    body: VoidAttendanceRequest;
+    headers: {
+        'Idempotency-Key': string;
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+        eventId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/attendance/events/{eventId}/void';
+};
+
+export type VoidMeetingAttendanceResponses = {
+    /**
+     * OK
+     */
+    200: RecordedAttendanceResponse;
+};
+
+export type VoidMeetingAttendanceResponse = VoidMeetingAttendanceResponses[keyof VoidMeetingAttendanceResponses];
+
 export type GetMeetingCalendarFileData = {
     body?: never;
     path: {
@@ -8830,6 +9044,65 @@ export type GetMeetingPaperContentResponses = {
      */
     200: unknown;
 };
+
+export type SetMeetingItemInProgressData = {
+    body: ItemProgressRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/progress';
+};
+
+export type SetMeetingItemInProgressResponses = {
+    /**
+     * OK
+     */
+    200: ItemProgressResponse;
+};
+
+export type SetMeetingItemInProgressResponse = SetMeetingItemInProgressResponses[keyof SetMeetingItemInProgressResponses];
+
+export type GetMeetingQuorumData = {
+    body?: never;
+    path: {
+        meetingId: string;
+    };
+    query?: {
+        at?: string;
+    };
+    url: '/api/v1/meetings/{meetingId}/quorum';
+};
+
+export type GetMeetingQuorumResponses = {
+    /**
+     * OK
+     */
+    200: LiveQuorumResponse;
+};
+
+export type GetMeetingQuorumResponse = GetMeetingQuorumResponses[keyof GetMeetingQuorumResponses];
+
+export type GetMeetingQuorumChangesData = {
+    body?: never;
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/quorum/changes';
+};
+
+export type GetMeetingQuorumChangesResponses = {
+    /**
+     * OK
+     */
+    200: Array<QuorumChangeResponse>;
+};
+
+export type GetMeetingQuorumChangesResponse = GetMeetingQuorumChangesResponses[keyof GetMeetingQuorumChangesResponses];
 
 export type RescheduleMeetingData = {
     body: RescheduleRequest;

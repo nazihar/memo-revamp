@@ -3411,6 +3411,8 @@
   "notifications.kind.meetingItemWithdrawn": "خرجت ورقة من جدول الأعمال المنشور لاجتماع {committee} المقرر في {date}: انشر مراجعة جديدة",
   "notifications.kind.meetingLatePaper": "ورقة متأخرة لاجتماع {committee} في {date} تحتاج إلى موافقتك",
   "notifications.kind.meetingNotHeld": "اجتماع {committee} المقرر في {date} لم يُسجَّل على أنه عُقد",
+  "notifications.kind.meetingQuorumLost": "فقد اجتماع {committee} المقرر في {date} النصاب: الحاضرون {present} من {needed}",
+  "notifications.kind.meetingQuorumRestored": "عاد النصاب لاجتماع {committee} المقرر في {date}: الحاضرون {present} من {needed}",
   "notifications.kind.meetingRsvpChanged": "ردّ {member} على اجتماع {committee} المقرر في {date}: {answer, select, IN_PERSON {نعم، حضوريًا} REMOTE {نعم، عبر الإنترنت} other {لا، مع الاعتذار}}",
   "notifications.kind.meetingRsvpRecorded": "سجّل أمين السر ردّك على اجتماع {committee} المقرر في {date}: {answer, select, IN_PERSON {نعم، حضوريًا} REMOTE {نعم، عبر الإنترنت} other {لا، مع الاعتذار}} ({how, select, EMAIL {بالبريد الإلكتروني} PHONE {بالهاتف} IN_PERSON {شخصيًا} other {بطريقة أخرى}})",
   "notifications.kind.meetingRulingNeeded":"إفصاح عن مصلحة في البند {item} من اجتماع {committee} المقرر في {date} ينتظر قرارك",

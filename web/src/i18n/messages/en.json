@@ -3410,6 +3410,8 @@
   "notifications.kind.meetingItemWithdrawn": "A paper left the published agenda for {committee} on {date}: publish a new revision",
   "notifications.kind.meetingLatePaper": "A late paper for {committee} on {date} needs your agreement",
   "notifications.kind.meetingNotHeld": "The meeting of {committee} on {date} is not marked as held",
+  "notifications.kind.meetingQuorumLost": "The meeting of {committee} on {date} lost its quorum: {present} of {needed} present",
+  "notifications.kind.meetingQuorumRestored": "The meeting of {committee} on {date} is quorate again: {present} of {needed} present",
   "notifications.kind.meetingRsvpChanged": "{member} answered for {committee} on {date}: {answer, select, IN_PERSON {Yes, in person} REMOTE {Yes, online} other {No, apologies}}",
   "notifications.kind.meetingRsvpRecorded": "The secretary recorded your answer for {committee} on {date}: {answer, select, IN_PERSON {Yes, in person} REMOTE {Yes, online} other {No, apologies}} ({how, select, EMAIL {by email} PHONE {by phone} IN_PERSON {in person} other {otherwise}})",
   "notifications.kind.meetingRulingNeeded": "A declaration of interest in item {item} of {committee} on {date} needs your ruling",

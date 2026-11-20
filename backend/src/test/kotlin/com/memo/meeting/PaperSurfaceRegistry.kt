@@ -51,6 +51,9 @@ object PaperSurfaceRegistry {
             "GET /api/v1/meetings/{meetingId}/rsvp/mine" to Surface.MEETING,
             "PUT /api/v1/meetings/{meetingId}/rsvp/mine" to Surface.MEETING,
             "GET /api/v1/meetings/{meetingId}/rsvps" to Surface.MEETING,
+            // Attendance and the live quorum (E05 T4): people, states, times, item ids and numbers; never an item's content.
+            "GET /api/v1/meetings/{meetingId}/attendance" to Surface.MEETING,
+            "GET /api/v1/meetings/{meetingId}/quorum" to Surface.MEETING,
         )
 
     /**
@@ -102,5 +105,11 @@ object PaperSurfaceRegistry {
                     "the meeting register (E04 T4): officers, the chair and vice-chair; a recused officer's own row only (REGISTERS probe)",
                 "POST /api/v1/meetings/{meetingId}/declarations/remind" to
                     "the declarations reminder (E04 T4): secretaries and forums.manage, names no item (REGISTERS probe)",
+                "POST /api/v1/meetings/{meetingId}/attendance/events" to "recording attendance (E05 T4): secretaries and forums.manage",
+                "POST /api/v1/meetings/{meetingId}/attendance/arrivals" to
+                    "marking arrivals at once (E05 T4): secretaries and forums.manage",
+                "POST /api/v1/meetings/{meetingId}/attendance/events/{eventId}/void" to "voiding an attendance event (E05 T4): secretaries",
+                "POST /api/v1/meetings/{meetingId}/progress" to "the item in progress (E05 T4): secretaries and forums.manage",
+                "GET /api/v1/meetings/{meetingId}/quorum/changes" to "the quorum lost and restored (E05 T4): officers",
             )
 }

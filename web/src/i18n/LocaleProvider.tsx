@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { IntlProvider, ReactIntlErrorCode } from 'react-intl'
 import { PREFERENCE_KEYS, readPreference, writePreference } from '@/lib/preferences'
-import type { CataloguePart } from './catalogue-parts'
+import { ALL_PARTS, type CataloguePart } from './catalogue-parts'
 import {
   DEFAULT_LOCALE,
   directionOf,
@@ -20,29 +20,6 @@ interface LocaleContextValue {
   /** Asks for [part] of the current locale's catalogue (and of every locale chosen later). */
   request: (part: CataloguePart) => void
 }
-
-const ALL_PARTS: ReadonlySet<CataloguePart> = new Set([
-  'core',
-  'admin',
-  'builder',
-  'memoAdmin',
-  'forumAdmin',
-  'forums',
-  'papers',
-  'meetings',
-  'agendaBuilder',
-  'meetingPage',
-  'meetingReplies',
-  'declarations',
-  'mySecurity',
-  'platform',
-  'patterns',
-  'search',
-  'inbox',
-  'dashboard',
-  'imports',
-  'legacy',
-])
 
 const LocaleContext = createContext<LocaleContextValue | null>(null)
 

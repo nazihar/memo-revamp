@@ -50,3 +50,23 @@ export function partForPath(pathname: string): CataloguePart {
   const found = routes.find(([, prefixes]) => prefixes.some((route) => under(pathname, route)))
   return found?.[0] ?? 'core'
 }
+
+/**
+ * Every part: core plus each part catalogue-parts.json defines. Derived, not listed, so a new part cannot be left out
+ * (a part missing from a hand-kept list kept its English pages on "Loading", found in E05 T7).
+ */
+export const ALL_PARTS: ReadonlySet<CataloguePart> = new Set<CataloguePart>([
+  'core',
+  ...Object.keys(definition)
+    .filter((name) => !name.startsWith('$'))
+    .map((name) => name as CataloguePart),
+])
+
+/** The parts catalogue-parts.json defines, as a type: the CataloguePart union must name exactly these and core. */
+type DefinedPart = Exclude<keyof typeof definition, `$${string}`> | 'core'
+// A compile error here means catalogue-parts.json and the CataloguePart union disagree.
+export const partsMatchDefinition: [DefinedPart] extends [CataloguePart]
+  ? [CataloguePart] extends [DefinedPart]
+    ? true
+    : never
+  : never = true

@@ -118,6 +118,10 @@ export const rm = defineMessages({
   OTHER: { id: 'meetingReplies.how.other', defaultMessage: 'otherwise' },
   // Invitation states
   notSent: { id: 'meetingReplies.invite.notSent', defaultMessage: 'Not sent yet' },
+  notInvitable: {
+    id: 'meetingReplies.invite.notInvitable',
+    defaultMessage: 'No invitation: they cannot sign in or are not cleared for this meeting',
+  },
   appOnly: { id: 'meetingReplies.invite.appOnly', defaultMessage: 'In memo only (invitation emails switched off)' },
   waiting: { id: 'meetingReplies.invite.waiting', defaultMessage: 'Waiting to be sent' },
   INVITATION: { id: 'meetingReplies.kind.invitation', defaultMessage: 'invitation' },

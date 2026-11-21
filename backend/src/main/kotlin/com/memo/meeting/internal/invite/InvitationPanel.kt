@@ -108,12 +108,14 @@ class InvitationPanel(
         val invitation = invitations.find(meeting.id)
         val people = invitable.of(meeting).takeIf { invitation != null }.orEmpty()
         val rows = invitees.invitees(meeting.id).associateBy { it.userId }
-        val ids = people.keys + rows.keys
+        val answers = replies.ofOfficers(meeting)
+        // Everyone who answers the meeting is listed, also a member who cannot hold the invitation (an account without
+        // sign-in, or not cleared): the secretary records their answer here (E05 T10, found with the demo's Chairman).
+        val ids = people.keys + rows.keys + answers.keys.takeIf { invitation != null }.orEmpty()
         val names = users.of(ids).mapValues { it.value.displayName }
         val mail = statuses.of(rows.values.mapNotNull { it.lastOutboxId })
         val now = clock.instant()
         val manages = access.manages(meeting.forumId)
-        val answers = replies.ofOfficers(meeting)
         return InvitationsResponse(
             meetingId = meeting.id,
             created = invitation != null,

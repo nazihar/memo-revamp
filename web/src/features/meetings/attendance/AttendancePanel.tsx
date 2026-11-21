@@ -377,7 +377,7 @@ function Group({ title, rows, ...rest }: { title: string; rows: Person[] } & Row
         {title}
       </h3>
       {rows.length ? (
-        <div className="overflow-x-auto">
+        <div className="relative overflow-x-auto">
           <table className="w-full min-w-[40rem] border-collapse text-sm">
             <caption className="sr-only">{title}</caption>
             <thead>
@@ -714,7 +714,7 @@ function History({ events, people, ctx }: { events: AttendanceEvent[]; people: P
       <div>
         <Button
           variant="ghost"
-          className="min-h-11"
+          className="h-auto min-h-11 max-w-full whitespace-normal py-2 text-start"
           aria-expanded={open}
           aria-controls={open ? listId : undefined}
           onClick={() => {

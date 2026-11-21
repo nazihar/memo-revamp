@@ -24,7 +24,8 @@ import java.util.UUID
  * Representative bank committees in the demo tenant (Phase 4 E01 T6; no pilot bank, Phase 4 A1): three committee types
  * from the presets and six committees, with the company secretary as secretary of each. Board members are a demo
  * director with sign-in, the chairman's seat and the managing director; management committees are held by position
- * where a seat exists. Seeded as the demo administrator; existing committees and members are left as they are.
+ * where a seat exists; Demo Director's risk committee seat has Demo Head of Credit as its alternate (Phase 4 E05 T10).
+ * Seeded as the demo administrator; existing committees and members are left as they are (an alternate is only added).
  */
 @Component
 class DemoForumSeeder(
@@ -46,6 +47,9 @@ class DemoForumSeeder(
                 forums.ensureForum(ALCO, "ALCO", "Asset-Liability Committee", "ALCO", management)
                 forums.ensureForum(EXCO, "EXCO", "Executive Committee", "ExCo", management)
                 members().forEach { (key, member) -> forums.ensureMember(key, member) }
+                // Phase 4 E05 T10: Demo Director's seat on the risk committee has an alternate, who stands in when they
+                // send apologies (the demo risk review and the journey meeting-replies.spec).
+                forums.ensureAlternate(RISK, person(DIRECTOR), person(HEAD_CREDIT))
             }
         }
     }

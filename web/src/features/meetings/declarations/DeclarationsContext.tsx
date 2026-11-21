@@ -2,8 +2,9 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useCallback, useMemo, useRef, useState, type ReactNode } from 'react'
 import { getMyDeclarationsOptions, getMyDeclarationsQueryKey } from '@/api/generated/@tanstack/react-query.gen'
 import type { DeclarationResponse, MemberAgendaResponse } from '@/api/generated/types.gen'
-import { DeclarationsContext as Context, PANEL_TITLE_ID, type DeclarationsValue } from './context'
+import { DeclarationsContext as Context, type DeclarationsValue } from './context'
 import { DeclareSheet } from './DeclareSheet'
+import { restoreFocus } from './focus'
 import { MyDeclarationSheet } from './MyDeclarationSheet'
 import { ReviewSheet } from './ReviewSheet'
 import { declaring } from './words'
@@ -11,27 +12,6 @@ import { declaring } from './words'
 type Sheet =
   | { kind: 'declare'; itemId: string; name: string; opener: HTMLElement | null }
   | { kind: 'mine'; declaration: DeclarationResponse; name: string; opener: HTMLElement | null }
-
-/** Gives focus back to [opener]; when it has gone (its line changed), to the Declarations panel or the main content. */
-function restoreFocus(opener: HTMLElement | null): void {
-  const go = () => {
-    if (opener?.isConnected) {
-      opener.focus()
-      return true
-    }
-    return false
-  }
-  if (go()) {
-    // The agenda reloads after a change: if the opener leaves with it, focus must not fall to the page.
-    window.setTimeout(() => {
-      if (!opener?.isConnected && (document.activeElement === document.body || !document.activeElement)) {
-        ;(document.getElementById(PANEL_TITLE_ID) ?? document.querySelector<HTMLElement>('main'))?.focus()
-      }
-    }, 100)
-    return
-  }
-  ;(document.getElementById(PANEL_TITLE_ID) ?? document.querySelector<HTMLElement>('main'))?.focus()
-}
 
 /**
  * Declaring an interest on the meeting page (Phase 4 E04 T6, flow S): reads the reader's declarations and the items to

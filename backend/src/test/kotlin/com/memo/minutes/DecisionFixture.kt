@@ -30,9 +30,12 @@ import com.memo.minutes.internal.ItemNotes
 import com.memo.minutes.internal.MinutesAccess
 import com.memo.minutes.internal.MinutesNotFoundException
 import com.memo.minutes.internal.MinutesRejectedException
+import com.memo.minutes.internal.MinutesReleaseScheduler
 import com.memo.minutes.internal.NoteStore
 import com.memo.testsupport.aPassword
 import com.memo.testsupport.anActiveUser
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.BeforeEach
 import org.springframework.beans.factory.annotation.Autowired
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -66,6 +69,19 @@ abstract class DecisionFixture : AttendanceTestSupport() {
     @Autowired lateinit var consentRequests: ConsentRequests
 
     @Autowired lateinit var typeVersions: ForumTypeLifecycle
+
+    @Autowired lateinit var releaseScheduler: MinutesReleaseScheduler
+
+    /** The `minutes-release` job is run by hand where a test needs it: test contexts share the scheduler table. */
+    @BeforeEach
+    fun noReleaseJobs() {
+        releaseScheduler.jobs = false
+    }
+
+    @AfterEach
+    fun releaseJobsBack() {
+        releaseScheduler.jobs = true
+    }
 
     /** A meeting with its items by title, and its consent section. */
     data class Deciding(

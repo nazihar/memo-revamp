@@ -11,7 +11,9 @@ import com.memo.jooq.indexes.MINUTES_DECISION_SUBMISSION_IDX
 import com.memo.jooq.keys.MINUTES_DECISION_ENTRY__MINUTES_DECISION_ENTRY_TENANT_ID_DECISION_ID_FKEY
 import com.memo.jooq.keys.MINUTES_DECISION_ITEM_UK
 import com.memo.jooq.keys.MINUTES_DECISION_PKEY
+import com.memo.jooq.keys.MINUTES_RESOLUTION__MINUTES_RESOLUTION_TENANT_ID_DECISION_ID_FKEY
 import com.memo.jooq.tables.MinutesDecisionEntry.MinutesDecisionEntryPath
+import com.memo.jooq.tables.MinutesResolution.MinutesResolutionPath
 import com.memo.jooq.tables.records.MinutesDecisionRecord
 
 import java.time.OffsetDateTime
@@ -193,6 +195,22 @@ open class MinutesDecision(
 
     val minutesDecisionEntry: MinutesDecisionEntryPath
         get(): MinutesDecisionEntryPath = minutesDecisionEntry()
+
+    private lateinit var _minutesResolution: MinutesResolutionPath
+
+    /**
+     * Get the implicit to-many join path to the
+     * <code>memo.minutes_resolution</code> table
+     */
+    fun minutesResolution(): MinutesResolutionPath {
+        if (!this::_minutesResolution.isInitialized)
+            _minutesResolution = MinutesResolutionPath(this, null, MINUTES_RESOLUTION__MINUTES_RESOLUTION_TENANT_ID_DECISION_ID_FKEY.inverseKey)
+
+        return _minutesResolution;
+    }
+
+    val minutesResolution: MinutesResolutionPath
+        get(): MinutesResolutionPath = minutesResolution()
     override fun getChecks(): List<Check<MinutesDecisionRecord>> = listOf(
         Internal.createCheck(this, DSL.name("minutes_decision_check"), "(((released_at IS NULL) = (released_kind IS NULL)))", true),
         Internal.createCheck(this, DSL.name("minutes_decision_check1"), "(((memo_id IS NULL) OR (submission_id IS NOT NULL)))", true),

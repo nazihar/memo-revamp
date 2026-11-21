@@ -1,14 +1,18 @@
 package com.memo.minutes
 
+import com.memo.common.context.ActorContext
+import com.memo.common.tenant.TenantContext
 import com.memo.common.tenant.TenantId
 import com.memo.common.tenant.TenantTransactions
 import com.memo.forum.OutcomeKind
+import com.memo.minutes.internal.DecisionReads
 import com.memo.minutes.internal.DecisionRow
 import com.memo.minutes.internal.DecisionStore
 import com.memo.minutes.internal.Dissent
 import com.memo.minutes.internal.EntryRow
 import com.memo.minutes.internal.NoteRow
 import com.memo.minutes.internal.NoteStore
+import com.memo.minutes.internal.ResolutionNumbers
 import com.memo.minutes.internal.VoteMode
 import java.time.Instant
 import java.time.temporal.ChronoUnit
@@ -85,4 +89,23 @@ class DecisionPlanting(
             check(notes.insert(NoteRow(meetingId, itemId, 1, text, by, Instant.now().truncatedTo(ChronoUnit.MICROS))))
         }
     }
+
+    /**
+     * Gives the planted decision [decisionId] its resolution number, as the meeting's end does (the job's system actor,
+     * the committee type's format pinned on the meeting); the resolution's id.
+     */
+    fun number(
+        tenant: TenantId,
+        decisionId: UUID,
+        reads: DecisionReads,
+        numbers: ResolutionNumbers,
+    ): UUID =
+        TenantContext.call(tenant) {
+            ActorContext.asSystem("minutes-release") {
+                transactions.inTenant(tenant) {
+                    val row = checkNotNull(store.lockById(decisionId))
+                    checkNotNull(numbers.assign(checkNotNull(reads.currentById(row.id)))).id
+                }
+            }
+        }
 }

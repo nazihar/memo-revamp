@@ -109,6 +109,8 @@ import com.memo.jooq.tables.MemoWatchSetting
 import com.memo.jooq.tables.MinutesDecision
 import com.memo.jooq.tables.MinutesDecisionEntry
 import com.memo.jooq.tables.MinutesItemNote
+import com.memo.jooq.tables.MinutesResolution
+import com.memo.jooq.tables.MinutesResolutionCounter
 import com.memo.jooq.tables.NotificationItem
 import com.memo.jooq.tables.NotificationMailOutbox
 import com.memo.jooq.tables.NotificationPreference
@@ -676,6 +678,16 @@ val MINUTES_DECISION_ENTRY: MinutesDecisionEntry = MinutesDecisionEntry.MINUTES_
  * The table <code>memo.minutes_item_note</code>.
  */
 val MINUTES_ITEM_NOTE: MinutesItemNote = MinutesItemNote.MINUTES_ITEM_NOTE
+
+/**
+ * The table <code>memo.minutes_resolution</code>.
+ */
+val MINUTES_RESOLUTION: MinutesResolution = MinutesResolution.MINUTES_RESOLUTION
+
+/**
+ * The table <code>memo.minutes_resolution_counter</code>.
+ */
+val MINUTES_RESOLUTION_COUNTER: MinutesResolutionCounter = MinutesResolutionCounter.MINUTES_RESOLUTION_COUNTER
 
 /**
  * The table <code>memo.notification_item</code>.

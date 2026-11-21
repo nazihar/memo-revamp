@@ -11,9 +11,11 @@ import com.memo.meeting.PaperSurfaceRegistry.Channel
 import com.memo.meeting.PaperSurfaceRegistry.Surface
 import com.memo.meeting.internal.RulingInput
 import com.memo.minutes.DecisionPlanting
+import com.memo.minutes.internal.DecisionReads
 import com.memo.minutes.internal.DecisionStore
 import com.memo.minutes.internal.Dissent
 import com.memo.minutes.internal.NoteStore
+import com.memo.minutes.internal.ResolutionNumbers
 import com.memo.testsupport.AuthzMatrix
 import com.memo.testsupport.Person
 import com.memo.testsupport.RecusalRow
@@ -67,6 +69,10 @@ class RecusalLeakIT : RecusalLeakFixture() {
     @Autowired lateinit var decisionStore: DecisionStore
 
     @Autowired lateinit var noteStore: NoteStore
+
+    @Autowired lateinit var decisionReads: DecisionReads
+
+    @Autowired lateinit var numbers: ResolutionNumbers
 
     // 1. Canaries and status, surface by surface
 
@@ -198,6 +204,15 @@ class RecusalLeakIT : RecusalLeakFixture() {
                 assertThat(result.json()["requests"].list().map { it["itemId"].asString() }).doesNotContain(p.item.toString())
             },
             Surface.DECISIONS to { p, v -> decisionsProbe(p, v.person()) },
+            // E06 T4: the register and its check (officers; members 403), and one resolution; the planted ones are numbered in
+            // the decided item's test.
+            Surface.RESOLUTIONS to { _, v ->
+                listOf(
+                    "/api/v1/forums/$brc/resolutions",
+                    "/api/v1/forums/$brc/resolutions/check",
+                    "/api/v1/resolutions/${UUID.randomUUID()}",
+                ).forEach { uri -> clean(v.person(), read(uri, v.person().session), statusBelow = 500) }
+            },
         )
 
     /** The generic files endpoints for every version of a paper's [file]: 403 or 404, naming nothing. */
@@ -308,6 +323,40 @@ class RecusalLeakIT : RecusalLeakFixture() {
     }
 
     /**
+     * E06 T4: the planted item's [resolution] is read by every recused viewer as their recused view (number, outcome, text,
+     * no vote or names), the hidden item's [hidden] not at all (404); in the register both are "restricted" rows for the
+     * recused officers (members are not given the register).
+     */
+    private fun resolutionsProbe(
+        p: Planted,
+        v: Viewer,
+        resolution: UUID,
+        hidden: UUID,
+    ) {
+        val one = read("/api/v1/resolutions/$resolution", v.person().session)
+        clean(v.person(), one)
+        assertThat(one.response.contentAsString).doesNotContain(CANARY_DISSENT, CANARY_NOTE)
+        assertThat(one.json()["viewerRecused"].asBoolean() to one.json()["full"].asBoolean()).isEqualTo(true to false)
+        assertThat(one.json()["text"].asString()).isEqualTo("It was resolved that the term loan be approved.")
+        val unseen = read("/api/v1/resolutions/$hidden", v.person().session)
+        assertThat(unseen).hasStatus(HttpStatus.NOT_FOUND)
+        assertThat(unseen.response.contentAsString).doesNotContain(CANARY_TITLE)
+        val register = read("/api/v1/forums/$brc/resolutions", v.person().session)
+        if (!v.officer) {
+            assertThat(register).hasStatus(HttpStatus.FORBIDDEN)
+            return
+        }
+        clean(v.person(), register)
+        assertThat(register.response.contentAsString).doesNotContain(CANARY_TITLE, CANARY_DISSENT)
+        val rows = register.json()["entries"].list()
+        assertThat(rows.map { it["id"].asString() }).contains(resolution.toString(), hidden.toString())
+        assertThat(
+            rows.filter { it["id"].asString() in setOf(resolution.toString(), hidden.toString()) }.map { it["restricted"].asBoolean() },
+        ).containsOnly(true)
+        assertThat(p.meeting.id.toString()).isIn(rows.map { it["meetingId"].asString() })
+    }
+
+    /**
      * E06 T3: the planted item's decision (a vote, a named dissent whose reason is a canary, the vice-chair abstaining) and
      * the hidden item's (its text a canary), with notes on the item. Each recused viewer reads the item's decision as their
      * recused view (outcome, text, conditions; no vote, names, snapshot or recorder), nothing of the hidden item's, and
@@ -317,23 +366,29 @@ class RecusalLeakIT : RecusalLeakFixture() {
     fun `a recused viewer reads a decided item's recused view only, and nothing of a hidden one's`() {
         val p = Planted(content = true)
         val planting = DecisionPlanting(transactions, decisionStore, noteStore)
-        planting.decision(
-            tenant.id,
-            p.meeting.id,
-            brc,
-            p.item,
-            secretary2.id,
-            "It was resolved that the term loan be approved.",
-            dissent = Dissent(d3.id, CANARY_DISSENT),
-            abstaining = vice.id,
-            tookNoPart = listOf(d1.id, d2.id),
-        )
-        planting.decision(tenant.id, p.meeting.id, brc, p.hidden, secretary2.id, "$CANARY_TITLE approved")
+        val decided =
+            planting.decision(
+                tenant.id,
+                p.meeting.id,
+                brc,
+                p.item,
+                secretary2.id,
+                "It was resolved that the term loan be approved.",
+                dissent = Dissent(d3.id, CANARY_DISSENT),
+                abstaining = vice.id,
+                tookNoPart = listOf(d1.id, d2.id),
+            )
+        val hiddenDecision = planting.decision(tenant.id, p.meeting.id, brc, p.hidden, secretary2.id, "$CANARY_TITLE approved")
+        // E06 T4: both numbered, as the meeting's end numbers them.
+        val resolution = planting.number(tenant.id, decided, decisionReads, numbers)
+        val hiddenResolution = planting.number(tenant.id, hiddenDecision, decisionReads, numbers)
         planting.note(tenant.id, p.meeting.id, p.item, secretary2.id, CANARY_NOTE)
         assertThat(read("/api/v1/meetings/${p.meeting.id}/decisions", control.session).response.contentAsString).contains(CANARY_DISSENT)
         Viewer.entries.forEach { viewer ->
             runCatching { decisionsProbe(p, viewer.person(), planted = true) }
                 .onFailure { throw AssertionError("decisions leak to $viewer", it) }
+            runCatching { resolutionsProbe(p, viewer, resolution, hiddenResolution) }
+                .onFailure { throw AssertionError("resolutions leak to $viewer", it) }
         }
     }
 
@@ -620,6 +675,9 @@ class RecusalLeakIT : RecusalLeakFixture() {
             // The committee's decisions to be ratified (E06 T3): ids, numbers and outcomes only.
             "GET /api/v1/forums/{forumId}/decisions/to-be-ratified" to
                 { _ -> read("/api/v1/forums/$brc/decisions/to-be-ratified", secretary.session) },
+            // The starting resolution number (E06 T4): forums.manage only, so the recused secretary is refused, naming nothing.
+            "PUT /api/v1/forums/{forumId}/resolution-counters/{period}" to
+                { _ -> send(HttpMethod.PUT, "/api/v1/forums/$brc/resolution-counters/2026", secretary, """{"next":14}""") },
             "POST /api/v1/meetings/{meetingId}/end" to
                 { p -> send(HttpMethod.POST, "${base(p)}/end", secretary, "{}", versioned(meetingVersion(p))) },
             "POST /api/v1/meetings/{meetingId}/cancel" to

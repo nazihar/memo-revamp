@@ -99,6 +99,26 @@ class MemoNotes(
     }
 
     /**
+     * A system entry on [memoId]'s note sheet, written by another module for the signed-in actor (ADR-0065: the committee's
+     * decision on the memo was corrected): a comment marked with [actionKind], in plain text cut to the note sheet's
+     * length, never correctable. It does not need the actor to read the memo (the committee's secretary records it); it
+     * mentions nobody. Its id.
+     */
+    fun system(
+        memoId: UUID,
+        actionKind: String,
+        text: String,
+    ): UUID {
+        val actor = checkNotNull(signedIn()) { "a system note is written for a signed-in user" }
+        val memo = store.find(memoId) ?: throw MemoNotFoundException("memo")
+        store.lock(memo.id)
+        val doc = NoteDocument.ofText(text.take(NoteDoc.MAX_TEXT))
+        val note =
+            NewNote(memo.id, maxOf(1, memo.currentRound), NoteKind.COMMENT, actor, null, null, actionKind, null, canonical(doc), doc.text())
+        return write(note, doc, emptyList())
+    }
+
+    /**
      * A decision with its remark (ADR-0049): [request]'s `remarkBody`, or its plain `remark` as one paragraph, is checked
      * first; [act] takes the derived text; then the entry is written, linked to the action just taken.
      */
@@ -190,6 +210,7 @@ class NoteChecks(
         val all = notes.of(memo.id).associateBy { it.id }
         val target = all[id] ?: throw MemoNotFoundException("note")
         refuseIf(target.authorId != actor && target.actingForId != actor, "NOT_YOURS") { "You can correct only your own notes." }
+        refuseIf(target.system(), "NOT_YOURS") { "A system entry is not corrected." }
         val depth = generateSequence(target) { it.correctsId?.let(all::get) }.count()
         refuseIf(depth > MAX_CORRECTIONS, "TOO_MANY_CORRECTIONS") { "This note was corrected too often; write a new note." }
         return target
@@ -302,3 +323,6 @@ class MemoNoteAttachmentPurpose(
         const val KEY = "memo.note.attachment"
     }
 }
+
+/** A system entry another module wrote (a committee's corrected decision, ADR-0065): a comment with a kind of its own. */
+internal fun MemoNote.system(): Boolean = kind == NoteKind.COMMENT && actionKind != null

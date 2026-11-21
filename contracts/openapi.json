@@ -2547,6 +2547,13 @@
           "resolution" : {
             "type" : "boolean"
           },
+          "resolutionId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "resolutionNumber" : {
+            "type" : [ "string", "null" ]
+          },
           "seq" : {
             "format" : "int32",
             "type" : "integer"
@@ -2556,7 +2563,7 @@
             "type" : [ "string", "null" ]
           },
           "state" : {
-            "enum" : [ "RECORDED", "RELEASED", "FINAL" ],
+            "enum" : [ "RECORDED", "NUMBERED", "RELEASED", "FINAL" ],
             "type" : "string"
           },
           "text" : {
@@ -8204,12 +8211,22 @@
             "enum" : [ "REMARK", "COMMENT", "CORRECTION" ],
             "type" : "string"
           },
+          "meetingLabel" : {
+            "type" : [ "string", "null" ]
+          },
           "readableMemos" : {
             "items" : {
               "format" : "uuid",
               "type" : "string"
             },
             "type" : "array"
+          },
+          "resolution" : {
+            "type" : [ "string", "null" ]
+          },
+          "resolutionId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
           },
           "round" : {
             "format" : "int32",
@@ -10521,6 +10538,152 @@
         },
         "type" : "object"
       },
+      "ResolutionCheckResponse" : {
+        "properties" : {
+          "complete" : {
+            "type" : "boolean"
+          },
+          "duplicates" : {
+            "items" : {
+              "format" : "int64",
+              "type" : "integer"
+            },
+            "type" : "array"
+          },
+          "firstNumber" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "forumId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "inForce" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "lastNumber" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "missing" : {
+            "items" : {
+              "format" : "int64",
+              "type" : "integer"
+            },
+            "type" : "array"
+          },
+          "missingCount" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "outOfRange" : {
+            "items" : {
+              "format" : "int64",
+              "type" : "integer"
+            },
+            "type" : "array"
+          },
+          "period" : {
+            "type" : "string"
+          },
+          "void" : {
+            "format" : "int32",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "complete", "duplicates", "firstNumber", "forumId", "inForce", "lastNumber", "missing", "missingCount", "outOfRange", "period", "void" ],
+        "type" : "object"
+      },
+      "ResolutionCounterRequest" : {
+        "properties" : {
+          "next" : {
+            "format" : "int64",
+            "type" : "integer"
+          }
+        },
+        "required" : [ "next" ],
+        "type" : "object"
+      },
+      "ResolutionEntryResponse" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "itemNumber" : {
+            "type" : [ "string", "null" ]
+          },
+          "itemTitle" : {
+            "type" : [ "string", "null" ]
+          },
+          "meetingDate" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "meetingId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "meetingLabel" : {
+            "type" : [ "string", "null" ]
+          },
+          "memo" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/ResolutionMemo"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "number" : {
+            "type" : "string"
+          },
+          "numberedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "outcome" : {
+            "enum" : [ "APPROVED", "APPROVED_WITH_CONDITIONS", "REJECTED", "DEFERRED", "RETURNED", "REFERRED", "NOTED", "WITHDRAWN" ],
+            "type" : [ "string", "null" ]
+          },
+          "outcomeLabel" : {
+            "type" : [ "string", "null" ]
+          },
+          "restricted" : {
+            "type" : "boolean"
+          },
+          "sequence" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "state" : {
+            "enum" : [ "IN_FORCE", "VOID" ],
+            "type" : "string"
+          },
+          "voidReason" : {
+            "type" : [ "string", "null" ]
+          },
+          "voidedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "id", "meetingId", "number", "numberedAt", "restricted", "sequence", "state" ],
+        "type" : "object"
+      },
+      "ResolutionMemo" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "reference" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "id" ],
+        "type" : "object"
+      },
       "ResolutionNumberPart" : {
         "properties" : {
           "digits" : {
@@ -10594,6 +10757,127 @@
           }
         },
         "required" : [ "numbering" ],
+        "type" : "object"
+      },
+      "ResolutionRegisterResponse" : {
+        "properties" : {
+          "entries" : {
+            "items" : {
+              "$ref" : "#/components/schemas/ResolutionEntryResponse"
+            },
+            "type" : "array"
+          },
+          "forumId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "next" : {
+            "type" : [ "string", "null" ]
+          },
+          "period" : {
+            "type" : [ "string", "null" ]
+          },
+          "periods" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          }
+        },
+        "required" : [ "entries", "forumId", "periods" ],
+        "type" : "object"
+      },
+      "ResolutionResponse" : {
+        "properties" : {
+          "conditions" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "decisionId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "forumId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "forumName" : {
+            "type" : "string"
+          },
+          "full" : {
+            "type" : "boolean"
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "itemNumber" : {
+            "type" : [ "string", "null" ]
+          },
+          "itemTitle" : {
+            "type" : [ "string", "null" ]
+          },
+          "meetingDate" : {
+            "format" : "date",
+            "type" : "string"
+          },
+          "meetingId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "meetingLabel" : {
+            "type" : [ "string", "null" ]
+          },
+          "memo" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/ResolutionMemo"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "number" : {
+            "type" : "string"
+          },
+          "numberedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "outcome" : {
+            "enum" : [ "APPROVED", "APPROVED_WITH_CONDITIONS", "REJECTED", "DEFERRED", "RETURNED", "REFERRED", "NOTED", "WITHDRAWN" ],
+            "type" : "string"
+          },
+          "outcomeLabel" : {
+            "type" : "string"
+          },
+          "releasedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "state" : {
+            "enum" : [ "IN_FORCE", "VOID" ],
+            "type" : "string"
+          },
+          "text" : {
+            "type" : [ "string", "null" ]
+          },
+          "validUntil" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "viewerRecused" : {
+            "type" : "boolean"
+          },
+          "voidReason" : {
+            "type" : [ "string", "null" ]
+          },
+          "voidedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "conditions", "decisionId", "forumId", "forumName", "full", "id", "meetingDate", "meetingId", "number", "numberedAt", "outcome", "outcomeLabel", "state", "viewerRecused" ],
         "type" : "object"
       },
       "Retention" : {
@@ -19241,6 +19525,145 @@
         "tags" : [ "forum" ]
       }
     },
+    "/api/v1/forums/{forumId}/resolution-counters/{period}" : {
+      "put" : {
+        "operationId" : "startResolutionCounter",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "period",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ResolutionCounterRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        },
+        "summary" : "Set the first resolution number of a committee's period before any is given (forums.manage, step-up)",
+        "tags" : [ "minutes" ]
+      }
+    },
+    "/api/v1/forums/{forumId}/resolutions" : {
+      "get" : {
+        "operationId" : "getResolutionRegister",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "period",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "state",
+          "required" : false,
+          "schema" : {
+            "enum" : [ "IN_FORCE", "VOID" ],
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "cursor",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "limit",
+          "required" : false,
+          "schema" : {
+            "default" : 50,
+            "format" : "int32",
+            "type" : "integer"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ResolutionRegisterResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A committee's resolutions in number order, the latest first",
+        "tags" : [ "minutes" ]
+      }
+    },
+    "/api/v1/forums/{forumId}/resolutions/check" : {
+      "get" : {
+        "operationId" : "checkResolutionRegister",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "query",
+          "name" : "period",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ResolutionCheckResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Whether every number of a committee's period is accounted for",
+        "tags" : [ "minutes" ]
+      }
+    },
     "/api/v1/forums/{forumId}/submissions" : {
       "get" : {
         "operationId" : "listForumSubmissions",
@@ -26300,6 +26723,34 @@
         },
         "summary" : "Suspend: the host refuses every request, sessions end, jobs wait",
         "tags" : [ "platform-tenants" ]
+      }
+    },
+    "/api/v1/resolutions/{resolutionId}" : {
+      "get" : {
+        "operationId" : "getResolution",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "resolutionId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ResolutionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "One resolution as the viewer may see it",
+        "tags" : [ "minutes" ]
       }
     },
     "/api/v1/saved-searches" : {

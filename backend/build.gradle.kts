@@ -153,8 +153,10 @@ registerUpdateTask(
 tasks.withType<Test>().configureEach {
     // Gradle's default of 512 MiB became too tight with E04's suite: master CI ran out of heap on a tree that had passed.
     // 1 GiB became too tight in Phase 3 E02 (CI ran out of heap in ArchUnit's import, with the cached Spring contexts):
-    // the runner has 16 GB, and each test context holds its own pools and caches.
-    maxHeapSize = "2g"
+    // the runner has 16 GB, and each test context holds its own pools and caches. 2 GiB became too tight in Phase 4 E06
+    // (about 3,800 tests; CI ran out of heap on #218), so 3 GiB, with a heap dump kept for the next time.
+    maxHeapSize = "3g"
+    jvmArgs("-XX:+HeapDumpOnOutOfMemoryError", "-XX:HeapDumpPath=build/test-heap")
     val repoRoot = rootProject.layout.projectDirectory
     // Tests read the committed contract and the same deploy scripts (DB roles, bucket bootstrap) that real installs use.
     systemProperty("repo.root", repoRoot.asFile.absolutePath)
@@ -181,6 +183,12 @@ pitest {
             "com.memo.forum.Quorum$*",
             "com.memo.meeting.internal.quorum.PresenceBuilder*",
             "com.memo.meeting.QuorumSnapshotInputs*",
+            // Resolution numbering and the way back to the memo (ADR-0065, Phase 4 E06 T4): the order numbers are given in, the
+            // register check and the release mapping.
+            "com.memo.minutes.internal.ResolutionOrder*",
+            "com.memo.minutes.internal.ResolutionChecks*",
+            "com.memo.minutes.internal.ReleaseMapping*",
+            "com.memo.minutes.internal.ReleaseCommand*",
         ),
     )
     targetTests.set(
@@ -191,6 +199,9 @@ pitest {
             "com.memo.forum.QuorumProperties",
             "com.memo.meeting.internal.quorum.PresenceBuilderProperties",
             "com.memo.meeting.internal.quorum.ItemQuorumProperties",
+            "com.memo.minutes.internal.ReleaseMappingTest",
+            "com.memo.minutes.internal.ResolutionChecksTest",
+            "com.memo.minutes.internal.AgendaOrderProperties",
         ),
     )
     threads.set(4)

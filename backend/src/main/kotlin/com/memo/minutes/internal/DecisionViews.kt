@@ -52,6 +52,9 @@ data class DecisionResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val toBeRatified: Boolean,
     /** The viewer declared an interest in the item: "You declared an interest in this item and took no part." */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val viewerRecused: Boolean,
+    /** Its resolution number in force ("BRC/2026/014"), given when the meeting is marked as held or at once after. */
+    val resolutionNumber: String? = null,
+    val resolutionId: UUID? = null,
     /** In full only, from here on. */
     val deferTo: DeferTarget? = null,
     val referToForumId: UUID? = null,

@@ -9,6 +9,7 @@ import com.memo.common.tenant.TenantTransactions
 import com.memo.common.web.etagOf
 import com.memo.files.Files
 import com.memo.identity.UserSummaries
+import com.memo.workflow.ActionEntry
 import com.memo.workflow.ActionKind
 import com.memo.workflow.WorkflowForums
 import io.swagger.v3.oas.annotations.Operation
@@ -83,6 +84,11 @@ data class NoteEntryView(
     val committee: String? = null,
     /** Its outcome: APPROVED, APPROVED_WITH_CONDITIONS, NOTED, REJECTED, RETURNED, or DECLINED. */
     val committeeOutcome: String? = null,
+    /** A committee's decision with a resolution number (ADR-0065): "Resolution BRC/2026/014", with a link to it. */
+    val resolution: String? = null,
+    val resolutionId: UUID? = null,
+    /** The meeting that decided it ("BRC 3/2026"). */
+    val meetingLabel: String? = null,
 )
 
 data class NoteSheetView(
@@ -207,29 +213,42 @@ class MemoNotesController(
                             fileInfo[f]?.let { NoteFileView(f, it.name, it.mediaType) }
                         },
                     readableMemos = refs.filter { actor != null && store.visible(it, actor, policy.clearanceRank()) != null },
-                    canCorrect = writable && actor != null && (n.authorId == actor || n.actingForId == actor),
+                    // A system entry (a committee's corrected decision) is never corrected.
+                    canCorrect = writable && actor != null && !n.system() && (n.authorId == actor || n.actingForId == actor),
                 )
             }
         val forumNames by lazy { workflow.forumNames() }
-        val legacy =
-            sheet.legacy.map { a ->
-                val text = a.remark.orEmpty()
-                val forum = (a.details["forum"] as? String)?.takeIf { a.kind in FORUM_ACTIONS }
-                NoteEntryView(
-                    id = "action-${a.seq}",
-                    kind = NoteKind.REMARK,
-                    round = a.round,
-                    author = named(a.actorId),
-                    actingFor = a.actingForId?.let(::named),
-                    actionKind = a.kind.name,
-                    body = NoteDoc.json(NoteDocument.ofText(text), json),
-                    text = text,
-                    createdAt = a.occurredAt,
-                    committee = forum?.let { forumNames[it] ?: it },
-                    committeeOutcome =
-                        forum?.let { if (a.kind == ActionKind.FORUM_DECLINED) "DECLINED" else a.details["outcome"] as? String },
-                )
-            }
+        val legacy = sheet.legacy.map { a -> legacyView(a, ::named) { forumNames } }
         return (entries + legacy).sortedBy { it.createdAt }
+    }
+
+    /**
+     * A remark of an action without an entry of its own (before E03, and every committee's decision): a committee's
+     * decision or decline names the committee and its outcome, and a decision its resolution number (ADR-0065).
+     */
+    private fun legacyView(
+        a: ActionEntry,
+        named: (UUID) -> Named,
+        forumNames: () -> Map<String, String>,
+    ): NoteEntryView {
+        val text = a.remark.orEmpty()
+        val forum = (a.details["forum"] as? String)?.takeIf { a.kind in FORUM_ACTIONS }
+        val detail = { key: String -> (a.details[key] as? String)?.takeIf { forum != null } }
+        return NoteEntryView(
+            id = "action-${a.seq}",
+            kind = NoteKind.REMARK,
+            round = a.round,
+            author = named(a.actorId),
+            actingFor = a.actingForId?.let(named),
+            actionKind = a.kind.name,
+            body = NoteDoc.json(NoteDocument.ofText(text), json),
+            text = text,
+            createdAt = a.occurredAt,
+            committee = forum?.let { forumNames()[it] ?: it },
+            committeeOutcome = forum?.let { if (a.kind == ActionKind.FORUM_DECLINED) "DECLINED" else detail("outcome") },
+            resolution = detail("resolution"),
+            resolutionId = detail("resolutionId")?.let { runCatching { UUID.fromString(it) }.getOrNull() },
+            meetingLabel = detail("meetingLabel"),
+        )
     }
 }

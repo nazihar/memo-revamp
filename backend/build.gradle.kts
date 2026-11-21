@@ -181,6 +181,12 @@ pitest {
             "com.memo.forum.Quorum$*",
             "com.memo.meeting.internal.quorum.PresenceBuilder*",
             "com.memo.meeting.QuorumSnapshotInputs*",
+            // Resolution numbering and the way back to the memo (ADR-0065, Phase 4 E06 T4): the order numbers are given in, the
+            // register check and the release mapping.
+            "com.memo.minutes.internal.ResolutionOrder*",
+            "com.memo.minutes.internal.ResolutionChecks*",
+            "com.memo.minutes.internal.ReleaseMapping*",
+            "com.memo.minutes.internal.ReleaseCommand*",
         ),
     )
     targetTests.set(
@@ -191,6 +197,9 @@ pitest {
             "com.memo.forum.QuorumProperties",
             "com.memo.meeting.internal.quorum.PresenceBuilderProperties",
             "com.memo.meeting.internal.quorum.ItemQuorumProperties",
+            "com.memo.minutes.internal.ReleaseMappingTest",
+            "com.memo.minutes.internal.ResolutionChecksTest",
+            "com.memo.minutes.internal.AgendaOrderProperties",
         ),
     )
     threads.set(4)

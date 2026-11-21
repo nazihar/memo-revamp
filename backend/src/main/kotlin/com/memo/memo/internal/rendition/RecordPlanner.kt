@@ -5,6 +5,7 @@ import com.memo.common.authz.Clearances
 import com.memo.files.FileType
 import com.memo.files.Files
 import com.memo.identity.UserSummaries
+import com.memo.memo.MemoSystemNotes
 import com.memo.memo.internal.AttachmentRow
 import com.memo.memo.internal.BoundAttachment
 import com.memo.memo.internal.Memo
@@ -20,6 +21,7 @@ import com.memo.memo.internal.NoteDocument
 import com.memo.memo.internal.NoteKind
 import com.memo.workflow.ActionEntry
 import com.memo.workflow.ActionKind
+import com.memo.workflow.WorkflowForums
 import com.memo.workflow.WorkflowQueries
 import org.springframework.stereotype.Component
 import tools.jackson.databind.json.JsonMapper
@@ -89,6 +91,7 @@ class RecordPlanner(
     private val attachments: MemoAttachmentStore,
     private val notes: MemoNoteStore,
     private val workflows: WorkflowQueries,
+    private val forums: WorkflowForums,
     private val files: Files,
     private val users: UserSummaries,
     private val clearances: Clearances,
@@ -121,7 +124,18 @@ class RecordPlanner(
                 facts.document.source,
                 placeholder(frame, "Approved document", facts.document.source, facts.memoLevel.name),
             )
-        parts += PlannedPart.Pages(PartKind.APPROVALS, "Approvals", "AP-", RecordPages.approvals(frame.header, frame.footer, stampLines))
+        parts +=
+            PlannedPart.Pages(
+                PartKind.APPROVALS,
+                "Approvals",
+                "AP-",
+                RecordPages.approvals(
+                    frame.header,
+                    frame.footer,
+                    stampLines,
+                    CommitteeDecisions.lines(facts.committees) { forums.forumNames() },
+                ),
+            )
         parts += PlannedPart.Pages(PartKind.NOTES, "Note sheet", "N-", RecordPages.notes(frame.header, frame.footer, noteLines(facts)))
         parts += attachmentParts(facts, frame)
         val metadata =
@@ -153,6 +167,8 @@ class RecordPlanner(
         val bound: List<Pair<BoundAttachment, AttachmentRow>>,
         val notes: List<MemoNote>,
         val legacy: List<ActionEntry>,
+        /** The committees' decisions on the memo (ADR-0065), from its workflow history. */
+        val committees: List<ActionEntry>,
         val levelOf: (UUID?, Int?) -> ClassificationLevelRef,
         val name: (UUID?) -> String?,
     ) {
@@ -167,11 +183,8 @@ class RecordPlanner(
         val final = stamps.lastOrNull { it.decision == ActionKind.APPROVE.name } ?: throw RecordPlanException("NO_APPROVAL")
         val noteList = notes.of(memo.id)
         val linked = noteList.mapNotNull { it.actionSeq }.toSet()
-        val legacy =
-            memo.workflowInstanceId
-                ?.let(workflows::history)
-                .orEmpty()
-                .filter { !it.remark.isNullOrBlank() && it.seq !in linked }
+        val history = memo.workflowInstanceId?.let(workflows::history).orEmpty()
+        val legacy = history.filter { !it.remark.isNullOrBlank() && it.seq !in linked }
         val people =
             stamps.flatMap { listOfNotNull(it.actorId, it.actingForId) } +
                 noteList.flatMap { listOfNotNull(it.authorId, it.actingForId) } +
@@ -186,6 +199,7 @@ class RecordPlanner(
             bound = attachments.bound(memo.id, final.round),
             notes = noteList,
             legacy = legacy,
+            committees = history.filter { it.kind == ActionKind.FORUM_DECIDED },
             levelOf = { id, rank -> levels.firstOrNull { it.id == id } ?: levels.first { it.rank == (rank ?: 0) } },
             name = { id -> id?.let { names[it] ?: "Unknown person" } },
         )
@@ -241,7 +255,7 @@ class RecordPlanner(
                     a.round,
                     facts.name(a.actorId).orEmpty(),
                     facts.name(a.actingForId),
-                    "${a.kind.name.lowercase().replaceFirstChar(Char::uppercase)} (remark)",
+                    CommitteeDecisions.remarkLabel(a),
                     a.occurredAt,
                     NoteDocument.ofText(a.remark.orEmpty()),
                     false,
@@ -344,8 +358,13 @@ class RecordPlanner(
         action: String?,
     ): String =
         when (kind) {
-            NoteKind.COMMENT -> "Comment"
+            NoteKind.COMMENT -> SYSTEM_NOTES[action] ?: "Comment"
             NoteKind.CORRECTION -> "Correction"
             NoteKind.REMARK -> "Remark on ${action?.lowercase() ?: "a decision"}"
         }
+
+    private companion object {
+        /** The system entries other modules write (`MemoSystemNotes`), by kind. */
+        val SYSTEM_NOTES = mapOf(MemoSystemNotes.FORUM_DECISION_CORRECTED to "The committee's decision corrected")
+    }
 }

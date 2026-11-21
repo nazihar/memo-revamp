@@ -37,6 +37,7 @@ enum class DecisionSight {
 class MinutesAccess(
     private val viewers: MeetingViewers,
     private val reads: DecisionReads,
+    private val resolutions: ResolutionStore,
     private val attendance: MeetingAttendance,
     private val snapshots: QuorumSnapshots,
     private val users: UserSummaries,
@@ -56,10 +57,11 @@ class MinutesAccess(
         val ratified = reads.ratifiers(shown.filter { it.first.entry.ratificationRequired }.map { it.first.decision.id }).keys
         val corrected = if (view.manages) attendance.of(meetingId)?.lastCorrectedAt else null
         val names = users.names(shown.filter { it.second == DecisionSight.FULL }.flatMap { (d, _) -> named(d.entry, view.officer) }.toSet())
+        val numbers = resolutions.inForce(shown.map { it.first.decision.id })
         val decisions =
             shown.map { (d, sight) ->
                 val drifted = corrected?.takeIf { it.isAfter(d.entry.recordedAt) }?.let { snapshots.drifted(d.entry.snapshotId)?.drifted }
-                response(view, d, sight, d.decision.id in ratified, names, drifted)
+                response(view, d, sight, d.decision.id in ratified, names, drifted, numbers[d.decision.id])
             }
         return MeetingDecisionsResponse(meetingId, decisions)
     }
@@ -169,6 +171,7 @@ class MinutesAccess(
         ratified: Boolean,
         names: Map<UUID, String>,
         drifted: Boolean?,
+        number: ResolutionRow?,
     ): DecisionResponse {
         val e = d.entry
         val reduced =
@@ -178,7 +181,7 @@ class MinutesAccess(
                 itemNumber = view.agenda.item(d.decision.itemId)?.number,
                 version = d.decision.version,
                 seq = e.seq,
-                state = state(d.decision),
+                state = DecisionState.of(d.decision.releasedAt, d.decision.finalAt, number != null),
                 outcome = e.outcomeKind,
                 outcomeLabel = e.outcomeLabel,
                 resolution = e.resolution,
@@ -189,6 +192,8 @@ class MinutesAccess(
                 ratificationRequired = e.ratificationRequired,
                 toBeRatified = e.ratificationRequired && !ratified,
                 viewerRecused = d.decision.itemId in view.recused,
+                resolutionNumber = number?.number,
+                resolutionId = number?.id,
             )
         if (sight != DecisionSight.FULL) return reduced
         val person = { id: UUID -> DecisionPerson(id, names[id].orEmpty()) }
@@ -247,5 +252,3 @@ private fun named(
     e: EntryRow,
     officer: Boolean,
 ): List<UUID> = e.dissent.map { it.userId } + e.abstentions + e.tookNoPart + listOfNotNull(e.recordedBy.takeIf { officer })
-
-private fun state(d: DecisionRow): DecisionState = DecisionState.of(d.releasedAt, d.finalAt)

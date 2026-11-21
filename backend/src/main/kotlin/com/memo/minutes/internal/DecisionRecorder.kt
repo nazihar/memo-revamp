@@ -33,6 +33,9 @@ data class DecisionScene(
     val outcomes: List<Outcome>,
 ) {
     val meetingId: UUID get() = view.meeting.id
+
+    /** The submission a SUBMISSION item decides; null for other items. */
+    val submissionId: UUID? get() = item.submissionId.takeIf { item.kind == AgendaItemKind.SUBMISSION }
 }
 
 /**
@@ -55,6 +58,7 @@ class DecisionRecorder(
     private val reads: DecisionReads,
     private val stages: MinutesStages,
     private val effects: DecisionEffects,
+    private val release: MinutesRelease,
     private val ids: IdGenerator,
     private val clock: Clock,
 ) {
@@ -72,7 +76,11 @@ class DecisionRecorder(
             if (version == null) throw PreconditionRequiredException()
             if (version != existing.version) throw ConcurrentModificationException("decision ${existing.id}", version)
         }
-        val sendBack = DecisionRules.window(scene.view.meeting.status, stages.stage(meetingId), existing, input.returnMinutesToDraft)
+        // E03's lock order: the decision row, the submission's, then the meeting's (here, so its status is current: a meeting
+        // marked as held meanwhile numbers and releases this decision at once; the snapshot takes the same lock).
+        release.lockSubmissions(listOfNotNull(scene.submissionId))
+        val status = meetings.locked(meetingId)?.status ?: scene.view.meeting.status
+        val sendBack = DecisionRules.window(status, stages.stage(meetingId), existing, input.returnMinutesToDraft)
         val now = clock.instant().truncatedTo(ChronoUnit.MICROS)
         val (content, contentProblems) = DecisionChecks.content(input, scene.outcomes, scene.view.meeting.date())
         val (reason, reasonProblem) = if (current == null) null to null else DecisionRules.reason(input.reason)
@@ -80,7 +88,7 @@ class DecisionRecorder(
             DecisionRules.decidedAt(
                 input.decidedAt?.truncatedTo(ChronoUnit.MICROS),
                 current?.entry?.decidedAt ?: lastStarted(meetingId, itemId),
-                scene.view.meeting.status,
+                status,
                 scene.view.meeting.startsAt to scene.view.meeting.endsAt,
                 now,
             )
@@ -103,7 +111,8 @@ class DecisionRecorder(
         if (sendBack) stages.returnToDraft(meetingId, itemId)
         val recorded = checkNotNull(reads.current(itemId))
         effects.recorded(recorded, current?.entry, snapshot)
-        return recorded
+        release.afterChange(recorded, current?.entry, status)
+        return checkNotNull(reads.current(itemId))
     }
 
     /** The meeting as the actor runs it and the item to decide: 404 unseen, 403 not a recorder, 403 `RECUSED`. */

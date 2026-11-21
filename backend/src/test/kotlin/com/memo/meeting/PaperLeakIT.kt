@@ -492,6 +492,18 @@ class PaperLeakIT : RecusalFixture() {
                     assertThat(answer.response.status).describedAs("resolution of $item").isEqualTo(expected)
                 }
             },
+            // E06 T5: the minutes page is the secretaries' while drafting: nobody probed has it (404), and nobody may draft.
+            Surface.MINUTES to { p, person ->
+                val base = "/api/v1/meetings/${p.meeting.id}/minutes"
+                val page = read(base, person.session)
+                assertThat(page).hasStatus(HttpStatus.NOT_FOUND)
+                p.canaries(person).forEach { assertThat(page.response.contentAsString).doesNotContain(it) }
+                listOf("$base/draft", "$base/items/${p.recused}/regenerate", "$base/items/${p.hidden}/regenerate").forEach { uri ->
+                    val asked = send(HttpMethod.POST, uri, person, "{}", mapOf("Idempotency-Key" to UUID.randomUUID().toString()))
+                    assertThat(asked.response.status).describedAs(uri).isIn(403, 404)
+                    p.canaries(person).forEach { assertThat(asked.response.contentAsString).doesNotContain(it) }
+                }
+            },
         )
 
     @Test

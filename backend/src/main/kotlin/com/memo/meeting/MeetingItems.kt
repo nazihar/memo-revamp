@@ -12,6 +12,7 @@ import com.memo.meeting.internal.MeetingAccess
 import com.memo.meeting.internal.MeetingGuard
 import com.memo.meeting.internal.MeetingRow
 import com.memo.meeting.internal.MeetingStore
+import com.memo.meeting.internal.PaperStore
 import com.memo.meeting.internal.PaperViewers
 import com.memo.meeting.internal.PublishedLate
 import com.memo.meeting.internal.RevisionStore
@@ -57,6 +58,32 @@ data class AgendaItemRef(
     val restricted: Boolean get() = restrictedTo != null
 }
 
+/** How an item or paper reached the members (design E03 §1.4): in time, after the deadline, or tabled at the meeting. */
+enum class ItemLateness { NONE, LATE, TABLED }
+
+/** A paper of an item as the minutes list it: its title and when it was circulated. */
+data class ItemPaper(
+    val title: String,
+    val late: ItemLateness,
+)
+
+/** Someone presenting an item: a user, or a typed name. */
+data class ItemPresenter(
+    val userId: UUID?,
+    val name: String?,
+)
+
+/** What the minutes print of an item beyond its line (design E06 §1.7). Business content. */
+data class AgendaItemDetails(
+    val itemId: UUID,
+    val sectionTitle: String,
+    val presenters: List<ItemPresenter>,
+    val papers: List<ItemPaper>,
+    /** Item attendees ("in attendance for item n"). */
+    val attendees: Set<UUID>,
+    val late: ItemLateness,
+)
+
 /** A meeting's decidable items, in agenda order (the latest revision's, then tabled items not yet published). */
 data class MeetingAgendaRef(
     val meetingId: UUID,
@@ -80,6 +107,7 @@ class MeetingItems(
     private val items: ItemStore,
     private val sections: SectionStore,
     private val requests: ConsentRequestStore,
+    private val paperStore: PaperStore,
 ) {
     /** [meetingId]'s items: the latest revision's body (no breaks), then the live tabled items it does not carry. */
     fun agenda(meetingId: UUID): MeetingAgendaRef {
@@ -88,6 +116,64 @@ class MeetingItems(
         val published = head?.let { published(revisions.snapshot(it.id).body(), lifted) }.orEmpty()
         return MeetingAgendaRef(meetingId, head?.number ?: 0, published + tabled(meetingId, published.map { it.id }.toSet(), lifted))
     }
+
+    /**
+     * What the minutes print of each item of [agenda] (design E06 §1.7): its section's title, presenters, papers and
+     * lateness, and its item attendees; from the latest revision, and from the live draft for a tabled item it does not
+     * carry. Business content: the caller decides who reads it.
+     */
+    fun details(agenda: MeetingAgendaRef): Map<UUID, AgendaItemDetails> {
+        val head = revisions.heads(agenda.meetingId).lastOrNull()
+        val body = head?.let { revisions.snapshot(it.id).body() }
+        val published =
+            body
+                ?.let { snapshot ->
+                    val titles = snapshot.sections.associate { it.sectionId to it.title }
+                    val papers = snapshot.papers.groupBy { it.itemId }
+                    snapshot.items.associate { row ->
+                        row.itemId to
+                            AgendaItemDetails(
+                                itemId = row.itemId,
+                                sectionTitle = titles[row.sectionId].orEmpty(),
+                                presenters = row.presenters.map { ItemPresenter(it.userId, it.name) },
+                                papers = papers[row.itemId].orEmpty().map { ItemPaper(it.title, lateness(it.late)) },
+                                attendees = row.attendees,
+                                late = lateness(row.late),
+                            )
+                    }
+                }.orEmpty()
+        val missing = agenda.items.map { it.id }.filter { it !in published }
+        if (missing.isEmpty()) return published
+        val titles = sections.live(agenda.meetingId).associate { it.id to it.title }
+        val papers = paperStore.live(agenda.meetingId).groupBy { it.itemId }
+        val live =
+            items.live(agenda.meetingId).filter { it.id in missing }.associate { row ->
+                row.id to
+                    AgendaItemDetails(
+                        itemId = row.id,
+                        sectionTitle = titles[row.sectionId].orEmpty(),
+                        presenters = row.presenters.map { ItemPresenter(it.userId, it.name) },
+                        papers = papers[row.id].orEmpty().map { ItemPaper(it.title, lateness(it.late)) },
+                        attendees = emptySet(),
+                        late = lateness(row.late),
+                    )
+            }
+        return published + live
+    }
+
+    private fun lateness(late: PublishedLate): ItemLateness =
+        when (late) {
+            PublishedLate.NONE -> ItemLateness.NONE
+            PublishedLate.LATE -> ItemLateness.LATE
+            PublishedLate.TABLED -> ItemLateness.TABLED
+        }
+
+    private fun lateness(late: Lateness): ItemLateness =
+        when (late) {
+            Lateness.TABLED -> ItemLateness.TABLED
+            Lateness.LATE, Lateness.CHAIR_AGREED -> ItemLateness.LATE
+            else -> ItemLateness.NONE
+        }
 
     private fun published(
         body: Snapshot,

@@ -265,6 +265,11 @@ internal object ControlXml {
         }
     }
 
+    /** Removes [sdt], with its content, from its document. */
+    fun remove(sdt: CTSdtBlock) {
+        sdt.newCursor().use { it.removeXml() }
+    }
+
     /** Whether any element or attribute in [xml] is in the relationships namespace (`r:id`, `r:embed`, …). */
     private fun refersToParts(xml: XmlObject): Boolean =
         xml.newCursor().use { c ->

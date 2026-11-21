@@ -23,6 +23,7 @@ import { directionOf } from '@/i18n/locales'
 import { problemText } from './codes'
 import { levelLabels, resultLabels, sheetLabels } from './format'
 import { im, imv } from './messages'
+import { TableScroll } from '@/components/page/TableScroll'
 
 type Level = ImportProblemView['level']
 type Sheet = NonNullable<ImportProblemView['sheet']>
@@ -239,7 +240,7 @@ export function ProblemList({ batchId }: { batchId: string }) {
           )}
         </Field>
       </div>
-      <div className="overflow-x-auto">
+      <TableScroll>
         <table className="w-full text-sm" data-testid="problem-table">
           <caption className="sr-only">{intl.formatMessage(im.problemsCaption)}</caption>
           <thead>
@@ -267,7 +268,7 @@ export function ProblemList({ batchId }: { batchId: string }) {
             ))}
           </tbody>
         </table>
-      </div>
+      </TableScroll>
       {!problems.isPending && items.length === 0 ? (
         <p className="text-sm text-muted-foreground">{intl.formatMessage(im.noProblems)}</p>
       ) : null}
@@ -316,7 +317,7 @@ function RowList({ batchId }: { batchId: string }) {
           </Select>
         )}
       </Field>
-      <div className="overflow-x-auto">
+      <TableScroll>
         <table className="w-full text-sm" data-testid="row-table">
           <caption className="sr-only">{intl.formatMessage(im.rowsCaption)}</caption>
           <thead>
@@ -350,7 +351,7 @@ function RowList({ batchId }: { batchId: string }) {
             ))}
           </tbody>
         </table>
-      </div>
+      </TableScroll>
       {!rows.isPending && items.length === 0 ? (
         <p className="text-sm text-muted-foreground">{intl.formatMessage(im.noRows)}</p>
       ) : null}

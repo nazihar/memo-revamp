@@ -8,6 +8,7 @@ import type {
   AttendancePersonResponse,
   AttendanceResponse,
   ForumPolicyResponse,
+  InvitationsResponse,
   LiveQuorumResponse,
   MeetingResponse,
   MemberAgendaResponse,
@@ -841,6 +842,74 @@ describe('The live quorum (Phase 4 E05 T8, flow Y)', () => {
     expect(await screen.findByRole('region', { name: 'النصاب' })).toHaveTextContent(/النصاب مكتمل — الاجتماع/)
     expect(document.documentElement).toHaveAttribute('dir', 'rtl')
     await expectNoA11yViolations(container)
+  }, 30_000)
+})
+
+/** The invitations panel with nobody on it: enough for the "Invitations and replies" tab to open. */
+const noInvitations = http.get(`${API}/meetings/m1/invitations`, () =>
+  HttpResponse.json<InvitationsResponse>({
+    meetingId: 'm1',
+    canResend: false,
+    cancelled: false,
+    created: true,
+    pending: false,
+    people: [],
+  }),
+)
+
+describe('The meeting page’s tabs', () => {
+  it('keeps the tab chosen in the address and across a change of language, without reloading the page', async () => {
+    const user = userEvent.setup()
+    setup()
+    server.use(noInvitations)
+    const { router } = renderRoute('/meetings/m1')
+    expect(await screen.findByRole('tab', { name: 'Attendance' })).toHaveAttribute('aria-selected', 'true')
+
+    const replies = screen.getByRole('tab', { name: 'Invitations and replies' })
+    await user.click(replies)
+    await waitFor(() => {
+      expect(router.state.location.search).toEqual({ tab: 'replies' })
+    })
+    expect(replies).toHaveAttribute('aria-selected', 'true')
+
+    await user.click(screen.getByRole('button', { name: /Change language/ }))
+    await user.click(await screen.findByRole('menuitemradio', { name: 'العربية' }))
+    expect(await screen.findByRole('tab', { name: 'الدعوات والردود' })).toHaveAttribute('aria-selected', 'true')
+    // The same tab, translated in place: the page was not replaced by a loading state while Arabic loaded.
+    expect(replies).toBeInTheDocument()
+    expect(router.state.location.search).toEqual({ tab: 'replies' })
+
+    // The register, the tab the page opens on while the meeting runs, leaves the address.
+    await user.click(screen.getByRole('tab', { name: 'الحضور' }))
+    await waitFor(() => {
+      expect(router.state.location.search).toEqual({})
+    })
+  }, 30_000)
+
+  it('opens on the tab the address names, and on the first tab for one the viewer does not have', async () => {
+    setup()
+    const first = renderRoute('/meetings/m1?tab=agenda')
+    expect(await screen.findByRole('tab', { name: 'Agenda' })).toHaveAttribute('aria-selected', 'true')
+    first.unmount()
+
+    // Before the meeting there is no register: `?tab=attendance` opens the agenda; an unknown tab, the one the page opens on.
+    setup({ meeting: { ...meeting, status: 'SCHEDULED' } })
+    const scheduled = renderRoute('/meetings/m1?tab=attendance')
+    expect(await screen.findByRole('tab', { name: 'Agenda' })).toHaveAttribute('aria-selected', 'true')
+    expect(screen.queryByRole('tab', { name: 'Attendance' })).not.toBeInTheDocument()
+    scheduled.unmount()
+
+    setup()
+    renderRoute('/meetings/m1?tab=minutes')
+    expect(await screen.findByRole('tab', { name: 'Attendance' })).toHaveAttribute('aria-selected', 'true')
+  }, 30_000)
+
+  it('puts the register’s tables in a positioned scroll box, so a hidden header never widens the page', async () => {
+    setup()
+    renderRoute('/meetings/m1')
+    const members = await screen.findByRole('table', { name: 'Members' })
+    const box = members.closest('[data-table-scroll]')
+    expect(box).toHaveClass('relative', 'overflow-x-auto')
   }, 30_000)
 })
 

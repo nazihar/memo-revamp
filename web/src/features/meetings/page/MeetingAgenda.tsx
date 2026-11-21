@@ -28,6 +28,7 @@ import { newIdempotencyKey } from '@/lib/idempotency'
 import { AgendaView } from './AgendaView'
 import { pm, pmv } from './messages'
 import { PaperViewer } from './PaperViewer'
+import { keepTab } from './search'
 import { WhatChangedDialog } from './WhatChanged'
 import { lineName } from './words'
 import './print.css'
@@ -172,14 +173,19 @@ export function MeetingAgenda({ meetingId, relation }: { meetingId: string; rela
   const reading = data.revision != null && data.revision !== data.latestRevision ? data.revision : undefined
   const openPaper = (p: MemberPaperResponse) => {
     pushed.current = true
-    void navigate({ search: { paper: p.id, ...(data.revision != null ? { revision: data.revision } : {}) } })
+    void navigate({
+      search: { ...keepTab(search), paper: p.id, ...(data.revision != null ? { revision: data.revision } : {}) },
+    })
   }
   const closePaper = () => {
     if (pushed.current) {
       pushed.current = false
       router.history.back()
     } else {
-      void navigate({ search: reading === undefined ? {} : { revision: reading }, replace: true })
+      void navigate({
+        search: { ...keepTab(search), ...(reading === undefined ? {} : { revision: reading }) },
+        replace: true,
+      })
     }
   }
   const paper = search.paper ? findPaper(data, search.paper) : undefined
@@ -241,7 +247,10 @@ export function MeetingAgenda({ meetingId, relation }: { meetingId: string; rela
                 value={revision}
                 latest={data.latestRevision}
                 onChange={(next) => {
-                  void navigate({ search: next === data.latestRevision ? {} : { revision: next }, replace: true })
+                  void navigate({
+                    search: { ...keepTab(search), ...(next === data.latestRevision ? {} : { revision: next }) },
+                    replace: true,
+                  })
                 }}
               />
             ) : null}
@@ -289,7 +298,7 @@ export function MeetingAgenda({ meetingId, relation }: { meetingId: string; rela
                   variant="outline"
                   className="min-h-11"
                   onClick={() => {
-                    void navigate({ search: {}, replace: true })
+                    void navigate({ search: keepTab(search), replace: true })
                   }}
                 >
                   {intl.formatMessage(pm.readLatest)}

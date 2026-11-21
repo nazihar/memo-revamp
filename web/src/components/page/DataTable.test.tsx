@@ -103,3 +103,34 @@ describe('DataTable', () => {
     expect(alert).toHaveTextContent('Reference: abc-123')
   })
 })
+
+describe('Tables and narrow screens (WCAG 1.4.10)', () => {
+  it('a DataTable scrolls in its own positioned box, which holds its visually hidden caption and headers', () => {
+    const hidden: DataTableColumn<Row>[] = [
+      ...columns,
+      { id: 'actions', header: () => <span className="sr-only">Actions</span>, cell: () => null },
+    ]
+    renderWithProviders(<DataTable caption="Users" columns={hidden} rows={rows} getRowId={(r) => r.id} />)
+    const table = screen.getByRole('table', { name: 'Users' })
+    const box = table.parentElement
+    expect(box).toHaveAttribute('data-table-scroll')
+    expect(box).toHaveClass('relative', 'overflow-x-auto')
+    expect(within(table).getByText('Actions').closest('[data-table-scroll]')).toBe(box)
+  })
+
+  it('every table in the application sits in such a box', () => {
+    // A table outside a positioned scroll box lets an `sr-only` header (absolutely positioned) be placed against the
+    // page, past its edge at 320 px, and the page scrolls sideways (found on the meeting page, Phase 4 E05 T10).
+    const sources = import.meta.glob<string>(['/src/**/*.tsx', '!/src/**/*.test.tsx'], {
+      query: '?raw',
+      import: 'default',
+      eager: true,
+    })
+    const unboxed = Object.entries(sources)
+      .filter(([, source]) => /<table\b/.test(source))
+      .filter(([, source]) => !/<TableScroll\b/.test(source) && !source.includes("'relative overflow-x-auto'"))
+      .map(([path]) => path)
+    expect(Object.keys(sources).length).toBeGreaterThan(100)
+    expect(unboxed).toEqual([])
+  })
+})

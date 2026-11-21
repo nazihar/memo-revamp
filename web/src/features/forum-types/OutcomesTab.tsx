@@ -5,6 +5,7 @@ import type { TermValues } from '@/features/terms/terms'
 import { effects, meaningLabels } from './labels'
 import { ft, ftt, ftv } from './messages'
 import { OUTCOME_KINDS, type OutcomeKind, type TypeSettings } from './settings'
+import { TableScroll } from '@/components/page/TableScroll'
 
 type Outcomes = TypeSettings['outcomes']
 
@@ -62,7 +63,7 @@ export function OutcomesTab({
           {errors.outcomes}
         </p>
       ) : null}
-      <div className="overflow-x-auto">
+      <TableScroll>
         <table className="w-full min-w-[36rem] text-sm">
           <caption className="sr-only">{intl.formatMessage(ft.outcomesCaption)}</caption>
           <thead>
@@ -132,7 +133,7 @@ export function OutcomesTab({
             })}
           </tbody>
         </table>
-      </div>
+      </TableScroll>
       <details className="rounded-md border p-3 text-sm">
         <summary className="min-h-8 cursor-pointer font-medium">{intl.formatMessage(ft.outcomesHelp)}</summary>
         <dl className="mt-2 grid gap-x-4 gap-y-1 sm:grid-cols-[minmax(0,14rem)_minmax(0,1fr)]">

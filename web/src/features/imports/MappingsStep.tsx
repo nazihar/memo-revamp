@@ -24,6 +24,7 @@ import { PeoplePicker } from '@/features/org/PeoplePicker'
 import { answerText } from './codes'
 import { inLegacyOrder, moved, orderBreak } from './mapping-order'
 import { im, imv } from './messages'
+import { TableScroll } from '@/components/page/TableScroll'
 
 type MappingKind = ImportMappingView['kind']
 const KINDS: MappingKind[] = ['STATUS', 'TYPE', 'UNIT', 'CLASSIFICATION', 'PERSON']
@@ -242,7 +243,7 @@ function KindEditor({
           {error ?? (broken ? intl.formatMessage(imv.orderBreak, broken) : null)}
         </p>
       ) : null}
-      <div className="overflow-x-auto">
+      <TableScroll>
         <table className="w-full text-sm">
           <caption className="sr-only">{intl.formatMessage(kindLabels[kind])}</caption>
           <thead>
@@ -346,7 +347,7 @@ function KindEditor({
             ))}
           </tbody>
         </table>
-      </div>
+      </TableScroll>
     </div>
   )
 }

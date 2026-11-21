@@ -46,7 +46,8 @@ function invitationWords(intl: IntlShape, p: InviteeResponse): string {
   const at = p.lastSentAt ? shortWhen(intl, p.lastSentAt) : ''
   switch (p.state) {
     case 'NOT_INVITED':
-      return intl.formatMessage(rm.notSent)
+      // A member who answers but cannot hold the invitation (no sign-in, or not cleared): the secretary records for them.
+      return intl.formatMessage(p.invitable ? rm.notSent : rm.notInvitable)
     case 'UNINVITED':
       return intl.formatMessage(rmv.withdrawnOn, { at })
     case 'CANCELLED':

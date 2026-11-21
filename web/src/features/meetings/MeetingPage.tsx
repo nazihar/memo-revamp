@@ -128,7 +128,7 @@ export function MeetingPage({ meetingId }: { meetingId: string }) {
             ...(declarations ? (['declarations'] as const) : []),
           ]}
         >
-          <TabsList aria-label={intl.formatMessage(rm.tabs)} className="print:hidden">
+          <TabsList aria-label={intl.formatMessage(rm.tabs)} className="flex-wrap print:hidden">
             <TabsTrigger value="agenda" className="min-h-11">
               {intl.formatMessage(rm.tabAgenda)}
             </TabsTrigger>

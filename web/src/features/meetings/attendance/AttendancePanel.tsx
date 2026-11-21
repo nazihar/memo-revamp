@@ -715,7 +715,7 @@ function History({ events, people, ctx }: { events: AttendanceEvent[]; people: P
       <div>
         <Button
           variant="ghost"
-          className="min-h-11"
+          className="h-auto min-h-11 max-w-full whitespace-normal py-2 text-start"
           aria-expanded={open}
           aria-controls={open ? listId : undefined}
           onClick={() => {

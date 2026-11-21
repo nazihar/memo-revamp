@@ -46054,6 +46054,20 @@
       "value": "‬"
     }
   ],
+  "meetingReplies.invite.notInvitable": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "No ıuʌıʇɐʇıou: ʇɥǝʎ ɔɐuuoʇ sıƃu ıu oɹ ɐɹǝ uoʇ ɔʅǝɐɹǝp ɟoɹ ʇɥıs ɯǝǝʇıuƃ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "meetingReplies.invite.notSent": [
     {
       "type": 0,

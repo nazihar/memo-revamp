@@ -201,3 +201,45 @@ None needs a real-world input. One change from the overview is reported: a recus
 | S declaring (members) | 2026-11-18 | Delegated (Phase 4 Q1); reviewed by the agent against the research and E03's principles |
 | T managing declarations (secretary and chair) | 2026-11-18 | Delegated (Phase 4 Q1) |
 | U the register of declarations | 2026-11-18 | Delegated (Phase 4 Q1) |
+
+## Keyboard and screen-reader pass (T9, 2026-11-21)
+Done by the agent in Chromium (Playwright 1.64, headless) against the local E2E stack. It used the seeded demo declarations: the BRC's "Quarterly risk review" as Demo Director (recused from item 7 "Term loan, Delta Textiles", waiting for the chair on item 8) and as the company secretary, and the register as the organisation administrator. It also used the journey `declarations.spec`'s own MCC meeting: a member declares and confirms, the secretary records "by email", the chair rules, and the register exports. A screen reader cannot be driven from there, so the spoken output is still for a person (below).
+
+### What the agent checked, and found
+- **axe** (WCAG 2.2 A/AA plus best practices, every impact): no rule fails anywhere it was run:
+  - the meeting page with the Declarations panel, the recused and waiting lines, My declaration (S4) and the declaration sheet (S2) with its error showing, in English and Arabic;
+  - the review sheet (S3);
+  - the secretary's Declarations tab (T1), Record a declaration (T2) with its errors showing, and Record the chair's decision (T3);
+  - the chair's decision dialog;
+  - the register (U), in English and Arabic.
+
+  The journey keeps serious and critical findings out on every run.
+- **Landmarks and headings:** each page has one `main` and one H1.
+  - The meeting page: H2 "Will you attend?", "Declarations of interest" (with H3 "Your declarations in this meeting") and "Agenda"; H3 per section; H4 per item, whose name carries the state ("7 Term loan, Delta Textiles — You declared an interest", "8 Operational risk incidents, third quarter — Waiting for the chair's decision"). A screen-reader user hears why an item has no papers when they reach it.
+  - The Declarations tab: one named region with H3 "Item 7 Term loan, Delta Textiles" per item.
+  - The register: H1 "Register of declarations of interest", the filters, and a table with a caption and column headers.
+- **Tab order** follows the reading order, with a visible focus ring on every stop of ours:
+  - **the meeting page** (35 stops): skip link, navigation, top bar, the reply, calendar, the panel's own "My declaration" buttons, print, revision, "Show changes", then per item its papers, "Ask to discuss" and "Declare an interest" or "My declaration". Standing items, breaks and "Restricted item" lines have no declaration button;
+  - **the Declarations tab** (30 stops) and **the register** (40 stops). The one stop without our ring on the register is Chromium's own calendar button inside the date field, which draws its own box.
+- **Keyboard only:**
+  - **flow S:** declaring (S2) opens with focus in the sheet, and an empty Declare puts focus on the interest field with its error described (`aria-invalid`, `aria-describedby` hint and error). Escape closes S2 and S4 with focus back on the opener. After declaring, focus stays on the item's "My declaration" (after the fix below). Confirming the review puts focus on the panel's heading once "Review and declare" has gone;
+  - **flow T:** an empty Record puts focus on Member, the first field with an error; Escape returns to "Record a declaration…". The chair decides from the keyboard and the row says "Taking part";
+  - **flow U:** "Export to Excel" downloads the workbook and says so in words.
+- **Targets:** every button on the member's meeting page and in its sheets is at least 44 × 44 px. Radio buttons are 20 px, but each sits inside its label, a row at least 44 px high, so the target is the row. On the secretary's page, "Add a guest" and "Remove …" in the Guests panel (E03/E05) are 40 px high, which passes WCAG 2.5.8 (24 px); they are not on the director's path.
+- **Reflow at 400 %** (320 CSS px wide): nothing scrolls sideways on the meeting page (English and Arabic), in S2 and S4, on the Declarations tab, in T2 and T3, or on the register. The register's table scrolls inside its own box, which WCAG 1.4.10 allows for data tables.
+
+### Defects found and fixed here
+1. **Focus fell to the page after declaring** (WCAG 2.4.3). The sheet gave focus back to "Declare an interest", but the agenda and the reader's declarations are read again afterwards, and the item's button was briefly replaced while they arrived. The old 100 ms check missed it whenever the reload took longer, which it always does against a real server; the unit tests' instant answers hid it. An item's declaration button now carries `data-declaration-item`. For three seconds after a sheet closes, focus that fell to the page, or to the panel's heading in the button's place, moves to the item's new button. Focus the person moved themselves is left alone, and a newer sheet's watch replaces an older one (`declarations/focus.ts`, `focus.test.ts`). The journey checks the focus.
+
+### For a person with a screen reader (still to do)
+Run with NVDA + Firefox and VoiceOver + Safari (macOS and iPad), in English and Arabic. Use the seeded "Quarterly risk review": Demo Director for flow S, the company secretary for flow T. Use Demo Board Member, the BRC chair, for the ruling on Demo Director's item 8. Use the organisation administrator for the register.
+1. **The recused line:** H4 navigation reads "7 Term loan, Delta Textiles — You declared an interest", then "You will be asked to leave the room for this item. Its papers are not shown to you." The waiting line on item 8 makes sense when spoken.
+2. **Duplicate names:** the panel's "My declaration: 7 Term loan, Delta Textiles" and the item's button of the same name open the same sheet. Judge whether hearing it twice in a buttons list is confusing.
+3. **Declare (S2):** the explanation is read on opening; the two choices read their consequence ("You will not receive its papers…", "Until the chair decides…") and "(recommended)"; the error is read with the field; "Thank you. The secretary and the chair have been told…" is announced after Declare.
+4. **Review (S3):** the items to review are read as a list; each row's button reads the item ("I have an interest: 5 …", "Declared — leaving the room: 7 …"); "Thank you. Your review of the agenda is recorded." is announced, and focus lands on the panel's heading.
+5. **My declaration (S4):** the history line ("Recorded by … by email (email of …)"), the interest in quotes and the decision read in order; the withdraw dialog's warning is read before its field.
+6. **Declarations tab (T1):** each item region is announced with its name; badges ("Leaving the room", "Waiting for a decision") are read with the person. The quorum warning and "also reads the memo" read as plain sentences, not as alerts on every visit. "Remind them now" announces its result in the status line.
+7. **Record (T2) and the decision (T3):** the selects read the person and "7 Term loan, Delta Textiles"; the "How it was made" group is read as a group; "Recorded. … has been told." and "… may take part. They have been told." are announced.
+8. **Register (U):** the table's caption and headers are read with each cell; "Details" names the person and the item; "(restricted item)" makes sense on its own; "The workbook has been downloaded." is announced.
+9. **Arabic:** the pages read right to left; Latin names and item titles keep their own direction inside Arabic sentences; dates and "item 7" read naturally.
+10. **Zoom and contrast by eye:** 200 % and 400 % in a real browser window, in light and dark themes, looking at the state badges and focus rings.

@@ -15,6 +15,7 @@ import com.memo.meeting.internal.MeetingRejectedException
 import com.memo.meeting.internal.MeetingRelation
 import com.memo.meeting.internal.MeetingRow
 import com.memo.meeting.internal.invite.InvitationMessageKind
+import com.memo.meeting.internal.invite.InvitationState
 import com.memo.meeting.internal.rsvp.Replies
 import com.memo.meeting.internal.rsvp.ReplyCapacity
 import com.memo.meeting.internal.rsvp.RsvpAnswer
@@ -302,6 +303,25 @@ class RepliesIT : InvitationTestSupport() {
         val released = Audit.assertAudited(tenant.id, "meeting.alternate.released", meeting.id.toString())
         assertThat(released.canonical).contains("ROSTER")
         assertThat(items(alternate, "MEETING_ALTERNATE_RELEASED")).hasSize(1)
+    }
+
+    @Test
+    fun `a member who cannot sign in is on the invitations panel without an invitation, and the secretary records their answer`() {
+        // An account never activated (as the demo's Chairman and staff seats are): never invited, but a member who answers.
+        val offline = transactions.inTenant(tenant.id) { accounts.create("offline-${UUID.randomUUID()}@bank.example", "Offline Member") }
+        seat(offline, ForumRole.MEMBER)
+        val meeting = scheduled()
+        reconcile(meeting.id)
+        val before = asUser(secretary) { panel.panel(meeting.id) }.people.single { it.userId == offline.id.value }
+        assertThat(Triple(before.invitable, before.state, before.reply?.capacity))
+            .isEqualTo(Triple(false, InvitationState.NOT_INVITED, ReplyCapacity.MEMBER))
+        assertThat(before.reply?.answer).isNull()
+
+        record(secretary, meeting, offline, RsvpInput(RsvpAnswer.IN_PERSON, how = RsvpHow.PHONE, howNote = "Called"))
+        val after = asUser(secretary) { panel.panel(meeting.id) }.people.single { it.userId == offline.id.value }
+        assertThat(after.reply?.answer to after.reply?.how).isEqualTo(RsvpAnswer.IN_PERSON to RsvpHow.PHONE)
+        assertThat(after.state).isEqualTo(InvitationState.NOT_INVITED)
+        assertThat(messages(meeting.id).map { it.userId }).doesNotContain(offline.id.value)
     }
 
     /** director's seat gets [alternate] (a user created here) as its alternate. */

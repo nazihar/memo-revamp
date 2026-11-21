@@ -222,10 +222,15 @@ class Attendance(
         return Recorded(event, after)
     }
 
-    /** "Now: item n" (design E05 §1.6.1): the item must be on the latest published revision or tabled; while in progress. */
+    /**
+     * "Now: item n" (design E05 §1.6.1): the item must be on the latest published revision or tabled; while in progress.
+     * [at] is null (now) from the API; a seeder recording a meeting after the fact (the demo's held meeting, E05 T10) gives
+     * the time, within the meeting's window and not ahead of the server, as for an arrival (422 `TIME_OUT_OF_RANGE`).
+     */
     fun progress(
         meetingId: UUID,
         itemId: UUID,
+        at: Instant? = null,
     ): ItemProgressRow {
         val meeting = locked(meetingId)
         AttendanceRules.window(AttendanceEventKind.ARRIVED, meeting.status)
@@ -233,8 +238,14 @@ class Attendance(
             meeting.status != MeetingStatus.IN_PROGRESS,
             "WRONG_STATE",
         ) { "The item in progress is set while the meeting is in progress." }
-        requireNoProblems(listOfNotNull(checks.itemProblem(meeting, itemId, required = false)))
-        val row = ItemProgressRow(ids.next(), meeting.id, itemId, clock.instant(), actorOrNull())
+        val now = clock.instant()
+        requireNoProblems(
+            listOfNotNull(
+                checks.itemProblem(meeting, itemId, required = false),
+                at?.let { AttendanceRules.time(AttendanceEventKind.ARRIVED, it, meeting, now) },
+            ),
+        )
+        val row = ItemProgressRow(ids.next(), meeting.id, itemId, at ?: now, actorOrNull())
         log.insert(row)
         audit.record(
             "meeting.item.progressed",

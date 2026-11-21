@@ -8139,6 +8139,196 @@
       "value": "You declared an interest. The chair decided you may take part.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "declarations.late.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.late.decline": [
+    {
+      "type": 0,
+      "value": "Not this meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.late.declineItemText": [
+    {
+      "type": 0,
+      "value": "The item is taken off the agenda and its paper goes back to the committee’s list, ready for a later meeting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.late.declinePaperText": [
+    {
+      "type": 0,
+      "value": "The paper is taken off the item and not published.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.late.failed": [
+    {
+      "type": 0,
+      "value": "Your decision could not be saved. Please try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.late.forbidden": [
+    {
+      "type": 0,
+      "value": "Only the chair decides this, or the vice-chair when the chair has declared an interest in the item.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.late.frozen": [
+    {
+      "type": 0,
+      "value": "The meeting has been held or cancelled: its agenda no longer changes.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.late.include": [
+    {
+      "type": 0,
+      "value": "Agree to include itSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.late.lead": [
+    {
+      "type": 0,
+      "value": "These came in after the paper deadline. The members see them only if you agree.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.late.notFound": [
+    {
+      "type": 0,
+      "value": "This paper is no longer on the agenda.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.late.rateLimited": [
+    {
+      "type": 0,
+      "value": "Too many changes at once. Wait a minute and try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.late.recused": [
+    {
+      "type": 0,
+      "value": "You have declared an interest in this item, so you cannot decide it. A secretary records the committee’s answer.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.late.restrictedPaper": [
+    {
+      "type": 0,
+      "value": "A restricted paperSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.late.stale": [
+    {
+      "type": 0,
+      "value": "The agenda changed just now. The list below is up to date again: please decide once more.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.late.title": [
+    {
+      "type": 0,
+      "value": "Late papers for you to decideSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.late.v.agreed": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " is agreed and will be published as a late paper.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.late.v.declineNamed": [
+    {
+      "type": 0,
+      "value": "Not this meeting: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.late.v.declineTitle": [
+    {
+      "type": 0,
+      "value": "Not this meeting: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.late.v.declined": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " is not for this meeting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.late.v.dueOn": [
+    {
+      "type": 0,
+      "value": "Papers were due on "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.late.v.includeNamed": [
+    {
+      "type": 0,
+      "value": "Agree to include "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.late.v.paperFor": [
+    {
+      "type": 1,
+      "value": "paper"
+    },
+    {
+      "type": 0,
+      "value": ", for "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "declarations.late.wrongState": [
+    {
+      "type": 0,
+      "value": "This is no longer waiting for a decision.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "declarations.mine.askInstead": [
     {
       "type": 0,

@@ -84,6 +84,19 @@ endpoints:
     body: { agree: true }
     headers: { If-Match: "\"0\"" }
     recusal: { recused: 403, awaiting: 403, recusedSecretary: 403, recusedChair: 403 }
+  # E04 (design E04 §1.7 as built): the late requests the actor decides (the chair, or the vice-chair on the items the
+  # chair is recused from), listed and answered outside the draft. Who decides on a real agenda, recused or not, is
+  # LateRequestsIT; what a person outside the paper rule is answered, PaperLeakIT (LATE_REQUESTS). Recused viewers list
+  # nothing of the item (200, no canary) and cannot decide it: 403 (403 RECUSED for the recused chair).
+  - endpoint: "GET /api/v1/meetings/{meetingId}/agenda/late-requests"
+    rule: signedIn
+    recusal: { recused: 200, awaiting: 200, recusedSecretary: 200, recusedChair: 200 }
+  - endpoint: "POST /api/v1/meetings/{meetingId}/agenda/late-requests/decisions"
+    rule: signedIn
+    body: { itemId: "{random}", agree: true }
+    headers: { If-Match: "\"0\"" }
+    recusalBody: { itemId: "{item}", agree: true }
+    recusal: { recused: 403, awaiting: 403, recusedSecretary: 403, recusedChair: 403 }
   - endpoint: "GET /api/v1/meetings/{meetingId}/agenda/publish-preview"
     rule: signedIn
     recusal: { recused: 403, awaiting: 403, recusedSecretary: 200, recusedChair: 200 }

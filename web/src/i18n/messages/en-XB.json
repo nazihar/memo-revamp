@@ -15059,6 +15059,368 @@
       "value": "‬"
     }
   ],
+  "declarations.late.cancel": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ↄɐuɔǝʅ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "declarations.late.decline": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noʇ ʇɥıs ɯǝǝʇıuƃ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "declarations.late.declineItemText": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ıʇǝɯ ıs ʇɐʞǝu oɟɟ ʇɥǝ ɐƃǝupɐ ɐup ıʇs dɐdǝɹ ƃoǝs qɐɔʞ ʇo ʇɥǝ ɔoɯɯıʇʇǝǝ’s ʅısʇ, ɹǝɐpʎ ɟoɹ ɐ ʅɐʇǝɹ ɯǝǝʇıuƃ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "declarations.late.declinePaperText": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ dɐdǝɹ ıs ʇɐʞǝu oɟɟ ʇɥǝ ıʇǝɯ ɐup uoʇ dnqʅısɥǝp."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "declarations.late.failed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄onɹ pǝɔısıou ɔonʅp uoʇ qǝ sɐʌǝp. Ԁʅǝɐsǝ ʇɹʎ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "declarations.late.forbidden": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ouʅʎ ʇɥǝ ɔɥɐıɹ pǝɔıpǝs ʇɥıs, oɹ ʇɥǝ ʌıɔǝ-ɔɥɐıɹ ʍɥǝu ʇɥǝ ɔɥɐıɹ ɥɐs pǝɔʅɐɹǝp ɐu ıuʇǝɹǝsʇ ıu ʇɥǝ ıʇǝɯ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "declarations.late.frozen": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɯǝǝʇıuƃ ɥɐs qǝǝu ɥǝʅp oɹ ɔɐuɔǝʅʅǝp: ıʇs ɐƃǝupɐ uo ʅouƃǝɹ ɔɥɐuƃǝs."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "declarations.late.include": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ƃɹǝǝ ʇo ıuɔʅnpǝ ıʇ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "declarations.late.lead": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝsǝ ɔɐɯǝ ıu ɐɟʇǝɹ ʇɥǝ dɐdǝɹ pǝɐpʅıuǝ. ⊥ɥǝ ɯǝɯqǝɹs sǝǝ ʇɥǝɯ ouʅʎ ıɟ ʎon ɐƃɹǝǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "declarations.late.notFound": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥıs dɐdǝɹ ıs uo ʅouƃǝɹ ou ʇɥǝ ɐƃǝupɐ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "declarations.late.rateLimited": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥oo ɯɐuʎ ɔɥɐuƃǝs ɐʇ ouɔǝ. Mɐıʇ ɐ ɯıunʇǝ ɐup ʇɹʎ ɐƃɐıu."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "declarations.late.recused": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅄on ɥɐʌǝ pǝɔʅɐɹǝp ɐu ıuʇǝɹǝsʇ ıu ʇɥıs ıʇǝɯ, so ʎon ɔɐuuoʇ pǝɔıpǝ ıʇ. ∀ sǝɔɹǝʇɐɹʎ ɹǝɔoɹps ʇɥǝ ɔoɯɯıʇʇǝǝ’s ɐusʍǝɹ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "declarations.late.restrictedPaper": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ ɹǝsʇɹıɔʇǝp dɐdǝɹ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "declarations.late.stale": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥǝ ɐƃǝupɐ ɔɥɐuƃǝp ɾnsʇ uoʍ. ⊥ɥǝ ʅısʇ qǝʅoʍ ıs nd ʇo pɐʇǝ ɐƃɐıu: dʅǝɐsǝ pǝɔıpǝ ouɔǝ ɯoɹǝ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "declarations.late.title": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⅂ɐʇǝ dɐdǝɹs ɟoɹ ʎon ʇo pǝɔıpǝ"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "declarations.late.v.agreed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ıs ɐƃɹǝǝp ɐup ʍıʅʅ qǝ dnqʅısɥǝp ɐs ɐ ʅɐʇǝ dɐdǝɹ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "declarations.late.v.declineNamed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noʇ ʇɥıs ɯǝǝʇıuƃ: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "declarations.late.v.declineTitle": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Noʇ ʇɥıs ɯǝǝʇıuƃ: "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "?"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "declarations.late.v.declined": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ıs uoʇ ɟoɹ ʇɥıs ɯǝǝʇıuƃ."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "declarations.late.v.dueOn": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "Ԁɐdǝɹs ʍǝɹǝ pnǝ ou "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": "."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "declarations.late.v.includeNamed": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "∀ƃɹǝǝ ʇo ıuɔʅnpǝ "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "declarations.late.v.paperFor": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 1,
+      "value": "paper"
+    },
+    {
+      "type": 0,
+      "value": ", ɟoɹ "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
+  "declarations.late.wrongState": [
+    {
+      "type": 0,
+      "value": "‮"
+    },
+    {
+      "type": 0,
+      "value": "⊥ɥıs ıs uo ʅouƃǝɹ ʍɐıʇıuƃ ɟoɹ ɐ pǝɔısıou."
+    },
+    {
+      "type": 0,
+      "value": "‬"
+    }
+  ],
   "declarations.mine.askInstead": [
     {
       "type": 0,

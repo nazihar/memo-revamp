@@ -1,15 +1,25 @@
 package com.memo.meeting
 
+import com.memo.common.context.ActorContext
 import com.memo.common.crypto.DataKeys
+import com.memo.common.tenant.TenantContext
+import com.memo.forum.internal.ForumMemberStore
+import com.memo.forum.internal.MemberEdit
 import com.memo.meeting.PaperSurfaceRegistry.Surface
 import com.memo.meeting.internal.ItemChange
 import com.memo.meeting.internal.MeetingRow
+import com.memo.meeting.internal.invite.InvitationReconciler
+import com.memo.meeting.internal.quorum.LiveQuorum
+import com.memo.meeting.internal.quorum.SnapshotRow
+import com.memo.meeting.internal.quorum.SnapshotStore
+import com.memo.notification.Mail
 import com.memo.testsupport.AppRoleJdbc
 import com.memo.testsupport.MailOutbox
 import com.memo.testsupport.Person
 import com.memo.testsupport.query
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Qualifier
@@ -18,6 +28,9 @@ import org.springframework.http.HttpStatus
 import org.springframework.test.web.servlet.assertj.MvcTestResult
 import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping
 import java.io.ByteArrayInputStream
+import java.time.Duration
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 import java.util.UUID
 
 /**
@@ -28,6 +41,9 @@ import java.util.UUID
  * confidential titles, descriptions, paper titles); no surface answers them, opens such a paper, counts its changes or
  * notifies them of it. E04 T2 adds a recused member (d1, recused from one item with its title shown and one with it
  * hidden, one of them waiting for the chair's ruling) to every probe: they see those items' lines and nothing else of them.
+ * E05 T5 adds d1's alternate, standing in for them (d1 sent apologies): they read as a cleared member of d1's seat, are
+ * named on nothing, and are recused with d1; and the E05 surfaces (the invitation files and emails, the replies, the
+ * register, the quorum per meeting and per item, the forecast and a snapshot whose override reason is a canary).
  */
 class PaperLeakIT : RecusalFixture() {
     @Autowired
@@ -35,6 +51,26 @@ class PaperLeakIT : RecusalFixture() {
     lateinit var mapping: RequestMappingHandlerMapping
 
     @Autowired lateinit var keys: DataKeys
+
+    @Autowired lateinit var memberStore: ForumMemberStore
+
+    @Autowired lateinit var reconciler: InvitationReconciler
+
+    @Autowired lateinit var live: LiveQuorum
+
+    @Autowired lateinit var snapshotStore: SnapshotStore
+
+    /** d1's alternate, standing in for them at the planted meeting. */
+    lateinit var alt: Person
+
+    @BeforeEach
+    fun alternateSeat() {
+        alt = person(clearance = 1)
+        val seat = transactions.readInTenant(tenant.id) { memberStore.members(brc).single { it.userId == d1.id } }
+        asUser(admin) {
+            members.edit(brc, seat.id, seat.version, MemberEdit(seat.voting, seat.attributes, alt.id, seat.termEndsOn, null))
+        }
+    }
 
     /**
      * A published agenda (revision 2 changing only what the probed people must not see), and who must not see what. d1,
@@ -60,7 +96,19 @@ class PaperLeakIT : RecusalFixture() {
         val recusedPaper: UUID
         val recusedHiddenPaper: UUID
 
+        /** A decision's snapshot on the recused item, overridden with a canary for a reason. */
+        val snapshot: UUID
+
         init {
+            // d1 sends apologies and their alternate attends: the alternate is in the audience from now on.
+            val asked =
+                send(
+                    HttpMethod.PUT,
+                    "/api/v1/meetings/${meeting.id}/rsvp/mine",
+                    d1,
+                    """{"answer":"APOLOGIES","alternateAttends":true}""",
+                )
+            assertThat(asked).hasStatusOk()
             change(meeting, restricted, ItemChange("Credit facility for Acme", CANARY_DESCRIPTION, restrictedTo = listOf(d1.id)))
             change(meeting, hidden, ItemChange(CANARY_HIDDEN, restrictedTo = listOf(d1.id), titleHidden = true))
             change(meeting, confidential, ItemChange(CANARY_CONFIDENTIAL, classificationId = levels()[1].id))
@@ -93,6 +141,30 @@ class PaperLeakIT : RecusalFixture() {
                 ItemChange("$CANARY_RECUSED_HIDDEN, revised", restrictedTo = listOf(d1.id), titleHidden = true),
             )
             publish(meeting, "Revision two")
+            // The invitations go out (the reconciler as its job runs it).
+            ActorContext.asSystem("meeting-invitations") {
+                TenantContext.call(tenant.id) { reconciler.run(meeting.id, Instant.now().plus(Duration.ofMinutes(3))) }
+            }
+            // Nobody is present 40 days ahead, so a snapshot is set up through the store: not quorate, overridden.
+            snapshot = UUID.randomUUID()
+            transactions.inTenant(tenant.id) {
+                val now = Instant.now().truncatedTo(ChronoUnit.MICROS)
+                val inputs = QuorumSnapshotInputs.of(meeting.id, live.evaluate(meeting, now, recused), UUID.randomUUID(), 1, now)
+                snapshotStore.insert(
+                    SnapshotRow(
+                        snapshot,
+                        meeting.id,
+                        recused,
+                        now,
+                        inputs,
+                        inputs.evaluate(),
+                        CANARY_OVERRIDE,
+                        inputs.sha256(),
+                        secretary.id,
+                        now,
+                    ),
+                )
+            }
         }
 
         /**
@@ -104,17 +176,20 @@ class PaperLeakIT : RecusalFixture() {
                 RECUSED_CANARIES
             } else {
                 listOf(CANARY_HIDDEN, CANARY_DESCRIPTION, CANARY_PAPER) + RECUSED_CANARIES +
-                    (if (person != d3) listOf(CANARY_CAMERA) else emptyList()) +
-                    (if (person != guest) listOf(CANARY_CONFIDENTIAL) else emptyList())
+                    (if (person != d3 && person != alt) listOf(CANARY_CAMERA) else emptyList()) +
+                    (if (person != guest && person != alt) listOf(CANARY_CONFIDENTIAL) else emptyList())
             }
 
-        /** The items whose title [person] may not read: d3 reads the members-only one, the guest the confidential one. */
+        /**
+         * The items whose title [person] may not read: d3 reads the members-only one, the guest the confidential one, d1's
+         * alternate (a cleared member of d1's seat, named on nothing) both.
+         */
         fun untitled(person: Person): List<UUID> =
             if (person == d1) {
                 listOf(recusedHidden)
             } else {
-                listOf(hidden, recusedHidden) + (if (person != d3) listOf(camera) else emptyList()) +
-                    (if (person != guest) listOf(confidential) else emptyList())
+                listOf(hidden, recusedHidden) + (if (person != d3 && person != alt) listOf(camera) else emptyList()) +
+                    (if (person != guest && person != alt) listOf(confidential) else emptyList())
             }
 
         /** The papers [person] may not open. */
@@ -124,6 +199,7 @@ class PaperLeakIT : RecusalFixture() {
                     d1 -> emptyList()
                     d3 -> listOf(restrictedPaper, hiddenPaper, confidentialPaper)
                     guest -> listOf(restrictedPaper, hiddenPaper, cameraPaper)
+                    alt -> listOf(restrictedPaper, hiddenPaper)
                     else -> listOf(restrictedPaper, hiddenPaper, cameraPaper, confidentialPaper)
                 }
 
@@ -136,14 +212,17 @@ class PaperLeakIT : RecusalFixture() {
          */
         fun changes(person: Person): Int =
             when (person) {
-                guest -> 1
+                guest, alt -> 1
                 d1 -> 3
                 else -> 0
             }
     }
 
-    /** The people probed: a member not named or cleared, a guest, a `forum.read` holder, and a recused member (E04 T2). */
-    private fun probed() = listOf(d3, guest, auditor, d1)
+    /**
+     * The people probed: a member not named or cleared, a guest, a `forum.read` holder, a recused member (E04 T2), and the
+     * recused member's alternate standing in for them (E05 T5).
+     */
+    private fun probed() = listOf(d3, guest, auditor, d1, alt)
 
     /** One probe per surface, for a person outside the rule. */
     private val probes: Map<Surface, (Planted, Person) -> Unit> =
@@ -207,9 +286,9 @@ class PaperLeakIT : RecusalFixture() {
             },
             Surface.MEETING to { p, person ->
                 clean(p, person, read("/api/v1/meetings/${p.meeting.id}", person.session))
-                // A guest has no role in the committee: its list is 404 to them.
+                // A guest and an alternate have no role in the committee: its list is 404 to them.
                 val list = read("/api/v1/forums/$brc/meetings", person.session)
-                if (person == guest) assertThat(list).hasStatus(HttpStatus.NOT_FOUND) else clean(p, person, list)
+                if (person == guest || person == alt) assertThat(list).hasStatus(HttpStatus.NOT_FOUND) else clean(p, person, list)
             },
             Surface.DECLARATIONS to { p, person ->
                 val base = "/api/v1/meetings/${p.meeting.id}"
@@ -258,6 +337,47 @@ class PaperLeakIT : RecusalFixture() {
                     assertThat(export).hasStatus(HttpStatus.FORBIDDEN)
                 }
             },
+            Surface.INVITATIONS to { p, person ->
+                val base = "/api/v1/meetings/${p.meeting.id}"
+                val reads = listOf("$base/calendar.ics", "$base/rsvp/mine", "$base/rsvps").map { read(it, person.session) }
+                // forum.read is not in the audience: no invitation and no replies.
+                if (person == auditor) {
+                    reads.forEach { assertThat(it.response.status).isIn(403, 404) }
+                } else {
+                    reads.forEach { clean(p, person, it) }
+                }
+                // The invitation files and emails (sent when planted) name no item: the calendar parts, decrypted.
+                val calendars =
+                    AppRoleJdbc.inTransaction(tenant.id) { c ->
+                        c.query("select id, calendar_enc from notification_mail_outbox where calendar_enc is not null") {
+                            it.getObject(1, UUID::class.java) to it.getBytes(2)
+                        }
+                    }
+                assertThat(calendars).describedAs("invitations sent").isNotEmpty()
+                calendars.forEach { (id, sealed) ->
+                    val text = String(keys.decrypt(sealed, Mail.calendarAad(tenant.id.toString(), id.toString())), Charsets.UTF_8)
+                    p.canaries(person).forEach { assertThat(text).doesNotContain(it) }
+                }
+            },
+            Surface.QUORUM to { p, person ->
+                val base = "/api/v1/meetings/${p.meeting.id}"
+                val register = read("$base/attendance", person.session)
+                if (person == auditor) assertThat(register).hasStatus(HttpStatus.FORBIDDEN) else clean(p, person, register)
+                // Members and the alternate read the numbers, for the meeting and for any item (no seats); the rest 403.
+                listOf("", "?itemId=${p.recused}", "?itemId=${p.recusedHidden}", "?itemId=${p.hidden}").forEach { query ->
+                    val quorum = read("$base/quorum$query", person.session)
+                    if (person == d1 || person == d3 || person == alt) {
+                        clean(p, person, quorum)
+                        assertThat(quorum.json().absent("seats")).isTrue()
+                    } else {
+                        assertThat(quorum).hasStatus(HttpStatus.FORBIDDEN)
+                    }
+                }
+                assertThat(read("$base/quorum/forecast", person.session)).hasStatus(HttpStatus.FORBIDDEN)
+                // The snapshot: forum.read reads it without the override's reason; the audience is 403.
+                val snapshot = read("$base/quorum/snapshots/${p.snapshot}", person.session)
+                if (person == auditor) clean(p, person, snapshot) else assertThat(snapshot).hasStatus(HttpStatus.FORBIDDEN)
+            },
         )
 
     @Test
@@ -273,6 +393,11 @@ class PaperLeakIT : RecusalFixture() {
         val ofSecretary = agendaOf(secretary2, planted.meeting).response.contentAsString
         assertThat(ofSecretary).contains(CANARY_RECUSED_DESCRIPTION, CANARY_RECUSED_PAPER, CANARY_RECUSED_HIDDEN)
         assertThat(agenda(d1, planted.meeting).access(planted.recused, planted.recusedHidden)).containsExactly("TITLE", "HIDDEN")
+        // The alternate reads the members-only and confidential titles (d1's seat, cleared), and the snapshot's reason is
+        // there for an officer who is not recused.
+        assertThat(agendaOf(alt, planted.meeting).response.contentAsString).contains(CANARY_CAMERA, CANARY_CONFIDENTIAL)
+        val reason = read("/api/v1/meetings/${planted.meeting.id}/quorum/snapshots/${planted.snapshot}", secretary2.session)
+        assertThat(reason.response.contentAsString).contains(CANARY_OVERRIDE)
         for (person in probed()) {
             for ((surface, probe) in probes) {
                 runCatching { probe(planted, person) }.onFailure { throw AssertionError("surface $surface leaks to ${person.id}", it) }
@@ -327,6 +452,9 @@ class PaperLeakIT : RecusalFixture() {
         const val CANARY_RECUSED_DESCRIPTION = "CANARY recused description"
         const val CANARY_RECUSED_PAPER = "CANARY recused paper title"
         const val CANARY_RECUSED_HIDDEN = "CANARY recused hidden title"
-        val RECUSED_CANARIES = listOf(CANARY_RECUSED_DESCRIPTION, CANARY_RECUSED_PAPER, CANARY_RECUSED_HIDDEN)
+
+        /** The override's reason on the recused item's snapshot: free text, for officers not recused only. */
+        const val CANARY_OVERRIDE = "CANARY override reason"
+        val RECUSED_CANARIES = listOf(CANARY_RECUSED_DESCRIPTION, CANARY_RECUSED_PAPER, CANARY_RECUSED_HIDDEN, CANARY_OVERRIDE)
     }
 }

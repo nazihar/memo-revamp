@@ -63,6 +63,7 @@ import com.memo.jooq.tables.MeetingItemProgress
 import com.memo.jooq.tables.MeetingPaper
 import com.memo.jooq.tables.MeetingPaperOpen
 import com.memo.jooq.tables.MeetingQuorumChange
+import com.memo.jooq.tables.MeetingQuorumSnapshot
 import com.memo.jooq.tables.MeetingReaderState
 import com.memo.jooq.tables.MeetingReminder
 import com.memo.jooq.tables.MeetingRevision
@@ -464,6 +465,11 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
      * The table <code>memo.meeting_quorum_change</code>.
      */
     val MEETING_QUORUM_CHANGE: MeetingQuorumChange get() = MeetingQuorumChange.MEETING_QUORUM_CHANGE
+
+    /**
+     * The table <code>memo.meeting_quorum_snapshot</code>.
+     */
+    val MEETING_QUORUM_SNAPSHOT: MeetingQuorumSnapshot get() = MeetingQuorumSnapshot.MEETING_QUORUM_SNAPSHOT
 
     /**
      * The table <code>memo.meeting_reader_state</code>.
@@ -1166,6 +1172,7 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         MeetingPaper.MEETING_PAPER,
         MeetingPaperOpen.MEETING_PAPER_OPEN,
         MeetingQuorumChange.MEETING_QUORUM_CHANGE,
+        MeetingQuorumSnapshot.MEETING_QUORUM_SNAPSHOT,
         MeetingReaderState.MEETING_READER_STATE,
         MeetingReminder.MEETING_REMINDER,
         MeetingRevision.MEETING_REVISION,

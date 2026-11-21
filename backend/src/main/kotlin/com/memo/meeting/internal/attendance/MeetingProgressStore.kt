@@ -6,6 +6,7 @@ import com.memo.jooq.tables.references.MEETING_ITEM_PROGRESS
 import com.memo.jooq.tables.references.MEETING_QUORUM_CHANGE
 import com.memo.meeting.QuorumChangeKind
 import org.jooq.JSONB
+import org.jooq.impl.DSL
 import org.springframework.stereotype.Repository
 import tools.jackson.core.type.TypeReference
 import tools.jackson.databind.json.JsonMapper
@@ -44,16 +45,18 @@ class MeetingProgressStore(
             .execute()
     }
 
-    /** The quorum's changes of [meetingId] at [level], in the order they were recorded. */
+    /** The quorum's changes of [meetingId] at [level] (null: both), in the order they were recorded. */
     fun changes(
         meetingId: UUID,
-        level: QuorumLevel = QuorumLevel.MEETING,
+        level: QuorumLevel? = QuorumLevel.MEETING,
     ): List<QuorumChangeRow> =
         tenantDsl
             .current()
             .selectFrom(MEETING_QUORUM_CHANGE)
-            .where(MEETING_QUORUM_CHANGE.MEETING_ID.eq(meetingId), MEETING_QUORUM_CHANGE.LEVEL.eq(level.name))
-            .orderBy(MEETING_QUORUM_CHANGE.RECORDED_AT, MEETING_QUORUM_CHANGE.ID)
+            .where(
+                MEETING_QUORUM_CHANGE.MEETING_ID.eq(meetingId),
+                if (level == null) DSL.noCondition() else MEETING_QUORUM_CHANGE.LEVEL.eq(level.name),
+            ).orderBy(MEETING_QUORUM_CHANGE.RECORDED_AT, MEETING_QUORUM_CHANGE.ID)
             .fetch { r ->
                 QuorumChangeRow(
                     id = r.id,

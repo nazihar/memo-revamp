@@ -18,6 +18,7 @@ import com.memo.meeting.internal.attendance.Standing
 import net.jqwik.api.Arbitraries
 import net.jqwik.api.Arbitrary
 import net.jqwik.api.Combinators
+import net.jqwik.api.Example
 import net.jqwik.api.ForAll
 import net.jqwik.api.Property
 import net.jqwik.api.Provide
@@ -29,7 +30,8 @@ import java.util.UUID
 /**
  * The presence builder and the live quorum over random rosters, alternates and attendance (test plan E05 T4
  * `PresenceBuilderProperties`, ADR-0064): a person fills at most one seat, an alternate only while the member is absent,
- * never when either is recused from the item, and never a seat holder; arrivals never break a quorum; the evaluation at the
+ * never when either is recused from the item, and never a seat holder; arrivals never break a quorum, and departures never
+ * make one but for a member online where that does not count, whose alternate counts once they leave; the evaluation at the
  * last event's time from the events equals the evaluation from the rows derived event by event (live equals recorded).
  */
 class PresenceBuilderProperties {
@@ -96,12 +98,74 @@ class PresenceBuilderProperties {
         @ForAll("rules") rule: QuorumRule,
     ) {
         // A member holding two seats who arrives silences both seats' alternates (ADR-0064: only while the member is absent).
-        if (meeting.multiSeat) return
+        // The other exception (theOnlineMembersAlternateCountsOnceTheMemberLeaves): a member online where online attendance
+        // does not count still takes part, so their alternate in the room does not count until they leave.
+        val leaving = meeting.present.keys.firstOrNull()
+        if (meeting.multiSeat || leaving == null || silencesTheirAlternate(rule, meeting, leaving)) return
         val before = evaluate(rule, meeting, meeting.present)
-        val leaving = meeting.present.keys.firstOrNull() ?: return
         val after = evaluate(rule, meeting, meeting.present - leaving)
         if (!before.quorate) assertThat(after.quorate).isFalse()
     }
+
+    /**
+     * The failing sample of seed -7426836235321309603 (2026-11-20, shrunk): two CHAIR seats; the first holder is away and
+     * their alternate in the room, the second holder online (`remoteCounts` false) with their alternate in the room. The
+     * online member takes part, so their alternate does not count (ADR-0064, model articles art. 26: only in the
+     * appointor's absence): 1 of 2. When the online member leaves, their alternate counts: 2 of 2, quorate. A departure
+     * making the meeting quorate is right here; the recusals of the sample play no part at the meeting level.
+     */
+    @Example
+    fun theOnlineMembersAlternateCountsOnceTheMemberLeaves() {
+        fun seat(
+            i: Long,
+            holder: Long,
+            alternate: Long,
+        ) = ForumSeat(
+            memberId = UUID(1, i),
+            forumId = UUID(9, 1),
+            userId = UUID(2, holder),
+            positionId = null,
+            role = ForumRole.CHAIR,
+            voting = true,
+            attributes = emptySet(),
+            alternateUserId = UUID(2, alternate),
+            startsOn = LocalDate.of(2026, 1, 1),
+            termEndsOn = null,
+            termNumber = 1,
+            until = null,
+        )
+        val roster = listOf(seat(0, 0, 1), seat(1, 2, 3))
+        val meeting =
+            Meeting(
+                roster = roster,
+                standIns = roster.associate { it.memberId to checkNotNull(it.alternateUserId) },
+                present =
+                    mapOf(
+                        UUID(2, 2) to PersonPresence(remote = true),
+                        UUID(2, 1) to PersonPresence(),
+                        UUID(2, 3) to PersonPresence(),
+                    ),
+                recused = setOf(UUID(2, 0), UUID(2, 1), UUID(2, 2), UUID(2, 3)),
+            )
+        val rule = QuorumRule(minimum = 1, alternatesCount = true, remoteCounts = false, recusedCount = false)
+        val before = evaluate(rule, meeting, meeting.present)
+        assertThat(before.quorate to before.present).isEqualTo(false to 1)
+        assertThat(silencesTheirAlternate(rule, meeting, UUID(2, 2))).isTrue()
+        val after = evaluate(rule, meeting, meeting.present - UUID(2, 2))
+        assertThat(after.quorate to after.present).isEqualTo(true to 2)
+        val seats = PresenceBuilder.build(meeting.roster, meeting.standIns, meeting.present - UUID(2, 2))
+        assertThat(seats.single { it.memberId == UUID(1, 1) }.let { it.userId to it.byAlternate }).isEqualTo(UUID(2, 3) to true)
+    }
+
+    /** [user] holds a seat, takes part online where that does not count, and the seat's alternate is present. */
+    private fun silencesTheirAlternate(
+        rule: QuorumRule,
+        meeting: Meeting,
+        user: UUID,
+    ): Boolean =
+        !rule.remoteCounts &&
+            meeting.present[user]?.remote == true &&
+            meeting.roster.any { seat -> seat.userId == user && meeting.standIns[seat.memberId]?.let { it in meeting.present } == true }
 
     @Property
     fun liveFromTheEventsEqualsTheRowsDerivedEventByEvent(

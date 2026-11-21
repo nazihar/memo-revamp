@@ -143,6 +143,10 @@ enum class NotificationKind(
     // `present` and `needed` (numbers). Never an item.
     MEETING_QUORUM_LOST(NotificationCategory.WORKFLOW, null),
     MEETING_QUORUM_RESTORED(NotificationCategory.WORKFLOW, null),
+
+    // A decision recorded without a quorum (Phase 4 E05 T5, ADR-0064): to the chair and the other secretaries, in the app
+    // only, "to be ratified at a quorate meeting". Parameters as the two above. Never the item or the reason.
+    MEETING_QUORUM_OVERRIDDEN(NotificationCategory.WORKFLOW, null),
 }
 
 /** Who receives a notification; the producer already holds the user, so `notification` never looks people up. */

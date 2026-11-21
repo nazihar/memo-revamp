@@ -7,8 +7,9 @@ import { cn } from '@/lib/utils'
 // Tabs: Radix positions nothing and injects no styles (CSP-safe, ADR-0021). Arrow keys move between tabs.
 export const Tabs = TabsPrimitive.Root
 
+/** The tabs wrap onto a second line rather than widen the page at 320 px (400 % zoom, WCAG 1.4.10). */
 export function TabsList({ className, ...props }: React.ComponentProps<typeof TabsPrimitive.List>) {
-  return <TabsPrimitive.List className={cn('flex gap-1 border-b', className)} {...props} />
+  return <TabsPrimitive.List className={cn('flex flex-wrap gap-1 border-b', className)} {...props} />
 }
 
 export function TabsTrigger({ className, ...props }: React.ComponentProps<typeof TabsPrimitive.Trigger>) {

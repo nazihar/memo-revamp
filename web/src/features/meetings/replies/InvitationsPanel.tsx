@@ -8,6 +8,7 @@ import { ErrorState, LoadingState } from '@/components/page/States'
 import { Button } from '@/components/ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { useSession } from '@/features/auth/session'
+import { ForecastLines } from '@/features/meetings/attendance/ForecastLines'
 import { rm, rmv } from './messages'
 import { RecordDialog } from './RecordDialog'
 import { ResendDialog } from './ResendDialog'
@@ -154,6 +155,7 @@ export function InvitationsPanel({ meeting: m }: { meeting: MeetingResponse }) {
             })}
           </p>
         ) : null}
+        {m.status === 'SCHEDULED' ? <ForecastLines meeting={m} /> : null}
       </div>
       {people.length ? (
         <div className="overflow-x-auto">

@@ -174,9 +174,10 @@ export const ft = defineMessages({
   MEMBER_phrase: { id: 'forumTypes.quorum.role.member', defaultMessage: 'a member' },
   STANDING_INVITEE_phrase: { id: 'forumTypes.quorum.role.standingInvitee', defaultMessage: 'a standing invitee' },
   OBSERVER_phrase: { id: 'forumTypes.quorum.role.observer', defaultMessage: 'an observer' },
+  // Flow Z (Phase 4 E05 T8, ADR-0064): an alternate never meets a role or an attribute condition.
   alternatesYes: {
-    id: 'forumTypes.quorum.alternates.yes',
-    defaultMessage: 'An alternate counts for the member they replace.',
+    id: 'forumTypes.quorum.alternates.numberOnly',
+    defaultMessage: 'Alternates count for the member they replace, for the number of members only.',
   },
   alternatesNo: { id: 'forumTypes.quorum.alternates.no', defaultMessage: 'Alternates do not count.' },
   remoteYes: { id: 'forumTypes.quorum.remote.yes', defaultMessage: 'Members attending remotely count.' },
@@ -269,7 +270,44 @@ export const ft = defineMessages({
     defaultMessage: 'Agenda: the chair agrees it before it is first published',
   },
   whatAgendaOrder: { id: 'forumTypes.changes.agendaOrder', defaultMessage: 'Agenda: order of the sections' },
-  // The meeting policy (Phase 4 E05, design E05 §1.8); its tab comes with E05 T8.
+  // The meeting policy (Phase 4 E05, design E05 §1.8): the Meetings tab (E05 T8, flow Z) and the changes view.
+  tabMeetings: { id: 'forumTypes.tab.meetings', defaultMessage: 'Meetings' },
+  meetingsInvitations: { id: 'forumTypes.meetings.invitations', defaultMessage: 'Calendar invitations' },
+  meetingsTitle: { id: 'forumTypes.meetings.title', defaultMessage: 'Title in the calendar' },
+  meetingsTitleNeutral: { id: 'forumTypes.meetings.title.neutral', defaultMessage: 'A neutral title' },
+  meetingsNeutralTitle: { id: 'forumTypes.meetings.neutralTitle', defaultMessage: 'Neutral title' },
+  meetingsNeutralTitleHint: {
+    id: 'forumTypes.meetings.neutralTitle.hint',
+    defaultMessage: 'For example “Board committee meeting”. At most 100 characters.',
+  },
+  meetingsReplies: { id: 'forumTypes.meetings.replies', defaultMessage: 'Replies' },
+  meetingsDeadline: {
+    id: 'forumTypes.meetings.deadline',
+    defaultMessage: 'Ask for replies by (working days before the meeting)',
+  },
+  meetingsDeadlineHint: {
+    id: 'forumTypes.meetings.deadline.hint',
+    defaultMessage: 'From 0 (no deadline) to 10.',
+  },
+  meetingsReplyReminder: {
+    id: 'forumTypes.meetings.replyReminder',
+    defaultMessage: 'Remind those who have not replied, on the deadline day',
+  },
+  meetingsMeetingReminder: {
+    id: 'forumTypes.meetings.meetingReminder',
+    defaultMessage: 'Remind everyone attending the working day before the meeting',
+  },
+  meetingsOverride: { id: 'forumTypes.meetings.override', defaultMessage: 'Decisions without a quorum' },
+  meetingsOverrideNever: { id: 'forumTypes.meetings.override.never', defaultMessage: 'Never allowed' },
+  meetingsOverrideWithReason: {
+    id: 'forumTypes.meetings.override.withReason',
+    defaultMessage: 'Allowed with a reason, to be ratified at a later quorate meeting',
+  },
+  meetingsOverrideHint: {
+    id: 'forumTypes.meetings.override.hint',
+    defaultMessage:
+      'The secretary gives the reason when recording the decision, and the chair and the other secretaries are told.',
+  },
   whatInvitationTitle: { id: 'forumTypes.changes.invitationTitle', defaultMessage: 'Invitation title in calendars' },
   whatReplyDeadline: {
     id: 'forumTypes.changes.replyDeadline',
@@ -504,10 +542,15 @@ type TermMessage =
   | 'NOTED_effect'
   | 'WITHDRAWN_effect'
   | 'invitationName'
+  | 'meetingsNeutralLead'
 
 /** Texts that name the committee: they take the organisation's terms (ADR-0032). */
 export const ftt = defineMessages<Record<TermMessage, TermValues>>({
-  // The meeting policy's invitation title in the changes view (Phase 4 E05).
+  meetingsNeutralLead: {
+    id: 'forumTypes.meetings.neutral.lead',
+    defaultMessage: 'Use a neutral title for {forums} whose name should not appear in people’s calendars.',
+  },
+  // The meeting policy's invitation title in the changes view and on the Meetings tab (Phase 4 E05).
   invitationName: {
     id: 'forumTypes.changes.invitationName',
     defaultMessage: "The meeting's title or the {forum}'s name",

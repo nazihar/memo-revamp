@@ -2,6 +2,7 @@ package com.memo.workflow
 
 import com.memo.common.events.TenantScopedEvent
 import io.swagger.v3.oas.annotations.media.Schema
+import java.time.Instant
 import java.util.UUID
 
 /**
@@ -63,6 +64,43 @@ interface WorkflowSubject {
         subjectId: UUID,
         kind: ActionKind,
     ) {}
+
+    /**
+     * The names of the people this subject names per item (ADR-0068), for `{"kind": "subject", "slot": …}` assignees in
+     * definitions bound to it: for example `owner` or `verifier`. The validator refuses other names (`UNKNOWN_SLOT`).
+     */
+    val slots: Set<String> get() = emptySet()
+
+    /**
+     * Who [slot] names on [subjectId] now, asked when a step on it activates and whenever it resolves again. Several
+     * holders make a pool, as a role does (claims and release); empty means nobody (the step's `fallback`, else a task
+     * for an administrator). Inside the action's tenant transaction.
+     */
+    fun slot(
+        subjectId: UUID,
+        slot: String,
+    ): List<SlotHolder> = emptyList()
+
+    /**
+     * When the task of the step [nodeId] on [subjectId] is due, for steps whose SLA is `from: "subject"` (ADR-0068);
+     * null means no due time and no timers. Read when the step activates and on [Workflows.redue].
+     */
+    fun dueAt(
+        subjectId: UUID,
+        nodeId: String,
+    ): Instant? = null
+
+    /**
+     * This subject's own rules for definitions bound to it (ADR-0068), checked at submit and publish beside the engine's.
+     * The default: none.
+     */
+    fun checkDefinition(definition: SubjectDefinition): List<DefinitionProblem> = emptyList()
+
+    /**
+     * When true, the initiator is not left out of this subject's steps (SOD-1, ADR-0068): they may hold its tasks, be
+     * reassigned or forwarded one, and act as a substitute. SOD-2 and SOD-4 still apply. The default: false.
+     */
+    val initiatorTakesPart: Boolean get() = false
 }
 
 /** Where an instance is now, returned by every [Workflows] call. */
@@ -125,6 +163,8 @@ data class WorkflowTaskCreated(
     val blocked: BlockedReason?,
     /** The action that created it: SUBMIT, APPROVE (next step), RESUBMIT or REASSIGN. */
     val action: ActionKind,
+    /** The definition step the task is on (ADR-0068), so subjects need no query; null only for events made elsewhere. */
+    val nodeId: String? = null,
 ) : TenantScopedEvent
 
 /** A task was completed, cancelled or reassigned away from [assigneeId]. */

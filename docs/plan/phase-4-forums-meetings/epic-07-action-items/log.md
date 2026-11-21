@@ -49,3 +49,23 @@
   - `master`: `forum/V7`, `meeting/V9`. Open #203 holds `meeting/V10`. E06 plans `minutes/V1`–`V4`.
 - **Uncertain until T1:** whether a slot that resolves to several people behaves exactly as a role pool, and whether any workflow CHECK constraint lists assignee kinds. Either would mean a small change in T1, not a design change.
 - **No real-world input is needed.**
+
+## 2026-11-21 — T1: the engine additions (ADR-0068)
+- **Built**, all additive, behind `WorkflowSubject` (defaults: none):
+  - **Slots:** assignee kind `subject` with `slot`; `WorkflowSubject.slots` and `slot(subjectId, slot): List<SlotHolder>` (`Person`, `Position`). Positions resolve to their holders and are recorded as `positionIds`, so a holder change re-resolves the step as for a `position` assignee. Slots work as an escalation's `to`, as notify recipients and as parallel assignees.
+  - **Due times from the subject:** `sla.from: "subject"` (exactly one of `due` and `from`), `WorkflowSubject.dueAt(subjectId, nodeId)`, and the published `Workflows.redue(subjectType, subjectId)`. A step that activates again (send-back, holder change) reads the due time again.
+  - **Bound definitions:** the top-level `subject` key; `WRONG_SUBJECT` at start, migration and simulation; `WorkflowSubject.checkDefinition(SubjectDefinition)` at submit and publish; validator problems `SUBJECT_REQUIRED`, `UNKNOWN_SLOT`, `UNKNOWN_SUBJECT`, and `WRONG_SUBJECT` for a fragment of another type; the builder catalogue lists each subject's `slots` beside its attributes; memo types are offered only definitions not bound to another type.
+  - **The initiator's part:** `WorkflowSubject.initiatorTakesPart` lifts SOD-1. SOD-2 and SOD-4 still apply.
+  - `WorkflowTaskCreated.nodeId`.
+- **The plan's open points:**
+  - A slot of several people is a pool exactly as a role is: one decision needed, with claim and release. Confirmed by `SubjectSlotsTest` and `SubjectSlotIT`.
+  - No workflow CHECK constraint lists assignee kinds, so there is **no migration** (no `workflow/V17`).
+- **Choices made while building** (recorded in design §2.2 "As built"):
+  - The subject checks a published read model, `SubjectDefinition`, because the definition classes are internal to the module. `DefinitionProblem` moved to `com.memo.workflow`.
+  - "5 working days before" a subject's due time counts working days. Steps with `sla.due` keep ADR-0041's plain subtraction.
+  - Past reminders and escalations are skipped and a past due time fires at once, at activation as on `redue`, for subject due times only.
+  - The initiator's part also covers routes, reassignment, forward and delegate, escalation targets, and the initiator as a substitute (SOD-3's initiator half).
+  - The initiator's part is the subject's switch, as in ADR-0068 and tasks.md, not a key on the definition.
+- **Tests:** `SubjectDefinitionValidatorTest`, `StoredDefinitionGoldenTest` (a Phase 2/3 body prints back unchanged), the round-trip property extended to bound definitions, `SubjectSlotsTest` (engine), `SubjectSlotIT`, `SubjectDueIT` (on `MutableClock`), and `BuilderCatalogueIT`; the test subject `TestSlotSubject` (`test.slots`) in `testsupport`.
+- **Results (local):** the whole `com.memo.workflow.*` package (property tests included), the memo route suites (`MemoSubmitIT`, `MemoApprovalsIT`, `ExtendedRouteIT`, `MemoTypeAdminIT`, `MemoTypeVersionsIT`), `ForumSubmissionsIT`, `ForumRemindersIT`, `ArchitectureRulesTest`, `ModularityTest`, `ModuleMetadataIT`, `AuditActionCoverageTest`, `OpenApiContractTest`, `JooqCodegenTest` and `MigrationDmlRlsTest` green, except `DefinitionSimulationIT`'s rate-limit test. That test needs 31 simulations within about 2 seconds, because the bucket refills one token every 2 seconds, and they took 9–32 seconds on the loaded dev machine. It is unrelated to this change; CI decides. PIT on the engine: 88% killed, test strength 92%. ktlint, detekt and SpotBugs clean. Web typecheck green after `pnpm generate:api`.
+- **Left for later tasks:** a published re-resolve for a changed owner (T4 uses `Workflows.reassign`, or adds it); the builder's subject picker and slot assignees in the web builder.

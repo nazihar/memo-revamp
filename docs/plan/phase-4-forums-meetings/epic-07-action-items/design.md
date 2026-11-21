@@ -496,6 +496,18 @@ Packages `raise`, `progress`, `closure`, `followup`, `report`, `access`, `subjec
 - Also: `WorkflowTaskCreated` gains `nodeId` (nullable, additive), so subjects know which step a task is on without a query.
 - The builder's catalogue lists subject types with their slots and attributes. The `subject` assignee appears in the picker only for a definition with `subject`.
 - The engine's property tests (TESTING_STRATEGY §4) and Phase 2's suites run unchanged.
+- **As built in T1** (2026-11-21):
+  - `checkDefinition` takes a published read model, `SubjectDefinition` (steps in authored order with type, slot, `dueFromSubject`, offered actions and targets), because the definition classes are internal to the workflow module. `DefinitionProblem` moved to `com.memo.workflow` for the same reason.
+  - A slot's positions are recorded on the step as `positionIds` (and `vacant`), and the staff-change listener finds steps by them as it finds `positionId`. A slot of vacant positions only resolves as VACANT, an empty slot as NOBODY.
+  - **A slot of several people is a pool exactly as a role is** (confirmed, `SubjectSlotsTest`, `SubjectSlotIT`): the step needs one decision, any candidate claims or releases it, and the exclusions run per person.
+  - An unknown `subject` key is refused as `UNKNOWN_SUBJECT`. A fragment bound to another subject type is refused as `WRONG_SUBJECT`. A bound definition's attributes are checked against its own subject's catalogue.
+  - `remind.before` on a step due from the subject is counted in working days (same time of day) when the step is in working time, so "5 working days before" means that. Steps with `sla.due` keep ADR-0041's plain subtraction.
+  - On a step due from the subject, a past reminder or escalation is skipped and a past due time fires at once, at activation as on `redue`. Steps with `sla.due` plan as before.
+  - `initiatorTakesPart` lifts SOD-1 wherever it applied: candidates, route entries, reassignment, forward and delegate, escalation targets, and the initiator part of SOD-3 (the initiator as a substitute). SOD-2, SOD-4 and the rest of SOD-3 stay.
+  - `Workflows.redue` returns the number of tasks re-planned. It needs no signed-in user.
+  - `WorkflowDefinitions.published(subjectType)` and `choice(key, subjectType)` leave out definitions bound to another subject type. Memo types pass `memo`, so a bound definition is never offered to a memo type.
+  - The simulation refuses a definition bound to another type (`WRONG_SUBJECT`); a slot names nobody in a simulation (no item), so its step shows as blocked (ADR-0068 follow-up).
+  - **No workflow CHECK constraint lists assignee kinds** (the kinds live in the definition's JSON and the step's `resolution` record), so there is no `workflow/V17`.
 
 ### 2.3 The other modules
 - **`memo`** (published additions, no migration):

@@ -71,6 +71,7 @@ class DefinitionSimulator(
         attributes: Map<String, Any?>,
         route: List<RouteEntry>,
     ): Simulation {
+        requireSubject(definition, subjectType)
         val transition = Transition(context(subjectType, initiator, attributes), definition)
         val trace = Trace(definition)
         var state = accepted(transition.start(initiator, route.flatMap { it.people }, null, route)).also(trace::record).state
@@ -113,12 +114,14 @@ class DefinitionSimulator(
             eligibility = { person -> ineligible.getOrPut(person) { subject.ineligibleAt(attributes, listOf(person))[person] } },
             maxApprovers = settings.maxApprovers(),
             attributes = { attributes },
+            // A sample has no item, so slots of the subject name nobody yet (ADR-0068: "set per item").
             resolver = resolvers.resolver(),
             oncePerRound = settings.oncePerRound(),
             // SOD-3 as in the runner; a sample item has no interests.
-            substituteOf = { person -> substitutes.of(person)?.takeUnless { it == initiator } },
+            substituteOf = { person -> substitutes.of(person)?.takeUnless { !subject.initiatorTakesPart && it == initiator } },
             doa = authority::value,
             within = orgLimits::within,
+            initiatorTakesPart = subject.initiatorTakesPart,
         )
     }
 

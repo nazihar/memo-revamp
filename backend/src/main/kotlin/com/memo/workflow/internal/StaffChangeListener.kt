@@ -55,13 +55,19 @@ class StaffChangeListener(
     /** Active steps whose resolution read [position], with their instance and the people holding their open decisions. */
     private fun stepsResolvedFrom(position: UUID): List<Triple<UUID, UUID, Set<UUID>>> {
         val containing = JSONB.valueOf("""{"resolved":[{"positionId":"$position"}]}""")
+        // A slot of the item that named the position (ADR-0068) records it among its `positionIds`.
+        val inSlot = JSONB.valueOf("""{"resolved":[{"positionIds":["$position"]}]}""")
         val steps =
             tenantDsl
                 .current()
                 .select(WORKFLOW_STEP.INSTANCE_ID, WORKFLOW_STEP.ID)
                 .from(WORKFLOW_STEP)
-                .where(WORKFLOW_STEP.STATE.eq(ACTIVE), DSL.condition("{0} @> {1}", WORKFLOW_STEP.RESOLUTION, DSL.value(containing)))
-                .fetch { it.value1()!! to it.value2()!! }
+                .where(
+                    WORKFLOW_STEP.STATE.eq(ACTIVE),
+                    DSL
+                        .condition("{0} @> {1}", WORKFLOW_STEP.RESOLUTION, DSL.value(containing))
+                        .or(DSL.condition("{0} @> {1}", WORKFLOW_STEP.RESOLUTION, DSL.value(inSlot))),
+                ).fetch { it.value1()!! to it.value2()!! }
         return steps.map { (instance, step) ->
             val holders =
                 tenantDsl

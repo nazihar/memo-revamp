@@ -3,6 +3,7 @@ package com.memo.workflow.internal
 import com.memo.common.authz.RoleHolders
 import com.memo.org.OrgDirectory
 import com.memo.org.PositionRef
+import com.memo.workflow.SlotHolder
 import com.memo.workflow.definition.Assignee
 import com.memo.workflow.definition.AssigneeKind
 import com.memo.workflow.engine.Resolution
@@ -21,8 +22,11 @@ class OrgResolvers(
     private val roles: RoleHolders,
     private val queues: Queues,
 ) {
-    /** A resolver for one action; the initiator's position is looked up once. */
-    fun resolver(): Resolver {
+    /**
+     * A resolver for one action; the initiator's position is looked up once. [slots] answers `subject` assignees for the
+     * instance's item (ADR-0068); without it they resolve to nobody.
+     */
+    fun resolver(slots: ((String) -> List<SlotHolder>)? = null): Resolver {
         val positions = mutableMapOf<UUID, PositionRef?>()
         return Resolver { assignee, initiator ->
             val own by lazy { positions.getOrPut(initiator) { directory.positionsOf(listOf(initiator))[initiator] } }
@@ -35,6 +39,7 @@ class OrgResolvers(
                     AssigneeKind.UNIT_HEAD -> unitHead(assignee, own)
                     AssigneeKind.ROLE -> role(assignee, own)
                     AssigneeKind.QUEUE -> queue(checkNotNull(assignee.queue), inputs(assignee))
+                    AssigneeKind.SUBJECT -> slot(checkNotNull(assignee.slot), slots, inputs(assignee))
                 }
             if (resolution.people.size > MAX_CANDIDATES) {
                 Resolution(emptyList(), resolution.inputs + ("reason" to TOO_MANY))
@@ -92,6 +97,38 @@ class OrgResolvers(
         return Resolution(people, if (people.isEmpty()) inputs + ("reason" to NOBODY) else inputs)
     }
 
+    /**
+     * The people the item names in [slot] (ADR-0068), in the item's order: persons as they are, positions as their
+     * holders now. The positions are recorded (`positionIds`) so a holder change re-resolves the step, as for a
+     * `position` assignee; a slot of vacant positions only is VACANT, an empty one NOBODY.
+     */
+    private fun slot(
+        slot: String,
+        slots: ((String) -> List<SlotHolder>)?,
+        inputs: Map<String, Any?>,
+    ): Resolution {
+        val named = slots?.invoke(slot).orEmpty()
+        val positions = named.filterIsInstance<SlotHolder.Position>().map { it.positionId }.distinct()
+        val held = if (positions.isEmpty()) emptyMap() else directory.holders(positions)
+        val people =
+            named
+                .mapNotNull { holder ->
+                    (holder as? SlotHolder.Person)?.userId ?: (holder as? SlotHolder.Position)?.let { held[it.positionId] }
+                }.distinct()
+        val recorded =
+            inputs +
+                listOfNotNull(
+                    positions.takeIf { it.isNotEmpty() }?.let { "positionIds" to it.map(UUID::toString) },
+                    positions.filter { it !in held }.takeIf { it.isNotEmpty() }?.let { "vacant" to it.map(UUID::toString) },
+                    when {
+                        people.isNotEmpty() -> null
+                        positions.isNotEmpty() && named.all { it is SlotHolder.Position } -> "reason" to VACANT
+                        else -> "reason" to NOBODY
+                    },
+                )
+        return Resolution(people, recorded)
+    }
+
     private fun holderOf(
         position: UUID,
         inputs: Map<String, Any?>,
@@ -116,6 +153,7 @@ class OrgResolvers(
             assignee.up?.let { "up" to it },
             assignee.roleId?.let { "roleId" to it.toString() },
             assignee.queue?.let { "queue" to it },
+            assignee.slot?.let { "slot" to it },
         ).toMap()
 
     companion object {

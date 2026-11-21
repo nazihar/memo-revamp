@@ -137,7 +137,9 @@ class InviteWriterProperties {
         at: Instant,
     ): Boolean {
         val rules = zone.rules
-        val around = listOfNotNull(rules.previousTransition(at), rules.nextTransition(at)).map { it.instant }
+        // previousTransition is strictly before its argument: a change exactly at [at] counts too (CI run 44904197328,
+        // Australia/Adelaide at 16:30Z on 6 April 2019, where ical4j's lookup still answered the old offset).
+        val around = listOfNotNull(rules.previousTransition(at.plusNanos(1)), rules.nextTransition(at)).map { it.instant }
         return around.any { Duration.between(it, at).abs() < NEAR }
     }
 

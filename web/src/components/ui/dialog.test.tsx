@@ -5,6 +5,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { expectNoA11yViolations, renderWithProviders } from '@/test/render'
 import { Button } from './button'
 import { AlertDialog, Dialog } from './dialog'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './dropdown-menu'
 
 function DialogHarness() {
   const [open, setOpen] = useState(false)
@@ -67,6 +68,28 @@ describe('Dialog (ADR-0021)', () => {
     expect(dialog).not.toHaveAttribute('open')
     expect(trigger).toHaveFocus()
     expect(document.documentElement).not.toHaveClass('modal-open')
+  })
+
+  it('renders a menu opened inside it into the dialog, not under it where the page is inert (E03 T9)', async () => {
+    const user = userEvent.setup()
+    const chosen = vi.fn()
+    renderWithProviders(
+      <Dialog open onOpenChange={() => undefined} title="Item 3">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button>Actions for the paper</Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem onSelect={chosen}>Remove from the pack</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </Dialog>,
+    )
+    await user.click(screen.getByRole('button', { name: 'Actions for the paper' }))
+    const item = await screen.findByRole('menuitem', { name: 'Remove from the pack' })
+    expect(screen.getByRole('dialog', { name: 'Item 3' })).toContainElement(item)
+    await user.click(item)
+    expect(chosen).toHaveBeenCalledOnce()
   })
 
   it('the close button closes it', async () => {

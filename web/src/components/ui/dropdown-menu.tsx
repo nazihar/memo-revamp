@@ -1,7 +1,9 @@
 // shadcn/ui DropdownMenu subset on Radix (copied source, owned by us). Keyboard: Enter/Space opens, arrows move, Esc closes.
 import { DropdownMenu as DropdownMenuPrimitive } from 'radix-ui'
+import { useContext } from 'react'
 import type * as React from 'react'
 import { cn } from '@/lib/utils'
+import { ModalLayer } from './modal-layer'
 
 /**
  * Menus are non-modal (WAI-ARIA menu button pattern). Modal Radix menus lock scrolling by injecting an inline <style>
@@ -19,8 +21,10 @@ export function DropdownMenuContent({
   sideOffset = 4,
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Content>) {
+  // Inside a modal dialog the rest of the page is inert: the menu renders into the dialog (ModalLayer).
+  const layer = useContext(ModalLayer)
   return (
-    <DropdownMenuPrimitive.Portal>
+    <DropdownMenuPrimitive.Portal container={layer ?? undefined}>
       <DropdownMenuPrimitive.Content
         sideOffset={sideOffset}
         className={cn(

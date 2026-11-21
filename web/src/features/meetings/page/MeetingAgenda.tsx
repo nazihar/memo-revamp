@@ -376,7 +376,7 @@ function RevisionPicker({
       </label>
       <Select
         id={id}
-        className="min-h-11 w-auto text-base"
+        className="min-h-11 w-auto max-w-full text-base"
         value={value}
         onChange={(e) => {
           onChange(Number(e.target.value))

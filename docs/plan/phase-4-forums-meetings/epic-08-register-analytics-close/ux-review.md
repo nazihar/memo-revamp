@@ -1,0 +1,178 @@
+# E08 Decision register, analytics and close-out — UX review
+
+> `AGENTS.md §5` Step 3. **The owner delegated these screens.** Phase 4 Q1 sends only the E01, E02/E03 and E06 flows to the owner before build. E08's screens are reviewed under the delegated gate, so the review table below records "delegated", and the web tasks (T6, T7) do not wait.
+>
+> The wireframes are structural; the look is the existing Ledger direction and its components. "Committee" is the default English word for a forum. Flows continue from E07's AR:
+> - **AS** the decision register;
+> - **AT** exporting for auditors;
+> - **AU** committee analytics overview;
+> - **AV** attendance per member;
+> - **AW** a committee's detail.
+>
+> The phase's moderated usability walkthrough and the owner's walk through the committee cycle (T9) are recorded at the end.
+
+## Design principles taken from the research
+1. **The register answers an auditor's first question in one step:** "every decision of this committee in this period", with the number check beside it (research §3.1).
+2. **A restricted row says so in words.** "Resolution BRC/2026/014 — Restricted item: you declared an interest" — never a blank or a missing number (E06's register rule).
+3. **Exceptions are one click:** with dissent, with conditions, to be ratified, corrected, validity passed.
+4. **A sentence before any chart.** "Board Risk Committee: 92 % attendance over the last 12 months, 3 actions overdue, decisions took a median of 18 days" (GOV.UK: convey the main message).
+5. **The table is the figure for older readers;** bars sit beside it, with value labels. No line, pie, donut or radial charts (research §5).
+6. **Colour is never alone;** every status has its word.
+7. **Every number leads to its list** (design §2.6).
+8. **Nothing about individuals that disclosure does not ask for:** attendance per member, not reading time; members see their own row.
+
+## Flow AS — The decision register (secretary, auditor, director)
+
+**AS1. Committees → Decisions**
+```
+Decisions                                                              [ Export… ]
+Search decisions and resolutions of the committees you can see.
+┌────────────────────────────────────────────────────────────────┐  [ Search ]
+│ Words, a resolution number or a memo number                     │
+└────────────────────────────────────────────────────────────────┘
+Committee [ All my committees ▾ ]  Type [ Any ▾ ]  From [ 01/01/2026 ]  To [ 31/12/2026 ]
+Outcome  [ Any ▾ ]   [ ] Resolutions only   More filters ▾   (With dissent · With conditions ·
+                                                             To be ratified · Corrected · Validity passed ·
+                                                             Memo type · State)
+Showing 214 decisions · Newest first ▾                                   [ Reset ]
+By committee: Board Risk 61 · Credit 120 · ALCO 33      By outcome: Approved 140 · Noted 52 · Deferred 9 …
+────────────────────────────────────────────────────────────────────────────────────────
+12 Dec 2026  BRC 3/2026, item 5     Resolution BRC/2026/014        Restricted item
+                                    In force                         You declared an interest in this item.
+────────────────────────────────────────────────────────────────────────────────────────
+12 Dec 2026  BRC 3/2026, item 4     Resolution BRC/2026/013        APPROVED WITH CONDITIONS
+             Liquidity contingency plan, annual review              2 conditions · with dissent
+             Minutes approved 9 Jan 2027 · Memo POL-2026-00031     [ Open ]  [ Meeting ]  [ Minutes ]
+────────────────────────────────────────────────────────────────────────────────────────
+                                                           [ Show more decisions ]
+```
+- **States in words:** "Recorded at the meeting", "Numbered", "Sent to the memo", "Minutes approved"; VOID as "Void — {date}".
+- **Number lookup:** typing `BRC/2026/014`, `brc-2026-14` or `14` with one committee chosen finds it; a memo number finds the decisions on that memo.
+- **Restricted lines** never show a title, an outcome or a memo, and an outcome filter leaves them out ("Some restricted items are not shown when you filter by outcome" under the count, for viewers who have any).
+- **"Number order"** appears in the sort menu when one committee is chosen, and the page offers "Check the numbers" (E06's per-committee register) for officers and auditors.
+- **Empty states:** "No decisions match. Try a wider date range or fewer filters." / "You are not a member or officer of any committee." (no scope: the menu item is hidden; a direct link explains it).
+- Filters are chips that can be removed one by one; Reset clears all (BoardPro). The page keeps its words in the address fragment only (Phase 3 E05).
+
+**AS2. Opening a row** goes to the resolution page (E06 flow AC) or, for a decision without a number, the meeting page at the item. The register keeps its place when the person comes back.
+
+## Flow AT — Exporting for auditors (secretary, auditor)
+```
+Export decisions
+──────────────────────────────────────────────────────────────────────
+214 decisions match your filters:
+  Board Risk Committee, Credit Committee, ALCO · 1 January – 31 December 2026
+Format   (•) Spreadsheet (.xlsx) — for sorting and checking, up to 20,000 rows
+         ( ) PDF — for filing, up to 2,000 rows
+The export includes a page "About this export" with these filters, your name and the time,
+and a number check for each committee and year.
+Restricted items show their number only.
+                                                   [ Cancel ]  [ Download ]
+```
+- More rows than the format allows: "This is 2,412 decisions; a PDF holds up to 2,000. Narrow the dates or choose a spreadsheet." The Download button stays disabled.
+- After 5 exports in an hour: "You have exported 5 times in the last hour. Please try again at 14:20."
+- **The spreadsheet:** sheet "Decisions"; sheet "About this export"; sheet "Number check":
+```
+Committee             Year   First  Last  In force  Void  Missing
+Board Risk Committee  2026   001    014   13        1     none
+  Void: BRC/2026/009, 3 Sep 2026 — "Recorded against the wrong item; replaced by BRC/2026/010"
+```
+- **The PDF:** landscape, the about block first, a table per committee, the number check last, "Page n of m" and "Produced by {name} on {date}" on every page.
+
+## Flow AU — Committee analytics overview (secretary, chair, auditor, members)
+```
+Committee analytics                                Period [ Last 12 months ▾ ]
+These figures count only the meetings, decisions and actions you can see.
+
+Board Risk Committee
+  92 % attendance at 12 meetings · 3 actions overdue · decisions took a median of 18 days
+  ┌────────────────────────────┬──────────┬───────────────────────────────────┐
+  │ Measure                    │ Value    │                                   │
+  ├────────────────────────────┼──────────┼───────────────────────────────────┤
+  │ Attendance                 │ 92 %     │ ████████████████████████▌  92 %   │
+  │ Actions overdue now        │ 3        │ ███  3   (1 over 90 days)         │
+  │ Actions closed on time     │ 12 of 18 │ by the original date; 16 by the agreed date
+  │ Time to decision           │ 18 days  │ median; 90 % within 41 days (24 decisions)
+  │ Items deferred             │ 3 of 27  │ ███  11 %                         │
+  │ Papers on time             │ 10 of 12 │ meetings published by the deadline│
+  └────────────────────────────┴──────────┴───────────────────────────────────┘
+  [ Attendance ]  [ Actions overdue ]  [ Decisions ]  [ Committee detail ]
+
+Management Credit Committee
+  …
+```
+- One block per committee in scope, alphabetical; a select narrows to one.
+- Every number is a link to its list (design §2.6). The bars are decorative beside the table (`aria-hidden`), because the table carries the data.
+- A member sees the same block without per-member rows (AV) and without late-paper counts.
+- No committee in scope: "Analytics are for committee members, officers and oversight."
+
+## Flow AV — Attendance per member (officers, oversight; members see their own row)
+```
+Board Risk Committee — attendance                     Period [ 1 Jan – 31 Dec 2026 ]
+12 meetings held. Overall attendance 92 %.                    [ Export for the annual report ]
+┌──────────────────────┬─────────────┬──────────┬──────────┬──────────┬───────────┬──────────┬────────────┐
+│ Member               │ Role        │ Expected │ Attended │ Remote   │ Apologies │ Absent   │ Rate       │
+├──────────────────────┼─────────────┼──────────┼──────────┼──────────┼───────────┼──────────┼────────────┤
+│ Dr F. Karim          │ Chair       │ 12       │ 12       │ 1        │ 0         │ 0        │ 100 % ████ │
+│ Ms N. Haque          │ Member      │ 12       │ 10       │ 3        │ 1 (alt.)  │ 1        │  83 % ███▍ │
+│ Mr R. Ahmed          │ Member      │ 6 (from 1 Jul) │ 6  │ 0        │ 0         │ 0        │ 100 % ████ │
+└──────────────────────┴─────────────┴──────────┴──────────┴──────────┴───────────┴──────────┴────────────┘
+"(alt.)": an alternate attended in their place; this is not counted as the member's attendance.
+```
+- Sorted by name; the column headers sort (Rate, then name). No ranks, badges or colours of judgement.
+- A name opens the list of the period's meetings with that person's attendance and links to each meeting.
+- **A member's view:** "Your attendance: 10 of 12 meetings (83 %). The committee's overall attendance: 92 %."
+- The export button only for officers and oversight; the file is the same table with a header block.
+
+## Flow AW — A committee's detail (officers, oversight, members)
+```
+Board Risk Committee                                   Period [ Last 2 years ▾ ]
+Time from submission to decision
+Decisions took a median of 18 days; 9 in 10 within 41 days. Based on 46 decisions you can see in full.
+┌──────────┬──────────┬────────┬───────────────┐
+│ Quarter  │ Decisions│ Median │ 90 % within   │   ▏Q1 2026  ████████ 21
+├──────────┼──────────┼────────┼───────────────┤   ▏Q2 2026  ██████ 16
+│ Q1 2026  │ 11       │ 21 days│ 44 days       │   ▏Q3 2026  ███████ 18
+│ …        │          │        │               │
+└──────────┴──────────┴────────┴───────────────┘
+By memo type: Credit proposal 22 days (19) · Policy approval 15 days (8) · …   [ Open these decisions ]
+
+Items deferred: 5 of 46 (11 %); 1 item deferred twice.                         [ Open deferred items ]
+Actions overdue by owner
+┌───────────────────────────────┬─────────┬────────────┬────────────┬──────────┐
+│ Owner                         │ Overdue │ 1–30 days  │ 31–90 days │ Over 90  │
+│ Head of Treasury (A. Karim)   │ 2       │ 1          │ 1          │ 0        │
+└───────────────────────────────┴─────────┴────────────┴────────────┴──────────┘ [ Open the tracker ]
+Papers on time: 10 of 12 meetings; 4 late papers in the year (officers).       [ Open meetings ]
+```
+- Quarters run in bars (horizontal, labelled), never as a line.
+- Below a basis of 5 decisions the median and 90 % lines say "Too few decisions to show a typical time" and the table lists the decisions instead.
+- "Working days" is a toggle on the timing table (calendar days by default).
+
+## Decisions taken under the delegated gate
+- **A restricted line, not a missing row,** for recused and restricted items (ADR-0069), matching E06's register.
+- **Members search their own committees' decisions;** only officers and oversight export.
+- **Two export formats:** spreadsheet for checking, PDF for filing, each with "About this export" and the number check.
+- **Five measures**, with "actions closed on time" and "papers on time" added to the overview's list; no paper-reading statistics, meeting counts or scores (ADR-0070).
+- **Tables visible by default** with bars beside them; no line, pie or donut charts.
+- **Members see their own attendance and the committee's total**, not colleagues' rows.
+
+## Questions for the owner
+None about the screens. Reported (ADR-0069, ADR-0070):
+- the register shows recused and restricted items as a numbered "Restricted item" line rather than leaving them out (E04's placeholder said "excluded"), so auditors can check every number;
+- the viewer's recusals are checked at the moment of the search rather than copied into the register;
+- two measures added (actions closed on time, papers on time), paper-reading statistics left out on purpose;
+- tables shown first, for older readers, unlike Phase 3's approvals dashboard.
+
+**No real-world input is needed for E08's screens.** The phase close needs the owner for the items in `tasks.md` "Carried".
+
+## Review
+| Flow | Date | Result |
+|---|---|---|
+| AS the decision register | 2026-11-21 | Delegated (Phase 4 Q1); reviewed by the agent against the research and E03's principles |
+| AT exporting for auditors | 2026-11-21 | Delegated (Phase 4 Q1) |
+| AU committee analytics overview | 2026-11-21 | Delegated (Phase 4 Q1) |
+| AV attendance per member | 2026-11-21 | Delegated (Phase 4 Q1) |
+| AW a committee's detail | 2026-11-21 | Delegated (Phase 4 Q1) |
+| Manual keyboard and screen-reader pass over AS–AW | — | T6, T7 |
+| The owner's walk through the representative committee cycle on dev (exit criterion 3, A1) | — | T9 |
+| Moderated usability walkthrough of the committee cycle (overview §5) | — | T9 |

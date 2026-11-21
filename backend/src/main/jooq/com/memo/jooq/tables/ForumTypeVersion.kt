@@ -214,6 +214,11 @@ open class ForumTypeVersion(
      */
     val MINUTES: TableField<ForumTypeVersionRecord, JSONB?> = createField(DSL.name("minutes"), SQLDataType.JSONB, this, "")
 
+    /**
+     * The column <code>memo.forum_type_version.actions</code>.
+     */
+    val ACTIONS: TableField<ForumTypeVersionRecord, JSONB?> = createField(DSL.name("actions"), SQLDataType.JSONB, this, "")
+
     private constructor(alias: Name, aliased: Table<ForumTypeVersionRecord>?): this(alias, null, null, null, aliased, null, null)
     private constructor(alias: Name, aliased: Table<ForumTypeVersionRecord>?, parameters: Array<Field<*>?>?): this(alias, null, null, null, aliased, parameters, null)
     private constructor(alias: Name, aliased: Table<ForumTypeVersionRecord>?, where: Condition?): this(alias, null, null, null, aliased, null, where)
@@ -257,6 +262,7 @@ open class ForumTypeVersion(
     fun forumType(): ForumTypePath = forumType
     val forumType: ForumTypePath by lazy { ForumTypePath(this, FORUM_TYPE_VERSION__FORUM_TYPE_VERSION_TENANT_ID_FORUM_TYPE_ID_FKEY, null) }
     override fun getChecks(): List<Check<ForumTypeVersionRecord>> = listOf(
+        Internal.createCheck(this, DSL.name("forum_type_version_actions_check"), "(((actions IS NULL) OR ((jsonb_typeof(actions) = 'object'::text) AND (octet_length((actions)::text) <= 4096))))", true),
         Internal.createCheck(this, DSL.name("forum_type_version_agenda_check"), "(((agenda IS NULL) OR ((jsonb_typeof(agenda) = 'object'::text) AND (octet_length((agenda)::text) <= 65536))))", true),
         Internal.createCheck(this, DSL.name("forum_type_version_check"), "(((reviewed_by IS NULL) OR (reviewed_by <> submitted_by)))", true),
         Internal.createCheck(this, DSL.name("forum_type_version_check1"), "(((state <> 'PUBLISHED'::text) OR (published_at IS NOT NULL)))", true),

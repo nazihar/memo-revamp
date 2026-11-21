@@ -4,6 +4,7 @@ import com.memo.common.concurrency.ConcurrentModificationException
 import com.memo.common.id.IdGenerator
 import com.memo.common.review.ReviewState
 import com.memo.common.tenant.TenantDsl
+import com.memo.forum.ActionsPolicy
 import com.memo.forum.AgendaPolicy
 import com.memo.forum.ForumRetention
 import com.memo.forum.MeetingPolicy
@@ -42,6 +43,8 @@ data class ForumTypeSettings(
     val meetings: MeetingPolicy = MeetingPolicy(),
     /** Minutes approval, when memos move on, resolution numbers and the minutes template (Phase 4 E06, design E06 §1.8). */
     val minutes: MinutesPolicy = MinutesPolicy(),
+    /** Action items: RAG, due-date changes, verification, evidence, the default due date, update requests (E07 §1.13). */
+    val actions: ActionsPolicy = ActionsPolicy(),
 )
 
 /** A forum type's identity. */

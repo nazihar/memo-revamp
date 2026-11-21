@@ -69,3 +69,43 @@
 - **Tests:** `SubjectDefinitionValidatorTest`, `StoredDefinitionGoldenTest` (a Phase 2/3 body prints back unchanged), the round-trip property extended to bound definitions, `SubjectSlotsTest` (engine), `SubjectSlotIT`, `SubjectDueIT` (on `MutableClock`), and `BuilderCatalogueIT`; the test subject `TestSlotSubject` (`test.slots`) in `testsupport`.
 - **Results (local):** the whole `com.memo.workflow.*` package (property tests included), the memo route suites (`MemoSubmitIT`, `MemoApprovalsIT`, `ExtendedRouteIT`, `MemoTypeAdminIT`, `MemoTypeVersionsIT`), `ForumSubmissionsIT`, `ForumRemindersIT`, `ArchitectureRulesTest`, `ModularityTest`, `ModuleMetadataIT`, `AuditActionCoverageTest`, `OpenApiContractTest`, `JooqCodegenTest` and `MigrationDmlRlsTest` green, except `DefinitionSimulationIT`'s rate-limit test. That test needs 31 simulations within about 2 seconds, because the bucket refills one token every 2 seconds, and they took 9–32 seconds on the loaded dev machine. It is unrelated to this change; CI decides. PIT on the engine: 88% killed, test strength 92%. ktlint, detekt and SpotBugs clean. Web typecheck green after `pnpm generate:api`.
 - **Left for later tasks:** a published re-resolve for a changed owner (T4 uses `Workflows.reassign`, or adds it); the builder's subject picker and slot assignees in the web builder.
+
+## 2026-11-21 — T2: the committee type's actions policy and the built-in definition
+- **Built:**
+  - **`forum/V8__actions_policy.sql`:** `forum_type_version.actions jsonb` (an object of at most 4 KiB; null reads as the defaults). Expand only, no data change. `forum/V8` was free on `master` and on every open branch.
+  - **`ForumTypePolicy.actions`** (`ActionsPolicy`, design §1.13): `amberWorkingDays` 10 (1–60), `staleWorkingDays` 20 (5–120, 0 off), `dueChange` SECRETARY_AGREES / CHAIR_AGREES / OWNER_WITH_REASON, `verifiedBy` SECRETARY / CHAIR, `evidenceRequired` false, `defaultDue` NEXT_MEETING / WORKING_DAYS with `defaultDueWorkingDays` 20 (1–120), `updateRequestWorkingDays` 5 (1–20, 0 off), `definitionKey` `action-item`.
+    - It goes through the type's request, response, store, audit summary and presets, with checks under `actions/…` at save, submit and publish.
+    - `UNKNOWN_DEFINITION` unless the key is a published definition bound to `action-item`.
+    - The second administrator's review is the type version's, as for every policy.
+  - **`ForumPolicies.current(forumId)`:** the type's published version, whatever version the meetings pinned.
+  - **Presets:** Board and Board committee use the defaults. A new **Board audit committee** preset is a board committee with `evidenceRequired`. Management committees have amber 5, OWNER_WITH_REASON and WORKING_DAYS 10.
+  - **`GET /api/v1/admin/forum-types/action-definitions`** (`forum.types.manage` or `.approve`; matrix `p4-e07-type-actions.yaml`, leak-suite registry): the definitions the Actions tab may offer.
+  - **A definition a committee type names is not retired** (`ForumTypeDefinitionUsage`, `IN_USE`). The default name counts, and so do drafts and versions in review.
+  - **The built-in `action-item` definition** is the body of design §1.8. The subject declares it (`WorkflowSubject.seededDefinitions`, new and defaulting to none). `SubjectDefinitionSeeds` stores it in every tenant as a published version 1 with its compiled body: at tenant creation and at start-up, beside `sequential-approval`. It is stored only after the engine's and the subject's checks pass.
+  - **`WorkflowDefinitions.bound(subjectType)`:** the published definitions bound to one subject type.
+  - **The `action-item` subject** (`com.memo.actions.subject.ActionItemSubject`, the actions module's first class): slots `owner`, `verifier`, `chair` and `secretaries`; `initiatorTakesPart`; the seed; and `checkDefinition` with §1.8's rules (`ACTION_START_WITH_OWNER`, `ACTION_NOT_REJECTED`, `ACTION_VERIFIED` on every way to the end, `ACTION_OWNER_KEEPS`).
+  - **Web:** the type editor carries `actions` as loaded, and the Changes tab lists its eight lines (en/ar). The preset has its label. The fixtures that build a type version have the field. The Actions tab itself is T10.
+- **Choices made while building** (design §1.13 "As built"):
+  - **0 means off, not null.** The API leaves nulls out, so a null "off" would come back as the default on the next save.
+  - **The seeded definition is not marked built in.** `built_in` refuses new versions, and the design wants the tenant to change it in the builder. The retirement guard protects it instead.
+  - **The seed is not audited**, like `sequential-approval` and the General memo type at tenant creation.
+  - **No new audit action:** the policy is in the type version's audit details (`forum.type.version.*` carries `actions=ActionsPolicy(…)`), asserted in `ForumTypeActionsPolicyIT`.
+  - **The subject is the minimum** a bound definition needs to validate and seed, as the brief asked. Who each slot names, `dueAt`, the attributes, `ineligible`, the snapshot and the lock are T3's. Until then no action exists, so no instance can start.
+  - **What is not in the policy:** the reopen window (90 days) and "risk accepted" for the chair alone are fixed rules (§1.10). Reminders and escalation are the definition's, edited in the builder.
+  - `MemoPerformanceIT` now picks `sequential-approval`'s version by key: every tenant has two definitions now. The retire refusal reads "A memo type or a committee type still uses this definition."
+- **Tests:**
+  - `ActionsPolicyChecksTest`: ranges at their edges, 0 as off, every choice round-tripping, missing fields as defaults, presets.
+  - `ActionDefinitionRulesTest`: the seed passes the validator with the subject's slots and rules, and each rule refuses its case, including a branch around verification and a way back to the owner.
+  - `ForumTypeActionsPolicyIT`: presets and null; the checks at save; `UNKNOWN_DEFINITION` for an unknown key and for `sequential-approval`; amber 0 refused at submit with 422 at `actions/amberWorkingDays`; maker-checker with audit; `current` following publication while version 1 stays pinned; another bound definition listed and chosen; retirement refused.
+  - `ActionDefinitionSeedIT`: in every tenant, valid, not offered to memo types, idempotent, changed as version 2 by a second administrator, and a REJECT refused by the subject's rule.
+- **Results (local, after merging `master` and T1):** 2,703 tests in 91 classes green, with none skipped. They covered:
+  - `com.memo.forum.*` and `com.memo.workflow.*`, property tests and `DefinitionSimulationIT` included;
+  - `com.memo.actions.*` and `com.memo.demo.*` (`DemoTenantSeedIT`, `DemoWorkflowsIT`, `DemoForumsIT` and the rest);
+  - `ArchitectureRulesTest`, `ModularityTest`, `ModuleMetadataIT`, `AuditActionCoverageTest`, `AuthorizationMatrixTest`, `OpenApiContractTest`, `JooqCodegenTest` and `MigrationDmlRlsTest`;
+  - `PaperLeakIT`, `RecusalLeakIT`, `MemoTypeAdminIT`, `MemoTypeVersionsIT` and `MemoPerformanceIT`.
+  - ktlint, detekt and SpotBugs are clean.
+  - On the web: typecheck, lint, Prettier and `i18n:verify` pass. Core is 13.5 KiB in Arabic, unchanged by T2, whose labels are in `forumAdmin`. The forum-type, forums and agenda-template tests are green.
+- **Left for later tasks:**
+  - T3: the rest of the subject.
+  - T10: the Actions tab, with the definition picker from `action-definitions` and "Open in the builder".
+  - T12: whether the demo's BAC moves to the audit preset.

@@ -101,6 +101,12 @@ interface WorkflowSubject {
      * reassigned or forwarded one, and act as a substitute. SOD-2 and SOD-4 still apply. The default: false.
      */
     val initiatorTakesPart: Boolean get() = false
+
+    /**
+     * The definitions every tenant gets for this subject type (ADR-0067), seeded when missing as a published version 1 and
+     * then the tenant's to change. The default: none.
+     */
+    val seededDefinitions: List<SeededDefinition> get() = emptyList()
 }
 
 /** Where an instance is now, returned by every [Workflows] call. */

@@ -32,6 +32,7 @@ export const ft = defineMessages({
   blank: { id: 'forumTypes.preset.blank', defaultMessage: 'Blank' },
   BOARD: { id: 'forumTypes.preset.board', defaultMessage: 'Board' },
   BOARD_COMMITTEE: { id: 'forumTypes.preset.boardCommittee', defaultMessage: 'Board committee' },
+  BOARD_AUDIT_COMMITTEE: { id: 'forumTypes.preset.boardAuditCommittee', defaultMessage: 'Board audit committee' },
   MANAGEMENT_COMMITTEE: { id: 'forumTypes.preset.managementCommittee', defaultMessage: 'Management committee' },
   create: { id: 'forumTypes.create', defaultMessage: 'Create draft' },
   cancel: { id: 'forumTypes.cancel', defaultMessage: 'Cancel' },
@@ -361,6 +362,30 @@ export const ft = defineMessages({
     defaultMessage: 'An uploaded template',
   },
   minutesTemplateNew: { id: 'forumTypes.changes.minutesTemplate.new', defaultMessage: 'A newly uploaded template' },
+  // The actions policy (Phase 4 E07, design E07 §1.13); its tab comes with E07 T10.
+  whatActionsAmber: { id: 'forumTypes.changes.actionsAmber', defaultMessage: 'Actions: amber when due within' },
+  whatActionsStale: { id: 'forumTypes.changes.actionsStale', defaultMessage: 'Actions: “No recent update” after' },
+  whatActionsDueChange: { id: 'forumTypes.changes.actionsDueChange', defaultMessage: 'Actions: a new due date needs' },
+  actionsDueSecretary: {
+    id: 'forumTypes.changes.actionsDueChange.secretary',
+    defaultMessage: 'The secretary’s agreement',
+  },
+  actionsDueChair: { id: 'forumTypes.changes.actionsDueChange.chair', defaultMessage: 'The chair’s agreement' },
+  actionsDueReason: { id: 'forumTypes.changes.actionsDueChange.reason', defaultMessage: 'Only a reason' },
+  whatActionsVerifiedBy: { id: 'forumTypes.changes.actionsVerifiedBy', defaultMessage: 'Actions: verified by' },
+  actionsVerifiedSecretary: { id: 'forumTypes.changes.actionsVerifiedBy.secretary', defaultMessage: 'A secretary' },
+  actionsVerifiedChair: { id: 'forumTypes.changes.actionsVerifiedBy.chair', defaultMessage: 'The chair' },
+  whatActionsEvidence: {
+    id: 'forumTypes.changes.actionsEvidence',
+    defaultMessage: 'Actions: evidence required when marked as done',
+  },
+  whatActionsDefaultDue: { id: 'forumTypes.changes.actionsDefaultDue', defaultMessage: 'Actions: default due date' },
+  whatActionsUpdateRequests: {
+    id: 'forumTypes.changes.actionsUpdateRequests',
+    defaultMessage: 'Actions: ask owners for an update before the papers are due',
+  },
+  whatActionsDefinition: { id: 'forumTypes.changes.actionsDefinition', defaultMessage: 'Actions: workflow' },
+  actionsOff: { id: 'forumTypes.changes.actionsOff', defaultMessage: 'Off' },
 })
 
 /** Texts with values besides the terms. */
@@ -420,7 +445,23 @@ export const ftv = defineMessages<{
   invitationNeutral: { title: string }
   resolutionNumbering: { example: string; reset: string }
   resolutionResetFinancialYear: { month: string }
+  actionsDays: { days: number }
+  actionsDueNextMeeting: { days: number }
+  actionsDueInDays: { days: number }
 }>({
+  actionsDays: {
+    id: 'forumTypes.changes.actionsDays',
+    defaultMessage: '{days, plural, one {# working day} other {# working days}}',
+  },
+  actionsDueNextMeeting: {
+    id: 'forumTypes.changes.actionsDefaultDue.nextMeeting',
+    defaultMessage:
+      'The next meeting, or {days, plural, one {# working day} other {# working days}} when none is scheduled',
+  },
+  actionsDueInDays: {
+    id: 'forumTypes.changes.actionsDefaultDue.days',
+    defaultMessage: '{days, plural, one {# working day} other {# working days}} after the action is raised',
+  },
   resolutionNumbering: { id: 'forumTypes.changes.resolutionNumbering.value', defaultMessage: '{example}, {reset}' },
   resolutionResetFinancialYear: {
     id: 'forumTypes.changes.resolutionNumbering.financialYear',

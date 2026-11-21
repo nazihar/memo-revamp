@@ -1,12 +1,4 @@
 {
-  "actions" : {
-    "basePackage" : "com.memo.actions",
-    "dependencies" : [ ],
-    "displayName" : "Action items",
-    "nested" : [ ],
-    "shared" : false,
-    "type" : "closed"
-  },
   "book" : {
     "basePackage" : "com.memo.book",
     "dependencies" : [ ],
@@ -280,6 +272,17 @@
       "types" : [ "EVENT_LISTENER", "USES_COMPONENT" ]
     } ],
     "displayName" : "Workflow",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  },
+  "actions" : {
+    "basePackage" : "com.memo.actions",
+    "dependencies" : [ {
+      "target" : "workflow",
+      "types" : [ "DEFAULT" ]
+    } ],
+    "displayName" : "Action items",
     "nested" : [ ],
     "shared" : false,
     "type" : "closed"

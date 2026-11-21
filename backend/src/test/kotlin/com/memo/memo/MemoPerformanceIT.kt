@@ -54,7 +54,7 @@ class MemoPerformanceIT : IntegrationTest() {
             val t = tenant.id.value
             val type = dsl.fetchValue("select id from memo_type where key = 'general'") as UUID
             val level = dsl.fetchValue("select id from authz_classification_level where rank = 0") as UUID
-            val definition = dsl.fetchValue("select id from workflow_definition_version limit 1") as UUID
+            val definition = dsl.fetchValue(SEQUENTIAL_VERSION) as UUID
             // Memo i: sent by the reader for i <= 500, else by one of 50 others; its open task is the reader's for i <= 300.
             val initiator = "case when i <= $SENT then '$reader'::uuid else md5('u' || (i % 50))::uuid end"
             val assignee = "case when i <= $MINE then '$reader'::uuid else md5('a' || (i % 97))::uuid end"
@@ -151,6 +151,10 @@ class MemoPerformanceIT : IntegrationTest() {
         }
 
     private companion object {
+        /** The memo definition's version: every tenant has others (the built-in `action-item`, E07), not for memos. */
+        const val SEQUENTIAL_VERSION =
+            "select v.id from workflow_definition_version v join workflow_definition d on d.id = v.definition_id " +
+                "where d.key = 'sequential-approval'"
         const val MEMOS = 10_000
         const val MINE = 300
         const val SENT = 500

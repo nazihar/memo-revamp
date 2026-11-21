@@ -144,7 +144,71 @@ export function changesBetween(
     )
   scalar('quorumOverride', intl.formatMessage(ft.whatQuorumOverride), override(before), override(after))
   minutesChanges(intl, before, after, text, changes)
+  actionsChanges(intl, before, after, yesNo, changes)
   return changes
+}
+
+/**
+ * The actions policy's lines (Phase 4 E07, design E07 §1.13): amber and "no recent update" in working days, who agrees a
+ * new date, who verifies, evidence, the default due date, update requests and the workflow. Its tab comes with E07 T10.
+ */
+function actionsChanges(
+  intl: IntlShape,
+  before: TypeSettings,
+  after: TypeSettings,
+  yesNo: (value: boolean) => string,
+  changes: Change[],
+) {
+  const a = before.actions
+  const b = after.actions
+  const scalar = (id: string, what: string, x: string, y: string) => {
+    if (x !== y) changes.push({ id, what, before: x, after: y })
+  }
+  // A rule given 0 working days is off.
+  const days = (n: number, off: boolean) =>
+    off && n === 0 ? intl.formatMessage(ft.actionsOff) : intl.formatMessage(ftv.actionsDays, { days: n })
+  scalar(
+    'actionsAmber',
+    intl.formatMessage(ft.whatActionsAmber),
+    days(a.amberWorkingDays, false),
+    days(b.amberWorkingDays, false),
+  )
+  scalar(
+    'actionsStale',
+    intl.formatMessage(ft.whatActionsStale),
+    days(a.staleWorkingDays, true),
+    days(b.staleWorkingDays, true),
+  )
+  const dueChange = (p: TypeSettings['actions']) =>
+    intl.formatMessage(
+      p.dueChange === 'CHAIR_AGREES'
+        ? ft.actionsDueChair
+        : p.dueChange === 'OWNER_WITH_REASON'
+          ? ft.actionsDueReason
+          : ft.actionsDueSecretary,
+    )
+  scalar('actionsDueChange', intl.formatMessage(ft.whatActionsDueChange), dueChange(a), dueChange(b))
+  const verifier = (p: TypeSettings['actions']) =>
+    intl.formatMessage(p.verifiedBy === 'CHAIR' ? ft.actionsVerifiedChair : ft.actionsVerifiedSecretary)
+  scalar('actionsVerifiedBy', intl.formatMessage(ft.whatActionsVerifiedBy), verifier(a), verifier(b))
+  scalar(
+    'actionsEvidence',
+    intl.formatMessage(ft.whatActionsEvidence),
+    yesNo(a.evidenceRequired),
+    yesNo(b.evidenceRequired),
+  )
+  const defaultDue = (p: TypeSettings['actions']) =>
+    intl.formatMessage(p.defaultDue === 'WORKING_DAYS' ? ftv.actionsDueInDays : ftv.actionsDueNextMeeting, {
+      days: p.defaultDueWorkingDays,
+    })
+  scalar('actionsDefaultDue', intl.formatMessage(ft.whatActionsDefaultDue), defaultDue(a), defaultDue(b))
+  scalar(
+    'actionsUpdateRequests',
+    intl.formatMessage(ft.whatActionsUpdateRequests),
+    days(a.updateRequestWorkingDays, true),
+    days(b.updateRequestWorkingDays, true),
+  )
+  scalar('actionsDefinition', intl.formatMessage(ft.whatActionsDefinition), a.definitionKey, b.definitionKey)
 }
 
 /** The minutes policy's lines (Phase 4 E06, design E06 §1.8): approval, its days, memos moving on, numbers, template. */

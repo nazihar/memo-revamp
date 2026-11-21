@@ -311,6 +311,16 @@ Derived on read from stored columns and today's date in the tenant's zone. No sw
   - Board Audit has `evidenceRequired` true (the IIA's evidence; research §3.3).
   - The management committees (credit, ALCO, ExCo) have `amberWorkingDays` 5, `defaultDue` WORKING_DAYS 10, and `dueChange` OWNER_WITH_REASON.
 - **A change applies to existing open actions** from their next write (`amberFrom`, `staleFrom`) and, for `verifiedBy`, from the next verification step. The definition key applies to actions issued or reopened afterwards. Running instances keep their pinned definition version (ADR-0038).
+- **As built in T2** (2026-11-21):
+  - `ActionsPolicy` in `com.memo.forum`, with `DueChange`, `ActionVerifier` and `DefaultDue`. The API leaves null fields out (`default-property-inclusion: non_null`), so a null could not mean "off" through a round trip: **0 working days means off** for `staleWorkingDays` and `updateRequestWorkingDays`, as `replyDeadlineWorkingDays` 0 does in E05.
+  - Checks under `actions/…` (`RANGE`; `LENGTH` for a key over 100 characters), at save, submit and publish. `UNKNOWN_DEFINITION` unless the key is a published definition **bound to `action-item`** (`WorkflowDefinitions.bound`): an unbound memo definition is refused too.
+  - `ForumPolicies.current(forumId)`: the type's published version, whatever the meetings pinned; null for no committee or no published version.
+  - **Presets:** there was no audit preset, so T2 adds `BOARD_AUDIT_COMMITTEE` (a board committee with `evidenceRequired`). Board and board committee keep the defaults. Management committees have amber 5, `OWNER_WITH_REASON` and `WORKING_DAYS` 10. The demo's BAC stays on the board-committee type; T12 may move it.
+  - The rules a tenant cannot change stay out of the policy: reopening within 90 days and "risk accepted" for the chair alone (§1.10). Reminders and escalation are the definition's.
+  - A definition a committee type names (published, draft or in review; the default counts) cannot be retired (`ForumTypeDefinitionUsage`, `IN_USE`).
+  - `GET /admin/forum-types/action-definitions` lists the definitions bound to action items, for the Actions tab (T10).
+  - **The built-in definition** is the body of §1.8. The subject declares it (`WorkflowSubject.seededDefinitions`), and `SubjectDefinitionSeeds` stores it as a published version 1 per tenant: at tenant creation and at start-up, beside `sequential-approval`, after the engine's and the subject's checks, with its compiled body. It is **not marked built in** (`built_in` false), because a built-in definition cannot get new versions. The tenant edits it in the builder as new versions with maker-checker.
+  - The `action-item` subject is registered in `com.memo.actions.subject` with its slots (`owner`, `verifier`, `chair`, `secretaries`), `initiatorTakesPart`, the seed and `checkDefinition` (§1.8's four rules: `ACTION_START_WITH_OWNER`, `ACTION_NOT_REJECTED`, `ACTION_VERIFIED`, `ACTION_OWNER_KEEPS`). The rest of the subject (who each slot names, `dueAt`, attributes, eligibility, snapshot, lock) is T3's.
 
 ### 1.14 Who sees what (`ActionAccess`, the one rule)
 `ActionAccess` is the only class that selects from the action tables for readers, and an architecture test checks it. It builds on `PaperAccess` (ADR-0061) and `Recusals` (ADR-0062).

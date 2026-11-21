@@ -1,0 +1,6 @@
+# Phase 4 E07 T2: the committee type's actions policy (design E07 §1.13, §3; flow AQ). Rules: rules.yaml. The policy itself
+# travels with the type version (p4-e01-forums.yaml); this is the Actions tab's own endpoint: the published workflows bound
+# to action items that the policy's definition may name (forum.types.manage, or forum.types.approve to review it).
+epic: P4-E07
+endpoints:
+  - { endpoint: GET /api/v1/admin/forum-types/action-definitions, rule: tenantAdmin }

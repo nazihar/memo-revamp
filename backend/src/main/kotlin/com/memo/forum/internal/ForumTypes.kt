@@ -140,6 +140,7 @@ class ForumTypes(
                 "agenda" to agendaSummary(settings.agenda),
                 "meetings" to settings.meetings.toString(),
                 "minutes" to minutesSummary(settings.minutes),
+                "actions" to settings.actions.toString(),
             )
     }
 }

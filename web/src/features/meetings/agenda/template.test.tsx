@@ -122,6 +122,17 @@ describe('the committee type’s Agenda tab (Phase 4 E03 T7, flow R)', () => {
           fyStartMonth: 7,
         },
       },
+      actions: {
+        amberWorkingDays: 10,
+        staleWorkingDays: 20,
+        dueChange: 'SECRETARY_AGREES',
+        verifiedBy: 'SECRETARY',
+        evidenceRequired: false,
+        defaultDue: 'NEXT_MEETING',
+        defaultDueWorkingDays: 20,
+        updateRequestWorkingDays: 5,
+        definitionKey: 'action-item',
+      },
       createdAt: '2026-11-18T08:00:00Z',
     }
     const bodies: { agenda?: AgendaPolicy }[] = []

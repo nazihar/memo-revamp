@@ -40,11 +40,12 @@ class PostgresInstance : AutoCloseable {
                         ?.split(' ')
                         ?.filter { it.contains('=') }
                         .orEmpty()
-                if (settings.isNotEmpty()) {
-                    container
-                        .withSharedMemorySize(SHARED_MEMORY)
-                        .withCommand(*(listOf("postgres", "-c", "fsync=off") + settings.flatMap { listOf("-c", it) }).toTypedArray())
-                }
+                // Each cached Spring test context holds its own pool (10), so the image's 100 connections ran out once
+                // the suite reached about ten contexts (CI on #223, 2026-11-22). The setting is the test server's only.
+                val connections = if (settings.any { it.startsWith("max_connections=") }) emptyList() else listOf(MAX_CONNECTIONS)
+                val command = listOf("postgres", "-c", "fsync=off") + (connections + settings).flatMap { listOf("-c", it) }
+                if (settings.isNotEmpty()) container.withSharedMemorySize(SHARED_MEMORY)
+                container.withCommand(*command.toTypedArray())
                 container.start()
             }
 
@@ -55,6 +56,7 @@ class PostgresInstance : AutoCloseable {
     companion object {
         const val IMAGE = "postgres:18.6"
         private const val SHARED_MEMORY = 1L shl 30
+        private const val MAX_CONNECTIONS = "max_connections=300"
     }
 }
 

@@ -158,9 +158,10 @@ test.describe('replies to an invitation', () => {
       await secretary.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth),
     ).toBe(0)
     await secretary.setViewportSize({ width: 1280, height: 720 })
-    // The page draws again in the new language and opens on its first tab.
+    // The page is translated in place and keeps its tab, which is in the address.
+    await expect(secretary).toHaveURL(/[?&]tab=replies(&|$)/)
     await toArabic(secretary)
-    await secretary.getByRole('tab', { name: 'الدعوات والردود' }).click()
+    await expect(secretary.getByRole('tab', { name: 'الدعوات والردود' })).toHaveAttribute('aria-selected', 'true')
     await expect(secretary.getByRole('table', { name: 'الدعوات والردود' })).toBeVisible()
     await checkPageA11y(secretary)
     await toEnglish(secretary)

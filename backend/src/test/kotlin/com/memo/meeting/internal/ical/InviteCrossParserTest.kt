@@ -3,6 +3,7 @@ package com.memo.meeting.internal.ical
 import com.memo.meeting.internal.ical.InviteFixtures.brc
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
+import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 
@@ -66,8 +67,68 @@ class InviteCrossParserTest {
         }
     }
 
+    /**
+     * Meetings that start or end exactly at a change of offset, or inside the hour that clocks going back repeat, in
+     * both directions (CI run 44904197328 found Australia/Adelaide at the end of its daylight saving). A time in the
+     * repeated hour's second occurrence is written in UTC: as a local time it would be read as the first occurrence
+     * (RFC 5545 §3.3.5), an hour early. Times in the first occurrence keep TZID.
+     */
+    @Test
+    fun `meetings at a change of offset are read at the instant the meeting says`() {
+        TRANSITIONS.forEach { (zoneId, utc, minutes) ->
+            val zone = ZoneId.of(zoneId)
+            val start = Instant.parse(utc)
+            val event = brc.copy(startsAt = start, endsAt = start.plusSeconds(minutes * MINUTE), zone = zone)
+            InviteKind.entries.forEach { kind ->
+                val bytes = writer.write(InviteFixtures.of(kind, event))
+                val parsed = InviteChecks.valid(bytes, kind)
+                assertThat(parsed.start).describedAs("$zoneId $utc start").isEqualTo(event.startsAt)
+                assertThat(parsed.end).describedAs("$zoneId $utc end").isEqualTo(event.endsAt)
+                // The event's DTSTART, not the VTIMEZONE observances'.
+                val local = String(bytes, Charsets.UTF_8).substringAfter("BEGIN:VEVENT").lines().first { it.startsWith("DTSTART") }
+                val inUtc = laterOccurrence(zone, event.startsAt) || laterOccurrence(zone, event.endsAt)
+                assertThat(local).describedAs("$zoneId $utc form").startsWith(if (inUtc) "DTSTART:" else "DTSTART;TZID=$zoneId:")
+            }
+        }
+    }
+
+    /** True when [at]'s local time is repeated in [zone] and [at] is its second occurrence. */
+    private fun laterOccurrence(
+        zone: ZoneId,
+        at: Instant,
+    ): Boolean {
+        val offsets = zone.rules.getValidOffsets(at.atZone(zone).toLocalDateTime())
+        return offsets.size > 1 && zone.rules.getOffset(at) != offsets.first()
+    }
+
     private companion object {
         const val HOUR = 3600L
+        const val MINUTE = 60L
+
+        /** Zone, start in UTC, length in minutes. */
+        val TRANSITIONS =
+            listOf(
+                // Daylight saving ends 03:00 → 02:00 on 7 April 2019: at the change, and inside the repeated hour.
+                Triple("Australia/Adelaide", "2019-04-06T16:30:00Z", 60L),
+                Triple("Australia/Adelaide", "2019-04-06T16:45:00Z", 60L),
+                // The same local times in the first occurrence (still daylight saving): TZID.
+                Triple("Australia/Adelaide", "2019-04-06T15:45:00Z", 30L),
+                // Daylight saving starts 02:00 → 03:00 on 6 October 2019.
+                Triple("Australia/Adelaide", "2019-10-05T16:30:00Z", 60L),
+                // London 25 October 2026 (02:00 BST → 01:00 GMT), and 29 March 2026 (01:00 GMT → 02:00 BST).
+                Triple("Europe/London", "2026-10-25T01:00:00Z", 60L),
+                Triple("Europe/London", "2026-10-25T00:30:00Z", 30L),
+                Triple("Europe/London", "2026-10-25T00:15:00Z", 60L),
+                Triple("Europe/London", "2026-03-29T01:00:00Z", 60L),
+                // New York 1 November 2026 (02:00 EDT → 01:00 EST), and 8 March 2026 (02:00 EST → 03:00 EDT).
+                Triple("America/New_York", "2026-11-01T06:00:00Z", 60L),
+                Triple("America/New_York", "2026-11-01T05:30:00Z", 30L),
+                Triple("America/New_York", "2026-03-08T07:00:00Z", 60L),
+                // Lord Howe's 30-minute shift: 02:00 → 01:30 on 5 April 2026, 02:00 → 02:30 on 4 October 2026.
+                Triple("Australia/Lord_Howe", "2026-04-04T15:00:00Z", 60L),
+                Triple("Australia/Lord_Howe", "2026-04-04T15:15:00Z", 30L),
+                Triple("Australia/Lord_Howe", "2026-10-03T15:30:00Z", 60L),
+            )
         val ONE_OFF =
             listOf(
                 // +04 from 2018-10-28 until 2020-12-27, then +03.

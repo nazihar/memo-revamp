@@ -242,6 +242,7 @@ class Attendance(
             meeting.id.toString(),
             after = mapOf("progressId" to row.id.toString(), "itemId" to itemId.toString(), "at" to row.startedAt.toString()),
         )
+        quorum.progressed(meeting, row)
         publisher.publishEvent(AttendanceChanged(TenantContext.current().value, meeting.id))
         return row
     }

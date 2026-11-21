@@ -12,11 +12,13 @@ fun etagOf(version: Long) = "\"$version\""
 
 /**
  * The change is not allowed in the current state (409 `conflict`); [reason] is a stable code for the client (for example
- * `CYCLE`, `NOT_EMPTY`, `OVERLAP`), the message an English fallback.
+ * `CYCLE`, `NOT_EMPTY`, `OVERLAP`), the message an English fallback, and [details] more properties of the problem as they
+ * are (for example the numbers of a missing quorum).
  */
-class RefusedException(
+open class RefusedException(
     val reason: String,
     message: String,
+    val details: Map<String, Any> = emptyMap(),
 ) : RuntimeException(message)
 
 /** Throws [RefusedException] with [reason] when [condition] holds. */

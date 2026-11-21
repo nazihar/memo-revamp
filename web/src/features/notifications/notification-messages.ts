@@ -140,6 +140,7 @@ const kindsWithValues = defineMessages<{
   meetingAlternateReleased: { committee: string; date: string; member: string }
   meetingQuorumLost: { committee: string; date: string; present: string; needed: string }
   meetingQuorumRestored: { committee: string; date: string; present: string; needed: string }
+  meetingQuorumOverridden: { committee: string; date: string; present: string; needed: string }
 }>({
   signInAlert: { id: 'notifications.kind.signInAlert', defaultMessage: 'New sign-in to your account from {device}' },
   roleGranted: { id: 'notifications.kind.roleGranted', defaultMessage: 'You were given the role {role}' },
@@ -296,6 +297,11 @@ const kindsWithValues = defineMessages<{
     id: 'notifications.kind.meetingQuorumRestored',
     defaultMessage: 'The meeting of {committee} on {date} is quorate again: {present} of {needed} present',
   },
+  meetingQuorumOverridden: {
+    id: 'notifications.kind.meetingQuorumOverridden',
+    defaultMessage:
+      'A decision at the meeting of {committee} on {date} was recorded without a quorum ({present} of {needed} present), to be ratified at a quorate meeting',
+  },
 })
 
 const kinds = defineMessages({
@@ -443,6 +449,12 @@ export function notificationText(intl: IntlShape, kind: string, params: Record<s
         kind === 'MEETING_QUORUM_LOST' ? kindsWithValues.meetingQuorumLost : kindsWithValues.meetingQuorumRestored,
         { ...meetingValues(params), present: params.present ?? '', needed: params.needed ?? '' },
       )
+    case 'MEETING_QUORUM_OVERRIDDEN':
+      return intl.formatMessage(kindsWithValues.meetingQuorumOverridden, {
+        ...meetingValues(params),
+        present: params.present ?? '',
+        needed: params.needed ?? '',
+      })
     case 'PASSWORD_CHANGED':
       return intl.formatMessage(kinds.passwordChanged)
     case 'MFA_RESET':

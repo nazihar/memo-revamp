@@ -34,8 +34,9 @@ class ProblemDetailsAdvice : ResponseEntityExceptionHandler() {
     @ExceptionHandler(ForbiddenException::class)
     fun forbidden(ex: ForbiddenException): ResponseEntity<ProblemDetail> =
         ResponseEntity.status(HttpStatus.FORBIDDEN).body(
-            ProblemTypes.of(HttpStatus.FORBIDDEN, ProblemTypes.FORBIDDEN, "You do not have access to this.").apply {
+            ProblemTypes.of(HttpStatus.FORBIDDEN, ProblemTypes.FORBIDDEN, ex.detail ?: "You do not have access to this.").apply {
                 ex.permission?.let { setProperty("permission", it.key) }
+                ex.reason?.let { setProperty("reason", it) }
             },
         )
 
@@ -53,6 +54,7 @@ class ProblemDetailsAdvice : ResponseEntityExceptionHandler() {
     fun refused(ex: RefusedException): ResponseEntity<ProblemDetail> =
         ResponseEntity.status(HttpStatus.CONFLICT).body(
             ProblemTypes.of(HttpStatus.CONFLICT, ProblemTypes.CONFLICT, ex.message ?: "Not possible.").apply {
+                ex.details.forEach { (name, value) -> setProperty(name, value) }
                 setProperty("reason", ex.reason)
             },
         )

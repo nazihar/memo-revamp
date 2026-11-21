@@ -57963,6 +57963,52 @@
       "value": "]"
     }
   ],
+  "notifications.kind.meetingQuorumOverridden": [
+    {
+      "type": 0,
+      "value": "["
+    },
+    {
+      "type": 0,
+      "value": "Ȧ ḓḗḗƈīşīǿǿƞ ȧȧŧ ŧħḗḗ ḿḗḗḗḗŧīƞɠ ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "committee"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƞ "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    },
+    {
+      "type": 0,
+      "value": " ẇȧȧş řḗḗƈǿǿřḓḗḗḓ ẇīŧħǿǿŭŭŧ ȧȧ ɋŭŭǿǿřŭŭḿ ("
+    },
+    {
+      "type": 1,
+      "value": "present"
+    },
+    {
+      "type": 0,
+      "value": " ǿǿƒ "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " ƥřḗḗşḗḗƞŧ), ŧǿǿ ƀḗḗ řȧȧŧīƒīḗḗḓ ȧȧŧ ȧȧ ɋŭŭǿǿřȧȧŧḗḗ ḿḗḗḗḗŧīƞɠ"
+    },
+    {
+      "type": 0,
+      "value": "]"
+    }
+  ],
   "notifications.kind.meetingQuorumRestored": [
     {
       "type": 0,

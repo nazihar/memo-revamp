@@ -28,7 +28,8 @@ import java.util.UUID
  * Another tenant and the decisions (test plan E06 T3 `MinutesCrossTenantIT`, AGENTS §3.2): B's administrator gets 404 for
  * every read and write of A's decisions, history, notes, consent section, committee and resolutions through the services
  * (E06 T4: the register, its check, one resolution, the starting number); as the app role B sees none of A's decisions,
- * entries, notes, numbers or counters, through joins either, writes none for A or pointing at A's rows,
+ * entries, notes, numbers or counters, through joins either, writes none for A or pointing at A's rows (E06 T5: nor the
+ * minutes, their page, their drafting or their history),
  * and changes none.
  */
 class MinutesCrossTenantIT : DecisionFixture() {
@@ -94,6 +95,67 @@ class MinutesCrossTenantIT : DecisionFixture() {
             assertThat(c.long("select count(*) from minutes_decision_entry where decision_id = ?", decided.decision.id)).isEqualTo(1)
             assertThat(c.long("select count(*) from minutes_item_note where item_id = ?", d.appetite)).isEqualTo(1)
             assertThat(c.long("select count(*) from minutes_resolution where id = ? and state = 'IN_FORCE'", number.id)).isEqualTo(1)
+        }
+    }
+
+    @Autowired lateinit var minutesDrafts: com.memo.minutes.internal.MinutesDrafts
+
+    @Autowired lateinit var minutesPages: com.memo.minutes.internal.MinutesPages
+
+    @Autowired lateinit var minutesStore: com.memo.minutes.internal.MinutesStore
+
+    @Test
+    fun `another tenant neither sees nor drafts the minutes, nor reads or writes their rows and history`() {
+        val d = deciding()
+        arrive(d.meeting, listOf(chair, director, director2, others[0], others[1]))
+        val held = meeting(d.meeting.id).let { asUser(secretary) { lifecycle.end(it.id, it.version) } }
+        // E06 T5: the minutes exist from the meeting's end, with a line of history.
+        asUser(secretary) {
+            minutesStore.insertEvent(
+                com.memo.minutes.internal.MinutesEventRow(
+                    UUID.randomUUID(),
+                    held.id,
+                    com.memo.minutes.internal.MinutesEventKind.RETURNED_TO_DRAFT,
+                    d.credit,
+                    secretary.id.value,
+                    null,
+                    null,
+                    java.time.Instant.now(),
+                ),
+            )
+        }
+        assertThat(asUser(secretary) { minutesPages.view(held.id) }.state.name).isEqualTo("DRAFT")
+
+        val b = registry.aTestTenant(transactions, settings, "minutesc", mfaRequired = false)
+        val bAdmin = accounts.anActiveUser(transactions, b, aPassword(), tenantAdmin = true)
+        listOf<() -> Any>(
+            { minutesPages.view(held.id) },
+            { minutesDrafts.request(held.id, null, true) },
+            { minutesDrafts.request(held.id, d.credit, false) },
+        ).forEach { call ->
+            val thrown = runCatching { inTenant(b, bAdmin, call) }.exceptionOrNull()
+            assertThat(thrown?.javaClass?.simpleName).isIn("MeetingNotFoundException", "MinutesNotFoundException")
+        }
+        AppRoleJdbc.inTransaction(b.id) { c ->
+            listOf("minutes", "minutes_event").forEach {
+                assertThat(c.long("select count(*) from $it where tenant_id = ?", tenant.id.value)).describedAs(it).isZero()
+            }
+            assertThat(c.update("update minutes set version = version + 1 where meeting_id = ?", held.id)).isZero()
+        }
+        val now = OffsetDateTime.now(ZoneOffset.UTC)
+        listOf(
+            "insert into minutes (tenant_id, meeting_id, forum_id, policy, held_at, created_at) values (?, ?, ?, '{}'::jsonb, ?, ?)" to
+                listOf<Any>(tenant.id.value, UUID.randomUUID(), brc, now, now),
+            // B's history pointing at A's minutes is refused by the composite foreign key.
+            "insert into minutes_event (id, tenant_id, meeting_id, kind, at) values (?, ?, ?, 'GENERATED', ?)" to
+                listOf<Any>(UUID.randomUUID(), b.id.value, held.id, now),
+        ).forEach { (sql, params) ->
+            val written = runCatching { AppRoleJdbc.inTransaction(b.id) { c -> c.update(sql, *params.toTypedArray()) } }
+            assertThat(written.exceptionOrNull()).describedAs(sql).isInstanceOf(SQLException::class.java)
+        }
+        AppRoleJdbc.inTransaction(tenant.id) { c ->
+            assertThat(c.long("select count(*) from minutes_event where meeting_id = ?", held.id)).isEqualTo(1)
+            assertThat(c.long("select version from minutes where meeting_id = ?", held.id)).isZero()
         }
     }
 

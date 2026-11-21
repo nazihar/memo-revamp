@@ -64,6 +64,7 @@ class MinutesRelease(
     private val placements: SubmissionPlacements,
     private val transactions: TenantTransactions,
     private val audit: AuditLog,
+    private val minutes: MinutesStore,
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
 
@@ -158,11 +159,14 @@ class MinutesRelease(
         if (submissionIds.isNotEmpty()) placements.lock(submissionIds.sorted())
     }
 
-    /** When memos move on for [meeting]: its pinned committee type version's `minutes.memoResumes`. */
-    fun resumes(meeting: MeetingRef): MemoResumes {
-        val forum = directory.forum(meeting.forumId) ?: return MemoResumes.AT_MEETING_END
-        return policies.version(forum.typeId, meeting.typeVersion)?.minutes?.memoResumes ?: MemoResumes.AT_MEETING_END
-    }
+    /**
+     * When memos move on for [meeting]: the policy copied onto its minutes when it was held (design E06 §1.8), else (before
+     * then) its pinned committee type version's `minutes.memoResumes`.
+     */
+    fun resumes(meeting: MeetingRef): MemoResumes =
+        minutes.find(meeting.id)?.policy?.memoResumes
+            ?: directory.forum(meeting.forumId)?.let { policies.version(it.typeId, meeting.typeVersion)?.minutes?.memoResumes }
+            ?: MemoResumes.AT_MEETING_END
 
     /** Whether [trigger] sends [meeting]'s decisions to their memos: HELD under AT_MEETING_END; APPROVED always (catching up). */
     private fun releases(

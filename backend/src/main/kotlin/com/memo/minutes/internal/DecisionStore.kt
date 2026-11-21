@@ -385,6 +385,17 @@ class NoteStore(
             .limit(1)
             .fetchOne { NoteRow(it.meetingId, it.itemId, it.seq, it.text, it.savedBy, it.savedAt.toInstant()) }
 
+    /** The latest note on each item of [meetingId] that has one, by item (the draft's "key points discussed"). */
+    fun latestOf(meetingId: UUID): Map<UUID, NoteRow> =
+        tenantDsl
+            .current()
+            .selectFrom(MINUTES_ITEM_NOTE)
+            .where(MINUTES_ITEM_NOTE.MEETING_ID.eq(meetingId))
+            .orderBy(MINUTES_ITEM_NOTE.ITEM_ID, MINUTES_ITEM_NOTE.SEQ.desc())
+            .fetch { NoteRow(it.meetingId, it.itemId, it.seq, it.text, it.savedBy, it.savedAt.toInstant()) }
+            .groupBy { it.itemId }
+            .mapValues { it.value.first() }
+
     /** Saves [row] as the next version; false when that version exists already (someone saved first). */
     fun insert(row: NoteRow): Boolean {
         val n = MINUTES_ITEM_NOTE

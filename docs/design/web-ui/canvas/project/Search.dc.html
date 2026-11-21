@@ -1,0 +1,472 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Search</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+.th{color-scheme:light;--bg:#ffffff;--card:#ffffff;--fg:#0a0a0a;--subtle:#fafafa;--muted:#f5f5f5;--hover:#f0f0f0;--active:#ebebeb;--chip:#e5e5e5;--border:#e5e5e5;--border-strong:#d4d4d4;--muted-fg:#737373;--text-1:#262626;--text-2:#404040;--text-3:#525252;--primary:#171717;--primary-fg:#fafafa;--primary-hover:#262626;--primary-divider:#404040;--primary-muted:#a3a3a3;--ring:#a3a3a3;--destructive:#dc2626;--destructive-hover:#b91c1c;--on-destructive:#ffffff;--danger-fg:#b91c1c;--danger-bg:#fef2f2;--danger-border:#fecaca;--warn-bg:#fffbeb;--warn-fg:#92400e;--warn-border:#fcd34d;--ok-bg:#f0fdf4;--ok-fg:#166534;--ok-border:#bbf7d0;--info-bg:#eff6ff;--info-fg:#1d4ed8}
+.th.dark{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}
+@media (prefers-color-scheme: dark){.th.system{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}}
+body:has(.th.dark){background:#09090b}
+@media (prefers-color-scheme: dark){body:has(.th.system){background:#09090b}}
+body{margin:0;background:#ffffff}
+a{color:var(--fg)}a:hover{color:var(--text-2)}
+button{font-family:inherit}
+textarea{font-family:inherit}
+.nav-item:hover{background:var(--hover)}
+.ghost:hover{background:var(--muted)}
+.tab:hover{color:var(--fg)}
+.lrow:hover{background:var(--subtle)}
+.primary:hover{background:var(--primary-hover)}
+.danger:hover{background:var(--destructive-hover)}
+.sidebar.collapsed{flex-basis:56px !important}
+.sidebar.collapsed .lbl{display:none !important}
+.sidebar.collapsed .nav-item{justify-content:center !important;padding:0 !important}
+.sidebar.collapsed .org{padding:8px 0 !important;justify-content:center}
+.sidebar.collapsed .grp-label{visibility:hidden;height:12px !important}
+.scrim{display:none !important}
+.drawer-close{display:none !important}
+@media (max-width: 1024px){.acct-name{display:none !important}}
+@media (max-width: 860px){
+.sidebar{display:none !important}
+.sidebar.open{display:flex !important;position:fixed;top:0;bottom:0;left:0;width:280px;z-index:40;box-shadow:0 10px 40px rgba(0,0,0,0.2)}
+.scrim.open{display:block !important}
+.drawer-close{display:inline-flex !important}
+.global-search{width:auto !important;flex:1;min-width:0}
+.kbd{display:none !important}
+}
+</style>
+</helmet>
+<div class="th {{themeClass}}" style="display: flex; flex-wrap: wrap; min-height: 1000px; background: var(--bg); color: var(--fg); font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 20px">
+
+  <button type="button" class="{{scrimClass}}" tabIndex="-1" aria-label="Close navigation" onClick="{{closeNav}}" style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 30; border: 0; padding: 0; background: rgba(0,0,0,0.4); cursor: default"></button>
+
+  <!-- Sidebar (same as Inbox) -->
+  <nav class="{{sidebarClass}}" aria-label="Main navigation" onKeyDown="{{navKey}}" style="flex: 0 0 240px; display: flex; flex-direction: column; background: var(--subtle); border-right: 1px solid var(--border); box-sizing: border-box; padding: 8px; overflow: hidden; position: relative">
+    <button type="button" class="drawer-close ghost" aria-label="Close navigation" onClick="{{closeNav}}" style="position: absolute; top: 14px; right: 12px; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--text-3)">
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+    </button>
+    <div class="org" title="[Organisation name]" style="display: flex; align-items: center; gap: 8px; padding: 8px; color: var(--fg)">
+      <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-weight: 600; font-size: 14px; flex-shrink: 0">N</span>
+      <span class="lbl" style="display: flex; flex-direction: column; min-width: 0; flex: 1">
+        <span style="font-weight: 600; font-size: 14px; line-height: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">[Organisation name]</span>
+        <span style="font-size: 12px; line-height: 16px; color: var(--muted-fg)">Memo &amp; Meetings</span>
+      </span>
+    </div>
+    <div style="display: flex; flex-direction: column; padding: 8px 0 0">
+      <div class="grp-label" style="height: 32px; display: flex; align-items: center; padding: 0 8px; font-size: 12px; font-weight: 500; color: var(--muted-fg); white-space: nowrap">Work</div>
+      <a href="Home.dc.html" class="nav-item" title="Home" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+        <span class="lbl">Home</span>
+      </a>
+      <a href="Main.dc.html" class="nav-item" title="Inbox" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+        <span class="lbl" style="flex: 1">Inbox</span>
+        <span class="lbl" style="font-size: 12px; font-weight: 500; color: var(--text-3); font-variant-numeric: tabular-nums">8</span>
+      </a>
+      <a href="Saved.dc.html" class="nav-item" title="Saved searches" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>
+        <span class="lbl">Saved searches</span>
+      </a>
+      <a href="Dashboard.dc.html" class="nav-item" title="Dashboard" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg>
+        <span class="lbl">Dashboard</span>
+      </a>
+      <a href="Status.dc.html" class="nav-item" title="Status" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path></svg>
+        <span class="lbl">Status</span>
+      </a>
+      <a href="Org.dc.html" class="nav-item" title="Organisation" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="16" y="16" width="6" height="6" rx="1"></rect><rect x="2" y="16" width="6" height="6" rx="1"></rect><rect x="9" y="2" width="6" height="6" rx="1"></rect><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"></path><path d="M12 12V8"></path></svg>
+        <span class="lbl">Organisation</span>
+      </a>
+    </div>
+    <div style="display: flex; flex-direction: column; padding: 8px 0 0">
+      <div class="grp-label" style="height: 32px; display: flex; align-items: center; padding: 0 8px; font-size: 12px; font-weight: 500; color: var(--muted-fg); white-space: nowrap">Administration</div>
+      <a href="AdminOverview.dc.html" class="nav-item" title="Overview" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
+        <span class="lbl">Overview</span>
+      </a>      <a href="Audit.dc.html" class="nav-item" title="Audit" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="5" x="2" y="3" rx="1"></rect><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"></path><path d="M10 12h4"></path></svg>
+        <span class="lbl">Audit</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main column -->
+  <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+
+    <!-- Top bar (same as Inbox) -->
+    <header style="position: relative; z-index: 5; height: 48px; display: flex; align-items: center; gap: 8px; padding: 0 16px; border-bottom: 1px solid var(--border); box-sizing: border-box; background: var(--bg)">
+      <button type="button" class="ghost" aria-label="Toggle navigation" aria-expanded="{{navAria}}" onClick="{{toggleNav}}" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; flex-shrink: 0; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M9 3v18"></path></svg>
+      </button>
+      <span aria-hidden="true" style="width: 1px; height: 16px; background: var(--chip); margin: 0 4px; flex-shrink: 0"></span>
+      <button type="button" class="global-search" style="display: flex; align-items: center; gap: 8px; width: 280px; height: 32px; padding: 0 6px 0 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--muted-fg); font-size: 14px; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        <span style="flex: 1; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Search memos…</span>
+        <kbd class="kbd" style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 11px; line-height: 16px; padding: 1px 5px; border: 1px solid var(--border); border-radius: 4px; background: var(--muted); color: var(--text-3)">{{shortcut}}</kbd>
+      </button>
+      <span style="flex: 1"></span>
+      <a href="Notifications.dc.html" class="ghost" aria-label="Notifications, 4 unread" style="position: relative; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; flex-shrink: 0; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg>
+        <span aria-hidden="true" style="position: absolute; top: 6px; right: 7px; width: 7px; height: 7px; border-radius: 50%; background: var(--destructive); border: 1.5px solid var(--bg)"></span>
+      </a>
+      <span aria-hidden="true" style="width: 1px; height: 16px; background: var(--chip); margin: 0 4px; flex-shrink: 0"></span>
+      <button type="button" class="ghost" aria-label="Account menu, Farhana Rahman" aria-haspopup="menu" style="display: inline-flex; align-items: center; gap: 8px; height: 32px; flex-shrink: 0; padding: 0 6px 0 2px; border: 0; background: transparent; border-radius: 8px; cursor: pointer; color: var(--fg)">
+        <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--chip); color: var(--fg); font-weight: 500; font-size: 11px; flex-shrink: 0">FR</span>
+        <span class="acct-name" style="display: flex; flex-direction: column; align-items: flex-start; line-height: 14px">
+          <span style="font-size: 13px; font-weight: 500; line-height: 16px">Farhana Rahman</span>
+          <span style="font-size: 11px; color: var(--muted-fg)">f.rahman@[domain]</span>
+        </span>
+        <svg style="color: var(--muted-fg)" class="acct-name" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+      </button>
+    </header>
+
+    <!-- Content -->
+    <main style="flex: 1; padding: 20px 24px 32px; display: flex; flex-direction: column; gap: 16px; min-width: 0">
+
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px">
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Search</h1>
+          <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">Type words from a memo’s details, notes or documents, or a memo number.</p>
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px">
+          <a href="#" class="ghost" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 8px; color: var(--fg); font-size: 13px; font-weight: 500; text-decoration: none">
+            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>
+            Saved searches
+          </a>
+          <button type="button" class="ghost" aria-haspopup="dialog" onClick="{{openSave}}" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>
+            Save this search
+          </button>
+        </div>
+      </div>
+
+      <!-- Query -->
+      <form role="search" novalidate onSubmit="{{noop}}" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 12px; border: 1px solid var(--border); border-radius: 10px; background: var(--card)">
+        <label style="position: relative; display: flex; align-items: center; flex: 1 1 360px; min-width: 0">
+          <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Words to find</span>
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--muted-fg); position: absolute; left: 12px"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+          <input type="search" value="Meghna valuation" style="width: 100%; height: 36px; padding: 0 12px 0 36px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 15px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); outline: none">
+        </label>
+        <fieldset style="margin: 0; padding: 0; border: 0; display: flex; align-items: center; gap: 8px">
+          <legend style="float: left; margin-right: 4px; padding: 0; font-size: 13px; color: var(--muted-fg)">Search in</legend>
+          <sc-for list="{{sources}}" as="s" hint-placeholder-count="3">
+            <label style="{{s.style}}">
+              <input type="checkbox" checked="{{s.on}}" onChange="{{s.toggle}}" style="margin: 0; width: 14px; height: 14px; accent-color: var(--primary)">
+              {{s.label}}
+            </label>
+          </sc-for>
+        </fieldset>
+        <button type="submit" style="height: 36px; padding: 0 16px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 14px; font-weight: 500; cursor: pointer">Search</button>
+      </form>
+
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 24px">
+
+        <!-- Filters -->
+        <aside aria-label="Filters" style="flex: 0 0 240px; display: flex; flex-direction: column; gap: 20px">
+          <sc-for list="{{facets}}" as="fc" hint-placeholder-count="3">
+            <fieldset style="margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 2px">
+              <legend style="padding: 0; margin-bottom: 6px; font-size: 13px; font-weight: 600">{{fc.title}}</legend>
+              <sc-for list="{{fc.options}}" as="o" hint-placeholder-count="3">
+                <label class="ghost" style="display: flex; align-items: center; gap: 8px; height: 30px; padding: 0 6px; margin: 0 -6px; border-radius: 6px; font-size: 13px; cursor: pointer">
+                  <input type="checkbox" checked="{{o.on}}" onChange="{{o.toggle}}" style="margin: 0; width: 14px; height: 14px; accent-color: var(--primary)">
+                  <span style="flex: 1">{{o.label}}</span>
+                  <span style="font-size: 12px; color: var(--muted-fg); font-variant-numeric: tabular-nums">{{o.count}}</span>
+                </label>
+              </sc-for>
+            </fieldset>
+          </sc-for>
+
+          <fieldset style="margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 6px">
+            <legend style="padding: 0; margin-bottom: 6px; font-size: 13px; font-weight: 600">Date</legend>
+            <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+              <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted-fg)">From
+                <input type="date" style="height: 32px; padding: 0 6px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 13px">
+              </label>
+              <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted-fg)">To
+                <input type="date" style="height: 32px; padding: 0 6px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 13px">
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset style="margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 6px">
+            <legend style="padding: 0; margin-bottom: 6px; font-size: 13px; font-weight: 600">Amount (BDT)</legend>
+            <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+              <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted-fg)">Minimum
+                <input type="text" inputmode="decimal" placeholder="0" style="height: 32px; padding: 0 8px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 13px; text-align: right">
+              </label>
+              <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted-fg)">Maximum
+                <input type="text" inputmode="decimal" placeholder="Any" style="height: 32px; padding: 0 8px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 13px; text-align: right">
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset style="margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 2px">
+            <legend style="padding: 0; margin-bottom: 6px; font-size: 13px; font-weight: 600">Origin</legend>
+            <sc-for list="{{origins}}" as="o" hint-placeholder-count="3">
+              <label style="display: flex; align-items: center; gap: 8px; height: 28px; font-size: 13px; cursor: pointer">
+                <input type="radio" name="origin" checked="{{o.on}}" onChange="{{o.pick}}" style="margin: 0; width: 14px; height: 14px; accent-color: var(--primary)">
+                {{o.label}}
+              </label>
+            </sc-for>
+          </fieldset>
+        </aside>
+
+        <!-- Results -->
+        <section aria-labelledby="s-results" style="flex: 999 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+          <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
+            <h2 id="s-results" style="margin: 0; font-size: 14px; font-weight: 600">{{countLabel}}</h2>
+            <sc-for list="{{chips}}" as="c" hint-placeholder-count="2">
+              <button type="button" onClick="{{c.remove}}" aria-label="{{c.removeLabel}}" style="display: inline-flex; align-items: center; gap: 4px; height: 24px; padding: 0 6px 0 8px; border: 1px solid var(--border); border-radius: 12px; background: var(--muted); color: var(--fg); font-size: 12px; font-weight: 500; cursor: pointer">
+                {{c.label}}
+                <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+              </button>
+            </sc-for>
+            <sc-if value="{{hasChips}}" hint-placeholder-val="{{false}}">
+              <button type="button" class="ghost" onClick="{{clearFilters}}" style="height: 24px; padding: 0 6px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); font-size: 12px; font-weight: 500; cursor: pointer">Clear filters</button>
+            </sc-if>
+            <span style="flex: 1"></span>
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted-fg)">Sort
+              <select onChange="{{onSort}}" style="height: 32px; padding: 0 8px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 13px">
+                <option value="relevance">Relevance</option>
+                <option value="newest">Newest</option>
+              </select>
+            </label>
+          </div>
+
+          <sc-if value="{{hasResults}}" hint-placeholder-val="{{true}}">
+            <ul style="list-style: none; margin: 0; padding: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--card)">
+              <sc-for list="{{results}}" as="r" hint-placeholder-count="6">
+                <li class="lrow" style="{{r.rowStyle}}">
+                  <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px">
+                    <a href="{{r.href}}" style="font-size: 15px; font-weight: 500; color: var(--fg); text-decoration: none">{{r.subject}}</a>
+                    <span style="{{r.statusStyle}}">{{r.status}}</span>
+                    <sc-if value="{{r.imported}}" hint-placeholder-val="{{false}}">
+                      <span style="display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 6px; background: var(--muted); color: var(--text-2); font-size: 11px; font-weight: 500">Imported</span>
+                    </sc-if>
+                  </div>
+                  <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; font-size: 12px; color: var(--muted-fg)">
+                    <span style="font-family: 'Geist Mono', ui-monospace, monospace; color: var(--text-2)">{{r.number}}</span>
+                    <span aria-hidden="true">·</span><span>{{r.type}}</span>
+                    <span aria-hidden="true">·</span><span>{{r.unit}}</span>
+                    <span aria-hidden="true">·</span><span>Updated {{r.updated}}</span>
+                  </div>
+                  <p style="margin: 2px 0 0; font-size: 13px; line-height: 20px; color: var(--text-1)">
+                    <sc-for list="{{r.snippet}}" as="p" hint-placeholder-count="3"><sc-if value="{{p.match}}" hint-placeholder-val="{{false}}"><mark style="padding: 0 2px; border-radius: 3px; background: var(--warn-bg); color: var(--fg); font-weight: 600">{{p.text}}</mark></sc-if><sc-if value="{{p.plain}}" hint-placeholder-val="{{true}}">{{p.text}}</sc-if></sc-for>
+                  </p>
+                  <span style="font-size: 12px; color: var(--muted-fg)">{{r.foundIn}}</span>
+                </li>
+              </sc-for>
+            </ul>
+            <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px">
+              <span style="font-size: 12px; color: var(--muted-fg)">Only memos you are cleared to read are shown.</span>
+              <button type="button" class="ghost" style="height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer">Show more</button>
+            </div>
+          </sc-if>
+
+          <sc-if value="{{noResults}}" hint-placeholder-val="{{false}}">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 48px 24px; border: 1px dashed var(--border); border-radius: 10px; text-align: center">
+              <span style="font-weight: 500; font-size: 16px">No memos match</span>
+              <span style="font-size: 14px; color: var(--muted-fg); max-width: 420px">Check the spelling, remove filters, or search all of the memo’s text.</span>
+              <button type="button" onClick="{{clearFilters}}" style="height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer">Clear filters</button>
+            </div>
+          </sc-if>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- Save this search -->
+  <sc-if value="{{saveOpen}}" hint-placeholder-val="{{false}}">
+    <div style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 16px; box-sizing: border-box">
+      <button type="button" tabIndex="-1" aria-label="Close dialog" onClick="{{closeSave}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; border: 0; padding: 0; background: rgba(0,0,0,0.5); cursor: default"></button>
+      <form role="dialog" aria-modal="true" aria-labelledby="sv-title" novalidate onSubmit="{{doSave}}" onKeyDown="{{saveKey}}" style="position: relative; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 18px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.2)">
+        <button type="button" class="ghost" aria-label="Close" onClick="{{closeSave}}" style="position: absolute; top: 12px; right: 12px; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--muted-fg)">
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+        </button>
+        <h2 id="sv-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Save this search</h2>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="sv-name" style="font-size: 14px; font-weight: 500">Name</label>
+          <input id="sv-name" type="text" value="{{saveName}}" onChange="{{onSaveName}}" aria-invalid="{{saveInvalid}}" aria-describedby="sv-msg sv-count" style="{{saveInputStyle}}; height: 36px; padding: 0 10px; font-size: 14px; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+          <span style="display: flex; justify-content: space-between; gap: 8px; font-size: 12px">
+            <sc-if value="{{saveError}}" hint-placeholder-val="{{false}}"><span id="sv-msg" role="alert" style="color: var(--danger-fg)">{{saveErrorText}}</span></sc-if>
+            <sc-if value="{{saveOk}}" hint-placeholder-val="{{true}}"><span id="sv-msg" style="color: var(--muted-fg)">Only you see your saved searches. Each time you open one, it shows what you may read then.</span></sc-if>
+            <span id="sv-count" style="flex-shrink: 0; color: var(--muted-fg); font-variant-numeric: tabular-nums">{{saveCounter}}</span>
+          </span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <span style="font-size: 13px; font-weight: 500">What is saved</span>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px">
+            <sc-for list="{{summary}}" as="c" hint-placeholder-count="4"><span style="{{c.style}}">{{c.text}}</span></sc-for>
+          </div>
+          <span style="font-size: 12px; color: var(--muted-fg)">The words, filters and sort, not the results: they are worked out again each time you open it.</span>
+        </div>
+        <sc-if value="{{atLimit}}" hint-placeholder-val="{{false}}">
+          <div role="alert" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 10px 12px; border: 1px solid var(--warn-border); border-radius: 8px; background: var(--warn-bg); color: var(--warn-fg); font-size: 13px">
+            <span style="flex: 1 1 240px">You have as many saved searches as you can keep. Delete one on the Saved searches page first.</span>
+            <a href="Saved.dc.html" style="color: var(--fg); font-weight: 500">Saved searches</a>
+          </div>
+        </sc-if>
+        <div style="display: flex; justify-content: flex-end; gap: 8px">
+          <button type="button" class="ghost" onClick="{{closeSave}}" style="height: 36px; padding: 0 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); font-size: 14px; font-weight: 500; color: var(--fg); cursor: pointer">Cancel</button>
+          <sc-if value="{{notAtLimit}}" hint-placeholder-val="{{true}}">
+            <button type="submit" style="height: 36px; padding: 0 14px; border: 0; border-radius: 8px; background: var(--primary); font-size: 14px; font-weight: 500; color: var(--primary-fg); cursor: pointer">Save</button>
+          </sc-if>
+        </div>
+      </form>
+    </div>
+  </sc-if>
+
+  <!-- Toast -->
+  <sc-if value="{{savedToast}}" hint-placeholder-val="{{false}}">
+    <div role="status" style="position: fixed; right: 24px; bottom: 24px; z-index: 40; display: flex; align-items: center; gap: 12px; padding: 10px 10px 10px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); box-shadow: 0 8px 24px rgba(0,0,0,0.12); font-size: 14px">
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--ok-fg)"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
+      <span>Search saved.</span>
+      <a href="Saved.dc.html" style="font-weight: 500">View saved searches</a>
+      <button type="button" class="ghost" aria-label="Dismiss" onClick="{{hideToast}}" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--muted-fg); cursor: pointer">
+        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+      </button>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"atLimit":{"editor":"boolean","default":false},"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  data() {
+    const S = (t) => t.split('*').map((text, i) => ({ text: text, match: i % 2 === 1, plain: i % 2 === 0 }));
+    return [
+      { id: 'r1', iso: '2026-11-16', subject: 'Credit line renewal for Meghna Agro', number: 'CR/2026/0142', status: 'In review', type: 'Credit proposal', unit: 'Corporate Banking', updated: '16 Nov 2026', order: 1, src: 'notes', foundIn: 'Found in: a note by Sadia Islam', href: 'Memo.dc.html', snippet: S('…Updated *valuation* from the panel valuer is attached. Security cover is now 1.4×. Recommend renewal…') },
+      { id: 'r2', iso: '2026-10-03', subject: 'Meghna Agro collateral revaluation', number: 'RSK/2026/0031', status: 'Closed', type: 'General memo', unit: 'Credit Risk', updated: '3 Oct 2026', order: 3, src: 'documents', foundIn: 'Found in: the document', href: '#', snippet: S('…the panel *valuation* of the Narsingdi warehouse held as security for *Meghna* Agro Ltd. puts the market value at…') },
+      { id: 'r3', iso: '2025-12-02', subject: 'Credit line for Meghna Agro, 2025', number: 'CR/2025/0388', status: 'Approved', type: 'Credit proposal', unit: 'Corporate Banking', updated: '2 Dec 2025', order: 4, src: 'metadata', foundIn: 'Found in: details', href: '#', snippet: S('Borrower: *Meghna* Agro Ltd. · Facility: revolving credit line · BDT 250,000,000') },
+      { id: 'r4', iso: '2026-07-28', subject: 'Agro sector exposure limits', number: 'RSK/2026/0012', status: 'Closed', type: 'Policy', unit: 'Credit Risk', updated: '28 Jul 2026', order: 5, src: 'documents', foundIn: 'Found in: an attachment, Exposure by borrower.xlsx', href: '#', snippet: S('…largest exposures, including *Meghna* Agro and two related borrowers, stay within…') },
+      { id: 'r5', iso: '2026-02-14', subject: 'Panel valuer appointments 2026', number: 'PRC/2026/0040', status: 'Approved', type: 'Procurement', unit: 'Procurement', updated: '14 Feb 2026', order: 6, src: 'metadata', foundIn: 'Found in: details', href: '#', snippet: S('Scope: property and collateral *valuation* services for the credit division…') },
+      { id: 'r6', iso: '2019-04-09', subject: 'Meghna Agro overdraft', number: 'CR/2019/1180', status: 'Approved', type: 'Credit proposal', unit: 'Corporate Banking', updated: '9 Apr 2019', order: 2, src: 'documents', foundIn: 'Found in: the document', href: 'Imported.dc.html', imported: true, snippet: S('…overdraft facility for *Meghna* Agro Ltd. against hypothecation of stock, subject to annual *valuation*…') }
+    ];
+  }
+  renderVals() {
+    const st = this.state || {};
+    const sel = st.sel || { status: {}, type: {}, unit: {} };
+    const sources = st.sources || { metadata: true, notes: true, documents: true };
+    const origin = st.origin || 'all';
+    const sort = st.sort || 'relevance';
+    const all = this.data();
+    const inFacet = (key, r) => { const s = sel[key]; const on = Object.keys(s).filter((k) => s[k]); return on.length === 0 || on.indexOf(r[key]) >= 0; };
+    const base = all.filter((r) => sources[r.src] && (origin === 'all' || (origin === 'imported' ? r.imported : !r.imported)));
+    const shown = base.filter((r) => inFacet('status', r) && inFacet('type', r) && inFacet('unit', r))
+      .slice().sort(sort === 'newest' ? (a, b) => b.iso.localeCompare(a.iso) : (a, b) => a.order - b.order);
+
+    const setFacet = (key, value) => { const next = JSON.parse(JSON.stringify(sel)); next[key][value] = !next[key][value]; this.setState({ sel: next }); };
+    const facetDefs = [{ key: 'status', title: 'Status' }, { key: 'type', title: 'Type' }, { key: 'unit', title: 'Unit' }];
+    const facets = facetDefs.map((f) => {
+      const values = [];
+      base.forEach((r) => { if (values.indexOf(r[f.key]) < 0) values.push(r[f.key]); });
+      return {
+        title: f.title,
+        options: values.map((v) => ({
+          label: v,
+          count: String(base.filter((r) => r[f.key] === v).length),
+          on: !!sel[f.key][v],
+          toggle: () => setFacet(f.key, v)
+        }))
+      };
+    });
+    const chips = [];
+    facetDefs.forEach((f) => Object.keys(sel[f.key]).forEach((v) => { if (sel[f.key][v]) chips.push({ label: f.title + ': ' + v, removeLabel: 'Remove filter ' + f.title + ' ' + v, remove: () => setFacet(f.key, v) }); }));
+    if (origin !== 'all') chips.push({ label: origin === 'imported' ? 'Imported' : 'Created here', removeLabel: 'Remove origin filter', remove: () => this.setState({ origin: 'all' }) });
+
+    const statusStyles = {
+      'In review': 'border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg)',
+      'Approved': 'border: 1px solid var(--ok-border); background: var(--ok-bg); color: var(--ok-fg)',
+      'Closed': 'border: 1px solid var(--ok-border); background: var(--ok-bg); color: var(--ok-fg)'
+    };
+    const results = shown.map((r, i) => Object.assign({}, r, {
+      imported: !!r.imported,
+      rowStyle: 'display: flex; flex-direction: column; gap: 4px; padding: 12px 16px' + (i > 0 ? '; border-top: 1px solid var(--hover)' : ''),
+      statusStyle: 'display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 6px; font-size: 11px; font-weight: 500; ' + (statusStyles[r.status] || 'border: 1px solid var(--border); color: var(--text-2)')
+    }));
+    const srcDefs = [{ id: 'metadata', label: 'Details' }, { id: 'notes', label: 'Notes' }, { id: 'documents', label: 'Documents' }];
+
+    const saveOpen = !!st.saveOpen;
+    const saveName = st.saveName !== undefined ? st.saveName : 'Meghna valuation';
+    const saveTried = !!st.saveTried;
+    const nameEmpty = !saveName.trim();
+    const nameLong = saveName.length > 100;
+    const atLimit = !!this.props.atLimit;
+    const saveError = saveTried && (nameEmpty || nameLong);
+    const summary = [{ text: '“Meghna valuation”', strong: true }]
+      .concat([{ text: 'In: ' + srcDefs.filter((x) => sources[x.id]).map((x) => x.label).join(', '), strong: false }])
+      .concat(chips.map((c) => ({ text: c.label, strong: false })))
+      .concat([{ text: (st.sort || 'relevance') === 'newest' ? 'Newest first' : 'Relevance', strong: false }])
+      .map((c) => ({ text: c.text, style: 'display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; ' + (c.strong ? 'background: var(--muted); color: var(--fg); font-weight: 600' : 'border: 1px solid var(--border); color: var(--text-2)') }));
+    const closeSave = () => this.setState({ saveOpen: false, saveTried: false });
+    const navOpen = !!st.navOpen;
+    const collapsed = !!st.collapsed;
+    const closeNav = () => this.setState({ navOpen: false });
+    const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent || '');
+    return {
+      themeClass: (this.state && this.state.theme) || this.props.theme || 'system',
+      noop: (e) => { if (e && e.preventDefault) e.preventDefault(); },
+      sources: srcDefs.map((s) => ({
+        label: s.label, on: !!sources[s.id],
+        style: 'display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: 14px; font-size: 13px; cursor: pointer; ' + (sources[s.id] ? 'border: 1px solid var(--border-strong); background: var(--muted); color: var(--fg)' : 'border: 1px solid var(--border); background: var(--bg); color: var(--muted-fg)'),
+        toggle: () => { const n = Object.assign({}, sources); n[s.id] = !n[s.id]; this.setState({ sources: n }); }
+      })),
+      facets: facets,
+      origins: [{ id: 'all', label: 'All memos' }, { id: 'native', label: 'Created here' }, { id: 'imported', label: 'Imported' }].map((o) => ({ label: o.label, on: o.id === origin, pick: () => this.setState({ origin: o.id }) })),
+      chips: chips,
+      hasChips: chips.length > 0,
+      clearFilters: () => this.setState({ sel: { status: {}, type: {}, unit: {} }, origin: 'all' }),
+      onSort: (e) => this.setState({ sort: e && e.target ? e.target.value : 'relevance' }),
+      saveOpen: saveOpen,
+      openSave: () => this.setState({ saveOpen: true, saveTried: false, savedToast: false }),
+      closeSave: closeSave,
+      saveKey: (ev) => { if (ev && ev.key === 'Escape') closeSave(); },
+      saveName: saveName,
+      onSaveName: (e) => this.setState({ saveName: e && e.target ? e.target.value : '' }),
+      saveError: saveError,
+      saveOk: !saveError,
+      saveErrorText: nameEmpty ? 'Enter a name.' : 'Use at most 100 characters.',
+      saveInvalid: saveError ? 'true' : 'false',
+      saveCounter: saveName.length + ' / 100',
+      saveInputStyle: 'width: 100%; box-sizing: border-box; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; outline: none; ' + (saveError ? 'border: 1px solid var(--destructive)' : 'border: 1px solid var(--border)'),
+      summary: summary,
+      atLimit: atLimit,
+      notAtLimit: !atLimit,
+      doSave: (e) => {
+        if (e && e.preventDefault) e.preventDefault();
+        if (atLimit) return;
+        if (nameEmpty || nameLong) { this.setState({ saveTried: true }); return; }
+        this.setState({ saveOpen: false, saveTried: false, savedToast: true });
+      },
+      savedToast: !!st.savedToast,
+      hideToast: () => this.setState({ savedToast: false }),
+      countLabel: shown.length === 1 ? '1 result' : shown.length + ' results',
+      results: results,
+      hasResults: shown.length > 0,
+      noResults: shown.length === 0,
+      shortcut: isMac ? '⌘K' : 'Ctrl K',
+      sidebarClass: 'sidebar' + (navOpen ? ' open' : '') + (collapsed && !navOpen ? ' collapsed' : ''),
+      scrimClass: 'scrim' + (navOpen ? ' open' : ''),
+      navAria: (navOpen || !collapsed) ? 'true' : 'false',
+      toggleNav: () => {
+        const narrow = typeof window !== 'undefined' && window.innerWidth <= 860;
+        if (narrow) this.setState({ navOpen: !navOpen });
+        else this.setState({ collapsed: !collapsed });
+      },
+      closeNav: closeNav,
+      navKey: (ev) => { if (ev && ev.key === 'Escape') closeNav(); }
+    };
+  }
+}
+</script>
+</body>
+</html>

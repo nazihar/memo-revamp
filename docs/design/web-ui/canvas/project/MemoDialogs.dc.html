@@ -1,0 +1,541 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Memo dialogs</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+.th{color-scheme:light;--bg:#ffffff;--card:#ffffff;--fg:#0a0a0a;--subtle:#fafafa;--muted:#f5f5f5;--hover:#f0f0f0;--active:#ebebeb;--chip:#e5e5e5;--border:#e5e5e5;--border-strong:#d4d4d4;--muted-fg:#737373;--text-1:#262626;--text-2:#404040;--text-3:#525252;--primary:#171717;--primary-fg:#fafafa;--primary-hover:#262626;--primary-divider:#404040;--primary-muted:#a3a3a3;--ring:#a3a3a3;--destructive:#dc2626;--destructive-hover:#b91c1c;--on-destructive:#ffffff;--danger-fg:#b91c1c;--danger-bg:#fef2f2;--danger-border:#fecaca;--warn-bg:#fffbeb;--warn-fg:#92400e;--warn-border:#fcd34d;--ok-bg:#f0fdf4;--ok-fg:#166534;--ok-border:#bbf7d0;--info-bg:#eff6ff;--info-fg:#1d4ed8}
+.th.dark{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}
+@media (prefers-color-scheme: dark){.th.system{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}}
+body:has(.th.dark){background:#09090b}
+@media (prefers-color-scheme: dark){body:has(.th.system){background:#09090b}}
+body{margin:0;background:#ffffff}
+a{color:var(--fg)}
+button,input,select,textarea{font-family:inherit}
+.ghost:hover{background:var(--hover)}
+.ghost:active{background:var(--muted)}
+@keyframes caret-blink{0%,70%,100%{opacity:1}20%,50%{opacity:0}}
+.otp-caret{animation:caret-blink 1.2s ease-out infinite}
+@media (prefers-reduced-motion: reduce){.otp-caret{animation:none}}
+button[role="combobox"]:disabled{background:var(--subtle)!important;color:var(--text-2)!important;box-shadow:none!important;cursor:not-allowed}
+</style>
+</helmet>
+<div class="th {{themeClass}}" style="min-height: 100vh; display: flex; flex-direction: column; gap: 28px; padding: 32px; box-sizing: border-box; background: var(--subtle); color: var(--fg); font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 20px">
+  <header style="display: flex; flex-direction: column; gap: 4px; max-width: 900px">
+    <h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600">Memo dialogs</h1>
+    <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">Every dialog a memo page opens, as it opens. Turn on the <strong>errors</strong> tweak to see what each shows when someone submits it incomplete. Required fields carry a red asterisk; the submit button never greys out. Decisions that go on the note sheet (approve, recommend, return, reject, and submit, resubmit and withdraw) use the formatting editor; the rest use a plain text box.</p>
+  </header>
+  <section aria-labelledby="g-deci" style="display: flex; flex-direction: column; gap: 12px">
+    <h2 id="g-deci" style="margin: 0; font-size: 14px; font-weight: 600">Decide</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 24px 20px; align-items: start">
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px; ">
+<figcaption style="font-size: 12px; color: var(--muted-fg)">Approve · from the task card</figcaption>
+<form role="dialog" aria-labelledby="approve-title" novalidate style="position: relative; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.12)">
+<button type="button" class="ghost" aria-label="Close" style="position: absolute; top: 12px; right: 12px; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--muted-fg)"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+<div style="display: flex; flex-direction: column; gap: 6px; padding-right: 24px">
+  <h2 id="approve-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Approve CR/2026/0142?</h2>
+  <p id="approve-desc" style="margin: 0; font-size: 14px; color: var(--muted-fg)">You approve document version 3. You may be asked to confirm it is you.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+  <label for="ap-r" style="font-size: 14px; font-weight: 500">Remark (optional)</label>
+  <div style="border: 1px solid var(--border); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+    <div role="toolbar" aria-label="Formatting" style="display: flex; gap: 2px; padding: 3px 4px; border-bottom: 1px solid var(--hover); background: var(--subtle)"><button type="button" class="ghost" aria-label="Bold" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8"></path></svg></button><button type="button" class="ghost" aria-label="Italic" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" x2="10" y1="4" y2="4"></line><line x1="14" x2="5" y1="20" y2="20"></line><line x1="15" x2="9" y1="4" y2="20"></line></svg></button><button type="button" class="ghost" aria-label="Bulleted list" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h.01"></path><path d="M3 18h.01"></path><path d="M3 6h.01"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M8 6h13"></path></svg></button><button type="button" class="ghost" aria-label="Numbered list" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12h11"></path><path d="M10 18h11"></path><path d="M10 6h11"></path><path d="M4 10h2"></path><path d="M4 6h1v4"></path><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"></path></svg></button><button type="button" class="ghost" aria-label="Link" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></button><button type="button" class="ghost" aria-label="Mention someone" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"></path></svg></button></div>
+    <div id="ap-r" role="textbox" aria-multiline="true" aria-label="Remark (optional)" contenteditable="true" style="min-height: 96px; padding: 8px 10px; font-size: 14px; line-height: 22px; outline: none"><span style="color: var(--muted-fg)">Add a remark for the note sheet…</span></div>
+  </div>
+  <span style="display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--muted-fg)"><span>Goes on the note sheet with your name and position.</span><span>0 / 4,000</span></span>
+</div>
+<div style="display: flex; justify-content: flex-end; gap: 8px"><button type="button" class="ghost" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--bg); color: var(--fg)">Cancel</button><button type="submit" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 0; background: var(--primary); color: var(--primary-fg)">Approve</button></div>
+</form>
+</figure>
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px; ">
+<figcaption style="font-size: 12px; color: var(--muted-fg)">Recommend · a review step’s positive action</figcaption>
+<form role="dialog" aria-labelledby="recommend-title" novalidate style="position: relative; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.12)">
+<button type="button" class="ghost" aria-label="Close" style="position: absolute; top: 12px; right: 12px; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--muted-fg)"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+<div style="display: flex; flex-direction: column; gap: 6px; padding-right: 24px">
+  <h2 id="recommend-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Recommend CR/2026/0142?</h2>
+  <p id="recommend-desc" style="margin: 0; font-size: 14px; color: var(--muted-fg)">You recommend document version 3. The next step gets it with your recommendation.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+  <label for="rc-r" style="font-size: 14px; font-weight: 500">Remark (optional)</label>
+  <div style="border: 1px solid var(--border); border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+    <div role="toolbar" aria-label="Formatting" style="display: flex; gap: 2px; padding: 3px 4px; border-bottom: 1px solid var(--hover); background: var(--subtle)"><button type="button" class="ghost" aria-label="Bold" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8"></path></svg></button><button type="button" class="ghost" aria-label="Italic" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" x2="10" y1="4" y2="4"></line><line x1="14" x2="5" y1="20" y2="20"></line><line x1="15" x2="9" y1="4" y2="20"></line></svg></button><button type="button" class="ghost" aria-label="Bulleted list" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h.01"></path><path d="M3 18h.01"></path><path d="M3 6h.01"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M8 6h13"></path></svg></button><button type="button" class="ghost" aria-label="Numbered list" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12h11"></path><path d="M10 18h11"></path><path d="M10 6h11"></path><path d="M4 10h2"></path><path d="M4 6h1v4"></path><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"></path></svg></button><button type="button" class="ghost" aria-label="Link" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></button><button type="button" class="ghost" aria-label="Mention someone" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"></path></svg></button></div>
+    <div id="rc-r" role="textbox" aria-multiline="true" aria-label="Remark (optional)" contenteditable="true" style="min-height: 96px; padding: 8px 10px; font-size: 14px; line-height: 22px; outline: none"><span style="color: var(--muted-fg)">Add a remark for the note sheet…</span></div>
+  </div>
+  <span style="display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--muted-fg)"><span>Goes on the note sheet with your name and position.</span><span>0 / 4,000</span></span>
+</div>
+<div style="display: flex; justify-content: flex-end; gap: 8px"><button type="button" class="ghost" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--bg); color: var(--fg)">Cancel</button><button type="submit" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 0; background: var(--primary); color: var(--primary-fg)">Recommend</button></div>
+</form>
+</figure>
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px; ">
+<figcaption style="font-size: 12px; color: var(--muted-fg)">Return · remark required</figcaption>
+<form role="dialog" aria-labelledby="return-title" novalidate style="position: relative; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.12)">
+<button type="button" class="ghost" aria-label="Close" style="position: absolute; top: 12px; right: 12px; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--muted-fg)"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+<div style="display: flex; flex-direction: column; gap: 6px; padding-right: 24px">
+  <h2 id="return-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Return CR/2026/0142 to its author?</h2>
+  <p id="return-desc" style="margin: 0; font-size: 14px; color: var(--muted-fg)">Say what needs to change. They can resubmit it.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+  <label for="rt-r" style="font-size: 14px; font-weight: 500">Remark <span aria-hidden="true" style="color: var(--danger-fg)">*</span></label>
+  <div style="border: 1px solid {{b}}; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+    <div role="toolbar" aria-label="Formatting" style="display: flex; gap: 2px; padding: 3px 4px; border-bottom: 1px solid var(--hover); background: var(--subtle)"><button type="button" class="ghost" aria-label="Bold" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8"></path></svg></button><button type="button" class="ghost" aria-label="Italic" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" x2="10" y1="4" y2="4"></line><line x1="14" x2="5" y1="20" y2="20"></line><line x1="15" x2="9" y1="4" y2="20"></line></svg></button><button type="button" class="ghost" aria-label="Bulleted list" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h.01"></path><path d="M3 18h.01"></path><path d="M3 6h.01"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M8 6h13"></path></svg></button><button type="button" class="ghost" aria-label="Numbered list" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12h11"></path><path d="M10 18h11"></path><path d="M10 6h11"></path><path d="M4 10h2"></path><path d="M4 6h1v4"></path><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"></path></svg></button><button type="button" class="ghost" aria-label="Link" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></button><button type="button" class="ghost" aria-label="Mention someone" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"></path></svg></button></div>
+    <div id="rt-r" role="textbox" aria-multiline="true" aria-label="Remark" contenteditable="true" style="min-height: 96px; padding: 8px 10px; font-size: 14px; line-height: 22px; outline: none"><span style="color: var(--muted-fg)">What needs to change…</span></div>
+  </div>
+  <span style="display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--muted-fg)"><span>Goes on the note sheet with your name and position.</span><span>0 / 4,000</span></span>
+  <sc-if value="{{e}}" hint-placeholder-val="{{false}}"><span id="rt-r-err" style="font-size: 12px; color: var(--danger-fg)">A remark is required.</span></sc-if>
+</div>
+<div style="display: flex; justify-content: flex-end; gap: 8px"><button type="button" class="ghost" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--bg); color: var(--fg)">Cancel</button><button type="submit" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 0; background: var(--primary); color: var(--primary-fg)">Return</button></div>
+</form>
+</figure>
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px; ">
+<figcaption style="font-size: 12px; color: var(--muted-fg)">Reject · ends the memo</figcaption>
+<form role="alertdialog" aria-labelledby="reject-title" novalidate style="position: relative; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.12)">
+<button type="button" class="ghost" aria-label="Close" style="position: absolute; top: 12px; right: 12px; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--muted-fg)"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+<div style="display: flex; flex-direction: column; gap: 6px; padding-right: 24px">
+  <h2 id="reject-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Reject CR/2026/0142?</h2>
+  <p id="reject-desc" style="margin: 0; font-size: 14px; color: var(--muted-fg)">The memo ends here. Say why.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+  <label for="rj-r" style="font-size: 14px; font-weight: 500">Remark <span aria-hidden="true" style="color: var(--danger-fg)">*</span></label>
+  <div style="border: 1px solid {{b}}; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+    <div role="toolbar" aria-label="Formatting" style="display: flex; gap: 2px; padding: 3px 4px; border-bottom: 1px solid var(--hover); background: var(--subtle)"><button type="button" class="ghost" aria-label="Bold" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8"></path></svg></button><button type="button" class="ghost" aria-label="Italic" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" x2="10" y1="4" y2="4"></line><line x1="14" x2="5" y1="20" y2="20"></line><line x1="15" x2="9" y1="4" y2="20"></line></svg></button><button type="button" class="ghost" aria-label="Bulleted list" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h.01"></path><path d="M3 18h.01"></path><path d="M3 6h.01"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M8 6h13"></path></svg></button><button type="button" class="ghost" aria-label="Numbered list" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12h11"></path><path d="M10 18h11"></path><path d="M10 6h11"></path><path d="M4 10h2"></path><path d="M4 6h1v4"></path><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"></path></svg></button><button type="button" class="ghost" aria-label="Link" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></button><button type="button" class="ghost" aria-label="Mention someone" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"></path></svg></button></div>
+    <div id="rj-r" role="textbox" aria-multiline="true" aria-label="Remark" contenteditable="true" style="min-height: 96px; padding: 8px 10px; font-size: 14px; line-height: 22px; outline: none"><span style="color: var(--muted-fg)">Why it is rejected…</span></div>
+  </div>
+  <span style="display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--muted-fg)"><span>Goes on the note sheet with your name and position.</span><span>0 / 4,000</span></span>
+  <sc-if value="{{e}}" hint-placeholder-val="{{false}}"><span id="rj-r-err" style="font-size: 12px; color: var(--danger-fg)">A remark is required.</span></sc-if>
+</div>
+<div style="display: flex; justify-content: flex-end; gap: 8px"><button type="button" class="ghost" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--bg); color: var(--fg)">Cancel</button><button type="submit" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 0; background: var(--destructive); color: var(--on-destructive)">Reject</button></div>
+</form>
+</figure>
+    </div>
+  </section>
+  <section aria-labelledby="g-hand" style="display: flex; flex-direction: column; gap: 12px">
+    <h2 id="g-hand" style="margin: 0; font-size: 14px; font-weight: 600">Hand it on</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 24px 20px; align-items: start">
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px; ">
+<figcaption style="font-size: 12px; color: var(--muted-fg)">Send back · to an earlier step of this round</figcaption>
+<form role="dialog" aria-labelledby="sendBack-title" novalidate style="position: relative; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.12)">
+<button type="button" class="ghost" aria-label="Close" style="position: absolute; top: 12px; right: 12px; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--muted-fg)"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+<div style="display: flex; flex-direction: column; gap: 6px; padding-right: 24px">
+  <h2 id="sendBack-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Send CR/2026/0142 back?</h2>
+  <p id="sendBack-desc" style="margin: 0; font-size: 14px; color: var(--muted-fg)">The step you choose runs again, and the steps after it too. Say why.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+  <label for="sb-step" style="font-size: 14px; font-weight: 500">Send back to <span aria-hidden="true" style="color: var(--danger-fg)">*</span></label>
+  <span style="position: relative; display: flex; align-items: center">
+    <select id="sb-step" style="width: 100%; height: 36px; padding: 0 32px 0 10px; box-sizing: border-box; appearance: none; border: 1px solid {{b}}; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)"><option>Credit risk analysts · any one (Sadia Islam)</option><option>Head of Corporate Banking (Mahmud Karim)</option></select>
+    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; right: 10px; color: var(--muted-fg); pointer-events: none"><path d="m6 9 6 6 6-6"></path></svg>
+  </span>
+  <sc-if value="{{e}}" hint-placeholder-val="{{false}}"><span id="sb-step-err" style="font-size: 12px; color: var(--danger-fg)">Choose a step.</span></sc-if>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+  <label for="sb-r" style="font-size: 14px; font-weight: 500">Remark <span aria-hidden="true" style="color: var(--danger-fg)">*</span></label>
+  <textarea id="sb-r" rows="4" maxlength="4000" placeholder="Why it needs another look…" aria-invalid="{{eAria}}" style="width: 100%; box-sizing: border-box; padding: 8px 10px; border: 1px solid {{b}}; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; line-height: 20px; resize: vertical; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)"></textarea>
+  <sc-if value="{{e}}" hint-placeholder-val="{{false}}"><span id="sb-r-err" style="font-size: 12px; color: var(--danger-fg)">A remark is required.</span></sc-if>
+</div>
+<div style="display: flex; justify-content: flex-end; gap: 8px"><button type="button" class="ghost" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--bg); color: var(--fg)">Cancel</button><button type="submit" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 0; background: var(--primary); color: var(--primary-fg)">Send back</button></div>
+</form>
+</figure>
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px; ">
+<figcaption style="font-size: 12px; color: var(--muted-fg)">Forward · someone else holds the step</figcaption>
+<form role="dialog" aria-labelledby="forward-title" novalidate style="position: relative; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.12)">
+<button type="button" class="ghost" aria-label="Close" style="position: absolute; top: 12px; right: 12px; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--muted-fg)"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+<div style="display: flex; flex-direction: column; gap: 6px; padding-right: 24px">
+  <h2 id="forward-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Forward CR/2026/0142?</h2>
+  <p id="forward-desc" style="margin: 0; font-size: 14px; color: var(--muted-fg)">The person you choose holds the step instead of you.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+  <label for="fw-p" style="font-size: 14px; font-weight: 500">Person <span aria-hidden="true" style="color: var(--danger-fg)">*</span></label>
+  <sc-if value="{{ok}}" hint-placeholder-val="{{true}}">
+    <div style="display: flex; align-items: center; gap: 10px; min-height: 36px; padding: 4px 4px 4px 10px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px">
+      <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: var(--muted); color: var(--text-2); font-size: 10px; font-weight: 600; flex-shrink: 0">IH</span>
+      <span style="flex: 1; min-width: 0; display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 500">Imran Hossain</span><span style="font-size: 12px; color: var(--muted-fg)">Chief Risk Officer (acting)</span></span>
+      <button type="button" class="ghost" aria-label="Remove Imran Hossain" style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border: 0; border-radius: 6px; background: transparent; color: var(--muted-fg); cursor: pointer"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+    </div>
+  </sc-if>
+  <sc-if value="{{e}}" hint-placeholder-val="{{false}}">
+    <span style="position: relative; display: flex; align-items: center"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; left: 10px; color: var(--muted-fg)"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><input id="fw-p" type="text" role="combobox" aria-expanded="false" aria-invalid="true" aria-describedby="fw-p-err" placeholder="Search people" style="width: 100%; box-sizing: border-box; border: 1px solid {{b}}; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); height: 36px; padding: 0 10px 0 32px"></span>
+    <span id="fw-p-err" style="font-size: 12px; color: var(--danger-fg)">Choose a person.</span>
+  </sc-if>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+  <label for="fw-r" style="font-size: 14px; font-weight: 500">Remark <span aria-hidden="true" style="color: var(--danger-fg)">*</span></label>
+  <textarea id="fw-r" rows="4" maxlength="4000" placeholder="Why you are handing it on…" aria-invalid="{{eAria}}" style="width: 100%; box-sizing: border-box; padding: 8px 10px; border: 1px solid {{b}}; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; line-height: 20px; resize: vertical; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)"></textarea>
+  <sc-if value="{{e}}" hint-placeholder-val="{{false}}"><span id="fw-r-err" style="font-size: 12px; color: var(--danger-fg)">A remark is required.</span></sc-if>
+</div>
+<div style="display: flex; justify-content: flex-end; gap: 8px"><button type="button" class="ghost" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--bg); color: var(--fg)">Cancel</button><button type="submit" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 0; background: var(--primary); color: var(--primary-fg)">Forward</button></div>
+</form>
+</figure>
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px; ">
+<figcaption style="font-size: 12px; color: var(--muted-fg)">Delegate · someone acts for you</figcaption>
+<form role="dialog" aria-labelledby="delegate-title" novalidate style="position: relative; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.12)">
+<button type="button" class="ghost" aria-label="Close" style="position: absolute; top: 12px; right: 12px; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--muted-fg)"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+<div style="display: flex; flex-direction: column; gap: 6px; padding-right: 24px">
+  <h2 id="delegate-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Delegate CR/2026/0142?</h2>
+  <p id="delegate-desc" style="margin: 0; font-size: 14px; color: var(--muted-fg)">The person you choose acts for you; the step stays yours.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+  <label for="dl-p" style="font-size: 14px; font-weight: 500">Person <span aria-hidden="true" style="color: var(--danger-fg)">*</span></label>
+  <sc-if value="{{ok}}" hint-placeholder-val="{{true}}">
+    <div style="display: flex; align-items: center; gap: 10px; min-height: 36px; padding: 4px 4px 4px 10px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px">
+      <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: var(--muted); color: var(--text-2); font-size: 10px; font-weight: 600; flex-shrink: 0">NJ</span>
+      <span style="flex: 1; min-width: 0; display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 500">Nusrat Jahan</span><span style="font-size: 12px; color: var(--muted-fg)">Credit Risk Manager</span></span>
+      <button type="button" class="ghost" aria-label="Remove Nusrat Jahan" style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border: 0; border-radius: 6px; background: transparent; color: var(--muted-fg); cursor: pointer"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+    </div>
+  </sc-if>
+  <sc-if value="{{e}}" hint-placeholder-val="{{false}}">
+    <span style="position: relative; display: flex; align-items: center"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; left: 10px; color: var(--muted-fg)"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><input id="dl-p" type="text" role="combobox" aria-expanded="false" aria-invalid="true" aria-describedby="dl-p-err" placeholder="Search people" style="width: 100%; box-sizing: border-box; border: 1px solid {{b}}; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); height: 36px; padding: 0 10px 0 32px"></span>
+    <span id="dl-p-err" style="font-size: 12px; color: var(--danger-fg)">Choose a person.</span>
+  </sc-if>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+  <label for="dl-r" style="font-size: 14px; font-weight: 500">Remark (optional)</label>
+  <textarea id="dl-r" rows="4" maxlength="4000" placeholder="Anything they should know…" aria-invalid="{{eAria}}" style="width: 100%; box-sizing: border-box; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; line-height: 20px; resize: vertical; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)"></textarea>
+</div>
+<div style="display: flex; justify-content: flex-end; gap: 8px"><button type="button" class="ghost" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--bg); color: var(--fg)">Cancel</button><button type="submit" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 0; background: var(--primary); color: var(--primary-fg)">Delegate</button></div>
+</form>
+</figure>
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px; ">
+<figcaption style="font-size: 12px; color: var(--muted-fg)">Ask a question · you decide after the answer</figcaption>
+<form role="dialog" aria-labelledby="ask-title" novalidate style="position: relative; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.12)">
+<button type="button" class="ghost" aria-label="Close" style="position: absolute; top: 12px; right: 12px; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--muted-fg)"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+<div style="display: flex; flex-direction: column; gap: 6px; padding-right: 24px">
+  <h2 id="ask-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Ask about CR/2026/0142?</h2>
+  <p id="ask-desc" style="margin: 0; font-size: 14px; color: var(--muted-fg)">You can decide once your question is answered.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+  <label for="as-p" style="font-size: 14px; font-weight: 500">Person <span aria-hidden="true" style="color: var(--danger-fg)">*</span></label>
+  <sc-if value="{{ok}}" hint-placeholder-val="{{true}}">
+    <div style="display: flex; align-items: center; gap: 10px; min-height: 36px; padding: 4px 4px 4px 10px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px">
+      <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px; border-radius: 50%; background: var(--muted); color: var(--text-2); font-size: 10px; font-weight: 600; flex-shrink: 0">TA</span>
+      <span style="flex: 1; min-width: 0; display: flex; flex-direction: column"><span style="font-size: 14px; font-weight: 500">Tanvir Ahmed</span><span style="font-size: 12px; color: var(--muted-fg)">Relationship Manager · initiator</span></span>
+      <button type="button" class="ghost" aria-label="Remove Tanvir Ahmed" style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border: 0; border-radius: 6px; background: transparent; color: var(--muted-fg); cursor: pointer"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+    </div>
+  </sc-if>
+  <sc-if value="{{e}}" hint-placeholder-val="{{false}}">
+    <span style="position: relative; display: flex; align-items: center"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; left: 10px; color: var(--muted-fg)"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><input id="as-p" type="text" role="combobox" aria-expanded="false" aria-invalid="true" aria-describedby="as-p-err" placeholder="Search people" style="width: 100%; box-sizing: border-box; border: 1px solid {{b}}; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); height: 36px; padding: 0 10px 0 32px"></span>
+    <span id="as-p-err" style="font-size: 12px; color: var(--danger-fg)">Choose a person.</span>
+  </sc-if>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+  <label for="as-r" style="font-size: 14px; font-weight: 500">Remark <span aria-hidden="true" style="color: var(--danger-fg)">*</span></label>
+  <textarea id="as-r" rows="4" maxlength="4000" placeholder="Your question…" aria-invalid="{{eAria}}" style="width: 100%; box-sizing: border-box; padding: 8px 10px; border: 1px solid {{b}}; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; line-height: 20px; resize: vertical; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)"></textarea>
+  <sc-if value="{{e}}" hint-placeholder-val="{{false}}"><span id="as-r-err" style="font-size: 12px; color: var(--danger-fg)">A remark is required.</span></sc-if>
+</div>
+<div style="display: flex; justify-content: flex-end; gap: 8px"><button type="button" class="ghost" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--bg); color: var(--fg)">Cancel</button><button type="submit" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 0; background: var(--primary); color: var(--primary-fg)">Ask a question</button></div>
+</form>
+</figure>
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px; ">
+<figcaption style="font-size: 12px; color: var(--muted-fg)">Ask for opinions · up to 10 people</figcaption>
+<form role="dialog" aria-labelledby="refer-title" novalidate style="position: relative; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.12)">
+<button type="button" class="ghost" aria-label="Close" style="position: absolute; top: 12px; right: 12px; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--muted-fg)"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+<div style="display: flex; flex-direction: column; gap: 6px; padding-right: 24px">
+  <h2 id="refer-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Ask for opinions on CR/2026/0142?</h2>
+  <p id="refer-desc" style="margin: 0; font-size: 14px; color: var(--muted-fg)">You keep the task and decide when you are ready.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+  <label for="rf-p" style="font-size: 14px; font-weight: 500">People (up to 10) <span aria-hidden="true" style="color: var(--danger-fg)">*</span></label>
+  <span style="position: relative; display: flex; align-items: center"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; left: 10px; color: var(--muted-fg)"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><input id="rf-p" type="text" role="combobox" aria-expanded="false" aria-invalid="{{eAria}}" aria-describedby="rf-p-hint" placeholder="Search people" style="width: 100%; box-sizing: border-box; border: 1px solid {{b}}; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); height: 36px; padding: 0 10px 0 32px"></span>
+  <sc-if value="{{ok}}" hint-placeholder-val="{{true}}"><div style="display: flex; flex-wrap: wrap; gap: 6px"><span style="display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 4px 0 4px; border-radius: 999px; background: var(--muted); font-size: 13px"><span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; background: var(--muted); color: var(--text-2); font-size: 10px; font-weight: 600; flex-shrink: 0">SA</span>Shirin Akter<button type="button" class="ghost" aria-label="Remove Shirin Akter" style="display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border: 0; border-radius: 50%; background: transparent; color: var(--muted-fg); cursor: pointer"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button></span><span style="display: inline-flex; align-items: center; gap: 6px; height: 26px; padding: 0 4px 0 4px; border-radius: 999px; background: var(--muted); font-size: 13px"><span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; background: var(--muted); color: var(--text-2); font-size: 10px; font-weight: 600; flex-shrink: 0">RC</span>Rafiq Chowdhury<button type="button" class="ghost" aria-label="Remove Rafiq Chowdhury" style="display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border: 0; border-radius: 50%; background: transparent; color: var(--muted-fg); cursor: pointer"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button></span></div></sc-if>
+  <span id="rf-p-hint" style="font-size: 12px; color: var(--muted-fg)">Type at least two letters of a name or title. 2 of 10 chosen.</span>
+  <sc-if value="{{e}}" hint-placeholder-val="{{false}}"><span id="rf-p-err" style="font-size: 12px; color: var(--danger-fg)">Choose at least one person.</span></sc-if>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+  <label for="rf-r" style="font-size: 14px; font-weight: 500">Remark <span aria-hidden="true" style="color: var(--danger-fg)">*</span></label>
+  <textarea id="rf-r" rows="4" maxlength="4000" placeholder="What you want their view on…" aria-invalid="{{eAria}}" style="width: 100%; box-sizing: border-box; padding: 8px 10px; border: 1px solid {{b}}; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; line-height: 20px; resize: vertical; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)"></textarea>
+  <sc-if value="{{e}}" hint-placeholder-val="{{false}}"><span id="rf-r-err" style="font-size: 12px; color: var(--danger-fg)">A remark is required.</span></sc-if>
+</div>
+<div style="display: flex; justify-content: flex-end; gap: 8px"><button type="button" class="ghost" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--bg); color: var(--fg)">Cancel</button><button type="submit" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 0; background: var(--primary); color: var(--primary-fg)">Ask for opinions</button></div>
+</form>
+</figure>
+    </div>
+  </section>
+  <section aria-labelledby="g-answ" style="display: flex; flex-direction: column; gap: 12px">
+    <h2 id="g-answ" style="margin: 0; font-size: 14px; font-weight: 600">Answer and advise</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 24px 20px; align-items: start">
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px; ">
+<figcaption style="font-size: 12px; color: var(--muted-fg)">Answer · when someone asked you</figcaption>
+<form role="dialog" aria-labelledby="answer-title" novalidate style="position: relative; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.12)">
+<button type="button" class="ghost" aria-label="Close" style="position: absolute; top: 12px; right: 12px; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--muted-fg)"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+<div style="display: flex; flex-direction: column; gap: 6px; padding-right: 24px">
+  <h2 id="answer-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Answer the question on CR/2026/0142</h2>
+  <p id="answer-desc" style="margin: 0; font-size: 14px; color: var(--muted-fg)">Whoever asked can decide once you answer.</p>
+</div>
+<div style="padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--subtle); color: var(--text-1); font-size: 13px"><strong style="font-weight: 600">Farhana Rahman asked</strong> · 17 Nov, 09:12<br>Is the October valuation from the bank’s panel valuer?</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+  <label for="an-r" style="font-size: 14px; font-weight: 500">Your answer <span aria-hidden="true" style="color: var(--danger-fg)">*</span></label>
+  <textarea id="an-r" rows="4" maxlength="4000" placeholder="Your answer…" aria-invalid="{{eAria}}" style="width: 100%; box-sizing: border-box; padding: 8px 10px; border: 1px solid {{b}}; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; line-height: 20px; resize: vertical; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)"></textarea>
+  <sc-if value="{{e}}" hint-placeholder-val="{{false}}"><span id="an-r-err" style="font-size: 12px; color: var(--danger-fg)">Write your answer.</span></sc-if>
+</div>
+<div style="display: flex; justify-content: flex-end; gap: 8px"><button type="button" class="ghost" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--bg); color: var(--fg)">Cancel</button><button type="submit" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 0; background: var(--primary); color: var(--primary-fg)">Answer</button></div>
+</form>
+</figure>
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px; ">
+<figcaption style="font-size: 12px; color: var(--muted-fg)">Give your opinion · when asked for one</figcaption>
+<form role="dialog" aria-labelledby="opinion-title" novalidate style="position: relative; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.12)">
+<button type="button" class="ghost" aria-label="Close" style="position: absolute; top: 12px; right: 12px; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--muted-fg)"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+<div style="display: flex; flex-direction: column; gap: 6px; padding-right: 24px">
+  <h2 id="opinion-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Your opinion on CR/2026/0142</h2>
+  <p id="opinion-desc" style="margin: 0; font-size: 14px; color: var(--muted-fg)">It goes into the history for whoever decides.</p>
+</div>
+<div style="padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border); background: var(--subtle); color: var(--text-1); font-size: 13px"><strong style="font-weight: 600">Farhana Rahman asked for opinions</strong> · 17 Nov, 09:20<br>Is 1.4× cover enough for an agro client in this season?</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+  <label for="op-r" style="font-size: 14px; font-weight: 500">Your opinion <span aria-hidden="true" style="color: var(--danger-fg)">*</span></label>
+  <textarea id="op-r" rows="4" maxlength="4000" placeholder="Your opinion…" aria-invalid="{{eAria}}" style="width: 100%; box-sizing: border-box; padding: 8px 10px; border: 1px solid {{b}}; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; line-height: 20px; resize: vertical; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)"></textarea>
+  <sc-if value="{{e}}" hint-placeholder-val="{{false}}"><span id="op-r-err" style="font-size: 12px; color: var(--danger-fg)">Write your opinion.</span></sc-if>
+</div>
+<div style="display: flex; justify-content: flex-end; gap: 8px"><button type="button" class="ghost" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--bg); color: var(--fg)">Cancel</button><button type="submit" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 0; background: var(--primary); color: var(--primary-fg)">Give your opinion</button></div>
+</form>
+</figure>
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px; ">
+<figcaption style="font-size: 12px; color: var(--muted-fg)">Declare an interest · you stand aside</figcaption>
+<form role="dialog" aria-labelledby="recuse-title" novalidate style="position: relative; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.12)">
+<button type="button" class="ghost" aria-label="Close" style="position: absolute; top: 12px; right: 12px; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--muted-fg)"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+<div style="display: flex; flex-direction: column; gap: 6px; padding-right: 24px">
+  <h2 id="recuse-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Stand aside from CR/2026/0142?</h2>
+  <p id="recuse-desc" style="margin: 0; font-size: 14px; color: var(--muted-fg)">Say what your interest is. The task leaves you and the step goes to someone else.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+  <label for="ru-r" style="font-size: 14px; font-weight: 500">Remark <span aria-hidden="true" style="color: var(--danger-fg)">*</span></label>
+  <textarea id="ru-r" rows="4" maxlength="4000" placeholder="Your interest in this memo…" aria-invalid="{{eAria}}" style="width: 100%; box-sizing: border-box; padding: 8px 10px; border: 1px solid {{b}}; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; line-height: 20px; resize: vertical; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)"></textarea>
+  <sc-if value="{{e}}" hint-placeholder-val="{{false}}"><span id="ru-r-err" style="font-size: 12px; color: var(--danger-fg)">A remark is required.</span></sc-if>
+</div>
+<div style="display: flex; justify-content: flex-end; gap: 8px"><button type="button" class="ghost" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--bg); color: var(--fg)">Cancel</button><button type="submit" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 0; background: var(--primary); color: var(--primary-fg)">Declare an interest</button></div>
+</form>
+</figure>
+    </div>
+  </section>
+  <section aria-labelledby="g-note" style="display: flex; flex-direction: column; gap: 12px">
+    <h2 id="g-note" style="margin: 0; font-size: 14px; font-weight: 600">Notes, details and checks</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); gap: 24px 20px; align-items: start">
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px; ">
+<figcaption style="font-size: 12px; color: var(--muted-fg)">Write a note · from the note sheet</figcaption>
+<form role="dialog" aria-labelledby="write-title" novalidate style="position: relative; width: 100%; max-width: 560px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.12)">
+<button type="button" class="ghost" aria-label="Close" style="position: absolute; top: 12px; right: 12px; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--muted-fg)"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+<div style="display: flex; flex-direction: column; gap: 6px; padding-right: 24px">
+  <h2 id="write-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Write a note</h2>
+  
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+  <label for="wn-note" style="font-size: 14px; font-weight: 500">Note <span aria-hidden="true" style="color: var(--danger-fg)">*</span></label>
+  <div style="border: 1px solid {{b}}; border-radius: 8px; overflow: hidden; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+    <div role="toolbar" aria-label="Formatting" style="display: flex; gap: 2px; padding: 3px 4px; border-bottom: 1px solid var(--hover); background: var(--subtle)"><button type="button" class="ghost" aria-label="Bold" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 12h9a4 4 0 0 1 0 8H7a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h7a4 4 0 0 1 0 8"></path></svg></button><button type="button" class="ghost" aria-label="Italic" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" x2="10" y1="4" y2="4"></line><line x1="14" x2="5" y1="20" y2="20"></line><line x1="15" x2="9" y1="4" y2="20"></line></svg></button><button type="button" class="ghost" aria-label="Bulleted list" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h.01"></path><path d="M3 18h.01"></path><path d="M3 6h.01"></path><path d="M8 12h13"></path><path d="M8 18h13"></path><path d="M8 6h13"></path></svg></button><button type="button" class="ghost" aria-label="Numbered list" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 12h11"></path><path d="M10 18h11"></path><path d="M10 6h11"></path><path d="M4 10h2"></path><path d="M4 6h1v4"></path><path d="M6 18H4c0-1 2-2 2-3s-1-1.5-2-1"></path></svg></button><button type="button" class="ghost" aria-label="Link" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></button><button type="button" class="ghost" aria-label="Mention someone" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--text-2); cursor: pointer"><svg aria-hidden="true" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"></path></svg></button></div>
+    <div id="wn-note" role="textbox" aria-multiline="true" aria-label="Note" contenteditable="true" style="min-height: 96px; padding: 8px 10px; font-size: 14px; line-height: 22px; outline: none">Spoke to the client today: the stock audit is booked for 28 Nov. @Farhana Rahman can you confirm the cover ratio holds if it comes in 10% lower?</div>
+  </div>
+  <span style="display: flex; justify-content: space-between; gap: 8px; font-size: 12px; color: var(--muted-fg)"><span>Draft saved 10:42 · only you can see it</span><span>142 / 4,000</span></span>
+  <sc-if value="{{e}}" hint-placeholder-val="{{false}}"><span id="wn-note-err" style="font-size: 12px; color: var(--danger-fg)">Write the note first.</span></sc-if>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px">
+  <button type="button" class="ghost" style="display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551"></path></svg>Add a file</button>
+  <span style="font-size: 12px; color: var(--muted-fg)">Up to 10 files, as for attachments.</span>
+</div>
+<div style="padding: 10px 12px; border-radius: 8px; border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg); font-size: 13px"><span style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px"><span>Farhana Rahman cannot see this memo. Share it with them?</span><button type="button" class="ghost" style="height: 30px; padding: 0 10px; border: 1px solid var(--warn-border); border-radius: 6px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer">Share and mention</button></span></div>
+<span style="font-size: 12px; color: var(--muted-fg)">Notes cannot be edited. You can post a correction.</span>
+<div style="display: flex; justify-content: flex-end; gap: 8px"><button type="button" class="ghost" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--bg); color: var(--fg)">Cancel</button><button type="submit" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 0; background: var(--primary); color: var(--primary-fg)">Post note</button></div>
+</form>
+</figure>
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px; ">
+<figcaption style="font-size: 12px; color: var(--muted-fg)">Edit · a draft or a returned memo</figcaption>
+<form role="dialog" aria-labelledby="edit-title" novalidate style="position: relative; width: 100%; max-width: 560px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.12)">
+<button type="button" class="ghost" aria-label="Close" style="position: absolute; top: 12px; right: 12px; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--muted-fg)"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+<div style="display: flex; flex-direction: column; gap: 6px; padding-right: 24px">
+  <h2 id="edit-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Edit</h2>
+  
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+  <label for="ed-subject" style="font-size: 14px; font-weight: 500">Subject <span aria-hidden="true" style="color: var(--danger-fg)">*</span></label>
+  <input id="ed-subject" type="text" value="Credit line renewal for Meghna Agro" style="width: 100%; height: 36px; padding: 0 10px; box-sizing: border-box; border: 1px solid {{b}}; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+  <sc-if value="{{e}}" hint-placeholder-val="{{false}}"><span id="ed-subject-err" style="font-size: 12px; color: var(--danger-fg)">Required.</span></sc-if>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+  <label for="ed-class" style="font-size: 14px; font-weight: 500">Classification</label>
+  <span style="position: relative; display: flex; align-items: center">
+    <select id="ed-class" disabled style="width: 100%; height: 36px; padding: 0 32px 0 10px; box-sizing: border-box; appearance: none; border: 1px solid var(--border); border-radius: 8px; background: var(--muted); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)"><option>Confidential</option></select>
+    <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; right: 10px; color: var(--muted-fg); pointer-events: none"><path d="m6 9 6 6 6-6"></path></svg>
+  </span>
+  <span style="font-size: 12px; color: var(--muted-fg)">Fixed once the memo is submitted.</span>
+</div>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+  <label for="ed-amount" style="font-size: 14px; font-weight: 500">Amount (BDT)</label>
+  <input id="ed-amount" type="text" value="250,000,000" style="width: 100%; height: 36px; padding: 0 10px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+  <label for="ed-tenor" style="font-size: 14px; font-weight: 500">Tenor (months)</label>
+  <input id="ed-tenor" type="text" value="12" style="width: 100%; height: 36px; padding: 0 10px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px">
+  <label for="ed-facility" style="font-size: 14px; font-weight: 500">Facility type</label>
+  <input id="ed-facility" type="text" value="Revolving credit line" style="width: 100%; height: 36px; padding: 0 10px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+</div>
+<div style="display: flex; justify-content: flex-end; gap: 8px"><button type="button" class="ghost" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--bg); color: var(--fg)">Cancel</button><button type="submit" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 0; background: var(--primary); color: var(--primary-fg)">Save</button></div>
+</form>
+</figure>
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px; ">
+<figcaption style="font-size: 12px; color: var(--muted-fg)">Who approves this? · from the approvers list</figcaption>
+<form role="dialog" aria-labelledby="doa-title" novalidate style="position: relative; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.12)">
+<button type="button" class="ghost" aria-label="Close" style="position: absolute; top: 12px; right: 12px; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--muted-fg)"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+<div style="display: flex; flex-direction: column; gap: 6px; padding-right: 24px">
+  <h2 id="doa-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Delegation of authority</h2>
+  
+</div>
+<p style="margin: 0; font-size: 13px; color: var(--muted-fg)">Version 4, rule “Credit facilities above BDT 100 million”</p>
+<ol style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px">
+<li style="display: flex; flex-direction: column; gap: 4px; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px">
+  <span style="font-size: 14px; font-weight: 500; color: var(--fg)">Group 1: 1 approval needed; your route has 1.</span>
+  <span style="font-size: 13px; color: var(--text-1)">Head of Credit · Farhana Rahman</span>
+</li>
+<li style="display: flex; flex-direction: column; gap: 4px; padding: 10px 12px; border: 1px solid var(--danger-border); border-radius: 8px">
+  <span style="font-size: 14px; font-weight: 500; color: var(--danger-fg)">Group 2: 2 approvals needed; your route has 1.</span>
+  <span style="font-size: 13px; color: var(--text-1)">Chief Risk Officer · Imran Hossain (acting); Managing Director · Abdul Kader</span>
+</li>
+</ol>
+<div style="display: flex; justify-content: flex-end; gap: 8px"><button type="button" class="ghost" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--bg); color: var(--fg)">Close</button></div>
+</form>
+</figure>
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px; ">
+<figcaption style="font-size: 12px; color: var(--muted-fg)">Confirm it is you · when the server asks, e.g. on Approve</figcaption>
+<form role="dialog" aria-labelledby="stepup-title" novalidate style="position: relative; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.12)">
+<button type="button" class="ghost" aria-label="Close" style="position: absolute; top: 12px; right: 12px; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--muted-fg)"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+<div style="display: flex; flex-direction: column; gap: 6px; padding-right: 24px">
+  <h2 id="stepup-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Confirm it is you</h2>
+  <p id="stepup-desc" style="margin: 0; font-size: 14px; color: var(--muted-fg)">Enter the 6-digit code from your authenticator app to continue.</p>
+</div>
+<div style="display: flex; flex-direction: column; gap: 6px; align-items: center; text-align: center">
+  <label for="su-code" style="font-size: 14px; font-weight: 500">Code</label>
+  <div style="position: relative; align-self: center; display: inline-flex; align-items: center; gap: 8px">
+    <input id="su-code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" value="{{otp.su_code.value}}" onChange="{{otp.su_code.onInput}}" onFocus="{{otp.su_code.onFocus}}" onBlur="{{otp.su_code.onBlur}}" disabled="{{otp.su_code.disabled}}" aria-invalid="{{otp.su_code.invalid}}" aria-describedby="{{otp.su_code.describedBy}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 2; width: 100%; height: 100%; margin: 0; padding: 0; border: 0; opacity: 0; background: transparent; color: transparent; caret-color: transparent; font-size: 16px; cursor: text">
+    <span aria-hidden="true" style="display: flex">
+      <sc-for list="{{otp.su_code.a}}" as="sl" hint-placeholder-count="3">
+        <span style="{{sl.style}}">{{sl.ch}}<sc-if value="{{sl.caret}}" hint-placeholder-val="{{false}}"><span class="otp-caret" style="position: absolute; width: 1px; height: 45%; background: var(--fg)"></span></sc-if></span>
+      </sc-for>
+    </span>
+    <span aria-hidden="true" style="display: flex; color: var(--muted-fg)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14"></path></svg></span>
+    <span aria-hidden="true" style="display: flex">
+      <sc-for list="{{otp.su_code.b}}" as="sl" hint-placeholder-count="3">
+        <span style="{{sl.style}}">{{sl.ch}}<sc-if value="{{sl.caret}}" hint-placeholder-val="{{false}}"><span class="otp-caret" style="position: absolute; width: 1px; height: 45%; background: var(--fg)"></span></sc-if></span>
+      </sc-for>
+    </span>
+  </div>
+  <sc-if value="{{e}}" hint-placeholder-val="{{false}}"><span id="su-code-err" style="font-size: 12px; color: var(--danger-fg)">That did not match. Try again.</span></sc-if>
+</div>
+<div style="display: flex; justify-content: flex-end; gap: 8px"><button type="button" class="ghost" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--bg); color: var(--fg)">Cancel</button><button type="submit" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 0; background: var(--primary); color: var(--primary-fg)">Confirm</button></div>
+</form>
+</figure>
+<figure style="margin: 0; display: flex; flex-direction: column; gap: 8px; grid-column: 1 / -1">
+<figcaption style="font-size: 12px; color: var(--muted-fg)">Compare versions · from the document</figcaption>
+<form role="dialog" aria-labelledby="compare-title" novalidate style="position: relative; width: 100%; max-width: 900px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.12)">
+<button type="button" class="ghost" aria-label="Close" style="position: absolute; top: 12px; right: 12px; display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--muted-fg)"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg></button>
+<div style="display: flex; flex-direction: column; gap: 6px; padding-right: 24px">
+  <h2 id="compare-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Compare versions</h2>
+  
+</div>
+<div style="display: flex; align-items: center; justify-content: space-between; gap: 8px; font-size: 13px"><span style="font-weight: 600">2 changes</span><span style="color: var(--muted-fg)">Removed text is struck through in the older version; added text is underlined in the newer one.</span></div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<div style="flex: 1 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+  <div style="display: flex; flex-direction: column; gap: 6px">
+  <label for="cmp-Older version" style="font-size: 14px; font-weight: 500">Older version</label>
+  <span style="position: relative; display: flex; align-items: center">
+    <span style="position: relative; display: flex; flex-direction: column; flex: 1 1 auto; min-width: 0; width: 100%"><button type="button" id="cmp-Older version" role="combobox" aria-haspopup="listbox" aria-expanded="{{cbx.olderVersion.aria}}" aria-controls="cbx-olderVersion-list" onClick="{{cbx.olderVersion.toggle}}" style="width: 100%; height: 36px; padding: 0 32px 0 10px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: space-between; gap: 8px; text-align: left; cursor: pointer"><span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{cbx.olderVersion.value}}</span><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; color: var(--muted-fg)"><path d="m7 15 5 5 5-5"></path><path d="m7 9 5-5 5 5"></path></svg></button><sc-if value="{{cbx.olderVersion.isOpen}}" hint-placeholder-val="{{false}}"><button type="button" tabIndex="-1" aria-label="Close" onClick="{{cbx.olderVersion.close}}" style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 40; border: 0; padding: 0; background: transparent; cursor: default"></button><div onKeyDown="{{cbx.olderVersion.key}}" style="position: absolute; z-index: 41; top: calc(100% + 4px); left: 0; min-width: 100%; width: max-content; max-width: 380px; box-sizing: border-box; display: flex; flex-direction: column; padding: 0 4px 4px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); box-shadow: 0 8px 24px rgba(0,0,0,0.12)"><label style="display: flex; align-items: center; gap: 8px; margin: 0 -4px 4px; padding: 0 10px; border-bottom: 1px solid var(--border)"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; color: var(--muted-fg)"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0">Search versions</span><input type="text" placeholder="Search versions…" value="{{cbx.olderVersion.q}}" onChange="{{cbx.olderVersion.onQ}}" aria-controls="cbx-olderVersion-list" autocomplete="off" style="flex: 1; min-width: 0; height: 34px; border: 0; outline: none; background: transparent; color: var(--fg); font-family: inherit; font-size: 14px"></label><ul id="cbx-olderVersion-list" role="listbox" aria-label="Older version" style="list-style: none; margin: 0; padding: 0; max-height: 240px; overflow-y: auto"><sc-for list="{{cbx.olderVersion.items}}" as="c1" hint-placeholder-count="4"><li role="none"><button type="button" role="option" aria-selected="{{c1.aria}}" onClick="{{c1.pick}}" class="ghost" style="display: flex; align-items: center; gap: 8px; width: 100%; min-height: 32px; padding: 6px 8px; border: 0; border-radius: 6px; background: transparent; color: var(--fg); font-family: inherit; font-size: 14px; text-align: left; cursor: pointer"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="{{c1.check}}"><path d="M20 6 9 17l-5-5"></path></svg><span>{{c1.label}}</span></button></li></sc-for></ul><sc-if value="{{cbx.olderVersion.empty}}" hint-placeholder-val="{{false}}"><span style="padding: 16px 8px; font-size: 13px; color: var(--muted-fg); text-align: center">No versions found.</span></sc-if></div></sc-if></span>
+  </span>
+</div>
+  <div style="padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--subtle); font-size: 14px; line-height: 22px">The facility is renewed at BDT 250,000,000 for twelve months. Security cover is <del style="background: var(--danger-bg); color: var(--danger-fg)">1.2× on the 2024 valuation</del>. Pricing stays at <del style="background: var(--danger-bg); color: var(--danger-fg)">policy rate + 2.5%</del>.</div>
+</div>
+<div style="flex: 1 1 260px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+  <div style="display: flex; flex-direction: column; gap: 6px">
+  <label for="cmp-Newer version" style="font-size: 14px; font-weight: 500">Newer version</label>
+  <span style="position: relative; display: flex; align-items: center">
+    <span style="position: relative; display: flex; flex-direction: column; flex: 1 1 auto; min-width: 0; width: 100%"><button type="button" id="cmp-Newer version" role="combobox" aria-haspopup="listbox" aria-expanded="{{cbx.newerVersion.aria}}" aria-controls="cbx-newerVersion-list" onClick="{{cbx.newerVersion.toggle}}" style="width: 100%; height: 36px; padding: 0 32px 0 10px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05); display: flex; align-items: center; justify-content: space-between; gap: 8px; text-align: left; cursor: pointer"><span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap">{{cbx.newerVersion.value}}</span><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; color: var(--muted-fg)"><path d="m7 15 5 5 5-5"></path><path d="m7 9 5-5 5 5"></path></svg></button><sc-if value="{{cbx.newerVersion.isOpen}}" hint-placeholder-val="{{false}}"><button type="button" tabIndex="-1" aria-label="Close" onClick="{{cbx.newerVersion.close}}" style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 40; border: 0; padding: 0; background: transparent; cursor: default"></button><div onKeyDown="{{cbx.newerVersion.key}}" style="position: absolute; z-index: 41; top: calc(100% + 4px); left: 0; min-width: 100%; width: max-content; max-width: 380px; box-sizing: border-box; display: flex; flex-direction: column; padding: 0 4px 4px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); box-shadow: 0 8px 24px rgba(0,0,0,0.12)"><label style="display: flex; align-items: center; gap: 8px; margin: 0 -4px 4px; padding: 0 10px; border-bottom: 1px solid var(--border)"><svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; color: var(--muted-fg)"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg><span style="position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0">Search versions</span><input type="text" placeholder="Search versions…" value="{{cbx.newerVersion.q}}" onChange="{{cbx.newerVersion.onQ}}" aria-controls="cbx-newerVersion-list" autocomplete="off" style="flex: 1; min-width: 0; height: 34px; border: 0; outline: none; background: transparent; color: var(--fg); font-family: inherit; font-size: 14px"></label><ul id="cbx-newerVersion-list" role="listbox" aria-label="Newer version" style="list-style: none; margin: 0; padding: 0; max-height: 240px; overflow-y: auto"><sc-for list="{{cbx.newerVersion.items}}" as="c2" hint-placeholder-count="4"><li role="none"><button type="button" role="option" aria-selected="{{c2.aria}}" onClick="{{c2.pick}}" class="ghost" style="display: flex; align-items: center; gap: 8px; width: 100%; min-height: 32px; padding: 6px 8px; border: 0; border-radius: 6px; background: transparent; color: var(--fg); font-family: inherit; font-size: 14px; text-align: left; cursor: pointer"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="{{c2.check}}"><path d="M20 6 9 17l-5-5"></path></svg><span>{{c2.label}}</span></button></li></sc-for></ul><sc-if value="{{cbx.newerVersion.empty}}" hint-placeholder-val="{{false}}"><span style="padding: 16px 8px; font-size: 13px; color: var(--muted-fg); text-align: center">No versions found.</span></sc-if></div></sc-if></span>
+  </span>
+</div>
+  <div style="padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--subtle); font-size: 14px; line-height: 22px">The facility is renewed at BDT 250,000,000 for twelve months. Security cover is <ins style="background: var(--ok-bg); color: var(--ok-fg); text-decoration: underline">1.4× on the October 2026 panel valuation</ins>. Pricing stays at <ins style="background: var(--ok-bg); color: var(--ok-fg); text-decoration: underline">policy rate + 2.25%</ins>.</div>
+</div>
+</div>
+<div style="display: flex; justify-content: flex-end; gap: 8px"><button type="button" class="ghost" style="height: 36px; padding: 0 14px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; border: 1px solid var(--border); background: var(--bg); color: var(--fg)">Close</button></div>
+</form>
+</figure>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"errors":{"editor":"boolean","default":false},"combobox":{"editor": "enum", "options": ["none", "olderVersion", "newerVersion"], "default": "none"},"$preview":{"width":1440,"height":3600}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const v = this._rv0() || {}; const st = this.state || {};
+    const CBX = {"olderVersion": {"options": ["Version 2 · Credit memo — Meghna Agro.docx · Tanvir Ahmed", "Version 1 · Credit memo — Meghna Agro.docx · Tanvir Ahmed"], "sel": 0}, "newerVersion": {"options": ["Version 3 · Credit memo — Meghna Agro.docx · Tanvir Ahmed"], "sel": 0}};
+    const get = (o, p) => p.split('.').reduce((a, k) => (a == null ? a : a[k]), o);
+    const open = st.cbxOpen !== undefined ? st.cbxOpen : (this.props.combobox && this.props.combobox !== 'none' ? this.props.combobox : '');
+    const q = (st.cbxQ || '').toLowerCase(); const vals = st.cbxVal || {};
+    const close = () => this.setState({ cbxOpen: '', cbxQ: '' });
+    v.cbx = {};
+    Object.keys(CBX).forEach((k) => {
+      const c = CBX[k];
+      const all = c.path ? (get(v, c.path) || []).map((o) => ({ value: String(o[c.valueKey] != null ? o[c.valueKey] : o[c.labelKey]), label: String(o[c.labelKey]), sel: !!o[c.selKey] }))
+                         : c.options.map((o, i) => ({ value: o, label: o, sel: i === c.sel }));
+      const placeholder = all.find((o) => o.value === '');
+      const opts = all.filter((o) => o.value !== '');
+      const chosen = vals[k] !== undefined ? vals[k] : ((opts.find((o) => o.sel) || placeholder || opts[0] || { label: '' }).label);
+      const isOpen = open === k;
+      const items = opts.filter((o) => !isOpen || !q || o.label.toLowerCase().indexOf(q) >= 0).map((o) => ({
+        label: o.label, aria: o.label === chosen ? 'true' : 'false', check: 'flex-shrink: 0; visibility: ' + (o.label === chosen ? 'visible' : 'hidden'),
+        pick: () => { const n = Object.assign({}, vals); n[k] = o.label; const h = c.onChange ? get(v, c.onChange) : null; if (typeof h === 'function') h({ target: { value: o.value } }); this.setState({ cbxOpen: '', cbxQ: '', cbxVal: n }); }
+      }));
+      v.cbx[k] = { value: chosen, isOpen: isOpen, aria: isOpen ? 'true' : 'false', toggle: () => this.setState({ cbxOpen: isOpen ? '' : k, cbxQ: '' }), close: close,
+        key: (ev) => { if (ev && ev.key === 'Escape') close(); }, q: st.cbxQ || '', onQ: (ev) => this.setState({ cbxQ: ev && ev.target ? ev.target.value : '' }),
+        items: items, empty: items.length === 0 };
+    });
+    return v;
+  }
+
+  _rv0() {
+    const e = !!this.props.errors;
+    const extra = {};
+    const st = this.state || {};
+    // One-time code: six boxes in two groups of three (shadcn InputOTP); the real input sits on top, invisible.
+    const mkOtp = (k, fid, o) => {
+      const raw = st['otp_' + k] !== undefined ? st['otp_' + k] : (o.init || '');
+      const v = String(raw).replace(/\D/g, '').slice(0, 6);
+      const focused = !!st['otpF_' + k] && !o.disabled;
+      const line = o.error ? 'var(--destructive)' : 'var(--border-strong)';
+      const slot = (i) => {
+        const active = focused && i === Math.min(v.length, 5);
+        const first = i % 3 === 0, last = i % 3 === 2;
+        return {
+          ch: v[i] || '', caret: active && !v[i],
+          style: 'position: relative; display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; box-sizing: border-box; '
+            + 'border-top: 1px solid ' + line + '; border-bottom: 1px solid ' + line + '; border-right: 1px solid ' + line + '; '
+            + (first ? 'border-left: 1px solid ' + line + '; border-radius: 8px 0 0 8px; ' : '') + (last ? 'border-radius: 0 8px 8px 0; ' : '')
+            + "font-family: 'Geist Mono', ui-monospace, monospace; font-size: 16px; font-weight: 500; box-shadow: 0 1px 2px rgba(0,0,0,0.05); "
+            + (o.disabled ? 'background: var(--muted); color: var(--muted-fg); ' : 'background: var(--bg); color: var(--fg); ')
+            + (active ? 'z-index: 1; box-shadow: 0 0 0 2px ' + (o.error ? 'var(--destructive)' : 'var(--ring)') + '; ' : '')
+        };
+      };
+      const slots = [0, 1, 2, 3, 4, 5].map(slot);
+      return {
+        a: slots.slice(0, 3), b: slots.slice(3), value: v,
+        disabled: !!o.disabled, invalid: o.error ? 'true' : 'false', describedBy: o.error ? fid + '-err' : '',
+        onInput: (ev) => { const n = {}; n['otp_' + k] = ev && ev.target ? String(ev.target.value).replace(/\D/g, '').slice(0, 6) : ''; this.setState(n); },
+        onFocus: () => { const n = {}; n['otpF_' + k] = true; this.setState(n); },
+        onBlur: () => { const n = {}; n['otpF_' + k] = false; this.setState(n); }
+      };
+    };
+    const OTP = {
+      su_code: mkOtp('su_code', 'su-code', { init: e ? '481209' : '', error: e })
+    };
+    return Object.assign({ otp: OTP }, Object.assign({
+      themeClass: (this.state && this.state.theme) || this.props.theme || 'system',
+      e: e, ok: !e, eAria: e ? 'true' : 'false',
+      b: e ? 'var(--destructive)' : 'var(--border)'
+    }, extra));
+  }
+}
+</script>
+</body>
+</html>

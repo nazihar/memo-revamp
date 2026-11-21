@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Closed memo on a phone</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+.th{color-scheme:light;--bg:#ffffff;--card:#ffffff;--fg:#0a0a0a;--subtle:#fafafa;--muted:#f5f5f5;--hover:#f0f0f0;--active:#ebebeb;--chip:#e5e5e5;--border:#e5e5e5;--border-strong:#d4d4d4;--muted-fg:#737373;--text-1:#262626;--text-2:#404040;--text-3:#525252;--primary:#171717;--primary-fg:#fafafa;--primary-hover:#262626;--primary-divider:#404040;--primary-muted:#a3a3a3;--ring:#a3a3a3;--destructive:#dc2626;--destructive-hover:#b91c1c;--on-destructive:#ffffff;--danger-fg:#b91c1c;--danger-bg:#fef2f2;--danger-border:#fecaca;--warn-bg:#fffbeb;--warn-fg:#92400e;--warn-border:#fcd34d;--ok-bg:#f0fdf4;--ok-fg:#166534;--ok-border:#bbf7d0;--info-bg:#eff6ff;--info-fg:#1d4ed8}
+.th.dark{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}
+@media (prefers-color-scheme: dark){.th.system{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}}
+body:has(.th.dark){background:#09090b}
+@media (prefers-color-scheme: dark){body:has(.th.system){background:#09090b}}
+body{margin:0;background:#ffffff}
+a{color:var(--fg)}
+button{font-family:inherit}
+.ghost:active{background:var(--muted)}
+</style>
+</helmet>
+<div class="th {{themeClass}}" style="position: relative; width: 390px; height: 844px; overflow: hidden; display: flex; flex-direction: column; background: var(--bg); color: var(--fg); font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 20px">
+
+  <header style="flex-shrink: 0; height: 56px; display: flex; align-items: center; gap: 4px; padding: 0 8px; border-bottom: 1px solid var(--border); box-sizing: border-box">
+    <a href="Phone.dc.html" class="ghost" aria-label="Back to Closed" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 8px; color: var(--fg)">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"></path></svg>
+    </a>
+    <span style="flex: 1; font-family: 'Geist Mono', ui-monospace, monospace; font-size: 14px; font-weight: 500">CR/2026/0142</span>
+    <button type="button" class="ghost" aria-label="More options for this memo" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: transparent; border-radius: 8px; color: var(--fg)">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+    </button>
+  </header>
+
+  <main style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; padding: 16px">
+    <div style="display: flex; flex-direction: column; gap: 6px">
+      <div style="display: flex; flex-wrap: wrap; gap: 6px">
+        <span style="display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; border: 1px solid var(--border); background: var(--muted); color: var(--text-2); font-size: 12px; font-weight: 500">Closed</span>
+        <span style="display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; background: var(--muted); color: var(--fg); font-size: 12px; font-weight: 500">Confidential</span>
+      </div>
+      <h1 style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600; letter-spacing: -0.01em">Credit line renewal for Meghna Agro</h1>
+      <span style="font-size: 13px; color: var(--muted-fg)">Closed 18 Nov by you · approved the same day by Abdul Kader, Managing Director. Nobody can act on it again.</span>
+    </div>
+
+    <section aria-labelledby="pc-rem" style="padding: 12px; border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; gap: 8px; background: var(--card)">
+      <h2 id="pc-rem" style="margin: 0; font-size: 14px; font-weight: 600">Closing remark</h2>
+      <blockquote style="margin: 0; padding-left: 10px; border-left: 2px solid var(--border-strong); font-size: 15px; line-height: 22px">Facility set up in core banking and the limit letter signed on 18 Nov. Nothing left to do on this memo.</blockquote>
+      <span style="font-size: 12px; color: var(--muted-fg)">Tanvir Ahmed (you) · 18 Nov, 16:40</span>
+    </section>
+
+    <!-- Final record -->
+    <section aria-labelledby="pa-rec" style="padding: 12px; border: 1px solid var(--border-strong); border-radius: 10px; display: flex; flex-direction: column; gap: 10px; background: var(--card)">
+      <h2 id="pa-rec" style="margin: 0; font-size: 14px; font-weight: 600">Final record</h2>
+      <div style="display: flex; align-items: center; gap: 10px">
+        <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 8px; background: var(--danger-bg); color: var(--danger-fg); font-size: 10px; font-weight: 700; flex-shrink: 0">PDF</span>
+        <span style="display: flex; flex-direction: column; min-width: 0">
+          <span style="font-weight: 500">Version 1 · 14 pages</span>
+          <span style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted-fg)">
+            <span style="display: inline-flex; align-items: center; height: 18px; padding: 0 6px; border-radius: 6px; border: 1px solid var(--ok-border); background: var(--ok-bg); color: var(--ok-fg); font-size: 11px; font-weight: 500">Valid PDF/A</span>
+            made 18 Nov
+          </span>
+        </span>
+      </div>
+      <a href="#" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 44px; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 15px; font-weight: 500; text-decoration: none">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15V3"></path><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path></svg>
+        Download final record
+      </a>
+      <span style="font-size: 12px; color: var(--muted-fg)">The approved document, approvals, note sheet and attachments in one file.</span>
+    </section>
+
+    <!-- Final decision -->
+    <section aria-labelledby="pa-dec" style="padding: 12px; border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; gap: 6px; background: var(--card)">
+      <h2 id="pa-dec" style="margin: 0; font-size: 14px; font-weight: 600">Final decision</h2>
+      <span style="font-size: 13px"><span style="font-weight: 500">Abdul Kader</span> <span style="color: var(--muted-fg)">· Managing Director · 18 Nov, 11:05</span></span>
+      <p style="margin: 0; color: var(--text-1)">Approved at the proposed limit. Renewal subject to the updated valuation being kept on file, and to a review of security cover at six months.</p>
+    </section>
+
+    <!-- Approvals -->
+    <section aria-labelledby="pa-appr" style="padding: 12px; border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; gap: 4px; background: var(--card)">
+      <h2 id="pa-appr" style="margin: 0 0 4px; font-size: 14px; font-weight: 600">Approvals · 5 of 5</h2>
+      <sc-for list="{{stamps}}" as="s" hint-placeholder-count="5">
+        <div style="display: flex; gap: 10px; padding: 8px 0; border-top: 1px solid var(--hover)">
+          <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; margin-top: 1px; border-radius: 50%; background: var(--primary); color: var(--primary-fg); flex-shrink: 0">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"></path></svg>
+          </span>
+          <span style="display: flex; flex-direction: column; min-width: 0">
+            <span style="font-size: 13px; font-weight: 500">{{s.person}} <span style="font-weight: 400; color: var(--muted-fg)">· {{s.decision}}</span></span>
+            <span style="font-size: 12px; color: var(--muted-fg)">{{s.position}} · {{s.time}}</span>
+          </span>
+        </div>
+      </sc-for>
+    </section>
+
+    <!-- More -->
+    <section aria-label="More about this memo" style="border: 1px solid var(--border); border-radius: 10px; overflow: hidden; background: var(--card)">
+      <sc-for list="{{more}}" as="m" hint-placeholder-count="5">
+        <a href="#" style="{{m.rowStyle}}">
+          <span style="display: flex; flex-direction: column; min-width: 0; flex: 1">
+            <span style="font-weight: 500">{{m.title}}</span>
+            <span style="font-size: 12px; color: var(--muted-fg); white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{m.value}}</span>
+          </span>
+          <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--muted-fg); flex-shrink: 0"><path d="m9 18 6-6-6-6"></path></svg>
+        </a>
+      </sc-for>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const stamps = [
+      { person: 'Mahmud Karim', position: 'Head of Corporate Banking', decision: 'Recommended', time: '15 Nov' },
+      { person: 'Sadia Islam', position: 'Credit Risk Analyst', decision: 'Recommended', time: '16 Nov' },
+      { person: 'Farhana Rahman', position: 'Head of Credit', decision: 'Approved', time: '17 Nov' },
+      { person: 'Imran Hossain', position: 'Chief Risk Officer (acting)', decision: 'Approved', time: '17 Nov' },
+      { person: 'Abdul Kader', position: 'Managing Director', decision: 'Approved', time: '18 Nov' }
+    ];
+    const more = [
+      { title: 'Approved document', value: 'Credit memo — Meghna Agro.docx · version 3' },
+      { title: 'Details', value: 'BDT 250,000,000 · revolving credit line · 12 months' },
+      { title: 'Note sheet', value: '9 notes over 2 rounds' },
+      { title: 'Attachments', value: '3 files' },
+      { title: 'Follow-up', value: 'Follows up CR/2025/0388' },
+      { title: 'History', value: 'Closed 18 Nov, 16:40' },
+      { title: 'People with access', value: '12 people · 2 copies sent · shared with 1' }
+    ].map((m, i) => Object.assign({}, m, {
+      rowStyle: 'display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 6px 8px 6px 12px; text-decoration: none; color: var(--fg)' + (i > 0 ? '; border-top: 1px solid var(--hover)' : '')
+    }));
+    return {
+      themeClass: (this.state && this.state.theme) || this.props.theme || 'system',
+      stamps: stamps,
+      more: more
+    };
+  }
+}
+</script>
+</body>
+</html>

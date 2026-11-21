@@ -1,0 +1,379 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Search on a phone</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+.th{color-scheme:light;--bg:#ffffff;--card:#ffffff;--fg:#0a0a0a;--subtle:#fafafa;--muted:#f5f5f5;--hover:#f0f0f0;--active:#ebebeb;--chip:#e5e5e5;--border:#e5e5e5;--border-strong:#d4d4d4;--muted-fg:#737373;--text-1:#262626;--text-2:#404040;--text-3:#525252;--primary:#171717;--primary-fg:#fafafa;--primary-hover:#262626;--primary-divider:#404040;--primary-muted:#a3a3a3;--ring:#a3a3a3;--destructive:#dc2626;--destructive-hover:#b91c1c;--on-destructive:#ffffff;--danger-fg:#b91c1c;--danger-bg:#fef2f2;--danger-border:#fecaca;--warn-bg:#fffbeb;--warn-fg:#92400e;--warn-border:#fcd34d;--ok-bg:#f0fdf4;--ok-fg:#166534;--ok-border:#bbf7d0;--info-bg:#eff6ff;--info-fg:#1d4ed8}
+.th.dark{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}
+@media (prefers-color-scheme: dark){.th.system{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}}
+body:has(.th.dark){background:#09090b}
+@media (prefers-color-scheme: dark){body:has(.th.system){background:#09090b}}
+body{margin:0;background:#ffffff}
+a{color:var(--fg)}
+button,input,select{font-family:inherit}
+.ghost:active{background:var(--muted)}
+.chips::-webkit-scrollbar{display:none}
+</style>
+</helmet>
+<div class="th {{themeClass}}" style="position: relative; width: 390px; height: 844px; overflow: hidden; display: flex; flex-direction: column; background: var(--bg); color: var(--fg); font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 20px">
+
+  <!-- Top bar -->
+  <header style="flex-shrink: 0; height: 56px; display: flex; align-items: center; gap: 4px; padding: 0 8px; border-bottom: 1px solid var(--border); box-sizing: border-box">
+    <button type="button" class="ghost" aria-label="Open navigation" aria-expanded="{{navAria}}" onClick="{{openNav}}" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: transparent; border-radius: 8px; color: var(--fg)">
+      <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16"></path><path d="M4 12h16"></path><path d="M4 18h16"></path></svg>
+    </button>
+    <span style="display: flex; align-items: center; gap: 8px; flex: 1; min-width: 0">
+      <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 7px; background: var(--primary); color: var(--primary-fg); font-weight: 600; font-size: 13px; flex-shrink: 0">N</span>
+      <span style="font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">[Organisation name]</span>
+    </span>
+    <a href="SearchPhone.dc.html" class="ghost" aria-current="page" aria-label="Search memos" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: var(--muted); border-radius: 8px; color: var(--fg)">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+    </a>
+    <a href="NotificationsPhone.dc.html" class="ghost" aria-label="Notifications, 4 unread" style="position: relative; display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: transparent; border-radius: 8px; color: var(--fg)">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg>
+      <span aria-hidden="true" style="position: absolute; top: 11px; right: 12px; width: 7px; height: 7px; border-radius: 50%; background: var(--destructive); border: 1.5px solid var(--bg)"></span>
+    </a>
+    <button type="button" class="ghost" aria-label="Account menu, Farhana Rahman" aria-haspopup="menu" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: transparent; border-radius: 8px">
+      <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 50%; background: var(--chip); color: var(--fg); font-weight: 500; font-size: 11px">FR</span>
+    </button>
+  </header>
+  <div style="flex-shrink: 0; display: flex; align-items: center; gap: 4px; padding: 8px 4px 0 12px">
+    <form role="search" novalidate onSubmit="{{noop}}" style="flex: 1; min-width: 0">
+      <label style="position: relative; display: flex; align-items: center">
+        <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Words to find</span>
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--muted-fg); position: absolute; left: 12px"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        <input type="search" enterkeyhint="search" value="Meghna valuation" style="width: 100%; height: 40px; padding: 0 12px 0 36px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--muted); color: var(--fg); font-size: 16px; outline: none">
+      </label>
+    </form>
+    <button type="button" class="ghost" aria-label="Save this search" aria-haspopup="dialog" onClick="{{openSave}}" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; border-radius: 8px; background: transparent; color: var(--fg); flex-shrink: 0">
+      <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>
+    </button>
+  </div>
+
+  <div class="chips" style="flex-shrink: 0; display: flex; align-items: center; gap: 6px; padding: 10px 16px; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid var(--hover)">
+    <button type="button" onClick="{{openFilters}}" aria-haspopup="dialog" style="{{filterBtnStyle}}">
+      <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"></path><path d="M7 12h10"></path><path d="M10 18h4"></path></svg>
+      {{filterLabel}}
+    </button>
+    <sc-for list="{{chips}}" as="c" hint-placeholder-count="1">
+      <button type="button" onClick="{{c.remove}}" aria-label="{{c.removeLabel}}" style="flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px; height: 36px; padding: 0 10px 0 12px; border: 1px solid var(--border); border-radius: 18px; background: var(--muted); color: var(--fg); font-size: 13px; font-weight: 500">
+        {{c.label}}
+        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+      </button>
+    </sc-for>
+    <button type="button" onClick="{{toggleSort}}" style="flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px; border: 1px solid var(--border); border-radius: 18px; background: var(--bg); color: var(--text-2); font-size: 13px; font-weight: 500">
+      <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 16-4 4-4-4"></path><path d="M17 20V4"></path><path d="m3 8 4-4 4 4"></path><path d="M7 4v16"></path></svg>
+      {{sortLabel}}
+    </button>
+  </div>
+
+  <main style="flex: 1; min-height: 0; overflow-y: auto">
+    <h2 style="margin: 0; padding: 12px 16px 4px; font-size: 12px; font-weight: 500; color: var(--muted-fg)">{{countLabel}}</h2>
+    <sc-if value="{{hasResults}}" hint-placeholder-val="{{true}}">
+      <ul style="list-style: none; margin: 0; padding: 0">
+        <sc-for list="{{results}}" as="r" hint-placeholder-count="6">
+          <li style="border-top: 1px solid var(--hover)">
+            <a href="{{r.href}}" style="display: flex; flex-direction: column; gap: 4px; padding: 12px 16px; text-decoration: none; color: var(--fg)">
+              <span style="display: flex; align-items: flex-start; gap: 8px">
+                <span style="flex: 1; min-width: 0; font-size: 15px; font-weight: 500">{{r.subject}}</span>
+                <span style="{{r.statusStyle}}">{{r.status}}</span>
+              </span>
+              <span style="font-size: 12px; color: var(--muted-fg)"><span style="font-family: 'Geist Mono', ui-monospace, monospace; color: var(--text-2)">{{r.number}}</span> · {{r.type}}<sc-if value="{{r.imported}}" hint-placeholder-val="{{false}}"> · Imported</sc-if></span>
+              <span style="font-size: 13px; line-height: 19px; color: var(--text-1); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden"><sc-for list="{{r.snippet}}" as="p" hint-placeholder-count="3"><sc-if value="{{p.match}}" hint-placeholder-val="{{false}}"><mark style="padding: 0 2px; border-radius: 3px; background: var(--warn-bg); color: var(--fg); font-weight: 600">{{p.text}}</mark></sc-if><sc-if value="{{p.plain}}" hint-placeholder-val="{{true}}">{{p.text}}</sc-if></sc-for></span>
+              <span style="font-size: 12px; color: var(--muted-fg)">{{r.foundIn}}</span>
+            </a>
+          </li>
+        </sc-for>
+      </ul>
+      <div style="display: flex; justify-content: center; padding: 16px">
+        <button type="button" class="ghost" style="height: 40px; padding: 0 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 14px; font-weight: 500">Show more</button>
+      </div>
+    </sc-if>
+    <sc-if value="{{noResults}}" hint-placeholder-val="{{false}}">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 48px 24px; text-align: center">
+        <span style="font-weight: 500; font-size: 16px">No memos match</span>
+        <span style="font-size: 14px; color: var(--muted-fg)">Check the spelling, remove filters, or search all of the memo’s text.</span>
+      </div>
+    </sc-if>
+  </main>
+
+  <!-- Filters sheet -->
+  <sc-if value="{{sheetOpen}}" hint-placeholder-val="{{false}}">
+    <button type="button" tabIndex="-1" aria-label="Close filters" onClick="{{closeFilters}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 20; border: 0; padding: 0; background: rgba(0,0,0,0.5)"></button>
+    <div role="dialog" aria-modal="true" aria-labelledby="ps-filters" onKeyDown="{{sheetKey}}" style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 21; max-height: 88%; display: flex; flex-direction: column; border-radius: 16px 16px 0 0; background: var(--card); box-shadow: 0 -8px 32px rgba(0,0,0,0.2)">
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 8px 8px 16px; border-bottom: 1px solid var(--hover)">
+        <h2 id="ps-filters" style="margin: 0; font-size: 18px; font-weight: 600">Filters</h2>
+        <button type="button" class="ghost" onClick="{{clearFilters}}" style="height: 44px; padding: 0 12px; border: 0; border-radius: 8px; background: transparent; color: var(--fg); font-size: 14px; font-weight: 500">Clear</button>
+      </div>
+      <div style="flex: 1; min-height: 0; overflow-y: auto; padding: 8px 16px; display: flex; flex-direction: column; gap: 16px">
+        <fieldset style="margin: 0; padding: 0; border: 0; display: flex; flex-wrap: wrap; gap: 6px">
+          <legend style="padding: 0; margin-bottom: 8px; font-size: 14px; font-weight: 600">Search in</legend>
+          <sc-for list="{{sources}}" as="s" hint-placeholder-count="3">
+            <label style="{{s.style}}">
+              <input type="checkbox" checked="{{s.on}}" onChange="{{s.toggle}}" style="margin: 0; width: 16px; height: 16px; accent-color: var(--primary)">
+              {{s.label}}
+            </label>
+          </sc-for>
+        </fieldset>
+        <sc-for list="{{facets}}" as="fc" hint-placeholder-count="3">
+          <fieldset style="margin: 0; padding: 0; border: 0; display: flex; flex-direction: column">
+            <legend style="padding: 0; margin-bottom: 4px; font-size: 14px; font-weight: 600">{{fc.title}}</legend>
+            <sc-for list="{{fc.options}}" as="o" hint-placeholder-count="3">
+              <label style="display: flex; align-items: center; gap: 12px; min-height: 44px; font-size: 15px">
+                <input type="checkbox" checked="{{o.on}}" onChange="{{o.toggle}}" style="margin: 0; width: 18px; height: 18px; accent-color: var(--primary)">
+                <span style="flex: 1">{{o.label}}</span>
+                <span style="font-size: 13px; color: var(--muted-fg)">{{o.count}}</span>
+              </label>
+            </sc-for>
+          </fieldset>
+        </sc-for>
+        <fieldset id="ps-date" style="margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 8px">
+          <legend style="padding: 0; margin-bottom: 8px; font-size: 14px; font-weight: 600">Date</legend>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px">
+            <label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--muted-fg)">From<input type="date" style="width: 100%; height: 44px; padding: 0 10px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 16px; outline: none"></label>
+            <label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--muted-fg)">To<input type="date" style="width: 100%; height: 44px; padding: 0 10px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 16px; outline: none"></label>
+          </div>
+        </fieldset>
+        <fieldset style="margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 8px">
+          <legend style="padding: 0; margin-bottom: 8px; font-size: 14px; font-weight: 600">Amount (BDT)</legend>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px">
+            <label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--muted-fg)">Minimum<input type="text" inputmode="decimal" placeholder="0" style="width: 100%; height: 44px; padding: 0 10px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 16px; outline: none"></label>
+            <label style="display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--muted-fg)">Maximum<input type="text" inputmode="decimal" placeholder="Any" style="width: 100%; height: 44px; padding: 0 10px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 16px; outline: none"></label>
+          </div>
+        </fieldset>
+        <fieldset style="margin: 0; padding: 0; border: 0; display: flex; flex-direction: column">
+          <legend style="padding: 0; margin-bottom: 4px; font-size: 14px; font-weight: 600">Origin</legend>
+          <sc-for list="{{origins}}" as="og" hint-placeholder-count="3">
+            <label style="display: flex; align-items: center; gap: 12px; min-height: 44px; font-size: 15px">
+              <input type="radio" name="ps-origin" checked="{{og.on}}" onChange="{{og.pick}}" style="margin: 0; width: 18px; height: 18px; accent-color: var(--primary)">
+              {{og.label}}
+            </label>
+          </sc-for>
+        </fieldset>
+      </div>
+      <div style="padding: 10px 16px 12px; border-top: 1px solid var(--border)">
+        <button type="button" onClick="{{closeFilters}}" style="width: 100%; height: 44px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 15px; font-weight: 500">{{showLabel}}</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{saveOpen}}" hint-placeholder-val="{{false}}">
+    <button type="button" tabIndex="-1" aria-label="Close" onClick="{{closeSave}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 30; border: 0; padding: 0; background: rgba(0,0,0,0.5)"></button>
+    <form role="dialog" aria-modal="true" aria-labelledby="psv-title" novalidate onSubmit="{{doSave}}" onKeyDown="{{saveKey}}" style="position: absolute; left: 0; right: 0; bottom: 0; z-index: 31; display: flex; flex-direction: column; gap: 16px; padding: 8px 16px 16px; border-radius: 16px 16px 0 0; background: var(--card); box-shadow: 0 -8px 32px rgba(0,0,0,0.2)">
+      <span aria-hidden="true" style="align-self: center; width: 40px; height: 4px; border-radius: 2px; background: var(--chip)"></span>
+      <h2 id="psv-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Save this search</h2>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="psv-name" style="font-size: 14px; font-weight: 500">Name</label>
+          <input id="psv-name" type="text" value="{{saveName}}" onChange="{{onSaveName}}" aria-invalid="{{saveInvalid}}" aria-describedby="psv-msg psv-count" style="{{saveInputStyle}}; height: 44px; padding: 0 12px; font-size: 16px">
+          <span style="display: flex; justify-content: space-between; gap: 8px; font-size: 12px">
+            <sc-if value="{{saveError}}" hint-placeholder-val="{{false}}"><span id="psv-msg" role="alert" style="color: var(--danger-fg)">{{saveErrorText}}</span></sc-if>
+            <sc-if value="{{saveOk}}" hint-placeholder-val="{{true}}"><span id="psv-msg" style="color: var(--muted-fg)">Only you see your saved searches. Each time you open one, it shows what you may read then.</span></sc-if>
+            <span id="psv-count" style="flex-shrink: 0; color: var(--muted-fg); font-variant-numeric: tabular-nums">{{saveCounter}}</span>
+          </span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <span style="font-size: 13px; font-weight: 500">What is saved</span>
+          <div style="display: flex; flex-wrap: wrap; gap: 6px">
+            <sc-for list="{{summary}}" as="c" hint-placeholder-count="4"><span style="{{c.style}}">{{c.text}}</span></sc-for>
+          </div>
+          <span style="font-size: 12px; color: var(--muted-fg)">The words, filters and sort, not the results: they are worked out again each time you open it.</span>
+        </div>
+        <sc-if value="{{atLimit}}" hint-placeholder-val="{{false}}">
+          <div role="alert" style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 10px 12px; border: 1px solid var(--warn-border); border-radius: 8px; background: var(--warn-bg); color: var(--warn-fg); font-size: 13px">
+            <span style="flex: 1 1 240px">You have as many saved searches as you can keep. Delete one on the Saved searches page first.</span>
+            <a href="SavedPhone.dc.html" style="color: var(--fg); font-weight: 500">Saved searches</a>
+          </div>
+        </sc-if>
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <sc-if value="{{notAtLimit}}" hint-placeholder-val="{{true}}">
+          <button type="submit" style="width: 100%; height: 44px; border: 0; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 15px; font-weight: 500">Save</button>
+        </sc-if>
+        <button type="button" class="ghost" onClick="{{closeSave}}" style="height: 44px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 15px; font-weight: 500">Cancel</button>
+      </div>
+    </form>
+  </sc-if>
+  <sc-if value="{{savedToast}}" hint-placeholder-val="{{false}}">
+    <div role="status" style="position: absolute; left: 16px; right: 16px; bottom: 16px; z-index: 25; display: flex; align-items: center; gap: 10px; padding: 10px 8px 10px 14px; border-radius: 10px; background: var(--primary); color: var(--primary-fg); font-size: 14px; box-shadow: 0 8px 24px rgba(0,0,0,0.2)">
+      <span style="flex: 1">Search saved.</span>
+      <a href="SavedPhone.dc.html" style="color: var(--primary-fg); font-weight: 500; text-decoration: underline">View</a>
+      <button type="button" aria-label="Dismiss" onClick="{{hideToast}}" style="display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border: 0; border-radius: 6px; background: transparent; color: var(--primary-fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+      </button>
+    </div>
+  </sc-if>
+  <!-- Navigation drawer -->
+  <sc-if value="{{navOpen}}" hint-placeholder-val="{{false}}">
+    <button type="button" tabIndex="-1" aria-label="Close navigation" onClick="{{closeNav}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; z-index: 10; border: 0; padding: 0; background: rgba(0,0,0,0.4)"></button>
+    <nav aria-label="Main navigation" onKeyDown="{{navKey}}" style="position: absolute; top: 0; bottom: 0; left: 0; z-index: 11; width: 300px; display: flex; flex-direction: column; padding: 8px; box-sizing: border-box; background: var(--subtle); border-right: 1px solid var(--border); box-shadow: 0 10px 40px rgba(0,0,0,0.2); overflow-y: auto">
+      <div style="display: flex; align-items: center; gap: 8px; padding: 6px 4px 6px 8px">
+        <span aria-hidden="true" style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-weight: 600; font-size: 14px; flex-shrink: 0">N</span>
+        <span style="display: flex; flex-direction: column; min-width: 0; flex: 1">
+          <span style="font-weight: 600; line-height: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">[Organisation name]</span>
+          <span style="font-size: 12px; line-height: 16px; color: var(--muted-fg)">Memo &amp; Meetings</span>
+        </span>
+        <button type="button" class="ghost" aria-label="Close navigation" onClick="{{closeNav}}" style="display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border: 0; background: transparent; border-radius: 8px; color: var(--text-3)">
+          <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+        </button>
+      </div>
+      <div style="height: 32px; display: flex; align-items: center; padding: 8px 8px 0; font-size: 12px; font-weight: 500; color: var(--muted-fg)">Work</div>
+      <a href="HomePhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+        Home
+      </a>
+      <a href="Phone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+        <span style="flex: 1">Inbox</span>
+        <span style="font-size: 12px; color: var(--text-3)">8</span>
+      </a>
+      <a href="SavedPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>
+        Saved searches
+      </a>
+      <a href="DashboardPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg>
+        Dashboard
+      </a>
+      <a href="StatusPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path></svg>
+        Status
+      </a>
+      <a href="OrgPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="16" y="16" width="6" height="6" rx="1"></rect><rect x="2" y="16" width="6" height="6" rx="1"></rect><rect x="9" y="2" width="6" height="6" rx="1"></rect><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"></path><path d="M12 12V8"></path></svg>
+        Organisation
+      </a>
+      <div style="height: 32px; display: flex; align-items: center; padding: 8px 8px 0; font-size: 12px; font-weight: 500; color: var(--muted-fg)">Administration</div>
+      <a href="AdminOverviewPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
+        Overview
+      </a>      <a href="AuditPhone.dc.html" class="nav-item" style="display: flex; align-items: center; gap: 10px; height: 44px; padding: 0 10px; border-radius: 8px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="5" x="2" y="3" rx="1"></rect><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"></path><path d="M10 12h4"></path></svg>
+        Audit
+      </a>
+    </nav>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"atLimit":{"editor":"boolean","default":false},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  data() {
+    const S = (t) => t.split('*').map((text, i) => ({ text: text, match: i % 2 === 1, plain: i % 2 === 0 }));
+    return [
+      { iso: '2026-11-16', order: 1, src: 'notes', subject: 'Credit line renewal for Meghna Agro', number: 'CR/2026/0142', status: 'In review', type: 'Credit proposal', unit: 'Corporate Banking', foundIn: 'Found in: a note', href: 'MemoPhone.dc.html', snippet: S('…Updated *valuation* from the panel valuer is attached. Security cover is now 1.4×…') },
+      { iso: '2019-04-09', order: 2, src: 'documents', subject: 'Meghna Agro overdraft', number: 'CR/2019/1180', status: 'Approved', type: 'Credit proposal', unit: 'Corporate Banking', foundIn: 'Found in: the document', href: 'ImportedPhone.dc.html', imported: true, snippet: S('…overdraft for *Meghna* Agro Ltd. against hypothecation of stock, subject to annual *valuation*…') },
+      { iso: '2026-10-03', order: 3, src: 'documents', subject: 'Meghna Agro collateral revaluation', number: 'RSK/2026/0031', status: 'Closed', type: 'General memo', unit: 'Credit Risk', foundIn: 'Found in: the document', href: '#', snippet: S('…the panel *valuation* of the Narsingdi warehouse held as security for *Meghna* Agro…') },
+      { iso: '2025-12-02', order: 4, src: 'metadata', subject: 'Credit line for Meghna Agro, 2025', number: 'CR/2025/0388', status: 'Approved', type: 'Credit proposal', unit: 'Corporate Banking', foundIn: 'Found in: details', href: '#', snippet: S('Borrower: *Meghna* Agro Ltd. · revolving credit line') },
+      { iso: '2026-07-28', order: 5, src: 'documents', subject: 'Agro sector exposure limits', number: 'RSK/2026/0012', status: 'Closed', type: 'Policy', unit: 'Credit Risk', foundIn: 'Found in: an attachment', href: '#', snippet: S('…including *Meghna* Agro and two related borrowers…') },
+      { iso: '2026-02-14', order: 6, src: 'metadata', subject: 'Panel valuer appointments 2026', number: 'PRC/2026/0040', status: 'Approved', type: 'Procurement', unit: 'Procurement', foundIn: 'Found in: details', href: '#', snippet: S('Scope: property and collateral *valuation* services…') }
+    ];
+  }
+  renderVals() {
+    const navOpen = !!(this.state && this.state.navOpen);
+    const closeNav = () => this.setState({ navOpen: false });
+    const st = this.state || {};
+    const sel = st.sel || { status: {}, type: {}, unit: {} };
+    const origin = st.origin || 'all';
+    const sources = st.sources || { metadata: true, notes: true, documents: true };
+    const sort = st.sort || 'relevance';
+    const sheetOpen = !!st.sheetOpen;
+    const base = this.data().filter((r) => sources[r.src] && (origin === 'all' || (origin === 'imported' ? r.imported : !r.imported)));
+    const inFacet = (key, r) => { const on = Object.keys(sel[key]).filter((k) => sel[key][k]); return on.length === 0 || on.indexOf(r[key]) >= 0; };
+    const shown = base.filter((r) => inFacet('status', r) && inFacet('type', r) && inFacet('unit', r))
+      .slice().sort(sort === 'newest' ? (a, b) => b.iso.localeCompare(a.iso) : (a, b) => a.order - b.order);
+    const setFacet = (key, v) => { const n = JSON.parse(JSON.stringify(sel)); n[key][v] = !n[key][v]; this.setState({ sel: n }); };
+    const facetDefs = [{ key: 'status', title: 'Status' }, { key: 'type', title: 'Type' }, { key: 'unit', title: 'Unit' }];
+    const facets = facetDefs.map((f) => {
+      const values = [];
+      base.forEach((r) => { if (values.indexOf(r[f.key]) < 0) values.push(r[f.key]); });
+      return { title: f.title, options: values.map((v) => ({ label: v, count: String(base.filter((r) => r[f.key] === v).length), on: !!sel[f.key][v], toggle: () => setFacet(f.key, v) })) };
+    });
+    const chips = [];
+    facetDefs.forEach((f) => Object.keys(sel[f.key]).forEach((v) => { if (sel[f.key][v]) chips.push({ label: v, removeLabel: 'Remove filter ' + v, remove: () => setFacet(f.key, v) }); }));
+    const offSources = ['metadata', 'notes', 'documents'].filter((k) => !sources[k]).length;
+    const activeCount = chips.length + offSources + (origin === 'all' ? 0 : 1);
+    const statusStyles = {
+      'In review': 'border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg)',
+      'Approved': 'border: 1px solid var(--ok-border); background: var(--ok-bg); color: var(--ok-fg)',
+      'Closed': 'border: 1px solid var(--ok-border); background: var(--ok-bg); color: var(--ok-fg)'
+    };
+
+    const saveOpen = !!st.saveOpen;
+    const saveName = st.saveName !== undefined ? st.saveName : 'Meghna valuation';
+    const saveTried = !!st.saveTried;
+    const nameEmpty = !saveName.trim();
+    const nameLong = saveName.length > 100;
+    const atLimit = !!this.props.atLimit;
+    const saveError = saveTried && (nameEmpty || nameLong);
+    const summary = [{ text: '“Meghna valuation”', strong: true }]
+      .concat([{ text: 'In: ' + [['metadata', 'Details'], ['notes', 'Notes'], ['documents', 'Documents']].filter((x) => sources[x[0]]).map((x) => x[1]).join(', '), strong: false }])
+      .concat(chips.map((c) => ({ text: c.label, strong: false })))
+      .concat([{ text: (st.sort || 'relevance') === 'newest' ? 'Newest first' : 'Relevance', strong: false }])
+      .map((c) => ({ text: c.text, style: 'display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; ' + (c.strong ? 'background: var(--muted); color: var(--fg); font-weight: 600' : 'border: 1px solid var(--border); color: var(--text-2)') }));
+    const closeSave = () => this.setState({ saveOpen: false, saveTried: false });
+    const closeFilters = () => this.setState({ sheetOpen: false });
+    return {
+      navOpen: navOpen,
+      navAria: navOpen ? 'true' : 'false',
+      openNav: () => this.setState({ navOpen: true }),
+      closeNav: closeNav,
+      navKey: (ev) => { if (ev && ev.key === 'Escape') closeNav(); },
+      themeClass: (this.state && this.state.theme) || this.props.theme || 'system',
+      noop: (e) => { if (e && e.preventDefault) e.preventDefault(); },
+      filterLabel: activeCount > 0 ? 'Filters · ' + activeCount : 'Filters',
+      filterBtnStyle: 'flex-shrink: 0; display: inline-flex; align-items: center; gap: 6px; height: 36px; padding: 0 12px; border-radius: 18px; font-size: 13px; font-weight: 500; ' + (activeCount > 0 ? 'border: 1px solid var(--primary); background: var(--primary); color: var(--primary-fg)' : 'border: 1px solid var(--border); background: var(--bg); color: var(--fg)'),
+      chips: chips,
+      sortLabel: sort === 'newest' ? 'Newest' : 'Relevance',
+      toggleSort: () => this.setState({ sort: sort === 'newest' ? 'relevance' : 'newest' }),
+      countLabel: shown.length === 1 ? '1 result' : shown.length + ' results',
+      results: shown.map((r) => Object.assign({}, r, { imported: !!r.imported, statusStyle: 'flex-shrink: 0; display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 6px; font-size: 11px; font-weight: 500; ' + statusStyles[r.status] })),
+      hasResults: shown.length > 0,
+      noResults: shown.length === 0,
+      sheetOpen: sheetOpen,
+      openFilters: () => this.setState({ sheetOpen: true }),
+      closeFilters: closeFilters,
+      sheetKey: (ev) => { if (ev && ev.key === 'Escape') closeFilters(); },
+      clearFilters: () => this.setState({ sel: { status: {}, type: {}, unit: {} }, origin: 'all', sources: { metadata: true, notes: true, documents: true } }),
+      origins: [{ id: 'all', label: 'All memos' }, { id: 'native', label: 'Created here' }, { id: 'imported', label: 'Imported' }].map((o) => ({ label: o.label, on: o.id === origin, pick: () => this.setState({ origin: o.id }) })),
+      facets: facets,
+      sources: [{ id: 'metadata', label: 'Details' }, { id: 'notes', label: 'Notes' }, { id: 'documents', label: 'Documents' }].map((s) => ({
+        label: s.label, on: !!sources[s.id],
+        style: 'display: inline-flex; align-items: center; gap: 8px; height: 40px; padding: 0 14px; border-radius: 20px; font-size: 14px; ' + (sources[s.id] ? 'border: 1px solid var(--border-strong); background: var(--muted)' : 'border: 1px solid var(--border); color: var(--muted-fg)'),
+        toggle: () => { const n = Object.assign({}, sources); n[s.id] = !n[s.id]; this.setState({ sources: n }); }
+      })),
+      saveOpen: saveOpen,
+      openSave: () => this.setState({ saveOpen: true, saveTried: false, savedToast: false }),
+      closeSave: closeSave,
+      saveKey: (ev) => { if (ev && ev.key === 'Escape') closeSave(); },
+      saveName: saveName,
+      onSaveName: (e) => this.setState({ saveName: e && e.target ? e.target.value : '' }),
+      saveError: saveError,
+      saveOk: !saveError,
+      saveErrorText: nameEmpty ? 'Enter a name.' : 'Use at most 100 characters.',
+      saveInvalid: saveError ? 'true' : 'false',
+      saveCounter: saveName.length + ' / 100',
+      saveInputStyle: 'width: 100%; box-sizing: border-box; border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; outline: none; ' + (saveError ? 'border: 1px solid var(--destructive)' : 'border: 1px solid var(--border)'),
+      summary: summary,
+      atLimit: atLimit,
+      notAtLimit: !atLimit,
+      doSave: (e) => {
+        if (e && e.preventDefault) e.preventDefault();
+        if (atLimit) return;
+        if (nameEmpty || nameLong) { this.setState({ saveTried: true }); return; }
+        this.setState({ saveOpen: false, saveTried: false, savedToast: true });
+      },
+      savedToast: !!st.savedToast,
+      hideToast: () => this.setState({ savedToast: false }),
+      showLabel: 'Show ' + shown.length + (shown.length === 1 ? ' result' : ' results')
+    };
+  }
+}
+</script>
+</body>
+</html>

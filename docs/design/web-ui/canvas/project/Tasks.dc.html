@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Open tasks</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500&amp;display=swap">
+<style>
+.th{color-scheme:light;--bg:#ffffff;--card:#ffffff;--fg:#0a0a0a;--subtle:#fafafa;--muted:#f5f5f5;--hover:#f0f0f0;--active:#ebebeb;--chip:#e5e5e5;--border:#e5e5e5;--border-strong:#d4d4d4;--muted-fg:#737373;--text-1:#262626;--text-2:#404040;--text-3:#525252;--primary:#171717;--primary-fg:#fafafa;--primary-hover:#262626;--primary-divider:#404040;--primary-muted:#a3a3a3;--ring:#a3a3a3;--destructive:#dc2626;--destructive-hover:#b91c1c;--on-destructive:#ffffff;--danger-fg:#b91c1c;--danger-bg:#fef2f2;--danger-border:#fecaca;--warn-bg:#fffbeb;--warn-fg:#92400e;--warn-border:#fcd34d;--ok-bg:#f0fdf4;--ok-fg:#166534;--ok-border:#bbf7d0;--info-bg:#eff6ff;--info-fg:#1d4ed8}
+.th.dark{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}
+@media (prefers-color-scheme: dark){.th.system{color-scheme:dark;--bg:#09090b;--card:#121214;--fg:#fafafa;--subtle:#121214;--muted:#232327;--hover:#1c1c1f;--active:#27272a;--chip:#2e2e33;--border:#27272a;--border-strong:#3f3f46;--muted-fg:#a1a1aa;--text-1:#f4f4f5;--text-2:#e4e4e7;--text-3:#a1a1aa;--primary:#fafafa;--primary-fg:#09090b;--primary-hover:#e4e4e7;--primary-divider:#a1a1aa;--primary-muted:#52525b;--ring:#a1a1aa;--destructive:#dc2626;--destructive-hover:#ef4444;--on-destructive:#ffffff;--danger-fg:#f87171;--danger-bg:#261517;--danger-border:#51282a;--warn-bg:#261f0e;--warn-fg:#fbbf24;--warn-border:#524012;--ok-bg:#112319;--ok-fg:#4ade80;--ok-border:#1c492e;--info-bg:#151f2c;--info-fg:#60a5fa}}
+body:has(.th.dark){background:#09090b}
+@media (prefers-color-scheme: dark){body:has(.th.system){background:#09090b}}
+body{margin:0;background:#ffffff}
+a{color:var(--fg)}a:hover{color:var(--text-2)}
+button{font-family:inherit}
+textarea{font-family:inherit}
+.nav-item:hover{background:var(--hover)}
+.ghost:hover{background:var(--muted)}
+.tab:hover{color:var(--fg)}
+.lrow:hover{background:var(--subtle)}
+.primary:hover{background:var(--primary-hover)}
+.danger:hover{background:var(--destructive-hover)}
+.sidebar.collapsed{flex-basis:56px !important}
+.sidebar.collapsed .lbl{display:none !important}
+.sidebar.collapsed .nav-item{justify-content:center !important;padding:0 !important}
+.sidebar.collapsed .org{padding:8px 0 !important;justify-content:center}
+.sidebar.collapsed .grp-label{visibility:hidden;height:12px !important}
+.scrim{display:none !important}
+.drawer-close{display:none !important}
+@media (max-width: 1024px){.acct-name{display:none !important}}
+@media (max-width: 860px){
+.sidebar{display:none !important}
+.sidebar.open{display:flex !important;position:fixed;top:0;bottom:0;left:0;width:280px;z-index:40;box-shadow:0 10px 40px rgba(0,0,0,0.2)}
+.scrim.open{display:block !important}
+.drawer-close{display:inline-flex !important}
+.global-search{width:auto !important;flex:1;min-width:0}
+.kbd{display:none !important}
+}
+</style>
+</helmet>
+<div class="th {{themeClass}}" style="display: flex; flex-wrap: wrap; min-height: 1000px; background: var(--bg); color: var(--fg); font-family: 'Geist', ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 20px">
+
+  <button type="button" class="{{scrimClass}}" tabIndex="-1" aria-label="Close navigation" onClick="{{closeNav}}" style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 30; border: 0; padding: 0; background: rgba(0,0,0,0.4); cursor: default"></button>
+
+  <!-- Sidebar (same as Inbox) -->
+  <nav class="{{sidebarClass}}" aria-label="Main navigation" onKeyDown="{{navKey}}" style="flex: 0 0 240px; display: flex; flex-direction: column; background: var(--subtle); border-right: 1px solid var(--border); box-sizing: border-box; padding: 8px; overflow: hidden; position: relative">
+    <button type="button" class="drawer-close ghost" aria-label="Close navigation" onClick="{{closeNav}}" style="position: absolute; top: 14px; right: 12px; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--text-3)">
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+    </button>
+    <div class="org" title="[Organisation name]" style="display: flex; align-items: center; gap: 8px; padding: 8px; color: var(--fg)">
+      <span style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-weight: 600; font-size: 14px; flex-shrink: 0">N</span>
+      <span class="lbl" style="display: flex; flex-direction: column; min-width: 0; flex: 1">
+        <span style="font-weight: 600; font-size: 14px; line-height: 18px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">[Organisation name]</span>
+        <span style="font-size: 12px; line-height: 16px; color: var(--muted-fg)">Memo &amp; Meetings</span>
+      </span>
+    </div>
+    <div style="display: flex; flex-direction: column; padding: 8px 0 0">
+      <div class="grp-label" style="height: 32px; display: flex; align-items: center; padding: 0 8px; font-size: 12px; font-weight: 500; color: var(--muted-fg); white-space: nowrap">Work</div>
+      <a href="Home.dc.html" class="nav-item" title="Home" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"></path><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+        <span class="lbl">Home</span>
+      </a>
+      <a href="Main.dc.html" class="nav-item" title="Inbox" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
+        <span class="lbl" style="flex: 1">Inbox</span>
+        <span class="lbl" style="font-size: 12px; font-weight: 500; color: var(--text-3); font-variant-numeric: tabular-nums">8</span>
+      </a>
+      <a href="Saved.dc.html" class="nav-item" title="Saved searches" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>
+        <span class="lbl">Saved searches</span>
+      </a>
+      <a href="Dashboard.dc.html" class="nav-item" title="Dashboard" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg>
+        <span class="lbl">Dashboard</span>
+      </a>
+      <a href="Status.dc.html" class="nav-item" title="Status" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path></svg>
+        <span class="lbl">Status</span>
+      </a>
+      <a href="Org.dc.html" class="nav-item" title="Organisation" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="16" y="16" width="6" height="6" rx="1"></rect><rect x="2" y="16" width="6" height="6" rx="1"></rect><rect x="9" y="2" width="6" height="6" rx="1"></rect><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"></path><path d="M12 12V8"></path></svg>
+        <span class="lbl">Organisation</span>
+      </a>
+    </div>
+    <div style="display: flex; flex-direction: column; padding: 8px 0 0">
+      <div class="grp-label" style="height: 32px; display: flex; align-items: center; padding: 0 8px; font-size: 12px; font-weight: 500; color: var(--muted-fg); white-space: nowrap">Administration</div>
+      <a href="AdminOverview.dc.html" class="nav-item" title="Overview" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
+        <span class="lbl">Overview</span>
+      </a>
+      <a href="Users.dc.html" class="nav-item" title="Users" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+        <span class="lbl">Users</span>
+      </a>
+      <a href="MemoTypes.dc.html" class="nav-item" title="Memo types" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path><path d="M14 2v4a2 2 0 0 0 2 2h4"></path><path d="M16 13H8"></path><path d="M16 17H8"></path></svg>
+        <span class="lbl">Memo types</span>
+      </a>
+      <a href="Workflows.dc.html" class="nav-item" title="Workflows" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="8" x="3" y="3" rx="2"></rect><path d="M7 11v4a2 2 0 0 0 2 2h4"></path><rect width="8" height="8" x="13" y="13" rx="2"></rect></svg>
+        <span class="lbl">Workflows</span>
+      </a>
+      <a href="#" class="nav-item" title="Open tasks" aria-current="page" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg); background: var(--active); font-weight: 500">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 2 2 4-4"></path><path d="m3 7 2 2 4-4"></path><path d="M13 6h8"></path><path d="M13 12h8"></path><path d="M13 18h8"></path></svg>
+        <span class="lbl">Open tasks</span>
+      </a>
+      <a href="OrgSecurity.dc.html" class="nav-item" title="Security" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"></path><path d="m9 12 2 2 4-4"></path></svg>
+        <span class="lbl">Security</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- Main column -->
+  <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column">
+
+    <!-- Top bar (same as Inbox) -->
+    <header style="position: relative; z-index: 5; height: 48px; display: flex; align-items: center; gap: 8px; padding: 0 16px; border-bottom: 1px solid var(--border); box-sizing: border-box; background: var(--bg)">
+      <button type="button" class="ghost" aria-label="Toggle navigation" aria-expanded="{{navAria}}" onClick="{{toggleNav}}" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; flex-shrink: 0; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M9 3v18"></path></svg>
+      </button>
+      <span aria-hidden="true" style="width: 1px; height: 16px; background: var(--chip); margin: 0 4px; flex-shrink: 0"></span>
+      <button type="button" class="global-search" style="display: flex; align-items: center; gap: 8px; width: 280px; height: 32px; padding: 0 6px 0 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--muted-fg); font-size: 14px; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
+        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        <span style="flex: 1; text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">Search memos…</span>
+        <kbd class="kbd" style="font-family: 'Geist Mono', ui-monospace, monospace; font-size: 11px; line-height: 16px; padding: 1px 5px; border: 1px solid var(--border); border-radius: 4px; background: var(--muted); color: var(--text-3)">{{shortcut}}</kbd>
+      </button>
+      <span style="flex: 1"></span>
+      <a href="Notifications.dc.html" class="ghost" aria-label="Notifications, 4 unread" style="position: relative; display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; flex-shrink: 0; border: 0; background: transparent; border-radius: 6px; cursor: pointer; color: var(--fg)">
+        <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.268 21a2 2 0 0 0 3.464 0"></path><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"></path></svg>
+        <span aria-hidden="true" style="position: absolute; top: 6px; right: 7px; width: 7px; height: 7px; border-radius: 50%; background: var(--destructive); border: 1.5px solid var(--bg)"></span>
+      </a>
+      <span aria-hidden="true" style="width: 1px; height: 16px; background: var(--chip); margin: 0 4px; flex-shrink: 0"></span>
+      <button type="button" class="ghost" aria-label="Account menu, Arif Rahman" aria-haspopup="menu" style="display: inline-flex; align-items: center; gap: 8px; height: 32px; flex-shrink: 0; padding: 0 6px 0 2px; border: 0; background: transparent; border-radius: 8px; cursor: pointer; color: var(--fg)">
+        <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--chip); color: var(--fg); font-weight: 500; font-size: 11px; flex-shrink: 0">AR</span>
+        <span class="acct-name" style="display: flex; flex-direction: column; align-items: flex-start; line-height: 14px">
+          <span style="font-size: 13px; font-weight: 500; line-height: 16px">Arif Rahman</span>
+          <span style="font-size: 11px; color: var(--muted-fg)">a.rahman@[domain]</span>
+        </span>
+        <svg style="color: var(--muted-fg)" class="acct-name" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
+      </button>
+    </header>
+
+    <!-- Content -->
+    <main style="flex: 1; padding: 20px 24px 32px; display: flex; flex-direction: column; gap: 16px; min-width: 0">
+
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px">
+        <div style="display: flex; flex-direction: column; gap: 2px">
+          <h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Open tasks</h1>
+          <p style="margin: 0; font-size: 14px; color: var(--muted-fg)">Give a task to someone else when its approver cannot act, for example after they left.</p>
+        </div>
+        <a href="#" class="ghost" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; text-decoration: none; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">Substitutions</a>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px">
+        <div role="tablist" aria-label="Show" style="display: inline-flex; align-items: center; gap: 2px; height: 36px; padding: 3px; box-sizing: border-box; border-radius: 10px; background: var(--muted)">
+          <sc-for list="{{filters}}" as="f" hint-placeholder-count="3">
+            <button type="button" role="tab" class="tab" aria-selected="{{f.aria}}" onClick="{{f.pick}}" style="{{f.style}}">
+              {{f.label}}
+              <sc-if value="{{f.hasCount}}" hint-placeholder-val="{{false}}">
+                <span style="{{f.countStyle}}">{{f.count}}</span>
+              </sc-if>
+            </button>
+          </sc-for>
+        </div>
+        <button type="button" class="ghost" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 10px; border: 1px dashed var(--border-strong); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer">
+          <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M8 12h8"></path><path d="M12 8v8"></path></svg>
+          Approver
+        </button>
+      </div>
+
+      <sc-if value="{{hasRows}}" hint-placeholder-val="{{true}}">
+        <div style="display: flex; flex-direction: column; gap: 8px">
+          <div style="border: 1px solid var(--border); border-radius: 10px; overflow-x: auto; background: var(--card)">
+            <table style="width: 100%; min-width: 960px; border-collapse: collapse; font-size: 14px">
+              <caption style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Open workflow tasks</caption>
+              <thead>
+                <tr style="border-bottom: 1px solid var(--border); text-align: left">
+                  <th scope="col" style="height: 40px; padding: 0 16px; font-weight: 500; font-size: 13px; color: var(--muted-fg); white-space: nowrap">Memo</th>
+                  <th scope="col" style="padding: 0 12px; font-weight: 500; font-size: 13px; color: var(--muted-fg); white-space: nowrap; width: 150px">Type</th>
+                  <th scope="col" style="padding: 0 12px; font-weight: 500; font-size: 13px; color: var(--muted-fg); white-space: nowrap; width: 240px">Approver</th>
+                  <th scope="col" style="padding: 0 12px; font-weight: 500; font-size: 13px; color: var(--muted-fg); white-space: nowrap; width: 120px">Waiting since</th>
+                  <th scope="col" style="padding: 0 12px; font-weight: 500; font-size: 13px; color: var(--muted-fg); white-space: nowrap; width: 130px">Due</th>
+                  <th scope="col" style="padding: 0 16px 0 12px; font-weight: 500; font-size: 13px; color: var(--muted-fg); white-space: nowrap; width: 100px; text-align: right">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <sc-for list="{{rows}}" as="r" hint-placeholder-count="8">
+                  <tr class="lrow" style="{{r.rowStyle}}">
+                    <td style="padding: 10px 16px; max-width: 0; width: 100%">
+                      <sc-if value="{{r.restricted}}" hint-placeholder-val="{{false}}">
+                        <span style="display: flex; align-items: center; gap: 6px; font-weight: 500; color: var(--text-3)">
+                          <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                          Restricted memo
+                        </span>
+                        <span style="font-size: 12px; color: var(--muted-fg)">You can reassign it without reading it.</span>
+                      </sc-if>
+                      <sc-if value="{{r.open}}" hint-placeholder-val="{{true}}">
+                        <a href="Memo.dc.html" style="display: block; font-weight: 500; color: var(--fg); text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{r.subject}}</a>
+                        <span style="font-size: 12px; color: var(--muted-fg)"><span style="font-family: 'Geist Mono', ui-monospace, monospace">{{r.ref}}</span> · Round {{r.round}}</span>
+                      </sc-if>
+                    </td>
+                    <td style="padding: 0 12px; color: var(--text-2); white-space: nowrap">{{r.type}}</td>
+                    <td style="padding: 8px 12px; white-space: nowrap">
+                      <span style="display: flex; flex-direction: column; gap: 3px; align-items: flex-start">
+                        <span style="display: flex; align-items: center; gap: 8px">
+                          <span aria-hidden="true" style="{{r.avatarStyle}}">{{r.initials}}</span>
+                          <span style="{{r.nameStyle}}">{{r.assignee}}</span>
+                        </span>
+                        <sc-if value="{{r.blocked}}" hint-placeholder-val="{{false}}">
+                          <span style="display: inline-flex; align-items: center; gap: 4px; height: 20px; padding: 0 6px; border-radius: 6px; border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg); font-size: 11px; font-weight: 500">
+                            <svg aria-hidden="true" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"></path><path d="M12 9v4"></path><path d="M12 17h.01"></path></svg>
+                            {{r.blockedLabel}}
+                          </span>
+                        </sc-if>
+                        <sc-if value="{{r.justMoved}}" hint-placeholder-val="{{false}}">
+                          <span style="display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 6px; border: 1px solid var(--ok-border); background: var(--ok-bg); color: var(--ok-fg); font-size: 11px; font-weight: 500">Reassigned just now</span>
+                        </sc-if>
+                      </span>
+                    </td>
+                    <td style="padding: 0 12px; color: var(--muted-fg); white-space: nowrap; font-variant-numeric: tabular-nums">{{r.since}}</td>
+                    <td style="padding: 0 12px; white-space: nowrap">
+                      <sc-if value="{{r.overdue}}" hint-placeholder-val="{{false}}">
+                        <span style="display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; background: var(--destructive); color: var(--on-destructive); font-size: 12px; font-weight: 500">{{r.due}}</span>
+                      </sc-if>
+                      <sc-if value="{{r.dueLater}}" hint-placeholder-val="{{true}}">
+                        <span style="display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; border: 1px solid var(--border); color: var(--text-2); font-size: 12px; font-weight: 500">{{r.due}}</span>
+                      </sc-if>
+                      <sc-if value="{{r.noDue}}" hint-placeholder-val="{{false}}">
+                        <span style="color: var(--muted-fg)">No due date</span>
+                      </sc-if>
+                    </td>
+                    <td style="padding: 0 16px 0 12px; text-align: right">
+                      <button type="button" onClick="{{r.reassign}}" aria-label="{{r.reassignLabel}}" style="{{r.btnStyle}}">Reassign</button>
+                    </td>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+          </div>
+          <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 0 4px">
+            <span style="font-size: 13px; color: var(--muted-fg)">Tasks waiting for reassignment come first. Both approvers are told when a task moves.</span>
+            <button type="button" class="ghost" style="height: 32px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 13px; font-weight: 500; cursor: pointer">Show more</button>
+          </div>
+        </div>
+      </sc-if>
+      <sc-if value="{{noRows}}" hint-placeholder-val="{{false}}">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 56px 24px; border: 1px dashed var(--border); border-radius: 10px; text-align: center">
+          <span style="font-weight: 500; font-size: 16px">No task matches.</span>
+          <span style="font-size: 14px; color: var(--muted-fg)">Nothing is waiting for reassignment right now.</span>
+        </div>
+      </sc-if>
+    </main>
+  </div>
+
+  <!-- Reassign dialog -->
+  <sc-if value="{{dlgOpen}}" hint-placeholder-val="{{false}}">
+    <div style="position: fixed; top: 0; right: 0; bottom: 0; left: 0; z-index: 50; display: flex; align-items: center; justify-content: center; padding: 16px; box-sizing: border-box">
+      <button type="button" tabIndex="-1" aria-label="Close dialog" onClick="{{closeDlg}}" style="position: absolute; top: 0; right: 0; bottom: 0; left: 0; border: 0; padding: 0; background: rgba(0,0,0,0.5); cursor: default"></button>
+      <form role="dialog" aria-modal="true" aria-labelledby="ra-title" aria-describedby="ra-desc" novalidate onSubmit="{{doReassign}}" onKeyDown="{{dlgKey}}" style="position: relative; width: 100%; max-width: 460px; display: flex; flex-direction: column; gap: 16px; padding: 24px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 12px; background: var(--card); box-shadow: 0 16px 48px rgba(0,0,0,0.2)">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h2 id="ra-title" style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Reassign {{dlg.ref}}</h2>
+          <p id="ra-desc" style="margin: 0; font-size: 14px; color: var(--muted-fg)">The new approver must be active and cleared for the memo. Both approvers are told.</p>
+        </div>
+        <div style="display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 6px 12px; padding: 10px 12px; border-radius: 8px; background: var(--subtle); font-size: 13px">
+          <span style="color: var(--muted-fg)">Memo</span><span style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{dlg.subject}}</span>
+          <span style="color: var(--muted-fg)">Now with</span><span>{{dlg.assignee}} <sc-if value="{{dlg.blocked}}" hint-placeholder-val="{{false}}"><span style="color: var(--warn-fg)">· {{dlg.blockedLabel}}</span></sc-if></span>
+        </div>
+        <fieldset style="margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 6px">
+          <legend style="padding: 0; margin-bottom: 6px; font-size: 14px; font-weight: 500">New approver</legend>
+          <label style="position: relative; display: flex; align-items: center">
+            <span style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Find a person</span>
+            <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--muted-fg); position: absolute; left: 10px"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+            <input type="text" value="Kar" style="width: 100%; height: 36px; padding: 0 10px 0 30px; box-sizing: border-box; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; outline: none">
+          </label>
+          <div role="radiogroup" aria-label="People found" style="display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: 8px; overflow: hidden">
+            <sc-for list="{{people}}" as="p" hint-placeholder-count="3">
+              <label style="{{p.rowStyle}}">
+                <input type="radio" name="ra-person" checked="{{p.on}}" disabled="{{p.off}}" onChange="{{p.pick}}" style="margin: 0; width: 16px; height: 16px; accent-color: var(--primary)">
+                <span style="display: flex; flex-direction: column; min-width: 0; flex: 1">
+                  <span style="font-size: 14px; font-weight: 500">{{p.name}}</span>
+                  <span style="font-size: 12px; color: var(--muted-fg)">{{p.position}}</span>
+                </span>
+                <span style="{{p.noteStyle}}">{{p.note}}</span>
+              </label>
+            </sc-for>
+          </div>
+        </fieldset>
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <label for="ra-reason" style="font-size: 14px; font-weight: 500">Reason</label>
+          <textarea id="ra-reason" rows="2" placeholder="e.g. Nasir Uddin left the bank on 31 October" style="width: 100%; box-sizing: border-box; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 14px; line-height: 20px; resize: vertical; outline: none"></textarea>
+          <span style="font-size: 12px; color: var(--muted-fg)">Kept with the task’s history and shown to both approvers.</span>
+        </div>
+        <div style="display: flex; justify-content: flex-end; gap: 8px">
+          <button type="button" class="ghost" onClick="{{closeDlg}}" style="height: 36px; padding: 0 14px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); font-size: 14px; font-weight: 500; color: var(--fg); cursor: pointer">Cancel</button>
+          <button type="submit" disabled="{{noPick}}" style="{{submitStyle}}">Reassign</button>
+        </div>
+      </form>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{toast}}" hint-placeholder-val="{{false}}">
+    <div role="status" style="position: fixed; right: 24px; bottom: 24px; z-index: 40; display: flex; align-items: center; gap: 10px; padding: 10px 10px 10px 14px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); box-shadow: 0 8px 24px rgba(0,0,0,0.12); font-size: 14px">
+      <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--ok-fg)"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg>
+      <span>{{toast}}</span>
+      <button type="button" class="ghost" aria-label="Dismiss" onClick="{{hideToast}}" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 0; border-radius: 6px; background: transparent; color: var(--muted-fg); cursor: pointer">
+        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
+      </button>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"$preview":{"width":1440,"height":1000}}'>
+class Component extends DCLogic {
+  data() {
+    return [
+      { id: 't1', subject: 'Branch refurbishment budget, Chattogram', ref: 'FIN/2026/0329', round: 1, type: 'Budget request', assignee: 'Nasir Uddin', blocked: 'Cannot sign in', since: '3 Nov', due: 'Overdue 6 days', dueKind: 'overdue' },
+      { id: 't2', subject: 'Vendor onboarding: core banking support services', ref: 'PRC/2026/0087', round: 1, type: 'Procurement', assignee: '', blocked: 'Nobody found for this step', since: '12 Nov', due: 'Due 20 Nov', dueKind: 'later' },
+      { id: 't3', restricted: true, type: 'Board paper', assignee: 'Kamal Hasan', blocked: 'Not cleared', since: '14 Nov', due: 'Due 24 Nov', dueKind: 'later' },
+      { id: 't4', subject: 'Credit line renewal for Meghna Agro', ref: 'CR/2026/0142', round: 2, type: 'Credit proposal', assignee: 'Farhana Rahman', since: '16 Nov', due: 'Overdue 1 day', dueKind: 'overdue' },
+      { id: 't5', subject: 'Staff loan exception — branch operations', ref: 'HR/2026/0129', round: 1, type: 'HR request', assignee: 'Imran Hossain', since: '14 Nov', due: 'Due 21 Nov', dueKind: 'later' },
+      { id: 't6', subject: 'ATM fleet replacement, phase 2', ref: 'FIN/2026/0298', round: 2, type: 'Capital expenditure', assignee: 'Shirin Akter', since: '13 Nov', due: 'Due 28 Nov', dueKind: 'later' },
+      { id: 't7', subject: 'Internal audit plan 2027', ref: 'AUD/2026/0021', round: 1, type: 'Audit', assignee: 'Abdul Kader', since: '12 Nov', due: 'Due 2 Dec', dueKind: 'later' },
+      { id: 't8', subject: 'Remote access standard, revision 4', ref: 'IT/2026/0054', round: 3, type: 'Policy', assignee: 'Nusrat Jahan', since: '15 Nov', due: '', dueKind: 'none' }
+    ];
+  }
+  renderVals() {
+    const st = this.state || {};
+    const filter = st.filter || 'open';
+    const moved = st.moved || {};
+    const dlg = st.dlg || '';
+    const pick = st.pick || '';
+    const all = this.data().map((d) => moved[d.id] ? Object.assign({}, d, { assignee: moved[d.id], blocked: '', justMoved: true }) : d);
+    const blockedN = all.filter((d) => d.blocked).length;
+    const overdueN = all.filter((d) => d.dueKind === 'overdue').length;
+    const tabBase = 'display: inline-flex; align-items: center; gap: 6px; height: 30px; padding: 0 10px; border-radius: 7px; font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; ';
+    const filters = [
+      { id: 'open', label: 'All open tasks', count: all.length },
+      { id: 'blocked', label: 'Waiting for reassignment', count: blockedN, warn: true },
+      { id: 'overdue', label: 'Overdue', count: overdueN }
+    ].map((f) => ({
+      label: f.label, count: String(f.count), hasCount: f.count > 0,
+      aria: f.id === filter ? 'true' : 'false',
+      style: tabBase + (f.id === filter ? 'border: 1px solid var(--border); background: var(--bg); color: var(--fg); box-shadow: 0 1px 2px rgba(0,0,0,0.06)' : 'border: 1px solid transparent; background: transparent; color: var(--muted-fg)'),
+      countStyle: 'display: inline-flex; align-items: center; justify-content: center; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 9px; font-size: 11px; font-weight: 500; ' + (f.warn && f.count > 0 ? 'background: var(--warn-bg); color: var(--warn-fg); border: 1px solid var(--warn-border)' : 'background: var(--chip); color: var(--text-2)'),
+      pick: () => this.setState({ filter: f.id })
+    }));
+    const shown = all.filter((d) => filter === 'open' || (filter === 'blocked' ? d.blocked : d.dueKind === 'overdue'));
+    const ini = (n) => n ? n.split(' ').map((p) => p[0]).join('').slice(0, 2) : '?';
+    const rows = shown.map((d, i) => ({
+      subject: d.subject, ref: d.ref, round: d.round, type: d.type, since: d.since, due: d.due,
+      restricted: !!d.restricted, open: !d.restricted,
+      assignee: d.assignee || 'Nobody yet', initials: ini(d.assignee),
+      blocked: !!d.blocked, blockedLabel: d.blocked || '', justMoved: !!d.justMoved,
+      overdue: d.dueKind === 'overdue', dueLater: d.dueKind === 'later', noDue: d.dueKind === 'none',
+      avatarStyle: 'display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; font-size: 10px; font-weight: 600; ' + (d.assignee ? 'background: var(--muted); color: var(--text-2)' : 'border: 1.5px dashed var(--border-strong); color: var(--muted-fg)'),
+      nameStyle: d.assignee ? 'color: var(--fg)' : 'color: var(--muted-fg); font-style: italic',
+      reassignLabel: 'Reassign ' + (d.restricted ? 'restricted memo' : d.ref),
+      btnStyle: 'height: 28px; padding: 0 10px; border-radius: 6px; font-size: 12px; font-weight: 500; cursor: pointer; ' + (d.blocked ? 'border: 0; background: var(--primary); color: var(--primary-fg)' : 'border: 1px solid var(--border); background: var(--bg); color: var(--fg)'),
+      rowStyle: 'border-top: 1px solid var(--hover)' + (d.blocked ? '; background: var(--subtle)' : ''),
+      reassign: () => this.setState({ dlg: d.id, pick: '' })
+    }));
+    const cur = all.find((d) => d.id === dlg) || all[0];
+    const people = [
+      { id: 'mk', name: 'Mahmud Karim', position: 'Head of Retail Banking', note: 'Already on the route', ok: false },
+      { id: 'kr', name: 'Karim Reza', position: 'Deputy CFO · Finance', note: 'Cleared · active', ok: true },
+      { id: 'ak', name: 'Akash Karmakar', position: 'Finance Manager', note: 'Not cleared for this memo', ok: false }
+    ].map((p, i) => ({
+      name: p.name, position: p.position, note: p.note,
+      on: pick === p.id, off: !p.ok,
+      pick: () => this.setState({ pick: p.id }),
+      rowStyle: 'display: flex; align-items: center; gap: 10px; padding: 8px 10px; ' + (i > 0 ? 'border-top: 1px solid var(--hover); ' : '') + (p.ok ? 'cursor: pointer' : 'opacity: 0.75; cursor: not-allowed') + (pick === p.id ? '; background: var(--muted)' : ''),
+      noteStyle: 'font-size: 12px; white-space: nowrap; ' + (p.ok ? 'color: var(--ok-fg)' : 'color: var(--muted-fg)')
+    }));
+    const closeDlg = () => this.setState({ dlg: '' });
+    const navOpen = !!st.navOpen;
+    const collapsed = !!st.collapsed;
+    const closeNav = () => this.setState({ navOpen: false });
+    const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent || '');
+    return {
+      themeClass: (this.state && this.state.theme) || this.props.theme || 'system',
+      filters: filters,
+      rows: rows,
+      hasRows: rows.length > 0,
+      noRows: rows.length === 0,
+      dlgOpen: !!dlg,
+      dlg: { ref: cur.restricted ? 'a restricted memo' : cur.ref, subject: cur.restricted ? 'Restricted memo' : cur.subject, assignee: cur.assignee || 'Nobody yet', blocked: !!cur.blocked, blockedLabel: cur.blocked || '' },
+      people: people,
+      noPick: !pick,
+      submitStyle: 'height: 36px; padding: 0 14px; border: 0; border-radius: 8px; font-size: 14px; font-weight: 500; ' + (pick ? 'background: var(--primary); color: var(--primary-fg); cursor: pointer' : 'background: var(--muted); color: var(--muted-fg); cursor: not-allowed'),
+      closeDlg: closeDlg,
+      dlgKey: (ev) => { if (ev && ev.key === 'Escape') closeDlg(); },
+      doReassign: (e) => {
+        if (e && e.preventDefault) e.preventDefault();
+        if (!pick) return;
+        const m = Object.assign({}, moved); m[dlg] = 'Karim Reza';
+        this.setState({ moved: m, dlg: '', toast: 'Task reassigned to Karim Reza. Both approvers were told.' });
+      },
+      toast: st.toast || '',
+      hideToast: () => this.setState({ toast: '' }),
+      shortcut: isMac ? '⌘K' : 'Ctrl K',
+      sidebarClass: 'sidebar' + (navOpen ? ' open' : '') + (collapsed && !navOpen ? ' collapsed' : ''),
+      scrimClass: 'scrim' + (navOpen ? ' open' : ''),
+      navAria: (navOpen || !collapsed) ? 'true' : 'false',
+      toggleNav: () => {
+        const narrow = typeof window !== 'undefined' && window.innerWidth <= 860;
+        if (narrow) this.setState({ navOpen: !navOpen });
+        else this.setState({ collapsed: !collapsed });
+      },
+      closeNav: closeNav,
+      navKey: (ev) => { if (ev && ev.key === 'Escape') closeNav(); }
+    };
+  }
+}
+</script>
+</body>
+</html>

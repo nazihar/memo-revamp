@@ -1,0 +1,79 @@
+  <main style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; padding: 14px 16px 24px">
+    <div style="display: flex; flex-direction: column; gap: 2px">
+      <h1 style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">My security</h1>
+      <span style="font-size: 13px; color: var(--muted-fg)">How you sign in, and where you are signed in.</span>
+    </div>
+
+    <section aria-labelledby="ps-pw" style="padding: 12px; border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; flex-direction: column; gap: 2px">
+        <h2 id="ps-pw" style="margin: 0; font-size: 14px; font-weight: 600">Password</h2>
+        <span style="font-size: 13px; color: var(--muted-fg)">Changing it signs you out on every other device.</span>
+      </div>
+      <button type="button" style="height: 44px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 15px; font-weight: 500">Change password</button>
+    </section>
+
+    <section aria-labelledby="ps-mfa" style="padding: 12px; border: 1px solid var(--border); border-radius: 10px; display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; flex-direction: column; gap: 2px">
+        <span style="display: flex; align-items: center; gap: 8px">
+          <h2 id="ps-mfa" style="margin: 0; font-size: 14px; font-weight: 600">Two-step sign-in</h2>
+          <span style="display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 6px; border: 1px solid var(--ok-border); background: var(--ok-bg); color: var(--ok-fg); font-size: 11px; font-weight: 500">On</span>
+        </span>
+        <span style="font-size: 13px; color: var(--muted-fg)">You confirm each sign-in with a code from your authenticator app.</span>
+      </div>
+      <button type="button" style="height: 44px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 15px; font-weight: 500">New recovery codes</button>
+      <button type="button" style="height: 44px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-size: 15px; font-weight: 500">Set up a new authenticator</button>
+    </section>
+
+    <section aria-labelledby="ps-dev" style="display: flex; flex-direction: column; gap: 8px">
+      <div style="display: flex; flex-direction: column; gap: 2px">
+        <h2 id="ps-dev" style="margin: 0; font-size: 14px; font-weight: 600">Signed-in devices</h2>
+        <span style="font-size: 13px; color: var(--muted-fg)">Sign out any device you do not recognise.</span>
+      </div>
+      <ul style="list-style: none; margin: 0; padding: 0; border: 1px solid var(--border); border-radius: 10px; overflow: hidden">
+        <sc-for list="{{devices}}" as="d" hint-placeholder-count="4">
+          <li style="{{d.rowStyle}}">
+            <span style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 2px">
+              <span style="display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 500">{{d.name}}
+                <sc-if value="{{d.current}}" hint-placeholder-val="{{false}}"><span style="display: inline-flex; align-items: center; height: 20px; padding: 0 6px; border-radius: 6px; background: var(--muted); font-size: 11px; font-weight: 500">This device</span></sc-if>
+              </span>
+              <span style="font-size: 12px; color: var(--muted-fg)">Last active {{d.last}} · {{d.ip}}</span>
+            </span>
+            <sc-if value="{{d.other}}" hint-placeholder-val="{{true}}">
+              <button type="button" onClick="{{d.signOut}}" aria-label="{{d.signOutLabel}}" style="flex-shrink: 0; height: 40px; padding: 0 12px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--danger-fg); font-size: 14px; font-weight: 500">Sign out</button>
+            </sc-if>
+          </li>
+        </sc-for>
+      </ul>
+    </section>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const st = this.state || {};
+    const out = st.out || {};
+    const closeNav = () => this.setState({ navOpen: false });
+    const devices = [
+      { id: 'd1', name: 'Safari on iPhone', ip: '10.20.9.112', last: 'now', current: true },
+      { id: 'd2', name: 'Chrome on Windows', ip: '10.20.4.17', last: 'today, 08:31' },
+      { id: 'd3', name: 'Edge on Windows', ip: '10.20.4.33', last: '14 Nov' },
+      { id: 'd4', name: 'Unknown device', ip: 'address not recorded', last: '9 Nov' }
+    ].filter((d) => !out[d.id]).map((d, i) => Object.assign({}, d, {
+      current: !!d.current, other: !d.current,
+      signOutLabel: 'Sign out ' + d.name,
+      signOut: () => { const o = Object.assign({}, out); o[d.id] = true; this.setState({ out: o }); },
+      rowStyle: 'display: flex; align-items: center; gap: 10px; padding: 12px' + (i > 0 ? '; border-top: 1px solid var(--hover)' : '')
+    }));
+    return {
+      themeClass: (this.state && this.state.theme) || this.props.theme || 'system',
+      navOpen: !!st.navOpen, navAria: st.navOpen ? 'true' : 'false',
+      openNav: () => this.setState({ navOpen: true }), closeNav: closeNav,
+      navKey: (ev) => { if (ev && ev.key === 'Escape') closeNav(); },
+      devices: devices
+    };
+  }
+}
+</script>
+</body>
+</html>

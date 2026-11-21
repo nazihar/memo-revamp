@@ -1,0 +1,111 @@
+# Web UI redesign (design canvas)
+
+A redesign of the web app: every route of the organisation app (user and administration pages) and of the operator console, desktop and phone side by side, in light and dark. Committees (`/committees`, `/me/committees`, `/admin/committee-types`), added to the app after this design started, are not designed yet. It is a **design**, not code. The app is built from it with shadcn/ui components (see "Building from this design" below).
+
+- Live canvas: a private claude.ai Design artifact, `https://claude.ai/artifact/VRTQYT81opA8eMovd2rDo6`. It needs to be shared before others can open it.
+- Snapshot in this folder: 2026-11-18, canvas version 111.
+
+## What is here
+
+```
+canvas/project/      The design itself: what the live canvas holds
+  canvas.json        Board positions, sizes, titles, the side notes and the canvas pages
+  *.dc.html          One board each: 122 boards. 61 screens, each desktop and phone (InboxReading has no phone board), plus Rules.dc.html (the design rules page)
+tools/               Python scripts and HTML fragments that produced or changed the boards
+NOTES.md             The canvas side notes as text: the API changes the design needs (user, admin and operator), behaviour notes, build note, one section per admin area and the operator console
+IMPROVEMENTS.md      UX improvement backlog: ideas to design and build later, with what each needs from the API
+```
+
+The `.dc.html` files are the source of truth. Each is an HTML template for the Design artifact type: markup with `{{holes}}`, `<sc-for>`/`<sc-if>`, and a `class Component extends DCLogic { renderVals() … }` script that supplies the data and the interactions. The `data-props` attribute declares the tweaks a board offers, for example `theme`, `errors`, `dialog` or `state`. Boards load `./support.js` and render only inside the Design artifact; opened in a browser on their own they show raw template text.
+
+Start with `Rules.dc.html`. It holds the principles, colour tokens, type, spacing, layout and breakpoints, component rules, wording and accessibility rules every board follows, then the admin and settings patterns (section 9) and the operator console's (section 10). The shadcn/ui component for each pattern is listed in its first section.
+
+## Boards on the canvas
+
+On the **Screens** page, in canvas order (`tools/layout.py`):
+
+| Group | Boards |
+|---|---|
+| Start | Home (tweak `viewer`), Inbox · My tasks (`Main`, `Phone`), Inbox with reading pane (`InboxReading`, desktop only), Inbox · Watching, Inbox · Team |
+| A memo's life | New memo, Draft, Your memo in review (`Sent`), Memo in review for an approver (`Memo`), Returned, Approved, Closed, Rejected, Withdrawn, Cancelled, Discarded, Imported, Document |
+| Memo pieces | Memo page parts (`MemoParts`), Memo dialogs (`MemoDialogs`), Confirm it is you (`StepUp`) |
+| Finding things | Search, Saved searches (`Saved`), Notifications, Approvals dashboard (`Dashboard`) |
+| Organisation | Organisation (`Org`), Position |
+| Account | My security (`Security`), Notification settings (`Prefs`), Sign in (`SignIn`) |
+| Platform | Platform status (`Status`), Page states (`States`) |
+
+The **Admin** canvas page holds every administration screen of the app, desktop and phone: the Administration overview (`AdminOverview`, at the top; it is also the grouped Administration menu), Open tasks (`Tasks`), Users, User detail, Roles, Classification (`Classifications`), Memo types, the memo type editor (`MemoTypeEditor`), Memo numbering, Distribution lists, Workflows, the workflow builder (`WorkflowBuilder`), Delegation of authority (`Doa`), Queues, Substitutions, Business calendar, Security, Email, Branding and Language and terms (`OrgSecurity`, `OrgEmail`, `OrgBranding`, `OrgLanguage`), Audit, Import (`Imports`) and one import batch (`ImportBatch`). Pages of one area share a row of section links: People and access, Memos, Workflows, Organisation-wide settings, Records. The **Operator** canvas page holds the operator console, desktop and phone: Operator sign-in (`OpSignIn`), two-step setup from the invitation link (`OpEnrol`), Organisations (`OpTenants`), New organisation (`OpNewTenant`), Organisation detail (`OpTenant`) and Platform audit (`OpAudit`). The **Design rules** page holds `Rules`.
+
+Each desktop board `X.dc.html` has a phone board `XPhone.dc.html`, except `Main` (its phone board is `Phone`) and `InboxReading` (wide screens only; a note stands in its phone column).
+
+## Changing the design
+
+**Small changes:** edit the `.dc.html` file and publish it (below). Keep the token names from `tools/tokens.css` (`var(--bg)`, `var(--fg)`, `var(--border)` …) rather than colours, so light and dark both work.
+
+**Check a board** after any edit: tags must balance, `renderVals()` must run, and every `{{hole}}` must resolve. Run this from this folder (needs Python 3 and Node):
+
+```bash
+python3 tools/smoke.py Memo.dc.html '{}' '{"props":{"errors":true}}'
+```
+
+Each extra argument is a JSON object `{"props": {...}, "state": {...}}` to render with. Reports of `false,true` are the template's own placeholder hints; other names listed as missing are worth a look. A hole inside a closed `<sc-if>` can show as missing harmlessly.
+
+**Add a board:** for admin pages, write a script like `tools/access.py` on top of `tools/kit.py` (its `canvas_add` adds the boards and title notes, and takes the page off the Admin to-do note). Otherwise add its entry to `canvas/project/canvas.json` (`boards`, a title note in `notes`, and `order`), add its row to `ROWS` in `tools/layout.py` (use `'note:<key>'` in the phone slot for a desktop-only board), then run `python3 tools/layout.py`.
+
+## Regenerating
+
+Most scripts in `tools/` were one-time edits applied in sequence while the design was made, for example "add Status to every sidebar" or "swap in the People with access panel". They are kept as a record. **Do not rerun them**: each expected the boards as they were at that moment, and several read copies of earlier boards that are not kept here. Rerunning one would undo later changes.
+
+These can be rerun safely, and reproduce the committed boards exactly:
+
+| Script | Rebuilds | Then run |
+|---|---|---|
+| `tools/dialogs_gallery.py` | `MemoDialogs`, `MemoDialogsPhone` (the dialog specs and copy are in `SPECS`) | `tools/otp.py`, `tools/card_surface.py`, then `tools/layout.py` |
+| `tools/parts.py` | `MemoParts`, `MemoPartsPhone` | `tools/card_surface.py`, then `tools/layout.py` |
+| `tools/otp.py` | Turns the code fields in the step-up, memo dialog and sign-in boards into six boxes (shadcn InputOTP); skips boards already done | — |
+| `tools/card_surface.py` | Adds the `--card` colour and puts cards, tables, dialogs, menus, sheets and toasts on it; skips what is already done | — |
+| `tools/layout.py` | Canvas order and spacing in `canvas.json` | — |
+| `tools/users.py` | `Users`, `UsersPhone`, `UserDetail`, `UserDetailPhone` (from the Open tasks and Position shells; copy from `UsersPage.tsx` and `UserDetailPage.tsx`); also points every sidebar's Users link at them | `tools/card_surface.py` |
+| `tools/kit.py` | Nothing on its own; the shared pieces `users.py`, `access.py`, `memo_admin.py`, `workflows.py`, `settings.py` and `records.py` import (icons, dialogs, fields, shells, section links, adding boards to `canvas.json`) | — |
+| `tools/access.py` | `Roles`, `RolesPhone`, `Classifications`, `ClassificationsPhone` (copy from `RolesPage.tsx`, `ClassificationsPage.tsx`; permission flags from the backend's `Permissions.kt`) | `tools/card_surface.py` |
+| `tools/memo_admin.py` | `MemoTypes`, `MemoTypeEditor`, `MemoNumbering`, `DistributionLists` and their phone boards (copy from `features/memo-types/*` and `DistributionListsPage.tsx`); also points every sidebar's Memo types link at them | `tools/card_surface.py` |
+| `tools/workflows.py` | `Workflows`, `WorkflowBuilder`, `Doa`, `Queues`, `Substitutions`, `BusinessCalendar` and their phone boards (copy from `features/workflows/*`); also points every sidebar's Workflows link at them. Its pieces are in `tools/wf_parts.py` and `tools/wf_builder.py` | `tools/card_surface.py` |
+| `tools/settings.py` | `OrgSecurity`, `OrgEmail`, `OrgBranding`, `OrgLanguage` and their phone boards (copy from `features/admin/*`, `MailSettingsPage.tsx`; ranges from the backend's `SecurityLimit`; contrast checks from `lib/contrast.ts`); also points every sidebar's Administration › Security link at them | `tools/card_surface.py` |
+| `tools/records.py` | `AdminOverview`, `Audit`, `Imports`, `ImportBatch` and their phone boards (copy from `AdminHomePage`, `AuditPage`, `app/navigation.ts`, `features/imports/*`); also points every sidebar's Administration › Overview link at them | `tools/card_surface.py` |
+| `tools/persona.py` | Who is signed in on the boards: trims the Administration group on user boards to what Farhana Rahman's roles allow (Overview, Audit), puts Arif Rahman in the admin shell's top bar, and sets the Inbox phone titles to 18px. Skips what is already done | — |
+| `tools/op_console.py` | `OpSignIn`, `OpEnrol`, `OpTenants`, `OpNewTenant`, `OpTenant`, `OpAudit` and their phone boards, the operator console on the Operator page (copy from `features/platform/*` and `features/auth/StepUpProvider.tsx`; audit actions from the backend; the sign-in frame from `SignIn`). Not named `operator.py`, which would hide Python's own `operator` module | — |
+| `tools/rules_admin.py` | Adds section 9 (admin and settings patterns) and four wording rules to `Rules`. Skips it when already there | — |
+| `tools/states_access.py` | Adds the No access to this page state to `States` and `StatesPhone`, and to the behaviour note. Skips it when already there | — |
+| `tools/rules_operator.py` | Adds section 10 (operator console patterns) to `Rules`, after `rules_admin.py`. Skips it when already there | — |
+| `tools/home_dash.py` | Home and the Approvals dashboard with one job each: the age line and the Your unit card on `Home`/`HomePhone` (tweak `viewer`: head or approver), the dashboard's unit-first scope and View list, the dead Dashboard and Saved searches sidebar links on every board, and the implementation note beside Home. Skips what is already done | — |
+| `tools/combobox.py` | Turns the long or growing lists (time zones, memo types, workflows, roles, units, versions) on 17 boards into a searchable select (shadcn Combobox): a popover on desktop, a bottom sheet on phones, a `combobox` tweak to show each open. Run after the scripts that build those boards and before `card_surface.py`. Skips boards already converted | `tools/card_surface.py` |
+| `tools/rules_select.py` | The select rule and "use the shadcn component, never hand-build on Radix or Base UI" on `Rules` (section 1) and in the build note. Skips what is already there | — |
+| `tools/api_notes.py` | Adds the admin and operator items to the API changes note and to `NOTES.md`. Skips them when already there | — |
+| `tools/smoke.py` | Nothing; checks a board | — |
+| `tools/preview.py` | Nothing; renders a board to a PNG outside the canvas, for checking it by eye (`python3 tools/preview.py Users.dc.html out.png '{"props":{"dialog":"invite"}}'`; needs Node and the Playwright Chromium) | — |
+
+Run them from this folder, for example:
+
+```bash
+cd docs/design/web-ui
+python3 tools/dialogs_gallery.py && python3 tools/otp.py && python3 tools/card_surface.py && python3 tools/layout.py
+```
+
+The one-time scripts, roughly in the order they ran: `theme.py` (tokens and dark mode), `tabs.py`, `bell.py`, `phoneshell.py`, `tasks.py`, `dialogs.py`, `savedialog.py`, `auth.py`, `orgnav.py`, `orgfix.py`, `orgphone.py`, `position.py`, `ended.py`, `sent.py`, `closed.py`, `inbox_tabs.py`, `states.py`, `access_swap.py`, `review_fix.py`, `ux_next_unread.py` (next task, “Since you last looked”, unread markers), `reading_pane.py` (builds `InboxReading` from the Inbox board), `pane_toggle.py` (the reading-pane switch), `dark_options.py` and `dark_preview.py` (the temporary dark-palette comparison, since removed), `apply_dark.py` (made palette A, Crisp neutral, the dark theme everywhere), and a one-time no-wrap fix to the Open tasks table headers and Approver column (done inline, not kept as a script). The `*-body.html`, `*-fields.html` and `*-logic.js` files are fragments they assembled.
+
+## Publishing to the canvas
+
+The canvas is a claude.ai Artifact of the Design type. Publishing is done from a Claude session with the Artifact tool, not from this repository:
+
+1. Copy this folder's `canvas/` somewhere the session can read.
+2. Publish to the canvas URL with `root` set to that `canvas` folder, `file_path` set to `canvas/project/canvas.json`, and `files` mapping each changed `project/X.dc.html` to itself.
+3. Only send the `project/` files. The Design type's own files (`index.html`, `SKILL.md`, `artifact-type/…`) are fixed.
+
+If someone changed a board on the canvas since this snapshot, read it from the canvas first and merge, rather than overwriting it with the copy here.
+
+## Building from this design
+
+- Use shadcn/ui components in `web/src/components/ui` for every control. Add missing ones with `npx shadcn@latest add <name>`. The boards are hand-written HTML only because the canvas cannot run React; do not copy their inline styles.
+- Validation is done by the form (TanStack Form), never by the browser: `noValidate` on forms, our own messages under the field, focus moves to the first error, and the submit button stays enabled.
+- Wording on the boards comes from the app's message catalogues where they exist. Copy the boards introduced is marked on the boards themselves (for example "New, not in the app yet" on Page states) and in `NOTES.md`.
+- `NOTES.md` lists the API changes the design needs (items 1–11) and the behaviour the boards assume.

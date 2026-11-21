@@ -1,0 +1,130 @@
+  <main style="flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; padding: 12px 16px 24px">
+    <h1 style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Approvals dashboard</h1>
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+      <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted-fg)">Scope
+        <select style="height: 40px; padding: 0 8px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 16px">
+          <option>Credit Risk</option><option>Me</option><option>Corporate Banking</option>
+        </select>
+      </label>
+      <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted-fg)">Period
+        <select style="height: 40px; padding: 0 8px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 16px">
+          <option>Last 12 weeks</option><option>Last 4 weeks</option><option>Last 26 weeks</option>
+        </select>
+      </label>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+      <sc-for list="{{tiles}}" as="k" hint-placeholder-count="4">
+        <div style="display: flex; flex-direction: column; gap: 2px; padding: 12px; border: 1px solid var(--border); border-radius: 10px">
+          <span style="display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted-fg)">
+            <sc-if value="{{k.critical}}" hint-placeholder-val="{{false}}"><svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--critical)"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg></sc-if>
+            {{k.label}}
+          </span>
+          <span style="font-size: 24px; line-height: 30px; font-weight: 600; font-variant-numeric: tabular-nums">{{k.value}}</span>
+          <span style="font-size: 12px; color: var(--muted-fg)">{{k.sub}}</span>
+        </div>
+      </sc-for>
+    </div>
+
+    <figure style="margin: 0; display: flex; flex-direction: column; gap: 10px; padding: 12px; border: 1px solid var(--border); border-radius: 10px">
+      <figcaption style="display: flex; flex-direction: column">
+        <span style="font-size: 14px; font-weight: 600">Pending by age</span>
+        <span style="font-size: 12px; color: var(--muted-fg)">Working days waiting</span>
+      </figcaption>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: end; height: 130px; padding-bottom: 22px; border-bottom: 1px solid var(--border)">
+        <sc-for list="{{age}}" as="a" hint-placeholder-count="4">
+          <div style="position: relative; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: flex-end">
+            <span style="font-size: 12px; font-weight: 500; margin-bottom: 4px">{{a.value}}</span>
+            <span style="{{a.barStyle}}"></span>
+            <span style="position: absolute; bottom: -20px; font-size: 11px; color: var(--muted-fg); white-space: nowrap">{{a.label}}</span>
+          </div>
+        </sc-for>
+      </div>
+    </figure>
+
+    <figure style="margin: 0; display: flex; flex-direction: column; gap: 10px; padding: 12px; border: 1px solid var(--border); border-radius: 10px">
+      <figcaption style="display: flex; flex-direction: column; gap: 4px">
+        <span style="font-size: 14px; font-weight: 600">Pending by person</span>
+        <span style="display: flex; gap: 12px; font-size: 12px; color: var(--muted-fg)">
+          <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 2px; background: var(--series-1)"></span>On time</span>
+          <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 10px; height: 10px; border-radius: 2px; background: var(--critical)"></span>Overdue</span>
+        </span>
+      </figcaption>
+      <sc-for list="{{people}}" as="p" hint-placeholder-count="7">
+        <div style="display: flex; flex-direction: column; gap: 4px">
+          <span style="display: flex; justify-content: space-between; gap: 8px; font-size: 13px"><span>{{p.name}}</span><span style="color: var(--muted-fg); font-variant-numeric: tabular-nums"><strong style="color: var(--fg); font-weight: 500">{{p.pending}}</strong> {{p.overText}}</span></span>
+          <span style="display: flex; gap: 2px; height: 12px">
+            <span style="{{p.onStyle}}"></span>
+            <sc-if value="{{p.hasOver}}" hint-placeholder-val="{{false}}"><span style="{{p.overStyle}}"></span></sc-if>
+          </span>
+        </div>
+      </sc-for>
+    </figure>
+
+    <figure style="margin: 0; display: flex; flex-direction: column; gap: 8px; padding: 12px; border: 1px solid var(--border); border-radius: 10px">
+      <figcaption style="display: flex; flex-direction: column">
+        <span style="font-size: 14px; font-weight: 600">Cycle time by memo type</span>
+        <span style="font-size: 12px; color: var(--muted-fg)">Days from submission to decision</span>
+      </figcaption>
+      <table style="width: 100%; border-collapse: collapse; font-size: 13px">
+        <thead><tr style="text-align: left; color: var(--muted-fg)"><th scope="col" style="padding: 4px 0; font-weight: 500; font-size: 12px">Type</th><th scope="col" style="padding: 4px 0; font-weight: 500; font-size: 12px; text-align: right">Median</th><th scope="col" style="padding: 4px 0; font-weight: 500; font-size: 12px; text-align: right">P90</th></tr></thead>
+        <tbody><sc-for list="{{cycle}}" as="c" hint-placeholder-count="6"><tr style="border-top: 1px solid var(--hover)"><td style="padding: 8px 0">{{c.type}} <span style="color: var(--muted-fg); font-size: 12px">· {{c.decided}}</span></td><td style="padding: 8px 0; text-align: right; font-variant-numeric: tabular-nums">{{c.median}} d</td><td style="padding: 8px 0; text-align: right; font-variant-numeric: tabular-nums">{{c.p90}} d</td></tr></sc-for></tbody>
+      </table>
+    </figure>
+
+    <figure style="margin: 0; display: flex; flex-direction: column; gap: 10px; padding: 12px; border: 1px solid var(--border); border-radius: 10px">
+      <figcaption style="display: flex; flex-direction: column; gap: 4px">
+        <span style="font-size: 14px; font-weight: 600">Throughput per week</span>
+        <span style="display: flex; gap: 12px; font-size: 12px; color: var(--muted-fg)">
+          <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 12px; height: 2px; background: var(--series-1)"></span>Created</span>
+          <span style="display: inline-flex; align-items: center; gap: 6px"><span aria-hidden="true" style="width: 12px; height: 2px; background: var(--series-2)"></span>Completed</span>
+        </span>
+      </figcaption>
+      <div style="position: relative; height: 120px; border-bottom: 1px solid var(--border); background-image: linear-gradient(var(--hover) 1px, transparent 1px); background-size: 100% 33.333%">
+        <svg aria-hidden="true" viewBox="0 0 110 100" preserveAspectRatio="none" style="position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible">
+          <polyline points="{{createdPts}}" fill="none" stroke="var(--series-1)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"></polyline>
+          <polyline points="{{completedPts}}" fill="none" stroke="var(--series-2)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"></polyline>
+        </svg>
+      </div>
+      <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--muted-fg)"><span>25 Aug</span><span>10 Nov</span></div>
+      <span style="font-size: 12px; color: var(--muted-fg)">116 created, 112 completed in 12 weeks.</span>
+    </figure>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const navOpen = !!(this.state && this.state.navOpen);
+    const closeNav = () => this.setState({ navOpen: false });
+    const age = [['0–2 d', 14], ['3–5 d', 11], ['6–10 d', 8], ['Over 10 d', 5]].map((a) => ({ label: a[0], value: String(a[1]), barStyle: 'display: block; width: 24px; height: ' + (a[1] / 16 * 90).toFixed(1) + 'px; border-radius: 4px 4px 0 0; background: var(--series-1)' }));
+    const people = [['Farhana Rahman', 9, 2], ['Mahmud Karim', 7, 0], ['Sadia Islam', 6, 3], ['Imran Hossain', 6, 1], ['Shirin Akter', 5, 1], ['Rafiq Chowdhury', 3, 0], ['2 others', 2, 0]].map((p) => ({
+      name: p[0], pending: String(p[1]), hasOver: p[2] > 0, overText: p[2] > 0 ? '(' + p[2] + ' overdue)' : '',
+      onStyle: 'display: block; width: ' + ((p[1] - p[2]) / 10 * 100) + '%; height: 100%; border-radius: ' + (p[2] > 0 ? '0' : '0 4px 4px 0') + '; background: var(--series-1)',
+      overStyle: 'display: block; width: ' + (p[2] / 10 * 100) + '%; height: 100%; border-radius: 0 4px 4px 0; background: var(--critical)'
+    }));
+    const cycle = [['Credit proposal', 41, 6.5, 14], ['Budget request', 18, 4, 9], ['Procurement', 22, 8, 17], ['Policy', 6, 11, 19], ['HR request', 15, 2.5, 6], ['General memo', 10, 1.5, 4]].map((c) => ({ type: c[0], decided: String(c[1]) + ' decided', median: String(c[2]), p90: String(c[3]) }));
+    const created = [8, 10, 9, 12, 7, 11, 10, 9, 13, 8, 10, 9];
+    const completed = [7, 9, 10, 8, 9, 12, 8, 10, 11, 9, 10, 9];
+    const pts = (arr) => arr.map((v, i) => (5 + i * (100 / 11)).toFixed(2) + ',' + (100 - v / 15 * 100).toFixed(2)).join(' ');
+    return {
+      themeClass: (this.state && this.state.theme) || this.props.theme || 'system',
+      navOpen: navOpen,
+      navAria: navOpen ? 'true' : 'false',
+      openNav: () => this.setState({ navOpen: true }),
+      closeNav: closeNav,
+      navKey: (ev) => { if (ev && ev.key === 'Escape') closeNav(); },
+      tiles: [
+        { label: 'Pending now', value: '38', sub: 'waiting for a decision', critical: false },
+        { label: 'Overdue', value: '7', sub: 'past their due date', critical: true },
+        { label: 'Decided', value: '112', sub: 'in 12 weeks', critical: false },
+        { label: 'Created', value: '116', sub: 'in 12 weeks', critical: false }
+      ],
+      age: age, people: people, cycle: cycle,
+      createdPts: pts(created), completedPts: pts(completed)
+    };
+  }
+}
+</script>
+</body>
+</html>

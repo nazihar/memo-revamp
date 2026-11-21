@@ -1,0 +1,57 @@
+        <sc-if value="{{dialog.hasAlert}}" hint-placeholder-val="{{false}}">
+          <div role="alert" style="display: flex; gap: 10px; padding: 10px 12px; border: 1px solid var(--danger-border); border-radius: 8px; background: var(--danger-bg); color: var(--danger-fg); font-size: 13px">
+            <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>
+            <span style="display: flex; flex-direction: column; gap: 2px"><strong style="font-weight: 600">{{dialog.alertTitle}}</strong><span>{{dialog.alertText}}</span></span>
+          </div>
+        </sc-if>
+        <sc-for list="{{dialog.fields}}" as="f" hint-placeholder-count="2">
+          <sc-if value="{{f.isText}}" hint-placeholder-val="{{false}}">
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <label for="{{f.id}}" style="font-size: 14px; font-weight: 500">{{f.label}}</label>
+              <input id="{{f.id}}" type="text" value="{{f.value}}" onChange="{{f.onInput}}" aria-invalid="{{f.invalid}}" aria-describedby="{{f.describedBy}}" style="{{f.inputStyle}}">
+              <sc-if value="{{f.hasError}}" hint-placeholder-val="{{false}}"><span id="{{f.errId}}" style="font-size: 12px; color: var(--danger-fg)">{{f.error}}</span></sc-if>
+            </div>
+          </sc-if>
+          <sc-if value="{{f.isDate}}" hint-placeholder-val="{{false}}">
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <label for="{{f.id}}" style="font-size: 14px; font-weight: 500">{{f.label}}</label>
+              <input id="{{f.id}}" type="date" value="{{f.value}}" onChange="{{f.onInput}}" aria-invalid="{{f.invalid}}" aria-describedby="{{f.describedBy}}" style="{{f.inputStyle}}">
+              <sc-if value="{{f.hasError}}" hint-placeholder-val="{{false}}"><span id="{{f.errId}}" style="font-size: 12px; color: var(--danger-fg)">{{f.error}}</span></sc-if>
+            </div>
+          </sc-if>
+          <sc-if value="{{f.isPicker}}" hint-placeholder-val="{{true}}">
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <label for="{{f.id}}" style="font-size: 14px; font-weight: 500">{{f.label}}</label>
+              <span style="position: relative; display: flex; align-items: center">
+                <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; left: 10px; color: var(--muted-fg)"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+                <input id="{{f.id}}" type="text" role="combobox" aria-expanded="false" aria-autocomplete="list" aria-invalid="{{f.invalid}}" aria-describedby="{{f.describedBy}}" placeholder="{{f.placeholder}}" value="{{f.value}}" onChange="{{f.onInput}}" style="{{f.inputStyle}}">
+              </span>
+              <sc-if value="{{f.hasError}}" hint-placeholder-val="{{false}}"><span id="{{f.errId}}" style="font-size: 12px; color: var(--danger-fg)">{{f.error}}</span></sc-if>
+              <sc-if value="{{f.hasHint}}" hint-placeholder-val="{{true}}"><span id="{{f.hintId}}" style="font-size: 12px; color: var(--muted-fg)">{{f.hint}}</span></sc-if>
+            </div>
+          </sc-if>
+          <sc-if value="{{f.isCheck}}" hint-placeholder-val="{{false}}">
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <label style="display: flex; align-items: center; gap: 8px; min-height: 24px; font-size: 14px; font-weight: 500; cursor: pointer">
+                <input type="checkbox" checked="{{f.checked}}" onChange="{{f.onInput}}" aria-invalid="{{f.invalid}}" aria-describedby="{{f.describedBy}}" style="{{f.checkStyle}}">
+                {{f.label}}
+              </label>
+              <sc-if value="{{f.hasError}}" hint-placeholder-val="{{false}}"><span id="{{f.errId}}" style="font-size: 12px; color: var(--danger-fg)">{{f.error}}</span></sc-if>
+            </div>
+          </sc-if>
+          <sc-if value="{{f.isSelect}}" hint-placeholder-val="{{false}}">
+            <div style="display: flex; flex-direction: column; gap: 6px">
+              <label for="{{f.id}}" style="font-size: 14px; font-weight: 500">{{f.label}}</label>
+              <span style="position: relative; display: flex; align-items: center">
+                <select id="{{f.id}}" aria-invalid="{{f.invalid}}" aria-describedby="{{f.describedBy}}" onChange="{{f.onInput}}" style="{{f.inputStyle}}">
+                  <option value="">Choose a unit</option>
+                  <sc-for list="{{f.options}}" as="o" hint-placeholder-count="4">
+                    <option value="{{o.value}}" selected="{{o.selected}}">{{o.label}}</option>
+                  </sc-for>
+                </select>
+                <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="position: absolute; right: 10px; color: var(--muted-fg); pointer-events: none"><path d="m6 9 6 6 6-6"></path></svg>
+              </span>
+              <sc-if value="{{f.hasError}}" hint-placeholder-val="{{false}}"><span id="{{f.errId}}" style="font-size: 12px; color: var(--danger-fg)">{{f.error}}</span></sc-if>
+            </div>
+          </sc-if>
+        </sc-for>

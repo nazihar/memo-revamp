@@ -121,6 +121,7 @@ export type AgendaItemRequest = {
 export type AgendaItemResponse = {
     attendees: Array<PersonResponse>;
     classificationId: string;
+    decides?: boolean;
     declarations?: Array<DeclarationLineResponse>;
     description?: string | null;
     id: string;
@@ -1660,6 +1661,28 @@ export type LateDecisionRequest = {
     agree?: boolean;
     note?: string | null;
     onBehalf?: boolean;
+};
+
+export type LateRequestDecisionRequest = {
+    agree: boolean;
+    itemId: string;
+    paperId?: string | null;
+};
+
+export type LateRequestResponse = {
+    itemId: string;
+    itemTitle?: string | null;
+    number?: string | null;
+    paperId?: string | null;
+    paperTitle?: string | null;
+    purpose?: 'DECISION' | 'DISCUSSION' | 'INFORMATION';
+};
+
+export type LateRequestsResponse = {
+    meetingId: string;
+    paperDeadline?: string | null;
+    requests: Array<LateRequestResponse>;
+    version: number;
 };
 
 export type LegacyApprovalView = {
@@ -8474,6 +8497,45 @@ export type RemoveAgendaItemResponses = {
 };
 
 export type RemoveAgendaItemResponse = RemoveAgendaItemResponses[keyof RemoveAgendaItemResponses];
+
+export type GetMyLateRequestsData = {
+    body?: never;
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/agenda/late-requests';
+};
+
+export type GetMyLateRequestsResponses = {
+    /**
+     * OK
+     */
+    200: LateRequestsResponse;
+};
+
+export type GetMyLateRequestsResponse = GetMyLateRequestsResponses[keyof GetMyLateRequestsResponses];
+
+export type DecideLateRequestData = {
+    body: LateRequestDecisionRequest;
+    headers?: {
+        'If-Match'?: string;
+    };
+    path: {
+        meetingId: string;
+    };
+    query?: never;
+    url: '/api/v1/meetings/{meetingId}/agenda/late-requests/decisions';
+};
+
+export type DecideLateRequestResponses = {
+    /**
+     * OK
+     */
+    200: LateRequestsResponse;
+};
+
+export type DecideLateRequestResponse = DecideLateRequestResponses[keyof DecideLateRequestResponses];
 
 export type MoveAgendaRowData = {
     body: AgendaMoveRequest;

@@ -48,6 +48,7 @@
 - [x] E03 plan written (2026-11-18): research, ADR-0060 agenda model, ADR-0061 meeting papers, design, threat model, tasks T1–T9, test plan, flows N–R (`epic-03-meetings-agenda/`, #165)
 - [x] Owner: E03 screen flows N–R and flow M with its addition approved as recommended (2026-11-18); meeting numbers per calendar year; members read papers in the app only until Phase 5
 - [ ] E03 backend T1–T5; web T6–T8 after the owner's review; T9 close
+- [ ] E04 follow-up in review (branch `phase4/e04-decider`): the vice-chair decides late papers when the chair is recused, through `GET …/agenda/late-requests` and `POST …/late-requests/decisions` and the draft's per-item `decides`; "Late papers for you to decide" on the meeting page (E04 log, 2026-11-21)
 - [ ] E06 (minutes and resolutions): plan in review (#189). T1 spike done, in review (#190): ONLYOFFICE 10.0.0.1 and Word keep the locked, tagged item controls (ADR-0066 option B1 holds; no fallback), review mode records `w:ins`/`w:del`, block loops and controls in `templating`, numbering format shared in `common.numbering`. Next: T2
 
 ## State (Phase 1b)

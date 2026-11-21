@@ -90,6 +90,12 @@ data class AgendaItemResponse(
     val myDeclaration: DeclarationResponse? = null,
     /** The others' open declarations on the item: names and states, never the nature. */
     val declarations: List<DeclarationLineResponse> = emptyList(),
+    /**
+     * The viewer decides the item's late requests (the item, or a paper of it, waiting for the chair): the chair, or the
+     * vice-chair when the chair is recused from it or there is none (design E04 §1.7, `DeclarationAccess.decider`); false
+     * on an item with nothing waiting.
+     */
+    val decides: Boolean = false,
 )
 
 data class AgendaSectionResponse(
@@ -175,7 +181,10 @@ data class AgendaDraftResponse(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val state: AgendaState,
     /** The chair's agreement to the first publication, once given. */
     val chairAgreement: ChairAgreementResponse?,
-    /** Whether the viewer is the chair in office (the vice-chair when there is none): they agree and decide late papers. */
+    /**
+     * Whether the viewer is the chair in office (the vice-chair when there is none): they agree the first publication and
+     * comment. Who decides each late request is its item's `decides`.
+     */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val canAgree: Boolean,
     /** The chair's comments to the secretaries, the oldest first. */
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val chairComments: List<ChairCommentResponse>,
@@ -202,6 +211,7 @@ class AgendaDraftViews(
     private val revisions: RevisionStore,
     private val declarations: DeclarationStore,
     private val declarationViews: DeclarationViews,
+    private val deciders: DeclarationAccess,
 ) {
     fun draft(
         meetingId: UUID,
@@ -233,7 +243,7 @@ class AgendaDraftViews(
             plannedEndsAt = times.endsAt,
             overrun = times.overrun,
             traySize = placements.ready(meeting.forumId, meeting.date).size,
-            sections = rows?.let { sections(it, times, meeting.zone) }.orEmpty(),
+            sections = rows?.let { sections(meeting, it, times) }.orEmpty(),
             template = if (rows == null) start.template(meeting) else null,
             state = rows?.agenda?.state ?: AgendaState.DRAFT,
             chairAgreement = rows?.agenda?.chairAgreement?.let { agreement(it) },
@@ -246,9 +256,9 @@ class AgendaDraftViews(
     }
 
     private fun sections(
+        meeting: MeetingRow,
         rows: AgendaRows,
         times: AgendaTimes,
-        zone: ZoneId,
     ): List<AgendaSectionResponse> {
         val numbers = AgendaRules.numbers(rows.sections, rows.items)
         val packs =
@@ -267,7 +277,15 @@ class AgendaDraftViews(
         val versions = files.currentVersions(rows.papers.map { it.fileId }.toSet())
         val open = declarations.ofMeeting(rows.agenda.meetingId).filter { it.state != DeclarationState.WITHDRAWN }
         val declared = DraftDeclarations(actorOrNull(), open.groupBy { it.itemId }, numbers, declarationViews.names(open))
-        val view = ItemView(rows, numbers, times, zone, packs, names, versions, declared, guard.recused(rows))
+        val recused = guard.recused(rows)
+        val waiting =
+            LateRequests
+                .waiting(rows)
+                .map { it.first }
+                .filter { it.id !in recused }
+                .distinct()
+        val deciding = deciders.decidedBy(meeting.forumId, waiting)
+        val view = ItemView(rows, numbers, times, meeting.zone, packs, names, versions, declared, recused, deciding)
         val ordered = AgendaRules.ordered(rows.sections, rows.items)
         return rows.sections.sortedBy { it.position }.map { s ->
             AgendaSectionResponse(
@@ -353,6 +371,8 @@ private class ItemView(
     private val versions: Map<UUID, com.memo.files.FileVersionInfo>,
     private val declared: DraftDeclarations,
     private val recused: Set<UUID>,
+    /** The items whose late requests the viewer decides. */
+    private val deciding: Set<UUID>,
 ) {
     fun item(
         item: ItemRow,
@@ -397,6 +417,7 @@ private class ItemView(
             subItems = subItems,
             myDeclaration = declared.mine(item, item.title),
             declarations = declared.others(item),
+            decides = item.id in deciding,
         )
     }
 

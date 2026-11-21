@@ -317,6 +317,12 @@ class AgendaCalls(
 ) {
     fun <T> read(block: () -> T): T = calls.read(block)
 
+    /** Runs [block] (rate-limited, like every agenda change) in one write transaction. */
+    fun <T> write(block: () -> T): T {
+        limit()
+        return calls.write(block)
+    }
+
     fun json(value: Any): String = json.writeValueAsString(value)
 
     /** Runs [change] (rate-limited) and answers the draft with its new version as the ETag. */

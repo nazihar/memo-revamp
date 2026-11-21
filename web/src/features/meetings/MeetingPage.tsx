@@ -12,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/misc'
 import { AgendaLink } from './agenda/AgendaLink'
 import { om } from './declarations/officer-messages'
 import { useChairSeat } from './declarations/chair-seat'
+import { LateRequests } from './declarations/LateRequests'
 import { OfficerDeclarations } from './declarations/OfficerDeclarations'
 import { AddGuestDialog, MeetingMenu, RemoveGuestDialog } from './MeetingDialogs'
 import { mm, mmv } from './messages'
@@ -55,6 +56,9 @@ export function MeetingPage({ meetingId }: { meetingId: string }) {
   // for the officers and the committee's chair or vice-chair, who rules on declarations even as a member.
   const replies = officer && m.status !== 'DRAFT'
   const declarations = (officer || chairSeat) && m.status !== 'CANCELLED'
+  // Late papers the viewer decides (E04 §1.7 as built): the chair, or the vice-chair on the items the chair has declared
+  // an interest in. Read only by the officers and the committee's chair or vice-chair; the server lists what they decide.
+  const decides = (officer || chairSeat) && ['DRAFT', 'SCHEDULED', 'IN_PROGRESS'].includes(m.status)
   return (
     <section aria-labelledby="meeting-title" className="meeting-print flex max-w-3xl flex-col gap-5">
       <PageHeader
@@ -94,6 +98,7 @@ export function MeetingPage({ meetingId }: { meetingId: string }) {
       {m.status === 'DRAFT' ? <p className="text-muted-foreground">{intl.formatMessage(mm.draftHint)}</p> : null}
       <Place meeting={m} />
       {m.rsvp ? <WillYouAttend meeting={m} /> : <CalendarLink meeting={m} />}
+      {decides ? <LateRequests meeting={m} /> : null}
       {replies || declarations ? (
         <Tabs defaultValue="agenda" className="print:contents">
           <TabsList aria-label={intl.formatMessage(rm.tabs)} className="print:hidden">

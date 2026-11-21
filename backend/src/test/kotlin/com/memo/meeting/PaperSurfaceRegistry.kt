@@ -26,6 +26,7 @@ object PaperSurfaceRegistry {
         MEETING("A meeting's details and a committee's meetings: no item content at all"),
         DECLARATIONS("Declaring an interest in an item, the declarant's own declarations and the review (E04 T1)"),
         REGISTERS("The meeting register, \"Remind them now\", the register across committees and its export (E04 T4)"),
+        LATE_REQUESTS("The late items and papers the viewer decides, and their decision (E04, the vice-chair when the chair is recused)"),
         INVITATIONS("The invitation files and emails, \"Add to my calendar\" and the replies (E05 T2, T3): never an item"),
         QUORUM(
             "The attendance register, the quorum of the meeting and of an item, and the snapshots (E05 T4, T5): people and numbers, " +
@@ -51,6 +52,9 @@ object PaperSurfaceRegistry {
             "POST /api/v1/meetings/{meetingId}/declarations/{declarationId}/ruling" to Surface.DECLARATIONS,
             "POST /api/v1/meetings/{meetingId}/declarations/{declarationId}/withdraw" to Surface.DECLARATIONS,
             "POST /api/v1/meetings/{meetingId}/declarations/review" to Surface.DECLARATIONS,
+            // The decider's late requests (E04 §1.7 as built): anyone who sees the meeting; only what they decide, by the rule.
+            "GET /api/v1/meetings/{meetingId}/agenda/late-requests" to Surface.LATE_REQUESTS,
+            "POST /api/v1/meetings/{meetingId}/agenda/late-requests/decisions" to Surface.LATE_REQUESTS,
             // The register across committees (E04 T4): forum.read, forums.manage and the committees' officers; 403 to others.
             "GET /api/v1/declarations" to Surface.REGISTERS,
             "GET /api/v1/declarations/export" to Surface.REGISTERS,

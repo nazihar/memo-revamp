@@ -184,7 +184,24 @@ class DeclarationAccess(
         return candidates.firstOrNull { it !in recused }
     }
 
+    /**
+     * The items among [items] whose late requests [userId] decides ([decider] for each item and its parent): none unless
+     * they hold the forum's chair or vice-chair seat, so the recusals are read only for those two.
+     */
+    fun decidedBy(
+        forumId: UUID,
+        items: Collection<ItemRow>,
+        userId: UUID? = actorOrNull(),
+    ): Set<UUID> {
+        val seated =
+            userId != null &&
+                items.isNotEmpty() &&
+                directory.membersOn(forumId).any { it.userId == userId && it.role in CHAIR_SEATS }
+        return if (seated) items.filter { decider(forumId, it.scope) == userId }.map { it.id }.toSet() else emptySet()
+    }
+
     private companion object {
         val OFFICER_SEATS = setOf(ForumRole.SECRETARY, ForumRole.CHAIR, ForumRole.VICE_CHAIR)
+        val CHAIR_SEATS = setOf(ForumRole.CHAIR, ForumRole.VICE_CHAIR)
     }
 }

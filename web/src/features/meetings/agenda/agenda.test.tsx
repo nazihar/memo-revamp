@@ -857,20 +857,36 @@ describe('the chair’s side (flow Q)', () => {
     purpose: 'DECISION',
     late: 'AWAITING_CHAIR',
   })
-  const firstDraft = (over: Partial<AgendaDraftResponse> = {}) =>
+  // `decides`: the server says the viewer decides the item's late requests (E04 §1.7: the chair, or the vice-chair when
+  // the chair is recused from it).
+  const firstDraft = (over: Partial<AgendaDraftResponse> = {}, decides = false) =>
     draftOf({
       currentRevision: 0,
       state: 'DRAFT',
       revisions: [],
       chairAgreement: null,
       deadlinePassed: true,
-      sections: draftOf().sections.map((s) => (s.id === 'sDecide' ? { ...s, items: [...s.items, waiting] } : s)),
+      sections: draftOf().sections.map((s) =>
+        s.id === 'sDecide' ? { ...s, items: [...s.items, { ...waiting, decides }] } : s,
+      ),
       ...over,
     })
 
+  it('offers the chair no decision on a late paper the server does not say they decide', async () => {
+    setup({ draft: firstDraft({ canEdit: false, canAgree: true }) })
+    renderRoute('/meetings/m1/agenda')
+
+    expect(
+      await screen.findByText('You read the draft agenda. Only the secretaries change it.', {}, { timeout: 5000 }),
+    ).toBeInTheDocument()
+    expect(screen.queryByRole('region', { name: 'Late papers: your agreement is needed' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Not this meeting' })).not.toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Record the chair’s answer…' })).not.toBeInTheDocument()
+  })
+
   it('lets the chair read the draft, comment, agree it and decide a late paper', async () => {
     const user = userEvent.setup()
-    const { calls } = setup({ draft: firstDraft({ canEdit: false, canAgree: true }) })
+    const { calls } = setup({ draft: firstDraft({ canEdit: false, canAgree: true }, true) })
     renderRoute('/meetings/m1/agenda')
 
     expect(

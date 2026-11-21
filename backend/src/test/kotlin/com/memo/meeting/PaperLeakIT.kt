@@ -337,6 +337,20 @@ class PaperLeakIT : RecusalFixture() {
                     assertThat(export).hasStatus(HttpStatus.FORBIDDEN)
                 }
             },
+            Surface.LATE_REQUESTS to { p, person ->
+                // Nobody probed decides for an item (no chair or vice-chair seat): an empty list, and every decision 403,
+                // naming nothing. What the decider is answered, by the rule and with their recusals, is LateRequestsIT.
+                val base = "/api/v1/meetings/${p.meeting.id}/agenda/late-requests"
+                val mine = read(base, person.session)
+                clean(p, person, mine)
+                assertThat(mine.json()["requests"].list()).isEmpty()
+                listOf(p.restricted, p.hidden, p.recused, p.recusedHidden).forEach { item ->
+                    val body = """{"itemId":"$item","agree":true}"""
+                    val decided = send(HttpMethod.POST, "$base/decisions", person, body, mapOf("If-Match" to "\"0\""))
+                    assertThat(decided).hasStatus(HttpStatus.FORBIDDEN)
+                    p.canaries(person).forEach { assertThat(decided.response.contentAsString).doesNotContain(it) }
+                }
+            },
             Surface.INVITATIONS to { p, person ->
                 val base = "/api/v1/meetings/${p.meeting.id}"
                 val reads = listOf("$base/calendar.ics", "$base/rsvp/mine", "$base/rsvps").map { read(it, person.session) }

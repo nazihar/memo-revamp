@@ -182,6 +182,13 @@ class RecusalLeakIT : RecusalLeakFixture() {
             },
             Surface.DECLARATIONS to { p, v -> declarationsProbe(p, v.person()) },
             Surface.REGISTERS to { p, v -> registersProbe(p, v) },
+            Surface.LATE_REQUESTS to { p, v ->
+                // The decider's late requests: never the item a viewer is recused from (the recused chair decides nothing
+                // there; the vice-chair does). The decision is the matrix's recusal columns.
+                val result = read("/api/v1/meetings/${p.meeting.id}/agenda/late-requests", v.person().session)
+                clean(v.person(), result)
+                assertThat(result.json()["requests"].list().map { it["itemId"].asString() }).doesNotContain(p.item.toString())
+            },
         )
 
     /** The generic files endpoints for every version of a paper's [file]: 403 or 404, naming nothing. */

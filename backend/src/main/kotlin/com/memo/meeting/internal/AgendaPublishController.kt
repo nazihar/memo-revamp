@@ -1,6 +1,7 @@
 package com.memo.meeting.internal
 
 import com.memo.common.authz.SignedIn
+import com.memo.common.web.etagOf
 import com.memo.common.web.ifMatchVersion
 import com.memo.meeting.MeetingStatus
 import io.swagger.v3.oas.annotations.Operation
@@ -31,6 +32,13 @@ data class LateDecisionRequest(
     val agree: Boolean,
     val onBehalf: Boolean = false,
     val note: String? = null,
+)
+
+/** The decider's own answer on a late item, or on a late paper of it ([paperId]). */
+data class LateRequestDecisionRequest(
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val itemId: UUID,
+    val paperId: UUID? = null,
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val agree: Boolean,
 )
 
 data class PublishAgendaRequest(
@@ -92,6 +100,7 @@ class AgendaPublishController(
     private val chair: AgendaChair,
     private val publisher: AgendaPublisher,
     private val calls: AgendaCalls,
+    private val lateRequests: LateRequests,
 ) {
     @PostMapping("/api/v1/meetings/{meetingId}/agenda/chair-agreement")
     @SignedIn
@@ -142,6 +151,43 @@ class AgendaPublishController(
     ): ResponseEntity<AgendaDraftResponse> {
         val version = ifMatchVersion(ifMatch)
         return calls.changed(meetingId) { chair.decidePaper(meetingId, paperId, version, body.decision()) }
+    }
+
+    @GetMapping("/api/v1/meetings/{meetingId}/agenda/late-requests")
+    @SignedIn
+    @Operation(
+        operationId = "getMyLateRequests",
+        summary = "The late items and papers waiting for the actor's decision (the chair, or the vice-chair when the chair is recused)",
+    )
+    fun lateRequests(
+        @PathVariable meetingId: UUID,
+    ): ResponseEntity<LateRequestsResponse> {
+        val requests = calls.read { lateRequests.mine(meetingId) }
+        return ResponseEntity
+            .ok()
+            .cacheControl(CacheControl.noStore())
+            .eTag(etagOf(requests.version))
+            .body(requests)
+    }
+
+    @PostMapping("/api/v1/meetings/{meetingId}/agenda/late-requests/decisions")
+    @SignedIn
+    @Operation(
+        operationId = "decideLateRequest",
+        summary = "The person who decides for the item agrees or declines a late item or paper, answered with their late requests",
+    )
+    fun decideLateRequest(
+        @PathVariable meetingId: UUID,
+        @RequestHeader("If-Match", required = false) ifMatch: String?,
+        @RequestBody body: LateRequestDecisionRequest,
+    ): ResponseEntity<LateRequestsResponse> {
+        val version = ifMatchVersion(ifMatch)
+        val requests =
+            calls.write {
+                lateRequests.decide(meetingId, body.itemId, body.paperId, body.agree, version)
+                lateRequests.mine(meetingId)
+            }
+        return ResponseEntity.ok().eTag(etagOf(requests.version)).body(requests)
     }
 
     @GetMapping("/api/v1/meetings/{meetingId}/agenda/publish-preview")

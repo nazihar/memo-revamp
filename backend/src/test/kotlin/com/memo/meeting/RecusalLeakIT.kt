@@ -10,6 +10,10 @@ import com.memo.common.tenant.TenantContext
 import com.memo.meeting.PaperSurfaceRegistry.Channel
 import com.memo.meeting.PaperSurfaceRegistry.Surface
 import com.memo.meeting.internal.RulingInput
+import com.memo.minutes.DecisionPlanting
+import com.memo.minutes.internal.DecisionStore
+import com.memo.minutes.internal.Dissent
+import com.memo.minutes.internal.NoteStore
 import com.memo.testsupport.AuthzMatrix
 import com.memo.testsupport.Person
 import com.memo.testsupport.RecusalRow
@@ -59,6 +63,10 @@ class RecusalLeakIT : RecusalLeakFixture() {
     lateinit var mapping: RequestMappingHandlerMapping
 
     @Autowired lateinit var auditExport: AuditExport
+
+    @Autowired lateinit var decisionStore: DecisionStore
+
+    @Autowired lateinit var noteStore: NoteStore
 
     // 1. Canaries and status, surface by surface
 
@@ -189,6 +197,7 @@ class RecusalLeakIT : RecusalLeakFixture() {
                 clean(v.person(), result)
                 assertThat(result.json()["requests"].list().map { it["itemId"].asString() }).doesNotContain(p.item.toString())
             },
+            Surface.DECISIONS to { p, v -> decisionsProbe(p, v.person()) },
         )
 
     /** The generic files endpoints for every version of a paper's [file]: 403 or 404, naming nothing. */
@@ -262,6 +271,70 @@ class RecusalLeakIT : RecusalLeakFixture() {
         val cells = workbookText(export)
         canaries(v.person()).forEach { assertThat(cells).doesNotContain(it) }
         assertThat(cells).contains(natureOf(v.person()))
+    }
+
+    /**
+     * E06 T3's surface, in the shared scenario: the decisions list answers no canary and names no decision of the hidden
+     * item, and the items' history and notes are 404. The planted decisions have a test of their
+     * own (a decided item freezes its declarations, which the other probes and the last ruling of the scenario change).
+     */
+    private fun decisionsProbe(
+        p: Planted,
+        person: Person,
+        planted: Boolean = false,
+    ) {
+        val base = "/api/v1/meetings/${p.meeting.id}"
+        val list = read("$base/decisions", person.session)
+        clean(person, list)
+        assertThat(list.response.contentAsString).doesNotContain(CANARY_DISSENT, CANARY_NOTE)
+        val decisions = list.json()["decisions"].list().associateBy { UUID.fromString(it["itemId"].asString()) }
+        assertThat(decisions.keys).describedAs("the hidden item's decision").doesNotContain(p.hidden)
+        if (planted) {
+            val mine = decisions.getValue(p.item)
+            assertThat(
+                mine["viewerRecused"].asBoolean() to mine["text"].asString(),
+            ).isEqualTo(true to "It was resolved that the term loan be approved.")
+            listOf("vote", "dissent", "abstentions", "tookNoPart", "snapshotId", "recordedBy").forEach {
+                assertThat(mine.absent(it)).describedAs("$it of a recused view").isTrue()
+            }
+        }
+        p.both.forEach { item ->
+            listOf("$base/items/$item/decision/entries", "$base/items/$item/notes").forEach { uri ->
+                val answer = read(uri, person.session)
+                assertThat(answer).hasStatus(HttpStatus.NOT_FOUND)
+                assertThat(answer.response.contentAsString).doesNotContain(CANARY_DISSENT, CANARY_NOTE, CANARY_TITLE)
+            }
+        }
+    }
+
+    /**
+     * E06 T3: the planted item's decision (a vote, a named dissent whose reason is a canary, the vice-chair abstaining) and
+     * the hidden item's (its text a canary), with notes on the item. Each recused viewer reads the item's decision as their
+     * recused view (outcome, text, conditions; no vote, names, snapshot or recorder), nothing of the hidden item's, and
+     * neither history nor notes of either (404); the control, who declared nothing, reads the vote and the names.
+     */
+    @Test
+    fun `a recused viewer reads a decided item's recused view only, and nothing of a hidden one's`() {
+        val p = Planted(content = true)
+        val planting = DecisionPlanting(transactions, decisionStore, noteStore)
+        planting.decision(
+            tenant.id,
+            p.meeting.id,
+            brc,
+            p.item,
+            secretary2.id,
+            "It was resolved that the term loan be approved.",
+            dissent = Dissent(d3.id, CANARY_DISSENT),
+            abstaining = vice.id,
+            tookNoPart = listOf(d1.id, d2.id),
+        )
+        planting.decision(tenant.id, p.meeting.id, brc, p.hidden, secretary2.id, "$CANARY_TITLE approved")
+        planting.note(tenant.id, p.meeting.id, p.item, secretary2.id, CANARY_NOTE)
+        assertThat(read("/api/v1/meetings/${p.meeting.id}/decisions", control.session).response.contentAsString).contains(CANARY_DISSENT)
+        Viewer.entries.forEach { viewer ->
+            runCatching { decisionsProbe(p, viewer.person(), planted = true) }
+                .onFailure { throw AssertionError("decisions leak to $viewer", it) }
+        }
     }
 
     /** One probe per [Channel], for a recused [Viewer]. */
@@ -544,6 +617,9 @@ class RecusalLeakIT : RecusalLeakFixture() {
                 { p -> send(HttpMethod.POST, "${base(p)}/progress", secretary, """{"itemId":"${p.item}"}""") },
             "GET /api/v1/meetings/{meetingId}/quorum/changes" to { p -> read("${base(p)}/quorum/changes", secretary.session) },
             "GET /api/v1/meetings/{meetingId}/quorum/forecast" to { p -> read("${base(p)}/quorum/forecast", secretary.session) },
+            // The committee's decisions to be ratified (E06 T3): ids, numbers and outcomes only.
+            "GET /api/v1/forums/{forumId}/decisions/to-be-ratified" to
+                { _ -> read("/api/v1/forums/$brc/decisions/to-be-ratified", secretary.session) },
             "POST /api/v1/meetings/{meetingId}/end" to
                 { p -> send(HttpMethod.POST, "${base(p)}/end", secretary, "{}", versioned(meetingVersion(p))) },
             "POST /api/v1/meetings/{meetingId}/cancel" to
@@ -594,6 +670,10 @@ class RecusalLeakIT : RecusalLeakFixture() {
     }
 
     private companion object {
+        /** E06 T3: a dissent's reason and the secretary's notes on the planted item, which no recused viewer may read. */
+        const val CANARY_DISSENT = "CANARY-DS dissent reason"
+        const val CANARY_NOTE = "CANARY-NT secretary notes"
+
         /** The officer probes the recused chair makes; the recused secretary makes the others. */
         val BY_THE_CHAIR =
             setOf(

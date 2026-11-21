@@ -106,6 +106,9 @@ import com.memo.jooq.tables.MemoTypeVersion
 import com.memo.jooq.tables.MemoWatch
 import com.memo.jooq.tables.MemoWatchEvent
 import com.memo.jooq.tables.MemoWatchSetting
+import com.memo.jooq.tables.MinutesDecision
+import com.memo.jooq.tables.MinutesDecisionEntry
+import com.memo.jooq.tables.MinutesItemNote
 import com.memo.jooq.tables.NotificationItem
 import com.memo.jooq.tables.NotificationMailOutbox
 import com.memo.jooq.tables.NotificationPreference
@@ -237,6 +240,9 @@ import com.memo.jooq.tables.records.MemoTypeVersionRecord
 import com.memo.jooq.tables.records.MemoWatchEventRecord
 import com.memo.jooq.tables.records.MemoWatchRecord
 import com.memo.jooq.tables.records.MemoWatchSettingRecord
+import com.memo.jooq.tables.records.MinutesDecisionEntryRecord
+import com.memo.jooq.tables.records.MinutesDecisionRecord
+import com.memo.jooq.tables.records.MinutesItemNoteRecord
 import com.memo.jooq.tables.records.NotificationItemRecord
 import com.memo.jooq.tables.records.NotificationMailOutboxRecord
 import com.memo.jooq.tables.records.NotificationPreferenceRecord
@@ -443,6 +449,10 @@ val MEMO_TYPE_VERSION_TENANT_ID_MEMO_TYPE_ID_NUMBER_KEY: UniqueKey<MemoTypeVersi
 val MEMO_WATCH_PKEY: UniqueKey<MemoWatchRecord> = Internal.createUniqueKey(MemoWatch.MEMO_WATCH, DSL.name("memo_watch_pkey"), arrayOf(MemoWatch.MEMO_WATCH.TENANT_ID, MemoWatch.MEMO_WATCH.MEMO_ID, MemoWatch.MEMO_WATCH.USER_ID), true)
 val MEMO_WATCH_EVENT_PKEY: UniqueKey<MemoWatchEventRecord> = Internal.createUniqueKey(MemoWatchEvent.MEMO_WATCH_EVENT, DSL.name("memo_watch_event_pkey"), arrayOf(MemoWatchEvent.MEMO_WATCH_EVENT.ID), true)
 val MEMO_WATCH_SETTING_PKEY: UniqueKey<MemoWatchSettingRecord> = Internal.createUniqueKey(MemoWatchSetting.MEMO_WATCH_SETTING, DSL.name("memo_watch_setting_pkey"), arrayOf(MemoWatchSetting.MEMO_WATCH_SETTING.TENANT_ID, MemoWatchSetting.MEMO_WATCH_SETTING.USER_ID), true)
+val MINUTES_DECISION_ITEM_UK: UniqueKey<MinutesDecisionRecord> = Internal.createUniqueKey(MinutesDecision.MINUTES_DECISION, DSL.name("minutes_decision_item_uk"), arrayOf(MinutesDecision.MINUTES_DECISION.TENANT_ID, MinutesDecision.MINUTES_DECISION.ITEM_ID), true)
+val MINUTES_DECISION_PKEY: UniqueKey<MinutesDecisionRecord> = Internal.createUniqueKey(MinutesDecision.MINUTES_DECISION, DSL.name("minutes_decision_pkey"), arrayOf(MinutesDecision.MINUTES_DECISION.TENANT_ID, MinutesDecision.MINUTES_DECISION.ID), true)
+val MINUTES_DECISION_ENTRY_PKEY: UniqueKey<MinutesDecisionEntryRecord> = Internal.createUniqueKey(MinutesDecisionEntry.MINUTES_DECISION_ENTRY, DSL.name("minutes_decision_entry_pkey"), arrayOf(MinutesDecisionEntry.MINUTES_DECISION_ENTRY.TENANT_ID, MinutesDecisionEntry.MINUTES_DECISION_ENTRY.DECISION_ID, MinutesDecisionEntry.MINUTES_DECISION_ENTRY.SEQ), true)
+val MINUTES_ITEM_NOTE_PKEY: UniqueKey<MinutesItemNoteRecord> = Internal.createUniqueKey(MinutesItemNote.MINUTES_ITEM_NOTE, DSL.name("minutes_item_note_pkey"), arrayOf(MinutesItemNote.MINUTES_ITEM_NOTE.TENANT_ID, MinutesItemNote.MINUTES_ITEM_NOTE.ITEM_ID, MinutesItemNote.MINUTES_ITEM_NOTE.SEQ), true)
 val NOTIFICATION_ITEM_PKEY: UniqueKey<NotificationItemRecord> = Internal.createUniqueKey(NotificationItem.NOTIFICATION_ITEM, DSL.name("notification_item_pkey"), arrayOf(NotificationItem.NOTIFICATION_ITEM.TENANT_ID, NotificationItem.NOTIFICATION_ITEM.ID, NotificationItem.NOTIFICATION_ITEM.CREATED_AT), true)
 val NOTIFICATION_MAIL_OUTBOX_PKEY: UniqueKey<NotificationMailOutboxRecord> = Internal.createUniqueKey(NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX, DSL.name("notification_mail_outbox_pkey"), arrayOf(NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.ID), true)
 val NOTIFICATION_MAIL_OUTBOX_TENANT_ID_ID_KEY: UniqueKey<NotificationMailOutboxRecord> = Internal.createUniqueKey(NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX, DSL.name("notification_mail_outbox_tenant_id_id_key"), arrayOf(NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.TENANT_ID, NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX.ID), true)
@@ -613,6 +623,7 @@ val MEMO_SUBMISSION_ATTACHMENT__MEMO_SUBMISSION_ATTACHMENT_TENANT_ID_MEMO_ID_FKE
 val MEMO_TYPE_VERSION__MEMO_TYPE_VERSION_TENANT_ID_MEMO_TYPE_ID_FKEY: ForeignKey<MemoTypeVersionRecord, MemoTypeRecord> = Internal.createForeignKey(MemoTypeVersion.MEMO_TYPE_VERSION, DSL.name("memo_type_version_tenant_id_memo_type_id_fkey"), arrayOf(MemoTypeVersion.MEMO_TYPE_VERSION.TENANT_ID, MemoTypeVersion.MEMO_TYPE_VERSION.MEMO_TYPE_ID), com.memo.jooq.keys.MEMO_TYPE_TENANT_ID_ID_KEY, arrayOf(MemoType.MEMO_TYPE.TENANT_ID, MemoType.MEMO_TYPE.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val MEMO_WATCH__MEMO_WATCH_TENANT_ID_MEMO_ID_FKEY: ForeignKey<MemoWatchRecord, MemoRecord> = Internal.createForeignKey(MemoWatch.MEMO_WATCH, DSL.name("memo_watch_tenant_id_memo_id_fkey"), arrayOf(MemoWatch.MEMO_WATCH.TENANT_ID, MemoWatch.MEMO_WATCH.MEMO_ID), com.memo.jooq.keys.MEMO_TENANT_ID_ID_KEY, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val MEMO_WATCH_EVENT__MEMO_WATCH_EVENT_TENANT_ID_MEMO_ID_FKEY: ForeignKey<MemoWatchEventRecord, MemoRecord> = Internal.createForeignKey(MemoWatchEvent.MEMO_WATCH_EVENT, DSL.name("memo_watch_event_tenant_id_memo_id_fkey"), arrayOf(MemoWatchEvent.MEMO_WATCH_EVENT.TENANT_ID, MemoWatchEvent.MEMO_WATCH_EVENT.MEMO_ID), com.memo.jooq.keys.MEMO_TENANT_ID_ID_KEY, arrayOf(Memo.MEMO_.TENANT_ID, Memo.MEMO_.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
+val MINUTES_DECISION_ENTRY__MINUTES_DECISION_ENTRY_TENANT_ID_DECISION_ID_FKEY: ForeignKey<MinutesDecisionEntryRecord, MinutesDecisionRecord> = Internal.createForeignKey(MinutesDecisionEntry.MINUTES_DECISION_ENTRY, DSL.name("minutes_decision_entry_tenant_id_decision_id_fkey"), arrayOf(MinutesDecisionEntry.MINUTES_DECISION_ENTRY.TENANT_ID, MinutesDecisionEntry.MINUTES_DECISION_ENTRY.DECISION_ID), com.memo.jooq.keys.MINUTES_DECISION_PKEY, arrayOf(MinutesDecision.MINUTES_DECISION.TENANT_ID, MinutesDecision.MINUTES_DECISION.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val ORG_ASSIGNMENT__ORG_ASSIGNMENT_TENANT_ID_POSITION_ID_FKEY: ForeignKey<OrgAssignmentRecord, OrgPositionRecord> = Internal.createForeignKey(OrgAssignment.ORG_ASSIGNMENT, DSL.name("org_assignment_tenant_id_position_id_fkey"), arrayOf(OrgAssignment.ORG_ASSIGNMENT.TENANT_ID, OrgAssignment.ORG_ASSIGNMENT.POSITION_ID), com.memo.jooq.keys.ORG_POSITION_TENANT_ID_ID_KEY, arrayOf(OrgPosition.ORG_POSITION.TENANT_ID, OrgPosition.ORG_POSITION.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val ORG_POSITION__ORG_POSITION_TENANT_ID_UNIT_ID_FKEY: ForeignKey<OrgPositionRecord, OrgUnitRecord> = Internal.createForeignKey(OrgPosition.ORG_POSITION, DSL.name("org_position_tenant_id_unit_id_fkey"), arrayOf(OrgPosition.ORG_POSITION.TENANT_ID, OrgPosition.ORG_POSITION.UNIT_ID), com.memo.jooq.keys.ORG_UNIT_TENANT_ID_ID_KEY, arrayOf(OrgUnit.ORG_UNIT.TENANT_ID, OrgUnit.ORG_UNIT.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)
 val ORG_REPORTING_LINE__ORG_REPORTING_LINE_TENANT_ID_POSITION_ID_FKEY: ForeignKey<OrgReportingLineRecord, OrgPositionRecord> = Internal.createForeignKey(OrgReportingLine.ORG_REPORTING_LINE, DSL.name("org_reporting_line_tenant_id_position_id_fkey"), arrayOf(OrgReportingLine.ORG_REPORTING_LINE.TENANT_ID, OrgReportingLine.ORG_REPORTING_LINE.POSITION_ID), com.memo.jooq.keys.ORG_POSITION_TENANT_ID_ID_KEY, arrayOf(OrgPosition.ORG_POSITION.TENANT_ID, OrgPosition.ORG_POSITION.ID), true, ForeignKeyRule.NO_ACTION, ForeignKeyRule.NO_ACTION)

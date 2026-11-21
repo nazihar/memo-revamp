@@ -43,6 +43,9 @@ import java.util.UUID
  * - MEETING_UPDATED: name, organisation, committee, date, changes (what changed, in words), link (with the file)
  * - MEETING_RSVP_RECORDED: name, organisation, committee, date, link (never the answer's note)
  * - MEETING_ALTERNATE_ASKED, MEETING_ALTERNATE_RELEASED: name, organisation, committee, date, member, link
+ * - MEETING_REPLY_REMINDER, MEETING_QUORUM_AT_RISK: name, organisation, committee, date, link
+ * - MEETING_REMINDER: name, organisation, committee, date, reply and declarations (sentences, empty when they do not
+ *   apply), link (never an item or a paper)
  */
 enum class MailTemplate {
     INVITATION,
@@ -90,6 +93,9 @@ enum class MailTemplate {
     MEETING_RSVP_RECORDED,
     MEETING_ALTERNATE_ASKED,
     MEETING_ALTERNATE_RELEASED,
+    MEETING_REPLY_REMINDER,
+    MEETING_REMINDER,
+    MEETING_QUORUM_AT_RISK,
 }
 
 /**
@@ -107,6 +113,12 @@ class Mail(
     @param:Qualifier("mailSendTask") private val sendTask: OneTimeTask<MailSend>,
     private val scheduler: ObjectProvider<SchedulerClient>,
 ) {
+    /**
+     * False only while a test delivers the outbox itself (`MailDelivery.send`): test contexts share the scheduler table, so
+     * a delivery scheduled here could run in another context.
+     */
+    @Volatile internal var jobs: Boolean = true
+
     /**
      * [locale] is the recipient's BCP 47 tag; null uses the tenant's default language. A [calendar] part is sent as iMIP
      * (ADR-0063), encrypted at rest like the parameters. Returns the outbox id, by which [MailStatuses] reports delivery.
@@ -135,7 +147,7 @@ class Mail(
             .set(NOTIFICATION_MAIL_OUTBOX.STATUS, "PENDING")
             .set(NOTIFICATION_MAIL_OUTBOX.CREATED_AT, OffsetDateTime.now(clock).withOffsetSameInstant(ZoneOffset.UTC))
             .execute()
-        scheduler.ifAvailable?.scheduleIfNotExists(sendTask.schedulableInstance(id.toString(), MailSend(tenant.value, id)))
+        if (jobs) scheduler.ifAvailable?.scheduleIfNotExists(sendTask.schedulableInstance(id.toString(), MailSend(tenant.value, id)))
         return id
     }
 

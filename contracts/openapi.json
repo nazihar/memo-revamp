@@ -1952,6 +1952,18 @@
         "required" : [ "name", "status" ],
         "type" : "object"
       },
+      "ConsentDecisionRequest" : {
+        "properties" : {
+          "decidedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "returnMinutesToDraft" : {
+            "type" : "boolean"
+          }
+        },
+        "type" : "object"
+      },
       "CopiesRequest" : {
         "properties" : {
           "copies" : {
@@ -2160,6 +2172,401 @@
           }
         },
         "required" : [ "decided", "medianDays", "p90Days", "type" ],
+        "type" : "object"
+      },
+      "DecisionDissentResponse" : {
+        "properties" : {
+          "person" : {
+            "$ref" : "#/components/schemas/DecisionPerson"
+          },
+          "reason" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "required" : [ "person" ],
+        "type" : "object"
+      },
+      "DecisionEntryResponse" : {
+        "properties" : {
+          "abstentions" : {
+            "items" : {
+              "$ref" : "#/components/schemas/DecisionPerson"
+            },
+            "type" : "array"
+          },
+          "conditions" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "consentBatchId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "correction" : {
+            "type" : "boolean"
+          },
+          "decidedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "deferTo" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/DeferTarget"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "dissent" : {
+            "items" : {
+              "$ref" : "#/components/schemas/DecisionDissentResponse"
+            },
+            "type" : "array"
+          },
+          "outcome" : {
+            "enum" : [ "APPROVED", "APPROVED_WITH_CONDITIONS", "REJECTED", "DEFERRED", "RETURNED", "REFERRED", "NOTED", "WITHDRAWN" ],
+            "type" : "string"
+          },
+          "outcomeLabel" : {
+            "type" : "string"
+          },
+          "ratificationRequired" : {
+            "type" : "boolean"
+          },
+          "ratifiesDecisionId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "reason" : {
+            "type" : [ "string", "null" ]
+          },
+          "recordedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "recordedBy" : {
+            "$ref" : "#/components/schemas/DecisionPerson"
+          },
+          "referReason" : {
+            "type" : [ "string", "null" ]
+          },
+          "referToForumId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "resolution" : {
+            "type" : "boolean"
+          },
+          "seq" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "snapshotId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "text" : {
+            "type" : [ "string", "null" ]
+          },
+          "tookNoPart" : {
+            "items" : {
+              "$ref" : "#/components/schemas/DecisionPerson"
+            },
+            "type" : "array"
+          },
+          "validUntil" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "vote" : {
+            "$ref" : "#/components/schemas/DecisionVoteResponse"
+          }
+        },
+        "required" : [ "abstentions", "conditions", "correction", "decidedAt", "dissent", "outcome", "outcomeLabel", "ratificationRequired", "recordedAt", "recordedBy", "resolution", "seq", "snapshotId", "tookNoPart", "vote" ],
+        "type" : "object"
+      },
+      "DecisionHistoryResponse" : {
+        "properties" : {
+          "decisionId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "entries" : {
+            "items" : {
+              "$ref" : "#/components/schemas/DecisionEntryResponse"
+            },
+            "type" : "array"
+          },
+          "itemId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "decisionId", "entries", "itemId" ],
+        "type" : "object"
+      },
+      "DecisionOverrideRequest" : {
+        "properties" : {
+          "reason" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "DecisionPerson" : {
+        "properties" : {
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "name" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "id", "name" ],
+        "type" : "object"
+      },
+      "DecisionRequest" : {
+        "properties" : {
+          "abstentions" : {
+            "items" : {
+              "format" : "uuid",
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "conditions" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "decidedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "deferTo" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/DeferTarget"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "dissent" : {
+            "items" : {
+              "$ref" : "#/components/schemas/Dissent"
+            },
+            "type" : "array"
+          },
+          "outcome" : {
+            "enum" : [ "APPROVED", "APPROVED_WITH_CONDITIONS", "REJECTED", "DEFERRED", "RETURNED", "REFERRED", "NOTED", "WITHDRAWN" ],
+            "type" : "string"
+          },
+          "override" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/DecisionOverrideRequest"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "ratifiesDecisionId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "reason" : {
+            "type" : [ "string", "null" ]
+          },
+          "recheckQuorum" : {
+            "type" : "boolean"
+          },
+          "referReason" : {
+            "type" : [ "string", "null" ]
+          },
+          "referToForumId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "returnMinutesToDraft" : {
+            "type" : "boolean"
+          },
+          "text" : {
+            "type" : [ "string", "null" ]
+          },
+          "validUntil" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "voteMode" : {
+            "enum" : [ "CONSENSUS", "VOTE" ],
+            "type" : "string"
+          },
+          "votesAbstain" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "votesAgainst" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "votesFor" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          }
+        },
+        "required" : [ "outcome" ],
+        "type" : "object"
+      },
+      "DecisionResponse" : {
+        "properties" : {
+          "abstentions" : {
+            "items" : {
+              "$ref" : "#/components/schemas/DecisionPerson"
+            },
+            "type" : [ "array", "null" ]
+          },
+          "conditions" : {
+            "items" : {
+              "type" : "string"
+            },
+            "type" : "array"
+          },
+          "consentBatchId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "decidedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "deferTo" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/DeferTarget"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "dissent" : {
+            "items" : {
+              "$ref" : "#/components/schemas/DecisionDissentResponse"
+            },
+            "type" : [ "array", "null" ]
+          },
+          "drifted" : {
+            "type" : [ "boolean", "null" ]
+          },
+          "id" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "itemId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "itemNumber" : {
+            "type" : [ "string", "null" ]
+          },
+          "outcome" : {
+            "enum" : [ "APPROVED", "APPROVED_WITH_CONDITIONS", "REJECTED", "DEFERRED", "RETURNED", "REFERRED", "NOTED", "WITHDRAWN" ],
+            "type" : "string"
+          },
+          "outcomeLabel" : {
+            "type" : "string"
+          },
+          "ratificationRequired" : {
+            "type" : "boolean"
+          },
+          "ratifiesDecisionId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "recordedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "recordedBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/DecisionPerson"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "referReason" : {
+            "type" : [ "string", "null" ]
+          },
+          "referToForumId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "resolution" : {
+            "type" : "boolean"
+          },
+          "seq" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "snapshotId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "state" : {
+            "enum" : [ "RECORDED", "RELEASED", "FINAL" ],
+            "type" : "string"
+          },
+          "text" : {
+            "type" : [ "string", "null" ]
+          },
+          "toBeRatified" : {
+            "type" : "boolean"
+          },
+          "tookNoPart" : {
+            "items" : {
+              "$ref" : "#/components/schemas/DecisionPerson"
+            },
+            "type" : [ "array", "null" ]
+          },
+          "validUntil" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "version" : {
+            "format" : "int64",
+            "type" : "integer"
+          },
+          "viewerRecused" : {
+            "type" : "boolean"
+          },
+          "vote" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/DecisionVoteResponse"
+            }, {
+              "type" : "null"
+            } ]
+          }
+        },
+        "required" : [ "conditions", "decidedAt", "id", "itemId", "outcome", "outcomeLabel", "ratificationRequired", "resolution", "seq", "state", "toBeRatified", "version", "viewerRecused" ],
+        "type" : "object"
+      },
+      "DecisionVoteResponse" : {
+        "properties" : {
+          "mode" : {
+            "enum" : [ "CONSENSUS", "VOTE" ],
+            "type" : "string"
+          },
+          "votesAbstain" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "votesAgainst" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          },
+          "votesFor" : {
+            "format" : "int32",
+            "type" : [ "integer", "null" ]
+          }
+        },
+        "required" : [ "mode" ],
         "type" : "object"
       },
       "DeclarationLineResponse" : {
@@ -2421,6 +2828,22 @@
         },
         "type" : "object"
       },
+      "DeferTarget" : {
+        "properties" : {
+          "date" : {
+            "format" : "date",
+            "type" : [ "string", "null" ]
+          },
+          "meetingId" : {
+            "format" : "uuid",
+            "type" : [ "string", "null" ]
+          },
+          "next" : {
+            "type" : "boolean"
+          }
+        },
+        "type" : "object"
+      },
       "DefinitionChoice" : {
         "properties" : {
           "key" : {
@@ -2600,6 +3023,18 @@
           }
         },
         "required" : [ "canAsk", "mine", "requestedBy" ],
+        "type" : "object"
+      },
+      "Dissent" : {
+        "properties" : {
+          "reason" : {
+            "type" : [ "string", "null" ]
+          },
+          "userId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
         "type" : "object"
       },
       "DissolveRequest" : {
@@ -4902,6 +5337,42 @@
         "required" : [ "itemId", "quorum", "viewerRecused" ],
         "type" : "object"
       },
+      "ItemNoteRequest" : {
+        "properties" : {
+          "text" : {
+            "type" : [ "string", "null" ]
+          }
+        },
+        "type" : "object"
+      },
+      "ItemNoteResponse" : {
+        "properties" : {
+          "itemId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "savedAt" : {
+            "format" : "date-time",
+            "type" : [ "string", "null" ]
+          },
+          "savedBy" : {
+            "oneOf" : [ {
+              "$ref" : "#/components/schemas/DecisionPerson"
+            }, {
+              "type" : "null"
+            } ]
+          },
+          "seq" : {
+            "format" : "int32",
+            "type" : "integer"
+          },
+          "text" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "itemId", "seq", "text" ],
+        "type" : "object"
+      },
       "ItemProgressRequest" : {
         "properties" : {
           "itemId" : {
@@ -5625,6 +6096,22 @@
           }
         },
         "required" : [ "displayName", "email", "id", "mfaEnrolled", "tenantAdmin" ],
+        "type" : "object"
+      },
+      "MeetingDecisionsResponse" : {
+        "properties" : {
+          "decisions" : {
+            "items" : {
+              "$ref" : "#/components/schemas/DecisionResponse"
+            },
+            "type" : "array"
+          },
+          "meetingId" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        },
+        "required" : [ "decisions", "meetingId" ],
         "type" : "object"
       },
       "MeetingDeclarationRegisterResponse" : {
@@ -11778,6 +12265,37 @@
           }
         },
         "required" : [ "locale", "terms" ],
+        "type" : "object"
+      },
+      "ToBeRatifiedResponse" : {
+        "properties" : {
+          "decidedAt" : {
+            "format" : "date-time",
+            "type" : "string"
+          },
+          "decisionId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "itemId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "itemNumber" : {
+            "type" : [ "string", "null" ]
+          },
+          "meetingId" : {
+            "format" : "uuid",
+            "type" : "string"
+          },
+          "meetingLabel" : {
+            "type" : [ "string", "null" ]
+          },
+          "outcomeLabel" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "decidedAt", "decisionId", "itemId", "meetingId", "outcomeLabel" ],
         "type" : "object"
       },
       "TriageRequest" : {
@@ -18108,6 +18626,37 @@
         "tags" : [ "forum" ]
       }
     },
+    "/api/v1/forums/{forumId}/decisions/to-be-ratified" : {
+      "get" : {
+        "operationId" : "getDecisionsToBeRatified",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "forumId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "items" : {
+                    "$ref" : "#/components/schemas/ToBeRatifiedResponse"
+                  },
+                  "type" : "array"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A committee's decisions taken without a quorum, to be ratified",
+        "tags" : [ "minutes" ]
+      }
+    },
     "/api/v1/forums/{forumId}/dissolve" : {
       "post" : {
         "operationId" : "dissolveForum",
@@ -21063,6 +21612,34 @@
         "tags" : [ "meeting" ]
       }
     },
+    "/api/v1/meetings/{meetingId}/decisions" : {
+      "get" : {
+        "operationId" : "getMeetingDecisions",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MeetingDecisionsResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "A meeting's decisions as the viewer may see them",
+        "tags" : [ "minutes" ]
+      }
+    },
     "/api/v1/meetings/{meetingId}/declarations" : {
       "get" : {
         "operationId" : "getMeetingDeclarationRegister",
@@ -21525,6 +22102,102 @@
         "tags" : [ "meeting" ]
       }
     },
+    "/api/v1/meetings/{meetingId}/items/{itemId}/decision" : {
+      "put" : {
+        "operationId" : "recordItemDecision",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "itemId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/DecisionRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DecisionResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Record or correct an item's decision (secretaries)",
+        "tags" : [ "minutes" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/items/{itemId}/decision/entries" : {
+      "get" : {
+        "operationId" : "getItemDecisionHistory",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "itemId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/DecisionHistoryResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "An item's decision with its corrections (officers, forum.read)",
+        "tags" : [ "minutes" ]
+      }
+    },
     "/api/v1/meetings/{meetingId}/items/{itemId}/declarations" : {
       "post" : {
         "operationId" : "declareInterest",
@@ -21576,6 +22249,100 @@
         },
         "summary" : "Declare an interest in an agenda item, or record one for someone",
         "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/items/{itemId}/notes" : {
+      "get" : {
+        "operationId" : "getItemNotes",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "itemId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ItemNoteResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "The secretary's notes on an item (secretaries not recused)",
+        "tags" : [ "minutes" ]
+      },
+      "put" : {
+        "operationId" : "saveItemNotes",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "itemId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "If-Match",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ItemNoteRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ItemNoteResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Save the notes on an item as a new version (secretaries not recused)",
+        "tags" : [ "minutes" ]
       }
     },
     "/api/v1/meetings/{meetingId}/papers/{paperId}/content" : {
@@ -22052,6 +22819,59 @@
         },
         "summary" : "Schedule a draft meeting: its audience sees it",
         "tags" : [ "meeting" ]
+      }
+    },
+    "/api/v1/meetings/{meetingId}/sections/{sectionId}/decision" : {
+      "post" : {
+        "operationId" : "decideConsentSection",
+        "parameters" : [ {
+          "in" : "path",
+          "name" : "meetingId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "path",
+          "name" : "sectionId",
+          "required" : true,
+          "schema" : {
+            "format" : "uuid",
+            "type" : "string"
+          }
+        }, {
+          "in" : "header",
+          "name" : "Idempotency-Key",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ConsentDecisionRequest"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/MeetingDecisionsResponse"
+                }
+              }
+            },
+            "description" : "OK"
+          }
+        },
+        "summary" : "Decide a consent section's items in one action (secretaries)",
+        "tags" : [ "minutes" ]
       }
     },
     "/api/v1/meetings/{meetingId}/seen" : {

@@ -312,4 +312,5 @@ Run with NVDA + Firefox and VoiceOver + Safari (macOS and iPad), in English and 
 4. **Publish dialog:** the change summary is read as a list; the note's error is read with the field.
 5. **Meeting page:** H4 navigation through the items; "papers restricted", "Restricted item", "Late paper", "Lifted for discussion at the request of …" and "Opened" are read with their item; the two clocks ("10:00 AM Dhaka time (…your time)") make sense when spoken; the PDF viewer's page image has the paper's name and the page count; "Changes since you last looked" reads each changed line.
 6. **Arabic:** both pages read right to left, Latin titles and numbers keep their own direction, and the time lines read naturally.
-7. **Zoom and contrast by eye:** 200 % and 400 % in a real browser window, light and dark themes, the drag handles and focus rings against the row backgrounds.
+7. **Focus after removing a paper:** after "Remove from the pack" in the item sheet, focus falls to the page body (the paper's menu button it returns to has gone); say where it should go (the papers list, or "Put back in the pack").
+8. **Zoom and contrast by eye:** 200 % and 400 % in a real browser window, light and dark themes, the drag handles and focus rings against the row backgrounds.

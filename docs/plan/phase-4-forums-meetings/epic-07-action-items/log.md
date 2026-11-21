@@ -1,0 +1,51 @@
+# E07 Action items — log
+
+## 2026-11-21
+- **Plan written** under the delegated gate. Phase 4 Q1 sends only the E01, E02/E03 and E06 screens to the owner, so E07's flows AJ–AR are recorded as delegated, and the web tasks wait only for their backend tasks.
+  - **Research:**
+    - R1: no new library or service. Spring Boot 4.2.0 GA came out on 19 November; the repository is on 4.1.1, and the upgrade stays a dependency PR of its own.
+    - R7, from:
+      - CGI's 2024 minuting guidance, read in full;
+      - the Manchester and Loughborough committee handbooks;
+      - published NHS and public-body action logs, with their RAG keys;
+      - ICSI's Guidance Note on board meetings;
+      - Basel 2015 ¶46, ¶60, ¶66, ¶69 and ¶167;
+      - EBA/GL/2021/05 ¶151 and ¶224;
+      - RBI's 2025 RRB governance directions, re-read: agenda item 1, "Minutes and Action Taken Report";
+      - ACCA's summary of IIA Standard 15.2;
+      - eight portals (BoardPro, Diligent, BoardEffect, OnBoard, iBabs, Board Intelligence, Convene, Boardvantage) and Admincontrol, with users' criticism (review sites as snippets);
+      - NN/g and W3C WAI on older users and notifications.
+  - **Decisions:** ADR-0067 (action items) and ADR-0068 (engine additions, amending ADR-0038 and ADR-0041).
+  - **The other documents:** design, threat model, tasks T1–T12, test plan, flows AJ–AR.
+- **Choices that came from the research:**
+  - **One accountable owner, a person or a position, shown by title first.** CGI says executives are usually named by title, and the logs name one responsible officer. Up to five contributors.
+  - **Owners outside the committee but inside the organisation.** Board Intelligence and Loughborough support outside owners, but a bank's governance system has no external accounts.
+  - **Red is always "past its date". Amber's window and the "no recent update" rule are per committee type.** Published logs define amber differently.
+  - **Every colour has a word and an icon, and the key is printed.** WCAG 1.4.1 requires it, and older users' colour perception declines.
+  - **Closure is proposed by the owner and verified by someone else, with evidence when the committee type requires it.** This follows the NHS logs and IIA 15.2. The meeting can agree closures in one step (Belfast).
+  - **"Risk accepted" is the chair's cancellation.** IIA Australia treats closing an outstanding action as accepting the risk.
+  - **Revised dates keep the original date and every revision with its reason.** The NHS logs do this, and IIA 15.2 asks for missed and revised dates.
+  - **A frozen action taken report under "Matters arising", one per published revision, with the sections that need the meeting first.** This follows ICSI, RBI's agenda item 1 and CGI's "actions schedule … in the board pack". It answers RBI's "compliance crowding".
+  - **The secretary can hold an action back from the report, with a reason.** BoardPro users could not curate.
+  - **One digest email a day; escalations at once; no action text in any email.** BoardPro sends one email per action; NN/g advises combining notifications.
+- **Changes from the overview, recorded in ADR-0067, to report to the owner:**
+  - **The RAG rule is per committee type** (tenant configuration with maker-checker), not one tenant rule.
+  - **The whole action runs on the workflow engine** (the owner's step due on the action's date, then verification), not only its closure. Reminders, substitutes, holder changes and escalation are then the engine's. This needs four general engine additions (ADR-0068): assignees named by the subject, due times set by the subject with re-planning, subject-bound definitions with their own checks, and the initiator taking part.
+- **Found while reading the code:**
+  - ADR-0041's due time is a duration from the task's creation, and nothing can move a running task's due time.
+  - Assignees cannot come from the subject, and SOD-1 would keep the issuing secretary off every step.
+  - Hence ADR-0068.
+  - Memo creation has no published API for other modules; T6 publishes `MemoDrafts`.
+  - Memo links join memos only; the action keeps its own `action_memo` link, and the memo shows its origin through a port.
+  - `PaperSurfaceRegistry` already holds E07's placeholder with three paths. T3 replaces it and adds the tracker's `/api/v1/forums/{forumId}/actions`.
+  - The meeting sweep is internal to the meeting module. E07 runs its own daily task (digest, update requests, safety net) with the same fan-out pattern.
+- **What E07 needs from E06's remaining tasks** (design §11):
+  - T3: `DecisionRecorded` for corrections too, and `Decisions.find` and `entry`;
+  - T5: the minutes template's action loops through a port;
+  - T6: an item-links port that accepts several implementations.
+  - E07 starts with non-decision sources and adds DECISION when E06 T3 merges.
+- **Migrations:**
+  - E07 takes `forum/V8` and `actions/V1`–`V4`, and no meeting, memo, workflow or notification migration.
+  - `master`: `forum/V7`, `meeting/V9`. Open #203 holds `meeting/V10`. E06 plans `minutes/V1`–`V4`.
+- **Uncertain until T1:** whether a slot that resolves to several people behaves exactly as a role pool, and whether any workflow CHECK constraint lists assignee kinds. Either would mean a small change in T1, not a design change.
+- **No real-world input is needed.**

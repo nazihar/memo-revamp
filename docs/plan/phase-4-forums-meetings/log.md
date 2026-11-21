@@ -20,3 +20,10 @@ History of the phase, newest last. `STATUS.md` keeps only the current position.
 
 ## 2026-11-19
 - E06 plan written (`epic-06-minutes-resolutions/`): research R1, R5 (CGI minute-taking guidance, Companies Act ss.248–249, SS-1, Basel ¶60, Bangladesh Bank's 2025 dissent notice, seven portals) and R9, ADR-0065 (a decision per item with named dissent, votes and the quorum snapshot; resolution numbers per committee and year in agenda order when the meeting ends; memos move on at the meeting's end or at minutes approval per committee type; the format code shared with memos, not the counters, a change from the overview) and ADR-0066 (minutes from the committee type's .docx template with a locked content control per item, edited in ONLYOFFICE, approved on a fixed path per committee type rather than the workflow engine, a change from the overview; PDF/A record and a redacted copy per reader), design, threat model, tasks T1–T12, test plan, and flows AA–AI with nine recommendations for the owner's review before the web tasks.
+
+## 2026-11-21
+- E07 plan written under the delegated gate (`epic-07-action-items/`).
+  - **Research:** R1 and R7 (CGI 2024 minuting guidance, NHS and public-body action logs, ICSI, Basel 2015, EBA/GL/2021/05, RBI's 2025 "Minutes and Action Taken Report", IIA 15.2 via ACCA, nine portals, NN/g and WAI on older users).
+  - **ADR-0067:** one accountable owner (a person or a position), the whole action on the workflow engine as subject `action-item` with verification by someone else, RAG per committee type with words and an override, follow-up memos linked both ways, and a frozen action taken report under "Matters arising". Two refinements of the overview are reported to the owner.
+  - **ADR-0068:** engine additions for subject slots, subject due times with re-planning, subject-bound definitions and the initiator taking part.
+  - **The other documents:** design, threat model, tasks T1–T12, test plan with the leak-suite surfaces for actions, and flows AJ–AR recorded as delegated.

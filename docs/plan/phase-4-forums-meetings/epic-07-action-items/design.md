@@ -1,0 +1,746 @@
+# E07 Action items — design
+
+> Step 3 of `AGENTS.md §5`. Decisions:
+> - **ADR-0067:** action items, their life on the workflow engine, RAG per committee type, closure verified by someone else, follow-up memos, the action taken report.
+> - **ADR-0068:** four general additions to the workflow engine. It amends ADR-0038 and ADR-0041.
+>
+> Builds on:
+> - the engine: ADR-0034 to ADR-0042;
+> - memos: ADR-0043 (links), ADR-0046 (attachments), ADR-0048 (templates), ADR-0050 (memo access), ADR-0054 (search);
+> - forums and meetings: ADR-0056 (committee types), ADR-0060 and ADR-0061 (agenda, the one item rule), ADR-0062 (recusal);
+> - minutes: ADR-0065 and ADR-0066, which are not built past T2 (§11 lists what E07 needs from them).
+>
+> Research: `research.md`. Screens: `ux-review.md`, flows AJ–AR. They are **delegated** (Phase 4 Q1: only E01, E02/E03 and E06 go to the owner).
+
+## 1. Domain model
+
+### 1.1 The action item (ADR-0067)
+| Attribute | Rule |
+|---|---|
+| `id` | UUIDv7 |
+| `forumId` | The committee the action belongs to; immutable |
+| `reference` | `{committee code} A{n}/{yyyy}`, for example **BRC A14/2026**: a counter per committee and calendar year (in the tenant's zone) taken **when the action is issued**, so discarded drafts use no number. Taken from `action_counter` with `INSERT … ON CONFLICT DO UPDATE … RETURNING` in the issuing transaction (AGENTS §4); immutable. Drafts show "Draft action" |
+| `source` | `DECISION` (a decision of E06, optionally one of its condition lines), `ITEM` (an agenda item without a decision, such as one for discussion), `MEETING` (the meeting as a whole, such as any other business) or `DIRECT` (raised by the secretary between meetings, with a `sourceNote` 0–300 such as "Chair's instruction of 3 December"). It carries `meetingId`, `itemId`, `decisionId` and `conditionIndex` as applicable. Immutable |
+| `sourceLabel` | Rendered at raise time and refreshed when the source changes: "BRC 3/2026, item 5 — Resolution BRC/2026/014, condition 2" |
+| item columns | `itemParentId`, `itemClassificationId`, `itemRestrictedTo`, `itemTitleHidden`, `itemMembersOnly`. Copied from the latest published revision when the action is raised, and refreshed when that meeting publishes another revision. They exist so the item rule (ADR-0061) runs on the action's own row (§1.14) |
+| `title` | 1–200: what is to be done, in a line ("Report the revised collateral valuation to the committee") |
+| `description` | 0–4,000: details |
+| `context` | 0–2,000: what the owner is told of the source. Chosen by the secretary: prefilled with the condition's text, or empty for a decision. The owner sees this, not the decision, unless they may see the decision anyway (§1.14) |
+| `classificationId` | The item's level (or the meeting's, or the committee's for DIRECT); the secretary may raise it, never lower it (422 `CLASSIFICATION`) |
+| `owner` | `PERSON` with `ownerUserId`, or `POSITION` with `ownerPositionId` (the holder at any time, through the engine). Exactly one; required to issue. The person, or each holder of the position, must be an active user cleared for `classificationId` (422 `OWNER_NOT_CLEARED`) |
+| `holderUserId` | Denormalised: who holds the owner's task now. That is the person, the position's holder, or a substitute acting for them (ADR-0040). Null while the task waits for an administrator |
+| `contributors` | 0–5 users (`action_contributor`): they read the action and post updates; they cannot mark it done. Each must be cleared, and may not be recused from the item (422 `RECUSED_NAMED`) |
+| `priority` | NORMAL or HIGH. A CEL attribute: a tenant definition can add a step for HIGH (§1.8) |
+| `dueDate` | Required to issue. A date, due at the end of that day in the tenant's zone. Quick picks: "By the next meeting" (that meeting's date, if one is scheduled) and the committee type's default (§1.13). Must be today or later when set (422 `DUE_IN_PAST`) |
+| `originalDueDate` | Set at issue; never changes |
+| `dueRevisions` | Count of agreed changes, shown "revised twice" |
+| `amberFrom` | `dueDate` minus `amberWorkingDays` working days (`WorkingDays.before`). Recomputed when the due date changes |
+| `status` | DRAFT, OPEN, IN_PROGRESS, DONE_PENDING (done, to be verified), CLOSED, CANCELLED (§1.4) |
+| `confidence` | The owner's word with their latest update: ON_TRACK, AT_RISK, OFF_TRACK, or null |
+| `lastUpdateAt`, `staleFrom` | The latest progress update, and that time plus `staleWorkingDays` working days (null when the type has no stale rule) |
+| `ragOverride` | RED, AMBER or GREEN, with `ragOverrideReason` 1–500, `ragOverrideBy`, and `ragOverrideUntil` (a date, or null for "until the next update") |
+| `workflowInstanceId` | The engine instance; null while DRAFT. A reopened action gets a new instance, and earlier instance ids stay in its entries |
+| `stepName` | Denormalised name of the open step ("Verification by the secretary"), for lists |
+| `doneAt`, `closedAt`, `closedBy` | Set by the engine's events |
+| `cancelKind`, `cancelReason` | Cancellation: NO_LONGER_NEEDED, SUPERSEDED (with `supersededBy`, an action of the same committee), RISK_ACCEPTED (chair only), DISCARDED (a draft), DUPLICATE; reason 1–500 |
+| `reopenCount` | Reopened after closing or cancelling (§1.10) |
+| `createdBy`, `createdAt`, `issuedBy`, `issuedAt`, `version` | `version` is for optimistic locking (If-Match) |
+
+**Invariants**, checked in the changing transaction under `SELECT … FOR UPDATE` on the action. `WorkflowSubject.lock` takes the same lock before the instance's:
+- `SOURCE_VISIBLE`: the person raising sees the source in full (the item rule) and is not recused from it (403 `RECUSED`). A DECISION source exists (E06 `Decisions.find`), and its `conditionIndex` is within its conditions (422 `CONDITION`).
+- `RAISE_WINDOW` (409 `WRONG_STATE`):
+  - from an item or decision: while the meeting is IN_PROGRESS, HELD or MINUTES_APPROVED;
+  - from the meeting: the same states;
+  - DIRECT: at any time while the committee is active.
+- `OWNER_REQUIRED`: owner and due date at issue (422 `REQUIRED`). Never two owners. The owner is not a contributor.
+- `ONE_ACCOUNTABLE`: the verifier is never the owner, the current holder or a contributor (§1.9). The engine's SOD-2 agrees.
+- Status changes only through the transitions of §1.4, as guarded updates (`… WHERE id = ? AND status = ? AND version = ?`; 0 rows → 409 `CONFLICT`).
+
+### 1.2 Raising actions
+- **From a decision** (E06 flow AA, the decision panel):
+  - "Add an action" under the recorded decision. For APPROVED_WITH_CONDITIONS, each condition line has "Make this an action", which prefills the title and context with the condition's text.
+  - Several actions may come from one decision or condition.
+  - Raising does not change the decision.
+- **From an item without a decision:**
+  - The same, on the item in the panel or on the meeting page.
+  - For example, "For discussion" items and items for noting. BoardPro users asked for "action items on review only items".
+- **From the meeting:**
+  - The meeting page's "Actions from this meeting".
+  - For example, any other business.
+- **Direct:**
+  - The committee's action tracker, "New action", with a source note.
+- **Drafts:**
+  - Every raised action starts as a DRAFT, seen only by the committee's secretaries and `forums.manage` holders who are not recused from its item.
+  - Drafts can be edited freely, and discarded (CANCELLED, DISCARDED; kept, never deleted).
+- **Issuing** (`POST …/issue`, one action, or `POST /meetings/{id}/actions/issue` for every draft of the meeting):
+  - The checks of §1.1 apply.
+  - The reference is taken. The workflow instance is started on the committee type's action definition (§1.8), and the owner is told.
+  - E06's "Mark the meeting as held" dialog gains "Send the {n} draft actions to their owners now", ticked by default (Manchester's "as early as possible", research §3.1).
+  - After HELD, an action can be saved as a draft or issued at once.
+- **The source changes:**
+  - E06 publishes `DecisionRecorded` for corrections too (§11). When a decision with actions is corrected, each issued action gets a system entry, "The committee's decision on this item was corrected on {date}", and its `sourceLabel` is refreshed.
+  - The secretaries are told in the app.
+  - Nothing else changes: the secretary decides whether to edit, cancel (SUPERSEDED) or keep each action.
+  - A condition line that no longer exists after the correction leaves `conditionIndex` pointing at the earlier entry, which `Decisions.entry(decisionId, seq)` still reads.
+
+### 1.3 Owner, contributors and the holder
+- **A position owner** ("Head of Treasury") follows its holder: the engine resolves the slot to the position and re-resolves the step when the holder changes (ADR-0040, `StaffChanges.reresolve`). The action shows "Head of Treasury (A. Karim)". CGI's convention is titles, not names (research §3.1).
+- **Substitutes and out-of-office** (ADR-0040) are the engine's. The holder is shown "A. Karim, acting for B. Rahman", and both see the action.
+- **Who may be an owner:**
+  - any active user of the tenant cleared for the action's level, member of the committee or not (research §3.1: owners are often executives outside it);
+  - a person recused from the item may own an action on it (the E04 placeholder allows it). The secretary is warned: "This person declared an interest in item 5. They will see this action, but not the item."
+- **Changing the owner** (`POST …/owner`, secretary not recused, reason 1–500):
+  - recorded as an entry;
+  - the open owner's task moves (`Workflows.reassign`; a position owner re-resolves);
+  - both people are told.
+  - The owner cannot pass an action on (BoardPro: "forwarding leaves the original owner accountable"). The owner's step offers no FORWARD or DELEGATE, and the engine's substitutes cover absence.
+- **A deactivated owner:** the engine blocks the task (`INACTIVE`) and the secretaries are told to choose a new owner (ADR-0040).
+
+### 1.4 The lifecycle
+```mermaid
+stateDiagram-v2
+  [*] --> DRAFT: raise (secretary)
+  DRAFT --> DRAFT: edit
+  DRAFT --> CANCELLED: discard (DISCARDED)
+  DRAFT --> OPEN: issue (reference taken, instance started, owner told)
+  OPEN --> IN_PROGRESS: first update (owner or contributor) or "I have started"
+  OPEN --> DONE_PENDING: mark as done (owner's step: RECOMMEND)
+  IN_PROGRESS --> DONE_PENDING: mark as done (owner's step: RECOMMEND)
+  DONE_PENDING --> IN_PROGRESS: send back (verifier: SEND_BACK, remark required)
+  DONE_PENDING --> CLOSED: verify (last step: APPROVE; instance APPROVED)
+  OPEN --> CANCELLED: cancel (secretary or chair, kind and reason; instance cancelled)
+  IN_PROGRESS --> CANCELLED: cancel
+  DONE_PENDING --> CANCELLED: cancel
+  CLOSED --> IN_PROGRESS: reopen within 90 days (secretary, reason; new instance)
+  CANCELLED --> IN_PROGRESS: reopen within 90 days (not DISCARDED)
+```
+- **The status is stored on the action and changed only by the actions module**, in the transaction of the engine action that causes it, from `WorkflowActionTaken`, `WorkflowTaskCreated` and `WorkflowInstanceEnded`. This is how the memo keeps its own state (ADR-0035).
+- **Overdue is not a status.** It is derived (`today > dueDate` and the status is OPEN or IN_PROGRESS) and drives RAG (§1.5). A DONE_PENDING action past its date is "Done, to be verified", not overdue.
+- **Forbidden** (409 `WRONG_STATE`):
+  - updating, re-dating or marking done a DRAFT, CLOSED or CANCELLED action;
+  - verifying anything but DONE_PENDING;
+  - issuing anything but a DRAFT;
+  - reopening a DISCARDED draft, or after 90 days (409 `TOO_LATE`: "Raise a new action instead");
+  - any change by a person recused from the item, except the owner's own actions (403 `RECUSED`).
+
+### 1.5 Red, amber and green (ADR-0067)
+Derived on read from stored columns and today's date in the tenant's zone. No sweep is needed, and lists filter and sort on it in SQL.
+
+| Shown | When (first match wins) | Words and icon |
+|---|---|---|
+| — | DRAFT | "Draft" |
+| Grey | CLOSED / CANCELLED | "Closed" ✓ / "Cancelled" ⨯ |
+| Blue | DONE_PENDING | "Done, to be verified" ◐ |
+| The override | `ragOverride` set and in force (until its date, or until the next update when it has none) | Its colour, with "set by {name}: {reason}" |
+| Red | today > `dueDate`, or `confidence` = OFF_TRACK | "Overdue" ▲ / "Off track" ▲ |
+| Amber | today ≥ `amberFrom`, or `confidence` = AT_RISK, or today ≥ `staleFrom` | "Due soon" ● / "At risk" ● / "No recent update" ● |
+| Green | otherwise | "On track" ✓ |
+
+- Colours come from the design tokens with contrast ≥ 4.5:1 for their text. **Colour is never alone**: the word and the icon always come with it (WCAG 1.4.1, research §7).
+- The tracker and the report print the key with this committee type's numbers ("Amber: due within 10 working days, at risk, or no update for 20 working days").
+- **Overrides:** by a secretary or the chair, not recused, with a reason. They are shown and audited, and cleared by the next update unless a date is given.
+- `amberFrom` and `staleFrom` are computed with the business calendar when written. A later calendar change does not move them until the action's next update or date change, the same rule as ADR-0041's due times.
+
+### 1.6 Progress updates and evidence
+- `POST …/updates` by the owner (the holder), a contributor, or a secretary on the owner's behalf (`onBehalfOf` with `how`: PHONE, EMAIL, IN_PERSON, MEETING):
+  - `text` 1–4,000;
+  - `confidence` (owner and on-behalf only);
+  - up to 10 files (purpose `action.evidence`: ClamAV, then type by content, ≤ 25 MiB each, ADR-0029; stored encrypted per tenant, readable by `ActionAccess`).
+- Append-only `action_entry` of kind UPDATE. Its effects:
+  - an OPEN action becomes IN_PROGRESS;
+  - `lastUpdateAt` and `staleFrom` are reset;
+  - an override with no end date is cleared.
+- **Entries are never edited.** A correction is a new entry with `corrects` pointing at the earlier one ("Correction to the update of 3 December"), shown under it.
+- **The timeline** (entries newest first) shows updates, date changes, owner changes, overrides, verification, memo events and source corrections. It is the action's history and is printed on the report's detail page.
+
+### 1.7 Due-date changes
+- The committee type's `dueChange` decides (§1.13):
+  - `SECRETARY_AGREES` (default): the owner requests a new date with a reason (`POST …/due-requests`, `{newDate, reason 1–500}`). A secretary not recused agrees or declines with an optional note. Until then the action keeps its date and shows "New date requested: 20 January".
+  - `CHAIR_AGREES`: the same, decided by the chair (the vice-chair when the chair is recused or absent from office).
+  - `OWNER_WITH_REASON`: the owner moves the date with a reason, and the secretaries are told.
+- A secretary not recused may always change the date directly, with a reason.
+- At most one pending request per action (409 `PENDING_REQUEST`). It is withdrawn automatically when the action is marked as done or cancelled.
+- **On a change:**
+  - `dueDate`, `dueRevisions + 1` and `amberFrom` are updated;
+  - an entry records the old date, the new date and the reason;
+  - `Workflows.redue("action-item", actionId)` re-plans the open owner's task's timers in the same transaction (ADR-0068);
+  - the owner and contributors are told.
+- **Shown everywhere as** "Due 20 January 2027 (originally 15 December 2026, revised once)". The IIA asks for "missed dates and revised dates" (research §3.3).
+
+### 1.8 Reminders and escalation (the engine's timers, ADR-0041 and ADR-0068)
+- The committee type names a published definition with `"subject": "action-item"` (`actions.definitionKey`, default `action-item`).
+- Every tenant gets the built-in **`action-item`** definition, seeded like `sequential-approval` and editable in the visual builder as a new version (ADR-0042):
+```json
+{ "schemaVersion": 2, "subject": "action-item", "start": "owner", "steps": [
+  { "id": "owner", "type": "review", "name": "Owner",
+    "assignee": { "kind": "subject", "slot": "owner" }, "actions": ["RECOMMEND"],
+    "sla": { "from": "subject", "remind": { "before": "P5D", "after": ["P5D"] },
+             "escalate": { "after": "P10D", "action": "notify" } },
+    "next": "verify" },
+  { "id": "verify", "type": "approve", "name": "Verification",
+    "assignee": { "kind": "subject", "slot": "verifier" }, "actions": ["APPROVE", "SEND_BACK"],
+    "remarks": ["SEND_BACK"],
+    "sla": { "due": "P5D", "remind": { "after": ["P3D"] },
+             "escalate": { "after": "P10D", "action": "notify", "to": { "kind": "subject", "slot": "chair" } } },
+    "next": "end" } ] }
+```
+- **What this gives, with the defaults:**
+  - 5 working days before the due date, the holder is reminded;
+  - on the due date's end, the action is overdue. The holder is told, and so are the committee's secretaries, in the app (the actions module's reaction to `WorkflowTimerFired DUE`);
+  - 5 working days after, a second reminder;
+  - 10 working days after, an **escalation** to the holder's supervisor by the reporting line (`notify`: the holder keeps the action), and the secretaries are told;
+  - at the next meeting the action is red in the action taken report (§1.12), which is the escalation to the committee.
+  - The verifier is reminded after 3 working days, and the chair is told after 10.
+- **Tenant variations by configuration** (AGENTS §3.5):
+  - a branch on `action.priority == "HIGH"` adding a review by the owner's unit head before verification;
+  - a chair's step for actions from resolutions (`action.fromResolution`);
+  - other reminder times.
+  - **The definition check** (ADR-0068's `WorkflowSubject.checkDefinition`) refuses an `action-item` definition that:
+    - does not start with a human step on the `owner` slot with `sla.from: subject`;
+    - offers REJECT or RETURN anywhere (an action is sent back, not rejected);
+    - has no later human step (closure is always verified);
+    - uses FORWARD or DELEGATE on the owner's step.
+- **Attributes for CEL:** `action.priority` (string), `action.fromResolution` (bool), `action.source` (string), `action.committeeType` (string, the type's key), `action.dueRevisions` (int), `action.reopened` (bool).
+- **Slots** (ADR-0068), resolved by the actions module when the engine asks:
+  - `owner`: the person, or the position (resolved by the engine as a position).
+  - `verifier`: per `verifiedBy` (§1.9).
+  - `chair`: the chair in office, else the vice-chair, never the owner.
+  - `secretaries`: the secretaries in office not recused from the item, for definitions that want them.
+- **Emails are combined** (research §4.1 point 8, §7):
+  - Reminders and overdue notices are in-app items, one per action, at once.
+  - Their emails wait for the **daily digest**: one email per person at 09:00 in the tenant's zone on working days, listing counts and references only ("2 actions due within 5 working days, 1 overdue: BRC A14/2026, MCC A3/2026").
+  - Escalations, new actions and send-backs are emailed at once.
+  - Email subjects never carry parameters, and bodies never carry an action's text (§9).
+
+### 1.9 Closure verified by someone else
+- **Marking done** (`POST …/done`, the holder):
+  - `note` 1–2,000 ("What was done"), and files as evidence: required when the type has `evidenceRequired` (422 `EVIDENCE_REQUIRED`).
+  - It also runs the owner's step's RECOMMEND (`Workflows.approve` on the task) with the note as the remark.
+  - An entry DONE is written, and the action becomes DONE_PENDING.
+- **The verifier slot** (`verifiedBy`):
+  - SECRETARY (default): the committee's secretaries in office who are not recused from the item and are not the owner, holder or a contributor. If none remain, the chair (else the vice-chair) is used, and failing that the `forums.manage` holders.
+  - CHAIR: the chair, else the vice-chair, under the same exclusions. If neither can, the secretaries are used.
+  - Several people form a pool: any one claims or acts (ADR-0040's claims).
+  - The engine's SOD-2 also excludes whoever recommended in the round, so the owner never verifies even if a tenant edits the definition badly.
+- **Verify** (`POST …/verify`, `{decision: CLOSE | SEND_BACK, remark}`):
+  - CLOSE: APPROVE on the last step; the action becomes CLOSED; the owner and contributors are told. The remark is optional.
+  - SEND_BACK: the engine's send-back to the owner's step with a required remark ("The valuation report is not attached"). The owner's step runs again with the same due date (its timers re-planned from it, so it may be overdue at once), and the action becomes IN_PROGRESS.
+- **At the meeting:**
+  - The action taken report's "Proposed to close" section has "Close the actions the committee agreed" (`POST /meetings/{id}/actions/close-agreed`, `{actionIds}`), for the verifier.
+  - It claims and verifies each one with the remark "Agreed at BRC 4/2026, item 3", one transaction per action, and reports any it could not close.
+  - This is the NHS and Belfast practice of approving closures at the meeting (research §3.2).
+- **What the verifier sees:** the action, its timeline, the evidence, and the follow-up memos with their outcomes (§1.11).
+
+### 1.10 Cancelling and reopening
+- **Cancel** (`POST …/cancel`, `{kind, reason, supersededBy?}`): a secretary or the chair, not recused.
+  - RISK_ACCEPTED is the chair's alone, or recorded by a secretary on the chair's behalf with `how` and a note. The chair is told at once. It is the IIA's "accepting the risk as it then stands" (research §3.3), and the report lists it under "Cancelled since the last meeting" with the words "risk accepted".
+  - The workflow instance is cancelled (`Workflows.cancel`, reason). Its pending request is withdrawn. The owner and contributors are told.
+- **Reopen** (`POST …/reopen`, `{reason, dueDate}`): a secretary not recused, within 90 days of closing or cancelling.
+  - A new instance starts on the type's current definition, and the action becomes IN_PROGRESS with the new due date.
+  - `reopenCount + 1`; the owner is told.
+  - After 90 days the secretary raises a new action instead.
+
+### 1.11 Follow-up memos (ADR-0067)
+- **"Raise a memo"** (`POST …/memos`, the holder or a contributor holding `memo.create`, while OPEN or IN_PROGRESS):
+  - `{typeId, subject?, classificationId?}` creates a **draft memo** through the memo module's new published `MemoDrafts.create(fields, origin)`, which uses the same path as `POST /memos`, including the type's template fill after commit;
+  - the subject defaults to the action's title;
+  - the classification defaults to the action's level and may not be lower without a confirmation ("This memo will be Internal; the action is Confidential");
+  - the creator is the memo's initiator;
+  - the link `action_memo (actionId, memoId, kind RAISED)` is written in the same transaction, and an entry MEMO_RAISED.
+  - The memo is an ordinary draft from then on: the owner edits and submits it on its own route, and every memo rule applies.
+- **Link an existing memo** (`kind LINKED`): any memo the holder or a secretary can read (`MemoReaders.canRead`). One memo may follow up several actions. Up to 10 memos per action.
+- **Back-references:**
+  - The memo shows "Raised from action BRC A14/2026 of the Board Risk Committee" through a new memo port `MemoOrigins`, which the actions module implements. Memo never depends on actions.
+  - The reference links to the action only for viewers who see the action; others see the text without a link.
+  - The note sheet gets a system entry at creation: "Raised from action BRC A14/2026 (Board Risk Committee)". It carries the reference, never the action's text.
+- **The memo's state on the action:**
+  - For viewers who may read the memo: its number, subject and status (`MemoReaders.readable` with a status added to `MemoBrief`).
+  - For others: "A follow-up memo (you do not have access)" with its status only when the viewer is the action's verifier or a secretary. They need the outcome to verify, and the status reveals nothing of the memo's content.
+- **When a linked memo is decided** (`WorkflowInstanceEnded` for subject `memo`: approved, rejected, withdrawn or cancelled, or the memo closed):
+  - an entry MEMO_DECIDED ("Memo MEMO/2026/0412 was approved on 9 January");
+  - the holder is told: "The follow-up memo was approved. You can now mark the action as done."
+  - **The action is not closed automatically.** The loop closes when the owner marks it done and the verifier verifies it with the memo's outcome in view (overview E07).
+- **The chain for the exit criterion:** memo → submission → item → decision and resolution → action → follow-up memo, with every link stored. The action reaches its decision through `decisionId` and E06's `Resolutions.ofDecision`; the follow-up memo reaches the action through `action_memo`. The `committee-cycle` IT walks it in both directions (test plan).
+
+### 1.12 Carry-forward: the action taken report on "Matters arising"
+- **When** a revision of a meeting's agenda is published (`AgendaPublished`) and it has a MATTERS_ARISING standing item, the actions module builds an **action taken report** for that revision in the publishing transaction.
+  - The report is frozen: the status "at agenda publication" (overview E07). A later revision gets a new report, and earlier ones stay.
+- **Rows** (`action_report_row`), for the meeting's committee:
+  1. **Proposed to close:** DONE_PENDING actions.
+  2. **Overdue:** OPEN or IN_PROGRESS past their date.
+  3. **Open:** the other OPEN or IN_PROGRESS actions, due date first.
+  4. **Closed since the last meeting, for noting:** CLOSED after the previous meeting's start.
+  5. **Cancelled since the last meeting, for noting:** with the kind, and "risk accepted" in words.
+  6. **Corrections to earlier minutes:** E06's `MinutesCorrections.since(forumId, previousMeetingStart)`. There is one entry per approved correction.
+  - Each row snapshots:
+    - reference;
+    - source ("BRC 3/2026, item 5");
+    - title;
+    - owner (title first);
+    - due date with the original and revisions;
+    - RAG with its words;
+    - status;
+    - the latest update (first 500 characters, with its date);
+    - the follow-up memos' numbers and statuses.
+  - Each row also keeps the action's item columns and classification, so each reader sees only their rows (§1.14).
+  - The report leads with sections 1 and 2, the ones that need the meeting. That answers RBI's "compliance crowding" (research §3.3). At most 500 rows. Beyond that the report says "and {n} more open actions; see the committee's tracker".
+- **Held back:** a secretary may exclude an action from the next revision's report (`POST …/report-hold`, reason). It stays open in the tracker. The report lists "1 action held back by the secretary" to officers, so curating is possible and visible. BoardPro's users could not curate (research §4.1 point 7).
+- **On the agenda:**
+  - The MATTERS_ARISING item shows "Action taken report: 2 to close, 3 overdue, 9 open, 4 closed since the last meeting — Open the report", through the meeting module's item-links port, which E06 adds for PREVIOUS_MINUTES (§11).
+  - The meeting page and the report page open the reader's rows.
+  - "Print" renders the reader's rows as a PDF through `ReportPages`. It is built on demand, not stored, and audited as a document open.
+- **The minutes:** the matters arising item's decision (E06) is recorded as usual ("NOTED"). Closures agreed at the meeting are §1.9's "Close the actions the committee agreed".
+- **Asking for updates before the pack:** the daily task (§9) asks the holders of open actions with no update since the previous meeting for one. It runs `updateRequestWorkingDays` before the next meeting's agenda deadline ("Please update BRC A14/2026 before 5 December, when the committee's papers are published"). A secretary can also press "Ask owners for an update" on the tracker, at most once a day per committee.
+
+### 1.13 The committee type's actions policy
+`forum_type_version.actions` (jsonb, `forum/V8`; null reads as the defaults). It is edited on the committee type's new **Actions** tab and reviewed by a second administrator like every type change (ADR-0056). It is pinned with the type version. Unlike the minutes policy, it is read from the version **in force today** for the committee, not the meeting's pinned version: an action lives across meetings, and its reminders must follow the committee's current rules.
+
+| Field | Default | Rule |
+|---|---|---|
+| `amberWorkingDays` | 10 | 1–60 |
+| `staleWorkingDays` | 20 | null (off) or 5–120 |
+| `dueChange` | SECRETARY_AGREES | SECRETARY_AGREES, CHAIR_AGREES or OWNER_WITH_REASON |
+| `verifiedBy` | SECRETARY | SECRETARY or CHAIR |
+| `evidenceRequired` | false | |
+| `defaultDue` | NEXT_MEETING | NEXT_MEETING or WORKING_DAYS, with `defaultDueWorkingDays` 1–120 (default 20). It is used when no next meeting is scheduled |
+| `updateRequestWorkingDays` | 5 | null (off) or 1–20 before the next meeting's agenda deadline |
+| `definitionKey` | `action-item` | A published definition whose `subject` is `action-item` (422 `UNKNOWN_DEFINITION`) |
+
+- **Presets** (E01):
+  - Board and Board Risk use the defaults.
+  - Board Audit has `evidenceRequired` true (the IIA's evidence; research §3.3).
+  - The management committees (credit, ALCO, ExCo) have `amberWorkingDays` 5, `defaultDue` WORKING_DAYS 10, and `dueChange` OWNER_WITH_REASON.
+- **A change applies to existing open actions** from their next write (`amberFrom`, `staleFrom`) and, for `verifiedBy`, from the next verification step. The definition key applies to actions issued or reopened afterwards. Running instances keep their pinned definition version (ADR-0038).
+
+### 1.14 Who sees what (`ActionAccess`, the one rule)
+`ActionAccess` is the only class that selects from the action tables for readers, and an architecture test checks it. It builds on `PaperAccess` (ADR-0061) and `Recusals` (ADR-0062).
+
+```
+involved(v, a)   := v = a.holder ∨ v holds a.ownerPosition ∨ v = a.ownerUser ∨ v ∈ a.contributors ∨ v holds or may claim a's open task
+seeAction(v, a)  := a.status ≠ DRAFT ∧ involved(v, a)
+                  ∨ cleared(v, a.classification) ∧ ¬recused(v, a.item) ∧
+                    ( a.status = DRAFT ⇒ secretaryOrManager(v, a.forum) ) ∧
+                    ( a.item = null ⇒ officer(v, a.forum) ∨ reader(v) ∨ memberToday(v, a.forum) ) ∧
+                    ( a.item ≠ null ⇒ PaperAccess.itemCondition(viewerToday(v, a.forum), a.itemColumns)
+                                      ∨ reader(v) ∧ a.itemRestrictedTo = null ∧ ¬a.itemTitleHidden )
+seeSource(v, a)  := E06's rule for the decision (MinutesAccess), else the item rule
+```
+- **`viewerToday`** is the person's role in the committee today: an officer (a secretary, the chair, or the vice-chair when there is no chair, and `forums.manage`), a member in office, or a `forum.read` holder (`reader`). Guests and item attendees of a past meeting see no actions unless they are involved. Former members lose access unless involved (E03's rule).
+- **Recusal** (the E04 placeholder): a person recused from the action's item does not see the action at all, nor is it counted for them, **unless they are involved**.
+  - An involved recused person sees the action (title, description, context, timeline) and the source label with the item's number. They see the item's title only if `PaperAccess.titleCondition` allows it.
+  - They never see the decision, the papers, or other actions of the item.
+  - A recused officer cannot draft, issue, edit, re-date, override, verify, cancel or reopen actions of the item (403 `RECUSED`). Another secretary does.
+  - The verifier slot already leaves recused people out.
+- **What an owner outside the committee sees:** the action, its context, its timeline, its evidence and its memos. They see the decision only when E06's rule lets them, for example as a reader of the source memo, and no papers. The source label shows "Board Risk Committee, BRC 3/2026, item 5". The item title is shown only when the title rule allows it.
+- **Counts** (badges, tracker totals, report sections) come from the same predicate in the same query, so nothing is revealed by a count.
+- **Item columns** are copied onto the action and refreshed (§1.1). The rule therefore runs on the action's row with one `EXISTS` for the recusal (`PaperExclusions`), and lists stay set-based.
+- **The report rows** carry the same columns, and each reader gets their rows from the same rule.
+- **Evidence files** (`action.evidence`): the purpose's `mayRead` is `seeAction`. The generic files endpoints serve them to nobody else.
+
+### 1.15 ERD
+```mermaid
+erDiagram
+  forum ||--o{ action_item : "actions"
+  action_counter }o--|| forum : "per year"
+  action_item ||--o{ action_contributor : "contributors"
+  action_item ||--|{ action_entry : "timeline"
+  action_item ||--o{ action_due_request : "date requests"
+  action_item ||--o{ action_memo : "follow-up memos"
+  action_item ||--o{ action_report_hold : "held back"
+  action_report ||--|{ action_report_row : "rows"
+  action_report_row }o--|| action_item : "snapshot of"
+  action_item {
+    uuid id PK
+    uuid tenant_id
+    uuid forum_id
+    int number_year
+    int sequence
+    text reference
+    text source
+    uuid meeting_id
+    uuid item_id
+    uuid decision_id
+    int condition_index
+    text source_label
+    uuid item_parent_id
+    uuid item_classification_id
+    uuid_array item_restricted_to
+    bool item_title_hidden
+    bool item_members_only
+    text title
+    text description
+    text context
+    uuid classification_id
+    text owner_kind
+    uuid owner_user_id
+    uuid owner_position_id
+    uuid holder_user_id
+    text priority
+    date due_date
+    date original_due_date
+    int due_revisions
+    date amber_from
+    text status
+    text confidence
+    timestamptz last_update_at
+    date stale_from
+    text rag_override
+    text rag_override_reason
+    date rag_override_until
+    uuid workflow_instance_id
+    text step_name
+    timestamptz done_at
+    timestamptz closed_at
+    text cancel_kind
+    uuid superseded_by
+    int reopen_count
+    timestamptz issued_at
+    bigint version
+  }
+  action_entry {
+    uuid tenant_id PK
+    uuid action_id PK
+    int seq PK
+    text kind
+    uuid actor_id
+    uuid on_behalf_of
+    text how
+    text text
+    text confidence
+    jsonb details
+    uuid_array file_ids
+    int corrects_seq
+    timestamptz at
+  }
+  action_due_request {
+    uuid id PK
+    uuid tenant_id
+    uuid action_id FK
+    date new_date
+    text reason
+    text state
+    uuid requested_by
+    uuid decided_by
+    timestamptz decided_at
+  }
+  action_memo {
+    uuid tenant_id PK
+    uuid action_id PK
+    uuid memo_id PK
+    text kind
+    uuid linked_by
+    timestamptz linked_at
+  }
+  action_report {
+    uuid id PK
+    uuid tenant_id
+    uuid meeting_id
+    int revision
+    uuid item_id
+    timestamptz since
+    timestamptz built_at
+    int row_count
+  }
+  action_report_row {
+    uuid tenant_id PK
+    uuid report_id PK
+    int position PK
+    text section
+    uuid action_id
+    jsonb snapshot
+    uuid item_id
+    uuid classification_id
+  }
+```
+- Not drawn:
+  - `action_counter`: `forum_id`, `year`, `last_number`; PK `(tenant_id, forum_id, year)`.
+  - `action_contributor`: `action_id`, `user_id`, `added_by`, `added_at`, `removed_at`.
+  - `action_report_hold`: `action_id`, `held_by`, `reason`, `for_meeting_id`, `at`.
+  - `action_digest`: `user_id`, `day`, `sent_at`; PK `(tenant_id, user_id, day)`, the digest's idempotency key.
+- `forum_id`, `meeting_id`, `item_id`, `decision_id`, `memo_id`, user, position and file ids refer to other modules' rows by id and are checked by the services. Inside the module, foreign keys are composite `(tenant_id, …)`.
+
+## 2. Modules and events
+
+### 2.1 The `actions` module
+Packages `raise`, `progress`, `closure`, `followup`, `report`, `access`, `subject`, `digest`.
+- **Depends on:**
+  - `meeting`: `Meetings`, `PaperAccess`, `Recusals`, the revision items, the item-links port;
+  - `forum`: `ForumDirectory` for officers, members and terms, `ForumPolicies` for `actions`, `ForumCodes`;
+  - `minutes`: `Decisions`, `Resolutions`, `MinutesCorrections`, events;
+  - `workflow`: `Workflows`, `WorkflowHandOns`, `WorkflowQueries`, `WorkingDays`, `WorkflowSubject`, events;
+  - `memo`: `MemoDrafts`, `MemoReaders`, `MemoOrigins` port, `ReportPages`;
+  - `files`, `identity` (users, `RecipientLookup`), `org` (positions, holders), `notification`, `audit`, `common`.
+- **Published API** in `com.memo.actions`:
+  - `ActionItems.ofDecision(decisionId)` and `ofItem(itemId)`, for E06's minutes loop through its port (§11) and for E08;
+  - `ActionCounts.overdue(forumId)`, for E08's analytics;
+  - the event `ActionChanged(tenantId, actionId, forumId, kind)` (kinds ISSUED, UPDATED, DUE_CHANGED, DONE, CLOSED, CANCELLED, REOPENED) for E08's indexing. Ids only.
+- **Listens to:**
+  - `WorkflowActionTaken`, `WorkflowTaskCreated`, `WorkflowTaskClosed`, `WorkflowInstanceEnded`, `WorkflowTimerFired`, `WorkflowEscalated` for subject `action-item`: status, holder, step name, notifications. These are synchronous, in the engine's transaction.
+  - `WorkflowInstanceEnded` for subject `memo`: follow-up memos decided.
+  - `AgendaPublished`: the action taken report, and refreshing item columns of actions from that meeting.
+  - `DecisionRecorded`: source corrected (§1.2).
+  - `MeetingChanged(ENDED)`: drafts are listed to the secretary ("5 draft actions not sent").
+
+### 2.2 `workflow` (ADR-0068: published, additive, no migration)
+1. **Assignee kind `subject` with a `slot`** (`^[a-z][a-z0-9-]{0,39}$`).
+   - It is resolved by `WorkflowSubject.slot(subjectId, slot): List<SlotHolder>`, where `SlotHolder` is `Person(userId)` or `Position(positionId)`. A position is resolved and re-resolved like a POSITION assignee. Several people make a pool, as a role does.
+   - It is recorded in the step's resolution record.
+   - `WorkflowSubject.slots: Set<String>` declares the names. The validator refuses an unknown slot (`UNKNOWN_SLOT`) and a `subject` assignee in a definition without `subject`.
+2. **`sla.from: "subject"`** in place of `due`: the task's due time is `WorkflowSubject.dueAt(subjectId, nodeId): Instant?`, and reminders and escalation are counted from it as today.
+   - `Workflows.redue(subjectType, subjectId)` re-reads it for the subject's open tasks, cancels their pending timers and plans new ones in the caller's transaction. A timer already in the past is skipped, except DUE, which fires at once.
+   - It writes no engine action. The subject audits the change.
+3. **A definition's optional top-level `subject`** (a subject type key). Such a definition starts only for that subject (refused otherwise: `WRONG_SUBJECT`). Its slots and attributes come from that subject. `WorkflowSubject.checkDefinition(definition): List<DefinitionProblem>` (default none) adds the subject's own rules at submit and publish. Memo definitions have no `subject` and behave as today.
+4. **`WorkflowSubject.initiatorTakesPart: Boolean`** (default false): SOD-1 does not exclude the initiator from this subject's steps.
+   - The secretary who issues an action may own it ("Secretary to circulate the revised policy") or verify others'.
+   - Independence comes from the verifier slot and SOD-2, not SOD-1.
+- Also: `WorkflowTaskCreated` gains `nodeId` (nullable, additive), so subjects know which step a task is on without a query.
+- The builder's catalogue lists subject types with their slots and attributes. The `subject` assignee appears in the picker only for a definition with `subject`.
+- The engine's property tests (TESTING_STRATEGY §4) and Phase 2's suites run unchanged.
+
+### 2.3 The other modules
+- **`memo`** (published additions, no migration):
+  - `MemoDrafts.create(MemoFields, origin: MemoOrigin)`: the same service as `POST /memos`, then the template fill after commit (ADR-0048). It returns the memo id. It requires the actor to hold `memo.create` and the type to be offered to them.
+  - The `MemoOrigins` port (`label(memoId, viewer): OriginLabel?`, default none) for "Raised from action …" on the memo view.
+  - `MemoBrief` gains `status`.
+  - `MemoNotes.system(memoId, kind = RAISED_FROM_ACTION, text)`.
+- **`forum`:** `ForumTypePolicy.actions` (§1.13) with checks, presets, the changes view and maker-checker; `forum/V8`.
+- **`meeting`:** none beyond the item-links port E06 adds, which must accept several implementations: minutes for PREVIOUS_MINUTES, actions for MATTERS_ARISING.
+- **`minutes`** (from E06's plan, §11): `Decisions`, `Resolutions.ofDecision`, `MinutesCorrections.since`, `DecisionRecorded` with corrections, and the `MinutesItemActions` port for the template loop.
+- **`notification`:** kinds in category WORKFLOW. Subjects carry no parameters. Bodies name the committee, the action's reference and its due date, never its text, title or the item:
+  - email and in-app: `ACTION_ASSIGNED`, `ACTION_SENT_BACK`, `ACTION_ESCALATED`, `ACTION_OWNER_CHANGED`, `ACTION_UPDATE_REQUESTED`, `ACTION_RISK_ACCEPTED` (to the chair), `ACTIONS_DIGEST` (email only);
+  - in-app, with their emails in the digest: `ACTION_DUE_SOON`, `ACTION_OVERDUE`, `ACTION_TO_VERIFY`, `ACTION_CLOSED`, `ACTION_CANCELLED`, `ACTION_REOPENED`, `ACTION_DUE_REQUESTED`, `ACTION_DUE_DECIDED`, `ACTION_DUE_CHANGED`, `ACTION_MEMO_DECIDED`, `ACTION_SOURCE_CORRECTED`, `ACTIONS_NOT_SENT`.
+- **`ApplicationModules.verify()`:** actions → meeting, forum, minutes, workflow, memo, files, identity, org, notification, audit, common. Nothing depends on actions except E08, and minutes, meeting and memo reach it through their own ports only.
+
+## 3. API
+Conventions as E03 and E06:
+- `/api/v1`, RFC 9457 errors, cursor pagination on lists;
+- `Idempotency-Key` on every POST that creates rows or acts;
+- If-Match on the action's `version` for every change of an action.
+
+| Method and path | Access (§4) | Notes |
+|---|---|---|
+| `POST /meetings/{id}/actions` | Sec, Mgr (nr) | Raise a draft: `{source: DECISION\|ITEM\|MEETING, itemId?, decisionId?, conditionIndex?, title, description?, context?, owner?, contributors?, dueDate?, priority?, classificationId?}` |
+| `GET /meetings/{id}/actions` | seeAction | The meeting's actions, drafts for Sec and Mgr. The meeting page's and the decision panel's list |
+| `POST /meetings/{id}/actions/issue` | Sec, Mgr | Issues every draft the actor may issue; per-action results |
+| `POST /meetings/{id}/actions/close-agreed` | the verifier | `{actionIds, remark?}`; per-action results |
+| `POST /forums/{fid}/actions` | Sec, Mgr | A DIRECT draft: `{sourceNote, …}` |
+| `GET /forums/{fid}/actions` | seeAction | The tracker: `status`, `rag`, `owner`, `overdue`, `dueBefore`, `dueAfter`, `meetingId`, `text` (title and description, `websearch_to_tsquery`), `sort` (due, updated, reference), `cursor`. Answers rows plus totals per RAG from the same predicate |
+| `GET /forums/{fid}/actions/export` | Sec, Chair, Mgr, Read | XLSX of the filtered tracker, streamed; rate-limited (`EXPORT`), audited |
+| `POST /forums/{fid}/actions/ask-for-updates` | Sec, Mgr | Once a day per committee (409 `ALREADY_ASKED`) |
+| `GET /actions/{id}` | seeAction | The action with its people, RAG and words, source (as §1.14 allows), memos, pending request, the viewer's available actions |
+| `GET /actions/{id}/entries` | seeAction | The timeline, newest first |
+| `PATCH /actions/{id}` | Sec, Mgr (nr) | Draft: any field. Issued: `title`, `description`, `context`, `priority`, `classificationId` (up only), `contributors`, with `reason` (entry EDITED with hashes) |
+| `POST /actions/{id}/issue` | Sec, Mgr (nr) | |
+| `POST /actions/{id}/owner` | Sec, Mgr (nr) | `{owner, reason}` |
+| `POST /actions/{id}/updates` | Holder, Contrib, Sec on behalf | `{text, confidence?, fileIds?, onBehalfOf?, how?, corrects?}` |
+| `POST /actions/{id}/started` | Holder | OPEN → IN_PROGRESS without text |
+| `POST /actions/{id}/due-requests` | Holder | `{newDate, reason}` (SECRETARY_AGREES, CHAIR_AGREES) |
+| `POST /actions/{id}/due-requests/{rid}/decide` | Sec (or Chair per type), nr | `{decision: AGREE\|DECLINE, note?}` |
+| `POST /actions/{id}/due` | Sec, Mgr (nr); Holder when OWNER_WITH_REASON | `{newDate, reason}` |
+| `POST /actions/{id}/rag` | Sec, Chair (nr) | `{rag, reason, until?}`; `DELETE` clears |
+| `POST /actions/{id}/done` | Holder | `{note, fileIds?}` |
+| `POST /actions/{id}/verify` | the verifier (pool member) | `{decision: CLOSE\|SEND_BACK, remark}`; claims the task if needed |
+| `POST /actions/{id}/cancel` | Sec, Chair (nr); RISK_ACCEPTED: Chair, or Sec on behalf with `how` | `{kind, reason, supersededBy?}` |
+| `POST /actions/{id}/reopen` | Sec, Mgr (nr) | `{reason, dueDate}` |
+| `POST /actions/{id}/memos` | Holder, Contrib (with `memo.create`) | `{typeId, subject?, classificationId?}` → 201 with the memo id |
+| `POST /actions/{id}/memos/link` | Holder, Sec | `{memoId}` (a memo they may read) |
+| `POST /actions/{id}/report-hold` | Sec, Mgr (nr) | `{reason}`; for the next revision's report |
+| `GET /me/actions` | signed in | `tab`: MINE (holder or owner), TO_VERIFY (verify tasks held or claimable), CONTRIBUTING; `rag`, `forumId`, `cursor`; counts per tab for the inbox badge |
+| `GET /meetings/{id}/action-report` | the MATTERS_ARISING item's readers | The latest report of the latest revision, or `?revision=`; rows by seeAction on the snapshot; officers also see held-back counts |
+| `GET /meetings/{id}/action-report/pdf` | as above | The reader's rows as PDF (ReportPages); audited open |
+| `GET/PUT /admin/forum-types/{id}/versions/{n}` (E01) | as E01 | The version gains `actions` (§1.13) |
+
+**Problems:**
+- 409: `WRONG_STATE`, `CONFLICT`, `PENDING_REQUEST`, `TOO_LATE`, `ALREADY_ASKED`, `NOT_VERIFIER`.
+- 422:
+  - `REQUIRED`, `LENGTH`, `RANGE`, `DUE_IN_PAST`;
+  - `CLASSIFICATION`, `OWNER_NOT_CLEARED`, `RECUSED_NAMED`, `CONDITION`;
+  - `EVIDENCE_REQUIRED`, `TOO_MANY` (contributors, files, memos);
+  - `UNKNOWN_DEFINITION`, `SAME_PERSON` (a contributor who is the owner), `SUPERSEDED_BY`.
+- 403 `RECUSED`.
+- 404 for an action the viewer may not see (never 403, so existence is not revealed); 412 on a stale If-Match.
+- The engine's refusals map as in Phase 2 (`WorkflowProblems`).
+
+## 4. Authorisation matrix
+**Columns:**
+- the E06 set: **Sec** (a secretary of the committee in office), **Chair** (chair or vice-chair), **Mgr** (`forums.manage`), **Member** (in office today), **Read** (`forum.read`, cleared), **Guest/Att** (guest or item attendee of the source meeting), **Former** (a former member);
+- **Owner**: the holder of the owner's task, or the person or position holder;
+- **Contrib**;
+- **Verifier**: a member of the verify step's pool;
+- **Recused**: a person recused from the item who is not involved.
+"(nr)" means not recused from the action's item.
+
+| Action | Sec | Chair | Mgr | Member | Read | Guest/Att | Former | Owner | Contrib | Verifier | Recused |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| Raise, edit or discard a draft; issue | ✓ (nr) | – | ✓ (nr) | – | – | – | – | – | – | – | 403 |
+| See a draft | ✓ (nr) | – | ✓ (nr) | 404 | 404 | 404 | 404 | 404 | 404 | – | 404 |
+| See an issued action | ✓ (nr) | ✓ (nr) | ✓ (nr) | rule | rule (unrestricted) | 404 | 404 | ✓ | ✓ | ✓ | 404 |
+| See the source decision | E06 | E06 | E06 | E06 | E06 | – | – | E06 | E06 | E06 | – |
+| Edit an issued action; change owner or contributors | ✓ (nr) | – | ✓ (nr) | – | – | – | – | – | – | – | 403 |
+| Post an update | on behalf (nr) | – | – | – | – | – | – | ✓ | ✓ | – | – |
+| Set confidence; "I have started" | on behalf | – | – | – | – | – | – | ✓ | – | – | – |
+| Request a new date | – | – | – | – | – | – | – | ✓ | – | – | – |
+| Agree or decline a request | ✓ (nr, SECRETARY_AGREES) | ✓ (nr, CHAIR_AGREES) | – | – | – | – | – | – | – | – | 403 |
+| Change the date directly | ✓ (nr) | – | ✓ (nr) | – | – | – | – | OWNER_WITH_REASON | – | – | 403 |
+| Override RAG | ✓ (nr) | ✓ (nr) | – | – | – | – | – | – | – | – | 403 |
+| Mark as done | – | – | – | – | – | – | – | ✓ | – | – | – |
+| Verify or send back | pool | pool | fallback | – | – | – | – | 403 | 403 | ✓ | – |
+| Close agreed at the meeting | pool | pool | – | – | – | – | – | – | – | ✓ | – |
+| Cancel (not RISK_ACCEPTED) | ✓ (nr) | ✓ (nr) | – | – | – | – | – | – | – | – | 403 |
+| Cancel, risk accepted | on behalf (`how`) | ✓ (nr) | – | – | – | – | – | – | – | – | 403 |
+| Reopen | ✓ (nr) | – | ✓ (nr) | – | – | – | – | – | – | – | 403 |
+| Raise or link a follow-up memo | link | – | – | – | – | – | – | ✓ (`memo.create`) | ✓ (`memo.create`) | – | – |
+| Hold back from the report; ask for updates | ✓ | – | ✓ | – | – | – | – | – | – | – | – |
+| The tracker | ✓ | ✓ | ✓ | rows by rule | rows by rule | – | – | own rows | own rows | own rows | rows without the item's |
+| Export the tracker | ✓ | ✓ | ✓ | – | ✓ | – | – | – | – | – | – |
+| "My actions" | own | own | own | own | own | own | own | ✓ | ✓ | ✓ | own |
+| The action taken report | ✓ | ✓ | ✓ | rows by rule | rows by rule | – | – | – | – | – | rows without the item's |
+| The committee type's Actions tab | – | – | `forum.types.manage` (maker-checker) | – | – | – | – | – | – | – | – |
+
+- "rule" is §1.14's `seeAction`. A recused secretary or chair is the Recused column for that item's actions and an ordinary officer for the others.
+- "fallback" means the slot resolves to `forums.manage` holders only when no secretary or chair can verify.
+- Invisible actions answer 404. Visible but forbidden actions answer 403.
+- `AuthzMatrixCoverageTest` requires a row for every endpoint. The matrix file is `p4-e07-actions.yaml`.
+
+## 5. Audit events
+These are written in the business transaction (AGENTS §3.3). Jobs audit as the system actor with the cause. Free text (title, description, context, updates, reasons, notes, remarks) is never in the details, only its SHA-256, as in E04 and E06.
+- **Life:**
+  - `actions.action.drafted` (source, item, decision, condition, owner, due, classification, `titleSha256`);
+  - `actions.action.edited` (fields changed, before and after hashes, `reasonSha256`);
+  - `.discarded`;
+  - `.issued` (reference, instance, definition version);
+  - `.owner_changed`, `.contributor_added`, `.contributor_removed`;
+  - `.cancelled` (kind, `supersededBy`, `onBehalfOf`, how);
+  - `.reopened`;
+  - `.source_corrected`.
+- **Progress:**
+  - `actions.update.posted` (seq, confidence, file ids, `onBehalfOf`, how, `corrects`);
+  - `actions.started`;
+  - `actions.due_request.made`, `.agreed`, `.declined`, `.withdrawn`;
+  - `actions.due.changed` (old, new, revisions);
+  - `actions.rag.overridden`, `actions.rag.cleared`.
+- **Closure:**
+  - `actions.done` (`noteSha256`, files);
+  - `actions.sent_back`;
+  - `actions.closed` (`closeAgreedAt` meeting when bulk).
+  - The engine's own RECOMMEND, APPROVE, SEND_BACK, CANCEL and ESCALATE actions are audited by the workflow module as today.
+- **Memos:** `actions.memo.raised`, `actions.memo.linked`, `actions.memo.decided`.
+- **Report:**
+  - `actions.report.built` (meeting, revision, rows per section, held back, `contentSha256`);
+  - `actions.report.opened` (document-open, with PDF or screen);
+  - `actions.report.held`.
+- **Tracker:** `actions.tracker.exported` (filters, rows); `actions.update_requests.sent` (count).
+- **Policy:** the committee type's version audit covers `actions`.
+- `AuditActionCoverageTest` lists every event.
+
+## 6. Tenancy and RLS
+- **New tables:** `action_item`, `action_counter`, `action_contributor`, `action_entry`, `action_due_request`, `action_memo`, `action_report`, `action_report_row`, `action_report_hold`, `action_digest`.
+  - Each has `tenant_id` first in every index and composite foreign keys inside the module.
+  - RLS is ENABLED and FORCED with the standard policy `tenant_id = (select nullif(current_setting('app.tenant_id', true), '')::uuid)`.
+- **No DELETE or TRUNCATE** for the app role on any of them.
+- **No UPDATE** on `action_entry`, `action_report`, `action_report_row` or `action_report_hold`: insert only.
+- **Guarded updates** on `action_item` (version and status), `action_due_request` (state PENDING → once), `action_counter` and `action_contributor` (`removed_at` null → value, once).
+- **Triggers refuse:**
+  - changing `forum_id`, `source`, `meeting_id`, `item_id`, `decision_id`, `reference`, `sequence`, `original_due_date` or `issued_at` once set;
+  - decreasing a counter.
+- Lowering an action's level is refused by the service (422 `CLASSIFICATION`), since levels and their ranks are tenant data; a test covers it.
+- **File purpose:** `action.evidence` (ordinary storage, encrypted per tenant, owner = the action), `mayRead` = `ActionAccess`.
+- **Jobs and listeners:**
+  - The jobs (the daily task, the update requests) carry `tenantId` and fail closed without it (ADR-0017).
+  - The engine's events and `AgendaPublished` run synchronously in the publisher's tenant transaction.
+- **Tests:** `ActionsCrossTenantIT` covers every table, endpoint and job, the joins to meeting items through `PaperAccess`, and the workflow instance of another tenant's action. `RlsMetaTest` picks up the tables.
+
+## 7. Migrations
+**Numbering, checked on 2026-11-21:**
+- `master` holds `forum/V7`, `meeting/V9`, `memo/V20`, `workflow/V16` and `notification/V4`.
+- Open #203 (E05 T5) holds `meeting/V10`.
+- E06 plans `minutes/V1`–`V4` and no forum migration after V7.
+- **E07 takes `forum/V8` and `actions/V1`–`V4`.** If another PR takes `forum/V8` first, E07 takes the next forum number.
+- E07 adds **no meeting, memo, workflow or notification migration**:
+  - notification kinds are an enum in code;
+  - the link check already allows `/actions/…`;
+  - the engine's additions are JSON and code;
+  - T1 confirms that no workflow CHECK constraint lists assignee kinds. If one does, it takes `workflow/V17`.
+
+**The migrations:**
+- **`forum/V8__actions_policy.sql`** (T2): `forum_type_version.actions jsonb`, with a CHECK on type and size (≤ 4 KiB; null reads as the defaults).
+- **`actions/V1__actions.sql`** (T3): the module's first migration, with its folder registered like every module's (ADR-0006).
+  - `action_counter`.
+  - `action_item`:
+    - unique `(tenant_id, reference)`;
+    - index `(tenant_id, forum_id, status, due_date, id)` for the tracker;
+    - index `(tenant_id, holder_user_id, status, due_date)` for "My actions";
+    - index `(tenant_id, owner_position_id) WHERE owner_position_id IS NOT NULL`;
+    - index `(tenant_id, meeting_id)`;
+    - index `(tenant_id, decision_id) WHERE decision_id IS NOT NULL`;
+    - index `(tenant_id, workflow_instance_id)`.
+  - `action_contributor`: PK `(tenant_id, action_id, user_id)`, index `(tenant_id, user_id) WHERE removed_at IS NULL`.
+  - `action_entry`: PK `(tenant_id, action_id, seq)`.
+  - Triggers and grants.
+- **`actions/V2__progress.sql`** (T4): `action_due_request` (unique `(tenant_id, action_id) WHERE state = 'PENDING'`); `action_digest`.
+- **`actions/V3__memos.sql`** (T6): `action_memo` (index `(tenant_id, memo_id)`).
+- **`actions/V4__reports.sql`** (T7): `action_report` (unique `(tenant_id, meeting_id, revision)`), `action_report_row`, `action_report_hold` (index `(tenant_id, action_id)`).
+- **All expand-only:** new tables and one new nullable column. Old app versions ignore them. The engine's schema additions are optional keys, so definitions stored today validate and run unchanged.
+
+## 8. Performance budget
+| Endpoint or job | Target p95 | Volume | How |
+|---|---|---|---|
+| `POST /meetings/{id}/actions` (draft) | < 150 ms | 60 items | One insert; the source checked through `Decisions.find` and `PaperAccess` (already cached per request) |
+| `POST …/issue` (one) | < 300 ms | — | Counter row, `Workflows.start` (one instance, one task, timers planned), audit, one notification |
+| `POST /meetings/{id}/actions/issue` | < 3 s | 30 drafts | One transaction per action, so a failure stops nothing else |
+| `GET /me/actions` | < 150 ms | 200 open per person; 30,000 actions per tenant | `(tenant_id, holder_user_id, status, due_date)`, plus contributors and claimable verify tasks from `WorkflowQueries.myTasks` (subject `action-item`) in one query each, merged |
+| `GET /forums/{fid}/actions` | < 200 ms per page of 50 | 1,000 actions per committee (10 years) | `(tenant_id, forum_id, status, due_date, id)` keyset; RAG in SQL from the stored dates and today; the access predicate on the row's columns plus one `EXISTS` for the recusal; totals in the same scan |
+| Tracker with `text` | < 300 ms | 1,000 per committee | `to_tsvector` on title and description evaluated within the committee's index range (no full-text index needed at this size; ADR-0054's tables stay for memos) |
+| Tracker export | < 3 s | 1,000 rows | SXSSF streaming |
+| `GET /actions/{id}` with timeline | < 120 ms | 100 entries | PK reads; memos through `MemoReaders.readable` (one query) |
+| `POST …/updates`, `…/done`, `…/verify` | < 250 ms | — | One lock, one entry, the engine command where there is one, audit |
+| Action taken report build (in `AgendaPublished`) | < 400 ms added to publishing | 300 rows | One set-based `INSERT … SELECT` for rows, the snapshot JSON built in SQL; at most 500 rows |
+| `GET /meetings/{id}/action-report` | < 150 ms | 300 rows | `(tenant_id, report_id, position)` and the rule on the row's columns |
+| Report PDF | < 2 s | 300 rows | `ReportPages`, on demand |
+| Daily task per tenant | < 30 s | 5,000 people, 3,000 open actions | One pass over open actions joined to pending in-app items of the day; one email per person; `action_digest` key |
+
+- **Volumes** (the E03 and E06 generator, extended in T9): 30 committees × 10 years × 12 meetings × 8 actions ≈ 28,800 actions; 150,000 entries; 3,000 open; 1,000 follow-up memo links; 3,600 reports with 200,000 rows.
+- `EXPLAIN` is reviewed for "My actions", the tracker (with and without text), the report, and the daily task.
+
+## 9. Background work
+- **The engine's timers** (ADR-0041), which already exist: reminders, overdue and escalation per task. The actions module reacts to `WorkflowTimerFired` and `WorkflowEscalated` for its subject inside the timer's transaction:
+  - it writes the in-app items;
+  - it queues emails for the digest, except escalations, which are emailed at once;
+  - it tells the secretaries on DUE.
+- **`actions-daily`** (a recurring platform task at 09:00 in each tenant's zone, fanning out to one `actions-daily` task per active tenant, the pattern of `meeting-sweep` and the watch digest). It runs in a tenant transaction as the system, only on the tenant's working days, and does three things:
+  - (a) **the digest:** for each person with action notices since the last digest, one `ACTIONS_DIGEST` email with counts and references. It is idempotent on `action_digest (user_id, day)`. At most 5,000 people a run; more go on the next run.
+  - (b) **update requests:** for each committee with `updateRequestWorkingDays` and a next meeting whose agenda deadline (E03's `AgendaLateness.deadline`, published by the meeting module if it is not already) is that many working days away, holders of open actions without an update since the previous meeting are asked (`ACTION_UPDATE_REQUESTED`). It is idempotent per meeting through a marker entry kind UPDATE_REQUESTED.
+  - (c) **the safety net:** an issued action that is OPEN, IN_PROGRESS or DONE_PENDING but has no running instance (for example after a failed start) is reported to the secretaries.
+- **Synchronous** in the change's transaction: raising, issuing (instance start), updates, date changes and `redue`, verification, cancel and reopen (engine commands), memo creation (`MemoDrafts.create`; the template fill runs after commit as for memos), the report at agenda publication, and every listener of engine events.
+- **Retry and idempotency:**
+  - Every mutating endpoint takes an `Idempotency-Key`.
+  - The bulk endpoints (`issue`, `close-agreed`) run one transaction per action and answer per-action results, so a retry with the same key replays them.
+  - The daily task's keys make it safe to run twice.
+
+## 10. UX flows (`ux-review.md`, delegated)
+- **AJ, Raising actions (secretary):** on the decision panel (E06 flow AA) and the meeting page; "Make this condition an action"; the action form; drafts; "Send the drafts to their owners" and the held-meeting dialog.
+- **AK, "My actions" (everyone):** the inbox tab with To do, To verify and Contributing; RAG in words; empty states.
+- **AL, The action page (owner):** source and context, "Post an update" with "How is it going?", evidence, "Ask for a new date", "Mark as done", the timeline.
+- **AM, Verification (secretary or chair):** what was done, evidence, memos, "Close the action" or "Send it back"; closing at the meeting.
+- **AN, The committee's action tracker (secretary, chair, members):** filters, the RAG key, totals, overdue first, changing date, owner and RAG, cancel and reopen, "Ask owners for an update", export.
+- **AO, Matters arising (members):** the action taken report on the next meeting's item, sections first that need the meeting, print.
+- **AP, Follow-up memo (owner):** "Raise a memo" with the type chooser, the memo's "Raised from action", the memo's state on the action.
+- **AQ, The committee type's Actions tab (administrators).**
+- **AR, Notifications and emails:** the new-action email, the daily digest, the escalation email, in-app items.
+
+## 11. What E07 needs from E06 (and from the other modules)
+E06 is built to T2; T3–T12 are planned. E07 is designed against E06's published plan (design §1.1, §2, §3). These are the points E06's tasks must deliver, or E07 adds them itself in the named task:
+
+| Need | E06 plan | E07 use | If E06 has not delivered by E07's task |
+|---|---|---|---|
+| `Decisions.find(decisionId)`, `Decisions.of(itemId)`, `Decisions.entry(decisionId, seq)`: the current entry's outcome kind and label, `resolution` flag, text, conditions, item, meeting, forum and state | `Decisions.of(meetingId/itemId)` (§2) | Raise from a decision or condition; the source label | E07 T3 raises from ITEM, MEETING and DIRECT first and adds DECISION behind a small `DecisionSource` adapter when E06 T3 merges |
+| `Resolutions.ofDecision(decisionId)` | `Resolutions` (find, register, by memo) | The resolution number in the source label | Label without the number until E06 T4 |
+| `DecisionRecorded(tenantId, meetingId, itemId, decisionId)` published **for corrections too** | Published at record (§2); corrections not stated | §1.2 source corrected | **Ask E06 T3** to publish it for every new entry, with `seq` |
+| `MinutesCorrections.since(forumId, since)` | §1.6.5 | Report section 6 | Section 6 left empty until E06 T8 |
+| The item-links port on the meeting module, accepting several implementations | `ItemLinks` for PREVIOUS_MINUTES (§2) | The MATTERS_ARISING item's link to the report | **Ask E06 T6** to make it a list of beans keyed by standing kind; E07 T7 adds the port itself if E06 T6 is not merged |
+| The minutes template's actions: `item.actions` row loop [`reference`, `action`, `owner`, `due`] and a meeting-level `actions` loop, filled through a `MinutesItemActions` port the actions module implements (minutes must not depend on actions) | Not in E06's vocabulary | "Actions in the minutes" (overview) | **Ask E06 T5** to add the two loops and the port with an empty default; E07 T3 implements the port |
+| The decision panel (flow AA) has room for "Actions" under each decision and condition, and the "Mark as held" dialog has room for the drafts line | Flow AA | Flow AJ | E07 T10 adds both to the panel E06 T10 builds |
+| `MeetingChanged(ENDED)` and `AgendaPublished` | E03, built | Drafts reminder; report | Built |
+| `MemoDrafts`, `MemoOrigins`, `MemoBrief.status`, `RAISED_FROM_ACTION` note kind (memo) | — | §1.11 | E07 T6 |
+| Engine additions (workflow) | — | §1.8, ADR-0068 | E07 T1 |
+| `AgendaLateness.deadline` published (meeting) | Internal today | §9 (b) | E07 T7 publishes a read-only `AgendaDeadlines.of(meetingId)` |

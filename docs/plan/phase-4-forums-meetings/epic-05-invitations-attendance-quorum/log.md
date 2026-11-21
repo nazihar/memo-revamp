@@ -258,3 +258,19 @@
   - web: the meetings unit tests (122, with a new `replies.test.tsx` case for a member without an invitation), `pnpm typecheck`, ESLint and Prettier on the changed files, `i18n:verify` with the catalogue sizes;
   - the stack was stopped and its volumes removed afterwards.
 - **Left:** T9 (the recorded real-client run, owner's mailboxes and relay); the journeys on dev once deployed; the person's screen-reader pass (`ux-review.md`).
+
+## 2026-11-21 (fix: meetings at a change of offset)
+- **CI on `master` (run 44904197328)** failed `InviteWriterProperties.vtimezoneGivesTheOffsetsJavaTimeGives` for Australia/Adelaide at 16:30Z on 6 April 2019, the instant daylight saving ends (03:00 ACDT → 02:00 ACST). The VTIMEZONE said +10:30, `java.time` said +09:30.
+- **The VTIMEZONE was right.** The STANDARD observance starts at `03:00` local in the old offset, the form every generator writes. The test's oracle was wrong in two ways:
+  - ical4j's observance lookup treats that onset as an hour later; it still answered +10:30 at 16:45Z;
+  - the "near a change" filter missed it, because `previousTransition(at)` excludes a change exactly at `at`. The filter now counts it.
+- **The investigation found a real writer defect:** a meeting starting or ending in the second occurrence of a repeated hour was written as an ambiguous local time. Examples: 01:00 GMT in London on 25 October 2026, or 02:00 ACST in Adelaide on 7 April 2019. RFC 5545 §3.3.5 reads such a time as its first occurrence, and both parsers read those meetings an hour early.
+  - Such meetings are now written in UTC (`DTSTART:…Z`, `DTEND:…Z`).
+  - Every other meeting keeps TZID, including one in the first occurrence (01:30 BST that morning).
+- **A biweekly limit, handled in `InviteChecks` with the reason:** biweekly 0.6.8 misreads the rest of the local day on which daylight saving starts in Australia/Adelaide and Australia/Sydney. For example, 10:00 on 6 October 2019 came out an hour late, while 23:30 was right. It reads the same RRULE form right for London, New York and Santiago, and ical4j agrees with `java.time`. Within a day after a change, the instants are checked against ical4j only.
+- **Fixed examples** (`InviteCrossParserTest`, every method, both parsers, and the DTSTART form asserted):
+  - Adelaide: 16:30Z and 16:45Z on 6 April 2019, 15:45Z the same night (first occurrence), and 16:30Z on 5 October 2019;
+  - London: 25 October 2026 at 01:00Z, 00:30Z and 00:15Z (ending in the repeated hour), and 29 March 2026 at 01:00Z;
+  - New York: 1 November 2026 at 06:00Z and 05:30Z, and 8 March 2026 at 07:00Z;
+  - Lord Howe (the 30-minute shift): 4 April 2026 at 15:00Z and 15:15Z, and 3 October 2026 at 15:30Z.
+- The property tests passed six more times with fresh seeds. The golden files are unchanged.

@@ -104,6 +104,9 @@ import com.memo.jooq.tables.MemoTypeVersion
 import com.memo.jooq.tables.MemoWatch
 import com.memo.jooq.tables.MemoWatchEvent
 import com.memo.jooq.tables.MemoWatchSetting
+import com.memo.jooq.tables.MinutesDecision
+import com.memo.jooq.tables.MinutesDecisionEntry
+import com.memo.jooq.tables.MinutesItemNote
 import com.memo.jooq.tables.NotificationItem
 import com.memo.jooq.tables.NotificationMailOutbox
 import com.memo.jooq.tables.NotificationPreference
@@ -677,6 +680,21 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val MEMO_WATCH_SETTING: MemoWatchSetting get() = MemoWatchSetting.MEMO_WATCH_SETTING
 
     /**
+     * The table <code>memo.minutes_decision</code>.
+     */
+    val MINUTES_DECISION: MinutesDecision get() = MinutesDecision.MINUTES_DECISION
+
+    /**
+     * The table <code>memo.minutes_decision_entry</code>.
+     */
+    val MINUTES_DECISION_ENTRY: MinutesDecisionEntry get() = MinutesDecisionEntry.MINUTES_DECISION_ENTRY
+
+    /**
+     * The table <code>memo.minutes_item_note</code>.
+     */
+    val MINUTES_ITEM_NOTE: MinutesItemNote get() = MinutesItemNote.MINUTES_ITEM_NOTE
+
+    /**
      * The table <code>memo.notification_item</code>.
      */
     val NOTIFICATION_ITEM: NotificationItem get() = NotificationItem.NOTIFICATION_ITEM
@@ -1214,6 +1232,9 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         MemoWatch.MEMO_WATCH,
         MemoWatchEvent.MEMO_WATCH_EVENT,
         MemoWatchSetting.MEMO_WATCH_SETTING,
+        MinutesDecision.MINUTES_DECISION,
+        MinutesDecisionEntry.MINUTES_DECISION_ENTRY,
+        MinutesItemNote.MINUTES_ITEM_NOTE,
         NotificationItem.NOTIFICATION_ITEM,
         NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX,
         NotificationPreference.NOTIFICATION_PREFERENCE,

@@ -1,8 +1,11 @@
 package com.memo.meeting
 
 import com.memo.common.context.ActorContext
+import com.memo.common.tenant.TenantContext
 import com.memo.meeting.internal.ical.InviteChecks
 import com.memo.meeting.internal.ical.InviteKind
+import com.memo.notification.Mail
+import com.memo.notification.internal.MailDelivery
 import com.memo.notification.internal.Relay
 import com.memo.notification.internal.TenantRelays
 import com.memo.notification.internal.TlsMode
@@ -12,6 +15,7 @@ import jakarta.mail.internet.MimeMessage
 import jakarta.mail.internet.MimeMultipart
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInstance
 import org.springframework.beans.factory.annotation.Autowired
@@ -25,16 +29,25 @@ import java.net.http.HttpResponse
 import java.time.Duration
 import java.time.Instant
 import java.util.Properties
+import java.util.UUID
 
 /**
  * Invitations as they leave memo (test plan E05 T2, ADR-0063), through the tenant's relay into a real Mailpit, read back
  * raw: the invitation and the cancellation are iMIP messages (`text/calendar; method=…` beside the text and HTML, and
  * `invite.ics`) whose file has the invitation's UID and names only the recipient, from the tenant's sending address as
  * ORGANIZER, under a subject without parameters.
+ *
+ * The test delivers the outbox itself ([Mail.jobs] off): test contexts share the scheduler table, so a scheduled delivery
+ * can run in another context; one that loaded "no relay" for the tenant (for the setup's membership emails) while the relay
+ * was being saved kept it (the cache race fixed in E05 T6) and left the cancellation queued, so the wait for it timed out.
  */
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class InvitationMailIT : InvitationTestSupport() {
     @Autowired internal lateinit var relays: TenantRelays
+
+    @Autowired lateinit var mail: Mail
+
+    @Autowired internal lateinit var delivery: MailDelivery
 
     private val mailpit: GenericContainer<*> =
         GenericContainer("axllent/mailpit:v1.31.5")
@@ -42,8 +55,24 @@ class InvitationMailIT : InvitationTestSupport() {
             .waitingFor(Wait.forHttp("/livez").forPort(API))
             .also { it.start() }
 
+    /** Before the committee is set up, so none of this class's emails is scheduled. */
+    @BeforeAll
+    fun deliverByHand() {
+        mail.jobs = false
+    }
+
     @AfterAll
-    fun stop() = mailpit.stop()
+    fun stop() {
+        mail.jobs = true
+        mailpit.stop()
+    }
+
+    /** Delivers every queued message of [meetingId]'s invitation, as the `mail-send` job would. */
+    private fun deliver(meetingId: UUID) {
+        messages(meetingId).mapNotNull { it.outboxId }.forEach { outboxId ->
+            ActorContext.asSystem("mail-send") { TenantContext.call(tenant.id) { delivery.send(outboxId) } }
+        }
+    }
 
     override fun label() = "invitemail"
 
@@ -59,6 +88,7 @@ class InvitationMailIT : InvitationTestSupport() {
         }
         val meeting = scheduled()
         reconcile(meeting.id)
+        deliver(meeting.id)
         val uid = checkNotNull(invitation(meeting.id)).icalUid.toString()
 
         val invite = received(director.email, "REQUEST")
@@ -76,6 +106,7 @@ class InvitationMailIT : InvitationTestSupport() {
         val current = meeting(meeting.id)
         asUser(secretary) { lifecycle.cancel(current.id, current.version, "Called off") }
         reconcile(meeting.id, Instant.now())
+        deliver(meeting.id)
         val cancel = received(director.email, "CANCEL")
         val (cancelMethod, cancelFile) = calendarOf(cancel)
         assertThat(cancelMethod).isEqualTo("CANCEL")

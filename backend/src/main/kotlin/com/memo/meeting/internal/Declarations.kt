@@ -9,15 +9,18 @@ import com.memo.common.web.FieldProblem
 import com.memo.common.web.refuseIf
 import com.memo.forum.ForumDirectory
 import com.memo.forum.ForumRole
+import com.memo.meeting.DecidedItems
 import com.memo.meeting.DeclarationChanged
 import com.memo.meeting.DeclarationHow
 import com.memo.meeting.DeclarationIntent
 import com.memo.meeting.DeclarationSource
 import com.memo.meeting.DeclarationState
 import com.memo.meeting.MeetingStatus
+import com.memo.meeting.NoDecidedItems
 import com.memo.meeting.RulingOutcome
 import com.memo.memo.MemoInterestLinks
 import com.memo.notification.NotificationKind
+import org.springframework.beans.factory.ObjectProvider
 import org.springframework.context.ApplicationEventPublisher
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
@@ -78,6 +81,7 @@ class Declarations(
     private val effects: DeclarationEffects,
     private val ids: IdGenerator,
     private val clock: Clock,
+    private val decidedItems: ObjectProvider<DecidedItems>,
 ) {
     /** Declares on [itemId] for the actor, or records it for `onBehalfOf`; the new declaration. */
     fun declare(
@@ -89,7 +93,8 @@ class Declarations(
         val target = input.onBehalfOf ?: scene.actor
         val forSomeone = target != scene.actor
         val item = item(scene, itemId, forSomeone)
-        val correction = DeclarationRules.window(scene.meeting.status, act(forSomeone), access.manages(scene.meeting.forumId))
+        val correction =
+            DeclarationRules.window(scene.meeting.status, act(forSomeone), access.manages(scene.meeting.forumId), decided(scene, item.id))
         if (forSomeone) requireRecorder(scene, item, target)
         val (nature, natureProblem) = DeclarationRules.nature(input.nature)
         val (howNote, noteProblem) = DeclarationRules.optional("howNote", input.howNote, DeclarationRules.MAX_HOW_NOTE)
@@ -143,7 +148,7 @@ class Declarations(
         val scene = scene(meetingId)
         val declaration = declaration(scene, declarationId)
         forbidIf(declaration.userId != scene.actor)
-        DeclarationRules.window(scene.meeting.status, DeclarationAct.INTENT, secretary = false)
+        DeclarationRules.window(scene.meeting.status, DeclarationAct.INTENT, secretary = false, decided(scene, declaration.itemId))
         val state = DeclarationRules.afterIntent(declaration.state, intent)
         val event =
             DeclarationEvent(
@@ -178,8 +183,11 @@ class Declarations(
         val item = scene.itemOf(declaration)
         val own = declaration.userId == scene.actor
         val secretary = access.manages(scene.meeting.forumId)
-        val correction = DeclarationRules.window(scene.meeting.status, DeclarationAct.WITHDRAW, secretary)
-        if (!own || correction) requireOfficerFree(scene, item)
+        val held = DeclarationRules.window(scene.meeting.status, DeclarationAct.WITHDRAW, secretary)
+        if (!own || held) requireOfficerFree(scene, item)
+        // E06: on a decided item only a secretary's correction, checked once the officer may act at all.
+        val correction = DeclarationRules.window(scene.meeting.status, DeclarationAct.WITHDRAW, secretary, decided(scene, item.id))
+        if (correction && own && !held) requireOfficerFree(scene, item)
         val (text, problem) = DeclarationRules.reason(reason)
         requireNoProblems(listOfNotNull(problem))
         val state = DeclarationRules.afterWithdrawal(declaration.state)
@@ -281,6 +289,25 @@ class Declarations(
         )
     }
 
+    /**
+     * Whether [itemId] or one of its sub-items has a decision (E06, through the [DecidedItems] port): its declarations then
+     * change only by a secretary's correction (design E04 �1.1).
+     */
+    fun decided(
+        scene: DeclarationScene,
+        itemId: UUID,
+    ): Boolean {
+        val port = decidedItems.getIfAvailable { NoDecidedItems }
+        val subItems =
+            scene.agenda.published.values
+                .filter { it.parentId == itemId }
+                .map { it.itemId } +
+                scene.agenda.draft.values
+                    .filter { it.parentId == itemId }
+                    .map { it.id }
+        return (listOf(itemId) + subItems).distinct().any(port::isDecided)
+    }
+
     private fun act(forSomeone: Boolean) = if (forSomeone) DeclarationAct.RECORD else DeclarationAct.DECLARE
 }
 
@@ -311,6 +338,8 @@ class DeclarationRulings(
         DeclarationRules.window(scene.meeting.status, DeclarationAct.RULE, secretary = false)
         forbidIf(!(if (input.onBehalf) access.manages(scene.meeting.forumId) else scene.chairSeat))
         if (declarations.recused(scene.actor, item)) throw RecusedException()
+        // E06: a decided item's rulings are frozen too, told only to someone who may rule.
+        DeclarationRules.window(scene.meeting.status, DeclarationAct.RULE, secretary = false, service.decided(scene, item.id))
         val ruler = declarations.ruler(scene.meeting.forumId, item, declaration.userId)
         if (input.onBehalf) {
             refuseIf(ruler == null, "NO_CHAIR") { "The committee has no chair or vice-chair in office who can rule on this." }

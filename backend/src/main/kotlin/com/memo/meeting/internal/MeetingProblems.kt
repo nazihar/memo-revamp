@@ -38,8 +38,11 @@ class OneOpenException(
     val declarationId: UUID?,
 ) : RuntimeException("an open declaration exists")
 
-/** Problems of the meeting endpoints. */
-@RestControllerAdvice(basePackageClasses = [MeetingProblems::class])
+/**
+ * Problems of the meeting endpoints, and of the meeting module's published API wherever it is called from (E06's
+ * decisions take quorum snapshots and read meetings through it): the exceptions handled are the meeting module's own.
+ */
+@RestControllerAdvice
 @Order(Ordered.HIGHEST_PRECEDENCE)
 class MeetingProblems {
     @ExceptionHandler(MeetingNotFoundException::class)

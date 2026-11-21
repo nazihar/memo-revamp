@@ -52,7 +52,7 @@ button,input{font-family:inherit}
     <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
       <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted-fg)">Scope
         <select style="height: 40px; padding: 0 8px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 16px">
-          <option>Credit Risk</option><option>Me</option><option>Corporate Banking</option>
+          <option>Credit Risk</option><option>Corporate Banking</option><option>Me</option>
         </select>
       </label>
       <label style="display: flex; flex-direction: column; gap: 4px; font-size: 12px; color: var(--muted-fg)">Period
@@ -197,7 +197,7 @@ class Component extends DCLogic {
     const navOpen = !!(this.state && this.state.navOpen);
     const closeNav = () => this.setState({ navOpen: false });
     const age = [['0–2 d', 14], ['3–5 d', 11], ['6–10 d', 8], ['Over 10 d', 5]].map((a) => ({ label: a[0], value: String(a[1]), barStyle: 'display: block; width: 24px; height: ' + (a[1] / 16 * 90).toFixed(1) + 'px; border-radius: 4px 4px 0 0; background: var(--series-1)' }));
-    const people = [['Farhana Rahman', 9, 2], ['Mahmud Karim', 7, 0], ['Sadia Islam', 6, 3], ['Imran Hossain', 6, 1], ['Shirin Akter', 5, 1], ['Rafiq Chowdhury', 3, 0], ['2 others', 2, 0]].map((p) => ({
+    const people = [['Farhana Rahman', 8, 2], ['Mahmud Karim', 7, 0], ['Sadia Islam', 6, 3], ['Imran Hossain', 6, 1], ['Shirin Akter', 5, 1], ['Rafiq Chowdhury', 3, 0], ['2 others', 3, 0]].map((p) => ({
       name: p[0], pending: String(p[1]), hasOver: p[2] > 0, overText: p[2] > 0 ? '(' + p[2] + ' overdue)' : '',
       onStyle: 'display: block; width: ' + ((p[1] - p[2]) / 10 * 100) + '%; height: 100%; border-radius: ' + (p[2] > 0 ? '0' : '0 4px 4px 0') + '; background: var(--series-1)',
       overStyle: 'display: block; width: ' + (p[2] / 10 * 100) + '%; height: 100%; border-radius: 0 4px 4px 0; background: var(--critical)'

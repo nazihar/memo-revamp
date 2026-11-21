@@ -52,6 +52,19 @@ Operator console (/api/v1/platform)
 
 Use shadcn/ui components for everything: Button, Input, InputOTP, Select, Combobox, Tabs, Table, Dialog, Drawer, AlertDialog, DropdownMenu, Popover, Badge, Skeleton, Alert, Sonner, Sidebar. These boards are hand-written HTML only because the canvas cannot run React; do not copy their inline styles. The component for each pattern is listed on the Design rules page, section 1.
 
+## Home and Dashboard
+
+- Home is where everyone starts and acts. The Dashboard is a report for people who oversee a unit. They are not merged: Home loads on every sign-in and must stay fast and short; the report needs scope and period controls that do not belong on Home.
+- Home › At a glance: the counts come from the Inbox as today. The “Oldest: 6–10 working days” line under Waiting for you is the oldest non-empty bucket of pendingByAge from GET /api/v1/dashboards/approvals?scope=me. If that call fails or is slow, show the counts without the line.
+- Home › Your unit (right column; on phones after Needs your decision): shown when the person has a unit scope, that is useScopeOptions() returns a unit (a head seat from the team view, or a memo.dashboard.read grant). It calls the same endpoint with scope=unit:<first unit>; pendingByAge, overdue and pendingByPerson are figures for now, so no period is sent. Waiting = sum of pendingByAge; Over 10 days = its last bucket; Most overdue = pendingByPerson with the most overdue (then most pending, then name); with nobody overdue the line says “Nobody is overdue.”. With more units: “You also see … in the dashboard”, each a link to that scope. The card loads on its own (skeleton, then the section error from Page states); Home never waits for it.
+- Links: Open the dashboard and the card go to /dashboards/approvals?scope=unit:<id>.
+- Sidebar: Dashboard shows only to people with a unit scope (navigation.ts audience: a new kind computed from useTeamAccess() and the memo.dashboard.read grant, instead of signedIn). The address still works for anyone and shows Me.
+- Dashboard: with no scope in the address and a unit available, open on the first unit (replace the address with scope=unit:<id>); Me is listed last. Overdue › View list goes to Inbox › Team for a unit, to My tasks for Me.
+- Tweak viewer on Home: head (Farhana Rahman, Head of Credit) or approver (Imran Hossain: no card, no Dashboard in the sidebar).
+- API: nothing new.
+- Every sidebar’s Dashboard link, and the desktop Saved searches link, pointed nowhere; they now open the page (`tools/home_dash.py`).
+- Farhana has 8 tasks waiting on Home and in the Inbox badge; the dashboard said 9 for her. It now says 8 (and “2 others” 3, so Credit Risk still has 38).
+
 ## Admin · User detail
 
 - One page for a person: account status and the account actions from the Users list, then positions, roles and clearance (today the app shows only the last three).

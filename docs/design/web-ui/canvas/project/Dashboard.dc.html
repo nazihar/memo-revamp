@@ -74,7 +74,7 @@ textarea{font-family:inherit}
         <span class="lbl" style="flex: 1">Inbox</span>
         <span class="lbl" style="font-size: 12px; font-weight: 500; color: var(--text-3); font-variant-numeric: tabular-nums">8</span>
       </a>
-      <a href="#" class="nav-item" title="Saved searches" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+      <a href="Saved.dc.html" class="nav-item" title="Saved searches" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
         <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>
         <span class="lbl">Saved searches</span>
       </a>
@@ -148,8 +148,8 @@ textarea{font-family:inherit}
         <label style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted-fg)">Scope
           <select onChange="{{onScope}}" style="height: 32px; padding: 0 8px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); color: var(--fg); font-family: inherit; font-size: 13px; box-shadow: 0 1px 2px rgba(0,0,0,0.05)">
             <option value="unit">Credit Risk</option>
-            <option value="me">Me</option>
             <option value="cb">Corporate Banking</option>
+            <option value="me">Me</option>
           </select>
         </label>
         <div role="radiogroup" aria-label="Period" style="display: inline-flex; gap: 2px; height: 32px; padding: 2px; box-sizing: border-box; border-radius: 8px; background: var(--muted)">
@@ -173,7 +173,7 @@ textarea{font-family:inherit}
             Overdue
           </span>
           <span style="font-size: 28px; line-height: 34px; font-weight: 600; font-variant-numeric: tabular-nums">7</span>
-          <a href="Main.dc.html" style="font-size: 12px; font-weight: 500; color: var(--fg)">View list</a>
+          <a href="InboxTeam.dc.html" style="font-size: 12px; font-weight: 500; color: var(--fg)">View list</a>
         </div>
         <div style="display: flex; flex-direction: column; gap: 4px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--card)">
           <span style="font-size: 13px; color: var(--muted-fg)">Decided</span>
@@ -379,7 +379,7 @@ class Component extends DCLogic {
       barStyle: 'display: block; width: 24px; height: ' + (a[1] / ageMax * 120).toFixed(1) + 'px; border-radius: 4px 4px 0 0; background: var(--series-1)'
     }));
 
-    const peopleData = [['Farhana Rahman', 9, 2], ['Mahmud Karim', 7, 0], ['Sadia Islam', 6, 3], ['Imran Hossain', 6, 1], ['Shirin Akter', 5, 1], ['Rafiq Chowdhury', 3, 0], ['2 others', 2, 0]];
+    const peopleData = [['Farhana Rahman', 8, 2], ['Mahmud Karim', 7, 0], ['Sadia Islam', 6, 3], ['Imran Hossain', 6, 1], ['Shirin Akter', 5, 1], ['Rafiq Chowdhury', 3, 0], ['2 others', 3, 0]];
     const pMax = 10;
     const people = peopleData.map((p, i) => ({
       name: p[0], pending: String(p[1]), overdue: String(p[2]), hasOver: p[2] > 0,

@@ -102,6 +102,12 @@ Proposed while designing the operator console (2026-11-18).
 | 44 | **New organisation checks the address while typing** ("meghna-leasing is taken") instead of after "Create and invite". | The address is the one field that is often taken. | An availability check endpoint. | Low | Idea |
 | 45 | **A recovery route for operators.** Operators get no recovery codes, so a lost phone locks them out until someone with server access resets them. Recovery codes at setup, or a second operator able to reset two-step sign-in (with step-up and an audit entry). | The console is the one place that cannot be locked out of. Today the code screen can only say who to ask. | Backend: recovery codes for operators, or an operator-resets-operator action. | Medium | Idea |
 
+## Home and dashboard
+
+| # | Improvement | Why | Needs | Priority | Status |
+|---|---|---|---|---|---|
+| 46 | **One job each for Home and the Approvals dashboard.** Home is where everyone starts and acts; its counts gain the age of what waits, and people who oversee a unit get a “Your unit” card (waiting, overdue, over 10 days, most overdue) linking to the dashboard for that unit. The dashboard shows in the sidebar only to people with a unit scope and opens on their first unit. | Most people never need the report, but everyone needs to know how old their own work is; heads see their unit without opening a report. | Frontend only: the existing dashboard endpoint with `scope=me` and `scope=unit:<id>`, and a new navigation audience from the team view and the dashboard grant. | High | Designed |
+
 ## Decisions
 
 - **Reading pane (5): a per-person switch, off by default** (2026-11-18). A "Reading pane" switch in the My tasks toolbar, shown only at 1400px and wider, turns it on and is remembered per person. When on, the list and the selected memo sit side by side with the decision bar; "Open the full page" covers the note sheet, attachments, linked memos and history. Links from notifications, search and Home still open the full page.

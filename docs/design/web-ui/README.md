@@ -3,7 +3,7 @@
 A redesign of the web app: every route of the organisation app (user and administration pages) and of the operator console, desktop and phone side by side, in light and dark. Committees (`/committees`, `/me/committees`, `/admin/committee-types`), added to the app after this design started, are not designed yet. It is a **design**, not code. The app is built from it with shadcn/ui components (see "Building from this design" below).
 
 - Live canvas: a private claude.ai Design artifact, `https://claude.ai/artifact/VRTQYT81opA8eMovd2rDo6`. It needs to be shared before others can open it.
-- Snapshot in this folder: 2026-11-18, canvas version 105.
+- Snapshot in this folder: 2026-11-18, canvas version 110.
 
 ## What is here
 
@@ -26,7 +26,7 @@ On the **Screens** page, in canvas order (`tools/layout.py`):
 
 | Group | Boards |
 |---|---|
-| Start | Home, Inbox · My tasks (`Main`, `Phone`), Inbox with reading pane (`InboxReading`, desktop only), Inbox · Watching, Inbox · Team |
+| Start | Home (tweak `viewer`), Inbox · My tasks (`Main`, `Phone`), Inbox with reading pane (`InboxReading`, desktop only), Inbox · Watching, Inbox · Team |
 | A memo's life | New memo, Draft, Your memo in review (`Sent`), Memo in review for an approver (`Memo`), Returned, Approved, Closed, Rejected, Withdrawn, Cancelled, Discarded, Imported, Document |
 | Memo pieces | Memo page parts (`MemoParts`), Memo dialogs (`MemoDialogs`), Confirm it is you (`StepUp`) |
 | Finding things | Search, Saved searches (`Saved`), Notifications, Approvals dashboard (`Dashboard`) |
@@ -77,6 +77,7 @@ These can be rerun safely, and reproduce the committed boards exactly:
 | `tools/rules_admin.py` | Adds section 9 (admin and settings patterns) and four wording rules to `Rules`. Skips it when already there | — |
 | `tools/states_access.py` | Adds the No access to this page state to `States` and `StatesPhone`, and to the behaviour note. Skips it when already there | — |
 | `tools/rules_operator.py` | Adds section 10 (operator console patterns) to `Rules`, after `rules_admin.py`. Skips it when already there | — |
+| `tools/home_dash.py` | Home and the Approvals dashboard with one job each: the age line and the Your unit card on `Home`/`HomePhone` (tweak `viewer`: head or approver), the dashboard's unit-first scope and View list, the dead Dashboard and Saved searches sidebar links on every board, and the implementation note beside Home. Skips what is already done | — |
 | `tools/api_notes.py` | Adds the admin and operator items to the API changes note and to `NOTES.md`. Skips them when already there | — |
 | `tools/smoke.py` | Nothing; checks a board | — |
 | `tools/preview.py` | Nothing; renders a board to a PNG outside the canvas, for checking it by eye (`python3 tools/preview.py Users.dc.html out.png '{"props":{"dialog":"invite"}}'`; needs Node and the Playwright Chromium) | — |

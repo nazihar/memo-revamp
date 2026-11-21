@@ -72,16 +72,16 @@ textarea{font-family:inherit}
       <a href="Main.dc.html" class="nav-item" title="Inbox" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
         <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg>
         <span class="lbl" style="flex: 1">Inbox</span>
-        <span class="lbl" style="font-size: 12px; font-weight: 500; color: var(--text-3); font-variant-numeric: tabular-nums">8</span>
+        <span class="lbl" style="font-size: 12px; font-weight: 500; color: var(--text-3); font-variant-numeric: tabular-nums">{{inboxCount}}</span>
       </a>
-      <a href="#" class="nav-item" title="Saved searches" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+      <a href="Saved.dc.html" class="nav-item" title="Saved searches" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
         <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg>
         <span class="lbl">Saved searches</span>
       </a>
-      <a href="#" class="nav-item" title="Dashboard" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
+      <sc-if value="{{showDash}}" hint-placeholder-val="{{true}}"><a href="Dashboard.dc.html" class="nav-item" title="Dashboard" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
         <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg>
         <span class="lbl">Dashboard</span>
-      </a>
+      </a></sc-if>
       <a href="Status.dc.html" class="nav-item" title="Status" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
         <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"></path></svg>
         <span class="lbl">Status</span>
@@ -91,7 +91,7 @@ textarea{font-family:inherit}
         <span class="lbl">Organisation</span>
       </a>
     </div>
-    <div style="display: flex; flex-direction: column; padding: 8px 0 0">
+    <sc-if value="{{showAdmin}}" hint-placeholder-val="{{true}}"><div style="display: flex; flex-direction: column; padding: 8px 0 0">
       <div class="grp-label" style="height: 32px; display: flex; align-items: center; padding: 0 8px; font-size: 12px; font-weight: 500; color: var(--muted-fg); white-space: nowrap">Administration</div>
       <a href="AdminOverview.dc.html" class="nav-item" title="Overview" style="display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px; border-radius: 6px; text-decoration: none; color: var(--fg)">
         <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 7h-9"></path><path d="M14 17H5"></path><circle cx="17" cy="17" r="3"></circle><circle cx="7" cy="7" r="3"></circle></svg>
@@ -100,7 +100,7 @@ textarea{font-family:inherit}
         <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="5" x="2" y="3" rx="1"></rect><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"></path><path d="M10 12h4"></path></svg>
         <span class="lbl">Audit</span>
       </a>
-    </div>
+    </div></sc-if>
   </nav>
 
   <!-- Main column -->
@@ -123,11 +123,11 @@ textarea{font-family:inherit}
         <span aria-hidden="true" style="position: absolute; top: 6px; right: 7px; width: 7px; height: 7px; border-radius: 50%; background: var(--destructive); border: 1.5px solid var(--bg)"></span>
       </a>
       <span aria-hidden="true" style="width: 1px; height: 16px; background: var(--chip); margin: 0 4px; flex-shrink: 0"></span>
-      <button type="button" class="ghost" aria-label="Account menu, Farhana Rahman" aria-haspopup="menu" style="display: inline-flex; align-items: center; gap: 8px; height: 32px; flex-shrink: 0; padding: 0 6px 0 2px; border: 0; background: transparent; border-radius: 8px; cursor: pointer; color: var(--fg)">
-        <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--chip); color: var(--fg); font-weight: 500; font-size: 11px; flex-shrink: 0">FR</span>
+      <button type="button" class="ghost" aria-label="Account menu, {{me.name}}" aria-haspopup="menu" style="display: inline-flex; align-items: center; gap: 8px; height: 32px; flex-shrink: 0; padding: 0 6px 0 2px; border: 0; background: transparent; border-radius: 8px; cursor: pointer; color: var(--fg)">
+        <span aria-hidden="true" style="display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--chip); color: var(--fg); font-weight: 500; font-size: 11px; flex-shrink: 0">{{me.initials}}</span>
         <span class="acct-name" style="display: flex; flex-direction: column; align-items: flex-start; line-height: 14px">
-          <span style="font-size: 13px; font-weight: 500; line-height: 16px">Farhana Rahman</span>
-          <span style="font-size: 11px; color: var(--muted-fg)">f.rahman@[domain]</span>
+          <span style="font-size: 13px; font-weight: 500; line-height: 16px">{{me.name}}</span>
+          <span style="font-size: 11px; color: var(--muted-fg)">{{me.email}}</span>
         </span>
         <svg style="color: var(--muted-fg)" class="acct-name" aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"></path></svg>
       </button>
@@ -139,7 +139,7 @@ textarea{font-family:inherit}
       <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px">
         <div style="display: flex; flex-direction: column; gap: 2px">
           <span style="font-size: 13px; color: var(--muted-fg)">Tuesday, 17 November 2026</span>
-          <h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Good morning, Farhana</h1>
+          <h1 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; letter-spacing: -0.01em">Good morning, {{me.first}}</h1>
         </div>
         <a href="NewMemo.dc.html" style="display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 12px; border-radius: 8px; background: var(--primary); color: var(--primary-fg); font-size: 14px; font-weight: 500; text-decoration: none">
           <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
@@ -189,7 +189,7 @@ textarea{font-family:inherit}
                 </li>
               </sc-for>
             </ul>
-            <span style="font-size: 12px; color: var(--muted-fg)">3 more in your Inbox, none due this week.</span>
+            <span style="font-size: 12px; color: var(--muted-fg)">{{moreText}}</span>
           </section>
 
           <!-- Your memos -->
@@ -214,6 +214,32 @@ textarea{font-family:inherit}
 
         <!-- Right column -->
         <aside aria-label="Updates" style="flex: 1 1 300px; max-width: 380px; min-width: 0; display: flex; flex-direction: column; gap: 20px">
+          <!-- Your unit: only for people who oversee a unit or hold a dashboard grant -->
+          <sc-if value="{{showDash}}" hint-placeholder-val="{{true}}">
+          <section aria-labelledby="h-unit" style="display: flex; flex-direction: column; gap: 8px">
+            <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px">
+              <h2 id="h-unit" style="margin: 0; font-size: 14px; font-weight: 600">Your unit</h2>
+              <a href="Dashboard.dc.html" style="font-size: 13px; font-weight: 500; color: var(--fg)">Open the dashboard</a>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 12px; padding: 14px 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--card)">
+              <span style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px"><span style="font-weight: 600">{{unit.name}}</span><span style="font-size: 12px; color: var(--muted-fg)">Waiting now</span></span>
+              <dl style="margin: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+                <div style="display: flex; flex-direction: column; gap: 2px"><dt style="font-size: 12px; color: var(--muted-fg)">Waiting</dt><dd style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600; font-variant-numeric: tabular-nums">{{unit.waiting}}</dd></div>
+                <div style="display: flex; flex-direction: column; gap: 2px"><dt style="font-size: 12px; color: var(--muted-fg)">Overdue</dt><dd style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--danger-fg)">{{unit.overdue}}</dd></div>
+                <div style="display: flex; flex-direction: column; gap: 2px"><dt style="font-size: 12px; color: var(--muted-fg)">Over 10 days</dt><dd style="margin: 0; font-size: 20px; line-height: 26px; font-weight: 600; font-variant-numeric: tabular-nums">{{unit.old}}</dd></div>
+              </dl>
+              <div style="display: flex; flex-direction: column; gap: 6px">
+                <span aria-hidden="true" style="display: flex; height: 8px; border-radius: 4px; overflow: hidden; background: var(--muted)"><sc-for list="{{unit.segs}}" as="g" hint-placeholder-count="4"><span style="{{g.style}}"></span></sc-for></span>
+                <ul aria-label="Waiting by working days" style="list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 12px; color: var(--muted-fg)"><sc-for list="{{unit.legend}}" as="lg" hint-placeholder-count="4"><li style="display: inline-flex; align-items: center; gap: 5px"><span aria-hidden="true" style="{{lg.dot}}"></span>{{lg.label}} <strong style="font-weight: 600; color: var(--fg); font-variant-numeric: tabular-nums">{{lg.value}}</strong></li></sc-for></ul>
+              </div>
+              <a href="Dashboard.dc.html" class="hrow" style="display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 0 -16px -14px; padding: 10px 16px; border-top: 1px solid var(--hover); font-size: 13px; color: var(--fg); text-decoration: none">
+                <span>Most overdue: <strong style="font-weight: 600">{{unit.worst}}</strong>, {{unit.worstText}}</span>
+              </a>
+            </div>
+            <sc-if value="{{unit.hasMore}}" hint-placeholder-val="{{true}}"><span style="font-size: 12px; color: var(--muted-fg)">You also see <a href="Dashboard.dc.html" style="color: var(--fg)">{{unit.more}}</a> in the dashboard.</span></sc-if>
+          </section>
+          </sc-if>
+
           <section aria-labelledby="h-notif" style="display: flex; flex-direction: column; gap: 8px">
             <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px">
               <h2 id="h-notif" style="margin: 0; font-size: 14px; font-weight: 600">Notifications</h2>
@@ -252,31 +278,43 @@ textarea{font-family:inherit}
   </div>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"$preview":{"width":1440,"height":1000}}'>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["system","light","dark"],"default":"system"},"viewer":{"editor":"enum","options":["head","approver"],"default":"head"},"$preview":{"width":1440,"height":1000}}'>
 class Component extends DCLogic {
   renderVals() {
     const st = this.state || {};
     const navOpen = !!st.navOpen;
     const collapsed = !!st.collapsed;
-    const tiles = [
-      { label: 'Waiting for you', value: '8', sub: 'Open Inbox', href: 'Main.dc.html' },
+    const HEAD = (this.props.viewer || 'head') === 'head';
+    // The age line: GET /api/v1/dashboards/approvals?scope=me (pendingByAge, the oldest bucket with tasks in it).
+    const tiles = (HEAD ? [
+      { label: 'Waiting for you', value: '8', sub: 'Oldest: 6–10 working days', href: 'Main.dc.html' },
       { label: 'Overdue', value: '2', sub: 'Show them', href: 'Main.dc.html', critical: true },
       { label: 'Your memos in review', value: '3', sub: 'Sent', href: 'Main.dc.html' },
       { label: 'Returned to you', value: '1', sub: 'Change and resubmit', href: 'Returned.dc.html', warn: true }
-    ].map((k) => Object.assign({ critical: false, warn: false }, k));
+    ] : [
+      { label: 'Waiting for you', value: '6', sub: 'Oldest: 3–5 working days', href: 'Main.dc.html' },
+      { label: 'Overdue', value: '1', sub: 'Show it', href: 'Main.dc.html', critical: true },
+      { label: 'Your memos in review', value: '1', sub: 'Sent', href: 'Main.dc.html' },
+      { label: 'Returned to you', value: '0', sub: 'Nothing to change', href: 'Main.dc.html' }
+    ]).map((k) => Object.assign({ critical: false, warn: false }, k));
     const dueBase = 'flex-shrink: 0; display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 6px; font-size: 12px; font-weight: 500; white-space: nowrap; ';
     const dueStyles = {
       overdue: dueBase + 'background: var(--destructive); color: var(--on-destructive)',
       soon: dueBase + 'border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg)',
       later: dueBase + 'border: 1px solid var(--border); color: var(--text-2)'
     };
-    const tasks = [
+    const tasks = (HEAD ? [
       { subject: 'Credit line renewal for Meghna Agro', ref: 'CR/2026/0142', action: 'Approve', due: 'Overdue 1 day', kind: 'overdue' },
       { subject: 'Credit Risk unit budget, FY2027', ref: 'FIN/2026/0326', action: 'Approve', note: 'Acting for N. Jahan', due: 'Due tomorrow', kind: 'soon' },
       { subject: 'Vendor onboarding: core banking support services', ref: 'PRC/2026/0087', action: 'Give opinion', due: 'Due in 3 days', kind: 'later' },
       { subject: 'Staff loan exception — branch operations', ref: 'HR/2026/0129', action: 'Approve', due: 'Due in 4 days', kind: 'later' },
       { subject: 'ATM fleet replacement, phase 2', ref: 'FIN/2026/0298', action: 'Recommend', note: 'Claimed by you', due: 'Due 28 Nov', kind: 'later' }
-    ].map((t, i) => Object.assign({}, t, {
+    ] : [
+      { subject: 'Limit increase for Rupali Foods', ref: 'CR/2026/0158', action: 'Recommend', due: 'Overdue 1 day', kind: 'overdue' },
+      { subject: 'Covenant waiver: Padma Textiles', ref: 'CR/2026/0151', action: 'Give opinion', due: 'Due tomorrow', kind: 'soon' },
+      { subject: 'Working capital line for Surma Tea Estates', ref: 'CR/2026/0155', action: 'Recommend', due: 'Due in 3 days', kind: 'later' },
+      { subject: 'Collateral revaluation, Chattogram branch', ref: 'CR/2026/0149', action: 'Recommend', due: 'Due in 5 days', kind: 'later' }
+    ]).map((t, i) => Object.assign({}, t, {
       hasNote: !!t.note, note: t.note || '',
       dueStyle: dueStyles[t.kind],
       rowStyle: 'display: flex; align-items: center; gap: 12px; padding: 10px 14px 10px 16px' + (i > 0 ? '; border-top: 1px solid var(--hover)' : '')
@@ -287,35 +325,51 @@ class Component extends DCLogic {
       'Returned': badgeBase + 'border: 1px solid var(--warn-border); background: var(--warn-bg); color: var(--warn-fg)',
       'Draft': badgeBase + 'border: 1px solid var(--border); color: var(--text-2)'
     };
-    const mine = [
+    const mine = (HEAD ? [
       { subject: 'Branch network risk review, Q3', where: 'RSK/2026/0044 · back with you since yesterday: “Add the Sylhet branch figures.”', status: 'Returned', href: 'Returned.dc.html', strong: true },
       { subject: 'Credit policy update for SME lending', where: 'POL/2026/0019 · waiting for Rafiq Chowdhury', status: 'In review', href: '#' },
       { subject: 'Annual credit risk appetite statement', where: 'RSK/2026/0039 · waiting for Shirin Akter', status: 'In review', href: '#' },
       { subject: 'Credit committee calendar 2027', where: 'Not submitted · changed 5 Nov', status: 'Draft', href: 'Draft.dc.html' }
-    ].map((m, i) => Object.assign({}, m, {
+    ] : [
+      { subject: 'Site visit report: Rupali Foods', where: 'RSK/2026/0047 · waiting for Farhana Rahman', status: 'In review', href: '#' },
+      { subject: 'Exposure note: Meghna Agro group', where: 'Not submitted · changed yesterday', status: 'Draft', href: 'Draft.dc.html' }
+    ]).map((m, i) => Object.assign({}, m, {
       badgeStyle: badges[m.status],
       rowStyle: 'display: flex; align-items: center; gap: 12px; padding: 10px 14px 10px 16px' + (i > 0 ? '; border-top: 1px solid var(--hover)' : '') + (m.strong ? '; background: var(--subtle)' : '')
     }));
-    const notes = [
+    const notes = (HEAD ? [
       { text: 'You were mentioned in a note on memo PRC/2026/0087', time: '08:42', unread: true },
       { text: 'Memo CR/2026/0142 is overdue', time: '08:00', unread: true, urgent: true },
       { text: 'Memo RSK/2026/0044 was returned to you', time: 'Yesterday', unread: true },
       { text: 'New sign-in to your account from Chrome on Windows', time: 'Yesterday', unread: false }
-    ].map((n, i) => ({
+    ] : [
+      { text: 'Memo CR/2026/0158 is overdue', time: '08:00', unread: true, urgent: true },
+      { text: 'Farhana Rahman opened your memo RSK/2026/0047', time: 'Yesterday', unread: true },
+      { text: 'New sign-in to your account from Edge on Windows', time: 'Mon', unread: false }
+    ]).map((n, i) => ({
       text: n.text, time: n.time,
       rowStyle: 'display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px 10px 12px' + (i > 0 ? '; border-top: 1px solid var(--hover)' : ''),
       dotStyle: 'width: 6px; height: 6px; margin-top: 7px; border-radius: 50%; flex-shrink: 0; background: ' + (n.unread ? (n.urgent ? 'var(--destructive)' : 'var(--primary)') : 'transparent'),
       textStyle: 'font-size: 13px; line-height: 18px; ' + (n.unread ? 'font-weight: 600' : 'color: var(--text-1)')
     }));
-    const saved = ['Meghna Agro — everything', 'Credit renewals in review', 'Large exposures this year'].map((name, i) => ({
+    const saved = (HEAD ? ['Meghna Agro — everything', 'Credit renewals in review', 'Large exposures this year'] : ['Rupali Foods — everything', 'My recommendations this month']).map((name, i) => ({
       name: name,
       rowStyle: 'display: flex; align-items: center; gap: 10px; height: 40px; padding: 0 14px; font-size: 13px; color: var(--fg); text-decoration: none' + (i > 0 ? '; border-top: 1px solid var(--hover)' : '')
     }));
+
+    // Your unit: GET /api/v1/dashboards/approvals?scope=unit:<first unit> (pendingByAge, overdue, pendingByPerson are "now").
+    const AGE = [['0–2', 14, 'var(--border-strong)'], ['3–5', 11, 'var(--muted-fg)'], ['6–10', 8, 'var(--warn-fg)'], ['Over 10', 5, 'var(--danger-fg)']];
+    const ageTotal = AGE.reduce((n, a) => n + a[1], 0);
+    const unit = { name: 'Credit Risk', waiting: String(ageTotal), overdue: '7', old: '5',
+      segs: AGE.map((a, i) => ({ style: 'display: block; height: 100%; width: ' + (a[1] / ageTotal * 100).toFixed(2) + '%; background: ' + a[2] + (i > 0 ? '; border-left: 2px solid var(--card)' : '') })),
+      legend: AGE.map((a) => ({ label: a[0] + ' days', value: String(a[1]), dot: 'width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; background: ' + a[2] })),
+      worst: 'Sadia Islam', worstText: '3 overdue of 6 waiting', more: 'Corporate Banking', hasMore: true };
     const closeNav = () => this.setState({ navOpen: false });
     const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent || '');
     return {
       themeClass: (this.state && this.state.theme) || this.props.theme || 'system',
-      tiles: tiles, tasks: tasks, mine: mine, notes: notes, saved: saved,
+      tiles: tiles, tasks: tasks, mine: mine, notes: notes, saved: saved, unit: unit, showDash: HEAD, showAdmin: HEAD, moreText: HEAD ? '3 more in your Inbox, none due this week.' : '2 more in your Inbox, none due this week.', inboxCount: HEAD ? '8' : '6',
+      me: HEAD ? { name: 'Farhana Rahman', first: 'Farhana', initials: 'FR', email: 'f.rahman@[domain]' } : { name: 'Imran Hossain', first: 'Imran', initials: 'IH', email: 'i.hossain@[domain]' },
       shortcut: isMac ? '⌘K' : 'Ctrl K',
       sidebarClass: 'sidebar' + (navOpen ? ' open' : '') + (collapsed && !navOpen ? ' collapsed' : ''),
       scrimClass: 'scrim' + (navOpen ? ' open' : ''),

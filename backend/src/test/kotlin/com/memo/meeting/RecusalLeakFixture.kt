@@ -4,6 +4,7 @@ import com.memo.common.tenant.TenantContext
 import com.memo.files.FileRenditions
 import com.memo.files.RenditionKind
 import com.memo.files.RenditionState
+import com.memo.files.internal.RenditionWorker
 import com.memo.meeting.internal.DeclarationRow
 import com.memo.meeting.internal.DeclareInput
 import com.memo.meeting.internal.ItemChange
@@ -36,6 +37,9 @@ import java.util.UUID
  */
 abstract class RecusalLeakFixture : RecusalFixture() {
     @Autowired lateinit var renditions: FileRenditions
+
+    /** Runs a text rendition here when the scheduled task is slow or ran in another test context (see [extractedText]). */
+    @Autowired internal lateinit var worker: RenditionWorker
 
     @Autowired lateinit var invitations: InvitationScheduler
 
@@ -304,6 +308,9 @@ abstract class RecusalLeakFixture : RecusalFixture() {
                 TenantContext.call(tenant.id) { renditions.write(version, RenditionKind.TEXT, out) }
                 return out.toString(Charsets.UTF_8)
             }
+            // Test contexts share the scheduler table: the rendition task may have run in a context without object
+            // storage and be waiting to retry. Run it here, as RenditionIT does; a claim held elsewhere makes this a no-op.
+            runCatching { TenantContext.call(tenant.id) { worker.run(version, RenditionKind.TEXT) } }
             Thread.sleep(POLL_MILLIS)
         }
         error("the text of $file was not extracted")

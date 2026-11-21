@@ -50,15 +50,19 @@ class MemoSeeding(
     /** Whether [initiator] has created any memo yet (seeders run once per tenant). */
     fun hasMemos(initiator: UUID): Boolean = tx { lists.anyOf(initiator) }
 
-    /** A draft of [typeId] (the built-in General type when null), classified at [rank]. */
+    /**
+     * A draft of [typeId] (the built-in General type when null), classified at [rank], with the values of its type's fields
+     * in [metadata] (as the API takes them; Phase 4 E03 T9).
+     */
     fun draft(
         subject: String,
         rank: Int = 0,
         typeId: UUID? = null,
+        metadata: Map<String, Any?>? = null,
     ): UUID =
         tx {
             val type = typeId ?: types.active().first { it.key == MemoTypeStore.GENERAL }.id
-            memos.create(MemoFields(subject, type, clearances.levels()[rank].id)).id
+            memos.create(MemoFields(subject, type, clearances.levels()[rank].id, metadata)).id
         }
 
     /** The memo's document: its first file, or a new version of it. */
@@ -104,14 +108,19 @@ class MemoSeeding(
         tx { reviews.withdraw(memo, remark) }
     }
 
-    /** Approves, returns or rejects the open task of [memo], which must be the current user's. */
+    /**
+     * Approves, returns or rejects the open task of [memo], which must be the current user's: the one they hold, or else the
+     * instance's first (a step shared by a queue has one task per candidate).
+     */
     fun act(
         memo: UUID,
         action: String,
         remark: String? = null,
     ) {
         tx {
-            val task = checkNotNull(queries.viewOf(MemoWorkflowSubject.TYPE, memo)?.openTaskId) { "memo $memo has no open task" }
+            val user = (ActorContext.current().actor as? Actor.User)?.userId
+            val mine = user?.let { queries.myTask(MemoWorkflowSubject.TYPE, memo, it)?.id }
+            val task = checkNotNull(mine ?: queries.viewOf(MemoWorkflowSubject.TYPE, memo)?.openTaskId) { "memo $memo has no open task" }
             when (action) {
                 APPROVE -> workflows.approve(task, remark)
                 RETURN -> workflows.returnToInitiator(task, remark)

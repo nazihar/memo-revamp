@@ -83,7 +83,10 @@ class DemoMemosIT : FilesIntegrationTest() {
         // The draft carries a quotation (E02 T8).
         val draft = box(MemoBox.DRAFTS).single().id
         assertThat(asUser(author) { attachments.list(draft) }.map { it.title }).containsExactly("laptop-quotation.pdf")
-        assertThat(box(MemoBox.SENT).map { it.status.name }).containsOnly("IN_REVIEW", "RETURNED").hasSize(5)
+        // The Phase 4 E03 credit proposal (DemoMeetingsIT, when it ran first) is in review too, waiting for the credit
+        // committee; it is not one of the D1 states.
+        val sent = box(MemoBox.SENT).filter { it.subject != DemoMeetingSeeder.CREDIT_SUBJECT }
+        assertThat(sent.map { it.status.name }).containsOnly("IN_REVIEW", "RETURNED").hasSize(5)
         // The E03 demo memo (DemoAccessIT, when it ran first) is approved too; it is not one of the D1 states.
         assertThat(box(MemoBox.CLOSED).filter { it.subject != DemoAccessSeeder.SUBJECT }.map { it.status.name })
             .containsExactlyInAnyOrder("APPROVED", "REJECTED", "WITHDRAWN")

@@ -351,13 +351,16 @@ function BuilderBody() {
         </p>
       ) : null}
       <AgendaDnd draft={draft} onMove={(body) => void move(body)} onPlace={placeDropped}>
-        <div className={canAdd ? 'grid items-start gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]' : 'flex flex-col'}>
+        <div
+          className={canAdd ? 'grid grid-cols-1 items-start gap-6 lg:grid-cols-[minmax(0,1fr)_20rem]' : 'flex flex-col'}
+        >
           <div className="flex flex-col gap-4">
             <AgendaList onMove={(body) => void move(body)} />
             <TotalLine />
           </div>
+          {/* The tray sticks below the sticky top bar (3.5rem), not under it. */}
           {canAdd ? (
-            <aside className="rounded-md border p-3 lg:sticky lg:top-4">
+            <aside className="rounded-md border p-3 lg:sticky lg:top-18">
               <Tray
                 ask={(s) => {
                   placing.ask(s)

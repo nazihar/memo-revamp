@@ -9,8 +9,9 @@ package com.memo.meeting
  * surfaces of later epics still to come ([pending]); its meta-test fails when a controller of [modules] is not registered.
  * E05 T5 added the alternate of a recused member to every probe of [PaperLeakIT], and its surfaces (invitations, replies,
  * the register, the quorum, the forecast and snapshots) to both suites. E06 T3 made its decisions placeholder real: the
- * decisions list and history (DECISIONS), recording, consent sections and notes (officers, with recusal columns). E07 T3
- * made its actions placeholder real: one action, a meeting's actions and "My actions" (ACTIONS), raising, editing,
+ * decisions list and history (DECISIONS), recording, consent sections and notes (officers, with recusal columns). E06 T4 made
+ * its resolutions placeholder real: the register, its check and one resolution (RESOLUTIONS), and the starting number. E07
+ * T3 made its actions placeholder real: one action, a meeting's actions and "My actions" (ACTIONS), raising, editing,
  * discarding and issuing (officers, with recusal columns or an officer probe).
  */
 object PaperSurfaceRegistry {
@@ -42,6 +43,10 @@ object PaperSurfaceRegistry {
         ACTIONS(
             "Action items (E07 T3): one action, a meeting's actions and My actions with their counts; a person recused from the " +
                 "item neither sees nor counts its actions unless involved, and then without the item's hidden title or papers",
+        ),
+        RESOLUTIONS(
+            "The committee's resolution register and its check, and one resolution (E06 T4): a row in full only when its item's " +
+                "decision is seen in full, else its number, meeting and item number (\"restricted\"); one resolution as the decision",
         ),
     }
 
@@ -87,6 +92,10 @@ object PaperSurfaceRegistry {
             "GET /api/v1/actions/{actionId}" to Surface.ACTIONS,
             "GET /api/v1/meetings/{meetingId}/actions" to Surface.ACTIONS,
             "GET /api/v1/me/actions" to Surface.ACTIONS,
+            // E06 T4: the register (officers, forums.manage, forum.read), its check, and one resolution (also its memo's readers).
+            "GET /api/v1/forums/{forumId}/resolutions" to Surface.RESOLUTIONS,
+            "GET /api/v1/forums/{forumId}/resolutions/check" to Surface.RESOLUTIONS,
+            "GET /api/v1/resolutions/{resolutionId}" to Surface.RESOLUTIONS,
         )
 
     /**
@@ -164,6 +173,8 @@ object PaperSurfaceRegistry {
                 "PATCH /api/v1/actions/{actionId}" to "editing a draft (E07 T3): secretaries not recused (recusal columns)",
                 "POST /api/v1/actions/{actionId}/discard" to "discarding a draft (E07 T3): secretaries not recused (recusal columns)",
                 "POST /api/v1/actions/{actionId}/issue" to "issuing a draft (E07 T3): secretaries not recused (recusal columns)",
+                "PUT /api/v1/forums/{forumId}/resolution-counters/{period}" to
+                    "the starting resolution number (E06 T4): forums.manage with a step-up; no item at all (officer probe)",
             )
 
     /** The modules whose controllers must all be registered here (test plan E04, "Meta-test"); later epics add theirs. */
@@ -265,11 +276,6 @@ object PaperSurfaceRegistry {
                 "E06",
                 "Draft and approved minutes: the recused version (heading, own declaration and decision; no discussion; ADR-0062)",
                 listOf("/api/v1/meetings/{meetingId}/minutes", "/api/v1/minutes"),
-            ),
-            Pending(
-                "E06",
-                "Resolutions of the item and their numbers",
-                listOf("/api/v1/resolutions", "/api/v1/meetings/{meetingId}/resolutions"),
             ),
             Pending(
                 "E07",

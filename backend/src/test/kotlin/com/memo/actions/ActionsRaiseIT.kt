@@ -35,6 +35,8 @@ import java.util.concurrent.Executors
 class ActionsRaiseIT : ActionFixture() {
     @Autowired lateinit var tenantDsl: com.memo.common.tenant.TenantDsl
 
+    @Autowired lateinit var resolutions: com.memo.minutes.Resolutions
+
     override fun label() = "actions"
 
     private val year get() = Year.now(ZoneOffset.UTC).value
@@ -218,8 +220,10 @@ class ActionsRaiseIT : ActionFixture() {
         d: Deciding,
         actionId: java.util.UUID,
     ) {
-        // The decision corrected: the issued action records it, keeps its condition, and nothing else changes.
+        // The decision corrected once the meeting is held: the issued action records it, keeps its condition, and its label
+        // takes the resolution number given at once (E06 T4); nothing else changes.
         issue(actionId)
+        asUser(secretary) { meeting(d.meeting.id).let { lifecycle.end(it.id, it.version) } }
         record(
             d,
             d.appetite,
@@ -234,6 +238,8 @@ class ActionsRaiseIT : ActionFixture() {
         assertThat(timeline.first().kind to timeline.first().details["seq"]).isEqualTo("SOURCE_CORRECTED" to 2)
         Audit.assertAudited(tenant.id, "actions.action.source_corrected", actionId.toString(), secretary.id.value.toString())
         assertThat(row(actionId).let { it.conditionIndex to it.status }).isEqualTo(0 to ActionStatus.OPEN)
+        val number = checkNotNull(transactions.readInTenant(tenant.id) { resolutions.inForce(row(actionId).decisionId!!) }).number
+        assertThat(row(actionId).sourceLabel).endsWith("— Resolution $number, condition 1")
     }
 
     @Test

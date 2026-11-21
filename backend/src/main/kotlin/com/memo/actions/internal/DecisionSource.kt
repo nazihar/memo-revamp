@@ -1,6 +1,7 @@
 package com.memo.actions.internal
 
 import com.memo.minutes.Decisions
+import com.memo.minutes.Resolutions
 import org.springframework.stereotype.Component
 import java.util.UUID
 
@@ -26,7 +27,11 @@ data class DecisionSourceRef(
 @Component
 class DecisionSource(
     private val decisions: Decisions,
+    private val resolutions: Resolutions,
 ) {
+    /** [decisionId]'s resolution number in force (E06 T4); null when it has none (not a resolution, or not numbered yet). */
+    fun resolutionNumber(decisionId: UUID): String? = resolutions.inForce(decisionId)?.number
+
     /** The decision [decisionId] with its current entry; null when there is none. */
     fun find(decisionId: UUID): DecisionSourceRef? = decisions.find(decisionId)?.let(::ref)
 

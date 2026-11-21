@@ -5,14 +5,19 @@ import com.memo.forum.OutcomeKind
 import com.memo.minutes.internal.CurrentDecision
 import com.memo.minutes.internal.DecisionReads
 import com.memo.minutes.internal.EntryRow
+import com.memo.minutes.internal.ResolutionRow
+import com.memo.minutes.internal.ResolutionStore
 import org.springframework.stereotype.Component
 import java.time.Instant
 import java.time.LocalDate
 import java.util.UUID
 
-/** Where a decision stands (design E06 §1.1), derived: NUMBERED comes with T4's resolutions. */
+/** Where a decision stands (design E06 §1.1), derived from its number, its release and the minutes' approval. */
 enum class DecisionState {
     RECORDED,
+
+    /** Its outcome is a resolution with a number in force (given when the meeting is marked as held, or at once after). */
+    NUMBERED,
 
     /** Sent to its memo (T4). */
     RELEASED,
@@ -25,10 +30,12 @@ enum class DecisionState {
         fun of(
             releasedAt: Instant?,
             finalAt: Instant?,
+            numbered: Boolean = false,
         ): DecisionState =
             when {
                 finalAt != null -> FINAL
                 releasedAt != null -> RELEASED
+                numbered -> NUMBERED
                 else -> RECORDED
             }
     }
@@ -71,6 +78,9 @@ data class DecisionRef(
     val ratificationRequired: Boolean,
     val releasedAt: Instant?,
     val finalAt: Instant?,
+    /** Its resolution number in force ("BRC/2026/014"); null when it has none (yet). */
+    val resolutionNumber: String? = null,
+    val resolutionId: UUID? = null,
 )
 
 /**
@@ -81,15 +91,16 @@ data class DecisionRef(
 @Component
 class Decisions(
     private val reads: DecisionReads,
+    private val resolutions: ResolutionStore,
 ) {
     /** The decision [decisionId] with its current entry; null when there is none. */
-    fun find(decisionId: UUID): DecisionRef? = reads.currentById(decisionId)?.ref()
+    fun find(decisionId: UUID): DecisionRef? = reads.currentById(decisionId)?.let { refs(listOf(it)).single() }
 
     /** [meetingId]'s current decisions. */
-    fun of(meetingId: UUID): List<DecisionRef> = reads.currentOf(meetingId).map { it.ref() }
+    fun of(meetingId: UUID): List<DecisionRef> = refs(reads.currentOf(meetingId))
 
     /** The current decision on [itemId]; null when it has none. */
-    fun ofItem(itemId: UUID): DecisionRef? = reads.current(itemId)?.ref()
+    fun ofItem(itemId: UUID): DecisionRef? = reads.current(itemId)?.let { refs(listOf(it)).single() }
 
     /** Entry [seq] of [decisionId] (a correction's earlier entries stay readable); null when there is none. */
     fun entry(
@@ -97,7 +108,12 @@ class Decisions(
         seq: Int,
     ): DecisionEntryRef? = reads.entries(decisionId).firstOrNull { it.seq == seq }?.ref()
 
-    private fun CurrentDecision.ref() =
+    private fun refs(decisions: List<CurrentDecision>): List<DecisionRef> {
+        val numbers = resolutions.inForce(decisions.map { it.decision.id })
+        return decisions.map { it.ref(numbers[it.decision.id]) }
+    }
+
+    private fun CurrentDecision.ref(number: ResolutionRow?) =
         DecisionRef(
             id = decision.id,
             meetingId = decision.meetingId,
@@ -105,11 +121,13 @@ class Decisions(
             forumId = decision.forumId,
             submissionId = decision.submissionId,
             memoId = decision.memoId,
-            state = DecisionState.of(decision.releasedAt, decision.finalAt),
+            state = DecisionState.of(decision.releasedAt, decision.finalAt, number != null),
             current = entry.ref(),
             ratificationRequired = entry.ratificationRequired,
             releasedAt = decision.releasedAt,
             finalAt = decision.finalAt,
+            resolutionNumber = number?.number,
+            resolutionId = number?.id,
         )
 
     private fun EntryRow.ref() =

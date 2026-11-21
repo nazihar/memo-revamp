@@ -1,8 +1,5 @@
 package com.memo.meeting
 
-import com.memo.actions.ActionPlanting
-import com.memo.actions.internal.ActionStore
-import com.memo.actions.internal.ItemCopy
 import com.memo.audit.AuditExport
 import com.memo.audit.AuditFilter
 import com.memo.common.authz.Permission
@@ -14,9 +11,11 @@ import com.memo.meeting.PaperSurfaceRegistry.Channel
 import com.memo.meeting.PaperSurfaceRegistry.Surface
 import com.memo.meeting.internal.RulingInput
 import com.memo.minutes.DecisionPlanting
+import com.memo.minutes.internal.DecisionReads
 import com.memo.minutes.internal.DecisionStore
 import com.memo.minutes.internal.Dissent
 import com.memo.minutes.internal.NoteStore
+import com.memo.minutes.internal.ResolutionNumbers
 import com.memo.testsupport.AuthzMatrix
 import com.memo.testsupport.Person
 import com.memo.testsupport.RecusalRow
@@ -60,7 +59,7 @@ import java.util.zip.ZipInputStream
  * surface or channel without its probe here, an item or paper endpoint without recusal columns, an officer endpoint without
  * columns or an officer probe, and a placeholder of a later epic ([PaperSurfaceRegistry.pending]) whose endpoints exist.
  */
-class RecusalLeakIT : RecusalLeakFixture() {
+class RecusalLeakIT : RecusalActionsFixture() {
     @Autowired
     @Qualifier("requestMappingHandlerMapping")
     lateinit var mapping: RequestMappingHandlerMapping
@@ -71,58 +70,9 @@ class RecusalLeakIT : RecusalLeakFixture() {
 
     @Autowired lateinit var noteStore: NoteStore
 
-    @Autowired lateinit var actionStore: ActionStore
+    @Autowired lateinit var decisionReads: DecisionReads
 
-    @Autowired lateinit var meetingItems: MeetingItems
-
-    /**
-     * E07 T3: the actions planted on a [Planted] meeting, once per meeting: a draft and an issued action of the item and an
-     * issued one of the hidden item, their titles a canary and owned by the control; and one of the hidden item owned by d1
-     * (recused from it), whose title is not a canary: they see their own action, never the item's hidden title.
-     */
-    private inner class PlantedActions(
-        p: Planted,
-    ) {
-        private val planting = ActionPlanting(transactions, actionStore, tenantDsl)
-        private val copies =
-            transactions.readInTenant(tenant.id) {
-                val agenda = meetingItems.agenda(p.meeting.id)
-                p.both.associateWith { id ->
-                    val item = checkNotNull(agenda.item(id))
-                    ItemCopy(item.parentId, item.classificationId, item.restrictedTo, item.titleHidden, item.membersOnly)
-                }
-            }
-
-        private fun plant(
-            p: Planted,
-            item: java.util.UUID,
-            title: String,
-            owner: Person,
-            issued: Boolean = true,
-        ) = planting.action(
-            tenant.id,
-            brc,
-            p.meeting.id,
-            item,
-            copies.getValue(item),
-            copies.getValue(item).classificationId,
-            secretary2.id,
-            title,
-            owner.id,
-            issued,
-            context = "$CANARY_ACTION context".takeIf { owner != d1 },
-        )
-
-        val draft = plant(p, p.item, "$CANARY_ACTION draft", control, issued = false)
-        val issued = plant(p, p.item, "$CANARY_ACTION issued", control)
-        val ofHidden = plant(p, p.hidden, "$CANARY_ACTION of the hidden item", control)
-        val d1s = plant(p, p.hidden, "Confirm the covenant waiver", d1)
-        val hiddenToAll = listOf(draft, issued, ofHidden)
-    }
-
-    private val plantedActions = mutableMapOf<java.util.UUID, PlantedActions>()
-
-    private fun actionsOf(p: Planted): PlantedActions = plantedActions.getOrPut(p.meeting.id) { PlantedActions(p) }
+    @Autowired lateinit var numbers: ResolutionNumbers
 
     // 1. Canaries and status, surface by surface
 
@@ -255,45 +205,16 @@ class RecusalLeakIT : RecusalLeakFixture() {
             },
             Surface.DECISIONS to { p, v -> decisionsProbe(p, v.person()) },
             Surface.ACTIONS to { p, v -> actionsProbe(p, v) },
+            // E06 T4: the register and its check (officers; members 403), and one resolution; the planted ones are numbered in
+            // the decided item's test.
+            Surface.RESOLUTIONS to { _, v ->
+                listOf(
+                    "/api/v1/forums/$brc/resolutions",
+                    "/api/v1/forums/$brc/resolutions/check",
+                    "/api/v1/resolutions/${UUID.randomUUID()}",
+                ).forEach { uri -> clean(v.person(), read(uri, v.person().session), statusBelow = 500) }
+            },
         )
-
-    /**
-     * E07 T3's surface: none of the item's actions, nor a count of them, for a viewer recused from it and not involved
-     * (404 to the action, absent from the meeting's actions and "My actions"); d1 sees their own action of the hidden item,
-     * marked recused, without its title. The control (the owner) reads the canaries.
-     */
-    private fun actionsProbe(
-        p: Planted,
-        v: Viewer,
-    ) {
-        val planted = actionsOf(p)
-        val person = v.person()
-        assertThat(read("/api/v1/actions/${planted.issued}", control.session).response.contentAsString).contains(CANARY_ACTION)
-        planted.hiddenToAll.forEach { id ->
-            val one = read("/api/v1/actions/$id", person.session)
-            assertThat(one).hasStatus(HttpStatus.NOT_FOUND)
-            assertThat(one.response.contentAsString).doesNotContain(CANARY_ACTION)
-        }
-        val list = read("/api/v1/meetings/${p.meeting.id}/actions", person.session)
-        clean(person, list)
-        assertThat(list.response.contentAsString).doesNotContain(CANARY_ACTION)
-        val listed = list.json()["actions"].list().map { java.util.UUID.fromString(it["id"].asString()) }
-        assertThat(listed).doesNotContainAnyElementsOf(planted.hiddenToAll)
-        assertThat(list.json()["drafts"].asInt()).isZero()
-        val mine = read("/api/v1/me/actions", person.session)
-        clean(person, mine)
-        assertThat(mine.response.contentAsString).doesNotContain(CANARY_ACTION)
-        if (v == Viewer.RECUSED) {
-            val own = read("/api/v1/actions/${planted.d1s}", person.session)
-            clean(person, own)
-            assertThat(own.json()["viewerRecused"].asBoolean()).isTrue()
-            assertThat(own.json()["source"].absent("itemTitle")).isTrue()
-            assertThat(listed).containsExactly(planted.d1s)
-            assertThat(mine.json()["counts"]["mine"].asInt()).isEqualTo(1)
-        } else {
-            assertThat(listed).doesNotContain(planted.d1s)
-        }
-    }
 
     /** The generic files endpoints for every version of a paper's [file]: 403 or 404, naming nothing. */
     private fun filesEndpoints(
@@ -403,6 +324,40 @@ class RecusalLeakIT : RecusalLeakFixture() {
     }
 
     /**
+     * E06 T4: the planted item's [resolution] is read by every recused viewer as their recused view (number, outcome, text,
+     * no vote or names), the hidden item's [hidden] not at all (404); in the register both are "restricted" rows for the
+     * recused officers (members are not given the register).
+     */
+    private fun resolutionsProbe(
+        p: Planted,
+        v: Viewer,
+        resolution: UUID,
+        hidden: UUID,
+    ) {
+        val one = read("/api/v1/resolutions/$resolution", v.person().session)
+        clean(v.person(), one)
+        assertThat(one.response.contentAsString).doesNotContain(CANARY_DISSENT, CANARY_NOTE)
+        assertThat(one.json()["viewerRecused"].asBoolean() to one.json()["full"].asBoolean()).isEqualTo(true to false)
+        assertThat(one.json()["text"].asString()).isEqualTo("It was resolved that the term loan be approved.")
+        val unseen = read("/api/v1/resolutions/$hidden", v.person().session)
+        assertThat(unseen).hasStatus(HttpStatus.NOT_FOUND)
+        assertThat(unseen.response.contentAsString).doesNotContain(CANARY_TITLE)
+        val register = read("/api/v1/forums/$brc/resolutions", v.person().session)
+        if (!v.officer) {
+            assertThat(register).hasStatus(HttpStatus.FORBIDDEN)
+            return
+        }
+        clean(v.person(), register)
+        assertThat(register.response.contentAsString).doesNotContain(CANARY_TITLE, CANARY_DISSENT)
+        val rows = register.json()["entries"].list()
+        assertThat(rows.map { it["id"].asString() }).contains(resolution.toString(), hidden.toString())
+        assertThat(
+            rows.filter { it["id"].asString() in setOf(resolution.toString(), hidden.toString()) }.map { it["restricted"].asBoolean() },
+        ).containsOnly(true)
+        assertThat(p.meeting.id.toString()).isIn(rows.map { it["meetingId"].asString() })
+    }
+
+    /**
      * E06 T3: the planted item's decision (a vote, a named dissent whose reason is a canary, the vice-chair abstaining) and
      * the hidden item's (its text a canary), with notes on the item. Each recused viewer reads the item's decision as their
      * recused view (outcome, text, conditions; no vote, names, snapshot or recorder), nothing of the hidden item's, and
@@ -412,23 +367,29 @@ class RecusalLeakIT : RecusalLeakFixture() {
     fun `a recused viewer reads a decided item's recused view only, and nothing of a hidden one's`() {
         val p = Planted(content = true)
         val planting = DecisionPlanting(transactions, decisionStore, noteStore)
-        planting.decision(
-            tenant.id,
-            p.meeting.id,
-            brc,
-            p.item,
-            secretary2.id,
-            "It was resolved that the term loan be approved.",
-            dissent = Dissent(d3.id, CANARY_DISSENT),
-            abstaining = vice.id,
-            tookNoPart = listOf(d1.id, d2.id),
-        )
-        planting.decision(tenant.id, p.meeting.id, brc, p.hidden, secretary2.id, "$CANARY_TITLE approved")
+        val decided =
+            planting.decision(
+                tenant.id,
+                p.meeting.id,
+                brc,
+                p.item,
+                secretary2.id,
+                "It was resolved that the term loan be approved.",
+                dissent = Dissent(d3.id, CANARY_DISSENT),
+                abstaining = vice.id,
+                tookNoPart = listOf(d1.id, d2.id),
+            )
+        val hiddenDecision = planting.decision(tenant.id, p.meeting.id, brc, p.hidden, secretary2.id, "$CANARY_TITLE approved")
+        // E06 T4: both numbered, as the meeting's end numbers them.
+        val resolution = planting.number(tenant.id, decided, decisionReads, numbers)
+        val hiddenResolution = planting.number(tenant.id, hiddenDecision, decisionReads, numbers)
         planting.note(tenant.id, p.meeting.id, p.item, secretary2.id, CANARY_NOTE)
         assertThat(read("/api/v1/meetings/${p.meeting.id}/decisions", control.session).response.contentAsString).contains(CANARY_DISSENT)
         Viewer.entries.forEach { viewer ->
             runCatching { decisionsProbe(p, viewer.person(), planted = true) }
                 .onFailure { throw AssertionError("decisions leak to $viewer", it) }
+            runCatching { resolutionsProbe(p, viewer, resolution, hiddenResolution) }
+                .onFailure { throw AssertionError("resolutions leak to $viewer", it) }
         }
     }
 
@@ -716,22 +677,10 @@ class RecusalLeakIT : RecusalLeakFixture() {
             // The committee's decisions to be ratified (E06 T3): ids, numbers and outcomes only.
             "GET /api/v1/forums/{forumId}/decisions/to-be-ratified" to
                 { _ -> read("/api/v1/forums/$brc/decisions/to-be-ratified", secretary.session) },
-            // Actions (E07 T3): issuing the meeting's drafts skips those of items the secretary is recused from; a direct
-            // action names no item.
-            "POST /api/v1/meetings/{meetingId}/actions/issue" to { p ->
-                actionsOf(p)
-                send(HttpMethod.POST, "${base(p)}/actions/issue", secretary, "{}", mapOf("Idempotency-Key" to UUID.randomUUID().toString()))
-            },
-            "POST /api/v1/forums/{forumId}/actions" to { _ ->
-                val body = """{"title":"Circulate the revised policy","sourceNote":"Chair's instruction"}"""
-                send(
-                    HttpMethod.POST,
-                    "/api/v1/forums/$brc/actions",
-                    secretary,
-                    body,
-                    mapOf("Idempotency-Key" to UUID.randomUUID().toString()),
-                )
-            },
+            *actionOfficerProbes(),
+            // The starting resolution number (E06 T4): forums.manage only, so the recused secretary is refused, naming nothing.
+            "PUT /api/v1/forums/{forumId}/resolution-counters/{period}" to
+                { _ -> send(HttpMethod.PUT, "/api/v1/forums/$brc/resolution-counters/2026", secretary, """{"next":14}""") },
             "POST /api/v1/meetings/{meetingId}/end" to
                 { p -> send(HttpMethod.POST, "${base(p)}/end", secretary, "{}", versioned(meetingVersion(p))) },
             "POST /api/v1/meetings/{meetingId}/cancel" to
@@ -785,9 +734,6 @@ class RecusalLeakIT : RecusalLeakFixture() {
         /** E06 T3: a dissent's reason and the secretary's notes on the planted item, which no recused viewer may read. */
         const val CANARY_DISSENT = "CANARY-DS dissent reason"
         const val CANARY_NOTE = "CANARY-NT secretary notes"
-
-        /** E07 T3: the planted actions' titles and context, which no recused viewer who is not involved may read. */
-        const val CANARY_ACTION = "CANARY-ACT action"
 
         /** The officer probes the recused chair makes; the recused secretary makes the others. */
         val BY_THE_CHAIR =

@@ -40,6 +40,8 @@ data class MeetingRef(
     /** "BRC 3/2026", set when the agenda is first published. */
     val label: String?,
     val status: MeetingStatus,
+    /** The meeting's number in the committee's series (the 3 of "BRC 3/2026"), set with [label]. */
+    val number: Int? = null,
 )
 
 /**
@@ -58,7 +60,14 @@ class Meetings(
 
     /** The meetings [userId] is in the audience of (as a member, guest or item attendee), oldest first. */
     fun meetingsOf(userId: UUID): List<MeetingRef> = store.findAll(audience.meetingsOf(userId)).map { it.ref() }
+
+    /**
+     * [id] with its row locked to the end of the transaction, as attendance and quorum snapshots lock it (E06: after the
+     * submission rows and the decision row, before the agenda); null when there is none. Its status is then current: a
+     * meeting marked as held meanwhile reads HELD.
+     */
+    fun locked(id: UUID): MeetingRef? = store.lock(id)?.ref()
 }
 
 internal fun MeetingRow.ref() =
-    MeetingRef(id, forumId, typeVersion, kind, title, startsAt, endsAt, zone, mode, classificationId, label, status)
+    MeetingRef(id, forumId, typeVersion, kind, title, startsAt, endsAt, zone, mode, classificationId, label, status, number)

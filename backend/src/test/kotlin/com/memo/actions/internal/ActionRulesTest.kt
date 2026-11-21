@@ -57,6 +57,8 @@ class ActionRulesTest {
         assertThat(ActionReferences.dueAt(today, dhaka)).isEqualTo(today.plusDays(1).atStartOfDay(dhaka).toInstant())
         assertThat(ActionReferences.label(ActionSource.DECISION, "Board Risk Committee", "BRC 3/2026", "5", 1))
             .isEqualTo("BRC 3/2026, item 5 — decision, condition 2")
+        assertThat(ActionReferences.label(ActionSource.DECISION, "Board Risk Committee", "BRC 3/2026", "5", 1, "BRC/2026/014"))
+            .isEqualTo("BRC 3/2026, item 5 — Resolution BRC/2026/014, condition 2")
         assertThat(
             ActionReferences.label(ActionSource.ITEM, "Board Risk Committee", "BRC 3/2026", null, null),
         ).isEqualTo("BRC 3/2026, an item")

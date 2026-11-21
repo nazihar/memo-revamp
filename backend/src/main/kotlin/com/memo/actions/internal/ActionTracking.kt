@@ -84,6 +84,21 @@ class ActionTracking(
             .execute()
     }
 
+    /** Sets [id]'s source label (its decision's resolution number was given or voided). */
+    fun relabel(
+        id: UUID,
+        label: String,
+    ) {
+        val a = ACTIONS_ITEM
+        tenantDsl
+            .current()
+            .update(a)
+            .set(a.SOURCE_LABEL, label)
+            .set(a.VERSION, a.VERSION.plus(1))
+            .where(a.ID.eq(id))
+            .execute()
+    }
+
     private companion object {
         const val STEP_NAME_MAX = 200
     }

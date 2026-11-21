@@ -115,6 +115,35 @@ class DecisionStore(
             .forUpdate()
             .fetchOne { it.decisionRow() }
 
+    /** The decision [decisionId], locked to the end of the transaction; null when there is none. */
+    fun lockById(decisionId: UUID): DecisionRow? =
+        tenantDsl
+            .current()
+            .selectFrom(MINUTES_DECISION)
+            .where(MINUTES_DECISION.ID.eq(decisionId))
+            .forUpdate()
+            .fetchOne { it.decisionRow() }
+
+    /**
+     * Marks [decision] (as seen at its version) sent to its memo with [kind], once (ADR-0065): the version moves on; false
+     * when the decision moved on in between or was released already.
+     */
+    fun released(
+        decision: DecisionRow,
+        kind: OutcomeKind,
+        at: Instant,
+    ): Boolean {
+        val d = MINUTES_DECISION
+        return tenantDsl
+            .current()
+            .update(d)
+            .set(d.RELEASED_AT, at.atOffset(ZoneOffset.UTC))
+            .set(d.RELEASED_KIND, kind.name)
+            .set(d.VERSION, decision.version + 1)
+            .where(d.ID.eq(decision.id), d.VERSION.eq(decision.version), d.RELEASED_AT.isNull)
+            .execute() == 1
+    }
+
     /** The decisions on [itemIds], locked in id order (one statement, so two callers never lock them crosswise). */
     fun lockAll(itemIds: Collection<UUID>): List<DecisionRow> =
         if (itemIds.isEmpty()) {

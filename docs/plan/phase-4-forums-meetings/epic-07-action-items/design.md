@@ -352,7 +352,7 @@ seeSource(v, a)  := E06's rule for the decision (MinutesAccess), else the item r
   - `viewerToday` (`ActionViewer`): roles from `ForumDirectory.rolesOf` today; officer = secretary, chair (vice-chair when there is no chair) or `forums.manage`; member = any seat in office, members-only for chair, vice-chair, member and secretary; never guest or attendee.
   - `involved` includes the open tasks the viewer holds or may claim (`WorkflowQueries.myTasks`, subject `action-item`).
   - The meeting's actions answer 404 for a meeting the viewer neither sees nor has an action of; an owner outside the committee gets their own.
-  - The source label carries numbers only: "BRC 3/2026, item 5 — decision, condition 2" (the resolution number waits for E06 T4). `itemTitle` is answered only when `itemCondition` or `titleCondition` allows it.
+  - The source label carries numbers only: "BRC 3/2026, item 5 — Resolution BRC/2026/014, condition 2", with "— decision" until the decision has its number (E06 T4's `Resolutions.inForce`; `ResolutionChanged` relabels the decision's actions when a number is given or voided). `itemTitle` is answered only when `itemCondition` or `titleCondition` allows it.
   - `AgendaItemRef` (meeting) gained `classificationId` and `membersOnly`, so the item columns are copied from the published revision (or the live row of a tabled item).
 - **As built in T3, raising and issuing** (§1.1, §1.2):
   - **The tables are named `actions_item`, `actions_counter`, `actions_contributor` and `actions_entry`** (and T4–T7's `actions_*`): `RlsMetaTest` requires the module's identifier as every table's prefix. §1.15 and §7 keep the shorter names for reading.

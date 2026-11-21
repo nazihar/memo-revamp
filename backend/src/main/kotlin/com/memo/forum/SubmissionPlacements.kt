@@ -45,6 +45,8 @@ data class SubmissionRef(
     val meetingId: UUID?,
     val meetingDate: LocalDate?,
     val version: Long,
+    /** Its memo waits at the forum step for the decision; false for one sent "for information" (it passed through). */
+    val waits: Boolean = true,
 )
 
 /**
@@ -172,4 +174,5 @@ internal fun SubmissionRow.ref() =
         meetingId = meetingId,
         meetingDate = meetingDate,
         version = version,
+        waits = waits,
     )

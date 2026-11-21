@@ -8,6 +8,7 @@ import com.memo.meeting.MeetingItems
 import com.memo.meeting.Meetings
 import com.memo.meeting.Recusals
 import com.memo.minutes.DecisionRecorded
+import com.memo.minutes.ResolutionChanged
 import com.memo.workflow.InstanceStatus
 import com.memo.workflow.WorkflowInstanceEnded
 import com.memo.workflow.WorkflowQueries
@@ -80,9 +81,10 @@ class ActionWorkflowListener(
 /**
  * Keeps an action's source current (design E07 §1.1, §1.2), in the publisher's transaction: a meeting's later agenda
  * revision refreshes the copied item columns (and the label's numbers) of the actions raised from its items, so the
- * visibility rule follows the item's restriction, hidden title, level and section; a decision corrected (a new entry)
- * leaves a SOURCE_CORRECTED entry on each issued action raised from it, and its secretaries not recused are told in the
- * app. Nothing else changes: the secretary decides whether to edit, cancel or keep each action.
+ * visibility rule follows the item's restriction, hidden title, level and section; a resolution number given or voided
+ * (E06 T4) is carried into the labels of the decision's actions; a decision corrected (a new entry) leaves a
+ * SOURCE_CORRECTED entry on each issued action raised from it, and its secretaries not recused are told in the app.
+ * Nothing else changes: the secretary decides whether to edit, cancel or keep each action.
  */
 @Component
 class ActionSourceListener(
@@ -94,6 +96,7 @@ class ActionSourceListener(
     private val directory: ForumDirectory,
     private val recusals: Recusals,
     private val viewers: ActionViewers,
+    private val decisions: DecisionSource,
     private val effects: ActionItemEffects,
     private val clock: Clock,
 ) {
@@ -106,10 +109,38 @@ class ActionSourceListener(
         actions.forEach { action ->
             val item = action.itemId?.let(agenda::item)?.takeIf { it.published } ?: return@forEach
             val copy = ItemCopy(item.parentId, item.classificationId, item.restrictedTo, item.titleHidden, item.membersOnly)
-            val label = ActionReferences.label(action.source, committee, meeting.label, item.number, action.conditionIndex)
+            val label = label(action, committee, meeting.label, item.number)
             if (copy != action.item || label != action.sourceLabel) tracking.refreshItem(action.id, copy, label)
         }
     }
+
+    /** A resolution number given or voided (E06 T4): the labels of the decision's actions carry it. */
+    @EventListener
+    fun onResolution(event: ResolutionChanged) {
+        val actions = store.ofDecision(event.decisionId)
+        val meeting = actions.firstOrNull()?.meetingId?.let(meetings::find) ?: return
+        val committee = directory.forum(meeting.forumId)?.name.orEmpty()
+        val agenda = items.agenda(meeting.id)
+        actions.forEach { action ->
+            val label = label(action, committee, meeting.label, action.itemId?.let(agenda::item)?.number)
+            if (label != action.sourceLabel) tracking.relabel(action.id, label)
+        }
+    }
+
+    private fun label(
+        action: ActionRow,
+        committee: String,
+        meetingLabel: String?,
+        itemNumber: String?,
+    ): String =
+        ActionReferences.label(
+            action.source,
+            committee,
+            meetingLabel,
+            itemNumber,
+            action.conditionIndex,
+            action.decisionId?.let(decisions::resolutionNumber),
+        )
 
     @EventListener
     fun onDecision(event: DecisionRecorded) {

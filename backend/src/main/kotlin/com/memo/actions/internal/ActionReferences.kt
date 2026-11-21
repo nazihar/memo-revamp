@@ -20,7 +20,8 @@ object ActionReferences {
     ): Instant = dueDate.plusDays(1).atStartOfDay(zone).toInstant()
 
     /**
-     * The source as lists show it: "BRC 3/2026, item 5 — decision, condition 2". The meeting's number and the item's, never
+     * The source as lists show it: "BRC 3/2026, item 5 — Resolution BRC/2026/014, condition 2" ("— decision" until the
+     * decision has its number). The meeting's number, the item's and the resolution's, never
      * the item's title or the decision's text, so the label is safe to show to an owner who may not read the item.
      */
     fun label(
@@ -29,6 +30,8 @@ object ActionReferences {
         meetingLabel: String?,
         itemNumber: String?,
         conditionIndex: Int?,
+        /** The decision's resolution number in force (E06 T4), once it has one. */
+        resolution: String? = null,
     ): String {
         val meeting = meetingLabel ?: "the meeting"
         val item = itemNumber?.let { "item $it" } ?: "an item"
@@ -46,7 +49,8 @@ object ActionReferences {
             }
 
             ActionSource.DECISION -> {
-                "$meeting, $item — decision" + (conditionIndex?.let { ", condition ${it + 1}" } ?: "")
+                "$meeting, $item — " + (resolution?.let { "Resolution $it" } ?: "decision") +
+                    (conditionIndex?.let { ", condition ${it + 1}" } ?: "")
             }
         }.take(LABEL_MAX)
     }

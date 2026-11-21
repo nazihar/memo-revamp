@@ -80,7 +80,15 @@ class ActionRaising(
                 FieldProblem("sourceNote", "SOURCE", "A source note is for a direct action.").takeIf { input.fields.sourceNote != null },
             )
         val source = Source(kind, view.meeting.id, item, decision, condition)
-        val label = ActionReferences.label(kind, forum.name, view.meeting.label, item?.number, condition)
+        val label =
+            ActionReferences.label(
+                kind,
+                forum.name,
+                view.meeting.label,
+                item?.number,
+                condition,
+                decision?.let { decisions.resolutionNumber(it.decisionId) },
+            )
         val base = item?.classificationId ?: view.meeting.classificationId
         return draft(forum, source, label, scenes.check(fields, base, item?.id, problems)).id
     }

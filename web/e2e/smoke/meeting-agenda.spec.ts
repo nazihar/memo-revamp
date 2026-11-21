@@ -98,6 +98,8 @@ test.describe('as the company secretary', () => {
       .getByRole('button', { name: 'Remove from the pack' })
       .press('Enter')
     await expect(pack.getByRole('button', { name: 'Put back in the pack' })).toBeVisible()
+    // The paper's own menu went with it: focus stays in the sheet, on the line that heads the papers (none is left).
+    await expect(pack.getByText('Papers in the order members see them.')).toBeFocused()
     await page.keyboard.press('Escape')
     await expect(pack).toBeHidden()
 

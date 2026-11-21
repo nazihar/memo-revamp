@@ -43,6 +43,7 @@ import {
 } from './draft'
 import { ap, apv, purposeLabels, STANDING_KINDS, standingLabels } from './messages'
 import { useWhere } from './hooks'
+import { focusWhenGone, neighbours } from './focus'
 import { focusRow, menuId, useAgenda } from './useAgenda'
 
 /**
@@ -592,7 +593,7 @@ function MoveToPositionDialog({
 
 function RemoveItemDialog({ item, onClose }: { item: Item; onClose: () => void }) {
   const intl = useIntl()
-  const { meeting, change, announce } = useAgenda()
+  const { meeting, draft, change, announce } = useAgenda()
   return (
     <AlertDialog
       open
@@ -607,10 +608,15 @@ function RemoveItemDialog({ item, onClose }: { item: Item; onClose: () => void }
       cancelLabel={intl.formatMessage(ap.keep)}
       destructive
       onConfirm={() => {
+        // The item's Move menu goes with it: focus moves to the next item's (its first sub-item, which takes its place,
+        // when it has some), else the one before, else the page.
+        const order = draft.sections.flatMap((sec) => sec.items.flatMap((i) => [i.id, ...i.subItems.map((x) => x.id)]))
+        const next = neighbours(order, item.id).map(menuId)
         void change((headers) =>
           removeAgendaItem({ path: { meetingId: meeting.id, itemId: item.id }, headers, throwOnError: true }),
         ).then((out) => {
           announce(out.draft ? intl.formatMessage(apv.removed, { title: item.title }) : out.refusal)
+          if (out.draft) focusWhenGone(menuId(item.id), next, 'main')
         })
       }}
     />

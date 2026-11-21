@@ -46,6 +46,11 @@
     "routes": ["/", "/me/meetings", "/meetings"],
     "prefixes": ["meetingReplies"]
   },
+  "meetingAttendance": {
+    "$comment": "Attendance and quorum at the meeting (Phase 4 E05 T8, flows X and Y): the officers’ Attendance tab, the live quorum banner and the per-item view, the members’ summary during the meeting, the forecast lines of the Invitations and replies tab, and the override dialog E06’s decisions open.",
+    "routes": ["/meetings"],
+    "prefixes": ["meetingAttendance"]
+  },
   "declarations": {
     "$comment": "Declarations of interest (Phase 4 E04): declaring on the meeting page (T6, flow S); the officers' Declarations tab, the chair's decision and the builder's recused rows (T7, flow T); the register across committees at /declarations (T8, flow U).",
     "routes": ["/meetings", "/declarations"],

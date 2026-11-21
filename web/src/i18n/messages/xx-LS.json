@@ -11532,6 +11532,104 @@
       "value": "Lowest levelSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
+  "forumTypes.meetings.deadline": [
+    {
+      "type": 0,
+      "value": "Ask for replies by (working days before the meeting)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.meetings.deadline.hint": [
+    {
+      "type": 0,
+      "value": "From 0 (no deadline) to 10.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.meetings.invitations": [
+    {
+      "type": 0,
+      "value": "Calendar invitationsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.meetings.meetingReminder": [
+    {
+      "type": 0,
+      "value": "Remind everyone attending the working day before the meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.meetings.neutral.lead": [
+    {
+      "type": 0,
+      "value": "Use a neutral title for "
+    },
+    {
+      "type": 1,
+      "value": "forums"
+    },
+    {
+      "type": 0,
+      "value": " whose name should not appear in people’s calendars.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.meetings.neutralTitle": [
+    {
+      "type": 0,
+      "value": "Neutral titleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.meetings.neutralTitle.hint": [
+    {
+      "type": 0,
+      "value": "For example “Board committee meeting”. At most 100 characters.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.meetings.override": [
+    {
+      "type": 0,
+      "value": "Decisions without a quorumSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.meetings.override.hint": [
+    {
+      "type": 0,
+      "value": "The secretary gives the reason when recording the decision, and the chair and the other secretaries are told.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.meetings.override.never": [
+    {
+      "type": 0,
+      "value": "Never allowedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.meetings.override.withReason": [
+    {
+      "type": 0,
+      "value": "Allowed with a reason, to be ratified at a later quorate meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.meetings.replies": [
+    {
+      "type": 0,
+      "value": "RepliesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.meetings.replyReminder": [
+    {
+      "type": 0,
+      "value": "Remind those who have not replied, on the deadline daySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.meetings.title": [
+    {
+      "type": 0,
+      "value": "Title in the calendarSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.meetings.title.neutral": [
+    {
+      "type": 0,
+      "value": "A neutral titleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
   "forumTypes.name": [
     {
       "type": 0,
@@ -11898,10 +11996,10 @@
       "value": "Alternates do not count.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
-  "forumTypes.quorum.alternates.yes": [
+  "forumTypes.quorum.alternates.numberOnly": [
     {
       "type": 0,
-      "value": "An alternate counts for the member they replace.SSSSSSSSSSSSSSSSSSSSSSSSS"
+      "value": "Alternates count for the member they replace, for the number of members only.SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "forumTypes.quorum.alternatesCount": [
@@ -12819,6 +12917,12 @@
     {
       "type": 0,
       "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "forumTypes.tab.meetings": [
+    {
+      "type": 0,
+      "value": "MeetingsSSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "forumTypes.tab.outcomes": [
@@ -21858,6 +21962,2588 @@
     {
       "type": 0,
       "value": "User nameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.action.absent": [
+    {
+      "type": 0,
+      "value": "AbsentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.action.apologies": [
+    {
+      "type": 0,
+      "value": "ApologiesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.action.back": [
+    {
+      "type": 0,
+      "value": "BackSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.action.backInPerson": [
+    {
+      "type": 0,
+      "value": "Back in personSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.action.backOnline": [
+    {
+      "type": 0,
+      "value": "Back onlineSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.action.inPerson": [
+    {
+      "type": 0,
+      "value": "In personSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.action.left": [
+    {
+      "type": 0,
+      "value": "LeftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.action.online": [
+    {
+      "type": 0,
+      "value": "OnlineSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.action.stepOut": [
+    {
+      "type": 0,
+      "value": "Stepped out for this itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.actionFor": [
+    {
+      "type": 1,
+      "value": "action"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.anItem": [
+    {
+      "type": 0,
+      "value": "an itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.bulk.action": [
+    {
+      "type": 0,
+      "value": "Mark everyone who said yes as present ("
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.bulk.confirm": [
+    {
+      "type": 0,
+      "value": "Mark "
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " person"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " people"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " present in the way they said ("
+    },
+    {
+      "type": 1,
+      "value": "inPerson"
+    },
+    {
+      "type": 0,
+      "value": " in person, "
+    },
+    {
+      "type": 1,
+      "value": "remote"
+    },
+    {
+      "type": 0,
+      "value": " online)? You can change anyone afterwards.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.bulk.done": [
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " person is"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " people are"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " marked present.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.bulk.submit": [
+    {
+      "type": 0,
+      "value": "Mark "
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " person"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " people"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " presentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.bulk.title": [
+    {
+      "type": 0,
+      "value": "Mark everyone who said yes as presentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.byItem.alternateFor": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " (alternate for "
+    },
+    {
+      "type": 1,
+      "value": "member"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.byItem.alternatesNumberOnly": [
+    {
+      "type": 0,
+      "value": "Alternates count for the number of members only, not as chair or as independent members.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.byItem.choose": [
+    {
+      "type": 0,
+      "value": "ItemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.byItem.counted": [
+    {
+      "type": 0,
+      "value": "Counted ("
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": "): "
+    },
+    {
+      "type": 1,
+      "value": "names"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.byItem.countsOnly": [
+    {
+      "type": 1,
+      "value": "present"
+    },
+    {
+      "type": 0,
+      "value": " counted, "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " needed. You declared an interest in this item, so the names are not shown to you.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.byItem.heading": [
+    {
+      "type": 0,
+      "value": "Quorum for item "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.byItem.nameNotes": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " ("
+    },
+    {
+      "type": 1,
+      "value": "notes"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.byItem.needed": [
+    {
+      "type": 0,
+      "value": "Needed: "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "basis"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.byItem.noItems": [
+    {
+      "type": 0,
+      "value": "The agenda has no published items.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.byItem.notCounted": [
+    {
+      "type": 0,
+      "value": "Not counted:SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.byItem.notCountedLine": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " — "
+    },
+    {
+      "type": 1,
+      "value": "why"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.byItem.open": [
+    {
+      "type": 0,
+      "value": "Quorum by item…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.byItem.resultNotQuorate": [
+    {
+      "type": 0,
+      "value": "Result: not quorate — "
+    },
+    {
+      "type": 1,
+      "value": "present"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " needed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.byItem.resultQuorate": [
+    {
+      "type": 0,
+      "value": "Result: quorate — "
+    },
+    {
+      "type": 1,
+      "value": "present"
+    },
+    {
+      "type": 0,
+      "value": " counted, "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " needed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.byItem.serverCounts": [
+    {
+      "type": 0,
+      "value": "The result is the one the quorum rule gives; the names show who is in the room.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.byItem.title": [
+    {
+      "type": 0,
+      "value": "Quorum by itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.cancel": [
+    {
+      "type": 0,
+      "value": "CancelSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.close": [
+    {
+      "type": 0,
+      "value": "CloseSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.col.actions": [
+    {
+      "type": 0,
+      "value": "ActionsSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.col.attendance": [
+    {
+      "type": 0,
+      "value": "AttendanceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.col.name": [
+    {
+      "type": 0,
+      "value": "NameSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.col.role": [
+    {
+      "type": 0,
+      "value": "RoleSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.correct.again": [
+    {
+      "type": 0,
+      "value": "Record the right entry nowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.correct.entry": [
+    {
+      "type": 0,
+      "value": "EntrySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.correct.hint": [
+    {
+      "type": 0,
+      "value": "The wrong entry stays in the history, struck through, with who corrected it, when and why.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.correct.submit": [
+    {
+      "type": 0,
+      "value": "Record the correctionSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.correct.title": [
+    {
+      "type": 0,
+      "value": "Correct an entry for "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.correct.voidedNotRecorded": [
+    {
+      "type": 0,
+      "value": "The wrong entry is voided, but the right one is not recorded yet: "
+    },
+    {
+      "type": 1,
+      "value": "problem"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.correct.what": [
+    {
+      "type": 0,
+      "value": "What is wrong?SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.correct.whatHint": [
+    {
+      "type": 0,
+      "value": "For example “"
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " arrived at 10:20, during item 2”. At most 500 characters.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.corrected": [
+    {
+      "type": 0,
+      "value": "The entry is corrected.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.correctingHint": [
+    {
+      "type": 0,
+      "value": "The meeting is over: what you record now corrects the register, with a reason, until the minutes are approved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.correction.hint": [
+    {
+      "type": 0,
+      "value": "The meeting is over: this entry corrects the register and keeps your reason.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.correction.reason": [
+    {
+      "type": 0,
+      "value": "Why the register is correctedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.correction.title": [
+    {
+      "type": 0,
+      "value": "Record a missed entry for "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.counts": [
+    {
+      "type": 1,
+      "value": "inPerson"
+    },
+    {
+      "type": 0,
+      "value": " in person · "
+    },
+    {
+      "type": 1,
+      "value": "remote"
+    },
+    {
+      "type": 0,
+      "value": " online · "
+    },
+    {
+      "type": 1,
+      "value": "apologies"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 6,
+      "value": "apologies",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 0,
+              "value": "apology"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "apologies"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "expected"
+    },
+    {
+      "type": 0,
+      "value": " expected · "
+    },
+    {
+      "type": 1,
+      "value": "left"
+    },
+    {
+      "type": 0,
+      "value": " left · "
+    },
+    {
+      "type": 1,
+      "value": "absent"
+    },
+    {
+      "type": 0,
+      "value": " absentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.declaredHere": [
+    {
+      "type": 0,
+      "value": "Declared an interest in this itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.done.absent": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ": recorded as absent.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.done.apologies": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ": apologies recorded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.done.back": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " is back in the room.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.done.inPerson": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " is present in person.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.done.left": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " left.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.done.online": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " is present online.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.done.steppedOut": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " stepped out for this item.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.entry.item": [
+    {
+      "type": 0,
+      "value": "During itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.entry.itemThen": [
+    {
+      "type": 0,
+      "value": "The item in progress thenSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.entry.kind": [
+    {
+      "type": 0,
+      "value": "EntrySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.entry.mode": [
+    {
+      "type": 0,
+      "value": "HowSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.entry.submit": [
+    {
+      "type": 0,
+      "value": "RecordSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.entry.time": [
+    {
+      "type": 0,
+      "value": "AtSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.entry.timeHint": [
+    {
+      "type": 0,
+      "value": "On the meeting’s clock, during the meeting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.entry.timeRequired": [
+    {
+      "type": 0,
+      "value": "Give the time.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.event.absent": [
+    {
+      "type": 0,
+      "value": "Absent, without apologiesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.event.apologies": [
+    {
+      "type": 0,
+      "value": "Sent apologiesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.event.apologiesReply": [
+    {
+      "type": 0,
+      "value": "Sent apologies (from their reply)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.event.arrived": [
+    {
+      "type": 0,
+      "value": "Arrived "
+    },
+    {
+      "type": 1,
+      "value": "mode"
+    },
+    {
+      "type": 0,
+      "value": " at "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.event.arrivedDuring": [
+    {
+      "type": 0,
+      "value": "Arrived "
+    },
+    {
+      "type": 1,
+      "value": "mode"
+    },
+    {
+      "type": 0,
+      "value": " at "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": ", during "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.event.left": [
+    {
+      "type": 0,
+      "value": "Left at "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.event.leftDuring": [
+    {
+      "type": 0,
+      "value": "Left at "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": ", during "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.event.modeChanged": [
+    {
+      "type": 0,
+      "value": "Changed to "
+    },
+    {
+      "type": 1,
+      "value": "mode"
+    },
+    {
+      "type": 0,
+      "value": " at "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.event.steppedBack": [
+    {
+      "type": 0,
+      "value": "Came back after "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.event.steppedOut": [
+    {
+      "type": 0,
+      "value": "Stepped out for "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.event.voided": [
+    {
+      "type": 0,
+      "value": "Voided an entrySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.forecast.item": [
+    {
+      "type": 0,
+      "value": "Item "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": ": not quorate even then — "
+    },
+    {
+      "type": 1,
+      "value": "present"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " needed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.forecast.itemDeclared": [
+    {
+      "type": 0,
+      "value": "Item "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": ": not quorate even then — "
+    },
+    {
+      "type": 1,
+      "value": "present"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " needed ("
+    },
+    {
+      "type": 6,
+      "value": "declared",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " member has"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " members have"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " declared an interest).SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.forecast.notQuorate": [
+    {
+      "type": 0,
+      "value": "If everyone who said yes attends: not quorate — "
+    },
+    {
+      "type": 1,
+      "value": "present"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "basis"
+    },
+    {
+      "type": 0,
+      "value": " members, "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " needed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.forecast.quorate": [
+    {
+      "type": 0,
+      "value": "If everyone who said yes attends: quorate — "
+    },
+    {
+      "type": 1,
+      "value": "present"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "basis"
+    },
+    {
+      "type": 0,
+      "value": " members, "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " needed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.forecast.unavailable": [
+    {
+      "type": 0,
+      "value": "The quorum forecast cannot be shown right now.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.frozenHint": [
+    {
+      "type": 0,
+      "value": "The register is closed: the minutes are approved.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.group.members": [
+    {
+      "type": 0,
+      "value": "MembersSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.group.others": [
+    {
+      "type": 0,
+      "value": "In attendanceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.history": [
+    {
+      "type": 0,
+      "value": "History: arrivals, departures and corrections ("
+    },
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": ")SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.history.correction": [
+    {
+      "type": 0,
+      "value": "Correction: “"
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.history.empty": [
+    {
+      "type": 0,
+      "value": "Nothing recorded yet.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.history.line": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "entry"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.history.recordedBy": [
+    {
+      "type": 0,
+      "value": "Recorded by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " at "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.history.voidedBy": [
+    {
+      "type": 0,
+      "value": "Voided by "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " at "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": ": “"
+    },
+    {
+      "type": 1,
+      "value": "reason"
+    },
+    {
+      "type": 0,
+      "value": "”SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.history.voidedPrefix": [
+    {
+      "type": 0,
+      "value": "Voided:SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.item": [
+    {
+      "type": 0,
+      "value": "item "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.itemStart": [
+    {
+      "type": 0,
+      "value": "Item "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.joinedDuring": [
+    {
+      "type": 0,
+      "value": "joined during "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": " (late)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.joinedLate": [
+    {
+      "type": 0,
+      "value": "joined lateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.kind.absent": [
+    {
+      "type": 0,
+      "value": "AbsentSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.kind.apologies": [
+    {
+      "type": 0,
+      "value": "ApologiesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.kind.arrived": [
+    {
+      "type": 0,
+      "value": "ArrivedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.kind.left": [
+    {
+      "type": 0,
+      "value": "LeftSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.kind.modeChanged": [
+    {
+      "type": 0,
+      "value": "Changed the way of attendingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.kind.steppedBack": [
+    {
+      "type": 0,
+      "value": "Came back after an itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.kind.steppedOut": [
+    {
+      "type": 0,
+      "value": "Stepped out for an itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.later.hint": [
+    {
+      "type": 0,
+      "value": "For an arrival or a departure you could not record when it happened.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.later.title": [
+    {
+      "type": 0,
+      "value": "At another time — "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.menu.arrivedAt": [
+    {
+      "type": 0,
+      "value": "Arrived at another time…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.menu.cameInPerson": [
+    {
+      "type": 0,
+      "value": "Came after all, in personSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.menu.cameOnline": [
+    {
+      "type": 0,
+      "value": "Came after all, onlineSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.menu.correct": [
+    {
+      "type": 0,
+      "value": "Correct an entry…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.menu.leftAt": [
+    {
+      "type": 0,
+      "value": "Left at another time…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.menu.nowInPerson": [
+    {
+      "type": 0,
+      "value": "Changed to in personSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.menu.nowOnline": [
+    {
+      "type": 0,
+      "value": "Changed to onlineSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.menu.recordEntry": [
+    {
+      "type": 0,
+      "value": "Record a missed entry…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.mode.inPerson": [
+    {
+      "type": 0,
+      "value": "in personSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.mode.inPersonChoice": [
+    {
+      "type": 0,
+      "value": "In personSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.mode.online": [
+    {
+      "type": 0,
+      "value": "onlineSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.mode.onlineChoice": [
+    {
+      "type": 0,
+      "value": "OnlineSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.moreFor": [
+    {
+      "type": 0,
+      "value": "More for "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.nobody": [
+    {
+      "type": 0,
+      "value": "Nobody.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.now": [
+    {
+      "type": 0,
+      "value": "Now: item "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.now.change": [
+    {
+      "type": 0,
+      "value": "Change the itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.now.done": [
+    {
+      "type": 0,
+      "value": "Now: item "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.now.menu": [
+    {
+      "type": 0,
+      "value": "The item in progressSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.now.none": [
+    {
+      "type": 0,
+      "value": "Now: no item chosenSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.numberOnly": [
+    {
+      "type": 0,
+      "value": "counts for the number onlySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.numberTitle": [
+    {
+      "type": 1,
+      "value": "number"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "title"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.online": [
+    {
+      "type": 0,
+      "value": "onlineSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.override.description": [
+    {
+      "type": 0,
+      "value": "This item is not quorate: "
+    },
+    {
+      "type": 1,
+      "value": "present"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " needed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.override.forbidden": [
+    {
+      "type": 0,
+      "value": "Only the secretaries can record a decision without a quorum.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.override.noDecision": [
+    {
+      "type": 0,
+      "value": "No decision can be recorded: the item is not quorate ("
+    },
+    {
+      "type": 1,
+      "value": "present"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " needed).SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.override.notAllowed": [
+    {
+      "type": 0,
+      "value": "The "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "’s rules do not allow a decision without a quorum.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.override.notQuorate": [
+    {
+      "type": 0,
+      "value": "The item is not quorate and no reason reached the server. Please try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.override.reason": [
+    {
+      "type": 0,
+      "value": "ReasonSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.override.reasonHint": [
+    {
+      "type": 0,
+      "value": "For example “Urgent: the borrower’s facility expires on 15 December”. At most "
+    },
+    {
+      "type": 1,
+      "value": "max"
+    },
+    {
+      "type": 0,
+      "value": " characters.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.override.reasonRequired": [
+    {
+      "type": 0,
+      "value": "Give the reason for recording this decision without a quorum.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.override.recused": [
+    {
+      "type": 0,
+      "value": "You declared an interest in this item, so you cannot record its decision without a quorum.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.override.rules": [
+    {
+      "type": 0,
+      "value": "The "
+    },
+    {
+      "type": 1,
+      "value": "forum"
+    },
+    {
+      "type": 0,
+      "value": "’s rules allow a decision without a quorum only with a reason, and it must be ratified at a later quorate meeting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.override.submit": [
+    {
+      "type": 0,
+      "value": "Record without quorumSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.override.title": [
+    {
+      "type": 0,
+      "value": "Record without quorumSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.override.told": [
+    {
+      "type": 0,
+      "value": "The chair and the other secretaries will be told.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.override.tooLong": [
+    {
+      "type": 0,
+      "value": "Please keep the reason to "
+    },
+    {
+      "type": 1,
+      "value": "max"
+    },
+    {
+      "type": 0,
+      "value": " characters.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.phrase.chair": [
+    {
+      "type": 0,
+      "value": "the chairSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.phrase.member": [
+    {
+      "type": 0,
+      "value": "a memberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.phrase.observer": [
+    {
+      "type": 0,
+      "value": "an observerSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.phrase.secretary": [
+    {
+      "type": 0,
+      "value": "the secretarySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.phrase.standingInvitee": [
+    {
+      "type": 0,
+      "value": "a standing inviteeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.phrase.viceChair": [
+    {
+      "type": 0,
+      "value": "a vice-chairSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.problem.alreadyCounted": [
+    {
+      "type": 0,
+      "value": "Someone on the list is already counted at this meeting, as a member or for another seat.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.problem.alreadyCountedFor": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " is already counted at this meeting, as a member or for another seat.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.problem.failed": [
+    {
+      "type": 0,
+      "value": "That did not work. Please try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.problem.forbidden": [
+    {
+      "type": 0,
+      "value": "You cannot record attendance for this meeting.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.problem.frozen": [
+    {
+      "type": 0,
+      "value": "The register of this meeting is closed: the minutes are approved or the meeting was cancelled.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.problem.itemNotOnAgenda": [
+    {
+      "type": 0,
+      "value": "Choose an item of the published agenda.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.problem.length": [
+    {
+      "type": 0,
+      "value": "Please make this shorter (at most 500 characters).SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.problem.modeRequired": [
+    {
+      "type": 0,
+      "value": "Say whether they attend in person or online.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.problem.notInvitable": [
+    {
+      "type": 0,
+      "value": "This person is not among the people this meeting is for.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.problem.reasonRequired": [
+    {
+      "type": 0,
+      "value": "Say why the register is corrected.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.problem.stale": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "’s attendance was changed meanwhile, perhaps by another secretary. It is shown as it is now: try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.problem.staleRegister": [
+    {
+      "type": 0,
+      "value": "The register was changed meanwhile, perhaps by another secretary. It is shown as it is now: try again.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.problem.timeOutOfRange": [
+    {
+      "type": 0,
+      "value": "Give a time during the meeting (from an hour before it starts), not in the future.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.problem.wrongState": [
+    {
+      "type": 0,
+      "value": "That does not fit what is recorded now (for example, they are already present). The register is shown as it is now.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.quorum.announceLost": [
+    {
+      "type": 0,
+      "value": "Quorum lost: "
+    },
+    {
+      "type": 1,
+      "value": "present"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "basis"
+    },
+    {
+      "type": 0,
+      "value": " present, "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " needed. No decision can be recorded until quorum is restored.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.quorum.announceRestored": [
+    {
+      "type": 0,
+      "value": "Quorum restored: "
+    },
+    {
+      "type": 1,
+      "value": "present"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "basis"
+    },
+    {
+      "type": 0,
+      "value": " present, "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " needed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.quorum.itemDeclared": [
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": " is not quorate: "
+    },
+    {
+      "type": 6,
+      "value": "count",
+      "options": {
+        "one": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " member has declared an interest and does not count"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " members have declared an interest and do not count"
+            }
+          ]
+        }
+      },
+      "offset": 0,
+      "pluralType": "cardinal"
+    },
+    {
+      "type": 0,
+      "value": " for it.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.quorum.itemNotQuorate": [
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": ": not quorate — "
+    },
+    {
+      "type": 1,
+      "value": "present"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "basis"
+    },
+    {
+      "type": 0,
+      "value": " counted, "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " needed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.quorum.itemQuorate": [
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": ": quorate — "
+    },
+    {
+      "type": 1,
+      "value": "present"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "basis"
+    },
+    {
+      "type": 0,
+      "value": " counted, "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " needed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.quorum.loading": [
+    {
+      "type": 0,
+      "value": "Loading the quorum…SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.quorum.lostSince": [
+    {
+      "type": 0,
+      "value": "The meeting is not quorate since "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "present"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "basis"
+    },
+    {
+      "type": 0,
+      "value": " present, "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " needed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.quorum.lostSinceDuring": [
+    {
+      "type": 0,
+      "value": "The meeting is not quorate since "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": " (during "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "): "
+    },
+    {
+      "type": 1,
+      "value": "present"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "basis"
+    },
+    {
+      "type": 0,
+      "value": " present, "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " needed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.quorum.noDecision": [
+    {
+      "type": 0,
+      "value": "No decision can be recorded until quorum is restored.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.quorum.quorate": [
+    {
+      "type": 0,
+      "value": "Quorate — meeting: "
+    },
+    {
+      "type": 1,
+      "value": "present"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "basis"
+    },
+    {
+      "type": 0,
+      "value": " present, "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " needed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.quorum.title": [
+    {
+      "type": 0,
+      "value": "QuorumSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.quorum.unavailable": [
+    {
+      "type": 0,
+      "value": "The quorum cannot be shown right now.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.quorum.waiting": [
+    {
+      "type": 0,
+      "value": "Not quorate — the meeting is waiting for quorum: "
+    },
+    {
+      "type": 1,
+      "value": "present"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "basis"
+    },
+    {
+      "type": 0,
+      "value": " present, "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " needed.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.recorded": [
+    {
+      "type": 0,
+      "value": "Recorded.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.register.title": [
+    {
+      "type": 0,
+      "value": "Attendance — "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.role.alternate": [
+    {
+      "type": 0,
+      "value": "AlternateSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.role.alternateFor": [
+    {
+      "type": 0,
+      "value": "Alternate for "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.role.chair": [
+    {
+      "type": 0,
+      "value": "ChairSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.role.guest": [
+    {
+      "type": 0,
+      "value": "GuestSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.role.inAttendance": [
+    {
+      "type": 0,
+      "value": "In attendanceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.role.member": [
+    {
+      "type": 0,
+      "value": "MemberSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.role.observer": [
+    {
+      "type": 0,
+      "value": "ObserverSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.role.secretary": [
+    {
+      "type": 0,
+      "value": "SecretarySSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.role.standingInvitee": [
+    {
+      "type": 0,
+      "value": "Standing inviteeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.role.viceChair": [
+    {
+      "type": 0,
+      "value": "Vice-chairSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.standsIn": [
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": " attends in their placeSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.state.absent": [
+    {
+      "type": 0,
+      "value": "Absent, without apologiesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.state.apologies": [
+    {
+      "type": 0,
+      "value": "ApologiesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.state.apologiesReply": [
+    {
+      "type": 0,
+      "value": "Apologies (from their reply)SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.state.expected": [
+    {
+      "type": 0,
+      "value": "ExpectedSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.state.inPersonSince": [
+    {
+      "type": 0,
+      "value": "In person since "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.state.leftAt": [
+    {
+      "type": 0,
+      "value": "Left at "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.state.leftDuring": [
+    {
+      "type": 0,
+      "value": "Left at "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": ", during "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.state.onlineSince": [
+    {
+      "type": 0,
+      "value": "Online since "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.stateNotes": [
+    {
+      "type": 1,
+      "value": "state"
+    },
+    {
+      "type": 0,
+      "value": " · "
+    },
+    {
+      "type": 1,
+      "value": "notes"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.steppedOutFor": [
+    {
+      "type": 0,
+      "value": "Stepped out for "
+    },
+    {
+      "type": 1,
+      "value": "item"
+    },
+    {
+      "type": 0,
+      "value": "SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.summary.quorate": [
+    {
+      "type": 0,
+      "value": "The meeting is quorate.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.summary.title": [
+    {
+      "type": 0,
+      "value": "At the meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.summary.waiting": [
+    {
+      "type": 0,
+      "value": "The meeting is waiting for quorum.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.tab": [
+    {
+      "type": 0,
+      "value": "AttendanceSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.theSystem": [
+    {
+      "type": 0,
+      "value": "memo, from the repliesSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.thisItem": [
+    {
+      "type": 0,
+      "value": "This itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.unmet.composition": [
+    {
+      "type": 0,
+      "value": "Needs at least "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": " members, has "
+    },
+    {
+      "type": 1,
+      "value": "actual"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.unmet.count": [
+    {
+      "type": 0,
+      "value": "Needs "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " present, has "
+    },
+    {
+      "type": 1,
+      "value": "actual"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.unmet.majority": [
+    {
+      "type": 0,
+      "value": "Needs a majority of "
+    },
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": " members: "
+    },
+    {
+      "type": 1,
+      "value": "needed"
+    },
+    {
+      "type": 0,
+      "value": " needed, has "
+    },
+    {
+      "type": 1,
+      "value": "actual"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.unmet.role": [
+    {
+      "type": 0,
+      "value": "Needs "
+    },
+    {
+      "type": 1,
+      "value": "roles"
+    },
+    {
+      "type": 0,
+      "value": " present.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.why.alternate": [
+    {
+      "type": 0,
+      "value": "an alternate, who does not count hereSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.why.away": [
+    {
+      "type": 0,
+      "value": "not at the meetingSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.why.declared": [
+    {
+      "type": 0,
+      "value": "declared an interest in this itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.why.online": [
+    {
+      "type": 0,
+      "value": "online, which does not count hereSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.why.steppedOut": [
+    {
+      "type": 0,
+      "value": "stepped out for this itemSSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.you.absent": [
+    {
+      "type": 0,
+      "value": "You are recorded as absent.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.you.apologies": [
+    {
+      "type": 0,
+      "value": "You sent your apologies.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.you.expected": [
+    {
+      "type": 0,
+      "value": "You are expected. The secretary records you when you arrive.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.you.inPerson": [
+    {
+      "type": 0,
+      "value": "You are recorded as present (in person).SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.you.left": [
+    {
+      "type": 0,
+      "value": "You are recorded as having left at "
+    },
+    {
+      "type": 1,
+      "value": "at"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.you.leftNoTime": [
+    {
+      "type": 0,
+      "value": "You are recorded as having left.SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.you.online": [
+    {
+      "type": 0,
+      "value": "You are recorded as present (online).SSSSSSSSSSSSSSSSSSSSSSSSS"
+    }
+  ],
+  "meetingAttendance.you.standIn": [
+    {
+      "type": 0,
+      "value": "You are attending in place of "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    },
+    {
+      "type": 0,
+      "value": ".SSSSSSSSSSSSSSSSSSSSSSSSS"
     }
   ],
   "meetingPage.agenda": [

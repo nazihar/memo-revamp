@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { Link } from '@tanstack/react-router'
 import { ExternalLink, UserPlus } from 'lucide-react'
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { useIntl } from 'react-intl'
 import { getMeetingOptions, listClassificationLevelsOptions } from '@/api/generated/@tanstack/react-query.gen'
 import type { MeetingGuestResponse, MeetingResponse } from '@/api/generated/types.gen'
@@ -10,6 +10,10 @@ import { ErrorState, LoadingState } from '@/components/page/States'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/misc'
 import { AgendaLink } from './agenda/AgendaLink'
+import { AtTheMeeting } from './attendance/AtTheMeeting'
+import { AttendancePanel } from './attendance/AttendancePanel'
+import { am } from './attendance/messages'
+import { QuorumBanner } from './attendance/QuorumBanner'
 import { om } from './declarations/officer-messages'
 import { useChairSeat } from './declarations/chair-seat'
 import { LateRequests } from './declarations/LateRequests'
@@ -32,7 +36,9 @@ import { cityOf, viewerZone, whenIn, yourTimes } from './time'
  * the guests for officers. Printing gives a plain agenda without the application's frame. Under the place, "Will you
  * attend?" with "Add to my calendar" for whoever answers the meeting (E05 T7, flow V), and for the officers of a meeting
  * that is scheduled or later, the agenda and "Invitations and replies" (flow W) as two tabs; and for the officers and the
- * committee's chair or vice-chair, "Declarations" (E04 T7, flow T).
+ * committee's chair or vice-chair, "Declarations" (E04 T7, flow T). From the start of the meeting (E05 T8): for the
+ * officers the live quorum above the tabs and the "Attendance" register (flows X and Y), the tab they land on while it
+ * runs; for the audience, "At the meeting" with how they are recorded and, for members, whether it is quorate.
  */
 export function MeetingPage({ meetingId }: { meetingId: string }) {
   const intl = useIntl()
@@ -59,6 +65,11 @@ export function MeetingPage({ meetingId }: { meetingId: string }) {
   // Late papers the viewer decides (E04 §1.7 as built): the chair, or the vice-chair on the items the chair has declared
   // an interest in. Read only by the officers and the committee's chair or vice-chair; the server lists what they decide.
   const decides = (officer || chairSeat) && ['DRAFT', 'SCHEDULED', 'IN_PROGRESS'].includes(m.status)
+  // The register (E05 T8, flow X) from the start of the meeting, for the officers; the tab they land on while it runs.
+  const attendance = officer && ATTENDANCE_STATUSES.includes(m.status)
+  const live = m.status === 'IN_PROGRESS'
+  // The audience during the meeting sees how they are recorded and, as members, whether it is quorate (flow Y1).
+  const atTheMeeting = live && !officer && m.relation !== 'READER'
   return (
     <section aria-labelledby="meeting-title" className="meeting-print flex max-w-3xl flex-col gap-5">
       <PageHeader
@@ -97,14 +108,26 @@ export function MeetingPage({ meetingId }: { meetingId: string }) {
       ) : null}
       {m.status === 'DRAFT' ? <p className="text-muted-foreground">{intl.formatMessage(mm.draftHint)}</p> : null}
       <Place meeting={m} />
-      {m.rsvp ? <WillYouAttend meeting={m} /> : <CalendarLink meeting={m} />}
+      {atTheMeeting ? (
+        <AtTheMeeting meeting={m} />
+      ) : m.rsvp ? (
+        <WillYouAttend meeting={m} />
+      ) : (
+        <CalendarLink meeting={m} />
+      )}
+      {officer && live ? <QuorumBanner meeting={m} /> : null}
       {decides ? <LateRequests meeting={m} /> : null}
       {replies || declarations ? (
-        <Tabs defaultValue="agenda" className="print:contents">
+        <MeetingTabs live={live && attendance}>
           <TabsList aria-label={intl.formatMessage(rm.tabs)} className="print:hidden">
             <TabsTrigger value="agenda" className="min-h-11">
               {intl.formatMessage(rm.tabAgenda)}
             </TabsTrigger>
+            {attendance ? (
+              <TabsTrigger value="attendance" className="min-h-11">
+                {intl.formatMessage(am.tab)}
+              </TabsTrigger>
+            ) : null}
             {replies ? (
               <TabsTrigger value="replies" className="min-h-11">
                 {intl.formatMessage(rm.tabReplies)}
@@ -119,6 +142,11 @@ export function MeetingPage({ meetingId }: { meetingId: string }) {
           <TabsContent value="agenda" className="pt-4">
             <MeetingAgenda meetingId={m.id} relation={m.relation} />
           </TabsContent>
+          {attendance ? (
+            <TabsContent value="attendance" className="pt-4 print:hidden">
+              <AttendancePanel meeting={m} />
+            </TabsContent>
+          ) : null}
           {replies ? (
             <TabsContent value="replies" className="pt-4 print:hidden">
               <InvitationsPanel meeting={m} />
@@ -129,7 +157,7 @@ export function MeetingPage({ meetingId }: { meetingId: string }) {
               <OfficerDeclarations meeting={m} />
             </TabsContent>
           ) : null}
-        </Tabs>
+        </MeetingTabs>
       ) : (
         <MeetingAgenda meetingId={m.id} relation={m.relation} />
       )}
@@ -137,6 +165,28 @@ export function MeetingPage({ meetingId }: { meetingId: string }) {
       {officer || m.canManage ? <Guests meeting={m} /> : null}
       {officer ? <AgendaLink meetingId={m.id} /> : null}
     </section>
+  )
+}
+
+/** The statuses with a register to show: from the start until the meeting is closed (read-only once frozen). */
+const ATTENDANCE_STATUSES: MeetingResponse['status'][] = ['IN_PROGRESS', 'HELD', 'MINUTES_APPROVED', 'CLOSED']
+
+/**
+ * The meeting page's tabs: the agenda first, or the register while the meeting runs ([live]); when the secretary starts
+ * the meeting from this page, the register opens.
+ */
+function MeetingTabs({ live, children }: { live: boolean; children: ReactNode }) {
+  const [tab, setTab] = useState(live ? 'attendance' : 'agenda')
+  const [wasLive, setWasLive] = useState(live)
+  if (live !== wasLive) {
+    setWasLive(live)
+    if (live) setTab('attendance')
+    else if (tab === 'attendance') setTab('agenda')
+  }
+  return (
+    <Tabs value={tab} onValueChange={setTab} className="print:contents">
+      {children}
+    </Tabs>
   )
 }
 

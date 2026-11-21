@@ -10,6 +10,8 @@ import com.memo.forum.internal.ForumTypes
 import com.memo.forum.internal.Forums
 import com.memo.forum.internal.MemberInput
 import com.memo.forum.internal.MemberKind
+import com.memo.forum.internal.SubmissionStore
+import com.memo.memo.MemoReaders
 import org.springframework.stereotype.Service
 import java.time.LocalDate
 import java.util.UUID
@@ -45,6 +47,7 @@ class ForumSeeding(
     private val store: ForumStore,
     private val members: ForumMembers,
     private val memberStore: ForumMemberStore,
+    private val submissions: SubmissionStore,
 ) {
     /** The type with [code], created and published from [preset] (named [name]) if missing. */
     fun ensureType(
@@ -64,6 +67,21 @@ class ForumSeeding(
     ): UUID =
         store.findByKey(key)?.id
             ?: forums.create(ForumInput(key, code, name, shortName, typeId, parentKey?.let { store.findByKey(it)?.id })).id
+
+    /**
+     * The open submission of memo [memoId] to the forum with [key] that is on no agenda yet, if its route has escalated it
+     * there (Phase 4 E03 T9).
+     */
+    fun unplacedSubmission(
+        key: String,
+        memoId: UUID,
+    ): UUID? {
+        val forum = store.findByKey(key) ?: return null
+        return submissions
+            .ofSubject(MemoReaders.SUBJECT_TYPE, memoId)
+            .firstOrNull { it.forumId == forum.id && it.status.open && it.meetingId == null }
+            ?.id
+    }
 
     /** Adds [member] to the forum with [key] unless that person or position already has a row there. */
     fun ensureMember(

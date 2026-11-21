@@ -426,44 +426,6 @@
     "shared" : false,
     "type" : "closed"
   },
-  "demo" : {
-    "basePackage" : "com.memo.demo",
-    "dependencies" : [ {
-      "target" : "common",
-      "types" : [ "USES_COMPONENT" ]
-    }, {
-      "target" : "files",
-      "types" : [ "USES_COMPONENT" ]
-    }, {
-      "target" : "forum",
-      "types" : [ "USES_COMPONENT" ]
-    }, {
-      "target" : "identity",
-      "types" : [ "USES_COMPONENT" ]
-    }, {
-      "target" : "imports",
-      "types" : [ "USES_COMPONENT" ]
-    }, {
-      "target" : "memo",
-      "types" : [ "USES_COMPONENT" ]
-    }, {
-      "target" : "org",
-      "types" : [ "USES_COMPONENT" ]
-    }, {
-      "target" : "search",
-      "types" : [ "USES_COMPONENT" ]
-    }, {
-      "target" : "tenancy",
-      "types" : [ "USES_COMPONENT" ]
-    }, {
-      "target" : "workflow",
-      "types" : [ "USES_COMPONENT" ]
-    } ],
-    "displayName" : "Demo data",
-    "nested" : [ ],
-    "shared" : false,
-    "type" : "closed"
-  },
   "meeting" : {
     "basePackage" : "com.memo.meeting",
     "dependencies" : [ {
@@ -501,6 +463,47 @@
       "types" : [ "USES_COMPONENT" ]
     } ],
     "displayName" : "Meeting",
+    "nested" : [ ],
+    "shared" : false,
+    "type" : "closed"
+  },
+  "demo" : {
+    "basePackage" : "com.memo.demo",
+    "dependencies" : [ {
+      "target" : "common",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "files",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "forum",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "identity",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "imports",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "meeting",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "memo",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "org",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "search",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "tenancy",
+      "types" : [ "USES_COMPONENT" ]
+    }, {
+      "target" : "workflow",
+      "types" : [ "USES_COMPONENT" ]
+    } ],
+    "displayName" : "Demo data",
     "nested" : [ ],
     "shared" : false,
     "type" : "closed"

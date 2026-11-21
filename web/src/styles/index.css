@@ -50,6 +50,11 @@
   html {
     /* 16px root (rem); working screens use 14px text (text-sm), director mode larger (AGENTS.md §3.7). */
     font-size: 100%;
+    /*
+     * The top bar is sticky (AppShell): what the browser scrolls to (focus moved by the agenda builder, a link to an
+     * anchor) stops below it, never under it (WCAG 2.4.11 Focus Not Obscured). The bar is 3.5rem high.
+     */
+    scroll-padding-top: 4.5rem;
   }
   /* Modal open (ADR-0021): lock page scroll with a class, never an inline style. */
   html.modal-open {

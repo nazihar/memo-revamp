@@ -16,6 +16,7 @@ export type CataloguePart =
   | 'agendaBuilder'
   | 'meetingPage'
   | 'meetingReplies'
+  | 'meetingAttendance'
   | 'declarations'
   | 'mySecurity'
   | 'platform'

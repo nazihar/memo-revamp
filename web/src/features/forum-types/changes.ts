@@ -116,7 +116,7 @@ export function changesBetween(
   // The meeting policy (Phase 4 E05, design E05 §1.8).
   const title = (s: TypeSettings) =>
     s.meetings.invitationTitle === 'NEUTRAL'
-      ? intl.formatMessage(ftv.invitationNeutral, { title: s.meetings.neutralTitle ?? '' })
+      ? intl.formatMessage(ftv.invitationNeutral, { title: s.meetings.neutralTitle })
       : intl.formatMessage(ftt.invitationName, terms)
   scalar('invitationTitle', intl.formatMessage(ft.whatInvitationTitle), title(before), title(after))
   scalar(

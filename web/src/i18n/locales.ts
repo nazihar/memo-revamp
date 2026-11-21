@@ -59,6 +59,10 @@ const loaders: Record<CataloguePart, Record<string, () => Promise<Messages>>> = 
     query: { part: 'meetingReplies' },
     import: 'default',
   }),
+  meetingAttendance: import.meta.glob<Messages>('./messages/*.json', {
+    query: { part: 'meetingAttendance' },
+    import: 'default',
+  }),
   declarations: import.meta.glob<Messages>('./messages/*.json', {
     query: { part: 'declarations' },
     import: 'default',

@@ -254,21 +254,23 @@ export function ChairPanel() {
 }
 
 /**
- * Late papers waiting for the chair (flow Q2): the chair agrees or says "Not this meeting"; a secretary records the
+ * Late papers waiting for the chair (flow Q2): the person who decides for the item (the server's `decides`: the chair,
+ * or the vice-chair when the chair is recused, E04 §1.7) agrees or says "Not this meeting"; a secretary records the
  * chair's answer on their behalf, with how it was given.
  */
 export function LatePapers() {
   const intl = useIntl()
   const { draft } = useAgenda()
   const waiting = waitingForChair(draft)
-  if (!waiting.length || (!draft.canAgree && !draft.canEdit)) return null
+  const deciding = waiting.some((w) => w.item.decides)
+  if (!waiting.length || (!deciding && !draft.canEdit)) return null
   return (
     <section
       aria-labelledby="agenda-late"
       className="flex flex-col gap-3 rounded-md border border-status-warn-fg/40 p-4"
     >
       <h2 id="agenda-late" className="text-base font-semibold">
-        {intl.formatMessage(draft.canAgree ? ap.lateForYou : ap.lateWaiting)}
+        {intl.formatMessage(deciding ? ap.lateForYou : ap.lateWaiting)}
       </h2>
       <ul className="flex flex-col gap-3">
         {waiting.map((w) => (
@@ -322,7 +324,7 @@ function LatePaper({ waiting }: { waiting: Waiting }) {
         </p>
       ) : null}
       <div className="flex flex-wrap gap-2">
-        {draft.canAgree ? (
+        {item.decides ? (
           <>
             <Button
               variant="outline"
@@ -334,7 +336,7 @@ function LatePaper({ waiting }: { waiting: Waiting }) {
             </Button>
             <Button onClick={() => void decide(true, false)}>{intl.formatMessage(ap.agreeInclude)}</Button>
           </>
-        ) : (
+        ) : draft.canEdit ? (
           <Button
             variant="outline"
             onClick={() => {
@@ -343,7 +345,7 @@ function LatePaper({ waiting }: { waiting: Waiting }) {
           >
             {intl.formatMessage(ap.recordAnswer)}
           </Button>
-        )}
+        ) : null}
       </div>
       {refusal ? (
         <p role="alert" className="text-sm text-destructive">

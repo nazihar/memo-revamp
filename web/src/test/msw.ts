@@ -2,6 +2,7 @@ import { http, HttpResponse } from 'msw'
 import { setupServer } from 'msw/node'
 import type {
   Health,
+  LateRequestsResponse,
   MyAccess,
   MeetingSummaryResponse,
   MyForumResponse,
@@ -112,6 +113,12 @@ export const memoPapersHandler = (body: SubmissionResponse[] = []) =>
 export const myMeetingsHandler = (body: MeetingSummaryResponse[] = []) =>
   http.get(`${API_ORIGIN}/api/v1/me/meetings`, () => HttpResponse.json<MeetingSummaryResponse[]>(body))
 
+/** The late papers the viewer decides on a meeting (Phase 4 E04): none, unless a test says so; the meeting page asks. */
+export const lateRequestsHandler = (requests: LateRequestsResponse['requests'] = [], version = 7) =>
+  http.get(`${API_ORIGIN}/api/v1/meetings/:meetingId/agenda/late-requests`, ({ params }) =>
+    HttpResponse.json<LateRequestsResponse>({ meetingId: String(params.meetingId), requests, version }),
+  )
+
 export const server = setupServer(
   healthHandler(),
   sessionHandler(),
@@ -127,4 +134,5 @@ export const server = setupServer(
   myForumsHandler(),
   memoPapersHandler(),
   myMeetingsHandler(),
+  lateRequestsHandler(),
 )

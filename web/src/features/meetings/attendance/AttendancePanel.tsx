@@ -43,6 +43,7 @@ import {
   type Person,
 } from './words'
 import { useAttendanceWrites, type Entry } from './writes'
+import { TableScroll } from '@/components/page/TableScroll'
 
 type Opened =
   | { kind: 'entry'; person: Person; kinds: Kind[] }
@@ -377,7 +378,7 @@ function Group({ title, rows, ...rest }: { title: string; rows: Person[] } & Row
         {title}
       </h3>
       {rows.length ? (
-        <div className="relative overflow-x-auto">
+        <TableScroll>
           <table className="w-full min-w-[40rem] border-collapse text-sm">
             <caption className="sr-only">{title}</caption>
             <thead>
@@ -398,7 +399,7 @@ function Group({ title, rows, ...rest }: { title: string; rows: Person[] } & Row
               ))}
             </tbody>
           </table>
-        </div>
+        </TableScroll>
       ) : (
         <p>{intl.formatMessage(am.nobody)}</p>
       )}

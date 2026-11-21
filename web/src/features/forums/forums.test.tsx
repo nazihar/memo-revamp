@@ -1,4 +1,4 @@
-import { screen, within } from '@testing-library/react'
+import { screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { http, HttpResponse } from 'msw'
 import { describe, expect, it, vi } from 'vitest'
@@ -300,6 +300,46 @@ describe('committees (Phase 4 E01 T5, flow K)', () => {
     expect(screen.getByText('A term usually lasts 36 months.')).toBeInTheDocument()
     expect(screen.queryByRole('link', { name: 'Open the committee type' })).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Add member' })).not.toBeInTheDocument()
+  }, 20_000)
+
+  it('keeps the tab chosen in the address, across a change of language and Back', async () => {
+    const user = userEvent.setup()
+    server.use(...handlers({ ...brc, canManage: false, canManageMembers: false }, []))
+    const { router } = renderRoute('/committees/f1')
+
+    await user.click(await screen.findByRole('tab', { name: 'History' }, { timeout: 5000 }))
+    await waitFor(() => {
+      expect(router.state.location.search).toEqual({ tab: 'history' })
+    })
+    await user.click(screen.getByRole('button', { name: /Change language/ }))
+    await user.click(await screen.findByRole('menuitemradio', { name: 'العربية' }))
+    await waitFor(() => {
+      expect(document.documentElement).toHaveAttribute('dir', 'rtl')
+    })
+    expect(await screen.findByRole('tab', { name: 'السجل' })).toHaveAttribute('aria-selected', 'true')
+
+    // Members, the tab the page opens on, leaves the address; another page and Back return to the tab chosen.
+    await user.click(screen.getByRole('tab', { name: 'الأعضاء' }))
+    await waitFor(() => {
+      expect(router.state.location.search).toEqual({})
+    })
+    await user.click(screen.getByRole('tab', { name: 'السياسة' }))
+    await router.navigate({ to: '/committees' })
+    router.history.back()
+    expect(await screen.findByRole('tab', { name: 'السياسة' }, { timeout: 5000 })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    )
+    expect(router.state.location.search).toEqual({ tab: 'policy' })
+  }, 30_000)
+
+  it('ignores a tab the address names but the page does not have', async () => {
+    server.use(...handlers())
+    renderRoute('/committees/f1?tab=minutes')
+    expect(await screen.findByRole('tab', { name: 'Members' }, { timeout: 5000 })).toHaveAttribute(
+      'aria-selected',
+      'true',
+    )
   }, 20_000)
 
   it('adds a person with an alternate, a term from the type and an authority', async () => {

@@ -13,6 +13,7 @@ import { rm, rmv } from './messages'
 import { RecordDialog } from './RecordDialog'
 import { ResendDialog } from './ResendDialog'
 import { howWords, replyWords, shortWhen } from './words'
+import { TableScroll } from '@/components/page/TableScroll'
 
 /** Every invited person, each alternate standing in right after the member they stand in for (flow W1). */
 function inOrder(people: InviteeResponse[]): InviteeResponse[] {
@@ -159,7 +160,7 @@ export function InvitationsPanel({ meeting: m }: { meeting: MeetingResponse }) {
         {m.status === 'SCHEDULED' ? <ForecastLines meeting={m} /> : null}
       </div>
       {people.length ? (
-        <div className="relative overflow-x-auto">
+        <TableScroll>
           <table className="w-full min-w-[44rem] border-collapse text-sm">
             <caption className="sr-only">{intl.formatMessage(rm.tabReplies)}</caption>
             <thead>
@@ -256,7 +257,7 @@ export function InvitationsPanel({ meeting: m }: { meeting: MeetingResponse }) {
               })}
             </tbody>
           </table>
-        </div>
+        </TableScroll>
       ) : data.created ? (
         <p>{intl.formatMessage(rm.nobody)}</p>
       ) : null}

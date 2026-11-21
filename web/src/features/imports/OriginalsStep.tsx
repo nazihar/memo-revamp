@@ -14,6 +14,7 @@ import { bytesText } from './format'
 import { beginIntake, useIntakeSession, type IntakeSession } from './intake-session'
 import { im, imv } from './messages'
 import { ProgressBar } from './ProgressBar'
+import { TableScroll } from '@/components/page/TableScroll'
 
 const REFUSED_PAGE = 100
 const REFUSED_SHOWN = 10
@@ -293,7 +294,7 @@ function RefusedList({
           </Button>
         ) : null}
       </div>
-      <div className="overflow-x-auto">
+      <TableScroll>
         <table className="w-full text-sm">
           <caption className="sr-only">{intl.formatMessage(im.refusedCaption)}</caption>
           <thead>
@@ -317,7 +318,7 @@ function RefusedList({
             ))}
           </tbody>
         </table>
-      </div>
+      </TableScroll>
       {all && refused.hasNextPage ? (
         <Button variant="outline" disabled={refused.isFetchingNextPage} onClick={() => void refused.fetchNextPage()}>
           {intl.formatMessage(im.loadMore)}

@@ -19,6 +19,7 @@ import { MeetingsTab } from '@/features/meetings/MeetingsTab'
 import { mm } from '@/features/meetings/messages'
 import { useTerms } from '@/features/terms/terms'
 import { CloneForumDialog, DissolveForumDialog, EditForumDialog } from './ForumDialogs'
+import { FORUM_TABS, type ForumTab } from './forum-tabs'
 import { HistoryTab } from './HistoryTab'
 import { ChangeRoleDialog, EndDialog, RenewDialog, WithdrawDialog } from './MemberDialogs'
 import { MembersTab } from './MembersTab'
@@ -33,8 +34,6 @@ import { formatDay, today } from './shared'
 
 /** What a row menu or the page menu opened. */
 export type MemberAction = 'renew' | 'changeRole' | 'edit' | 'end' | 'withdraw'
-/** The page's tabs; `?tab=meetings` opens the meetings, `?tab=submissions` the papers (notifications, a paper's page). */
-export type ForumTab = 'members' | 'meetings' | 'submissions' | 'history' | 'policy'
 
 type Open =
   { kind: 'add' } | { kind: 'clone' | 'editForum' | 'dissolve' } | { kind: MemberAction; member: MemberResponse }
@@ -44,7 +43,15 @@ type Open =
  * that day, its meetings (Phase 4 E03, flow N1), every term of office in History, and the type's published policy to read. Administrators and the
  * committee's secretaries add and change members; administrators also clone, edit and dissolve.
  */
-export function ForumPage({ forumId, tab }: { forumId: string; tab?: ForumTab }) {
+export function ForumPage({
+  forumId,
+  tab,
+  onTab,
+}: {
+  forumId: string
+  tab?: ForumTab | undefined
+  onTab: (tab: ForumTab) => void
+}) {
   const intl = useIntl()
   const terms = useTerms()
   const forum = useQuery(getForumOptions({ path: { forumId } }))
@@ -126,7 +133,13 @@ export function ForumPage({ forumId, tab }: { forumId: string; tab?: ForumTab })
       <Link to="/committees" className="w-fit text-sm underline-offset-4 hover:underline">
         {intl.formatMessage(fmt.back, terms)}
       </Link>
-      <Tabs defaultValue={tab === 'submissions' && !officer ? 'members' : (tab ?? 'members')}>
+      <Tabs
+        value={tab && FORUM_TABS.includes(tab) && (tab !== 'submissions' || officer) ? tab : 'members'}
+        onValueChange={(value) => {
+          const next = FORUM_TABS.find((t) => t === value)
+          if (next) onTab(next)
+        }}
+      >
         <TabsList aria-label={intl.formatMessage(fmt.tabs, terms)}>
           <TabsTrigger value="members">{intl.formatMessage(fm.tabMembers)}</TabsTrigger>
           <TabsTrigger value="meetings">{intl.formatMessage(mm.tab)}</TabsTrigger>

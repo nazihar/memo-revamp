@@ -14,6 +14,7 @@ import { ScheduleSheet } from './ScheduleSheet'
 import { DONE, meetingName, OPEN, type MeetingStatus } from './shared'
 import { StatusBadge } from './StatusBadge'
 import { cityOf, whenIn, yourTimes } from './time'
+import { TableScroll } from '@/components/page/TableScroll'
 
 type List = 'upcoming' | 'past' | 'cancelled'
 
@@ -138,7 +139,7 @@ function MeetingList({
       {rows.length === 0 ? (
         <EmptyState title={empty} />
       ) : (
-        <div className="overflow-x-auto">
+        <TableScroll>
           <table className="w-full min-w-[40rem] border-collapse text-sm">
             <caption className="sr-only">{intl.formatMessage(mmv.caption, { name: forum.name })}</caption>
             <thead>
@@ -168,7 +169,7 @@ function MeetingList({
               ))}
             </tbody>
           </table>
-        </div>
+        </TableScroll>
       )}
       {more || (earlier && !meetings.hasNextPage) ? (
         <div>

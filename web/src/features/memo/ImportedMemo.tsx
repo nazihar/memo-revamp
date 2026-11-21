@@ -30,6 +30,7 @@ import { MemoLinks } from './MemoLinks'
 import { referenceOf } from './memo-fields'
 import { statusLabels } from './memo-messages'
 import { statusTone } from './memo-status'
+import { TableScroll } from '@/components/page/TableScroll'
 
 type LegacyField = LegacyCorrectionRequest['field']
 const CORRECTABLE: Exclude<LegacyField, 'CLASSIFICATION'>[] = [
@@ -222,7 +223,7 @@ export function ImportedMemo({
             {legacy.approvals.length === 0 ? (
               <p className="text-sm text-muted-foreground">{intl.formatMessage(lm.approvalsNone)}</p>
             ) : (
-              <div className="overflow-x-auto">
+              <TableScroll>
                 <table className="w-full text-sm">
                   <thead>
                     <tr>
@@ -250,7 +251,7 @@ export function ImportedMemo({
                     ))}
                   </tbody>
                 </table>
-              </div>
+              </TableScroll>
             )}
           </Section>
           <Section title={intl.formatMessage(lm.originals)} id="legacy-originals">

@@ -1,7 +1,7 @@
 import { useIntl } from 'react-intl'
 import type { MemberAgendaResponse, MemberItemResponse } from '@/api/generated/types.gen'
 import { Button } from '@/components/ui/button'
-import { useDeclarations } from './context'
+import { ITEM_BUTTON, useDeclarations } from './context'
 import { dm, dmv } from './messages'
 import { declarable, isOpen, standingLines } from './words'
 
@@ -33,6 +33,7 @@ export function ItemDeclaration({ item, name, latest }: { item: MemberItemRespon
           variant="outline"
           className="h-auto min-h-11 whitespace-normal text-base print:hidden"
           aria-label={intl.formatMessage(mine ? dmv.mineNamed : dmv.declareNamed, { item: name })}
+          {...{ [ITEM_BUTTON]: item.id }}
           onClick={(e) => {
             if (mine) context.show(mine, name, e.currentTarget)
             else context.declare({ itemId: item.id, name }, e.currentTarget)

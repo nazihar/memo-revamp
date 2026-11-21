@@ -10,6 +10,7 @@ import com.memo.files.FileUploads
 import com.memo.files.Files
 import com.memo.memo.internal.MemoDocumentPurpose
 import com.memo.memo.internal.MemoFields
+import com.memo.memo.internal.MemoInterests
 import com.memo.memo.internal.MemoListStore
 import com.memo.memo.internal.MemoReviews
 import com.memo.memo.internal.MemoRoutes
@@ -46,6 +47,7 @@ class MemoSeeding(
     private val uploads: FileUploads,
     private val transactions: TenantTransactions,
     private val lifecycle: MemoTypeLifecycle,
+    private val interests: MemoInterests,
 ) {
     /** Whether [initiator] has created any memo yet (seeders run once per tenant). */
     fun hasMemos(initiator: UUID): Boolean = tx { lists.anyOf(initiator) }
@@ -110,7 +112,8 @@ class MemoSeeding(
 
     /**
      * Approves, returns or rejects the open task of [memo], which must be the current user's: the one they hold, or else the
-     * instance's first (a step shared by a queue has one task per candidate).
+     * instance's first (a step shared by a queue has one task per candidate). [STAND_ASIDE] declares the user's interest,
+     * [remark] being its reason, and stands aside (SOD-4): the step goes to someone else (Phase 4 E04 T9).
      */
     fun act(
         memo: UUID,
@@ -125,6 +128,7 @@ class MemoSeeding(
                 APPROVE -> workflows.approve(task, remark)
                 RETURN -> workflows.returnToInitiator(task, remark)
                 REJECT -> workflows.reject(task, remark)
+                STAND_ASIDE -> interests.recuse(task, remark)
                 else -> throw IllegalArgumentException("unknown action $action")
             }
         }
@@ -199,6 +203,7 @@ class MemoSeeding(
         const val APPROVE = "approve"
         const val RETURN = "return"
         const val REJECT = "reject"
+        const val STAND_ASIDE = "stand-aside"
     }
 }
 

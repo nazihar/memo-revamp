@@ -1,0 +1,19 @@
+# E08 Decision register, analytics and close-out — log
+
+## 2026-11-21 — plan
+- Plan written under the delegated gate (`research.md`, `design.md`, `threat-model.md`, `tasks.md`, `test-plan.md`, `ux-review.md`; ADR-0069 and ADR-0070). Flows AS–AW recorded as delegated.
+- **Research:** auditors read the minutes of every meeting in the period (ASA 560 ¶7(c)) and test completeness; Basel 2015 ¶60 and Bangladesh Bank's 2025 notice on dissent; UK Companies Act s.248 (ten years) **[snippet]**; BoardPro's decision register (date, type, outcome, keyword, PDF), Diligent's attendance report (Excel), OnBoard's search, iBabs **[snippet]**, ISO's number ranges; the UK Code 2024 Provision 14 on attendance disclosure; useful vs vanity measures **[snippets]**; late papers in director surveys **[snippets]**; older adults read tables best and line charts worst (CHI 2025) **[snippet]**; W3C and GOV.UK on text alternatives for charts.
+- **Key decisions:**
+  - `search_decision` in the search module behind new definer functions (`search/V4`), indexed in the change's transaction, backfilled, with an equivalence property test against E06's rule (ADR-0069).
+  - One rule: FULL for officers, members (unless restricted to others) and `forum.read` (unless restricted, title-hidden or members-only); a **restricted line** (number, committee, meeting, date) for recused and restricted items; nothing above clearance or outside scope. Text, outcome and exception filters match FULL rows only.
+  - **The viewer's recused items are computed in the request**, not copied onto rows (`DeclarationChanged` is after commit, so copies would lag).
+  - Exports: XLSX (20,000 rows) and PDF (2,000) with "About this export" and the number check, for officers and oversight, audited with a hash of the rows.
+  - Five measures (ADR-0070): attendance, actions overdue paired with closed on time, time from submission to decision (median and P90, calendar days), items deferred, papers on time; computed live per viewer; tables first.
+  - A new `analytics` module; the register's API in `search`; the leak suite's module list corrected (`com.memo.decision` did not exist).
+- **Changes from the overview to report to the owner:** restricted lines instead of excluded rows; recusals at query time instead of recused ids on rows; two measures added and paper-reading statistics left out; tables shown first.
+- **Migrations:** `master` holds `search/V3`, `forum/V7`, `meeting/V10`, `memo/V20`, `workflow/V16`, `notification/V4`; no open branch holds an unmerged migration. E06 plans `minutes/V1`–`V4`, E07 `forum/V8` and `actions/V1`–`V4`. **E08 takes `search/V4` only.**
+- **Asked of other epics:** E06 T4 to publish `ResolutionChanged` and `Resolutions.check`; E07 T8 to publish viewer-scoped `ActionStats` (E07's `ActionCounts.overdue(forumId)` has no viewer). E08 adds them itself if they are not there when it needs them.
+- **The close-out** (T8–T12): the exit journey `committee-cycle.spec` through the UI in CI and against dev, `CommitteeCycleIT` with the audit chain verified, the demo cycle with a year of history on dev, `demo.md`, runbooks, every Phase 4 ASVS row and threat model reviewed, the pen-test scope, nightly and weekly green after manual runs, the retrospective and STATUS.
+- **Carried to close Phase 4** (`tasks.md`): E05 T9's real-client invite run (the owner's mailboxes and a relay); the owner's walk through the representative cycle (exit criterion 3 under A1); the moderated usability walkthrough; an assistive-technology user's pass; the pen test after Phase 1b.
+- **Uncertain until T1:** whether E06's `DecisionRecorded` is published synchronously in the recording transaction (E07 assumes it); if it is after commit, the indexer writes in its own tenant transaction and the nightly check covers the gap.
+- **No real-world input is needed for E08 itself.**

@@ -94,6 +94,26 @@ class MeetingSweepStore(
             .limit(limit)
             .fetch { it.row() }
 
+    /**
+     * Scheduled meetings starting after [now] and before [horizon], published or not: those the reply and meeting reminders
+     * and the quorum-at-risk warning may be for (design E05 §9), through `meeting_status_start_idx` (tenant, status, start).
+     */
+    fun upcoming(
+        now: Instant,
+        horizon: Instant,
+        limit: Int,
+    ): List<MeetingRow> =
+        tenantDsl
+            .current()
+            .selectFrom(MEETING)
+            .where(
+                MEETING.STATUS.eq(MeetingStatus.SCHEDULED.name),
+                MEETING.STARTS_AT.gt(MeetingStore.utc(now)),
+                MEETING.STARTS_AT.lt(MeetingStore.utc(horizon)),
+            ).orderBy(MEETING.STARTS_AT, MEETING.ID)
+            .limit(limit)
+            .fetch { it.row() }
+
     /** Marks [id]'s agenda reminder sent at [at]; false when it already was, or the meeting moved on meanwhile. */
     fun markAgendaDue(
         id: UUID,
@@ -155,7 +175,9 @@ class MeetingSweepStore(
  * once per meeting date (the mark on the meeting row; a reschedule clears it) and is audited. (d, design E04 §9) From
  * 09:00 on the working day before a scheduled meeting with a published agenda, its members and officers with items to
  * review are reminded to declare their interests (`MEETING_DECLARATIONS_DUE`, [DeclarationReminders]), once per person
- * and revision.
+ * and revision. (e)–(g, design E05 §9) The meeting reminder, the reply reminder and the quorum-at-risk warning
+ * ([MeetingReminders]) run before (d): a person who gets the meeting reminder gets E04's declarations line in it, and not
+ * E04's reminder as well.
  */
 @Component
 class MeetingSweep(
@@ -164,17 +186,19 @@ class MeetingSweep(
     private val notifier: MeetingNotifier,
     private val access: AccessAdministration,
     private val invitations: InvitationSafetyNet,
+    private val meetingReminders: MeetingReminders,
     private val reminders: DeclarationReminders,
     private val audit: AuditLog,
     private val clock: Clock,
 ) {
     /**
-     * Sends what is due in the current tenant; how many reminders went out. Also schedules again any meeting invitation
-     * whose send is overdue by 15 minutes (design E05 §9 (h)).
+     * Sends what is due in the current tenant; how many meetings had reminders sent. First schedules again any meeting
+     * invitation whose send is overdue by 15 minutes (design E05 §9 (h)), on the real clock: the job runs on it.
      */
     fun sweep(): Int {
         invitations.rescheduleOverdue()
-        return agendaDue() + notHeld() + reminders.due(clock.instant())
+        val now = clock.instant()
+        return agendaDue() + notHeld() + meetingReminders.due(now) + reminders.due(now)
     }
 
     private fun agendaDue(): Int {

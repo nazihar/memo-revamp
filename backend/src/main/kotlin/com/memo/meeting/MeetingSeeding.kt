@@ -40,6 +40,9 @@ class MeetingSeeding(
         title: String,
     ): UUID? = tx { meetings.ofForum(forumId).firstOrNull { it.title == title }?.id }
 
+    /** The meeting's status (Phase 4 E04 T9: declarations are seeded only while it is scheduled). */
+    fun status(meetingId: UUID): MeetingStatus = tx { meeting(meetingId).status }
+
     /** A draft meeting of [forumId] in person at [location], its agenda started from the committee's template. */
     fun create(
         forumId: UUID,

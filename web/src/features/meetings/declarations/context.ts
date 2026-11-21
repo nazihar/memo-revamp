@@ -4,6 +4,9 @@ import type { DeclarationResponse, MyDeclarationsResponse } from '@/api/generate
 /** The id of the Declarations panel's heading: focus goes there when the control that opened a sheet is gone. */
 export const PANEL_TITLE_ID = 'declarations-title'
 
+/** The attribute naming the item on an agenda item's declaration button, so focus can follow it when it is drawn anew. */
+export const ITEM_BUTTON = 'data-declaration-item'
+
 export interface DeclarationsValue {
   meetingId: string
   timeZone: string

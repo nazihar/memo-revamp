@@ -15,11 +15,16 @@ import com.memo.identity.MfaSeeding
 import com.memo.identity.UserAccounts
 import com.memo.identity.operator.OperatorMfa
 import com.memo.meeting.AgendaSeeding
+import com.memo.meeting.DeclarationHow
+import com.memo.meeting.DeclarationSeeding
+import com.memo.meeting.DeclarationSource
+import com.memo.meeting.DeclarationState
 import com.memo.meeting.LineAccess
 import com.memo.meeting.MeetingSeeding
 import com.memo.meeting.MeetingStatus
 import com.memo.meeting.internal.AgendaDraftViews
 import com.memo.meeting.internal.AgendaNoticeScheduler
+import com.memo.meeting.internal.DeclarationReviews
 import com.memo.meeting.internal.ItemFlag
 import com.memo.meeting.internal.ItemKind
 import com.memo.meeting.internal.Lateness
@@ -29,6 +34,7 @@ import com.memo.meeting.internal.PaperFlag
 import com.memo.meeting.internal.PublishedLate
 import com.memo.meeting.internal.invite.InvitationScheduler
 import com.memo.memo.MemoAccessSeeding
+import com.memo.memo.MemoInterestLinks
 import com.memo.memo.MemoSeeding
 import com.memo.memo.internal.Memos
 import com.memo.org.OrgSeeding
@@ -92,6 +98,12 @@ class DemoMeetingsIT : FilesIntegrationTest() {
 
     @Autowired lateinit var agendaSeeding: AgendaSeeding
 
+    @Autowired lateinit var declarationSeeding: DeclarationSeeding
+
+    @Autowired lateinit var declarationReviews: DeclarationReviews
+
+    @Autowired lateinit var memoInterests: MemoInterestLinks
+
     @Autowired lateinit var forumSeeding: ForumSeeding
 
     @Autowired lateinit var reads: MeetingReads
@@ -136,6 +148,7 @@ class DemoMeetingsIT : FilesIntegrationTest() {
                 DemoMeetingSeeder(
                     meetingSeeding,
                     agendaSeeding,
+                    declarationSeeding,
                     memoSeeding,
                     memoAccess,
                     forumSeeding,
@@ -148,6 +161,7 @@ class DemoMeetingsIT : FilesIntegrationTest() {
             val seeded = checkNotNull(seeder.seed())
             assertRiskReview(seeded.riskReview)
             assertCreditMeeting(seeded.creditMeeting)
+            assertDeclarations(seeded)
 
             // Fills gaps only: a second run finds both meetings and adds nothing.
             assertThat(seeder.seed()).isEqualTo(seeded)
@@ -156,6 +170,9 @@ class DemoMeetingsIT : FilesIntegrationTest() {
                     assertThat(c.long("select count(*) from meeting where title = ?", it)).describedAs(it).isOne()
                 }
                 assertThat(c.long("select count(*) from memo where subject = ?", DemoMeetingSeeder.CREDIT_SUBJECT)).isOne()
+                val both = arrayOf<Any>(seeded.riskReview, seeded.creditMeeting)
+                assertThat(c.long("select count(*) from meeting_declaration where meeting_id in (?, ?)", *both)).isEqualTo(4)
+                assertThat(c.long("select count(*) from meeting_declaration_review where meeting_id in (?, ?)", *both)).isOne()
             }
         } finally {
             notices.jobs = true
@@ -251,6 +268,57 @@ class DemoMeetingsIT : FilesIntegrationTest() {
         assertThat(submission.subjectId).isEqualTo(memo)
         assertThat(submission.status to submission.meetingId).isEqualTo(SubmissionStatus.ACCEPTED to meeting)
         assertThat(asUser(author) { memos.get(memo).metadata["customer"] }).isEqualTo("Padma Spinning Mills Ltd")
+    }
+
+    /**
+     * E04 T9: at the risk review Demo Director is recused from the Delta Textiles item, waits for the chair's ruling on a
+     * consent item and confirmed revision 2; the secretary recorded the Chairman's declaration by email. At the credit
+     * committee the head of credit's interest on the memo (they stood aside at the desk) was carried to the placed item.
+     */
+    private fun assertDeclarations(seeded: DemoMeetingSeeder.Seeded) {
+        val director = id(DemoMeetingSeeder.DIRECTOR)
+        val secretary = id(DemoMeetingSeeder.SECRETARY)
+        val headCredit = id(DemoMeetingSeeder.HEAD_CREDIT)
+        val author = id(DemoMeetingSeeder.AUTHOR)
+        val mine = asUser(director) { declarationReviews.mine(seeded.riskReview) }
+        assertThat(mine.reviewedRevision).isEqualTo(2)
+        assertThat(mine.toReview).isEmpty()
+        assertThat(mine.declarations.map { Triple(it.itemTitle, it.state, it.source) })
+            .containsExactlyInAnyOrder(
+                Triple(DemoMeetingSeeder.DELTA, DeclarationState.RECUSED, DeclarationSource.SELF),
+                Triple(DemoMeetingSeeder.INCIDENTS, DeclarationState.AWAITING_RULING, DeclarationSource.SELF),
+            )
+        val items = asUser(director) { agendas.agenda(seeded.riskReview, null) }.sections.flatMap { it.items }
+        val delta = items.single { it.title == DemoMeetingSeeder.DELTA }
+        assertThat(delta.recused to delta.papers).isEqualTo(true to emptyList<Any>())
+        assertThat(items.single { it.title == DemoMeetingSeeder.INCIDENTS }.recused).isTrue()
+        assertThat(items.single { it.title == "Risk appetite statement 2027" }.recused).isFalse()
+        val byEmail =
+            AppRoleJdbc.inTransaction(DemoTenant.ID) { c ->
+                c.long(
+                    "select count(*) from meeting_declaration d join meeting_item i on i.id = d.item_id " +
+                        "where d.meeting_id = ? and i.title = ? and d.how = ? and d.source = ? and d.state = ? " +
+                        "and d.recorded_by = ? and d.how_note like 'Email of %'",
+                    seeded.riskReview,
+                    DemoMeetingSeeder.EXPOSURES,
+                    DeclarationHow.EMAIL.name,
+                    DeclarationSource.ON_BEHALF.name,
+                    DeclarationState.RECUSED.name,
+                    secretary,
+                )
+            }
+        assertThat(byEmail).isOne()
+
+        val placed =
+            asUser(secretary) { drafts.draft(seeded.creditMeeting) }.sections.flatMap { it.items }.single {
+                it.kind == ItemKind.SUBMISSION
+            }
+        val carried = asUser(headCredit) { declarationReviews.mine(seeded.creditMeeting) }.declarations.single()
+        assertThat(carried.itemId).isEqualTo(placed.id)
+        assertThat(carried.source to carried.state).isEqualTo(DeclarationSource.MEMO to DeclarationState.RECUSED)
+        assertThat(carried.nature).startsWith("Interest declared on memo")
+        val memo = checkNotNull(asUser(author) { memoAccess.find(author, DemoMeetingSeeder.CREDIT_SUBJECT) })
+        assertThat(asUser(secretary) { memoInterests.of(memo) }).containsExactly(headCredit)
     }
 
     private fun id(email: String): UUID = transactions.inTenant(DemoTenant.ID) { accounts.findByEmail(email)!!.id.value }

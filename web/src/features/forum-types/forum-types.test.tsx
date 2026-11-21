@@ -301,7 +301,7 @@ describe('committee types (Phase 4 E01 T4, flow J)', () => {
     expect(bodies[0]?.submissionPolicy).toEqual(draft.submissionPolicy)
     // So is the agenda policy (ADR-0060) until the Agenda tab edits it (E03 T7).
     expect(bodies[0]?.agenda).toEqual(draft.agenda)
-    // Likewise the meeting policy (Phase 4 E05) until its tab comes (E05 T8).
+    // Likewise the meeting policy (Phase 4 E05), untouched on its Meetings tab (E05 T8).
     expect(bodies[0]?.meetings).toEqual(draft.meetings)
     // And the minutes policy (Phase 4 E06) until its tab comes (E06 T10).
     expect(bodies[0]?.minutes).toEqual(draft.minutes)
@@ -343,6 +343,90 @@ describe('committee types (Phase 4 E01 T4, flow J)', () => {
     await user.click(screen.getByRole('button', { name: 'Save' }))
     await screen.findByText('Saved.')
     expect(bodies[0]?.submissionPolicy).toEqual({ deadlineWorkingDays: 3, lateMode: 'BLOCK', triageWorkingDays: 7 })
+  }, 20_000)
+
+  it('the Meetings tab sets invitations, replies and the quorum override, listed among the changes (Phase 4 E05 T8, flow Z)', async () => {
+    const user = userEvent.setup()
+    const bodies: { meetings: unknown }[] = []
+    server.use(
+      ...handlers([draft, published]),
+      http.put(`${BASE}/t1/versions/3`, async ({ request }) => {
+        bodies.push((await request.json()) as (typeof bodies)[number])
+        return HttpResponse.json<ForumTypeVersionResponse>({ ...draft, revision: 6 })
+      }),
+    )
+    const { container } = renderRoute('/admin/committee-types/t1?version=3')
+
+    await user.click(await screen.findByRole('tab', { name: 'Meetings' }, { timeout: 5000 }))
+    const invitations = screen.getByRole('group', { name: 'Calendar invitations' })
+    expect(invitations).toHaveAccessibleDescription(
+      'Use a neutral title for committees whose name should not appear in people’s calendars.',
+    )
+    expect(
+      within(invitations).getByRole('radio', { name: "The meeting's title or the committee's name" }),
+    ).toBeChecked()
+    await user.click(within(invitations).getByRole('radio', { name: 'A neutral title' }))
+    const title = within(invitations).getByRole('textbox', { name: /Neutral title/ })
+    expect(title).toHaveValue('Committee meeting')
+    await user.clear(title)
+    await user.type(title, 'Board committee meeting')
+    const deadline = screen.getByRole('spinbutton', { name: /Ask for replies by/ })
+    expect(deadline).toHaveValue(2)
+    expect(deadline).toHaveAccessibleDescription('From 0 (no deadline) to 10.')
+    await user.clear(deadline)
+    await user.type(deadline, '3')
+    expect(
+      screen.getByRole('checkbox', { name: 'Remind those who have not replied, on the deadline day' }),
+    ).toBeChecked()
+    await user.click(
+      screen.getByRole('checkbox', { name: 'Remind everyone attending the working day before the meeting' }),
+    )
+    const override = screen.getByRole('group', { name: 'Decisions without a quorum' })
+    expect(within(override).getByRole('radio', { name: 'Never allowed' })).toBeChecked()
+    await user.click(
+      within(override).getByRole('radio', {
+        name: 'Allowed with a reason, to be ratified at a later quorate meeting',
+      }),
+    )
+    await expectNoA11yViolations(container)
+
+    // The second administrator reads the same lines among the changes.
+    await user.click(screen.getByRole('tab', { name: /Changes/ }))
+    expect(screen.getByText('Invitation title in calendars:')).toBeInTheDocument()
+    expect(screen.getByText('A neutral title: Board committee meeting')).toBeInTheDocument()
+    expect(screen.getByText('Reply deadline (working days before a meeting):')).toBeInTheDocument()
+    expect(screen.getByText('Reminder the working day before:')).toBeInTheDocument()
+    expect(screen.getByText('Decisions without a quorum:')).toBeInTheDocument()
+    expect(screen.getByText('With a reason, to be ratified later')).toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Save' }))
+    await screen.findByText('Saved.')
+    expect(bodies[0]?.meetings).toEqual({
+      invitationTitle: 'NEUTRAL',
+      neutralTitle: 'Board committee meeting',
+      replyDeadlineWorkingDays: 3,
+      replyReminder: true,
+      meetingReminder: false,
+      quorumOverride: 'WITH_REASON',
+    })
+  }, 30_000)
+
+  it('the Meetings tab only reads for a reviewer, and the quorum tab says alternates count for the number only', async () => {
+    const user = userEvent.setup()
+    server.use(...handlers([inReview, published], ['forum.types.approve']))
+    renderRoute('/admin/committee-types/t1?version=3')
+
+    await user.click(await screen.findByRole('tab', { name: 'Meetings' }, { timeout: 5000 }))
+    const neutral = screen.getByRole('radio', { name: 'A neutral title' })
+    expect(neutral).toBeChecked()
+    expect(neutral).toBeDisabled()
+    expect(screen.getByRole('textbox', { name: /Neutral title/ })).toHaveValue('Board committee meeting')
+    expect(screen.getByRole('radio', { name: 'Never allowed' })).toBeDisabled()
+
+    await user.click(screen.getByRole('tab', { name: 'Quorum' }))
+    expect(
+      screen.getByText('Alternates count for the member they replace, for the number of members only.'),
+    ).toBeInTheDocument()
   }, 20_000)
 
   it('the quorum tab reads the rule as a sentence, with the server’s example and tester', async () => {

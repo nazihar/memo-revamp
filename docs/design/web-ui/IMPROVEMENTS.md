@@ -108,6 +108,12 @@ Proposed while designing the operator console (2026-11-18).
 |---|---|---|---|---|---|
 | 46 | **One job each for Home and the Approvals dashboard.** Home is where everyone starts and acts; its counts gain the age of what waits, and people who oversee a unit get a “Your unit” card (waiting, overdue, over 10 days, most overdue) linking to the dashboard for that unit. The dashboard shows in the sidebar only to people with a unit scope and opens on their first unit. | Most people never need the report, but everyone needs to know how old their own work is; heads see their unit without opening a report. | Frontend only: the existing dashboard endpoint with `scope=me` and `scope=unit:<id>`, and a new navigation audience from the team view and the dashboard grant. | High | Designed |
 
+## Components
+
+| # | Improvement | Why | Needs | Priority | Status |
+|---|---|---|---|---|---|
+| 47 | **shadcn Select and Combobox instead of the native select.** `components/ui/form-controls.tsx` exports a `Select` that wraps the browser’s `<select>`; 42 screens use it. Replace it with shadcn Select for fixed lists of up to about 10 options, and add shadcn Combobox (Popover + Command, type to filter; a Drawer on phones) for longer lists and lists that grow with the organisation’s data: time zones, memo types, workflows, roles, units, versions. Rebuild `PeoplePicker` (people, positions, units) on the same Combobox, searching the directory as you type. Add each with the shadcn CLI; do not hand-build them on Radix or Base UI. | One look and one behaviour for every choice; long lists become searchable; the boards already show it. | Frontend only: `npx shadcn@latest add select popover command drawer`, then swap the 42 uses (the boards and `tools/combobox.py` list which lists become a Combobox). | Medium | Designed |
+
 ## Decisions
 
 - **Reading pane (5): a per-person switch, off by default** (2026-11-18). A "Reading pane" switch in the My tasks toolbar, shown only at 1400px and wider, turns it on and is remembered per person. When on, the list and the selected memo sit side by side with the decision bar; "Open the full page" covers the note sheet, attachments, linked memos and history. Links from notifications, search and Home still open the full page.

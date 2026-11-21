@@ -3,7 +3,7 @@
 A redesign of the web app: every route of the organisation app (user and administration pages) and of the operator console, desktop and phone side by side, in light and dark. Committees (`/committees`, `/me/committees`, `/admin/committee-types`), added to the app after this design started, are not designed yet. It is a **design**, not code. The app is built from it with shadcn/ui components (see "Building from this design" below).
 
 - Live canvas: a private claude.ai Design artifact, `https://claude.ai/artifact/VRTQYT81opA8eMovd2rDo6`. It needs to be shared before others can open it.
-- Snapshot in this folder: 2026-11-18, canvas version 110.
+- Snapshot in this folder: 2026-11-18, canvas version 111.
 
 ## What is here
 
@@ -78,6 +78,8 @@ These can be rerun safely, and reproduce the committed boards exactly:
 | `tools/states_access.py` | Adds the No access to this page state to `States` and `StatesPhone`, and to the behaviour note. Skips it when already there | — |
 | `tools/rules_operator.py` | Adds section 10 (operator console patterns) to `Rules`, after `rules_admin.py`. Skips it when already there | — |
 | `tools/home_dash.py` | Home and the Approvals dashboard with one job each: the age line and the Your unit card on `Home`/`HomePhone` (tweak `viewer`: head or approver), the dashboard's unit-first scope and View list, the dead Dashboard and Saved searches sidebar links on every board, and the implementation note beside Home. Skips what is already done | — |
+| `tools/combobox.py` | Turns the long or growing lists (time zones, memo types, workflows, roles, units, versions) on 17 boards into a searchable select (shadcn Combobox): a popover on desktop, a bottom sheet on phones, a `combobox` tweak to show each open. Run after the scripts that build those boards and before `card_surface.py`. Skips boards already converted | `tools/card_surface.py` |
+| `tools/rules_select.py` | The select rule and "use the shadcn component, never hand-build on Radix or Base UI" on `Rules` (section 1) and in the build note. Skips what is already there | — |
 | `tools/api_notes.py` | Adds the admin and operator items to the API changes note and to `NOTES.md`. Skips them when already there | — |
 | `tools/smoke.py` | Nothing; checks a board | — |
 | `tools/preview.py` | Nothing; renders a board to a PNG outside the canvas, for checking it by eye (`python3 tools/preview.py Users.dc.html out.png '{"props":{"dialog":"invite"}}'`; needs Node and the Playwright Chromium) | — |

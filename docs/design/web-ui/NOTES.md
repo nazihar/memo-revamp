@@ -50,7 +50,7 @@ Operator console (/api/v1/platform)
 
 ## Build note
 
-Use shadcn/ui components for everything: Button, Input, InputOTP, Select, Combobox, Tabs, Table, Dialog, Drawer, AlertDialog, DropdownMenu, Popover, Badge, Skeleton, Alert, Sonner, Sidebar. These boards are hand-written HTML only because the canvas cannot run React; do not copy their inline styles. The component for each pattern is listed on the Design rules page, section 1.
+Use shadcn/ui components for everything: Button, Input, InputOTP, Select, Combobox, Tabs, Table, Dialog, Drawer, AlertDialog, DropdownMenu, Popover, Badge, Skeleton, Alert, Sonner, Sidebar. These boards are hand-written HTML only because the canvas cannot run React; do not copy their inline styles. Add each one with the shadcn CLI (npx shadcn@latest add <name>) and adjust the generated file in components/ui; never hand-build a control on Radix or Base UI primitives when shadcn has it. Selects: shadcn Select for a fixed list of up to about 10 options; shadcn Combobox (Popover + Command, type to filter; a Drawer on phones) for more than about 10, or any list that grows with the organisation’s data; the people, position and unit picker is a Combobox that searches the directory as you type. The component for each pattern is listed on the Design rules page, section 1.
 
 ## Home and Dashboard
 

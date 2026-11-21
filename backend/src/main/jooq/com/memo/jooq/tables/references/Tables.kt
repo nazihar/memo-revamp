@@ -106,6 +106,9 @@ import com.memo.jooq.tables.MemoTypeVersion
 import com.memo.jooq.tables.MemoWatch
 import com.memo.jooq.tables.MemoWatchEvent
 import com.memo.jooq.tables.MemoWatchSetting
+import com.memo.jooq.tables.MinutesDecision
+import com.memo.jooq.tables.MinutesDecisionEntry
+import com.memo.jooq.tables.MinutesItemNote
 import com.memo.jooq.tables.NotificationItem
 import com.memo.jooq.tables.NotificationMailOutbox
 import com.memo.jooq.tables.NotificationPreference
@@ -658,6 +661,21 @@ val MEMO_WATCH_EVENT: MemoWatchEvent = MemoWatchEvent.MEMO_WATCH_EVENT
  * The table <code>memo.memo_watch_setting</code>.
  */
 val MEMO_WATCH_SETTING: MemoWatchSetting = MemoWatchSetting.MEMO_WATCH_SETTING
+
+/**
+ * The table <code>memo.minutes_decision</code>.
+ */
+val MINUTES_DECISION: MinutesDecision = MinutesDecision.MINUTES_DECISION
+
+/**
+ * The table <code>memo.minutes_decision_entry</code>.
+ */
+val MINUTES_DECISION_ENTRY: MinutesDecisionEntry = MinutesDecisionEntry.MINUTES_DECISION_ENTRY
+
+/**
+ * The table <code>memo.minutes_item_note</code>.
+ */
+val MINUTES_ITEM_NOTE: MinutesItemNote = MinutesItemNote.MINUTES_ITEM_NOTE
 
 /**
  * The table <code>memo.notification_item</code>.

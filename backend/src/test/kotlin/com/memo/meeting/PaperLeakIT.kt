@@ -12,6 +12,10 @@ import com.memo.meeting.internal.invite.InvitationReconciler
 import com.memo.meeting.internal.quorum.LiveQuorum
 import com.memo.meeting.internal.quorum.SnapshotRow
 import com.memo.meeting.internal.quorum.SnapshotStore
+import com.memo.minutes.DecisionPlanting
+import com.memo.minutes.internal.DecisionStore
+import com.memo.minutes.internal.Dissent
+import com.memo.minutes.internal.NoteStore
 import com.memo.notification.Mail
 import com.memo.testsupport.AppRoleJdbc
 import com.memo.testsupport.MailOutbox
@@ -43,7 +47,9 @@ import java.util.UUID
  * hidden, one of them waiting for the chair's ruling) to every probe: they see those items' lines and nothing else of them.
  * E05 T5 adds d1's alternate, standing in for them (d1 sent apologies): they read as a cleared member of d1's seat, are
  * named on nothing, and are recused with d1; and the E05 surfaces (the invitation files and emails, the replies, the
- * register, the quorum per meeting and per item, the forecast and a snapshot whose override reason is a canary).
+ * register, the quorum per meeting and per item, the forecast and a snapshot whose override reason is a canary). E06 T3
+ * adds the decisions: each planted item carries one whose text is its canary, the recused item's with a dissent reason
+ * that is a canary for everyone (d1 included) and notes that nobody probed may read.
  */
 class PaperLeakIT : RecusalFixture() {
     @Autowired
@@ -59,6 +65,10 @@ class PaperLeakIT : RecusalFixture() {
     @Autowired lateinit var live: LiveQuorum
 
     @Autowired lateinit var snapshotStore: SnapshotStore
+
+    @Autowired lateinit var decisionStore: DecisionStore
+
+    @Autowired lateinit var noteStore: NoteStore
 
     /** d1's alternate, standing in for them at the planted meeting. */
     lateinit var alt: Person
@@ -165,6 +175,23 @@ class PaperLeakIT : RecusalFixture() {
                     ),
                 )
             }
+            // E06 T3: a decision on each planted item, its text the item's canary; on the recused item a named dissent
+            // whose reason no viewer may read (d1 sees that decision's recused view), and notes.
+            val planting = DecisionPlanting(transactions, decisionStore, noteStore)
+            listOf(restricted to CANARY_DESCRIPTION, hidden to CANARY_HIDDEN, camera to CANARY_CAMERA, confidential to CANARY_CONFIDENTIAL)
+                .forEach { (item, text) -> planting.decision(tenant.id, meeting.id, brc, item, secretary.id, text) }
+            planting.decision(
+                tenant.id,
+                meeting.id,
+                brc,
+                recused,
+                secretary.id,
+                "Approved as presented.",
+                dissent = Dissent(secretary2.id, CANARY_RECUSED_DESCRIPTION),
+                tookNoPart = listOf(d1.id),
+            )
+            planting.decision(tenant.id, meeting.id, brc, recusedHidden, secretary.id, CANARY_RECUSED_HIDDEN)
+            planting.note(tenant.id, meeting.id, recused, secretary.id, CANARY_RECUSED_PAPER)
         }
 
         /**
@@ -392,6 +419,29 @@ class PaperLeakIT : RecusalFixture() {
                 val snapshot = read("$base/quorum/snapshots/${p.snapshot}", person.session)
                 if (person == auditor) clean(p, person, snapshot) else assertThat(snapshot).hasStatus(HttpStatus.FORBIDDEN)
             },
+            // E06 T3: the decisions of the items a person sees in full only; d1 the recused view of the item they declared on
+            // (no vote, no names); the history and the notes of the planted items never.
+            Surface.DECISIONS to { p, person ->
+                val base = "/api/v1/meetings/${p.meeting.id}"
+                val list = read("$base/decisions", person.session)
+                clean(p, person, list)
+                val decided = list.json()["decisions"].list().associateBy { UUID.fromString(it["itemId"].asString()) }
+                if (person == d1) {
+                    val recused = decided.getValue(p.recused)
+                    assertThat(recused["viewerRecused"].asBoolean()).isTrue()
+                    listOf("vote", "dissent", "abstentions", "tookNoPart", "snapshotId").forEach { assertThat(recused.absent(it)).isTrue() }
+                    assertThat(decided.keys).doesNotContain(p.recusedHidden)
+                } else {
+                    assertThat(decided.keys).doesNotContain(p.recused, p.recusedHidden, p.restricted, p.hidden)
+                }
+                listOf(p.restricted, p.hidden, p.camera, p.confidential, p.recused, p.recusedHidden).forEach { item ->
+                    listOf("$base/items/$item/decision/entries", "$base/items/$item/notes").forEach { uri ->
+                        val answer = read(uri, person.session)
+                        assertThat(answer.response.status).describedAs(uri).isIn(403, 404)
+                        p.canaries(person).forEach { assertThat(answer.response.contentAsString).doesNotContain(it) }
+                    }
+                }
+            },
         )
 
     @Test
@@ -420,10 +470,10 @@ class PaperLeakIT : RecusalFixture() {
     }
 
     @Test
-    fun `every endpoint of the meeting module is in the surface registry, and every surface has a probe`() {
+    fun `every endpoint of the meeting and minutes modules is in the surface registry, and every surface has a probe`() {
         val endpoints =
             mapping.handlerMethods
-                .filter { (_, handler) -> handler.beanType.packageName.startsWith("com.memo.meeting") }
+                .filter { (_, handler) -> MODULES.any { handler.beanType.packageName.startsWith(it) } }
                 .flatMap { (info, _) ->
                     val methods = info.methodsCondition.methods.map { it.name }
                     info.patternValues.flatMap { path -> methods.map { "$it $path" } }
@@ -470,5 +520,8 @@ class PaperLeakIT : RecusalFixture() {
         /** The override's reason on the recused item's snapshot: free text, for officers not recused only. */
         const val CANARY_OVERRIDE = "CANARY override reason"
         val RECUSED_CANARIES = listOf(CANARY_RECUSED_DESCRIPTION, CANARY_RECUSED_PAPER, CANARY_RECUSED_HIDDEN, CANARY_OVERRIDE)
+
+        /** The modules whose endpoints are all in [PaperSurfaceRegistry.endpoints] or [PaperSurfaceRegistry.officersOnly]. */
+        val MODULES = listOf("com.memo.meeting", "com.memo.minutes")
     }
 }

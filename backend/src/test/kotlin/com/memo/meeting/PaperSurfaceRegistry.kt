@@ -8,7 +8,8 @@ package com.memo.meeting
  * ([RecusalLeakIT]): the channels beyond the meeting's endpoints ([Channel]), the forum module's endpoints ([forum]), and the
  * surfaces of later epics still to come ([pending]); its meta-test fails when a controller of [modules] is not registered.
  * E05 T5 added the alternate of a recused member to every probe of [PaperLeakIT], and its surfaces (invitations, replies,
- * the register, the quorum, the forecast and snapshots) to both suites.
+ * the register, the quorum, the forecast and snapshots) to both suites. E06 T3 made its decisions placeholder real: the
+ * decisions list and history (DECISIONS), recording, consent sections and notes (officers, with recusal columns).
  */
 object PaperSurfaceRegistry {
     enum class Surface(
@@ -31,6 +32,10 @@ object PaperSurfaceRegistry {
         QUORUM(
             "The attendance register, the quorum of the meeting and of an item, and the snapshots (E05 T4, T5): people and numbers, " +
                 "never an item's content; no seats for an item the viewer is recused from, no override reason but for officers",
+        ),
+        DECISIONS(
+            "The decisions of a meeting and an item's history (E06 T3): an item's decision when it is seen in full; for a recused " +
+                "person who sees its line the outcome, text and conditions only (no vote, names or notes); nothing of other items",
         ),
     }
 
@@ -69,6 +74,9 @@ object PaperSurfaceRegistry {
             "GET /api/v1/meetings/{meetingId}/quorum" to Surface.QUORUM,
             // A decision's snapshot (E05 T5): officers and forum.read; the override's reason for officers not recused only.
             "GET /api/v1/meetings/{meetingId}/quorum/snapshots/{snapshotId}" to Surface.QUORUM,
+            // Decisions (E06 T3): the list as each person may see it, and an item's history (officers and forum.read, seeing it in full).
+            "GET /api/v1/meetings/{meetingId}/decisions" to Surface.DECISIONS,
+            "GET /api/v1/meetings/{meetingId}/items/{itemId}/decision/entries" to Surface.DECISIONS,
         )
 
     /**
@@ -128,6 +136,16 @@ object PaperSurfaceRegistry {
                 "GET /api/v1/meetings/{meetingId}/quorum/changes" to "the quorum lost and restored (E05 T4): officers",
                 "GET /api/v1/meetings/{meetingId}/quorum/forecast" to
                     "the forecast from the replies (E05 T5): officers, numbers only (QUORUM probe)",
+                "PUT /api/v1/meetings/{meetingId}/items/{itemId}/decision" to
+                    "recording and correcting a decision (E06 T3): secretaries and forums.manage not recused (recusal columns)",
+                "POST /api/v1/meetings/{meetingId}/sections/{sectionId}/decision" to
+                    "a consent section in one action (E06 T3): secretaries not recused from any of its items (recusal columns)",
+                "GET /api/v1/meetings/{meetingId}/items/{itemId}/notes" to
+                    "the secretary's notes (E06 T3): secretaries not recused; nobody else knows of them (recusal columns)",
+                "PUT /api/v1/meetings/{meetingId}/items/{itemId}/notes" to
+                    "saving the notes (E06 T3): secretaries not recused (recusal columns)",
+                "GET /api/v1/forums/{forumId}/decisions/to-be-ratified" to
+                    "the committee's decisions to be ratified (E06 T3): secretaries; ids, numbers and outcomes only (officer probe)",
             )
 
     /** The modules whose controllers must all be registered here (test plan E04, "Meta-test"); later epics add theirs. */
@@ -224,11 +242,6 @@ object PaperSurfaceRegistry {
      */
     val pending: List<Pending> =
         listOf(
-            Pending(
-                "E06",
-                "The item's decision, vote counts and named dissent: a recused member is neither counted nor named (\"took no part\")",
-                listOf("/api/v1/meetings/{meetingId}/decisions", "/api/v1/meetings/{meetingId}/items/{itemId}/decision"),
-            ),
             Pending(
                 "E06",
                 "Draft and approved minutes: the recused version (heading, own declaration and decision; no discussion; ADR-0062)",

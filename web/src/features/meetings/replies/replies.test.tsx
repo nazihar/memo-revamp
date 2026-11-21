@@ -10,6 +10,7 @@ import type {
   MemberAgendaResponse,
   MyDeclarationsResponse,
   MyRsvpResponse,
+  QuorumForecastResponse,
   RepliesResponse,
   ReplyResponse,
 } from '@/api/generated/types.gen'
@@ -464,12 +465,45 @@ interface PanelCalls {
   resends: { body: unknown; key: string | null }[]
 }
 
+/**
+ * The quorum forecast from the replies (E05 T8, `GET …/quorum/forecast`): the meeting quorate if everyone who said yes
+ * attends; item 5 not even then, two members having declared an interest; item 6 too, for an officer recused from it.
+ */
+const forecast: QuorumForecastResponse = {
+  meetingId: 'm1',
+  meeting: { quorate: true, basis: 7, needed: 4, present: 5, unmet: [] },
+  items: [
+    {
+      itemId: 'i1',
+      number: '1',
+      quorum: { quorate: true, basis: 7, needed: 4, present: 5, unmet: [] },
+      viewerRecused: false,
+      declared: 0,
+    },
+    {
+      itemId: 'i5',
+      number: '5',
+      quorum: { quorate: false, basis: 7, needed: 4, present: 3, unmet: [{ kind: 'COUNT', needed: 4, actual: 3 }] },
+      declared: 2,
+      viewerRecused: false,
+    },
+    {
+      itemId: 'i6',
+      number: '6',
+      quorum: { quorate: false, basis: 7, needed: 4, present: 3, unmet: [{ kind: 'COUNT', needed: 4, actual: 3 }] },
+      declared: null,
+      viewerRecused: true,
+    },
+  ],
+}
+
 function panelHandlers(calls: PanelCalls, resend?: () => Response) {
   let current = panel
   return [
     ...handlers({ puts: [], mineReads: 0 }, { meeting: officerMeeting }),
     http.get(`${API}/meetings/m1/invitations`, () => HttpResponse.json<InvitationsResponse>(current)),
     http.get(`${API}/meetings/m1/rsvps`, () => HttpResponse.json<RepliesResponse>(replies)),
+    http.get(`${API}/meetings/m1/quorum/forecast`, () => HttpResponse.json<QuorumForecastResponse>(forecast)),
     http.put(`${API}/meetings/m1/rsvps/:userId`, async ({ request, params }) => {
       calls.records.push({
         userId: String(params.userId),
@@ -613,6 +647,22 @@ describe('Invitations and replies (Phase 4 E05 T7, flow W)', () => {
     })
     expect(calls.resends[0]?.body).toEqual({ userIds: ['u9', 'u3', ME] })
     expect(await screen.findByText('The invitation was sent again to 3 people.')).toBeInTheDocument()
+  }, 20_000)
+
+  it('forecasts the quorum from the replies, for the meeting and each item not quorate even then (E05 T8)', async () => {
+    const user = userEvent.setup()
+    server.use(...panelHandlers({ records: [], resends: [] }))
+    renderRoute('/meetings/m1')
+    await user.click(await screen.findByRole('tab', { name: 'Invitations and replies' }))
+    expect(
+      await screen.findByText('If everyone who said yes attends: quorate — 5 of 7 members, 4 needed.'),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByText('Item 5: not quorate even then — 3 of 4 needed (2 members have declared an interest).'),
+    ).toBeInTheDocument()
+    // An item the officer is recused from: the numbers only, without the count of declarations.
+    expect(screen.getByText('Item 6: not quorate even then — 3 of 4 needed.')).toBeInTheDocument()
+    expect(screen.queryByText(/^Item 1:/)).toBeNull()
   }, 20_000)
 
   it('is for officers only: a member sees no tab', async () => {

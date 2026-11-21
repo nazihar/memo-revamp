@@ -444,9 +444,16 @@ describe('the agenda builder (Phase 4 E03 T7, flow O)', () => {
       'agendaBuilder',
       'meetingPage',
       'meetingReplies',
+      'meetingAttendance',
       'declarations',
     ])
-    expect(partsForPath('/meetings/m1')).toEqual(['meetings', 'meetingPage', 'meetingReplies', 'declarations'])
+    expect(partsForPath('/meetings/m1')).toEqual([
+      'meetings',
+      'meetingPage',
+      'meetingReplies',
+      'meetingAttendance',
+      'declarations',
+    ])
     expect(partsForPath('/admin/committee-types/t1')).toContain('agendaBuilder')
   })
 

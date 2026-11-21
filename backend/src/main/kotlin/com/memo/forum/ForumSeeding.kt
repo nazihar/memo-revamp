@@ -8,6 +8,7 @@ import com.memo.forum.internal.ForumTypePreset
 import com.memo.forum.internal.ForumTypeStore
 import com.memo.forum.internal.ForumTypes
 import com.memo.forum.internal.Forums
+import com.memo.forum.internal.MemberEdit
 import com.memo.forum.internal.MemberInput
 import com.memo.forum.internal.MemberKind
 import com.memo.forum.internal.SubmissionStore
@@ -82,6 +83,25 @@ class ForumSeeding(
             .ofSubject(MemoReaders.SUBJECT_TYPE, memoId)
             .firstOrNull { it.forumId == forum.id && it.status.open && it.meetingId == null }
             ?.id
+    }
+
+    /**
+     * Gives [userId]'s open membership of the forum with [key] the alternate [alternateUserId] (Phase 4 E05 T10), unless it
+     * has one already or the person holds no open membership there.
+     */
+    fun ensureAlternate(
+        key: String,
+        userId: UUID,
+        alternateUserId: UUID,
+    ) {
+        val forum = checkNotNull(store.findByKey(key)) { "forum $key missing" }
+        val row =
+            memberStore
+                .members(forum.id)
+                .lastOrNull { it.kind == MemberKind.PERSON && it.userId == userId && it.endedOn == null }
+                ?.takeIf { it.alternateUserId == null }
+                ?: return
+        members.edit(forum.id, row.id, row.version, MemberEdit(row.voting, row.attributes, alternateUserId, row.termEndsOn, row.authority))
     }
 
     /** Adds [member] to the forum with [key] unless that person or position already has a row there. */

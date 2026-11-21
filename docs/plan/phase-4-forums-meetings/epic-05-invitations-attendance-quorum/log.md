@@ -212,3 +212,49 @@
   - the correction dialog takes the time on the meeting's local date (a meeting running past midnight cannot take a next-day time there);
   - the Meetings tab's first title choice is "The meeting's title or the committee's name" (what invitations use), the deadline is a number field, and the reply reminder says "on the deadline day";
   - times follow the reader's locale (10:02 AM in English).
+
+## 2026-11-21 (T10 close)
+- **Built on E03 T9 and E04 T9:** #211 (E04 close) and #208 (E03 close) were not merged when this started, so `origin/phase4/e04-t9` (which contains #208's branch) and then `origin/phase4/e03-t9` (its later fix: page-wide axe from the top, `checkPageA11y`) were merged into this branch. The Spring Modulith metadata conflicted (`demo` and `minutes` both gained `meeting`) and was regenerated with `updateModuleMetadata`.
+- **T9 is carried:** the recorded run in real calendar clients needs the owner's Outlook and Gmail mailboxes and an SMTP relay (Phase 4 Q5; `tasks.md`, "Owner input"). E05 closes without it, with the golden files, the strict and iTIP validation and the second parser as the evidence; the runbook says which client behaviours are taken from published documentation only.
+- **Demo seed** (`DemoMeetingSeeder` calling the new `DemoMeetingAttendanceSeeder`, on the new `ReplySeeding` and `AttendanceSeeding` in the meeting module, and `ForumSeeding.ensureAlternate`; through the same services as the API):
+  - **Alternate:** Demo Director's seat on the BRC gets Demo Head of Credit as its alternate (`DemoForumSeeder`, only on a seat without one). The journey `meeting-replies.spec` uses it too.
+  - **Replies at the BRC's "Quarterly risk review":**
+    - Demo Board Member (the chair) says "Yes, in person" for the planned date before the meeting is brought forward, so the answer is for the old time;
+    - Demo Director sends apologies with his alternate attending (Demo Head of Credit stands in, recused from the director's items);
+    - the CFO (Demo Head of Finance, a guest) sends apologies;
+    - the secretary records the Chairman's "Yes, in person" "by phone" ("Phone call of {today}").
+  - **The MCC's "Monthly credit review"**, hybrid, held on the first Monday to Thursday from ten days before the seed, 14:00–16:00 Dhaka. Three items (a decision on "Working capital limit, Meghna Foods", a watch-list review, a portfolio report), published. Demo Director and Demo Head of Finance answered "Yes, in person" and Demo Head of Credit "Yes, online"; Demo Head of Credit declared an interest in the Meghna Foods item (leaving the room). The register is recorded at the times it happened:
+    - the secretary at 13:50, Demo Director at 13:55 and Demo Head of Finance at 13:57 in person, Demo Head of Credit online at 14:00: quorate (REACHED, 3 of 4, 3 needed);
+    - the opening items from 14:02; the CRO's seat holder in person at 14:20, during matters arising (joined late);
+    - the Meghna Foods item from 14:25; Demo Head of Credit stepped out for it and was back at 14:49; its decision's **quorum snapshot** at 14:45 (quorate, 3 of 3 needed, the vice-chair recused);
+    - Demo Head of Finance left at 15:15 (left early); Demo Head of Credit's connection dropped at 15:30 (LOST, 2 of 4) and he was back online at 15:38 (RESTORED); any other business from 15:45; the meeting ended (HELD).
+  - **To record a meeting after the fact, `Attendance.progress` takes an optional time** (null from the API, so the endpoint is unchanged), checked like an arrival's (within the meeting's window, never ahead of the server). The register's events already took a time, and the live quorum logs each flip at its cause's time, so the seed's quorum changes carry the times above.
+  - **Gap-filling:** replies are added only while the risk review is scheduled and only for someone without an answer; the stale answer only when the review itself is seeded (it needs the move); the held review once, by its title. `MeetingSeeding.create` takes a mode and a joining link.
+  - **`DemoMeetingsIT`** checks:
+    - the four replies (two apologies, one with the alternate standing in; the phone answer recorded by the secretary; exactly one stale), the alternate's audience row and his recused Delta Textiles line;
+    - the held review: HELD and numbered; the secretary present; the late arrival; the early departure; the vice-chair online and stepped out of the Meghna Foods item; eight items in progress; REACHED → LOST (2 of 4, 3 needed, at 15:30) → RESTORED; the snapshot quorate with the vice-chair recused and its inputs re-evaluating to its result;
+    - that a second run adds no meeting, reply, attendance event, progress row, quorum change, snapshot or declaration.
+
+    It runs with the other demo ITs in one invocation (`com.memo.demo.*`), whose counts are unchanged: the seed adds no memo.
+- **Journeys** (smoke, PR stage), both with keyboard use, axe from the top of the page in English and Arabic and no sideways scrolling at 320 px:
+  - `meeting-replies.spec`: on a hybrid BRC meeting the secretary schedules through the API, Demo Director answers "Yes, online" (focus moves to "You said …") and changes to apologies, with Demo Head of Credit attending in his place (the default choice) and a note. Every target of the card is at least 44 px. Demo Head of Credit reads "You are attending in place of Demo Director.". The secretary records Demo Board Member's "Yes, in person" by phone, and the tab shows both answers, how each came and the alternate under the director.
+  - `meeting-attendance.spec`: on an MCC meeting scheduled for now with a published agenda, after three members answered yes, the secretary starts the meeting from its ⋯ menu and lands on the register. They mark everyone who said yes as present (quorate, 3 of 4), move to a decision item, and record Demo Head of Finance leaving (quorum lost, announced politely) and coming back (restored). They read "Quorum by item…" and end the meeting.
+  - **Runs:** against a local stack of this branch (Compose project `memo-e05t10` on its own ports, the jar, the e2e build). The first run found that the page opens on its first tab after a language change (the journey now chooses the tab again); after that both passed on every run, and finally twice on a fresh database seeded by the final code after merging `master` (at d889b7d) and `origin/phase4/e04-t9` again, with `meeting-page.spec`, `meeting-agenda.spec` and `declarations.spec` passing beside them (3 passed).
+- **The agent's keyboard and structure pass** over flows V and X is recorded in `ux-review.md` (T10), with the checklist a person must run with NVDA and VoiceOver.
+- **Defects found and fixed:**
+  - **The officers' meeting page scrolled sideways at 400 % zoom** (WCAG 1.4.10): 400 px on the Invitations and replies tab, 336 px on the register. The tab list did not wrap, and neither did the register's History button. Each table's visually hidden "Actions" header (absolutely positioned) was placed against the page, because its scroll box was not a positioning context. Fixed in `MeetingPage.tsx`, `AttendancePanel.tsx` and `InvitationsPanel.tsx`; both journeys check it.
+  - **The Invitations and replies tab left out members who cannot hold an invitation** (an account without sign-in, or not cleared), found with the demo's Chairman. His answer recorded by phone was counted but had no row, and no answer could be recorded for such a member from the tab. `InvitationPanel` now lists everyone who answers the meeting; the web says "No invitation: they cannot sign in or are not cleared for this meeting" (new message, en and ar). `RepliesIT` covers it.
+- **Observed, not changed:**
+  - changing the language redraws the meeting page on its default tab;
+  - Tab past a dialog's last control goes to the browser's toolbar (native `<dialog>`, ADR-0021);
+  - other tables with hidden text in a scroll box may overflow the same way (a shared scroller is the fix, left for a sweep).
+- **Docs:**
+  - the runbook `docs/runbooks/meeting-invitations.md`: how invitations work; the tenant's relay, the sending address and replies to it; SPF, DKIM and DMARC; Google's "Add invitations to my calendar"; the reconciler and its safety net; the tab; reminders; what to do about a missing, duplicated or unmoved event;
+  - "Attendance and quorum" and the E05 demo data in `meetings-and-agendas.md`;
+  - eight E05 rows in `docs/security/asvs-checklist.md`;
+  - `ux-review.md` and `STATUS.md`.
+- **Verified (after the last merges):**
+  - backend, in one invocation: every demo IT (`com.memo.demo.*`: `DemoMeetingsIT`, `DemoMemosIT`, `DemoForumsIT`, `DemoAccessIT`, `DemoTenantSeedIT`, `DemoWorkflowsIT`, the volume ITs), `RepliesIT`, `ArchitectureRulesTest`, `ModuleMetadataIT`, `OpenApiContractTest` (no API change), `AuditActionCoverageTest`; earlier also `InvitationsIT`, `AttendanceIT` and `LiveQuorumIT`; ktlint, detekt and SpotBugs (detekt's function count moved the E05 seed into `DemoMeetingAttendanceSeeder`);
+  - web: the meetings unit tests (122, with a new `replies.test.tsx` case for a member without an invitation), `pnpm typecheck`, ESLint and Prettier on the changed files, `i18n:verify` with the catalogue sizes;
+  - the stack was stopped and its volumes removed afterwards.
+- **Left:** T9 (the recorded real-client run, owner's mailboxes and relay); the journeys on dev once deployed; the person's screen-reader pass (`ux-review.md`).

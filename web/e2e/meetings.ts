@@ -70,11 +70,11 @@ export class MeetingApi {
     return (await response.json()) as T
   }
 
-  /** POSTs or PATCHes [body]; [version] goes as `If-Match`. Answers the JSON and the new ETag's version. */
+  /** POSTs, PATCHes or PUTs [body]; [version] goes as `If-Match`. Answers the JSON and the new ETag's version. */
   async send<T>(
     path: string,
     body: unknown,
-    { version, method = 'POST' }: { version?: number; method?: 'POST' | 'PATCH' } = {},
+    { version, method = 'POST' }: { version?: number; method?: 'POST' | 'PATCH' | 'PUT' } = {},
   ): Promise<T> {
     const headers: Record<string, string> = {
       'X-XSRF-TOKEN': await this.token(),

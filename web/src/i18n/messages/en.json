@@ -2676,6 +2676,7 @@
   "meetingReplies.invite.appOnly": "In memo only (invitation emails switched off)",
   "meetingReplies.invite.cancelSentOn": "Cancellation sent {at}",
   "meetingReplies.invite.failedOn": "Not delivered: the {kind} of {at} failed",
+  "meetingReplies.invite.notInvitable": "No invitation: they cannot sign in or are not cleared for this meeting",
   "meetingReplies.invite.notSent": "Not sent yet",
   "meetingReplies.invite.retrying": "Not sent yet: {attempts, plural, one {# attempt} other {# attempts}}, trying again",
   "meetingReplies.invite.sentOn": "Sent {at} ({kind})",

@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import java.time.Clock
 import java.time.DayOfWeek
+import java.time.Instant
 import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
@@ -45,7 +46,15 @@ import java.util.UUID
  * memo, SOD-4) and Demo Director recommended it, so placing it carried a declaration to the item: the vice-chair is
  * recused from it.
  *
- * Dates are relative to the day of seeding, so on a long-lived environment both meetings drift into the past. Fills gaps
+ * Phase 4 E05 T10 adds replies and a held meeting. At the risk review, Demo Director sent apologies and their alternate,
+ * Demo Head of Credit, stands in; the CFO (a guest) sent apologies; the secretary recorded the Chairman's yes "by phone";
+ * and the chair's yes was given for the planned date, so it is stale since the meeting was brought forward. The credit
+ * committee's "Monthly credit review", hybrid, was held about ten days ago and its register kept as it happened: the CRO
+ * arrived late, Demo Head of Credit (online) stepped out for "Working capital limit, Meghna Foods", the item they declared
+ * an interest in, Demo Head of Finance left early, and the meeting lost its quorum when the vice-chair's connection dropped
+ * and had it restored eight minutes later. The Meghna Foods decision's quorum snapshot is kept for E06's minutes.
+ *
+ * Dates are relative to the day of seeding, so on a long-lived environment the meetings drift into the past. Fills gaps
  * only: a meeting already there (by its title, in any state) is left as it is. Needs the files service (scanner) and the
  * demo password (the people acting must exist with sign-in), like the demo memos.
  */
@@ -54,6 +63,7 @@ class DemoMeetingSeeder(
     private val meetings: MeetingSeeding,
     private val agendas: AgendaSeeding,
     private val declarations: DeclarationSeeding,
+    private val e05: DemoMeetingAttendanceSeeder,
     private val memos: MemoSeeding,
     private val memoAccess: MemoAccessSeeding,
     private val forums: ForumSeeding,
@@ -65,7 +75,7 @@ class DemoMeetingSeeder(
 ) {
     private val log = LoggerFactory.getLogger(javaClass)
 
-    /** Seeds what is missing; the two meetings' ids, or null when the demo password is not set. */
+    /** Seeds what is missing; the three meetings' ids, or null when the demo password is not set. */
     fun seed(): Seeded? {
         if (demoPassword.isBlank()) return null
         val ids = ActorContext.asSystem("demo-meetings") { transactions.inTenant(DemoTenant.ID) { people() } }
@@ -75,8 +85,10 @@ class DemoMeetingSeeder(
         val riskMeeting = asUser(ids.getValue(SECRETARY)) { meetings.find(risk, RISK_TITLE) } ?: riskReview(ids, risk, today)
         val creditMeeting = asUser(ids.getValue(SECRETARY)) { meetings.find(credit, CREDIT_TITLE) } ?: creditMeeting(ids, credit, today)
         riskDeclarations(ids, risk, riskMeeting, today)
+        e05.riskReplies(ids, risk, riskMeeting, today)
+        val held = asUser(ids.getValue(SECRETARY)) { meetings.find(credit, HELD_TITLE) } ?: e05.heldCreditReview(ids, credit, today)
         log.info("Demo meetings seeded")
-        return Seeded(riskMeeting, creditMeeting)
+        return Seeded(riskMeeting, creditMeeting, held)
     }
 
     /** The BRC's meeting with revisions 1 and 2 (see the class). */
@@ -105,6 +117,8 @@ class DemoMeetingSeeder(
             meetings.seen(meeting, 1)
             meetings.askToDiscuss(meeting, agenda.lifted)
         }
+        // E05 T10: the chair said yes for the planned date; once the meeting is brought forward the answer is for the old time.
+        e05.plannedDateAnswer(ids.getValue(BOARD_MEMBER), meeting)
         // Brought forward past the paper deadline: the late addendum waits for the chair, who agrees it in the app.
         asUser(secretary) {
             meetings.reschedule(meeting, soon.atTime(RISK_START), soon.atTime(RISK_END), ZONE.id, "Brought forward at the chair's request")
@@ -195,12 +209,7 @@ class DemoMeetingSeeder(
         item(INCIDENTS)?.takeIf { missing(it, director) }?.let {
             asUser(director) { declarations.declare(meeting, it, INCIDENTS_INTEREST, DeclarationIntent.ASK_CHAIR) }
         }
-        val chairman =
-            asUser(secretary) {
-                transactions.inTenant(DemoTenant.ID) {
-                    directory.membersOn(forum).firstOrNull { it.positionId == DemoOrg.unitByCode("BOD").headPosition }?.userId
-                }
-            }
+        val chairman = e05.seatHolder(secretary, forum, "BOD")
         val exposures = item(EXPOSURES)
         if (chairman == null || exposures == null) {
             log.warn("Demo risk review: no Chairman or no large exposures item for the declaration by email")
@@ -310,10 +319,12 @@ class DemoMeetingSeeder(
         block: () -> T,
     ): T = ActorContext.call(ActorScope(Actor.User(user), null)) { TenantContext.call(DemoTenant.ID, block) }
 
-    /** The two demo meetings. */
+    /** The three demo meetings. */
     data class Seeded(
         val riskReview: UUID,
         val creditMeeting: UUID,
+        /** The credit committee's monthly review, held (E05 T10). */
+        val heldCreditReview: UUID,
     )
 
     companion object {
@@ -339,6 +350,10 @@ class DemoMeetingSeeder(
         const val DIRECTOR = "director@demo.example"
         const val HEAD_CREDIT = "head.credit@demo.example"
         const val HEAD_FINANCE = "head.finance@demo.example"
+        const val HELD_TITLE = "Monthly credit review"
+        const val MEGHNA = "Working capital limit, Meghna Foods"
+        const val WATCH_LIST = "Watch-list accounts, quarterly review"
+        const val PORTFOLIO = "Credit portfolio quality report"
         val ZONE: ZoneId = ZoneId.of("Asia/Dhaka")
         private const val APPETITE_FILE = "risk-appetite-2027.pdf"
         private const val APPETITE_TITLE = "Risk appetite statement 2027"
@@ -363,6 +378,12 @@ class DemoMeetingSeeder(
         /** [from], or the first Monday to Thursday after it: no weekend meetings, whether the weekend is Fri–Sat or Sat–Sun. */
         fun weekday(from: LocalDate): LocalDate =
             generateSequence(from) { it.plusDays(1) }.first { it.dayOfWeek in DayOfWeek.MONDAY..DayOfWeek.THURSDAY }
+
+        /** [time] on [day] in the demo's zone. */
+        fun at(
+            day: LocalDate,
+            time: LocalTime,
+        ): Instant = day.atTime(time).atZone(ZONE).toInstant()
 
         private fun pdf(
             title: String,

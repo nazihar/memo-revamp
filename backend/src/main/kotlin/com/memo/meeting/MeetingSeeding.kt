@@ -43,7 +43,11 @@ class MeetingSeeding(
     /** The meeting's status (Phase 4 E04 T9: declarations are seeded only while it is scheduled). */
     fun status(meetingId: UUID): MeetingStatus = tx { meeting(meetingId).status }
 
-    /** A draft meeting of [forumId] in person at [location], its agenda started from the committee's template. */
+    /**
+     * A draft meeting of [forumId] at [location] (in person, or [MeetingMode.HYBRID] with [joinUrl]: Phase 4 E05 T10), its
+     * agenda started from the committee's template.
+     */
+    @Suppress("LongParameterList")
     fun create(
         forumId: UUID,
         title: String,
@@ -51,12 +55,14 @@ class MeetingSeeding(
         endsAt: LocalDateTime,
         zone: String,
         location: String,
+        mode: MeetingMode = MeetingMode.IN_PERSON,
+        joinUrl: String? = null,
     ): UUID =
         tx {
             val meeting =
                 lifecycle.create(
                     forumId,
-                    MeetingInput(MeetingKind.ORDINARY, MeetingPlace(title, MeetingMode.IN_PERSON, location, null, null), null),
+                    MeetingInput(MeetingKind.ORDINARY, MeetingPlace(title, mode, location, joinUrl, null), null),
                     TimesInput(startsAt, endsAt, zone),
                 )
             starts.start(meeting.id, AgendaOrigin.TEMPLATE, null)

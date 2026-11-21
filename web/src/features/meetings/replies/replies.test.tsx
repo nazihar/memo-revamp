@@ -613,6 +613,33 @@ describe('Invitations and replies (Phase 4 E05 T7, flow W)', () => {
     expect(calls.records[0]?.ifMatch).toBe('"0"')
   }, 20_000)
 
+  it('lists a member who cannot hold the invitation, whose answer the secretary records (E05 T10)', async () => {
+    const user = userEvent.setup()
+    const offline = invitee('u7', 'Farhana Rahman', {
+      invitable: false,
+      state: 'NOT_INVITED',
+      lastKind: undefined,
+      lastSequence: undefined,
+      firstSentAt: undefined,
+      lastSentAt: undefined,
+      delivery: undefined,
+      reply: reply('u7', 'Farhana Rahman'),
+    })
+    server.use(
+      http.get(`${API}/meetings/m1/invitations`, () =>
+        HttpResponse.json<InvitationsResponse>({ ...panel, people: [...people, offline] }),
+      ),
+      ...panelHandlers({ records: [], resends: [] }),
+    )
+    renderRoute('/meetings/m1')
+    await user.click(await screen.findByRole('tab', { name: 'Invitations and replies' }))
+    const row = (await screen.findByRole('rowheader', { name: 'Farhana Rahman' })).closest('tr')
+    if (!row) throw new Error('no row')
+    expect(row).toHaveTextContent('No invitation: they cannot sign in or are not cleared for this meeting')
+    await user.click(within(row).getByRole('button', { name: 'Actions for Farhana Rahman' }))
+    expect((await screen.findAllByRole('menuitem')).map((i) => i.textContent)).toEqual(['Record an answer…'])
+  }, 20_000)
+
   it('resends to those who have not replied, and says when it is too soon in words', async () => {
     const user = userEvent.setup()
     const calls: PanelCalls = { records: [], resends: [] }

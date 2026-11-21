@@ -838,9 +838,11 @@ export type DecisionResponse = {
     referReason?: string | null;
     referToForumId?: string | null;
     resolution: boolean;
+    resolutionId?: string | null;
+    resolutionNumber?: string | null;
     seq: number;
     snapshotId?: string | null;
-    state: 'RECORDED' | 'RELEASED' | 'FINAL';
+    state: 'RECORDED' | 'NUMBERED' | 'RELEASED' | 'FINAL';
     text?: string | null;
     toBeRatified: boolean;
     tookNoPart?: Array<DecisionPerson> | null;
@@ -2639,7 +2641,10 @@ export type NoteEntryView = {
     createdAt: string;
     id: string;
     kind: 'REMARK' | 'COMMENT' | 'CORRECTION';
+    meetingLabel?: string | null;
     readableMemos: Array<string>;
+    resolution?: string | null;
+    resolutionId?: string | null;
     round: number;
     text: string;
 };
@@ -3482,6 +3487,48 @@ export type ResendInvitationsRequest = {
     userIds?: Array<string> | null;
 };
 
+export type ResolutionCheckResponse = {
+    complete: boolean;
+    duplicates: Array<number>;
+    firstNumber: number;
+    forumId: string;
+    inForce: number;
+    lastNumber: number;
+    missing: Array<number>;
+    missingCount: number;
+    outOfRange: Array<number>;
+    period: string;
+    void: number;
+};
+
+export type ResolutionCounterRequest = {
+    next: number;
+};
+
+export type ResolutionEntryResponse = {
+    id: string;
+    itemNumber?: string | null;
+    itemTitle?: string | null;
+    meetingDate?: string | null;
+    meetingId: string;
+    meetingLabel?: string | null;
+    memo?: ResolutionMemo | null;
+    number: string;
+    numberedAt: string;
+    outcome?: 'APPROVED' | 'APPROVED_WITH_CONDITIONS' | 'REJECTED' | 'DEFERRED' | 'RETURNED' | 'REFERRED' | 'NOTED' | 'WITHDRAWN';
+    outcomeLabel?: string | null;
+    restricted: boolean;
+    sequence: number;
+    state: 'IN_FORCE' | 'VOID';
+    voidReason?: string | null;
+    voidedAt?: string | null;
+};
+
+export type ResolutionMemo = {
+    id: string;
+    reference?: string | null;
+};
+
 export type ResolutionNumberPart = {
     digits?: number | null;
     kind: 'TEXT' | 'COMMITTEE_CODE' | 'YEAR' | 'FINANCIAL_YEAR' | 'MEETING_NUMBER' | 'SEQUENCE';
@@ -3504,6 +3551,40 @@ export type ResolutionNumberingPreviewRequest = {
     committeeCode?: string | null;
     meetingNumber?: number | null;
     numbering: ResolutionNumbering;
+};
+
+export type ResolutionRegisterResponse = {
+    entries: Array<ResolutionEntryResponse>;
+    forumId: string;
+    next?: string | null;
+    period?: string | null;
+    periods: Array<string>;
+};
+
+export type ResolutionResponse = {
+    conditions: Array<string>;
+    decisionId: string;
+    forumId: string;
+    forumName: string;
+    full: boolean;
+    id: string;
+    itemNumber?: string | null;
+    itemTitle?: string | null;
+    meetingDate: string;
+    meetingId: string;
+    meetingLabel?: string | null;
+    memo?: ResolutionMemo | null;
+    number: string;
+    numberedAt: string;
+    outcome: 'APPROVED' | 'APPROVED_WITH_CONDITIONS' | 'REJECTED' | 'DEFERRED' | 'RETURNED' | 'REFERRED' | 'NOTED' | 'WITHDRAWN';
+    outcomeLabel: string;
+    releasedAt?: string | null;
+    state: 'IN_FORCE' | 'VOID';
+    text?: string | null;
+    validUntil?: string | null;
+    viewerRecused: boolean;
+    voidReason?: string | null;
+    voidedAt?: string | null;
 };
 
 export type Retention = {
@@ -7828,6 +7909,69 @@ export type GetForumPolicyResponses = {
 
 export type GetForumPolicyResponse = GetForumPolicyResponses[keyof GetForumPolicyResponses];
 
+export type StartResolutionCounterData = {
+    body: ResolutionCounterRequest;
+    headers: {
+        'Idempotency-Key': string;
+    };
+    path: {
+        forumId: string;
+        period: string;
+    };
+    query?: never;
+    url: '/api/v1/forums/{forumId}/resolution-counters/{period}';
+};
+
+export type StartResolutionCounterResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
+export type GetResolutionRegisterData = {
+    body?: never;
+    path: {
+        forumId: string;
+    };
+    query?: {
+        period?: string;
+        state?: 'IN_FORCE' | 'VOID';
+        cursor?: string;
+        limit?: number;
+    };
+    url: '/api/v1/forums/{forumId}/resolutions';
+};
+
+export type GetResolutionRegisterResponses = {
+    /**
+     * OK
+     */
+    200: ResolutionRegisterResponse;
+};
+
+export type GetResolutionRegisterResponse = GetResolutionRegisterResponses[keyof GetResolutionRegisterResponses];
+
+export type CheckResolutionRegisterData = {
+    body?: never;
+    path: {
+        forumId: string;
+    };
+    query?: {
+        period?: string;
+    };
+    url: '/api/v1/forums/{forumId}/resolutions/check';
+};
+
+export type CheckResolutionRegisterResponses = {
+    /**
+     * OK
+     */
+    200: ResolutionCheckResponse;
+};
+
+export type CheckResolutionRegisterResponse = CheckResolutionRegisterResponses[keyof CheckResolutionRegisterResponses];
+
 export type ListForumSubmissionsData = {
     body?: never;
     path: {
@@ -11568,6 +11712,24 @@ export type SuspendPlatformTenantResponses = {
 };
 
 export type SuspendPlatformTenantResponse = SuspendPlatformTenantResponses[keyof SuspendPlatformTenantResponses];
+
+export type GetResolutionData = {
+    body?: never;
+    path: {
+        resolutionId: string;
+    };
+    query?: never;
+    url: '/api/v1/resolutions/{resolutionId}';
+};
+
+export type GetResolutionResponses = {
+    /**
+     * OK
+     */
+    200: ResolutionResponse;
+};
+
+export type GetResolutionResponse = GetResolutionResponses[keyof GetResolutionResponses];
 
 export type ListSavedSearchesData = {
     body?: never;

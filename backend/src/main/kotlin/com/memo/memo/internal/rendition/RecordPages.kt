@@ -30,6 +30,19 @@ data class StampLine(
     val previousHash: String?,
 )
 
+/**
+ * A committee's decision on the memo as the record's approvals print it (ADR-0065): the committee, the outcome, the
+ * resolution number when it has one, and the meeting.
+ */
+data class CommitteeDecisionLine(
+    val round: Int,
+    val committee: String,
+    val outcome: String,
+    val resolution: String?,
+    val meeting: String?,
+    val at: Instant,
+)
+
 /** One entry of the note sheet as the record prints it: a note, or an older action's plain remark. */
 data class NoteLine(
     val round: Int,
@@ -85,14 +98,29 @@ object RecordPages {
         header: String,
         footer: String,
         stamps: List<StampLine>,
+        committees: List<CommitteeDecisionLine> = emptyList(),
     ): PageDocument {
         val blocks = mutableListOf<Block>(Block.Title("Approvals"))
-        if (stamps.isEmpty()) blocks += Block.Paragraph("No decisions were recorded.")
-        stamps.groupBy { it.round }.toSortedMap().forEach { (round, inRound) ->
+        if (stamps.isEmpty() && committees.isEmpty()) blocks += Block.Paragraph("No decisions were recorded.")
+        val rounds = (stamps.map { it.round } + committees.map { it.round }).toSortedSet()
+        rounds.forEach { round ->
             blocks += Block.Heading("Round $round")
-            inRound.forEach { blocks += stamp(it) }
+            val entries =
+                stamps.filter { it.round == round }.map { it.at to stamp(it) } +
+                    committees.filter { it.round == round }.map { it.at to committee(it) }
+            entries.sortedBy { it.first }.forEach { blocks += it.second }
         }
         return PageDocument(header, footer, blocks)
+    }
+
+    /** "Board Risk Committee — Approved with conditions — Resolution BRC/2026/014", the meeting and the time. */
+    private fun committee(line: CommitteeDecisionLine): Block {
+        val head = listOfNotNull(line.committee, line.outcome, line.resolution?.let { "Resolution $it" }).joinToString(" — ")
+        val rows = listOfNotNull(line.meeting?.let { "Meeting" to it }, line.resolution?.let { "Resolution" to it })
+        return Block.Box(
+            listOf(Block.Paragraph(listOf(Run(head, bold = true), Run("  ${time(line.at)}")))) +
+                listOfNotNull(Block.KeyValues(rows).takeIf { rows.isNotEmpty() }),
+        )
     }
 
     fun notes(

@@ -107,6 +107,8 @@ import com.memo.jooq.tables.MemoWatchSetting
 import com.memo.jooq.tables.MinutesDecision
 import com.memo.jooq.tables.MinutesDecisionEntry
 import com.memo.jooq.tables.MinutesItemNote
+import com.memo.jooq.tables.MinutesResolution
+import com.memo.jooq.tables.MinutesResolutionCounter
 import com.memo.jooq.tables.NotificationItem
 import com.memo.jooq.tables.NotificationMailOutbox
 import com.memo.jooq.tables.NotificationPreference
@@ -695,6 +697,16 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
     val MINUTES_ITEM_NOTE: MinutesItemNote get() = MinutesItemNote.MINUTES_ITEM_NOTE
 
     /**
+     * The table <code>memo.minutes_resolution</code>.
+     */
+    val MINUTES_RESOLUTION: MinutesResolution get() = MinutesResolution.MINUTES_RESOLUTION
+
+    /**
+     * The table <code>memo.minutes_resolution_counter</code>.
+     */
+    val MINUTES_RESOLUTION_COUNTER: MinutesResolutionCounter get() = MinutesResolutionCounter.MINUTES_RESOLUTION_COUNTER
+
+    /**
      * The table <code>memo.notification_item</code>.
      */
     val NOTIFICATION_ITEM: NotificationItem get() = NotificationItem.NOTIFICATION_ITEM
@@ -1235,6 +1247,8 @@ open class Memo : SchemaImpl(DSL.name("memo"), DefaultCatalog.DEFAULT_CATALOG, D
         MinutesDecision.MINUTES_DECISION,
         MinutesDecisionEntry.MINUTES_DECISION_ENTRY,
         MinutesItemNote.MINUTES_ITEM_NOTE,
+        MinutesResolution.MINUTES_RESOLUTION,
+        MinutesResolutionCounter.MINUTES_RESOLUTION_COUNTER,
         NotificationItem.NOTIFICATION_ITEM,
         NotificationMailOutbox.NOTIFICATION_MAIL_OUTBOX,
         NotificationPreference.NOTIFICATION_PREFERENCE,

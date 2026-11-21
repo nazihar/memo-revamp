@@ -11,8 +11,10 @@ import com.memo.forum.OutcomeKind
 import com.memo.forum.SubmissionPurpose
 import com.memo.meeting.AgendaItemKind
 import com.memo.meeting.AgendaItemRef
+import com.memo.meeting.MeetingStatus
 import com.memo.meeting.MeetingView
 import com.memo.meeting.MeetingViewers
+import com.memo.meeting.Meetings
 import com.memo.meeting.QuorumSnapshots
 import org.springframework.stereotype.Service
 import java.time.Clock
@@ -36,6 +38,8 @@ class ConsentDecisions(
     private val reads: DecisionReads,
     private val stages: MinutesStages,
     private val effects: DecisionEffects,
+    private val release: MinutesRelease,
+    private val meetings: Meetings,
     private val ids: IdGenerator,
     private val clock: Clock,
 ) {
@@ -48,15 +52,19 @@ class ConsentDecisions(
     ): List<CurrentDecision> {
         val view = viewers.of(meetingId)
         val section = section(view, sectionId)
-        val sendBack = DecisionRules.window(view.meeting.status, stages.stage(meetingId), null, returnMinutesToDraft)
         val decided = store.lockAll(section.map { it.id }).map { it.itemId }.toSet()
         val remaining = section.filter { !it.lifted && it.id !in decided }
+        // E03's lock order: the decision rows, the submissions', then the meeting's (its status current, as when recording).
+        release.lockSubmissions(remaining.filter { it.kind == AgendaItemKind.SUBMISSION }.mapNotNull { it.submissionId })
+        val status = meetings.locked(meetingId)?.status ?: view.meeting.status
+        val sendBack = DecisionRules.window(status, stages.stage(meetingId), null, returnMinutesToDraft)
         refuseIf(remaining.isEmpty(), "NOTHING_TO_DECIDE") { "Every item of the section is decided or was lifted for discussion." }
         val now = clock.instant().truncatedTo(ChronoUnit.MICROS)
-        val planned = plan(view, remaining, decidedAt?.truncatedTo(ChronoUnit.MICROS), now)
+        val planned = plan(view, status, remaining, decidedAt?.truncatedTo(ChronoUnit.MICROS), now)
         requireNoProblems(planned.flatMap { it.problems })
         val batch = ids.next()
         val written = planned.map { write(view, it, now, batch) }
+        written.forEach { release.afterChange(it, null, status) }
         if (sendBack) remaining.forEach { stages.returnToDraft(meetingId, it.id) }
         effects.consentDecided(meetingId, sectionId, batch, remaining.map { it.id })
         return written
@@ -81,6 +89,7 @@ class ConsentDecisions(
     /** Each item's time and default content, with what is wrong with them under `items/{n}/…`. */
     private fun plan(
         view: MeetingView,
+        status: MeetingStatus,
         items: List<AgendaItemRef>,
         decidedAt: Instant?,
         now: Instant,
@@ -91,7 +100,7 @@ class ConsentDecisions(
                 DecisionRules.decidedAt(
                     decidedAt,
                     recorder.lastStarted(view.meeting.id, item.id),
-                    view.meeting.status,
+                    status,
                     view.meeting.startsAt to view.meeting.endsAt,
                     now,
                 )

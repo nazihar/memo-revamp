@@ -13,9 +13,11 @@ import com.memo.meeting.internal.quorum.LiveQuorum
 import com.memo.meeting.internal.quorum.SnapshotRow
 import com.memo.meeting.internal.quorum.SnapshotStore
 import com.memo.minutes.DecisionPlanting
+import com.memo.minutes.internal.DecisionReads
 import com.memo.minutes.internal.DecisionStore
 import com.memo.minutes.internal.Dissent
 import com.memo.minutes.internal.NoteStore
+import com.memo.minutes.internal.ResolutionNumbers
 import com.memo.notification.Mail
 import com.memo.testsupport.AppRoleJdbc
 import com.memo.testsupport.MailOutbox
@@ -70,6 +72,10 @@ class PaperLeakIT : RecusalFixture() {
 
     @Autowired lateinit var noteStore: NoteStore
 
+    @Autowired lateinit var decisionReads: DecisionReads
+
+    @Autowired lateinit var numbers: ResolutionNumbers
+
     /** d1's alternate, standing in for them at the planted meeting. */
     lateinit var alt: Person
 
@@ -108,6 +114,9 @@ class PaperLeakIT : RecusalFixture() {
 
         /** A decision's snapshot on the recused item, overridden with a canary for a reason. */
         val snapshot: UUID
+
+        /** E06 T4: each planted decision's resolution number, by item. */
+        val resolutions = linkedMapOf<UUID, UUID>()
 
         init {
             // d1 sends apologies and their alternate attends: the alternate is in the audience from now on.
@@ -178,19 +187,28 @@ class PaperLeakIT : RecusalFixture() {
             // E06 T3: a decision on each planted item, its text the item's canary; on the recused item a named dissent
             // whose reason no viewer may read (d1 sees that decision's recused view), and notes.
             val planting = DecisionPlanting(transactions, decisionStore, noteStore)
-            listOf(restricted to CANARY_DESCRIPTION, hidden to CANARY_HIDDEN, camera to CANARY_CAMERA, confidential to CANARY_CONFIDENTIAL)
-                .forEach { (item, text) -> planting.decision(tenant.id, meeting.id, brc, item, secretary.id, text) }
-            planting.decision(
-                tenant.id,
-                meeting.id,
-                brc,
-                recused,
-                secretary.id,
-                "Approved as presented.",
-                dissent = Dissent(secretary2.id, CANARY_RECUSED_DESCRIPTION),
-                tookNoPart = listOf(d1.id),
-            )
-            planting.decision(tenant.id, meeting.id, brc, recusedHidden, secretary.id, CANARY_RECUSED_HIDDEN)
+            val decided =
+                listOf(
+                    restricted to CANARY_DESCRIPTION,
+                    hidden to CANARY_HIDDEN,
+                    camera to CANARY_CAMERA,
+                    confidential to CANARY_CONFIDENTIAL,
+                ).associate { (item, text) -> item to planting.decision(tenant.id, meeting.id, brc, item, secretary.id, text) }
+                    .toMutableMap()
+            decided[recused] =
+                planting.decision(
+                    tenant.id,
+                    meeting.id,
+                    brc,
+                    recused,
+                    secretary.id,
+                    "Approved as presented.",
+                    dissent = Dissent(secretary2.id, CANARY_RECUSED_DESCRIPTION),
+                    tookNoPart = listOf(d1.id),
+                )
+            decided[recusedHidden] = planting.decision(tenant.id, meeting.id, brc, recusedHidden, secretary.id, CANARY_RECUSED_HIDDEN)
+            // E06 T4: every planted decision numbered, as the meeting's end numbers them.
+            decided.forEach { (item, decision) -> resolutions[item] = planting.number(tenant.id, decision, decisionReads, numbers) }
             planting.note(tenant.id, meeting.id, recused, secretary.id, CANARY_RECUSED_PAPER)
         }
 
@@ -440,6 +458,38 @@ class PaperLeakIT : RecusalFixture() {
                         assertThat(answer.response.status).describedAs(uri).isIn(403, 404)
                         p.canaries(person).forEach { assertThat(answer.response.contentAsString).doesNotContain(it) }
                     }
+                }
+            },
+            // E06 T4: the register and its check are forum.read's (a member 403, a guest and an alternate 404), each row of an
+            // item they do not see in full "restricted"; one resolution only for whoever sees its item's decision (d1 the
+            // recused view of the item they declared on), 404 to everyone else.
+            Surface.RESOLUTIONS to { p, person ->
+                listOf("/api/v1/forums/$brc/resolutions", "/api/v1/forums/$brc/resolutions/check").forEach { uri ->
+                    val answer = read(uri, person.session)
+                    if (person == auditor) clean(p, person, answer) else assertThat(answer.response.status).describedAs(uri).isIn(403, 404)
+                    p.canaries(person).forEach { assertThat(answer.response.contentAsString).doesNotContain(it) }
+                }
+                if (person == auditor) {
+                    val rows = read("/api/v1/forums/$brc/resolutions", person.session).json()["entries"].list()
+                    val shown = rows.filter { !it["restricted"].asBoolean() }.map { UUID.fromString(it["id"].asString()) }
+                    assertThat(shown)
+                        .describedAs("forum.read reads no restricted or hidden item's row in full")
+                        .doesNotContainAnyElementsOf(
+                            listOf(p.restricted, p.hidden, p.recused, p.recusedHidden).map { p.resolutions.getValue(it) },
+                        )
+                }
+                p.resolutions.forEach { (item, resolution) ->
+                    val answer = read("/api/v1/resolutions/$resolution", person.session)
+                    assertThat(answer.response.status).describedAs("resolution of $item").isIn(200, 404)
+                    p.canaries(person).forEach { assertThat(answer.response.contentAsString).doesNotContain(it) }
+                    val expected =
+                        when {
+                            item == p.recused && person == d1 -> 200
+                            item in listOf(p.recused, p.recusedHidden, p.restricted, p.hidden) && person != d1 -> 404
+                            item == p.recusedHidden -> 404
+                            else -> answer.response.status
+                        }
+                    assertThat(answer.response.status).describedAs("resolution of $item").isEqualTo(expected)
                 }
             },
         )

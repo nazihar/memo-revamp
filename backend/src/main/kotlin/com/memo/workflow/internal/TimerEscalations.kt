@@ -48,8 +48,12 @@ class TimerEscalations(
         val task = found.second
         val initiator = loaded.state.initiator
         val holder = task.onBehalfOf ?: task.assignee
-        val excluded = setOfNotNull(initiator, holder)
-        val named = escalate.to?.let { resolvers.resolver().resolve(it, initiator).people }.orEmpty()
+        val subject = subjects.singleOrNull { it.type == loaded.subjectType }
+        // The initiator is never a target, unless the subject lets them take part (ADR-0068).
+        val excluded = setOfNotNull(initiator.takeUnless { subject?.initiatorTakesPart == true }, holder)
+        // An escalation may go to a slot of the item (ADR-0068).
+        val resolver = resolvers.resolver { slot -> subject?.slot(loaded.subjectId, slot).orEmpty() }
+        val named = escalate.to?.let { resolver.resolve(it, initiator).people }.orEmpty()
         val supervisor = holder?.let(::supervisorOf)
         val command = { actor: UUID ->
             when (escalate.action) {

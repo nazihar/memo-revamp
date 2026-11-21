@@ -14,7 +14,9 @@ import java.util.UUID
 /**
  * When the steps an action activates are due (ADR-0041, design E05 §4.2): from each step's SLA, counted from [now] in
  * the tenant's working time (or calendar time), with the calendar read once per action and only when a step has an
- * SLA. The writer keeps a step's existing due time when its task moves to someone else. Inside a tenant transaction.
+ * SLA. A step whose SLA is `from: "subject"` is due when [subjectDue] says for its definition step (ADR-0068), read
+ * again each time the step activates. The writer keeps a step's existing due time when its task moves to someone else.
+ * Inside a tenant transaction.
  */
 @Component
 class DueTimes(
@@ -25,6 +27,7 @@ class DueTimes(
         definition: Definition,
         outcome: Outcome,
         now: Instant,
+        subjectDue: (String) -> Instant? = { null },
     ): (UUID) -> Instant? {
         val calendar by lazy { calendars.calendar() }
         val dues = mutableMapOf<UUID, Instant?>()
@@ -34,7 +37,14 @@ class DueTimes(
                     outcome.state.round.steps
                         .firstOrNull { it.id == stepId }
                 val sla = step?.let { definition.stepsById[it.nodeId]?.sla }
-                sla?.let { stepDue(stepId) ?: calendar.due(now, SlaDuration.parse(it.due), it.inWorkingTime) }
+                sla?.let { s ->
+                    stepDue(stepId)
+                        ?: if (s.fromSubject) {
+                            subjectDue(checkNotNull(step).nodeId)
+                        } else {
+                            s.due?.let { calendar.due(now, SlaDuration.parse(it), s.inWorkingTime) }
+                        }
+                }
             }
         }
     }

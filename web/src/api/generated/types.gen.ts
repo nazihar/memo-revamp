@@ -532,6 +532,7 @@ export type CatalogueRole = {
 
 export type CatalogueSubjectType = {
     attributes: Array<CatalogueAttribute>;
+    slots: Array<string>;
     type: string;
 };
 

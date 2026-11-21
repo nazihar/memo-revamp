@@ -34,7 +34,9 @@ class Transition(
     ): Decision {
         // People only, or positions and groups as well (design E04 §4.7).
         val chosen = entries ?: route.map(RouteEntry::person)
-        val refusal = Routes.refusal(initiator, chosen, context.maxApprovers, routed) ?: Remarks.refusal(remark, required = false)
+        val refusal =
+            Routes.refusal(initiator, chosen, context.maxApprovers, routed, context.initiatorTakesPart)
+                ?: Remarks.refusal(remark, required = false)
         if (refusal != null) return Decision.Refused(refusal)
         val walk = rounds.open(1, chosen, People(initiator, initiator))
         val action = ActionRecord(ActionKind.SUBMIT, 1, null, initiator, Remarks.clean(remark))

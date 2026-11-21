@@ -18,6 +18,7 @@ const catalogue: BuilderCatalogue = {
         { name: 'classificationRank', type: 'int' },
         { name: 'memoTypeId', type: 'string' },
       ],
+      slots: [],
     },
   ],
   roles: [],

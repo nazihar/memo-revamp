@@ -31,19 +31,27 @@ class WorkflowDefinitions(
     private val compiled: CompiledDefinitions,
     private val doa: DoaVersions,
 ) {
-    /** Every published definition that is not a fragment, by name. */
-    fun published(): List<DefinitionChoice> {
+    /**
+     * Every published definition that is not a fragment, by name. With [subjectType], only those that may run for it:
+     * not bound to a subject type, or bound to that one (ADR-0068).
+     */
+    fun published(subjectType: String? = null): List<DefinitionChoice> {
         val definitions = versions.definitions().filterNot { it.fragment }
         val published = versions.versions(definitions.map { it.id }).filter { it.state == VersionState.PUBLISHED }
         return definitions.mapNotNull { definition ->
-            published.firstOrNull { it.definitionId == definition.id }?.let { version ->
-                DefinitionChoice(definition.key, definition.name, compiled.get(version.id).steps.any { it.type == StepType.ROUTE })
-            }
+            published
+                .firstOrNull { it.definitionId == definition.id }
+                ?.let { compiled.get(it.id) }
+                ?.takeIf { subjectType == null || it.subject == null || it.subject == subjectType }
+                ?.let { body -> DefinitionChoice(definition.key, definition.name, body.steps.any { it.type == StepType.ROUTE }) }
         }
     }
 
-    /** [key] if it is published and not a fragment, else null. */
-    fun choice(key: String): DefinitionChoice? = published().firstOrNull { it.key == key }
+    /** [key] if it is published, not a fragment and (with [subjectType]) may run for that type, else null. */
+    fun choice(
+        key: String,
+        subjectType: String? = null,
+    ): DefinitionChoice? = published(subjectType).firstOrNull { it.key == key }
 
     /**
      * The item attributes in use (ADR-0043): declared by a published definition or fragment, with their type, or read by a

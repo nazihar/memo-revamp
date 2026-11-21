@@ -35,6 +35,7 @@ internal object Routes {
         route: List<RouteEntry>,
         maxApprovers: Int,
         routed: Boolean = true,
+        initiatorTakesPart: Boolean = false,
     ): Refusal? {
         val people = route.flatMap { it.people }
         val positions = route.flatMap { it.positions }
@@ -43,7 +44,7 @@ internal object Routes {
             route.isEmpty() -> Refusal.ROUTE_EMPTY
             route.size > maxApprovers -> Refusal.ROUTE_TOO_LONG
             route.any { !it.wellFormed } -> Refusal.ROUTE_INVALID
-            initiator in people -> Refusal.INITIATOR_AS_APPROVER
+            !initiatorTakesPart && initiator in people -> Refusal.INITIATOR_AS_APPROVER
             people.toSet().size != people.size || positions.toSet().size != positions.size -> Refusal.ROUTE_DUPLICATE
             else -> null
         }
@@ -121,7 +122,7 @@ internal object Guards {
 
             is Resubmit -> {
                 initiatorIn(state, command.actor, InstanceStatus.RETURNED)
-                    ?: Routes.refusal(state.initiator, command.routeEntries, context.maxApprovers, routed)
+                    ?: Routes.refusal(state.initiator, command.routeEntries, context.maxApprovers, routed, context.initiatorTakesPart)
                     ?: Remarks.refusal(command.remark, required = false)
             }
 
@@ -238,7 +239,7 @@ internal object Guards {
             found == null -> Refusal.TASK_NOT_FOUND
             found.second.state != TaskState.OPEN -> Refusal.TASK_NOT_OPEN
             command.newAssignee == found.second.assignee -> Refusal.SAME_ASSIGNEE
-            command.newAssignee == state.initiator -> Refusal.INITIATOR_AS_APPROVER
+            !context.initiatorTakesPart && command.newAssignee == state.initiator -> Refusal.INITIATOR_AS_APPROVER
             command.newAssignee in others -> Refusal.ASSIGNEE_IN_ROUND
             context.eligibility(command.newAssignee) != null -> Refusal.ASSIGNEE_NOT_ELIGIBLE
             else -> Remarks.refusal(command.reason, required = true)

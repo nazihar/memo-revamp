@@ -22,10 +22,12 @@ object DefinitionJson {
             resubmit = json.text("resubmit")?.let(ResubmitPolicy::of),
             start = json["start"].asString(),
             steps = json.array("steps").map(::step),
+            subject = json.text("subject"),
         )
 
     fun print(definition: Definition): ObjectNode {
         val out = nodes.objectNode().put("schemaVersion", Definition.SCHEMA_VERSION)
+        definition.subject?.let { out.put("subject", it) }
         if (definition.attributes.isNotEmpty()) {
             val attributes = out.putArray("attributes")
             definition.attributes.forEach { attributes.addObject().put("name", it.name).put("type", it.type.json) }
@@ -71,6 +73,7 @@ object DefinitionJson {
             up = json["up"]?.asInt(),
             roleId = json.text("roleId")?.let(UUID::fromString),
             queue = json.text("queue"),
+            slot = json.text("slot"),
         )
 
     private fun print(step: StepDef): ObjectNode {
@@ -131,6 +134,7 @@ object DefinitionJson {
         assignee.up?.let { out.put("up", it) }
         assignee.roleId?.let { out.put("roleId", it.toString()) }
         assignee.queue?.let { out.put("queue", it) }
+        assignee.slot?.let { out.put("slot", it) }
         return out
     }
 

@@ -26,6 +26,11 @@ data class CatalogueAttribute(
 data class CatalogueSubjectType(
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val type: String,
     @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val attributes: List<CatalogueAttribute>,
+    /**
+     * The people items of this type name (ADR-0068), for `{"kind": "subject", "slot": …}` assignees in definitions bound
+     * to it (`"subject": "<type>"`); empty for types that name nobody.
+     */
+    @field:Schema(requiredMode = Schema.RequiredMode.REQUIRED) val slots: List<String> = emptyList(),
 )
 
 data class CatalogueRole(
@@ -79,9 +84,15 @@ class BuilderCatalogueController(
                 BuilderCatalogue(
                     subjectTypes =
                         subjects
-                            .filter { it.attributes.isNotEmpty() }
+                            .filter { it.attributes.isNotEmpty() || it.slots.isNotEmpty() }
                             .sortedBy { it.type }
-                            .map { s -> CatalogueSubjectType(s.type, s.attributes.map { CatalogueAttribute(it.key, it.value.json) }) },
+                            .map { s ->
+                                CatalogueSubjectType(
+                                    s.type,
+                                    s.attributes.map { CatalogueAttribute(it.key, it.value.json) },
+                                    s.slots.sorted(),
+                                )
+                            },
                     roles = roles.names().map { (id, name) -> CatalogueRole(id, name) },
                     queues = queues.all().map { CatalogueEntry(it.key, it.name) },
                     fragments = definitions.filter { it.id in published }.map { CatalogueEntry(it.key, it.name) },

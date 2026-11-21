@@ -1,6 +1,9 @@
 package com.memo.workflow.definition
 
 import com.memo.workflow.AttributeType
+import com.memo.workflow.DefinitionProblem
+import com.memo.workflow.SubjectDefinition
+import com.memo.workflow.SubjectDefinitionStep
 import com.memo.workflow.calendar.SlaDuration
 import com.networknt.schema.InputFormat
 import com.networknt.schema.Schema
@@ -11,13 +14,6 @@ import tools.jackson.databind.JsonNode
 import java.util.Locale
 import java.util.UUID
 
-/** One reason a definition is refused: where (a JSON pointer into the body), a stable code and a sentence for the admin. */
-data class DefinitionProblem(
-    val pointer: String,
-    val code: String,
-    val message: String,
-)
-
 /** The outcome of [DefinitionValidator.validate]: the parsed definition when the shape was right, and every problem found. */
 data class Validation(
     val definition: Definition?,
@@ -27,12 +23,24 @@ data class Validation(
 }
 
 /**
+ * What a subject type adds to the checks of the definitions bound to it (ADR-0068): its attributes (the catalogue for
+ * those definitions), its slot names, and its own rules.
+ */
+class BoundSubject(
+    val attributes: Map<String, AttributeType>,
+    val slots: Set<String>,
+    val check: (SubjectDefinition) -> List<DefinitionProblem> = { emptyList() },
+)
+
+/**
  * Checks a definition body (ADR-0038): the JSON Schema first, then the rules a schema cannot express. [catalogue] is the
- * subject type's attribute catalogue (null: not checked); [fragments] finds a published fragment by key.
+ * subject type's attribute catalogue (null: not checked); [subjects] finds the subject type a definition is bound to
+ * (ADR-0068; null: subjects and slots not checked); [fragments] finds a published fragment by key.
  */
 class DefinitionValidator(
     private val catalogue: Map<String, AttributeType>?,
     private val references: DefinitionReferences = DefinitionReferences.ANY,
+    private val subjects: ((String) -> BoundSubject?)? = null,
     private val fragments: (String) -> Definition?,
 ) {
     private val assignees = AssigneeChecks(references)
@@ -55,6 +63,9 @@ class DefinitionValidator(
         private val problems = mutableListOf<DefinitionProblem>()
         private val index = definition.steps.withIndex().associate { (i, step) -> step.id to i }
 
+        /** The subject type the definition is bound to, when it names one and it is known. */
+        private val bound = definition.subject?.let { key -> subjects?.invoke(key) }
+
         fun check(): List<DefinitionProblem> {
             ids()
             targets()
@@ -62,6 +73,7 @@ class DefinitionValidator(
             definition.steps.forEachIndexed { i, step -> step(i, step) }
             attributes()
             conditions()
+            problems += subjectProblems(definition, known = subjects != null, bound = bound)
             return problems
         }
 
@@ -188,6 +200,10 @@ class DefinitionValidator(
                     add("$at/definition", "FRAGMENT_NOT_ALLOWED", "the fragment '$key' contains a route or sub-workflow step")
                 }
 
+                fragment.subject != null && fragment.subject != definition.subject -> {
+                    add("$at/definition", "WRONG_SUBJECT", "the fragment '$key' is for items of the kind '${fragment.subject}'")
+                }
+
                 else -> {
                     fragment.attributes.forEach { attribute ->
                         val own = definition.attributes.firstOrNull { it.name == attribute.name }
@@ -205,7 +221,8 @@ class DefinitionValidator(
                 .filterValues { it.size > 1 }
                 .keys
                 .forEach { add("/attributes", "DUPLICATE_ATTRIBUTE", "the attribute '$it' is declared twice") }
-            val known = catalogue ?: return
+            // A bound definition reads its own subject's attributes (ADR-0068); others any subject's, as before.
+            val known = bound?.attributes ?: catalogue ?: return
             definition.attributes.forEachIndexed { a, attribute ->
                 val type = known[attribute.name]
                 when {
@@ -359,10 +376,11 @@ internal fun slaProblems(
     sla: Sla,
 ): List<DefinitionProblem> {
     val before = sla.remind?.before
+    val due = sla.due
     val escalate = sla.escalate
     return listOfNotNull(
         DefinitionProblem("$at/remind/before", "SLA_REMIND_BEFORE", "a reminder before the due time must be shorter than the due time")
-            .takeIf { before != null && roughMinutes(before) >= roughMinutes(sla.due) },
+            .takeIf { before != null && due != null && roughMinutes(before) >= roughMinutes(due) },
         DefinitionProblem("$at/escalate/to", "SLA_ESCALATE_TO", "say whom the task is reassigned to")
             .takeIf { escalate?.action == EscalateAction.REASSIGN && escalate.to == null },
         DefinitionProblem("$at/escalate/to", "ASSIGNEE_KIND", "the initiator cannot decide on their own item")
@@ -370,8 +388,83 @@ internal fun slaProblems(
     )
 }
 
+/** Every `subject` assignee of [step] with its pointer and slot (ADR-0068): assignee(s), recipients, fallback, escalation. */
+private fun slotted(
+    at: String,
+    step: StepDef,
+): List<Pair<String, String>> =
+    (
+        listOfNotNull(step.assignee?.let { "$at/assignee" to it }) +
+            step.assignees.mapIndexed { a, assignee -> "$at/assignees/$a" to assignee } +
+            step.recipients.mapIndexed { r, assignee -> "$at/recipients/$r" to assignee } +
+            listOfNotNull(step.fallback?.let { "$at/fallback" to it }) +
+            listOfNotNull(
+                step.sla
+                    ?.escalate
+                    ?.to
+                    ?.let { "$at/sla/escalate/to" to it },
+            )
+    ).mapNotNull { (where, assignee) -> assignee.slot?.takeIf { assignee.kind == AssigneeKind.SUBJECT }?.let { where to it } }
+
+/** The definition as the subject type [subject] checks it ([com.memo.workflow.WorkflowSubject.checkDefinition]). */
+fun Definition.forSubject(subject: String): SubjectDefinition =
+    SubjectDefinition(
+        subject,
+        start,
+        steps.map { step ->
+            SubjectDefinitionStep(
+                id = step.id,
+                type = step.type.json,
+                human = step.type.human,
+                slot = step.assignee?.takeIf { it.kind == AssigneeKind.SUBJECT }?.slot,
+                dueFromSubject = step.sla?.fromSubject == true,
+                actions = if (step.type.human) step.offeredActions.map { it.name } else emptyList(),
+                targets = step.targets,
+            )
+        },
+    )
+
 /** A duration in minutes, a day counted as 24 hours: enough to compare a reminder with its due time. */
 private fun roughMinutes(iso: String): Long =
     runCatching { SlaDuration.parse(iso) }.getOrNull()?.let { it.days * MINUTES_PER_DAY + it.minutes } ?: 0
 
 private const val MINUTES_PER_DAY = 24 * 60L
+
+/**
+ * ADR-0068: a definition names slots and due times only when it is bound to a subject type, and only that type's slots;
+ * the subject's own rules come last. [known] is false when subjects are not checked at all; [bound] is the definition's
+ * subject type when it is known.
+ */
+private fun subjectProblems(
+    definition: Definition,
+    known: Boolean,
+    bound: BoundSubject?,
+): List<DefinitionProblem> {
+    val key = definition.subject
+    val problems = mutableListOf<DefinitionProblem>()
+    if (key != null && known &&
+        bound == null
+    ) {
+        problems += DefinitionProblem("/subject", "UNKNOWN_SUBJECT", "there are no items of the kind '$key'")
+    }
+    definition.steps.forEachIndexed { i, step ->
+        slotted("/steps/$i", step).forEach { (at, slot) ->
+            if (key == null) {
+                problems +=
+                    DefinitionProblem(at, "SUBJECT_REQUIRED", "a person named by the item needs a definition bound to a kind of item")
+            } else if (bound != null && slot !in bound.slots) {
+                problems += DefinitionProblem("$at/slot", "UNKNOWN_SLOT", "items of this kind name nobody as '$slot'")
+            }
+        }
+        if (key == null && step.sla?.fromSubject == true) {
+            problems +=
+                DefinitionProblem(
+                    "/steps/$i/sla/from",
+                    "SUBJECT_REQUIRED",
+                    "a due time set by the item needs a definition bound to a kind of item",
+                )
+        }
+    }
+    if (key != null && bound != null) problems += bound.check(definition.forSubject(key))
+    return problems
+}

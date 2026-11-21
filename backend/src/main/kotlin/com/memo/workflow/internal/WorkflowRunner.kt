@@ -75,6 +75,8 @@ class WorkflowRunner(
         // New instances pin the newest published version (ADR-0038).
         val version = definitions.publishedVersion(definitionKey)
         val definition = compiled.get(version)
+        // A definition bound to a subject type runs for that type only (ADR-0068).
+        requireSubject(definition, subjectType)
         // And the DoA version in force today, when the definition asks the DoA (design E04 §4.3).
         val doaVersion = doa.pin(definition)
         val outcome =
@@ -145,7 +147,9 @@ class WorkflowRunner(
             throw WorkflowRefusedException(if (found == null) INSTANCE_NOT_FOUND else VERSION_CHANGED)
         }
         val loaded = checkNotNull(found)
-        val command = Migrate(actor.userId, compiled.get(to.first), from.second, to.second)
+        val target = compiled.get(to.first)
+        requireSubject(target, loaded.subjectType)
+        val command = Migrate(actor.userId, target, from.second, to.second)
         val outcome =
             accepted(
                 transition(
@@ -193,7 +197,7 @@ class WorkflowRunner(
         val snapshot = subject.snapshot(instance.subjectId)
         val snapshotJson = JSONB.valueOf(json.writeValueAsString(snapshot))
         val at = now()
-        val dueOf = dues.of(instance.definition, outcome, at.toInstant())
+        val dueOf = dues.of(instance.definition, outcome, at.toInstant()) { node -> subject.dueAt(instance.subjectId, node) }
         val (actionId, version) = writer.write(instance.id, before, instance.version, outcome, snapshotJson, actor.actingAs, at, dueOf)
         timers.plan(instance.id, instance.definition, outcome, dueOf)
         effects.audit(instance, outcome, snapshot)
@@ -222,6 +226,7 @@ class WorkflowRunner(
         }
         val interested = lazy { subject.interested(subjectId) }
         val authority = lazy { doa.match(doaVersion, subject, subjectId, initiator) }
+        val takesPart = subject.initiatorTakesPart
         val context =
             TransitionContext(
                 newId = ids::next,
@@ -229,13 +234,17 @@ class WorkflowRunner(
                 maxApprovers = settings.maxApprovers(),
                 attributes = { subject.attributeValues(subjectId) },
                 carried = carried,
-                resolver = resolvers.resolver(),
+                resolver = resolvers.resolver { slot -> subject.slot(subjectId, slot) },
                 oncePerRound = settings.oncePerRound(),
                 interested = interested::value,
-                // SOD-3: a substitute never acts on an item they initiated or have an interest in (design E04 §4.4).
-                substituteOf = { person -> substitutes.of(person)?.takeUnless { it == initiator || it in interested.value } },
+                // SOD-3: a substitute never acts on an item they initiated (unless the initiator takes part, ADR-0068) or
+                // have an interest in (design E04 §4.4).
+                substituteOf = { person ->
+                    substitutes.of(person)?.takeUnless { (!takesPart && it == initiator) || it in interested.value }
+                },
                 doa = authority::value,
                 within = orgLimits::within,
+                initiatorTakesPart = takesPart,
             )
         return Transition(context, definition)
     }
@@ -269,6 +278,9 @@ class WorkflowRunner(
         const val TASK_NOT_FOUND = "TASK_NOT_FOUND"
         const val INSTANCE_NOT_FOUND = "INSTANCE_NOT_FOUND"
         const val VERSION_CHANGED = "VERSION_CHANGED"
+
+        /** The definition is bound to another subject type (ADR-0068). */
+        const val WRONG_SUBJECT = "WRONG_SUBJECT"
     }
 }
 
@@ -311,4 +323,12 @@ private fun view(
         version = version,
         recallable = state.status == InstanceStatus.RUNNING && untouched,
     )
+}
+
+/** A definition bound to a subject type runs for that type only (ADR-0068). */
+internal fun requireSubject(
+    definition: Definition,
+    subjectType: String,
+) {
+    if (definition.subject != null && definition.subject != subjectType) throw WorkflowRefusedException(WorkflowRunner.WRONG_SUBJECT)
 }

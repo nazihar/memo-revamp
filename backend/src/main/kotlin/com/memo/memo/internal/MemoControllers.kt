@@ -364,7 +364,8 @@ class AdminMemoTypesController(
     @GetMapping("/definitions")
     @RequiresPermission(Permission.MEMO_TYPES_MANAGE, orAnyOf = [Permission.MEMO_TYPES_APPROVE])
     @Operation(operationId = "listMemoTypeDefinitions", summary = "Published workflow definitions a memo type can run on")
-    fun definitions(): List<DefinitionChoice> = transactions.readInTenant(TenantContext.current()) { definitions.published() }
+    fun definitions(): List<DefinitionChoice> =
+        transactions.readInTenant(TenantContext.current()) { definitions.published(MemoWorkflowSubject.TYPE) }
 
     @PostMapping
     @RequiresPermission(Permission.MEMO_TYPES_MANAGE)

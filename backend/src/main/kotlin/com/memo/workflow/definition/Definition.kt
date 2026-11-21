@@ -78,6 +78,12 @@ enum class AssigneeKind(
 
     /** The members of a queue (people, and the holders of member positions), [Assignee.queue] by key. */
     QUEUE("queue"),
+
+    /**
+     * The people the item names in [Assignee.slot] (ADR-0068): persons, or positions resolved to their holders; only in
+     * definitions bound to a subject type.
+     */
+    SUBJECT("subject"),
     ;
 
     companion object {
@@ -102,6 +108,8 @@ data class Assignee(
     val roleId: UUID? = null,
     /** A queue key, for [AssigneeKind.QUEUE]. */
     val queue: String? = null,
+    /** A slot of the definition's subject, for [AssigneeKind.SUBJECT] (ADR-0068). */
+    val slot: String? = null,
 )
 
 data class Attribute(
@@ -128,18 +136,36 @@ enum class ForwardWithin(
     }
 }
 
+/** Where a step's due time comes from when it is not a duration (ADR-0068). */
+enum class SlaFrom(
+    val json: String,
+) {
+    /** The subject's due time for the step ([com.memo.workflow.WorkflowSubject.dueAt]). */
+    SUBJECT("subject"),
+    ;
+
+    companion object {
+        fun of(json: String): SlaFrom = entries.first { it.json == json }
+    }
+}
+
 /**
- * A step's service level (ADR-0041, design E05 §2): due after [due] (ISO 8601 days, hours, minutes), counted in the
- * tenant's working time unless [workingTime] is false; reminders before and after; and an escalation.
+ * A step's service level (ADR-0041, design E05 §2): due after [due] (ISO 8601 days, hours, minutes), or at the time the
+ * subject sets ([from], ADR-0068; exactly one of the two), counted in the tenant's working time unless [workingTime] is
+ * false; reminders before and after; and an escalation.
  */
 data class Sla(
-    val due: String,
+    val due: String? = null,
     val workingTime: Boolean? = null,
     val remind: Remind? = null,
     val escalate: Escalate? = null,
+    val from: SlaFrom? = null,
 ) {
     /** Working time unless the definition says otherwise. */
     val inWorkingTime: Boolean get() = workingTime != false
+
+    /** The due time is the subject's, not a duration from the task's creation. */
+    val fromSubject: Boolean get() = from == SlaFrom.SUBJECT
 }
 
 /** Reminders to the holder: once [before] the due time, and after it at each of [after] (at most 3). */
@@ -228,12 +254,16 @@ data class StepDef(
     }
 }
 
-/** A workflow definition, schema version 2 (ADR-0038). [END] is the implicit final step. */
+/**
+ * A workflow definition, schema version 2 (ADR-0038). [END] is the implicit final step. A definition with a [subject]
+ * runs only for that subject type and may name its slots and due times (ADR-0068).
+ */
 data class Definition(
     val attributes: List<Attribute> = emptyList(),
     val resubmit: ResubmitPolicy? = null,
     val start: String,
     val steps: List<StepDef>,
+    val subject: String? = null,
 ) {
     val stepsById: Map<String, StepDef> by lazy { steps.associateBy { it.id } }
 

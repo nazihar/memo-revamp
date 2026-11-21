@@ -16,6 +16,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/misc'
 import { FormDialog } from '@/features/forums/FormDialog'
 import { PeoplePicker, type Picked } from '@/features/org/PeoplePicker'
 import { newIdempotencyKey } from '@/lib/idempotency'
+import { focusWhenGone, neighbours, paperMenuId, papersLeadId } from './focus'
 import { CheckField } from './CheckField'
 import { itemChange, locate, paperChange, PURPOSES, type Item, type Paper, type Purpose } from './draft'
 import { ap, apv, purposeLabels, sourceLabels } from './messages'
@@ -572,7 +573,10 @@ function PapersTab({ item }: { item: Item }) {
   }
   return (
     <div className="flex flex-col gap-4">
-      <p className="text-sm text-muted-foreground">{intl.formatMessage(ap.papersLead)}</p>
+      {/* Focus comes here when the last paper is removed (focus.ts). */}
+      <p id={papersLeadId(item.id)} tabIndex={-1} className="text-sm text-muted-foreground">
+        {intl.formatMessage(ap.papersLead)}
+      </p>
       {item.papers.length ? (
         <ol aria-label={intl.formatMessage(ap.tabPapers)} className="flex flex-col divide-y rounded-md border">
           {item.papers.map((paper) => (
@@ -663,6 +667,7 @@ function PaperRow({ paper, item, onRefusal }: { paper: Paper; item: Item; onRefu
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
+              id={paperMenuId(paper.id)}
               variant="ghost"
               size="icon"
               aria-label={intl.formatMessage(apv.paperActions, { title: paper.title })}
@@ -720,11 +725,17 @@ function PaperRow({ paper, item, onRefusal }: { paper: Paper; item: Item; onRefu
           cancelLabel={intl.formatMessage(ap.keep)}
           destructive
           onConfirm={() => {
+            // The paper's own ⋯ button goes with it: focus moves to the next paper's, else the one before, else the lead.
+            const next = neighbours(
+              item.papers.map((p) => p.id),
+              paper.id,
+            ).map(paperMenuId)
             void change((headers) =>
               removeAgendaPaper({ path: { meetingId: meeting.id, paperId: paper.id }, headers, throwOnError: true }),
             ).then((out) => {
               onRefusal(out.refusal)
               announce(out.draft ? intl.formatMessage(apv.removed, { title: paper.title }) : out.refusal)
+              if (out.draft) focusWhenGone(paperMenuId(paper.id), next, papersLeadId(item.id))
             })
           }}
         />

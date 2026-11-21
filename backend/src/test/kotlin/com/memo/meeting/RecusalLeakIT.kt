@@ -213,6 +213,12 @@ class RecusalLeakIT : RecusalLeakFixture() {
                     "/api/v1/resolutions/${UUID.randomUUID()}",
                 ).forEach { uri -> clean(v.person(), read(uri, v.person().session), statusBelow = 500) }
             },
+            // E06 T5: the minutes page, the secretaries' while drafting; nothing on a meeting not held (404), never a canary.
+            Surface.MINUTES to { p, v ->
+                val page = read("/api/v1/meetings/${p.meeting.id}/minutes", v.person().session)
+                assertThat(page).hasStatus(HttpStatus.NOT_FOUND)
+                clean(v.person(), page, statusBelow = 500)
+            },
         )
 
     /** The generic files endpoints for every version of a paper's [file]: 403 or 404, naming nothing. */
@@ -678,6 +684,9 @@ class RecusalLeakIT : RecusalLeakFixture() {
             // The starting resolution number (E06 T4): forums.manage only, so the recused secretary is refused, naming nothing.
             "PUT /api/v1/forums/{forumId}/resolution-counters/{period}" to
                 { _ -> send(HttpMethod.PUT, "/api/v1/forums/$brc/resolution-counters/2026", secretary, """{"next":14}""") },
+            // Making the minutes' draft (E06 T5): the recused secretary is refused (403 `RECUSED`), naming nothing.
+            "POST /api/v1/meetings/{meetingId}/minutes/draft" to
+                { p -> send(HttpMethod.POST, "${base(p)}/minutes/draft", secretary, """{"replaceEdits":true}""") },
             "POST /api/v1/meetings/{meetingId}/end" to
                 { p -> send(HttpMethod.POST, "${base(p)}/end", secretary, "{}", versioned(meetingVersion(p))) },
             "POST /api/v1/meetings/{meetingId}/cancel" to

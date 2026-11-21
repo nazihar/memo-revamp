@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
-import { Link } from '@tanstack/react-router'
+import { Link, useNavigate, useSearch } from '@tanstack/react-router'
 import { ExternalLink, UserPlus } from 'lucide-react'
-import { useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { useIntl } from 'react-intl'
 import { getMeetingOptions, listClassificationLevelsOptions } from '@/api/generated/@tanstack/react-query.gen'
 import type { MeetingGuestResponse, MeetingResponse } from '@/api/generated/types.gen'
@@ -22,6 +22,7 @@ import { AddGuestDialog, MeetingMenu, RemoveGuestDialog } from './MeetingDialogs
 import { mm, mmv } from './messages'
 import { MeetingAgenda } from './page/MeetingAgenda'
 import { pmv } from './page/messages'
+import { MEETING_TABS, withTab, type MeetingTab } from './page/search'
 import { InvitationsPanel } from './replies/InvitationsPanel'
 import { rm } from './replies/messages'
 import { CalendarLink, WillYouAttend } from './replies/WillYouAttend'
@@ -118,7 +119,15 @@ export function MeetingPage({ meetingId }: { meetingId: string }) {
       {officer && live ? <QuorumBanner meeting={m} /> : null}
       {decides ? <LateRequests meeting={m} /> : null}
       {replies || declarations ? (
-        <MeetingTabs live={live && attendance}>
+        <MeetingTabs
+          live={live && attendance}
+          tabs={[
+            'agenda',
+            ...(attendance ? (['attendance'] as const) : []),
+            ...(replies ? (['replies'] as const) : []),
+            ...(declarations ? (['declarations'] as const) : []),
+          ]}
+        >
           <TabsList aria-label={intl.formatMessage(rm.tabs)} className="flex-wrap print:hidden">
             <TabsTrigger value="agenda" className="min-h-11">
               {intl.formatMessage(rm.tabAgenda)}
@@ -172,19 +181,32 @@ export function MeetingPage({ meetingId }: { meetingId: string }) {
 const ATTENDANCE_STATUSES: MeetingResponse['status'][] = ['IN_PROGRESS', 'HELD', 'MINUTES_APPROVED', 'CLOSED']
 
 /**
- * The meeting page's tabs: the agenda first, or the register while the meeting runs ([live]); when the secretary starts
- * the meeting from this page, the register opens.
+ * The meeting page's tabs ([tabs], those the viewer has): the agenda first, or the register while the meeting runs
+ * ([live]). Another tab is in the address (`?tab=`), so a reload, Back and a change of language keep it; a tab the
+ * viewer does not have opens the one the page opens on. When the secretary starts the meeting from this page, the
+ * register opens.
  */
-function MeetingTabs({ live, children }: { live: boolean; children: ReactNode }) {
-  const [tab, setTab] = useState(live ? 'attendance' : 'agenda')
-  const [wasLive, setWasLive] = useState(live)
-  if (live !== wasLive) {
-    setWasLive(live)
-    if (live) setTab('attendance')
-    else if (tab === 'attendance') setTab('agenda')
-  }
+function MeetingTabs({ live, tabs, children }: { live: boolean; tabs: MeetingTab[]; children: ReactNode }) {
+  const search = useSearch({ from: '/_shell/_signedIn/meetings/$meetingId' })
+  const navigate = useNavigate({ from: '/meetings/$meetingId' })
+  const opening: MeetingTab = live ? 'attendance' : 'agenda'
+  const tab = search.tab && tabs.includes(search.tab) ? search.tab : opening
+  const asked = search.tab
+  const wasLive = useRef(live)
+  useEffect(() => {
+    if (wasLive.current === live) return
+    wasLive.current = live
+    if (live || asked === 'attendance') void navigate({ search: (prev) => withTab(prev, undefined), replace: true })
+  }, [live, asked, navigate])
   return (
-    <Tabs value={tab} onValueChange={setTab} className="print:contents">
+    <Tabs
+      value={tab}
+      onValueChange={(value) => {
+        const next = MEETING_TABS.find((t) => t === value)
+        if (next) void navigate({ search: (prev) => withTab(prev, next === opening ? undefined : next), replace: true })
+      }}
+      className="print:contents"
+    >
       {children}
     </Tabs>
   )

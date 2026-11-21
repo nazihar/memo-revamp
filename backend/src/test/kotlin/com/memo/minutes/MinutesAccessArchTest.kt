@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController
 /**
  * [MinutesAccess] and [ResolutionAccess] are the only readers of the minutes tables for the people decisions and resolutions
  * are shown to (design E06 §1.9): the controllers reach no store, and the reads are used only by them, by the services that
- * record, number and release (they read what they lock) and by the published [Decisions] and [Resolutions] (other modules
- * decide access themselves).
+ * record, number and release (they read what they lock), by the draft's source (E06 T5: the minutes job, for its requester)
+ * and by the published [Decisions] and [Resolutions] (other modules decide access themselves).
  */
 class MinutesAccessArchTest {
     private val classes =
@@ -51,6 +51,7 @@ class MinutesAccessArchTest {
                     "ConsentDecisions",
                     "DecisionRelease",
                     "MinutesRelease",
+                    "MinutesDraftSource",
                     "Decisions",
                     "DecisionReads",
                 ),
@@ -71,6 +72,7 @@ class MinutesAccessArchTest {
                     "ResolutionNumbers",
                     "DecisionRelease",
                     "MinutesRelease",
+                    "MinutesDraftSource",
                     "Decisions",
                     "Resolutions",
                     "ResolutionStore",

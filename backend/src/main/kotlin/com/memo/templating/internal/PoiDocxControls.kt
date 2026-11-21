@@ -3,6 +3,7 @@ package com.memo.templating.internal
 import com.memo.common.poi.PoiLimits
 import com.memo.templating.ContentControlException
 import com.memo.templating.ControlParagraph
+import com.memo.templating.DocumentMarks
 import com.memo.templating.DocxControls
 import com.memo.templating.FoundControl
 import org.apache.poi.xwpf.usermodel.XWPFDocument
@@ -29,7 +30,43 @@ internal class PoiDocxControls : DocxControls {
         PoiLimits.apply()
     }
 
-    override fun scan(docx: InputStream): List<FoundControl> =
+    override fun scan(docx: InputStream): List<FoundControl> = body(docx, ::read)
+
+    override fun marks(docx: InputStream): DocumentMarks =
+        body(docx) { xml ->
+            var tracked = 0
+            var comments = 0
+            stream(xml) { reader ->
+                if (reader.eventType == XMLStreamConstants.START_ELEMENT && reader.namespaceURI == W) {
+                    when (reader.localName) {
+                        in TRACKED -> tracked++
+                        COMMENT_REFERENCE -> comments++
+                    }
+                }
+            }
+            DocumentMarks(tracked, comments)
+        }
+
+    override fun refill(
+        docx: InputStream,
+        source: InputStream,
+        tag: String,
+    ): ByteArray =
+        open(source).use { from ->
+            val copy = only(ControlXml.controls(from.document.body), tag)
+            edit(docx) { document ->
+                val body = document.document.body
+                val target = only(ControlXml.controls(body), tag)
+                ControlXml.insertCopy(body, copy, target)
+                ControlXml.remove(target)
+            }
+        }
+
+    /** [read] over the package's `word/document.xml`, bounded as POI's packages are. */
+    private fun <T> body(
+        docx: InputStream,
+        read: (InputStream) -> T,
+    ): T =
         try {
             ZipInputStream(docx).use { zip ->
                 generateSequence { zip.nextEntry }.firstOrNull { it.name == DOCUMENT } ?: throw ContentControlException("no $DOCUMENT")
@@ -94,24 +131,15 @@ internal class PoiDocxControls : DocxControls {
 
     /** The controls in [xml], in the order their starts appear. */
     private fun read(xml: InputStream): List<FoundControl> {
-        val factory = XMLInputFactory.newFactory()
-        factory.setProperty(XMLInputFactory.SUPPORT_DTD, false)
-        factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false)
-        factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, false)
-        val reader = factory.createXMLStreamReader(xml)
         val found = mutableListOf<Scanned>()
         val open = ArrayDeque<Scanned>()
         val path = ArrayDeque<String>()
-        try {
-            while (reader.hasNext()) {
-                when (reader.next()) {
-                    XMLStreamConstants.START_ELEMENT -> start(reader, path, open, found)
-                    XMLStreamConstants.END_ELEMENT -> if (path.removeLast() == SDT) open.removeLast()
-                    else -> Unit
-                }
+        stream(xml) { reader ->
+            when (reader.eventType) {
+                XMLStreamConstants.START_ELEMENT -> start(reader, path, open, found)
+                XMLStreamConstants.END_ELEMENT -> if (path.removeLast() == SDT) open.removeLast()
+                else -> Unit
             }
-        } finally {
-            reader.close()
         }
         return found.map { FoundControl(it.tag, it.lock, it.title, it.bodyLevel) }
     }
@@ -174,5 +202,46 @@ internal class PoiDocxControls : DocxControls {
         const val LOCK = "lock"
         const val ALIAS = "alias"
         const val VAL = "val"
+        const val COMMENT_REFERENCE = "commentReference"
+
+        /** Revision marks (ECMA-376 §17.13.5): what review mode leaves for the secretary to accept or reject. */
+        val TRACKED =
+            setOf(
+                "ins",
+                "del",
+                "moveFrom",
+                "moveTo",
+                "pPrChange",
+                "rPrChange",
+                "sectPrChange",
+                "tblPrChange",
+                "trPrChange",
+                "tcPrChange",
+                "tblGridChange",
+                "numberingChange",
+                "cellIns",
+                "cellDel",
+                "cellMerge",
+            )
+    }
+}
+
+/** Calls [each] at every event of [xml], read with StAX without DTDs or external entities. */
+private fun stream(
+    xml: InputStream,
+    each: (XMLStreamReader) -> Unit,
+) {
+    val factory = XMLInputFactory.newFactory()
+    factory.setProperty(XMLInputFactory.SUPPORT_DTD, false)
+    factory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false)
+    factory.setProperty(XMLInputFactory.IS_REPLACING_ENTITY_REFERENCES, false)
+    val reader = factory.createXMLStreamReader(xml)
+    try {
+        while (reader.hasNext()) {
+            reader.next()
+            each(reader)
+        }
+    } finally {
+        reader.close()
     }
 }

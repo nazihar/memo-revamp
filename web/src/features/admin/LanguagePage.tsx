@@ -19,6 +19,7 @@ import { Input, Select } from '@/components/ui/form-controls'
 import { useToast } from '@/components/ui/toast-context'
 import { TERMS, type TermKey } from '@/features/terms/terms'
 import { am, amv } from './admin-messages'
+import { TableScroll } from '@/components/page/TableScroll'
 
 const LANGUAGES = ['en', 'ar'] as const
 type Language = (typeof LANGUAGES)[number]
@@ -229,7 +230,7 @@ function TermsForm({ language, view }: { language: Language; view: Terms }) {
         void save()
       }}
     >
-      <div className="overflow-x-auto">
+      <TableScroll>
         <table className="w-full text-sm">
           <caption className="sr-only">{intl.formatMessage(am.termsCaption)}</caption>
           <thead>
@@ -305,7 +306,7 @@ function TermsForm({ language, view }: { language: Language; view: Terms }) {
             })}
           </tbody>
         </table>
-      </div>
+      </TableScroll>
       <FormActions>
         <Button type="submit">{intl.formatMessage(am.saveTerms)}</Button>
       </FormActions>

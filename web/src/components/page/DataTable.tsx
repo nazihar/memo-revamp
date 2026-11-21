@@ -13,6 +13,7 @@ import { Button } from '@/components/ui/button'
 import { Checkbox } from '@/components/ui/form-controls'
 import { cn } from '@/lib/utils'
 import { ErrorState, LoadingState } from './States'
+import { TableScroll } from './TableScroll'
 import { dataTableFeatures, type DataTableColumn, type DataTableFeatures } from './data-table-features'
 
 const messages = defineMessages<{
@@ -110,7 +111,7 @@ export function DataTable<T extends RowData>({
 
   return (
     <div className="flex flex-col gap-3">
-      <div className="overflow-x-auto rounded-lg border bg-card">
+      <TableScroll className="rounded-lg border bg-card">
         <table className="w-full min-w-[40rem] border-collapse text-sm">
           <caption className="sr-only">{caption}</caption>
           <thead>
@@ -199,7 +200,7 @@ export function DataTable<T extends RowData>({
           ) : null}
         </table>
         {placeholder}
-      </div>
+      </TableScroll>
       {paging ? <CursorPagination {...paging} /> : null}
     </div>
   )

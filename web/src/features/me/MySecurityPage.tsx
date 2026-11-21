@@ -19,6 +19,7 @@ import { Dialog } from '@/components/ui/dialog'
 import { Field } from '@/components/ui/field'
 import { Input } from '@/components/ui/form-controls'
 import { useToast } from '@/components/ui/toast-context'
+import { TableScroll } from '@/components/page/TableScroll'
 
 const m = defineMessages<{
   title: NoMessageValues
@@ -292,7 +293,7 @@ function SessionsSection() {
       {sessions.isPending ? <LoadingState rows={2} /> : null}
       {sessions.isError ? <ErrorState onRetry={() => void sessions.refetch()} /> : null}
       {sessions.data ? (
-        <div className="overflow-x-auto">
+        <TableScroll>
           <table className="w-full text-sm">
             <caption className="sr-only">{intl.formatMessage(m.sessions)}</caption>
             <thead className="text-start text-muted-foreground">
@@ -345,7 +346,7 @@ function SessionsSection() {
               ))}
             </tbody>
           </table>
-        </div>
+        </TableScroll>
       ) : null}
     </Section>
   )

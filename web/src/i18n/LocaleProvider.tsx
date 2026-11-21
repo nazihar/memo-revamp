@@ -65,7 +65,7 @@ interface Catalogue {
 }
 
 /**
- * Provides react-intl and keeps `<html lang dir>` in sync with the chosen locale (ADR-0010). The catalogue loads in
+ * Provides react-intl and keeps `<html lang dir>` in sync with the locale shown (ADR-0010). The catalogue loads in
  * parts (catalogue-parts.json): core for every page, the others when a page under their routes asks for them.
  */
 export function LocaleProvider({ children, locale: forced }: { children: ReactNode; locale?: AppLocale }) {
@@ -73,10 +73,17 @@ export function LocaleProvider({ children, locale: forced }: { children: ReactNo
   const [wanted, setWanted] = useState<ReadonlySet<CataloguePart>>(() => new Set(['core']))
   const [catalogue, setCatalogue] = useState<Catalogue>({ locale: DEFAULT_LOCALE, parts: {} })
 
+  // While the chosen language's catalogue loads, the page stays in the language it is shown in ([shown]) instead of
+  // giving way to a loading state: unmounting it would lose what the reader had open or typed (a tab, a form).
+  const ready = locale === DEFAULT_LOCALE || catalogue.locale === locale
+  const [settled, setSettled] = useState<AppLocale>(locale)
+  if (ready && settled !== locale) setSettled(locale)
+  const shown = ready ? locale : settled
+
   useEffect(() => {
-    document.documentElement.lang = locale
-    document.documentElement.dir = directionOf(locale)
-  }, [locale])
+    document.documentElement.lang = shown
+    document.documentElement.dir = directionOf(shown)
+  }, [shown])
 
   useEffect(() => {
     let cancelled = false
@@ -105,13 +112,13 @@ export function LocaleProvider({ children, locale: forced }: { children: ReactNo
   }, [])
 
   // English is the source locale: its messages are in the code, so every part is there from the start.
-  const current = catalogue.locale === locale
+  const current = catalogue.locale === shown
   const loaded = useMemo(
     () =>
-      locale === DEFAULT_LOCALE
+      shown === DEFAULT_LOCALE
         ? ALL_PARTS
         : new Set<CataloguePart>(current ? (Object.keys(catalogue.parts) as CataloguePart[]) : []),
-    [locale, current, catalogue],
+    [shown, current, catalogue],
   )
   const messages = useMemo(
     () => Object.assign({}, ...Object.values(current ? catalogue.parts : {})) as Messages,
@@ -122,7 +129,7 @@ export function LocaleProvider({ children, locale: forced }: { children: ReactNo
   return (
     <LocaleContext.Provider value={value}>
       <IntlProvider
-        locale={formattingLocale(current ? locale : DEFAULT_LOCALE)}
+        locale={formattingLocale(current ? shown : DEFAULT_LOCALE)}
         messages={messages}
         defaultLocale={DEFAULT_LOCALE}
         onError={(err) => {

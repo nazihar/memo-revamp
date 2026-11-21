@@ -69,6 +69,16 @@ test.describe('as the company secretary', () => {
     await app.checkA11y()
     await sheet.getByRole('button', { name: 'Schedule' }).click()
     await expect(page.getByText('Meeting scheduled. The members can see it now.')).toBeVisible()
+
+    // The tab is in the address. At 400 % zoom (320 CSS pixels wide) the meetings table, whose actions column has a
+    // visually hidden header, scrolls in its own box and the page does not scroll sideways (WCAG 1.4.10).
+    await expect(page).toHaveURL(/[?&]tab=meetings\b/)
+    await page.setViewportSize({ width: 320, height: 800 })
+    await expect(page.getByRole('table').filter({ hasText: meetingTitle })).toBeVisible()
+    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBe(
+      0,
+    )
+    await page.setViewportSize({ width: 1280, height: 720 })
     await page.getByRole('link', { name: meetingTitle }).click()
     await page.getByRole('link', { name: 'Open the agenda builder' }).click()
     const builder = page.url()

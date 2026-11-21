@@ -13,6 +13,7 @@ import net.fortuna.ical4j.model.property.DateProperty
 import net.fortuna.ical4j.validate.ValidationEntry
 import org.assertj.core.api.Assertions.assertThat
 import java.io.StringReader
+import java.time.Duration
 import java.time.Instant
 import java.time.ZoneId
 import java.time.temporal.Temporal
@@ -66,14 +67,27 @@ object InviteChecks {
                 .nextTransition(ical4j.start)
                 ?.instant
                 ?.isAfter(ical4j.end) == false
+        // And biweekly misreads the rest of the local day on which daylight saving starts in some zones whose summer spans
+        // the new year (Australia/Adelaide and Australia/Sydney: 10:00 on 6 October 2019 an hour late, 23:30 right), from
+        // the same RRULE VTIMEZONE it reads right for London, New York and Santiago; ical4j agrees with java.time there.
+        // Within a day after a change, the instants are checked against ical4j only (fix/vtimezone-transition-instant).
+        val dayAfterChange = zone != null && listOf(ical4j.start, ical4j.end).any { dayAfterChange(zone, it) }
         val compared =
             when {
-                !wholeHour -> biweekly.copy(start = ical4j.start, end = ical4j.end)
+                !wholeHour || dayAfterChange -> biweekly.copy(start = ical4j.start, end = ical4j.end)
                 oneOffChangeDuring -> biweekly.copy(start = ical4j.start)
                 else -> biweekly
             }
         assertThat(compared).describedAs("biweekly reads what ical4j reads").isEqualTo(ical4j)
         return ical4j
+    }
+
+    private fun dayAfterChange(
+        zone: ZoneId,
+        at: Instant,
+    ): Boolean {
+        val change = zone.rules.previousTransition(at.plusNanos(1)) ?: return false
+        return Duration.between(change.instant, at) < Duration.ofDays(1)
     }
 
     private const val HOUR = 3600L

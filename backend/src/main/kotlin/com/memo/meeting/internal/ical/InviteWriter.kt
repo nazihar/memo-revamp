@@ -87,13 +87,18 @@ class InviteWriter(
         joinUrl: String?,
     ): VEvent {
         val event = invite.event
+        // A time in the second occurrence of a repeated hour (clocks going back) has no unambiguous local form: RFC 5545
+        // §3.3.5 reads a repeated local time as its first occurrence, an hour early. Such a meeting is written in UTC.
+        val utc = secondOccurrence(event.startsAt, event) || secondOccurrence(event.endsAt, event)
+        val start = event.startsAt.truncatedTo(ChronoUnit.SECONDS)
+        val end = event.endsAt.truncatedTo(ChronoUnit.SECONDS)
         val properties =
             listOfNotNull(
                 Uid(event.uid.toString()),
                 Sequence(event.sequence),
                 DtStamp(clock.instant().truncatedTo(ChronoUnit.SECONDS)),
-                DtStart(zoned(event), local(event.startsAt, event)),
-                DtEnd(zoned(event), local(event.endsAt, event)),
+                if (utc) DtStart(start) else DtStart(zoned(event), local(start, event)),
+                if (utc) DtEnd(end) else DtEnd(zoned(event), local(end, event)),
                 Summary(InviteInput.line(event.summary).ifEmpty { "-" }),
                 texts.location(event, invite.locale)?.let(::Location),
                 organizer(invite.organizer),
@@ -117,6 +122,16 @@ class InviteWriter(
     ): LocalDateTime = LocalDateTime.ofInstant(instant.truncatedTo(ChronoUnit.SECONDS), event.zone)
 
     private fun zoned(event: InviteEvent) = ParameterList(listOf(TzId(event.zone.id)))
+
+    /** True when [instant]'s local time occurs twice in the meeting's zone and [instant] is the later occurrence. */
+    private fun secondOccurrence(
+        instant: java.time.Instant,
+        event: InviteEvent,
+    ): Boolean {
+        val rules = event.zone.rules
+        val offsets = rules.getValidOffsets(local(instant, event))
+        return offsets.size > 1 && rules.getOffset(instant) != offsets.first()
+    }
 
     private fun organizer(party: InviteParty): Property =
         Organizer(InviteInput.mailto(party.email)).apply {
